@@ -48,6 +48,8 @@
 #include <ctype.h>
 #include <string.h>
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -138,11 +140,40 @@
 #define error_unknown_name(AST) \
   fl_print_error_unknown_name( __FILE__, __LINE__, &(AST)->loc, &(AST)->sname )
 
-// local constants
-static bool const VISITOR_ERROR_FOUND     = true;
-static bool const VISITOR_ERROR_NOT_FOUND = false;
+///////////////////////////////////////////////////////////////////////////////
 
-/// @endcond
+// local constants
+
+/**
+ * Flag for c_ast_check_visitor(): is an AST node a function-like parameter?
+ */
+static c_ast_visitor_data_t const C_IS_FUNC_PARAM = (1u << 0);
+
+/**
+ * Flag for c_ast_check_visitor(): is an AST node the "of" type of a `typedef`
+ * AST that is itself a "to" type of a pointer AST?  For example, given:
+ *
+ *      typedef void V;                 // typedef AST1 AST2
+ *      explain V *p;                   // explain AST2 AST3
+ *
+ * That is, if AST3 (`p`) is a pointer to AST2 (`V`) that is a `typedef` of
+ * AST1 (`void`), then AST1 is a "pointee" because it is pointed to from AST3
+ * (indirectly via AST2).
+ *
+ * This is needed only for a pointer to a `typedef` of `void` since:
+ *
+ *  + A variable of `void` is illegal; but:
+ *  + A `typedef` of `void` is legal; and
+ *  + A pointer to `void` is also legal; therefore:
+ *  + A pointer to a `typedef` of `void` is also legal.
+ */
+static c_ast_visitor_data_t const C_IS_POINTED_TO = (1u << 1);
+
+/// Convenience return value for <code>\ref c_ast_visitor_t</code> functions.
+static bool const VISITOR_ERROR_FOUND     = true;
+
+/// Convenience return value for <code>\ref c_ast_visitor_t</code> functions.
+static bool const VISITOR_ERROR_NOT_FOUND = false;
 
 // local functions
 PJL_WARN_UNUSED_RESULT
@@ -152,7 +183,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_emc( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_errors( c_ast_t const*, bool );
+static bool c_ast_check_errors( c_ast_t const*, c_ast_visitor_data_t );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main( c_ast_t const* );
@@ -179,13 +210,13 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_name_equal( c_ast_t const*, char const* );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_error( c_ast_t*, uint64_t );
+static bool c_ast_visitor_error( c_ast_t*, c_ast_visitor_data_t );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_type( c_ast_t*, uint64_t );
+static bool c_ast_visitor_type( c_ast_t*, c_ast_visitor_data_t );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_warning( c_ast_t*, uint64_t );
+static bool c_ast_visitor_warning( c_ast_t*, c_ast_visitor_data_t );
 
 static void c_ast_warn_name( c_ast_t const* );
 static void c_sname_warn( c_sname_t const*, c_loc_t const* );
@@ -200,15 +231,15 @@ static c_lang_id_t is_reserved_name( char const* );
  *
  * @param ast The AST to check.
  * @param visitor The visitor to use.
- * @param data Optional data passed to c_ast_visit().
+ * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         c_ast_visitor_t visitor,
-                                        uint64_t data ) {
+                                        c_ast_visitor_data_t flags ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visitor, data ) == NULL;
+  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visitor, flags ) == NULL;
 }
 
 /**
@@ -290,14 +321,15 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
  * Checks an array AST for errors.
  *
  * @param ast The array AST to check.
- * @param is_func_param If `true`, \a ast is an AST for a function-like
- * parameter.
+ * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
+static bool c_ast_check_array( c_ast_t const *ast,
+                               c_ast_visitor_data_t flags ) {
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
+  bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
   if ( c_ast_is_register( ast ) ) {
     error_kind_not_tid( ast, TS_REGISTER, "\n" );
@@ -400,10 +432,12 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
  * Checks a built-in type AST for errors.
  *
  * @param ast The built-in AST to check.
+ * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_builtin( c_ast_t const *ast ) {
+static bool c_ast_check_builtin( c_ast_t const *ast,
+                                 c_ast_visitor_data_t flags ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
 
@@ -438,9 +472,21 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     }
   }
 
-  if ( ast->cast_kind == C_CAST_NONE && c_ast_is_builtin_any( ast, TB_VOID ) &&
+  if ( c_ast_is_builtin_any( ast, TB_VOID ) &&
+       //
+       // If we're of type void and:
+       //
+       //   + Not: int f(void)     // not a zero-parameter function; and:
+       //   + Not: (void)x         // not a cast to void; and:
+       //   + Not: typedef void V  // not a typedef of void; and:
+       //   + Not: V *p            // not a pointer to typedef of void; then:
+       //
+       // it means we must be a variable of void which is an error.
+       //
+       ast->parent_ast == NULL &&
+       ast->cast_kind == C_CAST_NONE &&
        !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) &&
-       ast->parent_ast == NULL ) {
+       (flags & C_IS_POINTED_TO) == 0 ) {
     print_error( &ast->loc, "variable of %s", L_VOID );
     print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
@@ -697,15 +743,16 @@ static bool c_ast_check_emc( c_ast_t const *ast ) {
  * Checks an entire AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param is_func_param If `true`, we're checking a function parameter.
+ * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_param ) {
+static bool c_ast_check_errors( c_ast_t const *ast,
+                                c_ast_visitor_data_t flags ) {
   assert( ast != NULL );
   // check in major-to-minor error order
-  return  c_ast_check_visitor( ast, c_ast_visitor_error, is_func_param ) &&
-          c_ast_check_visitor( ast, c_ast_visitor_type, is_func_param );
+  return  c_ast_check_visitor( ast, c_ast_visitor_error, flags ) &&
+          c_ast_check_visitor( ast, c_ast_visitor_type, flags );
 }
 
 /**
@@ -2083,26 +2130,25 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
  * Visitor function that checks an AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param data Cast to `bool`, indicates if \a ast is a function parameter.
+ * @param flags The flags to use.
  * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
  * `VISITOR_ERROR_NOT_FOUND` if not.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
+static bool c_ast_visitor_error( c_ast_t *ast, c_ast_visitor_data_t flags ) {
   assert( ast != NULL );
-  bool const is_func_param = STATIC_CAST( bool, data );
 
   if ( !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      if ( !c_ast_check_array( ast, is_func_param ) )
+      if ( !c_ast_check_array( ast, flags ) )
         return VISITOR_ERROR_FOUND;
       break;
 
     case K_BUILTIN:
-      if ( !c_ast_check_builtin( ast ) )
+      if ( !c_ast_check_builtin( ast, flags ) )
         return VISITOR_ERROR_FOUND;
       break;
 
@@ -2188,8 +2234,10 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
       // underlying type, but instead a synonym "for" it.  Hence, we have to
       // recurse into it manually.
       //
+      if ( c_ast_parent_is_kind( ast, K_POINTER ) )
+        flags |= C_IS_POINTED_TO;       // see the comment for C_IS_POINTED_TO
       ast = CONST_CAST( c_ast_t*, c_ast_untypedef( ast ) );
-      return c_ast_visitor_error( ast, data );
+      return c_ast_visitor_error( ast, flags );
 
     case K_USER_DEF_CONVERSION:
       if ( !c_ast_check_udef_conv( ast ) )
@@ -2205,7 +2253,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
       break;
 
     case K_VARIADIC:
-      assert( is_func_param );
+      assert( (flags & C_IS_FUNC_PARAM) != 0 );
       break;
 
     CASE_K_PLACEHOLDER;
@@ -2224,14 +2272,14 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
  * Visitor function that checks an AST for type errors.
  *
  * @param ast The AST to visit.
- * @param data Cast to `bool`, indicates if \a ast is a function parameter.
+ * @param flags The flags to use.
  * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
  * `VISITOR_ERROR_NOT_FOUND` if not.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_type( c_ast_t *ast, uint64_t data ) {
+static bool c_ast_visitor_type( c_ast_t *ast, c_ast_visitor_data_t flags ) {
   assert( ast != NULL );
-  bool const is_func_param = STATIC_CAST( bool, data );
+  bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
   c_lang_id_t const lang_ids = c_type_check( &ast->type );
   if ( lang_ids != LANG_ANY ) {
@@ -2297,8 +2345,10 @@ static bool c_ast_visitor_type( c_ast_t *ast, uint64_t data ) {
   if ( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) ) {
     FOREACH_PARAM( param, ast ) {
       c_ast_t const *const param_ast = c_param_ast( param );
-      if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type, true ) )
+      if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type,
+                                 C_IS_FUNC_PARAM ) ) {
         return VISITOR_ERROR_FOUND;
+      }
     } // for
   }
 
@@ -2309,11 +2359,11 @@ static bool c_ast_visitor_type( c_ast_t *ast, uint64_t data ) {
  * Visitor function that checks an AST for semantic warnings.
  *
  * @param ast The AST to check.
- * @param data Not used.
+ * @param flags The flags to use.
  * @return Always returns `false`.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_warning( c_ast_t *ast, uint64_t data ) {
+static bool c_ast_visitor_warning( c_ast_t *ast, c_ast_visitor_data_t flags ) {
   assert( ast != NULL );
 
   switch ( ast->kind ) {
@@ -2354,7 +2404,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, uint64_t data ) {
       FOREACH_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
         PJL_IGNORE_RV(
-          c_ast_check_visitor( param_ast, c_ast_visitor_warning, data )
+          c_ast_check_visitor( param_ast, c_ast_visitor_warning, flags )
         );
       } // for
       PJL_FALLTHROUGH;

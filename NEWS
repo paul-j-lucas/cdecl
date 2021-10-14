@@ -15,6 +15,15 @@ with their complete changes, see the AUTHORS file.
 ** `_Atomic(T)` in C++23
 Now supporting the `_Atomic(T)` macro in C++23.
 
+** Fixed pointer to a `typedef` of `void`
+Declarations like:
+
+    typedef void V
+    explain V *p
+
+are now fixed.
+
+
 ** Allow declarations using unknown scoped type names
 Previously, cdecl complained about things like:
 

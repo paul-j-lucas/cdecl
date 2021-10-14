@@ -41,7 +41,7 @@
 
 // local functions
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_english( c_ast_t*, uint64_t );
+static bool c_ast_visitor_english( c_ast_t*, c_ast_visitor_data_t );
 
 static void c_type_print_not_base( c_type_t const*, FILE* );
 
@@ -116,7 +116,7 @@ static void c_ast_english_func_params( c_ast_t const *ast, FILE *eout ) {
 
     c_ast_visit(
       CONST_CAST( c_ast_t*, param_ast ), C_VISIT_DOWN,
-      c_ast_visitor_english, REINTERPRET_CAST( uint64_t, eout )
+      c_ast_visitor_english, REINTERPRET_CAST( c_ast_visitor_data_t, eout )
     );
   } // for
 
@@ -131,7 +131,7 @@ static void c_ast_english_func_params( c_ast_t const *ast, FILE *eout ) {
  * @return Always returns `false`.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
+static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visitor_data_t data ) {
   assert( ast != NULL );
   FILE *const eout = REINTERPRET_CAST( FILE*, data );
   assert( eout != NULL );
@@ -291,7 +291,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 
   c_ast_visit(
     CONST_CAST( c_ast_t*, ast ), C_VISIT_DOWN,
-    c_ast_visitor_english, REINTERPRET_CAST( uint64_t, eout )
+    c_ast_visitor_english, REINTERPRET_CAST( c_ast_visitor_data_t, eout )
   );
 
   switch ( ast->align.kind ) {

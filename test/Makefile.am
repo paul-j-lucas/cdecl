@@ -469,6 +469,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_pi.test \
 	tests/explain_pp_mssc_f_v.test \
 	tests/explain_ppi.test \
+	tests/explain_ptdv.test \
 	tests/explain_rgi.test \
 	tests/explain_rgk.test \
 	tests/explain_ro_minus2_i_rk.test \
