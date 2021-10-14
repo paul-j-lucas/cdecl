@@ -45,9 +45,7 @@
 #define PRId_C_ARRAY_SIZE_T       "%d"
 
 /**
- * Decimal print conversion specifier for <code>\ref c_ast_sid_t</code>.
- *
- * @sa PRId_C_AST_ID_T
+ * Decimal print conversion specifier for <code>\ref c_ast_depth_t</code>.
  */
 #define PRId_C_AST_DEPTH_T        "%u"
 
@@ -61,7 +59,7 @@
 /**
  * Decimal print conversion specifier for <code>\ref c_ast_sid_t</code>.
  *
- * @sa PRId_C_AST_ID_T
+ * @sa #PRId_C_AST_ID_T
  */
 #define PRId_C_AST_SID_T          "%d"
 
