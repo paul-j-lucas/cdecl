@@ -23,7 +23,6 @@ Declarations like:
 
 are now fixed.
 
-
 ** Allow declarations using unknown scoped type names
 Previously, cdecl complained about things like:
 
@@ -35,7 +34,6 @@ Previously, cdecl complained about things like:
 Now, it just assumes the `T` is a type:
 
     declare x as T of structure S
-
 
 ** cvr-qualified `_Atomic`
 `const`-`volatile`-`restrict`-qualified `_Atomic` types are now correctly
