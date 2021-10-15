@@ -1,5 +1,17 @@
+2021-10-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Updated.
+
+2021-10-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_ast.h, c_ast_util.c, check.c, english.c, test/Makefile.am,
+     explain_ptdv.out, explain_ptdv.test: Fixed pointer to a `typedef` of
+     `void`.
+
 2021-10-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, cdecl-d-faia4iaviacias6i_v.out: Fixed DUMP_START for
+     array_cast_c_astp.
    * parser.y, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
      cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
      cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out,
