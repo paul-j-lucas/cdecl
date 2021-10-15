@@ -63,10 +63,10 @@ struct c_keyword {
   c_lang_id_t     lang_ids;             ///< Language(s) OK in.
 #ifdef WITH_READLINE
   /**
-   * Language(s) auto-completable in.  Relative to `lang_ids`, this field is:
+   * Language(s) auto-completable in.  Relative to `lang_ids`, this field:
    *
-   *  1. Exactly the same in which case it's auto-completable in all (and only)
-   *     those language(s) in which it's valid.
+   *  1. Is exactly the same in which case it's auto-completable in all (and
+   *     only) those language(s) in which it's valid.
    *
    *  2. Is a subset.  This is for a case like `restrict` where it's a C-only
    *     keyword, but we also allow it to be recognized in C++ so we can give a
