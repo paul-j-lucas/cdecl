@@ -15,7 +15,7 @@ builtin_type_ast ::= builtin_btid = {
 }
 
 east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
-  builtin_type_ast = {
+  atomic_builtin_typedef_type_c_ast = {
     sname = "",
     unique_id = 1327,
     kind = "built-in type",

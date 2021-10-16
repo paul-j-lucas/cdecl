@@ -4767,7 +4767,7 @@ east_modified_type_c_ast
       DUMP_START( "east_modified_type_c_ast",
                   "atomic_builtin_typedef_type_c_ast "
                   "type_modifier_list_c_type_opt" );
-      DUMP_AST( "builtin_type_ast", $1 );
+      DUMP_AST( "atomic_builtin_typedef_type_c_ast", $1 );
       DUMP_TYPE( "type_modifier_list_c_type_opt", &$2 );
 
       $$ = $1;
