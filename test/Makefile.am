@@ -1428,7 +1428,6 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_nrfi_v-c++-error.test \
 	tests/explain_p_typedef_ri.test \
 	tests/explain_pcf_i.test \
-	tests/explain_pmri.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \
 	tests/explain_rf_i.test \

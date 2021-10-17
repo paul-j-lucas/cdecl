@@ -1,3 +1,0 @@
-explain int& C::*x
-             ^
-14: error: pointer-to-member is not supported in C
