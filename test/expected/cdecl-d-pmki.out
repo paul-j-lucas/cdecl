@@ -189,7 +189,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 12-15,
+    loc = 12-16,
     type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {
@@ -226,7 +226,7 @@ decl_c ::= decl_c_astp = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 12-15,
+    loc = 12-16,
     type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {
@@ -248,7 +248,7 @@ decl_c ::= decl_c_astp = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 12-15,
+    loc = 12-16,
     type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {

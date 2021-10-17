@@ -1,3 +1,3 @@
 explain short char8_t x
-              ^
-15: error: "short char8_t" is illegal for built-in type
+        ^
+9: error: "short char8_t" is illegal for built-in type

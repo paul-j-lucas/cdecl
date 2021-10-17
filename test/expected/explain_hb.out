@@ -1,3 +1,3 @@
 explain short bool x
-              ^
-15: error: "short _Bool" is illegal for built-in type
+        ^
+9: error: "short _Bool" is illegal for built-in type

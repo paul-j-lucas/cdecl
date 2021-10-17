@@ -1,3 +1,3 @@
 struct S; struct T; explain S& S::operator=(T const&) = delete
-            ^
-13: error: "delete" can be used only for special member functions
+          ^
+11: error: "delete" can be used only for special member functions

@@ -638,7 +638,7 @@ pointer_decl_c_astp ::= pointer_type_c_ast decl_c_astp = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 13-27,
+    loc = 11-27,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [
@@ -709,7 +709,7 @@ decl_c ::= decl_c_astp = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 13-27,
+    loc = 11-27,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [
@@ -765,7 +765,7 @@ decl_c ::= decl_c_astp = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 13-27,
+    loc = 11-27,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [

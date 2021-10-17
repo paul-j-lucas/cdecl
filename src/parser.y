@@ -1962,6 +1962,7 @@ alignas_or_width_decl_english_ast
     {
       $$ = $1;
       $$->align = $2;
+      $$->loc = @$;
     }
 
   | decl_english_ast width_specifier_english
@@ -1975,6 +1976,7 @@ alignas_or_width_decl_english_ast
       }
 
       $$ = $1;
+      $$->loc = @$;
       $$->as.builtin.bit_width = (unsigned)$2;
     }
   ;
@@ -3289,6 +3291,7 @@ decl_c_astp
   | msc_calling_convention_atid msc_calling_convention_c_astp
     {
       $$ = $2;
+      $$.ast->loc = @$;
       $$.ast->type.atids |= $1;
     }
   ;
@@ -3944,6 +3947,7 @@ nested_decl_c_astp
       DUMP_AST( "decl_c_astp", $3.ast );
 
       $$ = $3;
+      $$.ast->loc = @$;
 
       DUMP_AST( "nested_decl_c_astp", $$.ast );
       DUMP_END();
@@ -4036,6 +4040,7 @@ pointer_decl_c_astp
 
       PJL_IGNORE_RV( c_ast_patch_placeholder( $1, $3.ast ) );
       $$ = $3;
+      $$.ast->loc = @$;
 
       DUMP_AST( "pointer_decl_c_astp", $$.ast );
       DUMP_END();
@@ -4074,6 +4079,7 @@ pointer_to_member_decl_c_astp
       DUMP_AST( "decl_c_astp", $3.ast );
 
       $$ = $3;
+      $$.ast->loc = @$;
 
       DUMP_AST( "pointer_to_member_decl_c_astp", $$.ast );
       DUMP_END();
@@ -4129,6 +4135,7 @@ reference_decl_c_astp
       DUMP_AST( "decl_c_astp", $3.ast );
 
       $$ = $3;
+      $$.ast->loc = @$;
 
       DUMP_AST( "reference_decl_c_astp", $$.ast );
       DUMP_END();
@@ -4490,6 +4497,7 @@ nested_cast_c_astp
       DUMP_AST( "cast_c_astp_opt", $3.ast );
 
       $$ = $3;
+      $$.ast->loc = @$;
 
       DUMP_AST( "nested_cast_c_astp", $$.ast );
       DUMP_END();
@@ -4678,6 +4686,7 @@ type_c_ast
       DUMP_AST( "east_modified_type_c_ast", $2 );
 
       $$ = $2;
+      $$->loc = @$;
       C_TYPE_ADD( &$$->type, &$1, @1 );
 
       DUMP_AST( "type_c_ast", $$ );
@@ -4771,6 +4780,7 @@ east_modified_type_c_ast
       DUMP_TYPE( "type_modifier_list_c_type_opt", &$2 );
 
       $$ = $1;
+      $$->loc = @$;
       C_TYPE_ADD( &$$->type, &$2, @2 );
 
       DUMP_AST( "type_c_ast", $$ );
@@ -4785,6 +4795,7 @@ east_modified_type_c_ast
       DUMP_TID( "cv_qualifier_list_stid_opt", $2 );
 
       $$ = $1;
+      $$->loc = @$;
       C_TYPE_ADD_TID( &$$->type, $2, @2 );
 
       DUMP_AST( "east_modified_type_c_ast", $$ );
@@ -4815,6 +4826,7 @@ atomic_specifier_type_c_ast
       DUMP_AST( "cast_c_astp_opt", $5.ast );
 
       $$ = $5.ast != NULL ? $5.ast : $3;
+      $$->loc = @$;
 
       //
       // Ensure the _Atomic() specifier type doesn't have either a storage
@@ -4973,6 +4985,7 @@ enum_fixed_type_c_ast
       DUMP_TID( "enum_fixed_type_modifier_list_btid_opt", $3 );
 
       $$ = $2;
+      $$->loc = @$;
       C_TYPE_ADD_TID( &$$->type, $1, @1 );
       C_TYPE_ADD_TID( &$$->type, $3, @3 );
 
@@ -4994,6 +5007,7 @@ enum_fixed_type_c_ast
       DUMP_TID( "enum_fixed_type_modifier_list_btid_opt", $2 );
 
       $$ = $1;
+      $$->loc = @$;
       C_TYPE_ADD_TID( &$$->type, $2, @2 );
 
       DUMP_AST( "enum_fixed_type_c_ast", $$ );
@@ -5754,6 +5768,8 @@ qualified_decl_english_ast
       DUMP_AST( "qualifiable_decl_english_ast", $2 );
 
       $$ = $2;
+      if ( !c_type_is_none( &$1 ) )
+        $$->loc = @$;
       C_TYPE_ADD( &$$->type, &$1, @1 );
 
       DUMP_AST( "qualified_decl_english_ast", $$ );
@@ -5883,6 +5899,7 @@ reference_decl_english_ast
       DUMP_AST( "decl_english_ast", $3 );
 
       $$ = $1;
+      $$->loc = @$;
       c_ast_set_parent( $3, $$ );
 
       DUMP_AST( "reference_decl_english_ast", $$ );
@@ -5957,6 +5974,7 @@ var_decl_english_ast
       }
 
       $$ = $3;
+      $$->loc = @$;
       c_ast_set_sname( $$, &$1 );
 
       DUMP_AST( "var_decl_english_ast", $$ );
@@ -5997,7 +6015,13 @@ type_english_ast
       DUMP_AST( "unmodified_type_english_ast", $2 );
 
       $$ = $2;
-      C_TYPE_ADD( &$$->type, &$1, @1 );
+      if ( !c_type_is_none( &$1 ) ) {
+        // Set the AST's location to the entire rule only if the leading
+        // optional rule is actually present, otherwise @$ refers to a column
+        // before $2.
+        $$->loc = @$;
+        C_TYPE_ADD( &$$->type, &$1, @1 );
+      }
 
       DUMP_AST( "type_english_ast", $$ );
       DUMP_END();
@@ -6094,7 +6118,10 @@ enum_fixed_type_english_ast
       DUMP_AST( "enum_unmodified_fixed_type_english_ast", $2 );
 
       $$ = $2;
-      C_TYPE_ADD_TID( &$$->type, $1, @1 );
+      if ( $1 != TB_NONE ) {            // See comment in type_english_ast.
+        $$->loc = @$;
+        C_TYPE_ADD_TID( &$$->type, $1, @1 );
+      }
 
       DUMP_AST( "enum_fixed_type_english_ast", $$ );
       DUMP_END();

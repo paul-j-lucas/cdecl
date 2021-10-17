@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.5
+
+** Better error/warning locations
+Locations for error and warning messages have been improved.
+
+
 * Changes in Cdecl 11.4
 
 ** `_Atomic(T)` in C++23
