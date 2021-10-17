@@ -227,7 +227,7 @@ run_cdecl_test() {
   ACTUAL_EXIT=$?
   if [ $ACTUAL_EXIT -eq $EXPECTED_EXIT ]
   then
-    if diff $EXPECTED_OUTPUT $LOG_FILE > $DIFF_FILE
+    if diff -u $EXPECTED_OUTPUT $LOG_FILE > $DIFF_FILE
     then pass
     else fail; mv $DIFF_FILE $LOG_FILE
     fi
