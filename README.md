@@ -26,6 +26,15 @@ is a program for composing and deciphering C (or C++)
 declarations or casts, aka ‘‘gibberish.’’
 It can be used interactively on a terminal or
 accept input from either the command line or standard input.
+For example:
+
+```
+cdecl> explain int *const (*p)[4]
+declare p as pointer to array 4 of const pointer to int
+
+cdecl> declare p as pointer to const pointer to const char
+const char *const *p;
+```
 
 This codebase fixes virtually all the deficiencies in earlier versions
 as well as adds many new features,
