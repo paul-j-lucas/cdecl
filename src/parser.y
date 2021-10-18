@@ -3253,7 +3253,7 @@ decl_c
       DUMP_AST( "decl_c_astp", $1.ast );
 
       c_ast_t const *const decl_ast = c_ast_join_type_decl(
-        in_attr.typename, &in_attr.align, type_ast, $1.ast, &@1
+        in_attr.typename, &in_attr.align, type_ast, $1.ast
       );
 
       DUMP_AST( "decl_c", decl_ast );

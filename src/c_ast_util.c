@@ -622,11 +622,9 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
 }
 
 c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
-                               c_ast_t *type_ast, c_ast_t *decl_ast,
-                               c_loc_t const *decl_loc ) {
+                               c_ast_t *type_ast, c_ast_t *decl_ast ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
-  assert( decl_loc != NULL );
 
   if ( has_typename && !c_ast_is_typename_ok( type_ast ) )
     return NULL;
@@ -652,7 +650,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
     //      explain typedef char int32_t;
     //
     if ( !c_ast_equiv( type_ast, decl_ast ) ) {
-      print_error( decl_loc,
+      print_error( &decl_ast->loc,
         "\"%s\": \"%s\" redefinition with different type; original is: ",
         c_ast_full_name( decl_ast ), L_TYPEDEF
       );

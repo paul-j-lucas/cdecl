@@ -258,13 +258,11 @@ bool c_ast_is_typename_ok( c_ast_t const *ast );
  * @param align The `alignas` specifier, if any.
  * @param type_ast The type AST.
  * @param decl_ast The declaration AST.
- * @param decl_loc The source location of \a decl_ast.
  * @return Returns The final AST on success or NULL on error.
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
-                               c_ast_t *type_ast, c_ast_t *decl_ast,
-                               c_loc_t const *decl_loc );
+                               c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
  * Gets whether the operator is a member, non-member, or unspecified.
