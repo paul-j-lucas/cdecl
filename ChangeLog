@@ -1,3 +1,48 @@
+2021-10-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_ast_util.h, parser.y, explain_typedef_ci32.out: Removed
+     c_ast_join_type_decl() decl_loc parameter.
+   * NEWS, configure.ac, parser.y, cast_rgi.out, cdecl--debug.out,
+     cdecl-d-f2i_pi.out, cdecl-d-pmki.out, declare_frg_v.out,
+     declare_fvx_v.out, define_rgi.out, explain_+o_eq_rck_rk=default-02.out,
+     explain_+o_eq_rck_rk=delete-02.out,
+     explain_+o_exclam_eq_rck_rk=delete.out, explain_a4f_i.out,
+     explain_a_cd_i.out, explain_alrgi.out, explain_ari.out,
+     explain_ati-c++20.out, explain_cast_ai.out, explain_cast_eti.out,
+     explain_cast_rgi.out, explain_cast_si.out, explain_cast_typedef_i.out,
+     explain_exsi.out, explain_fo_less_eq_greater_2rck_i=default.out,
+     explain_fsi_v.out, explain_hb.out, explain_hc.out, explain_hc16.out,
+     explain_hc32.out, explain_hc8.out, explain_hd.out, explain_hf.out,
+     explain_hv.out, explain_hwt.out, explain_ii.out, explain_lb.out,
+     explain_lc.out, explain_lc16.out, explain_lc32.out, explain_lc8.out,
+     explain_ld-knr.out, explain_lf-c.out, explain_lv.out, explain_lwt.out,
+     explain_main_fiapc_hi.out, explain_p_cdecl_v.out, explain_pri.out,
+     explain_prri.out, explain_rf_i.out, explain_rgi-c++11.out, explain_rr.out,
+     explain_rrr-1.out, explain_rrr-2.out, explain_rrrr.out, explain_sb.out,
+     explain_sc16.out, explain_sc32.out, explain_sc8.out, explain_smi.out,
+     explain_sv.out, explain_swt.out, explain_ub.out, explain_uc16.out,
+     explain_uc32.out, explain_uc8.out, explain_ud.out, explain_uf.out,
+     explain_uv.out, explain_uwt.out, typedef_ai.out, typedef_eti.out,
+     typedef_rgi.out, typedef_si.out, using_eti.out, using_f-name_v.out,
+     using_rgi.out, using_si.out, xec_explain_lla.out, xec_explain_llr.out,
+     xec_explain_ti.out, xupc_explain_ri.out: Better error/warning locations.
+   * run_test.sh: Now using diff -u for better diffs.
+   * test/Makefile.am: Removed unnecessary test.
+
+2021-10-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+     cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-f2i_pi.out,
+     cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out, cdecl-d-pmki.out,
+     cdecl-d-udc_i.out, cdecl-d-z.out: Fixed DUMP_AST() in
+     east_modified_type_c_ast.
+
+2021-10-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * man/man1/c++decl.1: Added -2021.
+   * man/man1/Makefile.am: s/cdecl.1/$</
+   * cdecl.1: s/no semantic/only some semantic/
+
 2021-10-14  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS: Updated.
