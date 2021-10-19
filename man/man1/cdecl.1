@@ -720,10 +720,10 @@ and
 has the following commands:
 .RS 4
 .TP 4
-.BR cast " \f2s-name\fP" "" " {" as | into | to "} " \f2english\fP
+.BR cast " \f2s-name\fP" "" " {" as |[ in ] to "} " \f2english\fP
 Composes a C (or C++) cast from pseudo-English.
 .TP
-.RB { const | dynamic | reinterpret | static } " cast \f2s-name\fP" " {" as | into | to "} " \f2english\fP
+.RB { const | dynamic | reinterpret | static } " cast \f2s-name\fP" " {" as |[ in ] to "} " \f2english\fP
 Composes a C++ new-style cast from pseudo-English.
 .TP
 .BR declare " \f2s-name\fP [" , " \f2s-name\fP" "" "]*" " as " \f2english\fP " [" width " \f2number\fP " [ bits "]]"
@@ -744,7 +744,7 @@ composes an overloaded operator declaration from pseudo-English.
 .BI define " s-name" " as" " english"
 Defines a type (\f(CWtypedef\fP) from pseudo-English.
 .TP
-.BR explain " \f2gibberish\fP [" , " \f2gibberish\fP" ]*
+.BR explain " \f2gibberish\fP [" , " \f2gibberish\fP]*"
 Deciphers C (or C++) declarations or a new-style cast (C++ only)
 into pseudo-English.
 .TP
@@ -867,7 +867,7 @@ if
 is given,
 definitions are shown as \f(CWusing\fP declarations.
 .TP
-.BI typedef " gibberish"
+.BR type [ def ] " \f2gibberish\fP" " [" , " \f2gibberish\fP]*"
 Defines types via a C (or C++) \f(CWtypedef\fP declaration.
 .TP
 .BI using " name" " = " gibberish
@@ -904,7 +904,7 @@ options
 .B "Set Options"
 below).
 .TP
-.BR exit " | " quit " | " q
+.BR exit " | " q [ uit ]
 Quits
 .BR cdecl .
 .RE
