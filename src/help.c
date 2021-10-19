@@ -65,11 +65,10 @@ static bool is_title( char const *s ) {
         case '+':
         case '-':
         case '\\':
-          break;
-        default:
-          if ( !isalpha( *s ) )
-            return false;
+          continue;
       } // switch
+      if ( !isalpha( *s ) )
+        break;
     } // while
   }
   return false;
@@ -151,7 +150,7 @@ static void print_help_commands( void ) {
     print_h( "|using" );
   print_h( "}]\n" );
 
-  print_h( "  typedef <gibberish> [, <gibberish>]*\n" );
+  print_h( "  type[def] <gibberish> [, <gibberish>]*\n" );
 
   if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "  <scope-c> <name> [\\{ [{ <scope-c> | <typedef>" );

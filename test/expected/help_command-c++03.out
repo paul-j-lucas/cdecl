@@ -8,7 +8,7 @@ command:
   { help | ? } [command[s] | english | options]
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  typedef <gibberish> [, <gibberish>]*
+  type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   exit | q[uit]
 declare-options:

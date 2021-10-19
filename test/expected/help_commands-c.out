@@ -6,7 +6,7 @@ command:
   { help | ? } [command[s] | english | options]
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
-  typedef <gibberish> [, <gibberish>]*
+  type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
 declare-options:
   align[ed] [as|to] {<number> [bytes] | <english>}
