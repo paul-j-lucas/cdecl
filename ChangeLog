@@ -1,3 +1,12 @@
+2021-10-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Formatting fixes.
+   * cdecl.1: s/,/./
+   * cdecl.1: Qualified commands with languages valid in.
+   * help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c++03.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out: s/typedef/type[def]/ in help.
+
 2021-10-17  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, c_ast_util.h, parser.y, explain_typedef_ci32.out: Removed
