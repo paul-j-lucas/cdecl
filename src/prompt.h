@@ -60,14 +60,18 @@ extern char const  *cdecl_prompt[2];
  * Enables or disables the prompt.
  *
  * @param enable If `true`, enables the prompt; else disables it.
+ *
+ * @sa cdecl_prompt_init()
  */
 void cdecl_prompt_enable( bool enable );
 
 /**
- * Initializes the prompt.
+ * Initializes the prompt for the current language.
  *
  * @note This is called `cdecl_prompt_init` and not `prompt_init` so as not to
  * conflict with the latter function in `libedit`.
+ *
+ * @sa cdecl_prompt_enable()
  */
 void cdecl_prompt_init( void );
 
