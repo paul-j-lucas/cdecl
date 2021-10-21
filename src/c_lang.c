@@ -135,14 +135,7 @@ void c_lang_set( c_lang_id_t lang_id ) {
   lang_id &= ~LANGX_MASK;
   assert( exactly_one_bit_set( lang_id ) );
   opt_lang = lang_id;
-
-  bool const prompt_enabled =
-    opt_prompt && (
-    cdecl_prompt[0] == NULL || // first time: cdecl_prompt_init() not called yet
-    cdecl_prompt[0][0] != '\0');
-
   cdecl_prompt_init();         // change prompt based on new language
-  cdecl_prompt_enable( prompt_enabled );
 }
 
 char const* c_lang_which( c_lang_id_t lang_ids ) {

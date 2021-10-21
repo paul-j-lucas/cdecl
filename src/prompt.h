@@ -29,13 +29,6 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 
-/// @cond DOXYGEN_IGNORE
-
-// standard
-#include <stdbool.h>
-
-/// @endcond
-
 /**
  * @defgroup prompt-group Prompt
  * Global variables and functions for the prompt.
@@ -57,13 +50,11 @@ extern char const  *cdecl_prompt[2];
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Enables or disables the prompt.
- *
- * @param enable If `true`, enables the prompt; else disables it.
+ * Enables or disables the prompt based on <code>\ref opt_prompt</code>.
  *
  * @sa cdecl_prompt_init()
  */
-void cdecl_prompt_enable( bool enable );
+void cdecl_prompt_enable( void );
 
 /**
  * Initializes the prompt for the current language.

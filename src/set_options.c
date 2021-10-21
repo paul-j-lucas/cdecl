@@ -349,7 +349,8 @@ static bool set_lang_impl( char const *name ) {
  * @return Returns `true` only if the option was set.
  */
 static bool set_prompt( set_option_fn_args_t const *args ) {
-  cdecl_prompt_enable( /*enable=*/args->opt_enabled );
+  opt_prompt = args->opt_enabled;
+  cdecl_prompt_enable();
   return true;
 }
 

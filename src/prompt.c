@@ -119,8 +119,8 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void cdecl_prompt_enable( bool enable ) {
-  if ( enable ) {
+void cdecl_prompt_enable( void ) {
+  if ( opt_prompt ) {
     cdecl_prompt[0] = prompt_buf[0].str;
     cdecl_prompt[1] = prompt_buf[1].str;
   } else {
@@ -131,7 +131,7 @@ void cdecl_prompt_enable( bool enable ) {
 void cdecl_prompt_init( void ) {
   prompt_create( '>', &prompt_buf[0] );
   prompt_create( '+', &prompt_buf[1] );
-  cdecl_prompt_enable( /*enable=*/true );
+  cdecl_prompt_enable();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
