@@ -618,11 +618,10 @@ use_help:
     fout = stdout;
 
   colorize = should_colorize( color_when );
-  if ( colorize ) {
-    if ( !(colors_parse( getenv( "CDECL_COLORS" ) )
-        || colors_parse( getenv( "GCC_COLORS" ) )) ) {
-      PJL_IGNORE_RV( colors_parse( COLORS_DEFAULT ) );
-    }
+  if ( colorize &&
+       !(colors_parse( getenv( "CDECL_COLORS" ) ) ||
+         colors_parse( getenv( "GCC_COLORS"   ) )) ) {
+    PJL_IGNORE_RV( colors_parse( COLORS_DEFAULT ) );
   }
 }
 
