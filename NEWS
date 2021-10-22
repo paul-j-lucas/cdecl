@@ -15,10 +15,6 @@ with their complete changes, see the AUTHORS file.
 ** Better error/warning locations
 Locations for error and warning messages have been improved.
 
-** `signed` explicit `int`
-For explicit `int`, the special case of `unsigned` by itself meaning `unsigned
-int` has also been extened to `signed` by itself to mean `signed int`.
-
 
 * Changes in Cdecl 11.4
 
