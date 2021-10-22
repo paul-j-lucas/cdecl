@@ -713,9 +713,10 @@ struct option const* cli_option_next( struct option const *opt ) {
 bool is_explicit_int( c_tid_t tid ) {
   assert( c_tid_tpid( tid ) == C_TPID_BASE );
 
-  if ( tid == TB_UNSIGNED ) {
+  if ( tid == TB_SIGNED || tid == TB_UNSIGNED ) {
     //
-    // Special case: "unsigned" by itself means "unsigned int."
+    // Special cases: either "signed" or "unsigned" by itself means either
+    // "signed int" or "unsigned int."
     //
     tid |= TB_INT;
   }
