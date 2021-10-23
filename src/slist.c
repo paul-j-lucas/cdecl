@@ -45,6 +45,9 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
   assert( i_list != NULL );
   assert( j_list != NULL );
 
+  if ( i_list == j_list )
+    return 0;
+
   slist_node_t const *i_node = i_list->head, *j_node = j_list->head;
 
   if ( data_cmp_fn == NULL ) {          // avoid repeated check in loop
