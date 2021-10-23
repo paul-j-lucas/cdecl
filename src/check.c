@@ -163,7 +163,7 @@ static c_ast_visitor_data_t const C_IS_FUNC_PARAM = (1u << 0);
  * This is needed only for a pointer to a `typedef` of `void` since:
  *
  *  + A variable of `void` is illegal; but:
- *  + A `typedef` of `void` is legal; and
+ *  + A `typedef` of `void` is legal; and:
  *  + A pointer to `void` is also legal; therefore:
  *  + A pointer to a `typedef` of `void` is also legal.
  */
