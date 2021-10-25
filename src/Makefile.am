@@ -76,17 +76,21 @@ cdecl_SOURCES += autocomplete.c
 endif
 
 red_black_test_SOURCES = \
+		cdecl.h \
 		pjl_config.h \
 		red_black.c red_black.h \
 		red_black_test.c \
-		slist.c \
+		slist.c slist.h \
+		types.h \
 		util.c util.h \
 		unit_test.h
 
 slist_test_SOURCES = \
+		cdecl.h
 		pjl_config.h \
 		slist.c slist.h \
 		slist_test.c \
+		types.h \
 		util.c util.h \
 		unit_test.h
 
