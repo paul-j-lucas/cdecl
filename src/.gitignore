@@ -4,6 +4,7 @@
 /*.output
 /*.tab.[ch]
 /*.vcg
+/*_test
 /c++decl
 /cast
 /cdecl
@@ -12,5 +13,4 @@
 /explain
 /lexer.c
 /parser.[ch]
-/red_black_test
 /stamp-h1

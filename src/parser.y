@@ -466,6 +466,10 @@ struct show_type_info {
 };
 typedef struct show_type_info show_type_info_t;
 
+// local functions
+PJL_WARN_UNUSED_RESULT
+static bool slist_node_is_ast_placeholder( void* );
+
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
 static c_ast_list_t   gc_ast_list;      ///< `c_ast` nodes freed after parse.
@@ -620,6 +624,11 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
     // collected at the end of the parse to a separate typedef_ast_list that's
     // freed only at program termination.
     //
+    // But first, free all orphaned placeholder AST nodes.  (For a normal, non-
+    // type-defining parse, this step isn't necessary since all nodes are freed
+    // at the end of the parse anyway.)
+    //
+    slist_free_if( &gc_ast_list, &slist_node_is_ast_placeholder );
     slist_push_list_tail( &typedef_ast_list, &gc_ast_list );
   }
   else if ( old_tdef->ast != NULL ) {   // type exists and isn't equivalent
@@ -898,6 +907,23 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
     }
   }
 
+  return false;
+}
+
+/**
+ * A predicate function for slist_free_if() that checks whether \a data (cast
+ * to an AST) is a #K_PLACEHOLDER: if so, c_ast_free()s it.
+ *
+ * @param data The AST to check.
+ * @return Returns `true` only if \a data (cast to an AST) is a #K_PLACEHOLDER.
+ */
+static bool slist_node_is_ast_placeholder( void *data ) {
+  c_ast_t *const ast = data;
+  if ( ast->kind == K_PLACEHOLDER ) {
+    assert( c_ast_is_orphan( ast ) );
+    c_ast_free( ast );
+    return true;
+  }
   return false;
 }
 

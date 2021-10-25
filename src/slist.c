@@ -117,6 +117,47 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
   }
 }
 
+void slist_free_if( slist_t *list, slist_predicate_fn_t pred_fn ) {
+  assert( list != NULL );
+  assert( pred_fn != NULL );
+
+  // special case: predicate matches list->head
+  for (;;) {
+    slist_node_t *const curr = list->head;
+    if ( curr == NULL )
+      return;
+    if ( !(*pred_fn)( curr->data ) )
+      break;
+    if ( list->tail == curr )
+      list->tail = NULL;
+    list->head = curr->next;
+    free( curr );
+    --list->len;
+  } // for
+
+  assert( list->head != NULL );
+  assert( list->tail != NULL );
+  assert( list->len > 0 );
+
+  // general case: predicate matches any node except list->head
+  slist_node_t *prev = list->head;
+  for (;;) {
+    slist_node_t *const curr = prev->next;
+    if ( curr == NULL )
+      break;
+    if ( !(*pred_fn)( curr->data ) ) {
+      prev = prev->next;
+    }
+    else {
+      if ( list->tail == curr )
+        list->tail = prev;
+      prev->next = curr->next;
+      free( curr );
+      --list->len;
+    }
+  } // for
+}
+
 void* slist_peek_at( slist_t const *list, size_t offset ) {
   assert( list != NULL );
   if ( offset >= list->len )

@@ -19,7 +19,7 @@
 ##
 
 bin_PROGRAMS =	cdecl
-check_PROGRAMS=	red_black_test
+check_PROGRAMS=	red_black_test slist_test
 
 if ENABLE_COVERAGE
 AM_CFLAGS =	--coverage -g -O0
@@ -80,7 +80,15 @@ red_black_test_SOURCES = \
 		red_black.c red_black.h \
 		red_black_test.c \
 		slist.c \
-		util.c util.h
+		util.c util.h \
+		unit_test.h
+
+slist_test_SOURCES = \
+		pjl_config.h \
+		slist.c slist.h \
+		slist_test.c \
+		util.c util.h \
+		unit_test.h
 
 all-local: c++decl$(EXEEXT)
 

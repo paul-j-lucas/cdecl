@@ -22,35 +22,13 @@
 #include "pjl_config.h"                 /* must go first */
 #include "red_black.h"
 #include "util.h"
+#include "unit_test.h"
 
 // standard
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sysexits.h>
-
-#ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wunused-value"
-#endif /* __GNUC__ */
-
-///////////////////////////////////////////////////////////////////////////////
-
-/**
- * Prints that \a EXPR failed and increments the test failure count.
- *
- * @param EXPR The stringified expression that failed.
- * @return Always returns `false`.
- */
-#define FAILED(EXPR) \
-  ( EPRINTF( "%s:%d: " EXPR "\n", me, __LINE__ ), !++test_failures )
-
-/**
- * Tests \a EXPR and prints that it failed only if it failed.
- *
- * @param EXPR The expression to evaluate.
- * @return Returns `true` only if \a EXPR is non-zero; `false` only if zero.
- */
-#define TEST(EXPR)                ( !!(EXPR) || FAILED( #EXPR ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 

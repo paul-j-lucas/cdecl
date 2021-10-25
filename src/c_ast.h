@@ -482,12 +482,27 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
 }
 
 /**
+ * Checks whether \a ast is an "orphan," that is: either has no parent AST or
+ * its parent no longer points to \a ast.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast is an orphan.
+ *
+ * @sa c_ast_is_parent()
+ */
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
+bool c_ast_is_orphan( c_ast_t const *ast ) {
+  return ast->parent_ast == NULL || ast->parent_ast->as.parent.of_ast != ast;
+}
+
+/**
  * Checks whether \a ast is a parent node.
  *
  * @param ast The AST to check.  If NULL, does nothing.
  * @return Returns `true` only if it is.
  *
  * @sa c_ast_is_kind_any()
+ * @sa c_ast_is_orphan()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_parent( c_ast_t const *ast ) {

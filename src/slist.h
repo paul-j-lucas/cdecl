@@ -109,6 +109,15 @@ typedef int (*slist_node_data_cmp_fn_t)( void const *i_data,
                                          void const *j_data );
 
 /**
+ * The signature for a function passed to slist_free_if() used to determine
+ * whether a node should be freed.
+ *
+ * @param data A pointer to the data to check.
+ * @return Returns `true` only if the node should be freed.
+ */
+typedef bool (*slist_predicate_fn_t)( void *data );
+
+/**
  * The signature for a function passed to slist_dup() used to duplicate data
  * associated with each node (if necessary).
  *
@@ -211,10 +220,26 @@ bool slist_empty( slist_t const *list ) {
  * @param node_data_free_fn A pointer to a function to use to free the data at
  * each node of \a list or NULL if none is required.
  *
+ * @sa slist_free_if()
  * @sa slist_init()
  */
 void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
                  slist_node_data_free_fn_t node_data_free_fn );
+
+/**
+ * Frees select nodes from \a list for which \a pred_fn returns `true`.
+ *
+ * @param list A pointer to the list to possibly free nodes from.
+ * @param pred_fn The predicate function to use.
+ *
+ * @note This function frees matching nodes _only_ from \a list and _not_ the
+ * data at each node.  If additional resources need to be freed for a node, \a
+ * pred_fn can do that before returning `true`.
+ * @note This is an O(n) operation.
+ *
+ * @sa slist_free()
+ */
+void slist_free_if( slist_t *list, slist_predicate_fn_t pred_fn );
 
 /**
  * Initializes \a list.  This is not necessary for either global or `static`
