@@ -93,14 +93,6 @@
 #define SET_TOKEN_TO(S)           (lexer_token = (S))
 
 /**
- * Sets <code>\ref lexer_token</code> to \a S and returns \a S[0].
- *
- * @param S The string to set the token to.
- */
-#define SET_TOKEN_TO_AND_RETURN(S) \
-  BLOCK( SET_TOKEN_TO(S); return lexer_token[0]; )
-
-/**
  * Overrides Flex's fatal error message to print the message in our format and
  * also exit with the status code we want.
  *
@@ -950,7 +942,6 @@ declare/{S}({S}|{L})*user-def(ined)? {
 ">="          { SET_TOKEN; return Y_GREATER_EQ      ; }
 ">>"          { SET_TOKEN; return Y_GREATER2        ; }
 ">>="         { SET_TOKEN; return Y_GREATER2_EQ     ; }
-"?"           { SET_TOKEN; return Y_HELP            ; }
 "?:"          { SET_TOKEN; return Y_QMARK_COLON     ; }
 "^="          { SET_TOKEN; return Y_CIRC_EQ         ; }
 "|="          { SET_TOKEN; return Y_PIPE_EQ         ; }
@@ -962,6 +953,9 @@ declare/{S}({S}|{L})*user-def(ined)? {
 "^"           { SET_TOKEN; return Y_CIRC            ; }
 "|"           { SET_TOKEN; return Y_PIPE            ; }
 "~"           { SET_TOKEN; return Y_TILDE           ; }
+
+              /* Synonym for "help", not "?:". */
+"?"           { SET_TOKEN; return Y_HELP            ; }
 
               /* Single-character operators and miscellaneous punctuation. */
 "%"           |
