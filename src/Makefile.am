@@ -86,7 +86,7 @@ red_black_test_SOURCES = \
 		unit_test.h
 
 slist_test_SOURCES = \
-		cdecl.h
+		cdecl.h \
 		pjl_config.h \
 		slist.c slist.h \
 		slist_test.c \
