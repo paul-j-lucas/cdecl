@@ -55,7 +55,7 @@
  */
 PJL_WARN_UNUSED_RESULT
 static char const* c_sname_impl( strbuf_t *sbuf, c_sname_t const *sname,
-                                    c_scope_t const *end_scope ) {
+                                 c_scope_t const *end_scope ) {
   assert( sbuf != NULL );
   assert( sname != NULL );
 
