@@ -54,7 +54,7 @@
  * string.
  */
 PJL_WARN_UNUSED_RESULT
-static char const* scope_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
+static char const* c_sname_impl( strbuf_t *sbuf, c_sname_t const *sname,
                                     c_scope_t const *end_scope ) {
   assert( sbuf != NULL );
   assert( sname != NULL );
@@ -128,7 +128,7 @@ void c_sname_free( c_sname_t *sname ) {
 
 char const* c_sname_full_name( c_sname_t const *sname ) {
   static strbuf_t sbuf;
-  return sname != NULL ? scope_name_impl( &sbuf, sname, NULL ) : "";
+  return sname != NULL ? c_sname_impl( &sbuf, sname, NULL ) : "";
 }
 
 bool c_sname_is_ctor( c_sname_t const *sname ) {
@@ -233,8 +233,7 @@ bool c_sname_parse( char const *s, c_sname_t *sname ) {
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {
   static strbuf_t sbuf;
-  assert( sname != NULL );
-  return scope_name_impl( &sbuf, sname, sname->tail );
+  return sname != NULL ? c_sname_impl( &sbuf, sname, sname->tail ) : "";
 }
 
 ///////////////////////////////////////////////////////////////////////////////

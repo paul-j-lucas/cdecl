@@ -438,9 +438,9 @@ void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
  *  + For `a::b::c`, returns `a::b`.
  *  + For `c`, returns the empty string.
  *
- * @param sname The scoped name to get the scope name of.
- * @return Returns said name or the empty string if \a sname is empty or not
- * within a scope.
+ * @param sname The scoped name to get the scope name of.  May be NULL.
+ * @return Returns said name or the empty string if \a sname is empty, NULL, or
+ * not within a scope.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
