@@ -2398,15 +2398,28 @@ show_command
 
   | Y_SHOW Y_NAME
     {
-      if ( opt_lang < LANG_CPP_11 ) {
+      if ( OPT_LANG_IS(C_KNR) ) {
         print_error( &@2,
-          "\"%s\": not defined as type via %s or %s",
-          $2, L_DEFINE, L_TYPEDEF
+          "\"%s\": not defined as type via %s, %s, %s, or %s",
+          $2, L_DEFINE, L_STRUCT, L_TYPEDEF, L_UNION
         );
-      } else {
+      }
+      else if ( OPT_LANG_IS(C_ANY) ) {
         print_error( &@2,
-          "\"%s\": not defined as type via %s, %s, or %s",
-          $2, L_DEFINE, L_TYPEDEF, L_USING
+          "\"%s\": not defined as type via %s, %s, %s, %s, or %s",
+          $2, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION
+        );
+      }
+      else if ( opt_lang < LANG_CPP_11 ) {
+        print_error( &@2,
+          "\"%s\": not defined as type via %s, %s, %s, %s, %s, or %s",
+          $2, L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION
+        );
+      }
+      else {
+        print_error( &@2,
+          "\"%s\": not defined as type via %s, %s, %s, %s, %s, %s, or %s",
+          $2, L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, L_USING
         );
       }
       print_suggestions( DYM_C_TYPES, $2 );
