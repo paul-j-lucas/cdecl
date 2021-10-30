@@ -33,6 +33,7 @@
 #include "color.h"
 #include "lexer.h"
 #include "options.h"
+#include "strbuf.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -65,6 +66,29 @@ static size_t             token_len( char const*, size_t, size_t );
 print_params_t            print_params;
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Helper function for print_suggestions() and fprint_list() that gets the
+ * string for a <code>\ref did_you_mean</code> token.
+ *
+ * @param p A pointer to a <code>\ref did_you_mean</code> element.
+ * @return Returns a pointer to the next "Did you mean" suggestion string or
+ * NULL if none.
+ */
+PJL_WARN_UNUSED_RESULT
+static char const* fprint_list_get_dym( void const *p ) {
+  did_you_mean_t const *const dym = p;
+  if ( dym->token == NULL )
+    return NULL;
+
+  static strbuf_t sbufs[ 2 ];
+  static unsigned buf_index;
+
+  strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
+  strbuf_free( sbuf );
+  strbuf_catf( sbuf, "\"%s\"", dym->token );
+  return sbuf->str;
+}
 
 /**
  * Gets the current input line.
@@ -399,13 +423,7 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
   did_you_mean_t const *const dym = dym_new( kinds, unknown_token );
   if ( dym != NULL ) {
     EPUTS( "; did you mean " );
-    for ( size_t i = 0; dym[i].token != NULL; ++i ) {
-      EPRINTF( "%s\"%s\"",
-        i == 0 ?
-          "" : (dym[i+1].token != NULL ? ", " : (i > 1 ?  ", or " : " or ")),
-        dym[i].token
-      );
-    } // for
+    fprint_list( stderr, dym, sizeof *dym, &fprint_list_get_dym );
     EPUTC( '?' );
     dym_free( dym );
     return true;

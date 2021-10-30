@@ -694,6 +694,36 @@ FILE* fmemopen( void *buf, size_t size, char const *mode );
 #endif /* HAVE_FMEMOPEN */
 
 /**
+ * Prints a zero-or-more element list of strings where for:
+ *
+ *  + A zero-element list, nothing is printed;
+ *  + A one-element list, the string for the element is printed;
+ *  + A two-element list, the strings for the elements are printed separated by
+ *    `or`;
+ *  + A three-or-more element list, the strings for the first N-1 elements are
+ *    printed separated by `,` and the N-1st and Nth elements are separated by
+ *    `, or`.
+ *
+ * @param out The FILE to print to.
+ * @param elt A pointer to the first of an array of elements to print.
+ * @param elt_size The size, in bytes, of each element.
+ * @param gets A pointer to a function to call to get the string for the given
+ * element or NULL if none.
+ */
+void fprint_list( FILE *out, void const *elt, size_t elt_size,
+                  char const* (*gets)( void const* ) );
+
+/**
+ * A helper function for fprint_list() that, given a pointer into an array of
+ * `const*`, returns the pointer to the associated string.
+ *
+ * @param elt A pointer to the element to get the list item string of.
+ * @return Returns said string or NULL for none.
+ */
+PJL_WARN_UNUSED_RESULT
+char const* fprint_list_gets( void const *elt );
+
+/**
  * Adds a pointer to the head of the free-later-list.
  *
  * @param p The pointer to add.

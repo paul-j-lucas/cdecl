@@ -2398,30 +2398,27 @@ show_command
 
   | Y_SHOW Y_NAME
     {
-      if ( OPT_LANG_IS(C_KNR) ) {
-        print_error( &@2,
-          "\"%s\": not defined as type via %s, %s, %s, or %s",
-          $2, L_DEFINE, L_STRUCT, L_TYPEDEF, L_UNION
-        );
-      }
-      else if ( OPT_LANG_IS(C_ANY) ) {
-        print_error( &@2,
-          "\"%s\": not defined as type via %s, %s, %s, %s, or %s",
-          $2, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION
-        );
-      }
-      else if ( opt_lang < LANG_CPP_11 ) {
-        print_error( &@2,
-          "\"%s\": not defined as type via %s, %s, %s, %s, %s, or %s",
-          $2, L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION
-        );
-      }
-      else {
-        print_error( &@2,
-          "\"%s\": not defined as type via %s, %s, %s, %s, %s, %s, or %s",
-          $2, L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, L_USING
-        );
-      }
+      static char const *const type_commands_knr[] = {
+        L_DEFINE, L_STRUCT, L_TYPEDEF, L_UNION, NULL
+      };
+      static char const *const type_commands_c[] = {
+        L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION
+      };
+      static char const *const type_commands_cpp_pre11[] = {
+        L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, NULL
+      };
+      static char const *const type_commands_cpp11[] = {
+        L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, L_USING, NULL
+      };
+
+      char const *const *const type_commands =
+        OPT_LANG_IS(C_KNR)     ? type_commands_knr :
+        OPT_LANG_IS(C_ANY)     ? type_commands_c :
+        opt_lang < LANG_CPP_11 ? type_commands_cpp_pre11 :
+                                 type_commands_cpp11;
+
+      print_error( &@2, "\"%s\": not defined as type via ", $2 );
+      fprint_list( stderr, type_commands, sizeof( char* ), &fprint_list_gets );
       print_suggestions( DYM_C_TYPES, $2 );
       EPUTC( '\n' );
       free( $2 );
