@@ -1,3 +1,42 @@
+2021-10-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.c, c_sname.c, c_type.c, cdecl.c, lexer.l, print.c, prompt.c,
+     strbuf.c, strbuf.h: Added strbuf_reset().
+   * parser.y, print.c, util.c, util.h: Added fprint_list().
+   * NEWS, parser.y, show_foo.out: `show` now lists all commands for defining
+     types.
+
+2021-10-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c: Whitespace.
+   * c_sname.c, c_sname.h: c_sname_impl() clean-up.
+
+2021-10-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Removed unused SET_TOKEN_TO_AND_RETURN(); moved "?".
+   * src/Makefile.am: Fixed slist_test_SOURCES.
+
+2021-10-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Fixed *_test dependencies.
+
+2021-10-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, c_ast.h, parser.y, red_black_test.c, slist.c, slist.h,
+     slist_test.c, unit_test.h: Added slist_free_if() to free placeholder nodes
+     when adding types.
+
+2021-10-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.c: Added: if ( i_list == j_list ).
+
+2021-10-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, options.c: Previous explicit int for signed was a bad idea.
+   * NEWS, options.c: For explicit int, the special case of "unsigned" by
+     itself meaning "unsigned int" has been extened to "signed" by itself to
+     mean "signed int."
+
 2021-10-19  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Formatting fixes.
