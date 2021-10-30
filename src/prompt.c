@@ -94,7 +94,7 @@ static inline bool have_genuine_gnu_readline( void ) {
  * @param sbuf A pointer to the strbuf to use.
  */
 static void prompt_create( char suffix, strbuf_t *sbuf ) {
-  strbuf_free( sbuf );
+  strbuf_reset( sbuf );
 
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {

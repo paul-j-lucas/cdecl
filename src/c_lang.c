@@ -144,7 +144,7 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
     return "";
 
   static strbuf_t sbuf;
-  strbuf_free( &sbuf );
+  strbuf_reset( &sbuf );
   c_lang_id_t which_lang_id;
 
   if ( exactly_one_bit_set( lang_ids ) ) {

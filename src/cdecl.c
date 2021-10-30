@@ -398,11 +398,11 @@ static bool parse_cdecl_stdin( void ) {
       FPRINTF( fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
     ok = true;
     for (;;) {
-      strbuf_t sbuf;
+      static strbuf_t sbuf;
+      strbuf_reset( &sbuf );
       if ( !cdecl_read_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
         break;
       ok = parse_cdecl_string( sbuf.str, sbuf.len );
-      strbuf_free( &sbuf );
     } // for
   } else {
     ok = parse_cdecl_file( fin );

@@ -59,7 +59,7 @@ static char const* c_sname_impl( strbuf_t *sbuf, c_sname_t const *sname,
   assert( sbuf != NULL );
   assert( sname != NULL );
 
-  strbuf_free( sbuf );
+  strbuf_reset( sbuf );
   bool colon2 = false;
 
   FOREACH_SCOPE( scope, sname, end_scope ) {

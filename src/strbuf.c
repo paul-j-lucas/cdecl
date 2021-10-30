@@ -88,6 +88,7 @@ void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
 }
 
 void strbuf_free( strbuf_t *sbuf ) {
+  assert( sbuf != NULL );
   free( sbuf->str );
   strbuf_init( sbuf );
 }
@@ -102,6 +103,14 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
     return true;
   }
   return false;
+}
+
+void strbuf_reset( strbuf_t *sbuf ) {
+  assert( sbuf != NULL );
+  if ( sbuf->len > 0 ) {
+    sbuf->str[0] = '\0';
+    sbuf->len = 0;
+  }
 }
 
 void strbuf_sepsn( strbuf_t *sbuf, char const *sep, size_t sep_len,

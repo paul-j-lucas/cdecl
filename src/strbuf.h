@@ -131,6 +131,7 @@ void strbuf_cats( strbuf_t *sbuf, char const *s ) {
  * @param sbuf A pointer to the strbuf to initialize.
  *
  * @sa strbuf_free()
+ * @sa strbuf_reset()
  * @sa strbuf_take()
  */
 STRBUF_INLINE
@@ -144,6 +145,7 @@ void strbuf_init( strbuf_t *sbuf ) {
  * @param sbuf A pointer to the strbuf to free.
  *
  * @sa strbuf_init()
+ * @sa strbuf_reset()
  * @sa strbuf_take()
  */
 void strbuf_free( strbuf_t *sbuf );
@@ -158,6 +160,19 @@ void strbuf_free( strbuf_t *sbuf );
  */
 PJL_NOWARN_UNUSED_RESULT
 bool strbuf_reserve( strbuf_t *sbuf, size_t res_len );
+
+/**
+ * Resets \a sbuf by setting the string to zero length.
+ * @param sbuf A pointer to the strbuf to reset.
+ *
+ * @note This function is more efficient than strbuf_free() when used
+ * repeatedly on the same strbuf.
+ *
+ * @sa strbuf_free()
+ * @sa strbuf_init()
+ * @sa strbuf_take()
+ */
+void strbuf_reset( strbuf_t *sbuf );
 
 /**
  * Possibly concatenates \a sep_len bytes of \a sep onto the end of \a sbuf
@@ -275,6 +290,7 @@ void strbuf_sepc_cats( strbuf_t *sbuf, char sep, bool *sep_flag,
  *
  * @sa strbuf_free()
  * @sa strbuf_init()
+ * @sa strbuf_reset()
  */
 STRBUF_INLINE PJL_WARN_UNUSED_RESULT
 char* strbuf_take( strbuf_t *sbuf ) {

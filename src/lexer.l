@@ -1020,7 +1020,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   int const c = input();
                   if ( c == EOF ) {
                     print_error( &yylloc, "unterminated string literal\n" );
-                    strbuf_free( &str_lit_buf );
+                    strbuf_reset( &str_lit_buf );
                     return Y_LEXER_ERROR;
                   }
                   if ( c != *d ) {
@@ -1085,7 +1085,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   "unterminated %s literal\n",
                   YY_START == X_STR ? "string" : "character"
                 );
-                strbuf_free( &str_lit_buf );
+                strbuf_reset( &str_lit_buf );
                 return Y_LEXER_ERROR;
               }
 }
@@ -1259,7 +1259,7 @@ void lexer_reset( bool hard_reset ) {
   lexer_find = LEXER_FIND_ALL;
   lexer_keyword_ctx = C_KW_CTX_DEFAULT;
   newline();
-  strbuf_free( &str_lit_buf );
+  strbuf_reset( &str_lit_buf );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

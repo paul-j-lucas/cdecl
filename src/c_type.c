@@ -704,7 +704,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   static unsigned buf_index;
 
   strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
-  strbuf_free( sbuf );
+  strbuf_reset( sbuf );
   bool space = false;
 
   c_tid_t btids = is_error ? type->btids : c_tid_simplify( type->btids );
