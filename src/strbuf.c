@@ -62,12 +62,24 @@ void strbuf_catf( strbuf_t *sbuf, char const *format, ... ) {
 
   va_list args;
 
+  //
+  // Attempt to concatenate onto the existing buffer: vsnprintf() returns the
+  // number of characters that _would_ have been printed if the buffer were
+  // unlimited.
+  //
   size_t buf_rem = sbuf->cap - sbuf->len;
   va_start( args, format );
   int rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args );
   va_end( args );
   IF_EXIT( rv < 0, EX_IOERR );
 
+  //
+  // Then reserve that number of characters: if strbuf_reserve() returns false,
+  // it means the buffer was already big enough and so all the characters were
+  // put into it by vsnprintf(); otherwise, it means the buffer wasn't big
+  // enough so all the characters didn't fit, but the buffer was grown so they
+  // _will_ fit if we vsnprintf() again.
+  //
   if ( strbuf_reserve( sbuf, (size_t)rv ) ) {
     buf_rem = sbuf->cap - sbuf->len;
     va_start( args, format );
