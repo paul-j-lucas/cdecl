@@ -52,23 +52,23 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t*, c_ast_t* );
  * Adds an array to the AST being built.
  *
  * @param ast The AST to append to; may be NULL.
- * @param of_ast The AST of the of-type of the array AST.
  * @param array_ast The array AST to append.  Its "of" type must be NULL.
+ * @param of_ast The AST to be the of-type of \a array_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT
-static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *of_ast,
-                                      c_ast_t *array_ast ) {
-  assert( of_ast != NULL );
+static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
+                                      c_ast_t *of_ast ) {
   assert( array_ast != NULL );
   assert( array_ast->kind == K_ARRAY );
+  assert( of_ast != NULL );
 
   if ( ast == NULL )
     return array_ast;
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      return c_ast_append_array( ast, of_ast, array_ast );
+      return c_ast_append_array( ast, array_ast, of_ast );
 
     case K_PLACEHOLDER:
       //
@@ -90,7 +90,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *of_ast,
     case K_POINTER:
       if ( ast->depth > array_ast->depth ) {
         PJL_IGNORE_RV(
-          c_ast_add_array_impl( ast->as.ptr_ref.to_ast, of_ast, array_ast )
+          c_ast_add_array_impl( ast->as.ptr_ref.to_ast, array_ast, of_ast )
         );
         return ast;
       }
@@ -151,20 +151,20 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *of_ast,
  *  + <code>array 3 of array 5 of array 7 of int</code>
  *
  * @param ast The AST to append to.
- * @param of_ast The AST of the of-type of the array AST.
  * @param array_ast The array AST to append.  Its "of" type must be NULL.
+ * @param of_ast The AST to be the of-type of \a array_ast.
  * @return If \a ast is an array, returns \a ast; otherwise returns \a
  * array_ast.
  */
 PJL_WARN_UNUSED_RESULT
-static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *of_ast,
-                                    c_ast_t *array_ast ) {
+static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast,
+                                    c_ast_t *of_ast ) {
   assert( ast != NULL );
-  assert( of_ast != NULL );
   assert( array_ast != NULL );
   assert( array_ast->kind == K_ARRAY );
   assert( array_ast->as.array.of_ast != NULL );
   assert( array_ast->as.array.of_ast->kind == K_PLACEHOLDER );
+  assert( of_ast != NULL );
 
   switch ( ast->kind ) {
     case K_POINTER:
@@ -187,7 +187,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *of_ast,
       // array of the new array; for all prior recursive calls, it's a no-op.
       //
       c_ast_t *const temp_ast =
-        c_ast_append_array( ast->as.array.of_ast, of_ast, array_ast );
+        c_ast_append_array( ast->as.array.of_ast, array_ast, of_ast );
       c_ast_set_parent( temp_ast, ast );
       return ast;
     }
@@ -209,14 +209,14 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *of_ast,
  * Adds a function-like AST to the AST being built.
  *
  * @param ast The AST to append to.
- * @param ret_ast The AST of the return-type of the function-like AST.
  * @param func_ast The function-like AST to append.  Its "of" type must be
  * NULL.
+ * @param ret_ast The AST to be the return-type of \a func_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT
-static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
-                                     c_ast_t *func_ast ) {
+static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
+                                     c_ast_t *ret_ast ) {
   assert( ast != NULL );
   assert( func_ast != NULL );
   assert( c_ast_is_kind_any( func_ast, K_ANY_FUNCTION_LIKE ) );
@@ -231,7 +231,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
       case K_RVALUE_REFERENCE:
         if ( ast->depth > func_ast->depth ) {
           PJL_IGNORE_RV(
-            c_ast_add_func_impl( ast->as.ptr_ref.to_ast, ret_ast, func_ast )
+            c_ast_add_func_impl( ast->as.ptr_ref.to_ast, func_ast, ret_ast )
           );
           return ast;
         }
@@ -490,9 +490,9 @@ static bool c_ast_vistor_type_any( c_ast_t *ast, c_ast_visitor_data_t data ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *of_ast, c_ast_t *array_ast ) {
+c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast ) {
   assert( ast != NULL );
-  c_ast_t *const rv_ast = c_ast_add_array_impl( ast, of_ast, array_ast );
+  c_ast_t *const rv_ast = c_ast_add_array_impl( ast, array_ast, of_ast );
   assert( rv_ast != NULL );
   if ( c_ast_name_empty( rv_ast ) )
     rv_ast->sname = c_ast_take_name( ast );
@@ -501,8 +501,8 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *of_ast, c_ast_t *array_ast ) {
   return rv_ast;
 }
 
-c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast ) {
-  c_ast_t *const rv_ast = c_ast_add_func_impl( ast, ret_ast, func_ast );
+c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
+  c_ast_t *const rv_ast = c_ast_add_func_impl( ast, func_ast, ret_ast );
   assert( rv_ast != NULL );
   if ( c_ast_name_empty( rv_ast ) )
     rv_ast->sname = c_ast_take_name( ast );

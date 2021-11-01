@@ -3372,9 +3372,9 @@ array_decl_c_astp
 
       if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
         $$.ast = $1.ast;
-        $$.target_ast = c_ast_add_array( $1.target_ast, type_ast, array_ast );
+        $$.target_ast = c_ast_add_array( $1.target_ast, array_ast, type_ast );
       } else {
-        $$.ast = c_ast_add_array( $1.ast, type_ast, array_ast );
+        $$.ast = c_ast_add_array( $1.ast, array_ast, type_ast );
         $$.target_ast = NULL;
       }
 
@@ -3419,7 +3419,7 @@ block_decl_c_astp                       // Apple extension
 
       C_TYPE_ADD_TID( &block_ast->type, $4, @4 );
       block_ast->as.block.param_ast_list = $8;
-      $$.ast = c_ast_add_func( $5.ast, type_ast, block_ast );
+      $$.ast = c_ast_add_func( $5.ast, block_ast, type_ast );
       $$.target_ast = block_ast->as.block.ret_ast;
 
       DUMP_AST( "block_decl_c_astp", $$.ast );
@@ -3619,13 +3619,13 @@ func_decl_c_astp
       }
       else if ( $1.target_ast != NULL ) {
         $$.ast = decl2_ast;
-        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast, func_ast ) );
+        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, func_ast, type_ast ) );
       }
       else {
         $$.ast = c_ast_add_func(
           decl2_ast,
-          trailing_ret_ast != NULL ? trailing_ret_ast : type_ast,
-          func_ast
+          func_ast,
+          trailing_ret_ast != NULL ? trailing_ret_ast : type_ast
         );
       }
 
@@ -4032,8 +4032,8 @@ oper_decl_c_astp
 
       $$.ast = c_ast_add_func(
         oper_c_ast,
-        trailing_ret_ast != NULL ? trailing_ret_ast : type_ast,
-        oper_ast
+        oper_ast,
+        trailing_ret_ast != NULL ? trailing_ret_ast : type_ast
       );
 
       $$.target_ast = oper_ast->as.oper.ret_ast;
@@ -4311,8 +4311,8 @@ user_defined_literal_decl_c_astp
 
       $$.ast = c_ast_add_func(
         udl_c_ast,
-        trailing_ret_ast != NULL ? trailing_ret_ast : type_ast,
-        udl_ast
+        udl_ast,
+        trailing_ret_ast != NULL ? trailing_ret_ast : type_ast
       );
 
       $$.target_ast = udl_ast->as.udef_lit.ret_ast;
@@ -4389,10 +4389,10 @@ array_cast_c_astp
 
       if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
         $$.ast = $1.ast;
-        $$.target_ast = c_ast_add_array( $1.target_ast, type_ast, $2 );
+        $$.target_ast = c_ast_add_array( $1.target_ast, array_ast, type_ast );
       } else {
         c_ast_t *const ast = $1.ast != NULL ? $1.ast : type_ast;
-        $$.ast = c_ast_add_array( ast, type_ast, $2 );
+        $$.ast = c_ast_add_array( ast, array_ast, type_ast );
         $$.target_ast = NULL;
       }
 
@@ -4460,7 +4460,7 @@ block_cast_c_astp                       // Apple extension
 
       C_TYPE_ADD_TID( &block_ast->type, $4, @4 );
       block_ast->as.block.param_ast_list = $8;
-      $$.ast = c_ast_add_func( $5.ast, type_ast, block_ast );
+      $$.ast = c_ast_add_func( $5.ast, block_ast, type_ast );
       $$.target_ast = block_ast->as.block.ret_ast;
 
       DUMP_AST( "block_cast_c_astp", $$.ast );
@@ -4499,13 +4499,13 @@ func_cast_c_astp
 
       if ( $1.target_ast != NULL ) {
         $$.ast = cast2_c_ast;
-        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast, func_ast ) );
+        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, func_ast, type_ast ) );
       }
       else {
         $$.ast = c_ast_add_func(
           cast2_c_ast,
-          trailing_ret_ast != NULL ? trailing_ret_ast : type_ast,
-          func_ast
+          func_ast,
+          trailing_ret_ast != NULL ? trailing_ret_ast : type_ast
         );
       }
 

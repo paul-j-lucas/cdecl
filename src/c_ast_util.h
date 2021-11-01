@@ -56,24 +56,24 @@ _GL_INLINE_HEADER_BEGIN
  * Adds an array to the AST being built.
  *
  * @param ast The AST to append to.
- * @param of_ast The AST of the of-type of the array AST.
  * @param array_ast The array AST to append.  Its "of" type must be NULL.
+ * @param of_ast The AST to be the of-type of \a array_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT
-c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *of_ast, c_ast_t *array_ast );
+c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast );
 
 /**
  * Adds a function-like AST to the AST being built.
  *
  * @param ast The AST to append to.
- * @param ret_ast The AST of the return-type of the function-like AST.
  * @param func_ast The function-like AST to append.  Its "of" type must be
  * NULL.
+ * @param ret_ast The AST to be the return-type of \a func_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT
-c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast );
+c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast );
 
 /**
  * Traverses \a ast attempting to find an AST node having one of \a kinds.
