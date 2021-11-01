@@ -19,6 +19,9 @@ Locations for error and warning messages have been improved.
 The `show` command now correctly prints all possible commands to define a type
 when requested to show a type that doesn't exist.
 
+** Help output
+Tweaked help output.
+
 
 * Changes in Cdecl 11.4
 

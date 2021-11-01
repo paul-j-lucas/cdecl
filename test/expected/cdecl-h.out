@@ -2,15 +2,15 @@ usage: cdecl [options] [command...]
        cdecl [options] files...
 options:
   --alt-tokens         (-a) Print alternative tokens.
-  --color=WHEN         (-k) When to colorize output [default: not_file].
-  --config=FILE        (-c) The configuration file [default: ~/.cdeclrc].
-  --debug              (-d) Enable debug output.
+  --color=WHEN         (-k) Colorize output WHEN [default: not_file].
+  --config=FILE        (-c) Configuration file path [default: ~/.cdeclrc].
+  --debug              (-d) Print cdecl debug output.
   --digraphs           (-2) Print digraphs.
   --east-const         (-E) Print in "east const" form.
   --explain            (-e) Assume "explain" when no other command is given.
-  --explicit-ecsu=WHEN (-S) When to print "class", "struct", "union" explicitly.
-  --explicit-int=WHEN  (-I) When to print "int" explicitly.
-  --file=FILE          (-f) Read from this file [default: stdin].
+  --explicit-ecsu=WHEN (-S) Print "class", "struct", "union" explicitly WHEN.
+  --explicit-int=WHEN  (-I) Print "int" explicitly WHEN.
+  --file=FILE          (-f) Read from FILE [default: stdin].
   --help               (-h) Print this help and exit.
   --interactive        (-i) Force interactive mode.
   --language=LANG      (-x) Use LANG.
@@ -18,7 +18,7 @@ options:
   --no-prompt          (-p) Suppress prompt.
   --no-semicolon       (-s) Suppress printing final semicolon for declarations.
   --no-typedefs        (-t) Suppress predefining standard types.
-  --output=FILE        (-o) Write to this file [default: stdout].
+  --output=FILE        (-o) Write to FILE [default: stdout].
   --trigraphs          (-3) Print trigraphs.
   --version            (-v) Print version and exit.
 

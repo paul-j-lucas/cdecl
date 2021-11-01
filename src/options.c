@@ -639,21 +639,21 @@ static void usage( int status ) {
 "options:\n"
 "  --alt-tokens         (-%c) Print alternative tokens.\n"
 #ifdef YYDEBUG
-"  --bison-debug        (-%c) Enable Bison debug output.\n"
+"  --bison-debug        (-%c) Print Bison debug output.\n"
 #endif /* YYDEBUG */
-"  --color=WHEN         (-%c) When to colorize output [default: not_file].\n"
-"  --config=FILE        (-%c) The configuration file [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
+"  --color=WHEN         (-%c) Colorize output WHEN [default: not_file].\n"
+"  --config=FILE        (-%c) Configuration file path [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
 #ifdef ENABLE_CDECL_DEBUG
-"  --debug              (-%c) Enable debug output.\n"
+"  --debug              (-%c) Print " CDECL " debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
 "  --digraphs           (-%c) Print digraphs.\n"
 "  --east-const         (-%c) Print in \"east const\" form.\n"
 "  --explain            (-%c) Assume \"explain\" when no other command is given.\n"
-"  --explicit-ecsu=WHEN (-%c) When to print \"class\", \"struct\", \"union\" explicitly.\n"
-"  --explicit-int=WHEN  (-%c) When to print \"int\" explicitly.\n"
-"  --file=FILE          (-%c) Read from this file [default: stdin].\n"
+"  --explicit-ecsu=WHEN (-%c) Print \"class\", \"struct\", \"union\" explicitly WHEN.\n"
+"  --explicit-int=WHEN  (-%c) Print \"int\" explicitly WHEN.\n"
+"  --file=FILE          (-%c) Read from FILE [default: stdin].\n"
 #ifdef ENABLE_FLEX_DEBUG
-"  --flex-debug         (-%c) Enable Flex debug output.\n"
+"  --flex-debug         (-%c) Print Flex debug output.\n"
 #endif /* ENABLE_FLEX_DEBUG */
 "  --help               (-%c) Print this help and exit.\n"
 "  --interactive        (-%c) Force interactive mode.\n"
@@ -662,7 +662,7 @@ static void usage( int status ) {
 "  --no-prompt          (-%c) Suppress prompt.\n"
 "  --no-semicolon       (-%c) Suppress printing final semicolon for declarations.\n"
 "  --no-typedefs        (-%c) Suppress predefining standard types.\n"
-"  --output=FILE        (-%c) Write to this file [default: stdout].\n"
+"  --output=FILE        (-%c) Write to FILE [default: stdout].\n"
 "  --trigraphs          (-%c) Print trigraphs.\n"
 "  --version            (-%c) Print version and exit.\n"
 "\n"
