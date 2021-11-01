@@ -91,7 +91,7 @@ c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
 /**
  * Traverses \a ast attempting to find an AST node having a name.
  *
- * @param ast The AST to begin the search at.
+ * @param ast The AST to begin at; may be NULL.
  * @param dir The direction to search.
  * @return Returns said name or NULL if none.
  */
@@ -101,7 +101,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
 /**
  * Traverses \a ast attempting to find an AST node having one of \a type.
  *
- * @param ast The AST to begin at.
+ * @param ast The AST to begin at; may be NULL.
  * @param dir The direction to visit.
  * @param type A type where each type ID is the bitwise-or of type IDs to find.
  * @return Returns a pointer to an AST node having one of \a type or NULL if
