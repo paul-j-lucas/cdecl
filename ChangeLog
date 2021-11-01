@@ -1,3 +1,9 @@
+2021-11-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_ast_util.h, parser.y: Reworked parameter order for
+     c_ast_add_array(), c_ast_append_array_impl(), and c_ast_add_func().
+   * cdecl.1: s/number error/number/
+
 2021-10-29  Paul J. Lucas <paul@lucasmail.org>
 
    * c_lang.c, c_sname.c, c_type.c, cdecl.c, lexer.l, print.c, prompt.c,
