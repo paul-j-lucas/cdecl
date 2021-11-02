@@ -385,7 +385,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * an rvalue reference.
  *
  * @sa c_ast_unpointer()
- * @sa c_ast_unrvalue_reference()
+ * @sa c_ast_unreference()
  * @sa c_ast_untypedef()
  */
 PJL_WARN_UNUSED_RESULT
