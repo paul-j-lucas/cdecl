@@ -2272,8 +2272,8 @@ explain
   : Y_EXPLAIN
     { //
       // Set our mode to deciphering gibberish into English and specifically
-      // tell the lexer to return cdecl keywords (e.g., "func") are returned as
-      // ordinary names, otherwise gibberish like:
+      // tell the lexer to return cdecl keywords (e.g., "func") as ordinary
+      // names, otherwise gibberish like:
       //
       //      int func(void);
       //
