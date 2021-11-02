@@ -1,3 +1,7 @@
+2021-11-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c: s/assert/UNEXPECTED_INT_VALUE/
+
 2021-11-01  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, c_ast_util.h, parser.y: Reworked parameter order for
