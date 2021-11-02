@@ -52,7 +52,8 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t*, c_ast_t* );
  * Adds an array to the AST being built.
  *
  * @param ast The AST to append to; may be NULL.
- * @param array_ast The array AST to append.
+ * @param array_ast The array AST to append.  Its `of_ast` must be of kind
+ * #K_PLACEHOLDER.
  * @param of_ast The AST to become the `of_ast` of \a array_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
@@ -61,6 +62,8 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
                                       c_ast_t *of_ast ) {
   assert( array_ast != NULL );
   assert( array_ast->kind == K_ARRAY );
+  assert( array_ast->as.array.of_ast != NULL );
+  assert( array_ast->as.array.of_ast->kind == K_PLACEHOLDER );
   assert( of_ast != NULL );
 
   if ( ast == NULL )
@@ -151,7 +154,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
  *  + <code>array 3 of array 5 of array 7 of int</code>
  *
  * @param ast The AST to append to.
- * @param array_ast The array AST to append.  Its `of_ast` must be a
+ * @param array_ast The array AST to append.  Its `of_ast` must be of kind
  * #K_PLACEHOLDER.
  * @param of_ast The AST to become the `of_ast` of \a array_ast.
  * @return If \a ast is an array, returns \a ast; otherwise returns \a

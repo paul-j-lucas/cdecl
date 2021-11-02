@@ -56,7 +56,8 @@ _GL_INLINE_HEADER_BEGIN
  * Adds an array to the AST being built.
  *
  * @param ast The AST to append to.
- * @param array_ast The array AST to append.  Its `of_ast` must be NULL.
+ * @param array_ast The array AST to append.  Its `of_ast` must be of kind
+ * #K_PLACEHOLDER.
  * @param of_ast The AST to become the `of_ast` of \a array_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
