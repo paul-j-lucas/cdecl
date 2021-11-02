@@ -417,10 +417,7 @@ static bool c_ast_check_array( c_ast_t const *ast,
       return false;
 
     case K_TYPEDEF:                     // can't happen after c_ast_untypedef()
-      // LCOV_EXCL_START
-      assert( raw_of_ast->kind != K_TYPEDEF );
-      break;
-      // LCOV_EXCL_STOP
+      UNEXPECTED_INT_VALUE( raw_of_ast->kind );
 
     CASE_K_PLACEHOLDER;
   } // switch
