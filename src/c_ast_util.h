@@ -56,8 +56,8 @@ _GL_INLINE_HEADER_BEGIN
  * Adds an array to the AST being built.
  *
  * @param ast The AST to append to.
- * @param array_ast The array AST to append.  Its "of" type must be NULL.
- * @param of_ast The AST to be the of-type of \a array_ast.
+ * @param array_ast The array AST to append.  Its `of_ast` must be NULL.
+ * @param of_ast The AST to become the `of_ast` of \a array_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT
@@ -67,9 +67,9 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast );
  * Adds a function-like AST to the AST being built.
  *
  * @param ast The AST to append to.
- * @param func_ast The function-like AST to append.  Its "of" type must be
+ * @param func_ast The function-like AST to append.  Its `ret_ast` must be
  * NULL.
- * @param ret_ast The AST to be the return-type of \a func_ast.
+ * @param ret_ast The AST to become the `ret_ast` of \a func_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT

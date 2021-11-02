@@ -52,8 +52,8 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t*, c_ast_t* );
  * Adds an array to the AST being built.
  *
  * @param ast The AST to append to; may be NULL.
- * @param array_ast The array AST to append.  Its "of" type must be NULL.
- * @param of_ast The AST to be the of-type of \a array_ast.
+ * @param array_ast The array AST to append.  Its `of_ast` must be NULL.
+ * @param of_ast The AST to become the `of_ast` of \a array_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT
