@@ -509,7 +509,6 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   assert( ast->cast_kind != C_CAST_NONE );
 
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-
   c_ast_t const *const storage_ast = c_ast_find_type_any(
     nonconst_ast, C_VISIT_DOWN, &C_TYPE_LIT_S( TS_MASK_STORAGE )
   );
