@@ -428,6 +428,7 @@ static c_keyword_t const C_KEYWORDS[] = {
 c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
                                    c_keyword_ctx_t kw_ctx ) {
   assert( literal != NULL );
+  assert( lang_ids != LANG_NONE );
 
   for ( c_keyword_t const *k = C_KEYWORDS; k->literal != NULL; ++k ) {
     if ( (k->lang_ids & lang_ids) == LANG_NONE )

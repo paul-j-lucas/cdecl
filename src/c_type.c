@@ -631,7 +631,6 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
 static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
                             c_tid_t const tids_set[], size_t tids_set_size,
                             bool in_english, char sep, bool *sep_flag ) {
-  assert( sbuf != NULL );
   for ( size_t i = 0; i < tids_set_size; ++i ) {
     if ( !c_tid_is_none( tids & tids_set[i] ) ) {
       char const *const name = c_tid_name_1( tids_set[i], in_english );

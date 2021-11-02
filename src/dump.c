@@ -104,11 +104,14 @@ static void dump_indent( unsigned indent, FILE *out ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void bool_dump( bool value, FILE *dout ) {
+  assert( dout != NULL );
   FPUTS( value ? "true" : "false", dout );
 }
 
 void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
                  FILE *dout ) {
+  assert( dout != NULL );
+
   if ( key0 != NULL && *key0 != '\0' )
     DUMP_FORMAT( "%s = {\n", key0 );
   else
@@ -278,6 +281,8 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
 
 void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
   assert( list != NULL );
+  assert( dout != NULL );
+
   if ( slist_empty( list ) ) {
     FPUTS( "[]", dout );
   } else {
@@ -297,6 +302,8 @@ void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
 
 void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
   assert( sname != NULL );
+  assert( dout != NULL );
+
   FPRINTF( dout, "\"%s\"", c_sname_full_name( sname ) );
   if ( !c_sname_empty( sname ) ) {
     FPUTS( " (", dout );
@@ -312,6 +319,9 @@ void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
 }
 
 void c_sname_list_dump( slist_t const *list, FILE *dout ) {
+  assert( list != NULL );
+  assert( dout != NULL );
+
   FPUTC( '[', dout );
   bool dump_comma = false;
   FOREACH_SLIST( node, list, NULL ) {
@@ -323,6 +333,7 @@ void c_sname_list_dump( slist_t const *list, FILE *dout ) {
 }
 
 void c_tid_dump( c_tid_t tid, FILE *dout ) {
+  assert( dout != NULL );
   FPRINTF( dout,
     "\"%s\" (%s = 0x%" PRIX_C_TID_T ")",
     c_tid_name_c( tid ), c_tpid_name( c_tid_tpid( tid ) ), tid
@@ -331,6 +342,8 @@ void c_tid_dump( c_tid_t tid, FILE *dout ) {
 
 void c_type_dump( c_type_t const *type, FILE *dout ) {
   assert( type != NULL );
+  assert( dout != NULL );
+
   char const *const type_name = c_type_name_c( type );
   FPRINTF( dout,
     "\"%s\" "
@@ -345,6 +358,7 @@ void c_type_dump( c_type_t const *type, FILE *dout ) {
 }
 
 void str_dump( char const *value, FILE *dout ) {
+  assert( dout != NULL );
   if ( value != NULL )
     FPRINTF( dout, "\"%s\"", value );
   else
