@@ -2246,7 +2246,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, c_ast_visitor_data_t flags ) {
 
     case K_USER_DEF_LITERAL:
       if ( !(c_ast_check_ret_type( ast ) &&
-             c_ast_check_func( ast )  &&
+             c_ast_check_func( ast ) &&
              c_ast_check_udef_lit_params( ast )) ) {
         return VISITOR_ERROR_FOUND;
       }
