@@ -801,7 +801,7 @@ void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname );
 /**
  * Does a depth-first, post-order traversal of an AST.
  *
- * @param ast The AST to begin at.  If NULL, does nothing.
+ * @param ast The AST to start from.  If NULL, does nothing.
  * @param dir The direction to visit.
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.

@@ -82,7 +82,7 @@ static bool c_alignas_equiv( c_alignas_t const *i_align,
 /**
  * Checks \a ast for a cycle.
  *
- * @param ast The AST node to begin at.
+ * @param ast The AST node to start from.
  * @return Returns `true` only if there is a cycle.
  */
 PJL_WARN_UNUSED_RESULT

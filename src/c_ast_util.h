@@ -79,7 +79,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast );
 /**
  * Traverses \a ast attempting to find an AST node having one of \a kinds.
  *
- * @param ast The AST to begin at; may be NULL.
+ * @param ast The AST to start from; may be NULL.
  * @param dir The direction to visit.
  * @param kinds The bitwise-or of kind(s) to find.
  * @return Returns a pointer to an AST node having one of \a kinds or NULL if
@@ -92,7 +92,7 @@ c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
 /**
  * Traverses \a ast attempting to find an AST node having a name.
  *
- * @param ast The AST to begin at; may be NULL.
+ * @param ast The AST to start from; may be NULL.
  * @param dir The direction to search.
  * @return Returns said name or NULL if none.
  */
@@ -102,7 +102,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
 /**
  * Traverses \a ast attempting to find an AST node having one of \a type.
  *
- * @param ast The AST to begin at; may be NULL.
+ * @param ast The AST to start from; may be NULL.
  * @param dir The direction to visit.
  * @param type A type where each type ID is the bitwise-or of type IDs to find.
  * @return Returns a pointer to an AST node having one of \a type or NULL if
@@ -303,9 +303,9 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list );
 
 /**
- * Gets the root AST node of \a ast.
+ * Gets the root AST node starting at \a ast.
  *
- * @param ast The AST node to get the root of.
+ * @param ast The AST node to start from.
  * @return Returns said AST node.
  */
 PJL_WARN_UNUSED_RESULT
