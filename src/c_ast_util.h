@@ -303,6 +303,15 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list );
 
 /**
+ * Gets the root AST node of \a ast.
+ *
+ * @param ast The AST node to get the root of.
+ * @return Returns said AST node.
+ */
+PJL_WARN_UNUSED_RESULT
+c_ast_t* c_ast_root( c_ast_t *ast );
+
+/**
  * Takes the name, if any, away from \a ast
  * (with the intent of giving it to another AST).
  *
