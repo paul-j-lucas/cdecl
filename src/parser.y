@@ -589,15 +589,6 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
   return cdecl_initialized && !opt_lang_is_any( lang_ids );
 }
 
-////////// extern functions ///////////////////////////////////////////////////
-
-/**
- * Cleans up global parser data at program termination.
- */
-void parser_cleanup( void ) {
-  c_ast_list_gc( &typedef_ast_list );
-}
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -7059,6 +7050,15 @@ virtual_stid_opt
 %%
 
 /// @endcond
+
+////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Cleans up global parser data at program termination.
+ */
+void parser_cleanup( void ) {
+  c_ast_list_gc( &typedef_ast_list );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */
