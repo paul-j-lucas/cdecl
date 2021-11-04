@@ -97,7 +97,7 @@ enum c_ast_kind {
 
   /**
    * Name only.  It's used as the initial kind for an identifier ("name") until
-   * we know it's actual type (if ever).  However, it's also used for pre-
+   * we know its actual type (if ever).  However, it's also used for pre-
    * prototype typeless function parameters in K&R C, e.g., `double sin(x)`.
    */
   K_NAME                    = (1u << 2),
