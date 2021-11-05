@@ -1437,6 +1437,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>       enum_fixed_type_modifier_list_btid_opt
 %type   <tid>       enum_fixed_type_modifier_btid
 %type   <ast>       enum_unmodified_fixed_type_c_ast
+%type   <tid>       extern_linkage_c_stid extern_linkage_c_stid_opt
 %type   <ast>       file_scope_constructor_decl_c_ast
 %type   <ast>       file_scope_destructor_decl_c_ast
 %type   <ast_pair>  func_decl_c_astp
@@ -1463,7 +1464,6 @@ static void yyerror( char const *msg ) {
 %type   <sname>     scope_sname_c_opt sub_scope_sname_c_opt
 %type   <sname>     sname_c sname_c_exp sname_c_opt
 %type   <ast>       sname_c_ast
-%type   <tid>       extern_linkage_c_stid extern_linkage_c_stid_opt
 %type   <type>      storage_class_c_type
 %type   <ast>       trailing_return_type_c_ast_opt
 %type   <ast>       type_c_ast
