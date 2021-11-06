@@ -214,6 +214,8 @@ enum c_ast_kind {
  * #K_DESTRUCTOR, #K_ENUM_CLASS_STRUCT_UNION, #K_FUNCTION, #K_OPERATOR,
  * #K_POINTER, #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE,
  * #K_USER_DEF_CONVERSION, or #K_USER_DEF_LITERAL.
+ *
+ * @sa #K_ANY_REFERRER
  */
 #define K_ANY_PARENT          ( K_ANY_FUNCTION_LIKE | K_ANY_POINTER \
                               | K_ANY_REFERENCE | K_ARRAY \
@@ -228,6 +230,14 @@ enum c_ast_kind {
  * Shorthand for any kind of reference: #K_REFERENCE or #K_RVALUE_REFERENCE.
  */
 #define K_ANY_REFERENCE       ( K_REFERENCE | K_RVALUE_REFERENCE )
+
+/**
+ * Shorthand for any kind that has a pointer to another AST: #K_ANY_PARENT or
+ * #K_TYPEDEF.
+ *
+ * @sa #K_ANY_PARENT
+ */
+#define K_ANY_REFERRER        ( K_ANY_PARENT | K_TYPEDEF )
 
 ////////// extern functions ///////////////////////////////////////////////////
 

@@ -122,7 +122,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       break;
 
     case K_TYPEDEF:
-      // for_ast duplicated by parent code below
+      // for_ast duplicated by referrer code below
     case K_BUILTIN:
       dup_ast->as.builtin.bit_width = ast->as.builtin.bit_width;
       break;
@@ -139,7 +139,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       dup_ast->as.func.flags = ast->as.func.flags;
       PJL_FALLTHROUGH;
     case K_APPLE_BLOCK:
-      // ret_ast duplicated by parent code below
+      // ret_ast duplicated by referrer code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL:
       FOREACH_PARAM( param, ast ) {
@@ -153,7 +153,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
     case K_USER_DEF_CONVERSION:
-      // of_ast duplicated by parent code below
+      // of_ast duplicated by referrer code below
     case K_DESTRUCTOR:
     case K_NAME:
     case K_PLACEHOLDER:
@@ -162,7 +162,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       break;
   } // switch
 
-  if ( c_ast_is_parent( ast ) || ast->kind == K_TYPEDEF ) {
+  if ( c_ast_is_referrer( ast ) ) {
     c_ast_t *const child_ast = ast->as.parent.of_ast;
     if ( child_ast != NULL )
       c_ast_set_parent( c_ast_dup( child_ast, ast_list ), dup_ast );
@@ -221,7 +221,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
         return false;
       PJL_FALLTHROUGH;
     case K_APPLE_BLOCK:
-      // ret_ast checked by parent code below
+      // ret_ast checked by referrer code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL: {
       c_ast_param_t const *i_param = c_ast_params( i_ast );
@@ -248,18 +248,13 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_TYPEDEF:
       if ( i_ast->as.tdef.bit_width != j_ast->as.tdef.bit_width )
         return false;
-      //
-      // K_TYPEDEF isn't a "parent" kind since it's not a parent "of" the
-      // underlying type, but instead a synonym "for" it.  However, for
-      // checking equivalence, it can be treated as-if it were a parent.
-      //
-      goto equiv_of;
+      break;
 
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
     case K_USER_DEF_CONVERSION:
-      // checked by parent code below
+      // checked by referrer code below
     case K_NAME:                        // names don't matter
     case K_DESTRUCTOR:
     case K_PLACEHOLDER:
@@ -268,13 +263,12 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
   } // switch
 
-  if ( !c_ast_is_parent( i_ast ) ) {
-    assert( !c_ast_is_parent( j_ast ) );
+  if ( !c_ast_is_referrer( i_ast ) ) {
+    assert( !c_ast_is_referrer( j_ast ) );
     return true;
   }
-  assert( c_ast_is_parent( j_ast ) );
+  assert( c_ast_is_referrer( j_ast ) );
 
-equiv_of:
   return c_ast_equiv( i_ast->as.parent.of_ast, j_ast->as.parent.of_ast );
 }
 
@@ -370,7 +364,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   assert( child_ast != NULL );
   assert( parent_ast != NULL );
-  assert( c_ast_is_parent( parent_ast ) || parent_ast->kind == K_TYPEDEF );
+  assert( c_ast_is_referrer( parent_ast ) );
 
   child_ast->parent_ast = parent_ast;
   parent_ast->as.parent.of_ast = child_ast;

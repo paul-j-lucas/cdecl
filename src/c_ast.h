@@ -475,6 +475,7 @@ void c_ast_free( c_ast_t *ast );
  * @return Returns `true` only if \a ast is one of \a kinds.
  *
  * @sa c_ast_is_parent()
+ * @sa c_ast_is_referrer()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
@@ -489,6 +490,7 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
  * @return Returns `true` only if \a ast is an orphan.
  *
  * @sa c_ast_is_parent()
+ * @sa c_ast_is_referrer()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_orphan( c_ast_t const *ast ) {
@@ -503,10 +505,26 @@ bool c_ast_is_orphan( c_ast_t const *ast ) {
  *
  * @sa c_ast_is_kind_any()
  * @sa c_ast_is_orphan()
+ * @sa c_ast_is_referrer()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_parent( c_ast_t const *ast ) {
   return ast != NULL && c_ast_is_kind_any( ast, K_ANY_PARENT );
+}
+
+/**
+ * Checks whether \a ast is a referrer node.
+ *
+ * @param ast The AST to check.  If NULL, does nothing.
+ * @return Returns `true` only if it is.
+ *
+ * @sa c_ast_is_kind_any()
+ * @sa c_ast_is_orphan()
+ * @sa c_ast_is_parent()
+ */
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
+bool c_ast_is_referrer( c_ast_t const *ast ) {
+  return ast != NULL && c_ast_is_kind_any( ast, K_ANY_REFERRER );
 }
 
 /**
