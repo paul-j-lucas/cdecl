@@ -456,7 +456,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast,
   }
 
   if ( ast->as.builtin.bit_width > 0 ) {
-    if ( c_ast_name_count( ast ) > 1 ) {
+    if ( c_sname_count( &ast->sname ) > 1 ) {
       print_error( &ast->loc, "scoped names can not have bit-field widths\n" );
       return false;
     }
@@ -610,13 +610,13 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( c_ast_is_kind_any( ast, K_CONSTRUCTOR | K_DESTRUCTOR ) );
 
-  bool const is_definition = c_ast_name_count( ast ) > 1;
+  bool const is_definition = c_sname_count( &ast->sname ) > 1;
 
   if ( is_definition && !c_sname_is_ctor( &ast->sname ) ) {
     print_error( &ast->loc,
       "\"%s\", \"%s\": %s and %s names don't match\n",
-      c_ast_name_atr( ast, 1 ), c_ast_local_name( ast ),
-      c_type_name_error( c_ast_local_type( ast ) ),
+      c_sname_name_atr( &ast->sname, 1 ), c_sname_local_name( &ast->sname ),
+      c_type_name_error( c_sname_local_type( &ast->sname ) ),
       c_kind_name( ast->kind )
     );
     return false;
@@ -912,10 +912,10 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   }
 
   if ( c_type_is_tid_any( &ast->type, TS_VIRTUAL ) ) {
-    if ( c_ast_name_count( ast ) > 1 ) {
+    if ( c_sname_count( &ast->sname ) > 1 ) {
       print_error( &ast->loc,
         "\"%s\": %s can not be used in file-scoped %ss\n",
-        c_ast_full_name( ast ), L_VIRTUAL, c_kind_name( ast->kind )
+        c_sname_full_name( &ast->sname ), L_VIRTUAL, c_kind_name( ast->kind )
       );
       return false;
     }
@@ -1081,7 +1081,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
     c_ast_t const *const param_ast = c_param_ast( param );
 
-    if ( c_ast_name_count( param_ast ) > 1 ) {
+    if ( c_sname_count( &param_ast->sname ) > 1 ) {
       print_error( &param_ast->loc, "parameter names can not be scoped\n" );
       return false;
     }
@@ -1113,7 +1113,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           // Ordinarily, void parameters are invalid; but a single void
           // function "parameter" is valid (as long as it doesn't have a name).
           //
-          if ( !c_ast_name_empty( param_ast ) ) {
+          if ( !c_sname_empty( &param_ast->sname ) ) {
             print_error( &param_ast->loc,
               "named parameters can not be %s\n", L_VOID
             );
@@ -1621,7 +1621,7 @@ same: print_error( &ast->loc,
       // presumably being declared within.
       //
       if ( c_type_is_tid_any( &ast->type, TS_FRIEND ) &&
-           c_ast_name_empty( ast ) ) {
+           c_sname_empty( &ast->sname ) ) {
         print_error( &ast->loc,
           "%s %ss can not be %s\n",
           L_MEMBER, L_OPERATOR, L_FRIEND
@@ -1979,7 +1979,8 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
     );
     return false;
   }
-  if ( c_type_is_tid_any( &ast->type, TS_FRIEND ) && c_ast_name_empty( ast ) ) {
+  if ( c_type_is_tid_any( &ast->type, TS_FRIEND ) &&
+       c_sname_empty( &ast->sname ) ) {
     print_error( &ast->loc,
       "%s %s %s %s must use qualified name\n",
       L_FRIEND, H_USER_DEFINED, L_CONVERSION, L_OPERATOR
@@ -2375,7 +2376,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, c_ast_visitor_data_t flags ) {
       break;
 
     case K_USER_DEF_LITERAL:
-      if ( c_ast_local_name( ast )[0] != '_' )
+      if ( c_sname_local_name( &ast->sname )[0] != '_' )
         print_warning( &ast->loc,
           "%s %s not starting with '_' are reserved\n",
           H_USER_DEFINED, L_LITERAL
@@ -2561,7 +2562,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     scope->next = NULL;
     c_typedef_t const *const tdef = c_typedef_find_sname( sname );
     if ( tdef != NULL ) {
-      c_type_t const *const tdef_type = c_ast_local_type( tdef->ast );
+      c_type_t const *const tdef_type = c_sname_local_type( &tdef->ast->sname );
       if ( c_type_is_tid_any( tdef_type, TB_ANY_SCOPE | TB_ENUM ) &&
            !c_type_equal( scope_type, tdef_type ) ) {
         if ( c_type_is_tid_any( scope_type, TB_ANY_SCOPE ) ) {

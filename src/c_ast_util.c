@@ -461,7 +461,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_name( c_ast_t *ast, c_ast_visitor_data_t data ) {
   assert( ast != NULL );
   (void)data;
-  return !c_ast_name_empty( ast );
+  return !c_sname_empty( &ast->sname );
 }
 
 /**
@@ -485,7 +485,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast ) {
   assert( ast != NULL );
   c_ast_t *const rv_ast = c_ast_add_array_impl( ast, array_ast, of_ast );
   assert( rv_ast != NULL );
-  if ( c_ast_name_empty( rv_ast ) )
+  if ( c_sname_empty( &rv_ast->sname ) )
     rv_ast->sname = c_ast_take_name( ast );
   c_type_t const taken_type = c_ast_take_storage( array_ast->as.array.of_ast );
   c_type_or_eq( &array_ast->type, &taken_type );
@@ -495,7 +495,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast ) {
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
   c_ast_t *const rv_ast = c_ast_add_func_impl( ast, func_ast, ret_ast );
   assert( rv_ast != NULL );
-  if ( c_ast_name_empty( rv_ast ) )
+  if ( c_sname_empty( &rv_ast->sname ) )
     rv_ast->sname = c_ast_take_name( ast );
   c_type_t const taken_type = c_ast_take_storage( func_ast->as.func.ret_ast );
   c_type_or_eq( &rv_ast->type, &taken_type );
@@ -643,7 +643,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
     if ( !c_ast_equiv( type_ast, decl_ast ) ) {
       print_error( &decl_ast->loc,
         "\"%s\": \"%s\" redefinition with different type; original is: ",
-        c_ast_full_name( decl_ast ), L_TYPEDEF
+        c_sname_full_name( &decl_ast->sname ), L_TYPEDEF
       );
       //
       // When printing the existing type in C/C++ as part of an error message,
@@ -679,13 +679,13 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
   }
 
   if ( ast->kind == K_USER_DEF_CONVERSION &&
-       c_ast_local_type( ast )->btids == TB_SCOPE ) {
+       c_sname_local_type( &ast->sname )->btids == TB_SCOPE ) {
     //
     // User-defined conversions don't have names, but they can still have a
     // scope.  Since only classes can have them, if the scope is still
     // TB_SCOPE, change it to TB_CLASS.
     //
-    c_ast_set_local_type( ast, &C_TYPE_LIT_B( TB_CLASS ) );
+    c_sname_set_local_type( &ast->sname, &C_TYPE_LIT_B( TB_CLASS ) );
   }
 
   return ast;
@@ -736,7 +736,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
       // Special case for new and delete operators: they're member operators if
       // they have a name (of a class) or declared static.
       //
-      return  !c_ast_name_empty( ast ) ||
+      return  !c_sname_empty( &ast->sname ) ||
               c_type_is_tid_any( &ast->type, TS_STATIC ) ?
         C_OP_MEMBER : C_OP_NON_MEMBER;
 
@@ -790,7 +790,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
         // The type_ast is the final AST -- decl_ast (containing a placeholder)
         // is discarded.
         //
-        if ( c_ast_name_empty( type_ast ) )
+        if ( c_sname_empty( &type_ast->sname ) )
           type_ast->sname = c_ast_take_name( decl_ast );
         return type_ast;
       }
@@ -819,7 +819,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   decl_ast->type.stids |= taken_type.stids;
   decl_ast->type.atids |= taken_type.atids;
 
-  if ( c_ast_name_empty( decl_ast ) )
+  if ( c_sname_empty( &decl_ast->sname ) )
     decl_ast->sname = c_ast_take_name( type_ast );
 
   return decl_ast;

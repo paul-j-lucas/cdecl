@@ -226,9 +226,10 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visitor_data_t data ) {
     case K_USER_DEF_CONVERSION: {
       char const *const name = c_type_name_english( &ast->type );
       FPRINTF( eout, "%s%s%s", SP_AFTER( name ), c_kind_name( ast->kind ) );
-      if ( !c_ast_name_empty( ast ) ) {
+      if ( !c_sname_empty( &ast->sname ) ) {
         FPRINTF( eout,
-          " %s %s ", L_OF, c_type_name_english( c_ast_local_type( ast ) )
+          " %s %s ",
+          L_OF, c_type_name_english( c_sname_local_type( &ast->sname ) )
         );
         c_sname_english( &ast->sname, eout );
       }

@@ -203,7 +203,7 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
   if ( opt_lang_is_any( tdef->lang_ids ) ) {
     copy_typedef_visitor_data_t *const ctvd = data;
     if ( ctvd->pdym != NULL ) {
-      char const *const name = c_ast_full_name( tdef->ast );
+      char const *const name = c_sname_full_name( &tdef->ast->sname );
       (*ctvd->pdym)++->token = check_strdup( name );
     }
     ++ctvd->count;

@@ -112,7 +112,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
 
   dup_ast->align = ast->align;
   dup_ast->depth = ast->depth;
-  dup_ast->sname = c_ast_name_dup( ast );
+  dup_ast->sname = c_sname_dup( &ast->sname );
   dup_ast->type = ast->type;
 
   switch ( ast->kind ) {
@@ -367,13 +367,6 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
   return ast;
 }
 
-void c_ast_set_name( c_ast_t *ast, char *name ) {
-  assert( ast != NULL );
-  assert( name != NULL );
-  c_sname_free( &ast->sname );
-  c_sname_append_name( &ast->sname, name );
-}
-
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   assert( child_ast != NULL );
   assert( parent_ast != NULL );
@@ -383,14 +376,6 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   parent_ast->as.parent.of_ast = child_ast;
 
   assert( !c_ast_has_cycle( child_ast ) );
-}
-
-void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname ) {
-  assert( ast != NULL );
-  assert( sname != NULL );
-
-  c_sname_free( &ast->sname );
-  c_ast_append_sname( ast, sname );
 }
 
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,

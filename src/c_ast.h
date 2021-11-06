@@ -510,55 +510,6 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
 }
 
 /**
- * Appends \a name to the name of \a ast.
- *
- * @param ast The AST to append to the name of.
- * @param name The name to append.  Ownership is taken.
- *
- * @sa c_ast_append_sname()
- * @sa c_ast_prepend_sname()
- * @sa c_ast_set_name()
- */
-C_AST_INLINE
-void c_ast_append_name( c_ast_t *ast, char *name ) {
-  c_sname_append_name( &ast->sname, name );
-}
-
-/**
- * Appends \a sname to the name of \a ast.
- *
- * @param ast The AST to append to the name of.
- * @param sname The scoped name to append.  It is cleared.
- *
- * @sa c_ast_append_name()
- * @sa c_ast_prepend_sname()
- * @sa c_ast_set_name()
- * @sa c_ast_set_sname()
- */
-C_AST_INLINE
-void c_ast_append_sname( c_ast_t *ast, c_sname_t *sname ) {
-  c_sname_append_sname( &ast->sname, sname );
-}
-
-/**
- * Gets the fully scoped name of \a ast.
- *
- * @param ast The AST to get the scoped name of.
- * @return Returns said name.
- *
- * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same `printf()` statement.
- *
- * @sa c_ast_name_atr()
- * @sa c_ast_local_name()
- * @sa c_ast_scope_name()
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_ast_full_name( c_ast_t const *ast ) {
-  return c_sname_full_name( &ast->sname );
-}
-
-/**
  * Frees only the list nodes of \a list but _not_ \a list itself.
  *
  * @param list The AST list to free the nodes of.
@@ -566,90 +517,6 @@ char const* c_ast_full_name( c_ast_t const *ast ) {
  * @sa c_ast_free()
  */
 void c_ast_list_free( c_ast_list_t *list );
-
-/**
- * Gets the local (last) name of \a ast, e.g., the local name of `S::T::x` is
- * `x`.
- *
- * @param ast The AST to get the local name of.
- * @return Returns said name or the empty string if the name is empty.
- *
- * @sa c_ast_full_name()
- * @sa c_ast_name_atr()
- * @sa c_ast_scope_name()
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_ast_local_name( c_ast_t const *ast ) {
-  return c_sname_local_name( &ast->sname );
-}
-
-/**
- * Gets the scope-type of the name of \a ast (which is the type of the
- * innermost scope).
- *
- * @param ast The AST node to get the scope-type of the name of.
- * @return Returns the scope-type.
- *
- * @sa c_ast_set_local_type()
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-c_type_t const* c_ast_local_type( c_ast_t const *ast ) {
-  return c_sname_local_type( &ast->sname );
-}
-
-/**
- * Gets the name at \a roffset of \a ast.
- *
- * @param ast The AST to get the name at \a roffset of.
- * @param roffset The reverse offset (starting at 0) of the name to get.
- * @return Returns the name at \a roffset or the empty string if \a roffset
- * &gt;= c_ast_name_count().
- *
- * @sa c_ast_full_name()
- * @sa c_ast_local_name()
- * @sa c_ast_scope_name()
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_ast_name_atr( c_ast_t const *ast, size_t roffset ) {
-  return c_sname_name_atr( &ast->sname, roffset );
-}
-
-/**
- * Gets the number of names of \a ast, e.g., `S::T::x` is 3.
- *
- * @param ast The AST to get the number of names of.
- * @return Returns said number of names.
- *
- * @note This is named "count" rather than "len" to avoid misinterpretation
- * that "len" would be the total length of the strings and `::` separators.
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-size_t c_ast_name_count( c_ast_t const *ast ) {
-  return c_sname_count( &ast->sname );
-}
-
-/**
- * Duplicates the name of \a ast.
- *
- * @param ast The AST to duplicate the name of.
- * @return Returns the name of \a ast duplicated.  The caller is responsible
- * for calling c_sname_free() on it.
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-c_sname_t c_ast_name_dup( c_ast_t const *ast ) {
-  return c_sname_dup( &ast->sname );
-}
-
-/**
- * Checks whether the name of \a ast is empty.
- *
- * @param ast The AST to check.
- * @return Returns `true` only if the name of \a ast is empty.
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-bool c_ast_name_empty( c_ast_t const *ast ) {
-  return c_sname_empty( &ast->sname );
-}
 
 /**
  * Creates a new AST node.
@@ -720,83 +587,12 @@ bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
 }
 
 /**
- * Prepends \a sname to the name of \a ast.
- *
- * @param ast The AST to prepend to the name of.
- * @param sname The scoped name to prepend.  It is cleared.
- *
- * @sa c_ast_append_name()
- * @sa c_ast_append_sname()
- * @sa c_ast_set_name()
- * @sa c_ast_set_sname()
- */
-C_AST_INLINE
-void c_ast_prepend_sname( c_ast_t *ast, c_sname_t *sname ) {
-  c_sname_prepend_sname( &ast->sname, sname );
-}
-
-/**
- * Gets the scope name of \a ast in C++ form.
- *
- * @param ast The AST to get the scope name of.
- * @return Returns said name or the empty string if \a ast doesn't have a scope
- * name.
- *
- * @sa c_ast_full_name()
- * @sa c_ast_local_name()
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_ast_scope_name( c_ast_t const *ast ) {
-  return c_sname_scope_name( &ast->sname );
-}
-
-/**
- * Sets the scope-type of the name of \a ast (which is the type of the
- * innermost scope).
- *
- * @param ast The AST to set the type of the name of.
- * @param type The scope-type.
- *
- * @sa c_ast_local_type()
- */
-C_AST_INLINE
-void c_ast_set_local_type( c_ast_t *ast, c_type_t const *type ) {
-  c_sname_set_local_type( &ast->sname, type );
-}
-
-/**
- * Sets the name of \a ast.
- *
- * @param ast The AST node to set the name of.
- * @param name The name to set.  Ownership is taken.
- *
- * @sa c_ast_append_name()
- * @sa c_ast_append_sname()
- * @sa c_ast_prepend_sname()
- * @sa c_ast_set_sname()
- */
-void c_ast_set_name( c_ast_t *ast, char *name );
-
-/**
  * Sets the two-way pointer links between parent/child AST nodes.
  *
  * @param child_ast The "child" AST node to set the parent of.
  * @param parent_ast The "parent" AST node whose child node is set.
  */
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
-
-/**
- * Sets the name of \a ast.
- *
- * @param ast The AST node to set the name of.
- * @param sname The scoped name to set.  It is cleared.
- *
- * @sa c_ast_append_name()
- * @sa c_ast_append_sname()
- * @sa c_ast_prepend_sname()
- * @sa c_ast_set_name()
- */
-void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname );
 
 /**
  * Does a depth-first, post-order traversal of an AST.

@@ -625,7 +625,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
   else if ( old_tdef->ast != NULL ) {   // type exists and isn't equivalent
     print_error( type_loc,
       "\"%s\": \"%s\" redefinition with different type; original is: ",
-      c_ast_full_name( type_ast ), decl_keyword
+      c_sname_full_name( &type_ast->sname ), decl_keyword
     );
 
     // The == works because this function is called with L_DEFINE.
@@ -1708,7 +1708,7 @@ declare_command
         // name, but the AST node is itself a name and overwriting it would
         // lose information.
         //
-        assert( !c_ast_name_empty( $5 ) );
+        assert( !c_sname_empty( &$5->sname ) );
         print_error_unknown_name( &@5, &$5->sname );
         c_sname_list_free( &$2 );
         PARSE_ABORT();
@@ -1732,7 +1732,7 @@ declare_command
       if ( slist_len( &$2 ) > 1 )
         gib_flags |= C_GIB_MULTI_DECL;
       FOREACH_SLIST( sname_node, &$2, NULL ) {
-        c_ast_set_sname( $5, sname_node->data );
+        c_sname_set( &$5->sname, sname_node->data );
         C_AST_CHECK( $5 );
         c_ast_gibberish( $5, gib_flags, fout );
         if ( sname_node->next != NULL ) {
@@ -1775,7 +1775,7 @@ declare_command
       DUMP_TID( "storage_class_list_english_stid_opt", $6 );
       DUMP_AST( "oper_decl_english_ast", $7 );
 
-      c_ast_set_sname( $7, &$4 );
+      c_sname_set( &$7->sname, &$4 );
       $7->loc = @2;
       $7->as.oper.oper_id = $2;
       C_TYPE_ADD_TID( &$7->type, $6, @6 );
@@ -1809,7 +1809,7 @@ declare_command
       DUMP_AST( "decl_english_ast", $9 );
 
       c_ast_t *const conv_ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
-      c_ast_set_sname( conv_ast, &$7 );
+      c_sname_set( &conv_ast->sname, &$7 );
       conv_ast->type = c_type_or( &$2, &C_TYPE_LIT_S( $3 ) );
       c_ast_set_parent( $9, conv_ast );
 
@@ -2062,10 +2062,10 @@ define_command
       DUMP_TID( "storage_class_list_english_stid_opt", $4 );
       DUMP_AST( "decl_english_ast", $5 );
 
-      c_ast_set_sname( $5, &$2 );
+      c_sname_set( &$5->sname, &$2 );
 
       if ( $5->kind == K_NAME ) {       // see the comment in "declare_command"
-        assert( !c_ast_name_empty( $5 ) );
+        assert( !c_sname_empty( &$5->sname ) );
         print_error_unknown_name( &@5, &$5->sname );
         PARSE_ABORT();
       }
@@ -2089,7 +2089,7 @@ define_command
       PJL_IGNORE_RV( c_ast_take_type_any( $5, &T_TS_TYPEDEF ) );
 
       if ( c_type_is_tid_any( &$5->type, TB_ANY_SCOPE ) )
-        c_ast_set_local_type( $5, &$5->type );
+        c_sname_set_local_type( &$5->sname, &$5->type );
       c_sname_fill_in_namespaces( &$5->sname );
 
       DUMP_AST( "defined.ast", $5 );
@@ -2859,7 +2859,7 @@ namespace_sname_c
 
       $$ = $1;
       c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
-      c_sname_t temp_sname = c_ast_name_dup( $3->ast );
+      c_sname_t temp_sname = c_sname_dup( &$3->ast->sname );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "namespace_sname_c", $$ );
@@ -2921,8 +2921,8 @@ namespace_typedef_sname_c
       DUMP_AST( "any_typedef", $3->ast );
 
       $$ = $1;
-      c_sname_set_local_type( &$$, c_ast_local_type( $3->ast ) );
-      c_sname_t temp_sname = c_ast_name_dup( $3->ast );
+      c_sname_set_local_type( &$$, c_sname_local_type( &$3->ast->sname ) );
+      c_sname_t temp_sname = c_sname_dup( &$3->ast->sname );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "typedef_sname_c", $$ );
@@ -2944,7 +2944,7 @@ namespace_typedef_sname_c
       DUMP_END();
     }
 
-  | any_typedef                   { $$ = c_ast_name_dup( $1->ast ); }
+  | any_typedef                   { $$ = c_sname_dup( &$1->ast->sname ); }
   ;
 
 brace_in_scope_declaration_c_exp
@@ -3074,8 +3074,8 @@ typedef_decl_c
         // that is: any type name followed by an existing typedef name.
         //
         typedef_ast = type_ast;
-        if ( c_ast_name_empty( typedef_ast ) )
-          typedef_ast->sname = c_ast_name_dup( $1.ast->as.tdef.for_ast );
+        if ( c_sname_empty( &typedef_ast->sname ) )
+          typedef_ast->sname = c_sname_dup( &$1.ast->as.tdef.for_ast->sname );
       }
       else {
         //
@@ -3088,23 +3088,24 @@ typedef_decl_c
         //
         typedef_ast = c_ast_patch_placeholder( type_ast, $1.ast );
         temp_sname = c_ast_take_name( $1.ast );
-        c_ast_set_sname( typedef_ast, &temp_sname );
+        c_sname_set( &typedef_ast->sname, &temp_sname );
       }
 
       C_AST_CHECK( typedef_ast );
       // see the comment in "define_command" about TS_TYPEDEF
       PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_TYPEDEF ) );
 
-      if ( c_ast_name_count( typedef_ast ) > 1 ) {
+      if ( c_sname_count( &typedef_ast->sname ) > 1 ) {
         print_error( &@1,
           "%s names can not be scoped; use: %s %s { %s ... }\n",
-          L_TYPEDEF, L_NAMESPACE, c_ast_scope_name( typedef_ast ), L_TYPEDEF
+          L_TYPEDEF, L_NAMESPACE, c_sname_scope_name( &typedef_ast->sname ),
+          L_TYPEDEF
         );
         PARSE_ABORT();
       }
 
       temp_sname = c_sname_dup( &in_attr.current_scope );
-      c_ast_prepend_sname( typedef_ast, &temp_sname );
+      c_sname_prepend_sname( &typedef_ast->sname, &temp_sname );
 
       DUMP_AST( "typedef_decl_c", typedef_ast );
       DUMP_END();
@@ -3169,7 +3170,7 @@ using_decl_c_ast
       c_sname_append_name( &temp_sname, $3 );
 
       $$ = c_ast_patch_placeholder( $5, $7.ast );
-      c_ast_set_sname( $$, &temp_sname );
+      c_sname_set( &$$->sname, &temp_sname );
 
       DUMP_AST( "using_decl_c_ast", $$ );
       DUMP_END();
@@ -3237,7 +3238,7 @@ decl_list_c_opt
       }
 
       c_sname_t temp_sname = c_sname_dup( ecsu_sname );
-      c_ast_set_sname( type_ast, &temp_sname );
+      c_sname_set( &type_ast->sname, &temp_sname );
 
       C_AST_CHECK( type_ast );
       c_ast_explain_type( type_ast, fout );
@@ -3439,7 +3440,7 @@ destructor_decl_c_ast
       DUMP_TID( "func_equals_c_stid_opt", $8 );
 
       $$ = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      c_ast_append_name( $$, $3 );
+      c_sname_append_name( &$$->sname, $3 );
       $$->type.stids = c_tid_check( $1 | $5 | $6 | $8, C_TPID_STORE );
 
       DUMP_AST( "destructor_decl_c_ast", $$ );
@@ -3706,7 +3707,7 @@ knr_func_or_constructor_decl_c_ast
         $$->type.stids = c_tid_check( $5 | $6, C_TPID_STORE );
       }
 
-      c_ast_set_sname( $$, &sname );
+      c_sname_set( &$$->sname, &sname );
       $$->as.func.param_ast_list = $3;
 
       DUMP_AST( "knr_func_or_constructor_decl_c_ast", $$ );
@@ -4046,7 +4047,7 @@ oper_c_ast
       DUMP_STR( "c_operator", c_oper_get( $3 )->name );
 
       $$ = type_ast;
-      c_ast_set_sname( $$, &$1 );
+      c_sname_set( &$$->sname, &$1 );
       $$->as.oper.oper_id = $3;
 
       DUMP_AST( "oper_c_ast", $$ );
@@ -4325,8 +4326,8 @@ user_defined_literal_c_ast
       DUMP_STR( "name", $4 );
 
       $$ = type_ast;
-      c_ast_set_sname( $$, &$1 );
-      c_ast_append_name( $$, $4 );
+      c_sname_set( &$$->sname, &$1 );
+      c_sname_append_name( &$$->sname, $4 );
 
       DUMP_AST( "user_defined_literal_c_ast", $$ );
       DUMP_END();
@@ -5869,7 +5870,7 @@ pointer_decl_english_ast
       DUMP_AST( "decl_english_ast", $3 );
 
       if ( $3->kind == K_NAME ) {       // see the comment in "declare_command"
-        assert( !c_ast_name_empty( $3 ) );
+        assert( !c_sname_empty( &$3->sname ) );
         print_error_unknown_name( &@3, &$3->sname );
         PARSE_ABORT();
       }
@@ -5995,14 +5996,14 @@ var_decl_english_ast
       DUMP_AST( "decl_english_ast", $3 );
 
       if ( $3->kind == K_NAME ) {       // see the comment in "declare_command"
-        assert( !c_ast_name_empty( $3 ) );
+        assert( !c_sname_empty( &$3->sname ) );
         print_error_unknown_name( &@3, &$3->sname );
         PARSE_ABORT();
       }
 
       $$ = $3;
       $$->loc = @$;
-      c_ast_set_sname( $$, &$1 );
+      c_sname_set( &$$->sname, &$1 );
 
       DUMP_AST( "var_decl_english_ast", $$ );
       DUMP_END();
@@ -6205,8 +6206,8 @@ any_name
   : Y_NAME
   | Y_TYPEDEF_NAME
     {
-      assert( c_ast_name_count( $1->ast ) == 1 );
-      $$ = check_strdup( c_ast_local_name( $1->ast ) );
+      assert( c_sname_count( &$1->ast->sname ) == 1 );
+      $$ = check_strdup( c_sname_local_name( &$1->ast->sname ) );
     }
   ;
 
@@ -6250,7 +6251,7 @@ name_ast
       DUMP_STR( "NAME", $1 );
 
       $$ = c_ast_new_gc( K_NAME, &@$ );
-      c_ast_set_name( $$, $1 );
+      c_sname_append_name( &$$->sname, $1 );
 
       DUMP_AST( "name_ast", $$ );
       DUMP_END();
@@ -6283,7 +6284,7 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
         $$->as.tdef.for_ast = type_for_ast;
       }
       else {
-        c_sname_t temp_name = c_ast_name_dup( $1->ast );
+        c_sname_t temp_name = c_sname_dup( &$1->ast->sname );
         c_sname_append_sname( &temp_name, &$2 );
 
         if ( type_ast == NULL ) {
@@ -6298,7 +6299,7 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
           // for it.
           //
           c_ast_t *const name_ast = c_ast_new_gc( K_NAME, &@2 );
-          c_ast_set_sname( name_ast, &temp_name );
+          c_sname_set( &name_ast->sname, &temp_name );
           type_for_ast = name_ast;
           goto ttntd;
         }
@@ -6318,7 +6319,7 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
         //          explain int S::T::x
         //
         $$ = type_ast;
-        c_ast_set_sname( $$, &temp_name );
+        c_sname_set( &$$->sname, &temp_name );
       }
 
       DUMP_AST( "typedef_type_c_ast", $$ );
@@ -6349,7 +6350,7 @@ scope_sname_c_opt
       //
       // that is: a typedef'd type used for a scope.
       //
-      $$ = c_ast_name_dup( $1->ast );
+      $$ = c_sname_dup( &$1->ast->sname );
     }
   ;
 
@@ -6389,7 +6390,7 @@ sname_c
 
       $$ = $1;
       c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
-      c_sname_t temp_sname = c_ast_name_dup( $3->ast );
+      c_sname_t temp_sname = c_sname_dup( &$3->ast->sname );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "sname_c", $$ );
@@ -6420,7 +6421,7 @@ sname_c_ast
       DUMP_INT( "bit_field_c_int_opt", $2 );
 
       $$ = type_ast;
-      c_ast_set_sname( $$, &$1 );
+      c_sname_set( &$$->sname, &$1 );
 
       bool ok = true;
       //
@@ -6509,7 +6510,7 @@ sname_english_ast
         c_sname_free( &sname );
       } else {
         $$ = c_ast_new_gc( K_NAME, &@$ );
-        c_ast_set_sname( $$, &sname );
+        c_sname_set( &$$->sname, &sname );
       }
 
       DUMP_AST( "sname_english_ast", $$ );
@@ -6591,15 +6592,15 @@ typedef_sname_c
       //      define S::T as struct S_T
       //
       $$ = $1;
-      c_sname_set_local_type( &$$, c_ast_local_type( $3->ast ) );
-      c_sname_t temp_sname = c_ast_name_dup( $3->ast );
+      c_sname_set_local_type( &$$, c_sname_local_type( &$3->ast->sname ) );
+      c_sname_t temp_sname = c_sname_dup( &$3->ast->sname );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "typedef_sname_c", $$ );
       DUMP_END();
     }
 
-  | any_typedef                   { $$ = c_ast_name_dup( $1->ast ); }
+  | any_typedef                   { $$ = c_sname_dup( &$1->ast->sname ); }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////

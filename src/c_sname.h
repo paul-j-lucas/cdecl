@@ -150,6 +150,7 @@ void c_scope_data_free( c_scope_data_t *data );
  *
  * @sa c_sname_append_sname()
  * @sa c_sname_prepend_sname()
+ * @sa c_sname_set()
  */
 void c_sname_append_name( c_sname_t *sname, char *name );
 
@@ -161,6 +162,7 @@ void c_sname_append_name( c_sname_t *sname, char *name );
  *
  * @sa c_sname_append_name()
  * @sa c_sname_prepend_sname()
+ * @sa c_sname_set()
  */
 C_SNAME_INLINE
 void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
@@ -466,6 +468,22 @@ C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
   c_scope_data_t const *const data = slist_peek_atr( sname, 1 );
   return data != NULL ? &data->type : &T_NONE;
+}
+
+/**
+ * Sets \a dst_sname to \a src_sname.
+ *
+ * @param dst_sname The scoped name to set.
+ * @param src_sname The scoped name to set \a dst_sname to. Ownership is taken.
+ *
+ * @sa c_sname_append_name()
+ * @sa c_sname_append_sname()
+ * @sa c_sname_prepend_sname()
+ */
+C_SNAME_INLINE
+void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname ) {
+  c_sname_free( dst_sname );
+  c_sname_append_sname( dst_sname, src_sname );
 }
 
 /**

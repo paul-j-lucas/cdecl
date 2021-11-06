@@ -223,8 +223,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( !c_type_is_none( &type ) )
         FPRINTF( g->gout, "%s ", c_type_name_c( &type ) );
       if ( ast->kind == K_USER_DEF_CONVERSION ) {
-        if ( !c_ast_name_empty( ast ) )
-          FPRINTF( g->gout, "%s::", c_ast_full_name( ast ) );
+        if ( !c_sname_empty( &ast->sname ) )
+          FPRINTF( g->gout, "%s::", c_sname_full_name( &ast->sname ) );
         FPRINTF( g->gout, "%s ", L_OPERATOR );
       }
       if ( ast->as.parent.of_ast != NULL )
@@ -335,7 +335,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     }
 
     case K_NAME:
-      if ( !c_ast_name_empty( ast ) && (g->flags & C_GIB_CAST) == 0 )
+      if ( !c_sname_empty( &ast->sname ) && (g->flags & C_GIB_CAST) == 0 )
         g_print_ast_name( g, ast );
       break;
 
@@ -535,7 +535,7 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
     // c_typedef_gibberish() so now we just print the local name.
     //
     (g->flags & C_GIB_TYPEDEF) != 0 ?
-      c_ast_local_name( ast ) : c_ast_full_name( ast ),
+      c_sname_local_name( &ast->sname ) : c_sname_full_name( &ast->sname ),
     g->gout
   );
 }
@@ -788,21 +788,21 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
 
   switch ( ast->kind ) {
     case K_CONSTRUCTOR:
-      FPUTS( c_ast_full_name( ast ), g->gout );
+      FPUTS( c_sname_full_name( &ast->sname ), g->gout );
       break;
     case K_DESTRUCTOR:
-      if ( c_ast_name_count( ast ) > 1 )
-        FPRINTF( g->gout, "%s::", c_ast_scope_name( ast ) );
+      if ( c_sname_count( &ast->sname ) > 1 )
+        FPRINTF( g->gout, "%s::", c_sname_scope_name( &ast->sname ) );
       if ( opt_alt_tokens )
         FPRINTF( g->gout, "%s ", L_COMPL );
       else
         FPUTC( '~', g->gout );
-      FPUTS( c_ast_local_name( ast ), g->gout );
+      FPUTS( c_sname_local_name( &ast->sname ), g->gout );
       break;
     case K_OPERATOR: {
       g_print_space_once( g );
-      if ( !c_ast_name_empty( ast ) )
-        FPRINTF( g->gout, "%s::", c_ast_full_name( ast ) );
+      if ( !c_sname_empty( &ast->sname ) )
+        FPRINTF( g->gout, "%s::", c_sname_full_name( &ast->sname ) );
       char const *const token = c_oper_token_c( ast->as.oper.oper_id );
       FPRINTF( g->gout,
         "%s%s%s", L_OPERATOR, isalpha( token[0] ) ? " " : "", token
@@ -814,12 +814,14 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       break;
     case K_USER_DEF_LITERAL:
       g_print_space_once( g );
-      if ( c_ast_name_count( ast ) > 1 )
-        FPRINTF( g->gout, "%s::", c_ast_scope_name( ast ) );
-      FPRINTF( g->gout, "%s\"\" %s", L_OPERATOR, c_ast_local_name( ast ) );
+      if ( c_sname_count( &ast->sname ) > 1 )
+        FPRINTF( g->gout, "%s::", c_sname_scope_name( &ast->sname ) );
+      FPRINTF( g->gout,
+        "%s\"\" %s", L_OPERATOR, c_sname_local_name( &ast->sname )
+      );
       break;
     default:
-      if ( !c_ast_name_empty( ast ) ) {
+      if ( !c_sname_empty( &ast->sname ) ) {
         if ( !g->skip_name_for_using )
           g_print_space_once( g );
         g_print_ast_name( g, ast );
