@@ -195,6 +195,8 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
     }
 
+    case K_TYPEDEF:
+      // for_ast compared by referrer code below
     case K_BUILTIN:
       if ( i_ast->as.builtin.bit_width != j_ast->as.builtin.bit_width )
         return false;
@@ -232,11 +234,6 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
         return false;
       break;
     }
-
-    case K_TYPEDEF:
-      if ( i_ast->as.tdef.bit_width != j_ast->as.tdef.bit_width )
-        return false;
-      break;
 
     case K_POINTER:
     case K_REFERENCE:
