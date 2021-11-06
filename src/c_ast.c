@@ -97,27 +97,6 @@ static bool c_ast_has_cycle( c_ast_t const *ast ) {
 }
 #endif /* NDEBUG */
 
-/**
- * If the scope-type of the scope name of \a ast has no scope-type but the
- * AST's kind is one of a class, namespace, struct, or union type, adopt that
- * type for the scope-type.
- *
- * @param ast The AST to set the local scope-type of.
- */
-static void c_ast_set_local_type_if_is_any_scope( c_ast_t *ast ) {
-  assert( ast != NULL );
-  if ( c_type_is_none( c_ast_local_type( ast ) ) &&
-       c_type_is_tid_any( &ast->type, TB_ANY_SCOPE ) ) {
-    c_ast_set_local_type( ast,
-      &C_TYPE_LIT(
-        ast->type.btids & TB_ANY_SCOPE,
-        ast->type.stids & TS_INLINE,
-        TA_NONE
-      )
-    );
-  }
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_cleanup( void ) {
@@ -393,7 +372,6 @@ void c_ast_set_name( c_ast_t *ast, char *name ) {
   assert( name != NULL );
   c_sname_free( &ast->sname );
   c_sname_append_name( &ast->sname, name );
-  c_ast_set_local_type_if_is_any_scope( ast );
 }
 
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
@@ -413,7 +391,6 @@ void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname ) {
 
   c_sname_free( &ast->sname );
   c_ast_append_sname( ast, sname );
-  c_ast_set_local_type_if_is_any_scope( ast );
 }
 
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,

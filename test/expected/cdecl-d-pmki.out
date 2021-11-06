@@ -114,7 +114,7 @@ sname_c_ast ::= sname_c = {
   sname = "p" (none),
   bit_field_c_int_opt = 0,
   sname_c_ast = {
-    sname = "p" (class),
+    sname = "p" (none),
     unique_id = 1328,
     kind = "pointer-to-member",
     cast_kind = "none",
@@ -139,7 +139,7 @@ sname_c_ast ::= sname_c = {
 
 pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
   pointer_to_member_type_c_ast = {
-    sname = "p" (class),
+    sname = "p" (none),
     unique_id = 1328,
     kind = "pointer-to-member",
     cast_kind = "none",
@@ -161,7 +161,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
     }
   },
   decl_c_astp = {
-    sname = "p" (class),
+    sname = "p" (none),
     unique_id = 1328,
     kind = "pointer-to-member",
     cast_kind = "none",
@@ -183,7 +183,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
     }
   },
   pointer_to_member_decl_c_astp = {
-    sname = "p" (class),
+    sname = "p" (none),
     unique_id = 1328,
     kind = "pointer-to-member",
     cast_kind = "none",
@@ -220,7 +220,7 @@ decl_c ::= decl_c_astp = {
     bit_width = 0
   },
   decl_c_astp = {
-    sname = "p" (class),
+    sname = "p" (none),
     unique_id = 1328,
     kind = "pointer-to-member",
     cast_kind = "none",
@@ -242,7 +242,7 @@ decl_c ::= decl_c_astp = {
     }
   },
   decl_c = {
-    sname = "p" (class),
+    sname = "p" (none),
     unique_id = 1328,
     kind = "pointer-to-member",
     cast_kind = "none",
