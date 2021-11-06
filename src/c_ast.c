@@ -177,18 +177,6 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
   if ( (i_ast != NULL && j_ast == NULL) || (i_ast == NULL && j_ast != NULL) )
     return false;
 
-  //
-  // If only one of the ASTs is a typedef, compare the other AST to the
-  // typedef's AST.
-  //
-  if ( i_ast->kind == K_TYPEDEF ) {
-    if ( j_ast->kind != K_TYPEDEF )
-      return c_ast_equiv( i_ast->as.tdef.for_ast, j_ast );
-  } else {
-    if ( j_ast->kind == K_TYPEDEF )
-      return c_ast_equiv( i_ast, j_ast->as.tdef.for_ast );
-  }
-
   if ( i_ast->kind != j_ast->kind )
     return false;
   if ( !c_alignas_equiv( &i_ast->align, &j_ast->align ) )
