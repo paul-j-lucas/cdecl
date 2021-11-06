@@ -1,3 +1,3 @@
 declare x as reference to register int
-        ^
-9: error: reference to register is illegal
+                          ^
+27: error: "register int" is illegal for built-in type since C++17

@@ -19,6 +19,12 @@ Locations for error and warning messages have been improved.
 The `show` command now correctly prints all possible commands to define a type
 when requested to show a type that doesn't exist.
 
+** `register` warnings
+A deprecated warning is now printed for a `register` array, enum, class,
+struct, union, pointer, pointer to member, reference, and rvalue reference
+between C++11 and C++14.  (Previously, a warning was printed only for built-in
+types and typedefs.)
+
 ** Help output
 Tweaked help output.
 

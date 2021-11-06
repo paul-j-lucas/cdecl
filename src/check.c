@@ -1885,11 +1885,6 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  if ( c_ast_is_register( to_ast ) ) {
-    error_kind_to_tid( ast, TS_REGISTER, "\n" );
-    return false;
-  }
-
   if ( c_ast_is_builtin_any( to_ast, TB_VOID ) ) {
     error_kind_to_tid( ast, TB_VOID, "" );
     print_hint( "%s to %s", L_POINTER, L_VOID );
@@ -2365,14 +2360,19 @@ static bool c_ast_visitor_warning( c_ast_t *ast, c_ast_visitor_data_t flags ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
+    case K_BUILTIN:
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-    case K_USER_DEF_CONVERSION:
-    case K_VARIADIC:
-      // nothing to check
+    case K_TYPEDEF:
+      if ( c_ast_is_register( ast ) && opt_lang >= LANG_CPP_11 ) {
+        print_warning( &ast->loc,
+          "\"%s\" is deprecated%s\n",
+          L_REGISTER, c_lang_which( LANG_MAX(CPP_03) )
+        );
+      }
       break;
 
     case K_USER_DEF_LITERAL:
@@ -2414,19 +2414,14 @@ static bool c_ast_visitor_warning( c_ast_t *ast, c_ast_visitor_data_t flags ) {
       }
       break;
 
-    case K_BUILTIN:
-    case K_TYPEDEF:
-      if ( c_ast_is_register( ast ) && opt_lang >= LANG_CPP_11 ) {
-        print_warning( &ast->loc,
-          "\"%s\" is deprecated%s\n",
-          L_REGISTER, c_lang_which( LANG_MAX(CPP_03) )
-        );
-      }
-      break;
-
     case K_NAME:
       if ( opt_lang > LANG_C_KNR )
         print_warning( &ast->loc, "missing type specifier\n" );
+      break;
+
+    case K_USER_DEF_CONVERSION:
+    case K_VARIADIC:
+      // nothing to check
       break;
 
     CASE_K_PLACEHOLDER;
