@@ -404,8 +404,6 @@ static char       rstr_delim[ RSTR_DELIM_LEN_MAX + 1/*"*/ + 1/*\0*/ ];
 noreturn
 static void       lexer_fatal( char const* );
 
-static void       lexer_update_loc( void );
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -518,6 +516,17 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
   memcpy( buf, input_buf + input_sent, input_avail );
   input_sent += input_avail;
   return input_avail;
+}
+
+/**
+ * Update the parser's location.
+ * @note This is called by Flex via `YY_USER_ACTION`.
+ */
+static void lexer_update_loc( void ) {
+  yylloc.first_line   = yylloc.last_line = (int)yylineno;
+  yylloc.first_column = token_column;
+  yylloc.last_column  = token_column + (int)yyleng - 1;
+  token_column += (int)yyleng;
 }
 
 /**
@@ -1212,17 +1221,6 @@ static void lexer_fatal( char const *msg ) {
   yy_fatal_error( msg );
 }
 // LCOV_EXCL_STOP
-
-/**
- * Update the parser's location.
- * @note This is called by Flex via `YY_USER_ACTION`.
- */
-static void lexer_update_loc( void ) {
-  yylloc.first_line   = yylloc.last_line = (int)yylineno;
-  yylloc.first_column = token_column;
-  yylloc.last_column  = token_column + (int)yyleng - 1;
-  token_column += (int)yyleng;
-}
 
 ////////// extern functions ///////////////////////////////////////////////////
 
