@@ -335,8 +335,21 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     }
 
     case K_NAME:
-      if ( !c_sname_empty( &ast->sname ) && (g->flags & C_GIB_CAST) == 0 )
+      assert( opt_lang < LANG_C_2X );
+      if ( opt_lang > LANG_C_KNR ) {
+        //
+        // In C89-C17, just a name for a function parameter is implicitly int:
+        //
+        //      cdecl> declare f as function (x) returning double
+        //      double f(int x)
+        //
+        FPUTS( L_INT, g->gout );
+      }
+      if ( (g->flags & C_GIB_CAST) == 0 ) {
+        if ( opt_lang > LANG_C_KNR )
+          FPUTC( ' ', g->gout );
         g_print_ast_name( g, ast );
+      }
       break;
 
     case K_POINTER:

@@ -1,4 +1,4 @@
 cast p into pointer to function (x) returning int
                                  ^
-34: warning: missing type specifier
-(int(*)())p
+34: warning: missing type specifier; int assumed
+(int(*)(int))p

@@ -1,0 +1,1 @@
+cdecl @ @ -xknr @ cast p into pointer to function (x as int) returning int @ 65

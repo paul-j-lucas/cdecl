@@ -25,6 +25,10 @@ struct, union, pointer, pointer to member, reference, and rvalue reference
 between C++11 and C++14.  (Previously, a warning was printed only for built-in
 types and typedefs.)
 
+** K&R function parameter printed as `int`
+For functions having K&R C typeless parameters, `int` is now printed in C89 and
+later since such parameters are implicitly `int`.
+
 ** Help output
 Tweaked help output.
 

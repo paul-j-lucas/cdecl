@@ -153,6 +153,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_fipfi_v_pfi_v.test \
 	tests/declare_fixiy_v.test \
 	tests/declare_fkr_pi-c17.test \
+	tests/declare_fkr_pi-cknr.test \
 	tests/declare_fpc_pi.test \
 	tests/declare_fpci_pi.test \
 	tests/declare_fpfc_i_d.test \
@@ -394,7 +395,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fid_v.test \
 	tests/explain_fipfi_v_pfi_v.test \
 	tests/explain_fixiy_v.test \
-	tests/explain_fkr_i.test \
+	tests/explain_fkr_i-cknr.test \
 	tests/explain_fkr_pi-c17.test \
 	tests/explain_fpa5d_v.test \
 	tests/explain_fpc_pi.test \
@@ -731,8 +732,9 @@ TESTS+=	tests/cast_bii_d.test \
 	tests/cast_pf_i-01.test \
 	tests/cast_pf_i-02.test \
 	tests/cast_pfii_i.test \
+	tests/cast_pfkr_i-c17.test \
+	tests/cast_pfkr_i-cknr.test \
 	tests/cast_pfv_pi.test \
-	tests/cast_pfx_i-c17.test \
 	tests/cast_pi.test \
 	tests/cast_ppi.test \
 	tests/cast_sc.test \
@@ -751,6 +753,7 @@ TESTS+=	tests/cast_bii_d.test \
 #
 TESTS+=	tests/cast_a3i.test \
 	tests/cast_f_i.test \
+	tests/cast_pfi_i-cknr.test \
 	tests/cast_pfx_i.test \
 	tests/cast_rgi.test \
 	tests/cast_type_i.test \

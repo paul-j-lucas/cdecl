@@ -2416,7 +2416,9 @@ static bool c_ast_visitor_warning( c_ast_t *ast, c_ast_visitor_data_t flags ) {
 
     case K_NAME:
       if ( opt_lang > LANG_C_KNR )
-        print_warning( &ast->loc, "missing type specifier\n" );
+        print_warning( &ast->loc,
+          "missing type specifier; %s assumed\n", L_INT
+        );
       break;
 
     case K_USER_DEF_CONVERSION:
