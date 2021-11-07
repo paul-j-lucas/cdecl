@@ -653,7 +653,7 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_declaration( c_ast_t const *ast ) {
   assert( ast != NULL );
-  if ( !c_ast_check_errors( ast, /*is_func_param=*/false ) )
+  if ( !c_ast_check_errors( ast, /*data=*/0 ) )
     return false;
   PJL_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning, 0 ) );
   return true;
@@ -849,9 +849,9 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
             PJL_FALLTHROUGH;
           default:
             //
-            // This isn't correct since copy constructors can have more than one
-            // parameter if the additional ones all have default arguments; but
-            // cdecl doesn't support default arguments.
+            // This isn't correct since copy constructors can have more than
+            // one parameter if the additional ones all have default arguments;
+            // but cdecl doesn't support default arguments.
             //
             goto only_special;
         } // switch
@@ -1188,7 +1188,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       CASE_K_PLACEHOLDER;
     } // switch
 
-    if ( !c_ast_check_errors( param_ast, /*is_func_param=*/true ) )
+    if ( !c_ast_check_errors( param_ast, C_IS_FUNC_PARAM ) )
       return false;
   } // for
 
