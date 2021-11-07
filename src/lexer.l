@@ -511,7 +511,7 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
   // 8192, it's unlikely that this will ever be true and that we'll have to
   // return the input line in chunks; but might as well code for the case.
   //
-  if ( input_avail > buf_capacity )
+  if ( unlikely( input_avail > buf_capacity ) )
     input_avail = buf_capacity;
   memcpy( buf, input_buf + input_sent, input_avail );
   input_sent += input_avail;
