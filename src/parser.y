@@ -2428,7 +2428,17 @@ show_command
 show_format
   : Y_ENGLISH                     { $$ = C_GIB_NONE; }
   | Y_TYPEDEF                     { $$ = C_GIB_TYPEDEF; }
-  | Y_USING                       { $$ = C_GIB_USING; }
+  | Y_USING
+    {
+      if ( opt_lang < LANG_CPP_11 ) {
+        print_error( &@1,
+          "\"%s\" is not supported%s\n",
+          L_USING, c_lang_which( LANG_CPP_MIN(11) )
+        );
+        PARSE_ABORT();
+      }
+      $$ = C_GIB_USING;
+    }
   ;
 
 show_format_exp

@@ -29,6 +29,9 @@ types and typedefs.)
 For functions having K&R C typeless parameters, `int` is now printed in C89 and
 later since such parameters are implicitly `int`.
 
+** `show using` before C++11
+A `show using` before C++11 now prints an error.
+
 ** Help output
 Tweaked help output.
 

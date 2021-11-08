@@ -857,7 +857,8 @@ TESTS+=	tests/show_all.test \
 # C show error tests
 # ==================
 #
-TESTS+=	tests/show_foo.test
+TESTS+=	tests/show_foo.test \
+	tests/show_using-c++03.test
 
 ###############################################################################
 

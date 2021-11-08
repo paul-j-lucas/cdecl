@@ -1,0 +1,3 @@
+show using
+     ^
+6: error: "using" is not supported until C++11
