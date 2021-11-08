@@ -72,8 +72,15 @@
  */
 extern unsigned         lexer_find;
 
-extern c_keyword_ctx_t  lexer_keyword_ctx;  ///< Keyword context.
-extern char const      *lexer_token;        ///< Text of current token.
+/**
+ * Keyword context.
+ */
+extern c_keyword_ctx_t  lexer_keyword_ctx;
+
+/**
+ * Text of current token.
+ */
+extern char const      *lexer_token;
 
 ////////// extern functions ///////////////////////////////////////////////////
 
