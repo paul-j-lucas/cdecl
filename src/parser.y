@@ -2939,7 +2939,7 @@ namespace_typedef_sname_c
       DUMP_END();
     }
 
-  | namespace_typedef_sname_c Y_COLON2 Y_INLINE Y_NAME
+  | namespace_typedef_sname_c Y_COLON2 Y_INLINE name_exp
     {
       DUMP_START( "namespace_typedef_sname_c",
                   "namespace_typedef_sname_c '::' INLINE NAME" );
