@@ -65,14 +65,14 @@
   print_hint( "%s %s %s", L_CAST, L_INTO, (HINT) ); )
 
 /**
- * Prints an error: `<kind> is not supported[ {in|until} <lang>]`.
+ * Prints an error: `<kind> not supported[ {in|since|unless|until} <lang>]`.
  *
  * @param AST The AST having the unsupported kind.
  * @param LANG_IDS The bitwise-or of legal language(s).
  */
 #define error_kind_not_supported(AST,LANG_IDS)            \
   fl_print_error( __FILE__, __LINE__,                     \
-    &(AST)->loc, "%s is not supported%s\n",               \
+    &(AST)->loc, "%s not supported%s\n",                  \
     c_kind_name( (AST)->kind ), c_lang_which( LANG_IDS )  \
   )
 
@@ -686,7 +686,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
     if ( of_ast != NULL ) {
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &of_ast->loc,
-          "%s with underlying type is not supported%s\n",
+          "%s with underlying type not supported%s\n",
           L_ENUM, c_lang_which( LANG_CPP_MIN(11) )
         );
         return false;
@@ -1227,7 +1227,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
         break;
       case K_VARIADIC:
         print_error( &param_ast->loc,
-          "ellipsis is not supported%s\n",
+          "ellipsis not supported%s\n",
           c_lang_which( LANG_MIN(C_89) )
         );
         return false;
@@ -1259,7 +1259,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 
   if ( (opt_lang & op->lang_ids) == LANG_NONE ) {
     print_error( &ast->loc,
-      "overloading %s \"%s\" is not supported%s\n",
+      "overloading %s \"%s\" not supported%s\n",
       L_OPERATOR, op->name, c_lang_which( op->lang_ids )
     );
     return false;
@@ -1693,7 +1693,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
 
   if ( opt_lang < LANG_CPP_20 ) {
     print_error( &ast->loc,
-      "%s %s %s is not supported%s\n",
+      "%s %s %s not supported%s\n",
       L_DEFAULT, L_OPERATOR, op->name, c_lang_which( LANG_CPP_MIN(20) )
     );
     return false;
@@ -1918,7 +1918,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       if ( c_type_is_tid_any( &raw_ret_ast->type, TB_AUTO ) &&
            opt_lang < LANG_CPP_14 ) {
         print_error( &ret_ast->loc,
-          "\"%s\" return type is not supported%s\n",
+          "\"%s\" return type not supported%s\n",
           L_AUTO, c_lang_which( LANG_CPP_MIN(14) )
         );
         return false;
@@ -1927,7 +1927,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
     case K_ENUM_CLASS_STRUCT_UNION:
       if ( OPT_LANG_IS(C_KNR) ) {
         print_error( &ret_ast->loc,
-          "%s returning %s is not supported%s\n",
+          "%s returning %s not supported%s\n",
           L_FUNCTION, c_kind_name( raw_ret_ast->kind ),
           c_lang_which( LANG_MIN(C_89) )
         );

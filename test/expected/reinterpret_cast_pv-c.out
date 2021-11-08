@@ -1,3 +1,3 @@
 reinterpret cast x into pointer to void
 ^
-1: error: reinterpret_cast is not supported in C
+1: error: reinterpret_cast not supported in C

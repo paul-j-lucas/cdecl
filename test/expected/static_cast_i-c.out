@@ -1,3 +1,3 @@
 static cast x into int
 ^
-1: error: static_cast is not supported in C
+1: error: static_cast not supported in C

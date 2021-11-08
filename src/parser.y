@@ -667,7 +667,7 @@ static void attr_syntax_not_supported( c_loc_t const *loc,
   assert( keyword != NULL );
 
   print_warning( loc,
-    "\"%s\" is not supported by %s (ignoring)", keyword, CDECL
+    "\"%s\" not supported by %s (ignoring)", keyword, CDECL
   );
   if ( OPT_LANG_IS(C_CPP_MIN(2X,11)) )
     print_hint( "[[...]]" );
@@ -1659,7 +1659,7 @@ cast_command
 
       if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@1,
-          "%s is not supported%s\n",
+          "%s not supported%s\n",
           cast_literal, c_lang_which( LANG_CPP_ANY )
         );
       }
@@ -1759,7 +1759,7 @@ declare_command
       // bigger error that operator overloading isn't supported in C.
       //
       if ( unsupported( LANG_CPP_ANY ) ) {
-        print_error( &@2, "operator overloading is not supported in C\n" );
+        print_error( &@2, "operator overloading not supported in C\n" );
         PARSE_ABORT();
       }
     }
@@ -2432,7 +2432,7 @@ show_format
     {
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &@1,
-          "\"%s\" is not supported%s\n",
+          "\"%s\" not supported%s\n",
           L_USING, c_lang_which( LANG_CPP_MIN(11) )
         );
         PARSE_ABORT();
@@ -2569,7 +2569,7 @@ new_style_cast_c
       bool ok = false;
 
       if ( unsupported( LANG_CPP_ANY ) ) {
-        print_error( &@1, "%s_cast is not supported in C\n", cast_literal );
+        print_error( &@1, "%s_cast not supported in C\n", cast_literal );
       }
       else if ( (ok = c_ast_check( cast_ast )) ) {
         FPRINTF( fout, "%s %s ", cast_literal, L_CAST );
@@ -3196,7 +3196,7 @@ using_decl_c_ast
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "\"%s\" is not supported%s\n",
+          "\"%s\" not supported%s\n",
           L_USING, c_lang_which( LANG_CPP_MIN(11) )
         );
         PARSE_ABORT();
@@ -3828,7 +3828,7 @@ trailing_return_type_c_ast_opt
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "trailing return type is not supported%s\n",
+          "trailing return type not supported%s\n",
           c_lang_which( LANG_CPP_MIN(11) )
         );
         PARSE_ABORT();
@@ -4956,7 +4956,7 @@ enum_class_struct_union_c_ast
     any_sname_c_opt '{'
     {
       print_error( &@4,
-        "explaining %s declarations is not supported by %s\n",
+        "explaining %s declarations not supported by %s\n",
         c_tid_name_c( $1 ), CDECL
       );
       c_sname_free( &$3 );
@@ -5182,7 +5182,7 @@ restrict_qualifier_c_stid
       //
       if ( OPT_LANG_IS(CPP_ANY) ) {
         print_error( &@1,
-          "\"%s\" is not supported in C++; use \"%s\" instead\n",
+          "\"%s\" not supported in C++; use \"%s\" instead\n",
           L_RESTRICT, L_GNU___RESTRICT
         );
         PARSE_ABORT();
@@ -5240,7 +5240,7 @@ attribute_specifier_list_c_atid
     {
       if ( unsupported( LANG_C_CPP_MIN(2X,11) ) ) {
         print_error( &@1,
-          "\"[[\" attribute syntax is not supported%s\n",
+          "\"[[\" attribute syntax not supported%s\n",
           c_lang_which( LANG_C_CPP_MIN(2X,11) )
         );
         PARSE_ABORT();
@@ -5271,7 +5271,7 @@ using_opt
   | Y_USING name_exp colon_exp
     {
       print_warning( &@1,
-        "\"%s\" in attributes is not supported by %s (ignoring)\n",
+        "\"%s\" in attributes not supported by %s (ignoring)\n",
         L_USING, CDECL
       );
       free( $2 );
@@ -5973,7 +5973,7 @@ user_defined_literal_decl_english_ast
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "%s %s is not supported%s\n",
+          "%s %s not supported%s\n",
           H_USER_DEFINED, L_LITERAL, c_lang_which( LANG_CPP_MIN(11) )
         );
         PARSE_ABORT();

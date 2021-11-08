@@ -1,4 +1,4 @@
 explain [[using foo : maybe_unused]] int i
           ^
-11: warning: "using" in attributes is not supported by cdecl (ignoring)
+11: warning: "using" in attributes not supported by cdecl (ignoring)
 declare i as maybe-unused int
