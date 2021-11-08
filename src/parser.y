@@ -2876,7 +2876,7 @@ namespace_sname_c
       DUMP_END();
     }
 
-  | namespace_sname_c Y_COLON2 Y_INLINE Y_NAME
+  | namespace_sname_c Y_COLON2 Y_INLINE name_exp
     {
       DUMP_START( "namespace_sname_c", "sname_c '::' NAME INLINE NAME" );
       DUMP_SNAME( "namespace_sname_c", $1 );
