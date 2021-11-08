@@ -1,3 +1,67 @@
+2021-11-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/Y_NAME/name_exp/
+
+2021-11-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c, parser.y, const_cast_pi-c.out, declare_cri.out,
+     declare_fco_exclam_b.out, declare_fmo_star_rk_rk.out,
+     declare_o_less_eq_greater_2rck_a-c++17.out, declare_vri.out,
+     explain_+co_eq2_rck_b=default-cpp17.out, explain_2gat_cpi.out,
+     explain_a_using_a_mu_i.out, explain_af-c++11.out, explain_c_gat_pi.out,
+     explain_c_gat_vpi.out, explain_efi-c.out, explain_f__v-c++03.out,
+     explain_f_k-knr.out, explain_fkrel_i.out, explain_frri_v-c++03.out,
+     explain_gat_c_gat_vpi.out, explain_gat_cpi.out, explain_gat_i-01.out,
+     explain_gat_i-02.out, explain_gat_i-03.out, explain_gat_i-04.out,
+     explain_gat_i-05.out, explain_gat_i-06.out, explain_gat_i-07.out,
+     explain_gat_i-08.out, explain_gat_i-09.out, explain_i_msds.out,
+     explain_k_msds.out, explain_msds_i.out, explain_msds_k.out,
+     explain_p_msds_i.out, explain_pmi-c.out, explain_pmrgi.out,
+     explain_ri-c.out, explain_rr.out, explain_rrgi.out, explain_rrr-1.out,
+     explain_rrr-2.out, explain_rrrr.out, explain_rtpi-c++-error.out,
+     reinterpret_cast_pv-c.out, show_using-c++03.out, static_cast_i-c.out: s/is
+     not supported/not supported/
+   * NEWS, parser.y, test/Makefile.am, show_using-c++03.out,
+     show_using-c++03.test: A `show using` before C++11 now prints an error.
+   * check.c: Properly calling c_ast_check_errors().
+   * lexer.l: Added unlikely().
+   * lexer.l: Moved lexer_update_loc().
+   * NEWS, check.c, english.c, gibberish.c, parser.y, test/Makefile.am,
+     cast_pfi_i-cknr.out, cast_pfkr_i-cknr.out, declare_fkr_pi-c17.out,
+     declare_fkr_pi-cknr.out, declare_pfkr_i-c17.out, explain_fkr_i-cknr.out,
+     explain_fkr_pi-c17.out, cast_pfi_i-cknr.test, cast_pfkr_i-cknr.test,
+     declare_fkr_pi-c17.test, declare_fkr_pi-cknr.test: For functions having
+     K&R C typeless parameters, `int` is now printed in C89 and later since
+     such parameters are implicitly `int`.
+
+2021-11-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, check.c, declare_rrgi.out: A deprecated warning is now printed for a
+     `register` array, enum, class, struct, union, pointer, pointer to member,
+     reference, and rvalue reference between C++11 and C++14.  (Previously, a
+     warning was printed only for built-in types and typedefs.)
+   * c_ast.c: Removed unncessary special-case code for K_TYPEDEF.
+   * c_ast.c, c_ast.h, c_kind.h: Added K_ANY_REFERRER, c_ast_is_referrer().
+
+2021-11-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_ast_util.c, c_sname.h, c_typedef.c, check.c,
+     did_you_mean.c, english.c, gibberish.c, parser.y: Removed unnecessary
+     c_ast_*_name() functions.
+   * c_ast.c, cdecl-d-pmki.out: Removed c_ast_set_local_type_if_is_any_scope()
+     -- not needed.
+
+2021-11-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Sorted rules.
+   * parser.y: DUMP whitespace fix.
+   * c_kind.h: s/it's/its/
+   * parser.y: Moved parser_cleanup().
+
+2021-11-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_ast_util.h: Made c_ast_root() not be static.
+
 2021-11-02  Paul J. Lucas <paul@lucasmail.org>
 
    * check.c: s/assert/UNEXPECTED_INT_VALUE/
