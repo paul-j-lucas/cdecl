@@ -331,7 +331,6 @@ enum c_tpid {
 #define TA_MSC_STDCALL        0x0000000000008004ull /**< `__stdcall`          */
 #define TA_MSC_THISCALL       0x0000000000010004ull /**< `__thiscall`         */
 #define TA_MSC_VECTORCALL     0x0000000000020004ull /**< `__vectorcall`       */
-#define TA_ANY_MSC_CALL       0x000000000003F004ull /**< Any call convention. */
 
 // bit masks
 #define TX_MASK_TPID          0x000000000000000Full /**< Type part ID bitmask.*/
@@ -345,8 +344,6 @@ extern c_type_t const T_ANY_CONST_CLASS;///< Any `const` `class`-like type.
 extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 
 // shorthands
-
-/// Shorthand for any Microsoft C/C++ calling convention.
 
 /// Shorthand for any character type.
 #define TB_ANY_CHAR           ( TB_CHAR | TB_WCHAR_T \
@@ -368,6 +365,11 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 /// Shorthand for an any modifier.
 #define TB_ANY_MODIFIER       ( TB_SHORT | TB_LONG | TB_LONG_LONG | TB_SIGNED \
                               | TB_UNSIGNED )
+
+/// Shorthand for any Microsoft C/C++ calling convention.
+#define TA_ANY_MSC_CALL       ( TA_MSC_CDECL | TA_MSC_CLRCALL \
+                              | TA_MSC_FASTCALL | TA_MSC_STDCALL \
+                              | TA_MSC_THISCALL | TA_MSC_VECTORCALL )
 
 /// Shorthand for `class`, `struct`, `union`, or `namespace`.
 #define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_NAMESPACE )
