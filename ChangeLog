@@ -1,5 +1,14 @@
+2021-11-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdefs.h, string.in.h, wchar.in.h: Updated Gnulib.
+
+2021-11-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.h: Reworked TA_ANY_MSC_CALL.
+
 2021-11-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: s/(unsigned)/(c_bit_width_t)/
    * parser.y: s/Y_NAME/name_exp/
 
 2021-11-07  Paul J. Lucas <paul@lucasmail.org>
