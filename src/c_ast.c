@@ -111,6 +111,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
     c_ast_new( ast->kind, ast->depth, &ast->loc, ast_list );
 
   dup_ast->align = ast->align;
+  dup_ast->cast_kind = ast->cast_kind;
   dup_ast->depth = ast->depth;
   dup_ast->sname = c_sname_dup( &ast->sname );
   dup_ast->type = ast->type;
@@ -178,6 +179,8 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     return false;
 
   if ( i_ast->kind != j_ast->kind )
+    return false;
+  if ( i_ast->cast_kind != j_ast->cast_kind )
     return false;
   if ( !c_alignas_equiv( &i_ast->align, &j_ast->align ) )
     return false;
