@@ -110,6 +110,17 @@ _GL_INLINE_HEADER_BEGIN
 #define FOREACH_AST_LIST(VAR,AST_LIST) \
   FOREACH_SLIST( VAR, AST_LIST, NULL )
 
+/**
+ * Convenience macro for iterating over all function-like parameters.
+ *
+ * @param VAR The `c_ast_param_t` loop variable.
+ * @param AST The AST to iterate the parameters of.
+ *
+ * @sa c_ast_params()
+ */
+#define FOREACH_PARAM(VAR,AST) \
+  FOREACH_AST_LIST( VAR, &(AST)->as.func.param_ast_list )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -567,17 +578,6 @@ C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
   return ast->as.func.param_ast_list.head;
 }
-
-/**
- * Convenience macro for iterating over all function-like parameters.
- *
- * @param VAR The `c_ast_param_t` loop variable.
- * @param AST The AST to iterate the parameters of.
- *
- * @sa c_ast_params()
- */
-#define FOREACH_PARAM(VAR,AST) \
-  FOREACH_SLIST( VAR, &(AST)->as.func.param_ast_list, NULL )
 
 /**
  * Convenience function for getting the number of function-like parameters.
