@@ -300,7 +300,7 @@ void c_ast_free( c_ast_t *ast ) {
 void c_ast_list_free( c_ast_list_t *list ) {
   // Do not pass &c_ast_free as the second argument since all ASTs are free'd
   // independently. Just free the list nodes.
-  slist_free( list, NULL, NULL );
+  slist_free( list, NULL );
 }
 
 c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,

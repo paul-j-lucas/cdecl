@@ -484,7 +484,7 @@ static c_ast_list_t   typedef_ast_list; ///< `c_ast` nodes for `typedef`s.
  * @param ast_list The AST list to free.
  */
 static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
-  slist_free( ast_list, NULL, (slist_node_data_free_fn_t)&c_ast_free );
+  slist_free( ast_list, (slist_data_free_fn_t)&c_ast_free );
 }
 
 /**
@@ -822,7 +822,7 @@ static void ia_free( void ) {
   c_sname_free( &in_attr.current_scope );
   // Do _not_ pass &c_ast_free for the 3rd argument! All AST nodes were already
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
-  slist_free( &in_attr.type_ast_stack, NULL, NULL );
+  slist_free( &in_attr.type_ast_stack, NULL );
   c_ast_list_gc( &in_attr.typedef_ast_list );
   MEM_ZERO( &in_attr );
 }

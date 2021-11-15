@@ -41,7 +41,7 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 int slist_cmp( slist_t const *i_list, slist_t const *j_list,
-               slist_node_data_cmp_fn_t data_cmp_fn ) {
+               slist_data_cmp_fn_t data_cmp_fn ) {
   assert( i_list != NULL );
   assert( j_list != NULL );
 
@@ -71,20 +71,17 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
 }
 
 slist_t slist_dup( slist_t const *src_list, ssize_t n,
-                   slist_data_dup_fn_t data_dup_fn,
-                   slist_node_data_dup_fn_t node_data_dup_fn ) {
+                   slist_data_dup_fn_t data_dup_fn ) {
   slist_t dst_list;
   slist_init( &dst_list );
 
   if ( src_list != NULL && n != 0 ) {
     size_t un = (size_t)n;
-    dst_list.data = data_dup_fn != NULL ?
-      (*data_dup_fn)( src_list->data ) : src_list->data;
     FOREACH_SLIST( src_node, src_list, NULL ) {
       if ( un-- == 0 )
         break;
-      void *const dst_data = node_data_dup_fn != NULL ?
-        (*node_data_dup_fn)( src_node->data ) : src_node->data;
+      void *const dst_data = data_dup_fn != NULL ?
+        (*data_dup_fn)( src_node->data ) : src_node->data;
       slist_push_tail( &dst_list, dst_data );
     } // for
   }
@@ -92,12 +89,11 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
   return dst_list;
 }
 
-void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
-                 slist_node_data_free_fn_t node_data_free_fn ) {
+void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn ) {
   if ( list != NULL ) {
     slist_node_t *p = list->head, *next;
 
-    if ( node_data_free_fn == NULL ) {  // avoid repeated check in loop
+    if ( data_free_fn == NULL ) {       // avoid repeated check in loop
       for ( ; p != NULL; p = next ) {
         next = p->next;
         free( p );
@@ -105,14 +101,12 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
     }
     else {
       for ( ; p != NULL; p = next ) {
-        (*node_data_free_fn)( p->data );
+        (*data_free_fn)( p->data );
         next = p->next;
         free( p );
       } // for
     }
 
-    if ( data_free_fn != NULL )
-      (*data_free_fn)( list->data );
     slist_init( list );
   }
 }

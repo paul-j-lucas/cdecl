@@ -123,7 +123,7 @@ void c_sname_fill_in_namespaces( c_sname_t *sname ) {
 }
 
 void c_sname_free( c_sname_t *sname ) {
-  slist_free( sname, NULL, (slist_data_free_fn_t)&c_scope_data_free );
+  slist_free( sname, (slist_data_free_fn_t)&c_scope_data_free );
 }
 
 char const* c_sname_full_name( c_sname_t const *sname ) {
@@ -141,7 +141,7 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
 }
 
 void c_sname_list_free( slist_t *list ) {
-  slist_free( list, NULL, (slist_data_free_fn_t)&c_sname_free );
+  slist_free( list, (slist_data_free_fn_t)&c_sname_free );
 }
 
 bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {

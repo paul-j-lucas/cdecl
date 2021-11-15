@@ -68,7 +68,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param NAME The name.
  */
 #define SNAME_VAR_INIT(VAR,NAME) \
-  SLIST_VAR_INIT( VAR, NULL, (&(c_scope_data_t){ (NAME), T_NONE }) )
+  SLIST_VAR_INIT( VAR, (&(c_scope_data_t){ (NAME), T_NONE }) )
 
 /**
  * Gets the data associated with \a SCOPE.
@@ -179,9 +179,7 @@ void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
-  return slist_cmp(
-    i_sname, j_sname, (slist_node_data_cmp_fn_t)&c_scope_data_cmp
-  );
+  return slist_cmp( i_sname, j_sname, (slist_data_cmp_fn_t)&c_scope_data_cmp );
 }
 
 /**
@@ -207,9 +205,7 @@ size_t c_sname_count( c_sname_t const *sname ) {
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 c_sname_t c_sname_dup( c_sname_t const *sname ) {
-  return slist_dup(
-    sname, -1, NULL, (slist_node_data_dup_fn_t)&c_scope_data_dup
-  );
+  return slist_dup( sname, -1, (slist_data_dup_fn_t)&c_scope_data_dup );
 }
 
 /**
