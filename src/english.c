@@ -71,7 +71,7 @@ static void c_ast_english_bit_width( c_ast_t const *ast, FILE *eout ) {
  * Helper function for c_ast_visitor_english() that prints a function-like
  * AST's parameters, if any.
  *
- * @param ast The AST to pring the parameters of.
+ * @param ast The AST to print the parameters of.
  * @param eout The `FILE` to emit to.
  */
 static void c_ast_english_func_params( c_ast_t const *ast, FILE *eout ) {
