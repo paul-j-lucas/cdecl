@@ -114,7 +114,7 @@ _GL_INLINE_HEADER_BEGIN
  * Convenience macro for iterating over all function-like parameters.
  *
  * @param VAR The `c_ast_param_t` loop variable.
- * @param AST The AST to iterate the parameters of.
+ * @param AST The AST to iterate the function-like parameters of.
  *
  * @sa c_ast_params()
  */
