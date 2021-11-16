@@ -497,7 +497,7 @@ static void g_print_ast_func_params( g_state_t const *g, c_ast_t const *ast ) {
 
   bool comma = false;
   FPUTC( '(', g->gout );
-  FOREACH_PARAM( param, ast ) {
+  FOREACH_FUNC_PARAM( param, ast ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", g->gout );
     g_state_t params_g;

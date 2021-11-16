@@ -1075,7 +1075,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
   c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
   unsigned n_params = 0;
 
-  FOREACH_PARAM( param, ast ) {
+  FOREACH_FUNC_PARAM( param, ast ) {
     if ( ++n_params > 1 && void_ast != NULL )
       goto only_void;                   // R f(void, T)
 
@@ -1220,7 +1220,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
   assert( c_ast_is_kind_any( ast, K_APPLE_BLOCK | K_FUNCTION ) );
   assert( opt_lang == LANG_C_KNR );
 
-  FOREACH_PARAM( param, ast ) {
+  FOREACH_FUNC_PARAM( param, ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
     switch ( param_ast->kind ) {
       case K_NAME:
@@ -1553,7 +1553,7 @@ same: print_error( &ast->loc,
   //
   unsigned ecsu_obj_param_count = 0, ecsu_lref_param_count = 0,
            ecsu_rref_param_count = 0;
-  FOREACH_PARAM( param, ast ) {
+  FOREACH_FUNC_PARAM( param, ast ) {
     //
     // Normally we can use c_ast_is_kind_any(), but we need to count objects
     // and lvalue references to objects distinctly to check default relational
@@ -2335,7 +2335,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, c_ast_visitor_data_t flags ) {
   }
 
   if ( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) ) {
-    FOREACH_PARAM( param, ast ) {
+    FOREACH_FUNC_PARAM( param, ast ) {
       c_ast_t const *const param_ast = c_param_ast( param );
       if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type,
                                  C_IS_FUNC_PARAM ) ) {
@@ -2398,7 +2398,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, c_ast_visitor_data_t flags ) {
     }
 
     case K_CONSTRUCTOR:
-      FOREACH_PARAM( param, ast ) {
+      FOREACH_FUNC_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
         PJL_IGNORE_RV(
           c_ast_check_visitor( param_ast, c_ast_visitor_warning, flags )

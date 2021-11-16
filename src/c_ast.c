@@ -143,7 +143,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       // ret_ast duplicated by referrer code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL:
-      FOREACH_PARAM( param, ast ) {
+      FOREACH_FUNC_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
         c_ast_t *const dup_param_ast = c_ast_dup( param_ast, ast_list );
         slist_push_tail( &dup_ast->as.func.param_ast_list, dup_param_ast );

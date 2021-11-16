@@ -82,7 +82,7 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
   FPUTC( '(', eout );
 
   bool comma = false;
-  FOREACH_PARAM( param, ast ) {
+  FOREACH_FUNC_PARAM( param, ast ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", eout );
 

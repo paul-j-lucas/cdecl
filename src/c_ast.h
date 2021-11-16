@@ -118,7 +118,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa c_ast_params()
  */
-#define FOREACH_PARAM(VAR,AST) \
+#define FOREACH_FUNC_PARAM(VAR,AST) \
   FOREACH_AST_LIST( VAR, &(AST)->as.func.param_ast_list )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -572,7 +572,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
  *
  * @sa c_ast_params_count()
  * @sa c_param_ast()
- * @sa #FOREACH_PARAM
+ * @sa #FOREACH_FUNC_PARAM
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
