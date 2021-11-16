@@ -54,7 +54,7 @@ static void c_type_print_not_base( c_type_t const*, FILE* );
  * @param ast The AST to print the bit-field width of.
  * @param eout The `FILE` to emit to.
  */
-static void c_ast_english_bit_width( c_ast_t const *ast, FILE *eout ) {
+static void c_ast_bit_width_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
   assert( c_ast_is_kind_any( ast, K_BUILTIN | K_TYPEDEF ) );
   assert( eout != NULL );
@@ -74,7 +74,7 @@ static void c_ast_english_bit_width( c_ast_t const *ast, FILE *eout ) {
  * @param ast The AST to print the parameters of.
  * @param eout The `FILE` to emit to.
  */
-static void c_ast_english_func_params( c_ast_t const *ast, FILE *eout ) {
+static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
   assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
   assert( eout != NULL );
@@ -169,7 +169,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visitor_data_t data ) {
       FPUTS( c_kind_name( ast->kind ), eout );
       if ( c_ast_params_count( ast ) > 0 ) {
         FPUTC( ' ', eout );
-        c_ast_english_func_params( ast, eout );
+        c_ast_func_params_english( ast, eout );
       }
       if ( ast->as.func.ret_ast != NULL )
         FPRINTF( eout, " %s ", L_RETURNING );
@@ -177,7 +177,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visitor_data_t data ) {
 
     case K_BUILTIN:
       FPUTS( c_type_name_english( &ast->type ), eout );
-      c_ast_english_bit_width( ast, eout );
+      c_ast_bit_width_english( ast, eout );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
@@ -196,7 +196,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visitor_data_t data ) {
       //      cdecl> explain double f(x)
       //      declare f as function (x as int) returning double
       //
-      // (The "x as" was printed in c_ast_english_func_params().)
+      // (The "x as" was printed in c_ast_func_params_english().)
       //
       FPUTS( L_INT, eout );
       break;
@@ -222,7 +222,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visitor_data_t data ) {
       if ( !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) ) )
         FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
       c_sname_english( &ast->as.tdef.for_ast->sname, eout );
-      c_ast_english_bit_width( ast, eout );
+      c_ast_bit_width_english( ast, eout );
       break;
 
     case K_USER_DEF_CONVERSION: {
