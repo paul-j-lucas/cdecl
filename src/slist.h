@@ -108,8 +108,6 @@ typedef void* (*slist_data_dup_fn_t)( void const *data );
  * associated with each node (if necessary).
  *
  * @param data A pointer to the data to free.
- *
- * @sa slist_data_free_fn_t
  */
 typedef void (*slist_data_free_fn_t)( void *data );
 
