@@ -480,7 +480,7 @@ tilde:
     }
   } // for
 
-  c_sname_free( &rv );
+  c_sname_cleanup( &rv );
   return false;
 }
 
@@ -708,7 +708,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                     yylval.sname = sname;
                     return Y_DESTRUCTOR_SNAME;
                   }
-                  c_sname_free( &sname );
+                  c_sname_cleanup( &sname );
                 }
                 YY_USER_ACTION_UNDO_FOR_REJECT;
                 REJECT;
@@ -782,7 +782,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                       c_typedef_find_sname( &sname );
                     if ( tdef != NULL ) {
                       yylval.tdef = tdef;
-                      c_sname_free( &sname );
+                      c_sname_cleanup( &sname );
                       return Y_TYPEDEF_SNAME;
                     }
                   }
@@ -790,7 +790,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   //
                   // 3. Otherwise, reject it.
                   //
-                  c_sname_free( &sname );
+                  c_sname_cleanup( &sname );
                 }
                 YY_USER_ACTION_UNDO_FOR_REJECT;
                 REJECT;

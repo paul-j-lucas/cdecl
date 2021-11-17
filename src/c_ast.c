@@ -265,18 +265,18 @@ void c_ast_free( c_ast_t *ast ) {
     assert( c_ast_count > 0 );
     --c_ast_count;
 
-    c_sname_free( &ast->sname );
+    c_sname_cleanup( &ast->sname );
     switch ( ast->kind ) {
       case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
       case K_FUNCTION:
       case K_OPERATOR:
       case K_USER_DEF_LITERAL:
-        c_ast_list_free( &ast->as.func.param_ast_list );
+        c_ast_list_cleanup( &ast->as.func.param_ast_list );
         break;
       case K_ENUM_CLASS_STRUCT_UNION:
       case K_POINTER_TO_MEMBER:
-        c_sname_free( &ast->as.ecsu.ecsu_sname );
+        c_sname_cleanup( &ast->as.ecsu.ecsu_sname );
         break;
       case K_ARRAY:
       case K_BUILTIN:
@@ -297,10 +297,10 @@ void c_ast_free( c_ast_t *ast ) {
   }
 }
 
-void c_ast_list_free( c_ast_list_t *list ) {
+void c_ast_list_cleanup( c_ast_list_t *list ) {
   // Do not pass &c_ast_free as the second argument since all ASTs are free'd
   // independently. Just free the list nodes.
-  slist_free( list, NULL );
+  slist_cleanup( list, NULL );
 }
 
 c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,

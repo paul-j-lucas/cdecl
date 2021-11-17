@@ -104,7 +104,7 @@ typedef bool (*slist_predicate_fn_t)( void *data );
 typedef void* (*slist_data_dup_fn_t)( void const *data );
 
 /**
- * The signature for a function passed to slist_free() used to free data
+ * The signature for a function passed to slist_cleanup() used to free data
  * associated with each node (if necessary).
  *
  * @param data A pointer to the data to free.
@@ -133,6 +133,19 @@ struct slist_node {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Cleans-up all memory associated with \a list but _not_ \a list itself.
+ *
+ * @param list A pointer to the list to clean up.  If NULL, does nothing;
+ * otherwise, reinitializes \a list upon completion.
+ * @param data_free_fn A pointer to a function to use to free the data at each
+ * node of \a list or NULL if none is required.
+ *
+ * @sa slist_free_if()
+ * @sa slist_init()
+ */
+void slist_cleanup( slist_t *list, slist_data_free_fn_t data_free_fn );
+
+/**
  * Compares two lists.
  *
  * @param i_list The first list.
@@ -156,9 +169,9 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
  * each node of \a src_list or NULL if none is required (hence a shallow copy
  * will be done).
  * @return Returns a duplicate of \a src_list.  The caller is responsible for
- * calling slist_free() on it.
+ * calling slist_cleanup() on it.
  *
- * @sa slist_free()
+ * @sa slist_cleanup()
  */
 PJL_WARN_UNUSED_RESULT
 slist_t slist_dup( slist_t const *src_list, ssize_t n,
@@ -180,30 +193,17 @@ bool slist_empty( slist_t const *list ) {
 }
 
 /**
- * Frees all memory associated with \a list but _not_ \a list itself.
- *
- * @param list A pointer to the list to free.  If NULL, does nothing;
- * otherwise, reinitializes \a list upon completion.
- * @param data_free_fn A pointer to a function to use to free the data at each
- * node of \a list or NULL if none is required.
- *
- * @sa slist_free_if()
- * @sa slist_init()
- */
-void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn );
-
-/**
  * Frees select nodes from \a list for which \a pred_fn returns `true`.
  *
  * @param list A pointer to the list to possibly free nodes from.
  * @param pred_fn The predicate function to use.
  *
- * @note This function frees matching nodes _only_ from \a list and _not_ the
- * data at each node.  If additional resources need to be freed for a node, \a
- * pred_fn can do that before returning `true`.
+ * @note This function _only_ frees matching nodes from \a list and _not_ the
+ * data at each node.  If the data at each node needs to be freed, \a pred_fn
+ * can do that before returning `true`.
  * @note This is an O(n) operation.
  *
- * @sa slist_free()
+ * @sa slist_cleanup()
  */
 void slist_free_if( slist_t *list, slist_predicate_fn_t pred_fn );
 
@@ -213,7 +213,7 @@ void slist_free_if( slist_t *list, slist_predicate_fn_t pred_fn );
  *
  * @param list A pointer to the <code>\ref slist</code> to initialize.
  *
- * @sa slist_free()
+ * @sa slist_cleanup()
  */
 SLIST_INLINE
 void slist_init( slist_t *list ) {

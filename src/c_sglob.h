@@ -63,13 +63,14 @@ struct c_sglob {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Frees all memory associated with \a sglob but _not_ \a sglob itself.
+ * Cleans-up all memory associated with \a sglob but does _not_ free \a sglob
+ * itself.
  *
- * @param sglob The scoped glob to free.  If NULL, does nothing.
+ * @param sglob The scoped glob to clean up.  If NULL, does nothing.
  *
  * @sa c_sglob_init()
  */
-void c_sglob_free( c_sglob_t *sglob );
+void c_sglob_cleanup( c_sglob_t *sglob );
 
 /**
  * Initializes \a sglob.
@@ -78,7 +79,7 @@ void c_sglob_free( c_sglob_t *sglob );
  *
  * @note This need not be called for either global or `static` scoped names.
  *
- * @sa c_sglob_free()
+ * @sa c_sglob_cleanup()
  */
 C_SGLOB_INLINE
 void c_sglob_init( c_sglob_t *sglob ) {
@@ -91,9 +92,9 @@ void c_sglob_init( c_sglob_t *sglob ) {
  * @param s The glob string to parse.  May be NULL.  If not, it _must_ be a
  * valid glob string.
  * @param sglob The scoped glob to parse into.  The caller is responsible for
- * calling c_sglob_free().
+ * calling c_glob_cleanup().
  *
- * @sa c_sglob_free()
+ * @sa c_sglob_cleanup()
  */
 void c_sglob_parse( char const *s, c_sglob_t *sglob );
 

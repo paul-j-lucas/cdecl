@@ -979,7 +979,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
         sname = &temp_sname;
       }
       else {
-        c_sname_init( &temp_sname );    // for unconditional c_sname_free()
+        c_sname_init( &temp_sname );    // for unconditional c_sname_cleanup()
         //
         // For all other cases (non-inline namespaces, enum, class, struct, and
         // union), the type is the scope's type, not the fisrt type used above.
@@ -1010,7 +1010,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
       FPRINTF( gout,
         "%s %s { ", c_type_name_c( &scope_type ), c_sname_scope_name( sname )
       );
-      c_sname_free( &temp_sname );
+      c_sname_cleanup( &temp_sname );
       scope_close_braces_to_print = 1;
     }
     else {

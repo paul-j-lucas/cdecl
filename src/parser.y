@@ -484,7 +484,7 @@ static c_ast_list_t   typedef_ast_list; ///< `c_ast` nodes for `typedef`s.
  * @param ast_list The AST list to free.
  */
 static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
-  slist_free( ast_list, (slist_data_free_fn_t)&c_ast_free );
+  slist_cleanup( ast_list, (slist_data_free_fn_t)&c_ast_free );
 }
 
 /**
@@ -573,7 +573,7 @@ static inline char const* printable_token( void ) {
  * @sa sti_init()
  */
 static inline void sti_free( show_type_info_t *sti ) {
-  c_sglob_free( &sti->sglob );
+  c_sglob_cleanup( &sti->sglob );
   MEM_ZERO( sti );
 }
 
@@ -819,10 +819,10 @@ static void fl_keyword_expected( char const *file, int line,
  * Frees all resources used by \ref in_attr "inherited attributes".
  */
 static void ia_free( void ) {
-  c_sname_free( &in_attr.current_scope );
+  c_sname_cleanup( &in_attr.current_scope );
   // Do _not_ pass &c_ast_free for the 3rd argument! All AST nodes were already
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
-  slist_free( &in_attr.type_ast_stack, NULL );
+  slist_cleanup( &in_attr.type_ast_stack, NULL );
   c_ast_list_gc( &in_attr.typedef_ast_list );
   MEM_ZERO( &in_attr );
 }
@@ -1528,13 +1528,13 @@ static void yyerror( char const *msg ) {
 //
 
 // c_ast_list_t
-%destructor { DTRACE; c_ast_list_free( &$$ ); } decl_list_english
-%destructor { DTRACE; c_ast_list_free( &$$ ); } decl_list_english_opt
-%destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast
-%destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast_exp
-%destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast_opt
-%destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english
-%destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english_opt
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } decl_list_english
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } decl_list_english_opt
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast_exp
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast_opt
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } paren_decl_list_english
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } paren_decl_list_english_opt
 
 // name
 %destructor { DTRACE; FREE( $$ ); } any_name
@@ -1551,25 +1551,25 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; FREE( $$ ); } Y_STR_LIT
 
 // sname
-%destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c
-%destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c_exp
-%destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c_opt
-%destructor { DTRACE; c_sname_free( &$$ ); } of_scope_english
-%destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english
-%destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english_opt
-%destructor { DTRACE; c_sname_free( &$$ ); } scope_sname_c_opt
-%destructor { DTRACE; c_sname_free( &$$ ); } sname_c
-%destructor { DTRACE; c_sname_free( &$$ ); } sname_c_exp
-%destructor { DTRACE; c_sname_free( &$$ ); } sname_c_opt
-%destructor { DTRACE; c_sname_free( &$$ ); } sname_english
-%destructor { DTRACE; c_sname_free( &$$ ); } sname_english_exp
-%destructor { DTRACE; c_sname_free( &$$ ); } sub_scope_sname_c_opt
-%destructor { DTRACE; c_sname_free( &$$ ); } typedef_sname_c
-%destructor { DTRACE; c_sname_free( &$$ ); } Y_CONSTRUCTOR_SNAME
-%destructor { DTRACE; c_sname_free( &$$ ); } Y_DESTRUCTOR_SNAME
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c_exp
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c_opt
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_english
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_list_english
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_list_english_opt
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } scope_sname_c_opt
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c_exp
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c_opt
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_english
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_english_exp
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } sub_scope_sname_c_opt
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } typedef_sname_c
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } Y_CONSTRUCTOR_SNAME
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } Y_DESTRUCTOR_SNAME
 
 // sname_list
-%destructor { DTRACE; c_sname_list_free( &$$ ); } sname_list_english
+%destructor { DTRACE; c_sname_list_cleanup( &$$ ); } sname_list_english
 
 ///////////////////////////////////////////////////////////////////////////////
 %%
@@ -1634,7 +1634,7 @@ cast_command
         FPRINTF( fout, ")%s\n", c_sname_full_name( &$2 ) );
       }
 
-      c_sname_free( &$2 );
+      c_sname_cleanup( &$2 );
       if ( !ok )
         PARSE_ABORT();
     }
@@ -1672,7 +1672,7 @@ cast_command
         }
       }
 
-      c_sname_free( &$3 );
+      c_sname_cleanup( &$3 );
       if ( !ok )
         PARSE_ABORT();
     }
@@ -1710,7 +1710,7 @@ declare_command
         //
         assert( !c_sname_empty( &$5->sname ) );
         print_error_unknown_name( &@5, &$5->sname );
-        c_sname_list_free( &$2 );
+        c_sname_list_cleanup( &$2 );
         PARSE_ABORT();
       }
 
@@ -1745,7 +1745,7 @@ declare_command
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
 
-      c_sname_list_free( &$2 );
+      c_sname_list_cleanup( &$2 );
     }
 
     /*
@@ -2249,7 +2249,7 @@ explain_command
   | explain sname_c
     {
       print_error_unknown_name( &@2, &$2 );
-      c_sname_free( &$2 );
+      c_sname_cleanup( &$2 );
       PARSE_ABORT();
     }
 
@@ -2533,7 +2533,7 @@ c_style_cast_c
         FPUTC( '\n', fout );
       }
 
-      c_sname_free( &$6 );
+      c_sname_cleanup( &$6 );
       if ( !ok )
         PARSE_ABORT();
     }
@@ -2579,7 +2579,7 @@ new_style_cast_c
         FPUTC( '\n', fout );
       }
 
-      c_sname_free( &$8 );
+      c_sname_cleanup( &$8 );
       if ( !ok )
         PARSE_ABORT();
     }
@@ -2686,7 +2686,7 @@ class_struct_union_declaration_c
             "\"%s\": %s has the same name as its enclosing %s\n",
             mbr_name, L_MEMBER, c_type_name_c( cur_type )
           );
-          c_sname_free( &$3 );
+          c_sname_cleanup( &$3 );
           PARSE_ABORT();
         }
       }
@@ -2792,7 +2792,7 @@ namespace_declaration_c
           "nested %s declarations not supported%s\n",
           L_NAMESPACE, c_lang_which( LANG_CPP_MIN(17) )
         );
-        c_sname_free( &$3 );
+        c_sname_cleanup( &$3 );
         PARSE_ABORT();
       }
 
@@ -3317,7 +3317,7 @@ decl_c
       //
       //      int x, y
       //
-      c_sname_free( &type_ast->sname );
+      c_sname_cleanup( &type_ast->sname );
     }
   ;
 
@@ -4959,7 +4959,7 @@ enum_class_struct_union_c_ast
         "explaining %s declarations not supported by %s\n",
         c_tid_name_c( $1 ), CDECL
       );
-      c_sname_free( &$3 );
+      c_sname_cleanup( &$3 );
       PARSE_ABORT();
     }
   ;
@@ -5337,7 +5337,7 @@ attribute_c_atid
       }
 
       $$ = TA_NONE;
-      c_sname_free( &$1 );
+      c_sname_cleanup( &$1 );
     }
   | error
     {
@@ -6518,7 +6518,7 @@ sname_english_ast
         $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
         $$->type.btids = TB_TYPEDEF;
         $$->as.tdef.for_ast = tdef->ast;
-        c_sname_free( &sname );
+        c_sname_cleanup( &sname );
       } else {
         $$ = c_ast_new_gc( K_NAME, &@$ );
         c_sname_set( &$$->sname, &sname );

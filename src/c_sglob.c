@@ -37,7 +37,7 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_sglob_free( c_sglob_t *sglob ) {
+void c_sglob_cleanup( c_sglob_t *sglob ) {
   if ( sglob != NULL ) {
     for ( size_t i = 0; i < sglob->count; ++i )
       free( sglob->pattern[i] );

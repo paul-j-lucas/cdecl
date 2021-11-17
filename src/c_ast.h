@@ -463,18 +463,18 @@ PJL_WARN_UNUSED_RESULT
 bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
 
 /**
- * Frees all the memory used by \a ast including \a ast itself.
+ * Frees all memory used by \a ast _including_ \a ast itself.
  *
  * @param ast The AST to free.  If NULL, does nothing.
  *
  * @note Even though \a ast invariably is part of a larger abstract syntax
- * _tree_, this function frees _only_ \a ast and _not_ any child AST node \a
- * ast may have.  Hence to free all AST nodes, they all be kept track of
+ * tree, this function frees _only_ \a ast and _not_ any child AST node \a ast
+ * may have.  Hence to free all AST nodes, they all be kept track of
  * independently via some other data structure, e.g., a <code>\ref
  * c_ast_list_t</code>.
  *
  * @sa c_ast_dup()
- * @sa c_ast_list_free()
+ * @sa c_ast_list_cleanup()
  * @sa c_ast_new()
  */
 void c_ast_free( c_ast_t *ast );
@@ -540,13 +540,13 @@ bool c_ast_is_referrer( c_ast_t const *ast ) {
 }
 
 /**
- * Frees only the list nodes of \a list but _not_ \a list itself.
+ * Cleans-up \a list by freeing only its nodes but _not_ \a list itself.
  *
- * @param list The AST list to free the nodes of.
+ * @param list The AST list to free the list nodes of.
  *
  * @sa c_ast_free()
  */
-void c_ast_list_free( c_ast_list_t *list );
+void c_ast_list_cleanup( c_ast_list_t *list );
 
 /**
  * Creates a new AST node.

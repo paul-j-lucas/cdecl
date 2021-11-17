@@ -104,7 +104,7 @@ int main( int argc, char const *argv[] ) {
     }
   }
 
-  rb_tree_free( &tree, NULL );
+  rb_tree_cleanup( &tree, NULL );
 
   printf( "%u failures\n", test_failures );
   exit( test_failures > 0 ? EX_SOFTWARE : EX_OK );

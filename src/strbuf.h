@@ -126,11 +126,23 @@ void strbuf_cats( strbuf_t *sbuf, char const *s ) {
 }
 
 /**
+ * Cleans-up all memory associated with \a sbuf but does _not_ free \a sbuf
+ * itself.
+ *
+ * @param sbuf A pointer to the strbuf to clean up.
+ *
+ * @sa strbuf_init()
+ * @sa strbuf_reset()
+ * @sa strbuf_take()
+ */
+void strbuf_cleanup( strbuf_t *sbuf );
+
+/**
  * Initializes a strbuf.
  *
  * @param sbuf A pointer to the strbuf to initialize.
  *
- * @sa strbuf_free()
+ * @sa strbuf_cleanup()
  * @sa strbuf_reset()
  * @sa strbuf_take()
  */
@@ -138,17 +150,6 @@ STRBUF_INLINE
 void strbuf_init( strbuf_t *sbuf ) {
   MEM_ZERO( sbuf );
 }
-
-/**
- * Frees a strbuf.
- *
- * @param sbuf A pointer to the strbuf to free.
- *
- * @sa strbuf_init()
- * @sa strbuf_reset()
- * @sa strbuf_take()
- */
-void strbuf_free( strbuf_t *sbuf );
 
 /**
  * Ensures at least \a res_len additional bytes of capacity exist in \a sbuf.
@@ -165,10 +166,10 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len );
  * Resets \a sbuf by setting the string to zero length.
  * @param sbuf A pointer to the strbuf to reset.
  *
- * @note This function is more efficient than strbuf_free() when used
+ * @note This function is more efficient than strbuf_cleanup() when used
  * repeatedly on the same strbuf.
  *
- * @sa strbuf_free()
+ * @sa strbuf_cleanup()
  * @sa strbuf_init()
  * @sa strbuf_take()
  */
@@ -288,7 +289,7 @@ void strbuf_sepc_cats( strbuf_t *sbuf, char sep, bool *sep_flag,
  * @param sbuf A pointer to the strbuf to take from.
  * @return Returns said string.  The caller is responsible for freeing it.
  *
- * @sa strbuf_free()
+ * @sa strbuf_cleanup()
  * @sa strbuf_init()
  * @sa strbuf_reset()
  */

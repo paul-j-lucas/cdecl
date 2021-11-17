@@ -170,6 +170,19 @@ void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
 }
 
 /**
+ * Cleans-up all memory associated with \a sname but does _not_ free \a sname
+ * itself.
+ *
+ * @param sname The scoped name to clean up.  If NULL, does nothing; otherwise,
+ * reinitializes it upon completion.
+ *
+ * @sa c_sname_init()
+ * @sa c_sname_init_name()
+ * @sa c_sname_list_cleanup()
+ */
+void c_sname_cleanup( c_sname_t *sname );
+
+/**
  * Compares two scoped names.
  *
  * @param i_sname The first scoped name to compare.
@@ -197,8 +210,8 @@ size_t c_sname_count( c_sname_t const *sname ) {
 }
 
 /**
- * Duplicates \a sname.  The caller is responsible for calling c_sname_free()
- * on the duplicate.
+ * Duplicates \a sname.  The caller is responsible for calling
+ * c_sname_cleanup() on the duplicate.
  *
  * @param sname The scoped name to duplicate.
  * @return Returns a duplicate of \a sname.
@@ -232,18 +245,6 @@ bool c_sname_empty( c_sname_t const *sname ) {
 void c_sname_fill_in_namespaces( c_sname_t *sname );
 
 /**
- * Frees all memory associated with \a sname but _not_ \a sname itself.
- *
- * @param sname The scoped name to free.  If NULL, does nothing; otherwise,
- * reinitializes it upon completion.
- *
- * @sa c_sname_init()
- * @sa c_sname_init_name()
- * @sa c_sname_list_free()
- */
-void c_sname_free( c_sname_t *sname );
-
-/**
  * Gets the fully scoped name of \a sname.
  *
  * @param sname The scoped name to get the full name of.  May be NULL.
@@ -266,7 +267,7 @@ char const* c_sname_full_name( c_sname_t const *sname );
  *
  * @note This need not be called for either global or `static` scoped names.
  *
- * @sa c_sname_free()
+ * @sa c_sname_cleanup()
  * @sa c_sname_init_name()
  */
 C_SNAME_INLINE
@@ -280,7 +281,7 @@ void c_sname_init( c_sname_t *sname ) {
  * @param sname The scoped name to initialize.
  * @param name The name to set to.  Ownership is taken.
  *
- * @sa c_sname_free()
+ * @sa c_sname_cleanup()
  * @sa c_sname_init()
  */
 C_SNAME_INLINE
@@ -304,14 +305,15 @@ PJL_WARN_UNUSED_RESULT
 bool c_sname_is_ctor( c_sname_t const *sname );
 
 /**
- * Frees all memory associated with \a list but _not_ \a list itself.
+ * Cleans-up all memory associated with \a list but does _not_ free \a list
+ * itself.
  *
- * @param list The list of scoped names to free.  If NULL, does nothing;
+ * @param list The list of scoped names to clean up.  If NULL, does nothing;
  * otherwise, reinitializes \a list upon completion.
  *
- * @sa c_sname_free()
+ * @sa c_sname_cleanup()
  */
-void c_sname_list_free( slist_t *list );
+void c_sname_list_cleanup( slist_t *list );
 
 /**
  * Gets the local name of \a sname (which is the name of the last scope), e.g.,
@@ -478,7 +480,7 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
  */
 C_SNAME_INLINE
 void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname ) {
-  c_sname_free( dst_sname );
+  c_sname_cleanup( dst_sname );
   c_sname_append_sname( dst_sname, src_sname );
 }
 

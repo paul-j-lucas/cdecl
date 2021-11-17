@@ -1002,7 +1002,7 @@ void c_typedef_cleanup( void ) {
   // freed independently in parser_cleanup().  Hence, this function frees only
   // the red-black tree, its nodes, and the c_typedef_t data each node points
   // to, but not the AST nodes the c_typedef_t data points to.
-  rb_tree_free( &typedefs, &free );
+  rb_tree_cleanup( &typedefs, &free );
 }
 
 c_typedef_t const* c_typedef_find_name( char const *name ) {
@@ -1010,7 +1010,7 @@ c_typedef_t const* c_typedef_find_name( char const *name ) {
   c_sname_t sname;
   if ( c_sname_parse( name, &sname ) ) {
     c_typedef_t const *const tdef = c_typedef_find_sname( &sname );
-    c_sname_free( &sname );
+    c_sname_cleanup( &sname );
     return tdef;
   }
   return NULL;

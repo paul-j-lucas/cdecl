@@ -465,7 +465,7 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
       ++i;
     } // for
     EPUTC( '\n' );
-    slist_free( &ambiguous_list, NULL );
+    slist_cleanup( &ambiguous_list, NULL );
     return false;
   }
 

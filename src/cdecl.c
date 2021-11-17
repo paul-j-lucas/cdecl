@@ -328,7 +328,7 @@ static bool parse_cdecl_command_line( char const *command, int argc,
     strbuf_sepc_cats( &sbuf, ' ', &space, argv[i] );
 
   bool const ok = parse_cdecl_string( sbuf.str, sbuf.len );
-  strbuf_free( &sbuf );
+  strbuf_cleanup( &sbuf );
   return ok;
 }
 
@@ -501,7 +501,7 @@ bool parse_cdecl_string( char const *s, size_t s_len ) {
   PJL_IGNORE_RV( fclose( temp_file ) );
 
   if ( insert_explain ) {
-    strbuf_free( &explain_buf );
+    strbuf_cleanup( &explain_buf );
     print_params.inserted_len = 0;
   }
 

@@ -302,6 +302,14 @@ static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+void rb_tree_cleanup( rb_tree_t *tree, rb_data_free_t data_free_fn ) {
+  if ( tree != NULL && RB_FIRST(tree) != NULL ) {
+    rb_node_free( RB_FIRST(tree), data_free_fn );
+    rb_node_init( RB_ROOT(tree) );
+    tree->data_cmp_fn = NULL;
+  }
+}
+
 void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
   assert( tree != NULL );
   assert( delete_node != NULL );
@@ -347,14 +355,6 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
     node = node->child[ cmp > 0 ];
   } // for
   return NULL;
-}
-
-void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn ) {
-  if ( tree != NULL && RB_FIRST(tree) != NULL ) {
-    rb_node_free( RB_FIRST(tree), data_free_fn );
-    rb_node_init( RB_ROOT(tree) );
-    tree->data_cmp_fn = NULL;
-  }
 }
 
 void rb_tree_init( rb_tree_t *tree, rb_data_cmp_t data_cmp_fn ) {

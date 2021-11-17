@@ -40,6 +40,28 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+void slist_cleanup( slist_t *list, slist_data_free_fn_t data_free_fn ) {
+  if ( list != NULL ) {
+    slist_node_t *curr = list->head, *next;
+
+    if ( data_free_fn == NULL ) {       // avoid repeated check in loop
+      for ( ; curr != NULL; curr = next ) {
+        next = curr->next;
+        free( curr );
+      } // for
+    }
+    else {
+      for ( ; curr != NULL; curr = next ) {
+        (*data_free_fn)( curr->data );
+        next = curr->next;
+        free( curr );
+      } // for
+    }
+
+    slist_init( list );
+  }
+}
+
 int slist_cmp( slist_t const *i_list, slist_t const *j_list,
                slist_data_cmp_fn_t data_cmp_fn ) {
   assert( i_list != NULL );
@@ -87,28 +109,6 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
   }
 
   return dst_list;
-}
-
-void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn ) {
-  if ( list != NULL ) {
-    slist_node_t *p = list->head, *next;
-
-    if ( data_free_fn == NULL ) {       // avoid repeated check in loop
-      for ( ; p != NULL; p = next ) {
-        next = p->next;
-        free( p );
-      } // for
-    }
-    else {
-      for ( ; p != NULL; p = next ) {
-        (*data_free_fn)( p->data );
-        next = p->next;
-        free( p );
-      } // for
-    }
-
-    slist_init( list );
-  }
 }
 
 void slist_free_if( slist_t *list, slist_predicate_fn_t pred_fn ) {

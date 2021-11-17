@@ -107,6 +107,10 @@ void c_sname_append_name( c_sname_t *sname, char *name ) {
   slist_push_tail( sname, data );
 }
 
+void c_sname_cleanup( c_sname_t *sname ) {
+  slist_cleanup( sname, (slist_data_free_fn_t)&c_scope_data_free );
+}
+
 void c_sname_fill_in_namespaces( c_sname_t *sname ) {
   assert( sname != NULL );
   c_type_t const *const local_type = c_sname_local_type( sname );
@@ -120,10 +124,6 @@ void c_sname_fill_in_namespaces( c_sname_t *sname ) {
       type->btids |= TB_NAMESPACE;
     }
   } // for
-}
-
-void c_sname_free( c_sname_t *sname ) {
-  slist_free( sname, (slist_data_free_fn_t)&c_scope_data_free );
 }
 
 char const* c_sname_full_name( c_sname_t const *sname ) {
@@ -140,8 +140,8 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
   return strcmp( local_name, class_name ) == 0;
 }
 
-void c_sname_list_free( slist_t *list ) {
-  slist_free( list, (slist_data_free_fn_t)&c_sname_free );
+void c_sname_list_cleanup( slist_t *list ) {
+  slist_cleanup( list, (slist_data_free_fn_t)&c_sname_cleanup );
 }
 
 bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
@@ -227,7 +227,7 @@ bool c_sname_parse( char const *s, c_sname_t *sname ) {
     SKIP_WS( s );
   } // for
 
-  c_sname_free( &rv );
+  c_sname_cleanup( &rv );
   return false;
 }
 

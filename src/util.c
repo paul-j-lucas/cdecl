@@ -194,7 +194,7 @@ void* free_later( void *p ) {
 }
 
 void free_now( void ) {
-  slist_free( &free_later_list, &free );
+  slist_cleanup( &free_later_list, &free );
 }
 
 #ifdef ENABLE_TERM_SIZE

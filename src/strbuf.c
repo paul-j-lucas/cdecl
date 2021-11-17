@@ -99,7 +99,7 @@ void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
   sbuf->str[ sbuf->len ] = '\0';
 }
 
-void strbuf_free( strbuf_t *sbuf ) {
+void strbuf_cleanup( strbuf_t *sbuf ) {
   assert( sbuf != NULL );
   free( sbuf->str );
   strbuf_init( sbuf );
