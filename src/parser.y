@@ -1530,11 +1530,11 @@ static void yyerror( char const *msg ) {
 // c_ast_list_t
 %destructor { DTRACE; c_ast_list_free( &$$ ); } decl_list_english
 %destructor { DTRACE; c_ast_list_free( &$$ ); } decl_list_english_opt
-%destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english
-%destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english_opt
 %destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast
 %destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast_exp
 %destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast_opt
+%destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english
+%destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english_opt
 
 // name
 %destructor { DTRACE; FREE( $$ ); } any_name
