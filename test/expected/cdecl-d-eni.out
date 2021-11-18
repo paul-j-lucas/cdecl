@@ -176,6 +176,28 @@ decl_list_c_opt ::= <empty> = {
       type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
+  },
+  decl_list_c_opt = {
+    sname = "E" (none),
+    unique_id = 1328,
+    kind = "enum, class, struct, or union",
+    cast_kind = "none",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
+    ecsu_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1327,
+      kind = "built-in type",
+      cast_kind = "none",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
   }
 }
 define E as enumeration E of type int

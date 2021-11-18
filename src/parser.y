@@ -3224,7 +3224,6 @@ decl_list_c_opt
       DUMP_START( "decl_list_c_opt", "<empty>" );
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl_list_c_opt", type_ast );
-      DUMP_END();
 
       if ( type_ast->kind != K_ENUM_CLASS_STRUCT_UNION ) {
         //
@@ -3249,6 +3248,9 @@ decl_list_c_opt
 
       c_sname_t temp_sname = c_sname_dup( ecsu_sname );
       c_sname_set( &type_ast->sname, &temp_sname );
+
+      DUMP_AST( "decl_list_c_opt", type_ast );
+      DUMP_END();
 
       C_AST_CHECK( type_ast );
       c_ast_explain_type( type_ast, fout );
