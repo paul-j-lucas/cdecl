@@ -1429,7 +1429,6 @@ static void yyerror( char const *msg ) {
 %type   <int_val>   bit_field_c_int_opt
 %type   <ast_pair>  block_decl_c_astp
 %type   <ast_pair>  decl_c_astp decl2_c_astp
-%type   <ast>       destructor_decl_c_ast
 %type   <ast>       east_modified_type_c_ast
 %type   <ast>       enum_class_struct_union_c_ast
 %type   <ast>       enum_fixed_type_c_ast enum_fixed_type_c_ast_opt
@@ -1438,14 +1437,11 @@ static void yyerror( char const *msg ) {
 %type   <tid>       enum_fixed_type_modifier_btid
 %type   <ast>       enum_unmodified_fixed_type_c_ast
 %type   <tid>       extern_linkage_c_stid extern_linkage_c_stid_opt
-%type   <ast>       file_scope_constructor_decl_c_ast
-%type   <ast>       file_scope_destructor_decl_c_ast
 %type   <ast_pair>  func_decl_c_astp
 %type   <tid>       func_equals_c_stid_opt
 %type   <tid>       func_qualifier_c_stid
 %type   <tid>       func_qualifier_list_c_stid_opt
 %type   <tid>       func_ref_qualifier_c_stid_opt
-%type   <ast>       knr_func_or_constructor_decl_c_ast
 %type   <tid>       linkage_stid
 %type   <ast_pair>  nested_decl_c_astp
 %type   <tid>       noexcept_c_stid_opt
@@ -2134,57 +2130,22 @@ explain_command
     /*
      * C++ file-scope constructor definition, e.g.: S::S([params]).
      */
-  | explain file_scope_constructor_decl_c_ast
-    {
-      DUMP_START( "explain_command",
-                  "EXPLAIN file_scope_constructor_decl_c_ast" );
-      DUMP_AST( "file_scope_constructor_decl_c_ast", $2 );
-      DUMP_END();
-
-      C_AST_CHECK( $2 );
-      c_ast_explain_declaration( $2, fout );
-    }
+  | explain file_scope_constructor_decl_c
 
     /*
      * C++ in-class destructor declaration, e.g.: ~S().
      */
-  | explain destructor_decl_c_ast
-    {
-      DUMP_START( "explain_command", "EXPLAIN destructor_decl_c_ast" );
-      DUMP_AST( "destructor_decl_c_ast", $2 );
-      DUMP_END();
-
-      C_AST_CHECK( $2 );
-      c_ast_explain_declaration( $2, fout );
-    }
+  | explain destructor_decl_c
 
     /*
      * C++ file scope destructor definition, e.g.: S::~S().
      */
-  | explain file_scope_destructor_decl_c_ast
-    {
-      DUMP_START( "explain_command",
-                  "EXPLAIN file_scope_destructor_decl_c_ast" );
-      DUMP_AST( "file_scope_destructor_decl_c_ast", $2 );
-      DUMP_END();
-
-      C_AST_CHECK( $2 );
-      c_ast_explain_declaration( $2, fout );
-    }
+  | explain file_scope_destructor_decl_c
 
     /*
      * K&R C implicit int function and C++ in-class constructor declaration.
      */
-  | explain knr_func_or_constructor_decl_c_ast
-    {
-      DUMP_START( "explain_command",
-                  "EXPLAIN knr_func_or_constructor_decl_c_ast" );
-      DUMP_AST( "knr_func_or_constructor_decl_c_ast", $2 );
-      DUMP_END();
-
-      C_AST_CHECK( $2 );
-      c_ast_explain_declaration( $2, fout );
-    }
+  | explain knr_func_or_constructor_decl_c
 
     /*
      * Template declaration -- not supported.
@@ -3433,7 +3394,7 @@ block_decl_c_astp                       // Apple extension
 
 /// Gibberish in-class destructor declaration /////////////////////////////////
 
-destructor_decl_c_ast
+destructor_decl_c
     /*
      * C++ in-class destructor declaration, e.g.: ~S().
      */
@@ -3441,7 +3402,7 @@ destructor_decl_c_ast
     lparen_exp rparen_func_qualifier_list_c_stid_opt noexcept_c_stid_opt
     gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt
     {
-      DUMP_START( "destructor_decl_c_ast",
+      DUMP_START( "destructor_decl_c",
                   "virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt "
                   "noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt "
                   "func_equals_c_stid_opt" );
@@ -3451,23 +3412,26 @@ destructor_decl_c_ast
       DUMP_TID( "noexcept_c_stid_opt", $6 );
       DUMP_TID( "func_equals_c_stid_opt", $8 );
 
-      $$ = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      c_sname_append_name( &$$->sname, $3 );
-      $$->type.stids = c_tid_check( $1 | $5 | $6 | $8, C_TPID_STORE );
+      c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
+      c_sname_append_name( &ast->sname, $3 );
+      ast->type.stids = c_tid_check( $1 | $5 | $6 | $8, C_TPID_STORE );
 
-      DUMP_AST( "destructor_decl_c_ast", $$ );
+      DUMP_AST( "destructor_decl_c", ast );
       DUMP_END();
+
+      C_AST_CHECK( ast );
+      c_ast_explain_declaration( ast, fout );
     }
   ;
 
 /// Gibberish file-scope constructor declaration //////////////////////////////
 
-file_scope_constructor_decl_c_ast
+file_scope_constructor_decl_c
   : inline_stid_opt Y_CONSTRUCTOR_SNAME
     lparen_exp param_list_c_ast_opt rparen_func_qualifier_list_c_stid_opt
     noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt
     {
-      DUMP_START( "file_scope_constructor_decl_c_ast",
+      DUMP_START( "file_scope_constructor_decl_c",
                   "inline_opt CONSTRUCTOR_SNAME '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt" );
       DUMP_TID( "inline_stid_opt", $1 );
@@ -3478,24 +3442,27 @@ file_scope_constructor_decl_c_ast
 
       c_sname_set_scope_type( &$2, &C_TYPE_LIT_B( TB_CLASS ) );
 
-      $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      $$->sname = $2;
-      $$->type.stids = c_tid_check( $1 | $5 | $6, C_TPID_STORE );
-      $$->as.constructor.param_ast_list = $4;
+      c_ast_t *const ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
+      ast->sname = $2;
+      ast->type.stids = c_tid_check( $1 | $5 | $6, C_TPID_STORE );
+      ast->as.constructor.param_ast_list = $4;
 
-      DUMP_AST( "file_scope_constructor_decl_c_ast", $$ );
+      DUMP_AST( "file_scope_constructor_decl_c", ast );
       DUMP_END();
+
+      C_AST_CHECK( ast );
+      c_ast_explain_declaration( ast, fout );
     }
   ;
 
 /// Gibberish file-scope destructor declaration ///////////////////////////////
 
-file_scope_destructor_decl_c_ast
+file_scope_destructor_decl_c
   : inline_stid_opt Y_DESTRUCTOR_SNAME
     lparen_exp rparen_func_qualifier_list_c_stid_opt noexcept_c_stid_opt
     gnu_attribute_specifier_list_c_opt
     {
-      DUMP_START( "file_scope_destructor_decl_c_ast",
+      DUMP_START( "file_scope_destructor_decl_c",
                   "inline_opt DESTRUCTOR_SNAME '(' ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt" );
       DUMP_TID( "inline_stid_opt", $1 );
@@ -3505,12 +3472,15 @@ file_scope_destructor_decl_c_ast
 
       c_sname_set_scope_type( &$2, &C_TYPE_LIT_B( TB_CLASS ) );
 
-      $$ = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      $$->sname = $2;
-      $$->type.stids = c_tid_check( $1 | $4 | $5, C_TPID_STORE );
+      c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
+      ast->sname = $2;
+      ast->type.stids = c_tid_check( $1 | $4 | $5, C_TPID_STORE );
 
-      DUMP_AST( "file_scope_destructor_decl_c_ast", $$ );
+      DUMP_AST( "file_scope_destructor_decl_c", ast );
       DUMP_END();
+
+      C_AST_CHECK( ast );
+      c_ast_explain_declaration( ast, fout );
     }
   ;
 
@@ -3661,7 +3631,7 @@ func_decl_c_astp
     }
   ;
 
-knr_func_or_constructor_decl_c_ast
+knr_func_or_constructor_decl_c
     /*
      * K&R C implicit int function and C++ in-class constructor declaration.
      *
@@ -3686,7 +3656,7 @@ knr_func_or_constructor_decl_c_ast
         PARSE_ABORT();
       }
 
-      DUMP_START( "knr_func_or_constructor_decl_c_ast",
+      DUMP_START( "knr_func_or_constructor_decl_c",
                   "NAME '(' param_list_c_ast_opt ')' noexcept_c_stid_opt "
                   "func_equals_c_stid_opt" );
       DUMP_STR( "NAME", $1 );
@@ -3694,6 +3664,7 @@ knr_func_or_constructor_decl_c_ast
       DUMP_TID( "noexcept_c_stid_opt", $5 );
       DUMP_TID( "func_equals_c_stid_opt", $6 );
 
+      c_ast_t *ast;
       c_sname_t sname;
       c_sname_init_name( &sname, $1 );
 
@@ -3707,24 +3678,27 @@ knr_func_or_constructor_decl_c_ast
         c_ast_t *const ret_ast = c_ast_new_gc( K_BUILTIN, &@1 );
         ret_ast->type.btids = TB_INT;
 
-        $$ = c_ast_new_gc( K_FUNCTION, &@$ );
-        $$->as.func.ret_ast = ret_ast;
-        $$->type.stids = c_tid_check( $5 | $6, C_TPID_STORE );
+        ast = c_ast_new_gc( K_FUNCTION, &@$ );
+        ast->as.func.ret_ast = ret_ast;
+        ast->type.stids = c_tid_check( $5 | $6, C_TPID_STORE );
       }
       else {
         //
         // In C++, encountering a name followed by '(' declares an in-class
         // constructor.
         //
-        $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-        $$->type.stids = c_tid_check( $5 | $6, C_TPID_STORE );
+        ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
+        ast->type.stids = c_tid_check( $5 | $6, C_TPID_STORE );
       }
 
-      c_sname_set( &$$->sname, &sname );
-      $$->as.func.param_ast_list = $3;
+      c_sname_set( &ast->sname, &sname );
+      ast->as.func.param_ast_list = $3;
 
-      DUMP_AST( "knr_func_or_constructor_decl_c_ast", $$ );
+      DUMP_AST( "knr_func_or_constructor_decl_c", ast );
       DUMP_END();
+
+      C_AST_CHECK( ast );
+      c_ast_explain_declaration( ast, fout );
     }
   ;
 
