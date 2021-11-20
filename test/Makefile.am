@@ -527,6 +527,8 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_0f_v-c.test \
 	tests/explain_a4f_i.test \
 	tests/explain_a4v.test \
+	tests/explain_a5fd_i.test \
+	tests/explain_a5fd_pi.test \
 	tests/explain_ac9i.test \
 	tests/explain_af-c.test \
 	tests/explain_al3_c.test \

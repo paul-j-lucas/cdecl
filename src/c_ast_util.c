@@ -240,6 +240,27 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
           );
           return ast;
         }
+        PJL_FALLTHROUGH;
+
+      default:
+        if ( ast->kind == K_ARRAY ) {
+          //
+          // Before:
+          //
+          //      [ast(K_ARRAY)] --> [of_ast]
+          //      [func_ast]
+          //
+          // After:
+          //
+          //      [ast(K_ARRAY)] --> [func_ast] --> [of_ast]
+          //
+          // Note that an array of function is illegal, but we still construct
+          // the AST properly and let c_ast_check_array() catch the error.
+          //
+          c_ast_set_parent( ast->as.array.of_ast, func_ast );
+          c_ast_set_parent( func_ast, ast );
+          return ast;
+        }
         break;
 
       case K_PLACEHOLDER:
@@ -251,9 +272,6 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
       case K_APPLE_BLOCK:
         c_ast_set_parent( ret_ast, func_ast );
         return ast;
-
-      default:
-        /* suppress warning */;
     } // switch
   }
 

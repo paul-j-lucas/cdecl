@@ -10,6 +10,18 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.5.1
+
+** Fixed bug with array of function
+Given:
+
+    cdecl> explain int x[5](double)
+    declare f as function (double) returning int
+
+cdecl (1) incorrectly elided the array and therefore (2) didn't report the
+array of function as an error.
+
+
 * Changes in Cdecl 11.5
 
 ** Better error/warning locations
