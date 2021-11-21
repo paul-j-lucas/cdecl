@@ -99,7 +99,7 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
 
   if ( src_list != NULL && n != 0 ) {
     size_t un = (size_t)n;
-    FOREACH_SLIST_NODE( src_node, src_list, NULL ) {
+    FOREACH_SLIST_NODE( src_node, src_list ) {
       if ( un-- == 0 )
         break;
       void *const dst_data = data_dup_fn != NULL ?

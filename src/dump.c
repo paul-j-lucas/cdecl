@@ -289,10 +289,10 @@ void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
     FPUTS( "[\n", dout );
     ++indent;
     bool comma = false;
-    FOREACH_AST_LIST( p, list ) {
+    FOREACH_AST_LIST( node, list ) {
       if ( true_or_set( &comma ) )
         FPUTS( ",\n", dout );
-      c_ast_dump( c_param_ast( p ), indent, NULL, dout );
+      c_ast_dump( c_param_ast( node ), indent, NULL, dout );
     } // for
     --indent;
     FPUTC( '\n', dout );
@@ -324,7 +324,7 @@ void c_sname_list_dump( slist_t const *list, FILE *dout ) {
 
   FPUTC( '[', dout );
   bool dump_comma = false;
-  FOREACH_SLIST_NODE( node, list, NULL ) {
+  FOREACH_SLIST_NODE( node, list ) {
     if ( true_or_set( &dump_comma ) )
       FPUTS( ", ", dout );
     c_sname_dump( node->data, dout );

@@ -50,13 +50,27 @@ _GL_INLINE_HEADER_BEGIN
  */
 
 /**
- * Convenience macro for iterating over the nodes of an `slist`.
+ * Convenience macro for iterating over all the nodes of \a SLIST.
+ *
+ * @param VAR The `slist_node` loop variable.
+ * @param SLIST A pointer to the `slist` to iterate over.
+ *
+ * @sa #FOREACH_SLIST_NODE_UNTIL()
+ */
+#define FOREACH_SLIST_NODE(VAR,SLIST) \
+  FOREACH_SLIST_NODE_UNTIL( VAR, SLIST, NULL )
+
+/**
+ * Convenience macro for iterating over the nodes of \a SLIST up to but not
+ * including \a END.
  *
  * @param VAR The `slist_node` loop variable.
  * @param SLIST A pointer to the `slist` to iterate over.
  * @param END A pointer to the node to end before; may be NULL.
+ *
+ * @sa #FOREACH_SLIST_NODE()
  */
-#define FOREACH_SLIST_NODE(VAR,SLIST,END) \
+#define FOREACH_SLIST_NODE_UNTIL(VAR,SLIST,END) \
   for ( slist_node_t *VAR = CONST_CAST( slist_t*, SLIST )->head; VAR != (END); VAR = VAR->next )
 
 /**

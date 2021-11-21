@@ -89,7 +89,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param END The scope to end before; may be NULL.
  */
 #define FOREACH_SNAME_SCOPE(VAR,SNAME,END) \
-  FOREACH_SLIST_NODE( VAR, SNAME, END )
+  FOREACH_SLIST_NODE_UNTIL( VAR, SNAME, END )
 
 ///////////////////////////////////////////////////////////////////////////////
 

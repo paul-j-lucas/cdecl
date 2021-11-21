@@ -122,7 +122,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FOREACH_AST_FUNC_PARAM()
  */
 #define FOREACH_AST_LIST(VAR,AST_LIST) \
-  FOREACH_SLIST_NODE( VAR, AST_LIST, NULL )
+  FOREACH_SLIST_NODE( VAR, AST_LIST )
 
 ///////////////////////////////////////////////////////////////////////////////
 
