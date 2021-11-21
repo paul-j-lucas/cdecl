@@ -497,7 +497,7 @@ static void g_print_ast_func_params( g_state_t const *g, c_ast_t const *ast ) {
 
   bool comma = false;
   FPUTC( '(', g->gout );
-  FOREACH_FUNC_PARAM( param, ast ) {
+  FOREACH_AST_FUNC_PARAM( param, ast ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", g->gout );
     g_state_t params_g;
@@ -1019,7 +1019,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
       //
       //      namespace S { namespace T { typedef int I; } }
       //
-      FOREACH_SCOPE( scope, sname, sname->tail ) {
+      FOREACH_SNAME_SCOPE( scope, sname, sname->tail ) {
         scope_type = c_scope_data( scope )->type;
         if ( scope_type.btids == TB_SCOPE )
           scope_type.btids = TB_NAMESPACE;

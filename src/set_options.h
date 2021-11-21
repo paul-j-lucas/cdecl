@@ -77,6 +77,7 @@ typedef struct set_option set_option_t;
  *
  * @param VAR The `set_option_t` loop variable.
  *
+ * @sa #FOREACH_CLI_OPTION()
  * @sa set_option_next()
  */
 #define FOREACH_SET_OPTION(VAR) \

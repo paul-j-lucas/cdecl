@@ -308,7 +308,7 @@ void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
   if ( !c_sname_empty( sname ) ) {
     FPUTS( " (", dout );
     bool colon2 = false;
-    FOREACH_SCOPE( scope, sname, NULL ) {
+    FOREACH_SNAME_SCOPE( scope, sname, NULL ) {
       if ( true_or_set( &colon2 ) )
         FPUTS( "::", dout );
       c_type_t const *const t = &c_scope_data( scope )->type;
@@ -324,11 +324,11 @@ void c_sname_list_dump( slist_t const *list, FILE *dout ) {
 
   FPUTC( '[', dout );
   bool dump_comma = false;
-  FOREACH_SLIST( node, list, NULL ) {
+  FOREACH_SLIST_NODE( node, list, NULL ) {
     if ( true_or_set( &dump_comma ) )
       FPUTS( ", ", dout );
     c_sname_dump( node->data, dout );
-  }
+  } // for
   FPUTC( ']', dout );
 }
 

@@ -45,6 +45,7 @@
  * @param VAR The `struct option` loop variable.
  *
  * @sa cli_option_next()
+ * @sa #FOREACH_SET_OPTION()
  */
 #define FOREACH_CLI_OPTION(VAR) \
   for ( struct option const *VAR = NULL; (VAR = cli_option_next( VAR )) != NULL; )

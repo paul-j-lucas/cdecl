@@ -102,24 +102,27 @@ _GL_INLINE_HEADER_BEGIN
 #define C_FUNC_MASK_MEMBER    0x3u
 
 /**
- * Convenience macro for iterating over the AST nodes of an AST list.
- *
- * @param VAR The `slist_node` loop variable.
- * @param AST_LIST A pointer to the AST list to iterate over.
- */
-#define FOREACH_AST_LIST(VAR,AST_LIST) \
-  FOREACH_SLIST( VAR, AST_LIST, NULL )
-
-/**
  * Convenience macro for iterating over all function-like parameters.
  *
  * @param VAR The `c_ast_param_t` loop variable.
  * @param AST The AST to iterate the function-like parameters of.
  *
  * @sa c_ast_params()
+ * @sa #FOREACH_AST_LIST()
  */
-#define FOREACH_FUNC_PARAM(VAR,AST) \
+#define FOREACH_AST_FUNC_PARAM(VAR,AST) \
   FOREACH_AST_LIST( VAR, &(AST)->as.func.param_ast_list )
+
+/**
+ * Convenience macro for iterating over the AST nodes of an AST list.
+ *
+ * @param VAR The `slist_node` loop variable.
+ * @param AST_LIST A pointer to the AST list to iterate over.
+ *
+ * @sa #FOREACH_AST_FUNC_PARAM()
+ */
+#define FOREACH_AST_LIST(VAR,AST_LIST) \
+  FOREACH_SLIST_NODE( VAR, AST_LIST, NULL )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -572,7 +575,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
  *
  * @sa c_ast_params_count()
  * @sa c_param_ast()
- * @sa #FOREACH_FUNC_PARAM
+ * @sa #FOREACH_AST_FUNC_PARAM
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {

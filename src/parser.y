@@ -1727,7 +1727,7 @@ declare_command
       c_gib_flags_t gib_flags = C_GIB_DECL;
       if ( slist_len( &$2 ) > 1 )
         gib_flags |= C_GIB_MULTI_DECL;
-      FOREACH_SLIST( sname_node, &$2, NULL ) {
+      FOREACH_SLIST_NODE( sname_node, &$2, NULL ) {
         c_sname_set( &$5->sname, sname_node->data );
         C_AST_CHECK( $5 );
         c_ast_gibberish( $5, gib_flags, fout );

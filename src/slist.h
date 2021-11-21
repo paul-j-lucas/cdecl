@@ -56,7 +56,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param SLIST A pointer to the `slist` to iterate over.
  * @param END A pointer to the node to end before; may be NULL.
  */
-#define FOREACH_SLIST(VAR,SLIST,END) \
+#define FOREACH_SLIST_NODE(VAR,SLIST,END) \
   for ( slist_node_t *VAR = CONST_CAST( slist_t*, SLIST )->head; VAR != (END); VAR = VAR->next )
 
 /**

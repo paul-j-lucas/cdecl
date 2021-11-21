@@ -62,7 +62,7 @@ static char const* c_sname_impl( strbuf_t *sbuf, c_sname_t const *sname,
   strbuf_reset( sbuf );
   bool colon2 = false;
 
-  FOREACH_SCOPE( scope, sname, end_scope ) {
+  FOREACH_SNAME_SCOPE( scope, sname, end_scope ) {
     strbuf_sepsn( sbuf, "::", 2, &colon2 );
     c_scope_data_t const *const data = c_scope_data( scope );
     if ( data->type.stids != TS_NONE ) {
@@ -117,7 +117,7 @@ void c_sname_fill_in_namespaces( c_sname_t *sname ) {
   if ( !c_type_is_tid_any( local_type, TB_NAMESPACE ) )
     return;
 
-  FOREACH_SCOPE( scope, sname, sname->tail ) {
+  FOREACH_SNAME_SCOPE( scope, sname, sname->tail ) {
     c_type_t *const type = &c_scope_data( scope )->type;
     if ( c_type_is_none( type ) || c_type_is_tid_any( type, TB_SCOPE ) ) {
       type->btids &= c_tid_compl( TB_SCOPE );

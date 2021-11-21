@@ -457,7 +457,7 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
       is_no ? "no" : "", found_opt->name
     );
     size_t i = 1;
-    FOREACH_SLIST( node, &ambiguous_list, NULL ) {
+    FOREACH_SLIST_NODE( node, &ambiguous_list, NULL ) {
       EPRINTF( "%s\"%s%s\"",
         (node->next != NULL ? ", " : (i > 1 ?  ", or " : " or ")),
         is_no ? "no" : "", STATIC_CAST( char*, node->data )
