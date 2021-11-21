@@ -1,5 +1,8 @@
 2021-11-21  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.h, dump.c: Removed FOREACH_AST_LIST().
+   * c_ast.h, c_sname.h, dump.c, parser.y, set_options.c, slist.c, slist.h:
+     Added FOREACH_SLIST_NODE_UNTIL().
    * c_ast.c, c_ast.h, c_sname.c, c_sname.h, check.c, dump.c, english.c,
      gibberish.c, options.h, parser.y, set_options.c, set_options.h, slist.c,
      slist.h: FOREACH_* macro clean-up.
