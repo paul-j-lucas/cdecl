@@ -1,3 +1,45 @@
+2021-11-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_sname.c, c_sname.h, check.c, dump.c, english.c,
+     gibberish.c, options.h, parser.y, set_options.c, set_options.h, slist.c,
+     slist.h: FOREACH_* macro clean-up.
+
+2021-11-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, c_ast_util.c, test/Makefile.am, explain_a5fd_i.out,
+     explain_a5fd_pi.out, explain_a5fd_i.test, explain_a5fd_pi.test: Fixed bug
+     with a declaration like int f[5](double).
+
+2021-11-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Reworked "explain" rules.
+
+2021-11-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, cdecl-d-eni.out: Added DUMP_AST( "decl_list_c_opt", type_ast )
+     to decl_list_c_opt.
+   * c_ast.c, c_ast.h, c_sglob.c, c_sglob.h, c_sname.c, c_sname.h, c_typedef.c,
+     cdecl.c, gibberish.c, lexer.l, parser.y, red_black.c, red_black.h,
+     red_black_test.c, set_options.c, slist.c, slist.h, slist_test.c, strbuf.c,
+     strbuf.h, util.c: Renamed *_free() functions to *_cleanup() for those that
+     don't free the object itself.
+   * parser.y: Sorted Bison destructors.
+
+2021-11-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, check.c, english.c, gibberish.c:
+     s/FOREACH_PARAM/FOREACH_FUNC_PARAM/
+   * english.c: Renaming.
+
+2021-11-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_sname.c, c_sname.h, parser.y, set_options.c, slist.c, slist.h,
+     slist_test.c, util.c: Got rid of slist data -- never used.
+
+2021-11-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: Added cast_kind to c_ast_equiv() and c_ast_dup().
+
 2021-11-10  Paul J. Lucas <paul@lucasmail.org>
 
    * cdefs.h, string.in.h, wchar.in.h: Updated Gnulib.
