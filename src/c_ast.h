@@ -108,21 +108,9 @@ _GL_INLINE_HEADER_BEGIN
  * @param AST The AST to iterate the function-like parameters of.
  *
  * @sa c_ast_params()
- * @sa #FOREACH_AST_LIST()
  */
 #define FOREACH_AST_FUNC_PARAM(VAR,AST) \
-  FOREACH_AST_LIST( VAR, &(AST)->as.func.param_ast_list )
-
-/**
- * Convenience macro for iterating over the AST nodes of an AST list.
- *
- * @param VAR The `slist_node` loop variable.
- * @param AST_LIST A pointer to the AST list to iterate over.
- *
- * @sa #FOREACH_AST_FUNC_PARAM()
- */
-#define FOREACH_AST_LIST(VAR,AST_LIST) \
-  FOREACH_SLIST_NODE( VAR, AST_LIST )
+  FOREACH_SLIST_NODE( VAR, &(AST)->as.func.param_ast_list )
 
 ///////////////////////////////////////////////////////////////////////////////
 
