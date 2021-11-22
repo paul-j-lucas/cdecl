@@ -1,3 +1,7 @@
+2021-11-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c, english.c, util.c, util.h: Got rid of hacky SP_IF() macro.
+
 2021-11-21  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.h, dump.c: Removed FOREACH_AST_LIST().
