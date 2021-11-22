@@ -1485,9 +1485,9 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
 
   c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
   unsigned const overload_flags = c_ast_oper_overload( ast );
-  char const *const op_monm =           // member or non-member string
-    overload_flags == C_OP_MEMBER     ? L_MEMBER     :
-    overload_flags == C_OP_NON_MEMBER ? H_NON_MEMBER :
+  char const *const member_or_nonmember =
+    overload_flags == C_OP_MEMBER     ? "member "     :
+    overload_flags == C_OP_NON_MEMBER ? "non-member " :
     "";
 
   //
@@ -1525,14 +1525,14 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   if ( n_params < req_params_min ) {
     if ( req_params_min == req_params_max )
 same: print_error( &ast->loc,
-        "%s%s%s %s must have exactly %u parameter%s\n",
-        SP_AFTER( op_monm ), L_OPERATOR, op->name,
+        "%s%s %s must have exactly %u parameter%s\n",
+        member_or_nonmember, L_OPERATOR, op->name,
         req_params_min, plural_s( req_params_min )
       );
     else
       print_error( &ast->loc,
-        "%s%s%s %s must have at least %u parameter%s\n",
-        SP_AFTER( op_monm ), L_OPERATOR, op->name,
+        "%s%s %s must have at least %u parameter%s\n",
+        member_or_nonmember, L_OPERATOR, op->name,
         req_params_min, plural_s( req_params_min )
       );
     return false;
@@ -1541,8 +1541,8 @@ same: print_error( &ast->loc,
     if ( op->params_min == req_params_max )
       goto same;
     print_error( &ast->loc,
-      "%s%s%s %s can have at most %u parameter%s\n",
-      SP_AFTER( op_monm ), L_OPERATOR, op->name,
+      "%s%s %s can have at most %u parameter%s\n",
+      member_or_nonmember, L_OPERATOR, op->name,
       op->params_max, plural_s( op->params_max )
     );
     return false;
@@ -1651,8 +1651,8 @@ same: print_error( &ast->loc,
       c_ast_t const *const param_ast = c_param_ast( param );
       if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
         print_error( &param_ast->loc,
-          "parameter of postfix %s%s%s %s must be %s\n",
-          SP_AFTER( op_monm ), L_OPERATOR, op->name,
+          "parameter of postfix %s%s %s must be %s\n",
+          member_or_nonmember, L_OPERATOR, op->name,
           c_tid_name_error( TB_INT )
         );
         return false;

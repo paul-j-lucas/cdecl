@@ -187,6 +187,11 @@ char const* fprint_list_gets( void const *elt ) {
   return *ps;
 }
 
+void fputs_sp( char const *s, FILE *out ) {
+  if ( s[0] != '\0' )
+    FPRINTF( out, "%s ", s );
+}
+
 void* free_later( void *p ) {
   assert( p != NULL );
   slist_push_tail( &free_later_list, p );

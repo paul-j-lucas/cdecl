@@ -435,30 +435,6 @@ _GL_INLINE_HEADER_BEGIN
 #define SKIP_WS(S)                SKIP_CHARS( (S), WS )
 
 /**
- * Conditionally returns a space or an empty string.
- *
- * @param S The C string to check.
- * @return If \a S is non-empty, returns `" "`; otherwise returns `""`.
- *
- * @sa #SP_AFTER()
- */
-#define SP_IF(S)                  ((S)[0] != '\0' ? " " : "")
-
-/**
- * Expands into \a S followed by either a space (if \a S is non-empty) or the
- * empty string (if \a S is empty).
- *
- * @note When used in a `printf()`, the format string must be `%s%s`.
- *
- * @param S The C string to check.
- * @return Returns \a S followed by either `" "` (if \a S is non-empty) or `""`
- * (if \a S is empty).
- *
- * @sa #SP_IF()
- */
-#define SP_AFTER(S)               (S), SP_IF(S)
-
-/**
  * Explicit C version of C++'s `static_cast`.
  *
  * @param T The type to cast to.
@@ -722,6 +698,14 @@ void fprint_list( FILE *out, void const *elt, size_t elt_size,
  */
 PJL_WARN_UNUSED_RESULT
 char const* fprint_list_gets( void const *elt );
+
+/**
+ * If \a s is not empty, prints \a s followed by a space to \a out.
+ *
+ * @param s The string to print.
+ * @param out the `FILE` to print to.
+ */
+void fputs_sp( char const *s, FILE *out );
 
 /**
  * Adds a pointer to the head of the free-later-list.

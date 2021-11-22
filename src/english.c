@@ -156,10 +156,10 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visitor_data_t data ) {
         case K_OPERATOR: {
           unsigned const overload_flags = c_ast_oper_overload( ast );
           char const *const op_literal =
-            overload_flags == C_OP_MEMBER     ? L_MEMBER      :
-            overload_flags == C_OP_NON_MEMBER ? H_NON_MEMBER  :
+            overload_flags == C_OP_MEMBER     ? "member "     :
+            overload_flags == C_OP_NON_MEMBER ? "non-member " :
             "";
-          FPRINTF( eout, "%s%s", SP_AFTER( op_literal ) );
+          FPUTS( op_literal, eout );
           break;
         }
         default:
@@ -208,15 +208,13 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visitor_data_t data ) {
       FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
       break;
 
-    case K_POINTER_TO_MEMBER: {
+    case K_POINTER_TO_MEMBER:
       c_type_print_not_base( &ast->type, eout );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
-      char const *const name = c_tid_name_english( ast->type.btids );
-      FPRINTF( eout, "%s%s", SP_AFTER( name ) );
+      fputs_sp( c_tid_name_english( ast->type.btids ), eout );
       c_sname_english( &ast->as.ptr_mbr.class_sname, eout );
       FPUTC( ' ', eout );
       break;
-    }
 
     case K_TYPEDEF:
       if ( !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) ) )
@@ -225,9 +223,9 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visitor_data_t data ) {
       c_ast_bit_width_english( ast, eout );
       break;
 
-    case K_USER_DEF_CONVERSION: {
-      char const *const name = c_type_name_english( &ast->type );
-      FPRINTF( eout, "%s%s%s", SP_AFTER( name ), c_kind_name( ast->kind ) );
+    case K_USER_DEF_CONVERSION:
+      fputs_sp( c_type_name_english( &ast->type ), eout );
+      FPUTS( c_kind_name( ast->kind ), eout );
       if ( !c_sname_empty( &ast->sname ) ) {
         FPRINTF( eout,
           " %s %s ",
@@ -237,7 +235,6 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visitor_data_t data ) {
       }
       FPRINTF( eout, " %s ", L_RETURNING );
       break;
-    }
 
     case K_VARIADIC:
       FPUTS( c_kind_name( ast->kind ), eout );
