@@ -111,13 +111,13 @@ static void print_h( char const *line ) {
           SGR_START_COLOR( fout, help_punct );
           PJL_FALLTHROUGH;
         case '>':                       // ends non-terminal
-          PUTC( *s );
+          FPUTC( *s, fout );
           SGR_END_COLOR( fout );
           continue;
       } // switch
     }
 
-    PUTC( *s );
+    FPUTC( *s, fout );
     is_escaped = false;
   } // for
 }
