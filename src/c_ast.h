@@ -501,9 +501,9 @@ bool c_ast_is_orphan( c_ast_t const *ast ) {
 }
 
 /**
- * Checks whether \a ast is a parent node.
+ * Checks whether \a ast is a #K_ANY_PARENT.
  *
- * @param ast The AST to check.  If NULL, does nothing.
+ * @param ast The AST to check.  May be NULL.
  * @return Returns `true` only if it is.
  *
  * @sa c_ast_is_kind_any()
@@ -516,9 +516,9 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
 }
 
 /**
- * Checks whether \a ast is a referrer node.
+ * Checks whether \a ast is a #K_ANY_REFERRER.
  *
- * @param ast The AST to check.  If NULL, does nothing.
+ * @param ast The AST to check.  May be NULL.
  * @return Returns `true` only if it is.
  *
  * @sa c_ast_is_kind_any()
