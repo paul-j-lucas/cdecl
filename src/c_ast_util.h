@@ -186,6 +186,8 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
  *
  * @param ast The AST to check.
  * @param sname The scoped name to check for.
+ * @return Returns `true` only if \a ast is a reference to #TB_ANY_CLASS and
+ * has a name matching \a sname.
  *
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_ref_to_type_any()
