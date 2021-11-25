@@ -3,7 +3,7 @@ Cdecl NEWS -- history of user-visible changes.
 Copyright (C) 2018-2021  Paul J. Lucas, et al.
 See the end of the file for license conditions.
 
-Note: over its 30+ year history, cdecl has never had good version numbering.
+Note: over its 35+ year history, cdecl has never had good version numbering.
 For changes in a particular version where the version number is unknown, the
 version's author is given instead.  For the full (known) list of authors along
 with their complete changes, see the AUTHORS file.
