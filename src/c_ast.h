@@ -577,7 +577,8 @@ c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
  * @return Returns said number of parameters.
  *
  * @sa c_ast_params()
- * @sa c_ast_params_count()
+ * @sa c_param_ast()
+ * @sa #FOREACH_AST_FUNC_PARAM
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 size_t c_ast_params_count( c_ast_t const *ast ) {
@@ -628,6 +629,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
  *
  * @sa c_ast_params()
  * @sa c_ast_params_count()
+ * @sa #FOREACH_AST_FUNC_PARAM
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_param_ast( c_ast_param_t const *param ) {
