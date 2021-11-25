@@ -167,7 +167,7 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  *
  * @param ast The AST to check.
  * @param mask_type The type mask to apply to the type of \a ast before
- * equality comparison with \a equal_type.
+ * equality comparison with \a type.
  * @param type The type to check against.  Only type IDs that are not NONE are
  * compared.
  * @return Returns `true` only if \a ast (masked with \a mask_type) is a
