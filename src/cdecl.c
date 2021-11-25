@@ -99,10 +99,20 @@ char const   *me;
 // extern functions
 extern void parser_cleanup( void );
 
+/**
+ * Bison: parse input.
+ *
+ * @return Returns 0 only if parsing was successful.
+ */
 PJL_WARN_UNUSED_RESULT
 extern int  yyparse( void );
 
-extern void yyrestart( FILE* );
+/**
+ * Flex: immediately switch to reading \a file.
+ *
+ * @param in_file The `FILE` to read from.
+ */
+extern void yyrestart( FILE *in_file );
 
 // local functions
 static void cdecl_cleanup( void );
