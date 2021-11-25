@@ -1,3 +1,7 @@
+2021-11-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: s/30/35/
+
 2021-11-24  Paul J. Lucas <paul@lucasmail.org>
 
    * c_sname.c, c_sname.h, parser.y, slist.c, slist.h, slist_test.c: slist type
