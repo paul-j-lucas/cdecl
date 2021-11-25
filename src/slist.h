@@ -97,7 +97,24 @@ typedef struct slist_node slist_node_t;
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
  * less than, equal to, or greater than \a j_data, respectively.
  */
-typedef int (*slist_data_cmp_fn_t)( void const *i_data, void const *j_data );
+typedef int (*slist_cmp_fn_t)( void const *i_data, void const *j_data );
+
+/**
+ * The signature for a function passed to slist_dup() used to duplicate data
+ * associated with each node (if necessary).
+ *
+ * @param data A pointer to the data to duplicate.
+ * @return Returns a duplicate of \a data.
+ */
+typedef void* (*slist_dup_fn_t)( void const *data );
+
+/**
+ * The signature for a function passed to slist_cleanup() used to free data
+ * associated with each node (if necessary).
+ *
+ * @param data A pointer to the data to free.
+ */
+typedef void (*slist_free_fn_t)( void *data );
 
 /**
  * The signature for a function passed to slist_free_if() used to determine
@@ -107,23 +124,6 @@ typedef int (*slist_data_cmp_fn_t)( void const *i_data, void const *j_data );
  * @return Returns `true` only if the node should be freed.
  */
 typedef bool (*slist_predicate_fn_t)( void *data );
-
-/**
- * The signature for a function passed to slist_dup() used to duplicate data
- * associated with each node (if necessary).
- *
- * @param data A pointer to the data to duplicate.
- * @return Returns a duplicate of \a data.
- */
-typedef void* (*slist_data_dup_fn_t)( void const *data );
-
-/**
- * The signature for a function passed to slist_cleanup() used to free data
- * associated with each node (if necessary).
- *
- * @param data A pointer to the data to free.
- */
-typedef void (*slist_data_free_fn_t)( void *data );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -151,45 +151,44 @@ struct slist_node {
  *
  * @param list A pointer to the list to clean up.  If NULL, does nothing;
  * otherwise, reinitializes \a list upon completion.
- * @param data_free_fn A pointer to a function to use to free the data at each
- * node of \a list or NULL if none is required.
+ * @param free_fn A pointer to a function to use to free the data at each node
+ * of \a list or NULL if none is required.
  *
  * @sa slist_free_if()
  * @sa slist_init()
  */
-void slist_cleanup( slist_t *list, slist_data_free_fn_t data_free_fn );
+void slist_cleanup( slist_t *list, slist_free_fn_t free_fn );
 
 /**
  * Compares two lists.
  *
  * @param i_list The first list.
  * @param j_list The second list.
- * @param data_cmp_fn A pointer to a function to use to compare data at each
- * node of \a i_list and \a j_list or NULL if none is required (hence the data
- * will be compared directly as signed integers).
+ * @param cmp_fn A pointer to a function to use to compare data at each node of
+ * \a i_list and \a j_list or NULL if none is required (hence the data will be
+ * compared directly as signed integers).
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_list is
  * less than, equal to, or greater than \a j_list, respectively.
  */
 PJL_WARN_UNUSED_RESULT
 int slist_cmp( slist_t const *i_list, slist_t const *j_list,
-               slist_data_cmp_fn_t data_cmp_fn );
+               slist_cmp_fn_t cmp_fn );
 
 /**
  * Duplicates \a src_list and all of its nodes.
  *
  * @param src_list The <code>\ref slist</code> to duplicate; may ne NULL.
  * @param n The number of nodes to duplicate; -1 is equivalent to slist_len().
- * @param data_dup_fn A pointer to a function to use to duplicate the data at
- * each node of \a src_list or NULL if none is required (hence a shallow copy
- * will be done).
+ * @param dup_fn A pointer to a function to use to duplicate the data at each
+ * node of \a src_list or NULL if none is required (hence a shallow copy will
+ * be done).
  * @return Returns a duplicate of \a src_list.  The caller is responsible for
  * calling slist_cleanup() on it.
  *
  * @sa slist_cleanup()
  */
 PJL_WARN_UNUSED_RESULT
-slist_t slist_dup( slist_t const *src_list, ssize_t n,
-                   slist_data_dup_fn_t data_dup_fn );
+slist_t slist_dup( slist_t const *src_list, ssize_t n, slist_dup_fn_t dup_fn );
 
 /**
  * Gets whether \a list is empty.

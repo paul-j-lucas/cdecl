@@ -53,35 +53,35 @@ static bool test_slist_cmp( void ) {
   slist_init( &list2 );
 
   // test 2 empty lists
-  TEST( slist_cmp( &list, &list2, (slist_data_cmp_fn_t)&strcmp ) == 0 );
+  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) == 0 );
 
   // test empty and non-empty lists
   slist_push_tail( &list2, (void*)"A" );
-  TEST( slist_cmp( &list, &list2, (slist_data_cmp_fn_t)&strcmp ) != 0 );
+  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) != 0 );
   slist_cleanup( &list2, NULL );
 
   // test non-empty and empty lists
   slist_push_tail( &list, (void*)"A" );
-  TEST( slist_cmp( &list, &list2, (slist_data_cmp_fn_t)&strcmp ) != 0 );
+  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) != 0 );
   slist_cleanup( &list, NULL );
 
   // test matching 1,2,3-element lists
   slist_push_tail( &list, (void*)"A" );
   slist_push_tail( &list2, (void*)"A" );
-  TEST( slist_cmp( &list, &list2, (slist_data_cmp_fn_t)&strcmp ) == 0 );
+  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) == 0 );
   slist_push_tail( &list, (void*)"B" );
   slist_push_tail( &list2, (void*)"B" );
-  TEST( slist_cmp( &list, &list2, (slist_data_cmp_fn_t)&strcmp ) == 0 );
+  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) == 0 );
   slist_push_tail( &list, (void*)"C" );
   slist_push_tail( &list2, (void*)"C" );
-  TEST( slist_cmp( &list, &list2, (slist_data_cmp_fn_t)&strcmp ) == 0 );
+  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) == 0 );
   slist_cleanup( &list, NULL );
   slist_cleanup( &list2, NULL );
 
   // test 1-element non-matching lists
   slist_push_tail( &list, (void*)"A" );
   slist_push_tail( &list2, (void*)"B" );
-  TEST( slist_cmp( &list, &list2, (slist_data_cmp_fn_t)&strcmp ) < 0 );
+  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) < 0 );
   slist_cleanup( &list, NULL );
   slist_cleanup( &list2, NULL );
 
@@ -89,7 +89,7 @@ static bool test_slist_cmp( void ) {
   slist_push_tail( &list, (void*)"A" );
   slist_push_tail( &list2, (void*)"A" );
   slist_push_tail( &list2, (void*)"B" );
-  TEST( slist_cmp( &list, &list2, (slist_data_cmp_fn_t)&strcmp ) < 0 );
+  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) < 0 );
   slist_cleanup( &list, NULL );
   slist_cleanup( &list2, NULL );
 
@@ -152,7 +152,7 @@ static bool test_slist_dup( void ) {
 
   // check data_dup_fn
   slist_push_tail( &list, (void*)&A );
-  list2 = slist_dup( &list, -1, (slist_data_dup_fn_t)&strdup );
+  list2 = slist_dup( &list, -1, (slist_dup_fn_t)&strdup );
   TEST( !slist_empty( &list2 ) );
   TEST( slist_len( &list2 ) == 1 );
   if ( TEST( (p = slist_peek_head( &list2 )) != NULL ) ) {

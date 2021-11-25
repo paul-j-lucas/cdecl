@@ -40,11 +40,11 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void slist_cleanup( slist_t *list, slist_data_free_fn_t data_free_fn ) {
+void slist_cleanup( slist_t *list, slist_free_fn_t free_fn ) {
   if ( list != NULL ) {
     slist_node_t *curr = list->head, *next;
 
-    if ( data_free_fn == NULL ) {       // avoid repeated check in loop
+    if ( free_fn == NULL ) {            // avoid repeated check in loop
       for ( ; curr != NULL; curr = next ) {
         next = curr->next;
         free( curr );
@@ -52,7 +52,7 @@ void slist_cleanup( slist_t *list, slist_data_free_fn_t data_free_fn ) {
     }
     else {
       for ( ; curr != NULL; curr = next ) {
-        (*data_free_fn)( curr->data );
+        (*free_fn)( curr->data );
         next = curr->next;
         free( curr );
       } // for
@@ -63,7 +63,7 @@ void slist_cleanup( slist_t *list, slist_data_free_fn_t data_free_fn ) {
 }
 
 int slist_cmp( slist_t const *i_list, slist_t const *j_list,
-               slist_data_cmp_fn_t data_cmp_fn ) {
+               slist_cmp_fn_t cmp_fn ) {
   assert( i_list != NULL );
   assert( j_list != NULL );
 
@@ -72,7 +72,7 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
 
   slist_node_t const *i_node = i_list->head, *j_node = j_list->head;
 
-  if ( data_cmp_fn == NULL ) {          // avoid repeated check in loop
+  if ( cmp_fn == NULL ) {               // avoid repeated check in loop
     for ( ; i_node != NULL && j_node != NULL;
           i_node = i_node->next, j_node = j_node->next ) {
       int const cmp = (int)((intptr_t)i_node->data - (intptr_t)j_node->data);
@@ -83,7 +83,7 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
   else {
     for ( ; i_node != NULL && j_node != NULL;
           i_node = i_node->next, j_node = j_node->next ) {
-      int const cmp = (*data_cmp_fn)( i_node->data, j_node->data );
+      int const cmp = (*cmp_fn)( i_node->data, j_node->data );
       if ( cmp != 0 )
         return cmp;
     } // for
@@ -93,7 +93,7 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
 }
 
 slist_t slist_dup( slist_t const *src_list, ssize_t n,
-                   slist_data_dup_fn_t data_dup_fn ) {
+                   slist_dup_fn_t dup_fn ) {
   slist_t dst_list;
   slist_init( &dst_list );
 
@@ -102,8 +102,8 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
     FOREACH_SLIST_NODE( src_node, src_list ) {
       if ( un-- == 0 )
         break;
-      void *const dst_data = data_dup_fn != NULL ?
-        (*data_dup_fn)( src_node->data ) : src_node->data;
+      void *const dst_data = dup_fn != NULL ?
+        (*dup_fn)( src_node->data ) : src_node->data;
       slist_push_tail( &dst_list, dst_data );
     } // for
   }

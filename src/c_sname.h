@@ -192,7 +192,7 @@ void c_sname_cleanup( c_sname_t *sname );
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
-  return slist_cmp( i_sname, j_sname, (slist_data_cmp_fn_t)&c_scope_data_cmp );
+  return slist_cmp( i_sname, j_sname, (slist_cmp_fn_t)&c_scope_data_cmp );
 }
 
 /**
@@ -218,7 +218,7 @@ size_t c_sname_count( c_sname_t const *sname ) {
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 c_sname_t c_sname_dup( c_sname_t const *sname ) {
-  return slist_dup( sname, -1, (slist_data_dup_fn_t)&c_scope_data_dup );
+  return slist_dup( sname, -1, (slist_dup_fn_t)&c_scope_data_dup );
 }
 
 /**

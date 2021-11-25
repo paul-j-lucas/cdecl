@@ -484,7 +484,7 @@ static c_ast_list_t   typedef_ast_list; ///< `c_ast` nodes for `typedef`s.
  * @param ast_list The AST list to free.
  */
 static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
-  slist_cleanup( ast_list, (slist_data_free_fn_t)&c_ast_free );
+  slist_cleanup( ast_list, (slist_free_fn_t)&c_ast_free );
 }
 
 /**
