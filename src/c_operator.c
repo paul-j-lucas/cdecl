@@ -38,7 +38,9 @@
 // standard
 #include <assert.h>
 
+/// @cond DOXYGEN_IGNORE
 #define UNLIMITED                 C_OP_PARAMS_UNLIMITED
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 

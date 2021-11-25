@@ -104,7 +104,7 @@ typedef enum   c_cast_kind        c_cast_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_ecsu_ast         c_ecsu_ast_t;
 typedef struct c_function_ast     c_function_ast_t;
-typedef unsigned                  c_gib_flags_t;
+typedef unsigned                  c_gib_flags_t;  ///< Gibberish printing flags.
 typedef enum   c_graph            c_graph_t;
 typedef struct c_keyword          c_keyword_t;
 typedef enum   c_keyword_ctx      c_keyword_ctx_t;

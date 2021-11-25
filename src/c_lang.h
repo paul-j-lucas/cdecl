@@ -79,10 +79,10 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CPP_NEW  LANG_CPP_23       /**< Newest supported C++ language. */
 #define LANG_CPP_ANY  LANG_MASK_CPP     /**< Any C++ language. */
 
-/**< Language eXtensions for Embedded C. */
+/** Language eXtensions for Embedded C. */
 #define LANGX_EMC     (1u << 7)
 
-/**< Language eXtensions for Unified Parallel C. */
+/** Language eXtensions for Unified Parallel C. */
 #define LANGX_UPC     (1u << 8)
 
 /**
