@@ -69,7 +69,7 @@
 
 /**
  * Flag for c_ast_gibberish() to indicate that the declaration is for multiple
- * ojects.
+ * objects.
  *
  * @note Unlike #C_GIB_OMIT_TYPE, must be used for the entire declaration.
  * @note May only be used in combination with #C_GIB_DECL.
