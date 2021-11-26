@@ -1,1 +1,0 @@
-cdecl @ @ @ typedef void (*f)(int); show f @ 0

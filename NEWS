@@ -21,6 +21,11 @@ Given:
 cdecl (1) incorrectly elided the array and therefore (2) didn't report the
 array of function as an error.
 
+** `typedef` of function
+`typedef`s of function are now correctly allowed:
+
+    typedef int (F)(void)
+
 
 * Changes in Cdecl 11.5
 

@@ -435,7 +435,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_FUNC_LIKE_CPP
  * @sa #TS_MAIN_FUNC_C
  */
-#define TS_FUNC_C             ( TS_EXTERN | TS_INLINE | TS_STATIC )
+#define TS_FUNC_C             ( TS_EXTERN | TS_INLINE | TS_STATIC | TS_TYPEDEF )
 
 /**
  * The only storage-types that can apply to C++ function-like things
