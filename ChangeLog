@@ -1,5 +1,12 @@
+2021-11-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_type.h, test/Makefile.am, typedef_fi_v_show.out,
+     typedef_fi_v_show.test, typedef_pfi_v_show.test: typedefs of function are
+     now correctly allowed.
+
 2021-11-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c: Removed unnecessary depth assignment.
    * NEWS: s/30/35/
 
 2021-11-24  Paul J. Lucas <paul@lucasmail.org>
