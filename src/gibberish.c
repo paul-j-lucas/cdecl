@@ -893,7 +893,10 @@ static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
 
 void c_ast_gibberish( c_ast_t const *ast, c_gib_flags_t flags, FILE *gout ) {
   assert( ast != NULL );
-  assert( (flags & (C_GIB_CAST | C_GIB_DECL)) != 0 );
+  assert( (flags & (C_GIB_CAST    | C_GIB_DECL )) != 0 );
+  assert( (flags & (C_GIB_TYPEDEF | C_GIB_USING)) == 0 );
+  assert( (flags & C_GIB_OMIT_TYPE ) == 0 || (flags & C_GIB_DECL) != 0 );
+  assert( (flags & C_GIB_MULTI_DECL) == 0 || (flags & C_GIB_DECL) != 0 );
   assert( gout != NULL );
 
   if ( (flags & C_GIB_OMIT_TYPE) == 0 ) {
@@ -930,6 +933,8 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
                           FILE *gout ) {
   assert( tdef != NULL );
   assert( (flags & (C_GIB_TYPEDEF | C_GIB_USING)) != 0 );
+  assert( (flags & (C_GIB_CAST    | C_GIB_DECL
+                 |  C_GIB_MULTI_DECL | C_GIB_OMIT_TYPE)) == 0 );
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;
