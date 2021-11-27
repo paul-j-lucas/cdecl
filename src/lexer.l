@@ -624,15 +624,15 @@ hyphenated    [a-z]+-([a-z]+-)*[a-z]+
 glob_scope    \*?({identifier}\*?)*
 glob          (\*\*|{glob_scope})({S}*::{S}*{glob_scope})*
 
-chr_str_pfx   (L|u8?|U)?
-rstr_pfx      {chr_str_pfx}R\"[^ \f\n\r\t\v()\\]*"("
-int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
+cstr_pfx      L|u8?|U
+rstr_pfx      {cstr_pfx}?R\"[^ \f\n\r\t\v()\\]*"("
+int_sfx       [lL][lL]?[uU]?|[uU][lL]?[lL]?
 set_option    [^=; \f\n\r\t\v]+
 
-bin_int       0[bB]{B}+{int_suffix}?
-oct_int       0{O}*{int_suffix}?
-dec_int       [1-9]{D}*{int_suffix}?
-hex_int       0[xX]{H}+{int_suffix}?
+bin_int       0[bB]{B}+{int_sfx}?
+oct_int       0{O}*{int_sfx}?
+dec_int       [1-9]{D}*{int_sfx}?
+hex_int       0[xX]{H}+{int_sfx}?
 
 /*
  * For the "set" command, we want to allow (almost) any character sequence for
@@ -1070,7 +1070,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
               }
 }
 
-{chr_str_pfx}['"] {
+{cstr_pfx}?['"] {
                 strbuf_init( &str_lit_buf );
                 //
                 // Save the start location because we want to use it as the
