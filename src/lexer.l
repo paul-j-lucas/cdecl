@@ -626,7 +626,7 @@ glob          (\*\*|{glob_scope})({S}*::{S}*{glob_scope})*
 
 cstr_pfx      L|u8?|U
 rstr_pfx      {cstr_pfx}?R\"[^ \f\n\r\t\v()\\]*"("
-int_sfx       [lL][lL]?[uU]?|[uU][lL]?[lL]?
+int_sfx       [lL][lL]?[uU]?|[uU]([lL][lL]?|[zZ])?|[zZ][uU]?
 set_option    [^=; \f\n\r\t\v]+
 
 bin_int       0[bB]{B}+{int_sfx}?

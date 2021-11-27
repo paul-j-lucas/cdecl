@@ -10,7 +10,11 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 11.5.1
+* Changes in Cdecl 11.6
+
+** C++23 integer literal suffixes
+The case-insensitive integer literal suffixes of `uz` and `zu` for `size_t` and
+`z` for `ssize_t` are now supported.
 
 ** Fixed bug with array of function
 Given:
