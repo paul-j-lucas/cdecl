@@ -101,7 +101,7 @@ static bool c_ast_has_cycle( c_ast_t const *ast ) {
 
 void c_ast_cleanup( void ) {
   if ( unlikely( c_ast_count > 0 ) )
-    INTERNAL_ERR( "number of c_ast objects (%zu) > 0\n", c_ast_count );
+    INTERNAL_ERR( "%zu: c_ast objects > 0 in c_ast_cleanup()\n", c_ast_count );
 }
 
 c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {

@@ -942,7 +942,7 @@ static void parse_predefined_types( char const *const *types ) {
   assert( types != NULL );
   do {
     if ( unlikely( !parse_cdecl_string( *types, strlen( *types ) ) ) )
-      INTERNAL_ERR( "failed to parse predefined type \"%s\"\n", *types );
+      INTERNAL_ERR( "\"%s\": failed to parse predefined type\n", *types );
   } while ( *++types != NULL );
 }
 

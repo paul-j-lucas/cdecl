@@ -1215,7 +1215,7 @@ static void lexer_fatal( char const *msg ) {
   // ourselves and having to get it right being subject to possible changes in
   // its signature in different Flex versions.
   //
-  INTERNAL_ERR( "%s\n", msg );
+  INTERNAL_ERR( "lexer_fatal(): %s\n", msg );
 
   // Not reached -- "called" just to silence the "unused function" warning.
   yy_fatal_error( msg );
