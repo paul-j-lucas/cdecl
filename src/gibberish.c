@@ -355,7 +355,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
     case K_POINTER:
     case K_REFERENCE:
-    case K_RVALUE_REFERENCE: {
+    case K_RVALUE_REFERENCE:
       if ( (g->flags & C_GIB_OMIT_TYPE) == 0 ) {
         c_tid_t const stid = type.stids & TS_MASK_STORAGE;
         if ( stid != TS_NONE )
@@ -367,7 +367,6 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( !g->postfix )
         g_print_qual_name( g, ast );
       break;
-    }
 
     case K_POINTER_TO_MEMBER:
       g_print_ast( g, ast->as.ptr_mbr.of_ast );
