@@ -1,5 +1,13 @@
+2021-11-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Now using true_clear().
+   * gibberish.c: Removed unnecessary {}.
+   * gibberish.c: Removed unncessary ().
+   * gibberish.c: Changed g_print_ast_func_params() to g_print_ast_list().
+
 2021-11-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS: Removed unnecessary ().
    * NEWS, c_operator.c, c_operator.h, test/Makefile.am,
      declare_o_brackets_2i_i-c++20.out, declare_o_brackets_2i_i.out,
      explain_o_brackets_2i_i-c++20.out, explain_o_brackets_2i_i.out,
