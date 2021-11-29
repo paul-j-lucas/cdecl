@@ -203,7 +203,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       //
       // Microsoft calling conventions are printed specially.
       //
-      msc_call_atid = (type.atids & TA_ANY_MSC_CALL);
+      msc_call_atid = type.atids & TA_ANY_MSC_CALL;
       type.atids &= c_tid_compl( TA_ANY_MSC_CALL );
 
       //
