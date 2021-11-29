@@ -1,5 +1,23 @@
+2021-11-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_operator.c, c_operator.h, test/Makefile.am,
+     declare_o_brackets_2i_i-c++20.out, declare_o_brackets_2i_i.out,
+     explain_o_brackets_2i_i-c++20.out, explain_o_brackets_2i_i.out,
+     declare_o_brackets_2i_i-c++20.test, declare_o_brackets_2i_i.test,
+     explain_o_brackets_2i_i-c++20.test, explain_o_brackets_2i_i.test: Now
+     allowing `operator[]` to have zero or more arguments starting in C++23.
+   * c_ast.c, c_typedef.c, lexer.l: Reformatted INTERNAL_ERR() messages.
+
+2021-11-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * declare_o_brackets_2i_i.out, declare_o_brackets_2i_i.test: Fixed test.
+   * NEWS, configure.ac, lexer.l: The case-insensitive integer literal suffixes
+     of `uz` and `zu` for `size_t` and `z` for `ssize_t` are now supported.
+
 2021-11-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c: Added more assert() cheks in gibberish.c.
+   * typedef_fi_v_show.test: Removed unncessary ().
    * NEWS, c_type.h, test/Makefile.am, typedef_fi_v_show.out,
      typedef_fi_v_show.test, typedef_pfi_v_show.test: typedefs of function are
      now correctly allowed.
