@@ -186,6 +186,7 @@ enum c_oper_id {
  * both.
  */
 struct c_operator {
+  c_oper_id_t oper_id;                  ///< ID.
   char const *name;                     ///< Name.
 
   /**

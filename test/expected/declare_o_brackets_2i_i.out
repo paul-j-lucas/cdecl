@@ -1,3 +1,1 @@
-declare [] as operator (int, int) returning int
-        ^
-9: error: member operator [] must have exactly 1 parameter
+int operator[](int, int);

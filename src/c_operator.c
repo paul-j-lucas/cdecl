@@ -39,63 +39,70 @@
 #include <assert.h>
 
 /// @cond DOXYGEN_IGNORE
-#define UNLIMITED                 C_OP_PARAMS_UNLIMITED
+#define MBR                       C_OP_MEMBER
+#define OVER                      C_OP_OVERLOADABLE
+#define UNL                       C_OP_PARAMS_UNLIMITED
+#define XXX                       C_OP_NOT_OVERLOADABLE
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Array of `c_operator` for all C/C++ operators indexed by a `c_oper_id`.
+ * Array of `c_operator` for all C++ operators.
  */
 static c_operator_t const C_OPERATOR[] = {
-  { "",         C_OP_NOT_OVERLOADABLE,  0, 0,         LANG_NONE         },
-  { L_NEW,      C_OP_OVERLOADABLE,      1, UNLIMITED, LANG_CPP_ANY      },
-  { "new[]",    C_OP_OVERLOADABLE,      1, UNLIMITED, LANG_CPP_ANY      },
-  { L_DELETE,   C_OP_OVERLOADABLE,      1, UNLIMITED, LANG_CPP_ANY      },
-  { "delete[]", C_OP_OVERLOADABLE,      1, UNLIMITED, LANG_CPP_ANY      },
-  { "!",        C_OP_OVERLOADABLE,      0, 1,         LANG_CPP_ANY      },
-  { "!=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "%",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "%=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "&",        C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ANY      },
-  { "&&",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "&=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "()",       C_OP_MEMBER,            0, UNLIMITED, LANG_CPP_ANY      },
-  { "*",        C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ANY      },
-  { "*=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "+",        C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ANY      },
-  { "++",       C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ANY      },
-  { "+=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { ",",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "-",        C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ANY      },
-  { "--",       C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ANY      },
-  { "-=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "->",       C_OP_MEMBER,            0, 0,         LANG_CPP_ANY      },
-  { "->*",      C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { ".",        C_OP_NOT_OVERLOADABLE,  0, 0,         LANG_CPP_ANY      },
-  { ".*",       C_OP_NOT_OVERLOADABLE,  0, 0,         LANG_CPP_ANY      },
-  { "/",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "/=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "::",       C_OP_NOT_OVERLOADABLE,  0, 0,         LANG_CPP_ANY      },
-  { "<",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "<<",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "<<=",      C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "<=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "<=>",      C_OP_OVERLOADABLE,      1, 2,         LANG_MIN(CPP_20)  },
-  { "=",        C_OP_MEMBER,            1, 1,         LANG_CPP_ANY      },
-  { "==",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { ">",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { ">=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { ">>",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { ">>=",      C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "?:",       C_OP_NOT_OVERLOADABLE,  0, 0,         LANG_CPP_ANY      },
-  { "[]",       C_OP_MEMBER,            1, 1,         LANG_CPP_ANY      },
-  { "^",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "^=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "|",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "|=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "||",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ANY      },
-  { "~",        C_OP_OVERLOADABLE,      0, 1,         LANG_CPP_ANY      },
+  { C_OP_NONE,            "",         XXX,  0, 0,   LANG_NONE         },
+  { C_OP_NEW,             L_NEW,      OVER, 1, UNL, LANG_CPP_ANY      },
+  { C_OP_NEW_ARRAY,       "new[]",    OVER, 1, UNL, LANG_CPP_ANY      },
+  { C_OP_DELETE,          L_DELETE,   OVER, 1, UNL, LANG_CPP_ANY      },
+  { C_OP_DELETE_ARRAY,    "delete[]", OVER, 1, UNL, LANG_CPP_ANY      },
+  { C_OP_EXCLAM,          "!",        OVER, 0, 1,   LANG_CPP_ANY      },
+  { C_OP_EXCLAM_EQ,       "!=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_PERCENT,         "%",        OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_PERCENT_EQ,      "%=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_AMPER,           "&",        OVER, 0, 2,   LANG_CPP_ANY      },
+  { C_OP_AMPER2,          "&&",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_AMPER_EQ,        "&=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_PARENS,          "()",       MBR,  0, UNL, LANG_CPP_ANY      },
+  { C_OP_STAR,            "*",        OVER, 0, 2,   LANG_CPP_ANY      },
+  { C_OP_STAR_EQ,         "*=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_PLUS,            "+",        OVER, 0, 2,   LANG_CPP_ANY      },
+  { C_OP_PLUS2,           "++",       OVER, 0, 2,   LANG_CPP_ANY      },
+  { C_OP_PLUS_EQ,         "+=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_COMMA,           ",",        OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_MINUS,           "-",        OVER, 0, 2,   LANG_CPP_ANY      },
+  { C_OP_MINUS2,          "--",       OVER, 0, 2,   LANG_CPP_ANY      },
+  { C_OP_MINUS_EQ,        "-=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_ARROW,           "->",       MBR,  0, 0,   LANG_CPP_ANY      },
+  { C_OP_ARROW_STAR,      "->*",      OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_DOT,             ".",        XXX,  0, 0,   LANG_CPP_ANY      },
+  { C_OP_DOT_STAR,        ".*",       XXX,  0, 0,   LANG_CPP_ANY      },
+  { C_OP_SLASH,           "/",        OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_SLASH_EQ,        "/=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_COLON2,          "::",       XXX,  0, 0,   LANG_CPP_ANY      },
+  { C_OP_LESS,            "<",        OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_LESS2,           "<<",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_LESS2_EQ,        "<<=",      OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_LESS_EQ,         "<=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_LESS_EQ_GREATER, "<=>",      OVER, 1, 2,   LANG_MIN(CPP_20)  },
+  { C_OP_EQ,              "=",        MBR,  1, 1,   LANG_CPP_ANY      },
+  { C_OP_EQ2,             "==",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_GREATER,         ">",        OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_GREATER_EQ,      ">=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_GREATER2,        ">>",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_GREATER2_EQ,     ">>=",      OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_QMARK_COLON,     "?:",       XXX,  0, 0,   LANG_CPP_ANY      },
+  { C_OP_BRACKETS,        "[]",       MBR,  1, 1,   LANG_MAX(CPP_20)  },
+  { C_OP_BRACKETS,        "[]",       MBR,  0, UNL, LANG_MIN(CPP_23)  },
+  { C_OP_CIRC,            "^",        OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_CIRC_EQ,         "^=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_PIPE,            "|",        OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_PIPE_EQ,         "|=",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_PIPE2,           "||",       OVER, 1, 2,   LANG_CPP_ANY      },
+  { C_OP_TILDE,           "~",        OVER, 0, 1,   LANG_CPP_ANY      },
+
+  { (c_oper_id_t)(C_OP_TILDE + 1),
+                          NULL,       XXX,  0, 0,   LANG_NONE         },
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -142,8 +149,34 @@ static char const* alt_token_c( char const *token ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
-  assert( oper_id <= C_OP_TILDE );
-  return &C_OPERATOR[ oper_id ];
+  assert( oper_id >= C_OP_NEW && oper_id <= C_OP_TILDE );
+
+  c_operator_t const *best_op = NULL;
+
+  //
+  // We can't just use oper_id as a direct index since operator[] has multiple
+  // entries, but we can start looking there.
+  //
+  for ( c_operator_t const *op = C_OPERATOR + oper_id; op->oper_id <= oper_id;
+        ++op ) {
+    if ( op->oper_id == oper_id ) {
+      if ( opt_lang_is_any( op->lang_ids ) )
+        return op;
+      //
+      // We found the operator, but the entry isn't supported for the current
+      // language, so keep looking for one that is.  However, make a note of
+      // the current entry and return it if we don't find a better entry since
+      // we always have to return non-NULL.  The code in c_ast_check_oper()
+      // will deal with an unsupported language.
+      //
+      best_op = op;
+    }
+  } // for
+
+  if ( unlikely( best_op == NULL ) )
+    INTERNAL_ERR( "%d: c_oper_get() didn't find operator\n", oper_id );
+
+  return best_op;
 }
 
 char const* c_oper_token_c( c_oper_id_t oper_id ) {

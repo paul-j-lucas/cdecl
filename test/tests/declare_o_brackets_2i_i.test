@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ declare [] as operator (int, int) returning int @ 65
+cdecl @ @ -xc++ @ declare [] as operator (int, int) returning int @ 0

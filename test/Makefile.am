@@ -1192,6 +1192,7 @@ TESTS+=	tests/declare_+o_eq_rck_rk=default.test \
 	tests/declare_o_amper_rcki_k.test \
 	tests/declare_o_arrow_star_i_rk.test \
 	tests/declare_o_arrow_star_rki_rk.test \
+	tests/declare_o_brackets_2i_i.test \
 	tests/declare_o_circ_eq_i_rk.test \
 	tests/declare_o_comma_rki_rk.test \
 	tests/declare_o_eq2_i_b.test \
@@ -1250,7 +1251,7 @@ TESTS+=	tests/declare_+o_eq_rck_rk=default-c++03.test \
 	tests/declare_nmo_parens_rck_v.test \
 	tests/declare_o_arrow_i.test \
 	tests/declare_o_arrow_rk_pk.test \
-	tests/declare_o_brackets_2i_i.test \
+	tests/declare_o_brackets_2i_i-c++20.test \
 	tests/declare_o_colon2_rk_rk.test \
 	tests/declare_o_dot_k.test \
 	tests/declare_o_dot_star_rk_rk.test \
@@ -1496,6 +1497,7 @@ TESTS+=	tests/explain_+co_eq2_rck_b=default.test \
 	tests/explain_o_arrow_pk.test \
 	tests/explain_o_arrow_star_i_rk.test \
 	tests/explain_o_arrow_star_rki_rk.test \
+	tests/explain_o_brackets_2i_i.test \
 	tests/explain_o_brackets_i_i.test \
 	tests/explain_o_circ_eq_i_rk.test \
 	tests/explain_o_circ_eq_rki_rk.test \
@@ -1614,7 +1616,7 @@ TESTS+=	tests/explain_+co_eq2_rck_b=default-cpp17.test \
 	tests/explain_fo_less_eq_greater_2rck_i=default.test \
 	tests/explain_fo_plus_2crk_b=default.test \
 	tests/explain_o_arrow_i.test \
-	tests/explain_o_brackets_2i_i.test \
+	tests/explain_o_brackets_2i_i-c++20.test \
 	tests/explain_o_delete__v.test \
 	tests/explain_o_delete_i_v.test \
 	tests/explain_o_delete_pv_i.test \

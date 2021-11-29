@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ explain int operator[](int, int) @ 65
+cdecl @ @ -xc++ @ explain int operator[](int, int) @ 0

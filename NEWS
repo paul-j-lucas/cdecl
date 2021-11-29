@@ -16,6 +16,9 @@ with their complete changes, see the AUTHORS file.
 The case-insensitive integer literal suffixes of `uz` and `zu` for `size_t` and
 `z` for `ssize_t` are now supported.
 
+** C++23 `operator[]`
+Now allowing `operator[]` to have zero or more arguments starting in C++23.
+
 ** Fixed bug with array of function
 Given:
 
