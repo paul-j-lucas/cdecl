@@ -31,7 +31,7 @@ array of function as an error.
 ** `typedef` of function
 `typedef`s of function are now correctly allowed:
 
-    typedef int (F)(void)
+    typedef int F(void)
 
 
 * Changes in Cdecl 11.5
