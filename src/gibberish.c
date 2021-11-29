@@ -521,7 +521,7 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  if ( g->skip_name_for_using ) {
+  if ( true_clear( &g->skip_name_for_using ) ) {
     //
     // If we're printing a type as a "using" declaration, we have to skip
     // printing the type name since it's already been printed immediately after
@@ -537,7 +537,6 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
     // we don't print it again after the '*'; but we still need to print all
     // subsequent names, if any.  Hence, reset the flags and print nothing.
     //
-    g->skip_name_for_using = false;
     g->printed_space = true;
     return;
   }
