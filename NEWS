@@ -22,7 +22,7 @@ Now allowing `operator[]` to have zero or more arguments starting in C++23.
 ** Fixed bug with array of function
 Given:
 
-    cdecl> explain int x[5](double)
+    cdecl> explain int f[5](double)
     declare f as function (double) returning int
 
 cdecl (1) incorrectly elided the array and therefore (2) didn't report the
