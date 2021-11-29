@@ -63,6 +63,7 @@ typedef struct g_state g_state_t;
 static void g_init( g_state_t*, c_gib_flags_t, bool, FILE* );
 static void g_print_ast( g_state_t*, c_ast_t const* );
 static void g_print_ast_bit_width( g_state_t const*, c_ast_t const* );
+static void g_print_ast_list( g_state_t const*, c_ast_list_t const* );
 static void g_print_ast_name( g_state_t*, c_ast_t const* );
 static void g_print_postfix( g_state_t*, c_ast_t const* );
 static void g_print_qual_name( g_state_t*, c_ast_t const* );
@@ -483,21 +484,21 @@ static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
 }
 
 /**
- * Helper function for g_print_ast() that prints a function-like AST's
- * parameters, if any.
+ * Prints a list of AST nodes separated by commas.
  *
  * @param g The `g_state` to use.
- * @param ast The AST that is <code>\ref K_ANY_FUNCTION_LIKE</code> whose
- * parameters to print.
+ * @param ast_list The list of AST nodes to print.
+ *
+ * @sa g_print_ast()
  */
-static void g_print_ast_func_params( g_state_t const *g, c_ast_t const *ast ) {
+static void g_print_ast_list( g_state_t const *g,
+                              c_ast_list_t const *ast_list ) {
   assert( g != NULL );
-  assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
+  assert( ast_list != NULL );
 
   bool comma = false;
-  FPUTC( '(', g->gout );
-  FOREACH_AST_FUNC_PARAM( param, ast ) {
+
+  FOREACH_SLIST_NODE( ast_node, ast_list ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", g->gout );
     g_state_t params_g;
@@ -505,9 +506,9 @@ static void g_print_ast_func_params( g_state_t const *g, c_ast_t const *ast ) {
       &params_g,
       g->flags & ~C_GIB_OMIT_TYPE, /*printing_typedef=*/false, g->gout
     );
-    g_print_ast( &params_g, c_param_ast( param ) );
+    c_ast_t const *const param_ast = c_param_ast( ast_node );
+    g_print_ast( &params_g, param_ast );
   } // for
-  FPUTC( ')', g->gout );
 }
 
 /**
@@ -673,7 +674,9 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
-      g_print_ast_func_params( g, ast );
+      FPUTC( '(', g->gout );
+      g_print_ast_list( g, &ast->as.func.param_ast_list );
+      FPUTC( ')', g->gout );
       break;
     case K_DESTRUCTOR:
     case K_USER_DEF_CONVERSION:
