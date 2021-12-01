@@ -423,7 +423,7 @@
  * @sa #DUMP_TID()
  */
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_dump( (TYPE), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_dump( &(TYPE), stdout ); )
 
 /** @} */
 
@@ -1799,7 +1799,7 @@ declare_command
                   "USER-DEFINED CONVERSION OPERATOR "
                   "of_scope_list_english_opt "
                   "RETURNING decl_english_ast" );
-      DUMP_TYPE( "udc_storage_class_list_english_type_opt", &$2 );
+      DUMP_TYPE( "udc_storage_class_list_english_type_opt", $2 );
       DUMP_TID( "cv_qualifier_list_stid_opt", $3 );
       DUMP_SNAME( "of_scope_list_english_opt", $7 );
       DUMP_AST( "decl_english_ast", $9 );
@@ -1920,13 +1920,13 @@ udc_storage_class_list_english_type_opt
       DUMP_START( "udc_storage_class_list_english_type_opt",
                   "udc_storage_class_list_english_type_opt "
                   "udc_storage_class_english_type" );
-      DUMP_TYPE( "udc_storage_class_list_english_type_opt", &$1 );
-      DUMP_TYPE( "udc_storage_class_english_type", &$2 );
+      DUMP_TYPE( "udc_storage_class_list_english_type_opt", $1 );
+      DUMP_TYPE( "udc_storage_class_english_type", $2 );
 
       $$ = $1;
       C_TYPE_ADD( &$$, &$2, @2 );
 
-      DUMP_TYPE( "udc_storage_class_list_english_type_opt", &$$ );
+      DUMP_TYPE( "udc_storage_class_list_english_type_opt", $$ );
       DUMP_END();
     }
   ;
@@ -2736,7 +2736,7 @@ namespace_declaration_c
                   "in_scope_declaration_c_opt "
                   "'}' [';']" );
       DUMP_SNAME( "(current_scope)", in_attr.current_scope );
-      DUMP_TYPE( "namespace_type", &$1 );
+      DUMP_TYPE( "namespace_type", $1 );
       DUMP_SNAME( "any_sname_c", $3 );
       DUMP_END();
 
@@ -4662,7 +4662,7 @@ type_c_ast
   : type_modifier_list_c_type           // allows implicit int in K&R C
     {
       DUMP_START( "type_c_ast", "type_modifier_list_c_type" );
-      DUMP_TYPE( "type_modifier_list_c_type", &$1 );
+      DUMP_TYPE( "type_modifier_list_c_type", $1 );
 
       //
       // Prior to C99, typeless declarations are implicitly int, so we set it
@@ -4697,7 +4697,7 @@ type_c_ast
     {
       DUMP_START( "type_c_ast",
                   "type_modifier_list_c_type east_modified_type_c_ast " );
-      DUMP_TYPE( "type_modifier_list_c_type", &$1 );
+      DUMP_TYPE( "type_modifier_list_c_type", $1 );
       DUMP_AST( "east_modified_type_c_ast", $2 );
 
       $$ = $2;
@@ -4721,13 +4721,13 @@ type_modifier_list_c_type
     {
       DUMP_START( "type_modifier_list_c_type",
                   "type_modifier_list_c_type type_modifier_c_type" );
-      DUMP_TYPE( "type_modifier_list_c_type", &$1 );
-      DUMP_TYPE( "type_modifier_c_type", &$2 );
+      DUMP_TYPE( "type_modifier_list_c_type", $1 );
+      DUMP_TYPE( "type_modifier_c_type", $2 );
 
       $$ = $1;
       C_TYPE_ADD( &$$, &$2, @2 );
 
-      DUMP_TYPE( "type_modifier_list_c_type", &$$ );
+      DUMP_TYPE( "type_modifier_list_c_type", $$ );
       DUMP_END();
     }
 
@@ -4792,7 +4792,7 @@ east_modified_type_c_ast
                   "atomic_builtin_typedef_type_c_ast "
                   "type_modifier_list_c_type_opt" );
       DUMP_AST( "atomic_builtin_typedef_type_c_ast", $1 );
-      DUMP_TYPE( "type_modifier_list_c_type_opt", &$2 );
+      DUMP_TYPE( "type_modifier_list_c_type_opt", $2 );
 
       $$ = $1;
       $$->loc = @$;
@@ -5595,7 +5595,7 @@ func_decl_english_ast
                   "member_or_non_member_mask_opt "
                   "FUNCTION paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
-      DUMP_TYPE( "func_qualifier_english_type_opt", &$1 );
+      DUMP_TYPE( "func_qualifier_english_type_opt", $1 );
       DUMP_INT( "member_or_non_member_mask_opt", $2 );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $4 );
       DUMP_AST( "returning_english_ast_opt", $5 );
@@ -5644,7 +5644,7 @@ oper_decl_english_ast
                   "member_or_non_member_mask_opt "
                   "OPERATOR paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
-      DUMP_TYPE( "type_qualifier_list_english_type_opt", &$1 );
+      DUMP_TYPE( "type_qualifier_list_english_type_opt", $1 );
       DUMP_TID( "ref_qualifier_english_stid_opt", $2 );
       DUMP_INT( "member_or_non_member_mask_opt", $3 );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $5 );
@@ -5779,7 +5779,7 @@ qualified_decl_english_ast
       DUMP_START( "qualified_decl_english_ast",
                   "type_qualifier_list_english_type_opt "
                   "qualifiable_decl_english_ast" );
-      DUMP_TYPE( "type_qualifier_list_english_type_opt", &$1 );
+      DUMP_TYPE( "type_qualifier_list_english_type_opt", $1 );
       DUMP_AST( "qualifiable_decl_english_ast", $2 );
 
       $$ = $2;
@@ -5803,13 +5803,13 @@ type_qualifier_list_english_type
       DUMP_START( "type_qualifier_list_english_type",
                   "type_qualifier_list_english_type "
                   "type_qualifier_english_type" );
-      DUMP_TYPE( "type_qualifier_list_english_type", &$1 );
-      DUMP_TYPE( "type_qualifier_english_type", &$2 );
+      DUMP_TYPE( "type_qualifier_list_english_type", $1 );
+      DUMP_TYPE( "type_qualifier_english_type", $2 );
 
       $$ = $1;
       C_TYPE_ADD( &$$, &$2, @2 );
 
-      DUMP_TYPE( "type_qualifier_list_english_type", &$$ );
+      DUMP_TYPE( "type_qualifier_list_english_type", $$ );
       DUMP_END();
     }
 
@@ -6026,7 +6026,7 @@ type_english_ast
       DUMP_START( "type_english_ast",
                   "type_modifier_list_english_type_opt "
                   "unmodified_type_english_ast" );
-      DUMP_TYPE( "type_modifier_list_english_type_opt", &$1 );
+      DUMP_TYPE( "type_modifier_list_english_type_opt", $1 );
       DUMP_AST( "unmodified_type_english_ast", $2 );
 
       $$ = $2;
@@ -6046,7 +6046,7 @@ type_english_ast
     type_modifier_list_english_type     // allows implicit int in K&R C
     {
       DUMP_START( "type_english_ast", "type_modifier_list_english_type" );
-      DUMP_TYPE( "type_modifier_list_english_type", &$1 );
+      DUMP_TYPE( "type_modifier_list_english_type", $1 );
 
       // see the comment in "type_c_ast"
       c_type_t type = C_TYPE_LIT_B( opt_lang < LANG_C_99 ? TB_INT : TB_NONE );
@@ -6072,13 +6072,13 @@ type_modifier_list_english_type
       DUMP_START( "type_modifier_list_english_type",
                   "type_modifier_list_english_type "
                   "type_modifier_english_type" );
-      DUMP_TYPE( "type_modifier_list_english_type", &$1 );
-      DUMP_TYPE( "type_modifier_english_type", &$2 );
+      DUMP_TYPE( "type_modifier_list_english_type", $1 );
+      DUMP_TYPE( "type_modifier_english_type", $2 );
 
       $$ = $1;
       C_TYPE_ADD( &$$, &$2, @2 );
 
-      DUMP_TYPE( "type_modifier_list_english_type", &$$ );
+      DUMP_TYPE( "type_modifier_list_english_type", $$ );
       DUMP_END();
     }
 
