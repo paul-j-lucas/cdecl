@@ -24,7 +24,7 @@ check_PROGRAMS=	red_black_test slist_test
 AM_CFLAGS =
 
 if ENABLE_ADDRESS_SANITIZER
-AM_CFLAGS +=	-fsanitize=address
+AM_CFLAGS +=	-fsanitize=address -fno-omit-frame-pointer
 endif
 
 if ENABLE_COVERAGE
