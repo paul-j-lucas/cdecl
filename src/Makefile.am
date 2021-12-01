@@ -21,8 +21,14 @@
 bin_PROGRAMS =	cdecl
 check_PROGRAMS=	red_black_test slist_test
 
+AM_CFLAGS =
+
+if ENABLE_ADDRESS_SANITIZER
+AM_CFLAGS +=	-fsanitize=address
+endif
+
 if ENABLE_COVERAGE
-AM_CFLAGS =	--coverage -g -O0
+AM_CFLAGS +=	--coverage -g -O0
 AM_LDFLAGS =	--coverage
 endif
 

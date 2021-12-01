@@ -189,6 +189,17 @@ AS_IF([test x$enable_bison_debug = xyes],
     [Define to 1 if Bison debugging is enabled.])]
 )
 
+# Testing feature: Address Sanitizer
+AC_ARG_ENABLE([address-sanitizer],
+  AS_HELP_STRING([--enable-address-sanitizer], [enable Address Sanitizer for debugging]),
+  [],
+  [enable_address_sanitizer=no]
+)
+AS_IF([test x$enable_address_sanitizer = xyes],
+  [AC_DEFINE([ENABLE_ADDRESS_SANITIZER], [1],
+    [Define to 1 if Address Sanitizer is enabled.])]
+)
+
 # Testing feature: code coverage, part 2
 AS_IF([test x$enable_coverage = xyes],
   [
@@ -209,11 +220,13 @@ AS_IF([test x$enable_coverage = xyes],
 )
 
 # Makefile conditionals.
-AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline       != xno])
+AM_CONDITIONAL([ENABLE_ADDRESS_SANITIZER],
+                                      [test x$enable_address_sanitizer = xyes])
 AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_cdecl_debug  = xyes])
 AM_CONDITIONAL([ENABLE_COVERAGE],     [test x$enable_coverage     = xyes])
 AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test x$enable_bison_debug  = xyes])
 AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test x$enable_flex_debug   = xyes])
+AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline       != xno])
 
 # Miscellaneous.
 AX_C___ATTRIBUTE__
