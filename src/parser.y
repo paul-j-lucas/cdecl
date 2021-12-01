@@ -2370,7 +2370,7 @@ show_command
                                  type_commands_cpp11;
 
       print_error( &@2, "\"%s\": not defined as type via ", $2 );
-      fprint_list( stderr, type_commands, sizeof( char* ), &fprint_list_gets );
+      fprint_list( stderr, type_commands, sizeof( char* ), NULL );
       print_suggestions( DYM_C_TYPES, $2 );
       EPUTC( '\n' );
       free( $2 );

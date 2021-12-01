@@ -92,6 +92,19 @@ static unsigned check_tigetnum( char const *capname ) {
 }
 #endif /* ENABLE_TERM_SIZE */
 
+/**
+ * A helper function for fprint_list() that, given a pointer into an array of
+ * `char*`, returns the pointer to the associated string.
+ *
+ * @param elt A pointer to the element to get the list item string of.
+ * @return Returns said string.
+ */
+PJL_WARN_UNUSED_RESULT
+static char const* fprint_list_gets( void const *elt ) {
+  char const *const *const ps = elt;
+  return *ps;
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 char const* base_name( char const *path_name ) {
@@ -168,7 +181,9 @@ void fprint_list( FILE *out, void const *elt, size_t elt_size,
   assert( out != NULL );
   assert( elt != NULL );
   assert( elt_size > 0 );
-  assert( gets != NULL );
+
+  if ( gets == NULL )
+    gets = &fprint_list_gets;
 
   char const *str = (*gets)( elt );
   for ( size_t i = 0; str != NULL; ++i ) {
@@ -180,11 +195,6 @@ void fprint_list( FILE *out, void const *elt, size_t elt_size,
     );
     str = next_str;
   } // for
-}
-
-char const* fprint_list_gets( void const *elt ) {
-  char const *const *const ps = elt;
-  return *ps;
 }
 
 void fputs_sp( char const *s, FILE *out ) {
