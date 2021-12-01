@@ -691,7 +691,8 @@ void fprint_list( FILE *out, void const *elt, size_t elt_size,
                   char const* (*gets)( void const* ) );
 
 /**
- * If \a s is not empty, prints \a s followed by a space to \a out.
+ * If \a s is not empty, prints \a s followed by a space to \a out; otherwise
+ * does nothing.
  *
  * @param s The string to print.
  * @param out the `FILE` to print to.
