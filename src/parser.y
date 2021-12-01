@@ -2354,7 +2354,7 @@ show_command
         L_DEFINE, L_STRUCT, L_TYPEDEF, L_UNION, NULL
       };
       static char const *const type_commands_c[] = {
-        L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION
+        L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, NULL
       };
       static char const *const type_commands_cpp_pre11[] = {
         L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, NULL

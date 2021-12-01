@@ -101,7 +101,7 @@ static bool test_slist_dup( void ) {
   slist_t list, list2;
   slist_init( &list );
   slist_init( &list2 );
-  char const A = 'A';
+  char const X[] = "X";
   char *p;
 
   // empty list
@@ -110,13 +110,13 @@ static bool test_slist_dup( void ) {
   TEST( slist_len( &list2 ) == 0 );
 
   // 1-element list
-  slist_push_tail( &list, (void*)&A );
+  slist_push_tail( &list, (void*)&X );
   list2 = slist_dup( &list, -1, NULL );
   TEST( !slist_empty( &list2 ) );
   TEST( slist_len( &list2 ) == 1 );
   if ( TEST( (p = slist_peek_head( &list2 )) != NULL ) ) {
-    TEST( *p == 'A' );
-    TEST( p == &A );
+    TEST( *p == 'X' );
+    TEST( p == X );
   }
   slist_cleanup( &list, NULL );
   slist_cleanup( &list2, NULL );
@@ -151,13 +151,13 @@ static bool test_slist_dup( void ) {
   slist_cleanup( &list2, NULL );
 
   // check data_dup_fn
-  slist_push_tail( &list, (void*)&A );
+  slist_push_tail( &list, (void*)&X );
   list2 = slist_dup( &list, -1, (slist_dup_fn_t)&strdup );
   TEST( !slist_empty( &list2 ) );
   TEST( slist_len( &list2 ) == 1 );
   if ( TEST( (p = slist_peek_head( &list2 )) != NULL ) ) {
-    TEST( *p == 'A' );
-    if ( TEST( p != &A ) )
+    TEST( *p == 'X' );
+    if ( TEST( p != X ) )
       free( p );
   }
   slist_cleanup( &list, NULL );
