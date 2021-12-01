@@ -71,13 +71,13 @@ print_params_t            print_params;
  * Helper function for print_suggestions() and fprint_list() that gets the
  * string for a <code>\ref did_you_mean</code> token.
  *
- * @param p A pointer to a <code>\ref did_you_mean</code> element.
+ * @param elt A pointer to a <code>\ref did_you_mean</code> element.
  * @return Returns a pointer to the next "Did you mean" suggestion string or
  * NULL if none.
  */
 PJL_WARN_UNUSED_RESULT
-static char const* fprint_list_get_dym( void const *p ) {
-  did_you_mean_t const *const dym = p;
+static char const* fprint_list_get_dym( void const *elt ) {
+  did_you_mean_t const *const dym = elt;
   if ( dym->token == NULL )
     return NULL;
 
