@@ -63,7 +63,12 @@ typedef CPPFunction rl_completion_func_t;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Subset of cdecl keywords that are auto-completable.
+ * Subset of cdecl keywords (that are not cdecl commands, nor `help` nor `set`
+ * command arguments, nor C/C++ keywords) that are auto-completable.
+ *
+ * @sa CDECL_COMMANDS
+ * @sa CDECL_KEYWORDS
+ * @sa C_KEYWORDS
  */
 static c_lang_lit_t const AC_CDECL_KEYWORDS[] = {
   { LANG_C_CPP_MIN(11,11),  L_ALIGN         },
@@ -93,6 +98,8 @@ static c_lang_lit_t const AC_CDECL_KEYWORDS[] = {
   { LANG_CPP_ANY,           L_SCOPE         },
   { LANG_CPP_ANY,           H_USER_DEFINED  },
   { LANG_C_MIN(99),         L_VARIABLE      },
+  { LANG_ANY,               L_VARIADIC      },
+  { LANG_ANY,               L_VECTOR        },
   { LANG_ANY,               L_WIDTH         },
 
   { LANG_NONE,              NULL            }
