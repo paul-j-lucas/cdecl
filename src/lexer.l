@@ -215,6 +215,8 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  *
  * Exceptions are `bool`, `complex`, `const`, and `volatile` that are included
  * here as cdecl keywords so each maps to its language-specific literal.
+ *
+ * @sa AC_CDECL_KEYWORDS
  */
 static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_ALIGN,          TOKEN( Y_ALIGNED                    ) },
