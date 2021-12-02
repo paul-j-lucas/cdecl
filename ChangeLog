@@ -1,3 +1,18 @@
+2021-12-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: "variadic" and "vector" are now autocompletable.
+   * c_typedef.c, cdecl.c, cdecl.h: Renaming.
+
+2021-12-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, c_sname.h, parser.y: Fixed memory leaks.
+   * parser.y: Made '&' implicit in DUMP_TYPE().
+   * src/Makefile.am: Added -fno-omit-frame-pointer for Address Sanitizer.
+   * configure.ac, src/Makefile.am: Added support for using AddressSanitizer.
+   * parser.y, util.c, util.h: Made fprint_list_gets() private to util.c.
+   * print.c: s/p/elt/
+   * parser.y, slist_test.c: Fixed address errors.
+
 2021-11-29  Paul J. Lucas <paul@lucasmail.org>
 
    * gibberish.c: Now using true_clear().
