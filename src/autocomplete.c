@@ -159,8 +159,8 @@ static char* command_generator( char const *text, int state ) {
 }
 
 /**
- * Creates an initializes an array of all auto-completable keywords composed of
- * C/C++ keywords and cdecl keywords.
+ * Creates and initializes an array of all auto-completable keywords composed
+ * of C/C++ keywords and cdecl keywords.
  *
  * @return Returns a pointer to said array.
  */
