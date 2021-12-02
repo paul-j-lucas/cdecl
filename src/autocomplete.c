@@ -204,7 +204,7 @@ PJL_WARN_UNUSED_RESULT
 static char const* const* init_set_options( void ) {
   size_t set_options_size =
       1                                 // for "options"
-    + 1;                                // for terminating pointer to NULL
+    + 1;                                // for terminating NULL pointer
 
   // pre-flight to calculate array size
   FOREACH_SET_OPTION( opt ) {
@@ -256,6 +256,8 @@ static char const* const* init_set_options( void ) {
  * or `reinterpret`.
  *
  * @return Returns `true` only if it's a cast command.
+ *
+ * @sa is_command()
  */
 PJL_WARN_UNUSED_RESULT
 static bool is_cast_command( void ) {
@@ -274,6 +276,8 @@ static bool is_cast_command( void ) {
  *
  * @param command The command to check for.
  * @return Returns `true` only if it is.
+ *
+ * @sa is_cast_command()
  */
 PJL_WARN_UNUSED_RESULT
 static bool is_command( char const *command ) {
