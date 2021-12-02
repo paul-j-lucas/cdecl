@@ -1719,29 +1719,34 @@ declare_command
       DUMP_AST( "alignas_or_width_decl_english_ast", $5 );
 
       $5->loc = @2;
-      C_TYPE_ADD_TID( &$5->type, $4, @4 );
+
+      bool ok = c_type_add_tid( &$5->type, $4, &@4 );
 
       DUMP_AST( "decl_english", $5 );
       DUMP_END();
 
-      c_gib_flags_t gib_flags = C_GIB_DECL;
-      if ( slist_len( &$2 ) > 1 )
-        gib_flags |= C_GIB_MULTI_DECL;
-      FOREACH_SLIST_NODE( sname_node, &$2 ) {
-        c_sname_set( &$5->sname, sname_node->data );
-        C_AST_CHECK( $5 );
-        c_ast_gibberish( $5, gib_flags, fout );
-        if ( sname_node->next != NULL ) {
-          gib_flags |= C_GIB_OMIT_TYPE;
-          FPUTS( ", ", fout );
-        }
-      } // for
+      if ( ok ) {
+        c_gib_flags_t gib_flags = C_GIB_DECL;
+        if ( slist_len( &$2 ) > 1 )
+          gib_flags |= C_GIB_MULTI_DECL;
+        FOREACH_SLIST_NODE( sname_node, &$2 ) {
+          c_sname_set( &$5->sname, sname_node->data );
+          if ( !(ok = c_ast_check( $5 )) )
+            break;
+          c_ast_gibberish( $5, gib_flags, fout );
+          if ( sname_node->next != NULL ) {
+            gib_flags |= C_GIB_OMIT_TYPE;
+            FPUTS( ", ", fout );
+          }
+        } // for
+      }
 
+      c_sname_list_cleanup( &$2 );
+      if ( !ok )
+        PARSE_ABORT();
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
-
-      c_sname_list_cleanup( &$2 );
     }
 
     /*
@@ -2701,8 +2706,10 @@ enum_declaration_c
       c_sname_t enum_sname = c_sname_dup( &in_attr.current_scope );
       c_sname_append_sname( &enum_sname, &$3 );
       c_sname_set_local_type( &enum_sname, &C_TYPE_LIT_B( $1 ) );
-      if ( !c_sname_check( &enum_sname, &@3 ) )
+      if ( !c_sname_check( &enum_sname, &@3 ) ) {
+        c_sname_cleanup( &enum_sname );
         PARSE_ABORT();
+      }
 
       c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
       enum_ast->sname = enum_sname;
@@ -3107,7 +3114,10 @@ using_decl_c_ast
     any_name_exp equals_exp type_c_ast
     {
       // see the comment in "define_command" about TS_TYPEDEF
-      C_TYPE_ADD_TID( &$5->type, TS_TYPEDEF, @5 );
+      if ( !c_type_add_tid( &$5->type, TS_TYPEDEF, &@5 ) ) {
+        free( $3 );
+        PARSE_ABORT();
+      }
       ia_type_ast_push( $5 );
     }
     cast_c_astp_opt
@@ -3134,6 +3144,7 @@ using_decl_c_ast
         print_error( &$7.ast->loc,
           "\"%s\" type can not have a name\n", L_USING
         );
+        free( $3 );
         PARSE_ABORT();
       }
 
@@ -5985,6 +5996,7 @@ var_decl_english_ast
       if ( $3->kind == K_NAME ) {       // see the comment in "declare_command"
         assert( !c_sname_empty( &$3->sname ) );
         print_error_unknown_name( &@3, &$3->sname );
+        c_sname_cleanup( &$1 );
         PARSE_ABORT();
       }
 
@@ -6347,6 +6359,8 @@ sname_c
       // see the comment in "of_scope_english"
       if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@2, "scoped names not supported in C\n" );
+        c_sname_cleanup( &$1 );
+        free( $3 );
         PARSE_ABORT();
       }
 
@@ -6861,6 +6875,7 @@ of_scope_english
       //
       if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@2, "scoped names not supported in C\n" );
+        c_sname_cleanup( &$3 );
         PARSE_ABORT();
       }
       $$ = $3;
@@ -6874,8 +6889,10 @@ of_scope_list_english
       $$ = $2;                          // "of scope X of scope Y" means Y::X
       c_sname_append_sname( &$$, &$1 );
       c_sname_fill_in_namespaces( &$$ );
-      if ( !c_sname_check( &$$, &@1 ) )
+      if ( !c_sname_check( &$$, &@1 ) ) {
+        c_sname_cleanup( &$$ );
         PARSE_ABORT();
+      }
     }
   | of_scope_english
   ;

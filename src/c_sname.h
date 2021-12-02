@@ -245,6 +245,18 @@ bool c_sname_empty( c_sname_t const *sname ) {
 void c_sname_fill_in_namespaces( c_sname_t *sname );
 
 /**
+ * Frees all memory associated with \a sname _including_ \a sname itself.
+ *
+ * @param sname The scoped name to free.  If NULL, does nothing.
+ *
+ * @sa c_sname_cleanup()
+ * @sa c_sname_init()
+ * @sa c_sname_init_name()
+ * @sa c_sname_list_cleanup()
+ */
+void c_sname_free( c_sname_t *sname );
+
+/**
  * Gets the fully scoped name of \a sname.
  *
  * @param sname The scoped name to get the full name of.  May be NULL.
@@ -268,6 +280,7 @@ char const* c_sname_full_name( c_sname_t const *sname );
  * @note This need not be called for either global or `static` scoped names.
  *
  * @sa c_sname_cleanup()
+ * @sa c_sname_free()
  * @sa c_sname_init_name()
  */
 C_SNAME_INLINE
@@ -282,6 +295,7 @@ void c_sname_init( c_sname_t *sname ) {
  * @param name The name to set to.  Ownership is taken.
  *
  * @sa c_sname_cleanup()
+ * @sa c_sname_free()
  * @sa c_sname_init()
  */
 C_SNAME_INLINE
@@ -312,6 +326,7 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  * otherwise, reinitializes \a list upon completion.
  *
  * @sa c_sname_cleanup()
+ * @sa c_sname_free()
  */
 void c_sname_list_cleanup( slist_t *list );
 

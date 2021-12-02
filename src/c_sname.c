@@ -126,6 +126,11 @@ void c_sname_fill_in_namespaces( c_sname_t *sname ) {
   } // for
 }
 
+void c_sname_free( c_sname_t *sname ) {
+  c_sname_cleanup( sname );
+  free( sname );
+}
+
 char const* c_sname_full_name( c_sname_t const *sname ) {
   static strbuf_t sbuf;
   return sname != NULL ? c_sname_impl( &sbuf, sname, NULL ) : "";
@@ -141,7 +146,7 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
 }
 
 void c_sname_list_cleanup( slist_t *list ) {
-  slist_cleanup( list, (slist_free_fn_t)&c_sname_cleanup );
+  slist_cleanup( list, (slist_free_fn_t)&c_sname_free );
 }
 
 bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
