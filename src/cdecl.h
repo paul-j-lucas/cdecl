@@ -83,7 +83,7 @@ extern char const  *me;                 ///< Program name.
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-bool parse_cdecl_string( char const *s, size_t s_len );
+bool cdecl_parse_string( char const *s, size_t s_len );
 
 ///////////////////////////////////////////////////////////////////////////////
 

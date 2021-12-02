@@ -118,16 +118,19 @@ extern void yyrestart( FILE *in_file );
 static void cdecl_cleanup( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_cdecl_argv( int, char const *const[] );
+static bool cdecl_parse_argv( int, char const *const[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_cdecl_command_line( char const*, int, char const *const[] );
+static bool cdecl_parse_command_line( char const*, int, char const *const[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_cdecl_files( int, char const *const[] );
+static bool cdecl_parse_files( int, char const *const[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_cdecl_stdin( void );
+static bool cdecl_parse_stdin( void );
+
+PJL_WARN_UNUSED_RESULT
+static bool is_command( char const*, cdecl_command_kind_t );
 
 static void read_conf_file( void );
 
@@ -154,11 +157,21 @@ int main( int argc, char const *argv[] ) {
   opt_conf_file = NULL;                 // don't print in errors any more
   cdecl_initialized = true;
 
-  bool const ok = parse_cdecl_argv( argc, argv );
+  bool const ok = cdecl_parse_argv( argc, argv );
   exit( ok ? EX_OK : EX_DATAERR );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Cleans up cdecl data.
+ */
+static void cdecl_cleanup( void ) {
+  free_now();
+  c_typedef_cleanup();
+  parser_cleanup();                     // must go before c_ast_cleanup()
+  c_ast_cleanup();
+}
 
 /**
  * Reads an input line interactively.
@@ -237,6 +250,140 @@ static bool cdecl_read_line( strbuf_t *sbuf, char const *ps1,
 }
 
 /**
+ * Parses \a argv to figure out what kind of arguments were given.
+ *
+ * @param argc The command-line argument count.
+ * @param argv The command-line argument values.
+ * @return Returns `true` only upon success.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool cdecl_parse_argv( int argc, char const *const argv[] ) {
+  if ( argc == 0 )                      // cdecl
+    return cdecl_parse_stdin();
+  if ( is_command( me, CDECL_COMMAND_PROG_NAME ) )
+    return cdecl_parse_command_line( me, argc, argv );
+
+  //
+  // Note that options_init() adjusts argv such that argv[0] becomes the first
+  // argument (and no longer the program name).
+  //
+  if ( is_command( argv[0], CDECL_COMMAND_FIRST_ARG ) )
+    return cdecl_parse_command_line( NULL, argc, argv );
+
+  if ( opt_explain )
+    return cdecl_parse_command_line( L_EXPLAIN, argc, argv );
+
+  // assume arguments are file names
+  return cdecl_parse_files( argc, argv );
+}
+
+/**
+ * Parses a cdecl command from the command-line.
+ *
+ * @param command The value of main()'s `argv[0]` if it's a cdecl command; NULL
+ * otherwise and `argv[1]` is a cdecl command.
+ * @param argc The command-line argument count.
+ * @param argv The command-line argument values.
+ * @return Returns `true` only upon success.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool cdecl_parse_command_line( char const *command, int argc,
+                                      char const *const argv[] ) {
+  strbuf_t sbuf;
+  bool space;
+
+  strbuf_init( &sbuf );
+  if ( (space = command != NULL) )
+    strbuf_cats( &sbuf, command );
+  for ( int i = 0; i < argc; ++i )
+    strbuf_sepc_cats( &sbuf, ' ', &space, argv[i] );
+
+  bool const ok = cdecl_parse_string( sbuf.str, sbuf.len );
+  strbuf_cleanup( &sbuf );
+  return ok;
+}
+
+/**
+ * Parses cdecl commands from a file.
+ *
+ * @param file The FILE to read from.
+ * @return Returns `true` only upon success.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool cdecl_parse_file( FILE *file ) {
+  assert( file != NULL );
+  bool ok = true;
+
+  // We don't just call yyrestart( file ) and yyparse() directly because
+  // cdecl_parse_string() also inserts "explain " for opt_explain.
+
+  for ( char buf[ 1024 ]; fgets( buf, sizeof buf, file ) != NULL; ) {
+    if ( !cdecl_parse_string( buf, strlen( buf ) ) )
+      ok = false;
+  } // for
+  FERROR( file );
+
+  return ok;
+}
+
+/**
+ * Parses cdecl commands from one or more files.
+ *
+ * @param num_files The length of \a files.
+ * @param files An array of file names.
+ * @return Returns `true` only upon success.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool cdecl_parse_files( int num_files, char const *const files[] ) {
+  bool ok = true;
+
+  for ( int i = 0; i < num_files && ok; ++i ) {
+    if ( strcmp( files[i], "-" ) == 0 ) {
+      ok = cdecl_parse_stdin();
+    }
+    else {
+      FILE *const file = fopen( files[i], "r" );
+      if ( unlikely( file == NULL ) )
+        PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR() );
+      if ( !cdecl_parse_file( file ) )
+        ok = false;
+      PJL_IGNORE_RV( fclose( file ) );
+    }
+  } // for
+
+  return ok;
+}
+
+/**
+ * Parses cdecl commands from standard input.
+ *
+ * @return Returns `true` only upon success.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool cdecl_parse_stdin( void ) {
+  bool ok = true;
+  is_input_a_tty = isatty( fileno( fin ) );
+
+  if ( is_input_a_tty || opt_interactive ) {
+    if ( opt_prompt )
+      FPRINTF( fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
+    ok = true;
+    for (;;) {
+      static strbuf_t sbuf;
+      strbuf_reset( &sbuf );
+      if ( !cdecl_read_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
+        break;
+      ok = cdecl_parse_string( sbuf.str, sbuf.len );
+    } // for
+  } else {
+    ok = cdecl_parse_file( fin );
+  }
+
+  is_input_a_tty = false;
+  return ok;
+}
+
+/**
  * Checks whether \a s is a cdecl command.
  *
  * @param s The null-terminated string to check.
@@ -279,150 +426,6 @@ static bool is_command( char const *s, cdecl_command_kind_t command_kind ) {
 }
 
 /**
- * Cleans up cdecl data.
- */
-static void cdecl_cleanup( void ) {
-  free_now();
-  c_typedef_cleanup();
-  parser_cleanup();                     // must go before c_ast_cleanup()
-  c_ast_cleanup();
-}
-
-/**
- * Parses \a argv to figure out what kind of arguments were given.
- *
- * @param argc The command-line argument count.
- * @param argv The command-line argument values.
- * @return Returns `true` only upon success.
- */
-PJL_WARN_UNUSED_RESULT
-static bool parse_cdecl_argv( int argc, char const *const argv[] ) {
-  if ( argc == 0 )                      // cdecl
-    return parse_cdecl_stdin();
-  if ( is_command( me, CDECL_COMMAND_PROG_NAME ) )
-    return parse_cdecl_command_line( me, argc, argv );
-
-  //
-  // Note that options_init() adjusts argv such that argv[0] becomes the first
-  // argument (and no longer the program name).
-  //
-  if ( is_command( argv[0], CDECL_COMMAND_FIRST_ARG ) )
-    return parse_cdecl_command_line( NULL, argc, argv );
-
-  if ( opt_explain )
-    return parse_cdecl_command_line( L_EXPLAIN, argc, argv );
-
-  // assume arguments are file names
-  return parse_cdecl_files( argc, argv );
-}
-
-/**
- * Parses a cdecl command from the command-line.
- *
- * @param command The value of main()'s `argv[0]` if it's a cdecl command; NULL
- * otherwise and `argv[1]` is a cdecl command.
- * @param argc The command-line argument count.
- * @param argv The command-line argument values.
- * @return Returns `true` only upon success.
- */
-PJL_WARN_UNUSED_RESULT
-static bool parse_cdecl_command_line( char const *command, int argc,
-                                      char const *const argv[] ) {
-  strbuf_t sbuf;
-  bool space;
-
-  strbuf_init( &sbuf );
-  if ( (space = command != NULL) )
-    strbuf_cats( &sbuf, command );
-  for ( int i = 0; i < argc; ++i )
-    strbuf_sepc_cats( &sbuf, ' ', &space, argv[i] );
-
-  bool const ok = parse_cdecl_string( sbuf.str, sbuf.len );
-  strbuf_cleanup( &sbuf );
-  return ok;
-}
-
-/**
- * Parses cdecl commands from a file.
- *
- * @param file The FILE to read from.
- * @return Returns `true` only upon success.
- */
-PJL_WARN_UNUSED_RESULT
-static bool parse_cdecl_file( FILE *file ) {
-  assert( file != NULL );
-  bool ok = true;
-
-  // We don't just call yyrestart( file ) and yyparse() directly because
-  // parse_cdecl_string() also inserts "explain " for opt_explain.
-
-  for ( char buf[ 1024 ]; fgets( buf, sizeof buf, file ) != NULL; ) {
-    if ( !parse_cdecl_string( buf, strlen( buf ) ) )
-      ok = false;
-  } // for
-  FERROR( file );
-
-  return ok;
-}
-
-/**
- * Parses cdecl commands from one or more files.
- *
- * @param num_files The length of \a files.
- * @param files An array of file names.
- * @return Returns `true` only upon success.
- */
-PJL_WARN_UNUSED_RESULT
-static bool parse_cdecl_files( int num_files, char const *const files[] ) {
-  bool ok = true;
-
-  for ( int i = 0; i < num_files && ok; ++i ) {
-    if ( strcmp( files[i], "-" ) == 0 ) {
-      ok = parse_cdecl_stdin();
-    }
-    else {
-      FILE *const file = fopen( files[i], "r" );
-      if ( unlikely( file == NULL ) )
-        PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR() );
-      if ( !parse_cdecl_file( file ) )
-        ok = false;
-      PJL_IGNORE_RV( fclose( file ) );
-    }
-  } // for
-
-  return ok;
-}
-
-/**
- * Parses cdecl commands from standard input.
- *
- * @return Returns `true` only upon success.
- */
-PJL_WARN_UNUSED_RESULT
-static bool parse_cdecl_stdin( void ) {
-  bool ok = true;
-  is_input_a_tty = isatty( fileno( fin ) );
-
-  if ( is_input_a_tty || opt_interactive ) {
-    if ( opt_prompt )
-      FPRINTF( fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
-    ok = true;
-    for (;;) {
-      static strbuf_t sbuf;
-      strbuf_reset( &sbuf );
-      if ( !cdecl_read_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
-        break;
-      ok = parse_cdecl_string( sbuf.str, sbuf.len );
-    } // for
-  } else {
-    ok = parse_cdecl_file( fin );
-  }
-
-  is_input_a_tty = false;
-  return ok;
-}
-
-/**
  * Reads the configuration file, if any.
  */
 static void read_conf_file( void ) {
@@ -452,7 +455,7 @@ static void read_conf_file( void ) {
   //
   c_lang_id_t const orig_lang = opt_lang;
   opt_lang = LANG_CPP_NEW;
-  PJL_IGNORE_RV( parse_cdecl_file( conf_file ) );
+  PJL_IGNORE_RV( cdecl_parse_file( conf_file ) );
   opt_lang = orig_lang;
 
   PJL_IGNORE_RV( fclose( conf_file ) );
@@ -477,7 +480,7 @@ static bool starts_with_token( char const *s, char const *token,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool parse_cdecl_string( char const *s, size_t s_len ) {
+bool cdecl_parse_string( char const *s, size_t s_len ) {
   assert( s != NULL );
 
   // The code in print.c relies on command_line being set, so set it.
