@@ -67,7 +67,7 @@ AC_PROG_LN_S
 
 # External dependency: readline (enabled by default)
 AC_ARG_WITH([readline],
-  AS_HELP_STRING([--without-readline], [disable support for readline]),
+  AS_HELP_STRING([--without-readline], [disable readline]),
   [],
   [with_readline=yes]
 )
@@ -144,7 +144,7 @@ AS_IF([test x$with_readline != xno -a x$ac_cv_search_readline = xno],
 
 # Program feature: cdecl-debug (enabled by default)
 AC_ARG_ENABLE([cdecl-debug],
-  AS_HELP_STRING([--disable-cdecl-debug], [disable support for cdecl debugging]),
+  AS_HELP_STRING([--disable-cdecl-debug], [disable cdecl debugging]),
   [],
   [enable_cdecl_debug=yes]
 )
@@ -155,7 +155,7 @@ AS_IF([test x$enable_cdecl_debug = xyes],
 
 # Program feature: term-size (enabled by default)
 AC_ARG_ENABLE([term-size],
-  AS_HELP_STRING([--disable-term-size], [disable support for terminal size]),
+  AS_HELP_STRING([--disable-term-size], [disable terminal size]),
   [],
   [enable_term_size=yes]
 )
@@ -167,9 +167,21 @@ AS_IF([test x$enable_term_size = xyes],
     [Define to 1 if term-size is enabled.])]
 )
 
+# Testing feature: Address Sanitizer
+AC_ARG_ENABLE([address-sanitizer],
+  AS_HELP_STRING([--enable-address-sanitizer],
+    [enable Address Sanitizer for debugging]),
+  [],
+  [enable_address_sanitizer=no]
+)
+AS_IF([test x$enable_address_sanitizer = xyes],
+  [AC_DEFINE([ENABLE_ADDRESS_SANITIZER], [1],
+    [Define to 1 if Address Sanitizer is enabled.])]
+)
+
 # Program feature: Flex debug (disabled by default)
 AC_ARG_ENABLE([flex-debug],
-  AS_HELP_STRING([--enable-flex-debug], [enable support for Flex debugging]),
+  AS_HELP_STRING([--enable-flex-debug], [enable Flex debugging]),
   [],
   [enable_flex_debug=no]
 )
@@ -180,24 +192,13 @@ AS_IF([test x$enable_flex_debug = xyes],
 
 # Program feature: Bison debug (disabled by default)
 AC_ARG_ENABLE([bison-debug],
-  AS_HELP_STRING([--enable-bison-debug], [enable support for Bison debugging]),
+  AS_HELP_STRING([--enable-bison-debug], [enable for Bison debugging]),
   [],
   [enable_bison_debug=no]
 )
 AS_IF([test x$enable_bison_debug = xyes],
   [AC_DEFINE([YYDEBUG], [1],
     [Define to 1 if Bison debugging is enabled.])]
-)
-
-# Testing feature: Address Sanitizer
-AC_ARG_ENABLE([address-sanitizer],
-  AS_HELP_STRING([--enable-address-sanitizer], [enable Address Sanitizer for debugging]),
-  [],
-  [enable_address_sanitizer=no]
-)
-AS_IF([test x$enable_address_sanitizer = xyes],
-  [AC_DEFINE([ENABLE_ADDRESS_SANITIZER], [1],
-    [Define to 1 if Address Sanitizer is enabled.])]
 )
 
 # Testing feature: code coverage, part 2
