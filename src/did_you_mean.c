@@ -145,7 +145,7 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
 PJL_NOWARN_UNUSED_RESULT
 static size_t copy_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
   size_t count = 0;
-  FOREACH_KEYWORD( k ) {
+  FOREACH_C_KEYWORD( k ) {
     if ( opt_lang_is_any( k->lang_ids ) && c_tid_tpid( k->tid ) == tpid ) {
       if ( pdym != NULL )
         (*pdym)++->token = check_strdup( k->literal );

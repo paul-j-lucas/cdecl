@@ -176,7 +176,7 @@ static c_lang_lit_t const* init_cdecl_keywords( void ) {
   size_t cdecl_keywords_size = ARRAY_SIZE( AC_CDECL_KEYWORDS );
 
   // pre-flight to calculate array size
-  FOREACH_KEYWORD( k ) {
+  FOREACH_C_KEYWORD( k ) {
     if ( k->ac_lang_ids != LANG_NONE )
       ++cdecl_keywords_size;
   } // for
@@ -188,7 +188,7 @@ static c_lang_lit_t const* init_cdecl_keywords( void ) {
   for ( c_lang_lit_t const *ll = AC_CDECL_KEYWORDS; ll->literal != NULL; ++ll )
     *p++ = *ll;
 
-  FOREACH_KEYWORD( k ) {
+  FOREACH_C_KEYWORD( k ) {
     if ( k->ac_lang_ids != LANG_NONE ) {
       p->lang_ids = k->ac_lang_ids;
       p->literal  = k->literal;
