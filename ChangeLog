@@ -1,3 +1,8 @@
+2021-12-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Whitespace.
+   * configure.ac: Reordering; removed "support for".
+
 2021-12-02  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c: "variadic" and "vector" are now autocompletable.
