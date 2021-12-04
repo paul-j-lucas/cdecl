@@ -169,6 +169,9 @@
  *      elaborate_error( "name expected" );
  *    }
  * @endcode
+ *
+ * @sa elaborate_error_dym()
+ * @sa keyword_expected()
  */
 #define elaborate_error(...) \
   elaborate_error_dym( DYM_NONE, __VA_ARGS__ )
@@ -187,6 +190,9 @@
  *      elaborate_error_dym( DYM_COMMANDS, "unexpected token" );
  *    }
  * @endcode
+ *
+ * @sa elaborate_error()
+ * @sa keyword_expected()
  */
 #define elaborate_error_dym(DYM_KINDS,...) BLOCK( \
   fl_elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
@@ -205,6 +211,9 @@
  *      keyword_expected( L_VIRTUAL );
  *    }
  * @endcode
+ *
+ * @sa elaborate_error()
+ * @sa elaborate_error_dym()
  */
 #define keyword_expected(KEYWORD) BLOCK ( \
   fl_keyword_expected( __FILE__, __LINE__, (KEYWORD) ); PARSE_ABORT(); )
