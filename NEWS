@@ -22,6 +22,9 @@ it's now mentioned in the error message:
 
 Additionally, cdecl keywords are now also offered in suggestions.
 
+** `register` arrays
+`register` arrays are now correctly allowed.
+
 
 * Changes in Cdecl 11.6
 

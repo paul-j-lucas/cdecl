@@ -331,11 +331,6 @@ static bool c_ast_check_array( c_ast_t const *ast,
   assert( ast->kind == K_ARRAY );
   bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
-  if ( c_ast_is_register( ast ) ) {
-    error_kind_not_tid( ast, TS_REGISTER, "\n" );
-    return false;
-  }
-
   if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE ) {
     if ( !OPT_LANG_IS(C_MIN(99)) ) {
       print_error( &ast->loc,

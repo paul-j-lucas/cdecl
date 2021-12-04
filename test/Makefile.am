@@ -614,7 +614,6 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_pmi-c.test \
 	tests/explain_puw3.test \
 	tests/explain_pv-knr.test \
-	tests/explain_rga4i.test \
 	tests/explain_rgf_v.test \
 	tests/explain_ri-c.test \
 	tests/explain_rtf_v-error.test \
