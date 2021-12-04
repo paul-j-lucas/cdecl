@@ -104,6 +104,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module sys_types:
   # Code from module sysexits:
   # Code from module unistd:
+  # Code from module vararrays:
   # Code from module verify:
   # Code from module wchar:
   # Code from module wctype-h:
@@ -304,6 +305,7 @@ AC_DEFUN([gl_INIT],
   gl_SYSEXITS
   gl_UNISTD_H
   gl_UNISTD_H_REQUIRE_DEFAULTS
+  AC_C_VARARRAYS
   gl_WCHAR_H
   gl_WCHAR_H_REQUIRE_DEFAULTS
   gl_WCTYPE_H
@@ -603,6 +605,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/sysexits.m4
   m4/threadlib.m4
   m4/unistd_h.m4
+  m4/vararrays.m4
   m4/visibility.m4
   m4/warn-on-use.m4
   m4/wchar_h.m4
