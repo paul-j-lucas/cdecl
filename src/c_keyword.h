@@ -29,7 +29,9 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "c_ast.h"
 #include "types.h"
+#include "parser.h"                     /* must go last */
 
 /**
  * @defgroup c-keywords-group C/C++ Keywords
@@ -57,7 +59,7 @@ enum c_keyword_ctx {
  */
 struct c_keyword {
   char const     *literal;              ///< C string literal of the keyword.
-  int             yy_token_id;          ///< Bison token number.
+  yytokentype     yy_token_id;          ///< Bison token number.
   c_keyword_ctx_t kw_ctx;               ///< Keyword context.
   c_tid_t         tid;                  ///< Type the keyword maps to, if any.
   c_lang_id_t     lang_ids;             ///< Language(s) OK in.
