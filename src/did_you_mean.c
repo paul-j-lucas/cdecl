@@ -33,6 +33,7 @@
 #include "c_sname.h"
 #include "c_typedef.h"
 #include "cdecl.h"
+#include "cdecl_keyword.h"
 #include "options.h"
 #include "set_options.h"
 #include "util.h"
@@ -90,6 +91,55 @@ static char* check_prefix_strdup( char const *prefix, char const *s ) {
 }
 
 /**
+ * Copies C/C++ keywords in the current language to the candidate list pointed
+ * to by \a pdym.  If \a pdym is NULL, only counts the number of keywords.
+ *
+ * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
+ * or NULL to just count keywords, not copy.  If not NULL, on return, the
+ * pointed-to pointer is incremented.
+ * @param tpid The type part ID that a keyword must have in order to be copied
+ * (or counted).
+ * @return Returns said number of keywords.
+ */
+PJL_NOWARN_UNUSED_RESULT
+static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
+  size_t count = 0;
+  FOREACH_C_KEYWORD( k ) {
+    if ( opt_lang_is_any( k->lang_ids ) && c_tid_tpid( k->tid ) == tpid ) {
+      if ( pdym != NULL )
+        (*pdym)++->token = check_strdup( k->literal );
+      ++count;
+    }
+  } // for
+  return count;
+}
+
+/**
+ * Copies cdecl keywords in the current language to the candidate list pointed
+ * to by \a pdym.  If \a pdym is NULL, only counts the number of keywords.
+ *
+ * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
+ * or NULL to just count keywords, not copy.  If not NULL, on return, the
+ * pointed-to pointer is incremented.
+ * @return Returns said number of keywords.
+ */
+PJL_NOWARN_UNUSED_RESULT
+static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
+  size_t count = 0;
+  FOREACH_CDECL_KEYWORD( k ) {
+    char const *literal = NULL;
+    if ( k->lang_syn == NULL )
+      literal = k->literal;
+    else if ( (literal = c_lang_literal( k->lang_syn )) == NULL )
+      continue;
+    if ( pdym != NULL )
+      (*pdym)++->token = check_strdup( literal );
+    ++count;
+  } // for
+  return count;
+}
+
+/**
  * Copies cdecl commands in the current language to the candidate list pointed
  * to by \a pdym.  If \a pdym is NULL, only counts the number of commands.
  *
@@ -127,30 +177,6 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
     if ( pdym != NULL )
       (*pdym)++->token = check_strdup( opt->name );
     ++count;
-  } // for
-  return count;
-}
-
-/**
- * Copies C/C++ keywords in the current language to the candidate list pointed
- * to by \a pdym.  If \a pdym is NULL, only counts the number of keywords.
- *
- * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
- * or NULL to just count keywords, not copy.  If not NULL, on return, the
- * pointed-to pointer is incremented.
- * @param tpid The type part ID that a keyword must have in order to be copied
- * (or counted).
- * @return Returns said number of keywords.
- */
-PJL_NOWARN_UNUSED_RESULT
-static size_t copy_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
-  size_t count = 0;
-  FOREACH_C_KEYWORD( k ) {
-    if ( opt_lang_is_any( k->lang_ids ) && c_tid_tpid( k->tid ) == tpid ) {
-      if ( pdym != NULL )
-        (*pdym)++->token = check_strdup( k->literal );
-      ++count;
-    }
   } // for
   return count;
 }
@@ -305,13 +331,15 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
     ((kinds & DYM_SET_OPTIONS) != DYM_NONE ?
       copy_set_options( /*pdym=*/NULL ) : 0) +
     ((kinds & DYM_C_KEYWORDS) != DYM_NONE ?
-      copy_keywords( /*pdym=*/NULL, C_TPID_NONE ) +
-      copy_keywords( /*pdym=*/NULL, C_TPID_STORE ) : 0) +
+      copy_c_keywords( /*pdym=*/NULL, C_TPID_NONE ) +
+      copy_c_keywords( /*pdym=*/NULL, C_TPID_STORE ) : 0) +
     ((kinds & DYM_C_ATTRIBUTES) != DYM_NONE ?
-      copy_keywords( /*pdym=*/NULL, C_TPID_ATTR ) : 0) +
+      copy_c_keywords( /*pdym=*/NULL, C_TPID_ATTR ) : 0) +
     ((kinds & DYM_C_TYPES) != DYM_NONE ?
-      copy_keywords( /*pdym=*/NULL, C_TPID_BASE ) +
-      copy_typedefs( /*pdym=*/NULL ) : 0);
+      copy_c_keywords( /*pdym=*/NULL, C_TPID_BASE ) +
+      copy_typedefs( /*pdym=*/NULL ) : 0) +
+    ((kinds & DYM_CDECL_KEYWORDS) != DYM_NONE ?
+      copy_cdecl_keywords( /*pdym=*/NULL ) : 0);
 
   if ( dym_size == 0 )
     return NULL;
@@ -329,15 +357,18 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
     copy_set_options( &dym );
   }
   if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE ) {
-    copy_keywords( &dym, C_TPID_NONE );
-    copy_keywords( &dym, C_TPID_STORE );
+    copy_c_keywords( &dym, C_TPID_NONE );
+    copy_c_keywords( &dym, C_TPID_STORE );
   }
   if ( (kinds & DYM_C_ATTRIBUTES) != DYM_NONE ) {
-    copy_keywords( &dym, C_TPID_ATTR );
+    copy_c_keywords( &dym, C_TPID_ATTR );
   }
   if ( (kinds & DYM_C_TYPES) != DYM_NONE ) {
-    copy_keywords( &dym, C_TPID_BASE );
+    copy_c_keywords( &dym, C_TPID_BASE );
     copy_typedefs( &dym );
+  }
+  if ( (kinds & DYM_CDECL_KEYWORDS) != DYM_NONE ) {
+    copy_cdecl_keywords( &dym );
   }
   MEM_ZERO( dym );                      // one past last is zero'd
 

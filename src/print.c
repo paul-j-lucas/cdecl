@@ -30,6 +30,7 @@
 #include "c_lang.h"
 #include "c_sname.h"
 #include "cdecl.h"
+#include "cdecl_keyword.h"
 #include "color.h"
 #include "lexer.h"
 #include "options.h"
@@ -328,13 +329,14 @@ void fl_print_error_unknown_name( char const *file, int line,
                                   c_loc_t const *loc, c_sname_t const *sname ) {
   assert( sname != NULL );
 
+  dym_kind_t dym_kind = DYM_NONE;
+
   // Must dup this since c_sname_full_name() returns a temporary buffer.
   char const *const name = check_strdup( c_sname_full_name( sname ) );
 
   c_keyword_t const *const k =
     c_keyword_find( name, LANG_ANY, C_KW_CTX_DEFAULT );
   if ( k != NULL ) {
-    dym_kind_t  dym_kind = DYM_NONE;
     char const *what = NULL;
 
     switch ( c_tid_tpid( k->tid ) ) {
@@ -356,13 +358,20 @@ void fl_print_error_unknown_name( char const *file, int line,
     fl_print_error( file, line, loc,
       "\"%s\": unsupported %s%s", name, what, c_lang_which( k->lang_ids )
     );
-    print_suggestions( dym_kind, name );
   }
   else {
     fl_print_error( file, line, loc, "\"%s\": unknown name", name );
-    print_suggestions( DYM_C_KEYWORDS | DYM_C_TYPES, name );
+
+    dym_kind = DYM_C_KEYWORDS | DYM_C_TYPES;
+    if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+      dym_kind |= DYM_CDECL_KEYWORDS;
+      cdecl_keyword_t const *const ck = cdecl_keyword_find( name );
+      if ( ck != NULL )
+        EPRINTF( " (\"%s\" is a cdecl keyword)", name );
+    }
   }
 
+  print_suggestions( dym_kind, name );
   EPUTC( '\n' );
   FREE( name );
 }

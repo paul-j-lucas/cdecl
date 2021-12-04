@@ -134,6 +134,7 @@ typedef enum   c_visit_dir        c_visit_dir_t;
 typedef struct cdecl_command      cdecl_command_t;
 typedef enum   cdecl_command_kind cdecl_command_kind_t;
 typedef enum   cdecl_help         cdecl_help_t;
+typedef struct cdecl_keyword      cdecl_keyword_t;
 typedef enum   cdecl_mode         cdecl_mode_t;
 typedef enum   yytokentype        yytokentype;
 

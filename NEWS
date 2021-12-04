@@ -10,6 +10,19 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.7
+
+** Cdecl keywords
+When an unexpected name token is encountered, if said token is a cdecl keyword,
+it's now mentioned in the error message:
+
+    cdecl> declare ptr as pointer to void
+                   ^
+    16: syntax error: "ptr": name expected ("ptr" is a cdecl keyword)
+
+Additionally, cdecl keywords are now also offered in suggestions.
+
+
 * Changes in Cdecl 11.6
 
 ** C++23 integer literal suffixes
