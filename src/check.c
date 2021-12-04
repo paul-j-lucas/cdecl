@@ -331,21 +331,32 @@ static bool c_ast_check_array( c_ast_t const *ast,
   assert( ast->kind == K_ARRAY );
   bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
-  if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE ) {
-    if ( !OPT_LANG_IS(C_MIN(99)) ) {
-      print_error( &ast->loc,
-        "variable length arrays not supported%s\n",
-        c_lang_which( LANG_C_MIN(99) )
-      );
-      return false;
-    }
-    if ( !is_func_param ) {
-      print_error( &ast->loc,
-        "variable length arrays are illegal outside of function parameters\n"
-      );
-      return false;
-    }
-  }
+  switch ( ast->as.array.size ) {
+    case C_ARRAY_SIZE_NONE:
+      break;
+    case C_ARRAY_SIZE_VARIABLE:
+      if ( !OPT_LANG_IS(C_MIN(99)) ) {
+        print_error( &ast->loc,
+          "variable length arrays not supported%s\n",
+          c_lang_which( LANG_C_MIN(99) )
+        );
+        return false;
+      }
+      if ( !is_func_param ) {
+        print_error( &ast->loc,
+          "variable length arrays are illegal outside of function parameters\n"
+        );
+        return false;
+      }
+      break;
+    default:
+      if ( ast->as.array.size == 0 ) {
+        print_error( &ast->loc, "%s size must be greater than 0\n", L_ARRAY );
+        return false;
+      }
+      assert( ast->as.array.size > 0 );
+      break;
+  } // switch
 
   if ( ast->as.array.stids != TS_NONE ) {
     if ( !OPT_LANG_IS(C_MIN(99)) ) {

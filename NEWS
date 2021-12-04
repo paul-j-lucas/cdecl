@@ -25,6 +25,9 @@ Additionally, cdecl keywords are now also offered in suggestions.
 ** `register` arrays
 `register` arrays are now correctly allowed.
 
+** Zero-sized arrays
+Zero-sized arrays are now correctly forbidden.
+
 
 * Changes in Cdecl 11.6
 
