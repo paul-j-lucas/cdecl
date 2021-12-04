@@ -774,11 +774,11 @@ static bool fl_is_nested_type_ok( char const *file, int line,
 }
 
 /**
- * A special case of fl_elaborate_error() when a C/C++ keyword is expected.  It
- * prevents oddly worded error messages where a C/C++ keyword is expected, but
- * that keyword isn't a keyword either until a later version of the language or
- * in a different language, hence the lexer will return the keyword as the
- * Y_NAME token instead of the keyword token.
+ * A special case of fl_elaborate_error() that prevents oddly worded error
+ * messages where a C/C++ keyword is expected, but that keyword isn't a keyword
+ * either until a later version of the language or in a different language;
+ * hence, the lexer will return the keyword as the Y_NAME token instead of the
+ * keyword token.
  *
  * For example, if fl_elaborate_error() were used for the following \b cdecl
  * command when the current language is C, you'd get the following:
