@@ -212,9 +212,9 @@ static bool cdecl_parse_command_line( char const *command, int argc,
 
   strbuf_init( &sbuf );
   if ( (space = command != NULL) )
-    strbuf_cats( &sbuf, command );
+    strbuf_puts( &sbuf, command );
   for ( int i = 0; i < argc; ++i )
-    strbuf_sepc_cats( &sbuf, ' ', &space, argv[i] );
+    strbuf_sepc_puts( &sbuf, ' ', &space, argv[i] );
 
   bool const ok = cdecl_parse_string( sbuf.str, sbuf.len );
   strbuf_cleanup( &sbuf );
@@ -419,8 +419,8 @@ bool cdecl_parse_string( char const *s, size_t s_len ) {
     print_params.inserted_len = ARRAY_SIZE( EXPLAIN_SP ) - 1/*\0*/;
     strbuf_init( &explain_buf );
     strbuf_reserve( &explain_buf, print_params.inserted_len + s_len );
-    strbuf_catsn( &explain_buf, EXPLAIN_SP, print_params.inserted_len );
-    strbuf_catsn( &explain_buf, s, s_len );
+    strbuf_putsn( &explain_buf, EXPLAIN_SP, print_params.inserted_len );
+    strbuf_putsn( &explain_buf, s, s_len );
     s = explain_buf.str;
     s_len = explain_buf.len;
   }

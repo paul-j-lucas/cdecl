@@ -87,7 +87,7 @@ static char const* fprint_list_get_dym( void const *elt ) {
 
   strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
   strbuf_reset( sbuf );
-  strbuf_catf( sbuf, "\"%s\"", dym->token );
+  strbuf_printf( sbuf, "\"%s\"", dym->token );
   return sbuf->str;
 }
 

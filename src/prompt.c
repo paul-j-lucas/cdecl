@@ -98,23 +98,23 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
 
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
-    strbuf_catc( sbuf, RL_PROMPT_START_IGNORE );
+    strbuf_putc( sbuf, RL_PROMPT_START_IGNORE );
     SGR_STRBUF_START_COLOR( sbuf, prompt );
-    strbuf_catc( sbuf, RL_PROMPT_END_IGNORE );
+    strbuf_putc( sbuf, RL_PROMPT_END_IGNORE );
   }
 #endif /* WITH_READLINE */
 
-  strbuf_catf( sbuf, "%s%c", OPT_LANG_IS(C_ANY) ? CDECL : CPPDECL, suffix );
+  strbuf_printf( sbuf, "%s%c", OPT_LANG_IS(C_ANY) ? CDECL : CPPDECL, suffix );
 
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
-    strbuf_catc( sbuf, RL_PROMPT_START_IGNORE );
+    strbuf_putc( sbuf, RL_PROMPT_START_IGNORE );
     SGR_STRBUF_END_COLOR( sbuf );
-    strbuf_catc( sbuf, RL_PROMPT_END_IGNORE );
+    strbuf_putc( sbuf, RL_PROMPT_END_IGNORE );
   }
 #endif /* WITH_READLINE */
 
-  strbuf_catc( sbuf, ' ' );
+  strbuf_putc( sbuf, ' ' );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

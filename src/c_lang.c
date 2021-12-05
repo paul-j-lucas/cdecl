@@ -148,7 +148,7 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
   c_lang_id_t which_lang_id;
 
   if ( exactly_one_bit_set( lang_ids ) ) {
-    strbuf_catsn( &sbuf, " unless ", 8 );
+    strbuf_putsn( &sbuf, " unless ", 8 );
     which_lang_id = lang_ids;
   }
   else {
@@ -158,9 +158,9 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
 
     which_lang_id = c_lang_oldest( lang_ids );
     if ( opt_lang < which_lang_id ) {
-      strbuf_catsn( &sbuf, " until ", 7 );
+      strbuf_putsn( &sbuf, " until ", 7 );
     } else {
-      strbuf_catsn( &sbuf, " since ", 7 );
+      strbuf_putsn( &sbuf, " since ", 7 );
       //
       // The newest language of langs_ids is the last language in which the
       // feature is legal, so we need the language after that to be the first
@@ -171,7 +171,7 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
     }
   }
 
-  strbuf_cats( &sbuf, c_lang_name( which_lang_id ) );
+  strbuf_puts( &sbuf, c_lang_name( which_lang_id ) );
   return sbuf.str;
 }
 

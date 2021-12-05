@@ -751,7 +751,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
               }
 
 <X_RSTR>{
-  [^)]+       { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
+  [^)]+       { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
   ")"         {
                 char const *d;
                 for ( d = rstr_delim; *d != '\0'; ++d, ++token_column ) {
@@ -771,7 +771,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                     // Hence, it's not the actual delimiter, but part of the
                     // string literal: append the part that matched (")ab").
                     //
-                    strbuf_catf( &str_lit_buf,
+                    strbuf_printf( &str_lit_buf,
                       ")%.*s", (int)(d - rstr_delim), rstr_delim
                     );
                     //
@@ -817,7 +817,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                */
 <X_CHAR,X_STR>{
               /* Escaped characters are copied verbatim, not interpreted. */
-  \\(.|\n)    { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
+  \\(.|\n)    { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
   \n          {
                 print_error( &str_lit_loc,
                   "unterminated %s literal\n",
@@ -829,7 +829,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 }
 
 <X_CHAR>{
-  [^'\\\n]+   { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
+  [^'\\\n]+   { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
   \'          {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;
@@ -840,7 +840,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 }
 
 <X_STR>{      /* X_STR is the same as X_CHAR except " replaces '. */
-  [^"\\\n]+   { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
+  [^"\\\n]+   { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
   \"          {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;

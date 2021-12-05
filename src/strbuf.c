@@ -56,7 +56,7 @@ static size_t next_pow_2( size_t n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void strbuf_catf( strbuf_t *sbuf, char const *format, ... ) {
+void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   assert( sbuf != NULL );
   assert( format != NULL );
 
@@ -91,7 +91,7 @@ void strbuf_catf( strbuf_t *sbuf, char const *format, ... ) {
   sbuf->len += (size_t)rv;
 }
 
-void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
+void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
   assert( s != NULL );
   strbuf_reserve( sbuf, s_len );
   strncpy( sbuf->str + sbuf->len, s, s_len );
@@ -129,13 +129,13 @@ void strbuf_sepsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
                    bool *sep_flag ) {
   assert( sep_flag != NULL );
   if ( true_or_set( sep_flag ) )
-    strbuf_catsn( sbuf, sep, sep_len );
+    strbuf_putsn( sbuf, sep, sep_len );
 }
 
-void strbuf_sepsn_catsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
+void strbuf_sepsn_putsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
                          bool *sep_flag, char const *s, size_t s_len ) {
   strbuf_sepsn( sbuf, sep, sep_len, sep_flag );
-  strbuf_catsn( sbuf, s, s_len );
+  strbuf_putsn( sbuf, s, s_len );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

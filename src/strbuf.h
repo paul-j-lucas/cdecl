@@ -67,65 +67,6 @@ typedef struct strbuf strbuf_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Concatenates \a format and the `printf`-style arguments onto the end of \a
- * sbuf growing the buffer if necessary.
- *
- * @param sbuf A pointer to the strbuf to concatenate onto.
- * @param format The `printf()` style format string.
- * @param ... The `printf()` arguments.
- *
- * @sa strbuf_catc()
- * @sa strbuf_cats()
- * @sa strbuf_catsn()
- */
-PJL_PRINTF_LIKE_FUNC(2)
-void strbuf_catf( strbuf_t *sbuf, char const *format, ... );
-
-/**
- * Concatenates \a s_len bytes of \a s onto the end of \a sbuf growing the
- * buffer if necessary.
- *
- * @param sbuf A pointer to the strbuf to concatenate onto.
- * @param s The string to concatenate.
- * @param s_len The number of bytes of \a s to concatenate.
- *
- * @sa strbuf_catc()
- * @sa strbuf_catf()
- * @sa strbuf_cats()
- */
-void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len );
-
-/**
- * Concatenates \a c onto the end of \a sbuf growing the buffer if necessary.
- *
- * @param sbuf A pointer to the strbuf to concatenate onto.
- * @param c The character to concatenate.
- *
- * @sa strbuf_catf()
- * @sa strbuf_cats()
- * @sa strbuf_catsn()
- */
-STRBUF_INLINE
-void strbuf_catc( strbuf_t *sbuf, char c ) {
-  strbuf_catsn( sbuf, &c, 1 );
-}
-
-/**
- * Concatenates \a s onto the end of \a sbuf growing the buffer if necessary.
- *
- * @param sbuf A pointer to the strbuf to concatenate onto.
- * @param s The string to concatenate.
- *
- * @sa strbuf_catc()
- * @sa strbuf_catf()
- * @sa strbuf_catsn()
- */
-STRBUF_INLINE
-void strbuf_cats( strbuf_t *sbuf, char const *s ) {
-  strbuf_catsn( sbuf, s, strlen( s ) );
-}
-
-/**
  * Cleans-up all memory associated with \a sbuf but does _not_ free \a sbuf
  * itself.
  *
@@ -149,6 +90,65 @@ void strbuf_cleanup( strbuf_t *sbuf );
 STRBUF_INLINE
 void strbuf_init( strbuf_t *sbuf ) {
   MEM_ZERO( sbuf );
+}
+
+/**
+ * Concatenates \a format and the `printf`-style arguments onto the end of \a
+ * sbuf growing the buffer if necessary.
+ *
+ * @param sbuf A pointer to the strbuf to concatenate onto.
+ * @param format The `printf()` style format string.
+ * @param ... The `printf()` arguments.
+ *
+ * @sa strbuf_putc()
+ * @sa strbuf_puts()
+ * @sa strbuf_putsn()
+ */
+PJL_PRINTF_LIKE_FUNC(2)
+void strbuf_printf( strbuf_t *sbuf, char const *format, ... );
+
+/**
+ * Concatenates \a s_len bytes of \a s onto the end of \a sbuf growing the
+ * buffer if necessary.
+ *
+ * @param sbuf A pointer to the strbuf to concatenate onto.
+ * @param s The string to concatenate.
+ * @param s_len The number of bytes of \a s to concatenate.
+ *
+ * @sa strbuf_putc()
+ * @sa strbuf_printf()
+ * @sa strbuf_puts()
+ */
+void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len );
+
+/**
+ * Concatenates \a c onto the end of \a sbuf growing the buffer if necessary.
+ *
+ * @param sbuf A pointer to the strbuf to concatenate onto.
+ * @param c The character to concatenate.
+ *
+ * @sa strbuf_printf()
+ * @sa strbuf_puts()
+ * @sa strbuf_putsn()
+ */
+STRBUF_INLINE
+void strbuf_putc( strbuf_t *sbuf, char c ) {
+  strbuf_putsn( sbuf, &c, 1 );
+}
+
+/**
+ * Concatenates \a s onto the end of \a sbuf growing the buffer if necessary.
+ *
+ * @param sbuf A pointer to the strbuf to concatenate onto.
+ * @param s The string to concatenate.
+ *
+ * @sa strbuf_putc()
+ * @sa strbuf_printf()
+ * @sa strbuf_putsn()
+ */
+STRBUF_INLINE
+void strbuf_puts( strbuf_t *sbuf, char const *s ) {
+  strbuf_putsn( sbuf, s, strlen( s ) );
 }
 
 /**
@@ -186,10 +186,10 @@ void strbuf_reset( strbuf_t *sbuf );
  * concatenated prior to \a s: if `false`, \a sep is _not_ concatenated and it
  * is set to `true`; if `true`, \a sep is concatenated.
  *
- * @sa strbuf_sepc_cats()
- * @sa strbuf_sepc_catsn()
- * @sa strbuf_sepsn_cats()
- * @sa strbuf_sepsn_catsn()
+ * @sa strbuf_sepc_puts()
+ * @sa strbuf_sepc_putsn()
+ * @sa strbuf_sepsn_puts()
+ * @sa strbuf_sepsn_putsn()
  */
 void strbuf_sepsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
                    bool *sep_flag );
@@ -208,11 +208,11 @@ void strbuf_sepsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @param s_len The number of bytes of \a s to concatenate.
  *
  * @sa strbuf_sepsn()
- * @sa strbuf_sepc_cats()
- * @sa strbuf_sepc_catsn()
- * @sa strbuf_sepsn_cats()
+ * @sa strbuf_sepc_puts()
+ * @sa strbuf_sepc_putsn()
+ * @sa strbuf_sepsn_puts()
  */
-void strbuf_sepsn_catsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
+void strbuf_sepsn_putsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
                          bool *sep_flag, char const *s, size_t s_len );
 
 /**
@@ -227,15 +227,15 @@ void strbuf_sepsn_catsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * is set to `true`; if `true`, \a sep is concatenated.
  * @param s The string to concatenate.
  *
- * @sa strbuf_sepc_cats()
- * @sa strbuf_sepc_catsn()
+ * @sa strbuf_sepc_puts()
+ * @sa strbuf_sepc_putsn()
  * @sa strbuf_sepsn()
- * @sa strbuf_sepsn_catsn()
+ * @sa strbuf_sepsn_putsn()
  */
 STRBUF_INLINE
-void strbuf_sepsn_cats( strbuf_t *sbuf, char const *sep, size_t sep_len,
+void strbuf_sepsn_puts( strbuf_t *sbuf, char const *sep, size_t sep_len,
                         bool *sep_flag, char const *s ) {
-  strbuf_sepsn_catsn( sbuf, sep, sep_len, sep_flag, s, strlen( s ) );
+  strbuf_sepsn_putsn( sbuf, sep, sep_len, sep_flag, s, strlen( s ) );
 }
 
 /**
@@ -250,15 +250,15 @@ void strbuf_sepsn_cats( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @param s The string to concatenate.
  * @param s_len The number of bytes of \a s to concatenate.
  *
- * @sa strbuf_sepc_cats()
+ * @sa strbuf_sepc_puts()
  * @sa strbuf_sepsn()
- * @sa strbuf_sepsn_cats()
- * @sa strbuf_sepsn_catsn()
+ * @sa strbuf_sepsn_puts()
+ * @sa strbuf_sepsn_putsn()
  */
 STRBUF_INLINE
-void strbuf_sepc_catsn( strbuf_t *sbuf, char sep, bool *sep_flag, char const *s,
+void strbuf_sepc_putsn( strbuf_t *sbuf, char sep, bool *sep_flag, char const *s,
                         size_t s_len ) {
-  strbuf_sepsn_catsn( sbuf, &sep, 1, sep_flag, s, s_len );
+  strbuf_sepsn_putsn( sbuf, &sep, 1, sep_flag, s, s_len );
 }
 
 /**
@@ -272,15 +272,15 @@ void strbuf_sepc_catsn( strbuf_t *sbuf, char sep, bool *sep_flag, char const *s,
  * is set to `true`; if `true`, \a sep is concatenated.
  * @param s The string to concatenate.
  *
- * @sa strbuf_sepc_catsn()
+ * @sa strbuf_sepc_putsn()
  * @sa strbuf_sepsn()
- * @sa strbuf_sepsn_cats()
- * @sa strbuf_sepsn_catsn()
+ * @sa strbuf_sepsn_puts()
+ * @sa strbuf_sepsn_putsn()
  */
 STRBUF_INLINE
-void strbuf_sepc_cats( strbuf_t *sbuf, char sep, bool *sep_flag,
+void strbuf_sepc_puts( strbuf_t *sbuf, char sep, bool *sep_flag,
                        char const *s ) {
-  strbuf_sepsn_catsn( sbuf, &sep, 1, sep_flag, s, strlen( s ) );
+  strbuf_sepsn_putsn( sbuf, &sep, 1, sep_flag, s, strlen( s ) );
 }
 
 /**

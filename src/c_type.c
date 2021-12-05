@@ -634,7 +634,7 @@ static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
   for ( size_t i = 0; i < tids_set_size; ++i ) {
     if ( !c_tid_is_none( tids & tids_set[i] ) ) {
       char const *const name = c_tid_name_1( tids_set[i], in_english );
-      strbuf_sepc_cats( sbuf, sep, sep_flag, name );
+      strbuf_sepc_puts( sbuf, sep, sep_flag, name );
     }
   } // for
 }
@@ -745,10 +745,10 @@ static char const* c_type_name_impl( c_type_t const *type,
     bool *const sep_cat = print_brackets ? &comma : &space;
 
     if ( print_brackets )
-      strbuf_sepc_cats( sbuf, ' ', &space, graph_token_c( "[[" ) );
+      strbuf_sepc_puts( sbuf, ' ', &space, graph_token_c( "[[" ) );
     C_TID_NAME_CAT( sbuf, atids, ATIDS, in_english, sep, sep_cat );
     if ( print_brackets )
-      strbuf_cats( sbuf, graph_token_c( "]]" ) );
+      strbuf_puts( sbuf, graph_token_c( "]]" ) );
     space = true;
   }
 
@@ -875,7 +875,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     c_tid_is_any( stids, TS_ATOMIC ) && !c_tid_is_any( btids, TB_TYPEDEF );
 
   if ( print_parens_for_cpp23_Atomic ) {
-    strbuf_catc( sbuf, '(' );
+    strbuf_putc( sbuf, '(' );
     space = false;
   }
 
@@ -916,7 +916,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   C_TID_NAME_CAT( sbuf, btids, BTIDS, in_english, ' ', &space );
 
   if ( print_parens_for_cpp23_Atomic )
-    strbuf_catc( sbuf, ')' );
+    strbuf_putc( sbuf, ')' );
 
   // Microsoft calling conventions must be handled here.
   static c_tid_t const MSC_CALL_ATIDS[] = {
@@ -934,9 +934,9 @@ static char const* c_type_name_impl( c_type_t const *type,
 
   // Really special cases.
   if ( c_tid_is_any( btids, TB_NAMESPACE ) )
-    strbuf_sepc_cats( sbuf, ' ', &space, L_NAMESPACE );
+    strbuf_sepc_puts( sbuf, ' ', &space, L_NAMESPACE );
   else if ( c_tid_is_any( btids, TB_SCOPE ) )
-    strbuf_sepc_cats( sbuf, ' ', &space, L_SCOPE );
+    strbuf_sepc_puts( sbuf, ' ', &space, L_SCOPE );
 
   return sbuf->str != NULL ? sbuf->str : "";
 }

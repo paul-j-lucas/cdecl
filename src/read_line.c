@@ -91,7 +91,7 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *ps1, char const *ps2 ) {
 
     size_t const line_len = strlen( line );
     is_cont_line = ends_with_chr( line, line_len, '\\' );
-    strbuf_catsn( sbuf, line, line_len - is_cont_line /* don't copy '\' */ );
+    strbuf_putsn( sbuf, line, line_len - is_cont_line /* don't copy '\' */ );
 
     if ( !is_cont_line )
       break;

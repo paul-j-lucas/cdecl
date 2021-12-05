@@ -126,7 +126,7 @@
  */
 #define SGR_STRBUF_START_COLOR(SBUF,COLOR) BLOCK( \
   if ( colorize && (sgr_ ## COLOR) != NULL )  \
-    strbuf_catf( (SBUF), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
+    strbuf_printf( (SBUF), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
 
 /**
  * Writes the bytes to \a SBUF that, when printed to a terminal, will end
@@ -137,7 +137,7 @@
  * @sa #SGR_STRBUF_START_COLOR
  */
 #define SGR_STRBUF_END_COLOR(SBUF) \
-  BLOCK( if ( colorize ) strbuf_cats( (SBUF), SGR_END SGR_EL ); )
+  BLOCK( if ( colorize ) strbuf_puts( (SBUF), SGR_END SGR_EL ); )
 
 /**
  * When to colorize output.

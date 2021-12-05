@@ -67,9 +67,9 @@ static char const* c_sname_impl( strbuf_t *sbuf, c_sname_t const *sname,
     c_scope_data_t const *const data = c_scope_data( scope );
     if ( data->type.stids != TS_NONE ) {
       // For nested inline namespaces, e.g., namespace A::inline B::C.
-      strbuf_catf( sbuf, "%s ", c_tid_name_c( data->type.stids ) );
+      strbuf_printf( sbuf, "%s ", c_tid_name_c( data->type.stids ) );
     }
-    strbuf_cats( sbuf, data->name );
+    strbuf_puts( sbuf, data->name );
   }
 
   return sbuf->str != NULL ? sbuf->str : "";

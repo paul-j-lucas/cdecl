@@ -294,7 +294,7 @@ static char const* opt_format( char short_opt, strbuf_t *sbuf ) {
   assert( sbuf != NULL );
   strbuf_init( sbuf );
   char const *const long_opt = opt_get_long( short_opt );
-  strbuf_catf(
+  strbuf_printf(
     sbuf, "%s%s%s-%c",
     long_opt[0] != '\0' ? "--" : "",
     long_opt,
@@ -357,7 +357,7 @@ static color_when_t parse_color_when( char const *when ) {
   strbuf_init( &when_sbuf );
   bool comma = false;
   for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m )
-    strbuf_sepsn_cats( &when_sbuf, ", ", 2, &comma, m->map_when );
+    strbuf_sepsn_puts( &when_sbuf, ", ", 2, &comma, m->map_when );
 
   strbuf_t opt_sbuf;
   PMESSAGE_EXIT( EX_USAGE,
@@ -386,7 +386,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
   bool comma = false;
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
-      strbuf_sepsn_cats( &langs_sbuf, ", ", 2, &comma, lang->name );
+      strbuf_sepsn_puts( &langs_sbuf, ", ", 2, &comma, lang->name );
   } // for
 
   strbuf_t opt_sbuf;
