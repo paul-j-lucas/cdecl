@@ -36,6 +36,7 @@
 #include "options.h"
 #include "print.h"
 #include "prompt.h"
+#include "read_line.h"
 #include "strbuf.h"
 #include "util.h"
 
@@ -51,13 +52,6 @@
 #include <string.h>
 #include <sysexits.h>
 #include <unistd.h>                     /* for isatty(3) */
-
-#ifdef HAVE_READLINE_READLINE_H
-# include <readline/readline.h>
-#endif /* HAVE_READLINE_READLINE_H */
-#ifdef HAVE_READLINE_HISTORY_H
-# include <readline/history.h>
-#endif /* HAVE_READLINE_HISTORY_H */
 
 /// @endcond
 
@@ -171,82 +165,6 @@ static void cdecl_cleanup( void ) {
   c_typedef_cleanup();
   parser_cleanup();                     // must go before c_ast_cleanup()
   c_ast_cleanup();
-}
-
-/**
- * Reads an input line interactively.
- *
- *  + Returns only non-whitespace-only lines.
- *  + Stitches multiple lines ending with `\` together.
- *
- * If GNU **readline**(3) is compiled in, also:
- *
- *  + Adds non-whitespace-only lines to the history.
- *
- * @param sbuf The strbuf to use.
- * @param ps1 The primary prompt to use.
- * @param ps2 The secondary prompt to use for a continuation line (a line after
- * ones ending with `\`).
- * @return Returns `false` only if encountered EOF.
- */
-PJL_WARN_UNUSED_RESULT
-static bool cdecl_read_line( strbuf_t *sbuf, char const *ps1,
-                             char const *ps2 ) {
-  assert( sbuf != NULL );
-  assert( ps1 != NULL );
-  assert( ps2 != NULL );
-
-  bool is_cont_line = false;
-
-  strbuf_init( sbuf );
-
-  for (;;) {
-    static char *line;
-    bool got_line;
-
-#ifdef WITH_READLINE
-    extern void readline_init( FILE*, FILE* );
-    static bool called_readline_init;
-    if ( false_set( &called_readline_init ) )
-      readline_init( fin, fout );
-    free( line );
-    got_line = (line = readline( is_cont_line ? ps2 : ps1 )) != NULL;
-#else
-    static size_t line_cap;
-    FPUTS( is_cont_line ? ps2 : ps1, fout );
-    FFLUSH( fout );
-    got_line = getline( &line, &line_cap, fin ) != -1;
-#endif /* WITH_READLINE */
-
-    if ( !got_line ) {
-      FERROR( fout );
-      return false;
-    }
-
-    if ( is_blank_line( line ) ) {
-      if ( is_cont_line ) {
-        //
-        // If we've been accumulating continuation lines, a blank line ends it.
-        //
-        break;
-      }
-      continue;                         // otherwise, ignore blank lines
-    }
-
-    size_t const line_len = strlen( line );
-    is_cont_line = ends_with_chr( line, line_len, '\\' );
-    strbuf_catsn( sbuf, line, line_len - is_cont_line /* don't copy '\' */ );
-
-    if ( !is_cont_line )
-      break;
-  } // for
-
-  assert( sbuf->str != NULL );
-  assert( sbuf->str[0] != '\0' );
-#ifdef WITH_READLINE
-  add_history( sbuf->str );
-#endif /* WITH_READLINE */
-  return true;
 }
 
 /**
@@ -371,7 +289,7 @@ static bool cdecl_parse_stdin( void ) {
     for (;;) {
       static strbuf_t sbuf;
       strbuf_reset( &sbuf );
-      if ( !cdecl_read_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
+      if ( !strbuf_read_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
         break;
       ok = cdecl_parse_string( sbuf.str, sbuf.len );
     } // for
