@@ -1,5 +1,25 @@
+2021-12-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.h: Added "const" to SLIST_VAR_INIT().
+   * c_lang.c, c_sname.c, c_type.c, cdecl.c, color.h, lexer.l, options.c,
+     print.c, prompt.c, read_line.c, strbuf.c, strbuf.h: strbuf function
+     renaming.
+   * Doxyfile, Makefile.am, configure.ac, man/Makefile.am,
+     man/man1/Makefile.am, src/Makefile.am, c_ast.c, c_ast.h, c_ast_util.c,
+     c_ast_util.h, c_keyword.c, c_keyword.h, c_kind.c, c_kind.h, c_lang.c,
+     c_lang.h, c_operator.c, c_operator.h, c_sglob.c, c_sglob.h, c_sname.c,
+     c_sname.h, c_type.c, c_type.h, c_typedef.c, c_typedef.h, cdecl_keyword.c,
+     cdecl_keyword.h, check.c, check.h, color.c, color.h, dam_lev.c, dam_lev.h,
+     did_you_mean.c, did_you_mean.h, dump.c, dump.h, english.c, english.h,
+     gibberish.c, gibberish.h, lexer.h, literals.c, literals.h, pjl_config.h,
+     print.c, print.h, prompt.c, prompt.h, slist.c, slist.h, strbuf.c,
+     strbuf.h, types.h, util.c, util.h, test/Makefile.am: Removed "et al" from
+     files that are wholly new.
+
 2021-12-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am, cdecl.c, read_line.c, read_line.h: Moved
+     cdecl_read_line() to strbuf_read_line() and put in its own file.
    * autocomplete.c, cdecl.c, cdecl.h, did_you_mean.c:
      s/FOREACH_COMMAND/FOREACH_CDECL_COMMAND/
    * cdecl_keyword.c: C_SYN() simplification.
