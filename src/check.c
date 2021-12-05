@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/check.c
 **
-**      Copyright (C) 2017-2021  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2021  Paul J. Lucas
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
