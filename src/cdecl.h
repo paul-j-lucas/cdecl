@@ -76,7 +76,7 @@ extern char const  *me;                 ///< Program name.
  * Parses a cdecl command from a string.
  *
  * @note This is the main parsing function (the only one that calls Bison).
- * All other `parse_cdecl_*()` functions ultimately call this function.
+ * All other `cdecl_parse_*()` functions ultimately call this function.
  *
  * @param s The null-terminated string to parse.
  * @param s_len The length of \a s.
