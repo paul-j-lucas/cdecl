@@ -1,5 +1,25 @@
+2021-12-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, cdecl.c, cdecl.h, did_you_mean.c:
+     s/FOREACH_COMMAND/FOREACH_CDECL_COMMAND/
+   * cdecl_keyword.c: C_SYN() simplification.
+   * c_keyword.h: s/int/yytokentype/
+   * NEWS, check.c, test/Makefile.am, explain_a0i.out, explain_a0i.test:
+     Zero-sized arrays are now correctly forbidden.
+   * NEWS, check.c, test/Makefile.am: `register` arrays are now correctly
+     allowed.
+   * gettext.h, gnulib-comp.m4, vararrays.m4: Updated Gnulib.
+   * NEWS, configure.ac, src/Makefile.am, cdecl_keyword.c, cdecl_keyword.h,
+     did_you_mean.c, did_you_mean.h, lexer.l, parser.y, print.c, types.h,
+     declare_rgf_v.out, explain_ac9i.out, explain_as9i.out,
+     explain_fpcf_i_v.out: Now mentioning that an unknown name is a cdecl
+     keyword and also offering cdecl keywords in suggestions.
+
 2021-12-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_lang.c: Simplified c_lang_literal().
+   * autocomplete.c, c_keyword.h, did_you_mean.c:
+     s/FOREACH_KEYWORD/FOREACH_C_KEYWORD/
    * configure.ac: Whitespace.
    * configure.ac: Reordering; removed "support for".
 
