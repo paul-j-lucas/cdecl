@@ -56,6 +56,12 @@ static size_t next_pow_2( size_t n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+void strbuf_cleanup( strbuf_t *sbuf ) {
+  assert( sbuf != NULL );
+  free( sbuf->str );
+  strbuf_init( sbuf );
+}
+
 void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   assert( sbuf != NULL );
   assert( format != NULL );
@@ -97,12 +103,6 @@ void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
   strncpy( sbuf->str + sbuf->len, s, s_len );
   sbuf->len += s_len;
   sbuf->str[ sbuf->len ] = '\0';
-}
-
-void strbuf_cleanup( strbuf_t *sbuf ) {
-  assert( sbuf != NULL );
-  free( sbuf->str );
-  strbuf_init( sbuf );
 }
 
 bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
