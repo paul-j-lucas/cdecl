@@ -54,6 +54,7 @@ _GL_INLINE_HEADER_BEGIN
  * For `c_array_ast.size`, denotes `array[]`.
  *
  * @sa #C_ARRAY_SIZE_VARIABLE
+ * @sa c_array_size_t
  */
 #define C_ARRAY_SIZE_NONE     (-1)
 
@@ -61,6 +62,7 @@ _GL_INLINE_HEADER_BEGIN
  * For `c_array_ast.size`, denotes `array[*]`.
  *
  * @sa #C_ARRAY_SIZE_NONE
+ * @sa c_array_size_t
  */
 #define C_ARRAY_SIZE_VARIABLE (-2)
 
@@ -216,16 +218,7 @@ struct c_parent_ast {
  */
 struct c_array_ast {
   c_ast_t        *of_ast;               ///< What it's an array of.
-
-  /**
-   * One of:
-   *
-   *  + The actual size of a C array.
-   *  + #C_ARRAY_SIZE_NONE
-   *  + #C_ARRAY_SIZE_VARIABLE
-   */
-  c_array_size_t  size;
-
+  c_array_size_t  size;                 ///< The array size.
   c_tid_t         stids;                ///< E.g., `array[static const 10]`
 };
 
@@ -240,7 +233,7 @@ struct c_array_ast {
  */
 struct c_apple_block_ast {
   c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_list_t    param_ast_list;       ///< Block parameters(s), if any.
+  c_ast_list_t    param_ast_list;       ///< Block parameter(s), if any.
 };
 
 /**
@@ -250,7 +243,7 @@ struct c_apple_block_ast {
  * taken advantage of.
  */
 struct c_builtin_ast {
-  /// So `bit_width` is at same offset as in `c_typedef_ast`.
+  /// So `bit_width` is at the same offset as in `c_typedef_ast`.
   void           *not_used;
 
   c_bit_width_t   bit_width;            ///< Bit-field width when &gt; 0.
@@ -264,10 +257,10 @@ struct c_builtin_ast {
  */
 struct c_constructor_ast {
   /// Constructors don't have a return type, but we need an unused pointer so
-  /// `param_ast_list` is at same offset as in `c_function_ast`.
+  /// `param_ast_list` is at the same offset as in `c_function_ast`.
   void           *not_used;
 
-  c_ast_list_t    param_ast_list;       ///< Constructor parameters(s), if any.
+  c_ast_list_t    param_ast_list;       ///< Constructor parameter(s), if any.
 };
 
 /**

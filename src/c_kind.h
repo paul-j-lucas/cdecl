@@ -31,7 +31,7 @@
 #include "types.h"
 
 /**
- * @defgroup c-kinds-group C/C++ Kinds of Declarations
+ * @defgroup c-kinds-group C/C++ Declaration Kinds
  * Types and functions for kinds of things in C/C++ declarations.
  * @{
  */

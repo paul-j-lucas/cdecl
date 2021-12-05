@@ -36,6 +36,14 @@
 #include <stdbool.h>
 
 /**
+ * @defgroup cdecl-keywords-group Cdecl Keywords
+ * Types and functions for cdecl keywords.
+ * @{
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
  * cdecl keyword info.
  */
 struct cdecl_keyword {
@@ -55,18 +63,20 @@ struct cdecl_keyword {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Finds a cdecl keyword matching \a s, if any.
+ * Given a literal, gets the `cdecl_keyword` for the corresponding cdecl
+ * keyword.
  *
- * @param s The string to find.
- * @return Returns a pointer to the corresponding keyword or NULL if not found.
+ * @param literal The literal to find.
+ * @return Returns a pointer to the corresponding `cdecl_keyword` or NULL if
+ * not found.
  */
 PJL_WARN_UNUSED_RESULT
-cdecl_keyword_t const* cdecl_keyword_find( char const *s );
+cdecl_keyword_t const* cdecl_keyword_find( char const *literal );
 
 /**
  * Iterates to the next cdecl keyword.
  *
- * @param k A pointer to the previous keyword. For the first iteration, NULL
+ * @param k A pointer to the current keyword. For the first iteration, NULL
  * should be passed.
  * @return Returns the next cdecl keyword or NULL for none.
  *
@@ -86,6 +96,8 @@ cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *k );
   for ( cdecl_keyword_t const *VAR = NULL; (VAR = cdecl_keyword_next( VAR )) != NULL; )
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_cdecl_keyword_H */
 /* vim:set et sw=2 ts=2: */

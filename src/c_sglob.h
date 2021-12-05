@@ -52,6 +52,14 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
+ * @defgroup sglob-group Scoped Globs
+ * Functions for accessing and manipulating C++ scoped globs.
+ * @{
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
  * C++ scoped name glob, e.g., `S::T::x*`.
  */
 struct c_sglob {
@@ -99,6 +107,8 @@ void c_sglob_init( c_sglob_t *sglob ) {
 void c_sglob_parse( char const *s, c_sglob_t *sglob );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 _GL_INLINE_HEADER_END
 

@@ -84,7 +84,7 @@ typedef struct c_array_ast        c_array_ast_t;
 /**
  * One of:
  *
- *  + The actual size of a C array.
+ *  + The actual size of a C array, but only when &ge; 0.
  *  + #C_ARRAY_SIZE_NONE
  *  + #C_ARRAY_SIZE_VARIABLE
  */

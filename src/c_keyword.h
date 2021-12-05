@@ -92,7 +92,8 @@ struct c_keyword {
  * @param literal The literal to find.
  * @param lang_ids The bitwise-or of language(s) to look for the keyword in.
  * @param kw_ctx The keyword context to limit to.
- * @return Returns a pointer to the corresponding `c_keyword` or NULL for none.
+ * @return Returns a pointer to the corresponding `c_keyword` or NULL if not
+ * found.
  */
 PJL_WARN_UNUSED_RESULT
 c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
@@ -101,7 +102,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
 /**
  * Iterates to the next C/C++ keyword.
  *
- * @param k A pointer to the previous keyword. For the first iteration, NULL
+ * @param k A pointer to the current keyword. For the first iteration, NULL
  * should be passed.
  * @return Returns the next C/C++ keyword or NULL for none.
  *

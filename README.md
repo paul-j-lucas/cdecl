@@ -75,13 +75,7 @@ most notably:
 * Support for `inline` function and variable declarations.
 * Support for `typedef` declarations.
 * Pre-defined `typedef` declarations
-  for all standard C & C++ language types
-  (`_Bool`,
-   `_Complex`, `_Imaginary`,
-   `char8_t`,
-   `wchar_t`,
-   etc.),
-  many POSIX and standard library types
+  for many POSIX and standard library types
   (`FILE`,
    `in_addr_t`,
    `int8_t`,
@@ -165,8 +159,8 @@ You will also need
 [`flex`](https://github.com/westes/flex)
 and
 [`bison`](https://www.gnu.org/software/bison/)
-(`lex` and `yacc` won't do).
-Or you can download a
+(`lex` and `yacc` won't do);
+or you can download a
 [released version](https://github.com/paul-j-lucas/cdecl/releases)
 that contains `configure`
 and the generated lexer and parser.
