@@ -81,7 +81,7 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define SLIST_VAR_INIT(VAR,NODE_DATA)                                 \
   slist_node_t VAR##_node = { NULL, CONST_CAST(void*, (NODE_DATA)) }; \
-  slist_t VAR = { &VAR##_node, &VAR##_node, 1 }
+  slist_t const VAR = { &VAR##_node, &VAR##_node, 1 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
