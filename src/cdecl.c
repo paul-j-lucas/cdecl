@@ -395,7 +395,7 @@ static bool is_command( char const *s, cdecl_command_kind_t command_kind ) {
   assert( s != NULL );
   SKIP_WS( s );
 
-  FOREACH_COMMAND( c ) {
+  FOREACH_CDECL_COMMAND( c ) {
     if ( c->kind >= command_kind ) {
       size_t const literal_len = strlen( c->literal );
       if ( !starts_with_token( s, c->literal, literal_len ) )

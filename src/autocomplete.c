@@ -324,7 +324,7 @@ static char* keyword_completion( char const *text, int state ) {
     else if ( is_cast_command() )
       command = L_CAST;
     else {
-      FOREACH_COMMAND( c ) {
+      FOREACH_CDECL_COMMAND( c ) {
         if ( opt_lang_is_any( c->lang_ids ) && is_command( c->literal ) ) {
           command = c->literal;
           break;

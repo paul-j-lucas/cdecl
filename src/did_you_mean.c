@@ -151,7 +151,7 @@ static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
 PJL_NOWARN_UNUSED_RESULT
 static size_t copy_commands( did_you_mean_t **const pdym ) {
   size_t count = 0;
-  FOREACH_COMMAND( c ) {
+  FOREACH_CDECL_COMMAND( c ) {
     if ( opt_lang_is_any( c->lang_ids ) ) {
       if ( pdym != NULL )
         (*pdym)++->token = check_strdup( c->literal );
