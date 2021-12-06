@@ -51,7 +51,7 @@
 #define CPPDECL                   "c++decl"
 
 /**
- * Convenience  macro for iterating over all cdecl commands.
+ * Convenience macro for iterating over all cdecl commands.
  *
  * @param VAR The `cdecl_command` loop variable.
  */
