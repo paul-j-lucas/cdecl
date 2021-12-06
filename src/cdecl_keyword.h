@@ -48,14 +48,20 @@
  */
 struct cdecl_keyword {
   char const         *literal;          ///< C string literal of the keyword.
-  bool                allow_explain;    ///< Allow when explaining C/C++?
-  yytokentype         yy_token_id;      ///< Bison token number; or:
+  bool                always_find;      ///< Find even when explaining C/C++?
 
   /**
-   * Array of language(s)/synonym-keyword pair(s).  The array is terminated by
-   * an element that has #LANG_ANY for lang_ids; hence subset(s) of language(s)
-   * cases come first and, failing to match opt_lang against any of those,
-   * matches the last (default) element.
+   * The Bison token ID (`Y_xxx`), but only if lang_syn is NULL; otherwise 0.
+   */
+  yytokentype         yy_token_id;
+
+  /**
+   * Array of language(s)/synonym-keyword pair(s), but only if yy_token_id is
+   * 0; otherwise NULL.
+   *
+   * The array is terminated by an element that has #LANG_ANY for lang_ids;
+   * hence subset(s) of language(s) cases come first and, failing to match
+   * opt_lang against any of those, matches the last (default) element.
    */
   c_lang_lit_t const *lang_syn;
 };

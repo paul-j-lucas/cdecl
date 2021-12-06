@@ -212,6 +212,26 @@ tilde:
 }
 
 /**
+ * Lexer-specific wrapper around cdecl_keyword_find() that finds a cdecl
+ * keyword, but only if we're currently supposed to or we're always supposed to
+ * find a particular keyword.
+ *
+ * @param literal The literal to find.
+ * @return Returns a pointer to the corresponding `cdecl_keyword` or NULL if
+ * not found or we're not currently supposed to find it.
+ */
+PJL_WARN_UNUSED_RESULT
+static inline
+cdecl_keyword_t const* lexer_cdecl_keyword_find( char const *literal ) {
+  cdecl_keyword_t const *const ck = cdecl_keyword_find( literal );
+  if ( ck != NULL &&
+       ((lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0 || ck->always_find) ) {
+    return ck;
+  }
+  return NULL;
+}
+
+/**
  * Gets a line of input for Flex and keeps a copy for use later if printing an
  * error message.
  *
@@ -551,10 +571,8 @@ declare/{S}({S}|{L})*user-def(ined)? {
         find_cdecl_keyword:
                 NO_OP;
                 cdecl_keyword_t const *const ck =
-                  cdecl_keyword_find( lexer_token );
-                if ( ck != NULL && (
-                      (lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0 ||
-                      (ck->lang_syn != NULL && ck->allow_explain) ) ) {
+                  lexer_cdecl_keyword_find( lexer_token );
+                if ( ck != NULL ) {
                   if ( ck->lang_syn == NULL ) {
                     if ( ck->literal == L_SET_COMMAND ) {
                       //
