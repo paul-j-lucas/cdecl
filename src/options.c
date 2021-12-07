@@ -518,7 +518,7 @@ static void parse_options( int argc, char const *argv[] ) {
         EPRINTF( "%s: '%c': invalid option", me, (char)optopt );
 
 use_help:
-        EPUTS( "; use --help or -h for help\n" );
+        EPRINTF( "; use --help or -%c for help\n", COPT(HELP) );
         exit( EX_USAGE );
 
       default:
