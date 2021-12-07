@@ -52,6 +52,7 @@
 #include "did_you_mean.h"
 #include "english.h"
 #include "gibberish.h"
+#include "help.h"
 #include "lexer.h"
 #include "literals.h"
 #include "options.h"

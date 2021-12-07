@@ -31,6 +31,7 @@
 #include "c_lang.h"
 #include "c_typedef.h"
 #include "color.h"
+#include "help.h"
 #include "lexer.h"
 #include "literals.h"
 #include "options.h"
@@ -195,9 +196,10 @@ static bool cdecl_parse_argv( int argc, char const *const argv[] ) {
     return cdecl_parse_command_line( L_EXPLAIN, argc, argv );
 
   EPRINTF( "%s: \"%s\": invalid command", me, argv[0] );
-  if ( !print_suggestions( DYM_COMMANDS, argv[0] ) )
-    EPUTS( "; use --help or -h for help" );
-  EPUTC( '\n' );
+  if ( print_suggestions( DYM_COMMANDS, argv[0] ) )
+    EPUTC( '\n' );
+  else
+    print_use_help();
   exit( EX_USAGE );
 }
 

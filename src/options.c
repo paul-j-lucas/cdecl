@@ -30,6 +30,7 @@
 #include "c_type.h"
 #include "cdecl.h"
 #include "color.h"
+#include "help.h"
 #include "print.h"
 #include "strbuf.h"
 #include "util.h"
@@ -518,7 +519,7 @@ static void parse_options( int argc, char const *argv[] ) {
         EPRINTF( "%s: '%c': invalid option", me, (char)optopt );
 
 use_help:
-        EPRINTF( "; use --help or -%c for help\n", COPT(HELP) );
+        print_use_help();
         exit( EX_USAGE );
 
       default:

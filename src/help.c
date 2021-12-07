@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines functions for printing the help text.
+ * Defines functions for printing help text.
  */
 
 // local
@@ -398,6 +398,10 @@ void print_help( cdecl_help_t help ) {
       return;
   } // switch
   UNEXPECTED_INT_VALUE( help );
+}
+
+void print_use_help( void ) {
+  EPRINTF( "; use --help or -h for help\n" );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

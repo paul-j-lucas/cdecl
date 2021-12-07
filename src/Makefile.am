@@ -61,7 +61,7 @@ cdecl_SOURCES =	parser.y \
 		did_you_mean.c did_you_mean.h \
 		english.c english.h \
 		gibberish.c gibberish.h \
-		help.c \
+		help.c help.h \
 		literals.c literals.h \
 		options.c options.h \
 		pjl_config.h \
