@@ -289,7 +289,7 @@ static bool cdecl_parse_stdin( void ) {
     for (;;) {
       static strbuf_t sbuf;
       strbuf_reset( &sbuf );
-      if ( !strbuf_read_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
+      if ( !strbuf_read_line( &sbuf, cdecl_prompt ) )
         break;
       ok = cdecl_parse_string( sbuf.str, sbuf.len );
     } // for

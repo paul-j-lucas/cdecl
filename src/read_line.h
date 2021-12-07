@@ -46,13 +46,13 @@
  *  + Adds non-whitespace-only lines to the history.
  *
  * @param sbuf The strbuf to use.
- * @param ps1 The primary prompt to use.
- * @param ps2 The secondary prompt to use for a continuation line (a line after
- * ones ending with `\`).
+ * @param prompts A pointer to a 2-element array of the prompts to use: the
+ * primary prompt and the the secondary prompt to use for a continuation line
+ * (a line after ones ending with `\`).
  * @return Returns `false` only if encountered EOF.
  */
 PJL_WARN_UNUSED_RESULT
-bool strbuf_read_line( strbuf_t *sbuf, char const *ps1, char const *ps2 );
+bool strbuf_read_line( strbuf_t *sbuf, char const *prompts[] );
 
 ///////////////////////////////////////////////////////////////////////////////
 

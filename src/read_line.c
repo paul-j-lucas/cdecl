@@ -47,10 +47,9 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool strbuf_read_line( strbuf_t *sbuf, char const *ps1, char const *ps2 ) {
+bool strbuf_read_line( strbuf_t *sbuf, char const *prompts[] ) {
   assert( sbuf != NULL );
-  assert( ps1 != NULL );
-  assert( ps2 != NULL );
+  assert( prompts != NULL );
 
   bool is_cont_line = false;
 
@@ -66,10 +65,10 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *ps1, char const *ps2 ) {
     if ( false_set( &called_readline_init ) )
       readline_init( fin, fout );
     free( line );
-    got_line = (line = readline( is_cont_line ? ps2 : ps1 )) != NULL;
+    got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
 #else
     static size_t line_cap;
-    FPUTS( is_cont_line ? ps2 : ps1, fout );
+    FPUTS( prompts[ is_cont_line ], fout );
     FFLUSH( fout );
     got_line = getline( &line, &line_cap, fin ) != -1;
 #endif /* WITH_READLINE */
