@@ -1,5 +1,29 @@
+2021-12-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, cdecl.c, help.c, help.h, options.c, parser.y:
+     Consolidated code that prints `; use --help or -h for help`.
+   * options.c: Now using COPT(HELP) in "use --help ..." message.
+   * cdecl.c: s/DYM_CLI_OPTIONS/DYM_COMMANDS/
+   * NEWS, cdecl.1, cdecl.c, read_line.c, read_line.h, file-cast_x.out,
+     file-cast_i.test, file-cast_x.test, file-declare_i.test,
+     file-declare_x.test, file-explain_i.test, file-explain_x.test: Removed
+     reading command-line arguments as files; made file-reading code
+     line-based.
+   * cdecl.c, cdecl.h, color.c, help.c, options.c, parser.y, read_line.c,
+     set_options.c: s/fin/cdecl_fin/; s/fout/cdecl_fout/
+   * read_line.c: Removed unnecessary strbuf_init().
+   * cdecl.c, read_line.c, read_line.h: Changed strbuf_read_line() to take a
+     char const*[2].
+
+2021-12-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_keyword.h, lexer.l: s/allow_explain/always_find/; added
+     lexer_cdecl_keyword_find().
+
 2021-12-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.h: Whitespace.
+   * strbuf.c: Sorted.
    * slist.h: Added "const" to SLIST_VAR_INIT().
    * c_lang.c, c_sname.c, c_type.c, cdecl.c, color.h, lexer.l, options.c,
      print.c, prompt.c, read_line.c, strbuf.c, strbuf.h: strbuf function
