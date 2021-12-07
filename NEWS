@@ -28,6 +28,11 @@ Additionally, cdecl keywords are now also offered in suggestions.
 ** Zero-sized arrays
 Zero-sized arrays are now correctly forbidden.
 
+** No files as arguments
+Command-line arguments were treated as files if they weren't commands.  This
+dubious use-case was a hold-over from the original cdecl and has been removed.
+(If you want to read a file use -f.)
+
 
 * Changes in Cdecl 11.6
 

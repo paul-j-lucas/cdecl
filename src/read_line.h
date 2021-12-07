@@ -32,27 +32,33 @@
 
 // standard
 #include <stdbool.h>
+#include <stdio.h>
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Reads an input line interactively.
+ * Reads an input line from \a fin.  If both \a fout and \a prompts are non-
+ * NULL, reads interactively:
  *
  *  + Returns only non-whitespace-only lines.
  *  + Stitches multiple lines ending with `\` together.
  *
- * If GNU **readline**(3) is compiled in, also:
+ * If reading interactively and GNU **readline**(3) is compiled in, also:
  *
  *  + Adds non-whitespace-only lines to the history.
  *
  * @param sbuf The strbuf to use.
+ * @param fin The file to read from.
+ * @param fout The file to print the prompts, if any, to.  If NULL, does not
+ * read interactively.
  * @param prompts A pointer to a 2-element array of the prompts to use: the
  * primary prompt and the the secondary prompt to use for a continuation line
- * (a line after ones ending with `\`).
+ * (a line after ones ending with `\`).  If NULL, does not read interactively.
  * @return Returns `false` only if encountered EOF.
  */
 PJL_WARN_UNUSED_RESULT
-bool strbuf_read_line( strbuf_t *sbuf, char const *prompts[] );
+bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
+                       char const *prompts[] );
 
 ///////////////////////////////////////////////////////////////////////////////
 

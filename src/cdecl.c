@@ -118,9 +118,6 @@ PJL_WARN_UNUSED_RESULT
 static bool cdecl_parse_command_line( char const*, int, char const *const[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_files( int, char const *const[] );
-
-PJL_WARN_UNUSED_RESULT
 static bool cdecl_parse_stdin( void );
 
 PJL_WARN_UNUSED_RESULT
@@ -169,6 +166,12 @@ static void cdecl_cleanup( void ) {
 
 /**
  * Parses \a argv to figure out what kind of arguments were given.
+ * If there are:
+ *
+ *  + Zero arguments, parses stdin; else:
+ *  + If the first argument is a cdecl command, parses the command line; else:
+ *  + If opt_explain is `true`, parses the command line; else:
+ *  + Prints an error and exits.
  *
  * @param argc The command-line argument count.
  * @param argv The command-line argument values.
@@ -191,8 +194,11 @@ static bool cdecl_parse_argv( int argc, char const *const argv[] ) {
   if ( opt_explain )
     return cdecl_parse_command_line( L_EXPLAIN, argc, argv );
 
-  // assume arguments are file names
-  return cdecl_parse_files( argc, argv );
+  EPRINTF( "%s: \"%s\": invalid command", me, argv[0] );
+  if ( !print_suggestions( DYM_CLI_OPTIONS, argv[0] ) )
+    EPUTS( "; use --help or -h for help" );
+  EPUTC( '\n' );
+  exit( EX_USAGE );
 }
 
 /**
@@ -222,53 +228,29 @@ static bool cdecl_parse_command_line( char const *command, int argc,
 }
 
 /**
- * Parses cdecl commands from a file.
+ * Parses cdecl commands from \a fin.
  *
- * @param file The FILE to read from.
+ * @param fin The FILE to read from.
+ * @param fout The FILE to write the prompts to, if any.
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_file( FILE *file ) {
-  assert( file != NULL );
+static bool cdecl_parse_file( FILE *fin, FILE *fout ) {
+  assert( fin != NULL );
+
+  strbuf_t sbuf;
+  strbuf_init( &sbuf );
   bool ok = true;
 
-  // We don't just call yyrestart( file ) and yyparse() directly because
-  // cdecl_parse_string() also inserts "explain " for opt_explain.
+  while ( strbuf_read_line( &sbuf, fin, fout, cdecl_prompt ) ) {
+    // We don't just call yyrestart( fin ) and yyparse() directly because
+    // cdecl_parse_string() also inserts "explain " for opt_explain.
+    if ( !(ok = cdecl_parse_string( sbuf.str, sbuf.len )) )
+      break;
+    strbuf_reset( &sbuf );
+  } // while
 
-  for ( char buf[ 1024 ]; fgets( buf, sizeof buf, file ) != NULL; ) {
-    if ( !cdecl_parse_string( buf, strlen( buf ) ) )
-      ok = false;
-  } // for
-  FERROR( file );
-
-  return ok;
-}
-
-/**
- * Parses cdecl commands from one or more files.
- *
- * @param num_files The length of \a files.
- * @param files An array of file names.
- * @return Returns `true` only upon success.
- */
-PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_files( int num_files, char const *const files[] ) {
-  bool ok = true;
-
-  for ( int i = 0; i < num_files && ok; ++i ) {
-    if ( strcmp( files[i], "-" ) == 0 ) {
-      ok = cdecl_parse_stdin();
-    }
-    else {
-      FILE *const file = fopen( files[i], "r" );
-      if ( unlikely( file == NULL ) )
-        PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR() );
-      if ( !cdecl_parse_file( file ) )
-        ok = false;
-      PJL_IGNORE_RV( fclose( file ) );
-    }
-  } // for
-
+  strbuf_cleanup( &sbuf );
   return ok;
 }
 
@@ -279,26 +261,10 @@ static bool cdecl_parse_files( int num_files, char const *const files[] ) {
  */
 PJL_WARN_UNUSED_RESULT
 static bool cdecl_parse_stdin( void ) {
-  bool ok = true;
   is_input_a_tty = isatty( fileno( cdecl_fin ) );
-
-  if ( is_input_a_tty || opt_interactive ) {
-    if ( opt_prompt )
-      FPRINTF( cdecl_fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
-    ok = true;
-    for (;;) {
-      static strbuf_t sbuf;
-      strbuf_reset( &sbuf );
-      if ( !strbuf_read_line( &sbuf, cdecl_prompt ) )
-        break;
-      ok = cdecl_parse_string( sbuf.str, sbuf.len );
-    } // for
-  } else {
-    ok = cdecl_parse_file( cdecl_fin );
-  }
-
-  is_input_a_tty = false;
-  return ok;
+  if ( opt_prompt && (is_input_a_tty || opt_interactive) )
+    FPRINTF( cdecl_fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
+  return cdecl_parse_file( cdecl_fin, cdecl_fout );
 }
 
 /**
@@ -373,7 +339,7 @@ static void read_conf_file( void ) {
   //
   c_lang_id_t const orig_lang = opt_lang;
   opt_lang = LANG_CPP_NEW;
-  PJL_IGNORE_RV( cdecl_parse_file( conf_file ) );
+  PJL_IGNORE_RV( cdecl_parse_file( conf_file, /*fout=*/NULL ) );
   opt_lang = orig_lang;
 
   PJL_IGNORE_RV( fclose( conf_file ) );

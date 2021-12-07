@@ -33,17 +33,17 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "November 1, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 7, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
 .B cdecl
 .BI [ options ]
-.BI [ file " " ... ]
+.BI [ command " " ... ]
 .br
 .B c++decl
 .BI [ options ]
-.BI [ file " " ... ]
+.BI [ command " " ... ]
 .br
 .B cast
 .BI [ options ]
@@ -221,23 +221,6 @@ to provide keyword completion,
 command-line history,
 and
 editing.
-.SS File Input
-.B cdecl
-reads the named files for statements in the language described below.
-A transformation is made from that language to C (or C++)
-for either
-.B cast
-or
-.BR declare ,
-or pseudo-English
-for
-.BR explain .
-The results of this transformation are written to standard output
-(unless either the
-.B \-\-output
-or
-.B \-o
-option is given).
 .SH OPTIONS
 An option argument
 .I f

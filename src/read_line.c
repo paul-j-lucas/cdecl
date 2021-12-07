@@ -32,7 +32,6 @@
 
 // standard
 #include <assert.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -47,10 +46,12 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool strbuf_read_line( strbuf_t *sbuf, char const *prompts[] ) {
+bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
+                       char const *prompts[] ) {
   assert( sbuf != NULL );
-  assert( prompts != NULL );
+  assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
 
+  bool const interactive = fout != NULL && prompts != NULL;
   bool is_cont_line = false;
 
   for (;;) {
@@ -58,21 +59,25 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prompts[] ) {
     bool got_line;
 
 #ifdef WITH_READLINE
-    extern void readline_init( FILE*, FILE* );
-    static bool called_readline_init;
-    if ( false_set( &called_readline_init ) )
-      readline_init( cdecl_fin, cdecl_fout );
-    free( line );
-    got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
-#else
-    static size_t line_cap;
-    FPUTS( prompts[ is_cont_line ], cdecl_fout );
-    FFLUSH( cdecl_fout );
-    got_line = getline( &line, &line_cap, cdecl_fin ) != -1;
+    if ( interactive ) {
+      extern void readline_init( FILE*, FILE* );
+      readline_init( fin, fout );
+      free( line );
+      got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
+    }
+    else
 #endif /* WITH_READLINE */
+    {
+      static size_t line_cap;
+      if ( interactive ) {
+        FPUTS( prompts[ is_cont_line ], fout );
+        FFLUSH( fout );
+      }
+      got_line = getline( &line, &line_cap, fin ) != -1;
+    }
 
     if ( !got_line ) {
-      FERROR( cdecl_fout );
+      FERROR( fin );
       return false;
     }
 
@@ -97,7 +102,8 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prompts[] ) {
   assert( sbuf->str != NULL );
   assert( sbuf->str[0] != '\0' );
 #ifdef WITH_READLINE
-  add_history( sbuf->str );
+  if ( interactive )
+    add_history( sbuf->str );
 #endif /* WITH_READLINE */
   return true;
 }
