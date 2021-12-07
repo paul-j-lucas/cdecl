@@ -53,8 +53,6 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prompts[] ) {
 
   bool is_cont_line = false;
 
-  strbuf_init( sbuf );
-
   for (;;) {
     static char *line;
     bool got_line;
