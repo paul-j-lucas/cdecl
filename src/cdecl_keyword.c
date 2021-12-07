@@ -43,23 +43,26 @@
  * Specify that the previosuly given literal is a synonym for the given
  * language-specific literals.
  *
- * @param ALLOW If `true`, allow this synonym when explaining C/C++.
+ * @param ALWAYS_FIND If `true`, always find this synonym, even when explaining
+ * C/C++.
  * @param ... Array of `c_lang_lit`.
  *
  * @sa #CDECL_KEYWORDS for examples.
  */
-#define C_SYN(ALLOW,...) \
-  (ALLOW), 0, (c_lang_lit_t const[]){ __VA_ARGS__ }
+#define C_SYN(ALWAYS_FIND,...) \
+  (ALWAYS_FIND), 0, (c_lang_lit_t const[]){ __VA_ARGS__ }
 
 /**
  * Special-case of #C_SYN when there is only one language(s)/literal pair.
  *
- * @param ALLOW If `true`, allow this synonym when explaining C/C++.
+ * @param ALWAYS_FIND If `true`, always find this synonym, even when explaining
+ * C/C++.
  * @param C_KEYWORD The C/C++ keyword literal (`L_xxx`) that is the synonym.
  *
  * @sa #CDECL_KEYWORDS for examples.
  */
-#define C_SY1(ALLOW,C_KEYWORD)    C_SYN( (ALLOW), { LANG_ANY, C_KEYWORD } )
+#define C_SY1(ALWAYS_FIND,C_KEYWORD) \
+  C_SYN( (ALWAYS_FIND), { LANG_ANY, C_KEYWORD } )
 
 /**
  * Specify that the previosuly given literal maps to Bison tokan \a Y_ID.
@@ -115,6 +118,8 @@
  * here as cdecl keywords so each maps to its language-specific literal.
  *
  * @sa AC_CDECL_KEYWORDS
+ * @sa CDECL_COMMANDS
+ * @sa C_KEYWORDS
  */
 static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_ALIGN,          TOKEN( Y_ALIGNED                    ) },
