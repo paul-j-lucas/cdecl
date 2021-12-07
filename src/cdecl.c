@@ -83,10 +83,10 @@ cdecl_command_t const CDECL_COMMANDS[] = {
 };
 
 // extern variable definitions
+FILE         *cdecl_fin;
+FILE         *cdecl_fout;
 bool          cdecl_initialized;
 cdecl_mode_t  cdecl_mode;
-FILE         *fin;
-FILE         *fout;
 bool          is_input_a_tty;
 char const   *me;
 
@@ -280,11 +280,11 @@ static bool cdecl_parse_files( int num_files, char const *const files[] ) {
 PJL_WARN_UNUSED_RESULT
 static bool cdecl_parse_stdin( void ) {
   bool ok = true;
-  is_input_a_tty = isatty( fileno( fin ) );
+  is_input_a_tty = isatty( fileno( cdecl_fin ) );
 
   if ( is_input_a_tty || opt_interactive ) {
     if ( opt_prompt )
-      FPRINTF( fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
+      FPRINTF( cdecl_fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
     ok = true;
     for (;;) {
       static strbuf_t sbuf;
@@ -294,7 +294,7 @@ static bool cdecl_parse_stdin( void ) {
       ok = cdecl_parse_string( sbuf.str, sbuf.len );
     } // for
   } else {
-    ok = cdecl_parse_file( fin );
+    ok = cdecl_parse_file( cdecl_fin );
   }
 
   is_input_a_tty = false;

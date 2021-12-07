@@ -973,9 +973,9 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
     if ( show_type ) {
       if ( sti->gib_flags == C_GIB_NONE )
-        c_ast_explain_type( tdef->ast, fout );
+        c_ast_explain_type( tdef->ast, cdecl_fout );
       else
-        c_typedef_gibberish( tdef, sti->gib_flags, fout );
+        c_typedef_gibberish( tdef, sti->gib_flags, cdecl_fout );
     }
   }
 
@@ -1707,9 +1707,9 @@ cast_command
       $4->cast_kind = C_CAST_C;
       bool const ok = c_ast_check( $4 );
       if ( ok ) {
-        FPUTC( '(', fout );
-        c_ast_gibberish( $4, C_GIB_CAST, fout );
-        FPRINTF( fout, ")%s\n", c_sname_full_name( &$2 ) );
+        FPUTC( '(', cdecl_fout );
+        c_ast_gibberish( $4, C_GIB_CAST, cdecl_fout );
+        FPRINTF( cdecl_fout, ")%s\n", c_sname_full_name( &$2 ) );
       }
 
       c_sname_cleanup( &$2 );
@@ -1744,9 +1744,9 @@ cast_command
       else {
         $5->cast_kind = $1;
         if ( (ok = c_ast_check( $5 )) ) {
-          FPRINTF( fout, "%s<", cast_literal );
-          c_ast_gibberish( $5, C_GIB_CAST, fout );
-          FPRINTF( fout, ">(%s)\n", c_sname_full_name( &$3 ) );
+          FPRINTF( cdecl_fout, "%s<", cast_literal );
+          c_ast_gibberish( $5, C_GIB_CAST, cdecl_fout );
+          FPRINTF( cdecl_fout, ">(%s)\n", c_sname_full_name( &$3 ) );
         }
       }
 
@@ -1815,10 +1815,10 @@ declare_command
           c_sname_set( &$5->sname, sname_node->data );
           if ( !(ok = c_ast_check( $5 )) )
             break;
-          c_ast_gibberish( $5, gib_flags, fout );
+          c_ast_gibberish( $5, gib_flags, cdecl_fout );
           if ( sname_node->next != NULL ) {
             gib_flags |= C_GIB_OMIT_TYPE;
-            FPUTS( ", ", fout );
+            FPUTS( ", ", cdecl_fout );
           }
         } // for
       }
@@ -1827,8 +1827,8 @@ declare_command
       if ( !ok )
         PARSE_ABORT();
       if ( opt_semicolon )
-        FPUTC( ';', fout );
-      FPUTC( '\n', fout );
+        FPUTC( ';', cdecl_fout );
+      FPUTC( '\n', cdecl_fout );
     }
 
     /*
@@ -1867,10 +1867,10 @@ declare_command
       DUMP_END();
 
       C_AST_CHECK( $7 );
-      c_ast_gibberish( $7, C_GIB_DECL, fout );
+      c_ast_gibberish( $7, C_GIB_DECL, cdecl_fout );
       if ( opt_semicolon )
-        FPUTC( ';', fout );
-      FPUTC( '\n', fout );
+        FPUTC( ';', cdecl_fout );
+      FPUTC( '\n', cdecl_fout );
     }
 
     /*
@@ -1900,10 +1900,10 @@ declare_command
       DUMP_END();
 
       C_AST_CHECK( conv_ast );
-      c_ast_gibberish( conv_ast, C_GIB_DECL, fout );
+      c_ast_gibberish( conv_ast, C_GIB_DECL, cdecl_fout );
       if ( opt_semicolon )
-        FPUTC( ';', fout );
-      FPUTC( '\n', fout );
+        FPUTC( ';', cdecl_fout );
+      FPUTC( '\n', cdecl_fout );
     }
 
   | Y_DECLARE error
@@ -2270,7 +2270,7 @@ explain_command
       DUMP_END();
 
       C_AST_CHECK( $2.ast );
-      c_ast_explain_declaration( $2.ast, fout );
+      c_ast_explain_declaration( $2.ast, cdecl_fout );
     }
 
     /*
@@ -2287,7 +2287,7 @@ explain_command
       C_TYPE_ADD_TID( &$3->type, $2, @2 );
 
       C_AST_CHECK( $3 );
-      c_ast_explain_declaration( $3, fout );
+      c_ast_explain_declaration( $3, cdecl_fout );
     }
 
     /*
@@ -2402,9 +2402,9 @@ show_command
       DUMP_END();
 
       if ( $3 == C_GIB_NONE )
-        c_ast_explain_type( $2->ast, fout );
+        c_ast_explain_type( $2->ast, cdecl_fout );
       else
-        c_typedef_gibberish( $2, $3, fout );
+        c_typedef_gibberish( $2, $3, cdecl_fout );
     }
 
   | Y_SHOW any_typedef Y_AS show_format_exp
@@ -2414,7 +2414,7 @@ show_command
       DUMP_INT( "show_format_exp", $4 );
       DUMP_END();
 
-      c_typedef_gibberish( $2, $4, fout );
+      c_typedef_gibberish( $2, $4, cdecl_fout );
     }
 
   | Y_SHOW show_which_types_mask_opt glob_opt show_format_opt
@@ -2571,14 +2571,14 @@ c_style_cast_c
 
       bool const ok = c_ast_check( cast_ast );
       if ( ok ) {
-        FPUTS( L_CAST, fout );
+        FPUTS( L_CAST, cdecl_fout );
         if ( !c_sname_empty( &$6 ) ) {
-          FPUTC( ' ', fout );
-          c_sname_english( &$6, fout );
+          FPUTC( ' ', cdecl_fout );
+          c_sname_english( &$6, cdecl_fout );
         }
-        FPRINTF( fout, " %s ", L_INTO );
-        c_ast_english( cast_ast, fout );
-        FPUTC( '\n', fout );
+        FPRINTF( cdecl_fout, " %s ", L_INTO );
+        c_ast_english( cast_ast, cdecl_fout );
+        FPUTC( '\n', cdecl_fout );
       }
 
       c_sname_cleanup( &$6 );
@@ -2620,11 +2620,11 @@ new_style_cast_c
         print_error( &@1, "%s_cast not supported in C\n", cast_literal );
       }
       else if ( (ok = c_ast_check( cast_ast )) ) {
-        FPRINTF( fout, "%s %s ", cast_literal, L_CAST );
-        c_sname_english( &$8, fout );
-        FPRINTF( fout, " %s ", L_INTO );
-        c_ast_english( cast_ast, fout );
-        FPUTC( '\n', fout );
+        FPRINTF( cdecl_fout, "%s %s ", cast_literal, L_CAST );
+        c_sname_english( &$8, cdecl_fout );
+        FPRINTF( cdecl_fout, " %s ", L_INTO );
+        c_ast_english( cast_ast, cdecl_fout );
+        FPUTC( '\n', cdecl_fout );
       }
 
       c_sname_cleanup( &$8 );
@@ -3307,7 +3307,7 @@ decl_list_c_opt
       DUMP_END();
 
       C_AST_CHECK( type_ast );
-      c_ast_explain_type( type_ast, fout );
+      c_ast_explain_type( type_ast, cdecl_fout );
     }
 
   | decl_list_c
@@ -3356,7 +3356,7 @@ decl_c
       if ( decl_ast == NULL )
         PARSE_ABORT();
       C_AST_CHECK( decl_ast );
-      c_ast_explain_declaration( decl_ast, fout );
+      c_ast_explain_declaration( decl_ast, cdecl_fout );
 
       //
       // The type's AST takes on the name of the thing being declared, e.g.:
@@ -3513,7 +3513,7 @@ destructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain_declaration( ast, fout );
+      c_ast_explain_declaration( ast, cdecl_fout );
     }
   ;
 
@@ -3544,7 +3544,7 @@ file_scope_constructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain_declaration( ast, fout );
+      c_ast_explain_declaration( ast, cdecl_fout );
     }
   ;
 
@@ -3573,7 +3573,7 @@ file_scope_destructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain_declaration( ast, fout );
+      c_ast_explain_declaration( ast, cdecl_fout );
     }
   ;
 
@@ -3791,7 +3791,7 @@ knr_func_or_constructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain_declaration( ast, fout );
+      c_ast_explain_declaration( ast, cdecl_fout );
     }
   ;
 

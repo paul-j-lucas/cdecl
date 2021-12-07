@@ -61,18 +61,18 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prompts[] ) {
     extern void readline_init( FILE*, FILE* );
     static bool called_readline_init;
     if ( false_set( &called_readline_init ) )
-      readline_init( fin, fout );
+      readline_init( cdecl_fin, cdecl_fout );
     free( line );
     got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
 #else
     static size_t line_cap;
-    FPUTS( prompts[ is_cont_line ], fout );
-    FFLUSH( fout );
-    got_line = getline( &line, &line_cap, fin ) != -1;
+    FPUTS( prompts[ is_cont_line ], cdecl_fout );
+    FFLUSH( cdecl_fout );
+    got_line = getline( &line, &line_cap, cdecl_fin ) != -1;
 #endif /* WITH_READLINE */
 
     if ( !got_line ) {
-      FERROR( fout );
+      FERROR( cdecl_fout );
       return false;
     }
 

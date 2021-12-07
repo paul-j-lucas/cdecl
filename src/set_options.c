@@ -414,7 +414,7 @@ static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
 bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc ) {
   if ( opt_name == NULL || strcmp( opt_name, "options" ) == 0 ) {
-    print_options( fout );
+    print_options( cdecl_fout );
     return true;
   }
 

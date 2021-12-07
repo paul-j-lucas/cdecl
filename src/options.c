@@ -607,15 +607,19 @@ use_help:
     exit( EX_OK );
   }
 
-  if ( strcmp( fin_path, "-" ) != 0 && !(fin = fopen( fin_path, "r" )) )
+  if ( strcmp( fin_path, "-" ) != 0 &&
+       (cdecl_fin = fopen( fin_path, "r" )) == NULL ) {
     PMESSAGE_EXIT( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
-  if ( strcmp( fout_path, "-" ) != 0 && !(fout = fopen( fout_path, "w" )) )
+  }
+  if ( strcmp( fout_path, "-" ) != 0 &&
+       (cdecl_fout = fopen( fout_path, "w" )) == NULL ) {
     PMESSAGE_EXIT( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
+  }
 
-  if ( fin == NULL )
-    fin = stdin;
-  if ( fout == NULL )
-    fout = stdout;
+  if ( cdecl_fin == NULL )
+    cdecl_fin = stdin;
+  if ( cdecl_fout == NULL )
+    cdecl_fout = stdout;
 
   colorize = should_colorize( color_when );
   if ( colorize &&
