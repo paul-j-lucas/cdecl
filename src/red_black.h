@@ -78,7 +78,7 @@ typedef enum   rb_color rb_color_t;
  * to whether the data pointed to by \a i_data is less than, equal to, or
  * greater than the data pointed to by \a j_data.
  */
-typedef int (*rb_data_cmp_t)( void const *i_data, void const *j_data );
+typedef int (*rb_data_cmp_fn_t)( void const *i_data, void const *j_data );
 
 /**
  * The signature for a function passed to rb_tree_cleanup() used to free data
@@ -86,7 +86,7 @@ typedef int (*rb_data_cmp_t)( void const *i_data, void const *j_data );
  *
  * @param data A pointer to the data to free.
  */
-typedef void (*rb_data_free_t)( void *data );
+typedef void (*rb_data_free_fn_t)( void *data );
 
 /**
  * The signature for the function passed to rb_tree_visit().
@@ -96,7 +96,7 @@ typedef void (*rb_data_free_t)( void *data );
  * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of rb_tree_visit().
  */
-typedef bool (*rb_visitor_t)( void *node_data, void *aux_data );
+typedef bool (*rb_visit_fn_t)( void *node_data, void *aux_data );
 
 /**
  * Red-black tree colors.
@@ -122,8 +122,8 @@ struct rb_node {
  * @sa rb_tree_init()
  */
 struct rb_tree {
-  rb_node_t     root;                   ///< Root node.
-  rb_data_cmp_t data_cmp_fn;            ///< Data comparison function.
+  rb_node_t         root;               ///< Root node.
+  rb_data_cmp_fn_t  data_cmp_fn;        ///< Data comparison function.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -139,7 +139,7 @@ struct rb_tree {
  *
  * @sa rb_tree_init()
  */
-void rb_tree_cleanup( rb_tree_t *tree, rb_data_free_t data_free_fn );
+void rb_tree_cleanup( rb_tree_t *tree, rb_data_free_fn_t data_free_fn );
 
 /**
  * Deletes \a node from \a tree.
@@ -178,7 +178,7 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data );
  *
  * @sa rb_tree_cleanup()
  */
-void rb_tree_init( rb_tree_t *tree, rb_data_cmp_t data_cmp_fn );
+void rb_tree_init( rb_tree_t *tree, rb_data_cmp_fn_t data_cmp_fn );
 
 /**
  * Inserts \a data into \a tree.
@@ -211,7 +211,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
  * position within the tree according to the tree's data comparison function.
  */
 PJL_WARN_UNUSED_RESULT
-rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visitor_t visitor,
+rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visitor,
                           void *aux_data );
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -65,7 +65,7 @@ struct c_typedef {
  * @return Returning `true` will cause traversal to stop and \a type to be
  * returned to the caller of c_typedef_visit().
  */
-typedef bool (*c_typedef_visitor_t)( c_typedef_t const *tdef, void *data );
+typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *data );
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -131,7 +131,7 @@ void c_typedef_init( void );
  * stopped on or NULL.
  */
 PJL_NOWARN_UNUSED_RESULT
-c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data );
+c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visitor, void *data );
 
 ///////////////////////////////////////////////////////////////////////////////
 

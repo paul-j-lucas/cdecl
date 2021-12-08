@@ -56,7 +56,7 @@
  * Data passed to our red-black tree visitor function.
  */
 struct tdef_rb_visitor_data {
-  c_typedef_visitor_t   visitor;        ///< Caller's visitor function.
+  c_typedef_visit_fn_t  visitor;        ///< Caller's visitor function.
   void                 *data;           ///< Caller's optional data.
 };
 typedef struct tdef_rb_visitor_data tdef_rb_visitor_data_t;
@@ -948,7 +948,7 @@ static void parse_predefined_types( char const *const *types ) {
 
 /**
  * Red-black tree visitor function that forwards to the
- * <code>\ref c_typedef_visitor_t</code> function.
+ * <code>\ref c_typedef_visit_fn_t</code> function.
  *
  * @param node_data A pointer to the node's data.
  * @param aux_data Optional data passed to to the visitor.
@@ -1125,7 +1125,7 @@ void c_typedef_init( void ) {
   user_defined = true;
 }
 
-c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data ) {
+c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visitor, void *data ) {
   assert( visitor != NULL );
   tdef_rb_visitor_data_t vd = { visitor, data };
   rb_node_t const *const rb = rb_tree_visit( &typedefs, &rb_visitor, &vd );

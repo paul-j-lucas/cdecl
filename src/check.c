@@ -169,10 +169,10 @@ static c_ast_visitor_data_t const C_IS_FUNC_PARAM = (1u << 0);
  */
 static c_ast_visitor_data_t const C_IS_POINTED_TO = (1u << 1);
 
-/// Convenience return value for <code>\ref c_ast_visitor_t</code> functions.
+/// Convenience return value for <code>\ref c_ast_visit_fn_t</code> functions.
 static bool const VISITOR_ERROR_FOUND     = true;
 
-/// Convenience return value for <code>\ref c_ast_visitor_t</code> functions.
+/// Convenience return value for <code>\ref c_ast_visit_fn_t</code> functions.
 static bool const VISITOR_ERROR_NOT_FOUND = false;
 
 // local functions
@@ -236,7 +236,7 @@ static c_lang_id_t is_reserved_name( char const* );
  */
 PJL_WARN_UNUSED_RESULT
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
-                                        c_ast_visitor_t visitor,
+                                        c_ast_visit_fn_t visitor,
                                         c_ast_visitor_data_t flags ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visitor, flags ) == NULL;

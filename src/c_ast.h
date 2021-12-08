@@ -164,7 +164,7 @@ typedef uint64_t c_ast_visitor_data_t;
  * @return Returning `true` will cause traversal to stop and \a ast to be
  * returned to the caller of c_ast_visit().
  */
-typedef bool (*c_ast_visitor_t)( c_ast_t *ast, c_ast_visitor_data_t data );
+typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visitor_data_t data );
 
 /**
  * @defgroup ast-nodes-group AST Nodes
@@ -611,8 +611,8 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
  * distinct ASTs.
  */
 PJL_NOWARN_UNUSED_RESULT
-c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
-                      c_ast_visitor_data_t data );
+c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
+                      c_ast_visit_fn_t visitor, c_ast_visitor_data_t data );
 
 /**
  * Convenience function to get the AST given a `c_ast_param_t`.

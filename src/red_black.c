@@ -159,7 +159,7 @@ static inline bool is_red( rb_node_t const *node ) {
  * @param data_free_fn A pointer to a function used to free data associated
  * with \a node or NULL if unnecessary.
  */
-static void rb_node_free( rb_node_t *node, rb_data_free_t data_free_fn ) {
+static void rb_node_free( rb_node_t *node, rb_data_free_fn_t data_free_fn ) {
   assert( node != NULL );
 
   if ( node != RB_NIL ) {
@@ -283,7 +283,7 @@ static void rb_tree_rotate_node( rb_tree_t *tree, rb_node_t *node,
  */
 PJL_WARN_UNUSED_RESULT
 static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
-                                      rb_visitor_t visitor, void *aux_data ) {
+                                      rb_visit_fn_t visitor, void *aux_data ) {
   assert( tree != NULL );
   assert( node != NULL );
 
@@ -302,7 +302,7 @@ static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void rb_tree_cleanup( rb_tree_t *tree, rb_data_free_t data_free_fn ) {
+void rb_tree_cleanup( rb_tree_t *tree, rb_data_free_fn_t data_free_fn ) {
   if ( tree != NULL && RB_FIRST(tree) != NULL ) {
     rb_node_free( RB_FIRST(tree), data_free_fn );
     rb_node_init( RB_ROOT(tree) );
@@ -357,7 +357,7 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
   return NULL;
 }
 
-void rb_tree_init( rb_tree_t *tree, rb_data_cmp_t data_cmp_fn ) {
+void rb_tree_init( rb_tree_t *tree, rb_data_cmp_fn_t data_cmp_fn ) {
   assert( tree != NULL );
   assert( data_cmp_fn != NULL );
 
@@ -437,7 +437,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   return NULL;
 }
 
-rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visitor_t visitor,
+rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visitor,
                           void *aux_data ) {
   assert( visitor != NULL );
 
