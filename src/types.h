@@ -122,7 +122,7 @@ typedef slist_node_t              c_scope_t;      ///< Scope in a c_sname_t.
 typedef struct c_scope_data       c_scope_data_t;
 typedef struct c_sglob            c_sglob_t;
 typedef slist_t                   c_sname_t;      ///< C++ scoped name.
-typedef uint64_t                  c_tid_t;        ///< Type ID(s) bitmask.
+typedef uint64_t                  c_tid_t;        ///< Type ID(s) bits.
 typedef enum   c_tpid             c_tpid_t;
 typedef struct c_typedef          c_typedef_t;
 typedef enum   c_typedef_add_rv   c_typedef_add_rv_t;
