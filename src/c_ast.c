@@ -106,7 +106,7 @@ void c_ast_cleanup( void ) {
 
 c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
   if ( ast == NULL )
-    return NULL;
+    return NULL;                        // LCOV_EXCL_LINE
   c_ast_t *const dup_ast =
     c_ast_new( ast->kind, ast->depth, &ast->loc, ast_list );
 
@@ -247,7 +247,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_PLACEHOLDER:
     case K_VARIADIC:
       // nothing to do
-      break;
+      break;                            // LCOV_EXCL_LINE
   } // switch
 
   if ( !c_ast_is_referrer( i_ast ) ) {

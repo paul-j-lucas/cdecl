@@ -81,11 +81,9 @@ PJL_WARN_UNUSED_RESULT
 static unsigned check_tigetnum( char const *capname ) {
   int const num = tigetnum( CONST_CAST(char*, capname) );
   if ( unlikely( num < 0 ) ) {
-    // LCOV_EXCL_START
     PMESSAGE_EXIT( EX_UNAVAILABLE,
       "tigetnum(\"%s\") returned error code %d", capname, num
     );
-    // LCOV_EXCL_STOP
   }
   return (unsigned)num;
 }
@@ -131,7 +129,7 @@ void* check_realloc( void *p, size_t size ) {
 
 char* check_strdup( char const *s ) {
   if ( s == NULL )
-    return NULL;
+    return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = strdup( s );
   IF_EXIT( dup_s == NULL, EX_OSERR );
   return dup_s;
@@ -139,7 +137,7 @@ char* check_strdup( char const *s ) {
 
 char* check_strdup_tolower( char const *s ) {
   if ( s == NULL )
-    return NULL;
+    return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = MALLOC( char, strlen( s ) + 1/*\0*/ );
   IF_EXIT( dup_s == NULL, EX_OSERR );
   for ( char *p = dup_s; (*p++ = (char)tolower( *s++ )); )
@@ -149,7 +147,7 @@ char* check_strdup_tolower( char const *s ) {
 
 char* check_strndup( char const *s, size_t n ) {
   if ( s == NULL )
-    return NULL;
+    return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = strndup( s, n );
   IF_EXIT( dup_s == NULL, EX_OSERR );
   return dup_s;
@@ -276,12 +274,10 @@ error:
   if ( likely( cterm_fd != -1 ) )
     close( cterm_fd );
   if ( unlikely( reason != NULL ) ) {
-    // LCOV_EXCL_START
     PMESSAGE_EXIT( EX_UNAVAILABLE,
       "failed to determine number of columns or lines in terminal: %s\n",
       reason
     );
-    // LCOV_EXCL_STOP
   }
 }
 #endif /* ENABLE_TERM_SIZE */
