@@ -46,7 +46,7 @@
 #include <string.h>
 #include <sys/stat.h>                   /* for fstat() */
 #include <sysexits.h>
-#include <unistd.h>                     /* for geteuid() */
+#include <unistd.h>                     /* for close(), geteuid() */
 
 #ifdef ENABLE_TERM_SIZE
 # include <fcntl.h>                     /* for open(2) */
@@ -58,7 +58,6 @@
 #   include <ncurses.h>
 # endif
 # include <term.h>                      /* for setupterm(3) */
-# include <unistd.h>                    /* for close(2) */
 #endif /* ENABLE_TERM_SIZE */
 
 /// @endcond
