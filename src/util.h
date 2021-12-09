@@ -684,8 +684,9 @@ FILE* fmemopen( void *buf, size_t size, char const *mode );
  * @param elt A pointer to the first of an array of elements to print.
  * @param elt_size The size, in bytes, of each element.
  * @param gets A pointer to a function to call to get the string for the given
- * element.  If NULL, it is assumed that \a elt points to the first element of
- * an \a elt_size array of `char*`.
+ * element.  When the function returns NULL, it signals the end of the list.
+ * If \a gets is NULL, it is assumed that \a elt points to the first element of
+ * an \a elt_size array of `char*` and that the array ends with NULL.
  */
 void fprint_list( FILE *out, void const *elt, size_t elt_size,
                   char const* (*gets)( void const* ) );
