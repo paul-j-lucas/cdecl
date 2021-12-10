@@ -330,7 +330,7 @@ static void read_conf_file( void ) {
   FILE *const conf_file = fopen( opt_conf_file, "r" );
   if ( conf_file == NULL ) {
     if ( is_explicit_conf_file )
-      PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR() );
+      FATAL_ERR( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR() );
     return;
   }
 

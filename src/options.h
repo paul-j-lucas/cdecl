@@ -146,7 +146,7 @@ void options_init( int *pargc, char const **pargv[] );
  * means `struct` and `union`.
  * @param loc The location of \a ecsu_format.  If not NULL and \a ecsu_format
  * is invalid, calls print_error(); if NULL and \a ecsu_format is invalid,
- * calls PMESSAGE_EXIT().
+ * calls FATAL_ERR().
  * @return Returns `true` only if \a ecsu_format was parsed successfully.
  */
 PJL_NOWARN_UNUSED_RESULT
@@ -169,7 +169,7 @@ bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc );
  * If invalid, an error message is printed to standard error.
  * @param loc The location of \a ei_format.  If not NULL and \a ei_format is
  * invalid, calls print_error(); if NULL and \a ei_format is invalid, calls
- * PMESSAGE_EXIT().
+ * FATAL_ERR().
  * @return Returns `true` only if \a ei_format was parsed successfully.
  */
 PJL_NOWARN_UNUSED_RESULT

@@ -243,7 +243,7 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
         if ( ++gave_count > 1 ) {
           char const gave_opt2 = *opt;
           strbuf_t opt1_sbuf, opt2_sbuf;
-          PMESSAGE_EXIT( EX_USAGE,
+          FATAL_ERR( EX_USAGE,
             "%s and %s are mutually exclusive\n",
             opt_format( gave_opt1, &opt1_sbuf ),
             opt_format( gave_opt2, &opt2_sbuf )
@@ -361,7 +361,7 @@ static color_when_t parse_color_when( char const *when ) {
     strbuf_sepsn_puts( &when_sbuf, ", ", 2, &comma, m->map_when );
 
   strbuf_t opt_sbuf;
-  PMESSAGE_EXIT( EX_USAGE,
+  FATAL_ERR( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
     when, opt_format( COPT(COLOR), &opt_sbuf ), when_sbuf.str
   );
@@ -391,7 +391,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
   } // for
 
   strbuf_t opt_sbuf;
-  PMESSAGE_EXIT( EX_USAGE,
+  FATAL_ERR( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
     lang_name, opt_format( COPT(LANGUAGE), &opt_sbuf ), langs_sbuf.str
   );
@@ -495,7 +495,7 @@ static void parse_options( int argc, char const *argv[] ) {
 
       case ':': {                       // option missing required argument
         strbuf_t sbuf;
-        PMESSAGE_EXIT( EX_USAGE,
+        FATAL_ERR( EX_USAGE,
           "\"%s\" requires an argument\n", opt_format( (char)optopt, &sbuf )
         );
       }
@@ -610,11 +610,11 @@ use_help:
 
   if ( strcmp( fin_path, "-" ) != 0 &&
        (cdecl_fin = fopen( fin_path, "r" )) == NULL ) {
-    PMESSAGE_EXIT( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
+    FATAL_ERR( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
   }
   if ( strcmp( fout_path, "-" ) != 0 &&
        (cdecl_fout = fopen( fout_path, "w" )) == NULL ) {
-    PMESSAGE_EXIT( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
+    FATAL_ERR( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
   }
 
   if ( cdecl_fin == NULL )
@@ -759,7 +759,7 @@ bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc ) {
       default:
         if ( loc == NULL ) {            // invalid for CLI option
           strbuf_t opt_sbuf;
-          PMESSAGE_EXIT( EX_USAGE,
+          FATAL_ERR( EX_USAGE,
             "\"%s\": invalid value for %s;"
             " must be only a combination of: e, c, s, or u\n",
             s, opt_format( COPT(EXPLICIT_ECSU), &opt_sbuf )
@@ -823,7 +823,7 @@ bool parse_explicit_int( char const *ei_format, c_loc_t const *loc ) {
       default:
         if ( loc == NULL ) {            // invalid for CLI option
           strbuf_t opt_sbuf;
-          PMESSAGE_EXIT( EX_USAGE,
+          FATAL_ERR( EX_USAGE,
             "\"%s\": invalid value for %s: '%c';"
             " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
             s, opt_format( COPT(EXPLICIT_INT), &opt_sbuf ), *s

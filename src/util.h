@@ -218,6 +218,20 @@ _GL_INLINE_HEADER_BEGIN
 #define EPUTS(S)                  fputs( (S), stderr )
 
 /**
+ * Prints an error message to standard error and exits with \a STATUS code.
+ *
+ * @param STATUS The status code to **exit**(3) with.
+ * @param FORMAT The `printf()` format to use.
+ * @param ... The `printf()` arguments.
+ *
+ * @sa #INTERNAL_ERR()
+ * @sa perror_exit()
+ * @sa #UNEXPECTED_INT_VALUE()
+ */
+#define FATAL_ERR(STATUS,FORMAT,...) \
+  BLOCK( EPRINTF( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
+
+/**
  * Calls **ferror**(3) and exits if there was an error on \a STREAM.
  *
  * @param STREAM The `FILE` stream to check for an error.
@@ -300,26 +314,26 @@ _GL_INLINE_HEADER_BEGIN
  * @param EXPR The expression to evaluate.
  * @param ERR The exit status code to use.
  *
+ * @sa #FATAL_ERR()
  * @sa perror_exit()
- * @sa #PMESSAGE_EXIT()
  * @sa #UNEXPECTED_INT_VALUE()
  */
 #define IF_EXIT(EXPR,ERR) \
   BLOCK( if ( unlikely( EXPR ) ) perror_exit( ERR ); )
 
 /**
- * Prints an error message to standard error and exits in response to an
- * internal error.
+ * A special-case of #FATAL_ERR that additionally prints the file and line
+ * where an internal error occurred.
  *
  * @param FORMAT The `printf()` format to use.
  * @param ... The `printf()` arguments.
  *
+ * @sa #FATAL_ERR()
  * @sa perror_exit()
- * @sa #PMESSAGE_EXIT()
  * @sa #UNEXPECTED_INT_VALUE()
  */
 #define INTERNAL_ERR(FORMAT,...) \
-  PMESSAGE_EXIT( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
+  FATAL_ERR( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
 
 /**
  * Convenience macro for calling check_realloc().
@@ -353,20 +367,6 @@ _GL_INLINE_HEADER_BEGIN
  * No-operation statement.  (Useful for a `goto` target.)
  */
 #define NO_OP                     ((void)0)
-
-/**
- * Prints an error message to standard error and exits with \a STATUS code.
- *
- * @param STATUS The status code to **exit**(3) with.
- * @param FORMAT The `printf()` format to use.
- * @param ... The `printf()` arguments.
- *
- * @sa #INTERNAL_ERR()
- * @sa perror_exit()
- * @sa #UNEXPECTED_INT_VALUE()
- */
-#define PMESSAGE_EXIT(STATUS,FORMAT,...) \
-  BLOCK( EPRINTF( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
 
 /**
  * Shorthand for printing a character to standard output.
@@ -495,12 +495,13 @@ _GL_INLINE_HEADER_BEGIN
 #endif /* __GNUC__ */
 
 /**
- * Prints that an integer value was unexpected to standard error and exits.
+ * A special-case of #INTERNAL_ERR that prints an unexpected integer value.
  *
  * @param EXPR The expression having the unexpected value.
  *
+ * @sa #FATAL_ERR()
  * @sa #INTERNAL_ERR()
- * @sa #PMESSAGE_EXIT()
+ * @sa perror_exit()
  */
 #define UNEXPECTED_INT_VALUE(EXPR) \
   INTERNAL_ERR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (unsigned long long)(EXPR) )
@@ -838,9 +839,9 @@ char const* parse_identifier( char const *s );
  *
  * @param status The exit status code.
  *
+ * @sa #FATAL_ERR()
  * @sa #IF_EXIT()
  * @sa #INTERNAL_ERR()
- * @sa #PMESSAGE_EXIT()
  */
 noreturn void perror_exit( int status );
 
