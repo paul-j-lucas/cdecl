@@ -1,5 +1,6 @@
 2021-12-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.c: s/fprintf/FPRINTF/
    * parser.y, util.c, util.h: fprint_list() now ignores the supplied elt_size
      when gets is NULL.
    * util.c: Removed duplicate #include <unistd.h>.
