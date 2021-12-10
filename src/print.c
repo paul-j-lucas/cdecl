@@ -114,8 +114,7 @@ static char const* get_input_line( size_t *input_line_len ) {
   //
   // Chop off whitespace (if any) so we can always print a newline ourselves.
   //
-  while ( ends_with_any_chr( input_line, *input_line_len, WS ) )
-    --*input_line_len;
+  str_rtrim_len( input_line, input_line_len );
 
   return input_line;
 }

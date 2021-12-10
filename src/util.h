@@ -597,36 +597,6 @@ PJL_WARN_UNUSED_RESULT
 char* check_strndup( char const *s, size_t n );
 
 /**
- * Checks whether \a s ends with any character in \a set.
- *
- * @param s The string to check.
- * @param s_len The length of \a s.
- * @param set The set of characters to check for.
- * @return Returns `true` only if \a s ends with any character in \a set.
- *
- * @sa ends_with_chr()
- */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
-bool ends_with_any_chr( char const *s, size_t s_len, char const *set ) {
-  return s_len > 0 && strchr( set, s[ s_len - 1 ] ) != NULL;
-}
-
-/**
- * Checks whether \a s ends with \a c.
- *
- * @param s The string to check.
- * @param s_len The length of \a s.
- * @param c The character to check for.
- * @return Returns `true` only if \a s ends with \a c.
- *
- * @sa ends_with_any_chr()
- */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
-bool ends_with_chr( char const *s, size_t s_len, char c ) {
-  return s_len > 0 && s[ s_len - 1 ] == c;
-}
-
-/**
  * Checks whether exactly 1 bit is set in the given integer.
  *
  * @param n The number to check.
@@ -741,19 +711,6 @@ PJL_WARN_UNUSED_RESULT
 char const* home_dir( void );
 
 /**
- * Checks whether \a s is a blank line, that is either an empty string or a
- * line consisting only of whitespace.
- *
- * @param s The null-terminated string to check.
- * @return Returns `true` only if \a s is a blank line.
- */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
-bool is_blank_line( char const *s ) {
-  SKIP_WS( s );
-  return *s == '\0';
-}
-
-/**
  * Checks whether the given file descriptor refers to a regular file.
  *
  * @param fd The file descriptor to check.
@@ -844,6 +801,27 @@ char const* parse_identifier( char const *s );
  * @sa #INTERNAL_ERR()
  */
 noreturn void perror_exit( int status );
+
+/**
+ * Checks whether \a s is a blank line, that is either an empty string or a
+ * line consisting only of whitespace.
+ *
+ * @param s The null-terminated string to check.
+ * @return Returns `true` only if \a s is a blank line.
+ */
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+bool str_is_blank( char const *s ) {
+  SKIP_WS( s );
+  return *s == '\0';
+}
+
+/**
+ * Decrements \a *s_len as if to trim whitespace, if any, from the end of \a s.
+ *
+ * @param s The null-terminated string to trim.
+ * @param s_len A pointer to the length of \a s.
+ */
+void str_rtrim_len( char const *s, size_t *s_len );
 
 /**
  * Checks \a flag: if `false`, sets it to `true`.

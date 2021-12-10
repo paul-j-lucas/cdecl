@@ -81,7 +81,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
       return false;
     }
 
-    if ( is_blank_line( line ) ) {
+    if ( str_is_blank( line ) ) {
       if ( is_cont_line ) {
         //
         // If we've been accumulating continuation lines, a blank line ends it.
@@ -92,7 +92,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
     }
 
     size_t const line_len = strlen( line );
-    is_cont_line = ends_with_chr( line, line_len, '\\' );
+    is_cont_line = line_len > 0 && line[ line_len - 1 ] == '\\';
     strbuf_putsn( sbuf, line, line_len - is_cont_line /* don't copy '\' */ );
 
     if ( !is_cont_line )

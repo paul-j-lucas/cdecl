@@ -352,6 +352,14 @@ char const* parse_identifier( char const *s ) {
   return s;
 }
 
+void str_rtrim_len( char const *s, size_t *s_len ) {
+  assert( s != NULL );
+  assert( s_len != NULL );
+
+  while ( *s_len > 0 && strchr( WS, s[ *s_len - 1 ] ) != NULL )
+    --*s_len;
+}
+
 // LCOV_EXCL_START
 noreturn
 void perror_exit( int status ) {
