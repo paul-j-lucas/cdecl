@@ -37,13 +37,13 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Reads an input line from \a fin.  If both \a fout and \a prompts are non-
- * NULL, reads interactively:
+ * Reads an input line from \a fin such that:
  *
+ *  + Multiple lines separated by `\` are stiched together.
  *  + Returns only non-whitespace-only lines.
- *  + Stitches multiple lines ending with `\` together.
  *
- * If reading interactively and GNU **readline**(3) is compiled in, also:
+ * If both \a fout and \a prompts are non-NULL and GNU **readline**(3) is
+ * compiled in, also:
  *
  *  + Adds non-whitespace-only lines to the history.
  *
