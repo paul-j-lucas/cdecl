@@ -1,3 +1,10 @@
+2021-12-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c, read_line.c, util.c, util.h: s/is_blank_line/str_is_blank/;
+     s/ends_with_any_chr/str_rtrim_len/; removed ends_with_chr().
+   * lcovrc, cdecl.c, options.c, options.h, util.c, util.h:
+     s/PMESSAGE_EXIT/FATAL_ERR/
+
 2021-12-09  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c: s/fprintf/FPRINTF/
