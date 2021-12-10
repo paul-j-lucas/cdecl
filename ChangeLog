@@ -1,5 +1,12 @@
+2021-12-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, util.c, util.h: fprint_list() now ignores the supplied elt_size
+     when gets is NULL.
+   * util.c: Removed duplicate #include <unistd.h>.
+
 2021-12-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * set_options.c: Changed signature to print_options(void).
    * c_ast.c, c_ast.h, c_typedef.c, c_typedef.h, check.c, red_black.c,
      red_black.h: Named typedefs for pointers to function consistently.
 
