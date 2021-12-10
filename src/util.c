@@ -177,10 +177,13 @@ void fprint_list( FILE *out, void const *elt, size_t elt_size,
                   char const* (*gets)( void const* ) ) {
   assert( out != NULL );
   assert( elt != NULL );
-  assert( elt_size > 0 );
 
-  if ( gets == NULL )
+  if ( gets == NULL ) {
     gets = &fprint_list_gets;
+    elt_size = sizeof( char* );
+  } else {
+    assert( elt_size > 0 );
+  }
 
   char const *str = (*gets)( elt );
   for ( size_t i = 0; str != NULL; ++i ) {
