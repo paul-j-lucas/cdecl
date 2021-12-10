@@ -189,8 +189,8 @@ void fprint_list( FILE *out, void const *elt, size_t elt_size,
   for ( size_t i = 0; str != NULL; ++i ) {
     elt = (char const*)elt + elt_size;
     char const *const next_str = (*gets)( elt );
-    fprintf( out, "%s%s",
-      i == 0 ? "" : (next_str != NULL ? ", " : (i > 1 ?  ", or " : " or ")),
+    FPRINTF( out, "%s%s",
+      i == 0 ? "" : (next_str != NULL ? ", " : (i > 1 ? ", or " : " or ")),
       str
     );
     str = next_str;
