@@ -177,13 +177,6 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
 void print_debug_file_line( char const *file, int line );
 
 /**
- * Prints a help message.
- *
- * @param help The type of help to print.
- */
-void print_help( cdecl_help_t help );
-
-/**
  * Prints a hint message to standard error in the form:
  * @code
  * ; did you mean ...?\n
