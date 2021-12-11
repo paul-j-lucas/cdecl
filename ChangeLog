@@ -1,5 +1,6 @@
 2021-12-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * did_you_mean.c: Put (double) back.
    * did_you_mean.c: Made SIMILAR_ENOUGH_PERCENT be double.
    * did_you_mean.c: Added assert()s; removed unnecessary = NULL.
 
