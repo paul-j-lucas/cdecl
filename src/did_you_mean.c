@@ -328,6 +328,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
     return NULL;
   assert( unknown_token != NULL );
 
+  // Pre-flight to calculate array size; the order here doesn't matter.
   size_t const dym_size =
     ((kinds & DYM_COMMANDS) != DYM_NONE ?
       copy_commands( /*pdym=*/NULL ) : 0) +
@@ -352,6 +353,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
   did_you_mean_t *const dym_array = MALLOC( did_you_mean_t, dym_size + 1 );
   did_you_mean_t *dym = dym_array;
 
+  // The order here doesn't matter either.
   if ( (kinds & DYM_COMMANDS) != DYM_NONE ) {
     copy_commands( &dym );
   }
