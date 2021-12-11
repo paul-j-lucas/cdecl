@@ -311,7 +311,7 @@ PJL_WARN_UNUSED_RESULT
 static bool is_similar_enough( dam_lev_t dam_lev_dist, double percent,
                                size_t target_len ) {
   assert( percent > 0 && percent < 1 );
-  return dam_lev_dist <= (dam_lev_t)(target_len * percent + 0.5);
+  return dam_lev_dist <= (dam_lev_t)((double)target_len * percent + 0.5);
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
