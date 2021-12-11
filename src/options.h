@@ -135,7 +135,7 @@ void options_init( int *pargc, char const **pargv[] );
  * Parses the explicit `enum`, `class`, `struct`, `union` option.
  *
  * @param ecsu_format The null-terminated explicit `enum`, `class`, `struct`,
- * `union` format string to parse.  Valid formats are:
+ * `union` format string (case insensitive) to parse.  Valid formats are:
  *      Format | Meaning
  *      -------|--------
  *      `e`    | `enum`
@@ -146,7 +146,7 @@ void options_init( int *pargc, char const **pargv[] );
  * means `struct` and `union`.
  * @param loc The location of \a ecsu_format.  If not NULL and \a ecsu_format
  * is invalid, calls print_error(); if NULL and \a ecsu_format is invalid,
- * calls FATAL_ERR().
+ * calls #FATAL_ERR().
  * @return Returns `true` only if \a ecsu_format was parsed successfully.
  */
 PJL_NOWARN_UNUSED_RESULT
@@ -155,8 +155,8 @@ bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc );
 /**
  * Parses the explicit `int` option.
  *
- * @param ei_format The null-terminated explicit `int` format string to parse.
- * Valid formats are:
+ * @param ei_format The null-terminated explicit `int` format string (case
+ * insensitive) to parse.  Valid formats are:
  *      Format            | Meaning
  *      ------------------|----------------------------
  *         `i`            | All signed integer types.
@@ -165,11 +165,11 @@ bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc );
  * Multiple formats may be given, one immediately after the other, e.g., `usl`
  * means `unsigned short` and `long`.  Parsing is greedy so commas may be used
  * to separate formats.  For example, `ulll` is parsed as `unsigned long long`
- * and `long` whereas `ul,ll` is parsed as `unsigned long` and `long long`.
- * If invalid, an error message is printed to standard error.
+ * and `long` whereas `ul,ll` is parsed as `unsigned long` and `long long`.  If
+ * invalid, an error message is printed to standard error.
  * @param loc The location of \a ei_format.  If not NULL and \a ei_format is
  * invalid, calls print_error(); if NULL and \a ei_format is invalid, calls
- * FATAL_ERR().
+ * #FATAL_ERR().
  * @return Returns `true` only if \a ei_format was parsed successfully.
  */
 PJL_NOWARN_UNUSED_RESULT
