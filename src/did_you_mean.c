@@ -83,6 +83,9 @@ static unsigned const SIMILAR_ENOUGH_PERCENT = 40;
  */
 PJL_WARN_UNUSED_RESULT
 static char* check_prefix_strdup( char const *prefix, char const *s ) {
+  assert( prefix != NULL );
+  assert( s != NULL );
+
   size_t const prefix_len = strlen( prefix );
   char *const dup_s = MALLOC( char*, prefix_len + strlen( s ) + 1/*\0*/ );
   strcpy( dup_s, prefix );
@@ -127,7 +130,7 @@ PJL_NOWARN_UNUSED_RESULT
 static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
   size_t count = 0;
   FOREACH_CDECL_KEYWORD( k ) {
-    char const *literal = NULL;
+    char const *literal;
     if ( k->lang_syn == NULL )
       literal = k->literal;
     else if ( (literal = c_lang_literal( k->lang_syn )) == NULL )
@@ -226,6 +229,9 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
  */
 PJL_NOWARN_UNUSED_RESULT
 static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
+  assert( tdef != NULL );
+  assert( data != NULL );
+
   if ( opt_lang_is_any( tdef->lang_ids ) ) {
     copy_typedef_visitor_data_t *const ctvd = data;
     if ( ctvd->pdym != NULL ) {
