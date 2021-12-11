@@ -70,7 +70,7 @@ typedef int (*qsort_cmp_fn_t)( void const *i_data, void const *j_data );
  * string's length in order to be considered "similar enough" to be a
  * reasonable suggestion.
  */
-static unsigned const SIMILAR_ENOUGH_PERCENT = 40;
+static double const SIMILAR_ENOUGH_PERCENT = .40;
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -308,11 +308,10 @@ static void dym_free_tokens( did_you_mean_t const *dym ) {
  * @return Returns `true` only if \a dam_lev_dist is "similar enough."
  */
 PJL_WARN_UNUSED_RESULT
-static bool is_similar_enough( dam_lev_t dam_lev_dist, unsigned percent,
+static bool is_similar_enough( dam_lev_t dam_lev_dist, double percent,
                                size_t target_len ) {
-  assert( percent < 100 );
-  double const percent_fract = percent / 100.0;
-  return dam_lev_dist <= (dam_lev_t)((double)target_len * percent_fract + 0.5);
+  assert( percent > 0 && percent < 1 );
+  return dam_lev_dist <= (dam_lev_t)(target_len * percent + 0.5);
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
