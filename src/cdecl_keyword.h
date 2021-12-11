@@ -30,7 +30,7 @@
 #include "pjl_config.h"                 /* must go first */
 #include "c_ast.h"
 #include "types.h"
-#include "parser.h"                     /* must go last */
+#include "cdecl_parser.h"               /* must go last */
 
 // standard
 #include <stdbool.h>

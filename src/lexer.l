@@ -48,7 +48,7 @@
 #include "print.h"
 #include "strbuf.h"
 #include "util.h"
-#include "parser.h"                     /* must go last */
+#include "cdecl_parser.h"               /* must go last */
 
 /// @cond DOXYGEN_IGNORE
 
