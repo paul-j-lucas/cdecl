@@ -1,5 +1,12 @@
+2021-12-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Made SIMILAR_ENOUGH_PERCENT be double.
+   * did_you_mean.c: Added assert()s; removed unnecessary = NULL.
+
 2021-12-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am, c_keyword.c, c_keyword.h, cdecl_keyword.h,
+     cdecl_parser.h, lexer.l: Added cdecl_parser.h.
    * print.h: Removed redundant declaration.
    * gettext.h, intprops.h: Updated Gnulib.
    * print.c, read_line.c, util.c, util.h: s/is_blank_line/str_is_blank/;
