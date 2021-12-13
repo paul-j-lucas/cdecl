@@ -10,6 +10,18 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.8
+
+** New cdecl keywords
+There are now the new pseudo-English keywords of `evaluation` (plus `eval` as a
+shorthand), `expression` (plus `expr`), and `initialization` (plus `init`) that
+can optionally be used after `constant` (or `const`) instead of `consteval`,
+`constexpr`, or `constinit`, respectively:
+
+    c++decl> declare f as constant expression function returning int
+    constexpr int f();
+
+
 * Changes in Cdecl 11.7
 
 ** Cdecl keywords

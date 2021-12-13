@@ -236,13 +236,13 @@ static c_type_info_t const C_STORAGE_INFO[] = {
     C_LANG_LIT( { LANG_ANY, L_TYPEDEF } ) },
 
   // storage-class-like
-  { TS_CONSTEVAL, LANG_CPP_MIN(20), NULL,
+  { TS_CONSTEVAL, LANG_CPP_MIN(20), "constant evaluation",
     C_LANG_LIT( { LANG_ANY, L_CONSTEVAL } ) },
 
-  { TS_CONSTEXPR, LANG_CPP_MIN(11), NULL,
+  { TS_CONSTEXPR, LANG_CPP_MIN(11), "constant expression",
     C_LANG_LIT( { LANG_ANY, L_CONSTEXPR } ) },
 
-  { TS_CONSTINIT, LANG_CPP_MIN(20), NULL,
+  { TS_CONSTINIT, LANG_CPP_MIN(20), "constant initialization",
     C_LANG_LIT( { LANG_ANY, L_CONSTINIT } ) },
 
   { TS_DEFAULT, LANG_CPP_MIN(11), NULL,

@@ -1,1 +1,1 @@
-declare C as constexpr constructor
+declare C as constant expression constructor

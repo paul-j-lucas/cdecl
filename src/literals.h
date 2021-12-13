@@ -75,11 +75,17 @@ extern char const L_DEFAULTED[];          // synonym for "default"
 extern char const L_DEFINE[];
 extern char const L_DELETED[];            // synonym for "delete"
 extern char const L_ENGLISH[];
+extern char const L_EVAL[];               // synonym for "evaluation"
+extern char const L_EVALUATION[];
 extern char const L_EXIT[];
 extern char const L_EXPLAIN[];
+extern char const L_EXPR[];               // synonym for "expression"
+extern char const L_EXPRESSION[];
 extern char const L_FUNC[];               // synonym for "function"
 extern char const L_FUNCTION[];
 extern char const L_HELP[];
+extern char const L_INIT[];               // synonym for "initialization"
+extern char const L_INITIALIZATION[];
 extern char const L_INTO[];
 extern char const L_LINKAGE[];
 extern char const L_MBR[];                // synonym for "member"

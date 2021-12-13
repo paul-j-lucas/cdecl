@@ -1124,7 +1124,10 @@ static void yyerror( char const *msg ) {
 %token              Y_CONVERSION
 %token              Y_DESTRUCTOR
 %token              Y_ENGLISH
+%token              Y_EVALUATION
+%token              Y_EXPRESSION
 %token              Y_FUNCTION
+%token              Y_INITIALIZATION
 %token              Y_INTO
 %token              Y_LENGTH
 %token              Y_LINKAGE
@@ -1937,6 +1940,9 @@ storage_class_list_english_stid_opt
 storage_class_english_stid
   : Y_AUTO_STORAGE
   | Y_APPLE___BLOCK
+  | Y_CONST Y_EVALUATION          { $$ = TS_CONSTEVAL; }
+  | Y_CONST Y_EXPRESSION          { $$ = TS_CONSTEXPR; }
+  | Y_CONST Y_INITIALIZATION      { $$ = TS_CONSTINIT; }
   | Y_CONSTEVAL
   | Y_CONSTEXPR
   | Y_CONSTINIT
