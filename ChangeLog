@@ -1,3 +1,10 @@
+2021-12-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, c_type.c, cdecl_keyword.c, literals.c,
+     literals.h, parser.y, explain_sxxi.out, explain_xxctor.out,
+     explain_xxi.out: Added pseudo-English keywords `evaluation` (plus `eval`),
+     `expression` (plus `expr`), and `initialization` (plus `init`).
+
 2021-12-11  Paul J. Lucas <paul@lucasmail.org>
 
    * did_you_mean.c: Put (double) back.
