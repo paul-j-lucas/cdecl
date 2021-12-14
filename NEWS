@@ -21,6 +21,9 @@ can optionally be used after `constant` (or `const`) instead of `consteval`,
     c++decl> declare f as constant expression function returning int
     constexpr int f();
 
+** Fixed reading of stdin
+The "no files as arguments" change broke reading of stdin; fixed.
+
 
 * Changes in Cdecl 11.7
 

@@ -234,10 +234,12 @@ static bool cdecl_parse_command_line( char const *command, int argc,
  *
  * @param fin The FILE to read from.
  * @param fout The FILE to write the prompts to, if any.
- * @return Returns `true` only upon success.
+ * @param return_on_error If `true`, return immediately upon encountering an
+ * error; if `false`, return only upon encountering EOF.
+ * @return Returns the success of the parse of the last line read.
  */
 PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_file( FILE *fin, FILE *fout ) {
+static bool cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
   assert( fin != NULL );
 
   strbuf_t sbuf;
@@ -247,7 +249,7 @@ static bool cdecl_parse_file( FILE *fin, FILE *fout ) {
   while ( strbuf_read_line( &sbuf, fin, fout, cdecl_prompt ) ) {
     // We don't just call yyrestart( fin ) and yyparse() directly because
     // cdecl_parse_string() also inserts "explain " for opt_explain.
-    if ( !(ok = cdecl_parse_string( sbuf.str, sbuf.len )) )
+    if ( !(ok = cdecl_parse_string( sbuf.str, sbuf.len )) && return_on_error )
       break;
     strbuf_reset( &sbuf );
   } // while
@@ -266,7 +268,7 @@ static bool cdecl_parse_stdin( void ) {
   is_input_a_tty = isatty( fileno( cdecl_fin ) );
   if ( opt_prompt && (is_input_a_tty || opt_interactive) )
     FPRINTF( cdecl_fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
-  return cdecl_parse_file( cdecl_fin, cdecl_fout );
+  return cdecl_parse_file( cdecl_fin, cdecl_fout, /*return_on_error=*/false );
 }
 
 /**
@@ -341,7 +343,9 @@ static void read_conf_file( void ) {
   //
   c_lang_id_t const orig_lang = opt_lang;
   opt_lang = LANG_CPP_NEW;
-  PJL_IGNORE_RV( cdecl_parse_file( conf_file, /*fout=*/NULL ) );
+  PJL_IGNORE_RV(
+    cdecl_parse_file( conf_file, /*fout=*/NULL, /*return_on_error=*/true )
+  );
   opt_lang = orig_lang;
 
   PJL_IGNORE_RV( fclose( conf_file ) );
