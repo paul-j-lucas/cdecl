@@ -1,5 +1,21 @@
+2021-12-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, autocomplete.c, c_type.c, cdecl_keyword.c, literals.c,
+     literals.h, parser.y, declare_a_cd_i.out, explain_a_cd_fa_cd_i_i.out,
+     explain_a_cd_fi_i.out, explain_a_dep_a_mu_i-01.out,
+     explain_a_dep_a_mu_i-02.out, explain_a_mu_f_v.out, explain_a_mu_i.out,
+     explain_a_mu_k-01.out, explain_a_mu_k-02.out, explain_a_using_a_mu_i.out,
+     explain_fa_cd_i_i.out, explain_fa_mu_i_v.out, explain_oi.out,
+     explain_tli.out: Now allowing "carries dependency", "maybe unused", "no
+     discard", "no except", "no return", "no unique address", and "thread
+     local".
+   * NEWS, cdecl.c: The "no files as arguments" change broke reading of stdin;
+     fixed.
+
 2021-12-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Added "constant evaluation", "constant expression", and "constant
+     initialization".
    * NEWS, configure.ac, cdecl.1, c_type.c, cdecl_keyword.c, literals.c,
      literals.h, parser.y, explain_sxxi.out, explain_xxctor.out,
      explain_xxi.out: Added pseudo-English keywords `evaluation` (plus `eval`),
