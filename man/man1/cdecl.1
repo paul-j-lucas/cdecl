@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "December 13, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 14, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1136,6 +1136,7 @@ The terms on the left are synonyms for what's on the right:
                  atomic  _Atomic
               automatic  auto
                    bool  _Bool
+     carries dependency  carries_dependency
      carries-dependency  carries_dependency
               character  char
                 command  commands
@@ -1160,19 +1161,24 @@ constant initialization  constinit
                    init  initialization
                 integer  int
                     len  length
+           maybe unused  maybe_unused
            maybe-unused  maybe_unused
                     mbr  member
+             no discard  nodiscard
              no-discard  nodiscard
         non-discardable  nodiscard
+              no except  noexcept
               no-except  noexcept
            no-exception  noexcept
+      no unique address  no_unique_address
       no-unique-address  no_unique_address
      non-unique-address  no_unique_address
                 non-mbr  non-member
+               noreturn  _Noreturn
+              no return  _Noreturn
               no-return  _Noreturn
           non-returning  _Noreturn
            non-throwing  throw()
-               noreturn  _Noreturn
                    oper  operator
              overridden  override
                  predef  predefined
@@ -1184,6 +1190,7 @@ constant initialization  constinit
               saturated  _Sat
               structure  struct
                    type  typedef
+           thread local  thread_local
            thread-local  thread_local
            thread_local  _Thread_local
                user-def  user-defined

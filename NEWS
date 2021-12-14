@@ -21,6 +21,11 @@ can optionally be used after `constant` (or `const`) instead of `consteval`,
     c++decl> declare f as constant expression function returning int
     constexpr int f();
 
+There are now the new pseudo-English keywords of `maybe`, `unused`, `thread`,
+`local`, as well as `discard`, `except`, and `return` that can be used after
+`no` that can be used instead of `maybe_unused`, `thread_local`, `nodiscard`,
+`noexcept`, and `noreturn`.
+
 ** Fixed reading of stdin
 The "no files as arguments" change broke reading of stdin; fixed.
 

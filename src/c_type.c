@@ -123,13 +123,13 @@ static char const L_TYPEDEF_TYPE[] = "";
  * Type mapping for attributes.
  */
 static c_type_info_t const C_ATTRIBUTE_INFO[] = {
-  { TA_CARRIES_DEPENDENCY, LANG_CPP_MIN(11), H_CARRIES_DEPENDENCY,
+  { TA_CARRIES_DEPENDENCY, LANG_CPP_MIN(11), "carries dependency",
     C_LANG_LIT( { LANG_ANY, L_CARRIES_DEPENDENCY } ) },
 
   { TA_DEPRECATED, LANG_C_CPP_MIN(2X,11), NULL,
     C_LANG_LIT( { LANG_ANY, L_DEPRECATED } ) },
 
-  { TA_MAYBE_UNUSED, LANG_C_CPP_MIN(2X,17), H_MAYBE_UNUSED,
+  { TA_MAYBE_UNUSED, LANG_C_CPP_MIN(2X,17), "maybe unused",
     C_LANG_LIT( { LANG_ANY, L_MAYBE_UNUSED } ) },
 
   { TA_NODISCARD, LANG_C_CPP_MIN(2X,17), H_NON_DISCARDABLE,
@@ -227,7 +227,7 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_STATIC, LANG_ANY, NULL,
     C_LANG_LIT( { LANG_ANY, L_STATIC } ) },
 
-  { TS_THREAD_LOCAL, LANG_ANY, H_THREAD_LOCAL,
+  { TS_THREAD_LOCAL, LANG_ANY, "thread local",
     C_LANG_LIT( { LANG_C_MAX(99) | LANG_CPP_MAX(03),  L_GNU___THREAD  },
                 { LANG_C_MIN(11),                     L__THREAD_LOCAL },
                 { LANG_ANY,                           L_THREAD_LOCAL  } ) },

@@ -90,6 +90,7 @@ extern char const L_INTO[];
 extern char const L_LINKAGE[];
 extern char const L_MBR[];                // synonym for "member"
 extern char const L_MEMBER[];
+extern char const L_NO[];
 extern char const H_NON_MBR[];            // synonym for "non-member"
 extern char const H_NON_MEMBER[];
 extern char const L_OF[];
@@ -188,6 +189,7 @@ extern char const H_NO_RETURN[];          // English for "_Noreturn"
 extern char const H_NON_RETURNING[];      // English for "_Noreturn"
 extern char const L__STATIC_ASSERT[];
 extern char const L__THREAD_LOCAL[];
+extern char const L_THREAD[], L_LOCAL[];
 extern char const H_THREAD_LOCAL[];       // English for "_Thread_local"
 
 // C++
@@ -235,11 +237,13 @@ extern char const L_VIRTUAL[];
 extern char const L_ALIGNAS[];
 extern char const L_ALIGNOF[];
 extern char const L_CARRIES_DEPENDENCY[];
+extern char const L_CARRIES[], L_DEPENDENCY[];
 extern char const H_CARRIES_DEPENDENCY[]; // English for "carries_dependency"
 extern char const L_CONSTEXPR[];
 extern char const L_DECLTYPE[];
 extern char const L_FINAL[];
 extern char const L_NOEXCEPT[];
+extern char const L_EXCEPT[];
 extern char const L_NORETURN[];
 extern char const L_LITERAL[];
 extern char const H_NO_EXCEPT[];          // English for "noexcept"
@@ -262,9 +266,11 @@ extern char const L___DEPRECATED__[];
 
 // C++17
 extern char const L_MAYBE_UNUSED[];
+extern char const L_MAYBE[], L_UNUSED[];
 extern char const H_MAYBE_UNUSED[];       // English for "maybe_unused"
 extern char const L___MAYBE_UNUSED__[];
 extern char const L_NODISCARD[];
+extern char const L_DISCARD[];
 extern char const H_NO_DISCARD[];         // English for "nodiscard"
 extern char const L___NODISCARD__[];
 extern char const H_NON_DISCARDABLE[];    // English for "nodiscard"
@@ -280,6 +286,7 @@ extern char const L_CO_YIELD[];
 extern char const L_EXPORT[];
 extern char const L_EXPORTED[];           // English for "export"
 extern char const L_NO_UNIQUE_ADDRESS[];
+extern char const L_UNIQUE[], L_ADDRESS[];
 extern char const H_NO_UNIQUE_ADDRESS[];  // English for "no_unique_address"
 extern char const H_NON_UNIQUE_ADDRESS[]; // English for "no_unique_address"
 extern char const L_REQUIRES[];

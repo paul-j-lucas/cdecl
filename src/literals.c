@@ -63,6 +63,7 @@ char const L_INTO[]               = "into";
 char const L_LINKAGE[]            = "linkage";
 char const L_MBR[]                = "mbr";
 char const L_MEMBER[]             = "member";
+char const L_NO[]                 = "no";
 char const H_NON_MBR[]            = "non-mbr";
 char const H_NON_MEMBER[]         = "non-member";
 char const L_OF[]                 = "of";
@@ -161,6 +162,7 @@ char const H_NO_RETURN[]          = "no-return";
 char const H_NON_RETURNING[]      = "non-returning";
 char const L__STATIC_ASSERT[]     = "_Static_assert";
 char const L__THREAD_LOCAL[]      = "_Thread_local";
+char const L_THREAD[]             = "thread", L_LOCAL[] = "local";
 char const H_THREAD_LOCAL[]       = "thread-local";
 
 // C++
@@ -207,6 +209,7 @@ char const L_VIRTUAL[]            = "virtual";
 // C++11
 char const L_ALIGNAS[]            = "alignas";
 char const L_ALIGNOF[]            = "alignof";
+char const L_CARRIES[]            = "carries", L_DEPENDENCY[] = "dependency";
 char const L_CARRIES_DEPENDENCY[] = "carries_dependency";
 char const H_CARRIES_DEPENDENCY[] = "carries-dependency";
 char const L_CONSTEXPR[]          = "constexpr";
@@ -214,9 +217,10 @@ char const L_DECLTYPE[]           = "decltype";
 char const L_FINAL[]              = "final";
 char const L_LITERAL[]            = "literal";
 char const L_NOEXCEPT[]           = "noexcept";
-char const L_NORETURN[]           = "noreturn";
+char const L_EXCEPT[]             = "except";
 char const H_NO_EXCEPT[]          = "no-except";
 char const H_NO_EXCEPTION[]       = "no-exception";
+char const L_NORETURN[]           = "noreturn";
 char const L_NULLPTR[]            = "nullptr";
 char const L_OVERRIDE[]           = "override";
 char const L_OVERRIDDEN[]         = "overridden";
@@ -235,9 +239,11 @@ char const L___DEPRECATED__[]     = "__deprecated__";
 
 // C++17
 char const L_MAYBE_UNUSED[]       = "maybe_unused";
+char const L_MAYBE[]              = "maybe", L_UNUSED[] = "unused";
 char const H_MAYBE_UNUSED[]       = "maybe-unused";
 char const L___MAYBE_UNUSED__[]   = "__maybe_unused__";
 char const L_NODISCARD[]          = "nodiscard";
+char const L_DISCARD[]            = "discard";
 char const H_NO_DISCARD[]         = "no-discard";
 char const L___NODISCARD__[]      = "__nodiscard__";
 char const H_NON_DISCARDABLE[]    = "non-discardable";
@@ -253,6 +259,7 @@ char const L_CO_YIELD[]           = "co_yield";
 char const L_EXPORT[]             = "export";
 char const L_EXPORTED[]           = "exported";
 char const L_NO_UNIQUE_ADDRESS[]  = "no_unique_address";
+char const L_UNIQUE[]             = "unique", L_ADDRESS[] = "address";
 char const H_NO_UNIQUE_ADDRESS[]  = "no-unique-address";
 char const H_NON_UNIQUE_ADDRESS[] = "non-unique-address";
 char const L_REQUIRES[]           = "requires";

@@ -1,1 +1,1 @@
-declare f as carries-dependency function (x as int) returning int
+declare f as carries dependency function (x as int) returning int

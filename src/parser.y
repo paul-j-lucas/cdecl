@@ -1102,6 +1102,7 @@ static void yyerror( char const *msg ) {
 %token              Y_HELP
 //                  Y_INLINE            // covered in C99
 //                  Y_NAMESPACE         // covered in C++
+%token              Y_NO
 %token              Y_QUIT
 %token              Y_REINTERPRET
 %token              Y_SET
@@ -1282,6 +1283,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y__NORETURN
 %token              Y__STATIC_ASSERT
 %token  <tid>       Y__THREAD_LOCAL
+%token              Y_THREAD Y_LOCAL
 
                     // C++
 %token  <tid>       Y_BOOL
@@ -1325,9 +1327,11 @@ static void yyerror( char const *msg ) {
 %token              Y_ALIGNAS
 %token              Y_ALIGNOF
 %token  <tid>       Y_AUTO_TYPE         // C++11 version of "auto"
+%token              Y_CARRIES Y_DEPENDENCY
 %token  <tid>       Y_CARRIES_DEPENDENCY
 %token  <tid>       Y_CONSTEXPR
 %token              Y_DECLTYPE
+%token              Y_EXCEPT
 %token  <tid>       Y_FINAL
 %token  <tid>       Y_NOEXCEPT
 %token              Y_NULLPTR
@@ -1340,7 +1344,9 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_DEPRECATED
 
                     // C2X & C++17
+%token              Y_DISCARD
 %token  <tid>       Y_MAYBE_UNUSED
+%token              Y_MAYBE Y_UNUSED
 %token  <tid>       Y_NODISCARD
 
                     // C++17
@@ -1350,6 +1356,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_CHAR8_T
 
                     // C++20
+%token              Y_ADDRESS
 %token              Y_CONCEPT
 %token  <tid>       Y_CONSTEVAL
 %token  <tid>       Y_CONSTINIT
@@ -1359,6 +1366,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_EXPORT
 %token  <tid>       Y_NO_UNIQUE_ADDRESS
 %token              Y_REQUIRES
+%token              Y_UNIQUE
 
                     // Embedded C extensions
 %token  <tid>       Y_EMC__ACCUM
@@ -1959,10 +1967,12 @@ storage_class_english_stid
   | Y_FRIEND
   | Y_INLINE
   | Y_MUTABLE
+  | Y_NO Y_EXCEPT                 { $$ = TS_NOEXCEPT; }
   | Y_NOEXCEPT
   | Y_OVERRIDE
 //| Y_REGISTER                          // in type_modifier_list_english_type
   | Y_STATIC
+  | Y_THREAD local_exp            { $$ = TS_THREAD_LOCAL; }
   | Y__THREAD_LOCAL
   | Y_THREAD_LOCAL
   | Y_THROW
@@ -1972,12 +1982,17 @@ storage_class_english_stid
   ;
 
 attribute_english_atid
-  : Y_CARRIES_DEPENDENCY
+  : Y_CARRIES dependency_exp      { $$ = TA_CARRIES_DEPENDENCY; }
+  | Y_CARRIES_DEPENDENCY
   | Y_DEPRECATED
+  | Y_MAYBE unused_exp            { $$ = TA_MAYBE_UNUSED; }
   | Y_MAYBE_UNUSED
+  | Y_NO Y_DISCARD                { $$ = TA_NODISCARD; }
   | Y_NODISCARD
+  | Y_NO Y_RETURN                 { $$ = TA_NORETURN; }
   | Y__NORETURN
   | Y_NORETURN
+  | Y_NO Y_UNIQUE address_exp     { $$ = TA_NO_UNIQUE_ADDRESS; }
   | Y_NO_UNIQUE_ADDRESS
   ;
 
@@ -6697,6 +6712,14 @@ typedef_sname_c
 //  MISCELLANEOUS                                                            //
 ///////////////////////////////////////////////////////////////////////////////
 
+address_exp
+  : Y_ADDRESS
+  | error
+    {
+      keyword_expected( L_ADDRESS );
+    }
+  ;
+
 array_exp
   : Y_ARRAY
   | error
@@ -6838,6 +6861,14 @@ c_operator
   | Y_TILDE                         { $$ = C_OP_TILDE           ; }
   ;
 
+dependency_exp
+  : Y_DEPENDENCY
+  | error
+    {
+      keyword_expected( L_DEPENDENCY );
+    }
+  ;
+
 equals_exp
   : '='
   | error
@@ -6906,6 +6937,14 @@ literal_exp
   | error
     {
       keyword_expected( L_LITERAL );
+    }
+  ;
+
+local_exp
+  : Y_LOCAL
+  | error
+    {
+      keyword_expected( L_LOCAL );
     }
   ;
 
@@ -7126,6 +7165,14 @@ type_opt
 typename_flag_opt
   : /* empty */                   { $$ = false; }
   | Y_TYPENAME                    { $$ = true; }
+  ;
+
+unused_exp
+  : Y_UNUSED
+  | error
+    {
+      keyword_expected( L_UNUSED );
+    }
   ;
 
 virtual_stid_exp
