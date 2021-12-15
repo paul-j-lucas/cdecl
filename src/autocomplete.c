@@ -125,57 +125,6 @@ static bool   is_command( char const* );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Attempts command completion for readline().
- *
- * @param text The text read (so far) to match against.
- * @param start The starting character position of \a text.
- * @param end The ending character position of \a text.
- * @return Returns an array of C strings of possible matches.
- */
-PJL_WARN_UNUSED_RESULT
-static char** attempt_completion( char const *text, int start, int end ) {
-  assert( text != NULL );
-  (void)end;
-  //
-  // If the word is at the start of the line (start == 0), then attempt to
-  // complete only cdecl commands and not all keywords.
-  //
-  return start == 0 ? rl_completion_matches( text, command_generator ) : NULL;
-}
-
-/**
- * Attempts to match a cdecl command.
- *
- * @param text The text read (so far) to match against.
- * @param state If 0, restart matching from the beginning; if non-zero,
- * continue to next match, if any.
- * @return Returns a copy of the command or NULL if not found.
- */
-PJL_WARN_UNUSED_RESULT
-static char* command_generator( char const *text, int state ) {
-  assert( text != NULL );
-
-  static size_t match_index;
-  static size_t text_len;
-
-  if ( state == 0 ) {                   // new word? reset
-    match_index = 0;
-    text_len = strlen( text );
-  }
-
-  for ( cdecl_command_t const *c;
-        (c = CDECL_COMMANDS + match_index)->literal != NULL; ) {
-    ++match_index;
-    if ( !opt_lang_is_any( c->lang_ids ) )
-      continue;
-    if ( strncmp( text, c->literal, text_len ) == 0 )
-      return check_strdup( c->literal );
-  } // for
-
-  return NULL;
-}
-
-/**
  * Creates and initializes an array of all auto-completable keywords composed
  * of C/C++ keywords and cdecl keywords.
  *
@@ -303,6 +252,59 @@ static bool is_command( char const *command ) {
   if ( command_len > (size_t)rl_end )   // more chars than in rl_line_buffer?
     return false;
   return strncmp( rl_line_buffer, command, command_len ) == 0;
+}
+
+////////// readline callback functions ////////////////////////////////////////
+
+/**
+ * Attempts command completion for readline().
+ *
+ * @param text The text read (so far) to match against.
+ * @param start The starting character position of \a text.
+ * @param end The ending character position of \a text.
+ * @return Returns an array of C strings of possible matches.
+ */
+PJL_WARN_UNUSED_RESULT
+static char** attempt_completion( char const *text, int start, int end ) {
+  assert( text != NULL );
+  (void)end;
+  //
+  // If the word is at the start of the line (start == 0), then attempt to
+  // complete only cdecl commands and not all keywords.
+  //
+  return start == 0 ? rl_completion_matches( text, command_generator ) : NULL;
+}
+
+/**
+ * Attempts to match a cdecl command.
+ *
+ * @param text The text read (so far) to match against.
+ * @param state If 0, restart matching from the beginning; if non-zero,
+ * continue to next match, if any.
+ * @return Returns a copy of the command or NULL if not found.
+ */
+PJL_WARN_UNUSED_RESULT
+static char* command_generator( char const *text, int state ) {
+  assert( text != NULL );
+
+  static size_t match_index;
+  static size_t text_len;
+
+  if ( state == 0 ) {                   // new word? reset
+    match_index = 0;
+    text_len = strlen( text );
+  }
+
+  for ( cdecl_command_t const *c;
+        (c = CDECL_COMMANDS + match_index)->literal != NULL; ) {
+    ++match_index;
+    if ( !opt_lang_is_any( c->lang_ids ) )
+      continue;
+    if ( strncmp( text, c->literal, text_len ) == 0 )
+      return check_strdup( c->literal );
+  } // for
+
+  return NULL;
 }
 
 /**
