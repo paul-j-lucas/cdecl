@@ -1,3 +1,12 @@
+2021-12-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: #include sort.
+   * configure.ac, autocomplete.c: Simplified autocompletion code.
+
+2021-12-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Function re-ordering.
+
 2021-12-14  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.1, autocomplete.c, c_type.c, cdecl_keyword.c, literals.c,
