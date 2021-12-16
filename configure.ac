@@ -115,9 +115,6 @@ PJL_COMPILE([__typeof__],[],[__typeof__(1) x __attribute((unused)) = 1;])
 
 # Checks for library functions.
 AC_FUNC_REALLOC
-PJL_COMPILE([rl_completion_func_t],[[#include <stdio.h>
-                                     #include <readline/readline.h>]],
-  [(void)sizeof(rl_completion_func_t);])
 AC_CHECK_DECLS([rl_completion_matches],[],[],
 [#include <stdio.h>
 #include <readline/readline.h>

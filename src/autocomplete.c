@@ -42,18 +42,6 @@
 #include <string.h>
 #include <readline/readline.h>          /* must go last */
 
-#if !HAVE_RL_COMPLETION_FUNC_T
-//
-// CPPFunction was the original typedef in Readline prior to 4.2.  In 4.2, it
-// was deprecated and replaced by rl_completion_func_t; in 6.3-5, CPPFunction
-// was removed.
-//
-// To support Readlines older than 4.2 (such as that on macOS Mojave -- which
-// is actually just a veneer on Editline), define rl_completion_func_t.
-//
-typedef CPPFunction rl_completion_func_t;
-#endif /* HAVE_RL_COMPLETION_FUNC_T */
-
 #if !HAVE_DECL_RL_COMPLETION_MATCHES
 # define rl_completion_matches    completion_matches
 #endif /* !HAVE_DECL_RL_COMPLETION_MATCHES */
@@ -116,8 +104,8 @@ static c_lang_lit_t const AC_CDECL_KEYWORDS[] = {
 };
 
 // local functions
-PJL_WARN_UNUSED_RESULT
 static char*  command_generator( char const*, int );
+static char*  keyword_generator( char const*, int );
 
 PJL_WARN_UNUSED_RESULT
 static bool   is_command( char const* );
@@ -264,15 +252,20 @@ static bool is_command( char const *command ) {
  * @param end The ending character position of \a text.
  * @return Returns an array of C strings of possible matches.
  */
-PJL_WARN_UNUSED_RESULT
-static char** attempt_completion( char const *text, int start, int end ) {
+static char** cdecl_rl_completion( char const *text, int start, int end ) {
   assert( text != NULL );
   (void)end;
+
+  rl_attempted_completion_over = 1;     // don't do filename completion
+
   //
-  // If the word is at the start of the line (start == 0), then attempt to
-  // complete only cdecl commands and not all keywords.
+  // If the word is at the start of the line (start == 0), attempt to complete
+  // only cdecl commands and not all keywords.  Having two generator functions
+  // makes the logic simpler in each.
   //
-  return start == 0 ? rl_completion_matches( text, command_generator ) : NULL;
+  return rl_completion_matches(
+    text, start == 0 ? command_generator : keyword_generator
+  );
 }
 
 /**
@@ -281,9 +274,8 @@ static char** attempt_completion( char const *text, int start, int end ) {
  * @param text The text read (so far) to match against.
  * @param state If 0, restart matching from the beginning; if non-zero,
  * continue to next match, if any.
- * @return Returns a copy of the command or NULL if not found.
+ * @return Returns a copy of the command or NULL if none.
  */
-PJL_WARN_UNUSED_RESULT
 static char* command_generator( char const *text, int state ) {
   assert( text != NULL );
 
@@ -315,27 +307,31 @@ static char* command_generator( char const *text, int state ) {
  * continue to next match, if any.
  * @return Returns a copy of the keyword or NULL if none.
  */
-PJL_WARN_UNUSED_RESULT
-static char* keyword_completion( char const *text, int state ) {
+static char* keyword_generator( char const *text, int state ) {
   assert( text != NULL );
 
-  static char const        *command;    // current command
-  static char const *const *command_keywords;
-  static size_t             match_index;
-  static bool               more_matches;
-  static size_t             text_len;
+  static char const  *command;          // current command
+  static size_t       match_index;
+  static size_t       text_len;
 
   if ( state == 0 ) {                   // new word? reset
-    command = NULL;
     match_index = 0;
-    more_matches = true;
     text_len = strlen( text );
 
+    //
+    // Retroactively figure out what the current command is so we can do some
+    // command-sensitive autocompletion.  We can't just set the command in
+    // command_generator() since it may never be called: the user could type an
+    // entire command, then hit <tab> sometime later, e.g.:
+    //
+    //      cdecl> set <tab>
+    //
     if ( is_command( "?" ) )
       command = L_HELP;
     else if ( is_cast_command() )
       command = L_CAST;
     else {
+      command = NULL;
       FOREACH_CDECL_COMMAND( c ) {
         if ( opt_lang_is_any( c->lang_ids ) && is_command( c->literal ) ) {
           command = c->literal;
@@ -345,7 +341,7 @@ static char* keyword_completion( char const *text, int state ) {
     }
   }
 
-  if ( command == NULL || !more_matches ) {
+  if ( command == NULL ) {
     //
     // We haven't at least matched a command yet, so don't match any other
     // keywords.
@@ -357,19 +353,21 @@ static char* keyword_completion( char const *text, int state ) {
   // Special case: if it's the "cast" command, the text partially matches
   // "into", and the user hasn't typed "into" yet, complete as "into".
   //
-  if ( strcmp( command, L_CAST ) == 0 &&
+  if ( command == L_CAST &&
        strncmp( text, L_INTO, text_len ) == 0 &&
        strstr( rl_line_buffer, L_INTO ) == NULL ) {
-    more_matches = false;               // unambiguously match "into"
+    command = NULL;                     // unambiguously match "into"
     return check_strdup( L_INTO );
   }
+
+  static char const *const *command_keywords;
 
   if ( state == 0 ) {
     //
     // Special case: for certain commands, complete using specific keywords for
     // that command.
     //
-    if ( strcmp( command, L_HELP ) == 0 ) {
+    if ( command == L_HELP ) {
       static char const *const help_keywords[] = {
         L_COMMANDS,
         L_ENGLISH,
@@ -378,7 +376,7 @@ static char* keyword_completion( char const *text, int state ) {
       };
       command_keywords = help_keywords;
     }
-    else if ( strcmp( command, L_SET_COMMAND ) == 0 ) {
+    else if ( command == L_SET_COMMAND ) {
       static char const *const *set_options;
       if ( set_options == NULL )
         set_options = init_set_options();
@@ -433,8 +431,7 @@ void readline_init( FILE *rin, FILE *rout ) {
   // allow conditional ~/.inputrc parsing
   rl_readline_name = CONST_CAST( char*, CDECL );
 
-  rl_attempted_completion_function = (rl_completion_func_t*)attempt_completion;
-  rl_completion_entry_function = (void*)keyword_completion;
+  rl_attempted_completion_function = cdecl_rl_completion;
   rl_instream = rin;
   rl_outstream = rout;
 }
