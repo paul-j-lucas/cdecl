@@ -54,6 +54,12 @@
  * Subset of cdecl keywords (that are not cdecl commands, nor `help` nor `set`
  * command arguments, nor C/C++ keywords) that are auto-completable.
  *
+ * @note For two-word terms, only the second word is here: the first shouldn't
+ * be.
+ * For example, for the two-word term `maybe unused`, only `unused` is here and
+ * `maybe` isn't.  Having `maybe` here would only create ambiguity between
+ * `maybe` and `maybe_unused` and completing `maybe_unused` better.
+ *
  * @sa CDECL_COMMANDS
  * @sa CDECL_KEYWORDS
  * @sa C_KEYWORDS
