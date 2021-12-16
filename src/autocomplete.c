@@ -37,8 +37,8 @@
 
 // standard
 #include <assert.h>
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <readline/readline.h>          /* must go last */
 
