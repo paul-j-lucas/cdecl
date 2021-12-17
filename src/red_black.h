@@ -89,7 +89,7 @@ typedef int (*rb_data_cmp_fn_t)( void const *i_data, void const *j_data );
 typedef void (*rb_data_free_fn_t)( void *data );
 
 /**
- * The signature for the function passed to rb_tree_visit().
+ * The signature for a function passed to rb_tree_visit().
  *
  * @param node_data A pointer to the node's data.
  * @param aux_data Optional data passed to to the visitor.
