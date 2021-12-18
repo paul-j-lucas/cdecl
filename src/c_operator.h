@@ -179,7 +179,7 @@ enum c_oper_id {
 /**
  * C++ operator information.
  *
- * @note: `params_min` and `params_max` comprise the inclusive range for the
+ * @note `params_min` and `params_max` comprise the inclusive range for the
  * union of member and non-member versions.  If you know you're dealing with a
  * member operator, use only `params_min`; if you know you're dealing with a
  * non-member operator, use only `params_max`; if you don't know which, use
