@@ -48,15 +48,14 @@ static size_t c_ast_count;              ///< ASTs allocated but not yet freed.
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Checks whether two alignments are equivalent, i.e., represent the same
- * alignment.
+ * Checks whether two alignments are equal.
  *
  * @param i_align The first alignment.
  * @param j_align The second alignment.
- * @return Returns `true` only if the two alignments are equivalent.
+ * @return Returns `true` only if the two alignments are equal.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_alignas_equiv( c_alignas_t const *i_align,
+static bool c_alignas_equal( c_alignas_t const *i_align,
                              c_alignas_t const *j_align ) {
   assert( i_align != NULL );
   assert( j_align != NULL );
@@ -72,7 +71,7 @@ static bool c_alignas_equiv( c_alignas_t const *i_align,
     case C_ALIGNAS_EXPR:
       return i_align->as.expr == j_align->as.expr;
     case C_ALIGNAS_TYPE:
-      return c_ast_equiv( i_align->as.type_ast, j_align->as.type_ast );
+      return c_ast_equal( i_align->as.type_ast, j_align->as.type_ast );
   } // switch
 
   UNEXPECTED_INT_VALUE( i_align->kind );
@@ -171,7 +170,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
   return dup_ast;
 }
 
-bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
+bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
   if ( i_ast == j_ast )
     return true;
   if ( (i_ast != NULL && j_ast == NULL) || (i_ast == NULL && j_ast != NULL) )
@@ -181,7 +180,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     return false;
   if ( i_ast->cast_kind != j_ast->cast_kind )
     return false;
-  if ( !c_alignas_equiv( &i_ast->align, &j_ast->align ) )
+  if ( !c_alignas_equal( &i_ast->align, &j_ast->align ) )
     return false;
   if ( !c_type_equal( &i_ast->type, &j_ast->type ) )
     return false;
@@ -220,7 +219,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       c_ast_param_t const *j_param = c_ast_params( j_ast );
       for ( ; i_param != NULL && j_param != NULL;
               i_param = i_param->next, j_param = j_param->next ) {
-        if ( !c_ast_equiv( c_param_ast( i_param ), c_param_ast( j_param ) ) )
+        if ( !c_ast_equal( c_param_ast( i_param ), c_param_ast( j_param ) ) )
           return false;
       } // for
       if ( i_param != NULL || j_param != NULL )
@@ -256,7 +255,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
   }
   assert( c_ast_is_referrer( j_ast ) );
 
-  return c_ast_equiv( i_ast->as.parent.of_ast, j_ast->as.parent.of_ast );
+  return c_ast_equal( i_ast->as.parent.of_ast, j_ast->as.parent.of_ast );
 }
 
 void c_ast_free( c_ast_t *ast ) {

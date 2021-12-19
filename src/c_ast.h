@@ -440,14 +440,14 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list );
 
 /**
- * Checks whether two ASTs are equivalent, i.e., represent the same type.
+ * Checks whether two ASTs are equal.
  *
  * @param i_ast The first AST.  May be NULL.
  * @param j_ast The second AST.  May be NULL.
- * @return Returns `true` only if the two ASTs are equivalent.
+ * @return Returns `true` only if the two ASTs are equal.
  */
 PJL_WARN_UNUSED_RESULT
-bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
+bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast );
 
 /**
  * Frees all memory used by \a ast _including_ \a ast itself.

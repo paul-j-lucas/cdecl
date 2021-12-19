@@ -658,7 +658,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
     //
     //      explain typedef char int32_t;
     //
-    if ( !c_ast_equiv( type_ast, decl_ast ) ) {
+    if ( !c_ast_equal( type_ast, decl_ast ) ) {
       print_error( &decl_ast->loc,
         "\"%s\": \"%s\" redefinition with different type; original is: ",
         c_sname_full_name( &decl_ast->sname ), L_TYPEDEF

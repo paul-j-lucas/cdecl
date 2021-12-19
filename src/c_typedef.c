@@ -991,7 +991,7 @@ c_typedef_t const* c_typedef_add( c_ast_t const *ast ) {
   //
   c_typedef_t const *const old_tdef = old_rb->data;
   static c_typedef_t const EMPTY_TYPEDEF;
-  return c_ast_equiv( ast, old_tdef->ast ) ? &EMPTY_TYPEDEF : old_tdef;
+  return c_ast_equal( ast, old_tdef->ast ) ? &EMPTY_TYPEDEF : old_tdef;
 }
 
 void c_typedef_cleanup( void ) {
