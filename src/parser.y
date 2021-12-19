@@ -599,13 +599,13 @@ static inline char const* printable_token( void ) {
 }
 
 /**
- * Frees all memory associated with \a sti but _not_ \a sti itself.
+ * Cleans-up all memory associated with \a sti but _not_ \a sti itself.
  *
  * @param sti The \ref show_type_info to free.
  *
  * @sa sti_init()
  */
-static inline void sti_free( show_type_info_t *sti ) {
+static inline void sti_cleanup( show_type_info_t *sti ) {
   c_sglob_cleanup( &sti->sglob );
   MEM_ZERO( sti );
 }
@@ -1005,7 +1005,7 @@ static bool slist_node_is_ast_placeholder( void *data ) {
  * @param glob The glob string.  May be NULL.
  * @param gib_flags The \ref c_gib_flags_t to use.
  *
- * @sa sti_free()
+ * @sa sti_cleanup()
  */
 static void sti_init( show_type_info_t *sti, unsigned show_which,
                       char const *glob, c_gib_flags_t gib_flags ) {
@@ -2441,7 +2441,7 @@ show_command
       show_type_info_t sti;
       sti_init( &sti, $2, $3, $4 );
       c_typedef_visit( &show_type_visitor, &sti );
-      sti_free( &sti );
+      sti_cleanup( &sti );
       free( $3 );
     }
 
@@ -2450,7 +2450,7 @@ show_command
       show_type_info_t sti;
       sti_init( &sti, $2, $3, $5 );
       c_typedef_visit( &show_type_visitor, &sti );
-      sti_free( &sti );
+      sti_cleanup( &sti );
       free( $3 );
     }
 
