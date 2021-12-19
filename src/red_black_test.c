@@ -46,9 +46,9 @@ static int test_rb_data_cmp( void const *i_data, void const *j_data ) {
   return strcmp( i_str, j_str );
 }
 
-static bool test_rb_visitor( void *node_data, void *aux_data ) {
+static bool test_rb_visitor( void *node_data, void *v_data ) {
   char const *const str = node_data;
-  unsigned *const letter_offset_ptr = aux_data;
+  unsigned *const letter_offset_ptr = v_data;
   if ( TEST( str != NULL ) )
     TEST( str[0] == (char)('A' + *letter_offset_ptr) );
   ++*letter_offset_ptr;

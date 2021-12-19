@@ -92,11 +92,11 @@ typedef void (*rb_data_free_fn_t)( void *data );
  * The signature for a function passed to rb_tree_visit().
  *
  * @param node_data A pointer to the node's data.
- * @param aux_data Optional data passed to to the visitor.
+ * @param v_data Optional data passed to to the visitor.
  * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of rb_tree_visit().
  */
-typedef bool (*rb_visit_fn_t)( void *node_data, void *aux_data );
+typedef bool (*rb_visit_fn_t)( void *node_data, void *v_data );
 
 /**
  * Red-black tree colors.
@@ -202,7 +202,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
  *
  * @param tree A pointer to the red-black tree to visit.
  * @param visitor The visitor to use.
- * @param aux_data Optional data passed to \a visitor.
+ * @param v_data Optional data passed to \a visitor.
  * @return Returns a pointer to the node at which visiting stopped or NULL if
  * the entire tree was visited.
  *
@@ -212,7 +212,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
  */
 PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visitor,
-                          void *aux_data );
+                          void *v_data );
 
 ///////////////////////////////////////////////////////////////////////////////
 

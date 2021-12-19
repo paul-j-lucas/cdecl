@@ -56,7 +56,7 @@
  */
 struct tdef_rb_visitor_data {
   c_typedef_visit_fn_t  visitor;        ///< Caller's visitor function.
-  void                 *data;           ///< Caller's optional data.
+  void                 *v_data;         ///< Caller's optional data.
 };
 typedef struct tdef_rb_visitor_data tdef_rb_visitor_data_t;
 
@@ -935,8 +935,8 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
 /**
  * Parses an array of predefined type declarations.
  *
- * @param types A pointer to the start of an array of pointers to `typedef`
- * strings.  The last element must be NULL.
+ * @param types A pointer to the start of an array of pointers to strings of
+ * cdecl commands that define types.  The last element must be NULL.
  */
 static void parse_predefined_types( char const *const *types ) {
   assert( types != NULL );
@@ -951,19 +951,19 @@ static void parse_predefined_types( char const *const *types ) {
  * c_typedef_visit_fn_t function.
  *
  * @param node_data A pointer to the node's data.
- * @param aux_data Optional data passed to to the visitor.
+ * @param v_data Data passed to to the visitor.
  * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of rb_tree_visit().
  */
 PJL_WARN_UNUSED_RESULT
-static bool rb_visitor( void *node_data, void *aux_data ) {
+static bool rb_visitor( void *node_data, void *v_data ) {
   assert( node_data != NULL );
-  assert( aux_data != NULL );
+  assert( v_data != NULL );
 
   c_typedef_t const *const tdef = node_data;
-  tdef_rb_visitor_data_t const *const vd = aux_data;
+  tdef_rb_visitor_data_t const *const vd = v_data;
 
-  return (*vd->visitor)( tdef, vd->data );
+  return (*vd->visitor)( tdef, vd->v_data );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -1125,9 +1125,10 @@ void c_typedef_init( void ) {
   user_defined = true;
 }
 
-c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visitor, void *data ) {
+c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visitor,
+                                    void *v_data ) {
   assert( visitor != NULL );
-  tdef_rb_visitor_data_t vd = { visitor, data };
+  tdef_rb_visitor_data_t vd = { visitor, v_data };
   rb_node_t const *const rb = rb_tree_visit( &typedefs, &rb_visitor, &vd );
   return rb != NULL ? rb->data : NULL;
 }

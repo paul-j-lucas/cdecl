@@ -421,9 +421,9 @@ PJL_WARN_UNUSED_RESULT
 char const* c_lang_which( c_lang_id_t lang_ids );
 
 /**
- * Convenience function for calling c_lang_and_newer() with opt_lang.
+ * Convenience function for calling c_lang_and_newer() with \ref opt_lang.
  *
- * @return Returns the bitwise-or all language(s) opt_lang and newer.
+ * @return Returns the bitwise-or all language(s) \ref opt_lang and newer.
  *
  * @sa c_lang_and_newer()
  * @sa c_lang_newer()
@@ -436,7 +436,8 @@ c_lang_id_t opt_lang_and_newer( void ) {
 }
 
 /**
- * Convenience function for checking whether opt_lang is among \a lang_ids.
+ * Convenience function for checking whether \ref opt_lang is among \a
+ * lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s) to check.
  * @return Returns `true` only if it is.
@@ -447,9 +448,9 @@ bool opt_lang_is_any( c_lang_id_t lang_ids ) {
 }
 
 /**
- * Convenience function for calling c_lang_newer() with opt_lang.
+ * Convenience function for calling c_lang_newer() with \ref opt_lang.
  *
- * @return Returns the bitwise-or of languages \a lang_id or newer; or
+ * @return Returns the bitwise-or of languages newer than \ref opt_lang; or
  * #LANG_NONE if no language(s) are newer.
  *
  * @sa c_lang_and_newer()

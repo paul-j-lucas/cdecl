@@ -61,11 +61,11 @@ struct c_typedef {
  * The signature for a function passed to c_typedef_visit().
  *
  * @param tdef The \ref c_typedef to visit.
- * @param data Optional data passed to the visitor.
+ * @param v_data Optional data passed to the visitor.
  * @return Returning `true` will cause traversal to stop and \a type to be
  * returned to the caller of c_typedef_visit().
  */
-typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *data );
+typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -126,12 +126,13 @@ void c_typedef_init( void );
  * Does an in-order traversal of all \ref c_typedef.
  *
  * @param visitor The visitor to use.
- * @param data Optional data passed to \a visitor.
+ * @param v_data Optional data passed to \a visitor.
  * @return Returns a pointer to the \ref c_typedef the visitor stopped on or
  * NULL.
  */
 PJL_NOWARN_UNUSED_RESULT
-c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visitor, void *data );
+c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visitor,
+                                    void *v_data );
 
 ///////////////////////////////////////////////////////////////////////////////
 
