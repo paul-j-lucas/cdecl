@@ -125,13 +125,13 @@ void c_typedef_init( void );
 /**
  * Does an in-order traversal of all \ref c_typedef.
  *
- * @param visitor The visitor to use.
- * @param v_data Optional data passed to \a visitor.
+ * @param visit_fn The visitor function to use.
+ * @param v_data Optional data passed to \a visit_fn.
  * @return Returns a pointer to the \ref c_typedef the visitor stopped on or
  * NULL.
  */
 PJL_NOWARN_UNUSED_RESULT
-c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visitor,
+c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,
                                     void *v_data );
 
 ///////////////////////////////////////////////////////////////////////////////

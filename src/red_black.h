@@ -201,8 +201,8 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
  * Performs an in-order traversal of \a tree.
  *
  * @param tree A pointer to the red-black tree to visit.
- * @param visitor The visitor to use.
- * @param v_data Optional data passed to \a visitor.
+ * @param visit_fn The visitor function to use.
+ * @param v_data Optional data passed to \a visit_fn.
  * @return Returns a pointer to the node at which visiting stopped or NULL if
  * the entire tree was visited.
  *
@@ -211,7 +211,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
  * position within the tree according to the tree's data comparison function.
  */
 PJL_WARN_UNUSED_RESULT
-rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visitor,
+rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
                           void *v_data );
 
 ///////////////////////////////////////////////////////////////////////////////

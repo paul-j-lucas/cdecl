@@ -276,23 +276,23 @@ static void rb_tree_rotate_node( rb_tree_t *tree, rb_node_t *node,
  *
  * @param tree A pointer to the red-black tree to visit.
  * @param node A pointer to the rb_node to start visiting at.
- * @param visitor The visitor to use.
- * @param v_data Optional data passed to \a visitor.
+ * @param visit_fn The visitor function to use.
+ * @param v_data Optional data passed to \a visit_fn.
  * @return Returns a pointer to the rb_node at which visiting stopped or NULL
  * if the entire sub-tree was visited.
  */
 PJL_WARN_UNUSED_RESULT
 static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
-                                      rb_visit_fn_t visitor, void *v_data ) {
+                                      rb_visit_fn_t visit_fn, void *v_data ) {
   assert( tree != NULL );
   assert( node != NULL );
 
   while ( node != RB_NIL ) {
     rb_node_t *const stopped_node =
-      rb_tree_visit_node( tree, node->child[RB_L], visitor, v_data );
+      rb_tree_visit_node( tree, node->child[RB_L], visit_fn, v_data );
     if ( stopped_node != NULL )
       return stopped_node;
-    if ( visitor( node->data, v_data ) )
+    if ( (*visit_fn)( node->data, v_data ) )
       return node;
     node = node->child[RB_R];
   } // while
@@ -437,13 +437,13 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   return NULL;
 }
 
-rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visitor,
+rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
                           void *v_data ) {
-  assert( visitor != NULL );
+  assert( visit_fn != NULL );
 
   rb_tree_t *const nonconst_tree = CONST_CAST( rb_tree_t*, tree );
   return rb_tree_visit_node(
-    nonconst_tree, RB_FIRST(nonconst_tree), visitor, v_data
+    nonconst_tree, RB_FIRST(nonconst_tree), visit_fn, v_data
   );
 }
 

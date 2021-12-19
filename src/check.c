@@ -230,16 +230,16 @@ static c_lang_id_t is_reserved_name( char const* );
  * Simple wrapper around c_ast_visit().
  *
  * @param ast The AST to check.
- * @param visitor The visitor to use.
+ * @param visit_fn The visitor function to use.
  * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
-                                        c_ast_visit_fn_t visitor,
+                                        c_ast_visit_fn_t visit_fn,
                                         c_ast_visitor_data_t flags ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visitor, flags ) == NULL;
+  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, flags ) == NULL;
 }
 
 /**
