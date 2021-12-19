@@ -75,7 +75,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_OP_NOT_OVERLOADABLE
  * @sa #C_OP_OVERLOADABLE
  */
-#define C_OP_UNSPECIFIED          C_FUNC_UNSPECIFIED
+#define C_OP_UNSPECIFIED          C_FN_UNSPECIFIED
 
 /**
  * For c_operator.flags, denotes that the operator is overload{able|ed} as a
@@ -86,7 +86,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_OP_OVERLOADABLE
  * @sa #C_OP_UNSPECIFIED
  */
-#define C_OP_MEMBER               C_FUNC_MEMBER
+#define C_OP_MEMBER               C_FN_MEMBER
 
 /**
  * For c_operator.flags, denotes that the operator is overload{able|ed} as a
@@ -97,7 +97,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_OP_OVERLOADABLE
  * @sa #C_OP_UNSPECIFIED
  */
-#define C_OP_NON_MEMBER           C_FUNC_NON_MEMBER
+#define C_OP_NON_MEMBER           C_FN_NON_MEMBER
 
 /**
  * For c_operator.flags, denotes that the operator is overloadable as either a

@@ -199,14 +199,14 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_FUNCTION:
         DUMP_COMMA;
         DUMP_FORMAT( "flags = " );
-        switch ( ast->as.func.flags & C_FUNC_MASK_MEMBER ) {
-          case C_FUNC_UNSPECIFIED:
+        switch ( ast->as.func.flags & C_FN_MASK_MEMBER ) {
+          case C_FN_UNSPECIFIED:
             FPUTS( "unspecified", dout );
             break;
-          case C_FUNC_MEMBER:
+          case C_FN_MEMBER:
             FPUTS( L_MEMBER, dout );
             break;
-          case C_FUNC_NON_MEMBER:
+          case C_FN_NON_MEMBER:
             FPUTS( H_NON_MEMBER, dout );
             break;
           case C_OP_OVERLOADABLE:

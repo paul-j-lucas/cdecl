@@ -23,8 +23,10 @@
 
 /**
  * @file
- * Declares types to represent an Abstract Syntax Tree (AST) for parsed C/C++
+ * Declares types to represent an _Abstract Syntax Tree_ (AST) for parsed C/C++
  * declarations as well as functions for traversing and manipulating an AST.
+ *
+ * @sa [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
  */
 
 // local
@@ -70,38 +72,38 @@ _GL_INLINE_HEADER_BEGIN
  * For c_function_ast.flags, denotes that the function is unspecified (unknown
  * whether it's a member or non-member).
  *
- * @sa #C_FUNC_MASK_MEMBER
- * @sa #C_FUNC_MEMBER
- * @sa #C_FUNC_NON_MEMBER
+ * @sa #C_FN_MASK_MEMBER
+ * @sa #C_FN_MEMBER
+ * @sa #C_FN_NON_MEMBER
  */
-#define C_FUNC_UNSPECIFIED    0u
+#define C_FN_UNSPECIFIED      0u
 
 /**
  * For c_function_ast.flags, denotes that the function is a member.
  *
- * @sa #C_FUNC_MASK_MEMBER
- * @sa #C_FUNC_NON_MEMBER
- * @sa #C_FUNC_UNSPECIFIED
+ * @sa #C_FN_MASK_MEMBER
+ * @sa #C_FN_NON_MEMBER
+ * @sa #C_FN_UNSPECIFIED
  */
-#define C_FUNC_MEMBER         (1u << 0)
+#define C_FN_MEMBER           (1u << 0)
 
 /**
  * For c_function_ast.flags, denotes that the function is a non-member.
  *
- * @sa #C_FUNC_MASK_MEMBER
- * @sa #C_FUNC_MEMBER
- * @sa #C_FUNC_UNSPECIFIED
+ * @sa #C_FN_MASK_MEMBER
+ * @sa #C_FN_MEMBER
+ * @sa #C_FN_UNSPECIFIED
  */
-#define C_FUNC_NON_MEMBER     (1u << 1)
+#define C_FN_NON_MEMBER       (1u << 1)
 
 /**
  * For c_function_ast.flags, member bitmask.
  *
- * @sa #C_FUNC_MEMBER
- * @sa #C_FUNC_NON_MEMBER
- * @sa #C_FUNC_UNSPECIFIED
+ * @sa #C_FN_MEMBER
+ * @sa #C_FN_NON_MEMBER
+ * @sa #C_FN_UNSPECIFIED
  */
-#define C_FUNC_MASK_MEMBER    0x3u
+#define C_FN_MASK_MEMBER      0x3u
 
 /**
  * Convenience macro for iterating over all parameters of a function-like AST.
@@ -283,10 +285,10 @@ struct c_function_ast {
    * Bitwise-or of flags currently specifying whether the function is a member,
    * non-member, or unspecified function.
    *
-   * @sa #C_FUNC_UNSPECIFIED
-   * @sa #C_FUNC_MEMBER
-   * @sa #C_FUNC_NON_MEMBER
-   * @sa #C_FUNC_MASK_MEMBER
+   * @sa #C_FN_UNSPECIFIED
+   * @sa #C_FN_MEMBER
+   * @sa #C_FN_NON_MEMBER
+   * @sa #C_FN_MASK_MEMBER
    */
   unsigned        flags;
 };
@@ -417,6 +419,9 @@ struct c_ast {
  *
  * @remarks Currently, this only checks that the number of AST nodes freed
  * equals the number allocated.
+ *
+ * @sa c_ast_free()
+ * @sa c_ast_new()
  */
 void c_ast_cleanup( void );
 
@@ -437,8 +442,8 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list );
 /**
  * Checks whether two ASTs are equivalent, i.e., represent the same type.
  *
- * @param i_ast The first AST.
- * @param j_ast The second AST.
+ * @param i_ast The first AST.  May be NULL.
+ * @param j_ast The second AST.  May be NULL.
  * @return Returns `true` only if the two ASTs are equivalent.
  */
 PJL_WARN_UNUSED_RESULT
@@ -455,6 +460,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
  * independently via some other data structure, e.g., a \ref
  * c_ast_list_t.
  *
+ * @sa c_ast_cleanup()
  * @sa c_ast_dup()
  * @sa c_ast_list_cleanup()
  * @sa c_ast_new()
@@ -539,6 +545,7 @@ void c_ast_list_cleanup( c_ast_list_t *list );
  * @param ast_list If not NULL, the new AST is appended to the list.
  * @return Returns a pointer to a new AST.
  *
+ * @sa c_ast_cleanup()
  * @sa c_ast_dup()
  * @sa c_ast_free()
  */

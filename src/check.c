@@ -824,12 +824,12 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     return false;
   }
 
-  unsigned const user_overload_flags = ast->as.func.flags & C_FUNC_MASK_MEMBER;
+  unsigned const user_overload_flags = ast->as.func.flags & C_FN_MASK_MEMBER;
   switch ( user_overload_flags ) {
-    case C_FUNC_MEMBER:
+    case C_FN_MEMBER:
       // nothing to do
       break;
-    case C_FUNC_NON_MEMBER:
+    case C_FN_NON_MEMBER:
       if ( member_func_stids != TS_NONE ) {
         print_error( &ast->loc,
           "%s %s can not be %s\n",
