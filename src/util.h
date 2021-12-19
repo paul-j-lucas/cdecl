@@ -164,7 +164,8 @@ _GL_INLINE_HEADER_BEGIN
 #define BLOCK(...)                do { __VA_ARGS__ } while (0)
 
 /**
- * Macro that "char-ifies" its argument, e.g., `CHARIFY(x)` becomes `'x'`.
+ * Macro that "char-ifies" its argument, e.g., <code>%CHARIFY(x)</code> becomes
+ * `'x'`.
  *
  * @param X The unquoted character to charify.  It can be only in the set
  * `[0-9_A-Za-z]`.
@@ -451,11 +452,11 @@ _GL_INLINE_HEADER_BEGIN
 #define STRERROR()                strerror( errno )
 
 /**
- * Macro that "string-ifies" its argument, e.g., `STRINGIFY(x)` becomes `"x"`.
+ * Macro that "string-ifies" its argument, e.g., <code>%STRINGIFY(x)</code>
+ * becomes `"x"`.
  *
- * @note
- * This macro is sometimes necessary in cases where it's mixed with uses of
- * `##` by forcing re-scanning for token substitution.
+ * @note This macro is sometimes necessary in cases where it's mixed with uses
+ * of `##` by forcing re-scanning for token substitution.
  *
  * @param X The unquoted string to stringify.
  *
