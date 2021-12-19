@@ -42,8 +42,7 @@
 /// @endcond
 
 /**
- * Convenience macro for specifying a <code>\ref c_typedef</code> literal
- * having \a SNAME.
+ * Convenience macro for specifying a \ref c_typedef literal having \a SNAME.
  *
  * @param SNAME The sname.
  */
@@ -892,8 +891,7 @@ static char const *const PREDEFINED_WIN32[] = {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Comparison function for <code>\ref c_typedef</code> data used by the red-
- * black tree.
+ * Comparison function for \ref c_typedef data used by the red-black tree.
  *
  * @param i_data A pointer to data.
  * @param j_data A pointer to data.
@@ -911,10 +909,10 @@ static int c_typedef_cmp( void const *i_data, void const *j_data ) {
 }
 
 /**
- * Creates a new <code>\ref c_typedef</code>.
+ * Creates a new \ref c_typedef.
  *
  * @param ast The AST of the type.
- * @return Returns said <code>\ref c_typedef</code>.
+ * @return Returns said \ref c_typedef.
  */
 PJL_WARN_UNUSED_RESULT
 static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
@@ -947,8 +945,8 @@ static void parse_predefined_types( char const *const *types ) {
 }
 
 /**
- * Red-black tree visitor function that forwards to the
- * <code>\ref c_typedef_visit_fn_t</code> function.
+ * Red-black tree visitor function that forwards to the \ref
+ * c_typedef_visit_fn_t function.
  *
  * @param node_data A pointer to the node's data.
  * @param aux_data Optional data passed to to the visitor.

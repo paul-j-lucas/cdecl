@@ -51,7 +51,7 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
- * For `c_array_ast.size`, denotes `array[]`.
+ * For c_array_ast.size, denotes `array[]`.
  *
  * @sa #C_ARRAY_SIZE_VARIABLE
  * @sa c_array_size_t
@@ -59,7 +59,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_ARRAY_SIZE_NONE     (-1)
 
 /**
- * For `c_array_ast.size`, denotes `array[*]`.
+ * For c_array_ast.size, denotes `array[*]`.
  *
  * @sa #C_ARRAY_SIZE_NONE
  * @sa c_array_size_t
@@ -67,8 +67,8 @@ _GL_INLINE_HEADER_BEGIN
 #define C_ARRAY_SIZE_VARIABLE (-2)
 
 /**
- * For `c_function_ast.flags`, denotes that the function is unspecified
- * (unknown whether it's a member or non-member).
+ * For c_function_ast.flags, denotes that the function is unspecified (unknown
+ * whether it's a member or non-member).
  *
  * @sa #C_FUNC_MASK_MEMBER
  * @sa #C_FUNC_MEMBER
@@ -77,7 +77,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_FUNC_UNSPECIFIED    0u
 
 /**
- * For `c_function_ast.flags`, denotes that the function is a member.
+ * For c_function_ast.flags, denotes that the function is a member.
  *
  * @sa #C_FUNC_MASK_MEMBER
  * @sa #C_FUNC_NON_MEMBER
@@ -86,7 +86,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_FUNC_MEMBER         (1u << 0)
 
 /**
- * For `c_function_ast.flags`, denotes that the function is a non-member.
+ * For c_function_ast.flags, denotes that the function is a non-member.
  *
  * @sa #C_FUNC_MASK_MEMBER
  * @sa #C_FUNC_MEMBER
@@ -95,7 +95,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_FUNC_NON_MEMBER     (1u << 1)
 
 /**
- * For `c_function_ast.flags`, member bitmask.
+ * For c_function_ast.flags, member bitmask.
  *
  * @sa #C_FUNC_MEMBER
  * @sa #C_FUNC_NON_MEMBER
@@ -106,7 +106,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Convenience macro for iterating over all function-like parameters.
  *
- * @param VAR The `c_ast_param_t` loop variable.
+ * @param VAR The \ref c_ast_param_t loop variable.
  * @param AST The AST to iterate the function-like parameters of.
  *
  * @sa c_ast_params()
@@ -171,9 +171,8 @@ typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visitor_data_t data );
  *
  * ## Layout
  *
- * The AST node `struct`s  contain data specific to each
- * <code>\ref c_ast_kind_t</code>.
- * In all cases where an AST node contains:
+ * The AST node `struct`s contain data specific to each \ref c_ast_kind_t.  In
+ * all cases where an AST node contains:
  *
  *  1. A pointer to another, that pointer is always declared first.
  *  2. Parameters, they are always declared second.
@@ -187,19 +186,18 @@ typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visitor_data_t data );
  *
  * Typically, nodes of a tree data structure are freed by freeing the root node
  * followed by its child nodes in turn, recursively.  This is _not_ done for
- * AST nodes.
- * Instead, AST nodes created via c_ast_new() or c_ast_dup() are appended to a
- * <code>\ref c_ast_list_t</code>.  Nodes are later freed by traversing the
- * list and calling c_ast_free() on each node individually.
- * It's done this way to simplify node memory management.
+ * AST nodes.  Instead, AST nodes created via c_ast_new() or c_ast_dup() are
+ * appended to a \ref c_ast_list_t.  Nodes are later freed by traversing the
+ * list and calling c_ast_free() on each node individually.  It's done this way
+ * to simplify node memory management.
  *
- * As an AST is being built, sometimes <code>\ref K_PLACEHOLDER</code> nodes
- * are created temporarily.  Later, once an actual node is created, the
- * <code>\ref K_PLACEHOLDER</code> node is replaced.  Rather than freeing a
- * <code>\ref K_PLACEHOLDER</code> node immediately (and, for a parent node,
- * set its "of" node to NULL just prior to being freed so as not to free its
- * child node also), it's simply left on the list.  Once parsing is complete,
- * the entire list is freed effectively "garbage collecting" all nodes.
+ * As an AST is being built, sometimes \ref K_PLACEHOLDER nodes are created
+ * temporarily.  Later, once an actual node is created, the \ref K_PLACEHOLDER
+ * node is replaced.  Rather than freeing a \ref K_PLACEHOLDER node immediately
+ * (and, for a parent node, set its "of" node to NULL just prior to being freed
+ * so as not to free its child node also), it's simply left on the list.  Once
+ * parsing is complete, the entire list is freed effectively "garbage
+ * collecting" all nodes.
  * @{
  */
 
@@ -225,7 +223,7 @@ struct c_array_ast {
 /**
  * AST node for a C/C++ block (Apple extension).
  *
- * @note Members are laid out in the same order as `c_function_ast`: this is
+ * @note Members are laid out in the same order as c_function_ast: this is
  * taken advantage of.
  *
  * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
@@ -239,11 +237,11 @@ struct c_apple_block_ast {
 /**
  * AST node for a built-in type.
  *
- * @note Members are laid out in the same order as `c_typedef_ast`: this is
- * taken advantage of.
+ * @note Members are laid out in the same order as c_typedef_ast: this is taken
+ * advantage of.
  */
 struct c_builtin_ast {
-  /// So `bit_width` is at the same offset as in `c_typedef_ast`.
+  /// So `bit_width` is at the same offset as in c_typedef_ast.
   void           *not_used;
 
   c_bit_width_t   bit_width;            ///< Bit-field width when &gt; 0.
@@ -252,12 +250,12 @@ struct c_builtin_ast {
 /**
  * AST node for a C++ constructor.
  *
- * @note Members are laid out in the same order as `c_function_ast`: this is
+ * @note Members are laid out in the same order as c_function_ast: this is
  * taken advantage of.
  */
 struct c_constructor_ast {
   /// Constructors don't have a return type, but we need an unused pointer so
-  /// `param_ast_list` is at the same offset as in `c_function_ast`.
+  /// `param_ast_list` is at the same offset as in c_function_ast.
   void           *not_used;
 
   c_ast_list_t    param_ast_list;       ///< Constructor parameter(s), if any.
@@ -296,7 +294,7 @@ struct c_function_ast {
 /**
  * AST node for a C++ overloaded operator.
  *
- * @note Members are laid out in the same order as `c_function_ast`: this is
+ * @note Members are laid out in the same order as c_function_ast: this is
  * taken advantage of.
  */
 struct c_operator_ast {
@@ -305,8 +303,8 @@ struct c_operator_ast {
 
   /**
    * Bitwise-or of flags specifying whether the user specified an operator as a
-   * member, non-member, or neither.  This is a mostly a subset of <code>\ref
-   * c_operator.flags</code> except this can be #C_OP_UNSPECIFIED.
+   * member, non-member, or neither.  This is a mostly a subset of \ref
+   * c_operator.flags except this can be #C_OP_UNSPECIFIED.
    *
    * @sa #C_OP_UNSPECIFIED
    * @sa #C_OP_MEMBER
@@ -321,7 +319,7 @@ struct c_operator_ast {
 /**
  * AST node for a C++ pointer-to-member of a class.
  *
- * @note Members are laid out in the same order as `c_ecsu_ast`: this is taken
+ * @note Members are laid out in the same order as c_ecsu_ast: this is taken
  * advantage of.
  */
 struct c_ptr_mbr_ast {
@@ -339,7 +337,7 @@ struct c_ptr_ref_ast {
 /**
  * AST node for a C/C++ `typedef`.
  *
- * @note Even though <code>%c_typedef_ast</code> has an AST pointer as its
+ * @note Even though %c_typedef_ast has an AST pointer as its
  * first `struct` member, it is _not_ a parent "of" the underlying type, but
  * instead a synonym "for" it; hence, it's _not_ included in #K_ANY_PARENT, but
  * it is, however, included in #K_ANY_REFERRER.
@@ -362,7 +360,7 @@ struct c_udef_conv_ast {
 /**
  * AST node for a C++ user-defined literal.
  *
- * @note Members are laid out in the same order as `c_function_ast`: this is
+ * @note Members are laid out in the same order as c_function_ast: this is
  * taken advantage of.
  */
 struct c_udef_lit_ast {
@@ -454,8 +452,8 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
  * @note Even though \a ast invariably is part of a larger abstract syntax
  * tree, this function frees _only_ \a ast and _not_ any child AST node \a ast
  * may have.  Hence to free all AST nodes, they all be kept track of
- * independently via some other data structure, e.g., a <code>\ref
- * c_ast_list_t</code>.
+ * independently via some other data structure, e.g., a \ref
+ * c_ast_list_t.
  *
  * @sa c_ast_dup()
  * @sa c_ast_list_cleanup()
@@ -615,9 +613,9 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
                       c_ast_visit_fn_t visitor, c_ast_visitor_data_t data );
 
 /**
- * Convenience function to get the AST given a `c_ast_param_t`.
+ * Convenience function to get the AST given a \ref c_ast_param_t.
  *
- * @param param A pointer to a `c_ast_param_t`.
+ * @param param A pointer to a \ref c_ast_param_t.
  * @return Returns a pointer to the AST.
  *
  * @sa c_ast_params()

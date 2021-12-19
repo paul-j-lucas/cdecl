@@ -60,7 +60,7 @@ struct c_typedef {
 /**
  * The signature for a function passed to c_typedef_visit().
  *
- * @param tdef The <code>\ref c_typedef</code> to visit.
+ * @param tdef The \ref c_typedef to visit.
  * @param data Optional data passed to the visitor.
  * @return Returning `true` will cause traversal to stop and \a type to be
  * returned to the caller of c_typedef_visit().
@@ -77,26 +77,26 @@ typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *data );
  * @return If:
  * + \a type_ast was added, returns NULL; or:
  * + \a type_ast->name already exists and the types are equivalent, returns a
- *   <code>\ref c_typedef</code> where \a ast is NULL; or:
+ *   \ref c_typedef where \a ast is NULL; or:
  * + \a type_ast->name already exists and the types are _not_ equivalent,
- *   returns the a <code>\ref c_typedef</code> of the existing type.
+ *   returns the a \ref c_typedef of the existing type.
  */
 PJL_WARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_add( c_ast_t const *type_ast );
 
 /**
- * Cleans up <code>\ref c_typedef</code> data.
+ * Cleans up \ref c_typedef data.
  *
  * @sa c_typedef_init()
  */
 void c_typedef_cleanup( void );
 
 /**
- * Gets the <code>\ref c_typedef</code> for \a name.
+ * Gets the \ref c_typedef for \a name.
  *
  * @param name The name to find.  It may contain `::`.
- * @return Returns a pointer to the corresponding <code>\ref c_typedef</code>
- * or NULL for none.
+ * @return Returns a pointer to the corresponding \ref c_typedef or NULL for
+ * none.
  *
  * @sa c_typedef_find_sname()
  */
@@ -104,11 +104,11 @@ PJL_WARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_find_name( char const *name );
 
 /**
- * Gets the <code>\ref c_typedef</code> for \a sname.
+ * Gets the \ref c_typedef for \a sname.
  *
  * @param sname The scoped name to find.
- * @return Returns a pointer to the corresponding <code>\ref c_typedef</code>
- * or NULL for none.
+ * @return Returns a pointer to the corresponding \ref c_typedef or NULL for
+ * none.
  *
  * @sa c_typedef_find_name()
  */
@@ -116,19 +116,19 @@ PJL_WARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname );
 
 /**
- * Initializes all <code>\ref c_typedef</code> data.
+ * Initializes all \ref c_typedef data.
  *
  * @sa c_typedef_cleanup()
  */
 void c_typedef_init( void );
 
 /**
- * Does an in-order traversal of all <code>\ref c_typedef</code>s.
+ * Does an in-order traversal of all \ref c_typedef.
  *
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
- * @return Returns a pointer to the <code>\ref c_typedef</code> the visitor
- * stopped on or NULL.
+ * @return Returns a pointer to the \ref c_typedef the visitor stopped on or
+ * NULL.
  */
 PJL_NOWARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visitor, void *data );

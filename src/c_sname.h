@@ -64,7 +64,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Creates an sname variable \a VAR on the stack having a local \a NAME.
  *
- * @param VAR The name for the sname variable.
+ * @param VAR The name for the \ref c_sname_t variable.
  * @param NAME The name.
  */
 #define SNAME_VAR_INIT(VAR,NAME) \
@@ -73,7 +73,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Gets the data associated with \a SCOPE.
  *
- * @param SCOPE The <code>\ref c_scope_data</code> to get the data of.
+ * @param SCOPE The \ref c_scope_data to get the data of.
  *
  * @note This is a macro instead of an inline function so it'll work with
  * either `const` or non-`const` \a SCOPE.
@@ -84,8 +84,8 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Convenience macro for iterating over all scopes of an sname.
  *
- * @param VAR The `c_scope_t` loop variable.
- * @param SNAME The `sname` to iterate over the scopes of.
+ * @param VAR The \ref c_scope_t loop variable.
+ * @param SNAME The \ref c_sname_t to iterate over the scopes of.
  * @param END The scope to end before; may be NULL.
  */
 #define FOREACH_SNAME_SCOPE(VAR,SNAME,END) \
@@ -112,10 +112,10 @@ struct c_scope_data {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Compares two <code>\ref c_scope_data</code>s.
+ * Compares two \ref c_scope_data.
  *
- * @param i_data The first <code>\ref c_scope_data</code> to compare.
- * @param j_data The second <code>\ref c_scope_data</code> to compare.
+ * @param i_data The first \ref c_scope_data to compare.
+ * @param j_data The second \ref c_scope_data to compare.
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
  * less than, equal to, or greater than \a j_data, respectively.
  */
@@ -125,7 +125,7 @@ int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data );
 /**
  * Duplicates \a data.
  *
- * @param data The <code>\ref c_scope_data</code> to duplicate.
+ * @param data The \ref c_scope_data to duplicate.
  * @return Returns a duplicate of \a data.  The caller is responsible for
  * calling c_scope_data_free() on it.
  *
@@ -137,8 +137,7 @@ c_scope_data_t* c_scope_data_dup( c_scope_data_t const *data );
 /**
  * Frees all memory associated with \a data _including_ \a data itself.
  *
- * @param data The <code>\ref c_scope_data</code> to free.  If NULL, does
- * nothing.
+ * @param data The \ref c_scope_data to free.  If NULL, does nothing.
  */
 void c_scope_data_free( c_scope_data_t *data );
 
@@ -427,7 +426,7 @@ char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
  * Parses a scoped name, e.g. `a::b::c`.
  *
  * @param s The string to parse.
- * @param sname The `c_sname` to parse into.
+ * @param sname The scoped name to parse into.
  * @return Returns `true` only if the scoped name was successfully parsed.
  */
 PJL_WARN_UNUSED_RESULT

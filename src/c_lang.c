@@ -46,7 +46,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Array of `c_lang` for all supported languages. The last entry is
+ * Array of c_lang for all supported languages. The last entry is
  * `{ NULL, false, LANG_NONE }`.
  */
 static c_lang_t const C_LANG[] = {

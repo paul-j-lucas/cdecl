@@ -45,7 +45,7 @@
  *
  * @param ALWAYS_FIND If `true`, always find this synonym, even when explaining
  * C/C++.
- * @param ... Array of `c_lang_lit`.
+ * @param ... Array of c_lang_lit.
  *
  * @sa #CDECL_KEYWORDS for examples.
  */

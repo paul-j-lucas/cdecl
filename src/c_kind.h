@@ -91,7 +91,7 @@ enum c_ast_kind {
   K_PLACEHOLDER             = (1u << 0),
 
   /**
-   * Built-in type, e.g., `void,` `char,` `int,` etc.
+   * Built-in type, e.g., `void`, `char`, `int`, etc.
    */
   K_BUILTIN                 = (1u << 1),
 
@@ -244,7 +244,7 @@ enum c_ast_kind {
 /**
  * Gets the name of \a kind.
  *
- * @param kind The <code>\ref c_ast_kind</code> to get the name for.
+ * @param kind The \ref c_ast_kind to get the name for.
  * @return Returns said name.
  */
 PJL_WARN_UNUSED_RESULT

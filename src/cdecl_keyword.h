@@ -69,12 +69,11 @@ struct cdecl_keyword {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Given a literal, gets the `cdecl_keyword` for the corresponding cdecl
- * keyword.
+ * Given a literal, gets the cdecl_keyword for the corresponding cdecl keyword.
  *
  * @param literal The literal to find.
- * @return Returns a pointer to the corresponding `cdecl_keyword` or NULL if
- * not found.
+ * @return Returns a pointer to the corresponding cdecl_keyword or NULL if not
+ * found.
  */
 PJL_WARN_UNUSED_RESULT
 cdecl_keyword_t const* cdecl_keyword_find( char const *literal );
@@ -94,7 +93,7 @@ cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *k );
 /**
  * Convenience macro for iterating over all cdecl keywords.
  *
- * @param VAR The `cdecl_keyword` loop variable.
+ * @param VAR The cdecl_keyword loop variable.
  *
  * @sa cdecl_keyword_next()
  */

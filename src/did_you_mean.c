@@ -97,9 +97,9 @@ static char* check_prefix_strdup( char const *prefix, char const *s ) {
  * Copies C/C++ keywords in the current language to the candidate list pointed
  * to by \a pdym.  If \a pdym is NULL, only counts the number of keywords.
  *
- * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
- * or NULL to just count keywords, not copy.  If not NULL, on return, the
- * pointed-to pointer is incremented.
+ * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
+ * just count keywords, not copy.  If not NULL, on return, the pointed-to
+ * pointer is incremented.
  * @param tpid The type part ID that a keyword must have in order to be copied
  * (or counted).
  * @return Returns said number of keywords.
@@ -121,9 +121,9 @@ static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
  * Copies cdecl keywords in the current language to the candidate list pointed
  * to by \a pdym.  If \a pdym is NULL, only counts the number of keywords.
  *
- * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
- * or NULL to just count keywords, not copy.  If not NULL, on return, the
- * pointed-to pointer is incremented.
+ * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
+ * just count keywords, not copy.  If not NULL, on return, the pointed-to
+ * pointer is incremented.
  * @return Returns said number of keywords.
  */
 PJL_NOWARN_UNUSED_RESULT
@@ -146,9 +146,9 @@ static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
  * Copies cdecl commands in the current language to the candidate list pointed
  * to by \a pdym.  If \a pdym is NULL, only counts the number of commands.
  *
- * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
- * or NULL to just count commands, not copy.  If not NULL, on return, the
- * pointed-to pointer is incremented.
+ * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
+ * just count commands, not copy.  If not NULL, on return, the pointed-to
+ * pointer is incremented.
  * @return Returns said number of commands.
  */
 PJL_NOWARN_UNUSED_RESULT
@@ -168,9 +168,9 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
  * Copies cdecl command-line options to the candidate list pointed to by \a
  * pdym.  If \a pdym is NULL, only counts the number of options.
  *
- * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
- * or NULL to just count options, not copy.  If not NULL, on return, the
- * pointed-to pointer is incremented.
+ * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
+ * just count options, not copy.  If not NULL, on return, the pointed-to
+ * pointer is incremented.
  * @return Returns said number of options.
  */
 PJL_NOWARN_UNUSED_RESULT
@@ -188,9 +188,9 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
  * Copies cdecl `set` options to the candidate list pointed to by \a pdym.  If
  * \a pdym is NULL, only counts the number of options.
  *
- * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
- * or NULL to just count options, not copy.  If not NULL, on return, the
- * pointed-to pointer is incremented.
+ * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
+ * just count options, not copy.  If not NULL, on return, the pointed-to
+ * pointer is incremented.
  * @return Returns said number of options.
  */
 PJL_NOWARN_UNUSED_RESULT
@@ -220,11 +220,11 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
 }
 
 /**
- * A <code>\ref c_typedef</code> visitor function to copy names of types that
- * are only valid in the current language to the candidate list pointed to 
+ * A \ref c_typedef visitor function to copy names of types that are only valid
+ * in the current language to the candidate list pointed to
  *
- * @param tdef The `c_typedef` to visit.
- * @param data A pointer to a <code>\ref copy_typedef_visitor_data</code>.
+ * @param tdef The c_typedef to visit.
+ * @param data A pointer to a \ref copy_typedef_visitor_data.
  * @return Always returns `false`.
  */
 PJL_NOWARN_UNUSED_RESULT
@@ -246,9 +246,9 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
 /**
  * Counts the number of `typedef`s that are only valid in the current language.
  *
- * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
- * or NULL to just count typedefs, not copy.  If not NULL, on return, the
- * pointed-to pointer is incremented.
+ * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
+ * just count typedefs, not copy.  If not NULL, on return, the pointed-to
+ * pointer is incremented.
  * @return Returns said number of `typedef`s.
  */
 PJL_NOWARN_UNUSED_RESULT
@@ -259,10 +259,10 @@ static size_t copy_typedefs( did_you_mean_t **const pdym ) {
 }
 
 /**
- * Comparison function for two <code>\ref did_you_mean</code> objects.
+ * Comparison function for two \ref did_you_mean objects.
  *
- * @param i_dym A pointer to the first <code>\ref did_you_mean</code>.
- * @param j_dym A pointer to the second <code>\ref did_you_mean</code>.
+ * @param i_dym A pointer to the first \ref did_you_mean.
+ * @param j_dym A pointer to the second \ref did_you_mean.
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_dym is
  * less than, equal to, or greater than \a j_dym, respectively.
  */
@@ -275,8 +275,8 @@ static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
 /**
  * Frees memory used by \a dym.
  *
- * @param dym A pointer to the first <code>\ref did_you_mean</code> to free and
- * continuing until `token` is NULL.
+ * @param dym A pointer to the first \ref did_you_mean to free and continuing
+ * until `token` is NULL.
  */
 static void dym_free_tokens( did_you_mean_t const *dym ) {
   assert( dym != NULL );

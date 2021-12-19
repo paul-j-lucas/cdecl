@@ -165,9 +165,9 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
                        char const *format, ... );
 
 /**
- * If <code>\ref opt_cdecl_debug</code> is compiled in and enabled, prints \a
- * file and \a line to standard error in the form `"[<file>:<line>] "`;
- * otherwise prints nothing.
+ * If \ref opt_cdecl_debug is compiled in and enabled, prints \a file and \a
+ * line to standard error in the form `"[<file>:<line>] "`; otherwise prints
+ * nothing.
  *
  * @note A newline is _not_ printed.
  *

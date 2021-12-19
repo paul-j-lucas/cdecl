@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Wrapper around the Bison-generated `parser.h` to add `#include` guards.
+ * Wrapper around the Bison-generated parser.h to add `#include` guards.
  */
 
 // local

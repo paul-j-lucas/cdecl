@@ -114,7 +114,7 @@ static rb_node_t rb_nil = { NULL, { RB_NIL, RB_NIL }, RB_NIL, RB_BLACK };
 /**
  * Convenience function for checking that a node is black.
  *
- * @param node A pointer to the `rb_node` to check.
+ * @param node A pointer to the rb_node to check.
  * @return Returns `true` only if \a node is black.
  *
  * @sa is_red()
@@ -128,7 +128,7 @@ static inline bool is_black( rb_node_t const *node ) {
  * Convenience function for checking whether a node is the left or right child
  * of its parent.
  *
- * @param node A pointer to the `rb_node` to check.
+ * @param node A pointer to the rb_node to check.
  * @param dir The direction to check for.
  * @return Returns `true` only if \a node is the \a dir child of its parent.
  */
@@ -140,7 +140,7 @@ static inline bool is_dir( rb_node_t const *node, rb_dir_t dir ) {
 /**
  * Convenience function for checking that a node is red.
  *
- * @param node A pointer to the `rb_node` to check.
+ * @param node A pointer to the rb_node to check.
  * @return Returns `true` only if \a node is red.
  *
  * @sa is_black()
@@ -155,7 +155,7 @@ static inline bool is_red( rb_node_t const *node ) {
 /**
  * Frees all memory associated with \a node.
  *
- * @param node A pointer to the `rb_node` to free.
+ * @param node A pointer to the rb_node to free.
  * @param data_free_fn A pointer to a function used to free data associated
  * with \a node or NULL if unnecessary.
  */
@@ -172,9 +172,9 @@ static void rb_node_free( rb_node_t *node, rb_data_free_fn_t data_free_fn ) {
 }
 
 /**
- * Initializes an `rb_node`.
+ * Initializes an rb_node.
  *
- * @param node A pointer to the `rb_node` to initialize.
+ * @param node A pointer to the rb_node to initialize.
  */
 static void rb_node_init( rb_node_t *node ) {
   assert( node != NULL );
@@ -187,7 +187,7 @@ static void rb_node_init( rb_node_t *node ) {
  * Gets the successor of \a node.
  *
  * @param tree A pointer to the red-black tree that \a node is part of.
- * @param node A pointer to the `rb_node` to get the successor of.
+ * @param node A pointer to the rb_node to get the successor of.
  * @return Returns said successor.
  */
 PJL_WARN_UNUSED_RESULT
@@ -215,7 +215,7 @@ static rb_node_t* rb_tree_node_successor( rb_tree_t *tree, rb_node_t *node ) {
  * colors to restore the 4 properties inherent in red-black trees.
  *
  * @param tree A pointer to the red-black tree to repair.
- * @param node A pointer to the `rb_node` to start the repair at.
+ * @param node A pointer to the rb_node to start the repair at.
  */
 static void rb_tree_repair_node( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
@@ -252,7 +252,7 @@ static void rb_tree_repair_node( rb_tree_t *tree, rb_node_t *node ) {
  * Rotates a subtree of a red-black tree.
  *
  * @param tree A pointer to the red-black tree to manipulate.
- * @param node A pointer to the `rb_node` to rotate.
+ * @param node A pointer to the rb_node to rotate.
  * @param dir The direction to rotate.
  */
 static void rb_tree_rotate_node( rb_tree_t *tree, rb_node_t *node,
@@ -275,10 +275,10 @@ static void rb_tree_rotate_node( rb_tree_t *tree, rb_node_t *node,
  * Performs an in-order traversal of the red-black tree starting at \a node.
  *
  * @param tree A pointer to the red-black tree to visit.
- * @param node A pointer to the `rb_node` to start visiting at.
+ * @param node A pointer to the rb_node to start visiting at.
  * @param visitor The visitor to use.
  * @param aux_data Optional data passed to \a visitor.
- * @return Returns a pointer to the `rb_node` at which visiting stopped or NULL
+ * @return Returns a pointer to the rb_node at which visiting stopped or NULL
  * if the entire sub-tree was visited.
  */
 PJL_WARN_UNUSED_RESULT

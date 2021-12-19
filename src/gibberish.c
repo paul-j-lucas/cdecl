@@ -75,7 +75,7 @@ static bool g_space_before_ptr_ref( g_state_t const*, c_ast_t const* );
 /**
  * Prints a space only if we haven't printed one yet.
  *
- * @param g The `g_state` to use.
+ * @param g The g_state to use.
  */
 static inline void g_print_space_once( g_state_t *g ) {
   if ( false_set( &g->printed_space ) )
@@ -104,9 +104,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_flags_t flags,
 }
 
 /**
- * Initializes a `g_state`.
+ * Initializes a g_state.
  *
- * @param g The `g_state` to initialize.
+ * @param g The g_state to initialize.
  * @param flags The gibberish flags to use.
  * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print it to.
@@ -129,7 +129,7 @@ static void g_init( g_state_t *g, c_gib_flags_t flags, bool printing_typedef,
 /**
  * Prints \a ast as gibberish, aka, a C/C++ declaration.
  *
- * @param g The `g_state` to use.
+ * @param g The g_state to use.
  * @param ast The AST to print.
  */
 static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
@@ -443,8 +443,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 /**
  * Helper function for g_print_ast() that prints an array's size.
  *
- * @param g The `g_state` to use.
- * @param ast The AST that is a <code>\ref K_ARRAY</code> whose size to print.
+ * @param g The g_state to use.
+ * @param ast The AST that is a \ref K_ARRAY whose size to print.
  */
 static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
@@ -470,7 +470,7 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
  * Helper function for c_ast_visitor_english() that prints a bit-field width,
  * if any.
  *
- * @param g The `g_state` to use.
+ * @param g The g_state to use.
  * @param ast The AST to print the bit-field width of.
  */
 static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
@@ -485,7 +485,7 @@ static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
 /**
  * Prints a list of AST nodes separated by commas.
  *
- * @param g The `g_state` to use.
+ * @param g The g_state to use.
  * @param ast_list The list of AST nodes to print.
  *
  * @sa g_print_ast()
@@ -514,7 +514,7 @@ static void g_print_ast_list( g_state_t const *g,
  * Prints either the full or local name of \a ast based on whether we're
  * emitting the gibberish for a `typedef` since it can't have a scoped name.
  *
- * @param g The `g_state` to use.
+ * @param g The g_state to use.
  * @param ast The AST to get the name of.
  */
 static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
@@ -560,7 +560,7 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
  *  + Pointer to array.
  *  + Reference to array.
  *
- * @param g The `g_state` to use.
+ * @param g The g_state to use.
  * @param ast The AST.
  */
 static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
@@ -699,11 +699,10 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
  * Helper function for g_print_ast() that prints a pointer, pointer-to-member,
  * reference, or rvalue reference, its qualifier, if any, and the name, if any.
  *
- * @param g The `g_state` to use.
- * @param ast The AST that is one of <code>\ref K_POINTER</code>,
- * <code>\ref K_POINTER_TO_MEMBER</code>, <code>\ref K_REFERENCE</code>, or
- * <code>\ref K_RVALUE_REFERENCE</code> whose qualifier, if any, and name, if
- * any, to print.
+ * @param g The g_state to use.
+ * @param ast The AST that is one of \ref K_POINTER, \ref K_POINTER_TO_MEMBER,
+ * \ref K_REFERENCE, or \ref K_RVALUE_REFERENCE whose qualifier, if any, and
+ * name, if any, to print.
  */
 static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
@@ -790,7 +789,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
  * one before) and an AST node's name, if any; but only if we're printing a
  * declaration (not a cast).
  *
- * @param g The `g_state` to use.
+ * @param g The g_state to use.
  * @param ast The AST to print the name (if any) of.
  */
 static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
@@ -874,7 +873,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
  *
  * because the latter looks inconsistent (even though it's correct).
  *
- * @param g The `g_state` to use.
+ * @param g The g_state to use.
  * @param ast The current AST node.
  * @return Returns `true` only if we should print a space after type type.
  */

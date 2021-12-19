@@ -180,7 +180,7 @@ bool colors_parse( char const *capabilities );
 /**
  * Determines whether we should emit escape sequences for color.
  *
- * @param when The `color_when` value.
+ * @param when The \ref color_when value.
  * @return Returns `true` only if we should do color.
  */
 PJL_WARN_UNUSED_RESULT

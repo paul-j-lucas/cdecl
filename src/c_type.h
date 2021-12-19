@@ -89,12 +89,11 @@ struct c_type {
 };
 
 /**
- * Convenience macro for specifying a complete <code>\ref c_type</code>
- * literal.
+ * Convenience macro for specifying a complete \ref c_type literal.
  *
- * @param BTID The base <code>\ref c_tid_t</code>.
- * @param STID The storage <code>\ref c_tid_t</code>.
- * @param ATID The attribute(s) <code>\ref c_tid_t</code>.
+ * @param BTID The base \ref c_tid_t.
+ * @param STID The storage \ref c_tid_t.
+ * @param ATID The attribute(s) \ref c_tid_t.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT_A()
@@ -108,10 +107,9 @@ struct c_type {
   (c_type_t const){ (BTID), (STID), (ATID) }
 
 /**
- * Convenience macro for specifying a <code>\ref c_type</code> literal from
- * \a ATID.
+ * Convenience macro for specifying a \ref c_type literal from \a ATID.
  *
- * @param ATID The attribute(s) <code>\ref c_tid_t</code>.
+ * @param ATID The attribute(s) \ref c_tid_t.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -125,10 +123,10 @@ struct c_type {
   C_TYPE_LIT( TB_NONE, TS_NONE, (ATID) )
 
 /**
- * Convenience macro for specifying a <code>\ref c_type</code> literal from
- * #TB_ANY, #TS_ANY, and \a ATID.
+ * Convenience macro for specifying a \ref c_type literal from #TB_ANY,
+ * #TS_ANY, and \a ATID.
  *
- * @param ATID The attribute(s) <code>\ref c_tid_t</code>.
+ * @param ATID The attribute(s) \ref c_tid_t.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -142,10 +140,9 @@ struct c_type {
   C_TYPE_LIT( TB_ANY, TS_ANY, (ATID) )
 
 /**
- * Convenience macro for specifying a <code>\ref c_type</code> literal from
- * \a BTID.
+ * Convenience macro for specifying a \ref c_type literal from \a BTID.
  *
- * @param BTID The base <code>\ref c_tid_t</code>.
+ * @param BTID The base \ref c_tid_t.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -156,10 +153,10 @@ struct c_type {
   C_TYPE_LIT( (BTID), TS_NONE, TA_NONE )
 
 /**
- * Convenience macro for specifying a <code>\ref c_type</code> literal from
- * \a BTID, #TS_ANY, and #TA_ANY.
+ * Convenience macro for specifying a \ref c_type literal from \a BTID,
+ * #TS_ANY, and #TA_ANY.
  *
- * @param BTID The base <code>\ref c_tid_t</code>.
+ * @param BTID The base \ref c_tid_t.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -173,10 +170,9 @@ struct c_type {
   C_TYPE_LIT( (BTID), TS_ANY, TA_ANY )
 
 /**
- * Convenience macro for specifying a <code>\ref c_type</code> literal from
- * \a STID.
+ * Convenience macro for specifying a \ref c_type literal from \a STID.
  *
- * @param STID The storage <code>\ref c_tid_t</code>.
+ * @param STID The storage \ref c_tid_t.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -190,10 +186,10 @@ struct c_type {
   C_TYPE_LIT( TB_NONE, (STID), TA_NONE )
 
 /**
- * Convenience macro for specifying a <code>\ref c_type</code> literal from
- * #TB_ANY, \a STID, and #TA_ANY.
+ * Convenience macro for specifying a \ref c_type literal from #TB_ANY, \a
+ * STID, and #TA_ANY.
  *
- * @param STID The storage <code>\ref c_tid_t</code>.
+ * @param STID The storage \ref c_tid_t.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -207,8 +203,8 @@ struct c_type {
   C_TYPE_LIT( TB_ANY, (STID), TA_ANY )
 
 /**
- * For <code>\ref c_tid_t</code> values, the low-order 4 bits specify the
- * <code>\ref c_tpid</code> and thus how the value should be interpreted.
+ * For \ref c_tid_t values, the low-order 4 bits specify the \ref c_tpid and
+ * thus how the value should be interpreted.
  */
 enum c_tpid {
   //
@@ -523,7 +519,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_THROW | TS_VIRTUAL )
 
 /**
- * Hexadecimal print conversion specifier for <code>\ref c_tid_t</code>.
+ * Hexadecimal print conversion specifier for \ref c_tid_t.
  */
 #define PRIX_C_TID_T          PRIX64
 
@@ -536,8 +532,8 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * A special case has to be made for `long` to allow for `long long` yet not
  * allow for `long long long`.
  *
- * @param dst_tids The <code>\ref c_tid_t</code> to add to.
- * @param new_tids The <code>\ref c_tid_t</code> to add.
+ * @param dst_tids The \ref c_tid_t to add to.
+ * @param new_tids The \ref c_tid_t to add.
  * @param new_loc The source location of \a new_id.
  * @return Returns `true` only if the type added successfully.
  *
@@ -549,7 +545,7 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tids, c_loc_t const *new_loc );
 /**
  * Gets the C/C++ name of \a tids.
  *
- * @param tids The <code>\ref c_tid_t</code> to get the name of.
+ * @param tids The \ref c_tid_t to get the name of.
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
@@ -567,7 +563,7 @@ char const* c_tid_name_c( c_tid_t tids );
  * Gets the pseudo-English name of \a tids, if available; the C/C++ name if
  * not.
  *
- * @param tids The <code>\ref c_tid_t</code> to get the name of.
+ * @param tids The \ref c_tid_t to get the name of.
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
@@ -586,7 +582,7 @@ char const* c_tid_name_english( c_tid_t tids );
  * pseudo-English to gibberish and the type has an pseudo-English alias, return
  * the alias, e.g., `non-returning` rather than `noreturn`.
  *
- * @param tids The <code>\ref c_tid_t</code> to get the name of.
+ * @param tids The \ref c_tid_t to get the name of.
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
@@ -608,15 +604,15 @@ char const* c_tid_name_error( c_tid_t tids );
  *  2. If it's only implicitly #TB_INT (e.g., `unsigned`), make it explicitly
  *     #TB_INT (e.g., `unsigned int`).
  *
- * @param tids The <code>\ref c_tid_t</code> to normalize.
- * @return Returns the normalized <code>\ref c_tid_t</code>.
+ * @param tids The \ref c_tid_t to normalize.
+ * @return Returns the normalized \ref c_tid_t.
  */
 PJL_WARN_UNUSED_RESULT
 c_tid_t c_tid_normalize( c_tid_t tids );
 
 /**
- * Gets the "order" value of a <code>\ref c_tid_t</code> so it can be compared
- * by its order.  The order is:
+ * Gets the "order" value of a \ref c_tid_t so it can be compared by its order.
+ * The order is:
  *
  * + { _none_ | `scope` }  &lt; [`inline`] `namespace` &lt;
  *   { `struct` | `union` | `class` } &lt;
@@ -644,10 +640,10 @@ PJL_WARN_UNUSED_RESULT
 unsigned c_tid_scope_order( c_tid_t btids );
 
 /**
- * Gets the `c_tpid_t` from \a tids.
+ * Gets the \ref c_tpid_t from \a tids.
  *
  * @param tids The type ID.
- * @return Returns said `c_tpid_t`.
+ * @return Returns said \ref c_tpid_t.
  *
  * @sa c_tid_no_tpid()
  */
@@ -661,8 +657,8 @@ c_tpid_t c_tid_tpid( c_tid_t tids );
  * A special case has to be made for `long` to allow for `long long` yet not
  * allow for `long long long`.
  *
- * @param dst_type The <code>\ref c_type</code> to add to.
- * @param new_type The <code>\ref c_type</code> to add.
+ * @param dst_type The \ref c_type to add to.
+ * @param new_type The \ref c_type to add.
  * @param new_loc The source location of \a new_type.
  * @return Returns `true` only if \a new_type added successfully.
  *
@@ -677,8 +673,8 @@ bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
 /**
  * Adds \a new_tids to \a dst_type.
  *
- * @param dst_type The <code>\ref c_type</code> to add to.
- * @param new_tids The <code>\ref c_tid_t</code> to add.
+ * @param dst_type The \ref c_type to add to.
+ * @param new_tids The \ref c_tid_t to add.
  * @param new_loc The source location of \a new_tids.
  * @return Returns `true` only if \a new_tids added successfully.
  *
@@ -691,9 +687,9 @@ bool c_type_add_tid( c_type_t *dst_type, c_tid_t new_tids,
 /**
  * Performs the bitwise-and of all the parts of \a i_type and \a j_type.
  *
- * @param i_type The first <code>\ref c_type</code>.
- * @param j_type The second <code>\ref c_type</code>.
- * @return Returns the resultant <code>\ref c_type</code>.
+ * @param i_type The first \ref c_type.
+ * @param j_type The second \ref c_type.
+ * @return Returns the resultant \ref c_type.
  *
  * @sa c_type_and_eq_compl()
  * @sa c_type_or()
@@ -715,7 +711,7 @@ void c_type_and_eq_compl( c_type_t *dst_type, c_type_t const *rm_type );
 /**
  * Checks that \a type is valid.
  *
- * @param type The <code>\ref c_type</code> to check.
+ * @param type The \ref c_type to check.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
 PJL_WARN_UNUSED_RESULT
@@ -724,8 +720,8 @@ c_lang_id_t c_type_check( c_type_t const *type );
 /**
  * Checks whether \a i_type and \a j_type are equal.
  *
- * @param i_type The first <code>\ref c_type</code>.
- * @param j_type The second <code>\ref c_type</code>.
+ * @param i_type The first \ref c_type.
+ * @param j_type The second \ref c_type.
  * @return Returns `true` only if \a i_type equals \a j_type.
  *
  * @sa c_type_is_none()
@@ -734,25 +730,23 @@ PJL_WARN_UNUSED_RESULT
 bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
- * Creates a <code>\ref c_type</code> based on the type part ID of \a tids.
+ * Creates a \ref c_type based on the type part ID of \a tids.
  *
- * @param tids The <code>\ref c_tid_t</code> to create the <code>\ref
- * c_type</code> from.
- * @return Returns said <code>\ref c_type</code>.
+ * @param tids The \ref c_tid_t to create the \ref c_type from.
+ * @return Returns said \ref c_type.
  */
 PJL_WARN_UNUSED_RESULT
 c_type_t c_type_from_tid( c_tid_t tids );
 
 /**
- * Gets the <code>\ref c_tid_t</code> of \a type that corresponds to the type
- * part ID of \a tids.
+ * Gets the \ref c_tid_t of \a type that corresponds to the type part ID of \a
+ * tids.
  *
- * @param type The <code>\ref c_type</code> to get the relevant <code>\ref
- * c_tid_t</code> of.
- * @param tids The <code>\ref c_tid_t</code> that specifies the part of \a type
- * to get the pointer to.
- * @return Returns the corresponding <code>\ref c_tid_t</code> of \a type for
- * the part of \a tids.
+ * @param type The \ref c_type to get the relevant \ref c_tid_t of.
+ * @param tids The \ref c_tid_t that specifies the part of \a type to get the
+ * pointer to.
+ * @return Returns the corresponding \ref c_tid_t of \a type for the part of \a
+ * tids.
  *
  * @sa c_type_get_tid_ptr()
  */
@@ -760,15 +754,15 @@ PJL_WARN_UNUSED_RESULT
 c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tids );
 
 /**
- * Gets a pointer to the <code>\ref c_tid_t</code> of \a type that corresponds
- * to the type part ID of \a tids.
+ * Gets a pointer to the \ref c_tid_t of \a type that corresponds to the type
+ * part ID of \a tids.
  *
- * @param type The <code>\ref c_type</code> to get a pointer to the relevant
- * <code>\ref c_tid_t</code> of.
- * @param tids The <code>\ref c_tid_t</code> that specifies the part of \a type
- * to get the pointer to.
- * @return Returns a pointer to the corresponding <code>\ref c_tid_t</code> of
- * \a type for the part of \a tids.
+ * @param type The \ref c_type to get a pointer to the relevant \ref c_tid_t
+ * of.
+ * @param tids The \ref c_tid_t that specifies the part of \a type to get the
+ * pointer to.
+ * @return Returns a pointer to the corresponding \ref c_tid_t of \a type for
+ * the part of \a tids.
  *
  * @sa c_type_get_tid()
  */
@@ -779,8 +773,8 @@ c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids );
  * For all type part IDs of \a j_type that are not none, gets whether the
  * corresponding type part ID of \a i_type is any of them.
  *
- * @param i_type The first <code>\ref c_type</code>.
- * @param j_type The second <code>\ref c_type</code>.
+ * @param i_type The first \ref c_type.
+ * @param j_type The second \ref c_type.
  * @return Returns `true` only if \a i_type contains any \a j_type.
  *
  * @sa c_tid_is_any()
@@ -894,8 +888,8 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
 /**
  * Checks that the type part ID of \a tids is \a tpid.
  *
- * @param tids The <code>\ref c_tid_t</code> to check.
- * @param tpid The <code>\ref c_tpid_t</code> to check against.
+ * @param tids The \ref c_tid_t to check.
+ * @param tpid The \ref c_tpid_t to check against.
  * @return Returns \a tids.
  */
 C_TYPE_INLINE PJL_NOWARN_UNUSED_RESULT
@@ -907,7 +901,7 @@ c_tid_t c_tid_check( c_tid_t tids, c_tpid_t tpid ) {
 /**
  * Checks whether \a tids has been complemented via `~`.
  *
- * @param tids The <code>\ref c_tid_t</code> to check.
+ * @param tids The \ref c_tid_t to check.
  * @return Returns `true` only if \a tids has been complemented.
  *
  * @sa c_tid_compl()
@@ -927,7 +921,7 @@ bool c_tid_is_compl( c_tid_t tids ) {
  * the part ID of \a tids would be complemented also.  This function
  * complements \a tids while preserving the original part ID.
  *
- * @param tids The <code>\ref c_tid_t</code> to complement.
+ * @param tids The \ref c_tid_t to complement.
  * @return Returns \a tids complemented.
  *
  * @sa c_tid_is_compl()
@@ -942,9 +936,9 @@ c_tid_t c_tid_compl( c_tid_t tids ) {
  * Checks whether \a tids is all of \a is_tids but not also any one of \a
  * except_tids.
  *
- * @param tids The <code>\ref c_tid_t</code> to check.
- * @param is_tids The bitwise-or of <code>\ref c_tid_t</code> to check for.
- * @param except_tids The bitwise-or of <code>\ref c_tid_t</code> to exclude.
+ * @param tids The \ref c_tid_t to check.
+ * @param is_tids The bitwise-or of \ref c_tid_t to check for.
+ * @param except_tids The bitwise-or of \ref c_tid_t to exclude.
  * @return Returns `true` only if \a tids contains any of \a is_tids, but not
  * any of \a except_tids.
  */
@@ -956,7 +950,7 @@ bool c_tid_is_except( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
 /**
  * Gets the type ID value without the part ID.
  *
- * @param tids The <code>\ref c_tid_t</code> to get the value of.
+ * @param tids The \ref c_tid_t to get the value of.
  * @return Returns the type ID value without the part ID.
  *
  * @sa c_tid_tpid()
@@ -969,8 +963,8 @@ c_tid_t c_tid_no_tpid( c_tid_t tids ) {
 /**
  * Gets whether \a i_tids contains any of \a j_tids.
  *
- * @param i_tids The first <code>\ref c_tid_t</code>.
- * @param j_tids The second <code>\ref c_tid_t</code>.
+ * @param i_tids The first \ref c_tid_t.
+ * @param j_tids The second \ref c_tid_t.
  * @return Returns `true` only if \a i_tids contains any \a j_tids.
  *
  * @sa c_type_is_any()
@@ -986,7 +980,7 @@ bool c_tid_is_any( c_tid_t i_tids, c_tid_t j_tids ) {
  *
  * @note This function is useful only when the part ID of \a tids can be any
  * part ID.
- * @param tids The <code>\ref c_tid_t</code> to check.
+ * @param tids The \ref c_tid_t to check.
  * @return Returns `true` only if \a tids is `Tx_NONE`.
  *
  * @sa c_type_is_none()
@@ -1002,7 +996,7 @@ bool c_tid_is_none( c_tid_t tids ) {
  * @note
  * In cdecl, `size_t` is `typedef`d to be `unsigned long` in `c_typedef.c`.
  *
- * @param tids The <code>\ref c_tid_t</code> to check.
+ * @param tids The \ref c_tid_t to check.
  * @return Returns `true` only if \a tids is `size_t`.
  *
  * @sa c_ast_is_size_t()
@@ -1016,7 +1010,7 @@ bool c_tid_is_size_t( c_tid_t tids ) {
 /**
  * Checks whether \a type is T_NONE.
  *
- * @param type The <code>\ref c_type</code> to check.
+ * @param type The \ref c_type to check.
  * @return Returns `true` only if \a type is none.
  *
  * @sa c_type_equal()
@@ -1027,13 +1021,12 @@ bool c_type_is_none( c_type_t const *type ) {
 }
 
 /**
- * Checks whether the relevant <code>\ref c_tid_t</code> of \a type is any
- * of \a tids.
+ * Checks whether the relevant \ref c_tid_t of \a type is any of \a tids.
  *
- * @param type The <code>\ref c_type</code> to check.
- * @param tids The <code>\ref c_tid_t</code> to check against.
- * @return Returns `true` only if the relevant <code>\ref c_tid_t</code> of
- * \a type contains any of \a tids.
+ * @param type The \ref c_type to check.
+ * @param tids The \ref c_tid_t to check against.
+ * @return Returns `true` only if the relevant \ref c_tid_t of \a type contains
+ * any of \a tids.
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_is_tid_any( c_type_t const *type, c_tid_t tids ) {

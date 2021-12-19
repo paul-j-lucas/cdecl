@@ -169,10 +169,10 @@ static c_ast_visitor_data_t const C_IS_FUNC_PARAM = (1u << 0);
  */
 static c_ast_visitor_data_t const C_IS_POINTED_TO = (1u << 1);
 
-/// Convenience return value for <code>\ref c_ast_visit_fn_t</code> functions.
+/// Convenience return value for \ref c_ast_visit_fn_t functions.
 static bool const VISITOR_ERROR_FOUND     = true;
 
-/// Convenience return value for <code>\ref c_ast_visit_fn_t</code> functions.
+/// Convenience return value for \ref c_ast_visit_fn_t functions.
 static bool const VISITOR_ERROR_NOT_FOUND = false;
 
 // local functions
@@ -2129,8 +2129,8 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
  *
  * @param ast The AST to check.
  * @param flags The flags to use.
- * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
- * `VISITOR_ERROR_NOT_FOUND` if not.
+ * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
+ * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_error( c_ast_t *ast, c_ast_visitor_data_t flags ) {
@@ -2271,8 +2271,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, c_ast_visitor_data_t flags ) {
  *
  * @param ast The AST to visit.
  * @param flags The flags to use.
- * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
- * `VISITOR_ERROR_NOT_FOUND` if not.
+ * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
+ * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_type( c_ast_t *ast, c_ast_visitor_data_t flags ) {

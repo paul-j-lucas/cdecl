@@ -87,12 +87,12 @@ struct c_keyword {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Given a literal, gets the `c_keyword` for the corresponding C/C++ keyword.
+ * Given a literal, gets the c_keyword for the corresponding C/C++ keyword.
  *
  * @param literal The literal to find.
  * @param lang_ids The bitwise-or of language(s) to look for the keyword in.
  * @param kw_ctx The keyword context to limit to.
- * @return Returns a pointer to the corresponding `c_keyword` or NULL if not
+ * @return Returns a pointer to the corresponding c_keyword or NULL if not
  * found.
  */
 PJL_WARN_UNUSED_RESULT
@@ -114,7 +114,7 @@ c_keyword_t const* c_keyword_next( c_keyword_t const *k );
 /**
  * Convenience macro for iterating over all C/C++ keywords.
  *
- * @param VAR The `c_keyword` loop variable.
+ * @param VAR The c_keyword loop variable.
  *
  * @sa c_keyword_next()
  */

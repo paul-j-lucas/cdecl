@@ -68,14 +68,14 @@ typedef unsigned dym_kind_t;
 /**
  * Frees all memory used by \a dym_array _including_ \a dym_array itself.
  *
- * @param dym_array The <code>\ref did_you_mean</code> array to free.  If NULL,
- * does nothing.
+ * @param dym_array The \ref did_you_mean array to free.  If NULL, does
+ * nothing.
  */
 void dym_free( did_you_mean_t const *dym_array );
 
 /**
- * Creates a new array of <code>\ref did_you_mean</code> elements containing
- * "Did you mean ...?" tokens for \a unknown_token.
+ * Creates a new array of \ref did_you_mean elements containing "Did you mean
+ * ...?" tokens for \a unknown_token.
  *
  * @param kinds The bitwise-or of the kind(s) of things possibly meant.
  * @param unknown_token The unknown token.

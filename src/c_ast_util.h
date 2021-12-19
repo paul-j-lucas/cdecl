@@ -271,8 +271,8 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
  * Gets whether the operator is a member, non-member, or unspecified.
  *
  * @param ast The AST of the operator.
- * @return Returns one of <code>\ref C_OP_MEMBER</code>,
- * <code>\ref C_OP_NON_MEMBER</code>, or <code>\ref C_OP_UNSPECIFIED</code>.
+ * @return Returns one of \ref C_OP_MEMBER, \ref C_OP_NON_MEMBER, or \ref
+ * C_OP_UNSPECIFIED.
  */
 PJL_WARN_UNUSED_RESULT
 unsigned c_ast_oper_overload( c_ast_t const *ast );
@@ -281,8 +281,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast );
  * "Patches" \a type_ast into \a decl_ast only if:
  *  + \a type_ast has no parent.
  *  + The depth of \a type_ast is less than that of \a decl_ast.
- *  + \a decl_ast still contains an AST node of type
- *    <code>\ref K_PLACEHOLDER</code>.
+ *  + \a decl_ast still contains an AST node of type \ref K_PLACEHOLDER.
  *
  * @param type_ast The AST of the initial type.
  * @param decl_ast The AST of a declaration; may be NULL.
@@ -292,8 +291,8 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
- * Creates a <code>\ref K_POINTER</code> AST to \a ast.  The name of \a ast (or
- * one of its child nodes), if any, is moved to the new pointer AST.
+ * Creates a \ref K_POINTER AST to \a ast.  The name of \a ast (or one of its
+ * child nodes), if any, is moved to the new pointer AST.
  *
  * @param ast The AST to create a pointer to.
  * @param ast_list If not NULL, the new pointer AST is appended to the list.
@@ -347,8 +346,8 @@ PJL_WARN_UNUSED_RESULT
 c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
 
 /**
- * Un-pointers \a ast, i.e., if \a ast is a <code>\ref K_POINTER</code>,
- * returns the pointed-to AST.
+ * Un-pointers \a ast, i.e., if \a ast is a \ref K_POINTER, returns the
+ * pointed-to AST.
  *
  * @note Even though pointers are "dereferenced," this function isn't called
  * `c_ast_dereference` to eliminate confusion with C++ references.
@@ -366,11 +365,10 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
 /**
- * Un-references \a ast, i.e., if \a ast is a <code>\ref K_REFERENCE</code>
- * returns the referred-to AST.
+ * Un-references \a ast, i.e., if \a ast is a \ref K_REFERENCE returns the
+ * referred-to AST.
  *
- * @note Only <code>\ref K_REFERENCE</code> is un-referenced, not
- * <code>\ref K_RVALUE_REFERENCE</code>.
+ * @note Only \ref K_REFERENCE is un-referenced, not \ref K_RVALUE_REFERENCE.
  *
  * @param ast The AST to un-reference.
  * @return If \a ast is a reference, Returns the referenced AST after
@@ -385,11 +383,10 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
 /**
- * Un-rvalue-references \a ast, i.e., if \a ast is a <code>\ref
- * K_RVALUE_REFERENCE</code> returns the referred-to AST.
+ * Un-rvalue-references \a ast, i.e., if \a ast is a \ref K_RVALUE_REFERENCE
+ * returns the referred-to AST.
  *
- * @note Only <code>\ref K_RVALUE_REFERENCE</code> is un-referenced, not
- * <code>\ref K_REFERENCE</code>.
+ * @note Only \ref K_RVALUE_REFERENCE is un-referenced, not \ref K_REFERENCE.
  *
  * @param ast The AST to un-reference.
  * @return If \a ast is an rvalue reference, Returns the referenced AST after
@@ -404,8 +401,8 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast );
 
 /**
- * Un-`typedef`s \a ast, i.e., if \a ast is a <code>\ref K_TYPEDEF</code>,
- * returns the AST the `typedef` is for.
+ * Un-`typedef`s \a ast, i.e., if \a ast is a \ref K_TYPEDEF, returns the AST
+ * the `typedef` is for.
  *
  * @param ast The AST to un-`typedef`.
  * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
@@ -424,7 +421,7 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
  * Checks if the type of \a ast is equivalent to `size_t`.
  *
  * @note
- * In cdecl, `size_t` is `typedef`d to be `unsigned long` in `c_typedef.c`.
+ * In cdecl, `size_t` is `typedef`d to be `unsigned long` in c_typedef.c.
  *
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast is `size_t`.

@@ -50,7 +50,7 @@ extern char const  *cdecl_prompt[2];
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Enables or disables the prompt based on <code>\ref opt_prompt</code>.
+ * Enables or disables the prompt based on \ref opt_prompt.
  *
  * @sa cdecl_prompt_init()
  */

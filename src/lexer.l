@@ -118,7 +118,7 @@
 #define YY_USER_ACTION            lexer_update_loc(); /* must include ';' */
 
 /**
- * This code must be manually inserted before a REJECT to undo YY_USER_ACTION.
+ * This code must be manually inserted before a REJECT to undo #YY_USER_ACTION.
  */
 #define YY_USER_ACTION_UNDO_FOR_REJECT \
   token_column -= (int)yyleng
@@ -159,7 +159,7 @@ static void       lexer_fatal( char const* );
  * Parses a scoped destructor name, e.g. `S::T::~T()`.
  *
  * @param s The string to parse.
- * @param sname The `c_sname` to parse into.
+ * @param sname The c_sname_t to parse into.
  * @return Returns `true` only if the scoped name was successfully parsed.
  */
 PJL_WARN_UNUSED_RESULT
@@ -217,8 +217,8 @@ tilde:
  * find a particular keyword.
  *
  * @param literal The literal to find.
- * @return Returns a pointer to the corresponding `cdecl_keyword` or NULL if
- * not found or we're not currently supposed to find it.
+ * @return Returns a pointer to the corresponding cdecl_keyword or NULL if not
+ * found or we're not currently supposed to find it.
  */
 PJL_WARN_UNUSED_RESULT
 static inline
@@ -267,7 +267,7 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
 
 /**
  * Update the parser's location.
- * @note This is called by Flex via `YY_USER_ACTION`.
+ * @note This is called by Flex via #YY_USER_ACTION.
  */
 static void lexer_update_loc( void ) {
   yylloc.first_line   = yylloc.last_line = (int)yylineno;

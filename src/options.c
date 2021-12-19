@@ -324,8 +324,8 @@ static char const* opt_get_long( char short_opt ) {
  * Parses a color "when" value.
  *
  * @param when The null-terminated "when" string to parse.
- * @return Returns the associated <code>\ref color_when</code> or prints an
- * error message and exits if \a when is invalid.
+ * @return Returns the associated \ref color_when or prints an error message
+ * and exits if \a when is invalid.
  */
 PJL_WARN_UNUSED_RESULT
 static color_when_t parse_color_when( char const *when ) {
@@ -371,8 +371,7 @@ static color_when_t parse_color_when( char const *when ) {
  * Parses a language name.
  *
  * @param lang_name The null-terminated name to parse.
- * @return Returns the <code>\ref c_lang_id_t</code> corresponding to \a
- * lang_name.
+ * @return Returns the \ref c_lang_id_t corresponding to \a lang_name.
  */
 PJL_WARN_UNUSED_RESULT
 static c_lang_id_t parse_lang( char const *lang_name ) {

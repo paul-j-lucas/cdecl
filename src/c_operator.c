@@ -48,7 +48,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Array of `c_operator` for all C++ operators.
+ * Array of c_operator for all C++ operators.
  */
 static c_operator_t const C_OPERATOR[] = {
   { C_OP_NONE,            "",         XXX,  0, 0,   LANG_NONE         },

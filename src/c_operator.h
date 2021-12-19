@@ -51,7 +51,7 @@ _GL_INLINE_HEADER_BEGIN
 // overloadability
 
 /**
- * For `c_operator.flags`, denotes that the operator is not overloadable.
+ * For c_operator.flags, denotes that the operator is not overloadable.
  *
  * @sa #C_OP_MEMBER
  * @sa #C_OP_NON_MEMBER
@@ -61,13 +61,13 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_NOT_OVERLOADABLE     (1u << 2)
 
 /**
- * For `c_operator.params_max` of `operator()()`, denotes an unlimited number
- * of parameters.
+ * For c_operator.params_max of `operator()()`, denotes an unlimited number of
+ * parameters.
  */
 #define C_OP_PARAMS_UNLIMITED     (~0u)
 
 /**
- * For `c_operator.flags`, denotes that the operator overloadability (member or
+ * For c_operator.flags, denotes that the operator overloadability (member or
  * non-member) is unspecified.
  *
  * @sa #C_OP_MEMBER
@@ -78,7 +78,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_UNSPECIFIED          C_FUNC_UNSPECIFIED
 
 /**
- * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
+ * For c_operator.flags, denotes that the operator is overload{able|ed} as a
  * member only.
  *
  * @sa #C_OP_NON_MEMBER
@@ -89,7 +89,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_MEMBER               C_FUNC_MEMBER
 
 /**
- * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
+ * For c_operator.flags, denotes that the operator is overload{able|ed} as a
  * non-member only.
  *
  * @sa #C_OP_MEMBER
@@ -100,8 +100,8 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_NON_MEMBER           C_FUNC_NON_MEMBER
 
 /**
- * For `c_operator.flags`, denotes that the operator is overloadable as either
- * a member or non-member.
+ * For c_operator.flags, denotes that the operator is overloadable as either a
+ * member or non-member.
  *
  * @sa #C_OP_MEMBER
  * @sa #C_OP_NON_MEMBER
@@ -111,7 +111,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_OVERLOADABLE         (C_OP_MEMBER | C_OP_NON_MEMBER)
 
 /**
- * For `c_operator.flags`, overloadability bitmask.
+ * For c_operator.flags, overloadability bitmask.
  */
 #define C_OP_MASK_OVERLOAD        0x7u
 
@@ -209,10 +209,10 @@ struct c_operator {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets the `c_operator` for \a oper_id.
+ * Gets the c_operator for \a oper_id.
  *
- * @param oper_id The ID of the `c_operator` to get.
- * @return Returns a pointer to said `c_operator`.
+ * @param oper_id The ID of the c_operator to get.
+ * @return Returns a pointer to said c_operator.
  */
 PJL_WARN_UNUSED_RESULT
 c_operator_t const* c_oper_get( c_oper_id_t oper_id );
@@ -251,7 +251,7 @@ bool c_oper_is_ambiguous( c_operator_t const *op ) {
 /**
  * Gets the C++ token for the operator having \a oper_id.
  *
- * @param oper_id The ID of the `c_operator` to get the token for.
+ * @param oper_id The ID of the c_operator to get the token for.
  * @return Returns said token (including alternative or graph tokens, if either
  * is enabled); otherwise, returns the unaltered token.
  */

@@ -70,7 +70,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
 /**
  * Dumps \a list of ASTs (for debugging).
  *
- * @param list The `slist` of ASTs to dump.
+ * @param list The \ref slist of ASTs to dump.
  * @param indent The initial indent.
  * @param dout The `FILE` to dump to.
  */
@@ -100,7 +100,7 @@ void c_sname_list_dump( slist_t const *list, FILE *dout );
 /**
  * Dumps \a tid (for debugging).
  *
- * @param tid The <code>\ref c_tid_t</code> to print.
+ * @param tid The \ref c_tid_t to print.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_type_dump()
@@ -110,7 +110,7 @@ void c_tid_dump( c_tid_t tid, FILE *dout );
 /**
  * Dumps \a type (for debugging).
  *
- * @param type The <code>\ref c_type</code> to print.
+ * @param type The \ref c_type to print.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_tid_dump()

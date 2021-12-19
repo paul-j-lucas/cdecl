@@ -113,8 +113,8 @@
 /**
  * Calls c_type_add(): if adding the type fails, calls #PARSE_ABORT().
  *
- * @param DST_TYPE The <code>\ref c_type</code> to add to.
- * @param NEW_TYPE The <code>\ref c_type</code> to add.
+ * @param DST_TYPE The \ref c_type to add to.
+ * @param NEW_TYPE The \ref c_type to add.
  * @param NEW_LOC The source location of \a NEW_TYPE.
  *
  * @sa #C_TID_ADD()
@@ -126,8 +126,8 @@
 /**
  * Calls c_type_add_tid(): if adding the type fails, calls #PARSE_ABORT().
  *
- * @param DST_TYPE The <code>\ref c_type</code> to add to.
- * @param NEW_TID The <code>\ref c_tid_t</code> to add.
+ * @param DST_TYPE The \ref c_type to add to.
+ * @param NEW_TID The \ref c_tid_t to add.
  * @param NEW_LOC The source location of \a NEW_TID.
  *
  * @sa #C_TID_ADD()
@@ -139,8 +139,8 @@
 /**
  * Calls c_tid_add(): if adding the type fails, calls #PARSE_ABORT().
  *
- * @param DST_TID The <code>\ref c_tid_t</code> to add to.
- * @param NEW_TID The <code>\ref c_tid_t</code> to add.
+ * @param DST_TID The \ref c_tid_t to add to.
+ * @param NEW_TID The \ref c_tid_t to add.
  * @param NEW_LOC The source location of \a NEW_TID.
  *
  * @sa #C_TYPE_ADD()
@@ -158,13 +158,11 @@
   if ( !fl_is_nested_type_ok( __FILE__, __LINE__, TYPE_LOC ) ) PARSE_ABORT(); )
 
 /**
- * Calls #elaborate_error_dym() with a <code>\ref dym_kind_t</code> of
- * #DYM_NONE.
+ * Calls #elaborate_error_dym() with a \ref dym_kind_t of #DYM_NONE.
  *
  * @param ... Arguments passed to fl_elaborate_error().
  *
- * @note
- * This must be used _only_ after an `error` token, e.g.:
+ * @note This must be used _only_ after an `error` token, e.g.:
  * @code
  *  | Y_DEFINE error
  *    {
@@ -274,8 +272,8 @@
 
 /**
  * @defgroup parser-dump-group Debugging Macros
- * Macros that are used to dump a trace during parsing when `opt_cdecl_debug`
- * is `true`.
+ * Macros that are used to dump a trace during parsing when \ref
+ * opt_cdecl_debug is `true`.
  * @ingroup parser-group
  * @{
  */
@@ -299,10 +297,10 @@
   if ( (AST) != NULL ) { DUMP_COMMA; c_ast_dump( (AST), 1, (KEY), stdout ); } )
 
 /**
- * Dumps an `s_list` of AST.
+ * Dumps an s_list of AST.
  *
  * @param KEY The key name to print.
- * @param AST_LIST The `s_list` of AST to dump.
+ * @param AST_LIST The \ref slist of AST to dump.
  *
  * @sa #DUMP_AST()
  */
@@ -383,7 +381,7 @@
  *
  * Whenever possible, an entire dump block should be completed before any
  * actions are taken as a result of a failed semantic check or other error
- * (typically, calling `print_error()` and #PARSE_ABORT()) so that the entire
+ * (typically, calling print_error() and #PARSE_ABORT()) so that the entire
  * block is dumped for debugging purposes first. If necessary, set a flag
  * within the dump block, then check it after, e.g.:
  * @code
@@ -440,10 +438,10 @@
   DUMP_COMMA; PUTS( "  " KEY " = " ); str_dump( (STR), stdout ); )
 
 /**
- * Dumps a <code>\ref c_tid_t</code>.
+ * Dumps a \ref c_tid_t.
  *
  * @param KEY The key name to print.
- * @param TID The <code>\ref c_tid_t</code> to dump.
+ * @param TID The \ref c_tid_t to dump.
  *
  * @sa #DUMP_TYPE()
  */
@@ -451,10 +449,10 @@
   DUMP_COMMA; PUTS( "  " KEY " = " ); c_tid_dump( (TID), stdout ); )
 
 /**
- * Dumps a <code>\ref c_type</code>.
+ * Dumps a \ref c_type.
  *
  * @param KEY The key name to print.
- * @param TYPE The <code>\ref c_type</code> to dump.
+ * @param TYPE The \ref c_type to dump.
  *
  * @sa #DUMP_TID()
  */
@@ -508,9 +506,9 @@ static bool slist_node_is_ast_placeholder( void* );
 
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
-static c_ast_list_t   gc_ast_list;      ///< `c_ast` nodes freed after parse.
+static c_ast_list_t   gc_ast_list;      ///< c_ast nodes freed after parse.
 static in_attr_t      in_attr;          ///< Inherited attributes.
-static c_ast_list_t   typedef_ast_list; ///< `c_ast` nodes for `typedef`s.
+static c_ast_list_t   typedef_ast_list; ///< c_ast nodes for `typedef`s.
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -524,7 +522,7 @@ static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
 }
 
 /**
- * Creates a new AST and adds it to <code>\ref gc_ast_list</code>.
+ * Creates a new AST and adds it to \ref gc_ast_list.
  *
  * @param kind The kind of AST to create.
  * @param loc A pointer to the token location data.
@@ -587,10 +585,9 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
 }
 
 /**
- * Gets a printable string of <code>\ref lexer_token</code>.
+ * Gets a printable string of \ref lexer_token.
  *
- * @return Returns said string or NULL if <code>\ref lexer_token</code> is the
- * empty string.
+ * @return Returns said string or NULL if \ref lexer_token is the empty string.
  */
 PJL_WARN_UNUSED_RESULT
 static inline char const* printable_token( void ) {
@@ -604,7 +601,7 @@ static inline char const* printable_token( void ) {
 /**
  * Frees all memory associated with \a sti but _not_ \a sti itself.
  *
- * @param sti The <code>\ref show_type_info</code> to free.
+ * @param sti The \ref show_type_info to free.
  *
  * @sa sti_init()
  */
@@ -617,8 +614,8 @@ static inline void sti_free( show_type_info_t *sti ) {
  * Checks if the current language is _not_ among \a lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s).
- * @return Returns `true` only if cdecl has been initialized and `opt_lang` is
- * _not_ among \a lang_ids.
+ * @return Returns `true` only if cdecl has been initialized and \ref opt_lang
+ * is _not_ among \a lang_ids.
  */
 PJL_WARN_UNUSED_RESULT
 static inline bool unsupported( c_lang_id_t lang_ids ) {
@@ -948,7 +945,7 @@ static void quit( void ) {
 /**
  * Prints the definition of a `typedef`.
  *
- * @param tdef The <code>\ref c_typedef</code> to print.
+ * @param tdef The \ref c_typedef to print.
  * @param data Optional data passed to the visitor: in this case, the bitmask
  * of which `typedef`s to print.
  * @return Always returns `false`.
@@ -1003,10 +1000,10 @@ static bool slist_node_is_ast_placeholder( void *data ) {
 /**
  * Initializes a show_type_info_t.
  *
- * @param sti The <code>\ref show_type_info</code> to initialize.
+ * @param sti The \ref show_type_info to initialize.
  * @param show_which Which types to show: predefined, user, or both?
  * @param glob The glob string.  May be NULL.
- * @param gib_flags The <code>\ref c_gib_flags_t</code> to use.
+ * @param gib_flags The \ref c_gib_flags_t to use.
  *
  * @sa sti_free()
  */

@@ -75,7 +75,7 @@ typedef struct set_option set_option_t;
 /**
  * Convenience macro for iterating over all cdecl `set` options.
  *
- * @param VAR The `set_option_t` loop variable.
+ * @param VAR The set_option loop variable.
  *
  * @sa #FOREACH_CLI_OPTION()
  * @sa set_option_next()

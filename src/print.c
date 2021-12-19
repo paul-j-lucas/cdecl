@@ -70,9 +70,9 @@ print_params_t            print_params;
 
 /**
  * Helper function for print_suggestions() and fprint_list() that gets the
- * string for a <code>\ref did_you_mean</code> token.
+ * string for a \ref did_you_mean token.
  *
- * @param elt A pointer to a <code>\ref did_you_mean</code> element.
+ * @param elt A pointer to a \ref did_you_mean element.
  * @return Returns a pointer to the next "Did you mean" suggestion string or
  * NULL if none.
  */

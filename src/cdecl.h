@@ -53,7 +53,7 @@
 /**
  * Convenience macro for iterating over all cdecl commands.
  *
- * @param VAR The `cdecl_command` loop variable.
+ * @param VAR The cdecl_command loop variable.
  */
 #define FOREACH_CDECL_COMMAND(VAR) \
   for ( cdecl_command_t const *VAR = CDECL_COMMANDS; VAR->literal != NULL; ++VAR )

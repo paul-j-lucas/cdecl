@@ -95,11 +95,10 @@ static char const*  c_type_literal( c_type_info_t const*, bool );
 
 /**
  * As part of the special case for `long long`, its literal is only `long`
- * because its type, #TB_LONG_LONG, is always combined with
- * <code>#TB_LONG</code>, i.e., two bits are set.  Therefore, when printed, it
- * prints one `long` for <code>#TB_LONG</code> and another `long` for
- * <code>#TB_LONG_LONG</code> (this literal).  That explains why this literal
- * is only one `long`.
+ * because its type, #TB_LONG_LONG, is always combined with #TB_LONG, i.e., two
+ * bits are set.  Therefore, when printed, it prints one `long` for #TB_LONG
+ * and another `long` for #TB_LONG_LONG (this literal).  That explains why this
+ * literal is only one `long`.
  */
 static char const L_LONG_LONG[] = "long";
 
@@ -110,12 +109,11 @@ static char const L_LONG_LONG[] = "long";
 static char const L_RVALUE_REFERENCE[] = "rvalue reference";
 
 /**
- * <code>#TB_TYPEDEF</code> exists only so there can be a row/column for it in
- * the <code>\ref OK_TYPE_LANGS</code> table to make things like `signed
- * size_t` illegal.
+ * #TB_TYPEDEF exists only so there can be a row/column for it in the \ref
+ * OK_TYPE_LANGS table to make things like `signed size_t` illegal.
  *
- * <code>#TB_TYPEDEF</code> doesn't have any printable representation (only the
- * name of the type is printed); therefore, its literal is the empty string.
+ * #TB_TYPEDEF doesn't have any printable representation (only the name of the
+ * type is printed); therefore, its literal is the empty string.
  */
 static char const L_TYPEDEF_TYPE[] = "";
 
@@ -499,11 +497,11 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Checks whether \a tids is some form of <code>long int</code> only, and _not_
- * one of `long float` (K&R), `long double` (C89), or either `long _Accum` or
- * `long _Fract` (Embedded C).
+ * Checks whether \a tids is some form of `long int` only, and _not_ one of
+ * `long float` (K&R), `long double` (C89), or either `long _Accum` or `long
+ * _Fract` (Embedded C).
  *
- * @param tids The <code>\ref c_tid_t</code> to check.
+ * @param tids The \ref c_tid_t to check.
  * @return Returns `true` only if \a tids is some form of `long int`.
  */
 PJL_WARN_UNUSED_RESULT
@@ -517,9 +515,8 @@ static inline bool c_tid_is_long_int( c_tid_t tids ) {
 /**
  * Checks that the type combination is legal in the current language.
  *
- * @param tids The <code>\ref c_tid_t</code> to check.
- * @param type_infos The array of <code>\ref c_type_info</code> to check
- * against.
+ * @param tids The \ref c_tid_t to check.
+ * @param type_infos The array of \ref c_type_info to check against.
  * @param type_infos_size The size of \a type_infos.
  * @param type_langs The type/languages array to check against.
  * @return Returns the bitwise-or of the language(s) \a tids is legal in.
@@ -546,9 +543,8 @@ c_tid_check_combo( c_tid_t tids, c_type_info_t const type_infos[],
 /**
  * Checks that \a tids is legal in the current language.
  *
- * @param tids The <code>\ref c_tid_t</code> to check.
- * @param type_infos The array of <code>\ref c_type_info</code> to check
- * against.
+ * @param tids The \ref c_tid_t to check.
+ * @param type_infos The array of \ref c_type_info to check against.
  * @param type_infos_size The size of \a type_infos.
  * @return Returns the bitwise-or of the language(s) \a tids is legal in.
  */
@@ -567,8 +563,8 @@ c_tid_check_legal( c_tid_t tids, c_type_info_t const type_infos[],
 /**
  * Gets the name of an individual type.
  *
- * @param tid The <code>\ref c_tid_t</code> to get the name for; \a tid
- * _must_ have _exactly one_ bit set.
+ * @param tid The \ref c_tid_t to get the name for; \a tid _must_ have _exactly
+ * one_ bit set.
  * @param in_english If `true`, return the pseudo-English literal if one
  * exists.
  * @return Returns said name.
@@ -619,7 +615,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
  * Concatenates the partial type name onto the full type name being made.
  *
  * @param sbuf A pointer to the buffer to concatenate the name to.
- * @param tids The <code>\ref c_tid_t</code> to concatenate the name of.
+ * @param tids The \ref c_tid_t to concatenate the name of.
  * @param tids_set The array of types to use.
  * @param tids_set_size The size of \a tids_set.
  * @param in_english If `true`, return the pseudo-English literal if one
@@ -640,13 +636,13 @@ static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
 }
 
 /**
- * "Simplifies" a base <code>\ref c_tid_t</code>.  Specifically:
+ * "Simplifies" a base \ref c_tid_t.  Specifically:
  *
  * + If \a btids is #TB_SIGNED and not #TB_CHAR, remove #TB_SIGNED.
  * + If \a btids becomes #TB_NONE, make it #TB_INT.
  *
- * @param btids The <code>\ref c_tid_t</code> to simplify.
- * @return Returns the simplified <code>\ref c_tid_t</code>.
+ * @param btids The \ref c_tid_t to simplify.
+ * @return Returns the simplified \ref c_tid_t.
  */
 PJL_WARN_UNUSED_RESULT
 static c_tid_t c_tid_simplify( c_tid_t btids ) {
@@ -660,10 +656,10 @@ static c_tid_t c_tid_simplify( c_tid_t btids ) {
 }
 
 /**
- * Gets the literal of a given <code>\ref c_type_info</code>, either gibberish
- * or, if appropriate and available, pseudo-English.
+ * Gets the literal of a given \ref c_type_info, either gibberish or, if
+ * appropriate and available, pseudo-English.
  *
- * @param ti The <code>\ref c_type_info</code> to get the literal of.
+ * @param ti The \ref c_type_info to get the literal of.
  * @param in_english If `true`, return the pseudo-English literal if one
  * exists.
  * @return Returns said literal.
@@ -678,8 +674,7 @@ static char const* c_type_literal( c_type_info_t const *ti, bool in_english ) {
  * Gets the name of \a type.
  *
  * @param type The type to get the name for.
- * @param apply_explicit_ecsu If `true`, apply <code>\ref
- * opt_explicit_ecsu</code>.
+ * @param apply_explicit_ecsu If `true`, apply \ref opt_explicit_ecsu.
  * @param in_english If `true`, return the pseudo-English name if possible.
  * @param is_error If `true`, the name is intended for use in an error message.
  * Specifically, c_tid_normalize() is _not_ called.

@@ -184,10 +184,9 @@ struct c_lang_lit {
 };
 
 /**
- * Convenience macro for specifying a constant array of
- * <code>\ref c_lang_lit</code>.
+ * Convenience macro for specifying a constant array of \ref c_lang_lit.
  *
- * @param ... The array of <code>\ref c_lang_lit</code> elements.
+ * @param ... The array of \ref c_lang_lit elements.
  */
 #define C_LANG_LIT(...)           (c_lang_lit_t const[]){ __VA_ARGS__ }
 
@@ -204,7 +203,7 @@ struct c_lang_lit {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A mapping between a language name and its corresponding `c_lang_id_t`.
+ * A mapping between a language name and its corresponding \ref c_lang_id_t.
  */
 struct c_lang {
   char const   *name;                   ///< Language name.
@@ -233,11 +232,10 @@ c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
 }
 
 /**
- * Gets the <code>\ref c_lang_id_t</code> corresponding to the given string
+ * Gets the \ref c_lang_id_t corresponding to the given string
  * (case insensitive).
  *
- * @param name The language name to get the corresponding <code>\ref
- * c_lang_id_t</code> for.
+ * @param name The language name to get the corresponding \ref c_lang_id_t for.
  * @return Returns said language or #LANG_NONE if \a name doesn't correspond to
  * any supported language.
  */
@@ -292,10 +290,9 @@ char const* c_lang_coarse_name( c_lang_id_t lang_ids ) {
 /**
  * Gets the literal appropriate for the current language.
  *
- * @param lang_lit A <code>\ref c_lang_lit</code> array.  The last element
- * _must_ always have a `lang_ids` value of #LANG_ANY.  If the corresponding
- * `literal` value is NULL, it means there is no appropriate literal for the
- * current language.
+ * @param lang_lit A \ref c_lang_lit array.  The last element _must_ always
+ * have a `lang_ids` value of #LANG_ANY.  If the corresponding `literal` value
+ * is NULL, it means there is no appropriate literal for the current language.
  * @return Returns said literal or NULL if there is no appropriate literal for
  * the current language.
  */
@@ -363,7 +360,7 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
 /**
  * Convenience macro for iterating over all languages.
  *
- * @param VAR The `c_lang` loop variable.
+ * @param VAR The \ref c_lang loop variable.
  *
  * @sa c_lang_next()
  */
@@ -439,7 +436,7 @@ c_lang_id_t opt_lang_and_newer( void ) {
  * Convenience function for checking whether opt_lang is among \a lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s) to check.
- * @return Returns `true` only if
+ * @return Returns `true` only if it is.
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool opt_lang_is_any( c_lang_id_t lang_ids ) {

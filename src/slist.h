@@ -52,8 +52,8 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Convenience macro for iterating over all the nodes of \a SLIST.
  *
- * @param VAR The `slist_node` loop variable.
- * @param SLIST A pointer to the `slist` to iterate over.
+ * @param VAR The slist_node loop variable.
+ * @param SLIST A pointer to the \ref slist to iterate over.
  *
  * @sa #FOREACH_SLIST_NODE_UNTIL()
  */
@@ -64,8 +64,8 @@ _GL_INLINE_HEADER_BEGIN
  * Convenience macro for iterating over the nodes of \a SLIST up to but not
  * including \a END.
  *
- * @param VAR The `slist_node` loop variable.
- * @param SLIST A pointer to the `slist` to iterate over.
+ * @param VAR The slist_node loop variable.
+ * @param SLIST A pointer to the \ref slist to iterate over.
  * @param END A pointer to the node to end before; may be NULL.
  *
  * @sa #FOREACH_SLIST_NODE()
@@ -74,9 +74,9 @@ _GL_INLINE_HEADER_BEGIN
   for ( slist_node_t *VAR = CONST_CAST( slist_t*, SLIST )->head; VAR != (END); VAR = VAR->next )
 
 /**
- * Creates a single-node `slist` on the stack with \a NODE_DATA.
+ * Creates a single-node \ref slist on the stack with \a NODE_DATA.
  *
- * @param VAR The name for the `slist` variable.
+ * @param VAR The name for the \ref slist variable.
  * @param NODE_DATA A pointer to the node data.
  */
 #define SLIST_VAR_INIT(VAR,NODE_DATA)                                 \
@@ -177,7 +177,7 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
 /**
  * Duplicates \a src_list and all of its nodes.
  *
- * @param src_list The <code>\ref slist</code> to duplicate; may ne NULL.
+ * @param src_list The \ref slist to duplicate; may ne NULL.
  * @param n The number of nodes to duplicate; -1 is equivalent to slist_len().
  * @param dup_fn A pointer to a function to use to duplicate the data at each
  * node of \a src_list or NULL if none is required (hence a shallow copy will
@@ -193,7 +193,7 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n, slist_dup_fn_t dup_fn );
 /**
  * Gets whether \a list is empty.
  *
- * @param list A pointer to the <code>\ref slist</code> to check.
+ * @param list A pointer to the \ref slist to check.
  * @return Returns `true` only if \a list is empty.
  *
  * @note This is an O(1) operation.
@@ -224,7 +224,7 @@ void slist_free_if( slist_t *list, slist_predicate_fn_t pred_fn );
  * Initializes \a list.  This is not necessary for either global or `static`
  * lists.
  *
- * @param list A pointer to the <code>\ref slist</code> to initialize.
+ * @param list A pointer to the \ref slist to initialize.
  *
  * @sa slist_cleanup()
  */
@@ -236,7 +236,7 @@ void slist_init( slist_t *list ) {
 /**
  * Gets the length of \a list.
  *
- * @param list A pointer to the <code>\ref slist</code> to get the length of.
+ * @param list A pointer to the \ref slist to get the length of.
  * @return Returns said length.
  *
  * @note This is an O(1) operation.
@@ -251,7 +251,7 @@ size_t slist_len( slist_t const *list ) {
 /**
  * Peeks at the data at \a offset of \a list.
  *
- * @param list A pointer to the <code>\ref slist</code>.
+ * @param list A pointer to the \ref slist.
  * @param offset The offset (starting at 0) of the data to get.
  * @return Returns the data from the node at \a offset or NULL if \a offset
  * &gt;= slist_len().
@@ -268,7 +268,7 @@ void* slist_peek_at( slist_t const *list, size_t offset );
 /**
  * Peeks at the data at \a roffset from the tail of \a list.
  *
- * @param list A pointer to the <code>\ref slist</code>.
+ * @param list A pointer to the \ref slist.
  * @param roffset The reverse offset (starting at 0) of the data to get.
  * @return Returns the data from the node at \a roffset or NULL if \a roffset
  * &gt;= slist_len().
@@ -288,7 +288,7 @@ void* slist_peek_atr( slist_t const *list, size_t roffset ) {
 /**
  * Peeks at the data at the head of \a list.
  *
- * @param list A pointer to the <code>\ref slist</code>.
+ * @param list A pointer to the \ref slist.
  * @return Returns the data from the node at the head of \a list or NULL if \a
  * list is empty.
  *
@@ -306,7 +306,7 @@ void* slist_peek_head( slist_t const *list ) {
 /**
  * Peeks at the data at the tail of \a list.
  *
- * @param list A pointer to the <code>\ref slist</code>.
+ * @param list A pointer to the \ref slist.
  * @return Returns the data from the node at the tail of \a list or NULL if \a
  * list is empty.
  *
@@ -324,7 +324,7 @@ void* slist_peek_tail( slist_t const *list ) {
 /**
  * Pops data from the head of \a list.
  *
- * @param list The pointer to the <code>\ref slist</code>.
+ * @param list The pointer to the \ref slist.
  * @return Returns the data from the head of \a list.  The caller is
  * responsible for freeing it (if necessary).
  *
@@ -336,7 +336,7 @@ void* slist_pop_head( slist_t *list );
 /**
  * Pushes a node onto the head of \a list.
  *
- * @param list A pointer to the <code>\ref slist</code>.
+ * @param list A pointer to the \ref slist.
  * @param data The pointer to the data to add.
  *
  * @note This is an O(1) operation.
@@ -349,8 +349,8 @@ void slist_push_head( slist_t *list, void *data );
 /**
  * Pushes \a src_list onto the head of \a dst_list.
  *
- * @param dst_list The <code>\ref slist</code> to push onto.
- * @param src_list The <code>\ref slist</code> to push.  It is made empty.
+ * @param dst_list The \ref slist to push onto.
+ * @param src_list The \ref slist to push.  It is made empty.
  *
  * @note This is an O(1) operation.
  *
@@ -362,8 +362,8 @@ void slist_push_list_head( slist_t *dst_list, slist_t *src_list );
 /**
  * Pushes \a src_list onto the tail of \a dst_list.
  *
- * @param dst_list The <code>\ref slist</code> to push onto.
- * @param src_list The <code>\ref slist</code> to push.  It is made empty.
+ * @param dst_list The \ref slist to push onto.
+ * @param src_list The \ref slist to push.  It is made empty.
  *
  * @note This is an O(1) operation.
  *
@@ -375,7 +375,7 @@ void slist_push_list_tail( slist_t *dst_list, slist_t *src_list );
 /**
  * Appends \a data onto the tail of \a list.
  *
- * @param list The <code>\ref slist</code> to push onto.
+ * @param list The \ref slist to push onto.
  * @param data The data to pushed.
  *
  * @note This is an O(1) operation.

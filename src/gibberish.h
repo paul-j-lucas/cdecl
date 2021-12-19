@@ -46,8 +46,8 @@
 // Flags for c_ast_gibberish() and c_typedef_gibberish().
 
 /**
- * Unset value for <code>\ref c_gib_flags_t</code>.  Can also be used to mean
- * _not_ to print in gibberish (hence, print in English).
+ * Unset value for \ref c_gib_flags_t.  Can also be used to mean _not_ to print
+ * in gibberish (hence, print in English).
  */
 #define C_GIB_NONE        0u
 
