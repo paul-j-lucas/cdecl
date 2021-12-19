@@ -46,10 +46,10 @@
 
 /**
  * @file
- * Declares types to represent a Red-Black Tree as well as functions for
+ * Declares types to represent a _Red-Black Tree_ as well as functions for
  * manipulating said trees.
  *
- * @sa [Red-black tree](https://en.wikipedia.org/wiki/Red-black_tree)
+ * @sa [Red-Black Tree](https://en.wikipedia.org/wiki/Red-black_tree)
  */
 
 // local
