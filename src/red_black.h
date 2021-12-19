@@ -102,8 +102,8 @@ typedef bool (*rb_visit_fn_t)( void *node_data, void *v_data );
  * Red-black tree colors.
  */
 enum rb_color {
-  RB_BLACK,
-  RB_RED
+  RB_BLACK,                             ///< Black.
+  RB_RED                                ///< Red.
 };
 
 /**
