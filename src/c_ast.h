@@ -104,7 +104,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_FUNC_MASK_MEMBER    0x3u
 
 /**
- * Convenience macro for iterating over all function-like parameters.
+ * Convenience macro for iterating over all parameters of a function-like AST.
  *
  * @param VAR The \ref c_ast_param_t loop variable.
  * @param AST The AST to iterate the function-like parameters of.

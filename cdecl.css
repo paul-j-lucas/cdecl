@@ -23,7 +23,11 @@
   font-weight: bold;
 }
 
-.memItemLeft, .memItemRight, .memname {
+.fieldname {
+  font-family: monospace, fixed;
+}
+
+.memItemLeft, .memItemRight, .memname, .memtitle {
   font-family: monospace, fixed;
 }
 

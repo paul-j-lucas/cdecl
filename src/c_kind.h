@@ -191,9 +191,9 @@ enum c_ast_kind {
 };
 
 /**
- * Shorthand for any kind of function-like parent: #K_APPLE_BLOCK,
- * #K_CONSTRUCTOR, #K_DESTRUCTOR, #K_FUNCTION, #K_OPERATOR,
- * #K_USER_DEF_CONVERSION, or #K_USER_DEF_LITERAL.
+ * Shorthand for any kind of function-like AST: #K_APPLE_BLOCK, #K_CONSTRUCTOR,
+ * #K_DESTRUCTOR, #K_FUNCTION, #K_OPERATOR, #K_USER_DEF_CONVERSION, or
+ * #K_USER_DEF_LITERAL.
  */
 #define K_ANY_FUNCTION_LIKE   ( K_APPLE_BLOCK | K_CONSTRUCTOR | K_DESTRUCTOR \
                               | K_FUNCTION | K_OPERATOR \

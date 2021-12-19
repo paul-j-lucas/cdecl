@@ -168,10 +168,10 @@ struct c_ast_pair {
 enum c_cast_kind {
   C_CAST_NONE,                          ///< Not a cast.
   C_CAST_C,                             ///< C-style cast.
-  C_CAST_CONST,                         ///< `const_cast`.
-  C_CAST_DYNAMIC,                       ///< `dynamic_cast`.
-  C_CAST_REINTERPRET,                   ///< `reinterpret_cast`.
-  C_CAST_STATIC                         ///< `static_cast`.
+  C_CAST_CONST,                         ///< C++ `const_cast`.
+  C_CAST_DYNAMIC,                       ///< C++ `dynamic_cast`.
+  C_CAST_REINTERPRET,                   ///< C++ `reinterpret_cast`.
+  C_CAST_STATIC                         ///< C++ `static_cast`.
 };
 
 /**
