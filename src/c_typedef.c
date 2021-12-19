@@ -575,6 +575,8 @@ static char const *const PREDEFINED_STD_CPP_20_REQUIRED[] = {
 
 /**
  * Embedded C types.
+ *
+ * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
  */
 static char const *const PREDEFINED_EMBEDDED_C[] = {
   "typedef          short _Accum int_hk_t",

@@ -723,6 +723,8 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
  *
  * @param ast The built-in AST to check.
  * @return Returns `true` only if all checks passed.
+ *
+ * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
  */
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_emc( c_ast_t const *ast ) {
@@ -2092,6 +2094,8 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
  *
  * @param ast The built-in AST to check.
  * @return Returns `true` only if all checks passed.
+ *
+ * @sa [Unified Parallel C](http://upc-lang.org/)
  */
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_upc( c_ast_t const *ast ) {
