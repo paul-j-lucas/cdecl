@@ -102,13 +102,21 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
 
   if ( src_list != NULL && n != 0 ) {
     size_t un = STATIC_CAST( size_t, n );
-    FOREACH_SLIST_NODE( src_node, src_list ) {
-      if ( un-- == 0 )
-        break;
-      void *const dst_data = dup_fn != NULL ?
-        (*dup_fn)( src_node->data ) : src_node->data;
-      slist_push_tail( &dst_list, dst_data );
-    } // for
+    if ( dup_fn == NULL ) {             // avoid repeated check in loop
+      FOREACH_SLIST_NODE( src_node, src_list ) {
+        if ( un-- == 0 )
+          break;
+        slist_push_tail( &dst_list, src_node->data );
+      } // for
+    }
+    else {
+      FOREACH_SLIST_NODE( src_node, src_list ) {
+        if ( un-- == 0 )
+          break;
+        void *const dst_data = (*dup_fn)( src_node->data );
+        slist_push_tail( &dst_list, dst_data );
+      } // for
+    }
   }
 
   return dst_list;
