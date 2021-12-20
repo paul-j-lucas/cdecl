@@ -553,6 +553,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_efi-c.test \
 	tests/explain_en-knr.test \
 	tests/explain_etsf_v.test \
+	tests/explain_f2i_v-redef.test \
 	tests/explain_f_ai.test \
 	tests/explain_f_k-knr.test \
 	tests/explain_f_typedef_ai.test \

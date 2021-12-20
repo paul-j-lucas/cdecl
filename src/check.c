@@ -195,6 +195,9 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params_knr( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_func_params_redef( c_ast_t const* );
+
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_default( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
@@ -1148,7 +1151,6 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           //
           //      strlen(s)
           //        char *s             // illegal in C2X
-          //      {
           //
           print_error( &param_ast->loc,
             "type specifier required by %s\n",
@@ -1207,7 +1209,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     return false;
   }
 
-  return true;
+  return c_ast_check_func_params_redef( ast );
 
 only_void:
   print_error( &void_ast->loc,
@@ -1247,6 +1249,40 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
         return false;
       CASE_K_PLACEHOLDER;
     } // switch
+  } // for
+
+  return c_ast_check_func_params_redef( ast );
+}
+
+/**
+ * Checks function-like parameters for redefinition (duplicate names).
+ *
+ * @param The function-like AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
+
+  size_t const n_params = c_ast_params_count( ast );
+  c_sname_t const *snames[ n_params ];
+  unsigned n_snames = 0;
+
+  FOREACH_AST_FUNC_PARAM( param, ast ) {
+    c_ast_t const *const param_ast = c_param_ast( param );
+    if ( c_sname_empty( &param_ast->sname ) )
+      continue;
+    for ( size_t i = 0; i < n_snames; ++i ) {
+      if ( c_sname_cmp( &param_ast->sname, snames[i] ) == 0 ) {
+        print_error( &param_ast->loc,
+          "\"%s\": redefinition of parameter\n",
+          c_sname_full_name( &param_ast->sname )
+        );
+        return false;
+      }
+    } // for
+    snames[ n_snames++ ] = &param_ast->sname;
   } // for
 
   return true;

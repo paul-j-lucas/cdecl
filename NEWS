@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.9
+
+** Function-like parameter redefinition
+Function-like parameters are now checked for redefinition (more than one
+parameter having the same name).
+
+
 * Changes in Cdecl 11.8
 
 ** New cdecl keywords
