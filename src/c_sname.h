@@ -411,7 +411,7 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
  * @param sname The scoped name to get the name at \a roffset of.
  * @param roffset The reverse offset (starting at 0) of the name to get.
  * @return Returns the name at \a roffset or the empty string if \a roffset
- * &gt;= c_sname_count().
+ * &ge; c_sname_count().
  *
  * @sa c_sname_full_name()
  * @sa c_sname_scope_name()

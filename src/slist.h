@@ -254,7 +254,7 @@ size_t slist_len( slist_t const *list ) {
  * @param list A pointer to the \ref slist.
  * @param offset The offset (starting at 0) of the data to get.
  * @return Returns the data from the node at \a offset or NULL if \a offset
- * &gt;= slist_len().
+ * &ge; slist_len().
  *
  * @note This is an O(n) operation.
  *
@@ -271,7 +271,7 @@ void* slist_peek_at( slist_t const *list, size_t offset );
  * @param list A pointer to the \ref slist.
  * @param roffset The reverse offset (starting at 0) of the data to get.
  * @return Returns the data from the node at \a roffset or NULL if \a roffset
- * &gt;= slist_len().
+ * &ge; slist_len().
  *
  * @note This is an O(n) operation.
  *

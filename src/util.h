@@ -496,7 +496,7 @@ _GL_INLINE_HEADER_BEGIN
 #endif /* __GNUC__ */
 
 /**
- * A special-case of #INTERNAL_ERR that prints an unexpected integer value.
+ * A special-case of #INTERNAL_ERR() that prints an unexpected integer value.
  *
  * @param EXPR The expression having the unexpected value.
  *
