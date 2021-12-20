@@ -1,3 +1,11 @@
+2021-12-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/sti_free/sti_cleanup/
+   * c_ast.c, c_ast.h, c_typedef.c, c_typedef.h, check.c, red_black.c,
+     red_black.h: s/visitor/visit_fn/
+   * c_ast.c, c_ast.h, c_ast_util.c, c_typedef.c: s/equiv/equal/
+   * c_ast.h, c_operator.h, check.c, dump.c, parser.y: s/C_FUNC/C_FN/
+
 2021-12-16  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c: #include sort.
