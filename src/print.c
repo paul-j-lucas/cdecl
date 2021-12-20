@@ -157,7 +157,7 @@ static size_t print_caret( size_t error_column ) {
     print_input_line( &error_column, term_columns );
   }
 
-  EPRINTF( "%*s", (int)error_column, "" );
+  EPRINTF( "%*s", STATIC_CAST( int, error_column ), "" );
   SGR_START_COLOR( stderr, caret );
   EPUTC( '^' );
   SGR_END_COLOR( stderr );
@@ -248,7 +248,7 @@ static void print_input_line( size_t *error_column, size_t term_columns ) {
 
   EPRINTF( "%s%.*s%s\n",
     (more[0] ? MORE[0] : ""),
-    (int)print_columns, input_line,
+    STATIC_CAST( int, print_columns ), input_line,
     (more[1] ? MORE[1] : "")
   );
 }
@@ -298,7 +298,7 @@ static size_t token_len( char const *s, size_t s_len, size_t token_offset ) {
         break;
     }
   } // while
-  return (size_t)(s - s0);
+  return STATIC_CAST( size_t, s - s0 );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -418,7 +418,7 @@ void print_hint( char const *format, ... ) {
 
 void print_loc( c_loc_t const *loc ) {
   assert( loc != NULL );
-  size_t const column = print_caret( (size_t)loc->first_column );
+  size_t const column = print_caret( STATIC_CAST( size_t, loc->first_column ) );
   SGR_START_COLOR( stderr, locus );
   if ( opt_conf_file != NULL )
     EPRINTF( "%s:%d,", opt_conf_file, loc->first_line + 1 );

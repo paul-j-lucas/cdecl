@@ -85,7 +85,7 @@ static unsigned check_tigetnum( char const *capname ) {
       "tigetnum(\"%s\") returned error code %d", capname, num
     );
   }
-  return (unsigned)num;
+  return STATIC_CAST( unsigned, num );
 }
 #endif /* ENABLE_TERM_SIZE */
 
@@ -140,7 +140,7 @@ char* check_strdup_tolower( char const *s ) {
     return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = MALLOC( char, strlen( s ) + 1/*\0*/ );
   IF_EXIT( dup_s == NULL, EX_OSERR );
-  for ( char *p = dup_s; (*p++ = (char)tolower( *s++ )); )
+  for ( char *p = dup_s; (*p++ = STATIC_CAST( char, tolower( *s++ ) )); )
     ;
   return dup_s;
 }

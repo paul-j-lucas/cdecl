@@ -90,7 +90,7 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
     switch ( *s ) {
       case ':':
       case '\0': {                      // found end of glob
-        size_t const glob_len = (size_t)(s - glob_begin);
+        size_t const glob_len = STATIC_CAST( size_t, s - glob_begin );
         assert( glob_len > 0 );
         assert( glob_index < sglob->count );
         sglob->pattern[ glob_index ] = check_strndup( glob_begin, glob_len );

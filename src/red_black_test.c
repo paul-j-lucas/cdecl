@@ -50,7 +50,7 @@ static bool test_rb_visitor( void *node_data, void *v_data ) {
   char const *const str = node_data;
   unsigned *const letter_offset_ptr = v_data;
   if ( TEST( str != NULL ) )
-    TEST( str[0] == (char)('A' + *letter_offset_ptr) );
+    TEST( str[0] == STATIC_CAST( char, 'A' + *letter_offset_ptr ) );
   ++*letter_offset_ptr;
   return false;
 }

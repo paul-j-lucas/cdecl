@@ -101,7 +101,7 @@ static c_operator_t const C_OPERATOR[] = {
   { C_OP_PIPE2,           "||",       OVER, 1, 2,   LANG_CPP_ANY      },
   { C_OP_TILDE,           "~",        OVER, 0, 1,   LANG_CPP_ANY      },
 
-  { (c_oper_id_t)(C_OP_TILDE + 1),
+  { STATIC_CAST( c_oper_id_t, C_OP_TILDE + 1),
                           NULL,       XXX,  0, 0,   LANG_NONE         },
 };
 

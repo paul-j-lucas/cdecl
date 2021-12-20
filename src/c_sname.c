@@ -210,7 +210,7 @@ bool c_sname_parse( char const *s, c_sname_t *sname ) {
   c_sname_init( &rv );
 
   for ( char const *end; (end = parse_identifier( s )) != NULL; ) {
-    char *const name = check_strndup( s, (size_t)(end - s) );
+    char *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
 
     // Ensure that the name is NOT a keyword.
     c_keyword_t const *const k =

@@ -268,7 +268,9 @@ static size_t copy_typedefs( did_you_mean_t **const pdym ) {
  */
 PJL_WARN_UNUSED_RESULT
 static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
-  int const cmp = (int)i_dym->dam_lev_dist - (int)j_dym->dam_lev_dist;
+  int const cmp =
+    STATIC_CAST( int, i_dym->dam_lev_dist ) -
+    STATIC_CAST( int, j_dym->dam_lev_dist );
   return cmp != 0 ? cmp : strcmp( i_dym->token, j_dym->token );
 }
 
@@ -311,7 +313,8 @@ PJL_WARN_UNUSED_RESULT
 static bool is_similar_enough( dam_lev_t dam_lev_dist, double percent,
                                size_t target_len ) {
   assert( percent > 0 && percent < 1 );
-  return dam_lev_dist <= (dam_lev_t)((double)target_len * percent + 0.5);
+  return dam_lev_dist <=
+    STATIC_CAST( dam_lev_t, STATIC_CAST( double, target_len ) * percent + 0.5 );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

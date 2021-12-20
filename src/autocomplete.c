@@ -168,7 +168,8 @@ static char const* const* init_set_options( void ) {
 
   // pre-flight to calculate array size
   FOREACH_SET_OPTION( opt ) {
-    set_options_size += 1 + (size_t)(opt->type == SET_OPT_TOGGLE /* "no" */);
+    set_options_size += 1
+      + STATIC_CAST( size_t, opt->type == SET_OPT_TOGGLE /* "no" */);
   } // for
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
@@ -243,8 +244,8 @@ PJL_WARN_UNUSED_RESULT
 static bool is_command( char const *command ) {
   assert( command != NULL );
   size_t const command_len = strlen( command );
-  if ( command_len > (size_t)rl_end )   // more chars than in rl_line_buffer?
-    return false;
+  if ( command_len > STATIC_CAST( size_t, rl_end ) )
+    return false;                       // more chars than in rl_line_buffer?
   return strncmp( rl_line_buffer, command, command_len ) == 0;
 }
 

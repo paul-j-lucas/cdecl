@@ -98,7 +98,7 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
  * @param out The `FILE` to print to.
  */
 static void dump_indent( unsigned indent, FILE *out ) {
-  FPRINTF( out, "%*s", (int)(indent * DUMP_INDENT), "" );
+  FPRINTF( out, "%*s", STATIC_CAST( int, indent * DUMP_INDENT ), "" );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -132,7 +132,8 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
     DUMP_FORMAT(
       "parent->unique_id = " PRId_C_AST_SID_T ",\n",
       ast->parent_ast != NULL ?
-        (c_ast_sid_t)ast->parent_ast->unique_id : (c_ast_sid_t)(-1)
+        STATIC_CAST( c_ast_sid_t, ast->parent_ast->unique_id ) :
+        STATIC_CAST( c_ast_sid_t, -1 )
     );
 
     if ( ast->align.kind != C_ALIGNAS_NONE ) {

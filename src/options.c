@@ -495,7 +495,8 @@ static void parse_options( int argc, char const *argv[] ) {
       case ':': {                       // option missing required argument
         strbuf_t sbuf;
         FATAL_ERR( EX_USAGE,
-          "\"%s\" requires an argument\n", opt_format( (char)optopt, &sbuf )
+          "\"%s\" requires an argument\n",
+          opt_format( STATIC_CAST( char, optopt ), &sbuf )
         );
       }
 
@@ -515,7 +516,7 @@ static void parse_options( int argc, char const *argv[] ) {
             exit( EX_USAGE );
           }
         }
-        EPRINTF( "%s: '%c': invalid option", me, (char)optopt );
+        EPRINTF( "%s: '%c': invalid option", me, STATIC_CAST( char, optopt ) );
 
 use_help:
         print_use_help();

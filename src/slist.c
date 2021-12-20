@@ -75,7 +75,10 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
   if ( cmp_fn == NULL ) {               // avoid repeated check in loop
     for ( ; i_node != NULL && j_node != NULL;
           i_node = i_node->next, j_node = j_node->next ) {
-      int const cmp = (int)((intptr_t)i_node->data - (intptr_t)j_node->data);
+      int const cmp = STATIC_CAST( int,
+        REINTERPRET_CAST( intptr_t, i_node->data ) -
+        REINTERPRET_CAST( intptr_t, j_node->data )
+      );
       if ( cmp != 0 )
         return cmp;
     } // for
@@ -98,7 +101,7 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
   slist_init( &dst_list );
 
   if ( src_list != NULL && n != 0 ) {
-    size_t un = (size_t)n;
+    size_t un = STATIC_CAST( size_t, n );
     FOREACH_SLIST_NODE( src_node, src_list ) {
       if ( un-- == 0 )
         break;
