@@ -156,17 +156,17 @@ static inline bool is_red( rb_node_t const *node ) {
  * Frees all memory associated with \a node.
  *
  * @param node A pointer to the rb_node to free.
- * @param data_free_fn A pointer to a function used to free data associated
- * with \a node or NULL if unnecessary.
+ * @param free_fn A pointer to a function used to free data associated with \a
+ * node or NULL if unnecessary.
  */
-static void rb_node_free( rb_node_t *node, rb_data_free_fn_t data_free_fn ) {
+static void rb_node_free( rb_node_t *node, rb_free_fn_t free_fn ) {
   assert( node != NULL );
 
   if ( node != RB_NIL ) {
-    rb_node_free( node->child[RB_L], data_free_fn );
-    rb_node_free( node->child[RB_R], data_free_fn );
-    if ( data_free_fn != NULL )
-      (*data_free_fn)( node->data );
+    rb_node_free( node->child[RB_L], free_fn );
+    rb_node_free( node->child[RB_R], free_fn );
+    if ( free_fn != NULL )
+      (*free_fn)( node->data );
     free( node );
   }
 }
@@ -302,11 +302,11 @@ static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void rb_tree_cleanup( rb_tree_t *tree, rb_data_free_fn_t data_free_fn ) {
+void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn ) {
   if ( tree != NULL && RB_FIRST(tree) != NULL ) {
-    rb_node_free( RB_FIRST(tree), data_free_fn );
+    rb_node_free( RB_FIRST(tree), free_fn );
     rb_node_init( RB_ROOT(tree) );
-    tree->data_cmp_fn = NULL;
+    tree->cmp_fn = NULL;
   }
 }
 
@@ -349,7 +349,7 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
   assert( data != NULL );
 
   for ( rb_node_t *node = RB_FIRST(tree); node != RB_NIL; ) {
-    int const cmp = (*tree->data_cmp_fn)( data, node->data );
+    int const cmp = (*tree->cmp_fn)( data, node->data );
     if ( cmp == 0 )
       return node;
     node = node->child[ cmp > 0 ];
@@ -357,12 +357,12 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
   return NULL;
 }
 
-void rb_tree_init( rb_tree_t *tree, rb_data_cmp_fn_t data_cmp_fn ) {
+void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn ) {
   assert( tree != NULL );
-  assert( data_cmp_fn != NULL );
+  assert( cmp_fn != NULL );
 
   rb_node_init( RB_ROOT(tree) );
-  tree->data_cmp_fn = data_cmp_fn;
+  tree->cmp_fn = cmp_fn;
 }
 
 rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
@@ -374,7 +374,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
 
   // Find correct insertion point.
   while ( node != RB_NIL ) {
-    int const cmp = (*tree->data_cmp_fn)( data, node->data );
+    int const cmp = (*tree->cmp_fn)( data, node->data );
     if ( cmp == 0 )
       return node;
     parent = node;
@@ -388,7 +388,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   node->parent = parent;
 
   rb_dir_t dir = parent != RB_ROOT(tree) &&
-    (*tree->data_cmp_fn)( data, parent->data ) > 0;
+    (*tree->cmp_fn)( data, parent->data ) > 0;
   assert( parent->child[dir] == RB_NIL );
   parent->child[dir] = node;
 

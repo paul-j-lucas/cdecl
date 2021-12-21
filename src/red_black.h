@@ -78,7 +78,7 @@ typedef enum   rb_color rb_color_t;
  * to whether the data pointed to by \a i_data is less than, equal to, or
  * greater than the data pointed to by \a j_data.
  */
-typedef int (*rb_data_cmp_fn_t)( void const *i_data, void const *j_data );
+typedef int (*rb_cmp_fn_t)( void const *i_data, void const *j_data );
 
 /**
  * The signature for a function passed to rb_tree_cleanup() used to free data
@@ -86,7 +86,7 @@ typedef int (*rb_data_cmp_fn_t)( void const *i_data, void const *j_data );
  *
  * @param data A pointer to the data to free.
  */
-typedef void (*rb_data_free_fn_t)( void *data );
+typedef void (*rb_free_fn_t)( void *data );
 
 /**
  * The signature for a function passed to rb_tree_visit().
@@ -122,8 +122,8 @@ struct rb_node {
  * @sa rb_tree_init()
  */
 struct rb_tree {
-  rb_node_t         root;               ///< Root node.
-  rb_data_cmp_fn_t  data_cmp_fn;        ///< Data comparison function.
+  rb_node_t   root;                     ///< Root node.
+  rb_cmp_fn_t cmp_fn;                   ///< Data comparison function.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -134,12 +134,12 @@ struct rb_tree {
  *
  * @param tree The red-black tree to clean up.  If NULL, does nothing;
  * otherwise, reinitializes \a tree upon completion.
- * @param data_free_fn A pointer to a function used to free data associated
- * with each node or NULL if unnecessary.
+ * @param free_fn A pointer to a function used to free data associated with
+ * each node or NULL if unnecessary.
  *
  * @sa rb_tree_init()
  */
-void rb_tree_cleanup( rb_tree_t *tree, rb_data_free_fn_t data_free_fn );
+void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn );
 
 /**
  * Deletes \a node from \a tree.
@@ -173,12 +173,11 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data );
  * Initializes a red-black tree.
  *
  * @param tree The red-black tree to initialize.
- * @param data_cmp_fn A pointer to a function used to compare data between
- * nodes.
+ * @param cmp_fn A pointer to a function used to compare data between nodes.
  *
  * @sa rb_tree_cleanup()
  */
-void rb_tree_init( rb_tree_t *tree, rb_data_cmp_fn_t data_cmp_fn );
+void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn );
 
 /**
  * Inserts \a data into \a tree.
