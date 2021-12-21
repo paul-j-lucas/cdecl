@@ -7,7 +7,7 @@ builtin_type_ast ::= builtin_btid = {
   builtin_btid = "int" (btid = 0x2001),
   builtin_type_ast = {
     sname = "",
-    unique_id = 1327,
+    unique_id = 1330,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -21,7 +21,7 @@ builtin_type_ast ::= builtin_btid = {
 east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
   atomic_builtin_typedef_type_c_ast = {
     sname = "",
-    unique_id = 1327,
+    unique_id = 1330,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -33,7 +33,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
-    unique_id = 1327,
+    unique_id = 1330,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -52,7 +52,7 @@ sname_c ::= NAME = {
 sname_c_ast ::= sname_c = {
   (type_c_ast) = {
     sname = "",
-    unique_id = 1327,
+    unique_id = 1330,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -65,7 +65,7 @@ sname_c_ast ::= sname_c = {
   bit_field_c_int_opt = 0,
   sname_c_ast = {
     sname = "i" (none),
-    unique_id = 1327,
+    unique_id = 1330,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -81,7 +81,7 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "i" (none),
-    unique_id = 1328,
+    unique_id = 1331,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -92,7 +92,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c_astp = {
     sname = "i" (none),
-    unique_id = 1327,
+    unique_id = 1330,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -103,7 +103,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c = {
     sname = "i" (none),
-    unique_id = 1327,
+    unique_id = 1330,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,

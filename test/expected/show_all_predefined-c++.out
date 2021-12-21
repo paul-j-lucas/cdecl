@@ -477,6 +477,7 @@ define iostate of class ios_base of namespace std as unsigned int
 define openmode of class ios_base of namespace std as unsigned int
 define seekdir of class ios_base of namespace std as int
 define iostream of namespace std as class iostream
+define ispanstream of namespace std as class ispanstream
 define istream of namespace std as class istream
 define istringstream of namespace std as class istringstream
 define jthread of namespace std as class jthread
@@ -513,6 +514,7 @@ define shared_mutex of namespace std as class shared_mutex
 define shared_timed_mutex of namespace std as class shared_timed_mutex
 define sig_atomic_t of namespace std as int
 define size_t of namespace std as unsigned long int
+define stacktrace_entry of namespace std as class stacktrace_entry
 define stop_source of namespace std as class stop_source
 define stop_token of namespace std as class stop_token
 define streambuf of namespace std as class streambuf
@@ -543,6 +545,7 @@ define wfstream of namespace std as class wfstream
 define wifstream of namespace std as class wifstream
 define wios of namespace std as class wios
 define wiostream of namespace std as class wiostream
+define wispanstream of namespace std as class wispanstream
 define wistream of namespace std as class wistream
 define wistringstream of namespace std as class wistringstream
 define wofstream of namespace std as class wofstream

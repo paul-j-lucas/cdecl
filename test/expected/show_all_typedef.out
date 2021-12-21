@@ -478,6 +478,7 @@ class std::ios_base { typedef unsigned iostate; };
 class std::ios_base { typedef unsigned openmode; };
 class std::ios_base { typedef int seekdir; };
 namespace std { class iostream; }
+namespace std { class ispanstream; }
 namespace std { class istream; }
 namespace std { class istringstream; }
 namespace std { class jthread; }
@@ -514,6 +515,7 @@ namespace std { class shared_mutex; }
 namespace std { class shared_timed_mutex; }
 namespace std { typedef int sig_atomic_t; }
 namespace std { typedef unsigned long size_t; }
+namespace std { class stacktrace_entry; }
 namespace std { class stop_source; }
 namespace std { class stop_token; }
 namespace std { class streambuf; }
@@ -544,6 +546,7 @@ namespace std { class wfstream; }
 namespace std { class wifstream; }
 namespace std { class wios; }
 namespace std { class wiostream; }
+namespace std { class wispanstream; }
 namespace std { class wistream; }
 namespace std { class wistringstream; }
 namespace std { class wofstream; }

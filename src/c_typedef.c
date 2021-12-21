@@ -574,6 +574,17 @@ static char const *const PREDEFINED_STD_CPP_20_REQUIRED[] = {
 };
 
 /**
+ * Predefined types for C++23.
+ */
+static char const *const PREDEFINED_STD_CPP_23[] = {
+  "namespace std { class  ispanstream; }",
+  "namespace std { class wispanstream; }",
+  "namespace std { class  stacktrace_entry; }",
+
+  NULL
+};
+
+/**
  * Embedded C types.
  *
  * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
@@ -1105,6 +1116,9 @@ void c_typedef_init( void ) {
 
     predefined_lang_ids = LANG_MIN(CPP_20);
     parse_predefined_types( PREDEFINED_STD_CPP_20 );
+
+    predefined_lang_ids = LANG_MIN(CPP_23);
+    parse_predefined_types( PREDEFINED_STD_CPP_23 );
   }
 
   predefined_lang_ids = LANG_MIN(CPP_20);

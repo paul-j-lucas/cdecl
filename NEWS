@@ -23,6 +23,10 @@ correctly forbidden:
 Function-like parameters are now checked for redefinition (more than one
 parameter having the same name).
 
+** More C++ standard types
+Added the standard C++ types `std::ispanstream`, `std::stacktrace_entry`,
+and `std::wispanstream`.
+
 
 * Changes in Cdecl 11.8
 
