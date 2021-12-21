@@ -183,14 +183,14 @@ static bool cdecl_parse_argv( int argc, char const *const argv[] ) {
   if ( argc == 0 )                      // cdecl
     return cdecl_parse_stdin();
   if ( is_command( me, CDECL_COMMAND_PROG_NAME ) )
-    return cdecl_parse_command_line( me, argc, argv );
+    return cdecl_parse_command_line( /*command=*/me, argc, argv );
 
   //
   // Note that options_init() adjusts argv such that argv[0] becomes the first
   // argument (and no longer the program name).
   //
   if ( is_command( argv[0], CDECL_COMMAND_FIRST_ARG ) )
-    return cdecl_parse_command_line( NULL, argc, argv );
+    return cdecl_parse_command_line( /*command=*/NULL, argc, argv );
 
   if ( opt_explain )
     return cdecl_parse_command_line( L_EXPLAIN, argc, argv );
