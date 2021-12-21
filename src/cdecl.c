@@ -144,7 +144,7 @@ int main( int argc, char const *argv[] ) {
   c_typedef_init();
   lexer_reset( true );                  // resets line number
 
-  if ( !opt_no_conf )
+  if ( opt_read_conf )
     read_conf_file();
   opt_conf_file = NULL;                 // don't print in errors any more
   cdecl_initialized = true;

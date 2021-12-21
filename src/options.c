@@ -96,8 +96,8 @@ c_tid_t             opt_explicit_ecsu = TB_STRUCT | TB_UNION;
 c_graph_t           opt_graph;
 bool                opt_interactive;
 c_lang_id_t         opt_lang;
-bool                opt_no_conf;
 bool                opt_prompt = true;
+bool                opt_read_conf = true;
 bool                opt_semicolon = true;
 bool                opt_typedefs = true;
 
@@ -475,7 +475,7 @@ static void parse_options( int argc, char const *argv[] ) {
         opt_graph = C_GRAPH_TRI;
         break;
       case COPT(NO_CONFIG):
-        opt_no_conf = true;
+        opt_read_conf = false;
         break;
       case COPT(NO_PROMPT):
         opt_prompt = false;
