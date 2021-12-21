@@ -414,7 +414,8 @@ static void parse_options( int argc, char const *argv[] ) {
 
   for (;;) {
     int const opt = getopt_long(
-      argc, (char**)argv, CLI_OPTIONS_SHORT, CLI_OPTIONS_LONG, NULL
+      argc, CONST_CAST( char**, argv ), CLI_OPTIONS_SHORT, CLI_OPTIONS_LONG,
+      /*longindex=*/NULL
     );
     if ( opt == -1 )
       break;

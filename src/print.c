@@ -133,7 +133,7 @@ static size_t print_caret( size_t error_column ) {
 
   unsigned term_columns;
 #ifdef ENABLE_TERM_SIZE
-  get_term_columns_lines( &term_columns, NULL );
+  get_term_columns_lines( &term_columns, /*plines=*/NULL );
   if ( term_columns == 0 )
 #endif /* ENABLE_TERM_SIZE */
     term_columns = TERM_COLUMNS_DEFAULT;

@@ -299,7 +299,9 @@ static inline int parse_int( int base ) {
   // Standard strtol(3) doesn't understand a "0b" (binary) prefix, so skip over
   // it if the base is 2.
   //
-  return (int)strtol( lexer_token + (base == 2 ? 2 : 0), NULL, base );
+  return STATIC_CAST( int,
+    strtol( lexer_token + (base == 2 ? 2 : 0), /*endptr=*/NULL, base )
+  );
 }
 
 /**

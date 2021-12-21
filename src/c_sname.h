@@ -86,9 +86,23 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param VAR The \ref c_scope_t loop variable.
  * @param SNAME The \ref c_sname_t to iterate over the scopes of.
- * @param END The scope to end before; may be NULL.
+ *
+ * @sa #FOREACH_SNAME_SCOPE_UNTIL()
  */
-#define FOREACH_SNAME_SCOPE(VAR,SNAME,END) \
+#define FOREACH_SNAME_SCOPE(VAR,SNAME) \
+  FOREACH_SLIST_NODE( VAR, SNAME )
+
+/**
+ * Convenience macro for iterating over all scopes of an sname up to but not
+ * including \a END.
+ *
+ * @param VAR The \ref c_scope_t loop variable.
+ * @param SNAME The \ref c_sname_t to iterate over the scopes of.
+ * @param END The scope to end before; may be NULL.
+ *
+ * @sa #FOREACH_SNAME_SCOPE()
+ */
+#define FOREACH_SNAME_SCOPE_UNTIL(VAR,SNAME,END) \
   FOREACH_SLIST_NODE_UNTIL( VAR, SNAME, END )
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -1024,7 +1024,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
       //
       //      namespace S { namespace T { typedef int I; } }
       //
-      FOREACH_SNAME_SCOPE( scope, sname, sname->tail ) {
+      FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
         scope_type = c_scope_data( scope )->type;
         if ( scope_type.btids == TB_SCOPE )
           scope_type.btids = TB_NAMESPACE;

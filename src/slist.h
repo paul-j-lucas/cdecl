@@ -58,7 +58,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FOREACH_SLIST_NODE_UNTIL()
  */
 #define FOREACH_SLIST_NODE(VAR,SLIST) \
-  FOREACH_SLIST_NODE_UNTIL( VAR, SLIST, NULL )
+  FOREACH_SLIST_NODE_UNTIL( VAR, SLIST, /*END=*/NULL )
 
 /**
  * Convenience macro for iterating over the nodes of \a SLIST up to but not

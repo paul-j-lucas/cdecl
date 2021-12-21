@@ -293,7 +293,7 @@ void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
     FOREACH_SLIST_NODE( node, list ) {
       if ( true_or_set( &comma ) )
         FPUTS( ",\n", dout );
-      c_ast_dump( c_param_ast( node ), indent, NULL, dout );
+      c_ast_dump( c_param_ast( node ), indent, /*key0=*/NULL, dout );
     } // for
     --indent;
     FPUTC( '\n', dout );
@@ -309,7 +309,7 @@ void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
   if ( !c_sname_empty( sname ) ) {
     FPUTS( " (", dout );
     bool colon2 = false;
-    FOREACH_SNAME_SCOPE( scope, sname, NULL ) {
+    FOREACH_SNAME_SCOPE( scope, sname ) {
       if ( true_or_set( &colon2 ) )
         FPUTS( "::", dout );
       c_type_t const *const t = &c_scope_data( scope )->type;

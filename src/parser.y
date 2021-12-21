@@ -902,7 +902,7 @@ static void ia_free( void ) {
   c_sname_cleanup( &in_attr.current_scope );
   // Do _not_ pass &c_ast_free for the 3rd argument! All AST nodes were already
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
-  slist_cleanup( &in_attr.type_ast_stack, NULL );
+  slist_cleanup( &in_attr.type_ast_stack, /*free_fn=*/NULL );
   c_ast_list_gc( &in_attr.typedef_ast_list );
   MEM_ZERO( &in_attr );
 }

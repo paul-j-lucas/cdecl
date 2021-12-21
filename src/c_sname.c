@@ -62,7 +62,7 @@ static char const* c_sname_impl( strbuf_t *sbuf, c_sname_t const *sname,
   strbuf_reset( sbuf );
   bool colon2 = false;
 
-  FOREACH_SNAME_SCOPE( scope, sname, end_scope ) {
+  FOREACH_SNAME_SCOPE_UNTIL( scope, sname, end_scope ) {
     strbuf_sepsn( sbuf, "::", 2, &colon2 );
     c_scope_data_t const *const data = c_scope_data( scope );
     if ( data->type.stids != TS_NONE ) {
@@ -117,7 +117,7 @@ void c_sname_fill_in_namespaces( c_sname_t *sname ) {
   if ( !c_type_is_tid_any( local_type, TB_NAMESPACE ) )
     return;
 
-  FOREACH_SNAME_SCOPE( scope, sname, sname->tail ) {
+  FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
     c_type_t *const type = &c_scope_data( scope )->type;
     if ( c_type_is_none( type ) || c_type_is_tid_any( type, TB_SCOPE ) ) {
       type->btids &= c_tid_compl( TB_SCOPE );
@@ -133,7 +133,7 @@ void c_sname_free( c_sname_t *sname ) {
 
 char const* c_sname_full_name( c_sname_t const *sname ) {
   static strbuf_t sbuf;
-  return sname != NULL ? c_sname_impl( &sbuf, sname, NULL ) : "";
+  return sname != NULL ? c_sname_impl( &sbuf, sname, /*end_scope=*/NULL ) : "";
 }
 
 bool c_sname_is_ctor( c_sname_t const *sname ) {
@@ -195,7 +195,7 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
         ++sglob_index, scope = scope->next ) {
     assert( sglob_index < sglob->count );
     char const *const name = c_scope_data( scope )->name;
-    if ( fnmatch( sglob->pattern[ sglob_index ], name, 0 ) != 0 )
+    if ( fnmatch( sglob->pattern[ sglob_index ], name, /*flags=*/0 ) != 0 )
       return false;
   } // for
 

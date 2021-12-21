@@ -2509,7 +2509,7 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
 static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
   assert( sname != NULL );
 
-  FOREACH_SNAME_SCOPE( scope, sname, NULL ) {
+  FOREACH_SNAME_SCOPE( scope, sname ) {
     char const *const name = c_scope_data( scope )->name;
 
     // First, check to see if the name is a keyword in some other language.
@@ -2593,7 +2593,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   c_tid_t prev_btids = TB_NONE;
   unsigned prev_order = 0;
 
-  FOREACH_SNAME_SCOPE( scope, sname, NULL ) {
+  FOREACH_SNAME_SCOPE( scope, sname ) {
     c_type_t *const scope_type = &c_scope_data( scope )->type;
     //
     // Temporarily set scope->next to NULL to chop off any scopes past the

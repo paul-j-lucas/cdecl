@@ -58,12 +58,12 @@ static bool test_slist_cmp( void ) {
   // test empty and non-empty lists
   slist_push_tail( &list2, (void*)"A" );
   TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) != 0 );
-  slist_cleanup( &list2, NULL );
+  slist_cleanup( &list2, /*free_fn=*/NULL );
 
   // test non-empty and empty lists
   slist_push_tail( &list, (void*)"A" );
   TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) != 0 );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // test matching 1,2,3-element lists
   slist_push_tail( &list, (void*)"A" );
@@ -75,23 +75,23 @@ static bool test_slist_cmp( void ) {
   slist_push_tail( &list, (void*)"C" );
   slist_push_tail( &list2, (void*)"C" );
   TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) == 0 );
-  slist_cleanup( &list, NULL );
-  slist_cleanup( &list2, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
+  slist_cleanup( &list2, /*free_fn=*/NULL );
 
   // test 1-element non-matching lists
   slist_push_tail( &list, (void*)"A" );
   slist_push_tail( &list2, (void*)"B" );
   TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) < 0 );
-  slist_cleanup( &list, NULL );
-  slist_cleanup( &list2, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
+  slist_cleanup( &list2, /*free_fn=*/NULL );
 
   // test 1-element and 2-element lists
   slist_push_tail( &list, (void*)"A" );
   slist_push_tail( &list2, (void*)"A" );
   slist_push_tail( &list2, (void*)"B" );
   TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) < 0 );
-  slist_cleanup( &list, NULL );
-  slist_cleanup( &list2, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
+  slist_cleanup( &list2, /*free_fn=*/NULL );
 
   TEST_FN_END();
 }
@@ -105,40 +105,40 @@ static bool test_slist_dup( void ) {
   char *p;
 
   // empty list
-  list2 = slist_dup( &list, -1, NULL );
+  list2 = slist_dup( &list, -1, /*dup_fn=*/NULL );
   TEST( slist_empty( &list2 ) );
   TEST( slist_len( &list2 ) == 0 );
 
   // 1-element list
   slist_push_tail( &list, (void*)&X );
-  list2 = slist_dup( &list, -1, NULL );
+  list2 = slist_dup( &list, -1, /*dup_fn=*/NULL );
   TEST( !slist_empty( &list2 ) );
   TEST( slist_len( &list2 ) == 1 );
   if ( TEST( (p = slist_peek_head( &list2 )) != NULL ) ) {
     TEST( *p == 'X' );
     TEST( p == X );
   }
-  slist_cleanup( &list, NULL );
-  slist_cleanup( &list2, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
+  slist_cleanup( &list2, /*free_fn=*/NULL );
 
   // 2-element list
   slist_push_tail( &list, (void*)"A" );
   slist_push_tail( &list, (void*)"B" );
-  list2 = slist_dup( &list, -1, NULL );
+  list2 = slist_dup( &list, -1, /*dup_fn=*/NULL );
   TEST( !slist_empty( &list2 ) );
   TEST( slist_len( &list2 ) == 2 );
   if ( TEST( (p = slist_peek_head( &list2 )) != NULL ) )
     TEST( *p == 'A' );
   if ( TEST( (p = slist_peek_tail( &list2 )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, NULL );
-  slist_cleanup( &list2, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
+  slist_cleanup( &list2, /*free_fn=*/NULL );
 
   // 3-element list
   slist_push_tail( &list, (void*)"A" );
   slist_push_tail( &list, (void*)"B" );
   slist_push_tail( &list, (void*)"C" );
-  list2 = slist_dup( &list, -1, NULL );
+  list2 = slist_dup( &list, -1, /*dup_fn=*/NULL );
   TEST( !slist_empty( &list2 ) );
   TEST( slist_len( &list2 ) == 3 );
   if ( TEST( (p = slist_peek_head( &list2 )) != NULL ) )
@@ -147,8 +147,8 @@ static bool test_slist_dup( void ) {
     TEST( *p == 'B' );
   if ( TEST( (p = slist_peek_tail( &list2 )) != NULL ) )
     TEST( *p == 'C' );
-  slist_cleanup( &list, NULL );
-  slist_cleanup( &list2, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
+  slist_cleanup( &list2, /*free_fn=*/NULL );
 
   // check data_dup_fn
   slist_push_tail( &list, (void*)&X );
@@ -160,8 +160,8 @@ static bool test_slist_dup( void ) {
     if ( TEST( p != X ) )
       free( p );
   }
-  slist_cleanup( &list, NULL );
-  slist_cleanup( &list2, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
+  slist_cleanup( &list2, /*free_fn=*/NULL );
 
   TEST_FN_END();
 }
@@ -195,7 +195,7 @@ static bool test_slist_free_if( void ) {
     TEST( *p == 'B' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // test match list[0] and list[1] with list->len == 3
   slist_push_tail( &list, (void*)"A" );
@@ -207,7 +207,7 @@ static bool test_slist_free_if( void ) {
     TEST( *p == 'B' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // test match list[1] with list->len == 3
   slist_push_tail( &list, (void*)"A" );
@@ -220,7 +220,7 @@ static bool test_slist_free_if( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'C' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // test match list[1] with list->len == 2
   slist_push_tail( &list, (void*)"A" );
@@ -231,7 +231,7 @@ static bool test_slist_free_if( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'A' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // test match list[1] and list[2] with list->len == 3
   slist_push_tail( &list, (void*)"A" );
@@ -243,7 +243,7 @@ static bool test_slist_free_if( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'A' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   TEST_FN_END();
 }
@@ -264,7 +264,7 @@ static bool test_slist_peek_at( void ) {
   if ( TEST( (p = slist_peek_at( &list, 2 )) != NULL ) )
     TEST( *p == 'C' );
   TEST( slist_peek_at( &list, 3 ) == NULL );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   TEST_FN_END();
 }
@@ -285,7 +285,7 @@ static bool test_slist_peek_atr( void ) {
   if ( TEST( (p = slist_peek_atr( &list, 2 )) != NULL ) )
     TEST( *p == 'A' );
   TEST( slist_peek_at( &list, 4 ) == NULL );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   TEST_FN_END();
 }
@@ -311,7 +311,7 @@ static bool test_slist_pop_head( void ) {
     TEST( slist_empty( &list ) );
   }
   TEST( slist_pop_head( &list ) == NULL );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   TEST_FN_END();
 }
@@ -333,7 +333,7 @@ static bool test_slist_push_head( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   TEST_FN_END();
 }
@@ -363,7 +363,7 @@ static bool test_slist_push_list_head( void ) {
   TEST( slist_len( &list2 ) == 0 );
   if ( TEST( (p = slist_peek_head( &list )) != NULL ) )
     TEST( *p == 'A' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // empty first, 2-element second
   slist_push_tail( &list2, (void*)"A" );
@@ -377,7 +377,7 @@ static bool test_slist_push_list_head( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // empty first, 3-element second
   slist_push_tail( &list2, (void*)"A" );
@@ -394,7 +394,7 @@ static bool test_slist_push_list_head( void ) {
     TEST( *p == 'B' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'C' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // 1-element first, 1-element second
   slist_push_tail( &list, (void*)"B" );
@@ -408,7 +408,7 @@ static bool test_slist_push_list_head( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // 2-element first, 1-element second
   slist_push_tail( &list, (void*)"B" );
@@ -425,7 +425,7 @@ static bool test_slist_push_list_head( void ) {
     TEST( *p == 'B' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'C' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // 3-element first, 1-element second
   slist_push_tail( &list, (void*)"B" );
@@ -445,7 +445,7 @@ static bool test_slist_push_list_head( void ) {
     TEST( *p == 'C' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'D' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // 3-element first, 2-element second
   slist_push_tail( &list, (void*)"C" );
@@ -468,7 +468,7 @@ static bool test_slist_push_list_head( void ) {
     TEST( *p == 'D' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'E' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   TEST_FN_END();
 }
@@ -498,7 +498,7 @@ static bool test_slist_push_list_tail( void ) {
   TEST( slist_len( &list2 ) == 0 );
   if ( TEST( (p = slist_peek_head( &list )) != NULL ) )
     TEST( *p == 'A' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // empty first, 2-element second
   slist_push_tail( &list2, (void*)"A" );
@@ -512,7 +512,7 @@ static bool test_slist_push_list_tail( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // empty first, 3-element second
   slist_push_tail( &list2, (void*)"A" );
@@ -529,7 +529,7 @@ static bool test_slist_push_list_tail( void ) {
     TEST( *p == 'B' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'C' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // 1-element first, 1-element second
   slist_push_tail( &list, (void*)"A" );
@@ -543,7 +543,7 @@ static bool test_slist_push_list_tail( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // 2-element first, 1-element second
   slist_push_tail( &list, (void*)"A" );
@@ -560,7 +560,7 @@ static bool test_slist_push_list_tail( void ) {
     TEST( *p == 'B' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'C' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // 3-element first, 1-element second
   slist_push_tail( &list, (void*)"A" );
@@ -580,7 +580,7 @@ static bool test_slist_push_list_tail( void ) {
     TEST( *p == 'C' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'D' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   // 3-element first, 2-element second
   slist_push_tail( &list, (void*)"A" );
@@ -603,7 +603,7 @@ static bool test_slist_push_list_tail( void ) {
     TEST( *p == 'D' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'E' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   TEST_FN_END();
 }
@@ -628,7 +628,7 @@ static bool test_slist_push_tail( void ) {
     TEST( *p == 'A' );
   if ( TEST( (p = slist_peek_tail( &list )) != NULL ) )
     TEST( *p == 'B' );
-  slist_cleanup( &list, NULL );
+  slist_cleanup( &list, /*free_fn=*/NULL );
 
   TEST_FN_END();
 }
