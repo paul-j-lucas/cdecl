@@ -589,6 +589,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_hwt.test \
 	tests/explain_i-itself.test \
 	tests/explain_ii.test \
+	tests/explain_ipi-redef.test \
 	tests/explain_lb.test \
 	tests/explain_lc.test \
 	tests/explain_lc16.test \

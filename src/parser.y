@@ -506,6 +506,7 @@ static bool slist_node_is_ast_placeholder( void* );
 
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
+static slist_t        decl_ast_list;    ///< List of ASTs being declared.
 static c_ast_list_t   gc_ast_list;      ///< c_ast nodes freed after parse.
 static in_attr_t      in_attr;          ///< Inherited attributes.
 static c_ast_list_t   typedef_ast_list; ///< c_ast nodes for `typedef`s.
@@ -917,6 +918,7 @@ static void ia_free( void ) {
  */
 static void parse_cleanup( bool hard_reset ) {
   lexer_reset( hard_reset );
+  slist_cleanup( &decl_ast_list, /*free_fn=*/NULL );
   c_ast_list_gc( &gc_ast_list );
   ia_free();
 }
@@ -3375,6 +3377,30 @@ decl_c
       if ( decl_ast == NULL )
         PARSE_ABORT();
       C_AST_CHECK( decl_ast );
+
+      if ( !c_sname_empty( &decl_ast->sname ) ) {
+        //
+        // For declarations that have a name, ensure that it's not used more
+        // than once in the same declaration with different types.  (More than
+        // once with the same type are "tentative definitions" and OK.)
+        //
+        //      int i, i;               // ok (same type)
+        //      int j, *j;              // error (different types)
+        //
+        FOREACH_SLIST_NODE( node, &decl_ast_list ) {
+          c_ast_t const *const prev_ast = node->data;
+          if ( c_sname_cmp( &decl_ast->sname, &prev_ast->sname ) == 0 &&
+              !c_ast_equal( decl_ast, prev_ast ) ) {
+            print_error( &decl_ast->loc,
+              "\"%s\": redefinition with different type\n",
+              c_sname_full_name( &decl_ast->sname )
+            );
+            PARSE_ABORT();
+          }
+        } // for
+        slist_push_tail( &decl_ast_list, CONST_CAST( void*, decl_ast ) );
+      }
+
       c_ast_explain_declaration( decl_ast, cdecl_fout );
 
       //

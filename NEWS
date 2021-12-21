@@ -12,7 +12,14 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.9
 
-** Function-like parameter redefinition
+** Redefinition check
+Names being redefined with a different type in the same declaration are now
+correctly forbidden:
+
+    int i, i;                           // OK (tentative definition)
+    int j, *j;                          // error: different type
+
+** Function-like parameter redefinition check
 Function-like parameters are now checked for redefinition (more than one
 parameter having the same name).
 
