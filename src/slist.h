@@ -123,7 +123,7 @@ typedef void (*slist_free_fn_t)( void *data );
  * @param data A pointer to the data to check.
  * @return Returns `true` only if the node should be freed.
  */
-typedef bool (*slist_predicate_fn_t)( void *data );
+typedef bool (*slist_pred_fn_t)( void *data );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -218,7 +218,7 @@ bool slist_empty( slist_t const *list ) {
  *
  * @sa slist_cleanup()
  */
-void slist_free_if( slist_t *list, slist_predicate_fn_t pred_fn );
+void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn );
 
 /**
  * Initializes \a list.  This is not necessary for either global or `static`

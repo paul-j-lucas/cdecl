@@ -122,7 +122,7 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
   return dst_list;
 }
 
-void slist_free_if( slist_t *list, slist_predicate_fn_t pred_fn ) {
+void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn ) {
   assert( list != NULL );
   assert( pred_fn != NULL );
 
