@@ -50,6 +50,7 @@
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
                        char const *prompts[] ) {
   assert( sbuf != NULL );
+  assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
 
   bool const is_fin_a_tty = isatty( fileno( fin ) );
