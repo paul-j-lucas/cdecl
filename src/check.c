@@ -142,12 +142,21 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * The signature for functions passed to c_ast_check_visitor().
+ *
+ * @param ast The AST to check.
+ * @param flags The flags to use.
+ * @return Returns `true` only if all checks passed.
+ */
+typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast, unsigned flags );
+
 // local constants
 
 /**
  * Flag for c_ast_check_visitor(): is an AST node a function-like parameter?
  */
-static c_ast_visitor_data_t const C_IS_FUNC_PARAM = (1u << 0);
+static unsigned const C_IS_FUNC_PARAM     = (1u << 0);
 
 /**
  * Flag for c_ast_check_visitor(): is an AST node the "of" type of a `typedef`
@@ -167,7 +176,7 @@ static c_ast_visitor_data_t const C_IS_FUNC_PARAM = (1u << 0);
  *  + A pointer to `void` is also legal; therefore:
  *  + A pointer to a `typedef` of `void` is also legal.
  */
-static c_ast_visitor_data_t const C_IS_POINTED_TO = (1u << 1);
+static unsigned const C_IS_POINTED_TO     = (1u << 1);
 
 /// Convenience return value for \ref c_ast_visit_fn_t functions.
 static bool const VISITOR_ERROR_FOUND     = true;
@@ -183,7 +192,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_emc( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_errors( c_ast_t const*, c_ast_visitor_data_t );
+static bool c_ast_check_errors( c_ast_t const*, unsigned );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main( c_ast_t const* );
@@ -213,13 +222,13 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_name_equal( c_ast_t const*, char const* );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_error( c_ast_t*, c_ast_visitor_data_t );
+static bool c_ast_visitor_error( c_ast_t const*, unsigned );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_type( c_ast_t*, c_ast_visitor_data_t );
+static bool c_ast_visitor_type( c_ast_t const*, unsigned );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_warning( c_ast_t*, c_ast_visitor_data_t );
+static bool c_ast_visitor_warning( c_ast_t const*, unsigned );
 
 static void c_ast_warn_name( c_ast_t const* );
 static void c_sname_warn( c_sname_t const*, c_loc_t const* );
@@ -230,19 +239,22 @@ static c_lang_id_t is_reserved_name( char const* );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Simple wrapper around c_ast_visit().
+ * Checks an entire AST for semantic errors using \a check_fn.
  *
  * @param ast The AST to check.
- * @param visit_fn The visitor function to use.
+ * @param check_fn The check function to use.
  * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
-                                        c_ast_visit_fn_t visit_fn,
-                                        c_ast_visitor_data_t flags ) {
+                                        c_ast_check_fn_t check_fn,
+                                        unsigned flags ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, flags ) == NULL;
+  c_ast_visit_fn_t const visit_fn = (c_ast_visit_fn_t)check_fn;
+  c_ast_visit_data_t const v_data =
+    REINTERPRET_CAST( c_ast_visit_data_t, flags );
+  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, v_data ) == NULL;
 }
 
 /**
@@ -257,10 +269,10 @@ static inline bool c_ast_is_register( c_ast_t const *ast ) {
 }
 
 /**
- * Returns an "s" or not based on \a n to pluralize a word.
+ * Returns an `"s"` or not based on \a n to pluralize a word.
  *
  * @param n A quantity.
- * @return Returns the empty string only if \a n == 1; otherwise returns "s".
+ * @return Returns the empty string only if \a n == 1; otherwise returns `"s"`.
  */
 PJL_WARN_UNUSED_RESULT
 static inline char const* plural_s( uint64_t n ) {
@@ -328,8 +340,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_array( c_ast_t const *ast,
-                               c_ast_visitor_data_t flags ) {
+static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
   bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
@@ -443,7 +454,7 @@ static bool c_ast_check_array( c_ast_t const *ast,
  */
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_builtin( c_ast_t const *ast,
-                                 c_ast_visitor_data_t flags ) {
+                                 c_ast_visit_data_t flags ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
 
@@ -662,9 +673,11 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_declaration( c_ast_t const *ast ) {
   assert( ast != NULL );
-  if ( !c_ast_check_errors( ast, /*data=*/0 ) )
+  if ( !c_ast_check_errors( ast, /*flags=*/0 ) )
     return false;
-  PJL_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning, 0 ) );
+  PJL_IGNORE_RV(
+    c_ast_check_visitor( ast, c_ast_visitor_warning, /*flags=*/0 )
+  );
   return true;
 }
 
@@ -754,8 +767,7 @@ static bool c_ast_check_emc( c_ast_t const *ast ) {
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_errors( c_ast_t const *ast,
-                                c_ast_visitor_data_t flags ) {
+static bool c_ast_check_errors( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
   // check in major-to-minor error order
   return  c_ast_check_visitor( ast, c_ast_visitor_error, flags ) &&
@@ -2173,7 +2185,7 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_error( c_ast_t *ast, c_ast_visitor_data_t flags ) {
+static bool c_ast_visitor_error( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
 
   if ( !c_ast_check_alignas( ast ) )
@@ -2315,7 +2327,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, c_ast_visitor_data_t flags ) {
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_type( c_ast_t *ast, c_ast_visitor_data_t flags ) {
+static bool c_ast_visitor_type( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
   bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
@@ -2401,7 +2413,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, c_ast_visitor_data_t flags ) {
  * @return Always returns `false`.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_warning( c_ast_t *ast, c_ast_visitor_data_t flags ) {
+static bool c_ast_visitor_warning( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
 
   switch ( ast->kind ) {

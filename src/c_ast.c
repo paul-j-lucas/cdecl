@@ -359,7 +359,7 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
 }
 
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
-                      c_ast_visit_fn_t visit_fn, c_ast_visitor_data_t v_data ) {
+                      c_ast_visit_fn_t visit_fn, c_ast_visit_data_t v_data ) {
   assert( visit_fn != NULL );
 
   switch ( dir ) {

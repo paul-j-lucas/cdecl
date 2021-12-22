@@ -156,7 +156,7 @@ enum c_visit_dir {
  * or a pointer.  It is _not_ `uintptr_t` because that can't hold a 64-bit
  * integer on a 32-bit pointer platform.
  */
-typedef uint64_t c_ast_visitor_data_t;
+typedef uint64_t c_ast_visit_data_t;
 
 /**
  * The signature for functions passed to c_ast_visit().
@@ -166,7 +166,7 @@ typedef uint64_t c_ast_visitor_data_t;
  * @return Returning `true` will cause traversal to stop and \a ast to be
  * returned to the caller of c_ast_visit().
  */
-typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visitor_data_t v_data );
+typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visit_data_t v_data );
 
 /**
  * @defgroup ast-nodes-group AST Nodes
@@ -617,7 +617,7 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
  */
 PJL_NOWARN_UNUSED_RESULT
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
-                      c_ast_visit_fn_t visit_fn, c_ast_visitor_data_t v_data );
+                      c_ast_visit_fn_t visit_fn, c_ast_visit_data_t v_data );
 
 /**
  * Convenience function to get the AST given a \ref c_ast_param_t.
