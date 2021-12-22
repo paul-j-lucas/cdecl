@@ -1,5 +1,50 @@
+2021-12-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * read_line.c: Added assert().
+   * file-cast_x.out: Fixed test.
+   * NEWS, read_line.c, read_line.h: Fixed reading from stdin when it's not a
+     TTY.
+   * src/Makefile.am: s/$</cdecl$(EXEEXT)/ since $< doesn't always work right.
+   * run_test.sh: s/mv/cp/ to avoid user/group problem.
+   * c_ast.c, c_ast.h, c_ast_util.c, check.c, english.c:
+     s/c_ast_visitor_data_t/c_ast_visit_data_t/ plus cleaned-up visitor data
+     handling.
+   * slist.c, slist.h: s/slist_predicate_fn_t/slist_pred_fn_t/
+   * red_black.c: s/succ/next/
+
+2021-12-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out,
+     cdecl-d-al8i.out, cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out,
+     cdecl-d-eni.out, cdecl-d-f2i_pi.out, cdecl-d-f_v.out,
+     cdecl-d-faia4iaviacias6i_v.out, cdecl-d-pmki.out, cdecl-d-udc_i.out,
+     cdecl-d-z.out, show_all-c++.out, show_all.out,
+     show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined_using.out: Added the standard C++
+     types std::ispanstream, std::stacktrace_entry, and std::wispanstream.
+   * cdecl.1: Added "for command-line options".
+
+2021-12-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, options.c, options.h: s/opt_no_conf/opt_read_conf/
+   * red_black.c, red_black.h: Renaming.
+   * c_ast.c, c_sname.c, c_sname.h, check.c, dump.c, gibberish.c, lexer.l,
+     options.c, parser.y, print.c, red_black_test.c, set_options.c, slist.h,
+     slist_test.c: Added FOREACH_SNAME_SCOPE_UNTIL(); argument comments.
+   * NEWS, parser.y, test/Makefile.am, explain_ipi-redef.out,
+     explain_ipi-redef.test: Names being redefined with a different type in the
+     same declaration are now correctly forbidden.
+   * NEWS, configure.ac, check.c, test/Makefile.am, explain_f2i_v-redef.out,
+     explain_f2i_v-redef.test: Now checking for function-like parameter
+     redefinition.
+
 2021-12-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * slist.c: Now avoiding repeated check in loop of slist_dup().
+   * autocomplete.c, c_operator.c, c_sglob.c, c_sname.c, did_you_mean.c,
+     dump.c, options.c, print.c, red_black_test.c, slist.c, strbuf.c, util.c:
+     Using STATIC_CAST more.
    * parser.y: s/sti_free/sti_cleanup/
    * c_ast.c, c_ast.h, c_typedef.c, c_typedef.h, check.c, red_black.c,
      red_black.h: s/visitor/visit_fn/
