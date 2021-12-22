@@ -107,7 +107,7 @@ all-local: c++decl$(EXEEXT)
 
 c++decl$(EXEEXT): cdecl$(EXEEXT)
 	rm -f $@
-	$(LN_S) $< $@
+	$(LN_S) cdecl$(EXEEXT) $@
 
 TESTS =		$(check_PROGRAMS)
 
