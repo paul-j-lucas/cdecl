@@ -34,6 +34,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>                     /* for isatty(3) */
 
 #ifdef HAVE_READLINE_READLINE_H
 # include <readline/readline.h>
@@ -51,7 +52,8 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
   assert( sbuf != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
 
-  bool const interactive = fout != NULL && prompts != NULL;
+  bool const is_fin_a_tty = isatty( fileno( fin ) );
+  bool const interactive = is_fin_a_tty && fout != NULL && prompts != NULL;
   bool is_cont_line = false;
 
   for (;;) {

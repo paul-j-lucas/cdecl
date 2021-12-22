@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.9
 
+** Fixed reading from stdin
+Fixed reading from stdin when it's not a TTY.
+
 ** Redefinition check
 Names being redefined with a different type in the same declaration are now
 correctly forbidden:

@@ -42,9 +42,10 @@
  *  + Multiple lines separated by `\` are stiched together.
  *  + Returns only non-whitespace-only lines.
  *
- * If both \a fout and \a prompts are non-NULL and GNU **readline**(3) is
- * compiled in, also:
+ * If \a fin is connected to a TTY, both \a fout and \a prompts are non-NULL,
+ * and GNU **readline**(3) is compiled in, also:
  *
+ *  + Uses GNU readline to read the line with editing and autocompletion.
  *  + Adds non-whitespace-only lines to the history.
  *
  * @param sbuf The strbuf to use.
