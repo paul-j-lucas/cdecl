@@ -195,19 +195,19 @@ static rb_node_t* rb_tree_node_successor( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );
 
-  rb_node_t *succ = node->child[RB_R];
+  rb_node_t *next = node->child[RB_R];
 
-  if ( succ != RB_NIL ) {
-    while ( succ->child[RB_L] != RB_NIL )
-      succ = succ->child[RB_L];
+  if ( next != RB_NIL ) {
+    while ( next->child[RB_L] != RB_NIL )
+      next = next->child[RB_L];
   } else {
     // No right child, move up until we find it or hit the root.
-    for ( succ = node->parent; node == succ->child[RB_R]; succ = succ->parent )
-      node = succ;
-    if ( succ == RB_ROOT(tree) )
-      succ = RB_NIL;
+    for ( next = node->parent; node == next->child[RB_R]; next = next->parent )
+      node = next;
+    if ( next == RB_ROOT(tree) )
+      next = RB_NIL;
   }
-  return succ;
+  return next;
 }
 
 /**
