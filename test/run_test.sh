@@ -229,7 +229,7 @@ run_cdecl_test() {
   then
     if diff -u $EXPECTED_OUTPUT $LOG_FILE > $DIFF_FILE
     then pass
-    else fail; mv $DIFF_FILE $LOG_FILE
+    else fail; cp $DIFF_FILE $LOG_FILE
     fi
   else
     case $ACTUAL_EXIT in
