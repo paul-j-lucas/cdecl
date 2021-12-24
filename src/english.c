@@ -119,13 +119,13 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
  * Visitor function that prints \a ast as pseudo-English.
  *
  * @param ast The AST to print.
- * @param data A pointer to a `FILE` to emit to.
+ * @param v_data A pointer to a `FILE` to emit to.
  * @return Always returns `false`.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t data ) {
+static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t v_data ) {
   assert( ast != NULL );
-  FILE *const eout = REINTERPRET_CAST( FILE*, data );
+  FILE *const eout = REINTERPRET_CAST( FILE*, v_data );
   assert( eout != NULL );
 
   switch ( ast->kind ) {
