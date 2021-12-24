@@ -2591,16 +2591,8 @@ c_style_cast_c
       DUMP_END();
 
       bool const ok = c_ast_check( cast_ast );
-      if ( ok ) {
-        FPUTS( L_CAST, cdecl_fout );
-        if ( !c_sname_empty( &$6 ) ) {
-          FPUTC( ' ', cdecl_fout );
-          c_sname_english( &$6, cdecl_fout );
-        }
-        FPRINTF( cdecl_fout, " %s ", L_INTO );
-        c_ast_english( cast_ast, cdecl_fout );
-        FPUTC( '\n', cdecl_fout );
-      }
+      if ( ok )
+        c_ast_explain_cast( &$6, cast_ast, cdecl_fout );
 
       c_sname_cleanup( &$6 );
       if ( !ok )
@@ -2637,16 +2629,10 @@ new_style_cast_c
 
       bool ok = false;
 
-      if ( unsupported( LANG_CPP_ANY ) ) {
+      if ( unsupported( LANG_CPP_ANY ) )
         print_error( &@1, "%s_cast not supported in C\n", cast_literal );
-      }
-      else if ( (ok = c_ast_check( cast_ast )) ) {
-        FPRINTF( cdecl_fout, "%s %s ", cast_literal, L_CAST );
-        c_sname_english( &$8, cdecl_fout );
-        FPRINTF( cdecl_fout, " %s ", L_INTO );
-        c_ast_english( cast_ast, cdecl_fout );
-        FPUTC( '\n', cdecl_fout );
-      }
+      else if ( (ok = c_ast_check( cast_ast )) )
+        c_ast_explain_cast( &$8, cast_ast, cdecl_fout );
 
       c_sname_cleanup( &$8 );
       if ( !ok )

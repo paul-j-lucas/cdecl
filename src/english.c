@@ -68,6 +68,39 @@ static void c_ast_bit_width_english( c_ast_t const *ast, FILE *eout ) {
 }
 
 /**
+ * Prints \a ast as a declaration in pseudo-English.
+ *
+ * @note A newline is _not_ printed.
+ *
+ * @param ast The AST to print.
+ * @param eout The `FILE` to print to.
+ */
+static void c_ast_english( c_ast_t const *ast, FILE *eout ) {
+  assert( ast != NULL );
+  assert( eout != NULL );
+
+  c_ast_visit(
+    CONST_CAST( c_ast_t*, ast ), C_VISIT_DOWN,
+    c_ast_visitor_english, REINTERPRET_CAST( c_ast_visit_data_t, eout )
+  );
+
+  switch ( ast->align.kind ) {
+    case C_ALIGNAS_NONE:
+      break;
+    case C_ALIGNAS_EXPR:
+      if ( ast->align.as.expr > 0 )
+        FPRINTF( eout,
+          " %s %s %u %s", L_ALIGNED, L_AS, ast->align.as.expr, L_BYTES
+        );
+      break;
+    case C_ALIGNAS_TYPE:
+      FPRINTF( eout, " %s %s ", L_ALIGNED, L_AS );
+      c_ast_english( ast->align.as.type_ast, eout );
+      break;
+  } // switch
+}
+
+/**
  * Helper function for c_ast_visitor_english() that prints a function-like
  * AST's parameters, if any.
  *
@@ -285,33 +318,28 @@ static void c_type_print_not_base( c_type_t const *type, FILE *eout ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_english( c_ast_t const *ast, FILE *eout ) {
+void c_ast_explain_cast( c_sname_t const *sname, c_ast_t const *ast,
+                         FILE *eout ) {
+  assert( sname != NULL );
   assert( ast != NULL );
+  assert( ast->cast_kind != C_CAST_NONE );
   assert( eout != NULL );
 
-  c_ast_visit(
-    CONST_CAST( c_ast_t*, ast ), C_VISIT_DOWN,
-    c_ast_visitor_english, REINTERPRET_CAST( c_ast_visit_data_t, eout )
-  );
-
-  switch ( ast->align.kind ) {
-    case C_ALIGNAS_NONE:
-      break;
-    case C_ALIGNAS_EXPR:
-      if ( ast->align.as.expr > 0 )
-        FPRINTF( eout,
-          " %s %s %u %s", L_ALIGNED, L_AS, ast->align.as.expr, L_BYTES
-        );
-      break;
-    case C_ALIGNAS_TYPE:
-      FPRINTF( eout, " %s %s ", L_ALIGNED, L_AS );
-      c_ast_english( ast->align.as.type_ast, eout );
-      break;
-  } // switch
+  if ( ast->cast_kind != C_CAST_C )
+    FPRINTF( eout, "%s ", c_cast_english( ast->cast_kind ) );
+  FPUTS( L_CAST, eout );
+  if ( !c_sname_empty( sname ) ) {
+    FPUTC( ' ', eout );
+    c_sname_english( sname, eout );
+  }
+  FPRINTF( cdecl_fout, " %s ", L_INTO );
+  c_ast_english( ast, eout );
+  FPUTC( '\n', eout );
 }
 
 void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
+  assert( ast->cast_kind == C_CAST_NONE );
   assert( eout != NULL );
 
   FPRINTF( eout, "%s ", L_DECLARE );
