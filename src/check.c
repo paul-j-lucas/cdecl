@@ -1269,7 +1269,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
 /**
  * Checks function-like parameters for redefinition (duplicate names).
  *
- * @param The function-like AST to check.
+ * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
