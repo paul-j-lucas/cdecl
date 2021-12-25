@@ -895,6 +895,15 @@ void c_ast_gibberish( c_ast_t const *ast, c_gib_flags_t flags, FILE *gout ) {
   assert( gout != NULL );
 
   if ( (flags & C_GIB_OMIT_TYPE) == 0 ) {
+    //
+    // If we're declaring more than one variable in the same declaration, print
+    // the alignment, if any, only when also printing the type for the first
+    // variable.  For example, for:
+    //
+    //      _Alignas(64) int i, j;
+    //
+    // print the alignment (and "int") only for "i" and not again for "j".
+    //
     switch ( ast->align.kind ) {
       case C_ALIGNAS_NONE:
         break;
