@@ -221,8 +221,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
     case K_ARRAY:
     case K_APPLE_BLOCK:
-      if ( !c_type_is_none( &type ) )
-        FPRINTF( g->gout, "%s ", c_type_name_c( &type ) );
+      fputs_sp( c_type_name_c( &type ), g->gout );
       if ( ast->kind == K_USER_DEF_CONVERSION ) {
         if ( !c_sname_empty( &ast->sname ) )
           FPRINTF( g->gout, "%s::", c_sname_full_name( &ast->sname ) );
@@ -357,9 +356,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       if ( (g->flags & C_GIB_OMIT_TYPE) == 0 ) {
-        c_tid_t const stid = type.stids & TS_MASK_STORAGE;
-        if ( stid != TS_NONE )
-          FPRINTF( g->gout, "%s ", c_tid_name_c( stid ) );
+        c_tid_t const stids = type.stids & TS_MASK_STORAGE;
+        fputs_sp( c_tid_name_c( stids ), g->gout );
       }
       g_print_ast( g, ast->as.ptr_ref.to_ast );
       if ( g_space_before_ptr_ref( g, ast ) )
@@ -452,8 +450,7 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
   assert( ast->kind == K_ARRAY );
 
   FPUTS( graph_token_c( "[" ), g->gout );
-  if ( ast->as.array.stids != TS_NONE )
-    FPRINTF( g->gout, "%s ", c_tid_name_c( ast->as.array.stids ) );
+  fputs_sp( c_tid_name_c( ast->as.array.stids ), g->gout );
   switch ( ast->as.array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;

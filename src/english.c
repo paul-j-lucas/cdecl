@@ -167,8 +167,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t v_data ) {
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
         FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
       FPRINTF( eout, "%s ", L_ARRAY );
-      if ( ast->as.array.stids != TS_NONE )
-        FPRINTF( eout, "%s ", c_tid_name_english( ast->as.array.stids ) );
+      fputs_sp( c_tid_name_english( ast->as.array.stids ), eout );
       if ( ast->as.array.size >= 0 )
         FPRINTF( eout, PRId_C_ARRAY_SIZE_T " ", ast->as.array.size );
       FPRINTF( eout, "%s ", L_OF );
@@ -311,9 +310,8 @@ static void c_type_print_not_base( c_type_t const *type, FILE *eout ) {
   assert( type != NULL );
   assert( eout != NULL );
 
-  c_type_t const temp_type = { TB_NONE, type->stids, type->atids };
-  if ( !c_type_is_none( &temp_type ) )
-    FPRINTF( eout, "%s ", c_type_name_english( &temp_type ) );
+  c_type_t const nobase_type = { TB_NONE, type->stids, type->atids };
+  fputs_sp( c_type_name_english( &nobase_type ), eout );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
