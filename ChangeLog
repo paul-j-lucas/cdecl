@@ -1,3 +1,15 @@
+2021-12-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: s/_[bsa]tid/_[bsa]tids/
+   * english.c, gibberish.c: Now using fputs_sp() more.
+
+2021-12-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * english.c, english.h, parser.y: Replaced c_ast_english() with
+     c_ast_explain_cast() to parallel c_ast_explain_declaration() and
+     c_ast_explain_type().
+   * english.c: s/data/v_data/
+
 2021-12-22  Paul J. Lucas <paul@lucasmail.org>
 
    * read_line.c: Added assert().
