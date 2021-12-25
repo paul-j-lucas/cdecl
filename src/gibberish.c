@@ -493,17 +493,15 @@ static void g_print_ast_list( g_state_t const *g,
   assert( ast_list != NULL );
 
   bool comma = false;
+  c_gib_flags_t const flags = g->flags & ~C_GIB_OMIT_TYPE;
 
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", g->gout );
-    g_state_t params_g;
-    g_init(
-      &params_g,
-      g->flags & ~C_GIB_OMIT_TYPE, /*printing_typedef=*/false, g->gout
-    );
-    c_ast_t const *const param_ast = c_param_ast( ast_node );
-    g_print_ast( &params_g, param_ast );
+    g_state_t g2;
+    g_init( &g2, flags, /*printing_typedef=*/false, g->gout );
+    c_ast_t const *const ast = c_param_ast( ast_node );
+    g_print_ast( &g2, ast );
   } // for
 }
 
