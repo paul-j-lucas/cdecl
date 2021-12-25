@@ -138,7 +138,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
   c_type_t type = ast->type;
 
-  c_tid_t cv_qual_stid    = TS_NONE;
+  c_tid_t cv_qual_stids   = TS_NONE;
   bool    is_default      = false;
   bool    is_delete       = false;
   bool    is_final        = false;
@@ -147,7 +147,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
   bool    is_pure_virtual = false;
   bool    is_throw        = false;
   c_tid_t msc_call_atid   = TA_NONE;
-  c_tid_t ref_qual_stid   = TS_NONE;
+  c_tid_t ref_qual_stids  = TS_NONE;
 
   //
   // This isn't implemented using a visitor because c_ast_visit() visits in
@@ -173,14 +173,14 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       // These things aren't printed as part of the type beforehand, so strip
       // them out of the type here, but print them after the parameters.
       //
-      cv_qual_stid    = (type.stids & TS_MASK_QUALIFIER);
+      cv_qual_stids   = (type.stids & TS_MASK_QUALIFIER);
       is_default      = (type.stids & TS_DEFAULT) != TS_NONE;
       is_delete       = (type.stids & TS_DELETE) != TS_NONE;
       is_final        = (type.stids & TS_FINAL) != TS_NONE;
       is_noexcept     = (type.stids & TS_NOEXCEPT) != TS_NONE;
       is_pure_virtual = (type.stids & TS_PURE_VIRTUAL) != TS_NONE;
       is_throw        = (type.stids & TS_THROW) != TS_NONE;
-      ref_qual_stid   = (type.stids & TS_MASK_REF_QUALIFIER);
+      ref_qual_stids  = (type.stids & TS_MASK_REF_QUALIFIER);
 
       // In C++, "override" should be printed only if "final" isn't.
       is_override     = !is_final && (type.stids & TS_OVERRIDE) != TS_NONE;
@@ -243,11 +243,11 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           g_print_space_once( g );
         g_print_postfix( g, ast );
       }
-      if ( cv_qual_stid != TS_NONE )
-        FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stid ) );
-      if ( ref_qual_stid != TS_NONE ) {
+      if ( cv_qual_stids != TS_NONE )
+        FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stids ) );
+      if ( ref_qual_stids != TS_NONE ) {
         FPUTS(
-          c_tid_is_any( ref_qual_stid, TS_REFERENCE ) ?  " &" : " &&",
+          c_tid_is_any( ref_qual_stids, TS_REFERENCE ) ?  " &" : " &&",
           g->gout
         );
       }
@@ -287,7 +287,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
 
       if ( opt_east_const ) {
-        cv_qual_stid = type.stids & TS_CV;
+        cv_qual_stids = type.stids & TS_CV;
         type.stids &= c_tid_compl( TS_CV );
       }
 
@@ -327,8 +327,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         g_print_ast( g, ast->as.ecsu.of_ast );
       }
 
-      if ( cv_qual_stid != TS_NONE )
-        FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stid ) );
+      if ( cv_qual_stids != TS_NONE )
+        FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stids ) );
 
       g_print_space_ast_name( g, ast );
       break;
@@ -703,11 +703,11 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  c_tid_t const qual_stid = ast->type.stids & TS_MASK_QUALIFIER;
+  c_tid_t const qual_stids = ast->type.stids & TS_MASK_QUALIFIER;
 
   switch ( ast->kind ) {
     case K_POINTER:
-      if ( qual_stid != TS_NONE && (g->flags & C_GIB_CAST) == 0 &&
+      if ( qual_stids != TS_NONE && (g->flags & C_GIB_CAST) == 0 &&
            !c_ast_is_ptr_to_kind( ast, K_FUNCTION ) ) {
         //
         // If we're printing a type as a "using" declaration and there's a
@@ -760,8 +760,8 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  if ( qual_stid != TS_NONE ) {
-    FPUTS( c_tid_name_c( qual_stid ), g->gout );
+  if ( qual_stids != TS_NONE ) {
+    FPUTS( c_tid_name_c( qual_stids ), g->gout );
 
     if ( (g->flags & (C_GIB_DECL | C_GIB_TYPEDEF)) != 0 &&
          c_ast_find_name( ast, C_VISIT_UP ) != NULL ) {
