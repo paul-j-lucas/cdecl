@@ -322,6 +322,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_0o_minus_rk_rk.test \
 	tests/explain_0o_plus2_i_rk.test \
 	tests/explain_0o_plus_rk_rk.test \
+	tests/explain_2i-redef.test \
 	tests/explain_2npi.test \
 	tests/explain_a012i.test \
 	tests/explain_a0b10i.test \
@@ -1406,6 +1407,7 @@ TESTS+=	tests/explain_+compl_dtor.test \
 TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_+dtor-error.test \
 	tests/explain_0f_v-03.test \
+	tests/explain_2i-redef-c++.test \
 	tests/explain_a_cd_i.test \
 	tests/explain_a_nua_f.test \
 	tests/explain_af-c++11.test \

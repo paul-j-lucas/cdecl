@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.10
+
+** Redefinition check in C++
+C++ doesn't support tentative definitions, so:
+
+    int i, i;                           // OK in C; error in C++
+
+is always an error in C++ even if the types match.
+
+
 * Changes in Cdecl 11.9
 
 ** Fixed reading from stdin

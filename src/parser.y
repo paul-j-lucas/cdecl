@@ -3367,16 +3367,25 @@ decl_c
       if ( !c_sname_empty( &decl_ast->sname ) ) {
         //
         // For declarations that have a name, ensure that it's not used more
-        // than once in the same declaration with different types.  (More than
-        // once with the same type are "tentative definitions" and OK.)
+        // than once in the same declaration in C++ or with different types in
+        // C.  (In C, more than once with the same type are "tentative
+        // definitions" and OK.)
         //
-        //      int i, i;               // ok (same type)
+        //      int i, i;               // ok in C (same type); error in C++
         //      int j, *j;              // error (different types)
         //
         FOREACH_SLIST_NODE( node, &decl_ast_list ) {
           c_ast_t const *const prev_ast = node->data;
-          if ( c_sname_cmp( &decl_ast->sname, &prev_ast->sname ) == 0 &&
-              !c_ast_equal( decl_ast, prev_ast ) ) {
+          if ( c_sname_cmp( &decl_ast->sname, &prev_ast->sname ) != 0 )
+            continue;
+          if ( OPT_LANG_IS(CPP_ANY) ) {
+            print_error( &decl_ast->loc,
+              "\"%s\": redefinition\n",
+              c_sname_full_name( &decl_ast->sname )
+            );
+            PARSE_ABORT();
+          }
+          else if ( !c_ast_equal( decl_ast, prev_ast ) ) {
             print_error( &decl_ast->loc,
               "\"%s\": redefinition with different type\n",
               c_sname_full_name( &decl_ast->sname )
