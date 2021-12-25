@@ -1044,14 +1044,14 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
   bool const is_ecsu = tdef->ast->kind == K_ENUM_CLASS_STRUCT_UNION;
 
   //
-  // When printing a type, all types except enum, class, struct, or union types
-  // must be preceded by "typedef", e.g.:
+  // When printing a type, all types except enum, class, struct, or union
+  // (ECSU) types must be preceded by "typedef", e.g.:
   //
   //      typedef int int32_t;
   //
-  // However, enum, class, struct, and union types are preceded by "typedef"
-  // only when the type was declared in C since those types in C without a
-  // typedef are merely in the tags namespace and not first-class types:
+  // However, ECSU types are preceded by "typedef" only when the type was
+  // declared in C since those types in C without a typedef are merely in the
+  // tags namespace and not first-class types:
   //
   //      struct S;                     // In C, tag only -- not a type.
   //      typedef struct S S;           // Now it's a type.
