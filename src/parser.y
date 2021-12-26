@@ -506,7 +506,7 @@ static bool slist_node_is_ast_placeholder( void* );
 
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
-static slist_t        decl_ast_list;    ///< List of ASTs being declared.
+static c_ast_list_t   decl_ast_list;    ///< List of ASTs being declared.
 static c_ast_list_t   gc_ast_list;      ///< c_ast nodes freed after parse.
 static in_attr_t      in_attr;          ///< Inherited attributes.
 static c_ast_list_t   typedef_ast_list; ///< c_ast nodes for `typedef`s.
