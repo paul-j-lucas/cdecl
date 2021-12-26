@@ -552,10 +552,10 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
   return only_bits_set( ast_btids, btids );
 }
 
-bool c_ast_is_ptr_to_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
+bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
   assert( ast != NULL );
   ast = c_ast_unpointer( ast );
-  return ast != NULL && ast->kind == kind;
+  return ast != NULL && c_ast_is_kind_any( ast, kinds );
 }
 
 bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,

@@ -2384,7 +2384,15 @@ static bool c_ast_visitor_type( c_ast_t const *ast, unsigned flags ) {
         // These being declared "restrict" in C is already made an error by
         // checks elsewhere.
         //
+        break;
       case K_POINTER:
+        if ( !c_ast_is_ptr_to_kind_any( ast, K_ANY_OBJECT ) ) {
+          print_error( &ast->loc,
+            "%s to %s can not be %s\n",
+            L_POINTER, c_kind_name( c_ast_unpointer( ast )->kind ), L_RESTRICT
+          );
+          return VISITOR_ERROR_FOUND;
+        }
         break;
       default:
         error_kind_not_tid( ast, TS_RESTRICT, "\n" );

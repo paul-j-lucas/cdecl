@@ -621,6 +621,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_rgf_v.test \
 	tests/explain_ri-c.test \
 	tests/explain_rtf_v-error.test \
+	tests/explain_rtpf_v.test \
 	tests/explain_sb.test \
 	tests/explain_sc-knr.test \
 	tests/explain_sc16.test \

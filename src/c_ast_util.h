@@ -125,17 +125,18 @@ PJL_WARN_UNUSED_RESULT
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids );
 
 /**
- * Checks whether \a ast is an AST for a pointer to a \a kind AST.
+ * Checks whether \a ast is an AST for a pointer to another AST that is one of
+ * \a kinds.
  *
  * @param ast The AST to check.
- * @param kind The kind to check for.
- * @return Returns `true` only if \a ast is a pointer to \a kind.
+ * @param kinds The bitwise-or of kind(s) to check for.
+ * @return Returns `true` only if \a ast is a pointer to one of \a kinds.
  *
  * @sa c_ast_is_ptr_to_tid_any()
  * @sa c_ast_is_ptr_to_type_any()
  */
 PJL_WARN_UNUSED_RESULT
-bool c_ast_is_ptr_to_kind( c_ast_t const *ast, c_ast_kind_t kind );
+bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds );
 
 /**
  * Checks whether \a ast is an AST for a pointer to another AST having a type
@@ -146,7 +147,7 @@ bool c_ast_is_ptr_to_kind( c_ast_t const *ast, c_ast_kind_t kind );
  * @return If \a ast is a pointer and the pointed-to AST has a type that is any
  * one of \a tids, returns the pointed-to AST; otherwise returns NULL.
  *
- * @sa c_ast_is_ptr_to_kind()
+ * @sa c_ast_is_ptr_to_kind_any()
  * @sa c_ast_is_ptr_to_type_any()
  * @sa c_ast_is_ref_to_tid_any()
  */
@@ -173,7 +174,7 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  * @return Returns `true` only if \a ast (masked with \a mask_type) is a
  * pointer to an AST having \a type.
  *
- * @sa c_ast_is_ptr_to_kind()
+ * @sa c_ast_is_ptr_to_kind_any()
  * @sa c_ast_is_ptr_to_tid_any()
  */
 PJL_WARN_UNUSED_RESULT

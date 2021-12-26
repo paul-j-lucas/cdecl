@@ -19,6 +19,12 @@ C++ doesn't support tentative definitions, so:
 
 is always an error in C++ even if the types match.
 
+** Restricted pointer to non-object
+A restricted pointer to a non-object, e.g., function, is now correctly flagged
+as an error:
+
+    int (*restrict pf)();               // error
+
 
 * Changes in Cdecl 11.9
 
