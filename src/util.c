@@ -185,15 +185,15 @@ void fprint_list( FILE *out, void const *elt, size_t elt_size,
     assert( elt_size > 0 );
   }
 
-  char const *str = (*gets)( elt );
-  for ( size_t i = 0; str != NULL; ++i ) {
+  char const *s = (*gets)( elt );
+  for ( size_t i = 0; s != NULL; ++i ) {
     elt = (char const*)elt + elt_size;
-    char const *const next_str = (*gets)( elt );
+    char const *const next_s = (*gets)( elt );
     FPRINTF( out, "%s%s",
-      i == 0 ? "" : (next_str != NULL ? ", " : (i > 1 ? ", or " : " or ")),
-      str
+      i == 0 ? "" : (next_s != NULL ? ", " : (i > 1 ? ", or " : " or ")),
+      s
     );
-    str = next_str;
+    s = next_s;
   } // for
 }
 
