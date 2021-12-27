@@ -548,7 +548,6 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
 }
 
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
-  assert( ast != NULL );
   assert( c_tid_tpid( btids ) == C_TPID_BASE );
 
   ast = c_ast_untypedef( ast );
@@ -559,7 +558,6 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
 }
 
 bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
-  assert( ast != NULL );
   ast = c_ast_unpointer( ast );
   return ast != NULL && c_ast_is_kind_any( ast, kinds );
 }
