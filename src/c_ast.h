@@ -598,8 +598,10 @@ bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
 /**
  * Sets the two-way pointer links between parent/child AST nodes.
  *
- * @param child_ast The "child" AST node to set the parent of.
- * @param parent_ast The "parent" AST node whose child node is set.
+ * @param child_ast The "child" AST node to set the parent of.  If it already
+ * has a parent, it's overwritten.
+ * @param parent_ast The "parent" AST node to set the child of.  It it already
+ * has a child, it's overwritten.
  */
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
 
