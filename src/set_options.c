@@ -66,6 +66,8 @@ struct set_option_fn_args {
   PJL_WARN_UNUSED_RESULT                                \
   static bool set_##NAME( set_option_fn_args_t const* )
 
+/// @cond DOXYGEN_IGNORE
+
 // local functions
 DECLARE_SET_OPTION_FN( alt_tokens );
 #ifdef YYDEBUG
@@ -86,6 +88,8 @@ DECLARE_SET_OPTION_FN( lang );
 DECLARE_SET_OPTION_FN( prompt );
 DECLARE_SET_OPTION_FN( semicolon );
 DECLARE_SET_OPTION_FN( trigraphs );
+
+/// @endcond
 
 PJL_WARN_UNUSED_RESULT
 static bool set_lang_impl( char const* );
