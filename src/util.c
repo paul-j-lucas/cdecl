@@ -164,7 +164,7 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   (void)mode;
 #endif /* NDEBUG */
 
-  FILE *const temp_file = tmpfile();
+  FILE *temp_file = tmpfile();
   if ( likely( temp_file != NULL && size > 0 ) &&
        unlikely( fwrite( buf, 1, size, temp_file ) != size ||
                  fseek( temp_file, 0L, SEEK_SET ) != 0 ) ) {
