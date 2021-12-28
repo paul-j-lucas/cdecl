@@ -90,8 +90,8 @@ static unsigned check_tigetnum( char const *capname ) {
 #endif /* ENABLE_TERM_SIZE */
 
 /**
- * Helper function for fprint_list() that, given a pointer into an array of
- * `char*`, returns the pointer to the associated string.
+ * Helper function for fprint_list() that, given a pointer to a pointer to an
+ * array of `char*`, returns the pointer to the associated string.
  *
  * @param ppelt A pointer to the pointer to the element to get the list item
  * string of.  On return, it is incremented by the size of the element.
