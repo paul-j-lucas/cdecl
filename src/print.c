@@ -72,8 +72,8 @@ print_params_t            print_params;
  * Helper function for print_suggestions() and fprint_list() that gets the
  * string for a \ref did_you_mean token.
  *
- * @param ppelt A pointer to the pointer to the \ref did_you_mean element to get
- * the string of.  On return, it is incremented by `sizeof(did_you_mean_t)`.
+ * @param ppelt A pointer to the pointer to the \ref did_you_mean element to
+ * get the string of.  On return, it is advanced to the next element.
  * @return Returns a pointer to the next "Did you mean" suggestion string or
  * NULL if none.
  */

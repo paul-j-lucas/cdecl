@@ -122,6 +122,22 @@ static set_option_t const SET_OPTIONS[] = {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Helper function for fprint_list() that, given a pointer to a pointer to an
+ * slist_node whose data is a `char*`, returns the `char*`.
+ *
+ * @param ppelt A pointer to the pointer to the element to get the string of.
+ * On return, it is advanced to the next list element.
+ * @return Returns said string or NULL if none.
+ */
+static char const* fprint_list_slist_gets( void const **ppelt ) {
+  slist_node_t const *const node = *ppelt;
+  if ( node == NULL )
+    return NULL;
+  *ppelt = node->next;
+  return node->data;
+}
+
+/**
  * Convenience function for getting `"no"` or not to print.
  *
  * @param enabled Whether a toggle option is enabled.
@@ -450,18 +466,10 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
 
   if ( !slist_empty( &ambiguous_list ) ) {
     print_error( opt_name_loc,
-      "\"%s\": ambiguous set option; could be \"%s%s\"",
-      orig_name,
-      is_no ? "no" : "", found_opt->name
+      "\"%s\": ambiguous set option; could be ", orig_name
     );
-    size_t i = 1;
-    FOREACH_SLIST_NODE( node, &ambiguous_list ) {
-      EPRINTF( "%s\"%s%s\"",
-        (node->next != NULL ? ", " : (i > 1 ?  ", or " : " or ")),
-        is_no ? "no" : "", STATIC_CAST( char*, node->data )
-      );
-      ++i;
-    } // for
+    slist_push_head( &ambiguous_list, CONST_CAST( void*, found_opt->name ) );
+    fprint_list( stderr, ambiguous_list.head, &fprint_list_slist_gets );
     EPUTC( '\n' );
     slist_cleanup( &ambiguous_list, /*free_fn=*/NULL );
     return false;
