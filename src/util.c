@@ -90,15 +90,17 @@ static unsigned check_tigetnum( char const *capname ) {
 #endif /* ENABLE_TERM_SIZE */
 
 /**
- * A helper function for fprint_list() that, given a pointer into an array of
+ * Helper function for fprint_list() that, given a pointer into an array of
  * `char*`, returns the pointer to the associated string.
  *
- * @param elt A pointer to the element to get the list item string of.
+ * @param ppelt A pointer to the pointer to the element to get the list item
+ * string of.  On return, it is incremented by the size of the element.
  * @return Returns said string.
  */
 PJL_WARN_UNUSED_RESULT
-static char const* fprint_list_gets( void const *elt ) {
-  char const *const *const ps = elt;
+static char const* fprint_list_gets( void const **ppelt ) {
+  char const *const *const ps = *ppelt;
+  *ppelt = ps + 1;
   return *ps;
 }
 
@@ -173,22 +175,17 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
 }
 #endif /* HAVE_FMEMOPEN */
 
-void fprint_list( FILE *out, void const *elt, size_t elt_size,
-                  char const* (*gets)( void const* ) ) {
+void fprint_list( FILE *out, void const *elt,
+                  char const* (*gets)( void const** ) ) {
   assert( out != NULL );
   assert( elt != NULL );
 
-  if ( gets == NULL ) {
+  if ( gets == NULL )
     gets = &fprint_list_gets;
-    elt_size = sizeof( char* );
-  } else {
-    assert( elt_size > 0 );
-  }
 
-  char const *s = (*gets)( elt );
+  char const *s = (*gets)( &elt );
   for ( size_t i = 0; s != NULL; ++i ) {
-    elt = (char const*)elt + elt_size;
-    char const *const next_s = (*gets)( elt );
+    char const *const next_s = (*gets)( &elt );
     FPRINTF( out, "%s%s",
       i == 0 ? "" : (next_s != NULL ? ", " : (i > 1 ? ", or " : " or ")),
       s

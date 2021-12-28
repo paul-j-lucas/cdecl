@@ -653,16 +653,16 @@ FILE* fmemopen( void *buf, size_t size, char const *mode );
  *    `, or`.
  *
  * @param out The FILE to print to.
- * @param elt A pointer to the first of an array of elements to print.
- * @param elt_size The size, in bytes, of each element.  If \a gets is NULL,
- * this is ignored `sizeof(char*)` is used instead.
- * @param gets A pointer to a function to call to get the string for the given
- * element.  When the function returns NULL, it signals the end of the list.
- * If \a gets is NULL, it is assumed that \a elt points to the first element of
- * an \a elt_size array of `char*` and that the array ends with NULL.
+ * @param elt A pointer to the first element to print.
+ * @param gets A pointer to a function to call to get the string for the
+ * element `**ppelt`: if the function returns NULL, it signals the end of the
+ * list; otherwise, the function returns the string for the element and must
+ * increment `*ppelt` to the next element.  If \a gets is NULL, it is assumed
+ * that \a elt points to the first element of an array of `char*` and that the
+ * array ends with NULL.
  */
-void fprint_list( FILE *out, void const *elt, size_t elt_size,
-                  char const* (*gets)( void const* ) );
+void fprint_list( FILE *out, void const *elt,
+                  char const* (*gets)( void const **ppelt ) );
 
 /**
  * If \a s is not empty, prints \a s followed by a space to \a out; otherwise
