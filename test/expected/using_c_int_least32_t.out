@@ -1,3 +1,3 @@
 using int_least32_t = char
-^
-1: error: "int_least32_t": "using" redefinition with different type; original is: using int_least32_t = int
+                      ^
+23: error: "int_least32_t": "using" redefinition with different type; original is: using int_least32_t = int

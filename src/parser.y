@@ -630,17 +630,14 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
  *
  * @param decl_keyword The keyword used for the declaration.
  * @param type_ast The AST of the type to add.
- * @param type_loc The location of the offending type declaration.
  * @return Returns `true` either if the type was added or it's equivalent to
  * the existing type; `false` if a different type already exists having the
  * same name.
  */
 PJL_WARN_UNUSED_RESULT
-static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
-                      c_loc_t const *type_loc ) {
+static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
   assert( decl_keyword != NULL );
   assert( type_ast != NULL );
-  assert( type_loc != NULL );
 
   c_typedef_t const *const old_tdef = c_typedef_add( type_ast );
   if ( old_tdef == NULL ) {             // type was added
@@ -657,7 +654,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
     slist_push_list_tail( &typedef_ast_list, &gc_ast_list );
   }
   else if ( old_tdef->ast != NULL ) {   // type exists and isn't equivalent
-    print_error( type_loc,
+    print_error( &type_ast->loc,
       "\"%s\": \"%s\" redefinition with different type; original is: ",
       c_sname_full_name( &type_ast->sname ), decl_keyword
     );
@@ -2200,7 +2197,7 @@ define_command
 
       if ( !c_sname_check( &$5->sname, &@2 ) )
         PARSE_ABORT();
-      if ( !add_type( L_DEFINE, $5, &@5 ) )
+      if ( !add_type( L_DEFINE, $5 ) )
         PARSE_ABORT();
 
       DUMP_END();
@@ -2770,7 +2767,7 @@ class_struct_union_declaration_c
       DUMP_AST( "class_struct_union_declaration_c", csu_ast );
       DUMP_END();
 
-      if ( !add_type( c_tid_name_c( $1 ), csu_ast, &@1 ) )
+      if ( !add_type( c_tid_name_c( $1 ), csu_ast ) )
         PARSE_ABORT();
     }
     brace_in_scope_declaration_c_opt
@@ -2812,7 +2809,7 @@ enum_declaration_c
       DUMP_AST( "enum_declaration_c", enum_ast );
       DUMP_END();
 
-      if ( !add_type( c_tid_name_c( $1 ), enum_ast, &@1 ) )
+      if ( !add_type( c_tid_name_c( $1 ), enum_ast ) )
         PARSE_ABORT();
     }
   ;
@@ -3177,7 +3174,7 @@ typedef_decl_c
       DUMP_AST( "typedef_decl_c", typedef_ast );
       DUMP_END();
 
-      if ( !add_type( L_TYPEDEF, typedef_ast, &@1 ) )
+      if ( !add_type( L_TYPEDEF, typedef_ast ) )
         PARSE_ABORT();
     }
   ;
@@ -3190,7 +3187,7 @@ using_declaration_c
       // see the comment in "define_command" about TS_TYPEDEF
       PJL_IGNORE_RV( c_ast_take_type_any( $1, &T_TS_TYPEDEF ) );
 
-      if ( !add_type( L_USING, $1, &@1 ) )
+      if ( !add_type( L_USING, $1 ) )
         PARSE_ABORT();
     }
   ;
