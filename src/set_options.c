@@ -126,22 +126,6 @@ static set_option_t const SET_OPTIONS[] = {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for fprint_list() that, given a pointer to a pointer to an
- * slist_node whose data is a `char*`, returns the `char*`.
- *
- * @param ppelt A pointer to the pointer to the element to get the string of.
- * On return, it is advanced to the next list element.
- * @return Returns said string or NULL if none.
- */
-static char const* fprint_list_slist_gets( void const **ppelt ) {
-  slist_node_t const *const node = *ppelt;
-  if ( node == NULL )
-    return NULL;
-  *ppelt = node->next;
-  return node->data;
-}
-
-/**
  * Convenience function for getting `"no"` or not to print.
  *
  * @param enabled Whether a toggle option is enabled.
@@ -406,6 +390,23 @@ static bool set_trigraphs( set_option_fn_args_t const *args ) {
 }
 
 /**
+ * Helper function for fprint_list() that, given a pointer to a pointer to an
+ * slist_node whose data is a `set_option_t*`, returns the option's name.
+ *
+ * @param ppelt A pointer to the pointer to the element to get the string of.
+ * On return, it is advanced to the next list element.
+ * @return Returns said string or NULL if none.
+ */
+static char const* slist_set_option_gets( void const **ppelt ) {
+  slist_node_t const *const node = *ppelt;
+  if ( node == NULL )
+    return NULL;
+  set_option_t const *const opt = node->data;
+  *ppelt = node->next;
+  return opt->name;
+}
+
+/**
  * Compares strings for at most \a n characters ignoring hyphens for equality.
  *
  * @param s1 The first string.
@@ -448,36 +449,34 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
     opt_name += 2/*no*/;
   size_t const opt_name_len = strlen( opt_name );
 
-  slist_t ambiguous_list;
-  slist_init( &ambiguous_list );
-  set_option_t const *found_opt = NULL;
+  slist_t found_opt_list;
+  slist_init( &found_opt_list );
 
   FOREACH_SET_OPTION( opt ) {
-    if ( strn_nohyphen_equal( opt->name, opt_name, opt_name_len ) ) {
-      if ( found_opt == NULL )
-        found_opt = opt;
-      else
-        slist_push_tail( &ambiguous_list, CONST_CAST( void*, opt->name ) );
-    }
+    if ( strn_nohyphen_equal( opt->name, opt_name, opt_name_len ) )
+      slist_push_tail( &found_opt_list, CONST_CAST( void*, opt ) );
   } // for
 
-  if ( found_opt == NULL ) {
-    print_error( opt_name_loc, "\"%s\": unknown set option", orig_name );
-    print_suggestions( DYM_SET_OPTIONS, orig_name );
-    EPUTC( '\n' );
-    return false;
-  }
+  switch ( slist_len( &found_opt_list ) ) {
+    case 0:
+      print_error( opt_name_loc, "\"%s\": unknown set option", orig_name );
+      print_suggestions( DYM_SET_OPTIONS, orig_name );
+      EPUTC( '\n' );
+      return false;
+    case 1:
+      break;
+    default:
+      print_error( opt_name_loc,
+        "\"%s\": ambiguous set option; could be ", orig_name
+      );
+      fprint_list( stderr, found_opt_list.head, &slist_set_option_gets );
+      slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
+      EPUTC( '\n' );
+      return false;
+  } // switch
 
-  if ( !slist_empty( &ambiguous_list ) ) {
-    print_error( opt_name_loc,
-      "\"%s\": ambiguous set option; could be ", orig_name
-    );
-    slist_push_head( &ambiguous_list, CONST_CAST( void*, found_opt->name ) );
-    fprint_list( stderr, ambiguous_list.head, &fprint_list_slist_gets );
-    EPUTC( '\n' );
-    slist_cleanup( &ambiguous_list, /*free_fn=*/NULL );
-    return false;
-  }
+  set_option_t const *const found_opt = slist_peek_head( &found_opt_list );
+  slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
 
   switch ( found_opt->type ) {
     case SET_OPT_TOGGLE:
