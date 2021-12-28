@@ -98,7 +98,7 @@ static unsigned check_tigetnum( char const *capname ) {
  * @return Returns said string.
  */
 PJL_WARN_UNUSED_RESULT
-static char const* fprint_list_gets( void const **ppelt ) {
+static char const* fprint_list_array_gets( void const **ppelt ) {
   char const *const *const ps = *ppelt;
   *ppelt = ps + 1;
   return *ps;
@@ -181,7 +181,7 @@ void fprint_list( FILE *out, void const *elt,
   assert( elt != NULL );
 
   if ( gets == NULL )
-    gets = &fprint_list_gets;
+    gets = &fprint_list_array_gets;
 
   char const *s = (*gets)( &elt );
   for ( size_t i = 0; s != NULL; ++i ) {
