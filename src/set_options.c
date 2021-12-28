@@ -305,13 +305,12 @@ static bool set_flex_debug( set_option_fn_args_t const *args ) {
  */
 static bool set_lang( set_option_fn_args_t const *args ) {
   assert( args->opt_enabled );
-  if ( !set_lang_impl( args->opt_value ) ) {
-    print_error( args->opt_value_loc,
-      "\"%s\": unknown language\n", args->opt_value
-    );
-    return false;
-  }
-  return true;
+  if ( set_lang_impl( args->opt_value ) )
+    return true;
+  print_error( args->opt_value_loc,
+    "\"%s\": unknown language\n", args->opt_value
+  );
+  return false;
 }
 
 /**
@@ -324,24 +323,23 @@ static bool set_lang( set_option_fn_args_t const *args ) {
 PJL_WARN_UNUSED_RESULT
 static bool set_lang_impl( char const *name ) {
   c_lang_id_t const new_lang_id = c_lang_find( name );
-  if ( new_lang_id != LANG_NONE ) {
-    c_lang_set( new_lang_id );
-    //
-    // Every time the language changes, re-set di/trigraph mode so the user is
-    // re-warned if di/trigraphs are not supported in the current language.
-    //
-    static set_option_fn_args_t const args = { true, NULL, NULL, NULL };
-    switch ( opt_graph ) {
-      case C_GRAPH_NONE:
-        break;
-      case C_GRAPH_DI:
-        return set_digraphs( &args );
-      case C_GRAPH_TRI:
-        return set_trigraphs( &args );
-    } // switch
-    return true;
-  }
-  return false;
+  if ( new_lang_id == LANG_NONE )
+    return false;
+  c_lang_set( new_lang_id );
+  //
+  // Every time the language changes, re-set di/trigraph mode so the user is
+  // re-warned if di/trigraphs are not supported in the current language.
+  //
+  static set_option_fn_args_t const args = { true, NULL, NULL, NULL };
+  switch ( opt_graph ) {
+    case C_GRAPH_NONE:
+      break;
+    case C_GRAPH_DI:
+      return set_digraphs( &args );
+    case C_GRAPH_TRI:
+      return set_trigraphs( &args );
+  } // switch
+  return true;
 }
 
 /**
