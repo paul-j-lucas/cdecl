@@ -111,7 +111,7 @@ AC_TYPE_SSIZE_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
 AC_CHECK_MEMBERS([struct passwd.pw_dir],[],[],[[#include <pwd.h>]])
-PJL_COMPILE([__typeof__],[],[__typeof__(1) x __attribute((unused)) = 1;])
+PJL_COMPILE([__typeof__],[],[__typeof__(1) x __attribute__((unused)) = 1;])
 
 # Checks for library functions.
 AC_FUNC_REALLOC
