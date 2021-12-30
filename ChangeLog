@@ -1,5 +1,38 @@
+2021-12-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: s/__attribute/__attribute__/
+
+2021-12-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Removed incorrect "const".
+   * set_options.c: Simplification.
+   * print.c, set_options.c, util.c, set_expl.out, set_expli.out: Now using
+     fprint_list() to print ambiguous set options.
+   * util.c: Renaming.
+   * parser.y, print.c, util.c, util.h: Eliminated fprint_list() elt_size
+     parameter.
+
+2021-12-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, define_c_int_least32_t.out, typedef_c_int_least32_t.out,
+     using_c_int_least32_t.out: Eliminated type_loc parameter from add_type().
+   * c_ast_util.c: Removed redundant asserts.
+
+2021-12-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * run_test.sh: Added "ulimit -c 0" to prevent core files during automated
+     tests.
+   * util.c: s/str/s/
+   * parser.y: s/slist_t/c_ast_list_t/
+   * NEWS, c_ast_util.c, c_ast_util.h, check.c, gibberish.c, test/Makefile.am,
+     explain_rtpf_v.out, explain_rtpf_v.test: A restricted pointer to a
+     non-object, e.g., function, is now correctly flagged as an error.
+
 2021-12-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, configure.ac, parser.y, test/Makefile.am, explain_2i-redef-c++.out,
+     explain_2i-redef.out, explain_2i-redef-c++.test, explain_2i-redef.test:
+     Redefinition in C++ is always an error.
    * gibberish.c: s/_[bsa]tid/_[bsa]tids/
    * english.c, gibberish.c: Now using fputs_sp() more.
 
