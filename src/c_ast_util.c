@@ -300,11 +300,11 @@ static c_ast_t const* c_ast_is_tid_any_cv_impl( c_ast_t const *ast,
                                                 c_tid_t tids,
                                                 c_tid_t cv_stids ) {
   if ( ast != NULL ) {
-    c_tid_t ast_stids = c_type_get_tid( &ast->type, tids );
-    ast_stids = c_tid_normalize( ast_stids );
+    c_tid_t ast_tids = c_type_get_tid( &ast->type, tids );
+    ast_tids = c_tid_normalize( ast_tids );
     if ( c_tid_tpid( tids ) == C_TPID_STORE )
-      ast_stids |= cv_stids;
-    if ( c_tid_is_any( ast_stids, tids ) )
+      ast_tids |= cv_stids;
+    if ( c_tid_is_any( ast_tids, tids ) )
       return ast;
   }
   return NULL;
