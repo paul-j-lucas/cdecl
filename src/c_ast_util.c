@@ -286,6 +286,67 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
 }
 
 /**
+ * Helper function that checks whether the type of \a ast is one of \a tids.
+ *
+ * @param ast The AST to check; may be NULL.
+ * @param cv_stids The `const`/`volatiile` qualifier(s) of the `typedef` for \a
+ * ast, if any.
+ * @param tids The bitwise-or of type(s) to check against.
+ * @return If \a ast is not NULL and the type of \a ast is one of \a tids,
+ * returns \a ast; otherwise returns NULL.
+ */
+PJL_WARN_UNUSED_RESULT
+static c_ast_t const* c_ast_is_tid_any_cv_impl( c_ast_t const *ast,
+                                                c_tid_t tids,
+                                                c_tid_t cv_stids ) {
+  if ( ast != NULL ) {
+    c_tid_t ast_stids = c_type_get_tid( &ast->type, tids );
+    ast_stids = c_tid_normalize( ast_stids );
+    if ( c_tid_tpid( tids ) == C_TPID_STORE )
+      ast_stids |= cv_stids;
+    if ( c_tid_is_any( ast_stids, tids ) )
+      return ast;
+  }
+  return NULL;
+}
+
+/**
+ * Takes the storage (and attributes), if any, away from \a ast
+ * (with the intent of giving them to another AST).
+ * This is used is cases like:
+ * @code
+ *  explain static int f()
+ * @endcode
+ * that should be explained as:
+ * @code
+ *  declare f as static function () returning int
+ * @endcode
+ * and _not_:
+ * @code
+ *  declare f as function () returning static int
+ * @endcode
+ * i.e., the `static` has to be taken away from `int` and given to the function
+ * because it's the function that's `static`, not the `int`.
+ *
+ * @param ast The AST to take from.
+ * @return Returns said storage (and attributes) or \ref T_NONE.
+ */
+PJL_WARN_UNUSED_RESULT
+static c_type_t c_ast_take_storage( c_ast_t *ast ) {
+  assert( ast != NULL );
+  c_type_t rv_type = T_NONE;
+  c_ast_t *const found_ast =
+    c_ast_find_kind_any( ast, C_VISIT_DOWN, K_BUILTIN | K_TYPEDEF );
+  if ( found_ast != NULL ) {
+    rv_type.stids = found_ast->type.stids & TS_MASK_STORAGE;
+    rv_type.atids = found_ast->type.atids;
+    found_ast->type.stids &= c_tid_compl( TS_MASK_STORAGE );
+    found_ast->type.atids = TA_NONE;
+  }
+  return rv_type;
+}
+
+/**
  * Only if \a ast is a \ref K_POINTER, un-pointers \a ast.
  *
  * @param ast The AST to un-pointer.
@@ -320,11 +381,11 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
  * un-`typedef` it.
  * @return Returns the pointed-to AST or NULL if \a ast is not a pointer.
  *
- * @sa c_ast_if_unreference()
  * @sa c_ast_unpointer()
+ * @sa c_ast_unreference_cv()
  */
 PJL_WARN_UNUSED_RESULT
-static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
+static c_ast_t const* c_ast_unpointer_cv( c_ast_t const *ast,
                                           c_tid_t *cv_stids ) {
   ast = c_ast_untypedef( ast );
   if ( ast->kind != K_POINTER )
@@ -377,11 +438,11 @@ static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
  * un-`typedef` it.
  * @return Returns the referenced AST or NULL if \a ast is not a reference.
  *
- * @sa c_ast_if_unpointer()
+ * @sa c_ast_unpointer_cv()
  * @sa c_ast_unreference()
  */
 PJL_WARN_UNUSED_RESULT
-static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
+static c_ast_t const* c_ast_unreference_cv( c_ast_t const *ast,
                                             c_tid_t *cv_stids ) {
   ast = c_ast_untypedef( ast );
   if ( ast->kind != K_REFERENCE )
@@ -397,67 +458,6 @@ static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
   // typedef/reference layers.
   //
   return c_ast_unreference( ast );
-}
-
-/**
- * Helper function that checks whether the type of \a ast is one of \a tids.
- *
- * @param ast The AST to check; may be NULL.
- * @param ast_cv_stids The `const`/`volatiile` qualifier(s) of the `typedef`
- * for \a ast, if any.
- * @param tids The bitwise-or of type(s) to check against.
- * @return If \a ast is not NULL and the type of \a ast is one of \a tids,
- * returns \a ast; otherwise returns NULL.
- */
-PJL_WARN_UNUSED_RESULT
-static c_ast_t const* c_ast_is_tid_any_impl( c_ast_t const *ast,
-                                             c_tid_t ast_cv_stids,
-                                             c_tid_t tids ) {
-  if ( ast != NULL ) {
-    c_tid_t ast_stids = c_type_get_tid( &ast->type, tids );
-    ast_stids = c_tid_normalize( ast_stids );
-    if ( c_tid_tpid( tids ) == C_TPID_STORE )
-      ast_stids |= ast_cv_stids;
-    if ( c_tid_is_any( ast_stids, tids ) )
-      return ast;
-  }
-  return NULL;
-}
-
-/**
- * Takes the storage (and attributes), if any, away from \a ast
- * (with the intent of giving them to another AST).
- * This is used is cases like:
- * @code
- *  explain static int f()
- * @endcode
- * that should be explained as:
- * @code
- *  declare f as static function () returning int
- * @endcode
- * and _not_:
- * @code
- *  declare f as function () returning static int
- * @endcode
- * i.e., the `static` has to be taken away from `int` and given to the function
- * because it's the function that's `static`, not the `int`.
- *
- * @param ast The AST to take from.
- * @return Returns said storage (and attributes) or \ref T_NONE.
- */
-PJL_WARN_UNUSED_RESULT
-static c_type_t c_ast_take_storage( c_ast_t *ast ) {
-  assert( ast != NULL );
-  c_type_t rv_type = T_NONE;
-  c_ast_t *const found_ast =
-    c_ast_find_kind_any( ast, C_VISIT_DOWN, K_BUILTIN | K_TYPEDEF );
-  if ( found_ast != NULL ) {
-    rv_type.stids = found_ast->type.stids & TS_MASK_STORAGE;
-    rv_type.atids = found_ast->type.atids;
-    found_ast->type.stids &= c_tid_compl( TS_MASK_STORAGE );
-    found_ast->type.atids = TA_NONE;
-  }
-  return rv_type;
 }
 
 /**
@@ -567,7 +567,7 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
   assert( mask_type != NULL );
 
   c_tid_t cv_stids;
-  ast = c_ast_if_unpointer( ast, &cv_stids );
+  ast = c_ast_unpointer_cv( ast, &cv_stids );
   if ( ast == NULL )
     return false;
   c_type_t const masked_type = {
@@ -580,8 +580,8 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
 
 c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   c_tid_t cv_stids;
-  ast = c_ast_if_unpointer( ast, &cv_stids );
-  return c_ast_is_tid_any_impl( ast, cv_stids, tids );
+  ast = c_ast_unpointer_cv( ast, &cv_stids );
+  return c_ast_is_tid_any_cv_impl( ast, tids, cv_stids );
 }
 
 bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname ) {
@@ -594,14 +594,14 @@ bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname ) {
 
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   c_tid_t cv_stids;
-  ast = c_ast_if_unreference( ast, &cv_stids );
-  return c_ast_is_tid_any_impl( ast, cv_stids, tids );
+  ast = c_ast_unreference_cv( ast, &cv_stids );
+  return c_ast_is_tid_any_cv_impl( ast, tids, cv_stids );
 }
 
 c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
                                          c_type_t const *type ) {
   c_tid_t cv_stids;
-  ast = c_ast_if_unreference( ast, &cv_stids );
+  ast = c_ast_unreference_cv( ast, &cv_stids );
   if ( ast == NULL )
     return NULL;
 
@@ -616,7 +616,7 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
 
 c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   ast = c_ast_untypedef( ast );
-  return c_ast_is_tid_any_impl( ast, TS_NONE, tids );
+  return c_ast_is_tid_any_cv_impl( ast, tids, TS_NONE );
 }
 
 bool c_ast_is_typename_ok( c_ast_t const *ast ) {
