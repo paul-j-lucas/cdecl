@@ -289,7 +289,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
  * Helper function that checks whether the type of \a ast is one of \a tids.
  *
  * @param ast The AST to check; may be NULL.
- * @param cv_stids The `const`/`volatiile` qualifier(s) of the `typedef` for \a
+ * @param cv_stids The `const`/`volatile` qualifier(s) of the `typedef` for \a
  * ast, if any.
  * @param tids The bitwise-or of type(s) to check against.
  * @return If \a ast is not NULL and the type of \a ast is one of \a tids,
