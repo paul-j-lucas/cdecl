@@ -206,7 +206,7 @@ bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname );
  * any one of \a tids, returns the referred-to AST; otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_tid_any()
- * @sa c_ast_is_ref_to_class_sname();
+ * @sa c_ast_is_ref_to_class_sname()
  * @sa c_ast_is_ref_to_type_any()
  * @sa c_ast_is_tid_any()
  */
@@ -224,7 +224,7 @@ c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  * otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_type_any()
- * @sa c_ast_is_ref_to_class_sname();
+ * @sa c_ast_is_ref_to_class_sname()
  * @sa c_ast_is_ref_to_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
