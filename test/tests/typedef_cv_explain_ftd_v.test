@@ -1,0 +1,1 @@
+cdecl @ @ @ typedef const void Void; explain void f(Void) @ 65

@@ -12,6 +12,19 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.10
 
+** `const void` function parameters
+`const` (and `volatile`) qualifiers for `void` as a function "parameter" (even
+via a `typedef`) are now correctly flagged as an error:
+
+    void f1(void);                      // OK
+    void f2(const void);                // error
+
+    typedef void Void;
+    void f3(Void);                      // OK
+
+    typedef const void CVoid;
+    void f4(CVoid);                     // error
+
 ** Redefinition check in C++
 C++ doesn't support tentative definitions, so:
 

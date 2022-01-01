@@ -289,8 +289,8 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
  * Helper function that checks whether the type of \a ast is one of \a tids.
  *
  * @param ast The AST to check; may be NULL.
- * @param cv_stids The `const`/`volatile` qualifier(s) of the `typedef` for \a
- * ast, if any.
+ * @param cv_stids The `const` and `volatile` (cv) qualifier(s) of the
+ * `typedef` for \a ast, if any.
  * @param tids The bitwise-or of type(s) to check against.
  * @return If \a ast is not NULL and the type of \a ast is one of \a tids,
  * returns \a ast; otherwise returns NULL.
@@ -351,7 +351,7 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  *
  * @param ast The AST to un-pointer.
  * @param cv_stids If \a ast is a pointer, receives the `const` and `volatile`
- * (cv) qualifiers (only) of the first pointed-to type.  For a declaration like
+ * (cv) qualifier(s) of the first pointed-to type.  For a declaration like
  * <code>const&nbsp;S&nbsp;*x</code> (where `S` is a `struct`), the `const` is
  * associated with the `typedef` for the `struct` and _not_ the actual `struct`
  * the `typedef` is a `typedef` for:
@@ -408,7 +408,7 @@ static c_ast_t const* c_ast_unpointer_cv( c_ast_t const *ast,
  *
  * @param ast The AST to un-reference.
  * @param cv_stids If \a ast is a reference, receives the `const` and
- * `volatile` (cv) qualifiers (only) of the first referred-to type.  For a
+ * `volatile` (cv) qualifier(s) of the first referred-to type.  For a
  * declaration like <code>const&nbsp;S&nbsp;&x</code> (where `S` is a
  * `struct`), the `const` is associated with the `typedef` for the `struct` and
  * _not_ the actual `struct` the `typedef` is a `typedef` for:
@@ -458,6 +458,33 @@ static c_ast_t const* c_ast_unreference_cv( c_ast_t const *ast,
   // typedef/reference layers.
   //
   return c_ast_unreference( ast );
+}
+
+/**
+ * Un-`typedef`s \a ast, i.e., if \a ast is a \ref K_TYPEDEF, returns the AST
+ * the `typedef` is for.
+ *
+ * @param ast The AST to un-`typedef`.
+ * @param cv_stids Receives the bitwise-or of the `const` and `volatile` (cv)
+ * qualifier(s) of \a ast and all ASTs \a ast is a `typedef` for.
+ * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
+ * `typedef`.
+ *
+ * @sa c_ast_untypedef()
+ */
+static c_ast_t const* c_ast_untypedef_cv( c_ast_t const *ast,
+                                          c_tid_t *cv_stids ) {
+  assert( ast != NULL );
+  assert( cv_stids != NULL );
+
+  *cv_stids = ast->type.stids & TS_CV;
+  for (;;) {
+    if ( ast->kind != K_TYPEDEF )
+      return ast;
+    ast = ast->as.tdef.for_ast;
+    assert( ast != NULL );
+    *cv_stids |= ast->type.stids & TS_CV;
+  } // for
 }
 
 /**
@@ -614,9 +641,10 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
   return c_type_is_any( &ast_cv_type, type ) ? ast : NULL;
 }
 
-c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
-  ast = c_ast_untypedef( ast );
-  return c_ast_is_tid_any_cv_impl( ast, tids, TS_NONE );
+c_ast_t const* c_ast_is_tid_any_cv( c_ast_t const *ast, c_tid_t tids,
+                                    c_tid_t *cv_stids ) {
+  ast = c_ast_untypedef_cv( ast, cv_stids );
+  return c_ast_is_tid_any_cv_impl( ast, tids, *cv_stids );
 }
 
 bool c_ast_is_typename_ok( c_ast_t const *ast ) {

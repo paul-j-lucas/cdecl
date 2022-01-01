@@ -559,6 +559,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_f_k-knr.test \
 	tests/explain_f_typedef_ai.test \
 	tests/explain_fasv_v.test \
+	tests/explain_fcv_v.test \
 	tests/explain_fd_i-cknr.test \
 	tests/explain_fel_v.test \
 	tests/explain_felcc_v.test \
@@ -648,7 +649,8 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_vi-knr.test \
 	tests/explain_vovyf-c.test \
 	tests/explain_wt-c89.test \
-	tests/explain_xxi-c.test
+	tests/explain_xxi-c.test \
+	tests/typedef_cv_explain_ftd_v.test
 
 #
 # C misc. error tests

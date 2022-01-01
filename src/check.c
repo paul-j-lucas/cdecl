@@ -1134,14 +1134,24 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         if ( c_ast_is_builtin_any( raw_param_ast, TB_VOID ) ) {
           //
           // Ordinarily, void parameters are invalid; but a single void
-          // function "parameter" is valid (as long as it doesn't have a name).
+          // function "parameter" is valid (as long as it has neither a name
+          // nor qualifiers).
           //
           if ( !c_sname_empty( &param_ast->sname ) ) {
             print_error( &param_ast->loc,
-              "named parameters can not be %s\n", L_VOID
+              "%s as parameter can not have a name\n", L_VOID
             );
             return false;
           }
+          c_tid_t cv_stids;
+          if ( c_ast_is_tid_any_cv( param_ast, TS_CV, &cv_stids ) ) {
+            print_error( &param_ast->loc,
+              "%s as parameter can not be %s\n",
+              L_VOID, c_tid_name_error( cv_stids )
+            );
+            return false;
+          }
+
           assert( void_ast == NULL );
           void_ast = param_ast;
           if ( n_params > 1 )
