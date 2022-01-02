@@ -2248,9 +2248,9 @@ explain_command
   | explain file_scope_destructor_decl_c
 
     /*
-     * K&R C implicit int function and C++ in-class constructor declaration.
+     * Pre-C99 implicit int function and C++ in-class constructor declaration.
      */
-  | explain knr_func_or_constructor_decl_c
+  | explain pc99_func_or_constructor_decl_c
 
     /*
      * Template declaration -- not supported.
@@ -3761,9 +3761,9 @@ func_decl_c_astp
     }
   ;
 
-knr_func_or_constructor_decl_c
+pc99_func_or_constructor_decl_c
     /*
-     * K&R C implicit int function and C++ in-class constructor declaration.
+     * Pre-C99 implicit int function and C++ in-class constructor declaration.
      *
      * This grammar rule handles both since they're so similar (and so would
      * cause grammar conflicts if they were separate rules in an LALR(1)
@@ -3786,7 +3786,7 @@ knr_func_or_constructor_decl_c
         PARSE_ABORT();
       }
 
-      DUMP_START( "knr_func_or_constructor_decl_c",
+      DUMP_START( "pc99_func_or_constructor_decl_c",
                   "NAME '(' param_list_c_ast_opt ')' noexcept_c_stid_opt "
                   "func_equals_c_stid_opt" );
       DUMP_STR( "NAME", $1 );
@@ -3824,7 +3824,7 @@ knr_func_or_constructor_decl_c
       c_sname_set( &ast->sname, &sname );
       ast->as.func.param_ast_list = $3;
 
-      DUMP_AST( "knr_func_or_constructor_decl_c", ast );
+      DUMP_AST( "pc99_func_or_constructor_decl_c", ast );
       DUMP_END();
 
       C_AST_CHECK( ast );
@@ -4789,7 +4789,7 @@ type_c_ast
      *
      *      unsigned i;
      */
-  : type_modifier_list_c_type           // allows implicit int in K&R C
+  : type_modifier_list_c_type           // allows implicit int in pre-C99
     {
       DUMP_START( "type_c_ast", "type_modifier_list_c_type" );
       DUMP_TYPE( "type_modifier_list_c_type", $1 );
@@ -6174,7 +6174,7 @@ type_english_ast
     }
 
   | // in_attr: qualifier
-    type_modifier_list_english_type     // allows implicit int in K&R C
+    type_modifier_list_english_type     // allows implicit int in pre-C99
     {
       DUMP_START( "type_english_ast", "type_modifier_list_english_type" );
       DUMP_TYPE( "type_modifier_list_english_type", $1 );
