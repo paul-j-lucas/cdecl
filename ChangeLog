@@ -1,3 +1,39 @@
+2022-01-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y, test/Makefile.am, explain_2pii-c89.out,
+     explain_a4pii-c89.out, explain_f_rpii-c89.out, explain_npii-c89.out,
+     explain_npiii-c89.out, explain_pii-c89.out, explain_piii-c89.out,
+     explain_2pii-c89.test, explain_a4pii-c89.test, explain_f_rpii-c89.test,
+     explain_npii-c89.test, explain_npiii-c89.test, explain_pii-c89.test,
+     explain_piii-c89.test: Support for pre-C99 pointer to implicit int
+     declarations.
+   * parser.y: s/knr/pc99/
+
+2022-01-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am,
+     declare_frg_v.out, declare_fvx_v.out, explain_fcv_v.out,
+     explain_frg_v.out, explain_fvx_v.out, typedef_cv_explain_ftd_v.out,
+     explain_fcv_v.test, typedef_cv_explain_ftd_v.test: Now flagging `void
+     f(const void)` as an error.
+   * c_ast_util.c: s/ast_stids/ast_tids/
+   * c_ast_util.c: Renaming.
+   * Doxyfile, Makefile.am, NEWS, bootstrap, cdecl.css, configure.ac, lcovrc,
+     makedoc.sh, man/Makefile.am, man/man1/c++decl.1, cdecl.1, src/Makefile.am,
+     autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c,
+     c_keyword.h, c_kind.c, c_kind.h, c_lang.c, c_lang.h, c_operator.c,
+     c_operator.h, c_sglob.c, c_sglob.h, c_sname.c, c_sname.h, c_type.c,
+     c_type.h, c_typedef.c, c_typedef.h, cdecl.c, cdecl.h, cdecl_keyword.c,
+     cdecl_keyword.h, cdecl_lldb.py, cdecl_parser.h, check.c, check.h, color.c,
+     color.h, dam_lev.c, dam_lev.h, did_you_mean.c, did_you_mean.h, dump.c,
+     dump.h, english.c, english.h, gibberish.c, gibberish.h, help.c, help.h,
+     lexer.h, lexer.l, literals.c, literals.h, options.c, options.h, parser.y,
+     pjl_config.h, print.c, print.h, prompt.c, prompt.h, read_line.c,
+     read_line.h, red_black.c, red_black.h, red_black_test.c, set_options.c,
+     set_options.h, slist.c, slist.h, slist_test.c, strbuf.c, strbuf.h,
+     types.h, unit_test.h, util.c, util.h, test/Makefile.am,
+     not_in_Makefile.sh, run_test.sh, update_test.sh: s/2021/2022/
+
 2021-12-30  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: s/__attribute/__attribute__/
