@@ -324,6 +324,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_0o_plus_rk_rk.test \
 	tests/explain_2i-redef.test \
 	tests/explain_2npi.test \
+	tests/explain_2pii-c89.test \
 	tests/explain_a012i.test \
 	tests/explain_a0b10i.test \
 	tests/explain_a0xAi-01.test \
@@ -339,6 +340,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a3a5pfv_ppi.test \
 	tests/explain_a3pfv_i.test \
 	tests/explain_a3ppfv_i.test \
+	tests/explain_a4pii-c89.test \
 	tests/explain_a9cpi.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
@@ -383,6 +385,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_eta2i.test \
 	tests/explain_f_pi.test \
 	tests/explain_f_ppc.test \
+	tests/explain_f_rpii-c89.test \
 	tests/explain_fac_v-1.test \
 	tests/explain_fac_v.test \
 	tests/explain_facs3_v.test \
@@ -451,6 +454,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_na4i.test \
 	tests/explain_nfi_c.test \
 	tests/explain_ni.test \
+	tests/explain_npii-c89.test \
+	tests/explain_npiii-c89.test \
 	tests/explain_nrfi_v.test \
 	tests/explain_oi.test \
 	tests/explain_ovo_minus2_i_rk.test \
@@ -469,6 +474,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_pcpi.test \
 	tests/explain_pfv_pi.test \
 	tests/explain_pi.test \
+	tests/explain_pii-c89.test \
+	tests/explain_piii-c89.test \
 	tests/explain_pp_mssc_f_v.test \
 	tests/explain_ppi.test \
 	tests/explain_ptdv.test \

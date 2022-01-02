@@ -1,0 +1,2 @@
+declare p as pointer to int
+declare i as int

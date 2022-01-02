@@ -12,6 +12,15 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.10
 
+** Pre-C99 implicit `int`
+Added more support for pre-C99 implicit `int`:
+
+    explain *p                          // pointer to int
+    explain *p, i                       // pointer to int, int
+    explain *a[4]                       // array 4 of pointer to int
+    explain *f()                        // function returning pointer to int
+    explain (*p)                        // pointer to int -- unnecessary ()
+
 ** `const void` function parameters
 `const` (and `volatile`) qualifiers for `void` as a function "parameter" (even
 via a `typedef`) are now correctly flagged as an error:

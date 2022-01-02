@@ -59,6 +59,7 @@ The characters are:
 + `grt` = GNU C `__restrict__`
 + `h` = `short`
 + `i` = `inline` or `int`
++ `ii` = Pre-C99 implicit `int`
 + `im` = `_Imaginary` or `imaginary`
 + `k` = `struct`
 + `kr` = untyped K&R C function argument

@@ -474,6 +474,7 @@
 struct in_attr {
   c_alignas_t   align;            ///< Alignment, if any.
   c_sname_t     current_scope;    ///< C++ only: current scope, if any.
+  bool          implicit_int;     ///< Created implicit `int` AST?
   c_ast_list_t  type_ast_stack;   ///< Type AST stack.
   c_ast_list_t  typedef_ast_list; ///< AST nodes of `typedef` being declared.
   c_ast_t      *typedef_type_ast; ///< AST of `typedef` being declared.
@@ -1539,6 +1540,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  oper_decl_c_astp
 %type   <ast>       param_c_ast
 %type   <ast_list>  param_list_c_ast param_list_c_ast_exp param_list_c_ast_opt
+%type   <ast>       pc99_pointer_type_c_ast
 %type   <ast_pair>  pointer_decl_c_astp
 %type   <ast_pair>  pointer_to_member_decl_c_astp
 %type   <ast>       pointer_to_member_type_c_ast
@@ -2253,6 +2255,20 @@ explain_command
   | explain pc99_func_or_constructor_decl_c
 
     /*
+     * Pre-C99 pointer to implicit int declaration:
+     *
+     *      *p;               // pointer to int
+     *      *p, i;            // pointer to int, int
+     *      *a[4];            // array 4 of pointer to int
+     *      *f();             // function returning pointer to int
+     */
+  | explain pc99_pointer_decl_list_c
+    {
+      ia_type_ast_pop();
+      in_attr.implicit_int = false;
+    }
+
+    /*
      * Template declaration -- not supported.
      */
   | explain template_declaration_c
@@ -2594,6 +2610,21 @@ c_style_cast_c
       c_sname_cleanup( &$6 );
       if ( !ok )
         PARSE_ABORT();
+    }
+
+    /*
+     * Pre-C99 pointer to implicit int declaration (with unnecessary
+     * parentheses):
+     *
+     *      (*p);             // pointer to int
+     *      (*p, i);          // pointer to int, int
+     *      (*a[4]);          // array 4 of pointer to int
+     *      (*f());           // function returning pointer to int
+     */
+  | '(' pc99_pointer_decl_list_c rparen_exp
+    {
+      ia_type_ast_pop();
+      in_attr.implicit_int = false;
     }
   ;
 
@@ -4207,6 +4238,71 @@ pointer_type_c_ast
       c_ast_set_parent( type_ast, $$ );
 
       DUMP_AST( "pointer_type_c_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+/// Gibberish pre-C99 implicit int pointer declaration ////////////////////////
+
+pc99_pointer_decl_list_c
+  : pc99_pointer_decl_c
+  | pc99_pointer_decl_c ',' decl_list_c
+  ;
+
+pc99_pointer_decl_c
+  : pc99_pointer_type_c_ast { ia_type_ast_push( $1 ); } decl_c_astp
+    {
+      ia_type_ast_pop();
+
+      DUMP_START( "pc99_pointer_decl_c",
+                  "pc99_pointer_type_c_ast decl_c_astp" );
+      DUMP_AST( "pc99_pointer_type_c_ast", $1 );
+      DUMP_AST( "decl_c_astp", $3.ast );
+
+      PJL_IGNORE_RV( c_ast_patch_placeholder( $1, $3.ast ) );
+      c_ast_t *const ast = $3.ast;
+      ast->loc = @$;
+
+      DUMP_AST( "pc99_pointer_decl_c", ast );
+      DUMP_END();
+
+      C_AST_CHECK( ast );
+      c_ast_explain_declaration( ast, cdecl_fout );
+    }
+  ;
+
+pc99_pointer_type_c_ast
+  : '*' type_qualifier_list_c_stid_opt
+    {
+      if ( OPT_LANG_IS(C_MIN(99)) ) {
+        //
+        // In C99 and later, an implicit int function is an error.  This check
+        // has to be done now in the parser rather than later in the AST since
+        // the AST would have no "memory" that the return type was implicitly
+        // int.
+        //
+        print_error( &@1,
+          "implicit \"%s\" is illegal in %s and later\n",
+          L_INT, c_lang_name( LANG_C_99 )
+        );
+        PARSE_ABORT();
+      }
+
+      DUMP_START( "pc99_pointer_type_c_ast",
+                  "* type_qualifier_list_c_stid_opt" );
+      DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
+
+      if ( false_set( &in_attr.implicit_int ) ) {
+        c_ast_t *const int_ast = c_ast_new_gc( K_BUILTIN, &@1 );
+        int_ast->type.btids = TB_INT;
+        ia_type_ast_push( int_ast );
+      }
+
+      c_ast_t *const type_ast = c_ast_dup( ia_type_ast_peek(), &gc_ast_list );
+      $$ = c_ast_pointer( type_ast, &gc_ast_list );
+      $$->type.stids = c_tid_check( $2, C_TPID_STORE );
+
+      DUMP_AST( "pc99_pointer_type_c_ast", $$ );
       DUMP_END();
     }
   ;
