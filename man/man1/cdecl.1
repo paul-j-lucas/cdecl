@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "December 21, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 3, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2513,6 +2513,8 @@ struct S { typedef int Int; };  // supported (C++ only)
 struct S { int i; char c; } s;  // not supported
 .cE 0
 .RE
+.IP \n+[step].
+Arbitrary expressions for array sizes are not supported.
 .IP \n+[step].
 C++
 \f(CWdecltype\fP,
