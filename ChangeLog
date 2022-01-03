@@ -1,5 +1,10 @@
+2022-01-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added note that arbitrary array sizes are not supported.
+
 2022-01-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * check.c: s/ret_ast/raw_ret_ast/
    * NEWS, parser.y, test/Makefile.am, explain_2pii-c89.out,
      explain_a4pii-c89.out, explain_f_rpii-c89.out, explain_npii-c89.out,
      explain_npiii-c89.out, explain_pii-c89.out, explain_piii-c89.out,
