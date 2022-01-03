@@ -2005,7 +2005,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
     case K_USER_DEF_LITERAL:
       print_error( &ret_ast->loc,
         "%s returning %s",
-        kind_name, c_kind_name( ret_ast->kind )
+        kind_name, c_kind_name( raw_ret_ast->kind )
       );
       print_hint( "%s returning %s to %s", kind_name, L_POINTER, L_FUNCTION );
       return false;
