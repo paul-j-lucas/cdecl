@@ -1599,7 +1599,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>     namespace_typedef_sname_c
 %type   <tid>       no_except_bool_stid_exp
 %type   <bitmask>   predefined_or_user_mask_opt
-%type   <name>      set_option_value_opt
+%type   <str_val>   set_option_value_opt
 %type   <gib_flags> show_format show_format_exp show_format_opt
 %type   <bitmask>   show_which_types_mask_opt
 %type   <tid>       static_stid_opt
