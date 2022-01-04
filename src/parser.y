@@ -1597,7 +1597,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>     namespace_sname_c namespace_sname_c_exp
 %type   <type>      namespace_type
 %type   <sname>     namespace_typedef_sname_c
-%type   <tid>       no_except_bool_stid_exp
+%type   <tid>       noexcept_bool_stid_exp
 %type   <bitmask>   predefined_or_user_mask_opt
 %type   <str_val>   set_option_value_opt
 %type   <gib_flags> show_format show_format_exp show_format_opt
@@ -3922,14 +3922,14 @@ func_ref_qualifier_c_stid_opt
 noexcept_c_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
   | Y_NOEXCEPT
-  | Y_NOEXCEPT '(' no_except_bool_stid_exp rparen_exp
+  | Y_NOEXCEPT '(' noexcept_bool_stid_exp rparen_exp
     {
       $$ = $3;
     }
   | Y_THROW lparen_exp rparen_exp
   ;
 
-no_except_bool_stid_exp
+noexcept_bool_stid_exp
   : Y_FALSE
   | Y_TRUE
   | error
