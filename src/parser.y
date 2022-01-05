@@ -3805,10 +3805,9 @@ pc99_func_or_constructor_decl_c
     {
       if ( OPT_LANG_IS(C_MIN(99)) ) {
         //
-        // In C99 and later, an implicit int function is an error.  This check
-        // has to be done now in the parser rather than later in the AST since
-        // the AST would have no "memory" that the return type was implicitly
-        // int.
+        // In C99 and later, implicit int is an error.  This check has to be
+        // done now in the parser rather than later in the AST since the AST
+        // would have no "memory" that the return type was implicitly int.
         //
         print_error( &@1,
           "implicit \"%s\" functions are illegal in %s and later\n",
@@ -4276,10 +4275,9 @@ pc99_pointer_type_c_ast
     {
       if ( OPT_LANG_IS(C_MIN(99)) ) {
         //
-        // In C99 and later, an implicit int function is an error.  This check
-        // has to be done now in the parser rather than later in the AST since
-        // the AST would have no "memory" that the return type was implicitly
-        // int.
+        // In C99 and later, implicit int is an error.  This check has to be
+        // done now in the parser rather than later in the AST since the AST
+        // would have no "memory" that the return type was implicitly int.
         //
         print_error( &@1,
           "implicit \"%s\" is illegal in %s and later\n",
