@@ -911,23 +911,13 @@ static void ia_free( void ) {
  * @param hard_reset If `true`, does a "hard" reset that currently resets the
  * EOF flag of the lexer.  This should be `true` if an error occurs and
  * `YYABORT` is called.
- *
- * @sa parse_init()
  */
 static void parse_cleanup( bool hard_reset ) {
+  cdecl_mode = CDECL_ENGLISH_TO_GIBBERISH;
   lexer_reset( hard_reset );
   slist_cleanup( &decl_ast_list, /*free_fn=*/NULL );
   c_ast_list_gc( &gc_ast_list );
   ia_free();
-}
-
-/**
- * Gets ready to parse a command.
- *
- * @sa parse_cleanup()
- */
-static void parse_init( void ) {
-  cdecl_mode = CDECL_ENGLISH_TO_GIBBERISH;
 }
 
 /**
@@ -1663,7 +1653,7 @@ static void yyerror( char const *msg ) {
 
 command_list
   : /* empty */
-  | command_list { parse_init(); } command
+  | command_list command
     { //
       // We get here only after a successful parse, so a hard reset is not
       // needed.
