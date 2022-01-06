@@ -222,8 +222,7 @@
   fl_keyword_expected( __FILE__, __LINE__, (KEYWORD) ); PARSE_ABORT(); )
 
 /**
- * Aborts the current parse (presumably after an error message has been
- * printed).
+ * Aborts the current parse after an error message has been printed.
  */
 #define PARSE_ABORT()             BLOCK( parse_cleanup( true ); YYABORT; )
 
