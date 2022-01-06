@@ -324,9 +324,9 @@ void c_sname_list_dump( slist_t const *list, FILE *dout ) {
   assert( dout != NULL );
 
   FPUTC( '[', dout );
-  bool dump_comma = false;
+  bool comma = false;
   FOREACH_SLIST_NODE( node, list ) {
-    if ( true_or_set( &dump_comma ) )
+    if ( true_or_set( &comma ) )
       FPUTS( ", ", dout );
     c_sname_dump( node->data, dout );
   } // for
