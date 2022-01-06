@@ -473,6 +473,7 @@
  */
 struct in_attr {
   c_alignas_t   align;            ///< Alignment, if any.
+  c_ast_depth_t ast_depth;        ///< Parentheses nesting depth.
   c_sname_t     current_scope;    ///< C++ only: current scope, if any.
   bool          implicit_int;     ///< Created implicit `int` AST?
   c_ast_list_t  type_ast_stack;   ///< Type AST stack.
@@ -506,7 +507,6 @@ PJL_WARN_UNUSED_RESULT
 static bool slist_node_is_ast_placeholder( void* );
 
 // local variables
-static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
 static c_ast_list_t   decl_ast_list;    ///< List of ASTs being declared.
 static c_ast_list_t   gc_ast_list;      ///< c_ast nodes freed after parse.
 static in_attr_t      in_attr;          ///< Inherited attributes.
@@ -534,7 +534,7 @@ static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
  */
 PJL_WARN_UNUSED_RESULT
 static inline c_ast_t* c_ast_new_gc( c_ast_kind_t kind, c_loc_t const *loc ) {
-  return c_ast_new( kind, ast_depth, loc, &gc_ast_list );
+  return c_ast_new( kind, in_attr.ast_depth, loc, &gc_ast_list );
 }
 
 /**
@@ -927,7 +927,6 @@ static void parse_cleanup( bool hard_reset ) {
  * @sa parse_cleanup()
  */
 static void parse_init( void ) {
-  ast_depth = 0;
   cdecl_mode = CDECL_ENGLISH_TO_GIBBERISH;
 }
 
@@ -4111,12 +4110,12 @@ nested_decl_c_astp
   : '('
     {
       ia_type_ast_push( c_ast_new_gc( K_PLACEHOLDER, &@$ ) );
-      ++ast_depth;
+      ++in_attr.ast_depth;
     }
     decl_c_astp rparen_exp
     {
       ia_type_ast_pop();
-      --ast_depth;
+      --in_attr.ast_depth;
 
       DUMP_START( "nested_decl_c_astp", "'(' decl_c_astp ')'" );
       DUMP_AST( "decl_c_astp", $3.ast );
@@ -4725,12 +4724,12 @@ nested_cast_c_astp
   : '('
     {
       ia_type_ast_push( c_ast_new_gc( K_PLACEHOLDER, &@$ ) );
-      ++ast_depth;
+      ++in_attr.ast_depth;
     }
     cast_c_astp_opt rparen_exp
     {
       ia_type_ast_pop();
-      --ast_depth;
+      --in_attr.ast_depth;
 
       DUMP_START( "nested_cast_c_astp", "'(' cast_c_astp_opt ')'" );
       DUMP_AST( "cast_c_astp_opt", $3.ast );
