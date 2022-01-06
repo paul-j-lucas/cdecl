@@ -224,7 +224,8 @@
 /**
  * Aborts the current parse after an error message has been printed.
  */
-#define PARSE_ABORT()             BLOCK( parse_cleanup( true ); YYABORT; )
+#define PARSE_ABORT() \
+  BLOCK( parse_cleanup( /*will_YYABORT=*/true ); YYABORT; )
 
 /**
  * Calls fl_punct_expected() followed by #PARSE_ABORT().
@@ -907,13 +908,19 @@ static void ia_free( void ) {
 /**
  * Cleans up individial parse data after each parse.
  *
- * @param hard_reset If `true`, does a "hard" reset that currently resets the
- * EOF flag of the lexer.  This should be `true` if an error occurs and
- * `YYABORT` is called.
+ * @param will_YYABORT If `true`, #YYABORT is about to be called due to a
+ * semantic error.
  */
-static void parse_cleanup( bool hard_reset ) {
+static void parse_cleanup( bool will_YYABORT ) {
   cdecl_mode = CDECL_ENGLISH_TO_GIBBERISH;
-  lexer_reset( hard_reset );
+
+  //
+  // We need to reset the lexer differently depending on whether we completed a
+  // parse as a result of explicitly calling YYABORT due to a semantic error.
+  // If so, do a "hard" reset that currently resets the EOF flag of the lexer.
+  //
+  lexer_reset( /*hard_reset=*/will_YYABORT );
+
   slist_cleanup( &decl_ast_list, /*free_fn=*/NULL );
   c_ast_list_gc( &gc_ast_list );
   ia_free();
@@ -1036,7 +1043,7 @@ static void yyerror( char const *msg ) {
   EPUTS( msg );                         // no newline
   SGR_END_COLOR( stderr );
 
-  parse_cleanup( false );
+  parse_cleanup( /*will_YYABORT=*/false );
 }
 
 /** @} */
@@ -1657,7 +1664,7 @@ command_list
       // We get here only after a successful parse, so a hard reset is not
       // needed.
       //
-      parse_cleanup( false );
+      parse_cleanup( /*will_YYABORT=*/false );
     }
   ;
 
