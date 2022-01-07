@@ -974,8 +974,8 @@ static void lexer_fatal( char const *msg ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 char const* lexer_input_line( size_t *plen ) {
-  if ( plen != NULL )
-    *plen = input_len;
+  assert( plen != NULL );
+  *plen = input_len;
   return input_buf;
 }
 

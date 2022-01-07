@@ -87,8 +87,7 @@ extern char const      *lexer_token;
 /**
  * Gets the current input line.
  *
- * @param plen If not NULL, sets the value pointed at to be the length of said
- * line.
+ * @param plen The value pointed at is set to be the length of said line.
  * @return Returns said line.
  */
 PJL_WARN_UNUSED_RESULT
