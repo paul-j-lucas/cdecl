@@ -225,7 +225,7 @@
  * Aborts the current parse after an error message has been printed.
  */
 #define PARSE_ABORT() \
-  BLOCK( parse_cleanup( /*will_YYABORT=*/true ); YYABORT; )
+  BLOCK( parse_cleanup( /*fatal_error=*/true ); YYABORT; )
 
 /**
  * Calls fl_punct_expected() followed by #PARSE_ABORT().
@@ -908,18 +908,19 @@ static void ia_free( void ) {
 /**
  * Cleans up individial parse data after each parse.
  *
- * @param will_YYABORT If `true`, #YYABORT is about to be called due to a
- * semantic error.
+ * @param fatal_error Must be `true` only if a fatal semantic error has
+ * occurred and #YYABORT is about to be called to bail out of parsing by
+ * returning from yyparse().
  */
-static void parse_cleanup( bool will_YYABORT ) {
+static void parse_cleanup( bool fatal_error ) {
   cdecl_mode = CDECL_ENGLISH_TO_GIBBERISH;
 
   //
   // We need to reset the lexer differently depending on whether we completed a
-  // parse as a result of explicitly calling YYABORT due to a semantic error.
-  // If so, do a "hard" reset that currently resets the EOF flag of the lexer.
+  // parse with a fatal error.  If so, do a "hard" reset that also resets the
+  // EOF flag of the lexer.
   //
-  lexer_reset( /*hard_reset=*/will_YYABORT );
+  lexer_reset( /*hard_reset=*/fatal_error );
 
   slist_cleanup( &decl_ast_list, /*free_fn=*/NULL );
   c_ast_list_gc( &gc_ast_list );
@@ -1043,7 +1044,13 @@ static void yyerror( char const *msg ) {
   EPUTS( msg );                         // no newline
   SGR_END_COLOR( stderr );
 
-  parse_cleanup( /*will_YYABORT=*/false );
+  //
+  // A syntax error has occurred, but syntax errors aren't fatal since Bison
+  // tries to recover.  We'll clean-up the current parse, but YYABORT won't be
+  // called so we won't bail out of parsing by returning from yyparse(); hence,
+  // parsing will continue.
+  //
+  parse_cleanup( /*fatal_error=*/false );
 }
 
 /** @} */
@@ -1661,10 +1668,9 @@ command_list
   : /* empty */
   | command_list command
     { //
-      // We get here only after a successful parse, so a hard reset is not
-      // needed.
+      // We get here only after a successful parse.
       //
-      parse_cleanup( /*will_YYABORT=*/false );
+      parse_cleanup( /*fatal_error=*/false );
     }
   ;
 
