@@ -1,5 +1,24 @@
+2022-01-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.h, lexer.l: plen for lexer_input_line() must now not be NULL.
+
+2022-01-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: parse_cleanup() comment renaming.
+   * parser.y: Got rid of parse_init().
+   * parser.y: Made ast_depth be a field of in_attr.
+
+2022-01-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c: s/dump_comma/comma/
+
+2022-01-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/no_except_bool_stid_exp/noexcept_bool_stid_exp/
+
 2022-01-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: s/name/str_val/ for set_option_value_opt.
    * cdecl.1: Added note that arbitrary array sizes are not supported.
 
 2022-01-02  Paul J. Lucas <paul@lucasmail.org>
