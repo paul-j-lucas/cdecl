@@ -146,10 +146,11 @@
  * The signature for functions passed to c_ast_check_visitor().
  *
  * @param ast The AST to check.
- * @param flags The flags to use.
+ * @param v_data The flags to use.
  * @return Returns `true` only if all checks passed.
  */
-typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast, unsigned flags );
+typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast,
+                                  c_ast_visit_data_t flags );
 
 // local constants
 
@@ -222,13 +223,13 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_name_equal( c_ast_t const*, char const* );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_error( c_ast_t const*, unsigned );
+static bool c_ast_visitor_error( c_ast_t const*, c_ast_visit_data_t );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_type( c_ast_t const*, unsigned );
+static bool c_ast_visitor_type( c_ast_t const*, c_ast_visit_data_t );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_warning( c_ast_t const*, unsigned );
+static bool c_ast_visitor_warning( c_ast_t const*, c_ast_visit_data_t );
 
 static void c_ast_warn_name( c_ast_t const* );
 static void c_sname_warn( c_sname_t const*, c_loc_t const* );
@@ -2195,8 +2196,10 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_error( c_ast_t const *ast, unsigned flags ) {
+static bool c_ast_visitor_error( c_ast_t const *ast,
+                                 c_ast_visit_data_t v_data ) {
   assert( ast != NULL );
+  unsigned flags = REINTERPRET_CAST( unsigned, v_data );
 
   if ( !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
@@ -2332,13 +2335,15 @@ static bool c_ast_visitor_error( c_ast_t const *ast, unsigned flags ) {
  * Visitor function that checks an AST for type errors.
  *
  * @param ast The AST to visit.
- * @param flags The flags to use.
+ * @param v_data The flags to use.
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_type( c_ast_t const *ast, unsigned flags ) {
+static bool c_ast_visitor_type( c_ast_t const *ast,
+                                c_ast_visit_data_t v_data ) {
   assert( ast != NULL );
+  unsigned const flags = REINTERPRET_CAST( unsigned, v_data );
   bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
   c_lang_id_t const lang_ids = c_type_check( &ast->type );
@@ -2427,12 +2432,14 @@ static bool c_ast_visitor_type( c_ast_t const *ast, unsigned flags ) {
  * Visitor function that checks an AST for semantic warnings.
  *
  * @param ast The AST to check.
- * @param flags The flags to use.
+ * @param v_data The flags to use.
  * @return Always returns `false`.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_warning( c_ast_t const *ast, unsigned flags ) {
+static bool c_ast_visitor_warning( c_ast_t const *ast,
+                                   c_ast_visit_data_t v_data ) {
   assert( ast != NULL );
+  unsigned const flags = REINTERPRET_CAST( unsigned, v_data );
 
   switch ( ast->kind ) {
     case K_ARRAY:
