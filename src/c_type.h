@@ -993,8 +993,8 @@ bool c_tid_is_none( c_tid_t tids ) {
 /**
  * Checks if \a tids is equivalent to `size_t`.
  *
- * @note
- * In cdecl, `size_t` is `typedef`d to be `unsigned long` in `c_typedef.c`.
+ * @note In cdecl, `size_t` is `typedef`d to be `unsigned long` in
+ * `c_typedef.c`.
  *
  * @param tids The \ref c_tid_t to check.
  * @return Returns `true` only if \a tids is `size_t`.

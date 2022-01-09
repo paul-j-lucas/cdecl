@@ -119,9 +119,8 @@
 /**
  * Denote that a function's return value may be ignored without warning.
  *
- * @note
- * There is no compiler attribute for this.  It's just a visual cue in code
- * that #PJL_WARN_UNUSED_RESULT wasn't forgotten.
+ * @note There is no compiler attribute for this.  It's just a visual cue in
+ * code that #PJL_WARN_UNUSED_RESULT wasn't forgotten.
  */
 #define PJL_NOWARN_UNUSED_RESULT  /* nothing */
 

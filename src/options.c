@@ -169,9 +169,8 @@ static struct option const CLI_OPTIONS_LONG[] = {
 /**
  * Short command-line options.
  *
- * @note
- * It _must_ start with `:` to make `getopt_long()` return `:` when a required
- * argument for a known option is missing.
+ * @note It _must_ start with `:` to make `getopt_long()` return `:` when a
+ * required argument for a known option is missing.
  *
  * @sa CLI_OPTIONS_LONG
  */

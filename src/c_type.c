@@ -163,8 +163,7 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
 /**
  * Type mapping for qualifiers.
  *
- * @note
- * This array _must_ have the same size and order as OK_QUALIFIER_LANGS.
+ * @note This array _must_ have the same size and order as OK_QUALIFIER_LANGS.
  */
 static c_type_info_t const C_QUALIFIER_INFO[] = {
   { TS_ATOMIC, LANG_C_CPP_MIN(11,23), L_ATOMIC,

@@ -183,8 +183,7 @@
  * @param DYM_KINDS The bitwise-or of the kind(s) of things possibly meant.
  * @param ... Arguments passed to fl_elaborate_error().
  *
- * @note
- * This must be used _only_ after an `error` token, e.g.:
+ * @note This must be used _only_ after an `error` token, e.g.:
  * @code
  *  | error
  *    {
@@ -204,8 +203,7 @@
  *
  * @param KEYWORD A keyword literal.
  *
- * @note
- * This must be used _only_ after an `error` token, e.g.:
+ * @note This must be used _only_ after an `error` token, e.g.:
  * @code
  *  : Y_VIRTUAL
  *  | error
@@ -232,8 +230,7 @@
  *
  * @param PUNCT The punctuation character that was expected.
  *
- * @note
- * This must be used _only_ after an `error` token, e.g.:
+ * @note This must be used _only_ after an `error` token, e.g.:
  * @code
  *  : ','
  *  | error
@@ -955,8 +952,7 @@ static void parse_cleanup( bool fatal_error ) {
 /**
  * Implements the cdecl `quit` command.
  *
- * @note
- * This should be marked `noreturn` but isn't since that would generate a
+ * @note This should be marked `noreturn` but isn't since that would generate a
  * warning that a `break` in the Bison-generated code won't be executed.
  */
 static void quit( void ) {

@@ -102,9 +102,8 @@ extern print_params_t print_params;     ///< Print parameters.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @note
- * This function isn't normally called directly; use the #print_error() macro
- * instead.
+ * @note This function isn't normally called directly; use the #print_error()
+ * macro instead.
  *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
@@ -125,8 +124,7 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @note
- * This function isn't normally called directly; use the
+ * @note This function isn't normally called directly; use the
  * #print_error_unknown_name() macro instead.
  *
  * @param file The name of the file where this function was called from.
@@ -147,9 +145,8 @@ void fl_print_error_unknown_name( char const *file, int line,
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @note
- * This function isn't normally called directly; use the #print_warning() macro
- * instead.
+ * @note This function isn't normally called directly; use the #print_warning()
+ * macro instead.
  *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
@@ -198,8 +195,7 @@ void print_hint( char const *format, ... );
  *  + A `^` (in color, if possible and requested) under the offending token.
  *  + The error column.
  *
- * @note
- * A newline is _not_ printed.
+ * @note A newline is _not_ printed.
  *
  * @param loc The location to print.
  */
@@ -215,8 +211,7 @@ void print_loc( c_loc_t const *loc );
  * where `...` is a a comma-separated list of one or more suggestions.  If
  * there are no suggestions that are "similar enough," prints nothing.
  *
- * @note
- * A newline is _not_ printed.
+ * @note A newline is _not_ printed.
  *
  * @param kinds The bitwise-or of the kind(s) of things possibly meant by \a
  * unknown_token.

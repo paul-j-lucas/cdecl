@@ -428,8 +428,7 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 /**
  * Checks if the type of \a ast is equivalent to `size_t`.
  *
- * @note
- * In cdecl, `size_t` is `typedef`d to be `unsigned long` in c_typedef.c.
+ * @note In cdecl, `size_t` is `typedef`d to be `unsigned long` in c_typedef.c.
  *
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast is `size_t`.
