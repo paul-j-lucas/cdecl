@@ -504,20 +504,25 @@ typedef struct show_type_info show_type_info_t;
 
 // local functions
 PJL_WARN_UNUSED_RESULT
-static bool slist_node_is_ast_placeholder( void* );
+static bool c_ast_free_if_placeholder( c_ast_t* );
 
 // local variables
 static c_ast_list_t   decl_ast_list;    ///< List of ASTs being declared.
 static c_ast_list_t   gc_ast_list;      ///< c_ast nodes freed after parse.
 static in_attr_t      in_attr;          ///< Inherited attributes.
-static c_ast_list_t   typedef_ast_list; ///< c_ast nodes for `typedef`s.
+static c_ast_list_t   typedef_ast_list; ///< List of ASTs for `typedef`s.
 
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Garbage-collect the AST nodes on \a ast_list.
+ * Garbage-collect the AST nodes on \a ast_list but does _not_ free \a ast_list
+ * itself.
  *
- * @param ast_list The AST list to free.
+ * @param ast_list The AST list to free the nodes of.
+ *
+ * @sa c_ast_list_cleanup()
+ * @sa c_ast_new_gc()
+ * @sa c_ast_pair_new_gc()
  */
 static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
   slist_cleanup( ast_list, (slist_free_fn_t)&c_ast_free );
@@ -601,9 +606,10 @@ static inline char const* printable_token( void ) {
 }
 
 /**
- * Cleans-up all memory associated with \a sti but _not_ \a sti itself.
+ * Cleans-up all memory associated with \a sti but does _not_ free \a sti
+ * itself.
  *
- * @param sti The \ref show_type_info to free.
+ * @param sti The \ref show_type_info to clean up.
  *
  * @sa sti_init()
  */
@@ -651,7 +657,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
     // type-defining parse, this step isn't necessary since all nodes are freed
     // at the end of the parse anyway.)
     //
-    slist_free_if( &gc_ast_list, &slist_node_is_ast_placeholder );
+    slist_free_if( &gc_ast_list, (slist_pred_fn_t)&c_ast_free_if_placeholder );
     slist_push_list_tail( &typedef_ast_list, &gc_ast_list );
   }
   else if ( old_tdef->ast != NULL ) {   // type exists and isn't equivalent
@@ -705,6 +711,22 @@ static void attr_syntax_not_supported( c_loc_t const *loc,
     print_hint( "[[...]]" );
   else
     EPUTC( '\n' );
+}
+
+/**
+ * A predicate function for slist_free_if() that checks whether \a ast is a
+ * #K_PLACEHOLDER: if so, c_ast_free()s it.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast is a #K_PLACEHOLDER.
+ */
+static bool c_ast_free_if_placeholder( c_ast_t *ast ) {
+  if ( ast->kind == K_PLACEHOLDER ) {
+    assert( c_ast_is_orphan( ast ) );
+    c_ast_free( ast );
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -898,7 +920,7 @@ static void fl_punct_expected( char const *file, int line, char punct ) {
  */
 static void ia_free( void ) {
   c_sname_cleanup( &in_attr.current_scope );
-  // Do _not_ pass &c_ast_free for the 3rd argument! All AST nodes were already
+  // Do _not_ pass &c_ast_free for the 2nd argument! All AST nodes were already
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
   slist_cleanup( &in_attr.type_ast_stack, /*free_fn=*/NULL );
   c_ast_list_gc( &in_attr.typedef_ast_list );
@@ -909,7 +931,7 @@ static void ia_free( void ) {
  * Cleans up individial parse data after each parse.
  *
  * @param fatal_error Must be `true` only if a fatal semantic error has
- * occurred and #YYABORT is about to be called to bail out of parsing by
+ * occurred and `YYABORT` is about to be called to bail out of parsing by
  * returning from yyparse().
  */
 static void parse_cleanup( bool fatal_error ) {
@@ -922,7 +944,10 @@ static void parse_cleanup( bool fatal_error ) {
   //
   lexer_reset( /*hard_reset=*/fatal_error );
 
+  // Do _not_ pass &c_ast_free for the 2nd argument! All AST nodes will be
+  // free'd from the gc_ast_list below. Just free the slist nodes.
   slist_cleanup( &decl_ast_list, /*free_fn=*/NULL );
+
   c_ast_list_gc( &gc_ast_list );
   ia_free();
 }
@@ -973,23 +998,6 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
     }
   }
 
-  return false;
-}
-
-/**
- * A predicate function for slist_free_if() that checks whether \a data (cast
- * to an AST) is a #K_PLACEHOLDER: if so, c_ast_free()s it.
- *
- * @param data The AST to check.
- * @return Returns `true` only if \a data (cast to an AST) is a #K_PLACEHOLDER.
- */
-static bool slist_node_is_ast_placeholder( void *data ) {
-  c_ast_t *const ast = data;
-  if ( ast->kind == K_PLACEHOLDER ) {
-    assert( c_ast_is_orphan( ast ) );
-    c_ast_free( ast );
-    return true;
-  }
   return false;
 }
 
