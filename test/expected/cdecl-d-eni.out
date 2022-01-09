@@ -8,7 +8,7 @@ builtin_type_ast ::= builtin_btid = {
   builtin_btid = "int" (btid = 0x2001),
   builtin_type_ast = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -22,7 +22,7 @@ builtin_type_ast ::= builtin_btid = {
 enum_fixed_type_c_ast ::= enum_unmodified_fixed_type_c_ast enum_fixed_type_modifier_list_btid_opt = {
   enum_unmodified_fixed_type_c_ast = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -34,7 +34,7 @@ enum_fixed_type_c_ast ::= enum_unmodified_fixed_type_c_ast enum_fixed_type_modif
   enum_fixed_type_modifier_list_btid_opt = "" (btid = 0x1),
   enum_fixed_type_c_ast = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -51,7 +51,7 @@ enum_class_struct_union_c_ast ::= enum_class_struct_union_c_btid attribute_speci
   any_sname_c = "E" (none),
   enum_fixed_type_c_ast_opt = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -62,7 +62,7 @@ enum_class_struct_union_c_ast ::= enum_class_struct_union_c_btid attribute_speci
   },
   enum_class_struct_union_c_ast = {
     sname = "",
-    unique_id = 1331,
+    unique_id = 1336,
     kind = "enum, class, struct, or union",
     cast_kind = "none",
     depth = 0,
@@ -72,7 +72,7 @@ enum_class_struct_union_c_ast ::= enum_class_struct_union_c_btid attribute_speci
     ecsu_sname = "E" (none),
     of_ast = {
       sname = "",
-      unique_id = 1330,
+      unique_id = 1335,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -87,7 +87,7 @@ enum_class_struct_union_c_ast ::= enum_class_struct_union_c_btid attribute_speci
 east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_stid_opt = {
   enum_class_struct_union_c_ast = {
     sname = "",
-    unique_id = 1331,
+    unique_id = 1336,
     kind = "enum, class, struct, or union",
     cast_kind = "none",
     depth = 0,
@@ -97,7 +97,7 @@ east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_sti
     ecsu_sname = "E" (none),
     of_ast = {
       sname = "",
-      unique_id = 1330,
+      unique_id = 1335,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -110,7 +110,7 @@ east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_sti
   cv_qualifier_list_stid_opt = "" (stid = 0x2),
   east_modified_type_c_ast = {
     sname = "",
-    unique_id = 1331,
+    unique_id = 1336,
     kind = "enum, class, struct, or union",
     cast_kind = "none",
     depth = 0,
@@ -120,7 +120,7 @@ east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_sti
     ecsu_sname = "E" (none),
     of_ast = {
       sname = "",
-      unique_id = 1330,
+      unique_id = 1335,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -135,7 +135,7 @@ east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_sti
 decl_list_c_opt ::= <empty> = {
   (type_c_ast) = {
     sname = "",
-    unique_id = 1331,
+    unique_id = 1336,
     kind = "enum, class, struct, or union",
     cast_kind = "none",
     depth = 0,
@@ -145,7 +145,7 @@ decl_list_c_opt ::= <empty> = {
     ecsu_sname = "E" (none),
     of_ast = {
       sname = "",
-      unique_id = 1330,
+      unique_id = 1335,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -157,7 +157,7 @@ decl_list_c_opt ::= <empty> = {
   },
   decl_list_c_opt = {
     sname = "",
-    unique_id = 1331,
+    unique_id = 1336,
     kind = "enum, class, struct, or union",
     cast_kind = "none",
     depth = 0,
@@ -167,7 +167,7 @@ decl_list_c_opt ::= <empty> = {
     ecsu_sname = "E" (none),
     of_ast = {
       sname = "",
-      unique_id = 1330,
+      unique_id = 1335,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -179,7 +179,7 @@ decl_list_c_opt ::= <empty> = {
   },
   decl_list_c_opt = {
     sname = "E" (none),
-    unique_id = 1331,
+    unique_id = 1336,
     kind = "enum, class, struct, or union",
     cast_kind = "none",
     depth = 0,
@@ -189,7 +189,7 @@ decl_list_c_opt ::= <empty> = {
     ecsu_sname = "E" (none),
     of_ast = {
       sname = "",
-      unique_id = 1330,
+      unique_id = 1335,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,

@@ -244,11 +244,13 @@ define atomic_ushort as atomic unsigned short int
 define atomic_wchar_t as atomic wchar_t
 define blkcnt_t as int32_t
 define blksize_t as int32_t
+define caddr_t as pointer to char
 define cc_t as unsigned int
 define clock_t as long int
 define clockid_t as enumeration clockid_t
 define cnd_t as pthread_cond_t
 define constraint_handler_t as pointer to function (restricted pointer to constant char, restricted pointer to void, errno_t) returning void
+define daddr_t as long int
 define dev_t as int
 define div_t as structure div_t
 define double_t as double

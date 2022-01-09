@@ -69,16 +69,22 @@ static bool         user_defined;       ///< Are new `typedef`s used-defined?
 
 /**
  * Predefined types for K&R C.
+ * The types here include those shown in:
+ *  + The first edition of _The C Programming Language_.
+ *  + Various Version 7 Unix manual pages.
  *
- * @note The types here include only those shown in the first edition of _The C
- * Programming Language_.  There likely should be more, but it's hard to find
- * documentation going back that far.
+ * There likely should be more, but it's hard to find documentation going
+ * back that far.
+ *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
 static char const *const PREDEFINED_KNR_C[] = {
+  "typedef          char *caddr_t",
+  "typedef          long  daddr_t",
   "typedef          int   dev_t",
   "typedef unsigned int   ino_t",
+  "typedef          int   jmp_buf[37]",
   "typedef struct _iobuf  FILE",
   "typedef          long  off_t",
   "typedef          long  time_t",
@@ -101,7 +107,6 @@ static char const *const PREDEFINED_STD_C_89[] = {
   "struct                 lldiv_t",
   "typedef          int     errno_t",
   "struct                   fpos_t",
-  "typedef          int     jmp_buf[37]",
   "struct                   lconv",
   "typedef          long    ptrdiff_t",
   "typedef          int     sig_atomic_t",

@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.11
+
+** More K&R C types
+The types `caaddr_t` and `daddr_t` were added; `jmp_buf` was moved from C89.
+
+
 * Changes in Cdecl 11.10
 
 ** Pre-C99 implicit `int`

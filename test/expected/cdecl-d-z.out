@@ -2,7 +2,7 @@
 typedef_type_c_ast ::= any_typedef = {
   any_typedef.ast = {
     sname = "size_t" (none),
-    unique_id = 32,
+    unique_id = 37,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -14,7 +14,7 @@ typedef_type_c_ast ::= any_typedef = {
   sub_scope_sname_c_opt = "",
   typedef_type_c_ast = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "typedef",
     cast_kind = "none",
     depth = 0,
@@ -23,7 +23,7 @@ typedef_type_c_ast ::= any_typedef = {
     type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
-      unique_id = 32,
+      unique_id = 37,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -39,7 +39,7 @@ typedef_type_c_ast ::= any_typedef = {
 east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
   atomic_builtin_typedef_type_c_ast = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "typedef",
     cast_kind = "none",
     depth = 0,
@@ -48,7 +48,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
-      unique_id = 32,
+      unique_id = 37,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -62,7 +62,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "typedef",
     cast_kind = "none",
     depth = 0,
@@ -71,7 +71,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
-      unique_id = 32,
+      unique_id = 37,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -92,7 +92,7 @@ sname_c ::= NAME = {
 sname_c_ast ::= sname_c = {
   (type_c_ast) = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "typedef",
     cast_kind = "none",
     depth = 0,
@@ -101,7 +101,7 @@ sname_c_ast ::= sname_c = {
     type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
-      unique_id = 32,
+      unique_id = 37,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -116,7 +116,7 @@ sname_c_ast ::= sname_c = {
   bit_field_c_int_opt = 0,
   sname_c_ast = {
     sname = "i" (none),
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "typedef",
     cast_kind = "none",
     depth = 0,
@@ -125,7 +125,7 @@ sname_c_ast ::= sname_c = {
     type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
-      unique_id = 32,
+      unique_id = 37,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -142,7 +142,7 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "i" (none),
-    unique_id = 1331,
+    unique_id = 1336,
     kind = "typedef",
     cast_kind = "none",
     depth = 0,
@@ -151,11 +151,11 @@ decl_c ::= decl_c_astp = {
     type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
-      unique_id = 1332,
+      unique_id = 1337,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1331,
+      parent->unique_id = 1336,
       loc = 8-20,
       type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
       bit_width = 0
@@ -164,7 +164,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c_astp = {
     sname = "i" (none),
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "typedef",
     cast_kind = "none",
     depth = 0,
@@ -173,7 +173,7 @@ decl_c ::= decl_c_astp = {
     type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
-      unique_id = 32,
+      unique_id = 37,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -186,7 +186,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c = {
     sname = "i" (none),
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "typedef",
     cast_kind = "none",
     depth = 0,
@@ -195,7 +195,7 @@ decl_c ::= decl_c_astp = {
     type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
-      unique_id = 32,
+      unique_id = 37,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,

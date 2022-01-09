@@ -3,7 +3,7 @@ builtin_type_ast ::= builtin_btid = {
   builtin_btid = "int" (btid = 0x2001),
   builtin_type_ast = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -17,7 +17,7 @@ builtin_type_ast ::= builtin_btid = {
 east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
   atomic_builtin_typedef_type_c_ast = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -29,7 +29,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -44,7 +44,7 @@ user_defined_conversion_decl_c_astp ::= scope_sname_c_opt OPERATOR type_c_ast ud
   scope_sname_c_opt = "",
   type_c_ast = {
     sname = "",
-    unique_id = 1330,
+    unique_id = 1335,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -58,7 +58,7 @@ user_defined_conversion_decl_c_astp ::= scope_sname_c_opt OPERATOR type_c_ast ud
   func_equals_c_stid_opt = "" (stid = 0x2),
   user_defined_conversion_decl_c_astp = {
     sname = "",
-    unique_id = 1331,
+    unique_id = 1336,
     kind = "user-defined conversion operator",
     cast_kind = "none",
     depth = 0,
@@ -67,7 +67,7 @@ user_defined_conversion_decl_c_astp ::= scope_sname_c_opt OPERATOR type_c_ast ud
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     conv_ast = {
       sname = "",
-      unique_id = 1330,
+      unique_id = 1335,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
@@ -82,7 +82,7 @@ user_defined_conversion_decl_c_astp ::= scope_sname_c_opt OPERATOR type_c_ast ud
 explain_command ::= EXPLAIN user_defined_conversion_decl_c_astp = {
   user_defined_conversion_decl_c_astp = {
     sname = "",
-    unique_id = 1331,
+    unique_id = 1336,
     kind = "user-defined conversion operator",
     cast_kind = "none",
     depth = 0,
@@ -91,7 +91,7 @@ explain_command ::= EXPLAIN user_defined_conversion_decl_c_astp = {
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     conv_ast = {
       sname = "",
-      unique_id = 1330,
+      unique_id = 1335,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
