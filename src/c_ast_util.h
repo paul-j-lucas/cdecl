@@ -238,6 +238,7 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
  * the `const` and `volatile` (cv) qualifier(s) of \a ast.
  *
  * @param ast The AST to check.
+ * @param tids The bitwise-or of type(s) to check against.
  * @param cv_stids Receives the cv qualifier(s) of \a ast bitwise-or'd with the
  * cv qualifier(s) of the AST \a ast is a \ref K_TYPEDEF for (if \a ast is a
  * \ref K_TYPEDEF), but only if this function returns non-NULL.

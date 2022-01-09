@@ -150,7 +150,7 @@
  * @return Returns `true` only if all checks passed.
  */
 typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast,
-                                  c_ast_visit_data_t flags );
+                                  c_ast_visit_data_t v_data );
 
 // local constants
 
@@ -2191,7 +2191,7 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
  * Visitor function that checks an AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param flags The flags to use.
+ * @param v_data The flags to use.
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
