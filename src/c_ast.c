@@ -359,16 +359,16 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
 }
 
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
-                      c_ast_visit_fn_t visit_fn, c_ast_visit_data_t v_data ) {
+                      c_ast_visit_fn_t visit_fn, c_ast_visit_data_t avd ) {
   assert( visit_fn != NULL );
 
   switch ( dir ) {
     case C_VISIT_DOWN:
-      while ( ast != NULL && !(*visit_fn)( ast, v_data ) )
+      while ( ast != NULL && !(*visit_fn)( ast, avd ) )
         ast = c_ast_is_parent( ast ) ? ast->as.parent.of_ast : NULL;
       break;
     case C_VISIT_UP:
-      while ( ast != NULL && !(*visit_fn)( ast, v_data ) )
+      while ( ast != NULL && !(*visit_fn)( ast, avd ) )
         ast = ast->parent_ast;
       break;
   } // switch

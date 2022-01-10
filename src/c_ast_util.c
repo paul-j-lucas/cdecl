@@ -491,13 +491,13 @@ static c_ast_t const* c_ast_untypedef_cv( c_ast_t const *ast,
  * A visitor function to find an AST node having a particular kind(s).
  *
  * @param ast The AST to check.
- * @param v_data The bitwise-or of the kind(s) \a ast can be.
+ * @param avd The bitwise-or of the kind(s) \a ast can be.
  * @return Returns `true` only if the kind of \a ast is one of the kinds.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_vistor_kind_any( c_ast_t *ast, c_ast_visit_data_t v_data ) {
+static bool c_ast_vistor_kind_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  c_ast_kind_t const kinds = REINTERPRET_CAST( c_ast_kind_t, v_data );
+  c_ast_kind_t const kinds = REINTERPRET_CAST( c_ast_kind_t, avd );
   return c_ast_is_kind_any( ast, kinds );
 }
 
@@ -505,13 +505,13 @@ static bool c_ast_vistor_kind_any( c_ast_t *ast, c_ast_visit_data_t v_data ) {
  * A visitor function to find an AST node having a non-empty name.
  *
  * @param ast The AST to check.
- * @param v_data Not used.
+ * @param avd Not used.
  * @return Returns `true` only if \a ast has such a scoped name.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_name( c_ast_t *ast, c_ast_visit_data_t v_data ) {
+static bool c_ast_visitor_name( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  (void)v_data;
+  (void)avd;
   return !c_sname_empty( &ast->sname );
 }
 
@@ -519,14 +519,14 @@ static bool c_ast_visitor_name( c_ast_t *ast, c_ast_visit_data_t v_data ) {
  * A visitor function to find an AST node having a particular type(s).
  *
  * @param ast The AST to check.
- * @param v_data A pointer to a type where each type part is the bitwise-or of
+ * @param avd A pointer to a type where each type part is the bitwise-or of
  * type IDs to find.
  * @return Returns `true` only if the type of \a ast is one of the types.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_vistor_type_any( c_ast_t *ast, c_ast_visit_data_t v_data ) {
+static bool c_ast_vistor_type_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  c_type_t const *const type = REINTERPRET_CAST( c_type_t*, v_data );
+  c_type_t const *const type = REINTERPRET_CAST( c_type_t*, avd );
   return c_type_is_any( &ast->type, type );
 }
 
@@ -556,9 +556,8 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_ast_kind_t kinds ) {
   assert( kinds != 0 );
-  c_ast_visit_data_t const v_data =
-    REINTERPRET_CAST( c_ast_visit_data_t, kinds );
-  return c_ast_visit( ast, dir, c_ast_vistor_kind_any, v_data );
+  c_ast_visit_data_t const avd = REINTERPRET_CAST( c_ast_visit_data_t, kinds );
+  return c_ast_visit( ast, dir, c_ast_vistor_kind_any, avd );
 }
 
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir ) {
@@ -569,9 +568,8 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir ) {
 
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_type_t const *type ) {
-  c_ast_visit_data_t const v_data =
-    REINTERPRET_CAST( c_ast_visit_data_t, type );
-  return c_ast_visit( ast, dir, c_ast_vistor_type_any, v_data );
+  c_ast_visit_data_t const avd = REINTERPRET_CAST( c_ast_visit_data_t, type );
+  return c_ast_visit( ast, dir, c_ast_vistor_type_any, avd );
 }
 
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {

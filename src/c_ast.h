@@ -162,11 +162,11 @@ typedef uint64_t c_ast_visit_data_t;
  * The signature for functions passed to c_ast_visit().
  *
  * @param ast The AST to visit.
- * @param v_data Optional data passed to c_ast_visit().
+ * @param avd Optional data passed to c_ast_visit().
  * @return Returning `true` will cause traversal to stop and \a ast to be
  * returned to the caller of c_ast_visit().
  */
-typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visit_data_t v_data );
+typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visit_data_t avd );
 
 /**
  * @defgroup ast-nodes-group AST Nodes
@@ -611,7 +611,7 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
  * @param ast The AST to start from.  If NULL, does nothing.
  * @param dir The direction to visit.
  * @param visit_fn The visitor function to use.
- * @param v_data Optional data passed to \a visit_fn.
+ * @param avd Optional data passed to \a visit_fn.
  * @return Returns a pointer to the AST the visitor stopped on or NULL.
  *
  * @note Function-like parameters are _not_ traversed into.  They're considered
@@ -619,7 +619,7 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
  */
 PJL_NOWARN_UNUSED_RESULT
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
-                      c_ast_visit_fn_t visit_fn, c_ast_visit_data_t v_data );
+                      c_ast_visit_fn_t visit_fn, c_ast_visit_data_t avd );
 
 /**
  * Convenience function to get the AST given a \ref c_ast_param_t.

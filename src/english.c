@@ -79,10 +79,9 @@ static void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
   assert( eout != NULL );
 
-  c_ast_visit(
-    CONST_CAST( c_ast_t*, ast ), C_VISIT_DOWN,
-    c_ast_visitor_english, REINTERPRET_CAST( c_ast_visit_data_t, eout )
-  );
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_ast_visit_data_t const avd = REINTERPRET_CAST( c_ast_visit_data_t, eout );
+  c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, avd );
 
   switch ( ast->align.kind ) {
     case C_ALIGNAS_NONE:
@@ -139,10 +138,9 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
       //
     }
 
-    c_ast_visit(
-      CONST_CAST( c_ast_t*, param_ast ), C_VISIT_DOWN,
-      c_ast_visitor_english, REINTERPRET_CAST( c_ast_visit_data_t, eout )
-    );
+    c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, param_ast );
+    c_ast_visit_data_t const avd = REINTERPRET_CAST( c_ast_visit_data_t, eout );
+    c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, avd );
   } // for
 
   FPUTC( ')', eout );
@@ -152,13 +150,13 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
  * Visitor function that prints \a ast as pseudo-English.
  *
  * @param ast The AST to print.
- * @param v_data A pointer to a `FILE` to emit to.
+ * @param avd A pointer to a `FILE` to emit to.
  * @return Always returns `false`.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t v_data ) {
+static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  FILE *const eout = REINTERPRET_CAST( FILE*, v_data );
+  FILE *const eout = REINTERPRET_CAST( FILE*, avd );
   assert( eout != NULL );
 
   switch ( ast->kind ) {

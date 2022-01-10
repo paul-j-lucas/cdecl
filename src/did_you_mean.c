@@ -46,13 +46,13 @@
 /**
  * Used by copy_typedefs() and copy_typedef_visitor() to pass and return data.
  */
-struct copy_typedef_visitor_data {
+struct copy_typedef_visit_data {
   /// Pointer to a pointer to a candidate list or NULL to just get the count.
   did_you_mean_t  **pdym;
 
   size_t            count;              ///< The count.
 };
-typedef struct copy_typedef_visitor_data copy_typedef_visitor_data_t;
+typedef struct copy_typedef_visit_data copy_typedef_visit_data_t;
 
 /**
  * The signature for a function passed to qsort().
@@ -224,7 +224,7 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
  * in the current language to the candidate list pointed to
  *
  * @param tdef The c_typedef to visit.
- * @param data A pointer to a \ref copy_typedef_visitor_data.
+ * @param data A pointer to a \ref copy_typedef_visit_data.
  * @return Always returns `false`.
  */
 PJL_NOWARN_UNUSED_RESULT
@@ -233,7 +233,7 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
   assert( data != NULL );
 
   if ( opt_lang_is_any( tdef->lang_ids ) ) {
-    copy_typedef_visitor_data_t *const ctvd = data;
+    copy_typedef_visit_data_t *const ctvd = data;
     if ( ctvd->pdym != NULL ) {
       char const *const name = c_sname_full_name( &tdef->ast->sname );
       (*ctvd->pdym)++->token = check_strdup( name );
@@ -253,7 +253,7 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
  */
 PJL_NOWARN_UNUSED_RESULT
 static size_t copy_typedefs( did_you_mean_t **const pdym ) {
-  copy_typedef_visitor_data_t ctvd = { pdym, 0 };
+  copy_typedef_visit_data_t ctvd = { pdym, 0 };
   c_typedef_visit( &copy_typedef_visitor, &ctvd );
   return ctvd.count;
 }
