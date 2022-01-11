@@ -398,14 +398,14 @@ void c_lang_set( c_lang_id_t lang_id );
  * not supported"` (with no trailing space).
  *
  * @param lang_ids The bitwise-or of legal language(s).
- * @return If:
- *  + \a lang_ids is #LANG_NONE, returns the empty string.
- *  + \a lang_ids contains exactly one language, returns `" unless "` followed
- *    by the name of that language.
- *  + The current language is C and \a lang_ids does not contain any version of
- *    C, returns `" in C"`.
- *  + The current language is C++ and \a lang_ids does not contain any version
- *    of C++, returns `" in C++"`.
+ * @return
+ *  + If \a lang_ids is #LANG_NONE, returns the empty string.
+ *  + If \a lang_ids contains exactly one language, returns `" unless "`
+ *    followed by the name of that language.
+ *  + If the current language is C and \a lang_ids does not contain any version
+ *    of C, returns `" in C"`.
+ *  + If the current language is C++ and \a lang_ids does not contain any
+ *    version of C++, returns `" in C++"`.
  *  + If the current language is older than oldest language in \a lang_ids,
  *    returns `" until "` followed by the name of the oldest C version (if the
  *    current language is C) or the name of the oldest C++ version (if the
