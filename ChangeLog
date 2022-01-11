@@ -1,5 +1,28 @@
+2022-01-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.c, c_lang.h: Fixed c_lang_coarse_name() so it returns NULL for
+     LANG_NONE.
+   * c_lang.c, c_lang.h, check.c: Improved error message for types that are
+     illegal in the current language.
+
+2022-01-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_ast_util.c, c_typedef.c, check.c, did_you_mean.c,
+     english.c: Visitor data struct renaming.
+   * NEWS, configure.ac, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out,
+     cdecl-d-al8i.out, cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out,
+     cdecl-d-eni.out, cdecl-d-f2i_pi.out, cdecl-d-f_v.out,
+     cdecl-d-faia4iaviacias6i_v.out, cdecl-d-pmki.out, cdecl-d-udc_i.out,
+     cdecl-d-z.out, show_all-c++.out, show_all.out,
+     show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: The types `caaddr_t` and `daddr_t` were added;
+     `jmp_buf` was moved from C89.
+
 2022-01-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * check.c: Fixed function cast warning.
    * lexer.h, lexer.l: plen for lexer_input_line() must now not be NULL.
 
 2022-01-06  Paul J. Lucas <paul@lucasmail.org>
