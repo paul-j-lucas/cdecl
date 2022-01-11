@@ -252,6 +252,7 @@ c_lang_id_t c_lang_find( char const *name );
  * @return Returns `true` only if any one of \a lang_ids is a version of C.
  *
  * @sa c_lang_is_cpp()
+ * @sa c_lang_is_one()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool c_lang_is_c( c_lang_id_t lang_ids ) {
@@ -265,6 +266,7 @@ bool c_lang_is_c( c_lang_id_t lang_ids ) {
  * @return Returns `true` only if any one of \a lang_ids is a version of C++.
  *
  * @sa c_lang_is_c()
+ * @sa c_lang_is_one()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
@@ -289,6 +291,24 @@ char const* c_lang_coarse_name( c_lang_id_t lang_ids ) {
     (c_lang_is_cpp( lang_ids ) ? NULL : "C") :
     "C++";
 }
+
+/**
+ * Gets whether \a lang_ids contains language(s) for only either C or C++, but
+ * not both.
+ *
+ * @param lang_ids The bitwise-of of language(s) to check.
+ * @return
+ *  + If \a lang_ids contains any version of C and no version of C++, returns
+ *    #LANG_C_ANY.
+ *  + If \a lang_ids contains any version of C++ and no version of C, returns
+ *    #LANG_CPP_ANY.
+ *  + Otherwise returns #LANG_NONE.
+ *
+ * @sa c_lang_is_c()
+ * @sa c_lang_is_cpp()
+ */
+PJL_WARN_UNUSED_RESULT
+c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids );
 
 /**
  * Gets the literal appropriate for the current language.

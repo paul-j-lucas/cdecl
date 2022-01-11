@@ -2344,11 +2344,25 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
 
   c_lang_id_t const lang_ids = c_type_check( &ast->type );
   if ( lang_ids != LANG_ANY ) {
-    print_error( &ast->loc,
-      "\"%s\" is illegal for %s%s\n",
-      c_type_name_error( &ast->type ), c_kind_name( ast->kind ),
-      c_lang_which( lang_ids )
-    );
+    c_lang_id_t const one_lang_ids = c_lang_is_one( lang_ids );
+    if ( one_lang_ids != LANG_NONE && !opt_lang_is_any( one_lang_ids ) ) {
+      //
+      // The language(s) ast->type is legal in is only either C or C++ and the
+      // current language isn't one of those languages: just say it's illegal
+      // (regardless of kind) in the current language (otherwise it can imply
+      // it's legal for some other kind in the current language).
+      //
+      print_error( &ast->loc,
+        "\"%s\" is illegal%s\n",
+        c_type_name_error( &ast->type ), c_lang_which( lang_ids )
+      );
+    } else {
+      print_error( &ast->loc,
+        "\"%s\" is illegal for %s%s\n",
+        c_type_name_error( &ast->type ), c_kind_name( ast->kind ),
+        c_lang_which( lang_ids )
+      );
+    }
     return VISITOR_ERROR_FOUND;
   }
 

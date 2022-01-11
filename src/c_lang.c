@@ -131,6 +131,12 @@ c_lang_t const* c_lang_next( c_lang_t const *lang ) {
   return lang == NULL ? C_LANG : (++lang)->name == NULL ? NULL : lang;
 }
 
+c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids ) {
+  bool const is_c   = c_lang_is_c  ( lang_ids );
+  bool const is_cpp = c_lang_is_cpp( lang_ids );
+  return is_c ^ is_cpp ? (is_c ? LANG_C_ANY : LANG_CPP_ANY) : LANG_NONE;
+}
+
 void c_lang_set( c_lang_id_t lang_id ) {
   lang_id &= ~LANGX_MASK;
   assert( exactly_one_bit_set( lang_id ) );
