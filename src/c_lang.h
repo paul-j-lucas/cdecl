@@ -234,6 +234,20 @@ c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
 }
 
 /**
+ * Gets the "coarse" name of \a lang_ids.
+ *
+ * @param lang_ids The bitwise-or of language(s).
+ * @return
+ *  + If \a lang_ids only contains any version of C, returns `"C"`.
+ *  + If \a lang_ids only contains any version of C++, returns `"C++"`.
+ *  + Otherwise returns NULL.
+ *
+ * @sa c_lang_name()
+ */
+PJL_WARN_UNUSED_RESULT
+char const* c_lang_coarse_name( c_lang_id_t lang_ids );
+
+/**
  * Gets the \ref c_lang_id_t corresponding to the given string
  * (case insensitive).
  *
@@ -271,25 +285,6 @@ bool c_lang_is_c( c_lang_id_t lang_ids ) {
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
   return (lang_ids & LANG_MASK_CPP) != LANG_NONE;
-}
-
-/**
- * Gets the "coarse" name of \a lang_ids.
- *
- * @param lang_ids The bitwise-or of language(s).
- * @return If:
- *  + \a lang_ids contains any version of both C and C++, returns NULL;
- *    otherwise:
- *  + \a lang_ids contains any version of C, returns `"C"`.
- *  + \a lang_ids contains any version of C++, returns `"C++"`.
- *
- * @sa c_lang_name()
- */
-C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_lang_coarse_name( c_lang_id_t lang_ids ) {
-  return c_lang_is_c( lang_ids ) ?
-    (c_lang_is_cpp( lang_ids ) ? NULL : "C") :
-    "C++";
 }
 
 /**

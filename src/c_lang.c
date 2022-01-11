@@ -131,6 +131,12 @@ c_lang_t const* c_lang_next( c_lang_t const *lang ) {
   return lang == NULL ? C_LANG : (++lang)->name == NULL ? NULL : lang;
 }
 
+char const* c_lang_coarse_name( c_lang_id_t lang_ids ) {
+  bool const is_c   = c_lang_is_c  ( lang_ids );
+  bool const is_cpp = c_lang_is_cpp( lang_ids );
+  return is_c ^ is_cpp ? (is_c ? "C" : "C++") : NULL;
+}
+
 c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids ) {
   bool const is_c   = c_lang_is_c  ( lang_ids );
   bool const is_cpp = c_lang_is_cpp( lang_ids );
