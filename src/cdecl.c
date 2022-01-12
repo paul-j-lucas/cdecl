@@ -113,13 +113,9 @@ extern void yyrestart( FILE *in_file );
 static void cdecl_cleanup( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_argv( int, char const *const[] );
-
-PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_command_line( char const*, int, char const *const[] );
-
-PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_stdin( void );
+static bool cdecl_parse_argv( int, char const *const[] ),
+            cdecl_parse_command_line( char const*, int, char const *const[] ),
+            cdecl_parse_stdin( void );
 
 PJL_WARN_UNUSED_RESULT
 static bool is_command( char const*, cdecl_command_kind_t );

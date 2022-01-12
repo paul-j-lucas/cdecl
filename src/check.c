@@ -186,49 +186,21 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 
 // local functions
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_declaration( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_emc( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_errors( c_ast_t const*, unsigned );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_func_main( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_func_main_char_ptr_param( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_func_params_knr( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_func_params_redef( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_default( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_params( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_relational_default( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_upc( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_name_equal( c_ast_t const*, char const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_error( c_ast_t const*, c_ast_visit_data_t );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_type( c_ast_t const*, c_ast_visit_data_t );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_warning( c_ast_t const*, c_ast_visit_data_t );
+static bool c_ast_check_declaration( c_ast_t const* ),
+            c_ast_check_emc( c_ast_t const* ),
+            c_ast_check_errors( c_ast_t const*, unsigned ),
+            c_ast_check_func_main( c_ast_t const* ),
+            c_ast_check_func_main_char_ptr_param( c_ast_t const* ),
+            c_ast_check_func_params_knr( c_ast_t const* ),
+            c_ast_check_func_params_redef( c_ast_t const* ),
+            c_ast_check_oper_default( c_ast_t const* ),
+            c_ast_check_oper_params( c_ast_t const* ),
+            c_ast_check_oper_relational_default( c_ast_t const* ),
+            c_ast_check_upc( c_ast_t const* ),
+            c_ast_name_equal( c_ast_t const*, char const* ),
+            c_ast_visitor_error( c_ast_t const*, c_ast_visit_data_t ),
+            c_ast_visitor_type( c_ast_t const*, c_ast_visit_data_t ),
+            c_ast_visitor_warning( c_ast_t const*, c_ast_visit_data_t );
 
 static void c_ast_warn_name( c_ast_t const* );
 static void c_sname_warn( c_sname_t const*, c_loc_t const* );
