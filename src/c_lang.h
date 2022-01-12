@@ -376,16 +376,6 @@ PJL_WARN_UNUSED_RESULT
 c_lang_t const* c_lang_next( c_lang_t const *lang );
 
 /**
- * Convenience macro for iterating over all languages.
- *
- * @param VAR The \ref c_lang loop variable.
- *
- * @sa c_lang_next()
- */
-#define FOREACH_LANG(VAR) \
-  for ( c_lang_t const *VAR = NULL; (VAR = c_lang_next( VAR )) != NULL; )
-
-/**
  * Gets the oldest language among \a lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s).
@@ -434,6 +424,16 @@ void c_lang_set( c_lang_id_t lang_id );
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_lang_which( c_lang_id_t lang_ids );
+
+/**
+ * Convenience macro for iterating over all languages.
+ *
+ * @param VAR The \ref c_lang loop variable.
+ *
+ * @sa c_lang_next()
+ */
+#define FOREACH_LANG(VAR) \
+  for ( c_lang_t const *VAR = NULL; (VAR = c_lang_next( VAR )) != NULL; )
 
 /**
  * Convenience function for calling c_lang_and_newer() with \ref opt_lang.
