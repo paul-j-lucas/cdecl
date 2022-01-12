@@ -1,3 +1,9 @@
+2022-01-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.h, c_typedef.c, parser.y: Removed opt_lang_and_newer() and
+     opt_lang_newer(): they were used only in one place.
+   * c_lang.h: Moved macro.
+
 2022-01-11  Paul J. Lucas <paul@lucasmail.org>
 
    * c_lang.c, c_lang.h: Fixed c_lang_coarse_name() so it returns NULL for
