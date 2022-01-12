@@ -199,6 +199,8 @@ struct c_lang_lit {
  * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
  * @return Returns `true` only if the current language is among the languages
  * specified by \a LANG_MACRO.
+ *
+ * @sa opt_lang_is_any()
  */
 #define OPT_LANG_IS(LANG_MACRO)   opt_lang_is_any( LANG_##LANG_MACRO )
 
@@ -224,7 +226,6 @@ struct c_lang {
  * @sa c_lang_oldest()
  * @sa c_lang_newer()
  * @sa c_lang_newest()
- * @sa opt_lang_and_newer()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
@@ -339,7 +340,6 @@ char const* c_lang_name( c_lang_id_t lang_id );
  * @sa c_lang_and_newer()
  * @sa c_lang_newest()
  * @sa c_lang_oldest()
- * @sa opt_lang_newer()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
@@ -436,46 +436,17 @@ char const* c_lang_which( c_lang_id_t lang_ids );
   for ( c_lang_t const *VAR = NULL; (VAR = c_lang_next( VAR )) != NULL; )
 
 /**
- * Convenience function for calling c_lang_and_newer() with \ref opt_lang.
- *
- * @return Returns the bitwise-or all language(s) \ref opt_lang and newer.
- *
- * @sa c_lang_and_newer()
- * @sa c_lang_newer()
- * @sa c_lang_newest()
- * @sa opt_lang_newer()
- */
-C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-c_lang_id_t opt_lang_and_newer( void ) {
-  return c_lang_and_newer( opt_lang );
-}
-
-/**
  * Convenience function for checking whether \ref opt_lang is among \a
  * lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s) to check.
  * @return Returns `true` only if it is.
+ *
+ * @sa #OPT_LANG_IS()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool opt_lang_is_any( c_lang_id_t lang_ids ) {
   return (opt_lang & lang_ids) != LANG_NONE;
-}
-
-/**
- * Convenience function for calling c_lang_newer() with \ref opt_lang.
- *
- * @return Returns the bitwise-or of languages newer than \ref opt_lang; or
- * #LANG_NONE if no language(s) are newer.
- *
- * @sa c_lang_and_newer()
- * @sa c_lang_newer()
- * @sa c_lang_newest()
- * @sa opt_lang_and_newer()
- */
-C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-c_lang_id_t opt_lang_newer( void ) {
-  return c_lang_newer( opt_lang );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -5527,7 +5527,7 @@ attribute_c_atid
 
         char const *const name = c_sname_local_name( &$1 );
         c_keyword_t const *const k =
-          c_keyword_find( name, opt_lang_newer(), C_KW_CTX_ATTRIBUTE );
+          c_keyword_find( name, c_lang_newer( opt_lang ), C_KW_CTX_ATTRIBUTE );
         if ( k != NULL && c_tid_tpid( k->tid ) == C_TPID_ATTR ) {
           adj = "unsupported";
           lang_ids = k->lang_ids;
