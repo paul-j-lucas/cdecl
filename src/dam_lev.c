@@ -26,6 +26,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "dam_lev.h"
+#include "util.h"
 
 // standard
 #include <assert.h>
@@ -69,7 +70,11 @@ dam_lev_t dam_lev_dist( char const *source, char const *target ) {
   // extras with higher-than-possible distances to prevent erroneous detection
   // of transpositions that would be outside the bounds of the strings.
   //
-  dam_lev_t m[ slen + 2 ][ tlen + 2 ];
+  dam_lev_t *const distances = MALLOC( dam_lev_t, (slen + 2) * (tlen + 2) );
+  dam_lev_t **const m = MALLOC( dam_lev_t*, slen + 2 );
+  for ( size_t i = 0; i < slen + 2; ++i )
+    m[i] = &distances[ i * (tlen + 2) ];
+
   size_t const inf = slen + tlen;
   m[0][0] = inf;
   for ( size_t i = 0; i <= slen; ++i ) {
@@ -143,7 +148,10 @@ dam_lev_t dam_lev_dist( char const *source, char const *target ) {
     last_row[ (unsigned char)sc ] = row;
   } // for
 
-  return m[ slen+1 ][ tlen+1 ];
+  dam_lev_t const rv = m[ slen+1 ][ tlen+1 ];
+  free( m );
+  free( distances );
+  return rv;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
