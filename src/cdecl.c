@@ -175,7 +175,7 @@ static void cdecl_cleanup( void ) {
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_argv( int argc, char const *const argv[] ) {
+static bool cdecl_parse_argv( int argc, char const *const argv[const] ) {
   if ( argc == 0 )                      // cdecl
     return cdecl_parse_stdin();
   if ( is_command( me, CDECL_COMMAND_PROG_NAME ) )
@@ -210,7 +210,7 @@ static bool cdecl_parse_argv( int argc, char const *const argv[] ) {
  */
 PJL_WARN_UNUSED_RESULT
 static bool cdecl_parse_command_line( char const *command, int argc,
-                                      char const *const argv[] ) {
+                                      char const *const argv[const] ) {
   strbuf_t sbuf;
   bool space;
 
