@@ -1,3 +1,8 @@
+2022-01-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * dam_lev.c: No longer using a VLA.
+   * c_type.c, cdecl.c: Added "const" to some array parameter declarations.
+
 2022-01-12  Paul J. Lucas <paul@lucasmail.org>
 
    * c_lang.h, c_typedef.c, parser.y: Removed opt_lang_and_newer() and
