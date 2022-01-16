@@ -106,9 +106,9 @@ size_t dam_lev_dist( char const *source, char const *target ) {
       bool const match = sc == tc;
 
       // Calculate the distances of all possible operations.
-      size_t const dist_ins = m[ row   ][ col+1 ] + 1;
-      size_t const dist_del = m[ row+1 ][ col   ] + 1;
-      size_t const dist_sub = m[ row   ][ col   ] + !match;
+      size_t const ins_dist = m[ row   ][ col+1 ] + 1;
+      size_t const del_dist = m[ row+1 ][ col   ] + 1;
+      size_t const sub_dist = m[ row   ][ col   ] + !match;
       //
       // Calculate the cost of a transposition between the current character in
       // target and the last character found in both strings.
@@ -131,14 +131,14 @@ size_t dam_lev_dist( char const *source, char const *target ) {
       // cause the total cost of a transposition to become higher than any
       // other operation's cost.
       //
-      size_t const dist_xpos = m[ last_match_row ][ last_match_col ]
+      size_t const xpos_dist = m[ last_match_row ][ last_match_col ]
         + (row - last_match_row - 1)
         + (col - last_match_col - 1) + 1;
 
       // Use the minimum distance.
-      size_t dist_min = min_dist( dist_ins, dist_del );
-             dist_min = min_dist( dist_min, dist_sub );
-             dist_min = min_dist( dist_min, dist_xpos );
+      size_t dist_min = min_dist( ins_dist, del_dist );
+             dist_min = min_dist( dist_min, sub_dist );
+             dist_min = min_dist( dist_min, xpos_dist );
       m[ row+1 ][ col+1 ] = dist_min;
 
       if ( match )
