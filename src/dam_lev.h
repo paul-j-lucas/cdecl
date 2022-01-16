@@ -32,10 +32,6 @@
 // standard
 #include <stddef.h>                     /* for size_t */
 
-///////////////////////////////////////////////////////////////////////////////
-
-typedef size_t dam_lev_t;               ///< Damerau-Levenshtein edit distance.
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -51,7 +47,7 @@ typedef size_t dam_lev_t;               ///< Damerau-Levenshtein edit distance.
  * @sa [Damerau–Levenshtein Edit Distance Explained](https://www.lemoda.net/text-fuzzy/damerau-levenshtein/)
  */
 PJL_WARN_UNUSED_RESULT
-dam_lev_t dam_lev_dist( char const *source, char const *target );
+size_t dam_lev_dist( char const *source, char const *target );
 
 ///////////////////////////////////////////////////////////////////////////////
 

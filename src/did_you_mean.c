@@ -34,6 +34,7 @@
 #include "c_typedef.h"
 #include "cdecl.h"
 #include "cdecl_keyword.h"
+#include "dam_lev.h"
 #include "options.h"
 #include "set_options.h"
 #include "util.h"
@@ -310,11 +311,11 @@ static void dym_free_tokens( did_you_mean_t const *dym ) {
  * @return Returns `true` only if \a dam_lev_dist is "similar enough."
  */
 PJL_WARN_UNUSED_RESULT
-static bool is_similar_enough( dam_lev_t dam_lev_dist, double percent,
+static bool is_similar_enough( size_t dam_lev_dist, double percent,
                                size_t target_len ) {
   assert( percent > 0 && percent < 1 );
   return dam_lev_dist <=
-    STATIC_CAST( dam_lev_t, STATIC_CAST( double, target_len ) * percent + 0.5 );
+    STATIC_CAST( size_t, STATIC_CAST( double, target_len ) * percent + 0.5 );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -397,7 +398,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
     (qsort_cmp_fn_t)&dym_cmp
   );
 
-  dam_lev_t const best_dist = dym_array->dam_lev_dist;
+  size_t const best_dist = dym_array->dam_lev_dist;
   size_t const best_len = strlen( dym_array->token );
 
   if ( is_similar_enough( best_dist, SIMILAR_ENOUGH_PERCENT, best_len ) ) {

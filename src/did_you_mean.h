@@ -29,7 +29,9 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "dam_lev.h"
+
+// standard
+#include <stddef.h>                     /* for size_t */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +40,7 @@
  */
 struct did_you_mean {
   char const *token;                    ///< Candidate token.
-  dam_lev_t   dam_lev_dist;             ///< Damerau-Levenshtein edit distance.
+  size_t      dam_lev_dist;             ///< Damerau-Levenshtein edit distance.
 };
 typedef struct did_you_mean did_you_mean_t;
 
