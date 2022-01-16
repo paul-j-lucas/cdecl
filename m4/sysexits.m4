@@ -1,5 +1,5 @@
-# sysexits.m4 serial 6
-dnl Copyright (C) 2003, 2005, 2007, 2009-2021 Free Software Foundation, Inc.
+# sysexits.m4 serial 7
+dnl Copyright (C) 2003, 2005, 2007, 2009-2022 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -32,13 +32,11 @@ AC_DEFUN([gl_SYSEXITS],
             break;
           }
         ]])],
-      [SYSEXITS_H=],
-      [SYSEXITS_H=sysexits.h])
+      [GL_GENERATE_SYSEXITS_H=false],
+      [GL_GENERATE_SYSEXITS_H=true])
   else
     HAVE_SYSEXITS_H=0
-    SYSEXITS_H=sysexits.h
+    GL_GENERATE_SYSEXITS_H=true
   fi
   AC_SUBST([HAVE_SYSEXITS_H])
-  AC_SUBST([SYSEXITS_H])
-  AM_CONDITIONAL([GL_GENERATE_SYSEXITS_H], [test -n "$SYSEXITS_H"])
 ])

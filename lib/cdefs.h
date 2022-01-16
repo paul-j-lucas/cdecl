@@ -1,4 +1,4 @@
-/* Copyright (C) 1992-2021 Free Software Foundation, Inc.
+/* Copyright (C) 1992-2022 Free Software Foundation, Inc.
    Copyright The GNU Toolchain Authors.
    This file is part of the GNU C Library.
 
@@ -143,7 +143,8 @@
 #define __bos0(ptr) __builtin_object_size (ptr, 0)
 
 /* Use __builtin_dynamic_object_size at _FORTIFY_SOURCE=3 when available.  */
-#if __USE_FORTIFY_LEVEL == 3 && __glibc_clang_prereq (9, 0)
+#if __USE_FORTIFY_LEVEL == 3 && (__glibc_clang_prereq (9, 0)		      \
+				 || __GNUC_PREREQ (12, 0))
 # define __glibc_objsize0(__o) __builtin_dynamic_object_size (__o, 0)
 # define __glibc_objsize(__o) __builtin_dynamic_object_size (__o, 1)
 #else
@@ -169,7 +170,7 @@
 						   __s, __osz))		      \
    && __glibc_safe_len_cond ((__SIZE_TYPE__) (__l), __s, __osz))
 
-/* Conversely, we know at compile time that the length is safe if the
+/* Conversely, we know at compile time that the length is unsafe if the
    __L * __S <= __OBJSZ condition can be folded to a constant and if it is
    false.  */
 #define __glibc_unsafe_len(__l, __s, __osz) \

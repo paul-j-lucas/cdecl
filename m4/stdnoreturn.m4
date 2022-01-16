@@ -1,6 +1,6 @@
 # Check for stdnoreturn.h that conforms to C11.
 
-dnl Copyright 2012-2021 Free Software Foundation, Inc.
+dnl Copyright 2012-2022 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -15,7 +15,7 @@ AC_DEFUN([gl_STDNORETURN_H],
       dnl Regardless whether a working <stdnoreturn.h> exists or not,
       dnl we need our own <stdnoreturn.h>, because of the definition
       dnl of _Noreturn done by gnulib-common.m4.
-      STDNORETURN_H='stdnoreturn.h'
+      GL_GENERATE_STDNORETURN_H=true
       ;;
     *)
       AC_CACHE_CHECK([for working stdnoreturn.h],
@@ -43,12 +43,10 @@ AC_DEFUN([gl_STDNORETURN_H],
            [gl_cv_header_working_stdnoreturn_h=yes],
            [gl_cv_header_working_stdnoreturn_h=no])])
       if test $gl_cv_header_working_stdnoreturn_h = yes; then
-        STDNORETURN_H=''
+        GL_GENERATE_STDNORETURN_H=false
       else
-        STDNORETURN_H='stdnoreturn.h'
+        GL_GENERATE_STDNORETURN_H=true
       fi
       ;;
   esac
-  AC_SUBST([STDNORETURN_H])
-  AM_CONDITIONAL([GL_GENERATE_STDNORETURN_H], [test -n "$STDNORETURN_H"])
 ])

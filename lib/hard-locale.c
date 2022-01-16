@@ -1,6 +1,6 @@
 /* hard-locale.c -- Determine whether a locale is hard.
 
-   Copyright (C) 1997-1999, 2002-2004, 2006-2007, 2009-2021 Free Software
+   Copyright (C) 1997-1999, 2002-2004, 2006-2007, 2009-2022 Free Software
    Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
