@@ -1624,6 +1624,7 @@ static void yyerror( char const *msg ) {
 
 // c_ast_list_t
 %destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_decl_list_english
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_decl_list_english_opt
 %destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast
 %destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast_exp
 %destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast_opt
