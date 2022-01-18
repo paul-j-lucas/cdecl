@@ -1455,7 +1455,6 @@ static void yyerror( char const *msg ) {
 %type   <ast>       block_decl_english_ast
 %type   <ast>       constructor_decl_english_ast
 %type   <ast>       decl_english_ast
-%type   <ast_list>  decl_list_english decl_list_english_opt
 %type   <ast>       destructor_decl_english_ast
 %type   <ast>       enum_class_struct_union_english_ast
 %type   <ast>       enum_fixed_type_english_ast
@@ -1470,7 +1469,9 @@ static void yyerror( char const *msg ) {
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
 %type   <ast>       of_type_enum_fixed_type_english_ast_opt
 %type   <ast>       oper_decl_english_ast
-%type   <ast_list>  paren_decl_list_english paren_decl_list_english_opt
+%type   <ast_list>  param_decl_list_english param_decl_list_english_opt
+%type   <ast_list>  paren_param_decl_list_english
+%type   <ast_list>  paren_param_decl_list_english_opt
 %type   <ast>       pointer_decl_english_ast
 %type   <ast>       qualifiable_decl_english_ast
 %type   <ast>       qualified_decl_english_ast
@@ -1622,13 +1623,12 @@ static void yyerror( char const *msg ) {
 //
 
 // c_ast_list_t
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } decl_list_english
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } decl_list_english_opt
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_decl_list_english
 %destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast
 %destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast_exp
 %destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast_opt
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } paren_decl_list_english
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } paren_decl_list_english_opt
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } paren_param_decl_list_english
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } paren_param_decl_list_english_opt
 
 // name
 %destructor { DTRACE; FREE( $$ ); } any_name
@@ -5759,12 +5759,12 @@ length_opt
 
 block_decl_english_ast                  // Apple extension
   : // in_attr: qualifier
-    Y_APPLE_BLOCK paren_decl_list_english_opt returning_english_ast_opt
+    Y_APPLE_BLOCK paren_param_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "block_decl_english_ast",
-                  "BLOCK paren_decl_list_english_opt "
+                  "BLOCK paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
-      DUMP_AST_LIST( "paren_decl_list_english_opt", $2 );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $2 );
       DUMP_AST( "returning_english_ast_opt", $3 );
 
       $$ = c_ast_new_gc( K_APPLE_BLOCK, &@$ );
@@ -5779,11 +5779,11 @@ block_decl_english_ast                  // Apple extension
 /// English C++ constructor declaration ///////////////////////////////////////
 
 constructor_decl_english_ast
-  : Y_CONSTRUCTOR paren_decl_list_english_opt
+  : Y_CONSTRUCTOR paren_param_decl_list_english_opt
     {
       DUMP_START( "constructor_decl_english_ast",
-                  "CONSTRUCTOR paren_decl_list_english_opt" );
-      DUMP_AST_LIST( "paren_decl_list_english_opt", $2 );
+                  "CONSTRUCTOR paren_param_decl_list_english_opt" );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $2 );
 
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       $$->as.constructor.param_ast_list = $2;
@@ -5817,16 +5817,16 @@ parens_opt
 func_decl_english_ast
   : // in_attr: qualifier
     func_qualifier_english_type_opt member_or_non_member_mask_opt
-    Y_FUNCTION paren_decl_list_english_opt returning_english_ast_opt
+    Y_FUNCTION paren_param_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "func_decl_english_ast",
                   "ref_qualifier_english_stid_opt "
                   "member_or_non_member_mask_opt "
-                  "FUNCTION paren_decl_list_english_opt "
+                  "FUNCTION paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_TYPE( "func_qualifier_english_type_opt", $1 );
       DUMP_INT( "member_or_non_member_mask_opt", $2 );
-      DUMP_AST_LIST( "paren_decl_list_english_opt", $4 );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $4 );
       DUMP_AST( "returning_english_ast_opt", $5 );
 
       $$ = c_ast_new_gc( K_FUNCTION, &@$ );
@@ -5864,19 +5864,19 @@ msc_calling_convention_atid
 
 oper_decl_english_ast
   : type_qualifier_list_english_type_opt ref_qualifier_english_stid_opt
-    member_or_non_member_mask_opt operator_exp paren_decl_list_english_opt
+    member_or_non_member_mask_opt operator_exp paren_param_decl_list_english_opt
     returning_english_ast_opt
     {
       DUMP_START( "oper_decl_english_ast",
                   "type_qualifier_list_english_type_opt "
                   "ref_qualifier_english_stid_opt "
                   "member_or_non_member_mask_opt "
-                  "OPERATOR paren_decl_list_english_opt "
+                  "OPERATOR paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_TYPE( "type_qualifier_list_english_type_opt", $1 );
       DUMP_TID( "ref_qualifier_english_stid_opt", $2 );
       DUMP_INT( "member_or_non_member_mask_opt", $3 );
-      DUMP_AST_LIST( "paren_decl_list_english_opt", $5 );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $5 );
       DUMP_AST( "returning_english_ast_opt", $6 );
 
       $$ = c_ast_new_gc( K_OPERATOR, &@$ );
@@ -5891,50 +5891,50 @@ oper_decl_english_ast
     }
   ;
 
-/// English C/C++ parenthesized declaration ///////////////////////////////////
+/// English C/C++ parameter list declaration //////////////////////////////////
 
-paren_decl_list_english_opt
+paren_param_decl_list_english_opt
   : /* empty */                   { slist_init( &$$ ); }
-  | paren_decl_list_english
+  | paren_param_decl_list_english
   ;
 
-paren_decl_list_english
-  : '(' decl_list_english_opt ')'
+paren_param_decl_list_english
+  : '(' param_decl_list_english_opt ')'
     {
-      DUMP_START( "paren_decl_list_english",
-                  "'(' decl_list_english_opt ')'" );
-      DUMP_AST_LIST( "decl_list_english_opt", $2 );
+      DUMP_START( "paren_param_decl_list_english",
+                  "'(' param_decl_list_english_opt ')'" );
+      DUMP_AST_LIST( "param_decl_list_english_opt", $2 );
 
       $$ = $2;
 
-      DUMP_AST_LIST( "paren_decl_list_english", $$ );
+      DUMP_AST_LIST( "paren_param_decl_list_english", $$ );
       DUMP_END();
     }
   ;
 
-decl_list_english_opt
+param_decl_list_english_opt
   : /* empty */                   { slist_init( &$$ ); }
-  | decl_list_english
+  | param_decl_list_english
   ;
 
-decl_list_english
-  : decl_list_english comma_exp decl_english_ast
+param_decl_list_english
+  : param_decl_list_english comma_exp decl_english_ast
     {
-      DUMP_START( "decl_list_english",
-                  "decl_list_english ',' decl_english_ast" );
-      DUMP_AST_LIST( "decl_list_english", $1 );
+      DUMP_START( "param_decl_list_english",
+                  "param_decl_list_english ',' decl_english_ast" );
+      DUMP_AST_LIST( "param_decl_list_english", $1 );
       DUMP_AST( "decl_english_ast", $3 );
 
       $$ = $1;
       slist_push_tail( &$$, $3 );
 
-      DUMP_AST_LIST( "decl_list_english", $$ );
+      DUMP_AST_LIST( "param_decl_list_english", $$ );
       DUMP_END();
     }
 
   | decl_english_ast
     {
-      DUMP_START( "decl_list_english", "decl_english_ast" );
+      DUMP_START( "param_decl_list_english", "decl_english_ast" );
       DUMP_AST( "decl_english_ast", $1 );
 
       if ( $1->kind == K_FUNCTION ) {
@@ -5951,7 +5951,7 @@ decl_list_english
       slist_init( &$$ );
       slist_push_tail( &$$, $1 );
 
-      DUMP_AST_LIST( "decl_list_english", $$ );
+      DUMP_AST_LIST( "param_decl_list_english", $$ );
       DUMP_END();
     }
   ;
@@ -6166,7 +6166,7 @@ reference_english_ast
 /// English C++ user-defined literal declaration //////////////////////////////
 
 user_defined_literal_decl_english_ast
-  : Y_USER_DEFINED literal_exp paren_decl_list_english_opt
+  : Y_USER_DEFINED literal_exp paren_param_decl_list_english_opt
     returning_english_ast_opt
     { //
       // User-defined literals are supported only in C++11 and later.
@@ -6185,9 +6185,9 @@ user_defined_literal_decl_english_ast
       }
 
       DUMP_START( "user_defined_literal_decl_english_ast",
-                  "USER-DEFINED LITERAL paren_decl_list_english_opt "
+                  "USER-DEFINED LITERAL paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
-      DUMP_AST_LIST( "paren_decl_list_english_opt", $3 );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $3 );
       DUMP_AST( "returning_english_ast_opt", $4 );
 
       $$ = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
