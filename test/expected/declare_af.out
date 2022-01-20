@@ -1,3 +1,3 @@
 declare f as function returning auto
-                                ^
-33: syntax error: "auto": English expected after "returning" ("auto" is a keyword)
+                                    ^
+37: syntax error: "\n": English expected after "returning"

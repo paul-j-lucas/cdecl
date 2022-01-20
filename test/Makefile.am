@@ -346,7 +346,6 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a9pi.test \
 	tests/explain_a_mu_k-01.test \
 	tests/explain_a_mu_k-02.test \
-	tests/explain_a_using_a_mu_i.test \
 	tests/explain_ai.test \
 	tests/explain_al0_c.test \
 	tests/explain_al8_c.test \
@@ -1328,6 +1327,7 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_a_nd_f_v.test \
 	tests/explain_a_nua_k-1.test \
 	tests/explain_a_nua_k-2.test \
+	tests/explain_a_using_a_mu_i.test \
 	tests/explain_al0_c-c++.test \
 	tests/explain_al8_c-c++.test \
 	tests/explain_bitand_i.test \
@@ -1400,6 +1400,7 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_sxxi.test \
 	tests/explain_thf_v-c++17.test \
 	tests/explain_using_a3i.test \
+	tests/explain_using_a_mu_i.test \
 	tests/explain_using_pfi_v.test \
 	tests/explain_vcompl_dtor.test \
 	tests/explain_vdtor.test \

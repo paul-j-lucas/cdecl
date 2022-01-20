@@ -1484,7 +1484,6 @@ static void yyerror( char const *msg ) {
 %type   <ast>       sname_english_ast
 %type   <list>      sname_list_english
 %type   <tid>       storage_class_english_stid
-%type   <tid>       storage_class_list_english_stid_opt
 %type   <ast>       type_english_ast
 %type   <type>      type_modifier_english_type
 %type   <type>      type_modifier_list_english_type
@@ -1785,10 +1784,9 @@ declare_command
     /*
      * Common declaration, e.g.: declare x as int.
      */
-  : Y_DECLARE sname_list_english as_exp storage_class_list_english_stid_opt
-    alignas_or_width_decl_english_ast
+  : Y_DECLARE sname_list_english as_exp alignas_or_width_decl_english_ast
     {
-      if ( $5->kind == K_NAME ) {
+      if ( $4->kind == K_NAME ) {
         //
         // This checks for a case like:
         //
@@ -1802,42 +1800,38 @@ declare_command
         // name, but the AST node is itself a name and overwriting it would
         // lose information.
         //
-        assert( !c_sname_empty( &$5->sname ) );
-        print_error_unknown_name( &@5, &$5->sname );
+        assert( !c_sname_empty( &$4->sname ) );
+        print_error_unknown_name( &@4, &$4->sname );
         c_sname_list_cleanup( &$2 );
         PARSE_ABORT();
       }
 
       DUMP_START( "declare_command",
                   "DECLARE sname_list_english AS "
-                  "storage_class_list_english_stid_opt "
                   "alignas_or_width_decl_english_ast" );
       DUMP_SNAME_LIST( "sname_list_english", $2 );
-      DUMP_TID( "storage_class_list_english_stid_opt", $4 );
-      DUMP_AST( "alignas_or_width_decl_english_ast", $5 );
+      DUMP_AST( "alignas_or_width_decl_english_ast", $4 );
 
-      $5->loc = @2;
+      $4->loc = @2;
 
-      bool ok = c_type_add_tid( &$5->type, $4, &@4 );
-
-      DUMP_AST( "decl_english", $5 );
+      DUMP_AST( "decl_english", $4 );
       DUMP_END();
 
-      if ( ok ) {
-        c_gib_flags_t gib_flags = C_GIB_DECL;
-        if ( slist_len( &$2 ) > 1 )
-          gib_flags |= C_GIB_MULTI_DECL;
-        FOREACH_SLIST_NODE( sname_node, &$2 ) {
-          c_sname_set( &$5->sname, sname_node->data );
-          if ( !(ok = c_ast_check( $5 )) )
-            break;
-          c_ast_gibberish( $5, gib_flags, cdecl_fout );
-          if ( sname_node->next != NULL ) {
-            gib_flags |= C_GIB_OMIT_TYPE;
-            FPUTS( ", ", cdecl_fout );
-          }
-        } // for
-      }
+      c_gib_flags_t gib_flags = C_GIB_DECL;
+      if ( slist_len( &$2 ) > 1 )
+        gib_flags |= C_GIB_MULTI_DECL;
+
+      bool ok = true;
+      FOREACH_SLIST_NODE( sname_node, &$2 ) {
+        c_sname_set( &$4->sname, sname_node->data );
+        if ( !(ok = c_ast_check( $4 )) )
+          break;
+        c_ast_gibberish( $4, gib_flags, cdecl_fout );
+        if ( sname_node->next != NULL ) {
+          gib_flags |= C_GIB_OMIT_TYPE;
+          FPUTS( ", ", cdecl_fout );
+        }
+      } // for
 
       c_sname_list_cleanup( &$2 );
       if ( !ok )
@@ -1862,28 +1856,24 @@ declare_command
         PARSE_ABORT();
       }
     }
-    of_scope_list_english_opt as_exp storage_class_list_english_stid_opt
-    oper_decl_english_ast
+    of_scope_list_english_opt as_exp oper_decl_english_ast
     {
       DUMP_START( "declare_command",
                   "DECLARE c_operator of_scope_list_english_opt AS "
-                  "storage_class_list_english_stid_opt "
                   "oper_decl_english_ast" );
       DUMP_STR( "c_operator", c_oper_get( $2 )->name );
       DUMP_SNAME( "of_scope_list_english_opt", $4 );
-      DUMP_TID( "storage_class_list_english_stid_opt", $6 );
-      DUMP_AST( "oper_decl_english_ast", $7 );
+      DUMP_AST( "oper_decl_english_ast", $6 );
 
-      c_sname_set( &$7->sname, &$4 );
-      $7->loc = @2;
-      $7->as.oper.oper_id = $2;
-      C_TYPE_ADD_TID( &$7->type, $6, @6 );
+      c_sname_set( &$6->sname, &$4 );
+      $6->loc = @2;
+      $6->as.oper.oper_id = $2;
 
-      DUMP_AST( "declare_command", $7 );
+      DUMP_AST( "declare_command", $6 );
       DUMP_END();
 
-      C_AST_CHECK( $7 );
-      c_ast_gibberish( $7, C_GIB_DECL, cdecl_fout );
+      C_AST_CHECK( $6 );
+      c_ast_gibberish( $6, C_GIB_DECL, cdecl_fout );
       if ( opt_semicolon )
         FPUTC( ';', cdecl_fout );
       FPUTC( '\n', cdecl_fout );
@@ -1929,101 +1919,6 @@ declare_command
       else
         elaborate_error( "name expected" );
     }
-  ;
-
-storage_class_list_english_stid_opt
-  : /* empty */                   { $$ = TS_NONE; }
-  | storage_class_list_english_stid_opt storage_class_english_stid
-    {
-      DUMP_START( "storage_class_list_english_stid_opt",
-                  "storage_class_list_english_stid_opt "
-                  "storage_class_english_stid" );
-      DUMP_TID( "storage_class_list_english_stid_opt", $1 );
-      DUMP_TID( "storage_class_english_stid", $2 );
-
-      $$ = $1;
-      C_TID_ADD( &$$, $2, @2 );
-
-      DUMP_TID( "storage_class_list_english_stid_opt", $$ );
-      DUMP_END();
-    }
-  ;
-
-storage_class_english_stid
-  : Y_AUTO_STORAGE
-  | Y_APPLE___BLOCK
-  | Y_CONST Y_EVALUATION          { $$ = TS_CONSTEVAL; }
-  | Y_CONST Y_EXPRESSION          { $$ = TS_CONSTEXPR; }
-  | Y_CONST Y_INITIALIZATION      { $$ = TS_CONSTINIT; }
-  | Y_CONSTEVAL
-  | Y_CONSTEXPR
-  | Y_CONSTINIT
-  | Y_DEFAULT
-  | Y_DELETE
-  | Y_EXPLICIT
-  | Y_EXPORT
-  | Y_EXTERN
-  | Y_EXTERN linkage_stid linkage_opt
-    {
-      $$ = $2;
-    }
-  | Y_FINAL
-  | Y_FRIEND
-  | Y_INLINE
-  | Y_MUTABLE
-  | Y_NO Y_EXCEPT                 { $$ = TS_NOEXCEPT; }
-  | Y_NOEXCEPT
-  | Y_OVERRIDE
-//| Y_REGISTER                          // in type_modifier_list_english_type
-  | Y_STATIC
-  | Y_THREAD local_exp            { $$ = TS_THREAD_LOCAL; }
-  | Y__THREAD_LOCAL
-  | Y_THREAD_LOCAL
-  | Y_THROW
-  | Y_TYPEDEF
-  | Y_VIRTUAL
-  | Y_PURE virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
-  ;
-
-attribute_english_atid
-  : Y_CARRIES dependency_exp      { $$ = TA_CARRIES_DEPENDENCY; }
-  | Y_CARRIES_DEPENDENCY
-  | Y_DEPRECATED
-  | Y_MAYBE unused_exp            { $$ = TA_MAYBE_UNUSED; }
-  | Y_MAYBE_UNUSED
-  | Y_NO Y_DISCARD                { $$ = TA_NODISCARD; }
-  | Y_NODISCARD
-  | Y_NO Y_RETURN                 { $$ = TA_NORETURN; }
-  | Y__NORETURN
-  | Y_NORETURN
-  | Y_NO Y_UNIQUE address_exp     { $$ = TA_NO_UNIQUE_ADDRESS; }
-  | Y_NO_UNIQUE_ADDRESS
-  ;
-
-linkage_stid
-  : str_lit
-    {
-      bool ok = true;
-
-      if ( strcmp( $1, "C" ) == 0 )
-        $$ = TS_EXTERN_C;
-      else if ( strcmp( $1, "C++" ) == 0 )
-        $$ = TS_NONE;
-      else {
-        print_error( &@1, "\"%s\": unknown linkage language", $1 );
-        print_hint( "\"C\" or \"C++\"" );
-        ok = false;
-      }
-
-      free( $1 );
-      if ( !ok )
-        PARSE_ABORT();
-    }
-  ;
-
-linkage_opt
-  : /* empty */
-  | Y_LINKAGE
   ;
 
 udc_storage_class_list_english_type_opt
@@ -2161,21 +2056,18 @@ bits_opt
 /// define command ////////////////////////////////////////////////////////////
 
 define_command
-  : Y_DEFINE sname_english_exp as_exp storage_class_list_english_stid_opt
-    decl_english_ast
+  : Y_DEFINE sname_english_exp as_exp decl_english_ast
     {
       DUMP_START( "define_command",
-                  "DEFINE sname_english AS "
-                  "storage_class_list_english_stid_opt decl_english_ast" );
+                  "DEFINE sname_english AS decl_english_ast" );
       DUMP_SNAME( "sname", $2 );
-      DUMP_TID( "storage_class_list_english_stid_opt", $4 );
-      DUMP_AST( "decl_english_ast", $5 );
+      DUMP_AST( "decl_english_ast", $4 );
 
-      c_sname_set( &$5->sname, &$2 );
+      c_sname_set( &$4->sname, &$2 );
 
-      if ( $5->kind == K_NAME ) {       // see the comment in "declare_command"
-        assert( !c_sname_empty( &$5->sname ) );
-        print_error_unknown_name( &@5, &$5->sname );
+      if ( $4->kind == K_NAME ) {       // see the comment in "declare_command"
+        assert( !c_sname_empty( &$4->sname ) );
+        print_error_unknown_name( &@4, &$4->sname );
         PARSE_ABORT();
       }
 
@@ -2190,22 +2082,21 @@ define_command
       //  i.e., a defined type with a storage class.  Once the semantic checks
       // pass, remove the TS_TYPEDEF.
       //
-      if ( !c_type_add( &$5->type, &T_TS_TYPEDEF, &@4 ) ||
-           !c_type_add_tid( &$5->type, $4, &@4 ) ||
-           !c_ast_check( $5 ) ) {
+      if ( !c_type_add( &$4->type, &T_TS_TYPEDEF, &@4 ) ||
+           !c_ast_check( $4 ) ) {
         PARSE_ABORT();
       }
-      PJL_IGNORE_RV( c_ast_take_type_any( $5, &T_TS_TYPEDEF ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( $4, &T_TS_TYPEDEF ) );
 
-      if ( c_type_is_tid_any( &$5->type, TB_ANY_SCOPE ) )
-        c_sname_set_local_type( &$5->sname, &$5->type );
-      c_sname_fill_in_namespaces( &$5->sname );
+      if ( c_type_is_tid_any( &$4->type, TB_ANY_SCOPE ) )
+        c_sname_set_local_type( &$4->sname, &$4->type );
+      c_sname_fill_in_namespaces( &$4->sname );
 
-      DUMP_AST( "defined.ast", $5 );
+      DUMP_AST( "defined.ast", $4 );
 
-      if ( !c_sname_check( &$5->sname, &@2 ) )
+      if ( !c_sname_check( &$4->sname, &@2 ) )
         PARSE_ABORT();
-      if ( !add_type( L_DEFINE, $5 ) )
+      if ( !add_type( L_DEFINE, $4 ) )
         PARSE_ABORT();
 
       DUMP_END();
@@ -3234,25 +3125,27 @@ using_decl_c_ast
     {
       gibberish_to_english();           // see the comment in "explain"
     }
-    any_name_exp equals_exp type_c_ast
+    any_name_exp attribute_specifier_list_c_atid_opt equals_exp type_c_ast
     {
       // see the comment in "define_command" about TS_TYPEDEF
-      if ( !c_type_add_tid( &$5->type, TS_TYPEDEF, &@5 ) ) {
+      if ( !c_type_add_tid( &$6->type, TS_TYPEDEF, &@6 ) ) {
         free( $3 );
         PARSE_ABORT();
       }
-      ia_type_ast_push( $5 );
+      ia_type_ast_push( $6 );
     }
     cast_c_astp_opt
     {
       ia_type_ast_pop();
 
       DUMP_START( "using_decl_c_ast",
-                  "USING any_name_exp '=' type_c_ast cast_c_astp_opt" );
+                  "USING any_name_exp attribute_specifier_list_c_atid_opt '=' "
+                  "type_c_ast cast_c_astp_opt" );
       DUMP_SNAME( "(current_scope)", in_attr.current_scope );
       DUMP_STR( "any_name_exp", $3 );
-      DUMP_AST( "type_c_ast", $5 );
-      DUMP_AST( "cast_c_astp_opt", $7.ast );
+      DUMP_TID( "attribute_specifier_list_c_atid_opt", $4 );
+      DUMP_AST( "type_c_ast", $6 );
+      DUMP_AST( "cast_c_astp_opt", $8.ast );
 
       //
       // Ensure the type on the right-hand side doesn't have a name, e.g.:
@@ -3262,9 +3155,9 @@ using_decl_c_ast
       // This check has to be done now in the parser rather than later in the
       // AST because the patched AST loses the name.
       //
-      c_sname_t const *const sname = c_ast_find_name( $7.ast, C_VISIT_DOWN );
+      c_sname_t const *const sname = c_ast_find_name( $8.ast, C_VISIT_DOWN );
       if ( sname != NULL ) {
-        print_error( &$7.ast->loc,
+        print_error( &$8.ast->loc,
           "\"%s\" type can not have a name\n", L_USING
         );
         free( $3 );
@@ -3274,8 +3167,9 @@ using_decl_c_ast
       c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
       c_sname_append_name( &temp_sname, $3 );
 
-      $$ = c_ast_patch_placeholder( $5, $7.ast );
+      $$ = c_ast_patch_placeholder( $6, $8.ast );
       c_sname_set( &$$->sname, &temp_sname );
+      $$->type.atids = c_tid_check( $4, C_TPID_ATTR );
 
       DUMP_AST( "using_decl_c_ast", $$ );
       DUMP_END();
@@ -5686,10 +5580,7 @@ msc_attribuet_list_c
 ///////////////////////////////////////////////////////////////////////////////
 
 decl_english_ast
-  : array_decl_english_ast
-  | constructor_decl_english_ast
-  | destructor_decl_english_ast
-  | qualified_decl_english_ast
+  : qualified_decl_english_ast
   | user_defined_literal_decl_english_ast
   | var_decl_english_ast
   ;
@@ -6048,7 +5939,85 @@ type_qualifier_list_english_type
 
 type_qualifier_english_type
   : attribute_english_atid        { $$ = C_TYPE_LIT_A( $1 ); }
+  | storage_class_english_stid    { $$ = C_TYPE_LIT_S( $1 ); }
   | type_qualifier_english_stid   { $$ = C_TYPE_LIT_S( $1 ); }
+  ;
+
+attribute_english_atid
+  : Y_CARRIES dependency_exp      { $$ = TA_CARRIES_DEPENDENCY; }
+  | Y_CARRIES_DEPENDENCY
+  | Y_DEPRECATED
+  | Y_MAYBE unused_exp            { $$ = TA_MAYBE_UNUSED; }
+  | Y_MAYBE_UNUSED
+  | Y_NO Y_DISCARD                { $$ = TA_NODISCARD; }
+  | Y_NODISCARD
+  | Y_NO Y_RETURN                 { $$ = TA_NORETURN; }
+  | Y__NORETURN
+  | Y_NORETURN
+  | Y_NO Y_UNIQUE address_exp     { $$ = TA_NO_UNIQUE_ADDRESS; }
+  | Y_NO_UNIQUE_ADDRESS
+  ;
+
+storage_class_english_stid
+  : Y_AUTO_STORAGE
+  | Y_APPLE___BLOCK
+  | Y_CONST Y_EVALUATION          { $$ = TS_CONSTEVAL; }
+  | Y_CONST Y_EXPRESSION          { $$ = TS_CONSTEXPR; }
+  | Y_CONST Y_INITIALIZATION      { $$ = TS_CONSTINIT; }
+  | Y_CONSTEVAL
+  | Y_CONSTEXPR
+  | Y_CONSTINIT
+  | Y_DEFAULT
+  | Y_DELETE
+  | Y_EXPLICIT
+  | Y_EXPORT
+  | Y_EXTERN
+  | Y_EXTERN linkage_stid linkage_opt
+    {
+      $$ = $2;
+    }
+  | Y_FINAL
+  | Y_FRIEND
+  | Y_INLINE
+  | Y_MUTABLE
+  | Y_NO Y_EXCEPT                 { $$ = TS_NOEXCEPT; }
+  | Y_NOEXCEPT
+  | Y_OVERRIDE
+//| Y_REGISTER                          // in type_modifier_list_english_type
+  | Y_STATIC
+  | Y_THREAD local_exp            { $$ = TS_THREAD_LOCAL; }
+  | Y__THREAD_LOCAL
+  | Y_THREAD_LOCAL
+  | Y_THROW
+  | Y_TYPEDEF
+  | Y_VIRTUAL
+  | Y_PURE virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
+  ;
+
+linkage_stid
+  : str_lit
+    {
+      bool ok = true;
+
+      if ( strcmp( $1, "C" ) == 0 )
+        $$ = TS_EXTERN_C;
+      else if ( strcmp( $1, "C++" ) == 0 )
+        $$ = TS_NONE;
+      else {
+        print_error( &@1, "\"%s\": unknown linkage language", $1 );
+        print_hint( "\"C\" or \"C++\"" );
+        ok = false;
+      }
+
+      free( $1 );
+      if ( !ok )
+        PARSE_ABORT();
+    }
+  ;
+
+linkage_opt
+  : /* empty */
+  | Y_LINKAGE
   ;
 
 type_qualifier_english_stid
@@ -6067,7 +6036,10 @@ upc_layout_qualifier_english
   ;
 
 qualifiable_decl_english_ast
-  : block_decl_english_ast
+  : array_decl_english_ast
+  | block_decl_english_ast
+  | constructor_decl_english_ast
+  | destructor_decl_english_ast
   | func_decl_english_ast
   | pointer_decl_english_ast
   | reference_decl_english_ast

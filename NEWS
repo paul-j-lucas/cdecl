@@ -12,6 +12,12 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.11
 
+** `using` with attributes
+Now supporting `using` with attributes:
+
+    c++decl> explain using Int [[maybe_unused]] = int
+    declare Int as maybe unused type int
+
 ** More K&R C types
 The types `caaddr_t` and `daddr_t` were added; `jmp_buf` was moved from C89.
 
