@@ -305,6 +305,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
                     c_loc_t const *loc, c_ast_list_t *ast_list ) {
   assert( exactly_one_bit_set( kind ) );
   assert( loc != NULL );
+  assert( ast_list != NULL );
   static c_ast_id_t next_id;
 
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
@@ -342,8 +343,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
   } // switch
 
   ++c_ast_count;
-  if ( ast_list != NULL )
-    slist_push_tail( ast_list, ast );
+  slist_push_tail( ast_list, ast );
   return ast;
 }
 

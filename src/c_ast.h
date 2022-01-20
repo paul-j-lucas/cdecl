@@ -429,8 +429,7 @@ void c_ast_cleanup( void );
  * Duplicates the entire AST starting at \a ast.
  *
  * @param ast The AST to duplicate.
- * @param ast_list If not NULL, the duplicated AST nodes are appended to the
- * list.
+ * @param ast_list The list to append the duplicated AST nodes onto.
  * @return Returns the duplicated AST.
  *
  * @sa c_ast_free()
@@ -542,7 +541,7 @@ void c_ast_list_cleanup( c_ast_list_t *list );
  * @param kind The kind of AST to create.
  * @param depth How deep within `()` it is.
  * @param loc A pointer to the token location data.
- * @param ast_list If not NULL, the new AST is appended to the list.
+ * @param ast_list The list to append the new AST node onto.
  * @return Returns a pointer to a new AST.
  *
  * @sa c_ast_cleanup()
