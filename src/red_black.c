@@ -107,7 +107,12 @@ static void rb_tree_rotate_node( rb_tree_t*, rb_node_t*, rb_dir_t );
  * Sentinel for NIL node.  Ideally, it should be `const` but isn't since
  * pointers-to-non-`const` point to it.
  */
-static rb_node_t rb_nil = { NULL, { RB_NIL, RB_NIL }, RB_NIL, RB_BLACK };
+static rb_node_t rb_nil = {
+  .data = NULL,
+  .child = { RB_NIL, RB_NIL },
+  .parent = RB_NIL,
+  .color = RB_BLACK
+};
 
 ////////// inline functions ///////////////////////////////////////////////////
 
