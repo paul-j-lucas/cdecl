@@ -46,9 +46,9 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * TODO
+ * Explains \a ast as a cast in pseudo-English.
  *
- * @param sname TODO.
+ * @param sname The scoped name being cast.
  * @param ast The AST to explain.
  * @param eout The `FILE` to print to.
  *
