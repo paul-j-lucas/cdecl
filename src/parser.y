@@ -1817,21 +1817,25 @@ declare_command
       DUMP_AST( "decl_english", $4 );
       DUMP_END();
 
-      c_gib_flags_t gib_flags = C_GIB_DECL;
-      if ( slist_len( &$2 ) > 1 )
-        gib_flags |= C_GIB_MULTI_DECL;
+      // To check the declaration, it needs a name: just dup the first one.
+      c_sname_t temp_sname = c_sname_dup( slist_peek_head( &$2 ) );
+      c_sname_set( &$4->sname, &temp_sname );
+      bool const ok = c_ast_check( $4 );
 
-      bool ok = true;
-      FOREACH_SLIST_NODE( sname_node, &$2 ) {
-        c_sname_set( &$4->sname, sname_node->data );
-        if ( !(ok = c_ast_check( $4 )) )
-          break;
-        c_ast_gibberish( $4, gib_flags, cdecl_fout );
-        if ( sname_node->next != NULL ) {
-          gib_flags |= C_GIB_OMIT_TYPE;
-          FPUTS( ", ", cdecl_fout );
-        }
-      } // for
+      if ( ok ) {
+        c_gib_flags_t gib_flags = C_GIB_DECL;
+        if ( slist_len( &$2 ) > 1 )
+          gib_flags |= C_GIB_MULTI_DECL;
+
+        FOREACH_SLIST_NODE( sname_node, &$2 ) {
+          c_sname_set( &$4->sname, sname_node->data );
+          c_ast_gibberish( $4, gib_flags, cdecl_fout );
+          if ( sname_node->next != NULL ) {
+            gib_flags |= C_GIB_OMIT_TYPE;
+            FPUTS( ", ", cdecl_fout );
+          }
+        } // for
+      }
 
       c_sname_list_cleanup( &$2 );
       if ( !ok )
