@@ -159,10 +159,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
   c_tid_t ref_qual_stids  = TS_NONE;
 
   //
-  // This isn't implemented using a visitor because c_ast_visit() visits in
-  // post-order and, in order to print gibberish, the AST has to be visited in
-  // pre-order.  Since this is the only case where a pre-order traversal has to
-  // be done, it's not worth having a pre-order version of c_ast_visit().
+  // This isn't implemented using a visitor due to the complicated way the
+  // nodes need to be visited in order to print gibberish.
   //
   switch ( ast->kind ) {
     case K_CONSTRUCTOR:

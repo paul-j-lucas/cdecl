@@ -605,7 +605,7 @@ bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
 
 /**
- * Does a depth-first, post-order traversal of an AST.
+ * Does a pre-order traversal of an AST.
  *
  * @param ast The AST to start from.  If NULL, does nothing.
  * @param dir The direction to visit.
