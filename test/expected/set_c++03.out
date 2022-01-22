@@ -8,3 +8,4 @@
     lang=C++03
     prompt
     semicolon
+    using

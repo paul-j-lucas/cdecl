@@ -195,7 +195,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_si.test \
 	tests/declare_sif_v.test \
 	tests/declare_sll.test \
-	tests/declare_type.test \
+	tests/declare_type_i.test \
 	tests/declare_type_pfc_i.test \
 	tests/declare_typedef_i.test \
 	tests/declare_u.test \
@@ -1074,6 +1074,8 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_rrf_v.test \
 	tests/declare_rtf_v.test \
 	tests/declare_sxxi.test \
+	tests/declare_type_2i-c++.test \
+	tests/declare_type_i-c++.test \
 	tests/declare_vdtor.test \
 	tests/declare_vf_v.test \
 	tests/declare_vovyf.test \
@@ -1927,6 +1929,7 @@ TESTS+=	tests/help-c++.test \
 	tests/set_nographs.test \
 	tests/set_noprompt.test \
 	tests/set_nosemicolon.test \
+	tests/set_nousing-c++.test \
 	tests/set_options.test \
 	tests/set_prompt.test \
 	tests/set_prompt=x.test \

@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ set nousing; declare x as type int @ 0

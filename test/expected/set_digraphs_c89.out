@@ -9,3 +9,4 @@ warning: digraphs not supported until C95
     lang=C89
     prompt
     semicolon
+    using

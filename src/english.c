@@ -384,7 +384,6 @@ void c_ast_explain_type( c_ast_t const *ast, FILE *eout ) {
   c_sname_english( &ast->sname, eout );
   FPRINTF( eout, " %s ", L_AS );
   c_ast_english( ast, eout );
-  FPUTC( '\n', eout );
 }
 
 char const* c_cast_english( c_cast_kind_t kind ) {

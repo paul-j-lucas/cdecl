@@ -74,6 +74,7 @@ extern bool         opt_prompt;         ///< Print the prompt?
 extern bool         opt_read_conf;      ///< Read configuration file?
 extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?
 extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s?
+extern bool         opt_using;          ///< Print "using" in C++11 and later?
 
 // other extern variables
 #ifdef ENABLE_FLEX_DEBUG

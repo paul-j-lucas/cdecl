@@ -31,6 +31,7 @@
 #include "pjl_config.h"                 /* must go first */
 #include "c_ast.h"
 #include "c_type.h"
+#include "options.h"
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -457,6 +458,19 @@ C_AST_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   c_tid_t cv_stids;
   return c_ast_is_tid_any_cv( ast, tids, &cv_stids );
+}
+
+/**
+ * Checks whether \a ast should be printed as a `using` declaration.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast should be printed as a `using`
+ * declaration.
+ */
+C_AST_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+bool c_ast_print_as_using( c_ast_t const *ast ) {
+  return  opt_using && opt_lang >= LANG_CPP_11 &&
+          c_type_is_tid_any( &ast->type, TS_TYPEDEF );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -73,8 +73,6 @@ void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout );
 /**
  * Explains \a ast as a type in pseudo-English.
  *
- * @note A newline _is_ printed.
- *
  * @param ast The AST to explain.
  * @param eout The `FILE` to print to.
  *

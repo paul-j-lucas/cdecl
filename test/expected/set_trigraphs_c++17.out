@@ -9,3 +9,4 @@ warning: trigraphs no longer supported since C++17
     lang=C++17
     prompt
     semicolon
+    using

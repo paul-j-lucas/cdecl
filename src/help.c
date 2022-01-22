@@ -373,6 +373,7 @@ static void print_help_options( void ) {
   print_h( "  <lang>\n" );
   print_h( "  [no]prompt\n" );
   print_h( "  [no]semicolon\n" );
+  print_h( "  [no]using\n" );
   print_h( "lang:\n" );
   print_h( "  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|2X] | C\\+\\+[98|03|11|14|17|20|23]\n" );
 

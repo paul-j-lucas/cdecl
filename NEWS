@@ -18,6 +18,21 @@ Now supporting `using` with attributes:
     c++decl> explain using Int [[maybe_unused]] = int
     declare Int as maybe unused type int
 
+** Declare types with `using`
+In C++11 and later, types are now declared with `using` instead of `typedef` by
+default.
+
+** `using` declarations
+New `--no-using`/`-u` command-line option and `using` set option that control
+whether types are declared with `using` instead of `typedef` in C++11 and
+later:
+
+    c++decl> declare pint as type pointer to int
+    using pint = int*;
+    c++decl> set nousing
+    c++decl> declare pint as type pointer to int
+    typedef int *pint;
+
 ** More K&R C types
 The types `caaddr_t` and `daddr_t` were added; `jmp_buf` was moved from C89.
 

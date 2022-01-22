@@ -73,6 +73,7 @@
 #define SOPT_NO_SEMICOLON   s
 #define SOPT_EXPLICIT_ECSU  S
 #define SOPT_NO_TYPEDEFS    t
+#define SOPT_NO_USING       u
 #define SOPT_VERSION        v
 #define SOPT_LANGUAGE       x
 
@@ -100,6 +101,7 @@ bool                opt_prompt = true;
 bool                opt_read_conf = true;
 bool                opt_semicolon = true;
 bool                opt_typedefs = true;
+bool                opt_using = true;
 
 /**
  * The integer type(s) that `int` shall be print explicitly for in C/C++
@@ -155,6 +157,7 @@ static struct option const CLI_OPTIONS_LONG[] = {
   { "no-prompt",      no_argument,        NULL, COPT(NO_PROMPT)     },
   { "no-semicolon",   no_argument,        NULL, COPT(NO_SEMICOLON)  },
   { "no-typedefs",    no_argument,        NULL, COPT(NO_TYPEDEFS)   },
+  { "no-using",       no_argument,        NULL, COPT(NO_USING)      },
   { "output",         required_argument,  NULL, COPT(OUTPUT)        },
   { "trigraphs",      no_argument,        NULL, COPT(TRIGRAPHS)     },
   { "version",        no_argument,        NULL, COPT(VERSION)       },
@@ -200,6 +203,7 @@ static char const   CLI_OPTIONS_SHORT[] = ":"
   SOPT(NO_PROMPT)     SOPT_NO_ARGUMENT
   SOPT(NO_SEMICOLON)  SOPT_NO_ARGUMENT
   SOPT(NO_TYPEDEFS)   SOPT_NO_ARGUMENT
+  SOPT(NO_USING)      SOPT_NO_ARGUMENT
   SOPT(OUTPUT)        SOPT_REQUIRED_ARGUMENT
   SOPT(TRIGRAPHS)     SOPT_NO_ARGUMENT
   SOPT(VERSION)       SOPT_NO_ARGUMENT
@@ -485,6 +489,9 @@ static void parse_options( int argc, char const *argv[] ) {
       case COPT(NO_TYPEDEFS):
         opt_typedefs = false;
         break;
+      case COPT(NO_USING):
+        opt_using = false;
+        break;
       case COPT(OUTPUT):
         fout_path = optarg;
         break;
@@ -563,6 +570,7 @@ use_help:
     SOPT(NO_PROMPT)
     SOPT(NO_SEMICOLON)
     SOPT(NO_TYPEDEFS)
+    SOPT(NO_USING)
     SOPT(OUTPUT)
     SOPT(TRIGRAPHS)
     SOPT(VERSION)
@@ -594,6 +602,7 @@ use_help:
     SOPT(NO_PROMPT)
     SOPT(NO_SEMICOLON)
     SOPT(NO_TYPEDEFS)
+    SOPT(NO_USING)
     SOPT(OUTPUT)
     SOPT(TRIGRAPHS)
   );
@@ -667,6 +676,7 @@ static void usage( int status ) {
 "  --no-prompt          (-%c) Suppress prompt.\n"
 "  --no-semicolon       (-%c) Suppress printing final semicolon for declarations.\n"
 "  --no-typedefs        (-%c) Suppress predefining standard types.\n"
+"  --no-using           (-%c) Declare types with typedef, not using, in C++.\n"
 "  --output=FILE        (-%c) Write to FILE [default: stdout].\n"
 "  --trigraphs          (-%c) Print trigraphs.\n"
 "  --version            (-%c) Print version and exit.\n"
@@ -698,6 +708,7 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n",
     COPT(NO_PROMPT),
     COPT(NO_SEMICOLON),
     COPT(NO_TYPEDEFS),
+    COPT(NO_USING),
     COPT(OUTPUT),
     COPT(TRIGRAPHS),
     COPT(VERSION)

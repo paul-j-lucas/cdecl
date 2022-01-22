@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 3, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 21, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -512,6 +512,11 @@ e.g.,
 etc.
 (See
 .BR "PREDEFINED TYPES" .)
+.TP
+.BR \-\-no-using " | " \-u
+Always declare types with \f(CWtypedef\fP
+rather than \f(CWusing\fP
+in C++11 and later.
 .TP
 .BI \-\-output \f1=\fPf "\f1 | \fP" "" \-o " f"
 Sends all non-error output to file
@@ -1449,6 +1454,11 @@ and
 \(em default is off.
 (Supported only in C89 and later
 and only through C++14.)
+.TP
+.RB [ no ] using
+Turns [off] on declaring types with \f(CWusing\fP
+rather than \f(CWtypedef\fP
+in C++11 and later.
 .RE
 .SH PREDEFINED TYPES
 The following types are predefined

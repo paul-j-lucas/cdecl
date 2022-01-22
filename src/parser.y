@@ -681,7 +681,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
 
       opt_semicolon = orig_semicolon;
     }
-
+    EPUTC( '\n' );
     return false;
   }
 
@@ -991,6 +991,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
         c_ast_explain_type( tdef->ast, cdecl_fout );
       else
         c_typedef_gibberish( tdef, sti->gib_flags, cdecl_fout );
+      FPUTC( '\n', cdecl_fout );
     }
   }
 
@@ -1826,13 +1827,21 @@ declare_command
         c_gib_flags_t gib_flags = C_GIB_DECL;
         if ( slist_len( &$2 ) > 1 )
           gib_flags |= C_GIB_MULTI_DECL;
+        bool const print_as_using = c_ast_print_as_using( $4 );
 
         FOREACH_SLIST_NODE( sname_node, &$2 ) {
           c_sname_set( &$4->sname, sname_node->data );
           c_ast_gibberish( $4, gib_flags, cdecl_fout );
           if ( sname_node->next != NULL ) {
-            gib_flags |= C_GIB_OMIT_TYPE;
-            FPUTS( ", ", cdecl_fout );
+            if ( print_as_using ) {
+              if ( opt_semicolon )
+                FPUTC( ';', cdecl_fout );
+              FPUTC( '\n', cdecl_fout );
+            }
+            else {
+              gib_flags |= C_GIB_OMIT_TYPE;
+              FPUTS( ", ", cdecl_fout );
+            }
           }
         } // for
       }
@@ -2340,6 +2349,7 @@ show_command
         c_ast_explain_type( $2->ast, cdecl_fout );
       else
         c_typedef_gibberish( $2, $3, cdecl_fout );
+      FPUTC( '\n', cdecl_fout );
     }
 
   | Y_SHOW any_typedef Y_AS show_format_exp
@@ -2350,6 +2360,7 @@ show_command
       DUMP_END();
 
       c_typedef_gibberish( $2, $4, cdecl_fout );
+      FPUTC( '\n', cdecl_fout );
     }
 
   | Y_SHOW show_which_types_mask_opt glob_opt show_format_opt
@@ -3247,6 +3258,7 @@ decl_list_c_opt
 
       C_AST_CHECK( type_ast );
       c_ast_explain_type( type_ast, cdecl_fout );
+      FPUTC( '\n', cdecl_fout );
     }
 
   | decl_list_c

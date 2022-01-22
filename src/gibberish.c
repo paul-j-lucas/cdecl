@@ -138,6 +138,15 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
   c_type_t type = ast->type;
 
+  if ( (g->flags & C_GIB_USING) != 0 ) {
+    //
+    // If we're printing a "using" declaration, don't print either "typedef" or
+    // attributes since they will have been printed in c_typedef_gibberish().
+    //
+    type.stids &= c_tid_compl( TS_TYPEDEF );
+    type.atids = TA_NONE;
+  }
+
   c_tid_t cv_qual_stids   = TS_NONE;
   bool    is_default      = false;
   bool    is_delete       = false;
@@ -894,6 +903,26 @@ void c_ast_gibberish( c_ast_t const *ast, c_gib_flags_t flags, FILE *gout ) {
   assert( (flags & C_GIB_MULTI_DECL) == 0 || (flags & C_GIB_DECL) != 0 );
   assert( gout != NULL );
 
+  if ( c_ast_print_as_using( ast ) ) {
+    //
+    // This is when declaring types in C++11 or later when opt_using is set:
+    //
+    //      c++decl> declare pint as type pointer to int
+    //      using pint = int*;
+    //
+    // It's simpler just to create a temporary c_typedef_t, tweak some flags,
+    // and call c_typedef_gibberish().
+    //
+    c_typedef_t const tdef = {
+      ast, LANG_ANY, .user_defined = true, .defined_in_english = true
+    };
+    bool const orig_semicolon = opt_semicolon;
+    opt_semicolon = false;
+    c_typedef_gibberish( &tdef, C_GIB_USING, gout );
+    opt_semicolon = orig_semicolon;
+    return;
+  }
+
   if ( (flags & C_GIB_OMIT_TYPE) == 0 ) {
     //
     // If we're declaring more than one variable in the same declaration, print
@@ -1069,10 +1098,15 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
   //
   bool const printing_using = (flags & C_GIB_USING) != 0 && !is_ecsu;
 
-  if ( printing_typedef )
+  if ( printing_typedef ) {
     FPRINTF( gout, "%s ", L_TYPEDEF );
-  else if ( printing_using )
-    FPRINTF( gout, "%s %s = ", L_USING, c_sname_local_name( sname ) );
+  }
+  else if ( printing_using ) {
+    FPRINTF( gout, "%s %s ", L_USING, c_sname_local_name( sname ) );
+    if ( tdef->ast->type.atids != TA_NONE )
+      FPRINTF( gout, "%s ", c_tid_name_c( tdef->ast->type.atids ) );
+    FPUTS( "= ", gout );
+  }
 
   c_ast_gibberish_impl(
     tdef->ast, printing_using ? C_GIB_USING : C_GIB_TYPEDEF,
@@ -1087,7 +1121,6 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
 
   if ( opt_semicolon && scope_type.btids != TB_NAMESPACE )
     FPUTC( ';', gout );
-  FPUTC( '\n', gout );
 }
 
 char const* graph_token_c( char const *token ) {

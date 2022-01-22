@@ -88,6 +88,7 @@ DECLARE_SET_OPTION_FN( lang );
 DECLARE_SET_OPTION_FN( prompt );
 DECLARE_SET_OPTION_FN( semicolon );
 DECLARE_SET_OPTION_FN( trigraphs );
+DECLARE_SET_OPTION_FN( using );
 
 /// @endcond
 
@@ -120,6 +121,7 @@ static set_option_t const SET_OPTIONS[] = {
   { "prompt",             SET_OPT_TOGGLE,   false,  &set_prompt             },
   { "semicolon",          SET_OPT_TOGGLE,   false,  &set_semicolon          },
   { "trigraphs",          SET_OPT_AFF_ONLY, false,  &set_trigraphs          },
+  { "using",              SET_OPT_TOGGLE,   false,  &set_using              },
   { NULL,                 SET_OPT_TOGGLE,   false,  NULL                    }
 };
 
@@ -181,6 +183,7 @@ static void print_options( void ) {
   FPRINTF( cdecl_fout, "    lang=%s\n", c_lang_name( opt_lang ) );
   FPRINTF( cdecl_fout, "  %sprompt\n", maybe_no( cdecl_prompt[0][0] != '\0' ) );
   FPRINTF( cdecl_fout, "  %ssemicolon\n", maybe_no( opt_semicolon ) );
+  FPRINTF( cdecl_fout, "  %susing\n", maybe_no( opt_using ) );
 }
 
 /**
@@ -384,6 +387,17 @@ static bool set_trigraphs( set_option_fn_args_t const *args ) {
       );
     }
   }
+  return true;
+}
+
+/**
+ * Sets the using option.
+ *
+ * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
+ */
+static bool set_using( set_option_fn_args_t const *args ) {
+  opt_using = args->opt_enabled;
   return true;
 }
 

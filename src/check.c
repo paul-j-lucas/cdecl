@@ -2650,6 +2650,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
             c_ast_explain_type( tdef->ast, stderr );
           else
             c_typedef_gibberish( tdef, C_GIB_TYPEDEF, stderr );
+          EPUTC( '\n' );
           scope->next = orig_next;
           return false;
         }

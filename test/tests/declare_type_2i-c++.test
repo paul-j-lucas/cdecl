@@ -1,0 +1,1 @@
+cdecl @ @ -x c++ @ declare x, y as type int @ 0
