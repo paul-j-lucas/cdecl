@@ -119,9 +119,9 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * The argument type for the `alignas` specifier.
+ * The argument kind for the `alignas` specifier.
  */
-enum c_alignas_arg {
+enum c_alignas_kind {
   C_ALIGNAS_NONE,                       ///< No `alignas` specifier.
   C_ALIGNAS_EXPR,                       ///< `alignas(` _expr_ `)`
   C_ALIGNAS_TYPE                        ///< `alignas(` _type_ `)`
@@ -132,11 +132,11 @@ enum c_alignas_arg {
  */
 struct c_alignas {
   union {
-    unsigned      expr;                 ///< Aligned to this number of bytes.
-    c_ast_t      *type_ast;             ///< Aligned the same as this type.
+    unsigned        expr;               ///< Aligned to this number of bytes.
+    c_ast_t        *type_ast;           ///< Aligned the same as this type.
   } as;                                 ///< Union discriminator.
-  c_alignas_arg_t kind;                 ///< Kind of `alignas` argument.
-  c_loc_t         loc;                  ///< Source location.
+  c_alignas_kind_t  kind;               ///< Kind of `alignas` argument.
+  c_loc_t           loc;                ///< Source location.
 };
 
 /**

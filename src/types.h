@@ -77,7 +77,7 @@ typedef struct slist_node slist_node_t;
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef struct c_alignas          c_alignas_t;
-typedef enum   c_alignas_arg      c_alignas_arg_t;
+typedef enum   c_alignas_kind     c_alignas_kind_t;
 typedef struct c_apple_block_ast  c_apple_block_ast_t;
 typedef struct c_array_ast        c_array_ast_t;
 
