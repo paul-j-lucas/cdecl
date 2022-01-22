@@ -1,5 +1,45 @@
+2022-01-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * extern-inline.m4: Updated Gnulib.
+
+2022-01-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_ast_util.c, c_ast_util.h, check.c, english.c, english.h,
+     gibberish.c, help.c, options.c, options.h, parser.y, set_options.c,
+     test/Makefile.am, cdecl-h.out, declare_type_2i-c++.out,
+     declare_type_i-c++.out, help_options.out, set.out, set_c++.out,
+     set_c++03.out, set_c++11.out, set_c++14.out, set_c++17.out, set_c++20.out,
+     set_c++23.out, set_c++98.out, set_c11.out, set_c17.out, set_c18.out,
+     set_c89.out, set_c90.out, set_c95.out, set_c99.out, set_cknr.out,
+     set_digraphs_c89.out, set_explicit-ecsu=ecsu.out, set_explicit-int=i.out,
+     set_explicit-int=u.out, set_lang=c++.out, set_noexplicit-int.out,
+     set_nousing-c++.out, set_options.out, set_trigraphs_c++17.out,
+     declare_type_2i-c++.test, declare_type_i-c++.test, set_nousing-c++.test:
+     Added --no-using/-u CLI options and `using` set option. Can now print
+     types as `using` declarations in C++11 and later.
+   * c_ast_util.c, red_black.c: Added struct designators.
+   * parser.y: Now checking multi-declarations only once.
+
+2022-01-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: s/ast->type/type/
+   * c_ast.c, c_ast.h: c_ast_dup() and c_ast_new() now require a non-null
+     ast_list.
+   * NEWS, parser.y, test/Makefile.am, cast_type_i.out, cast_typedef_i.out,
+     declare_af.out, declare_fsi_v.out, define_ai.out, define_eti.out,
+     define_si.out, explain_using_a_mu_i.out, explain_using_a_mu_i.test: Now
+     supporting attributes for "using" declarations.
+
+2022-01-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added missing %destructor for param_decl_list_english_opt.
+   * parser.y: Renamed *decl_list* to *param_decl_list*.
+
 2022-01-16  Paul J. Lucas <paul@lucasmail.org>
 
+   * dam_lev.c: Renaming.
+   * dam_lev.c, dam_lev.h, did_you_mean.c, did_you_mean.h: Got rid of
+     dam_lev_t.
    * lib/Makefile.am, _Noreturn.h, alloca.in.h, arg-nonnull.h, attribute.h,
      btowc.c, c++defs.h, cdefs.h, ctype.in.h, errno.in.h, flexmember.h,
      fnmatch.c, fnmatch.in.h, fnmatch_loop.c, getdelim.c, getline.c,
