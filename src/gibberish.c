@@ -483,7 +483,7 @@ static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
   assert( c_ast_is_kind_any( ast, K_BUILTIN | K_TYPEDEF ) );
 
   if ( ast->as.builtin.bit_width > 0 )
-    FPRINTF( g->gout, " : " PRId_C_BIT_WIDTH_T, ast->as.builtin.bit_width );
+    FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
 }
 
 /**

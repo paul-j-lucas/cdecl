@@ -301,8 +301,8 @@ void c_ast_list_cleanup( c_ast_list_t *list ) {
   slist_cleanup( list, /*free_fn=*/NULL );
 }
 
-c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
-                    c_loc_t const *loc, c_ast_list_t *ast_list ) {
+c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
+                    c_ast_list_t *ast_list ) {
   assert( exactly_one_bit_set( kind ) );
   assert( loc != NULL );
   assert( ast_list != NULL );

@@ -113,7 +113,7 @@ sname_c_ast ::= sname_c = {
     bit_width = 0
   },
   sname = "i" (none),
-  bit_field_c_int_opt = 0,
+  bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "i" (none),
     unique_id = 1335,

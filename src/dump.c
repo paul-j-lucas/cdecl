@@ -127,7 +127,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
     FPUTS( ",\n", dout );
     DUMP_STR( "cast_kind", c_cast_english( ast->cast_kind ) );
     FPUTS( ",\n", dout );
-    DUMP_FORMAT( "depth = " PRId_C_AST_DEPTH_T ",\n", ast->depth );
+    DUMP_FORMAT( "depth = %u,\n", ast->depth );
 
     DUMP_FORMAT(
       "parent->unique_id = " PRId_C_AST_SID_T ",\n",
@@ -262,9 +262,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_BUILTIN:
         DUMP_COMMA;
-        DUMP_FORMAT(
-          "bit_width = " PRId_C_BIT_WIDTH_T, ast->as.builtin.bit_width
-        );
+        DUMP_FORMAT( "bit_width = %u", ast->as.builtin.bit_width );
         break;
 
       case K_USER_DEF_CONVERSION:

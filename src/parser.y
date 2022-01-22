@@ -470,7 +470,7 @@
  */
 struct in_attr {
   c_alignas_t   align;            ///< Alignment, if any.
-  c_ast_depth_t ast_depth;        ///< Parentheses nesting depth.
+  unsigned      ast_depth;        ///< Parentheses nesting depth.
   c_sname_t     current_scope;    ///< C++ only: current scope, if any.
   bool          implicit_int;     ///< Created implicit `int` AST?
   c_ast_list_t  type_ast_stack;   ///< Type AST stack.
@@ -1082,7 +1082,7 @@ static void yyerror( char const *msg ) {
   bool                flag;       // simple flag
   c_gib_flags_t       gib_flags;  // gibberish flags
   cdecl_help_t        help;       // type of help to print
-  int                 int_val;    // integer value
+  int                 int_val;    // signed integer value
   slist_t             list;       // multipurpose list
   char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // identifier name, cf. sname
@@ -1092,6 +1092,7 @@ static void yyerror( char const *msg ) {
   c_typedef_t const  *tdef;       // typedef
   c_tid_t             tid;        // built-ins, storage classes, & qualifiers
   c_type_t            type;       // complete type
+  unsigned            uint_val;   // unsigned integer value
 }
 
                     // cdecl commands
@@ -1441,6 +1442,7 @@ static void yyerror( char const *msg ) {
 //      + <sname>: "_sname" is appended.
 //      + <tid>: "_[bsa]tid" is appended.
 //      + <type>: "_type" is appended.
+//      + <uint_val>: "_uint" is appended.
 //  4. Is expected, "_exp" is appended; is optional, "_opt" is appended.
 //
 // Sort using: sort -bdk3
@@ -1499,7 +1501,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       unmodified_type_english_ast
 %type   <ast>       user_defined_literal_decl_english_ast
 %type   <ast>       var_decl_english_ast
-%type   <int_val>   width_specifier_english
+%type   <uint_val>  width_specifier_english_uint
 
                     // C/C++ casts
 %type   <ast_pair>  array_cast_c_astp
@@ -1524,7 +1526,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>       attribute_list_c_atid attribute_list_c_atid_opt
 %type   <tid>       attribute_specifier_list_c_atid
 %type   <tid>       attribute_specifier_list_c_atid_opt
-%type   <int_val>   bit_field_c_int_opt
+%type   <uint_val>  bit_field_c_uint_opt
 %type   <ast_pair>  block_decl_c_astp
 %type   <ast_pair>  decl_c_astp decl2_c_astp
 %type   <ast>       east_modified_type_c_ast
@@ -1999,7 +2001,7 @@ alignas_or_width_decl_english_ast
       $$->loc = @$;
     }
 
-  | decl_english_ast width_specifier_english
+  | decl_english_ast width_specifier_english_uint
     { //
       // This check has to be done now in the parser rather than later in the
       // AST since we need to use the builtin union member now.
@@ -2011,7 +2013,7 @@ alignas_or_width_decl_english_ast
 
       $$ = $1;
       $$->loc = @$;
-      $$->as.builtin.bit_width = (c_bit_width_t)$2;
+      $$->as.builtin.bit_width = $2;
     }
   ;
 
@@ -2047,7 +2049,7 @@ bytes_opt
   | Y_BYTES
   ;
 
-width_specifier_english
+width_specifier_english_uint
   : Y_WIDTH int_exp bits_opt
     { //
       // This check has to be done now in the parser rather than later in the
@@ -2057,7 +2059,7 @@ width_specifier_english
         print_error( &@2, "bit-field width must be > 0\n" );
         PARSE_ABORT();
       }
-      $$ = $2;
+      $$ = (unsigned)$2;
     }
   ;
 
@@ -6619,14 +6621,14 @@ sname_c
 
 sname_c_ast
   : // in_attr: type_c_ast
-    sname_c bit_field_c_int_opt
+    sname_c bit_field_c_uint_opt
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "sname_c_ast", "sname_c" );
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_SNAME( "sname", $1 );
-      DUMP_INT( "bit_field_c_int_opt", $2 );
+      DUMP_INT( "bit_field_c_uint_opt", $2 );
 
       $$ = type_ast;
       c_sname_set( &$$->sname, &$1 );
@@ -6649,7 +6651,7 @@ sname_c_ast
     }
   ;
 
-bit_field_c_int_opt
+bit_field_c_uint_opt
   : /* empty */                   { $$ = 0; }
   | ':' int_exp
     { //
@@ -6660,7 +6662,7 @@ bit_field_c_int_opt
         print_error( &@2, "bit-field width must be > 0\n" );
         PARSE_ABORT();
       }
-      $$ = $2;
+      $$ = (unsigned)$2;
     }
   ;
 

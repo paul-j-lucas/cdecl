@@ -60,10 +60,7 @@ static void c_ast_bit_width_english( c_ast_t const *ast, FILE *eout ) {
   assert( eout != NULL );
 
   if ( ast->as.builtin.bit_width > 0 ) {
-    FPRINTF( eout,
-      " %s " PRId_C_BIT_WIDTH_T " %s",
-      L_WIDTH, ast->as.builtin.bit_width, L_BITS
-    );
+    FPRINTF( eout, " %s %u %s", L_WIDTH, ast->as.builtin.bit_width, L_BITS );
   }
 }
 

@@ -35,19 +35,9 @@
 #include <stdint.h>                     /* for uint*_t */
 
 /**
- * Decimal print conversion specifier for \ref c_bit_width_t.
- */
-#define PRId_C_BIT_WIDTH_T        "%u"
-
-/**
  * Decimal print conversion specifier for \ref c_array_size_t.
  */
 #define PRId_C_ARRAY_SIZE_T       "%d"
-
-/**
- * Decimal print conversion specifier for \ref c_ast_depth_t.
- */
-#define PRId_C_AST_DEPTH_T        "%u"
 
 /**
  * Decimal print conversion specifier for \ref c_ast_id_t.
@@ -91,7 +81,6 @@ typedef struct c_array_ast        c_array_ast_t;
 typedef int                       c_array_size_t;
 
 typedef struct c_ast              c_ast_t;
-typedef unsigned                  c_ast_depth_t;  ///< How many `()` deep.
 typedef unsigned                  c_ast_id_t;     ///< Unique AST node id.
 typedef enum   c_ast_kind         c_ast_kind_t;
 typedef slist_t                   c_ast_list_t;   ///< AST list.

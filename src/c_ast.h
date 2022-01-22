@@ -246,7 +246,7 @@ struct c_builtin_ast {
   /// So `bit_width` is at the same offset as in c_typedef_ast.
   void           *not_used;
 
-  c_bit_width_t   bit_width;            ///< Bit-field width when &gt; 0.
+  unsigned        bit_width;            ///< Bit-field width when &gt; 0.
 };
 
 /**
@@ -349,7 +349,7 @@ struct c_ptr_ref_ast {
  */
 struct c_typedef_ast {
   c_ast_t const  *for_ast;              ///< What it's a `typedef` for.
-  c_bit_width_t   bit_width;            ///< Bit-field width when &gt; 0.
+  unsigned        bit_width;            ///< Bit-field width when &gt; 0.
 };
 
 /**
@@ -375,7 +375,7 @@ struct c_udef_lit_ast {
  */
 struct c_ast {
   c_alignas_t           align;          ///< Alignment, if any.
-  c_ast_depth_t         depth;          ///< How many `()` deep.
+  unsigned              depth;          ///< How many `()` deep.
   c_ast_kind_t          kind;           ///< AST kind.
   c_cast_kind_t         cast_kind;      ///< Cast kind, if any.
   c_loc_t               loc;            ///< Source location.
@@ -549,8 +549,8 @@ void c_ast_list_cleanup( c_ast_list_t *list );
  * @sa c_ast_free()
  */
 PJL_WARN_UNUSED_RESULT
-c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
-                    c_loc_t const *loc, c_ast_list_t *ast_list );
+c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
+                    c_ast_list_t *ast_list );
 
 /**
  * Convenience function for getting function-like parameters.

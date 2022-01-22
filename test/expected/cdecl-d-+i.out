@@ -64,7 +64,7 @@ sname_c_ast ::= sname_c = {
     bit_width = 0
   },
   sname = "S::x" (scope::none),
-  bit_field_c_int_opt = 0,
+  bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "S::x" (scope::none),
     unique_id = 1335,

@@ -58,7 +58,7 @@ sname_c_ast ::= sname_c = {
     bit_width = 0
   },
   sname = "f" (none),
-  bit_field_c_int_opt = 0,
+  bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "f" (none),
     unique_id = 1335,
@@ -131,7 +131,7 @@ sname_c_ast ::= sname_c = {
     bit_width = 0
   },
   sname = "a" (none),
-  bit_field_c_int_opt = 0,
+  bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "a" (none),
     unique_id = 1336,
@@ -371,7 +371,7 @@ sname_c_ast ::= sname_c = {
     bit_width = 0
   },
   sname = "b" (none),
-  bit_field_c_int_opt = 0,
+  bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "b" (none),
     unique_id = 1339,
@@ -657,7 +657,7 @@ sname_c_ast ::= sname_c = {
     bit_width = 0
   },
   sname = "c" (none),
-  bit_field_c_int_opt = 0,
+  bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "c" (none),
     unique_id = 1342,
@@ -987,7 +987,7 @@ sname_c_ast ::= sname_c = {
     bit_width = 0
   },
   sname = "d" (none),
-  bit_field_c_int_opt = 0,
+  bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "d" (none),
     unique_id = 1345,
@@ -1367,7 +1367,7 @@ sname_c_ast ::= sname_c = {
     bit_width = 0
   },
   sname = "e" (none),
-  bit_field_c_int_opt = 0,
+  bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "e" (none),
     unique_id = 1348,
