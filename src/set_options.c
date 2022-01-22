@@ -466,7 +466,7 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
 
   FOREACH_SET_OPTION( opt ) {
     if ( strn_nohyphen_equal( opt->name, opt_name, opt_name_len ) )
-      slist_push_tail( &found_opt_list, CONST_CAST( void*, opt ) );
+      slist_push_back( &found_opt_list, CONST_CAST( void*, opt ) );
   } // for
 
   switch ( slist_len( &found_opt_list ) ) {
@@ -487,7 +487,7 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
       return false;
   } // switch
 
-  set_option_t const *const found_opt = slist_peek_head( &found_opt_list );
+  set_option_t const *const found_opt = slist_front( &found_opt_list );
   slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
 
   switch ( found_opt->type ) {

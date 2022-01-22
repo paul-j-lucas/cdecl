@@ -144,7 +144,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       FOREACH_AST_FUNC_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
         c_ast_t *const dup_param_ast = c_ast_dup( param_ast, ast_list );
-        slist_push_tail( &dup_ast->as.func.param_ast_list, dup_param_ast );
+        slist_push_back( &dup_ast->as.func.param_ast_list, dup_param_ast );
       } // for
       break;
 
@@ -343,7 +343,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
   } // switch
 
   ++c_ast_count;
-  slist_push_tail( ast_list, ast );
+  slist_push_back( ast_list, ast );
   return ast;
 }
 

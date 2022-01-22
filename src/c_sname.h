@@ -179,7 +179,7 @@ void c_sname_append_name( c_sname_t *sname, char *name );
  */
 C_SNAME_INLINE
 void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
-  slist_push_list_tail( dst, src );
+  slist_push_list_back( dst, src );
 }
 
 /**
@@ -358,7 +358,7 @@ C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_sname_local_name( c_sname_t const *sname ) {
   if ( sname == NULL )
     return "";
-  c_scope_data_t const *const local_data = slist_peek_tail( sname );
+  c_scope_data_t const *const local_data = slist_back( sname );
   return local_data == NULL ? "" : local_data->name;
 }
 
@@ -432,7 +432,7 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
-  c_scope_data_t const *const data = slist_peek_atr( sname, roffset );
+  c_scope_data_t const *const data = slist_atr( sname, roffset );
   return data != NULL ? data->name : "";
 }
 
@@ -457,7 +457,7 @@ bool c_sname_parse( char const *s, c_sname_t *sname );
  */
 C_SNAME_INLINE
 void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
-  slist_push_list_head( dst, src );
+  slist_push_list_front( dst, src );
 }
 
 /**
@@ -492,7 +492,7 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
-  c_scope_data_t const *const data = slist_peek_atr( sname, 1 );
+  c_scope_data_t const *const data = slist_atr( sname, 1 );
   return data != NULL ? &data->type : &T_NONE;
 }
 
@@ -557,7 +557,7 @@ void c_sname_set_local_type( c_sname_t *sname, c_type_t const *type ) {
  */
 C_SNAME_INLINE
 void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
-  c_scope_data_t *const data = slist_peek_atr( sname, 1 );
+  c_scope_data_t *const data = slist_atr( sname, 1 );
   if ( data != NULL )
     data->type = *type;
 }

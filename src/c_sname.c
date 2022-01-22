@@ -104,7 +104,7 @@ void c_sname_append_name( c_sname_t *sname, char *name ) {
   c_scope_data_t *const data = MALLOC( c_scope_data_t, 1 );
   data->name = name;
   data->type = T_NONE;
-  slist_push_tail( sname, data );
+  slist_push_back( sname, data );
 }
 
 void c_sname_cleanup( c_sname_t *sname ) {

@@ -558,7 +558,7 @@ static inline void gibberish_to_english( void ) {
  */
 PJL_WARN_UNUSED_RESULT
 static inline c_ast_t* ia_type_ast_peek( void ) {
-  return slist_peek_head( &in_attr.type_ast_stack );
+  return slist_front( &in_attr.type_ast_stack );
 }
 
 /**
@@ -572,7 +572,7 @@ static inline c_ast_t* ia_type_ast_peek( void ) {
  */
 PJL_NOWARN_UNUSED_RESULT
 static inline c_ast_t* ia_type_ast_pop( void ) {
-  return slist_pop_head( &in_attr.type_ast_stack );
+  return slist_pop_front( &in_attr.type_ast_stack );
 }
 
 /**
@@ -585,7 +585,7 @@ static inline c_ast_t* ia_type_ast_pop( void ) {
  * @sa ia_type_ast_pop()
  */
 static inline void ia_type_ast_push( c_ast_t *ast ) {
-  slist_push_head( &in_attr.type_ast_stack, ast );
+  slist_push_front( &in_attr.type_ast_stack, ast );
 }
 
 /**
@@ -655,7 +655,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
     // at the end of the parse anyway.)
     //
     slist_free_if( &gc_ast_list, (slist_pred_fn_t)&c_ast_free_if_placeholder );
-    slist_push_list_tail( &typedef_ast_list, &gc_ast_list );
+    slist_push_list_back( &typedef_ast_list, &gc_ast_list );
   }
   else if ( old_tdef->ast != NULL ) {   // type exists and isn't equivalent
     print_error( &type_ast->loc,
@@ -1819,7 +1819,7 @@ declare_command
       DUMP_END();
 
       // To check the declaration, it needs a name: just dup the first one.
-      c_sname_t temp_sname = c_sname_dup( slist_peek_head( &$2 ) );
+      c_sname_t temp_sname = c_sname_dup( slist_front( &$2 ) );
       c_sname_set( &$4->sname, &temp_sname );
       bool const ok = c_ast_check( $4 );
 
@@ -3032,7 +3032,7 @@ typedef_declaration_c
       // so every type gets a pristine copy.
       //
       assert( slist_empty( &in_attr.typedef_ast_list ) );
-      slist_push_list_tail( &in_attr.typedef_ast_list, &gc_ast_list );
+      slist_push_list_back( &in_attr.typedef_ast_list, &gc_ast_list );
       in_attr.typedef_type_ast = $4;
       ia_type_ast_push( c_ast_dup( in_attr.typedef_type_ast, &gc_ast_list ) );
     }
@@ -3337,7 +3337,7 @@ decl_c
             PARSE_ABORT();
           }
         } // for
-        slist_push_tail( &decl_ast_list, CONST_CAST( void*, decl_ast ) );
+        slist_push_back( &decl_ast_list, CONST_CAST( void*, decl_ast ) );
       }
 
       c_ast_explain_declaration( decl_ast, cdecl_fout );
@@ -3961,7 +3961,7 @@ param_list_c_ast
       DUMP_AST( "param_c_ast", $3 );
 
       $$ = $1;
-      slist_push_tail( &$$, $3 );
+      slist_push_back( &$$, $3 );
 
       DUMP_AST_LIST( "param_list_c_ast", $$ );
       DUMP_END();
@@ -3973,7 +3973,7 @@ param_list_c_ast
       DUMP_AST( "param_c_ast", $1 );
 
       slist_init( &$$ );
-      slist_push_tail( &$$, $1 );
+      slist_push_back( &$$, $1 );
 
       DUMP_AST_LIST( "param_list_c_ast", $$ );
       DUMP_END();
@@ -5834,7 +5834,7 @@ param_decl_list_english
       DUMP_AST( "decl_english_ast", $3 );
 
       $$ = $1;
-      slist_push_tail( &$$, $3 );
+      slist_push_back( &$$, $3 );
 
       DUMP_AST_LIST( "param_decl_list_english", $$ );
       DUMP_END();
@@ -5857,7 +5857,7 @@ param_decl_list_english
       }
 
       slist_init( &$$ );
-      slist_push_tail( &$$, $1 );
+      slist_push_back( &$$, $1 );
 
       DUMP_AST_LIST( "param_decl_list_english", $$ );
       DUMP_END();
@@ -6745,7 +6745,7 @@ sname_list_english
       $$ = $1;
       c_sname_t *const temp_sname = MALLOC( c_sname_t, 1 );
       *temp_sname = $3;
-      slist_push_tail( &$$, temp_sname );
+      slist_push_back( &$$, temp_sname );
 
       DUMP_SNAME_LIST( "sname_list_english", $$ );
       DUMP_END();
@@ -6759,7 +6759,7 @@ sname_list_english
       slist_init( &$$ );
       c_sname_t *const temp_sname = MALLOC( c_sname_t, 1 );
       *temp_sname = $1;
-      slist_push_tail( &$$, temp_sname );
+      slist_push_back( &$$, temp_sname );
 
       DUMP_SNAME_LIST( "sname_list_english", $$ );
       DUMP_END();

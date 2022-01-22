@@ -147,6 +147,61 @@ struct slist_node {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Peeks at the data at \a offset of \a list.
+ *
+ * @param list A pointer to the \ref slist.
+ * @param offset The offset (starting at 0) of the data to get.
+ * @return Returns the data from the node at \a offset or NULL if \a offset
+ * &ge; slist_len().
+ *
+ * @note This is an O(n) operation.
+ *
+ * @sa slist_atr()
+ * @sa slist_back()
+ * @sa slist_front()
+ */
+PJL_WARN_UNUSED_RESULT
+void* slist_at( slist_t const *list, size_t offset );
+
+/**
+ * Peeks at the data at \a roffset from the back of \a list.
+ *
+ * @param list A pointer to the \ref slist.
+ * @param roffset The reverse offset (starting at 0) of the data to get.
+ * @return Returns the data from the node at \a roffset or NULL if \a roffset
+ * &ge; slist_len().
+ *
+ * @note This is an O(n) operation.
+ *
+ * @sa slist_at()
+ * @sa slist_back()
+ * @sa slist_front()
+ */
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
+void* slist_atr( slist_t const *list, size_t roffset ) {
+  return roffset < list->len ?
+    slist_at( list, list->len - (roffset + 1) ) : NULL;
+}
+
+/**
+ * Peeks at the data at the back of \a list.
+ *
+ * @param list A pointer to the \ref slist.
+ * @return Returns the data from the node at the back of \a list or NULL if \a
+ * list is empty.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_at()
+ * @sa slist_atr()
+ * @sa slist_front()
+ */
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
+void* slist_back( slist_t const *list ) {
+  return list->tail != NULL ? list->tail->data : NULL;
+}
+
+/**
  * Cleans-up all memory associated with \a list but _not_ \a list itself.
  *
  * @param list A pointer to the list to clean up.  If NULL, does nothing;
@@ -221,6 +276,24 @@ bool slist_empty( slist_t const *list ) {
 void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn );
 
 /**
+ * Peeks at the data at the front of \a list.
+ *
+ * @param list A pointer to the \ref slist.
+ * @return Returns the data from the node at the front of \a list or NULL if \a
+ * list is empty.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_at()
+ * @sa slist_atr()
+ * @sa slist_back()
+ */
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
+void* slist_front( slist_t const *list ) {
+  return list->head != NULL ? list->head->data : NULL;
+}
+
+/**
  * Initializes \a list.  This is not necessary for either global or `static`
  * lists.
  *
@@ -249,141 +322,68 @@ size_t slist_len( slist_t const *list ) {
 }
 
 /**
- * Peeks at the data at \a offset of \a list.
- *
- * @param list A pointer to the \ref slist.
- * @param offset The offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a offset or NULL if \a offset
- * &ge; slist_len().
- *
- * @note This is an O(n) operation.
- *
- * @sa slist_peek_atr()
- * @sa slist_peek_head()
- * @sa slist_peek_tail()
- */
-PJL_WARN_UNUSED_RESULT
-void* slist_peek_at( slist_t const *list, size_t offset );
-
-/**
- * Peeks at the data at \a roffset from the tail of \a list.
- *
- * @param list A pointer to the \ref slist.
- * @param roffset The reverse offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a roffset or NULL if \a roffset
- * &ge; slist_len().
- *
- * @note This is an O(n) operation.
- *
- * @sa slist_peek_at()
- * @sa slist_peek_head()
- * @sa slist_peek_tail()
- */
-SLIST_INLINE PJL_WARN_UNUSED_RESULT
-void* slist_peek_atr( slist_t const *list, size_t roffset ) {
-  return roffset < list->len ?
-    slist_peek_at( list, list->len - (roffset + 1) ) : NULL;
-}
-
-/**
- * Peeks at the data at the head of \a list.
- *
- * @param list A pointer to the \ref slist.
- * @return Returns the data from the node at the head of \a list or NULL if \a
- * list is empty.
- *
- * @note This is an O(1) operation.
- *
- * @sa slist_peek_at()
- * @sa slist_peek_atr()
- * @sa slist_peek_tail()
- */
-SLIST_INLINE PJL_WARN_UNUSED_RESULT
-void* slist_peek_head( slist_t const *list ) {
-  return list->head != NULL ? list->head->data : NULL;
-}
-
-/**
- * Peeks at the data at the tail of \a list.
- *
- * @param list A pointer to the \ref slist.
- * @return Returns the data from the node at the tail of \a list or NULL if \a
- * list is empty.
- *
- * @note This is an O(1) operation.
- *
- * @sa slist_peek_at()
- * @sa slist_peek_atr()
- * @sa slist_peek_head()
- */
-SLIST_INLINE PJL_WARN_UNUSED_RESULT
-void* slist_peek_tail( slist_t const *list ) {
-  return list->tail != NULL ? list->tail->data : NULL;
-}
-
-/**
- * Pops data from the head of \a list.
+ * Pops data from the front of \a list.
  *
  * @param list The pointer to the \ref slist.
- * @return Returns the data from the head of \a list.  The caller is
+ * @return Returns the data from the front of \a list.  The caller is
  * responsible for freeing it (if necessary).
  *
  * @note This is an O(1) operation.
  */
 PJL_WARN_UNUSED_RESULT
-void* slist_pop_head( slist_t *list );
+void* slist_pop_front( slist_t *list );
 
 /**
- * Pushes a node onto the head of \a list.
- *
- * @param list A pointer to the \ref slist.
- * @param data The pointer to the data to add.
- *
- * @note This is an O(1) operation.
- *
- * @sa slist_push_list_head()
- * @sa slist_push_tail()
- */
-void slist_push_head( slist_t *list, void *data );
-
-/**
- * Pushes \a src_list onto the head of \a dst_list.
- *
- * @param dst_list The \ref slist to push onto.
- * @param src_list The \ref slist to push.  It is made empty.
- *
- * @note This is an O(1) operation.
- *
- * @sa slist_push_head()
- * @sa slist_push_list_tail()
- */
-void slist_push_list_head( slist_t *dst_list, slist_t *src_list );
-
-/**
- * Pushes \a src_list onto the tail of \a dst_list.
- *
- * @param dst_list The \ref slist to push onto.
- * @param src_list The \ref slist to push.  It is made empty.
- *
- * @note This is an O(1) operation.
- *
- * @sa slist_push_list_head()
- * @sa slist_push_tail()
- */
-void slist_push_list_tail( slist_t *dst_list, slist_t *src_list );
-
-/**
- * Appends \a data onto the tail of \a list.
+ * Appends \a data onto the back of \a list.
  *
  * @param list The \ref slist to push onto.
  * @param data The data to pushed.
  *
  * @note This is an O(1) operation.
  *
- * @sa slist_push_head()
- * @sa slist_push_list_tail()
+ * @sa slist_push_front()
+ * @sa slist_push_list_back()
  */
-void slist_push_tail( slist_t *list, void *data );
+void slist_push_back( slist_t *list, void *data );
+
+/**
+ * Pushes a node onto the front of \a list.
+ *
+ * @param list A pointer to the \ref slist.
+ * @param data The pointer to the data to add.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_push_back()
+ * @sa slist_push_list_front()
+ */
+void slist_push_front( slist_t *list, void *data );
+
+/**
+ * Pushes \a src_list onto the back of \a dst_list.
+ *
+ * @param dst_list The \ref slist to push onto.
+ * @param src_list The \ref slist to push.  It is made empty.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_push_back()
+ * @sa slist_push_list_front()
+ */
+void slist_push_list_back( slist_t *dst_list, slist_t *src_list );
+
+/**
+ * Pushes \a src_list onto the front of \a dst_list.
+ *
+ * @param dst_list The \ref slist to push onto.
+ * @param src_list The \ref slist to push.  It is made empty.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_push_front()
+ * @sa slist_push_list_back()
+ */
+void slist_push_list_front( slist_t *dst_list, slist_t *src_list );
 
 ///////////////////////////////////////////////////////////////////////////////
 
