@@ -58,7 +58,8 @@
  * be.
  * For example, for the two-word term `maybe unused`, only `unused` is here and
  * `maybe` isn't.  Having `maybe` here would only create ambiguity between
- * `maybe` and `maybe_unused` and completing `maybe_unused` better.
+ * `maybe` (a cdecl keyword) and `maybe_unused` (a C keyword) and completing
+ * `maybe_unused` is better.
  *
  * @sa CDECL_COMMANDS
  * @sa CDECL_KEYWORDS
