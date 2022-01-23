@@ -1,5 +1,18 @@
 2022-01-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c, c_type.h, check.c, gibberish.c:
+     s/TS_MASK_STORAGE/TS_ANY_STORAGE/
+   * c_type.h, check.c, gibberish.c: Type mask rework.
+   * c_type.h, gibberish.c: Removed TS_MASK_REF_QUALIFIER.
+   * c_type.h: Removed TS_CVR.
+   * c_ast.c, c_ast.h, dump.c, english.c, gibberish.c, parser.y, types.h,
+     cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out, cdecl-d-alli.out,
+     cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out,
+     cdecl-d-pmki.out, cdecl-d-z.out: Removed c_bit_width_t,
+     PRId_C_BIT_WIDTH_T, c_ast_depth_t, and PRId_C_AST_DEPTH_T.
+   * c_ast.c, c_sname.c, c_sname.h, parser.y, set_options.c, slist.c, slist.h,
+     slist_test.c, util.c: Renamed slist functions to be more C++ STL-like.
+   * c_ast.h, types.h: s/c_alignas_arg/c_alignas_kind/
    * extern-inline.m4: Updated Gnulib.
 
 2022-01-21  Paul J. Lucas <paul@lucasmail.org>
