@@ -817,6 +817,16 @@ bool str_is_blank( char const *s ) {
 }
 
 /**
+ * Like **strspn**(3) except it limits its scan to at most \a n characters.
+ *
+ * @param s The string to span.
+ * @param charset The set of allowed characters.
+ * @param n The number of characters at most to check.
+ * @return Returns the number of characters spanned.
+ */
+size_t strnspn( char const *s, char const *charset, size_t n );
+
+/**
  * Decrements \a *s_len as if to trim whitespace, if any, from the end of \a s.
  *
  * @param s The null-terminated string to trim.

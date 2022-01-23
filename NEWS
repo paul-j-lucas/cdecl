@@ -10,6 +10,18 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.12
+
+** Ignore leading whitespace for command completion
+Previously, if there was any leading whitesplace before a command, that is:
+
+    cdecl>  dec<TAB>
+           ^
+	   leading whitespace
+
+it wouldn't match: now it does.
+
+
 * Changes in Cdecl 11.11
 
 ** `using` with attributes

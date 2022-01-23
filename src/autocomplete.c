@@ -255,7 +255,8 @@ static bool is_command( char const *command ) {
 /**
  * Attempts command completion for readline().
  *
- * @param text The text read (so far) to match against.
+ * @param text The text read so far, without leading whitespace, if any, to
+ * match against.
  * @param start The starting character position of \a text.
  * @param end The ending character position of \a text.
  * @return Returns an array of C strings of possible matches.
@@ -267,12 +268,15 @@ static char** cdecl_rl_completion( char const *text, int start, int end ) {
   rl_attempted_completion_over = 1;     // don't do filename completion
 
   //
-  // If the word is at the start of the line (start == 0), attempt to complete
-  // only cdecl commands and not all keywords.  Having two generator functions
-  // makes the logic simpler in each.
+  // Determine whether we should complete a cdecl command (the first word on
+  // the line) vs. a non-command keyword: if start is zero or all characters in
+  // the readline buffer before start are whitespace, then complete a command.
+  // Having two generator functions makes the logic simpler in each.
   //
+  size_t const n = STATIC_CAST( size_t, start );
+  bool const is_command = strnspn( rl_line_buffer, " ", n ) == n;
   return rl_completion_matches(
-    text, start == 0 ? command_generator : keyword_generator
+    text, is_command ? command_generator : keyword_generator
   );
 }
 

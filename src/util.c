@@ -349,6 +349,16 @@ char const* parse_identifier( char const *s ) {
   return s;
 }
 
+size_t strnspn( char const *s, char const *charset, size_t n ) {
+  assert( s != NULL );
+  assert( charset != NULL );
+
+  char const *const s0 = s;
+  while ( n-- > 0 && strchr( charset, *s ) != NULL )
+    ++s;
+  return STATIC_CAST( size_t, s - s0 );
+}
+
 void str_rtrim_len( char const *s, size_t *s_len ) {
   assert( s != NULL );
   assert( s_len != NULL );
