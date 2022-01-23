@@ -332,7 +332,6 @@ enum c_tpid {
 #define TX_MASK_TPID          0x000000000000000Full /**< Type part ID bitmask.*/
 #define TS_MASK_STORAGE       0x000000000FFFFFF2ull /**< Storage bitmask.     */
 #define TS_MASK_QUALIFIER     0x00000007F0000002ull /**< Qualifier bitmask.   */
-#define TS_MASK_REF_QUALIFIER 0x0000001800000002ull /**< Ref-qual bitmask.    */
 
 extern c_type_t const T_NONE;           ///< No type.
 extern c_type_t const T_ANY;            ///< All types.
@@ -367,11 +366,11 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TA_MSC_FASTCALL | TA_MSC_STDCALL \
                               | TA_MSC_THISCALL | TA_MSC_VECTORCALL )
 
-/// Shorthand for `class`, `struct`, `union`, or `namespace`.
-#define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_NAMESPACE )
-
 /// Shorthand for any reference qualifier.
 #define TS_ANY_REFERENCE      ( TS_REFERENCE | TS_RVALUE_REFERENCE )
+
+/// Shorthand for `class`, `struct`, `union`, or `namespace`.
+#define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_NAMESPACE )
 
 /// Shorthand for `const` or `volatile`.
 #define TS_CV                 ( TS_CONST | TS_VOLATILE )

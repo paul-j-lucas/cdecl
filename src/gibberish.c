@@ -187,13 +187,14 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       is_noexcept     = (type.stids & TS_NOEXCEPT) != TS_NONE;
       is_pure_virtual = (type.stids & TS_PURE_VIRTUAL) != TS_NONE;
       is_throw        = (type.stids & TS_THROW) != TS_NONE;
-      ref_qual_stids  = (type.stids & TS_MASK_REF_QUALIFIER);
+      ref_qual_stids  = (type.stids & TS_ANY_REFERENCE);
 
       // In C++, "override" should be printed only if "final" isn't.
       is_override     = !is_final && (type.stids & TS_OVERRIDE) != TS_NONE;
 
       type.stids &= c_tid_compl(
                        TS_MASK_QUALIFIER
+                     | TS_ANY_REFERENCE
                      | TS_DEFAULT
                      | TS_DELETE
                      | TS_FINAL
@@ -201,7 +202,6 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
                      | TS_OVERRIDE
                      | TS_PURE_VIRTUAL
                      | TS_THROW
-                     | TS_MASK_REF_QUALIFIER
                      // In C++, if either "override" or "final" is printed,
                      // "virtual" shouldn't be.
                      | (is_override || is_final ? TS_VIRTUAL : TS_NONE)
