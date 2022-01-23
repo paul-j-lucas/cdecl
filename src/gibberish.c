@@ -180,7 +180,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       // These things aren't printed as part of the type beforehand, so strip
       // them out of the type here, but print them after the parameters.
       //
-      cv_qual_stids   = (type.stids & TS_MASK_QUALIFIER);
+      cv_qual_stids   = (type.stids & TS_ANY_QUALIFIER);
       is_default      = (type.stids & TS_DEFAULT) != TS_NONE;
       is_delete       = (type.stids & TS_DELETE) != TS_NONE;
       is_final        = (type.stids & TS_FINAL) != TS_NONE;
@@ -193,7 +193,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       is_override     = !is_final && (type.stids & TS_OVERRIDE) != TS_NONE;
 
       type.stids &= c_tid_compl(
-                       TS_MASK_QUALIFIER
+                       TS_ANY_QUALIFIER
                      | TS_ANY_REFERENCE
                      | TS_DEFAULT
                      | TS_DELETE
@@ -710,7 +710,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  c_tid_t const qual_stids = ast->type.stids & TS_MASK_QUALIFIER;
+  c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
 
   switch ( ast->kind ) {
     case K_POINTER:
