@@ -17,7 +17,7 @@ Previously, if there was any leading whitesplace before a command, that is:
 
     cdecl>  dec<TAB>
            ^
-	   leading whitespace
+           leading whitespace
 
 it wouldn't match: now it does.
 
