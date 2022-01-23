@@ -376,9 +376,6 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 /// Shorthand for `const` or `volatile`.
 #define TS_CV                 ( TS_CONST | TS_VOLATILE )
 
-/// Shorthand for `const`, `volatile`, or `restrict`.
-#define TS_CVR                ( TS_CV | TS_RESTRICT )
-
 /**
  * The only types that can apply to in-class constructor declarations.
  *
