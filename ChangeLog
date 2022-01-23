@@ -1,3 +1,9 @@
+2022-01-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Fixed tab.
+   * NEWS, configure.ac, autocomplete.c, util.c, util.h: Now matching a command
+     even when there's leading whitespace.
+
 2022-01-22  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, c_type.h, check.c, gibberish.c:
