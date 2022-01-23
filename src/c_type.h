@@ -330,7 +330,6 @@ enum c_tpid {
 
 // bit masks
 #define TX_MASK_TPID          0x000000000000000Full /**< Type part ID bitmask.*/
-#define TS_MASK_STORAGE       0x000000000FFFFFF2ull /**< Storage bitmask.     */
 
 extern c_type_t const T_NONE;           ///< No type.
 extern c_type_t const T_ANY;            ///< All types.
@@ -373,6 +372,9 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 
 /// Shorthand for `class`, `struct`, `union`, or `namespace`.
 #define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_NAMESPACE )
+
+/// Shorthand for any storage.
+#define TS_ANY_STORAGE        0x000000000FFFFFF2ull
 
 /// Shorthand for any UPC qualifier.
 #define TS_ANY_UPC            ( TS_UPC_RELAXED | TS_UPC_SHARED | TS_UPC_STRICT )

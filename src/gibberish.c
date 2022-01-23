@@ -363,7 +363,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       if ( (g->flags & C_GIB_OMIT_TYPE) == 0 ) {
-        c_tid_t const stids = type.stids & TS_MASK_STORAGE;
+        c_tid_t const stids = type.stids & TS_ANY_STORAGE;
         fputs_sp( c_tid_name_c( stids ), g->gout );
       }
       g_print_ast( g, ast->as.ptr_ref.to_ast );

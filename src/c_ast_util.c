@@ -338,9 +338,9 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
   c_ast_t *const found_ast =
     c_ast_find_kind_any( ast, C_VISIT_DOWN, K_BUILTIN | K_TYPEDEF );
   if ( found_ast != NULL ) {
-    rv_type.stids = found_ast->type.stids & TS_MASK_STORAGE;
+    rv_type.stids = found_ast->type.stids & TS_ANY_STORAGE;
     rv_type.atids = found_ast->type.atids;
-    found_ast->type.stids &= c_tid_compl( TS_MASK_STORAGE );
+    found_ast->type.stids &= c_tid_compl( TS_ANY_STORAGE );
     found_ast->type.atids = TA_NONE;
   }
   return rv_type;

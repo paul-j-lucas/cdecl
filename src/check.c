@@ -497,13 +497,13 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t const *const storage_ast = c_ast_find_type_any(
-    nonconst_ast, C_VISIT_DOWN, &C_TYPE_LIT_S( TS_MASK_STORAGE )
+    nonconst_ast, C_VISIT_DOWN, &C_TYPE_LIT_S( TS_ANY_STORAGE )
   );
 
   if ( storage_ast != NULL ) {
     print_error( &ast->loc,
       "can not %s %s %s\n", L_CAST, L_INTO,
-      c_tid_name_error( storage_ast->type.stids & TS_MASK_STORAGE )
+      c_tid_name_error( storage_ast->type.stids & TS_ANY_STORAGE )
     );
     return false;
   }
@@ -1080,7 +1080,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     }
 
     c_tid_t const param_stids =
-      TS_MASK_STORAGE & param_ast->type.stids & c_tid_compl( TS_REGISTER );
+      TS_ANY_STORAGE & param_ast->type.stids & c_tid_compl( TS_REGISTER );
     if ( param_stids != TS_NONE ) {
       print_error( &param_ast->loc,
         "%s parameters can not be %s\n",
