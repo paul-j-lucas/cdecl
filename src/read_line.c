@@ -71,10 +71,12 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
     else
 #endif /* WITH_READLINE */
     {
+#ifndef WITH_READLINE
       if ( interactive ) {
         FPUTS( prompts[ is_cont_line ], fout );
         FFLUSH( fout );
       }
+#endif /* WITH_READLINE */
       static size_t line_cap;
       got_line = getline( &line, &line_cap, fin ) != -1;
     }
