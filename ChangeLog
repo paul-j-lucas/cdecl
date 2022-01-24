@@ -1,3 +1,8 @@
+2022-01-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * read_line.c: Better WITH_READLINE code.
+   * read_line.c: Added #ifndef WITH_READLINE.
+
 2022-01-23  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS: Fixed tab.
