@@ -1,3 +1,8 @@
+2022-01-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Added PJL_IGNORE_RV().
+   * cdecl.c: Added IF_EXIT() for atexit().
+
 2022-01-24  Paul J. Lucas <paul@lucasmail.org>
 
    * read_line.c: Better WITH_READLINE code.
