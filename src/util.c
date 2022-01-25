@@ -272,7 +272,7 @@ void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines ) {
 
 error:
   if ( likely( cterm_fd != -1 ) )
-    close( cterm_fd );
+    PJL_IGNORE_RV( close( cterm_fd ) );
   if ( unlikely( reason != NULL ) ) {
     FATAL_ERR( EX_UNAVAILABLE,
       "failed to determine number of columns or lines in terminal: %s\n",
