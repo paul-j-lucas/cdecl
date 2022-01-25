@@ -135,7 +135,7 @@ static bool starts_with_token( char const*, char const*, size_t );
  * @return Returns 0 on success, non-zero on failure.
  */
 int main( int argc, char const *argv[] ) {
-  atexit( cdecl_cleanup );
+  IF_EXIT( atexit( cdecl_cleanup ) != 0, EX_OSERR );
   options_init( &argc, &argv );
   c_typedef_init();
   lexer_reset( true );                  // resets line number
