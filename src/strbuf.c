@@ -82,9 +82,9 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   //
   // Then reserve that number of characters: if strbuf_reserve() returns false,
   // it means the buffer was already big enough and so all the characters were
-  // put into it by vsnprintf(); otherwise, it means the buffer wasn't big
-  // enough so all the characters didn't fit, but the buffer was grown so they
-  // _will_ fit if we vsnprintf() again.
+  // put into it by vsnprintf() which means we're done; otherwise, it means the
+  // buffer wasn't big enough so all the characters didn't fit, but the buffer
+  // was grown so they _will_ fit if we vsnprintf() again.
   //
   if ( strbuf_reserve( sbuf, STATIC_CAST( size_t, rv ) ) ) {
     buf_rem = sbuf->cap - sbuf->len;
