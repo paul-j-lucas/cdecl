@@ -90,8 +90,8 @@ static inline bool have_genuine_gnu_readline( void ) {
 /**
  * Creates a prompt.
  *
- * @param suffix The prompt suffix character to use.  It is initially free'd.
- * @param sbuf A pointer to the strbuf to use.
+ * @param suffix The prompt suffix character to use.
+ * @param sbuf A pointer to the strbuf to use.  It is initially reset.
  */
 static void prompt_create( char suffix, strbuf_t *sbuf ) {
   strbuf_reset( sbuf );
