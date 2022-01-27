@@ -110,8 +110,8 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
   size_t const buf_rem = sbuf->cap - sbuf->len;
   if ( res_len >= buf_rem ) {
     //
-    // We don't need to add +1 here for the terminating '\0' since
-    // next_pow_2(n) is gauranteed to be at least n+1.
+    // We don't need to add +1 for the terminating '\0' since next_pow_2(n) is
+    // guaranteed to be at least n+1.
     //
     size_t const new_len = sbuf->len + res_len;
     sbuf->cap = next_pow_2( new_len );
