@@ -149,57 +149,24 @@ struct slist_node {
 /**
  * Peeks at the data at \a offset of \a list.
  *
+ * @note This function isn't normally called directly; use either slist_at() or
+ * slist_atr() instead.
+ *
  * @param list A pointer to the \ref slist.
- * @param offset The offset (starting at 0) of the data to get.
+ * @param offset The offset (starting at 0) of the data to get.  It is _not_
+ * checked to ensure it's &lt; the list's length.
  * @return Returns the data from the node at \a offset or NULL if \a offset
  * &ge; slist_len().
  *
  * @note This is an O(n) operation.
  *
+ * @sa slist_at()
  * @sa slist_atr()
  * @sa slist_back()
  * @sa slist_front()
  */
 PJL_WARN_UNUSED_RESULT
-void* slist_at( slist_t const *list, size_t offset );
-
-/**
- * Peeks at the data at \a roffset from the back of \a list.
- *
- * @param list A pointer to the \ref slist.
- * @param roffset The reverse offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a roffset or NULL if \a roffset
- * &ge; slist_len().
- *
- * @note This is an O(n) operation.
- *
- * @sa slist_at()
- * @sa slist_back()
- * @sa slist_front()
- */
-SLIST_INLINE PJL_WARN_UNUSED_RESULT
-void* slist_atr( slist_t const *list, size_t roffset ) {
-  return roffset < list->len ?
-    slist_at( list, list->len - (roffset + 1) ) : NULL;
-}
-
-/**
- * Peeks at the data at the back of \a list.
- *
- * @param list A pointer to the \ref slist.
- * @return Returns the data from the node at the back of \a list or NULL if \a
- * list is empty.
- *
- * @note This is an O(1) operation.
- *
- * @sa slist_at()
- * @sa slist_atr()
- * @sa slist_front()
- */
-SLIST_INLINE PJL_WARN_UNUSED_RESULT
-void* slist_back( slist_t const *list ) {
-  return list->tail != NULL ? list->tail->data : NULL;
-}
+void* slist_at_nocheck_offset( slist_t const *list, size_t offset );
 
 /**
  * Cleans-up all memory associated with \a list but _not_ \a list itself.
@@ -246,21 +213,6 @@ PJL_WARN_UNUSED_RESULT
 slist_t slist_dup( slist_t const *src_list, ssize_t n, slist_dup_fn_t dup_fn );
 
 /**
- * Gets whether \a list is empty.
- *
- * @param list A pointer to the \ref slist to check.
- * @return Returns `true` only if \a list is empty.
- *
- * @note This is an O(1) operation.
- *
- * @sa slist_len()
- */
-SLIST_INLINE PJL_WARN_UNUSED_RESULT
-bool slist_empty( slist_t const *list ) {
-  return list->head == NULL;
-}
-
-/**
  * Frees select nodes from \a list for which \a pred_fn returns `true`.
  *
  * @param list A pointer to the list to possibly free nodes from.
@@ -274,52 +226,6 @@ bool slist_empty( slist_t const *list ) {
  * @sa slist_cleanup()
  */
 void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn );
-
-/**
- * Peeks at the data at the front of \a list.
- *
- * @param list A pointer to the \ref slist.
- * @return Returns the data from the node at the front of \a list or NULL if \a
- * list is empty.
- *
- * @note This is an O(1) operation.
- *
- * @sa slist_at()
- * @sa slist_atr()
- * @sa slist_back()
- */
-SLIST_INLINE PJL_WARN_UNUSED_RESULT
-void* slist_front( slist_t const *list ) {
-  return list->head != NULL ? list->head->data : NULL;
-}
-
-/**
- * Initializes \a list.  This is not necessary for either global or `static`
- * lists.
- *
- * @param list A pointer to the \ref slist to initialize.
- *
- * @sa slist_cleanup()
- */
-SLIST_INLINE
-void slist_init( slist_t *list ) {
-  MEM_ZERO( list );
-}
-
-/**
- * Gets the length of \a list.
- *
- * @param list A pointer to the \ref slist to get the length of.
- * @return Returns said length.
- *
- * @note This is an O(1) operation.
- *
- * @sa slist_empty()
- */
-SLIST_INLINE PJL_WARN_UNUSED_RESULT
-size_t slist_len( slist_t const *list ) {
-  return list->len;
-}
 
 /**
  * Pops data from the front of \a list.
@@ -384,6 +290,126 @@ void slist_push_list_back( slist_t *dst_list, slist_t *src_list );
  * @sa slist_push_list_back()
  */
 void slist_push_list_front( slist_t *dst_list, slist_t *src_list );
+
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Peeks at the data at \a offset of \a list.
+ *
+ * @param list A pointer to the \ref slist.
+ * @param offset The offset (starting at 0) of the data to get.
+ * @return Returns the data from the node at \a offset or NULL if \a offset
+ * &ge; slist_len().
+ *
+ * @note This is an O(n) operation.
+ *
+ * @sa slist_atr()
+ * @sa slist_back()
+ * @sa slist_front()
+ */
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
+void* slist_at( slist_t const *list, size_t offset ) {
+  return offset < list->len ? slist_at_nocheck_offset( list, offset ) : NULL;
+}
+
+/**
+ * Peeks at the data at \a roffset from the back of \a list.
+ *
+ * @param list A pointer to the \ref slist.
+ * @param roffset The reverse offset (starting at 0) of the data to get.
+ * @return Returns the data from the node at \a roffset or NULL if \a roffset
+ * &ge; slist_len().
+ *
+ * @note This is an O(n) operation.
+ *
+ * @sa slist_at()
+ * @sa slist_back()
+ * @sa slist_front()
+ */
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
+void* slist_atr( slist_t const *list, size_t roffset ) {
+  return roffset < list->len ?
+    slist_at_nocheck_offset( list, list->len - (roffset + 1) ) : NULL;
+}
+
+/**
+ * Peeks at the data at the back of \a list.
+ *
+ * @param list A pointer to the \ref slist.
+ * @return Returns the data from the node at the back of \a list or NULL if \a
+ * list is empty.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_at()
+ * @sa slist_atr()
+ * @sa slist_front()
+ */
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
+void* slist_back( slist_t const *list ) {
+  return list->tail != NULL ? list->tail->data : NULL;
+}
+
+/**
+ * Gets whether \a list is empty.
+ *
+ * @param list A pointer to the \ref slist to check.
+ * @return Returns `true` only if \a list is empty.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_len()
+ */
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
+bool slist_empty( slist_t const *list ) {
+  return list->head == NULL;
+}
+
+/**
+ * Peeks at the data at the front of \a list.
+ *
+ * @param list A pointer to the \ref slist.
+ * @return Returns the data from the node at the front of \a list or NULL if \a
+ * list is empty.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_at()
+ * @sa slist_atr()
+ * @sa slist_back()
+ */
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
+void* slist_front( slist_t const *list ) {
+  return list->head != NULL ? list->head->data : NULL;
+}
+
+/**
+ * Initializes \a list.  This is not necessary for either global or `static`
+ * lists.
+ *
+ * @param list A pointer to the \ref slist to initialize.
+ *
+ * @sa slist_cleanup()
+ */
+SLIST_INLINE
+void slist_init( slist_t *list ) {
+  MEM_ZERO( list );
+}
+
+/**
+ * Gets the length of \a list.
+ *
+ * @param list A pointer to the \ref slist to get the length of.
+ * @return Returns said length.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_empty()
+ */
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
+size_t slist_len( slist_t const *list ) {
+  return list->len;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
