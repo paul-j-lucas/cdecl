@@ -1,5 +1,6 @@
 2022-02-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_typedef.c: Sorted PREDEFINED_KNR_C.
    * c_typedef.c, cdecl.c, cdecl.h: cdecl_parse_*() now return the exit status
      to use.
 
