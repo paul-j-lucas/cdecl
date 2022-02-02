@@ -511,7 +511,7 @@ Declaring a `struct` as `register` is now legal.
 The `show` command now supports globs:
 
     show foo*         // Show types starting with foo.
-    show s::*foo      // Show types starting with foo in top-level scope s.
+    show s::foo*      // Show types starting with foo in top-level scope s.
     show s*::foo      // Show foo types in top-level scopes starting with s.
     show *::foo       // Show foo types in any top-level scope.
     show **::foo      // Show foo types in any scope.
