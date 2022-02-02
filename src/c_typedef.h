@@ -85,13 +85,6 @@ PJL_WARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_add( c_ast_t const *type_ast );
 
 /**
- * Cleans up \ref c_typedef data.
- *
- * @sa c_typedef_init()
- */
-void c_typedef_cleanup( void );
-
-/**
  * Gets the \ref c_typedef for \a name.
  *
  * @param name The name to find.  It may contain `::`.
@@ -117,8 +110,6 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname );
 
 /**
  * Initializes all \ref c_typedef data.
- *
- * @sa c_typedef_cleanup()
  */
 void c_typedef_init( void );
 

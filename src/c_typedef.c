@@ -38,6 +38,7 @@
 
 // standard
 #include <assert.h>
+#include <stdlib.h>
 
 /// @endcond
 
@@ -909,6 +910,20 @@ static char const *const PREDEFINED_WIN32[] = {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Cleans up \ref c_typedef data.
+ *
+ * @sa c_typedef_init()
+ */
+static void c_typedef_cleanup( void ) {
+  // There is no c_typedef_free() function because c_typedef_add() adds only
+  // c_typedef_t nodes pointing to pre-existing AST nodes.  The AST nodes are
+  // freed independently in parser_cleanup().  Hence, this function frees only
+  // the red-black tree, its nodes, and the c_typedef_t data each node points
+  // to, but not the AST nodes the c_typedef_t data points to.
+  rb_tree_cleanup( &typedefs, &free );
+}
+
+/**
  * Comparison function for \ref c_typedef data used by the red-black tree.
  *
  * @param i_data A pointer to data.
@@ -1013,15 +1028,6 @@ c_typedef_t const* c_typedef_add( c_ast_t const *ast ) {
   return c_ast_equal( ast, old_tdef->ast ) ? &EMPTY_TYPEDEF : old_tdef;
 }
 
-void c_typedef_cleanup( void ) {
-  // There is no c_typedef_free() function because c_typedef_add() adds only
-  // c_typedef_t nodes pointing to pre-existing AST nodes.  The AST nodes are
-  // freed independently in parser_cleanup().  Hence, this function frees only
-  // the red-black tree, its nodes, and the c_typedef_t data each node points
-  // to, but not the AST nodes the c_typedef_t data points to.
-  rb_tree_cleanup( &typedefs, &free );
-}
-
 c_typedef_t const* c_typedef_find_name( char const *name ) {
   assert( name != NULL );
   c_sname_t sname;
@@ -1042,6 +1048,7 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
 
 void c_typedef_init( void ) {
   rb_tree_init( &typedefs, &c_typedef_cmp );
+  IF_EXIT( atexit( c_typedef_cleanup ) != 0, EX_OSERR );
 
 #ifdef ENABLE_CDECL_DEBUG
   //

@@ -156,7 +156,6 @@ int main( int argc, char const *argv[] ) {
  */
 static void cdecl_cleanup( void ) {
   free_now();
-  c_typedef_cleanup();
   parser_cleanup();                     // must go before c_ast_cleanup()
   c_ast_cleanup();
 }
