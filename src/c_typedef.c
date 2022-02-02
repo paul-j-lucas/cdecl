@@ -75,8 +75,8 @@ static bool         user_defined;       ///< Are new `typedef`s used-defined?
  *  + The first edition of _The C Programming Language_.
  *  + Various Version 7 Unix manual pages.
  *
- * There likely should be more, but it's hard to find documentation going
- * back that far.
+ * There likely should be more, but it's hard to find documentation going back
+ * that far.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
