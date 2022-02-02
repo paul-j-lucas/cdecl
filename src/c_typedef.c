@@ -85,9 +85,9 @@ static char const *const PREDEFINED_KNR_C[] = {
   "typedef          char *caddr_t",
   "typedef          long  daddr_t",
   "typedef          int   dev_t",
+  "typedef struct _iobuf  FILE",
   "typedef unsigned int   ino_t",
   "typedef          int   jmp_buf[37]",
-  "typedef struct _iobuf  FILE",
   "typedef          long  off_t",
   "typedef          long  time_t",
 
