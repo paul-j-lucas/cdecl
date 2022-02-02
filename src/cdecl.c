@@ -138,7 +138,7 @@ int main( int argc, char const *argv[] ) {
   IF_EXIT( atexit( cdecl_cleanup ) != 0, EX_OSERR );
   options_init( &argc, &argv );
   c_typedef_init();
-  lexer_reset( true );                  // resets line number
+  lexer_reset( /*hard_reset=*/true );   // resets line number
 
   if ( opt_read_conf )
     read_conf_file();
