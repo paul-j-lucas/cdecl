@@ -1,3 +1,17 @@
+2022-02-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, cdecl.c, cdecl.h: cdecl_parse_*() now return the exit status
+     to use.
+
+2022-02-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, c_typedef.h, cdecl.c: Made c_typedef_cleanup() static and
+     called seperately.
+
+2022-01-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.c, slist.h: Added slist_at_nocheck_offset().
+
 2022-01-25  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c: Added PJL_IGNORE_RV().
