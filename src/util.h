@@ -652,7 +652,7 @@ FILE* fmemopen( void *buf, size_t size, char const *mode );
  *    printed separated by `,` and the N-1st and Nth elements are separated by
  *    `, or`.
  *
- * @param out The FILE to print to.
+ * @param out The `FILE` to print to.
  * @param elt A pointer to the first element to print.
  * @param gets A pointer to a function to call to get the string for the
  * element `**ppelt`: if the function returns NULL, it signals the end of the

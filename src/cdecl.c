@@ -226,8 +226,8 @@ static int cdecl_parse_command_line( char const *command, int argc,
 /**
  * Parses cdecl commands from \a fin.
  *
- * @param fin The FILE to read from.
- * @param fout The FILE to write the prompts to, if any.
+ * @param fin The `FILE` to read from.
+ * @param fout The `FILE` to write the prompts to, if any.
  * @param return_on_error If `true`, return immediately upon encountering an
  * error; if `false`, return only upon encountering EOF.
  * @return Returns `EX_OK` upon success of the last line read or another value
