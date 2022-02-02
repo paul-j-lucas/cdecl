@@ -113,7 +113,7 @@ extern void yyrestart( FILE *in_file );
 static void cdecl_cleanup( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_argv( int, char const *const[] ),
+static int  cdecl_parse_argv( int, char const *const[] ),
             cdecl_parse_command_line( char const*, int, char const *const[] ),
             cdecl_parse_stdin( void );
 
@@ -145,8 +145,7 @@ int main( int argc, char const *argv[] ) {
   opt_conf_file = NULL;                 // don't print in errors any more
   cdecl_initialized = true;
 
-  bool const ok = cdecl_parse_argv( argc, argv );
-  exit( ok ? EX_OK : EX_DATAERR );
+  exit( cdecl_parse_argv( argc, argv ) );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -166,15 +165,15 @@ static void cdecl_cleanup( void ) {
  *
  *  + Zero arguments, parses stdin; else:
  *  + If the first argument is a cdecl command, parses the command line; else:
- *  + If opt_explain is `true`, parses the command line; else:
- *  + Prints an error and exits.
+ *  + If \ref opt_explain is `true`, parses the command line; else:
+ *  + Prints an error message.
  *
  * @param argc The command-line argument count.
  * @param argv The command-line argument values.
- * @return Returns `true` only upon success.
+ * @return Returns `EX_OK` upon success or another value upon failure.
  */
 PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_argv( int argc, char const *const argv[const] ) {
+static int cdecl_parse_argv( int argc, char const *const argv[const] ) {
   if ( argc == 0 )                      // cdecl
     return cdecl_parse_stdin();
   if ( is_command( me, CDECL_COMMAND_PROG_NAME ) )
@@ -195,7 +194,7 @@ static bool cdecl_parse_argv( int argc, char const *const argv[const] ) {
     EPUTC( '\n' );
   else
     print_use_help();
-  exit( EX_USAGE );
+  return EX_USAGE;
 }
 
 /**
@@ -205,11 +204,11 @@ static bool cdecl_parse_argv( int argc, char const *const argv[const] ) {
  * otherwise and `argv[1]` is a cdecl command.
  * @param argc The command-line argument count.
  * @param argv The command-line argument values.
- * @return Returns `true` only upon success.
+ * @return Returns `EX_OK` upon success or another value upon failure.
  */
 PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_command_line( char const *command, int argc,
-                                      char const *const argv[const] ) {
+static int cdecl_parse_command_line( char const *command, int argc,
+                                     char const *const argv[const] ) {
   strbuf_t sbuf;
   bool space;
 
@@ -219,9 +218,9 @@ static bool cdecl_parse_command_line( char const *command, int argc,
   for ( int i = 0; i < argc; ++i )
     strbuf_sepc_puts( &sbuf, ' ', &space, argv[i] );
 
-  bool const ok = cdecl_parse_string( sbuf.str, sbuf.len );
+  int const status = cdecl_parse_string( sbuf.str, sbuf.len );
   strbuf_cleanup( &sbuf );
-  return ok;
+  return status;
 }
 
 /**
@@ -231,35 +230,37 @@ static bool cdecl_parse_command_line( char const *command, int argc,
  * @param fout The FILE to write the prompts to, if any.
  * @param return_on_error If `true`, return immediately upon encountering an
  * error; if `false`, return only upon encountering EOF.
- * @return Returns the success of the parse of the last line read.
+ * @return Returns `EX_OK` upon success of the last line read or another value
+ * upon failure.
  */
 PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
+static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
   assert( fin != NULL );
 
   strbuf_t sbuf;
   strbuf_init( &sbuf );
-  bool ok = true;
+  int status = EX_OK;
 
   while ( strbuf_read_line( &sbuf, fin, fout, cdecl_prompt ) ) {
     // We don't just call yyrestart( fin ) and yyparse() directly because
     // cdecl_parse_string() also inserts "explain " for opt_explain.
-    if ( !(ok = cdecl_parse_string( sbuf.str, sbuf.len )) && return_on_error )
+    status = cdecl_parse_string( sbuf.str, sbuf.len );
+    if ( status != EX_OK && return_on_error )
       break;
     strbuf_reset( &sbuf );
   } // while
 
   strbuf_cleanup( &sbuf );
-  return ok;
+  return status;
 }
 
 /**
  * Parses cdecl commands from standard input.
  *
- * @return Returns `true` only upon success.
+ * @return Returns `EX_OK` upon success or another value upon failure.
  */
 PJL_WARN_UNUSED_RESULT
-static bool cdecl_parse_stdin( void ) {
+static int cdecl_parse_stdin( void ) {
   is_input_a_tty = isatty( fileno( cdecl_fin ) );
   if ( opt_prompt && (is_input_a_tty || opt_interactive) )
     FPRINTF( cdecl_fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
@@ -365,7 +366,7 @@ static bool starts_with_token( char const *s, char const *token,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool cdecl_parse_string( char const *s, size_t s_len ) {
+int cdecl_parse_string( char const *s, size_t s_len ) {
   assert( s != NULL );
 
   // The code in print.c relies on command_line being set, so set it.
@@ -395,7 +396,7 @@ bool cdecl_parse_string( char const *s, size_t s_len ) {
   FILE *const temp_file = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
   IF_EXIT( temp_file == NULL, EX_IOERR );
   yyrestart( temp_file );
-  bool const ok = yyparse() == 0;
+  int const status = yyparse() == 0 ? EX_OK : EX_DATAERR;
   PJL_IGNORE_RV( fclose( temp_file ) );
 
   if ( insert_explain ) {
@@ -403,7 +404,7 @@ bool cdecl_parse_string( char const *s, size_t s_len ) {
     print_params.inserted_len = 0;
   }
 
-  return ok;
+  return status;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

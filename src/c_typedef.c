@@ -39,6 +39,7 @@
 // standard
 #include <assert.h>
 #include <stdlib.h>
+#include <sysexits.h>
 
 /// @endcond
 
@@ -973,7 +974,7 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
 static void parse_predefined_types( char const *const *types ) {
   assert( types != NULL );
   do {
-    if ( unlikely( !cdecl_parse_string( *types, strlen( *types ) ) ) )
+    if ( unlikely( cdecl_parse_string( *types, strlen( *types ) ) != EX_OK ) )
       INTERNAL_ERR( "\"%s\": failed to parse predefined type\n", *types );
   } while ( *++types != NULL );
 }

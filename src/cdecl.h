@@ -80,10 +80,10 @@ extern char const  *me;                 ///< Program name.
  *
  * @param s The null-terminated string to parse.
  * @param s_len The length of \a s.
- * @return Returns `true` only upon success.
+ * @return Returns `EX_OK` upon success or another value upon failure.
  */
 PJL_WARN_UNUSED_RESULT
-bool cdecl_parse_string( char const *s, size_t s_len );
+int cdecl_parse_string( char const *s, size_t s_len );
 
 ///////////////////////////////////////////////////////////////////////////////
 
