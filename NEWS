@@ -12,6 +12,13 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.12
 
+** `noexcept` for function parameters
+`noexcept` is now correctly allowed for pointers to function parameter
+arguments:
+
+    c++decl> explain void g( void (*f)() noexcept )
+    declare g as function (f as pointer to no-exception function returning void) returning void
+
 ** Ignore leading whitespace for command completion
 Previously, if there was any leading whitesplace before a command, that is:
 

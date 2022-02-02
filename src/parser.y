@@ -4594,25 +4594,27 @@ block_cast_c_astp                       // Apple extension
 func_cast_c_astp
   : // in_attr: type_c_ast
     cast2_c_astp '(' param_list_c_ast_opt rparen_func_qualifier_list_c_stid_opt
-    trailing_return_type_c_ast_opt
+    noexcept_c_stid_opt trailing_return_type_c_ast_opt
     {
       c_ast_t *const cast2_c_ast = $1.ast;
       c_tid_t  const func_ref_qualifier_stid = $4;
-      c_ast_t *const trailing_ret_ast = $5;
+      c_tid_t  const noexcept_stid = $5;
+      c_ast_t *const trailing_ret_ast = $6;
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "func_cast_c_astp",
                   "cast2_c_astp '(' param_list_c_ast_opt ')' "
-                  "func_qualifier_list_c_stid_opt "
+                  "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "cast2_c_ast", cast2_c_ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
       DUMP_TID( "func_qualifier_list_c_stid_opt", func_ref_qualifier_stid );
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
+      DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
       DUMP_AST( "target_ast", $1.target_ast );
 
-      c_tid_t const func_stid = func_ref_qualifier_stid;
+      c_tid_t const func_stid = func_ref_qualifier_stid | noexcept_stid;
 
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
       func_ast->type.stids = c_tid_check( func_stid, C_TPID_STORE );
