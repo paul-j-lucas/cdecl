@@ -1625,48 +1625,40 @@ static void yyerror( char const *msg ) {
 //
 
 // c_ast_list_t
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_decl_list_english
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_decl_list_english_opt
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast_exp
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_list_c_ast_opt
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } paren_param_decl_list_english
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } paren_param_decl_list_english_opt
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); }
+  param_decl_list_english param_decl_list_english_opt
+  param_list_c_ast param_list_c_ast_exp param_list_c_ast_opt
+  paren_param_decl_list_english paren_param_decl_list_english_opt
 
 // name
-%destructor { DTRACE; FREE( $$ ); } any_name
-%destructor { DTRACE; FREE( $$ ); } any_name_exp
-%destructor { DTRACE; FREE( $$ ); } glob_opt
-%destructor { DTRACE; FREE( $$ ); } name_exp
-%destructor { DTRACE; FREE( $$ ); } set_option_value_opt
-%destructor { DTRACE; FREE( $$ ); } str_lit
-%destructor { DTRACE; FREE( $$ ); } str_lit_exp
-%destructor { DTRACE; FREE( $$ ); } Y_CHAR_LIT
-%destructor { DTRACE; FREE( $$ ); } Y_GLOB
-%destructor { DTRACE; FREE( $$ ); } Y_NAME
-%destructor { DTRACE; FREE( $$ ); } Y_SET_OPTION
-%destructor { DTRACE; FREE( $$ ); } Y_STR_LIT
+%destructor { DTRACE; FREE( $$ ); }
+  any_name any_name_exp
+  glob_opt
+  name_exp
+  set_option_value_opt
+  str_lit str_lit_exp
+  Y_CHAR_LIT
+  Y_GLOB
+  Y_NAME
+  Y_SET_OPTION
+  Y_STR_LIT
 
 // sname
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c_exp
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_english
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_list_english
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_list_english_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } scope_sname_c_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c_exp
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_english
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_english_exp
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sub_scope_sname_c_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } typedef_sname_c
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } Y_CONSTRUCTOR_SNAME
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } Y_DESTRUCTOR_SNAME
+%destructor { DTRACE; c_sname_cleanup( &$$ ); }
+  any_sname_c any_sname_c_exp any_sname_c_opt
+  of_scope_english
+  of_scope_list_english of_scope_list_english_opt
+  scope_sname_c_opt
+  sname_c sname_c_exp sname_c_opt
+  sname_english sname_english_exp
+  sub_scope_sname_c_opt
+  typedef_sname_c
+  Y_CONSTRUCTOR_SNAME
+  Y_DESTRUCTOR_SNAME
 
 // sname_list
-%destructor { DTRACE; c_sname_list_cleanup( &$$ ); } sname_list_english
+%destructor { DTRACE; c_sname_list_cleanup( &$$ ); }
+  sname_list_english
 
 ///////////////////////////////////////////////////////////////////////////////
 %%
