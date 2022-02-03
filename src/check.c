@@ -368,7 +368,6 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
-    case K_VARIADIC:
       // nothing to do
       break;
 
@@ -408,6 +407,7 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
       return false;
 
     case K_TYPEDEF:                     // can't happen after c_ast_untypedef()
+    case K_VARIADIC:
       UNEXPECTED_INT_VALUE( raw_of_ast->kind );
 
     CASE_K_PLACEHOLDER;
