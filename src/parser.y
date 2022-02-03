@@ -3844,6 +3844,25 @@ noexcept_c_stid_opt
       $$ = $3;
     }
   | Y_THROW lparen_exp rparen_exp
+    {
+      $$ = $1;
+    }
+  | Y_THROW lparen_exp param_list_c_ast ')'
+    {
+      c_ast_list_cleanup( &$3 );
+
+      if ( opt_lang < LANG_CPP_17 ) {
+        print_error( &@3,
+          "dynamic exception specifications not supported by %s\n", CDECL
+        );
+      } else {
+        print_error( &@3,
+          "dynamic exception specifications no longer supported%s\n",
+          c_lang_which( LANG_CPP_MAX(14) )
+        );
+      }
+      PARSE_ABORT();
+    }
   ;
 
 noexcept_bool_stid_exp
@@ -6742,7 +6761,8 @@ sname_english_exp
 sname_list_english
   : sname_list_english ',' sname_english
     {
-      DUMP_START( "sname_list_english", "sname_english" );
+      DUMP_START( "sname_list_english",
+                  "sname_list_english ',' sname_english" );
       DUMP_SNAME_LIST( "sname_list_english", $1 );
       DUMP_SNAME( "sname_english", $3 );
 

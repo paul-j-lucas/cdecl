@@ -19,6 +19,10 @@ arguments:
     c++decl> explain void g( void (*f)() noexcept )
     declare g as function (f as pointer to no-exception function returning void) returning void
 
+** Dynamic exception specifications
+These are now parsed, but either not supported by cdecl through C++14 or no
+longer supported in C++17.
+
 ** Ignore leading whitespace for command completion
 Previously, if there was any leading whitesplace before a command, that is:
 

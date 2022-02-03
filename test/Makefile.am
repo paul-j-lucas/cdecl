@@ -1106,7 +1106,7 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_rv.test \
 	tests/declare_sctor.test \
 	tests/declare_smi.test \
-	tests/declare_thf_v.test \
+	tests/declare_th_f_v.test \
 	tests/declare_udl_pcci_i.test \
 	tests/declare_v+f_v.test \
 	tests/declare_xvi.test
@@ -1400,7 +1400,7 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_rrf_v.test \
 	tests/explain_sf__i.test \
 	tests/explain_sxxi.test \
-	tests/explain_thf_v-c++17.test \
+	tests/explain_th_f_v-c++17.test \
 	tests/explain_using_a3i.test \
 	tests/explain_using_a_mu_i.test \
 	tests/explain_using_pfi_v.test \
@@ -1469,7 +1469,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_smi.test \
 	tests/explain_srf_v.test \
 	tests/explain_srrf_v.test \
-	tests/explain_thf_v.test \
+	tests/explain_th_f_v.test \
 	tests/explain_unknown_attribute.test \
 	tests/explain_v+f_v.test \
 	tests/explain_xif_i.test \
