@@ -2221,7 +2221,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
       if ( c_type_is_tid_any( &ast->type, TS_THROW ) &&
            opt_lang >= LANG_CPP_20 ) {
         print_error( &ast->loc,
-          "\"%s\" is no longer supported in C++20", L_THROW
+          "\"%s\" is no longer supported since C++20", L_THROW
         );
         print_hint( "\"%s\"", L_NOEXCEPT );
         return VISITOR_ERROR_FOUND;
