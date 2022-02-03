@@ -1619,7 +1619,8 @@ static void yyerror( char const *msg ) {
 
 //
 // Bison %destructors.  We don't use the <identifier> syntax because older
-// versions of Bison don't support it.
+// versions of Bison don't support it.  Each repeats %destructor so each gets
+// its own line number via DTRACE.
 //
 // Clean-up of AST nodes is done via garbage collection using gc_ast_list.
 //
