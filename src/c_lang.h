@@ -398,26 +398,28 @@ c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
 void c_lang_set( c_lang_id_t lang_id );
 
 /**
- * Gets a string specifying when a particular language feature won't be legal
- * until or has been illegal since, if ever.  It is presumed to follow `"...
- * not supported"` (with no trailing space).
+ * Gets a string specifying a language when a particular feature isn't, hasn't
+ * been, or won't be legal unless, since, or until, if ever.  It is presumed to
+ * follow `"...  not supported"` (with no trailing space).
  *
  * @param lang_ids The bitwise-or of legal language(s).
  * @return
  *  + If \a lang_ids is #LANG_NONE, returns the empty string.
- *  + If \a lang_ids contains exactly one language, returns `" unless "`
- *    followed by the name of that language.
- *  + If the current language is C and \a lang_ids does not contain any version
- *    of C, returns `" in C"`.
- *  + If the current language is C++ and \a lang_ids does not contain any
- *    version of C++, returns `" in C++"`.
- *  + If the current language is older than oldest language in \a lang_ids,
- *    returns `" until "` followed by the name of the oldest C version (if the
- *    current language is C) or the name of the oldest C++ version (if the
- *    current language is C++).
- *  + Otherwise returns `" since "` followed by the name of the newest C
- *    version (if the current language is C) or the name of the newest C++
- *    version (if the current language is C++).
+ *  + If \a lang_ids contains exactly one language:
+ *      + If the current language is that language, returns the empty string;
+ *      + Otherwise returns `" unless "` followed by the name of that language.
+ *  + Otherwise:
+ *      + If the current language is any version of C and \a lang_ids does not
+ *        contain any version of C, returns `" in C"`.
+ *      + If the current language is any version of C++ and \a lang_ids does
+ *        not contain any version of C++, returns `" in C++"`.
+ *      + If the current language is older than oldest language in \a lang_ids,
+ *        returns `" until "` followed by the name of the oldest C version (if
+ *        the current language is C) or the name of the oldest C++ version (if
+ *        the current language is C++).
+ *      + Otherwise returns `" since "` followed by the name of the newest C
+ *        version (if the current language is C) or the name of the newest C++
+ *        version (if the current language is C++).
  *
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
