@@ -1457,7 +1457,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>       attribute_english_atid
 %type   <ast>       block_decl_english_ast
 %type   <ast>       constructor_decl_english_ast
-%type   <ast>       decl_english_ast
+%type   <ast>       decl_english_ast decl_english_ast_exp
 %type   <ast>       destructor_decl_english_ast
 %type   <ast>       enum_class_struct_union_english_ast
 %type   <ast>       enum_fixed_type_english_ast
@@ -1522,7 +1522,7 @@ static void yyerror( char const *msg ) {
 %type   <int_val>   array_size_c_int
 %type   <ast>       atomic_builtin_typedef_type_c_ast
 %type   <ast>       atomic_specifier_type_c_ast
-%type   <tid>       attribute_c_atid
+%type   <tid>       attribute_c_atid_exp
 %type   <tid>       attribute_list_c_atid attribute_list_c_atid_opt
 %type   <tid>       attribute_specifier_list_c_atid
 %type   <tid>       attribute_specifier_list_c_atid_opt
@@ -1547,7 +1547,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>       noexcept_c_stid_opt
 %type   <ast>       oper_c_ast
 %type   <ast_pair>  oper_decl_c_astp
-%type   <ast>       param_c_ast
+%type   <ast>       param_c_ast param_c_ast_exp
 %type   <ast_list>  param_list_c_ast param_list_c_ast_exp param_list_c_ast_opt
 %type   <ast>       pc99_pointer_type_c_ast
 %type   <ast_pair>  pointer_decl_c_astp
@@ -3054,7 +3054,7 @@ typedef_decl_list_c
       ia_type_ast_pop();
       ia_type_ast_push( c_ast_dup( in_attr.typedef_type_ast, &gc_ast_list ) );
     }
-    typedef_decl_c
+    typedef_decl_c_exp
 
   | typedef_decl_c
   ;
@@ -3121,6 +3121,14 @@ typedef_decl_c
 
       if ( !add_type( L_TYPEDEF, typedef_ast ) )
         PARSE_ABORT();
+    }
+  ;
+
+typedef_decl_c_exp
+  : typedef_decl_c
+  | error
+    {
+      elaborate_error( "type expected" );
     }
   ;
 
@@ -3267,7 +3275,7 @@ decl_list_c_opt
   ;
 
 decl_list_c
-  : decl_list_c ',' decl_c
+  : decl_list_c ',' decl_c_exp
   | decl_c
   ;
 
@@ -3360,6 +3368,14 @@ decl_c
       //      int x, y
       //
       c_sname_cleanup( &type_ast->sname );
+    }
+  ;
+
+decl_c_exp
+  : decl_c
+  | error
+    {
+      elaborate_error( "declaration expected" );
     }
   ;
 
@@ -3975,7 +3991,7 @@ param_list_c_ast_opt
   ;
 
 param_list_c_ast
-  : param_list_c_ast comma_exp param_c_ast
+  : param_list_c_ast comma_exp param_c_ast_exp
     {
       DUMP_START( "param_list_c_ast", "param_list_c_ast ',' param_c_ast" );
       DUMP_AST_LIST( "param_list_c_ast", $1 );
@@ -4041,6 +4057,13 @@ param_c_ast
     }
   ;
 
+param_c_ast_exp
+  : param_c_ast
+  | error
+    {
+      elaborate_error( "parameter declaration expected" );
+    }
+  ;
 
 /// Gibberish C/C++ nested declaration ////////////////////////////////////////
 
@@ -5423,12 +5446,12 @@ attribute_list_c_atid_opt
   ;
 
 attribute_list_c_atid
-  : attribute_list_c_atid comma_exp attribute_c_atid
+  : attribute_list_c_atid comma_exp attribute_c_atid_exp
     {
       DUMP_START( "attribute_list_c_atid",
                   "attribute_list_c_atid , attribute_c_atid" );
       DUMP_TID( "attribute_list_c_atid", $1 );
-      DUMP_TID( "attribute_c_atid", $3 );
+      DUMP_TID( "attribute_c_atid_exp", $3 );
 
       $$ = $1;
       C_TID_ADD( &$$, $3, @3 );
@@ -5437,10 +5460,10 @@ attribute_list_c_atid
       DUMP_END();
     }
 
-  | attribute_c_atid
+  | attribute_c_atid_exp
   ;
 
-attribute_c_atid
+attribute_c_atid_exp
   : Y_CARRIES_DEPENDENCY
   | Y_DEPRECATED attribute_str_arg_c_opt
   | Y_MAYBE_UNUSED
@@ -5537,11 +5560,11 @@ gnu_attribute_list_c_opt
   ;
 
 gnu_attribuet_list_c
-  : gnu_attribuet_list_c comma_exp gnu_attribute_c
-  | gnu_attribute_c
+  : gnu_attribuet_list_c comma_exp gnu_attribute_c_exp
+  | gnu_attribute_c_exp
   ;
 
-gnu_attribute_c
+gnu_attribute_c_exp
   : Y_NAME gnu_attribute_decl_arg_list_c_opt
     {
       free( $1 );
@@ -5605,13 +5628,13 @@ msc_attribute_list_c_opt
 msc_attribuet_list_c
     /*
      * Microsoft's syntax for individual attributes is the same as GNU's, so we
-     * can just use gnu_attribute_c here.
+     * can just use gnu_attribute_c_exp here.
      *
      * Note that Microsoft attributes are separated by whitespace, not commas
      * as in GNU's, so that's why msc_attribuet_list_c is needed.
      */
-  : msc_attribuet_list_c gnu_attribute_c
-  | gnu_attribute_c
+  : msc_attribuet_list_c gnu_attribute_c_exp
+  | gnu_attribute_c_exp
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5849,7 +5872,7 @@ param_decl_list_english_opt
   ;
 
 param_decl_list_english
-  : param_decl_list_english comma_exp decl_english_ast
+  : param_decl_list_english comma_exp decl_english_ast_exp
     {
       DUMP_START( "param_decl_list_english",
                   "param_decl_list_english ',' decl_english_ast" );
@@ -5884,6 +5907,14 @@ param_decl_list_english
 
       DUMP_AST_LIST( "param_decl_list_english", $$ );
       DUMP_END();
+    }
+  ;
+
+decl_english_ast_exp
+  : decl_english_ast
+  | error
+    {
+      elaborate_error( "declaration expected" );
     }
   ;
 
@@ -6759,7 +6790,7 @@ sname_english_exp
   ;
 
 sname_list_english
-  : sname_list_english ',' sname_english
+  : sname_list_english ',' sname_english_exp
     {
       DUMP_START( "sname_list_english",
                   "sname_list_english ',' sname_english" );
