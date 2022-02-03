@@ -1,5 +1,12 @@
 2022-02-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Improved error messages for syntax errors after commas.
+   * NEWS, parser.y, test/Makefile.am: Can now parse dynamic exception
+     specifications.
+   * check.c, declare_thf_v.out: s/in/since/
+   * NEWS, parser.y: `noexcept` is now allowed for pointers to function
+     parameter arguments.
+   * NEWS: Fixed `show` command glob example.
    * c_typedef.c: Sorted PREDEFINED_KNR_C.
    * c_typedef.c, cdecl.c, cdecl.h: cdecl_parse_*() now return the exit status
      to use.
