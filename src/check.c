@@ -2219,10 +2219,11 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         return VISITOR_ERROR_FOUND;
       }
 
-      if ( c_type_is_tid_any( &ast->type, TS_THROW ) &&
-           opt_lang >= LANG_CPP_20 ) {
+      if ( opt_lang >= LANG_CPP_20 &&
+           c_type_is_tid_any( &ast->type, TS_THROW ) ) {
         print_error( &ast->loc,
-          "\"%s\" is no longer supported since C++20", L_THROW
+          "\"%s\" is no longer supported%s",
+          L_THROW, c_lang_which( LANG_CPP_MAX(17) )
         );
         print_hint( "\"%s\"", L_NOEXCEPT );
         return VISITOR_ERROR_FOUND;
@@ -2473,9 +2474,12 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
       PJL_FALLTHROUGH;
 
     case K_DESTRUCTOR:
-      if ( c_type_is_tid_any( &ast->type, TS_THROW ) &&
-           opt_lang >= LANG_CPP_11 ) {
-        print_warning( &ast->loc, "\"%s\" is deprecated in C++11", L_THROW );
+      if ( opt_lang >= LANG_CPP_11 &&
+           c_type_is_tid_any( &ast->type, TS_THROW ) ) {
+        print_warning( &ast->loc,
+          "\"%s\" is deprecated%s",
+          L_THROW, c_lang_which( LANG_CPP_MAX(03) )
+        );
         print_hint( "\"%s\"", L_NOEXCEPT );
       }
       break;

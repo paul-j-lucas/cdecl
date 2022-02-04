@@ -1,4 +1,4 @@
 explain void f() throw()
              ^
-14: warning: "throw" is deprecated in C++11; did you mean "noexcept"?
+14: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 declare f as non-throwing function returning void
