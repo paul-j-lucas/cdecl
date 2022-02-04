@@ -112,9 +112,24 @@ _GL_INLINE_HEADER_BEGIN
  * @param AST The AST to iterate the function-like parameters of.
  *
  * @sa c_ast_params()
+ * @sa #FOREACH_AST_FUNC_PARAM_UNTIL
  */
 #define FOREACH_AST_FUNC_PARAM(VAR,AST) \
-  FOREACH_SLIST_NODE( VAR, &(AST)->as.func.param_ast_list )
+  FOREACH_AST_FUNC_PARAM_UNTIL( VAR, AST, NULL )
+
+/**
+ * Convenience macro for iterating over all parameters of a function-like AST
+ * up to but not including \a END.
+ *
+ * @param VAR The \ref c_ast_param_t loop variable.
+ * @param AST The AST to iterate the function-like parameters of.
+ * @param END A pointer to the parameter to end before; may be NULL.
+ *
+ * @sa c_ast_params()
+ * @sa #FOREACH_AST_FUNC_PARAM
+ */
+#define FOREACH_AST_FUNC_PARAM_UNTIL(VAR,AST,END) \
+  FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->as.func.param_ast_list, END )
 
 ///////////////////////////////////////////////////////////////////////////////
 

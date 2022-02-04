@@ -1257,16 +1257,15 @@ static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
 
-  size_t const n_params = c_ast_params_count( ast );
-  c_sname_t const *snames[ n_params ];
-  unsigned n_snames = 0;
-
   FOREACH_AST_FUNC_PARAM( param, ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
     if ( c_sname_empty( &param_ast->sname ) )
       continue;
-    for ( size_t i = 0; i < n_snames; ++i ) {
-      if ( c_sname_cmp( &param_ast->sname, snames[i] ) == 0 ) {
+    FOREACH_AST_FUNC_PARAM_UNTIL( prev_param, ast, param ) {
+      c_ast_t const *const prev_param_ast = c_param_ast( prev_param );
+      if ( c_sname_empty( &prev_param_ast->sname ) )
+        continue;
+      if ( c_sname_cmp( &param_ast->sname, &prev_param_ast->sname ) == 0 ) {
         print_error( &param_ast->loc,
           "\"%s\": redefinition of parameter\n",
           c_sname_full_name( &param_ast->sname )
@@ -1274,7 +1273,6 @@ static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
         return false;
       }
     } // for
-    snames[ n_snames++ ] = &param_ast->sname;
   } // for
 
   return true;
