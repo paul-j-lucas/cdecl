@@ -428,16 +428,16 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
 
-  if ( !c_ast_parent_is_kind( ast, K_USER_DEF_CONVERSION ) &&
-       ast->type.btids == TB_NONE ) {
+  if ( opt_lang >= LANG_C_99 && ast->type.btids == TB_NONE &&
+       !c_ast_parent_is_kind( ast, K_USER_DEF_CONVERSION ) ) {
     print_error( &ast->loc,
-      "implicit \"%s\" is illegal in %s and later\n",
-      L_INT, c_lang_name( LANG_C_99 )
+      "implicit \"%s\" is illegal%s\n",
+      L_INT, c_lang_which( LANG_C_MAX(95) )
     );
     return false;
   }
 
-  if ( c_type_is_tid_any( &ast->type, TS_INLINE ) && opt_lang < LANG_CPP_17 ) {
+  if ( opt_lang < LANG_CPP_17 && c_type_is_tid_any( &ast->type, TS_INLINE ) ) {
     print_error( &ast->loc,
       "%s variables not supported%s\n",
       L_INLINE, c_lang_which( LANG_CPP_MIN(17) )
