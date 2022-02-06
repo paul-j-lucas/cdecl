@@ -1,4 +1,4 @@
-warning: trigraphs no longer supported since C++17
+warning: trigraphs not supported since C++17
   noalt-tokens
   nodebug
   noeast-const

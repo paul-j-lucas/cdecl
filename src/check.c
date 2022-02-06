@@ -2222,7 +2222,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
       if ( opt_lang >= LANG_CPP_20 &&
            c_type_is_tid_any( &ast->type, TS_THROW ) ) {
         print_error( &ast->loc,
-          "\"%s\" is no longer supported%s",
+          "\"%s\" not supported%s",
           L_THROW, c_lang_which( LANG_CPP_MAX(17) )
         );
         print_hint( "\"%s\"", L_NOEXCEPT );

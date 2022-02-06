@@ -3874,7 +3874,7 @@ noexcept_c_stid_opt
         );
       } else {
         print_error( &@3,
-          "dynamic exception specifications no longer supported%s\n",
+          "dynamic exception specifications not supported%s\n",
           c_lang_which( LANG_CPP_MAX(14) )
         );
       }

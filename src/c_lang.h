@@ -176,6 +176,15 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_CPP_MIN(CL,CPPL)   (LANG_C_MIN(CL) | LANG_CPP_MIN(CPPL))
 
 /**
+ * All languages between \a MIN and \a MAX, inclusive.
+ *
+ * @param MIN The minimum language _without_ the `LANG_` prefix.
+ * @param MAX The maximum language _without_ the `LANG_` prefix.
+ */
+#define LANG_RANGE(MIN,MAX) \
+  ((((~(LANG_##MIN - 1u)) & (LANG_##MAX - 1u)) | LANG_##MAX) & ~LANGX_MASK)
+
+/**
  * C/C++ language(s)/literal pairs: for the given language(s) only, use the
  * given literal.  This allows different languages to use different literals,
  * e.g., `_Noreturn` for C and `noreturn` for C++.

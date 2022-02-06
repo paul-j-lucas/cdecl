@@ -331,8 +331,7 @@ static void set_digraph( char const *token ) {
  * @sa set_digraph()
  */
 static void set_trigraph( char const *token ) {
-  if ( (opt_lang < LANG_C_89 || opt_lang > LANG_CPP_14) &&
-       false_set( &trigraph_warned ) ) {
+  if ( !OPT_LANG_IS(RANGE(C_89,CPP_14)) && false_set( &trigraph_warned ) ) {
     print_warning( &yylloc,
       "trigraphs not supported%s\n",
       c_lang_which( LANG_C_MIN(89) | LANG_CPP_MAX(14) )

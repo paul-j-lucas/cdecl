@@ -376,16 +376,10 @@ static bool set_semicolon( set_option_fn_args_t const *args ) {
  */
 static bool set_trigraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
-  if ( args->opt_enabled ) {
-    if ( opt_lang < LANG_C_89 ) {
-      print_warning( args->opt_name_loc,
-        "trigraphs not supported%s\n", c_lang_which( LANG_MIN(C_89) )
-      );
-    } else if ( opt_lang > LANG_CPP_14 ) {
-      print_warning( args->opt_name_loc,
-        "trigraphs no longer supported%s\n", c_lang_which( LANG_MAX(CPP_14) )
-      );
-    }
+  if ( args->opt_enabled && !OPT_LANG_IS(RANGE(C_89,CPP_14)) ) {
+    print_warning( args->opt_name_loc,
+      "trigraphs not supported%s\n", c_lang_which( LANG_RANGE(C_89,CPP_14) )
+    );
   }
   return true;
 }
