@@ -125,7 +125,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_MIN()
  * @sa #LANG_RANGE()
  */
-#define LANG_MAX(L)               ((LANG_##L | (LANG_##L - 1u)) & ~LANGX_MASK)
+#define LANG_MAX(L)               (BITS_LE( LANG_##L ) & ~LANGX_MASK)
 
 /**
  * All languages \a L and later.
@@ -136,7 +136,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_MAX()
  * @sa #LANG_RANGE()
  */
-#define LANG_MIN(L)               (~(LANG_##L - 1u) & ~LANGX_MASK)
+#define LANG_MIN(L)               (BITS_GE( LANG_##L ) & ~LANGX_MASK)
 
 /**
  * C-only languages up to and including \a L.
@@ -183,41 +183,41 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CPP_MIN(L)           LANG_MIN( CPP_##L )
 
 /**
- * C-only languages up to and including \a CL; and C++-only languages up to and
- * including \a CPPL.
+ * C-only languages up to and including \a LC; and C++-only languages up to and
+ * including \a LCPP.
  *
- * @param CL The C language _without_ the `LANG_` prefix.
- * @param CPPL The C++ language _without_ the `LANG_` prefix.
+ * @param LC The C language _without_ the `LANG_` prefix.
+ * @param LCPP The C++ language _without_ the `LANG_` prefix.
  *
  * @sa #LANG_C_MAX()
  * @sa #LANG_C_CPP_MIN()
  * @sa #LANG_CPP_MAX()
  */
-#define LANG_C_CPP_MAX(CL,CPPL)   (LANG_C_MAX(CL) | LANG_CPP_MAX(CPPL))
+#define LANG_C_CPP_MAX(LC,LCPP)   (LANG_C_MAX(LC) | LANG_CPP_MAX(LCPP))
 
 /**
- * C-only languages \a CL and later; and C++-only languages \a CPPL and later.
+ * C-only languages \a LC and later; and C++-only languages \a LCPP and later.
  *
- * @param CL The C language _without_ the `LANG_` prefix.
- * @param CPPL The C++ language _without_ the `LANG_` prefix.
+ * @param LC The C language _without_ the `LANG_` prefix.
+ * @param LCPP The C++ language _without_ the `LANG_` prefix.
  *
  * @sa #LANG_C_CPP_MAX()
  * @sa #LANG_C_MIN()
  * @sa #LANG_CPP_MIN()
  */
-#define LANG_C_CPP_MIN(CL,CPPL)   (LANG_C_MIN(CL) | LANG_CPP_MIN(CPPL))
+#define LANG_C_CPP_MIN(LC,LCPP)   (LANG_C_MIN(LC) | LANG_CPP_MIN(LCPP))
 
 /**
- * All languages between \a MIN and \a MAX, inclusive.
+ * All languages between \a LMIN and \a LMAX, inclusive.
  *
- * @param MIN The minimum language _without_ the `LANG_` prefix.
- * @param MAX The maximum language _without_ the `LANG_` prefix.
+ * @param LMIN The minimum language _without_ the `LANG_` prefix.
+ * @param LMAX The maximum language _without_ the `LANG_` prefix.
  *
  * @sa #LANG_MAX()
  * @sa #LANG_MIN()
  */
-#define LANG_RANGE(MIN,MAX) \
-  ((((~(LANG_##MIN - 1u)) & (LANG_##MAX - 1u)) | LANG_##MAX) & ~LANGX_MASK)
+#define LANG_RANGE(LMIN,LMAX) \
+  (((BITS_GE( LANG_##LMIN ) & BITS_LT( LANG_##LMAX )) | LANG_##LMAX) & ~LANGX_MASK)
 
 /**
  * C/C++ language(s)/literal pairs: for the given language(s) only, use the
