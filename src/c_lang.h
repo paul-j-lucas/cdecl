@@ -120,6 +120,10 @@ _GL_INLINE_HEADER_BEGIN
  * All languages up to and including \a L.
  *
  * @param L The language _without_ the `LANG_` prefix.
+ *
+ * @sa #LANG_C_MAX()
+ * @sa #LANG_MIN()
+ * @sa #LANG_RANGE()
  */
 #define LANG_MAX(L)               ((LANG_##L | (LANG_##L - 1u)) & ~LANGX_MASK)
 
@@ -127,6 +131,10 @@ _GL_INLINE_HEADER_BEGIN
  * All languages \a L and later.
  *
  * @param L The language _without_ the `LANG_` prefix.
+ *
+ * @sa #LANG_C_MIN()
+ * @sa #LANG_MAX()
+ * @sa #LANG_RANGE()
  */
 #define LANG_MIN(L)               (~(LANG_##L - 1u) & ~LANGX_MASK)
 
@@ -134,6 +142,10 @@ _GL_INLINE_HEADER_BEGIN
  * C-only languages up to and including \a L.
  *
  * @param L The language _without_ the `LANG_` prefix.
+ *
+ * @sa #LANG_C_CPP_MAX()
+ * @sa #LANG_C_MIN()
+ * @sa #LANG_MAX()
  */
 #define LANG_C_MAX(L)             LANG_MAX( C_##L )
 
@@ -141,6 +153,10 @@ _GL_INLINE_HEADER_BEGIN
  * C-only languages \a L and later.
  *
  * @param L The language _without_ the `LANG_` prefix.
+ *
+ * @sa #LANG_C_CPP_MIN()
+ * @sa #LANG_C_MAX()
+ * @sa #LANG_MIN()
  */
 #define LANG_C_MIN(L)             (LANG_MIN( C_##L ) & LANG_MASK_C)
 
@@ -148,6 +164,10 @@ _GL_INLINE_HEADER_BEGIN
  * C++-only languages up to and including \a L.
  *
  * @param L The language _without_ the `LANG_` prefix.
+ *
+ * @sa #LANG_CPP_MIN()
+ * @sa #LANG_C_CPP_MAX()
+ * @sa #LANG_MAX()
  */
 #define LANG_CPP_MAX(L)           (LANG_MAX( CPP_##L ) & LANG_MASK_CPP)
 
@@ -155,6 +175,10 @@ _GL_INLINE_HEADER_BEGIN
  * C++-only languages \a L and later.
  *
  * @param L The language _without_ the `LANG_` prefix.
+ *
+ * @sa #LANG_C_CPP_MIN()
+ * @sa #LANG_CPP_MAX()
+ * @sa #LANG_MIN()
  */
 #define LANG_CPP_MIN(L)           LANG_MIN( CPP_##L )
 
@@ -164,6 +188,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param CL The C language _without_ the `LANG_` prefix.
  * @param CPPL The C++ language _without_ the `LANG_` prefix.
+ *
+ * @sa #LANG_C_MAX()
+ * @sa #LANG_C_CPP_MIN()
+ * @sa #LANG_CPP_MAX()
  */
 #define LANG_C_CPP_MAX(CL,CPPL)   (LANG_C_MAX(CL) | LANG_CPP_MAX(CPPL))
 
@@ -172,6 +200,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param CL The C language _without_ the `LANG_` prefix.
  * @param CPPL The C++ language _without_ the `LANG_` prefix.
+ *
+ * @sa #LANG_C_CPP_MAX()
+ * @sa #LANG_C_MIN()
+ * @sa #LANG_CPP_MIN()
  */
 #define LANG_C_CPP_MIN(CL,CPPL)   (LANG_C_MIN(CL) | LANG_CPP_MIN(CPPL))
 
@@ -180,6 +212,9 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param MIN The minimum language _without_ the `LANG_` prefix.
  * @param MAX The maximum language _without_ the `LANG_` prefix.
+ *
+ * @sa #LANG_MAX()
+ * @sa #LANG_MIN()
  */
 #define LANG_RANGE(MIN,MAX) \
   ((((~(LANG_##MIN - 1u)) & (LANG_##MAX - 1u)) | LANG_##MAX) & ~LANGX_MASK)
@@ -188,6 +223,8 @@ _GL_INLINE_HEADER_BEGIN
  * C/C++ language(s)/literal pairs: for the given language(s) only, use the
  * given literal.  This allows different languages to use different literals,
  * e.g., `_Noreturn` for C and `noreturn` for C++.
+ *
+ * @sa #C_LANG_LIT()
  */
 struct c_lang_lit {
   c_lang_id_t   lang_ids;               ///< Language(s) literal is in.
