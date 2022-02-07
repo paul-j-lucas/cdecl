@@ -107,6 +107,16 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * UPC: _Unified Parallel C_, which is based on C99, ISO/IEC&nbsp;9899:1999.
  *
+ * @note This is not a distinct language in cdecl, i.e., the user can't set the
+ * language to "Unified Parallel C" specifically.  It's used to mark keywords
+ * as being available only in the Unified Parallel C extensions to C99 instead
+ * of "plain" C99 so that if a user does:
+ *
+ *      cdecl> declare shared as int
+ *      9: warning: "shared" is a keyword in C99 (with Unified Parallel C extensions)
+ *
+ * in a language other than C99, they'll get a warning.
+ *
  * @sa [Unified Parallel C](http://upc-lang.org/)
  */
 #define LANG_C_99_UPC (LANG_C_99 | LANGX_UPC)
@@ -220,18 +230,6 @@ _GL_INLINE_HEADER_BEGIN
   (((BITS_GE( LANG_##LMIN ) & BITS_LT( LANG_##LMAX )) | LANG_##LMAX) & ~LANGX_MASK)
 
 /**
- * C/C++ language(s)/literal pairs: for the given language(s) only, use the
- * given literal.  This allows different languages to use different literals,
- * e.g., `_Noreturn` for C and `noreturn` for C++.
- *
- * @sa #C_LANG_LIT()
- */
-struct c_lang_lit {
-  c_lang_id_t   lang_ids;               ///< Language(s) literal is in.
-  char const   *literal;                ///< The literal.
-};
-
-/**
  * Convenience macro for specifying a constant array of \ref c_lang_lit.
  *
  * @param ... The array of \ref c_lang_lit elements.
@@ -259,6 +257,18 @@ struct c_lang {
   char const   *name;                   ///< Language name.
   bool          is_alias;               ///< Alias for another language name?
   c_lang_id_t   lang_id;                ///< Language bit.
+};
+
+/**
+ * C/C++ language(s)/literal pairs: for the given language(s) only, use the
+ * given literal.  This allows different languages to use different literals,
+ * e.g., `_Noreturn` for C and `noreturn` for C++.
+ *
+ * @sa #C_LANG_LIT()
+ */
+struct c_lang_lit {
+  c_lang_id_t   lang_ids;               ///< Language(s) literal is in.
+  char const   *literal;                ///< The literal.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
