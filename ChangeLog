@@ -1,5 +1,27 @@
+2022-02-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.h, util.h: Now using BITS_Lx macros in c_lang.h.
+   * c_lang.h, check.c, lexer.l, parser.y, set_options.c, declare_th_f_v.out,
+     set_trigraphs-c++.out, set_trigraphs_c++17.out: s/is no longer/not/; added
+     LANG_RANGE() macro.
+
+2022-02-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c, explain_th_f_v-c++17.out: Now using c_lang_which() more.
+
+2022-02-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c, explain_c-02.out: Now checking opt_lang >= LANG_C_99 for implicit
+     int.
+   * c_ast.h, check.c: Got rid of VLA.
+   * check.c: Added assert()s.
+   * c_lang.c: Added if ( opt_lang == lang_ids ).
+   * check.c: Moved K_VARIADIC.
+   * parser.y: Revert "Bison %destructor clean-up."
+
 2022-02-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Bison %destructor clean-up.
    * parser.y: Improved error messages for syntax errors after commas.
    * NEWS, parser.y, test/Makefile.am: Can now parse dynamic exception
      specifications.
