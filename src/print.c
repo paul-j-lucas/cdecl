@@ -140,16 +140,18 @@ static size_t print_caret( size_t error_column ) {
 #endif /* ENABLE_TERM_SIZE */
     term_columns = TERM_COLUMNS_DEFAULT;
 
+  size_t caret_column;
+
   if ( is_input_a_tty || opt_interactive ) {
     //
     // If we're interactive, we can put the ^ under the already existing token
     // the user typed for the recent command, but we have to add the length of
     // the prompt.
     //
-    error_column += strlen( OPT_LANG_IS(C_ANY) ? CDECL : CPPDECL )
+    caret_column = error_column + strlen( OPT_LANG_IS(C_ANY) ? CDECL : CPPDECL )
       + 2 /* "> " */;
     if ( term_columns > 0 )
-      error_column %= term_columns;
+      caret_column %= term_columns;
   }
   else {
     //
@@ -157,9 +159,10 @@ static size_t print_caret( size_t error_column ) {
     // the ^ under that.
     //
     print_input_line( &error_column, term_columns );
+    caret_column = error_column;
   }
 
-  EPRINTF( "%*s", STATIC_CAST( int, error_column ), "" );
+  EPRINTF( "%*s", STATIC_CAST( int, caret_column ), "" );
   SGR_START_COLOR( stderr, caret );
   EPUTC( '^' );
   SGR_END_COLOR( stderr );

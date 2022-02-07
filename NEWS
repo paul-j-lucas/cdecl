@@ -32,6 +32,10 @@ Previously, if there was any leading whitesplace before a command, that is:
 
 it wouldn't match: now it does.
 
+** Fixed interactive column
+The column number printed for error and warning messages while interactive is
+now correct.
+
 
 * Changes in Cdecl 11.11
 
