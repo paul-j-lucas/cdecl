@@ -211,6 +211,9 @@ void free_now( void ) {
 
 #ifdef ENABLE_TERM_SIZE
 void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines ) {
+  if ( unlikely( ncolumns == NULL && nlines == NULL ) )
+    return;
+
   int         cterm_fd = -1;
   char        reason_buf[ 128 ];
   char const *reason = NULL;
