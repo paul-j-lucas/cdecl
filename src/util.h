@@ -260,7 +260,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #UNEXPECTED_INT_VALUE()
  */
 #define FATAL_ERR(STATUS,FORMAT,...) \
-  BLOCK( EPRINTF( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
+  BLOCK( EPRINTF( "%s: " FORMAT, me, __VA_ARGS__ ); _Exit( STATUS ); )
 
 /**
  * Calls **ferror**(3) and exits if there was an error on \a STREAM.
