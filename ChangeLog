@@ -1,3 +1,7 @@
+2022-02-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, print.c: Fixed interactive column number.
+
 2022-02-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_lang.h, util.h: Now using BITS_Lx macros in c_lang.h.
