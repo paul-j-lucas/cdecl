@@ -1,3 +1,15 @@
+2022-02-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * string.in.h: Updated Gnulib.
+
+2022-02-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Now returning immediately if ncolumns == NULL and nlines == NULL.
+   * util.h: FATAL_ERR now calls _Exit() insstead of exit() since functions
+     called via atexit() must not call exit().
+   * c_typedef.c, cdecl.c: Added '&'.
+   * c_operator.c: s/OVER/OVR/
+
 2022-02-07  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, print.c: Fixed interactive column number.
