@@ -1113,11 +1113,11 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
             );
             return false;
           }
-          c_tid_t cv_stids;
-          if ( c_ast_is_tid_any_cv( param_ast, TS_CV, &cv_stids ) ) {
+          c_tid_t qual_stids;
+          if ( c_ast_is_tid_any_qual( param_ast, TS_CV, &qual_stids ) ) {
             print_error( &param_ast->loc,
               "%s as parameter can not be %s\n",
-              L_VOID, c_tid_name_error( cv_stids )
+              L_VOID, c_tid_name_error( qual_stids )
             );
             return false;
           }
@@ -2372,8 +2372,9 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
     }
   }
 
-  if ( c_type_is_tid_any( &ast->type, TS_RESTRICT ) ) {
-    switch ( ast->kind ) {
+  if ( c_ast_is_tid_any( ast, TS_RESTRICT ) ) {
+    c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+    switch ( raw_ast->kind ) {
       case K_FUNCTION:
       case K_OPERATOR:
       case K_REFERENCE:
@@ -2385,7 +2386,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         //
         break;
       case K_POINTER:
-        if ( !c_ast_is_ptr_to_kind_any( ast, K_ANY_OBJECT ) ) {
+        if ( !c_ast_is_ptr_to_kind_any( raw_ast, K_ANY_OBJECT ) ) {
           print_error( &ast->loc,
             "%s to %s can not be %s\n",
             L_POINTER, c_kind_name( c_ast_unpointer( ast )->kind ), L_RESTRICT
@@ -2394,7 +2395,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         }
         break;
       default:
-        error_kind_not_tid( ast, TS_RESTRICT, "\n" );
+        error_kind_not_tid( raw_ast, TS_RESTRICT, "\n" );
         return VISITOR_ERROR_FOUND;
     } // switch
   }

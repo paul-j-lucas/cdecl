@@ -289,8 +289,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
  * Helper function that checks whether the type of \a ast is one of \a tids.
  *
  * @param ast The AST to check; may be NULL.
- * @param cv_stids The `const` and `volatile` (cv) qualifier(s) of the
- * `typedef` for \a ast, if any.
+ * @param qual_stids The qualifier(s) of the `typedef` for \a ast, if any.
  * @param tids The bitwise-or of type(s) to check against.
  * @return If \a ast is not NULL and the type of \a ast is one of \a tids,
  * returns \a ast; otherwise returns NULL.
@@ -298,12 +297,12 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
 PJL_WARN_UNUSED_RESULT
 static c_ast_t const* c_ast_is_tid_any_cv_impl( c_ast_t const *ast,
                                                 c_tid_t tids,
-                                                c_tid_t cv_stids ) {
+                                                c_tid_t qual_stids ) {
   if ( ast != NULL ) {
     c_tid_t ast_tids = c_type_get_tid( &ast->type, tids );
     ast_tids = c_tid_normalize( ast_tids );
     if ( c_tid_tpid( tids ) == C_TPID_STORE )
-      ast_tids |= cv_stids;
+      ast_tids |= qual_stids;
     if ( c_tid_is_any( ast_tids, tids ) )
       return ast;
   }
@@ -350,8 +349,8 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  * Only if \a ast is a \ref K_POINTER, un-pointers \a ast.
  *
  * @param ast The AST to un-pointer.
- * @param cv_stids If \a ast is a pointer, receives the `const` and `volatile`
- * (cv) qualifier(s) of the first pointed-to type.  For a declaration like
+ * @param qual_stids If \a ast is a pointer, receives the qualifier(s) of the
+ * first pointed-to type.  For a declaration like
  * <code>const&nbsp;S&nbsp;*x</code> (where `S` is a `struct`), the `const` is
  * associated with the `typedef` for the `struct` and _not_ the actual `struct`
  * the `typedef` is a `typedef` for:
@@ -382,19 +381,19 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  * @return Returns the pointed-to AST or NULL if \a ast is not a pointer.
  *
  * @sa c_ast_unpointer()
- * @sa c_ast_unreference_cv()
+ * @sa c_ast_unreference_qual()
  */
 PJL_WARN_UNUSED_RESULT
-static c_ast_t const* c_ast_unpointer_cv( c_ast_t const *ast,
-                                          c_tid_t *cv_stids ) {
+static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
+                                            c_tid_t *qual_stids ) {
   ast = c_ast_untypedef( ast );
   if ( ast->kind != K_POINTER )
     return NULL;
 
   ast = ast->as.ptr_ref.to_ast;
   assert( ast != NULL );
-  assert( cv_stids != NULL );
-  *cv_stids = ast->type.stids & TS_CV;
+  assert( qual_stids != NULL );
+  *qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
   //
   // Now that we've gotten the cv qualifiers of the first pointed-to type, we
   // can just call the ordinary c_ast_untypedef() to peel off any remaining
@@ -407,11 +406,11 @@ static c_ast_t const* c_ast_unpointer_cv( c_ast_t const *ast,
  * Only if \a ast is a \ref K_REFERENCE, un-references \a ast.
  *
  * @param ast The AST to un-reference.
- * @param cv_stids If \a ast is a reference, receives the `const` and
- * `volatile` (cv) qualifier(s) of the first referred-to type.  For a
- * declaration like <code>const&nbsp;S&nbsp;&x</code> (where `S` is a
- * `struct`), the `const` is associated with the `typedef` for the `struct` and
- * _not_ the actual `struct` the `typedef` is a `typedef` for:
+ * @param qual_stids If \a ast is a reference, receives the bitwise-of of the
+ * qualifier(s) of the first referred-to type.  For a declaration like
+ * <code>const&nbsp;S&nbsp;&x</code> (where `S` is a `struct`), the `const` is
+ * associated with the `typedef` for the `struct` and _not_ the actual `struct`
+ * the `typedef` is a `typedef` for:
  * ```
  * decl_c = {
  *   sname = "x" (none),
@@ -438,20 +437,20 @@ static c_ast_t const* c_ast_unpointer_cv( c_ast_t const *ast,
  * un-`typedef` it.
  * @return Returns the referenced AST or NULL if \a ast is not a reference.
  *
- * @sa c_ast_unpointer_cv()
+ * @sa c_ast_unpointer_qual()
  * @sa c_ast_unreference()
  */
 PJL_WARN_UNUSED_RESULT
-static c_ast_t const* c_ast_unreference_cv( c_ast_t const *ast,
-                                            c_tid_t *cv_stids ) {
+static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
+                                              c_tid_t *qual_stids ) {
   ast = c_ast_untypedef( ast );
   if ( ast->kind != K_REFERENCE )
     return NULL;
 
   ast = ast->as.ptr_ref.to_ast;
   assert( ast != NULL );
-  assert( cv_stids != NULL );
-  *cv_stids = ast->type.stids & TS_CV;
+  assert( qual_stids != NULL );
+  *qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
   //
   // Now that we've gotten the cv qualifiers of the first referred-to type, we
   // can just call the ordinary c_ast_unreference() to peel off any remaining
@@ -465,25 +464,25 @@ static c_ast_t const* c_ast_unreference_cv( c_ast_t const *ast,
  * the `typedef` is for.
  *
  * @param ast The AST to un-`typedef`.
- * @param cv_stids Receives the bitwise-or of the `const` and `volatile` (cv)
- * qualifier(s) of \a ast and all ASTs \a ast is a `typedef` for.
+ * @param qual_stids Receives the qualifier(s) of \a ast and all ASTs \a ast is
+ * a `typedef` for.
  * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
  * `typedef`.
  *
  * @sa c_ast_untypedef()
  */
-static c_ast_t const* c_ast_untypedef_cv( c_ast_t const *ast,
-                                          c_tid_t *cv_stids ) {
+static c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
+                                            c_tid_t *qual_stids ) {
   assert( ast != NULL );
-  assert( cv_stids != NULL );
+  assert( qual_stids != NULL );
 
-  *cv_stids = ast->type.stids & TS_CV;
+  *qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
   for (;;) {
     if ( ast->kind != K_TYPEDEF )
       return ast;
     ast = ast->as.tdef.for_ast;
     assert( ast != NULL );
-    *cv_stids |= ast->type.stids & TS_CV;
+    *qual_stids |= ast->type.stids & TS_ANY_QUALIFIER;
   } // for
 }
 
@@ -591,22 +590,22 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
                                c_type_t const *type ) {
   assert( mask_type != NULL );
 
-  c_tid_t cv_stids;
-  ast = c_ast_unpointer_cv( ast, &cv_stids );
+  c_tid_t qual_stids;
+  ast = c_ast_unpointer_qual( ast, &qual_stids );
   if ( ast == NULL )
     return false;
   c_type_t const masked_type = {
     c_tid_normalize( ast->type.btids ) & mask_type->btids,
-    (ast->type.stids | cv_stids)       & mask_type->stids,
+    (ast->type.stids | qual_stids)     & mask_type->stids,
     ast->type.atids                    & mask_type->atids
   };
   return c_type_is_any( &masked_type, type );
 }
 
 c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
-  c_tid_t cv_stids;
-  ast = c_ast_unpointer_cv( ast, &cv_stids );
-  return c_ast_is_tid_any_cv_impl( ast, tids, cv_stids );
+  c_tid_t qual_stids;
+  ast = c_ast_unpointer_qual( ast, &qual_stids );
+  return c_ast_is_tid_any_cv_impl( ast, tids, qual_stids );
 }
 
 bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname ) {
@@ -618,31 +617,31 @@ bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname ) {
 }
 
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
-  c_tid_t cv_stids;
-  ast = c_ast_unreference_cv( ast, &cv_stids );
-  return c_ast_is_tid_any_cv_impl( ast, tids, cv_stids );
+  c_tid_t qual_stids;
+  ast = c_ast_unreference_qual( ast, &qual_stids );
+  return c_ast_is_tid_any_cv_impl( ast, tids, qual_stids );
 }
 
 c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
                                          c_type_t const *type ) {
-  c_tid_t cv_stids;
-  ast = c_ast_unreference_cv( ast, &cv_stids );
+  c_tid_t qual_stids;
+  ast = c_ast_unreference_qual( ast, &qual_stids );
   if ( ast == NULL )
     return NULL;
 
   c_type_t const ast_cv_type = {
     c_tid_normalize( ast->type.btids ),
-    ast->type.stids | cv_stids,
+    ast->type.stids | qual_stids,
     ast->type.atids
   };
 
   return c_type_is_any( &ast_cv_type, type ) ? ast : NULL;
 }
 
-c_ast_t const* c_ast_is_tid_any_cv( c_ast_t const *ast, c_tid_t tids,
-                                    c_tid_t *cv_stids ) {
-  ast = c_ast_untypedef_cv( ast, cv_stids );
-  return c_ast_is_tid_any_cv_impl( ast, tids, *cv_stids );
+c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
+                                      c_tid_t *qual_stids ) {
+  ast = c_ast_untypedef_qual( ast, qual_stids );
+  return c_ast_is_tid_any_cv_impl( ast, tids, *qual_stids );
 }
 
 bool c_ast_is_typename_ok( c_ast_t const *ast ) {

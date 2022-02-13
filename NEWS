@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.13
+
+** `restrict` of `typedef`
+`restrict` is now correctly allowed on `typedef`s of pointer:
+
+    cdecl> typdef int *pint
+    cdecl> explain restrict pint p
+    declare p as restricted pint
+
+
 * Changes in Cdecl 11.12
 
 ** `noexcept` for function parameters

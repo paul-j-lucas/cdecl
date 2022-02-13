@@ -210,7 +210,7 @@ bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname );
  * @sa c_ast_is_ref_to_class_sname()
  * @sa c_ast_is_ref_to_type_any()
  * @sa c_ast_is_tid_any()
- * @sa c_ast_is_tid_any_cv()
+ * @sa c_ast_is_tid_any_qual()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids );
@@ -236,12 +236,12 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
 /**
  * Checks whether one of the type IDs of the type of \a ast is any one of \a
  * tids.  This function is a variant of c_ast_is_tid_any() that also returns
- * the `const` and `volatile` (cv) qualifier(s) of \a ast.
+ * the qualifier(s) of \a ast.
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
- * @param cv_stids Receives the cv qualifier(s) of \a ast bitwise-or'd with the
- * cv qualifier(s) of the AST \a ast is a \ref K_TYPEDEF for (if \a ast is a
+ * @param qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with the
+ * qualifier(s) of the AST \a ast is a \ref K_TYPEDEF for (if \a ast is a
  * \ref K_TYPEDEF), but only if this function returns non-NULL.
  * @return If the type of \a ast has one of \a tids, returns the AST after
  * `typedef`s, if any, are stripped; otherwise returns NULL.
@@ -251,8 +251,8 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
  * @sa c_ast_is_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
-c_ast_t const* c_ast_is_tid_any_cv( c_ast_t const *ast, c_tid_t tids,
-                                    c_tid_t *cv_stids );
+c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
+                                      c_tid_t *qual_stids );
 
 /**
  * Checks whether `typename` is OK since the type's name is a qualified name.
@@ -452,12 +452,12 @@ bool c_ast_is_size_t( c_ast_t const *ast ) {
  *
  * @sa c_ast_is_ptr_to_tid_any()
  * @sa c_ast_is_ref_to_tid_any()
- * @sa c_ast_is_tid_any_cv()
+ * @sa c_ast_is_tid_any_qual()
  */
 C_AST_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
-  c_tid_t cv_stids;
-  return c_ast_is_tid_any_cv( ast, tids, &cv_stids );
+  c_tid_t qual_stids;
+  return c_ast_is_tid_any_qual( ast, tids, &qual_stids );
 }
 
 /**

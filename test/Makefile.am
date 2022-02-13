@@ -489,6 +489,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_rro_plus2_i_rk.test \
 	tests/explain_rro_plus_rk_rk.test \
 	tests/explain_rtpi.test \
+	tests/explain_rttdpi.test \
 	tests/explain_sa2i.test \
 	tests/explain_sc.test \
 	tests/explain_sf_v.test \
@@ -629,6 +630,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_ri-c.test \
 	tests/explain_rtf_v-error.test \
 	tests/explain_rtpf_v.test \
+	tests/explain_rttdi.test \
 	tests/explain_sb.test \
 	tests/explain_sc-knr.test \
 	tests/explain_sc16.test \
