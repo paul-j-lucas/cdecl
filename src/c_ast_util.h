@@ -114,7 +114,7 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_type_t const *type );
 
 /**
- * Checks whether \a ast is an AST is one of \a btids built-in type(s) or a
+ * Checks whether \a ast is an AST is one of \a btids built-in type(s); or a
  * `typedef` thereof.
  *
  * @param ast The AST to check.
@@ -127,7 +127,7 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids );
 
 /**
  * Checks whether \a ast is an AST for a pointer to another AST that is one of
- * \a kinds.
+ * \a kinds; or a `typedef` thereof.
  *
  * @param ast The AST to check.
  * @param kinds The bitwise-or of kind(s) to check for.
@@ -141,7 +141,7 @@ bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds );
 
 /**
  * Checks whether \a ast is an AST for a pointer to another AST having a type
- * that contains any one of \a tids.
+ * that contains any one of \a tids ; or a `typedef` thereof.
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
@@ -156,10 +156,10 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
- * Checks whether \a ast is an AST for a pointer to another AST having \a type.
- * For example:
- *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT_B(TB_CHAR) )`
- *    returns `true` only if \a ast is pointer to `char` (`char*`) _exactly_.
+ * Checks whether \a ast is an AST for a pointer to another AST having \a type;
+ * or a `typedef` thereof.  For example:
+ *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT_B(TB_CHAR) )` returns
+ *    `true` only if \a ast is pointer to `char` (`char*`) _exactly_.
  *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT(TB_CHAR, TS_CONST, TA_NONE) )`
  *    returns `true` only if \a ast is a pointer to `const` `char` (`char
  *    const*`) _exactly_.
@@ -184,7 +184,7 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
 
 /**
  * Checks whether \a ast is an AST for a reference to another AST that is a
- * #TB_ANY_CLASS and has a name matching \a sname.
+ * #TB_ANY_CLASS and has a name matching \a sname; or a `typedef` thereof.
  *
  * @param ast The AST to check.
  * @param sname The scoped name to check for.
@@ -199,7 +199,7 @@ bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname );
 
 /**
  * Checks whether \a ast is an AST for a reference to another AST having a type
- * that contains any one of \a tids.
+ * that contains any one of \a tids; or a `typedef` thereof.
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
@@ -217,7 +217,7 @@ c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
  * Checks whether \a ast is an AST for a reference to another AST having \a
- * type.
+ * type; or a `typedef` thereof.
  *
  * @param ast The AST to check.
  * @param type The type to check against.  Only type IDs that are not NONE are
