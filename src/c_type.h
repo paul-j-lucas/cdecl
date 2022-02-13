@@ -1026,10 +1026,14 @@ bool c_type_is_none( c_type_t const *type ) {
 /**
  * Checks whether the relevant \ref c_tid_t of \a type is any of \a tids.
  *
+ * @note If \a type contains #TB_TYPEDEF, it is _not_ un-`typedef`d first.
+ *
  * @param type The \ref c_type to check.
  * @param tids The \ref c_tid_t to check against.
  * @return Returns `true` only if the relevant \ref c_tid_t of \a type contains
  * any of \a tids.
+ *
+ * @sa c_ast_is_tid_any()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_is_tid_any( c_type_t const *type, c_tid_t tids ) {

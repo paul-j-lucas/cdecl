@@ -243,8 +243,8 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
  * @param qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with the
  * qualifier(s) of the AST \a ast is a \ref K_TYPEDEF for (if \a ast is a
  * \ref K_TYPEDEF), but only if this function returns non-NULL.
- * @return If the type of \a ast has one of \a tids, returns the AST after
- * `typedef`s, if any, are stripped; otherwise returns NULL.
+ * @return If the type of \a ast has one of \a tids, returns the un-`typedef`d
+ * AST of \a ast; otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_type_any()
  * @sa c_ast_is_ref_to_type_any()
@@ -362,8 +362,8 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  * `c_ast_dereference` to eliminate confusion with C++ references.
  *
  * @param ast The AST to un-pointer.
- * @return If \a ast is a pointer, returns the pointed-to AST after `typedef`s,
- * if any, are stripped; otherwise returns NULL if \a ast is not a pointer.
+ * @return If \a ast is a pointer, returns the un-`typedef`d pointed-to AST;
+ * otherwise returns NULL.
  *
  * @sa c_ast_pointer()
  * @sa c_ast_unreference()
@@ -380,9 +380,8 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * @note Only \ref K_REFERENCE is un-referenced, not \ref K_RVALUE_REFERENCE.
  *
  * @param ast The AST to un-reference.
- * @return If \a ast is a reference, Returns the referenced AST after
- * `typedef`s, if any, are stripped; otherwise returns \a ast if \a ast is not
- * a reference.
+ * @return If \a ast is a reference, returns the un-`typdef`d referenced AST;
+ * otherwise returns \a ast.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unrvalue_reference()
@@ -398,9 +397,8 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * @note Only \ref K_RVALUE_REFERENCE is un-referenced, not \ref K_REFERENCE.
  *
  * @param ast The AST to un-reference.
- * @return If \a ast is an rvalue reference, Returns the referenced AST after
- * `typedef`s, if any, are stripped; otherwise returns \a ast if \a ast is not
- * an rvalue reference.
+ * @return If \a ast is an rvalue reference, returns the un-`typedef`d
+ * referenced AST; otherwise returns \a ast.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
@@ -447,12 +445,13 @@ bool c_ast_is_size_t( c_ast_t const *ast ) {
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
- * @return If the type of \a ast has one of \a tids, returns the AST after
- * `typedef`s, if any, are stripped; otherwise returns NULL.
+ * @return If the type of \a ast has one of \a tids, returns the un-`typedef`d
+ * AST of \a ast; otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_tid_any()
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_tid_any_qual()
+ * @sa c_type_is_tid_any()
  */
 C_AST_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
