@@ -459,7 +459,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
       print_error( &ast->loc, "scoped names can not have bit-field widths\n" );
       return false;
     }
-    if ( c_type_is_tid_any( &ast->type, TS_ANY ) ) {
+    if ( ast->type.stids != TS_NONE ) {
       print_error( &ast->loc,
         "%s can not have bit-field widths\n",
         c_tid_name_error( ast->type.stids )
