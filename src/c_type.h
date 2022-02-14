@@ -444,6 +444,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_CONSTRUCTOR_DEF
  * @sa #TS_MAIN_FUNC_CPP
  * @sa #TS_NEW_DELETE_OPER
+ * @sa #TS_NOT_CONSTRUCTOR
  * @sa #TS_USER_DEF_CONV
  */
 #define TS_FUNC_LIKE_CPP      ( TS_CV | TS_CONSTEVAL | TS_CONSTEXPR \
