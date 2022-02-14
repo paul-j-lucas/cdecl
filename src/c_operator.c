@@ -51,7 +51,7 @@
  * Array of c_operator for all C++ operators.
  */
 static c_operator_t const C_OPERATOR[] = {
-  { C_OP_NONE,            "",         XXX, 0, 0,    LANG_NONE         },
+  { C_OP_NONE,            "none",     XXX, 0, 0,    LANG_ANY          },
   { C_OP_NEW,             L_NEW,      OVR, 1, UNL,  LANG_CPP_ANY      },
   { C_OP_NEW_ARRAY,       "new[]",    OVR, 1, UNL,  LANG_CPP_ANY      },
   { C_OP_DELETE,          L_DELETE,   OVR, 1, UNL,  LANG_CPP_ANY      },
@@ -149,7 +149,7 @@ static char const* alt_token_c( char const *token ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
-  assert( oper_id >= C_OP_NEW && oper_id <= C_OP_TILDE );
+  assert( oper_id >= C_OP_NONE && oper_id <= C_OP_TILDE );
 
   c_operator_t const *best_op = NULL;
 

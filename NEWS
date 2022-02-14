@@ -19,6 +19,9 @@ with their complete changes, see the AUTHORS file.
     cdecl> explain restrict pint p
     declare p as restricted pint
 
+** Fixed core dump for `--debug`/`-d` for operator
+Fixed a core dump when using the `--debug`/`-d` option for an operator.
+
 
 * Changes in Cdecl 11.12
 
