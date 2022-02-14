@@ -652,9 +652,7 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
     &ast->sname;
 
   if ( c_sname_count( sname ) < 2 ) {
-    print_error( &ast->loc,
-      "qualified name expected after \"%s\"\n", L_TYPENAME
-    );
+    print_error( &ast->loc, "qualified name expected after \"typename\"\n" );
     return false;
   }
   return true;
@@ -690,8 +688,8 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
     //
     if ( !c_ast_equal( type_ast, decl_ast ) ) {
       print_error( &decl_ast->loc,
-        "\"%s\": \"%s\" redefinition with different type; original is: ",
-        c_sname_full_name( &decl_ast->sname ), L_TYPEDEF
+        "\"%s\": \"typedef\" redefinition with different type; original is: ",
+        c_sname_full_name( &decl_ast->sname )
       );
       //
       // When printing the existing type in C/C++ as part of an error message,
@@ -724,7 +722,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
       // because the "typedef-ness" needed to be removed previously before the
       // eventual call to c_ast_check().
       //
-      print_error( &align->loc, "%s can not be %s\n", L_TYPEDEF, L_ALIGNED );
+      print_error( &align->loc, "typedef can not be aligned\n" );
       return NULL;
     }
   }

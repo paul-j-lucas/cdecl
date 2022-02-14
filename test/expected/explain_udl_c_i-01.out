@@ -1,4 +1,4 @@
 explain int operator"" m(char)
           ^
-11: warning: user-defined literal not starting with '_' are reserved
+11: warning: user-defined literals not starting with '_' are reserved
 declare m as user-defined literal (char) returning int

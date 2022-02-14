@@ -2429,8 +2429,7 @@ show_format
     {
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &@1,
-          "\"%s\" not supported%s\n",
-          L_USING, c_lang_which( LANG_CPP_MIN(11) )
+          "\"using\" not supported%s\n", c_lang_which( LANG_CPP_MIN(11) )
         );
         PARSE_ABORT();
       }
@@ -2649,7 +2648,7 @@ asm_declaration_c
   : Y_ASM lparen_exp str_lit_exp rparen_exp
     {
       free( $3 );
-      print_error( &@1, "%s declarations not supported by %s\n", L_ASM, CDECL );
+      print_error( &@1, "asm declarations not supported by %s\n", CDECL );
       PARSE_ABORT();
     }
   ;
@@ -2681,8 +2680,8 @@ class_struct_union_declaration_c
         char const *const mbr_name = c_sname_local_name( &$3 );
         if ( strcmp( mbr_name, cur_name ) == 0 ) {
           print_error( &@3,
-            "\"%s\": %s has the same name as its enclosing %s\n",
-            mbr_name, L_MEMBER, c_type_name_c( cur_type )
+            "\"%s\": member has the same name as its enclosing %s\n",
+            mbr_name, c_type_name_c( cur_type )
           );
           c_sname_cleanup( &$3 );
           PARSE_ABORT();
@@ -2789,8 +2788,8 @@ namespace_declaration_c
       //
       if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_CPP_MIN(17) ) ) {
         print_error( &@3,
-          "nested %s declarations not supported%s\n",
-          L_NAMESPACE, c_lang_which( LANG_CPP_MIN(17) )
+          "nested namespace declarations not supported%s\n",
+          c_lang_which( LANG_CPP_MIN(17) )
         );
         c_sname_cleanup( &$3 );
         PARSE_ABORT();
@@ -2990,9 +2989,7 @@ in_scope_declaration_c_exp
 template_declaration_c
   : Y_TEMPLATE
     {
-      print_error( &@1,
-        "%s declarations not supported by %s\n", L_TEMPLATE, CDECL
-      );
+      print_error( &@1, "template declarations not supported by %s\n", CDECL );
       PARSE_ABORT();
     }
   ;
@@ -3107,9 +3104,9 @@ typedef_decl_c
 
       if ( c_sname_count( &typedef_ast->sname ) > 1 ) {
         print_error( &@1,
-          "%s names can not be scoped; use: %s %s { %s ... }\n",
-          L_TYPEDEF, L_NAMESPACE, c_sname_scope_name( &typedef_ast->sname ),
-          L_TYPEDEF
+          "typedef names can not be scoped; "
+          "use: namespace %s { typedef ... }\n",
+          c_sname_scope_name( &typedef_ast->sname )
         );
         PARSE_ABORT();
       }
@@ -3183,9 +3180,7 @@ using_decl_c_ast
       //
       c_sname_t const *const sname = c_ast_find_name( $8.ast, C_VISIT_DOWN );
       if ( sname != NULL ) {
-        print_error( &$8.ast->loc,
-          "\"%s\" type can not have a name\n", L_USING
-        );
+        print_error( &$8.ast->loc, "\"using\" type can not have a name\n" );
         free( $3 );
         PARSE_ABORT();
       }
@@ -3211,8 +3206,7 @@ using_decl_c_ast
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "\"%s\" not supported%s\n",
-          L_USING, c_lang_which( LANG_CPP_MIN(11) )
+          "\"using\" not supported%s\n", c_lang_which( LANG_CPP_MIN(11) )
         );
         PARSE_ABORT();
       }
@@ -3745,8 +3739,8 @@ pc99_func_or_constructor_decl_c
         // would have no "memory" that the return type was implicitly int.
         //
         print_error( &@1,
-          "implicit \"%s\" functions are illegal in %s and later\n",
-          L_INT, c_lang_name( LANG_C_99 )
+          "implicit \"int\" functions are illegal%s\n",
+          c_lang_which( LANG_MAX(C_95) )
         );
         PARSE_ABORT();
       }
@@ -3939,8 +3933,7 @@ trailing_return_type_c_ast_opt
       //
       if ( ret_ast->type.btids != TB_AUTO ) {
         print_error( &ret_ast->loc,
-          "function with trailing return type must only specify \"%s\"\n",
-          L_AUTO
+          "function with trailing return type must only specify \"auto\"\n"
         );
         PARSE_ABORT();
       }
@@ -4241,8 +4234,8 @@ pc99_pointer_type_c_ast
         // would have no "memory" that the return type was implicitly int.
         //
         print_error( &@1,
-          "implicit \"%s\" is illegal in %s and later\n",
-          L_INT, c_lang_name( LANG_C_99 )
+          "implicit \"int\" is illegal%s\n",
+          c_lang_which( LANG_MAX(C_95) )
         );
         PARSE_ABORT();
       }
@@ -5045,8 +5038,7 @@ atomic_specifier_type_c_ast
         static c_type_t const TSA_ANY = { TB_NONE, TS_ANY, TA_ANY };
         c_type_t const error_type = c_type_and( &$$->type, &TSA_ANY );
         print_error( &@3,
-          "%s can not be of \"%s\"\n",
-          L__ATOMIC, c_type_name_c( &error_type )
+          "_Atomic can not be of \"%s\"\n", c_type_name_c( &error_type )
         );
         PARSE_ABORT();
       }
@@ -5345,8 +5337,8 @@ restrict_qualifier_c_stid
       //
       if ( OPT_LANG_IS(CPP_ANY) ) {
         print_error( &@1,
-          "\"%s\" not supported in C++; use \"%s\" instead\n",
-          L_RESTRICT, L_GNU___RESTRICT
+          "\"restrict\" not supported in C++; use \"%s\" instead\n",
+          L_GNU___RESTRICT
         );
         PARSE_ABORT();
       }
@@ -5434,8 +5426,7 @@ using_opt
   | Y_USING name_exp colon_exp
     {
       print_warning( &@1,
-        "\"%s\" in attributes not supported by %s (ignoring)\n",
-        L_USING, CDECL
+        "\"using\" in attributes not supported by %s (ignoring)\n", CDECL
       );
       free( $2 );
     }
@@ -6222,8 +6213,8 @@ user_defined_literal_decl_english_ast
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "%s %s not supported%s\n",
-          H_USER_DEFINED, L_LITERAL, c_lang_which( LANG_CPP_MIN(11) )
+          "user-defined literal not supported%s\n",
+          c_lang_which( LANG_CPP_MIN(11) )
         );
         PARSE_ABORT();
       }
@@ -7041,8 +7032,7 @@ extern_linkage_c_stid
   | Y_EXTERN linkage_stid '{'
     {
       print_error( &@3,
-        "scoped linkage declarations not supported by %s\n",
-        CDECL
+        "scoped linkage declarations not supported by %s\n", CDECL
       );
       PARSE_ABORT();
     }
