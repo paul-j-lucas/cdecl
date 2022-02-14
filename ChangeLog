@@ -1,3 +1,16 @@
+2022-02-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_operator.c: Fixed a core dump when using the `--debug`/`-d` option
+     for an operator.
+   * c_ast_util.c, check.c, parser.y, declare_a_cd_i.out, declare_ac3i.out,
+     declare_as3i.out, declare_avi.out, explain_a_cd_i.out,
+     explain_udl_c_i-01.out: print_error() and print_warning() clean-up.
+   * c_ast_util.c: Renaming.
+   * NEWS, configure.ac, c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am,
+     explain_rttdi.out, explain_rttdpi.out, explain_rttdi.test,
+     explain_rttdpi.test: `restrict` is now correctly allowed on `typedef`s of
+     pointer.
+
 2022-02-11  Paul J. Lucas <paul@lucasmail.org>
 
    * string.in.h: Updated Gnulib.
