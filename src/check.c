@@ -270,7 +270,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
 
     if ( c_ast_is_register( ast ) ) {
       print_error( &ast->loc,
-        "\"%s\" can not be combined with \"register\"\n", alignas_lang()
+        "\"%s\" can not be combined with \"register\"\n", alignas_name()
       );
       return false;
     }

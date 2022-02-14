@@ -935,10 +935,10 @@ void c_ast_gibberish( c_ast_t const *ast, c_gib_flags_t flags, FILE *gout ) {
       case C_ALIGNAS_NONE:
         break;
       case C_ALIGNAS_EXPR:
-        FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
+        FPRINTF( gout, "%s(%u) ", alignas_name(), ast->align.as.expr );
         break;
       case C_ALIGNAS_TYPE:
-        FPRINTF( gout, "%s(", alignas_lang() );
+        FPRINTF( gout, "%s(", alignas_name() );
         c_ast_gibberish( ast->align.as.type_ast, C_GIB_DECL, gout );
         FPUTS( ") ", gout );
         break;
