@@ -1,3 +1,12 @@
+2022-02-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.h, parser.y: s/TS_NOT_CONSTRUCTOR/TS_FUNC_LIKE_NOT_CTOR/
+   * c_type.h: TS_CONSTRUCTOR_DECL & TS_DESTRUCTOR_DECL clean-up.
+   * c_ast_util.c, c_ast_util.h, c_sname.c, c_type.h, check.c, english.c,
+     gibberish.c, parser.y: Eliminated c_type_is_tid_any().
+   * check.c: Simplification.
+   * check.c, gibberish.c, literals.h: s/alignas_lang/alignas_name/
+
 2022-02-13  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, c_operator.c: Fixed a core dump when using the `--debug`/`-d` option
