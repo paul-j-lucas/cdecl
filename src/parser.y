@@ -2104,7 +2104,7 @@ define_command
       }
       PJL_IGNORE_RV( c_ast_take_type_any( $4, &T_TS_TYPEDEF ) );
 
-      if ( c_type_is_tid_any( &$4->type, TB_ANY_SCOPE ) )
+      if ( c_tid_is_any( $4->type.btids, TB_ANY_SCOPE ) )
         c_sname_set_local_type( &$4->sname, &$4->type );
       c_sname_fill_in_namespaces( &$4->sname );
 
@@ -2674,7 +2674,7 @@ class_struct_union_declaration_c
     {
       c_type_t const *const cur_type =
         c_sname_local_type( &in_attr.current_scope );
-      if ( c_type_is_tid_any( cur_type, TB_ANY_CLASS ) ) {
+      if ( c_tid_is_any( cur_type->btids, TB_ANY_CLASS ) ) {
         char const *const cur_name =
           c_sname_local_name( &in_attr.current_scope );
         char const *const mbr_name = c_sname_local_name( &$3 );
@@ -3654,11 +3654,11 @@ func_decl_c_astp
 
         // + The existing type does _not_ have any non-constructor storage
         //   classes.
-        !c_type_is_tid_any( &type_ast->type, TS_NOT_CONSTRUCTOR ) &&
+        !c_tid_is_any( type_ast->type.stids, TS_NOT_CONSTRUCTOR ) &&
 
         ( // + The existing type has any constructor-only storage-class-like
           //   types (e.g., explicit).
-          c_type_is_tid_any( &type_ast->type, TS_CONSTRUCTOR_ONLY ) ||
+          c_tid_is_any( type_ast->type.stids, TS_CONSTRUCTOR_ONLY ) ||
 
           // + Or the existing type only has storage-class-like types that may
           //   be applied to constructors.
@@ -4383,7 +4383,7 @@ typedef_type_decl_c_ast
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "typedef_type_c_ast", $1 );
 
-      if ( c_type_is_tid_any( &type_ast->type, TS_TYPEDEF ) ) {
+      if ( c_tid_is_any( type_ast->type.stids, TS_TYPEDEF ) ) {
         //
         // If we're defining a type, return the type as-is.
         //

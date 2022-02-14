@@ -282,7 +282,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION: {
-      if ( c_type_is_tid_any( &type, TB_ENUM ) ) {
+      if ( c_tid_is_any( type.btids, TB_ENUM ) ) {
         //
         // Special case: an enum class must be written as just "enum" when
         // doing an elaborated-type-specifier:
@@ -606,7 +606,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
             //
             FPUTC( '(', g->gout );
 
-            if ( c_type_is_tid_any( &ast->type, TA_ANY_MSC_CALL ) ) {
+            if ( c_tid_is_any( ast->type.atids, TA_ANY_MSC_CALL ) ) {
               //
               // A pointer to a function having a Microsoft calling convention
               // has the convention printed just inside the '(':
@@ -998,7 +998,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
       // might be being asked to print all types.
       //
       c_sname_t temp_sname;
-      if ( c_type_is_tid_any( &scope_type, TS_INLINE ) ) {
+      if ( c_tid_is_any( scope_type.stids, TS_INLINE ) ) {
         //
         // For an inline namespace, the "inline" is printed like:
         //

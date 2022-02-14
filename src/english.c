@@ -177,7 +177,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       c_type_print_not_base( &ast->type, eout );
       switch ( ast->kind ) {
         case K_FUNCTION:
-          if ( c_type_is_tid_any( &ast->type, TS_MEMBER_FUNC_ONLY ) )
+          if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
             FPRINTF( eout, "%s ", L_MEMBER );
           break;
         case K_OPERATOR: {

@@ -114,12 +114,12 @@ void c_sname_cleanup( c_sname_t *sname ) {
 void c_sname_fill_in_namespaces( c_sname_t *sname ) {
   assert( sname != NULL );
   c_type_t const *const local_type = c_sname_local_type( sname );
-  if ( !c_type_is_tid_any( local_type, TB_NAMESPACE ) )
+  if ( !c_tid_is_any( local_type->btids, TB_NAMESPACE ) )
     return;
 
   FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
     c_type_t *const type = &c_scope_data( scope )->type;
-    if ( c_type_is_none( type ) || c_type_is_tid_any( type, TB_SCOPE ) ) {
+    if ( c_type_is_none( type ) || c_tid_is_any( type->btids, TB_SCOPE ) ) {
       type->btids &= c_tid_compl( TB_SCOPE );
       type->btids |= TB_NAMESPACE;
     }

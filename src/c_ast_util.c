@@ -289,8 +289,8 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
  * Helper function that checks whether the type of \a ast is one of \a tids.
  *
  * @param ast The AST to check; may be NULL.
- * @param qual_stids The qualifier(s) of the `typedef` for \a ast, if any.
  * @param tids The bitwise-or of type(s) to check against.
+ * @param qual_stids The qualifier(s) of the `typedef` for \a ast, if any.
  * @return If \a ast is not NULL and the type of \a ast is one of \a tids,
  * returns \a ast; otherwise returns NULL.
  */
@@ -668,8 +668,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
 
   c_type_t type = c_ast_take_type_any( type_ast, &T_TS_TYPEDEF );
 
-  if ( c_type_is_tid_any( &type, TS_TYPEDEF ) &&
-       decl_ast->kind == K_TYPEDEF ) {
+  if ( c_tid_is_any( type.stids, TS_TYPEDEF ) && decl_ast->kind == K_TYPEDEF ) {
     //
     // This is for a case like:
     //
@@ -716,7 +715,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
 
   if ( align != NULL && align->kind != C_ALIGNAS_NONE ) {
     ast->align = *align;
-    if ( c_type_is_tid_any( &type, TS_TYPEDEF ) ) {
+    if ( c_tid_is_any( type.stids, TS_TYPEDEF ) ) {
       //
       // We check for illegal aligned typedef here rather than in errors.c
       // because the "typedef-ness" needed to be removed previously before the
@@ -771,7 +770,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   // The user didn't specify either member or non-member explicitly: see if it
   // has a member-only type qualifier.
   //
-  if ( c_type_is_tid_any( &ast->type, TS_MEMBER_FUNC_ONLY ) )
+  if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
     return C_OP_MEMBER;
 
   size_t const n_params = c_ast_params_count( ast );
@@ -786,7 +785,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
       // they have a name (of a class) or declared static.
       //
       return  !c_sname_empty( &ast->sname ) ||
-              c_type_is_tid_any( &ast->type, TS_STATIC ) ?
+              c_tid_is_any( ast->type.stids, TS_STATIC ) ?
         C_OP_MEMBER : C_OP_NON_MEMBER;
 
     case C_OP_MINUS2:
