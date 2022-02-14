@@ -389,9 +389,8 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_CONSTRUCTOR_ONLY
  * @sa #TS_FUNC_LIKE_CPP
  */
-#define TS_CONSTRUCTOR_DECL   ( TS_CONSTEXPR | TS_DEFAULT | TS_DELETE \
-                              | TS_EXPLICIT | TS_FRIEND | TS_INLINE \
-                              | TS_NOEXCEPT | TS_THROW )
+#define TS_CONSTRUCTOR_DECL   ( TS_CONSTRUCTOR_DEF | TS_DEFAULT | TS_DELETE \
+                              | TS_EXPLICIT | TS_FRIEND )
 
 /**
  * A subset of #TS_CONSTRUCTOR_DECL that can apply to file-scope constructor
@@ -416,9 +415,9 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_CONSTRUCTOR_DECL
  * @sa #TS_DESTRUCTOR_DEF
  */
-#define TS_DESTRUCTOR_DECL    ( TS_DEFAULT | TS_DELETE | TS_FINAL | TS_FRIEND \
-                              | TS_INLINE | TS_NOEXCEPT | TS_OVERRIDE \
-                              | TS_PURE_VIRTUAL | TS_THROW | TS_VIRTUAL )
+#define TS_DESTRUCTOR_DECL    ( TS_DESTRUCTOR_DEF | TS_DELETE | TS_FINAL \
+                              | TS_FRIEND | TS_OVERRIDE | TS_PURE_VIRTUAL \
+                              | TS_VIRTUAL )
 
 /**
  * A subset of #TS_DESTRUCTOR_DECL that can apply to file-scope destructor
