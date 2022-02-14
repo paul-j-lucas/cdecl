@@ -159,18 +159,18 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
   //
   for ( c_operator_t const *op = C_OPERATOR + oper_id; op->oper_id <= oper_id;
         ++op ) {
-    if ( op->oper_id == oper_id ) {
-      if ( opt_lang_is_any( op->lang_ids ) )
-        return op;
-      //
-      // We found the operator, but the entry isn't supported for the current
-      // language, so keep looking for one that is.  However, make a note of
-      // the current entry and return it if we don't find a better entry since
-      // we always have to return non-NULL.  The code in c_ast_check_oper()
-      // will deal with an unsupported language.
-      //
-      best_op = op;
-    }
+    if ( op->oper_id < oper_id )
+      continue;
+    if ( opt_lang_is_any( op->lang_ids ) )
+      return op;
+    //
+    // We found the operator, but the entry isn't supported for the current
+    // language, so keep looking for one that is.  However, make a note of the
+    // current entry and return it if we don't find a better entry since we
+    // always have to return non-NULL.  The code in c_ast_check_oper() will
+    // deal with an unsupported language.
+    //
+    best_op = op;
   } // for
 
   if ( unlikely( best_op == NULL ) )
