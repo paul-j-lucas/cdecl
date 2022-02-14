@@ -442,9 +442,9 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  *
  * @sa #TS_CONSTRUCTOR_DECL
  * @sa #TS_CONSTRUCTOR_DEF
+ * @sa #TS_FUNC_LIKE_NOT_CTOR
  * @sa #TS_MAIN_FUNC_CPP
  * @sa #TS_NEW_DELETE_OPER
- * @sa #TS_NOT_CONSTRUCTOR
  * @sa #TS_USER_DEF_CONV
  */
 #define TS_FUNC_LIKE_CPP      ( TS_CV | TS_CONSTEVAL | TS_CONSTEXPR \
@@ -454,6 +454,18 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_OVERRIDE | TS_PURE_VIRTUAL \
                               | TS_ANY_REFERENCE | TS_RESTRICT | TS_THROW \
                               | TS_TYPEDEF | TS_VIRTUAL )
+
+/**
+ * The types that can apply only to function-like things except constructors.
+ *
+ * @sa #TS_CONSTRUCTOR_DECL
+ * @sa #TS_CONSTRUCTOR_DEF
+ * @sa #TS_CONSTRUCTOR_ONLY
+ * @sa #TS_FUNC_LIKE_CPP
+ */
+#define TS_FUNC_LIKE_NOT_CTOR ( TS_CV | TS_EXTERN | TS_EXTERN_C | TS_FINAL \
+                              | TS_OVERRIDE | TS_ANY_REFERENCE | TS_RESTRICT \
+                              | TS_STATIC | TS_VIRTUAL )
 
 /**
  * The only storage types that can apply to a C program's `main()` function.
@@ -498,18 +510,6 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_MEMBER_FUNC_ONLY
  */
 #define TS_NONMEMBER_FUNC_ONLY TS_FRIEND
-
-/**
- * The types that can apply only to function-like things except constructors.
- *
- * @sa #TS_CONSTRUCTOR_DECL
- * @sa #TS_CONSTRUCTOR_DEF
- * @sa #TS_CONSTRUCTOR_ONLY
- * @sa #TS_FUNC_LIKE_CPP
- */
-#define TS_NOT_CONSTRUCTOR    ( TS_CV | TS_EXTERN | TS_EXTERN_C | TS_FINAL \
-                              | TS_OVERRIDE | TS_ANY_REFERENCE | TS_RESTRICT \
-                              | TS_STATIC | TS_VIRTUAL )
 
 /**
  * The only types that can apply to user-defined conversion operators.

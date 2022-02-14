@@ -3654,7 +3654,7 @@ func_decl_c_astp
 
         // + The existing type does _not_ have any non-constructor storage
         //   classes.
-        !c_tid_is_any( type_ast->type.stids, TS_NOT_CONSTRUCTOR ) &&
+        !c_tid_is_any( type_ast->type.stids, TS_FUNC_LIKE_NOT_CTOR ) &&
 
         ( // + The existing type has any constructor-only storage-class-like
           //   types (e.g., explicit).
@@ -3669,7 +3669,7 @@ func_decl_c_astp
         ) &&
 
         // + The new type does _not_ have any non-constructor storage classes.
-        !c_tid_is_any( func_stid, TS_NOT_CONSTRUCTOR );
+        !c_tid_is_any( func_stid, TS_FUNC_LIKE_NOT_CTOR );
 
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
