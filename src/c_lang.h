@@ -455,7 +455,7 @@ void c_lang_set( c_lang_id_t lang_id );
 /**
  * Gets a string specifying a language when a particular feature isn't, hasn't
  * been, or won't be legal unless, since, or until, if ever.  It is presumed to
- * follow `"...  not supported"` (with no trailing space).
+ * follow `"not supported"` (with no trailing space).
  *
  * @param lang_ids The bitwise-or of legal language(s).
  * @return
