@@ -40,6 +40,20 @@
 #include <string.h>                     /* for str...() */
 #include <unistd.h>                     /* for isatty() */
 
+//
+// Color capabilities.  Names containint Upper-case are unique to cdecl and
+// upper-case to avoid conflict with gcc.
+//
+#define CAP_CARET             "caret"
+#define CAP_ERROR             "error"
+#define CAP_HELP_KEYWORD      "HELP-keyword"
+#define CAP_HELP_NONTERM      "HELP-nonterm"
+#define CAP_HELP_PUNCT        "HELP-punct"
+#define CAP_HELP_TITLE        "HELP-title"
+#define CAP_LOCUS             "locus"
+#define CAP_PROMPT            "PROMPT"
+#define CAP_WARNING           "warning"
+
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -56,15 +70,15 @@ typedef struct color_cap color_cap_t;
 
 // extern constant definitions
 char const  COLORS_DEFAULT[] =
-  "caret="        SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
-  "error="        SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP
-  "HELP-keyword="                       SGR_BOLD  SGR_CAP_SEP
-  "HELP-nonterm=" SGR_FG_CYAN                     SGR_CAP_SEP
-  "HELP-punct="   SGR_FG_BLACK  SGR_SEP SGR_BOLD  SGR_CAP_SEP
-  "HELP-title="   SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP
-  "locus="                              SGR_BOLD  SGR_CAP_SEP
-  "PROMPT="       SGR_FG_GREEN                    SGR_CAP_SEP
-  "warning="      SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP;
+  CAP_CARET         "=" SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  CAP_ERROR         "=" SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  CAP_HELP_KEYWORD  "="                       SGR_BOLD  SGR_CAP_SEP
+  CAP_HELP_NONTERM  "=" SGR_FG_CYAN                     SGR_CAP_SEP
+  CAP_HELP_PUNCT    "=" SGR_FG_BLACK  SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  CAP_HELP_TITLE    "=" SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  CAP_LOCUS         "="                       SGR_BOLD  SGR_CAP_SEP
+  CAP_PROMPT        "=" SGR_FG_GREEN                    SGR_CAP_SEP
+  CAP_WARNING       "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP;
 
 // extern variable definitions
 bool        colorize;
@@ -79,20 +93,19 @@ char const *sgr_prompt;
 char const *sgr_warning;
 
 /**
- * Color capabilities table.  Upper-case names are unique to cdecl and upper-
- * case to avoid conflict with gcc.
+ * Color capabilities table.
  */
 static color_cap_t const COLOR_CAPS[] = {
-  { "caret",        &sgr_caret        },
-  { "error",        &sgr_error        },
-  { "HELP-keyword", &sgr_help_keyword },
-  { "HELP-nonterm", &sgr_help_nonterm },
-  { "HELP-punct",   &sgr_help_punct   },
-  { "HELP-title",   &sgr_help_title   },
-  { "locus",        &sgr_locus        },
-  { "PROMPT",       &sgr_prompt       },
-  { "warning",      &sgr_warning      },
-  { NULL,           NULL              }
+  { CAP_CARET,        &sgr_caret        },
+  { CAP_ERROR,        &sgr_error        },
+  { CAP_HELP_KEYWORD, &sgr_help_keyword },
+  { CAP_HELP_NONTERM, &sgr_help_nonterm },
+  { CAP_HELP_PUNCT,   &sgr_help_punct   },
+  { CAP_HELP_TITLE,   &sgr_help_title   },
+  { CAP_LOCUS,        &sgr_locus        },
+  { CAP_PROMPT,       &sgr_prompt       },
+  { CAP_WARNING,      &sgr_warning      },
+  { NULL,             NULL              }
 };
 
 // local functions
