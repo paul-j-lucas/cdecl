@@ -181,7 +181,7 @@ static void print_options( void ) {
 #endif /* ENABLE_FLEX_DEBUG */
   FPRINTF( cdecl_fout, " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
   FPRINTF( cdecl_fout, "    lang=%s\n", c_lang_name( opt_lang ) );
-  FPRINTF( cdecl_fout, "  %sprompt\n", maybe_no( cdecl_prompt[0][0] != '\0' ) );
+  FPRINTF( cdecl_fout, "  %sprompt\n", maybe_no( opt_prompt ) );
   FPRINTF( cdecl_fout, "  %ssemicolon\n", maybe_no( opt_semicolon ) );
   FPRINTF( cdecl_fout, "  %susing\n", maybe_no( opt_using ) );
 }
