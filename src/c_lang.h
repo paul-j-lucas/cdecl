@@ -305,8 +305,7 @@ PJL_WARN_UNUSED_RESULT
 char const* c_lang_coarse_name( c_lang_id_t lang_ids );
 
 /**
- * Gets the \ref c_lang_id_t corresponding to the given string
- * (case insensitive).
+ * Gets the \ref c_lang_id_t corresponding to \a name.
  *
  * @param name The language name (case insensitive) to get the corresponding
  * \ref c_lang_id_t for.
