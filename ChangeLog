@@ -1,3 +1,8 @@
+2022-02-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c: Added color capability macros for names.
+   * set_options.c: Now more simply using opt_prompt.
+
 2022-02-14  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.h, parser.y: s/TS_NOT_CONSTRUCTOR/TS_FUNC_LIKE_NOT_CTOR/
