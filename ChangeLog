@@ -1,5 +1,17 @@
+2022-02-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c: "default" is now auto-completable only in C++11 and later.
+   * NEWS, parser.y: New-style cast keyword synonyms for corresponding two-word
+     English phrases.
+   * parser.y: s/new_style_cast_c/new_style_cast_expr_c/ to remove duplicate
+     name. (How did this ever work?)
+   * c_lang.c: Made c_lang_literal() able to exit the loop.
+
 2022-02-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl_keyword.c: Using LANG_C_CPP_MAX().
+   * NEWS, parser.y: `return` is now accepted as a shorthand for `returning` in
+     pseudo-English.
    * color.c: Added color capability macros for names.
    * set_options.c: Now more simply using opt_prompt.
 
