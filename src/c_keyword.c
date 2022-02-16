@@ -75,7 +75,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_CONTINUE,             Y_CONTINUE,           KC__, TX_NONE,
     LANG_ANY,               AC_LANG(NONE)                                 },
   { L_DEFAULT,              Y_DEFAULT,            KC__, TS_DEFAULT,
-    LANG_ANY,               AC_LANG(ANY)                                  },
+    LANG_ANY,               AC_LANG(CPP_MIN(11))                          },
   { L_DO,                   Y_DO,                 KC__, TX_NONE,
     LANG_ANY,               AC_LANG(NONE)                                 },
   { L_DOUBLE,               Y_DOUBLE,             KC__, TB_DOUBLE,
