@@ -94,12 +94,13 @@ c_lang_id_t c_lang_find( char const *name ) {
   return LANG_NONE;
 }
 
-char const* c_lang_literal( c_lang_lit_t const *lang_lit ) {
-  assert( lang_lit != NULL );
-  for ( ;; ++lang_lit ) {
-    if ( opt_lang_is_any( lang_lit->lang_ids ) )
-      return lang_lit->literal;
+char const* c_lang_literal( c_lang_lit_t const *ll ) {
+  assert( ll != NULL );
+  for ( ; ll->literal != NULL; ++ll ) {
+    if ( opt_lang_is_any( ll->lang_ids ) )
+      return ll->literal;
   } // for
+  return NULL;
 }
 
 char const* c_lang_name( c_lang_id_t lang_id ) {
