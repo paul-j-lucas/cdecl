@@ -5937,7 +5937,7 @@ returning_english_ast_opt
   ;
 
 returning_english_ast
-  : Y_RETURNING decl_english_ast
+  : returning decl_english_ast
     {
       DUMP_START( "returning_english_ast", "RETURNING decl_english_ast" );
       DUMP_AST( "decl_english_ast", $2 );
@@ -5948,7 +5948,7 @@ returning_english_ast
       DUMP_END();
     }
 
-  | Y_RETURNING error
+  | returning error
     {
       elaborate_error( "English expected after \"%s\"", L_RETURNING );
     }
@@ -7224,8 +7224,13 @@ reference_exp
     }
   ;
 
-returning_exp
+returning
   : Y_RETURNING
+  | Y_RETURN
+  ;
+
+returning_exp
+  : returning
   | error
     {
       keyword_expected( L_RETURNING );
