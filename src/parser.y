@@ -2125,12 +2125,12 @@ explain_command
     /*
      * C-style cast.
      */
-  : explain c_style_cast_c
+  : explain c_style_cast_expr_c
 
     /*
      * New C++-style cast.
      */
-  | explain new_style_cast_c
+  | explain new_style_cast_expr_c
 
     /*
      * Common typed declaration, e.g.: T x.
@@ -2496,7 +2496,7 @@ using_command
 
 /// Gibberish C-style cast ////////////////////////////////////////////////////
 
-c_style_cast_c
+c_style_cast_expr_c
   : '(' type_c_ast
     {
       ia_type_ast_push( $2 );
@@ -2544,7 +2544,7 @@ c_style_cast_c
 
 /// Gibberish C++-style cast //////////////////////////////////////////////////
 
-new_style_cast_c
+new_style_cast_expr_c
   : new_style_cast_c lt_exp type_c_ast
     {
       ia_type_ast_push( $3 );
