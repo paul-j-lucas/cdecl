@@ -1739,7 +1739,7 @@ cast_command
     /*
      * New C++-style cast.
      */
-  | new_style_cast_english cast_exp sname_english_exp as_into_to_exp
+  | new_style_cast_english sname_english_exp as_into_to_exp
     decl_english_ast
     {
       char const *const cast_literal = c_cast_gibberish( $1 );
@@ -1748,8 +1748,8 @@ cast_command
                   "new_style_cast_english CAST sname_english_exp "
                   "as_into_to_exp decl_english_ast" );
       DUMP_STR( "new_style_cast_english", cast_literal );
-      DUMP_SNAME( "sname_english_exp", $3 );
-      DUMP_AST( "decl_english_ast", $5 );
+      DUMP_SNAME( "sname_english_exp", $2 );
+      DUMP_AST( "decl_english_ast", $4 );
       DUMP_END();
 
       bool ok = false;
@@ -1761,25 +1761,26 @@ cast_command
         );
       }
       else {
-        $5->cast_kind = $1;
-        if ( (ok = c_ast_check( $5 )) ) {
+        $4->cast_kind = $1;
+        if ( (ok = c_ast_check( $4 )) ) {
           FPRINTF( cdecl_fout, "%s<", cast_literal );
-          c_ast_gibberish( $5, C_GIB_CAST, cdecl_fout );
-          FPRINTF( cdecl_fout, ">(%s)\n", c_sname_full_name( &$3 ) );
+          c_ast_gibberish( $4, C_GIB_CAST, cdecl_fout );
+          FPRINTF( cdecl_fout, ">(%s)\n", c_sname_full_name( &$2 ) );
         }
       }
 
-      c_sname_cleanup( &$3 );
+      c_sname_cleanup( &$2 );
       if ( !ok )
         PARSE_ABORT();
     }
   ;
 
 new_style_cast_english
-  : Y_CONST                       { $$ = C_CAST_CONST;        }
-  | Y_DYNAMIC                     { $$ = C_CAST_DYNAMIC;      }
-  | Y_REINTERPRET                 { $$ = C_CAST_REINTERPRET;  }
-  | Y_STATIC                      { $$ = C_CAST_STATIC;       }
+  : Y_CONST cast_exp              { $$ = C_CAST_CONST;        }
+  | Y_DYNAMIC cast_exp            { $$ = C_CAST_DYNAMIC;      }
+  | Y_REINTERPRET cast_exp        { $$ = C_CAST_REINTERPRET;  }
+  | Y_STATIC cast_exp             { $$ = C_CAST_STATIC;       }
+  | new_style_cast_c
   ;
 
 /// declare command ///////////////////////////////////////////////////////////
