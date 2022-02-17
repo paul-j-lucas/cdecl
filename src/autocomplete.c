@@ -103,7 +103,7 @@ static c_lang_lit_t const AC_CDECL_KEYWORDS[] = {
   { LANG_C_CPP_MIN(2X,17),  L_UNUSED          },
   { LANG_CPP_ANY,           H_USER_DEFINED    },
   { LANG_C_MIN(99),         L_VARIABLE        },
-  { LANG_ANY,               L_VARIADIC        },
+  { LANG_MIN(C_89),         L_VARIADIC        },
   { LANG_ANY,               L_VECTOR          },
   { LANG_ANY,               L_WIDTH           },
 
