@@ -255,9 +255,9 @@ static bool is_command( char const *command, char const *s, size_t n ) {
     return true;
   //
   // If n > command_len, then the first character past the end of the command
-  // must not be an identifier.  For example, if command is "foo", then s must
-  // be "foo" exactly (above); or "foo" followed by whitespace or punctuation,
-  // but not an identifier character:
+  // must not be an identifier character.  For example, if command is "foo",
+  // then it must be "foo" exactly (above); or "foo" followed by a whitespace
+  // or punctuation character, but not an identifier character:
   //
   //      "foo"   match
   //      "foo "  match
