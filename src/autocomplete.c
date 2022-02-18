@@ -115,7 +115,7 @@ static char*  command_generator( char const*, int );
 static char*  keyword_generator( char const*, int );
 
 PJL_WARN_UNUSED_RESULT
-static bool   is_command( char const* );
+static bool   is_command( char const*, char const*, size_t );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -213,45 +213,58 @@ static char const* const* init_set_options( void ) {
 }
 
 /**
- * Checks whether the current line being read is a cast command.  In C, this
- * can only be `cast`; in C++, this can also be `const`, `dynamic`, `static`,
- * or `reinterpret`.
+ * Checks whether \a s is a cast command.  In C, this can only be `cast`; in
+ * C++, this can also be `const`, `dynamic`, `static`, or `reinterpret`.
  *
+ * @param s The string to check.  Leading whitespace must have been skipped.
+ * @param n The length of \a s.
  * @return Returns `true` only if it's a cast command.
  *
  * @sa is_command()
  */
 PJL_WARN_UNUSED_RESULT
-static bool is_cast_command( void ) {
-  if ( is_command( L_CAST ) )
+static bool is_cast_command( char const *s, size_t n ) {
+  if ( is_command( L_CAST, s, n ) )
     return true;
   if ( OPT_LANG_IS(C_ANY) )
     return false;
-  return  is_command( L_CONST       ) ||
-          is_command( L_DYNAMIC     ) ||
-          is_command( L_STATIC      ) ||
-          is_command( L_REINTERPRET );
+  return  is_command( L_CONST,       s, n ) ||
+          is_command( L_DYNAMIC,     s, n ) ||
+          is_command( L_STATIC,      s, n ) ||
+          is_command( L_REINTERPRET, s, n );
 }
 
 /**
- * Checks whether the current line being read is a particular cdecl command.
+ * Checks whether \a s is a particular cdecl command.
  *
  * @param command The command to check for.
+ * @param s The string to check.  Leading whitespace must have been skipped.
+ * @param n The length of \a s.
  * @return Returns `true` only if it is.
  *
  * @sa is_cast_command()
  */
 PJL_WARN_UNUSED_RESULT
-static bool is_command( char const *command ) {
+static bool is_command( char const *command, char const *s, size_t n ) {
   assert( command != NULL );
-  size_t const spaces = strspn( rl_line_buffer, " " );
-  size_t const rl_size = STATIC_CAST( size_t, rl_end ) - spaces;
-  if ( rl_size == 0 )
-    return false;
+  assert( s != NULL );
   size_t const command_len = strlen( command );
-  if ( command_len > rl_size )
-    return false;                       // more chars than in rl_line_buffer?
-  return strncmp( rl_line_buffer + spaces, command, command_len ) == 0;
+  if ( command_len > n || strncmp( s, command, command_len ) != 0 )
+    return false;
+  if ( command_len == n )
+    return true;
+  //
+  // If n > command_len, then the first character past the end of the command
+  // must not be an identifier.  For example, if command is "foo", then s must
+  // be "foo" exactly (above); or "foo" followed by whitespace or punctuation,
+  // but not an identifier character:
+  //
+  //      "foo"   match
+  //      "foo "  match
+  //      "foo("  match
+  //      "foob"  no match
+  //
+  return !is_ident( s[ command_len ] );
 }
 
 ////////// readline callback functions ////////////////////////////////////////
@@ -331,6 +344,14 @@ static char* keyword_generator( char const *text, int state ) {
   static size_t       text_len;
 
   if ( state == 0 ) {                   // new word? reset
+    size_t const rl_size = STATIC_CAST( size_t, rl_end );
+    size_t const leading_spaces = strnspn( rl_line_buffer, " ", rl_size );
+    size_t const buf_len = rl_size - leading_spaces;
+    if ( buf_len == 0 )
+      return NULL;
+    char const *const buf = rl_line_buffer + leading_spaces;
+
+    command = NULL;
     match_index = 0;
     text_len = strlen( text );
 
@@ -342,14 +363,15 @@ static char* keyword_generator( char const *text, int state ) {
     //
     //      cdecl> set <tab>
     //
-    if ( is_command( "?" ) )
+    if ( is_command( "?", buf, buf_len ) )
       command = L_HELP;
-    else if ( is_cast_command() )
+    else if ( is_cast_command( buf, buf_len ) )
       command = L_CAST;
     else {
-      command = NULL;
       FOREACH_CDECL_COMMAND( c ) {
-        if ( opt_lang_is_any( c->lang_ids ) && is_command( c->literal ) ) {
+        if ( !opt_lang_is_any( c->lang_ids ) )
+          continue;
+        if ( is_command( c->literal, buf, buf_len ) ) {
           command = c->literal;
           break;
         }
