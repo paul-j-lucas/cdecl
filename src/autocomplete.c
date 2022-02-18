@@ -244,10 +244,14 @@ static bool is_cast_command( void ) {
 PJL_WARN_UNUSED_RESULT
 static bool is_command( char const *command ) {
   assert( command != NULL );
+  size_t const spaces = strspn( rl_line_buffer, " " );
+  size_t const rl_size = STATIC_CAST( size_t, rl_end ) - spaces;
+  if ( rl_size == 0 )
+    return false;
   size_t const command_len = strlen( command );
-  if ( command_len > STATIC_CAST( size_t, rl_end ) )
+  if ( command_len > rl_size )
     return false;                       // more chars than in rl_line_buffer?
-  return strncmp( rl_line_buffer, command, command_len ) == 0;
+  return strncmp( rl_line_buffer + spaces, command, command_len ) == 0;
 }
 
 ////////// readline callback functions ////////////////////////////////////////
