@@ -12,6 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.13
 
+** `alignas` & `_Alignas`
+These keywords are now additionally allowed instead of `aligned [as|to]` in
+pseudo-English.
+
 ** Auto-completion of cdecl keywords
 Cdecl keywords are now _not_ auto-completable when explaining gibberish.
 

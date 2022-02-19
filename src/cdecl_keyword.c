@@ -101,8 +101,9 @@
 
 /**
  * All cdecl keywords that are (mostly) _not_ C/C++ keywords.
- * Exceptions are `bool`, `complex`, `const`, and `volatile` that are included
- * here as cdecl keywords so each maps to its language-specific literal.
+ * Exceptions are `alignas`, `bool`, `complex`, `const`, and `volatile` that
+ * are included here as cdecl keywords so each maps to its language-specific
+ * literal.
  *
  * ## Initialization Macros
  *
@@ -169,6 +170,9 @@
 static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_ADDRESS,        TOKEN( Y_ADDRESS,           AC_LANG(CPP_MIN(20))      ) },
   { L_ALIGN,          TOKEN( Y_ALIGNED,           AC_LANG(NONE)             ) },
+  { L_ALIGNAS,        C_SYN( true,                AC_LANG(NONE),
+                        { LANG_C_MIN(11), L__ALIGNAS },
+                        { LANG_ANY,       L_ALIGNAS  }                      ) },
   { L_ALIGNED,        TOKEN( Y_ALIGNED,           AC_LANG(C_CPP_MIN(11,11)) ) },
   { L_ALL,            TOKEN( Y_ALL,               AC_LANG(NONE)             ) },
   { L_APPLE_BLOCK,    TOKEN( Y_APPLE_BLOCK,       AC_LANG(ANY)              ) },

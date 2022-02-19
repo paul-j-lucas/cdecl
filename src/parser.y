@@ -2020,24 +2020,30 @@ alignas_or_width_decl_english_ast
   ;
 
 alignas_specifier_english
-  : Y_ALIGNED as_or_to_opt Y_INT_LIT bytes_opt
+  : aligned_english Y_INT_LIT bytes_opt
     {
       $$.kind = C_ALIGNAS_EXPR;
       $$.loc = @1;
-      $$.as.expr = (unsigned)$3;
+      $$.as.expr = (unsigned)$2;
     }
-  | Y_ALIGNED as_or_to_opt decl_english_ast
+  | aligned_english decl_english_ast
     {
       $$.kind = C_ALIGNAS_TYPE;
       $$.loc = @1;
-      $$.as.type_ast = $3;
+      $$.as.type_ast = $2;
     }
-  | Y_ALIGNED as_or_to_opt error
+  | aligned_english error
     {
       MEM_ZERO( &$$ );
       $$.loc = @1;
       elaborate_error( "integer or type expected" );
     }
+  ;
+
+aligned_english
+  : Y_ALIGNED as_or_to_opt
+  | Y__ALIGNAS
+  | Y_ALIGNAS
   ;
 
 as_or_to_opt
