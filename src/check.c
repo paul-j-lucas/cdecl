@@ -275,9 +275,18 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
       return false;
     }
 
-    if ( !c_ast_is_kind_any( ast, K_ANY_OBJECT ) ) {
+    c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+
+    if ( !c_ast_is_kind_any( raw_ast, K_ANY_OBJECT ) ) {
       print_error( &ast->loc,
         "%s can not be aligned\n", c_kind_name( ast->kind )
+      );
+      return false;
+    }
+
+    if ( OPT_LANG_IS(C_ANY) && raw_ast->kind == K_ENUM_CLASS_STRUCT_UNION ) {
+      print_error( &ast->loc,
+        "%s can not be aligned in C\n", c_kind_name( ast->kind )
       );
       return false;
     }

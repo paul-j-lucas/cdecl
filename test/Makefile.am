@@ -236,6 +236,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_cnmf_v-c.test \
 	tests/declare_cri.test \
 	tests/declare_en-knr.test \
+	tests/declare_en_al4.test \
 	tests/declare_enc-c.test \
 	tests/declare_etsf_v.test \
 	tests/declare_f_ai.test \

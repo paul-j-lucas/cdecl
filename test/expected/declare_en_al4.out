@@ -1,0 +1,3 @@
+declare x as enum E aligned 4
+        ^
+9: error: enum, struct, or union can not be aligned in C

@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.13
 
+** Aligned `enum`, `struct`, and `union` in C
+Alignment of `enum`, `struct`, and `union` is now correctly forbidden in C.
+
 ** `alignas` & `_Alignas`
 These keywords are now additionally allowed instead of `aligned [as|to]` in
 pseudo-English.
