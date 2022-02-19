@@ -45,12 +45,6 @@
 #define KC_A                      C_KW_CTX_ATTRIBUTE
 #define KC_F                      C_KW_CTX_MBR_FUNC
 
-#ifdef WITH_READLINE
-# define AC_LANG(LANG_MACRO)      LANG_##LANG_MACRO
-#else
-# define AC_LANG(LANG_MACRO)      /* nothing */
-#endif /* WITH_READLINE */
-
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////

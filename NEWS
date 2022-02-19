@@ -12,10 +12,13 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.13
 
-** Autocompletion tweaks
-`new` is now autocompletable; `variadic` is now autocompletable only in C89 and
-later.  The following are now _not_ autocompletable: `co_await`, `co_return`,
-`co_yield`, `concept`, `decltype`, and `requires`.
+** Auto-completion of cdecl keywords
+Cdecl keywords are now _not_ auto-completable when explaining gibberish.
+
+** Auto-completion tweaks
+`new` is now auto-completable; `variadic` is now autocompletable only in C89
+and later.  The following are now _not_ autocompletable: `co_await`,
+`co_return`, `co_yield`, `concept`, `decltype`, and `requires`.
 
 ** `restrict` of `typedef`
 `restrict` is now correctly allowed on `typedef`s of pointer:

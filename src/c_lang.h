@@ -127,6 +127,18 @@ _GL_INLINE_HEADER_BEGIN
 #define LANGX_MASK    0x0180u           /**< Language extensions bitmask. */
 
 /**
+ * Expands into \a LANG_MACRO for autocompletion only if GNU **readline**(3) is
+ * compiled in; nothing if not.
+ *
+ * @param LANG_MACRO The `LANG_xxx` macro to expand (without the `LANG_`).
+ */
+#ifdef WITH_READLINE
+# define AC_LANG(LANG_MACRO)      LANG_##LANG_MACRO
+#else
+# define AC_LANG(LANG_MACRO)      /* nothing */
+#endif /* WITH_READLINE */
+
+/**
  * All languages up to and including \a L.
  *
  * @param L The language _without_ the `LANG_` prefix.

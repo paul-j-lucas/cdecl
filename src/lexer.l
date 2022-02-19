@@ -223,10 +223,10 @@ tilde:
 PJL_WARN_UNUSED_RESULT
 static inline
 cdecl_keyword_t const* lexer_cdecl_keyword_find( char const *literal ) {
-  cdecl_keyword_t const *const ck = cdecl_keyword_find( literal );
-  if ( ck != NULL &&
-       ((lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0 || ck->always_find) ) {
-    return ck;
+  cdecl_keyword_t const *const k = cdecl_keyword_find( literal );
+  if ( k != NULL &&
+       ((lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0 || k->always_find) ) {
+    return k;
   }
   return NULL;
 }

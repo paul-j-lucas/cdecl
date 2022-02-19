@@ -64,6 +64,10 @@ struct cdecl_keyword {
    * opt_lang against any of those, matches the last (default) element.
    */
   c_lang_lit_t const *lang_syn;
+
+#ifdef WITH_READLINE
+  c_lang_id_t         ac_lang_ids;      ///< Language(s) auto-completable in.
+#endif /* WITH_READLINE */
 };
 
 ////////// extern functions ///////////////////////////////////////////////////

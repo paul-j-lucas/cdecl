@@ -28,6 +28,7 @@
 #include "cdecl.h"
 #include "c_keyword.h"
 #include "c_lang.h"
+#include "cdecl_keyword.h"
 #include "literals.h"
 #include "options.h"
 #include "set_options.h"
@@ -51,64 +52,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Subset of cdecl keywords (that are not cdecl commands, nor `help` nor `set`
- * command arguments, nor C/C++ keywords) that are auto-completable.
+ * Auto-completable keywords.
  *
- * @note For two-word terms, only the second word is here: the first shouldn't
- * be.
- * For example, for the two-word term `maybe unused`, only `unused` is here and
- * `maybe` isn't.  Having `maybe` here would only create ambiguity between
- * `maybe` (a cdecl keyword) and `maybe_unused` (a C keyword) and completing
- * `maybe_unused` is better.
- *
- * @sa CDECL_COMMANDS
- * @sa CDECL_KEYWORDS
- * @sa C_KEYWORDS
+ * This is the union of C/C++ keywords and cdecl keywords that are auto-
+ * completable.
  */
-static c_lang_lit_t const AC_CDECL_KEYWORDS[] = {
-  { LANG_CPP_MIN(20),       L_ADDRESS         },
-  { LANG_C_CPP_MIN(11,11),  L_ALIGN           },
-  { LANG_ANY,               L_APPLE_BLOCK     },
-  { LANG_ANY,               L_ARRAY           },
-  { LANG_C_MIN(11),         L_ATOMIC          },
-  { LANG_ANY,               L_BITS            },
-  { LANG_C_CPP_MIN(11,11),  L_BYTES           },
-  { LANG_ANY,               L_CAST            },
-  { LANG_C_MIN(99),         L_COMPLEX         },
-  { LANG_CPP_ANY,           L_CONSTRUCTOR     },
-  { LANG_CPP_ANY,           L_CONVERSION      },
-  { LANG_CPP_MIN(11),       L_DEPENDENCY      },
-  { LANG_CPP_ANY,           L_DESTRUCTOR      },
-  { LANG_CPP_MIN(17),       L_DISCARD         },
-  { LANG_CPP_MIN(20),       L_EVALUATION      },
-  { LANG_CPP_MIN(11),       L_EXCEPT          },
-  { LANG_CPP_MIN(11),       L_EXPRESSION      },
-  { LANG_ANY,               L_FUNCTION        },
-  { LANG_C_MIN(99),         L_IMAGINARY       },
-  { LANG_CPP_MIN(20),       L_INITIALIZATION  },
-  { LANG_C_MIN(99),         L_LENGTH          },
-  { LANG_CPP_ANY,           L_LINKAGE         },
-  { LANG_CPP_MIN(11),       L_LITERAL         },
-  { LANG_C_CPP_MIN(11,11),  L_LOCAL           },
-  { LANG_CPP_ANY,           L_MEMBER          },
-  { LANG_CPP_ANY,           H_NON_MEMBER      },
-  { LANG_ANY,               L_POINTER         },
-  { LANG_ANY,               L_PREDEFINED      },
-  { LANG_CPP_ANY,           L_PURE            },
-  { LANG_CPP_ANY,           L_REFERENCE       },
-  { LANG_ANY,               L_RETURNING       },
-  { LANG_CPP_MIN(11),       L_RVALUE          },
-  { LANG_CPP_ANY,           L_SCOPE           },
-  { LANG_CPP_MIN(20),       L_UNIQUE          },
-  { LANG_C_CPP_MIN(2X,17),  L_UNUSED          },
-  { LANG_CPP_ANY,           H_USER_DEFINED    },
-  { LANG_C_MIN(99),         L_VARIABLE        },
-  { LANG_MIN(C_89),         L_VARIADIC        },
-  { LANG_ANY,               L_VECTOR          },
-  { LANG_ANY,               L_WIDTH           },
-
-  { LANG_NONE,              NULL              }
+struct ac_keyword {
+  char const *literal;                  ///< C string literal of the keyword.
+  c_lang_id_t ac_lang_ids;              ///< Language(s) auto-completable in.
+  bool        always_autocomplete;      ///< Auto-complete even for gibberish?
 };
+typedef struct ac_keyword ac_keyword_t;
 
 // local functions
 static char*  command_generator( char const*, int );
@@ -126,26 +80,36 @@ static bool   is_command( char const*, char const*, size_t );
  * @return Returns a pointer to said array.
  */
 PJL_WARN_UNUSED_RESULT
-static c_lang_lit_t const* init_cdecl_keywords( void ) {
-  size_t cdecl_keywords_size = ARRAY_SIZE( AC_CDECL_KEYWORDS );
+static ac_keyword_t const* init_cdecl_keywords( void ) {
+  size_t n = 1;                         // for terminating empty element
 
   // pre-flight to calculate array size
   FOREACH_C_KEYWORD( k ) {
     if ( k->ac_lang_ids != LANG_NONE )
-      ++cdecl_keywords_size;
+      ++n;
+  } // for
+  FOREACH_CDECL_KEYWORD( k ) {
+    if ( k->ac_lang_ids != LANG_NONE )
+      ++n;
   } // for
 
-  c_lang_lit_t *const cdecl_keywords =
-    free_later( MALLOC( c_lang_lit_t, cdecl_keywords_size ) );
-  c_lang_lit_t *p = cdecl_keywords;
-
-  for ( c_lang_lit_t const *ll = AC_CDECL_KEYWORDS; ll->literal != NULL; ++ll )
-    *p++ = *ll;
+  ac_keyword_t *const cdecl_keywords = free_later( MALLOC( ac_keyword_t, n ) );
+  ac_keyword_t *p = cdecl_keywords;
 
   FOREACH_C_KEYWORD( k ) {
     if ( k->ac_lang_ids != LANG_NONE ) {
-      p->lang_ids = k->ac_lang_ids;
-      p->literal  = k->literal;
+      p->literal = k->literal;
+      p->ac_lang_ids = k->ac_lang_ids;
+      p->always_autocomplete = true;
+      ++p;
+    }
+  } // for
+
+  FOREACH_CDECL_KEYWORD( k ) {
+    if ( k->ac_lang_ids != LANG_NONE ) {
+      p->literal = k->literal;
+      p->ac_lang_ids = k->ac_lang_ids;
+      p->always_autocomplete = k->always_find;
       ++p;
     }
   } // for
@@ -267,6 +231,22 @@ static bool is_command( char const *command, char const *s, size_t n ) {
   return !is_ident( s[ command_len ] );
 }
 
+/**
+ * Gets whether \a command is an English command, that is followed by pseudo-
+ * English instead of gibberish.
+ *
+ * @param command The cdecl command to check.
+ * @return Returns `true` only if \a command is an English command.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool is_english_command( char const *command ) {
+  return  command == L_CAST     ||
+          command == L_DECLARE  ||
+          command == L_DEFINE   ||
+          command == L_HELP     ||
+          command == L_SET_COMMAND;
+}
+
 ////////// readline callback functions ////////////////////////////////////////
 
 /**
@@ -377,6 +357,8 @@ static char* keyword_generator( char const *text, int state ) {
         }
       } // for
     }
+    if ( command == NULL && opt_explain )
+      command = L_EXPLAIN;
   }
 
   if ( command == NULL ) {
@@ -440,17 +422,27 @@ static char* keyword_generator( char const *text, int state ) {
     //
     // Otherwise, just attempt to match (almost) any keyword.
     //
-    static c_lang_lit_t const *cdecl_keywords;
+    static ac_keyword_t const *cdecl_keywords;
     if ( cdecl_keywords == NULL )
       cdecl_keywords = init_cdecl_keywords();
 
-    for ( c_lang_lit_t const *ll;
-          (ll = cdecl_keywords + match_index)->literal != NULL; ) {
+    // The keywords following the command are in gibberish, not English.
+    bool const is_gibberish = !is_english_command( command );
+
+    for ( ac_keyword_t const *k;
+          (k = cdecl_keywords + match_index)->literal != NULL; ) {
       ++match_index;
-      if ( !opt_lang_is_any( ll->lang_ids ) )
+      if ( is_gibberish && !k->always_autocomplete ) {
+        //
+        // The keywords following the command are in gibberish, but the
+        // keyword is a cdecl keyword, so skip it.
+        //
         continue;
-      if ( strncmp( text, ll->literal, text_len ) == 0 )
-        return check_strdup( ll->literal );
+      }
+      if ( !opt_lang_is_any( k->ac_lang_ids ) )
+        continue;
+      if ( strncmp( text, k->literal, text_len ) == 0 )
+        return check_strdup( k->literal );
     } // for
   }
 
