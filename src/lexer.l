@@ -589,7 +589,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                       //
                       BEGIN( S_SHOW );
                     }
-                    return ck->yy_token_id;
+                    return ck->y_token_id;
                   }
                   char const *const literal = c_lang_literal( ck->lang_syn );
                   if ( literal != NULL ) {
@@ -620,7 +620,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                     c_keyword_find( lexer_token, opt_lang, lexer_keyword_ctx );
                   if ( k != NULL ) {
                     yylval.tid = k->tid;
-                    return k->yy_token_id;
+                    return k->y_token_id;
                   }
                 }
 
