@@ -55,7 +55,7 @@
  * @sa #C_SYE()
  */
 #define C_SYN(ALWAYS_FIND,LANG,...) \
-  (ALWAYS_FIND), 0, (c_lang_lit_t const[]){ __VA_ARGS__ }, LANG
+  (ALWAYS_FIND), /*y_token_id=*/0, (c_lang_lit_t const[]){ __VA_ARGS__ }, LANG
 
 /**
  * Special-case of #C_SYN when there is only one language(s)/literal pair _and_
@@ -96,7 +96,8 @@
  *
  * @sa #CDECL_KEYWORDS for examples.
  */
-#define TOKEN(Y_ID,LANG)          /*always_find=*/false, (Y_ID), NULL, LANG
+#define TOKEN(Y_ID,LANG) \
+  /*always_find=*/false, (Y_ID), /*lang_syn=*/NULL, LANG
 
 /**
  * All cdecl keywords that are (mostly) _not_ C/C++ keywords.
