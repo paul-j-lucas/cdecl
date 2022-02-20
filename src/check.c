@@ -526,7 +526,9 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     return false;
   }
 
-  switch ( ast->kind ) {
+  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+
+  switch ( raw_ast->kind ) {
     case K_ARRAY:
       error_kind_not_cast_into( ast, "pointer" );
       return false;
@@ -542,25 +544,17 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
-
   switch ( ast->cast_kind ) {
     case C_CAST_NONE:
       UNEXPECTED_INT_VALUE( ast->cast_kind );
 
     case C_CAST_CONST:
       if ( (raw_ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) == 0 ) {
-        if ( opt_lang < LANG_CPP_11 ) {
-          print_error( &ast->loc,
-            "const_cast must be to a "
-            "pointer, pointer-to-member, or reference\n"
-          );
-        } else {
-          print_error( &ast->loc,
-            "const_cast must be to a "
-            "pointer, pointer-to-member, reference, or rvalue reference\n"
-          );
-        }
+        print_error( &ast->loc,
+          "const_cast must be to a pointer, pointer-to-member, %s\n",
+          opt_lang < LANG_CPP_11 ?
+            "or reference" : "reference, or rvalue reference"
+        );
         return false;
       }
       break;
