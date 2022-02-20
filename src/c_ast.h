@@ -483,21 +483,6 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast );
 void c_ast_free( c_ast_t *ast );
 
 /**
- * Checks whether \a ast is an AST of one of \a kinds.
- *
- * @param ast The AST to check.
- * @param kinds The bitwise-or of the kinds(s) \a ast can be.
- * @return Returns `true` only if \a ast is one of \a kinds.
- *
- * @sa c_ast_is_parent()
- * @sa c_ast_is_referrer()
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-bool c_ast_is_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
-  return (ast->kind & kinds) != 0;
-}
-
-/**
  * Checks whether \a ast is an "orphan," that is: either has no parent AST or
  * its parent no longer points to \a ast.
  *
@@ -518,13 +503,12 @@ bool c_ast_is_orphan( c_ast_t const *ast ) {
  * @param ast The AST to check.  May be NULL.
  * @return Returns `true` only if it is.
  *
- * @sa c_ast_is_kind_any()
  * @sa c_ast_is_orphan()
  * @sa c_ast_is_referrer()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast != NULL && c_ast_is_kind_any( ast, K_ANY_PARENT );
+  return ast != NULL && (ast->kind & K_ANY_PARENT) != 0;
 }
 
 /**
@@ -533,13 +517,12 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
  * @param ast The AST to check.  May be NULL.
  * @return Returns `true` only if it is.
  *
- * @sa c_ast_is_kind_any()
  * @sa c_ast_is_orphan()
  * @sa c_ast_is_parent()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_referrer( c_ast_t const *ast ) {
-  return ast != NULL && c_ast_is_kind_any( ast, K_ANY_REFERRER );
+  return ast != NULL && (ast->kind & K_ANY_REFERRER) != 0;
 }
 
 /**

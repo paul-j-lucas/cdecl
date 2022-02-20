@@ -480,7 +480,7 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
 static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_BUILTIN | K_TYPEDEF ) );
+  assert( (ast->kind & (K_BUILTIN | K_TYPEDEF)) != 0 );
 
   if ( ast->as.builtin.bit_width > 0 )
     FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
@@ -635,7 +635,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
         if ( c_ast_is_parent( parent_ast->parent_ast ) )
           g_print_postfix( g, parent_ast );
 
-        if ( !c_ast_is_kind_any( ast, K_ANY_POINTER ) )
+        if ( (ast->kind & K_ANY_POINTER) == 0 )
           FPUTC( ')', g->gout );
         break;
 

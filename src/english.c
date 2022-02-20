@@ -56,7 +56,7 @@ static void c_type_print_not_base( c_type_t const*, FILE* );
  */
 static void c_ast_bit_width_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_BUILTIN | K_TYPEDEF ) );
+  assert( (ast->kind & (K_BUILTIN | K_TYPEDEF)) != 0 );
   assert( eout != NULL );
 
   if ( ast->as.builtin.bit_width > 0 ) {
@@ -105,7 +105,7 @@ static void c_ast_english( c_ast_t const *ast, FILE *eout ) {
  */
 static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
+  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
   assert( eout != NULL );
 
   FPUTC( '(', eout );

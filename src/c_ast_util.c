@@ -229,11 +229,11 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
                                      c_ast_t *ret_ast ) {
   assert( ast != NULL );
   assert( func_ast != NULL );
-  assert( c_ast_is_kind_any( func_ast, K_ANY_FUNCTION_LIKE ) );
+  assert( (func_ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
   assert( func_ast->as.func.ret_ast == NULL );
   assert( ret_ast != NULL );
 
-  if ( c_ast_is_kind_any( ast, K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE ) ) {
+  if ( (ast->kind & (K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE)) != 0 ) {
     switch ( ast->as.parent.of_ast->kind ) {
       case K_ARRAY:
       case K_POINTER:
@@ -497,7 +497,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_vistor_kind_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
   c_ast_kind_t const kinds = REINTERPRET_CAST( c_ast_kind_t, avd );
-  return c_ast_is_kind_any( ast, kinds );
+  return (ast->kind & kinds) != 0;
 }
 
 /**
@@ -583,7 +583,7 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
 
 bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
   ast = c_ast_unpointer( ast );
-  return ast != NULL && c_ast_is_kind_any( ast, kinds );
+  return ast != NULL && (ast->kind & kinds) != 0;
 }
 
 bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,

@@ -277,7 +277,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
 
     c_ast_t const *const raw_ast = c_ast_untypedef( ast );
 
-    if ( !c_ast_is_kind_any( raw_ast, K_ANY_OBJECT ) ) {
+    if ( (raw_ast->kind & K_ANY_OBJECT) == 0 ) {
       print_error( &ast->loc,
         "%s can not be aligned\n", c_kind_name( ast->kind )
       );
@@ -549,7 +549,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       UNEXPECTED_INT_VALUE( ast->cast_kind );
 
     case C_CAST_CONST:
-      if ( !c_ast_is_kind_any( raw_ast, K_ANY_POINTER | K_ANY_REFERENCE ) ) {
+      if ( (raw_ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) == 0 ) {
         if ( opt_lang < LANG_CPP_11 ) {
           print_error( &ast->loc,
             "const_cast must be to a "
@@ -603,7 +603,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_CONSTRUCTOR | K_DESTRUCTOR ) );
+  assert( (ast->kind & (K_CONSTRUCTOR | K_DESTRUCTOR)) != 0 );
 
   bool const is_definition = c_sname_count( &ast->sname ) > 1;
 
@@ -754,7 +754,7 @@ static bool c_ast_check_errors( c_ast_t const *ast, unsigned flags ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
+  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
 
   if ( ast->kind == K_FUNCTION && c_ast_name_equal( ast, "main" ) &&
       ( //
@@ -1061,7 +1061,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     return c_ast_check_func_params_knr( ast );
 
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
+  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
   assert( opt_lang != LANG_C_KNR );
 
   c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
@@ -1216,7 +1216,7 @@ only_void:
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_APPLE_BLOCK | K_FUNCTION ) );
+  assert( (ast->kind & (K_APPLE_BLOCK | K_FUNCTION)) != 0 );
   assert( opt_lang == LANG_C_KNR );
 
   FOREACH_AST_FUNC_PARAM( param, ast ) {
@@ -1252,7 +1252,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
+  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
 
   FOREACH_AST_FUNC_PARAM( param, ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
@@ -1580,9 +1580,9 @@ same: print_error( &ast->loc,
            ecsu_rref_param_count = 0;
   FOREACH_AST_FUNC_PARAM( param, ast ) {
     //
-    // Normally we can use c_ast_is_kind_any(), but we need to count objects
-    // and lvalue references to objects distinctly to check default relational
-    // operators in C++20.
+    // Normally we could use c_param_ast( ast )->kind directly, but we need to
+    // count objects and lvalue references to objects distinctly to check
+    // default relational operators in C++20.
     //
     c_ast_t const *param_ast = c_ast_untypedef( c_param_ast( param ) );
     switch ( param_ast->kind ) {
@@ -1834,7 +1834,7 @@ rel_2par: print_error( &ast->loc,
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_pointer( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_ANY_POINTER ) );
+  assert( (ast->kind & K_ANY_POINTER) != 0 );
 
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
   c_ast_t const *const raw_to_ast = c_ast_untypedef( to_ast );
@@ -1883,7 +1883,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_reference( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_ANY_REFERENCE ) );
+  assert( (ast->kind & K_ANY_REFERENCE) != 0 );
 
   if ( c_tid_is_any( ast->type.stids, TS_CV ) ) {
     c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
@@ -1921,7 +1921,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
+  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
 
   char const *const kind_name = c_kind_name( ast->kind );
   c_ast_t const *const ret_ast = ast->as.func.ret_ast;
@@ -2190,8 +2190,8 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
       PJL_FALLTHROUGH;
 
     case K_DESTRUCTOR: {
-      if ( c_ast_is_kind_any( ast, K_CONSTRUCTOR | K_DESTRUCTOR ) &&
-          !c_ast_check_ctor_dtor( ast ) ) {
+      if ( (ast->kind & (K_CONSTRUCTOR | K_DESTRUCTOR)) != 0 &&
+           !c_ast_check_ctor_dtor( ast ) ) {
         return VISITOR_ERROR_FOUND;
       }
 
@@ -2324,7 +2324,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
     return VISITOR_ERROR_FOUND;
   }
 
-  if ( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) ) {
+  if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
     if ( opt_lang < LANG_CPP_14 &&
          c_tid_is_any( ast->type.stids, TS_CONSTEXPR ) &&
          c_ast_is_builtin_any( ast->as.func.ret_ast, TB_VOID ) ) {
@@ -2385,7 +2385,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
     } // switch
   }
 
-  if ( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) ) {
+  if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
     FOREACH_AST_FUNC_PARAM( param, ast ) {
       c_ast_t const *const param_ast = c_param_ast( param );
       if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type,
