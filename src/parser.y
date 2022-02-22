@@ -4643,13 +4643,13 @@ func_cast_c_astp
       c_tid_t  const func_ref_qualifier_stid = $4;
       c_tid_t  const noexcept_stid = $5;
       c_ast_t *const trailing_ret_ast = $6;
-      c_ast_t *const type_ast = ia_type_ast_peek();
+      c_ast_t *const ret_ast = ia_type_ast_peek();
 
       DUMP_START( "func_cast_c_astp",
                   "cast2_c_astp '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "(type_c_ast)", ret_ast );
       DUMP_AST( "cast2_c_ast", cast2_c_ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
       DUMP_TID( "func_qualifier_list_c_stid_opt", func_ref_qualifier_stid );
@@ -4665,13 +4665,13 @@ func_cast_c_astp
 
       if ( $1.target_ast != NULL ) {
         $$.ast = cast2_c_ast;
-        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, func_ast, type_ast ) );
+        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, func_ast, ret_ast ) );
       }
       else {
         $$.ast = c_ast_add_func(
           cast2_c_ast,
           func_ast,
-          trailing_ret_ast != NULL ? trailing_ret_ast : type_ast
+          trailing_ret_ast != NULL ? trailing_ret_ast : ret_ast
         );
       }
 
