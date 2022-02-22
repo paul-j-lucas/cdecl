@@ -4642,8 +4642,8 @@ func_cast_c_astp
       c_ast_t *const cast2_c_ast = $1.ast;
       c_tid_t  const func_ref_qualifier_stid = $4;
       c_tid_t  const noexcept_stid = $5;
-      c_ast_t *const trailing_ret_ast = $6;
       c_ast_t *const ret_ast = ia_type_ast_peek();
+      c_ast_t *const trailing_ret_ast = $6;
 
       DUMP_START( "func_cast_c_astp",
                   "cast2_c_astp '(' param_list_c_ast_opt ')' "
