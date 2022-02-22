@@ -25,7 +25,8 @@ alignas_specifier_c ::= ALIGNAS '(' type_c_ast cast_c_astp_opt ')' = {
     loc = 17-20,
     type = "long" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
-  }
+  },
+  cast_c_astp_opt = NULL
 }
 
 builtin_type_ast ::= builtin_btid = {

@@ -1,5 +1,6 @@
 
 typedef_type_c_ast ::= any_typedef = {
+  (type_c_ast) = NULL,
   any_typedef.ast = {
     sname = "size_t" (none),
     unique_id = 37,

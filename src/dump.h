@@ -59,12 +59,12 @@ void bool_dump( bool b, FILE *dout );
  *
  * @param ast The AST to dump.
  * @param indent The initial indent.
- * @param key0 The initial key or NULL for none.
+ * @param key The initial key or NULL for none.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_ast_list_dump()
  */
-void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
+void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
                  FILE *dout );
 
 /**

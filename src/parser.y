@@ -291,7 +291,7 @@
  * @sa #DUMP_AST_LIST()
  */
 #define DUMP_AST(KEY,AST) IF_DEBUG( \
-  if ( (AST) != NULL ) { DUMP_COMMA; c_ast_dump( (AST), 1, (KEY), stdout ); } )
+  DUMP_COMMA; c_ast_dump( (AST), 1, (KEY), stdout ); )
 
 /**
  * Dumps an s_list of AST.

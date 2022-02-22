@@ -41,6 +41,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
 }
 
 user_defined_conversion_decl_c_astp ::= scope_sname_c_opt OPERATOR type_c_ast udc_decl_c_ast_opt '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt func_equals_c_stid_opt = {
+  (type_c_ast) = NULL,
   scope_sname_c_opt = "",
   type_c_ast = {
     sname = "",
@@ -53,6 +54,7 @@ user_defined_conversion_decl_c_astp ::= scope_sname_c_opt OPERATOR type_c_ast ud
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
+  udc_decl_c_ast_opt = NULL,
   func_qualifier_list_c_stid_opt = "" (stid = 0x2),
   noexcept_c_stid_opt = "" (stid = 0x2),
   func_equals_c_stid_opt = "" (stid = 0x2),

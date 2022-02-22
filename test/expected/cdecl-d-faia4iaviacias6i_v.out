@@ -168,6 +168,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
+  target_ast = NULL,
   array_size_c_ast = {
     sname = "",
     unique_id = 1337,
@@ -178,8 +179,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     loc = 21-22,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     size = unspecified,
-    of_ast = {
-    }
+    of_ast = NULL
   },
   array_cast_c_astp = {
     sname = "a" (none),
@@ -408,6 +408,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
+  target_ast = NULL,
   array_size_c_ast = {
     sname = "",
     unique_id = 1340,
@@ -418,8 +419,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     loc = 30-32,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     size = 4,
-    of_ast = {
-    }
+    of_ast = NULL
   },
   array_cast_c_astp = {
     sname = "b" (none),
@@ -694,6 +694,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
+  target_ast = NULL,
   array_size_c_ast = {
     sname = "",
     unique_id = 1343,
@@ -704,8 +705,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     loc = 40-42,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     size = *,
-    of_ast = {
-    }
+    of_ast = NULL
   },
   array_cast_c_astp = {
     sname = "c" (none),
@@ -1024,6 +1024,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
+  target_ast = NULL,
   array_size_c_ast = {
     sname = "",
     unique_id = 1346,
@@ -1035,8 +1036,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     size = unspecified,
     type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
-    of_ast = {
-    }
+    of_ast = NULL
   },
   array_cast_c_astp = {
     sname = "d" (none),
@@ -1404,6 +1404,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
+  target_ast = NULL,
   array_size_c_ast = {
     sname = "",
     unique_id = 1349,
@@ -1415,8 +1416,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     size = 6,
     type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
-    of_ast = {
-    }
+    of_ast = NULL
   },
   array_cast_c_astp = {
     sname = "e" (none),
@@ -1874,7 +1874,9 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
   func_qualifier_list_c_stid_opt = "" (stid = 0x2),
   func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
   noexcept_c_stid_opt = "" (stid = 0x2),
+  trailing_return_type_c_ast_opt = NULL,
   func_equals_c_stid_opt = "" (stid = 0x2),
+  target_ast = NULL,
   func_decl_c_astp = {
     sname = "f" (none),
     unique_id = 1351,

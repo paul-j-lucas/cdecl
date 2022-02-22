@@ -122,6 +122,7 @@ oper_decl_c_astp ::= oper_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
   func_qualifier_list_c_stid_opt = "const" (stid = 0x20000002),
   func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
   noexcept_c_stid_opt = "" (stid = 0x2),
+  trailing_return_type_c_ast_opt = NULL,
   func_equals_c_stid_opt = "" (stid = 0x2),
   oper_decl_c_astp = {
     sname = "S" (struct),
