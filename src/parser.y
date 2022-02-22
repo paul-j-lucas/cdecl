@@ -4657,9 +4657,8 @@ func_cast_c_astp
       DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
       DUMP_AST( "target_ast", $1.target_ast );
 
-      c_tid_t const func_stid = func_ref_qualifier_stid | noexcept_stid;
-
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
+      c_tid_t const func_stid = func_ref_qualifier_stid | noexcept_stid;
       func_ast->type.stids = c_tid_check( func_stid, C_TPID_STORE );
       func_ast->as.func.param_ast_list = $3;
 
