@@ -62,7 +62,7 @@ struct tdef_rb_visit_data {
 };
 typedef struct tdef_rb_visit_data tdef_rb_visit_data_t;
 
-// local variable definitions
+// local variables
 static rb_tree_t    typedefs;           ///< Global set of `typedef`s.
 static c_lang_id_t  predefined_lang_ids;///< Languages when predefining types.
 static bool         user_defined;       ///< Are new `typedef`s used-defined?
