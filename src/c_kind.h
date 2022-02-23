@@ -37,13 +37,18 @@
  */
 
 /**
- * Shorthand for use inside a `switch` statement on an AST's kind to assert
- * that it's not #K_PLACEHOLDER because it shouldn't occur in a completed AST.
+ * Shorthand for use inside a `switch` statement on an AST's kind to:
+ *
+ * 1. Assert that it's not #K_PLACEHOLDER because it shouldn't occur in a
+ *    completed AST.
+ *
+ * 2. Suppress the warning that otherwise would be given because #K_PLACEHOLDER
+ *    is not handled by the `switch`.
+ *
  * For example:
  *
  *      switch ( ast->kind ) {
  *        // ...
- *
  *        CASE_K_PLACEHOLDER;
  *      }
  */
