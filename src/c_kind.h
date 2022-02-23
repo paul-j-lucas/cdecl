@@ -75,20 +75,21 @@ enum c_ast_kind {
    *         int a[2][3]
    *
    *    At the first `[`, we know it's an "array 2 [of something]* of int," but
-   *    we don't yet know whether the "something" will turn out to be nothing.
-   *    It's not until the second `[` that we know it's an "array 2 of array 3
-   *    of int."  (Had the `[3]` not been there, then it would have been just
-   *    "array 2 of int.")
+   *    we don't yet know either what the "something" is or whether it will
+   *    turn out to be nothing.  It's not until the second `[` that we know
+   *    it's an "array 2 of array 3 of int."  (Had the `[3]` not been there,
+   *    then it would have been just "array 2 of int.")
    *
    * 2. Nested declarations or casts (inside parentheses).  Consider:
    *
    *         int (*a)[2]
    *
    *    At the `*`, we know it's a "pointer [to something]* of int," but,
-   *    similar to the array case, we don't yet know whether the "something"
-   *    will turn out to be nothing.  It's not until the `[` that we know it's
-   *    a "pointer to array 2 of int."  (Had the `[2]` not been there, then it
-   *    would have been just "pointer to int" (with unnecessary parentheses).
+   *    similar to the array case, we don't yet know either what the
+   *    "something" is or whether it will turn out to be nothing.  It's not
+   *    until the `[` that we know it's a "pointer to array 2 of int."  (Had
+   *    the `[2]` not been there, then it would have been just "pointer to int"
+   *    (with unnecessary parentheses).
    *
    * In either case, a placeholder node is created to hold the place of the
    * "something" in the AST.
