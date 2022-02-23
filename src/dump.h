@@ -59,23 +59,20 @@ void bool_dump( bool b, FILE *dout );
  *
  * @param ast The AST to dump.  If NULL and \a key is not NULL, dumps only \a
  * key followed by `=&nbsp;NULL`.
- * @param indent The initial indent.
  * @param key The key for which \a ast is the value, or NULL for none.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_ast_list_dump()
  */
-void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
-                 FILE *dout );
+void c_ast_dump( c_ast_t const *ast, char const *key, FILE *dout );
 
 /**
  * Dumps \a list of ASTs (for debugging).
  *
  * @param list The \ref slist of ASTs to dump.
- * @param indent The initial indent.
  * @param dout The `FILE` to dump to.
  */
-void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout );
+void c_ast_list_dump( c_ast_list_t const *list, FILE *dout );
 
 /**
  * Dumps \a sname (for debugging).

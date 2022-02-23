@@ -66,30 +66,14 @@
 
 /// @endcond
 
+// local functions
+static void c_ast_list_dump_impl( c_ast_list_t const *list, unsigned indent,
+                                  FILE *dout );
+
+// local constants
 static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
 
-////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Gets a string representation of \a tpid for printing.
- *
- * @param tpid The type part id to get the string representation of.
- * @return Returns a string representation of \a tpid.
- */
-static char const* c_tpid_name( c_tpid_t tpid ) {
-  switch ( tpid ) {
-    case C_TPID_NONE:
-      break;                            // LCOV_EXCL_LINE
-    case C_TPID_BASE:
-      return "btid";
-    case C_TPID_STORE:
-      return "stid";
-    case C_TPID_ATTR:
-      return "atid";
-  } // switch
-
-  UNEXPECTED_INT_VALUE( tpid );
-}
+////////// inline functions ///////////////////////////////////////////////////
 
 /**
  * Prints a multiple of \a indent spaces.
@@ -97,19 +81,25 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
  * @param indent How much to indent.
  * @param out The `FILE` to print to.
  */
-static void dump_indent( unsigned indent, FILE *out ) {
+static inline void dump_indent( unsigned indent, FILE *out ) {
   FPRINTF( out, "%*s", STATIC_CAST( int, indent * DUMP_INDENT ), "" );
 }
 
-////////// extern functions ///////////////////////////////////////////////////
+////////// local functions ////////////////////////////////////////////////////
 
-void bool_dump( bool value, FILE *dout ) {
-  assert( dout != NULL );
-  FPUTS( value ? "true" : "false", dout );
-}
-
-void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
-                 FILE *dout ) {
+/**
+ * Helper function for c_ast_dump().
+ *
+ * @param ast The AST to dump.  If NULL and \a key is not NULL, dumps only \a
+ * key followed by `=&nbsp;NULL`.
+ * @param key The key for which \a ast is the value, or NULL for none.
+ * @param indent The initial indent.
+ * @param dout The `FILE` to dump to.
+ *
+ * @sa c_ast_list_dump()
+ */
+static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
+                             char const *key, FILE *dout ) {
   assert( dout != NULL );
   bool const has_key = key != NULL && key[0] != '\0';
 
@@ -152,7 +142,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
         DUMP_FORMAT( "alignas.expr = %u,\n", ast->align.as.expr );
         break;
       case C_ALIGNAS_TYPE:
-        c_ast_dump(
+        c_ast_dump_impl(
           ast->align.as.type_ast, indent, "alignas.type_ast", dout
         );
         FPUTS( ",\n", dout );
@@ -193,7 +183,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
         DUMP_TYPE( &type );
         FPUTS( ",\n", dout );
       }
-      c_ast_dump( ast->as.array.of_ast, indent, "of_ast", dout );
+      c_ast_dump_impl( ast->as.array.of_ast, indent, "of_ast", dout );
       break;
 
     case K_OPERATOR:
@@ -233,10 +223,10 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
     case K_USER_DEF_LITERAL:
       DUMP_COMMA;
       DUMP_FORMAT( "param_ast_list = " );
-      c_ast_list_dump( &ast->as.func.param_ast_list, indent, dout );
+      c_ast_list_dump_impl( &ast->as.func.param_ast_list, indent, dout );
       if ( ast->as.func.ret_ast != NULL ) {
         FPUTS( ",\n", dout );
-        c_ast_dump( ast->as.func.ret_ast, indent, "ret_ast", dout );
+        c_ast_dump_impl( ast->as.func.ret_ast, indent, "ret_ast", dout );
       }
       break;
 
@@ -245,7 +235,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
       DUMP_SNAME( "ecsu_sname", &ast->as.ecsu.ecsu_sname );
       if ( ast->as.ecsu.of_ast != NULL ) {
         FPUTS( ",\n", dout );
-        c_ast_dump( ast->as.ecsu.of_ast, indent, "of_ast", dout );
+        c_ast_dump_impl( ast->as.ecsu.of_ast, indent, "of_ast", dout );
       }
       break;
 
@@ -259,12 +249,12 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       DUMP_COMMA;
-      c_ast_dump( ast->as.ptr_ref.to_ast, indent, "to_ast", dout );
+      c_ast_dump_impl( ast->as.ptr_ref.to_ast, indent, "to_ast", dout );
       break;
 
     case K_TYPEDEF:
       DUMP_COMMA;
-      c_ast_dump( ast->as.tdef.for_ast, indent, "for_ast", dout );
+      c_ast_dump_impl( ast->as.tdef.for_ast, indent, "for_ast", dout );
       FPUTS( ",\n", dout );
       PJL_FALLTHROUGH;
 
@@ -275,7 +265,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
 
     case K_USER_DEF_CONVERSION:
       DUMP_COMMA;
-      c_ast_dump( ast->as.udef_conv.conv_ast, indent, "conv_ast", dout );
+      c_ast_dump_impl( ast->as.udef_conv.conv_ast, indent, "conv_ast", dout );
       break;
   } // switch
 
@@ -284,7 +274,15 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
   DUMP_FORMAT( "}" );
 }
 
-void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
+/**
+ * Helper function for c_ast_list_dump().
+ *
+ * @param list The \ref slist of ASTs to dump.
+ * @param indent The initial indent.
+ * @param dout The `FILE` to dump to.
+ */
+static void c_ast_list_dump_impl( c_ast_list_t const *list, unsigned indent,
+                                  FILE *dout ) {
   assert( list != NULL );
   assert( dout != NULL );
 
@@ -297,12 +295,48 @@ void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
     FOREACH_SLIST_NODE( node, list ) {
       if ( true_or_set( &comma ) )
         FPUTS( ",\n", dout );
-      c_ast_dump( c_param_ast( node ), indent, /*key=*/NULL, dout );
+      c_ast_dump_impl( c_param_ast( node ), indent, /*key=*/NULL, dout );
     } // for
     --indent;
     FPUTC( '\n', dout );
     DUMP_FORMAT( "]" );
   }
+}
+
+/**
+ * Gets a string representation of \a tpid for printing.
+ *
+ * @param tpid The type part id to get the string representation of.
+ * @return Returns a string representation of \a tpid.
+ */
+static char const* c_tpid_name( c_tpid_t tpid ) {
+  switch ( tpid ) {
+    case C_TPID_NONE:
+      break;                            // LCOV_EXCL_LINE
+    case C_TPID_BASE:
+      return "btid";
+    case C_TPID_STORE:
+      return "stid";
+    case C_TPID_ATTR:
+      return "atid";
+  } // switch
+
+  UNEXPECTED_INT_VALUE( tpid );
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+void bool_dump( bool value, FILE *dout ) {
+  assert( dout != NULL );
+  FPUTS( value ? "true" : "false", dout );
+}
+
+void c_ast_dump( c_ast_t const *ast, char const *key, FILE *dout ) {
+  c_ast_dump_impl( ast, 1, key, dout );
+}
+
+void c_ast_list_dump( c_ast_list_t const *list, FILE *dout ) {
+  c_ast_list_dump_impl( list, 1, dout );
 }
 
 void c_sname_dump( c_sname_t const *sname, FILE *dout ) {

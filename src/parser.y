@@ -291,7 +291,7 @@
  * @sa #DUMP_AST_LIST()
  */
 #define DUMP_AST(KEY,AST) IF_DEBUG( \
-  DUMP_COMMA; c_ast_dump( (AST), 1, (KEY), stdout ); )
+  DUMP_COMMA; c_ast_dump( (AST), (KEY), stdout ); )
 
 /**
  * Dumps an s_list of AST.
@@ -303,7 +303,7 @@
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY " = " );         \
-  c_ast_list_dump( &(AST_LIST), 1, stdout ); )
+  c_ast_list_dump( &(AST_LIST), stdout ); )
 
 /**
  * Dumps a `bool`.
