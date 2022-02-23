@@ -1,3 +1,45 @@
+2022-02-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am: Updated Gnulib.
+   * c_ast.h, parser.y: s/constructor/ctor/
+   * NEWS, parser.y, test/Makefile.am, explain_ff_i_v-02.out,
+     explain_ff_i_v-02.test: Fixed function returning function parameter crash.
+   * parser.y: s/type_ast/ret_ast/
+   * dump.c, dump.h, parser.y, cdecl--debug.out, cdecl-d-alli.out,
+     cdecl-d-cmo_exclam__b.out, cdecl-d-f2i_pi.out, cdecl-d-f_v.out,
+     cdecl-d-faia4iaviacias6i_v.out, cdecl-d-udc_i.out, cdecl-d-z.out: AST
+     debug output now always prints the key and prints "NULL" for null.
+
+2022-02-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_ast_util.c, check.c, english.c, gibberish.c: Eliminated
+     c_ast_is_kind_any().
+
+2022-02-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, check.c, test/Makefile.am, declare_en_al4.out, declare_en_al4.test:
+     Alignment of `enum`, `struct`, and `union` is now correctly forbidden in
+     C.
+   * NEWS, cdecl_keyword.c, parser.y: `alignas` & `_Alignas` are now
+     additionally allowed instead of `aligned [as
+   * NEWS, autocomplete.c, c_keyword.c, c_lang.h, cdecl_keyword.c,
+     cdecl_keyword.h, lexer.l: Eliminated AC_CDECL_KEYWORDS; now _not_
+     completing English keywords when C/C++ is expected.
+   * c_keyword.h, cdecl_keyword.h, lexer.l: s/yy_token_id/y_token_id/
+
+2022-02-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Made is_command() more efficient by stripping leading
+     whitespace once.
+
+2022-02-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Now skipping leading spaces in is_command().
+   * NEWS, c_keyword.c: `new` is now autocompletable.  The following are now
+     _not_ autocompletable: `co_await`, `co_return`, `co_yield`, `concept`,
+     `decltype`, and `requires`.
+   * autocomplete.c: "variadic" is now autocompletable only in C89 and later.
+
 2022-02-16  Paul J. Lucas <paul@lucasmail.org>
 
    * c_keyword.c: "default" is now auto-completable only in C++11 and later.
