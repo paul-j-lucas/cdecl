@@ -57,9 +57,10 @@ void bool_dump( bool b, FILE *dout );
 /**
  * Dumps \a ast (for debugging).
  *
- * @param ast The AST to dump.
+ * @param ast The AST to dump.  If NULL and \a key is not NULL, dumps only \a
+ * key followed by `=&nbsp;NULL`.
  * @param indent The initial indent.
- * @param key The initial key or NULL for none.
+ * @param key The key for which \a ast is the value, or NULL for none.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_ast_list_dump()
@@ -100,7 +101,7 @@ void c_sname_list_dump( slist_t const *list, FILE *dout );
 /**
  * Dumps \a tid (for debugging).
  *
- * @param tid The \ref c_tid_t to print.
+ * @param tid The \ref c_tid_t to dump.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_type_dump()
@@ -110,7 +111,7 @@ void c_tid_dump( c_tid_t tid, FILE *dout );
 /**
  * Dumps \a type (for debugging).
  *
- * @param type The \ref c_type to print.
+ * @param type The \ref c_type to dump.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_tid_dump()
@@ -120,7 +121,7 @@ void c_type_dump( c_type_t const *type, FILE *dout );
 /**
  * Dumps a string value (for debugging).
  *
- * @param s The string to print, if any.  If NULL, `null` is printed instead.
+ * @param s The string to dump, if any.  If NULL, `null` is printed instead.
  * @param dout The `FILE` to dump to.
  */
 void str_dump( char const *s, FILE *dout );
