@@ -3542,7 +3542,7 @@ file_scope_constructor_decl_c
       c_ast_t *const ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       ast->sname = $2;
       ast->type.stids = c_tid_check( $1 | $5 | $6, C_TPID_STORE );
-      ast->as.constructor.param_ast_list = $4;
+      ast->as.ctor.param_ast_list = $4;
 
       DUMP_AST( "file_scope_constructor_decl_c", ast );
       DUMP_END();
@@ -5772,7 +5772,7 @@ constructor_decl_english_ast
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $2 );
 
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      $$->as.constructor.param_ast_list = $2;
+      $$->as.ctor.param_ast_list = $2;
 
       DUMP_AST( "constructor_decl_english_ast", $$ );
       DUMP_END();

@@ -404,7 +404,7 @@ struct c_ast {
     c_array_ast_t       array;          ///< Array member(s).
     c_apple_block_ast_t block;          ///< Block member(s).
     c_builtin_ast_t     builtin;        ///< Built-in type member(s).
-    c_constructor_ast_t constructor;    ///< Constructor member(s).
+    c_constructor_ast_t ctor;           ///< Constructor member(s).
     // nothing needed for K_DESTRUCTOR
     c_ecsu_ast_t        ecsu;           ///< `enum`, `class`, `struct`, `union`
     c_function_ast_t    func;           ///< Function member(s).
