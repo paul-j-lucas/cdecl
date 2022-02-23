@@ -1,3 +1,8 @@
+2022-02-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, dump.h, parser.y: Added c_ast_dump_impl() and
+     c_ast_list_dump_impl().
+
 2022-02-22  Paul J. Lucas <paul@lucasmail.org>
 
    * lib/Makefile.am: Updated Gnulib.
