@@ -74,22 +74,22 @@ enum c_ast_kind {
    *
    *         int a[2][3]
    *
-   *    At the first `[`, we know it's an "array 2 [of something]* of int," but
-   *    we don't yet know either what the "something" is or whether it will
+   *    At the first `[`, we know it's an _array 2 of [something of]*_ `int`,
+   *    but we don't yet know either what the "something" is or whether it will
    *    turn out to be nothing.  It's not until the second `[` that we know
-   *    it's an "array 2 of array 3 of int."  (Had the `[3]` not been there,
-   *    then it would have been just "array 2 of int.")
+   *    it's an _array 2 of array 3 of_ `int`.  (Had the `[3]` not been there,
+   *    then it would have been just _array 2 of_ `int`.)
    *
    * 2. Nested declarations or casts (inside parentheses).  Consider:
    *
    *         int (*a)[2]
    *
-   *    At the `*`, we know it's a "pointer [to something]* of int," but,
+   *    At the `*`, we know it's a _pointer to [something of]*_ `int`, but,
    *    similar to the array case, we don't yet know either what the
    *    "something" is or whether it will turn out to be nothing.  It's not
-   *    until the `[` that we know it's a "pointer to array 2 of int."  (Had
-   *    the `[2]` not been there, then it would have been just "pointer to int"
-   *    (with unnecessary parentheses).
+   *    until the `[` that we know it's a _pointer to array 2 of_ `int`.  (Had
+   *    the `[2]` not been there, then it would have been just _pointer to_
+   *    `int` (with unnecessary parentheses).
    *
    * In either case, a placeholder node is created to hold the place of the
    * "something" in the AST.
@@ -220,6 +220,8 @@ enum c_ast_kind {
  * #K_DESTRUCTOR, #K_ENUM_CLASS_STRUCT_UNION, #K_FUNCTION, #K_OPERATOR,
  * #K_POINTER, #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE,
  * #K_USER_DEF_CONVERSION, or #K_USER_DEF_LITERAL.
+ *
+ * @note #K_TYPEDEF is intentionally _not_ included.
  *
  * @sa #K_ANY_REFERRER
  */

@@ -219,7 +219,7 @@ typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visit_data_t avd );
  */
 
 /**
- * Generic "parent" AST node.
+ * Generic AST node for a #K_ANY_PARENT.
  *
  * @note All parent nodes have an AST pointer to what they're a parent of as
  * their first `struct` member: this is taken advantage of.
@@ -229,7 +229,7 @@ struct c_parent_ast {
 };
 
 /**
- * AST node for a C/C++ array.
+ * AST node for a #K_ARRAY.
  */
 struct c_array_ast {
   c_ast_t        *of_ast;               ///< What it's an array of.
@@ -238,7 +238,7 @@ struct c_array_ast {
 };
 
 /**
- * AST node for a C/C++ block (Apple extension).
+ * AST node for a #K_APPLE_BLOCK.
  *
  * @note Members are laid out in the same order as c_function_ast: this is
  * taken advantage of.
@@ -252,7 +252,7 @@ struct c_apple_block_ast {
 };
 
 /**
- * AST node for a built-in type.
+ * AST node for a #K_BUILTIN.
  *
  * @note Members are laid out in the same order as c_typedef_ast: this is taken
  * advantage of.
@@ -265,7 +265,7 @@ struct c_builtin_ast {
 };
 
 /**
- * AST node for a C++ constructor.
+ * AST node for a #K_CONSTRUCTOR.
  *
  * @note Members are laid out in the same order as c_function_ast: this is
  * taken advantage of.
@@ -279,7 +279,7 @@ struct c_constructor_ast {
 };
 
 /**
- * AST node for a C/C++ `enum`, `class`, `struct`, or `union` type.
+ * AST node for a #K_ENUM_CLASS_STRUCT_UNION.
  *
  * @note Members are laid out in the same order as `c_ptr_mbr_ast`: this is
  * taken advantage of.
@@ -290,7 +290,7 @@ struct c_ecsu_ast {
 };
 
 /**
- * AST node for a C/C++ function.
+ * AST node for a #K_FUNCTION.
  */
 struct c_function_ast {
   c_ast_t        *ret_ast;              ///< Return type.
@@ -309,7 +309,7 @@ struct c_function_ast {
 };
 
 /**
- * AST node for a C++ overloaded operator.
+ * AST node for a #K_OPERATOR.
  *
  * @note Members are laid out in the same order as c_function_ast: this is
  * taken advantage of.
@@ -334,7 +334,7 @@ struct c_operator_ast {
 };
 
 /**
- * AST node for a C++ pointer-to-member of a class.
+ * AST node for a #K_POINTER_TO_MEMBER.
  *
  * @note Members are laid out in the same order as c_ecsu_ast: this is taken
  * advantage of.
@@ -345,14 +345,14 @@ struct c_ptr_mbr_ast {
 };
 
 /**
- * AST node for a C/C++ pointer, or a C++ reference or rvalue reference.
+ * AST node for a #K_POINTER, #K_REFERENCE, or #K_RVALUE_REFERENCE.
  */
 struct c_ptr_ref_ast {
   c_ast_t        *to_ast;               ///< What it's a pointer/reference to.
 };
 
 /**
- * AST node for a C/C++ `typedef`.
+ * AST node for a #K_TYPEDEF.
  *
  * @note Even though %c_typedef_ast has an AST pointer as its first `struct`
  * member, it is _not_ a parent "of" the underlying type, but instead a synonym
@@ -368,14 +368,14 @@ struct c_typedef_ast {
 };
 
 /**
- * AST node for a C++ user-defined conversion operator.
+ * AST node for a #K_USER_DEF_CONVERSION.
  */
 struct c_udef_conv_ast {
   c_ast_t        *conv_ast;             ///< Conversion type.
 };
 
 /**
- * AST node for a C++ user-defined literal.
+ * AST node for a #K_USER_DEF_LITERAL.
  *
  * @note Members are laid out in the same order as c_function_ast: this is
  * taken advantage of.
@@ -389,33 +389,33 @@ struct c_udef_lit_ast {
  * AST node for a parsed C/C++ declaration.
  */
 struct c_ast {
-  c_alignas_t           align;          ///< Alignment, if any.
-  unsigned              depth;          ///< How many `()` deep.
-  c_ast_kind_t          kind;           ///< AST kind.
-  c_cast_kind_t         cast_kind;      ///< Cast kind, if any.
-  c_loc_t               loc;            ///< Source location.
-  c_sname_t             sname;          ///< Scoped name, if any.
-  c_type_t              type;           ///< Type, if any.
-  c_ast_t              *parent_ast;     ///< Parent AST node, if any.
-  c_ast_id_t            unique_id;      ///< Unique id (starts at 1).
+  c_alignas_t           align;      ///< Alignment, if any.
+  unsigned              depth;      ///< How many `()` deep.
+  c_ast_kind_t          kind;       ///< AST kind.
+  c_cast_kind_t         cast_kind;  ///< Cast kind, if any.
+  c_loc_t               loc;        ///< Source location.
+  c_sname_t             sname;      ///< Scoped name, if any.
+  c_type_t              type;       ///< Type, if any.
+  c_ast_t              *parent_ast; ///< Parent AST node, if any.
+  c_ast_id_t            unique_id;  ///< Unique id (starts at 1).
 
   union {
-    c_parent_ast_t      parent;         ///< "Parent" member(s).
-    c_array_ast_t       array;          ///< Array member(s).
-    c_apple_block_ast_t block;          ///< Block member(s).
-    c_builtin_ast_t     builtin;        ///< Built-in type member(s).
-    c_constructor_ast_t ctor;           ///< Constructor member(s).
-    // nothing needed for K_DESTRUCTOR
-    c_ecsu_ast_t        ecsu;           ///< `enum`, `class`, `struct`, `union`
-    c_function_ast_t    func;           ///< Function member(s).
-    // nothing needed for K_NAME
-    c_operator_ast_t    oper;           ///< Operator member(s).
-    c_ptr_mbr_ast_t     ptr_mbr;        ///< Pointer-to-member member(s).
-    c_ptr_ref_ast_t     ptr_ref;        ///< Pointer or reference member(s).
-    c_typedef_ast_t     tdef;           ///< `typedef` member(s).
-    c_udef_conv_ast_t   udef_conv;      ///< User-defined conversion member(s).
-    c_udef_lit_ast_t    udef_lit;       ///< User-defined literal member(s).
-    // nothing needed for K_VARIADIC
+    c_parent_ast_t      parent;     ///< #K_ANY_PARENT members.
+    c_array_ast_t       array;      ///< #K_ARRAY members.
+    c_apple_block_ast_t block;      ///< #K_APPLE_BLOCK members.
+    c_builtin_ast_t     builtin;    ///< #K_BUILTIN members.
+    c_constructor_ast_t ctor;       ///< #K_CONSTRUCTOR members.
+                    // nothing needed for K_DESTRUCTOR
+    c_ecsu_ast_t        ecsu;       ///< #K_ENUM_CLASS_STRUCT_UNION members.
+    c_function_ast_t    func;       ///< #K_FUNCTION members.
+                    // nothing needed for K_NAME
+    c_operator_ast_t    oper;       ///< #K_OPERATOR members.
+    c_ptr_mbr_ast_t     ptr_mbr;    ///< #K_POINTER_TO_MEMBER members.
+    c_ptr_ref_ast_t     ptr_ref;    ///< #K_POINTER or #K_ANY_REFERENCE members.
+    c_typedef_ast_t     tdef;       ///< #K_TYPEDEF members.
+    c_udef_conv_ast_t   udef_conv;  ///< #K_USER_DEF_CONVERSION members.
+    c_udef_lit_ast_t    udef_lit;   ///< #K_USER_DEF_LITERAL members.
+                    // nothing needed for K_VARIADIC
   } as;                                 ///< Union discriminator.
 };
 
