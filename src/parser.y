@@ -4642,7 +4642,7 @@ func_cast_c_astp
       c_ast_t *const cast2_c_ast = $1.ast;
       c_tid_t  const func_ref_qualifier_stid = $4;
       c_tid_t  const noexcept_stid = $5;
-      c_ast_t *const ret_ast = ia_type_ast_peek();
+      c_ast_t *      ret_ast = ia_type_ast_peek();
       c_ast_t *const trailing_ret_ast = $6;
 
       DUMP_START( "func_cast_c_astp",
@@ -4656,6 +4656,36 @@ func_cast_c_astp
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
       DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
       DUMP_AST( "target_ast", $1.target_ast );
+
+      if ( cast2_c_ast->kind == K_PLACEHOLDER ) {
+        //
+        // This is for a case like:
+        //
+        //      void f( int () () )
+        //              |   |  |
+        //              |   |  func
+        //              |   |
+        //              |   cast2_c_ast
+        //              |
+        //              ret_ast
+        //
+        // We discard cast2_c_ast and alter ret_ast to be a function returning
+        // that type:
+        //
+        //      void f( int() () )
+        //              |     |
+        //              |     func
+        //              |
+        //              ret_ast
+        //
+        // that is, a "function returning function returning int" -- which is
+        // illegal (since functions can't return functions) and will be caught
+        // by c_ast_check_ret_type().
+        //
+        c_ast_t *const new_ret_ast = c_ast_new_gc( K_FUNCTION, &@1 );
+        c_ast_set_parent( ret_ast, new_ret_ast );
+        ret_ast = new_ret_ast;
+      }
 
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
       c_tid_t const func_stid = func_ref_qualifier_stid | noexcept_stid;
@@ -4698,7 +4728,11 @@ nested_cast_c_astp
       DUMP_AST( "cast_c_astp_opt", $3.ast );
 
       $$ = $3;
-      $$.ast->loc = @$;
+
+      if ( $$.ast == NULL )
+        $$.ast = c_ast_new_gc( K_PLACEHOLDER, &@$ );
+      else
+        $$.ast->loc = @$;
 
       DUMP_AST( "nested_cast_c_astp", $$.ast );
       DUMP_END();

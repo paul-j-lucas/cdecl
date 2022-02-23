@@ -45,6 +45,13 @@ pseudo-English.
 ** Fixed core dump for `--debug`/`-d` for operator
 Fixed a core dump when using the `--debug`/`-d` option for an operator.
 
+** Fixed function returning function parameter crash
+A crash for:
+
+    explain void f( int()() )
+
+has been fixed
+
 
 * Changes in Cdecl 11.12
 
