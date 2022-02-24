@@ -46,11 +46,11 @@ pseudo-English.
 Fixed a core dump when using the `--debug`/`-d` option for an operator.
 
 ** Fixed function returning function parameter crash
-A crash for (which is illegal):
+A crash for:
 
     explain void f( int()() )
 
-has been fixed.
+(which is illegal) has been fixed.
 
 
 * Changes in Cdecl 11.12
