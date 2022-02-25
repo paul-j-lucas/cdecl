@@ -198,7 +198,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
     case K_FUNCTION:
       DUMP_COMMA;
       DUMP_FORMAT( "flags = " );
-      switch ( ast->as.func.flags & C_FN_MASK_MEMBER ) {
+      switch ( ast->as.func.flags ) {
         case C_FN_UNSPECIFIED:
           FPUTS( "unspecified", dout );
           break;

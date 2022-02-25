@@ -72,7 +72,6 @@ _GL_INLINE_HEADER_BEGIN
  * For c_function_ast.flags, denotes that the function is unspecified (unknown
  * whether it's a member or non-member).
  *
- * @sa #C_FN_MASK_MEMBER
  * @sa #C_FN_MEMBER
  * @sa #C_FN_NON_MEMBER
  */
@@ -81,7 +80,6 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * For c_function_ast.flags, denotes that the function is a member.
  *
- * @sa #C_FN_MASK_MEMBER
  * @sa #C_FN_NON_MEMBER
  * @sa #C_FN_UNSPECIFIED
  */
@@ -90,20 +88,10 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * For c_function_ast.flags, denotes that the function is a non-member.
  *
- * @sa #C_FN_MASK_MEMBER
  * @sa #C_FN_MEMBER
  * @sa #C_FN_UNSPECIFIED
  */
 #define C_FN_NON_MEMBER       (1u << 1)
-
-/**
- * For c_function_ast.flags, member bitmask.
- *
- * @sa #C_FN_MEMBER
- * @sa #C_FN_NON_MEMBER
- * @sa #C_FN_UNSPECIFIED
- */
-#define C_FN_MASK_MEMBER      0x3u
 
 /**
  * Convenience macro for iterating over all parameters of a function-like AST.
@@ -297,13 +285,12 @@ struct c_function_ast {
   c_ast_list_t    param_ast_list;       ///< Function parameter(s), if any.
 
   /**
-   * Bitwise-or of flags currently specifying whether the function is a member,
-   * non-member, or unspecified function.
+   * Bitwise-or of flags specifying whether the function is a member, non-
+   * member, or unspecified function.
    *
    * @sa #C_FN_UNSPECIFIED
    * @sa #C_FN_MEMBER
    * @sa #C_FN_NON_MEMBER
-   * @sa #C_FN_MASK_MEMBER
    */
   unsigned        flags;
 };
@@ -320,13 +307,11 @@ struct c_operator_ast {
 
   /**
    * Bitwise-or of flags specifying whether the user specified an operator as a
-   * member, non-member, or neither.  This is a mostly a subset of \ref
-   * c_operator.flags except this can be #C_OP_UNSPECIFIED.
+   * member, non-member, or neither.
    *
    * @sa #C_OP_UNSPECIFIED
    * @sa #C_OP_MEMBER
    * @sa #C_OP_NON_MEMBER
-   * @sa #C_OP_MASK_OVERLOAD
    */
   unsigned        flags;
 

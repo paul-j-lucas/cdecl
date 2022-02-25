@@ -110,11 +110,6 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define C_OP_OVERLOADABLE         (C_OP_MEMBER | C_OP_NON_MEMBER)
 
-/**
- * For c_operator.flags, overloadability bitmask.
- */
-#define C_OP_MASK_OVERLOAD        0x7u
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -197,7 +192,6 @@ struct c_operator {
    * @sa #C_OP_NON_MEMBER
    * @sa #C_OP_OVERLOADABLE
    * @sa #C_OP_NOT_OVERLOADABLE
-   * @sa #C_OP_MASK_OVERLOAD
    */
   unsigned    flags;
 

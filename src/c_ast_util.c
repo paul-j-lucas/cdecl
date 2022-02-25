@@ -747,23 +747,21 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   // If the operator is either member or non-member only, then it's that.
   //
   c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
-  unsigned const op_overload_flags = op->flags & C_OP_MASK_OVERLOAD;
-  switch ( op_overload_flags ) {
+  switch ( op->flags ) {
     case C_OP_MEMBER:
     case C_OP_NON_MEMBER:
     case C_OP_NOT_OVERLOADABLE:
-      return op_overload_flags;
+      return op->flags;
   } // switch
 
   //
   // Otherwise, the operator can be either: see if the user specified which one
   // explicitly.
   //
-  unsigned const user_overload_flags = ast->as.oper.flags & C_OP_MASK_OVERLOAD;
-  switch ( user_overload_flags ) {
+  switch ( ast->as.oper.flags ) {
     case C_OP_MEMBER:
     case C_OP_NON_MEMBER:
-      return user_overload_flags;
+      return ast->as.oper.flags;
   } // switch
 
   //

@@ -806,8 +806,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     return false;
   }
 
-  unsigned const user_overload_flags = ast->as.func.flags & C_FN_MASK_MEMBER;
-  switch ( user_overload_flags ) {
+  switch ( ast->as.func.flags ) {
     case C_FN_MEMBER:
       // nothing to do
       break;
@@ -1290,22 +1289,20 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     return false;
   }
 
-  unsigned const op_overload_flags = op->flags & C_OP_MASK_OVERLOAD;
-  if ( op_overload_flags == C_OP_NOT_OVERLOADABLE ) {
+  if ( op->flags == C_OP_NOT_OVERLOADABLE ) {
     print_error( &ast->loc, "operator %s can not be overloaded\n", op->name );
     return false;
   }
 
-  unsigned const user_overload_flags = ast->as.oper.flags & C_OP_MASK_OVERLOAD;
-  if ( user_overload_flags != C_OP_UNSPECIFIED &&
-      (user_overload_flags & op_overload_flags) == 0 ) {
+  if ( ast->as.oper.flags != C_OP_UNSPECIFIED &&
+      (ast->as.oper.flags & op->flags) == 0 ) {
     //
     // The user specified either member or non-member, but the operator can't
     // be that.
     //
     print_error( &ast->loc,
       "operator %s can only be a %s\n",
-      op->name, op_overload_flags == C_OP_MEMBER ? L_MEMBER : H_NON_MEMBER
+      op->name, op->flags == C_OP_MEMBER ? L_MEMBER : H_NON_MEMBER
     );
     return false;
   }
