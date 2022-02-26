@@ -1,3 +1,8 @@
+2022-02-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_ast_util.c, c_operator.h, check.c, dump.c: Got rid of
+     C_FN_MASK_MEMBER and C_OP_MASK_OVERLOAD.
+
 2022-02-23  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, dump.h, parser.y: Added c_ast_dump_impl() and
