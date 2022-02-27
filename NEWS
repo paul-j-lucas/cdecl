@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.14
+
+** Fixed `void f(int())`
+The long-standing issue <https://github.com/paul-j-lucas/cdecl/issues/10> has
+finally been fixed.
+
+
 * Changes in Cdecl 11.13
 
 ** Aligned `enum`, `struct`, and `union` in C

@@ -4665,7 +4665,7 @@ func_cast_c_astp
       DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
       DUMP_AST( "target_ast", $1.target_ast );
 
-      if ( cast2_c_ast->kind == K_PLACEHOLDER ) {
+      if ( cast2_c_ast->kind == K_FUNCTION ) {
         //
         // This is for a case like:
         //
@@ -4673,26 +4673,23 @@ func_cast_c_astp
         //              |   |  |
         //              |   |  func
         //              |   |
-        //              |   cast2_c_ast
+        //              |   cast2_c_ast (func)
         //              |
         //              ret_ast
         //
-        // We discard cast2_c_ast and alter ret_ast to be a function returning
-        // that type:
+        // We replace ret_ast with cast2_c_ast:
         //
         //      void f( int() () )
         //              |     |
         //              |     func
         //              |
-        //              ret_ast
+        //              ret_ast <- cast2_c_ast (func)
         //
         // that is, a "function returning function returning int" -- which is
         // illegal (since functions can't return functions) and will be caught
         // by c_ast_check_ret_type().
         //
-        c_ast_t *const new_ret_ast = c_ast_new_gc( K_FUNCTION, &@1 );
-        c_ast_set_parent( ret_ast, new_ret_ast );
-        ret_ast = new_ret_ast;
+        ret_ast = cast2_c_ast;
       }
 
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
@@ -4732,15 +4729,30 @@ nested_cast_c_astp
       ia_type_ast_pop();
       --in_attr.ast_depth;
 
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "nested_cast_c_astp", "'(' cast_c_astp_opt ')'" );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "cast_c_astp_opt", $3.ast );
 
       $$ = $3;
 
-      if ( $$.ast == NULL )
-        $$.ast = c_ast_new_gc( K_PLACEHOLDER, &@$ );
-      else
+      if ( $$.ast == NULL ) {
+        //
+        // This is for a case like:
+        //
+        //      void f( int() )
+        //                 ^^
+        //
+        // where the unnamed parameter is a "function returning int".  (In
+        // param_c_ast, this will be converted into a "pointer to function
+        // returning int".)
+        //
+        $$.ast = c_ast_new_gc( K_FUNCTION, &@$ );
+        c_ast_set_parent( type_ast, $$.ast );
+      } else {
         $$.ast->loc = @$;
+      }
 
       DUMP_AST( "nested_cast_c_astp", $$.ast );
       DUMP_END();
