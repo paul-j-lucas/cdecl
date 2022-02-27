@@ -4032,8 +4032,16 @@ param_c_ast
 
       $$ = c_ast_patch_placeholder( $1, $3.ast );
 
-      if ( $$->kind == K_FUNCTION )     // see the comment in decl_english_ast
+      if ( $$->kind == K_FUNCTION ) {
+        //
+        // From the C11 standard, section 6.3.2.1(4):
+        //
+        //    [A] function designator with type "function returning type" is
+        //    converted to an expression that has type "pointer to function
+        //    returning type."
+        //
         $$ = c_ast_pointer( $$, &gc_ast_list );
+      }
 
       DUMP_AST( "param_c_ast", $$ );
       DUMP_END();
@@ -5923,16 +5931,8 @@ param_decl_list_english
       DUMP_START( "param_decl_list_english", "decl_english_ast" );
       DUMP_AST( "decl_english_ast", $1 );
 
-      if ( $1->kind == K_FUNCTION ) {
-        //
-        // From the C11 standard, section 6.3.2.1(4):
-        //
-        //    [A] function designator with type "function returning type" is
-        //    converted to an expression that has type "pointer to function
-        //    returning type."
-        //
+      if ( $1->kind == K_FUNCTION )     // see the comment in param_c_ast
         $1 = c_ast_pointer( $1, &gc_ast_list );
-      }
 
       slist_init( &$$ );
       slist_push_back( &$$, $1 );
