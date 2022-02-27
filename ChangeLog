@@ -1,3 +1,9 @@
+2022-02-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, parser.y, test/Makefile.am, explain_fpf_v_i.out,
+     explain_fpf_v_i.test: Finally fixed `explain void f(int())`.
+   * c_ast_util.c: Now also checking placeholder_ast->parent_ast == NULL.
+
 2022-02-25  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.h, c_ast_util.c, c_operator.h, check.c, dump.c: Got rid of
