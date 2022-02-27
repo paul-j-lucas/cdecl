@@ -831,7 +831,8 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     c_ast_t *const placeholder_ast =
       c_ast_find_kind_any( decl_ast, C_VISIT_DOWN, K_PLACEHOLDER );
     if ( placeholder_ast != NULL ) {
-      if ( type_ast->depth >= decl_ast->depth ) {
+      if ( type_ast->depth >= decl_ast->depth ||
+           placeholder_ast->parent_ast == NULL ) {
         //
         // The type_ast is the final AST -- decl_ast (containing a placeholder)
         // is discarded.
