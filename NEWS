@@ -16,6 +16,9 @@ with their complete changes, see the AUTHORS file.
 The long-standing issue <https://github.com/paul-j-lucas/cdecl/issues/10> has
 finally been fixed.
 
+** Fixed help message
+The old mention of `files...` in the help messages was removed.
+
 
 * Changes in Cdecl 11.13
 

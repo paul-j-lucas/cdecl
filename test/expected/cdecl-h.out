@@ -1,5 +1,4 @@
 usage: cdecl [options] [command...]
-       cdecl [options] files...
 options:
   --alt-tokens         (-a) Print alternative tokens.
   --color=WHEN         (-k) Colorize output WHEN [default: not_file].

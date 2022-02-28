@@ -649,7 +649,6 @@ noreturn
 static void usage( int status ) {
   fprintf( status == EX_OK ? stdout : stderr,
 "usage: " CDECL " [options] [command...]\n"
-"       " CDECL " [options] files...\n"
 "options:\n"
 "  --alt-tokens         (-%c) Print alternative tokens.\n"
 #ifdef YYDEBUG
