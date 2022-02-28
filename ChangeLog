@@ -1,3 +1,8 @@
+2022-02-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, options.c, cdecl-h.out: The old mention of `files...` was removed.
+   * dump.c, english.c, gibberish.c, parser.y, util.h: Added print_sep().
+
 2022-02-27  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, parser.y, test/Makefile.am, explain_fpf_v_i.out,
