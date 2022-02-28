@@ -50,18 +50,15 @@
   DUMP_FORMAT( KEY " = %d-%d,\n", (LOC)->first_column, (LOC)->last_column )
 
 #define DUMP_SNAME(KEY,SNAME) BLOCK(  \
-  dump_indent( indent, dout );        \
-  FPUTS( KEY " = ", dout );           \
+  DUMP_FORMAT( KEY " = " );           \
   c_sname_dump( (SNAME), dout ); )
 
 #define DUMP_STR(KEY,VALUE) BLOCK(  \
-  dump_indent( indent, dout );      \
-  FPUTS( KEY " = ", dout );         \
+  DUMP_FORMAT( KEY " = " );         \
   str_dump( (VALUE), dout ); )
 
 #define DUMP_TYPE(TYPE) BLOCK(  \
-  dump_indent( indent, dout );  \
-  FPUTS( "type = ", dout );     \
+  DUMP_FORMAT( "type = " );     \
   c_type_dump( (TYPE), dout ); )
 
 /// @endcond
