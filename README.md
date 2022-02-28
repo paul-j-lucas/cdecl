@@ -215,5 +215,5 @@ I therefore am licensing **cdecl** 3.0 (and later) under the
 [GNU General Public License, v3](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 **Paul J. Lucas**  
-San Francisco, California, USA  
-16 April 2017
+San Francisco Bay Area, California, USA  
+28 February 2022
