@@ -214,6 +214,75 @@ and that **cdecl** is in the Public Domain,
 I therefore am licensing **cdecl** 3.0 (and later) under the
 [GNU General Public License, v3](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
+However,
+even if you do _not_ assume that the original version of **cdecl**
+is in the public domain,
+copyright law allows for
+"[fair use](https://www.copyright.gov/fair-use/more-info.html)"
+for which there are four factors to consider:
+
+1. **Purpose and character of the use,
+   including whether the use is of a commercial nature
+   or is for nonprofit educational purposes.**
+
+   My version of **cdecl**
+   is not of a commercial nature
+   and is for nonprofit educational purposes.
+
+2. **Nature of the copyrighted work.**
+
+   The purpose of **cdecl**
+   is to provide a tool
+   for C and C++ developers.
+   Unlike, say, a literary work,
+   the _output_ of **cdecl**
+   based on user input
+   is what is of primary importance,
+   not the source code itself.
+
+3. **Amount and substantiality of the portion used
+   in relation to the copyrighted work as a whole.**
+
+   The table below
+   shows a comparison
+   between Hansen's version of **cdecl**
+   and a recent version of my **cdecl**.
+   Hansen's files on the left
+   map to my files on the right,
+   both with total numbers of lines of code
+   and the perecentage of my lines
+   that Hansen's version is:
+
+   | Original   | Lines | New        | Lines | %     |
+   | :--------- | ----: | :--------- | ----: | ----: |
+   | `cdgram.y` |  855  | `parser.y` |  7410 | 11.5% |
+   | `cdlex.l`  |   75  | `lexer.l`  |  1012 |  7.4% |
+   | `cdecl.c`  | 1014  | `*.[ch]`   | 25437 |  4.0% |
+   | **Total**  | 1944  |            | 33859 |  5.7% |
+
+   Handsen's version of **cdecl** accounts for only 5.7%
+   of a recent total
+   of the number of lines of code
+   of my version of **cdecl**.
+   Additionally,
+   of that small percentage,
+   there are very likely
+   no lines that haven't been modified substantially.
+
+4. **Effect of the use upon the potential market for
+   or value of the copyrighted work.**
+
+   The original version of **cdecl**
+   was released as open-source
+   and distributed widely
+   for free.
+   As such,
+   there is no market value.
+
+Note, however, that I am not a lawyer;
+but my layman's anaysis
+seems reasonable.
+
 **Paul J. Lucas**  
 San Francisco Bay Area, California, USA  
 28 February 2022
