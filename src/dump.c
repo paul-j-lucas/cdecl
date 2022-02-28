@@ -92,8 +92,9 @@ static inline void dump_indent( unsigned indent, FILE *out ) {
  *
  * @param ast The AST to dump.  If NULL and \a key is not NULL, dumps only \a
  * key followed by `=&nbsp;NULL`.
- * @param key The key for which \a ast is the value, or NULL for none.
- * @param indent The initial indent.
+ * @param indent The current indent.
+ * @param key If not NULL, prints \a key followed by ` = ` before dumping the
+ * value of \a ast.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_ast_list_dump()
