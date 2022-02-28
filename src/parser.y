@@ -279,8 +279,7 @@
  * Dumps a comma followed by a newline the _second_ and subsequent times it's
  * called.  It's used to separate items being dumped.
  */
-#define DUMP_COMMA \
-  BLOCK( if ( true_or_set( &dump_comma ) ) PUTS( ",\n" ); )
+#define DUMP_COMMA                print_sep( ",\n", &dump_comma, stdout )
 
 /**
  * Dumps an AST.

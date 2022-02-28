@@ -291,8 +291,7 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list, unsigned indent,
     ++indent;
     bool comma = false;
     FOREACH_SLIST_NODE( node, list ) {
-      if ( true_or_set( &comma ) )
-        FPUTS( ",\n", dout );
+      print_sep( ",\n", &comma, dout );
       c_ast_dump_impl( c_param_ast( node ), indent, /*key=*/NULL, dout );
     } // for
     --indent;
@@ -346,8 +345,7 @@ void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
     FPUTS( " (", dout );
     bool colon2 = false;
     FOREACH_SNAME_SCOPE( scope, sname ) {
-      if ( true_or_set( &colon2 ) )
-        FPUTS( "::", dout );
+      print_sep( "::", &colon2, dout );
       c_type_t const *const t = &c_scope_data( scope )->type;
       FPUTS( c_type_is_none( t ) ? "none" : c_type_name_c( t ), dout );
     } // for
@@ -362,8 +360,7 @@ void c_sname_list_dump( slist_t const *list, FILE *dout ) {
   FPUTC( '[', dout );
   bool comma = false;
   FOREACH_SLIST_NODE( node, list ) {
-    if ( true_or_set( &comma ) )
-      FPUTS( ", ", dout );
+    print_sep( ", ", &comma, dout );
     c_sname_dump( node->data, dout );
   } // for
   FPUTC( ']', dout );

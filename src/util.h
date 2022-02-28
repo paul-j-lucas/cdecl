@@ -894,6 +894,20 @@ bool true_clear( bool *flag ) {
   return *flag && !(*flag = false);
 }
 
+/**
+ * Possibly prints the list separator \a sep based on \a sep_flag.
+ *
+ * @param sep The separator to print.
+ * @param sep_flag A pointer to a flag to know whether to print \a sep.  The
+ * flag should be `false` initially.
+ * @param sout The `FILE` to print to.
+ */
+C_UTIL_INLINE
+void print_sep( char const *sep, bool *sep_flag, FILE *sout ) {
+  if ( true_or_set( sep_flag ) )
+    FPUTS( sep, sout );
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
