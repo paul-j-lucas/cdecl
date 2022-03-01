@@ -253,7 +253,7 @@ for which there are four factors to consider:
    and the perecentage of my lines
    that Hansen's version is:
 
-   | Hansen's   | Lines | New        | Lines | %     |
+   | Hansen's   | Lines | Lucas's    | Lines | %     |
    | :--------- | ----: | :--------- | ----: | ----: |
    | `cdgram.y` |  855  | `parser.y` |  7410 | 11.5% |
    | `cdlex.l`  |   75  | `lexer.l`  |  1012 |  7.4% |
