@@ -190,7 +190,10 @@ then do:
 **cdecl** was originally written by Graham Ross
 sometime in the mid-1980s.
 Tony Hansen, a major contributor,
-[posted the source code with his changes](https://groups.google.com/d/msg/comp.sources.unix/Y76scbXQQBk/MVrZZBG0nNwJ)
+posted the source code with his changes
+(parts [1](https://groups.google.com/g/comp.sources.unix/c/Y76scbXQQBk/m/MVrZZBG0nNwJ)
+&
+[2](https://groups.google.com/g/comp.sources.unix/c/yzWbI4agBE0/m/ddqzmuiEidwJ))
 to `comp.sources.unix` in 1988.
 
 The source files have never had either a copyright notice or license.
