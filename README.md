@@ -263,7 +263,7 @@ for which there are four factors to consider:
    | `cdecl.c`  | 1014  | `*.[ch]`   | 25437 |  4.0% |
    | **Total**  | 1944  |            | 33859 |  5.7% |
 
-   Handsen's version of **cdecl** accounts for only 5.7%
+   Hansen's version of **cdecl** accounts for only 5.7%
    of a recent total
    of the number of lines of code
    of my version of **cdecl**.
