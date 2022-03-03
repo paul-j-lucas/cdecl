@@ -60,6 +60,10 @@
 
 // extern option variables
 extern bool         opt_alt_tokens;     ///< Print alternative tokens?
+#ifdef YYDEBUG
+                    /// Print Bison debug output?
+#define             opt_bison_debug     yydebug
+#endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
 extern bool         opt_cdecl_debug;    ///< Print JSON-like debug output?
 #endif /* ENABLE_CDECL_DEBUG */
@@ -67,6 +71,10 @@ extern char const  *opt_conf_file;      ///< Configuration file path.
 extern bool         opt_east_const;     ///< Print in "east const" form?
 extern bool         opt_explain;        ///< Assume `explain` if no command?
 extern c_tid_t      opt_explicit_ecsu;  ///< Explicit `class`|`struct`|`union`?
+#ifdef ENABLE_FLEX_DEBUG
+                    /// Print Flex debug output?
+#define             opt_flex_debug      yy_flex_debug
+#endif /* ENABLE_FLEX_DEBUG */
 extern c_graph_t    opt_graph;          ///< Di/Trigraph mode.
 extern bool         opt_interactive;    ///< Interactive mode?
 extern c_lang_id_t  opt_lang;           ///< Current language.
@@ -79,11 +87,9 @@ extern bool         opt_using;          ///< Print "using" in C++11 and later?
 // other extern variables
 #ifdef ENABLE_FLEX_DEBUG
 extern int          yy_flex_debug;      ///< Flex variable for debugging.
-#define opt_flex_debug  yy_flex_debug   ///< Print Flex debug output?
 #endif /* ENABLE_FLEX_DEBUG */
 #ifdef YYDEBUG
 extern int          yydebug;            ///< Bison variable for debugging.
-#define opt_bison_debug yydebug         ///< Print Bison debug output?
 #endif /* YYDEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////
