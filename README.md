@@ -255,14 +255,12 @@ for which there are four factors to consider:
    both with total numbers of lines of code
    and the perecentage of my lines
    that Hansen's version is:
-
    | Hansen's   | Lines | Lucas's    | Lines | %     |
    | :--------- | ----: | :--------- | ----: | ----: |
    | `cdgram.y` |  855  | `parser.y` |  7410 | 11.5% |
    | `cdlex.l`  |   75  | `lexer.l`  |  1012 |  7.4% |
    | `cdecl.c`  | 1014  | `*.[ch]`   | 25437 |  4.0% |
    | **Total**  | 1944  |            | 33859 |  5.7% |
-
    Hansen's version of **cdecl** accounts for only 5.7%
    of a recent total
    of the number of lines of code
