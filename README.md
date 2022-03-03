@@ -221,7 +221,7 @@ However,
 even if you do _not_ assume that the original version of **cdecl**
 is in the public domain,
 copyright law allows for
-"[fair use](https://www.copyright.gov/fair-use/more-info.html)"
+["fair use"](https://www.copyright.gov/fair-use/more-info.html)
 for which there are four factors to consider:
 
 1. **Purpose and character of the use,
