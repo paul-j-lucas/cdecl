@@ -452,10 +452,24 @@ static void parse_options( int argc, char const *argv[] ) {
         opt_explain = true;
         break;
       case COPT(EXPLICIT_ECSU):
-        parse_explicit_ecsu( optarg, /*loc=*/NULL );
+        if ( !parse_explicit_ecsu( optarg ) ) {
+          strbuf_t opt_sbuf;
+          FATAL_ERR( EX_USAGE,
+            "\"%s\": invalid value for %s;"
+            " must be only a combination of: e, c, s, or u\n",
+            optarg, opt_format( COPT(EXPLICIT_ECSU), &opt_sbuf )
+          );
+        }
         break;
       case COPT(EXPLICIT_INT):
-        parse_explicit_int( optarg, /*loc=*/NULL );
+        if ( !parse_explicit_int( optarg ) ) {
+          strbuf_t opt_sbuf;
+          FATAL_ERR( EX_USAGE,
+            "\"%s\": invalid value for %s;"
+            " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
+            optarg, opt_format( COPT(EXPLICIT_INT), &opt_sbuf )
+          );
+        }
         break;
       case COPT(FILE):
         fin_path  = optarg;
@@ -747,7 +761,7 @@ bool is_explicit_int( c_tid_t tid ) {
   return c_tid_is_any( tid, opt_explicit_int[ is_unsigned ] );
 }
 
-bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc ) {
+bool parse_explicit_ecsu( char const *ecsu_format ) {
   assert( ecsu_format != NULL );
 
   c_tid_t btids = TB_NONE;
@@ -767,19 +781,6 @@ bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc ) {
         btids |= TB_UNION;
         break;
       default:
-        if ( loc == NULL ) {            // invalid for CLI option
-          strbuf_t opt_sbuf;
-          FATAL_ERR( EX_USAGE,
-            "\"%s\": invalid value for %s;"
-            " must be only a combination of: e, c, s, or u\n",
-            s, opt_format( COPT(EXPLICIT_ECSU), &opt_sbuf )
-          );
-        }
-        print_error( loc,               // invalid for `set` option
-          "\"%s\": invalid explicit-ecsu value;"
-          " must be only a combination of: e, c, s, or u\n",
-          s
-        );
         return false;
     } // switch
   } // for
@@ -788,7 +789,7 @@ bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc ) {
   return true;
 }
 
-bool parse_explicit_int( char const *ei_format, c_loc_t const *loc ) {
+bool parse_explicit_int( char const *ei_format ) {
   assert( ei_format != NULL );
 
   c_tid_t tid = TB_NONE;
@@ -831,19 +832,6 @@ bool parse_explicit_int( char const *ei_format, c_loc_t const *loc ) {
       case ',':
         break;
       default:
-        if ( loc == NULL ) {            // invalid for CLI option
-          strbuf_t opt_sbuf;
-          FATAL_ERR( EX_USAGE,
-            "\"%s\": invalid value for %s: '%c';"
-            " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
-            s, opt_format( COPT(EXPLICIT_INT), &opt_sbuf ), *s
-          );
-        }
-        print_error( loc,               // invalid for `set` option
-          "\"%s\": invalid explicit-int value;"
-          " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
-          s
-        );
         return false;
     } // switch
 

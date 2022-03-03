@@ -268,11 +268,27 @@ static bool set_explain_by_default( set_option_fn_args_t const *args ) {
  * @return Returns `true` only if the option was set.
  */
 static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
-  if ( OPT_LANG_IS(C_ANY) )
+  bool ok;
+
+  if ( args->opt_enabled ) {
+    ok = parse_explicit_ecsu( args->opt_value );
+    if ( !ok ) {
+      print_error( args->opt_value_loc,
+        "\"%s\": invalid explicit-ecsu value;"
+        " must be only a combination of: e, c, s, or u\n",
+        args->opt_value
+      );
+    }
+  }
+  else {
+    ok = parse_explicit_ecsu( "" );
+    assert( ok );
+  }
+
+  if ( ok && OPT_LANG_IS(C_ANY) )
     print_warning( args->opt_name_loc, "explicit-ecsu is ignored in C\n" );
-  return args->opt_enabled ?
-    parse_explicit_ecsu( args->opt_value, args->opt_value_loc ) :
-    parse_explicit_ecsu( "", /*loc=*/NULL );
+
+  return ok;
 }
 
 /**
@@ -282,9 +298,24 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
  * @return Returns `true` only if the option was set.
  */
 static bool set_explicit_int( set_option_fn_args_t const *args ) {
-  return args->opt_enabled ?
-    parse_explicit_int( args->opt_value, args->opt_value_loc ) :
-    parse_explicit_int( "", /*loc=*/NULL );
+  bool ok;
+
+  if ( args->opt_enabled ) {
+    ok = parse_explicit_int( args->opt_value );
+    if ( !ok ) {
+      print_error( args->opt_value_loc,
+        "\"%s\": invalid explicit-int value;"
+        " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
+        args->opt_value
+      );
+    }
+  }
+  else {
+    ok = parse_explicit_int( "" );
+    assert( ok );
+  }
+
+  return ok;
 }
 
 #ifdef ENABLE_FLEX_DEBUG

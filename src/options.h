@@ -151,13 +151,10 @@ void options_init( int *pargc, char const **pargv[] );
  *      `u`    | `union`
  * Multiple formats may be given, one immediately after the other, e.g., `su`
  * means `struct` and `union`.
- * @param loc The location of \a ecsu_format.  If not NULL and \a ecsu_format
- * is invalid, calls print_error(); if NULL and \a ecsu_format is invalid,
- * calls #FATAL_ERR().
  * @return Returns `true` only if \a ecsu_format was parsed successfully.
  */
-PJL_NOWARN_UNUSED_RESULT
-bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc );
+PJL_WARN_UNUSED_RESULT
+bool parse_explicit_ecsu( char const *ecsu_format );
 
 /**
  * Parses the explicit `int` option.
@@ -174,13 +171,10 @@ bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc );
  * to separate formats.  For example, `ulll` is parsed as `unsigned long long`
  * and `long` whereas `ul,ll` is parsed as `unsigned long` and `long long`.  If
  * invalid, an error message is printed to standard error.
- * @param loc The location of \a ei_format.  If not NULL and \a ei_format is
- * invalid, calls print_error(); if NULL and \a ei_format is invalid, calls
- * #FATAL_ERR().
  * @return Returns `true` only if \a ei_format was parsed successfully.
  */
-PJL_NOWARN_UNUSED_RESULT
-bool parse_explicit_int( char const *ei_format, c_loc_t const *loc );
+PJL_WARN_UNUSED_RESULT
+bool parse_explicit_int( char const *ei_format );
 
 /**
  * Prints the string representation of the explicit integer option.
