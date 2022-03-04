@@ -39,6 +39,12 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @defgroup set-options-group Set Options
+ * Declares global variables and functions for `set` command options.
+ * @{
+ */
+
 typedef struct set_option_fn_args set_option_fn_args_t;
 
 /**
@@ -110,6 +116,8 @@ PJL_WARN_UNUSED_RESULT
 set_option_t const* set_option_next( set_option_t const *opt );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_set_options_H */
 /* vim:set et sw=2 ts=2: */
