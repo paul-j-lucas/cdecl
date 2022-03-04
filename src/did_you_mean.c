@@ -34,8 +34,8 @@
 #include "c_typedef.h"
 #include "cdecl.h"
 #include "cdecl_keyword.h"
+#include "cli_options.h"
 #include "dam_lev.h"
-#include "options.h"
 #include "set_options.h"
 #include "util.h"
 

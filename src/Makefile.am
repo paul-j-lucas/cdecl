@@ -57,6 +57,7 @@ cdecl_SOURCES =	parser.y \
 		cdecl_keyword.c cdecl_keyword.h \
 		cdecl_parser.h \
 		check.c check.h \
+		cli_options.c cli_options.h \
 		color.c color.h \
 		dam_lev.c dam_lev.h \
 		did_you_mean.c did_you_mean.h \

@@ -30,6 +30,7 @@
 #include "c_ast.h"
 #include "c_lang.h"
 #include "c_typedef.h"
+#include "cli_options.h"
 #include "color.h"
 #include "help.h"
 #include "lexer.h"
@@ -136,7 +137,7 @@ static bool starts_with_token( char const*, char const*, size_t );
  */
 int main( int argc, char const *argv[] ) {
   IF_EXIT( atexit( &cdecl_cleanup ) != 0, EX_OSERR );
-  options_init( &argc, &argv );
+  cli_options_init( &argc, &argv );
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
 
@@ -180,8 +181,8 @@ static int cdecl_parse_argv( int argc, char const *const argv[const] ) {
     return cdecl_parse_command_line( /*command=*/me, argc, argv );
 
   //
-  // Note that options_init() adjusts argv such that argv[0] becomes the first
-  // argument (and no longer the program name).
+  // Note that cli_options_init() adjusts argv such that argv[0] becomes the
+  // first argument (and no longer the program name).
   //
   if ( is_command( argv[0], CDECL_COMMAND_FIRST_ARG ) )
     return cdecl_parse_command_line( /*command=*/NULL, argc, argv );

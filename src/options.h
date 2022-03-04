@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares global variables and functions for command-line options.
+ * Declares global variables and functions for cdecl options.
  */
 
 // local
@@ -33,28 +33,16 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <getopt.h>
 #include <stdbool.h>
 #include <stdio.h>                      /* for FILE */
 
 /// @endcond
 
-/**
- * Convenience macro for iterating over all cdecl command-line options.
- *
- * @param VAR The `struct option` loop variable.
- *
- * @sa cli_option_next()
- * @sa #FOREACH_SET_OPTION()
- */
-#define FOREACH_CLI_OPTION(VAR) \
-  for ( struct option const *VAR = NULL; (VAR = cli_option_next( VAR )) != NULL; )
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @defgroup cli-options-group Command-Line Options
- * Declares global variables and functions for command-line options.
+ * @defgroup cdecl-options-group Options
+ * Declares global variables and functions for cdecl options.
  * @{
  */
 
@@ -115,28 +103,6 @@ bool any_explicit_int( void );
  */
 PJL_WARN_UNUSED_RESULT
 bool is_explicit_int( c_tid_t tid );
-
-/**
- * Iterates to the next cdecl command-line option.
- *
- * @param opt A pointer to the previous option. For the first iteration, NULL
- * should be passed.
- * @return Returns the next command-line option or NULL for none.
- *
- * @sa #FOREACH_CLI_OPTION()
- */
-PJL_WARN_UNUSED_RESULT
-struct option const* cli_option_next( struct option const *opt );
-
-/**
- * Initializes command-line option variables.
- * On return, `*pargc` and `*pargv` are updated to reflect the remaining
- * command-line with the options removed.
- *
- * @param pargc A pointer to the argument count from main().
- * @param pargv A pointer to the argument values from main().
- */
-void options_init( int *pargc, char const **pargv[] );
 
 /**
  * Parses the explicit `enum`, `class`, `struct`, `union` option.
