@@ -155,8 +155,7 @@ struct slist_node {
  * @param list A pointer to the \ref slist.
  * @param offset The offset (starting at 0) of the data to get.  It is _not_
  * checked to ensure it's &lt; the list's length.
- * @return Returns the data from the node at \a offset or NULL if \a offset
- * &ge; slist_len().
+ * @return Returns the data from the node at \a offset.
  *
  * @note This is an O(n) operation.
  *
