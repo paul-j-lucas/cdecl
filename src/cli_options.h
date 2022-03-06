@@ -41,6 +41,10 @@
 /**
  * @defgroup cli-options-group Command-Line Options
  * Declares global variables and functions for command-line options.
+ *
+ * @sa \ref cdecl-options-group
+ * @sa \ref set-options-group
+ *
  * @{
  */
 
@@ -59,6 +63,9 @@
 
 /**
  * Iterates to the next cdecl command-line option.
+
+ * @note This function isn't normally called directly; use the
+ * #FOREACH_CLI_OPTION() macro instead.
  *
  * @param opt A pointer to the previous option. For the first iteration, NULL
  * should be passed.

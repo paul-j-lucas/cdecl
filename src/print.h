@@ -134,7 +134,7 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
  * @param sname The unknown name.
  *
  * @sa fl_print_error()
- * @sa print_error_unknown_name()
+ * @sa #print_error_unknown_name()
  * @sa print_suggestions()
  */
 void fl_print_error_unknown_name( char const *file, int line,

@@ -42,6 +42,10 @@
 /**
  * @defgroup set-options-group Set Options
  * Declares global variables and functions for `set` command options.
+ *
+ * @sa \ref cdecl-options-group
+ * @sa \ref cli-options-group
+ *
  * @{
  */
 
@@ -105,6 +109,9 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
 
 /**
  * Iterates to the next cdecl `set` option.
+ *
+ * @note This function isn't normally called directly; use the
+ * #FOREACH_SET_OPTION() macro instead.
  *
  * @param opt A pointer to the previous option. For the first iteration, NULL
  * should be passed.
