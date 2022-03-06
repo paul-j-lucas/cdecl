@@ -213,7 +213,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #REINTERPRET_CAST()
  * @sa #STATIC_CAST()
  */
-#define CONST_CAST(T,EXPR)        ((T)(uintptr_t)(EXPR))
+#define CONST_CAST(T,EXPR)        ((T)(uint64_t)(EXPR))
 
 /**
  * Shorthand for printing to standard error.
@@ -442,7 +442,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #CONST_CAST()
  * @sa #STATIC_CAST()
  */
-#define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
+#define REINTERPRET_CAST(T,EXPR)  ((T)(uint64_t)(EXPR))
 
 /**
  * Advances \a S over all \a CHARS.
