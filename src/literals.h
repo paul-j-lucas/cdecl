@@ -53,8 +53,8 @@ _GL_INLINE_HEADER_BEGIN
 
 // If you add a new literal and it is:
 //
-//  + A cdecl command only, update CDECL_KEYWORDS in lexer.l and
-//    AC_CDECL_COMMANDS in autocomplete.c (if you want it auto-completable).
+//  + A cdecl command only, update CDECL_KEYWORDS in lexer.l and CDECL_COMMANDS
+//    in cdecl.c.
 //
 //  + A cdecl command that is also a C/C++ keyword -OR- a C/C++ keyword only,
 //    update C_KEYWORDS in c_keywords.c.
