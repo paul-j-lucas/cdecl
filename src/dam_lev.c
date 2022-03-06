@@ -70,20 +70,20 @@ size_t dam_lev_dist( char const *source, char const *target ) {
   // extras with higher-than-possible distances to prevent erroneous detection
   // of transpositions that would be outside the bounds of the strings.
   //
-  size_t *const distances = MALLOC( size_t, (slen + 2) * (tlen + 2) );
-  size_t **const m = MALLOC( size_t*, slen + 2 );
+  size_t *const dist_array = MALLOC( size_t, (slen + 2) * (tlen + 2) );
+  size_t **const dist_matrix = MALLOC( size_t*, slen + 2 );
   for ( size_t i = 0; i < slen + 2; ++i )
-    m[i] = &distances[ i * (tlen + 2) ];
+    dist_matrix[i] = &dist_array[ i * (tlen + 2) ];
 
   size_t const inf = slen + tlen;
-  m[0][0] = inf;
+  dist_matrix[0][0] = inf;
   for ( size_t i = 0; i <= slen; ++i ) {
-    m[i+1][1] = i;
-    m[i+1][0] = inf;
+    dist_matrix[i+1][1] = i;
+    dist_matrix[i+1][0] = inf;
   } // for
   for ( size_t j = 0; j <= tlen; ++j ) {
-    m[1][j+1] = j;
-    m[0][j+1] = inf;
+    dist_matrix[1][j+1] = j;
+    dist_matrix[0][j+1] = inf;
   } // for
 
   // Map from a character to the row where it last appeared in source.
@@ -106,9 +106,9 @@ size_t dam_lev_dist( char const *source, char const *target ) {
       bool const match = sc == tc;
 
       // Calculate the distances of all possible operations.
-      size_t const ins_dist = m[ row   ][ col+1 ] + 1;
-      size_t const del_dist = m[ row+1 ][ col   ] + 1;
-      size_t const sub_dist = m[ row   ][ col   ] + !match;
+      size_t const ins_dist = dist_matrix[ row   ][ col+1 ] + 1;
+      size_t const del_dist = dist_matrix[ row+1 ][ col   ] + 1;
+      size_t const sub_dist = dist_matrix[ row   ][ col   ] + !match;
       //
       // Calculate the cost of a transposition between the current character in
       // target and the last character found in both strings.
@@ -131,7 +131,7 @@ size_t dam_lev_dist( char const *source, char const *target ) {
       // cause the total cost of a transposition to become higher than any
       // other operation's cost.
       //
-      size_t const xpos_dist = m[ last_match_row ][ last_match_col ]
+      size_t const xpos_dist = dist_matrix[ last_match_row ][ last_match_col ]
         + (row - last_match_row - 1)
         + (col - last_match_col - 1) + 1;
 
@@ -139,7 +139,7 @@ size_t dam_lev_dist( char const *source, char const *target ) {
       size_t dist_min = min_dist( ins_dist, del_dist );
              dist_min = min_dist( dist_min, sub_dist );
              dist_min = min_dist( dist_min, xpos_dist );
-      m[ row+1 ][ col+1 ] = dist_min;
+      dist_matrix[ row+1 ][ col+1 ] = dist_min;
 
       if ( match )
         last_match_col = col;
@@ -148,10 +148,10 @@ size_t dam_lev_dist( char const *source, char const *target ) {
     last_row[ (unsigned char)sc ] = row;
   } // for
 
-  size_t const rv = m[ slen+1 ][ tlen+1 ];
-  free( m );
-  free( distances );
-  return rv;
+  size_t const edit_dist = dist_matrix[ slen+1 ][ tlen+1 ];
+  free( dist_matrix );
+  free( dist_array );
+  return edit_dist;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
