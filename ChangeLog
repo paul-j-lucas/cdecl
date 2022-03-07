@@ -1,5 +1,13 @@
 2022-03-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_lang.h, check.c, lexer.l, parser.y, set_options.c: Added C_LANG_WHICH().
+   * NEWS, options.h, set_options.c: Now prints a warning that neither
+     alternative tokens nor digraphs are supported until C95; now prints a
+     warning that `using` isn't supported until C++11.
+   * NEWS, set_options.c: Now prints a warning that `east-const` isn't
+     supported until C89.
+   * cdecl.1: Removed yet another remnant of file arguments.
+   * cdecl.1: s/current/default/
    * cdefs.h, gnulib-common.m4: Updated Gnulib.
 
 2022-03-06  Paul J. Lucas <paul@lucasmail.org>
