@@ -181,21 +181,21 @@ static char const* const* init_set_options( void ) {
  * C++, this can also be `const`, `dynamic`, `static`, or `reinterpret`.
  *
  * @param s The string to check.  Leading whitespace must have been skipped.
- * @param n The length of \a s.
+ * @param s_len The length of \a s.
  * @return Returns `true` only if it's a cast command.
  *
  * @sa is_command()
  */
 PJL_WARN_UNUSED_RESULT
-static bool is_cast_command( char const *s, size_t n ) {
-  if ( is_command( L_CAST, s, n ) )
+static bool is_cast_command( char const *s, size_t s_len ) {
+  if ( is_command( L_CAST, s, s_len ) )
     return true;
   if ( OPT_LANG_IS(C_ANY) )
     return false;
-  return  is_command( L_CONST,       s, n ) ||
-          is_command( L_DYNAMIC,     s, n ) ||
-          is_command( L_STATIC,      s, n ) ||
-          is_command( L_REINTERPRET, s, n );
+  return  is_command( L_CONST,       s, s_len ) ||
+          is_command( L_DYNAMIC,     s, s_len ) ||
+          is_command( L_STATIC,      s, s_len ) ||
+          is_command( L_REINTERPRET, s, s_len );
 }
 
 /**
@@ -203,25 +203,25 @@ static bool is_cast_command( char const *s, size_t n ) {
  *
  * @param command The command to check for.
  * @param s The string to check.  Leading whitespace must have been skipped.
- * @param n The length of \a s.
+ * @param s_len The length of \a s.
  * @return Returns `true` only if it is.
  *
  * @sa is_cast_command()
  */
 PJL_WARN_UNUSED_RESULT
-static bool is_command( char const *command, char const *s, size_t n ) {
+static bool is_command( char const *command, char const *s, size_t s_len ) {
   assert( command != NULL );
   assert( s != NULL );
   size_t const command_len = strlen( command );
-  if ( command_len > n || strncmp( s, command, command_len ) != 0 )
+  if ( command_len > s_len || strncmp( s, command, command_len ) != 0 )
     return false;
-  if ( command_len == n )
+  if ( command_len == s_len )
     return true;
   //
-  // If n > command_len, then the first character past the end of the command
-  // must not be an identifier character.  For example, if command is "foo",
-  // then it must be "foo" exactly (above); or "foo" followed by a whitespace
-  // or punctuation character, but not an identifier character:
+  // If s_len > command_len, then the first character past the end of the
+  // command must not be an identifier character.  For example, if command is
+  // "foo", then it must be "foo" exactly (above); or "foo" followed by a
+  // whitespace or punctuation character, but not an identifier character:
   //
   //      "foo"   match
   //      "foo "  match
