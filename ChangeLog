@@ -1,3 +1,7 @@
+2022-03-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdefs.h, gnulib-common.m4: Updated Gnulib.
+
 2022-03-06  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c, cdecl.c, cdecl.h: Made CDECL_COMMANDS static; added
