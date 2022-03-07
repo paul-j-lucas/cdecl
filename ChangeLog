@@ -1,3 +1,17 @@
+2022-03-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, cdecl.c, cdecl.h: Made CDECL_COMMANDS static; added
+     cdecl_command_next().
+   * slist.c, util.h: s/intptr_t/int64_t/; s/uintptr_t/uint64_t/
+
+2022-03-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, cdecl.c, cli_options.c, cli_options.h, did_you_mean.c,
+     options.c, options.h: Split CLI code from options.[ch] into
+     cli_options.[ch].
+   * options.c, options.h, set_options.c, cdecl-Ix.out: parse_explicit_ecsu()
+     and parse_explicit_int() no longer print error messages; their callers do.
+
 2022-02-28  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, options.c, cdecl-h.out: The old mention of `files...` was removed.
