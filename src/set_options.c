@@ -194,6 +194,11 @@ static void print_options( void ) {
  */
 static bool set_alt_tokens( set_option_fn_args_t const *args ) {
   opt_alt_tokens = args->opt_enabled;
+  if ( opt_alt_tokens && !OPT_LANG_IS(OPT_ALT_TOKENS) ) {
+    print_warning( args->opt_name_loc,
+      "alt-tokens not supported%s\n", c_lang_which( LANG_OPT_ALT_TOKENS )
+    );
+  }
   return true;
 }
 
@@ -231,9 +236,9 @@ static bool set_debug( set_option_fn_args_t const *args ) {
  */
 static bool set_digraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_DI : C_GRAPH_NONE;
-  if ( opt_graph && opt_lang < LANG_C_95 ) {
+  if ( opt_graph && !OPT_LANG_IS(OPT_DIGRAPHS) ) {
     print_warning( args->opt_name_loc,
-      "digraphs not supported%s\n", c_lang_which( LANG_MIN(C_95) )
+      "digraphs not supported%s\n", c_lang_which( LANG_OPT_DIGRAPHS )
     );
   }
   return true;
@@ -247,9 +252,9 @@ static bool set_digraphs( set_option_fn_args_t const *args ) {
  */
 static bool set_east_const( set_option_fn_args_t const *args ) {
   opt_east_const = args->opt_enabled;
-  if ( opt_east_const && opt_lang < LANG_C_89 ) {
+  if ( opt_east_const && !OPT_LANG_IS(OPT_EAST_CONST) ) {
     print_warning( args->opt_name_loc,
-      "east-const not supported%s\n", c_lang_which( LANG_MIN(C_89) )
+      "east-const not supported%s\n", c_lang_which( LANG_OPT_EAST_CONST )
     );
   }
   return true;
@@ -412,9 +417,9 @@ static bool set_semicolon( set_option_fn_args_t const *args ) {
  */
 static bool set_trigraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
-  if ( args->opt_enabled && !OPT_LANG_IS(RANGE(C_89,CPP_14)) ) {
+  if ( args->opt_enabled && !OPT_LANG_IS(OPT_TRIGRAPHS) ) {
     print_warning( args->opt_name_loc,
-      "trigraphs not supported%s\n", c_lang_which( LANG_RANGE(C_89,CPP_14) )
+      "trigraphs not supported%s\n", c_lang_which( LANG_OPT_TRIGRAPHS )
     );
   }
   return true;
@@ -428,6 +433,11 @@ static bool set_trigraphs( set_option_fn_args_t const *args ) {
  */
 static bool set_using( set_option_fn_args_t const *args ) {
   opt_using = args->opt_enabled;
+  if ( opt_using && !OPT_LANG_IS(OPT_USING) ) {
+    print_warning( args->opt_name_loc,
+      "using not supported%s\n", c_lang_which( LANG_OPT_USING )
+    );
+  }
   return true;
 }
 

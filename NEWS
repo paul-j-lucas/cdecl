@@ -12,8 +12,15 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.14
 
+** Alternative tokens & digraphs
+Now prints a warning that neither alternative tokens nor digraphs are supported
+until C95.
+
 ** `east-const` in K&R C
 Now prints a warning that `east-const` isn't supported until C89.
+
+** `using`
+Now prints a warning that `using` isn't supported until C++11.
 
 ** Fixed `void f(int())`
 The long-standing issue <https://github.com/paul-j-lucas/cdecl/issues/10> has
