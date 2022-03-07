@@ -59,7 +59,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-cdecl_command_t const CDECL_COMMANDS[] = {
+/**
+ * Cdecl commands.
+ */
+static cdecl_command_t const CDECL_COMMANDS[] = {
   { L_CAST,                   CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
   { L_CLASS,                  CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
   { L_CONST /* cast */,       CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
@@ -366,6 +369,12 @@ static bool starts_with_token( char const *s, char const *token,
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+cdecl_command_t const* cdecl_command_next( cdecl_command_t const *command ) {
+  return command == NULL ?
+    CDECL_COMMANDS :
+    (++command)->literal == NULL ? NULL : command;
+}
 
 int cdecl_parse_string( char const *s, size_t s_len ) {
   assert( s != NULL );

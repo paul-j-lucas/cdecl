@@ -288,17 +288,17 @@ static char** cdecl_rl_completion( char const *text, int start, int end ) {
 static char* command_generator( char const *text, int state ) {
   assert( text != NULL );
 
-  static size_t match_index;
+  static cdecl_command_t const *match_command;
   static size_t text_len;
 
   if ( state == 0 ) {                   // new word? reset
-    match_index = 0;
+    match_command = cdecl_command_next( NULL );
     text_len = strlen( text );
   }
 
-  for ( cdecl_command_t const *c;
-        (c = CDECL_COMMANDS + match_index)->literal != NULL; ) {
-    ++match_index;
+  while ( match_command != NULL ) {
+    cdecl_command_t const *const c = match_command;
+    match_command = cdecl_command_next( match_command );
     if ( !opt_lang_is_any( c->lang_ids ) )
       continue;
     if ( strncmp( text, c->literal, text_len ) == 0 )

@@ -56,13 +56,11 @@
  * @param VAR The cdecl_command loop variable.
  */
 #define FOREACH_CDECL_COMMAND(VAR) \
-  for ( cdecl_command_t const *VAR = CDECL_COMMANDS; VAR->literal != NULL; ++VAR )
+  for ( cdecl_command_t const *VAR = NULL; (VAR = cdecl_command_next( VAR )) != NULL; )
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern cdecl_command_t const
-                    CDECL_COMMANDS[];   ///< cdecl commands.
 extern FILE        *cdecl_fin;          ///< File in.
 extern FILE        *cdecl_fout;         ///< File out.
 extern bool         cdecl_initialized;  ///< Initialized (read conf. file)?
@@ -84,6 +82,21 @@ extern char const  *me;                 ///< Program name.
  */
 PJL_WARN_UNUSED_RESULT
 int cdecl_parse_string( char const *s, size_t s_len );
+
+/**
+ * Iterates to the next cdecl command.
+ *
+ * @note This function isn't normally called directly; use the
+ * #FOREACH_CDECL_COMMAND() macro instead.
+ *
+ * @param command A pointer to the previous command. For the first iteration,
+ * NULL should be passed.
+ * @return Returns the next command or NULL for none.
+ *
+ * @sa #FOREACH_CDECL_COMMAND
+ */
+PJL_WARN_UNUSED_RESULT
+cdecl_command_t const* cdecl_command_next( cdecl_command_t const *command );
 
 ///////////////////////////////////////////////////////////////////////////////
 
