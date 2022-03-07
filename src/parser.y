@@ -1755,8 +1755,7 @@ cast_command
 
       if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@1,
-          "%s not supported%s\n",
-          cast_literal, c_lang_which( LANG_CPP_ANY )
+          "%s not supported%s\n", cast_literal, C_LANG_WHICH( CPP_ANY )
         );
       }
       else {
@@ -2433,9 +2432,9 @@ show_format
   | Y_TYPEDEF                     { $$ = C_GIB_TYPEDEF; }
   | Y_USING
     {
-      if ( opt_lang < LANG_CPP_11 ) {
+      if ( !OPT_LANG_IS(OPT_USING) ) {
         print_error( &@1,
-          "\"using\" not supported%s\n", c_lang_which( LANG_CPP_MIN(11) )
+          "\"using\" not supported%s\n", C_LANG_WHICH( OPT_USING )
         );
         PARSE_ABORT();
       }
@@ -2795,7 +2794,7 @@ namespace_declaration_c
       if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_CPP_MIN(17) ) ) {
         print_error( &@3,
           "nested namespace declarations not supported%s\n",
-          c_lang_which( LANG_CPP_MIN(17) )
+          C_LANG_WHICH( CPP_MIN(17) )
         );
         c_sname_cleanup( &$3 );
         PARSE_ABORT();
@@ -3210,9 +3209,9 @@ using_decl_c_ast
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      if ( unsupported( LANG_CPP_MIN(11) ) ) {
+      if ( unsupported( LANG_OPT_USING ) ) {
         print_error( &@1,
-          "\"using\" not supported%s\n", c_lang_which( LANG_CPP_MIN(11) )
+          "\"using\" not supported%s\n", C_LANG_WHICH( OPT_USING )
         );
         PARSE_ABORT();
       }
@@ -3746,7 +3745,7 @@ pc99_func_or_constructor_decl_c
         //
         print_error( &@1,
           "implicit \"int\" functions are illegal%s\n",
-          c_lang_which( LANG_MAX(C_95) )
+          C_LANG_WHICH( MAX(C_95) )
         );
         PARSE_ABORT();
       }
@@ -3875,7 +3874,7 @@ noexcept_c_stid_opt
       } else {
         print_error( &@3,
           "dynamic exception specifications not supported%s\n",
-          c_lang_which( LANG_CPP_MAX(14) )
+          C_LANG_WHICH( CPP_MAX(14) )
         );
       }
       PARSE_ABORT();
@@ -3919,7 +3918,7 @@ trailing_return_type_c_ast_opt
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
           "trailing return type not supported%s\n",
-          c_lang_which( LANG_CPP_MIN(11) )
+          C_LANG_WHICH( CPP_MIN(11) )
         );
         PARSE_ABORT();
       }
@@ -4248,8 +4247,7 @@ pc99_pointer_type_c_ast
         // would have no "memory" that the return type was implicitly int.
         //
         print_error( &@1,
-          "implicit \"int\" is illegal%s\n",
-          c_lang_which( LANG_MAX(C_95) )
+          "implicit \"int\" is illegal%s\n", C_LANG_WHICH( MAX(C_95) )
         );
         PARSE_ABORT();
       }
@@ -5455,7 +5453,7 @@ attribute_specifier_list_c_atid
       if ( unsupported( LANG_C_CPP_MIN(2X,11) ) ) {
         print_error( &@1,
           "\"[[\" attribute syntax not supported%s\n",
-          c_lang_which( LANG_C_CPP_MIN(2X,11) )
+          C_LANG_WHICH( C_CPP_MIN(2X,11) )
         );
         PARSE_ABORT();
       }
@@ -6265,7 +6263,7 @@ user_defined_literal_decl_english_ast
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
           "user-defined literal not supported%s\n",
-          c_lang_which( LANG_CPP_MIN(11) )
+          C_LANG_WHICH( CPP_MIN(11) )
         );
         PARSE_ABORT();
       }

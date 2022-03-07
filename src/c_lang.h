@@ -249,6 +249,14 @@ _GL_INLINE_HEADER_BEGIN
 #define C_LANG_LIT(...)           (c_lang_lit_t const[]){ __VA_ARGS__ }
 
 /**
+ * Shorthand for calling c_lang_which() with a `LANG_*` macro.
+ *
+ * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
+ * @return Returns the value of c_lang_which().
+ */
+#define C_LANG_WHICH(LANG_MACRO)  c_lang_which( LANG_##LANG_MACRO )
+
+/**
  * Shorthand for the common case of getting whether the current language is
  * among the languages specified by \a LANG_MACRO.
  *
@@ -490,6 +498,8 @@ void c_lang_set( c_lang_id_t lang_id );
  *
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
+ *
+ * @sa #C_LANG_WHICH()
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_lang_which( c_lang_id_t lang_ids );

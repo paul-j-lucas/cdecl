@@ -314,9 +314,9 @@ static inline int parse_int( int base ) {
  * @sa set_trigraph()
  */
 static void set_digraph( char const *token ) {
-  if ( opt_lang < LANG_C_95 && false_set( &digraph_warned ) )
+  if ( !OPT_LANG_IS(OPT_DIGRAPHS) && false_set( &digraph_warned ) )
     print_warning( &yylloc,
-      "digraphs not supported%s\n", c_lang_which( LANG_MIN(C_95) )
+      "digraphs not supported%s\n", C_LANG_WHICH( OPT_DIGRAPHS )
     );
   SET_TOKEN_TO( token );
 }
@@ -331,10 +331,9 @@ static void set_digraph( char const *token ) {
  * @sa set_digraph()
  */
 static void set_trigraph( char const *token ) {
-  if ( !OPT_LANG_IS(RANGE(C_89,CPP_14)) && false_set( &trigraph_warned ) ) {
+  if ( !OPT_LANG_IS(OPT_TRIGRAPHS) && false_set( &trigraph_warned ) ) {
     print_warning( &yylloc,
-      "trigraphs not supported%s\n",
-      c_lang_which( LANG_C_MIN(89) | LANG_CPP_MAX(14) )
+      "trigraphs not supported%s\n", C_LANG_WHICH( OPT_TRIGRAPHS )
     );
   }
   SET_TOKEN_TO( token );
