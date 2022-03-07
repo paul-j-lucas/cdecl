@@ -247,6 +247,11 @@ static bool set_digraphs( set_option_fn_args_t const *args ) {
  */
 static bool set_east_const( set_option_fn_args_t const *args ) {
   opt_east_const = args->opt_enabled;
+  if ( opt_east_const && opt_lang < LANG_C_89 ) {
+    print_warning( args->opt_name_loc,
+      "east-const not supported%s\n", c_lang_which( LANG_MIN(C_89) )
+    );
+  }
   return true;
 }
 
