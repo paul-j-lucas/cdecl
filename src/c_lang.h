@@ -130,7 +130,7 @@ _GL_INLINE_HEADER_BEGIN
  * Expands into \a LANG_MACRO for autocompletion only if GNU **readline**(3) is
  * compiled in; nothing if not.
  *
- * @param LANG_MACRO The `LANG_xxx` macro to expand (without the `LANG_`).
+ * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
  */
 #ifdef WITH_READLINE
 # define AC_LANG(LANG_MACRO)      LANG_##LANG_MACRO
