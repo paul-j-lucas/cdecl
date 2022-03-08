@@ -631,7 +631,8 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
 /**
  * Adds a type to the global set.
  *
- * @param decl_keyword The keyword used for the declaration.
+ * @param decl_keyword The keyword used for the declaration, one of `class`,
+ * `define`, `struct`, `typedef`, `union`, or `using`.
  * @param type_ast The AST of the type to add.
  * @return Returns `true` either if the type was added or it's equivalent to
  * the existing type; `false` if a different type already exists having the
