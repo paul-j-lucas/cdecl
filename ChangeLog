@@ -1,5 +1,12 @@
+2022-03-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Removed c_qualifier.
+
 2022-03-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * options.c, options.h, set_options.c: Added print_explicit_ecsu().
+   * NEWS, set_options.c: Print a warning if alt-tokens is set and the current
+     language changes to one that doesn't support them.
    * c_lang.h, check.c, lexer.l, parser.y, set_options.c: Added C_LANG_WHICH().
    * NEWS, options.h, set_options.c: Now prints a warning that neither
      alternative tokens nor digraphs are supported until C95; now prints a
