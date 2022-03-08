@@ -480,15 +480,6 @@ struct in_attr {
 typedef struct in_attr in_attr_t;
 
 /**
- * Qualifier and its source location.
- */
-struct c_qualifier {
-  c_tid_t qual_stid;                    ///< E.g., #TS_CONST or #TS_VOLATILE.
-  c_loc_t loc;                          ///< Qualifier source location.
-};
-typedef struct c_qualifier c_qualifier_t;
-
-/**
  * Information for show_type_visitor().
  */
 struct show_type_info {
