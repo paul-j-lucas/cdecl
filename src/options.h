@@ -107,6 +107,8 @@ extern int          yydebug;            ///< Bison variable for debugging.
  * @return Returns `true` if at least one explicit `int` is set.
  *
  * @sa is_explicit_int()
+ * @sa parse_explicit_int()
+ * @sa print_explicit_int()
  */
 PJL_WARN_UNUSED_RESULT
 bool any_explicit_int( void );
@@ -119,6 +121,8 @@ bool any_explicit_int( void );
  * printed explicitly.
  *
  * @sa any_explicit_int()
+ * @sa parse_explicit_int()
+ * @sa print_explicit_int()
  */
 PJL_WARN_UNUSED_RESULT
 bool is_explicit_int( c_tid_t tid );
@@ -137,6 +141,8 @@ bool is_explicit_int( c_tid_t tid );
  * Multiple formats may be given, one immediately after the other, e.g., `su`
  * means `struct` and `union`.
  * @return Returns `true` only if \a ecsu_format was parsed successfully.
+ *
+ * @sa print_explicit_ecsu()
  */
 PJL_WARN_UNUSED_RESULT
 bool parse_explicit_ecsu( char const *ecsu_format );
@@ -157,14 +163,32 @@ bool parse_explicit_ecsu( char const *ecsu_format );
  * and `long` whereas `ul,ll` is parsed as `unsigned long` and `long long`.  If
  * invalid, an error message is printed to standard error.
  * @return Returns `true` only if \a ei_format was parsed successfully.
+ *
+ * @sa any_explicit_int()
+ * @sa is_explicit_int()
+ * @sa print_explicit_int()
  */
 PJL_WARN_UNUSED_RESULT
 bool parse_explicit_int( char const *ei_format );
 
 /**
+ * Prints the string representation of the explicit `enum`, `class`, `struct`,
+ * `union` option.
+ *
+ * @param out The `FILE` to print to.
+ *
+ * @sa parse_explicit_ecsu()
+ */
+void print_explicit_ecsu( FILE *out );
+
+/**
  * Prints the string representation of the explicit integer option.
  *
  * @param out The `FILE` to print to.
+ *
+ * @sa any_explicit_int()
+ * @sa is_explicit_int()
+ * @sa parse_explicit_int()
  */
 void print_explicit_int( FILE *out );
 

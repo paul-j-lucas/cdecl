@@ -183,6 +183,17 @@ bool parse_explicit_int( char const *ei_format ) {
   return true;
 }
 
+void print_explicit_ecsu( FILE *out ) {
+  if ( (opt_explicit_ecsu & TB_ENUM) != TB_NONE )
+    FPUTC( 'e', out );
+  if ( (opt_explicit_ecsu & TB_CLASS) != TB_NONE )
+    FPUTC( 'c', out );
+  if ( (opt_explicit_ecsu & TB_STRUCT) != TB_NONE )
+    FPUTC( 's', out );
+  if ( (opt_explicit_ecsu & TB_UNION) != TB_NONE )
+    FPUTC( 'u', out );
+}
+
 void print_explicit_int( FILE *out ) {
   bool const is_explicit_s   = is_explicit_int( TB_SHORT );
   bool const is_explicit_i   = is_explicit_int( TB_INT );

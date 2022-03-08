@@ -155,14 +155,7 @@ static void print_options( void ) {
 
   if ( opt_explicit_ecsu != TB_NONE ) {
     FPUTS( "    explicit-ecsu=", cdecl_fout );
-    if ( (opt_explicit_ecsu & TB_ENUM) != TB_NONE )
-      FPUTC( 'e', cdecl_fout );
-    if ( (opt_explicit_ecsu & TB_CLASS) != TB_NONE )
-      FPUTC( 'c', cdecl_fout );
-    if ( (opt_explicit_ecsu & TB_STRUCT) != TB_NONE )
-      FPUTC( 's', cdecl_fout );
-    if ( (opt_explicit_ecsu & TB_UNION) != TB_NONE )
-      FPUTC( 'u', cdecl_fout );
+    print_explicit_ecsu( cdecl_fout );
     FPUTC( '\n', cdecl_fout );
   } else {
     FPUTS( "  noexplicit-ecsu\n", cdecl_fout );
