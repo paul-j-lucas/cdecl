@@ -3317,7 +3317,7 @@ decl_c
         // C.  (In C, more than once with the same type are "tentative
         // definitions" and OK.)
         //
-        //      int i, i;               // ok in C (same type); error in C++
+        //      int i, i;               // OK in C (same type); error in C++
         //      int j, *j;              // error (different types)
         //
         FOREACH_SLIST_NODE( node, &decl_ast_list ) {
