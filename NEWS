@@ -14,7 +14,8 @@ with their complete changes, see the AUTHORS file.
 
 ** Alternative tokens & digraphs
 Now prints a warning that neither alternative tokens nor digraphs are supported
-until C95.
+until C95.  Also now printing a warning if alternative tokens are set and the
+current language changes to one that doesn't support them.
 
 ** `east-const` in K&R C
 Now prints a warning that `east-const` isn't supported until C89.
