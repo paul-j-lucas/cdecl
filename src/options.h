@@ -84,19 +84,19 @@ extern int          yy_flex_debug;      ///< Flex variable for debugging.
 extern int          yydebug;            ///< Bison variable for debugging.
 #endif /* YYDEBUG */
 
-/// Languages alternative tokens are supported in.
+/// Languages \ref opt_alt_tokens "alternative tokens" are supported in.
 #define LANG_OPT_ALT_TOKENS       LANG_MIN(C_95)
 
-/// Languages digraphs are supported in.
+/// Languages \ref opt_graph "digraphs" are supported in.
 #define LANG_OPT_DIGRAPHS         LANG_MIN(C_95)
 
-/// Languages "east const" is supported in.
+/// Languages \ref opt_east_const "east const" is supported in.
 #define LANG_OPT_EAST_CONST       LANG_MIN(C_89)
 
-/// Languages trigraphs are supported in.
+/// Languages \ref opt_graph "trigraphs" are supported in.
 #define LANG_OPT_TRIGRAPHS        LANG_RANGE(C_89,CPP_14)
 
-/// Languages \ref opt_using is supported in.
+/// Languages \ref opt_using "using" is supported in.
 #define LANG_OPT_USING            LANG_CPP_MIN(11)
 
 ////////// extern functions ///////////////////////////////////////////////////
