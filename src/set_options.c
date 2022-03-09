@@ -381,6 +381,12 @@ static bool set_lang_impl( char const *name ) {
       break;
   } // switch
 
+  // set_east_const() isn't here since the only language it's not supported in
+  // is K&RC and K&RC doesn't support const anyway.
+
+  // set_using() isn't here since the feature is defined as printing types via
+  // "using" declarations only in C++11 and later anyway.
+
   return true;
 }
 
