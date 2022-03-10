@@ -503,7 +503,7 @@ static void g_print_ast_list( g_state_t const *g,
   c_gib_flags_t const flags = g->flags & ~C_GIB_OMIT_TYPE;
 
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
-    print_sep( ", ", &comma, g->gout );
+    fprint_sep( g->gout, ", ", &comma );
     g_state_t g2;
     g_init( &g2, flags, /*printing_typedef=*/false, g->gout );
     c_ast_t const *const ast = c_param_ast( ast_node );
