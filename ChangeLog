@@ -1,3 +1,8 @@
+2022-03-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, english.c, gibberish.c, parser.y, util.h: s/print_sep/fprint_sep/
+   * dump.c: s/dump_indent/fprint_spaces/
+
 2022-03-08  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Removed c_qualifier.
