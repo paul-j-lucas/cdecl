@@ -43,8 +43,8 @@
 #define DUMP_COMMA \
   BLOCK( if ( false_set( &comma ) ) FPUTS( ",\n", dout ); )
 
-#define DUMP_FORMAT(...) \
-  BLOCK( dump_indent( indent, dout ); FPRINTF( dout, __VA_ARGS__ ); )
+#define DUMP_FORMAT(...) BLOCK( \
+  fprint_spaces( dout, indent * DUMP_INDENT ); FPRINTF( dout, __VA_ARGS__ ); )
 
 #define DUMP_LOC(KEY,LOC) \
   DUMP_FORMAT( KEY " = %d-%d,\n", (LOC)->first_column, (LOC)->last_column )
@@ -73,13 +73,13 @@ static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Prints a multiple of \a indent spaces.
+ * Prints \a n spaces.
  *
- * @param indent How much to indent.
  * @param out The `FILE` to print to.
+ * @param n The number of spaces to print.
  */
-static inline void dump_indent( unsigned indent, FILE *out ) {
-  FPRINTF( out, "%*s", STATIC_CAST( int, indent * DUMP_INDENT ), "" );
+static inline void fprint_spaces( FILE *out, unsigned indent ) {
+  FPRINTF( out, "%*s", STATIC_CAST( int, indent ), "" );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
