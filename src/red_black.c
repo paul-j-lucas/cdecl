@@ -186,6 +186,23 @@ static void rb_node_init( rb_node_t *node ) {
   *node = rb_nil;
 }
 
+#ifndef NDEBUG
+/**
+ * Checks that \ref rb_nil is still NIL, i.e., hasn't been accidentally
+ * modified.
+ *
+ * @return Returns `true` only if it's still NIL.
+ */
+static bool rb_nil_is_nil( void ) {
+  assert( rb_nil.data == NULL );
+  assert( rb_nil.child[RB_L] == RB_NIL );
+  assert( rb_nil.child[RB_R] == RB_NIL );
+  assert( rb_nil.parent == RB_NIL );
+  assert( rb_nil.color == RB_BLACK );
+  return true;
+}
+#endif /* NDEBUG */
+
 /**
  * Gets the successor of \a node.
  *
@@ -345,6 +362,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
   }
 
   free( delete_node );
+  assert( rb_nil_is_nil() );
   return data;
 }
 
@@ -439,6 +457,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   } // while
 
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
+  assert( rb_nil_is_nil() );
   return NULL;
 }
 
