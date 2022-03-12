@@ -183,12 +183,7 @@ static void rb_node_free( rb_node_t *node, rb_free_fn_t free_fn ) {
  */
 static void rb_node_init( rb_node_t *node ) {
   assert( node != NULL );
-  *node = (rb_node_t){
-    .data = NULL,
-    .child = { RB_NIL, RB_NIL },
-    .parent = RB_NIL,
-    .color = RB_BLACK
-  };
+  *node = rb_nil;
 }
 
 /**
