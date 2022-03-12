@@ -316,6 +316,7 @@ void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn ) {
 void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
   assert( tree != NULL );
   assert( delete_node != NULL );
+  assert( delete_node != RB_NIL );
 
   void *const data = delete_node->data;
 
