@@ -183,9 +183,12 @@ static void rb_node_free( rb_node_t *node, rb_free_fn_t free_fn ) {
  */
 static void rb_node_init( rb_node_t *node ) {
   assert( node != NULL );
-  node->color = RB_BLACK;
-  node->child[RB_L] = node->child[RB_R] = node->parent = RB_NIL;
-  node->data = NULL;
+  *node = (rb_node_t){
+    .data = NULL,
+    .child = { RB_NIL, RB_NIL },
+    .parent = RB_NIL,
+    .color = RB_BLACK
+  };
 }
 
 /**
@@ -227,7 +230,7 @@ static void rb_tree_repair_node( rb_tree_t *tree, rb_node_t *node ) {
   assert( node != NULL );
 
   while ( is_black( node ) ) {
-    rb_dir_t const dir = is_dir( node->parent, RB_R );
+    rb_dir_t const dir = STATIC_CAST( rb_dir_t, is_dir( node->parent, RB_R ) );
     rb_node_t *sibling = node->parent->child[dir];
     if ( is_red( sibling ) ) {
       sibling->color = RB_BLACK;
@@ -392,8 +395,9 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   node->data = data;
   node->parent = parent;
 
-  rb_dir_t dir = parent != RB_ROOT(tree) &&
-    (*tree->cmp_fn)( data, parent->data ) > 0;
+  rb_dir_t dir = STATIC_CAST( rb_dir_t,
+    parent != RB_ROOT(tree) && (*tree->cmp_fn)( data, parent->data ) > 0
+  );
   assert( parent->child[dir] == RB_NIL );
   parent->child[dir] = node;
 
@@ -420,7 +424,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   // worry about replacing the root.
   //
   while ( is_red( node->parent ) ) {
-    dir = is_dir( node->parent, RB_R );
+    dir = STATIC_CAST( rb_dir_t, is_dir( node->parent, RB_R ) );
     rb_node_t *const uncle = node->parent->parent->child[dir];
     if ( is_red( uncle ) ) {
       node->parent->color = RB_BLACK;
