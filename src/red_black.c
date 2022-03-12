@@ -311,7 +311,7 @@ static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
 ////////// extern functions ///////////////////////////////////////////////////
 
 void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn ) {
-  if ( tree != NULL && RB_FIRST(tree) != NULL ) {
+  if ( tree != NULL ) {
     rb_node_free( RB_FIRST(tree), free_fn );
     rb_node_init( RB_ROOT(tree) );
     tree->cmp_fn = NULL;
