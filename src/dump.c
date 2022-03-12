@@ -78,8 +78,8 @@ static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
  * @param out The `FILE` to print to.
  * @param n The number of spaces to print.
  */
-static inline void fprint_spaces( FILE *out, unsigned indent ) {
-  FPRINTF( out, "%*s", STATIC_CAST( int, indent ), "" );
+static inline void fprint_spaces( FILE *out, unsigned n ) {
+  FPRINTF( out, "%*s", STATIC_CAST( int, n ), "" );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
