@@ -52,9 +52,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Auto-completable keywords.
+ * Auto-completable keyword.
  *
- * This is the union of C/C++ keywords and cdecl keywords that are auto-
+ * This is either a of C/C++ keyword or a cdecl keyword that is auto-
  * completable.
  */
 struct ac_keyword {
@@ -80,7 +80,7 @@ static bool   is_command( char const*, char const*, size_t );
  * @return Returns a pointer to said array.
  */
 PJL_WARN_UNUSED_RESULT
-static ac_keyword_t const* init_cdecl_keywords( void ) {
+static ac_keyword_t const* init_ac_keywords( void ) {
   size_t n = 1;                         // for terminating empty element
 
   // pre-flight to calculate array size
@@ -93,8 +93,8 @@ static ac_keyword_t const* init_cdecl_keywords( void ) {
       ++n;
   } // for
 
-  ac_keyword_t *const cdecl_keywords = free_later( MALLOC( ac_keyword_t, n ) );
-  ac_keyword_t *p = cdecl_keywords;
+  ac_keyword_t *const ac_keywords = free_later( MALLOC( ac_keyword_t, n ) );
+  ac_keyword_t *p = ac_keywords;
 
   FOREACH_C_KEYWORD( k ) {
     if ( k->ac_lang_ids != LANG_NONE ) {
@@ -116,7 +116,7 @@ static ac_keyword_t const* init_cdecl_keywords( void ) {
 
   MEM_ZERO( p );
 
-  return cdecl_keywords;
+  return ac_keywords;
 }
 
 /**
@@ -422,15 +422,15 @@ static char* keyword_generator( char const *text, int state ) {
     //
     // Otherwise, just attempt to match (almost) any keyword.
     //
-    static ac_keyword_t const *cdecl_keywords;
-    if ( cdecl_keywords == NULL )
-      cdecl_keywords = init_cdecl_keywords();
+    static ac_keyword_t const *ac_keywords;
+    if ( ac_keywords == NULL )
+      ac_keywords = init_ac_keywords();
 
     // The keywords following the command are in gibberish, not English.
     bool const is_gibberish = !is_english_command( command );
 
     for ( ac_keyword_t const *k;
-          (k = cdecl_keywords + match_index)->literal != NULL; ) {
+          (k = ac_keywords + match_index)->literal != NULL; ) {
       ++match_index;
       if ( is_gibberish && !k->always_autocomplete ) {
         //
