@@ -84,14 +84,10 @@ static ac_keyword_t const* init_ac_keywords( void ) {
   size_t n = 1;                         // for terminating empty element
 
   // pre-flight to calculate array size
-  FOREACH_C_KEYWORD( k ) {
-    if ( k->ac_lang_ids != LANG_NONE )
-      ++n;
-  } // for
-  FOREACH_CDECL_KEYWORD( k ) {
-    if ( k->ac_lang_ids != LANG_NONE )
-      ++n;
-  } // for
+  FOREACH_C_KEYWORD( k )
+    n += k->ac_lang_ids != LANG_NONE;
+  FOREACH_CDECL_KEYWORD( k )
+    n += k->ac_lang_ids != LANG_NONE;
 
   ac_keyword_t *const ac_keywords = free_later( MALLOC( ac_keyword_t, n ) );
   ac_keyword_t *p = ac_keywords;
@@ -127,21 +123,17 @@ static ac_keyword_t const* init_ac_keywords( void ) {
  */
 PJL_WARN_UNUSED_RESULT
 static char const* const* init_set_options( void ) {
-  size_t set_options_size =
+  size_t n =
       1                                 // for "options"
     + 1;                                // for terminating NULL pointer
 
   // pre-flight to calculate array size
-  FOREACH_SET_OPTION( opt ) {
-    set_options_size += 1
-      + STATIC_CAST( size_t, opt->type == SET_OPT_TOGGLE /* "no" */);
-  } // for
-  FOREACH_LANG( lang ) {
-    if ( !lang->is_alias )
-      ++set_options_size;
-  } // for
+  FOREACH_SET_OPTION( opt )
+    n += 1 + STATIC_CAST( size_t, opt->type == SET_OPT_TOGGLE /* "no" */);
+  FOREACH_LANG( lang )
+    n += !lang->is_alias;
 
-  char **const set_options = free_later( MALLOC( char*, set_options_size ) );
+  char **const set_options = free_later( MALLOC( char*, n ) );
   char **p = set_options;
 
   *p++ = CONST_CAST( char*, L_OPTIONS );
