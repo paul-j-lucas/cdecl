@@ -295,7 +295,7 @@ static char* command_generator( char const *text, int state ) {
       continue;
     if ( strncmp( text, c->literal, text_len ) == 0 )
       return check_strdup( c->literal );
-  } // for
+  } // while
 
   return NULL;
 }
