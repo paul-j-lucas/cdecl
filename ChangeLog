@@ -1,3 +1,16 @@
+2022-03-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl_compile.m4: Updated copyright year to 2022.
+
+2022-03-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.h: Silence "unused parameter 'tpid'" warning with --disable-assert.
+   * red_black.c: Added rb_nil_is_nil().
+   * red_black.c: Added assert().
+   * red_black.c: Simplification.
+   * red_black.c: Removed unnecessary check.
+   * red_black.c: Added STATIC_CAST; clean-up.
+
 2022-03-09  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, english.c, gibberish.c, parser.y, util.h: s/print_sep/fprint_sep/
