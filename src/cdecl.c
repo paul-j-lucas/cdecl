@@ -139,7 +139,7 @@ static bool starts_with_token( char const*, char const*, size_t );
  * @return Returns 0 on success, non-zero on failure.
  */
 int main( int argc, char const *argv[] ) {
-  IF_EXIT( atexit( &cdecl_cleanup ) != 0, EX_OSERR );
+  perror_exit_if( atexit( &cdecl_cleanup ) != 0, EX_OSERR );
   cli_options_init( &argc, &argv );
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
@@ -404,7 +404,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   }
 
   FILE *const temp_file = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
-  IF_EXIT( temp_file == NULL, EX_IOERR );
+  perror_exit_if( temp_file == NULL, EX_IOERR );
   yyrestart( temp_file );
   int const status = yyparse() == 0 ? EX_OK : EX_DATAERR;
   PJL_IGNORE_RV( fclose( temp_file ) );

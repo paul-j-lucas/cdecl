@@ -267,9 +267,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param STREAM The `FILE` stream to check for an error.
  *
- * @sa #IF_EXIT()
+ * @sa perror_exit_if()
  */
-#define FERROR(STREAM)            IF_EXIT( ferror( STREAM ) != 0, EX_IOERR )
+#define FERROR(STREAM) \
+  perror_exit_if( ferror( STREAM ) != 0, EX_IOERR )
 
 /**
  * Calls **fflush(3)** on \a STREAM, checks for an error, and exits if there
@@ -277,9 +278,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param STREAM The `FILE` stream to flush.
  *
- * @sa #IF_EXIT()
+ * @sa perror_exit_if()
  */
-#define FFLUSH(STREAM)            IF_EXIT( fflush( STREAM ) != 0, EX_IOERR )
+#define FFLUSH(STREAM) \
+  perror_exit_if( fflush( STREAM ) != 0, EX_IOERR )
 
 /**
  * Calls **fprintf**(3) on \a STREAM, checks for an error, and exits if there
@@ -289,10 +291,10 @@ _GL_INLINE_HEADER_BEGIN
  * @param ... The `fprintf()` arguments.
  *
  * @sa #EPRINTF()
- * @sa #IF_EXIT()
+ * @sa perror_exit_if()
  */
 #define FPRINTF(STREAM,...) \
-  IF_EXIT( fprintf( (STREAM), __VA_ARGS__ ) < 0, EX_IOERR )
+  perror_exit_if( fprintf( (STREAM), __VA_ARGS__ ) < 0, EX_IOERR )
 
 /**
  * Calls **putc**(3), checks for an error, and exits if there was one.
@@ -302,10 +304,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #FPRINTF()
  * @sa #FPUTS()
- * @sa #IF_EXIT()
+ * @sa perror_exit_if()
  */
 #define FPUTC(C,STREAM) \
-  IF_EXIT( putc( (C), (STREAM) ) == EOF, EX_IOERR )
+  perror_exit_if( putc( (C), (STREAM) ) == EOF, EX_IOERR )
 
 /**
  * Calls **fputs**(3), checks for an error, and exits if there was one.
@@ -315,10 +317,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #FPRINTF()
  * @sa #FPUTC()
- * @sa #IF_EXIT()
+ * @sa perror_exit_if()
  */
 #define FPUTS(S,STREAM) \
-  IF_EXIT( fputs( (S), (STREAM) ) == EOF, EX_IOERR )
+  perror_exit_if( fputs( (S), (STREAM) ) == EOF, EX_IOERR )
 
 /**
  * Frees the given memory.
@@ -337,20 +339,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param STAT A pointer to a `struct stat` to receive the result.
  */
 #define FSTAT(FD,STAT) \
-  IF_EXIT( fstat( (FD), (STAT) ) < 0, EX_IOERR )
-
-/**
- * Evaluates \a EXPR: if it returns `true`, calls perror_exit() with \a ERR.
- *
- * @param EXPR The expression to evaluate.
- * @param ERR The exit status code to use.
- *
- * @sa #FATAL_ERR()
- * @sa perror_exit()
- * @sa #UNEXPECTED_INT_VALUE()
- */
-#define IF_EXIT(EXPR,ERR) \
-  BLOCK( if ( unlikely( EXPR ) ) perror_exit( ERR ); )
+  perror_exit_if( fstat( (FD), (STAT) ) < 0, EX_IOERR )
 
 /**
  * A special-case of #FATAL_ERR that additionally prints the file and line
@@ -828,10 +817,27 @@ char const* parse_identifier( char const *s );
  * @param status The exit status code.
  *
  * @sa #FATAL_ERR()
- * @sa #IF_EXIT()
  * @sa #INTERNAL_ERR()
+ * @sa perror_exit_if()
  */
 noreturn void perror_exit( int status );
+
+/**
+ * If \a expr is `true`, prints an error message for `errno` to standard error
+ * and exits.
+ *
+ * @param expr The expression.
+ * @param status The exit status code.
+ *
+ * @sa #FATAL_ERR()
+ * @sa #INTERNAL_ERR()
+ * @sa perror_exit()
+ */
+C_UTIL_INLINE
+void perror_exit_if( bool expr, int status ) {
+  if ( unlikely( expr ) )
+    perror_exit( status );
+}
 
 /**
  * Checks whether \a s is a blank line, that is either an empty string or a

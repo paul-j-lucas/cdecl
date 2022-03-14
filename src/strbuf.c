@@ -77,7 +77,7 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   va_start( args, format );
   int rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args );
   va_end( args );
-  IF_EXIT( rv < 0, EX_IOERR );
+  perror_exit_if( rv < 0, EX_IOERR );
 
   //
   // Then reserve that number of characters: if strbuf_reserve() returns false,
@@ -91,7 +91,7 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
     va_start( args, format );
     rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args );
     va_end( args );
-    IF_EXIT( rv < 0, EX_IOERR );
+    perror_exit_if( rv < 0, EX_IOERR );
   }
 
   sbuf->len += STATIC_CAST( size_t, rv );

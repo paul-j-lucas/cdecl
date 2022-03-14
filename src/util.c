@@ -125,7 +125,7 @@ void* check_realloc( void *p, size_t size ) {
   if ( unlikely( size == 0 ) )
     size = 1;                           // LCOV_EXCL_LINE
   p = p != NULL ? realloc( p, size ) : malloc( size );
-  IF_EXIT( p == NULL, EX_OSERR );
+  perror_exit_if( p == NULL, EX_OSERR );
   return p;
 }
 
@@ -133,7 +133,7 @@ char* check_strdup( char const *s ) {
   if ( s == NULL )
     return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = strdup( s );
-  IF_EXIT( dup_s == NULL, EX_OSERR );
+  perror_exit_if( dup_s == NULL, EX_OSERR );
   return dup_s;
 }
 
@@ -141,7 +141,7 @@ char* check_strdup_tolower( char const *s ) {
   if ( s == NULL )
     return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = MALLOC( char, strlen( s ) + 1/*\0*/ );
-  IF_EXIT( dup_s == NULL, EX_OSERR );
+  perror_exit_if( dup_s == NULL, EX_OSERR );
   for ( char *p = dup_s; (*p++ = STATIC_CAST( char, tolower( *s++ ) )); )
     ;
   return dup_s;
@@ -151,7 +151,7 @@ char* check_strndup( char const *s, size_t n ) {
   if ( s == NULL )
     return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = strndup( s, n );
-  IF_EXIT( dup_s == NULL, EX_OSERR );
+  perror_exit_if( dup_s == NULL, EX_OSERR );
   return dup_s;
 }
 
