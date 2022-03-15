@@ -954,8 +954,8 @@ static void quit( void ) {
  * Prints the definition of a `typedef`.
  *
  * @param tdef The \ref c_typedef to print.
- * @param data Optional data passed to the visitor: in this case, the bitmask
- * of which `typedef`s to print.
+ * @param data Optional data passed to the visitor: in this case, the flags of
+ * which `typedef`s to print.
  * @return Always returns `false`.
  */
 PJL_WARN_UNUSED_RESULT
@@ -1068,10 +1068,9 @@ static void yyerror( char const *msg ) {
   c_ast_t            *ast;        // for the AST being built
   c_ast_list_t        ast_list;   // for declarations and function parameters
   c_ast_pair_t        ast_pair;   // for the AST being built
-  unsigned            bitmask;    // multipurpose bitmask (used by show)
   c_cast_kind_t       cast_kind;  // C/C++ cast kind
   bool                flag;       // simple flag
-  unsigned            flags;      // bit flags
+  unsigned            flags;      // multipurpose bitwise flags
   cdecl_help_t        help;       // type of help to print
   int                 int_val;    // signed integer value
   slist_t             list;       // multipurpose list
@@ -1425,8 +1424,8 @@ static void yyerror( char const *msg ) {
 //      + <ast>: "_ast" is appended.
 //      + <ast_list>: (See #1.)
 //      + <ast_pair>: "_astp" is appended.
-//      + <bitmask>: "_mask" is appended.
 //      + <flag>: "_flag" is appended.
+//      + <flags>: "_flags" is appended.
 //      + <name>: "_name" is appended.
 //      + <int_val>: "_int" is appended.
 //      + <literal>: "_literal" is appended.
@@ -1457,7 +1456,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       enum_unmodified_fixed_type_english_ast
 %type   <ast>       func_decl_english_ast
 %type   <type>      func_qualifier_english_type_opt
-%type   <bitmask>   member_or_non_member_mask_opt
+%type   <flags>     member_or_non_member_flags_opt
 %type   <cast_kind> new_style_cast_english
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
@@ -1598,10 +1597,10 @@ static void yyerror( char const *msg ) {
 %type   <type>      namespace_type
 %type   <sname>     namespace_typedef_sname_c
 %type   <tid>       noexcept_bool_stid_exp
-%type   <bitmask>   predefined_or_user_mask_opt
+%type   <flags>     predefined_or_user_flags_opt
 %type   <str_val>   set_option_value_opt
 %type   <flags>     show_format show_format_exp show_format_opt
-%type   <bitmask>   show_which_types_mask_opt
+%type   <flags>     show_which_types_flags_opt
 %type   <tid>       static_stid_opt
 %type   <str_val>   str_lit str_lit_exp
 %type   <type>      type_modifier_base_type
@@ -2363,7 +2362,7 @@ show_command
       FPUTC( '\n', cdecl_fout );
     }
 
-  | Y_SHOW show_which_types_mask_opt glob_opt show_format_opt
+  | Y_SHOW show_which_types_flags_opt glob_opt show_format_opt
     {
       show_type_info_t sti;
       sti_init( &sti, $2, $3, $4 );
@@ -2372,7 +2371,7 @@ show_command
       free( $3 );
     }
 
-  | Y_SHOW show_which_types_mask_opt glob_opt Y_AS show_format_exp
+  | Y_SHOW show_which_types_flags_opt glob_opt Y_AS show_format_exp
     {
       show_type_info_t sti;
       sti_init( &sti, $2, $3, $5 );
@@ -2452,9 +2451,9 @@ show_format_opt
   | show_format
   ;
 
-show_which_types_mask_opt
+show_which_types_flags_opt
   : /* empty */                   { $$ = SHOW_USER_TYPES; }
-  | Y_ALL predefined_or_user_mask_opt
+  | Y_ALL predefined_or_user_flags_opt
     {
       $$ = SHOW_ALL_TYPES |
            ($2 != 0 ? $2 : SHOW_PREDEFINED_TYPES | SHOW_USER_TYPES);
@@ -2463,7 +2462,7 @@ show_which_types_mask_opt
   | Y_USER                        { $$ = SHOW_USER_TYPES; }
   ;
 
-predefined_or_user_mask_opt
+predefined_or_user_flags_opt
   : /* empty */                   { $$ = 0; }
   | Y_PREDEFINED                  { $$ = SHOW_PREDEFINED_TYPES; }
   | Y_USER                        { $$ = SHOW_USER_TYPES; }
@@ -5811,16 +5810,16 @@ parens_opt
 
 func_decl_english_ast
   : // in_attr: qualifier
-    func_qualifier_english_type_opt member_or_non_member_mask_opt
+    func_qualifier_english_type_opt member_or_non_member_flags_opt
     Y_FUNCTION paren_param_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "func_decl_english_ast",
                   "ref_qualifier_english_stid_opt "
-                  "member_or_non_member_mask_opt "
+                  "member_or_non_member_flags_opt "
                   "FUNCTION paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_TYPE( "func_qualifier_english_type_opt", $1 );
-      DUMP_INT( "member_or_non_member_mask_opt", $2 );
+      DUMP_INT( "member_or_non_member_flags_opt", $2 );
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $4 );
       DUMP_AST( "returning_english_ast_opt", $5 );
 
@@ -5859,18 +5858,18 @@ msc_calling_convention_atid
 
 oper_decl_english_ast
   : type_qualifier_list_english_type_opt ref_qualifier_english_stid_opt
-    member_or_non_member_mask_opt operator_exp paren_param_decl_list_english_opt
-    returning_english_ast_opt
+    member_or_non_member_flags_opt operator_exp
+    paren_param_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "oper_decl_english_ast",
                   "type_qualifier_list_english_type_opt "
                   "ref_qualifier_english_stid_opt "
-                  "member_or_non_member_mask_opt "
+                  "member_or_non_member_flags_opt "
                   "OPERATOR paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_TYPE( "type_qualifier_list_english_type_opt", $1 );
       DUMP_TID( "ref_qualifier_english_stid_opt", $2 );
-      DUMP_INT( "member_or_non_member_mask_opt", $3 );
+      DUMP_INT( "member_or_non_member_flags_opt", $3 );
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $5 );
       DUMP_AST( "returning_english_ast_opt", $6 );
 
@@ -7154,7 +7153,7 @@ lt_exp
     }
   ;
 
-member_or_non_member_mask_opt
+member_or_non_member_flags_opt
   : /* empty */                   { $$ = C_FN_UNSPECIFIED; }
   | Y_MEMBER                      { $$ = C_FN_MEMBER     ; }
   | Y_NON_MEMBER                  { $$ = C_FN_NON_MEMBER ; }
