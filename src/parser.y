@@ -483,9 +483,9 @@ typedef struct in_attr in_attr_t;
  * Information for show_type_visitor().
  */
 struct show_type_info {
-  unsigned      show_which;             ///< Predefined, user, or both?
-  c_gib_flags_t gib_flags;              ///< Gibberish flags.
-  c_sglob_t     sglob;                  ///< Scoped glob to match, if any.
+  unsigned  show_which;                 ///< Predefined, user, or both?
+  unsigned  gib_flags;                  ///< Gibberish flags.
+  c_sglob_t sglob;                      ///< Scoped glob to match, if any.
 };
 typedef struct show_type_info show_type_info_t;
 
@@ -995,12 +995,12 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
  * @param sti The \ref show_type_info to initialize.
  * @param show_which Which types to show: predefined, user, or both?
  * @param glob The glob string.  May be NULL.
- * @param gib_flags The \ref c_gib_flags_t to use.
+ * @param gib_flags The gibberish flags to use.
  *
  * @sa sti_cleanup()
  */
 static void sti_init( show_type_info_t *sti, unsigned show_which,
-                      char const *glob, c_gib_flags_t gib_flags ) {
+                      char const *glob, unsigned gib_flags ) {
   assert( sti != NULL );
   sti->show_which = show_which;
   sti->gib_flags = gib_flags;
@@ -1071,7 +1071,7 @@ static void yyerror( char const *msg ) {
   unsigned            bitmask;    // multipurpose bitmask (used by show)
   c_cast_kind_t       cast_kind;  // C/C++ cast kind
   bool                flag;       // simple flag
-  c_gib_flags_t       gib_flags;  // gibberish flags
+  unsigned            flags;      // bit flags
   cdecl_help_t        help;       // type of help to print
   int                 int_val;    // signed integer value
   slist_t             list;       // multipurpose list
@@ -1600,7 +1600,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>       noexcept_bool_stid_exp
 %type   <bitmask>   predefined_or_user_mask_opt
 %type   <str_val>   set_option_value_opt
-%type   <gib_flags> show_format show_format_exp show_format_opt
+%type   <flags>     show_format show_format_exp show_format_opt
 %type   <bitmask>   show_which_types_mask_opt
 %type   <tid>       static_stid_opt
 %type   <str_val>   str_lit str_lit_exp
@@ -1818,7 +1818,7 @@ declare_command
       bool const ok = c_ast_check( $4 );
 
       if ( ok ) {
-        c_gib_flags_t gib_flags = C_GIB_DECL;
+        unsigned gib_flags = C_GIB_DECL;
         if ( slist_len( &$2 ) > 1 )
           gib_flags |= C_GIB_MULTI_DECL;
         bool const print_as_using = c_ast_print_as_using( $4 );

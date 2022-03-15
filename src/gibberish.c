@@ -50,17 +50,17 @@
  * arguments otherwise).
  */
 struct g_state {
-  c_gib_flags_t flags;                  ///< Gibberish printing flags.
-  FILE         *gout;                   ///< Where to write the gibberish.
-  bool          postfix;                ///< Doing postfix gibberish?
-  bool          printed_space;          ///< Printed a space yet?
-  bool          printing_typedef;       ///< Printing a `typedef`?
-  bool          skip_name_for_using;    ///< Skip type name for `using`?
+  unsigned  flags;                      ///< Gibberish printing flags.
+  FILE     *gout;                       ///< Where to write the gibberish.
+  bool      postfix;                    ///< Doing postfix gibberish?
+  bool      printed_space;              ///< Printed a space yet?
+  bool      printing_typedef;           ///< Printing a `typedef`?
+  bool      skip_name_for_using;        ///< Skip type name for `using`?
 };
 typedef struct g_state g_state_t;
 
 // local functions
-static void g_init( g_state_t*, c_gib_flags_t, bool, FILE* );
+static void g_init( g_state_t*, unsigned, bool, FILE* );
 static void g_print_ast( g_state_t*, c_ast_t const* );
 static void g_print_ast_bit_width( g_state_t const*, c_ast_t const* );
 static void g_print_ast_list( g_state_t const*, c_ast_list_t const* );
@@ -93,7 +93,7 @@ static inline void g_print_space_once( g_state_t *g ) {
  * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print to.
  */
-static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_flags_t flags,
+static void c_ast_gibberish_impl( c_ast_t const *ast, unsigned flags,
                                   bool printing_typedef, FILE *gout ) {
   assert( ast != NULL );
   assert( gout != NULL );
@@ -111,7 +111,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_flags_t flags,
  * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print it to.
  */
-static void g_init( g_state_t *g, c_gib_flags_t flags, bool printing_typedef,
+static void g_init( g_state_t *g, unsigned flags, bool printing_typedef,
                     FILE *gout ) {
   assert( g != NULL );
   assert( gout != NULL );
@@ -500,7 +500,7 @@ static void g_print_ast_list( g_state_t const *g,
   assert( ast_list != NULL );
 
   bool comma = false;
-  c_gib_flags_t const flags = g->flags & ~C_GIB_OMIT_TYPE;
+  unsigned const flags = g->flags & ~C_GIB_OMIT_TYPE;
 
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     fprint_sep( g->gout, ", ", &comma );
@@ -892,7 +892,7 @@ static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_gibberish( c_ast_t const *ast, c_gib_flags_t flags, FILE *gout ) {
+void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
   assert( ast != NULL );
   assert( (flags & (C_GIB_CAST    | C_GIB_DECL )) != 0 );
   assert( (flags & (C_GIB_TYPEDEF | C_GIB_USING)) == 0 );
@@ -959,7 +959,7 @@ char const* c_cast_gibberish( c_cast_kind_t kind ) {
   UNEXPECTED_INT_VALUE( kind );
 }
 
-void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
+void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
                           FILE *gout ) {
   assert( tdef != NULL );
   assert( (flags & (C_GIB_TYPEDEF | C_GIB_USING)) != 0 );

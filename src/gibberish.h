@@ -46,8 +46,8 @@
 // Flags for c_ast_gibberish() and c_typedef_gibberish().
 
 /**
- * Unset value for \ref c_gib_flags_t.  Can also be used to mean _not_ to print
- * in gibberish (hence, print in English).
+ * Unset value for gibberish flags.  Can also be used to mean _not_ to print in
+ * gibberish (hence, print in English).
  */
 #define C_GIB_NONE        0u
 
@@ -121,7 +121,7 @@
  *
  * @sa c_typedef_gibberish()
  */
-void c_ast_gibberish( c_ast_t const *ast, c_gib_flags_t flags, FILE *gout );
+void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout );
 
 /**
  * Given \a kind, gets the associated C++ literal.
@@ -142,7 +142,7 @@ char const* c_cast_gibberish( c_cast_kind_t kind );
  *
  * @sa c_ast_gibberish()
  */
-void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
+void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
                           FILE *gout );
 
 /**
