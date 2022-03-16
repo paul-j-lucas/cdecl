@@ -453,7 +453,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_FRIEND | TS_FUNC_C | TS_NOEXCEPT \
                               | TS_OVERRIDE | TS_PURE_VIRTUAL \
                               | TS_ANY_REFERENCE | TS_RESTRICT | TS_THROW \
-                              | TS_TYPEDEF | TS_VIRTUAL )
+                              | TS_VIRTUAL )
 
 /**
  * The types that can apply only to function-like things except constructors.
