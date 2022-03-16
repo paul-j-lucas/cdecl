@@ -1133,7 +1133,7 @@ c_tid_t c_tid_normalize( c_tid_t tids ) {
 }
 
 unsigned c_tid_scope_order( c_tid_t btids ) {
-  assert( (btids & TX_MASK_TPID) == C_TPID_BASE );
+  c_tid_check( btids, C_TPID_BASE );
   switch ( btids & (TB_ANY_SCOPE | TB_ENUM) ) {
     case TB_NONE:
     case TB_SCOPE:
