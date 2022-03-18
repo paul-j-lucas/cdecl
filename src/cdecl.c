@@ -30,6 +30,7 @@
 #include "c_ast.h"
 #include "c_lang.h"
 #include "c_typedef.h"
+#include "cdecl_command.h"
 #include "cli_options.h"
 #include "color.h"
 #include "help.h"
@@ -58,34 +59,6 @@
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
-
-/**
- * Cdecl commands.
- */
-static cdecl_command_t const CDECL_COMMANDS[] = {
-  { L_CAST,                   CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
-  { L_CLASS,                  CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_CONST /* cast */,       CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_DECLARE,                CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
-  { L_DEFINE,                 CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_DYNAMIC /* cast */,     CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_ENUM,                   CDECL_COMMAND_FIRST_ARG,  LANG_MIN(C_89)    },
-  { L_EXIT,                   CDECL_COMMAND_LANG_ONLY,  LANG_ANY          },
-  { L_EXPLAIN,                CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
-  { L_HELP,                   CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_INLINE /* namespace */, CDECL_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11)  },
-  { L_NAMESPACE,              CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_QUIT,                   CDECL_COMMAND_LANG_ONLY,  LANG_ANY          },
-  { L_REINTERPRET /* cast */, CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_SET_COMMAND,            CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_SHOW,                   CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_STATIC /* cast */,      CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_STRUCT,                 CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_TYPEDEF,                CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_UNION,                  CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_USING,                  CDECL_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11)  },
-  { NULL,                     CDECL_COMMAND_ANYWHERE,   LANG_NONE         },
-};
 
 // extern variable definitions
 FILE         *cdecl_fin;
@@ -369,12 +342,6 @@ static bool starts_with_token( char const *s, char const *token,
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
-
-cdecl_command_t const* cdecl_command_next( cdecl_command_t const *command ) {
-  return command == NULL ?
-    CDECL_COMMANDS :
-    (++command)->literal == NULL ? NULL : command;
-}
 
 int cdecl_parse_string( char const *s, size_t s_len ) {
   assert( s != NULL );

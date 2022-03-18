@@ -190,25 +190,6 @@ struct c_loc {
 };
 
 /**
- * The kind of cdecl command in least-to-most restrictive order.
- */
-enum cdecl_command_kind {
-  CDECL_COMMAND_ANYWHERE,               ///< Command is OK anywhere.
-  CDECL_COMMAND_FIRST_ARG,              ///< `$ cdecl` _command_ _args_
-  CDECL_COMMAND_PROG_NAME,              ///< `$` _command_ _args_
-  CDECL_COMMAND_LANG_ONLY               ///< `cdecl>` _command_ _args_
-};
-
-/**
- * A cdecl command.
- */
-struct cdecl_command {
-  char const           *literal;        ///< The command literal.
-  cdecl_command_kind_t  kind;           ///< The kind of command.
-  c_lang_id_t           lang_ids;       ///< Language(s) command is in.
-};
-
-/**
  * Types of help.
  */
 enum cdecl_help {

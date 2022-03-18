@@ -54,6 +54,7 @@ cdecl_SOURCES =	parser.y \
 		c_type.c c_type.h \
 		c_typedef.c c_typedef.h \
 		cdecl.c cdecl.h \
+		cdecl_command.c cdecl_command.h \
 		cdecl_keyword.c cdecl_keyword.h \
 		cdecl_parser.h \
 		check.c check.h \

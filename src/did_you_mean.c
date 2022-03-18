@@ -32,7 +32,7 @@
 #include "c_lang.h"
 #include "c_sname.h"
 #include "c_typedef.h"
-#include "cdecl.h"
+#include "cdecl_command.h"
 #include "cdecl_keyword.h"
 #include "cli_options.h"
 #include "dam_lev.h"

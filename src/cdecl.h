@@ -50,16 +50,6 @@
 /** Program name when composing or deciphering C++. */
 #define CPPDECL                   "c++decl"
 
-/**
- * Convenience macro for iterating over all cdecl commands.
- *
- * @param VAR The cdecl_command loop variable.
- *
- * @sa cdecl_command_next()
- */
-#define FOREACH_CDECL_COMMAND(VAR) \
-  for ( cdecl_command_t const *VAR = NULL; (VAR = cdecl_command_next( VAR )) != NULL; )
-
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
@@ -84,21 +74,6 @@ extern char const  *me;                 ///< Program name.
  */
 PJL_WARN_UNUSED_RESULT
 int cdecl_parse_string( char const *s, size_t s_len );
-
-/**
- * Iterates to the next cdecl command.
- *
- * @note This function isn't normally called directly; use the
- * #FOREACH_CDECL_COMMAND() macro instead.
- *
- * @param command A pointer to the previous command. For the first iteration,
- * NULL should be passed.
- * @return Returns the next command or NULL for none.
- *
- * @sa #FOREACH_CDECL_COMMAND
- */
-PJL_WARN_UNUSED_RESULT
-cdecl_command_t const* cdecl_command_next( cdecl_command_t const *command );
 
 ///////////////////////////////////////////////////////////////////////////////
 
