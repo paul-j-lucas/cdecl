@@ -46,12 +46,21 @@
 
 /**
  * Begins a test function.
+ *
+ * @remarks This should be the first thing inside a test function that must be
+ * declared to return `bool`.
+ *
+ * @sa #TEST_FN_END()
  */
 #define TEST_FN_BEGIN() \
   unsigned const test_failures_start = test_failures
 
 /**
  * Ends a test function.
+ *
+ * @remarks This should be the last thing inside a test function.
+ *
+ * @sa #TEST_FN_BEGIN()
  */
 #define TEST_FN_END() \
   return test_failures == test_failures_start
