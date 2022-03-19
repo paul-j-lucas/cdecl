@@ -57,7 +57,6 @@ extern FILE        *cdecl_fin;          ///< File in.
 extern FILE        *cdecl_fout;         ///< File out.
 extern bool         cdecl_initialized;  ///< Initialized (read conf. file)?
 extern cdecl_mode_t cdecl_mode;         ///< Converting English or gibberish?
-extern bool         is_input_a_tty;     ///< Is our input from a TTY?
 extern char const  *me;                 ///< Program name.
 
 ////////// extern functions ///////////////////////////////////////////////////

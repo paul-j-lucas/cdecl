@@ -54,7 +54,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sysexits.h>
-#include <unistd.h>                     /* for isatty(3) */
 
 /// @endcond
 
@@ -65,7 +64,6 @@ FILE         *cdecl_fin;
 FILE         *cdecl_fout;
 bool          cdecl_initialized;
 cdecl_mode_t  cdecl_mode;
-bool          is_input_a_tty;
 char const   *me;
 
 // extern functions
@@ -238,8 +236,7 @@ static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
  */
 PJL_WARN_UNUSED_RESULT
 static int cdecl_parse_stdin( void ) {
-  is_input_a_tty = isatty( fileno( cdecl_fin ) );
-  if ( opt_prompt && (is_input_a_tty || opt_interactive) )
+  if ( opt_interactive && opt_prompt )
     FPRINTF( cdecl_fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
   return cdecl_parse_file( cdecl_fin, cdecl_fout, /*return_on_error=*/false );
 }

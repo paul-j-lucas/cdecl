@@ -46,6 +46,7 @@
 #include <stdnoreturn.h>
 #include <string.h>
 #include <sysexits.h>
+#include <unistd.h>                     /* for isatty(3) */
 
 // in ascending option character ASCII order
 #define SOPT_DIGRAPHS       2
@@ -713,6 +714,8 @@ void cli_options_init( int *pargc, char const **pargv[] ) {
   opt_flex_debug = false;
 #endif /* ENABLE_FLEX_DEBUG */
   parse_options( *pargc, *pargv );
+  if ( !opt_interactive )
+    opt_interactive = isatty( fileno( cdecl_fin ) );
   c_lang_set( opt_lang );
   *pargc -= optind;
   *pargv += optind;

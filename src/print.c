@@ -142,7 +142,7 @@ static size_t print_caret( size_t error_column ) {
 
   size_t caret_column;
 
-  if ( is_input_a_tty || opt_interactive ) {
+  if ( opt_interactive ) {
     //
     // If we're interactive, we can put the ^ under the already existing token
     // the user typed for the recent command, but we have to add the length of
