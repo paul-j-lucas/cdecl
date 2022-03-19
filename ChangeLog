@@ -1,3 +1,25 @@
+2022-03-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, cdecl.h, cli_options.c, print.c: Removed is_input_a_tty.
+
+2022-03-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, autocomplete.c, cdecl.c, cdecl.h, cdecl_command.c,
+     cdecl_command.h, did_you_mean.c, literals.h, types.h: Split out
+     cdecl_command.[ch].
+   * dam_lev.c: Added PJL_WARN_UNUSED_RESULT.
+
+2022-03-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c, c_type.h: Using c_tid_check() more.
+   * c_type.h: Removed duplicate TS_TYPEDEF from TS_FUNC_LIKE_CPP.
+
+2022-03-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/bitmask/flags/
+   * gibberish.c, gibberish.h, parser.y, types.h: s/c_gib_flags_t/unsigned/
+   * c_typedef.c, cdecl.c, strbuf.c, util.c, util.h: s/IF_EXIT/perror_exit_if/
+
 2022-03-13  Paul J. Lucas <paul@lucasmail.org>
 
    * pjl_compile.m4: Updated copyright year to 2022.
