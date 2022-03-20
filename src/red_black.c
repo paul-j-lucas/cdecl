@@ -330,38 +330,39 @@ void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn ) {
   }
 }
 
-void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
+void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   assert( tree != NULL );
-  assert( delete_node != NULL );
-  assert( delete_node != RB_NIL );
+  assert( delete != NULL );
+  assert( delete != RB_NIL );
 
-  void *const data = delete_node->data;
+  void *const data = delete->data;
 
-  rb_node_t *const y =
-    delete_node->child[RB_L] == RB_NIL || delete_node->child[RB_R] == RB_NIL ?
-      delete_node :
-      rb_tree_node_successor( tree, delete_node );
+  rb_node_t *const surrogate =
+    delete->child[RB_L] == RB_NIL || delete->child[RB_R] == RB_NIL ?
+      delete :
+      rb_tree_node_successor( tree, delete );
 
-  rb_node_t *const x = y->child[ y->child[RB_L] == RB_NIL ];
+  rb_node_t *const non_nil_child =
+    surrogate->child[ surrogate->child[RB_L] == RB_NIL ];
 
-  if ( (x->parent = y->parent) == RB_ROOT(tree) )
-    RB_FIRST(tree) = x;
+  if ( (non_nil_child->parent = surrogate->parent) == RB_ROOT(tree) )
+    RB_FIRST(tree) = non_nil_child;
   else
-    y->parent->child[ is_dir( y, RB_R ) ] = x;
+    surrogate->parent->child[ is_dir( surrogate, RB_R ) ] = non_nil_child;
 
-  if ( is_black( y ) )
-    rb_tree_repair_node( tree, x );
+  if ( is_black( surrogate ) )
+    rb_tree_repair_node( tree, non_nil_child );
 
-  if ( y != delete_node ) {
-    y->color = delete_node->color;
-    y->child[RB_L] = delete_node->child[RB_L];
-    y->child[RB_R] = delete_node->child[RB_R];
-    y->parent = delete_node->parent;
-    delete_node->child[RB_L]->parent = delete_node->child[RB_R]->parent = y;
-    delete_node->parent->child[ is_dir( delete_node, RB_R ) ] = y;
+  if ( surrogate != delete ) {
+    surrogate->color = delete->color;
+    surrogate->child[RB_L] = delete->child[RB_L];
+    surrogate->child[RB_R] = delete->child[RB_R];
+    surrogate->parent = delete->parent;
+    delete->child[RB_L]->parent = delete->child[RB_R]->parent = surrogate;
+    delete->parent->child[ is_dir( delete, RB_R ) ] = surrogate;
   }
 
-  free( delete_node );
+  free( delete );
   assert( rb_nil_is_nil() );
   return data;
 }
