@@ -407,11 +407,14 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   } // while
 
   node = MALLOC( rb_node_t, 1 );
-  node->color = RB_RED;
-  node->child[RB_L] = node->child[RB_R] = RB_NIL;
-  node->data = data;
-  node->parent = parent;
+  *node = (rb_node_t){
+    .data = data,
+    .child = { RB_NIL, RB_NIL },
+    .parent = parent,
+    .color = RB_RED
+  };
 
+  // Determine which child of the parent the new node should be.
   rb_dir_t dir = STATIC_CAST( rb_dir_t,
     parent != RB_ROOT(tree) && (*tree->cmp_fn)( data, parent->data ) > 0
   );
