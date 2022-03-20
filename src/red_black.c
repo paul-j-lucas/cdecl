@@ -394,7 +394,10 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   rb_node_t *node = RB_FIRST(tree);
   rb_node_t *parent = RB_ROOT(tree);
 
-  // Find correct insertion point.
+  //
+  // Find either the existing node having the same data -OR- the parent for the
+  // new node.
+  //
   while ( node != RB_NIL ) {
     int const cmp = (*tree->cmp_fn)( data, node->data );
     if ( cmp == 0 )
