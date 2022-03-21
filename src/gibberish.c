@@ -119,11 +119,9 @@ static void g_init( g_state_t *g, unsigned flags, bool printing_typedef,
   MEM_ZERO( g );
   g->flags = flags;
   g->gout = gout;
+  g->printed_space = (flags & C_GIB_OMIT_TYPE) != 0;
   g->printing_typedef = printing_typedef;
-  if ( (flags & C_GIB_USING) != 0 )
-    g->skip_name_for_using = true;
-  if ( (flags & C_GIB_OMIT_TYPE) != 0 )
-    g->printed_space = true;
+  g->skip_name_for_using = (flags & C_GIB_USING) != 0;
 }
 
 /**
