@@ -51,7 +51,7 @@
  */
 struct g_state {
   unsigned  flags;                      ///< Gibberish printing flags.
-  FILE     *gout;                       ///< Where to write the gibberish.
+  FILE     *gout;                       ///< Where to print the gibberish.
   bool      postfix;                    ///< Doing postfix gibberish?
   bool      printed_space;              ///< Printed a space yet?
   bool      printing_typedef;           ///< Printing a `typedef`?
