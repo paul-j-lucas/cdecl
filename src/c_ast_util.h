@@ -459,6 +459,18 @@ c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
 }
 
 /**
+ * Checks whether the parent AST of \a ast (if any) is \a kind.
+ *
+ * @param ast The AST to check the parent of.
+ * @param kind The kind to check for.
+ * @return Returns `true` only if the parent of \a ast is \a kind.
+ */
+C_AST_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
+  return ast->parent_ast != NULL && ast->parent_ast->kind == kind;
+}
+
+/**
  * Checks whether \a ast should be printed as a `using` declaration.
  *
  * @param ast The AST to check.

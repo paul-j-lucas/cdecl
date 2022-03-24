@@ -569,18 +569,6 @@ size_t c_ast_params_count( c_ast_t const *ast ) {
 }
 
 /**
- * Checks whether the parent AST of \a ast (if any) is \a kind.
- *
- * @param ast The AST to check the parent of.
- * @param kind The kind to check for.
- * @return Returns `true` only if the parent of \a ast is \a kind.
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
-  return ast->parent_ast != NULL && ast->parent_ast->kind == kind;
-}
-
-/**
  * Sets the two-way pointer links between parent/child AST nodes.
  *
  * @param child_ast The "child" AST node to set the parent of.  If it already
