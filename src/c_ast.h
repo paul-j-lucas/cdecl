@@ -69,8 +69,8 @@ _GL_INLINE_HEADER_BEGIN
 #define C_ARRAY_SIZE_VARIABLE (-2)
 
 /**
- * For c_function_ast.flags, denotes that the function is unspecified (unknown
- * whether it's a member or non-member).
+ * For c_function_ast.flags, denotes that the user didn't explicitly specify
+ * either `member` or `non-member` in pseudo-English.
  *
  * @sa #C_FN_MEMBER
  * @sa #C_FN_NON_MEMBER
@@ -78,7 +78,8 @@ _GL_INLINE_HEADER_BEGIN
 #define C_FN_UNSPECIFIED      0u
 
 /**
- * For c_function_ast.flags, denotes that the function is a member.
+ * For c_function_ast.flags, denotes that the user explicitly specified
+ * `member` in pseudo-English.
  *
  * @sa #C_FN_NON_MEMBER
  * @sa #C_FN_UNSPECIFIED
@@ -86,7 +87,8 @@ _GL_INLINE_HEADER_BEGIN
 #define C_FN_MEMBER           (1u << 0)
 
 /**
- * For c_function_ast.flags, denotes that the function is a non-member.
+ * For c_function_ast.flags, denotes that the user explicitly specified
+ * `non-member` in pseudo-English.
  *
  * @sa #C_FN_MEMBER
  * @sa #C_FN_UNSPECIFIED
