@@ -274,11 +274,20 @@ for which there are four factors to consider:
 4. **Effect of the use upon the potential market for
    or value of the copyrighted work.**
 
-   The original version of **cdecl**
-   was released as open-source
+   Given that there are millions of C and C++ developers,
+   the potential market is huge;
+   however,
+   all versions of **cdecl**
+   were released as open-source
    and distributed widely
    for free.
-   As such,
+   Additionally,
+   **cdecl** prior to 3.0
+   has limited value
+   since it has not kept pace
+   with the evolution
+   of C and C++.
+   Hence,
    there is no market value.
 
 Note, however, that I am not a lawyer;
