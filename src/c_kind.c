@@ -56,7 +56,7 @@ char const* c_kind_name( c_ast_kind_t kind ) {
     case K_PLACEHOLDER        : return "placeholder";
     case K_OPERATOR           : return "operator";
     case K_POINTER            : return "pointer";
-    case K_POINTER_TO_MEMBER  : return "pointer-to-member";
+    case K_POINTER_TO_MEMBER  : return "pointer to member";
     case K_REFERENCE          : return "reference";
     case K_RVALUE_REFERENCE   : return "rvalue reference";
     case K_TYPEDEF            : return "typedef";

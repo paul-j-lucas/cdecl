@@ -62,7 +62,7 @@ pointer_to_member_type_c_ast ::= sname '::*' cv_qualifier_list_stid_opt = {
   pointer_to_member_type_c_ast = {
     sname = "",
     unique_id = 1336,
-    kind = "pointer-to-member",
+    kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
@@ -92,7 +92,7 @@ sname_c_ast ::= sname_c = {
   (type_c_ast) = {
     sname = "",
     unique_id = 1336,
-    kind = "pointer-to-member",
+    kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
@@ -116,7 +116,7 @@ sname_c_ast ::= sname_c = {
   sname_c_ast = {
     sname = "p" (none),
     unique_id = 1336,
-    kind = "pointer-to-member",
+    kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
@@ -141,7 +141,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
   pointer_to_member_type_c_ast = {
     sname = "p" (none),
     unique_id = 1336,
-    kind = "pointer-to-member",
+    kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
@@ -163,7 +163,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
   decl_c_astp = {
     sname = "p" (none),
     unique_id = 1336,
-    kind = "pointer-to-member",
+    kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
@@ -185,7 +185,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
   pointer_to_member_decl_c_astp = {
     sname = "p" (none),
     unique_id = 1336,
-    kind = "pointer-to-member",
+    kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
@@ -222,7 +222,7 @@ decl_c ::= decl_c_astp = {
   decl_c_astp = {
     sname = "p" (none),
     unique_id = 1336,
-    kind = "pointer-to-member",
+    kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
@@ -244,7 +244,7 @@ decl_c ::= decl_c_astp = {
   decl_c = {
     sname = "p" (none),
     unique_id = 1336,
-    kind = "pointer-to-member",
+    kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,

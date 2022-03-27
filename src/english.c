@@ -236,7 +236,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
 
     case K_POINTER_TO_MEMBER:
       c_type_print_not_base( &ast->type, eout );
-      FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
+      FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_OF );
       fputs_sp( c_tid_name_english( ast->type.btids ), eout );
       c_sname_english( &ast->as.ptr_mbr.class_sname, eout );
       FPUTC( ' ', eout );
