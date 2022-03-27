@@ -96,10 +96,8 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
         sglob->pattern[ glob_index ] = check_strndup( glob_begin, glob_len );
         if ( *s == '\0' )
           return;
-        assert( *s == ':' );
-        ++s;
-        assert( *s == ':' );
-        ++s;
+        assert( s[0] == ':' && s[1] == ':' );
+        s += 2 /* "::" */;
         SKIP_WS( s );
         assert( is_ident( *s ) || *s == '*' );
         glob_begin = s;
