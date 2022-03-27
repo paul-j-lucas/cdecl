@@ -1,3 +1,18 @@
+2022-03-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sglob.c: Reworked assert().
+   * c_kind.c, english.c, cdecl-d-pmki.out, explain_pmi-c.out,
+     explain_pmrgi.out: Changed K_POINTER_TO_MEMBER's name to "pointer to
+     member" (without '-').
+
+2022-03-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_ast_util.h: Moved c_ast_parent_is_kind().
+
+2022-03-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Simplification.
+
 2022-03-19  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c, cdecl.h, cli_options.c, print.c: Removed is_input_a_tty.
