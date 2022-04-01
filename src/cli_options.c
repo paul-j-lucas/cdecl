@@ -628,7 +628,7 @@ use_help:
 noreturn
 static void usage( int status ) {
   fprintf( status == EX_OK ? stdout : stderr,
-"usage: " CDECL " [options] [command...]\n"
+"usage: %s [options] [command...]\n"
 "options:\n"
 "  --alt-tokens         (-%c) Print alternative tokens.\n"
 #ifdef YYDEBUG
@@ -662,6 +662,7 @@ static void usage( int status ) {
 "\n"
 "Report bugs to: " PACKAGE_BUGREPORT "\n"
 PACKAGE_NAME " home page: " PACKAGE_URL "\n",
+    me,
     COPT(ALT_TOKENS),
 #ifdef YYDEBUG
     COPT(BISON_DEBUG),
