@@ -1,3 +1,8 @@
+2022-04-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Now printing program name in usage message instead of
+     always "cdecl".
+
 2022-03-31  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c: Removed mostly pointless cast.
