@@ -1015,7 +1015,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
         c_sname_init( &temp_sname );    // for unconditional c_sname_cleanup()
         //
         // For all other cases (non-inline namespaces, enum, class, struct, and
-        // union), the type is the scope's type, not the fisrt type used above.
+        // union), the type is the scope's type, not the first type used above.
         // For example, in:
         //
         //      struct S::T { typedef int I; }
