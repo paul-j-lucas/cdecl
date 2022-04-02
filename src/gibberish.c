@@ -1140,7 +1140,7 @@ char const* graph_token_c( char const *token ) {
         }
         break;
       case C_GRAPH_TRI:
-        if ( opt_lang >= LANG_C_89 && opt_lang <= LANG_CPP_14 ) {
+        if ( OPT_LANG_IS(RANGE(C_89,CPP_14)) ) {
           switch ( token[0] ) {
             case '#'  : return "?\?=";
             case '['  : return token[1] == '[' ? "?\?(?\?(" : "?\?(";
