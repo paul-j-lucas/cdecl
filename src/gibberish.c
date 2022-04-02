@@ -1054,8 +1054,6 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
       //
       FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
         scope_type = c_scope_data( scope )->type;
-        if ( scope_type.btids == TB_SCOPE )
-          scope_type.btids = TB_NAMESPACE;
         FPRINTF( gout,
           "%s %s { ",
           c_type_name_c( &scope_type ), c_scope_data( scope )->name
