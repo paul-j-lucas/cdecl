@@ -985,8 +985,10 @@ c_loc_t lexer_loc( void ) {
     rv_loc.first_column = newline_column;
   else if ( lexer_token[0] == '\n' )
     rv_loc.first_column = token_column;
-  else
+  else {
     rv_loc.first_column = token_column - (int)strlen( lexer_token );
+    assert( rv_loc.first_column >= 0 );
+  }
 
   rv_loc.last_line = rv_loc.first_line;
   rv_loc.last_column = rv_loc.first_column;
