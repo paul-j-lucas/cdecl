@@ -442,9 +442,24 @@ char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
  * @param s The string to parse.
  * @param sname The scoped name to parse into.
  * @return Returns `true` only if the scoped name was successfully parsed.
+ *
+ * @sa c_sname_parse_dtor()
  */
 PJL_WARN_UNUSED_RESULT
 bool c_sname_parse( char const *s, c_sname_t *sname );
+
+/**
+ * Parses a scoped destructor name, e.g. `S::T::~T`.
+ *
+ * @param s The string to parse.
+ * @param sname The scoped name to parse into.
+ * @return Returns `true` only if the scoped destructor name was successfully
+ * parsed.
+ *
+ * @sa c_sname_parse()
+ */
+PJL_WARN_UNUSED_RESULT
+bool c_sname_parse_dtor( char const *s, c_sname_t *sname );
 
 /**
  * Prepends \a src onto the beginning of \a dst.

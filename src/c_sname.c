@@ -32,6 +32,7 @@
 #include "c_sname.h"
 #include "c_keyword.h"
 #include "c_sglob.h"
+#include "literals.h"
 #include "options.h"
 #include "strbuf.h"
 #include "util.h"
@@ -73,6 +74,64 @@ static char const* c_sname_impl( strbuf_t *sbuf, c_sname_t const *sname,
   }
 
   return sbuf->str != NULL ? sbuf->str : "";
+}
+
+/**
+ * Helper function for c_sname_parse() and c_sname_parse_dtor().
+ *
+ * @param s The string to parse.
+ * @param sname The scoped name to parse into.
+ * @param dtor `true` only if a destructor name, e.g., `S::T::~T`, is to be
+ * parsed.
+ * @return Returns `true` only if the scoped name was successfully parsed.
+ */
+bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool dtor ) {
+  assert( s != NULL );
+  assert( sname != NULL );
+
+  bool parsed_tilde = !dtor;
+  c_sname_t rv;
+  c_sname_init( &rv );
+
+  for ( char const *end; (end = parse_identifier( s )) != NULL; ) {
+    char *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
+
+    // Ensure that the name is NOT a keyword.
+    c_keyword_t const *const k =
+      c_keyword_find( name, opt_lang, C_KW_CTX_DEFAULT );
+    if ( k != NULL ) {
+      FREE( name );
+      // k->literal is set to L_* so == is OK
+      if ( dtor && k->literal == L_COMPL ) {
+        char const *const t = s + strlen( L_COMPL );
+        if ( isspace( *t ) ) {          // except treat "compl" as '~'
+          s = t + 1;
+          goto tilde;
+        }
+      }
+      break;
+    }
+    c_sname_append_name( &rv, name );
+
+    SKIP_WS( end );
+    if ( *end == '\0' && parsed_tilde ) {
+      *sname = rv;
+      return true;
+    }
+    if ( strncmp( end, "::", 2 ) != 0 )
+      break;
+    s = end + 2;
+    SKIP_WS( s );
+    if ( dtor && *s == '~' ) {
+      ++s;
+tilde:
+      SKIP_WS( s );
+      parsed_tilde = true;
+    }
+  } // for
+
+  c_sname_cleanup( &rv );
+  return false;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -203,37 +262,11 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
 }
 
 bool c_sname_parse( char const *s, c_sname_t *sname ) {
-  assert( s != NULL );
-  assert( sname != NULL );
+  return c_sname_parse_impl( s, sname, /*dtor=*/false );
+}
 
-  c_sname_t rv;
-  c_sname_init( &rv );
-
-  for ( char const *end; (end = parse_identifier( s )) != NULL; ) {
-    char *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
-
-    // Ensure that the name is NOT a keyword.
-    c_keyword_t const *const k =
-      c_keyword_find( name, opt_lang, C_KW_CTX_DEFAULT );
-    if ( k != NULL ) {
-      FREE( name );
-      break;
-    }
-    c_sname_append_name( &rv, name );
-
-    SKIP_WS( end );
-    if ( *end == '\0' ) {
-      *sname = rv;
-      return true;
-    }
-    if ( strncmp( end, "::", 2 ) != 0 )
-      break;
-    s = end + 2;
-    SKIP_WS( s );
-  } // for
-
-  c_sname_cleanup( &rv );
-  return false;
+bool c_sname_parse_dtor( char const *s, c_sname_t *sname ) {
+  return c_sname_parse_impl( s, sname, /*dtor=*/true );
 }
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {
