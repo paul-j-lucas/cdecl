@@ -1,3 +1,20 @@
+2022-04-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Now using LANG_C_CPP_MAX() more.
+   * c_type.c: s/.../LANG_IDS/
+
+2022-04-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c: s/c_sname_impl/c_sname_name_impl/
+   * c_sname.c, c_sname.h, lexer.l: Folded c_sname_parse_dtor() into
+     c_sname_parse_impl().
+   * lexer.l: Added assert().
+
+2022-04-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Now using OPT_LANG_IS(RANGE(...)).
+   * gibberish.c: Removed code that's no longer needd.
+
 2022-04-01  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: Now printing program name in usage message instead of
