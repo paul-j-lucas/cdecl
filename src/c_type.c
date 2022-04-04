@@ -45,8 +45,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define C_TYPE_CHECK(...) BLOCK(            \
-  c_lang_id_t const lang_ids = __VA_ARGS__; \
+#define C_TYPE_CHECK(LANG_IDS) BLOCK(       \
+  c_lang_id_t const lang_ids = (LANG_IDS);  \
   if ( lang_ids != LANG_ANY )               \
     return lang_ids; )
 
