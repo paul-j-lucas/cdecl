@@ -181,8 +181,8 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
     C_LANG_LIT( { LANG_ANY, L_RVALUE_REFERENCE } ) },
 
   { TS_RESTRICT, LANG_ANY, L_RESTRICTED,
-    C_LANG_LIT( { LANG_C_MAX(95) | LANG_CPP_ANY, L_GNU___RESTRICT },
-                { LANG_ANY,                      L_RESTRICT       } ) },
+    C_LANG_LIT( { LANG_C_CPP_MAX(95,NEW), L_GNU___RESTRICT },
+                { LANG_ANY,               L_RESTRICT       } ) },
 
   { TS_VOLATILE, LANG_ANY, NULL,
     C_LANG_LIT( { LANG_C_KNR, L_GNU___VOLATILE },
@@ -226,9 +226,9 @@ static c_type_info_t const C_STORAGE_INFO[] = {
     C_LANG_LIT( { LANG_ANY, L_STATIC } ) },
 
   { TS_THREAD_LOCAL, LANG_ANY, "thread local",
-    C_LANG_LIT( { LANG_C_MAX(99) | LANG_CPP_MAX(03),  L_GNU___THREAD  },
-                { LANG_C_MIN(11),                     L__THREAD_LOCAL },
-                { LANG_ANY,                           L_THREAD_LOCAL  } ) },
+    C_LANG_LIT( { LANG_C_CPP_MAX(99,03),  L_GNU___THREAD  },
+                { LANG_C_MIN(11),         L__THREAD_LOCAL },
+                { LANG_ANY,               L_THREAD_LOCAL  } ) },
 
   { TS_TYPEDEF, LANG_ANY, L_TYPE,
     C_LANG_LIT( { LANG_ANY, L_TYPEDEF } ) },
