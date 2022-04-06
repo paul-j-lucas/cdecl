@@ -71,7 +71,7 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
       strbuf_printf( sbuf, "%s ", c_tid_name_c( data->type.stids ) );
     }
     strbuf_puts( sbuf, data->name );
-  }
+  } // for
 
   return sbuf->str != NULL ? sbuf->str : "";
 }
