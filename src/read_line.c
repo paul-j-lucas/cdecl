@@ -20,7 +20,8 @@
 
 /**
  * @file
- * Defines read_line() for reading a line of text interactively from stdin.
+ * Defines strbuf_read_line() for reading a line of text from a file or
+ * interactively from stdin.
  */
 
 // local

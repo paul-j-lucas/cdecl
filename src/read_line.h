@@ -23,7 +23,8 @@
 
 /**
  * @file
- * Declares read_line() for reading a line of text, possibly interactively.
+ * Declares strbuf_read_line() for reading a line of text from a file or
+ * interactively from stdin.
  */
 
 // local

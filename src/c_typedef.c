@@ -20,8 +20,8 @@
 
 /**
  * @file
- * Defines functions for adding and looking up C/C++ `typedef` or `using`
- * declarations.
+ * Defines types, data, and functions for standard types and adding and looking
+ * up C/C++ `typedef` or `using` declarations.
  */
 
 // local

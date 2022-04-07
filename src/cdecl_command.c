@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Declares functions for cdecl commands.
+ * Declares data and functions for cdecl commands.
  */
 
 // local

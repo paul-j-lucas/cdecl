@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines functions for C/C++ types.
+ * Defines types and functions for C/C++ types.
  */
 
 // local

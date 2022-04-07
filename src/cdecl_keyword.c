@@ -20,8 +20,7 @@
 
 /**
  * @file
- * Defines helper macros, data structures, variables, functions, and the
- * tokenizer for C/C++ declarations.
+ * Defined types, data, and functions for looking up cdecl keyword information.
  */
 
 // local

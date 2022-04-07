@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines static data for C/C++ operators.
+ * Defines data and functions for C/C++ operators.
  */
 
 // local

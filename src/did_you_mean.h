@@ -23,8 +23,8 @@
 
 /**
  * @file
- * Declares types, constants, and functions for implementing "Did you mean
- * ...?" suggestions.
+ * Declares types, constants, and functions that implement "Did you mean ...?"
+ * suggestions.
  */
 
 // local

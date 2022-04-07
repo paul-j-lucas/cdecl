@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines functions for implementing command-line autocompletion.
+ * Defines functions that implement command-line autocompletion.
  */
 
 // local

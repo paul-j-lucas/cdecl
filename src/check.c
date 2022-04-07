@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines functions for performing semantic checks.
+ * Defines functions for performing C/C++ semantic checks.
  */
 
 // local
