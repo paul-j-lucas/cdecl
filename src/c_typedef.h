@@ -62,8 +62,9 @@ struct c_typedef {
  *
  * @param tdef The \ref c_typedef to visit.
  * @param v_data Optional data passed to the visitor.
- * @return Returning `true` will cause traversal to stop and \a type to be
- * returned to the caller of c_typedef_visit().
+ * @return Returning `true` will cause traversal to stop and a pointer to the
+ * \ref c_typedef the visitor stopped on to be returned to the caller of
+ * c_typedef_visit().
  */
 typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
 
