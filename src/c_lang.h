@@ -49,6 +49,11 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * @defgroup c-lang-group C/C++ Language Versions
  * Macros, types, constants, and functions for C/C++ language versions.
+ *
+ * @note @anchor c-lang-order Despite the year of standardization, all versions
+ * of C++ are considered "newer" than all versions of C.  However, this isn't a
+ * problem since cdecl is only ever parsing either (any version of) C or (any
+ * version of) C++ at any given time.
  * @{
  */
 
@@ -295,7 +300,7 @@ struct c_lang_lit {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets all the language(s) \a lang_id and newer.
+ * Gets all the language(s) \a lang_id and \ref c-lang-order "newer".
  *
  * @param lang_id The language.  Exactly one language must be set.
  * @return Returns the bitwise-or of all language(s) \a lang_id and newer.
@@ -407,7 +412,8 @@ PJL_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
 
 /**
- * Gets the bitwise-or of language(s) that are newer than \a lang_id.
+ * Gets the bitwise-or of language(s) that are \ref c-lang-order "newer than"
+ * \a lang_id.
  *
  * @param lang_id The language.  Exactly one language must be set.
  * @return Returns the bitwise-or of languages \a lang_id or newer; or
@@ -425,7 +431,7 @@ c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
 }
 
 /**
- * Gets the newest language among \a lang_ids.
+ * Gets the \ref c-lang-order "newest" language among \a lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s).
  * @return Returns said language.
@@ -452,7 +458,7 @@ PJL_WARN_UNUSED_RESULT
 c_lang_t const* c_lang_next( c_lang_t const *lang );
 
 /**
- * Gets the oldest language among \a lang_ids.
+ * Gets the \ref c-lang-order "oldest" language among \a lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s).
  * @return Returns said language.
