@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines functions for C/C++ language versions.
+ * Defines constants and functions for C/C++ language versions.
  */
 
 // local

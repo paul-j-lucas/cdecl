@@ -23,7 +23,8 @@
 
 /**
  * @file
- * Declares constants, types, and functions for C/C++ language versions.
+ * Declares macros, types, constants, and functions for C/C++ language
+ * versions.
  */
 
 // local
@@ -47,7 +48,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * @defgroup c-lang-group C/C++ Language Versions
- * Constants, types, and functions for C/C++ language versions.
+ * Macros, types, constants, and functions for C/C++ language versions.
  * @{
  */
 
