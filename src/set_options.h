@@ -110,12 +110,12 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
 /**
  * Iterates to the next cdecl `set` option.
  *
- * @note This function isn't normally called directly; use the
- * #FOREACH_SET_OPTION() macro instead.
- *
  * @param opt A pointer to the previous option. For the first iteration, NULL
  * should be passed.
  * @return Returns the next `set` option or NULL for none.
+ *
+ * @note This function isn't normally called directly; use the
+ * #FOREACH_SET_OPTION() macro instead.
  *
  * @sa #FOREACH_SET_OPTION
  */

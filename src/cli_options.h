@@ -64,12 +64,12 @@
 /**
  * Iterates to the next cdecl command-line option.
  *
- * @note This function isn't normally called directly; use the
- * #FOREACH_CLI_OPTION() macro instead.
- *
  * @param opt A pointer to the previous option. For the first iteration, NULL
  * should be passed.
  * @return Returns the next command-line option or NULL for none.
+ *
+ * @note This function isn't normally called directly; use the
+ * #FOREACH_CLI_OPTION() macro instead.
  *
  * @sa #FOREACH_CLI_OPTION()
  */

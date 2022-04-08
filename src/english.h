@@ -60,10 +60,10 @@ void c_ast_explain_cast( c_sname_t const *sname, c_ast_t const *ast,
 /**
  * Explains \a ast as a declaration in pseudo-English.
  *
- * @note A newline _is_ printed.
- *
  * @param ast The AST to explain.
  * @param eout The `FILE` to print to.
+ *
+ * @note A newline _is_ printed.
  *
  * @sa c_ast_explain_cast()
  * @sa c_ast_explain_type()
@@ -93,10 +93,10 @@ char const* c_cast_english( c_cast_kind_t kind );
 /**
  * Prints \a sname in pseudo-English.
  *
- * @note A newline is _not_ printed.
- *
  * @param sname The name to print.
  * @param eout The `FILE` to print to.
+ *
+ * @note A newline is _not_ printed.
  */
 void c_sname_english( c_sname_t const *sname, FILE *eout );
 

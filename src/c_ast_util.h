@@ -358,12 +358,12 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  * Un-pointers \a ast, i.e., if \a ast is a \ref K_POINTER, returns the
  * pointed-to AST.
  *
- * @note Even though pointers are "dereferenced," this function isn't called
- * `c_ast_dereference` to eliminate confusion with C++ references.
- *
  * @param ast The AST to un-pointer.
  * @return If \a ast is a pointer, returns the un-`typedef`d pointed-to AST;
  * otherwise returns NULL.
+ *
+ * @note Even though pointers are "dereferenced," this function isn't called
+ * `c_ast_dereference` to eliminate confusion with C++ references.
  *
  * @sa c_ast_pointer()
  * @sa c_ast_unreference()
@@ -377,11 +377,11 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * Un-references \a ast, i.e., if \a ast is a \ref K_REFERENCE returns the
  * referred-to AST.
  *
- * @note Only \ref K_REFERENCE is un-referenced, not \ref K_RVALUE_REFERENCE.
- *
  * @param ast The AST to un-reference.
  * @return If \a ast is a reference, returns the un-`typdef`d referenced AST;
  * otherwise returns \a ast.
+ *
+ * @note Only \ref K_REFERENCE is un-referenced, not \ref K_RVALUE_REFERENCE.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unrvalue_reference()
@@ -394,11 +394,11 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * Un-rvalue-references \a ast, i.e., if \a ast is a \ref K_RVALUE_REFERENCE
  * returns the referred-to AST.
  *
- * @note Only \ref K_RVALUE_REFERENCE is un-referenced, not \ref K_REFERENCE.
- *
  * @param ast The AST to un-reference.
  * @return If \a ast is an rvalue reference, returns the un-`typedef`d
  * referenced AST; otherwise returns \a ast.
+ *
+ * @note Only \ref K_RVALUE_REFERENCE is un-referenced, not \ref K_REFERENCE.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
@@ -427,10 +427,10 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 /**
  * Checks if the type of \a ast is equivalent to `size_t`.
  *
- * @note In cdecl, `size_t` is `typedef`d to be `unsigned long` in c_typedef.c.
- *
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast is `size_t`.
+ *
+ * @note In cdecl, `size_t` is `typedef`d to be `unsigned long` in c_typedef.c.
  *
  * @sa c_tid_is_size_t()
  */

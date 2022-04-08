@@ -102,15 +102,15 @@ extern print_params_t print_params;     ///< Print parameters.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @note This function isn't normally called directly; use the #print_error()
- * macro instead.
- *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
  * from.
  * @param loc The location of the error; may be NULL.
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
+ *
+ * @note This function isn't normally called directly; use the #print_error()
+ * macro instead.
  *
  * @sa #print_error()
  */
@@ -124,14 +124,14 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @note This function isn't normally called directly; use the
- * #print_error_unknown_name() macro instead.
- *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
  * from.
  * @param loc The location of \a sname.
  * @param sname The unknown name.
+ *
+ * @note This function isn't normally called directly; use the
+ * #print_error_unknown_name() macro instead.
  *
  * @sa fl_print_error()
  * @sa #print_error_unknown_name()
@@ -145,15 +145,15 @@ void fl_print_error_unknown_name( char const *file, int line,
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @note This function isn't normally called directly; use the #print_warning()
- * macro instead.
- *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
  * from.
  * @param loc The location of the warning; may be NULL.
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
+ *
+ * @note This function isn't normally called directly; use the #print_warning()
+ * macro instead.
  *
  * @sa #print_warning()
  */
@@ -166,10 +166,10 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
  * line to standard error in the form `"[<file>:<line>] "`; otherwise prints
  * nothing.
  *
- * @note A newline is _not_ printed.
- *
  * @param file The name of the file to print.
  * @param line The line number within \a file to print.
+ *
+ * @note A newline is _not_ printed.
  */
 void print_debug_file_line( char const *file, int line );
 
@@ -195,9 +195,9 @@ void print_hint( char const *format, ... );
  *  + A `^` (in color, if possible and requested) under the offending token.
  *  + The error column.
  *
- * @note A newline is _not_ printed.
- *
  * @param loc The location to print.
+ *
+ * @note A newline is _not_ printed.
  */
 void print_loc( c_loc_t const *loc );
 
@@ -211,12 +211,12 @@ void print_loc( c_loc_t const *loc );
  * where `...` is a a comma-separated list of one or more suggestions.  If
  * there are no suggestions that are "similar enough," prints nothing.
  *
- * @note A newline is _not_ printed.
- *
  * @param kinds The bitwise-or of the kind(s) of things possibly meant by \a
  * unknown_token.
  * @param unknown_token The unknown token.
  * @return Returns `true` only if any suggestions were printed.
+ *
+ * @note A newline is _not_ printed.
  *
  * @sa print_hint()
  */

@@ -149,14 +149,13 @@ struct slist_node {
 /**
  * Peeks at the data at \a offset of \a list.
  *
- * @note This function isn't normally called directly; use either slist_at() or
- * slist_atr() instead.
- *
  * @param list A pointer to the \ref slist.
  * @param offset The offset (starting at 0) of the data to get.  It is _not_
  * checked to ensure it's &lt; the list's length.
  * @return Returns the data from the node at \a offset.
  *
+ * @note This function isn't normally called directly; use either slist_at() or
+ * slist_atr() instead.
  * @note This is an O(n) operation.
  *
  * @sa slist_at()

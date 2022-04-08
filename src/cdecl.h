@@ -64,12 +64,12 @@ extern char const  *me;                 ///< Program name.
 /**
  * Parses a cdecl command from a string.
  *
- * @note This is the main parsing function (the only one that calls Bison).
- * All other `cdecl_parse_*()` functions ultimately call this function.
- *
  * @param s The null-terminated string to parse.
  * @param s_len The length of \a s.
  * @return Returns `EX_OK` upon success or another value upon failure.
+ *
+ * @note This is the main parsing function (the only one that calls Bison).
+ * All other `cdecl_parse_*()` functions ultimately call this function.
  */
 PJL_WARN_UNUSED_RESULT
 int cdecl_parse_string( char const *s, size_t s_len );

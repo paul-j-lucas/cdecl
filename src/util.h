@@ -474,10 +474,10 @@ _GL_INLINE_HEADER_BEGIN
  * Macro that "string-ifies" its argument, e.g., <code>%STRINGIFY(x)</code>
  * becomes `"x"`.
  *
+ * @param X The unquoted string to stringify.
+ *
  * @note This macro is sometimes necessary in cases where it's mixed with uses
  * of `##` by forcing re-scanning for token substitution.
- *
- * @param X The unquoted string to stringify.
  *
  * @sa #CHARIFY()
  */

@@ -30,6 +30,7 @@
  * scope.
  *
  * @note For C, an sglob is simply a single glob, e.g., `x*`.
+ *
  * @sa c_sname_match()
  */
 

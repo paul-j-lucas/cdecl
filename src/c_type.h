@@ -875,10 +875,11 @@ c_type_t c_type_or( c_type_t const *i_type, c_type_t const *j_type );
 /**
  * Performs the bitwise-or of \a dst_type with \a add_type and stores the
  * result in \a dst_type.
- * @note Unlike c_type_add(), no checks are made.
  *
  * @param dst_type The type to modify.
  * @param add_type The source type.
+ *
+ * @note Unlike c_type_add(), no checks are made.
  *
  * @sa c_type_add()
  * @sa c_type_and_eq_compl()
@@ -984,10 +985,11 @@ bool c_tid_is_any( c_tid_t i_tids, c_tid_t j_tids ) {
 /**
  * Checks whether \a tids is "none."
  *
- * @note This function is useful only when the part ID of \a tids can be any
- * part ID.
  * @param tids The \ref c_tid_t to check.
  * @return Returns `true` only if \a tids is `Tx_NONE`.
+ *
+ * @note This function is useful only when the part ID of \a tids can be any
+ * part ID.
  *
  * @sa c_type_is_none()
  */
@@ -999,11 +1001,11 @@ bool c_tid_is_none( c_tid_t tids ) {
 /**
  * Checks if \a tids is equivalent to `size_t`.
  *
- * @note In cdecl, `size_t` is `typedef`d to be `unsigned long` in
- * `c_typedef.c`.
- *
  * @param tids The \ref c_tid_t to check.
  * @return Returns `true` only if \a tids is `size_t`.
+ *
+ * @note In cdecl, `size_t` is `typedef`d to be `unsigned long` in
+ * `c_typedef.c`.
  *
  * @sa c_ast_is_size_t()
  */

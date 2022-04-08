@@ -69,12 +69,12 @@ struct cdecl_command {
 /**
  * Iterates to the next cdecl command.
  *
- * @note This function isn't normally called directly; use the
- * #FOREACH_CDECL_COMMAND() macro instead.
- *
  * @param command A pointer to the previous command. For the first iteration,
  * NULL should be passed.
  * @return Returns the next command or NULL for none.
+ *
+ * @note This function isn't normally called directly; use the
+ * #FOREACH_CDECL_COMMAND() macro instead.
  *
  * @sa #FOREACH_CDECL_COMMAND
  */
