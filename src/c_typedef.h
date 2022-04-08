@@ -77,9 +77,9 @@ typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
  * function returns NULL.
  * @return If:
  * + \a type_ast was added, returns NULL; or:
- * + \a type_ast->name already exists and the types are equivalent, returns a
- *   \ref c_typedef where \a ast is NULL; or:
- * + \a type_ast->name already exists and the types are _not_ equivalent,
+ * + \a type_ast&ndash;>name already exists and the types are equivalent,
+ *   returns a \ref c_typedef where \a ast is NULL; or:
+ * + \a type_ast&ndash;>name already exists and the types are _not_ equivalent,
  *   returns the a \ref c_typedef of the existing type.
  */
 PJL_WARN_UNUSED_RESULT
