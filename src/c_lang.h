@@ -321,8 +321,8 @@ c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
  *
  * @param lang_ids The bitwise-or of language(s).
  * @return
- *  + If \a lang_ids only contains any version of C, returns `"C"`.
- *  + If \a lang_ids only contains any version of C++, returns `"C++"`.
+ *  + If \a lang_ids only contains any versions of C, returns `"C"`.
+ *  + If \a lang_ids only contains any versions of C++, returns `"C++"`.
  *  + Otherwise returns NULL.
  *
  * @sa c_lang_name()
