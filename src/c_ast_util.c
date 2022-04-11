@@ -714,7 +714,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
     ast->align = *align;
     if ( c_tid_is_any( type.stids, TS_TYPEDEF ) ) {
       //
-      // We check for illegal aligned typedef here rather than in errors.c
+      // We check for illegal aligned typedef here rather than in check.c
       // because the "typedef-ness" needed to be removed previously before the
       // eventual call to c_ast_check().
       //
