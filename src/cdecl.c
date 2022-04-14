@@ -334,6 +334,8 @@ static void read_conf_file( void ) {
 PJL_WARN_UNUSED_RESULT
 static bool starts_with_token( char const *s, char const *token,
                                size_t token_len ) {
+  assert( s != NULL );
+  assert( token != NULL );
   return  strncmp( s, token, token_len ) == 0 &&
           !is_ident( token[ token_len ] );
 }

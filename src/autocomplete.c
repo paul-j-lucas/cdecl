@@ -232,6 +232,7 @@ static bool is_command( char const *command, char const *s, size_t s_len ) {
  */
 PJL_WARN_UNUSED_RESULT
 static bool is_english_command( char const *command ) {
+  assert( command != NULL );
   return  command == L_CAST     ||
           command == L_DECLARE  ||
           command == L_DEFINE   ||
