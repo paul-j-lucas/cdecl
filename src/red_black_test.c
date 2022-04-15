@@ -27,6 +27,7 @@
 // standard
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdnoreturn.h>
 #include <string.h>
 #include <sysexits.h>
 
