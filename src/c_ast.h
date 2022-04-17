@@ -223,7 +223,7 @@ struct c_parent_ast {
  */
 struct c_array_ast {
   c_ast_t        *of_ast;               ///< What it's an array of.
-  c_array_size_t  size;                 ///< The array size.
+  c_array_size_t  size;                 ///< @copydoc c_array_size_t
   c_tid_t         stids;                ///< E.g., `array[static const 10]`
 };
 
