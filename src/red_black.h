@@ -108,9 +108,28 @@ enum rb_color {
 
 /**
  * A red-black tree node.
+ *
+ * @warning Only rb_node.data may be accessed by client code, and even then as
+ * read-only.  All other fields are for internal use only.
  */
 struct rb_node {
-  void       *data;                     ///< User data.
+  /**
+   * User data.
+   *
+   * @warning The data pointed to _must not_ be modified if that would change
+   * the node's position within the tree according to the tree's \ref
+   * rb_cmp_fn_t function.  For example, if `data` points to a `struct` like:
+   * @code
+   *  struct word_count {
+   *      char     *word;
+   *      unsigned  count;
+   *  };
+   * @endcode
+   * then, assuming the tree's \ref rb_cmp_fn_t function compares only `word`,
+   * client code may then only safely modify `count`.
+   */
+  void       *data;
+
   rb_node_t  *child[2];                 ///< Left/right (internal use only).
   rb_node_t  *parent;                   ///< Parent (internal use only).
   rb_color_t  color;                    ///< Node color (internal use only).
