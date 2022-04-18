@@ -369,6 +369,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  * @sa c_ast_unreference()
  * @sa c_ast_unrvalue_reference()
  * @sa c_ast_untypedef()
+ * @sa c_ast_untypedef_qual()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
@@ -386,6 +387,7 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * @sa c_ast_unpointer()
  * @sa c_ast_unrvalue_reference()
  * @sa c_ast_untypedef()
+ * @sa c_ast_untypedef_qual()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
@@ -403,6 +405,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
  * @sa c_ast_untypedef()
+ * @sa c_ast_untypedef_qual()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast );
@@ -418,9 +421,28 @@ c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast );
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
  * @sa c_ast_unrvalue_reference()
+ * @sa c_ast_untypedef_qual()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
+
+/**
+ * Un-`typedef`s \a ast, i.e., if \a ast is a \ref K_TYPEDEF, returns the AST
+ * the `typedef` is for.
+ *
+ * @param ast The AST to un-`typedef`.
+ * @param qual_stids Receives the qualifier(s) of \a ast and all ASTs \a ast is
+ * a `typedef` for.
+ * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
+ * `typedef`.
+ *
+ * @sa c_ast_unpointer()
+ * @sa c_ast_unreference()
+ * @sa c_ast_unrvalue_reference()
+ * @sa c_ast_untypedef()
+ */
+PJL_WARN_UNUSED_RESULT
+c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast, c_tid_t *qual_stids );
 
 ////////// inline functions ///////////////////////////////////////////////////
 

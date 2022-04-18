@@ -548,6 +548,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_alrgi.test \
 	tests/explain_as9i.test \
 	tests/explain_atci.test \
+	tests/explain_attda2i.test \
 	tests/explain_b-c89.test \
 	tests/explain_b_ai.test \
 	tests/explain_c-02.test \

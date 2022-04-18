@@ -460,34 +460,6 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
 }
 
 /**
- * Un-`typedef`s \a ast, i.e., if \a ast is a \ref K_TYPEDEF, returns the AST
- * the `typedef` is for.
- *
- * @param ast The AST to un-`typedef`.
- * @param qual_stids Receives the qualifier(s) of \a ast and all ASTs \a ast is
- * a `typedef` for.
- * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
- * `typedef`.
- *
- * @sa c_ast_untypedef()
- */
-PJL_WARN_UNUSED_RESULT
-static c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
-                                            c_tid_t *qual_stids ) {
-  assert( ast != NULL );
-  assert( qual_stids != NULL );
-
-  *qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
-  for (;;) {
-    if ( ast->kind != K_TYPEDEF )
-      return ast;
-    ast = ast->as.tdef.for_ast;
-    assert( ast != NULL );
-    *qual_stids |= ast->type.stids & TS_ANY_QUALIFIER;
-  } // for
-}
-
-/**
  * A visitor function to find an AST node having a particular kind(s).
  *
  * @param ast The AST to check.
@@ -939,6 +911,18 @@ c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast ) {
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
   for (;;) {
     assert( ast != NULL );
+    if ( ast->kind != K_TYPEDEF )
+      return ast;
+    ast = ast->as.tdef.for_ast;
+  } // for
+}
+
+c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast, c_tid_t *qual_stids ) {
+  assert( qual_stids != NULL );
+  *qual_stids = TS_NONE;
+  for (;;) {
+    assert( ast != NULL );
+    *qual_stids |= ast->type.stids & TS_ANY_QUALIFIER;
     if ( ast->kind != K_TYPEDEF )
       return ast;
     ast = ast->as.tdef.for_ast;

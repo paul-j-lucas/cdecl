@@ -325,6 +325,11 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
   assert( ast->kind == K_ARRAY );
   bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
+  if ( c_tid_is_any( ast->type.stids, TS_ATOMIC ) ) {
+    error_kind_not_tid( ast, TS_ATOMIC, "\n" );
+    return false;
+  }
+
   switch ( ast->as.array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;
@@ -2228,7 +2233,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         return VISITOR_ERROR_FOUND;
       break;
 
-    case K_TYPEDEF:
+    case K_TYPEDEF: {
       //
       // K_TYPEDEF isn't a "parent" kind since it's not a parent "of" the
       // underlying type, but instead a synonym "for" it.  Hence, we have to
@@ -2236,9 +2241,29 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
       //
       if ( c_ast_parent_is_kind( ast, K_POINTER ) )
         flags |= C_IS_POINTED_TO;       // see the comment for C_IS_POINTED_TO
-      ast = CONST_CAST( c_ast_t*, c_ast_untypedef( ast ) );
+
+      //
+      // Create a temporary AST node on the stack that is a copy of the
+      // untypedef'd AST but with the qualifiers of the typedef bitwise-or'd.
+      // For example, given:
+      //
+      //      typedef int A[2];
+      //      _Atomic A x;              // error: arrays can't be _Atomic
+      //
+      // when we un-typedef the AST for "x" into "temp", we get the AST for
+      // "A", but we need to bitwise-or in the _Atomic from "x" into "temp" so
+      // we check the fully qualified AST.
+      //
+      // We also have to use "x"'s location rather than "A"'s location.
+      //
+      c_tid_t qual_stids;
+      c_ast_t temp_ast = *c_ast_untypedef_qual( ast, &qual_stids );
+      temp_ast.loc = ast->loc;
+      temp_ast.type.stids |= qual_stids;
+
       avd = REINTERPRET_CAST( c_ast_visit_data_t, flags );
-      return c_ast_visitor_error( ast, avd );
+      return c_ast_visitor_error( &temp_ast, avd );
+    }
 
     case K_USER_DEF_CONVERSION:
       if ( !c_ast_check_udef_conv( ast ) )

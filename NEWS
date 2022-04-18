@@ -10,6 +10,21 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.15
+
+** `_Atomic` arrays
+`_Atomic` arrays are now correctly forbidden:
+
+    typedef int A[2]
+    explain _Atomic A x  // error
+
+Note that:
+
+    _Atomic int x[2];    // OK
+
+is an array of `_Atomic` `int` which is legal.
+
+
 * Changes in Cdecl 11.14
 
 ** Alternative tokens & digraphs
