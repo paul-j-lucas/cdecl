@@ -471,6 +471,7 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
  *
  * @sa c_ast_untypedef()
  */
+PJL_WARN_UNUSED_RESULT
 static c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
                                             c_tid_t *qual_stids ) {
   assert( ast != NULL );
