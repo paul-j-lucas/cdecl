@@ -1,3 +1,22 @@
+2022-04-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am,
+     explain_attda2i.out, typedef_v_explain_v.out, explain_attda2i.test:
+     _Atomic arrays are now correctly forbidden.
+   * c_ast_util.c: Added PJL_WARN_UNUSED_RESULT.
+
+2022-04-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black_test.c, slist_test.c: Added #include <stdnoreturn.h>
+
+2022-04-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, cdecl.c: Added assert()s.
+
+2022-04-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c: Removed unnecessary check.
+
 2022-04-04  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.c: Now using LANG_C_CPP_MAX() more.
