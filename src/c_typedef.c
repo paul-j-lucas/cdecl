@@ -63,9 +63,8 @@ struct tdef_rb_visit_data {
 typedef struct tdef_rb_visit_data tdef_rb_visit_data_t;
 
 // local variables
-static rb_tree_t    typedefs;           ///< Global set of `typedef`s.
 static c_lang_id_t  predefined_lang_ids;///< Languages when predefining types.
-static bool         user_defined;       ///< Are new `typedef`s used-defined?
+static rb_tree_t    typedefs;           ///< Global set of `typedef`s.
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -955,13 +954,14 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   c_typedef_t *const tdef = MALLOC( c_typedef_t, 1 );
   tdef->ast = ast;
   //
-  // User-defined types are available in the current language and later;
-  // predefined types are available only in the language(s) explicitly
-  // specified by predefined_lang_ids.
+  // If predefined_lang_ids is set, we're predefining a type that's available
+  // only in those language(s); otherwise we're defining a user-defined type
+  // that's available in the current language and later.
   //
-  tdef->lang_ids = user_defined ?
-    c_lang_and_newer( opt_lang ) : predefined_lang_ids;
-  tdef->user_defined = user_defined;
+  bool const is_predefined = predefined_lang_ids != LANG_NONE;
+  tdef->lang_ids = is_predefined ?
+    predefined_lang_ids : c_lang_and_newer( opt_lang );
+  tdef->user_defined = !is_predefined;
   tdef->defined_in_english = cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH;
   return tdef;
 }
@@ -1139,6 +1139,7 @@ void c_typedef_init( void ) {
   predefined_lang_ids = LANG_MIN(CPP_20);
   parse_predefined_types( PREDEFINED_STD_CPP_20_REQUIRED );
 
+  predefined_lang_ids = LANG_NONE;
   opt_lang = orig_lang;
 
 #ifdef ENABLE_CDECL_DEBUG
@@ -1150,8 +1151,6 @@ void c_typedef_init( void ) {
 #ifdef YYDEBUG
   opt_bison_debug = orig_bison_debug;
 #endif /* YYDEBUG */
-
-  user_defined = true;
 }
 
 c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,
