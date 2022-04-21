@@ -959,11 +959,15 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   // only in those language(s); otherwise we're defining a user-defined type
   // that's available in the current language and later.
   //
-  bool const is_predefined = predefined_lang_ids != LANG_NONE;
-  tdef->lang_ids = is_predefined ?
-    predefined_lang_ids : c_lang_and_newer( opt_lang );
-  tdef->predefined = is_predefined;
-  tdef->defined_in_english = cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH;
+  if ( predefined_lang_ids != LANG_NONE ) {
+    tdef->lang_ids = predefined_lang_ids;
+    tdef->predefined = true;
+    tdef->defined_in_english = false;
+  } else {
+    tdef->lang_ids = c_lang_and_newer( opt_lang );
+    tdef->predefined = false;
+    tdef->defined_in_english = cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH;
+  }
   return tdef;
 }
 
