@@ -44,12 +44,13 @@
 /// @endcond
 
 /**
- * Convenience macro for specifying a \ref c_typedef literal having \a SNAME.
+ * Convenience macro for specifying a \ref c_typedef literal with an AST having
+ * \a SNAME.
  *
  * @param SNAME The sname.
  */
-#define C_TYPEDEF_LIT(SNAME) \
-  (c_typedef_t){ &(c_ast_t const){ .sname = (SNAME) }, LANG_ANY, true, false }
+#define C_TYPEDEF_SNAME_LIT(SNAME) \
+  C_TYPEDEF_AST_LIT( &(c_ast_t const){ .sname = (SNAME) } )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -961,7 +962,7 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   bool const is_predefined = predefined_lang_ids != LANG_NONE;
   tdef->lang_ids = is_predefined ?
     predefined_lang_ids : c_lang_and_newer( opt_lang );
-  tdef->user_defined = !is_predefined;
+  tdef->predefined = is_predefined;
   tdef->defined_in_english = cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH;
   return tdef;
 }
@@ -1044,7 +1045,7 @@ c_typedef_t const* c_typedef_find_name( char const *name ) {
 c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
   assert( sname != NULL );
   rb_node_t const *const found_rb =
-    rb_tree_find( &typedefs, &C_TYPEDEF_LIT( *sname ) );
+    rb_tree_find( &typedefs, &C_TYPEDEF_SNAME_LIT( *sname ) );
   return found_rb != NULL ? found_rb->data : NULL;
 }
 

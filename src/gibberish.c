@@ -908,9 +908,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
     // It's simpler just to create a temporary c_typedef_t, tweak some flags,
     // and call c_typedef_gibberish().
     //
-    c_typedef_t const tdef = {
-      ast, LANG_ANY, .user_defined = true, .defined_in_english = true
-    };
+    c_typedef_t const tdef = C_TYPEDEF_AST_LIT( ast );
     bool const orig_semicolon = opt_semicolon;
     opt_semicolon = false;
     c_typedef_gibberish( &tdef, C_GIB_USING, gout );

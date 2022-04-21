@@ -38,6 +38,14 @@
 
 /// @endcond
 
+/**
+ * Convenience macro for specifying a \ref c_typedef literal having \a AST.
+ *
+ * @param AST The AST.
+ */
+#define C_TYPEDEF_AST_LIT(AST) \
+  (c_typedef_t const){ (AST), LANG_ANY, false, false }
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -53,7 +61,7 @@
 struct c_typedef {
   c_ast_t const  *ast;                  ///< AST representing the type.
   c_lang_id_t     lang_ids;             ///< Language(s) available in.
-  bool            user_defined;         ///< Is the type user-defined?
+  bool            predefined;           ///< Is the type predefined?
   bool            defined_in_english;   ///< Originally defined in English?
 };
 

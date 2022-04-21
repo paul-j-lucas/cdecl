@@ -971,9 +971,9 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
   if ( show_in_lang ) {
     bool const show_type =
-      ((tdef->user_defined ?
-        (sti->show_which & SHOW_USER_TYPES) != 0 :
-        (sti->show_which & SHOW_PREDEFINED_TYPES) != 0)) &&
+      ((tdef->predefined ?
+        (sti->show_which & SHOW_PREDEFINED_TYPES) != 0 :
+        (sti->show_which & SHOW_USER_TYPES) != 0)) &&
       (sti->sglob.count == 0 ||
        c_sname_match( &tdef->ast->sname, &sti->sglob ));
 
