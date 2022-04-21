@@ -241,8 +241,8 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
  * @param qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with the
- * qualifier(s) of the AST \a ast is a \ref K_TYPEDEF for (if \a ast is a
- * \ref K_TYPEDEF), but only if this function returns non-NULL.
+ * qualifier(s) \a ast is a `typedef` for (if \a ast is a \ref K_TYPEDEF), but
+ * only if this function returns non-NULL.
  * @return If the type of \a ast has one of \a tids, returns the un-`typedef`d
  * AST of \a ast; otherwise returns NULL.
  *
@@ -431,8 +431,8 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
  * the `typedef` is for.
  *
  * @param ast The AST to un-`typedef`.
- * @param qual_stids Receives the qualifier(s) of \a ast and all ASTs \a ast is
- * a `typedef` for.
+ * @param qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with the
+ * qualifier(s) \a ast is a `typedef` for (if \a ast is a \ref K_TYPEDEF).
  * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
  * `typedef`.
  *
