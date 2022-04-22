@@ -132,14 +132,6 @@
     c_kind_name( (AST)->kind ), c_tid_name_error( TID ) \
   )
 
-/**
- * Prints an error: `"<name>": unknown <thing>`.
- *
- * @param AST The AST having the unknown name.
- */
-#define error_unknown_name(AST) \
-  print_error_unknown_name( &(AST)->loc, &(AST)->sname )
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -409,7 +401,7 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
       return false;
 
     case K_NAME:
-      error_unknown_name( of_ast );
+      print_error_unknown_name( &of_ast->loc, &of_ast->sname );
       return false;
 
     case K_REFERENCE:
