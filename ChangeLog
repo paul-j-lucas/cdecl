@@ -1,3 +1,16 @@
+2022-04-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c: Removed error_unknown_name().
+   * check.c: s/fl_print_error_unknown_name/fl_print_error_unknown_name/
+   * c_typedef.c: Now using "if...else".
+   * c_ast_util.c, c_typedef.c, c_typedef.h, gibberish.c, parser.y:
+     s/c_typedef::user_defined/predefined/; added C_TYPEDEF_AST_LIT().
+   * c_typedef.c: Eliminated user_defined variable.
+
+2022-04-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added some missing K&R C typedefs.
+
 2022-04-18  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am,
