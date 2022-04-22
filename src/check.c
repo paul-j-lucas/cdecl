@@ -59,7 +59,7 @@
  * @param HINT The hint.
  */
 #define error_kind_not_cast_into(AST,HINT) BLOCK(       \
-  fl_print_error( __FILE__, __LINE__, &(AST)->loc,      \
+  print_error( &(AST)->loc,                             \
     "can not cast into %s", c_kind_name( (AST)->kind )  \
   );                                                    \
   print_hint( "%s %s %s", L_CAST, L_INTO, (HINT) ); )
@@ -71,8 +71,8 @@
  * @param LANG_IDS The bitwise-or of legal language(s).
  */
 #define error_kind_not_supported(AST,LANG_IDS)            \
-  fl_print_error( __FILE__, __LINE__,                     \
-    &(AST)->loc, "%s not supported%s\n",                  \
+  print_error( &(AST)->loc,                               \
+    "%s not supported%s\n",                               \
     c_kind_name( (AST)->kind ), c_lang_which( LANG_IDS )  \
   )
 
@@ -85,8 +85,8 @@
  * (either `"\n"` or `""`).
  */
 #define error_kind_not_tid(AST,TID,END_STR_LIT)         \
-  fl_print_error( __FILE__, __LINE__,                   \
-    &(AST)->loc, "%s can not be %s" END_STR_LIT,        \
+  print_error( &(AST)->loc,                             \
+    "%s can not be %s" END_STR_LIT,                     \
     c_kind_name( (AST)->kind ), c_tid_name_error( TID ) \
   )
 
@@ -99,8 +99,8 @@
  * (either `"\n"` or `""`).
  */
 #define error_kind_of_kind(AST1,AST2,END_STR_LIT)             \
-  fl_print_error( __FILE__, __LINE__,                         \
-    &(AST1)->loc, "%s of %s is illegal" END_STR_LIT,          \
+  print_error( &(AST1)->loc,                                  \
+    "%s of %s is illegal" END_STR_LIT,                        \
     c_kind_name( (AST1)->kind ), c_kind_name( (AST2)->kind )  \
   )
 
@@ -113,8 +113,8 @@
  * (either `"\n"` or `""`).
  */
 #define error_kind_to_kind(AST1,AST2,END_STR_LIT)             \
-  fl_print_error( __FILE__, __LINE__,                         \
-    &(AST1)->loc, "%s to %s is illegal" END_STR_LIT,          \
+  print_error( &(AST1)->loc,                                  \
+    "%s to %s is illegal" END_STR_LIT,                        \
     c_kind_name( (AST1)->kind ), c_kind_name( (AST2)->kind )  \
   )
 
@@ -127,8 +127,8 @@
  * (either `"\n"` or `""`).
  */
 #define error_kind_to_tid(AST,TID,END_STR_LIT)          \
-  fl_print_error( __FILE__, __LINE__,                   \
-    &(AST)->loc, "%s to %s is illegal" END_STR_LIT,     \
+  print_error( &(AST)->loc,                             \
+    "%s to %s is illegal" END_STR_LIT,                  \
     c_kind_name( (AST)->kind ), c_tid_name_error( TID ) \
   )
 
@@ -138,7 +138,7 @@
  * @param AST The AST having the unknown name.
  */
 #define error_unknown_name(AST) \
-  fl_print_error_unknown_name( __FILE__, __LINE__, &(AST)->loc, &(AST)->sname )
+  print_error_unknown_name( &(AST)->loc, &(AST)->sname )
 
 ///////////////////////////////////////////////////////////////////////////////
 
