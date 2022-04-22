@@ -146,7 +146,7 @@ static void print_help_commands( void ) {
   print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
 
   print_h( "  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef" );
-  if ( OPT_LANG_IS(CPP_MIN(11)) )
+  if ( OPT_LANG_IS(OPT_USING) )
     print_h( "|using" );
   print_h( "}]\n" );
 
@@ -154,12 +154,12 @@ static void print_help_commands( void ) {
 
   if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "  <scope-c> <name> [\\{ [{ <scope-c> | <typedef>" );
-    if ( OPT_LANG_IS(CPP_MIN(11)) )
+    if ( OPT_LANG_IS(OPT_USING) )
       print_h( " | <using>" );
     print_h( " } ;]* \\}]\n" );
   }
 
-  if ( OPT_LANG_IS(CPP_MIN(11)) )
+  if ( OPT_LANG_IS(OPT_USING) )
     print_h( "  using <name> = <gibberish>\n" );
 
   print_h( "  exit | q[uit]\n" );

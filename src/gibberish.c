@@ -1127,7 +1127,7 @@ char const* graph_token_c( char const *token ) {
       // are returned as a single string.
       //
       case C_GRAPH_DI:
-        if ( opt_lang >= LANG_C_95 ) {
+        if ( OPT_LANG_IS(OPT_DIGRAPHS) ) {
           switch ( token[0] ) {
             case '#'  : return token[1] == '#' ? "%:%:" : "%:";
             case '['  : return token[1] == '[' ? "<:<:" : "<:";
@@ -1138,7 +1138,7 @@ char const* graph_token_c( char const *token ) {
         }
         break;
       case C_GRAPH_TRI:
-        if ( OPT_LANG_IS(RANGE(C_89,CPP_14)) ) {
+        if ( OPT_LANG_IS(OPT_TRIGRAPHS) ) {
           switch ( token[0] ) {
             case '#'  : return "?\?=";
             case '['  : return token[1] == '[' ? "?\?(?\?(" : "?\?(";

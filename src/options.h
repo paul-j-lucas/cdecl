@@ -99,6 +99,9 @@ extern int          yydebug;            ///< Bison variable for debugging.
 /// Languages \ref opt_using "using" is supported in.
 #define LANG_OPT_USING            LANG_CPP_MIN(11)
 
+/// Languages variable length arrays are supported in.
+#define LANG_VLA                  LANG_C_MIN(99)
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**

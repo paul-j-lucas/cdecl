@@ -326,9 +326,9 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
     case C_ARRAY_SIZE_NONE:
       break;
     case C_ARRAY_SIZE_VARIABLE:
-      if ( !OPT_LANG_IS(C_MIN(99)) ) {
+      if ( !OPT_LANG_IS(VLA) ) {
         print_error( &ast->loc,
-          "variable length arrays not supported%s\n", C_LANG_WHICH( C_MIN(99) )
+          "variable length arrays not supported%s\n", C_LANG_WHICH( VLA )
         );
         return false;
       }
