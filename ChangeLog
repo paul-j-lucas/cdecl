@@ -1,3 +1,17 @@
+2022-04-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.h, c_keyword.c, c_lang.h, c_type.c, c_type.h, cdecl_command.c,
+     cdecl_keyword.c, check.c, gibberish.c, help.c, lexer.l, options.h,
+     parser.y, set_options.c, test/Makefile.am, cast_pfx_i.out,
+     declare_fkr_pi.out, declare_pfkr_i.out, declare_th_f_v.out,
+     explain_fkr_pi.out, explain_fkr_v.out, explain_th_f_v-c++14.test: Now
+     using LANG_feature macros rather than specific language version macros.
+
+2022-04-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c, gibberish.c, help.c, options.h: Added LANG_VLA plus other
+     LAPG_OPT_* clean-up.
+
 2022-04-21  Paul J. Lucas <paul@lucasmail.org>
 
    * check.c: Removed error_unknown_name().
