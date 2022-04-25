@@ -29,34 +29,40 @@
 #include "c_lang.h"
 #include "literals.h"
 
+// shorthands
+#define ANYWHERE                  CDECL_COMMAND_ANYWHERE
+#define FIRST_ARG                 CDECL_COMMAND_FIRST_ARG
+#define LANG_ONLY                 CDECL_COMMAND_LANG_ONLY
+#define PROG_NAME                 CDECL_COMMAND_PROG_NAME
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Cdecl commands.
  */
 static cdecl_command_t const CDECL_COMMANDS[] = {
-  { L_CAST,                   CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
-  { L_CLASS,                  CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_CONST /* cast */,       CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_DECLARE,                CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
-  { L_DEFINE,                 CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_DYNAMIC /* cast */,     CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_ENUM,                   CDECL_COMMAND_FIRST_ARG,  LANG_MIN(C_89)    },
-  { L_EXIT,                   CDECL_COMMAND_LANG_ONLY,  LANG_ANY          },
-  { L_EXPLAIN,                CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
-  { L_HELP,                   CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_INLINE /* namespace */, CDECL_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11)  },
-  { L_NAMESPACE,              CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_QUIT,                   CDECL_COMMAND_LANG_ONLY,  LANG_ANY          },
-  { L_REINTERPRET /* cast */, CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_SET_COMMAND,            CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_SHOW,                   CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_STATIC /* cast */,      CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_STRUCT,                 CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_TYPEDEF,                CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_UNION,                  CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_USING,                  CDECL_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11)  },
-  { NULL,                     CDECL_COMMAND_ANYWHERE,   LANG_NONE         },
+  { L_CAST,                   PROG_NAME,  LANG_ANY                },
+  { L_CLASS,                  FIRST_ARG,  LANG_CPP_ANY            },
+  { L_CONST /* cast */,       FIRST_ARG,  LANG_CPP_ANY            },
+  { L_DECLARE,                PROG_NAME,  LANG_ANY                },
+  { L_DEFINE,                 FIRST_ARG,  LANG_ANY                },
+  { L_DYNAMIC /* cast */,     FIRST_ARG,  LANG_CPP_ANY            },
+  { L_ENUM,                   FIRST_ARG,  LANG_ENUM               },
+  { L_EXIT,                   LANG_ONLY,  LANG_ANY                },
+  { L_EXPLAIN,                PROG_NAME,  LANG_ANY                },
+  { L_HELP,                   FIRST_ARG,  LANG_ANY                },
+  { L_INLINE /* namespace */, FIRST_ARG,  LANG_INLINE_NAMESPACE   },
+  { L_NAMESPACE,              FIRST_ARG,  LANG_CPP_ANY            },
+  { L_QUIT,                   LANG_ONLY,  LANG_ANY                },
+  { L_REINTERPRET /* cast */, FIRST_ARG,  LANG_CPP_ANY            },
+  { L_SET_COMMAND,            FIRST_ARG,  LANG_ANY                },
+  { L_SHOW,                   FIRST_ARG,  LANG_ANY                },
+  { L_STATIC /* cast */,      FIRST_ARG,  LANG_CPP_ANY            },
+  { L_STRUCT,                 FIRST_ARG,  LANG_ANY                },
+  { L_TYPEDEF,                FIRST_ARG,  LANG_ANY                },
+  { L_UNION,                  FIRST_ARG,  LANG_ANY                },
+  { L_USING,                  FIRST_ARG,  LANG_USING_DECLARATION  },
+  { NULL,                     ANYWHERE,   LANG_NONE               },
 };
 
 ////////// extern functions ///////////////////////////////////////////////////

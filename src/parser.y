@@ -695,7 +695,7 @@ static void attr_syntax_not_supported( c_loc_t const *loc,
   print_warning( loc,
     "\"%s\" not supported by %s (ignoring)", keyword, CDECL
   );
-  if ( OPT_LANG_IS(C_CPP_MIN(2X,11)) )
+  if ( OPT_LANG_IS(ATTRIBUTES) )
     print_hint( "[[...]]" );
   else
     EPUTC( '\n' );
@@ -1746,7 +1746,8 @@ cast_command
 
       if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@1,
-          "%s not supported%s\n", cast_literal, C_LANG_WHICH( CPP_ANY )
+          "%s not supported%s\n", cast_literal,
+          C_LANG_WHICH( CPP_ANY )
         );
       }
       else {
@@ -2396,10 +2397,10 @@ show_command
       };
 
       char const *const *const type_commands =
-        OPT_LANG_IS(C_KNR)     ? type_commands_knr :
-        OPT_LANG_IS(C_ANY)     ? type_commands_c :
-        opt_lang < LANG_CPP_11 ? type_commands_cpp_pre11 :
-                                 type_commands_cpp11;
+        OPT_LANG_IS(C_KNR)             ? type_commands_knr :
+        OPT_LANG_IS(C_ANY)             ? type_commands_c :
+        OPT_LANG_IS(USING_DECLARATION) ? type_commands_cpp11 :
+                                         type_commands_cpp_pre11;
 
       print_error( &@2, "\"%s\": not defined as type via ", $2 );
       fprint_list( stderr, type_commands, /*gets=*/NULL );
@@ -2423,9 +2424,10 @@ show_format
   | Y_TYPEDEF                     { $$ = C_GIB_TYPEDEF; }
   | Y_USING
     {
-      if ( !OPT_LANG_IS(OPT_USING) ) {
+      if ( !OPT_LANG_IS(USING_DECLARATION) ) {
         print_error( &@1,
-          "\"using\" not supported%s\n", C_LANG_WHICH( OPT_USING )
+          "\"using\" not supported%s\n",
+          C_LANG_WHICH( USING_DECLARATION )
         );
         PARSE_ABORT();
       }
@@ -2437,12 +2439,12 @@ show_format_exp
   : show_format
   | error
     {
-      if ( opt_lang < LANG_CPP_11 )
-        elaborate_error( "\"%s\" or \"%s\" expected", L_ENGLISH, L_TYPEDEF );
-      else
+      if ( OPT_LANG_IS(USING_DECLARATION) )
         elaborate_error(
           "\"%s\", \"%s\", or \"%s\" expected", L_ENGLISH, L_TYPEDEF, L_USING
         );
+      else
+        elaborate_error( "\"%s\" or \"%s\" expected", L_ENGLISH, L_TYPEDEF );
     }
   ;
 
@@ -2782,10 +2784,10 @@ namespace_declaration_c
       // AST because the AST has no "memory" of how a namespace was
       // constructed.
       //
-      if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_CPP_MIN(17) ) ) {
+      if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_NESTED_NAMESPACE ) ) {
         print_error( &@3,
           "nested namespace declarations not supported%s\n",
-          C_LANG_WHICH( CPP_MIN(17) )
+          C_LANG_WHICH( NESTED_NAMESPACE )
         );
         c_sname_cleanup( &$3 );
         PARSE_ABORT();
@@ -3200,9 +3202,10 @@ using_decl_c_ast
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      if ( unsupported( LANG_OPT_USING ) ) {
+      if ( unsupported( LANG_USING_DECLARATION ) ) {
         print_error( &@1,
-          "\"using\" not supported%s\n", C_LANG_WHICH( OPT_USING )
+          "\"using\" not supported%s\n",
+          C_LANG_WHICH( USING_DECLARATION )
         );
         PARSE_ABORT();
       }
@@ -3728,7 +3731,7 @@ pc99_func_or_constructor_decl_c
   : Y_NAME '(' param_list_c_ast_opt ')' noexcept_c_stid_opt
     func_equals_c_stid_opt
     {
-      if ( OPT_LANG_IS(C_MIN(99)) ) {
+      if ( OPT_LANG_IS(C_ANY) && !OPT_LANG_IS(IMPLICIT_INT) ) {
         //
         // In C99 and later, implicit int is an error.  This check has to be
         // done now in the parser rather than later in the AST since the AST
@@ -3736,7 +3739,7 @@ pc99_func_or_constructor_decl_c
         //
         print_error( &@1,
           "implicit \"int\" functions are illegal%s\n",
-          C_LANG_WHICH( MAX(C_95) )
+          C_LANG_WHICH( IMPLICIT_INT )
         );
         PARSE_ABORT();
       }
@@ -3858,14 +3861,14 @@ noexcept_c_stid_opt
     {
       c_ast_list_cleanup( &$3 );
 
-      if ( opt_lang < LANG_CPP_17 ) {
+      if ( OPT_LANG_IS(THROW) ) {
         print_error( &@3,
           "dynamic exception specifications not supported by %s\n", CDECL
         );
       } else {
         print_error( &@3,
           "dynamic exception specifications not supported%s\n",
-          C_LANG_WHICH( CPP_MAX(14) )
+          C_LANG_WHICH( THROW )
         );
       }
       PARSE_ABORT();
@@ -3906,10 +3909,10 @@ trailing_return_type_c_ast_opt
       // later in the AST because the AST has no "memory" of where the return-
       // type came from.
       //
-      if ( unsupported( LANG_CPP_MIN(11) ) ) {
+      if ( unsupported( LANG_TRAILING_RETURN_TYPE ) ) {
         print_error( &@1,
           "trailing return type not supported%s\n",
-          C_LANG_WHICH( CPP_MIN(11) )
+          C_LANG_WHICH( TRAILING_RETURN_TYPE )
         );
         PARSE_ABORT();
       }
@@ -3955,12 +3958,12 @@ func_equals_c_stid_opt
     }
   | '=' error
     {
-      if ( opt_lang < LANG_CPP_11 )
-        elaborate_error( "'0' expected" );
-      else
+      if ( OPT_LANG_IS(DEFAULT_DELETE_FUNC) )
         elaborate_error(
           "'0', \"%s\", or \"%s\" expected", L_DEFAULT, L_DELETE
         );
+      else
+        elaborate_error( "'0' expected" );
     }
   ;
 
@@ -4231,14 +4234,15 @@ pc99_pointer_decl_c
 pc99_pointer_type_c_ast
   : '*' type_qualifier_list_c_stid_opt
     {
-      if ( OPT_LANG_IS(C_MIN(99)) ) {
+      if ( OPT_LANG_IS(C_ANY) && !OPT_LANG_IS(IMPLICIT_INT) ) {
         //
         // In C99 and later, implicit int is an error.  This check has to be
         // done now in the parser rather than later in the AST since the AST
         // would have no "memory" that the return type was implicitly int.
         //
         print_error( &@1,
-          "implicit \"int\" is illegal%s\n", C_LANG_WHICH( MAX(C_95) )
+          "implicit \"int\" is illegal%s\n",
+          C_LANG_WHICH( IMPLICIT_INT )
         );
         PARSE_ABORT();
       }
@@ -4905,7 +4909,8 @@ type_c_ast
       //      const    j;   // illegal in C99
       //      register k;   // illegal in C99
       //
-      c_type_t type = opt_lang < LANG_C_99 ? C_TYPE_LIT_B( TB_INT ) : T_NONE;
+      c_type_t type = OPT_LANG_IS(IMPLICIT_INT) ?
+        C_TYPE_LIT_B( TB_INT ) : T_NONE;
 
       C_TYPE_ADD( &type, &$1, @1 );
 
@@ -5441,10 +5446,10 @@ attribute_specifier_list_c_atid_opt
 attribute_specifier_list_c_atid
   : Y_ATTR_BEGIN '['
     {
-      if ( unsupported( LANG_C_CPP_MIN(2X,11) ) ) {
+      if ( unsupported( LANG_ATTRIBUTES ) ) {
         print_error( &@1,
           "\"[[\" attribute syntax not supported%s\n",
-          C_LANG_WHICH( C_CPP_MIN(2X,11) )
+          C_LANG_WHICH( ATTRIBUTES )
         );
         PARSE_ABORT();
       }
@@ -5967,7 +5972,7 @@ returning_english_ast_opt
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       // see the comment in "type_c_ast"
-      $$->type.btids = opt_lang < LANG_C_99 ? TB_INT : TB_VOID;
+      $$->type.btids = OPT_LANG_IS(IMPLICIT_INT) ? TB_INT : TB_VOID;
 
       DUMP_AST( "returning_english_ast_opt", $$ );
       DUMP_END();
@@ -6251,10 +6256,10 @@ user_defined_literal_decl_english_ast
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( unsupported( LANG_CPP_MIN(11) ) ) {
+      if ( unsupported( LANG_USER_DEFINED_LITERAL ) ) {
         print_error( &@1,
           "user-defined literal not supported%s\n",
-          C_LANG_WHICH( CPP_MIN(11) )
+          C_LANG_WHICH( USER_DEFINED_LITERAL )
         );
         PARSE_ABORT();
       }
@@ -6354,7 +6359,8 @@ type_english_ast
       DUMP_TYPE( "type_modifier_list_english_type", $1 );
 
       // see the comment in "type_c_ast"
-      c_type_t type = C_TYPE_LIT_B( opt_lang < LANG_C_99 ? TB_INT : TB_NONE );
+      c_type_t type =
+        C_TYPE_LIT_B( OPT_LANG_IS(IMPLICIT_INT) ? TB_INT : TB_NONE );
 
       C_TYPE_ADD( &type, &$1, @1 );
 

@@ -501,7 +501,7 @@ bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
  */
 C_AST_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_print_as_using( c_ast_t const *ast ) {
-  return  opt_using && opt_lang >= LANG_CPP_11 &&
+  return  opt_using && OPT_LANG_IS( USING_DECLARATION ) &&
           c_tid_is_any( ast->type.stids, TS_TYPEDEF );
 }
 

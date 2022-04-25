@@ -215,12 +215,12 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       // Depending on the C++ language version, change noexcept to throw() or
       // vice versa.
       //
-      if ( opt_lang < LANG_CPP_11 ) {
-        if ( true_clear( &is_noexcept ) )
-          is_throw = true;
-      } else {
+      if ( OPT_LANG_IS( NOEXCEPT ) ) {
         if ( true_clear( &is_throw ) )
           is_noexcept = true;
+      } else {
+        if ( true_clear( &is_noexcept ) )
+          is_throw = true;
       }
       PJL_FALLTHROUGH;
 
@@ -340,8 +340,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     }
 
     case K_NAME:
-      assert( opt_lang < LANG_C_2X );
-      if ( opt_lang > LANG_C_KNR ) {
+      assert( OPT_LANG_IS( KNR_FUNC_DEFINITION ) );
+      if ( OPT_LANG_IS(PROTOTYPES) ) {
         //
         // In C89-C17, just a name for a function parameter is implicitly int:
         //
@@ -978,7 +978,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
     // struct, or union.
     //
     if ( scope_type.btids != TB_NAMESPACE ||
-         opt_lang_is_any( LANG_CPP_MIN(17) | LANG_C_ANY ) ) {
+         opt_lang_is_any( LANG_NESTED_NAMESPACE | LANG_C_ANY ) ) {
       //
       // All C++ versions support nested class/struct/union declarations, e.g.:
       //
@@ -1127,7 +1127,7 @@ char const* graph_token_c( char const *token ) {
       // are returned as a single string.
       //
       case C_GRAPH_DI:
-        if ( OPT_LANG_IS(OPT_DIGRAPHS) ) {
+        if ( OPT_LANG_IS(DIGRAPHS) ) {
           switch ( token[0] ) {
             case '#'  : return token[1] == '#' ? "%:%:" : "%:";
             case '['  : return token[1] == '[' ? "<:<:" : "<:";
@@ -1138,7 +1138,7 @@ char const* graph_token_c( char const *token ) {
         }
         break;
       case C_GRAPH_TRI:
-        if ( OPT_LANG_IS(OPT_TRIGRAPHS) ) {
+        if ( OPT_LANG_IS(TRIGRAPHS) ) {
           switch ( token[0] ) {
             case '#'  : return "?\?=";
             case '['  : return token[1] == '[' ? "?\?(?\?(" : "?\?(";

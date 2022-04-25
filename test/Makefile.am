@@ -1406,7 +1406,7 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_rrf_v.test \
 	tests/explain_sf__i.test \
 	tests/explain_sxxi.test \
-	tests/explain_th_f_v-c++17.test \
+	tests/explain_th_f_v-c++14.test \
 	tests/explain_using_a3i.test \
 	tests/explain_using_a_mu_i.test \
 	tests/explain_using_pfi_v.test \

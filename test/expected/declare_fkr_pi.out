@@ -1,3 +1,3 @@
 declare f as function (x) returning pointer to int
                        ^
-24: error: type specifier required by C2X
+24: error: type specifier required since C2X

@@ -1,1 +1,0 @@
-cdecl @ @ -xc++17 @ explain void f() throw() @ 0

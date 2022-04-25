@@ -491,7 +491,8 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_NONMEMBER_FUNC_ONLY
  */
 #define TS_MEMBER_FUNC_ONLY   ( TS_CV \
-                              | (opt_lang < LANG_CPP_20 ? TS_DEFAULT : TS_NONE)\
+                              | (OPT_LANG_IS(DEFAULT_RELOPS) ? \
+                                  TS_NONE : TS_DEFAULT) \
                               | TS_DELETE | TS_FINAL | TS_OVERRIDE \
                               | TS_ANY_REFERENCE | TS_RESTRICT | TS_VIRTUAL )
 
