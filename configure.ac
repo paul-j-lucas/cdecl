@@ -178,7 +178,7 @@ AS_IF([test x$enable_address_sanitizer = xyes],
 
 # Program feature: Flex debug (disabled by default)
 AC_ARG_ENABLE([flex-debug],
-  AS_HELP_STRING([--enable-flex-debug], [enable Flex debugging]),
+  AS_HELP_STRING([--enable-flex-debug], [enable Flex debug output]),
   [],
   [enable_flex_debug=no]
 )
@@ -189,7 +189,7 @@ AS_IF([test x$enable_flex_debug = xyes],
 
 # Program feature: Bison debug (disabled by default)
 AC_ARG_ENABLE([bison-debug],
-  AS_HELP_STRING([--enable-bison-debug], [enable for Bison debugging]),
+  AS_HELP_STRING([--enable-bison-debug], [enable Bison debug output]),
   [],
   [enable_bison_debug=no]
 )
