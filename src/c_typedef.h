@@ -43,8 +43,8 @@
  *
  * @param AST The AST.
  */
-#define C_TYPEDEF_AST_LIT(AST) \
-  (c_typedef_t const){ (AST), LANG_ANY, false, false }
+#define C_TYPEDEF_AST_LIT(AST) (c_typedef_t const) \
+  { (AST), LANG_ANY, .predefined = false, .defined_in_english = false }
 
 ///////////////////////////////////////////////////////////////////////////////
 
