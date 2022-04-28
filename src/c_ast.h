@@ -328,7 +328,7 @@ struct c_operator_ast {
  */
 struct c_ptr_mbr_ast {
   c_ast_t        *of_ast;               ///< Member type.
-  c_sname_t       class_sname;          ///< When a member function; or empty.
+  c_sname_t       class_sname;          ///< Class pointer-to-member of.
 };
 
 /**
