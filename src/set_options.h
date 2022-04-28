@@ -117,7 +117,7 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
  * @note This function isn't normally called directly; use the
  * #FOREACH_SET_OPTION() macro instead.
  *
- * @sa #FOREACH_SET_OPTION
+ * @sa #FOREACH_SET_OPTION()
  */
 PJL_WARN_UNUSED_RESULT
 set_option_t const* set_option_next( set_option_t const *opt );

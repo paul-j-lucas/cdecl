@@ -102,7 +102,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param AST The AST to iterate the function-like parameters of.
  *
  * @sa c_ast_params()
- * @sa #FOREACH_AST_FUNC_PARAM_UNTIL
+ * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
 #define FOREACH_AST_FUNC_PARAM(VAR,AST) \
   FOREACH_AST_FUNC_PARAM_UNTIL( VAR, AST, NULL )
@@ -116,7 +116,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param END A pointer to the parameter to end before; may be NULL.
  *
  * @sa c_ast_params()
- * @sa #FOREACH_AST_FUNC_PARAM
+ * @sa #FOREACH_AST_FUNC_PARAM()
  */
 #define FOREACH_AST_FUNC_PARAM_UNTIL(VAR,AST,END) \
   FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->as.func.param_ast_list, END )
@@ -546,7 +546,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
  *
  * @sa c_ast_params_count()
  * @sa c_param_ast()
- * @sa #FOREACH_AST_FUNC_PARAM
+ * @sa #FOREACH_AST_FUNC_PARAM()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
@@ -561,7 +561,7 @@ c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
  *
  * @sa c_ast_params()
  * @sa c_param_ast()
- * @sa #FOREACH_AST_FUNC_PARAM
+ * @sa #FOREACH_AST_FUNC_PARAM()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 size_t c_ast_params_count( c_ast_t const *ast ) {
@@ -602,7 +602,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
  *
  * @sa c_ast_params()
  * @sa c_ast_params_count()
- * @sa #FOREACH_AST_FUNC_PARAM
+ * @sa #FOREACH_AST_FUNC_PARAM()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_param_ast( c_ast_param_t const *param ) {

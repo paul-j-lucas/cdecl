@@ -89,7 +89,7 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *literal );
  * should be passed.
  * @return Returns the next cdecl keyword or NULL for none.
  *
- * @sa #FOREACH_CDECL_KEYWORD
+ * @sa #FOREACH_CDECL_KEYWORD()
  */
 PJL_WARN_UNUSED_RESULT
 cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *k );

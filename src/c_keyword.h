@@ -106,7 +106,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
  * should be passed.
  * @return Returns the next C/C++ keyword or NULL for none.
  *
- * @sa #FOREACH_C_KEYWORD
+ * @sa #FOREACH_C_KEYWORD()
  */
 PJL_WARN_UNUSED_RESULT
 c_keyword_t const* c_keyword_next( c_keyword_t const *k );

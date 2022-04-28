@@ -76,7 +76,7 @@ struct cdecl_command {
  * @note This function isn't normally called directly; use the
  * #FOREACH_CDECL_COMMAND() macro instead.
  *
- * @sa #FOREACH_CDECL_COMMAND
+ * @sa #FOREACH_CDECL_COMMAND()
  */
 PJL_WARN_UNUSED_RESULT
 cdecl_command_t const* cdecl_command_next( cdecl_command_t const *command );
