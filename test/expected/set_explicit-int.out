@@ -1,3 +1,3 @@
 set explicit-int
     ^
-5: error: "explicit-int" set option requires =<value>
+5: error: set option "explicit-int" requires =<value>

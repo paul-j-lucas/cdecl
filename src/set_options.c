@@ -563,7 +563,7 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
   if ( opt_value == NULL ) {
     if ( !is_no && found_opt->takes_value ) {
       print_error( opt_name_loc,
-        "\"%s\" set option requires =<value>\n",
+        "set option \"%s\" requires =<value>\n",
         orig_name
       );
       return false;
