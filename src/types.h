@@ -85,7 +85,6 @@ typedef unsigned                  c_ast_id_t;     ///< Unique AST node id.
 typedef enum   c_ast_kind         c_ast_kind_t;
 typedef slist_t                   c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;
-typedef slist_node_t              c_ast_param_t;  ///< Function-like parameter.
 typedef int                       c_ast_sid_t;    ///< Signed \ref c_ast_id_t.
 typedef unsigned                  c_bit_width_t;  ///< Bit-field width.
 typedef struct c_builtin_ast      c_builtin_ast_t;
@@ -103,6 +102,7 @@ typedef struct c_loc              c_loc_t;
 typedef struct c_operator_ast     c_operator_ast_t;
 typedef enum   c_oper_id          c_oper_id_t;
 typedef struct c_operator         c_operator_t;
+typedef slist_node_t              c_param_t;      ///< Function-like parameter.
 typedef struct c_parent_ast       c_parent_ast_t;
 typedef struct c_ptr_mbr_ast      c_ptr_mbr_ast_t;
 typedef struct c_ptr_ref_ast      c_ptr_ref_ast_t;

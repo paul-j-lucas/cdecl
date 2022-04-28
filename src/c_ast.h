@@ -98,7 +98,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Convenience macro for iterating over all parameters of a function-like AST.
  *
- * @param VAR The \ref c_ast_param_t loop variable.
+ * @param VAR The \ref c_param_t loop variable.
  * @param AST The AST to iterate the function-like parameters of.
  *
  * @sa c_ast_params()
@@ -111,7 +111,7 @@ _GL_INLINE_HEADER_BEGIN
  * Convenience macro for iterating over all parameters of a function-like AST
  * up to but not including \a END.
  *
- * @param VAR The \ref c_ast_param_t loop variable.
+ * @param VAR The \ref c_param_t loop variable.
  * @param AST The AST to iterate the function-like parameters of.
  * @param END A pointer to the parameter to end before; may be NULL.
  *
@@ -549,7 +549,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
  * @sa #FOREACH_AST_FUNC_PARAM()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
-c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
+c_param_t const* c_ast_params( c_ast_t const *ast ) {
   return ast->as.func.param_ast_list.head;
 }
 
@@ -595,9 +595,9 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
                       c_ast_visit_fn_t visit_fn, c_ast_visit_data_t avd );
 
 /**
- * Convenience function to get the AST given a \ref c_ast_param_t.
+ * Convenience function to get the AST given a \ref c_param_t.
  *
- * @param param A pointer to a \ref c_ast_param_t.
+ * @param param A pointer to a \ref c_param_t.
  * @return Returns a pointer to the AST.
  *
  * @sa c_ast_params()
@@ -605,7 +605,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
  * @sa #FOREACH_AST_FUNC_PARAM()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
-c_ast_t const* c_param_ast( c_ast_param_t const *param ) {
+c_ast_t const* c_param_ast( c_param_t const *param ) {
   return param->data;
 }
 

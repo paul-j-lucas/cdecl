@@ -215,8 +215,8 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       // ret_ast checked by referrer code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL: {
-      c_ast_param_t const *i_param = c_ast_params( i_ast );
-      c_ast_param_t const *j_param = c_ast_params( j_ast );
+      c_param_t const *i_param = c_ast_params( i_ast );
+      c_param_t const *j_param = c_ast_params( j_ast );
       for ( ; i_param != NULL && j_param != NULL;
               i_param = i_param->next, j_param = j_param->next ) {
         if ( !c_ast_equal( c_param_ast( i_param ), c_param_ast( j_param ) ) )

@@ -978,7 +978,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
     case 2:                             // main(int, char *argv[])
     case 3:                             // main(int, char *argv[], char *envp[])
       if ( opt_lang > LANG_C_KNR ) {
-        c_ast_param_t const *param = c_ast_params( ast );
+        c_param_t const *param = c_ast_params( ast );
         param_ast = c_param_ast( param );
         if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
           print_error( &param_ast->loc,
@@ -1439,7 +1439,7 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
 
   // minimum number of parameters checked in c_ast_check_oper_params()
 
-  c_ast_param_t const *const param = c_ast_params( ast );
+  c_param_t const *const param = c_ast_params( ast );
   assert( param != NULL );
   c_ast_t const *const param_ast = c_param_ast( param );
 
@@ -1470,7 +1470,7 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
 
   // minimum number of parameters checked in c_ast_check_oper_params()
 
-  c_ast_param_t const *const param = c_ast_params( ast );
+  c_param_t const *const param = c_ast_params( ast );
   assert( param != NULL );
   c_ast_t const *const param_ast = c_param_ast( param );
 
@@ -1647,7 +1647,7 @@ same: print_error( &ast->loc,
       // Ensure that the dummy parameter for postfix -- or ++ is type int (or
       // is a typedef of int).
       //
-      c_ast_param_t const *param = c_ast_params( ast );
+      c_param_t const *param = c_ast_params( ast );
       if ( param == NULL )              // member prefix
         break;
       if ( overload_flags == C_OP_NON_MEMBER ) {
@@ -1707,7 +1707,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
     return false;
   }
 
-  c_ast_param_t const *const param = c_ast_params( ast );
+  c_param_t const *const param = c_ast_params( ast );
   assert( param != NULL );
   c_ast_t const *const param_ast = c_param_ast( param );
 
@@ -2015,7 +2015,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_USER_DEF_LITERAL );
 
-  c_ast_param_t const *param = c_ast_params( ast );
+  c_param_t const *param = c_ast_params( ast );
   assert( param != NULL );
   c_ast_t const *param_ast = c_param_ast( param );
   c_ast_t const *raw_param_ast = c_ast_untypedef( param_ast );
