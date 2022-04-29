@@ -363,7 +363,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  * otherwise returns NULL.
  *
  * @note Even though pointers are "dereferenced," this function isn't called
- * `c_ast_dereference` to eliminate confusion with C++ references.
+ * `c_ast_dereference` to avoid confusion with C++ references.
  *
  * @sa c_ast_pointer()
  * @sa c_ast_unreference()
