@@ -637,16 +637,21 @@ static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
 }
 
 /**
- * "Simplifies" a base \ref c_tid_t.  Specifically:
+ * Removes #TB_SIGNED from \a btids if possible.  Specifically:
  *
- * + If \a btids is #TB_SIGNED and not #TB_CHAR, remove #TB_SIGNED.
- * + If \a btids becomes #TB_NONE, make it #TB_INT.
+ * + If \a btids contains #TB_SIGNED but not #TB_CHAR, removes #TB_SIGNED.
+ * + If \a btids becomes #TB_NONE, makes it #TB_INT.
  *
  * @param btids The \ref c_tid_t to simplify.
  * @return Returns the simplified \ref c_tid_t.
+ *
+ * @note This function isn't called `c_tid_unsigned` to avoid confusion with
+ * the `unsigned` type.
+ *
+ * @sa c_tid_normalize()
  */
 PJL_WARN_UNUSED_RESULT
-static c_tid_t c_tid_simplify( c_tid_t btids ) {
+static c_tid_t c_tid_nosigned( c_tid_t btids ) {
   assert( c_tid_tpid( btids ) == C_TPID_BASE );
   if ( c_tid_is_except( btids, TB_SIGNED, TB_CHAR ) ) {
     btids &= c_tid_compl( TB_SIGNED );
@@ -702,7 +707,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   strbuf_reset( sbuf );
   bool space = false;
 
-  c_tid_t btids = is_error ? type->btids : c_tid_simplify( type->btids );
+  c_tid_t btids = is_error ? type->btids : c_tid_nosigned( type->btids );
   c_tid_t stids = type->stids;
   c_tid_t atids = type->atids;
 
@@ -1118,7 +1123,7 @@ char const* c_tid_name_error( c_tid_t tids ) {
 c_tid_t c_tid_normalize( c_tid_t tids ) {
   switch ( c_tid_tpid( tids ) ) {
     case C_TPID_BASE:
-      tids = c_tid_simplify( tids );
+      tids = c_tid_nosigned( tids );
       // If the type is only implicitly int, make it explicitly int.
       if ( c_tid_is_except( tids, TB_SHORT, TB_ANY_EMC ) ||
            c_tid_is_except( tids, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC ) ||
