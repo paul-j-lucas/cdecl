@@ -171,8 +171,8 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
     C_LANG_LIT( { LANG_ANY, L__ATOMIC } ) },
 
   { TS_CONST, LANG_ANY, L_CONSTANT,
-    C_LANG_LIT( { LANG_C_KNR, L_GNU___CONST },
-                { LANG_ANY,   L_CONST       } ) },
+    C_LANG_LIT( { ~LANG_CONST, L_GNU___CONST },
+                { LANG_ANY,    L_CONST       } ) },
 
   { TS_REFERENCE, LANG_CPP_MIN(11), NULL,
     C_LANG_LIT( { LANG_ANY, L_REFERENCE } ) },
@@ -185,8 +185,8 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
                 { LANG_ANY,       L_RESTRICT       } ) },
 
   { TS_VOLATILE, LANG_ANY, NULL,
-    C_LANG_LIT( { LANG_C_KNR, L_GNU___VOLATILE },
-                { LANG_ANY,   L_VOLATILE       } ) },
+    C_LANG_LIT( { ~LANG_VOLATILE, L_GNU___VOLATILE },
+                { LANG_ANY,       L_VOLATILE       } ) },
 
   // Unified Parallel C extensions
   { TS_UPC_RELAXED, LANG_C_99, NULL,
