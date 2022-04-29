@@ -652,7 +652,7 @@ static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
  */
 PJL_WARN_UNUSED_RESULT
 static c_tid_t c_tid_nosigned( c_tid_t btids ) {
-  assert( c_tid_tpid( btids ) == C_TPID_BASE );
+  c_tid_check( btids, C_TPID_BASE );
   if ( c_tid_is_except( btids, TB_SIGNED, TB_CHAR ) ) {
     btids &= c_tid_compl( TB_SIGNED );
     if ( btids == TB_NONE )
