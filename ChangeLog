@@ -1,3 +1,13 @@
+2022-04-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, check.c, types.h: s/c_ast_param_t/c_param_t/
+   * set_options.c, set_explicit-ecsu.out, set_explicit-int.out: Made error
+     messages consistent.
+
+2022-04-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.h: Now using member designators.
+
 2022-04-25  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.h, c_keyword.c, c_lang.h, c_type.c, c_type.h, cdecl_command.c,
