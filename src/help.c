@@ -129,13 +129,13 @@ static void print_help_commands( void ) {
   print_h( "command:\n" );
 
   print_h( "  " );
-  if ( OPT_LANG_IS(CPP_ANY) )
+  if ( OPT_LANG_IS( CPP_ANY ) )
     print_h( "[const | dynamic | reinterpret | static] " );
   print_h( "cast <name> {as|[in]to} <english>\n" );
 
   print_h( "  declare <name> [, <name>]* as <english> [<declare-options>]\n" );
 
-  if ( OPT_LANG_IS(CPP_ANY) ) {
+  if ( OPT_LANG_IS( CPP_ANY ) ) {
     print_h( "  declare <operator> as <english>\n" );
     print_h( "  declare [<english>] user-def[ined] <user-defined-english>\n" );
   }
@@ -146,39 +146,39 @@ static void print_help_commands( void ) {
   print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
 
   print_h( "  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef" );
-  if ( OPT_LANG_IS(USING_DECLARATION) )
+  if ( OPT_LANG_IS( USING_DECLARATION ) )
     print_h( "|using" );
   print_h( "}]\n" );
 
   print_h( "  type[def] <gibberish> [, <gibberish>]*\n" );
 
-  if ( OPT_LANG_IS(CPP_ANY) ) {
+  if ( OPT_LANG_IS( CPP_ANY ) ) {
     print_h( "  <scope-c> <name> [\\{ [{ <scope-c> | <typedef>" );
-    if ( OPT_LANG_IS(USING_DECLARATION) )
+    if ( OPT_LANG_IS( USING_DECLARATION ) )
       print_h( " | <using>" );
     print_h( " } ;]* \\}]\n" );
   }
 
-  if ( OPT_LANG_IS(USING_DECLARATION) )
+  if ( OPT_LANG_IS( USING_DECLARATION ) )
     print_h( "  using <name> = <gibberish>\n" );
 
   print_h( "  exit | q[uit]\n" );
 
   print_h( "declare-options:\n" );
-  if ( OPT_LANG_IS(ALIGNMENT) )
+  if ( OPT_LANG_IS( ALIGNMENT ) )
     print_h( "  align[ed] [as|to] {<number> [bytes] | <english>}\n" );
   print_h( "  width <number> [bits]\n" );
 
   print_h( "gibberish: a C" );
-  if ( OPT_LANG_IS(CPP_ANY) )
+  if ( OPT_LANG_IS( CPP_ANY ) )
     print_h( "\\+\\+" );
   print_h( " declaration, like \"int x\"; or a cast, like \"(int)x\"\n" );
 
   print_help_name();
 
-  if ( OPT_LANG_IS(CPP_ANY) ) {
+  if ( OPT_LANG_IS( CPP_ANY ) ) {
     print_h( "scope-c: class | struct | union |" );
-    if ( OPT_LANG_IS(INLINE_NAMESPACE) )
+    if ( OPT_LANG_IS( INLINE_NAMESPACE ) )
       print_h( " [inline]" );
     print_h( " namespace\n" );
   }
@@ -192,19 +192,19 @@ static void print_help_commands( void ) {
 static void print_help_english( void ) {
   print_h( "english:\n" );
 
-  if ( OPT_LANG_IS(C_ANY) ) {
+  if ( OPT_LANG_IS( C_ANY ) ) {
     print_h( "  <store>*" );
-    if ( OPT_LANG_IS(CONST) )
+    if ( OPT_LANG_IS( CONST ) )
       print_h( " <cv-qual>*" );
-    if ( OPT_LANG_IS(QUALIFIED_ARRAY) )
+    if ( OPT_LANG_IS( QUALIFIED_ARRAY ) )
       print_h( " array [[static] <cv-qual>* {<number>|\\*}] of <english>\n" );
     else
       print_h( " array [<number>] of <english>\n" );
-    if ( OPT_LANG_IS(VLA) )
+    if ( OPT_LANG_IS( VLA ) )
       print_h( "  <store>* <cv-qual>* variable [length] array <cv-qual>* of <english>\n" );
     print_h( "  <store>* function [([<args>])] [returning <english>]\n" );
     print_h( "  <store>*" );
-    if ( OPT_LANG_IS(CONST) )
+    if ( OPT_LANG_IS( CONST ) )
       print_h( " <cv-qual>*" );
     print_h( " pointer to <english>\n" );
   }
@@ -218,74 +218,74 @@ static void print_help_english( void ) {
   }
 
   print_h( "  {" );
-  if ( OPT_LANG_IS(ENUM) ) {
+  if ( OPT_LANG_IS( ENUM ) ) {
     print_h( " enum" );
-    if ( OPT_LANG_IS(ENUM_CLASS) )
+    if ( OPT_LANG_IS( ENUM_CLASS ) )
       print_h( " [class|struct] [of [type] <english>]" );
     print_h( " |" );
-    if ( OPT_LANG_IS(CPP_ANY) )
+    if ( OPT_LANG_IS( CPP_ANY ) )
       print_h( " class |" );
   }
   print_h( " struct | union } <name>\n" );
 
-  if ( OPT_LANG_IS(C_ANY) ) {
+  if ( OPT_LANG_IS( C_ANY ) ) {
     print_h( "  block [([<args>])] [returning <english>]\n" );
     print_h( "  <store>* <modifier>* [<C-type>]\n" );
 
     print_h( "args: a comma separated list of " );
-    if ( OPT_LANG_IS(C_KNR) )
+    if ( OPT_LANG_IS( C_KNR ) )
       print_h( "<name>\n" );
-    else if ( OPT_LANG_IS(KNR_FUNC_DEFINITION) )
+    else if ( OPT_LANG_IS( KNR_FUNC_DEFINITION ) )
       print_h( "<name>, <english>, or <name> as <english>\n" );
     else
       print_h( "[<name> as] <english>\n" );
 
     print_h( "C-type:" );
-    if ( OPT_LANG_IS(_BOOL) )
+    if ( OPT_LANG_IS( _BOOL ) )
       print_h( " _Bool |" );
     print_h( " char" );
-    if ( OPT_LANG_IS(CHAR16_32_T) ) {
+    if ( OPT_LANG_IS( CHAR16_32_T ) ) {
       print_h( "[{" );
-      if ( OPT_LANG_IS(CHAR8_T) )
+      if ( OPT_LANG_IS( CHAR8_T ) )
         print_h( "8|" );
       print_h( "16|32}_t]" );
     }
-    if ( OPT_LANG_IS(WCHAR_T) )
+    if ( OPT_LANG_IS( WCHAR_T ) )
       print_h( " | wchar_t" );
     print_h( " | int | float | double" );
-    if ( OPT_LANG_IS(VOID) )
+    if ( OPT_LANG_IS( VOID ) )
       print_h( " | void" );
     print_h( "\n" );
 
-    if ( OPT_LANG_IS(CONST) ) {
+    if ( OPT_LANG_IS( CONST ) ) {
       print_h( "cv-qual:" );
-      if ( OPT_LANG_IS(_ATOMIC) )
+      if ( OPT_LANG_IS( _ATOMIC ) )
         print_h( " _Atomic |" );
       print_h( " const |" );
-      if ( OPT_LANG_IS(RESTRICT) )
+      if ( OPT_LANG_IS( RESTRICT ) )
         print_h( " restrict |" );
       print_h( " volatile\n" );
     }
 
     print_h( "modifier:" );
     print_h( " short | long" );
-    if ( OPT_LANG_IS(SIGNED) )
+    if ( OPT_LANG_IS( SIGNED ) )
       print_h( " | signed" );
     print_h( " | unsigned" );
-    if ( OPT_LANG_IS(CONST) )
+    if ( OPT_LANG_IS( CONST ) )
       print_h( " | <cv-qual>" );
     print_h( "\n" );
 
     print_help_name();
     print_h( "store: auto | extern | register | static" );
-    if ( OPT_LANG_IS(_THREAD_LOCAL) )
+    if ( OPT_LANG_IS( _THREAD_LOCAL ) )
       print_h( " | _Thread_local" );
     print_h( " | typedef" );
     print_h( "\n" );
   }
   else /* C++ */ {
     print_h( "  <store>*" );
-    if ( OPT_LANG_IS(RVALUE_REFERENCE) )
+    if ( OPT_LANG_IS( RVALUE_REFERENCE ) )
       print_h( " [rvalue]" );
     print_h( " reference to <english>\n" );
 
@@ -294,15 +294,15 @@ static void print_help_english( void ) {
     print_h( "user-defined-english:\n" );
     print_h( "  conversion [operator] [of <scope-e> <name>]* returning <english>\n" );
 
-    if ( OPT_LANG_IS(USER_DEFINED_LITERAL) )
+    if ( OPT_LANG_IS( USER_DEFINED_LITERAL ) )
       print_h( "  literal [([<args>])] [returning <english>]\n" );
 
     print_h( "args: a comma separated list of [<name> as] <english>\n" );
 
     print_h( "C\\+\\+-type: bool | char" );
-    if ( OPT_LANG_IS(CHAR16_32_T) ) {
+    if ( OPT_LANG_IS( CHAR16_32_T ) ) {
       print_h( "[{" );
-      if ( OPT_LANG_IS(CHAR8_T) )
+      if ( OPT_LANG_IS( CHAR8_T ) )
         print_h( "8|" );
       print_h( "16|32}_t]" );
     }
@@ -311,7 +311,7 @@ static void print_help_english( void ) {
     print_h( "cv-qual: const | volatile\n" );
 
     print_h( "fn-qual: <cv-qual>" );
-    if ( OPT_LANG_IS(RVALUE_REFERENCE) )
+    if ( OPT_LANG_IS( RVALUE_REFERENCE ) )
       print_h( " | [rvalue] reference" );
     print_h( "\n" );
 
@@ -319,27 +319,27 @@ static void print_help_english( void ) {
     print_help_name();
 
     print_h( "scope-e: scope | class | struct | union |" );
-    if ( OPT_LANG_IS(INLINE_NAMESPACE) )
+    if ( OPT_LANG_IS( INLINE_NAMESPACE ) )
       print_h( " [inline]" );
     print_h( " namespace\n" );
 
     print_h( "store:" );
-    if ( OPT_LANG_IS(AUTO_STORAGE) )
+    if ( OPT_LANG_IS( AUTO_STORAGE ) )
       print_h( " auto |" );
     print_h( " const" );
-    if ( OPT_LANG_IS(CONSTEXPR) )
+    if ( OPT_LANG_IS( CONSTEXPR ) )
       print_h( "[" );
-    if ( OPT_LANG_IS(CONSTEVAL) )
+    if ( OPT_LANG_IS( CONSTEVAL ) )
       print_h( "eval|" );
-    if ( OPT_LANG_IS(CONSTEXPR) )
+    if ( OPT_LANG_IS( CONSTEXPR ) )
       print_h( "expr" );
-    if ( OPT_LANG_IS(CONSTINIT) )
+    if ( OPT_LANG_IS( CONSTINIT ) )
       print_h( "|init" );
-    if ( OPT_LANG_IS(CONSTEXPR) )
+    if ( OPT_LANG_IS( CONSTEXPR ) )
       print_h( "]" );
     print_h( " | extern [\"C\" [linkage]] | friend | mutable |\n" );
     print_h( "       static" );
-    if ( OPT_LANG_IS(THREAD_LOCAL) )
+    if ( OPT_LANG_IS( THREAD_LOCAL ) )
       print_h( " | thread_local" );
     print_h( " | typedef | [pure] virtual\n" );
   }
@@ -351,7 +351,7 @@ static void print_help_english( void ) {
  * Print the help for a cdecl name.
  */
 static void print_help_name( void ) {
-  if ( OPT_LANG_IS(C_ANY) )
+  if ( OPT_LANG_IS( C_ANY ) )
     print_h( "name: a C identifier\n" );
   else
     print_h( "name: a C\\+\\+ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*\n" );

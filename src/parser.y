@@ -695,7 +695,7 @@ static void attr_syntax_not_supported( c_loc_t const *loc,
   print_warning( loc,
     "\"%s\" not supported by %s (ignoring)", keyword, CDECL
   );
-  if ( OPT_LANG_IS(ATTRIBUTES) )
+  if ( OPT_LANG_IS( ATTRIBUTES ) )
     print_hint( "[[...]]" );
   else
     EPUTC( '\n' );
@@ -806,7 +806,7 @@ PJL_WARN_UNUSED_RESULT
 static bool fl_is_nested_type_ok( char const *file, int line,
                                   c_loc_t const *type_loc ) {
   assert( type_loc != NULL );
-  if ( !c_sname_empty( &in_attr.current_scope ) && OPT_LANG_IS(C_ANY) ) {
+  if ( !c_sname_empty( &in_attr.current_scope ) && OPT_LANG_IS( C_ANY ) ) {
     fl_print_error( file, line, type_loc, "nested types not supported in C\n" );
     return false;
   }
@@ -1921,7 +1921,7 @@ declare_command
 
   | Y_DECLARE error
     {
-      if ( OPT_LANG_IS(CPP_ANY) )
+      if ( OPT_LANG_IS( CPP_ANY ) )
         elaborate_error( "name or %s expected", L_OPERATOR );
       else
         elaborate_error( "name expected" );
@@ -2389,18 +2389,18 @@ show_command
       static char const *const type_commands_c[] = {
         L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, NULL
       };
-      static char const *const type_commands_cpp_pre11[] = {
+      static char const *const type_commands_cpp_without_using[] = {
         L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, NULL
       };
-      static char const *const type_commands_cpp11[] = {
+      static char const *const type_commands_cpp_with_using[] = {
         L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, L_USING, NULL
       };
 
       char const *const *const type_commands =
-        OPT_LANG_IS(C_KNR)             ? type_commands_knr :
-        OPT_LANG_IS(C_ANY)             ? type_commands_c :
-        OPT_LANG_IS(USING_DECLARATION) ? type_commands_cpp11 :
-                                         type_commands_cpp_pre11;
+        OPT_LANG_IS( C_KNR )             ? type_commands_knr :
+        OPT_LANG_IS( C_ANY )             ? type_commands_c :
+        OPT_LANG_IS( USING_DECLARATION ) ? type_commands_cpp_with_using :
+                                           type_commands_cpp_without_using;
 
       print_error( &@2, "\"%s\": not defined as type via ", $2 );
       fprint_list( stderr, type_commands, /*gets=*/NULL );
@@ -2424,7 +2424,7 @@ show_format
   | Y_TYPEDEF                     { $$ = C_GIB_TYPEDEF; }
   | Y_USING
     {
-      if ( !OPT_LANG_IS(USING_DECLARATION) ) {
+      if ( !OPT_LANG_IS( USING_DECLARATION ) ) {
         print_error( &@1,
           "\"using\" not supported%s\n",
           C_LANG_WHICH( USING_DECLARATION )
@@ -2439,7 +2439,7 @@ show_format_exp
   : show_format
   | error
     {
-      if ( OPT_LANG_IS(USING_DECLARATION) )
+      if ( OPT_LANG_IS( USING_DECLARATION ) )
         elaborate_error(
           "\"%s\", \"%s\", or \"%s\" expected", L_ENGLISH, L_TYPEDEF, L_USING
         );
@@ -3326,7 +3326,7 @@ decl_c
           c_ast_t const *const prev_ast = node->data;
           if ( c_sname_cmp( &decl_ast->sname, &prev_ast->sname ) != 0 )
             continue;
-          if ( OPT_LANG_IS(CPP_ANY) ) {
+          if ( OPT_LANG_IS( CPP_ANY ) ) {
             print_error( &decl_ast->loc,
               "\"%s\": redefinition\n",
               c_sname_full_name( &decl_ast->sname )
@@ -3645,7 +3645,7 @@ func_decl_c_astp
       bool const assume_constructor =
 
         // + The current language is C++.
-        OPT_LANG_IS(CPP_ANY) &&
+        OPT_LANG_IS( CPP_ANY ) &&
 
         // + The existing base type is none (because constructors don't have
         //   return types).
@@ -3731,7 +3731,7 @@ pc99_func_or_constructor_decl_c
   : Y_NAME '(' param_list_c_ast_opt ')' noexcept_c_stid_opt
     func_equals_c_stid_opt
     {
-      if ( OPT_LANG_IS(C_ANY) && !OPT_LANG_IS(IMPLICIT_INT) ) {
+      if ( OPT_LANG_IS( C_ANY ) && !OPT_LANG_IS( IMPLICIT_INT ) ) {
         //
         // In C99 and later, implicit int is an error.  This check has to be
         // done now in the parser rather than later in the AST since the AST
@@ -3756,7 +3756,7 @@ pc99_func_or_constructor_decl_c
       c_sname_t sname;
       c_sname_init_name( &sname, $1 );
 
-      if ( OPT_LANG_IS(C_ANY) ) {
+      if ( OPT_LANG_IS( C_ANY ) ) {
         //
         // In C prior to C99, encountering a name followed by '(' declares a
         // function that implicitly returns int:
@@ -3793,7 +3793,7 @@ pc99_func_or_constructor_decl_c
 rparen_func_qualifier_list_c_stid_opt
   : ')'
     {
-      if ( OPT_LANG_IS(CPP_ANY) ) {
+      if ( OPT_LANG_IS( CPP_ANY ) ) {
         //
         // Both "final" and "override" are matched only within member function
         // declarations.  Now that ')' has been parsed, we're within one, so
@@ -3861,7 +3861,7 @@ noexcept_c_stid_opt
     {
       c_ast_list_cleanup( &$3 );
 
-      if ( OPT_LANG_IS(THROW) ) {
+      if ( OPT_LANG_IS( THROW ) ) {
         print_error( &@3,
           "dynamic exception specifications not supported by %s\n", CDECL
         );
@@ -3958,7 +3958,7 @@ func_equals_c_stid_opt
     }
   | '=' error
     {
-      if ( OPT_LANG_IS(DEFAULT_DELETE_FUNC) )
+      if ( OPT_LANG_IS( DEFAULT_DELETE_FUNC ) )
         elaborate_error(
           "'0', \"%s\", or \"%s\" expected", L_DEFAULT, L_DELETE
         );
@@ -4234,7 +4234,7 @@ pc99_pointer_decl_c
 pc99_pointer_type_c_ast
   : '*' type_qualifier_list_c_stid_opt
     {
-      if ( OPT_LANG_IS(C_ANY) && !OPT_LANG_IS(IMPLICIT_INT) ) {
+      if ( OPT_LANG_IS( C_ANY ) && !OPT_LANG_IS( IMPLICIT_INT ) ) {
         //
         // In C99 and later, implicit int is an error.  This check has to be
         // done now in the parser rather than later in the AST since the AST
@@ -4909,7 +4909,7 @@ type_c_ast
       //      const    j;   // illegal in C99
       //      register k;   // illegal in C99
       //
-      c_type_t type = OPT_LANG_IS(IMPLICIT_INT) ?
+      c_type_t type = OPT_LANG_IS( IMPLICIT_INT ) ?
         C_TYPE_LIT_B( TB_INT ) : T_NONE;
 
       C_TYPE_ADD( &type, &$1, @1 );
@@ -5388,7 +5388,7 @@ restrict_qualifier_c_stid
       // AST since both "restrict" and "__restrict" map to TS_RESTRICT and the
       // AST has no "memory" of which it was.
       //
-      if ( OPT_LANG_IS(CPP_ANY) ) {
+      if ( OPT_LANG_IS( CPP_ANY ) ) {
         print_error( &@1,
           "\"restrict\" not supported in C++; use \"%s\" instead\n",
           L_GNU___RESTRICT
@@ -5972,7 +5972,7 @@ returning_english_ast_opt
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       // see the comment in "type_c_ast"
-      $$->type.btids = OPT_LANG_IS(IMPLICIT_INT) ? TB_INT : TB_VOID;
+      $$->type.btids = OPT_LANG_IS( IMPLICIT_INT ) ? TB_INT : TB_VOID;
 
       DUMP_AST( "returning_english_ast_opt", $$ );
       DUMP_END();
@@ -6204,7 +6204,7 @@ pointer_decl_english_ast
 
   | Y_POINTER to_exp error
     {
-      if ( OPT_LANG_IS(CPP_ANY) )
+      if ( OPT_LANG_IS( CPP_ANY ) )
         elaborate_error( "type name or \"%s\" expected", L_MEMBER );
       else
         elaborate_error( "type name expected" );
@@ -6360,7 +6360,7 @@ type_english_ast
 
       // see the comment in "type_c_ast"
       c_type_t type =
-        C_TYPE_LIT_B( OPT_LANG_IS(IMPLICIT_INT) ? TB_INT : TB_NONE );
+        C_TYPE_LIT_B( OPT_LANG_IS( IMPLICIT_INT ) ? TB_INT : TB_NONE );
 
       C_TYPE_ADD( &type, &$1, @1 );
 
@@ -6927,7 +6927,7 @@ array_exp
 as_exp
   : Y_AS
     {
-      if ( OPT_LANG_IS(CPP_ANY) ) {
+      if ( OPT_LANG_IS( CPP_ANY ) ) {
         //
         // For either "declare" or "define", neither "override" nor "final"
         // must be matched initially to allow for cases like:
@@ -7092,7 +7092,7 @@ extern_linkage_c_stid_opt
 glob
   : Y_GLOB
     {
-      if ( OPT_LANG_IS(C_ANY) && strchr( $1, ':' ) != NULL ) {
+      if ( OPT_LANG_IS( C_ANY ) && strchr( $1, ':' ) != NULL ) {
         print_error( &@1, "scoped names not supported in C\n" );
         free( $1 );
         PARSE_ABORT();

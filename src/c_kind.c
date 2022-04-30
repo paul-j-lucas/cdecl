@@ -65,11 +65,11 @@ char const* c_kind_name( c_ast_kind_t kind ) {
     case K_VARIADIC           : return "variadic";
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      if ( OPT_LANG_IS(CPP_ANY) )
+      if ( OPT_LANG_IS( CPP_ANY ) )
         return "enum, class, struct, or union";
-      if ( OPT_LANG_IS(MIN(C_89)) )
+      if ( OPT_LANG_IS( MIN(C_89) ) )
         return "enum, struct, or union";
-      assert( OPT_LANG_IS(C_KNR) );
+      assert( OPT_LANG_IS( C_KNR ) );
       return "struct or union";
   } // switch
 

@@ -167,9 +167,9 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
     which_lang_id = lang_ids;
   }
   else {
-    lang_ids &= OPT_LANG_IS(C_ANY) ? LANG_MASK_C : LANG_MASK_CPP;
+    lang_ids &= OPT_LANG_IS( C_ANY ) ? LANG_MASK_C : LANG_MASK_CPP;
     if ( lang_ids == LANG_NONE )
-      return OPT_LANG_IS(C_ANY) ? " in C" : " in C++";
+      return OPT_LANG_IS( C_ANY ) ? " in C" : " in C++";
 
     which_lang_id = c_lang_oldest( lang_ids );
     if ( opt_lang < which_lang_id ) {

@@ -104,7 +104,7 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
   }
 #endif /* WITH_READLINE */
 
-  strbuf_printf( sbuf, "%s%c", OPT_LANG_IS(C_ANY) ? CDECL : CPPDECL, suffix );
+  strbuf_printf( sbuf, "%s%c", OPT_LANG_IS( C_ANY ) ? CDECL : CPPDECL, suffix );
 
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {

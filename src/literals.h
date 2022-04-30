@@ -377,7 +377,7 @@ extern char const L_MSC_WINAPI[];         // synonym for "__stdcall"
  */
 C_LITERALS_INLINE PJL_WARN_UNUSED_RESULT
 char const* alignas_name( void ) {
-  return OPT_LANG_IS(C_ANY) ? L__ALIGNAS : L_ALIGNAS;
+  return OPT_LANG_IS( C_ANY ) ? L__ALIGNAS : L_ALIGNAS;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

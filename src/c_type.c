@@ -764,7 +764,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   c_tid_t stids = type->stids;
   c_tid_t atids = type->atids;
 
-  if ( OPT_LANG_IS(C_ANY) && c_tid_is_any( atids, TA_NORETURN ) ) {
+  if ( OPT_LANG_IS( C_ANY ) && c_tid_is_any( atids, TA_NORETURN ) ) {
     //
     // Special case: we store _Noreturn as an attribute, but in C, it's a
     // distinct keyword and printed as such instead being printed between
@@ -791,7 +791,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     // Microsoft calling conventions must be handled later -- see below.
 
     bool const print_brackets =
-      OPT_LANG_IS(MIN(C_2X)) &&
+      OPT_LANG_IS( MIN(C_2X) ) &&
       cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH && !in_english;
 
     bool comma = false;
@@ -909,7 +909,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   };
   C_TID_NAME_CAT( sbuf, stids, QUAL_STIDS, in_english, ' ', &space );
 
-  if ( OPT_LANG_IS(CPP_ANY) && apply_explicit_ecsu &&
+  if ( OPT_LANG_IS( CPP_ANY ) && apply_explicit_ecsu &&
        !in_english && !is_error && c_tid_is_any( btids, TB_ANY_CLASS ) ) {
     btids &= opt_explicit_ecsu;
   }
@@ -925,7 +925,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   // types, see the similar special case for K_TYPEDEF in g_ast_print().
   //
   bool const print_parens_for_cpp23_Atomic =
-    OPT_LANG_IS(CPP_MIN(23)) && !in_english &&
+    OPT_LANG_IS( CPP_MIN(23) ) && !in_english &&
     c_tid_is_any( stids, TS_ATOMIC ) && !c_tid_is_any( btids, TB_TYPEDEF );
 
   if ( print_parens_for_cpp23_Atomic ) {

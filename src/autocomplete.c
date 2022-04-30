@@ -182,7 +182,7 @@ PJL_WARN_UNUSED_RESULT
 static bool is_cast_command( char const *s, size_t s_len ) {
   if ( is_command( L_CAST, s, s_len ) )
     return true;
-  if ( OPT_LANG_IS(C_ANY) )
+  if ( OPT_LANG_IS( C_ANY ) )
     return false;
   return  is_command( L_CONST,       s, s_len ) ||
           is_command( L_DYNAMIC,     s, s_len ) ||

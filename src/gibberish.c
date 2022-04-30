@@ -341,7 +341,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
     case K_NAME:
       assert( OPT_LANG_IS( KNR_FUNC_DEFINITION ) );
-      if ( OPT_LANG_IS(PROTOTYPES) ) {
+      if ( OPT_LANG_IS( PROTOTYPES ) ) {
         //
         // In C89-C17, just a name for a function parameter is implicitly int:
         //
@@ -403,7 +403,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         // typedef types, see the similar special case in c_type_name_impl().
         //
         bool const print_parens_for_cpp23_Atomic =
-          OPT_LANG_IS(CPP_MIN(23)) &&
+          OPT_LANG_IS( CPP_MIN(23) ) &&
           c_tid_is_any( type.stids, TS_ATOMIC );
 
         if ( print_parens_for_cpp23_Atomic )
@@ -1081,7 +1081,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
   //
   bool const printing_typedef = (flags & C_GIB_TYPEDEF) != 0 &&
     (!is_ecsu || c_lang_is_c( tdef->lang_ids ) ||
-    (OPT_LANG_IS(C_ANY) && !c_lang_is_cpp( tdef->lang_ids )));
+    (OPT_LANG_IS( C_ANY ) && !c_lang_is_cpp( tdef->lang_ids )));
 
   //
   // When printing a "using", we don't have to check languages since "using" is
@@ -1127,7 +1127,7 @@ char const* graph_token_c( char const *token ) {
       // are returned as a single string.
       //
       case C_GRAPH_DI:
-        if ( OPT_LANG_IS(DIGRAPHS) ) {
+        if ( OPT_LANG_IS( DIGRAPHS ) ) {
           switch ( token[0] ) {
             case '#'  : return token[1] == '#' ? "%:%:" : "%:";
             case '['  : return token[1] == '[' ? "<:<:" : "<:";
@@ -1138,7 +1138,7 @@ char const* graph_token_c( char const *token ) {
         }
         break;
       case C_GRAPH_TRI:
-        if ( OPT_LANG_IS(TRIGRAPHS) ) {
+        if ( OPT_LANG_IS( TRIGRAPHS ) ) {
           switch ( token[0] ) {
             case '#'  : return "?\?=";
             case '['  : return token[1] == '[' ? "?\?(?\?(" : "?\?(";

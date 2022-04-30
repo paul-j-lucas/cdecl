@@ -187,7 +187,7 @@ static void print_options( void ) {
  */
 static bool set_alt_tokens( set_option_fn_args_t const *args ) {
   opt_alt_tokens = args->opt_enabled;
-  if ( opt_alt_tokens && !OPT_LANG_IS(ALT_TOKENS) ) {
+  if ( opt_alt_tokens && !OPT_LANG_IS( ALT_TOKENS ) ) {
     print_warning( args->opt_name_loc,
       "alt-tokens not supported%s\n",
       C_LANG_WHICH( ALT_TOKENS )
@@ -230,7 +230,7 @@ static bool set_debug( set_option_fn_args_t const *args ) {
  */
 static bool set_digraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_DI : C_GRAPH_NONE;
-  if ( opt_graph && !OPT_LANG_IS(DIGRAPHS) ) {
+  if ( opt_graph && !OPT_LANG_IS( DIGRAPHS ) ) {
     print_warning( args->opt_name_loc,
       "digraphs not supported%s\n",
       C_LANG_WHICH( DIGRAPHS )
@@ -247,7 +247,7 @@ static bool set_digraphs( set_option_fn_args_t const *args ) {
  */
 static bool set_east_const( set_option_fn_args_t const *args ) {
   opt_east_const = args->opt_enabled;
-  if ( opt_east_const && !OPT_LANG_IS(CONST) ) {
+  if ( opt_east_const && !OPT_LANG_IS( CONST ) ) {
     print_warning( args->opt_name_loc,
       "east-const not supported%s\n",
       C_LANG_WHICH( CONST )
@@ -291,7 +291,7 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
     assert( ok );
   }
 
-  if ( ok && OPT_LANG_IS(C_ANY) )
+  if ( ok && OPT_LANG_IS( C_ANY ) )
     print_warning( args->opt_name_loc, "explicit-ecsu is ignored in C\n" );
 
   return ok;
@@ -424,7 +424,7 @@ static bool set_semicolon( set_option_fn_args_t const *args ) {
  */
 static bool set_trigraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
-  if ( opt_graph && !OPT_LANG_IS(TRIGRAPHS) ) {
+  if ( opt_graph && !OPT_LANG_IS( TRIGRAPHS ) ) {
     print_warning( args->opt_name_loc,
       "trigraphs not supported%s\n",
       C_LANG_WHICH( TRIGRAPHS )
@@ -441,7 +441,7 @@ static bool set_trigraphs( set_option_fn_args_t const *args ) {
  */
 static bool set_using( set_option_fn_args_t const *args ) {
   opt_using = args->opt_enabled;
-  if ( opt_using && !OPT_LANG_IS(USING_DECLARATION) ) {
+  if ( opt_using && !OPT_LANG_IS( USING_DECLARATION ) ) {
     print_warning( args->opt_name_loc,
       "using not supported%s\n",
       C_LANG_WHICH( USING_DECLARATION )
