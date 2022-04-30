@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/check.h
+**      src/c_ast_check.h
 **
 **      Copyright (C) 2021-2022  Paul J. Lucas
 **
@@ -18,12 +18,12 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_check_H
-#define cdecl_check_H
+#ifndef cdecl_c_ast_check_H
+#define cdecl_c_ast_check_H
 
 /**
  * @file
- * Declares functions for performing semantic checks.
+ * Declares a function for checking an AST for semantic errors.
  */
 
 // local
@@ -51,5 +51,5 @@ bool c_ast_check( c_ast_t const *ast );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* cdecl_check_H */
+#endif /* cdecl_c_ast_check_H */
 /* vim:set et sw=2 ts=2: */

@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/check.c
+**      src/c_ast_check.c
 **
 **      Copyright (C) 2017-2022  Paul J. Lucas
 **
@@ -20,12 +20,12 @@
 
 /**
  * @file
- * Defines functions for performing C/C++ semantic checks.
+ * Defines a function for checking an AST for semantic errors.
  */
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "check.h"
+#include "c_ast_check.h"
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_keyword.h"

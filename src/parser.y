@@ -34,6 +34,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "c_ast.h"
+#include "c_ast_check.h"
 #include "c_ast_util.h"
 #include "c_keyword.h"
 #include "c_lang.h"
@@ -44,7 +45,6 @@
 #include "c_typedef.h"
 #include "cdecl.h"
 #include "cdecl_keyword.h"
-#include "check.h"
 #include "color.h"
 #ifdef ENABLE_CDECL_DEBUG
 #include "dump.h"

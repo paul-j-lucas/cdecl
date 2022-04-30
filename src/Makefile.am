@@ -44,6 +44,7 @@ BUILT_SOURCES =	parser.c parser.h lexer.c
 cdecl_SOURCES =	parser.y \
 		lexer.l lexer.h \
 		c_ast.c c_ast.h \
+		c_ast_check.c c_ast_check.h \
 		c_ast_util.c c_ast_util.h \
 		c_keyword.c c_keyword.h \
 		c_kind.c c_kind.h \
@@ -57,7 +58,6 @@ cdecl_SOURCES =	parser.y \
 		cdecl_command.c cdecl_command.h \
 		cdecl_keyword.c cdecl_keyword.h \
 		cdecl_parser.h \
-		check.c check.h \
 		cli_options.c cli_options.h \
 		color.c color.h \
 		dam_lev.c dam_lev.h \
