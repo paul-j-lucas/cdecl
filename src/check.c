@@ -2310,9 +2310,9 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
   unsigned const flags = REINTERPRET_CAST( unsigned, avd );
   bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
-  c_lang_id_t const lang_ids = c_type_check( &ast->type );
-  if ( lang_ids != LANG_ANY ) {
-    c_lang_id_t const one_lang_ids = c_lang_is_one( lang_ids );
+  c_lang_id_t const ok_lang_ids = c_type_check( &ast->type );
+  if ( ok_lang_ids != LANG_ANY ) {
+    c_lang_id_t const one_lang_ids = c_lang_is_one( ok_lang_ids );
     if ( one_lang_ids != LANG_NONE && !opt_lang_is_any( one_lang_ids ) ) {
       //
       // The language(s) ast->type is legal in is only either C or C++ and the
@@ -2322,14 +2322,14 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
       //
       print_error( &ast->loc,
         "\"%s\" is illegal%s\n",
-        c_type_name_error( &ast->type ), c_lang_which( lang_ids )
+        c_type_name_error( &ast->type ), c_lang_which( ok_lang_ids )
       );
     } else {
       print_error( &ast->loc,
         "\"%s\" is illegal for %s%s\n",
         c_type_name_error( &ast->type ),
         c_kind_name( ast->kind ),
-        c_lang_which( lang_ids )
+        c_lang_which( ok_lang_ids )
       );
     }
     return VISITOR_ERROR_FOUND;
