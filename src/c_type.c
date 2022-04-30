@@ -662,6 +662,28 @@ static c_tid_t c_tid_nosigned( c_tid_t btids ) {
 }
 
 /**
+ * Creates a \ref c_type based on the type part ID of \a tids.
+ *
+ * @param tids The \ref c_tid_t to create the \ref c_type from.
+ * @return Returns said \ref c_type.
+ */
+PJL_WARN_UNUSED_RESULT
+static c_type_t c_tid_to_type( c_tid_t tids ) {
+  switch ( c_tid_tpid( tids ) ) {
+    case C_TPID_NONE:
+      break;                            // LCOV_EXCL_LINE
+    case C_TPID_BASE:
+      return C_TYPE_LIT_B( tids );
+    case C_TPID_STORE:
+      return C_TYPE_LIT_S( tids );
+    case C_TPID_ATTR:
+      return C_TYPE_LIT_A( tids );
+  } // switch
+
+  UNEXPECTED_INT_VALUE( tids );
+}
+
+/**
  * Gets the literal of a given \ref c_type_info, either gibberish or, if
  * appropriate and available, pseudo-English.
  *
@@ -1016,21 +1038,6 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
   return i_btids == j_btids;
 }
 
-c_type_t c_type_from_tid( c_tid_t tids ) {
-  switch ( c_tid_tpid( tids ) ) {
-    case C_TPID_NONE:
-      break;                            // LCOV_EXCL_LINE
-    case C_TPID_BASE:
-      return C_TYPE_LIT_B( tids );
-    case C_TPID_STORE:
-      return C_TYPE_LIT_S( tids );
-    case C_TPID_ATTR:
-      return C_TYPE_LIT_A( tids );
-  } // switch
-
-  UNEXPECTED_INT_VALUE( tids );
-}
-
 c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tids ) {
   assert( type != NULL );
 
@@ -1091,7 +1098,7 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tids, c_loc_t const *new_loc ) {
 }
 
 char const* c_tid_name_c( c_tid_t tids ) {
-  c_type_t const type = c_type_from_tid( tids );
+  c_type_t const type = c_tid_to_type( tids );
   return c_type_name_impl( &type,
     /*apply_explicit_ecsu=*/false,
     /*in_english=*/false,
@@ -1100,7 +1107,7 @@ char const* c_tid_name_c( c_tid_t tids ) {
 }
 
 char const* c_tid_name_english( c_tid_t tids ) {
-  c_type_t const type = c_type_from_tid( tids );
+  c_type_t const type = c_tid_to_type( tids );
   return c_type_name_impl( &type,
     /*apply_explicit_ecsu=*/false,
     /*in_english=*/true,
@@ -1110,7 +1117,7 @@ char const* c_tid_name_english( c_tid_t tids ) {
 
 
 char const* c_tid_name_error( c_tid_t tids ) {
-  c_type_t const type = c_type_from_tid( tids );
+  c_type_t const type = c_tid_to_type( tids );
   // When giving an error message, return the type name in pseudo-English if
   // we're parsing pseudo-English or in C/C++ if we're parsing C/C++.
   return c_type_name_impl( &type,

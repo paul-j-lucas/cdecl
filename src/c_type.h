@@ -734,15 +734,6 @@ PJL_WARN_UNUSED_RESULT
 bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
- * Creates a \ref c_type based on the type part ID of \a tids.
- *
- * @param tids The \ref c_tid_t to create the \ref c_type from.
- * @return Returns said \ref c_type.
- */
-PJL_WARN_UNUSED_RESULT
-c_type_t c_type_from_tid( c_tid_t tids );
-
-/**
  * Gets the \ref c_tid_t of \a type that corresponds to the type part ID of \a
  * tids.
  *
