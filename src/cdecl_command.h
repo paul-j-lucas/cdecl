@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares macros and functions for cdecl commands.
+ * Declares macros, types, and functions for cdecl commands.
  */
 
 // local
