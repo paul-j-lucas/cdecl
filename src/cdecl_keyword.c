@@ -54,7 +54,7 @@
  * @sa #C_SYE()
  */
 #define C_SYN(ALWAYS_FIND,LANG,...) \
-  (ALWAYS_FIND), /*y_token_id=*/0, (c_lang_lit_t const[]){ __VA_ARGS__ }, LANG
+  (ALWAYS_FIND), /*y_token_id=*/0, C_LANG_LIT( __VA_ARGS__ ), LANG
 
 /**
  * Special-case of #C_SYN when there is only one language(s)/literal pair _and_
@@ -287,8 +287,8 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_REFERENCE,      TOKEN( Y_REFERENCE,         AC_LANG(CPP_ANY)          ) },
   { L_REINTERPRET,    TOKEN( Y_REINTERPRET,       AC_LANG(CPP_ANY)          ) },
   { L_RESTRICTED,     C_SYN( false,               AC_LANG(NONE),
-                        { LANG_C_CPP_MAX(95,NEW), L_GNU___RESTRICT },
-                        { LANG_ANY,               L_RESTRICT }              ) },
+                        { ~LANG_RESTRICT, L_GNU___RESTRICT },
+                        { LANG_ANY,       L_RESTRICT       }                ) },
   { L_RET,            TOKEN( Y_RETURNING,         AC_LANG(NONE)             ) },
   { L_RETURNING,      TOKEN( Y_RETURNING,         AC_LANG(ANY)              ) },
   { L_RVALUE,         TOKEN( Y_RVALUE,            AC_LANG(CPP_MIN(11))      ) },
