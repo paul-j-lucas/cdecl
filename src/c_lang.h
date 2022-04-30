@@ -60,7 +60,7 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 // languages supported
-#define LANG_NONE     ((c_lang_id_t)0u) /**< No languages. */
+#define LANG_NONE     0u                /**< No languages. */
 #define LANG_ANY      (~LANGX_MASK)     /**< Any supported language. */
 
 #define LANG_C_OLD    LANG_C_KNR        /**< Oldest supported C language. */
