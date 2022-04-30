@@ -684,6 +684,37 @@ static c_type_t c_tid_to_type( c_tid_t tids ) {
 }
 
 /**
+ * Gets a pointer to the \ref c_tid_t of \a type that corresponds to the type
+ * part ID of \a tids.
+ *
+ * @param type The \ref c_type to get a pointer to the relevant \ref c_tid_t
+ * of.
+ * @param tids The \ref c_tid_t that specifies the part of \a type to get the
+ * pointer to.
+ * @return Returns a pointer to the corresponding \ref c_tid_t of \a type for
+ * the part of \a tids.
+ *
+ * @sa c_type_get_tid()
+ */
+PJL_WARN_UNUSED_RESULT
+static c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids ) {
+  assert( type != NULL );
+
+  switch ( c_tid_tpid( tids ) ) {
+    case C_TPID_NONE:
+      break;                            // LCOV_EXCL_LINE
+    case C_TPID_BASE:
+      return &type->btids;
+    case C_TPID_STORE:
+      return &type->stids;
+    case C_TPID_ATTR:
+      return &type->atids;
+  } // switch
+
+  UNEXPECTED_INT_VALUE( tids );
+}
+
+/**
  * Gets the literal of a given \ref c_type_info, either gibberish or, if
  * appropriate and available, pseudo-English.
  *
@@ -1050,23 +1081,6 @@ c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tids ) {
       return type->stids;
     case C_TPID_ATTR:
       return type->atids;
-  } // switch
-
-  UNEXPECTED_INT_VALUE( tids );
-}
-
-c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids ) {
-  assert( type != NULL );
-
-  switch ( c_tid_tpid( tids ) ) {
-    case C_TPID_NONE:
-      break;                            // LCOV_EXCL_LINE
-    case C_TPID_BASE:
-      return &type->btids;
-    case C_TPID_STORE:
-      return &type->stids;
-    case C_TPID_ATTR:
-      return &type->atids;
   } // switch
 
   UNEXPECTED_INT_VALUE( tids );

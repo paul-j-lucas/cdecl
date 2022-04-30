@@ -742,27 +742,9 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
  * pointer to.
  * @return Returns the corresponding \ref c_tid_t of \a type for the part of \a
  * tids.
- *
- * @sa c_type_get_tid_ptr()
  */
 PJL_WARN_UNUSED_RESULT
 c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tids );
-
-/**
- * Gets a pointer to the \ref c_tid_t of \a type that corresponds to the type
- * part ID of \a tids.
- *
- * @param type The \ref c_type to get a pointer to the relevant \ref c_tid_t
- * of.
- * @param tids The \ref c_tid_t that specifies the part of \a type to get the
- * pointer to.
- * @return Returns a pointer to the corresponding \ref c_tid_t of \a type for
- * the part of \a tids.
- *
- * @sa c_type_get_tid()
- */
-PJL_WARN_UNUSED_RESULT
-c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids );
 
 /**
  * For all type part IDs of \a j_type that are not none, gets whether the
