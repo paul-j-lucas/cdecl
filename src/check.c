@@ -33,8 +33,6 @@
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
-#include "color.h"
-#include "did_you_mean.h"
 #include "english.h"
 #include "gibberish.h"
 #include "literals.h"
@@ -2587,97 +2585,6 @@ bool c_ast_check( c_ast_t const *ast ) {
   if ( ast->cast_kind != C_CAST_NONE && !c_ast_check_cast( ast ) )
     return false;
   return c_ast_check_declaration( ast );
-}
-
-bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
-  assert( sname != NULL );
-  assert( !c_sname_empty( sname ) );
-  assert( sname_loc != NULL );
-
-  size_t const sname_count = c_sname_count( sname );
-  if ( sname_count > 1 ) {
-    c_type_t const *const scope_type = c_sname_first_type( sname );
-    bool const is_inline_namespace =
-      c_tid_is_any( scope_type->stids, TS_INLINE ) &&
-      c_tid_is_any( scope_type->btids, TB_NAMESPACE );
-    if ( is_inline_namespace ) {
-      print_error( sname_loc,
-        "nested namespace can not be %s\n",
-        c_tid_name_error( TS_INLINE )
-      );
-      return false;
-    }
-  }
-
-  c_tid_t prev_btids = TB_NONE;
-  unsigned prev_order = 0;
-
-  FOREACH_SNAME_SCOPE( scope, sname ) {
-    c_type_t *const scope_type = &c_scope_data( scope )->type;
-    //
-    // Temporarily set scope->next to NULL to chop off any scopes past the
-    // given scope to look up a partial sname. For example, given "A::B::C",
-    // see if "A::B" exists.  If it does, check that the sname's scope's type
-    // matches the previously declared sname's scope's type.
-    //
-    c_scope_t *const orig_next = scope->next;
-    scope->next = NULL;
-    c_typedef_t const *const tdef = c_typedef_find_sname( sname );
-    if ( tdef != NULL ) {
-      c_type_t const *const tdef_type = c_sname_local_type( &tdef->ast->sname );
-      if ( c_tid_is_any( tdef_type->btids, TB_ANY_SCOPE | TB_ENUM ) &&
-           !c_type_equal( scope_type, tdef_type ) ) {
-        if ( c_tid_is_any( scope_type->btids, TB_ANY_SCOPE ) ) {
-          //
-          // The scope's type is a scope-type and doesn't match a previously
-          // declared scope-type, e.g.:
-          //
-          //      namespace N { class C; }
-          //      namespace N::C { class D; }
-          //                ^
-          //      11: error: "N::C" was previously declared as class
-          //
-          print_error( sname_loc,
-            "\"%s\" was previously declared as %s:\n",
-            c_sname_full_name( sname ),
-            c_type_name_error( tdef_type )
-          );
-          SGR_START_COLOR( stderr, caret );
-          EPUTC( '>' );
-          SGR_END_COLOR( stderr );
-          EPUTC( ' ' );
-          if ( tdef->defined_in_english )
-            c_ast_explain_type( tdef->ast, stderr );
-          else
-            c_typedef_gibberish( tdef, C_GIB_TYPEDEF, stderr );
-          EPUTC( '\n' );
-          scope->next = orig_next;
-          return false;
-        }
-
-        //
-        // Otherwise, copy the previously declared scope's type to the current
-        // scope's type.
-        //
-        *scope_type = *tdef_type;
-      }
-    }
-    scope->next = orig_next;
-
-    unsigned const scope_order = c_tid_scope_order( scope_type->btids );
-    if ( scope_order < prev_order ) {
-      print_error( sname_loc,
-        "%s can not nest inside %s\n",
-        c_tid_name_error( scope_type->btids ),
-        c_tid_name_error( prev_btids )
-      );
-      return false;
-    }
-    prev_btids = scope_type->btids;
-    prev_order = scope_order;
-  } // for
-
-  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
