@@ -23,7 +23,8 @@
 
 /**
  * @file
- * Declares types and functions for looking up cdecl keyword information.
+ * Declares macros, types, and functions for looking up cdecl keyword
+ * information.
  */
 
 // local
@@ -88,6 +89,9 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *literal );
  * @param k A pointer to the current keyword. For the first iteration, NULL
  * should be passed.
  * @return Returns the next cdecl keyword or NULL for none.
+ *
+ * @note This function isn't normally called directly; use the
+ * #FOREACH_CDECL_KEYWORD() macro instead.
  *
  * @sa #FOREACH_CDECL_KEYWORD()
  */
