@@ -619,7 +619,7 @@ char* check_strdup_tolower( char const *s );
  * @return Returns a copy of \a n characters of \a s or NULL if \a s is NULL.
  *
  * @sa check_strdup_tolower()
- * @sa check_strndup()
+ * @sa check_strdup()
  */
 PJL_WARN_UNUSED_RESULT
 char* check_strndup( char const *s, size_t n );
