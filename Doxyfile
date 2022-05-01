@@ -26,8 +26,8 @@ EXTENSION_MAPPING       = l=C y=C
 FILE_PATTERNS           = *.c *.h *.l *.md *.y
 FILTER_PATTERNS         = "*.h=sed s/[A-Z][A-Z_]*INLINE/inline/"
 PREDEFINED              = __GNUC__ \
-                          WITH_READLINE \
-                          WITH_TERM_COLUMNS
+                          ENABLE_TERM_SIZE \
+                          WITH_READLINE
 EXCLUDE                 = src/config.h \
                           src/lexer.c \
                           src/literals.h src/literals.c \
