@@ -637,13 +637,13 @@ static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
 }
 
 /**
- * Removes #TB_SIGNED from \a btids if possible.  Specifically:
+ * Removes #TB_SIGNED from \a btids, if possible.  Specifically:
  *
  * + If \a btids contains #TB_SIGNED but not #TB_CHAR, removes #TB_SIGNED.
- * + If \a btids becomes #TB_NONE, makes it #TB_INT.
+ * + If \a btids then becomes #TB_NONE, makes it #TB_INT.
  *
- * @param btids The \ref c_tid_t to simplify.
- * @return Returns the simplified \ref c_tid_t.
+ * @param btids The \ref c_tid_t to remove #TB_SIGNED from, if possible.
+ * @return Returns a \ref c_tid_t with #TB_SIGNED removed, if possible.
  *
  * @note This function isn't called `c_tid_unsigned` to avoid confusion with
  * the `unsigned` type.
