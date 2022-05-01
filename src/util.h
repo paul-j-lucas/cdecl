@@ -232,8 +232,9 @@ _GL_INLINE_HEADER_BEGIN
  * @param C The character to print.
  *
  * @sa #EPRINTF()
- * @sa #PUTC()
  * @sa #EPUTS()
+ * @sa #FPUTC()
+ * @sa #PUTC()
  */
 #define EPUTC(C)                  fputc( (C), stderr )
 
@@ -244,6 +245,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #EPRINTF()
  * @sa #EPUTC()
+ * @sa #FPUTS()
  * @sa #PUTS()
  */
 #define EPUTS(S)                  fputs( (S), stderr )
@@ -291,6 +293,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param ... The `fprintf()` arguments.
  *
  * @sa #EPRINTF()
+ * @sa #FPUTC()
+ * @sa #FPUTS()
  * @sa perror_exit_if()
  */
 #define FPRINTF(STREAM,...) \
@@ -302,6 +306,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param C The character to print.
  * @param STREAM The `FILE` stream to print to.
  *
+ * @sa #EPUTC()
  * @sa #FPRINTF()
  * @sa #FPUTS()
  * @sa perror_exit_if()
@@ -315,6 +320,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param S The C string to print.
  * @param STREAM The `FILE` stream to print to.
  *
+ * @sa #EPUTS()
  * @sa #FPRINTF()
  * @sa #FPUTC()
  * @sa perror_exit_if()
@@ -394,6 +400,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param C The character to print.
  *
  * @sa #EPUTC()
+ * @sa #FPUTS()
  * @sa #PUTS()
  */
 #define PUTC(C)                   FPUTC( (C), stdout )
@@ -403,8 +410,9 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param S The C string to print.
  *
- * @sa #PUTC()
  * @sa #EPUTS()
+ * @sa #FPUTS()
+ * @sa #PUTC()
  */
 #define PUTS(S)                   FPUTS( (S), stdout )
 
