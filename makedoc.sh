@@ -35,7 +35,7 @@ is_remote_login() {
 echo "Generating documentation..."
 doxygen
 
-INDEX_HTML="docs/html/index.html"
+INDEX_HTML="docs/index.html"
 
 echo
 echo "HTML documentation generated at: $INDEX_HTML"

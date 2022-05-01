@@ -33,6 +33,7 @@ EXCLUDE                 = src/config.h \
                           src/literals.h src/literals.c \
                           src/parser.h src/parser.c
 OUTPUT_DIRECTORY        = docs
+HTML_OUTPUT             = .
 
 EXTRACT_ALL             = YES
 EXTRACT_PACKAGE         = YES
