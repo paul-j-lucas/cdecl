@@ -43,11 +43,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Prints an error message to standard error _not_ including a newline.
+ * Prints an error message to standard error.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
  * @param ... The `printf()` arguments.
+ *
+ * @note A newline is _not_ printed.
  *
  * @sa fl_print_error()
  * @sa print_error_unknown_name()
@@ -65,6 +67,8 @@
  * @param LOC The location of \a SNAME.
  * @param SNAME The unknown name.
  *
+ * @note A newline _is_ printed.
+ *
  * @sa fl_print_error_unknown_name()
  * @sa print_error()
  */
@@ -72,11 +76,13 @@
   fl_print_error_unknown_name( __FILE__, __LINE__, (LOC), (SNAME) )
 
 /**
- * Prints an warning message to standard error _not_ including a newline.
+ * Prints an warning message to standard error.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
  * @param ... The `printf()` arguments.
+ *
+ * @note A newline is _not_ printed.
  *
  * @sa fl_print_warning()
  * @sa print_error()
@@ -100,7 +106,7 @@ extern print_params_t print_params;     ///< Print parameters.
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Prints an error message to standard error _not_ including a newline.
+ * Prints an error message to standard error.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
@@ -111,6 +117,7 @@ extern print_params_t print_params;     ///< Print parameters.
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
  *
+ * @note A newline is _not_ printed.
  * @note This function isn't normally called directly; use the #print_error()
  * macro instead.
  *
@@ -132,6 +139,7 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
  * @param loc The location of \a sname.
  * @param sname The unknown name.
  *
+ * @note A newline _is_ printed.
  * @note This function isn't normally called directly; use the
  * #print_error_unknown_name() macro instead.
  *
@@ -143,7 +151,7 @@ void fl_print_error_unknown_name( char const *file, int line,
                                   c_loc_t const *loc, c_sname_t const *sname );
 
 /**
- * Prints a warning message to standard error _not_ including a newline.
+ * Prints a warning message to standard error.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
@@ -154,6 +162,7 @@ void fl_print_error_unknown_name( char const *file, int line,
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
  *
+ * @note A newline is _not_ printed.
  * @note This function isn't normally called directly; use the #print_warning()
  * macro instead.
  *
@@ -184,6 +193,8 @@ void print_debug_file_line( char const *file, int line );
  *
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
+ *
+ * @note A newline _is_ printed.
  *
  * @sa print_suggestions()
  */
