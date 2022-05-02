@@ -79,26 +79,26 @@ bool any_explicit_int( void ) {
   return opt_explicit_int[0] != TB_NONE || opt_explicit_int[1] != TB_NONE;
 }
 
-bool is_explicit_int( c_tid_t btid ) {
-  c_tid_check( btid, C_TPID_BASE );
+bool is_explicit_int( c_tid_t btids ) {
+  c_tid_check( btids, C_TPID_BASE );
 
-  if ( btid == TB_UNSIGNED ) {
+  if ( btids == TB_UNSIGNED ) {
     //
     // Special case: "unsigned" by itself means "unsigned int."
     //
-    btid |= TB_INT;
+    btids |= TB_INT;
   }
-  else if ( c_tid_is_any( btid, TB_LONG_LONG ) ) {
+  else if ( c_tid_is_any( btids, TB_LONG_LONG ) ) {
     //
     // Special case: for long long, its type is always combined with TB_LONG,
     // i.e., two bits are set.  Therefore, to check for explicit int for long
     // long, we first have to turn off the TB_LONG bit.
     //
-    btid &= c_tid_compl( TB_LONG );
+    btids &= c_tid_compl( TB_LONG );
   }
-  bool const is_unsigned = c_tid_is_any( btid, TB_UNSIGNED );
-  btid &= c_tid_compl( TB_UNSIGNED );
-  return c_tid_is_any( btid, opt_explicit_int[ is_unsigned ] );
+  bool const is_unsigned = c_tid_is_any( btids, TB_UNSIGNED );
+  btids &= c_tid_compl( TB_UNSIGNED );
+  return c_tid_is_any( btids, opt_explicit_int[ is_unsigned ] );
 }
 
 bool parse_explicit_ecsu( char const *ecsu_format ) {

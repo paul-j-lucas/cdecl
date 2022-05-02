@@ -101,7 +101,7 @@ bool any_explicit_int( void );
 /**
  * Checks whether \a tid shall have `int` be printed explicitly for it.
  *
- * @param btid The integer type to check.
+ * @param btids The integer type to check.
  * @return Returns `true` only if the type given by \a btid shall have `int`
  * printed explicitly.
  *
@@ -110,7 +110,7 @@ bool any_explicit_int( void );
  * @sa print_explicit_int()
  */
 PJL_WARN_UNUSED_RESULT
-bool is_explicit_int( c_tid_t btid );
+bool is_explicit_int( c_tid_t btids );
 
 /**
  * Parses the explicit `enum`, `class`, `struct`, `union` option.
