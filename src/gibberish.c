@@ -584,7 +584,6 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
       c_sname_local_name( &ast->sname ) : c_sname_full_name( &ast->sname ),
     g->gout
   );
-
 }
 
 /**
