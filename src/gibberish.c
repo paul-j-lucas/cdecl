@@ -543,7 +543,7 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  if ( ast->cast_kind != C_CAST_NONE ) {
+  if ( (g->flags & C_GIB_CAST) != 0 ) {
     //
     // When printing a cast, the cast itself and the AST's name (the thing
     // that's being cast) is printed in c_ast_cast_gibberish(), so we mustn't
@@ -928,16 +928,16 @@ static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
 
 void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
   assert( ast != NULL );
-  assert( (flags & (C_GIB_CAST    | C_GIB_DECL )) != 0 );
   assert( (flags & (C_GIB_TYPEDEF | C_GIB_USING)) == 0 );
-  assert( (flags & C_GIB_OMIT_TYPE ) == 0 || (flags & C_GIB_DECL) != 0 );
-  assert( (flags & C_GIB_MULTI_DECL) == 0 || (flags & C_GIB_DECL) != 0 );
   assert( gout != NULL );
 
-  if ( ast->cast_kind != C_CAST_NONE ) {
+  if ( (flags & C_GIB_CAST) != 0 ) {
+    assert( only_bits_set( flags, C_GIB_CAST ) );
     c_ast_cast_gibberish( ast, gout );
     return;
   }
+
+  assert( (flags & C_GIB_DECL) != 0 );
 
   if ( c_ast_print_as_using( ast ) ) {
     //
