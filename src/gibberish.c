@@ -741,6 +741,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
 static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
+  assert( (ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) != 0 );
 
   c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
 
