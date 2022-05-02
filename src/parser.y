@@ -1714,16 +1714,9 @@ cast_command
       DUMP_END();
 
       $4->cast_kind = C_CAST_C;
-      bool const ok = c_ast_check( $4 );
-      if ( ok ) {
-        FPUTC( '(', cdecl_fout );
-        c_ast_gibberish( $4, C_GIB_CAST, cdecl_fout );
-        FPRINTF( cdecl_fout, ")%s\n", c_sname_full_name( &$2 ) );
-      }
-
-      c_sname_cleanup( &$2 );
-      if ( !ok )
-        PARSE_ABORT();
+      $4->sname = $2;
+      C_AST_CHECK( $4 );
+      c_ast_gibberish( $4, C_GIB_CAST, cdecl_fout );
     }
 
     /*
@@ -1742,26 +1735,18 @@ cast_command
       DUMP_AST( "decl_english_ast", $4 );
       DUMP_END();
 
-      bool ok = false;
-
       if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@1,
           "%s not supported%s\n", cast_literal,
           C_LANG_WHICH( CPP_ANY )
         );
-      }
-      else {
-        $4->cast_kind = $1;
-        if ( (ok = c_ast_check( $4 )) ) {
-          FPRINTF( cdecl_fout, "%s<", cast_literal );
-          c_ast_gibberish( $4, C_GIB_CAST, cdecl_fout );
-          FPRINTF( cdecl_fout, ">(%s)\n", c_sname_full_name( &$2 ) );
-        }
+        PARSE_ABORT();
       }
 
-      c_sname_cleanup( &$2 );
-      if ( !ok )
-        PARSE_ABORT();
+      $4->cast_kind = $1;
+      $4->sname = $2;
+      C_AST_CHECK( $4 );
+      c_ast_gibberish( $4, C_GIB_CAST, cdecl_fout );
     }
   ;
 

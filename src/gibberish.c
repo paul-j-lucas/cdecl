@@ -60,6 +60,7 @@ struct g_state {
 typedef struct g_state g_state_t;
 
 // local functions
+static void c_ast_gibberish_impl( c_ast_t const*, unsigned, bool, FILE* );
 static void g_init( g_state_t*, unsigned, bool, FILE* );
 static void g_print_ast( g_state_t*, c_ast_t const* );
 static void g_print_ast_bit_width( g_state_t const*, c_ast_t const* );
@@ -83,6 +84,28 @@ static inline void g_print_space_once( g_state_t *g ) {
 }
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Helper function for c_ast_gibberish() that prints \a ast as a C/C++ cast.
+ *
+ * @param ast The AST to print.
+ * @param gout The `FILE` to print to.
+ */
+static void c_ast_cast_gibberish( c_ast_t const *ast, FILE *gout ) {
+  assert( ast != NULL );
+  assert( ast->cast_kind != C_CAST_NONE );
+  assert( gout != NULL );
+
+  if ( ast->cast_kind == C_CAST_C ) {
+    FPUTC( '(', gout );
+    c_ast_gibberish_impl( ast, C_GIB_CAST, /*printing_typedef=*/false, gout );
+    FPRINTF( cdecl_fout, ")%s\n", c_sname_full_name( &ast->sname ) );
+  } else {
+    FPRINTF( cdecl_fout, "%s<", c_cast_gibberish( ast->cast_kind ) );
+    c_ast_gibberish_impl( ast, C_GIB_CAST, /*printing_typedef=*/false, gout );
+    FPRINTF( cdecl_fout, ">(%s)\n", c_sname_full_name( &ast->sname ) );
+  }
+}
 
 /**
  * Helper function for c_ast_gibberish() that prints \a ast as a C/C++
@@ -520,6 +543,18 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
+  if ( ast->cast_kind != C_CAST_NONE ) {
+    //
+    // When printing a cast, the cast itself and the AST's name (the thing
+    // that's being cast) is printed in c_ast_cast_gibberish(), so we mustn't
+    // print it here and print only the type T:
+    //
+    //      (T)name
+    //      static_cast<T>(name)
+    //
+    return;
+  }
+
   if ( true_clear( &g->skip_name_for_using ) ) {
     //
     // If we're printing a type as a "using" declaration, we have to skip
@@ -549,6 +584,7 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
       c_sname_local_name( &ast->sname ) : c_sname_full_name( &ast->sname ),
     g->gout
   );
+
 }
 
 /**
@@ -898,6 +934,11 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
   assert( (flags & C_GIB_MULTI_DECL) == 0 || (flags & C_GIB_DECL) != 0 );
   assert( gout != NULL );
 
+  if ( ast->cast_kind != C_CAST_NONE ) {
+    c_ast_cast_gibberish( ast, gout );
+    return;
+  }
+
   if ( c_ast_print_as_using( ast ) ) {
     //
     // This is when declaring types in C++11 or later when opt_using is set:
@@ -958,9 +999,7 @@ char const* c_cast_gibberish( c_cast_kind_t kind ) {
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
                           FILE *gout ) {
   assert( tdef != NULL );
-  assert( (flags & (C_GIB_TYPEDEF | C_GIB_USING)) != 0 );
-  assert( (flags & (C_GIB_CAST    | C_GIB_DECL
-                 |  C_GIB_MULTI_DECL | C_GIB_OMIT_TYPE)) == 0 );
+  assert( only_bits_set( flags, C_GIB_TYPEDEF | C_GIB_USING) );
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;
