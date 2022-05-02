@@ -1,3 +1,29 @@
+2022-05-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c, options.h: s/btid/btids/
+   * options.c, options.h: s/tid/btid/
+   * c_ast_util.c: Now using c_tid_check().
+
+2022-05-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * Doxyfile: s/WITH_TERM_COLUMNS/ENABLE_TERM_SIZE/ for docs.
+   * Doxyfile, makedoc.sh: Eliminated "html" subdirectory in docs.
+
+2022-04-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, parser.y: Moved check.[ch] -> c_ast_check.[ch].
+   * c_sname.c, c_sname.h, check.c, check.h: Moved c_sname_check() to
+     c_sname.[ch].
+   * c_type.c, c_type.h: Made c_type_get_tid_ptr() static.
+   * c_lang.h: Removed cast.
+   * c_type.c, c_type.h: Made c_tid_to_type() static.
+
+2022-04-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Now using c_tid_check().
+   * c_type.c: s/c_tid_simplify/c_tid_nosigned/
+   * c_type.c: Missed uses of LANG_CONST and LANG_VOLATILE.
+
 2022-04-28  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_ast.h, check.c, types.h: s/c_ast_param_t/c_param_t/
