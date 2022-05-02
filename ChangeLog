@@ -1,5 +1,7 @@
 2022-05-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c, parser.y: c_ast_gibberish() now prints casts itself.
+   * c_ast_check.c, gibberish.c: s/LANG_C_KNR/PROTOTYPES/
    * options.c, options.h: s/btid/btids/
    * options.c, options.h: s/tid/btid/
    * c_ast_util.c: Now using c_tid_check().
