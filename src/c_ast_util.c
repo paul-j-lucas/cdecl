@@ -545,7 +545,7 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
 }
 
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
-  assert( c_tid_tpid( btids ) == C_TPID_BASE );
+  c_tid_check( btids, C_TPID_BASE );
 
   ast = c_ast_untypedef( ast );
   if ( ast->kind != K_BUILTIN )
