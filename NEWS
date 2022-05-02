@@ -16,13 +16,13 @@ with their complete changes, see the AUTHORS file.
 `_Atomic` arrays are now correctly forbidden:
 
     typedef int A[2]
-    explain _Atomic A x  // error
+    explain _Atomic A x  // error: _Atomic array of T is illegal
 
 Note that:
 
-    _Atomic int x[2];    // OK
+    _Atomic int x[2];    // OK: array of _Atomic T is legal
 
-is an array of `_Atomic` `int` which is legal.
+is legal.
 
 
 * Changes in Cdecl 11.14
