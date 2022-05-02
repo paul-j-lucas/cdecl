@@ -351,7 +351,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         FPUTS( L_INT, g->gout );
       }
       if ( (g->flags & C_GIB_CAST) == 0 ) {
-        if ( opt_lang > LANG_C_KNR )
+        if ( OPT_LANG_IS( PROTOTYPES ) )
           FPUTC( ' ', g->gout );
         g_print_ast_name( g, ast );
       }

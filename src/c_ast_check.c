@@ -1047,12 +1047,12 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
  */
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params( c_ast_t const *ast ) {
-  if ( opt_lang == LANG_C_KNR )
+  if ( !OPT_LANG_IS( PROTOTYPES ) )
     return c_ast_check_func_params_knr( ast );
 
   assert( ast != NULL );
   assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
-  assert( opt_lang != LANG_C_KNR );
+  assert( OPT_LANG_IS( PROTOTYPES ) );
 
   c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
   unsigned n_params = 0;
@@ -1207,7 +1207,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind & (K_APPLE_BLOCK | K_FUNCTION)) != 0 );
-  assert( opt_lang == LANG_C_KNR );
+  assert( !OPT_LANG_IS( PROTOTYPES ) );
 
   FOREACH_AST_FUNC_PARAM( param, ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
