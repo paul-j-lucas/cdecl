@@ -618,8 +618,8 @@ char* check_strdup_tolower( char const *s );
  * @param n The number of characters of \a s to duplicate.
  * @return Returns a copy of \a n characters of \a s or NULL if \a s is NULL.
  *
- * @sa check_strdup_tolower()
  * @sa check_strdup()
+ * @sa check_strdup_tolower()
  */
 PJL_WARN_UNUSED_RESULT
 char* check_strndup( char const *s, size_t n );
