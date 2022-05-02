@@ -47,10 +47,11 @@
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @param ... The arguments for fl_print_error().
+ * @param ... The `printf()` arguments.
  *
  * @sa fl_print_error()
  * @sa print_error_unknown_name()
+ * @sa print_warning()
  */
 #define print_error(...) \
   fl_print_error( __FILE__, __LINE__, __VA_ARGS__ )
@@ -75,9 +76,10 @@
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @param ... The arguments for fl_print_warning().
+ * @param ... The `printf()` arguments.
  *
  * @sa fl_print_warning()
+ * @sa print_error()
  */
 #define print_warning(...) \
   fl_print_warning( __FILE__, __LINE__, __VA_ARGS__ )
