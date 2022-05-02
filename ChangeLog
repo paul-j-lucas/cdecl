@@ -1,5 +1,8 @@
 2022-05-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c: Reworked asserts.
+   * gibberish.c: Added assert.
+   * gibberish.c: Whitespace.
    * gibberish.c, parser.y: c_ast_gibberish() now prints casts itself.
    * c_ast_check.c, gibberish.c: s/LANG_C_KNR/PROTOTYPES/
    * options.c, options.h: s/btid/btids/
