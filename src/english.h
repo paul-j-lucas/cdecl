@@ -46,28 +46,16 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Explains \a ast as a cast in pseudo-English.
- *
- * @param ast The AST to explain.
- * @param eout The `FILE` to print to.
- *
- * @sa c_ast_explain_declaration()
- * @sa c_ast_explain_type()
- */
-void c_ast_explain_cast( c_ast_t const *ast, FILE *eout );
-
-/**
- * Explains \a ast as a declaration in pseudo-English.
+ * Explains \a ast in pseudo-English.
  *
  * @param ast The AST to explain.
  * @param eout The `FILE` to print to.
  *
  * @note A newline _is_ printed.
  *
- * @sa c_ast_explain_cast()
  * @sa c_ast_explain_type()
  */
-void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout );
+void c_ast_explain( c_ast_t const *ast, FILE *eout );
 
 /**
  * Explains \a ast as a type in pseudo-English.
@@ -75,8 +63,7 @@ void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout );
  * @param ast The AST to explain.
  * @param eout The `FILE` to print to.
  *
- * @sa c_ast_explain_cast()
- * @sa c_ast_explain_declaration()
+ * @sa c_ast_explain()
  */
 void c_ast_explain_type( c_ast_t const *ast, FILE *eout );
 

@@ -2199,7 +2199,7 @@ explain_command
       DUMP_END();
 
       C_AST_CHECK( $2.ast );
-      c_ast_explain_declaration( $2.ast, cdecl_fout );
+      c_ast_explain( $2.ast, cdecl_fout );
     }
 
     /*
@@ -2216,7 +2216,7 @@ explain_command
       C_TYPE_ADD_TID( &$3->type, $2, @2 );
 
       C_AST_CHECK( $3 );
-      c_ast_explain_declaration( $3, cdecl_fout );
+      c_ast_explain( $3, cdecl_fout );
     }
 
     /*
@@ -2502,7 +2502,7 @@ c_style_cast_expr_c
       DUMP_END();
 
       C_AST_CHECK( cast_ast );
-      c_ast_explain_cast( cast_ast, cdecl_fout );
+      c_ast_explain( cast_ast, cdecl_fout );
     }
 
     /*
@@ -2555,7 +2555,7 @@ new_style_cast_expr_c
       }
 
       C_AST_CHECK( cast_ast );
-      c_ast_explain_cast( cast_ast, cdecl_fout );
+      c_ast_explain( cast_ast, cdecl_fout );
     }
   ;
 
@@ -3323,7 +3323,7 @@ decl_c
         slist_push_back( &decl_ast_list, CONST_CAST( void*, decl_ast ) );
       }
 
-      c_ast_explain_declaration( decl_ast, cdecl_fout );
+      c_ast_explain( decl_ast, cdecl_fout );
 
       //
       // The type's AST takes on the name of the thing being declared, e.g.:
@@ -3488,7 +3488,7 @@ destructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain_declaration( ast, cdecl_fout );
+      c_ast_explain( ast, cdecl_fout );
     }
   ;
 
@@ -3519,7 +3519,7 @@ file_scope_constructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain_declaration( ast, cdecl_fout );
+      c_ast_explain( ast, cdecl_fout );
     }
   ;
 
@@ -3548,7 +3548,7 @@ file_scope_destructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain_declaration( ast, cdecl_fout );
+      c_ast_explain( ast, cdecl_fout );
     }
   ;
 
@@ -3765,7 +3765,7 @@ pc99_func_or_constructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain_declaration( ast, cdecl_fout );
+      c_ast_explain( ast, cdecl_fout );
     }
   ;
 
@@ -4206,7 +4206,7 @@ pc99_pointer_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain_declaration( ast, cdecl_fout );
+      c_ast_explain( ast, cdecl_fout );
     }
   ;
 

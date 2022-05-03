@@ -97,6 +97,32 @@ static void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 }
 
 /**
+ * Explains \a ast as a cast in pseudo-English.
+ *
+ * @param ast The AST to explain.
+ * @param eout The `FILE` to print to.
+ *
+ * @sa c_ast_explain()
+ * @sa c_ast_explain_type()
+ */
+static void c_ast_explain_cast( c_ast_t const *ast, FILE *eout ) {
+  assert( ast != NULL );
+  assert( ast->cast_kind != C_CAST_NONE );
+  assert( eout != NULL );
+
+  if ( ast->cast_kind != C_CAST_C )
+    FPRINTF( eout, "%s ", c_cast_english( ast->cast_kind ) );
+  FPUTS( L_CAST, eout );
+  if ( !c_sname_empty( &ast->sname ) ) {
+    FPUTC( ' ', eout );
+    c_sname_english( &ast->sname, eout );
+  }
+  FPRINTF( cdecl_fout, " %s ", L_INTO );
+  c_ast_english( ast, eout );
+  FPUTC( '\n', eout );
+}
+
+/**
  * Helper function for c_ast_visitor_english() that prints a function-like
  * AST's parameters, if any.
  *
@@ -310,27 +336,14 @@ static void c_type_print_not_base( c_type_t const *type, FILE *eout ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_explain_cast( c_ast_t const *ast, FILE *eout ) {
+void c_ast_explain( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
-  assert( ast->cast_kind != C_CAST_NONE );
   assert( eout != NULL );
 
-  if ( ast->cast_kind != C_CAST_C )
-    FPRINTF( eout, "%s ", c_cast_english( ast->cast_kind ) );
-  FPUTS( L_CAST, eout );
-  if ( !c_sname_empty( &ast->sname ) ) {
-    FPUTC( ' ', eout );
-    c_sname_english( &ast->sname, eout );
+  if ( ast->cast_kind != C_CAST_NONE ) {
+    c_ast_explain_cast( ast, eout );
+    return;
   }
-  FPRINTF( cdecl_fout, " %s ", L_INTO );
-  c_ast_english( ast, eout );
-  FPUTC( '\n', eout );
-}
-
-void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout ) {
-  assert( ast != NULL );
-  assert( ast->cast_kind == C_CAST_NONE );
-  assert( eout != NULL );
 
   FPRINTF( eout, "%s ", L_DECLARE );
   if ( ast->kind != K_USER_DEF_CONVERSION ) {
