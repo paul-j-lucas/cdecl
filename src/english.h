@@ -54,6 +54,7 @@
  * @note A newline _is_ printed.
  *
  * @sa c_ast_english_type()
+ * @sa c_ast_gibberish()
  */
 void c_ast_english( c_ast_t const *ast, FILE *eout );
 
@@ -85,6 +86,8 @@ char const* c_cast_english( c_cast_kind_t kind );
  * @param eout The `FILE` to print to.
  *
  * @note A newline is _not_ printed.
+ *
+ * @sa c_sname_full_name()
  */
 void c_sname_english( c_sname_t const *sname, FILE *eout );
 

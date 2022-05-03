@@ -288,6 +288,7 @@ void c_sname_free( c_sname_t *sname );
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
+ * @sa c_sname_english()
  * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name()

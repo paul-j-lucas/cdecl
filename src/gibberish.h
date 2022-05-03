@@ -125,6 +125,7 @@
  * #C_GIB_CAST or #C_GIB_DECL.
  * @param gout The `FILE` to print to.
  *
+ * @sa c_ast_english()
  * @sa c_typedef_gibberish()
  */
 void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout );
