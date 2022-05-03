@@ -787,8 +787,8 @@ static char const* c_type_name_impl( c_type_t const *type,
       TA_NODISCARD,
       TA_NORETURN,                      // still here for C++'s [[noreturn]]
       TA_NO_UNIQUE_ADDRESS,
+      // Microsoft calling conventions must be handled later -- see below.
     };
-    // Microsoft calling conventions must be handled later -- see below.
 
     bool const print_brackets =
       OPT_LANG_IS( ATTRIBUTES ) &&
