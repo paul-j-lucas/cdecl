@@ -425,11 +425,11 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         // Note that this handles printing () only for typedef types; for non-
         // typedef types, see the similar special case in c_type_name_impl().
         //
-        bool const print_parens_for_cpp23_Atomic =
+        bool const print_parens_for_Atomic =
           OPT_LANG_IS( CPP_MIN(23) ) &&
           c_tid_is_any( type.stids, TS_ATOMIC );
 
-        if ( print_parens_for_cpp23_Atomic )
+        if ( print_parens_for_Atomic )
           FPUTC( '(', g->gout );
         else if ( is_more_than_plain_typedef && !opt_east_const )
           FPUTC( ' ', g->gout );
@@ -448,7 +448,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         g_print_ast_name( g, ast->as.tdef.for_ast );
         g->skip_name_for_using = orig_skip_name_for_using;
 
-        if ( print_parens_for_cpp23_Atomic )
+        if ( print_parens_for_Atomic )
           FPUTC( ')', g->gout );
         if ( is_more_than_plain_typedef && opt_east_const )
           FPRINTF( g->gout, " %s", c_type_name_c( &ast->type ) );

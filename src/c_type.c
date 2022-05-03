@@ -924,11 +924,11 @@ static char const* c_type_name_impl( c_type_t const *type,
   // Note that this handles printing () only for non-typedef types; for typedef
   // types, see the similar special case for K_TYPEDEF in g_ast_print().
   //
-  bool const print_parens_for_cpp23_Atomic =
+  bool const print_parens_for_Atomic =
     OPT_LANG_IS( CPP_MIN(23) ) && !in_english &&
     c_tid_is_any( stids, TS_ATOMIC ) && !c_tid_is_any( btids, TB_TYPEDEF );
 
-  if ( print_parens_for_cpp23_Atomic ) {
+  if ( print_parens_for_Atomic ) {
     strbuf_putc( sbuf, '(' );
     space = false;
   }
@@ -969,7 +969,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   };
   C_TID_NAME_CAT( sbuf, btids, BTIDS, in_english, ' ', &space );
 
-  if ( print_parens_for_cpp23_Atomic )
+  if ( print_parens_for_Atomic )
     strbuf_putc( sbuf, ')' );
 
   // Microsoft calling conventions must be handled here.
