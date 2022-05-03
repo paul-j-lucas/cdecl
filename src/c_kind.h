@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares types and functions for kinds of things in C/C++ declarations.
+ * Declares types and functions for kinds of AST nodes in C/C++ declarations.
  */
 
 // local
@@ -32,7 +32,7 @@
 
 /**
  * @defgroup c-kinds-group C/C++ Declaration Kinds
- * Types and functions for kinds of things in C/C++ declarations.
+ * Types and functions for kinds of AST nodes in C/C++ declarations.
  * @{
  */
 
@@ -60,11 +60,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Kinds of things comprising a C/C++ declaration.
+ * Kinds of AST nodes comprising a C/C++ declaration.
  *
- * A given thing may only have a single kind and _not_ be a bitwise-or of
+ * A given AST node may only have a single kind and _not_ be a bitwise-or of
  * kinds.  However, a bitwise-or of kinds may be used to test whether a given
- * thing is any _one_ of those kinds.
+ * AST node is any _one_ of those kinds.
  */
 enum c_ast_kind {
   /**
