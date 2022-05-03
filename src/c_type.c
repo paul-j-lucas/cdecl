@@ -791,7 +791,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     // Microsoft calling conventions must be handled later -- see below.
 
     bool const print_brackets =
-      OPT_LANG_IS( MIN(C_2X) ) &&
+      OPT_LANG_IS( ATTRIBUTES ) &&
       cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH && !in_english;
 
     bool comma = false;
