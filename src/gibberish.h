@@ -46,8 +46,9 @@
 // Flags for c_ast_gibberish() and c_typedef_gibberish().
 
 /**
- * Unset value for gibberish flags.  Can also be used to mean _not_ to print in
- * gibberish (hence, print in English).
+ * Unset value for gibberish flags for c_ast_gibberish() and
+ * c_typedef_gibberish().  Can also be used to mean _not_ to print in gibberish
+ * (hence, print in English).
  */
 #define C_GIB_NONE        0u
 
@@ -69,10 +70,14 @@
 
 /**
  * Flag for c_ast_gibberish() to indicate that the declaration is for multiple
- * objects.
+ * objects, for example:
  *
- * @note Unlike #C_GIB_OMIT_TYPE, must be used for the entire declaration.
- * @note May only be used in combination with #C_GIB_DECL.
+ *      int *p, *q;
+ *
+ * @note Unlike #C_GIB_OMIT_TYPE, `C_GIB_MULTI_DECL` must be used for the
+ * entire declaration.
+ * @note May be used _only_ in combination with #C_GIB_DECL and
+ * #C_GIB_MULTI_DECL.
  *
  * @sa #C_GIB_DECL
  * @sa #C_GIB_OMIT_TYPE
@@ -88,7 +93,8 @@
  *
  * the gibberish for `q` must _not_ print the `int` again.
  *
- * @note May only be used in combination with #C_GIB_DECL.
+ * @note May be used _only_ in combination with #C_GIB_DECL and
+ * #C_GIB_MULTI_DECL.
  *
  * @sa #C_GIB_DECL
  * @sa #C_GIB_MULTI_DECL
@@ -112,11 +118,11 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Prints \a ast as a C/C++ declaration or cast.
+ * Prints \a ast as gibberish, aka, a C/C++ declaration or cast.
  *
  * @param ast The AST to print.
- * @param flags The gibberish flags to use; must include either #C_GIB_CAST or
- * #C_GIB_DECL.
+ * @param flags The gibberish flags to use; must include at least either
+ * #C_GIB_CAST or #C_GIB_DECL.
  * @param gout The `FILE` to print to.
  *
  * @sa c_typedef_gibberish()
