@@ -310,9 +310,7 @@ static void c_type_print_not_base( c_type_t const *type, FILE *eout ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_explain_cast( c_sname_t const *sname, c_ast_t const *ast,
-                         FILE *eout ) {
-  assert( sname != NULL );
+void c_ast_explain_cast( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
   assert( ast->cast_kind != C_CAST_NONE );
   assert( eout != NULL );
@@ -320,9 +318,9 @@ void c_ast_explain_cast( c_sname_t const *sname, c_ast_t const *ast,
   if ( ast->cast_kind != C_CAST_C )
     FPRINTF( eout, "%s ", c_cast_english( ast->cast_kind ) );
   FPUTS( L_CAST, eout );
-  if ( !c_sname_empty( sname ) ) {
+  if ( !c_sname_empty( &ast->sname ) ) {
     FPUTC( ' ', eout );
-    c_sname_english( sname, eout );
+    c_sname_english( &ast->sname, eout );
   }
   FPRINTF( cdecl_fout, " %s ", L_INTO );
   c_ast_english( ast, eout );

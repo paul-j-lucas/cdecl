@@ -48,15 +48,14 @@
 /**
  * Explains \a ast as a cast in pseudo-English.
  *
- * @param sname The scoped name being cast.
  * @param ast The AST to explain.
  * @param eout The `FILE` to print to.
  *
  * @sa c_ast_explain_declaration()
  * @sa c_ast_explain_type()
  */
-void c_ast_explain_cast( c_sname_t const *sname, c_ast_t const *ast,
-                         FILE *eout );
+void c_ast_explain_cast( c_ast_t const *ast, FILE *eout );
+
 /**
  * Explains \a ast as a declaration in pseudo-English.
  *

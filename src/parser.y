@@ -2496,17 +2496,13 @@ c_style_cast_expr_c
 
       c_ast_t *const cast_ast = c_ast_patch_placeholder( $2, $4.ast );
       cast_ast->cast_kind = C_CAST_C;
+      cast_ast->sname = $6;
 
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
 
-      bool const ok = c_ast_check( cast_ast );
-      if ( ok )
-        c_ast_explain_cast( &$6, cast_ast, cdecl_fout );
-
-      c_sname_cleanup( &$6 );
-      if ( !ok )
-        PARSE_ABORT();
+      C_AST_CHECK( cast_ast );
+      c_ast_explain_cast( cast_ast, cdecl_fout );
     }
 
     /*
@@ -2548,20 +2544,18 @@ new_style_cast_expr_c
 
       c_ast_t *const cast_ast = c_ast_patch_placeholder( $3, $5.ast );
       cast_ast->cast_kind = $1;
+      cast_ast->sname = $8;
 
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
 
-      bool ok = false;
-
-      if ( unsupported( LANG_CPP_ANY ) )
+      if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@1, "%s_cast not supported in C\n", cast_literal );
-      else if ( (ok = c_ast_check( cast_ast )) )
-        c_ast_explain_cast( &$8, cast_ast, cdecl_fout );
-
-      c_sname_cleanup( &$8 );
-      if ( !ok )
         PARSE_ABORT();
+      }
+
+      C_AST_CHECK( cast_ast );
+      c_ast_explain_cast( cast_ast, cdecl_fout );
     }
   ;
 
