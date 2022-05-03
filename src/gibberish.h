@@ -132,8 +132,11 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout );
 /**
  * Given \a kind, gets the associated C++ literal.
  *
- * @param kind The cast kind to get the literal for.
+ * @param kind The cast kind to get the literal for.  Must only be one of
+ * #C_CAST_CONST, #C_CAST_DYNAMIC, #C_CAST_REINTERPRET, or #C_CAST_STATIC.
  * @return Returns said literal.
+ *
+ * @sa c_cast_english()
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_cast_gibberish( c_cast_kind_t kind );

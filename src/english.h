@@ -86,6 +86,8 @@ void c_ast_explain_type( c_ast_t const *ast, FILE *eout );
  *
  * @param kind The cast kind to get the literal for.
  * @return Returns said literal.
+ *
+ * @sa c_cast_gibberish()
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_cast_english( c_cast_kind_t kind );
