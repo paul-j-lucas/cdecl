@@ -1,5 +1,11 @@
 2022-05-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sname.c, english.c, english.h, parser.y: s/c_ast_explain/c_ast_english/
+   * english.c, english.h, parser.y: Eliminated public c_ast_explain_cast().
+   * english.c, english.h, parser.y: Now setting the cast_ast's sname so it no
+     longer has to be passed as an argument.
+   * gibberish.c: c_cast_gibberish() no longer accepts C_CAST_NONE nor C_CAST_C
+     since those can never be emitted in gibberish.
    * c_type.c: Now using LANG_ATTRIBUTES.
    * c_kind.c: Now using LANG_ENUM.
 
