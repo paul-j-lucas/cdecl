@@ -1,3 +1,8 @@
+2022-05-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Now using LANG_ATTRIBUTES.
+   * c_kind.c: Now using LANG_ENUM.
+
 2022-05-02  Paul J. Lucas <paul@lucasmail.org>
 
    * gibberish.c: Reworked asserts.
