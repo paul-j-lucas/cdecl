@@ -986,8 +986,9 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
 
 char const* c_cast_gibberish( c_cast_kind_t kind ) {
   switch ( kind ) {
-    case C_CAST_NONE        : return "none";
-    case C_CAST_C           : return "C";
+    case C_CAST_NONE:
+    case C_CAST_C:
+      break;                            // LCOV_EXCL_LINE
     case C_CAST_CONST       : return L_CONST_CAST;
     case C_CAST_DYNAMIC     : return L_DYNAMIC_CAST;
     case C_CAST_REINTERPRET : return L_REINTERPRET_CAST;
