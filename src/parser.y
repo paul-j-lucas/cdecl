@@ -656,7 +656,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
 
     // The == works because this function is called with L_DEFINE.
     if ( decl_keyword == L_DEFINE ) {
-      c_ast_explain_type( old_tdef->ast, stderr );
+      c_ast_english_type( old_tdef->ast, stderr );
     } else {
       //
       // When printing the existing type in C/C++ as part of an error message,
@@ -979,7 +979,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
     if ( show_type ) {
       if ( sti->gib_flags == C_GIB_NONE )
-        c_ast_explain_type( tdef->ast, cdecl_fout );
+        c_ast_english_type( tdef->ast, cdecl_fout );
       else
         c_typedef_gibberish( tdef, sti->gib_flags, cdecl_fout );
       FPUTC( '\n', cdecl_fout );
@@ -2199,7 +2199,7 @@ explain_command
       DUMP_END();
 
       C_AST_CHECK( $2.ast );
-      c_ast_explain( $2.ast, cdecl_fout );
+      c_ast_english( $2.ast, cdecl_fout );
     }
 
     /*
@@ -2216,7 +2216,7 @@ explain_command
       C_TYPE_ADD_TID( &$3->type, $2, @2 );
 
       C_AST_CHECK( $3 );
-      c_ast_explain( $3, cdecl_fout );
+      c_ast_english( $3, cdecl_fout );
     }
 
     /*
@@ -2331,7 +2331,7 @@ show_command
       DUMP_END();
 
       if ( $3 == C_GIB_NONE )
-        c_ast_explain_type( $2->ast, cdecl_fout );
+        c_ast_english_type( $2->ast, cdecl_fout );
       else
         c_typedef_gibberish( $2, $3, cdecl_fout );
       FPUTC( '\n', cdecl_fout );
@@ -2502,7 +2502,7 @@ c_style_cast_expr_c
       DUMP_END();
 
       C_AST_CHECK( cast_ast );
-      c_ast_explain( cast_ast, cdecl_fout );
+      c_ast_english( cast_ast, cdecl_fout );
     }
 
     /*
@@ -2555,7 +2555,7 @@ new_style_cast_expr_c
       }
 
       C_AST_CHECK( cast_ast );
-      c_ast_explain( cast_ast, cdecl_fout );
+      c_ast_english( cast_ast, cdecl_fout );
     }
   ;
 
@@ -3240,7 +3240,7 @@ decl_list_c_opt
       DUMP_END();
 
       C_AST_CHECK( type_ast );
-      c_ast_explain_type( type_ast, cdecl_fout );
+      c_ast_english_type( type_ast, cdecl_fout );
       FPUTC( '\n', cdecl_fout );
     }
 
@@ -3323,7 +3323,7 @@ decl_c
         slist_push_back( &decl_ast_list, CONST_CAST( void*, decl_ast ) );
       }
 
-      c_ast_explain( decl_ast, cdecl_fout );
+      c_ast_english( decl_ast, cdecl_fout );
 
       //
       // The type's AST takes on the name of the thing being declared, e.g.:
@@ -3488,7 +3488,7 @@ destructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain( ast, cdecl_fout );
+      c_ast_english( ast, cdecl_fout );
     }
   ;
 
@@ -3519,7 +3519,7 @@ file_scope_constructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain( ast, cdecl_fout );
+      c_ast_english( ast, cdecl_fout );
     }
   ;
 
@@ -3548,7 +3548,7 @@ file_scope_destructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain( ast, cdecl_fout );
+      c_ast_english( ast, cdecl_fout );
     }
   ;
 
@@ -3765,7 +3765,7 @@ pc99_func_or_constructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain( ast, cdecl_fout );
+      c_ast_english( ast, cdecl_fout );
     }
   ;
 
@@ -4206,7 +4206,7 @@ pc99_pointer_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_explain( ast, cdecl_fout );
+      c_ast_english( ast, cdecl_fout );
     }
   ;
 

@@ -53,9 +53,9 @@
  *
  * @note A newline _is_ printed.
  *
- * @sa c_ast_explain_type()
+ * @sa c_ast_english_type()
  */
-void c_ast_explain( c_ast_t const *ast, FILE *eout );
+void c_ast_english( c_ast_t const *ast, FILE *eout );
 
 /**
  * Explains \a ast as a type in pseudo-English.
@@ -63,9 +63,9 @@ void c_ast_explain( c_ast_t const *ast, FILE *eout );
  * @param ast The AST to explain.
  * @param eout The `FILE` to print to.
  *
- * @sa c_ast_explain()
+ * @sa c_ast_english()
  */
-void c_ast_explain_type( c_ast_t const *ast, FILE *eout );
+void c_ast_english_type( c_ast_t const *ast, FILE *eout );
 
 /**
  * Given \a kind, gets the associated English literal.
