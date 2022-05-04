@@ -1,3 +1,10 @@
+2022-05-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, cdecl.c, english.c, gibberish.c, parser.y,
+     declare_pmri.out: Using fewer L_* constants.
+   * c_sname.c, english.c, english.h, gibberish.h, parser.y:
+     s/c_ast_english_type/c_typedef_english/
+
 2022-05-03  Paul J. Lucas <paul@lucasmail.org>
 
    * english.c: s/cdecl_out/eout/
