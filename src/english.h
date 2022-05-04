@@ -53,21 +53,10 @@
  *
  * @note A newline _is_ printed.
  *
- * @sa c_ast_english_type()
  * @sa c_ast_gibberish()
+ * @sa c_typedef_english()
  */
 void c_ast_english( c_ast_t const *ast, FILE *eout );
-
-/**
- * Explains \a ast as a type in pseudo-English.
- *
- * @param ast The AST to explain.
- * @param eout The `FILE` to print to.
- *
- * @sa c_ast_english()
- * @sa c_typedef_gibberish()
- */
-void c_ast_english_type( c_ast_t const *ast, FILE *eout );
 
 /**
  * Given \a kind, gets the associated English literal.
@@ -91,6 +80,17 @@ char const* c_cast_english( c_cast_kind_t kind );
  * @sa c_sname_full_name()
  */
 void c_sname_english( c_sname_t const *sname, FILE *eout );
+
+/**
+ * Explains \a tdef as a type in pseudo-English.
+ *
+ * @param tdef The type to explain.
+ * @param eout The `FILE` to print to.
+ *
+ * @sa c_ast_english()
+ * @sa c_typedef_gibberish()
+ */
+void c_typedef_english( c_typedef_t const *tdef, FILE *eout );
 
 ///////////////////////////////////////////////////////////////////////////////
 

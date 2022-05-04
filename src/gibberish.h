@@ -150,8 +150,8 @@ char const* c_cast_gibberish( c_cast_kind_t kind );
  * or #C_GIB_USING.
  * @param gout The `FILE` to print to.
  *
- * @sa c_ast_english_type()
  * @sa c_ast_gibberish()
+ * @sa c_typedef_english()
  */
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
                           FILE *gout );

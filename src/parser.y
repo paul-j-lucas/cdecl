@@ -656,7 +656,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
 
     // The == works because this function is called with L_DEFINE.
     if ( decl_keyword == L_DEFINE ) {
-      c_ast_english_type( old_tdef->ast, stderr );
+      c_typedef_english( old_tdef, stderr );
     } else {
       //
       // When printing the existing type in C/C++ as part of an error message,
@@ -979,7 +979,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
     if ( show_type ) {
       if ( sti->gib_flags == C_GIB_NONE )
-        c_ast_english_type( tdef->ast, cdecl_fout );
+        c_typedef_english( tdef, cdecl_fout );
       else
         c_typedef_gibberish( tdef, sti->gib_flags, cdecl_fout );
       FPUTC( '\n', cdecl_fout );
@@ -2331,7 +2331,7 @@ show_command
       DUMP_END();
 
       if ( $3 == C_GIB_NONE )
-        c_ast_english_type( $2->ast, cdecl_fout );
+        c_typedef_english( $2, cdecl_fout );
       else
         c_typedef_gibberish( $2, $3, cdecl_fout );
       FPUTC( '\n', cdecl_fout );
@@ -3240,7 +3240,7 @@ decl_list_c_opt
       DUMP_END();
 
       C_AST_CHECK( type_ast );
-      c_ast_english_type( type_ast, cdecl_fout );
+      c_typedef_english( &C_TYPEDEF_AST_LIT( type_ast ), cdecl_fout );
       FPUTC( '\n', cdecl_fout );
     }
 
