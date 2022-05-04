@@ -8,14 +8,14 @@
 > certain logic to it.*
 
 <div style="text-align: center">
-&mdash; Dennis M. Ritchie
+&mdash; Dennis M. Ritchie, Creator of C
 </div>
 <p></p>
 
 > *I consider the C declarator syntax an experiment that failed.*
 
 <div style="text-align: center">
-&mdash; Bjarne Stroustrup
+&mdash; Bjarne Stroustrup, Creator of C++
 </div>
 <p></p>
 
