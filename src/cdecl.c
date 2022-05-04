@@ -237,7 +237,7 @@ static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
 PJL_WARN_UNUSED_RESULT
 static int cdecl_parse_stdin( void ) {
   if ( opt_interactive && opt_prompt )
-    FPRINTF( cdecl_fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
+    FPUTS( "Type \"help\" or \"?\" for help\n", cdecl_fout );
   return cdecl_parse_file( cdecl_fin, cdecl_fout, /*return_on_error=*/false );
 }
 

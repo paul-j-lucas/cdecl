@@ -1907,7 +1907,7 @@ declare_command
   | Y_DECLARE error
     {
       if ( OPT_LANG_IS( CPP_ANY ) )
-        elaborate_error( "name or %s expected", L_OPERATOR );
+        elaborate_error( "name or operator expected" );
       else
         elaborate_error( "name expected" );
     }
@@ -2264,10 +2264,7 @@ help_what_opt
   | Y_OPTIONS                     { $$ = CDECL_HELP_OPTIONS;  }
   | error
     {
-      elaborate_error(
-        "\"%s\", \"%s\", or \"%s\" expected",
-        L_COMMANDS, L_ENGLISH, L_OPTIONS
-      );
+      elaborate_error( "\"commands\", \"english\", or \"options\" expected" );
     }
   ;
 
@@ -2398,8 +2395,7 @@ show_command
   | Y_SHOW error
     {
       elaborate_error(
-        "type name or \"%s\", \"%s\", or \"%s\" expected",
-        L_ALL, L_PREDEFINED, L_USER
+        "type name or \"all\", \"predefined\", or \"user\" expected"
       );
     }
   ;
@@ -2425,11 +2421,9 @@ show_format_exp
   | error
     {
       if ( OPT_LANG_IS( USING_DECLARATION ) )
-        elaborate_error(
-          "\"%s\", \"%s\", or \"%s\" expected", L_ENGLISH, L_TYPEDEF, L_USING
-        );
+        elaborate_error( "\"english\", \"typedef\", or \"using\" expected" );
       else
-        elaborate_error( "\"%s\" or \"%s\" expected", L_ENGLISH, L_TYPEDEF );
+        elaborate_error( "\"english\" or \"typedef\" expected" );
     }
   ;
 
@@ -3859,7 +3853,7 @@ noexcept_bool_stid_exp
   | Y_TRUE
   | error
     {
-      elaborate_error( "\"%s\" or \"%s\" expected", L_TRUE, L_FALSE );
+      elaborate_error( "\"true\" or \"false\" expected" );
     }
   ;
 
@@ -3938,9 +3932,7 @@ func_equals_c_stid_opt
   | '=' error
     {
       if ( OPT_LANG_IS( DEFAULT_DELETE_FUNC ) )
-        elaborate_error(
-          "'0', \"%s\", or \"%s\" expected", L_DEFAULT, L_DELETE
-        );
+        elaborate_error( "'0', \"default\", or \"delete\" expected" );
       else
         elaborate_error( "'0' expected" );
     }
@@ -5974,7 +5966,7 @@ returning_english_ast
 
   | returning error
     {
-      elaborate_error( "English expected after \"%s\"", L_RETURNING );
+      elaborate_error( "English expected after \"returning\"" );
     }
   ;
 
@@ -6184,7 +6176,7 @@ pointer_decl_english_ast
   | Y_POINTER to_exp error
     {
       if ( OPT_LANG_IS( CPP_ANY ) )
-        elaborate_error( "type name or \"%s\" expected", L_MEMBER );
+        elaborate_error( "type name or \"member\" expected" );
       else
         elaborate_error( "type name expected" );
     }
@@ -6936,10 +6928,7 @@ as_into_to_exp
   | Y_TO
   | error
     {
-      elaborate_error(
-        "\"%s\", \"%s\", or \"%s\" expected",
-        L_AS, L_INTO, L_TO
-      );
+      elaborate_error( "\"as\", \"into\", or \"to\" expected" );
     }
   ;
 
@@ -6955,10 +6944,7 @@ class_struct_union_btid_exp
   : class_struct_union_btid
   | error
     {
-      elaborate_error(
-        "\"%s\", \"%s\" or \"%s\" expected",
-        L_CLASS, L_STRUCT, L_UNION
-      );
+      elaborate_error( "\"class\", \"struct\", or \"union\" expected" );
     }
   ;
 
@@ -7281,8 +7267,7 @@ scope_english_type_exp
   | error
     {
       elaborate_error(
-        "\"%s\", \"%s\", \"%s\", \"%s\", or \"%s\" expected",
-        L_CLASS, L_NAMESPACE, L_SCOPE, L_STRUCT, L_UNION
+        "\"class\", \"namespace\", \"scope\", \"struct\", or \"union\" expected"
       );
     }
   ;

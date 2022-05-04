@@ -60,7 +60,7 @@
   print_error( &(AST)->loc,                             \
     "can not cast into %s", c_kind_name( (AST)->kind )  \
   );                                                    \
-  print_hint( "%s %s %s", L_CAST, L_INTO, (HINT) ); )
+  print_hint( "cast into %s", (HINT) ); )
 
 /**
  * Prints an error: `<kind> not supported[ {in|since|unless|until} <lang>]`.
@@ -1876,7 +1876,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   if ( c_tid_is_any( ast->type.stids, TS_CV ) ) {
     c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
     error_kind_not_tid( ast, qual_stids, "" );
-    print_hint( "%s to %s", L_REFERENCE, c_tid_name_error( qual_stids ) );
+    print_hint( "reference to %s", c_tid_name_error( qual_stids ) );
     return false;
   }
 
@@ -1893,7 +1893,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 
   if ( c_ast_is_builtin_any( to_ast, TB_VOID ) ) {
     error_kind_to_tid( ast, TB_VOID, "" );
-    print_hint( "%s to %s", c_kind_name( K_POINTER ), L_VOID );
+    print_hint( "%s to void", c_kind_name( K_POINTER ) );
     return false;
   }
 
@@ -2197,7 +2197,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
           "\"throw\" not supported%s",
           C_LANG_WHICH( THROW )
         );
-        print_hint( "\"%s\"", L_NOEXCEPT );
+        print_hint( "\"noexcept\"" );
         return VISITOR_ERROR_FOUND;
       }
       break;
@@ -2474,7 +2474,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
           "\"throw\" is deprecated%s",
           C_LANG_WHICH( CPP_MAX(03) )
         );
-        print_hint( "\"%s\"", L_NOEXCEPT );
+        print_hint( "\"noexcept\"" );
       }
       break;
 

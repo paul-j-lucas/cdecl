@@ -61,9 +61,8 @@ static void c_ast_bit_width_english( c_ast_t const *ast, FILE *eout ) {
   assert( (ast->kind & (K_BUILTIN | K_TYPEDEF)) != 0 );
   assert( eout != NULL );
 
-  if ( ast->as.builtin.bit_width > 0 ) {
-    FPRINTF( eout, " %s %u %s", L_WIDTH, ast->as.builtin.bit_width, L_BITS );
-  }
+  if ( ast->as.builtin.bit_width > 0 )
+    FPRINTF( eout, " width %u bits", ast->as.builtin.bit_width );
 }
 
 /**
@@ -87,7 +86,7 @@ static void c_ast_english_cast( c_ast_t const *ast, FILE *eout ) {
     FPUTC( ' ', eout );
     c_sname_english( &ast->sname, eout );
   }
-  FPRINTF( eout, " %s ", L_INTO );
+  FPUTS( " into ", eout );
   c_ast_english_impl( ast, eout );
   FPUTC( '\n', eout );
 }
@@ -113,12 +112,10 @@ static void c_ast_english_impl( c_ast_t const *ast, FILE *eout ) {
       break;
     case C_ALIGNAS_EXPR:
       if ( ast->align.as.expr > 0 )
-        FPRINTF( eout,
-          " %s %s %u %s", L_ALIGNED, L_AS, ast->align.as.expr, L_BYTES
-        );
+        FPRINTF( eout, " aligned as %u bytes", ast->align.as.expr );
       break;
     case C_ALIGNAS_TYPE:
-      FPRINTF( eout, " %s %s ", L_ALIGNED, L_AS );
+      FPUTS( " aligned as ", eout );
       c_ast_english_impl( ast->align.as.type_ast, eout );
       break;
   } // switch
@@ -151,7 +148,7 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
       //      <name> as ...
       //
       c_sname_english( sname, eout );
-      FPRINTF( eout, " %s ", L_AS );
+      FPUTS( " as ", eout );
     } else {
       //
       // If there's no name, it's an unnamed parameter, e.g.:
@@ -187,12 +184,12 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
     case K_ARRAY:
       c_type_print_not_base( &ast->type, eout );
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
-        FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
-      FPRINTF( eout, "%s ", L_ARRAY );
+        FPUTS( "variable length ", eout );
+      FPUTS( "array ", eout );
       fputs_sp( c_tid_name_english( ast->as.array.stids ), eout );
       if ( ast->as.array.size >= 0 )
         FPRINTF( eout, PRId_C_ARRAY_SIZE_T " ", ast->as.array.size );
-      FPRINTF( eout, "%s ", L_OF );
+      FPUTS( "of ", eout );
       break;
 
     case K_APPLE_BLOCK:
@@ -205,7 +202,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       switch ( ast->kind ) {
         case K_FUNCTION:
           if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
-            FPRINTF( eout, "%s ", L_MEMBER );
+            FPUTS( "member ", eout );
           break;
         case K_OPERATOR: {
           unsigned const overload_flags = c_ast_oper_overload( ast );
@@ -226,7 +223,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
         c_ast_func_params_english( ast, eout );
       }
       if ( ast->as.func.ret_ast != NULL )
-        FPRINTF( eout, " %s ", L_RETURNING );
+        FPUTS( " returning ", eout );
       break;
 
     case K_BUILTIN:
@@ -238,7 +235,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
       c_sname_english( &ast->as.ecsu.ecsu_sname, eout );
       if ( ast->as.ecsu.of_ast != NULL )
-        FPRINTF( eout, " %s %s ", L_OF, L_TYPE );
+        FPUTS( " of type ", eout );
       break;
 
     case K_NAME:
@@ -259,12 +256,12 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       c_type_print_not_base( &ast->type, eout );
-      FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
+      FPRINTF( eout, "%s to ", c_kind_name( ast->kind ) );
       break;
 
     case K_POINTER_TO_MEMBER:
       c_type_print_not_base( &ast->type, eout );
-      FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_OF );
+      FPRINTF( eout, "%s of ", c_kind_name( ast->kind ) );
       fputs_sp( c_tid_name_english( ast->type.btids ), eout );
       c_sname_english( &ast->as.ptr_mbr.class_sname, eout );
       FPUTC( ' ', eout );
@@ -282,12 +279,11 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       FPUTS( c_kind_name( ast->kind ), eout );
       if ( !c_sname_empty( &ast->sname ) ) {
         FPRINTF( eout,
-          " %s %s ",
-          L_OF, c_type_name_english( c_sname_local_type( &ast->sname ) )
+          " of %s ", c_type_name_english( c_sname_local_type( &ast->sname ) )
         );
         c_sname_english( &ast->sname, eout );
       }
-      FPRINTF( eout, " %s ", L_RETURNING );
+      FPUTS( " returning ", eout );
       break;
 
     case K_VARIADIC:
@@ -316,7 +312,7 @@ static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
     c_sname_english_impl( scope->next, eout );
     c_scope_data_t const *const data = c_scope_data( scope );
     FPRINTF( eout,
-      " %s %s %s", L_OF, c_type_name_english( &data->type ), data->name
+      " of %s %s", c_type_name_english( &data->type ), data->name
     );
   }
 }
@@ -347,7 +343,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
     return;
   }
 
-  FPRINTF( eout, "%s ", L_DECLARE );
+  FPUTS( "declare ", eout );
   if ( ast->kind != K_USER_DEF_CONVERSION ) {
     //
     // Every kind but a user-defined conversion has a name.
@@ -375,10 +371,10 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
     if ( scope_name[0] != '\0' ) {
       assert( !c_type_is_none( scope_type ) );
       FPRINTF( eout,
-        "%s %s %s ", L_OF, c_type_name_english( scope_type ), scope_name
+        "of %s %s ", c_type_name_english( scope_type ), scope_name
       );
     }
-    FPRINTF( eout, "%s ", L_AS );
+    FPUTS( "as ", eout );
   }
 
   c_ast_english_impl( ast, eout );
@@ -412,9 +408,9 @@ void c_typedef_english( c_typedef_t const *tdef, FILE *eout ) {
   assert( tdef->ast != NULL );
   assert( eout != NULL );
 
-  FPRINTF( eout, "%s ", L_DEFINE );
+  FPUTS( "define ", eout );
   c_sname_english( &tdef->ast->sname, eout );
-  FPRINTF( eout, " %s ", L_AS );
+  FPUTS( " as ", eout );
   c_ast_english_impl( tdef->ast, eout );
 }
 

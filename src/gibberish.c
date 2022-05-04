@@ -253,7 +253,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( ast->kind == K_USER_DEF_CONVERSION ) {
         if ( !c_sname_empty( &ast->sname ) )
           FPRINTF( g->gout, "%s::", c_sname_full_name( &ast->sname ) );
-        FPRINTF( g->gout, "%s ", L_OPERATOR );
+        FPUTS( "operator ", g->gout );
       }
       if ( ast->as.parent.of_ast != NULL )
         g_print_ast( g, ast->as.parent.of_ast );
@@ -280,19 +280,19 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         );
       }
       if ( is_noexcept )
-        FPRINTF( g->gout, " %s", L_NOEXCEPT );
+        FPUTS( " noexcept", g->gout );
       else if ( is_throw )
-        FPRINTF( g->gout, " %s()", L_THROW );
+        FPUTS( " throw()", g->gout );
       if ( is_override )
-        FPRINTF( g->gout, " %s", L_OVERRIDE );
+        FPUTS( " override", g->gout );
       else if ( is_final )
-        FPRINTF( g->gout, " %s", L_FINAL );
+        FPUTS( " final", g->gout );
       else if ( is_pure_virtual )
         FPUTS( " = 0", g->gout );
       if ( is_default )
-        FPRINTF( g->gout, " = %s", L_DEFAULT );
+        FPUTS( " = default", g->gout );
       else if ( is_delete )
-        FPRINTF( g->gout, " = %s", L_DELETE );
+        FPUTS( " = delete", g->gout );
       break;
 
     case K_BUILTIN:
@@ -781,7 +781,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
     case K_REFERENCE:
       if ( opt_alt_tokens ) {
         g_print_space_once( g );
-        FPRINTF( g->gout, "%s ", L_BITAND );
+        FPUTS( "bitand ", g->gout );
       } else {
         FPUTC( '&', g->gout );
       }
@@ -790,7 +790,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
     case K_RVALUE_REFERENCE:
       if ( opt_alt_tokens ) {
         g_print_space_once( g );
-        FPRINTF( g->gout, "%s ", L_AND );
+        FPUTS( "and ", g->gout );
       } else {
         FPUTS( "&&", g->gout );
       }
@@ -842,7 +842,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       if ( c_sname_count( &ast->sname ) > 1 )
         FPRINTF( g->gout, "%s::", c_sname_scope_name( &ast->sname ) );
       if ( opt_alt_tokens )
-        FPRINTF( g->gout, "%s ", L_COMPL );
+        FPUTS( "compl ", g->gout );
       else
         FPUTC( '~', g->gout );
       FPUTS( c_sname_local_name( &ast->sname ), g->gout );
@@ -852,9 +852,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       if ( !c_sname_empty( &ast->sname ) )
         FPRINTF( g->gout, "%s::", c_sname_full_name( &ast->sname ) );
       char const *const token = c_oper_token_c( ast->as.oper.oper_id );
-      FPRINTF( g->gout,
-        "%s%s%s", L_OPERATOR, isalpha( token[0] ) ? " " : "", token
-      );
+      FPRINTF( g->gout, "operator%s%s", isalpha( token[0] ) ? " " : "", token );
       break;
     }
     case K_USER_DEF_CONVERSION:
@@ -864,9 +862,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       g_print_space_once( g );
       if ( c_sname_count( &ast->sname ) > 1 )
         FPRINTF( g->gout, "%s::", c_sname_scope_name( &ast->sname ) );
-      FPRINTF( g->gout,
-        "%s\"\" %s", L_OPERATOR, c_sname_local_name( &ast->sname )
-      );
+      FPRINTF( g->gout, "operator\"\" %s", c_sname_local_name( &ast->sname ) );
       break;
     default:
       if ( !c_sname_empty( &ast->sname ) ) {
@@ -1130,10 +1126,10 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
   bool const printing_using = (flags & C_GIB_USING) != 0 && !is_ecsu;
 
   if ( printing_typedef ) {
-    FPRINTF( gout, "%s ", L_TYPEDEF );
+    FPUTS( "typedef ", gout );
   }
   else if ( printing_using ) {
-    FPRINTF( gout, "%s %s ", L_USING, c_sname_local_name( sname ) );
+    FPRINTF( gout, "using %s ", c_sname_local_name( sname ) );
     if ( tdef->ast->type.atids != TA_NONE )
       FPRINTF( gout, "%s ", c_tid_name_c( tdef->ast->type.atids ) );
     FPUTS( "= ", gout );
