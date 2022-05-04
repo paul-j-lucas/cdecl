@@ -65,6 +65,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout );
  * @param eout The `FILE` to print to.
  *
  * @sa c_ast_english()
+ * @sa c_typedef_gibberish()
  */
 void c_ast_english_type( c_ast_t const *ast, FILE *eout );
 
