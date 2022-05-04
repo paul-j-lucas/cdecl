@@ -86,7 +86,7 @@ static void c_ast_english_cast( c_ast_t const *ast, FILE *eout ) {
     FPUTC( ' ', eout );
     c_sname_english( &ast->sname, eout );
   }
-  FPRINTF( cdecl_fout, " %s ", L_INTO );
+  FPRINTF( eout, " %s ", L_INTO );
   c_ast_english_impl( ast, eout );
   FPUTC( '\n', eout );
 }
