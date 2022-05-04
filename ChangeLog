@@ -1,5 +1,6 @@
 2022-05-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * english.c: s/cdecl_out/eout/
    * c_sname.c, english.c, english.h, parser.y: s/c_ast_explain/c_ast_english/
    * english.c, english.h, parser.y: Eliminated public c_ast_explain_cast().
    * english.c, english.h, parser.y: Now setting the cast_ast's sname so it no
