@@ -974,7 +974,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
       ((tdef->predefined ?
         (sti->show_which & SHOW_PREDEFINED_TYPES) != 0 :
         (sti->show_which & SHOW_USER_TYPES) != 0)) &&
-      (sti->sglob.count == 0 ||
+      (c_sglob_empty( &sti->sglob ) ||
        c_sname_match( &tdef->ast->sname, &sti->sglob ));
 
     if ( show_type ) {

@@ -82,6 +82,17 @@ struct c_sglob {
 void c_sglob_cleanup( c_sglob_t *sglob );
 
 /**
+ * Gets whether \a sglob is empty.
+ *
+ * @param sglob The scoped glob to check.
+ * @return Returns `true` only if \a sglob is empty.
+ */
+C_SGLOB_INLINE PJL_WARN_UNUSED_RESULT
+bool c_sglob_empty( c_sglob_t const *sglob ) {
+  return sglob->count == 0;
+}
+
+/**
  * Initializes \a sglob.
  *
  * @param sglob The scoped glob to initialize.
