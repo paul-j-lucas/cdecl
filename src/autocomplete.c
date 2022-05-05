@@ -129,7 +129,7 @@ static char const* const* init_set_options( void ) {
 
   // pre-flight to calculate array size
   FOREACH_SET_OPTION( opt )
-    n += 1 + (opt->type == SET_OPT_TOGGLE /* "no" */);
+    n += 1u + (opt->type == SET_OPT_TOGGLE /* "no" */);
   FOREACH_LANG( lang )
     n += !lang->is_alias;
 
