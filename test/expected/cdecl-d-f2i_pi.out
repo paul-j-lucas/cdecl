@@ -60,7 +60,7 @@ pointer_type_c_ast ::= * type_qualifier_list_c_stid_opt = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 11-11,
+    loc = 11,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
@@ -89,7 +89,7 @@ sname_c_ast ::= sname_c = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 11-11,
+    loc = 11,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
@@ -112,7 +112,7 @@ sname_c_ast ::= sname_c = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 11-11,
+    loc = 11,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
@@ -432,7 +432,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 11-11,
+    loc = 11,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
@@ -453,7 +453,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 11-11,
+    loc = 11,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
@@ -538,7 +538,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
       cast_kind = "none",
       depth = 0,
       parent->unique_id = 1339,
-      loc = 11-11,
+      loc = 11,
       type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       to_ast = {
         sname = "",
@@ -563,7 +563,7 @@ pointer_decl_c_astp ::= pointer_type_c_ast decl_c_astp = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = 1339,
-    loc = 11-11,
+    loc = 11,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
@@ -618,7 +618,7 @@ pointer_decl_c_astp ::= pointer_type_c_ast decl_c_astp = {
       cast_kind = "none",
       depth = 0,
       parent->unique_id = 1339,
-      loc = 11-11,
+      loc = 11,
       type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       to_ast = {
         sname = "",
@@ -674,7 +674,7 @@ pointer_decl_c_astp ::= pointer_type_c_ast decl_c_astp = {
       cast_kind = "none",
       depth = 0,
       parent->unique_id = 1339,
-      loc = 11-11,
+      loc = 11,
       type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       to_ast = {
         sname = "",
@@ -745,7 +745,7 @@ decl_c ::= decl_c_astp = {
       cast_kind = "none",
       depth = 0,
       parent->unique_id = 1339,
-      loc = 11-11,
+      loc = 11,
       type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       to_ast = {
         sname = "",
@@ -801,7 +801,7 @@ decl_c ::= decl_c_astp = {
       cast_kind = "none",
       depth = 0,
       parent->unique_id = 1339,
-      loc = 11-11,
+      loc = 11,
       type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       to_ast = {
         sname = "",

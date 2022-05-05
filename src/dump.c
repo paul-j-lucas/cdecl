@@ -46,8 +46,9 @@
 #define DUMP_FORMAT(...) BLOCK( \
   fprint_spaces( dout, indent * DUMP_INDENT ); FPRINTF( dout, __VA_ARGS__ ); )
 
-#define DUMP_LOC(KEY,LOC) \
-  DUMP_FORMAT( KEY " = %d-%d,\n", (LOC)->first_column, (LOC)->last_column )
+#define DUMP_LOC(KEY,LOC)   \
+  DUMP_FORMAT( KEY " = " ); \
+  c_loc_dump( (LOC), dout )
 
 #define DUMP_SNAME(KEY,SNAME) BLOCK(  \
   DUMP_FORMAT( KEY " = " );           \
@@ -64,8 +65,8 @@
 /// @endcond
 
 // local functions
-static void c_ast_list_dump_impl( c_ast_list_t const *list, unsigned indent,
-                                  FILE *dout );
+static void c_ast_list_dump_impl( c_ast_list_t const*, unsigned, FILE* );
+static void c_loc_dump( c_loc_t const*, FILE* );
 
 // local constants
 static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
@@ -147,9 +148,11 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
         break;
     } // switch
     DUMP_LOC( "alignas_loc", &ast->align.loc );
+    FPUTS( ",\n", dout );
   }
 
   DUMP_LOC( "loc", &ast->loc );
+  FPUTS( ",\n", dout );
   DUMP_TYPE( &ast->type );
 
   bool comma = false;
@@ -298,6 +301,20 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list, unsigned indent,
     FPUTC( '\n', dout );
     DUMP_FORMAT( "]" );
   }
+}
+
+/**
+ * Dumps \a loc (for debugging).
+ *
+ * @param loc The location to dump.
+ * @param dout The `FILE` to dump to.
+ */
+static void c_loc_dump( c_loc_t const *loc, FILE *dout ) {
+  assert( loc != NULL );
+  assert( dout != NULL );
+  FPRINTF( dout, "%d", loc->first_column );
+  if ( loc->last_column != loc->first_column )
+    FPRINTF( dout, "-%d", loc->last_column );
 }
 
 /**

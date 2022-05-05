@@ -15,7 +15,7 @@ class_struct_union_declaration_c ::= class_struct_union_btid sname '{' in_scope_
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 7-7,
+    loc = 7,
     type = "struct" (btid = 0x800001, stid = 0x2, atid = 0x4),
     ecsu_sname = "S" (none)
   }
