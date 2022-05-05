@@ -261,7 +261,7 @@
  * Show only user-defined types that were defined in the current language or
  * earlier.
  */
-#define SHOW_USER_TYPES           (1u << 1)
+#define SHOW_USER_DEFINED_TYPES   (1u << 1)
 
 /** @} */
 
@@ -972,8 +972,8 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
   if ( show_in_lang ) {
     bool const show_type =
       ((tdef->predefined ?
-        (sti->show_which & SHOW_PREDEFINED_TYPES) != 0 :
-        (sti->show_which & SHOW_USER_TYPES) != 0)) &&
+        (sti->show_which & SHOW_PREDEFINED_TYPES  ) != 0 :
+        (sti->show_which & SHOW_USER_DEFINED_TYPES) != 0)) &&
       (c_sglob_empty( &sti->sglob ) ||
        c_sname_match( &tdef->ast->sname, &sti->sglob ));
 
@@ -2433,20 +2433,20 @@ show_format_opt
   ;
 
 show_which_types_flags_opt
-  : /* empty */                   { $$ = SHOW_USER_TYPES; }
+  : /* empty */                   { $$ = SHOW_USER_DEFINED_TYPES; }
   | Y_ALL predefined_or_user_flags_opt
     {
       $$ = SHOW_ALL_TYPES |
-           ($2 != 0 ? $2 : SHOW_PREDEFINED_TYPES | SHOW_USER_TYPES);
+           ($2 != 0 ? $2 : SHOW_PREDEFINED_TYPES | SHOW_USER_DEFINED_TYPES);
     }
   | Y_PREDEFINED                  { $$ = SHOW_PREDEFINED_TYPES; }
-  | Y_USER                        { $$ = SHOW_USER_TYPES; }
+  | Y_USER                        { $$ = SHOW_USER_DEFINED_TYPES; }
   ;
 
 predefined_or_user_flags_opt
   : /* empty */                   { $$ = 0; }
   | Y_PREDEFINED                  { $$ = SHOW_PREDEFINED_TYPES; }
-  | Y_USER                        { $$ = SHOW_USER_TYPES; }
+  | Y_USER                        { $$ = SHOW_USER_DEFINED_TYPES; }
   ;
 
 /// template command //////////////////////////////////////////////////////////
