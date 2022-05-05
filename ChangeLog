@@ -1,5 +1,17 @@
+2022-05-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Fixed sign conversion warning.
+   * c_ast_util.c, gibberish.c, gibberish.h, parser.y, en_ns_c.out: Added
+     C_GIB_FINAL_SEMI flag to simplify calling c_typedef_gibberish().
+   * dump.c, cdecl--debug.out, cdecl-d-cmo_exclam__b.out, cdecl-d-f2i_pi.out:
+     When dumping a location, no longer dumping last_column if it's the same as
+     first_column.
+   * parser.y: s/SHOW_USER_TYPES/SHOW_USER_DEFINED_TYPES/
+   * c_sglob.h, parser.y: Added c_sglob_empty().
+
 2022-05-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Added "Creator of ...".
    * c_ast_check.c, cdecl.c, english.c, gibberish.c, parser.y,
      declare_pmri.out: Using fewer L_* constants.
    * c_sname.c, english.c, english.h, gibberish.h, parser.y:
