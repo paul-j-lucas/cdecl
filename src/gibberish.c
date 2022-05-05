@@ -942,14 +942,11 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
     //      c++decl> declare pint as type pointer to int
     //      using pint = int*;
     //
-    // It's simpler just to create a temporary c_typedef_t, tweak some flags,
-    // and call c_typedef_gibberish().
+    // It's simpler just to create a temporary c_typedef_t and call
+    // c_typedef_gibberish().
     //
     c_typedef_t const tdef = C_TYPEDEF_AST_LIT( ast );
-    bool const orig_semicolon = opt_semicolon;
-    opt_semicolon = false;
     c_typedef_gibberish( &tdef, C_GIB_USING, gout );
-    opt_semicolon = orig_semicolon;
     return;
   }
 
@@ -996,7 +993,9 @@ char const* c_cast_gibberish( c_cast_kind_t kind ) {
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
                           FILE *gout ) {
   assert( tdef != NULL );
-  assert( only_bits_set( flags, C_GIB_TYPEDEF | C_GIB_USING) );
+  assert(
+    only_bits_set( flags, C_GIB_TYPEDEF | C_GIB_USING | C_GIB_FINAL_SEMI)
+  );
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;
@@ -1146,7 +1145,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
       FPUTS( " }", gout );
   }
 
-  if ( opt_semicolon && scope_type.btids != TB_NAMESPACE )
+  if ( (flags & C_GIB_FINAL_SEMI) != 0 && scope_type.btids != TB_NAMESPACE )
     FPUTC( ';', gout );
 }
 

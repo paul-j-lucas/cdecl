@@ -69,6 +69,15 @@
 #define C_GIB_DECL        (1u << 1)
 
 /**
+ * Flag for c_typedef_gibberish() to print the final semicolon after a type
+ * declaration.
+ *
+ * @note May be used _only_ in combination with #C_GIB_TYPEDEF and
+ * #C_GIB_USING.
+ */
+#define C_GIB_FINAL_SEMI  (1u << 2)
+
+/**
  * Flag for c_ast_gibberish() to indicate that the declaration is for multiple
  * objects, for example:
  *
@@ -82,7 +91,7 @@
  * @sa #C_GIB_DECL
  * @sa #C_GIB_OMIT_TYPE
  */
-#define C_GIB_MULTI_DECL  (1u << 2)
+#define C_GIB_MULTI_DECL  (1u << 3)
 
 /**
  * Flag for c_ast_gibberish() to omit the type name when printing gibberish for
@@ -99,21 +108,21 @@
  * @sa #C_GIB_DECL
  * @sa #C_GIB_MULTI_DECL
  */
-#define C_GIB_OMIT_TYPE   (1u << 3)
+#define C_GIB_OMIT_TYPE   (1u << 4)
 
 /**
  * Flag for c_typedef_gibberish() to print as a `typedef` declaration.
  *
  * @sa #C_GIB_USING
  */
-#define C_GIB_TYPEDEF     (1u << 4)
+#define C_GIB_TYPEDEF     (1u << 5)
 
 /**
  * Flag for c_typedef_gibberish() to print as a `using` declaration.
  *
  * @sa #C_GIB_TYPEDEF
  */
-#define C_GIB_USING       (1u << 5)
+#define C_GIB_USING       (1u << 6)
 
 ////////// extern functions ///////////////////////////////////////////////////
 

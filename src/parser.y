@@ -658,19 +658,10 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
     if ( decl_keyword == L_DEFINE ) {
       c_typedef_english( old_tdef, stderr );
     } else {
-      //
-      // When printing the existing type in C/C++ as part of an error message,
-      // we always want to omit the trailing semicolon.
-      //
-      bool const orig_semicolon = opt_semicolon;
-      opt_semicolon = false;
-
       c_typedef_gibberish(
         // The == works because this function is called with L_USING.
         old_tdef, decl_keyword == L_USING ? C_GIB_USING : C_GIB_TYPEDEF, stderr
       );
-
-      opt_semicolon = orig_semicolon;
     }
     EPUTC( '\n' );
     return false;
@@ -951,9 +942,27 @@ static void quit( void ) {
 }
 
 /**
- * Prints the definition of a `typedef`.
+ * Shows (prints) the definition of \a tdef.
  *
- * @param tdef The \ref c_typedef to print.
+ * @param tdef The \ref c_typedef to show.
+ * @param flags The gibberish flags to use.
+ */
+static void show_type( c_typedef_t const *tdef, unsigned flags ) {
+  assert( tdef != NULL );
+  if ( flags == C_GIB_NONE ) {
+    c_typedef_english( tdef, cdecl_fout );
+  } else {
+    if ( opt_semicolon )
+      flags |= C_GIB_FINAL_SEMI;
+    c_typedef_gibberish( tdef, flags, cdecl_fout );
+  }
+  FPUTC( '\n', cdecl_fout );
+}
+
+/**
+ * A visitor function to show (print) \a tdef.
+ *
+ * @param tdef The \ref c_typedef to show.
  * @param data Optional data passed to the visitor: in this case, the flags of
  * which `typedef`s to print.
  * @return Always returns `false`.
@@ -970,20 +979,15 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
     opt_lang_is_any( tdef->lang_ids );
 
   if ( show_in_lang ) {
-    bool const show_type =
+    bool const show_it =
       ((tdef->predefined ?
         (sti->show_which & SHOW_PREDEFINED_TYPES  ) != 0 :
         (sti->show_which & SHOW_USER_DEFINED_TYPES) != 0)) &&
       (c_sglob_empty( &sti->sglob ) ||
        c_sname_match( &tdef->ast->sname, &sti->sglob ));
 
-    if ( show_type ) {
-      if ( sti->gib_flags == C_GIB_NONE )
-        c_typedef_english( tdef, cdecl_fout );
-      else
-        c_typedef_gibberish( tdef, sti->gib_flags, cdecl_fout );
-      FPUTC( '\n', cdecl_fout );
-    }
+    if ( show_it )
+      show_type( tdef, sti->gib_flags );
   }
 
   return false;
@@ -2327,11 +2331,7 @@ show_command
       DUMP_INT( "show_format_opt", $3 );
       DUMP_END();
 
-      if ( $3 == C_GIB_NONE )
-        c_typedef_english( $2, cdecl_fout );
-      else
-        c_typedef_gibberish( $2, $3, cdecl_fout );
-      FPUTC( '\n', cdecl_fout );
+      show_type( $2, $3 );
     }
 
   | Y_SHOW any_typedef Y_AS show_format_exp
@@ -2341,8 +2341,7 @@ show_command
       DUMP_INT( "show_format_exp", $4 );
       DUMP_END();
 
-      c_typedef_gibberish( $2, $4, cdecl_fout );
-      FPUTC( '\n', cdecl_fout );
+      show_type( $2, $4 );
     }
 
   | Y_SHOW show_which_types_flags_opt glob_opt show_format_opt

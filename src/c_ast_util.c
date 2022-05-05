@@ -660,18 +660,9 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
         "\"%s\": \"typedef\" redefinition with different type; original is: ",
         c_sname_full_name( &decl_ast->sname )
       );
-      //
-      // When printing the existing type in C/C++ as part of an error message,
-      // we always want to omit the trailing semicolon.
-      //
-      bool const orig_semicolon = opt_semicolon;
-      opt_semicolon = false;
-
       c_typedef_t const temp_tdef = C_TYPEDEF_AST_LIT( decl_ast );
       c_typedef_gibberish( &temp_tdef, C_GIB_TYPEDEF, stderr );
       EPUTC( '\n' );
-
-      opt_semicolon = orig_semicolon;
       return NULL;
     }
   }
