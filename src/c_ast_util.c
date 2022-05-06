@@ -670,8 +670,8 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
   }
 
   c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
-  c_type_t const type2 = c_ast_take_type_any( ast, &T_TS_TYPEDEF );
-  c_type_or_eq( &type, &type2 );
+  c_type_t const tdef_type = c_ast_take_type_any( ast, &T_TS_TYPEDEF );
+  c_type_or_eq( &type, &tdef_type );
   c_type_or_eq( &ast->type, &type );
 
   if ( align != NULL && align->kind != C_ALIGNAS_NONE ) {
