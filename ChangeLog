@@ -1,5 +1,7 @@
 2022-05-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c, explain_typedef_ci32.out: Better error location when
+     explaining a wrong existing typedef.
    * c_typedef.c, c_typedef.h, parser.y: Move type equivalence checking out of
      c_typedef_add().
 
