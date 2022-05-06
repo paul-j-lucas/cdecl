@@ -1,3 +1,8 @@
+2022-05-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, c_typedef.h, parser.y: Move type equivalence checking out of
+     c_typedef_add().
+
 2022-05-05  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c: Fixed sign conversion warning.
