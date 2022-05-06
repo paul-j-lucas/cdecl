@@ -645,9 +645,9 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
     //      explain typedef int int32_t;
     //
     // that is: explaining an existing typedef.  In order to do that, we have
-    // to un-typedef it so we explain the type that it's typedef'd as.
+    // to un-typedef it so we explain the type that it's a typedef for.
     //
-    decl_ast = CONST_CAST( c_ast_t*, c_ast_untypedef( decl_ast ) );
+    c_ast_t const *const for_ast = c_ast_untypedef( decl_ast );
 
     //
     // However, we also have to check whether the typedef being explained is
@@ -655,16 +655,18 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
     //
     //      explain typedef char int32_t;
     //
-    if ( !c_ast_equal( type_ast, decl_ast ) ) {
+    if ( !c_ast_equal( type_ast, for_ast ) ) {
       print_error( &decl_ast->loc,
         "\"%s\": \"typedef\" redefinition with different type; original is: ",
-        c_sname_full_name( &decl_ast->sname )
+        c_sname_full_name( &for_ast->sname )
       );
-      c_typedef_t const temp_tdef = C_TYPEDEF_AST_LIT( decl_ast );
+      c_typedef_t const temp_tdef = C_TYPEDEF_AST_LIT( for_ast );
       c_typedef_gibberish( &temp_tdef, C_GIB_TYPEDEF, stderr );
       EPUTC( '\n' );
       return NULL;
     }
+
+    decl_ast = CONST_CAST( c_ast_t*, for_ast );
   }
 
   c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
