@@ -634,37 +634,49 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
   assert( decl_keyword != NULL );
   assert( type_ast != NULL );
 
-  c_typedef_t const *const old_tdef = c_typedef_add( type_ast );
-  if ( old_tdef == NULL ) {             // type was added
+  c_typedef_t const *const tdef = c_typedef_add( type_ast );
+  if ( tdef->ast->unique_id == type_ast->unique_id ) {
     //
-    // We have to move the AST from the gc_ast_list so it won't be garbage
-    // collected at the end of the parse to a separate typedef_ast_list that's
-    // freed only at program termination.
+    // Type was added: we have to move the AST from the gc_ast_list so it won't
+    // be garbage collected at the end of the parse to a separate
+    // typedef_ast_list that's freed only at program termination.
     //
-    // But first, free all orphaned placeholder AST nodes.  (For a normal, non-
-    // type-defining parse, this step isn't necessary since all nodes are freed
-    // at the end of the parse anyway.)
+    // But first, free all orphaned placeholder AST nodes.  (For a non-type-
+    // defining parse, this step isn't necessary since all nodes are freed at
+    // the end of the parse anyway.)
     //
     slist_free_if( &gc_ast_list, (slist_pred_fn_t)&c_ast_free_if_placeholder );
     slist_push_list_back( &typedef_ast_list, &gc_ast_list );
-  }
-  else if ( old_tdef->ast != NULL ) {   // type exists and isn't equivalent
-    print_error( &type_ast->loc,
-      "\"%s\": \"%s\" redefinition with different type; original is: ",
-      c_sname_full_name( &type_ast->sname ), decl_keyword
-    );
-
-    // The == works because this function is called with L_DEFINE.
-    if ( decl_keyword == L_DEFINE ) {
-      c_typedef_english( old_tdef, stderr );
-    } else {
-      c_typedef_gibberish(
-        // The == works because this function is called with L_USING.
-        old_tdef, decl_keyword == L_USING ? C_GIB_USING : C_GIB_TYPEDEF, stderr
+  } else {
+    //
+    // Previously declared type having the same name was returned: check if the
+    // types are equal.
+    //
+    // In C, multiple typedef declarations having the same name are allowed
+    // only if the types are equivalent:
+    //
+    //      typedef int T;
+    //      typedef int T;                // OK
+    //      typedef double T;             // error: types aren't equivalent
+    //
+    if ( !c_ast_equal( type_ast, tdef->ast ) ) {
+      print_error( &type_ast->loc,
+        "\"%s\": \"%s\" redefinition with different type; original is: ",
+        c_sname_full_name( &type_ast->sname ), decl_keyword
       );
+
+      // The == works because this function is called with L_DEFINE.
+      if ( decl_keyword == L_DEFINE ) {
+        c_typedef_english( tdef, stderr );
+      } else {
+        c_typedef_gibberish(
+          // The == works because this function is called with L_USING.
+          tdef, decl_keyword == L_USING ? C_GIB_USING : C_GIB_TYPEDEF, stderr
+        );
+      }
+      EPUTC( '\n' );
+      return false;
     }
-    EPUTC( '\n' );
-    return false;
   }
 
   return true;

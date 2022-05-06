@@ -81,14 +81,12 @@ typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
 /**
  * Adds a new `typedef` or `using` to the global set.
  *
- * @param type_ast The AST of the type.  Ownership is taken only if the
- * function returns NULL.
- * @return If:
- * + \a type_ast was added, returns NULL; or:
- * + \a type_ast&ndash;>name already exists and the types are equivalent,
- *   returns a \ref c_typedef where \a ast is NULL; or:
- * + \a type_ast&ndash;>name already exists and the types are _not_ equivalent,
- *   returns the a \ref c_typedef of the existing type.
+ * @param type_ast The AST of the type to add.  Ownership is taken only if the
+ * type was added.
+ * @return Returns the \ref c_typedef of either:
+ * + The newly added type (its AST's \ref c_ast.unique_id "unique_id" is equal
+ *   to \a type_ast's `unique_id`); or:
+ * + The previously added type having the same scoped name.
  */
 PJL_WARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_add( c_ast_t const *type_ast );
