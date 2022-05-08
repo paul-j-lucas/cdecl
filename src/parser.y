@@ -4382,9 +4382,11 @@ typedef_type_decl_c_ast
       }
       else {
         //
-        // Otherwise, return the type that it's typedef'd as.
+        // Otherwise, return the type that it's typedef'd as (but we have to
+        // duplicate it to set the current location).
         //
-        $$ = CONST_CAST( c_ast_t*, c_ast_untypedef( $1 ) );
+        $$ = c_ast_dup( c_ast_untypedef( $1 ), &gc_ast_list );
+        $$->loc = $1->loc;
       }
 
       DUMP_AST( "typedef_type_c_ast", $$ );
