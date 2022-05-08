@@ -3267,6 +3267,7 @@ decl_c
       //    explain int *p, *q
       //
       c_ast_t *const type_ast = c_ast_dup( ia_type_ast_peek(), &gc_ast_list );
+      c_ast_t *decl_ast = $1.ast;
 
       DUMP_START( "decl_c", "decl_c_astp" );
       switch ( in_attr.align.kind ) {
@@ -3283,10 +3284,10 @@ decl_c
       } // switch
       DUMP_BOOL( "(typename_flag_opt)", in_attr.typename );
       DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_AST( "decl_c_astp", $1.ast );
+      DUMP_AST( "decl_c_astp", decl_ast );
 
-      c_ast_t const *const decl_ast = c_ast_join_type_decl(
-        in_attr.typename, &in_attr.align, type_ast, $1.ast
+      decl_ast = c_ast_join_type_decl(
+        in_attr.typename, &in_attr.align, type_ast, decl_ast
       );
 
       DUMP_AST( "decl_c", decl_ast );
@@ -3397,10 +3398,11 @@ array_decl_c_astp
     decl2_c_astp array_size_c_int gnu_attribute_specifier_list_c_opt
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
+      c_ast_t *const decl_ast = $1.ast;
 
       DUMP_START( "array_decl_c_astp", "decl2_c_astp array_size_c_int" );
       DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_AST( "decl2_c_astp", $1.ast );
+      DUMP_AST( "decl2_c_astp", decl_ast );
       DUMP_AST( "target_ast", $1.target_ast );
       DUMP_INT( "array_size_c_int", $2 );
 
@@ -3409,10 +3411,10 @@ array_decl_c_astp
       c_ast_set_parent( c_ast_new_gc( K_PLACEHOLDER, &@1 ), array_ast );
 
       if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
-        $$.ast = $1.ast;
+        $$.ast = decl_ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, array_ast, type_ast );
       } else {
-        $$.ast = c_ast_add_array( $1.ast, array_ast, type_ast );
+        $$.ast = c_ast_add_array( decl_ast, array_ast, type_ast );
         $$.target_ast = NULL;
       }
 
