@@ -662,6 +662,10 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_vovyf-c.test \
 	tests/explain_wt-c89.test \
 	tests/explain_xxi-c.test \
+	tests/k_explain_ai.test \
+	tests/k_explain_b_i.test \
+	tests/k_explain_f_i.test \
+	tests/k_explain_i.test \
 	tests/typedef_cv_explain_ftd_v.test
 
 #

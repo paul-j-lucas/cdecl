@@ -1,0 +1,3 @@
+struct S; explain int S()
+             ^
+14: error: "S": previously declared as type: typedef struct S S

@@ -24,6 +24,13 @@ Note that:
 
 is legal.
 
+** Types as objects
+Previously declared types are now checked to ensure they're not being used as
+objects
+
+    cdecl> struct S
+    cdecl> explain int S                // error (now)
+
 
 * Changes in Cdecl 11.14
 

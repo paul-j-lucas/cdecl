@@ -4382,10 +4382,68 @@ typedef_type_decl_c_ast
       }
       else {
         //
-        // Otherwise, return the type that it's typedef'd as (but we have to
-        // duplicate it to set the current location).
+        // Otherwise, return the type that it's typedef'd as.
         //
-        $$ = c_ast_dup( c_ast_untypedef( $1 ), &gc_ast_list );
+        c_ast_t const *const raw_ast = c_ast_untypedef( $1 );
+
+        //
+        // But first ensure the name isn't of a previously declared type:
+        //
+        //      cdecl> struct S
+        //      cdecl> explain int S    // error: "S" was previously declared
+        //
+        // Note that typedef_type_c_ast is like:
+        // ```
+        // typedef_type_c_ast = {
+        //   sname = "",
+        //   ...
+        //   kind = "typedef",
+        //   ...
+        //   type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+        //   for_ast = {
+        //     sname = "S" (struct),
+        //     ...
+        //     kind = "enum, struct, or union",
+        //     ...
+        //     type = "struct" (btid = 0x800001, stid = 0x2, atid = 0x4),
+        //     ecsu_sname = "S" (none)
+        //   }
+        // }
+        // ```
+        // That is, typedef_type_c_ast has no name itself (at this point), but
+        // the raw type, of course, does, so it's that name we have to check.
+        //
+        // This check has to be done now in the parser rather than later in the
+        // AST since if this declaration were joined with a type (like `int`
+        // above), the type information would be lost and we'd get this from
+        // above:
+        //
+        //      declare S as structure S          // wrong
+        //
+        // Additionally, we also get here when the typedef name is used as part
+        // of longer name, e.g., `S::x`:
+        //
+        //      c++decl> explain int S::x
+        //      declare x of structure S as int   // correct
+        //
+        // but that name isn't of a previously declared type, so it's OK.
+        //
+        c_typedef_t const *const tdef = c_typedef_find_sname( &raw_ast->sname );
+        if ( tdef != NULL ) {
+          print_error(
+            &$1->loc,
+            "\"%s\": previously declared as type: ",
+              c_sname_full_name( &raw_ast->sname )
+          );
+          c_typedef_gibberish( tdef, C_GIB_TYPEDEF, stderr );
+          EPUTC( '\n' );
+          PARSE_ABORT();
+        }
+
+        //
+        // We have to duplicate the type to set the current location.
+        //
+        $$ = c_ast_dup( raw_ast, &gc_ast_list );
         $$->loc = $1->loc;
       }
 
