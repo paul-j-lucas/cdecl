@@ -1,3 +1,16 @@
+2022-05-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y, test/Makefile.am, k_explain_ai.out, k_explain_b_i.out,
+     k_explain_f_i.out, k_explain_i.out, k_explain_ai.test, k_explain_b_i.test,
+     k_explain_f_i.test, k_explain_i.test: Now checking that previously
+     declared types are not being used as objects.
+   * c_ast_util.c: s/for_ast/raw_ast/
+
+2022-05-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now correctly duplicating the type in typedef_type_decl_c_ast.
+   * parser.y: Added decl_ast local variables.
+
 2022-05-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, explain_typedef_ci32.out: Better error location when
