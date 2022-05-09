@@ -1,5 +1,7 @@
 2022-05-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdefs.h, libc-config.h, stdlib.in.h, string.in.h, verify.h, wchar.in.h,
+     gnulib-common.m4: Updated GnuLib.
    * NEWS, parser.y, test/Makefile.am, k_explain_ai.out, k_explain_b_i.out,
      k_explain_f_i.out, k_explain_i.out, k_explain_ai.test, k_explain_b_i.test,
      k_explain_f_i.test, k_explain_i.test: Now checking that previously
