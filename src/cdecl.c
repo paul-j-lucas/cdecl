@@ -95,7 +95,7 @@ static int  cdecl_parse_argv( int, char const *const[] ),
 PJL_WARN_UNUSED_RESULT
 static bool is_command( char const*, cdecl_command_kind_t );
 
-static void read_conf_file( void );
+static void read_conf_file( char const* );
 
 PJL_WARN_UNUSED_RESULT
 static bool starts_with_token( char const*, char const*, size_t );
@@ -115,9 +115,11 @@ int main( int argc, char const *argv[] ) {
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
 
-  if ( opt_read_conf )
-    read_conf_file();
-  opt_conf_file = NULL;                 // don't print in errors any more
+  if ( opt_read_conf ) {
+    print_params.conf_path = opt_conf_path;
+    read_conf_file( opt_conf_path );
+    print_params.conf_path = NULL;
+  }
   cdecl_initialized = true;
 
   exit( cdecl_parse_argv( argc, argv ) );
@@ -285,9 +287,12 @@ static bool is_command( char const *s, cdecl_command_kind_t command_kind ) {
 
 /**
  * Reads the configuration file, if any.
+ *
+ * @param conf_path The full path of the configuration file to read.  If NULL,
+ * reads `~/.cdeclrc`.
  */
-static void read_conf_file( void ) {
-  bool const is_explicit_conf_file = (opt_conf_file != NULL);
+static void read_conf_file( char const *conf_path ) {
+  bool const is_explicit_conf_file = (conf_path != NULL);
 
   if ( !is_explicit_conf_file ) {       // no explicit conf file: use default
     char const *const home = home_dir();
@@ -295,14 +300,14 @@ static void read_conf_file( void ) {
       return;
     static char conf_path_buf[ PATH_MAX ];
     strcpy( conf_path_buf, home );
-    path_append( conf_path_buf, CONF_FILE_NAME_DEFAULT );
-    opt_conf_file = conf_path_buf;
+    path_append( conf_path_buf, "." CONF_FILE_NAME_DEFAULT );
+    conf_path = conf_path_buf;
   }
 
-  FILE *const conf_file = fopen( opt_conf_file, "r" );
+  FILE *const conf_file = fopen( conf_path, "r" );
   if ( conf_file == NULL ) {
     if ( is_explicit_conf_file )
-      FATAL_ERR( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR() );
+      FATAL_ERR( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
     return;
   }
 

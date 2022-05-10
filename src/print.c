@@ -426,8 +426,8 @@ void print_loc( c_loc_t const *loc ) {
   assert( loc != NULL );
   size_t const column = print_caret( STATIC_CAST( size_t, loc->first_column ) );
   SGR_START_COLOR( stderr, locus );
-  if ( opt_conf_file != NULL )
-    EPRINTF( "%s:%d,", opt_conf_file, loc->first_line + 1 );
+  if ( print_params.conf_path != NULL )
+    EPRINTF( "%s:%d,", print_params.conf_path, loc->first_line + 1 );
   EPRINTF( "%zu", column + 1 );
   SGR_END_COLOR( stderr );
   EPUTS( ": " );

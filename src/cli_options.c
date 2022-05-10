@@ -406,7 +406,7 @@ static void parse_options( int argc, char const *argv[] ) {
         color_when = parse_color_when( optarg );
         break;
       case COPT(CONFIG):
-        opt_conf_file = optarg;
+        opt_conf_path = optarg;
         break;
       case COPT(DIGRAPHS):
         opt_graph = C_GRAPH_DI;
@@ -635,7 +635,7 @@ static void usage( int status ) {
 "  --bison-debug        (-%c) Print Bison debug output.\n"
 #endif /* YYDEBUG */
 "  --color=WHEN         (-%c) Colorize output WHEN [default: not_file].\n"
-"  --config=FILE        (-%c) Configuration file path [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
+"  --config=FILE        (-%c) Configuration file path [default: ~/." CONF_FILE_NAME_DEFAULT "].\n"
 #ifdef ENABLE_CDECL_DEBUG
 "  --debug              (-%c) Print " CDECL " debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
