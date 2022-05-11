@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 4, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 10, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2156,10 +2156,7 @@ it's assumed to be a member function.
 .SS cdeclrc
 The
 .B cdeclrc
-file
-(by default,
-.BR ~/.cdeclrc )
-is used to configure
+file is used to configure
 .B cdecl
 by executing the contained commands
 on start-up
@@ -2168,6 +2165,20 @@ on start-up
 or
 .B \-C
 option is given).
+The full path of this file can be specified by either the
+.B \-\-config
+or
+.B \-c
+option;
+or,
+if not,
+the path is taken from the value of the
+.B CDECLRC
+environment variable
+unless it is either unset or empty
+in which case the path defaults to
+.BR ~/.cdeclrc .
+.PP
 The commands useful within a configuration file are:
 .IP \(bu 3
 .BR class ,
@@ -2396,6 +2407,19 @@ other character attributes
 such as bold, underlined, reverse video, etc.,
 may be possible depending on the capabilities of the terminal.
 .TP
+.B CDECLRC
+The full path to the user-specific configuration file
+(see
+.BR "CONFIGURATION FILES" ).
+Used only if not empty
+and none of the
+.BR \-\-config ,
+.BR \-c ,
+.BR \-\-no-config ,
+or
+.B \-C
+options are given.
+.TP
 .B COLUMNS
 The number of columns of the terminal on which
 .B cdecl
@@ -2437,19 +2461,9 @@ is being run.
 .SH FILES
 .TP 4
 .B ~/.cdeclrc
-The default configuration file
-containing
-.BR class ,
-.BR define ,
-.BR enum ,
-.BR namespace ,
-.BR set ,
-.BR struct ,
-.BR typedef ,
-.BR union ,
-or
-.B using
-commands
+The default
+.B cdecl
+configuration file
 (see
 .BR "CONFIGURATION FILES" ).
 .TP

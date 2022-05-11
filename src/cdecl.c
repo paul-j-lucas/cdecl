@@ -93,12 +93,9 @@ static int  cdecl_parse_argv( int, char const *const[] ),
             cdecl_parse_stdin( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool is_command( char const*, cdecl_command_kind_t );
-
-static void read_conf_file( char const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool starts_with_token( char const*, char const*, size_t );
+static bool is_command( char const*, cdecl_command_kind_t ),
+            read_conf_file( char const* ),
+            starts_with_token( char const*, char const*, size_t );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -116,10 +113,37 @@ int main( int argc, char const *argv[] ) {
   lexer_reset( /*hard_reset=*/true );   // resets line number
 
   if ( opt_read_conf ) {
-    print_params.conf_path = opt_conf_path;
-    read_conf_file( opt_conf_path );
-    print_params.conf_path = NULL;
+    //
+    // In priority order:
+    //
+    //  1. Either the --config or -c command-line option.
+    //  2. The value of the CDECLRC environment variable.
+    //  3. ~/.cdeclrc
+    //
+    char const *conf_path = opt_conf_path;
+    if ( conf_path == NULL ) {
+      conf_path = getenv( "CDECLRC" );
+      if ( conf_path != NULL && conf_path[0] == '\0' )
+        conf_path = NULL;
+    }
+    if ( conf_path == NULL ) {
+      char const *const home = home_dir();
+      if ( home != NULL ) {
+        static char conf_path_buf[ PATH_MAX ];
+        strcpy( conf_path_buf, home );
+        path_append( conf_path_buf, "." CONF_FILE_NAME_DEFAULT );
+        conf_path = conf_path_buf;
+      }
+    }
+
+    if ( conf_path != NULL ) {
+      print_params.conf_path = conf_path;
+      if ( !read_conf_file( conf_path ) && opt_conf_path != NULL )
+        FATAL_ERR( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
+      print_params.conf_path = NULL;
+    }
   }
+
   cdecl_initialized = true;
 
   exit( cdecl_parse_argv( argc, argv ) );
@@ -288,28 +312,16 @@ static bool is_command( char const *s, cdecl_command_kind_t command_kind ) {
 /**
  * Reads the configuration file, if any.
  *
- * @param conf_path The full path of the configuration file to read.  If NULL,
- * reads `~/.cdeclrc`.
+ * @param conf_path The full path of the configuration file to read.
+ * @return Returns `false` only if \a conf_path could not be opened for
+ * reading.
  */
-static void read_conf_file( char const *conf_path ) {
-  bool const is_explicit_conf_file = (conf_path != NULL);
-
-  if ( !is_explicit_conf_file ) {       // no explicit conf file: use default
-    char const *const home = home_dir();
-    if ( home == NULL )
-      return;
-    static char conf_path_buf[ PATH_MAX ];
-    strcpy( conf_path_buf, home );
-    path_append( conf_path_buf, "." CONF_FILE_NAME_DEFAULT );
-    conf_path = conf_path_buf;
-  }
+static bool read_conf_file( char const *conf_path ) {
+  assert( conf_path != NULL );
 
   FILE *const conf_file = fopen( conf_path, "r" );
-  if ( conf_file == NULL ) {
-    if ( is_explicit_conf_file )
-      FATAL_ERR( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
-    return;
-  }
+  if ( conf_file == NULL )
+    return false;
 
   //
   // Before reading the configuration file, temporarily set the language to the
@@ -324,6 +336,7 @@ static void read_conf_file( char const *conf_path ) {
   opt_lang = orig_lang;
 
   PJL_IGNORE_RV( fclose( conf_file ) );
+  return true;
 }
 
 /**
