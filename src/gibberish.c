@@ -119,6 +119,7 @@ static void c_ast_cast_gibberish( c_ast_t const *ast, FILE *gout ) {
 static void c_ast_gibberish_impl( c_ast_t const *ast, unsigned flags,
                                   bool printing_typedef, FILE *gout ) {
   assert( ast != NULL );
+  assert( flags != C_GIB_NONE );
   assert( gout != NULL );
 
   g_state_t g;
