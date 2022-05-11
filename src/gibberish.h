@@ -69,24 +69,21 @@
 #define C_GIB_DECL        (1u << 1)
 
 /**
- * Flag for c_typedef_gibberish() to print the final semicolon after a type
- * declaration.
- *
- * @note May be used _only_ in combination with #C_GIB_TYPEDEF and
- * #C_GIB_USING.
+ * Flag for c_ast_gibberish() or c_typedef_gibberish() to print the final
+ * semicolon after a type declaration.
  */
 #define C_GIB_FINAL_SEMI  (1u << 2)
 
 /**
  * Flag for c_ast_gibberish() to indicate that the declaration is for multiple
- * objects, for example:
+ * types or objects, for example:
  *
  *      int *p, *q;
  *
  * @note Unlike #C_GIB_OMIT_TYPE, `C_GIB_MULTI_DECL` must be used for the
  * entire declaration.
  * @note May be used _only_ in combination with #C_GIB_DECL and
- * #C_GIB_MULTI_DECL.
+ * #C_GIB_OMIT_TYPE.
  *
  * @sa #C_GIB_DECL
  * @sa #C_GIB_OMIT_TYPE
@@ -98,9 +95,9 @@
  * the _second_ and subsequent objects when printing multiple objects in the
  * same declaration.  For example, when printing:
  *
- *      int *p, *q;
+ *      int *x, *y;
  *
- * the gibberish for `q` must _not_ print the `int` again.
+ * the gibberish for `y` must _not_ print the `int` again.
  *
  * @note May be used _only_ in combination with #C_GIB_DECL and
  * #C_GIB_MULTI_DECL.

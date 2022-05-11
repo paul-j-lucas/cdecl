@@ -1823,20 +1823,49 @@ declare_command
         if ( slist_len( &$2 ) > 1 )
           gib_flags |= C_GIB_MULTI_DECL;
         bool const print_as_using = c_ast_print_as_using( $4 );
+        if ( print_as_using && opt_semicolon ) {
+          //
+          // When declaring multiple types via the same "declare" as "using"
+          // declarations, each type needs its own "using" declaration and
+          // hence its own semicolon:
+          //
+          //      c++decl> declare I, J as type int
+          //      using I = int;
+          //      using J = int;
+          //
+          gib_flags |= C_GIB_FINAL_SEMI;
+        }
 
         FOREACH_SLIST_NODE( sname_node, &$2 ) {
           c_sname_set( &$4->sname, sname_node->data );
+          bool const is_last_sname = sname_node->next == NULL;
+          if ( is_last_sname && opt_semicolon )
+            gib_flags |= C_GIB_FINAL_SEMI;
           c_ast_gibberish( $4, gib_flags, cdecl_fout );
-          if ( sname_node->next != NULL ) {
-            if ( print_as_using ) {
-              if ( opt_semicolon )
-                FPUTC( ';', cdecl_fout );
-              FPUTC( '\n', cdecl_fout );
-            }
-            else {
-              gib_flags |= C_GIB_OMIT_TYPE;
-              FPUTS( ", ", cdecl_fout );
-            }
+          if ( is_last_sname )
+            continue;
+          if ( print_as_using ) {
+            //
+            // When declaring multiple types via the same "declare" as "using"
+            // declarations, they need to be separated by newlines.  (The final
+            // newine is handled below.)
+            //
+            FPUTC( '\n', cdecl_fout );
+          }
+          else {
+            //
+            // When declaring multiple types (not as "using" declarations) or
+            // objects via the same "declare", the second and subsequent types
+            // or objects must not have the type name printed -- and they also
+            // need to be separated by commas.  For example, when printing:
+            //
+            //      cdecl> declare x, y as pointer to int
+            //      int *x, *y;
+            //
+            // the gibberish for `y` must not print the `int` again.
+            //
+            gib_flags |= C_GIB_OMIT_TYPE;
+            FPUTS( ", ", cdecl_fout );
           }
         } // for
       }
@@ -1844,8 +1873,6 @@ declare_command
       c_sname_list_cleanup( &$2 );
       if ( !ok )
         PARSE_ABORT();
-      if ( opt_semicolon )
-        FPUTC( ';', cdecl_fout );
       FPUTC( '\n', cdecl_fout );
     }
 
@@ -1881,9 +1908,10 @@ declare_command
       DUMP_END();
 
       C_AST_CHECK( $6 );
-      c_ast_gibberish( $6, C_GIB_DECL, cdecl_fout );
+      unsigned gib_flags = C_GIB_DECL;
       if ( opt_semicolon )
-        FPUTC( ';', cdecl_fout );
+        gib_flags |= C_GIB_FINAL_SEMI;
+      c_ast_gibberish( $6, gib_flags, cdecl_fout );
       FPUTC( '\n', cdecl_fout );
     }
 
@@ -1914,9 +1942,10 @@ declare_command
       DUMP_END();
 
       C_AST_CHECK( conv_ast );
-      c_ast_gibberish( conv_ast, C_GIB_DECL, cdecl_fout );
+      unsigned gib_flags = C_GIB_DECL;
       if ( opt_semicolon )
-        FPUTC( ';', cdecl_fout );
+        gib_flags |= C_GIB_FINAL_SEMI;
+      c_ast_gibberish( conv_ast, gib_flags, cdecl_fout );
       FPUTC( '\n', cdecl_fout );
     }
 

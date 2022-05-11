@@ -948,34 +948,37 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
     //
     c_typedef_t const tdef = C_TYPEDEF_AST_LIT( ast );
     c_typedef_gibberish( &tdef, C_GIB_USING, gout );
-    return;
+  }
+  else {
+    if ( (flags & C_GIB_OMIT_TYPE) == 0 ) {
+      //
+      // If we're declaring more than one variable in the same declaration,
+      // print the alignment, if any, only when also printing the type for the
+      // first variable.  For example, for:
+      //
+      //      _Alignas(64) int i, j;
+      //
+      // print the alignment (and "int") only for "i" and not again for "j".
+      //
+      switch ( ast->align.kind ) {
+        case C_ALIGNAS_NONE:
+          break;
+        case C_ALIGNAS_EXPR:
+          FPRINTF( gout, "%s(%u) ", alignas_name(), ast->align.as.expr );
+          break;
+        case C_ALIGNAS_TYPE:
+          FPRINTF( gout, "%s(", alignas_name() );
+          c_ast_gibberish( ast->align.as.type_ast, C_GIB_DECL, gout );
+          FPUTS( ") ", gout );
+          break;
+      } // switch
+    }
+
+    c_ast_gibberish_impl( ast, flags, /*printing_typedef=*/false, gout );
   }
 
-  if ( (flags & C_GIB_OMIT_TYPE) == 0 ) {
-    //
-    // If we're declaring more than one variable in the same declaration, print
-    // the alignment, if any, only when also printing the type for the first
-    // variable.  For example, for:
-    //
-    //      _Alignas(64) int i, j;
-    //
-    // print the alignment (and "int") only for "i" and not again for "j".
-    //
-    switch ( ast->align.kind ) {
-      case C_ALIGNAS_NONE:
-        break;
-      case C_ALIGNAS_EXPR:
-        FPRINTF( gout, "%s(%u) ", alignas_name(), ast->align.as.expr );
-        break;
-      case C_ALIGNAS_TYPE:
-        FPRINTF( gout, "%s(", alignas_name() );
-        c_ast_gibberish( ast->align.as.type_ast, C_GIB_DECL, gout );
-        FPUTS( ") ", gout );
-        break;
-    } // switch
-  }
-
-  c_ast_gibberish_impl( ast, flags, /*printing_typedef=*/false, gout );
+  if ( (flags & C_GIB_FINAL_SEMI) != 0 )
+    FPUTC( ';', gout );
 }
 
 char const* c_cast_gibberish( c_cast_kind_t kind ) {
