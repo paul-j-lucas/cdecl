@@ -391,12 +391,7 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
     case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
       error_kind_of_kind( ast, raw_of_ast, "" );
-      print_hint(
-        "%s of %s to %s",
-        c_kind_name( K_ARRAY ),
-        c_kind_name( K_POINTER ),
-        c_kind_name( K_FUNCTION )
-      );
+      print_hint( "array of pointer to function" );
       return false;
 
     case K_NAME:
@@ -407,10 +402,7 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
     case K_RVALUE_REFERENCE:
       error_kind_of_kind( ast, raw_of_ast, "" );
       if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
-        print_hint(
-          "%s to %s",
-          c_kind_name( raw_of_ast->kind ), c_kind_name( K_ARRAY )
-        );
+        print_hint( "%s to array", c_kind_name( raw_of_ast->kind ) );
       } else {
         print_hint( "(%s%s)[]",
           raw_of_ast->kind == K_REFERENCE ? "&" : "&&",
@@ -1832,14 +1824,10 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
     case K_RVALUE_REFERENCE:
       error_kind_to_kind( ast, raw_to_ast, "" );
       if ( raw_to_ast == to_ast ) {
-        if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
-          print_hint(
-            "%s to %s",
-            c_kind_name( K_REFERENCE ), c_kind_name( K_POINTER )
-          );
-        } else {
+        if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+          print_hint( "reference to pointer" );
+        else
           print_hint( "\"*&\"" );
-        }
       } else {
         EPUTC( '\n' );
       }
@@ -1893,7 +1881,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 
   if ( c_ast_is_builtin_any( to_ast, TB_VOID ) ) {
     error_kind_to_tid( ast, TB_VOID, "" );
-    print_hint( "%s to void", c_kind_name( K_POINTER ) );
+    print_hint( "pointer to void" );
     return false;
   }
 
@@ -1918,7 +1906,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   switch ( raw_ret_ast->kind ) {
     case K_ARRAY:
       print_error( &ret_ast->loc, "%s returning array", kind_name );
-      print_hint( "%s returning %s", kind_name, c_kind_name( K_POINTER ) );
+      print_hint( "%s returning pointer", kind_name );
       return false;
     case K_BUILTIN:
       if ( c_tid_is_any( raw_ret_ast->type.btids, TB_AUTO ) &&
@@ -1946,10 +1934,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       print_error( &ret_ast->loc,
         "%s returning %s", kind_name, c_kind_name( raw_ret_ast->kind )
       );
-      print_hint(
-        "%s returning %s to %s",
-        kind_name, c_kind_name( K_POINTER ), c_kind_name( K_FUNCTION )
-      );
+      print_hint( "%s returning pointer to function", kind_name );
       return false;
     default:
       /* suppress warning */;
@@ -1994,7 +1979,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
     print_error( &conv_ast->loc,
       "user-defined conversion operator can not convert to an array"
     );
-    print_hint( "%s to %s", c_kind_name( K_POINTER ), c_kind_name( K_ARRAY ) );
+    print_hint( "pointer to array" );
     return false;
   }
 
