@@ -1,3 +1,11 @@
+2022-05-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, cdecl.c: Now can use the CDECLRC environment variable.
+   * cdecl.c, cdecl.h, cli_options.c, options.c, options.h, print.c, print.h:
+     s/opt_conf_file/opt_conf_path/; added print_params.conf_path;
+     read_conf_file() now takes a path; CONF_FILE_NAME_DEFAULT no longer
+     includes the '.'.
+
 2022-05-09  Paul J. Lucas <paul@lucasmail.org>
 
    * cdefs.h, libc-config.h, stdlib.in.h, string.in.h, verify.h, wchar.in.h,
