@@ -1,3 +1,10 @@
+2022-05-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c, gibberish.h, parser.y: Made c_ast_gibberish() use
+     C_GIB_FINAL_SEMI as well.
+   * gibberish.c: Added assert().
+   * c_ast_check.c: Removed unecessary uses of c_kind_name().
+
 2022-05-10  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.1, cdecl.c: Now can use the CDECLRC environment variable.
