@@ -113,12 +113,12 @@ c++decl$(EXEEXT): cdecl$(EXEEXT)
 
 TESTS =		$(check_PROGRAMS)
 
-check-local: clean-coverage
+check-local: clean-coverage-local
 
 clean-local:
 	rm -f $(BUILT_SOURCES) c++decl$(EXEEXT) parser.output
 
-distclean-local: distclean-coverage
+distclean-local: distclean-coverage-local
 
 clean-coverage-local:
 	rm -f *.gcda

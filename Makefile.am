@@ -64,13 +64,13 @@ else
 	@echo "    ./configure --enable-coverage"
 endif
 
-clean-local: clean-coverage
+clean-local: clean-coverage-local
 	rm -fr docs
 
 clean-coverage-local:
 	rm -f $(COVERAGE_INFO)
 
-distclean-local: distclean-coverage
+distclean-local: distclean-coverage-local
 
 distclean-coverage-local:
 	rm -fr $(COVERAGE_DIR)
