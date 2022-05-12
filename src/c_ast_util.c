@@ -27,7 +27,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 /// @cond DOXYGEN_IGNORE
-#define C_AST_UTIL_INLINE _GL_EXTERN_INLINE
+#define C_AST_UTIL_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_ast_util.h"
 #include "c_typedef.h"

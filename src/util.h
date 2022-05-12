@@ -43,9 +43,9 @@
 #include <sysexits.h>
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef C_UTIL_INLINE
-# define C_UTIL_INLINE _GL_INLINE
-#endif /* C_UTIL_INLINE */
+#ifndef C_UTIL_H_INLINE
+# define C_UTIL_H_INLINE _GL_INLINE
+#endif /* C_UTIL_H_INLINE */
 
 /// @endcond
 
@@ -549,7 +549,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa exactly_one_bit_set()
  */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
 bool at_most_one_bit_set( uint64_t n ) {
   return (n & (n - 1)) == 0;
 }
@@ -632,7 +632,7 @@ char* check_strndup( char const *s, size_t n );
  *
  * @sa at_most_one_bit_set()
  */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
 bool exactly_one_bit_set( uint64_t n ) {
   return n != 0 && at_most_one_bit_set( n );
 }
@@ -647,7 +647,7 @@ bool exactly_one_bit_set( uint64_t n ) {
  * @sa true_clear()
  * @sa true_or_set()
  */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
 bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
 }
@@ -754,7 +754,7 @@ bool is_file( int fd );
  * @return Returns `true` only if \a c is either an alphanumeric or `_`
  * character.
  */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
 bool is_ident( char c ) {
   return isalnum( c ) || c == '_';
 }
@@ -793,7 +793,7 @@ uint32_t ms_bit1_32( uint32_t n );
  * @return Returns `true` only if \a bits is not zero and the bits set are only
  * among the bits set in \a allowed_bits.
  */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
 bool only_bits_set( uint64_t bits, uint64_t allowed_bits ) {
   return bits != 0 && (bits & allowed_bits) == bits;
 }
@@ -841,7 +841,7 @@ noreturn void perror_exit( int status );
  * @sa #INTERNAL_ERR()
  * @sa perror_exit()
  */
-C_UTIL_INLINE
+C_UTIL_H_INLINE
 void perror_exit_if( bool expr, int status ) {
   if ( unlikely( expr ) )
     perror_exit( status );
@@ -854,7 +854,7 @@ void perror_exit_if( bool expr, int status ) {
  * @param s The null-terminated string to check.
  * @return Returns `true` only if \a s is a blank line.
  */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
 bool str_is_blank( char const *s ) {
   SKIP_WS( s );
   return *s == '\0';
@@ -888,7 +888,7 @@ void str_rtrim_len( char const *s, size_t *s_len );
  * @sa false_set()
  * @sa true_clear()
  */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
 bool true_or_set( bool *flag ) {
   return *flag || !(*flag = true);
 }
@@ -903,7 +903,7 @@ bool true_or_set( bool *flag ) {
  * @sa false_set()
  * @sa true_or_set()
  */
-C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
 bool true_clear( bool *flag ) {
   return *flag && !(*flag = false);
 }
@@ -916,7 +916,7 @@ bool true_clear( bool *flag ) {
  * flag should be `false` initially.
  * @param sout The `FILE` to print to.
  */
-C_UTIL_INLINE
+C_UTIL_H_INLINE
 void fprint_sep( FILE *sout, char const *sep, bool *sep_flag ) {
   if ( true_or_set( sep_flag ) )
     FPUTS( sep, sout );

@@ -39,9 +39,9 @@
 #include <string.h>
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef STRBUF_INLINE
-# define STRBUF_INLINE _GL_INLINE
-#endif /* STRBUF_INLINE */
+#ifndef STRBUF_H_INLINE
+# define STRBUF_H_INLINE _GL_INLINE
+#endif /* STRBUF_H_INLINE */
 
 /// @endcond
 
@@ -87,7 +87,7 @@ void strbuf_cleanup( strbuf_t *sbuf );
  * @sa strbuf_reset()
  * @sa strbuf_take()
  */
-STRBUF_INLINE
+STRBUF_H_INLINE
 void strbuf_init( strbuf_t *sbuf ) {
   MEM_ZERO( sbuf );
 }
@@ -131,7 +131,7 @@ void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len );
  * @sa strbuf_puts()
  * @sa strbuf_putsn()
  */
-STRBUF_INLINE
+STRBUF_H_INLINE
 void strbuf_putc( strbuf_t *sbuf, char c ) {
   strbuf_putsn( sbuf, &c, 1 );
 }
@@ -146,7 +146,7 @@ void strbuf_putc( strbuf_t *sbuf, char c ) {
  * @sa strbuf_printf()
  * @sa strbuf_putsn()
  */
-STRBUF_INLINE
+STRBUF_H_INLINE
 void strbuf_puts( strbuf_t *sbuf, char const *s ) {
   strbuf_putsn( sbuf, s, strlen( s ) );
 }
@@ -232,7 +232,7 @@ void strbuf_sepsn_putsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @sa strbuf_sepsn()
  * @sa strbuf_sepsn_putsn()
  */
-STRBUF_INLINE
+STRBUF_H_INLINE
 void strbuf_sepsn_puts( strbuf_t *sbuf, char const *sep, size_t sep_len,
                         bool *sep_flag, char const *s ) {
   strbuf_sepsn_putsn( sbuf, sep, sep_len, sep_flag, s, strlen( s ) );
@@ -255,7 +255,7 @@ void strbuf_sepsn_puts( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @sa strbuf_sepsn_puts()
  * @sa strbuf_sepsn_putsn()
  */
-STRBUF_INLINE
+STRBUF_H_INLINE
 void strbuf_sepc_putsn( strbuf_t *sbuf, char sep, bool *sep_flag, char const *s,
                         size_t s_len ) {
   strbuf_sepsn_putsn( sbuf, &sep, 1, sep_flag, s, s_len );
@@ -277,7 +277,7 @@ void strbuf_sepc_putsn( strbuf_t *sbuf, char sep, bool *sep_flag, char const *s,
  * @sa strbuf_sepsn_puts()
  * @sa strbuf_sepsn_putsn()
  */
-STRBUF_INLINE
+STRBUF_H_INLINE
 void strbuf_sepc_puts( strbuf_t *sbuf, char sep, bool *sep_flag,
                        char const *s ) {
   strbuf_sepsn_putsn( sbuf, &sep, 1, sep_flag, s, strlen( s ) );
@@ -293,7 +293,7 @@ void strbuf_sepc_puts( strbuf_t *sbuf, char sep, bool *sep_flag,
  * @sa strbuf_init()
  * @sa strbuf_reset()
  */
-STRBUF_INLINE PJL_WARN_UNUSED_RESULT
+STRBUF_H_INLINE PJL_WARN_UNUSED_RESULT
 char* strbuf_take( strbuf_t *sbuf ) {
   char *const str = sbuf->str;
   strbuf_init( sbuf );

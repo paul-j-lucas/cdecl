@@ -33,9 +33,9 @@
 /// @cond DOXYGEN_IGNORE
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef C_LITERALS_INLINE
-# define C_LITERALS_INLINE _GL_INLINE
-#endif /* C_LITERALS_INLINE */
+#ifndef C_LITERALS_H_INLINE
+# define C_LITERALS_H_INLINE _GL_INLINE
+#endif /* C_LITERALS_H_INLINE */
 
 /// @endcond
 
@@ -375,7 +375,7 @@ extern char const L_MSC_WINAPI[];         // synonym for "__stdcall"
  *
  * @return Returns either `_Alignas` (for C) or `alignas` (for C++).
  */
-C_LITERALS_INLINE PJL_WARN_UNUSED_RESULT
+C_LITERALS_H_INLINE PJL_WARN_UNUSED_RESULT
 char const* alignas_name( void ) {
   return OPT_LANG_IS( C_ANY ) ? L__ALIGNAS : L_ALIGNAS;
 }

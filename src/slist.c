@@ -26,7 +26,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 /// @cond DOXYGEN_IGNORE
-#define SLIST_INLINE _GL_EXTERN_INLINE
+#define SLIST_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "slist.h"
 

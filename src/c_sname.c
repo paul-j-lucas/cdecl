@@ -27,7 +27,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 /// @cond DOXYGEN_IGNORE
-#define C_SNAME_INLINE _GL_EXTERN_INLINE
+#define C_SNAME_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_sname.h"
 #include "c_keyword.h"
