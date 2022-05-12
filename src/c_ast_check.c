@@ -274,7 +274,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
       return false;
     }
 
-    if ( OPT_LANG_IS( C_ANY ) && raw_ast->kind == K_ENUM_CLASS_STRUCT_UNION ) {
+    if ( raw_ast->kind == K_ENUM_CLASS_STRUCT_UNION && OPT_LANG_IS( C_ANY ) ) {
       print_error( &ast->loc,
         "%s can not be aligned in C\n", c_kind_name( ast->kind )
       );
@@ -433,7 +433,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
 
-  if ( !OPT_LANG_IS( IMPLICIT_INT ) && ast->type.btids == TB_NONE &&
+  if ( ast->type.btids == TB_NONE && !OPT_LANG_IS( IMPLICIT_INT ) &&
        !c_ast_parent_is_kind( ast, K_USER_DEF_CONVERSION ) ) {
     print_error( &ast->loc,
       "implicit \"int\" is illegal%s\n",
@@ -442,8 +442,8 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
     return false;
   }
 
-  if ( !OPT_LANG_IS( INLINE_VARIABLE ) &&
-       c_tid_is_any( ast->type.stids, TS_INLINE ) ) {
+  if ( c_tid_is_any( ast->type.stids, TS_INLINE ) &&
+       !OPT_LANG_IS( INLINE_VARIABLE ) ) {
     print_error( &ast->loc,
       "inline variables not supported%s\n",
       C_LANG_WHICH( INLINE_VARIABLE )
@@ -2176,8 +2176,8 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         return VISITOR_ERROR_FOUND;
       }
 
-      if ( !OPT_LANG_IS( THROW ) &&
-           c_tid_is_any( ast->type.stids, TS_THROW ) ) {
+      if ( c_tid_is_any( ast->type.stids, TS_THROW ) &&
+           !OPT_LANG_IS( THROW ) ) {
         print_error( &ast->loc,
           "\"throw\" not supported%s",
           C_LANG_WHICH( THROW )
@@ -2319,8 +2319,8 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
   }
 
   if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
-    if ( !OPT_LANG_IS( CONSTEXPR_RETURN_TYPE ) &&
-         c_tid_is_any( ast->type.stids, TS_CONSTEXPR ) &&
+    if ( c_tid_is_any( ast->type.stids, TS_CONSTEXPR ) &&
+         !OPT_LANG_IS( CONSTEXPR_RETURN_TYPE ) &&
          c_ast_is_builtin_any( ast->as.func.ret_ast, TB_VOID ) ) {
       print_error( &ast->loc,
         "%s %s is illegal%s\n",
@@ -2453,8 +2453,8 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
       PJL_FALLTHROUGH;
 
     case K_DESTRUCTOR:
-      if ( OPT_LANG_IS( NOEXCEPT ) &&
-           c_tid_is_any( ast->type.stids, TS_THROW ) ) {
+      if ( c_tid_is_any( ast->type.stids, TS_THROW ) &&
+           OPT_LANG_IS( NOEXCEPT ) ) {
         print_warning( &ast->loc,
           "\"throw\" is deprecated%s",
           C_LANG_WHICH( CPP_MAX(03) )
