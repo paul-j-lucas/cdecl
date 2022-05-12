@@ -1,5 +1,17 @@
+2022-05-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * Makefile.am, src/Makefile.am: Fixed distclean and distclean-coverage
+     rules.
+   * Makefile.am: Added to .PHONY.
+
 2022-05-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_kind.c, c_kind.h,
+     c_lang.h, dump.c, english.c, gibberish.c, parser.y, types.h,
+     test/Makefile.am, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
+     declare_en_al4.out, declare_en_al4.test: Split K_ENUM_CLASS_STRUCT_UNION
+     into K_ENUM and K_CLASS_STRUCT_UNION; now allow _Alignas for enums in C.
+   * c_ast_check.c: OPT_LANG_IS() clean-up.
    * gibberish.c, gibberish.h, parser.y: Made c_ast_gibberish() use
      C_GIB_FINAL_SEMI as well.
    * gibberish.c: Added assert().
