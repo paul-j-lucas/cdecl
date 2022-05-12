@@ -44,7 +44,7 @@ GENHTML_FLAGS =	--legend \
 		--title "$(PACKAGE_NAME)-$(PACKAGE_VERSION) Code Coverage" \
 		--output-directory $(top_builddir)/$(COVERAGE_DIR)
 
-.PHONY: doc docs
+.PHONY: clean-coverage-local distclean-coverage-local doc docs update-gnulib
 
 doc docs:
 	@./makedoc.sh
@@ -62,14 +62,14 @@ else
 endif
 
 clean-local: clean-coverage
-	rm -rf docs
+	rm -fr docs
 
 distclean-local: distclean-coverage
 
 clean-coverage-local:
 	rm -f $(COVERAGE_INFO)
 
-distclean-coverage-local: clean-coverage-local
+distclean-coverage-local:
 	rm -fr $(COVERAGE_DIR)
 
 update-gnulib:
