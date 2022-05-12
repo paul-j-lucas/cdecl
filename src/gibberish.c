@@ -303,18 +303,18 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       g_print_ast_bit_width( g, ast );
       break;
 
-    case K_ENUM_CLASS_STRUCT_UNION: {
-      if ( c_tid_is_any( type.btids, TB_ENUM ) ) {
-        //
-        // Special case: an enum class must be written as just "enum" when
-        // doing an elaborated-type-specifier:
-        //
-        //      c++decl> declare e as enum class C
-        //      enum C e;                   // not: enum class C e;
-        //
-        type.btids &= c_tid_compl( TB_STRUCT | TB_CLASS );
-      }
+    case K_ENUM:
+      //
+      // Special case: an enum class must be written as just "enum" when doing
+      // an elaborated-type-specifier:
+      //
+      //      c++decl> declare e as enum class C
+      //      enum C e;                 // not: enum class C e;
+      //
+      type.btids &= c_tid_compl( TB_STRUCT | TB_CLASS );
+      PJL_FALLTHROUGH;
 
+    case K_CLASS_STRUCT_UNION: {
       if ( opt_east_const ) {
         cv_qual_stids = type.stids & TS_CV;
         type.stids &= c_tid_compl( TS_CV );
@@ -347,13 +347,13 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         FPRINTF( g->gout,
           "%s%s",
           type_name[0] != '\0' ? " " : "",
-          c_sname_full_name( &ast->as.ecsu.ecsu_sname )
+          c_sname_full_name( &ast->as.csu.csu_sname )
         );
       }
 
-      if ( ast->as.ecsu.of_ast != NULL ) {
+      if ( ast->kind == K_ENUM && ast->as.enum_.of_ast != NULL ) {
         FPUTS( " : ", g->gout );
-        g_print_ast( g, ast->as.ecsu.of_ast );
+        g_print_ast( g, ast->as.enum_.of_ast );
       }
 
       if ( cv_qual_stids != TS_NONE )
@@ -673,7 +673,8 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
         break;
 
       case K_BUILTIN:
-      case K_ENUM_CLASS_STRUCT_UNION:
+      case K_CLASS_STRUCT_UNION:
+      case K_ENUM:
       case K_NAME:
       case K_TYPEDEF:
       case K_VARIADIC:
@@ -716,7 +717,8 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       FPUTS( "()", g->gout );
       break;
     case K_BUILTIN:
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_CLASS_STRUCT_UNION:
+    case K_ENUM:
     case K_NAME:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
@@ -1100,7 +1102,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
     }
   }
 
-  bool const is_ecsu = tdef->ast->kind == K_ENUM_CLASS_STRUCT_UNION;
+  bool const is_ecsu = (tdef->ast->kind & K_ENUM_CLASS_STRUCT_UNION) != 0;
 
   //
   // When printing a type, all types except enum, class, struct, or union

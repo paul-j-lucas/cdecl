@@ -231,10 +231,15 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       c_ast_bit_width_english( ast, eout );
       break;
 
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_CLASS_STRUCT_UNION:
       FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
-      c_sname_english( &ast->as.ecsu.ecsu_sname, eout );
-      if ( ast->as.ecsu.of_ast != NULL )
+      c_sname_english( &ast->as.csu.csu_sname, eout );
+      break;
+
+    case K_ENUM:
+      FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
+      c_sname_english( &ast->as.enum_.enum_sname, eout );
+      if ( ast->as.enum_.of_ast != NULL )
         FPUTS( " of type ", eout );
       break;
 

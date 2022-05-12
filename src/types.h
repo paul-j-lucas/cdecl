@@ -90,7 +90,8 @@ typedef unsigned                  c_bit_width_t;  ///< Bit-field width.
 typedef struct c_builtin_ast      c_builtin_ast_t;
 typedef enum   c_cast_kind        c_cast_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
-typedef struct c_ecsu_ast         c_ecsu_ast_t;
+typedef struct c_csu_ast          c_csu_ast_t;
+typedef struct c_enum_ast         c_enum_ast_t;
 typedef struct c_function_ast     c_function_ast_t;
 typedef enum   c_graph            c_graph_t;
 typedef struct c_keyword          c_keyword_t;

@@ -1,3 +1,0 @@
-explain class C : int
-                  ^
-19: error: class can not specify an underlying type

@@ -187,6 +187,11 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
       c_ast_dump_impl( ast->as.array.of_ast, indent, "of_ast", dout );
       break;
 
+    case K_CLASS_STRUCT_UNION:
+      DUMP_COMMA;
+      DUMP_SNAME( "csu_sname", &ast->as.csu.csu_sname );
+      break;
+
     case K_OPERATOR:
       DUMP_COMMA;
       DUMP_FORMAT(
@@ -231,12 +236,12 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
       }
       break;
 
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_ENUM:
       DUMP_COMMA;
-      DUMP_SNAME( "ecsu_sname", &ast->as.ecsu.ecsu_sname );
-      if ( ast->as.ecsu.of_ast != NULL ) {
+      DUMP_SNAME( "enum_sname", &ast->as.enum_.enum_sname );
+      if ( ast->as.enum_.of_ast != NULL ) {
         FPUTS( ",\n", dout );
-        c_ast_dump_impl( ast->as.ecsu.of_ast, indent, "of_ast", dout );
+        c_ast_dump_impl( ast->as.enum_.of_ast, indent, "of_ast", dout );
       }
       break;
 

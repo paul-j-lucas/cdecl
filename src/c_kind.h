@@ -102,68 +102,73 @@ enum c_ast_kind {
   K_BUILTIN                 = (1u << 1),
 
   /**
+   * A `class,` `struct,` or `union`.
+   */
+  K_CLASS_STRUCT_UNION      = (1u << 2),
+
+  /**
    * Name only.  It's used as the initial kind for an identifier ("name") until
    * we know its actual type (if ever).  However, it's also used for pre-
    * prototype typeless function parameters in K&R C, e.g., `double sin(x)`.
    */
-  K_NAME                    = (1u << 2),
+  K_NAME                    = (1u << 3),
 
   /**
    * `typedef` type, e.g., `size_t`.
    */
-  K_TYPEDEF                 = (1u << 3),
+  K_TYPEDEF                 = (1u << 4),
 
   /**
    * Variadic (`...`) function parameter.
    */
-  K_VARIADIC                = (1u << 4),
+  K_VARIADIC                = (1u << 5),
 
   ////////// "parent" kinds ///////////////////////////////////////////////////
 
   /**
    * Array.
    */
-  K_ARRAY                   = (1u << 5),
+  K_ARRAY                   = (1u << 6),
 
   /**
-   * An `enum,` `class,` `struct,` or `union`.
+   * An `enum`.
    *
    * @note This is a "parent" kind because `enum` in C++11 and later can be
    * "of" a fixed type.
    */
-  K_ENUM_CLASS_STRUCT_UNION = (1u << 6),
+  K_ENUM                    = (1u << 7),
 
   /**
    * C or C++ pointer.
    */
-  K_POINTER                 = (1u << 7),
+  K_POINTER                 = (1u << 8),
 
   /**
    * C++ pointer-to-member.
    */
-  K_POINTER_TO_MEMBER       = (1u << 8),
+  K_POINTER_TO_MEMBER       = (1u << 9),
 
   /**
    * C++ reference.
    */
-  K_REFERENCE               = (1u << 9),
+  K_REFERENCE               = (1u << 10),
 
   /**
    * C++11 rvalue reference.
    */
-  K_RVALUE_REFERENCE        = (1u << 10),
+  K_RVALUE_REFERENCE        = (1u << 11),
 
   ////////// function-like "parent" kinds /////////////////////////////////////
 
   /**
    * C++ constructor.
    */
-  K_CONSTRUCTOR             = (1u << 11),
+  K_CONSTRUCTOR             = (1u << 12),
 
   /**
    * C++ destructor.
    */
-  K_DESTRUCTOR              = (1u << 12),
+  K_DESTRUCTOR              = (1u << 13),
 
   ////////// function-like "parent" kinds that have return values /////////////
 
@@ -173,28 +178,34 @@ enum c_ast_kind {
    * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
    * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
    */
-  K_APPLE_BLOCK             = (1u << 13),
+  K_APPLE_BLOCK             = (1u << 14),
 
   /**
    * Function.
    */
-  K_FUNCTION                = (1u << 14),
+  K_FUNCTION                = (1u << 15),
 
   /**
    * C++ overloaded operator.
    */
-  K_OPERATOR                = (1u << 15),
+  K_OPERATOR                = (1u << 16),
 
   /**
    * C++ user-defined conversion operator.
    */
-  K_USER_DEF_CONVERSION     = (1u << 16),
+  K_USER_DEF_CONVERSION     = (1u << 17),
 
   /**
    * C++11 user-defined literal.
    */
-  K_USER_DEF_LITERAL        = (1u << 17),
+  K_USER_DEF_LITERAL        = (1u << 18),
 };
+
+/**
+ * Shorthand for either #K_ENUM or #K_CLASS_STRUCT_UNION.
+ */
+#define K_ENUM_CLASS_STRUCT_UNION \
+                              ( K_ENUM | K_CLASS_STRUCT_UNION )
 
 /**
  * Shorthand for any kind of function-like AST: #K_APPLE_BLOCK, #K_CONSTRUCTOR,
@@ -208,8 +219,8 @@ enum c_ast_kind {
 /**
  * Shorthand for any kind of "object" that can be the type of a variable or
  * constant, i.e., something to which `sizeof` can be applied: #K_ARRAY,
- * #K_BUILTIN, #K_ENUM_CLASS_STRUCT_UNION, #K_POINTER, #K_POINTER_TO_MEMBER,
- * #K_REFERENCE, #K_RVALUE_REFERENCE, or #K_TYPEDEF.
+ * #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_ENUM, #K_POINTER,
+ * #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE, or #K_TYPEDEF.
  */
 #define K_ANY_OBJECT          ( K_ANY_POINTER | K_ANY_REFERENCE | K_ARRAY \
                               | K_BUILTIN | K_ENUM_CLASS_STRUCT_UNION \
@@ -217,8 +228,8 @@ enum c_ast_kind {
 
 /**
  * Shorthand for any kind of parent: #K_APPLE_BLOCK, #K_ARRAY, #K_CONSTRUCTOR,
- * #K_DESTRUCTOR, #K_ENUM_CLASS_STRUCT_UNION, #K_FUNCTION, #K_OPERATOR,
- * #K_POINTER, #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE,
+ * #K_DESTRUCTOR, #K_ENUM, #K_FUNCTION, #K_OPERATOR, #K_POINTER,
+ * #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE,
  * #K_USER_DEF_CONVERSION, or #K_USER_DEF_LITERAL.
  *
  * @note #K_TYPEDEF is intentionally _not_ included.
@@ -226,8 +237,7 @@ enum c_ast_kind {
  * @sa #K_ANY_REFERRER
  */
 #define K_ANY_PARENT          ( K_ANY_FUNCTION_LIKE | K_ANY_POINTER \
-                              | K_ANY_REFERENCE | K_ARRAY \
-                              | K_ENUM_CLASS_STRUCT_UNION )
+                              | K_ANY_REFERENCE | K_ARRAY | K_ENUM )
 
 /**
  * Shorthand for any kind of pointer: #K_POINTER or #K_POINTER_TO_MEMBER.

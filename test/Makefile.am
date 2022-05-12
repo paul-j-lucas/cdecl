@@ -136,6 +136,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_cz-ec.test \
 	tests/declare_cz.test \
 	tests/declare_en.test \
+	tests/declare_en_al4.test \
 	tests/declare_eta2i.test \
 	tests/declare_f.test \
 	tests/declare_f_pi.test \
@@ -236,7 +237,6 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_cnmf_v-c.test \
 	tests/declare_cri.test \
 	tests/declare_en-knr.test \
-	tests/declare_en_al4.test \
 	tests/declare_enc-c.test \
 	tests/declare_etsf_v.test \
 	tests/declare_f_ai.test \
@@ -1438,7 +1438,6 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_ari.test \
 	tests/explain_ati-c++20.test \
 	tests/explain_cepctor_i.test \
-	tests/explain_cfi.test \
 	tests/explain_cri.test \
 	tests/explain_ctor_2i=default.test \
 	tests/explain_ecf_v-Rstr-03.test \

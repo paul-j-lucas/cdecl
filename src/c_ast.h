@@ -269,14 +269,29 @@ struct c_constructor_ast {
 };
 
 /**
- * AST node for a #K_ENUM_CLASS_STRUCT_UNION.
+ * AST node for a #K_CLASS_STRUCT_UNION.
  *
- * @note Members are laid out in the same order as `c_ptr_mbr_ast`: this is
- * taken advantage of.
+ * @note Members are laid out in the same order as c_enum_ast and
+ * c_ptr_mbr_ast: this is taken advantage of.
  */
-struct c_ecsu_ast {
-  c_ast_t        *of_ast;               ///< For `enum`, the fixed type, if any.
-  c_sname_t       ecsu_sname;           ///< enum/class/struct/union name
+struct c_csu_ast {
+  /// Class, struct, and union types don't have an "of" type, but we need an
+  /// unused pointer so `csu_sname` is at the same offset as enum_sname in
+  /// c_enum_ast and class_sname in c_ptr_mbr_ast.
+  void           *not_used;
+
+  c_sname_t       csu_sname;            ///< Class, struct, or union name.
+};
+
+/**
+ * AST node for a #K_ENUM.
+ *
+ * @note Members are laid out in the same order as c_csu_ast and c_ptr_mbr_ast:
+ * this is taken advantage of.
+ */
+struct c_enum_ast {
+  c_ast_t        *of_ast;               ///< The fixed type, if any.
+  c_sname_t       enum_sname;           ///< Enumeration name.
 };
 
 /**
@@ -323,8 +338,8 @@ struct c_operator_ast {
 /**
  * AST node for a #K_POINTER_TO_MEMBER.
  *
- * @note Members are laid out in the same order as c_ecsu_ast: this is taken
- * advantage of.
+ * @note Members are laid out in the same order as c_csu_ast and c_enum_ast:
+ * this is taken advantage of.
  */
 struct c_ptr_mbr_ast {
   c_ast_t        *of_ast;               ///< Member type.
@@ -391,9 +406,10 @@ struct c_ast {
     c_array_ast_t       array;      ///< #K_ARRAY members.
     c_apple_block_ast_t block;      ///< #K_APPLE_BLOCK members.
     c_builtin_ast_t     builtin;    ///< #K_BUILTIN members.
+    c_csu_ast_t         csu;        ///< #K_CLASS_STRUCT_UNION members.
     c_constructor_ast_t ctor;       ///< #K_CONSTRUCTOR members.
                     // nothing needed for K_DESTRUCTOR
-    c_ecsu_ast_t        ecsu;       ///< #K_ENUM_CLASS_STRUCT_UNION members.
+    c_enum_ast_t        enum_;      ///< #K_ENUM members.
     c_function_ast_t    func;       ///< #K_FUNCTION members.
                     // nothing needed for K_NAME
     c_operator_ast_t    oper;       ///< #K_OPERATOR members.

@@ -443,6 +443,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CONSTINIT                  LANG_CPP_MIN(20)
 
 /**
+ * Languages `class`, `struct`, or `union` for return types are supported.
+ */
+#define LANG_CSU_RETURN_TYPE            LANG_MIN(C_89)
+
+/**
  * Languages the `decltype` keyword is supported in.
  */
 #define LANG_DECLTYPE                   LANG_CPP_MIN(11)
@@ -476,12 +481,6 @@ _GL_INLINE_HEADER_BEGIN
  * Languages "digraphs" are supported in.
  */
 #define LANG_DIGRAPHS                   LANG_MIN(C_95)
-
-/**
- * Languages `enum`, `class`, `struct`, or `union` for return types are
- * supported.
- */
-#define LANG_ECSU_RETURN_TYPE           LANG_MIN(C_89)
 
 /**
  * Languages the `enum` keyword is supported in.

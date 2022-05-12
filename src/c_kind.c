@@ -51,6 +51,7 @@ char const* c_kind_name( c_ast_kind_t kind ) {
     case K_BUILTIN            : return "built-in type";
     case K_CONSTRUCTOR        : return "constructor";
     case K_DESTRUCTOR         : return "destructor";
+    case K_ENUM               : return "enumeration";
     case K_FUNCTION           : return "function";
     case K_NAME               : return "name";
     case K_PLACEHOLDER        : return "placeholder";
@@ -64,12 +65,9 @@ char const* c_kind_name( c_ast_kind_t kind ) {
     case K_USER_DEF_CONVERSION: return "user-defined conversion operator";
     case K_VARIADIC           : return "variadic";
 
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_CLASS_STRUCT_UNION:
       if ( OPT_LANG_IS( CPP_ANY ) )
-        return "enum, class, struct, or union";
-      if ( OPT_LANG_IS( ENUM ) )
-        return "enum, struct, or union";
-      assert( OPT_LANG_IS( C_KNR ) );
+        return "class, struct, or union";
       return "struct or union";
   } // switch
 

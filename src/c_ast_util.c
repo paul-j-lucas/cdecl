@@ -370,7 +370,7 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  *       kind = "enum, class, struct, or union",
  *       ...
  *       type = "struct" (base = 0x800001, store = 0x2, attr = 0x4),
- *       ecsu_sname = "S" (none)
+ *       csu_sname = "S" (none)
  *     },
  *     ...
  *   }
@@ -427,7 +427,7 @@ static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
  *       kind = "enum, class, struct, or union",
  *       ...
  *       type = "struct" (base = 0x800001, store = 0x2, attr = 0x4),
- *       ecsu_sname = "S" (none)
+ *       csu_sname = "S" (none)
  *     },
  *     bit_width = 0
  *   }
@@ -583,7 +583,7 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
 
 bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname ) {
   ast = c_ast_is_ref_to_tid_any( ast, TB_ANY_CLASS );
-  return ast != NULL && c_sname_cmp( &ast->as.ecsu.ecsu_sname, sname ) == 0;
+  return ast != NULL && c_sname_cmp( &ast->as.csu.csu_sname, sname ) == 0;
 }
 
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {

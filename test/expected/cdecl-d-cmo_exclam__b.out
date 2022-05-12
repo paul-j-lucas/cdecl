@@ -11,13 +11,13 @@ class_struct_union_declaration_c ::= class_struct_union_btid sname '{' in_scope_
   class_struct_union_declaration_c = {
     sname = "S" (struct),
     unique_id = 1335,
-    kind = "enum, class, struct, or union",
+    kind = "class, struct, or union",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
     loc = 7,
     type = "struct" (btid = 0x800001, stid = 0x2, atid = 0x4),
-    ecsu_sname = "S" (none)
+    csu_sname = "S" (none)
   }
 }
 

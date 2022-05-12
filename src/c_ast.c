@@ -126,9 +126,10 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       dup_ast->as.builtin.bit_width = ast->as.builtin.bit_width;
       break;
 
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_CLASS_STRUCT_UNION:
+    case K_ENUM:
     case K_POINTER_TO_MEMBER:
-      dup_ast->as.ecsu.ecsu_sname = c_sname_dup( &ast->as.ecsu.ecsu_sname );
+      dup_ast->as.csu.csu_sname = c_sname_dup( &ast->as.csu.csu_sname );
       break;
 
     case K_OPERATOR:
@@ -227,11 +228,12 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
     }
 
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_CLASS_STRUCT_UNION:
+    case K_ENUM:
     case K_POINTER_TO_MEMBER: {
-      c_ecsu_ast_t const *const ei_ast = &i_ast->as.ecsu;
-      c_ecsu_ast_t const *const ej_ast = &j_ast->as.ecsu;
-      if ( c_sname_cmp( &ei_ast->ecsu_sname, &ej_ast->ecsu_sname ) != 0 )
+      c_csu_ast_t const *const csui_ast = &i_ast->as.csu;
+      c_csu_ast_t const *const csuj_ast = &j_ast->as.csu;
+      if ( c_sname_cmp( &csui_ast->csu_sname, &csuj_ast->csu_sname ) != 0 )
         return false;
       break;
     }
@@ -272,9 +274,10 @@ void c_ast_free( c_ast_t *ast ) {
       case K_USER_DEF_LITERAL:
         c_ast_list_cleanup( &ast->as.func.param_ast_list );
         break;
-      case K_ENUM_CLASS_STRUCT_UNION:
+      case K_CLASS_STRUCT_UNION:
+      case K_ENUM:
       case K_POINTER_TO_MEMBER:
-        c_sname_cleanup( &ast->as.ecsu.ecsu_sname );
+        c_sname_cleanup( &ast->as.csu.csu_sname );
         break;
       case K_ARRAY:
       case K_BUILTIN:
@@ -323,9 +326,10 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
       break;
     case K_APPLE_BLOCK:
     case K_BUILTIN:
+    case K_CLASS_STRUCT_UNION:
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_ENUM:
     case K_FUNCTION:
     case K_NAME:
     case K_OPERATOR:

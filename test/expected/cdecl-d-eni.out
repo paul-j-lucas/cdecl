@@ -45,8 +45,8 @@ enum_fixed_type_c_ast ::= enum_unmodified_fixed_type_c_ast enum_fixed_type_modif
   }
 }
 
-enum_class_struct_union_c_ast ::= enum_class_struct_union_c_btid attribute_specifier_list_c_atid_opt sname = {
-  enum_class_struct_union_c_btid = "enum" (btid = 0x400001),
+enum_c_ast ::= enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt = {
+  enum_btid = "enum" (btid = 0x400001),
   attribute_specifier_list_c_atid_opt = "" (atid = 0x4),
   any_sname_c = "E" (none),
   enum_fixed_type_c_ast_opt = {
@@ -60,16 +60,16 @@ enum_class_struct_union_c_ast ::= enum_class_struct_union_c_btid attribute_speci
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  enum_class_struct_union_c_ast = {
+  enum_c_ast = {
     sname = "",
     unique_id = 1336,
-    kind = "enum, class, struct, or union",
+    kind = "enumeration",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
     loc = 8-19,
     type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
-    ecsu_sname = "E" (none),
+    enum_sname = "E" (none),
     of_ast = {
       sname = "",
       unique_id = 1335,
@@ -88,13 +88,13 @@ east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_sti
   enum_class_struct_union_c_ast = {
     sname = "",
     unique_id = 1336,
-    kind = "enum, class, struct, or union",
+    kind = "enumeration",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
     loc = 8-19,
     type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
-    ecsu_sname = "E" (none),
+    enum_sname = "E" (none),
     of_ast = {
       sname = "",
       unique_id = 1335,
@@ -111,13 +111,13 @@ east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_sti
   east_modified_type_c_ast = {
     sname = "",
     unique_id = 1336,
-    kind = "enum, class, struct, or union",
+    kind = "enumeration",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
     loc = 8-19,
     type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
-    ecsu_sname = "E" (none),
+    enum_sname = "E" (none),
     of_ast = {
       sname = "",
       unique_id = 1335,
@@ -136,13 +136,13 @@ decl_list_c_opt ::= <empty> = {
   (type_c_ast) = {
     sname = "",
     unique_id = 1336,
-    kind = "enum, class, struct, or union",
+    kind = "enumeration",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
     loc = 8-19,
     type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
-    ecsu_sname = "E" (none),
+    enum_sname = "E" (none),
     of_ast = {
       sname = "",
       unique_id = 1335,
@@ -158,13 +158,13 @@ decl_list_c_opt ::= <empty> = {
   decl_list_c_opt = {
     sname = "",
     unique_id = 1336,
-    kind = "enum, class, struct, or union",
+    kind = "enumeration",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
     loc = 8-19,
     type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
-    ecsu_sname = "E" (none),
+    enum_sname = "E" (none),
     of_ast = {
       sname = "",
       unique_id = 1335,
@@ -180,13 +180,13 @@ decl_list_c_opt ::= <empty> = {
   decl_list_c_opt = {
     sname = "E" (none),
     unique_id = 1336,
-    kind = "enum, class, struct, or union",
+    kind = "enumeration",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
     loc = 8-19,
     type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
-    ecsu_sname = "E" (none),
+    enum_sname = "E" (none),
     of_ast = {
       sname = "",
       unique_id = 1335,

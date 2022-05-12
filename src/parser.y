@@ -1462,10 +1462,11 @@ static void yyerror( char const *msg ) {
 %type   <int_val>   array_size_int_opt
 %type   <tid>       attribute_english_atid
 %type   <ast>       block_decl_english_ast
+%type   <ast>       class_struct_union_english_ast
 %type   <ast>       constructor_decl_english_ast
 %type   <ast>       decl_english_ast decl_english_ast_exp
 %type   <ast>       destructor_decl_english_ast
-%type   <ast>       enum_class_struct_union_english_ast
+%type   <ast>       enum_english_ast
 %type   <ast>       enum_fixed_type_english_ast
 %type   <tid>       enum_fixed_type_modifier_list_english_btid
 %type   <tid>       enum_fixed_type_modifier_list_english_btid_opt
@@ -1534,8 +1535,10 @@ static void yyerror( char const *msg ) {
 %type   <tid>       attribute_specifier_list_c_atid_opt
 %type   <uint_val>  bit_field_c_uint_opt
 %type   <ast_pair>  block_decl_c_astp
+%type   <ast>       class_struct_union_c_ast
 %type   <ast_pair>  decl_c_astp decl2_c_astp
 %type   <ast>       east_modified_type_c_ast
+%type   <ast>       enum_c_ast
 %type   <ast>       enum_class_struct_union_c_ast
 %type   <ast>       enum_fixed_type_c_ast enum_fixed_type_c_ast_opt
 %type   <tid>       enum_fixed_type_modifier_list_btid
@@ -1601,7 +1604,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>       class_struct_union_btid class_struct_union_btid_exp
 %type   <oper_id>   c_operator
 %type   <tid>       cv_qualifier_stid cv_qualifier_list_stid_opt
-%type   <tid>       enum_btid enum_class_struct_union_c_btid
+%type   <tid>       enum_btid
 %type   <name>      glob glob_opt
 %type   <help>      help_what_opt
 %type   <tid>       inline_stid_opt
@@ -2712,10 +2715,10 @@ class_struct_union_declaration_c
       if ( !c_sname_check( &in_attr.current_scope, &@3 ) )
         PARSE_ABORT();
 
-      c_ast_t *const csu_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
+      c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@3 );
       csu_ast->sname = c_sname_dup( &in_attr.current_scope );
       c_sname_append_name(
-        &csu_ast->as.ecsu.ecsu_sname,
+        &csu_ast->as.csu.csu_sname,
         check_strdup( c_sname_local_name( &in_attr.current_scope ) )
       );
       csu_ast->type.btids = c_tid_check( $1, C_TPID_BASE );
@@ -2753,12 +2756,12 @@ enum_declaration_c
         PARSE_ABORT();
       }
 
-      c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
+      c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM, &@3 );
       enum_ast->sname = enum_sname;
       enum_ast->type.btids = c_tid_check( $1, C_TPID_BASE );
-      enum_ast->as.ecsu.of_ast = $4;
+      enum_ast->as.enum_.of_ast = $4;
       c_sname_append_name(
-        &enum_ast->as.ecsu.ecsu_sname,
+        &enum_ast->as.enum_.enum_sname,
         check_strdup( c_sname_local_name( &enum_sname ) )
       );
 
@@ -3246,7 +3249,7 @@ decl_list_c_opt
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl_list_c_opt", type_ast );
 
-      if ( type_ast->kind != K_ENUM_CLASS_STRUCT_UNION ) {
+      if ( (type_ast->kind & K_ENUM_CLASS_STRUCT_UNION) == 0 ) {
         //
         // The declaration is a non-ECSU type, e.g.:
         //
@@ -3257,7 +3260,7 @@ decl_list_c_opt
         PARSE_ABORT();
       }
 
-      c_sname_t const *const ecsu_sname = &type_ast->as.ecsu.ecsu_sname;
+      c_sname_t const *const ecsu_sname = &type_ast->as.csu.csu_sname;
       assert( !c_sname_empty( ecsu_sname ) );
 
       if ( c_sname_count( ecsu_sname ) > 1 ) {
@@ -4435,7 +4438,7 @@ typedef_type_decl_c_ast
         //     kind = "enum, struct, or union",
         //     ...
         //     type = "struct" (btid = 0x800001, stid = 0x2, atid = 0x4),
-        //     ecsu_sname = "S" (none)
+        //     csu_sname = "S" (none)
         //   }
         // }
         // ```
@@ -5212,29 +5215,31 @@ builtin_btid
 /// Gibberish C/C++ enum, class, struct, & union types ////////////////////////
 
 enum_class_struct_union_c_ast
-  : enum_class_struct_union_c_btid attribute_specifier_list_c_atid_opt
-    any_sname_c_exp enum_fixed_type_c_ast_opt
+  : class_struct_union_c_ast
+  | enum_c_ast
+  ;
+
+class_struct_union_c_ast
+  : class_struct_union_btid attribute_specifier_list_c_atid_opt any_sname_c_exp
     {
       DUMP_START( "enum_class_struct_union_c_ast",
-                  "enum_class_struct_union_c_btid "
+                  "class_struct_union_btid "
                   "attribute_specifier_list_c_atid_opt sname" );
-      DUMP_TID( "enum_class_struct_union_c_btid", $1 );
+      DUMP_TID( "class_struct_union_btid", $1 );
       DUMP_TID( "attribute_specifier_list_c_atid_opt", $2 );
       DUMP_SNAME( "any_sname_c", $3 );
-      DUMP_AST( "enum_fixed_type_c_ast_opt", $4 );
 
-      $$ = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
+      $$ = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@$ );
       $$->type.btids = c_tid_check( $1, C_TPID_BASE );
       $$->type.atids = c_tid_check( $2, C_TPID_ATTR );
-      $$->as.ecsu.of_ast = $4;
-      $$->as.ecsu.ecsu_sname = $3;
+      $$->as.csu.csu_sname = $3;
 
-      DUMP_AST( "enum_class_struct_union_c_ast", $$ );
+      DUMP_AST( "class_struct_union_c_ast", $$ );
       DUMP_END();
     }
 
-  | enum_class_struct_union_c_btid attribute_specifier_list_c_atid_opt
-    any_sname_c_opt '{'
+  | class_struct_union_btid attribute_specifier_list_c_atid_opt any_sname_c_opt
+    '{'
     {
       print_error( &@4,
         "explaining %s declarations not supported by %s\n",
@@ -5245,9 +5250,37 @@ enum_class_struct_union_c_ast
     }
   ;
 
-enum_class_struct_union_c_btid
-  : enum_btid
-  | class_struct_union_btid
+enum_c_ast
+  : enum_btid attribute_specifier_list_c_atid_opt any_sname_c_exp
+    enum_fixed_type_c_ast_opt
+    {
+      DUMP_START( "enum_c_ast",
+                  "enum_btid attribute_specifier_list_c_atid_opt sname "
+                  "enum_fixed_type_c_ast_opt" );
+      DUMP_TID( "enum_btid", $1 );
+      DUMP_TID( "attribute_specifier_list_c_atid_opt", $2 );
+      DUMP_SNAME( "any_sname_c", $3 );
+      DUMP_AST( "enum_fixed_type_c_ast_opt", $4 );
+
+      $$ = c_ast_new_gc( K_ENUM, &@$ );
+      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
+      $$->type.atids = c_tid_check( $2, C_TPID_ATTR );
+      $$->as.enum_.of_ast = $4;
+      $$->as.enum_.enum_sname = $3;
+
+      DUMP_AST( "enum_c_ast", $$ );
+      DUMP_END();
+    }
+
+  | enum_btid attribute_specifier_list_c_atid_opt any_sname_c_opt '{'
+    {
+      print_error( &@4,
+        "explaining %s declarations not supported by %s\n",
+        c_tid_name_c( $1 ), CDECL
+      );
+      c_sname_cleanup( &$3 );
+      PARSE_ABORT();
+    }
   ;
 
 /// Gibberish C/C++ enum type /////////////////////////////////////////////////
@@ -6475,26 +6508,43 @@ type_modifier_english_type
 
 unmodified_type_english_ast
   : builtin_type_ast
-  | enum_class_struct_union_english_ast
+  | class_struct_union_english_ast
+  | enum_english_ast
   | typedef_type_c_ast
   ;
 
-enum_class_struct_union_english_ast
-  : enum_class_struct_union_c_btid any_sname_c_exp
-    of_type_enum_fixed_type_english_ast_opt
+class_struct_union_english_ast
+  : class_struct_union_btid any_sname_c_exp
     {
-      DUMP_START( "enum_class_struct_union_english_ast",
-                  "enum_class_struct_union_c_btid sname" );
-      DUMP_TID( "enum_class_struct_union_c_btid", $1 );
+      DUMP_START( "class_struct_union_english_ast",
+                  "class_struct_union_btid sname" );
+      DUMP_TID( "class_struct_union_btid", $1 );
+      DUMP_SNAME( "sname", $2 );
+
+      $$ = c_ast_new_gc( $1 == TB_ENUM ? K_ENUM : K_CLASS_STRUCT_UNION, &@$ );
+      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
+      $$->as.csu.csu_sname = $2;
+
+      DUMP_AST( "enum_class_struct_union_english_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+enum_english_ast
+  : enum_btid any_sname_c_exp of_type_enum_fixed_type_english_ast_opt
+    {
+      DUMP_START( "enum_english_ast",
+                  "enum_btid sname of_type_enum_fixed_type_english_ast_opt" );
+      DUMP_TID( "enum_btid", $1 );
       DUMP_SNAME( "sname", $2 );
       DUMP_AST( "enum_fixed_type_english_ast", $3 );
 
-      $$ = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
+      $$ = c_ast_new_gc(  K_ENUM, &@$ );
       $$->type.btids = c_tid_check( $1, C_TPID_BASE );
-      $$->as.ecsu.of_ast = $3;
-      $$->as.ecsu.ecsu_sname = $2;
+      $$->as.enum_.of_ast = $3;
+      $$->as.enum_.enum_sname = $2;
 
-      DUMP_AST( "enum_class_struct_union_english_ast", $$ );
+      DUMP_AST( "enum_english_ast", $$ );
       DUMP_END();
     }
   ;

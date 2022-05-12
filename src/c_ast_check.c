@@ -274,7 +274,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
       return false;
     }
 
-    if ( raw_ast->kind == K_ENUM_CLASS_STRUCT_UNION && OPT_LANG_IS( C_ANY ) ) {
+    if ( raw_ast->kind == K_CLASS_STRUCT_UNION && OPT_LANG_IS( C_ANY ) ) {
       print_error( &ast->loc,
         "%s can not be aligned in C\n", c_kind_name( ast->kind )
       );
@@ -369,7 +369,8 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
   c_ast_t const *const raw_of_ast = c_ast_untypedef( of_ast );
   switch ( raw_of_ast->kind ) {
     case K_ARRAY:
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_CLASS_STRUCT_UNION:
+    case K_ENUM:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
       // nothing to do
@@ -639,56 +640,6 @@ static bool c_ast_check_declaration( c_ast_t const *ast ) {
 }
 
 /**
- * Checks an `enum`, `class`, `struct`, or `union` AST for errors.
- *
- * @param ast The `enum`, `class`, `struct`, or union AST to check.
- * @return Returns `true` only if all checks passed.
- */
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_ecsu( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  assert( ast->kind == K_ENUM_CLASS_STRUCT_UNION );
-
-  c_ast_t const *const of_ast = ast->as.ecsu.of_ast;
-
-  if ( c_tid_is_any( ast->type.btids, TB_ENUM ) ) {
-    if ( cdecl_mode == CDECL_GIBBERISH_TO_ENGLISH &&
-         c_tid_is_any( ast->type.btids, TB_STRUCT | TB_CLASS ) &&
-        !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) ) {
-      print_error( &ast->loc,
-        "\"%s\": enum classes must just use \"enum\"\n",
-        c_type_name_error( &ast->type )
-      );
-      return false;
-    }
-
-    if ( of_ast != NULL ) {
-      if ( !OPT_LANG_IS( FIXED_TYPE_ENUM ) ) {
-        print_error( &of_ast->loc,
-          "enum with underlying type not supported%s\n",
-          C_LANG_WHICH( FIXED_TYPE_ENUM )
-        );
-        return false;
-      }
-
-      if ( !c_ast_is_builtin_any( of_ast, TB_ANY_INTEGRAL ) ) {
-        print_error( &of_ast->loc, "enum underlying type must be integral\n" );
-        return false;
-      }
-    }
-  }
-  else if ( of_ast != NULL ) {          // class, struct, or union
-    print_error( &of_ast->loc,
-      "%s can not specify an underlying type\n",
-      c_type_name_error( &ast->type )
-    );
-    return false;
-  }
-
-  return true;
-}
-
-/**
  * Checks a built-in Embedded C type AST for errors.
  *
  * @param ast The built-in AST to check.
@@ -707,6 +658,46 @@ static bool c_ast_check_emc( c_ast_t const *ast ) {
       "\"_Sat\" requires either \"_Accum\" or \"_Fract\"\n"
     );
     return false;
+  }
+
+  return true;
+}
+
+/**
+ * Checks an `enum` AST for errors.
+ *
+ * @param ast The `enum` AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_enum( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_ENUM );
+
+  if ( cdecl_mode == CDECL_GIBBERISH_TO_ENGLISH &&
+       c_tid_is_any( ast->type.btids, TB_STRUCT | TB_CLASS ) &&
+      !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) ) {
+    print_error( &ast->loc,
+      "\"%s\": enum classes must just use \"enum\"\n",
+      c_type_name_error( &ast->type )
+    );
+    return false;
+  }
+
+  c_ast_t const *const of_ast = ast->as.enum_.of_ast;
+  if ( of_ast != NULL ) {
+    if ( !OPT_LANG_IS( FIXED_TYPE_ENUM ) ) {
+      print_error( &of_ast->loc,
+        "enum with underlying type not supported%s\n",
+        C_LANG_WHICH( FIXED_TYPE_ENUM )
+      );
+      return false;
+    }
+
+    if ( !c_ast_is_builtin_any( of_ast, TB_ANY_INTEGRAL ) ) {
+      print_error( &of_ast->loc, "enum underlying type must be integral\n" );
+      return false;
+    }
   }
 
   return true;
@@ -1151,9 +1142,10 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
       case K_ARRAY:
       case K_APPLE_BLOCK:
+      case K_CLASS_STRUCT_UNION:
       case K_CONSTRUCTOR:
       case K_DESTRUCTOR:
-      case K_ENUM_CLASS_STRUCT_UNION:
+      case K_ENUM:
       case K_FUNCTION:
       case K_OPERATOR:
       case K_POINTER:
@@ -1566,17 +1558,18 @@ same: print_error( &ast->loc,
     //
     c_ast_t const *param_ast = c_ast_untypedef( c_param_ast( param ) );
     switch ( param_ast->kind ) {
-      case K_ENUM_CLASS_STRUCT_UNION:
+      case K_CLASS_STRUCT_UNION:
+      case K_ENUM:
         ++ecsu_obj_param_count;
         break;
       case K_REFERENCE:
         param_ast = c_ast_unreference( param_ast );
-        if ( param_ast->kind == K_ENUM_CLASS_STRUCT_UNION )
+        if ( (param_ast->kind & K_ENUM_CLASS_STRUCT_UNION) != 0 )
           ++ecsu_lref_param_count;
         break;
       case K_RVALUE_REFERENCE:
         param_ast = c_ast_unrvalue_reference( param_ast );
-        if ( param_ast->kind == K_ENUM_CLASS_STRUCT_UNION )
+        if ( (param_ast->kind & K_ENUM_CLASS_STRUCT_UNION) != 0 )
           ++ecsu_rref_param_count;
         break;
       default:
@@ -1918,12 +1911,12 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
         return false;
       }
       break;
-    case K_ENUM_CLASS_STRUCT_UNION:
-      if ( !OPT_LANG_IS( ECSU_RETURN_TYPE ) ) {
+    case K_CLASS_STRUCT_UNION:
+      if ( !OPT_LANG_IS( CSU_RETURN_TYPE ) ) {
         print_error( &ret_ast->loc,
           "function returning %s not supported%s\n",
           c_kind_name( raw_ret_ast->kind ),
-          C_LANG_WHICH( ECSU_RETURN_TYPE )
+          C_LANG_WHICH( CSU_RETURN_TYPE )
         );
         return false;
       }
@@ -2141,8 +2134,12 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         return VISITOR_ERROR_FOUND;
       break;
 
-    case K_ENUM_CLASS_STRUCT_UNION:
-      if ( !c_ast_check_ecsu( ast ) )
+    case K_CLASS_STRUCT_UNION:
+      // nothing to check
+      break;
+
+    case K_ENUM:
+      if ( !c_ast_check_enum( ast ) )
         return VISITOR_ERROR_FOUND;
       break;
 
@@ -2408,7 +2405,8 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
   switch ( ast->kind ) {
     case K_ARRAY:
     case K_BUILTIN:
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_CLASS_STRUCT_UNION:
+    case K_ENUM:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
     case K_REFERENCE:
@@ -2492,9 +2490,10 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
 
   c_sname_warn( &ast->sname, &ast->loc );
   switch ( ast->kind ) {
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_CLASS_STRUCT_UNION:
+    case K_ENUM:
     case K_POINTER_TO_MEMBER:
-      c_sname_warn( &ast->as.ecsu.ecsu_sname, &ast->loc );
+      c_sname_warn( &ast->as.csu.csu_sname, &ast->loc );
       break;
     default:
       /* suppress warning */;
