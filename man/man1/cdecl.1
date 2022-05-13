@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 10, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 13, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -649,6 +649,7 @@ Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 \f(CWconstexpr\fP,
+\f(CWdefault\fP and \f(CWdelete\fP for member functions,
 \f(CWenum class\fP,
 fixed-type enumerations,
 \f(CWinline\fP namespaces,
@@ -669,7 +670,9 @@ and
 Use the C++14 version of the C++ language.
 Adds support for
 \f(CWauto\fP
-functions
+and
+\f(CWconstexpr\fP
+return types
 and
 \f(CW[[deprecated]]\fP.
 .TP
@@ -679,16 +682,21 @@ Adds support for
 \f(CWinline\fP
 variables,
 \f(CW[[maybe_unused]]\fP,
+nested namespace declarations,
 and
 \f(CW[[nodiscard]]\fP.
 .TP
 .B C++20
 Use the C++20 version of the C++ language.
 Adds support for
+\f(CWauto\fP parameters,
 \f(CWchar8_t\fP,
 \f(CWconsteval\fP,
 \f(CWconstinit\fP,
+\f(CEdefault\fP relational operators,
+\f(CWexport\fP,
 nested \f(CWinline\fP namespaces,
+\f(CW[[no_unique_address]]\fP,
 and
 \f(CWoperator<=>\fP.
 .TP
