@@ -1,3 +1,9 @@
+2022-05-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.c, config_using_i.cdeclrc: No longer temporarily setting
+     language to latest C++ while reading configuration file.
+   * cdecl.1: Added missing langauge feature support.
+
 2022-05-12  Paul J. Lucas <paul@lucasmail.org>
 
    * Makefile.am, src/Makefile.am: Fixed distclean and distclean-coverage
