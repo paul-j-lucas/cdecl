@@ -29,6 +29,12 @@ If none of the `--config`, `-c`, `--no-config`, nor `-C` command line options
 are given and the value of the `CDECLRC` environment variable isn't empty, it's
 used as the full path to the cdeclrc file to read upon start-up.
 
+** Configuration file default language
+Previously, cdecl would temporarily set the current language to the latest
+supported version of C++ while reading a configuration file.  It no longer does
+this as a special case.  Now, as always, it sets the default language based on
+the executable name.
+
 ** `enum` alignment in C11
 Alignment of enums is now correctly allowed in C11.
 

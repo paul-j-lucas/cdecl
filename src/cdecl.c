@@ -323,17 +323,9 @@ static bool read_conf_file( char const *conf_path ) {
   if ( conf_file == NULL )
     return false;
 
-  //
-  // Before reading the configuration file, temporarily set the language to the
-  // maximum supported C++ so "using" declarations, if any, won't cause the
-  // parser to error out.
-  //
-  c_lang_id_t const orig_lang = opt_lang;
-  opt_lang = LANG_CPP_NEW;
   PJL_IGNORE_RV(
     cdecl_parse_file( conf_file, /*fout=*/NULL, /*return_on_error=*/true )
   );
-  opt_lang = orig_lang;
 
   PJL_IGNORE_RV( fclose( conf_file ) );
   return true;
