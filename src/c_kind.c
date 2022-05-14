@@ -65,10 +65,10 @@ char const* c_kind_name( c_ast_kind_t kind ) {
     case K_USER_DEF_CONVERSION: return "user-defined conversion operator";
     case K_VARIADIC           : return "variadic";
 
-    case K_CLASS_STRUCT_UNION:
-      if ( OPT_LANG_IS( CPP_ANY ) )
-        return "class, struct, or union";
-      return "struct or union";
+    case K_CLASS_STRUCT_UNION :
+      return OPT_LANG_IS( CPP_ANY ) ?
+        "class, struct, or union" :
+        "struct or union";
   } // switch
 
   UNEXPECTED_INT_VALUE( kind );
