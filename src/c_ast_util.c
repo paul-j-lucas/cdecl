@@ -816,12 +816,12 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
       // Otherwise, excise the K_PLACEHOLDER.
       // Before:
       //
-      //      [type_ast] --> ... --> [type_root_ast]
-      //      [placeholder] --> [placeholder-parent]
+      //      type_ast --> ... --> type_root_ast
+      //      placeholder --> placeholder-parent
       //
       // After:
       //
-      //      [type_ast] --> ... --> [type_root_ast] --> [placeholder-parent]
+      //      type_ast --> ... --> type_root_ast --> placeholder-parent
       //
       c_ast_t *const type_root_ast = c_ast_root( type_ast );
       c_ast_set_parent( type_root_ast, placeholder_ast->parent_ast );
