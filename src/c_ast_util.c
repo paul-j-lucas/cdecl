@@ -80,13 +80,13 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
       //
       // Before:
       //
-      //      [array_ast]
-      //      [placeholder] --> [placeholder-parent]
-      //      [of_ast]
+      //      array_ast
+      //      placeholder --> placeholder-parent
+      //      of_ast
       //
       // After:
       //
-      //      [of_ast] --> [array_ast] --> [placeholder-parent]
+      //      of_ast --> array_ast --> placeholder-parent
       //
       if ( ast->parent_ast != NULL )
         c_ast_set_parent( array_ast, ast->parent_ast );
@@ -111,12 +111,12 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
         //
         // Before:
         //
-        //      [ast-child] --> [ast]
-        //      [array_ast]
+        //      ast-child --> ast
+        //      array_ast
         //
         // After:
         //
-        //      [ast-child] --> [array_ast] --> [ast]
+        //      ast-child --> array_ast --> ast
         //
         if ( c_ast_is_parent( ast ) )
           c_ast_set_parent( ast->as.parent.of_ast, array_ast );
@@ -127,12 +127,12 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
         //
         // Before:
         //
-        //      [ast] --> [ast-parent]
-        //      [array_ast]
+        //      ast --> ast-parent
+        //      array_ast
         //
         // After:
         //
-        //      [ast] --> [array_ast] --> [ast-parent]
+        //      ast --> array_ast --> ast-parent
         //
         if ( ast->parent_ast != NULL )
           c_ast_set_parent( array_ast, ast->parent_ast );
@@ -253,12 +253,12 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
           //
           // Before:
           //
-          //      [ast(K_ARRAY)] --> [of_ast]
-          //      [func_ast]
+          //      ast(K_ARRAY) --> of_ast
+          //      func_ast
           //
           // After:
           //
-          //      [ast(K_ARRAY)] --> [func_ast] --> [of_ast]
+          //      ast(K_ARRAY) --> func_ast --> of_ast
           //
           // Note that an array of function is illegal, but we still construct
           // the AST properly and let c_ast_check_array() catch the error.
