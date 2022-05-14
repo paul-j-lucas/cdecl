@@ -639,7 +639,8 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
 }
 
 c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
-                               c_ast_t *type_ast, c_ast_t *decl_ast ) {
+                               c_ast_t *type_ast, c_ast_t *decl_ast,
+                               c_ast_list_t *ast_list ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
 
@@ -676,7 +677,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
       return NULL;
     }
 
-    decl_ast = CONST_CAST( c_ast_t*, raw_ast );
+    decl_ast = c_ast_dup( raw_ast, ast_list );
   }
 
   c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );

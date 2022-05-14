@@ -3319,7 +3319,7 @@ decl_c
       DUMP_AST( "decl_c_astp", decl_ast );
 
       decl_ast = c_ast_join_type_decl(
-        in_attr.typename, &in_attr.align, type_ast, decl_ast
+        in_attr.typename, &in_attr.align, type_ast, decl_ast, &gc_ast_list
       );
 
       DUMP_AST( "decl_c", decl_ast );
