@@ -3249,7 +3249,7 @@ decl_list_c_opt
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl_list_c_opt", type_ast );
 
-      if ( (type_ast->kind & K_ENUM_CLASS_STRUCT_UNION) == 0 ) {
+      if ( (type_ast->kind & K_ANY_ENUM_CLASS_STRUCT_UNION) == 0 ) {
         //
         // The declaration is a non-ECSU type, e.g.:
         //
