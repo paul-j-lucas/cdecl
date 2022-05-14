@@ -61,8 +61,8 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_NOT_OVERLOADABLE     (1u << 2)
 
 /**
- * For c_operator.params_max of `operator()()`, denotes an unlimited number of
- * parameters.
+ * For c_operator.params_max of `operator()` or `operator[]` (in C++23 or
+ * later), denotes an unlimited number of parameters.
  */
 #define C_OP_PARAMS_UNLIMITED     (~0u)
 
