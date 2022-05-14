@@ -95,6 +95,16 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
 
     case K_POINTER:
       if ( ast->depth > array_ast->depth ) {
+        //
+        // If there's an intervening pointer, e.g.:
+        //
+        //      int (*(*x)[3])[5]
+        //
+        // (where 'x' is a "pointer to array 3 of pointer to array 5 of int"),
+        // we have to recurse "through" it if its depth > the array's depth;
+        // else we'd end up with a "pointer to array 5 of array 3 of pointer to
+        // int."
+        //
         PJL_IGNORE_RV(
           c_ast_add_array_impl( ast->as.ptr_ref.to_ast, array_ast, of_ast )
         );
@@ -181,7 +191,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast,
       //
       // If there's an intervening pointer, e.g.:
       //
-      //      type (*(*x)[3])[5]
+      //      int (*(*x)[3])[5]
       //
       // (where 'x' is a "pointer to array 3 of pointer to array 5 of int"), we
       // have to recurse "through" it if its depth < the array's depth; else
