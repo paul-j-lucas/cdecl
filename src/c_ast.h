@@ -58,7 +58,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_ARRAY_SIZE_VARIABLE
  * @sa c_array_size_t
  */
-#define C_ARRAY_SIZE_NONE     (-1)
+#define C_ARRAY_SIZE_NONE         (-1)
 
 /**
  * For c_array_ast.size, denotes `array[*]`.
@@ -66,7 +66,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_ARRAY_SIZE_NONE
  * @sa c_array_size_t
  */
-#define C_ARRAY_SIZE_VARIABLE (-2)
+#define C_ARRAY_SIZE_VARIABLE     (-2)
 
 /**
  * For c_function_ast.flags, denotes that the user didn't explicitly specify
@@ -75,7 +75,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_FN_MEMBER
  * @sa #C_FN_NON_MEMBER
  */
-#define C_FN_UNSPECIFIED      0u
+#define C_FN_UNSPECIFIED          0u
 
 /**
  * For c_function_ast.flags, denotes that the user explicitly specified
@@ -84,7 +84,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_FN_NON_MEMBER
  * @sa #C_FN_UNSPECIFIED
  */
-#define C_FN_MEMBER           (1u << 0)
+#define C_FN_MEMBER               (1u << 0)
 
 /**
  * For c_function_ast.flags, denotes that the user explicitly specified
@@ -93,7 +93,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_FN_MEMBER
  * @sa #C_FN_UNSPECIFIED
  */
-#define C_FN_NON_MEMBER       (1u << 1)
+#define C_FN_NON_MEMBER           (1u << 1)
 
 /**
  * Convenience macro for iterating over all parameters of a function-like AST.
