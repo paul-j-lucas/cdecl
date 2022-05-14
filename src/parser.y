@@ -721,6 +721,22 @@ static bool c_ast_free_if_placeholder( c_ast_t *ast ) {
 }
 
 /**
+ * Checks whether `typename` is OK since the type's name is a qualified name.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only upon success.
+ */
+PJL_WARN_UNUSED_RESULT
+bool c_ast_is_typename_ok( c_ast_t const *ast ) {
+  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+  if ( c_sname_count( &raw_ast->sname ) < 2 ) {
+    print_error( &ast->loc, "qualified name expected after \"typename\"\n" );
+    return false;
+  }
+  return true;
+}
+
+/**
  * Prints an additional parsing error message including a newline to standard
  * error that continues from where yyerror() left off.  Additionally:
  *
@@ -916,6 +932,85 @@ static void ia_free( void ) {
   slist_cleanup( &in_attr.type_ast_stack, /*free_fn=*/NULL );
   c_ast_list_gc( &in_attr.typedef_ast_list );
   MEM_ZERO( &in_attr );
+}
+
+/**
+ * Joins \a type_ast and \a decl_ast into a single AST.
+ *
+ * @param type_ast The type AST.
+ * @param decl_ast The declaration AST.
+ * @return Returns the joined AST on success or NULL on error.
+ */
+PJL_WARN_UNUSED_RESULT
+c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
+  assert( type_ast != NULL );
+  assert( decl_ast != NULL );
+
+  if ( in_attr.typename && !c_ast_is_typename_ok( type_ast ) )
+    return NULL;
+
+  c_type_t type = c_ast_take_type_any( type_ast, &T_TS_TYPEDEF );
+
+  if ( c_tid_is_any( type.stids, TS_TYPEDEF ) && decl_ast->kind == K_TYPEDEF ) {
+    //
+    // This is for a case like:
+    //
+    //      explain typedef int int32_t;
+    //
+    // that is: explaining an existing typedef.  In order to do that, we have
+    // to un-typedef it so we explain the type that it's a typedef for.
+    //
+    c_ast_t const *const raw_ast = c_ast_untypedef( decl_ast );
+
+    //
+    // However, we also have to check whether the typedef being explained is
+    // not equivalent to the existing typedef.  This is for a case like:
+    //
+    //      explain typedef char int32_t;
+    //
+    if ( !c_ast_equal( type_ast, raw_ast ) ) {
+      print_error( &decl_ast->loc,
+        "\"%s\": \"typedef\" redefinition with different type; original is: ",
+        c_sname_full_name( &raw_ast->sname )
+      );
+      c_typedef_t const temp_tdef = C_TYPEDEF_AST_LIT( raw_ast );
+      c_typedef_gibberish( &temp_tdef, C_GIB_TYPEDEF, stderr );
+      EPUTC( '\n' );
+      return NULL;
+    }
+
+    decl_ast = c_ast_dup( raw_ast, &gc_ast_list );
+  }
+
+  c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
+  c_type_t const tdef_type = c_ast_take_type_any( ast, &T_TS_TYPEDEF );
+  c_type_or_eq( &type, &tdef_type );
+  c_type_or_eq( &ast->type, &type );
+
+  if ( in_attr.align.kind != C_ALIGNAS_NONE ) {
+    ast->align = in_attr.align;
+    if ( c_tid_is_any( type.stids, TS_TYPEDEF ) ) {
+      //
+      // We check for illegal aligned typedef here rather than in c_ast_check.c
+      // because the "typedef-ness" needed to be removed previously before the
+      // eventual call to c_ast_check().
+      //
+      print_error( &ast->align.loc, "typedef can not be aligned\n" );
+      return NULL;
+    }
+  }
+
+  if ( ast->kind == K_USER_DEF_CONVERSION &&
+       c_sname_local_type( &ast->sname )->btids == TB_SCOPE ) {
+    //
+    // User-defined conversions don't have names, but they can still have a
+    // scope.  Since only classes can have them, if the scope is still
+    // TB_SCOPE, change it to TB_CLASS.
+    //
+    c_sname_set_local_type( &ast->sname, &C_TYPE_LIT_B( TB_CLASS ) );
+  }
+
+  return ast;
 }
 
 /**
@@ -3318,9 +3413,7 @@ decl_c
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl_c_astp", decl_ast );
 
-      decl_ast = c_ast_join_type_decl(
-        in_attr.typename, &in_attr.align, type_ast, decl_ast, &gc_ast_list
-      );
+      decl_ast = join_type_decl( type_ast, decl_ast );
 
       DUMP_AST( "decl_c", decl_ast );
       DUMP_END();

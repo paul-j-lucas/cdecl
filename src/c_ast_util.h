@@ -255,30 +255,6 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
                                       c_tid_t *qual_stids );
 
 /**
- * Checks whether `typename` is OK since the type's name is a qualified name.
- *
- * @param ast The AST to check.
- * @return Returns `true` only upon success.
- */
-PJL_WARN_UNUSED_RESULT
-bool c_ast_is_typename_ok( c_ast_t const *ast );
-
-/**
- * Joins \a type_ast and \a decl_ast into a single AST.
- *
- * @param has_typename `true` only if the declaration includes `typename`.
- * @param align The `alignas` specifier, if any.
- * @param type_ast The type AST.
- * @param decl_ast The declaration AST.
- * @param ast_list The list to append duplicated AST nodes (if necessary) onto.
- * @return Returns The final AST on success or NULL on error.
- */
-PJL_WARN_UNUSED_RESULT
-c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
-                               c_ast_t *type_ast, c_ast_t *decl_ast,
-                               c_ast_list_t *ast_list );
-
-/**
  * Gets whether the operator is a member, non-member, or unspecified.
  *
  * @param ast The AST of the operator.
