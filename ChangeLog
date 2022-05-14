@@ -1,3 +1,13 @@
+2022-05-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_ast_util.h, parser.y: Moved c_ast_is_typename_ok() and
+     c_ast_join_type_decl() to parser.y.
+   * c_ast_util.c, c_ast_util.h, parser.y: c_ast_join_type_decl() now
+     duplicates decl_ast if necessary.
+   * c_ast_check.c, c_kind.h, gibberish.c, parser.y:
+     s/K_ENUM_CLASS_STRUCT_UNION/K_ANY_ENUM_CLASS_STRUCT_UNION/ to connote that
+     it's not a single kind so == should not be used for comparison.
+
 2022-05-13  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.c, config_using_i.cdeclrc: No longer temporarily setting
