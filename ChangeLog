@@ -1,3 +1,11 @@
+2022-05-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, c_sname.c, c_typedef.c, c_typedef.h, english.h,
+     gibberish.h, parser.y, print.c, print.h, define_c_int_least32_t.out,
+     explain_typedef_ci32.out, typedef_c_int_least32_t.out,
+     using_c_int_least32_t.out: Now printing types in error messages as they
+     were originally defined (pseudo-English vs. gibberish) in more cases.
+
 2022-05-14  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, c_ast_util.h, parser.y: Moved c_ast_is_typename_ok() and
