@@ -1875,7 +1875,9 @@ declare_command
      */
   : Y_DECLARE sname_list_english as_exp alignas_or_width_decl_english_ast
     {
-      if ( $4->kind == K_NAME ) {
+      c_ast_t *const decl_ast = $4;
+
+      if ( decl_ast->kind == K_NAME ) {
         //
         // This checks for a case like:
         //
@@ -1889,8 +1891,8 @@ declare_command
         // name, but the AST node is itself a name and overwriting it would
         // lose information.
         //
-        assert( !c_sname_empty( &$4->sname ) );
-        print_error_unknown_name( &@4, &$4->sname );
+        assert( !c_sname_empty( &decl_ast->sname ) );
+        print_error_unknown_name( &@4, &decl_ast->sname );
         c_sname_list_cleanup( &$2 );
         PARSE_ABORT();
       }
@@ -1899,23 +1901,23 @@ declare_command
                   "DECLARE sname_list_english AS "
                   "alignas_or_width_decl_english_ast" );
       DUMP_SNAME_LIST( "sname_list_english", $2 );
-      DUMP_AST( "alignas_or_width_decl_english_ast", $4 );
+      DUMP_AST( "alignas_or_width_decl_english_ast", decl_ast );
 
-      $4->loc = @2;
+      decl_ast->loc = @2;
 
-      DUMP_AST( "decl_english", $4 );
+      DUMP_AST( "decl_english", decl_ast );
       DUMP_END();
 
       // To check the declaration, it needs a name: just dup the first one.
       c_sname_t temp_sname = c_sname_dup( slist_front( &$2 ) );
-      c_sname_set( &$4->sname, &temp_sname );
-      bool const ok = c_ast_check( $4 );
+      c_sname_set( &decl_ast->sname, &temp_sname );
+      bool const ok = c_ast_check( decl_ast );
 
       if ( ok ) {
         unsigned gib_flags = C_GIB_DECL;
         if ( slist_len( &$2 ) > 1 )
           gib_flags |= C_GIB_MULTI_DECL;
-        bool const print_as_using = c_ast_print_as_using( $4 );
+        bool const print_as_using = c_ast_print_as_using( decl_ast );
         if ( print_as_using && opt_semicolon ) {
           //
           // When declaring multiple types via the same "declare" as "using"
@@ -1930,11 +1932,11 @@ declare_command
         }
 
         FOREACH_SLIST_NODE( sname_node, &$2 ) {
-          c_sname_set( &$4->sname, sname_node->data );
+          c_sname_set( &decl_ast->sname, sname_node->data );
           bool const is_last_sname = sname_node->next == NULL;
           if ( is_last_sname && opt_semicolon )
             gib_flags |= C_GIB_FINAL_SEMI;
-          c_ast_gibberish( $4, gib_flags, cdecl_fout );
+          c_ast_gibberish( decl_ast, gib_flags, cdecl_fout );
           if ( is_last_sname )
             continue;
           if ( print_as_using ) {
