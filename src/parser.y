@@ -1911,7 +1911,32 @@ declare_command
       // To check the declaration, it needs a name: just dup the first one.
       c_sname_t temp_sname = c_sname_dup( slist_front( &$2 ) );
       c_sname_set( &decl_ast->sname, &temp_sname );
-      bool const ok = c_ast_check( decl_ast );
+      bool ok = c_ast_check( decl_ast );
+
+      if ( ok ) {
+        //
+        // Ensure that none of the names aren't of a previously declared type:
+        //
+        //      cdecl> struct S
+        //      cdecl> declare S as int // error: "S": previously declared
+        //
+        // This check is done now in the parser rather than later in the AST
+        // since similar checks are also done here in the parser.
+        //
+        FOREACH_SLIST_NODE( sname_node, &$2 ) {
+          c_sname_t const *const sname = sname_node->data;
+          c_typedef_t const *const tdef = c_typedef_find_sname( sname );
+          if ( tdef != NULL ) {
+            print_error( &decl_ast->loc,
+              "\"%s\": previously declared as type: ",
+              c_sname_full_name( sname )
+            );
+            print_type( tdef, stderr );
+            ok = false;
+            break;
+          }
+        } // for
+      }
 
       if ( ok ) {
         unsigned gib_flags = C_GIB_DECL;
@@ -4512,7 +4537,7 @@ typedef_type_decl_c_ast
         // But first ensure the name isn't of a previously declared type:
         //
         //      cdecl> struct S
-        //      cdecl> explain int S    // error: "S" was previously declared
+        //      cdecl> explain int S    // error: "S": previously declared
         //
         // Note that typedef_type_c_ast is like:
         // ```

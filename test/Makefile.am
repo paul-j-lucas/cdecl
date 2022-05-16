@@ -309,7 +309,8 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_vri.test \
 	tests/declare_wt-c89.test \
 	tests/declare_xvi-c.test \
-	tests/declare_xxi-c.test
+	tests/declare_xxi-c.test \
+	tests/k_declare_i.test
 
 ###############################################################################
 
