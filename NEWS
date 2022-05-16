@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.16
+
+** Printing of types
+Now printing types in error messages as they were originally defined (pseudo-
+English vs. gibberish) in more cases.
+
+
 * Changes in Cdecl 11.15
 
 ** `_Atomic` arrays

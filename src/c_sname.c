@@ -229,11 +229,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
           EPUTC( '>' );
           SGR_END_COLOR( stderr );
           EPUTC( ' ' );
-          if ( tdef->defined_in_english )
-            c_typedef_english( tdef, stderr );
-          else
-            c_typedef_gibberish( tdef, C_GIB_TYPEDEF, stderr );
-          EPUTC( '\n' );
+          print_type( tdef, stderr );
           scope->next = orig_next;
           return false;
         }

@@ -33,6 +33,7 @@
 
 // standard
 #include <stdbool.h>
+#include <stdio.h>
 
 /**
  * @defgroup printing-errors-warnings-group Printing Hints, Errors, & Warnings
@@ -236,6 +237,26 @@ void print_loc( c_loc_t const *loc );
  */
 PJL_NOWARN_UNUSED_RESULT
 bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
+
+/**
+ * Prints the type \a tdef how it was defined:
+ *
+ *  + If it was defined using pseudo-English, prints it as pseudo-English;
+ *
+ *  + If it was defined using `using`, \ref opt_using is `true`, and the
+ *    current language is C++11 or later, prints it as a `using` declaration;
+ *
+ *  + Otherwise, prints it as gibberish.
+ *
+ * @param tdef The \ref c_typedef to print.
+ * @param tout The `FILE` to print to.
+ *
+ * @note A newline _is_ printed.
+ *
+ * @sa c_typedef_english()
+ * @sa c_typedef_gibberish()
+ */
+void print_type( c_typedef_t const *tdef, FILE *tout );
 
 ///////////////////////////////////////////////////////////////////////////////
 

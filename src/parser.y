@@ -622,19 +622,18 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
 /**
  * Adds a type to the global set.
  *
- * @param decl_keyword The keyword used for the declaration, one of `class`,
- * `define`, `struct`, `typedef`, `union`, or `using`.
  * @param type_ast The AST of the type to add.
+ * @param gib_flags The gibberish flags to use; must only be one of
+ * #C_GIB_NONE, #C_GIB_TYPEDEF, or #C_GIB_USING.
  * @return Returns `true` either if the type was added or it's equivalent to
  * the existing type; `false` if a different type already exists having the
  * same name.
  */
 PJL_WARN_UNUSED_RESULT
-static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
-  assert( decl_keyword != NULL );
+static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
   assert( type_ast != NULL );
 
-  c_typedef_t const *const tdef = c_typedef_add( type_ast );
+  c_typedef_t const *const tdef = c_typedef_add( type_ast, gib_flags );
   if ( tdef->ast->unique_id == type_ast->unique_id ) {
     //
     // Type was added: we have to move the AST from the gc_ast_list so it won't
@@ -647,10 +646,11 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
     //
     slist_free_if( &gc_ast_list, (slist_pred_fn_t)&c_ast_free_if_placeholder );
     slist_push_list_back( &typedef_ast_list, &gc_ast_list );
-  } else {
+  }
+  else {
     //
-    // Previously declared type having the same name was returned: check if the
-    // types are equal.
+    // Type was NOT added because a previously declared type having the same
+    // name was returned: check if the types are equal.
     //
     // In C, multiple typedef declarations having the same name are allowed
     // only if the types are equivalent:
@@ -661,20 +661,10 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast ) {
     //
     if ( !c_ast_equal( type_ast, tdef->ast ) ) {
       print_error( &type_ast->loc,
-        "\"%s\": \"%s\" redefinition with different type; original is: ",
-        c_sname_full_name( &type_ast->sname ), decl_keyword
+        "\"%s\": type redefinition with different type; original is: ",
+        c_sname_full_name( &type_ast->sname )
       );
-
-      // The == works because this function is called with L_DEFINE.
-      if ( decl_keyword == L_DEFINE ) {
-        c_typedef_english( tdef, stderr );
-      } else {
-        c_typedef_gibberish(
-          // The == works because this function is called with L_USING.
-          tdef, decl_keyword == L_USING ? C_GIB_USING : C_GIB_TYPEDEF, stderr
-        );
-      }
-      EPUTC( '\n' );
+      print_type( tdef, stderr );
       return false;
     }
   }
@@ -942,7 +932,7 @@ static void ia_free( void ) {
  * @return Returns the joined AST on success or NULL on error.
  */
 PJL_WARN_UNUSED_RESULT
-c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
+c_ast_t const* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
 
@@ -970,15 +960,20 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     //
     if ( !c_ast_equal( type_ast, raw_ast ) ) {
       print_error( &decl_ast->loc,
-        "\"%s\": \"typedef\" redefinition with different type; original is: ",
+        "\"%s\": type redefinition with different type; original is: ",
         c_sname_full_name( &raw_ast->sname )
       );
-      c_typedef_t const temp_tdef = C_TYPEDEF_AST_LIT( raw_ast );
-      c_typedef_gibberish( &temp_tdef, C_GIB_TYPEDEF, stderr );
-      EPUTC( '\n' );
+      // Look-up the type so we can print it how it was originally defined.
+      c_typedef_t const *const tdef = c_typedef_find_sname( &raw_ast->sname );
+      assert( tdef != NULL );
+      print_type( tdef, stderr );
       return NULL;
     }
 
+    //
+    // Because the raw_ast for the existing type is about to be combined with
+    // type_ast, duplicate raw_ast first.
+    //
     decl_ast = c_ast_dup( raw_ast, &gc_ast_list );
   }
 
@@ -2237,7 +2232,7 @@ define_command
 
       if ( !c_sname_check( &$4->sname, &@2 ) )
         PARSE_ABORT();
-      if ( !add_type( L_DEFINE, $4 ) )
+      if ( !add_type( $4, C_GIB_NONE ) )
         PARSE_ABORT();
 
       DUMP_END();
@@ -2821,7 +2816,7 @@ class_struct_union_declaration_c
       DUMP_AST( "class_struct_union_declaration_c", csu_ast );
       DUMP_END();
 
-      if ( !add_type( c_tid_name_c( $1 ), csu_ast ) )
+      if ( !add_type( csu_ast, C_GIB_TYPEDEF ) )
         PARSE_ABORT();
     }
     brace_in_scope_declaration_c_opt
@@ -2863,7 +2858,7 @@ enum_declaration_c
       DUMP_AST( "enum_declaration_c", enum_ast );
       DUMP_END();
 
-      if ( !add_type( c_tid_name_c( $1 ), enum_ast ) )
+      if ( !add_type( enum_ast, C_GIB_TYPEDEF ) )
         PARSE_ABORT();
     }
   ;
@@ -3226,7 +3221,7 @@ typedef_decl_c
       DUMP_AST( "typedef_decl_c", typedef_ast );
       DUMP_END();
 
-      if ( !add_type( L_TYPEDEF, typedef_ast ) )
+      if ( !add_type( typedef_ast, C_GIB_TYPEDEF  ) )
         PARSE_ABORT();
     }
   ;
@@ -3247,7 +3242,7 @@ using_declaration_c
       // see the comment in "define_command" about TS_TYPEDEF
       PJL_IGNORE_RV( c_ast_take_type_any( $1, &T_TS_TYPEDEF ) );
 
-      if ( !add_type( L_USING, $1 ) )
+      if ( !add_type( $1, C_GIB_USING ) )
         PARSE_ABORT();
     }
   ;
@@ -3413,16 +3408,16 @@ decl_c
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl_c_astp", decl_ast );
 
-      decl_ast = join_type_decl( type_ast, decl_ast );
+      c_ast_t const *const ast = join_type_decl( type_ast, decl_ast );
 
-      DUMP_AST( "decl_c", decl_ast );
+      DUMP_AST( "decl_c", ast );
       DUMP_END();
 
-      if ( decl_ast == NULL )
+      if ( ast == NULL )
         PARSE_ABORT();
-      C_AST_CHECK( decl_ast );
+      C_AST_CHECK( ast );
 
-      if ( !c_sname_empty( &decl_ast->sname ) ) {
+      if ( !c_sname_empty( &ast->sname ) ) {
         //
         // For declarations that have a name, ensure that it's not used more
         // than once in the same declaration in C++ or with different types in
@@ -3434,27 +3429,27 @@ decl_c
         //
         FOREACH_SLIST_NODE( node, &decl_ast_list ) {
           c_ast_t const *const prev_ast = node->data;
-          if ( c_sname_cmp( &decl_ast->sname, &prev_ast->sname ) != 0 )
+          if ( c_sname_cmp( &ast->sname, &prev_ast->sname ) != 0 )
             continue;
           if ( OPT_LANG_IS( CPP_ANY ) ) {
-            print_error( &decl_ast->loc,
+            print_error( &ast->loc,
               "\"%s\": redefinition\n",
-              c_sname_full_name( &decl_ast->sname )
+              c_sname_full_name( &ast->sname )
             );
             PARSE_ABORT();
           }
-          else if ( !c_ast_equal( decl_ast, prev_ast ) ) {
-            print_error( &decl_ast->loc,
+          else if ( !c_ast_equal( ast, prev_ast ) ) {
+            print_error( &ast->loc,
               "\"%s\": redefinition with different type\n",
-              c_sname_full_name( &decl_ast->sname )
+              c_sname_full_name( &ast->sname )
             );
             PARSE_ABORT();
           }
         } // for
-        slist_push_back( &decl_ast_list, CONST_CAST( void*, decl_ast ) );
+        slist_push_back( &decl_ast_list, CONST_CAST( void*, ast ) );
       }
 
-      c_ast_english( decl_ast, cdecl_fout );
+      c_ast_english( ast, cdecl_fout );
 
       //
       // The type's AST takes on the name of the thing being declared, e.g.:
@@ -4560,8 +4555,7 @@ typedef_type_decl_c_ast
             "\"%s\": previously declared as type: ",
               c_sname_full_name( &raw_ast->sname )
           );
-          c_typedef_gibberish( tdef, C_GIB_TYPEDEF, stderr );
-          EPUTC( '\n' );
+          print_type( tdef, stderr );
           PARSE_ABORT();
         }
 

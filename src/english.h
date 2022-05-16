@@ -89,6 +89,7 @@ void c_sname_english( c_sname_t const *sname, FILE *eout );
  *
  * @sa c_ast_english()
  * @sa c_typedef_gibberish()
+ * @sa print_type()
  */
 void c_typedef_english( c_typedef_t const *tdef, FILE *eout );
 

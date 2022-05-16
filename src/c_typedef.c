@@ -30,6 +30,7 @@
 #include "cdecl.h"
 #include "c_ast.h"
 #include "c_lang.h"
+#include "gibberish.h"
 #include "options.h"
 #include "red_black.h"
 #include "util.h"
@@ -947,27 +948,27 @@ static int c_typedef_cmp( void const *i_data, void const *j_data ) {
  * Creates a new \ref c_typedef.
  *
  * @param ast The AST of the type.
+ * @param gib_flags The gibberish flags to use; must only be one of
+ * #C_GIB_NONE, #C_GIB_TYPEDEF, or #C_GIB_USING.
  * @return Returns said \ref c_typedef.
  */
 PJL_WARN_UNUSED_RESULT
-static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
+static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
   assert( ast != NULL );
+  assert( gib_flags == C_GIB_NONE ||
+          (gib_flags & (C_GIB_TYPEDEF | C_GIB_USING)) != 0 );
+
   c_typedef_t *const tdef = MALLOC( c_typedef_t, 1 );
   tdef->ast = ast;
+  tdef->gib_flags = gib_flags;
   //
   // If predefined_lang_ids is set, we're predefining a type that's available
   // only in those language(s); otherwise we're defining a user-defined type
-  // that's available in the current language and later.
+  // that's available in the current language and newer.
   //
-  if ( predefined_lang_ids != LANG_NONE ) {
-    tdef->lang_ids = predefined_lang_ids;
-    tdef->predefined = true;
-    tdef->defined_in_english = false;
-  } else {
-    tdef->lang_ids = c_lang_and_newer( opt_lang );
-    tdef->predefined = false;
-    tdef->defined_in_english = cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH;
-  }
+  tdef->predefined = predefined_lang_ids != LANG_NONE;
+  tdef->lang_ids = tdef->predefined ?
+    predefined_lang_ids : c_lang_and_newer( opt_lang );
   return tdef;
 }
 
@@ -1007,11 +1008,11 @@ static bool rb_visitor( void *node_data, void *v_data ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_typedef_t const* c_typedef_add( c_ast_t const *ast ) {
+c_typedef_t const* c_typedef_add( c_ast_t const *ast, unsigned gib_flags ) {
   assert( ast != NULL );
   assert( !c_sname_empty( &ast->sname ) );
 
-  c_typedef_t *const new_tdef = c_typedef_new( ast );
+  c_typedef_t *const new_tdef = c_typedef_new( ast, gib_flags );
   rb_node_t const *const old_rb = rb_tree_insert( &typedefs, new_tdef );
   if ( old_rb == NULL )                 // type's name doesn't exist
     return new_tdef;

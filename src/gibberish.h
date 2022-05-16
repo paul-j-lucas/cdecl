@@ -158,6 +158,7 @@ char const* c_cast_gibberish( c_cast_kind_t kind );
  *
  * @sa c_ast_gibberish()
  * @sa c_typedef_english()
+ * @sa print_type()
  */
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
                           FILE *gout );

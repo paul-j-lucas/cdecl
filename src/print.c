@@ -29,9 +29,12 @@
 #include "c_keyword.h"
 #include "c_lang.h"
 #include "c_sname.h"
+#include "c_typedef.h"
 #include "cdecl.h"
 #include "cdecl_keyword.h"
 #include "color.h"
+#include "english.h"
+#include "gibberish.h"
 #include "lexer.h"
 #include "options.h"
 #include "strbuf.h"
@@ -443,6 +446,23 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
     return true;
   }
   return false;
+}
+
+void print_type( c_typedef_t const *tdef, FILE *tout ) {
+  assert( tdef != NULL );
+  assert( tout != NULL );
+
+  if ( tdef->gib_flags == C_GIB_NONE ) {
+    c_typedef_english( tdef, tout );
+  } else {
+    c_typedef_gibberish(
+      tdef,
+      opt_using && OPT_LANG_IS( USING_DECLARATION ) ?
+        tdef->gib_flags : C_GIB_TYPEDEF,
+      tout
+    );
+  }
+  EPUTC( '\n' );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
