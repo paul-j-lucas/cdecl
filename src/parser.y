@@ -4555,7 +4555,7 @@ typedef_type_decl_c_ast
           print_error(
             &$1->loc,
             "\"%s\": previously declared as type: ",
-              c_sname_full_name( &raw_ast->sname )
+            c_sname_full_name( &raw_ast->sname )
           );
           print_type( tdef, stderr );
           PARSE_ABORT();
