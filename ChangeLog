@@ -1,3 +1,10 @@
+2022-05-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y, test/Makefile.am, k_declare_i.out, k_declare_i.test: Now
+     checking that previously declared types in pseudo-English are not being
+     used as objects.
+   * parser.y: s/$4/decl_ast/
+
 2022-05-15  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, c_sname.c, c_typedef.c, c_typedef.h, english.h,
