@@ -86,6 +86,7 @@ extern void yyrestart( FILE *in_file );
 
 // local functions
 static void cdecl_cleanup( void );
+static void conf_init( void );
 
 PJL_WARN_UNUSED_RESULT
 static int  cdecl_parse_argv( int, char const *const[] ),
@@ -111,41 +112,9 @@ int main( int argc, char const *argv[] ) {
   cli_options_init( &argc, &argv );
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
-
-  if ( opt_read_conf ) {
-    //
-    // In priority order:
-    //
-    //  1. Either the --config or -c command-line option.
-    //  2. The value of the CDECLRC environment variable.
-    //  3. ~/.cdeclrc
-    //
-    char const *conf_path = opt_conf_path;
-    if ( conf_path == NULL ) {
-      conf_path = getenv( "CDECLRC" );
-      if ( conf_path != NULL && conf_path[0] == '\0' )
-        conf_path = NULL;
-    }
-    if ( conf_path == NULL ) {
-      char const *const home = home_dir();
-      if ( home != NULL ) {
-        static char conf_path_buf[ PATH_MAX ];
-        strcpy( conf_path_buf, home );
-        path_append( conf_path_buf, "." CONF_FILE_NAME_DEFAULT );
-        conf_path = conf_path_buf;
-      }
-    }
-
-    if ( conf_path != NULL ) {
-      print_params.conf_path = conf_path;
-      if ( !read_conf_file( conf_path ) && opt_conf_path != NULL )
-        FATAL_ERR( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
-      print_params.conf_path = NULL;
-    }
-  }
-
+  if ( opt_read_conf )
+    conf_init();
   cdecl_initialized = true;
-
   exit( cdecl_parse_argv( argc, argv ) );
 }
 
@@ -268,6 +237,39 @@ static int cdecl_parse_stdin( void ) {
 }
 
 /**
+ * Reads the configuration file, if any.
+ * In priority order:
+ *
+ *  1. Either the `--config` or `-c` command-line option; or:
+ *  2. The value of the `CDECLRC` environment variable; or:
+ *  3. `~/.cdeclrc`
+ */
+static void conf_init( void ) {
+  char const *conf_path = opt_conf_path;
+  if ( conf_path == NULL ) {
+    conf_path = getenv( "CDECLRC" );
+    if ( conf_path != NULL && conf_path[0] == '\0' )
+      conf_path = NULL;
+  }
+  if ( conf_path == NULL ) {
+    char const *const home = home_dir();
+    if ( home != NULL ) {
+      static char conf_path_buf[ PATH_MAX ];
+      strcpy( conf_path_buf, home );
+      path_append( conf_path_buf, "." CONF_FILE_NAME_DEFAULT );
+      conf_path = conf_path_buf;
+    }
+  }
+
+  if ( conf_path != NULL ) {
+    print_params.conf_path = conf_path;
+    if ( !read_conf_file( conf_path ) && opt_conf_path != NULL )
+      FATAL_ERR( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
+    print_params.conf_path = NULL;
+  }
+}
+
+/**
  * Checks whether \a s is a cdecl command.
  *
  * @param s The null-terminated string to check.
@@ -310,7 +312,7 @@ static bool is_command( char const *s, cdecl_command_kind_t command_kind ) {
 }
 
 /**
- * Reads the configuration file, if any.
+ * Reads the configuration file \a conf_path.
  *
  * @param conf_path The full path of the configuration file to read.
  * @return Returns `false` only if \a conf_path could not be opened for
