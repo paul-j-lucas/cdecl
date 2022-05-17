@@ -96,7 +96,7 @@ void strbuf_init( strbuf_t *sbuf ) {
  * Concatenates \a format and the `printf`-style arguments onto the end of \a
  * sbuf growing the buffer if necessary.
  *
- * @param sbuf A pointer to the \ref strbuf to concatenate onto.
+ * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
  *
@@ -111,9 +111,9 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... );
  * Concatenates \a s_len bytes of \a s onto the end of \a sbuf growing the
  * buffer if necessary.
  *
- * @param sbuf A pointer to the \ref strbuf to concatenate onto.
- * @param s The string to concatenate.
- * @param s_len The number of bytes of \a s to concatenate.
+ * @param sbuf A pointer to the \ref strbuf to append onto.
+ * @param s The string to append.
+ * @param s_len The number of bytes of \a s to append.
  *
  * @sa strbuf_putc()
  * @sa strbuf_printf()
@@ -124,8 +124,8 @@ void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len );
 /**
  * Concatenates \a c onto the end of \a sbuf growing the buffer if necessary.
  *
- * @param sbuf A pointer to the \ref strbuf to concatenate onto.
- * @param c The character to concatenate.
+ * @param sbuf A pointer to the \ref strbuf to append onto.
+ * @param c The character to append.
  *
  * @sa strbuf_printf()
  * @sa strbuf_puts()
@@ -139,8 +139,8 @@ void strbuf_putc( strbuf_t *sbuf, char c ) {
 /**
  * Concatenates \a s onto the end of \a sbuf growing the buffer if necessary.
  *
- * @param sbuf A pointer to the \ref strbuf to concatenate onto.
- * @param s The string to concatenate.
+ * @param sbuf A pointer to the \ref strbuf to append onto.
+ * @param s The string to append.
  *
  * @sa strbuf_putc()
  * @sa strbuf_printf()
@@ -176,15 +176,15 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len );
 void strbuf_reset( strbuf_t *sbuf );
 
 /**
- * Possibly concatenates \a sep_len bytes of \a sep onto the end of \a sbuf
- * growing the buffer if necessary.
+ * Possibly appends \a sep_len bytes of \a sep onto the end of \a sbuf growing
+ * the buffer if necessary.
  *
- * @param sbuf A pointer to the \ref strbuf to concatenate onto.
- * @param sep The separator string to concatenate.
- * @param sep_len The number of bytes of \a sep to concatenate.
+ * @param sbuf A pointer to the \ref strbuf to append onto.
+ * @param sep The separator string to append.
+ * @param sep_len The number of bytes of \a sep to append.
  * @param sep_flag A pointer to a flag to determine whether \a sep should be
- * concatenated prior to \a s: if `false`, \a sep is _not_ concatenated and it
- * is set to `true`; if `true`, \a sep is concatenated.
+ * appended prior to \a s: if `false`, \a sep is _not_ appended and it is set
+ * to `true`; if `true`, \a sep is appended.
  *
  * @sa strbuf_sepc_puts()
  * @sa strbuf_sepc_putsn()
@@ -195,17 +195,17 @@ void strbuf_sepsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
                    bool *sep_flag );
 
 /**
- * Possibly concatenates \a sep_len bytes of \a sep followed by \a s_len bytes
- * of \a s onto the end of \a sbuf growing the buffer if necessary.
+ * Possibly appends \a sep_len bytes of \a sep followed by \a s_len bytes of \a
+ * s onto the end of \a sbuf growing the buffer if necessary.
  *
- * @param sbuf A pointer to the \ref strbuf to concatenate onto.
- * @param sep The separator string to concatenate.
- * @param sep_len The number of bytes of \a sep to concatenate.
+ * @param sbuf A pointer to the \ref strbuf to append onto.
+ * @param sep The separator string to append.
+ * @param sep_len The number of bytes of \a sep to append.
  * @param sep_flag A pointer to a flag to determine whether \a sep should be
- * concatenated prior to \a s: if `false`, \a sep is _not_ concatenated and it
- * is set to `true`; if `true`, \a sep is concatenated.
- * @param s The string to concatenate.
- * @param s_len The number of bytes of \a s to concatenate.
+ * appended prior to \a s: if `false`, \a sep is _not_ appended and it is set
+ * to `true`; if `true`, \a sep is appended.
+ * @param s The string to append.
+ * @param s_len The number of bytes of \a s to append.
  *
  * @sa strbuf_sepsn()
  * @sa strbuf_sepc_puts()
@@ -216,16 +216,16 @@ void strbuf_sepsn_putsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
                          bool *sep_flag, char const *s, size_t s_len );
 
 /**
- * Possibly concatenates \a sep_len bytes of \a sep followed by \a s onto the
- * end of \a sbuf growing the buffer if necessary.
+ * Possibly appends \a sep_len bytes of \a sep followed by \a s onto the end of
+ * \a sbuf growing the buffer if necessary.
  *
- * @param sbuf A pointer to the \ref strbuf to concatenate onto.
- * @param sep The separator string to concatenate.
- * @param sep_len The number of bytes of \a sep to concatenate.
+ * @param sbuf A pointer to the \ref strbuf to append onto.
+ * @param sep The separator string to append.
+ * @param sep_len The number of bytes of \a sep to append.
  * @param sep_flag A pointer to a flag to determine whether \a sep should be
- * concatenated prior to \a s: if `false`, \a sep is _not_ concatenated and it
- * is set to `true`; if `true`, \a sep is concatenated.
- * @param s The string to concatenate.
+ * appended prior to \a s: if `false`, \a sep is _not_ appended and it is set
+ * to `true`; if `true`, \a sep is appended.
+ * @param s The string to append.
  *
  * @sa strbuf_sepc_puts()
  * @sa strbuf_sepc_putsn()
@@ -239,16 +239,16 @@ void strbuf_sepsn_puts( strbuf_t *sbuf, char const *sep, size_t sep_len,
 }
 
 /**
- * Possibly concatenates \a sep followed by \a s_len bytes of \a s onto the end
- * of \a sbuf growing the buffer if necessary.
+ * Possibly appends \a sep followed by \a s_len bytes of \a s onto the end of
+ * \a sbuf growing the buffer if necessary.
  *
- * @param sbuf A pointer to the \ref strbuf to concatenate onto.
- * @param sep The separator character to concatenate.
+ * @param sbuf A pointer to the \ref strbuf to append onto.
+ * @param sep The separator character to append.
  * @param sep_flag A pointer to a flag to determine whether \a sep should be
- * concatenated prior to \a s: if `false`, \a sep is _not_ concatenated and it
- * is set to `true`; if `true`, \a sep is concatenated.
- * @param s The string to concatenate.
- * @param s_len The number of bytes of \a s to concatenate.
+ * appended prior to \a s: if `false`, \a sep is _not_ appended and it is set
+ * to `true`; if `true`, \a sep is appended.
+ * @param s The string to append.
+ * @param s_len The number of bytes of \a s to append.
  *
  * @sa strbuf_sepc_puts()
  * @sa strbuf_sepsn()
@@ -262,15 +262,15 @@ void strbuf_sepc_putsn( strbuf_t *sbuf, char sep, bool *sep_flag, char const *s,
 }
 
 /**
- * Possibly concatenates \a sep followed by \a s onto the end of \a sbuf
- * growing the buffer if necessary.
+ * Possibly appends \a sep followed by \a s onto the end of \a sbuf growing the
+ * buffer if necessary.
  *
- * @param sbuf A pointer to the \ref strbuf to concatenate onto.
- * @param sep The separator character to concatenate.
+ * @param sbuf A pointer to the \ref strbuf to append onto.
+ * @param sep The separator character to append.
  * @param sep_flag A pointer to a flag to determine whether \a sep should be
- * concatenated prior to \a s: if `false`, \a sep is _not_ concatenated and it
- * is set to `true`; if `true`, \a sep is concatenated.
- * @param s The string to concatenate.
+ * appended prior to \a s: if `false`, \a sep is _not_ appended and it is set
+ * to `true`; if `true`, \a sep is appended.
+ * @param s The string to append.
  *
  * @sa strbuf_sepc_putsn()
  * @sa strbuf_sepsn()
