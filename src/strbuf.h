@@ -93,8 +93,8 @@ void strbuf_init( strbuf_t *sbuf ) {
 }
 
 /**
- * Concatenates \a format and the `printf`-style arguments onto the end of \a
- * sbuf growing the buffer if necessary.
+ * Appends \a format and the `printf`-style arguments onto the end of \a sbuf
+ * growing the buffer if necessary.
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param format The `printf()` style format string.
@@ -108,8 +108,8 @@ PJL_PRINTF_LIKE_FUNC(2)
 void strbuf_printf( strbuf_t *sbuf, char const *format, ... );
 
 /**
- * Concatenates \a s_len bytes of \a s onto the end of \a sbuf growing the
- * buffer if necessary.
+ * Appends \a s_len bytes of \a s onto the end of \a sbuf growing the buffer if
+ * necessary.
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param s The string to append.
@@ -122,7 +122,7 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... );
 void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len );
 
 /**
- * Concatenates \a c onto the end of \a sbuf growing the buffer if necessary.
+ * Appends \a c onto the end of \a sbuf growing the buffer if necessary.
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param c The character to append.
@@ -137,7 +137,7 @@ void strbuf_putc( strbuf_t *sbuf, char c ) {
 }
 
 /**
- * Concatenates \a s onto the end of \a sbuf growing the buffer if necessary.
+ * Appends \a s onto the end of \a sbuf growing the buffer if necessary.
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param s The string to append.
