@@ -64,7 +64,7 @@ extern char const  *me;                 ///< Program name.
 /**
  * Parses a cdecl command from a string.
  *
- * @param s The null-terminated string to parse.
+ * @param s The string to parse.
  * @param s_len The length of \a s.
  * @return Returns `EX_OK` upon success or another value upon failure.
  *
