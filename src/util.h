@@ -799,16 +799,6 @@ bool only_bits_set( uint64_t bits, uint64_t allowed_bits ) {
 }
 
 /**
- * Appends \a component to \a path ensuring that exactly one `/` separates
- * them.
- *
- * @param path The path to append to.  The buffer pointed to must be big enough
- * to hold the new path.
- * @param component The component to append.
- */
-void path_append( char *path, char const *component );
-
-/**
  * Parses a C/C++ identifier.
  *
  * @param s The string to parse.

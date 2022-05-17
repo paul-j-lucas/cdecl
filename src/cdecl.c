@@ -48,7 +48,6 @@
 // standard
 #include <ctype.h>
 #include <errno.h>
-#include <limits.h>                     /* for PATH_MAX */
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -251,13 +250,16 @@ static void conf_init( void ) {
     if ( conf_path != NULL && conf_path[0] == '\0' )
       conf_path = NULL;
   }
+
+  strbuf_t sbuf;
+  strbuf_init( &sbuf );
+
   if ( conf_path == NULL ) {
     char const *const home = home_dir();
     if ( home != NULL ) {
-      static char conf_path_buf[ PATH_MAX ];
-      strcpy( conf_path_buf, home );
-      path_append( conf_path_buf, "." CONF_FILE_NAME_DEFAULT );
-      conf_path = conf_path_buf;
+      strbuf_puts( &sbuf, home );
+      strbuf_paths( &sbuf, "." CONF_FILE_NAME_DEFAULT );
+      conf_path = sbuf.str;
     }
   }
 
@@ -266,6 +268,7 @@ static void conf_init( void ) {
     if ( !read_conf_file( conf_path ) && opt_conf_path != NULL )
       FATAL_ERR( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
     print_params.conf_path = NULL;
+    strbuf_cleanup( &sbuf );
   }
 }
 

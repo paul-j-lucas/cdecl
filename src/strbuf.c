@@ -62,6 +62,29 @@ void strbuf_cleanup( strbuf_t *sbuf ) {
   strbuf_init( sbuf );
 }
 
+void strbuf_paths( strbuf_t *sbuf, char const *component ) {
+  assert( sbuf != NULL );
+  assert( component != NULL );
+
+  size_t comp_len = strlen( component );
+  if ( comp_len == 0 )
+    return;
+
+  if ( sbuf->len > 0 ) {
+    if ( sbuf->str[ sbuf->len - 1 ] == '/' ) {
+      if ( component[0] == '/' ) {
+        ++component;
+        --comp_len;
+      }
+    } else {
+      if ( component[0] != '/' )
+        strbuf_putc( sbuf, '/' );
+    }
+  }
+
+  strbuf_putsn( sbuf, component, comp_len );
+}
+
 void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   assert( sbuf != NULL );
   assert( format != NULL );

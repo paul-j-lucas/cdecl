@@ -326,23 +326,6 @@ uint32_t ms_bit1_32( uint32_t n ) {
   return 0;
 }
 
-void path_append( char *path, char const *component ) {
-  assert( path != NULL );
-  assert( component != NULL );
-
-  char *end = path + strlen( path );
-  if ( end > path ) {
-    if ( end[-1] == '/' ) {
-      if ( component[0] == '/' )
-        ++component;
-    } else {
-      if ( component[0] != '/' )
-        *end++ = '/';
-    }
-  }
-  strcpy( end, component );
-}
-
 char const* parse_identifier( char const *s ) {
   assert( s != NULL );
   if ( !(isalpha( s[0] ) || s[0] == '_') )

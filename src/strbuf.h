@@ -93,6 +93,15 @@ void strbuf_init( strbuf_t *sbuf ) {
 }
 
 /**
+ * Appends \a component onto \a sbuf containing a path ensuring that exactly
+ * one `/` separates them.
+ *
+ * @param sbuf A pointer to the \ref strbuf to append onto.
+ * @param component The component to append.
+ */
+void strbuf_paths( strbuf_t *sbuf, char const *component );
+
+/**
  * Appends \a format and the `printf`-style arguments onto the end of \a sbuf
  * growing the buffer if necessary.
  *
