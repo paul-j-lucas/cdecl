@@ -98,6 +98,10 @@ void strbuf_init( strbuf_t *sbuf ) {
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param component The component to append.
+ *
+ * @sa strbuf_printf()
+ * @sa strbuf_puts()
+ * @sa strbuf_putsn()
  */
 void strbuf_paths( strbuf_t *sbuf, char const *component );
 
@@ -109,6 +113,7 @@ void strbuf_paths( strbuf_t *sbuf, char const *component );
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
  *
+ * @sa strbuf_paths()
  * @sa strbuf_putc()
  * @sa strbuf_puts()
  * @sa strbuf_putsn()
@@ -124,6 +129,7 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... );
  * @param s The string to append.
  * @param s_len The number of bytes of \a s to append.
  *
+ * @sa strbuf_paths()
  * @sa strbuf_putc()
  * @sa strbuf_printf()
  * @sa strbuf_puts()
@@ -151,6 +157,7 @@ void strbuf_putc( strbuf_t *sbuf, char c ) {
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param s The string to append.
  *
+ * @sa strbuf_paths()
  * @sa strbuf_putc()
  * @sa strbuf_printf()
  * @sa strbuf_putsn()
