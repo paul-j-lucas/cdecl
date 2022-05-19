@@ -91,8 +91,8 @@
 #ifdef HAVE___ATTRIBUTE__
 
 /**
- * Intentionally fall through to the next `switch` `case`.
  * @def PJL_FALLTHROUGH
+ * Intentionally fall through to the next `switch` `case`.
  */
 #if __has_attribute(fallthrough) || GCC_AT_LEAST_VERSION(7,0)
 #define PJL_FALLTHROUGH           __attribute__((fallthrough))

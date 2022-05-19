@@ -39,6 +39,16 @@
  * @{
  */
 
+/**
+ * Convenience macro for iterating over all C/C++ keywords.
+ *
+ * @param VAR The c_keyword loop variable.
+ *
+ * @sa c_keyword_next()
+ */
+#define FOREACH_C_KEYWORD(VAR) \
+  for ( c_keyword_t const *VAR = NULL; (VAR = c_keyword_next( VAR )) != NULL; )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -110,16 +120,6 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
  */
 PJL_WARN_UNUSED_RESULT
 c_keyword_t const* c_keyword_next( c_keyword_t const *k );
-
-/**
- * Convenience macro for iterating over all C/C++ keywords.
- *
- * @param VAR The c_keyword loop variable.
- *
- * @sa c_keyword_next()
- */
-#define FOREACH_C_KEYWORD(VAR) \
-  for ( c_keyword_t const *VAR = NULL; (VAR = c_keyword_next( VAR )) != NULL; )
 
 ///////////////////////////////////////////////////////////////////////////////
 

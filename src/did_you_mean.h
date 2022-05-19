@@ -23,8 +23,8 @@
 
 /**
  * @file
- * Declares types, constants, and functions that implement "Did you mean ...?"
- * suggestions.
+ * Declares macros, types, and functions for printing suggestions for "Did you
+ * mean ...?"
  */
 
 // local
@@ -32,6 +32,13 @@
 
 // standard
 #include <stddef.h>                     /* for size_t */
+
+/**
+ * @defgroup printing-suggestions-group Printing Suggestions
+ * Declares macros, types, and functions for printing suggestions for "Did you
+ * mean ...?"
+ * @{
+ */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -91,6 +98,8 @@ PJL_WARN_UNUSED_RESULT
 did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_did_you_mean_H */
 /* vim:set et sw=2 ts=2: */

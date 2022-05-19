@@ -94,7 +94,7 @@
 /**
  * Starts printing in the predefined \a COLOR.
  *
- * @param STREAM The `FILE` to use.
+ * @param STREAM The `FILE` to print to.
  * @param COLOR The predefined color without the `sgr_` prefix.
  *
  * @sa #SGR_END_COLOR
@@ -107,7 +107,7 @@
 /**
  * Ends printing in color.
  *
- * @param STREAM The `FILE` to use.
+ * @param STREAM The `FILE` to print to.
  *
  * @sa #SGR_START_COLOR
  */
@@ -115,10 +115,10 @@
   BLOCK( if ( colorize ) FPUTS( SGR_END SGR_EL, (STREAM) ); )
 
 /**
- * Writes the bytes to \a SBUF that, when printed to a terminal, will start
+ * Appends the bytes to \a SBUF that, when printed to a terminal, will start
  * printing in \a COLOR.
  *
- * @param SBUF The string to write to.
+ * @param SBUF The string buffer to write to.
  * @param COLOR The predefined color without the `sgr_` prefix.
  *
  * @sa #SGR_STRBUF_END_COLOR
@@ -129,10 +129,10 @@
     strbuf_printf( (SBUF), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
 
 /**
- * Writes the bytes to \a SBUF that, when printed to a terminal, will end
+ * Appends the bytes to \a SBUF that, when printed to a terminal, will end
  * printing in color.
  *
- * @param SBUF The string to write to.
+ * @param SBUF The string buffer to write to.
  *
  * @sa #SGR_STRBUF_START_COLOR
  */

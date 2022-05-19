@@ -41,8 +41,6 @@
 
 /// @endcond
 
-///////////////////////////////////////////////////////////////////////////////
-
 /**
  * @defgroup set-options-group Set Options
  * Declares global variables and functions for `set` command options.
@@ -52,6 +50,19 @@
  *
  * @{
  */
+
+/**
+ * Convenience macro for iterating over all cdecl `set` options.
+ *
+ * @param VAR The set_option loop variable.
+ *
+ * @sa #FOREACH_CLI_OPTION()
+ * @sa set_option_next()
+ */
+#define FOREACH_SET_OPTION(VAR) \
+  for ( set_option_t const *VAR = NULL; (VAR = set_option_next( VAR )) != NULL; )
+
+///////////////////////////////////////////////////////////////////////////////
 
 typedef struct set_option_fn_args set_option_fn_args_t;
 
@@ -85,17 +96,6 @@ struct set_option {
 typedef struct set_option set_option_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
-
-/**
- * Convenience macro for iterating over all cdecl `set` options.
- *
- * @param VAR The set_option loop variable.
- *
- * @sa #FOREACH_CLI_OPTION()
- * @sa set_option_next()
- */
-#define FOREACH_SET_OPTION(VAR) \
-  for ( set_option_t const *VAR = NULL; (VAR = set_option_next( VAR )) != NULL; )
 
 /**
  * Implements the cdecl `set` command.

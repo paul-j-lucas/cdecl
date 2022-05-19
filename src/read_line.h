@@ -33,7 +33,7 @@
 
 // standard
 #include <stdbool.h>
-#include <stdio.h>
+#include <stdio.h>                      /* for FILE */
 
 ////////// extern functions ///////////////////////////////////////////////////
 

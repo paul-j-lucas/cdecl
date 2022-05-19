@@ -105,7 +105,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
 #define FOREACH_AST_FUNC_PARAM(VAR,AST) \
-  FOREACH_AST_FUNC_PARAM_UNTIL( VAR, AST, NULL )
+  FOREACH_AST_FUNC_PARAM_UNTIL( VAR, AST, /*END=*/NULL )
 
 /**
  * Convenience macro for iterating over all parameters of a function-like AST

@@ -20,8 +20,8 @@
 
 /**
  * @file
- * Defines types, constants, and functions that implement "Did you mean ...?"
- * suggestions.
+ * Defines types, constants, and functions for printing suggestions for "Did
+ * you mean ...?"
  */
 
 // local

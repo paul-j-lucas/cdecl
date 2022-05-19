@@ -42,6 +42,16 @@
  * @{
  */
 
+/**
+ * Convenience macro for iterating over all cdecl keywords.
+ *
+ * @param VAR The cdecl_keyword loop variable.
+ *
+ * @sa cdecl_keyword_next()
+ */
+#define FOREACH_CDECL_KEYWORD(VAR) \
+  for ( cdecl_keyword_t const *VAR = NULL; (VAR = cdecl_keyword_next( VAR )) != NULL; )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -97,16 +107,6 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *literal );
  */
 PJL_WARN_UNUSED_RESULT
 cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *k );
-
-/**
- * Convenience macro for iterating over all cdecl keywords.
- *
- * @param VAR The cdecl_keyword loop variable.
- *
- * @sa cdecl_keyword_next()
- */
-#define FOREACH_CDECL_KEYWORD(VAR) \
-  for ( cdecl_keyword_t const *VAR = NULL; (VAR = cdecl_keyword_next( VAR )) != NULL; )
 
 ///////////////////////////////////////////////////////////////////////////////
 

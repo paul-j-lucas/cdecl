@@ -78,7 +78,7 @@
  * Flag for c_ast_gibberish() to indicate that the declaration is for multiple
  * types or objects, for example:
  *
- *      int *p, *q;
+ *      int *x, *y;
  *
  * @note Unlike #C_GIB_OMIT_TYPE, `C_GIB_MULTI_DECL` must be used for the
  * entire declaration.
