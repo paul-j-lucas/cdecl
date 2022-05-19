@@ -57,43 +57,29 @@ struct set_option_fn_args {
   c_loc_t const *opt_value_loc;         ///< The location of \a opt_value.
 };
 
-/**
- * Convenience macro for declaring a `set` option function.
- *
- * @param NAME The option name with `-` replaced by `_`.
- */
-#define DECLARE_SET_OPTION_FN(NAME)                     \
-  PJL_WARN_UNUSED_RESULT                                \
-  static bool set_##NAME( set_option_fn_args_t const* )
-
-/// @cond DOXYGEN_IGNORE
-
 // local functions
-DECLARE_SET_OPTION_FN( alt_tokens );
+PJL_WARN_UNUSED_RESULT
+static bool set_alt_tokens( set_option_fn_args_t const* ),
 #ifdef YYDEBUG
-DECLARE_SET_OPTION_FN( bison_debug );
+            set_bison_debug( set_option_fn_args_t const* ),
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-DECLARE_SET_OPTION_FN( debug );
+            set_debug( set_option_fn_args_t const* ),
 #endif /* ENABLE_CDECL_DEBUG */
-DECLARE_SET_OPTION_FN( digraphs );
-DECLARE_SET_OPTION_FN( east_const );
-DECLARE_SET_OPTION_FN( explain_by_default );
-DECLARE_SET_OPTION_FN( explicit_ecsu );
-DECLARE_SET_OPTION_FN( explicit_int );
+            set_digraphs( set_option_fn_args_t const* ),
+            set_east_const( set_option_fn_args_t const* ),
+            set_explain_by_default( set_option_fn_args_t const* ),
+            set_explicit_ecsu( set_option_fn_args_t const* ),
+            set_explicit_int( set_option_fn_args_t const* ),
 #ifdef ENABLE_FLEX_DEBUG
-DECLARE_SET_OPTION_FN( flex_debug );
+            set_flex_debug( set_option_fn_args_t const* ),
 #endif /* ENABLE_FLEX_DEBUG */
-DECLARE_SET_OPTION_FN( lang );
-DECLARE_SET_OPTION_FN( prompt );
-DECLARE_SET_OPTION_FN( semicolon );
-DECLARE_SET_OPTION_FN( trigraphs );
-DECLARE_SET_OPTION_FN( using );
-
-/// @endcond
-
-PJL_WARN_UNUSED_RESULT
-static bool set_lang_impl( char const* );
+            set_lang( set_option_fn_args_t const* ),
+            set_lang_impl( char const* ),
+            set_prompt( set_option_fn_args_t const* ),
+            set_semicolon( set_option_fn_args_t const* ),
+            set_trigraphs( set_option_fn_args_t const* ),
+            set_using( set_option_fn_args_t const* );
 
 ///////////////////////////////////////////////////////////////////////////////
 
