@@ -23,7 +23,10 @@
 
 /**
  * @file
- * Declares global variables and functions for command-line options.
+ * Declares macros and functions for command-line options.
+ *
+ * @sa options.h
+ * @sa set_options.h
  */
 
 // local

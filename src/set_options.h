@@ -23,7 +23,11 @@
 
 /**
  * @file
- * Declares types and functions that implement the cdecl `set` command.
+ * Declares macros, types, and functions that implement the cdecl `set`
+ * command.
+ *
+ * @sa cli_options.h
+ * @sa options.h
  */
 
 // local
