@@ -78,9 +78,9 @@ typedef bool (*set_option_fn_t)( set_option_fn_args_t const *args );
  * cdecl `set` option kind.
  */
 enum set_option_kind {
-  SET_OPT_TOGGLE,                       ///< Toggle, e.g., `foo` & `nofoo`.
-  SET_OPT_AFF_ONLY,                     ///< Affirmative only, e.g., `foo`.
-  SET_OPT_NEG_ONLY                      ///< Negative only, e.g., `nofoo`.
+  SET_OPTION_TOGGLE,                    ///< Toggle, e.g., `foo` & `nofoo`.
+  SET_OPTION_AFF_ONLY,                  ///< Affirmative only, e.g., `foo`.
+  SET_OPTION_NEG_ONLY                   ///< Negative only, e.g., `nofoo`.
 };
 typedef enum set_option_kind set_option_kind_t;
 

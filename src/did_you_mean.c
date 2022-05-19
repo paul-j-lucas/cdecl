@@ -199,18 +199,18 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
   size_t count = 0;
   FOREACH_SET_OPTION( opt ) {
     switch ( opt->kind ) {
-      case SET_OPT_TOGGLE:
+      case SET_OPTION_TOGGLE:
         if ( pdym != NULL ) {
           (*pdym)++->token = check_strdup( opt->name );
           (*pdym)++->token = check_prefix_strdup( "no", opt->name );
         }
         ++count;
         break;
-      case SET_OPT_AFF_ONLY:
+      case SET_OPTION_AFF_ONLY:
         if ( pdym != NULL )
           (*pdym)++->token = check_strdup( opt->name );
         break;
-      case SET_OPT_NEG_ONLY:
+      case SET_OPTION_NEG_ONLY:
         if ( pdym != NULL )
           (*pdym)++->token = check_prefix_strdup( "no", opt->name );
         break;

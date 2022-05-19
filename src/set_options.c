@@ -101,28 +101,28 @@ static bool set_lang_impl( char const* );
  * cdecl `set` options.
  */
 static set_option_t const SET_OPTIONS[] = {
-  { "alt-tokens",         SET_OPT_TOGGLE,   false,  &set_alt_tokens         },
+  { "alt-tokens",         SET_OPTION_TOGGLE,   false, &set_alt_tokens         },
 #ifdef YYDEBUG
-  { "bison-debug",        SET_OPT_TOGGLE,   false,  &set_bison_debug        },
+  { "bison-debug",        SET_OPTION_TOGGLE,   false, &set_bison_debug        },
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-  { "debug",              SET_OPT_TOGGLE,   false,  &set_debug              },
+  { "debug",              SET_OPTION_TOGGLE,   false, &set_debug              },
 #endif /* ENABLE_CDECL_DEBUG */
-  { "digraphs",           SET_OPT_AFF_ONLY, false,  &set_digraphs           },
-  { "graphs",             SET_OPT_NEG_ONLY, false,  &set_digraphs           },
-  { "east-const",         SET_OPT_TOGGLE,   false,  &set_east_const         },
-  { "explain-by-default", SET_OPT_TOGGLE,   false,  &set_explain_by_default },
-  { "explicit-ecsu",      SET_OPT_TOGGLE,   true,   &set_explicit_ecsu      },
-  { "explicit-int",       SET_OPT_TOGGLE,   true,   &set_explicit_int       },
+  { "digraphs",           SET_OPTION_AFF_ONLY, false, &set_digraphs           },
+  { "graphs",             SET_OPTION_NEG_ONLY, false, &set_digraphs           },
+  { "east-const",         SET_OPTION_TOGGLE,   false, &set_east_const         },
+  { "explain-by-default", SET_OPTION_TOGGLE,   false, &set_explain_by_default },
+  { "explicit-ecsu",      SET_OPTION_TOGGLE,   true,  &set_explicit_ecsu      },
+  { "explicit-int",       SET_OPTION_TOGGLE,   true,  &set_explicit_int       },
 #ifdef ENABLE_FLEX_DEBUG
-  { "flex-debug",         SET_OPT_TOGGLE,   false,  &set_flex_debug         },
+  { "flex-debug",         SET_OPTION_TOGGLE,   false, &set_flex_debug         },
 #endif /* ENABLE_FLEX_DEBUG */
-  { "lang",               SET_OPT_AFF_ONLY, true,   &set_lang               },
-  { "prompt",             SET_OPT_TOGGLE,   false,  &set_prompt             },
-  { "semicolon",          SET_OPT_TOGGLE,   false,  &set_semicolon          },
-  { "trigraphs",          SET_OPT_AFF_ONLY, false,  &set_trigraphs          },
-  { "using",              SET_OPT_TOGGLE,   false,  &set_using              },
-  { NULL,                 SET_OPT_TOGGLE,   false,  NULL                    }
+  { "lang",               SET_OPTION_AFF_ONLY, true,  &set_lang               },
+  { "prompt",             SET_OPTION_TOGGLE,   false, &set_prompt             },
+  { "semicolon",          SET_OPTION_TOGGLE,   false, &set_semicolon          },
+  { "trigraphs",          SET_OPTION_AFF_ONLY, false, &set_trigraphs          },
+  { "using",              SET_OPTION_TOGGLE,   false, &set_using              },
+  { NULL,                 SET_OPTION_TOGGLE,   false, NULL                    }
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -540,9 +540,9 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
 
   switch ( found_opt->kind ) {
-    case SET_OPT_TOGGLE:
+    case SET_OPTION_TOGGLE:
       break;
-    case SET_OPT_AFF_ONLY:
+    case SET_OPTION_AFF_ONLY:
       if ( is_no ) {
         print_error( opt_name_loc,
           "\"no\" not valid for \"%s\"\n", found_opt->name
@@ -550,7 +550,7 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
         return false;
       }
       break;
-    case SET_OPT_NEG_ONLY:
+    case SET_OPTION_NEG_ONLY:
       if ( !is_no ) {
         print_error( opt_name_loc,
           "\"no\" required for \"%s\"\n", found_opt->name
