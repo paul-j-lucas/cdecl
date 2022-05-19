@@ -126,8 +126,8 @@
 
 #ifdef HAVE___TYPEOF__
 /**
- * Ignore the return value of a function even if it was declared with
- * #PJL_WARN_UNUSED_RESULT.
+ * Ignore the return value of a non-`void` function even if it was declared
+ * with #PJL_WARN_UNUSED_RESULT.
  *
  * @param FN_CALL The function call.
  */
