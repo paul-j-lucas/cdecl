@@ -2450,7 +2450,7 @@ scoped_command
 set_command
   : Y_SET
     {
-      if ( !option_set( NULL, NULL, NULL, NULL ) )
+      if ( !set_option( NULL, NULL, NULL, NULL ) )
         PARSE_ABORT();
     }
   | Y_SET set_option_list
@@ -2464,7 +2464,7 @@ set_option_list
 set_option
   : Y_SET_OPTION set_option_value_opt
     {
-      bool const ok = option_set( $1, &@1, $2, &@2 );
+      bool const ok = set_option( $1, &@1, $2, &@2 );
       free( $1 );
       free( $2 );
       if ( !ok )

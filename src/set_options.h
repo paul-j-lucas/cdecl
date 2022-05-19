@@ -108,7 +108,7 @@ typedef struct set_option set_option_t;
  * @return Returns `true` only if the option was set.
  */
 PJL_WARN_UNUSED_RESULT
-bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
+bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc );
 
 /**
