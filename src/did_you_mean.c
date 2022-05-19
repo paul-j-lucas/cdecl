@@ -198,7 +198,7 @@ PJL_NOWARN_UNUSED_RESULT
 static size_t copy_set_options( did_you_mean_t **const pdym ) {
   size_t count = 0;
   FOREACH_SET_OPTION( opt ) {
-    switch ( opt->type ) {
+    switch ( opt->kind ) {
       case SET_OPT_TOGGLE:
         if ( pdym != NULL ) {
           (*pdym)++->token = check_strdup( opt->name );

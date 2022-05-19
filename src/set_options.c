@@ -539,7 +539,7 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   set_option_t const *const found_opt = slist_front( &found_opt_list );
   slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
 
-  switch ( found_opt->type ) {
+  switch ( found_opt->kind ) {
     case SET_OPT_TOGGLE:
       break;
     case SET_OPT_AFF_ONLY:
