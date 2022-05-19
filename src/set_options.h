@@ -102,10 +102,10 @@ typedef struct set_option set_option_t;
  *
  * @param opt_name The name of the option to set. If NULL or `"options"`,
  * displays the current values of all options.
- * @param opt_name_loc The location of \a opt_name.
+ * @param opt_name_loc The location of \a opt_name if not NULL.
  * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
- * @return Returns `true` only if the option was set.
+ * @param opt_value_loc The location of \a opt_value if not NULL.
+ * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
 bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
