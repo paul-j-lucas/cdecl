@@ -28,6 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -84,9 +85,6 @@ _GL_INLINE_HEADER_BEGIN
   slist_t const VAR = { &VAR##_node, &VAR##_node, 1 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-typedef struct slist      slist_t;
-typedef struct slist_node slist_node_t;
 
 /**
  * The signature for a function passed to slist_cmp() used to compare data

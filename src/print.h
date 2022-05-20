@@ -101,7 +101,6 @@ struct print_params {
   char const *conf_path;                ///< Configuration file path, if any.
   size_t      inserted_len;             ///< Length of inserted string, if any.
 };
-typedef struct print_params print_params_t;
 
 extern print_params_t print_params;     ///< Print parameters.
 

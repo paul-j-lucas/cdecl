@@ -145,16 +145,6 @@ struct c_alignas {
 };
 
 /**
- * The direction to traverse an AST using c_ast_visit().
- */
-enum c_visit_dir {
-  C_VISIT_DOWN,                         ///< Root to leaves.
-  C_VISIT_UP                            ///< Leaf to root.
-};
-
-///////////////////////////////////////////////////////////////////////////////
-
-/**
  * Type of optional data passed to c_ast_visit().
  *
  * @note This is `uint64_t` so it can hold either the largest possible integer
@@ -172,6 +162,16 @@ typedef uint64_t c_ast_visit_data_t;
  * returned to the caller of c_ast_visit().
  */
 typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visit_data_t avd );
+
+/**
+ * The direction to traverse an AST using c_ast_visit().
+ */
+enum c_visit_dir {
+  C_VISIT_DOWN,                         ///< Root to leaves.
+  C_VISIT_UP                            ///< Leaf to root.
+};
+
+///////////////////////////////////////////////////////////////////////////////
 
 /**
  * @defgroup ast-nodes-group AST Nodes

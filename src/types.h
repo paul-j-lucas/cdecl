@@ -53,11 +53,6 @@
  */
 #define PRId_C_AST_SID_T          "%d"
 
-// We have to define these typedefs here rather than just use the struct tags
-// in the typedefs below otherwise Doxygen won't know about them.
-typedef struct slist slist_t;
-typedef struct slist_node slist_node_t;
-
 /**
  * @defgroup type-declarations-group Type Declarations
  * Declares many types and `typedef` declarations in one file.
@@ -65,6 +60,9 @@ typedef struct slist_node slist_node_t;
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+
+typedef struct slist              slist_t;
+typedef struct slist_node         slist_node_t;
 
 typedef struct c_alignas          c_alignas_t;
 typedef enum   c_alignas_kind     c_alignas_kind_t;
@@ -125,6 +123,10 @@ typedef enum   cdecl_command_kind cdecl_command_kind_t;
 typedef enum   cdecl_help         cdecl_help_t;
 typedef struct cdecl_keyword      cdecl_keyword_t;
 typedef enum   cdecl_mode         cdecl_mode_t;
+typedef struct print_params       print_params_t;
+typedef struct set_option         set_option_t;
+typedef struct set_option_fn_args set_option_fn_args_t;
+typedef enum   set_option_kind    set_option_kind_t;
 typedef enum   yytokentype        yytokentype;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
