@@ -1,3 +1,21 @@
+2022-05-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, print.h, set_options.h, slist.h, types.h: Moved typedefs.
+
+2022-05-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c: Got rid of DECLARE_SET_OPTION_FN().
+   * autocomplete.c, did_you_mean.c, set_options.c, set_options.h:
+     s/SET_OPT_/SET_OPTION_/
+   * autocomplete.c, did_you_mean.c, set_options.c, set_options.h:
+     s/set_option_type/set_option_kind/
+   * parser.y, set_options.c, set_options.h: s/option_set/set_option/
+
+2022-05-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, strbuf.c, strbuf.h, util.c, util.h: Added strbuf_paths().
+   * cdecl.c: Added conf_init().
+
 2022-05-16  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, parser.y, test/Makefile.am, k_declare_i.out, k_declare_i.test: Now
