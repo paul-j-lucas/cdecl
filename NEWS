@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.16
 
+** `_Noreturn` deprecated
+`_Noreturn` is now deprecated in C2X.
+
 ** Printing of types
 Now printing types in error messages as they were originally defined (pseudo-
 English vs. gibberish) in more cases.

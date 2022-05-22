@@ -174,9 +174,9 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_lf.test \
 	tests/declare_ll.test \
 	tests/declare_n.test \
-	tests/declare_nrfi_v-01.test \
-	tests/declare_nrfi_v-02.test \
-	tests/declare_nrfi_v-03.test \
+	tests/declare_nrfi_v-01-c17.test \
+	tests/declare_nrfi_v-02-c17.test \
+	tests/declare_nrfi_v-03-c17.test \
 	tests/declare_p_cdecl_f.test \
 	tests/declare_pa3cpa5i.test \
 	tests/declare_pa3pa5i.test \
@@ -459,6 +459,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_npii-c89.test \
 	tests/explain_npiii-c89.test \
 	tests/explain_nrfi_v.test \
+	tests/explain_nrfi_v-c17.test \
 	tests/explain_oi.test \
 	tests/explain_ovo_minus2_i_rk.test \
 	tests/explain_ovo_minus_rk_rk.test \

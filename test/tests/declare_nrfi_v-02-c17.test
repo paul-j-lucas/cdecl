@@ -1,0 +1,1 @@
+cdecl @ @ -xc17 @ declare f as noreturn function (int) returning void @ 0
