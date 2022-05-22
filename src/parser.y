@@ -471,11 +471,11 @@ struct in_attr {
   c_alignas_t   align;            ///< Alignment, if any.
   unsigned      ast_depth;        ///< Parentheses nesting depth.
   c_sname_t     current_scope;    ///< C++ only: current scope, if any.
-  bool          implicit_int;     ///< Created implicit `int` AST?
+  bool          is_implicit_int;  ///< Created implicit `int` AST?
+  bool          is_typename;      ///< C++ only: `typename` specified?
   c_ast_list_t  type_ast_stack;   ///< Type AST stack.
   c_ast_list_t  typedef_ast_list; ///< AST nodes of `typedef` being declared.
   c_ast_t      *typedef_type_ast; ///< AST of `typedef` being declared.
-  bool          typename;         ///< C++ only: `typename` specified?
 };
 typedef struct in_attr in_attr_t;
 
@@ -936,7 +936,7 @@ c_ast_t const* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
 
-  if ( in_attr.typename && !c_ast_is_typename_ok( type_ast ) )
+  if ( in_attr.is_typename && !c_ast_is_typename_ok( type_ast ) )
     return NULL;
 
   c_type_t type = c_ast_take_type_any( type_ast, &T_TS_TYPEDEF );
@@ -1082,7 +1082,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
   if ( show_in_lang ) {
     bool const show_it =
-      ((tdef->predefined ?
+      ((tdef->is_predefined ?
         (sti->show_which & SHOW_PREDEFINED_TYPES  ) != 0 :
         (sti->show_which & SHOW_USER_DEFINED_TYPES) != 0)) &&
       (c_sglob_empty( &sti->sglob ) ||
@@ -2325,7 +2325,7 @@ explain_command
   | explain pc99_pointer_decl_list_c
     {
       ia_type_ast_pop();
-      in_attr.implicit_int = false;
+      in_attr.is_implicit_int = false;
     }
 
     /*
@@ -2341,7 +2341,7 @@ explain_command
      * (We can't use typename_flag_opt because it would introduce more
      * shift/reduce conflicts.)
      */
-  | explain Y_TYPENAME { in_attr.typename = true; } typed_declaration_c
+  | explain Y_TYPENAME { in_attr.is_typename = true; } typed_declaration_c
 
     /*
      * User-defined conversion operator declaration without a storage-class-
@@ -2671,7 +2671,7 @@ c_style_cast_expr_c
   | '(' pc99_pointer_decl_list_c rparen_exp
     {
       ia_type_ast_pop();
-      in_attr.implicit_int = false;
+      in_attr.is_implicit_int = false;
     }
   ;
 
@@ -2728,7 +2728,7 @@ new_style_cast_c
 
 aligned_declaration_c
   : alignas_specifier_c { in_attr.align = $1; }
-    typename_flag_opt { in_attr.typename = $3; }
+    typename_flag_opt { in_attr.is_typename = $3; }
     typed_declaration_c
   ;
 
@@ -3140,7 +3140,7 @@ typedef_declaration_c
   : Y_TYPEDEF typename_flag_opt
     {
       CHECK_NESTED_TYPE_OK( &@1 );
-      in_attr.typename = $2;
+      in_attr.is_typename = $2;
       gibberish_to_english();           // see the comment in "explain"
     }
     type_c_ast
@@ -3431,7 +3431,7 @@ decl_c
           );
           break;
       } // switch
-      DUMP_BOOL( "(typename_flag_opt)", in_attr.typename );
+      DUMP_BOOL( "(typename_flag_opt)", in_attr.is_typename );
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl_c_astp", decl_ast );
 
@@ -4382,7 +4382,7 @@ pc99_pointer_type_c_ast
                   "* type_qualifier_list_c_stid_opt" );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
 
-      if ( false_set( &in_attr.implicit_int ) ) {
+      if ( false_set( &in_attr.is_implicit_int ) ) {
         c_ast_t *const int_ast = c_ast_new_gc( K_BUILTIN, &@1 );
         int_ast->type.btids = TB_INT;
         ia_type_ast_push( int_ast );

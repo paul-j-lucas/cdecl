@@ -966,8 +966,8 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
   // only in those language(s); otherwise we're defining a user-defined type
   // that's available in the current language and newer.
   //
-  tdef->predefined = predefined_lang_ids != LANG_NONE;
-  tdef->lang_ids = tdef->predefined ?
+  tdef->is_predefined = predefined_lang_ids != LANG_NONE;
+  tdef->lang_ids = tdef->is_predefined ?
     predefined_lang_ids : c_lang_and_newer( opt_lang );
   return tdef;
 }

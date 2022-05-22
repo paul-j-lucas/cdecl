@@ -44,7 +44,7 @@
  * @param AST The AST.
  */
 #define C_TYPEDEF_AST_LIT(AST) (c_typedef_t const) \
-  { (AST), LANG_ANY, .gib_flags = C_GIB_NONE, .predefined = false }
+  { (AST), LANG_ANY, .gib_flags = C_GIB_NONE, .is_predefined = false }
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -62,7 +62,7 @@ struct c_typedef {
   c_ast_t const  *ast;                  ///< AST representing the type.
   c_lang_id_t     lang_ids;             ///< Language(s) available in.
   unsigned        gib_flags;            ///< How was the type defined?
-  bool            predefined;           ///< Was the type predefined?
+  bool            is_predefined;        ///< Was the type predefined?
 };
 
 /**
