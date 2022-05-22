@@ -1,3 +1,10 @@
+2022-05-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_ast_check.c, test/Makefile.am, explain_nrfi_v-c17.out,
+     explain_nrfi_v.out, declare_nrfi_v-01-c17.test,
+     declare_nrfi_v-02-c17.test, declare_nrfi_v-03-c17.test,
+     explain_nrfi_v-c17.test: _Noreturn is now deprecated in C2X.
+
 2022-05-20  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.h, print.h, set_options.h, slist.h, types.h: Moved typedefs.
