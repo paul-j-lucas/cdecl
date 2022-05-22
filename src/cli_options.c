@@ -180,10 +180,8 @@ static bool         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
 PJL_WARN_UNUSED_RESULT
-static char const*  opt_format( char, strbuf_t* );
-
-PJL_WARN_UNUSED_RESULT
-static char const*  opt_get_long( char );
+static char const*  opt_format( char, strbuf_t* ),
+                 *  opt_get_long( char );
 
 noreturn
 static void         usage( int );
