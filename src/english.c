@@ -244,7 +244,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       break;
 
     case K_NAME:
-      assert( OPT_LANG_IS( C_MAX(17) ) );
+      assert( OPT_LANG_IS( KNR_FUNC_DEFINITION ) );
       //
       // In C17 and earlier, just a name for a function parameter is implicitly
       // int:

@@ -1111,7 +1111,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       case K_NAME:
         if ( !OPT_LANG_IS( KNR_FUNC_DEFINITION ) ) {
           //
-          // C2X finally forbids old-style K&R function declarations:
+          // C2X finally forbids old-style K&R function definitions:
           //
           //      strlen(s)
           //        char *s             // illegal in C2X
