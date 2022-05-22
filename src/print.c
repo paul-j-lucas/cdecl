@@ -83,9 +83,9 @@ print_params_t            print_params;
 PJL_WARN_UNUSED_RESULT
 static char const* fprint_list_dym_gets( void const **ppelt ) {
   did_you_mean_t const *const dym = *ppelt;
-  *ppelt = dym + 1;
   if ( dym->token == NULL )
     return NULL;
+  *ppelt = dym + 1;
 
   static strbuf_t sbufs[ 2 ];
   static unsigned buf_index;
