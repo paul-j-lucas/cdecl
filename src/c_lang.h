@@ -552,6 +552,8 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Languages K&R style function definitions are supported in.
+ *
+ * @sa #LANG_PROTOTYPES
  */
 #define LANG_KNR_FUNC_DEFINITION        LANG_C_MAX(17)
 
@@ -648,6 +650,8 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Languages function prototypes are supported in.
+ *
+ * @sa #LANG_KNR_FUNC_DEFINITION
  */
 #define LANG_PROTOTYPES                 LANG_MIN(C_89)
 
