@@ -91,14 +91,14 @@ static unsigned check_tigetnum( char const *capname ) {
 
 /**
  * Helper function for fprint_list() that, given a pointer to a pointer to an
- * array of `char*`, returns the pointer to the associated string.
+ * array of pointer to `char`, returns the pointer to the associated string.
  *
  * @param ppelt A pointer to the pointer to the element to get the string of.
  * On return, it is incremented by the size of the element.
  * @return Returns said string or NULL if none.
  */
 PJL_WARN_UNUSED_RESULT
-static char const* fprint_list_array_gets( void const **ppelt ) {
+static char const* fprint_list_apc_gets( void const **ppelt ) {
   char const *const *const ps = *ppelt;
   *ppelt = ps + 1;
   return *ps;
@@ -181,7 +181,7 @@ void fprint_list( FILE *out, void const *elt,
   assert( elt != NULL );
 
   if ( gets == NULL )
-    gets = &fprint_list_array_gets;
+    gets = &fprint_list_apc_gets;
 
   char const *s = (*gets)( &elt );
   for ( size_t i = 0; s != NULL; ++i ) {

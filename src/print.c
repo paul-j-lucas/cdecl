@@ -81,7 +81,7 @@ print_params_t            print_params;
  * NULL if none.
  */
 PJL_WARN_UNUSED_RESULT
-static char const* fprint_list_get_dym( void const **ppelt ) {
+static char const* fprint_list_dym_gets( void const **ppelt ) {
   did_you_mean_t const *const dym = *ppelt;
   *ppelt = dym + 1;
   if ( dym->token == NULL )
@@ -440,7 +440,7 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
   did_you_mean_t const *const dym = dym_new( kinds, unknown_token );
   if ( dym != NULL ) {
     EPUTS( "; did you mean " );
-    fprint_list( stderr, dym, &fprint_list_get_dym );
+    fprint_list( stderr, dym, &fprint_list_dym_gets );
     EPUTC( '?' );
     dym_free( dym );
     return true;
