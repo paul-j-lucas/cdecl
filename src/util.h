@@ -687,6 +687,10 @@ FILE* fmemopen( void *buf, size_t size, char const *mode );
  * increment `*ppelt` to the next element.  If \a gets is NULL, it is assumed
  * that \a elt points to the first element of an array of `char*` and that the
  * array ends with NULL.
+ *
+ * @warning The pointer returned by \a gets for a given element _must_ remain
+ * valid at least until after the _next_ call to fprint_list(), that is upon
+ * return, the previously returned string pointer must still be valid also.
  */
 void fprint_list( FILE *out, void const *elt,
                   char const* (*gets)( void const **ppelt ) );
