@@ -519,8 +519,8 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
         "\"%s\": ambiguous set option; could be ", orig_name
       );
       fprint_list( stderr, found_opt_list.head, &slist_set_option_gets );
-      slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
       EPUTC( '\n' );
+      slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
       return false;
   } // switch
 
