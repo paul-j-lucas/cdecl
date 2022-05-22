@@ -127,42 +127,44 @@ static inline char const* maybe_no( bool enabled ) {
 
 /**
  * Prints the current option settings.
+ *
+ * @param out `FILE` to print to.
  */
-static void print_options( void ) {
-  FPRINTF( cdecl_fout, "  %salt-tokens\n", maybe_no( opt_alt_tokens ) );
+static void print_options( FILE *out ) {
+  FPRINTF( out, "  %salt-tokens\n", maybe_no( opt_alt_tokens ) );
 #ifdef YYDEBUG
-  FPRINTF( cdecl_fout, "  %sbison-debug\n", maybe_no( opt_bison_debug ) );
+  FPRINTF( out, "  %sbison-debug\n", maybe_no( opt_bison_debug ) );
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-  FPRINTF( cdecl_fout, "  %sdebug\n", maybe_no( opt_cdecl_debug ) );
+  FPRINTF( out, "  %sdebug\n", maybe_no( opt_cdecl_debug ) );
 #endif /* ENABLE_CDECL_DEBUG */
-  FPRINTF( cdecl_fout, "  %seast-const\n", maybe_no( opt_east_const ) );
-  FPRINTF( cdecl_fout, "  %sexplain-by-default\n", maybe_no( opt_explain ) );
+  FPRINTF( out, "  %seast-const\n", maybe_no( opt_east_const ) );
+  FPRINTF( out, "  %sexplain-by-default\n", maybe_no( opt_explain ) );
 
   if ( opt_explicit_ecsu != TB_NONE ) {
-    FPUTS( "    explicit-ecsu=", cdecl_fout );
-    print_explicit_ecsu( cdecl_fout );
-    FPUTC( '\n', cdecl_fout );
+    FPUTS( "    explicit-ecsu=", out );
+    print_explicit_ecsu( out );
+    FPUTC( '\n', out );
   } else {
-    FPUTS( "  noexplicit-ecsu\n", cdecl_fout );
+    FPUTS( "  noexplicit-ecsu\n", out );
   }
 
   if ( any_explicit_int() ) {
-    FPUTS( "    explicit-int=", cdecl_fout );
-    print_explicit_int( cdecl_fout );
-    FPUTC( '\n', cdecl_fout );
+    FPUTS( "    explicit-int=", out );
+    print_explicit_int( out );
+    FPUTC( '\n', out );
   } else {
-    FPUTS( "  noexplicit-int\n", cdecl_fout );
+    FPUTS( "  noexplicit-int\n", out );
   }
 
 #ifdef ENABLE_FLEX_DEBUG
-  FPRINTF( cdecl_fout, "  %sflex-debug\n", maybe_no( opt_flex_debug ) );
+  FPRINTF( out, "  %sflex-debug\n", maybe_no( opt_flex_debug ) );
 #endif /* ENABLE_FLEX_DEBUG */
-  FPRINTF( cdecl_fout, " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
-  FPRINTF( cdecl_fout, "    lang=%s\n", c_lang_name( opt_lang ) );
-  FPRINTF( cdecl_fout, "  %sprompt\n", maybe_no( opt_prompt ) );
-  FPRINTF( cdecl_fout, "  %ssemicolon\n", maybe_no( opt_semicolon ) );
-  FPRINTF( cdecl_fout, "  %susing\n", maybe_no( opt_using ) );
+  FPRINTF( out, " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
+  FPRINTF( out, "    lang=%s\n", c_lang_name( opt_lang ) );
+  FPRINTF( out, "  %sprompt\n", maybe_no( opt_prompt ) );
+  FPRINTF( out, "  %ssemicolon\n", maybe_no( opt_semicolon ) );
+  FPRINTF( out, "  %susing\n", maybe_no( opt_using ) );
 }
 
 /**
@@ -480,7 +482,7 @@ static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
 bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc ) {
   if ( opt_name == NULL || strcmp( opt_name, "options" ) == 0 ) {
-    print_options();
+    print_options( cdecl_fout );
     return true;
   }
 
