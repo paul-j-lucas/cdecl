@@ -1,5 +1,7 @@
 2022-05-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, english.c: s/C_MAX(17)/KNR_FUNC_DEFINITION/
+   * c_ast_check.c, english.c: More use of OPT_LANG_IS().
    * NEWS, c_ast_check.c, test/Makefile.am, explain_nrfi_v-c17.out,
      explain_nrfi_v.out, declare_nrfi_v-01-c17.test,
      declare_nrfi_v-02-c17.test, declare_nrfi_v-03-c17.test,
