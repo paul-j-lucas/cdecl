@@ -318,7 +318,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_ALT_TOKENS                 LANG_MIN(C_95)
 
 /**
- * Languages Apple's `__block` keywords is supported in.
+ * Languages Apple's `__block` keyword is supported in.
  */
 #define LANG_APPLE_BLOCK                LANG_MIN(C_89)
 
@@ -338,7 +338,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_ATTRIBUTES                 LANG_C_CPP_MIN(2X,11)
 
 /**
- * Languages the `auto` keywords as a storage class is supported in.
+ * Languages the `auto` keyword as a storage class is supported in.
  *
  * @sa #LANG_AUTO_TYPE
  */
@@ -357,7 +357,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_AUTO_PARAMETER             LANG_CPP_MIN(20)
 
 /**
- * Languages the `auto` keywords for return types are supported in.
+ * Languages the `auto` keyword for return types are supported in.
  */
 #define LANG_AUTO_RETURN_TYPE           LANG_CPP_MIN(14)
 
