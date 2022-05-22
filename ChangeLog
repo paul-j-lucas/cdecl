@@ -1,5 +1,7 @@
 2022-05-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_typedef.c, c_typedef.h, parser.y: Added "is_" prefix to some bool
+     variables.
    * c_ast_check.c, english.c: s/C_MAX(17)/KNR_FUNC_DEFINITION/
    * c_ast_check.c, english.c: More use of OPT_LANG_IS().
    * NEWS, c_ast_check.c, test/Makefile.am, explain_nrfi_v-c17.out,
