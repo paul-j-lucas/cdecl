@@ -959,7 +959,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 
     case 2:                             // main(int, char *argv[])
     case 3:                             // main(int, char *argv[], char *envp[])
-      if ( opt_lang > LANG_C_KNR ) {
+      if ( OPT_LANG_IS( PROTOTYPES ) ) {
         c_param_t const *param = c_ast_params( ast );
         param_ast = c_param_ast( param );
         if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
@@ -2412,7 +2412,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
     case K_TYPEDEF:
-      if ( c_ast_is_register( ast ) && opt_lang >= LANG_CPP_11 ) {
+      if ( c_ast_is_register( ast ) && OPT_LANG_IS( MIN(CPP_11) ) ) {
         print_warning( &ast->loc,
           "\"register\" is deprecated%s\n",
           C_LANG_WHICH( MAX(CPP_03) )
