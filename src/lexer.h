@@ -57,18 +57,21 @@
 /** For \ref lexer_find, look-up cdecl keywords. */
 #define LEXER_FIND_CDECL_KEYWORDS (1u << 1)
 
-/** For \ref lexer_find, look-up `typedef`s. */
-#define LEXER_FIND_TYPEDEFS       (1u << 2)
+/** For \ref lexer_find, look-up type names. */
+#define LEXER_FIND_TYPES          (1u << 2)
 
 // extern variables
 
 /**
  * The bitwise-or of what to look up.
+ * Defaults to #LEXER_FIND_ANY, but #LEXER_FIND_C_KEYWORDS,
+ * #LEXER_FIND_CDECL_KEYWORDS, or #LEXER_FIND_TYPES can be turned off to find
+ * all _but_ that.
  *
  * @sa #LEXER_FIND_ANY
  * @sa #LEXER_FIND_C_KEYWORDS
  * @sa #LEXER_FIND_CDECL_KEYWORDS
- * @sa #LEXER_FIND_TYPEDEFS
+ * @sa #LEXER_FIND_TYPES
  */
 extern unsigned         lexer_find;
 

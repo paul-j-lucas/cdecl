@@ -465,7 +465,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                     return Y_CONSTRUCTOR_SNAME;
                   }
 
-                  if ( (lexer_find & LEXER_FIND_TYPEDEFS) != 0 ) {
+                  if ( (lexer_find & LEXER_FIND_TYPES) != 0 ) {
                     //
                     // 2. See if it's a typedef'd type.
                     //
@@ -541,7 +541,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   }
                 }
 
-                if ( (lexer_find & LEXER_FIND_TYPEDEFS) != 0 ) {
+                if ( (lexer_find & LEXER_FIND_TYPES) != 0 ) {
                   //
                   // 2. See if it's a typedef'd type.
                   //

@@ -5180,9 +5180,9 @@ type_modifier_c_type
       // see the comment in type_modifier_base_type about "register").
       //
       if ( $$.stids == TS_REGISTER )
-        lexer_find |= LEXER_FIND_TYPEDEFS;
+        lexer_find |= LEXER_FIND_TYPES;
       else
-        lexer_find &= ~LEXER_FIND_TYPEDEFS;
+        lexer_find &= ~LEXER_FIND_TYPES;
     }
   | type_qualifier_c_stid         { $$ = C_TYPE_LIT_S( $1 ); }
   | storage_class_c_type
