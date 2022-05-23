@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.16
 
+** `help options` types
+Help for types was added to options help.
+
 ** `_Noreturn` deprecated
 `_Noreturn` is now deprecated in C2X.
 
