@@ -140,11 +140,11 @@ bool parse_explicit_ecsu( char const *ecsu_format );
  *
  * @param ei_format The null-terminated explicit `int` format string (case
  * insensitive) to parse.  Valid formats are:
- *      Format            | Meaning
- *      ------------------|----------------------------
- *         `i`            | All signed integer types.
- *      `u`               | All unsigned integer types.
- *      [`u`]{`isl`[`l`]} | Possibly `unsigned` `int`, `short`, `long`, or `long long`.
+ *      Format                    | Meaning
+ *      --------------------------|----------------------------
+ *         `i`                    | All signed integer types.
+ *      `u`                       | All unsigned integer types.
+ *      [`u`]{`i`\|`s`\|`l`[`l`]} | Possibly `unsigned` `int`, `short`, `long`, or `long long`.
  * Multiple formats may be given, one immediately after the other, e.g., `usl`
  * means `unsigned short` and `long`.  Parsing is greedy so commas may be used
  * to separate formats.  For example, `ulll` is parsed as `unsigned long long`
