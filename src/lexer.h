@@ -51,13 +51,13 @@
 /** For \ref lexer_find, look-up everything (the default). */
 #define LEXER_FIND_ALL            (~0u)
 
-/** For \ref lexer_find, also look-up C/C++ keywords. */
+/** For \ref lexer_find, look-up C/C++ keywords. */
 #define LEXER_FIND_C_KEYWORDS     (1u << 0)
 
-/** For \ref lexer_find, also look-up cdecl keywords. */
+/** For \ref lexer_find, look-up cdecl keywords. */
 #define LEXER_FIND_CDECL_KEYWORDS (1u << 1)
 
-/** For \ref lexer_find, also look-up `typedef`s. */
+/** For \ref lexer_find, look-up `typedef`s. */
 #define LEXER_FIND_TYPEDEFS       (1u << 2)
 
 // extern variables
