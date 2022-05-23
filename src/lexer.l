@@ -126,7 +126,7 @@
 static char const lexer_token_init_buf; ///< So lexer_token is never NULL.
 
 // extern variables
-unsigned          lexer_find = LEXER_FIND_ALL;
+unsigned          lexer_find = LEXER_FIND_ANY;
 c_keyword_ctx_t   lexer_keyword_ctx;
 
 // A separate pointer for the current token allows it:
@@ -947,7 +947,7 @@ void lexer_reset( bool hard_reset ) {
   BEGIN( INITIAL );
   digraph_warned = trigraph_warned = false;
   input_len = input_sent = 0;
-  lexer_find = LEXER_FIND_ALL;
+  lexer_find = LEXER_FIND_ANY;
   lexer_keyword_ctx = C_KW_CTX_DEFAULT;
   newline();
   strbuf_reset( &str_lit_buf );

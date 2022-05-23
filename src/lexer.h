@@ -49,7 +49,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /** For \ref lexer_find, look-up everything (the default). */
-#define LEXER_FIND_ALL            (~0u)
+#define LEXER_FIND_ANY            (~0u)
 
 /** For \ref lexer_find, look-up C/C++ keywords. */
 #define LEXER_FIND_C_KEYWORDS     (1u << 0)
@@ -65,7 +65,7 @@
 /**
  * The bitwise-or of what to look up.
  *
- * @sa #LEXER_FIND_ALL
+ * @sa #LEXER_FIND_ANY
  * @sa #LEXER_FIND_C_KEYWORDS
  * @sa #LEXER_FIND_CDECL_KEYWORDS
  * @sa #LEXER_FIND_TYPEDEFS
