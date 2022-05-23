@@ -955,8 +955,7 @@ static int c_typedef_cmp( void const *i_data, void const *j_data ) {
 PJL_WARN_UNUSED_RESULT
 static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
   assert( ast != NULL );
-  assert( gib_flags == C_GIB_NONE ||
-          (gib_flags & (C_GIB_TYPEDEF | C_GIB_USING)) != 0 );
+  assert( (gib_flags & (C_GIB_TYPEDEF | C_GIB_USING)) == gib_flags );
 
   c_typedef_t *const tdef = MALLOC( c_typedef_t, 1 );
   tdef->ast = ast;
