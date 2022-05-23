@@ -1,5 +1,13 @@
+2022-05-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Simplification in type_modifier_c_type re: LEXER_FIND_TYPES.
+   * lexer.h, lexer.l, parser.y: s/LEXER_FIND_TYPEDEFS/LEXER_FIND_TYPES/
+   * lexer.h, lexer.l: s/LEXER_FIND_ALL/LEXER_FIND_ANY/
+
 2022-05-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, help.c, help_options.out: Help for options types was added.
+   * util.c: Simlification.
    * print.c: Now incrementing *ppelt only if dym->token != NULL.
    * print.c, util.c: Renaming.
    * set_options.c: print_options() now takes FILE*.
