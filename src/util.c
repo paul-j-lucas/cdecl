@@ -288,16 +288,25 @@ error:
 
 char const* home_dir( void ) {
   static char const *home;
-  if ( home == NULL ) {
+  static bool initialized;
+
+  if ( !initialized ) {
     home = getenv( "HOME" );
+    if ( home != NULL && home[0] == '\0' )
+      home = NULL;
 #if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
     if ( home == NULL ) {
       struct passwd *const pw = getpwuid( geteuid() );
-      if ( pw != NULL )
+      if ( pw != NULL ) {
         home = pw->pw_dir;
+        if ( home != NULL && home[0] == '\0' )
+          home = NULL;
+      }
     }
 #endif /* HAVE_GETEUID && && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR */
+    initialized = true;
   }
+
   return home;
 }
 
