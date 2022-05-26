@@ -1,5 +1,6 @@
 2022-05-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.c: Now defensively checking "home" for empty string.
    * c_ast.c, c_ast_check.c, c_ast_util.c, c_kind.c, c_lang.c, c_lang.h,
      c_type.c, c_typedef.c, english.c, gibberish.c, parser.y, util.h: Reworked
      bit functions and tightened asserts.
