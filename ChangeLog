@@ -1,5 +1,12 @@
+2022-05-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast_check.c, c_ast_util.c, c_kind.c, c_lang.c, c_lang.h,
+     c_type.c, c_typedef.c, english.c, gibberish.c, parser.y, util.h: Reworked
+     bit functions and tightened asserts.
+
 2022-05-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_typedef.c: Simplified assert().
    * parser.y: Simplification in type_modifier_c_type re: LEXER_FIND_TYPES.
    * lexer.h, lexer.l, parser.y: s/LEXER_FIND_TYPEDEFS/LEXER_FIND_TYPES/
    * lexer.h, lexer.l: s/LEXER_FIND_ALL/LEXER_FIND_ANY/
