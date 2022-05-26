@@ -358,7 +358,9 @@ static bool set_lang_impl( char const *name ) {
   // Every time the language changes, re-set language-specific options so the
   // user is re-warned if the option is not supported in the current language.
   //
-  static set_option_fn_args_t const args = { true, NULL, NULL, NULL };
+  static set_option_fn_args_t const args = {
+    /*opt_enabled=*/true, NULL, NULL, NULL
+  };
   if ( opt_alt_tokens )
     PJL_IGNORE_RV( set_alt_tokens( &args ) );
   switch ( opt_graph ) {
