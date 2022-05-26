@@ -571,7 +571,7 @@ c_tid_check_legal( c_tid_t tids, c_type_info_t const type_infos[const],
  */
 PJL_WARN_UNUSED_RESULT
 static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
-  assert( exactly_one_bit_set( c_tid_no_tpid( tid ) ) );
+  assert( is_1_bit( c_tid_no_tpid( tid ) ) );
 
   switch ( c_tid_tpid( tid ) ) {
     case C_TPID_NONE:
@@ -826,7 +826,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     // after.  Hence, by the time we get here, at most one bit should be set.
     //
     assert(
-      at_most_one_bit_set(
+      is_01_bit(
         c_tid_no_tpid( stids & (TS_VIRTUAL | TS_OVERRIDE | TS_FINAL) )
       )
     );

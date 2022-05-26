@@ -542,19 +542,6 @@ _GL_INLINE_HEADER_BEGIN
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Checks whether at most 1 bit is set in the given integer.
- *
- * @param n The number to check.
- * @return Returns `true` only if at most 1 bit is set.
- *
- * @sa exactly_one_bit_set()
- */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
-bool at_most_one_bit_set( uint64_t n ) {
-  return (n & (n - 1)) == 0;
-}
-
-/**
  * Extracts the base portion of a path-name.
  * Unlike **basename**(3):
  *  + Trailing `/` characters are not deleted.
@@ -623,19 +610,6 @@ char* check_strdup_tolower( char const *s );
  */
 PJL_WARN_UNUSED_RESULT
 char* check_strndup( char const *s, size_t n );
-
-/**
- * Checks whether exactly 1 bit is set in the given integer.
- *
- * @param n The number to check.
- * @return Returns `true` only if exactly 1 bit is set.
- *
- * @sa at_most_one_bit_set()
- */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
-bool exactly_one_bit_set( uint64_t n ) {
-  return n != 0 && at_most_one_bit_set( n );
-}
 
 /**
  * Checks \a flag: if `false`, sets it to `true`.
@@ -744,6 +718,144 @@ PJL_WARN_UNUSED_RESULT
 char const* home_dir( void );
 
 /**
+ * Checks whether \a n has either 0 or 1 bits set.
+ *
+ * @param n The number to check.
+ * @return Returns `true` only if \a n has either 0 or 1 bits set.
+ *
+ * @sa is_01_bit_only_in_set()
+ * @sa is_0n_bit_only_in_set()
+ * @sa is_1_bit()
+ * @sa is_1_bit_in_set()
+ * @sa is_1_bit_only_in_set()
+ * @sa is_1n_bit_only_in_set()
+ */
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+bool is_01_bit( uint64_t n ) {
+  return (n & (n - 1)) == 0;
+}
+
+/**
+ * Checks whether there are 0 or more bits set in \a n that are only among the
+ * bits set in \a set.
+ *
+ * @param n The bits to check.
+ * @param set The bits to check against.
+ * @return Returns `true` only if there are 0 or more bits set in \a n that are
+ * only among the bits set in \a set.
+ *
+ * @sa is_01_bit()
+ * @sa is_01_bit_only_in_set()
+ * @sa is_1_bit()
+ * @sa is_1_bit_in_set()
+ * @sa is_1_bit_only_in_set()
+ * @sa is_1n_bit_only_in_set()
+ */
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+bool is_0n_bit_only_in_set( uint64_t n, uint64_t set ) {
+  return (n & set) == n;
+}
+
+/**
+ * Checks whether \a n has exactly 1 bit is set.
+ *
+ * @param n The number to check.
+ * @return Returns `true` only if \a n has exactly 1 bit set.
+ *
+ * @sa is_01_bit()
+ * @sa is_01_bit_only_in_set()
+ * @sa is_0n_bit_only_in_set()
+ * @sa is_1_bit_in_set()
+ * @sa is_1_bit_only_in_set()
+ * @sa is_1n_bit_only_in_set()
+ */
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+bool is_1_bit( uint64_t n ) {
+  return n != 0 && is_01_bit( n );
+}
+
+/**
+ * Checks whether \a n has exactly 1 bit set in \a set.
+ *
+ * @param n The number to check.
+ * @param set The set of bits to check against.
+ * @return Returns `true` only if \a n has exactly 1 bit set in \a set.
+ *
+ * @note There may be other bits set in \a n that are not in \a set.
+ *
+ * @sa is_01_bit()
+ * @sa is_01_bit_only_in_set()
+ * @sa is_0n_bit_only_in_set()
+ * @sa is_1_bit()
+ * @sa is_1_bit_only_in_set()
+ * @sa is_1n_bit_only_in_set()
+ */
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
+  return is_1_bit( n & set );
+}
+
+/**
+ * Checks whether \a n has exactly 1 bit set only in \a set.
+ *
+ * @param n The number to check.
+ * @param set The set of bits to check against.
+ * @return Returns `true` only if \a n has exactly 1 bit set only in \a set.
+ *
+ * @sa is_01_bit()
+ * @sa is_01_bit_only_in_set()
+ * @sa is_0n_bit_only_in_set()
+ * @sa is_1_bit()
+ * @sa is_1_bit_in_set()
+ * @sa is_1n_bit_only_in_set()
+ */
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+bool is_1_bit_only_in_set( uint64_t n, uint64_t set ) {
+  return is_1_bit( n ) && (n & set) != 0;
+}
+
+/**
+ * Checks whether \a n is zero or has exactly 1 bit set only in \a set.
+ *
+ * @param n The bits to check.
+ * @param set The bits to check against.
+ * @return Returns `true` only if either \a n is zero or has exactly 1 bit set
+ * only in \a set.
+ *
+ * @sa is_01_bit()
+ * @sa is_0n_bit_only_in_set()
+ * @sa is_1_bit()
+ * @sa is_1_bit_in_set()
+ * @sa is_1_bit_only_in_set()
+ * @sa is_1n_bit_only_in_set()
+ */
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+bool is_01_bit_only_in_set( uint64_t n, uint64_t set ) {
+  return n == 0 || is_1_bit_only_in_set( n, set );
+}
+
+/**
+ * Checks whether \a n has one or more bits set that are only among the bits
+ * set in \a set.
+ *
+ * @param n The bits to check.
+ * @param set The bits to check against.
+ * @return Returns `true` only if \a n has one or more bits set that are only
+ * among the bits set in \a set.
+ *
+ * @sa is_01_bit()
+ * @sa is_01_bit_only_in_set()
+ * @sa is_0n_bit_only_in_set()
+ * @sa is_1_bit()
+ * @sa is_1_bit_in_set()
+ * @sa is_1_bit_only_in_set()
+ */
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
+  return n != 0 && is_0n_bit_only_in_set( n, set );
+}
+
+/**
  * Checks whether the given file descriptor refers to a regular file.
  *
  * @param fd The file descriptor to check.
@@ -787,21 +899,6 @@ uint32_t ls_bit1_32( uint32_t n );
  */
 PJL_WARN_UNUSED_RESULT
 uint32_t ms_bit1_32( uint32_t n );
-
-/**
- * Checks whether the bits set in \a bits are only among the bits set in \a
- * allowed_bits, i.e., there is no bit set in \a bits that is not also set in
- * \a allowed_bits.
- *
- * @param bits The bits to check.
- * @param allowed_bits The bits to check against.
- * @return Returns `true` only if \a bits is not zero and the bits set are only
- * among the bits set in \a allowed_bits.
- */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
-bool only_bits_set( uint64_t bits, uint64_t allowed_bits ) {
-  return bits != 0 && (bits & allowed_bits) == bits;
-}
 
 /**
  * Parses a C/C++ identifier.

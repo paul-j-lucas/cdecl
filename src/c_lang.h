@@ -808,7 +808,7 @@ struct c_lang_lit {
 C_LANG_H_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
   lang_id &= ~LANGX_MASK;
-  assert( exactly_one_bit_set( lang_id ) );
+  assert( is_1_bit( lang_id ) );
   return BITS_GE( lang_id );
 }
 
@@ -922,7 +922,7 @@ char const* c_lang_name( c_lang_id_t lang_id );
 C_LANG_H_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
   lang_id &= ~LANGX_MASK;
-  assert( exactly_one_bit_set( lang_id ) );
+  assert( is_1_bit( lang_id ) );
   return BITS_GT( lang_id );
 }
 

@@ -43,7 +43,7 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 char const* c_kind_name( c_ast_kind_t kind ) {
-  assert( exactly_one_bit_set( kind ) );
+  assert( is_1_bit( kind ) );
 
   switch ( kind ) {
     case K_ARRAY              : return "array";

@@ -286,7 +286,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
         break;                          // LCOV_EXCL_LINE
       case C_ALIGNAS_EXPR: {
         unsigned const alignment = ast->align.as.expr;
-        if ( !at_most_one_bit_set( alignment ) ) {
+        if ( !is_01_bit( alignment ) ) {
           print_error( &ast->loc,
             "\"%u\": alignment must be a power of 2\n", alignment
           );
@@ -586,7 +586,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & (K_CONSTRUCTOR | K_DESTRUCTOR)) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_CONSTRUCTOR | K_DESTRUCTOR ) );
 
   bool const is_definition = c_sname_count( &ast->sname ) > 1;
 
@@ -727,7 +727,7 @@ static bool c_ast_check_errors( c_ast_t const *ast, unsigned flags ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
 
   if ( ast->kind == K_FUNCTION && c_ast_name_equal( ast, "main" ) &&
       ( //
@@ -1034,7 +1034,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     return c_ast_check_func_params_knr( ast );
 
   assert( ast != NULL );
-  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
   assert( OPT_LANG_IS( PROTOTYPES ) );
 
   c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
@@ -1190,7 +1190,7 @@ only_void:
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & (K_APPLE_BLOCK | K_FUNCTION)) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_APPLE_BLOCK | K_FUNCTION ) );
   assert( !OPT_LANG_IS( PROTOTYPES ) );
 
   FOREACH_AST_FUNC_PARAM( param, ast ) {
@@ -1226,7 +1226,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
 
   FOREACH_AST_FUNC_PARAM( param, ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
@@ -1807,7 +1807,7 @@ rel_2par: print_error( &ast->loc,
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_pointer( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & K_ANY_POINTER) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER ) );
 
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
   c_ast_t const *const raw_to_ast = c_ast_untypedef( to_ast );
@@ -1852,7 +1852,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_reference( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & K_ANY_REFERENCE) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_REFERENCE ) );
 
   if ( c_tid_is_any( ast->type.stids, TS_CV ) ) {
     c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
@@ -1890,7 +1890,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
 
   char const *const kind_name = c_kind_name( ast->kind );
   c_ast_t const *const ret_ast = ast->as.func.ret_ast;

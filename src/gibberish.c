@@ -502,7 +502,7 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
 static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( (ast->kind & (K_BUILTIN | K_TYPEDEF)) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_BUILTIN | K_TYPEDEF ) );
 
   if ( ast->as.builtin.bit_width > 0 )
     FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
@@ -744,7 +744,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
 static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( (ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER | K_ANY_REFERENCE ) );
 
   c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
 
@@ -931,7 +931,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
   assert( gout != NULL );
 
   if ( (flags & C_GIB_CAST) != 0 ) {
-    assert( only_bits_set( flags, C_GIB_CAST ) );
+    assert( flags == C_GIB_CAST );
     c_ast_cast_gibberish( ast, gout );
     return;
   }
@@ -999,8 +999,11 @@ char const* c_cast_gibberish( c_cast_kind_t kind ) {
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
                           FILE *gout ) {
   assert( tdef != NULL );
+  assert( is_1_bit_in_set( flags, C_GIB_TYPEDEF | C_GIB_USING ) );
   assert(
-    only_bits_set( flags, C_GIB_TYPEDEF | C_GIB_USING | C_GIB_FINAL_SEMI)
+    is_1n_bit_only_in_set(
+      flags, C_GIB_TYPEDEF | C_GIB_USING | C_GIB_FINAL_SEMI
+    )
   );
   assert( gout != NULL );
 

@@ -104,7 +104,7 @@ char const* c_lang_literal( c_lang_lit_t const *ll ) {
 }
 
 char const* c_lang_name( c_lang_id_t lang_id ) {
-  assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
+  assert( is_1_bit( lang_id & ~LANGX_MASK ) );
   switch ( lang_id ) {
     case LANG_NONE    : return "";
     case LANG_C_KNR   : return "K&RC";
@@ -146,7 +146,7 @@ c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids ) {
 
 void c_lang_set( c_lang_id_t lang_id ) {
   lang_id &= ~LANGX_MASK;
-  assert( exactly_one_bit_set( lang_id ) );
+  assert( is_1_bit( lang_id ) );
   opt_lang = lang_id;
   cdecl_prompt_init();                  // change prompt based on new language
 }
@@ -160,7 +160,7 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
   strbuf_reset( &sbuf );
   c_lang_id_t which_lang_id;
 
-  if ( exactly_one_bit_set( lang_ids ) ) {
+  if ( is_1_bit( lang_ids ) ) {
     if ( opt_lang == lang_ids )
       return "";
     strbuf_putsn( &sbuf, " unless ", 8 );

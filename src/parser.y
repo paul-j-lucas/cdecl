@@ -3794,7 +3794,7 @@ func_decl_c_astp
 
           // + Or the existing type only has storage-class-like types that may
           //   be applied to constructors.
-          only_bits_set(
+          is_1n_bit_only_in_set(
             c_tid_no_tpid( type_ast->type.stids ),
             c_tid_no_tpid( TS_CONSTRUCTOR_DECL )
           )

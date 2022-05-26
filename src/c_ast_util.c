@@ -239,7 +239,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
                                      c_ast_t *ret_ast ) {
   assert( ast != NULL );
   assert( func_ast != NULL );
-  assert( (func_ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
+  assert( is_1_bit_only_in_set( func_ast->kind, K_ANY_FUNCTION_LIKE ) );
   assert( func_ast->as.func.ret_ast == NULL );
   assert( ret_ast != NULL );
 
@@ -561,7 +561,7 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
   if ( ast->kind != K_BUILTIN )
     return false;
   c_tid_t const ast_btids = c_tid_normalize( ast->type.btids );
-  return only_bits_set( ast_btids, btids );
+  return is_1n_bit_only_in_set( ast_btids, btids );
 }
 
 bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
