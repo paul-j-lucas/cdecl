@@ -421,7 +421,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param PTR The pointer to memory to reallocate.  It is set to the newly
  * reallocated memory.
- * @param TYPE The type to cast the pointer returned by **realloc**(3) to.
+ * @param TYPE The type of object to reallocate.
  * @param N The number of objects of \a TYPE to reallocate.
  *
  * @sa check_realloc()
