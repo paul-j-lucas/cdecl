@@ -588,13 +588,6 @@ use_help:
   if ( print_usage )
     usage( argc > 2 ? EX_USAGE : EX_OK );
 
-  if ( print_version ) {
-    if ( argc > 2 )                     // cdecl -v foo
-      usage( EX_USAGE );
-    puts( PACKAGE_STRING );
-    exit( EX_OK );
-  }
-
   if ( strcmp( fin_path, "-" ) != 0 &&
        (cdecl_fin = fopen( fin_path, "r" )) == NULL ) {
     FATAL_ERR( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
@@ -608,6 +601,13 @@ use_help:
     cdecl_fin = stdin;
   if ( cdecl_fout == NULL )
     cdecl_fout = stdout;
+
+  if ( print_version ) {
+    if ( argc > 2 )                     // cdecl -v foo
+      usage( EX_USAGE );
+    fprintf( cdecl_fout, "%s\n", PACKAGE_STRING );
+    exit( EX_OK );
+  }
 
   colorize = should_colorize( color_when );
   if ( colorize &&
