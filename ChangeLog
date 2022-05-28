@@ -1,3 +1,13 @@
+2022-05-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Now printing non-error usage message to cdecl_fout.
+   * cli_options.c: Whitespace.
+   * cli_options.c: Now printing the version to cdecl_fout.
+
+2022-05-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: home_dir() now checks for whitespace-only values.
+
 2022-05-26  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c: Now defensively checking "home" for empty string.
