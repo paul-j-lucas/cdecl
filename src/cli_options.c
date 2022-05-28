@@ -585,9 +585,6 @@ use_help:
     SOPT(TRIGRAPHS)
   );
 
-  if ( print_usage )
-    usage( argc > 2 ? EX_USAGE : EX_OK );
-
   if ( strcmp( fin_path, "-" ) != 0 &&
        (cdecl_fin = fopen( fin_path, "r" )) == NULL ) {
     FATAL_ERR( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
@@ -601,6 +598,9 @@ use_help:
     cdecl_fin = stdin;
   if ( cdecl_fout == NULL )
     cdecl_fout = stdout;
+
+  if ( print_usage )
+    usage( argc > 2 ? EX_USAGE : EX_OK );
 
   if ( print_version ) {
     if ( argc > 2 )                     // cdecl -v foo
@@ -625,7 +625,7 @@ use_help:
  */
 noreturn
 static void usage( int status ) {
-  fprintf( status == EX_OK ? stdout : stderr,
+  fprintf( status == EX_OK ? cdecl_fout : stderr,
 "usage: %s [options] [command...]\n"
 "options:\n"
 "  --alt-tokens         (-%c) Print alternative tokens.\n"
