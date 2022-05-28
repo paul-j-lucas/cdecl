@@ -436,7 +436,7 @@ static void parse_options( int argc, char const *argv[] ) {
         }
         break;
       case COPT(FILE):
-        fin_path  = optarg;
+        fin_path = optarg;
         break;
 #ifdef ENABLE_FLEX_DEBUG
       case COPT(FLEX_DEBUG):
