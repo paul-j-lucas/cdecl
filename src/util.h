@@ -395,17 +395,6 @@ _GL_INLINE_HEADER_BEGIN
 #define NO_OP                     ((void)0)
 
 /**
- * Shorthand for printing a character to standard output.
- *
- * @param C The character to print.
- *
- * @sa #EPUTC()
- * @sa #FPUTS()
- * @sa #PUTS()
- */
-#define PUTC(C)                   FPUTC( (C), stdout )
-
-/**
  * Shorthand for printing a C string to standard output.
  *
  * @param S The C string to print.
