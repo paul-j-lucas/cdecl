@@ -49,39 +49,41 @@
 #include <unistd.h>                     /* for isatty(3) */
 
 // in ascending option character ASCII order
-#define SOPT_DIGRAPHS       2
-#define SOPT_TRIGRAPHS      3
-#define SOPT_ALT_TOKENS     a
+#define OPT_DIGRAPHS        2
+#define OPT_TRIGRAPHS       3
+#define OPT_ALT_TOKENS      a
 #ifdef YYDEBUG
-#define SOPT_BISON_DEBUG    B
+#define OPT_BISON_DEBUG     B
 #endif /* YYDEBUG */
-#define SOPT_CONFIG         c
-#define SOPT_NO_CONFIG      C
+#define OPT_CONFIG          c
+#define OPT_NO_CONFIG       C
 #ifdef ENABLE_CDECL_DEBUG
-#define SOPT_CDECL_DEBUG    d
+#define OPT_CDECL_DEBUG     d
 #endif /* ENABLE_CDECL_DEBUG */
-#define SOPT_EXPLAIN        e
-#define SOPT_EAST_CONST     E
-#define SOPT_FILE           f
+#define OPT_EXPLAIN         e
+#define OPT_EAST_CONST      E
+#define OPT_FILE            f
 #ifdef ENABLE_FLEX_DEBUG
-#define SOPT_FLEX_DEBUG     F
+#define OPT_FLEX_DEBUG      F
 #endif /* ENABLE_FLEX_DEBUG */
-#define SOPT_HELP           h
-#define SOPT_INTERACTIVE    i
-#define SOPT_EXPLICIT_INT   I
-#define SOPT_COLOR          k
-#define SOPT_OUTPUT         o
-#define SOPT_NO_PROMPT      p
-#define SOPT_NO_SEMICOLON   s
-#define SOPT_EXPLICIT_ECSU  S
-#define SOPT_NO_TYPEDEFS    t
-#define SOPT_NO_USING       u
-#define SOPT_VERSION        v
-#define SOPT_LANGUAGE       x
+#define OPT_HELP            h
+#define OPT_INTERACTIVE     i
+#define OPT_EXPLICIT_INT    I
+#define OPT_COLOR           k
+#define OPT_OUTPUT          o
+#define OPT_NO_PROMPT       p
+#define OPT_NO_SEMICOLON    s
+#define OPT_EXPLICIT_ECSU   S
+#define OPT_NO_TYPEDEFS     t
+#define OPT_NO_USING        u
+#define OPT_VERSION         v
+#define OPT_LANGUAGE        x
 
-#define COPT(X)                   CHARIFY(SOPT_##X)
-#define SOPT_HELPER(X)            STRINGIFY(X)
-#define SOPT(X)                   SOPT_HELPER(SOPT_##X)
+/// Command-line option character as a character literal.
+#define COPT(X)                   CHARIFY(OPT_##X)
+
+/// Command-line option character as a single-character string literal.
+#define SOPT(X)                   STRINGIFY(OPT_##X)
 
 /// @endcond
 
