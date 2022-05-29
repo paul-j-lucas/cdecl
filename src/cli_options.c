@@ -229,6 +229,24 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
 }
 
 /**
+ * Prints that \a value is an invalid value for \a opt to standard error and
+ * exits.
+ *
+ * @param opt The option that has the invalid \a value.
+ * @param value The invalid value for \a opt.
+ * @param must_be What \a opt must be instead.
+ */
+noreturn
+static void invalid_opt_value( char opt, char const *value,
+                               char const *must_be ) {
+  strbuf_t opt_sbuf;
+  FATAL_ERR( EX_USAGE,
+    "\"%s\": invalid value for %s; must be %s\n",
+    value, opt_format( opt, &opt_sbuf ), must_be
+  );
+}
+
+/**
  * Checks whether we're c++decl.
  *
  * @param prog_name The name of the program.
@@ -328,12 +346,7 @@ static color_when_t parse_color_when( char const *when ) {
   bool comma = false;
   for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m )
     strbuf_sepsn_puts( &when_sbuf, ", ", 2, &comma, m->map_when );
-
-  strbuf_t opt_sbuf;
-  FATAL_ERR( EX_USAGE,
-    "\"%s\": invalid value for %s; must be one of: %s\n",
-    when, opt_format( COPT(COLOR), &opt_sbuf ), when_sbuf.str
-  );
+  invalid_opt_value( COPT(COLOR), when, when_sbuf.str );
 }
 
 /**
@@ -357,12 +370,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
     if ( !lang->is_alias )
       strbuf_sepsn_puts( &langs_sbuf, ", ", 2, &comma, lang->name );
   } // for
-
-  strbuf_t opt_sbuf;
-  FATAL_ERR( EX_USAGE,
-    "\"%s\": invalid value for %s; must be one of: %s\n",
-    lang_name, opt_format( COPT(LANGUAGE), &opt_sbuf ), langs_sbuf.str
-  );
+  invalid_opt_value( COPT(LANGUAGE), lang_name, langs_sbuf.str );
 }
 
 /**
@@ -418,24 +426,16 @@ static void parse_options( int argc, char const *argv[] ) {
         opt_explain = true;
         break;
       case COPT(EXPLICIT_ECSU):
-        if ( !parse_explicit_ecsu( optarg ) ) {
-          strbuf_t opt_sbuf;
-          FATAL_ERR( EX_USAGE,
-            "\"%s\": invalid value for %s;"
-            " must be only a combination of: e, c, s, or u\n",
-            optarg, opt_format( COPT(EXPLICIT_ECSU), &opt_sbuf )
+        if ( !parse_explicit_ecsu( optarg ) )
+          invalid_opt_value(
+            COPT(EXPLICIT_ECSU), optarg, "a combination of e, c, s, or u"
           );
-        }
         break;
       case COPT(EXPLICIT_INT):
-        if ( !parse_explicit_int( optarg ) ) {
-          strbuf_t opt_sbuf;
-          FATAL_ERR( EX_USAGE,
-            "\"%s\": invalid value for %s;"
-            " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
-            optarg, opt_format( COPT(EXPLICIT_INT), &opt_sbuf )
+        if ( !parse_explicit_int( optarg ) )
+          invalid_opt_value(
+            COPT(EXPLICIT_INT), optarg, "i, u, or {[u]{isl[l]}[,]}+"
           );
-        }
         break;
       case COPT(FILE):
         fin_path = optarg;

@@ -1,1 +1,1 @@
-cdecl: "x": invalid value for --explicit-ecsu/-S; must be only a combination of: e, c, s, or u
+cdecl: "x": invalid value for --explicit-ecsu/-S; must be a combination of e, c, s, or u

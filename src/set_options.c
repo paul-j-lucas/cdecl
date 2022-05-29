@@ -268,8 +268,8 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
     ok = parse_explicit_ecsu( args->opt_value );
     if ( !ok ) {
       print_error( args->opt_value_loc,
-        "\"%s\": invalid explicit-ecsu value;"
-        " must be only a combination of: e, c, s, or u\n",
+        "\"%s\": invalid value for explicit-ecsu;"
+        " must be a combination of e, c, s, or u\n",
         args->opt_value
       );
     }
@@ -298,8 +298,8 @@ static bool set_explicit_int( set_option_fn_args_t const *args ) {
     ok = parse_explicit_int( args->opt_value );
     if ( !ok ) {
       print_error( args->opt_value_loc,
-        "\"%s\": invalid explicit-int value;"
-        " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
+        "\"%s\": invalid value for explicit-int;"
+        " must be i, u, or {[u]{isl[l]}[,]}+\n",
         args->opt_value
       );
     }
