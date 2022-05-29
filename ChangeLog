@@ -1,5 +1,6 @@
 2022-05-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: Removed PUTC() -- not used.
    * cli_options.c: Now printing non-error usage message to cdecl_fout.
    * cli_options.c: Whitespace.
    * cli_options.c: Now printing the version to cdecl_fout.
