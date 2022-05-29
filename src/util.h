@@ -215,7 +215,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #REINTERPRET_CAST()
  * @sa #STATIC_CAST()
  */
-#define CONST_CAST(T,EXPR)        ((T)(uint64_t)(EXPR))
+#define CONST_CAST(T,EXPR)        ((T)(EXPR))
 
 /**
  * Shorthand for printing to standard error.
