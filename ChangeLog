@@ -1,5 +1,6 @@
 2022-05-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: Removed (uint64_t) from CONST_CAST.
    * cli_options.c, set_options.c, cdecl-Ix.out, cdecl-Sx.out, cdecl-kxxx.out,
      cdecl-xx.out, set_explicit-ecsu=x.out, set_explicit-int=x.out: Normalized
      printing of invalid value for option.
