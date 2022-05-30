@@ -201,13 +201,6 @@ bool should_colorize( color_when_t when ) {
     default          : break;
   } // switch
 
-  //
-  // If TERM is unset, empty, or "dumb", color probably won't work.
-  //
-  char const *const term = getenv( "TERM" );
-  if ( term == NULL || *term == '\0' || strcmp( term, "dumb" ) == 0 )
-    return false;
-
   int const fout_fd = fileno( cdecl_fout );
   if ( when == COLOR_ISATTY )           // emulate gcc's --color=auto
     return isatty( fout_fd );

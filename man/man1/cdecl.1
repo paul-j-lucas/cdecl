@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 13, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 30, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -275,10 +275,7 @@ Always colorize.
 .TP
 .BR auto " | " isatty " | " tty
 Colorize only when standard output is connected to a TTY
-(terminal)
-and the TERM environment variable
-is not empty and not equal to
-.BR dumb .
+(terminal).
 .TP
 .B never
 Never colorize.
@@ -287,10 +284,7 @@ Never colorize.
 Colorize only when
 .I not
 writing to a regular file
-(hence writing to a TTY or pipe)
-and the TERM environment variable
-is not empty and not equal to
-.BR dumb .
+(hence writing to a TTY or pipe).
 (Specifically,
 .BR fstat (3)
 is called on standard output:

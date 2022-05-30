@@ -12,6 +12,11 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.16
 
+** Color and `TERM`
+The `TERM` environment variable is no longer considered when determining
+whether color should be used in output.  Now, all that matters is whether the
+output stream is connected to a TTY.
+
 ** `help options` types
 Help for types was added to options help.
 
