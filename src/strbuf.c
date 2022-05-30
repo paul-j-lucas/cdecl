@@ -46,6 +46,7 @@
  * @param n The initial value.
  * @return Returns said power of 2.
  */
+PJL_WARN_UNUSED_RESULT
 static size_t next_pow_2( size_t n ) {
   if ( n == 0 )
     return 1;
