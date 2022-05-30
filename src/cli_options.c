@@ -706,7 +706,6 @@ void cli_options_init( int *pargc, char const **pargv[] ) {
   assert( pargc != NULL );
   assert( pargv != NULL );
 
-  me = base_name( (*pargv)[0] );
   opt_lang = is_cppdecl( me ) ? LANG_CPP_NEW : LANG_C_NEW;
 #ifdef ENABLE_FLEX_DEBUG
   //

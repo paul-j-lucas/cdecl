@@ -107,6 +107,7 @@ static bool is_command( char const*, cdecl_command_kind_t ),
  * @return Returns 0 on success, non-zero on failure.
  */
 int main( int argc, char const *argv[] ) {
+  me = base_name( argv[0] );
   perror_exit_if( atexit( &cdecl_cleanup ) != 0, EX_OSERR );
   cli_options_init( &argc, &argv );
   c_typedef_init();
