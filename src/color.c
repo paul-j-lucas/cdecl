@@ -41,7 +41,7 @@
 #include <unistd.h>                     /* for isatty() */
 
 //
-// Color capabilities.  Names containint Upper-case are unique to cdecl and
+// Color capabilities.  Names containing Upper-case are unique to cdecl and
 // upper-case to avoid conflict with gcc.
 //
 #define CAP_CARET             "caret"
