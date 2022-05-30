@@ -191,6 +191,7 @@ bool colors_parse( char const *capabilities ) {
       } // for
     } // for
   }
+
   return set_something;
 }
 
