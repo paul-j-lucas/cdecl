@@ -99,11 +99,11 @@ static void c_ast_cast_gibberish( c_ast_t const *ast, FILE *gout ) {
   if ( ast->cast_kind == C_CAST_C ) {
     FPUTC( '(', gout );
     c_ast_gibberish_impl( ast, C_GIB_CAST, /*printing_typedef=*/false, gout );
-    FPRINTF( cdecl_fout, ")%s\n", c_sname_full_name( &ast->sname ) );
+    FPRINTF( gout, ")%s\n", c_sname_full_name( &ast->sname ) );
   } else {
-    FPRINTF( cdecl_fout, "%s<", c_cast_gibberish( ast->cast_kind ) );
+    FPRINTF( gout, "%s<", c_cast_gibberish( ast->cast_kind ) );
     c_ast_gibberish_impl( ast, C_GIB_CAST, /*printing_typedef=*/false, gout );
-    FPRINTF( cdecl_fout, ">(%s)\n", c_sname_full_name( &ast->sname ) );
+    FPRINTF( gout, ">(%s)\n", c_sname_full_name( &ast->sname ) );
   }
 }
 
