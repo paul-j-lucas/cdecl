@@ -1,3 +1,8 @@
+2022-05-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, read_line.c, util.c, util.h: Added null_if_empty();
+     s/str_is_blank()/str_is_empty()/
+
 2022-05-30  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c, cli_options.c: Moved setting of "me" to main().
