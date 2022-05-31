@@ -936,11 +936,28 @@ void perror_exit_if( bool expr, int status ) {
  *
  * @param s The null-terminated string to check.
  * @return Returns `true` only if \a s is a blank line.
+ *
+ * @sa null_if_empty()
  */
 C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
-bool str_is_blank( char const *s ) {
+bool str_is_empty( char const *s ) {
   SKIP_WS( s );
   return *s == '\0';
+}
+
+/**
+ * Checks whether \a s is null, an empty string, or consists only of
+ * whitespace.
+ *
+ * @param s The null-terminated string to check.
+ * @return Returns \a s only if it's neither the empty string nor only
+ * whitespace; otherwise returns NULL.
+ *
+ * @sa str_is_empty()
+ */
+C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+char const* null_if_empty( char const *s ) {
+  return s != NULL && str_is_empty( s ) ? NULL : s;
 }
 
 /**

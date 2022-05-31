@@ -291,17 +291,12 @@ char const* home_dir( void ) {
   static bool initialized;
 
   if ( !initialized ) {
-    home = getenv( "HOME" );
-    if ( home != NULL && str_is_blank( home ) )
-      home = NULL;
+    home = null_if_empty( getenv( "HOME" ) );
 #if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
     if ( home == NULL ) {
       struct passwd *const pw = getpwuid( geteuid() );
-      if ( pw != NULL ) {
-        home = pw->pw_dir;
-        if ( home != NULL && str_is_blank( home ) )
-          home = NULL;
-      }
+      if ( pw != NULL )
+        home = null_if_empty( pw->pw_dir );
     }
 #endif /* HAVE_GETEUID && && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR */
     initialized = true;

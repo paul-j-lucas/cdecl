@@ -86,7 +86,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
       return false;
     }
 
-    if ( str_is_blank( line ) ) {
+    if ( str_is_empty( line ) ) {
       if ( is_cont_line ) {
         //
         // If we've been accumulating continuation lines, a blank line ends it.

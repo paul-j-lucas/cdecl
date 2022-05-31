@@ -246,11 +246,8 @@ static int cdecl_parse_stdin( void ) {
  */
 static void conf_init( void ) {
   char const *conf_path = opt_conf_path;
-  if ( conf_path == NULL ) {
-    conf_path = getenv( "CDECLRC" );
-    if ( conf_path != NULL && conf_path[0] == '\0' )
-      conf_path = NULL;
-  }
+  if ( conf_path == NULL )
+    conf_path = null_if_empty( getenv( "CDECLRC" ) );
 
   strbuf_t sbuf;
   strbuf_init( &sbuf );
