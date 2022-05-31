@@ -1,5 +1,6 @@
 2022-05-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * print.c: Don't need assert here.
    * print.c: Now turning off only C_GIB_USING bit.
    * cdecl.c, read_line.c, util.c, util.h: Added null_if_empty();
      s/str_is_blank()/str_is_empty()/
