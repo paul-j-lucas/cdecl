@@ -455,12 +455,10 @@ void print_type( c_typedef_t const *tdef, FILE *tout ) {
   if ( tdef->gib_flags == C_GIB_NONE ) {
     c_typedef_english( tdef, tout );
   } else {
-    c_typedef_gibberish(
-      tdef,
-      opt_using && OPT_LANG_IS( USING_DECLARATION ) ?
-        tdef->gib_flags : C_GIB_TYPEDEF,
-      tout
-    );
+    assert( is_1_bit_in_set( tdef->gib_flags, C_GIB_TYPEDEF | C_GIB_USING ) );
+    unsigned const gib_flags = OPT_LANG_IS( USING_DECLARATION ) ?
+      tdef->gib_flags : (tdef->gib_flags & ~C_GIB_USING) | C_GIB_TYPEDEF;
+    c_typedef_gibberish( tdef, gib_flags, tout );
   }
   EPUTC( '\n' );
 }
