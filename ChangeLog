@@ -1,5 +1,13 @@
+2022-06-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, help.c, help_english-c++.out, help_english-c++03.out: Added
+     `explicit` to the help.
+   * NEWS, autocomplete.c: The `show` command now has command-specific
+     autocompletion.
+
 2022-05-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Added temporary variable.
    * print.c: Don't need assert here.
    * print.c: Now turning off only C_GIB_USING bit.
    * cdecl.c, read_line.c, util.c, util.h: Added null_if_empty();
