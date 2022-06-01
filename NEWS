@@ -20,6 +20,9 @@ output stream is connected to a TTY.
 ** `help options` types
 Help for types was added to options help.
 
+** `explicit` help
+The missing `explicit` was added to the help.
+
 ** `_Noreturn` deprecated
 `_Noreturn` is now deprecated in C2X.
 

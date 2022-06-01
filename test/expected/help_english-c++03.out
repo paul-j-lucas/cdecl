@@ -17,6 +17,6 @@ fn-qual: <cv-qual>
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-e: scope | class | struct | union | namespace
-store: auto | const | extern ["C" [linkage]] | friend | mutable |
-       static | typedef | [pure] virtual
+store: auto | const | explicit | extern ["C" [linkage]] | friend |
+       mutable | static | typedef | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

@@ -337,8 +337,8 @@ static void print_help_english( void ) {
       print_h( "|init" );
     if ( OPT_LANG_IS( CONSTEXPR ) )
       print_h( "]" );
-    print_h( " | extern [\"C\" [linkage]] | friend | mutable |\n" );
-    print_h( "       static" );
+    print_h( " | explicit | extern [\"C\" [linkage]] | friend |\n" );
+    print_h( "       mutable | static" );
     if ( OPT_LANG_IS( THREAD_LOCAL ) )
       print_h( " | thread_local" );
     print_h( " | typedef | [pure] virtual\n" );
