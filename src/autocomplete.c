@@ -395,6 +395,27 @@ static char* keyword_generator( char const *text, int state ) {
         set_options = init_set_options();
       command_keywords = set_options;
     }
+    else if ( command == L_SHOW ) {
+      static char const *const show_keywords[] = {
+        L_ALL,
+        L_ENGLISH,
+        L_PREDEFINED,
+        L_TYPEDEF,
+        L_USER,
+        NULL
+      };
+      static char const *const show_keywords_with_using[] = {
+        L_ALL,
+        L_ENGLISH,
+        L_PREDEFINED,
+        L_TYPEDEF,
+        L_USER,
+        L_USING,
+        NULL
+      };
+      command_keywords = OPT_LANG_IS( USING_DECLARATION ) ?
+        show_keywords_with_using : show_keywords;
+    }
     else {
       command_keywords = NULL;
     }

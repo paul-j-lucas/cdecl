@@ -27,6 +27,9 @@ Help for types was added to options help.
 Now printing types in error messages as they were originally defined (pseudo-
 English vs. gibberish) in more cases.
 
+** `show` autocompletion
+The `show` command now uses command-specific autocompletion.
+
 ** Types as objects, English edition
 Previously declared types in pseudo-Engilsh are now checked to ensure they're
 not being used as objects:
