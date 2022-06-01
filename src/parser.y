@@ -1957,7 +1957,8 @@ declare_command
         }
 
         FOREACH_SLIST_NODE( sname_node, &$2 ) {
-          c_sname_set( &decl_ast->sname, sname_node->data );
+          c_sname_t *const cur_sname = sname_node->data;
+          c_sname_set( &decl_ast->sname, cur_sname );
           bool const is_last_sname = sname_node->next == NULL;
           if ( is_last_sname && opt_semicolon )
             gib_flags |= C_GIB_FINAL_SEMI;
