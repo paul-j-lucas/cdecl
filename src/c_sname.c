@@ -87,15 +87,15 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
  *
  * @param s The string to parse.
  * @param sname The scoped name to parse into.
- * @param dtor `true` only if a destructor name, e.g., `S::T::~T`, is to be
+ * @param is_dtor `true` only if a destructor name, e.g., `S::T::~T`, is to be
  * parsed.
  * @return Returns `true` only if the scoped name was successfully parsed.
  */
-bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool dtor ) {
+bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
   assert( s != NULL );
   assert( sname != NULL );
 
-  bool parsed_tilde = !dtor;
+  bool parsed_tilde = !is_dtor;
   c_sname_t rv;
   c_sname_init( &rv );
 
@@ -108,7 +108,7 @@ bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool dtor ) {
     if ( k != NULL ) {
       FREE( name );
       // k->literal is set to L_* so == is OK
-      if ( dtor && k->literal == L_COMPL ) {
+      if ( is_dtor && k->literal == L_COMPL ) {
         char const *const t = s + strlen( L_COMPL );
         if ( isspace( *t ) ) {          // except treat "compl" as '~'
           s = t + 1;
@@ -128,7 +128,7 @@ bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool dtor ) {
       break;
     s = end + 2;
     SKIP_WS( s );
-    if ( dtor && *s == '~' ) {
+    if ( is_dtor && *s == '~' ) {
       ++s;
 tilde:
       SKIP_WS( s );
@@ -356,11 +356,11 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
 }
 
 bool c_sname_parse( char const *s, c_sname_t *sname ) {
-  return c_sname_parse_impl( s, sname, /*dtor=*/false );
+  return c_sname_parse_impl( s, sname, /*is_dtor=*/false );
 }
 
 bool c_sname_parse_dtor( char const *s, c_sname_t *sname ) {
-  return c_sname_parse_impl( s, sname, /*dtor=*/true );
+  return c_sname_parse_impl( s, sname, /*is_dtor=*/true );
 }
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {
