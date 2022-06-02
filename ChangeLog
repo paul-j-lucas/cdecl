@@ -1,3 +1,7 @@
+2022-06-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c: Reworked asserts.
+
 2022-06-01  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.1, help.c, help_english-c++.out, help_english-c++03.out: Added
