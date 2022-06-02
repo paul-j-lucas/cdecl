@@ -405,8 +405,9 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
 }
 
 void print_debug_file_line( char const *file, int line ) {
-  assert( file != NULL );
 #ifdef ENABLE_CDECL_DEBUG
+  assert( file != NULL );
+  assert( line > 0 );
   if ( opt_cdecl_debug )
     EPRINTF( "[%s:%d] ", file, line );
 #else
