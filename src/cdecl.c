@@ -131,9 +131,11 @@ static void cdecl_cleanup( void ) {
 
 /**
  * Parses \a argv to figure out what kind of arguments were given.
- * If there are:
+ * If:
  *
- *  + Zero arguments, parses stdin; else:
+ *  + There are zero arguments, parses stdin; else:
+ *  + The program's name is one of `cast`, `declare`, or `explain`, parses the
+ *    command line; else:
  *  + If the first argument is a cdecl command, parses the command line; else:
  *  + If \ref opt_explain is `true`, parses the command line; else:
  *  + Prints an error message.
