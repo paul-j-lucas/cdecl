@@ -399,23 +399,33 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
   );
 
   size_t const best_dist = dym_array->dam_lev_dist;
-  size_t const best_len = strlen( dym_array->token );
-
-  if ( is_similar_enough( best_dist, SIMILAR_ENOUGH_PERCENT, best_len ) ) {
-    // include all candidates that have the same distance
-    for ( dym = dym_array;
-          (++dym)->token != NULL && dym->dam_lev_dist == best_dist; )
-      ;
+  if ( best_dist == 0 ) {
     //
-    // Free tokens past the best ones and set the one past the last to NULL to
-    // mark the end.
+    // This means unknown_token was an exact match for a token which means we
+    // shouldn't suggest it for itself.
     //
-    dym_free_tokens( dym );
-    dym->token = NULL;
-
-    return dym_array;
+    goto none;
   }
 
+  size_t const best_len = strlen( dym_array->token );
+  if ( !is_similar_enough( best_dist, SIMILAR_ENOUGH_PERCENT, best_len ) )
+    goto none;
+
+  // include all candidates that have the same distance
+  for ( dym = dym_array;
+        (++dym)->token != NULL && dym->dam_lev_dist == best_dist; )
+    ;
+
+  //
+  // Free tokens past the best ones and set the one past the last to NULL to
+  // mark the end.
+  //
+  dym_free_tokens( dym );
+  dym->token = NULL;
+
+  return dym_array;
+
+none:
   dym_free( dym_array );
   return NULL;
 }
