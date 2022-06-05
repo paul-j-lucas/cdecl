@@ -92,8 +92,8 @@
 
 /**
  * Flag for c_ast_gibberish() to omit the type name when printing gibberish for
- * the _second_ and subsequent objects when printing multiple objects in the
- * same declaration.  For example, when printing:
+ * the _second_ and subsequent objects when printing multiple types or objects
+ * in the same declaration.  For example, when printing:
  *
  *      int *x, *y;
  *
