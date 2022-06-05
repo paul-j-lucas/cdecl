@@ -858,20 +858,31 @@ static void fl_keyword_expected( char const *file, int line,
                                  char const *keyword ) {
   assert( keyword != NULL );
 
+  dym_kind_t dym_kinds = DYM_NONE;
+
   char const *const error_token = printable_token();
-  if ( error_token != NULL && strcmp( error_token, keyword ) == 0 ) {
-    c_keyword_t const *const k =
-      c_keyword_find( keyword, LANG_ANY, C_KW_CTX_DEFAULT );
-    if ( k != NULL ) {
-      char const *const which_lang = c_lang_which( k->lang_ids );
-      if ( which_lang[0] != '\0' ) {
-        EPRINTF( ": \"%s\" not supported%s\n", keyword, which_lang );
-        return;
+  if ( error_token != NULL ) {
+    if ( strcmp( error_token, keyword ) == 0 ) {
+      //
+      // The error token is the keyword we expect which likely means it's not a
+      // C/C++ token until a later version of the current language.
+      //
+      c_keyword_t const *const k =
+        c_keyword_find( keyword, LANG_ANY, C_KW_CTX_DEFAULT );
+      if ( k != NULL ) {
+        char const *const which_lang = c_lang_which( k->lang_ids );
+        if ( which_lang[0] != '\0' ) {
+          EPRINTF( ": \"%s\" not supported%s\n", keyword, which_lang );
+          return;
+        }
       }
     }
+
+    dym_kinds = cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ?
+      DYM_CDECL_KEYWORDS : DYM_C_KEYWORDS;
   }
 
-  fl_elaborate_error( file, line, DYM_NONE, "\"%s\" expected", keyword );
+  fl_elaborate_error( file, line, dym_kinds, "\"%s\" expected", keyword );
 }
 
 /**

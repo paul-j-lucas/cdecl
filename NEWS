@@ -12,6 +12,15 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.16
 
+** Added suggestions
+Added suggestions to error messages in certain cases when a keyword is
+expected, for example:
+
+    cdecl> declare x as type poiner to int
+                             ^
+    19: syntax error: "poiner": "as" expected; did you mean "pointer"?
+
+
 ** Color and `TERM`
 The `TERM` environment variable is no longer considered when determining
 whether color should be used in output.  Now, all that matters is whether the
