@@ -1,3 +1,13 @@
+2022-06-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y: Added suggestions to error messages in certain cases when
+     a keyword is expected.
+   * did_you_mean.c: No longer offering a suggestion for an exact match.
+
+2022-06-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Reworked loop in is_command() to use `continue`.
+
 2022-06-02  Paul J. Lucas <paul@lucasmail.org>
 
    * print.c: Reworked asserts.
