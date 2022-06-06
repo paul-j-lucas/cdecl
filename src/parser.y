@@ -864,8 +864,9 @@ static void fl_keyword_expected( char const *file, int line,
   if ( error_token != NULL ) {
     if ( strcmp( error_token, keyword ) == 0 ) {
       //
-      // The error token is the keyword we expect which likely means it's not a
-      // C/C++ token until a later version of the current language.
+      // The error token is the expected keyword which means the lexer returned
+      // it as a name and not the token which likely means it's not a C/C++
+      // keyword until a later version of the current language.
       //
       c_keyword_t const *const k =
         c_keyword_find( keyword, LANG_ANY, C_KW_CTX_DEFAULT );
