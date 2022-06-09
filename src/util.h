@@ -207,12 +207,17 @@ _GL_INLINE_HEADER_BEGIN
 #define CHARIFY(X)                CHARIFY_IMPL(X)
 
 /**
- * Explicit C version of C++'s `const_cast`.
+ * C version of C++'s `const_cast`.
  *
  * @param T The type to cast to.
  * @param EXPR The expression to cast.
  *
- * @sa #REINTERPRET_CAST()
+ * @note This macro can't actually implement C++'s `const_cast` because there's
+ * no way to do it in C.  It serves merely as a visual cue for the type of cast
+ * meant.
+ *
+ * @sa #INTEGER_CAST()
+ * @sa #POINTER_CAST()
  * @sa #STATIC_CAST()
  */
 #define CONST_CAST(T,EXPR)        ((T)(EXPR))
@@ -236,7 +241,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPRINTF()
  * @sa #EPUTS()
  * @sa #FPUTC()
- * @sa #PUTC()
  */
 #define EPUTC(C)                  fputc( (C), stderr )
 
@@ -350,6 +354,22 @@ _GL_INLINE_HEADER_BEGIN
   perror_exit_if( fstat( (FD), (STAT) ) < 0, EX_IOERR )
 
 /**
+ * Cast either from or to an integral type &mdash; similar to C++'s
+ * `reinterpret_cast`, but for integers only.
+ *
+ * @param T The integral type to cast to.
+ * @param EXPR The expression to cast.
+ *
+ * @note In C++, this would be done via `reinterpret_cast`, but it's not
+ * possible to implement that in C that works for both pointers and integers.
+ *
+ * @sa #CONST_CAST()
+ * @sa #POINTER_CAST()
+ * @sa #STATIC_CAST()
+ */
+#define INTEGER_CAST(T,EXPR)      ((T)(uint64_t)(EXPR))
+
+/**
  * A special-case of #FATAL_ERR that additionally prints the file and line
  * where an internal error occurred.
  *
@@ -397,13 +417,29 @@ _GL_INLINE_HEADER_BEGIN
 #define NO_OP                     ((void)0)
 
 /**
+ * Cast either from or to a pointer type &mdash; similar to C++'s
+ * `reinterpret_cast`, but for integers only.
+ *
+ * @param T The type to cast to.
+ * @param EXPR The expression to cast.
+ *
+ * @note This macro silences a "cast to pointer from integer of different size"
+ * warning.  In C++, this would be done via `reinterpret_cast`, but it's not
+ * possible to implement that in C that works for both pointers and integers.
+ *
+ * @sa #CONST_CAST()
+ * @sa #INTEGER_CAST()
+ * @sa #STATIC_CAST()
+ */
+#define POINTER_CAST(T,EXPR)      ((T)(uintptr_t)(EXPR))
+
+/**
  * Shorthand for printing a C string to standard output.
  *
  * @param S The C string to print.
  *
  * @sa #EPUTS()
  * @sa #FPUTS()
- * @sa #PUTC()
  */
 #define PUTS(S)                   FPUTS( (S), stdout )
 
@@ -420,17 +456,6 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define REALLOC(PTR,TYPE,N) \
   ((PTR) = check_realloc( (PTR), sizeof(TYPE) * (N) ))
-
-/**
- * Explicit C version of C++'s `reinterpret_cast`.
- *
- * @param T The type to cast to.
- * @param EXPR The expression to cast.
- *
- * @sa #CONST_CAST()
- * @sa #STATIC_CAST()
- */
-#define REINTERPRET_CAST(T,EXPR)  ((T)(uint64_t)(EXPR))
 
 /**
  * Advances \a S over all \a CHARS.
@@ -454,13 +479,18 @@ _GL_INLINE_HEADER_BEGIN
 #define SKIP_WS(S)                SKIP_CHARS( (S), WS )
 
 /**
- * Explicit C version of C++'s `static_cast`.
+ * C version of C++'s `static_cast`.
  *
  * @param T The type to cast to.
  * @param EXPR The expression to cast.
  *
+ * @note This macro can't actually implement C++'s `static_cast` because
+ * there's no way to do it in C.  It serves merely as a visual cue for the type
+ * of cast meant.
+ *
  * @sa #CONST_CAST()
- * @sa #REINTERPRET_CAST()
+ * @sa #INTEGER_CAST()
+ * @sa #POINTER_CAST()
  */
 #define STATIC_CAST(T,EXPR)       ((T)(EXPR))
 

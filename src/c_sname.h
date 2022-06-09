@@ -79,7 +79,7 @@ _GL_INLINE_HEADER_BEGIN
  * either `const` or non-`const` \a SCOPE.
  */
 #define c_scope_data(SCOPE) \
-  REINTERPRET_CAST( c_scope_data_t*, (SCOPE)->data )
+  POINTER_CAST( c_scope_data_t*, (SCOPE)->data )
 
 /**
  * Convenience macro for iterating over all scopes of an sname.

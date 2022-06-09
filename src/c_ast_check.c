@@ -214,7 +214,7 @@ static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         unsigned flags ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_visit_fn_t const visit_fn = (c_ast_visit_fn_t)check_fn;
-  c_ast_visit_data_t const avd = REINTERPRET_CAST( c_ast_visit_data_t, flags );
+  c_ast_visit_data_t const avd = INTEGER_CAST( c_ast_visit_data_t, flags );
   return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, avd ) == NULL;
 }
 
@@ -2118,7 +2118,7 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  unsigned flags = REINTERPRET_CAST( unsigned, avd );
+  unsigned flags = INTEGER_CAST( unsigned, avd );
 
   if ( !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
@@ -2243,7 +2243,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
       temp_ast.loc = ast->loc;
       temp_ast.type.stids |= qual_stids;
 
-      avd = REINTERPRET_CAST( c_ast_visit_data_t, flags );
+      avd = INTEGER_CAST( c_ast_visit_data_t, flags );
       return c_ast_visitor_error( &temp_ast, avd );
     }
 
@@ -2287,7 +2287,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  unsigned const flags = REINTERPRET_CAST( unsigned, avd );
+  unsigned const flags = INTEGER_CAST( unsigned, avd );
   bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
   c_lang_id_t const ok_lang_ids = c_type_check( &ast->type );
@@ -2400,7 +2400,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_warning( c_ast_t const *ast,
                                    c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  unsigned const flags = REINTERPRET_CAST( unsigned, avd );
+  unsigned const flags = INTEGER_CAST( unsigned, avd );
 
   switch ( ast->kind ) {
     case K_ARRAY:

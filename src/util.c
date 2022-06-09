@@ -50,14 +50,14 @@
 
 #ifdef ENABLE_TERM_SIZE
 # include <fcntl.h>                     /* for open(2) */
+# define _BOOL /* nothing */            /* prevent bool clash on AIX/Solaris */
 # if defined(HAVE_CURSES_H)
-#   define _BOOL /* nothing */          /* prevents clash of bool on Solaris */
 #   include <curses.h>
-#   undef _BOOL
 # elif defined(HAVE_NCURSES_H)
 #   include <ncurses.h>
 # endif
 # include <term.h>                      /* for setupterm(3) */
+# undef _BOOL
 #endif /* ENABLE_TERM_SIZE */
 
 /// @endcond

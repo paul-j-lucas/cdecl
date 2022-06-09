@@ -104,7 +104,7 @@ static void c_ast_english_impl( c_ast_t const *ast, FILE *eout ) {
   assert( eout != NULL );
 
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_visit_data_t const avd = REINTERPRET_CAST( c_ast_visit_data_t, eout );
+  c_ast_visit_data_t const avd = POINTER_CAST( c_ast_visit_data_t, eout );
   c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, avd );
 
   switch ( ast->align.kind ) {
@@ -160,7 +160,7 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
     }
 
     c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, param_ast );
-    c_ast_visit_data_t const avd = REINTERPRET_CAST( c_ast_visit_data_t, eout );
+    c_ast_visit_data_t const avd = POINTER_CAST( c_ast_visit_data_t, eout );
     c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, avd );
   } // for
 
@@ -177,7 +177,7 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  FILE *const eout = REINTERPRET_CAST( FILE*, avd );
+  FILE *const eout = POINTER_CAST( FILE*, avd );
   assert( eout != NULL );
 
   switch ( ast->kind ) {
