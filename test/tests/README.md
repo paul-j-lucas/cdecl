@@ -87,7 +87,8 @@ The characters are:
 + `rg` = `register`
 + `rr` = rvalue reference
 + `rt` = `restrict`
-+ `s` = `signed` or `static`
++ `s` = `signed`
++ `st` = `static`
 + `t` = unknown type
 + `td` = `typedef`
 + `th` = `throw`
