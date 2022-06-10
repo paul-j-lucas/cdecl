@@ -191,11 +191,11 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_ppi.test \
 	tests/declare_rgi.test \
 	tests/declare_sta2i.test \
-	tests/declare_sc.test \
+	tests/declare_sic.test \
 	tests/declare_stf_v.test \
-	tests/declare_si.test \
+	tests/declare_sii.test \
 	tests/declare_stif_v.test \
-	tests/declare_sll.test \
+	tests/declare_sill.test \
 	tests/declare_type_i.test \
 	tests/declare_type_pfc_i.test \
 	tests/declare_typedef_i.test \
@@ -284,15 +284,15 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_rgf_v.test \
 	tests/declare_rtf_v-c.test \
 	tests/declare_rti.test \
-	tests/declare_sb.test \
-	tests/declare_sc-knr.test \
-	tests/declare_sc16.test \
-	tests/declare_sc32.test \
-	tests/declare_sc8.test \
-	tests/declare_si-knr.test \
-	tests/declare_sl-knr.test \
-	tests/declare_sv.test \
-	tests/declare_swt.test \
+	tests/declare_sib.test \
+	tests/declare_sic-knr.test \
+	tests/declare_sic16.test \
+	tests/declare_sic32.test \
+	tests/declare_sic8.test \
+	tests/declare_sii-knr.test \
+	tests/declare_sil-knr.test \
+	tests/declare_siv.test \
+	tests/declare_siwt.test \
 	tests/declare_t.test \
 	tests/declare_typedef_i_al8.test \
 	tests/declare_ub.test \
@@ -377,7 +377,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_cpfv_pi.test \
 	tests/explain_cpi.test \
 	tests/explain_cppi.test \
-	tests/explain_cs.test \
+	tests/explain_csi.test \
 	tests/explain_cu.test \
 	tests/explain_cvpi.test \
 	tests/explain_cxd.test \
@@ -437,7 +437,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_lf.test \
 	tests/explain_ll.test \
 	tests/explain_main_f_i.test \
-	tests/explain_main_f_s.test \
+	tests/explain_main_f_si.test \
 	tests/explain_main_fi2apc_i.test \
 	tests/explain_main_fi2ppc_i.test \
 	tests/explain_main_fiapc_i.test \
@@ -495,7 +495,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_rtpi.test \
 	tests/explain_rttdpi.test \
 	tests/explain_sta2i.test \
-	tests/explain_sc.test \
+	tests/explain_sic.test \
 	tests/explain_stf_v.test \
 	tests/explain_sti.test \
 	tests/explain_tli.test \
@@ -637,15 +637,15 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_rtf_v-error.test \
 	tests/explain_rtpf_v.test \
 	tests/explain_rttdi.test \
-	tests/explain_sb.test \
-	tests/explain_sc-knr.test \
-	tests/explain_sc16.test \
-	tests/explain_sc32.test \
-	tests/explain_sc8.test \
-	tests/explain_si-knr.test \
-	tests/explain_sl-knr.test \
-	tests/explain_sv.test \
-	tests/explain_swt.test \
+	tests/explain_sib.test \
+	tests/explain_sic-knr.test \
+	tests/explain_sic16.test \
+	tests/explain_sic32.test \
+	tests/explain_sic8.test \
+	tests/explain_sii-knr.test \
+	tests/explain_sil-knr.test \
+	tests/explain_siv.test \
+	tests/explain_siwt.test \
 	tests/explain_tli-c99.test \
 	tests/explain_type_i.test \
 	tests/explain_typedef_ci32.test \
@@ -763,9 +763,9 @@ TESTS+=	tests/cast_bii_d.test \
 	tests/cast_pfv_pi.test \
 	tests/cast_pi.test \
 	tests/cast_ppi.test \
-	tests/cast_sc.test \
-	tests/cast_si.test \
-	tests/cast_sll.test \
+	tests/cast_sic.test \
+	tests/cast_sii.test \
+	tests/cast_sill.test \
 	tests/cast_u.test \
 	tests/cast_uc.test \
 	tests/cast_ui.test \
