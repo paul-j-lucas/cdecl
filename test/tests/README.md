@@ -25,7 +25,7 @@ declaration as it is in English.
 The characters are:
 
 + `+` = scope (`S::x`; `2+` = `S::T::x`, etc.)
-+ `=` = scope (`=` = `of scope S`; `2=` = `of scope S of scope T`, etc.)
++ `++` = scope (`++` = `of scope S`; `2++` = `of scope S of scope T`, etc.)
 + `0` = pure virtual
 + `a` = array (following digits specify array size) or `auto`
 + `a_cd_` = `carries_dependency`
