@@ -383,7 +383,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_CV                 ( TS_CONST | TS_VOLATILE )
 
 /**
- * The only types that can apply to in-class constructor declarations.
+ * The only types that can apply to constructor declarations.
  *
  * @sa #TS_CONSTRUCTOR_DEF
  * @sa #TS_CONSTRUCTOR_ONLY
@@ -410,7 +410,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_CONSTRUCTOR_ONLY   TS_EXPLICIT
 
 /**
- * The only types that can apply to in-class destructor declarations.
+ * The only types that can apply to destructor declarations.
  *
  * @sa #TS_CONSTRUCTOR_DECL
  * @sa #TS_DESTRUCTOR_DEF
