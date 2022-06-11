@@ -1015,9 +1015,9 @@ TESTS+=	tests/declare_config_u.test \
 TESTS+=	tests/declare_+dtor.test \
 	tests/declare_+f_v.test \
 	tests/declare_0f_v.test \
-	tests/declare_2+f_v.test \
 	tests/declare_+++i.test \
 	tests/declare_++i.test \
+	tests/declare_2+f_v.test \
 	tests/declare_a.test \
 	tests/declare_a3a5pfv_ppa7a9pc.test \
 	tests/declare_a_cd_fa_cd_i_i.test \
@@ -1043,6 +1043,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_dtor.test \
 	tests/declare_ecf_v.test \
 	tests/declare_efi.test \
+	tests/declare_en-c++.test \
 	tests/declare_enc.test \
 	tests/declare_enk.test \
 	tests/declare_epctor_i.test \
