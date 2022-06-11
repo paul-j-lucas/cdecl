@@ -1,3 +1,23 @@
+2022-06-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am, declare_en-c++.out, declare_en-c++.test: New enum test.
+   * NEWS, c_type.c, c_type.h, gibberish.c, declare_enc.out, declare_enk.out:
+     The `explicit-ecsu` option for enums is fixed.
+
+2022-06-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am: Replaced "=" in filenames with either "++" or "_" since
+     it caused problems on some versions of Make.
+
+2022-06-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am: Renamed 's' files to 'si' for signed.
+   * test/Makefile.am: Renamed 's' files to 'st' for static.
+   * c_ast_check.c, c_ast_util.c, c_sname.h, english.c, slist.c, util.c,
+     util.h: Split REINTERPRET_CAST into INTEGER_CAST and POINTER_CAST because
+     it's not possible to implement C++'s `reinterpret_cast` as a single macro
+     in C.
+
 2022-06-05  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, parser.y: Added suggestions to error messages in certain cases when
