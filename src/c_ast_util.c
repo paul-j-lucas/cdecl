@@ -377,7 +377,7 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  *     type = "const" (base = 0x10000001, store = 0x20000002, attr = 0x4),
  *     for_ast = {
  *       sname = "S" (struct),
- *       kind = "enum, class, struct, or union",
+ *       kind = "class, struct, or union",
  *       ...
  *       type = "struct" (base = 0x800001, store = 0x2, attr = 0x4),
  *       csu_sname = "S" (none)
@@ -434,7 +434,7 @@ static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
  *     type = "const" (base = 0x10000001, store = 0x20000002, attr = 0x4),
  *     for_ast = {
  *       sname = "S" (struct),
- *       kind = "enum, class, struct, or union",
+ *       kind = "class, struct, or union",
  *       ...
  *       type = "struct" (base = 0x800001, store = 0x2, attr = 0x4),
  *       csu_sname = "S" (none)
