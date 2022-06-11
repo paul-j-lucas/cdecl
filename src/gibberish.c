@@ -175,6 +175,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
   bool    is_default      = false;
   bool    is_delete       = false;
   bool    is_final        = false;
+  bool    is_fixed_enum   = false;
   bool    is_noexcept     = false;
   bool    is_override     = false;
   bool    is_pure_virtual = false;
@@ -306,6 +307,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_ENUM:
+      is_fixed_enum = ast->as.enum_.of_ast != NULL;
       //
       // Special case: an enum class must be written as just "enum" when doing
       // an elaborated-type-specifier:
@@ -323,7 +325,13 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
 
       char const *const type_name =
-        (g->flags & (C_GIB_CAST | C_GIB_DECL)) != 0 ?
+        (g->flags & (C_GIB_CAST | C_GIB_DECL)) != 0 &&
+        //
+        // Special case: an enum with a fixed type must always have "enum"
+        // printed, so we don't call c_type_name_ecsu() that may omit it by
+        // applying opt_explicit_ecsu.
+        //
+        !is_fixed_enum ?
           c_type_name_ecsu( &type ) :
           c_type_name_c( &type );
 

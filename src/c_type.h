@@ -345,6 +345,9 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 /// Shorthand for `class`, `struct`, or `union`.
 #define TB_ANY_CLASS          ( TB_CLASS | TB_STRUCT | TB_UNION )
 
+/// Shorthand for `enum`, `class`, `struct`, or `union`.
+#define TB_ANY_ECSU           ( TB_ENUM | TB_ANY_CLASS )
+
 /// Shorthand for any Embedded C type.
 #define TB_ANY_EMC            ( TB_EMC_ACCUM | TB_EMC_FRACT )
 

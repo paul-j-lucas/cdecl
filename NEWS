@@ -32,6 +32,9 @@ Help for types was added to options help.
 ** `explicit` help
 The missing `explicit` was added to the help.
 
+** `explicit-escu` for `enum`
+The `explicit-ecsu` option for enums is fixed.
+
 ** `_Noreturn` deprecated
 `_Noreturn` is now deprecated in C2X.
 

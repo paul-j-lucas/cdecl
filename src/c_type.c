@@ -910,7 +910,22 @@ static char const* c_type_name_impl( c_type_t const *type,
   C_TID_NAME_CAT( sbuf, stids, QUAL_STIDS, in_english, ' ', &space );
 
   if ( OPT_LANG_IS( CPP_ANY ) && apply_explicit_ecsu &&
-       !in_english && !is_error && c_tid_is_any( btids, TB_ANY_CLASS ) ) {
+       !in_english && !is_error && c_tid_is_any( btids, TB_ANY_ECSU ) ) {
+    //
+    // This isn't right for a declaration of an enum with a fixed type, e.g.:
+    //
+    //      c++decl> declare x as enum E of type int
+    //      enum E : int x;             // `enum` is required
+    //
+    // Hence, we should _not_ mask-off the explicit enum bit for such types;
+    // but the only way we can know not to do that is by checking if the AST's
+    // kind is K_ENUM and its "of" type is not NULL -- but we don't have access
+    // to the AST here.
+    //
+    // To fix this, gibberish.c has a special case that calls c_type_name_c()
+    // (which sets apply_explicit_ecsu to false) instead of c_type_name_ecsu()
+    // when the AST's kind is K_ENUM and its "of" type is not NULL.
+    //
     btids &= opt_explicit_ecsu;
   }
 
