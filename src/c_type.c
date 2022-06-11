@@ -1234,8 +1234,7 @@ char const* c_type_name_english( c_type_t const *type ) {
 
 char const* c_type_name_error( c_type_t const *type ) {
   // See comment in c_tid_name_error().
-  return c_type_name_impl(
-    type,
+  return c_type_name_impl( type,
     /*apply_explicit_ecsu=*/false,
     /*in_english=*/cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH,
     /*is_error=*/true
