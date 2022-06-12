@@ -301,7 +301,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast );
  * "Patches" \a type_ast into \a decl_ast only if:
  *  + \a type_ast has no parent.
  *  + The depth of \a type_ast is less than that of \a decl_ast.
- *  + \a decl_ast still contains an AST node of type #K_PLACEHOLDER.
+ *  + \a decl_ast still contains an AST node of kind #K_PLACEHOLDER.
  *
  * @param type_ast The AST of the initial type.
  * @param decl_ast The AST of a declaration; may be NULL.
