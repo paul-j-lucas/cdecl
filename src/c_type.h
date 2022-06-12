@@ -725,16 +725,19 @@ PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_type_check( c_type_t const *type );
 
 /**
- * Checks whether \a i_type and \a j_type are equal.
+ * Checks whether \a i_type and \a j_type are equivalent (not bitwise
+ * identical).  Specifically, the base types are normalized prior to
+ * comparison.
  *
  * @param i_type The first \ref c_type.
  * @param j_type The second \ref c_type.
- * @return Returns `true` only if \a i_type equals \a j_type.
+ * @return Returns `true` only if \a i_type is equivalent to \a j_type.
  *
+ * @sa c_tid_normalize()
  * @sa c_type_is_none()
  */
 PJL_WARN_UNUSED_RESULT
-bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
+bool c_type_equiv( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
  * Gets the \ref c_tid_t of \a type that corresponds to the type part ID of \a
@@ -998,11 +1001,11 @@ bool c_tid_is_size_t( c_tid_t tids ) {
  * @param type The \ref c_type to check.
  * @return Returns `true` only if \a type is none.
  *
- * @sa c_type_equal()
+ * @sa c_type_equiv()
  */
 C_TYPE_H_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_is_none( c_type_t const *type ) {
-  return c_type_equal( type, &T_NONE );
+  return c_type_equiv( type, &T_NONE );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

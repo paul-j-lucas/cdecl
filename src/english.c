@@ -273,7 +273,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       break;
 
     case K_TYPEDEF:
-      if ( !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) ) )
+      if ( !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) ) )
         FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
       c_sname_english( &ast->as.tdef.for_ast->sname, eout );
       c_ast_bit_width_english( ast, eout );

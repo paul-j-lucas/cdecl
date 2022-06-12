@@ -1073,7 +1073,7 @@ c_lang_id_t c_type_check( c_type_t const *type ) {
   return LANG_ANY;
 }
 
-bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
+bool c_type_equiv( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( i_type != NULL );
   assert( j_type != NULL );
 

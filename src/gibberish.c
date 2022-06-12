@@ -420,7 +420,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         // we need to see whether there's any more to the type, e.g., "const".
         //
         bool const is_more_than_plain_typedef =
-          !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) );
+          !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) );
 
         if ( is_more_than_plain_typedef && !opt_east_const )
           FPUTS( c_type_name_c( &ast->type ), g->gout );

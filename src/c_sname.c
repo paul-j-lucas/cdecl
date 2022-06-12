@@ -209,7 +209,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     if ( tdef != NULL ) {
       c_type_t const *const tdef_type = c_sname_local_type( &tdef->ast->sname );
       if ( c_tid_is_any( tdef_type->btids, TB_ANY_SCOPE | TB_ENUM ) &&
-           !c_type_equal( scope_type, tdef_type ) ) {
+           !c_type_equiv( scope_type, tdef_type ) ) {
         if ( c_tid_is_any( scope_type->btids, TB_ANY_SCOPE ) ) {
           //
           // The scope's type is a scope-type and doesn't match a previously

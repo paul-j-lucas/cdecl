@@ -183,7 +183,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     return false;
   if ( !c_alignas_equal( &i_ast->align, &j_ast->align ) )
     return false;
-  if ( !c_type_equal( &i_ast->type, &j_ast->type ) )
+  if ( !c_type_equiv( &i_ast->type, &j_ast->type ) )
     return false;
 
   switch ( i_ast->kind ) {
