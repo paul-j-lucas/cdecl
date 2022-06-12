@@ -549,8 +549,8 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       break;
 
     case C_CAST_DYNAMIC:
-      if ( !c_ast_is_ptr_to_tid_any( raw_ast, TB_ANY_CLASS ) &&
-           !c_ast_is_ref_to_tid_any( raw_ast, TB_ANY_CLASS ) ) {
+      if ( !c_ast_is_ptr_to_kind_any( raw_ast, K_CLASS_STRUCT_UNION ) &&
+           !c_ast_is_ref_to_kind_any( raw_ast, K_CLASS_STRUCT_UNION ) ) {
         print_error( &ast->loc,
           "dynamic_cast must be to a "
           "pointer or reference to a class, struct, or union\n"
@@ -1318,7 +1318,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       // Special case for operator-> that must return a pointer to a struct,
       // union, or class.
       //
-      if ( !c_ast_is_ptr_to_tid_any( ret_ast, TB_ANY_CLASS ) ) {
+      if ( !c_ast_is_ptr_to_kind_any( ret_ast, K_CLASS_STRUCT_UNION ) ) {
         print_error( &ret_ast->loc,
           "operator %s must return a pointer to struct, union, or class\n",
           op->name

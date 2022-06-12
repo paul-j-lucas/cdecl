@@ -569,6 +569,11 @@ bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
   return ast != NULL && (ast->kind & kinds) != 0;
 }
 
+bool c_ast_is_ref_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
+  ast = c_ast_unreference( ast );
+  return ast != NULL && (ast->kind & kinds) != 0;
+}
+
 bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
                                c_type_t const *type ) {
   assert( mask_type != NULL );

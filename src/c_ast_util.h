@@ -126,22 +126,25 @@ PJL_WARN_UNUSED_RESULT
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids );
 
 /**
- * Checks whether \a ast is an AST for a pointer to another AST that is one of
- * \a kinds; or a `typedef` thereof.
+ * Checks whether \a ast is an AST for a #K_POINTER to another AST that is one
+ * of \a kinds; or a `typedef` thereof.
  *
  * @param ast The AST to check.
  * @param kinds The bitwise-or of kind(s) to check for.
- * @return Returns `true` only if \a ast is a pointer to one of \a kinds.
+ * @return Returns `true` only if \a ast is a #K_POINTER to one of \a kinds.
  *
  * @sa c_ast_is_ptr_to_tid_any()
  * @sa c_ast_is_ptr_to_type_any()
+ * @sa c_ast_is_ref_to_kind_any()
+ * @sa c_ast_is_ref_to_tid_any()
+ * @sa c_ast_is_ref_to_type_any()
  */
 PJL_WARN_UNUSED_RESULT
 bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds );
 
 /**
- * Checks whether \a ast is an AST for a pointer to another AST having a type
- * that contains any one of \a tids ; or a `typedef` thereof.
+ * Checks whether \a ast is an AST for a #K_POINTER to another AST having a
+ * type that contains any one of \a tids ; or a `typedef` thereof.
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
@@ -150,7 +153,9 @@ bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds );
  *
  * @sa c_ast_is_ptr_to_kind_any()
  * @sa c_ast_is_ptr_to_type_any()
+ * @sa c_ast_is_ref_to_kind_any()
  * @sa c_ast_is_ref_to_tid_any()
+ * @sa c_ast_is_ref_to_type_any()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
@@ -177,6 +182,9 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  *
  * @sa c_ast_is_ptr_to_kind_any()
  * @sa c_ast_is_ptr_to_tid_any()
+ * @sa c_ast_is_ref_to_kind_any()
+ * @sa c_ast_is_ref_to_tid_any()
+ * @sa c_ast_is_ref_to_type_any()
  */
 PJL_WARN_UNUSED_RESULT
 bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
@@ -191,11 +199,30 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
  * @return Returns `true` only if \a ast is a reference to #TB_ANY_CLASS and
  * has a name matching \a sname.
  *
+ * @sa c_ast_is_ref_to_kind_any()
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_ref_to_type_any()
  */
 PJL_WARN_UNUSED_RESULT
 bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname );
+
+/**
+ * Checks whether \a ast is an AST for a reference to another AST that is one
+ * of \a kinds; or a `typedef` thereof.
+ *
+ * @param ast The AST to check.
+ * @param kinds The bitwise-or of kind(s) to check for.
+ * @return Returns `true` only if \a ast is a reference to one of \a kinds.
+ *
+ * @sa c_ast_is_ptr_to_kind_any()
+ * @sa c_ast_is_ptr_to_tid_any()
+ * @sa c_ast_is_ptr_to_type_any()
+ * @sa c_ast_is_ref_to_class_sname()
+ * @sa c_ast_is_ref_to_tid_any()
+ * @sa c_ast_is_ref_to_type_any()
+ */
+PJL_WARN_UNUSED_RESULT
+bool c_ast_is_ref_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds );
 
 /**
  * Checks whether \a ast is an AST for a reference to another AST having a type
@@ -206,8 +233,11 @@ bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname );
  * @return If \a ast is a reference and the referred-to AST has a type that is
  * any one of \a tids, returns the referred-to AST; otherwise returns NULL.
  *
+ * @sa c_ast_is_ptr_to_kind_any()
  * @sa c_ast_is_ptr_to_tid_any()
+ * @sa c_ast_is_ptr_to_type_any()
  * @sa c_ast_is_ref_to_class_sname()
+ * @sa c_ast_is_ref_to_kind_any()
  * @sa c_ast_is_ref_to_type_any()
  * @sa c_ast_is_tid_any()
  * @sa c_ast_is_tid_any_qual()
@@ -225,8 +255,11 @@ c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  * @return If \a ast is a reference, returns the AST \a ast is a reference to;
  * otherwise returns NULL.
  *
+ * @sa c_ast_is_ptr_to_kind_any()
+ * @sa c_ast_is_ptr_to_tid_any()
  * @sa c_ast_is_ptr_to_type_any()
  * @sa c_ast_is_ref_to_class_sname()
+ * @sa c_ast_is_ref_to_kind_any()
  * @sa c_ast_is_ref_to_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
@@ -241,8 +274,8 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
  * @param qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with the
- * qualifier(s) \a ast is a `typedef` for (if \a ast is a \ref K_TYPEDEF), but
- * only if this function returns non-NULL.
+ * qualifier(s) \a ast is a `typedef` for (if \a ast is a #K_TYPEDEF), but only
+ * if this function returns non-NULL.
  * @return If the type of \a ast has one of \a tids, returns the un-`typedef`d
  * AST of \a ast; otherwise returns NULL.
  *
@@ -268,7 +301,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast );
  * "Patches" \a type_ast into \a decl_ast only if:
  *  + \a type_ast has no parent.
  *  + The depth of \a type_ast is less than that of \a decl_ast.
- *  + \a decl_ast still contains an AST node of type \ref K_PLACEHOLDER.
+ *  + \a decl_ast still contains an AST node of type #K_PLACEHOLDER.
  *
  * @param type_ast The AST of the initial type.
  * @param decl_ast The AST of a declaration; may be NULL.
@@ -278,7 +311,7 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
- * Creates a \ref K_POINTER AST to \a ast.  The name of \a ast (or one of its
+ * Creates a # K_POINTER AST to \a ast.  The name of \a ast (or one of its
  * child nodes), if any, is moved to the new pointer AST.
  *
  * @param ast The AST to create a pointer to.
@@ -333,8 +366,8 @@ PJL_WARN_UNUSED_RESULT
 c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
 
 /**
- * Un-pointers \a ast, i.e., if \a ast is a \ref K_POINTER, returns the
- * pointed-to AST.
+ * Un-pointers \a ast, i.e., if \a ast is a #K_POINTER, returns the pointed-to
+ * AST.
  *
  * @param ast The AST to un-pointer.
  * @return If \a ast is a pointer, returns the un-`typedef`d pointed-to AST;
@@ -353,14 +386,14 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
 /**
- * Un-references \a ast, i.e., if \a ast is a \ref K_REFERENCE returns the
+ * Un-references \a ast, i.e., if \a ast is a #K_REFERENCE returns the
  * referred-to AST.
  *
  * @param ast The AST to un-reference.
  * @return If \a ast is a reference, returns the un-`typdef`d referenced AST;
  * otherwise returns \a ast.
  *
- * @note Only \ref K_REFERENCE is un-referenced, not \ref K_RVALUE_REFERENCE.
+ * @note Only #K_REFERENCE is un-referenced, not #K_RVALUE_REFERENCE.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unrvalue_reference()
@@ -371,14 +404,14 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
 /**
- * Un-rvalue-references \a ast, i.e., if \a ast is a \ref K_RVALUE_REFERENCE
+ * Un-rvalue-references \a ast, i.e., if \a ast is a #K_RVALUE_REFERENCE
  * returns the referred-to AST.
  *
  * @param ast The AST to un-reference.
  * @return If \a ast is an rvalue reference, returns the un-`typedef`d
  * referenced AST; otherwise returns \a ast.
  *
- * @note Only \ref K_RVALUE_REFERENCE is un-referenced, not \ref K_REFERENCE.
+ * @note Only #K_RVALUE_REFERENCE is un-referenced, not #K_REFERENCE.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
@@ -389,8 +422,8 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast );
 
 /**
- * Un-`typedef`s \a ast, i.e., if \a ast is a \ref K_TYPEDEF, returns the AST
- * the `typedef` is for.
+ * Un-`typedef`s \a ast, i.e., if \a ast is a #K_TYPEDEF, returns the AST the
+ * `typedef` is for.
  *
  * @param ast The AST to un-`typedef`.
  * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
@@ -405,12 +438,12 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 
 /**
- * Un-`typedef`s \a ast, i.e., if \a ast is a \ref K_TYPEDEF, returns the AST
- * the `typedef` is for.
+ * Un-`typedef`s \a ast, i.e., if \a ast is a #K_TYPEDEF, returns the AST the
+ * `typedef` is for.
  *
  * @param ast The AST to un-`typedef`.
  * @param qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with the
- * qualifier(s) \a ast is a `typedef` for (if \a ast is a \ref K_TYPEDEF).
+ * qualifier(s) \a ast is a `typedef` for (if \a ast is a #K_TYPEDEF).
  * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
  * `typedef`.
  *
