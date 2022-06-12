@@ -223,7 +223,7 @@ enum c_ast_kind {
  * #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE, or #K_TYPEDEF.
  */
 #define K_ANY_OBJECT              ( K_ANY_POINTER | K_ANY_REFERENCE | K_ARRAY \
-                                  | K_BUILTIN | K_ANY_ENUM_CLASS_STRUCT_UNION \
+                                  | K_ANY_ENUM_CLASS_STRUCT_UNION | K_BUILTIN \
                                   | K_TYPEDEF )
 
 /**
