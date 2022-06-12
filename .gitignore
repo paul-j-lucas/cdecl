@@ -1,4 +1,5 @@
 *.a
+*.core
 *.gz
 *.in
 *.log
