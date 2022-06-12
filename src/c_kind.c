@@ -46,23 +46,23 @@ char const* c_kind_name( c_ast_kind_t kind ) {
   assert( is_1_bit( kind ) );
 
   switch ( kind ) {
-    case K_ARRAY              : return "array";
     case K_APPLE_BLOCK        : return "block";
+    case K_ARRAY              : return "array";
     case K_BUILTIN            : return "built-in type";
     case K_CONSTRUCTOR        : return "constructor";
     case K_DESTRUCTOR         : return "destructor";
     case K_ENUM               : return "enumeration";
     case K_FUNCTION           : return "function";
     case K_NAME               : return "name";
-    case K_PLACEHOLDER        : return "placeholder";
     case K_OPERATOR           : return "operator";
+    case K_PLACEHOLDER        : return "placeholder";
     case K_POINTER            : return "pointer";
     case K_POINTER_TO_MEMBER  : return "pointer to member";
     case K_REFERENCE          : return "reference";
     case K_RVALUE_REFERENCE   : return "rvalue reference";
     case K_TYPEDEF            : return "typedef";
-    case K_USER_DEF_LITERAL   : return "user-defined literal";
     case K_USER_DEF_CONVERSION: return "user-defined conversion operator";
+    case K_USER_DEF_LITERAL   : return "user-defined literal";
     case K_VARIADIC           : return "variadic";
 
     case K_CLASS_STRUCT_UNION :
