@@ -90,16 +90,30 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   assert( sbuf != NULL );
   assert( format != NULL );
 
-  va_list args;
+  char *buf;
+  size_t buf_rem;
+
+  if ( sbuf->str == NULL ) {
+    //
+    // Avoid the undefined behavior of adding an offset to a null pointer.  We
+    // have to check for this only in this function since we don't initially
+    // call strbuf_reserve() like in every other function.
+    //
+    buf = NULL;
+    buf_rem = 0;
+  } else {
+    buf = sbuf->str + sbuf->len;
+    buf_rem = sbuf->cap - sbuf->len;
+  }
 
   //
   // Attempt to concatenate onto the existing buffer: vsnprintf() returns the
   // number of characters that _would_ have been printed if the buffer were
   // unlimited.
   //
-  size_t buf_rem = sbuf->cap - sbuf->len;
+  va_list args;
   va_start( args, format );
-  int rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args );
+  int rv = vsnprintf( buf, buf_rem, format, args );
   va_end( args );
   perror_exit_if( rv < 0, EX_IOERR );
 
