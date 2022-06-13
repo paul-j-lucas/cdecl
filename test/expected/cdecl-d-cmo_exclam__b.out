@@ -62,7 +62,13 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
   }
 }
 
-oper_c_ast ::= OPERATOR c_operator = {
+func_qualifier_list_c_stid_opt ::= func_qualifier_list_c_stid_opt func_qualifier_c_stid = {
+  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  func_qualifier_c_stid = "const" (stid = 0x20000002),
+  func_qualifier_list_c_stid_opt = "const" (stid = 0x20000002)
+}
+
+oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
   (type_c_ast) = {
     sname = "",
     unique_id = 1336,
@@ -76,48 +82,6 @@ oper_c_ast ::= OPERATOR c_operator = {
   },
   scope_sname_c_opt = "S" (struct),
   c_operator = "!",
-  oper_c_ast = {
-    sname = "S" (struct),
-    unique_id = 1336,
-    kind = "built-in type",
-    cast_kind = "none",
-    depth = 0,
-    parent->unique_id = -1,
-    loc = 9-12,
-    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
-    bit_width = 0
-  }
-}
-
-func_qualifier_list_c_stid_opt ::= func_qualifier_list_c_stid_opt func_qualifier_c_stid = {
-  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
-  func_qualifier_c_stid = "const" (stid = 0x20000002),
-  func_qualifier_list_c_stid_opt = "const" (stid = 0x20000002)
-}
-
-oper_decl_c_astp ::= oper_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
-  (type_c_ast) = {
-    sname = "S" (struct),
-    unique_id = 1336,
-    kind = "built-in type",
-    cast_kind = "none",
-    depth = 0,
-    parent->unique_id = -1,
-    loc = 9-12,
-    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
-    bit_width = 0
-  },
-  oper_c_ast = {
-    sname = "S" (struct),
-    unique_id = 1336,
-    kind = "built-in type",
-    cast_kind = "none",
-    depth = 0,
-    parent->unique_id = -1,
-    loc = 9-12,
-    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
-    bit_width = 0
-  },
   param_list_c_ast_opt = [],
   func_qualifier_list_c_stid_opt = "const" (stid = 0x20000002),
   func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
