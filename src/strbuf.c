@@ -126,7 +126,8 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   // buffer wasn't big enough so all the characters didn't fit, but the buffer
   // was grown so they _will_ fit if we vsnprintf() again.
   //
-  if ( strbuf_reserve( sbuf, STATIC_CAST( size_t, rv ) ) ) {
+  size_t const args_len = STATIC_CAST( size_t, rv );
+  if ( strbuf_reserve( sbuf, args_len ) ) {
     buf_rem = sbuf->cap - sbuf->len;
     va_start( args, format );
     rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args );
@@ -134,7 +135,7 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
     perror_exit_if( rv < 0, EX_IOERR );
   }
 
-  sbuf->len += STATIC_CAST( size_t, rv );
+  sbuf->len += args_len;
 }
 
 void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
