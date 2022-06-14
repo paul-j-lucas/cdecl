@@ -78,8 +78,10 @@ void strbuf_paths( strbuf_t *sbuf, char const *component ) {
         --comp_len;
       }
     } else {
-      if ( component[0] != '/' )
+      if ( component[0] != '/' ) {
+        strbuf_reserve( sbuf, comp_len + 1 );
         strbuf_putc( sbuf, '/' );
+      }
     }
   }
 
