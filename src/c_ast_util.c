@@ -591,7 +591,7 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
 }
 
 c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
-  c_tid_t qual_stids;
+  c_tid_t qual_stids = TS_NONE;
   ast = c_ast_unpointer_qual( ast, &qual_stids );
   return c_ast_is_tid_any_qual_impl( ast, tids, qual_stids );
 }
@@ -602,7 +602,7 @@ bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname ) {
 }
 
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
-  c_tid_t qual_stids;
+  c_tid_t qual_stids = TS_NONE;
   ast = c_ast_unreference_qual( ast, &qual_stids );
   return c_ast_is_tid_any_qual_impl( ast, tids, qual_stids );
 }
