@@ -164,16 +164,40 @@ AS_IF([test x$enable_term_size = xyes],
     [Define to 1 if term-size is enabled.])]
 )
 
-# Testing feature: Address Sanitizer
-AC_ARG_ENABLE([address-sanitizer],
-  AS_HELP_STRING([--enable-address-sanitizer],
+# Testing feature: Address Sanitizer (ASan)
+AC_ARG_ENABLE([asan],
+  AS_HELP_STRING([--enable-asan],
     [enable Address Sanitizer for debugging]),
   [],
-  [enable_address_sanitizer=no]
+  [enable_asan=no]
 )
-AS_IF([test x$enable_address_sanitizer = xyes],
-  [AC_DEFINE([ENABLE_ADDRESS_SANITIZER], [1],
+AS_IF([test x$enable_asan = xyes],
+  [AC_DEFINE([ENABLE_ASAN], [1],
     [Define to 1 if Address Sanitizer is enabled.])]
+)
+
+# Testing feature: Memory Sanitizer (MSan)
+AC_ARG_ENABLE([msan],
+  AS_HELP_STRING([--enable-msan],
+    [enable Memory Sanitizer for debugging]),
+  [],
+  [enable_msan=no]
+)
+AS_IF([test x$enable_msan = xyes],
+  [AC_DEFINE([ENABLE_MSAN], [1],
+    [Define to 1 if Memory Sanitizer is enabled.])]
+)
+
+# Testing feature: Undefined Behavior Sanitizer (UBSan)
+AC_ARG_ENABLE([ubsan],
+  AS_HELP_STRING([--enable-ubsan],
+    [enable Undefined Bahavior Sanitizer for debugging]),
+  [],
+  [enable_ubsan=no]
+)
+AS_IF([test x$enable_ubsan = xyes],
+  [AC_DEFINE([ENABLE_UBSAN], [1],
+    [Define to 1 if Undefined Bahavior Sanitizer is enabled.])]
 )
 
 # Program feature: Flex debug (disabled by default)
@@ -218,13 +242,14 @@ AS_IF([test x$enable_coverage = xyes],
 )
 
 # Makefile conditionals.
-AM_CONDITIONAL([ENABLE_ADDRESS_SANITIZER],
-                                      [test x$enable_address_sanitizer = xyes])
-AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_cdecl_debug       = xyes])
-AM_CONDITIONAL([ENABLE_COVERAGE],     [test x$enable_coverage          = xyes])
-AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test x$enable_bison_debug       = xyes])
-AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test x$enable_flex_debug        = xyes])
-AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline           != xno])
+AM_CONDITIONAL([ENABLE_ASAN],         [test x$enable_asan         = xyes])
+AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_cdecl_debug  = xyes])
+AM_CONDITIONAL([ENABLE_COVERAGE],     [test x$enable_coverage     = xyes])
+AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test x$enable_bison_debug  = xyes])
+AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test x$enable_flex_debug   = xyes])
+AM_CONDITIONAL([ENABLE_MSAN],         [test x$enable_msan         = xyes])
+AM_CONDITIONAL([ENABLE_UBSAN],        [test x$enable_ubsan        = xyes])
+AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline      != xno ])
 
 # Miscellaneous.
 AX_C___ATTRIBUTE__

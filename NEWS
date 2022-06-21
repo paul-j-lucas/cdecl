@@ -42,6 +42,12 @@ The `explicit-ecsu` option for enums is fixed.
 Now printing types in error messages as they were originally defined (pseudo-
 English vs. gibberish) in more cases.
 
+** Additional sanitizers
+The `configure` options of `--enable-msan` and `--enable-ubsan` have been added
+to enable clang's Memory Sanitizer and Undefined Behavior Sanitizer,
+respectively.  The previous `--enable-address-sanitizer` has been renamed to
+`--enable-asan`.
+
 ** `show` autocompletion
 The `show` command now uses command-specific autocompletion.
 

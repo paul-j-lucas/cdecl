@@ -23,8 +23,16 @@ check_PROGRAMS=	red_black_test slist_test
 
 AM_CFLAGS =
 
-if ENABLE_ADDRESS_SANITIZER
+if ENABLE_ASAN
 AM_CFLAGS +=	-fsanitize=address -fno-omit-frame-pointer
+endif
+
+if ENABLE_MSAN
+AM_CFLAGS +=	-fsanitize=memory -fno-omit-frame-pointer
+endif
+
+if ENABLE_UBSAN
+AM_CFLAGS +=	-fsanitize=undefined
 endif
 
 if ENABLE_COVERAGE
