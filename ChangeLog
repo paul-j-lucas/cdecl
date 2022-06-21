@@ -1,3 +1,33 @@
+2022-06-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, src/Makefile.am: Added `--enable-msan` and
+     `--enable-ubsan`; renamed `--enable-address-sanitizer` to `--enable-asan`.
+
+2022-06-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c: Fixed undefined behavior bug.
+
+2022-06-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * strbuf.c: Removed new_len.
+   * strbuf.c: Added args_len.
+   * strbuf.c: Made strbuf_paths() slightly more efficient by reserving space
+     for '/' and comp_len.
+
+2022-06-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * strbuf.c: Avoid undefined behavior of adding an offset to NULL.
+
+2022-06-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, cdecl-d-cmo_exclam__b.out: Reworked the way C++ operators are
+     parsed so as not to set oper_id on the type's AST.
+   * c_ast_util.h: s/type/kind/
+   * c_ast_check.c, c_ast_util.c, c_ast_util.h: Added
+     c_ast_is_ref_to_kind_any().
+   * c_ast.c, c_sname.c, c_type.c, c_type.h, english.c, gibberish.c:
+     s/c_type_equal/c_type_equiv/
+
 2022-06-11  Paul J. Lucas <paul@lucasmail.org>
 
    * test/Makefile.am, declare_en-c++.out, declare_en-c++.test: New enum test.
