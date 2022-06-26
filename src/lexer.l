@@ -136,6 +136,7 @@ char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
 static bool       digraph_warned;       ///< Printed digraph warning once?
+static size_t     include_depth;        ///< How many "include" deep?
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
@@ -325,6 +326,8 @@ oct_int       0{O}*{int_sfx}?
 dec_int       [1-9]{D}*{int_sfx}?
 hex_int       0[xX]{H}+{int_sfx}?
 
+%x X_INCL
+
 /*
  * For the "set" command, we want to allow (almost) any character sequence for
  * the command's options.
@@ -379,6 +382,23 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
                 return Y_DECLARE;
               }
+
+              /* See <http://westes.github.io/flex/manual/Multiple-Input-Buffers.html> */
+include       { BEGIN( X_INCL ); }
+
+<X_INCL>{
+  [^ \t\n]+   {
+                yyin = fopen( yytext, "r" );
+                if ( yyin == NULL ) {
+                  print_error( &yylloc, "%s\n", STRERROR() );
+                  return Y_LEXER_ERROR;
+                }
+                YY_BUFFER_STATE new_buf = yy_create_buffer( yyin, YY_BUF_SIZE );
+                yypush_buffer_state( new_buf );
+                ++include_depth;
+                BEGIN( INITIAL );
+              }
+}
 
               /*
                * Special case: similar to {sname} below, handle scoped
@@ -875,6 +895,15 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 SET_TOKEN;
                 newline();
                 BEGIN( INITIAL );
+
+                if ( include_depth > 0 ) {
+                  --include_depth;
+                  yypop_buffer_state();
+                  if ( YY_CURRENT_BUFFER == NULL )
+                    yyterminate();
+                  return Y_END;
+                }
+
                 //
                 // The first time we encounter EOF, we want to treat it as if
                 // it were a newline by returning Y_END so commands in the
