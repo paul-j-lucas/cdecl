@@ -847,21 +847,23 @@ include{S}+\"  {
                 char const *we_reason = NULL;
                 switch ( we_rv ) {
                   case 0:               // success
-                    if ( we.we_wordc != 1 )
+                    if ( we.we_wordc != 1 ) {
+                      wordfree( &we );
                       we_reason = "too many files";
+                    }
                     break;
                   case WRDE_BADCHAR:
-                    we_reason = "contains unquoted shell character";
+                    we_reason = "path contains unquoted shell character";
                     break;
                   case WRDE_SYNTAX:
                     we_reason = "syntax error";
                     break;
                   // LCOV_EXCL_START
-                  case WRDE_NOSPACE:
+                  case WRDE_NOSPACE:    // unlikely
                     we_reason = "out of memory";
                     break;
-                  case WRDE_BADVAL:
-                  case WRDE_CMDSUB:
+                  case WRDE_BADVAL:     // can't happen
+                  case WRDE_CMDSUB:     // can't happen
                     PJL_FALLTHROUGH;
                   default:
                     UNEXPECTED_INT_VALUE( we_rv );
@@ -869,7 +871,6 @@ include{S}+\"  {
                 } // swtich
 
                 if ( we_reason != NULL ) {
-                  wordfree( &we );
                   print_error( &str_lit_loc, "%s\n", we_reason );
                   return Y_LEXER_ERROR;
                 }
