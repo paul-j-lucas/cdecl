@@ -384,21 +384,15 @@ declare/{S}({S}|{L})*user-def(ined)? {
               }
 
               /* See <http://westes.github.io/flex/manual/Multiple-Input-Buffers.html> */
-include       { BEGIN( X_INCL ); }
-
-<X_INCL>{
-  [^ \t\n]+   {
-                yyin = fopen( yytext, "r" );
-                if ( yyin == NULL ) {
-                  print_error( &yylloc, "%s\n", STRERROR() );
-                  return Y_LEXER_ERROR;
-                }
-                YY_BUFFER_STATE new_buf = yy_create_buffer( yyin, YY_BUF_SIZE );
-                yypush_buffer_state( new_buf );
-                ++include_depth;
-                BEGIN( INITIAL );
+include{S}+\"  {
+                strbuf_init( &str_lit_buf );
+                //
+                // Save the start location because we want to use it as the
+                // location for the literal, not its end location.
+                //
+                str_lit_loc = yylloc;
+                BEGIN( X_INCL );
               }
-}
 
               /*
                * Special case: similar to {sname} below, handle scoped
@@ -821,14 +815,27 @@ include       { BEGIN( X_INCL ); }
               }
 }
 
-<X_STR>{      /* X_STR is the same as X_CHAR except " replaces '. */
+<X_INCL,X_STR>{ /* X_STR is the same as X_CHAR except " replaces '. */
   [^"\\\n]+   { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
   \"          {
-                yylloc.first_line   = str_lit_loc.first_line;
-                yylloc.first_column = str_lit_loc.first_column;
-                yylval.str_val = strbuf_take( &str_lit_buf );
+                if ( YY_START == X_STR ) {
+                  BEGIN( INITIAL );
+                  yylloc.first_line   = str_lit_loc.first_line;
+                  yylloc.first_column = str_lit_loc.first_column;
+                  yylval.str_val = strbuf_take( &str_lit_buf );
+                  return Y_STR_LIT;
+                }
+
                 BEGIN( INITIAL );
-                return Y_STR_LIT;
+                yyin = fopen( str_lit_buf.str, "r" );
+                strbuf_reset( &str_lit_buf );
+                if ( yyin == NULL ) {
+                  print_error( &yylloc, "%s\n", STRERROR() );
+                  return Y_LEXER_ERROR;
+                }
+                YY_BUFFER_STATE new_buf = yy_create_buffer( yyin, YY_BUF_SIZE );
+                yypush_buffer_state( new_buf );
+                ++include_depth;
               }
 }
 
