@@ -11,6 +11,7 @@ Test files are as follows:
 + `*-ec`               = An "east const" test.
 + `file-*`             = A file test.
 + `help-*`             = A help test.
++ `include-*`          = An `include` test.
 + `*-`_lang_`*`        = A test using _lang_ explicitly.
 + `reinterpret_cast_*` = A `reinterpret_cast` test.
 + `set_*`              = A `set` test.

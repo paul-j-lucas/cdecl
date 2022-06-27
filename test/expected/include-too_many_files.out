@@ -1,0 +1,3 @@
+include "*"
+        ^
+9: error: too many files
