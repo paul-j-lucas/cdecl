@@ -825,19 +825,20 @@ include{S}+\"  {
               }
 }
 
-<X_INCL,X_STR>{ /* X_STR is the same as X_CHAR except " replaces '. */
-  [^"\\\n]+   { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
-  \"          {
-                if ( YY_START == X_STR ) {
-                  BEGIN( INITIAL );
-                  yylloc.first_line   = str_lit_loc.first_line;
-                  yylloc.first_column = str_lit_loc.first_column;
-                  yylval.str_val = strbuf_take( &str_lit_buf );
-                  return Y_STR_LIT;
-                }
+              /*
+               * Common code between X_INCL and X_STR:
+               *
+               * 1. X_INCL is the same as X_STR except we need to do different
+               *    things upon the terminating " (which is why X_INCL exists
+               *    rather than just using X_STR).
+               *
+               * 2. X_STR is the same as X_CHAR except " replaces '.
+               */
+<X_INCL,X_STR>[^"\\\n]+ {
+                strbuf_putsn( &str_lit_buf, yytext, yyleng );
+              }
 
-                // Otherwise, include the file.
-
+<X_INCL>\"    {
                 BEGIN( INITIAL );
 
                 wordexp_t we;
@@ -848,8 +849,8 @@ include{S}+\"  {
                 switch ( we_rv ) {
                   case 0:               // success
                     if ( we.we_wordc != 1 ) {
-                      wordfree( &we );
                       we_reason = "too many files";
+                      wordfree( &we );
                     }
                     break;
                   case WRDE_BADCHAR:
@@ -886,7 +887,14 @@ include{S}+\"  {
                 yypush_buffer_state( new_buf );
                 ++include_depth;
               }
-}
+
+<X_STR>\"     { /* X_STR is the same as X_CHAR except " replaces '. */
+                yylloc.first_line   = str_lit_loc.first_line;
+                yylloc.first_column = str_lit_loc.first_column;
+                yylval.str_val = strbuf_take( &str_lit_buf );
+                BEGIN( INITIAL );
+                return Y_STR_LIT;
+              }
 
 <*>"/*"       {                         /* ignore C-style comments */
                 for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
