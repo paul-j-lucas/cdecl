@@ -870,14 +870,14 @@ include{S}+\"  {
 
                 if ( we_reason != NULL ) {
                   wordfree( &we );
-                  print_error( &yylloc, "%s\n", we_reason );
+                  print_error( &str_lit_loc, "%s\n", we_reason );
                   return Y_LEXER_ERROR;
                 }
 
                 FILE *const include_file = fopen( we.we_wordv[0], "r" );
                 wordfree( &we );
                 if ( include_file == NULL ) {
-                  print_error( &yylloc, "%s\n", STRERROR() );
+                  print_error( &str_lit_loc, "%s\n", STRERROR() );
                   return Y_LEXER_ERROR;
                 }
                 yyin = include_file;
