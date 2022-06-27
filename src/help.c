@@ -143,6 +143,7 @@ static void print_help_commands( void ) {
   print_h( "  define <name> as <english>\n" );
   print_h( "  explain <gibberish> [, <gibberish>]*\n" );
   print_h( "  { help | ? } [command[s] | english | options]\n" );
+  print_h( "  include \"<path>\"\n" );
   print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
 
   print_h( "  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef" );

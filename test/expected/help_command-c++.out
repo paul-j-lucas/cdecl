@@ -6,6 +6,7 @@ command:
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
+  include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
   type[def] <gibberish> [, <gibberish>]*
