@@ -59,6 +59,7 @@
 #include <stdlib.h>                     /* for strtol(3) */
 #include <stdnoreturn.h>
 #include <string.h>
+#include <wordexp.h>
 
 #ifdef __GNUC__
 // Silence these warnings for Flex-generated code.
@@ -326,6 +327,9 @@ oct_int       0{O}*{int_sfx}?
 dec_int       [1-9]{D}*{int_sfx}?
 hex_int       0[xX]{H}+{int_sfx}?
 
+/*
+ * For "include" files.
+ */
 %x X_INCL
 
 /*
@@ -383,7 +387,12 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 return Y_DECLARE;
               }
 
-              /* See <http://westes.github.io/flex/manual/Multiple-Input-Buffers.html> */
+              /*
+               * Special case: implement "include" files entirely within the
+               * lexer.  See:
+               *
+               * http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
+               */
 include{S}+\"  {
                 strbuf_init( &str_lit_buf );
                 //
@@ -391,6 +400,7 @@ include{S}+\"  {
                 // location for the literal, not its end location.
                 //
                 str_lit_loc = yylloc;
+                str_lit_loc.first_column = yylloc.last_column;
                 BEGIN( X_INCL );
               }
 
@@ -788,16 +798,16 @@ include{S}+\"  {
               }
 
               /*
-               * Common code between X_STR and X_CHAR.  Multicharacter literals
-               * are legal, but implementation-defined.
+               * Common code between X_CHAR, X_INCL, and X_STR.  Multicharacter
+               * literals are legal, but implementation-defined.
                */
-<X_CHAR,X_STR>{
+<X_CHAR,X_INCL,X_STR>{
               /* Escaped characters are copied verbatim, not interpreted. */
   \\(.|\n)    { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
   \n          {
                 print_error( &str_lit_loc,
                   "unterminated %s literal\n",
-                  YY_START == X_STR ? "string" : "character"
+                  YY_START == X_CHAR ? "character" : "string"
                 );
                 strbuf_reset( &str_lit_buf );
                 return Y_LEXER_ERROR;
@@ -826,13 +836,51 @@ include{S}+\"  {
                   return Y_STR_LIT;
                 }
 
+                // Otherwise, include the file.
+
                 BEGIN( INITIAL );
-                yyin = fopen( str_lit_buf.str, "r" );
+
+                wordexp_t we;
+                int const we_rv = wordexp( str_lit_buf.str, &we, /*flags=*/0 );
                 strbuf_reset( &str_lit_buf );
-                if ( yyin == NULL ) {
+
+                char const *we_reason = NULL;
+                switch ( we_rv ) {
+                  case 0:               // success
+                    if ( we.we_wordc != 1 )
+                      we_reason = "too many files";
+                    break;
+                  case WRDE_BADCHAR:
+                    we_reason = "contains unquoted shell character";
+                    break;
+                  case WRDE_SYNTAX:
+                    we_reason = "syntax error";
+                    break;
+                  // LCOV_EXCL_START
+                  case WRDE_NOSPACE:
+                    we_reason = "out of memory";
+                    break;
+                  case WRDE_BADVAL:
+                  case WRDE_CMDSUB:
+                    PJL_FALLTHROUGH;
+                  default:
+                    UNEXPECTED_INT_VALUE( we_rv );
+                  // LCOV_EXCL_STOP
+                } // swtich
+
+                if ( we_reason != NULL ) {
+                  wordfree( &we );
+                  print_error( &yylloc, "%s\n", we_reason );
+                  return Y_LEXER_ERROR;
+                }
+
+                FILE *const include_file = fopen( we.we_wordv[0], "r" );
+                wordfree( &we );
+                if ( include_file == NULL ) {
                   print_error( &yylloc, "%s\n", STRERROR() );
                   return Y_LEXER_ERROR;
                 }
+                yyin = include_file;
                 YY_BUFFER_STATE new_buf = yy_create_buffer( yyin, YY_BUF_SIZE );
                 yypush_buffer_state( new_buf );
                 ++include_depth;
