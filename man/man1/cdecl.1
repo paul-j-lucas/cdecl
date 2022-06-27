@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 1, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 27, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -741,6 +741,17 @@ into pseudo-English.
 .TP
 .BR "explain (" \f2gibberish\fP ")" [ \f2s-name\fP ]
 Deciphers a C (or C++) cast into pseudo-English.
+.TP
+.BI "include """ path """"
+Includes the file denoted by
+.I path
+and runs the contained commands.
+(This is typically used in a configuration file
+to include another configuration file.)
+Shell meta characters in
+.IR path ,
+e.g., \f(CW~\fP,
+are expanded.
 .TP
 .RB "{ " struct " | " union " | " class " | " enum " } " \f2s-name\fP
 Defines
@@ -2196,6 +2207,9 @@ or
 to pre-define user-specific types
 so that they may be subsequently used
 when either composing or deciphering declarations.
+.IP \(bu
+.B include
+to include other configuration files.
 .IP \(bu
 .B set
 to set the language
