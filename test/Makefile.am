@@ -1002,8 +1002,8 @@ TESTS+=	tests/define_ns_++c_i.test \
 # C config file tests
 # ===================
 #
-TESTS+=	tests/declare_config_u.test \
-	tests/explain_config_u.test \
+TESTS+=	tests/declare_config_tdu.test \
+	tests/explain_config_tdu.test \
 	tests/using_config_i.test
 
 ###############################################################################
