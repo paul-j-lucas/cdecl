@@ -969,9 +969,9 @@ include{S}+\"  {
                 }
 
                 //
-                // The first time we encounter EOF, we want to treat it as if
-                // it were a newline by returning Y_END so commands in the
-                // parser always end in Y_END.
+                // The first time we encounter EOF (not for an include file),
+                // we want to treat it as if it were a newline by returning
+                // Y_END so commands in the parser always end in Y_END.
                 //
                 // Requesting more characters after encountering EOF will
                 // simply continue to return EOF, so the second time we
