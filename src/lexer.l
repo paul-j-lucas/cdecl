@@ -264,6 +264,8 @@ static bool pop_file( void ) {
   --include_file_depth;
   // The example code in the Flex manual leaks file handles; see:
   // https://stackoverflow.com/a/27512485/99089
+  assert( yyin != NULL );
+  assert( yyin != stdin );
   PJL_IGNORE_RV( fclose( yyin ) );
   yypop_buffer_state();
   assert( YY_CURRENT_BUFFER != NULL );
