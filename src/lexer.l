@@ -46,6 +46,7 @@
 #include "literals.h"
 #include "options.h"
 #include "print.h"
+#include "slist.h"
 #include "strbuf.h"
 #include "util.h"
 #include "cdecl_parser.h"               /* must go last */
@@ -137,7 +138,7 @@ char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
 static bool       digraph_warned;       ///< Printed digraph warning once?
-static size_t     include_file_depth;   ///< How many "include" files deep?
+static slist_t    include_path_stack;   ///< Stack of include file paths.
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
@@ -259,9 +260,10 @@ static inline int parse_int( int base ) {
  * @sa http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
  */
 static bool pop_file( void ) {
-  if ( include_file_depth == 0 )
+  if ( slist_empty( &include_path_stack ) )
     return false;
-  --include_file_depth;
+  free( slist_pop_front( &include_path_stack ) );
+  print_params.conf_path = slist_front( &include_path_stack );
   // The example code in the Flex manual leaks file handles; see:
   // https://stackoverflow.com/a/27512485/99089
   assert( yyin != NULL );
@@ -288,9 +290,9 @@ static char const* push_file( char const *path ) {
   assert( path != NULL );
 
   wordexp_t we;
-  int const we_rv = wordexp( path, &we, /*flags=*/0 );
+  int const rv_we = wordexp( path, &we, /*flags=*/0 );
 
-  switch ( we_rv ) {
+  switch ( rv_we ) {
     case 0:                             // success
       if ( we.we_wordc != 1 ) {
         wordfree( &we );
@@ -308,18 +310,24 @@ static char const* push_file( char const *path ) {
     case WRDE_CMDSUB:                   // can't happen
       PJL_FALLTHROUGH;
     default:
-      UNEXPECTED_INT_VALUE( we_rv );
+      UNEXPECTED_INT_VALUE( rv_we );
     // LCOV_EXCL_STOP
   } // swtich
 
+  char const *error = NULL;
   FILE *const include_file = fopen( we.we_wordv[0], "r" );
+  if ( include_file == NULL ) {
+    error = STRERROR();
+  } else {
+    yyin = include_file;
+    yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
+    char *const expanded_path = check_strdup( we.we_wordv[0] );
+    slist_push_front( &include_path_stack, expanded_path );
+    print_params.conf_path = expanded_path;
+  }
+
   wordfree( &we );
-  if ( include_file == NULL )
-    return STRERROR();
-  yyin = include_file;
-  yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
-  ++include_file_depth;
-  return NULL;
+  return error;
 }
 
 /**
@@ -1062,6 +1070,7 @@ c_loc_t lexer_loc( void ) {
 void lexer_reset( bool hard_reset ) {
   if ( hard_reset ) {
     is_eof = false;
+    slist_cleanup( &include_path_stack, &free );
     yylineno = 0;
   }
   BEGIN( INITIAL );
