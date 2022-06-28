@@ -287,7 +287,9 @@ static bool pop_file( void ) {
  */
 PJL_WARN_UNUSED_RESULT
 static char const* push_file( char const *path ) {
-  assert( path != NULL );
+  path = null_if_empty( path );
+  if ( path == NULL )
+    return "empty path";
 
   wordexp_t we;
   int const rv_we = wordexp( path, &we, /*flags=*/0 );
