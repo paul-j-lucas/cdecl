@@ -367,7 +367,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #POINTER_CAST()
  * @sa #STATIC_CAST()
  */
-#define INTEGER_CAST(T,EXPR)      ((T)(uint64_t)(EXPR))
+#define INTEGER_CAST(T,EXPR)      ((T)(uintmax_t)(EXPR))
 
 /**
  * A special-case of #FATAL_ERR that additionally prints the file and line
