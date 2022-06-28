@@ -137,7 +137,7 @@ char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
 static bool       digraph_warned;       ///< Printed digraph warning once?
-static size_t     include_depth;        ///< How many "include" deep?
+static size_t     include_file_depth;   ///< How many "include" files deep?
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
@@ -248,6 +248,76 @@ static inline int parse_int( int base ) {
   return STATIC_CAST( int,
     strtol( lexer_token + (base == 2 ? 2 : 0), /*endptr=*/NULL, base )
   );
+}
+
+/**
+ * Pops the current input file, if any.
+ *
+ * @return Returns `true` only if an include file was popped.
+ *
+ * @sa push_file()
+ * @sa http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
+ */
+static bool pop_file( void ) {
+  if ( include_file_depth == 0 )
+    return false;
+  --include_file_depth;
+  // The example code in the Flex manual leaks file handles; see:
+  // https://stackoverflow.com/a/27512485/99089
+  PJL_IGNORE_RV( fclose( yyin ) );
+  yypop_buffer_state();
+  assert( YY_CURRENT_BUFFER != NULL );
+  return true;
+}
+
+/**
+ * Pushes the current input file and sets \a path as the file to read
+ * subsequent input from.
+ *
+ * @param path The path to read subsequent input from until EOF.  Shell
+ * metacharacters, e.g., `~`, are expanded.
+ * @return Returns NULL upon success or an error message upon failure.
+ *
+ * @sa pop_file()
+ * @sa http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
+ */
+PJL_WARN_UNUSED_RESULT
+static char const* push_file( char const *path ) {
+  assert( path != NULL );
+
+  wordexp_t we;
+  int const we_rv = wordexp( path, &we, /*flags=*/0 );
+
+  switch ( we_rv ) {
+    case 0:                             // success
+      if ( we.we_wordc != 1 ) {
+        wordfree( &we );
+        return "too many files";
+      }
+      break;
+    case WRDE_BADCHAR:
+      return "path contains unquoted shell character";
+    case WRDE_SYNTAX:
+      return "path syntax error";
+    // LCOV_EXCL_START
+    case WRDE_NOSPACE:                  // unlikely
+      return "out of memory";
+    case WRDE_BADVAL:                   // can't happen
+    case WRDE_CMDSUB:                   // can't happen
+      PJL_FALLTHROUGH;
+    default:
+      UNEXPECTED_INT_VALUE( we_rv );
+    // LCOV_EXCL_STOP
+  } // swtich
+
+  FILE *const include_file = fopen( we.we_wordv[0], "r" );
+  wordfree( &we );
+  if ( include_file == NULL )
+    return STRERROR();
+  yyin = include_file;
+  yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
+  ++include_file_depth;
+  return NULL;
 }
 
 /**
@@ -840,52 +910,12 @@ include{S}+\"  {
 
 <X_INCL>\"    {
                 BEGIN( INITIAL );
-
-                wordexp_t we;
-                int const we_rv = wordexp( str_lit_buf.str, &we, /*flags=*/0 );
+                char const *const err = push_file( str_lit_buf.str );
                 strbuf_reset( &str_lit_buf );
-
-                char const *we_reason = NULL;
-                switch ( we_rv ) {
-                  case 0:               // success
-                    if ( we.we_wordc != 1 ) {
-                      we_reason = "too many files";
-                      wordfree( &we );
-                    }
-                    break;
-                  case WRDE_BADCHAR:
-                    we_reason = "path contains unquoted shell character";
-                    break;
-                  case WRDE_SYNTAX:
-                    we_reason = "syntax error";
-                    break;
-                  // LCOV_EXCL_START
-                  case WRDE_NOSPACE:    // unlikely
-                    we_reason = "out of memory";
-                    break;
-                  case WRDE_BADVAL:     // can't happen
-                  case WRDE_CMDSUB:     // can't happen
-                    PJL_FALLTHROUGH;
-                  default:
-                    UNEXPECTED_INT_VALUE( we_rv );
-                  // LCOV_EXCL_STOP
-                } // swtich
-
-                if ( we_reason != NULL ) {
-                  print_error( &str_lit_loc, "%s\n", we_reason );
+                if ( err != NULL ) {
+                  print_error( &str_lit_loc, "%s\n", err );
                   return Y_LEXER_ERROR;
                 }
-
-                FILE *const include_file = fopen( we.we_wordv[0], "r" );
-                wordfree( &we );
-                if ( include_file == NULL ) {
-                  print_error( &str_lit_loc, "%s\n", STRERROR() );
-                  return Y_LEXER_ERROR;
-                }
-                yyin = include_file;
-                YY_BUFFER_STATE new_buf = yy_create_buffer( yyin, YY_BUF_SIZE );
-                yypush_buffer_state( new_buf );
-                ++include_depth;
               }
 
 <X_STR>\"     { /* X_STR is the same as X_CHAR except " replaces '. */
@@ -960,13 +990,8 @@ include{S}+\"  {
                 newline();
                 BEGIN( INITIAL );
 
-                if ( include_depth > 0 ) {
-                  --include_depth;
-                  yypop_buffer_state();
-                  if ( YY_CURRENT_BUFFER == NULL )
-                    yyterminate();
+                if ( pop_file() )
                   return Y_END;
-                }
 
                 //
                 // The first time we encounter EOF (not for an include file),

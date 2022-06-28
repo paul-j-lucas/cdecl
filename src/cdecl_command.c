@@ -51,6 +51,7 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
   { L_EXIT,                   LANG_ONLY,  LANG_ANY                },
   { L_EXPLAIN,                PROG_NAME,  LANG_ANY                },
   { L_HELP,                   FIRST_ARG,  LANG_ANY                },
+  { L_INCLUDE,                LANG_ONLY,  LANG_ANY                },
   { L_INLINE /* namespace */, FIRST_ARG,  LANG_INLINE_NAMESPACE   },
   { L_NAMESPACE,              FIRST_ARG,  LANG_CPP_ANY            },
   { L_QUIT,                   LANG_ONLY,  LANG_ANY                },

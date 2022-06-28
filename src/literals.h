@@ -84,6 +84,7 @@ extern char const L_EXPRESSION[];
 extern char const L_FUNC[];               // synonym for "function"
 extern char const L_FUNCTION[];
 extern char const L_HELP[];
+extern char const L_INCLUDE[];
 extern char const L_INIT[];               // synonym for "initialization"
 extern char const L_INITIALIZATION[];
 extern char const L_INTO[];

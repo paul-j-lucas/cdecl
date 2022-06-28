@@ -57,6 +57,7 @@ char const L_EXPRESSION[]         = "expression";
 char const L_FUNC[]               = "func";
 char const L_FUNCTION[]           = "function";
 char const L_HELP[]               = "help";
+char const L_INCLUDE[]            = "include";
 char const L_INIT[]               = "init";
 char const L_INITIALIZATION[]     = "initialization";
 char const L_INTO[]               = "into";
