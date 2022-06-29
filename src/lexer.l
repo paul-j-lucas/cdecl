@@ -125,6 +125,18 @@
 #define YY_USER_ACTION_UNDO_FOR_REJECT \
   token_column -= (int)yyleng
 
+/**
+ * Data to keep for a file that is `include`d.
+ *
+ * @note We need \ref include_file_info.last_lineno "last_lineno" because Flex
+ * doesn't restore `yylineno` when `yypop_buffer_state()`.
+ */
+struct include_file_info {
+  char const *path;                     ///< The file's path.
+  int         last_lineno;              ///< The file's last line number.
+};
+typedef struct include_file_info include_file_info_t;
+
 static char const lexer_token_init_buf; ///< So lexer_token is never NULL.
 
 // extern variables
@@ -138,7 +150,7 @@ char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
 static bool       digraph_warned;       ///< Printed digraph warning once?
-static slist_t    include_path_stack;   ///< Stack of include file paths.
+static slist_t    include_file_stack;   ///< Stack of include file information.
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
@@ -157,6 +169,27 @@ noreturn
 static void       lexer_fatal( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Frees all memory used by include_file_stack but _not_ include_file_stack
+ * itself.
+ */
+static void include_file_stack_cleanup( void ) {
+  //
+  // We can't use a special ifi_free() function that would always free
+  // ifi->path and ifi itself because the path of the first include_file_info
+  // push'd was the original print_params.conf_path that was not allocated by
+  // the lexer in push_file().  Hence, we have to free the path of all but the
+  // first include_file_info.
+  //
+  while ( !slist_empty( &include_file_stack ) ) {
+    FREE( print_params.conf_path );
+    include_file_info_t *const ifi = slist_pop_front( &include_file_stack );
+    assert( ifi != NULL );
+    print_params.conf_path = ifi->path;
+    free( ifi );
+  } // while
+}
 
 /**
  * Lexer-specific wrapper around cdecl_keyword_find() that finds a cdecl
@@ -260,10 +293,16 @@ static inline int parse_int( int base ) {
  * @sa http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
  */
 static bool pop_file( void ) {
-  if ( slist_empty( &include_path_stack ) )
+  if ( slist_empty( &include_file_stack ) )
     return false;
-  free( slist_pop_front( &include_path_stack ) );
-  print_params.conf_path = slist_front( &include_path_stack );
+
+  FREE( print_params.conf_path );
+  include_file_info_t *const ifi = slist_pop_front( &include_file_stack );
+  assert( ifi != NULL );
+  print_params.conf_path = ifi->path;
+  yylineno = ifi->last_lineno;
+  free( ifi );
+
   // The example code in the Flex manual leaks file handles; see:
   // https://stackoverflow.com/a/27512485/99089
   assert( yyin != NULL );
@@ -271,6 +310,7 @@ static bool pop_file( void ) {
   PJL_IGNORE_RV( fclose( yyin ) );
   yypop_buffer_state();
   assert( YY_CURRENT_BUFFER != NULL );
+
   return true;
 }
 
@@ -320,12 +360,16 @@ static char const* push_file( char const *path ) {
   FILE *const include_file = fopen( we.we_wordv[0], "r" );
   if ( include_file == NULL ) {
     error = STRERROR();
-  } else {
+  }
+  else {
+    include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );
+    *ifi = (include_file_info_t){ print_params.conf_path, yylineno };
+    slist_push_front( &include_file_stack, ifi );
+
     yyin = include_file;
     yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
-    char *const expanded_path = check_strdup( we.we_wordv[0] );
-    slist_push_front( &include_path_stack, expanded_path );
-    print_params.conf_path = expanded_path;
+    print_params.conf_path = check_strdup( we.we_wordv[0] );
+    yylineno = 0;
   }
 
   wordfree( &we );
@@ -1072,7 +1116,7 @@ c_loc_t lexer_loc( void ) {
 void lexer_reset( bool hard_reset ) {
   if ( hard_reset ) {
     is_eof = false;
-    slist_cleanup( &include_path_stack, &free );
+    include_file_stack_cleanup();
     yylineno = 0;
   }
   BEGIN( INITIAL );

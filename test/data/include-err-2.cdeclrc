@@ -1,0 +1,3 @@
+struct B1
+include "data/not_found.cdeclrc"
+struct B2

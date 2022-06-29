@@ -1,0 +1,3 @@
+struct A1
+include "data/include-err-2.cdeclrc"
+struct A2

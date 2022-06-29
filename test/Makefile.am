@@ -1793,7 +1793,8 @@ TESTS+=	tests/file-cast_x.test \
 TESTS+=	tests/include-nested.test \
 	tests/include-ok.test
 
-TESTS+=	tests/include-too_many_files.test \
+TESTS+=	tests/include-err-01.test \
+	tests/include-too_many_files.test \
 	tests/include-unquoted.test
 
 ###############################################################################
