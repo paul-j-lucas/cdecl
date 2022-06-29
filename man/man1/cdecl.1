@@ -2560,8 +2560,9 @@ Arbitrary expressions for array sizes are not supported.
 .IP \n+[step].
 C++
 \f(CWdecltype\fP,
-function default arguments,
-structured bindings,
+default argument,
+lambda,
+structured binding,
 and
 template declarations
 are not supported.
@@ -2576,7 +2577,7 @@ and
 are supported;
 arbitrary expressions for \f(CWnoexcept\fP
 or types for \f(CWthrow\fP
-are not supported.
+are not.
 .IP \n+[step].
 Namespace alias declarations are not supported:
 .RS
@@ -2788,8 +2789,8 @@ supports the C++11 function trailing return-type syntax,
 .B declare
 always prints in the traditional syntax.
 .IP \n+[step].
-Only a name may be cast;
-casting an expression is not supported.
+Only casting a name is supported;
+casting an expression is not.
 .IP \n+[step].
 When converting from or to a C++ new-style cast,
 only some semantic validation is performed
