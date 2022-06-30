@@ -150,7 +150,7 @@ char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
 static bool       digraph_warned;       ///< Printed digraph warning once?
-static slist_t    include_file_stack;   ///< Stack of include file information.
+static slist_t    include_stack;        ///< Stack of include file information.
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
@@ -171,10 +171,9 @@ static void       lexer_fatal( char const* );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Frees all memory used by include_file_stack but _not_ include_file_stack
- * itself.
+ * Frees all memory used by include_stack but _not_ include_stack itself.
  */
-static void include_file_stack_cleanup( void ) {
+static void include_cleanup( void ) {
   //
   // We can't use a special ifi_free() function that would always free
   // ifi->path and ifi itself because the path of the first include_file_info
@@ -182,9 +181,9 @@ static void include_file_stack_cleanup( void ) {
   // the lexer in push_file().  Hence, we have to free the path of all but the
   // first include_file_info.
   //
-  while ( !slist_empty( &include_file_stack ) ) {
+  while ( !slist_empty( &include_stack ) ) {
     FREE( print_params.conf_path );
-    include_file_info_t *const ifi = slist_pop_front( &include_file_stack );
+    include_file_info_t *const ifi = slist_pop_front( &include_stack );
     assert( ifi != NULL );
     print_params.conf_path = ifi->path;
     free( ifi );
@@ -293,12 +292,13 @@ static inline int parse_int( int base ) {
  * @sa http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
  */
 static bool pop_file( void ) {
-  if ( slist_empty( &include_file_stack ) )
+  if ( slist_empty( &include_stack ) )
     return false;
 
   FREE( print_params.conf_path );
-  include_file_info_t *const ifi = slist_pop_front( &include_file_stack );
+  include_file_info_t *const ifi = slist_pop_front( &include_stack );
   assert( ifi != NULL );
+
   print_params.conf_path = ifi->path;
   yylineno = ifi->last_lineno;
   free( ifi );
@@ -364,7 +364,7 @@ static char const* push_file( char const *path ) {
   else {
     include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );
     *ifi = (include_file_info_t){ print_params.conf_path, yylineno };
-    slist_push_front( &include_file_stack, ifi );
+    slist_push_front( &include_stack, ifi );
 
     yyin = include_file;
     yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
@@ -1116,7 +1116,7 @@ c_loc_t lexer_loc( void ) {
 void lexer_reset( bool hard_reset ) {
   if ( hard_reset ) {
     is_eof = false;
-    include_file_stack_cleanup();
+    include_cleanup();
     yylineno = 0;
   }
   BEGIN( INITIAL );
