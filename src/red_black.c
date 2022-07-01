@@ -289,6 +289,7 @@ static void rb_tree_rotate_node( rb_tree_t *tree, rb_node_t *node,
   node->parent->child[ is_dir( node, RB_R ) ] = temp;
   temp->child[dir] = node;
   node->parent = temp;
+  assert( rb_nil_is_nil() );
 }
 
 /**
