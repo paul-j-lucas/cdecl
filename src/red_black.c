@@ -198,7 +198,6 @@ static bool rb_nil_is_nil( void ) {
   assert( rb_nil.child[RB_L] == RB_NIL );
   assert( rb_nil.child[RB_R] == RB_NIL );
   assert( rb_nil.parent == RB_NIL );
-  assert( rb_nil.color == RB_BLACK );
   return true;
 }
 #endif /* NDEBUG */
