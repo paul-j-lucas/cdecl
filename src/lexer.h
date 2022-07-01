@@ -88,6 +88,11 @@ extern char const      *lexer_token;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Initializes the lexer.
+ */
+void lexer_init( void );
+
+/**
  * Gets the current input line.
  *
  * @param plen The value pointed at is set to be the length of said line.

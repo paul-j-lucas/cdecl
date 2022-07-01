@@ -110,6 +110,7 @@ int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   perror_exit_if( atexit( &cdecl_cleanup ) != 0, EX_OSERR );
   cli_options_init( &argc, &argv );
+  lexer_init();
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
   if ( opt_read_conf )

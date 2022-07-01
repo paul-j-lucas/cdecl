@@ -46,6 +46,7 @@
 #include "literals.h"
 #include "options.h"
 #include "print.h"
+#include "red_black.h"
 #include "slist.h"
 #include "strbuf.h"
 #include "util.h"
@@ -132,7 +133,8 @@
  * doesn't restore `yylineno` when `yypop_buffer_state()`.
  */
 struct include_file_info {
-  char const *path;                     ///< The file's path.
+  char const *orig_path;                ///< The file's original path.
+  char const *real_path;                ///< The file's real path.
   int         last_lineno;              ///< The file's last line number.
 };
 typedef struct include_file_info include_file_info_t;
@@ -150,7 +152,8 @@ char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
 static bool       digraph_warned;       ///< Printed digraph warning once?
-static slist_t    include_stack;        ///< Stack of include file information.
+static rb_tree_t  include_set;          ///< Set of resolved include paths.
+static slist_t    include_stack;        ///< Stack of original include paths.
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
@@ -171,23 +174,41 @@ static void       lexer_fatal( char const* );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Frees all memory used by include_stack but _not_ include_stack itself.
+ * Compares two \ref include_file_info.
+ *
+ * @param i_ifi The first \ref include_file_info.
+ * @param j_ifi The second \ref include_file_info.
+ * @return Returns an integer less than, equal to, or greater than 0, according
+ * to whether the real path pointed to by \a i_ifi is less than, equal to, or
+ * greater than the real path pointed to by \a j_ifi.
+ */
+static int ifi_cmp( include_file_info_t const *i_ifi,
+                    include_file_info_t const *j_ifi ) {
+  assert( i_ifi != NULL );
+  assert( j_ifi != NULL );
+  return strcmp( i_ifi->real_path, j_ifi->real_path );
+}
+
+/**
+ * Frees all memory associated with \a ifi _including_ \a ifi itself.
+ *
+ * @param ifi The \ref include_file_info to free.
+ */
+static void ifi_free( include_file_info_t *ifi ) {
+  if ( ifi != NULL ) {
+    FREE( ifi->orig_path );
+    FREE( ifi->real_path );
+    free( ifi );
+  }
+}
+
+/**
+ * Frees all memory used by include files.
  */
 static void include_cleanup( void ) {
-  //
-  // We can't use a special ifi_free() function that would always free
-  // ifi->path and ifi itself because the path of the first include_file_info
-  // push'd was the original print_params.conf_path that was not allocated by
-  // the lexer in push_file().  Hence, we have to free the path of all but the
-  // first include_file_info.
-  //
-  while ( !slist_empty( &include_stack ) ) {
-    FREE( print_params.conf_path );
-    include_file_info_t *const ifi = slist_pop_front( &include_stack );
-    assert( ifi != NULL );
-    print_params.conf_path = ifi->path;
-    free( ifi );
-  } // while
+  rb_tree_cleanup( &include_set, (rb_free_fn_t)&ifi_free );
+  slist_cleanup( &include_stack, NULL );
+  lexer_init();
 }
 
 /**
@@ -295,11 +316,28 @@ static bool pop_file( void ) {
   if ( slist_empty( &include_stack ) )
     return false;
 
-  FREE( print_params.conf_path );
-  include_file_info_t *const ifi = slist_pop_front( &include_stack );
+  assert( print_params.conf_path != NULL );
+
+  include_file_info_t *ifi;
+  char *const real_path = realpath( print_params.conf_path, /*real_buf=*/NULL );
+  if ( real_path == NULL ) {
+    // TODO
+  }
+  else {
+    include_file_info_t const want_ifi = { print_params.conf_path, real_path, 0 };
+    rb_node_t *const rb = rb_tree_find( &include_set, &want_ifi );
+    free( real_path );
+    assert( rb != NULL );
+    ifi = rb_tree_delete( &include_set, rb );
+    assert( ifi != NULL );
+    assert( ifi->orig_path == print_params.conf_path );
+    ifi_free( ifi );
+  }
+
+  ifi = slist_pop_front( &include_stack );
   assert( ifi != NULL );
 
-  print_params.conf_path = ifi->path;
+  print_params.conf_path = ifi->orig_path;
   yylineno = ifi->last_lineno;
   free( ifi );
 
@@ -315,7 +353,7 @@ static bool pop_file( void ) {
 }
 
 /**
- * Pushes the current input file and sets \a path as the file to read
+ * Pushes the current input file and sets \a path as the new file to read
  * subsequent input from.
  *
  * @param path The path to read subsequent input from until EOF.  Shell
@@ -334,11 +372,13 @@ static char const* push_file( char const *path ) {
   wordexp_t we;
   int const rv_we = wordexp( path, &we, /*flags=*/0 );
 
+  char const *error = NULL;
+
   switch ( rv_we ) {
     case 0:                             // success
       if ( we.we_wordc != 1 ) {
-        wordfree( &we );
-        return "too many files";
+        error = "too many files";
+        goto done;
       }
       break;
     case WRDE_BADCHAR:
@@ -356,22 +396,43 @@ static char const* push_file( char const *path ) {
     // LCOV_EXCL_STOP
   } // swtich
 
-  char const *error = NULL;
-  FILE *const include_file = fopen( we.we_wordv[0], "r" );
+  char const *const real_path = realpath( we.we_wordv[0], /*real_buf=*/NULL );
+  if ( real_path == NULL ) {
+    error = "could not resolve path";
+    goto done;
+  }
+  char const *const orig_path = check_strdup( we.we_wordv[0] );
+  include_file_info_t *ifi = MALLOC( include_file_info_t, 1 );
+  *ifi = (include_file_info_t){ orig_path, real_path, 0 };
+
+  rb_node_t *old_rb = rb_tree_insert( &include_set, ifi );
+  if ( old_rb != NULL ) {
+    error = "file previously included";
+    ifi_free( ifi );
+    goto done;
+  }
+
+  FILE *const include_file = fopen( real_path, "r" );
   if ( include_file == NULL ) {
+    old_rb = rb_tree_find( &include_set, ifi );
+    assert( old_rb != NULL );
+    ifi = rb_tree_delete( &include_set, old_rb );
+    assert( ifi != NULL );
+    ifi_free( ifi );
     error = STRERROR();
-  }
-  else {
-    include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );
-    *ifi = (include_file_info_t){ print_params.conf_path, yylineno };
-    slist_push_front( &include_stack, ifi );
-
-    yyin = include_file;
-    yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
-    print_params.conf_path = check_strdup( we.we_wordv[0] );
-    yylineno = 0;
+    goto done;
   }
 
+  ifi = MALLOC( include_file_info_t, 1 );
+  *ifi = (include_file_info_t){ print_params.conf_path, NULL, yylineno };
+  slist_push_front( &include_stack, ifi );
+
+  yyin = include_file;
+  yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
+  print_params.conf_path = orig_path;
+  yylineno = 0;
+
+done:
   wordfree( &we );
   return error;
 }
@@ -1088,6 +1149,10 @@ static void lexer_fatal( char const *msg ) {
 // LCOV_EXCL_STOP
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+void lexer_init( void ) {
+  rb_tree_init( &include_set, (rb_cmp_fn_t)&ifi_cmp );
+}
 
 char const* lexer_input_line( size_t *plen ) {
   assert( plen != NULL );
