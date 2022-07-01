@@ -63,6 +63,25 @@ static noreturn void usage( void ) {
 }
 // LCOV_EXCL_STOP
 
+////////// tests //////////////////////////////////////////////////////////////
+
+static void test_insert2_find_delete( void ) {
+  rb_tree_t tree;
+  rb_tree_init( &tree, &test_rb_data_cmp );
+
+  TEST( rb_tree_insert( &tree, (void*)"A" ) == NULL );
+  if ( TEST( rb_tree_insert( &tree, (void*)"B" ) == NULL ) ) {
+    rb_node_t *const node = rb_tree_find( &tree, (void*)"B" );
+    if ( TEST( node != NULL ) ) {
+      void *const data = rb_tree_delete( &tree, node );
+      if ( TEST( data != NULL ) )
+        TEST( strcmp( data, "B" ) == 0 );
+    }
+  }
+
+  rb_tree_cleanup( &tree, /*free_fn=*/NULL );
+}
+
 ////////// main ///////////////////////////////////////////////////////////////
 
 int main( int argc, char const *argv[] ) {
@@ -106,6 +125,8 @@ int main( int argc, char const *argv[] ) {
   }
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
+
+  test_insert2_find_delete();
 
   printf( "%u failures\n", test_failures );
   exit( test_failures > 0 ? EX_SOFTWARE : EX_OK );

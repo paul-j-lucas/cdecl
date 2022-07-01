@@ -289,6 +289,7 @@ static void rb_tree_rotate_node( rb_tree_t *tree, rb_node_t *node,
   node->parent->child[ is_dir( node, RB_R ) ] = temp;
   temp->child[dir] = node;
   node->parent = temp;
+  assert( rb_nil_is_nil() );
 }
 
 /**
@@ -345,10 +346,12 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   rb_node_t *const non_nil_child =
     surrogate->child[ surrogate->child[RB_L] == RB_NIL ];
 
-  if ( (non_nil_child->parent = surrogate->parent) == RB_ROOT(tree) )
+  if ( surrogate->parent == RB_ROOT(tree) ) {
+    non_nil_child->parent = surrogate->parent;
     RB_FIRST(tree) = non_nil_child;
-  else
+  } else {
     surrogate->parent->child[ is_dir( surrogate, RB_R ) ] = non_nil_child;
+  }
 
   if ( is_black( surrogate ) )
     rb_tree_repair_node( tree, non_nil_child );
