@@ -156,30 +156,6 @@ static inline bool is_red( rb_node_t const *node ) {
 
 ////////// local functions ////////////////////////////////////////////////////
 
-#ifndef NDEBUG
-/**
- * Checks that some invariants of \a tree still hold.
- *
- * @param tree A pointer to the red-black tree to check.
- */
-static void rb_tree_check( rb_tree_t const *tree ) {
-  assert( tree != NULL );
-  assert( RB_NIL(tree)->data == NULL );
-  assert( RB_NIL(tree)->child[RB_L] == RB_NIL(tree) );
-  assert( RB_NIL(tree)->child[RB_R] == RB_NIL(tree) );
-  assert( RB_NIL(tree)->parent == RB_NIL(tree) );
-  assert( RB_NIL(tree)->color == RB_BLACK );
-  assert( RB_FIRST(tree)->color == RB_BLACK );
-  assert(
-    // If the left child is nil, the right child must not be nil.
-    RB_FIRST(tree) != RB_NIL(tree) || RB_ROOT(tree)->child[RB_R] == RB_NIL(tree)
-  );
-}
-#else
-#define rb_tree_check(TREE)       do { } while (0)
-}
-#endif /* NDEBUG */
-
 /**
  * Frees all memory associated with \a node _including_ \a node itself.
  *
@@ -249,6 +225,30 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
   temp->child[dir] = node;
   node->parent = temp;
 }
+
+#ifndef NDEBUG
+/**
+ * Checks that some invariants of \a tree still hold.
+ *
+ * @param tree A pointer to the red-black tree to check.
+ */
+static void rb_tree_check( rb_tree_t const *tree ) {
+  assert( tree != NULL );
+  assert( RB_NIL(tree)->data == NULL );
+  assert( RB_NIL(tree)->child[RB_L] == RB_NIL(tree) );
+  assert( RB_NIL(tree)->child[RB_R] == RB_NIL(tree) );
+  assert( RB_NIL(tree)->parent == RB_NIL(tree) );
+  assert( RB_NIL(tree)->color == RB_BLACK );
+  assert( RB_FIRST(tree)->color == RB_BLACK );
+  assert(
+    // If the left child is nil, the right child must also be nil.
+    RB_ROOT(tree)->child[RB_L] != RB_NIL(tree) ||
+    RB_ROOT(tree)->child[RB_R] == RB_NIL(tree)
+  );
+}
+#else
+# define rb_tree_check(TREE)      do { } while (0)
+#endif /* NDEBUG */
 
 /**
  * Repairs the tree after a node has been deleted by rotating and repainting
