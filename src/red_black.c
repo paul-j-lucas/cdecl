@@ -170,6 +170,33 @@ static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
   }
 }
 
+/**
+ * Gets the next node from \a node.
+ *
+ * @param tree A pointer to the red-black tree that \a node is part of.
+ * @param node A pointer to the rb_node to get the next node from.
+ * @return Returns said node.
+ */
+PJL_WARN_UNUSED_RESULT
+static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
+  assert( tree != NULL );
+  assert( node != NULL );
+
+  rb_node_t *next = node->child[RB_R];
+
+  if ( next != RB_NIL(tree) ) {
+    while ( next->child[RB_L] != RB_NIL(tree) )
+      next = next->child[RB_L];
+  } else {
+    // No right child, move up until we find it or hit the root.
+    for ( next = node->parent; node == next->child[RB_R]; next = next->parent )
+      node = next;
+    if ( next == RB_ROOT(tree) )
+      next = RB_NIL(tree);
+  }
+  return next;
+}
+
 #ifndef NDEBUG
 /**
  * Checks that some invariants of \a tree still hold.
@@ -193,33 +220,6 @@ static void rb_tree_check( rb_tree_t const *tree ) {
 #define rb_tree_check(TREE)       do { } while (0)
 }
 #endif /* NDEBUG */
-
-/**
- * Gets the successor of \a node.
- *
- * @param tree A pointer to the red-black tree that \a node is part of.
- * @param node A pointer to the rb_node to get the successor of.
- * @return Returns said successor.
- */
-PJL_WARN_UNUSED_RESULT
-static rb_node_t* rb_tree_node_successor( rb_tree_t *tree, rb_node_t *node ) {
-  assert( tree != NULL );
-  assert( node != NULL );
-
-  rb_node_t *next = node->child[RB_R];
-
-  if ( next != RB_NIL(tree) ) {
-    while ( next->child[RB_L] != RB_NIL(tree) )
-      next = next->child[RB_L];
-  } else {
-    // No right child, move up until we find it or hit the root.
-    for ( next = node->parent; node == next->child[RB_R]; next = next->parent )
-      node = next;
-    if ( next == RB_ROOT(tree) )
-      next = RB_NIL(tree);
-  }
-  return next;
-}
 
 /**
  * Repairs the tree after a node has been deleted by rotating and repainting
@@ -357,7 +357,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   rb_node_t *const surrogate =
     delete->child[RB_L] == RB_NIL(tree) || delete->child[RB_R] == RB_NIL(tree) ?
       delete :
-      rb_tree_node_successor( tree, delete );
+      rb_node_next( tree, delete );
 
   rb_node_t *const non_nil_child =
     surrogate->child[ surrogate->child[RB_L] == RB_NIL(tree) ];
