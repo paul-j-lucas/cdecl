@@ -257,7 +257,7 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
  * @param tree A pointer to the red-black tree to repair.
  * @param node A pointer to the rb_node to start the repair at.
  */
-static void rb_tree_repair_node( rb_tree_t *tree, rb_node_t *node ) {
+static void rb_tree_repair( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );
 
@@ -362,18 +362,18 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   rb_node_t *const surrogate =
     is_full( tree, delete ) ? rb_node_next( tree, delete ) : delete;
 
-  rb_node_t *const non_nil_child =
+  rb_node_t *const surrogate_child =
     surrogate->child[ surrogate->child[RB_L] == RB_NIL(tree) ];
 
   if ( surrogate->parent == RB_ROOT(tree) ) {
-    non_nil_child->parent = surrogate->parent;
-    RB_FIRST(tree) = non_nil_child;
+    surrogate_child->parent = RB_ROOT(tree);
+    RB_FIRST(tree) = surrogate_child;
   } else {
-    surrogate->parent->child[ is_dir( surrogate, RB_R ) ] = non_nil_child;
+    surrogate->parent->child[ is_dir( surrogate, RB_R ) ] = surrogate_child;
   }
 
   if ( is_black( surrogate ) )
-    rb_tree_repair_node( tree, non_nil_child );
+    rb_tree_repair( tree, surrogate_child );
 
   if ( surrogate != delete ) {
     surrogate->color = delete->color;
