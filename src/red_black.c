@@ -177,8 +177,7 @@ static void rb_tree_check( rb_tree_t const *tree ) {
   );
 }
 #else
-#define rb_tree_check(TREE)       do { } while (0)
-}
+# define rb_tree_check(TREE)      do { } while (0)
 #endif /* NDEBUG */
 
 /**
