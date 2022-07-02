@@ -257,7 +257,7 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
  * @param tree A pointer to the red-black tree to repair.
  * @param node A pointer to the rb_node to start the repair at.
  */
-static void rb_tree_repair_node( rb_tree_t *tree, rb_node_t *node ) {
+static void rb_tree_repair( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );
 
@@ -373,7 +373,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   }
 
   if ( is_black( surrogate ) )
-    rb_tree_repair_node( tree, non_nil_child );
+    rb_tree_repair( tree, non_nil_child );
 
   if ( surrogate != delete ) {
     surrogate->color = delete->color;
