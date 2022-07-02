@@ -563,7 +563,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                *
                * http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
                */
-include{S}+\"  {
+include{S}*\"  {
                 strbuf_init( &str_lit_buf );
                 //
                 // Save the start location because we want to use it as the
