@@ -316,26 +316,17 @@ static bool pop_file( void ) {
   if ( slist_empty( &include_stack ) )
     return false;
 
-  assert( print_params.conf_path != NULL );
-
-  include_file_info_t *ifi;
-  char *const real_path = realpath( print_params.conf_path, /*real_buf=*/NULL );
-  if ( real_path == NULL ) {
-    // TODO
-  }
-  else {
-    include_file_info_t const want_ifi = { print_params.conf_path, real_path, 0 };
-    rb_node_t *const rb = rb_tree_find( &include_set, &want_ifi );
-    free( real_path );
-    assert( rb != NULL );
-    ifi = rb_tree_delete( &include_set, rb );
-    assert( ifi != NULL );
-    assert( ifi->orig_path == print_params.conf_path );
-    ifi_free( ifi );
-  }
-
-  ifi = slist_pop_front( &include_stack );
+  include_file_info_t *ifi = slist_pop_front( &include_stack );
   assert( ifi != NULL );
+
+  include_file_info_t const want_ifi = { NULL, ifi->real_path, 0 };
+  rb_node_t *const found_rb = rb_tree_find( &include_set, &want_ifi );
+  assert( found_rb != NULL );
+
+  include_file_info_t *ifi2 = rb_tree_delete( &include_set, found_rb );
+  assert( ifi2 != NULL );
+  assert( ifi2->orig_path == print_params.conf_path );
+  ifi_free( ifi2 );
 
   print_params.conf_path = ifi->orig_path;
   yylineno = ifi->last_lineno;
@@ -417,6 +408,11 @@ static char const* push_file( char const *path ) {
     goto done;
   }
 
+  //
+  // Now that we know the path resolves, it wasn't previously included, and we
+  // can open it, we can copy temp_ifi on the stack to a new ifi in the heap
+  // and insert it into include_set.
+  //
   include_file_info_t *ifi = MALLOC( include_file_info_t, 1 );
   *ifi = temp_ifi;
   rb_insert_rv_t const rb_ins_rv = rb_tree_insert( &include_set, ifi );
@@ -424,7 +420,7 @@ static char const* push_file( char const *path ) {
   (void)rb_ins_rv;
 
   ifi = MALLOC( include_file_info_t, 1 );
-  *ifi = (include_file_info_t){ print_params.conf_path, NULL, yylineno };
+  *ifi = (include_file_info_t){ print_params.conf_path, real_path, yylineno };
   slist_push_front( &include_stack, ifi );
 
   yyin = include_file;
