@@ -366,7 +366,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
     surrogate->child[ surrogate->child[RB_L] == RB_NIL(tree) ];
 
   if ( surrogate->parent == RB_ROOT(tree) ) {
-    surrogate_child->parent = surrogate->parent;
+    surrogate_child->parent = RB_ROOT(tree);
     RB_FIRST(tree) = surrogate_child;
   } else {
     surrogate->parent->child[ is_dir( surrogate, RB_R ) ] = surrogate_child;
