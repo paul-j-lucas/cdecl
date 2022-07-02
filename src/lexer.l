@@ -129,12 +129,21 @@
 /**
  * Data to keep for a file that is `include`d.
  *
+ * When a file is included, an include_file_info is pushed onto include_stack
+ * such that:
+ *
+ *  + prev_orig_path contains the previous include (or configuration) original
+ *    (unresolved) path, if any, that is the value of print_params.conf_path.
+ *
+ *  + curr_real_path contains the resolved path of the new file about to be
+ *    included.
+ *
  * @note We need \ref include_file_info.last_lineno "last_lineno" because Flex
- * doesn't restore `yylineno` when `yypop_buffer_state()`.
+ * doesn't restore `yylineno` when `yypop_buffer_state()` is called.
  */
 struct include_file_info {
-  char const *orig_path;                ///< The file's original path.
-  char const *real_path;                ///< The file's real path.
+  char const *prev_orig_path;           ///< The previous file's original path.
+  char const *curr_real_path;           ///< The current file's real path.
   int         last_lineno;              ///< The file's last line number.
 };
 typedef struct include_file_info include_file_info_t;
@@ -152,7 +161,7 @@ char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
 static bool       digraph_warned;       ///< Printed digraph warning once?
-static rb_tree_t  include_set;          ///< Set of include paths.
+static rb_tree_t  include_set;          ///< Set of resolved include paths.
 static slist_t    include_stack;        ///< Stack of include paths.
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of `input_buf`.
@@ -180,8 +189,8 @@ static void       lexer_fatal( char const* );
  */
 static void ifi_free( include_file_info_t *ifi ) {
   if ( ifi != NULL ) {
-    FREE( ifi->orig_path );
-    FREE( ifi->real_path );
+    FREE( ifi->prev_orig_path );
+    FREE( ifi->curr_real_path );
     free( ifi );
   }
 }
@@ -190,8 +199,10 @@ static void ifi_free( include_file_info_t *ifi ) {
  * Frees all memory used by include files.
  */
 static void include_cleanup( void ) {
-  rb_tree_cleanup( &include_set, /*free_fn=*/NULL );
   slist_cleanup( &include_stack, (slist_free_fn_t)&ifi_free );
+  // Do not pass free() as the second argument since the resolved include path
+  // strings are shared with and owned by include_stack.
+  rb_tree_cleanup( &include_set, /*free_fn=*/NULL );
   lexer_init();
 }
 
@@ -303,14 +314,14 @@ static bool pop_file( void ) {
   include_file_info_t *ifi = slist_pop_front( &include_stack );
   assert( ifi != NULL );
 
-  rb_node_t *const found_rb = rb_tree_find( &include_set, ifi->real_path );
+  rb_node_t *const found_rb = rb_tree_find( &include_set, ifi->curr_real_path );
   assert( found_rb != NULL );
 
   char const *const rb_real_path = rb_tree_delete( &include_set, found_rb );
-  assert( rb_real_path == ifi->real_path );
+  assert( rb_real_path == ifi->curr_real_path );
   (void)rb_real_path;
 
-  print_params.conf_path = ifi->orig_path;
+  print_params.conf_path = ifi->prev_orig_path;
   yylineno = ifi->last_lineno;
   free( ifi );
 
@@ -391,9 +402,7 @@ static char const* push_file( char const *path ) {
   // Now that we know the path resolves, it wasn't previously included, and we
   // can open it, we can insert it into include_set.
   //
-  rb_insert_rv_t const rb_ins_rv = rb_tree_insert( &include_set, real_path );
-  assert( rb_ins_rv.inserted );
-  (void)rb_ins_rv;
+  PJL_IGNORE_RV( rb_tree_insert( &include_set, (void*)real_path ) );
 
   include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );
   *ifi = (include_file_info_t){ print_params.conf_path, real_path, yylineno };
