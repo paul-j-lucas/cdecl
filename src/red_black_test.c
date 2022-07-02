@@ -65,12 +65,29 @@ static noreturn void usage( void ) {
 
 ////////// tests //////////////////////////////////////////////////////////////
 
+static void test_insert1_find_delete( void ) {
+  rb_tree_t tree;
+  rb_tree_init( &tree, &test_rb_data_cmp );
+
+  if ( TEST( rb_tree_insert( &tree, (void*)"A" ).inserted ) ) {
+    rb_node_t *const node = rb_tree_find( &tree, (void*)"A" );
+    if ( TEST( node != NULL ) ) {
+      void *const data = rb_tree_delete( &tree, node );
+      if ( TEST( data != NULL ) )
+        TEST( strcmp( data, "A" ) == 0 );
+    }
+  }
+
+  rb_tree_cleanup( &tree, /*free_fn=*/NULL );
+  TEST( rb_tree_is_empty( &tree ) );
+}
+
 static void test_insert2_find_delete( void ) {
   rb_tree_t tree;
   rb_tree_init( &tree, &test_rb_data_cmp );
 
-  TEST( rb_tree_insert( &tree, (void*)"A" ).inserted );
-  if ( TEST( rb_tree_insert( &tree, (void*)"B" ).inserted ) ) {
+  if ( TEST( rb_tree_insert( &tree, (void*)"A" ).inserted ) &&
+       TEST( rb_tree_insert( &tree, (void*)"B" ).inserted ) ) {
     rb_node_t *const node = rb_tree_find( &tree, (void*)"B" );
     if ( TEST( node != NULL ) ) {
       void *const data = rb_tree_delete( &tree, node );
@@ -90,10 +107,13 @@ int main( int argc, char const *argv[] ) {
   if ( --argc != 0 )
     usage();                            // LCOV_EXCL_LINE
 
+  test_insert1_find_delete();
+  test_insert2_find_delete();
+
   rb_tree_t tree;
   rb_tree_init( &tree, &test_rb_data_cmp );
   rb_node_t *node;
-  rb_insert_rv_t rv;
+  rb_insert_rv_t rb_insert_rv;
 
   // test insertion
   TEST( rb_tree_insert( &tree, (void*)"A" ).inserted );
@@ -102,9 +122,9 @@ int main( int argc, char const *argv[] ) {
   TEST( rb_tree_insert( &tree, (void*)"D" ).inserted );
 
   // test insertion with existing data
-  rv = rb_tree_insert( &tree, (void*)"A" );
-  if ( TEST( !rv.inserted ) )
-    TEST( strcmp( rv.node->data, "A" ) == 0 );
+  rb_insert_rv = rb_tree_insert( &tree, (void*)"A" );
+  if ( TEST( !rb_insert_rv.inserted ) )
+    TEST( strcmp( rb_insert_rv.node->data, "A" ) == 0 );
 
   // test visitor
   unsigned letter_offset = 0;
@@ -128,8 +148,6 @@ int main( int argc, char const *argv[] ) {
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
   TEST( rb_tree_is_empty( &tree ) );
-
-  test_insert2_find_delete();
 
   printf( "%u failures\n", test_failures );
   exit( test_failures > 0 ? EX_SOFTWARE : EX_OK );
