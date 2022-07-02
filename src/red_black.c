@@ -101,11 +101,6 @@ enum rb_dir {
 };
 typedef enum rb_dir rb_dir_t;
 
-///////////////////////////////////////////////////////////////////////////////
-
-// local functions
-static void rb_tree_rotate_node( rb_tree_t*, rb_node_t*, rb_dir_t );
-
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
@@ -161,6 +156,30 @@ static inline bool is_red( rb_node_t const *node ) {
 
 ////////// local functions ////////////////////////////////////////////////////
 
+#ifndef NDEBUG
+/**
+ * Checks that some invariants of \a tree still hold.
+ *
+ * @param tree A pointer to the red-black tree to check.
+ */
+static void rb_tree_check( rb_tree_t const *tree ) {
+  assert( tree != NULL );
+  assert( RB_NIL(tree)->data == NULL );
+  assert( RB_NIL(tree)->child[RB_L] == RB_NIL(tree) );
+  assert( RB_NIL(tree)->child[RB_R] == RB_NIL(tree) );
+  assert( RB_NIL(tree)->parent == RB_NIL(tree) );
+  assert( RB_NIL(tree)->color == RB_BLACK );
+  assert( RB_FIRST(tree)->color == RB_BLACK );
+  assert(
+    // If the left child is nil, the right child must not be nil.
+    RB_FIRST(tree) != RB_NIL(tree) || RB_ROOT(tree)->child[RB_R] == RB_NIL(tree)
+  );
+}
+#else
+#define rb_tree_check(TREE)       do { } while (0)
+}
+#endif /* NDEBUG */
+
 /**
  * Frees all memory associated with \a node _including_ \a node itself.
  *
@@ -209,29 +228,28 @@ static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
   return next;
 }
 
-#ifndef NDEBUG
 /**
- * Checks that some invariants of \a tree still hold.
+ * Rotates a subtree of \a tree rooted at \a node.
  *
- * @param tree A pointer to the red-black tree to check.
+ * @param tree A pointer to the red-black tree to manipulate.
+ * @param node A pointer to the rb_node to rotate.
+ * @param dir The direction to rotate.
  */
-static void rb_tree_check( rb_tree_t const *tree ) {
+static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
   assert( tree != NULL );
-  assert( RB_NIL(tree)->data == NULL );
-  assert( RB_NIL(tree)->child[RB_L] == RB_NIL(tree) );
-  assert( RB_NIL(tree)->child[RB_R] == RB_NIL(tree) );
-  assert( RB_NIL(tree)->parent == RB_NIL(tree) );
-  assert( RB_NIL(tree)->color == RB_BLACK );
-  assert( RB_FIRST(tree)->color == RB_BLACK );
-  assert(
-    // If the left child is nil, the right child must not be nil.
-    RB_FIRST(tree) != RB_NIL(tree) || RB_ROOT(tree)->child[RB_R] == RB_NIL(tree)
-  );
+  assert( node != NULL );
+
+  rb_node_t *const temp = node->child[!dir];
+  node->child[!dir] = temp->child[dir];
+
+  if ( temp->child[dir] != RB_NIL(tree) )
+    temp->child[dir]->parent = node;
+  temp->parent = node->parent;
+  node->parent->child[ is_dir( node, RB_R ) ] = temp;
+  temp->child[dir] = node;
+  node->parent = temp;
+  rb_tree_check( tree );
 }
-#else
-#define rb_tree_check(TREE)       do { } while (0)
-}
-#endif /* NDEBUG */
 
 /**
  * Repairs the tree after a node has been deleted by rotating and repainting
@@ -250,20 +268,20 @@ static void rb_tree_repair_node( rb_tree_t *tree, rb_node_t *node ) {
     if ( is_red( sibling ) ) {
       sibling->color = RB_BLACK;
       node->parent->color = RB_RED;
-      rb_tree_rotate_node( tree, node->parent, !dir );
+      rb_node_rotate( tree, node->parent, !dir );
       sibling = node->parent->child[dir];
     }
     if ( is_red( sibling->child[RB_L] ) || is_red( sibling->child[RB_R] ) ) {
       if ( is_black( sibling ) ) {
         sibling->child[!dir]->color = RB_BLACK;
         sibling->color = RB_RED;
-        rb_tree_rotate_node( tree, sibling, dir );
+        rb_node_rotate( tree, sibling, dir );
         sibling = node->parent->child[dir];
       }
       sibling->color = node->parent->color;
       node->parent->color = RB_BLACK;
       sibling->child[dir]->color = RB_BLACK;
-      rb_tree_rotate_node( tree, node->parent, !dir );
+      rb_node_rotate( tree, node->parent, !dir );
       break;
     }
     sibling->color = RB_RED;
@@ -295,30 +313,6 @@ static void rb_tree_reset( rb_tree_t *tree ) {
 
   *RB_ROOT(tree) = *RB_NIL(tree);
   tree->cmp_fn = NULL;
-}
-
-/**
- * Rotates a subtree of a red-black tree.
- *
- * @param tree A pointer to the red-black tree to manipulate.
- * @param node A pointer to the rb_node to rotate.
- * @param dir The direction to rotate.
- */
-static void rb_tree_rotate_node( rb_tree_t *tree, rb_node_t *node,
-                                 rb_dir_t dir ) {
-  assert( tree != NULL );
-  assert( node != NULL );
-
-  rb_node_t *const temp = node->child[!dir];
-  node->child[!dir] = temp->child[dir];
-
-  if ( temp->child[dir] != RB_NIL(tree) )
-    temp->child[dir]->parent = node;
-  temp->parent = node->parent;
-  node->parent->child[ is_dir( node, RB_R ) ] = temp;
-  temp->child[dir] = node;
-  node->parent = temp;
-  rb_tree_check( tree );
 }
 
 /**
@@ -486,11 +480,11 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
     }
     if ( is_dir( node, dir ) ) {
       node = node->parent;
-      rb_tree_rotate_node( tree, node, !dir );
+      rb_node_rotate( tree, node, !dir );
     }
     node->parent->color = RB_BLACK;
     node->parent->parent->color = RB_RED;
-    rb_tree_rotate_node( tree, node->parent->parent, dir );
+    rb_node_rotate( tree, node->parent->parent, dir );
   } // while
 
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
