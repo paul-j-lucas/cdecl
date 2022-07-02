@@ -308,6 +308,7 @@ static inline int parse_int( int base ) {
  * @sa push_file()
  * @sa http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
  */
+PJL_WARN_UNUSED_RESULT
 static bool pop_file( void ) {
   if ( slist_empty( &include_stack ) )
     return false;
