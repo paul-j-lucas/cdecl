@@ -1012,15 +1012,14 @@ c_typedef_t const* c_typedef_add( c_ast_t const *ast, unsigned gib_flags ) {
   assert( !c_sname_empty( &ast->sname ) );
 
   c_typedef_t *const new_tdef = c_typedef_new( ast, gib_flags );
-  rb_node_t const *const old_rb = rb_tree_insert( &typedefs, new_tdef );
-  if ( old_rb == NULL )                 // type's name doesn't exist
-    return new_tdef;
-  //
-  // A typedef having the same name already exists, so we don't need the new
-  // c_typedef.
-  //
-  FREE( new_tdef );
-  return old_rb->data;
+  rb_insert_rv_t const rv = rb_tree_insert( &typedefs, new_tdef );
+  if ( !rv.inserted ) {
+    //
+    // A typedef with the same name exists, so we don't need the new one.
+    //
+    FREE( new_tdef );
+  }
+  return rv.node->data;
 }
 
 c_typedef_t const* c_typedef_find_name( char const *name ) {
