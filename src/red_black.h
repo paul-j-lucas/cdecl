@@ -64,9 +64,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef struct rb_node  rb_node_t;
-typedef struct rb_tree  rb_tree_t;
-typedef enum   rb_color rb_color_t;
+typedef enum   rb_color     rb_color_t;
+typedef struct rb_insert_rv rb_insert_rv_t;
+typedef struct rb_node      rb_node_t;
+typedef struct rb_tree      rb_tree_t;
 
 /**
  * The signature for a function passed to rb_tree_init() used to compare node
@@ -145,6 +146,14 @@ struct rb_tree {
   rb_cmp_fn_t cmp_fn;                   ///< Data comparison function.
 };
 
+/**
+ * The return value of rb_tree_insert().
+ */
+struct rb_insert_rv {
+  rb_node_t  *node;                     ///< The node either found or inserted.
+  bool        inserted;                 ///< Was \a node inserted?
+};
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -203,8 +212,9 @@ void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn );
  *
  * @param tree A pointer to the red-black tree to insert into.
  * @param data A pointer to the data to insert.
- * @return Returns NULL if \a data is inserted or a pointer to a node if \a
- * data already exists.
+ * @return Returns an \ref rb_insert_rv_t where its node points to either the
+ * newly inserted node or the existing node having the same \a data and \a
+ * inserted is `true` only if \a data was inserted.
  *
  * @warning Even though this function returns a pointer to a non-`const` node,
  * the node's data _must not_ be modified if that would change the node's
@@ -213,7 +223,7 @@ void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn );
  * @sa rb_tree_delete()
  */
 PJL_WARN_UNUSED_RESULT
-rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
+rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data );
 
 /**
  * Performs an in-order traversal of \a tree.

@@ -390,7 +390,7 @@ void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn ) {
   tree->cmp_fn = cmp_fn;
 }
 
-rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
+rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
   assert( tree != NULL );
   assert( data != NULL );
 
@@ -404,7 +404,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   while ( node != RB_NIL ) {
     int const cmp = (*tree->cmp_fn)( data, node->data );
     if ( cmp == 0 )
-      return node;
+      return (rb_insert_rv_t){ node, false };
     parent = node;
     node = node->child[ cmp > 0 ];
   } // while
@@ -416,6 +416,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
     .parent = parent,
     .color = RB_RED
   };
+  rb_insert_rv_t const rv = (rb_insert_rv_t){ node, true };
 
   // Determine which child of the parent the new node should be.
   rb_dir_t dir = STATIC_CAST( rb_dir_t,
@@ -467,7 +468,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
 
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
   assert( rb_nil_is_nil() );
-  return NULL;
+  return rv;
 }
 
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
