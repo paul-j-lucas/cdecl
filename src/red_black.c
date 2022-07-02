@@ -248,7 +248,6 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
   node->parent->child[ is_dir( node, RB_R ) ] = temp;
   temp->child[dir] = node;
   node->parent = temp;
-  rb_tree_check( tree );
 }
 
 /**
