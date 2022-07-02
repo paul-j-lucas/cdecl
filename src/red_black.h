@@ -212,7 +212,7 @@ void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn );
  *
  * @param tree A pointer to the red-black tree to insert into.
  * @param data A pointer to the data to insert.
- * @return Returns an \ref rb_insert_rv_t where its node points to either the
+ * @return Returns an \ref rb_insert_rv where its node points to either the
  * newly inserted node or the existing node having the same \a data and \a
  * inserted is `true` only if \a data was inserted.
  *
