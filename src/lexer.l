@@ -132,11 +132,12 @@
  * When a file is included, an include_file_info is pushed onto include_stack
  * such that:
  *
- *  + prev_orig_path contains the previous include (or configuration) original
- *    (unresolved) path, if any, that is the value of print_params.conf_path.
+ *  + \ref prev_orig_path is the unresolved path of the _previous_ include (or
+ *    configuration) file, if any, that is the value of print_params.conf_path.
  *
- *  + curr_real_path contains the resolved path of the new file about to be
- *    included.
+ *  + \ref curr_real_path is the resolved path of the _new_ file about to be
+ *    included.  We need to remember the resolved path in order to be able to
+ *    remove it from include_set upon EOF.
  *
  * @note We need \ref include_file_info.last_lineno "last_lineno" because Flex
  * doesn't restore `yylineno` when `yypop_buffer_state()` is called.
@@ -311,15 +312,14 @@ static bool pop_file( void ) {
   if ( slist_empty( &include_stack ) )
     return false;
 
-  include_file_info_t *ifi = slist_pop_front( &include_stack );
+  include_file_info_t *const ifi = slist_pop_front( &include_stack );
   assert( ifi != NULL );
 
   rb_node_t *const found_rb = rb_tree_find( &include_set, ifi->curr_real_path );
   assert( found_rb != NULL );
-
-  char const *const rb_real_path = rb_tree_delete( &include_set, found_rb );
-  assert( rb_real_path == ifi->curr_real_path );
-  (void)rb_real_path;
+  // Ignore the curr_real_path returned by rb_tree_delete() since it's shared
+  // with and owned by ifi.
+  PJL_IGNORE_RV( rb_tree_delete( &include_set, found_rb ) );
 
   print_params.conf_path = ifi->prev_orig_path;
   yylineno = ifi->last_lineno;
@@ -407,7 +407,7 @@ static char const* push_file( char const *path ) {
   include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );
   *ifi = (include_file_info_t){ print_params.conf_path, real_path, yylineno };
   slist_push_front( &include_stack, ifi );
-  real_path = NULL;
+  real_path = NULL;                     // now owned by ifi above
 
   yyin = include_file;
   yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
