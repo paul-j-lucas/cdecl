@@ -324,7 +324,7 @@ static bool pop_file( void ) {
 
   print_params.conf_path = ifi->prev_orig_path;
   yylineno = ifi->last_lineno;
-  free( ifi );
+  ifi_free( ifi );
 
   // The example code in the Flex manual leaks file handles; see:
   // https://stackoverflow.com/a/27512485/99089
