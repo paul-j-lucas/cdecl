@@ -171,8 +171,9 @@ static void rb_tree_check( rb_tree_t const *tree ) {
   assert( RB_NIL(tree)->color == RB_BLACK );
   assert( RB_FIRST(tree)->color == RB_BLACK );
   assert(
-    // If the left child is nil, the right child must not be nil.
-    RB_FIRST(tree) != RB_NIL(tree) || RB_ROOT(tree)->child[RB_R] == RB_NIL(tree)
+    // If the left child is nil, the right child must also be nil.
+    RB_ROOT(tree)->child[RB_L] != RB_NIL(tree) ||
+    RB_ROOT(tree)->child[RB_R] == RB_NIL(tree)
   );
 }
 #else
