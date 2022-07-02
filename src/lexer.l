@@ -405,8 +405,8 @@ static char const* push_file( char const *path ) {
   include_file_info_t *ifi = MALLOC( include_file_info_t, 1 );
   *ifi = (include_file_info_t){ orig_path, real_path, 0 };
 
-  rb_node_t *old_rb = rb_tree_insert( &include_set, ifi );
-  if ( old_rb != NULL ) {
+  rb_insert_rv_t const rb_ins_rv = rb_tree_insert( &include_set, ifi );
+  if ( !rb_ins_rv.inserted ) {
     error = "file previously included";
     ifi_free( ifi );
     goto done;
@@ -414,9 +414,7 @@ static char const* push_file( char const *path ) {
 
   FILE *const include_file = fopen( real_path, "r" );
   if ( include_file == NULL ) {
-    old_rb = rb_tree_find( &include_set, ifi );
-    assert( old_rb != NULL );
-    ifi = rb_tree_delete( &include_set, old_rb );
+    ifi = rb_tree_delete( &include_set, rb_ins_rv.node );
     assert( ifi != NULL );
     ifi_free( ifi );
     error = STRERROR();
