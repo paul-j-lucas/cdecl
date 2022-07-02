@@ -80,6 +80,7 @@ static void test_insert2_find_delete( void ) {
   }
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
+  TEST( rb_tree_is_empty( &tree ) );
 }
 
 ////////// main ///////////////////////////////////////////////////////////////
@@ -126,6 +127,7 @@ int main( int argc, char const *argv[] ) {
   }
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
+  TEST( rb_tree_is_empty( &tree ) );
 
   test_insert2_find_delete();
 

@@ -56,6 +56,15 @@
 #include "pjl_config.h"                 /* must go first */
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
+_GL_INLINE_HEADER_BEGIN
+#ifndef RED_BLACK_H_INLINE
+# define RED_BLACK_H_INLINE _GL_INLINE
+#endif /* RED_BLACK_H_INLINE */
+
+/// @endcond
+
 /**
  * @defgroup red-black-group Red-Black Tree
  * Types and functions for manipulating red-black trees.
@@ -143,6 +152,7 @@ struct rb_node {
  */
 struct rb_tree {
   rb_node_t   root;                     ///< Root node.
+  rb_node_t   nil;                      ///< Nil node.
   rb_cmp_fn_t cmp_fn;                   ///< Data comparison function.
 };
 
@@ -198,6 +208,23 @@ PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data );
 
 /**
+ * Gets the first node in \a tree, if any.
+ *
+ * @param tree A pointer to the red-black tree to get the first node of.
+ * @return Returns a pointer to the first node in \a tree if not empty or NULL
+ * if empty.
+ *
+ * @warning Even though this function returns a pointer to a non-`const` node,
+ * the node's data _must not_ be modified if that would change the node's
+ * position within the tree according to the tree's data comparison function.
+ */
+RED_BLACK_H_INLINE PJL_WARN_UNUSED_RESULT
+rb_node_t* rb_tree_first( rb_tree_t const *tree ) {
+  rb_node_t *const first = tree->root.child[0];
+  return first == &tree->nil ? NULL : first;
+}
+
+/**
  * Initializes a red-black tree.
  *
  * @param tree The red-black tree to initialize.
@@ -226,6 +253,17 @@ PJL_WARN_UNUSED_RESULT
 rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data );
 
 /**
+ * Gets whether \a tree is empry.
+ *
+ * @param tree A pointer to the red-black tree to check.
+ * @return Returns `true` only if \a tree is empty.
+ */
+RED_BLACK_H_INLINE PJL_WARN_UNUSED_RESULT
+bool rb_tree_is_empty( rb_tree_t const *tree ) {
+  return tree->root.child[0] == &tree->nil && tree->root.child[1] == &tree->nil;
+}
+
+/**
  * Performs an in-order traversal of \a tree.
  *
  * @param tree A pointer to the red-black tree to visit.
@@ -245,6 +283,8 @@ rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+_GL_INLINE_HEADER_END
 
 #endif /* cdecl_red_black_H */
 /* vim:set et sw=2 ts=2: */

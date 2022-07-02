@@ -73,6 +73,9 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+/// @cond DOXYGEN_IGNORE
+#define RED_BLACK_H_INLINE _GL_EXTERN_INLINE
+/// @endcond
 #include "red_black.h"
 #include "util.h"
 
@@ -83,9 +86,9 @@
 #include <stdio.h>                      /* for NULL */
 #include <stdlib.h>                     /* or free(3) */
 
-#define RB_FIRST(TREE)  (RB_ROOT(TREE)->child[RB_L])
-#define RB_NIL          (&rb_nil)
-#define RB_ROOT(TREE)   (&(TREE)->root)
+#define RB_FIRST(TREE)            (RB_ROOT(TREE)->child[RB_L])
+#define RB_NIL(TREE)              (&(TREE)->nil)
+#define RB_ROOT(TREE)             (&(TREE)->root)
 
 /// @endcond
 
@@ -97,22 +100,6 @@ enum rb_dir {
   RB_R                                  ///< Right child direction.
 };
 typedef enum rb_dir rb_dir_t;
-
-///////////////////////////////////////////////////////////////////////////////
-
-// local functions
-static void rb_tree_rotate_node( rb_tree_t*, rb_node_t*, rb_dir_t );
-
-/**
- * Sentinel for NIL node.  Ideally, it should be `const` but isn't since
- * pointers-to-non-`const` point to it.
- */
-static rb_node_t rb_nil = {
-  .data = NULL,
-  .child = { RB_NIL, RB_NIL },
-  .parent = RB_NIL,
-  .color = RB_BLACK
-};
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -143,6 +130,18 @@ static inline bool is_dir( rb_node_t const *node, rb_dir_t dir ) {
 }
 
 /**
+ * Gets whether \a node is "full," that is neither child node is nil.
+ *
+ * @param tree A pointer to the red-black tree \a node is part of.
+ * @param node A pointer to the rb_node to check.
+ * @return Returns `true` only if \a node is full.
+ */
+PJL_WARN_UNUSED_RESULT
+static inline bool is_full( rb_tree_t const *tree, rb_node_t const *node ) {
+  return node->child[RB_L] != RB_NIL(tree) && node->child[RB_R] != RB_NIL(tree);
+}
+
+/**
  * Convenience function for checking that a node is red.
  *
  * @param node A pointer to the rb_node to check.
@@ -157,19 +156,45 @@ static inline bool is_red( rb_node_t const *node ) {
 
 ////////// local functions ////////////////////////////////////////////////////
 
+#ifndef NDEBUG
 /**
- * Frees all memory associated with \a node.
+ * Checks that some invariants of \a tree still hold.
  *
+ * @param tree A pointer to the red-black tree to check.
+ */
+static void rb_tree_check( rb_tree_t const *tree ) {
+  assert( tree != NULL );
+  assert( RB_NIL(tree)->data == NULL );
+  assert( RB_NIL(tree)->child[RB_L] == RB_NIL(tree) );
+  assert( RB_NIL(tree)->child[RB_R] == RB_NIL(tree) );
+  assert( RB_NIL(tree)->parent == RB_NIL(tree) );
+  assert( RB_NIL(tree)->color == RB_BLACK );
+  assert( RB_FIRST(tree)->color == RB_BLACK );
+  assert(
+    // If the left child is nil, the right child must not be nil.
+    RB_FIRST(tree) != RB_NIL(tree) || RB_ROOT(tree)->child[RB_R] == RB_NIL(tree)
+  );
+}
+#else
+#define rb_tree_check(TREE)       do { } while (0)
+}
+#endif /* NDEBUG */
+
+/**
+ * Frees all memory associated with \a node _including_ \a node itself.
+ *
+ * @param tree A pointer to the red-black tree to free \a node from.
  * @param node A pointer to the rb_node to free.
  * @param free_fn A pointer to a function used to free data associated with \a
  * node or NULL if unnecessary.
  */
-static void rb_node_free( rb_node_t *node, rb_free_fn_t free_fn ) {
+static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
+                          rb_free_fn_t free_fn ) {
   assert( node != NULL );
 
-  if ( node != RB_NIL ) {
-    rb_node_free( node->child[RB_L], free_fn );
-    rb_node_free( node->child[RB_R], free_fn );
+  if ( node != RB_NIL(tree) ) {
+    rb_node_free( tree, node->child[RB_L], free_fn );
+    rb_node_free( tree, node->child[RB_R], free_fn );
     if ( free_fn != NULL )
       (*free_fn)( node->data );
     free( node );
@@ -177,56 +202,53 @@ static void rb_node_free( rb_node_t *node, rb_free_fn_t free_fn ) {
 }
 
 /**
- * Initializes an rb_node.
- *
- * @param node A pointer to the rb_node to initialize.
- */
-static void rb_node_init( rb_node_t *node ) {
-  assert( node != NULL );
-  *node = rb_nil;
-}
-
-#ifndef NDEBUG
-/**
- * Checks that \ref rb_nil is still NIL, i.e., hasn't been accidentally
- * modified.
- *
- * @return Returns `true` only if it's still NIL.
- */
-static bool rb_nil_is_nil( void ) {
-  assert( rb_nil.data == NULL );
-  assert( rb_nil.child[RB_L] == RB_NIL );
-  assert( rb_nil.child[RB_R] == RB_NIL );
-  assert( rb_nil.parent == RB_NIL );
-  return true;
-}
-#endif /* NDEBUG */
-
-/**
- * Gets the successor of \a node.
+ * Gets the next node from \a node.
  *
  * @param tree A pointer to the red-black tree that \a node is part of.
- * @param node A pointer to the rb_node to get the successor of.
- * @return Returns said successor.
+ * @param node A pointer to the rb_node to get the next node from.
+ * @return Returns said node.
  */
 PJL_WARN_UNUSED_RESULT
-static rb_node_t* rb_tree_node_successor( rb_tree_t *tree, rb_node_t *node ) {
+static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );
 
   rb_node_t *next = node->child[RB_R];
 
-  if ( next != RB_NIL ) {
-    while ( next->child[RB_L] != RB_NIL )
+  if ( next != RB_NIL(tree) ) {
+    while ( next->child[RB_L] != RB_NIL(tree) )
       next = next->child[RB_L];
   } else {
     // No right child, move up until we find it or hit the root.
     for ( next = node->parent; node == next->child[RB_R]; next = next->parent )
       node = next;
     if ( next == RB_ROOT(tree) )
-      next = RB_NIL;
+      next = RB_NIL(tree);
   }
   return next;
+}
+
+/**
+ * Rotates a subtree of \a tree rooted at \a node.
+ *
+ * @param tree A pointer to the red-black tree to manipulate.
+ * @param node A pointer to the rb_node to rotate.
+ * @param dir The direction to rotate.
+ */
+static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
+  assert( tree != NULL );
+  assert( node != NULL );
+
+  rb_node_t *const temp = node->child[!dir];
+  node->child[!dir] = temp->child[dir];
+
+  if ( temp->child[dir] != RB_NIL(tree) )
+    temp->child[dir]->parent = node;
+  temp->parent = node->parent;
+  node->parent->child[ is_dir( node, RB_R ) ] = temp;
+  temp->child[dir] = node;
+  node->parent = temp;
+  rb_tree_check( tree );
 }
 
 /**
@@ -246,20 +268,20 @@ static void rb_tree_repair_node( rb_tree_t *tree, rb_node_t *node ) {
     if ( is_red( sibling ) ) {
       sibling->color = RB_BLACK;
       node->parent->color = RB_RED;
-      rb_tree_rotate_node( tree, node->parent, !dir );
+      rb_node_rotate( tree, node->parent, !dir );
       sibling = node->parent->child[dir];
     }
     if ( is_red( sibling->child[RB_L] ) || is_red( sibling->child[RB_R] ) ) {
       if ( is_black( sibling ) ) {
         sibling->child[!dir]->color = RB_BLACK;
         sibling->color = RB_RED;
-        rb_tree_rotate_node( tree, sibling, dir );
+        rb_node_rotate( tree, sibling, dir );
         sibling = node->parent->child[dir];
       }
       sibling->color = node->parent->color;
       node->parent->color = RB_BLACK;
       sibling->child[dir]->color = RB_BLACK;
-      rb_tree_rotate_node( tree, node->parent, !dir );
+      rb_node_rotate( tree, node->parent, !dir );
       break;
     }
     sibling->color = RB_RED;
@@ -268,27 +290,29 @@ static void rb_tree_repair_node( rb_tree_t *tree, rb_node_t *node ) {
 }
 
 /**
- * Rotates a subtree of a red-black tree.
+ * Resets \a tree to empty.
  *
- * @param tree A pointer to the red-black tree to manipulate.
- * @param node A pointer to the rb_node to rotate.
- * @param dir The direction to rotate.
+ * @param tree A pointer to the red-black tree to reset.
+ *
+ * @warning Unlike rb_tree_cleanup(), this function does _not_ free nodes of a
+ * non-empty tree.  This function is to be used only on new (empty) trees or on
+ * newly cleaned-up (now empty) trees.
+ *
+ * @sa rb_tree_cleanup()
+ * @sa rb_tree_init()
  */
-static void rb_tree_rotate_node( rb_tree_t *tree, rb_node_t *node,
-                                 rb_dir_t dir ) {
+static void rb_tree_reset( rb_tree_t *tree ) {
   assert( tree != NULL );
-  assert( node != NULL );
 
-  rb_node_t *const temp = node->child[!dir];
-  node->child[!dir] = temp->child[dir];
+  tree->nil = (rb_node_t){
+    .data = NULL,
+    .child = { RB_NIL(tree), RB_NIL(tree) },
+    .parent = RB_NIL(tree),
+    .color = RB_BLACK
+  };
 
-  if ( temp->child[dir] != RB_NIL )
-    temp->child[dir]->parent = node;
-  temp->parent = node->parent;
-  node->parent->child[ is_dir( node, RB_R ) ] = temp;
-  temp->child[dir] = node;
-  node->parent = temp;
-  assert( rb_nil_is_nil() );
+  *RB_ROOT(tree) = *RB_NIL(tree);
+  tree->cmp_fn = NULL;
 }
 
 /**
@@ -307,7 +331,7 @@ static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
   assert( tree != NULL );
   assert( node != NULL );
 
-  while ( node != RB_NIL ) {
+  while ( node != RB_NIL(tree) ) {
     rb_node_t *const stopped_node =
       rb_tree_visit_node( tree, node->child[RB_L], visit_fn, v_data );
     if ( stopped_node != NULL )
@@ -324,26 +348,23 @@ static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
 
 void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn ) {
   if ( tree != NULL ) {
-    rb_node_free( RB_FIRST(tree), free_fn );
-    rb_node_init( RB_ROOT(tree) );
-    tree->cmp_fn = NULL;
+    rb_node_free( tree, RB_FIRST(tree), free_fn );
+    rb_tree_reset( tree );
   }
 }
 
 void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   assert( tree != NULL );
   assert( delete != NULL );
-  assert( delete != RB_NIL );
+  assert( delete != RB_NIL(tree) );
 
   void *const data = delete->data;
 
   rb_node_t *const surrogate =
-    delete->child[RB_L] == RB_NIL || delete->child[RB_R] == RB_NIL ?
-      delete :
-      rb_tree_node_successor( tree, delete );
+    is_full( tree, delete ) ? rb_node_next( tree, delete ) : delete;
 
   rb_node_t *const non_nil_child =
-    surrogate->child[ surrogate->child[RB_L] == RB_NIL ];
+    surrogate->child[ surrogate->child[RB_L] == RB_NIL(tree) ];
 
   if ( surrogate->parent == RB_ROOT(tree) ) {
     non_nil_child->parent = surrogate->parent;
@@ -365,7 +386,8 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   }
 
   free( delete );
-  assert( rb_nil_is_nil() );
+  RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
+  rb_tree_check( tree );
   return data;
 }
 
@@ -373,7 +395,7 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
   assert( tree != NULL );
   assert( data != NULL );
 
-  for ( rb_node_t *node = RB_FIRST(tree); node != RB_NIL; ) {
+  for ( rb_node_t *node = RB_FIRST(tree); node != RB_NIL(tree); ) {
     int const cmp = (*tree->cmp_fn)( data, node->data );
     if ( cmp == 0 )
       return node;
@@ -385,8 +407,7 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
 void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn ) {
   assert( tree != NULL );
   assert( cmp_fn != NULL );
-
-  rb_node_init( RB_ROOT(tree) );
+  rb_tree_reset( tree );
   tree->cmp_fn = cmp_fn;
 }
 
@@ -401,7 +422,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
   // Find either the existing node having the same data -OR- the parent for the
   // new node.
   //
-  while ( node != RB_NIL ) {
+  while ( node != RB_NIL(tree) ) {
     int const cmp = (*tree->cmp_fn)( data, node->data );
     if ( cmp == 0 )
       return (rb_insert_rv_t){ node, false };
@@ -412,7 +433,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
   node = MALLOC( rb_node_t, 1 );
   *node = (rb_node_t){
     .data = data,
-    .child = { RB_NIL, RB_NIL },
+    .child = { RB_NIL(tree), RB_NIL(tree) },
     .parent = parent,
     .color = RB_RED
   };
@@ -422,7 +443,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
   rb_dir_t dir = STATIC_CAST( rb_dir_t,
     parent != RB_ROOT(tree) && (*tree->cmp_fn)( data, parent->data ) > 0
   );
-  assert( parent->child[dir] == RB_NIL );
+  assert( parent->child[dir] == RB_NIL(tree) );
   parent->child[dir] = node;
 
   //
@@ -459,15 +480,15 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
     }
     if ( is_dir( node, dir ) ) {
       node = node->parent;
-      rb_tree_rotate_node( tree, node, !dir );
+      rb_node_rotate( tree, node, !dir );
     }
     node->parent->color = RB_BLACK;
     node->parent->parent->color = RB_RED;
-    rb_tree_rotate_node( tree, node->parent->parent, dir );
+    rb_node_rotate( tree, node->parent->parent, dir );
   } // while
 
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
-  assert( rb_nil_is_nil() );
+  rb_tree_check( tree );
   return rv;
 }
 
