@@ -135,6 +135,18 @@ static inline bool is_dir( rb_node_t const *node, rb_dir_t dir ) {
 }
 
 /**
+ * Gets whether \a node is "full," that is neither child node is nil.
+ *
+ * @param tree A pointer to the red-black tree \a node is part of.
+ * @param node A pointer to the rb_node to check.
+ * @return Returns `true` only if \a node is full.
+ */
+PJL_WARN_UNUSED_RESULT
+static inline bool is_full( rb_tree_t const *tree, rb_node_t const *node ) {
+  return node->child[RB_L] != RB_NIL(tree) && node->child[RB_R] != RB_NIL(tree);
+}
+
+/**
  * Convenience function for checking that a node is red.
  *
  * @param node A pointer to the rb_node to check.
@@ -355,9 +367,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   void *const data = delete->data;
 
   rb_node_t *const surrogate =
-    delete->child[RB_L] == RB_NIL(tree) || delete->child[RB_R] == RB_NIL(tree) ?
-      delete :
-      rb_node_next( tree, delete );
+    is_full( tree, delete ) ? rb_node_next( tree, delete ) : delete;
 
   rb_node_t *const non_nil_child =
     surrogate->child[ surrogate->child[RB_L] == RB_NIL(tree) ];
