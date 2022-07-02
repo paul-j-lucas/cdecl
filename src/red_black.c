@@ -362,18 +362,18 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   rb_node_t *const surrogate =
     is_full( tree, delete ) ? rb_node_next( tree, delete ) : delete;
 
-  rb_node_t *const non_nil_child =
+  rb_node_t *const surrogate_child =
     surrogate->child[ surrogate->child[RB_L] == RB_NIL(tree) ];
 
   if ( surrogate->parent == RB_ROOT(tree) ) {
-    non_nil_child->parent = surrogate->parent;
-    RB_FIRST(tree) = non_nil_child;
+    surrogate_child->parent = surrogate->parent;
+    RB_FIRST(tree) = surrogate_child;
   } else {
-    surrogate->parent->child[ is_dir( surrogate, RB_R ) ] = non_nil_child;
+    surrogate->parent->child[ is_dir( surrogate, RB_R ) ] = surrogate_child;
   }
 
   if ( is_black( surrogate ) )
-    rb_tree_repair( tree, non_nil_child );
+    rb_tree_repair( tree, surrogate_child );
 
   if ( surrogate != delete ) {
     surrogate->color = delete->color;
