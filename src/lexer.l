@@ -152,8 +152,8 @@ char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
 static bool       digraph_warned;       ///< Printed digraph warning once?
-static rb_tree_t  include_set;          ///< Set of resolved include paths.
-static slist_t    include_stack;        ///< Stack of original include paths.
+static rb_tree_t  include_set;          ///< Set of include paths.
+static slist_t    include_stack;        ///< Stack of include paths.
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
@@ -373,6 +373,8 @@ static char const* push_file( char const *path ) {
   int const rv_we = wordexp( path, &we, /*flags=*/0 );
 
   char const *error = NULL;
+  char const *orig_path = NULL;
+  char const *real_path = NULL;
 
   switch ( rv_we ) {
     case 0:                             // success
@@ -396,30 +398,30 @@ static char const* push_file( char const *path ) {
     // LCOV_EXCL_STOP
   } // swtich
 
-  char const *const real_path = realpath( we.we_wordv[0], /*real_buf=*/NULL );
+  real_path = realpath( we.we_wordv[0], /*real_buf=*/NULL );
   if ( real_path == NULL ) {
     error = "could not resolve path";
     goto done;
   }
-  char const *const orig_path = check_strdup( we.we_wordv[0] );
-  include_file_info_t *ifi = MALLOC( include_file_info_t, 1 );
-  *ifi = (include_file_info_t){ orig_path, real_path, 0 };
+  orig_path = check_strdup( we.we_wordv[0] );
 
-  rb_insert_rv_t const rb_ins_rv = rb_tree_insert( &include_set, ifi );
-  if ( !rb_ins_rv.inserted ) {
+  include_file_info_t const temp_ifi = { orig_path, real_path, 0 };
+  if ( rb_tree_find( &include_set, &temp_ifi ) != NULL ) {
     error = "file previously included";
-    ifi_free( ifi );
     goto done;
   }
 
   FILE *const include_file = fopen( real_path, "r" );
   if ( include_file == NULL ) {
-    ifi = rb_tree_delete( &include_set, rb_ins_rv.node );
-    assert( ifi != NULL );
-    ifi_free( ifi );
     error = STRERROR();
     goto done;
   }
+
+  include_file_info_t *ifi = MALLOC( include_file_info_t, 1 );
+  *ifi = temp_ifi;
+  rb_insert_rv_t const rb_ins_rv = rb_tree_insert( &include_set, ifi );
+  assert( rb_ins_rv.inserted );
+  (void)rb_ins_rv;
 
   ifi = MALLOC( include_file_info_t, 1 );
   *ifi = (include_file_info_t){ print_params.conf_path, NULL, yylineno };
@@ -430,7 +432,11 @@ static char const* push_file( char const *path ) {
   print_params.conf_path = orig_path;
   yylineno = 0;
 
+  orig_path = real_path = NULL;
+
 done:
+  FREE( orig_path );
+  FREE( real_path );
   wordfree( &we );
   return error;
 }
