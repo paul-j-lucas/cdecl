@@ -1,1 +1,4 @@
-cdecl @ @ -xknr @ declare x as signed char @ 65
+EXPECTED_EXIT=65
+cdecl -xknr <<END
+declare x as signed char
+END

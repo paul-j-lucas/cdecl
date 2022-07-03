@@ -1,1 +1,4 @@
-cdecl @ @ @ explain _Alignas(3) char c @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain _Alignas(3) char c
+END

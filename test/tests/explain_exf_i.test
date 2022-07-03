@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain export int f() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain export int f()
+END

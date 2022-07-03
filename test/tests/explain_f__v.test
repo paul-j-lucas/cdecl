@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain auto f() -> void @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain auto f() -> void
+END

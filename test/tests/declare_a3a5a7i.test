@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as array 3 of array 5 of array 7 of int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as array 3 of array 5 of array 7 of int
+END

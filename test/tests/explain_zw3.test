@@ -1,1 +1,4 @@
-cdecl @ @ @ explain size_t x : 3 @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain size_t x : 3
+END

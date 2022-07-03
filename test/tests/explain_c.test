@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain class C x @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain class C x
+END

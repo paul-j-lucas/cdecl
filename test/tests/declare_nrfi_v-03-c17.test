@@ -1,1 +1,4 @@
-cdecl @ @ -xc17 @ declare f as non-returning function (int) returning void @ 0
+EXPECTED_EXIT=0
+cdecl -xc17 <<END
+declare f as non-returning function (int) returning void
+END

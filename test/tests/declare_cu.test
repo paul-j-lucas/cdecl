@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as const unsigned @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as const unsigned
+END

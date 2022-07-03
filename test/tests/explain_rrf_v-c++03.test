@@ -1,1 +1,4 @@
-cdecl @ @ -xc++03 @ explain void f() && @ 65
+EXPECTED_EXIT=65
+cdecl -xc++03 <<END
+explain void f() &&
+END

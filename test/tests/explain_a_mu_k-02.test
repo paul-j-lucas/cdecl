@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain struct [[maybe_unused]] S s @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain struct [[maybe_unused]] S s
+END

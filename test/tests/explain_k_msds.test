@@ -1,1 +1,4 @@
-cdecl @ @ @ explain struct __declspec(dllexport) S @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain struct __declspec(dllexport) S
+END

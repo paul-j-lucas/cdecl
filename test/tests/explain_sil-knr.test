@@ -1,1 +1,4 @@
-cdecl @ @ -xknr @ explain signed long x @ 65
+EXPECTED_EXIT=65
+cdecl -xknr <<END
+explain signed long x
+END

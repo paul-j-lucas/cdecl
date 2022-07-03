@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as typedef int aligned 64 @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+declare x as typedef int aligned 64
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xknrc @ explain int main(x) @ 65
+EXPECTED_EXIT=65
+cdecl -xknrc <<END
+explain int main(x)
+END

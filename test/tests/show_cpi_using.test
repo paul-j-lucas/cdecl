@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ typedef int *const CPI; show using @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+typedef int *const CPI
+show using
+END

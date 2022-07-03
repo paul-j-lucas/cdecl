@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain void f() final @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain void f() final
+END

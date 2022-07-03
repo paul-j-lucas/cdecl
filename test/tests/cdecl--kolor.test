@@ -1,1 +1,4 @@
-cdecl @ @ --kolor @ @ 64
+EXPECTED_EXIT=64
+cdecl --kolor <<END
+
+END

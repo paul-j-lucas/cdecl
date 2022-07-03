@@ -1,1 +1,5 @@
-cdecl @ @ -d -xc++ @ struct S; explain bool S::operator!() const @ 0
+EXPECTED_EXIT=0
+cdecl -d -xc++ <<END
+struct S
+explain bool S::operator!() const
+END

@@ -1,1 +1,4 @@
-cdecl @ @ @ cast x into signed int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+cast x into signed int
+END

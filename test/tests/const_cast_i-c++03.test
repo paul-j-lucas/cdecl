@@ -1,1 +1,4 @@
-cdecl @ @ -xc++03 @ const cast x into int @ 65
+EXPECTED_EXIT=65
+cdecl -xc++03 <<END
+const cast x into int
+END

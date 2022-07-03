@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ class C { namespace N { class D; } } @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+class C { namespace N { class D; } }
+END

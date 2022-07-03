@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ using int_least32_t = int @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+using int_least32_t = int
+END

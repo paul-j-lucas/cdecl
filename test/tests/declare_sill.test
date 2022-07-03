@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as signed long long @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as signed long long
+END

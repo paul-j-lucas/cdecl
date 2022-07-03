@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain static void f() const @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+explain static void f() const
+END

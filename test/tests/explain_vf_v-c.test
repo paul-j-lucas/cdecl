@@ -1,1 +1,4 @@
-cdecl @ @ @ explain virtual void f() @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain virtual void f()
+END

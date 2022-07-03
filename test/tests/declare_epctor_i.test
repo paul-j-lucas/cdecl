@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ declare C as explicit constructor (int) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+declare C as explicit constructor (int)
+END

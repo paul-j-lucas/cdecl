@@ -1,3 +1,3 @@
-typedef int A[2]; explain A f()
-         ^
-10: error: function returning array; did you mean function returning pointer?
+explain A f()
+        ^
+9: error: function returning array; did you mean function returning pointer?

@@ -1,1 +1,4 @@
-cdecl @ @ @ explain short long x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain short long x
+END

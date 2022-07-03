@@ -1,1 +1,4 @@
-cdecl @ @ @ explain __attribute__(( foo(1) )) int i @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain __attribute__(( foo(1) )) int i
+END

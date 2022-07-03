@@ -1,1 +1,4 @@
-cdecl @ @ @ explain void f(int x[static const 3]) @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain void f(int x[static const 3])
+END

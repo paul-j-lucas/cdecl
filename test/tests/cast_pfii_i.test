@@ -1,1 +1,4 @@
-cdecl @ @ @ cast p into pointer to function (x as int, y as int) returning int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+cast p into pointer to function (x as int, y as int) returning int
+END

@@ -1,1 +1,4 @@
-cdecl @ @ @ const cast x into pointer to int @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+const cast x into pointer to int
+END

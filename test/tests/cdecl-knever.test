@@ -1,1 +1,4 @@
-cdecl @ @ -k never @ @ 0
+EXPECTED_EXIT=0
+cdecl -k never <<END
+
+END

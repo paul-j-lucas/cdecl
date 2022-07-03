@@ -84,22 +84,11 @@ update_cdecl_test() {
   TEST_NAME=`local_basename "$TEST_PATH"`
   EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
 
-  IFS_old=$IFS
-  IFS='@'; read COMMAND CONFIG OPTIONS INPUT EXPECTED_EXIT < $TEST_PATH
-  [ "$IFS_old" ] && IFS=$IFS_old
-
-  COMMAND=`echo $COMMAND`               # trims whitespace
-  CONFIG=`echo $CONFIG`                 # trims whitespace
-  [ "$CONFIG" ] && CONFIG="-c $DATA_DIR/$CONFIG"
-  # INPUT=`echo $INPUT`                 # don't expand shell metas
-  EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
-
   echo $TEST_NAME
 
-  #echo "$INPUT" \| $COMMAND $CONFIG "$OPTIONS" \> $ACTUAL_OUTPUT
-  echo "$INPUT" | sed 's/^ //' | $COMMAND $CONFIG $OPTIONS > $ACTUAL_OUTPUT 2>&1
-  ACTUAL_EXIT=$?
+  . $TEST > $ACTUAL_OUTPUT 2>&1
 
+  ACTUAL_EXIT=$?
   if [ $ACTUAL_EXIT -eq $EXPECTED_EXIT ]
   then mv $ACTUAL_OUTPUT $EXPECTED_OUTPUT
   else fail

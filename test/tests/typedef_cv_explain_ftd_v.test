@@ -1,1 +1,5 @@
-cdecl @ @ @ typedef const void Void; explain void f(Void) @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+typedef const void Void
+explain void f(Void)
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain friend C::operator int() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain friend C::operator int()
+END

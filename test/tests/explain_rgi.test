@@ -1,1 +1,4 @@
-cdecl @ @ @ explain register int x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain register int x
+END

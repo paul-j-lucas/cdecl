@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as array const 3 of int @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+declare x as array const 3 of int
+END

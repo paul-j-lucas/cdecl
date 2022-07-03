@@ -1,1 +1,5 @@
-cdecl @ @ @ typedef int Int; declare x as Int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+typedef int Int
+declare x as Int
+END

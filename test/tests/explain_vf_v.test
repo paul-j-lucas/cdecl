@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain virtual void f() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain virtual void f()
+END

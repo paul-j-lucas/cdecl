@@ -1,1 +1,4 @@
-cdecl @ @ @ typedef typename int Int @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+typedef typename int Int
+END

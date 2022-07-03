@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain inline C::C() noexcept @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain inline C::C() noexcept
+END

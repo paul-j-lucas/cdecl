@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ typedef int &RI; explain RI *p @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+typedef int &RI
+explain RI *p
+END

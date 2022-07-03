@@ -1,1 +1,4 @@
-cdecl @ @ @ dynamic cast x into pointer to class C @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+dynamic cast x into pointer to class C
+END

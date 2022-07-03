@@ -1,1 +1,4 @@
-cdecl @ @ @ explain typedef int int32_t @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain typedef int int32_t
+END

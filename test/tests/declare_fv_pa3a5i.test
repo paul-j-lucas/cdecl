@@ -1,1 +1,4 @@
-cdecl @ @ @ declare f as function (void) returning pointer to array 3 of array 5 of int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare f as function (void) returning pointer to array 3 of array 5 of int
+END

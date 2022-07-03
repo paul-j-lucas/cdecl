@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ typedef int S::Int @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+typedef int S::Int
+END

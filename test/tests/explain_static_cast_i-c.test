@@ -1,1 +1,4 @@
-cdecl @ @ @ explain static_cast<int>(x) @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain static_cast<int>(x)
+END

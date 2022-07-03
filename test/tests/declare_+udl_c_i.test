@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ declare _x of scope S as user-defined literal (char) returning int @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+declare _x of scope S as user-defined literal (char) returning int
+END

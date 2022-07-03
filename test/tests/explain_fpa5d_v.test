@@ -1,1 +1,4 @@
-cdecl @ @ @ explain void f( double (*a)[5] ) @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain void f( double (*a)[5] )
+END

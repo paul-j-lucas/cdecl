@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain virtual void f() override final @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain virtual void f() override final
+END

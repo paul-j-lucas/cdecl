@@ -1,1 +1,4 @@
-cdecl @ @ @ explain wchar_t x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain wchar_t x
+END

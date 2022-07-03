@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as size_t @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as size_t
+END

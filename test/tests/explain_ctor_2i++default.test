@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain C(int, int) = default @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+explain C(int, int) = default
+END

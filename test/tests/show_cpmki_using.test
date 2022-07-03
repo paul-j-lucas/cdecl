@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ typedef int S::*const CPMSI; show CPMSI using @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+typedef int S::*const CPMSI
+show CPMSI using
+END

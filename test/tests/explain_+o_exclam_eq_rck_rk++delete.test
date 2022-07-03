@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct S; explain S& S::operator!=(S const&) = delete @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+struct S
+explain S& S::operator!=(S const&) = delete
+END

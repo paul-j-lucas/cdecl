@@ -1,1 +1,4 @@
-cdecl @ @ @ explain struct S x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain struct S x
+END

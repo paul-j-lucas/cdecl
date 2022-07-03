@@ -1,1 +1,4 @@
-cdecl @ @ @ explain _Atomic int x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain _Atomic int x
+END

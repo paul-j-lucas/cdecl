@@ -1,1 +1,5 @@
-cdecl @ @ @ typedef int Int; show all typedef @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+typedef int Int
+show all typedef
+END

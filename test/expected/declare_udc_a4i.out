@@ -1,3 +1,3 @@
-typedef int A4[4]; declare user-defined conversion operator returning A4
-                                                    ^
-53: error: user-defined conversion operator can not convert to an array; did you mean pointer to array?
+declare user-defined conversion operator returning A4
+                                                   ^
+52: error: user-defined conversion operator can not convert to an array; did you mean pointer to array?

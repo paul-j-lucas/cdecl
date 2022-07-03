@@ -1,1 +1,5 @@
-cdecl @ @ -a -3 -xc++ @ struct S; declare bitor as operator (x as reference to constant S, y as reference to constant S) returning S @ 0
+EXPECTED_EXIT=0
+cdecl -a -3 -xc++ <<END
+struct S
+declare bitor as operator (x as reference to constant S, y as reference to constant S) returning S
+END

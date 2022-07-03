@@ -1,1 +1,4 @@
-cdecl @ @ @ explain int x, (*f)(double) @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain int x, (*f)(double)
+END

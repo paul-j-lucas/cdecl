@@ -1,1 +1,4 @@
-cdecl @ @ @ explain int static x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain int static x
+END

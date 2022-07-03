@@ -1,1 +1,4 @@
-cdecl @ @ @ typedef void Void @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+typedef void Void
+END

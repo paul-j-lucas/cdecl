@@ -1,1 +1,4 @@
-cdecl @ @ -xknr @ help english @ 0
+EXPECTED_EXIT=0
+cdecl -xknr <<END
+help english
+END

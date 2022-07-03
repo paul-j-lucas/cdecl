@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain virtual short main() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain virtual short main()
+END

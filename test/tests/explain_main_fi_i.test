@@ -1,1 +1,4 @@
-cdecl @ @ @ explain int main( int ) @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain int main( int )
+END

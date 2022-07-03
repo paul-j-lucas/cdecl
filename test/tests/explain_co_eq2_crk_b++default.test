@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct S; explain bool operator==(S const&) const = default @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+struct S
+explain bool operator==(S const&) const = default
+END

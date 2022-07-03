@@ -1,1 +1,4 @@
-cdecl @ @ @ declare f as function (i as register int) returning void @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare f as function (i as register int) returning void
+END

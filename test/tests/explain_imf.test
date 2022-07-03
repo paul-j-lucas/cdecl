@@ -1,1 +1,4 @@
-cdecl @ @ @ explain imaginary float x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain imaginary float x
+END

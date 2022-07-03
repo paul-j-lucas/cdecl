@@ -1,1 +1,4 @@
-cdecl @ @ @ declare f as restricted function @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+declare f as restricted function
+END

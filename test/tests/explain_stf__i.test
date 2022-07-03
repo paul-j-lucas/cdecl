@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain static auto f() -> int @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain static auto f() -> int
+END

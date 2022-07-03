@@ -1,1 +1,4 @@
-cdecl @ @ -xcknr @ set trigraphs @ 0
+EXPECTED_EXIT=0
+cdecl -xcknr <<END
+set trigraphs
+END

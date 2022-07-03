@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ using SI = extern int @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+using SI = extern int
+END

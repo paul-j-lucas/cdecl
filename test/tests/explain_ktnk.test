@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct T; explain typename T x @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+struct T
+explain typename T x
+END

@@ -1,1 +1,4 @@
-cdecl @ @ @ declare f as function (fmt as pointer to const char, varargs) returning void @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare f as function (fmt as pointer to const char, varargs) returning void
+END

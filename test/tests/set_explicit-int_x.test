@@ -1,1 +1,4 @@
-cdecl @ @ @ set explicit-int=x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+set explicit-int=x
+END

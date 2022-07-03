@@ -1,1 +1,4 @@
-cdecl @ @ -E @ declare x as pointer to const int @ 0
+EXPECTED_EXIT=0
+cdecl --east-const <<END
+declare x as pointer to const int
+END

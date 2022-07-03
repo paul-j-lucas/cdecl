@@ -1,1 +1,4 @@
-cdecl @ @ -xc18 @ explain int* f(x) @ 0
+EXPECTED_EXIT=0
+cdecl -xc18 <<END
+explain int* f(x)
+END

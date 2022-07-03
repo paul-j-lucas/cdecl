@@ -1,1 +1,4 @@
-cdecl @ @ @ explain int (a)[4] @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain int (a)[4]
+END

@@ -1,4 +1,4 @@
-enum E; namespace E { class C; }
-           ^
-12: error: "E" was previously declared as enum:
+namespace E { class C; }
+          ^
+11: error: "E" was previously declared as enum:
 > enum E

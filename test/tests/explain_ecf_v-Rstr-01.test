@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain extern R"(C)" void f() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain extern R"(C)" void f()
+END

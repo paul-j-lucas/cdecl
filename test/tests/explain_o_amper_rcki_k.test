@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct S; explain S operator&(const S&, int) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+struct S
+explain S operator&(const S&, int)
+END

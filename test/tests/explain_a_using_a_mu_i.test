@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain [[using foo : maybe_unused]] int i @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain [[using foo : maybe_unused]] int i
+END

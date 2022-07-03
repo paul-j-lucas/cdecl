@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ reinterpret cast x into void @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+reinterpret cast x into void
+END

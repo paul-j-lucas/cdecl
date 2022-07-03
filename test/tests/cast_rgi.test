@@ -1,1 +1,4 @@
-cdecl @ @ @ cast x into register int @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+cast x into register int
+END

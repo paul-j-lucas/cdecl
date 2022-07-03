@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain int operator"" _x() @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+explain int operator"" _x()
+END

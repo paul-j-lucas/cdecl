@@ -1,1 +1,4 @@
-cdecl @ @ -x c++ @ declare x, y as type int @ 0
+EXPECTED_EXIT=0
+cdecl -x c++ <<END
+declare x, y as type int
+END

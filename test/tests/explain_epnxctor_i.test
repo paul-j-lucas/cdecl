@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain explicit C(int) noexcept @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain explicit C(int) noexcept
+END

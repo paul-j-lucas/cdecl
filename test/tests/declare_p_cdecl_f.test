@@ -1,1 +1,4 @@
-cdecl @ @ @ declare f as pointer to cdecl function @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare f as pointer to cdecl function
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ declare new as operator (n as std::size_t) returning pointer to void @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+declare new as operator (n as std::size_t) returning pointer to void
+END

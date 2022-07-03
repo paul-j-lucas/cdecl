@@ -1,1 +1,4 @@
-cdecl @ @ @ explain (int (*)[3][5])x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain (int (*)[3][5])x
+END

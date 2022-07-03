@@ -1,1 +1,4 @@
-cdecl @ @ @ explain unsigned char16_t x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain unsigned char16_t x
+END

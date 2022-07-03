@@ -1,1 +1,4 @@
-cdecl @ @ @ explain int *volatile x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain int *volatile x
+END

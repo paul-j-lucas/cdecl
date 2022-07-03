@@ -1,1 +1,4 @@
-cdecl @ @ @ cast x into unsigned char @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+cast x into unsigned char
+END

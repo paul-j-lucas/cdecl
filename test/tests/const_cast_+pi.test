@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ const cast S::x into pointer to int @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+const cast S::x into pointer to int
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc99 @ explain short _Accum x @ 0
+EXPECTED_EXIT=0
+cdecl -xc99 <<END
+explain short _Accum x
+END

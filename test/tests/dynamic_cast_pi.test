@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ dynamic cast x into pointer to int @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+dynamic cast x into pointer to int
+END

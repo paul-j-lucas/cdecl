@@ -1,1 +1,11 @@
-cdecl @ @ -Ilull @ declare x as short; declare x as int; declare x as long; declare x as long long; declare x as unsigned short; declare x as unsigned; declare x as unsigned long; declare x as unsigned long long @ 0
+EXPECTED_EXIT=0
+cdecl -Ilull <<END
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+END

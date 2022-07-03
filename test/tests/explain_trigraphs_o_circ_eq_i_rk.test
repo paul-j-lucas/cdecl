@@ -1,1 +1,5 @@
-cdecl @ @ -3 -xc++11 @ struct S; explain S& operator??'=(int) @ 0
+EXPECTED_EXIT=0
+cdecl -3 -xc++11 <<END
+struct S
+explain S& operator??'=(int)
+END

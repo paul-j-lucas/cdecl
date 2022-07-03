@@ -1,1 +1,4 @@
-cdecl @ @ @ explain (static int)x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain (static int)x
+END

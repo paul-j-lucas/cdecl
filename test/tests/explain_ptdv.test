@@ -1,1 +1,5 @@
-cdecl @ @ @ typedef void V; explain V *p @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+typedef void V
+explain V *p
+END

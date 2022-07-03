@@ -1,1 +1,4 @@
-cdecl @ @ -xknr @ explain long float x @ 0
+EXPECTED_EXIT=0
+cdecl -xknr <<END
+explain long float x
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain static_cast<int>(S::x) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain static_cast<int>(S::x)
+END

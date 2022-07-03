@@ -1,1 +1,4 @@
-cdecl @ @ -xc99 @ declare x as strict shared int @ 0
+EXPECTED_EXIT=0
+cdecl -xc99 <<END
+declare x as strict shared int
+END

@@ -1,1 +1,4 @@
-cdecl @ @ @ declare f as function (pointer to char) returning pointer to int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare f as function (pointer to char) returning pointer to int
+END

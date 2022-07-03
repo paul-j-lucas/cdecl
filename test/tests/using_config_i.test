@@ -1,1 +1,4 @@
-cdecl @ config_using_i.cdeclrc @ @ declare i as Int @ 0
+EXPECTED_EXIT=0
+cdecl -c data/config_using_i.cdeclrc <<END
+declare i as Int
+END

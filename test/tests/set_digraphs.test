@@ -1,1 +1,5 @@
-cdecl @ @ @ set digraphs; declare x as array of int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+set digraphs
+declare x as array of int
+END

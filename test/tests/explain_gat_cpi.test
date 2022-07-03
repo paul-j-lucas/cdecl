@@ -1,1 +1,4 @@
-cdecl @ @ @ explain int *const __attribute__(( foo )) p @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain int *const __attribute__(( foo )) p
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc17 @ declare p as pointer to function (x) returning int @ 0
+EXPECTED_EXIT=0
+cdecl -xc17 <<END
+declare p as pointer to function (x) returning int
+END

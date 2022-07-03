@@ -1,1 +1,4 @@
-cdecl @ @ @ explain int *const volatile x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain int *const volatile x
+END

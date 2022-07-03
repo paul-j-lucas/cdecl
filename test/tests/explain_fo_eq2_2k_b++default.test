@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct S; explain friend bool operator==(S, S) = default @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+struct S
+explain friend bool operator==(S, S) = default
+END

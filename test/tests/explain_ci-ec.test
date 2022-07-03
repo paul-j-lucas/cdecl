@@ -1,1 +1,4 @@
-cdecl @ @ -E @ explain const int x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain const int x
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ -Sx @ @ 64
+EXPECTED_EXIT=64
+cdecl -xc++ -Sx <<END
+
+END

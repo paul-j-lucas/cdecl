@@ -1,1 +1,4 @@
-cdecl @ @ @ explain unsigned double x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain unsigned double x
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain C::compl C() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain C::compl C()
+END

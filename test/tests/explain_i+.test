@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain int s::x @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain int s::x
+END

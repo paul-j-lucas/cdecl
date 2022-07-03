@@ -1,1 +1,4 @@
-cdecl @ @ @ declare c as char aligned as pointer to void @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare c as char aligned as pointer to void
+END

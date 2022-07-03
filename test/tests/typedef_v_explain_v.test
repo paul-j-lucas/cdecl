@@ -1,1 +1,5 @@
-cdecl @ @ @ typedef void Void; explain Void x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+typedef void Void
+explain Void x
+END

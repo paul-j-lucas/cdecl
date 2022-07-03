@@ -1,1 +1,4 @@
-cdecl @ @ -e @ int x @ 0
+EXPECTED_EXIT=0
+cdecl --explain <<END
+int x
+END

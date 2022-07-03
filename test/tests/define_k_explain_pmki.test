@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct S; explain int S::*p @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+struct S
+explain int S::*p
+END

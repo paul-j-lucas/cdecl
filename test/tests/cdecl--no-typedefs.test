@@ -1,1 +1,4 @@
-cdecl @ @ --no-typedefs @ declare x as int @ 0
+EXPECTED_EXIT=0
+cdecl --no-typedefs <<END
+declare x as int
+END

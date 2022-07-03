@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ set explicit-ecsu @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+set explicit-ecsu
+END

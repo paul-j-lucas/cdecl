@@ -1,1 +1,5 @@
-cdecl @ @ @ set east; declare x as const int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+set east
+declare x as const int
+END

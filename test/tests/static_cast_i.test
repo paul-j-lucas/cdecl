@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ static cast x into int @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+static cast x into int
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc++14 @ namespace A::B { typedef int Int; }; show user typedef @ 65
+EXPECTED_EXIT=65
+cdecl -xc++14 <<END
+namespace A::B { typedef int Int; }
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc89 @ explain *a[4] @ 0
+EXPECTED_EXIT=0
+cdecl -xc89 <<END
+explain *a[4]
+END

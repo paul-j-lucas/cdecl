@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct S; explain void S::operator delete(void *p) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+struct S
+explain void S::operator delete(void *p)
+END

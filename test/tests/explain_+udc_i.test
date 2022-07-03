@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ class C; explain C::operator int() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+class C
+explain C::operator int()
+END

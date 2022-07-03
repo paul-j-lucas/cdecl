@@ -1,1 +1,4 @@
-cdecl @ @ @ explain int** (*x[3][5])(void) @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain int** (*x[3][5])(void)
+END

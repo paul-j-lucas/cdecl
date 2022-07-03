@@ -1,1 +1,4 @@
-cdecl @ @ @ set -e-a--st-; declare x as const int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+set -e-a--st-; declare x as const int
+END

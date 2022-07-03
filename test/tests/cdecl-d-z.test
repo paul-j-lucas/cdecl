@@ -1,1 +1,4 @@
-cdecl @ @ -d @ explain size_t i @ 0
+EXPECTED_EXIT=0
+cdecl -d <<END
+explain size_t i
+END

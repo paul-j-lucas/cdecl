@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct S; declare == as operator (S, int) returning bool @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+struct S
+declare == as operator (S, int) returning bool
+END

@@ -1,1 +1,4 @@
-cdecl @ @ @ set c @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+set c
+END

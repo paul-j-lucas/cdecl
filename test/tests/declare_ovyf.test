@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ declare f as override final function @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+declare f as override final function
+END

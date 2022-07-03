@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain [[deprecated]] int x @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain [[deprecated]] int x
+END

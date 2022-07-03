@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x, y as pointer to int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x, y as pointer to int
+END

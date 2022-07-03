@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct T; explain bool S::operator==(T const&, int) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+struct T
+explain bool S::operator==(T const&, int)
+END

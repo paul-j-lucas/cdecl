@@ -1,3 +1,3 @@
-struct S; explain int operator?:(S, int, int)
-           ^
-12: error: operator ?: can not be overloaded
+explain int operator?:(S, int, int)
+          ^
+11: error: operator ?: can not be overloaded
