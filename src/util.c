@@ -155,6 +155,12 @@ char* check_strndup( char const *s, size_t n ) {
   return dup_s;
 }
 
+bool fd_is_file( int fd ) {
+  struct stat fd_stat;
+  FSTAT( fd, &fd_stat );
+  return S_ISREG( fd_stat.st_mode );
+}
+
 #ifndef HAVE_FMEMOPEN
 FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   assert( buf != NULL );
@@ -305,12 +311,6 @@ char const* home_dir( void ) {
   return home;
 }
 
-bool is_file( int fd ) {
-  struct stat fd_stat;
-  FSTAT( fd, &fd_stat );
-  return S_ISREG( fd_stat.st_mode );
-}
-
 uint32_t ls_bit1_32( uint32_t n ) {
   if ( n != 0 ) {
     for ( uint32_t b = 1; b != 0; b <<= 1 ) {
@@ -338,6 +338,12 @@ char const* parse_identifier( char const *s ) {
   while ( is_ident( *++s ) )
     ;
   return s;
+}
+
+bool path_is_file( char const *path ) {
+  struct stat path_stat;
+  STAT( path, &path_stat );
+  return S_ISREG( path_stat.st_mode );
 }
 
 size_t strnspn( char const *s, char const *charset, size_t n ) {

@@ -224,7 +224,7 @@ bool should_colorize( color_when_t when ) {
   //
   // Hence, we want to do color _except_ when ISREG=T.
   //
-  return !is_file( fout_fd );
+  return !fd_is_file( fout_fd );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

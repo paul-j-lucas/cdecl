@@ -397,6 +397,11 @@ static char const* push_file( char const *path ) {
     goto done;
   }
 
+  if ( !path_is_file( real_path ) ) {
+    strbuf_printf( &ebuf, "%s: not a plain file", path );
+    goto done;
+  }
+
   FILE *const include_file = fopen( real_path, "r" );
   if ( include_file == NULL ) {
     strbuf_printf( &ebuf, "%s: %s", path, STRERROR() );

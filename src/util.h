@@ -345,13 +345,15 @@ _GL_INLINE_HEADER_BEGIN
 #define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
 
 /**
- * Calls **fstat**(3), checks for an error, and exits if there was one.
+ * Calls **fstat**(2), checks for an error, and exits if there was one.
  *
  * @param FD The file descriptor to stat.
- * @param STAT A pointer to a `struct stat` to receive the result.
+ * @param PSTAT A pointer to a `struct stat` to receive the result.
+ *
+ * @sa #STAT()
  */
-#define FSTAT(FD,STAT) \
-  perror_exit_if( fstat( (FD), (STAT) ) < 0, EX_IOERR )
+#define FSTAT(FD,PSTAT) \
+  perror_exit_if( fstat( (FD), (PSTAT) ) < 0, EX_IOERR )
 
 /**
  * Cast either from or to an integral type &mdash; similar to C++'s
@@ -477,6 +479,17 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #SKIP_CHARS()
  */
 #define SKIP_WS(S)                SKIP_CHARS( (S), WS )
+
+/**
+ * Calls **stat**(2), checks for an error, and exits if there was one.
+ *
+ * @param PATH The path to stat.
+ * @param PSTAT A pointer to a `struct stat` to receive the result.
+ *
+ * @sa #FSTAT()
+ */
+#define STAT(PATH,PSTAT) \
+  perror_exit_if( stat( (PATH), (PSTAT) ) < 0, EX_IOERR )
 
 /**
  * C version of C++'s `static_cast`.
@@ -646,6 +659,17 @@ C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
 bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
 }
+
+/**
+ * Checks whether \a fd refers to a regular file.
+ *
+ * @param fd The file descriptor to check.
+ * @return Returns `true` only if \a fd refers to a regular file.
+ *
+ * @sa path_is_file()
+ */
+PJL_WARN_UNUSED_RESULT
+bool fd_is_file( int fd );
 
 #ifndef HAVE_FMEMOPEN
 /**
@@ -877,15 +901,6 @@ bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
 }
 
 /**
- * Checks whether the given file descriptor refers to a regular file.
- *
- * @param fd The file descriptor to check.
- * @return Returns `true` only if \a fd refers to a regular file.
- */
-PJL_WARN_UNUSED_RESULT
-bool is_file( int fd );
-
-/**
  * Checks whether \a c is an identifier character.
  *
  * @param c The character to check.
@@ -989,6 +1004,17 @@ C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
 char const* null_if_empty( char const *s ) {
   return s != NULL && str_is_empty( s ) ? NULL : s;
 }
+
+/**
+ * Checks whether \a path refers to a regular file.
+ *
+ * @param path The path to check.
+ * @return Returns `true` only if \a path refers to a regular file.
+ *
+ * @sa fd_is_file()
+ */
+PJL_WARN_UNUSED_RESULT
+bool path_is_file( char const *path );
 
 /**
  * Like **strspn**(3) except it limits its scan to at most \a n characters.
