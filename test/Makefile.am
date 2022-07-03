@@ -1790,7 +1790,8 @@ TESTS+=	tests/file-cast_x.test \
 # include tests
 # =============
 #
-TESTS+=	tests/include-nested.test \
+TESTS+=
+	tests/include-ok-nested-01.test \
 	tests/include-ok.test
 
 TESTS+=	tests/include-err-01.test \
