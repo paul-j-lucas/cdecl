@@ -1,1 +1,4 @@
-cdecl @ @ @ explain complex double x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain complex double x
+END

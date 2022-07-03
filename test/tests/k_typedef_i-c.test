@@ -1,1 +1,4 @@
-cdecl @ @ @ struct S { typedef int I; } @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+struct S { typedef int I; }
+END

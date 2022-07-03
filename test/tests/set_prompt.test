@@ -1,1 +1,4 @@
-cdecl @ @ @ set prompt @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+set prompt
+END

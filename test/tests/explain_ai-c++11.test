@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain auto int x @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+explain auto int x
+END

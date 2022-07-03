@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain static constexpr int x @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain static constexpr int x
+END

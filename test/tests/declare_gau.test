@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as __auto_type @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as __auto_type
+END

@@ -1,1 +1,4 @@
-cdecl @ @ @ set noprompt @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+set noprompt
+END

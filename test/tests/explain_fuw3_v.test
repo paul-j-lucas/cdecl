@@ -1,1 +1,4 @@
-cdecl @ @ @ explain void f(unsigned x : 3) @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain void f(unsigned x : 3)
+END

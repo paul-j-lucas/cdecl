@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain int (C::*p)() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain int (C::*p)()
+END

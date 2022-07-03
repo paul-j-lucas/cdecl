@@ -1,1 +1,4 @@
-cdecl @ @ @ using I = int @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+using I = int
+END

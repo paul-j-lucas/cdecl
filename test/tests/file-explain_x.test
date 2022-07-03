@@ -1,1 +1,4 @@
-cdecl @ @ -f data/explain_x.cdecl @ @ 65
+EXPECTED_EXIT=65
+cdecl -f data/explain_x.cdecl <<END
+
+END

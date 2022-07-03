@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain int operator"" _x(const char*, unsigned long) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain int operator"" _x(const char*, unsigned long)
+END

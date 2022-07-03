@@ -1,1 +1,4 @@
-cdecl @ @ @ explain using f = void (*)(int) @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain using f = void (*)(int)
+END

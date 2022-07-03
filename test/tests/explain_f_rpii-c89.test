@@ -1,1 +1,4 @@
-cdecl @ @ -xc89 @ explain *f() @ 0
+EXPECTED_EXIT=0
+cdecl -xc89 <<END
+explain *f()
+END

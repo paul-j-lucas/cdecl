@@ -1,1 +1,4 @@
-cdecl @ @ @ show int8_t @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+show int8_t
+END

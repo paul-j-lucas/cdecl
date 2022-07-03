@@ -1,1 +1,4 @@
-cdecl @ @ -3 @ declare a as array 9 of int @ 0
+EXPECTED_EXIT=0
+cdecl -3 <<END
+declare a as array 9 of int
+END

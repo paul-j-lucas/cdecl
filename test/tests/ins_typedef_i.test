@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ inline namespace NS { typedef int Int; }; show user typedef @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+inline namespace NS { typedef int Int; }
+show user typedef
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -9 @ @ 64
+EXPECTED_EXIT=64
+cdecl -9 <<END
+
+END

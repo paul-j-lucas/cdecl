@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ cast p into pointer to member of class C int @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+cast p into pointer to member of class C int
+END

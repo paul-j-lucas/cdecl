@@ -1,1 +1,4 @@
-cdecl @ @ -xc99 @ explain _Sat _Fract x @ 0
+EXPECTED_EXIT=0
+cdecl -xc99 <<END
+explain _Sat _Fract x
+END

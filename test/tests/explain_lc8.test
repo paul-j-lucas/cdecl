@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain long char8_t x @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+explain long char8_t x
+END

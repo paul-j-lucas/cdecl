@@ -1,1 +1,4 @@
-cdecl @ @ @ declare f as cdecl function @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare f as cdecl function
+END

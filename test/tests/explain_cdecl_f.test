@@ -1,1 +1,4 @@
-cdecl @ @ @ explain void __cdecl f() @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain void __cdecl f()
+END

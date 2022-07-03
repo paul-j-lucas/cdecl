@@ -30,7 +30,7 @@ builtin_type_ast ::= builtin_btid = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 9-12,
+    loc = 8-11,
     type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
@@ -44,7 +44,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 9-12,
+    loc = 8-11,
     type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
@@ -56,7 +56,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 9-12,
+    loc = 8-11,
     type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
@@ -76,7 +76,7 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 9-12,
+    loc = 8-11,
     type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
@@ -95,7 +95,7 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 14-33,
+    loc = 13-32,
     type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
     oper_id = "!" (5),
     flags = unspecified (0x0),
@@ -107,7 +107,7 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_
       cast_kind = "none",
       depth = 0,
       parent->unique_id = 1337,
-      loc = 9-12,
+      loc = 8-11,
       type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
@@ -123,7 +123,7 @@ decl_c ::= decl_c_astp = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 9-12,
+    loc = 8-11,
     type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
@@ -134,7 +134,7 @@ decl_c ::= decl_c_astp = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 14-33,
+    loc = 13-32,
     type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
     oper_id = "!" (5),
     flags = unspecified (0x0),
@@ -146,7 +146,7 @@ decl_c ::= decl_c_astp = {
       cast_kind = "none",
       depth = 0,
       parent->unique_id = 1337,
-      loc = 9-12,
+      loc = 8-11,
       type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
@@ -158,7 +158,7 @@ decl_c ::= decl_c_astp = {
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
-    loc = 14-33,
+    loc = 13-32,
     type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
     oper_id = "!" (5),
     flags = unspecified (0x0),
@@ -170,7 +170,7 @@ decl_c ::= decl_c_astp = {
       cast_kind = "none",
       depth = 0,
       parent->unique_id = 1337,
-      loc = 9-12,
+      loc = 8-11,
       type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
       bit_width = 0
     }

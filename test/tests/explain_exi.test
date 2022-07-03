@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain export int x @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain export int x
+END

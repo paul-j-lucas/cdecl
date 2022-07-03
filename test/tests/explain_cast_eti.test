@@ -1,1 +1,4 @@
-cdecl @ @ @ explain (extern int)x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain (extern int)x
+END

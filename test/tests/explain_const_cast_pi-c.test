@@ -1,1 +1,4 @@
-cdecl @ @ @ explain const_cast<int*>(x) @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain const_cast<int*>(x)
+END

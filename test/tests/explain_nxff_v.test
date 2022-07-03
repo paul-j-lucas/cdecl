@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain void f() noexcept(false) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain void f() noexcept(false)
+END

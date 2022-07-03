@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain C(int) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain C(int)
+END

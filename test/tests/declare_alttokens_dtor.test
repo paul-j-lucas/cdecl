@@ -1,1 +1,4 @@
-cdecl @ @ -a -xc++ @ declare T as destructor @ 0
+EXPECTED_EXIT=0
+cdecl -a -xc++ <<END
+declare T as destructor
+END

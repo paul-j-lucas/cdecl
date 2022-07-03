@@ -1,1 +1,4 @@
-cdecl @ @ -a -xc++ @ declare rr as rvalue reference to int @ 0
+EXPECTED_EXIT=0
+cdecl -a -xc++ <<END
+declare rr as rvalue reference to int
+END

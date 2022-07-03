@@ -1,1 +1,4 @@
-cdecl @ @ -d @ explain int* f(int x, int y) @ 0
+EXPECTED_EXIT=0
+cdecl -d <<END
+explain int* f(int x, int y)
+END

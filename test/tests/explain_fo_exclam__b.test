@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain friend bool operator!() @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+explain friend bool operator!()
+END

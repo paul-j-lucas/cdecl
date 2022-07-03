@@ -1,1 +1,4 @@
-cdecl @ @ @ cast f into function returning int @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+cast f into function returning int
+END

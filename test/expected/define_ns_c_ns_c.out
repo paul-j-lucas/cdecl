@@ -1,4 +1,4 @@
-namespace N { class C; }; define D of namespace C of namespace N as class D
-          ^
-11: error: "N::C" was previously declared as class:
+define D of namespace C of namespace N as class D
+         ^
+10: error: "N::C" was previously declared as class:
 > namespace N { class C; }

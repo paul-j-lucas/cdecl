@@ -1,1 +1,4 @@
-cdecl @ @ @ declare f as function (x as array static 3 of int) returning void @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare f as function (x as array static 3 of int) returning void
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc99 @ explain shared[*] int a[4] @ 0
+EXPECTED_EXIT=0
+cdecl -xc99 <<END
+explain shared[*] int a[4]
+END

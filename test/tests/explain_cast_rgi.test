@@ -1,1 +1,4 @@
-cdecl @ @ @ explain (register int)x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain (register int)x
+END

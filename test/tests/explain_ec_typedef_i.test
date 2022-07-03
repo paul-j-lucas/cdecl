@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain extern "C" typedef int Int @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain extern "C" typedef int Int
+END

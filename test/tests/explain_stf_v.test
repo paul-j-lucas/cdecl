@@ -1,1 +1,4 @@
-cdecl @ @ @ explain static void f() @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain static void f()
+END

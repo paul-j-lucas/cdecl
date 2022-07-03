@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain friend void f() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain friend void f()
+END

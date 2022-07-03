@@ -1,1 +1,4 @@
-cdecl @ @ @ set bison-debug @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+set bison-debug
+END

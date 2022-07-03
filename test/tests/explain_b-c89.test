@@ -1,1 +1,4 @@
-cdecl @ @ -xc89 @ explain bool x @ 65
+EXPECTED_EXIT=65
+cdecl -xc89 <<END
+explain bool x
+END

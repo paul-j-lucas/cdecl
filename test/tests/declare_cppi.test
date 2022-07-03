@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as const pointer to pointer to int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as const pointer to pointer to int
+END

@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ namespace N { class C { typedef int I; }; }; explain N::C::I x @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+namespace N { class C { typedef int I; }; }
+explain N::C::I x
+END

@@ -1,1 +1,4 @@
-cdecl @ @ @ explain void f( int, int, void ) @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain void f( int, int, void )
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ declare S::T::f as function @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+declare S::T::f as function
+END

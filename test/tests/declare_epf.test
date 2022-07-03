@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ declare f as explicit function @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+declare f as explicit function
+END

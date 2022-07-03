@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain static void* operator new( std::size_t ) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain static void* operator new( std::size_t )
+END

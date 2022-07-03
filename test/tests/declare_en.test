@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as enum E @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as enum E
+END

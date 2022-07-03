@@ -1,1 +1,4 @@
-cdecl @ @ @ explain (int[3][5][7])x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain (int[3][5][7])x
+END

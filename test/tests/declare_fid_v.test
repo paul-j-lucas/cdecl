@@ -1,1 +1,4 @@
-cdecl @ @ @ declare f as function (i as int, d as double) returning void @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare f as function (i as int, d as double) returning void
+END

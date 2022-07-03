@@ -1,1 +1,5 @@
-cdecl @ @ @ typedef void (*f)(int); show @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+typedef void (*f)(int)
+show
+END

@@ -1,1 +1,4 @@
-cdecl @ @ @ explain enum E : int x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain enum E : int x
+END

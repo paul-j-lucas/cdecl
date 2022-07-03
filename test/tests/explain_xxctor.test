@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain constexpr C() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain constexpr C()
+END

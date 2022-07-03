@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct S; explain std::strong_ordering operator<=>(const S&, const S&) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+struct S
+explain std::strong_ordering operator<=>(const S&, const S&)
+END

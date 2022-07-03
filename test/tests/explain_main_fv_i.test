@@ -1,1 +1,4 @@
-cdecl @ @ @ explain int main( void ) @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain int main( void )
+END

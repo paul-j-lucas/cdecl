@@ -1,1 +1,5 @@
-cdecl @ @ @ set c++14; set @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+set c++14
+set
+END

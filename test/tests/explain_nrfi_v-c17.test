@@ -1,1 +1,4 @@
-cdecl @ @ -xc17 @ explain noreturn void f(int) @ 0
+EXPECTED_EXIT=0
+cdecl -xc17 <<END
+explain noreturn void f(int)
+END

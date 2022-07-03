@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ declare delete as operator (p as pointer to void) returning void @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+declare delete as operator (p as pointer to void) returning void
+END

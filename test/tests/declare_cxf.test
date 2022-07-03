@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as complex float @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as complex float
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc99 @ explain unsigned _Fract x @ 0
+EXPECTED_EXIT=0
+cdecl -xc99 <<END
+explain unsigned _Fract x
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc++14 @ explain void f() throw() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++14 <<END
+explain void f() throw()
+END

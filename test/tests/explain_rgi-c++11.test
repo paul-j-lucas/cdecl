@@ -1,1 +1,4 @@
-cdecl @ @ -xc++11 @ explain register int i @ 0
+EXPECTED_EXIT=0
+cdecl -xc++11 <<END
+explain register int i
+END

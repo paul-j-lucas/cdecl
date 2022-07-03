@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain extern R"abc(X)ab)abc" void f() @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+explain extern R"abc(X)ab)abc" void f()
+END

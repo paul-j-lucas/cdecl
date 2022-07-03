@@ -1,1 +1,4 @@
-cdecl @ @ @ explain type int x @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain type int x
+END

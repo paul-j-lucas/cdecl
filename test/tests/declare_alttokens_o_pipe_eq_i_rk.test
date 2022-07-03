@@ -1,1 +1,5 @@
-cdecl @ @ -a -xc++ @ struct S; declare |= as operator (int) returning reference to S @ 0
+EXPECTED_EXIT=0
+cdecl -a -xc++ <<END
+struct S
+declare |= as operator (int) returning reference to S
+END

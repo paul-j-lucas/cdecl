@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x of scope s as int @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+declare x of scope s as int
+END

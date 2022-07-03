@@ -1,1 +1,4 @@
-cdecl @ @ @ explain char signed x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain char signed x
+END

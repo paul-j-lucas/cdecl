@@ -1,1 +1,4 @@
-cdecl @ @ @ register int f(void) @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+register int f(void)
+END

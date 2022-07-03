@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain enum struct C x @ 65
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+explain enum struct C x
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc++03 @ help english @ 0
+EXPECTED_EXIT=0
+cdecl -xc++03 <<END
+help english
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -d @ explain _Alignas(long) int i @ 0
+EXPECTED_EXIT=0
+cdecl -d <<END
+explain _Alignas(long) int i
+END

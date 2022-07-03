@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ namespace A::B { typedef int Int; }; show user typedef @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+namespace A::B { typedef int Int; }
+show user typedef
+END

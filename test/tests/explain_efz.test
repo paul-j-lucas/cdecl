@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain enum E : size_t x @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain enum E : size_t x
+END

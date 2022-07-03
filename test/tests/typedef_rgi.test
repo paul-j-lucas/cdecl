@@ -1,1 +1,4 @@
-cdecl @ @ @ typedef register int SI @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+typedef register int SI
+END

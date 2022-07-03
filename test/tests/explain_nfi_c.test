@@ -1,1 +1,4 @@
-cdecl @ @ @ explain char (f)(int) @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain char (f)(int)
+END

@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ class C; explain operator C const&() @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+class C
+explain operator C const&()
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xknr @ declare x as const int @ 0
+EXPECTED_EXIT=0
+cdecl -xknr <<END
+declare x as const int
+END

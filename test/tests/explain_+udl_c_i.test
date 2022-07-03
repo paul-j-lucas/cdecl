@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain int S::operator"" _x(char) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain int S::operator"" _x(char)
+END

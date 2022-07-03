@@ -1,1 +1,4 @@
-cdecl @ @ @ explain int f( void() ) @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain int f( void() )
+END

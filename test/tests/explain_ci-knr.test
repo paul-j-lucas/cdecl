@@ -1,1 +1,4 @@
-cdecl @ @ -xknr @ explain const int x @ 65
+EXPECTED_EXIT=65
+cdecl -xknr <<END
+explain const int x
+END

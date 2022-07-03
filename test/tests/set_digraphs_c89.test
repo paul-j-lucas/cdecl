@@ -1,1 +1,5 @@
-cdecl @ @ @ set digraphs c89; set @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+set digraphs c89
+set
+END

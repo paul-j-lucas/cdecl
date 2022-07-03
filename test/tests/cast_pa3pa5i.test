@@ -1,1 +1,4 @@
-cdecl @ @ @ cast x into pointer to array 3 of pointer to array 5 of int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+cast x into pointer to array 3 of pointer to array 5 of int
+END

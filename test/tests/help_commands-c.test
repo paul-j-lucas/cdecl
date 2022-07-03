@@ -1,1 +1,4 @@
-cdecl @ @ @ help commands @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+help commands
+END

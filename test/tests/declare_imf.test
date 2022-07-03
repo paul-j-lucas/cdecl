@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as imaginary float @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as imaginary float
+END

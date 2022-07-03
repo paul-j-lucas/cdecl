@@ -1,1 +1,4 @@
-cdecl @ @ -d -xc++ @ explain enum E : int @ 0
+EXPECTED_EXIT=0
+cdecl -d -xc++ <<END
+explain enum E : int
+END

@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as volatile pointer to int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as volatile pointer to int
+END

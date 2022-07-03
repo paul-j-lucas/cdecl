@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ set nousing; declare x as type int @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+set nousing
+declare x as type int
+END

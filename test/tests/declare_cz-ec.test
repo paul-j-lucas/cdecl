@@ -1,1 +1,4 @@
-cdecl @ @ -E @ declare x as const size_t @ 0
+EXPECTED_EXIT=0
+cdecl --east-const <<END
+declare x as const size_t
+END

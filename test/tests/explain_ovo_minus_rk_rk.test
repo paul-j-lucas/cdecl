@@ -1,1 +1,5 @@
-cdecl @ @ -xc++ @ struct S; explain S& operator-(S&) override @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+struct S
+explain S& operator-(S&) override
+END

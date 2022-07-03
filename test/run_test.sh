@@ -211,21 +211,11 @@ ulimit -c 0
 ########## Run test ###########################################################
 
 run_cdecl_test() {
-  IFS_old=$IFS
-  IFS='@'; read COMMAND CONFIG OPTIONS INPUT EXPECTED_EXIT < $TEST
-  [ "$IFS_old" ] && IFS=$IFS_old
-
-  COMMAND=`echo $COMMAND`               # trims whitespace
-  CONFIG=`echo $CONFIG`                 # trims whitespace
-  [ "$CONFIG" ] && CONFIG="-c $DATA_DIR/$CONFIG"
-  # INPUT=`echo $INPUT`                 # don't expand shell metas
-  EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
-
   EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
   assert_exists $EXPECTED_OUTPUT
 
-  #echo "$INPUT" \| $COMMAND $CONFIG "$OPTIONS" \> $LOG_FILE
-  echo "$INPUT" | sed 's/^ //' | $COMMAND $CONFIG $OPTIONS > $LOG_FILE 2>&1
+  . $TEST > $LOG_FILE 2>&1
+
   ACTUAL_EXIT=$?
   if [ $ACTUAL_EXIT -eq $EXPECTED_EXIT ]
   then

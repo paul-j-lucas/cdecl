@@ -1,1 +1,5 @@
-cdecl @ @ @ define Int as int; explain Int x @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+define Int as int
+explain Int x
+END

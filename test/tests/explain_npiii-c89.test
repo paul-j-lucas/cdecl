@@ -1,1 +1,4 @@
-cdecl @ @ -xc89 @ explain (*p, i) @ 0
+EXPECTED_EXIT=0
+cdecl -xc89 <<END
+explain (*p, i)
+END

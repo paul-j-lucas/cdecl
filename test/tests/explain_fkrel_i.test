@@ -1,1 +1,4 @@
-cdecl @ @ -xcknr @ explain int f(x, ...) @ 65
+EXPECTED_EXIT=65
+cdecl -xcknr <<END
+explain int f(x, ...)
+END

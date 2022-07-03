@@ -1,1 +1,4 @@
-cdecl @ @ -xknr @ explain struct S f() @ 65
+EXPECTED_EXIT=65
+cdecl -xknr <<END
+explain struct S f()
+END

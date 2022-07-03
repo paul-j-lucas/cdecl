@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain extern "C" using Int = int @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain extern "C" using Int = int
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc99 @ declare x as char32_t @ 65
+EXPECTED_EXIT=65
+cdecl -xc99 <<END
+declare x as char32_t
+END

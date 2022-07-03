@@ -1,1 +1,4 @@
-cdecl @ @ @ explain __inline__ void f() @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+explain __inline__ void f()
+END

@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain C() = default @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain C() = default
+END

@@ -1,1 +1,4 @@
-cdecl @ @ @ set noexplicit-int=u @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+set noexplicit-int=u
+END

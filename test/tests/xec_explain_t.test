@@ -1,1 +1,4 @@
-cdecl @ @ -xc99 @ explain _Sat x @ 65
+EXPECTED_EXIT=65
+cdecl -xc99 <<END
+explain _Sat x
+END

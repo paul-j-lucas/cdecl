@@ -1,1 +1,4 @@
-cdecl @ @ @ define int_least32_t as int @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+define int_least32_t as int
+END

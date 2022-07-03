@@ -1,1 +1,4 @@
-cdecl @ @ -xc++ @ explain [[carries_dependency]] int f([[carries_dependency]] int x) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain [[carries_dependency]] int f([[carries_dependency]] int x)
+END

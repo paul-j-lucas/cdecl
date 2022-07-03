@@ -1,1 +1,4 @@
-cdecl @ @ @ typedef char int_least32_t @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+typedef char int_least32_t
+END

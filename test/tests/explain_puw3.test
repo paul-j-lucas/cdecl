@@ -1,1 +1,4 @@
-cdecl @ @ @ explain unsigned *x : 3 @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+explain unsigned *x : 3
+END

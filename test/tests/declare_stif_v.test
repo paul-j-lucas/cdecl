@@ -1,1 +1,4 @@
-cdecl @ @ @ declare f as static inline function returning void @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare f as static inline function returning void
+END

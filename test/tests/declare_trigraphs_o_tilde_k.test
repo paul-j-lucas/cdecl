@@ -1,1 +1,5 @@
-cdecl @ @ -3 -xc++11 @ struct S; declare ??- as operator returning S @ 0
+EXPECTED_EXIT=0
+cdecl -3 -xc++11 <<END
+struct S
+declare ??- as operator returning S
+END

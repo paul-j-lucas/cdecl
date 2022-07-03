@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x, y as pointer to function (int, double) returning pointer to char @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x, y as pointer to function (int, double) returning pointer to char
+END

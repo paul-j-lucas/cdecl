@@ -1,1 +1,4 @@
-cdecl @ @ -xc++11 @ explain ??(??(noreturn??)??) void f(int) @ 0
+EXPECTED_EXIT=0
+cdecl -xc++11 <<END
+explain ??(??(noreturn??)??) void f(int)
+END

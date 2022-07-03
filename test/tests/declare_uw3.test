@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as unsigned width 3 bits @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as unsigned width 3 bits
+END

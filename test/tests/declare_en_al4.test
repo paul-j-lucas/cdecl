@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as enum E aligned 4 @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as enum E aligned 4
+END

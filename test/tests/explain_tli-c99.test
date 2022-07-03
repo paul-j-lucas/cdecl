@@ -1,1 +1,4 @@
-cdecl @ @ -xc99 @ explain thread_local int x @ 65
+EXPECTED_EXIT=65
+cdecl -xc99 <<END
+explain thread_local int x
+END

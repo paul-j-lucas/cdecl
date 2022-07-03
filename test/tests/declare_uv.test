@@ -1,1 +1,4 @@
-cdecl @ @ @ declare x as unsigned void @ 65
+EXPECTED_EXIT=65
+cdecl <<END
+declare x as unsigned void
+END
