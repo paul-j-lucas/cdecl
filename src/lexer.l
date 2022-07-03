@@ -354,23 +354,27 @@ static char const* push_file( char const *path ) {
   if ( path == NULL )
     return "empty path";
 
+  static strbuf_t ebuf;
+  strbuf_reset( &ebuf );
+
   wordexp_t we;
   int const rv_we = wordexp( path, &we, /*flags=*/0 );
 
-  char const *error = NULL;
   char const *real_path = NULL;
 
   switch ( rv_we ) {
     case 0:                             // success
       if ( we.we_wordc != 1 ) {
-        error = "too many files";
+        strbuf_printf( &ebuf, "%s: too many files", path );
         goto done;
       }
       break;
     case WRDE_BADCHAR:
-      return "path contains unquoted shell character";
+      strbuf_printf( &ebuf, "%s: contains unquoted shell characters", path );
+      return ebuf.str;
     case WRDE_SYNTAX:
-      return "path syntax error";
+      strbuf_printf( &ebuf, "%s: path syntax error", path );
+      return ebuf.str;
     // LCOV_EXCL_START
     case WRDE_NOSPACE:                  // unlikely
       return "out of memory";
@@ -384,18 +388,18 @@ static char const* push_file( char const *path ) {
 
   real_path = realpath( we.we_wordv[0], /*real_buf=*/NULL );
   if ( real_path == NULL ) {
-    error = "could not resolve path";
+    strbuf_printf( &ebuf, "%s: could not resolve path", path );
     goto done;
   }
 
   if ( rb_tree_find( &include_set, real_path ) != NULL ) {
-    error = "file previously included";
+    strbuf_printf( &ebuf, "%s: file previously included", path );
     goto done;
   }
 
   FILE *const include_file = fopen( real_path, "r" );
   if ( include_file == NULL ) {
-    error = STRERROR();
+    strbuf_printf( &ebuf, "%s: %s", path, STRERROR() );
     goto done;
   }
 
@@ -417,8 +421,8 @@ static char const* push_file( char const *path ) {
 
 done:
   FREE( real_path );
-  wordfree( &we );
-  return error;
+  wordfree( &we );                      // call only if rv_we == 0
+  return ebuf.str;
 }
 
 /**
