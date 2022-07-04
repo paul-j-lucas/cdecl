@@ -1,1 +1,5 @@
-cdecl @ @ @ include "data/include_1.cdeclrc"; show @ 0
+EXPECTED_EXIT=0
+cdecl <<END
+include "data/include_1.cdeclrc"
+show
+END

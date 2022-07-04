@@ -1,1 +1,4 @@
-cdecl @ @ @ include "|" @ 65
+EXPECTED_EXIT=0
+cdecl <<END
+include "|"
+END

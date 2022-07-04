@@ -343,19 +343,17 @@ static bool pop_file( void ) {
  *
  * @param path The path to read subsequent input from until EOF.  Shell
  * metacharacters, e.g., `~`, are expanded.
- * @return Returns NULL upon success or an error message upon failure.
+ * @param path_loc The location of \a path.
  *
  * @sa pop_file()
  * @sa http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
  */
-PJL_WARN_UNUSED_RESULT
-static char const* push_file( char const *path ) {
+static void push_file( char const *path, c_loc_t const *path_loc ) {
   path = null_if_empty( path );
-  if ( path == NULL )
-    return "empty path";
-
-  static strbuf_t ebuf;
-  strbuf_reset( &ebuf );
+  if ( path == NULL ) {
+    print_error( path_loc, "empty path\n" );
+    return;
+  }
 
   wordexp_t we;
   int const rv_we = wordexp( path, &we, /*flags=*/0 );
@@ -365,19 +363,19 @@ static char const* push_file( char const *path ) {
   switch ( rv_we ) {
     case 0:                             // success
       if ( we.we_wordc != 1 ) {
-        strbuf_printf( &ebuf, "%s: too many files", path );
+        print_error( path_loc, "%s: too many files\n", path );
         goto done;
       }
       break;
     case WRDE_BADCHAR:
-      strbuf_printf( &ebuf, "%s: contains unquoted shell characters", path );
-      return ebuf.str;
+      print_error( path_loc, "%s: contains unquoted shell characters\n", path );
+      return;
     case WRDE_SYNTAX:
-      strbuf_printf( &ebuf, "%s: path syntax error", path );
-      return ebuf.str;
+      print_error( path_loc, "%s: path syntax error\n", path );
+      return;
     // LCOV_EXCL_START
     case WRDE_NOSPACE:                  // unlikely
-      return "out of memory";
+      print_error( path_loc, "out of memory\n" );
     case WRDE_BADVAL:                   // can't happen
     case WRDE_CMDSUB:                   // can't happen
       PJL_FALLTHROUGH;
@@ -388,23 +386,23 @@ static char const* push_file( char const *path ) {
 
   real_path = realpath( we.we_wordv[0], /*real_buf=*/NULL );
   if ( real_path == NULL ) {
-    strbuf_printf( &ebuf, "%s: could not resolve path", path );
+    print_error( path_loc, "%s: could not resolve path\n", path );
     goto done;
   }
 
   if ( rb_tree_find( &include_set, real_path ) != NULL ) {
-    strbuf_printf( &ebuf, "%s: file previously included", path );
+    print_error( path_loc, "%s: file previously included\n", path );
     goto done;
   }
 
   if ( !path_is_file( real_path ) ) {
-    strbuf_printf( &ebuf, "%s: not a plain file", path );
+    print_error( path_loc, "%s: not a plain file\n", path );
     goto done;
   }
 
   FILE *const include_file = fopen( real_path, "r" );
   if ( include_file == NULL ) {
-    strbuf_printf( &ebuf, "%s: %s", path, STRERROR() );
+    print_error( path_loc, "%s: %s\n", path, STRERROR() );
     goto done;
   }
 
@@ -427,7 +425,6 @@ static char const* push_file( char const *path ) {
 done:
   FREE( real_path );
   wordfree( &we );                      // call only if rv_we == 0
-  return ebuf.str;
 }
 
 /**
@@ -1020,12 +1017,8 @@ include{S}*\"  {
 
 <X_INCL>\"    {
                 BEGIN( INITIAL );
-                char const *const err = push_file( str_lit_buf.str );
+                push_file( str_lit_buf.str, &str_lit_loc );
                 strbuf_reset( &str_lit_buf );
-                if ( err != NULL ) {
-                  print_error( &str_lit_loc, "%s\n", err );
-                  return Y_LEXER_ERROR;
-                }
               }
 
 <X_STR>\"     { /* X_STR is the same as X_CHAR except " replaces '. */

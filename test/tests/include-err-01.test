@@ -1,1 +1,5 @@
-cdecl @ @ @ include "data/include-err-1.cdeclrc"; show @ 65
+EXPECTED_EXIT=0
+cdecl <<END
+include "data/include-err-1.cdeclrc"
+show
+END
