@@ -736,6 +736,12 @@ Shell meta characters in
 .IR path ,
 e.g., \f(CW~\fP,
 are expanded.
+(Note that
+.B include
+is recognized as a
+.B cdecl
+keyword only when immediately followed
+by a string literal.)
 .TP
 .RB "{ " struct " | " union " | " class " | " enum " } " \f2s-name\fP
 Defines
