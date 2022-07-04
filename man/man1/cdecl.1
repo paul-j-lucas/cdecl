@@ -273,7 +273,7 @@ writing to a regular file
 .BR fstat (3)
 is called on standard output:
 colorize only if \f(CWS_IFREG\fP is false.)
-.IP ""
+.IP
 This is more useful than
 .B isatty
 since it accomodates the common case of allowing color output to be piped to
@@ -286,7 +286,7 @@ understands
 ASCII terminal escape sequences
 that produce color.
 .RE
-.IP ""
+.IP
 The default is
 .BR not_file .
 .TP
@@ -313,7 +313,7 @@ includes the
 .RI \f(CW[\fP file \f(CW:\fP line \f(CW]\fP
 of the code that generated said message.
 .RE
-.IP ""
+.IP
 (This is a debugging aid for developers of
 .B cdecl
 itself.)
@@ -362,7 +362,7 @@ c++decl> declare pt as pointer to class T
 T *pt;
 .cE 0
 .RE
-.IP ""
+.IP
 (See
 .BR "Other Minor Caveats" .)
 For C,
@@ -404,7 +404,7 @@ Possibly \f(CWunsigned\fP:
 or
 \f(CWlong long\fP.
 .RE
-.IP ""
+.IP
 Multiple formats may be given,
 one immediately after the other,
 e.g., \f(CWusl\fP
@@ -845,8 +845,7 @@ or
 equivalent to
 .BR "show user" .
 .RE
-.TP
-.B ""
+.IP
 By default,
 definitions are shown in pseudo-English.
 If
@@ -996,7 +995,8 @@ arguments.
 .P
 .I English
 is one of:
-.IP "" 4
+.P
+.RS 4
 .BR \f2store\fP "* " array " [[" static "] " \f2cv-qual\fP "* {" \f2number\fP | * "}] " of " \f2english\fP"
 .br
 .BR \f2store\fP "* " variable " [" length "] " "array " \f2cv-qual\fP * " of" " \f2english\fP"
@@ -1022,6 +1022,7 @@ is one of:
 .IR store "* " modifier "* [" C-type ]
 .br
 .RB "{ " enum " [" class "|" struct "] [" of " [" type "] " \f2english\fP "] | " class " | " namespace " | " struct " | " union " } \f2s-name\fP"
+.RE
 .P
 where:
 .RS 4
@@ -2328,7 +2329,7 @@ in a manner similar to the
 variable
 used by
 .BR gcc .
-.IP ""
+.IP
 As with
 .BR gcc ,
 the value is composed of a colon-separated sequence of capabilities.
@@ -2348,7 +2349,7 @@ in the range 0\-255.
 An example SGR value is \f(CW31;1\fP
 that specifies a bright red foreground
 on the terminal's default background.
-.IP ""
+.IP
 Capability names in upper-case are unique to
 .BR cdecl ;
 those in lower-case are upwards compatibile with
@@ -2402,7 +2403,7 @@ SGR for the word ``warning.''
 The default is \f(CW33;1\fP
 (bright yellow foreground over current terminal background).
 .RE
-.IP ""
+.IP
 Other
 .B gcc
 capabilities, if present, are ignored
@@ -2497,7 +2498,7 @@ add the following (undocumented) command:
 bind ^I rl_complete
 .cE 0
 .RE
-.IP ""
+.IP
 to make tab-completion work in
 .BR cdecl .
 .TP
@@ -2633,13 +2634,13 @@ c++decl> explain T *pt
 18: error: "T": unknown name
 .cE 0
 .RE
-.IP ""
+.IP
 This is because,
 when going from a C++ declaration to pseudo-English,
 .B cdecl
 doesn't know that an arbitrary name,
 in this example, \f(CWT\fP, is a \f(CWclass\fP name.
-.IP ""
+.IP
 To include the type keywords explicitly
 and thus make the declarations ``round-trippable,''
 include them via either the
@@ -2650,7 +2651,7 @@ option,
 or the
 .B set explicit-ecsu
 command.
-.IP ""
+.IP
 Alternatively,
 declare the type via one of
 .BR class ,
@@ -2714,7 +2715,7 @@ when declared as:
 T operator OP(U);
 .cE 0
 .RE
-.IP ""
+.IP
 i.e., taking one argument,
 it's ambiguous
 (to
@@ -2734,7 +2735,7 @@ public:
 };
 .cE 0
 .RE
-.IP ""
+.IP
 then clearly it's a member operator;
 if it were declared at file scope,
 then clearly it's a non-member operator;
@@ -2767,7 +2768,7 @@ c++decl> declare r as reference to int
 int &r;
 .cE 0
 .RE
-.IP ""
+.IP
 These are illegal C++ declarations
 since such declarations
 .I must
@@ -2826,7 +2827,7 @@ unsigned __int128 x128;         // legal in GNU C
 unsigned __int32  x32;          // legal in Microsoft C
 .cE 0
 .RE
-.IP ""
+.IP
 In
 .BR cdecl ,
 these types are \f(CWtypedef\fPs
