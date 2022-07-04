@@ -927,7 +927,8 @@ As a special case,
 may start with \f(CW**::\fP to match a type name in any scope.
 .TP
 .I scope-c
-One of:
+A C or C++ scope-creating keyword,
+one of:
 .BR class ,
 .BR namespace ,
 .BR struct ,
@@ -935,13 +936,42 @@ or
 .BR union .
 .TP
 .I scope-e
-One of:
-.BR class ,
-.BR namespace ,
-.BR scope ,
-.BR struct ,
-or
-.BR union .
+An extended scope-creating keyword,
+either one of
+.I scope-c
+or the
+.BR cdecl -specific
+.B scope
+when the particular
+.I scope-c
+is either
+unknown when \f(CWT\fP wasn't previously declared
+or when it doesn't matter.
+For example:
+.RS 9
+.cS
+c++decl> explain int T::x
+declare x of scope T as int
+.cE 0
+.RE
+.IP
+.B cdecl
+knows \f(CWT\fP
+is one of
+.IR scope-c ,
+but it has no way to know which one
+so it uses the generic
+.BR scope .
+Similarly,
+you may use
+.B scope
+when you don't care which:
+.RS 9
+.cS
+c++decl> declare x of scope T as int
+explain int T::x
+.cE 0
+.RE
 .RE
 .P
 Commands are terminated by either a semicolon or newline.
@@ -952,18 +982,22 @@ When a newline is escaped,
 the next prompt
 (if interactive and enabled)
 changes to either
-\f(CWcdecl+\fP
+.B cdecl+
 or
-\f(CWc++decl+\fP
+.B c++decl+
 to indicate that the current line
 will be a continuation of the previons line.
 .SS English
 In what follows,
-[] means zero or one,
-* means zero or more,
-{} means one of,
+.B []
+means zero or one,
+.B *
+means zero or more,
+.B {}
+means one of,
 and
-| means alternate.
+.B |
+means alternate.
 The only punctuation characters used in pseudo-English
 are hyphens in hyphenated words
 and parentheses around
