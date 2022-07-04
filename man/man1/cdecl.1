@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 1, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 3, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -136,27 +136,11 @@ will also behave as above
 if the first non-option argument
 on the command-line
 or the first whitespace separated word thereof
-is one of
-.BR cast ,
-.BR class " (C++ only),"
-.BR const " (C++ only),"
-.BR declare ,
-.BR define ,
-.BR dynamic " (C++ only),"
-.BR enum " (C89 or later),"
-.BR explain ,
-.BR help ,
-.BR inline " (C++11 or later),"
-.BR namespace " (C++ only),"
-.BR reinterpret " (C++ only),"
-.BR set ,
-.BR show ,
-.BR static " (C++ only),"
-.BR struct ,
-.BR typedef ,
-.BR union ,
-or
-.BR using " (C++11 or later):"
+is a
+.B cdecl
+command
+(see
+.BR "Commands" ):
 .cS
 $ cdecl declare p as pointer to array 4 of int
 int (*p)[4];
