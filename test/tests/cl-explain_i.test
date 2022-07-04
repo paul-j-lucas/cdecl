@@ -1,4 +1,2 @@
 EXPECTED_EXIT=0
-cdecl explain int x <<END
-
-END
+cdecl explain int x
