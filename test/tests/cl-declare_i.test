@@ -1,4 +1,2 @@
 EXPECTED_EXIT=0
-cdecl declare x as int <<END
-
-END
+cdecl declare x as int

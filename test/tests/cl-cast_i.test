@@ -1,4 +1,2 @@
 EXPECTED_EXIT=0
-cdecl cast x into int <<END
-
-END
+cdecl cast x into int

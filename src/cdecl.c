@@ -88,14 +88,12 @@ static void cdecl_cleanup( void );
 static void conf_init( void );
 
 PJL_WARN_UNUSED_RESULT
-static int  cdecl_parse_argv( int, char const *const[] ),
-            cdecl_parse_command_line( char const*, int, char const *const[] ),
+static int  cdecl_parse_cli( size_t, char const *const[] ),
+            cdecl_parse_command( char const*, size_t, char const *const[] ),
             cdecl_parse_stdin( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool is_command( char const*, cdecl_command_kind_t ),
-            read_conf_file( char const* ),
-            starts_with_token( char const*, char const*, size_t );
+static bool read_conf_file( char const* );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -116,13 +114,17 @@ int main( int argc, char const *argv[] ) {
   if ( opt_read_conf )
     conf_init();
   cdecl_initialized = true;
-  exit( cdecl_parse_argv( argc, argv ) );
+  //
+  // Note that cli_options_init() adjusts argv such that argv[0] becomes the
+  // first argument, if any, and no longer the program name.
+  //
+  exit( cdecl_parse_cli( INTEGER_CAST( size_t, argc ), argv ) );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Cleans up cdecl data.
+ * Cleans up **cdecl** data.
  */
 static void cdecl_cleanup( void ) {
   free_now();
@@ -131,39 +133,66 @@ static void cdecl_cleanup( void ) {
 }
 
 /**
- * Parses \a argv to figure out what kind of arguments were given.
- * If:
+ * Parses the command-line.
  *
- *  + There are zero arguments, parses stdin; else:
- *  + The program's name is one of `cast`, `declare`, or `explain`, parses the
- *    command line; else:
- *  + If the first argument is a cdecl command, parses the command line; else:
- *  + If \ref opt_explain is `true`, parses the command line; else:
- *  + Prints an error message.
- *
- * @param argc The command-line argument count.
- * @param argv The command-line argument values.
+ * @param cli_count The size of \a cli_value.
+ * @param cli_value The command-line argument values, if any.  Note that,
+ * unlike `main()`'s `argv`, this contains _only_ the command-line arguments
+ * _after_ the program name.
+
  * @return Returns `EX_OK` upon success or another value upon failure.
+ *
+ * @note The parameters are _not_ named `argc` and `argv` intentionally to
+ * avoid confusion since they're not the same.
  */
 PJL_WARN_UNUSED_RESULT
-static int cdecl_parse_argv( int argc, char const *const argv[const] ) {
-  if ( argc == 0 )                      // cdecl
-    return cdecl_parse_stdin();
-  if ( is_command( me, CDECL_COMMAND_PROG_NAME ) )
-    return cdecl_parse_command_line( /*command=*/me, argc, argv );
+static int cdecl_parse_cli( size_t cli_count,
+                            char const *const cli_value[const] ) {
+  if ( is_cdecl( me ) || is_cppdecl( me ) )
+    return cdecl_parse_command( /*command=*/NULL, cli_count, cli_value );
+
+  char const *invalid_when = "";
 
   //
-  // Note that cli_options_init() adjusts argv such that argv[0] becomes the
-  // first argument (and no longer the program name).
+  // Is the program name itself a command, i.e., cast, declare, or explain?
   //
-  if ( is_command( argv[0], CDECL_COMMAND_FIRST_ARG ) )
-    return cdecl_parse_command_line( /*command=*/NULL, argc, argv );
+  char const *find_what = me;
+  cdecl_command_t const *command = cdecl_command_find( find_what );
+  if ( command != NULL ) {
+    switch ( command->kind ) {
+      case CDECL_COMMAND_FIRST_ARG:
+      case CDECL_COMMAND_LANG_ONLY:
+        invalid_when = " (as a program name)";
+        goto invalid_command;
+      case CDECL_COMMAND_PROG_NAME:
+        return cdecl_parse_command( /*command=*/me, cli_count, cli_value );
+    } // switch
+  }
+
+  if ( cli_count > 0 ) {
+    //
+    // Is the first word of the first argument a command?
+    //
+    find_what = cli_value[0];
+    command = cdecl_command_find( find_what );
+    if ( command != NULL ) {
+      switch ( command->kind ) {
+        case CDECL_COMMAND_FIRST_ARG:
+        case CDECL_COMMAND_PROG_NAME:
+          return cdecl_parse_command( /*command=*/NULL, cli_count, cli_value );
+        case CDECL_COMMAND_LANG_ONLY:
+          invalid_when = " (as a first argument)";
+          goto invalid_command;
+      } // switch
+    }
+  }
 
   if ( opt_explain )
-    return cdecl_parse_command_line( L_EXPLAIN, argc, argv );
+    return cdecl_parse_command( L_EXPLAIN, cli_count, cli_value );
 
-  EPRINTF( "%s: \"%s\": invalid command", me, argv[0] );
-  if ( print_suggestions( DYM_COMMANDS, argv[0] ) )
+invalid_command:
+  EPRINTF( "%s: \"%s\": invalid command%s", me, find_what, invalid_when );
+  if ( command == NULL && print_suggestions( DYM_COMMANDS, find_what ) )
     EPUTC( '\n' );
   else
     print_use_help();
@@ -171,25 +200,32 @@ static int cdecl_parse_argv( int argc, char const *const argv[const] ) {
 }
 
 /**
- * Parses a cdecl command from the command-line.
+ * Parses a **cdecl** command.
  *
- * @param command The value of main()'s `argv[0]` if it's a cdecl command; NULL
- * otherwise and `argv[1]` is a cdecl command.
- * @param argc The command-line argument count.
- * @param argv The command-line argument values.
+ * @param command The **cdecl** command to parse, but only if its \ref
+ * cdecl_command::kind "kind" is #CDECL_COMMAND_PROG_NAME; NULL otherwise.
+ * @param arg_count The size of \a arg_value.
+ * @param arg_value The argument values, if any.  Note that, unlike `main()`'s
+ * `argv`, this contains _only_ the command-line arguments _after_ the program
+ * name.
  * @return Returns `EX_OK` upon success or another value upon failure.
  */
 PJL_WARN_UNUSED_RESULT
-static int cdecl_parse_command_line( char const *command, int argc,
-                                     char const *const argv[const] ) {
+static int cdecl_parse_command( char const *command, size_t arg_count,
+                                char const *const arg_value[const] ) {
+  if ( command == NULL && arg_count == 0 ) // invoked as just cdecl or c++decl
+    return cdecl_parse_stdin();
+
   strbuf_t sbuf;
   bool space;
 
   strbuf_init( &sbuf );
+  // If command wasn't cdecl or c++decl, start the command string with it.
   if ( (space = command != NULL) )
     strbuf_puts( &sbuf, command );
-  for ( int i = 0; i < argc; ++i )
-    strbuf_sepc_puts( &sbuf, ' ', &space, argv[i] );
+  // Concatenate arguments, if any, into a single string.
+  for ( size_t i = 0; i < arg_count; ++i )
+    strbuf_sepc_puts( &sbuf, ' ', &space, arg_value[i] );
 
   int const status = cdecl_parse_string( sbuf.str, sbuf.len );
   strbuf_cleanup( &sbuf );
@@ -197,7 +233,7 @@ static int cdecl_parse_command_line( char const *command, int argc,
 }
 
 /**
- * Parses cdecl commands from \a fin.
+ * Parses **cdecl** commands from \a fin.
  *
  * @param fin The `FILE` to read from.
  * @param fout The `FILE` to write the prompts to, if any.
@@ -228,7 +264,7 @@ static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
 }
 
 /**
- * Parses cdecl commands from standard input.
+ * Parses **cdecl** commands from standard input.
  *
  * @return Returns `EX_OK` upon success or another value upon failure.
  */
@@ -274,48 +310,6 @@ static void conf_init( void ) {
 }
 
 /**
- * Checks whether \a s is a cdecl command.
- *
- * @param s The null-terminated string to check.
- * @param command_kind The kind of commands to check against.
- * @return Returns `true` only if \a s is a command.
- */
-PJL_WARN_UNUSED_RESULT
-static bool is_command( char const *s, cdecl_command_kind_t command_kind ) {
-  assert( s != NULL );
-  SKIP_WS( s );
-
-  FOREACH_CDECL_COMMAND( c ) {
-    if ( c->kind < command_kind )
-      continue;
-    size_t const literal_len = strlen( c->literal );
-    if ( !starts_with_token( s, c->literal, literal_len ) )
-      continue;
-    if ( c->literal == L_CONST || c->literal == L_STATIC ) {
-      //
-      // When in explain-by-default mode, a special case has to be made for
-      // const and static since explain is implied only when NOT followed by
-      // "cast":
-      //
-      //      const int *p                      // Implies explain.
-      //      const cast p into pointer to int  // Does NOT imply explain.
-      //
-      char const *p = s + literal_len;
-      if ( !isspace( *p ) )
-        break;
-      SKIP_WS( p );
-      if ( !starts_with_token( p, L_CAST, 4 ) )
-        break;
-      p += 4;
-      if ( !isspace( *p ) )
-        break;
-    }
-    return true;
-  } // for
-  return false;
-}
-
-/**
  * Reads the configuration file \a conf_path.
  *
  * @param conf_path The full path of the configuration file to read.
@@ -337,25 +331,6 @@ static bool read_conf_file( char const *conf_path ) {
   return true;
 }
 
-/**
- * Checks whether \a s starts with a token.  If so, the character following the
- * token in \a s also _must not_ be an identifier character, i.e., whitespace,
- * punctuation, or the null byte.
- *
- * @param s The null-terminated string to check.
- * @param token The token to check against.
- * @param token_len The length of \a token.
- * @return Returns `true` only if \a s starts with \a token.
- */
-PJL_WARN_UNUSED_RESULT
-static bool starts_with_token( char const *s, char const *token,
-                               size_t token_len ) {
-  assert( s != NULL );
-  assert( token != NULL );
-  return  strncmp( s, token, token_len ) == 0 &&
-          !is_ident( token[ token_len ] );
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 int cdecl_parse_string( char const *s, size_t s_len ) {
@@ -366,8 +341,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   print_params.command_line_len = s_len;
 
   strbuf_t explain_buf;
-  bool const insert_explain =
-    opt_explain && !is_command( s, CDECL_COMMAND_ANYWHERE );
+  bool const insert_explain = opt_explain && cdecl_command_find( s ) == NULL;
 
   if ( insert_explain ) {
     //
@@ -397,6 +371,25 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   }
 
   return status;
+}
+
+bool is_cdecl( char const *prog_name ) {
+  return strcmp( prog_name, CDECL ) == 0;
+}
+
+bool is_cppdecl( char const *prog_name ) {
+  static char const *const NAMES[] = {
+    CPPDECL,
+    "cppdecl",
+    "cxxdecl",
+    NULL
+  };
+
+  for ( char const *const *pname = NAMES; *pname != NULL; ++pname ) {
+    if ( strcmp( *pname, prog_name ) == 0 )
+      return true;
+  } // for
+  return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

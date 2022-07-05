@@ -97,7 +97,8 @@ struct c_keyword {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Given a literal, gets the c_keyword for the corresponding C/C++ keyword.
+ * Given a literal, gets the c_keyword for the corresponding C/C++ keyword, if
+ * any.
  *
  * @param literal The literal to find.
  * @param lang_ids The bitwise-or of language(s) to look for the keyword in.

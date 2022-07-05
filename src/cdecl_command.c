@@ -28,9 +28,13 @@
 #include "cdecl_command.h"
 #include "c_lang.h"
 #include "literals.h"
+#include "util.h"
+
+// standard
+#include <assert.h>
+#include <string.h>
 
 // shorthands
-#define ANYWHERE                  CDECL_COMMAND_ANYWHERE
 #define FIRST_ARG                 CDECL_COMMAND_FIRST_ARG
 #define LANG_ONLY                 CDECL_COMMAND_LANG_ONLY
 #define PROG_NAME                 CDECL_COMMAND_PROG_NAME
@@ -63,10 +67,63 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
   { L_TYPEDEF,                FIRST_ARG,  LANG_ANY                },
   { L_UNION,                  FIRST_ARG,  LANG_ANY                },
   { L_USING,                  FIRST_ARG,  LANG_USING_DECLARATION  },
-  { NULL,                     ANYWHERE,   LANG_NONE               },
+  { NULL,                     0,          LANG_NONE               },
 };
 
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Checks whether \a s starts with a token.  If so, the character following the
+ * token in \a s also _must not_ be an identifier character, i.e., whitespace,
+ * punctuation, or the null byte.
+ *
+ * @param s The null-terminated string to check.
+ * @param token The token to check against.
+ * @param token_len The length of \a token.
+ * @return Returns `true` only if \a s starts with \a token.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool starts_with_token( char const *s, char const *token,
+                               size_t token_len ) {
+  assert( s != NULL );
+  assert( token != NULL );
+  return  strncmp( s, token, token_len ) == 0 &&
+          !is_ident( token[ token_len ] );
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
+
+cdecl_command_t const* cdecl_command_find( char const *s ) {
+  assert( s != NULL );
+  SKIP_WS( s );
+
+  FOREACH_CDECL_COMMAND( command ) {
+    size_t const literal_len = strlen( command->literal );
+    if ( !starts_with_token( s, command->literal, literal_len ) )
+      continue;
+    if ( command->literal == L_CONST || command->literal == L_STATIC ) {
+      //
+      // When in explain-by-default mode, a special case has to be made for
+      // const and static since explain is implied only when NOT followed by
+      // "cast":
+      //
+      //      const int *p                      // Implies explain.
+      //      const cast p into pointer to int  // Does NOT imply explain.
+      //
+      char const *p = s + literal_len;
+      if ( !isspace( *p ) )
+        break;
+      SKIP_WS( p );
+      if ( !starts_with_token( p, L_CAST, 4 ) )
+        break;
+      p += 4;
+      if ( !isspace( *p ) )
+        break;
+    }
+    return command;
+  } // for
+  return NULL;
+}
 
 cdecl_command_t const* cdecl_command_next( cdecl_command_t const *command ) {
   return command == NULL ?

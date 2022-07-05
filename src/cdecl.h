@@ -63,7 +63,7 @@ extern char const  *me;                 ///< Program name.
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Parses a cdecl command from a string.
+ * Parses a **cdecl** command from a string.
  *
  * @param s The string to parse.
  * @param s_len The length of \a s.
@@ -74,6 +74,28 @@ extern char const  *me;                 ///< Program name.
  */
 PJL_WARN_UNUSED_RESULT
 int cdecl_parse_string( char const *s, size_t s_len );
+
+/**
+ * Checks whether \a prog_name is **cdecl**.
+ *
+ * @param prog_name The name of the program.
+ * @returns Returns `true` only if we are.
+ *
+ * @sa is_cppdecl()
+ */
+PJL_WARN_UNUSED_RESULT
+bool is_cdecl( char const *prog_name );
+
+/**
+ * Checks whether \a prog_name is **c++decl** or a variant.
+ *
+ * @param prog_name The name of the program.
+ * @returns Returns `true` only if we are.
+ *
+ * @sa is_cdecl()
+ */
+PJL_WARN_UNUSED_RESULT
+bool is_cppdecl( char const *prog_name );
 
 ///////////////////////////////////////////////////////////////////////////////
 
