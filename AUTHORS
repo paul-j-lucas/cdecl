@@ -101,6 +101,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added Embedded C types _Accum, _Fract, _Sat, and typedefs
 	added Unified Parallel C qualifiers relaxed, shared, and strict
 	independently added typedef declarations
+	added the "include" command
 	added "using" declarations
 	made "returning" optional in all cases where it is actually optional
 	added binary, octal, and hexadecimal array sizes

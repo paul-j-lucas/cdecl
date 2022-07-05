@@ -40,6 +40,10 @@ The missing `explicit` was added to the help.
 ** `explicit-escu` for `enum`
 The `explicit-ecsu` option for enums is fixed.
 
+** `include`
+Added a new `include` command to include cdecl commands from files either from
+a configuration file or the cdecl command line.
+
 ** `_Noreturn` deprecated
 `_Noreturn` is now deprecated in C2X.
 
