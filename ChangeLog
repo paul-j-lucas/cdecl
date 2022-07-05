@@ -1,5 +1,28 @@
+2022-07-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Changed version to 12.0.
+   * string.in.h, wchar.in.h: Updated GnuLib.
+   * NEWS, cdecl.c, cdecl.h, cdecl_command.c, cdecl_command.h, cli_options.c:
+     Fixed when cdecl was invoked as `cast`, `declare`, or `explain`, or with a
+     name that isn't a command without command-line arguments.
+
+2022-07-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * cl-cast_i.test, cl-declare_i.test, cl-explain_i.test: Removed empty "here"
+     documents.
+   * cdecl_command.c: Allowing "include" as first argument.
+   * cdecl.1: s/C++/C++98/
+   * cdecl.1: Better explanation of scope-e.
+   * cdecl.1: Formatting.
+
 2022-07-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Better formatting.
+   * cdecl.1: Added note for "include".
+   * cdecl.1: Replaced commands with "see Commands".
+   * lexer.l, parser.y, include-err-01.out, include-err-01.test,
+     include-ok-nested-01.test, include-ok.test, include-too_many_files.test,
+     include-unquoted.test: Converted new tests to new format.
    * cdecl-d-cmo_exclam__b.out, declare_+o_eq_rck_rk++default-c++03.out,
      declare_+o_eq_rck_rk++delete-c++03.out, declare_co_exclam_k_b.out,
      declare_fmo_star_rk_rk.out, declare_mo_arrow_i.out,
@@ -658,9 +681,13 @@
      xupc_explain_rdi.test, xupc_explain_rdpi.test, xupc_explain_ri.test,
      xupc_explain_tdi.test, update_test.sh: Changed tests to shell "here"
      documents for more flexibility.
+   * color.c, lexer.l, util.c, util.h: Now checking for plain file.
+   * lexer.l, include-err-01.out, include-too_many_files.out,
+     include-unquoted.out: Now including path in error message.
 
 2022-07-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * test/Makefile.am: Test renaming.
    * red_black.c: Sorted functions.
    * red_black.c: Fixed NDEBUG build.
    * red_black.c: s/surrogate->parent/RB_ROOT(tree)/
@@ -676,6 +703,7 @@
 
 2022-07-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Now allowing no space between include and ".
    * c_typedef.c, red_black.c, red_black.h, red_black_test.c: Added
      rb_insert_rv_t.
    * red_black.c: Removed assert( rb_nil.color == RB_BLACK );
@@ -685,17 +713,36 @@
 
 2022-06-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Renaming.
    * cdecl.1: s/supported//
    * cdecl.1: Mentioned lambdas as not being supported.
 
 2022-06-28  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: s/uint64_t/uintmax_t/
+   * lexer.l: Now using include_path_stack.
 
 2022-06-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * test/Makefile.am, include_1.cdeclrc, include_2.cdeclrc,
+     include-nested.out, include-nested.test: Nested include test.
+   * lexer.l: Added asserts.
+   * cdecl_command.c, lexer.l, literals.c, literals.h: Added push_file() and
+     pop_file().
+   * cdecl.1: Updated man page.
+   * lexer.l, test/Makefile.am, include-unquoted.out, include-unquoted.test:
+     More tests.
+   * test/Makefile.am, include-ok.out, include-too_many_files.out,
+     include-ok.test, include-too_many_files.test: More tests.
+   * help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c++03.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out: Updated help.
    * test/Makefile.am, declare_config_tdu.test, explain_config_tdu.test: Test
      renaming.
+
+2022-06-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Added "include" command.
 
 2022-06-21  Paul J. Lucas <paul@lucasmail.org>
 
