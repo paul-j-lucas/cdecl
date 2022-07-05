@@ -247,28 +247,6 @@ static void invalid_opt_value( char opt, char const *value,
 }
 
 /**
- * Checks whether we're c++decl.
- *
- * @param prog_name The name of the program.
- * @returns Returns `true` only if we are.
- */
-PJL_WARN_UNUSED_RESULT
-static bool is_cppdecl( char const *prog_name ) {
-  static char const *const NAMES[] = {
-    CPPDECL,
-    "cppdecl",
-    "cxxdecl",
-    NULL
-  };
-
-  for ( char const *const *pname = NAMES; *pname != NULL; ++pname ) {
-    if ( strcasecmp( *pname, prog_name ) == 0 )
-      return true;
-  } // for
-  return false;
-}
-
-/**
  * Formats an option as `[--%%s/]-%%c` where `%%s` is the long option (if any)
  * and `%%c` is the short option.
  *

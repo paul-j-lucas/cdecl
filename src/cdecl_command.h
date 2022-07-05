@@ -46,13 +46,33 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * The kind of cdecl command in least-to-most restrictive order.
+ * The kind of cdecl command.
  */
 enum cdecl_command_kind {
-  CDECL_COMMAND_ANYWHERE,               ///< Command is OK anywhere.
-  CDECL_COMMAND_FIRST_ARG,              ///< `$ cdecl` _command_ _args_
-  CDECL_COMMAND_PROG_NAME,              ///< `$` _command_ _args_
-  CDECL_COMMAND_LANG_ONLY               ///< `cdecl>` _command_ _args_
+  /**
+   * Command is valid _only_ within the \b cdecl language and _not_ as either
+   * the command-line command (`argv[0]`) or the first word of the first
+   * command-line argument (`argv[1]`):
+   *
+   * `cdecl>` _command_ _args_
+   */
+  CDECL_COMMAND_LANG_ONLY,
+
+  /**
+   * Command is valid within the \b cdecl language _and_ as the first word of
+   * the first command-line argument (`argv[1]`):
+   *
+   * `$ cdecl` _command_ _args_
+   */
+  CDECL_COMMAND_FIRST_ARG,
+
+  /**
+   * Command is valid within the \b cdecl language _and_ as the
+   * program name (`argv[0]`):
+   *
+   * `$` _command_ _args_
+   */
+  CDECL_COMMAND_PROG_NAME,
 };
 
 /**
@@ -65,6 +85,16 @@ struct cdecl_command {
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Given a string, gets the corresponding cdecl_command, if any.
+ *
+ * @param s The string presumably _starting with_ a cdecl command to find.
+ * @return Returns a pointer to the corresponding cdecl_command or NULL if not
+ * found.
+ */
+PJL_WARN_UNUSED_RESULT
+cdecl_command_t const* cdecl_command_find( char const *s );
 
 /**
  * Iterates to the next cdecl command.
