@@ -84,7 +84,7 @@ struct cdecl_keyword {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Given a literal, gets the cdecl_keyword for the corresponding cdecl keyword.
+ * Given a literal, gets the corresponding cdecl_keyword, if any.
  *
  * @param literal The literal to find.
  * @return Returns a pointer to the corresponding cdecl_keyword or NULL if not
