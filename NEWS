@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 11.16
+* Changes in Cdecl 12.0
 
 ** Added suggestions
 Added suggestions to error messages in certain cases when a keyword is
