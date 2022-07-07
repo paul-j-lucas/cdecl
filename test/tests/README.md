@@ -128,29 +128,12 @@ A function's return type is separated from its arguments by `_`
 using the traditional "leading" syntax
 or `__` using the C++11 "trailing" syntax.
 
-Test File Format
-================
-
-Cdecl test files must be a single line in the following format:
-
-*command* `@` *config* `@` *options* `@` *input* `@` *exit*
-
-that is five fields separated by the at (`@`) character
-(with optional whitespace)
-where:
-
-+ *command* = command to execute (`cdecl`)
-+ *config*  = name of config file to use or `/dev/null` for none
-+ *options* = command-line options or blank for none
-+ *input*   = command-line arguments
-+ *exit*    = expected exit status code
-
 Note on Test Names
 ------------------
 
 Care must be taken when naming files that differ only in case
-because of case-insensitive (but preserving) filesystems like HFS+
-used on macOS.
+because of case-insensitive (but preserving) filesystems
+like those generally used on macOS.
 
 For example, tests such as these:
 
@@ -158,7 +141,7 @@ For example, tests such as these:
     cdecl-I.test
 
 that differ only in `i` vs. `I` will work fine on every other Unix filesystem
-but cause a collision on HFS+.
+but cause a collision on macOS.
 
 One solution (the one used here) is to append a distinct number:
 
@@ -166,3 +149,41 @@ One solution (the one used here) is to append a distinct number:
     cdecl-I-02.test
 
 thus making the filenames unique regardless of case.
+
+Test File Format
+================
+
+**Cdecl** test files are mini shell scripts
+that are included verbatim into `run_test.sh`
+via the shell's `.` command.
+However,
+they must have a particular format.
+
+The first executable line of a test
+_must_ be a line like:
+
+`EXPECTED_EXIT=`_n_
+
+where _n_ is the expected integer exit status of **cdecl**.
+Valid status codes are given in **cdecl**(1).
+
+After the `EXPECTED_EXIT` line,
+the remaing lines are more free-form.
+However, the exit status of the test script as a whole
+is considered its _actual exit status_
+and is compared against the value of `EXPECTED_EXIT`.
+The test is considered failed if those values are unequal
+and those values being equal is a prerequisite for the test passing.
+
+A test is typically like:
+
+    EXPECTED_EXIT=0
+    cdecl -xc++ <<END
+    explain int s::x
+    END
+
+that is **cdecl** is invoked
+along with any options necessary for the test
+followed by a shell "here" document.
+Use of "here" documents is preferred
+since shell metacharacters don't have to be quoted.
