@@ -193,7 +193,7 @@ PJL_WARN_UNUSED_RESULT
 void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
 
 /**
- * Gets whether \a tree is empry.
+ * Gets whether \a tree is empty.
  *
  * @param tree A pointer to the red-black tree to check.
  * @return Returns `true` only if \a tree is empty.
