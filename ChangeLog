@@ -1,3 +1,7 @@
+2022-07-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * lines.sh: Added lines.sh script to compare current and Hansen's cdecl.
+
 2022-07-05  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac: Changed version to 12.0.
