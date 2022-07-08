@@ -193,6 +193,17 @@ PJL_WARN_UNUSED_RESULT
 void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
 
 /**
+ * Gets whether \a tree is empry.
+ *
+ * @param tree A pointer to the red-black tree to check.
+ * @return Returns `true` only if \a tree is empty.
+ */
+RED_BLACK_H_INLINE PJL_WARN_UNUSED_RESULT
+bool rb_tree_empty( rb_tree_t const *tree ) {
+  return tree->root.child[0] == &tree->nil && tree->root.child[1] == &tree->nil;
+}
+
+/**
  * Attempts to find \a data in \a tree.
  *
  * @param tree A pointer to the red-black tree to search through.
@@ -251,17 +262,6 @@ void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn );
  */
 PJL_WARN_UNUSED_RESULT
 rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data );
-
-/**
- * Gets whether \a tree is empry.
- *
- * @param tree A pointer to the red-black tree to check.
- * @return Returns `true` only if \a tree is empty.
- */
-RED_BLACK_H_INLINE PJL_WARN_UNUSED_RESULT
-bool rb_tree_is_empty( rb_tree_t const *tree ) {
-  return tree->root.child[0] == &tree->nil && tree->root.child[1] == &tree->nil;
-}
 
 /**
  * Performs an in-order traversal of \a tree.

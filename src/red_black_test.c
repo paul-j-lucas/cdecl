@@ -79,7 +79,7 @@ static void test_insert1_find_delete( void ) {
   }
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
-  TEST( rb_tree_is_empty( &tree ) );
+  TEST( rb_tree_empty( &tree ) );
 }
 
 static void test_insert2_find_delete( void ) {
@@ -97,7 +97,7 @@ static void test_insert2_find_delete( void ) {
   }
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
-  TEST( rb_tree_is_empty( &tree ) );
+  TEST( rb_tree_empty( &tree ) );
 }
 
 ////////// main ///////////////////////////////////////////////////////////////
@@ -147,7 +147,7 @@ int main( int argc, char const *argv[] ) {
   }
 
   rb_tree_cleanup( &tree, /*free_fn=*/NULL );
-  TEST( rb_tree_is_empty( &tree ) );
+  TEST( rb_tree_empty( &tree ) );
 
   printf( "%u failures\n", test_failures );
   exit( test_failures > 0 ? EX_SOFTWARE : EX_OK );
