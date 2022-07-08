@@ -259,10 +259,10 @@ for which there are four factors to consider:
    | :--------- | ----: | :--------- | ----: | ----: |
    | `cdgram.y` |  855  | `parser.y` |  7633 | 11.2% |
    | `cdlex.l`  |   75  | `lexer.l`  |  1183 |  6.3% |
-   | `cdecl.c`  | 1014  | `*.[ch]`   | 26666 |  3.8% |
-   | **Total**  | 1944  |            | 35482 |  5.5% |
+   | `cdecl.c`  | 1014  | `*.[ch]`   | 26120 |  3.9% |
+   | **Total**  | 1944  |            | 35936 |  5.6% |
 
-   Hansen's version of **cdecl** accounts for only 5.5%
+   Hansen's version of **cdecl** accounts for only 5.6%
    of a recent total
    of the number of lines of code
    of my version of **cdecl**.
