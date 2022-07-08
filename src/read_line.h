@@ -49,7 +49,7 @@
  *  + Uses GNU readline to read the line with editing and autocompletion.
  *  + Adds non-whitespace-only lines to the history.
  *
- * @param sbuf The strbuf to use.
+ * @param sbuf The \ref strbuf to use.
  * @param fin The file to read from.
  * @param fout The file to print the prompts, if any, to.  If NULL, does not
  * read interactively.
@@ -60,7 +60,7 @@
  */
 PJL_WARN_UNUSED_RESULT
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
-                       char const *prompts[] );
+                       char const *const prompts[static const 2] );
 
 ///////////////////////////////////////////////////////////////////////////////
 
