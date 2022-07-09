@@ -273,7 +273,7 @@ static void rb_tree_check( rb_tree_t const *tree ) {
  * @param tree A pointer to the red-black tree to repair.
  * @param node A pointer to the rb_node to start the repair at.
  */
-static void rb_tree_delete_repair( rb_tree_t *tree, rb_node_t *node ) {
+static void rb_delete_repair( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );
 
@@ -311,7 +311,7 @@ static void rb_tree_delete_repair( rb_tree_t *tree, rb_node_t *node ) {
  * @param tree A pointer to the red-black tree to repair.
  * @param node A pointer to the rb_node to start the repair at.
  */
-static void rb_tree_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
+static void rb_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );
   //
@@ -360,6 +360,35 @@ static void rb_tree_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
 }
 
 /**
+ * Performs an in-order traversal of the red-black tree starting at \a node.
+ *
+ * @param tree A pointer to the red-black tree to visit.
+ * @param node A pointer to the rb_node to start visiting at.
+ * @param visit_fn The visitor function to use.
+ * @param v_data Optional data passed to \a visit_fn.
+ * @return Returns a pointer to the rb_node at which visiting stopped or NULL
+ * if the entire sub-tree was visited.
+ */
+PJL_WARN_UNUSED_RESULT
+static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
+                                 rb_visit_fn_t visit_fn, void *v_data ) {
+  assert( tree != NULL );
+  assert( node != NULL );
+
+  while ( node != RB_NIL(tree) ) {
+    rb_node_t *const stopped_node =
+      rb_node_visit( tree, node->child[RB_L], visit_fn, v_data );
+    if ( stopped_node != NULL )
+      return stopped_node;
+    if ( (*visit_fn)( node->data, v_data ) )
+      return node;
+    node = node->child[RB_R];
+  } // while
+
+  return NULL;
+}
+
+/**
  * Resets \a tree to empty.
  *
  * @param tree A pointer to the red-black tree to reset.
@@ -383,35 +412,6 @@ static void rb_tree_reset( rb_tree_t *tree ) {
 
   *RB_ROOT(tree) = *RB_NIL(tree);
   tree->cmp_fn = NULL;
-}
-
-/**
- * Performs an in-order traversal of the red-black tree starting at \a node.
- *
- * @param tree A pointer to the red-black tree to visit.
- * @param node A pointer to the rb_node to start visiting at.
- * @param visit_fn The visitor function to use.
- * @param v_data Optional data passed to \a visit_fn.
- * @return Returns a pointer to the rb_node at which visiting stopped or NULL
- * if the entire sub-tree was visited.
- */
-PJL_WARN_UNUSED_RESULT
-static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
-                                      rb_visit_fn_t visit_fn, void *v_data ) {
-  assert( tree != NULL );
-  assert( node != NULL );
-
-  while ( node != RB_NIL(tree) ) {
-    rb_node_t *const stopped_node =
-      rb_tree_visit_node( tree, node->child[RB_L], visit_fn, v_data );
-    if ( stopped_node != NULL )
-      return stopped_node;
-    if ( (*visit_fn)( node->data, v_data ) )
-      return node;
-    node = node->child[RB_R];
-  } // while
-
-  return NULL;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -444,7 +444,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   }
 
   if ( is_black( surrogate ) )
-    rb_tree_delete_repair( tree, surrogate_child );
+    rb_delete_repair( tree, surrogate_child );
 
   if ( surrogate != delete ) {
     surrogate->color = delete->color;
@@ -515,7 +515,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
   assert( parent->child[dir] == RB_NIL(tree) );
   parent->child[dir] = node;
 
-  rb_tree_insert_repair( tree, node );
+  rb_insert_repair( tree, node );
   return (rb_insert_rv_t){ node, true };
 }
 
@@ -524,7 +524,7 @@ rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
   assert( visit_fn != NULL );
 
   rb_tree_t *const nonconst_tree = CONST_CAST( rb_tree_t*, tree );
-  return rb_tree_visit_node(
+  return rb_node_visit(
     nonconst_tree, RB_FIRST(nonconst_tree), visit_fn, v_data
   );
 }
