@@ -287,7 +287,7 @@ static void rb_delete_repair( rb_tree_t *tree, rb_node_t *node ) {
       sibling = node->parent->child[dir];
     }
     if ( is_red( sibling->child[RB_L] ) || is_red( sibling->child[RB_R] ) ) {
-      if ( is_black( sibling ) ) {
+      if ( is_black( sibling->child[dir] ) ) {
         sibling->child[!dir]->color = RB_BLACK;
         sibling->color = RB_RED;
         rb_node_rotate( tree, sibling, dir );
