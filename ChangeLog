@@ -1,5 +1,13 @@
+2022-07-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: Renaming.
+   * red_black.c: Added rb_tree_insert_repair().
+
 2022-07-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * red_black.h, red_black_test.c: s/rb_tree_is_empty/rb_tree_empty/
+   * read_line.c, read_line.h: char const *const prompts[static const 2]
+   * strbuf.c, strbuf.h: Moved header.
    * lines.sh: Added lines.sh script to compare current and Hansen's cdecl.
 
 2022-07-05  Paul J. Lucas <paul@lucasmail.org>
