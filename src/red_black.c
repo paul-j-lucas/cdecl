@@ -505,7 +505,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
     .data = data,
     .child = { RB_NIL(tree), RB_NIL(tree) },
     .parent = parent,
-    .color = RB_RED
+    .color = RB_RED                     // new nodes are always red
   };
 
   // Determine which child of the parent the new node should be.
