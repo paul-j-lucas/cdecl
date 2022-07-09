@@ -219,7 +219,18 @@ static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
 static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
   assert( tree != NULL );
   assert( node != NULL );
-
+  //
+  // Given the following ordered tree, perform a left rotation on node N:
+  //
+  //      N            T
+  //       \          / \
+  //        T   =>   N   U
+  //       / \        \
+  //      S   U        S
+  //
+  // N is rotated left (and down); T is rotated left (and up).  Note that the
+  // order is preserved.  A right rotation is the mirror image.
+  //
   rb_node_t *const temp = node->child[!dir];
   node->child[!dir] = temp->child[dir];
 
