@@ -86,6 +86,11 @@
 #include <stdio.h>                      /* for NULL */
 #include <stdlib.h>                     /* or free(3) */
 
+//
+// These are macros rather than inline functions so they can:
+// + Work in both const and non-const contexts.
+// + Be both l-values and r-values.
+//
 #define RB_FIRST(TREE)            (RB_ROOT(TREE)->child[RB_L])
 #define RB_NIL(TREE)              (&(TREE)->nil)
 #define RB_ROOT(TREE)             (&(TREE)->root)
