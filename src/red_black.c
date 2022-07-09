@@ -267,13 +267,13 @@ static void rb_tree_check( rb_tree_t const *tree ) {
 #endif /* NDEBUG */
 
 /**
- * Repairs the tree after a node has been deleted by rotating and repainting
+ * Repairs a tree after a node has been deleted by rotating and repainting
  * colors to restore the 4 properties inherent in red-black trees.
  *
  * @param tree A pointer to the red-black tree to repair.
  * @param node A pointer to the rb_node to start the repair at.
  */
-static void rb_tree_repair( rb_tree_t *tree, rb_node_t *node ) {
+static void rb_tree_delete_repair( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );
 
@@ -302,6 +302,61 @@ static void rb_tree_repair( rb_tree_t *tree, rb_node_t *node ) {
     sibling->color = RB_RED;
     node = node->parent;
   } // while
+}
+
+/**
+ * Repairs a tree after a node has been inserted by rotating and repainting
+ * colors to restore the 4 properties inherent in red-black trees.
+ *
+ * @param tree A pointer to the red-black tree to repair.
+ * @param node A pointer to the rb_node to start the repair at.
+ */
+static void rb_tree_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
+  assert( tree != NULL );
+  assert( node != NULL );
+  //
+  // If the parent node is black, we're all set; if it's red, we have the
+  // following possible cases to deal with.  We iterate through the rest of the
+  // tree to make sure none of the required properties is violated.
+  //
+  //  1. The uncle is red.  We repaint both the parent and uncle black and
+  //     repaint the grandparent node red.
+  //
+  //  2. The uncle is black and the new node is the right child of its parent,
+  //     and the parent in turn is the left child of its parent.  We do a left
+  //     rotation to switch the roles of the parent and child, relying on
+  //     further iterations to repair the old parent.
+  //
+  //  3. The uncle is black and the new node is the left child of its parent,
+  //     and the parent in turn is the left child of its parent.  We switch the
+  //     colors of the parent and grandparent and perform a right rotation
+  //     around the grandparent.  This makes the former parent the parent of
+  //     the new node and the former grandparent.
+  //
+  // Note that because we use a sentinel for the root node we never need to
+  // worry about replacing the root.
+  //
+  while ( is_red( node->parent ) ) {
+    rb_dir_t const dir = STATIC_CAST( rb_dir_t, is_dir( node->parent, RB_R ) );
+    rb_node_t *const uncle = node->parent->parent->child[dir];
+    if ( is_red( uncle ) ) {
+      node->parent->color = RB_BLACK;
+      uncle->color = RB_BLACK;
+      node->parent->parent->color = RB_RED;
+      node = node->parent->parent;
+      continue;
+    }
+    if ( is_dir( node, dir ) ) {
+      node = node->parent;
+      rb_node_rotate( tree, node, !dir );
+    }
+    node->parent->color = RB_BLACK;
+    node->parent->parent->color = RB_RED;
+    rb_node_rotate( tree, node->parent->parent, dir );
+  } // while
+
+  RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
+  rb_tree_check( tree );
 }
 
 /**
@@ -389,7 +444,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   }
 
   if ( is_black( surrogate ) )
-    rb_tree_repair( tree, surrogate_child );
+    rb_tree_delete_repair( tree, surrogate_child );
 
   if ( surrogate != delete ) {
     surrogate->color = delete->color;
@@ -452,59 +507,16 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
     .parent = parent,
     .color = RB_RED
   };
-  rb_insert_rv_t const rv = (rb_insert_rv_t){ node, true };
 
   // Determine which child of the parent the new node should be.
-  rb_dir_t dir = STATIC_CAST( rb_dir_t,
+  rb_dir_t const dir = STATIC_CAST( rb_dir_t,
     parent != RB_ROOT(tree) && (*tree->cmp_fn)( data, parent->data ) > 0
   );
   assert( parent->child[dir] == RB_NIL(tree) );
   parent->child[dir] = node;
 
-  //
-  // If the parent node is black, we're all set; if it's red, we have the
-  // following possible cases to deal with.  We iterate through the rest of the
-  // tree to make sure none of the required properties is violated.
-  //
-  //  1. The uncle is red.  We repaint both the parent and uncle black and
-  //     repaint the grandparent node red.
-  //
-  //  2. The uncle is black and the new node is the right child of its parent,
-  //     and the parent in turn is the left child of its parent.  We do a left
-  //     rotation to switch the roles of the parent and child, relying on
-  //     further iterations to fixup the old parent.
-  //
-  //  3. The uncle is black and the new node is the left child of its parent,
-  //     and the parent in turn is the left child of its parent.  We switch the
-  //     colors of the parent and grandparent and perform a right rotation
-  //     around the grandparent.  This makes the former parent the parent of
-  //     the new node and the former grandparent.
-  //
-  // Note that because we use a sentinel for the root node we never need to
-  // worry about replacing the root.
-  //
-  while ( is_red( node->parent ) ) {
-    dir = STATIC_CAST( rb_dir_t, is_dir( node->parent, RB_R ) );
-    rb_node_t *const uncle = node->parent->parent->child[dir];
-    if ( is_red( uncle ) ) {
-      node->parent->color = RB_BLACK;
-      uncle->color = RB_BLACK;
-      node->parent->parent->color = RB_RED;
-      node = node->parent->parent;
-      continue;
-    }
-    if ( is_dir( node, dir ) ) {
-      node = node->parent;
-      rb_node_rotate( tree, node, !dir );
-    }
-    node->parent->color = RB_BLACK;
-    node->parent->parent->color = RB_RED;
-    rb_node_rotate( tree, node->parent->parent, dir );
-  } // while
-
-  RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
-  rb_tree_check( tree );
-  return rv;
+  rb_tree_insert_repair( tree, node );
+  return (rb_insert_rv_t){ node, true };
 }
 
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
