@@ -86,25 +86,48 @@
 #include <stdio.h>                      /* for NULL */
 #include <stdlib.h>                     /* or free(3) */
 
-//
-// These are macros rather than inline functions so they can:
-// + Work in both const and non-const contexts.
-// + Be both l-values and r-values.
-//
-#define RB_FIRST(TREE)            (RB_ROOT(TREE)->child[RB_L])
-#define RB_NIL(TREE)              (&(TREE)->nil)
-#define RB_ROOT(TREE)             (&(TREE)->root)
-
 /// @endcond
 
 /**
+ * These are macros rather than inline functions so they can:
+ * @param TREE A pointer to the red-black tree to get the root node of.
+ * @return Returns said l-value referene.
+ * @note This is a macro instead of an inline function so it'll:
+ * + Work ith either `const` or non-`const` \a TREE.
+ * + Be an l-value reference.
+ */
+#define RB_FIRST(TREE)            (RB_ROOT(TREE)->child[RB_L])
+
+/**
+ * Gets an l-value reference to the root node of \a TREE.
+ *
+ * @param TREE A pointer to the red-black tree to get the root node of.
+ * @return Returns said l-value referene.
+ *
+ * @note This is a macro instead of an inline function so it'll work with
+ * either a `const` or non-`const` \a TREE.
+ */
+#define RB_NIL(TREE)              (&(TREE)->nil)
+
+/**
  * Gets an l-value reference to the child node pointer of \a NODE's parent,
- * i.e., the pointer to \a NODE.
+ * i.e., the parent's pointer to \a NODE.
  *
  * @param NODE A pointer to the node to get said reference from.
  * @return Returns said l-value reference.
  */
 #define RB_PARENT_CHILD(NODE)     ((NODE)->parent->child[ child_dir( NODE ) ])
+
+/**
+ * Gets an l-value reference to the root node of \a TREE.
+ *
+ * @param TREE A pointer to the red-black tree to get the root node of.
+ * @return Returns said l-value referene.
+ *
+ * @note This is a macro instead of an inline function so it'll work with
+ * either a `const` or non-`const` \a TREE.
+ */
+#define RB_ROOT(TREE)             (&(TREE)->root)
 
 /**
  * Red-black tree child direction.
@@ -236,6 +259,18 @@ static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
 /**
  * Rotates a subtree of \a tree rooted at \a node.
  *
+ * For example, given the following ordered tree, perform a left rotation on
+ * node **N**:
+ *
+ *      N            T
+ *       \          / \
+ *        T   =>   N   U
+ *       / \        \
+ *      S   U        S
+ *
+ * **N** is rotated left (and down); **T** is rotated left (and up).  Note that
+ * the order is preserved.  A right rotation is the mirror image.
+ *
  * @param tree A pointer to the red-black tree to manipulate.
  * @param node A pointer to the rb_node to rotate.
  * @param dir The direction to rotate.
@@ -243,18 +278,6 @@ static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
 static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
   assert( tree != NULL );
   assert( node != NULL );
-  //
-  // Given the following ordered tree, perform a left rotation on node N:
-  //
-  //      N            T
-  //       \          / \
-  //        T   =>   N   U
-  //       / \        \
-  //      S   U        S
-  //
-  // N is rotated left (and down); T is rotated left (and up).  Note that the
-  // order is preserved.  A right rotation is the mirror image.
-  //
   rb_node_t *const temp = node->child[!dir];
   node->child[!dir] = temp->child[dir];
 
