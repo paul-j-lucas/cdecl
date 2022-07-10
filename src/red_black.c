@@ -98,6 +98,15 @@
 /// @endcond
 
 /**
+ * Gets an l-value reference to the child node pointer of \a NODE's parent,
+ * i.e., the pointer to \a NODE.
+ *
+ * @param NODE A pointer to the node to get said reference from.
+ * @return Returns said l-value reference.
+ */
+#define RB_PARENT_CHILD(NODE)     ((NODE)->parent->child[ child_dir( NODE ) ])
+
+/**
  * Red-black tree child direction.
  */
 enum rb_dir {
@@ -128,10 +137,25 @@ static inline bool is_black( rb_node_t const *node ) {
  * @param node A pointer to the rb_node to check.
  * @param dir The direction to check for.
  * @return Returns `true` only if \a node is the \a dir child of its parent.
+ *
+ * @sa child_dir()
  */
 PJL_WARN_UNUSED_RESULT
-static inline bool is_dir( rb_node_t const *node, rb_dir_t dir ) {
+static inline bool is_dir_child( rb_node_t const *node, rb_dir_t dir ) {
   return node == node->parent->child[dir];
+}
+
+/**
+ * Gets the direction of the child that \a node is of its parent.
+ *
+ * @param node A pointer to the rb_node to check.
+ * @return Returns the direction of the child that \a node is of its parent.
+ *
+ * @sa is_dir_child()
+ */
+PJL_WARN_UNUSED_RESULT
+static inline rb_dir_t child_dir( rb_node_t const *node ) {
+  return is_dir_child( node, RB_L ) ? RB_L : RB_R;
 }
 
 /**
@@ -237,7 +261,7 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
   if ( temp->child[dir] != RB_NIL(tree) )
     temp->child[dir]->parent = node;
   temp->parent = node->parent;
-  node->parent->child[ is_dir( node, RB_R ) ] = temp;
+  RB_PARENT_CHILD( node ) = temp;
   temp->child[dir] = node;
   node->parent = temp;
 }
@@ -278,7 +302,7 @@ static void rb_delete_repair( rb_tree_t *tree, rb_node_t *node ) {
   assert( node != NULL );
 
   while ( is_black( node ) ) {
-    rb_dir_t const dir = STATIC_CAST( rb_dir_t, is_dir( node->parent, RB_R ) );
+    rb_dir_t const dir = child_dir( node->parent );
     rb_node_t *sibling = node->parent->child[dir];
     if ( is_red( sibling ) ) {
       sibling->color = RB_BLACK;
@@ -337,7 +361,7 @@ static void rb_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
   // worry about replacing the root.
   //
   while ( is_red( node->parent ) ) {
-    rb_dir_t const dir = STATIC_CAST( rb_dir_t, is_dir( node->parent, RB_R ) );
+    rb_dir_t const dir = child_dir( node->parent );
     rb_node_t *const uncle = node->parent->parent->child[dir];
     if ( is_red( uncle ) ) {
       node->parent->color = RB_BLACK;
@@ -346,7 +370,7 @@ static void rb_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
       node = node->parent->parent;
       continue;
     }
-    if ( is_dir( node, dir ) ) {
+    if ( is_dir_child( node, dir ) ) {
       node = node->parent;
       rb_node_rotate( tree, node, !dir );
     }
@@ -440,7 +464,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
     surrogate_child->parent = RB_ROOT(tree);
     RB_FIRST(tree) = surrogate_child;
   } else {
-    surrogate->parent->child[ is_dir( surrogate, RB_R ) ] = surrogate_child;
+    RB_PARENT_CHILD( surrogate ) = surrogate_child;
   }
 
   if ( is_black( surrogate ) )
@@ -452,7 +476,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
     surrogate->child[RB_R] = delete->child[RB_R];
     surrogate->parent = delete->parent;
     delete->child[RB_L]->parent = delete->child[RB_R]->parent = surrogate;
-    delete->parent->child[ is_dir( delete, RB_R ) ] = surrogate;
+    RB_PARENT_CHILD( delete ) = surrogate;
   }
 
   free( delete );
