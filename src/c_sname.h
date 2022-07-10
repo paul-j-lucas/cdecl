@@ -76,7 +76,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param SCOPE The \ref c_scope_data to get the data of.
  *
  * @note This is a macro instead of an inline function so it'll work with
- * either `const` or non-`const` \a SCOPE.
+ * either a `const` or non-`const` \a SCOPE.
  */
 #define c_scope_data(SCOPE) \
   POINTER_CAST( c_scope_data_t*, (SCOPE)->data )
