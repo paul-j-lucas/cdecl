@@ -66,7 +66,7 @@ typedef struct tdef_rb_visit_data tdef_rb_visit_data_t;
 
 // local variables
 static c_lang_id_t  predefined_lang_ids;///< Languages when predefining types.
-static rb_tree_t    typedefs;           ///< Global set of `typedef`s.
+static rb_tree_t    typedef_set;        ///< Global set of `typedef`s.
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -923,7 +923,7 @@ static void c_typedef_cleanup( void ) {
   // freed independently in parser_cleanup().  Hence, this function frees only
   // the red-black tree, its nodes, and the c_typedef_t data each node points
   // to, but not the AST nodes the c_typedef_t data points to.
-  rb_tree_cleanup( &typedefs, &free );
+  rb_tree_cleanup( &typedef_set, &free );
 }
 
 /**
@@ -1012,7 +1012,7 @@ c_typedef_t const* c_typedef_add( c_ast_t const *ast, unsigned gib_flags ) {
   assert( !c_sname_empty( &ast->sname ) );
 
   c_typedef_t *const new_tdef = c_typedef_new( ast, gib_flags );
-  rb_insert_rv_t const rv = rb_tree_insert( &typedefs, new_tdef );
+  rb_insert_rv_t const rv = rb_tree_insert( &typedef_set, new_tdef );
   if ( !rv.inserted ) {
     //
     // A typedef with the same name exists, so we don't need the new one.
@@ -1036,12 +1036,12 @@ c_typedef_t const* c_typedef_find_name( char const *name ) {
 c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
   assert( sname != NULL );
   rb_node_t const *const found_rb =
-    rb_tree_find( &typedefs, &C_TYPEDEF_SNAME_LIT( *sname ) );
+    rb_tree_find( &typedef_set, &C_TYPEDEF_SNAME_LIT( *sname ) );
   return found_rb != NULL ? found_rb->data : NULL;
 }
 
 void c_typedef_init( void ) {
-  rb_tree_init( &typedefs, &c_typedef_cmp );
+  rb_tree_init( &typedef_set, &c_typedef_cmp );
   perror_exit_if( atexit( &c_typedef_cleanup ) != 0, EX_OSERR );
 
 #ifdef ENABLE_CDECL_DEBUG
@@ -1149,7 +1149,7 @@ c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,
                                     void *v_data ) {
   assert( visit_fn != NULL );
   tdef_rb_visit_data_t trvd = { visit_fn, v_data };
-  rb_node_t const *const rb = rb_tree_visit( &typedefs, &rb_visitor, &trvd );
+  rb_node_t const *const rb = rb_tree_visit( &typedef_set, &rb_visitor, &trvd );
   return rb != NULL ? rb->data : NULL;
 }
 
