@@ -94,7 +94,7 @@ struct c_type {
  * @param BTID The base \ref c_tid_t.
  * @param STID The storage \ref c_tid_t.
  * @param ATID The attribute(s) \ref c_tid_t.
- * @return Returns a reference to said literal.
+ * @return Returns said literal.
  *
  * @sa #C_TYPE_LIT_A()
  * @sa #C_TYPE_LIT_A_ANY()
@@ -110,7 +110,7 @@ struct c_type {
  * Convenience macro for specifying a \ref c_type literal from \a ATID.
  *
  * @param ATID The attribute(s) \ref c_tid_t.
- * @return Returns a reference to said literal.
+ * @return Returns said literal.
  *
  * @sa #C_TYPE_LIT()
  * @sa #C_TYPE_LIT_A_ANY()
@@ -127,7 +127,7 @@ struct c_type {
  * #TS_ANY, and \a ATID.
  *
  * @param ATID The attribute(s) \ref c_tid_t.
- * @return Returns a reference to said literal.
+ * @return Returns said literal.
  *
  * @sa #C_TYPE_LIT()
  * @sa #C_TYPE_LIT_A()
@@ -143,7 +143,7 @@ struct c_type {
  * Convenience macro for specifying a \ref c_type literal from \a BTID.
  *
  * @param BTID The base \ref c_tid_t.
- * @return Returns a reference to said literal.
+ * @return Returns said literal.
  *
  * @sa #C_TYPE_LIT()
  * @sa #C_TYPE_LIT_A()
@@ -157,7 +157,7 @@ struct c_type {
  * #TS_ANY, and #TA_ANY.
  *
  * @param BTID The base \ref c_tid_t.
- * @return Returns a reference to said literal.
+ * @return Returns said literal.
  *
  * @sa #C_TYPE_LIT()
  * @sa #C_TYPE_LIT_A()
@@ -173,7 +173,7 @@ struct c_type {
  * Convenience macro for specifying a \ref c_type literal from \a STID.
  *
  * @param STID The storage \ref c_tid_t.
- * @return Returns a reference to said literal.
+ * @return Returns said literal.
  *
  * @sa #C_TYPE_LIT()
  * @sa #C_TYPE_LIT_A()
@@ -190,7 +190,7 @@ struct c_type {
  * STID, and #TA_ANY.
  *
  * @param STID The storage \ref c_tid_t.
- * @return Returns a reference to said literal.
+ * @return Returns said literal.
  *
  * @sa #C_TYPE_LIT()
  * @sa #C_TYPE_LIT_A()
