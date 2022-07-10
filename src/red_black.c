@@ -190,7 +190,8 @@ static inline rb_dir_t child_dir( rb_node_t const *node ) {
  * @return Returns `true` only if \a node is full.
  */
 PJL_WARN_UNUSED_RESULT
-static inline bool is_full( rb_tree_t const *tree, rb_node_t const *node ) {
+static inline bool is_node_full( rb_tree_t const *tree,
+                                 rb_node_t const *node ) {
   return node->child[RB_L] != RB_NIL(tree) && node->child[RB_R] != RB_NIL(tree);
 }
 
@@ -479,7 +480,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   void *const data = delete->data;
 
   rb_node_t *const surrogate =
-    is_full( tree, delete ) ? rb_node_next( tree, delete ) : delete;
+    is_node_full( tree, delete ) ? rb_node_next( tree, delete ) : delete;
 
   rb_node_t *const surrogate_child =
     surrogate->child[ surrogate->child[RB_L] == RB_NIL(tree) ];
