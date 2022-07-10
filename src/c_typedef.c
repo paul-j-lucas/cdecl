@@ -957,17 +957,22 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
   assert( ast != NULL );
   assert( is_01_bit_only_in_set( gib_flags, C_GIB_TYPEDEF | C_GIB_USING ) );
 
+  bool const is_predefined = predefined_lang_ids != LANG_NONE;
+
   c_typedef_t *const tdef = MALLOC( c_typedef_t, 1 );
-  tdef->ast = ast;
-  tdef->gib_flags = gib_flags;
-  //
-  // If predefined_lang_ids is set, we're predefining a type that's available
-  // only in those language(s); otherwise we're defining a user-defined type
-  // that's available in the current language and newer.
-  //
-  tdef->is_predefined = predefined_lang_ids != LANG_NONE;
-  tdef->lang_ids = tdef->is_predefined ?
-    predefined_lang_ids : c_lang_and_newer( opt_lang );
+  *tdef = (c_typedef_t){
+    .ast = ast,
+    .gib_flags = gib_flags,
+    .is_predefined = is_predefined,
+    //
+    // If predefined_lang_ids is set, we're predefining a type that's available
+    // only in those language(s); otherwise we're defining a user-defined type
+    // that's available in the current language and newer.
+    //
+    .lang_ids = is_predefined ?
+      predefined_lang_ids : c_lang_and_newer( opt_lang )
+  };
+
   return tdef;
 }
 
