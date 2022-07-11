@@ -300,9 +300,6 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
 static void rb_tree_check( rb_tree_t const *tree ) {
   assert( tree != NULL );
   assert( RB_NIL(tree)->data == NULL );
-  assert( RB_NIL(tree)->child[RB_L] == RB_NIL(tree) );
-  assert( RB_NIL(tree)->child[RB_R] == RB_NIL(tree) );
-  assert( RB_NIL(tree)->parent == RB_NIL(tree) );
   assert( RB_NIL(tree)->color == RB_BLACK );
   assert( RB_FIRST(tree)->color == RB_BLACK );
   assert(
@@ -479,30 +476,29 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
 
   void *const data = delete->data;
 
-  rb_node_t *const surrogate =
+  rb_node_t *const proxy =
     is_node_full( tree, delete ) ? rb_node_next( tree, delete ) : delete;
 
-  rb_node_t *const surrogate_child =
-    surrogate->child[ surrogate->child[RB_L] == RB_NIL(tree) ];
+  rb_node_t *const proxy_child =
+    proxy->child[ proxy->child[RB_L] == RB_NIL(tree) ];
 
-  if ( surrogate->parent == RB_ROOT(tree) ) {
-    surrogate_child->parent = RB_ROOT(tree);
-    RB_FIRST(tree) = surrogate_child;
-  } else {
-    RB_PARENT_CHILD( surrogate ) = surrogate_child;
+  proxy_child->parent = proxy->parent;
+  if ( proxy->parent == RB_ROOT(tree) )
+    RB_FIRST(tree) = proxy_child;
+  else
+    RB_PARENT_CHILD( proxy ) = proxy_child;
+
+  if ( proxy != delete ) {
+    proxy->color = delete->color;
+    proxy->child[RB_L] = delete->child[RB_L];
+    proxy->child[RB_R] = delete->child[RB_R];
+    proxy->parent = delete->parent;
+    delete->child[RB_L]->parent = delete->child[RB_R]->parent = proxy;
+    RB_PARENT_CHILD( delete ) = proxy;
   }
 
-  if ( is_black( surrogate ) )
-    rb_delete_repair( tree, surrogate_child );
-
-  if ( surrogate != delete ) {
-    surrogate->color = delete->color;
-    surrogate->child[RB_L] = delete->child[RB_L];
-    surrogate->child[RB_R] = delete->child[RB_R];
-    surrogate->parent = delete->parent;
-    delete->child[RB_L]->parent = delete->child[RB_R]->parent = surrogate;
-    RB_PARENT_CHILD( delete ) = surrogate;
-  }
+  if ( is_black( proxy ) )
+    rb_delete_repair( tree, proxy_child );
 
   free( delete );
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
