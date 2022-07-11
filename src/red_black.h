@@ -68,6 +68,9 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * @defgroup red-black-group Red-Black Tree
  * Types and functions for manipulating red-black trees.
+ *
+ * @sa [Red-Black Tree](https://en.wikipedia.org/wiki/Red-black_tree)
+ *
  * @{
  */
 
@@ -149,11 +152,37 @@ struct rb_node {
  * A red-black tree.
  *
  * @sa rb_tree_init()
+ * @sa [Red-Black Tree](https://en.wikipedia.org/wiki/Red-black_tree)
  */
 struct rb_tree {
-  rb_node_t   root;                     ///< Root node.
-  rb_node_t   nil;                      ///< Nil node.
-  rb_cmp_fn_t cmp_fn;                   ///< Data comparison function.
+  /**
+   * A convenience sentinel for the root node.  Note, however, that it's _not_
+   * the true root node of the tree; it's just an object to which the \ref
+   * rb_node::parent "parent" node pointer of the true root node (`fake_root`'s
+   * left child node) can point.  That is, when a node's \ref rb_node::parent
+   * "parent" pointer points to `fake_root`, it means _that_ node _is_ the true
+   * root node.  The `fake_root` has no invariants.
+   */
+  rb_node_t   fake_root;
+
+  /**
+   * A convenience sentinel for all leaf nodes.  Its only invariant is that its
+   * \ref rb_node::color "color" _must_ be #RB_BLACK.  Its children, parent,
+   * and even data can take on arbitrary values.
+   *
+   * @note There is one nil per tree instead of a single static nil for all
+   * trees because those values can change.  In a multithreaded program,
+   * updates to different trees could affect such a single nil that would
+   * result in undefined behavior.
+   */
+  rb_node_t   nil;
+
+  /**
+   * Data comparison function.
+   *
+   * @warning This value may be changed _only_ when the tree is empty.
+   */
+  rb_cmp_fn_t cmp_fn;
 };
 
 /**
@@ -215,7 +244,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
  */
 RED_BLACK_H_INLINE PJL_WARN_UNUSED_RESULT
 bool rb_tree_empty( rb_tree_t const *tree ) {
-  return tree->root.child[0] == &tree->nil && tree->root.child[1] == &tree->nil;
+  return tree->fake_root.child[0] == &tree->nil;
 }
 
 /**
@@ -233,24 +262,6 @@ bool rb_tree_empty( rb_tree_t const *tree ) {
  */
 PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data );
-
-/**
- * Gets the first node in \a tree, if any.
- *
- * @param tree A pointer to the red-black tree to get the first node of.
- * @return Returns a pointer to the first node in \a tree if not empty or NULL
- * if empty.
- *
- * @warning Even though this function returns a pointer to a non-`const` \ref
- * rb_node, the node's \ref rb_node::data "data" _must not_ be modified if that
- * would change the node's position within the tree according to its \ref
- * rb_tree::cmp_fn "cmp_fn".
- */
-RED_BLACK_H_INLINE PJL_WARN_UNUSED_RESULT
-rb_node_t* rb_tree_first( rb_tree_t const *tree ) {
-  rb_node_t *const first = tree->root.child[0];
-  return first == &tree->nil ? NULL : first;
-}
 
 /**
  * Initializes a red-black tree.

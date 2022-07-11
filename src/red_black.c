@@ -128,7 +128,7 @@
  * @note This is a macro instead of an inline function so it'll work with
  * either a `const` or non-`const` \a TREE.
  */
-#define RB_ROOT(TREE)             (&(TREE)->root)
+#define RB_ROOT(TREE)             (&(TREE)->fake_root)
 
 /**
  * Red-black tree child direction.
@@ -142,10 +142,10 @@ typedef enum rb_dir rb_dir_t;
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Convenience function for checking that a node is black.
+ * Convenience function for checking that a node's color is #RB_BLACK.
  *
  * @param node A pointer to the rb_node to check.
- * @return Returns `true` only if \a node is black.
+ * @return Returns `true` only if \a node is #RB_BLACK.
  *
  * @sa is_red()
  */
@@ -196,10 +196,10 @@ static inline bool is_node_full( rb_tree_t const *tree,
 }
 
 /**
- * Convenience function for checking that a node is red.
+ * Convenience function for checking that a node's color is #RB_RED.
  *
  * @param node A pointer to the rb_node to check.
- * @return Returns `true` only if \a node is red.
+ * @return Returns `true` only if \a node is #RB_RED.
  *
  * @sa is_black()
  */
@@ -301,14 +301,8 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
  */
 static void rb_tree_check( rb_tree_t const *tree ) {
   assert( tree != NULL );
-  assert( RB_NIL(tree)->data == NULL );
   assert( RB_NIL(tree)->color == RB_BLACK );
   assert( RB_FIRST(tree)->color == RB_BLACK );
-  assert(
-    // If the left child is nil, the right child must also be nil.
-    RB_ROOT(tree)->child[RB_L] != RB_NIL(tree) ||
-    RB_ROOT(tree)->child[RB_R] == RB_NIL(tree)
-  );
 }
 #else
 # define rb_tree_check(TREE)      do { } while (0)
