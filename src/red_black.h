@@ -211,9 +211,10 @@ bool rb_tree_empty( rb_tree_t const *tree ) {
  * @return Returns a pointer to the node containing \a data or NULL if not
  * found.
  *
- * @warning Even though this function returns a pointer to a non-`const` node,
- * the node's data _must not_ be modified if that would change the node's
- * position within the tree according to the tree's data comparison function.
+ * @warning Even though this function returns a pointer to a non-`const` \ref
+ * rb_node, the node's \ref rb_node::data "data" _must not_ be modified if that
+ * would change the node's position within the tree according to its \ref
+ * rb_tree::cmp_fn "cmp_fn".
  */
 PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data );
@@ -225,9 +226,10 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data );
  * @return Returns a pointer to the first node in \a tree if not empty or NULL
  * if empty.
  *
- * @warning Even though this function returns a pointer to a non-`const` node,
- * the node's data _must not_ be modified if that would change the node's
- * position within the tree according to the tree's data comparison function.
+ * @warning Even though this function returns a pointer to a non-`const` \ref
+ * rb_node, the node's \ref rb_node::data "data" _must not_ be modified if that
+ * would change the node's position within the tree according to its \ref
+ * rb_tree::cmp_fn "cmp_fn".
  */
 RED_BLACK_H_INLINE PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_first( rb_tree_t const *tree ) {
@@ -250,13 +252,15 @@ void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn );
  *
  * @param tree A pointer to the red-black tree to insert into.
  * @param data A pointer to the data to insert.
- * @return Returns an \ref rb_insert_rv where its node points to either the
- * newly inserted node or the existing node having the same \a data and \a
- * inserted is `true` only if \a data was inserted.
+ * @return Returns an \ref rb_insert_rv where its \ref rb_insert_rv::node
+ * "node" points to either the newly inserted node or the existing node having
+ * the same \ref rb_node::data "data" and \ref rb_insert_rv::inserted
+ * "inserted" is `true` only if \ref rb_node::data "data" was inserted.
  *
- * @warning Even though this function returns a pointer to a non-`const` node,
- * the node's data _must not_ be modified if that would change the node's
- * position within the tree according to the tree's data comparison function.
+ * @warning Even though this function returns an \ref rb_insert_rv containing a
+ * pointer to a non-`const` \ref rb_insert_rv::node "node", the node's \ref
+ * rb_node::data "data" _must not_ be modified if that would change the node's
+ * position within the tree according its \ref rb_tree::cmp_fn "cmp_fn".
  *
  * @sa rb_tree_delete()
  */
@@ -272,9 +276,10 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data );
  * @return Returns a pointer to the node at which visiting stopped or NULL if
  * the entire tree was visited.
  *
- * @warning Even though this function returns a pointer to a non-`const` node,
- * the node's data _must not_ be modified if that would change the node's
- * position within the tree according to the tree's data comparison function.
+ * @warning Even though this function returns a pointer to a non-`const` \ref
+ * rb_node, the node's \ref rb_node::data "data" _must not_ be modified if that
+ * would change the node's position within the tree according to its \ref
+ * rb_tree::cmp_fn "cmp_fn".
  */
 PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
