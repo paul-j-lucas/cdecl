@@ -161,7 +161,8 @@ struct rb_tree {
  */
 struct rb_insert_rv {
   /**
-   * The \ref rb_node "node" either found or inserted.
+   * The \ref rb_node "node" either found or inserted.  Use \ref inserted to
+   * know which.
    *
    * @warning Even though this is a pointer to a non-`const` \ref rb_node, the
    * node's \ref rb_node::data "data" _must not_ be modified if that would
@@ -171,7 +172,9 @@ struct rb_insert_rv {
   rb_node_t *node;
 
   /**
-   * Was \ref node inserted?
+   * If `true`, \ref node refers to the newly inserted node; if `false`, \ref
+   * node refers to the existing node having the same \ref rb_node::data
+   * "data".
    */
   bool inserted;
 };
