@@ -280,11 +280,13 @@ static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
 static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
   assert( tree != NULL );
   assert( node != NULL );
+
   rb_node_t *const temp = node->child[!dir];
   node->child[!dir] = temp->child[dir];
 
   if ( temp->child[dir] != RB_NIL(tree) )
     temp->child[dir]->parent = node;
+
   temp->parent = node->parent;
   RB_PARENT_CHILD( node ) = temp;
   temp->child[dir] = node;
