@@ -119,8 +119,8 @@ enum rb_color {
 /**
  * A red-black tree node.
  *
- * @warning Only rb_node.data may be accessed by client code, and even then as
- * read-only.  All other fields are for internal use only.
+ * @warning Only \ref data may be accessed by client code.  All other fields
+ * are for internal use only.
  */
 struct rb_node {
   /**
@@ -160,8 +160,20 @@ struct rb_tree {
  * The return value of rb_tree_insert().
  */
 struct rb_insert_rv {
-  rb_node_t  *node;                     ///< The node either found or inserted.
-  bool        inserted;                 ///< Was \a node inserted?
+  /**
+   * The \ref rb_node "node" either found or inserted.
+   *
+   * @warning Even though this is a pointer to a non-`const` \ref rb_node, the
+   * node's \ref rb_node::data "data" _must not_ be modified if that would
+   * change the node's position within the tree according to its \ref
+   * rb_tree::cmp_fn "cmp_fn".
+   */
+  rb_node_t *node;
+
+  /**
+   * Was \ref node inserted?
+   */
+  bool inserted;
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
