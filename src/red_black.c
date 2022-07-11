@@ -264,11 +264,11 @@ static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
  * For example, given the following ordered tree, perform a left rotation on
  * node **N**:
  *
- *      N            T
- *       \          / \
- *        T   =>   N   U
- *       / \        \
- *      S   U        S
+ *        N            T
+ *       / \          / \
+ *      M   T   =>   N   U
+ *         / \      / \
+ *        S   U    M   S
  *
  * **N** is rotated left (and down); **T** is rotated left (and up).  Note that
  * the order is preserved.  A right rotation is the mirror image.
