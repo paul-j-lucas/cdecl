@@ -205,13 +205,13 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
       DUMP_COMMA;
       DUMP_FORMAT( "flags = " );
       switch ( ast->as.func.flags ) {
-        case C_FN_UNSPECIFIED:
+        case C_FUNC_UNSPECIFIED:
           FPUTS( "unspecified", dout );
           break;
-        case C_FN_MEMBER:
+        case C_FUNC_MEMBER:
           FPUTS( L_MEMBER, dout );
           break;
-        case C_FN_NON_MEMBER:
+        case C_FUNC_NON_MEMBER:
           FPUTS( H_NON_MEMBER, dout );
           break;
         case C_OP_OVERLOADABLE:

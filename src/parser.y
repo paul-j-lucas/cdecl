@@ -7389,9 +7389,9 @@ lt_exp
   ;
 
 member_or_non_member_flags_opt
-  : /* empty */                   { $$ = C_FN_UNSPECIFIED; }
-  | Y_MEMBER                      { $$ = C_FN_MEMBER     ; }
-  | Y_NON_MEMBER                  { $$ = C_FN_NON_MEMBER ; }
+  : /* empty */                   { $$ = C_FUNC_UNSPECIFIED; }
+  | Y_MEMBER                      { $$ = C_FUNC_MEMBER     ; }
+  | Y_NON_MEMBER                  { $$ = C_FUNC_NON_MEMBER ; }
   ;
 
 namespace_btid_exp

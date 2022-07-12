@@ -72,28 +72,28 @@ _GL_INLINE_HEADER_BEGIN
  * For c_function_ast.flags, denotes that the user didn't explicitly specify
  * either `member` or `non-member` in pseudo-English.
  *
- * @sa #C_FN_MEMBER
- * @sa #C_FN_NON_MEMBER
+ * @sa #C_FUNC_MEMBER
+ * @sa #C_FUNC_NON_MEMBER
  */
-#define C_FN_UNSPECIFIED          0u
+#define C_FUNC_UNSPECIFIED        0u
 
 /**
  * For c_function_ast.flags, denotes that the user explicitly specified
  * `member` in pseudo-English.
  *
- * @sa #C_FN_NON_MEMBER
- * @sa #C_FN_UNSPECIFIED
+ * @sa #C_FUNC_NON_MEMBER
+ * @sa #C_FUNC_UNSPECIFIED
  */
-#define C_FN_MEMBER               (1u << 0)
+#define C_FUNC_MEMBER             (1u << 0)
 
 /**
  * For c_function_ast.flags, denotes that the user explicitly specified
  * `non-member` in pseudo-English.
  *
- * @sa #C_FN_MEMBER
- * @sa #C_FN_UNSPECIFIED
+ * @sa #C_FUNC_MEMBER
+ * @sa #C_FUNC_UNSPECIFIED
  */
-#define C_FN_NON_MEMBER           (1u << 1)
+#define C_FUNC_NON_MEMBER         (1u << 1)
 
 /**
  * Convenience macro for iterating over all parameters of a function-like AST.
@@ -305,9 +305,9 @@ struct c_function_ast {
    * Bitwise-or of flags specifying whether the function is a member, non-
    * member, or unspecified function.
    *
-   * @sa #C_FN_UNSPECIFIED
-   * @sa #C_FN_MEMBER
-   * @sa #C_FN_NON_MEMBER
+   * @sa #C_FUNC_UNSPECIFIED
+   * @sa #C_FUNC_MEMBER
+   * @sa #C_FUNC_NON_MEMBER
    */
   unsigned        flags;
 };

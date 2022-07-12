@@ -786,10 +786,10 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   }
 
   switch ( ast->as.func.flags ) {
-    case C_FN_MEMBER:
+    case C_FUNC_MEMBER:
       // nothing to do
       break;
-    case C_FN_NON_MEMBER:
+    case C_FUNC_NON_MEMBER:
       if ( member_func_stids != TS_NONE ) {
         print_error( &ast->loc,
           "non-member %s can not be %s\n",
