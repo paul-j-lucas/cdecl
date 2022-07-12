@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares macros, types, and functions for cdecl commands.
+ * Declares macros, types, and functions for **cdecl** commands.
  */
 
 // local
@@ -34,7 +34,7 @@
 #include <stddef.h>                     /* for NULL */
 
 /**
- * Convenience macro for iterating over all cdecl commands.
+ * Convenience macro for iterating over all **cdecl** commands.
  *
  * @param VAR The cdecl_command loop variable.
  *
@@ -46,11 +46,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * The kind of cdecl command.
+ * The kind of **cdecl** command.
  */
 enum cdecl_command_kind {
   /**
-   * Command is valid _only_ within the \b cdecl language and _not_ as either
+   * Command is valid _only_ within the **cdecl** language and _not_ as either
    * the command-line command (`argv[0]`) or the first word of the first
    * command-line argument (`argv[1]`):
    *
@@ -59,7 +59,7 @@ enum cdecl_command_kind {
   CDECL_COMMAND_LANG_ONLY,
 
   /**
-   * Command is valid within the \b cdecl language _and_ as the first word of
+   * Command is valid within the **cdecl** language _and_ as the first word of
    * the first command-line argument (`argv[1]`):
    *
    * `$ cdecl` _command_ _args_
@@ -67,7 +67,7 @@ enum cdecl_command_kind {
   CDECL_COMMAND_FIRST_ARG,
 
   /**
-   * Command is valid within the \b cdecl language _and_ as the
+   * Command is valid within the **cdecl** language _and_ as the
    * program name (`argv[0]`):
    *
    * `$` _command_ _args_
@@ -76,7 +76,7 @@ enum cdecl_command_kind {
 };
 
 /**
- * A cdecl command.
+ * A **cdecl** command.
  */
 struct cdecl_command {
   char const           *literal;        ///< The command literal.
@@ -89,7 +89,7 @@ struct cdecl_command {
 /**
  * Given a string, gets the corresponding cdecl_command, if any.
  *
- * @param s The string presumably _starting with_ a cdecl command to find.
+ * @param s The string presumably _starting with_ a **cdecl** command to find.
  * @return Returns a pointer to the corresponding cdecl_command or NULL if not
  * found.
  */
@@ -97,7 +97,7 @@ PJL_WARN_UNUSED_RESULT
 cdecl_command_t const* cdecl_command_find( char const *s );
 
 /**
- * Iterates to the next cdecl command.
+ * Iterates to the next **cdecl** command.
  *
  * @param command A pointer to the previous command. For the first iteration,
  * NULL should be passed.

@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines constants for cdecl and C/C++ language literals.
+ * Defines constants for **cdecl** and C/C++ language literals.
  */
 
 // local

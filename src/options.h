@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares global variables and functions for cdecl options.
+ * Declares global variables and functions for **cdecl** options.
  *
  * @sa cli_options.h
  * @sa set_options.h
@@ -45,7 +45,7 @@
 
 /**
  * @defgroup cdecl-options-group Cdecl Options
- * Declares global variables and functions for cdecl options.
+ * Declares global variables and functions for **cdecl** options.
  *
  * @sa \ref cli-options-group
  * @sa \ref set-options-group

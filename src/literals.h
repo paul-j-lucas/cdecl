@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares constants for cdecl and C/C++ language literals.
+ * Declares constants for **cdecl** and C/C++ language literals.
  */
 
 // local
@@ -41,7 +41,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * @defgroup literals-group Literal Strings
- * Declares constants for cdecl and C/C++ language literals.
+ * Declares constants for **cdecl** and C/C++ language literals.
  * @{
  */
 

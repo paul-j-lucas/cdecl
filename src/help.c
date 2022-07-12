@@ -349,7 +349,7 @@ static void print_help_english( void ) {
 }
 
 /**
- * Print the help for a cdecl name.
+ * Print the help for a **cdecl** name.
  */
 static void print_help_name( void ) {
   if ( OPT_LANG_IS( C_ANY ) )
@@ -359,7 +359,7 @@ static void print_help_name( void ) {
 }
 
 /**
- * Print the help for cdecl options.
+ * Print the help for **cdecl** options.
  */
 static void print_help_options( void ) {
   print_h( "option:\n" );

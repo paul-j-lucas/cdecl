@@ -219,7 +219,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  *      T operator OP(U);
  *
  * i.e., having one parameter, are ambiguous (to cdecl) between being a member
- * or non-member operator since cdecl doesn't have the context in which the
+ * or non-member operator since **cdecl** doesn't have the context in which the
  * operator is declared.  If it were declared in-class, e.g.:
  *
  *      class T {
@@ -229,7 +229,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  *      };
  *
  * then clearly it's a member operator; if it were declared at file scope, then
- * clearly it's a non-member operator; but cdecl doesn't have this context.
+ * clearly it's a non-member operator; but **cdecl** doesn't have this context.
  *
  * We can tell if an operator is ambiguous if it can take 1 parameter when the
  * minimum is 0 and the maximum is 2.

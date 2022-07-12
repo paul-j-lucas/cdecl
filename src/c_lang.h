@@ -52,8 +52,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @note @anchor c-lang-order Despite the year of standardization, all versions
  * of C++ are considered "newer" than all versions of C.  However, this isn't a
- * problem since cdecl is only ever parsing either (any version of) C or (any
- * version of) C++ at any given time.
+ * problem since **cdecl** is only ever parsing either (any version of) C or
+ * (any version of) C++ at any given time.
  * @{
  */
 

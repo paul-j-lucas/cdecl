@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines global variables and functions for cdecl options.
+ * Defines global variables and functions for **cdecl** options.
  */
 
 // local

@@ -52,7 +52,7 @@
  */
 
 /**
- * Convenience macro for iterating over all cdecl command-line options.
+ * Convenience macro for iterating over all **cdecl** command-line options.
  *
  * @param VAR The `struct option` loop variable.
  *
@@ -65,7 +65,7 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Iterates to the next cdecl command-line option.
+ * Iterates to the next **cdecl** command-line option.
  *
  * @param opt A pointer to the previous option. For the first iteration, NULL
  * should be passed.
@@ -80,7 +80,7 @@ PJL_WARN_UNUSED_RESULT
 struct option const* cli_option_next( struct option const *opt );
 
 /**
- * Initializes cdecl options from the command-line.
+ * Initializes **cdecl** options from the command-line.
  * On return, `*pargc` and `*pargv` are updated to reflect the remaining
  * command-line with the options removed.
  *

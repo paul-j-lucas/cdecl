@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares macros, types, and functions that implement the cdecl `set`
+ * Declares macros, types, and functions that implement the **cdecl** `set`
  * command.
  *
  * @sa cli_options.h
@@ -52,7 +52,7 @@
  */
 
 /**
- * Convenience macro for iterating over all cdecl `set` options.
+ * Convenience macro for iterating over all **cdecl** `set` options.
  *
  * @param VAR The set_option loop variable.
  *
@@ -73,7 +73,7 @@
 typedef bool (*set_option_fn_t)( set_option_fn_args_t const *args );
 
 /**
- * cdecl `set` option kind.
+ * **cdecl** `set` option kind.
  */
 enum set_option_kind {
   SET_OPTION_TOGGLE,                    ///< Toggle, e.g., `foo` & `nofoo`.
@@ -82,7 +82,7 @@ enum set_option_kind {
 };
 
 /**
- * cdecl `set` option.
+ * **cdecl** `set` option.
  */
 struct set_option {
   char const       *name;               ///< Option name.
@@ -94,7 +94,7 @@ struct set_option {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Implements the cdecl `set` command.
+ * Implements the **cdecl** `set` command.
  *
  * @param opt_name The name of the option to set. If NULL or `"options"`,
  * displays the current values of all options.
@@ -108,7 +108,7 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc );
 
 /**
- * Iterates to the next cdecl `set` option.
+ * Iterates to the next **cdecl** `set` option.
  *
  * @param opt A pointer to the previous option. For the first iteration, NULL
  * should be passed.

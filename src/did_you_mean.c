@@ -119,8 +119,9 @@ static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
 }
 
 /**
- * Copies cdecl keywords in the current language to the candidate list pointed
- * to by \a pdym.  If \a pdym is NULL, only counts the number of keywords.
+ * Copies **cdecl** keywords in the current language to the candidate list
+ * pointed to by \a pdym.  If \a pdym is NULL, only counts the number of
+ * keywords.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count keywords, not copy.  If not NULL, on return, the pointed-to
@@ -144,8 +145,9 @@ static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
 }
 
 /**
- * Copies cdecl commands in the current language to the candidate list pointed
- * to by \a pdym.  If \a pdym is NULL, only counts the number of commands.
+ * Copies **cdecl** commands in the current language to the candidate list
+ * pointed to by \a pdym.  If \a pdym is NULL, only counts the number of
+ * commands.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count commands, not copy.  If not NULL, on return, the pointed-to
@@ -166,7 +168,7 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
 }
 
 /**
- * Copies cdecl command-line options to the candidate list pointed to by \a
+ * Copies **cdecl** command-line options to the candidate list pointed to by \a
  * pdym.  If \a pdym is NULL, only counts the number of options.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
@@ -186,8 +188,8 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
 }
 
 /**
- * Copies cdecl `set` options to the candidate list pointed to by \a pdym.  If
- * \a pdym is NULL, only counts the number of options.
+ * Copies **cdecl** `set` options to the candidate list pointed to by \a pdym.
+ * If \a pdym is NULL, only counts the number of options.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count options, not copy.  If not NULL, on return, the pointed-to

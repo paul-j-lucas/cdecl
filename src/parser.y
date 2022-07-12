@@ -609,8 +609,8 @@ static inline void sti_cleanup( show_type_info_t *sti ) {
  * Checks if the current language is _not_ among \a lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s).
- * @return Returns `true` only if cdecl has been initialized and \ref opt_lang
- * is _not_ among \a lang_ids.
+ * @return Returns `true` only if **cdecl** has been initialized and \ref
+ * opt_lang is _not_ among \a lang_ids.
  */
 PJL_WARN_UNUSED_RESULT
 static inline bool unsupported( c_lang_id_t lang_ids ) {
@@ -1046,7 +1046,7 @@ static void parse_cleanup( bool fatal_error ) {
 }
 
 /**
- * Implements the cdecl `quit` command.
+ * Implements the **cdecl** `quit` command.
  *
  * @note This should be marked `noreturn` but isn't since that would generate a
  * warning that a `break` in the Bison-generated code won't be executed.

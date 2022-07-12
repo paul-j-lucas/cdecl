@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares macros, types, and functions for looking up cdecl keyword
+ * Declares macros, types, and functions for looking up **cdecl** keyword
  * information.
  */
 
@@ -38,12 +38,12 @@
 
 /**
  * @defgroup cdecl-keywords-group Cdecl Keywords
- * Types and functions for cdecl keywords.
+ * Types and functions for **cdecl** keywords.
  * @{
  */
 
 /**
- * Convenience macro for iterating over all cdecl keywords.
+ * Convenience macro for iterating over all **cdecl** keywords.
  *
  * @param VAR The cdecl_keyword loop variable.
  *
@@ -55,7 +55,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * cdecl keyword info.
+ * **cdecl** keyword info.
  */
 struct cdecl_keyword {
   char const         *literal;          ///< C string literal of the keyword.
@@ -94,11 +94,11 @@ PJL_WARN_UNUSED_RESULT
 cdecl_keyword_t const* cdecl_keyword_find( char const *literal );
 
 /**
- * Iterates to the next cdecl keyword.
+ * Iterates to the next **cdecl** keyword.
  *
  * @param k A pointer to the current keyword. For the first iteration, NULL
  * should be passed.
- * @return Returns the next cdecl keyword or NULL for none.
+ * @return Returns the next **cdecl** keyword or NULL for none.
  *
  * @note This function isn't normally called directly; use the
  * #FOREACH_CDECL_KEYWORD() macro instead.

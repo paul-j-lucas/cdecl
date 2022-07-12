@@ -2551,8 +2551,8 @@ static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
  *      _[A-Z_]*
  *      *__*        // C++ only.
  *
- * However, we don't check for the first one since cdecl doesn't have either
- * the linkage or the scope of a name.
+ * However, we don't check for the first one since **cdecl** doesn't have
+ * either the linkage or the scope of a name.
  *
  * @param name The name to check.
  * @return Returns the bitwise-or of language(s) that \a name is reserved in.

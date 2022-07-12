@@ -20,7 +20,8 @@
 
 /**
  * @file
- * Defined types, data, and functions for looking up cdecl keyword information.
+ * Defined types, data, and functions for looking up **cdecl** keyword
+ * information.
  */
 
 // local
@@ -99,25 +100,24 @@
   /*always_find=*/false, (Y_ID), /*lang_syn=*/NULL, LANG
 
 /**
- * All cdecl keywords that are (mostly) _not_ C/C++ keywords.
- * Exceptions are `alignas`, `bool`, `complex`, `const`, and `volatile` that
- * are included here as cdecl keywords so each maps to its language-specific
- * literal.
+ * All **cdecl** keywords that are (mostly) _not_ C/C++ keywords.  Exceptions
+ * are `alignas`, `bool`, `complex`, `const`, and `volatile` that are included
+ * here as **cdecl** keywords so each maps to its language-specific literal.
  *
  * ## Initialization Macros
  *
  * The #C_SYN, #C_SYA, #C_SYE, and #TOKEN macros are used to initialize entries
  * in the array as follows.
  *
- * To have a literal for a cdecl keyword map to its corresponding token, use
- * #TOKEN:
+ * To have a literal for a **cdecl** keyword map to its corresponding token,
+ * use #TOKEN:
  *
  *      // The "aligned" literal maps to the Y_ALIGNED token:
  *      { L_ALIGNED,        TOKEN( Y_ALIGNED, AC_LANG(NONE)  ) }
  *
- * To have a literal that is a synonym for another literal for a cdecl keyword
- * map to the other literal's same token, use #TOKEN with the other literal's
- * token:
+ * To have a literal that is a synonym for another literal for a **cdecl**
+ * keyword map to the other literal's same token, use #TOKEN with the other
+ * literal's token:
  *
  *      // The "align" literal synonym also maps to the Y_ALIGNED token:
  *      { L_ALIGN,          TOKEN( Y_ALIGNED, AC_LANG(ALIGNMENT) ) },
@@ -152,7 +152,7 @@
  * The #AC_LANG macro is used to specify the language(s) that a keyword should
  * be auto-completed in.  A keyword is auto-completable _unless_ it:
  *
- * 1. Is a synonym for a preferred cdecl token, e.g., `conversion` is auto-
+ * 1. Is a synonym for a preferred **cdecl** token, e.g., `conversion` is auto-
  *    completable, but `conv` is not.
  *
  * 2. Is a synonym for a C/C++ token, e.g., `enum` is auto-completable (via

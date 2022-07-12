@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines data and functions that implement the cdecl `set` command.
+ * Defines data and functions that implement the **cdecl** `set` command.
  */
 
 // local
@@ -84,7 +84,7 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * cdecl `set` options.
+ * **cdecl** `set` options.
  */
 static set_option_t const SET_OPTIONS[] = {
   { "alt-tokens",         SET_OPTION_TOGGLE,   false, &set_alt_tokens         },

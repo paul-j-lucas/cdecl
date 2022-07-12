@@ -332,8 +332,8 @@ void c_sname_init_name( c_sname_t *sname, char *name ) {
  * Gets whether \a sname is a constructor name, i.e., whether the last two
  * names match, e.g. `S::T::T`.
  *
- * @note This can also be used to check for destructor names since cdecl elides
- * the `~` when parsing them.  (An AST's kind is #K_DESTRUCTOR.)
+ * @note This can also be used to check for destructor names since **cdecl**
+ * elides the `~` when parsing them.  (An AST's kind is #K_DESTRUCTOR.)
  *
  * @param sname The scoped name to check.
  * @return Returns `true` only if \a sname has at least two names and the last

@@ -980,7 +980,7 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
  * Parses an array of predefined type declarations.
  *
  * @param types A pointer to the start of an array of pointers to strings of
- * cdecl commands that define types.  The last element must be NULL.
+ * **cdecl** commands that define types.  The last element must be NULL.
  */
 static void parse_predefined_types( char const *const *types ) {
   assert( types != NULL );

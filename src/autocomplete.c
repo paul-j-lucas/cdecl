@@ -54,7 +54,7 @@
 /**
  * Auto-completable keyword.
  *
- * This is either a of C/C++ keyword or a cdecl keyword that is auto-
+ * This is either a of C/C++ keyword or a **cdecl** keyword that is auto-
  * completable.
  */
 struct ac_keyword {
@@ -75,7 +75,7 @@ static bool   is_command( char const*, char const*, size_t );
 
 /**
  * Creates and initializes an array of all auto-completable keywords composed
- * of C/C++ keywords and cdecl keywords.
+ * of C/C++ keywords and **cdecl** keywords.
  *
  * @return Returns a pointer to said array.
  */
@@ -191,7 +191,7 @@ static bool is_cast_command( char const *s, size_t s_len ) {
 }
 
 /**
- * Checks whether \a s is a particular cdecl command.
+ * Checks whether \a s is a particular **cdecl** command.
  *
  * @param command The command to check for.
  * @param s The string to check.  Leading whitespace must have been skipped.
@@ -227,7 +227,7 @@ static bool is_command( char const *command, char const *s, size_t s_len ) {
  * Gets whether \a command is an English command, that is followed by pseudo-
  * English instead of gibberish.
  *
- * @param command The cdecl command to check.
+ * @param command The **cdecl** command to check.
  * @return Returns `true` only if \a command is an English command.
  */
 PJL_WARN_UNUSED_RESULT
@@ -271,7 +271,7 @@ static char** cdecl_rl_completion( char const *text, int start, int end ) {
 }
 
 /**
- * Attempts to match a cdecl command.
+ * Attempts to match a **cdecl** command.
  *
  * @param text The text read (so far) to match against.
  * @param state If 0, restart matching from the beginning; if non-zero,
@@ -302,7 +302,7 @@ static char* command_generator( char const *text, int state ) {
 }
 
 /**
- * Attempts to match a cdecl keyword (that is not a command).
+ * Attempts to match a **cdecl** keyword (that is not a command).
  *
  * @param text The text read (so far) to match against.
  * @param state If 0, restart matching from the beginning; if non-zero,
