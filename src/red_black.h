@@ -131,15 +131,16 @@ struct rb_node {
    *
    * @warning The data pointed to _must not_ be modified if that would change
    * the node's position within the tree according to the tree's \ref
-   * rb_cmp_fn_t function.  For example, if `data` points to a `struct` like:
+   * rb_tree::cmp_fn "cmp_fn".  For example, if `data` points to a `struct`
+   * like:
    * @code
    *  struct word_count {
    *      char     *word;
    *      unsigned  count;
    *  };
    * @endcode
-   * then, assuming the tree's \ref rb_cmp_fn_t function compares only `word`,
-   * client code may then only safely modify `count`.
+   * then, assuming the tree's \ref rb_tree::cmp_fn "cmp_fn" compares only
+   * `word`, client code may then only safely modify `count`.
    */
   void       *data;
 
