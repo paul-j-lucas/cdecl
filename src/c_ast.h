@@ -99,7 +99,7 @@ _GL_INLINE_HEADER_BEGIN
  * Convenience macro for iterating over all parameters of a function-like AST.
  *
  * @param VAR The \ref c_param_t loop variable.
- * @param AST The AST to iterate the function-like parameters of.
+ * @param AST The function-like AST to iterate the parameters of.
  *
  * @sa c_ast_params()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
@@ -112,7 +112,7 @@ _GL_INLINE_HEADER_BEGIN
  * up to but not including \a END.
  *
  * @param VAR The \ref c_param_t loop variable.
- * @param AST The AST to iterate the function-like parameters of.
+ * @param AST The function-like AST to iterate the parameters of.
  * @param END A pointer to the parameter to end before; may be NULL.
  *
  * @sa c_ast_params()
@@ -557,12 +557,13 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
 /**
  * Convenience function for getting function-like parameters.
  *
- * @param ast The AST to get the parameters of.
+ * @param ast The function-like AST to get the parameters of.
  * @return Returns a pointer to the first parameter or NULL if none.
  *
  * @sa c_ast_params_count()
  * @sa c_param_ast()
  * @sa #FOREACH_AST_FUNC_PARAM()
+ * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
 C_AST_H_INLINE PJL_WARN_UNUSED_RESULT
 c_param_t const* c_ast_params( c_ast_t const *ast ) {
@@ -572,12 +573,13 @@ c_param_t const* c_ast_params( c_ast_t const *ast ) {
 /**
  * Convenience function for getting the number of function-like parameters.
  *
- * @param ast The AST to get the number of parameters of.
+ * @param ast The function-like AST to get the number of parameters of.
  * @return Returns said number of parameters.
  *
  * @sa c_ast_params()
  * @sa c_param_ast()
  * @sa #FOREACH_AST_FUNC_PARAM()
+ * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
 C_AST_H_INLINE PJL_WARN_UNUSED_RESULT
 size_t c_ast_params_count( c_ast_t const *ast ) {
@@ -619,6 +621,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
  * @sa c_ast_params()
  * @sa c_ast_params_count()
  * @sa #FOREACH_AST_FUNC_PARAM()
+ * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
 C_AST_H_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_param_ast( c_param_t const *param ) {
