@@ -66,10 +66,6 @@
 # include <stdlib.h>
 #endif
 
-#ifndef __has_attribute
-# define __has_attribute(X)       0
-#endif
-
 /// @endcond
 
 // local
