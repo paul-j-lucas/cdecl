@@ -181,7 +181,7 @@ static char const   CLI_OPTIONS_SHORT[] = ":"
 static bool         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const*  opt_format( char, strbuf_t* ),
                  *  opt_get_long( char );
 
@@ -255,7 +255,7 @@ static void invalid_opt_value( char opt, char const *value,
  * @param sbuf A pointer to the strbuf to use.
  * @return Returns \a sbuf->str.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* opt_format( char short_opt, strbuf_t *sbuf ) {
   assert( sbuf != NULL );
   strbuf_init( sbuf );
@@ -276,7 +276,7 @@ static char const* opt_format( char short_opt, strbuf_t *sbuf ) {
  * @param short_opt The short option to get the corresponding long option for.
  * @return Returns said option or the empty string if none.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* opt_get_long( char short_opt ) {
   FOREACH_CLI_OPTION( opt ) {
     if ( opt->val == short_opt )
@@ -292,7 +292,7 @@ static char const* opt_get_long( char short_opt ) {
  * @return Returns the associated \ref color_when or prints an error message
  * and exits if \a when is invalid.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static color_when_t parse_color_when( char const *when ) {
   struct colorize_map {
     char const   *map_when;
@@ -333,7 +333,7 @@ static color_when_t parse_color_when( char const *when ) {
  * @param lang_name The null-terminated name to parse.
  * @return Returns the \ref c_lang_id_t corresponding to \a lang_name.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_lang_id_t parse_lang( char const *lang_name ) {
   assert( lang_name != NULL );
 

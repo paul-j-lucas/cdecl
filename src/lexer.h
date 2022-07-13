@@ -98,7 +98,7 @@ void lexer_init( void );
  * @param plen The value pointed at is set to be the length of said line.
  * @return Returns said line.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* lexer_input_line( size_t *plen );
 
 /**
@@ -106,7 +106,7 @@ char const* lexer_input_line( size_t *plen );
  *
  * @return Returns said location.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_loc_t lexer_loc( void );
 
 /**
@@ -124,7 +124,7 @@ void lexer_reset( bool hard_reset );
  *
  * @note The definition is provided by Flex.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 int yylex( void );
 
 ///////////////////////////////////////////////////////////////////////////////

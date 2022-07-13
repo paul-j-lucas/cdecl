@@ -89,7 +89,7 @@ struct c_type_info {
 typedef struct c_type_info c_type_info_t;
 
 // local functions
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const*  c_type_literal( c_type_info_t const*, bool );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -504,7 +504,7 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
  * @param tids The \ref c_tid_t to check.
  * @return Returns `true` only if \a tids is some form of `long int`.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline bool c_tid_is_long_int( c_tid_t tids ) {
   return  c_tid_tpid( tids ) == C_TPID_BASE &&
           c_tid_is_except( tids, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC );
@@ -521,7 +521,7 @@ static inline bool c_tid_is_long_int( c_tid_t tids ) {
  * @param type_langs The type/languages array to check against.
  * @return Returns the bitwise-or of the language(s) \a tids is legal in.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_lang_id_t
 c_tid_check_combo( c_tid_t tids, c_type_info_t const type_infos[const],
                    size_t type_infos_size,
@@ -548,7 +548,7 @@ c_tid_check_combo( c_tid_t tids, c_type_info_t const type_infos[const],
  * @param type_infos_size The size of \a type_infos.
  * @return Returns the bitwise-or of the language(s) \a tids is legal in.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_lang_id_t
 c_tid_check_legal( c_tid_t tids, c_type_info_t const type_infos[const],
                    size_t type_infos_size ) {
@@ -569,7 +569,7 @@ c_tid_check_legal( c_tid_t tids, c_type_info_t const type_infos[const],
  * exists.
  * @return Returns said name.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
   assert( is_1_bit( c_tid_no_tpid( tid ) ) );
 
@@ -650,7 +650,7 @@ static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
  *
  * @sa c_tid_normalize()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_tid_t c_tid_nosigned( c_tid_t btids ) {
   c_tid_check( btids, C_TPID_BASE );
   if ( c_tid_is_except( btids, TB_SIGNED, TB_CHAR ) ) {
@@ -667,7 +667,7 @@ static c_tid_t c_tid_nosigned( c_tid_t btids ) {
  * @param tids The \ref c_tid_t to create the \ref c_type from.
  * @return Returns said \ref c_type.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_type_t c_tid_to_type( c_tid_t tids ) {
   switch ( c_tid_tpid( tids ) ) {
     case C_TPID_NONE:
@@ -696,7 +696,7 @@ static c_type_t c_tid_to_type( c_tid_t tids ) {
  *
  * @sa c_type_get_tid()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids ) {
   assert( type != NULL );
 
@@ -723,7 +723,7 @@ static c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids ) {
  * exists.
  * @return Returns said literal.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* c_type_literal( c_type_info_t const *ti, bool in_english ) {
   return in_english && ti->english_lit != NULL ?
     ti->english_lit : c_lang_literal( ti->lang_lit );
@@ -749,7 +749,7 @@ static char const* c_type_literal( c_type_info_t const *ti, bool in_english ) {
  * @sa c_type_name_english()
  * @sa c_type_name_error()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* c_type_name_impl( c_type_t const *type,
                                      bool apply_explicit_ecsu, bool in_english,
                                      bool is_error ) {

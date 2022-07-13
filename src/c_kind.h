@@ -266,7 +266,7 @@ enum c_ast_kind {
  * @param kind The \ref c_ast_kind to get the name for.
  * @return Returns said name.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_kind_name( c_ast_kind_t kind );
 
 ///////////////////////////////////////////////////////////////////////////////

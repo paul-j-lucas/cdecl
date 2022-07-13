@@ -109,7 +109,7 @@ static color_cap_t const COLOR_CAPS[] = {
 };
 
 // local functions
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool sgr_is_valid( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -121,7 +121,7 @@ static bool sgr_is_valid( char const* );
  * @param sgr_color The SGR color to set; or NULL or empty to unset.
  * @return Returns `true` only if \a sgr_color is valid.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
   assert( cap != NULL );
   assert( cap->cap_var_to_set != NULL );
@@ -146,7 +146,7 @@ static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
  *
  * @sa [ANSI escape code](http://en.wikipedia.org/wiki/ANSI_escape_code)
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool sgr_is_valid( char const *sgr_color ) {
   if ( sgr_color == NULL )
     return false;

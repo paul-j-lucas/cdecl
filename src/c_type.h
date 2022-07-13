@@ -546,7 +546,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  *
  * @sa c_type_add(()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tids, c_loc_t const *new_loc );
 
 /**
@@ -563,7 +563,7 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tids, c_loc_t const *new_loc );
  * @sa c_tid_name_error()
  * @sa c_type_name_c()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_tid_name_c( c_tid_t tids );
 
 /**
@@ -581,7 +581,7 @@ char const* c_tid_name_c( c_tid_t tids );
  * @sa c_tid_name_error()
  * @sa c_type_name_english()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_tid_name_english( c_tid_t tids );
 
 /**
@@ -600,7 +600,7 @@ char const* c_tid_name_english( c_tid_t tids );
  * @sa c_tid_name_english()
  * @sa c_type_name_error()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_tid_name_error( c_tid_t tids );
 
 /**
@@ -614,7 +614,7 @@ char const* c_tid_name_error( c_tid_t tids );
  * @param tids The \ref c_tid_t to normalize.
  * @return Returns the normalized \ref c_tid_t.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_tid_t c_tid_normalize( c_tid_t tids );
 
 /**
@@ -643,7 +643,7 @@ c_tid_t c_tid_normalize( c_tid_t tids );
  * @note The return value by itself is meaningless.  All that matters is the
  * result of comparing two orders.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 unsigned c_tid_scope_order( c_tid_t btids );
 
 /**
@@ -654,7 +654,7 @@ unsigned c_tid_scope_order( c_tid_t btids );
  *
  * @sa c_tid_no_tpid()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_tpid_t c_tid_tpid( c_tid_t tids );
 
 /**
@@ -673,7 +673,7 @@ c_tpid_t c_tid_tpid( c_tid_t tids );
  * @sa c_type_add_tid()
  * @sa c_type_or_eq()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
                  c_loc_t const *new_loc );
 
@@ -687,7 +687,7 @@ bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
  *
  * @sa c_type_add()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_type_add_tid( c_type_t *dst_type, c_tid_t new_tids,
                      c_loc_t const *new_loc );
 
@@ -701,7 +701,7 @@ bool c_type_add_tid( c_type_t *dst_type, c_tid_t new_tids,
  * @sa c_type_and_eq_compl()
  * @sa c_type_or()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_type_t c_type_and( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
@@ -721,7 +721,7 @@ void c_type_and_eq_compl( c_type_t *dst_type, c_type_t const *rm_type );
  * @param type The \ref c_type to check.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_lang_id_t c_type_check( c_type_t const *type );
 
 /**
@@ -736,7 +736,7 @@ c_lang_id_t c_type_check( c_type_t const *type );
  * @sa c_tid_normalize()
  * @sa c_type_is_none()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_type_equiv( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
@@ -749,7 +749,7 @@ bool c_type_equiv( c_type_t const *i_type, c_type_t const *j_type );
  * @return Returns the corresponding \ref c_tid_t of \a type for the part of \a
  * tids.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tids );
 
 /**
@@ -762,7 +762,7 @@ c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tids );
  *
  * @sa c_tid_is_any()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
@@ -780,7 +780,7 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
  * @sa c_type_name_english()
  * @sa c_type_name_error()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_type_name_c( c_type_t const *type );
 
 /**
@@ -797,7 +797,7 @@ char const* c_type_name_c( c_type_t const *type );
  * @sa c_type_name_english()
  * @sa c_type_name_error()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_type_name_ecsu( c_type_t const *type );
 
 /**
@@ -815,7 +815,7 @@ char const* c_type_name_ecsu( c_type_t const *type );
  * @sa c_type_name_ecsu()
  * @sa c_type_name_error()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_type_name_english( c_type_t const *type );
 
 /**
@@ -835,7 +835,7 @@ char const* c_type_name_english( c_type_t const *type );
  * @sa c_type_name_ecsu()
  * @sa c_type_name_english()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_type_name_error( c_type_t const *type );
 
 /**
@@ -849,7 +849,7 @@ char const* c_type_name_error( c_type_t const *type );
  * @sa c_type_and_eq_compl()
  * @sa c_type_or_eq()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_type_t c_type_or( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
@@ -876,7 +876,7 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
  * @param tpid The \ref c_tpid_t to check against.
  * @return Returns \a tids.
  */
-C_TYPE_H_INLINE PJL_NOWARN_UNUSED_RESULT
+C_TYPE_H_INLINE PJL_DISCARD
 c_tid_t c_tid_check( c_tid_t tids, c_tpid_t tpid ) {
   assert( (tids & TX_MASK_TPID) == tpid );
 #ifdef NDEBUG
@@ -893,7 +893,7 @@ c_tid_t c_tid_check( c_tid_t tids, c_tpid_t tpid ) {
  *
  * @sa c_tid_compl()
  */
-C_TYPE_H_INLINE PJL_WARN_UNUSED_RESULT
+C_TYPE_H_INLINE NODISCARD
 bool c_tid_is_compl( c_tid_t tids ) {
   //
   // The low-order 4 bits specify the c_tpid.  Currently, type part IDs are 1
@@ -913,7 +913,7 @@ bool c_tid_is_compl( c_tid_t tids ) {
  *
  * @sa c_tid_is_compl()
  */
-C_TYPE_H_INLINE PJL_WARN_UNUSED_RESULT
+C_TYPE_H_INLINE NODISCARD
 c_tid_t c_tid_compl( c_tid_t tids ) {
   assert( !c_tid_is_compl( tids ) );
   return ~tids ^ TX_MASK_TPID;
@@ -929,7 +929,7 @@ c_tid_t c_tid_compl( c_tid_t tids ) {
  * @return Returns `true` only if \a tids contains any of \a is_tids, but not
  * any of \a except_tids.
  */
-C_TYPE_H_INLINE PJL_WARN_UNUSED_RESULT
+C_TYPE_H_INLINE NODISCARD
 bool c_tid_is_except( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
   return (tids & (is_tids | except_tids)) == is_tids;
 }
@@ -942,7 +942,7 @@ bool c_tid_is_except( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
  *
  * @sa c_tid_tpid()
  */
-C_TYPE_H_INLINE PJL_WARN_UNUSED_RESULT
+C_TYPE_H_INLINE NODISCARD
 c_tid_t c_tid_no_tpid( c_tid_t tids ) {
   return tids & ~TX_MASK_TPID;
 }
@@ -956,7 +956,7 @@ c_tid_t c_tid_no_tpid( c_tid_t tids ) {
  *
  * @sa c_type_is_any()
  */
-C_TYPE_H_INLINE PJL_WARN_UNUSED_RESULT
+C_TYPE_H_INLINE NODISCARD
 bool c_tid_is_any( c_tid_t i_tids, c_tid_t j_tids ) {
   assert( c_tid_tpid( i_tids ) == c_tid_tpid( j_tids ) );
   return c_tid_no_tpid( i_tids & j_tids ) != TX_NONE;
@@ -973,7 +973,7 @@ bool c_tid_is_any( c_tid_t i_tids, c_tid_t j_tids ) {
  *
  * @sa c_type_is_none()
  */
-C_TYPE_H_INLINE PJL_WARN_UNUSED_RESULT
+C_TYPE_H_INLINE NODISCARD
 bool c_tid_is_none( c_tid_t tids ) {
   return c_tid_no_tpid( tids ) == TX_NONE;
 }
@@ -989,7 +989,7 @@ bool c_tid_is_none( c_tid_t tids ) {
  *
  * @sa c_ast_is_size_t()
  */
-C_TYPE_H_INLINE PJL_WARN_UNUSED_RESULT
+C_TYPE_H_INLINE NODISCARD
 bool c_tid_is_size_t( c_tid_t tids ) {
   c_tid_check( tids, C_TPID_BASE );
   return (tids & c_tid_compl( TB_INT )) == (TB_UNSIGNED | TB_LONG);
@@ -1003,7 +1003,7 @@ bool c_tid_is_size_t( c_tid_t tids ) {
  *
  * @sa c_type_equiv()
  */
-C_TYPE_H_INLINE PJL_WARN_UNUSED_RESULT
+C_TYPE_H_INLINE NODISCARD
 bool c_type_is_none( c_type_t const *type ) {
   return c_type_equiv( type, &T_NONE );
 }

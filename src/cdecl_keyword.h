@@ -91,7 +91,7 @@ struct cdecl_keyword {
  * @return Returns a pointer to the corresponding cdecl_keyword or NULL if not
  * found.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 cdecl_keyword_t const* cdecl_keyword_find( char const *literal );
 
 /**
@@ -106,7 +106,7 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *literal );
  *
  * @sa #FOREACH_CDECL_KEYWORD()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *k );
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -90,7 +90,7 @@ typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
  *   to \a type_ast's `unique_id`); or:
  * + The previously added type having the same scoped name.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_typedef_t const* c_typedef_add( c_ast_t const *type_ast, unsigned gib_flags );
 
 /**
@@ -102,7 +102,7 @@ c_typedef_t const* c_typedef_add( c_ast_t const *type_ast, unsigned gib_flags );
  *
  * @sa c_typedef_find_sname()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_typedef_t const* c_typedef_find_name( char const *name );
 
 /**
@@ -114,7 +114,7 @@ c_typedef_t const* c_typedef_find_name( char const *name );
  *
  * @sa c_typedef_find_name()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname );
 
 /**
@@ -130,7 +130,7 @@ void c_typedef_init( void );
  * @return Returns a pointer to the \ref c_typedef the visitor stopped on or
  * NULL.
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,
                                     void *v_data );
 

@@ -54,7 +54,7 @@ static void print_help_where( void );
  * @param s The string to check.
  * @return Returns `true` only if \a s is a title string.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool is_title( char const *s ) {
   assert( s != NULL );
   if ( isalpha( *s ) ) {
@@ -109,7 +109,7 @@ static void print_h( char const *line ) {
         case '|':
         case '}':
           SGR_START_COLOR( cdecl_fout, help_punct );
-          PJL_FALLTHROUGH;
+          FALLTHROUGH;
         case '>':                       // ends non-terminal
           FPUTC( *s, cdecl_fout );
           SGR_END_COLOR( cdecl_fout );

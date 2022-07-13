@@ -70,7 +70,7 @@ static void g_print_postfix( g_state_t*, c_ast_t const* );
 static void g_print_qual_name( g_state_t*, c_ast_t const* );
 static void g_print_space_ast_name( g_state_t*, c_ast_t const* );
 
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool g_space_before_ptr_ref( g_state_t const*, c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -196,7 +196,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       // before the name, so lie and set the "space" flag.
       //
       g->printed_space = true;
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_FUNCTION:
     case K_OPERATOR:
@@ -249,7 +249,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         if ( true_clear( &is_noexcept ) )
           is_throw = true;
       }
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_ARRAY:
     case K_APPLE_BLOCK:
@@ -316,7 +316,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       //      enum C e;                 // not: enum class C e;
       //
       type.btids &= c_tid_compl( TB_STRUCT | TB_CLASS );
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_CLASS_STRUCT_UNION: {
       if ( opt_east_const ) {
@@ -921,7 +921,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
  * @param ast The current AST node.
  * @return Returns `true` only if we should print a space after type type.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
   if ( g->skip_name_for_using )
     return false;

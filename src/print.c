@@ -63,7 +63,7 @@ static unsigned const     TERM_COLUMNS_DEFAULT = 80;
 // local functions
 static void               print_input_line( size_t*, size_t );
 
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static size_t             token_len( char const*, size_t, size_t );
 
 // extern variables
@@ -80,7 +80,7 @@ print_params_t            print_params;
  * @return Returns a pointer to the next "Did you mean" suggestion string or
  * NULL if none.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* fprint_list_dym_gets( void const **ppelt ) {
   did_you_mean_t const *const dym = *ppelt;
   if ( dym->token == NULL )
@@ -102,7 +102,7 @@ static char const* fprint_list_dym_gets( void const **ppelt ) {
  * @param input_line_len A pointer to receive the length of the input line.
  * @return Returns the input line.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* get_input_line( size_t *input_line_len ) {
   char const *input_line = lexer_input_line( input_line_len );
   assert( input_line != NULL );
@@ -131,7 +131,7 @@ static char const* get_input_line( size_t *input_line_len ) {
  * @param error_column The zero-based column of the offending token.
  * @return Returns \a error_column, adjusted (if necessary).
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static size_t print_caret( size_t error_column ) {
   if ( error_column >= print_params.inserted_len )
     error_column -= print_params.inserted_len;
@@ -279,7 +279,7 @@ static void print_input_line( size_t *error_column, size_t term_columns ) {
  * @param token_offset The offset of the start of the token.
  * @return Returns the length of the token.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static size_t token_len( char const *s, size_t s_len, size_t token_offset ) {
   assert( s != NULL );
 

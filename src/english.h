@@ -66,7 +66,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout );
  *
  * @sa c_cast_gibberish()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_cast_english( c_cast_kind_t kind );
 
 /**

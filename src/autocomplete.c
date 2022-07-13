@@ -68,7 +68,7 @@ typedef struct ac_keyword ac_keyword_t;
 static char*  command_generator( char const*, int );
 static char*  keyword_generator( char const*, int );
 
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool   is_command( char const*, char const*, size_t );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -79,7 +79,7 @@ static bool   is_command( char const*, char const*, size_t );
  *
  * @return Returns a pointer to said array.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static ac_keyword_t const* init_ac_keywords( void ) {
   size_t n = 1;                         // for terminating empty element
 
@@ -121,7 +121,7 @@ static ac_keyword_t const* init_ac_keywords( void ) {
  *
  * @return Returns a pointer to said array.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* const* init_set_options( void ) {
   size_t n =
       1                                 // for "options"
@@ -146,7 +146,7 @@ static char const* const* init_set_options( void ) {
 
       case SET_OPTION_TOGGLE:
         *p++ = CONST_CAST( char*, opt->name );
-        PJL_FALLTHROUGH;
+        FALLTHROUGH;
 
       case SET_OPTION_NEG_ONLY:
         *p = free_later(
@@ -178,7 +178,7 @@ static char const* const* init_set_options( void ) {
  *
  * @sa is_command()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool is_cast_command( char const *s, size_t s_len ) {
   if ( is_command( L_CAST, s, s_len ) )
     return true;
@@ -200,7 +200,7 @@ static bool is_cast_command( char const *s, size_t s_len ) {
  *
  * @sa is_cast_command()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool is_command( char const *command, char const *s, size_t s_len ) {
   assert( command != NULL );
   assert( s != NULL );
@@ -230,7 +230,7 @@ static bool is_command( char const *command, char const *s, size_t s_len ) {
  * @param command The **cdecl** command to check.
  * @return Returns `true` only if \a command is an English command.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool is_english_command( char const *command ) {
   assert( command != NULL );
   return  command == L_CAST     ||

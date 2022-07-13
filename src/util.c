@@ -77,7 +77,7 @@ static slist_t free_later_list;         ///< List of stuff to free later.
  * @param capname The name of the terminal capability.
  * @return Returns said value or 0 if it could not be determined.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static unsigned check_tigetnum( char const *capname ) {
   int const num = tigetnum( CONST_CAST(char*, capname) );
   if ( unlikely( num < 0 ) ) {
@@ -97,7 +97,7 @@ static unsigned check_tigetnum( char const *capname ) {
  * On return, it is incremented by the size of the element.
  * @return Returns said string or NULL if none.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* fprint_list_apc_gets( void const **ppelt ) {
   char const *const *const ps = *ppelt;
   *ppelt = ps + 1;

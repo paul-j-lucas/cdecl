@@ -490,7 +490,7 @@ struct show_type_info {
 typedef struct show_type_info show_type_info_t;
 
 // local functions
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_free_if_placeholder( c_ast_t* );
 
 // local variables
@@ -524,7 +524,7 @@ static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
  *
  * @sa c_ast_pair_new_gc()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline c_ast_t* c_ast_new_gc( c_ast_kind_t kind, c_loc_t const *loc ) {
   return c_ast_new( kind, in_attr.ast_depth, loc, &gc_ast_list );
 }
@@ -546,7 +546,7 @@ static inline void gibberish_to_english( void ) {
  * @sa ia_type_ast_pop()
  * @sa ia_type_ast_push()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline c_ast_t* ia_type_ast_peek( void ) {
   return slist_front( &in_attr.type_ast_stack );
 }
@@ -560,7 +560,7 @@ static inline c_ast_t* ia_type_ast_peek( void ) {
  * @sa ia_type_ast_peek()
  * @sa ia_type_ast_push()
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 static inline c_ast_t* ia_type_ast_pop( void ) {
   return slist_pop_front( &in_attr.type_ast_stack );
 }
@@ -583,7 +583,7 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
  *
  * @return Returns said string or NULL if \ref lexer_token is the empty string.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline char const* printable_token( void ) {
   switch ( lexer_token[0] ) {
     case '\0': return NULL;
@@ -612,7 +612,7 @@ static inline void sti_cleanup( show_type_info_t *sti ) {
  * @return Returns `true` only if **cdecl** has been initialized and \ref
  * opt_lang is _not_ among \a lang_ids.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline bool unsupported( c_lang_id_t lang_ids ) {
   return cdecl_initialized && !opt_lang_is_any( lang_ids );
 }
@@ -629,7 +629,7 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
  * existing type; `false` if a different type already exists having the same
  * name.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
   assert( type_ast != NULL );
 
@@ -716,7 +716,7 @@ static bool c_ast_free_if_placeholder( c_ast_t *ast ) {
  * @param ast The AST to check.
  * @return Returns `true` only upon success.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_ast_is_typename_ok( c_ast_t const *ast ) {
   c_ast_t const *const raw_ast = c_ast_untypedef( ast );
   if ( c_sname_count( &raw_ast->sname ) < 2 ) {
@@ -811,7 +811,7 @@ static void fl_elaborate_error( char const *file, int line,
  * @return Returns `true` only if the type currently being declared is either
  * not nested or the current language is C++.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool fl_is_nested_type_ok( char const *file, int line,
                                   c_loc_t const *type_loc ) {
   assert( type_loc != NULL );
@@ -943,7 +943,7 @@ static void ia_free( void ) {
  * @param decl_ast The declaration AST.
  * @return Returns the joined AST on success or NULL on error.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t const* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
@@ -1081,7 +1081,7 @@ static void show_type( c_typedef_t const *tdef, unsigned flags ) {
  * which `typedef`s to print.
  * @return Always returns `false`.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
   assert( tdef != NULL );
   assert( data != NULL );

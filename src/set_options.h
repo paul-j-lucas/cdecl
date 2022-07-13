@@ -103,7 +103,7 @@ struct set_option {
  * @param opt_value_loc The location of \a opt_value if not NULL.
  * @return Returns `true` only upon success.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc );
 
@@ -119,7 +119,7 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
  *
  * @sa #FOREACH_SET_OPTION()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 set_option_t const* set_option_next( set_option_t const *opt );
 
 ///////////////////////////////////////////////////////////////////////////////

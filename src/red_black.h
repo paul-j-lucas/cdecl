@@ -234,7 +234,7 @@ void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn );
  *
  * @sa rb_tree_insert()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
 
 /**
@@ -243,7 +243,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
  * @param tree A pointer to the red-black tree to check.
  * @return Returns `true` only if \a tree is empty.
  */
-RED_BLACK_H_INLINE PJL_WARN_UNUSED_RESULT
+RED_BLACK_H_INLINE NODISCARD
 bool rb_tree_empty( rb_tree_t const *tree ) {
   return tree->fake_root.child[0] == &tree->nil;
 }
@@ -261,7 +261,7 @@ bool rb_tree_empty( rb_tree_t const *tree ) {
  * would change the node's position within the tree according to its \ref
  * rb_tree::cmp_fn "cmp_fn".
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data );
 
 /**
@@ -291,7 +291,7 @@ void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn );
  *
  * @sa rb_tree_delete()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data );
 
 /**
@@ -308,7 +308,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data );
  * would change the node's position within the tree according to its \ref
  * rb_tree::cmp_fn "cmp_fn".
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
                           void *v_data );
 

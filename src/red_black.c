@@ -149,7 +149,7 @@ typedef enum rb_dir rb_dir_t;
  *
  * @sa is_red()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline bool is_black( rb_node_t const *node ) {
   return node->color == RB_BLACK;
 }
@@ -164,7 +164,7 @@ static inline bool is_black( rb_node_t const *node ) {
  *
  * @sa child_dir()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline bool is_dir_child( rb_node_t const *node, rb_dir_t dir ) {
   return node == node->parent->child[dir];
 }
@@ -177,7 +177,7 @@ static inline bool is_dir_child( rb_node_t const *node, rb_dir_t dir ) {
  *
  * @sa is_dir_child()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline rb_dir_t child_dir( rb_node_t const *node ) {
   return is_dir_child( node, RB_L ) ? RB_L : RB_R;
 }
@@ -189,7 +189,7 @@ static inline rb_dir_t child_dir( rb_node_t const *node ) {
  * @param node A pointer to the rb_node to check.
  * @return Returns `true` only if \a node is full.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline bool is_node_full( rb_tree_t const *tree,
                                  rb_node_t const *node ) {
   return node->child[RB_L] != RB_NIL(tree) && node->child[RB_R] != RB_NIL(tree);
@@ -203,7 +203,7 @@ static inline bool is_node_full( rb_tree_t const *tree,
  *
  * @sa is_black()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline bool is_red( rb_node_t const *node ) {
   return node->color == RB_RED;
 }
@@ -238,7 +238,7 @@ static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
  * @param node A pointer to the rb_node to get the next node from.
  * @return Returns said node.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );
@@ -411,7 +411,7 @@ static void rb_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
  * @return Returns a pointer to the rb_node at which visiting stopped or NULL
  * if the entire sub-tree was visited.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
                                  rb_visit_fn_t visit_fn, void *v_data ) {
   assert( tree != NULL );

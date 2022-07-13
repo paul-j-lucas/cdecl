@@ -82,7 +82,7 @@ static double const SIMILAR_ENOUGH_PERCENT = .40;
  * @param s The null-terminated string to duplicate.
  * @return Returns a copy of \a s prefixed by \a prefix.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char* check_prefix_strdup( char const *prefix, char const *s ) {
   assert( prefix != NULL );
   assert( s != NULL );
@@ -105,7 +105,7 @@ static char* check_prefix_strdup( char const *prefix, char const *s ) {
  * (or counted).
  * @return Returns said number of keywords.
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
   size_t count = 0;
   FOREACH_C_KEYWORD( k ) {
@@ -128,7 +128,7 @@ static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
  * pointer is incremented.
  * @return Returns said number of keywords.
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
   size_t count = 0;
   FOREACH_CDECL_KEYWORD( k ) {
@@ -154,7 +154,7 @@ static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
  * pointer is incremented.
  * @return Returns said number of commands.
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 static size_t copy_commands( did_you_mean_t **const pdym ) {
   size_t count = 0;
   FOREACH_CDECL_COMMAND( c ) {
@@ -176,7 +176,7 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
  * pointer is incremented.
  * @return Returns said number of options.
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 static size_t copy_cli_options( did_you_mean_t **pdym ) {
   size_t count = 0;
   FOREACH_CLI_OPTION( opt ) {
@@ -196,7 +196,7 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
  * pointer is incremented.
  * @return Returns said number of options.
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 static size_t copy_set_options( did_you_mean_t **const pdym ) {
   size_t count = 0;
   FOREACH_SET_OPTION( opt ) {
@@ -230,7 +230,7 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
  * @param data A pointer to a \ref copy_typedef_visit_data.
  * @return Always returns `false`.
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
   assert( tdef != NULL );
   assert( data != NULL );
@@ -254,7 +254,7 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
  * pointer is incremented.
  * @return Returns said number of `typedef`s.
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 static size_t copy_typedefs( did_you_mean_t **const pdym ) {
   copy_typedef_visit_data_t ctvd = { pdym, 0 };
   c_typedef_visit( &copy_typedef_visitor, &ctvd );
@@ -269,7 +269,7 @@ static size_t copy_typedefs( did_you_mean_t **const pdym ) {
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_dym is
  * less than, equal to, or greater than \a j_dym, respectively.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
   int const cmp =
     STATIC_CAST( int, i_dym->dam_lev_dist ) -
@@ -312,7 +312,7 @@ static void dym_free_tokens( did_you_mean_t const *dym ) {
  * @param target_len The length of the target string.
  * @return Returns `true` only if \a dam_lev_dist is "similar enough."
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool is_similar_enough( size_t dam_lev_dist, double percent,
                                size_t target_len ) {
   assert( percent > 0 && percent < 1 );

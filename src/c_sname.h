@@ -133,7 +133,7 @@ struct c_scope_data {
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
  * less than, equal to, or greater than \a j_data, respectively.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data );
 
 /**
@@ -145,7 +145,7 @@ int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data );
  *
  * @sa c_scope_data_free()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_scope_data_t* c_scope_data_dup( c_scope_data_t const *data );
 
 /**
@@ -189,7 +189,7 @@ void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
  * @param sname_loc The location of \a sname.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc );
 
 /**
@@ -213,7 +213,7 @@ void c_sname_cleanup( c_sname_t *sname );
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_sname is
  * less than, equal to, or greater than \a j_sname, respectively.
  */
-C_SNAME_H_INLINE PJL_WARN_UNUSED_RESULT
+C_SNAME_H_INLINE NODISCARD
 int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
   return slist_cmp( i_sname, j_sname, (slist_cmp_fn_t)&c_scope_data_cmp );
 }
@@ -227,7 +227,7 @@ int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
  * @note This is named "count" rather than "len" to avoid misinterpretation
  * that "len" would be the total length of the strings and `::` separators.
  */
-C_SNAME_H_INLINE PJL_WARN_UNUSED_RESULT
+C_SNAME_H_INLINE NODISCARD
 size_t c_sname_count( c_sname_t const *sname ) {
   return slist_len( sname );
 }
@@ -239,7 +239,7 @@ size_t c_sname_count( c_sname_t const *sname ) {
  * @param sname The scoped name to duplicate.
  * @return Returns a duplicate of \a sname.
  */
-C_SNAME_H_INLINE PJL_WARN_UNUSED_RESULT
+C_SNAME_H_INLINE NODISCARD
 c_sname_t c_sname_dup( c_sname_t const *sname ) {
   return slist_dup( sname, -1, (slist_dup_fn_t)&c_scope_data_dup );
 }
@@ -250,7 +250,7 @@ c_sname_t c_sname_dup( c_sname_t const *sname ) {
  * @param sname The scoped name to check.
  * @return Returns `true` only if \a sname is empty.
  */
-C_SNAME_H_INLINE PJL_WARN_UNUSED_RESULT
+C_SNAME_H_INLINE NODISCARD
 bool c_sname_empty( c_sname_t const *sname ) {
   return slist_empty( sname );
 }
@@ -293,7 +293,7 @@ void c_sname_free( c_sname_t *sname );
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_sname_full_name( c_sname_t const *sname );
 
 /**
@@ -339,7 +339,7 @@ void c_sname_init_name( c_sname_t *sname, char *name ) {
  * @return Returns `true` only if \a sname has at least two names and the last
  * two names match.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_sname_is_ctor( c_sname_t const *sname );
 
 /**
@@ -365,7 +365,7 @@ void c_sname_list_cleanup( slist_t *list );
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name()
  */
-C_SNAME_H_INLINE PJL_WARN_UNUSED_RESULT
+C_SNAME_H_INLINE NODISCARD
 char const* c_sname_local_name( c_sname_t const *sname ) {
   if ( sname == NULL )
     return "";
@@ -384,7 +384,7 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
  * @sa c_sname_scope_type()
  * @sa c_sname_set_first_type()
  */
-C_SNAME_H_INLINE PJL_WARN_UNUSED_RESULT
+C_SNAME_H_INLINE NODISCARD
 c_type_t const* c_sname_first_type( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? &T_NONE : &c_scope_data( sname->head )->type;
 }
@@ -400,7 +400,7 @@ c_type_t const* c_sname_first_type( c_sname_t const *sname ) {
  * @sa c_sname_scope_type()
  * @sa c_sname_set_local_type()
  */
-C_SNAME_H_INLINE PJL_WARN_UNUSED_RESULT
+C_SNAME_H_INLINE NODISCARD
 c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? &T_NONE : &c_scope_data( sname->tail )->type;
 }
@@ -427,7 +427,7 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
  * @param sglob The scoped glob to match.
  * @return Returns `true` only if \a sname matches \a sglob.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
 
 /**
@@ -441,7 +441,7 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
  * @sa c_sname_full_name()
  * @sa c_sname_scope_name()
  */
-C_SNAME_H_INLINE PJL_WARN_UNUSED_RESULT
+C_SNAME_H_INLINE NODISCARD
 char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
   c_scope_data_t const *const data = slist_atr( sname, roffset );
   return data != NULL ? data->name : "";
@@ -456,7 +456,7 @@ char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
  *
  * @sa c_sname_parse_dtor()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_sname_parse( char const *s, c_sname_t *sname );
 
 /**
@@ -469,7 +469,7 @@ bool c_sname_parse( char const *s, c_sname_t *sname );
  *
  * @sa c_sname_parse()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_sname_parse_dtor( char const *s, c_sname_t *sname );
 
 /**
@@ -502,7 +502,7 @@ void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
  * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_sname_scope_name( c_sname_t const *sname );
 
 /**
@@ -516,7 +516,7 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  * @sa c_sname_local_type()
  * @sa c_sname_set_scope_type()
  */
-C_SNAME_H_INLINE PJL_WARN_UNUSED_RESULT
+C_SNAME_H_INLINE NODISCARD
 c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
   c_scope_data_t const *const data = slist_atr( sname, 1 );
   return data != NULL ? &data->type : &T_NONE;

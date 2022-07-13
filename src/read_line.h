@@ -58,7 +58,7 @@
  * (a line after ones ending with `\`).  If NULL, does not read interactively.
  * @return Returns `false` only if encountered EOF.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
                        char const *const prompts[static const 2] );
 

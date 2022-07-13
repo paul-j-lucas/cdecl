@@ -454,7 +454,7 @@ void c_ast_cleanup( void );
  * @sa c_ast_free()
  * @sa c_ast_new()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list );
 
 /**
@@ -465,7 +465,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list );
  * @return Returns `true` only if the two ASTs are equal _except_ for their
  * names.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast );
 
 /**
@@ -496,7 +496,7 @@ void c_ast_free( c_ast_t *ast );
  * @sa c_ast_is_parent()
  * @sa c_ast_is_referrer()
  */
-C_AST_H_INLINE PJL_WARN_UNUSED_RESULT
+C_AST_H_INLINE NODISCARD
 bool c_ast_is_orphan( c_ast_t const *ast ) {
   return ast->parent_ast == NULL || ast->parent_ast->as.parent.of_ast != ast;
 }
@@ -510,7 +510,7 @@ bool c_ast_is_orphan( c_ast_t const *ast ) {
  * @sa c_ast_is_orphan()
  * @sa c_ast_is_referrer()
  */
-C_AST_H_INLINE PJL_WARN_UNUSED_RESULT
+C_AST_H_INLINE NODISCARD
 bool c_ast_is_parent( c_ast_t const *ast ) {
   return ast != NULL && (ast->kind & K_ANY_PARENT) != 0;
 }
@@ -524,7 +524,7 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
  * @sa c_ast_is_orphan()
  * @sa c_ast_is_parent()
  */
-C_AST_H_INLINE PJL_WARN_UNUSED_RESULT
+C_AST_H_INLINE NODISCARD
 bool c_ast_is_referrer( c_ast_t const *ast ) {
   return ast != NULL && (ast->kind & K_ANY_REFERRER) != 0;
 }
@@ -551,7 +551,7 @@ void c_ast_list_cleanup( c_ast_list_t *list );
  * @sa c_ast_dup()
  * @sa c_ast_free()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
                     c_ast_list_t *ast_list );
 
@@ -566,7 +566,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
  * @sa #FOREACH_AST_FUNC_PARAM()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
-C_AST_H_INLINE PJL_WARN_UNUSED_RESULT
+C_AST_H_INLINE NODISCARD
 c_param_t const* c_ast_params( c_ast_t const *ast ) {
   return ast->as.func.param_ast_list.head;
 }
@@ -582,7 +582,7 @@ c_param_t const* c_ast_params( c_ast_t const *ast ) {
  * @sa #FOREACH_AST_FUNC_PARAM()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
-C_AST_H_INLINE PJL_WARN_UNUSED_RESULT
+C_AST_H_INLINE NODISCARD
 size_t c_ast_params_count( c_ast_t const *ast ) {
   return slist_len( &ast->as.func.param_ast_list );
 }
@@ -609,7 +609,7 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
  * @note Function-like parameters are _not_ traversed into.  They're considered
  * distinct ASTs.
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
                       c_ast_visit_fn_t visit_fn, c_ast_visit_data_t avd );
 
@@ -624,7 +624,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
  * @sa #FOREACH_AST_FUNC_PARAM()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
-C_AST_H_INLINE PJL_WARN_UNUSED_RESULT
+C_AST_H_INLINE NODISCARD
 c_ast_t const* c_param_ast( c_param_t const *param ) {
   return param->data;
 }

@@ -76,7 +76,7 @@
  *
  * @sa #FOREACH_CLI_OPTION()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 struct option const* cli_option_next( struct option const *opt );
 
 /**

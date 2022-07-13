@@ -587,7 +587,7 @@ _GL_INLINE_HEADER_BEGIN
  * If \a path_name consists entirely of `/` characters, a pointer to the string
  * `/` is returned.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* base_name( char const *path_name );
 
 /**
@@ -601,7 +601,7 @@ char const* base_name( char const *path_name );
  * @sa #MALLOC()
  * @sa #REALLOC()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 void* check_realloc( void *p, size_t size );
 
 /**
@@ -614,7 +614,7 @@ void* check_realloc( void *p, size_t size );
  * @sa check_strdup_tolower()
  * @sa check_strndup()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char* check_strdup( char const *s );
 
 /**
@@ -628,7 +628,7 @@ char* check_strdup( char const *s );
  * @sa check_strdup()
  * @sa check_strndup()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char* check_strdup_tolower( char const *s );
 
 /**
@@ -642,7 +642,7 @@ char* check_strdup_tolower( char const *s );
  * @sa check_strdup()
  * @sa check_strdup_tolower()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char* check_strndup( char const *s, size_t n );
 
 /**
@@ -655,7 +655,7 @@ char* check_strndup( char const *s, size_t n );
  * @sa true_clear()
  * @sa true_or_set()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
 }
@@ -668,7 +668,7 @@ bool false_set( bool *flag ) {
  *
  * @sa path_is_file()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool fd_is_file( int fd );
 
 #ifndef HAVE_FMEMOPEN
@@ -683,7 +683,7 @@ bool fd_is_file( int fd );
  * @return Returns a `FILE*` containing the contents of \a buf or NULL upon
  * error.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 FILE* fmemopen( void *buf, size_t size, char const *mode );
 #endif /* HAVE_FMEMOPEN */
 
@@ -732,7 +732,7 @@ void fputs_sp( char const *s, FILE *out );
  *
  * @sa free_now()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 void* free_later( void *p );
 
 /**
@@ -759,7 +759,7 @@ void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines );
  *
  * @return Returns said directory or NULL if it is not obtainable.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* home_dir( void );
 
 /**
@@ -775,7 +775,7 @@ char const* home_dir( void );
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool is_01_bit( uint64_t n ) {
   return (n & (n - 1)) == 0;
 }
@@ -796,7 +796,7 @@ bool is_01_bit( uint64_t n ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool is_0n_bit_only_in_set( uint64_t n, uint64_t set ) {
   return (n & set) == n;
 }
@@ -814,7 +814,7 @@ bool is_0n_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool is_1_bit( uint64_t n ) {
   return n != 0 && is_01_bit( n );
 }
@@ -835,7 +835,7 @@ bool is_1_bit( uint64_t n ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
   return is_1_bit( n & set );
 }
@@ -854,7 +854,7 @@ bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool is_1_bit_only_in_set( uint64_t n, uint64_t set ) {
   return is_1_bit( n ) && (n & set) != 0;
 }
@@ -874,7 +874,7 @@ bool is_1_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool is_01_bit_only_in_set( uint64_t n, uint64_t set ) {
   return n == 0 || is_1_bit_only_in_set( n, set );
 }
@@ -895,7 +895,7 @@ bool is_01_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_in_set()
  * @sa is_1_bit_only_in_set()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
   return n != 0 && is_0n_bit_only_in_set( n, set );
 }
@@ -907,7 +907,7 @@ bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @return Returns `true` only if \a c is either an alphanumeric or `_`
  * character.
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool is_ident( char c ) {
   return isalnum( c ) || c == '_';
 }
@@ -921,7 +921,7 @@ bool is_ident( char c ) {
  *
  * @sa ms_bit1_32()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 uint32_t ls_bit1_32( uint32_t n );
 
 /**
@@ -933,7 +933,7 @@ uint32_t ls_bit1_32( uint32_t n );
  *
  * @sa ls_bit1_32()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 uint32_t ms_bit1_32( uint32_t n );
 
 /**
@@ -944,7 +944,7 @@ uint32_t ms_bit1_32( uint32_t n );
  * character only if an identifier was parsed or NULL if an identifier was not
  * parsed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* parse_identifier( char const *s );
 
 /**
@@ -984,7 +984,7 @@ void perror_exit_if( bool expr, int status ) {
  *
  * @sa null_if_empty()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool str_is_empty( char const *s ) {
   SKIP_WS( s );
   return *s == '\0';
@@ -1000,7 +1000,7 @@ bool str_is_empty( char const *s ) {
  *
  * @sa str_is_empty()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 char const* null_if_empty( char const *s ) {
   return s != NULL && str_is_empty( s ) ? NULL : s;
 }
@@ -1013,7 +1013,7 @@ char const* null_if_empty( char const *s ) {
  *
  * @sa fd_is_file()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool path_is_file( char const *path );
 
 /**
@@ -1044,7 +1044,7 @@ void str_rtrim_len( char const *s, size_t *s_len );
  * @sa false_set()
  * @sa true_clear()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool true_or_set( bool *flag ) {
   return *flag || !(*flag = true);
 }
@@ -1059,7 +1059,7 @@ bool true_or_set( bool *flag ) {
  * @sa false_set()
  * @sa true_or_set()
  */
-C_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_UTIL_H_INLINE NODISCARD
 bool true_clear( bool *flag ) {
   return *flag && !(*flag = false);
 }

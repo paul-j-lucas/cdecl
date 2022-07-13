@@ -98,7 +98,7 @@ extern int          yydebug;            ///< Bison variable for debugging.
  * @sa parse_explicit_int()
  * @sa print_explicit_int()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool any_explicit_int( void );
 
 /**
@@ -112,7 +112,7 @@ bool any_explicit_int( void );
  * @sa parse_explicit_int()
  * @sa print_explicit_int()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool is_explicit_int( c_tid_t btids );
 
 /**
@@ -132,7 +132,7 @@ bool is_explicit_int( c_tid_t btids );
  *
  * @sa print_explicit_ecsu()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool parse_explicit_ecsu( char const *ecsu_format );
 
 /**
@@ -156,7 +156,7 @@ bool parse_explicit_ecsu( char const *ecsu_format );
  * @sa is_explicit_int()
  * @sa print_explicit_int()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool parse_explicit_int( char const *ei_format );
 
 /**

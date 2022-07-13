@@ -234,7 +234,7 @@ void print_loc( c_loc_t const *loc );
  *
  * @sa print_hint()
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
 
 /**

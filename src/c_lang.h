@@ -805,7 +805,7 @@ struct c_lang_lit {
  * @sa c_lang_newer()
  * @sa c_lang_newest()
  */
-C_LANG_H_INLINE PJL_WARN_UNUSED_RESULT
+C_LANG_H_INLINE NODISCARD
 c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
   lang_id &= ~LANGX_MASK;
   assert( is_1_bit( lang_id ) );
@@ -823,7 +823,7 @@ c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
  *
  * @sa c_lang_name()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_lang_coarse_name( c_lang_id_t lang_ids );
 
 /**
@@ -834,7 +834,7 @@ char const* c_lang_coarse_name( c_lang_id_t lang_ids );
  * @return Returns said language or #LANG_NONE if \a name doesn't correspond to
  * any supported language.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_lang_id_t c_lang_find( char const *name );
 
 /**
@@ -846,7 +846,7 @@ c_lang_id_t c_lang_find( char const *name );
  * @sa c_lang_is_cpp()
  * @sa c_lang_is_one()
  */
-C_LANG_H_INLINE PJL_WARN_UNUSED_RESULT
+C_LANG_H_INLINE NODISCARD
 bool c_lang_is_c( c_lang_id_t lang_ids ) {
   return (lang_ids & LANG_MASK_C) != LANG_NONE;
 }
@@ -860,7 +860,7 @@ bool c_lang_is_c( c_lang_id_t lang_ids ) {
  * @sa c_lang_is_c()
  * @sa c_lang_is_one()
  */
-C_LANG_H_INLINE PJL_WARN_UNUSED_RESULT
+C_LANG_H_INLINE NODISCARD
 bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
   return (lang_ids & LANG_MASK_CPP) != LANG_NONE;
 }
@@ -880,7 +880,7 @@ bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
  * @sa c_lang_is_c()
  * @sa c_lang_is_cpp()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids );
 
 /**
@@ -893,7 +893,7 @@ c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids );
  * @return Returns said literal or NULL if there is no appropriate literal for
  * the current language.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_lang_literal( c_lang_lit_t const *lang_lit );
 
 /**
@@ -905,7 +905,7 @@ char const* c_lang_literal( c_lang_lit_t const *lang_lit );
  *
  * @sa c_lang_coarse_name()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_lang_name( c_lang_id_t lang_id );
 
 /**
@@ -920,7 +920,7 @@ char const* c_lang_name( c_lang_id_t lang_id );
  * @sa c_lang_newest()
  * @sa c_lang_oldest()
  */
-C_LANG_H_INLINE PJL_WARN_UNUSED_RESULT
+C_LANG_H_INLINE NODISCARD
 c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
   lang_id &= ~LANGX_MASK;
   assert( is_1_bit( lang_id ) );
@@ -937,7 +937,7 @@ c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
  * @sa c_lang_newer()
  * @sa c_lang_oldest()
  */
-C_LANG_H_INLINE PJL_WARN_UNUSED_RESULT
+C_LANG_H_INLINE NODISCARD
 c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
   return ms_bit1_32( lang_ids & ~LANGX_MASK ) | (lang_ids & LANGX_MASK);
 }
@@ -951,7 +951,7 @@ c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
  *
  * @sa #FOREACH_LANG()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_lang_t const* c_lang_next( c_lang_t const *lang );
 
 /**
@@ -964,7 +964,7 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
  * @sa c_lang_newer()
  * @sa c_lang_newest()
  */
-C_LANG_H_INLINE PJL_WARN_UNUSED_RESULT
+C_LANG_H_INLINE NODISCARD
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
   return ls_bit1_32( lang_ids & ~LANGX_MASK ) | (lang_ids & LANGX_MASK);
 }
@@ -1005,7 +1005,7 @@ void c_lang_set( c_lang_id_t lang_id );
  *
  * @sa #C_LANG_WHICH()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_lang_which( c_lang_id_t lang_ids );
 
 /**
@@ -1027,7 +1027,7 @@ char const* c_lang_which( c_lang_id_t lang_ids );
  *
  * @sa #OPT_LANG_IS()
  */
-C_LANG_H_INLINE PJL_WARN_UNUSED_RESULT
+C_LANG_H_INLINE NODISCARD
 bool opt_lang_is_any( c_lang_id_t lang_ids ) {
   return (opt_lang & lang_ids) != LANG_NONE;
 }

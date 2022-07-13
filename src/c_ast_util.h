@@ -62,7 +62,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param of_ast The AST to become the `of_ast` of \a array_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast );
 
 /**
@@ -74,7 +74,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast );
  * @param ret_ast The AST to become the `ret_ast` of \a func_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast );
 
 /**
@@ -86,7 +86,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast );
  * @return Returns a pointer to an AST node having one of \a kinds or NULL if
  * none.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_ast_kind_t kinds );
 
@@ -97,7 +97,7 @@ c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
  * @param dir The direction to search.
  * @return Returns said name or NULL if none.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
 
 /**
@@ -109,7 +109,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
  * @return Returns a pointer to an AST node having one of \a type or NULL if
  * none.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_type_t const *type );
 
@@ -122,7 +122,7 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
  * types (no storage classes, qualfiers, or attributes).
  * @return Returns `true` only if the type of \a ast is one of \a btids.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids );
 
 /**
@@ -139,7 +139,7 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids );
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_ref_to_type_any()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds );
 
 /**
@@ -157,7 +157,7 @@ bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds );
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_ref_to_type_any()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
@@ -186,7 +186,7 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_ref_to_type_any()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
                                c_type_t const *type );
 
@@ -203,7 +203,7 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_ref_to_type_any()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname );
 
 /**
@@ -221,7 +221,7 @@ bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname );
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_ref_to_type_any()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_ast_is_ref_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds );
 
 /**
@@ -242,7 +242,7 @@ bool c_ast_is_ref_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds );
  * @sa c_ast_is_tid_any()
  * @sa c_ast_is_tid_any_qual()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
@@ -262,7 +262,7 @@ c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  * @sa c_ast_is_ref_to_kind_any()
  * @sa c_ast_is_ref_to_tid_any()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
                                          c_type_t const *type );
 
@@ -283,7 +283,7 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
  * @sa c_ast_is_ref_to_type_any()
  * @sa c_ast_is_tid_any()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
                                       c_tid_t *qual_stids );
 
@@ -294,7 +294,7 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
  * @return Returns one of \ref C_OP_MEMBER, \ref C_OP_NON_MEMBER, or \ref
  * C_OP_UNSPECIFIED.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 unsigned c_ast_oper_overload( c_ast_t const *ast );
 
 /**
@@ -307,7 +307,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast );
  * @param decl_ast The AST of a declaration; may be NULL.
  * @return Returns the final AST.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
@@ -320,7 +320,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
  *
  * @sa c_ast_unpointer()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list );
 
 /**
@@ -329,7 +329,7 @@ c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list );
  * @param ast The AST node to start from.
  * @return Returns said AST node.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t* c_ast_root( c_ast_t *ast );
 
 /**
@@ -339,7 +339,7 @@ c_ast_t* c_ast_root( c_ast_t *ast );
  * @param ast The AST (or one of its child nodes) to take from.
  * @return Returns said name or en empty name.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_sname_t c_ast_take_name( c_ast_t *ast );
 
 /**
@@ -362,7 +362,7 @@ c_sname_t c_ast_take_name( c_ast_t *ast );
  * @param type A type where each type ID is the bitwise-or of type IDs to find.
  * @return Returns the taken type.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
 
 /**
@@ -382,7 +382,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  * @sa c_ast_untypedef()
  * @sa c_ast_untypedef_qual()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
 /**
@@ -400,7 +400,7 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * @sa c_ast_untypedef()
  * @sa c_ast_untypedef_qual()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
 /**
@@ -418,7 +418,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * @sa c_ast_untypedef()
  * @sa c_ast_untypedef_qual()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast );
 
 /**
@@ -434,7 +434,7 @@ c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast );
  * @sa c_ast_unrvalue_reference()
  * @sa c_ast_untypedef_qual()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 
 /**
@@ -452,7 +452,7 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
  * @sa c_ast_unrvalue_reference()
  * @sa c_ast_untypedef()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast, c_tid_t *qual_stids );
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -467,7 +467,7 @@ c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast, c_tid_t *qual_stids );
  *
  * @sa c_tid_is_size_t()
  */
-C_AST_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_AST_UTIL_H_INLINE NODISCARD
 bool c_ast_is_size_t( c_ast_t const *ast ) {
   return c_tid_is_size_t( c_ast_untypedef( ast )->type.btids );
 }
@@ -485,7 +485,7 @@ bool c_ast_is_size_t( c_ast_t const *ast ) {
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_tid_any_qual()
  */
-C_AST_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_AST_UTIL_H_INLINE NODISCARD
 c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   c_tid_t qual_stids;
   return c_ast_is_tid_any_qual( ast, tids, &qual_stids );
@@ -498,7 +498,7 @@ c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
  * @param kind The kind to check for.
  * @return Returns `true` only if the parent of \a ast is \a kind.
  */
-C_AST_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_AST_UTIL_H_INLINE NODISCARD
 bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
   return ast->parent_ast != NULL && ast->parent_ast->kind == kind;
 }
@@ -510,7 +510,7 @@ bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
  * @return Returns `true` only if \a ast should be printed as a `using`
  * declaration.
  */
-C_AST_UTIL_H_INLINE PJL_WARN_UNUSED_RESULT
+C_AST_UTIL_H_INLINE NODISCARD
 bool c_ast_print_as_using( c_ast_t const *ast ) {
   return  opt_using && OPT_LANG_IS( USING_DECLARATION ) &&
           c_tid_is_any( ast->type.stids, TS_TYPEDEF );

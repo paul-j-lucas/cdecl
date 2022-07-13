@@ -216,7 +216,7 @@ static void include_cleanup( void ) {
  * @return Returns a pointer to the corresponding cdecl_keyword or NULL if not
  * found or we're not currently supposed to find it.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline
 cdecl_keyword_t const* lexer_cdecl_keyword_find( char const *literal ) {
   cdecl_keyword_t const *const k = cdecl_keyword_find( literal );
@@ -235,7 +235,7 @@ cdecl_keyword_t const* lexer_cdecl_keyword_find( char const *literal ) {
  * @param buf_capacity The capacity of \a buf.
  * @return Returns the number of bytes read.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
   assert( buf != NULL );
   yy_size_t input_avail = input_len - input_sent;
@@ -286,7 +286,7 @@ static inline void newline( void ) {
  * @param base The integer base to use.
  * @return Returns the integer value.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline int parse_int( int base ) {
   //
   // We don't need to check for errors from strtol(3) here since the lexer
@@ -308,7 +308,7 @@ static inline int parse_int( int base ) {
  * @sa push_file()
  * @sa http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool pop_file( void ) {
   if ( slist_empty( &include_stack ) )
     return false;
@@ -378,7 +378,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
       print_error( path_loc, "out of memory\n" );
     case WRDE_BADVAL:                   // can't happen
     case WRDE_CMDSUB:                   // can't happen
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
     default:
       UNEXPECTED_INT_VALUE( rv_we );
     // LCOV_EXCL_STOP

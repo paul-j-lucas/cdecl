@@ -46,7 +46,7 @@
  * @sa [Damerau–Levenshtein distance](https://en.wikipedia.org/wiki/Damerau–Levenshtein_distance)
  * @sa [Damerau–Levenshtein Edit Distance Explained](https://www.lemoda.net/text-fuzzy/damerau-levenshtein/)
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 size_t dam_lev_dist( char const *source, char const *target );
 
 ///////////////////////////////////////////////////////////////////////////////

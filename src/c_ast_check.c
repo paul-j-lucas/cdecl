@@ -175,7 +175,7 @@ static bool const VISITOR_ERROR_FOUND     = true;
 static bool const VISITOR_ERROR_NOT_FOUND = false;
 
 // local functions
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool         c_ast_check_declaration( c_ast_t const* ),
                     c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_errors( c_ast_t const*, unsigned ),
@@ -195,7 +195,7 @@ static bool         c_ast_check_declaration( c_ast_t const* ),
 static void         c_ast_warn_name( c_ast_t const* );
 static void         c_sname_warn( c_sname_t const*, c_loc_t const* );
 
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_lang_id_t  is_reserved_name( char const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -208,7 +208,7 @@ static c_lang_id_t  is_reserved_name( char const* );
  * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         c_ast_check_fn_t check_fn,
                                         unsigned flags ) {
@@ -224,7 +224,7 @@ static inline bool c_ast_check_visitor( c_ast_t const *ast,
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast has the `register` storage class.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline bool c_ast_is_register( c_ast_t const *ast ) {
   return c_tid_is_any( ast->type.stids, TS_REGISTER );
 }
@@ -235,7 +235,7 @@ static inline bool c_ast_is_register( c_ast_t const *ast ) {
  * @param n A quantity.
  * @return Returns the empty string only if \a n == 1; otherwise returns `"s"`.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline char const* plural_s( uint64_t n ) {
   return n == 1 ? "" : "s";
 }
@@ -248,7 +248,7 @@ static inline char const* plural_s( uint64_t n ) {
  * @param ast The AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_alignas( c_ast_t const *ast ) {
   assert( ast != NULL );
 
@@ -309,7 +309,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
  * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
@@ -429,7 +429,7 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
  * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
@@ -497,7 +497,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
  *
  * @sa c_ast_check_declaration()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_cast( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->cast_kind != C_CAST_NONE );
@@ -583,7 +583,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
  * @param ast The constructor or destructor AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_CONSTRUCTOR | K_DESTRUCTOR ) );
@@ -628,7 +628,7 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
  *
  * @sa c_ast_check_cast()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_declaration( c_ast_t const *ast ) {
   assert( ast != NULL );
   if ( !c_ast_check_errors( ast, /*flags=*/0 ) )
@@ -647,7 +647,7 @@ static bool c_ast_check_declaration( c_ast_t const *ast ) {
  *
  * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_emc( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
@@ -669,7 +669,7 @@ static bool c_ast_check_emc( c_ast_t const *ast ) {
  * @param ast The `enum` AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_enum( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_ENUM );
@@ -710,7 +710,7 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
  * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_errors( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
   // check in major-to-minor error order
@@ -724,7 +724,7 @@ static bool c_ast_check_errors( c_ast_t const *ast, unsigned flags ) {
  * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
@@ -812,7 +812,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
             param_ast = c_param_ast( c_ast_params( ast ) );
             if ( c_ast_is_ref_to_class_sname( param_ast, &ast->sname ) )
               break;
-            PJL_FALLTHROUGH;
+            FALLTHROUGH;
           default:
             //
             // This isn't correct since copy constructors can have more than
@@ -912,7 +912,7 @@ only_special:
  * @param ast The main function AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_func_main( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_FUNCTION );
@@ -998,7 +998,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast is of either type.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
   c_ast_t const *const raw_ast = c_ast_untypedef( ast );
   switch ( raw_ast->kind ) {
@@ -1028,7 +1028,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
  * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_func_params( c_ast_t const *ast ) {
   if ( !OPT_LANG_IS( PROTOTYPES ) )
     return c_ast_check_func_params_knr( ast );
@@ -1187,7 +1187,7 @@ only_void:
  * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_APPLE_BLOCK | K_FUNCTION ) );
@@ -1223,7 +1223,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
  * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
@@ -1255,7 +1255,7 @@ static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
  * @param ast The overloaded operator AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_oper( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
@@ -1372,7 +1372,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
  * @param ast The defaulted operator AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_oper_default( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
@@ -1413,7 +1413,7 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
  * @param ast The overloaded operator AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
@@ -1444,7 +1444,7 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
  * @param ast The overloaded operator `new` AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
@@ -1475,7 +1475,7 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
  * @param ast The overloaded operator AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
@@ -1508,7 +1508,7 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
         req_params_max = is_ambiguous ? 1 : op->params_min;
         break;
       }
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
     case C_OP_UNSPECIFIED:
       req_params_min = op->params_min;
       req_params_max = op->params_max;
@@ -1673,7 +1673,7 @@ same: print_error( &ast->loc,
  * @param ast The defaulted relational operator AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
@@ -1804,7 +1804,7 @@ rel_2par: print_error( &ast->loc,
  * @param ast The pointer or pointer-to-member AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_pointer( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER ) );
@@ -1849,7 +1849,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
  * @param ast The pointer or pointer-to-member AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_reference( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_REFERENCE ) );
@@ -1887,7 +1887,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
  * @param ast The function-like AST to check the return type of.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
@@ -1947,7 +1947,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
  * @param ast The user-defined conversion operator AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_USER_DEF_CONVERSION );
@@ -1987,7 +1987,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
  * @param ast The user-defined literal AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_USER_DEF_LITERAL );
@@ -2075,7 +2075,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
  *
  * @sa [Unified Parallel C](http://upc-lang.org/)
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_check_upc( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
@@ -2098,7 +2098,7 @@ static bool c_ast_check_upc( c_ast_t const *ast ) {
  * @param name The name to check for.
  * @return Returns `true` only if the name of \a ast is equal to \a name.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
   assert( ast != NULL );
   assert( name != NULL );
@@ -2115,7 +2115,7 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
   unsigned flags = INTEGER_CAST( unsigned, avd );
@@ -2146,18 +2146,18 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
     case K_OPERATOR:
       if ( !c_ast_check_oper( ast ) )
         return VISITOR_ERROR_FOUND;
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_APPLE_BLOCK:
     case K_FUNCTION:
       if ( !c_ast_check_ret_type( ast ) )
         return VISITOR_ERROR_FOUND;
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_CONSTRUCTOR:
       if ( !(c_ast_check_func( ast ) && c_ast_check_func_params( ast )) )
         return VISITOR_ERROR_FOUND;
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_DESTRUCTOR: {
       if ( (ast->kind & (K_CONSTRUCTOR | K_DESTRUCTOR)) != 0 &&
@@ -2194,7 +2194,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         error_kind_not_supported( ast, LANG_CPP_ANY );
         return VISITOR_ERROR_FOUND;
       }
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
     case K_POINTER:
       if ( !c_ast_check_pointer( ast ) )
         return VISITOR_ERROR_FOUND;
@@ -2205,7 +2205,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         error_kind_not_supported( ast, LANG_RVALUE_REFERENCE );
         return VISITOR_ERROR_FOUND;
       }
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
     case K_REFERENCE:
       if ( OPT_LANG_IS( C_ANY ) ) {
         error_kind_not_supported( ast, LANG_CPP_ANY );
@@ -2284,7 +2284,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
   unsigned const flags = INTEGER_CAST( unsigned, avd );
@@ -2396,7 +2396,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
  * @param avd The flags to use.
  * @return Always returns `false`.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_visitor_warning( c_ast_t const *ast,
                                    c_ast_visit_data_t avd ) {
   assert( ast != NULL );
@@ -2425,7 +2425,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
         print_warning( &ast->loc,
           "user-defined literals not starting with '_' are reserved\n"
         );
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_APPLE_BLOCK:
     case K_FUNCTION:
@@ -2446,7 +2446,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
         );
         print_hint( "[[noreturn]]" );
       }
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
     }
 
     case K_CONSTRUCTOR:
@@ -2456,7 +2456,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
           c_ast_check_visitor( param_ast, c_ast_visitor_warning, flags )
         );
       } // for
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_DESTRUCTOR:
       if ( c_tid_is_any( ast->type.stids, TS_THROW ) &&
@@ -2557,7 +2557,7 @@ static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
  * @param name The name to check.
  * @return Returns the bitwise-or of language(s) that \a name is reserved in.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_lang_id_t is_reserved_name( char const *name ) {
   assert( name != NULL );
 

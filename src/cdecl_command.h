@@ -93,7 +93,7 @@ struct cdecl_command {
  * @return Returns a pointer to the corresponding cdecl_command or NULL if not
  * found.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 cdecl_command_t const* cdecl_command_find( char const *s );
 
 /**
@@ -108,7 +108,7 @@ cdecl_command_t const* cdecl_command_find( char const *s );
  *
  * @sa #FOREACH_CDECL_COMMAND()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 cdecl_command_t const* cdecl_command_next( cdecl_command_t const *command );
 
 ///////////////////////////////////////////////////////////////////////////////

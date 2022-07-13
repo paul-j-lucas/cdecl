@@ -54,7 +54,7 @@ static size_t c_ast_count;              ///< ASTs allocated but not yet freed.
  * @param j_align The second alignment.
  * @return Returns `true` only if the two alignments are equal.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_alignas_equal( c_alignas_t const *i_align,
                              c_alignas_t const *j_align ) {
   assert( i_align != NULL );
@@ -84,7 +84,7 @@ static bool c_alignas_equal( c_alignas_t const *i_align,
  * @param ast The AST node to start from.
  * @return Returns `true` only if there is a cycle.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_has_cycle( c_ast_t const *ast ) {
   assert( ast != NULL );
   for ( c_ast_t const *const start_ast = ast; ast->parent_ast != NULL; ) {
@@ -134,10 +134,10 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
 
     case K_OPERATOR:
       dup_ast->as.oper.oper_id = ast->as.oper.oper_id;
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
     case K_FUNCTION:
       dup_ast->as.func.flags = ast->as.func.flags;
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
     case K_APPLE_BLOCK:
       // ret_ast duplicated by referrer code below
     case K_CONSTRUCTOR:
@@ -207,11 +207,11 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_OPERATOR:
       if ( i_ast->as.oper.oper_id != j_ast->as.oper.oper_id )
         return false;
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
     case K_FUNCTION:
       if ( i_ast->as.func.flags != j_ast->as.func.flags )
         return false;
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
     case K_APPLE_BLOCK:
       // ret_ast checked by referrer code below
     case K_CONSTRUCTOR:

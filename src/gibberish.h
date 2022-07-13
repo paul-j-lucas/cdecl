@@ -145,7 +145,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout );
  *
  * @sa c_cast_english()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* c_cast_gibberish( c_cast_kind_t kind );
 
 /**
@@ -171,7 +171,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
  * characters that have a graph equivalent, returns \a token with said
  * characters replaced by their graphs; otherwise returns \a token as-is.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 char const* graph_token_c( char const *token );
 
 ///////////////////////////////////////////////////////////////////////////////

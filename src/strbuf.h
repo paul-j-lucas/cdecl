@@ -174,7 +174,7 @@ void strbuf_puts( strbuf_t *sbuf, char const *s ) {
  * @param res_len The number of additional bytes to reserve.
  * @return Returns `true` only if a memory reallocation was necessary.
  */
-PJL_NOWARN_UNUSED_RESULT
+PJL_DISCARD
 bool strbuf_reserve( strbuf_t *sbuf, size_t res_len );
 
 /**
@@ -308,7 +308,7 @@ void strbuf_sepc_puts( strbuf_t *sbuf, char sep, bool *sep_flag,
  * @sa strbuf_init()
  * @sa strbuf_reset()
  */
-STRBUF_H_INLINE PJL_WARN_UNUSED_RESULT
+STRBUF_H_INLINE NODISCARD
 char* strbuf_take( strbuf_t *sbuf ) {
   char *const str = sbuf->str;
   strbuf_init( sbuf );

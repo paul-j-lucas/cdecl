@@ -73,7 +73,7 @@ extern void parser_cleanup( void );
  *
  * @return Returns 0 only if parsing was successful.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 extern int  yyparse( void );
 
 /**
@@ -87,12 +87,12 @@ extern void yyrestart( FILE *in_file );
 static void cdecl_cleanup( void );
 static void conf_init( void );
 
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static int  cdecl_parse_cli( size_t, char const *const[] ),
             cdecl_parse_command( char const*, size_t, char const *const[] ),
             cdecl_parse_stdin( void );
 
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool read_conf_file( char const* );
 
 ////////// main ///////////////////////////////////////////////////////////////
@@ -145,7 +145,7 @@ static void cdecl_cleanup( void ) {
  * @note The parameters are _not_ named `argc` and `argv` intentionally to
  * avoid confusion since they're not the same.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static int cdecl_parse_cli( size_t cli_count,
                             char const *const cli_value[const] ) {
   if ( is_cdecl( me ) || is_cppdecl( me ) )
@@ -210,7 +210,7 @@ invalid_command:
  * name.
  * @return Returns `EX_OK` upon success or another value upon failure.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static int cdecl_parse_command( char const *command, size_t arg_count,
                                 char const *const arg_value[const] ) {
   if ( command == NULL && arg_count == 0 ) // invoked as just cdecl or c++decl
@@ -242,7 +242,7 @@ static int cdecl_parse_command( char const *command, size_t arg_count,
  * @return Returns `EX_OK` upon success of the last line read or another value
  * upon failure.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
   assert( fin != NULL );
 
@@ -268,7 +268,7 @@ static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
  *
  * @return Returns `EX_OK` upon success or another value upon failure.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static int cdecl_parse_stdin( void ) {
   if ( opt_interactive && opt_prompt )
     FPUTS( "Type \"help\" or \"?\" for help\n", cdecl_fout );

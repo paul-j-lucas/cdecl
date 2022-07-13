@@ -935,7 +935,7 @@ static void c_typedef_cleanup( void ) {
  * to whether the `typedef` name pointed to by \a i_data is less than, equal
  * to, or greater than the `typedef` name pointed to by \a j_data.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static int c_typedef_cmp( void const *i_data, void const *j_data ) {
   assert( i_data != NULL );
   assert( j_data != NULL );
@@ -952,7 +952,7 @@ static int c_typedef_cmp( void const *i_data, void const *j_data ) {
  * #C_GIB_NONE, #C_GIB_TYPEDEF, or #C_GIB_USING.
  * @return Returns said \ref c_typedef.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
   assert( ast != NULL );
   assert( is_01_bit_only_in_set( gib_flags, C_GIB_TYPEDEF | C_GIB_USING ) );
@@ -999,7 +999,7 @@ static void parse_predefined_types( char const *const *types ) {
  * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of rb_tree_visit().
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool rb_visitor( void *node_data, void *v_data ) {
   assert( node_data != NULL );
   assert( v_data != NULL );

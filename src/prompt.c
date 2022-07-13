@@ -75,7 +75,7 @@ static strbuf_t     prompt_buf[2];      ///< Buffers for prompts.
  * @sa [The GNU Readline Library](https://tiswww.case.edu/php/chet/readline/rltop.html)
  * @sa http://stackoverflow.com/a/31333315/99089
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline bool have_genuine_gnu_readline( void ) {
 #if HAVE_DECL_RL_GNU_READLINE_P
   return rl_gnu_readline_p == 1;

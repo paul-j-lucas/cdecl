@@ -60,7 +60,7 @@
  * @return If not NULL, returns \a sbuf->str; otherwise returns the empty
  * string.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
                                       c_scope_t const *end_scope ) {
   assert( sbuf != NULL );

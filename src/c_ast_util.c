@@ -43,7 +43,7 @@
 /// @endcond
 
 // local functions
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t*, c_ast_t* );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t*, c_ast_t* );
  *
  * @sa c_ast_append_array()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
                                       c_ast_t *of_ast ) {
   assert( array_ast != NULL );
@@ -110,7 +110,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
         );
         return ast;
       }
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     default:
       //
@@ -176,7 +176,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
  *
  * @sa c_ast_add_array_impl()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast,
                                     c_ast_t *of_ast ) {
   assert( ast != NULL );
@@ -199,7 +199,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast,
       //
       if ( array_ast->depth >= ast->depth )
         break;
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_ARRAY: {
       //
@@ -234,7 +234,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast,
  * @param ret_ast The AST to become the `ret_ast` of \a func_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
                                      c_ast_t *ret_ast ) {
   assert( ast != NULL );
@@ -256,7 +256,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
           );
           return ast;
         }
-        PJL_FALLTHROUGH;
+        FALLTHROUGH;
 
       default:
         if ( ast->kind == K_ARRAY ) {
@@ -283,7 +283,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
         if ( ret_ast == ast )
           break;
         c_ast_set_parent( func_ast, ast );
-        PJL_FALLTHROUGH;
+        FALLTHROUGH;
 
       case K_APPLE_BLOCK:
         c_ast_set_parent( ret_ast, func_ast );
@@ -304,7 +304,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
  * @return If \a ast is not NULL and the type of \a ast is one of \a tids,
  * returns \a ast; otherwise returns NULL.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_ast_t const* c_ast_is_tid_any_qual_impl( c_ast_t const *ast,
                                                   c_tid_t tids,
                                                   c_tid_t qual_stids ) {
@@ -340,7 +340,7 @@ static c_ast_t const* c_ast_is_tid_any_qual_impl( c_ast_t const *ast,
  * @param ast The AST to take from.
  * @return Returns said storage (and attributes) or \ref T_NONE.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_type_t c_ast_take_storage( c_ast_t *ast ) {
   assert( ast != NULL );
   c_type_t rv_type = T_NONE;
@@ -393,7 +393,7 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference_qual()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
                                             c_tid_t *qual_stids ) {
   ast = c_ast_untypedef( ast );
@@ -450,7 +450,7 @@ static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
  * @sa c_ast_unpointer_qual()
  * @sa c_ast_unreference()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
                                               c_tid_t *qual_stids ) {
   ast = c_ast_untypedef( ast );
@@ -476,7 +476,7 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
  * @param avd The bitwise-or of the kind(s) \a ast can be.
  * @return Returns `true` only if the kind of \a ast is one of the kinds.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_vistor_kind_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
   c_ast_kind_t const kinds = INTEGER_CAST( c_ast_kind_t, avd );
@@ -490,7 +490,7 @@ static bool c_ast_vistor_kind_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
  * @param avd Not used.
  * @return Returns `true` only if \a ast has such a scoped name.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_visitor_name( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
   (void)avd;
@@ -505,7 +505,7 @@ static bool c_ast_visitor_name( c_ast_t *ast, c_ast_visit_data_t avd ) {
  * type IDs to find.
  * @return Returns `true` only if the type of \a ast is one of the types.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_vistor_type_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
   c_type_t const *const type = POINTER_CAST( c_type_t*, avd );

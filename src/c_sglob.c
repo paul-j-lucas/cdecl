@@ -107,7 +107,7 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
 
       default:
         assert( is_ident( *s ) );
-        PJL_FALLTHROUGH;
+        FALLTHROUGH;
       case '*':
         ++s;
         break;

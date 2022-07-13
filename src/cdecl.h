@@ -72,7 +72,7 @@ extern char const  *me;                 ///< Program name.
  * @note This is the main parsing function (the only one that calls Bison).
  * All other `cdecl_parse_*()` functions ultimately call this function.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 int cdecl_parse_string( char const *s, size_t s_len );
 
 /**
@@ -83,7 +83,7 @@ int cdecl_parse_string( char const *s, size_t s_len );
  *
  * @sa is_cppdecl()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool is_cdecl( char const *prog_name );
 
 /**
@@ -94,7 +94,7 @@ bool is_cdecl( char const *prog_name );
  *
  * @sa is_cdecl()
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool is_cppdecl( char const *prog_name );
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -115,7 +115,7 @@ static c_operator_t const C_OPERATOR[] = {
  * has an alternative token, returns said token; otherwise returns \a token as-
  * is.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static char const* alt_token_c( char const *token ) {
   assert( token != NULL );
 

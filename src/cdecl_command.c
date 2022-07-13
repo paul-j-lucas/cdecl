@@ -82,7 +82,7 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
  * @param token_len The length of \a token.
  * @return Returns `true` only if \a s starts with \a token.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool starts_with_token( char const *s, char const *token,
                                size_t token_len ) {
   assert( s != NULL );

@@ -58,7 +58,7 @@ struct set_option_fn_args {
 };
 
 // local functions
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool set_alt_tokens( set_option_fn_args_t const* ),
 #ifdef YYDEBUG
             set_bison_debug( set_option_fn_args_t const* ),
@@ -120,7 +120,7 @@ static set_option_t const SET_OPTIONS[] = {
  * @return If \a enabled is `true`, returns `"  "` (two spaces); if `false`,
  * returns `"no"`.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline char const* maybe_no( bool enabled ) {
   return enabled ? "  " : "no";
 }
@@ -348,7 +348,7 @@ static bool set_lang( set_option_fn_args_t const *args ) {
  * @return Returns `true` only if \a name corresponds to a supported language
  * and the language was set.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool set_lang_impl( char const *name ) {
   c_lang_id_t const new_lang_id = c_lang_find( name );
   if ( new_lang_id == LANG_NONE )
@@ -466,7 +466,7 @@ static char const* slist_set_option_gets( void const **ppelt ) {
  * @return Returns `true` only if \a s1 equals \a s2 (ignoring hyphens)
  * for \a n characters.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
   while ( n-- > 0 ) {
     if ( *s1 == '-' )

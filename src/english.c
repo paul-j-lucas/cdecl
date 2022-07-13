@@ -41,7 +41,7 @@
 /// @endcond
 
 // local functions
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_visitor_english( c_ast_t*, c_ast_visit_data_t );
 
 static void c_ast_english_impl( c_ast_t const*, FILE* );
@@ -174,7 +174,7 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
  * @param avd A pointer to a `FILE` to emit to.
  * @return Always returns `false`.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
   FILE *const eout = POINTER_CAST( FILE*, avd );

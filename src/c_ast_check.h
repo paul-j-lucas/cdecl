@@ -46,7 +46,7 @@
  * @param ast The AST to check.
  * @return Returns `true` only if all checks passed.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 bool c_ast_check( c_ast_t const *ast );
 
 ///////////////////////////////////////////////////////////////////////////////

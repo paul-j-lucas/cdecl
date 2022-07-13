@@ -199,7 +199,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
         c_oper_get( ast->as.oper.oper_id )->name,
         ast->as.oper.oper_id
       );
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_FUNCTION:
       DUMP_COMMA;
@@ -222,7 +222,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
           break;
       } // switch
       FPRINTF( dout, " (0x%x),\n", ast->as.func.flags );
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
@@ -249,7 +249,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
       DUMP_COMMA;
       DUMP_SNAME( "class_sname", &ast->as.ptr_mbr.class_sname );
       FPUTS( ",\n", dout );
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_POINTER:
     case K_REFERENCE:
@@ -262,7 +262,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
       DUMP_COMMA;
       c_ast_dump_impl( ast->as.tdef.for_ast, indent, "for_ast", dout );
       FPUTS( ",\n", dout );
-      PJL_FALLTHROUGH;
+      FALLTHROUGH;
 
     case K_BUILTIN:
       DUMP_COMMA;

@@ -42,7 +42,7 @@
  * @param j The second number
  * @return Returns the minimum of \a i or \a j.
  */
-PJL_WARN_UNUSED_RESULT
+NODISCARD
 static inline size_t min_dist( size_t i, size_t j ) {
   return i < j ? i : j;
 }
