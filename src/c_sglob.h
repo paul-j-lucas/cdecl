@@ -112,7 +112,7 @@ void c_sglob_init( c_sglob_t *sglob ) {
  * @param s The glob string to parse.  May be NULL.  If not, it _must_ be a
  * valid glob string.
  * @param sglob The scoped glob to parse into.  The caller is responsible for
- * calling c_glob_cleanup().
+ * calling c_sglob_cleanup().
  *
  * @sa c_sglob_cleanup()
  */

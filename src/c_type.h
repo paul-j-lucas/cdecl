@@ -536,8 +536,8 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
  * particular type is never added more than once, e.g., `short` to `short int`.
  *
- * A special case has to be made for `long` to allow for `long long` yet not
- * allow for `long long long`.
+ * @note A special case has to be made for `long` to allow for `long long` yet
+ * not allow for `long long long`.
  *
  * @param dst_tids The \ref c_tid_t to add to.
  * @param new_tids The \ref c_tid_t to add.
@@ -661,8 +661,8 @@ c_tpid_t c_tid_tpid( c_tid_t tids );
  * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
  * particular type is never added more than once, e.g., `short` to `short int`.
  *
- * A special case has to be made for `long` to allow for `long long` yet not
- * allow for `long long long`.
+ * @note A special case has to be made for `long` to allow for `long long` yet
+ * not allow for `long long long`.
  *
  * @param dst_type The \ref c_type to add to.
  * @param new_type The \ref c_type to add.
@@ -758,7 +758,7 @@ c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tids );
  *
  * @param i_type The first \ref c_type.
  * @param j_type The second \ref c_type.
- * @return Returns `true` only if \a i_type contains any \a j_type.
+ * @return Returns `true` only if \a i_type is among \a j_type.
  *
  * @sa c_tid_is_any()
  */
@@ -948,11 +948,11 @@ c_tid_t c_tid_no_tpid( c_tid_t tids ) {
 }
 
 /**
- * Gets whether \a i_tids contains any of \a j_tids.
+ * Gets whether any \a i_tids are among any \a j_tids.
  *
  * @param i_tids The first \ref c_tid_t.
  * @param j_tids The second \ref c_tid_t.
- * @return Returns `true` only if \a i_tids contains any \a j_tids.
+ * @return Returns `true` only if any \a i_tids are among any \a j_tids.
  *
  * @sa c_type_is_any()
  */
@@ -984,7 +984,7 @@ bool c_tid_is_none( c_tid_t tids ) {
  * @param tids The \ref c_tid_t to check.
  * @return Returns `true` only if \a tids is `size_t`.
  *
- * @note In cdecl, `size_t` is `typedef`d to be `unsigned long` in
+ * @note In **cdecl**, `size_t` is `typedef`d to be `unsigned long` in
  * `c_typedef.c`.
  *
  * @sa c_ast_is_size_t()
@@ -996,7 +996,7 @@ bool c_tid_is_size_t( c_tid_t tids ) {
 }
 
 /**
- * Checks whether \a type is T_NONE.
+ * Checks whether \a type is \ref T_NONE.
  *
  * @param type The \ref c_type to check.
  * @return Returns `true` only if \a type is none.

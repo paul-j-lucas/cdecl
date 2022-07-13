@@ -37,7 +37,8 @@
  */
 
 /**
- * Shorthand for use inside a `switch` statement on an AST's kind to:
+ * Shorthand for use inside a `switch` statement on an AST's \ref c_ast::kind
+ * "kind" to:
  *
  * 1. Assert that it's not #K_PLACEHOLDER because it shouldn't occur in a
  *    completed AST.

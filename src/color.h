@@ -24,8 +24,8 @@
 /**
  * @file
  * Declares constants, macros, types, global variables, and functions for
- * printing to an ANSI terminal in color using Select Graphics Rendition (SGR)
- * codes.
+ * printing to an ANSI terminal in color using [Select Graphics Rendition
+ * (SGR)](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR) codes.
  */
 
 // local
@@ -41,16 +41,17 @@
 /**
  * @defgroup printing-color-group Printing Color
  * Declares constants, macros, types, global variables, and functions for
- * printing to an ANSI terminal in color using Select Graphics Rendition (SGR)
- * codes.
+ * printing to an ANSI terminal in color using [Select Graphics Rendition
+ * (SGR)](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR) codes.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
  * @defgroup sgr-group Select Graphics Rendition (SGR) Macros
- * Macros for Select Graphics Rendition (SGR) colors and other terminal
- * cababilities.
+ * Macros for [Select Graphics Rendition
+ * (SGR)](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR) colors and other
+ * terminal cababilities.
  * @ingroup printing-color-group
  * @{
  */

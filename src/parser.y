@@ -158,7 +158,7 @@
   if ( !fl_is_nested_type_ok( __FILE__, __LINE__, TYPE_LOC ) ) PARSE_ABORT(); )
 
 /**
- * Calls #elaborate_error_dym() with a \ref dym_kind_t of #DYM_NONE.
+ * Calls #elaborate_error_dym() with #DYM_NONE.
  *
  * @param ... Arguments passed to fl_elaborate_error().
  *
@@ -625,9 +625,9 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
  * @param type_ast The AST of the type to add.
  * @param gib_flags The gibberish flags to use; must only be one of
  * #C_GIB_NONE, #C_GIB_TYPEDEF, or #C_GIB_USING.
- * @return Returns `true` either if the type was added or it's equivalent to
- * the existing type; `false` if a different type already exists having the
- * same name.
+ * @return Returns `true` either if the type was added or it's equivalent to an
+ * existing type; `false` if a different type already exists having the same
+ * name.
  */
 PJL_WARN_UNUSED_RESULT
 static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
@@ -826,8 +826,8 @@ static bool fl_is_nested_type_ok( char const *file, int line,
  * A special case of fl_elaborate_error() that prevents oddly worded error
  * messages where a C/C++ keyword is expected, but that keyword isn't a keyword
  * either until a later version of the language or in a different language;
- * hence, the lexer will return the keyword as the Y_NAME token instead of the
- * keyword token.
+ * hence, the lexer will return the keyword as the `Y_NAME` token instead of
+ * the keyword token.
  *
  * For example, if fl_elaborate_error() were used for the following \b cdecl
  * command when the current language is C, you'd get the following:

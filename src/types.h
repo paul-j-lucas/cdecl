@@ -79,7 +79,7 @@ typedef struct c_array_ast        c_array_ast_t;
 typedef int                       c_array_size_t;
 
 typedef struct c_ast              c_ast_t;
-typedef unsigned                  c_ast_id_t;     ///< Unique AST node id.
+typedef unsigned                  c_ast_id_t;     ///< Unique AST node ID.
 typedef enum   c_ast_kind         c_ast_kind_t;
 typedef slist_t                   c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;

@@ -62,7 +62,7 @@ _GL_INLINE_HEADER_BEGIN
  */
 
 /**
- * Creates an sname variable \a VAR on the stack having a local \a NAME.
+ * Creates a scoped name variable \a VAR on the stack having a local \a NAME.
  *
  * @param VAR The name for the \ref c_sname_t variable.
  * @param NAME The name.
@@ -73,7 +73,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Gets the data associated with \a SCOPE.
  *
- * @param SCOPE The \ref c_scope_data to get the data of.
+ * @param SCOPE The scope to get the data of.
  *
  * @note This is a macro instead of an inline function so it'll work with
  * either a `const` or non-`const` \a SCOPE.
@@ -171,7 +171,7 @@ void c_sname_append_name( c_sname_t *sname, char *name );
  * Appends \a src onto the end of \a dst.
  *
  * @param dst The scoped name to append to.
- * @param src The scoped name to append.
+ * @param src The scoped name to append.  Ownership is taken.
  *
  * @sa c_sname_append_name()
  * @sa c_sname_prepend_sname()
@@ -245,7 +245,7 @@ c_sname_t c_sname_dup( c_sname_t const *sname ) {
 }
 
 /**
- * Gets whether \a name is empty.
+ * Gets whether \a sname is empty.
  *
  * @param sname The scoped name to check.
  * @return Returns `true` only if \a sname is empty.
@@ -330,7 +330,7 @@ void c_sname_init_name( c_sname_t *sname, char *name ) {
 
 /**
  * Gets whether \a sname is a constructor name, i.e., whether the last two
- * names match, e.g. `S::T::T`.
+ * names match, for example `S::T::T`.
  *
  * @note This can also be used to check for destructor names since **cdecl**
  * elides the `~` when parsing them.  (An AST's kind is #K_DESTRUCTOR.)
@@ -355,8 +355,8 @@ bool c_sname_is_ctor( c_sname_t const *sname );
 void c_sname_list_cleanup( slist_t *list );
 
 /**
- * Gets the local name of \a sname (which is the name of the last scope), e.g.,
- * the local name of `S::T::x` is `x`.
+ * Gets the local name of \a sname (which is the name of the last scope), for
+ * example the local name of `S::T::x` is `x`.
  *
  * @param sname The scoped name to get the local name of.  May be NULL.
  * @return Returns said name or the empty string if \a sname is empty or NULL.
@@ -448,7 +448,7 @@ char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
 }
 
 /**
- * Parses a scoped name, e.g. `a::b::c`.
+ * Parses a scoped name, for example `a::b::c`.
  *
  * @param s The string to parse.
  * @param sname The scoped name to parse into.
@@ -460,7 +460,7 @@ PJL_WARN_UNUSED_RESULT
 bool c_sname_parse( char const *s, c_sname_t *sname );
 
 /**
- * Parses a scoped destructor name, e.g. `S::T::~T`.
+ * Parses a scoped destructor name, for example `S::T::~T`.
  *
  * @param s The string to parse.
  * @param sname The scoped name to parse into.
@@ -476,7 +476,7 @@ bool c_sname_parse_dtor( char const *s, c_sname_t *sname );
  * Prepends \a src onto the beginning of \a dst.
  *
  * @param dst The scoped name to prepend to.
- * @param src The name to prepend.
+ * @param src The name to prepend.  Ownership is taken.
  *
  * @sa c_sname_append_name()
  * @sa c_sname_append_sname()

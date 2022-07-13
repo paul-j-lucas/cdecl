@@ -43,7 +43,8 @@
  *  + 0 = The primary prompt.
  *  + 1 = The secondary prompt (used for continuation lines).
  *
- * @note These may contain SGR color codes.
+ * @note These may contain [Select Graphics Rendition (SGR) color
+ * codes](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).
  */
 extern char const  *cdecl_prompt[2];
 
@@ -57,7 +58,7 @@ extern char const  *cdecl_prompt[2];
 void cdecl_prompt_enable( void );
 
 /**
- * Initializes the prompt for the current language.
+ * Initializes the prompt for \ref opt_lang.
  *
  * @note This is called `cdecl_prompt_init` and not `prompt_init` so as not to
  * conflict with the latter function in `libedit`.

@@ -174,11 +174,11 @@ enum c_oper_id {
 /**
  * C++ operator information.
  *
- * @note `params_min` and `params_max` comprise the inclusive range for the
- * union of member and non-member versions.  If you know you're dealing with a
- * member operator, use only `params_min`; if you know you're dealing with a
- * non-member operator, use only `params_max`; if you don't know which, use
- * both.
+ * @note \ref params_min and \ref params_max comprise the inclusive range for
+ * the union of member and non-member versions.  If you know you're dealing
+ * with a member operator, use only \ref params_min; if you know you're dealing
+ * with a non-member operator, use only \ref params_max; if you don't know
+ * which, use both.
  */
 struct c_operator {
   c_oper_id_t oper_id;                  ///< ID.
@@ -218,9 +218,9 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  *
  *      T operator OP(U);
  *
- * i.e., having one parameter, are ambiguous (to cdecl) between being a member
- * or non-member operator since **cdecl** doesn't have the context in which the
- * operator is declared.  If it were declared in-class, e.g.:
+ * i.e., having one parameter, are ambiguous (to **cdecl**) between being a
+ * member or non-member operator since **cdecl** doesn't have the context in
+ * which the operator is declared.  If it were declared in-class, e.g.:
  *
  *      class T {
  *      public:
@@ -231,8 +231,9 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  * then clearly it's a member operator; if it were declared at file scope, then
  * clearly it's a non-member operator; but **cdecl** doesn't have this context.
  *
- * We can tell if an operator is ambiguous if it can take 1 parameter when the
- * minimum is 0 and the maximum is 2.
+ * We can tell if an operator is ambiguous if it can take 1 parameter when \ref
+ * c_operator::params_min "params_min" is 0 and \ref c_operator::params_max
+ * "params_max" is 2.
  *
  * @param op The C++ operator to check.
  * @return Returns `true` only if the operator is ambiguous.

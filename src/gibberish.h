@@ -80,7 +80,7 @@
  *
  *      int *x, *y;
  *
- * @note Unlike #C_GIB_OMIT_TYPE, `C_GIB_MULTI_DECL` must be used for the
+ * @note Unlike #C_GIB_OMIT_TYPE, `C_GIB_MULTI_DECL` _must_ be used for the
  * entire declaration.
  * @note May be used _only_ in combination with #C_GIB_DECL and
  * #C_GIB_OMIT_TYPE.
@@ -97,7 +97,7 @@
  *
  *      int *x, *y;
  *
- * the gibberish for `y` must _not_ print the `int` again.
+ * the gibberish for `y` _must not_ print the `int` again.
  *
  * @note May be used _only_ in combination with #C_GIB_DECL and
  * #C_GIB_MULTI_DECL.
@@ -127,7 +127,7 @@
  * Prints \a ast as gibberish, aka, a C/C++ declaration or cast.
  *
  * @param ast The AST to print.
- * @param flags The gibberish flags to use; must include at least either
+ * @param flags The gibberish flags to use; _must_ include at least either
  * #C_GIB_CAST or #C_GIB_DECL.
  * @param gout The `FILE` to print to.
  *
@@ -139,7 +139,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout );
 /**
  * Given \a kind, gets the associated C++ literal.
  *
- * @param kind The cast kind to get the literal for.  Must only be one of
+ * @param kind The cast kind to get the literal for.  _Must only_ be one of
  * #C_CAST_CONST, #C_CAST_DYNAMIC, #C_CAST_REINTERPRET, or #C_CAST_STATIC.
  * @return Returns said literal.
  *
@@ -152,8 +152,8 @@ char const* c_cast_gibberish( c_cast_kind_t kind );
  * Prints \a tdef as a C/C++ type declaration.
  *
  * @param tdef The type to print.
- * @param flags The gibberish flags to use; must include either #C_GIB_TYPEDEF
- * or #C_GIB_USING.
+ * @param flags The gibberish flags to use; _must_ include either
+ * #C_GIB_TYPEDEF or #C_GIB_USING.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_gibberish()

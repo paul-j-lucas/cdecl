@@ -248,7 +248,7 @@ struct c_apple_block_ast {
  * advantage of.
  */
 struct c_builtin_ast {
-  /// So `bit_width` is at the same offset as in c_typedef_ast.
+  /// So \ref bit_width is at the same offset as in c_typedef_ast.
   void           *not_used;
 
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
@@ -262,7 +262,7 @@ struct c_builtin_ast {
  */
 struct c_constructor_ast {
   /// Constructors don't have a return type, but we need an unused pointer so
-  /// `param_ast_list` is at the same offset as in c_function_ast.
+  /// \ref param_ast_list is at the same offset as in c_function_ast.
   void           *not_used;
 
   c_ast_list_t    param_ast_list;       ///< Constructor parameter(s), if any.
@@ -276,8 +276,9 @@ struct c_constructor_ast {
  */
 struct c_csu_ast {
   /// Class, struct, and union types don't have an "of" type, but we need an
-  /// unused pointer so `csu_sname` is at the same offset as enum_sname in
-  /// c_enum_ast and class_sname in c_ptr_mbr_ast.
+  /// unused pointer so \ref csu_sname is at the same offset as \ref
+  /// c_enum_ast::enum_sname "enum_sname" and \ref c_ptr_mbr_ast::class_sname
+  /// "class_sname".
   void           *not_used;
 
   c_sname_t       csu_sname;            ///< Class, struct, or union name.
@@ -356,10 +357,10 @@ struct c_ptr_ref_ast {
 /**
  * AST node for a #K_TYPEDEF.
  *
- * @note Even though %c_typedef_ast has an AST pointer as its first `struct`
- * member, it is _not_ a parent "of" the underlying type, but instead a synonym
- * "for" it; hence, it's _not_ included in #K_ANY_PARENT, but it is, however,
- * included in #K_ANY_REFERRER.
+ * @note Even though this has an AST pointer as its first `struct` member, it
+ * is _not_ a parent "of" the underlying type, but instead a synonym "for" it;
+ * hence, it's _not_ included in #K_ANY_PARENT, but it is, however, included in
+ * #K_ANY_REFERRER.
  *
  * @note C++ `using` declarations are stored as their equivalent `typedef`
  * declarations.

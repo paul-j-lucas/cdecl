@@ -62,17 +62,18 @@ struct cdecl_keyword {
   bool                always_find;      ///< Find even when explaining C/C++?
 
   /**
-   * The Bison token (`Y_xxx`), but only if lang_syn is NULL; otherwise 0.
+   * The Bison token (`Y_xxx`), but only if \ref lang_syn is NULL; otherwise 0.
    */
   yytokentype         y_token_id;
 
   /**
-   * Array of language(s)/synonym-keyword pair(s), but only if y_token_id is 0;
-   * otherwise NULL.
+   * Array of language(s)/synonym-keyword pair(s), but only if \ref y_token_id
+   * is 0; otherwise NULL.
    *
-   * The array is terminated by an element that has #LANG_ANY for lang_ids;
-   * hence subset(s) of language(s) cases come first and, failing to match
-   * opt_lang against any of those, matches the last (default) element.
+   * The array is terminated by an element that has #LANG_ANY for \ref
+   * c_lang_lit::lang_ids "lang_ids"; hence subset(s) of language(s) cases come
+   * first and, failing to match \ref opt_lang against any of those, matches
+   * the last (default) element.
    */
   c_lang_lit_t const *lang_syn;
 

@@ -92,14 +92,14 @@ _GL_INLINE_HEADER_BEGIN
 #define LANGX_UPC     (1u << 8)
 
 /**
- * EMC: Embedded C, or more formally, _Programming languages - C - Extensions
- * to support embedded processors_, ISO/IEC TR&nbsp;18037:2008, which is based
- * on C99, ISO/IEC&nbsp;9899:1999.
+ * Embedded C, or more formally, _Programming languages - C - Extensions to
+ * support embedded processors_, ISO/IEC TR&nbsp;18037:2008, which is based on
+ * C99, ISO/IEC&nbsp;9899:1999.
  *
- * @note This is not a distinct language in cdecl, i.e., the user can't set the
- * language to "Embedded C" specifically.  It's used to mark keywords as being
- * available only in the Embedded C extensions to C99 instead of "plain" C99 so
- * that if a user does:
+ * @note This is not a distinct language in **cdecl**, i.e., the user can't set
+ * the language to "Embedded C" specifically.  It's used to mark keywords as
+ * being available only in the Embedded C extensions to C99 instead of "plain"
+ * C99 so that if a user does:
  *
  *      cdecl> declare _Sat as int
  *      9: warning: "_Sat" is a keyword in C99 (with Embedded C extensions)
@@ -111,12 +111,12 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_99_EMC (LANG_C_99 | LANGX_EMC)
 
 /**
- * UPC: _Unified Parallel C_, which is based on C99, ISO/IEC&nbsp;9899:1999.
+ * _Unified Parallel C_, which is based on C99, ISO/IEC&nbsp;9899:1999.
  *
- * @note This is not a distinct language in cdecl, i.e., the user can't set the
- * language to "Unified Parallel C" specifically.  It's used to mark keywords
- * as being available only in the Unified Parallel C extensions to C99 instead
- * of "plain" C99 so that if a user does:
+ * @note This is not a distinct language in **cdecl**, i.e., the user can't set
+ * the language to "Unified Parallel C" specifically.  It's used to mark
+ * keywords as being available only in the Unified Parallel C extensions to C99
+ * instead of "plain" C99 so that if a user does:
  *
  *      cdecl> declare shared as int
  *      9: warning: "shared" is a keyword in C99 (with Unified Parallel C extensions)
@@ -320,7 +320,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages Apple's `__block` keyword is supported in.
  */
-#define LANG_APPLE_BLOCK                LANG_MIN(C_89)
+#define LANG_APPLE___BLOCK              LANG_MIN(C_89)
 
 /**
  * Languages the `asm` keyword is supported in.
@@ -887,8 +887,9 @@ c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids );
  * Gets the literal appropriate for the current language.
  *
  * @param lang_lit A \ref c_lang_lit array.  The last element _must_ always
- * have a `lang_ids` value of #LANG_ANY.  If the corresponding `literal` value
- * is NULL, it means there is no appropriate literal for the current language.
+ * have a \ref c_lang_lit::lang_ids "lang_ids" value of #LANG_ANY.  If the
+ * corresponding \ref c_lang_lit::literal "literal" value is NULL, it means
+ * there is no appropriate literal for the current language.
  * @return Returns said literal or NULL if there is no appropriate literal for
  * the current language.
  */
@@ -898,8 +899,8 @@ char const* c_lang_literal( c_lang_lit_t const *lang_lit );
 /**
  * Gets the printable name of \a lang_id.
  *
- * @param lang_id The language to get the name of.  Exactly one language must
- * be set.
+ * @param lang_id The language to get the name of.  _Exactly one_ language
+ * _must_ be set.
  * @return Returns said name.
  *
  * @sa c_lang_coarse_name()
@@ -911,7 +912,7 @@ char const* c_lang_name( c_lang_id_t lang_id );
  * Gets the bitwise-or of language(s) that are \ref c-lang-order "newer than"
  * \a lang_id.
  *
- * @param lang_id The language.  Exactly one language must be set.
+ * @param lang_id The language.  _Exactly one_ language _must_ be set.
  * @return Returns the bitwise-or of languages \a lang_id or newer; or
  * #LANG_NONE if no language(s) are newer.
  *
@@ -971,7 +972,7 @@ c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
 /**
  * Sets the current language and the corresponding prompt.
  *
- * @param lang_id The language to set.  Exactly one language must be set.
+ * @param lang_id The language to set.  _Exactly one_ language _must_ be set.
  */
 void c_lang_set( c_lang_id_t lang_id );
 

@@ -43,7 +43,7 @@
 
 /**
  * @defgroup set-options-group Set Options
- * Declares global variables and functions for `set` command options.
+ * Declares global variables and functions for **cdecl** `set` command options.
  *
  * @sa \ref cdecl-options-group
  * @sa \ref cli-options-group
@@ -52,7 +52,7 @@
  */
 
 /**
- * Convenience macro for iterating over all **cdecl** `set` options.
+ * Convenience macro for iterating over all **cdecl** `set` command options.
  *
  * @param VAR The set_option loop variable.
  *
