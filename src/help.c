@@ -405,7 +405,7 @@ void print_help( cdecl_help_t help ) {
 }
 
 void print_use_help( void ) {
-  EPRINTF( "; use --help or -h for help\n" );
+  EPUTS( "; use --help or -h for help\n" );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
