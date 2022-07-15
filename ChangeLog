@@ -1,5 +1,44 @@
+2022-07-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl_config.h: s/__attribute__((unused))/MAYBE_UNUSED/
+
+2022-07-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c: s/EPRINTF/EPUTS/
+   * pjl_config.h: Removed __has_attribute.
+   * autocomplete.c, c_ast.c, c_ast.h, c_ast_check.c, c_ast_check.h,
+     c_ast_util.c, c_ast_util.h, c_keyword.h, c_kind.h, c_lang.h, c_operator.c,
+     c_operator.h, c_sglob.c, c_sglob.h, c_sname.c, c_sname.h, c_type.c,
+     c_type.h, c_typedef.c, c_typedef.h, cdecl.c, cdecl.h, cdecl_command.c,
+     cdecl_command.h, cdecl_keyword.h, cli_options.c, cli_options.h, color.c,
+     color.h, dam_lev.c, dam_lev.h, did_you_mean.c, did_you_mean.h, dump.c,
+     english.c, english.h, gibberish.c, gibberish.h, help.c, lexer.h, lexer.l,
+     literals.h, options.h, parser.y, pjl_config.h, print.c, print.h, prompt.c,
+     read_line.h, red_black.c, red_black.h, set_options.c, set_options.h,
+     slist.h, strbuf.c, strbuf.h, util.c, util.h: Now using GNULib FALLTHROUGH
+     and NODISCARD.
+
+2022-07-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_ast_check.c, c_operator.h, dump.c, parser.y: s/C_FN_*/C_FUNC_*/
+
+2022-07-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black_test.c: Added complete tree validation.
+   * red_black.c, red_black.h: s/root/fake_root/; removed fake_root invariants;
+     removed right child check from rb_is_empty(); removed rb_tree_first().
+
+2022-07-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: More clean-up.
+   * red_black.c: s/is_full/is_node_full/
+   * c_typedef.c: Now using struct literal.
+   * c_typedef.c: Renaming.
+   * red_black.c: Added child_dir() and RB_PARENT_CHILD().
+
 2022-07-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * red_black.c: Fixed apparent mis-transcription of code.
    * red_black.c: Renaming.
    * red_black.c: Added rb_tree_insert_repair().
 
