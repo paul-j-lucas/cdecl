@@ -102,7 +102,7 @@
  * @param FN_CALL The function call.
  */
 #define PJL_IGNORE_RV(FN_CALL) \
-  do { __typeof__(FN_CALL) _rv __attribute__((unused)) = (FN_CALL); } while (0)
+  do { MAYBE_UNUSED __typeof__(FN_CALL) _rv = (FN_CALL); } while (0)
 #endif /* HAVE___TYPEOF__ */
 
 #ifndef PJL_IGNORE_RV
