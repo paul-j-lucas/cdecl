@@ -2431,6 +2431,13 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
     case K_FUNCTION:
     case K_OPERATOR: {
       c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+      if ( c_tid_is_any( ret_ast->type.stids, TS_VOLATILE ) &&
+           OPT_LANG_IS( CPP_MIN(20) ) ) {
+        print_warning( &ret_ast->loc,
+          "\"volatile\" return types are deprecated%s\n",
+          C_LANG_WHICH( CPP_MAX(17) )
+        );
+      }
       if ( c_tid_is_any( ast->type.atids, TA_NODISCARD ) &&
            c_ast_is_builtin_any( ret_ast, TB_VOID ) ) {
         print_warning( &ret_ast->loc,
@@ -2455,6 +2462,13 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
         PJL_IGNORE_RV(
           c_ast_check_visitor( param_ast, c_ast_visitor_warning, flags )
         );
+        if ( c_tid_is_any( param_ast->type.stids, TS_VOLATILE ) &&
+             OPT_LANG_IS( CPP_MIN(20) ) ) {
+          print_warning( &param_ast->loc,
+            "\"volatile\" parameter types are deprecated%s\n",
+            C_LANG_WHICH( CPP_MAX(17) )
+          );
+        }
       } // for
       FALLTHROUGH;
 
