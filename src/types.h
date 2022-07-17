@@ -186,7 +186,8 @@ struct c_loc {
   int first_line;                       ///< First line of location range.
   int first_column;                     ///< First column of location range.
   //
-  // Cdecl doesn't use either of these.
+  // Cdecl doesn't use either of these, but Bison generates code that does, so
+  // we need to keep them.
   //
   int last_line;                        ///< Last line of location range.
   int last_column;                      ///< Last column of location range.

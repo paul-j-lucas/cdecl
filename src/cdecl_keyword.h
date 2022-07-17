@@ -55,7 +55,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * **cdecl** keyword info.
+ * **Cdecl** keyword info.
  */
 struct cdecl_keyword {
   char const         *literal;          ///< C string literal of the keyword.
