@@ -268,7 +268,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_CONSTINIT,            Y_CONSTINIT,          KC__, TS_CONSTINIT,
     LANG_CONSTINIT,         AC_LANG(CONSTINIT)                            },
   { L_CO_AWAIT,             Y_CO_AWAIT,           KC__, TX_NONE,
-    LANG_COROUTINES,        AC_LANG(NONE)                                 },
+    LANG_COROUTINES,        AC_LANG(COROUTINES)                           },
   { L_CO_RETURN,            Y_CO_RETURN,          KC__, TX_NONE,
     LANG_COROUTINES,        AC_LANG(NONE)                                 },
   { L_CO_YIELD,             Y_CO_YIELD,           KC__, TX_NONE,

@@ -52,6 +52,7 @@
  */
 static c_operator_t const C_OPERATOR[] = {
   { C_OP_NONE,            "none",     XXX, 0, 0,    LANG_ANY          },
+  { C_OP_CO_AWAIT,        L_CO_AWAIT, OVR, 0, 1,    LANG_CPP_MIN(20)  },
   { C_OP_NEW,             L_NEW,      OVR, 1, UNL,  LANG_CPP_ANY      },
   { C_OP_NEW_ARRAY,       "new[]",    OVR, 1, UNL,  LANG_CPP_ANY      },
   { C_OP_DELETE,          L_DELETE,   OVR, 1, UNL,  LANG_CPP_ANY      },

@@ -122,6 +122,7 @@ _GL_INLINE_HEADER_BEGIN
  */
 enum c_oper_id {
   C_OP_NONE,            ///< No operator.
+  C_OP_CO_AWAIT,        ///< The `co_await` operator.
   C_OP_NEW,             ///< The `new` operator.
   C_OP_NEW_ARRAY,       ///< The `new[]` operator.
   C_OP_DELETE,          ///< The `delete` operator.

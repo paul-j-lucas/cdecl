@@ -97,7 +97,7 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_
     parent->unique_id = -1,
     loc = 13-32,
     type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
-    oper_id = "!" (5),
+    oper_id = "!" (6),
     flags = unspecified (0x0),
     param_ast_list = [],
     ret_ast = {
@@ -136,7 +136,7 @@ decl_c ::= decl_c_astp = {
     parent->unique_id = -1,
     loc = 13-32,
     type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
-    oper_id = "!" (5),
+    oper_id = "!" (6),
     flags = unspecified (0x0),
     param_ast_list = [],
     ret_ast = {
@@ -160,7 +160,7 @@ decl_c ::= decl_c_astp = {
     parent->unique_id = -1,
     loc = 13-32,
     type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
-    oper_id = "!" (5),
+    oper_id = "!" (6),
     flags = unspecified (0x0),
     param_ast_list = [],
     ret_ast = {

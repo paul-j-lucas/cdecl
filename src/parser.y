@@ -7237,7 +7237,8 @@ conversion_exp
   ;
 
 c_operator
-  : Y_NEW                           { $$ = C_OP_NEW             ; }
+  : Y_CO_AWAIT                      { $$ = C_OP_CO_AWAIT        ; }
+  | Y_NEW                           { $$ = C_OP_NEW             ; }
   | Y_NEW '[' rbracket_exp          { $$ = C_OP_NEW_ARRAY       ; }
   | Y_DELETE                        { $$ = C_OP_DELETE          ; }
   | Y_DELETE '[' rbracket_exp       { $$ = C_OP_DELETE_ARRAY    ; }

@@ -60,6 +60,9 @@ respectively.  The previous `--enable-address-sanitizer` has been renamed to
 ** `show` autocompletion
 The `show` command now uses command-specific autocompletion.
 
+** Overloading `co_await` operator
+Overloading the `co_await` operator is now supported.
+
 ** Predefined types
 Fixed spelling of `bad_typeid`; added `source_location`, `type_index`, and
 `type_info`.
