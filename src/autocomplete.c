@@ -74,6 +74,22 @@ static bool   is_command( char const*, char const*, size_t );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Auto-completion wrapper around cdecl_command_next() that returns only auto-
+ * completable **cdecl** commands.
+ *
+ * @param command A pointer to the previous command. For the first iteration,
+ * NULL should be passed.
+ * @return Returns the next auto-completable command or NULL for none.
+ */
+NODISCARD static
+cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
+  do {
+    command = cdecl_command_next( command );
+  } while ( command != NULL && command->ac_lang_ids == LANG_NONE );
+  return command;
+}
+
+/**
  * Creates and initializes an array of all auto-completable keywords composed
  * of C/C++ keywords and **cdecl** keywords.
  *
@@ -285,13 +301,13 @@ static char* command_generator( char const *text, int state ) {
   static size_t text_len;
 
   if ( state == 0 ) {                   // new word? reset
-    match_command = cdecl_command_next( NULL );
+    match_command = ac_cdecl_command_next( NULL );
     text_len = strlen( text );
   }
 
   while ( match_command != NULL ) {
     cdecl_command_t const *const c = match_command;
-    match_command = cdecl_command_next( match_command );
+    match_command = ac_cdecl_command_next( match_command );
     if ( !opt_lang_is_any( c->lang_ids ) )
       continue;
     if ( strncmp( text, c->literal, text_len ) == 0 )

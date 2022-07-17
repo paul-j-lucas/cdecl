@@ -223,7 +223,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_EVAL,           TOKEN( Y_EVALUATION,        AC_LANG(NONE)             ) },
   { L_EVALUATION,     TOKEN( Y_EVALUATION,        AC_LANG(CONSTEVAL)        ) },
   { L_EXCEPT,         TOKEN( Y_EXCEPT,            AC_LANG(NOEXCEPT)         ) },
-  { L_EXIT,           TOKEN( Y_QUIT,              AC_LANG(ANY)              ) },
+  { L_EXIT,           TOKEN( Y_QUIT,              AC_LANG(NONE)             ) },
   { L_EXPLAIN,        TOKEN( Y_EXPLAIN,           AC_LANG(ANY)              ) },
   { L_EXPORTED,       C_SYE( L_EXPORT,            AC_LANG(NONE)             ) },
   { L_EXPR,           TOKEN( Y_EXPRESSION,        AC_LANG(NONE)             ) },

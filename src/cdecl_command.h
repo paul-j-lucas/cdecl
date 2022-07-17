@@ -82,6 +82,9 @@ struct cdecl_command {
   char const           *literal;        ///< The command literal.
   cdecl_command_kind_t  kind;           ///< The kind of command.
   c_lang_id_t           lang_ids;       ///< Language(s) command is in.
+#ifdef WITH_READLINE
+  c_lang_id_t           ac_lang_ids;    ///< Language(s) auto-completable in.
+#endif /* WITH_READLINE */
 };
 
 ////////// extern functions ///////////////////////////////////////////////////

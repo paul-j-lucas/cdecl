@@ -31,6 +31,10 @@ The `TERM` environment variable is no longer considered when determining
 whether color should be used in output.  Now, all that matters is whether the
 output stream is connected to a TTY.
 
+** `exit` auto-completion
+The `exit` command is no longer auto-completable enabling `explain` to be auto-
+completed after typing only `ex` rather than `exp` as before.
+
 ** `help options` types
 Help for types was added to options help.
 

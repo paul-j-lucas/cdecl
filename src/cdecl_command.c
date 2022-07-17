@@ -34,40 +34,51 @@
 #include <assert.h>
 #include <string.h>
 
+/// @cond DOXYGEN_IGNORE
+
 // shorthands
 #define FIRST_ARG                 CDECL_COMMAND_FIRST_ARG
 #define LANG_ONLY                 CDECL_COMMAND_LANG_ONLY
 #define PROG_NAME                 CDECL_COMMAND_PROG_NAME
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Cdecl commands.
+ * **Cdecl** commands.
  */
 static cdecl_command_t const CDECL_COMMANDS[] = {
-  { L_CAST,                   PROG_NAME,  LANG_ANY                },
-  { L_CLASS,                  FIRST_ARG,  LANG_CPP_ANY            },
-  { L_CONST /* cast */,       FIRST_ARG,  LANG_CPP_ANY            },
-  { L_DECLARE,                PROG_NAME,  LANG_ANY                },
-  { L_DEFINE,                 FIRST_ARG,  LANG_ANY                },
-  { L_DYNAMIC /* cast */,     FIRST_ARG,  LANG_CPP_ANY            },
-  { L_ENUM,                   FIRST_ARG,  LANG_ENUM               },
-  { L_EXIT,                   LANG_ONLY,  LANG_ANY                },
-  { L_EXPLAIN,                PROG_NAME,  LANG_ANY                },
-  { L_HELP,                   FIRST_ARG,  LANG_ANY                },
-  { L_INCLUDE,                FIRST_ARG,  LANG_ANY                },
-  { L_INLINE /* namespace */, FIRST_ARG,  LANG_INLINE_NAMESPACE   },
-  { L_NAMESPACE,              FIRST_ARG,  LANG_CPP_ANY            },
-  { L_QUIT,                   LANG_ONLY,  LANG_ANY                },
-  { L_REINTERPRET /* cast */, FIRST_ARG,  LANG_CPP_ANY            },
-  { L_SET_COMMAND,            FIRST_ARG,  LANG_ANY                },
-  { L_SHOW,                   FIRST_ARG,  LANG_ANY                },
-  { L_STATIC /* cast */,      FIRST_ARG,  LANG_CPP_ANY            },
-  { L_STRUCT,                 FIRST_ARG,  LANG_ANY                },
-  { L_TYPEDEF,                FIRST_ARG,  LANG_ANY                },
-  { L_UNION,                  FIRST_ARG,  LANG_ANY                },
-  { L_USING,                  FIRST_ARG,  LANG_USING_DECLARATION  },
-  { NULL,                     0,          LANG_NONE               },
+  //
+  // The `exit` command shares the same 2-character prefix of `ex` with
+  // `explain` and it's far more likely that a user wants to auto-complete
+  // `explain` than `exit`.  Therefore, make `exit` not auto-completable so
+  // `explain` auto-completes after typing `ex` rather than `exp`.  Note that
+  // the user can alternatively auto-complete `quit` (or just use `q`).
+  //
+  { L_CAST,                 PROG_NAME,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_CLASS,                FIRST_ARG,  LANG_CPP_ANY,           AC_LANG(ANY)  },
+  { L_CONST /*cast*/,       FIRST_ARG,  LANG_CPP_ANY,           AC_LANG(ANY)  },
+  { L_DECLARE,              PROG_NAME,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_DEFINE,               FIRST_ARG,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_DYNAMIC /*cast*/,     FIRST_ARG,  LANG_CPP_ANY,           AC_LANG(ANY)  },
+  { L_ENUM,                 FIRST_ARG,  LANG_ENUM,              AC_LANG(ANY)  },
+  { L_EXIT,                 LANG_ONLY,  LANG_ANY,               AC_LANG(NONE) },
+  { L_EXPLAIN,              PROG_NAME,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_HELP,                 FIRST_ARG,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_INCLUDE,              FIRST_ARG,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_INLINE /*namespace*/, FIRST_ARG,  LANG_INLINE_NAMESPACE,  AC_LANG(ANY)  },
+  { L_NAMESPACE,            FIRST_ARG,  LANG_CPP_ANY,           AC_LANG(ANY)  },
+  { L_QUIT,                 LANG_ONLY,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_REINTERPRET /*cast*/, FIRST_ARG,  LANG_CPP_ANY,           AC_LANG(ANY)  },
+  { L_SET_COMMAND,          FIRST_ARG,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_SHOW,                 FIRST_ARG,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_STATIC /*cast*/,      FIRST_ARG,  LANG_CPP_ANY,           AC_LANG(ANY)  },
+  { L_STRUCT,               FIRST_ARG,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_TYPEDEF,              FIRST_ARG,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_UNION,                FIRST_ARG,  LANG_ANY,               AC_LANG(ANY)  },
+  { L_USING,                FIRST_ARG,  LANG_USING_DECLARATION, AC_LANG(ANY)  },
+  { NULL,                   0,          LANG_NONE,              AC_LANG(ANY)  },
 };
 
 ////////// local functions ////////////////////////////////////////////////////
