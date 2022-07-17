@@ -60,6 +60,10 @@ respectively.  The previous `--enable-address-sanitizer` has been renamed to
 ** `show` autocompletion
 The `show` command now uses command-specific autocompletion.
 
+** Predefined types
+Fixed spelling of `bad_typeid`; added `source_location`, `type_index`, and
+`type_info`.
+
 ** Types as objects, English edition
 Previously declared types in pseudo-Engilsh are now checked to ensure they're
 not being used as objects:

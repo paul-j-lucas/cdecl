@@ -394,7 +394,7 @@ namespace std { class bad_cast; }
 namespace std { class bad_exception; }
 namespace std { class bad_function_call; }
 namespace std { class bad_optional_access; }
-namespace std { class bad_type_id; }
+namespace std { class bad_typeid; }
 namespace std { class bad_variant_access; }
 namespace std { class bad_weak_ptr; }
 namespace std { enum byte; }
@@ -516,6 +516,7 @@ namespace std { class shared_mutex; }
 namespace std { class shared_timed_mutex; }
 namespace std { typedef int sig_atomic_t; }
 namespace std { typedef unsigned long size_t; }
+namespace std { struct source_location; }
 namespace std { class stacktrace_entry; }
 namespace std { class stop_source; }
 namespace std { class stop_token; }
@@ -534,6 +535,8 @@ namespace std { class thread; }
 namespace std { class time_base; }
 namespace std { class timed_mutex; }
 namespace std { struct try_to_lock_t; }
+namespace std { class type_index; }
+namespace std { class type_info; }
 namespace std { class u16string; }
 namespace std { class u16string_view; }
 namespace std { class u32string; }

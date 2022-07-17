@@ -388,7 +388,7 @@ define bad_cast of namespace std as class bad_cast
 define bad_exception of namespace std as class bad_exception
 define bad_function_call of namespace std as class bad_function_call
 define bad_optional_access of namespace std as class bad_optional_access
-define bad_type_id of namespace std as class bad_type_id
+define bad_typeid of namespace std as class bad_typeid
 define bad_variant_access of namespace std as class bad_variant_access
 define bad_weak_ptr of namespace std as class bad_weak_ptr
 define byte of namespace std as enumeration byte
@@ -510,6 +510,7 @@ define shared_mutex of namespace std as class shared_mutex
 define shared_timed_mutex of namespace std as class shared_timed_mutex
 define sig_atomic_t of namespace std as int
 define size_t of namespace std as unsigned long int
+define source_location of namespace std as structure source_location
 define stacktrace_entry of namespace std as class stacktrace_entry
 define stop_source of namespace std as class stop_source
 define stop_token of namespace std as class stop_token
@@ -528,6 +529,8 @@ define thread of namespace std as class thread
 define time_base of namespace std as class time_base
 define timed_mutex of namespace std as class timed_mutex
 define try_to_lock_t of namespace std as structure try_to_lock_t
+define type_index of namespace std as class type_index
+define type_info of namespace std as class type_info
 define u16string of namespace std as class u16string
 define u16string_view of namespace std as class u16string_view
 define u32string of namespace std as class u32string

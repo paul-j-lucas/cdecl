@@ -315,7 +315,7 @@ static char const *const PREDEFINED_STD_CPP[] = {
   "namespace std { class                    bad_alloc; }",
   "namespace std { class                    bad_cast; }",
   "namespace std { class                    bad_exception; }",
-  "namespace std { class                    bad_type_id; }",
+  "namespace std { class                    bad_typeid; }",
   "namespace std { class                    codecvt_base; }",
   "namespace std { class                    ctype_base; }",
   "namespace std { struct                   div_t; }",
@@ -380,6 +380,7 @@ static char const *const PREDEFINED_STD_CPP[] = {
   "namespace std { class                   osyncstream; }",
   "namespace std { class                  wosyncstream; }",
   "namespace std { class                    time_base; }",
+  "namespace std { class                    type_info; }",
   "namespace std { class                    underflow_error; }",
 
   NULL
@@ -485,6 +486,7 @@ static char const *const PREDEFINED_STD_CPP_11[] = {
   "namespace std          {      class      thread; }",
   "namespace std          {      class      timed_mutex; }",
   "namespace std          {     struct      try_to_lock_t; }",
+  "namespace std          {      class      type_index; }",
 
   NULL
 };
@@ -543,6 +545,7 @@ static char const *const PREDEFINED_STD_CPP_20[] = {
   "namespace std::chrono {      class   month_weekday_last; }",
   "namespace std::chrono {      class   nonexistent_local_time; }",
   "namespace std         {     struct   nonstopstate_t; }",
+  "namespace std         {     struct   source_location; }",
   "namespace std         {      class u8string_view; }",
   "namespace std         {      class   stop_source; }",
   "namespace std         {      class   stop_token; }",
