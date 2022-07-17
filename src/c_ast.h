@@ -616,8 +616,8 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
 /**
  * Convenience function to get the AST given a \ref c_param_t.
  *
- * @param param A pointer to a \ref c_param_t.
- * @return Returns a pointer to the AST.
+ * @param param A pointer to a \ref c_param_t or NULL.
+ * @return Returns a pointer to the AST or NULL if \a param is NULL.
  *
  * @sa c_ast_params()
  * @sa c_ast_params_count()
@@ -626,7 +626,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
  */
 C_AST_H_INLINE NODISCARD
 c_ast_t const* c_param_ast( c_param_t const *param ) {
-  return param->data;
+  return param != NULL ? param->data : NULL;
 }
 
 /** @} */

@@ -1,3 +1,3 @@
 explain int main(x)
-            ^
-13: error: main() must have 0, 2, or 3 parameters in K&RC
+                 ^
+18: error: main() must have 0, 2, or 3 parameters in K&RC

@@ -230,6 +230,19 @@ static inline bool c_ast_is_register( c_ast_t const *ast ) {
 }
 
 /**
+ * Gets the location of the first parameter of \a ast, if any.
+ *
+ * @param ast The AST to get the location of its first parameter of, if any.
+ * @return Returns the location of either the first parameter of \a ast or \a
+ * ast if \a ast has no parameters.
+ */
+NODISCARD
+c_loc_t const* c_ast_params_loc( c_ast_t const *ast ) {
+  c_ast_t const *const param_ast = c_param_ast( c_ast_params( ast ) );
+  return &(param_ast != NULL ? param_ast : ast)->loc;
+}
+
+/**
  * Returns an `"s"` or not based on \a n to pluralize a word.
  *
  * @param n A quantity.
@@ -940,15 +953,14 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
       break;
 
     case 1:                             // main(void)
+      param_ast = c_param_ast( c_ast_params( ast ) );
       if ( opt_lang == LANG_C_KNR ) {
-        print_error( &ast->loc,
+        print_error( &param_ast->loc,
           "main() must have 0, 2, or 3 parameters in %s\n",
           c_lang_name( LANG_C_KNR )
         );
         return false;
       }
-
-      param_ast = c_param_ast( c_ast_params( ast ) );
       if ( !c_ast_is_builtin_any( param_ast, TB_VOID ) ) {
         print_error( &param_ast->loc,
           "a single parameter for main() must be void\n"
@@ -984,7 +996,9 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
       break;
 
     default:
-      print_error( &ast->loc, "main() must have 0-3 parameters\n" );
+      print_error( c_ast_params_loc( ast ),
+        "main() must have 0-3 parameters\n"
+      );
       return false;
   } // switch
 
@@ -995,28 +1009,28 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
  * Checks that an AST of a main() parameter is either `char*[]` or `char**`
  * optionally including `const`.
  *
- * @param ast The AST to check.
- * @return Returns `true` only if \a ast is of either type.
+ * @param param_ast The parameter AST to check.
+ * @return Returns `true` only if \a parameter_ast is of either type.
  */
 NODISCARD
-static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
-  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
+  c_ast_t const *const raw_ast = c_ast_untypedef( param_ast );
   switch ( raw_ast->kind ) {
     case K_ARRAY:                       // char *argv[]
     case K_POINTER:                     // char **argv
-      if ( !c_ast_is_ptr_to_type_any( ast->as.parent.of_ast,
+      if ( !c_ast_is_ptr_to_type_any( param_ast->as.parent.of_ast,
               &C_TYPE_LIT_S_ANY( c_tid_compl( TS_CONST ) ),
               &C_TYPE_LIT_B( TB_CHAR ) ) ) {
-        print_error( &ast->loc,
+        print_error( &param_ast->loc,
           "this parameter of main() must be %s %s pointer to [const] char\n",
-          c_kind_name( ast->kind ),
-          ast->kind == K_ARRAY ? "of" : "to"
+          c_kind_name( param_ast->kind ),
+          param_ast->kind == K_ARRAY ? "of" : "to"
         );
         return false;
       }
       break;
     default:                            // ???
-      print_error( &ast->loc, "illegal signature for main()\n" );
+      print_error( &param_ast->loc, "illegal signature for main()\n" );
       return false;
   } // switch
   return true;
@@ -1521,13 +1535,13 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   size_t const n_params = c_ast_params_count( ast );
   if ( n_params < req_params_min ) {
     if ( req_params_min == req_params_max )
-same: print_error( &ast->loc,
+same: print_error( c_ast_params_loc( ast ),
         "%soperator %s must have exactly %u parameter%s\n",
         member_or_nonmember, op->name,
         req_params_min, plural_s( req_params_min )
       );
     else
-      print_error( &ast->loc,
+      print_error( c_ast_params_loc( ast ),
         "%soperator %s must have at least %u parameter%s\n",
         member_or_nonmember, op->name,
         req_params_min, plural_s( req_params_min )
@@ -1537,7 +1551,7 @@ same: print_error( &ast->loc,
   if ( n_params > req_params_max ) {
     if ( op->params_min == req_params_max )
       goto same;
-    print_error( &ast->loc,
+    print_error( c_ast_params_loc( ast ),
       "%soperator %s can have at most %u parameter%s\n",
       member_or_nonmember, op->name,
       op->params_max, plural_s( op->params_max )
@@ -1593,7 +1607,7 @@ same: print_error( &ast->loc,
           break;
         default:
           if ( ecsu_param_count == 0 ) {
-            print_error( &ast->loc,
+            print_error( c_ast_params_loc( ast ),
               "at least 1 parameter of a non-member operator must be an "
               "enum, class, struct, or union"
               "; or a reference or rvalue reference thereto\n"
@@ -1747,7 +1761,7 @@ rel_2par: print_error( &ast->loc,
       if ( param1_ast == NULL ) {
         param1_ast = c_ast_is_ref_to_type_any( param_ast, &T_ANY_CONST_CLASS );
         if ( param1_ast == NULL ) {
-          print_error( &ast->loc,
+          print_error( c_ast_params_loc( ast ),
             "default member relational operators must take one "
             "value or reference-to-const parameter to a class\n"
           );
