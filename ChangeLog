@@ -1,5 +1,43 @@
+2022-07-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, autocomplete.c, cdecl_command.c, cdecl_command.h, cdecl_keyword.c:
+     `exit` is no longer auto-completable.
+
+2022-07-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_keyword.c, c_operator.c, c_operator.h, parser.y,
+     cdecl-d-cmo_exclam__b.out: Can now overload the co_await operator.
+   * c_ast.h, c_ast_check.c, declare_co_exclam_k_b.out,
+     declare_nmo_amper_i_i.out, declare_o_arrow_rk_pk.out,
+     declare_o_brackets_2i_i-c++20.out, declare_o_exclam_2i.out,
+     declare_o_minus2_d_rk.out, declare_o_minus_iel_i.out,
+     declare_o_oexclam_k_b.out, declare_o_plus2_d_rk.out,
+     declare_o_plus_iel_i.out, declare_ro_exclam_k_b.out,
+     declare_rro_exclam_k_b.out, declare_vo_exclam_k_b.out,
+     declare_yo_exclam_k_b.out, explain_co_exclam_k_b.out,
+     explain_co_less_i_b++default.out, explain_main_f4i_i.out,
+     explain_main_fkr_i.out, explain_o_brackets_2i_i-c++20.out,
+     explain_o_exclam_2i.out, explain_o_minus2_d_rk.out,
+     explain_o_minus_iel_i.out, explain_o_plus2_d_rk.out,
+     explain_o_plus_iel_i.out, explain_ov_o_exclam_k_b.out,
+     explain_ro_exclam_k_b.out, explain_rro_exclam_k_b.out,
+     explain_vo_exclam_k_b.out, explain_yo_exclam_k_b.out: Better error
+     location for parameter-related errors.
+   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+     cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
+     cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviaciast6i_v.out,
+     cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined_using.out: Fixed spelling of
+     `bad_typeid`; added `source_location`, `type_index`, and `type_info`.
+
 2022-07-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c: In C++20 and later, now warning if function parameters or
+     return types are volatile.
+   * c_ast_check.c, explain_a_nd_f_v.out, explain_nrfi_v.out: Change loc to
+     ret_ast.
    * pjl_config.h: s/__attribute__((unused))/MAYBE_UNUSED/
 
 2022-07-13  Paul J. Lucas <paul@lucasmail.org>
