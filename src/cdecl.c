@@ -148,24 +148,26 @@ static void cdecl_cleanup( void ) {
 NODISCARD
 static int cdecl_parse_cli( size_t cli_count,
                             char const *const cli_value[const] ) {
-  if ( is_cdecl( me ) || is_cppdecl( me ) )
-    return cdecl_parse_command( /*command=*/NULL, cli_count, cli_value );
-
+  char const *command_literal = NULL;
   char const *invalid_when = "";
+
+  if ( is_cdecl( me ) || is_cppdecl( me ) )
+    goto parse_command;
 
   //
   // Is the program name itself a command, i.e., cast, declare, or explain?
   //
   char const *find_what = me;
-  cdecl_command_t const *command = cdecl_command_find( find_what );
-  if ( command != NULL ) {
-    switch ( command->kind ) {
+  cdecl_command_t const *found_command = cdecl_command_find( find_what );
+  if ( found_command != NULL ) {
+    switch ( found_command->kind ) {
       case CDECL_COMMAND_FIRST_ARG:
       case CDECL_COMMAND_LANG_ONLY:
         invalid_when = " (as a program name)";
         goto invalid_command;
       case CDECL_COMMAND_PROG_NAME:
-        return cdecl_parse_command( /*command=*/me, cli_count, cli_value );
+        command_literal = me;
+        goto parse_command;
     } // switch
   }
 
@@ -174,12 +176,12 @@ static int cdecl_parse_cli( size_t cli_count,
     // Is the first word of the first argument a command?
     //
     find_what = cli_value[0];
-    command = cdecl_command_find( find_what );
-    if ( command != NULL ) {
-      switch ( command->kind ) {
+    found_command = cdecl_command_find( find_what );
+    if ( found_command != NULL ) {
+      switch ( found_command->kind ) {
         case CDECL_COMMAND_FIRST_ARG:
         case CDECL_COMMAND_PROG_NAME:
-          return cdecl_parse_command( /*command=*/NULL, cli_count, cli_value );
+          goto parse_command;
         case CDECL_COMMAND_LANG_ONLY:
           invalid_when = " (as a first argument)";
           goto invalid_command;
@@ -188,11 +190,15 @@ static int cdecl_parse_cli( size_t cli_count,
   }
 
   if ( opt_explain )
-    return cdecl_parse_command( L_EXPLAIN, cli_count, cli_value );
+    command_literal = L_EXPLAIN;
+
+parse_command:
+  return cdecl_parse_command( command_literal, cli_count, cli_value );
 
 invalid_command:
+  assert( find_what != NULL );
   EPRINTF( "%s: \"%s\": invalid command%s", me, find_what, invalid_when );
-  if ( command == NULL && print_suggestions( DYM_COMMANDS, find_what ) )
+  if ( found_command == NULL && print_suggestions( DYM_COMMANDS, find_what ) )
     EPUTC( '\n' );
   else
     print_use_help();
