@@ -241,6 +241,15 @@ AS_IF([test x$enable_coverage = xyes],
   ]
 )
 
+# Testing program: expect
+AS_IF([test x$with_readline != xno],
+  [
+    AC_CHECK_PROG([EXPECT], [expect], [expect])
+    AS_IF([test x$EXPECT = x],
+      [AC_MSG_WARN([optionl program "expect" for testing autocompletion not found])])
+  ]
+)
+
 # Makefile conditionals.
 AM_CONDITIONAL([ENABLE_ASAN],         [test x$enable_asan         = xyes])
 AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_cdecl_debug  = xyes])
@@ -249,6 +258,7 @@ AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test x$enable_bison_debug  = xyes])
 AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test x$enable_flex_debug   = xyes])
 AM_CONDITIONAL([ENABLE_MSAN],         [test x$enable_msan         = xyes])
 AM_CONDITIONAL([ENABLE_UBSAN],        [test x$enable_ubsan        = xyes])
+AM_CONDITIONAL([WITH_EXPECT],         [test x$EXPECT             != x   ])
 AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline      != xno ])
 
 # Miscellaneous.

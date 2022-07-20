@@ -1,0 +1,34 @@
+#! /usr/bin/env expect --
+
+spawn cdecl --color=never
+set timeout 1
+
+expect "cdecl> "
+send "typedef int I\r"
+
+expect "cdecl> "
+# show
+send "sh\t\r"
+expect default { exit 1 } "cdecl> "
+
+# show all
+send "show a\t\r"
+expect default { exit 1 } "wint_t"
+
+expect "cdecl> "
+# show all english
+send "show all e\t\r"
+expect default { exit 1 } "wint_t"
+
+expect "cdecl> "
+# show all typedef
+send "show all t\t\r"
+expect default { exit 1 } "wint_t"
+
+expect "cdecl> "
+# show user using
+send "set c++\r"
+send "show user usi\t\r"
+expect default { exit 1 } "using I = int;"
+
+# vim:set et sw=2 ts=2:

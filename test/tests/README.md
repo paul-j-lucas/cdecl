@@ -3,6 +3,7 @@ Test Names
 
 Test files are as follows:
 
++ `ac-*.exp`           = Auto-completion test.
 + `cast_*`             = A cast test.
 + `cdecl-*`            = A command-line option test.
 + `cl-*`               = A command-line test.

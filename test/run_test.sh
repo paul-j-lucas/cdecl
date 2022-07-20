@@ -231,8 +231,18 @@ run_cdecl_test() {
   fi
 }
 
+run_script_test() {
+  $TEST > $LOG_FILE 2>&1
+  ACTUAL_EXIT=$?
+  if [ $ACTUAL_EXIT -eq 0 ]
+  then pass
+  else fail
+  fi
+}
+
 assert_exists $TEST
 case $TEST in
+*.exp)  run_script_test ;;
 *.test) run_cdecl_test ;;
 esac
 

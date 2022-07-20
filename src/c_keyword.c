@@ -97,7 +97,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_REGISTER,             Y_REGISTER,           KC__, TS_REGISTER,
     LANG_ANY,               AC_LANG(REGISTER)                             },
   { L_RETURN,               Y_RETURN,             KC__, TX_NONE,
-    LANG_ANY,               AC_LANG(ANY)                                  },
+    LANG_ANY,               AC_LANG(NONE)                                 },
   { L_SHORT,                Y_SHORT,              KC__, TB_SHORT,
     LANG_ANY,               AC_LANG(ANY)                                  },
   { L_SIZEOF,               Y_SIZEOF,             KC__, TX_NONE,

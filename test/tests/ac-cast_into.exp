@@ -1,0 +1,11 @@
+#! /usr/bin/env expect --
+
+spawn cdecl --color=never
+set timeout 1
+
+expect "cdecl> "
+# cast x into int
+send "cast x i\tint\r"
+expect default { exit 1 } "(int)x"
+
+# vim:set et sw=2 ts=2:

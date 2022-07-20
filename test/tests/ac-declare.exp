@@ -1,0 +1,16 @@
+#! /usr/bin/env expect --
+
+spawn cdecl --color=never
+set timeout 1
+
+expect "cdecl> "
+# declare x as int
+send "dec\tx as int\r"
+expect default { exit 1 } "int x;"
+
+expect "cdecl> "
+# declare f as function returning int
+send "declare f as fu\tret\tint\r"
+expect default { exit 1 } "int f();"
+
+# vim:set et sw=2 ts=2:

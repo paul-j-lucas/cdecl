@@ -1892,6 +1892,21 @@ TESTS+=	tests/xupc_explain_ri.test
 ###############################################################################
 
 #
+# Auto-completion tests
+# =====================
+#
+if WITH_EXPECT
+TESTS+=	tests/ac-cast_into.exp \
+	tests/ac-declare.exp \
+	tests/ac-explain.exp \
+	tests/ac-help.exp \
+	tests/ac-set.exp \
+	tests/ac-show.exp
+endif
+
+###############################################################################
+
+#
 # Miscellaneous tests
 # ===================
 #
@@ -1982,10 +1997,11 @@ endif
 
 ###############################################################################
 
-BUILD_SRC = $(top_builddir)/src
-AM_TESTS_ENVIRONMENT = BUILD_SRC=$(BUILD_SRC); export BUILD_SRC ;
-TEST_EXTENSIONS = .test 
+BUILD_SRC = $(abs_top_builddir)/src
+AM_TESTS_ENVIRONMENT = BUILD_SRC=$(BUILD_SRC) ; export BUILD_SRC ;
+TEST_EXTENSIONS = .exp .test
 
+EXP_LOG_DRIVER  = $(srcdir)/run_test.sh
 TEST_LOG_DRIVER = $(srcdir)/run_test.sh
 
 EXTRA_DIST = run_test.sh tests data expected
