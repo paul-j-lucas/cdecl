@@ -1,5 +1,17 @@
+2022-07-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, c_keyword.c, test/Makefile.am, run_test.sh,
+     ac-cast_into.exp, ac-declare.exp, ac-explain.exp, ac-help.exp, ac-set.exp,
+     ac-show.exp: Tests for autocompletion.
+
+2022-07-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Now making weird program names just default to being the same as
+     cdecl.
+
 2022-07-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl_command.c: Simplification.
    * NEWS, autocomplete.c, cdecl_command.c, cdecl_command.h, cdecl_keyword.c:
      `exit` is no longer auto-completable.
 
