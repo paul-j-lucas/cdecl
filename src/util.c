@@ -115,15 +115,7 @@ char const* base_name( char const *path_name ) {
 }
 
 void* check_realloc( void *p, size_t size ) {
-  //
-  // Autoconf, 5.5.1:
-  //
-  // realloc
-  //    The C standard says a call realloc(NULL, size) is equivalent to
-  //    malloc(size), but some old systems don't support this (e.g., NextStep).
-  //
-  if ( unlikely( size == 0 ) )
-    size = 1;                           // LCOV_EXCL_LINE
+  assert( size > 0 );
   p = p != NULL ? realloc( p, size ) : malloc( size );
   perror_exit_if( p == NULL, EX_OSERR );
   return p;

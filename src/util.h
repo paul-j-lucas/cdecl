@@ -389,7 +389,7 @@ _GL_INLINE_HEADER_BEGIN
  * Convenience macro for calling check_realloc().
  *
  * @param TYPE The type to allocate.
- * @param N The number of objects of \a TYPE to allocate.
+ * @param N The number of objects of \a TYPE to allocate.  It _must_ be &gt; 0.
  * @return Returns a pointer to \a N uninitialized objects of \a TYPE.
  *
  * @sa check_realloc()
@@ -595,7 +595,7 @@ char const* base_name( char const *path_name );
  * If reallocation fails, prints an error message and exits.
  *
  * @param p The pointer to reallocate.  If NULL, new memory is allocated.
- * @param size The number of bytes to allocate.
+ * @param size The number of bytes to allocate.  It _must_ be &gt; 0.
  * @return Returns a pointer to the allocated memory.
  *
  * @sa #MALLOC()
