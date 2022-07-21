@@ -5,7 +5,7 @@
     explicit-ecsu=su
     explicit-int=i
   nographs
-    lang=C2X
+    lang=C23
     prompt
     semicolon
     using

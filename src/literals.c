@@ -234,7 +234,7 @@ char const H_USER_DEFINED[]       = "user-defined";
 char const L_CHAR16_T[]           = "char16_t";
 char const L_CHAR32_T[]           = "char32_t";
 
-// C2X & C++14
+// C23 & C++14
 char const L_DEPRECATED[]         = "deprecated";
 char const L___DEPRECATED__[]     = "__deprecated__";
 

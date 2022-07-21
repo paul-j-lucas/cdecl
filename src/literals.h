@@ -261,7 +261,7 @@ extern char const H_USER_DEFINED[];
 extern char const L_CHAR16_T[];
 extern char const L_CHAR32_T[];
 
-// C2X & C++14
+// C23 & C++14
 extern char const L_DEPRECATED[];
 extern char const L___DEPRECATED__[];
 

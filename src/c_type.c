@@ -391,7 +391,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define P1          LANG_CPP_MIN(11)
 #define P2          LANG_CPP_MIN(20)
 #define E1          LANG_C_CPP_MIN(11,11)
-#define E2          LANG_C_CPP_MIN(2X,20)
+#define E2          LANG_C_CPP_MIN(23,20)
 #define E3          LANG_C_CPP_MIN(11,23)
 
 /// @endcond

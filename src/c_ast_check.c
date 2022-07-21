@@ -1125,10 +1125,10 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       case K_NAME:
         if ( !OPT_LANG_IS( KNR_FUNC_DEFINITION ) ) {
           //
-          // C2X finally forbids old-style K&R function definitions:
+          // C23 finally forbids old-style K&R function definitions:
           //
           //      strlen(s)
-          //        char *s             // illegal in C2X
+          //        char *s             // illegal in C23
           //
           print_error( &param_ast->loc,
             "type specifier required%s\n",
@@ -2460,7 +2460,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
         );
       }
       if ( c_tid_is_any( ast->type.atids, TA_NORETURN ) &&
-           OPT_LANG_IS( C_MIN(2X)) ) {
+           OPT_LANG_IS( C_MIN(23)) ) {
         print_warning( &ret_ast->loc,
           "\"_Noreturn\" is deprecated%s",
           C_LANG_WHICH( C_MAX(17) )

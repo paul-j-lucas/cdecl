@@ -256,7 +256,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_CHAR32_T,             Y_CHAR32_T,           KC__, TB_CHAR32_T,
     LANG_CHAR16_32_T,       AC_LANG(CHAR16_32_T)                          },
 
-  // C2X & C++20
+  // C23 & C++20
   { L_CHAR8_T,              Y_CHAR8_T,            KC__, TB_CHAR8_T,
     LANG_CHAR8_T,           AC_LANG(CHAR8_T)                              },
 
@@ -308,13 +308,13 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_NORETURN,             Y_NORETURN,           KC_A, TA_NORETURN,
     LANG_NORETURN,          AC_LANG(NORETURN)                             },
 
-  // C2X & C++14 attributes
+  // C23 & C++14 attributes
   { L_DEPRECATED,           Y_DEPRECATED,         KC_A, TA_DEPRECATED,
     LANG_DEPRECATED,        AC_LANG(DEPRECATED)                           },
   { L___DEPRECATED__,       Y_DEPRECATED,         KC_A, TA_DEPRECATED,    
     LANG___DEPRECATED__,    AC_LANG(__DEPRECATED__)                       },
 
-  // C2X & C++17 attributes
+  // C23 & C++17 attributes
   { L_MAYBE_UNUSED,         Y_MAYBE_UNUSED,       KC_A, TA_MAYBE_UNUSED,
     LANG_MAYBE_UNUSED,      AC_LANG(MAYBE_UNUSED)                         },
   { L___MAYBE_UNUSED__,     Y_MAYBE_UNUSED,       KC_A, TA_MAYBE_UNUSED,

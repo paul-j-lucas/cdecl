@@ -68,7 +68,7 @@ static c_lang_t const C_LANG[] = {
   { "C11",    false,  LANG_C_11    },
   { "C17",    false,  LANG_C_17    },
   { "C18",    true,   LANG_C_17    },
-  { "C2X",    false,  LANG_C_2X    },
+  { "C23",    false,  LANG_C_23    },
   { "C++",    false,  LANG_CPP_NEW },
   { "C++98",  false,  LANG_CPP_98  },
   { "C++03",  false,  LANG_CPP_03  },
@@ -115,7 +115,7 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
     case LANG_C_99_UPC: return "C99 (with Unified Parallel C extensions)";
     case LANG_C_11    : return "C11";
     case LANG_C_17    : return "C17";
-    case LANG_C_2X    : return "C2X";
+    case LANG_C_23    : return "C23";
     case LANG_CPP_98  : return "C++98";
     case LANG_CPP_03  : return "C++03";
     case LANG_CPP_11  : return "C++11";

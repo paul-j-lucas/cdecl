@@ -35,7 +35,7 @@
 
 /**
  * @defgroup c-keywords-group C/C++ Keywords
- * Types and functions for C/C++ keywords or C2X/C++11 (or later) attributes.
+ * Types and functions for C/C++ keywords or C23/C++11 (or later) attributes.
  * @{
  */
 
@@ -65,7 +65,7 @@ enum c_keyword_ctx {
 };
 
 /**
- * C/C++ language keyword or C2X/C++11 (or later) attribute information.
+ * C/C++ language keyword or C23/C++11 (or later) attribute information.
  */
 struct c_keyword {
   char const     *literal;              ///< C string literal of the keyword.

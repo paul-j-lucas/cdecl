@@ -1,4 +1,4 @@
 explain noreturn void f(int)
         ^
-9: warning: "_Noreturn" is deprecated since C2X; did you mean [[noreturn]]?
+9: warning: "_Noreturn" is deprecated since C23; did you mean [[noreturn]]?
 declare f as non-returning function (int) returning void

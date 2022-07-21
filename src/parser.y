@@ -1433,7 +1433,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_CHAR16_T
 %token  <tid>       Y_CHAR32_T
 
-                    // C2X & C++11
+                    // C23 & C++11
 %token              Y_ATTR_BEGIN        // First '[' of "[[" for an attribute.
 
                     // C++11
@@ -1453,10 +1453,10 @@ static void yyerror( char const *msg ) {
 %token              Y_STATIC_ASSERT
 %token  <tid>       Y_THREAD_LOCAL
 
-                    // C2X & C++14
+                    // C23 & C++14
 %token  <tid>       Y_DEPRECATED
 
-                    // C2X & C++17
+                    // C23 & C++17
 %token              Y_DISCARD
 %token  <tid>       Y_MAYBE_UNUSED
 %token              Y_MAYBE Y_UNUSED
@@ -1465,7 +1465,7 @@ static void yyerror( char const *msg ) {
                     // C++17
 %token  <tid>       Y_NORETURN
 
-                    // C2X & C++20
+                    // C23 & C++20
 %token  <tid>       Y_CHAR8_T
 
                     // C++20

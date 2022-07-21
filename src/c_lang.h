@@ -70,8 +70,8 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_99     (1u << 3)         /**< C 99. */
 #define LANG_C_11     (1u << 4)         /**< C 11. */
 #define LANG_C_17     (1u << 5)         /**< C 17. */
-#define LANG_C_2X     (1u << 6)         /**< C 2X. */
-#define LANG_C_NEW    LANG_C_2X         /**< Newest supported C language. */
+#define LANG_C_23     (1u << 6)         /**< C 23. */
+#define LANG_C_NEW    LANG_C_23         /**< Newest supported C language. */
 #define LANG_C_ANY    LANG_MAX(C_NEW)   /**< Any C language. */
 
 #define LANG_CPP_OLD  LANG_CPP_98       /**< Oldest supported C++ language. */
@@ -335,7 +335,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages `[[`...`]]` attribute syntax is supported in.
  */
-#define LANG_ATTRIBUTES                 LANG_C_CPP_MIN(2X,11)
+#define LANG_ATTRIBUTES                 LANG_C_CPP_MIN(23,11)
 
 /**
  * Languages the `auto` keyword as a storage class is supported in.
@@ -392,7 +392,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG_CHAR16_32_T
  */
-#define LANG_CHAR8_T                    LANG_C_CPP_MIN(2X,20)
+#define LANG_CHAR8_T                    LANG_C_CPP_MIN(23,20)
 
 /**
  * Languages the `_Complex` keyword is supported in.
@@ -468,14 +468,14 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG_DEPRECATED
  */
-#define LANG___DEPRECATED__             LANG_C_MIN(2X)
+#define LANG___DEPRECATED__             LANG_C_MIN(23)
 
 /**
  * Languages the `deprecated` attribute is supported in.
  *
  * @sa #LANG___DEPRECATED__
  */
-#define LANG_DEPRECATED                 LANG_C_CPP_MIN(2X,14)
+#define LANG_DEPRECATED                 LANG_C_CPP_MIN(23,14)
 
 /**
  * Languages "digraphs" are supported in.
@@ -567,14 +567,14 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG_MAYBE_UNUSED
  */
-#define LANG___MAYBE_UNUSED__           LANG_C_MIN(2X)
+#define LANG___MAYBE_UNUSED__           LANG_C_MIN(23)
 
 /**
  * Languages the `maybe_unused` attribute is supported in.
  *
  * @sa #LANG___MAYBE_UNUSED__
  */
-#define LANG_MAYBE_UNUSED               LANG_C_CPP_MIN(2X,17)
+#define LANG_MAYBE_UNUSED               LANG_C_CPP_MIN(23,17)
 
 /**
  * Languages Microsoft extensions are supported in.
@@ -591,14 +591,14 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG_NODISCARD
  */
-#define LANG___NODISCARD__              LANG_C_MIN(2X)
+#define LANG___NODISCARD__              LANG_C_MIN(23)
 
 /**
  * Languages the `nodiscard` attribute is supported in.
  *
  * @sa #LANG___NODISCARD__
  */
-#define LANG_NODISCARD                  LANG_C_CPP_MIN(2X,17)
+#define LANG_NODISCARD                  LANG_C_CPP_MIN(23,17)
 
 /**
  * Languages the `noexcept` keyword is supported in.
