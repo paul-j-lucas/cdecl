@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares types and functions for looking up C/C++ keyword or C++11 (or
+ * Declares types and functions for looking up C/C++ keyword or C23/C++11 (or
  * later) attribute information.
  */
 
@@ -97,11 +97,12 @@ struct c_keyword {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Given a literal, gets the c_keyword for the corresponding C/C++ keyword, if
- * any.
+ * Given a literal, gets the c_keyword for the corresponding C/C++ keyword or
+ * C23/C++11 (or later) attribute, if any.
  *
  * @param literal The literal to find.
- * @param lang_ids The bitwise-or of language(s) to look for the keyword in.
+ * @param lang_ids The bitwise-or of language(s) to look for the keyword or
+ * attribute in.
  * @param kw_ctx The keyword context to limit to.
  * @return Returns a pointer to the corresponding c_keyword or NULL if not
  * found.
@@ -111,11 +112,12 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
                                    c_keyword_ctx_t kw_ctx );
 
 /**
- * Iterates to the next C/C++ keyword.
+ * Iterates to the next C/C++ keyword or or C23/C++11 (or later) attribute
  *
- * @param k A pointer to the current keyword. For the first iteration, NULL
- * should be passed.
- * @return Returns the next C/C++ keyword or NULL for none.
+ * @param k A pointer to the current keyword or attribute. For the first
+ * iteration, NULL should be passed.
+ * @return Returns the next C/C++ keyword or C23/C++11 (or later) attribute, or
+ * NULL for none.
  *
  * @sa #FOREACH_C_KEYWORD()
  */

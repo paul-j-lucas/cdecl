@@ -20,7 +20,8 @@
 
 /**
  * @file
- * Defines functions for looking up C/C++ keyword information.
+ * Defines functions for looking up C/C++ keyword or C23/C++11 (or later)
+ * attribute information.
  */
 
 // local
@@ -50,7 +51,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Array of all C/C++ keywords.
+ * Array of all C/C++ keywords or C23/C++11 (or later) attributes.
  *
  * @note There are two rows for `auto` since it has two meanings (one as a
  * storage class in C and C++ up to C++03 and the other as an automatically
