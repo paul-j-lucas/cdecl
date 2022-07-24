@@ -420,7 +420,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Cast either from or to a pointer type &mdash; similar to C++'s
- * `reinterpret_cast`, but for integers only.
+ * `reinterpret_cast`, but for pointers only.
  *
  * @param T The type to cast to.
  * @param EXPR The expression to cast.
@@ -1024,6 +1024,7 @@ bool path_is_file( char const *path );
  * @param n The number of characters at most to check.
  * @return Returns the number of characters spanned.
  */
+NODISCARD
 size_t strnspn( char const *s, char const *charset, size_t n );
 
 /**
