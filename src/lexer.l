@@ -139,13 +139,13 @@
  *    included.  We need to remember the resolved path in order to be able to
  *    remove it from include_set upon EOF.
  *
- * @note We need \ref include_file_info.last_lineno "last_lineno" because Flex
+ * @note We need \ref include_file_info.prev_lineno "prev_lineno" because Flex
  * doesn't restore `yylineno` when `yypop_buffer_state()` is called.
  */
 struct include_file_info {
   char const *prev_orig_path;           ///< The previous file's original path.
   char const *curr_real_path;           ///< The current file's real path.
-  int         last_lineno;              ///< The file's last line number.
+  int         prev_lineno;              ///< The file's last line number.
 };
 typedef struct include_file_info include_file_info_t;
 
@@ -323,7 +323,7 @@ static bool pop_file( void ) {
   PJL_IGNORE_RV( rb_tree_delete( &include_set, found_rb ) );
 
   print_params.conf_path = ifi->prev_orig_path;
-  yylineno = ifi->last_lineno;
+  yylineno = ifi->prev_lineno;
   ifi_free( ifi );
 
   // The example code in the Flex manual leaks file handles; see:
