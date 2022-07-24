@@ -376,6 +376,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
     // LCOV_EXCL_START
     case WRDE_NOSPACE:                  // unlikely
       print_error( path_loc, "out of memory\n" );
+      _Exit( EX_OSERR );
     case WRDE_BADVAL:                   // can't happen
     case WRDE_CMDSUB:                   // can't happen
       FALLTHROUGH;
