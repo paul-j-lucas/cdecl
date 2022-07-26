@@ -407,7 +407,7 @@ _GL_INLINE_HEADER_BEGIN
 #ifdef HAVE___TYPEOF__
 #define MEM_ZERO(PTR) BLOCK(                                            \
   /* "error: array initializer must be an initializer list" if array */ \
-  __typeof__(PTR) _tmp __attribute__((unused)) = 0;                     \
+  MAYBE_UNUSED __typeof__(PTR) _tmp = 0;                                \
   memset( (PTR), 0, sizeof *(PTR) ); )
 #else
 #define MEM_ZERO(PTR)             memset( (PTR), 0, sizeof *(PTR) )
