@@ -69,7 +69,7 @@
  */
 enum c_ast_kind {
   /**
-   * Temporary node in AST.  This is needed in two cases:
+   * Temporary node in an AST.  This is needed in two cases:
    *
    * 1. Array declarations or casts.  Consider:
    *
