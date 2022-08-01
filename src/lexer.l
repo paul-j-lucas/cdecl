@@ -1022,7 +1022,7 @@ include{S}*\"  {
                 strbuf_reset( &str_lit_buf );
               }
 
-<X_STR>\"     { /* X_STR is the same as X_CHAR except " replaces '. */
+<X_STR>\"     {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;
                 yylval.str_val = strbuf_take( &str_lit_buf );
