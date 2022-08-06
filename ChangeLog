@@ -1,3 +1,7 @@
+2022-08-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, cdecl.1: s/C2X/C23/
+
 2022-07-26  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Using MAYBE_UNUSED.
