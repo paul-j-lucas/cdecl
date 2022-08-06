@@ -303,7 +303,7 @@ void slist_push_list_front( slist_t *dst_list, slist_t *src_list );
  * @sa slist_back()
  * @sa slist_front()
  */
-SLIST_H_INLINE NODISCARD
+NODISCARD SLIST_H_INLINE
 void* slist_at( slist_t const *list, size_t offset ) {
   return offset < list->len ? slist_at_nocheck_offset( list, offset ) : NULL;
 }
@@ -322,7 +322,7 @@ void* slist_at( slist_t const *list, size_t offset ) {
  * @sa slist_back()
  * @sa slist_front()
  */
-SLIST_H_INLINE NODISCARD
+NODISCARD SLIST_H_INLINE
 void* slist_atr( slist_t const *list, size_t roffset ) {
   return roffset < list->len ?
     slist_at_nocheck_offset( list, list->len - (roffset + 1) ) : NULL;
@@ -341,7 +341,7 @@ void* slist_atr( slist_t const *list, size_t roffset ) {
  * @sa slist_atr()
  * @sa slist_front()
  */
-SLIST_H_INLINE NODISCARD
+NODISCARD SLIST_H_INLINE
 void* slist_back( slist_t const *list ) {
   return list->tail != NULL ? list->tail->data : NULL;
 }
@@ -356,7 +356,7 @@ void* slist_back( slist_t const *list ) {
  *
  * @sa slist_len()
  */
-SLIST_H_INLINE NODISCARD
+NODISCARD SLIST_H_INLINE
 bool slist_empty( slist_t const *list ) {
   return list->head == NULL;
 }
@@ -374,7 +374,7 @@ bool slist_empty( slist_t const *list ) {
  * @sa slist_atr()
  * @sa slist_back()
  */
-SLIST_H_INLINE NODISCARD
+NODISCARD SLIST_H_INLINE
 void* slist_front( slist_t const *list ) {
   return list->head != NULL ? list->head->data : NULL;
 }
@@ -402,7 +402,7 @@ void slist_init( slist_t *list ) {
  *
  * @sa slist_empty()
  */
-SLIST_H_INLINE NODISCARD
+NODISCARD SLIST_H_INLINE
 size_t slist_len( slist_t const *list ) {
   return list->len;
 }

@@ -467,7 +467,7 @@ c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast, c_tid_t *qual_stids );
  *
  * @sa c_tid_is_size_t()
  */
-C_AST_UTIL_H_INLINE NODISCARD
+NODISCARD C_AST_UTIL_H_INLINE
 bool c_ast_is_size_t( c_ast_t const *ast ) {
   return c_tid_is_size_t( c_ast_untypedef( ast )->type.btids );
 }
@@ -485,7 +485,7 @@ bool c_ast_is_size_t( c_ast_t const *ast ) {
  * @sa c_ast_is_ref_to_tid_any()
  * @sa c_ast_is_tid_any_qual()
  */
-C_AST_UTIL_H_INLINE NODISCARD
+NODISCARD C_AST_UTIL_H_INLINE
 c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   c_tid_t qual_stids;
   return c_ast_is_tid_any_qual( ast, tids, &qual_stids );
@@ -498,7 +498,7 @@ c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
  * @param kind The kind to check for.
  * @return Returns `true` only if the parent of \a ast is \a kind.
  */
-C_AST_UTIL_H_INLINE NODISCARD
+NODISCARD C_AST_UTIL_H_INLINE
 bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
   return ast->parent_ast != NULL && ast->parent_ast->kind == kind;
 }
@@ -510,7 +510,7 @@ bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
  * @return Returns `true` only if \a ast should be printed as a `using`
  * declaration.
  */
-C_AST_UTIL_H_INLINE NODISCARD
+NODISCARD C_AST_UTIL_H_INLINE
 bool c_ast_print_as_using( c_ast_t const *ast ) {
   return  opt_using && OPT_LANG_IS( USING_DECLARATION ) &&
           c_tid_is_any( ast->type.stids, TS_TYPEDEF );

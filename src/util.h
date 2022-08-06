@@ -655,7 +655,7 @@ char* check_strndup( char const *s, size_t n );
  * @sa true_clear()
  * @sa true_or_set()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
 }
@@ -775,7 +775,7 @@ char const* home_dir( void );
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool is_01_bit( uint64_t n ) {
   return (n & (n - 1)) == 0;
 }
@@ -796,7 +796,7 @@ bool is_01_bit( uint64_t n ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool is_0n_bit_only_in_set( uint64_t n, uint64_t set ) {
   return (n & set) == n;
 }
@@ -814,7 +814,7 @@ bool is_0n_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool is_1_bit( uint64_t n ) {
   return n != 0 && is_01_bit( n );
 }
@@ -835,7 +835,7 @@ bool is_1_bit( uint64_t n ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
   return is_1_bit( n & set );
 }
@@ -854,7 +854,7 @@ bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool is_1_bit_only_in_set( uint64_t n, uint64_t set ) {
   return is_1_bit( n ) && (n & set) != 0;
 }
@@ -874,7 +874,7 @@ bool is_1_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_only_in_set()
  * @sa is_1n_bit_only_in_set()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool is_01_bit_only_in_set( uint64_t n, uint64_t set ) {
   return n == 0 || is_1_bit_only_in_set( n, set );
 }
@@ -895,7 +895,7 @@ bool is_01_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @sa is_1_bit_in_set()
  * @sa is_1_bit_only_in_set()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
   return n != 0 && is_0n_bit_only_in_set( n, set );
 }
@@ -907,7 +907,7 @@ bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @return Returns `true` only if \a c is either an alphanumeric or `_`
  * character.
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool is_ident( char c ) {
   return isalnum( c ) || c == '_';
 }
@@ -984,7 +984,7 @@ void perror_exit_if( bool expr, int status ) {
  *
  * @sa null_if_empty()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool str_is_empty( char const *s ) {
   SKIP_WS( s );
   return *s == '\0';
@@ -1000,7 +1000,7 @@ bool str_is_empty( char const *s ) {
  *
  * @sa str_is_empty()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 char const* null_if_empty( char const *s ) {
   return s != NULL && str_is_empty( s ) ? NULL : s;
 }
@@ -1045,7 +1045,7 @@ void str_rtrim_len( char const *s, size_t *s_len );
  * @sa false_set()
  * @sa true_clear()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool true_or_set( bool *flag ) {
   return *flag || !(*flag = true);
 }
@@ -1060,7 +1060,7 @@ bool true_or_set( bool *flag ) {
  * @sa false_set()
  * @sa true_or_set()
  */
-C_UTIL_H_INLINE NODISCARD
+NODISCARD C_UTIL_H_INLINE
 bool true_clear( bool *flag ) {
   return *flag && !(*flag = false);
 }

@@ -893,7 +893,7 @@ c_tid_t c_tid_check( c_tid_t tids, c_tpid_t tpid ) {
  *
  * @sa c_tid_compl()
  */
-C_TYPE_H_INLINE NODISCARD
+NODISCARD C_TYPE_H_INLINE
 bool c_tid_is_compl( c_tid_t tids ) {
   //
   // The low-order 4 bits specify the c_tpid.  Currently, type part IDs are 1
@@ -913,7 +913,7 @@ bool c_tid_is_compl( c_tid_t tids ) {
  *
  * @sa c_tid_is_compl()
  */
-C_TYPE_H_INLINE NODISCARD
+NODISCARD C_TYPE_H_INLINE
 c_tid_t c_tid_compl( c_tid_t tids ) {
   assert( !c_tid_is_compl( tids ) );
   return ~tids ^ TX_MASK_TPID;
@@ -929,7 +929,7 @@ c_tid_t c_tid_compl( c_tid_t tids ) {
  * @return Returns `true` only if \a tids contains any of \a is_tids, but not
  * any of \a except_tids.
  */
-C_TYPE_H_INLINE NODISCARD
+NODISCARD C_TYPE_H_INLINE
 bool c_tid_is_except( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
   return (tids & (is_tids | except_tids)) == is_tids;
 }
@@ -942,7 +942,7 @@ bool c_tid_is_except( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
  *
  * @sa c_tid_tpid()
  */
-C_TYPE_H_INLINE NODISCARD
+NODISCARD C_TYPE_H_INLINE
 c_tid_t c_tid_no_tpid( c_tid_t tids ) {
   return tids & ~TX_MASK_TPID;
 }
@@ -956,7 +956,7 @@ c_tid_t c_tid_no_tpid( c_tid_t tids ) {
  *
  * @sa c_type_is_any()
  */
-C_TYPE_H_INLINE NODISCARD
+NODISCARD C_TYPE_H_INLINE
 bool c_tid_is_any( c_tid_t i_tids, c_tid_t j_tids ) {
   assert( c_tid_tpid( i_tids ) == c_tid_tpid( j_tids ) );
   return c_tid_no_tpid( i_tids & j_tids ) != TX_NONE;
@@ -973,7 +973,7 @@ bool c_tid_is_any( c_tid_t i_tids, c_tid_t j_tids ) {
  *
  * @sa c_type_is_none()
  */
-C_TYPE_H_INLINE NODISCARD
+NODISCARD C_TYPE_H_INLINE
 bool c_tid_is_none( c_tid_t tids ) {
   return c_tid_no_tpid( tids ) == TX_NONE;
 }
@@ -989,7 +989,7 @@ bool c_tid_is_none( c_tid_t tids ) {
  *
  * @sa c_ast_is_size_t()
  */
-C_TYPE_H_INLINE NODISCARD
+NODISCARD C_TYPE_H_INLINE
 bool c_tid_is_size_t( c_tid_t tids ) {
   c_tid_check( tids, C_TPID_BASE );
   return (tids & c_tid_compl( TB_INT )) == (TB_UNSIGNED | TB_LONG);
@@ -1003,7 +1003,7 @@ bool c_tid_is_size_t( c_tid_t tids ) {
  *
  * @sa c_type_equiv()
  */
-C_TYPE_H_INLINE NODISCARD
+NODISCARD C_TYPE_H_INLINE
 bool c_type_is_none( c_type_t const *type ) {
   return c_type_equiv( type, &T_NONE );
 }

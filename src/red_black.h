@@ -243,7 +243,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
  * @param tree A pointer to the red-black tree to check.
  * @return Returns `true` only if \a tree is empty.
  */
-RED_BLACK_H_INLINE NODISCARD
+NODISCARD RED_BLACK_H_INLINE
 bool rb_tree_empty( rb_tree_t const *tree ) {
   return tree->fake_root.child[0] == &tree->nil;
 }

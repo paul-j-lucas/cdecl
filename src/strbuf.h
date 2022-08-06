@@ -308,7 +308,7 @@ void strbuf_sepc_puts( strbuf_t *sbuf, char sep, bool *sep_flag,
  * @sa strbuf_init()
  * @sa strbuf_reset()
  */
-STRBUF_H_INLINE NODISCARD
+NODISCARD STRBUF_H_INLINE
 char* strbuf_take( strbuf_t *sbuf ) {
   char *const str = sbuf->str;
   strbuf_init( sbuf );
