@@ -1,3 +1,9 @@
+2022-08-07  Jan Engelhardt <jengelh@inai.de>
+
+   * c_ast.h, c_ast_util.h, c_lang.h, c_operator.h, c_sglob.h, c_sname.h,
+     c_type.h, literals.h, red_black.h, slist.h, strbuf.h, util.h: build:
+     resolve compile failure due to improper attribute syntax (#23)
+
 2022-08-06  Paul J. Lucas <paul@lucasmail.org>
 
    * AUTHORS, NEWS, cdecl.1: s/C2X/C23/
