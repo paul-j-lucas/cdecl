@@ -1,3 +1,27 @@
+2022-07-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Using MAYBE_UNUSED.
+
+2022-07-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: s/last_lineno/prev_lineno/
+   * lexer.l: Added _Exit().
+   * util.h: Added missing NODISCARD.
+
+2022-07-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Added #include <stdnoreturn.h>
+
+2022-07-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_ast_check.c, c_keyword.c, c_keyword.h, c_lang.c, c_lang.h,
+     c_type.c, help.c, literals.c, literals.h, parser.y, cast_pfx_i.out,
+     cdecl-xx.out, declare_fkr_pi.out, declare_pfkr_i.out, explain_fkr_pi.out,
+     explain_nrfi_v.out, help_options.out, set.out, set_explicit-int_i.out,
+     set_explicit-int_u.out, set_noexplicit-int.out, set_options.out:
+     s/C2X/C23/
+   * util.c, util.h: check_realloc()'s size _must_ be > 0.
+
 2022-07-20  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, c_keyword.c, test/Makefile.am, run_test.sh,
