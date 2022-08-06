@@ -239,7 +239,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  * @param op The C++ operator to check.
  * @return Returns `true` only if the operator is ambiguous.
  */
-C_OPERATOR_H_INLINE NODISCARD
+NODISCARD C_OPERATOR_H_INLINE
 bool c_oper_is_ambiguous( c_operator_t const *op ) {
   return op->params_min == 0 && op->params_max == 2;
 }

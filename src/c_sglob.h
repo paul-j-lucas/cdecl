@@ -87,7 +87,7 @@ void c_sglob_cleanup( c_sglob_t *sglob );
  * @param sglob The scoped glob to check.
  * @return Returns `true` only if \a sglob is empty.
  */
-C_SGLOB_H_INLINE NODISCARD
+NODISCARD C_SGLOB_H_INLINE
 bool c_sglob_empty( c_sglob_t const *sglob ) {
   return sglob->count == 0;
 }
