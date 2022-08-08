@@ -26,7 +26,7 @@ name that isn't a command (through renaming or a hard or a symbolic link)
 without command-line arguments, it behaved as if it were invoked as `cdecl`
 without error.  This has been fixed.
 
-* C23
+** C23
 The placeholder name of C2X has been changed to C23.
 
 ** Color and `TERM`
