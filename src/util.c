@@ -163,14 +163,20 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   (void)mode;
 #endif /* NDEBUG */
 
-  FILE *temp_file = tmpfile();
-  if ( likely( temp_file != NULL && size > 0 ) &&
-       unlikely( fwrite( buf, 1, size, temp_file ) != size ||
-                 fseek( temp_file, 0L, SEEK_SET ) != 0 ) ) {
-    PJL_IGNORE_RV( fclose( temp_file ) );
-    temp_file = NULL;
+  if ( unlikely( size == 0 ) )
+    return NULL;
+
+  FILE *const temp_file = tmpfile();
+  if ( unlikely( temp_file == NULL ) )
+    return NULL;
+
+  if ( likely( fwrite( buf, 1, size, temp_file ) == size &&
+               fseek( temp_file, 0L, SEEK_SET ) != 0 ) ) {
+    return temp_file;
   }
-  return temp_file;
+
+  PJL_IGNORE_RV( fclose( temp_file ) );
+  return NULL;
 }
 #endif /* HAVE_FMEMOPEN */
 
