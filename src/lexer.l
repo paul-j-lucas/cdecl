@@ -204,7 +204,6 @@ static void include_cleanup( void ) {
   // Do not pass free() as the second argument since the resolved include path
   // strings are shared with and owned by include_stack.
   rb_tree_cleanup( &include_set, /*free_fn=*/NULL );
-  lexer_init();
 }
 
 /**
@@ -225,6 +224,16 @@ cdecl_keyword_t const* lexer_cdecl_keyword_find( char const *literal ) {
     return k;
   }
   return NULL;
+}
+
+/**
+ * Cleans up lexer data.
+ *
+ * @sa lexer_init()
+ */
+static void lexer_cleanup( void ) {
+  include_cleanup();
+  strbuf_cleanup( &str_lit_buf );
 }
 
 /**
@@ -1139,6 +1148,7 @@ static void lexer_fatal( char const *msg ) {
 
 void lexer_init( void ) {
   rb_tree_init( &include_set, (rb_cmp_fn_t)&strcmp );
+  perror_exit_if( atexit( &lexer_cleanup ) != 0, EX_OSERR );
 }
 
 char const* lexer_input_line( size_t *plen ) {
@@ -1169,6 +1179,7 @@ void lexer_reset( bool hard_reset ) {
   if ( hard_reset ) {
     is_eof = false;
     include_cleanup();
+    lexer_init();
     yylineno = 0;
   }
   BEGIN( INITIAL );
