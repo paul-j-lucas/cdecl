@@ -1050,7 +1050,7 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
 
 void c_typedef_init( void ) {
   rb_tree_init( &typedef_set, &c_typedef_cmp );
-  perror_exit_if( atexit( &c_typedef_cleanup ) != 0, EX_OSERR );
+  check_atexit( &c_typedef_cleanup );
 
 #ifdef ENABLE_CDECL_DEBUG
   //

@@ -115,6 +115,11 @@ char const* base_name( char const *path_name ) {
   return path_name;
 }
 
+void check_atexit( void (*cleanup_fn)(void) ) {
+  assert( cleanup_fn != NULL );
+  perror_exit_if( atexit( cleanup_fn ) != 0, EX_OSERR );
+}
+
 void* check_realloc( void *p, size_t size ) {
   assert( size > 0 );
   p = p != NULL ? realloc( p, size ) : malloc( size );

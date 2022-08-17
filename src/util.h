@@ -591,6 +591,13 @@ NODISCARD
 char const* base_name( char const *path_name );
 
 /**
+ * Calls **atexit**(3) and checks for failure.
+ *
+ * @param cleanup_fn The pointer to the function to call **atexit**(3) with.
+ */
+void check_atexit( void (*cleanup_fn)(void) );
+
+/**
  * Calls **realloc**(3) and checks for failure.
  * If reallocation fails, prints an error message and exits.
  *

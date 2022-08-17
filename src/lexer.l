@@ -1148,7 +1148,7 @@ static void lexer_fatal( char const *msg ) {
 
 void lexer_init( void ) {
   rb_tree_init( &include_set, (rb_cmp_fn_t)&strcmp );
-  perror_exit_if( atexit( &lexer_cleanup ) != 0, EX_OSERR );
+  check_atexit( &lexer_cleanup );
 }
 
 char const* lexer_input_line( size_t *plen ) {
