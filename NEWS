@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 12.0.1
+
+** Explicit user-defined conversion operators
+Explicit user-defined conversion operators are now correctly allowed in C++11
+and later.
+
+
 * Changes in Cdecl 12.0
 
 ** Added suggestions

@@ -1948,8 +1948,22 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   } // switch
 
   if ( c_tid_is_any( ast->type.stids, TS_EXPLICIT ) ) {
-    error_kind_not_tid( ast, TS_EXPLICIT, "\n" );
-    return false;
+    c_lang_id_t which_lang_id = LANG_NONE;
+    switch ( ast->kind ) {
+      case K_USER_DEF_CONVERSION:
+        if ( OPT_LANG_IS( EXPLICIT_USER_DEF_CONV ) )
+          break;
+        which_lang_id = LANG_EXPLICIT_USER_DEF_CONV;
+        FALLTHROUGH;
+      default:
+        print_error( &ast->loc,
+          "%s can not be %s%s\n",
+          c_kind_name( ast->kind ),
+          c_tid_name_error( TS_EXPLICIT ),
+          c_lang_which( which_lang_id )
+        );
+        return false;
+    } // switch
   }
 
   return true;

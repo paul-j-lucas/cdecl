@@ -1367,6 +1367,7 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_epctor_i.test \
 	tests/explain_epictor_i.test \
 	tests/explain_epnxctor_i.test \
+	tests/explain_epudc_b.test \
 	tests/explain_exf_i.test \
 	tests/explain_exi.test \
 	tests/explain_f__pf__v.test \
@@ -1447,6 +1448,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_efd.test \
 	tests/explain_enc.test \
 	tests/explain_enk.test \
+	tests/explain_epudc_b-c++03.test \
 	tests/explain_exsti.test \
 	tests/explain_f+_v.test \
 	tests/explain_f__v-c++03.test \
