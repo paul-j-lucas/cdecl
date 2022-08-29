@@ -1951,15 +1951,15 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   } // switch
 
   if ( c_tid_is_any( ast->type.stids, TS_EXPLICIT ) ) {
-    c_lang_id_t which_lang_id = LANG_NONE;
+    c_lang_id_t which_lang_ids = LANG_NONE;
     switch ( ast->kind ) {
       case K_USER_DEF_CONVERSION:
         if ( OPT_LANG_IS( EXPLICIT_USER_DEF_CONV ) )
           break;
-        which_lang_id = LANG_EXPLICIT_USER_DEF_CONV;
+        which_lang_ids = LANG_EXPLICIT_USER_DEF_CONV;
         FALLTHROUGH;
       default:
-        error_kind_not_tid( ast, TS_EXPLICIT, which_lang_id, "\n" );
+        error_kind_not_tid( ast, TS_EXPLICIT, which_lang_ids, "\n" );
         return false;
     } // switch
   }
