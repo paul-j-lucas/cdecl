@@ -1939,7 +1939,8 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
       print_error( &ret_ast->loc,
-        "%s returning %s", kind_name, c_kind_name( raw_ret_ast->kind )
+        "%s returning %s is illegal",
+        kind_name, c_kind_name( raw_ret_ast->kind )
       );
       print_hint( "%s returning pointer to function", kind_name );
       return false;
