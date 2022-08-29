@@ -79,13 +79,15 @@
  *
  * @param AST The AST .
  * @param TID The bad type.
+ * @param LANG_IDS The language(s) that this is legal in, if any.
  * @param END_STR_LIT A string literal appended to the end of the error message
  * (either `"\n"` or `""`).
  */
-#define error_kind_not_tid(AST,TID,END_STR_LIT)         \
-  print_error( &(AST)->loc,                             \
-    "%s can not be %s" END_STR_LIT,                     \
-    c_kind_name( (AST)->kind ), c_tid_name_error( TID ) \
+#define error_kind_not_tid(AST,TID,LANG_IDS,END_STR_LIT)  \
+  print_error( &(AST)->loc,                               \
+    "%s can not be %s%s" END_STR_LIT,                     \
+    c_kind_name( (AST)->kind ), c_tid_name_error( TID ),  \
+    c_lang_which( LANG_IDS )                              \
   )
 
 /**
@@ -329,7 +331,7 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
   bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
   if ( c_tid_is_any( ast->type.stids, TS_ATOMIC ) ) {
-    error_kind_not_tid( ast, TS_ATOMIC, "\n" );
+    error_kind_not_tid( ast, TS_ATOMIC, LANG_NONE, "\n" );
     return false;
   }
 
@@ -762,7 +764,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     return true;
 
   if ( c_tid_is_any( ast->type.stids, TS_CONSTINIT ) ) {
-    error_kind_not_tid( ast, TS_CONSTINIT, "\n" );
+    error_kind_not_tid( ast, TS_CONSTINIT, LANG_NONE, "\n" );
     return false;
   }
 
@@ -886,7 +888,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   }
 
   if ( c_tid_is_any( ast->type.atids, TA_NO_UNIQUE_ADDRESS ) ) {
-    error_kind_not_tid( ast, TA_NO_UNIQUE_ADDRESS, "\n" );
+    error_kind_not_tid( ast, TA_NO_UNIQUE_ADDRESS, LANG_NONE, "\n" );
     return false;
   }
 
@@ -1870,7 +1872,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 
   if ( c_tid_is_any( ast->type.stids, TS_CV ) ) {
     c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
-    error_kind_not_tid( ast, qual_stids, "" );
+    error_kind_not_tid( ast, qual_stids, LANG_NONE, "" );
     print_hint( "reference to %s", c_tid_name_error( qual_stids ) );
     return false;
   }
@@ -1957,12 +1959,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
         which_lang_id = LANG_EXPLICIT_USER_DEF_CONV;
         FALLTHROUGH;
       default:
-        print_error( &ast->loc,
-          "%s can not be %s%s\n",
-          c_kind_name( ast->kind ),
-          c_tid_name_error( TS_EXPLICIT ),
-          c_lang_which( which_lang_id )
-        );
+        error_kind_not_tid( ast, TS_EXPLICIT, which_lang_id, "\n" );
         return false;
     } // switch
   }
@@ -1982,7 +1979,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
   assert( ast->kind == K_USER_DEF_CONVERSION );
 
   if ( c_tid_is_any( ast->type.stids, c_tid_compl( TS_USER_DEF_CONV ) ) ) {
-    error_kind_not_tid( ast, ast->type.stids, "\n" );
+    error_kind_not_tid( ast, ast->type.stids, LANG_NONE, "\n" );
     return false;
   }
   if ( c_tid_is_any( ast->type.stids, TS_FRIEND ) &&
@@ -2195,7 +2192,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         ast->type.stids &
         c_tid_compl( OPT_LANG_IS( C_ANY ) ? TS_FUNC_C : TS_FUNC_LIKE_CPP );
       if ( not_func_stids != TS_NONE ) {
-        error_kind_not_tid( ast, not_func_stids, "\n" );
+        error_kind_not_tid( ast, not_func_stids, LANG_NONE, "\n" );
         return VISITOR_ERROR_FOUND;
       }
 
@@ -2397,7 +2394,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         }
         break;
       default:
-        error_kind_not_tid( raw_ast, TS_RESTRICT, "\n" );
+        error_kind_not_tid( raw_ast, TS_RESTRICT, LANG_NONE, "\n" );
         return VISITOR_ERROR_FOUND;
     } // switch
   }
