@@ -1982,10 +1982,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
   assert( ast->kind == K_USER_DEF_CONVERSION );
 
   if ( c_tid_is_any( ast->type.stids, c_tid_compl( TS_USER_DEF_CONV ) ) ) {
-    print_error( &ast->loc,
-      "user-defined conversion operators can not be %s\n",
-      c_tid_name_error( ast->type.stids )
-    );
+    error_kind_not_tid( ast, ast->type.stids, "\n" );
     return false;
   }
   if ( c_tid_is_any( ast->type.stids, TS_FRIEND ) &&
