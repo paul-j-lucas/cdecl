@@ -140,6 +140,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_eta2i.test \
 	tests/declare_f.test \
 	tests/declare_f_pi.test \
+	tests/declare_fac_v.test \
 	tests/declare_facst3_v.test \
 	tests/declare_facv_v.test \
 	tests/declare_fast3_v.test \
@@ -190,12 +191,12 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_pi.test \
 	tests/declare_ppi.test \
 	tests/declare_rgi.test \
-	tests/declare_sta2i.test \
 	tests/declare_sic.test \
-	tests/declare_stf_v.test \
 	tests/declare_sii.test \
-	tests/declare_stif_v.test \
 	tests/declare_sill.test \
+	tests/declare_sta2i.test \
+	tests/declare_stf_v.test \
+	tests/declare_stif_v.test \
 	tests/declare_type_i.test \
 	tests/declare_type_pfc_i.test \
 	tests/declare_typedef_i.test \

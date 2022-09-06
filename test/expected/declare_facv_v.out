@@ -1,1 +1,1 @@
-void f(int x[const *]);
+void f(int x[const*]);
