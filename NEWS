@@ -12,6 +12,11 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 12.0.1
 
+** `static` or `const` array parameters
+Both `static` or `const` array declarations are now additionally recognized
+outside of function parameters allowing more specific error reporting (since
+they're still illegal).
+
 ** Explicit user-defined conversion operators
 Explicit user-defined conversion operators are now correctly allowed in C++11
 and later.

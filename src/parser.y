@@ -3555,19 +3555,18 @@ decl2_c_astp
 
 array_decl_c_astp
   : // in_attr: type_c_ast
-    decl2_c_astp array_size_c_int gnu_attribute_specifier_list_c_opt
+    decl2_c_astp array_size_c_ast gnu_attribute_specifier_list_c_opt
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
       c_ast_t *const decl_ast = $1.ast;
+      c_ast_t *const array_ast = $2;
 
-      DUMP_START( "array_decl_c_astp", "decl2_c_astp array_size_c_int" );
+      DUMP_START( "array_decl_c_astp", "decl2_c_astp array_size_c_ast" );
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl2_c_astp", decl_ast );
       DUMP_AST( "target_ast", $1.target_ast );
-      DUMP_INT( "array_size_c_int", $2 );
+      DUMP_AST( "array_size_c_ast", array_ast );
 
-      c_ast_t *const array_ast = c_ast_new_gc( K_ARRAY, &@$ );
-      array_ast->as.array.size = $2;
       c_ast_set_parent( c_ast_new_gc( K_PLACEHOLDER, &@1 ), array_ast );
 
       if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
@@ -3580,6 +3579,38 @@ array_decl_c_astp
 
       DUMP_AST( "array_decl_c_astp", $$.ast );
       DUMP_END();
+    }
+  ;
+
+array_size_c_ast
+  : array_size_c_int
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->as.array.size = $1;
+    }
+  | '[' type_qualifier_list_c_stid rbracket_exp
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->as.array.size = C_ARRAY_SIZE_NONE;
+      $$->as.array.stids = c_tid_check( $2, C_TPID_STORE );
+    }
+  | '[' type_qualifier_list_c_stid static_stid_opt Y_INT_LIT rbracket_exp
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->as.array.size = $4;
+      $$->as.array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
+    }
+  | '[' type_qualifier_list_c_stid_opt '*' rbracket_exp
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
+      $$->as.array.stids = c_tid_check( $2, C_TPID_STORE );
+    }
+  | '[' Y_STATIC type_qualifier_list_c_stid_opt Y_INT_LIT rbracket_exp
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->as.array.size = $4;
+      $$->as.array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
     }
   ;
 
@@ -4752,38 +4783,6 @@ array_cast_c_astp
 
       DUMP_AST( "array_cast_c_astp", $$.ast );
       DUMP_END();
-    }
-  ;
-
-array_size_c_ast
-  : array_size_c_int
-    {
-      $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = $1;
-    }
-  | '[' type_qualifier_list_c_stid rbracket_exp
-    {
-      $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = C_ARRAY_SIZE_NONE;
-      $$->as.array.stids = c_tid_check( $2, C_TPID_STORE );
-    }
-  | '[' type_qualifier_list_c_stid static_stid_opt Y_INT_LIT rbracket_exp
-    {
-      $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = $4;
-      $$->as.array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
-    }
-  | '[' type_qualifier_list_c_stid_opt '*' rbracket_exp
-    {
-      $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
-      $$->as.array.stids = c_tid_check( $2, C_TPID_STORE );
-    }
-  | '[' Y_STATIC type_qualifier_list_c_stid_opt Y_INT_LIT rbracket_exp
-    {
-      $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = $4;
-      $$->as.array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
     }
   ;
 
