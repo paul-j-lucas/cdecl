@@ -1619,6 +1619,7 @@ TESTS+=	tests/explain_+co_eq2_rck_b++default.test \
 	tests/explain_rro_star_rk_rk.test \
 	tests/explain_sto_delete_pv_v.test \
 	tests/explain_sto_new_z_pv.test \
+	tests/explain_sto_parens_2i_v.test \
 	tests/explain_vo_amper_rk_pk.test \
 	tests/explain_vo_star_rk_rk.test \
 	tests/explain_yo_amper_rk_pk.test \
@@ -1670,6 +1671,8 @@ TESTS+=	tests/explain_+co_eq2_rck_b++default-cpp17.test \
 	tests/explain_ov_o_exclam_k_b.test \
 	tests/explain_ro_exclam_k_b.test \
 	tests/explain_rro_exclam_k_b.test \
+	tests/explain_sto_eq_i_v.test \
+	tests/explain_sto_parens_2i_v-cpp20.test \
 	tests/explain_vo_exclam_k_b.test \
 	tests/explain_vv_o_new_z.test \
 	tests/explain_yo_exclam_k_b.test

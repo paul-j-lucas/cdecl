@@ -1,0 +1,4 @@
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain static void operator()(int, int)
+END

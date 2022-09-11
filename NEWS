@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 12.0.1
 
+** `static` `operator()`
+Now allow `operator()` to be `static` in C++23.
+
 ** Added `std::bernoulli_distribution` and `std::random_device`
 Added these missing C++11 types.
 

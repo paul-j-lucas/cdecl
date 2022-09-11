@@ -705,6 +705,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_STATIC_ASSERT              LANG_CPP_MIN(11)
 
 /**
+ * Languages `operator()` can be a `static` member.
+ */
+#define LANG_STATIC_OP_PARENS           LANG_CPP_MIN(23)
+
+/**
  * Languages the `_Thread_local` keyword is supported in.
  *
  * @sa #LANG_THREAD_LOCAL

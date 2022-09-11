@@ -1304,6 +1304,24 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     return false;
   }
 
+  if ( op->flags == C_OP_MEMBER &&
+       c_tid_is_any( ast->type.stids, TS_STATIC ) ) {
+    c_lang_id_t ok_lang_ids = LANG_NONE;
+    switch ( ast->as.oper.oper_id ) {
+      case C_OP_PARENS:
+        if ( OPT_LANG_IS( STATIC_OP_PARENS ) )
+          break;
+        ok_lang_ids = LANG_STATIC_OP_PARENS;
+        FALLTHROUGH;
+      default:
+        print_error( &ast->loc,
+          "operator %s must be non-static%s\n",
+          op->name, c_lang_which( ok_lang_ids )
+        );
+        return false;
+    } // switch
+  }
+
   switch ( ast->as.oper.oper_id ) {
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
