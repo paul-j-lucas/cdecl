@@ -89,8 +89,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_MEMBER               C_FUNC_MEMBER
 
 /**
- * For c_operator.flags, denotes that the operator is overload{able|ed} as a
- * non-member only.
+ * Denotes that an operator is overloaded as a non-member.
  *
  * @sa #C_OP_MEMBER
  * @sa #C_OP_NOT_OVERLOADABLE
