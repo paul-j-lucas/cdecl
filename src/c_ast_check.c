@@ -1294,8 +1294,8 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   if ( ast->as.oper.flags != C_OP_UNSPECIFIED &&
       (ast->as.oper.flags & op->flags) == 0 ) {
     //
-    // The user specified either member or non-member, but the operator can't
-    // be that.
+    // The user explicitly specified either member or non-member, but the
+    // operator can't be that.
     //
     print_error( &ast->loc,
       "operator %s can only be a %s\n",
