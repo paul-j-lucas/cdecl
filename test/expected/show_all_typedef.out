@@ -398,6 +398,7 @@ namespace std { class bad_optional_access; }
 namespace std { class bad_typeid; }
 namespace std { class bad_variant_access; }
 namespace std { class bad_weak_ptr; }
+namespace std { class bernoulli_distribution; }
 namespace std { enum byte; }
 namespace std { enum chars_format; }
 namespace std::chrono { enum choose; }
@@ -505,6 +506,7 @@ namespace std { class out_of_range; }
 namespace std { class overflow_error; }
 namespace std { struct partial_ordering; }
 namespace std { typedef long ptrdiff_t; }
+namespace std { class random_device; }
 namespace std { class range_error; }
 namespace std { class recursive_mutex; }
 namespace std { class recursive_timed_mutex; }

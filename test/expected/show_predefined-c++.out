@@ -391,6 +391,7 @@ define bad_optional_access of namespace std as class bad_optional_access
 define bad_typeid of namespace std as class bad_typeid
 define bad_variant_access of namespace std as class bad_variant_access
 define bad_weak_ptr of namespace std as class bad_weak_ptr
+define bernoulli_distribution of namespace std as class bernoulli_distribution
 define byte of namespace std as enumeration byte
 define chars_format of namespace std as enumeration class chars_format
 define choose of namespace chrono of namespace std as enumeration class choose
@@ -498,6 +499,7 @@ define out_of_range of namespace std as class out_of_range
 define overflow_error of namespace std as class overflow_error
 define partial_ordering of namespace std as structure partial_ordering
 define ptrdiff_t of namespace std as long int
+define random_device of namespace std as class random_device
 define range_error of namespace std as class range_error
 define recursive_mutex of namespace std as class recursive_mutex
 define recursive_timed_mutex of namespace std as class recursive_timed_mutex
