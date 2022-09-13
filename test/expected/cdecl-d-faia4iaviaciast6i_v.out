@@ -205,7 +205,8 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
   }
 }
 
-param_c_ast ::= type_c_ast cast_c_astp_opt = {
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
   type_c_ast = {
     sname = "",
     unique_id = 1341,
@@ -445,7 +446,8 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
   }
 }
 
-param_c_ast ::= type_c_ast cast_c_astp_opt = {
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
   type_c_ast = {
     sname = "",
     unique_id = 1344,
@@ -731,7 +733,8 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
   }
 }
 
-param_c_ast ::= type_c_ast cast_c_astp_opt = {
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
   type_c_ast = {
     sname = "",
     unique_id = 1347,
@@ -1035,7 +1038,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     loc = 50-56,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     size = unspecified,
-    type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+    type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
     of_ast = NULL
   },
   array_cast_c_astp = {
@@ -1048,7 +1051,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     loc = 50-56,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     size = unspecified,
-    type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+    type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
     of_ast = {
       sname = "",
       unique_id = 1350,
@@ -1063,7 +1066,8 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
   }
 }
 
-param_c_ast ::= type_c_ast cast_c_astp_opt = {
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
   type_c_ast = {
     sname = "",
     unique_id = 1350,
@@ -1085,7 +1089,7 @@ param_c_ast ::= type_c_ast cast_c_astp_opt = {
     loc = 50-56,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     size = unspecified,
-    type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+    type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
     of_ast = {
       sname = "",
       unique_id = 1350,
@@ -1108,7 +1112,7 @@ param_c_ast ::= type_c_ast cast_c_astp_opt = {
     loc = 50-56,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     size = unspecified,
-    type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+    type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
     of_ast = {
       sname = "",
       unique_id = 1350,
@@ -1202,7 +1206,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
     loc = 50-56,
     type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     size = unspecified,
-    type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+    type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
     of_ast = {
       sname = "",
       unique_id = 1350,
@@ -1292,7 +1296,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       loc = 50-56,
       type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       size = unspecified,
-      type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+      type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
       of_ast = {
         sname = "",
         unique_id = 1350,
@@ -1443,7 +1447,8 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
   }
 }
 
-param_c_ast ::= type_c_ast cast_c_astp_opt = {
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
   type_c_ast = {
     sname = "",
     unique_id = 1353,
@@ -1581,7 +1586,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       loc = 50-56,
       type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       size = unspecified,
-      type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+      type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
       of_ast = {
         sname = "",
         unique_id = 1350,
@@ -1695,7 +1700,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       loc = 50-56,
       type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       size = unspecified,
-      type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+      type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
       of_ast = {
         sname = "",
         unique_id = 1350,
@@ -1834,7 +1839,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
       loc = 50-56,
       type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       size = unspecified,
-      type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+      type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
       of_ast = {
         sname = "",
         unique_id = 1350,
@@ -1964,7 +1969,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
         loc = 50-56,
         type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
         size = unspecified,
-        type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+        type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
         of_ast = {
           sname = "",
           unique_id = 1350,
@@ -2115,7 +2120,7 @@ decl_c ::= decl_c_astp = {
         loc = 50-56,
         type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
         size = unspecified,
-        type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+        type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
         of_ast = {
           sname = "",
           unique_id = 1350,
@@ -2251,7 +2256,7 @@ decl_c ::= decl_c_astp = {
         loc = 50-56,
         type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
         size = unspecified,
-        type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+        type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
         of_ast = {
           sname = "",
           unique_id = 1350,

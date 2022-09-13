@@ -763,6 +763,17 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   if ( OPT_LANG_IS( C_ANY ) )
     return true;
 
+  c_ast_t const *param_ast = c_param_ast( c_ast_params( ast ) );
+  if ( param_ast != NULL && c_ast_is_tid_any( param_ast, TS_THIS ) &&
+       c_ast_is_tid_any( ast, TS_FUNC_LIKE_NOT_EXPLICIT_OBJ_PARAM ) ) {
+    print_error( &param_ast->loc,
+      "%s with \"this\" parameter can not be %s\n",
+      c_kind_name( ast->kind ),
+      c_tid_name_error( ast->type.stids & TS_FUNC_LIKE_NOT_EXPLICIT_OBJ_PARAM )
+    );
+    return false;
+  }
+
   if ( c_tid_is_any( ast->type.stids, TS_CONSTINIT ) ) {
     error_kind_not_tid( ast, TS_CONSTINIT, LANG_NONE, "\n" );
     return false;
@@ -817,14 +828,12 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   } // switch
 
   if ( c_tid_is_any( ast->type.stids, TS_DEFAULT | TS_DELETE ) ) {
-    c_ast_t const *param_ast;
     switch ( ast->kind ) {
       case K_CONSTRUCTOR:
         switch ( c_ast_params_count( ast ) ) {
           case 0:                     // C()
             break;
           case 1:                     // C(C const&)
-            param_ast = c_param_ast( c_ast_params( ast ) );
             if ( c_ast_is_ref_to_class_sname( param_ast, &ast->sname ) )
               break;
             FALLTHROUGH;
@@ -855,7 +864,6 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
               c_ast_is_ref_to_tid_any( ast->as.oper.ret_ast, TB_ANY_CLASS );
             if ( ret_ast == NULL || c_ast_params_count( ast ) != 1 )
               goto only_special;
-            param_ast = c_param_ast( c_ast_params( ast ) );
             param_ast = c_ast_is_ref_to_tid_any( param_ast, TB_ANY_CLASS );
             if ( param_ast != ret_ast )
               goto only_special;
@@ -1057,10 +1065,18 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
   unsigned n_params = 0;
 
   FOREACH_AST_FUNC_PARAM( param, ast ) {
-    if ( ++n_params > 1 && void_ast != NULL )
-      goto only_void;                   // R f(void, T)
-
     c_ast_t const *const param_ast = c_param_ast( param );
+
+    if ( ++n_params > 1 ) {
+      if ( c_ast_is_tid_any( param_ast, TS_THIS ) ) {
+        print_error( &param_ast->loc,
+          "\"this\" can be only first parameter\n"
+        );
+        return false;
+      }
+      if ( void_ast != NULL )
+        goto only_void;                 // R f(void, T)
+    }
 
     if ( c_sname_count( &param_ast->sname ) > 1 ) {
       print_error( &param_ast->loc, "parameter names can not be scoped\n" );
@@ -1068,7 +1084,8 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     }
 
     c_tid_t const param_stids =
-      TS_ANY_STORAGE & param_ast->type.stids & c_tid_compl( TS_REGISTER );
+      TS_ANY_STORAGE & param_ast->type.stids &
+      c_tid_compl( TS_FUNC_LIKE_PARAM );
     if ( param_stids != TS_NONE ) {
       print_error( &param_ast->loc,
         "%s parameters can not be %s\n",

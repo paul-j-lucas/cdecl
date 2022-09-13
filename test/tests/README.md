@@ -96,6 +96,7 @@ The characters are:
 + `th` = `throw`
 + `tl` = `thread_local`
 + `tn` = `typename`
++ `ts` = `this`
 + `u` = `unsigned`
 + `udc` = user-defined conversion
 + `udl` = user-defined literal

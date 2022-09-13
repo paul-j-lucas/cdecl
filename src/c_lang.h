@@ -493,6 +493,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_ENUM_CLASS                 LANG_MIN(CPP_11)
 
 /**
+ * Languages explicit `this` parameter supported in.
+ */
+#define LANG_EXPLICIT_OBJ_PARAM_DECL    LANG_CPP_MIN(23)
+
+/**
  * Languages `explicit` user-defined conversion operators are supported in.
  */
 #define LANG_EXPLICIT_USER_DEF_CONV     LANG_MIN(CPP_11)

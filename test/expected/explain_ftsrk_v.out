@@ -1,0 +1,1 @@
+declare f as function (self as this reference to S) returning void

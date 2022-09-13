@@ -1420,7 +1420,7 @@ static void yyerror( char const *msg ) {
 %token  <literal>   Y_REINTERPRET_CAST
 %token  <literal>   Y_STATIC_CAST
 %token              Y_TEMPLATE
-%token              Y_THIS
+%token  <tid>       Y_THIS
 %token  <tid>       Y_THROW
 %token  <tid>       Y_TRUE              // for noexcept(true)
 %token              Y_TRY
@@ -1724,6 +1724,7 @@ static void yyerror( char const *msg ) {
 %type   <flags>     show_which_types_flags_opt
 %type   <tid>       static_stid_opt
 %type   <str_val>   str_lit str_lit_exp
+%type   <tid>       this_stid_opt
 %type   <type>      type_modifier_base_type
 %type   <flag>      typename_flag_opt
 %type   <tid>       virtual_stid_exp virtual_stid_opt
@@ -4189,15 +4190,16 @@ param_c_ast
     /*
      * Ordinary function parameter declaration.
      */
-  : type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
+  : this_stid_opt type_c_ast { ia_type_ast_push( $2 ); } cast_c_astp_opt
     {
       ia_type_ast_pop();
 
-      DUMP_START( "param_c_ast", "type_c_ast cast_c_astp_opt" );
-      DUMP_AST( "type_c_ast", $1 );
-      DUMP_AST( "cast_c_astp_opt", $3.ast );
+      DUMP_START( "param_c_ast", "this_stid_opt type_c_ast cast_c_astp_opt" );
+      DUMP_TID( "this_stid_opt", $1 );
+      DUMP_AST( "type_c_ast", $2 );
+      DUMP_AST( "cast_c_astp_opt", $4.ast );
 
-      $$ = c_ast_patch_placeholder( $1, $3.ast );
+      $$ = c_ast_patch_placeholder( $2, $4.ast );
 
       if ( $$->kind == K_FUNCTION ) {
         //
@@ -4209,6 +4211,8 @@ param_c_ast
         //
         $$ = c_ast_pointer( $$, &gc_ast_list );
       }
+
+      C_TYPE_ADD_TID( &$$->type, $1, @1 );
 
       DUMP_AST( "param_c_ast", $$ );
       DUMP_END();
@@ -6309,6 +6313,7 @@ storage_class_english_stid
   | Y_OVERRIDE
 //| Y_REGISTER                          // in type_modifier_list_english_type
   | Y_STATIC
+  | Y_THIS
   | Y_THREAD local_exp            { $$ = TS_THREAD_LOCAL; }
   | Y__THREAD_LOCAL
   | Y_THREAD_LOCAL
@@ -7575,6 +7580,11 @@ str_lit_exp
       $$ = NULL;
       elaborate_error( "string literal expected" );
     }
+  ;
+
+this_stid_opt
+  : /* empty */                   { $$ = TS_NONE; }
+  | Y_THIS
   ;
 
 to_exp

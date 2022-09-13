@@ -201,7 +201,8 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-param_c_ast ::= type_c_ast cast_c_astp_opt = {
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
   type_c_ast = {
     sname = "x" (none),
     unique_id = 1342,
@@ -337,7 +338,8 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-param_c_ast ::= type_c_ast cast_c_astp_opt = {
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
   type_c_ast = {
     sname = "y" (none),
     unique_id = 1343,

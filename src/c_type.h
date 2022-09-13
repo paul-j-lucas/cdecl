@@ -292,23 +292,24 @@ enum c_tpid {
 #define TS_NOEXCEPT           0x0000000000800002ull /**< `noexcept`           */
 #define TS_OVERRIDE           0x0000000001000002ull /**< `override`           */
 #define TS_PURE_VIRTUAL       0x0000000002000002ull /**< `= 0`                */
-#define TS_THROW              0x0000000004000002ull /**< `throw()`            */
-#define TS_VIRTUAL            0x0000000008000002ull /**< `virtual`            */
+#define TS_THIS               0x0000000004000002ull /**< `this`               */
+#define TS_THROW              0x0000000008000002ull /**< `throw()`            */
+#define TS_VIRTUAL            0x0000000010000002ull /**< `virtual`            */
 
 // qualifiers
-#define TS_ATOMIC             0x0000000010000002ull /**< `_Atomic`            */
-#define TS_CONST              0x0000000020000002ull /**< `const`              */
-#define TS_RESTRICT           0x0000000040000002ull /**< `restrict`           */
-#define TS_VOLATILE           0x0000000080000002ull /**< `volatile`           */
+#define TS_ATOMIC             0x0000000100000002ull /**< `_Atomic`            */
+#define TS_CONST              0x0000000200000002ull /**< `const`              */
+#define TS_RESTRICT           0x0000000400000002ull /**< `restrict`           */
+#define TS_VOLATILE           0x0000000800000002ull /**< `volatile`           */
 
 // Unified Parallel C qualifiers
-#define TS_UPC_RELAXED        0x0000000100000002ull /**< `relaxed`            */
-#define TS_UPC_SHARED         0x0000000200000002ull /**< `shared`             */
-#define TS_UPC_STRICT         0x0000000400000002ull /**< `strict`             */
+#define TS_UPC_RELAXED        0x0000001000000002ull /**< `relaxed`            */
+#define TS_UPC_SHARED         0x0000002000000002ull /**< `shared`             */
+#define TS_UPC_STRICT         0x0000004000000002ull /**< `strict`             */
 
 // ref-qualifiers
-#define TS_REFERENCE          0x0000000800000002ull /**< `void f() &`         */
-#define TS_RVALUE_REFERENCE   0x0000001000000002ull /**< `void f() &&`        */
+#define TS_REFERENCE          0x0000010000000002ull /**< `void f() &`         */
+#define TS_RVALUE_REFERENCE   0x0000020000000002ull /**< `void f() &&`        */
 
 // attributes
 #define TA_NONE               0x0000000000000004ull /**< No attribute.        */
@@ -377,7 +378,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_NAMESPACE )
 
 /// Shorthand for any storage.
-#define TS_ANY_STORAGE        0x000000000FFFFFF2ull
+#define TS_ANY_STORAGE        0x00000000FFFFFFF2ull
 
 /// Shorthand for any UPC qualifier.
 #define TS_ANY_UPC            ( TS_UPC_RELAXED | TS_UPC_SHARED | TS_UPC_STRICT )
@@ -469,6 +470,19 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_FUNC_LIKE_NOT_CTOR ( TS_CV | TS_EXTERN | TS_EXTERN_C | TS_FINAL \
                               | TS_OVERRIDE | TS_ANY_REFERENCE | TS_RESTRICT \
                               | TS_STATIC | TS_VIRTUAL )
+
+/**
+ * The storage types that can _not_ apply to C++ function like things
+ * (functions and operators) that have an explicit object parameter (`this`).
+ */
+#define TS_FUNC_LIKE_NOT_EXPLICIT_OBJ_PARAM \
+                              ( TS_ANY_REFERENCE | TS_CV | TS_STATIC \
+                              | TS_VIRTUAL )
+
+/**
+ * The storage-types that can apply to C++ function-like parameters.
+ */
+#define TS_FUNC_LIKE_PARAM    ( TS_REGISTER | TS_THIS )
 
 /**
  * The only storage types that can apply to a C program's `main()` function.

@@ -208,8 +208,8 @@ static c_keyword_t const C_KEYWORDS[] = {
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
   { L_TEMPLATE,             Y_TEMPLATE,           KC__, TX_NONE,
     LANG_CPP_ANY,           AC_LANG(NONE)                                 },
-  { L_THIS,                 Y_THIS,               KC__, TX_NONE,
-    LANG_CPP_ANY,           AC_LANG(NONE)                                 },
+  { L_THIS,                 Y_THIS,               KC__, TS_THIS,
+    LANG_CPP_ANY,           AC_LANG(EXPLICIT_OBJ_PARAM_DECL)              },
   { L_THROW,                Y_THROW,              KC__, TS_THROW,
     LANG_CPP_ANY,           AC_LANG(THROW)                                },
   // Allow "true" in any C++ version since it's a keyword, but make it auto-

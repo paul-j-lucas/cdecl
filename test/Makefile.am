@@ -1059,6 +1059,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_fa_nd_i_v-01.test \
 	tests/declare_fa_nd_i_v-02.test \
 	tests/declare_frri_v.test \
+	tests/declare_ftsrk_v.test \
 	tests/declare_grtpi.test \
 	tests/declare_i+++.test \
 	tests/declare_ii-c++.test \
@@ -1384,6 +1385,7 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_fa_v.test \
 	tests/explain_fctor_i.test \
 	tests/explain_frri_v.test \
+	tests/explain_ftsrk_v.test \
 	tests/explain_grtpi.test \
 	tests/explain_grtri.test \
 	tests/explain_grtrri.test \
@@ -1443,6 +1445,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_ari.test \
 	tests/explain_ati-c++20.test \
 	tests/explain_cepctor_i.test \
+	tests/explain_cftsrk_v.test \
 	tests/explain_cri.test \
 	tests/explain_ctor_2i++default.test \
 	tests/explain_ecf_v-Rstr-03.test \
@@ -1472,6 +1475,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_prri.test \
 	tests/explain_rf_i.test \
 	tests/explain_rf_v-c++03.test \
+	tests/explain_rftsrk_v.test \
 	tests/explain_rr.test \
 	tests/explain_rrf_v-c++03.test \
 	tests/explain_rrgi.test \
@@ -1481,12 +1485,14 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_rtpi-c++-error.test \
 	tests/explain_rv.test \
 	tests/explain_stcf_v.test \
+	tests/explain_stftsrk_v.test \
 	tests/explain_stmi.test \
 	tests/explain_strf_v.test \
 	tests/explain_strrf_v.test \
 	tests/explain_th_f_v.test \
 	tests/explain_unknown_attribute.test \
 	tests/explain_v+f_v.test \
+	tests/explain_vftsrk_v.test \
 	tests/explain_xif_i.test \
 	tests/explain_xxf_v-c++11.test
 

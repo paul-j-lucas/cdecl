@@ -274,6 +274,9 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_OVERRIDE, LANG_OVERRIDE, L_OVERRIDDEN,
     C_LANG_LIT( { LANG_ANY, L_OVERRIDE } ) },
 
+  { TS_THIS, LANG_EXPLICIT_OBJ_PARAM_DECL, NULL,
+    C_LANG_LIT( { LANG_ANY, L_THIS } ) },
+
   { TS_THROW, LANG_CPP_ANY, H_NON_THROWING,
     C_LANG_LIT( { LANG_ANY, L_THROW } ) },
 
@@ -390,6 +393,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define P03         LANG_CPP_MIN(03)
 #define P11         LANG_CPP_MIN(11)
 #define P20         LANG_CPP_MIN(20)
+#define P23         LANG_CPP_MIN(23)
 #define E11         LANG_C_CPP_MIN(11,11)
 #define E30         LANG_C_CPP_MIN(23,20)
 #define E13         LANG_C_CPP_MIN(11,23)
@@ -429,33 +433,34 @@ static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] 
  */
 static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
-//  aut blo ext exc reg sta thr typ   cev cex cin def del exp exp fin fri inl mut noe ove thr vir pur
-  { ___,___,___,___,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// auto
-  { ___,___,___,___,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// block
-  { XXX,___,___,___,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// extern
-  { XXX,___,___,CPP,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// extern C
-  { XXX,___,XXX,XXX,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// register
-  { XXX,XXX,XXX,XXX,XXX,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// static
-  { XXX,___,___,P11,XXX,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// thread
-  { XXX,___,XXX,CPP,XXX,XXX,XXX,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// typedef
+//  aut blo ext exc reg sta thr typ   cev cex cin def del exp exp fin fri inl mut noe ove thi thr vir pur
+  { ___,___,___,___,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// auto
+  { ___,___,___,___,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// block
+  { XXX,___,___,___,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// extern
+  { XXX,___,___,CPP,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// extern C
+  { XXX,___,XXX,XXX,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// register
+  { XXX,XXX,XXX,XXX,XXX,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// static
+  { XXX,___,___,P11,XXX,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// thread
+  { XXX,___,XXX,CPP,XXX,XXX,XXX,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// typedef
 
   // storage-class-like
-  { P11,P11,P11,P20,XXX,P11,XXX,XXX,  P20,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'eval
-  { P11,P11,P11,P11,XXX,P11,XXX,XXX,  XXX,P11,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'expr
-  { XXX,XXX,P20,P20,XXX,P20,P20,XXX,  XXX,XXX,P20,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'init
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P11,P11,XXX,P11,___,___,___,___,___,___,___,___,___,___,___,___ },// default
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P11,P11,XXX,XXX,P11,___,___,___,___,___,___,___,___,___,___,___ },// delete
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P11,XXX,P11,P11,CPP,___,___,___,___,___,___,___,___,___,___ },// explicit
-  { XXX,XXX,P20,XXX,XXX,XXX,XXX,XXX,  XXX,P20,P20,XXX,XXX,XXX,P20,___,___,___,___,___,___,___,___,___ },// export
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P11,XXX,XXX,XXX,XXX,XXX,P11,___,___,___,___,___,___,___,___ },// final
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P20,P11,XXX,P20,XXX,XXX,XXX,XXX,CPP,___,___,___,___,___,___,___ },// friend
-  { XXX,XXX,___,CPP,XXX,___,XXX,XXX,  P20,P11,P20,P11,P11,CPP,P20,P11,CPP,C99,___,___,___,___,___,___ },// inline
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P03,___,___,___,___,___ },// mutable
-  { XXX,XXX,P11,CPP,XXX,P11,XXX,P11,  P20,P11,XXX,P11,P11,CPP,P20,P11,P11,P11,XXX,P11,___,___,___,___ },// noexcept
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P11,XXX,XXX,XXX,XXX,XXX,P11,XXX,C11,XXX,C11,P11,___,___,___ },// override
-  { XXX,XXX,CPP,CPP,XXX,CPP,XXX,CPP,  P20,P11,XXX,P11,P11,CPP,XXX,CPP,XXX,CPP,XXX,XXX,CPP,CPP,___,___ },// throw
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P20,XXX,XXX,XXX,XXX,XXX,P11,XXX,CPP,XXX,C11,P11,CPP,CPP,___ },// virtual
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P20,XXX,XXX,XXX,XXX,XXX,XXX,XXX,CPP,XXX,C11,P11,CPP,CPP,CPP },// pure
+  { P11,P11,P11,P20,XXX,P11,XXX,XXX,  P20,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'eval
+  { P11,P11,P11,P11,XXX,P11,XXX,XXX,  XXX,P11,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'expr
+  { XXX,XXX,P20,P20,XXX,P20,P20,XXX,  XXX,XXX,P20,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'init
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P11,P11,XXX,P11,___,___,___,___,___,___,___,___,___,___,___,___,___ },// default
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P11,P11,XXX,XXX,P11,___,___,___,___,___,___,___,___,___,___,___,___ },// delete
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P11,XXX,P11,P11,CPP,___,___,___,___,___,___,___,___,___,___,___ },// explicit
+  { XXX,XXX,P20,XXX,XXX,XXX,XXX,XXX,  XXX,P20,P20,XXX,XXX,XXX,P20,___,___,___,___,___,___,___,___,___,___ },// export
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P11,XXX,XXX,XXX,XXX,XXX,P11,___,___,___,___,___,___,___,___,___ },// final
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P20,P11,XXX,P20,XXX,XXX,XXX,XXX,CPP,___,___,___,___,___,___,___,___ },// friend
+  { XXX,XXX,___,CPP,XXX,___,XXX,XXX,  P20,P11,P20,P11,P11,CPP,P20,P11,CPP,C99,___,___,___,___,___,___,___ },// inline
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P03,___,___,___,___,___,___ },// mutable
+  { XXX,XXX,P11,CPP,XXX,P11,XXX,P11,  P20,P11,XXX,P11,P11,CPP,P20,P11,P11,P11,XXX,P11,___,___,___,___,___ },// noexcept
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P11,XXX,XXX,XXX,XXX,XXX,P11,XXX,C11,XXX,C11,P11,___,___,___,___ },// override
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P23,___,___,___ },// this
+  { XXX,XXX,CPP,CPP,XXX,CPP,XXX,CPP,  P20,P11,XXX,P11,P11,CPP,XXX,CPP,XXX,CPP,XXX,XXX,CPP,P23,CPP,___,___ },// throw
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P20,XXX,XXX,XXX,XXX,XXX,P11,XXX,CPP,XXX,C11,P11,XXX,CPP,CPP,___ },// virtual
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P20,XXX,XXX,XXX,XXX,XXX,XXX,XXX,CPP,XXX,C11,P11,XXX,CPP,CPP,CPP },// pure
 };
 
 /**
@@ -861,6 +866,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     TS_REGISTER,
     TS_MUTABLE,
     TS_STATIC,
+    TS_THIS,
     TS_THREAD_LOCAL,
 
     // These are next so we get names like "static inline".
