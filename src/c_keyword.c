@@ -211,7 +211,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_THIS,                 Y_THIS,               KC__, TX_NONE,
     LANG_CPP_ANY,           AC_LANG(NONE)                                 },
   { L_THROW,                Y_THROW,              KC__, TS_THROW,
-    LANG_CPP_ANY,           AC_LANG(CPP_MAX(03))                          },
+    LANG_CPP_ANY,           AC_LANG(THROW)                                },
   // Allow "true" in any C++ version since it's a keyword, but make it auto-
   // completable only in languages where "noexcept" is supported.
   { L_TRUE,                 Y_TRUE,               KC__, TS_NOEXCEPT,
@@ -223,7 +223,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_TYPENAME,             Y_TYPENAME,           KC__, TX_NONE,
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
   { L_USING,                Y_USING,              KC__, TS_TYPEDEF,
-    LANG_CPP_ANY,           AC_LANG(CPP_MIN(11))                          },
+    LANG_CPP_ANY,           AC_LANG(USING_DECLARATION)                    },
   { L_VIRTUAL,              Y_VIRTUAL,            KC__, TS_VIRTUAL,
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
 
