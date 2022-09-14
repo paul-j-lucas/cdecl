@@ -561,7 +561,7 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
   if ( ast->kind != K_BUILTIN )
     return false;
   c_tid_t const ast_btids = c_tid_normalize( ast->type.btids );
-  return is_1n_bit_only_in_set( ast_btids, btids );
+  return is_1n_bit_only_in_set( c_tid_no_tpid( ast_btids ), btids );
 }
 
 bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
