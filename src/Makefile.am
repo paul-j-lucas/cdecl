@@ -99,6 +99,7 @@ red_black_test_SOURCES = \
 		pjl_config.h \
 		red_black.c red_black.h \
 		red_black_test.c \
+		slist.c slist.h \
 		types.h \
 		util.c util.h \
 		unit_test.h
