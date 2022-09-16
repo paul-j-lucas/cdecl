@@ -340,6 +340,8 @@ static void print_help_english( void ) {
       print_h( "]" );
     print_h( " | explicit | extern [\"C\" [linkage]] | friend |\n" );
     print_h( "       mutable | static" );
+    if ( OPT_LANG_IS( EXPLICIT_OBJ_PARAM_DECL ) )
+      print_h( " | this" );
     if ( OPT_LANG_IS( THREAD_LOCAL ) )
       print_h( " | thread_local" );
     print_h( " | typedef | [pure] virtual\n" );
