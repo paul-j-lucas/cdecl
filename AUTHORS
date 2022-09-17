@@ -96,6 +96,7 @@ Paul J. Lucas <paul@lucasmail.org>
 		noexcept, override, ref-qualifiers, rvalue references,
 		thread_local, and user-defined literals
 	added C23 and C++11 later attribute specifiers
+	added C++23 explicit object parameters
 	added C++20 consteval, constinit, export, operator<=>, and nested
 		inline namespaces
 	added Embedded C types _Accum, _Fract, _Sat, and typedefs
