@@ -60,7 +60,7 @@
  */
 NODISCARD
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
-                       char const *const prompts[static const 2] );
+                       char const *const prompts[] );
 
 ///////////////////////////////////////////////////////////////////////////////
 
