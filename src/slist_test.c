@@ -643,7 +643,7 @@ static noreturn void usage( void ) {
 
 ////////// main ///////////////////////////////////////////////////////////////
 
-int main( int argc, char const *argv[] ) {
+int main( int argc, char const *argv[const] ) {
   me = base_name( argv[0] );
   if ( --argc != 0 )
     usage();                            // LCOV_EXCL_LINE

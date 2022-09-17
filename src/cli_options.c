@@ -357,7 +357,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
  * @param argc The argument count from main().
  * @param argv The argument values from main().
  */
-static void parse_options( int argc, char const *argv[] ) {
+static void parse_options( int argc, char const *argv[const] ) {
   opterr = 0;                           // suppress default error message
   optind = 1;
 
@@ -680,7 +680,7 @@ struct option const* cli_option_next( struct option const *opt ) {
   return opt == NULL ? CLI_OPTIONS_LONG : (++opt)->name == NULL ? NULL : opt;
 }
 
-void cli_options_init( int *pargc, char const **pargv[] ) {
+void cli_options_init( int *pargc, char const **pargv[const] ) {
   assert( pargc != NULL );
   assert( pargv != NULL );
 
