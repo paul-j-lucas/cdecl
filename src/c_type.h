@@ -203,7 +203,7 @@ struct c_type {
   C_TYPE_LIT( TB_ANY, (STID), TA_ANY )
 
 /**
- * For \ref c_tid_t values, the low-order 4 bits specify the \ref c_tpid and
+ * For \ref c_tid_t values, the low-order 4 bits specify the type part ID and
  * thus how the value should be interpreted.
  */
 enum c_tpid {
@@ -432,7 +432,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_DESTRUCTOR_DEF     ( TS_INLINE | TS_NOEXCEPT | TS_THROW )
 
 /**
- * The only storage-types that can apply to C functions.
+ * The only storage types that can apply to C functions.
  *
  * @sa #TS_FUNC_LIKE_CPP
  * @sa #TS_MAIN_FUNC_C
@@ -440,7 +440,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_FUNC_C             ( TS_EXTERN | TS_INLINE | TS_STATIC | TS_TYPEDEF )
 
 /**
- * The only storage-types that can apply to C++ function-like things
+ * The only storage types that can apply to C++ function-like things
  * (functions, blocks, constructors, destructors, operators, and user-defined
  * conversion operators and literals).
  *
@@ -480,7 +480,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_VIRTUAL )
 
 /**
- * The storage-types that can apply to C++ function-like parameters.
+ * The storage types that can apply to C++ function-like parameters.
  */
 #define TS_FUNC_LIKE_PARAM    ( TS_REGISTER | TS_THIS )
 

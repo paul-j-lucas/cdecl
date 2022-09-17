@@ -95,6 +95,9 @@ static char const*  c_type_literal( c_type_info_t const*, bool );
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Literal for `long long`.
+ *
+ * @remarks
  * As part of the special case for `long long`, its literal is only `long`
  * because its type, #TB_LONG_LONG, is always combined with #TB_LONG, i.e., two
  * bits are set.  Therefore, when printed, it prints one `long` for #TB_LONG
@@ -104,15 +107,20 @@ static char const*  c_type_literal( c_type_info_t const*, bool );
 static char const L_LONG_LONG[] = "long";
 
 /**
+ * Literal for `rvalue reference`.
+
+ * @remarks
  * For convenience, this is just a concatenation of `L_RVALUE` and
  * `L_REFERENCE`.
  */
 static char const L_RVALUE_REFERENCE[] = "rvalue reference";
 
 /**
+ * "Literal" for a `typedef` type, e.g., `size_t`.
+ *
+ * @remarks
  * #TB_TYPEDEF exists only so there can be a row/column for it in the \ref
  * OK_TYPE_LANGS table to make things like `signed size_t` illegal.
- *
  * #TB_TYPEDEF doesn't have any printable representation (only the name of the
  * type is printed); therefore, its literal is the empty string.
  */
@@ -163,6 +171,12 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
 
 /**
  * Type mapping for qualifiers.
+ *
+ * @remarks
+ * Even though `const`, `restrict`, and `volatile` weren't supported until C89,
+ * they're allowed in all languages since **cdecl** supports their GNU
+ * extension counterparts of `__const`, `__restrict`, and `__volatile` in K&R
+ * C.
  *
  * @note This array _must_ have the same size and order as OK_QUALIFIER_LANGS.
  */
@@ -406,8 +420,14 @@ static c_type_info_t const C_TYPE_INFO[] = {
 /**
  * Legal combinations of qualifiers in languages.
  *
+ * @remarks
+ * Even though `const`, `restrict`, and `volatile` weren't supported until C89,
+ * they're allowed in all languages since **cdecl** supports their GNU
+ * extension counterparts of `__const`, `__restrict`, and `__volatile` in K&R
+ * C.
+ *
  * @note
- * This array _must_ have the same size and order as C_QUALIFIER_INFO.
+ * This array _must_ have the same size and order as \ref C_QUALIFIER_INFO.
  */
 static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] = {
 // Only the lower triangle is used.
@@ -429,7 +449,7 @@ static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] 
  * Legal combinations of storage classes in languages.
  *
  * @note
- * This array _must_ have the same size and order as C_STORAGE_INFO.
+ * This array _must_ have the same size and order as \ref C_STORAGE_INFO.
  */
 static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
@@ -467,7 +487,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
  * Legal combinations of types in languages.
  *
  * @note
- * This array _must_ have the same size and order as C_TYPE_INFO.
+ * This array _must_ have the same size and order as \ref C_TYPE_INFO.
  */
 static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 // Only the lower triangle is used.
@@ -668,7 +688,7 @@ static c_tid_t c_tid_nosigned( c_tid_t btids ) {
 }
 
 /**
- * Creates a \ref c_type based on the type part ID of \a tids.
+ * Creates a \ref c_type based on the \ref c_tpid "type part ID" of \a tids.
  *
  * @param tids The \ref c_tid_t to create the \ref c_type from.
  * @return Returns said \ref c_type.
@@ -690,8 +710,8 @@ static c_type_t c_tid_to_type( c_tid_t tids ) {
 }
 
 /**
- * Gets a pointer to the \ref c_tid_t of \a type that corresponds to the type
- * part ID of \a tids.
+ * Gets a pointer to the \ref c_tid_t of \a type that corresponds to the \ref
+ * c_tpid "type part ID" of \a tids.
  *
  * @param type The \ref c_type to get a pointer to the relevant \ref c_tid_t
  * of.
