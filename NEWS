@@ -13,7 +13,7 @@ with their complete changes, see the AUTHORS file.
 * Changes in Cdecl 12.1
 
 ** Explicit object parameters
-Explicit object parameters in C++23 are preliminarily supported:
+Explicit object parameters in C++23 are preliminarily supported.
 
 ** `static` `operator()`
 Now allow `operator()` to be `static` in C++23.
