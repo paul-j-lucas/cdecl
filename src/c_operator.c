@@ -174,9 +174,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
     best_op = op;
   } // for
 
-  if ( unlikely( best_op == NULL ) )
-    INTERNAL_ERR( "%d: c_oper_get() didn't find operator\n", oper_id );
-
+  assert( best_op != NULL );
   return best_op;
 }
 
