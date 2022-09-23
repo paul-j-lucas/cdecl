@@ -55,7 +55,6 @@ struct g_state {
   bool      postfix;                    ///< Doing postfix gibberish?
   bool      printed_space;              ///< Printed a space yet?
   bool      printing_typedef;           ///< Printing a `typedef`?
-  bool      skip_name_for_using;        ///< Skip type name for `using`?
 };
 typedef struct g_state g_state_t;
 
@@ -147,7 +146,6 @@ static void g_init( g_state_t *g, unsigned flags, bool printing_typedef,
   g->gout = gout;
   g->printed_space = (flags & C_GIB_OMIT_TYPE) != 0;
   g->printing_typedef = printing_typedef;
-  g->skip_name_for_using = (flags & C_GIB_USING) != 0;
 }
 
 /**
@@ -271,7 +269,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         FPRINTF( g->gout, " %s", c_tid_name_c( msc_call_atid ) );
       }
       if ( false_set( &g->postfix ) ) {
-        if ( !g->skip_name_for_using && (g->flags & C_GIB_CAST) == 0 )
+        if ( (g->flags & (C_GIB_CAST | C_GIB_USING)) == 0 )
           g_print_space_once( g );
         g_print_postfix( g, ast );
       }
@@ -446,19 +444,18 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           FPUTC( ' ', g->gout );
 
         //
-        // Temporarily set skip_name_for_using to false to force printing of
-        // the type's name.  This is necessary for when printing the name of a
-        // typedef of a typedef as a "using" declaration:
+        // Temporarily turn off C_GIB_USING to force printing of the type's
+        // name.  This is necessary for when printing the name of a typedef of
+        // a typedef as a "using" declaration:
         //
         //      c++decl> typedef int32_t foo_t
         //      c++decl> show foo_t as using
         //      using foo_t = int32_t;
         //
-        bool const orig_skip_name_for_using = g->skip_name_for_using;
-        g->skip_name_for_using = false;
+        unsigned const orig_flags = g->flags;
+        g->flags &= ~C_GIB_USING;
         g_print_ast_name( g, ast->as.tdef.for_ast );
-        g->skip_name_for_using = orig_skip_name_for_using;
-
+        g->flags = orig_flags;
         if ( print_parens_for_Atomic )
           FPUTC( ')', g->gout );
         if ( is_more_than_plain_typedef && opt_east_const )
@@ -575,7 +572,7 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
     return;
   }
 
-  if ( true_clear( &g->skip_name_for_using ) ) {
+  if ( (g->flags & C_GIB_USING) != 0 ) {
     //
     // If we're printing a type as a "using" declaration, we have to skip
     // printing the type name since it's already been printed immediately after
@@ -888,7 +885,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       break;
     default:
       if ( !c_sname_empty( &ast->sname ) ) {
-        if ( !g->skip_name_for_using )
+        if ( (g->flags & C_GIB_USING) == 0 )
           g_print_space_once( g );
         g_print_ast_name( g, ast );
       }
@@ -932,7 +929,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
  */
 NODISCARD
 static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
-  if ( g->skip_name_for_using )
+  if ( (g->flags & C_GIB_USING) != 0 )
     return false;
   if ( (g->flags & C_GIB_CAST) != 0 )
     return false;
