@@ -178,7 +178,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
   bool    is_override     = false;
   bool    is_pure_virtual = false;
   bool    is_throw        = false;
-  c_tid_t msc_call_atid   = TA_NONE;
+  c_tid_t msc_call_atids  = TA_NONE;
   c_tid_t ref_qual_stids  = TS_NONE;
 
   //
@@ -233,7 +233,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       //
       // Microsoft calling conventions are printed specially.
       //
-      msc_call_atid = type.atids & TA_ANY_MSC_CALL;
+      msc_call_atids = type.atids & TA_ANY_MSC_CALL;
       type.atids &= c_tid_compl( TA_ANY_MSC_CALL );
 
       //
@@ -259,14 +259,14 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
       if ( ast->as.parent.of_ast != NULL )
         g_print_ast( g, ast->as.parent.of_ast );
-      if ( msc_call_atid != TA_NONE &&
+      if ( msc_call_atids != TA_NONE &&
            !c_ast_parent_is_kind( ast, K_POINTER ) ) {
         //
         // If ast is a function having a Microsoft calling convention, but not
         // a pointer to such a function, print the calling convention.
         // (Pointers to such functions are handled in g_print_postfix().)
         //
-        FPRINTF( g->gout, " %s", c_tid_name_c( msc_call_atid ) );
+        FPRINTF( g->gout, " %s", c_tid_name_c( msc_call_atids ) );
       }
       if ( false_set( &g->postfix ) ) {
         if ( (g->flags & (C_GIB_CAST | C_GIB_USING)) == 0 )
@@ -662,8 +662,8 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
               //
               //      void (__stdcall *pf)(int, int)
               //
-              c_tid_t const msc_call_atid = ast->type.atids & TA_ANY_MSC_CALL;
-              FPRINTF( g->gout, "%s ", c_tid_name_c( msc_call_atid ) );
+              c_tid_t const msc_call_atids = ast->type.atids & TA_ANY_MSC_CALL;
+              FPRINTF( g->gout, "%s ", c_tid_name_c( msc_call_atids ) );
             }
             break;
 
