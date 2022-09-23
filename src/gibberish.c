@@ -361,7 +361,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         );
       }
 
-      if ( ast->kind == K_ENUM && ast->as.enum_.of_ast != NULL ) {
+      if ( is_fixed_enum ) {
         FPUTS( " : ", g->gout );
         g_print_ast( g, ast->as.enum_.of_ast );
       }
