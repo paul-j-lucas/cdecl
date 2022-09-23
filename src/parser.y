@@ -1918,14 +1918,15 @@ declare_command
 
       decl_ast->loc = @2;
 
+      DUMP_AST( "decl_english", decl_ast );
+      DUMP_END();
+
       // To check the declaration, it needs a name: just dup the first one.
       c_sname_t temp_sname = c_sname_dup( slist_front( &$2 ) );
       c_sname_set( &decl_ast->sname, &temp_sname );
 
-      DUMP_AST( "decl_english", decl_ast );
-      DUMP_END();
-
       bool ok = c_ast_check( decl_ast );
+
       if ( ok ) {
         //
         // Ensure that none of the names aren't of a previously declared type:
