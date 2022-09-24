@@ -325,9 +325,9 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       char const *const type_name =
         (g->flags & (C_GIB_CAST | C_GIB_DECL)) != 0 &&
         //
-        // Special case: an enum with a fixed type must always have "enum"
-        // printed, so we don't call c_type_name_ecsu() that may omit it by
-        // applying opt_explicit_ecsu.
+        // Special case: a fixed type enum must always have "enum" printed, so
+        // we don't call c_type_name_ecsu() that may omit it by applying
+        // opt_explicit_ecsu.
         //
         !is_fixed_enum ?
           c_type_name_ecsu( &type ) :
@@ -359,7 +359,26 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         );
       }
 
+      bool printed_name = false;
+
       if ( is_fixed_enum ) {
+        if ( (g->flags & C_GIB_TYPEDEF) != 0 ) {
+          //
+          // Special case: a fixed type enum needs to have its underlying type
+          // printed before east-const qualifiers (if any); but, if it's a type
+          // declaration, then we also need to print its name before the
+          // qualifiers:
+          //
+          //      c++decl> define E as enum E of type int
+          //      c++decl> show typedef
+          //      enum E : int;
+          //
+          // But if we print its name now, we can't print it again later, so
+          // set a flag.
+          //
+          g_print_space_ast_name( g, ast );
+          printed_name = true;
+        }
         FPUTS( " : ", g->gout );
         g_print_ast( g, ast->as.enum_.of_ast );
       }
@@ -367,7 +386,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( cv_qual_stids != TS_NONE )
         FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stids ) );
 
-      g_print_space_ast_name( g, ast );
+      if ( !printed_name )
+        g_print_space_ast_name( g, ast );
       break;
     }
 

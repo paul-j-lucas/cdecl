@@ -40,6 +40,9 @@ A declaration omitting `int` now gives the correct error message:
 ** Fixed `const` array
 Array parameters no longer have a space wrongly emitted after `const`.
 
+** Fixed fixed type `enum` definition
+Fixed type `enum` definitions are now printed as C++ correctly.
+
 
 * Changes in Cdecl 12.0
 

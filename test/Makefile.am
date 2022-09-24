@@ -987,6 +987,7 @@ TESTS+=	tests/define_ai.test \
 TESTS+=	tests/define_2++_i.test \
 	tests/define_++_i.test \
 	tests/define_++c_i.test \
+	tests/define_efi.test \
 	tests/define_k_define_k_explain_k+k.test \
 	tests/define_k_explain_pmki.test
 
