@@ -866,7 +866,7 @@ bool is_1_bit_in_set( uint64_t n, uint64_t set ) {
  */
 NODISCARD C_UTIL_H_INLINE
 bool is_1_bit_only_in_set( uint64_t n, uint64_t set ) {
-  return is_1_bit( n ) && (n & set) != 0;
+  return is_1_bit( n ) && is_1_bit_in_set( n, set );
 }
 
 /**
