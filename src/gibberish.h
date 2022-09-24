@@ -127,8 +127,8 @@
  * Prints \a ast as gibberish, aka, a C/C++ declaration or cast.
  *
  * @param ast The AST to print.
- * @param flags The gibberish flags to use; _must_ include at least either
- * #C_GIB_CAST or #C_GIB_DECL.
+ * @param flags The gibberish flags to use; _must_ include either #C_GIB_CAST
+ * or #C_GIB_DECL.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_english()
