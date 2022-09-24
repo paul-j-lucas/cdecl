@@ -1140,7 +1140,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
   // In C++, such typedefs are unnecessary since such types are first-class
   // types and not just tags, so we don't print "typedef".
   //
-  bool const printed_typedef = (flags & C_GIB_TYPEDEF) != 0 &&
+  bool const print_typedef = (flags & C_GIB_TYPEDEF) != 0 &&
     (!is_ecsu || c_lang_is_c( tdef->lang_ids ) ||
     (OPT_LANG_IS( C_ANY ) && !c_lang_is_cpp( tdef->lang_ids )));
 
@@ -1148,12 +1148,12 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
   // When printing a "using", we don't have to check languages since "using" is
   // available only in C++.
   //
-  bool const printing_using = (flags & C_GIB_USING) != 0 && !is_ecsu;
+  bool const print_using = (flags & C_GIB_USING) != 0 && !is_ecsu;
 
-  if ( printed_typedef ) {
+  if ( print_typedef ) {
     FPUTS( "typedef ", gout );
   }
-  else if ( printing_using ) {
+  else if ( print_using ) {
     FPRINTF( gout, "using %s ", c_sname_local_name( sname ) );
     if ( tdef->ast->type.atids != TA_NONE )
       FPRINTF( gout, "%s ", c_tid_name_c( tdef->ast->type.atids ) );
@@ -1161,8 +1161,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
   }
 
   c_ast_gibberish_impl(
-    tdef->ast, printing_using ? C_GIB_USING : C_GIB_TYPEDEF,
-    printed_typedef, gout
+    tdef->ast, print_using ? C_GIB_USING : C_GIB_TYPEDEF, print_typedef, gout
   );
 
   if ( scope_close_braces_to_print > 0 ) {
