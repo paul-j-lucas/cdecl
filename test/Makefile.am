@@ -546,6 +546,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_ac9i.test \
 	tests/explain_af-c.test \
 	tests/explain_al3_c.test \
+	tests/explain_al4_cw3.test \
 	tests/explain_al8ty_i.test \
 	tests/explain_alf_i.test \
 	tests/explain_alrgi.test \

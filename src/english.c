@@ -58,7 +58,7 @@ static void c_type_print_not_base( c_type_t const*, FILE* );
  */
 static void c_ast_bit_width_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
-  assert( is_1_bit_only_in_set( ast->kind, K_BUILTIN | K_TYPEDEF ) );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_BIT_WIDTH ) );
   assert( eout != NULL );
 
   if ( ast->as.builtin.bit_width > 0 )

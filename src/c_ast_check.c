@@ -289,6 +289,12 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
       return false;
     }
 
+    if ( (raw_ast->kind & K_ANY_BIT_WIDTH) != 0 &&
+         ast->as.builtin.bit_width > 0 ) {
+      print_error( &ast->align.loc, "bit fields can not be aligned\n" );
+      return false;
+    }
+
     if ( raw_ast->kind == K_CLASS_STRUCT_UNION && OPT_LANG_IS( C_ANY ) ) {
       print_error( &ast->loc,
         "%s can not be aligned in C\n", c_kind_name( ast->kind )

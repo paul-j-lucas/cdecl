@@ -203,6 +203,11 @@ enum c_ast_kind {
 };
 
 /**
+ * Shorthand for any kind that can be a bit field.
+ */
+#define K_ANY_BIT_WIDTH           ( K_BUILTIN | K_TYPEDEF )
+
+/**
  * Shorthand for either #K_ENUM or #K_CLASS_STRUCT_UNION.
  */
 #define K_ANY_ENUM_CLASS_STRUCT_UNION \

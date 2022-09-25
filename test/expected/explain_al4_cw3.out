@@ -1,0 +1,3 @@
+explain _Alignas(4) char c : 3
+        ^
+9: error: bit fields can not be aligned

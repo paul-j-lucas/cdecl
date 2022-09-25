@@ -30,6 +30,9 @@ they're still illegal).
 Explicit user-defined conversion operators are now correctly allowed in C++11
 and later.
 
+** Fixed aligned bit fields
+Aligned bit fields are now correctly forbidden.
+
 ** Fixed implicit `int` checking error message
 A declaration omitting `int` now gives the correct error message:
 
