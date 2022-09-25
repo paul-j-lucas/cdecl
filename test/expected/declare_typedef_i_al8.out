@@ -1,3 +1,3 @@
 declare x as typedef int aligned 64
-        ^
-9: error: types can not be aligned
+                         ^
+26: error: types can not be aligned

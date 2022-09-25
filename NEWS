@@ -30,6 +30,9 @@ they're still illegal).
 Explicit user-defined conversion operators are now correctly allowed in C++11
 and later.
 
+** Better alignment error location
+Improved the location of alignment errors.
+
 ** Fixed aligned bit fields
 Aligned bit fields are now correctly forbidden.
 

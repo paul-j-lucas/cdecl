@@ -269,12 +269,12 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
 
   if ( ast->align.kind != C_ALIGNAS_NONE ) {
     if ( c_tid_is_any( ast->type.stids, TS_TYPEDEF ) ) {
-      print_error( &ast->loc, "types can not be aligned\n" );
+      print_error( &ast->align.loc, "types can not be aligned\n" );
       return false;
     }
 
     if ( c_ast_is_register( ast ) ) {
-      print_error( &ast->loc,
+      print_error( &ast->align.loc,
         "\"%s\" can not be combined with \"register\"\n", alignas_name()
       );
       return false;
@@ -283,7 +283,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
     c_ast_t const *const raw_ast = c_ast_untypedef( ast );
 
     if ( (raw_ast->kind & K_ANY_OBJECT) == 0 ) {
-      print_error( &ast->loc,
+      print_error( &ast->align.loc,
         "%s can not be aligned\n", c_kind_name( ast->kind )
       );
       return false;
@@ -296,7 +296,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
     }
 
     if ( raw_ast->kind == K_CLASS_STRUCT_UNION && OPT_LANG_IS( C_ANY ) ) {
-      print_error( &ast->loc,
+      print_error( &ast->align.loc,
         "%s can not be aligned in C\n", c_kind_name( ast->kind )
       );
       return false;
@@ -308,7 +308,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
       case C_ALIGNAS_EXPR: {
         unsigned const alignment = ast->align.as.expr;
         if ( !is_01_bit( alignment ) ) {
-          print_error( &ast->loc,
+          print_error( &ast->align.loc,
             "\"%u\": alignment must be a power of 2\n", alignment
           );
           return false;
