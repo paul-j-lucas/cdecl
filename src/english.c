@@ -47,6 +47,21 @@ static bool c_ast_visitor_english( c_ast_t*, c_ast_visit_data_t );
 static void c_ast_english_impl( c_ast_t const*, FILE* );
 static void c_type_print_not_base( c_type_t const*, FILE* );
 
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Convenience function for calling c_ast_visit() to print \a ast as a
+ * declaration in pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eout The `FILE` to print to.
+ */
+static inline void c_ast_visit_english( c_ast_t const *ast, FILE *eout ) {
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_ast_visit_data_t const avd = POINTER_CAST( c_ast_visit_data_t, eout );
+  c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, avd );
+}
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -103,9 +118,7 @@ static void c_ast_english_impl( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
   assert( eout != NULL );
 
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_visit_data_t const avd = POINTER_CAST( c_ast_visit_data_t, eout );
-  c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, avd );
+  c_ast_visit_english( ast, eout );
 
   switch ( ast->align.kind ) {
     case C_ALIGNAS_NONE:
@@ -159,9 +172,7 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
       //
     }
 
-    c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, param_ast );
-    c_ast_visit_data_t const avd = POINTER_CAST( c_ast_visit_data_t, eout );
-    c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, avd );
+    c_ast_visit_english( param_ast, eout );
   } // for
 
   FPUTC( ')', eout );
