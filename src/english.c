@@ -291,12 +291,12 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
  * @param scope A pointer to the outermost scope.
  * @param eout The `FILE` to emit to.
  */
-static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
+static void c_scope_english( c_scope_t const *scope, FILE *eout ) {
   assert( scope != NULL );
   assert( eout != NULL );
 
   if ( scope->next != NULL ) {
-    c_sname_english_impl( scope->next, eout );
+    c_scope_english( scope->next, eout );
     c_scope_data_t const *const data = c_scope_data( scope );
     FPRINTF( eout,
       " of %s %s", c_type_name_english( &data->type ), data->name
@@ -400,7 +400,7 @@ void c_sname_english( c_sname_t const *sname, FILE *eout ) {
 
   if ( !c_sname_empty( sname ) ) {
     FPUTS( c_sname_local_name( sname ), eout );
-    c_sname_english_impl( sname->head, eout );
+    c_scope_english( sname->head, eout );
   }
 }
 
