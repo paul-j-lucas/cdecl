@@ -44,7 +44,6 @@
 NODISCARD
 static bool c_ast_visitor_english( c_ast_t*, c_ast_visit_data_t );
 
-static void c_ast_english_impl( c_ast_t const*, FILE* );
 static void c_type_print_not_base( c_type_t const*, FILE* );
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -102,36 +101,8 @@ static void c_ast_english_cast( c_ast_t const *ast, FILE *eout ) {
     c_sname_english( &ast->sname, eout );
   }
   FPUTS( " into ", eout );
-  c_ast_english_impl( ast, eout );
-  FPUTC( '\n', eout );
-}
-
-/**
- * Prints \a ast as a declaration in pseudo-English.
- *
- * @note A newline is _not_ printed.
- *
- * @param ast The AST to print.
- * @param eout The `FILE` to print to.
- */
-static void c_ast_english_impl( c_ast_t const *ast, FILE *eout ) {
-  assert( ast != NULL );
-  assert( eout != NULL );
-
   c_ast_visit_english( ast, eout );
-
-  switch ( ast->align.kind ) {
-    case C_ALIGNAS_NONE:
-      break;
-    case C_ALIGNAS_EXPR:
-      if ( ast->align.as.expr > 0 )
-        FPRINTF( eout, " aligned as %u bytes", ast->align.as.expr );
-      break;
-    case C_ALIGNAS_TYPE:
-      FPUTS( " aligned as ", eout );
-      c_ast_english_impl( ast->align.as.type_ast, eout );
-      break;
-  } // switch
+  FPUTC( '\n', eout );
 }
 
 /**
@@ -393,7 +364,21 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
     FPUTS( "as ", eout );
   }
 
-  c_ast_english_impl( ast, eout );
+  c_ast_visit_english( ast, eout );
+
+  switch ( ast->align.kind ) {
+    case C_ALIGNAS_NONE:
+      break;
+    case C_ALIGNAS_EXPR:
+      if ( ast->align.as.expr > 0 )
+        FPRINTF( eout, " aligned as %u bytes", ast->align.as.expr );
+      break;
+    case C_ALIGNAS_TYPE:
+      FPUTS( " aligned as ", eout );
+      c_ast_visit_english( ast->align.as.type_ast, eout );
+      break;
+  } // switch
+
   FPUTC( '\n', eout );
 }
 
@@ -427,7 +412,7 @@ void c_typedef_english( c_typedef_t const *tdef, FILE *eout ) {
   FPUTS( "define ", eout );
   c_sname_english( &tdef->ast->sname, eout );
   FPUTS( " as ", eout );
-  c_ast_english_impl( tdef->ast, eout );
+  c_ast_visit_english( tdef->ast, eout );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
