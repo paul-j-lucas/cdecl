@@ -1191,7 +1191,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       case K_POINTER_TO_MEMBER:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
-      case K_TYPEDEF:
+      case K_TYPEDEF:                   // can't happen after c_ast_untypedef()
       case K_USER_DEF_CONVERSION:
       case K_USER_DEF_LITERAL:
         // nothing to do
