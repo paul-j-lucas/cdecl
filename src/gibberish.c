@@ -538,10 +538,10 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
 static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( is_1_bit_only_in_set( ast->kind, K_ANY_BIT_WIDTH ) );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_BIT_FIELD ) );
 
-  if ( ast->as.builtin.bit_width > 0 )
-    FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
+  if ( ast->as.bit_field.bit_width > 0 )
+    FPRINTF( g->gout, " : %u", ast->as.bit_field.bit_width );
 }
 
 /**

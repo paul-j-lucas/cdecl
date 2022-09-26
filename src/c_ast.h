@@ -242,6 +242,23 @@ struct c_apple_block_ast {
 };
 
 /**
+ * Generic AST node for a #K_ANY_BIT_FIELD.
+ *
+ * @note All bit-field nodes have an `unsigned` bit width as a member offset by
+ * `sizeof(void*)`: this is taken advantage of.
+ *
+ * @sa c_builtin_ast
+ * @sa c_typedef_ast
+ */
+struct c_bit_field_ast {
+  /// So \ref bit_width is at the same offset as in both c_builtin_ast and
+  /// c_typedef_ast.
+  void           *not_used;
+
+  unsigned        bit_width;            ///< Bit-field width when &gt; 0.
+};
+
+/**
  * AST node for a #K_BUILTIN.
  *
  * @note Members are laid out in the same order as c_typedef_ast: this is taken
@@ -405,6 +422,7 @@ struct c_ast {
   union {
     c_parent_ast_t      parent;     ///< #K_ANY_PARENT members.
     c_array_ast_t       array;      ///< #K_ARRAY members.
+    c_bit_field_ast_t   bit_field;  ///< #K_ANY_BIT_FIELD members.
     c_apple_block_ast_t block;      ///< #K_APPLE_BLOCK members.
     c_builtin_ast_t     builtin;    ///< #K_BUILTIN members.
     c_csu_ast_t         csu;        ///< #K_CLASS_STRUCT_UNION members.

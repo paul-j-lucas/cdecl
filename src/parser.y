@@ -6969,7 +6969,7 @@ sname_c_ast
       // AST since we need to use the builtin union member now.
       //
       if ( $2 != 0 && (ok = c_ast_is_builtin_any( $$, TB_ANY_INTEGRAL )) )
-        $$->as.builtin.bit_width = (c_bit_width_t)$2;
+        $$->as.builtin.bit_width = (unsigned)$2;
 
       DUMP_AST( "sname_c_ast", $$ );
       DUMP_END();

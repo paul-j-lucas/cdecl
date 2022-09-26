@@ -289,8 +289,8 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
       return false;
     }
 
-    if ( (raw_ast->kind & K_ANY_BIT_WIDTH) != 0 &&
-         ast->as.builtin.bit_width > 0 ) {
+    if ( (raw_ast->kind & K_ANY_BIT_FIELD) != 0 &&
+         ast->as.bit_field.bit_width > 0 ) {
       print_error( &ast->align.loc, "bit fields can not be aligned\n" );
       return false;
     }
