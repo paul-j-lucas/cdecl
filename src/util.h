@@ -275,10 +275,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param STREAM The `FILE` stream to check for an error.
  *
- * @sa perror_exit_if()
+ * @sa #PERROR_EXIT_IF()
  */
 #define FERROR(STREAM) \
-  perror_exit_if( ferror( STREAM ) != 0, EX_IOERR )
+  PERROR_EXIT_IF( ferror( STREAM ) != 0, EX_IOERR )
 
 /**
  * Calls **fflush(3)** on \a STREAM, checks for an error, and exits if there
@@ -286,10 +286,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param STREAM The `FILE` stream to flush.
  *
- * @sa perror_exit_if()
+ * @sa #PERROR_EXIT_IF()
  */
 #define FFLUSH(STREAM) \
-  perror_exit_if( fflush( STREAM ) != 0, EX_IOERR )
+  PERROR_EXIT_IF( fflush( STREAM ) != 0, EX_IOERR )
 
 /**
  * Calls **fprintf**(3) on \a STREAM, checks for an error, and exits if there
@@ -301,10 +301,10 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPRINTF()
  * @sa #FPUTC()
  * @sa #FPUTS()
- * @sa perror_exit_if()
+ * @sa #PERROR_EXIT_IF()
  */
 #define FPRINTF(STREAM,...) \
-  perror_exit_if( fprintf( (STREAM), __VA_ARGS__ ) < 0, EX_IOERR )
+  PERROR_EXIT_IF( fprintf( (STREAM), __VA_ARGS__ ) < 0, EX_IOERR )
 
 /**
  * Calls **putc**(3), checks for an error, and exits if there was one.
@@ -315,10 +315,10 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPUTC()
  * @sa #FPRINTF()
  * @sa #FPUTS()
- * @sa perror_exit_if()
+ * @sa #PERROR_EXIT_IF()
  */
 #define FPUTC(C,STREAM) \
-  perror_exit_if( putc( (C), (STREAM) ) == EOF, EX_IOERR )
+  PERROR_EXIT_IF( putc( (C), (STREAM) ) == EOF, EX_IOERR )
 
 /**
  * Calls **fputs**(3), checks for an error, and exits if there was one.
@@ -329,10 +329,10 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPUTS()
  * @sa #FPRINTF()
  * @sa #FPUTC()
- * @sa perror_exit_if()
+ * @sa #PERROR_EXIT_IF()
  */
 #define FPUTS(S,STREAM) \
-  perror_exit_if( fputs( (S), (STREAM) ) == EOF, EX_IOERR )
+  PERROR_EXIT_IF( fputs( (S), (STREAM) ) == EOF, EX_IOERR )
 
 /**
  * Frees the given memory.
@@ -353,7 +353,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #STAT()
  */
 #define FSTAT(FD,PSTAT) \
-  perror_exit_if( fstat( (FD), (PSTAT) ) < 0, EX_IOERR )
+  PERROR_EXIT_IF( fstat( (FD), (PSTAT) ) < 0, EX_IOERR )
 
 /**
  * Cast either from or to an integral type &mdash; similar to C++'s
@@ -417,6 +417,20 @@ _GL_INLINE_HEADER_BEGIN
  * No-operation statement.  (Useful for a `goto` target.)
  */
 #define NO_OP                     ((void)0)
+
+/**
+ * If \a EXPR is `true`, prints an error message for `errno` to standard error
+ * and exits with status \a STATUS.
+ *
+ * @param EXPR The expression.
+ * @param STATUS The exit status code.
+ *
+ * @sa #FATAL_ERR()
+ * @sa #INTERNAL_ERR()
+ * @sa perror_exit()
+ */
+#define PERROR_EXIT_IF( EXPR, STATUS ) \
+  BLOCK( if ( unlikely( EXPR ) ) perror_exit( STATUS ); )
 
 /**
  * Cast either from or to a pointer type &mdash; similar to C++'s
@@ -489,7 +503,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FSTAT()
  */
 #define STAT(PATH,PSTAT) \
-  perror_exit_if( stat( (PATH), (PSTAT) ) < 0, EX_IOERR )
+  PERROR_EXIT_IF( stat( (PATH), (PSTAT) ) < 0, EX_IOERR )
 
 /**
  * C version of C++'s `static_cast`.
@@ -964,26 +978,9 @@ char const* parse_identifier( char const *s );
  *
  * @sa #FATAL_ERR()
  * @sa #INTERNAL_ERR()
- * @sa perror_exit_if()
+ * @sa #PERROR_EXIT_IF()
  */
 noreturn void perror_exit( int status );
-
-/**
- * If \a expr is `true`, prints an error message for `errno` to standard error
- * and exits.
- *
- * @param expr The expression.
- * @param status The exit status code.
- *
- * @sa #FATAL_ERR()
- * @sa #INTERNAL_ERR()
- * @sa perror_exit()
- */
-C_UTIL_H_INLINE
-void perror_exit_if( bool expr, int status ) {
-  if ( unlikely( expr ) )
-    perror_exit( status );
-}
 
 /**
  * Checks whether \a s is a blank line, that is either an empty string or a

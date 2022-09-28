@@ -118,7 +118,7 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   va_start( args, format );
   int rv = vsnprintf( buf, buf_rem, format, args );
   va_end( args );
-  perror_exit_if( rv < 0, EX_IOERR );
+  PERROR_EXIT_IF( rv < 0, EX_IOERR );
 
   //
   // Then reserve that number of characters: if strbuf_reserve() returns false,
@@ -133,7 +133,7 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
     va_start( args, format );
     rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args );
     va_end( args );
-    perror_exit_if( rv < 0, EX_IOERR );
+    PERROR_EXIT_IF( rv < 0, EX_IOERR );
   }
 
   sbuf->len += args_len;

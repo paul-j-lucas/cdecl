@@ -117,13 +117,13 @@ char const* base_name( char const *path_name ) {
 
 void check_atexit( void (*cleanup_fn)(void) ) {
   assert( cleanup_fn != NULL );
-  perror_exit_if( atexit( cleanup_fn ) != 0, EX_OSERR );
+  PERROR_EXIT_IF( atexit( cleanup_fn ) != 0, EX_OSERR );
 }
 
 void* check_realloc( void *p, size_t size ) {
   assert( size > 0 );
   p = p != NULL ? realloc( p, size ) : malloc( size );
-  perror_exit_if( p == NULL, EX_OSERR );
+  PERROR_EXIT_IF( p == NULL, EX_OSERR );
   return p;
 }
 
@@ -131,7 +131,7 @@ char* check_strdup( char const *s ) {
   if ( s == NULL )
     return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = strdup( s );
-  perror_exit_if( dup_s == NULL, EX_OSERR );
+  PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
   return dup_s;
 }
 
@@ -139,7 +139,7 @@ char* check_strdup_tolower( char const *s ) {
   if ( s == NULL )
     return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = MALLOC( char, strlen( s ) + 1/*\0*/ );
-  perror_exit_if( dup_s == NULL, EX_OSERR );
+  PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
   for ( char *p = dup_s; (*p++ = STATIC_CAST( char, tolower( *s++ ) )); )
     ;
   return dup_s;
@@ -149,7 +149,7 @@ char* check_strndup( char const *s, size_t n ) {
   if ( s == NULL )
     return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = strndup( s, n );
-  perror_exit_if( dup_s == NULL, EX_OSERR );
+  PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
   return dup_s;
 }
 

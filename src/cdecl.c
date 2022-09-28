@@ -366,7 +366,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   }
 
   FILE *const temp_file = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
-  perror_exit_if( temp_file == NULL, EX_IOERR );
+  PERROR_EXIT_IF( temp_file == NULL, EX_IOERR );
   yyrestart( temp_file );
   int const status = yyparse() == 0 ? EX_OK : EX_DATAERR;
   PJL_IGNORE_RV( fclose( temp_file ) );
