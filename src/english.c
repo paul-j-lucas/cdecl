@@ -80,32 +80,6 @@ static void c_ast_bit_width_english( c_ast_t const *ast, FILE *eout ) {
 }
 
 /**
- * Explains \a ast as a cast in pseudo-English.
- *
- * @param ast The AST to explain.
- * @param eout The `FILE` to print to.
- *
- * @sa c_ast_english()
- * @sa c_typedef_english()
- */
-static void c_ast_english_cast( c_ast_t const *ast, FILE *eout ) {
-  assert( ast != NULL );
-  assert( ast->cast_kind != C_CAST_NONE );
-  assert( eout != NULL );
-
-  if ( ast->cast_kind != C_CAST_C )
-    FPRINTF( eout, "%s ", c_cast_english( ast->cast_kind ) );
-  FPUTS( L_CAST, eout );
-  if ( !c_sname_empty( &ast->sname ) ) {
-    FPUTC( ' ', eout );
-    c_sname_english( &ast->sname, eout );
-  }
-  FPUTS( " into ", eout );
-  c_ast_visit_english( ast, eout );
-  FPUTC( '\n', eout );
-}
-
-/**
  * Helper function for c_ast_visitor_english() that prints a function-like
  * AST's parameters, if any.
  *
@@ -325,43 +299,50 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
   assert( eout != NULL );
 
-  if ( ast->cast_kind != C_CAST_NONE ) {
-    c_ast_english_cast( ast, eout );
-    return;
-  }
+  if ( ast->cast_kind == C_CAST_NONE ) {
+    FPUTS( "declare ", eout );
+    if ( ast->kind != K_USER_DEF_CONVERSION ) {
+      //
+      // Every kind but a user-defined conversion has a name.
+      //
+      c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
+      char const *local_name, *scope_name = "";
+      c_type_t const *scope_type = NULL;
 
-  FPUTS( "declare ", eout );
-  if ( ast->kind != K_USER_DEF_CONVERSION ) {
-    //
-    // Every kind but a user-defined conversion has a name.
-    //
-    c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
-    char const *local_name, *scope_name = "";
-    c_type_t const *scope_type = NULL;
-
-    if ( ast->kind == K_OPERATOR ) {
-      local_name = c_oper_token_c( ast->as.oper.oper_id );
-      if ( found_sname != NULL ) {
-        scope_name = c_sname_full_name( found_sname );
-        scope_type = c_sname_local_type( found_sname );
+      if ( ast->kind == K_OPERATOR ) {
+        local_name = c_oper_token_c( ast->as.oper.oper_id );
+        if ( found_sname != NULL ) {
+          scope_name = c_sname_full_name( found_sname );
+          scope_type = c_sname_local_type( found_sname );
+        }
+      } else {
+        assert( found_sname != NULL );
+        assert( !c_sname_empty( found_sname ) );
+        local_name = c_sname_local_name( found_sname );
+        scope_name = c_sname_scope_name( found_sname );
+        scope_type = c_sname_scope_type( found_sname );
       }
-    } else {
-      assert( found_sname != NULL );
-      assert( !c_sname_empty( found_sname ) );
-      local_name = c_sname_local_name( found_sname );
-      scope_name = c_sname_scope_name( found_sname );
-      scope_type = c_sname_scope_type( found_sname );
-    }
 
-    assert( local_name != NULL );
-    FPRINTF( eout, "%s ", local_name );
-    if ( scope_name[0] != '\0' ) {
-      assert( !c_type_is_none( scope_type ) );
-      FPRINTF( eout,
-        "of %s %s ", c_type_name_english( scope_type ), scope_name
-      );
+      assert( local_name != NULL );
+      FPRINTF( eout, "%s ", local_name );
+      if ( scope_name[0] != '\0' ) {
+        assert( !c_type_is_none( scope_type ) );
+        FPRINTF( eout,
+          "of %s %s ", c_type_name_english( scope_type ), scope_name
+        );
+      }
+      FPUTS( "as ", eout );
     }
-    FPUTS( "as ", eout );
+  }
+  else {                                // it's a cast
+    if ( ast->cast_kind != C_CAST_C )
+      FPRINTF( eout, "%s ", c_cast_english( ast->cast_kind ) );
+    FPUTS( L_CAST, eout );
+    if ( !c_sname_empty( &ast->sname ) ) {
+      FPUTC( ' ', eout );
+      c_sname_english( &ast->sname, eout );
+    }
+    FPUTS( " into ", eout );
   }
 
   c_ast_visit_english( ast, eout );
