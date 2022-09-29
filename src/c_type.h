@@ -393,8 +393,8 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_CONSTRUCTOR_ONLY
  * @sa #TS_FUNC_LIKE_CPP
  */
-#define TS_CONSTRUCTOR_DECL   ( TS_CONSTRUCTOR_DEF | TS_DEFAULT | TS_DELETE \
-                              | TS_EXPLICIT | TS_FRIEND )
+#define TS_CONSTRUCTOR_DECL   ( TS_CONSTRUCTOR_DEF | TS_CONSTRUCTOR_ONLY \
+                              | TS_DEFAULT | TS_DELETE | TS_FRIEND )
 
 /**
  * A subset of #TS_CONSTRUCTOR_DECL that can apply to file-scope constructor
