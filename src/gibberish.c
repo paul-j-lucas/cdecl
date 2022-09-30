@@ -388,6 +388,9 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
       if ( !printed_name )
         g_print_space_ast_name( g, ast );
+
+      if ( ast->kind == K_ENUM )
+        g_print_ast_bit_width( g, ast );
       break;
     }
 

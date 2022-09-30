@@ -197,6 +197,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       c_sname_english( &ast->as.enum_.enum_sname, eout );
       if ( ast->as.enum_.of_ast != NULL )
         FPUTS( " of type ", eout );
+      else
+        c_ast_bit_width_english( ast, eout );
       break;
 
     case K_NAME:

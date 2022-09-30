@@ -204,8 +204,10 @@ enum c_ast_kind {
 
 /**
  * Shorthand for any kind that can be a bit field.
+ *
+ * @note Enumerations are allowed to be bit fields only in C++.
  */
-#define K_ANY_BIT_FIELD           ( K_BUILTIN | K_TYPEDEF )
+#define K_ANY_BIT_FIELD           ( K_BUILTIN | K_ENUM | K_TYPEDEF )
 
 /**
  * Shorthand for either #K_ENUM or #K_CLASS_STRUCT_UNION.

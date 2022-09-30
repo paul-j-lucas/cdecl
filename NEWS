@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 12.1
 
+** Enumeration bit-fields
+Enumerations in C++ can now be bit fields.
+
 ** Explicit object parameters
 Explicit object parameters in C++23 are preliminarily supported.
 

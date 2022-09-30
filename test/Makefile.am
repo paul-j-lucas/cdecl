@@ -567,6 +567,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_ci-knr.test \
 	tests/explain_efi-c.test \
 	tests/explain_en-knr.test \
+	tests/explain_enw3-c.test \
 	tests/explain_etstf_v.test \
 	tests/explain_f2i_v-redef.test \
 	tests/explain_f_ai.test \
@@ -1017,9 +1018,9 @@ TESTS+=	tests/declare_config_tdu.test \
 #
 TESTS+=	tests/declare_+dtor.test \
 	tests/declare_+f_v.test \
-	tests/declare_0f_v.test \
 	tests/declare_+++i.test \
 	tests/declare_++i.test \
+	tests/declare_0f_v.test \
 	tests/declare_2+f_v.test \
 	tests/declare_a.test \
 	tests/declare_a3a5pfv_ppa7a9pc.test \
@@ -1049,6 +1050,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_en-c++.test \
 	tests/declare_enc.test \
 	tests/declare_enk.test \
+	tests/declare_enw3-c++.test \
 	tests/declare_epctor_i.test \
 	tests/declare_exf_i.test \
 	tests/declare_exi.test \
@@ -1368,6 +1370,7 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_efi.test \
 	tests/explain_efui.test \
 	tests/explain_efz.test \
+	tests/explain_enw3-c++.test \
 	tests/explain_epctor_i.test \
 	tests/explain_epictor_i.test \
 	tests/explain_epnxctor_i.test \

@@ -244,16 +244,16 @@ struct c_apple_block_ast {
 /**
  * Generic AST node for a #K_ANY_BIT_FIELD.
  *
- * @note All bit-field nodes have an `unsigned` bit width as a member offset by
- * `sizeof(void*)`: this is taken advantage of.
- *
  * @sa c_builtin_ast
+ * @sa c_enum_ast
  * @sa c_typedef_ast
  */
 struct c_bit_field_ast {
-  /// So \ref bit_width is at the same offset as in both c_builtin_ast and
-  /// c_typedef_ast.
-  void           *not_used;
+  ///@{
+  /// So \ref bit_width is at the same offset as in c_enum_ast.
+  c_ast_t        *unused_ast;
+  c_sname_t       unused_sname;
+  ///@}
 
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
 };
@@ -265,8 +265,11 @@ struct c_bit_field_ast {
  * advantage of.
  */
 struct c_builtin_ast {
-  /// So \ref bit_width is at the same offset as in c_typedef_ast.
-  void           *not_used;
+  ///@{
+  /// So \ref bit_width is at the same offset as in c_enum_ast.
+  c_ast_t        *unused_ast;
+  c_sname_t       unused_sname;
+  ///@}
 
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
 };
@@ -280,7 +283,7 @@ struct c_builtin_ast {
 struct c_constructor_ast {
   /// Constructors don't have a return type, but we need an unused pointer so
   /// \ref param_ast_list is at the same offset as in c_function_ast.
-  void           *not_used;
+  c_ast_t        *unused_ast;
 
   c_ast_list_t    param_ast_list;       ///< Constructor parameter(s), if any.
 };
@@ -296,7 +299,7 @@ struct c_csu_ast {
   /// unused pointer so \ref csu_sname is at the same offset as \ref
   /// c_enum_ast::enum_sname "enum_sname" and \ref c_ptr_mbr_ast::class_sname
   /// "class_sname".
-  void           *not_used;
+  c_ast_t        *unused_ast;
 
   c_sname_t       csu_sname;            ///< Class, struct, or union name.
 };
@@ -310,6 +313,7 @@ struct c_csu_ast {
 struct c_enum_ast {
   c_ast_t        *of_ast;               ///< The fixed type, if any.
   c_sname_t       enum_sname;           ///< Enumeration name.
+  unsigned        bit_width;            ///< Bit-field width when &gt; 0.
 };
 
 /**
@@ -384,6 +388,10 @@ struct c_ptr_ref_ast {
  */
 struct c_typedef_ast {
   c_ast_t const  *for_ast;              ///< What it's a `typedef` for.
+
+  /// So \ref bit_width is at the same offset as in c_enum_ast.
+  c_sname_t       unused_sname;
+
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
 };
 

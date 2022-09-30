@@ -2163,14 +2163,17 @@ alignas_or_width_decl_english_ast
       // This check has to be done now in the parser rather than later in the
       // AST since we need to use the builtin union member now.
       //
-      if ( !c_ast_is_builtin_any( $1, TB_ANY_INTEGRAL ) ) {
-        print_error( &@2, "bit-field type must be integral\n" );
+      if ( !c_ast_is_bit_field( $1 ) ) {
+        print_error( &@2,
+          "bit-fields can be only of integral %stypes\n",
+          OPT_LANG_IS( CPP_ANY ) ? "or enumeration " : ""
+        );
         PARSE_ABORT();
       }
 
       $$ = $1;
       $$->loc = @$;
-      $$->as.builtin.bit_width = $2;
+      $$->as.bit_field.bit_width = $2;
     }
   ;
 
@@ -6968,14 +6971,17 @@ sname_c_ast
       // This check has to be done now in the parser rather than later in the
       // AST since we need to use the builtin union member now.
       //
-      if ( $2 != 0 && (ok = c_ast_is_builtin_any( $$, TB_ANY_INTEGRAL )) )
-        $$->as.builtin.bit_width = (unsigned)$2;
+      if ( $2 != 0 && (ok = c_ast_is_bit_field( $$ )) )
+        $$->as.bit_field.bit_width = (unsigned)$2;
 
       DUMP_AST( "sname_c_ast", $$ );
       DUMP_END();
 
       if ( !ok ) {
-        print_error( &@2, "bit-fields can be only of integral types\n" );
+        print_error( &@2,
+          "bit-fields can be only of integral %stypes\n",
+          OPT_LANG_IS( CPP_ANY ) ? "or enumeration " : ""
+        );
         PARSE_ABORT();
       }
     }

@@ -1,0 +1,4 @@
+EXPECTED_EXIT=0
+cdecl -xc++ <<END
+explain enum E x : 3
+END
