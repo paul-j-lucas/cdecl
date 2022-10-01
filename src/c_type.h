@@ -944,7 +944,7 @@ c_tid_t c_tid_compl( c_tid_t tids ) {
  * any of \a except_tids.
  */
 NODISCARD C_TYPE_H_INLINE
-bool c_tid_is_except( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
+bool c_tid_is_except_any( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
   return (tids & (is_tids | except_tids)) == is_tids;
 }
 

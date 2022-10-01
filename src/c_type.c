@@ -533,7 +533,7 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 NODISCARD
 static inline bool c_tid_is_long_int( c_tid_t tids ) {
   return  c_tid_tpid( tids ) == C_TPID_BASE &&
-          c_tid_is_except( tids, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC );
+          c_tid_is_except_any( tids, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -679,7 +679,7 @@ static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
 NODISCARD
 static c_tid_t c_tid_nosigned( c_tid_t btids ) {
   c_tid_check( btids, C_TPID_BASE );
-  if ( c_tid_is_except( btids, TB_SIGNED, TB_CHAR ) ) {
+  if ( c_tid_is_except_any( btids, TB_SIGNED, TB_CHAR ) ) {
     btids &= c_tid_compl( TB_SIGNED );
     if ( btids == TB_NONE )
       btids = TB_INT;
@@ -1188,9 +1188,9 @@ c_tid_t c_tid_normalize( c_tid_t tids ) {
     case C_TPID_BASE:
       tids = c_tid_nosigned( tids );
       // If the type is only implicitly int, make it explicitly int.
-      if ( c_tid_is_except( tids, TB_SHORT, TB_ANY_EMC ) ||
-           c_tid_is_except( tids, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC ) ||
-           c_tid_is_except( tids, TB_UNSIGNED, TB_CHAR | TB_ANY_EMC ) ) {
+      if ( c_tid_is_except_any( tids, TB_SHORT, TB_ANY_EMC ) ||
+           c_tid_is_except_any( tids, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC ) ||
+           c_tid_is_except_any( tids, TB_UNSIGNED, TB_CHAR | TB_ANY_EMC ) ) {
         tids |= TB_INT;
       }
       break;
