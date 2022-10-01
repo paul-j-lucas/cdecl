@@ -79,15 +79,15 @@ typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Adds a new `typedef` or `using` to the global set.
+ * Adds a new `typedef` (or `using`) to the global set.
  *
  * @param type_ast The AST of the type to add.  Ownership is taken only if the
  * type was added.
  * @param gib_flags The gibberish flag indicating how the type was created;
  * must only be one of #C_GIB_NONE, #C_GIB_TYPEDEF, or #C_GIB_USING.
  * @return Returns the \ref c_typedef of either:
- * + The newly added type (its AST's \ref c_ast.unique_id "unique_id" is equal
- *   to \a type_ast's `unique_id`); or:
+ * + The newly added type (its \ref c_typedef.ast "ast" is equal to \a
+ *   type_ast); or:
  * + The previously added type having the same scoped name.
  */
 NODISCARD

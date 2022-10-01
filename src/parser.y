@@ -634,7 +634,7 @@ static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
   assert( type_ast != NULL );
 
   c_typedef_t const *const tdef = c_typedef_add( type_ast, gib_flags );
-  if ( tdef->ast->unique_id == type_ast->unique_id ) {
+  if ( tdef->ast == type_ast ) {
     //
     // Type was added: we have to move the AST from the gc_ast_list so it won't
     // be garbage collected at the end of the parse to a separate
