@@ -365,7 +365,7 @@ struct c_operator_ast {
  *      c++decl> explain int C::*p
  *      declare p as pointer to member of class C int
  *
- * the AST is:
+ * has an AST like:
  *
  *      decl_c = {
  *        sname = "p",
