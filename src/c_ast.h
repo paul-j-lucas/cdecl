@@ -261,8 +261,8 @@ struct c_bit_field_ast {
 /**
  * AST node for a #K_BUILTIN.
  *
- * @note Members are laid out in the same order as c_typedef_ast: this is taken
- * advantage of.
+ * @note Members are laid out in the same order as c_enum_ast and
+ * c_typedef_ast: this is taken advantage of.
  */
 struct c_builtin_ast {
   ///@{
@@ -307,8 +307,8 @@ struct c_csu_ast {
 /**
  * AST node for a #K_ENUM.
  *
- * @note Members are laid out in the same order as c_csu_ast and c_ptr_mbr_ast:
- * this is taken advantage of.
+ * @note Members are laid out in the same order as c_builtin_ast, c_csu_ast,
+ * c_ptr_mbr_ast, and c_typedef_ast: this is taken advantage of.
  */
 struct c_enum_ast {
   c_ast_t        *of_ast;               ///< The fixed type, if any.
@@ -359,6 +359,27 @@ struct c_operator_ast {
 
 /**
  * AST node for a #K_POINTER_TO_MEMBER.
+ *
+ * For example, a declaration like:
+ *
+ *      c++decl> explain int C::*p
+ *      declare p as pointer to member of class C int
+ *
+ * the AST is:
+ *
+ *      decl_c = {
+ *        sname = "p",
+ *        kind = "pointer to member",
+ *        ...
+ *        type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
+ *        class_sname = "C" (class),
+ *        of_ast = {
+ *          sname = "",
+ *          kind = "built-in type",
+ *          ...
+ *          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+ *        }
+ *      }
  *
  * @note Members are laid out in the same order as c_csu_ast and c_enum_ast:
  * this is taken advantage of.
