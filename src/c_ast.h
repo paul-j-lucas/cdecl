@@ -324,8 +324,8 @@ struct c_function_ast {
   c_ast_list_t    param_ast_list;       ///< Function parameter(s), if any.
 
   /**
-   * Bitwise-or of flags specifying whether the function is a member, non-
-   * member, or unspecified function.
+   * Bitwise-or of flags indicating whether the function is a member, non-
+   * member, or neither.
    *
    * @sa #C_FUNC_UNSPECIFIED
    * @sa #C_FUNC_MEMBER
@@ -345,7 +345,7 @@ struct c_operator_ast {
   c_ast_list_t    param_ast_list;       ///< Operator parameter(s), if any.
 
   /**
-   * Bitwise-or of flags specifying whether the user specified an operator as a
+   * Bitwise-or of flags indicating whether the user specified an operator as a
    * member, non-member, or neither.
    *
    * @sa #C_OP_UNSPECIFIED
