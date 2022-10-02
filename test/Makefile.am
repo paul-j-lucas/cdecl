@@ -1056,6 +1056,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_exi.test \
 	tests/declare_f+k_v.test \
 	tests/declare_f_pmi.test \
+	tests/declare_f_pmpi.test \
 	tests/declare_fa_cd_i_i.test \
 	tests/declare_fa_dep_i_v.test \
 	tests/declare_fa_mu_i_v-01.test \
@@ -1081,6 +1082,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_pmci.test \
 	tests/declare_pmf_i.test \
 	tests/declare_pmf_pc.test \
+	tests/declare_pmf_pi.test \
 	tests/declare_pmf_pk.test \
 	tests/declare_pmi.test \
 	tests/declare_ra3i.test \

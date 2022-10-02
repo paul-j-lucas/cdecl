@@ -428,10 +428,10 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
     case K_POINTER_TO_MEMBER:
       g_print_ast( g, ast->as.ptr_mbr.of_ast );
-      if ( !g->postfix ) {
+      if ( !g->printed_space )
         FPUTC( ' ', g->gout );
+      if ( !g->postfix )
         g_print_qual_name( g, ast );
-      }
       break;
 
     case K_TYPEDEF:

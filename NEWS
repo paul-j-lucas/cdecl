@@ -39,6 +39,15 @@ Improved the location of alignment errors.
 ** Fixed aligned bit fields
 Aligned bit fields are now correctly forbidden.
 
+** Fixed function returning pointer to member pointer to T
+The output of a declaration like:
+
+    c++decl> declare f as function returning pointer to member of class C \
+        pointer to int
+    int* C::* f();
+
+has been fixed.
+
 ** Fixed implicit `int` checking error message
 A declaration omitting `int` now gives the correct error message:
 
