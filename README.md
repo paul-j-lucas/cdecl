@@ -127,6 +127,7 @@ most notably:
   and
   `export`
   declarations.
+* Support for C++23 explicit object parameters.
 * Support for C++
   `[[carries_dependency]]`,
   `[[deprecated]]`,
