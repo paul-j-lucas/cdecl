@@ -51,11 +51,10 @@
 # endif
 
 # include "attribute.h"
-# include "verify.h"
 # include "lc-charset-dispatch.h"
 # include "mbtowc-lock.h"
 
-verify (sizeof (mbstate_t) >= 4);
+static_assert (sizeof (mbstate_t) >= 4);
 static char internal_state[4];
 
 size_t

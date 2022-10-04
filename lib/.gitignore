@@ -1,4 +1,5 @@
 /alloca.h
+/assert.h
 /ctype.h
 /errno.h
 /fnmatch.h
@@ -9,6 +10,7 @@
 /locale.h
 /stdarg.h
 /stdbool.h
+/stdckdint.h
 /stddef.h
 /stdint.h
 /stdio.h

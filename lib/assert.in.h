@@ -1,6 +1,5 @@
-/* Determine whether a locale is hard.
-
-   Copyright (C) 1999, 2003-2004, 2009-2022 Free Software Foundation, Inc.
+/* Substitute for and wrapper around <assert.h>
+   Copyright (C) 2011-2022 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -15,12 +14,14 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
-#ifndef HARD_LOCALE_H_
-# define HARD_LOCALE_H_ 1
+/* Do not guard the include, since <assert.h> is supposed to define
+   the assert macro each time it is included.  */
 
-/* Return true if the specified CATEGORY of the current locale is hard, i.e.
-   different from the C or POSIX locale that has a fixed behavior.
-   CATEGORY must be one of the LC_* values, but not LC_ALL.  */
-extern bool hard_locale (int category);
+#if __GNUC__ >= 3
+@PRAGMA_SYSTEM_HEADER@
+#endif
+@PRAGMA_COLUMNS@
 
-#endif /* HARD_LOCALE_H_ */
+#@INCLUDE_NEXT@ @NEXT_ASSERT_H@
+
+/* The definition of static_assert is copied here.  */

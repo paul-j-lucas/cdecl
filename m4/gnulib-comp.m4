@@ -44,6 +44,7 @@ AC_DEFUN([gl_EARLY],
 
   # Code from module absolute-header:
   # Code from module alloca-opt:
+  # Code from module assert-h:
   # Code from module attribute:
   # Code from module btowc:
   # Code from module builtin-expect:
@@ -64,7 +65,6 @@ AC_DEFUN([gl_EARLY],
   # Code from module hard-locale:
   # Code from module idx:
   # Code from module include_next:
-  # Code from module intprops:
   # Code from module inttypes-incomplete:
   # Code from module isblank:
   # Code from module libc-config:
@@ -91,6 +91,7 @@ AC_DEFUN([gl_EARLY],
   dnl for the builtin va_copy to work.  gl_PROG_CC_C99 arranges for this.
   gl_PROG_CC_C99
   # Code from module stdbool:
+  # Code from module stdckdint:
   # Code from module stddef:
   # Code from module stdint:
   # Code from module stdio:
@@ -106,7 +107,6 @@ AC_DEFUN([gl_EARLY],
   # Code from module sysexits:
   # Code from module unistd:
   # Code from module vararrays:
-  # Code from module verify:
   # Code from module wchar:
   # Code from module wctype-h:
   # Code from module wmemchr:
@@ -134,6 +134,9 @@ AC_DEFUN([gl_INIT],
   gl_source_base_prefix=
   gl_FUNC_ALLOCA
   gl_CONDITIONAL_HEADER([alloca.h])
+  AC_PROG_MKDIR_P
+  gl_ASSERT_H
+  gl_CONDITIONAL_HEADER([assert.h])
   AC_PROG_MKDIR_P
   gl_FUNC_BTOWC
   gl_CONDITIONAL([GL_COND_OBJ_BTOWC],
@@ -272,8 +275,14 @@ AC_DEFUN([gl_INIT],
   gl_STDARG_H
   gl_CONDITIONAL_HEADER([stdarg.h])
   AC_PROG_MKDIR_P
-  gl_STDBOOL_H
-  gl_CONDITIONAL_HEADER([stdbool.h])
+  gl_C_BOOL
+  AC_CHECK_HEADERS_ONCE([stdckdint.h])
+  if test $ac_cv_header_stdckdint_h = yes; then
+    GL_GENERATE_STDCKDINT_H=false
+  else
+    GL_GENERATE_STDCKDINT_H=true
+  fi
+  gl_CONDITIONAL_HEADER([stdckdint.h])
   AC_PROG_MKDIR_P
   gl_STDDEF_H
   gl_STDDEF_H_REQUIRE_DEFAULTS
@@ -535,6 +544,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/_Noreturn.h
   lib/alloca.in.h
   lib/arg-nonnull.h
+  lib/assert.in.h
   lib/attribute.h
   lib/btowc.c
   lib/c++defs.h
@@ -560,7 +570,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/hard-locale.c
   lib/hard-locale.h
   lib/idx.h
-  lib/intprops.h
+  lib/intprops-internal.h
   lib/inttypes.in.h
   lib/isblank.c
   lib/lc-charset-dispatch.c
@@ -588,7 +598,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/setlocale_null.c
   lib/setlocale_null.h
   lib/stdarg.in.h
-  lib/stdbool.in.h
+  lib/stdckdint.in.h
   lib/stddef.in.h
   lib/stdint.in.h
   lib/stdio-read.c
@@ -620,8 +630,10 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/__inline.m4
   m4/absolute-header.m4
   m4/alloca.m4
+  m4/assert_h.m4
   m4/btowc.m4
   m4/builtin-expect.m4
+  m4/c-bool.m4
   m4/codeset.m4
   m4/ctype_h.m4
   m4/errno_h.m4
@@ -659,7 +671,6 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/ssize_t.m4
   m4/std-gnu11.m4
   m4/stdarg.m4
-  m4/stdbool.m4
   m4/stddef_h.m4
   m4/stdint.m4
   m4/stdio_h.m4

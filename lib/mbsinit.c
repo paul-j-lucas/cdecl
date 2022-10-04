@@ -20,7 +20,6 @@
 /* Specification.  */
 #include <wchar.h>
 
-#include "verify.h"
 
 #if GNULIB_defined_mbstate_t
 
@@ -39,7 +38,7 @@
      - In wc -> mb direction, mbstate_t contains no information. In other
        words, it is always in the initial state.  */
 
-verify (sizeof (mbstate_t) >= 4);
+static_assert (sizeof (mbstate_t) >= 4);
 
 int
 mbsinit (const mbstate_t *ps)

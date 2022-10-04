@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdckdint.h>
 #include <stdlib.h>
 #if defined _LIBC || HAVE_ALLOCA
 # include <alloca.h>
@@ -37,7 +38,6 @@
 #include <wchar.h>
 #include <wctype.h>
 #include <stddef.h>
-#include <stdbool.h>
 
 /* We need some of the locale data (the collation sequence information)
    but there is no interface to get this information in general.  Therefore
@@ -73,7 +73,6 @@ extern int fnmatch (const char *pattern, const char *string, int flags);
 # include "attribute.h"
 #endif
 
-#include <intprops.h>
 #include <flexmember.h>
 
 #ifdef _LIBC
