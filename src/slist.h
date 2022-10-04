@@ -162,7 +162,7 @@ struct slist_node {
  * @sa slist_front()
  */
 NODISCARD
-void* slist_at_nocheck_offset( slist_t const *list, size_t offset );
+void* slist_at_nocheck( slist_t const *list, size_t offset );
 
 /**
  * Cleans-up all memory associated with \a list but _not_ \a list itself.
@@ -305,7 +305,7 @@ void slist_push_list_front( slist_t *dst_list, slist_t *src_list );
  */
 NODISCARD SLIST_H_INLINE
 void* slist_at( slist_t const *list, size_t offset ) {
-  return offset < list->len ? slist_at_nocheck_offset( list, offset ) : NULL;
+  return offset < list->len ? slist_at_nocheck( list, offset ) : NULL;
 }
 
 /**
@@ -325,7 +325,7 @@ void* slist_at( slist_t const *list, size_t offset ) {
 NODISCARD SLIST_H_INLINE
 void* slist_atr( slist_t const *list, size_t roffset ) {
   return roffset < list->len ?
-    slist_at_nocheck_offset( list, list->len - (roffset + 1) ) : NULL;
+    slist_at_nocheck( list, list->len - (roffset + 1) ) : NULL;
 }
 
 /**

@@ -40,7 +40,7 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void* slist_at_nocheck_offset( slist_t const *list, size_t offset ) {
+void* slist_at_nocheck( slist_t const *list, size_t offset ) {
   assert( list != NULL );
 
   slist_node_t *p;
