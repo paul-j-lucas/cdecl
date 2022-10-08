@@ -299,6 +299,7 @@ void slist_push_list_front( slist_t *dst_list, slist_t *src_list );
  *
  * @note This is an O(n) operation.
  *
+ * @sa slist_at_nocheck()
  * @sa slist_atr()
  * @sa slist_back()
  * @sa slist_front()
@@ -318,6 +319,7 @@ void* slist_at( slist_t const *list, size_t offset ) {
  *
  * @note This is an O(n) operation.
  *
+ * @sa slist_at_nocheck()
  * @sa slist_at()
  * @sa slist_back()
  * @sa slist_front()
@@ -337,6 +339,7 @@ void* slist_atr( slist_t const *list, size_t roffset ) {
  *
  * @note This is an O(1) operation.
  *
+ * @sa slist_at_nocheck()
  * @sa slist_at()
  * @sa slist_atr()
  * @sa slist_front()
@@ -370,6 +373,7 @@ bool slist_empty( slist_t const *list ) {
  *
  * @note This is an O(1) operation.
  *
+ * @sa slist_at_nocheck()
  * @sa slist_at()
  * @sa slist_atr()
  * @sa slist_back()
