@@ -401,6 +401,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * definitions.
  *
  * @sa #TS_CONSTRUCTOR_DECL
+ * @sa #TS_CONSTRUCTOR_ONLY
  */
 #define TS_CONSTRUCTOR_DEF    ( TS_CONSTEXPR | TS_INLINE | TS_NOEXCEPT \
                               | TS_THROW )
