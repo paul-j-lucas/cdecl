@@ -427,7 +427,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_POINTER_TO_MEMBER:
-      g_print_ast( g, ast->as.ptr_mbr.of_ast );
+      g_print_ast( g, ast->as.ptr_mbr.to_ast );
       if ( !g->printed_space )
         FPUTC( ' ', g->gout );
       if ( !g->postfix )

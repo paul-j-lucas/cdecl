@@ -373,7 +373,7 @@ struct c_operator_ast {
  *        ...
  *        type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
  *        class_sname = "C" (class),
- *        of_ast = {
+ *        to_ast = {
  *          sname = "",
  *          kind = "built-in type",
  *          ...
@@ -385,7 +385,7 @@ struct c_operator_ast {
  * this is taken advantage of.
  */
 struct c_ptr_mbr_ast {
-  c_ast_t        *of_ast;               ///< Member type.
+  c_ast_t        *to_ast;               ///< Member type.
   c_sname_t       class_sname;          ///< Class pointer-to-member of.
 };
 
