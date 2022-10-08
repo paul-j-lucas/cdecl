@@ -499,7 +499,8 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_FUNC_LIKE_CPP
  * @sa #TS_MAIN_FUNC_C
  */
-#define TS_MAIN_FUNC_CPP      ( TS_EXTERN | TS_FRIEND | TS_NOEXCEPT | TS_THROW )
+#define TS_MAIN_FUNC_CPP      ( TS_FRIEND | TS_MAIN_FUNC_C | TS_NOEXCEPT \
+                              | TS_THROW )
 
 /**
  * The types that can apply only to member functions, operators, or user-
