@@ -102,7 +102,7 @@ NODISCARD
 bool any_explicit_int( void );
 
 /**
- * Checks whether \a tid shall have `int` be printed explicitly for it.
+ * Checks whether \a btids shall have `int` be printed explicitly for it.
  *
  * @param btids The integer type to check.
  * @return Returns `true` only if the type given by \a btid shall have `int`
