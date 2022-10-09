@@ -48,6 +48,9 @@ The output of a declaration like:
 
 has been fixed.
 
+** `pointer` auto-completion
+`pointer` is now auto-completable.
+
 ** Fixed implicit `int` checking error message
 A declaration omitting `int` now gives the correct error message:
 
