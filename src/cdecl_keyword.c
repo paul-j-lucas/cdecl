@@ -290,7 +290,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
                         { LANG_ANY,       L_RESTRICT       }                ) },
   { L_RET,            TOKEN( Y_RETURNING,         AC_LANG(NONE)             ) },
   { L_RETURNING,      TOKEN( Y_RETURNING,         AC_LANG(ANY)              ) },
-  { L_RVALUE,         TOKEN( Y_RVALUE,            AC_LANG(CPP_MIN(11))      ) },
+  { L_RVALUE,         TOKEN( Y_RVALUE,            AC_LANG(RVALUE_REFERENCE) ) },
   { L_SCOPE,          TOKEN( Y_SCOPE,             AC_LANG(ANY)              ) },
   { L_SET_COMMAND,    TOKEN( Y_SET,               AC_LANG(ANY)              ) },
   { L_SHOW,           TOKEN( Y_SHOW,              AC_LANG(ANY)              ) },
