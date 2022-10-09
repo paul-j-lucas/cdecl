@@ -509,9 +509,7 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
   assert( ast->kind == K_ARRAY );
 
   FPUTS( graph_token_c( "[" ), g->gout );
-
-  if ( ast->as.array.stids != TS_NONE )
-    fputs( c_tid_name_c( ast->as.array.stids ), g->gout );
+  FPUTS( c_tid_name_c( ast->as.array.stids ), g->gout );
 
   switch ( ast->as.array.size ) {
     case C_ARRAY_SIZE_NONE:
