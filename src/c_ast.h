@@ -446,7 +446,9 @@ struct c_ast {
   c_sname_t             sname;      ///< Scoped name, if any.
   c_type_t              type;       ///< Type, if any.
   c_ast_t              *parent_ast; ///< Parent AST node, if any.
+#ifdef ENABLE_CDECL_DEBUG
   c_ast_id_t            unique_id;  ///< Unique id (starts at 1).
+#endif /* ENABLE_CDECL_DEBUG */
 
   union {
     c_parent_ast_t      parent;     ///< #K_ANY_PARENT members.

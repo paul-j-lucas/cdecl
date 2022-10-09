@@ -308,7 +308,6 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
   assert( is_1_bit( kind ) );
   assert( loc != NULL );
   assert( ast_list != NULL );
-  static c_ast_id_t next_id;
 
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
   MEM_ZERO( ast );
@@ -317,7 +316,11 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
   ast->kind = kind;
   ast->loc = *loc;
   ast->type = T_NONE;
+
+#ifdef ENABLE_CDECL_DEBUG
+  static c_ast_id_t next_id;
   ast->unique_id = ++next_id;
+#endif /* ENABLE_CDECL_DEBUG */
 
   switch ( kind ) {
     case K_ARRAY:
