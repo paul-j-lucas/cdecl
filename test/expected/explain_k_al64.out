@@ -1,0 +1,3 @@
+explain _Alignas(64) S x
+        ^
+9: error: struct or union can not be aligned in C
