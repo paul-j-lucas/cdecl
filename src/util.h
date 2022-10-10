@@ -265,6 +265,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #INTERNAL_ERR()
  * @sa perror_exit()
+ * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()
  */
 #define FATAL_ERR(STATUS,FORMAT,...) \
@@ -380,6 +381,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #FATAL_ERR()
  * @sa perror_exit()
+ * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()
  */
 #define INTERNAL_ERR(FORMAT,...) \
@@ -428,6 +430,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FATAL_ERR()
  * @sa #INTERNAL_ERR()
  * @sa perror_exit()
+ * @sa #UNEXPECTED_INT_VALUE()
  */
 #define PERROR_EXIT_IF( EXPR, STATUS ) \
   BLOCK( if ( unlikely( EXPR ) ) perror_exit( STATUS ); )
@@ -578,6 +581,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FATAL_ERR()
  * @sa #INTERNAL_ERR()
  * @sa perror_exit()
+ * @sa #PERROR_EXIT_IF()
  */
 #define UNEXPECTED_INT_VALUE(EXPR) \
   INTERNAL_ERR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (unsigned long long)(EXPR) )
@@ -979,6 +983,7 @@ char const* parse_identifier( char const *s );
  * @sa #FATAL_ERR()
  * @sa #INTERNAL_ERR()
  * @sa #PERROR_EXIT_IF()
+ * @sa #UNEXPECTED_INT_VALUE()
  */
 noreturn void perror_exit( int status );
 
