@@ -1362,6 +1362,7 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_crf_v.test \
 	tests/explain_ctor++default.test \
 	tests/explain_ctor_i.test \
+	tests/explain_ctor_rcc.test \
 	tests/explain_cvf_v.test \
 	tests/explain_dtor.test \
 	tests/explain_ec_typedef_i.test \

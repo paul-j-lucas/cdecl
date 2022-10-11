@@ -473,6 +473,7 @@ struct in_attr {
   c_sname_t     current_scope;    ///< C++ only: current scope, if any.
   bool          is_implicit_int;  ///< Created implicit `int` AST?
   bool          is_typename;      ///< C++ only: `typename` specified?
+  rb_node_t    *tdef_rb;          ///< Red-black node for temporary `typedef`.
   c_ast_list_t  type_ast_stack;   ///< Type AST stack.
   c_ast_list_t  typedef_ast_list; ///< AST nodes of `typedef` being declared.
   c_ast_t      *typedef_type_ast; ///< AST of `typedef` being declared.
@@ -633,7 +634,9 @@ NODISCARD
 static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
   assert( type_ast != NULL );
 
-  c_typedef_t const *const tdef = c_typedef_add( type_ast, gib_flags );
+  rb_node_t const *const tdef_rb = c_typedef_add( type_ast, gib_flags );
+  c_typedef_t const *const tdef = tdef_rb->data;
+
   if ( tdef->ast == type_ast ) {
     //
     // Type was added: we have to move the AST from the gc_ast_list so it won't
@@ -3910,10 +3913,42 @@ pc99_func_or_constructor_decl_c
      * cause grammar conflicts if they were separate rules in an LALR(1)
      * parser).
      */
-  : Y_NAME '(' param_list_c_ast_opt ')' noexcept_c_stid_opt
+  : Y_NAME '('
+    {
+      if ( OPT_LANG_IS( CPP_ANY ) ) {
+        //
+        // In C++, encountering a name followed by '(' declares an in-class
+        // constructor.  That means NAME is the name of a class, so we have to
+        // create a temporary class type for it so if it's used as the type of
+        // a parameter, e.g.:
+        //
+        //      C(C const&)
+        //
+        // it'll be recognized as such.
+        //
+        c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@1 );
+        csu_ast->type.btids = TB_CLASS;
+        c_sname_init_name( &csu_ast->as.csu.csu_sname, check_strdup( $1 ) );
+        csu_ast->sname = c_sname_dup( &csu_ast->as.csu.csu_sname );
+
+        in_attr.tdef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
+        MAYBE_UNUSED c_typedef_t *const csu_tdef = in_attr.tdef_rb->data;
+        assert( csu_tdef->ast == csu_ast );
+      }
+    }
+    param_list_c_ast_opt ')' noexcept_c_stid_opt
     func_equals_c_stid_opt
     {
-      if ( OPT_LANG_IS( C_ANY ) && !OPT_LANG_IS( IMPLICIT_INT ) ) {
+      if ( OPT_LANG_IS( CPP_ANY ) ) {
+        //
+        // Free the temporary typedef for the class.
+        //
+        // Note that we free only the typedef and not its AST; its AST will be
+        // garbage collected.
+        //
+        free( c_typedef_remove( in_attr.tdef_rb ) );
+      }
+      else if ( !OPT_LANG_IS( IMPLICIT_INT ) ) {
         //
         // In C99 and later, implicit int is an error.  This check has to be
         // done now in the parser rather than later in the AST since the AST
@@ -3930,9 +3965,9 @@ pc99_func_or_constructor_decl_c
                   "NAME '(' param_list_c_ast_opt ')' noexcept_c_stid_opt "
                   "func_equals_c_stid_opt" );
       DUMP_STR( "NAME", $1 );
-      DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
-      DUMP_TID( "noexcept_c_stid_opt", $5 );
-      DUMP_TID( "func_equals_c_stid_opt", $6 );
+      DUMP_AST_LIST( "param_list_c_ast_opt", $4 );
+      DUMP_TID( "noexcept_c_stid_opt", $6 );
+      DUMP_TID( "func_equals_c_stid_opt", $7 );
 
       c_ast_t *ast;
       c_sname_t sname;
@@ -3950,7 +3985,7 @@ pc99_func_or_constructor_decl_c
 
         ast = c_ast_new_gc( K_FUNCTION, &@$ );
         ast->as.func.ret_ast = ret_ast;
-        ast->type.stids = c_tid_check( $5 | $6, C_TPID_STORE );
+        ast->type.stids = c_tid_check( $6 | $7, C_TPID_STORE );
       }
       else {
         //
@@ -3958,11 +3993,11 @@ pc99_func_or_constructor_decl_c
         // constructor.
         //
         ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-        ast->type.stids = c_tid_check( $5 | $6, C_TPID_STORE );
+        ast->type.stids = c_tid_check( $6 | $7, C_TPID_STORE );
       }
 
       c_sname_set( &ast->sname, &sname );
-      ast->as.func.param_ast_list = $3;
+      ast->as.func.param_ast_list = $4;
 
       DUMP_AST( "pc99_func_or_constructor_decl_c", ast );
       DUMP_END();

@@ -29,6 +29,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "red_black.h"
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -85,13 +86,16 @@ typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
  * type was added.
  * @param gib_flags The gibberish flag indicating how the type was created;
  * must only be one of #C_GIB_NONE, #C_GIB_TYPEDEF, or #C_GIB_USING.
- * @return Returns the \ref c_typedef of either:
+ * @return Returns an rb_node where \ref rb_node.data "data" points to a \ref
+ * c_typedef of either:
  * + The newly added type (its \ref c_typedef.ast "ast" is equal to \a
  *   type_ast); or:
  * + The previously added type having the same scoped name.
+ *
+ * @sa c_typedef_remove()
  */
 NODISCARD
-c_typedef_t const* c_typedef_add( c_ast_t const *type_ast, unsigned gib_flags );
+rb_node_t* c_typedef_add( c_ast_t const *type_ast, unsigned gib_flags );
 
 /**
  * Gets the \ref c_typedef for \a name.
@@ -121,6 +125,18 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname );
  * Initializes all \ref c_typedef data.
  */
 void c_typedef_init( void );
+
+/**
+ * Removes a `typedef` (or `using`) from the global set.
+ *
+ * @param node The rb_node containing the `typedef` to remove.
+ * @return Returns the removed `typedef`.  It is the caller's responsibility to
+ * delete it if necessary.
+ *
+ * @sa c_typedef_add()
+ */
+NODISCARD
+c_typedef_t* c_typedef_remove( rb_node_t *node );
 
 /**
  * Does an in-order traversal of all \ref c_typedef.

@@ -32,7 +32,6 @@
 #include "c_lang.h"
 #include "gibberish.h"
 #include "options.h"
-#include "red_black.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -1017,7 +1016,7 @@ static bool rb_visitor( void *node_data, void *v_data ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_typedef_t const* c_typedef_add( c_ast_t const *ast, unsigned gib_flags ) {
+rb_node_t* c_typedef_add( c_ast_t const *ast, unsigned gib_flags ) {
   assert( ast != NULL );
   assert( !c_sname_empty( &ast->sname ) );
 
@@ -1029,7 +1028,7 @@ c_typedef_t const* c_typedef_add( c_ast_t const *ast, unsigned gib_flags ) {
     //
     FREE( new_tdef );
   }
-  return rv.node->data;
+  return rv.node;
 }
 
 c_typedef_t const* c_typedef_find_name( char const *name ) {
@@ -1153,6 +1152,10 @@ void c_typedef_init( void ) {
 #ifdef YYDEBUG
   opt_bison_debug = orig_bison_debug;
 #endif /* YYDEBUG */
+}
+
+c_typedef_t* c_typedef_remove( rb_node_t *node ) {
+  return rb_tree_delete( &typedef_set, node );
 }
 
 c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,

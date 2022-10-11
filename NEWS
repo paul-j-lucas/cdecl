@@ -12,6 +12,14 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 12.1
 
+** Better copy constructor support
+Declarations like:
+
+    c++decl> explain C(C const&)
+    declare C as constructor (reference to constant C)
+
+are now supported better.
+
 ** Enumeration bit-fields
 Enumerations in C++ can now be bit fields.
 
