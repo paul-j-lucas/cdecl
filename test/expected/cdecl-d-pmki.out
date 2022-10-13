@@ -3,7 +3,7 @@ builtin_type_ast ::= builtin_btid = {
   builtin_btid = "int" (btid = 0x2001),
   builtin_type_ast = {
     sname = "",
-    unique_id = 1340,
+    unique_id = 1355,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -17,7 +17,7 @@ builtin_type_ast ::= builtin_btid = {
 east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
   atomic_builtin_typedef_type_c_ast = {
     sname = "",
-    unique_id = 1340,
+    unique_id = 1355,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -29,7 +29,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
-    unique_id = 1340,
+    unique_id = 1355,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -48,7 +48,7 @@ sname_c ::= NAME = {
 pointer_to_member_type_c_ast ::= sname '::*' cv_qualifier_list_stid_opt = {
   (type_c_ast) = {
     sname = "",
-    unique_id = 1340,
+    unique_id = 1355,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -61,7 +61,7 @@ pointer_to_member_type_c_ast ::= sname '::*' cv_qualifier_list_stid_opt = {
   cv_qualifier_list_stid_opt = "" (stid = 0x2),
   pointer_to_member_type_c_ast = {
     sname = "",
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
@@ -71,11 +71,11 @@ pointer_to_member_type_c_ast ::= sname '::*' cv_qualifier_list_stid_opt = {
     class_sname = "S" (class),
     to_ast = {
       sname = "",
-      unique_id = 1340,
+      unique_id = 1355,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1341,
+      parent->unique_id = 1356,
       loc = 8-10,
       type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
       bit_width = 0
@@ -91,7 +91,7 @@ sname_c ::= NAME = {
 sname_c_ast ::= sname_c = {
   (type_c_ast) = {
     sname = "",
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
@@ -101,11 +101,11 @@ sname_c_ast ::= sname_c = {
     class_sname = "S" (class),
     to_ast = {
       sname = "",
-      unique_id = 1340,
+      unique_id = 1355,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1341,
+      parent->unique_id = 1356,
       loc = 8-10,
       type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
       bit_width = 0
@@ -115,7 +115,7 @@ sname_c_ast ::= sname_c = {
   bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "p" (none),
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
@@ -125,11 +125,11 @@ sname_c_ast ::= sname_c = {
     class_sname = "S" (class),
     to_ast = {
       sname = "",
-      unique_id = 1340,
+      unique_id = 1355,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1341,
+      parent->unique_id = 1356,
       loc = 8-10,
       type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
       bit_width = 0
@@ -140,7 +140,7 @@ sname_c_ast ::= sname_c = {
 pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
   pointer_to_member_type_c_ast = {
     sname = "p" (none),
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
@@ -150,11 +150,11 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
     class_sname = "S" (class),
     to_ast = {
       sname = "",
-      unique_id = 1340,
+      unique_id = 1355,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1341,
+      parent->unique_id = 1356,
       loc = 8-10,
       type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
       bit_width = 0
@@ -162,7 +162,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
   },
   decl_c_astp = {
     sname = "p" (none),
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
@@ -172,11 +172,11 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
     class_sname = "S" (class),
     to_ast = {
       sname = "",
-      unique_id = 1340,
+      unique_id = 1355,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1341,
+      parent->unique_id = 1356,
       loc = 8-10,
       type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
       bit_width = 0
@@ -184,7 +184,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
   },
   pointer_to_member_decl_c_astp = {
     sname = "p" (none),
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
@@ -194,11 +194,11 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
     class_sname = "S" (class),
     to_ast = {
       sname = "",
-      unique_id = 1340,
+      unique_id = 1355,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1341,
+      parent->unique_id = 1356,
       loc = 8-10,
       type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
       bit_width = 0
@@ -210,7 +210,7 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "",
-    unique_id = 1342,
+    unique_id = 1357,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -221,7 +221,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c_astp = {
     sname = "p" (none),
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
@@ -231,11 +231,11 @@ decl_c ::= decl_c_astp = {
     class_sname = "S" (class),
     to_ast = {
       sname = "",
-      unique_id = 1340,
+      unique_id = 1355,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1341,
+      parent->unique_id = 1356,
       loc = 8-10,
       type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
       bit_width = 0
@@ -243,7 +243,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c = {
     sname = "p" (none),
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "pointer to member",
     cast_kind = "none",
     depth = 0,
@@ -253,11 +253,11 @@ decl_c ::= decl_c_astp = {
     class_sname = "S" (class),
     to_ast = {
       sname = "",
-      unique_id = 1340,
+      unique_id = 1355,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1341,
+      parent->unique_id = 1356,
       loc = 8-10,
       type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
       bit_width = 0

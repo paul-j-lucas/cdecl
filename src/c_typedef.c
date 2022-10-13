@@ -589,9 +589,22 @@ static char const *const PREDEFINED_STD_CPP_20_REQUIRED[] = {
  * Predefined types for C++23.
  */
 static char const *const PREDEFINED_STD_CPP_23[] = {
-  "namespace std { class  ispanstream; }",
-  "namespace std { class wispanstream; }",
-  "namespace std { class  stacktrace_entry; }",
+  "namespace std {   using  float16_t = float; }",
+  "namespace std {   using bfloat16_t = float; }",
+  "namespace std {   using  float32_t = float; }",
+  "namespace std {   using  float64_t = double; }",
+  "namespace std {   using  float128_t = double[2]; }",
+  "namespace std { class    spanbuf; }",
+  "namespace std { class   wspanbuf; }",
+  "namespace std { class    spanstream; }",
+  "namespace std { class   ispanstream; }",
+  "namespace std { class  wispanstream; }",
+  "namespace std { class   ospanstream; }",
+  "namespace std { class  wospanstream; }",
+  "namespace std { class   wspanstream; }",
+  "namespace std { class    stacktrace; }",
+  "namespace std { class    stacktrace_entry; }",
+  "namespace std { struct   unexpect_t; }",
 
   NULL
 };

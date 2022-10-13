@@ -3,7 +3,7 @@ type_c_ast ::= type_modifier_list_c_type = {
   type_modifier_list_c_type = "long" (btid = 0x4001, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
-    unique_id = 1340,
+    unique_id = 1355,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -17,7 +17,7 @@ type_c_ast ::= type_modifier_list_c_type = {
 alignas_specifier_c ::= ALIGNAS '(' type_c_ast cast_c_astp_opt ')' = {
   type_c_ast = {
     sname = "",
-    unique_id = 1340,
+    unique_id = 1355,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -33,7 +33,7 @@ builtin_type_ast ::= builtin_btid = {
   builtin_btid = "int" (btid = 0x2001),
   builtin_type_ast = {
     sname = "",
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -47,7 +47,7 @@ builtin_type_ast ::= builtin_btid = {
 east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
   atomic_builtin_typedef_type_c_ast = {
     sname = "",
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -59,7 +59,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -78,7 +78,7 @@ sname_c ::= NAME = {
 sname_c_ast ::= sname_c = {
   (type_c_ast) = {
     sname = "",
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -91,7 +91,7 @@ sname_c_ast ::= sname_c = {
   bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "i" (none),
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -105,7 +105,7 @@ sname_c_ast ::= sname_c = {
 decl_c ::= decl_c_astp = {
   (alignas_specifier_c.as.type_ast) = {
     sname = "",
-    unique_id = 1340,
+    unique_id = 1355,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -117,7 +117,7 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "i" (none),
-    unique_id = 1342,
+    unique_id = 1357,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -128,7 +128,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c_astp = {
     sname = "i" (none),
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -139,14 +139,14 @@ decl_c ::= decl_c_astp = {
   },
   decl_c = {
     sname = "i" (none),
-    unique_id = 1341,
+    unique_id = 1356,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
     parent->unique_id = -1,
     alignas.type_ast = {
       sname = "",
-      unique_id = 1340,
+      unique_id = 1355,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,

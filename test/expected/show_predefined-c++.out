@@ -392,6 +392,7 @@ define bad_typeid of namespace std as class bad_typeid
 define bad_variant_access of namespace std as class bad_variant_access
 define bad_weak_ptr of namespace std as class bad_weak_ptr
 define bernoulli_distribution of namespace std as class bernoulli_distribution
+define bfloat16_t of namespace std as float
 define byte of namespace std as enumeration byte
 define chars_format of namespace std as enumeration class chars_format
 define choose of namespace chrono of namespace std as enumeration class choose
@@ -455,6 +456,10 @@ define perm_options of namespace filesystem of namespace std as enumeration clas
 define perms of namespace filesystem of namespace std as enumeration class perms
 define recursive_directory_iterator of namespace filesystem of namespace std as class recursive_directory_iterator
 define space_info of namespace filesystem of namespace std as structure space_info
+define float128_t of namespace std as array 2 of double
+define float16_t of namespace std as float
+define float32_t of namespace std as float
+define float64_t of namespace std as double
 define format_error of namespace std as class format_error
 define fstream of namespace std as class fstream
 define future_errc of namespace std as enumeration class future_errc
@@ -492,6 +497,7 @@ define nonstopstate_t of namespace std as structure nonstopstate_t
 define nothrow_t of namespace std as structure nothrow_t
 define nullptr_t of namespace std as pointer to void
 define ofstream of namespace std as class ofstream
+define ospanstream of namespace std as class ospanstream
 define ostream of namespace std as class ostream
 define ostringstream of namespace std as class ostringstream
 define osyncstream of namespace std as class osyncstream
@@ -513,6 +519,9 @@ define shared_timed_mutex of namespace std as class shared_timed_mutex
 define sig_atomic_t of namespace std as int
 define size_t of namespace std as unsigned long int
 define source_location of namespace std as structure source_location
+define spanbuf of namespace std as class spanbuf
+define spanstream of namespace std as class spanstream
+define stacktrace of namespace std as class stacktrace
 define stacktrace_entry of namespace std as class stacktrace_entry
 define stop_source of namespace std as class stop_source
 define stop_token of namespace std as class stop_token
@@ -539,6 +548,7 @@ define u32string of namespace std as class u32string
 define u32string_view of namespace std as class u32string_view
 define u8string_view of namespace std as class u8string_view
 define underflow_error of namespace std as class underflow_error
+define unexpect_t of namespace std as structure unexpect_t
 define weak_equality of namespace std as structure weak_equality
 define weak_ordering of namespace std as structure weak_ordering
 define wfilebuf of namespace std as class wfilebuf
@@ -550,10 +560,13 @@ define wispanstream of namespace std as class wispanstream
 define wistream of namespace std as class wistream
 define wistringstream of namespace std as class wistringstream
 define wofstream of namespace std as class wofstream
+define wospanstream of namespace std as class wospanstream
 define wostream of namespace std as class wostream
 define wostringstream of namespace std as class wostringstream
 define wosyncstream of namespace std as class wosyncstream
 define wregex of namespace std as class wregex
+define wspanbuf of namespace std as class wspanbuf
+define wspanstream of namespace std as class wspanstream
 define wstreambuf of namespace std as class wstreambuf
 define wstring of namespace std as class wstring
 define wstring_view of namespace std as class wstring_view

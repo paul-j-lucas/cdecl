@@ -398,6 +398,7 @@ namespace std { class bad_typeid; }
 namespace std { class bad_variant_access; }
 namespace std { class bad_weak_ptr; }
 namespace std { class bernoulli_distribution; }
+namespace std { typedef float bfloat16_t; }
 namespace std { enum byte; }
 namespace std { enum chars_format; }
 namespace std::chrono { enum choose; }
@@ -461,6 +462,10 @@ namespace std::filesystem { enum perm_options; }
 namespace std::filesystem { enum perms; }
 namespace std::filesystem { class recursive_directory_iterator; }
 namespace std::filesystem { struct space_info; }
+namespace std { typedef double float128_t[2]; }
+namespace std { typedef float float16_t; }
+namespace std { typedef float float32_t; }
+namespace std { typedef double float64_t; }
 namespace std { class format_error; }
 namespace std { class fstream; }
 namespace std { enum future_errc; }
@@ -498,6 +503,7 @@ namespace std { struct nonstopstate_t; }
 namespace std { struct nothrow_t; }
 namespace std { typedef void *nullptr_t; }
 namespace std { class ofstream; }
+namespace std { class ospanstream; }
 namespace std { class ostream; }
 namespace std { class ostringstream; }
 namespace std { class osyncstream; }
@@ -519,6 +525,9 @@ namespace std { class shared_timed_mutex; }
 namespace std { typedef int sig_atomic_t; }
 namespace std { typedef unsigned long size_t; }
 namespace std { struct source_location; }
+namespace std { class spanbuf; }
+namespace std { class spanstream; }
+namespace std { class stacktrace; }
 namespace std { class stacktrace_entry; }
 namespace std { class stop_source; }
 namespace std { class stop_token; }
@@ -545,6 +554,7 @@ namespace std { class u32string; }
 namespace std { class u32string_view; }
 namespace std { class u8string_view; }
 namespace std { class underflow_error; }
+namespace std { struct unexpect_t; }
 namespace std { struct weak_equality; }
 namespace std { struct weak_ordering; }
 namespace std { class wfilebuf; }
@@ -556,10 +566,13 @@ namespace std { class wispanstream; }
 namespace std { class wistream; }
 namespace std { class wistringstream; }
 namespace std { class wofstream; }
+namespace std { class wospanstream; }
 namespace std { class wostream; }
 namespace std { class wostringstream; }
 namespace std { class wosyncstream; }
 namespace std { class wregex; }
+namespace std { class wspanbuf; }
+namespace std { class wspanstream; }
 namespace std { class wstreambuf; }
 namespace std { class wstring; }
 namespace std { class wstring_view; }

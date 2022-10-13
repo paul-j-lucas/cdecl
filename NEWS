@@ -20,6 +20,12 @@ Declarations like:
 
 are now supported better.
 
+** More C++23 standard types
+Added the standard C++23 types `std::bfloat16_t`, `std::float128_t`,
+`std::float16_t`, `std::float32_t`, `std::float64_t`, `std::ospanstream`,
+`std::spanbuf`, `std::spanstream`, `std::stacktrace`, `std::unexpect_t`,
+`std::wospanstream`, `std::wspanbuf`, and `std::wspanstream`.
+
 ** Enumeration bit-fields
 Enumerations in C++ can now be bit fields.
 
@@ -353,7 +359,7 @@ correctly forbidden:
 Function-like parameters are now checked for redefinition (more than one
 parameter having the same name).
 
-** More C++ standard types
+** More C++23 standard types
 Added the standard C++ types `std::ispanstream`, `std::stacktrace_entry`,
 and `std::wispanstream`.
 
