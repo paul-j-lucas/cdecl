@@ -3958,6 +3958,7 @@ pc99_func_or_constructor_decl_c
           "implicit \"int\" functions are illegal%s\n",
           C_LANG_WHICH( IMPLICIT_INT )
         );
+        free( $1 );
         PARSE_ABORT();
       }
 
