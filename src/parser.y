@@ -3939,29 +3939,6 @@ pc99_func_or_constructor_decl_c
     param_list_c_ast_opt ')' noexcept_c_stid_opt
     func_equals_c_stid_opt
     {
-      if ( OPT_LANG_IS( CPP_ANY ) ) {
-        //
-        // Free the temporary typedef for the class.
-        //
-        // Note that we free only the typedef and not its AST; its AST will be
-        // garbage collected.
-        //
-        free( c_typedef_remove( in_attr.tdef_rb ) );
-      }
-      else if ( !OPT_LANG_IS( IMPLICIT_INT ) ) {
-        //
-        // In C99 and later, implicit int is an error.  This check has to be
-        // done now in the parser rather than later in the AST since the AST
-        // would have no "memory" that the return type was implicitly int.
-        //
-        print_error( &@1,
-          "implicit \"int\" functions are illegal%s\n",
-          C_LANG_WHICH( IMPLICIT_INT )
-        );
-        free( $1 );
-        PARSE_ABORT();
-      }
-
       DUMP_START( "pc99_func_or_constructor_decl_c",
                   "NAME '(' param_list_c_ast_opt ')' noexcept_c_stid_opt "
                   "func_equals_c_stid_opt" );
@@ -3972,7 +3949,36 @@ pc99_func_or_constructor_decl_c
 
       c_ast_t *ast;
 
-      if ( OPT_LANG_IS( C_ANY ) ) {
+      if ( OPT_LANG_IS( CPP_ANY ) ) {
+        //
+        // Free the temporary typedef for the class.
+        //
+        // Note that we free only the typedef and not its AST; its AST will be
+        // garbage collected.
+        //
+        free( c_typedef_remove( in_attr.tdef_rb ) );
+
+        //
+        // In C++, encountering a name followed by '(' declares an in-class
+        // constructor.
+        //
+        ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
+      }
+      else {
+        if ( !OPT_LANG_IS( IMPLICIT_INT ) ) {
+          //
+          // In C99 and later, implicit int is an error.  This check has to be
+          // done now in the parser rather than later in the AST since the AST
+          // would have no "memory" that the return type was implicitly int.
+          //
+          print_error( &@1,
+            "implicit \"int\" functions are illegal%s\n",
+            C_LANG_WHICH( IMPLICIT_INT )
+          );
+          free( $1 );
+          PARSE_ABORT();
+        }
+
         //
         // In C prior to C99, encountering a name followed by '(' declares a
         // function that implicitly returns int:
@@ -3984,13 +3990,6 @@ pc99_func_or_constructor_decl_c
 
         ast = c_ast_new_gc( K_FUNCTION, &@$ );
         ast->as.func.ret_ast = ret_ast;
-      }
-      else {
-        //
-        // In C++, encountering a name followed by '(' declares an in-class
-        // constructor.
-        //
-        ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       }
 
       c_sname_init_name( &ast->sname, $1 );
