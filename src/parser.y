@@ -3970,8 +3970,6 @@ pc99_func_or_constructor_decl_c
       DUMP_TID( "func_equals_c_stid_opt", $7 );
 
       c_ast_t *ast;
-      c_sname_t sname;
-      c_sname_init_name( &sname, $1 );
 
       if ( OPT_LANG_IS( C_ANY ) ) {
         //
@@ -3985,7 +3983,6 @@ pc99_func_or_constructor_decl_c
 
         ast = c_ast_new_gc( K_FUNCTION, &@$ );
         ast->as.func.ret_ast = ret_ast;
-        ast->type.stids = c_tid_check( $6 | $7, C_TPID_STORE );
       }
       else {
         //
@@ -3993,10 +3990,10 @@ pc99_func_or_constructor_decl_c
         // constructor.
         //
         ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-        ast->type.stids = c_tid_check( $6 | $7, C_TPID_STORE );
       }
 
-      c_sname_set( &ast->sname, &sname );
+      c_sname_init_name( &ast->sname, $1 );
+      ast->type.stids = c_tid_check( $6 | $7, C_TPID_STORE );
       ast->as.func.param_ast_list = $4;
 
       DUMP_AST( "pc99_func_or_constructor_decl_c", ast );
