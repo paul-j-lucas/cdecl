@@ -944,20 +944,19 @@ static void c_typedef_cleanup( void ) {
 }
 
 /**
- * Comparison function for \ref c_typedef data used by the red-black tree.
+ * Comparison function for two \ref c_typedef.
  *
- * @param i_data A pointer to data.
- * @param j_data A pointer to data.
+ * @param i_tdef A pointer to the first \ref c_typedef.
+ * @param j_tdef A pointer to the second \ref c_typedef.
  * @return Returns an integer less than, equal to, or greater than 0, according
  * to whether the `typedef` name pointed to by \a i_data is less than, equal
  * to, or greater than the `typedef` name pointed to by \a j_data.
  */
 NODISCARD
-static int c_typedef_cmp( void const *i_data, void const *j_data ) {
-  assert( i_data != NULL );
-  assert( j_data != NULL );
-  c_typedef_t const *const i_tdef = i_data;
-  c_typedef_t const *const j_tdef = j_data;
+static int c_typedef_cmp( c_typedef_t const *i_tdef,
+                          c_typedef_t const *j_tdef ) {
+  assert( i_tdef != NULL );
+  assert( j_tdef != NULL );
   return c_sname_cmp( &i_tdef->ast->sname, &j_tdef->ast->sname );
 }
 
@@ -1063,7 +1062,7 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
 }
 
 void c_typedef_init( void ) {
-  rb_tree_init( &typedef_set, &c_typedef_cmp );
+  rb_tree_init( &typedef_set, POINTER_CAST( rb_cmp_fn_t, &c_typedef_cmp ) );
   check_atexit( &c_typedef_cleanup );
 
 #ifdef ENABLE_CDECL_DEBUG

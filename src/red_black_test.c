@@ -41,12 +41,6 @@ static unsigned   test_failures;
 
 ////////// local functions ////////////////////////////////////////////////////
 
-static int test_rb_data_cmp( void const *i_data, void const *j_data ) {
-  char const *const i_str = i_data;
-  char const *const j_str = j_data;
-  return strcmp( i_str, j_str );
-}
-
 static void test_rb_validate_node( rb_tree_t const *tree,
                                    rb_node_t const *node ) {
   if ( node->color == RB_RED ) {
@@ -89,7 +83,7 @@ static noreturn void usage( void ) {
 
 static void test_insert1_find_delete( void ) {
   rb_tree_t tree;
-  rb_tree_init( &tree, &test_rb_data_cmp );
+  rb_tree_init( &tree, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
 
   if ( TEST( rb_tree_insert( &tree, (void*)"A" ).inserted ) ) {
     test_rb_validate( &tree );
@@ -108,7 +102,7 @@ static void test_insert1_find_delete( void ) {
 
 static void test_insert2_find_delete( void ) {
   rb_tree_t tree;
-  rb_tree_init( &tree, &test_rb_data_cmp );
+  rb_tree_init( &tree, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
 
   if ( TEST( rb_tree_insert( &tree, (void*)"A" ).inserted ) &&
        TEST( rb_tree_insert( &tree, (void*)"B" ).inserted ) ) {
@@ -137,7 +131,7 @@ int main( int argc, char const *argv[const] ) {
   test_insert2_find_delete();
 
   rb_tree_t tree;
-  rb_tree_init( &tree, &test_rb_data_cmp );
+  rb_tree_init( &tree, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
   rb_node_t *node;
   rb_insert_rv_t rb_insert_rv;
 
