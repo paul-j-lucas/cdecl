@@ -118,7 +118,7 @@ int main( int argc, char const *argv[] ) {
   // Note that cli_options_init() adjusts argv such that argv[0] becomes the
   // first argument, if any, and no longer the program name.
   //
-  exit( cdecl_parse_cli( INTEGER_CAST( size_t, argc ), argv ) );
+  exit( cdecl_parse_cli( STATIC_CAST( size_t, argc ), argv ) );
 }
 
 ////////// local functions ////////////////////////////////////////////////////

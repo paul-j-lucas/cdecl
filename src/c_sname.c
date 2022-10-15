@@ -260,7 +260,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
 }
 
 void c_sname_cleanup( c_sname_t *sname ) {
-  slist_cleanup( sname, (slist_free_fn_t)&c_scope_data_free );
+  slist_cleanup( sname, POINTER_CAST( slist_free_fn_t, &c_scope_data_free ) );
 }
 
 void c_sname_fill_in_namespaces( c_sname_t *sname ) {
@@ -299,7 +299,7 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
 }
 
 void c_sname_list_cleanup( slist_t *list ) {
-  slist_cleanup( list, (slist_free_fn_t)&c_sname_free );
+  slist_cleanup( list, POINTER_CAST( slist_free_fn_t, &c_sname_free ) );
 }
 
 bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {

@@ -112,7 +112,7 @@
  * @param BYTES_MAX The maximum number of bytes to read.
  */
 #define YY_INPUT(BUF,BYTES_READ,BYTES_MAX) \
-  (BYTES_READ) = lexer_get_input( (BUF), (yy_size_t)(BYTES_MAX) )
+  (BYTES_READ) = lexer_get_input( (BUF), STATIC_CAST( yy_size_t, (BYTES_MAX) ) )
 
 /**
  * This code is inserted by Flex at the beginning of each rule to set the
@@ -124,7 +124,7 @@
  * This code must be manually inserted before a REJECT to undo #YY_USER_ACTION.
  */
 #define YY_USER_ACTION_UNDO_FOR_REJECT \
-  token_column -= (int)yyleng
+  token_column -= STATIC_CAST( int, yyleng )
 
 /**
  * Data to keep for a file that is `include`d.
@@ -200,7 +200,7 @@ static void ifi_free( include_file_info_t *ifi ) {
  * Frees all memory used by include files.
  */
 static void include_cleanup( void ) {
-  slist_cleanup( &include_stack, (slist_free_fn_t)&ifi_free );
+  slist_cleanup( &include_stack, POINTER_CAST( slist_free_fn_t, &ifi_free ) );
   // Do not pass free() as the second argument since the resolved include path
   // strings are shared with and owned by include_stack.
   rb_tree_cleanup( &include_set, /*free_fn=*/NULL );
@@ -255,7 +255,7 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
       FERROR( yyin );
       bytes_read = 0;
     }
-    input_avail = input_len = (yy_size_t)bytes_read;
+    input_avail = input_len = STATIC_CAST( yy_size_t, bytes_read );
     input_sent = 0;
   }
   //
@@ -275,10 +275,10 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
  * @note This is called by Flex via #YY_USER_ACTION.
  */
 static void lexer_update_loc( void ) {
-  yylloc.first_line   = yylloc.last_line = (int)yylineno;
+  yylloc.first_line   = yylloc.last_line = STATIC_CAST( int, yylineno );
   yylloc.first_column = token_column;
-  yylloc.last_column  = token_column + (int)yyleng - 1;
-  token_column += (int)yyleng;
+  yylloc.last_column  = token_column + STATIC_CAST( int, yyleng ) - 1;
+  token_column += STATIC_CAST( int, yyleng );
 }
 
 /**
@@ -895,7 +895,7 @@ include{S}*\"  {
                 char const *const p = strchr( ++q, '(' );
                 assert( p != NULL );
 
-                size_t const delim_len = (size_t)(p - q);
+                size_t const delim_len = STATIC_CAST( size_t, p - q );
                 if ( delim_len > RSTR_DELIM_LEN_MAX ) {
                   print_error( &yylloc,
                     "raw string literal delimiter "
@@ -945,7 +945,7 @@ include{S}*\"  {
                     // string literal: append the part that matched (")ab").
                     //
                     strbuf_printf( &str_lit_buf,
-                      ")%.*s", (int)(d - rstr_delim), rstr_delim
+                      ")%.*s", STATIC_CAST( int, d - rstr_delim ), rstr_delim
                     );
                     //
                     // Unput the character that caused the mismatch since it
@@ -1147,7 +1147,7 @@ static void lexer_fatal( char const *msg ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void lexer_init( void ) {
-  rb_tree_init( &include_set, (rb_cmp_fn_t)&strcmp );
+  rb_tree_init( &include_set, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
   check_atexit( &lexer_cleanup );
 }
 
@@ -1166,7 +1166,8 @@ c_loc_t lexer_loc( void ) {
   else if ( lexer_token[0] == '\n' )
     rv_loc.first_column = token_column;
   else {
-    rv_loc.first_column = token_column - (int)strlen( lexer_token );
+    rv_loc.first_column =
+      token_column - STATIC_CAST( int, strlen( lexer_token ) );
     assert( rv_loc.first_column >= 0 );
   }
 

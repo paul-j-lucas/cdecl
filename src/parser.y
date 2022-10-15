@@ -329,8 +329,8 @@
  *
  * @sa #DUMP_STR()
  */
-#define DUMP_INT(KEY,NUM) \
-  IF_DEBUG( DUMP_COMMA; FPRINTF( stdout, "  " KEY " = %d", (int)(NUM) ); )
+#define DUMP_INT(KEY,NUM) IF_DEBUG( \
+  DUMP_COMMA; FPRINTF( stdout, "  " KEY " = %d", STATIC_CAST( int, (NUM) ) ); )
 
 /**
  * Dumps a scoped name.
@@ -513,7 +513,7 @@ static c_ast_list_t   typedef_ast_list; ///< List of ASTs for `typedef`s.
  * @sa c_ast_pair_new_gc()
  */
 static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
-  slist_cleanup( ast_list, (slist_free_fn_t)&c_ast_free );
+  slist_cleanup( ast_list, POINTER_CAST( slist_free_fn_t, &c_ast_free ) );
 }
 
 /**
@@ -647,7 +647,9 @@ static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
     // defining parse, this step isn't necessary since all nodes are freed at
     // the end of the parse anyway.)
     //
-    slist_free_if( &gc_ast_list, (slist_pred_fn_t)&c_ast_free_if_placeholder );
+    slist_free_if(
+      &gc_ast_list, POINTER_CAST( slist_pred_fn_t, &c_ast_free_if_placeholder )
+    );
     slist_push_list_back( &typedef_ast_list, &gc_ast_list );
   }
   else {
@@ -2185,7 +2187,7 @@ alignas_specifier_english
     {
       $$.kind = C_ALIGNAS_EXPR;
       $$.loc = @1;
-      $$.as.expr = (unsigned)$2;
+      $$.as.expr = STATIC_CAST( unsigned, $2 );
     }
   | aligned_english decl_english_ast
     {
@@ -2228,7 +2230,7 @@ width_specifier_english_uint
         print_error( &@2, "bit-field width must be > 0\n" );
         PARSE_ABORT();
       }
-      $$ = (unsigned)$2;
+      $$ = STATIC_CAST( unsigned, $2 );
     }
   ;
 
@@ -2762,7 +2764,7 @@ alignas_specifier_c
 
       $$.kind = C_ALIGNAS_EXPR;
       $$.loc = @1;
-      $$.as.expr = (unsigned)$3;
+      $$.as.expr = STATIC_CAST( unsigned, $3 );
     }
 
   | alignas lparen_exp type_c_ast { ia_type_ast_push( $3 ); }
@@ -7004,7 +7006,7 @@ sname_c_ast
       // AST since we need to use the builtin union member now.
       //
       if ( $2 != 0 && (ok = c_ast_is_bit_field( $$ )) )
-        $$->as.bit_field.bit_width = (unsigned)$2;
+        $$->as.bit_field.bit_width = STATIC_CAST( unsigned, $2 );
 
       DUMP_AST( "sname_c_ast", $$ );
       DUMP_END();
@@ -7030,7 +7032,7 @@ bit_field_c_uint_opt
         print_error( &@2, "bit-field width must be > 0\n" );
         PARSE_ABORT();
       }
-      $$ = (unsigned)$2;
+      $$ = STATIC_CAST( unsigned, $2 );
     }
   ;
 
