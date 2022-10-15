@@ -44,6 +44,7 @@
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
+#include <stdint.h>
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_AST_H_INLINE
@@ -147,11 +148,11 @@ struct c_alignas {
 /**
  * Type of optional data passed to c_ast_visit().
  *
- * @note This is `uint64_t` so it can hold either the largest possible integer
+ * @note This is `uintmax_t` so it can hold either the largest possible integer
  * or a pointer.  It is _not_ `uintptr_t` because that can't hold a 64-bit
  * integer on a 32-bit pointer platform.
  */
-typedef uint64_t c_ast_visit_data_t;
+typedef uintmax_t c_ast_visit_data_t;
 
 /**
  * The signature for functions passed to c_ast_visit().
