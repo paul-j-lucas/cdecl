@@ -215,7 +215,7 @@ static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         c_ast_check_fn_t check_fn,
                                         unsigned flags ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_visit_fn_t const visit_fn = (c_ast_visit_fn_t)check_fn;
+  c_ast_visit_fn_t const visit_fn = POINTER_CAST( c_ast_visit_fn_t, check_fn );
   c_ast_visit_data_t const avd = INTEGER_CAST( c_ast_visit_data_t, flags );
   return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, avd ) == NULL;
 }
