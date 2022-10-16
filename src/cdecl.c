@@ -190,7 +190,7 @@ static int cdecl_parse_cli( size_t cli_count,
   }
 
   if ( opt_explain )
-    command_literal = L_EXPLAIN;
+    command_literal = L_explain;
 
 parse_command:
   return cdecl_parse_command( command_literal, cli_count, cli_value );

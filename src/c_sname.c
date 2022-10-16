@@ -108,8 +108,8 @@ bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
     if ( k != NULL ) {
       FREE( name );
       // k->literal is set to L_* so == is OK
-      if ( is_dtor && k->literal == L_COMPL ) {
-        char const *const t = s + strlen( L_COMPL );
+      if ( is_dtor && k->literal == L_compl ) {
+        char const *const t = s + strlen( L_compl );
         if ( isspace( *t ) ) {          // except treat "compl" as '~'
           s = t + 1;
           goto tilde;

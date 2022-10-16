@@ -212,7 +212,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       //
       // (The "x as" was printed in c_ast_func_params_english().)
       //
-      FPUTS( L_INT, eout );
+      FPUTS( L_int, eout );
       break;
 
     case K_POINTER:
@@ -339,7 +339,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   else {                                // it's a cast
     if ( ast->cast_kind != C_CAST_C )
       FPRINTF( eout, "%s ", c_cast_english( ast->cast_kind ) );
-    FPUTS( L_CAST, eout );
+    FPUTS( L_cast, eout );
     if ( !c_sname_empty( &ast->sname ) ) {
       FPUTC( ' ', eout );
       c_sname_english( &ast->sname, eout );
@@ -369,10 +369,10 @@ char const* c_cast_english( c_cast_kind_t kind ) {
   switch ( kind ) {
     case C_CAST_NONE        : return "none";
     case C_CAST_C           : return "C";
-    case C_CAST_CONST       : return L_CONST;
-    case C_CAST_DYNAMIC     : return L_DYNAMIC;
-    case C_CAST_REINTERPRET : return L_REINTERPRET;
-    case C_CAST_STATIC      : return L_STATIC;
+    case C_CAST_CONST       : return L_const;
+    case C_CAST_DYNAMIC     : return L_dynamic;
+    case C_CAST_REINTERPRET : return L_reinterpret;
+    case C_CAST_STATIC      : return L_static;
   } // switch
   UNEXPECTED_INT_VALUE( kind );
 }

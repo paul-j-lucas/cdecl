@@ -52,10 +52,10 @@
  */
 static c_operator_t const C_OPERATOR[] = {
   { C_OP_NONE,            "none",     XXX, 0, 0,    LANG_ANY          },
-  { C_OP_CO_AWAIT,        L_CO_AWAIT, OVR, 0, 1,    LANG_CPP_MIN(20)  },
-  { C_OP_NEW,             L_NEW,      OVR, 1, UNL,  LANG_CPP_ANY      },
+  { C_OP_CO_AWAIT,        L_co_await, OVR, 0, 1,    LANG_CPP_MIN(20)  },
+  { C_OP_NEW,             L_new,      OVR, 1, UNL,  LANG_CPP_ANY      },
   { C_OP_NEW_ARRAY,       "new[]",    OVR, 1, UNL,  LANG_CPP_ANY      },
-  { C_OP_DELETE,          L_DELETE,   OVR, 1, UNL,  LANG_CPP_ANY      },
+  { C_OP_DELETE,          L_delete,   OVR, 1, UNL,  LANG_CPP_ANY      },
   { C_OP_DELETE_ARRAY,    "delete[]", OVR, 1, UNL,  LANG_CPP_ANY      },
   { C_OP_EXCLAM,          "!",        OVR, 0, 1,    LANG_CPP_ANY      },
   { C_OP_EXCLAM_EQ,       "!=",       OVR, 1, 2,    LANG_CPP_ANY      },
@@ -123,23 +123,23 @@ static char const* alt_token_c( char const *token ) {
   if ( opt_alt_tokens ) {
     switch ( token[0] ) {
       case '!': switch ( token[1] ) {
-                  case '=': return L_NOT_EQ;
-                  default : return L_NOT;
+                  case '=': return L_not_eq;
+                  default : return L_not;
                 }
       case '&': switch ( token[1] ) {
-                  case '&': return L_AND;
-                  case '=': return L_AND_EQ;
-                  default : return L_BITAND;
+                  case '&': return L_and;
+                  case '=': return L_and_eq;
+                  default : return L_bitand;
                 } // switch
       case '|': switch ( token[1] ) {
-                  case '|': return L_OR;
-                  case '=': return L_OR_EQ;
-                  default : return L_BITOR;
+                  case '|': return L_or;
+                  case '=': return L_or_eq;
+                  default : return L_bitor;
                 } // switch
-      case '~': return L_COMPL;
+      case '~': return L_compl;
       case '^': switch ( token[1] ) {
-                  case '=': return L_XOR_EQ;
-                  default : return L_XOR;
+                  case '=': return L_xor_eq;
+                  default : return L_xor;
                 } // switch
     } // switch
   }

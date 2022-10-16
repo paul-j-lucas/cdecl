@@ -59,28 +59,28 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
   // `explain` auto-completes after typing `ex` rather than `exp`.  Note that
   // the user can alternatively auto-complete `quit` (or just type `q`).
   //
-  { L_CAST,                 PROG_NAME,  LANG_SAME(ANY)                },
-  { L_CLASS,                FIRST_ARG,  LANG_SAME(CPP_ANY)            },
-  { L_CONST /*cast*/,       FIRST_ARG,  LANG_SAME(CPP_ANY)            },
-  { L_DECLARE,              PROG_NAME,  LANG_SAME(ANY)                },
-  { L_DEFINE,               FIRST_ARG,  LANG_SAME(ANY)                },
-  { L_DYNAMIC /*cast*/,     FIRST_ARG,  LANG_SAME(CPP_ANY)            },
-  { L_ENUM,                 FIRST_ARG,  LANG_SAME(ENUM)               },
-  { L_EXIT,                 LANG_ONLY,  LANG_DIFF(ANY,NONE)           },
-  { L_EXPLAIN,              PROG_NAME,  LANG_SAME(ANY)                },
-  { L_HELP,                 FIRST_ARG,  LANG_SAME(ANY)                },
-  { L_INCLUDE,              FIRST_ARG,  LANG_SAME(ANY)                },
-  { L_INLINE,               FIRST_ARG,  LANG_SAME(INLINE_NAMESPACE)   },
-  { L_NAMESPACE,            FIRST_ARG,  LANG_SAME(CPP_ANY)            },
-  { L_QUIT,                 LANG_ONLY,  LANG_SAME(ANY)                },
-  { L_REINTERPRET /*cast*/, FIRST_ARG,  LANG_SAME(CPP_ANY)            },
-  { L_SET_COMMAND,          FIRST_ARG,  LANG_SAME(ANY)                },
-  { L_SHOW,                 FIRST_ARG,  LANG_SAME(ANY)                },
-  { L_STATIC /*cast*/,      FIRST_ARG,  LANG_SAME(CPP_ANY)            },
-  { L_STRUCT,               FIRST_ARG,  LANG_SAME(ANY)                },
-  { L_TYPEDEF,              FIRST_ARG,  LANG_SAME(ANY)                },
-  { L_UNION,                FIRST_ARG,  LANG_SAME(ANY)                },
-  { L_USING,                FIRST_ARG,  LANG_SAME(USING_DECLARATION)  },
+  { L_cast,                 PROG_NAME,  LANG_SAME(ANY)                },
+  { L_class,                FIRST_ARG,  LANG_SAME(CPP_ANY)            },
+  { L_const /*cast*/,       FIRST_ARG,  LANG_SAME(CPP_ANY)            },
+  { L_declare,              PROG_NAME,  LANG_SAME(ANY)                },
+  { L_define,               FIRST_ARG,  LANG_SAME(ANY)                },
+  { L_dynamic /*cast*/,     FIRST_ARG,  LANG_SAME(CPP_ANY)            },
+  { L_enum,                 FIRST_ARG,  LANG_SAME(ENUM)               },
+  { L_exit,                 LANG_ONLY,  LANG_DIFF(ANY,NONE)           },
+  { L_explain,              PROG_NAME,  LANG_SAME(ANY)                },
+  { L_help,                 FIRST_ARG,  LANG_SAME(ANY)                },
+  { L_include,              FIRST_ARG,  LANG_SAME(ANY)                },
+  { L_inline,               FIRST_ARG,  LANG_SAME(INLINE_NAMESPACE)   },
+  { L_namespace,            FIRST_ARG,  LANG_SAME(CPP_ANY)            },
+  { L_quit,                 LANG_ONLY,  LANG_SAME(ANY)                },
+  { L_reinterpret /*cast*/, FIRST_ARG,  LANG_SAME(CPP_ANY)            },
+  { L_set,                  FIRST_ARG,  LANG_SAME(ANY)                },
+  { L_show,                 FIRST_ARG,  LANG_SAME(ANY)                },
+  { L_static /*cast*/,      FIRST_ARG,  LANG_SAME(CPP_ANY)            },
+  { L_struct,               FIRST_ARG,  LANG_SAME(ANY)                },
+  { L_typedef,              FIRST_ARG,  LANG_SAME(ANY)                },
+  { L_union,                FIRST_ARG,  LANG_SAME(ANY)                },
+  { L_using,                FIRST_ARG,  LANG_SAME(USING_DECLARATION)  },
   { NULL,                   0,          LANG_SAME(NONE)               },
 };
 
@@ -115,7 +115,7 @@ cdecl_command_t const* cdecl_command_find( char const *s ) {
     size_t const literal_len = strlen( command->literal );
     if ( !starts_with_token( s, command->literal, literal_len ) )
       continue;
-    if ( command->literal == L_CONST || command->literal == L_STATIC ) {
+    if ( command->literal == L_const || command->literal == L_static ) {
       //
       // When in explain-by-default mode, a special case has to be made for
       // const and static since explain is implied only when NOT followed by
@@ -128,7 +128,7 @@ cdecl_command_t const* cdecl_command_find( char const *s ) {
       if ( !isspace( *p ) )
         break;
       SKIP_WS( p );
-      if ( !starts_with_token( p, L_CAST, 4 ) )
+      if ( !starts_with_token( p, L_cast, 4 ) )
         break;
       p += 4;
       if ( !isspace( *p ) )

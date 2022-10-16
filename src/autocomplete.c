@@ -152,7 +152,7 @@ static char const* const* init_set_options( void ) {
   char **const set_options = free_later( MALLOC( char*, n ) );
   char **p = set_options;
 
-  *p++ = CONST_CAST( char*, L_OPTIONS );
+  *p++ = CONST_CAST( char*, L_options );
 
   FOREACH_SET_OPTION( opt ) {
     switch ( opt->kind ) {
@@ -196,14 +196,14 @@ static char const* const* init_set_options( void ) {
  */
 NODISCARD
 static bool is_cast_command( char const *s, size_t s_len ) {
-  if ( is_command( L_CAST, s, s_len ) )
+  if ( is_command( L_cast, s, s_len ) )
     return true;
   if ( OPT_LANG_IS( C_ANY ) )
     return false;
-  return  is_command( L_CONST,       s, s_len ) ||
-          is_command( L_DYNAMIC,     s, s_len ) ||
-          is_command( L_STATIC,      s, s_len ) ||
-          is_command( L_REINTERPRET, s, s_len );
+  return  is_command( L_const,       s, s_len ) ||
+          is_command( L_dynamic,     s, s_len ) ||
+          is_command( L_static,      s, s_len ) ||
+          is_command( L_reinterpret, s, s_len );
 }
 
 /**
@@ -249,11 +249,11 @@ static bool is_command( char const *command, char const *s, size_t s_len ) {
 NODISCARD
 static bool is_english_command( char const *command ) {
   assert( command != NULL );
-  return  command == L_CAST     ||
-          command == L_DECLARE  ||
-          command == L_DEFINE   ||
-          command == L_HELP     ||
-          command == L_SET_COMMAND;
+  return  command == L_cast     ||
+          command == L_declare  ||
+          command == L_define   ||
+          command == L_help     ||
+          command == L_set;
 }
 
 ////////// readline callback functions ////////////////////////////////////////
@@ -353,9 +353,9 @@ static char* keyword_generator( char const *text, int state ) {
     //      cdecl> set <tab>
     //
     if ( is_command( "?", buf, buf_len ) )
-      command = L_HELP;
+      command = L_help;
     else if ( is_cast_command( buf, buf_len ) )
-      command = L_CAST;
+      command = L_cast;
     else {
       FOREACH_CDECL_COMMAND( c ) {
         if ( !opt_lang_is_any( c->lang_ids ) )
@@ -367,7 +367,7 @@ static char* keyword_generator( char const *text, int state ) {
       } // for
     }
     if ( command == NULL && opt_explain )
-      command = L_EXPLAIN;
+      command = L_explain;
   }
 
   if ( command == NULL ) {
@@ -382,11 +382,11 @@ static char* keyword_generator( char const *text, int state ) {
   // Special case: if it's the "cast" command, the text partially matches
   // "into", and the user hasn't typed "into" yet, complete as "into".
   //
-  if ( command == L_CAST &&
-       strncmp( text, L_INTO, text_len ) == 0 &&
-       strstr( rl_line_buffer, L_INTO ) == NULL ) {
+  if ( command == L_cast &&
+       strncmp( text, L_into, text_len ) == 0 &&
+       strstr( rl_line_buffer, L_into ) == NULL ) {
     command = NULL;                     // unambiguously match "into"
-    return check_strdup( L_INTO );
+    return check_strdup( L_into );
   }
 
   static char const *const *command_keywords;
@@ -396,37 +396,37 @@ static char* keyword_generator( char const *text, int state ) {
     // Special case: for certain commands, complete using specific keywords for
     // that command.
     //
-    if ( command == L_HELP ) {
+    if ( command == L_help ) {
       static char const *const help_keywords[] = {
-        L_COMMANDS,
-        L_ENGLISH,
-        L_OPTIONS,
+        L_commands,
+        L_english,
+        L_options,
         NULL
       };
       command_keywords = help_keywords;
     }
-    else if ( command == L_SET_COMMAND ) {
+    else if ( command == L_set ) {
       static char const *const *set_options;
       if ( set_options == NULL )
         set_options = init_set_options();
       command_keywords = set_options;
     }
-    else if ( command == L_SHOW ) {
+    else if ( command == L_show ) {
       static char const *const show_keywords[] = {
-        L_ALL,
-        L_ENGLISH,
-        L_PREDEFINED,
-        L_TYPEDEF,
-        L_USER,
+        L_all,
+        L_english,
+        L_predefined,
+        L_typedef,
+        L_user,
         NULL
       };
       static char const *const show_keywords_with_using[] = {
-        L_ALL,
-        L_ENGLISH,
-        L_PREDEFINED,
-        L_TYPEDEF,
-        L_USER,
-        L_USING,
+        L_all,
+        L_english,
+        L_predefined,
+        L_typedef,
+        L_user,
+        L_using,
         NULL
       };
       command_keywords = OPT_LANG_IS( USING_DECLARATION ) ?

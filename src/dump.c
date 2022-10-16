@@ -209,10 +209,10 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
           FPUTS( "unspecified", dout );
           break;
         case C_FUNC_MEMBER:
-          FPUTS( L_MEMBER, dout );
+          FPUTS( L_member, dout );
           break;
         case C_FUNC_NON_MEMBER:
-          FPUTS( H_NON_MEMBER, dout );
+          FPUTS( H_non_member, dout );
           break;
         case C_OP_OVERLOADABLE:
           FPUTS( "overloadable", dout );

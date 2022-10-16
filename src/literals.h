@@ -60,313 +60,313 @@ _GL_INLINE_HEADER_BEGIN
 //    update C_KEYWORDS in c_keywords.c.
 
 // english
-extern char const L_ALIGN[];
-extern char const L_ALIGNED[];
-extern char const L_ALL[];
-extern char const L_ARRAY[];
-extern char const L_AS[];
-extern char const L_BITS[];
-extern char const L_BYTES[];
-extern char const L_CAST[];
-extern char const L_COMMAND[];            // synonym for "commands"
-extern char const L_COMMANDS[];
-extern char const L_DECLARE[];
-extern char const L_DEFAULTED[];          // synonym for "default"
-extern char const L_DEFINE[];
-extern char const L_DELETED[];            // synonym for "delete"
-extern char const L_ENGLISH[];
-extern char const L_EVAL[];               // synonym for "evaluation"
-extern char const L_EVALUATION[];
-extern char const L_EXIT[];
-extern char const L_EXPLAIN[];
-extern char const L_EXPR[];               // synonym for "expression"
-extern char const L_EXPRESSION[];
-extern char const L_FUNC[];               // synonym for "function"
-extern char const L_FUNCTION[];
-extern char const L_HELP[];
-extern char const L_INCLUDE[];
-extern char const L_INIT[];               // synonym for "initialization"
-extern char const L_INITIALIZATION[];
-extern char const L_INTO[];
-extern char const L_LINKAGE[];
-extern char const L_MBR[];                // synonym for "member"
-extern char const L_MEMBER[];
-extern char const L_NO[];
-extern char const H_NON_MBR[];            // synonym for "non-member"
-extern char const H_NON_MEMBER[];
-extern char const L_OF[];
-extern char const L_OPTIONS[];
-extern char const L_POINTER[];
-extern char const L_PREDEF[];             // synonym for "predefined"
-extern char const L_PREDEFINED[];
-extern char const L_PTR[];                // synonym for "pointer"
-extern char const L_Q[];                  // synonym for "quit"
-extern char const L_QUIT[];
-extern char const L_REF[];                // synonym for "reference"
-extern char const L_REFERENCE[];
-extern char const L_RET[];                // synonym for "returning"
-extern char const L_RETURNING[];
-extern char const L_RVALUE[];
-extern char const L_SET_COMMAND[];        // L_SET is synonym for SEEK_SET
-extern char const L_SHOW[];
-extern char const L_TO[];
-extern char const L_USER[];
-extern char const L_VECTOR[];             // synonym for "array"
-extern char const L_WIDTH[];
+extern char const L_align[];
+extern char const L_aligned[];
+extern char const L_all[];
+extern char const L_array[];
+extern char const L_as[];
+extern char const L_bits[];
+extern char const L_bytes[];
+extern char const L_cast[];
+extern char const L_command[];            // synonym for "commands"
+extern char const L_commands[];
+extern char const L_declare[];
+extern char const L_defaulted[];          // synonym for "default"
+extern char const L_define[];
+extern char const L_deleted[];            // synonym for "delete"
+extern char const L_english[];
+extern char const L_eval[];               // synonym for "evaluation"
+extern char const L_evaluation[];
+extern char const L_exit[];
+extern char const L_explain[];
+extern char const L_expr[];               // synonym for "expression"
+extern char const L_expression[];
+extern char const L_func[];               // synonym for "function"
+extern char const L_function[];
+extern char const L_help[];
+extern char const L_include[];
+extern char const L_init[];               // synonym for "initialization"
+extern char const L_initialization[];
+extern char const L_into[];
+extern char const L_linkage[];
+extern char const L_mbr[];                // synonym for "member"
+extern char const L_member[];
+extern char const L_no[];
+extern char const H_non_mbr[];            // synonym for "non-member"
+extern char const H_non_member[];
+extern char const L_of[];
+extern char const L_options[];
+extern char const L_pointer[];
+extern char const L_predef[];             // synonym for "predefined"
+extern char const L_predefined[];
+extern char const L_ptr[];                // synonym for "pointer"
+extern char const L_q[];                  // synonym for "quit"
+extern char const L_quit[];
+extern char const L_ref[];                // synonym for "reference"
+extern char const L_reference[];
+extern char const L_ret[];                // synonym for "returning"
+extern char const L_returning[];
+extern char const L_rvalue[];
+extern char const L_set[];
+extern char const L_show[];
+extern char const L_to[];
+extern char const L_user[];
+extern char const L_vector[];             // synonym for "array"
+extern char const L_width[];
 
 // K&R
-extern char const L_AUTO[];
-extern char const L_AUTOMATIC[];          // synonym for "auto", "__auto_type"
-extern char const L_BREAK[];
-extern char const L_CASE[];
-extern char const L_CHAR[];
-extern char const L_CHARACTER[];          // English for "char"
-extern char const L_CONTINUE[];
-extern char const L_DEFAULT[];
-extern char const L_DO[];
-extern char const L_DOUBLE[];
-extern char const H_DOUBLE_PRECISION[];   // English for "double"
-extern char const L_ELSE[];
-extern char const L_EXTERN[];
-extern char const L_EXTERNAL[];           // English for "extern"
-extern char const L_FLOAT[];
-extern char const H_FLOATING_POINT[];     // English for "float"
-extern char const L_FOR[];
-extern char const L_GOTO[];
-extern char const L_IF[];
-extern char const L_INT[];
-extern char const L_INTEGER[];            // English for "int"
-extern char const L_LONG[];
-extern char const L_REGISTER[];
-extern char const L_RETURN[];
-extern char const L_SHORT[];
-extern char const L_SIZEOF[];
-extern char const L_STATIC[];
-extern char const L_STRUCT[];
-extern char const L_STRUCTURE[];          // English for "struct"
-extern char const L_SWITCH[];
-extern char const L_TYPE[];               // English for "typedef"
-extern char const L_TYPEDEF[];
-extern char const L_UNION[];
-extern char const L_UNSIGNED[];
-extern char const L_WHILE[];
+extern char const L_auto[];
+extern char const L_automatic[];          // synonym for "auto", "__auto_type"
+extern char const L_break[];
+extern char const L_case[];
+extern char const L_char[];
+extern char const L_character[];          // English for "char"
+extern char const L_continue[];
+extern char const L_default[];
+extern char const L_do[];
+extern char const L_double[];
+extern char const H_double_precision[];   // English for "double"
+extern char const L_else[];
+extern char const L_extern[];
+extern char const L_external[];           // English for "extern"
+extern char const L_float[];
+extern char const H_floating_point[];     // English for "float"
+extern char const L_for[];
+extern char const L_goto[];
+extern char const L_if[];
+extern char const L_int[];
+extern char const L_integer[];            // English for "int"
+extern char const L_long[];
+extern char const L_register[];
+extern char const L_return[];
+extern char const L_short[];
+extern char const L_sizeof[];
+extern char const L_static[];
+extern char const L_struct[];
+extern char const L_structure[];          // English for "struct"
+extern char const L_switch[];
+extern char const L_type[];               // English for "typedef"
+extern char const L_typedef[];
+extern char const L_union[];
+extern char const L_unsigned[];
+extern char const L_while[];
 
 // C89
-extern char const L_ASM[];
-extern char const L_CONST[];
-extern char const L_CONSTANT[];           // English for "const"
-extern char const L_ELLIPSIS[];           // ...
-extern char const L_ENUM[];
-extern char const L_ENUMERATION[];        // English for "enum"
-extern char const L_SIGNED[];
-extern char const L_VARARGS[];            // synonym for "..."
-extern char const L_VARIADIC[];           // synonym for "..."
-extern char const L_VOID[];
-extern char const L_VOLATILE[];
+extern char const L_asm[];
+extern char const L_const[];
+extern char const L_constant[];           // English for "const"
+extern char const L_ellipsis[];           // ...
+extern char const L_enum[];
+extern char const L_enumeration[];        // English for "enum"
+extern char const L_signed[];
+extern char const L_varargs[];            // synonym for "..."
+extern char const L_variadic[];           // synonym for "..."
+extern char const L_void[];
+extern char const L_volatile[];
 
 // C99
-extern char const L__BOOL[];
-extern char const L__COMPLEX[];
-extern char const L_COMPLEX[];            // synonym for "_Complex"
-extern char const L__IMAGINARY[];
-extern char const L_IMAGINARY[];          // synonym for "_Imaginary"
-extern char const L_INLINE[];
-extern char const L_LEN[];                // synonym for "length"
-extern char const L_LENGTH[];             // for "variable [length] array"
-extern char const L_RESTRICT[];
-extern char const L_RESTRICTED[];         // synonym for "restrict"
-extern char const L_VAR[];                // synonym for "variable"
-extern char const L_VARIABLE[];           // for "variable [length] array"
-extern char const L_WCHAR_T[];
+extern char const L__Bool[];
+extern char const L__Complex[];
+extern char const L_complex[];            // synonym for "_Complex"
+extern char const L__Imaginary[];
+extern char const L_imaginary[];          // synonym for "_Imaginary"
+extern char const L_inline[];
+extern char const L_len[];                // synonym for "length"
+extern char const L_length[];             // for "variable [length] array"
+extern char const L_restrict[];
+extern char const L_restricted[];         // synonym for "restrict"
+extern char const L_var[];                // synonym for "variable"
+extern char const L_variable[];           // for "variable [length] array"
+extern char const L_wchar_t[];
 
 // C11
-extern char const L__ALIGNAS[];
-extern char const L__ALIGNOF[];
-extern char const L__ATOMIC[];
-extern char const L_ATOMIC[];             // synonym for "_Atomic"
-extern char const L__GENERIC[];
-extern char const L__NORETURN[];
-extern char const H_NO_RETURN[];          // English for "_Noreturn"
-extern char const H_NON_RETURNING[];      // English for "_Noreturn"
-extern char const L__STATIC_ASSERT[];
-extern char const L__THREAD_LOCAL[];
-extern char const L_THREAD[], L_LOCAL[];
-extern char const H_THREAD_LOCAL[];       // English for "_Thread_local"
+extern char const L__Alignas[];
+extern char const L__Alignof[];
+extern char const L__Atomic[];
+extern char const L_atomic[];             // synonym for "_Atomic"
+extern char const L__Generic[];
+extern char const L__Noreturn[];
+extern char const H_no_return[];          // English for "_Noreturn"
+extern char const H_non_returning[];      // English for "_Noreturn"
+extern char const L__Static_assert[];
+extern char const L__Thread_local[];
+extern char const L_thread[], L_local[];
+extern char const H_thread_local[];       // English for "_Thread_local"
 
 // C++
-extern char const L_BOOL[];
-extern char const L_CATCH[];
-extern char const L_CLASS[];
-extern char const L_CONSTRUCTOR[];
-extern char const L_CONST_CAST[];
-extern char const L_CONV[];               // synonym for "conversion"
-extern char const L_CONVERSION[];
-extern char const L_CTOR[];               // synonym for "constructor"
-extern char const L_DELETE[];
-extern char const L_DESTRUCTOR[];
-extern char const L_DTOR[];               // synonym for "destructor"
-extern char const L_DYNAMIC[];
-extern char const L_DYNAMIC_CAST[];
-extern char const L_EXPLICIT[];
-extern char const L_FALSE[];
-extern char const L_FRIEND[];
-extern char const L_MUTABLE[];
-extern char const L_NAMESPACE[];
-extern char const L_NEW[];
-extern char const H_NON_THROWING[];       // English for "throw"
-extern char const L_OPER[];               // synonym for "operator"
-extern char const L_OPERATOR[];
-extern char const L_PRIVATE[];
-extern char const L_PROTECTED[];
-extern char const L_PUBLIC[];
-extern char const L_PURE[];
-extern char const L_REINTERPRET[];
-extern char const L_REINTERPRET_CAST[];
-extern char const L_SCOPE[];
-extern char const L_STATIC_CAST[];
-extern char const L_TEMPLATE[];
-extern char const L_THIS[];
-extern char const L_THROW[];
-extern char const L_TRUE[];
-extern char const L_TRY[];
-extern char const L_TYPEID[];
-extern char const L_TYPENAME[];
-extern char const L_USING[];
-extern char const L_VIRTUAL[];
+extern char const L_bool[];
+extern char const L_catch[];
+extern char const L_class[];
+extern char const L_constructor[];
+extern char const L_const_cast[];
+extern char const L_conv[];               // synonym for "conversion"
+extern char const L_conversion[];
+extern char const L_ctor[];               // synonym for "constructor"
+extern char const L_delete[];
+extern char const L_destructor[];
+extern char const L_dtor[];               // synonym for "destructor"
+extern char const L_dynamic[];
+extern char const L_dynamic_cast[];
+extern char const L_explicit[];
+extern char const L_false[];
+extern char const L_friend[];
+extern char const L_mutable[];
+extern char const L_namespace[];
+extern char const L_new[];
+extern char const H_non_throwing[];       // English for "throw"
+extern char const L_oper[];               // synonym for "operator"
+extern char const L_operator[];
+extern char const L_private[];
+extern char const L_protected[];
+extern char const L_public[];
+extern char const L_pure[];
+extern char const L_reinterpret[];
+extern char const L_reinterpret_cast[];
+extern char const L_scope[];
+extern char const L_static_cast[];
+extern char const L_template[];
+extern char const L_this[];
+extern char const L_throw[];
+extern char const L_true[];
+extern char const L_try[];
+extern char const L_typeid[];
+extern char const L_typename[];
+extern char const L_using[];
+extern char const L_virtual[];
 
 // C++11
-extern char const L_ALIGNAS[];
-extern char const L_ALIGNOF[];
-extern char const L_CARRIES_DEPENDENCY[];
-extern char const L_CARRIES[], L_DEPENDENCY[];
-extern char const H_CARRIES_DEPENDENCY[]; // English for "carries_dependency"
-extern char const L_CONSTEXPR[];
-extern char const L_DECLTYPE[];
-extern char const L_FINAL[];
-extern char const L_NOEXCEPT[];
-extern char const L_EXCEPT[];
-extern char const L_NORETURN[];
-extern char const L_LITERAL[];
-extern char const H_NO_EXCEPT[];          // English for "noexcept"
-extern char const H_NO_EXCEPTION[];       // English for "noexcept"
-extern char const L_NULLPTR[];
-extern char const L_OVERRIDE[];
-extern char const L_OVERRIDDEN[];         // English for "override"
-extern char const L_STATIC_ASSERT[];
-extern char const L_THREAD_LOCAL[];
-extern char const H_USER_DEF[];           // synonym for "user-defined"
-extern char const H_USER_DEFINED[];
+extern char const L_alignas[];
+extern char const L_alignof[];
+extern char const L_carries_dependency[];
+extern char const L_carries[], L_dependency[];
+extern char const H_carries_dependency[]; // English for "carries_dependency"
+extern char const L_constexpr[];
+extern char const L_decltype[];
+extern char const L_final[];
+extern char const L_noexcept[];
+extern char const L_except[];
+extern char const L_noreturn[];
+extern char const L_literal[];
+extern char const H_no_except[];          // English for "noexcept"
+extern char const H_no_exception[];       // English for "noexcept"
+extern char const L_nullptr[];
+extern char const L_override[];
+extern char const L_overridden[];         // English for "override"
+extern char const L_static_assert[];
+extern char const L_thread_local[];
+extern char const H_user_def[];           // synonym for "user-defined"
+extern char const H_user_defined[];
 
 // C11 & C++11
-extern char const L_CHAR16_T[];
-extern char const L_CHAR32_T[];
+extern char const L_char16_t[];
+extern char const L_char32_t[];
 
 // C23 & C++14
-extern char const L_DEPRECATED[];
-extern char const L___DEPRECATED__[];
+extern char const L_deprecated[];
+extern char const L___deprecated__[];
 
 // C++17
-extern char const L_MAYBE_UNUSED[];
-extern char const L_MAYBE[], L_UNUSED[];
-extern char const H_MAYBE_UNUSED[];       // English for "maybe_unused"
-extern char const L___MAYBE_UNUSED__[];
-extern char const L_NODISCARD[];
-extern char const L_DISCARD[];
-extern char const H_NO_DISCARD[];         // English for "nodiscard"
-extern char const L___NODISCARD__[];
-extern char const H_NON_DISCARDABLE[];    // English for "nodiscard"
+extern char const L_maybe_unused[];
+extern char const L_maybe[], L_unused[];
+extern char const H_maybe_unused[];       // English for "maybe_unused"
+extern char const L___maybe_unused__[];
+extern char const L_nodiscard[];
+extern char const L_discard[];
+extern char const H_no_discard[];         // English for "nodiscard"
+extern char const L___nodiscard__[];
+extern char const H_non_discardable[];    // English for "nodiscard"
 
 // C++20
-extern char const L_CHAR8_T[];
-extern char const L_CONCEPT[];
-extern char const L_CONSTEVAL[];
-extern char const L_CONSTINIT[];
-extern char const L_CO_AWAIT[];
-extern char const L_CO_RETURN[];
-extern char const L_CO_YIELD[];
-extern char const L_EXPORT[];
-extern char const L_EXPORTED[];           // English for "export"
-extern char const L_NO_UNIQUE_ADDRESS[];
-extern char const L_UNIQUE[], L_ADDRESS[];
-extern char const H_NO_UNIQUE_ADDRESS[];  // English for "no_unique_address"
-extern char const H_NON_UNIQUE_ADDRESS[]; // English for "no_unique_address"
-extern char const L_REQUIRES[];
+extern char const L_char8_t[];
+extern char const L_concept[];
+extern char const L_consteval[];
+extern char const L_constinit[];
+extern char const L_co_await[];
+extern char const L_co_return[];
+extern char const L_co_yield[];
+extern char const L_export[];
+extern char const L_exported[];           // English for "export"
+extern char const L_no_unique_address[];
+extern char const L_unique[], L_address[];
+extern char const H_no_unique_address[];  // English for "no_unique_address"
+extern char const H_non_unique_address[]; // English for "no_unique_address"
+extern char const L_requires[];
 
 // Alternative tokens
-extern char const L_AND[];                // &&
-extern char const L_AND_EQ[];             // &=
-extern char const L_BITAND[];             // &
-extern char const L_BITOR[];              // |
-extern char const L_COMPL[];              // ~
-extern char const L_NOT[];                // !
-extern char const L_NOT_EQ[];             // !=
-extern char const L_OR[];                 // ||
-extern char const L_OR_EQ[];              // |=
-extern char const L_XOR[];                // ^
-extern char const L_XOR_EQ[];             // ^=
+extern char const L_and[];                // &&
+extern char const L_and_eq[];             // &=
+extern char const L_bitand[];             // &
+extern char const L_bitor[];              // |
+extern char const L_compl[];              // ~
+extern char const L_not[];                // !
+extern char const L_not_eq[];             // !=
+extern char const L_or[];                 // ||
+extern char const L_or_eq[];              // |=
+extern char const L_xor[];                // ^
+extern char const L_xor_eq[];             // ^=
 
 // Embedded C extensions
-extern char const L_EMC__ACCUM[];
-extern char const L_EMC_ACCUM[];          // synonym for "_Accum"
-extern char const L_EMC__FRACT[];
-extern char const L_EMC_FRACT[];          // synonym for "_Fract"
-extern char const L_EMC__SAT[];
-extern char const L_EMC_SAT[];            // synonym for "_Sat"
-extern char const L_EMC_SATURATED[];      // English for "_Sat"
+extern char const L_EMC__Accum[];
+extern char const L_EMC_accum[];          // synonym for "_Accum"
+extern char const L_EMC__Fract[];
+extern char const L_EMC_fract[];          // synonym for "_Fract"
+extern char const L_EMC__Sat[];
+extern char const L_EMC_sat[];            // synonym for "_Sat"
+extern char const L_EMC_saturated[];      // English for "_Sat"
 
 // Unified Parallel C extensions
-extern char const L_UPC_RELAXED[];
-extern char const L_UPC_SHARED[];
-extern char const L_UPC_STRICT[];
+extern char const L_UPC_relaxed[];
+extern char const L_UPC_shared[];
+extern char const L_UPC_strict[];
 
 // GNU extensions
-extern char const L_GNU___ATTRIBUTE__[];
-extern char const L_GNU___AUTO_TYPE[];
-extern char const L_GNU___COMPLEX[];
-extern char const L_GNU___COMPLEX__[];
-extern char const L_GNU___CONST[];
-extern char const L_GNU___INLINE[];
-extern char const L_GNU___INLINE__[];
-extern char const L_GNU___RESTRICT[];
-extern char const L_GNU___RESTRICT__[];
-extern char const L_GNU___SIGNED[];
-extern char const L_GNU___SIGNED__[];
-extern char const L_GNU___THREAD[];
-extern char const L_GNU___VOLATILE[];
-extern char const L_GNU___VOLATILE__[];
+extern char const L_GNU___attribute__[];
+extern char const L_GNU___auto_type[];
+extern char const L_GNU___complex[];
+extern char const L_GNU___complex__[];
+extern char const L_GNU___const[];
+extern char const L_GNU___inline[];
+extern char const L_GNU___inline__[];
+extern char const L_GNU___restrict[];
+extern char const L_GNU___restrict__[];
+extern char const L_GNU___signed[];
+extern char const L_GNU___signed__[];
+extern char const L_GNU___thread[];
+extern char const L_GNU___volatile[];
+extern char const L_GNU___volatile__[];
 
 // Apple extensions
-extern char const L_APPLE___BLOCK[];      // storage class
-extern char const L_APPLE_BLOCK[];        // Engligh for '^'
+extern char const L_Apple___block[];      // storage class
+extern char const L_Apple_block[];        // Engligh for '^'
 
 // Microsoft extensions
 //
 // Only some of these keywords have both two and one leading underscore; see
 // <https://docs.microsoft.com/en-us/cpp/cpp/keywords-cpp?#microsoft-specific-c-keywords>.
-extern char const L_MSC__ASM[];
-extern char const L_MSC___ASM[];
-extern char const L_MSC__CDECL[];
-extern char const L_MSC___CDECL[];
-extern char const L_MSC_CDECL[];          // English for "__cdecl"
-extern char const L_MSC___CLRCALL[];
-extern char const L_MSC_CLRCALL[];        // English for "__clrcall"
-extern char const L_MSC__DECLSPEC[];
-extern char const L_MSC___DECLSPEC[];
-extern char const L_MSC__FASTCALL[];
-extern char const L_MSC___FASTCALL[];
-extern char const L_MSC_FASTCALL[];       // English for "__fastcall"
-extern char const L_MSC__FORCEINLINE[];
-extern char const L_MSC___FORCEINLINE[];
-extern char const L_MSC__INLINE[];
-extern char const L_MSC__RESTRICT[];
-extern char const L_MSC__STDCALL[];
-extern char const L_MSC___STDCALL[];
-extern char const L_MSC_STDCALL[];        // English for "__stdcall"
-extern char const L_MSC___THISCALL[];
-extern char const L_MSC_THISCALL[];       // English for "__thiscall"
-extern char const L_MSC__VECTORCALL[];
-extern char const L_MSC___VECTORCALL[];
-extern char const L_MSC_VECTORCALL[];     // English for "__vectorcall"
+extern char const L_MSC__asm[];
+extern char const L_MSC___asm[];
+extern char const L_MSC__cdecl[];
+extern char const L_MSC___cdecl[];
+extern char const L_MSC_cdecl[];          // English for "__cdecl"
+extern char const L_MSC___clrcall[];
+extern char const L_MSC_clrcall[];        // English for "__clrcall"
+extern char const L_MSC__declspec[];
+extern char const L_MSC___declspec[];
+extern char const L_MSC__fastcall[];
+extern char const L_MSC___fastcall[];
+extern char const L_MSC_fastcall[];       // English for "__fastcall"
+extern char const L_MSC__forceinline[];
+extern char const L_MSC___forceinline[];
+extern char const L_MSC__inline[];
+extern char const L_MSC__restrict[];
+extern char const L_MSC__stdcall[];
+extern char const L_MSC___stdcall[];
+extern char const L_MSC_stdcall[];        // English for "__stdcall"
+extern char const L_MSC___thiscall[];
+extern char const L_MSC_thiscall[];       // English for "__thiscall"
+extern char const L_MSC__vectorcall[];
+extern char const L_MSC___vectorcall[];
+extern char const L_MSC_vectorcall[];     // English for "__vectorcall"
 extern char const L_MSC_WINAPI[];         // synonym for "__stdcall"
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -378,7 +378,7 @@ extern char const L_MSC_WINAPI[];         // synonym for "__stdcall"
  */
 NODISCARD C_LITERALS_H_INLINE
 char const* alignas_name( void ) {
-  return OPT_LANG_IS( C_ANY ) ? L__ALIGNAS : L_ALIGNAS;
+  return OPT_LANG_IS( C_ANY ) ? L__Alignas : L_alignas;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

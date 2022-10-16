@@ -544,7 +544,7 @@ hex_int       0[xX]{H}+{int_sfx}?
                */
 _Atomic/{S}*\( {
                 SET_TOKEN;
-                return Y__ATOMIC_SPEC;
+                return Y__Atomic_SPEC;
               }
 
               /*
@@ -571,7 +571,7 @@ _Atomic/{S}*\( {
 declare/{S}({S}|{L})*user-def(ined)? {
                 SET_TOKEN;
                 lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
-                return Y_DECLARE;
+                return Y_declare;
               }
 
               /*
@@ -729,7 +729,7 @@ include{S}*\"  {
                   lexer_cdecl_keyword_find( lexer_token );
                 if ( ck != NULL ) {
                   if ( ck->lang_syn == NULL ) {
-                    if ( ck->literal == L_SET_COMMAND ) {
+                    if ( ck->literal == L_set ) {
                       //
                       // For the "set" command, we want to allow (almost) any
                       // character sequence for the command's options, so we
@@ -737,7 +737,7 @@ include{S}*\"  {
                       //
                       BEGIN( X_SET );
                     }
-                    else if ( ck->literal == L_SHOW ) {
+                    else if ( ck->literal == L_show ) {
                       //
                       // For the "show" command, we need to allow globs.
                       //
@@ -866,7 +866,7 @@ include{S}*\"  {
 "~"           { SET_TOKEN; return Y_TILDE           ; }
 
               /* Synonym for "help", not "?:". */
-"?"           { SET_TOKEN; return Y_HELP            ; }
+"?"           { SET_TOKEN; return Y_help            ; }
 
               /* Single-character operators and miscellaneous punctuation. */
 "%"           |

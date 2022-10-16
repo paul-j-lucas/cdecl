@@ -164,7 +164,7 @@
  *
  * @note This must be used _only_ after an `error` token, e.g.:
  * @code
- *  | Y_DEFINE error
+ *  | Y_define error
  *    {
  *      elaborate_error( "name expected" );
  *    }
@@ -205,10 +205,10 @@
  *
  * @note This must be used _only_ after an `error` token, e.g.:
  * @code
- *  : Y_VIRTUAL
+ *  : Y_virtual
  *  | error
  *    {
- *      keyword_expected( L_VIRTUAL );
+ *      keyword_expected( L_virtual );
  *    }
  * @endcode
  *
@@ -1209,64 +1209,64 @@ static void yyerror( char const *msg ) {
 }
 
                     // cdecl commands
-%token              Y_CAST
-//                  Y_CLASS             // covered in C++
-//                  Y_CONST             // covered in C89
-%token              Y_DECLARE
-%token              Y_DEFINE
-%token              Y_DYNAMIC
-//                  Y_EXIT              // mapped to Y_QUIT by lexer
-%token              Y_EXPLAIN
-%token              Y_HELP
-//                  Y_INLINE            // covered in C99
-//                  Y_NAMESPACE         // covered in C++
-%token              Y_NO
-%token              Y_QUIT
-%token              Y_REINTERPRET
-%token              Y_SET
-%token              Y_SHOW
-//                  Y_STATIC            // covered in K&R C
-//                  Y_STRUCT            // covered in K&R C
-//                  Y_TYPEDEF           // covered in K&R C
-//                  Y_UNION             // covered in K&R C
-//                  Y_USING             // covered in C++
+%token              Y_cast
+//                  Y_class             // covered in C++
+//                  Y_const             // covered in C89
+%token              Y_declare
+%token              Y_define
+%token              Y_dynamic
+//                  Y_exit              // mapped to Y_quit by lexer
+%token              Y_explain
+%token              Y_help
+//                  Y_inline            // covered in C99
+//                  Y_namespace         // covered in C++
+%token              Y_no
+%token              Y_quit
+%token              Y_reinterpret
+%token              Y_set
+%token              Y_show
+//                  Y_static            // covered in K&R C
+//                  Y_struct            // covered in K&R C
+//                  Y_typedef           // covered in K&R C
+//                  Y_union             // covered in K&R C
+//                  Y_using             // covered in C++
 
                     // Pseudo-English
-%token              Y_ALIGNED
-%token              Y_ALL
-%token              Y_ARRAY
-%token              Y_AS
-%token              Y_BITS
-%token              Y_BYTES
-%token              Y_COMMANDS
-%token              Y_CONSTRUCTOR
-%token              Y_CONVERSION
-%token              Y_DESTRUCTOR
-%token              Y_ENGLISH
-%token              Y_EVALUATION
-%token              Y_EXPRESSION
-%token              Y_FUNCTION
-%token              Y_INITIALIZATION
-%token              Y_INTO
-%token              Y_LENGTH
-%token              Y_LINKAGE
-%token              Y_LITERAL
-%token              Y_MEMBER
-%token              Y_NON_MEMBER
-%token              Y_OF
-%token              Y_OPTIONS
-%token              Y_POINTER
-%token              Y_PREDEFINED
-%token              Y_PURE
-%token              Y_REFERENCE
-%token              Y_RETURNING
-%token              Y_RVALUE
-%token              Y_SCOPE
-%token              Y_TO
-%token              Y_USER
-%token              Y_USER_DEFINED
-%token              Y_VARIABLE
-%token              Y_WIDTH
+%token              Y_aligned
+%token              Y_all
+%token              Y_array
+%token              Y_as
+%token              Y_bits
+%token              Y_bytes
+%token              Y_commands
+%token              Y_constructor
+%token              Y_conversion
+%token              Y_destructor
+%token              Y_english
+%token              Y_evaluation
+%token              Y_expression
+%token              Y_function
+%token              Y_initialization
+%token              Y_into
+%token              Y_length
+%token              Y_linkage
+%token              Y_literal
+%token              Y_member
+%token              Y_non_member
+%token              Y_of
+%token              Y_options
+%token              Y_pointer
+%token              Y_predefined
+%token              Y_pure
+%token              Y_reference
+%token              Y_returning
+%token              Y_rvalue
+%token              Y_scope
+%token              Y_to
+%token              Y_user
+%token              Y_user_defined
+%token              Y_variable
+%token              Y_width
 
                     // Precedence
 %nonassoc           Y_PREC_LESS_THAN_upc_layout_qualifier
@@ -1294,7 +1294,7 @@ static void yyerror( char const *msg ) {
                     Y_EXCLAM         // '!' -- also has alt. token "not"
                  // Y_UMINUS         // '-' -- covered by '-' below
                  // Y_UPLUS          // '+' -- covered by '+' below
-                    Y_SIZEOF
+                    Y_sizeof
                     Y_TILDE          // '~' -- also has alt.token "compl"
                     // C/C++ operators: precedence 14
 %left               Y_DOT_STAR          ".*"
@@ -1320,7 +1320,7 @@ static void yyerror( char const *msg ) {
 %left               Y_EQ2               "=="
                     Y_EXCLAM_EQ      // "!=" -- also has alt. token "not_eq"
                     // C/C++ operators: precedence 7 (covered above)
-%left               Y_BIT_AND        // '&' -- covered by Y_AMPER
+%left               Y_bit_and        // '&' -- covered by Y_AMPER
                     // C/C++ operators: precedence 6
 %left               Y_CIRC           // '^' -- also has alt. token "xor"
                     // C/C++ operators: precedence 5
@@ -1346,172 +1346,172 @@ static void yyerror( char const *msg ) {
 %left                                   ','
 
                     // K&R C
-%token  <tid>       Y_AUTO_STORAGE      // C version of "auto"
-%token              Y_BREAK
-%token              Y_CASE
-%token  <tid>       Y_CHAR
-%token              Y_CONTINUE
-%token  <tid>       Y_DEFAULT
-%token              Y_DO
-%token  <tid>       Y_DOUBLE
-%token              Y_ELSE
-%token  <tid>       Y_EXTERN
-%token  <tid>       Y_FLOAT
-%token              Y_FOR
-%token              Y_GOTO
-%token              Y_IF
-%token  <tid>       Y_INT
-%token  <tid>       Y_LONG
-%token  <tid>       Y_REGISTER
-%token              Y_RETURN
-%token  <tid>       Y_SHORT
-%token  <tid>       Y_STATIC
-%token  <tid>       Y_STRUCT
-%token              Y_SWITCH
-%token  <tid>       Y_TYPEDEF
-%token  <tid>       Y_UNION
-%token  <tid>       Y_UNSIGNED
-%token              Y_WHILE
+%token  <tid>       Y_auto_STORAGE      // C version of "auto"
+%token              Y_break
+%token              Y_case
+%token  <tid>       Y_char
+%token              Y_continue
+%token  <tid>       Y_default
+%token              Y_do
+%token  <tid>       Y_double
+%token              Y_else
+%token  <tid>       Y_extern
+%token  <tid>       Y_float
+%token              Y_for
+%token              Y_goto
+%token              Y_if
+%token  <tid>       Y_int
+%token  <tid>       Y_long
+%token  <tid>       Y_register
+%token              Y_return
+%token  <tid>       Y_short
+%token  <tid>       Y_static
+%token  <tid>       Y_struct
+%token              Y_switch
+%token  <tid>       Y_typedef
+%token  <tid>       Y_union
+%token  <tid>       Y_unsigned
+%token              Y_while
 
                     // C89
-%token              Y_ASM
-%token  <tid>       Y_CONST
+%token              Y_asm
+%token  <tid>       Y_const
 %token              Y_ELLIPSIS    "..." // for varargs
-%token  <tid>       Y_ENUM
-%token  <tid>       Y_SIGNED
-%token  <tid>       Y_VOID
-%token  <tid>       Y_VOLATILE
+%token  <tid>       Y_enum
+%token  <tid>       Y_signed
+%token  <tid>       Y_void
+%token  <tid>       Y_volatile
 
                     // C95
-%token  <tid>       Y_WCHAR_T
+%token  <tid>       Y_wchar_t
 
                     // C99
-%token  <tid>       Y__BOOL
-%token  <tid>       Y__COMPLEX
-%token  <tid>       Y__IMAGINARY
-%token  <tid>       Y_INLINE
-%token  <tid>       Y_RESTRICT
+%token  <tid>       Y__Bool
+%token  <tid>       Y__Complex
+%token  <tid>       Y__Imaginary
+%token  <tid>       Y_inline
+%token  <tid>       Y_restrict
 
                     // C11
-%token              Y__ALIGNAS
-%token              Y__ALIGNOF
-%token  <tid>       Y__ATOMIC_QUAL      // qualifier: _Atomic type
-%token  <tid>       Y__ATOMIC_SPEC      // specifier: _Atomic (type)
-%token              Y__GENERIC
-%token  <tid>       Y__NORETURN
-%token              Y__STATIC_ASSERT
-%token  <tid>       Y__THREAD_LOCAL
-%token              Y_THREAD Y_LOCAL
+%token              Y__Alignas
+%token              Y__Alignof
+%token  <tid>       Y__Atomic_QUAL      // qualifier: _Atomic type
+%token  <tid>       Y__Atomic_SPEC      // specifier: _Atomic (type)
+%token              Y__Generic
+%token  <tid>       Y__Noreturn
+%token              Y__Static_assert
+%token  <tid>       Y__Thread_local
+%token              Y_thread Y_local
 
                     // C++
-%token  <tid>       Y_BOOL
-%token              Y_CATCH
-%token  <tid>       Y_CLASS
-%token  <literal>   Y_CONST_CAST
+%token  <tid>       Y_bool
+%token              Y_catch
+%token  <tid>       Y_class
+%token  <literal>   Y_const_cast
 %token  <sname>     Y_CONSTRUCTOR_SNAME // e.g., S::T::T
-%token  <tid>       Y_DELETE
+%token  <tid>       Y_delete
 %token  <sname>     Y_DESTRUCTOR_SNAME  // e.g., S::T::~T
-%token  <literal>   Y_DYNAMIC_CAST
-%token  <tid>       Y_EXPLICIT
-%token  <tid>       Y_FALSE             // for noexcept(false)
-%token  <tid>       Y_FRIEND
-%token  <tid>       Y_MUTABLE
-%token  <tid>       Y_NAMESPACE
-%token              Y_NEW
-%token              Y_OPERATOR
-%token              Y_PRIVATE
-%token              Y_PROTECTED
-%token              Y_PUBLIC
-%token  <literal>   Y_REINTERPRET_CAST
-%token  <literal>   Y_STATIC_CAST
-%token              Y_TEMPLATE
-%token  <tid>       Y_THIS
-%token  <tid>       Y_THROW
-%token  <tid>       Y_TRUE              // for noexcept(true)
-%token              Y_TRY
-%token              Y_TYPEID
-%token  <flag>      Y_TYPENAME
-%token  <tid>       Y_USING
-%token  <tid>       Y_VIRTUAL
+%token  <literal>   Y_dynamic_cast
+%token  <tid>       Y_explicit
+%token  <tid>       Y_false             // for noexcept(false)
+%token  <tid>       Y_friend
+%token  <tid>       Y_mutable
+%token  <tid>       Y_namespace
+%token              Y_new
+%token              Y_operator
+%token              Y_private
+%token              Y_protected
+%token              Y_public
+%token  <literal>   Y_reinterpret_cast
+%token  <literal>   Y_static_cast
+%token              Y_template
+%token  <tid>       Y_this
+%token  <tid>       Y_throw
+%token  <tid>       Y_true              // for noexcept(true)
+%token              Y_try
+%token              Y_typeid
+%token  <flag>      Y_typename
+%token  <tid>       Y_using
+%token  <tid>       Y_virtual
 
                     // C11 & C++11
-%token  <tid>       Y_CHAR16_T
-%token  <tid>       Y_CHAR32_T
+%token  <tid>       Y_char16_t
+%token  <tid>       Y_char32_t
 
                     // C23 & C++11
 %token              Y_ATTR_BEGIN        // First '[' of "[[" for an attribute.
 
                     // C++11
-%token              Y_ALIGNAS
-%token              Y_ALIGNOF
-%token  <tid>       Y_AUTO_TYPE         // C++11 version of "auto"
-%token              Y_CARRIES Y_DEPENDENCY
-%token  <tid>       Y_CARRIES_DEPENDENCY
-%token  <tid>       Y_CONSTEXPR
-%token              Y_DECLTYPE
-%token              Y_EXCEPT
-%token  <tid>       Y_FINAL
-%token  <tid>       Y_NOEXCEPT
-%token              Y_NULLPTR
-%token  <tid>       Y_OVERRIDE
+%token              Y_alignas
+%token              Y_alignof
+%token  <tid>       Y_auto_TYPE         // C++11 version of "auto"
+%token              Y_carries Y_dependency
+%token  <tid>       Y_carries_dependency
+%token  <tid>       Y_constexpr
+%token              Y_decltype
+%token              Y_except
+%token  <tid>       Y_final
+%token  <tid>       Y_noexcept
+%token              Y_nullptr
+%token  <tid>       Y_override
 %token              Y_QUOTE2            // for user-defined literals
-%token              Y_STATIC_ASSERT
-%token  <tid>       Y_THREAD_LOCAL
+%token              Y_static_assert
+%token  <tid>       Y_thread_local
 
                     // C23 & C++14
-%token  <tid>       Y_DEPRECATED
+%token  <tid>       Y_deprecated
 
                     // C23 & C++17
-%token              Y_DISCARD
-%token  <tid>       Y_MAYBE_UNUSED
-%token              Y_MAYBE Y_UNUSED
-%token  <tid>       Y_NODISCARD
+%token              Y_discard
+%token  <tid>       Y_maybe_unused
+%token              Y_maybe Y_unused
+%token  <tid>       Y_nodiscard
 
                     // C++17
-%token  <tid>       Y_NORETURN
+%token  <tid>       Y_noreturn
 
                     // C23 & C++20
-%token  <tid>       Y_CHAR8_T
+%token  <tid>       Y_char8_t
 
                     // C++20
-%token              Y_ADDRESS
-%token              Y_CONCEPT
-%token  <tid>       Y_CONSTEVAL
-%token  <tid>       Y_CONSTINIT
-%token              Y_CO_AWAIT
-%token              Y_CO_RETURN
-%token              Y_CO_YIELD
-%token  <tid>       Y_EXPORT
-%token  <tid>       Y_NO_UNIQUE_ADDRESS
-%token              Y_REQUIRES
-%token              Y_UNIQUE
+%token              Y_address
+%token              Y_concept
+%token  <tid>       Y_consteval
+%token  <tid>       Y_constinit
+%token              Y_co_await
+%token              Y_co_return
+%token              Y_co_yield
+%token  <tid>       Y_export
+%token  <tid>       Y_no_unique_address
+%token              Y_requires
+%token              Y_unique
 
                     // Embedded C extensions
-%token  <tid>       Y_EMC__ACCUM
-%token  <tid>       Y_EMC__FRACT
-%token  <tid>       Y_EMC__SAT
+%token  <tid>       Y_EMC__Accum
+%token  <tid>       Y_EMC__Fract
+%token  <tid>       Y_EMC__Sat
 
                     // Unified Parallel C extensions
-%token  <tid>       Y_UPC_RELAXED
-%token  <tid>       Y_UPC_SHARED
-%token  <tid>       Y_UPC_STRICT
+%token  <tid>       Y_UPC_relaxed
+%token  <tid>       Y_UPC_shared
+%token  <tid>       Y_UPC_strict
 
                     // GNU extensions
-%token              Y_GNU___ATTRIBUTE__
-%token  <tid>       Y_GNU___RESTRICT
+%token              Y_GNU___attribute__
+%token  <tid>       Y_GNU___restrict
 
                     // Apple extensions
-%token  <tid>       Y_APPLE___BLOCK     // __block storage class
-%token              Y_APPLE_BLOCK       // English for '^'
+%token  <tid>       Y_Apple___block     // __block storage class
+%token              Y_Apple_BLOCK       // English for '^'
 
                     // Microsoft extensions
-%token  <tid>       Y_MSC___CDECL
-%token  <tid>       Y_MSC___CLRCALL
-%token              Y_MSC___DECLSPEC
-%token  <tid>       Y_MSC___FASTCALL
-%token  <tid>       Y_MSC___STDCALL
-%token  <tid>       Y_MSC___THISCALL
-%token  <tid>       Y_MSC___VECTORCALL
+%token  <tid>       Y_MSC___cdecl
+%token  <tid>       Y_MSC___clrcall
+%token              Y_MSC___declspec
+%token  <tid>       Y_MSC___fastcall
+%token  <tid>       Y_MSC___stdcall
+%token  <tid>       Y_MSC___thiscall
+%token  <tid>       Y_MSC___vectorcall
 
                     // Miscellaneous
 %token              ':'
@@ -1832,7 +1832,7 @@ cast_command
     /*
      * C-style cast.
      */
-  : Y_CAST sname_english_exp as_into_to_exp decl_english_ast
+  : Y_cast sname_english_exp as_into_to_exp decl_english_ast
     {
       DUMP_START( "cast_command",
                   "CAST sname_english_exp as_into_to_exp decl_english_ast" );
@@ -1878,10 +1878,10 @@ cast_command
   ;
 
 new_style_cast_english
-  : Y_CONST cast_exp              { $$ = C_CAST_CONST;        }
-  | Y_DYNAMIC cast_exp            { $$ = C_CAST_DYNAMIC;      }
-  | Y_REINTERPRET cast_exp        { $$ = C_CAST_REINTERPRET;  }
-  | Y_STATIC cast_exp             { $$ = C_CAST_STATIC;       }
+  : Y_const cast_exp              { $$ = C_CAST_CONST;        }
+  | Y_dynamic cast_exp            { $$ = C_CAST_DYNAMIC;      }
+  | Y_reinterpret cast_exp        { $$ = C_CAST_REINTERPRET;  }
+  | Y_static cast_exp             { $$ = C_CAST_STATIC;       }
   | new_style_cast_c
   ;
 
@@ -1891,7 +1891,7 @@ declare_command
     /*
      * Common declaration, e.g.: declare x as int.
      */
-  : Y_DECLARE sname_list_english as_exp alignas_or_width_decl_english_ast
+  : Y_declare sname_list_english as_exp alignas_or_width_decl_english_ast
     {
       c_ast_t *const decl_ast = $4;
 
@@ -2019,7 +2019,7 @@ declare_command
     /*
      * C++ overloaded operator declaration.
      */
-  | Y_DECLARE c_operator
+  | Y_declare c_operator
     { //
       // This check is done now in the parser rather than later in the AST
       // since it yields a better error message since otherwise it would warn
@@ -2058,8 +2058,8 @@ declare_command
     /*
      * C++ user-defined conversion operator declaration.
      */
-  | Y_DECLARE udc_storage_class_list_english_type_opt cv_qualifier_list_stid_opt
-    Y_USER_DEFINED conversion_exp operator_opt of_scope_list_english_opt
+  | Y_declare udc_storage_class_list_english_type_opt cv_qualifier_list_stid_opt
+    Y_user_defined conversion_exp operator_opt of_scope_list_english_opt
     returning_exp decl_english_ast
     {
       DUMP_START( "declare_command",
@@ -2089,7 +2089,7 @@ declare_command
       FPUTC( '\n', cdecl_fout );
     }
 
-  | Y_DECLARE error
+  | Y_declare error
     {
       if ( OPT_LANG_IS( CPP_ANY ) )
         elaborate_error( "name or operator expected" );
@@ -2138,19 +2138,19 @@ udc_storage_class_english_type
    * since only special members can be deleted anyway.
    */
 udc_storage_class_english_stid
-  : Y_CONSTEVAL
-  | Y_CONSTEXPR
-  | Y_CONSTINIT
-  | Y_EXPLICIT
-  | Y_EXPORT
-  | Y_FINAL
-  | Y_FRIEND
-  | Y_INLINE
-  | Y_NOEXCEPT
-  | Y_OVERRIDE
-  | Y_THROW
-  | Y_VIRTUAL
-  | Y_PURE virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
+  : Y_consteval
+  | Y_constexpr
+  | Y_constinit
+  | Y_explicit
+  | Y_export
+  | Y_final
+  | Y_friend
+  | Y_inline
+  | Y_noexcept
+  | Y_override
+  | Y_throw
+  | Y_virtual
+  | Y_pure virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
   ;
 
 alignas_or_width_decl_english_ast
@@ -2204,24 +2204,24 @@ alignas_specifier_english
   ;
 
 aligned_english
-  : Y_ALIGNED as_or_to_opt
-  | Y__ALIGNAS
-  | Y_ALIGNAS
+  : Y_aligned as_or_to_opt
+  | Y__Alignas
+  | Y_alignas
   ;
 
 as_or_to_opt
   : /* empty */
-  | Y_AS
-  | Y_TO
+  | Y_as
+  | Y_to
   ;
 
 bytes_opt
   : /* empty */
-  | Y_BYTES
+  | Y_bytes
   ;
 
 width_specifier_english_uint
-  : Y_WIDTH int_exp bits_opt
+  : Y_width int_exp bits_opt
     { //
       // This check has to be done now in the parser rather than later in the
       // AST since we use 0 to mean "no bit-field."
@@ -2236,13 +2236,13 @@ width_specifier_english_uint
 
 bits_opt
   : /* empty */
-  | Y_BITS
+  | Y_bits
   ;
 
 /// define command ////////////////////////////////////////////////////////////
 
 define_command
-  : Y_DEFINE sname_english_exp as_exp decl_english_ast
+  : Y_define sname_english_exp as_exp decl_english_ast
     {
       DUMP_START( "define_command",
                   "DEFINE sname_english AS decl_english_ast" );
@@ -2364,7 +2364,7 @@ explain_command
      * (We can't use typename_flag_opt because it would introduce more
      * shift/reduce conflicts.)
      */
-  | explain Y_TYPENAME { in_attr.is_typename = true; } typed_declaration_c
+  | explain Y_typename { in_attr.is_typename = true; } typed_declaration_c
 
     /*
      * User-defined conversion operator declaration without a storage-class-
@@ -2425,7 +2425,7 @@ explain_command
   ;
 
 explain
-  : Y_EXPLAIN
+  : Y_explain
     { //
       // Set our mode to deciphering gibberish into English and specifically
       // tell the lexer to return cdecl keywords (e.g., "func") as ordinary
@@ -2442,14 +2442,14 @@ explain
 /// help command //////////////////////////////////////////////////////////////
 
 help_command
-  : Y_HELP help_what_opt          { print_help( $2 ); }
+  : Y_help help_what_opt          { print_help( $2 ); }
   ;
 
 help_what_opt
   : /* empty */                   { $$ = CDECL_HELP_COMMANDS; }
-  | Y_COMMANDS                    { $$ = CDECL_HELP_COMMANDS; }
-  | Y_ENGLISH                     { $$ = CDECL_HELP_ENGLISH;  }
-  | Y_OPTIONS                     { $$ = CDECL_HELP_OPTIONS;  }
+  | Y_commands                    { $$ = CDECL_HELP_COMMANDS; }
+  | Y_english                     { $$ = CDECL_HELP_ENGLISH;  }
+  | Y_options                     { $$ = CDECL_HELP_OPTIONS;  }
   | error
     {
       elaborate_error( "\"commands\", \"english\", or \"options\" expected" );
@@ -2459,7 +2459,7 @@ help_what_opt
 /// quit command //////////////////////////////////////////////////////////////
 
 quit_command
-  : Y_QUIT                        { quit(); }
+  : Y_quit                        { quit(); }
   ;
 
 /// scope (enum, class, struct, union, namespace) command /////////////////////
@@ -2471,12 +2471,12 @@ scoped_command
 /// set command ///////////////////////////////////////////////////////////////
 
 set_command
-  : Y_SET
+  : Y_set
     {
       if ( !set_option( NULL, NULL, NULL, NULL ) )
         PARSE_ABORT();
     }
-  | Y_SET set_option_list
+  | Y_set set_option_list
   ;
 
 set_option_list
@@ -2508,7 +2508,7 @@ set_option_value_opt
 /// show command //////////////////////////////////////////////////////////////
 
 show_command
-  : Y_SHOW any_typedef show_format_opt
+  : Y_show any_typedef show_format_opt
     {
       DUMP_START( "show_command", "SHOW any_typedef show_format_opt" );
       DUMP_AST( "any_typedef.ast", $2->ast );
@@ -2518,7 +2518,7 @@ show_command
       show_type( $2, $3 );
     }
 
-  | Y_SHOW any_typedef Y_AS show_format_exp
+  | Y_show any_typedef Y_as show_format_exp
     {
       DUMP_START( "show_command", "SHOW any_typedef AS show_format_exp" );
       DUMP_AST( "any_typedef.ast", $2->ast );
@@ -2528,7 +2528,7 @@ show_command
       show_type( $2, $4 );
     }
 
-  | Y_SHOW show_which_types_flags_opt glob_opt show_format_opt
+  | Y_show show_which_types_flags_opt glob_opt show_format_opt
     {
       show_type_info_t sti;
       sti_init( &sti, $2, $3, $4 );
@@ -2537,7 +2537,7 @@ show_command
       free( $3 );
     }
 
-  | Y_SHOW show_which_types_flags_opt glob_opt Y_AS show_format_exp
+  | Y_show show_which_types_flags_opt glob_opt Y_as show_format_exp
     {
       show_type_info_t sti;
       sti_init( &sti, $2, $3, $5 );
@@ -2546,19 +2546,19 @@ show_command
       free( $3 );
     }
 
-  | Y_SHOW Y_NAME
+  | Y_show Y_NAME
     {
       static char const *const type_commands_knr[] = {
-        L_DEFINE, L_STRUCT, L_TYPEDEF, L_UNION, NULL
+        L_define, L_struct, L_typedef, L_union, NULL
       };
       static char const *const type_commands_c[] = {
-        L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, NULL
+        L_define, L_enum, L_struct, L_typedef, L_union, NULL
       };
       static char const *const type_commands_cpp_without_using[] = {
-        L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, NULL
+        L_class, L_define, L_enum, L_struct, L_typedef, L_union, NULL
       };
       static char const *const type_commands_cpp_with_using[] = {
-        L_CLASS, L_DEFINE, L_ENUM, L_STRUCT, L_TYPEDEF, L_UNION, L_USING, NULL
+        L_class, L_define, L_enum, L_struct, L_typedef, L_union, L_using, NULL
       };
 
       char const *const *const type_commands =
@@ -2575,7 +2575,7 @@ show_command
       PARSE_ABORT();
     }
 
-  | Y_SHOW error
+  | Y_show error
     {
       elaborate_error(
         "type name or \"all\", \"predefined\", or \"user\" expected"
@@ -2584,9 +2584,9 @@ show_command
   ;
 
 show_format
-  : Y_ENGLISH                     { $$ = C_GIB_NONE; }
-  | Y_TYPEDEF                     { $$ = C_GIB_TYPEDEF; }
-  | Y_USING
+  : Y_english                     { $$ = C_GIB_NONE; }
+  | Y_typedef                     { $$ = C_GIB_TYPEDEF; }
+  | Y_using
     {
       if ( !OPT_LANG_IS( USING_DECLARATION ) ) {
         print_error( &@1,
@@ -2617,19 +2617,19 @@ show_format_opt
 
 show_which_types_flags_opt
   : /* empty */                   { $$ = SHOW_USER_DEFINED_TYPES; }
-  | Y_ALL predefined_or_user_flags_opt
+  | Y_all predefined_or_user_flags_opt
     {
       $$ = SHOW_ALL_TYPES |
            ($2 != 0 ? $2 : SHOW_PREDEFINED_TYPES | SHOW_USER_DEFINED_TYPES);
     }
-  | Y_PREDEFINED                  { $$ = SHOW_PREDEFINED_TYPES; }
-  | Y_USER                        { $$ = SHOW_USER_DEFINED_TYPES; }
+  | Y_predefined                  { $$ = SHOW_PREDEFINED_TYPES; }
+  | Y_user                        { $$ = SHOW_USER_DEFINED_TYPES; }
   ;
 
 predefined_or_user_flags_opt
   : /* empty */                   { $$ = 0; }
-  | Y_PREDEFINED                  { $$ = SHOW_PREDEFINED_TYPES; }
-  | Y_USER                        { $$ = SHOW_USER_DEFINED_TYPES; }
+  | Y_predefined                  { $$ = SHOW_PREDEFINED_TYPES; }
+  | Y_user                        { $$ = SHOW_USER_DEFINED_TYPES; }
   ;
 
 /// template command //////////////////////////////////////////////////////////
@@ -2737,10 +2737,10 @@ new_style_cast_expr_c
   ;
 
 new_style_cast_c
-  : Y_CONST_CAST                  { $$ = C_CAST_CONST;        }
-  | Y_DYNAMIC_CAST                { $$ = C_CAST_DYNAMIC;      }
-  | Y_REINTERPRET_CAST            { $$ = C_CAST_REINTERPRET;  }
-  | Y_STATIC_CAST                 { $$ = C_CAST_STATIC;       }
+  : Y_const_cast                  { $$ = C_CAST_CONST;        }
+  | Y_dynamic_cast                { $$ = C_CAST_DYNAMIC;      }
+  | Y_reinterpret_cast            { $$ = C_CAST_REINTERPRET;  }
+  | Y_static_cast                 { $$ = C_CAST_STATIC;       }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2792,14 +2792,14 @@ alignas_specifier_c
   ;
 
 alignas
-  : Y__ALIGNAS
-  | Y_ALIGNAS
+  : Y__Alignas
+  | Y_alignas
   ;
 
 /// Gibberish C/C++ asm declaration ///////////////////////////////////////////
 
 asm_declaration_c
-  : Y_ASM lparen_exp str_lit_exp rparen_exp
+  : Y_asm lparen_exp str_lit_exp rparen_exp
     {
       free( $3 );
       print_error( &@1, "asm declarations not supported by %s\n", CDECL );
@@ -3029,7 +3029,7 @@ namespace_sname_c
       DUMP_END();
     }
 
-  | namespace_sname_c Y_COLON2 Y_INLINE name_exp
+  | namespace_sname_c Y_COLON2 Y_inline name_exp
     {
       DUMP_START( "namespace_sname_c", "sname_c '::' NAME INLINE NAME" );
       DUMP_SNAME( "namespace_sname_c", $1 );
@@ -3092,7 +3092,7 @@ namespace_typedef_sname_c
       DUMP_END();
     }
 
-  | namespace_typedef_sname_c Y_COLON2 Y_INLINE name_exp
+  | namespace_typedef_sname_c Y_COLON2 Y_inline name_exp
     {
       DUMP_START( "namespace_typedef_sname_c",
                   "namespace_typedef_sname_c '::' INLINE NAME" );
@@ -3141,7 +3141,7 @@ in_scope_declaration_c_exp
 /// Gibberish C++ template declaration ////////////////////////////////////////
 
 template_declaration_c
-  : Y_TEMPLATE
+  : Y_template
     {
       print_error( &@1, "template declarations not supported by %s\n", CDECL );
       PARSE_ABORT();
@@ -3160,7 +3160,7 @@ typed_declaration_c
 /// Gibberish C/C++ typedef declaration ///////////////////////////////////////
 
 typedef_declaration_c
-  : Y_TYPEDEF typename_flag_opt
+  : Y_typedef typename_flag_opt
     {
       CHECK_NESTED_TYPE_OK( &@1 );
       in_attr.is_typename = $2;
@@ -3298,7 +3298,7 @@ using_declaration_c
   ;
 
 using_decl_c_ast
-  : Y_USING
+  : Y_using
     {
       gibberish_to_english();           // see the comment in "explain"
     }
@@ -3616,7 +3616,7 @@ array_size_c_ast
       $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
       $$->as.array.stids = c_tid_check( $2, C_TPID_STORE );
     }
-  | '[' Y_STATIC type_qualifier_list_c_stid_opt Y_INT_LIT rbracket_exp
+  | '[' Y_static type_qualifier_list_c_stid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
@@ -4044,8 +4044,8 @@ func_qualifier_list_c_stid_opt
 
 func_qualifier_c_stid
   : cv_qualifier_stid
-  | Y_FINAL
-  | Y_OVERRIDE
+  | Y_final
+  | Y_override
     /*
      * GNU C++ allows restricted-this-pointer member functions:
      *
@@ -4053,7 +4053,7 @@ func_qualifier_c_stid
      *
      * <https://gcc.gnu.org/onlinedocs/gcc/Restricted-Pointers.html>
      */
-  | Y_GNU___RESTRICT                    // GNU C++ extension
+  | Y_GNU___restrict                    // GNU C++ extension
   ;
 
 func_ref_qualifier_c_stid_opt
@@ -4064,16 +4064,16 @@ func_ref_qualifier_c_stid_opt
 
 noexcept_c_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | Y_NOEXCEPT
-  | Y_NOEXCEPT '(' noexcept_bool_stid_exp rparen_exp
+  | Y_noexcept
+  | Y_noexcept '(' noexcept_bool_stid_exp rparen_exp
     {
       $$ = $3;
     }
-  | Y_THROW lparen_exp rparen_exp
+  | Y_throw lparen_exp rparen_exp
     {
       $$ = $1;
     }
-  | Y_THROW lparen_exp param_list_c_ast ')'
+  | Y_throw lparen_exp param_list_c_ast ')'
     {
       c_ast_list_cleanup( &$3 );
 
@@ -4092,8 +4092,8 @@ noexcept_c_stid_opt
   ;
 
 noexcept_bool_stid_exp
-  : Y_FALSE
-  | Y_TRUE
+  : Y_false
+  | Y_true
   | error
     {
       elaborate_error( "\"true\" or \"false\" expected" );
@@ -4162,8 +4162,8 @@ trailing_return_type_c_ast_opt
 
 func_equals_c_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | '=' Y_DEFAULT                 { $$ = $2; }
-  | '=' Y_DELETE                  { $$ = $2; }
+  | '=' Y_default                 { $$ = $2; }
+  | '=' Y_delete                  { $$ = $2; }
   | '=' Y_INT_LIT
     {
       if ( $2 != 0 ) {
@@ -4364,7 +4364,7 @@ oper_decl_c_astp
   ;
 
 scope_sname_c_opt_operator
-  : scope_sname_c_opt Y_OPERATOR  { $$ = $1; }
+  : scope_sname_c_opt Y_operator  { $$ = $1; }
   ;
 
 /// Gibberish C/C++ pointer declaration ///////////////////////////////////////
@@ -4675,7 +4675,7 @@ typedef_type_decl_c_ast
 
 user_defined_conversion_decl_c_astp
   : // in_attr: type_c_ast
-    scope_sname_c_opt Y_OPERATOR type_c_ast
+    scope_sname_c_opt Y_operator type_c_ast
     {
       ia_type_ast_push( $3 );
     }
@@ -4751,7 +4751,7 @@ user_defined_literal_decl_c_astp
 
 user_defined_literal_c_ast
   : // in_attr: type_c_ast
-    scope_sname_c_opt Y_OPERATOR quote2_exp name_exp
+    scope_sname_c_opt Y_operator quote2_exp name_exp
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
@@ -5232,19 +5232,19 @@ type_modifier_c_type
   ;
 
 type_modifier_base_type
-  : Y__COMPLEX                    { $$ = C_TYPE_LIT_B( $1 ); }
-  | Y__IMAGINARY                  { $$ = C_TYPE_LIT_B( $1 ); }
-  | Y_LONG                        { $$ = C_TYPE_LIT_B( $1 ); }
-  | Y_SHORT                       { $$ = C_TYPE_LIT_B( $1 ); }
-  | Y_SIGNED                      { $$ = C_TYPE_LIT_B( $1 ); }
-  | Y_UNSIGNED                    { $$ = C_TYPE_LIT_B( $1 ); }
-  | Y_EMC__SAT                    { $$ = C_TYPE_LIT_B( $1 ); }
+  : Y__Complex                    { $$ = C_TYPE_LIT_B( $1 ); }
+  | Y__Imaginary                  { $$ = C_TYPE_LIT_B( $1 ); }
+  | Y_long                        { $$ = C_TYPE_LIT_B( $1 ); }
+  | Y_short                       { $$ = C_TYPE_LIT_B( $1 ); }
+  | Y_signed                      { $$ = C_TYPE_LIT_B( $1 ); }
+  | Y_unsigned                    { $$ = C_TYPE_LIT_B( $1 ); }
+  | Y_EMC__Sat                    { $$ = C_TYPE_LIT_B( $1 ); }
     /*
      * Register is here (rather than in storage_class_c_type) because it's the
      * only storage class that can be specified for function parameters.
      * Therefore, it's simpler to treat it as any other type modifier.
      */
-  | Y_REGISTER                    { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_register                    { $$ = C_TYPE_LIT_S( $1 ); }
   ;
 
 east_modified_type_c_ast
@@ -5289,7 +5289,7 @@ atomic_builtin_typedef_type_c_ast
 /// C Gibberish _Atomic types /////////////////////////////////////////////////
 
 atomic_specifier_type_c_ast
-  : Y__ATOMIC_SPEC lparen_exp type_c_ast
+  : Y__Atomic_SPEC lparen_exp type_c_ast
     {
       ia_type_ast_push( $3 );
     }
@@ -5349,20 +5349,20 @@ builtin_type_ast
   ;
 
 builtin_btid
-  : Y_VOID
-  | Y_AUTO_TYPE
-  | Y__BOOL
-  | Y_BOOL
-  | Y_CHAR
-  | Y_CHAR8_T
-  | Y_CHAR16_T
-  | Y_CHAR32_T
-  | Y_WCHAR_T
-  | Y_INT
-  | Y_FLOAT
-  | Y_DOUBLE
-  | Y_EMC__ACCUM
-  | Y_EMC__FRACT
+  : Y_void
+  | Y_auto_TYPE
+  | Y__Bool
+  | Y_bool
+  | Y_char
+  | Y_char8_t
+  | Y_char16_t
+  | Y_char32_t
+  | Y_wchar_t
+  | Y_int
+  | Y_float
+  | Y_double
+  | Y_EMC__Accum
+  | Y_EMC__Fract
   ;
 
 /// Gibberish C/C++ enum, class, struct, & union types ////////////////////////
@@ -5439,7 +5439,7 @@ enum_c_ast
 /// Gibberish C/C++ enum type /////////////////////////////////////////////////
 
 enum_btid
-  : Y_ENUM class_struct_btid_opt  { $$ = $1 | $2; }
+  : Y_enum class_struct_btid_opt  { $$ = $1 | $2; }
   ;
 
 enum_fixed_type_c_ast_opt
@@ -5546,10 +5546,10 @@ enum_fixed_type_modifier_list_btid
   ;
 
 enum_fixed_type_modifier_btid
-  : Y_LONG
-  | Y_SHORT
-  | Y_SIGNED
-  | Y_UNSIGNED
+  : Y_long
+  | Y_short
+  | Y_signed
+  | Y_unsigned
   ;
 
 enum_unmodified_fixed_type_c_ast
@@ -5565,13 +5565,13 @@ class_struct_btid_opt
   ;
 
 class_struct_btid
-  : Y_CLASS
-  | Y_STRUCT
+  : Y_class
+  | Y_struct
   ;
 
 class_struct_union_btid
   : class_struct_btid
-  | Y_UNION
+  | Y_union
   ;
 
 /// Gibberish C/C++ type qualifiers ///////////////////////////////////////////
@@ -5609,18 +5609,18 @@ type_qualifier_list_c_stid
   ;
 
 type_qualifier_c_stid
-  : Y__ATOMIC_QUAL
+  : Y__Atomic_QUAL
   | cv_qualifier_stid
   | restrict_qualifier_c_stid
-  | Y_UPC_RELAXED
-  | Y_UPC_SHARED                  %prec Y_PREC_LESS_THAN_upc_layout_qualifier
-  | Y_UPC_SHARED upc_layout_qualifier_c
-  | Y_UPC_STRICT
+  | Y_UPC_relaxed
+  | Y_UPC_shared                  %prec Y_PREC_LESS_THAN_upc_layout_qualifier
+  | Y_UPC_shared upc_layout_qualifier_c
+  | Y_UPC_strict
   ;
 
 cv_qualifier_stid
-  : Y_CONST
-  | Y_VOLATILE
+  : Y_const
+  | Y_volatile
   ;
 
 cv_qualifier_list_stid_opt
@@ -5641,7 +5641,7 @@ cv_qualifier_list_stid_opt
   ;
 
 restrict_qualifier_c_stid
-  : Y_RESTRICT                          // C only
+  : Y_restrict                          // C only
     { //
       // This check has to be done now in the parser rather than later in the
       // AST since both "restrict" and "__restrict" map to TS_RESTRICT and the
@@ -5650,12 +5650,12 @@ restrict_qualifier_c_stid
       if ( OPT_LANG_IS( CPP_ANY ) ) {
         print_error( &@1,
           "\"restrict\" not supported in C++; use \"%s\" instead\n",
-          L_GNU___RESTRICT
+          L_GNU___restrict
         );
         PARSE_ABORT();
       }
     }
-  | Y_GNU___RESTRICT                    // GNU C/C++ extension
+  | Y_GNU___restrict                    // GNU C/C++ extension
   ;
 
 upc_layout_qualifier_c
@@ -5671,28 +5671,28 @@ upc_layout_qualifier_c
 /// Gibberish C/C++ storage classes ///////////////////////////////////////////
 
 storage_class_c_type
-  : Y_AUTO_STORAGE                { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_APPLE___BLOCK               { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_CONSTEVAL                   { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_CONSTEXPR                   { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_CONSTINIT                   { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_EXPLICIT                    { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_EXPORT                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_EXTERN                      { $$ = C_TYPE_LIT_S( $1 ); }
+  : Y_auto_STORAGE                { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_Apple___block               { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_consteval                   { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_constexpr                   { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_constinit                   { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_explicit                    { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_export                      { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_extern                      { $$ = C_TYPE_LIT_S( $1 ); }
   | extern_linkage_c_stid         { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_FINAL                       { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_FRIEND                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_INLINE                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_MUTABLE                     { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y__NORETURN                   { $$ = C_TYPE_LIT_A( $1 ); }
-  | Y_NORETURN                    { $$ = C_TYPE_LIT_A( $1 ); }
-  | Y_OVERRIDE                    { $$ = C_TYPE_LIT_S( $1 ); }
-//| Y_REGISTER                          // in type_modifier_base_type
-  | Y_STATIC                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_TYPEDEF                     { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y__THREAD_LOCAL               { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_THREAD_LOCAL                { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_VIRTUAL                     { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_final                       { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_friend                      { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_inline                      { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_mutable                     { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y__Noreturn                   { $$ = C_TYPE_LIT_A( $1 ); }
+  | Y_noreturn                    { $$ = C_TYPE_LIT_A( $1 ); }
+  | Y_override                    { $$ = C_TYPE_LIT_S( $1 ); }
+//| Y_register                          // in type_modifier_base_type
+  | Y_static                      { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_typedef                     { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y__Thread_local               { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_thread_local                { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_virtual                     { $$ = C_TYPE_LIT_S( $1 ); }
   ;
 
 /// Gibberish C/C++ attributes ////////////////////////////////////////////////
@@ -5735,7 +5735,7 @@ attribute_specifier_list_c_atid
 
 using_opt
   : /* empty */
-  | Y_USING name_exp colon_exp
+  | Y_using name_exp colon_exp
     {
       print_warning( &@1,
         "\"using\" in attributes not supported by %s (ignoring)\n", CDECL
@@ -5768,12 +5768,12 @@ attribute_list_c_atid
   ;
 
 attribute_c_atid_exp
-  : Y_CARRIES_DEPENDENCY
-  | Y_DEPRECATED attribute_str_arg_c_opt
-  | Y_MAYBE_UNUSED
-  | Y_NODISCARD attribute_str_arg_c_opt
-  | Y_NORETURN
-  | Y_NO_UNIQUE_ADDRESS
+  : Y_carries_dependency
+  | Y_deprecated attribute_str_arg_c_opt
+  | Y_maybe_unused
+  | Y_nodiscard attribute_str_arg_c_opt
+  | Y_noreturn
+  | Y_no_unique_address
   | sname_c
     {
       if ( c_sname_count( &$1 ) > 1 ) {
@@ -5843,9 +5843,9 @@ gnu_attribute_specifier_list_c
   ;
 
 gnu_attribute_specifier_c
-  : Y_GNU___ATTRIBUTE__
+  : Y_GNU___attribute__
     {
-      attr_syntax_not_supported( &@1, L_GNU___ATTRIBUTE__ );
+      attr_syntax_not_supported( &@1, L_GNU___attribute__ );
       //
       // Temporariy disabling finding keywords allows GNU attributes that are C
       // keywords (e.g., const) to be found as ordinary string literals.
@@ -5912,9 +5912,9 @@ msc_attribute_specifier_list_c
   ;
 
 msc_attribute_specifier_c
-  : Y_MSC___DECLSPEC
+  : Y_MSC___declspec
     {
-      attr_syntax_not_supported( &@1, L_MSC___DECLSPEC );
+      attr_syntax_not_supported( &@1, L_MSC___declspec );
       // See comment in gnu_attribute_specifier_c.
       lexer_find &= ~LEXER_FIND_C_KEYWORDS;
     }
@@ -5954,7 +5954,7 @@ decl_english_ast
 /// English C/C++ array declaration ///////////////////////////////////////////
 
 array_decl_english_ast
-  : Y_ARRAY static_stid_opt array_qualifier_list_english_stid_opt
+  : Y_array static_stid_opt array_qualifier_list_english_stid_opt
     array_size_int_opt of_exp decl_english_ast
     {
       DUMP_START( "array_decl_english_ast",
@@ -5974,7 +5974,7 @@ array_decl_english_ast
       DUMP_END();
     }
 
-  | Y_VARIABLE length_opt array_exp array_qualifier_list_english_stid_opt
+  | Y_variable length_opt array_exp array_qualifier_list_english_stid_opt
     of_exp decl_english_ast
     {
       DUMP_START( "array_decl_english_ast",
@@ -6010,14 +6010,14 @@ array_size_int_opt
 
 length_opt
   : /* empty */
-  | Y_LENGTH
+  | Y_length
   ;
 
 /// English block declaration (Apple extension) ///////////////////////////////
 
 block_decl_english_ast                  // Apple extension
   : // in_attr: qualifier
-    Y_APPLE_BLOCK paren_param_decl_list_english_opt returning_english_ast_opt
+    Y_Apple_BLOCK paren_param_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "block_decl_english_ast",
                   "BLOCK paren_param_decl_list_english_opt "
@@ -6037,7 +6037,7 @@ block_decl_english_ast                  // Apple extension
 /// English C++ constructor declaration ///////////////////////////////////////
 
 constructor_decl_english_ast
-  : Y_CONSTRUCTOR paren_param_decl_list_english_opt
+  : Y_constructor paren_param_decl_list_english_opt
     {
       DUMP_START( "constructor_decl_english_ast",
                   "CONSTRUCTOR paren_param_decl_list_english_opt" );
@@ -6054,7 +6054,7 @@ constructor_decl_english_ast
 /// English C++ destructor declaration ////////////////////////////////////////
 
 destructor_decl_english_ast
-  : Y_DESTRUCTOR parens_opt
+  : Y_destructor parens_opt
     {
       DUMP_START( "destructor_decl_english_ast", "DESTRUCTOR" );
 
@@ -6075,7 +6075,7 @@ parens_opt
 func_decl_english_ast
   : // in_attr: qualifier
     func_qualifier_english_type_opt member_or_non_member_flags_opt
-    Y_FUNCTION paren_param_decl_list_english_opt returning_english_ast_opt
+    Y_function paren_param_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "func_decl_english_ast",
                   "ref_qualifier_english_stid_opt "
@@ -6110,12 +6110,12 @@ func_qualifier_english_type_opt
   ;
 
 msc_calling_convention_atid
-  : Y_MSC___CDECL
-  | Y_MSC___CLRCALL
-  | Y_MSC___FASTCALL
-  | Y_MSC___STDCALL
-  | Y_MSC___THISCALL
-  | Y_MSC___VECTORCALL
+  : Y_MSC___cdecl
+  | Y_MSC___clrcall
+  | Y_MSC___fastcall
+  | Y_MSC___stdcall
+  | Y_MSC___thiscall
+  | Y_MSC___vectorcall
   ;
 
 /// English C++ operator declaration //////////////////////////////////////////
@@ -6218,8 +6218,8 @@ decl_english_ast_exp
 
 ref_qualifier_english_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | Y_REFERENCE                   { $$ = TS_REFERENCE; }
-  | Y_RVALUE reference_exp        { $$ = TS_RVALUE_REFERENCE; }
+  | Y_reference                   { $$ = TS_REFERENCE; }
+  | Y_rvalue reference_exp        { $$ = TS_RVALUE_REFERENCE; }
   ;
 
 /// English C/C++ function(like) returning declaration ////////////////////////
@@ -6310,55 +6310,55 @@ type_qualifier_english_type
   ;
 
 attribute_english_atid
-  : Y_CARRIES dependency_exp      { $$ = TA_CARRIES_DEPENDENCY; }
-  | Y_CARRIES_DEPENDENCY
-  | Y_DEPRECATED
-  | Y_MAYBE unused_exp            { $$ = TA_MAYBE_UNUSED; }
-  | Y_MAYBE_UNUSED
-  | Y_NO Y_DISCARD                { $$ = TA_NODISCARD; }
-  | Y_NODISCARD
-  | Y_NO Y_RETURN                 { $$ = TA_NORETURN; }
-  | Y__NORETURN
-  | Y_NORETURN
-  | Y_NO Y_UNIQUE address_exp     { $$ = TA_NO_UNIQUE_ADDRESS; }
-  | Y_NO_UNIQUE_ADDRESS
+  : Y_carries dependency_exp      { $$ = TA_CARRIES_DEPENDENCY; }
+  | Y_carries_dependency
+  | Y_deprecated
+  | Y_maybe unused_exp            { $$ = TA_MAYBE_UNUSED; }
+  | Y_maybe_unused
+  | Y_no Y_discard                { $$ = TA_NODISCARD; }
+  | Y_nodiscard
+  | Y_no Y_return                 { $$ = TA_NORETURN; }
+  | Y__Noreturn
+  | Y_noreturn
+  | Y_no Y_unique address_exp     { $$ = TA_NO_UNIQUE_ADDRESS; }
+  | Y_no_unique_address
   ;
 
 storage_class_english_stid
-  : Y_AUTO_STORAGE
-  | Y_APPLE___BLOCK
-  | Y_CONST Y_EVALUATION          { $$ = TS_CONSTEVAL; }
-  | Y_CONST Y_EXPRESSION          { $$ = TS_CONSTEXPR; }
-  | Y_CONST Y_INITIALIZATION      { $$ = TS_CONSTINIT; }
-  | Y_CONSTEVAL
-  | Y_CONSTEXPR
-  | Y_CONSTINIT
-  | Y_DEFAULT
-  | Y_DELETE
-  | Y_EXPLICIT
-  | Y_EXPORT
-  | Y_EXTERN
-  | Y_EXTERN linkage_stid linkage_opt
+  : Y_auto_STORAGE
+  | Y_Apple___block
+  | Y_const Y_evaluation          { $$ = TS_CONSTEVAL; }
+  | Y_const Y_expression          { $$ = TS_CONSTEXPR; }
+  | Y_const Y_initialization      { $$ = TS_CONSTINIT; }
+  | Y_consteval
+  | Y_constexpr
+  | Y_constinit
+  | Y_default
+  | Y_delete
+  | Y_explicit
+  | Y_export
+  | Y_extern
+  | Y_extern linkage_stid linkage_opt
     {
       $$ = $2;
     }
-  | Y_FINAL
-  | Y_FRIEND
-  | Y_INLINE
-  | Y_MUTABLE
-  | Y_NO Y_EXCEPT                 { $$ = TS_NOEXCEPT; }
-  | Y_NOEXCEPT
-  | Y_OVERRIDE
-//| Y_REGISTER                          // in type_modifier_list_english_type
-  | Y_STATIC
-  | Y_THIS
-  | Y_THREAD local_exp            { $$ = TS_THREAD_LOCAL; }
-  | Y__THREAD_LOCAL
-  | Y_THREAD_LOCAL
-  | Y_THROW
-  | Y_TYPEDEF
-  | Y_VIRTUAL
-  | Y_PURE virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
+  | Y_final
+  | Y_friend
+  | Y_inline
+  | Y_mutable
+  | Y_no Y_except                 { $$ = TS_NOEXCEPT; }
+  | Y_noexcept
+  | Y_override
+//| Y_register                          // in type_modifier_list_english_type
+  | Y_static
+  | Y_this
+  | Y_thread local_exp            { $$ = TS_THREAD_LOCAL; }
+  | Y__Thread_local
+  | Y_thread_local
+  | Y_throw
+  | Y_typedef
+  | Y_virtual
+  | Y_pure virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
   ;
 
 linkage_stid
@@ -6384,17 +6384,17 @@ linkage_stid
 
 linkage_opt
   : /* empty */
-  | Y_LINKAGE
+  | Y_linkage
   ;
 
 type_qualifier_english_stid
-  : Y__ATOMIC_QUAL
+  : Y__Atomic_QUAL
   | cv_qualifier_stid
   | restrict_qualifier_c_stid
-  | Y_UPC_RELAXED
-  | Y_UPC_SHARED                  %prec Y_PREC_LESS_THAN_upc_layout_qualifier
-  | Y_UPC_SHARED upc_layout_qualifier_english
-  | Y_UPC_STRICT
+  | Y_UPC_relaxed
+  | Y_UPC_shared                  %prec Y_PREC_LESS_THAN_upc_layout_qualifier
+  | Y_UPC_shared upc_layout_qualifier_english
+  | Y_UPC_strict
   ;
 
 upc_layout_qualifier_english
@@ -6420,7 +6420,7 @@ pointer_decl_english_ast
      * Ordinary pointer declaration.
      */
   : // in_attr: qualifier
-    Y_POINTER to_exp decl_english_ast
+    Y_pointer to_exp decl_english_ast
     {
       DUMP_START( "pointer_decl_english_ast", "POINTER TO decl_english_ast" );
       DUMP_AST( "decl_english_ast", $3 );
@@ -6442,7 +6442,7 @@ pointer_decl_english_ast
      * C++ pointer-to-member declaration.
      */
   | // in_attr: qualifier
-    Y_POINTER to_exp Y_MEMBER of_exp class_struct_union_btid_exp
+    Y_pointer to_exp Y_member of_exp class_struct_union_btid_exp
     sname_english_exp decl_english_ast
     {
       DUMP_START( "pointer_to_member_decl_english",
@@ -6462,7 +6462,7 @@ pointer_decl_english_ast
       DUMP_END();
     }
 
-  | Y_POINTER to_exp error
+  | Y_pointer to_exp error
     {
       if ( OPT_LANG_IS( CPP_ANY ) )
         elaborate_error( "type name or \"member\" expected" );
@@ -6492,12 +6492,12 @@ reference_decl_english_ast
   ;
 
 reference_english_ast
-  : Y_REFERENCE
+  : Y_reference
     {
       $$ = c_ast_new_gc( K_REFERENCE, &@$ );
     }
 
-  | Y_RVALUE reference_exp
+  | Y_rvalue reference_exp
     {
       $$ = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
     }
@@ -6506,7 +6506,7 @@ reference_english_ast
 /// English C++ user-defined literal declaration //////////////////////////////
 
 user_defined_literal_decl_english_ast
-  : Y_USER_DEFINED literal_exp paren_param_decl_list_english_opt
+  : Y_user_defined literal_exp paren_param_decl_list_english_opt
     returning_english_ast_opt
     { //
       // User-defined literals are supported only in C++11 and later.
@@ -6545,7 +6545,7 @@ var_decl_english_ast
     /*
      * Ordinary variable declaration.
      */
-  : sname_c Y_AS decl_english_ast
+  : sname_c Y_as decl_english_ast
     {
       DUMP_START( "var_decl_english_ast", "NAME AS decl_english_ast" );
       DUMP_SNAME( "sname", $1 );
@@ -6705,7 +6705,7 @@ enum_english_ast
 
 of_type_enum_fixed_type_english_ast_opt
   : /* empty */                         { $$ = NULL; }
-  | Y_OF type_opt enum_fixed_type_english_ast
+  | Y_of type_opt enum_fixed_type_english_ast
     {
       $$ = $3;
     }
@@ -7189,23 +7189,23 @@ typedef_sname_c
 ///////////////////////////////////////////////////////////////////////////////
 
 address_exp
-  : Y_ADDRESS
+  : Y_address
   | error
     {
-      keyword_expected( L_ADDRESS );
+      keyword_expected( L_address );
     }
   ;
 
 array_exp
-  : Y_ARRAY
+  : Y_array
   | error
     {
-      keyword_expected( L_ARRAY );
+      keyword_expected( L_array );
     }
   ;
 
 as_exp
-  : Y_AS
+  : Y_as
     {
       if ( OPT_LANG_IS( CPP_ANY ) ) {
         //
@@ -7227,14 +7227,14 @@ as_exp
     }
   | error
     {
-      keyword_expected( L_AS );
+      keyword_expected( L_as );
     }
   ;
 
 as_into_to_exp
-  : Y_AS
-  | Y_INTO
-  | Y_TO
+  : Y_as
+  | Y_into
+  | Y_to
   | error
     {
       elaborate_error( "\"as\", \"into\", or \"to\" expected" );
@@ -7242,10 +7242,10 @@ as_into_to_exp
   ;
 
 cast_exp
-  : Y_CAST
+  : Y_cast
   | error
     {
-      keyword_expected( L_CAST );
+      keyword_expected( L_cast );
     }
   ;
 
@@ -7274,19 +7274,19 @@ comma_exp
   ;
 
 conversion_exp
-  : Y_CONVERSION
+  : Y_conversion
   | error
     {
-      keyword_expected( L_CONVERSION );
+      keyword_expected( L_conversion );
     }
   ;
 
 c_operator
-  : Y_CO_AWAIT                      { $$ = C_OP_CO_AWAIT        ; }
-  | Y_NEW                           { $$ = C_OP_NEW             ; }
-  | Y_NEW '[' rbracket_exp          { $$ = C_OP_NEW_ARRAY       ; }
-  | Y_DELETE                        { $$ = C_OP_DELETE          ; }
-  | Y_DELETE '[' rbracket_exp       { $$ = C_OP_DELETE_ARRAY    ; }
+  : Y_co_await                      { $$ = C_OP_CO_AWAIT        ; }
+  | Y_new                           { $$ = C_OP_NEW             ; }
+  | Y_new '[' rbracket_exp          { $$ = C_OP_NEW_ARRAY       ; }
+  | Y_delete                        { $$ = C_OP_DELETE          ; }
+  | Y_delete '[' rbracket_exp       { $$ = C_OP_DELETE_ARRAY    ; }
   | Y_EXCLAM                        { $$ = C_OP_EXCLAM          ; }
   | Y_EXCLAM_EQ                     { $$ = C_OP_EXCLAM_EQ       ; }
   | '%'                             { $$ = C_OP_PERCENT         ; }
@@ -7333,10 +7333,10 @@ c_operator
   ;
 
 dependency_exp
-  : Y_DEPENDENCY
+  : Y_dependency
   | error
     {
-      keyword_expected( L_DEPENDENCY );
+      keyword_expected( L_dependency );
     }
   ;
 
@@ -7349,8 +7349,8 @@ equals_exp
   ;
 
 extern_linkage_c_stid
-  : Y_EXTERN linkage_stid         { $$ = $2; }
-  | Y_EXTERN linkage_stid '{'
+  : Y_extern linkage_stid         { $$ = $2; }
+  | Y_extern linkage_stid '{'
     {
       print_error( &@3,
         "scoped linkage declarations not supported by %s\n", CDECL
@@ -7391,7 +7391,7 @@ gt_exp
 
 inline_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | Y_INLINE
+  | Y_inline
   ;
 
 int_exp
@@ -7403,18 +7403,18 @@ int_exp
   ;
 
 literal_exp
-  : Y_LITERAL
+  : Y_literal
   | error
     {
-      keyword_expected( L_LITERAL );
+      keyword_expected( L_literal );
     }
   ;
 
 local_exp
-  : Y_LOCAL
+  : Y_local
   | error
     {
-      keyword_expected( L_LOCAL );
+      keyword_expected( L_local );
     }
   ;
 
@@ -7436,33 +7436,33 @@ lt_exp
 
 member_or_non_member_flags_opt
   : /* empty */                   { $$ = C_FUNC_UNSPECIFIED; }
-  | Y_MEMBER                      { $$ = C_FUNC_MEMBER     ; }
-  | Y_NON_MEMBER                  { $$ = C_FUNC_NON_MEMBER ; }
+  | Y_member                      { $$ = C_FUNC_MEMBER     ; }
+  | Y_non_member                  { $$ = C_FUNC_NON_MEMBER ; }
   ;
 
 namespace_btid_exp
-  : Y_NAMESPACE
+  : Y_namespace
   | error
     {
-      keyword_expected( L_NAMESPACE );
+      keyword_expected( L_namespace );
     }
   ;
 
 namespace_type
-  : Y_NAMESPACE                   { $$ = C_TYPE_LIT_B( $1 ); }
-  | Y_INLINE namespace_btid_exp   { $$ = C_TYPE_LIT( $2, $1, TA_NONE ); }
+  : Y_namespace                   { $$ = C_TYPE_LIT_B( $1 ); }
+  | Y_inline namespace_btid_exp   { $$ = C_TYPE_LIT( $2, $1, TA_NONE ); }
   ;
 
 of_exp
-  : Y_OF
+  : Y_of
   | error
     {
-      keyword_expected( L_OF );
+      keyword_expected( L_of );
     }
   ;
 
 of_scope_english
-  : Y_OF scope_english_type_exp any_sname_c_exp
+  : Y_of scope_english_type_exp any_sname_c_exp
     { //
       // Scoped names are supported only in C++.  (However, we always allow
       // them in configuration files.)
@@ -7501,16 +7501,16 @@ of_scope_list_english_opt
   ;
 
 operator_exp
-  : Y_OPERATOR
+  : Y_operator
   | error
     {
-      keyword_expected( L_OPERATOR );
+      keyword_expected( L_operator );
     }
   ;
 
 operator_opt
   : /* empty */
-  | Y_OPERATOR
+  | Y_operator
   ;
 
 quote2_exp
@@ -7538,23 +7538,23 @@ rbracket_exp
   ;
 
 reference_exp
-  : Y_REFERENCE
+  : Y_reference
   | error
     {
-      keyword_expected( L_REFERENCE );
+      keyword_expected( L_reference );
     }
   ;
 
 returning
-  : Y_RETURNING
-  | Y_RETURN
+  : Y_returning
+  | Y_return
   ;
 
 returning_exp
   : returning
   | error
     {
-      keyword_expected( L_RETURNING );
+      keyword_expected( L_returning );
     }
   ;
 
@@ -7569,7 +7569,7 @@ rparen_exp
 scope_english_type
   : class_struct_union_btid       { $$ = C_TYPE_LIT_B( $1 ); }
   | namespace_type
-  | Y_SCOPE                       { $$ = C_TYPE_LIT_B( TB_SCOPE ); }
+  | Y_scope                       { $$ = C_TYPE_LIT_B( TB_SCOPE ); }
   ;
 
 scope_english_type_exp
@@ -7602,7 +7602,7 @@ semi_or_end
 
 static_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | Y_STATIC
+  | Y_static
   ;
 
 str_lit
@@ -7625,46 +7625,46 @@ str_lit_exp
 
 this_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | Y_THIS
+  | Y_this
   ;
 
 to_exp
-  : Y_TO
+  : Y_to
   | error
     {
-      keyword_expected( L_TO );
+      keyword_expected( L_to );
     }
   ;
 
 type_opt
   : /* empty */
-  | Y_TYPEDEF
+  | Y_typedef
   ;
 
 typename_flag_opt
   : /* empty */                   { $$ = false; }
-  | Y_TYPENAME                    { $$ = true; }
+  | Y_typename                    { $$ = true; }
   ;
 
 unused_exp
-  : Y_UNUSED
+  : Y_unused
   | error
     {
-      keyword_expected( L_UNUSED );
+      keyword_expected( L_unused );
     }
   ;
 
 virtual_stid_exp
-  : Y_VIRTUAL
+  : Y_virtual
   | error
     {
-      keyword_expected( L_VIRTUAL );
+      keyword_expected( L_virtual );
     }
   ;
 
 virtual_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | Y_VIRTUAL
+  | Y_virtual
   ;
 
 %%

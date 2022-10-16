@@ -1322,7 +1322,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     //
     print_error( &ast->loc,
       "operator %s can only be a %s\n",
-      op->name, op->flags == C_OP_MEMBER ? L_MEMBER : H_NON_MEMBER
+      op->name, op->flags == C_OP_MEMBER ? L_member : H_non_member
     );
     return false;
   }

@@ -403,7 +403,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         //      cdecl> declare f as function (x) returning double
         //      double f(int x)
         //
-        FPUTS( L_INT, g->gout );
+        FPUTS( L_int, g->gout );
       }
       if ( (g->flags & C_GIB_CAST) == 0 ) {
         if ( OPT_LANG_IS( PROTOTYPES ) )
@@ -490,7 +490,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_VARIADIC:
-      FPUTS( L_ELLIPSIS, g->gout );
+      FPUTS( L_ellipsis, g->gout );
       break;
 
     CASE_K_PLACEHOLDER;
@@ -1023,10 +1023,10 @@ char const* c_cast_gibberish( c_cast_kind_t kind ) {
     case C_CAST_NONE:
     case C_CAST_C:
       break;                            // LCOV_EXCL_LINE
-    case C_CAST_CONST       : return L_CONST_CAST;
-    case C_CAST_DYNAMIC     : return L_DYNAMIC_CAST;
-    case C_CAST_REINTERPRET : return L_REINTERPRET_CAST;
-    case C_CAST_STATIC      : return L_STATIC_CAST;
+    case C_CAST_CONST       : return L_const_cast;
+    case C_CAST_DYNAMIC     : return L_dynamic_cast;
+    case C_CAST_REINTERPRET : return L_reinterpret_cast;
+    case C_CAST_STATIC      : return L_static_cast;
   } // switch
   UNEXPECTED_INT_VALUE( kind );
 }
