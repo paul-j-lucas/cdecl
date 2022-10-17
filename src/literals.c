@@ -222,17 +222,19 @@ char const L_except[]             = "except";
 char const H_no_except[]          = "no-except";
 char const H_no_exception[]       = "no-exception";
 char const L_noreturn[]           = "noreturn";
-char const L_nullptr[]            = "nullptr";
 char const L_override[]           = "override";
 char const L_overridden[]         = "overridden";
-char const L_static_assert[]      = "static_assert";
-char const L_thread_local[]       = "thread_local";
 char const H_user_def[]           = "user-def";
 char const H_user_defined[]       = "user-defined";
 
 // C11 & C++11
 char const L_char16_t[]           = "char16_t";
 char const L_char32_t[]           = "char32_t";
+
+// C23 & C++11
+char const L_nullptr[]            = "nullptr";
+char const L_static_assert[]      = "static_assert";
+char const L_thread_local[]       = "thread_local";
 
 // C23 & C++14
 char const L_deprecated[]         = "deprecated";

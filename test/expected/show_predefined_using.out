@@ -297,6 +297,7 @@ using mode_t = int32_t;
 using mtx_t = pthread_mutex_t;
 using nfds_t = unsigned long;
 using nlink_t = uint32_t;
+using nullptr_t = void*;
 using off_t = long;
 using once_flag = int;
 using pid_t = int32_t;

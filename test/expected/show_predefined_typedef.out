@@ -297,6 +297,7 @@ typedef int32_t mode_t;
 typedef pthread_mutex_t mtx_t;
 typedef unsigned long nfds_t;
 typedef uint32_t nlink_t;
+typedef void *nullptr_t;
 typedef long off_t;
 typedef int once_flag;
 typedef int32_t pid_t;

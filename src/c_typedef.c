@@ -243,6 +243,18 @@ static char const *const PREDEFINED_STD_C_11[] = {
 };
 
 /**
+ * Predefined types for C23.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
+ */
+static char const *const PREDEFINED_STD_C_23[] = {
+  "typedef void  *nullptr_t",
+
+  NULL
+};
+
+/**
  * Predefined types for Floating-point extensions for C.
  *
  * @note The underlying types used here are merely typical and do not
@@ -1124,6 +1136,9 @@ void c_typedef_init( void ) {
 
     predefined_lang_ids = LANG_MIN(C_11);
     parse_predefined_types( PREDEFINED_STD_C_11 );
+
+    predefined_lang_ids = LANG_MIN(C_23);
+    parse_predefined_types( PREDEFINED_STD_C_23 );
   }
 
   //

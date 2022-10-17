@@ -242,20 +242,22 @@ static c_keyword_t const C_KEYWORDS[] = {
     LANG_FINAL,             AC_LANG(FINAL)                                },
   { L_noexcept,             Y_noexcept,           KC__, TS_NOEXCEPT,
     LANG_NOEXCEPT,          AC_LANG(NOEXCEPT)                             },
-  { L_nullptr,              Y_nullptr,            KC__, TX_NONE,
-    LANG_NULLPTR,           AC_LANG(NONE)                                 },
   { L_override,             Y_override,           KC_F, TS_OVERRIDE,
     LANG_OVERRIDE,          AC_LANG(OVERRIDE)                             },
-  { L_static_assert,        Y_static_assert,      KC__, TX_NONE,
-    LANG_STATIC_ASSERT,     AC_LANG(NONE)                                 },
-  { L_thread_local,         Y_thread_local,       KC__, TS_THREAD_LOCAL,
-    LANG_THREAD_LOCAL,      AC_LANG(THREAD_LOCAL_STORAGE)                 },
 
   // C11 & C++11
   { L_char16_t,             Y_char16_t,           KC__, TB_CHAR16_T,
     LANG_CHAR16_32_T,       AC_LANG(CHAR16_32_T)                          },
   { L_char32_t,             Y_char32_t,           KC__, TB_CHAR32_T,
     LANG_CHAR16_32_T,       AC_LANG(CHAR16_32_T)                          },
+
+  // C23 & C++11
+  { L_nullptr,              Y_nullptr,            KC__, TX_NONE,
+    LANG_NULLPTR,           AC_LANG(NONE)                                 },
+  { L_static_assert,        Y_static_assert,      KC__, TX_NONE,
+    LANG_STATIC_ASSERT,     AC_LANG(NONE)                                 },
+  { L_thread_local,         Y_thread_local,       KC__, TS_THREAD_LOCAL,
+    LANG_THREAD_LOCAL,      AC_LANG(THREAD_LOCAL_STORAGE)                 },
 
   // C23 & C++20
   { L_char8_t,              Y_char8_t,            KC__, TB_CHAR8_T,

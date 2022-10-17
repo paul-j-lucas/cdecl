@@ -10,7 +10,7 @@ class_struct_union_declaration_c ::= class_struct_union_btid sname '{' in_scope_
   any_sname_c = "S" (none),
   class_struct_union_declaration_c = {
     sname = "S" (struct),
-    unique_id = 1355,
+    unique_id = 1358,
     kind = "class, struct, or union",
     cast_kind = "none",
     depth = 0,
@@ -25,7 +25,7 @@ builtin_type_ast ::= builtin_btid = {
   builtin_btid = "bool" (btid = 0x41),
   builtin_type_ast = {
     sname = "",
-    unique_id = 1356,
+    unique_id = 1359,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -39,7 +39,7 @@ builtin_type_ast ::= builtin_btid = {
 east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
   atomic_builtin_typedef_type_c_ast = {
     sname = "",
-    unique_id = 1356,
+    unique_id = 1359,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -51,7 +51,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
-    unique_id = 1356,
+    unique_id = 1359,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -71,7 +71,7 @@ func_qualifier_list_c_stid_opt ::= func_qualifier_list_c_stid_opt func_qualifier
 oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
   (type_c_ast) = {
     sname = "",
-    unique_id = 1356,
+    unique_id = 1359,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -90,7 +90,7 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_
   func_equals_c_stid_opt = "" (stid = 0x2),
   oper_decl_c_astp = {
     sname = "S" (struct),
-    unique_id = 1357,
+    unique_id = 1360,
     kind = "operator",
     cast_kind = "none",
     depth = 0,
@@ -102,11 +102,11 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_
     param_ast_list = [],
     ret_ast = {
       sname = "",
-      unique_id = 1356,
+      unique_id = 1359,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1357,
+      parent->unique_id = 1360,
       loc = 8-11,
       type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
       bit_width = 0
@@ -118,7 +118,7 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "",
-    unique_id = 1358,
+    unique_id = 1361,
     kind = "built-in type",
     cast_kind = "none",
     depth = 0,
@@ -129,7 +129,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c_astp = {
     sname = "S" (struct),
-    unique_id = 1357,
+    unique_id = 1360,
     kind = "operator",
     cast_kind = "none",
     depth = 0,
@@ -141,11 +141,11 @@ decl_c ::= decl_c_astp = {
     param_ast_list = [],
     ret_ast = {
       sname = "",
-      unique_id = 1356,
+      unique_id = 1359,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1357,
+      parent->unique_id = 1360,
       loc = 8-11,
       type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
       bit_width = 0
@@ -153,7 +153,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c = {
     sname = "S" (struct),
-    unique_id = 1357,
+    unique_id = 1360,
     kind = "operator",
     cast_kind = "none",
     depth = 0,
@@ -165,11 +165,11 @@ decl_c ::= decl_c_astp = {
     param_ast_list = [],
     ret_ast = {
       sname = "",
-      unique_id = 1356,
+      unique_id = 1359,
       kind = "built-in type",
       cast_kind = "none",
       depth = 0,
-      parent->unique_id = 1357,
+      parent->unique_id = 1360,
       loc = 8-11,
       type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
       bit_width = 0

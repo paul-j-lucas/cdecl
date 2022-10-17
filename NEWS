@@ -20,6 +20,9 @@ Declarations like:
 
 are now supported better.
 
+** `nullptr`, `static_assert`, & `thread_local`
+These are now also keywords in C23.
+
 ** More C++23 standard types
 Added the standard C++23 types `std::bfloat16_t`, `std::float128_t`,
 `std::float16_t`, `std::float32_t`, `std::float64_t`, `std::ospanstream`,

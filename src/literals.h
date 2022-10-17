@@ -249,17 +249,19 @@ extern char const L_noreturn[];
 extern char const L_literal[];
 extern char const H_no_except[];          // English for "noexcept"
 extern char const H_no_exception[];       // English for "noexcept"
-extern char const L_nullptr[];
 extern char const L_override[];
 extern char const L_overridden[];         // English for "override"
-extern char const L_static_assert[];
-extern char const L_thread_local[];
 extern char const H_user_def[];           // synonym for "user-defined"
 extern char const H_user_defined[];
 
 // C11 & C++11
 extern char const L_char16_t[];
 extern char const L_char32_t[];
+
+// C23 & C++11
+extern char const L_nullptr[];
+extern char const L_static_assert[];
+extern char const L_thread_local[];
 
 // C23 & C++14
 extern char const L_deprecated[];

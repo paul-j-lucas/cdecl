@@ -649,7 +649,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `nullptr` keyword is supported in.
  */
-#define LANG_NULLPTR                    LANG_CPP_MIN(11)
+#define LANG_NULLPTR                    LANG_C_CPP_MIN(23,11)
 
 /**
  * Languages the `override` keyword is supported in.
@@ -707,7 +707,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG__STATIC_ASSERT
  */
-#define LANG_STATIC_ASSERT              LANG_CPP_MIN(11)
+#define LANG_STATIC_ASSERT              LANG_C_CPP_MIN(23,11)
 
 /**
  * Languages `operator()` can be a `static` member.
@@ -728,7 +728,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG__THREAD_LOCAL
  * @sa #LANG_THREAD_LOCAL_STORAGE
  */
-#define LANG_THREAD_LOCAL               LANG_CPP_MIN(11)
+#define LANG_THREAD_LOCAL               LANG_C_CPP_MIN(23,11)
 
 /**
  * Language thread-local storage is supported in.

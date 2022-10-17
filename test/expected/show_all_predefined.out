@@ -303,6 +303,7 @@ define mode_t as int32_t
 define mtx_t as pthread_mutex_t
 define nfds_t as unsigned long int
 define nlink_t as uint32_t
+define nullptr_t as pointer to void
 define off_t as long int
 define once_flag as int
 define pid_t as int32_t
