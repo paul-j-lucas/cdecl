@@ -106,7 +106,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_ati-02.test \
 	tests/declare_atpi-01.test \
 	tests/declare_b.test \
-	tests/declare_bii_d.test \
+	tests/declare_blii_d.test \
 	tests/declare_c.test \
 	tests/declare_c_al0.test \
 	tests/declare_c_al8.test \
@@ -124,7 +124,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_cpa3pa5i.test \
 	tests/declare_cpa9ci.test \
 	tests/declare_cpa9i.test \
-	tests/declare_cpbv_pi.test \
+	tests/declare_cpblv_pi.test \
 	tests/declare_cpcpi.test \
 	tests/declare_cpfv_pi.test \
 	tests/declare_cpi.test \
@@ -183,7 +183,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_pa3pa5i.test \
 	tests/declare_pa9i.test \
 	tests/declare_pati-01.test \
-	tests/declare_pbv_pi.test \
+	tests/declare_pblv_pi.test \
 	tests/declare_pci-ec.test \
 	tests/declare_pcpi.test \
 	tests/declare_pfkr_i-c17.test \
@@ -226,7 +226,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_ast3i.test \
 	tests/declare_avi.test \
 	tests/declare_b-c89.test \
-	tests/declare_b_ai.test \
+	tests/declare_bl_ai.test \
 	tests/declare_b_f_i.test \
 	tests/declare_c-c.test \
 	tests/declare_c16-c++03.test \
@@ -358,9 +358,9 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_atpi-01.test \
 	tests/explain_atpi-02.test \
 	tests/explain_b.test \
-	tests/explain_bii_d.test \
+	tests/explain_blii_d.test \
 	tests/explain_c.test \
-	tests/explain_cast_pbv_pi.test \
+	tests/explain_cast_pblv_pi.test \
 	tests/explain_cdecl_f.test \
 	tests/explain_ci-ec.test \
 	tests/explain_ci.test \
@@ -373,7 +373,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_cpa3pa5i.test \
 	tests/explain_cpa9ci.test \
 	tests/explain_cpa9i.test \
-	tests/explain_cpbv_pi.test \
+	tests/explain_cpblv_pi.test \
 	tests/explain_cpcpi.test \
 	tests/explain_cpfv_pi.test \
 	tests/explain_cpi.test \
@@ -474,7 +474,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_pa9i.test \
 	tests/explain_pati-01.test \
 	tests/explain_pati-02.test \
-	tests/explain_pbv_pi.test \
+	tests/explain_pblv_pi.test \
 	tests/explain_pcpi.test \
 	tests/explain_pfv_pi.test \
 	tests/explain_pi.test \
@@ -554,7 +554,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_atci.test \
 	tests/explain_attda2i.test \
 	tests/explain_b-c89.test \
-	tests/explain_b_ai.test \
+	tests/explain_bl_ai.test \
 	tests/explain_c-02.test \
 	tests/explain_c-c.test \
 	tests/explain_c16-c++03.test \
@@ -669,7 +669,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_wt-c89.test \
 	tests/explain_xxi-c.test \
 	tests/k_explain_ai.test \
-	tests/k_explain_b_i.test \
+	tests/k_explain_bl_i.test \
 	tests/k_explain_f_i.test \
 	tests/k_explain_i.test \
 	tests/typedef_cv_explain_ftd_v.test
@@ -739,14 +739,14 @@ TESTS+=	tests/explain_digraphs_a9i-c89.test \
 # ============
 # Almost every test here has a corresponding declare_ and explain_ test.
 #
-TESTS+=	tests/cast_bii_d.test \
+TESTS+=	tests/cast_blii_d.test \
 	tests/cast_ci.test \
 	tests/cast_constant.test \
 	tests/cast_cpa3cpa5i.test \
 	tests/cast_cpa3pa5i.test \
 	tests/cast_cpa9ci.test \
 	tests/cast_cpa9i.test \
-	tests/cast_cpbv_pi.test \
+	tests/cast_cpblv_pi.test \
 	tests/cast_cpcpi.test \
 	tests/cast_cpfv_pi.test \
 	tests/cast_cpi.test \
@@ -756,7 +756,7 @@ TESTS+=	tests/cast_bii_d.test \
 	tests/cast_pa3cpa5i.test \
 	tests/cast_pa3pa5i.test \
 	tests/cast_pa9i.test \
-	tests/cast_pbv_pi.test \
+	tests/cast_pblv_pi.test \
 	tests/cast_pci.test \
 	tests/cast_pcpi.test \
 	tests/cast_pf_i-01.test \
@@ -810,7 +810,7 @@ TESTS+=	tests/explain_cast_ci.test \
 	tests/explain_cast_cpa3pa5i.test \
 	tests/explain_cast_cpa9ci.test \
 	tests/explain_cast_cpa9i.test \
-	tests/explain_cast_cpbv_pi.test \
+	tests/explain_cast_cpblv_pi.test \
 	tests/explain_cast_cpcpi.test \
 	tests/explain_cast_cpfv_pi.test \
 	tests/explain_cast_cpi.test \

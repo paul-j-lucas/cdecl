@@ -38,7 +38,8 @@ The characters are:
 + `a_using_` = attribute with `using`
 + `al` = `_Alignas` or `alignas`
 + `at` = `_Atomic` or `atomic`
-+ `b` = block (Apple extension) or `bool`
++ `b` = `bool`
++ `bl` = block (Apple extension)
 + `c` = `char`, `class`, or `const`
 + `c8` = `char8_t`
 + `c16` = `char16_t`
