@@ -370,13 +370,18 @@ _GL_INLINE_HEADER_BEGIN
  * Languages the `_Bool` keyword is supported in.
  *
  * @sa #LANG_BOOL
+ * @sa #LANG_TRUE_FALSE
  */
 #define LANG__BOOL                      LANG_C_MIN(99)
 
 /**
  * Languages the `bool` keyword is supported in.
  *
+ * @note Even though `bool` as a keyword isn't supportd in C until C23, we
+ * support it starting in C99 due to the `bool` macro in `stdbool.h`.
+ *
  * @sa #LANG__BOOL
+ * @sa #LANG_TRUE_FALSE
  */
 #define LANG_BOOL                       LANG_MIN(C_99)
 
@@ -757,6 +762,14 @@ _GL_INLINE_HEADER_BEGIN
  * Languages "trigraphs" are supported in.
  */
 #define LANG_TRIGRAPHS                  LANG_RANGE(C_89,CPP_14)
+
+/**
+ * Languages the `true` and `false` keywords are supported in.
+ *
+ * @sa #LANG__BOOL
+ * @sa #LANG_BOOL
+ */
+#define LANG_TRUE_FALSE                 LANG_MIN(C_23)
 
 /**
  * Languages user-defined literals are supported in.

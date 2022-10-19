@@ -26,7 +26,7 @@ The `_BitInt(N)` type in C23 in now supported.
 ** `constexpr`
 `constexpr` in C23 is now supported.
 
-** `nullptr`, `static_assert`, & `thread_local`
+** `true`, `false`, `nullptr`, `static_assert`, & `thread_local`
 These are now also keywords in C23.
 
 ** More C++23 standard types

@@ -182,10 +182,8 @@ static c_keyword_t const C_KEYWORDS[] = {
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
   { L_explicit,             Y_explicit,           KC__, TS_EXPLICIT,
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
-  // Allow "false" in any C++ version since it's a keyword, but make it auto-
-  // completable only in languages where "noexcept" is supported.
   { L_false,                Y_false,              KC__, TX_NONE,
-    LANG_CPP_ANY,           AC_LANG(NOEXCEPT)                             },
+    LANG_TRUE_FALSE,        AC_LANG(TRUE_FALSE)                           },
   { L_friend,               Y_friend,             KC__, TS_FRIEND,
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
   { L_mutable,              Y_mutable,            KC__, TS_MUTABLE,
@@ -212,10 +210,8 @@ static c_keyword_t const C_KEYWORDS[] = {
     LANG_CPP_ANY,           AC_LANG(EXPLICIT_OBJ_PARAM_DECL)              },
   { L_throw,                Y_throw,              KC__, TS_THROW,
     LANG_CPP_ANY,           AC_LANG(THROW)                                },
-  // Allow "true" in any C++ version since it's a keyword, but make it auto-
-  // completable only in languages where "noexcept" is supported.
   { L_true,                 Y_true,               KC__, TS_NOEXCEPT,
-    LANG_CPP_ANY,           AC_LANG(NOEXCEPT)                             },
+    LANG_TRUE_FALSE,        AC_LANG(TRUE_FALSE)                           },
   { L_try,                  Y_try,                KC__, TX_NONE,
     LANG_CPP_ANY,           AC_LANG(NONE)                                 },
   { L_typeid,               Y_typeid,             KC__, TX_NONE,

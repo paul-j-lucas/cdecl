@@ -71,7 +71,7 @@ typedef int (*qsort_cmp_fn_t)( void const *i_data, void const *j_data );
  * string's length in order to be considered "similar enough" to be a
  * reasonable suggestion.
  */
-static double const SIMILAR_ENOUGH_PERCENT = .40;
+static double const SIMILAR_ENOUGH_PERCENT = .37;
 
 ////////// local functions ////////////////////////////////////////////////////
 
