@@ -23,6 +23,9 @@ are now supported better.
 ** `_BitInt(N)`
 The `_BitInt(N)` type in C23 in now supported.
 
+** `constexpr`
+`constexpr` in C23 is now supported.
+
 ** `nullptr`, `static_assert`, & `thread_local`
 These are now also keywords in C23.
 

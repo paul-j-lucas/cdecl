@@ -413,8 +413,9 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define P20         LANG_CPP_MIN(20)
 #define P23         LANG_CPP_MIN(23)
 #define E11         LANG_C_CPP_MIN(11,11)
-#define E30         LANG_C_CPP_MIN(23,20)
 #define E13         LANG_C_CPP_MIN(11,23)
+#define E30         LANG_C_CPP_MIN(23,20)
+#define E31         LANG_C_CPP_MIN(23,11)
 
 /// @endcond
 
@@ -469,7 +470,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 
   // storage-class-like
   { P11,P11,P11,P20,XXX,P11,XXX,XXX,  P20,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'eval
-  { P11,P11,P11,P11,XXX,P11,XXX,XXX,  XXX,P11,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'expr
+  { C23,E31,P11,P11,C23,P11,XXX,XXX,  XXX,E31,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'expr
   { XXX,XXX,P20,P20,XXX,P20,P20,XXX,  XXX,XXX,P20,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'init
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P11,P11,XXX,P11,___,___,___,___,___,___,___,___,___,___,___,___,___ },// default
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P11,P11,XXX,XXX,P11,___,___,___,___,___,___,___,___,___,___,___,___ },// delete

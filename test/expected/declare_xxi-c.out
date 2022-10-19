@@ -1,3 +1,1 @@
-declare x as constexpr int
-             ^
-14: error: "constexpr": unsupported keyword in C
+constexpr int x;

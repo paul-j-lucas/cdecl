@@ -48,6 +48,11 @@
 
 /// @endcond
 
+/**
+ * Storage-class-like types that are _not_ legal with `constexpr` in C only.
+ */
+#define TS_NOT_CONSTEXPR_C_ONLY   ( TS_ATOMIC | TS_RESTRICT | TS_VOLATILE )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -102,6 +107,21 @@
   print_error( &(AST1)->loc,                                  \
     "%s of %s is illegal" END_STR_LIT,                        \
     c_kind_name( (AST1)->kind ), c_kind_name( (AST2)->kind )  \
+  )
+
+/**
+ * Prints an error: `<type> <type> is illegal`.
+ *
+ * @param AST The AST .
+ * @param TID1 The first bad type.
+ * @param TID2 The second bad type.
+ * @param END_STR_LIT A string literal appended to the end of the error message
+ * (usually `"\n"`).
+ */
+#define error_tid_not_tid(AST,TID1,TID2,END_STR_LIT)    \
+  print_error( &(AST)->loc,                             \
+    "%s %s is illegal" END_STR_LIT,                     \
+    c_tid_name_error( TID1 ), c_tid_name_error( TID2 )  \
   )
 
 /**
@@ -2403,6 +2423,15 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
     }
   }
   else {
+    if ( c_tid_is_any( ast->type.stids, TS_CONSTEXPR ) &&
+         OPT_LANG_IS( C_ANY ) &&
+         c_tid_is_any( ast->type.stids, TS_NOT_CONSTEXPR_C_ONLY ) ) {
+      error_tid_not_tid( ast,
+        TS_CONSTEXPR, ast->type.stids & TS_NOT_CONSTEXPR_C_ONLY, " in C\n"
+      );
+      return VISITOR_ERROR_FOUND;
+    }
+
     if ( c_tid_is_any( ast->type.atids, TA_CARRIES_DEPENDENCY ) &&
          !is_func_param ) {
       print_error( &ast->loc,

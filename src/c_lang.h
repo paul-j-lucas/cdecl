@@ -433,7 +433,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG_CONSTEXPR_RETURN_TYPE
  */
-#define LANG_CONSTEXPR                  LANG_CPP_MIN(11)
+#define LANG_CONSTEXPR                  LANG_C_CPP_MIN(23,11)
 
 /**
  * Languages the `constexpr` keyword for return types are supported in.

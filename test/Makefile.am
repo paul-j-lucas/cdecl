@@ -211,6 +211,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_vpi.test \
 	tests/declare_wt.test \
 	tests/declare_xvf_i.test \
+	tests/declare_xxi-c.test \
 	tests/declare_z.test \
 	tests/declare_zw3.test \
 	tests/declare_zz.test
@@ -311,7 +312,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_vri.test \
 	tests/declare_wt-c89.test \
 	tests/declare_xvi-c.test \
-	tests/declare_xxi-c.test \
+	tests/declare_xxi-c17.test \
 	tests/k_declare_i.test
 
 ###############################################################################
@@ -521,6 +522,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_vo_plus_rk_rk.test \
 	tests/explain_vpi.test \
 	tests/explain_wt.test \
+	tests/explain_xxi-c.test \
 	tests/explain_yo_minus2_i_rk.test \
 	tests/explain_yo_minus_rk_rk.test \
 	tests/explain_yo_plus2_i_rk.test \
@@ -678,7 +680,8 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_vi-knr.test \
 	tests/explain_vovyf-c.test \
 	tests/explain_wt-c89.test \
-	tests/explain_xxi-c.test \
+	tests/explain_xxi-c17.test \
+	tests/explain_xxvi.test \
 	tests/k_explain_ai.test \
 	tests/k_explain_bl_i.test \
 	tests/k_explain_f_i.test \
