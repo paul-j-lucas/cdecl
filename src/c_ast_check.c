@@ -110,21 +110,6 @@
   )
 
 /**
- * Prints an error: `<type> <type> is illegal`.
- *
- * @param AST The AST .
- * @param TID1 The first bad type.
- * @param TID2 The second bad type.
- * @param END_STR_LIT A string literal appended to the end of the error message
- * (usually `"\n"`).
- */
-#define error_tid_not_tid(AST,TID1,TID2,END_STR_LIT)    \
-  print_error( &(AST)->loc,                             \
-    "%s %s is illegal" END_STR_LIT,                     \
-    c_tid_name_error( TID1 ), c_tid_name_error( TID2 )  \
-  )
-
-/**
  * Prints an error: `<kind> to <kind> is illegal`.
  *
  * @param AST1 The AST having the bad kind.
@@ -150,6 +135,21 @@
   print_error( &(AST)->loc,                             \
     "%s to %s is illegal" END_STR_LIT,                  \
     c_kind_name( (AST)->kind ), c_tid_name_error( TID ) \
+  )
+
+/**
+ * Prints an error: `<type> <type> is illegal`.
+ *
+ * @param AST The AST .
+ * @param TID1 The first bad type.
+ * @param TID2 The second bad type.
+ * @param END_STR_LIT A string literal appended to the end of the error message
+ * (usually `"\n"`).
+ */
+#define error_tid_not_tid(AST,TID1,TID2,END_STR_LIT)    \
+  print_error( &(AST)->loc,                             \
+    "\"%s %s\" is illegal" END_STR_LIT,                 \
+    c_tid_name_error( TID1 ), c_tid_name_error( TID2 )  \
   )
 
 ///////////////////////////////////////////////////////////////////////////////
