@@ -300,6 +300,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_BUILTIN:
       if ( (g->flags & C_GIB_OMIT_TYPE) == 0 )
         FPUTS( c_type_name_c( &type ), g->gout );
+      if ( ast->as.builtin.as.BitInt.width > 0 )
+        FPRINTF( g->gout, "(%u)", ast->as.builtin.as.BitInt.width );
       g_print_space_ast_name( g, ast );
       g_print_ast_bit_width( g, ast );
       break;

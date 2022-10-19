@@ -1458,6 +1458,9 @@ static void yyerror( char const *msg ) {
 %token              Y_static_assert
 %token  <tid>       Y_thread_local
 
+                    // C23
+%token  <tid>       Y__BitInt
+
                     // C23 & C++14
 %token  <tid>       Y_deprecated
 
@@ -1568,7 +1571,9 @@ static void yyerror( char const *msg ) {
 %type   <tid>       array_qualifier_list_english_stid_opt
 %type   <int_val>   array_size_int_opt
 %type   <tid>       attribute_english_atid
+%type   <int_val>   BitInt_english_int
 %type   <ast>       block_decl_english_ast
+%type   <ast>       builtin_type_english_ast
 %type   <ast>       class_struct_union_english_ast
 %type   <ast>       constructor_decl_english_ast
 %type   <ast>       decl_english_ast decl_english_ast_exp
@@ -1641,7 +1646,9 @@ static void yyerror( char const *msg ) {
 %type   <tid>       attribute_specifier_list_c_atid
 %type   <tid>       attribute_specifier_list_c_atid_opt
 %type   <uint_val>  bit_field_c_uint_opt
+%type   <int_val>   BitInt_c_int
 %type   <ast_pair>  block_decl_c_astp
+%type   <ast>       builtin_type_c_ast
 %type   <ast>       class_struct_union_c_ast
 %type   <ast_pair>  decl_c_astp decl2_c_astp
 %type   <ast>       east_modified_type_c_ast
@@ -1705,8 +1712,8 @@ static void yyerror( char const *msg ) {
                     // Miscellaneous
 %type   <name>      any_name any_name_exp
 %type   <tdef>      any_typedef
-%type   <tid>       builtin_btid
-%type   <ast>       builtin_type_ast
+%type   <ast>       builtin_no_BitInt_ast
+%type   <tid>       builtin_no_BitInt_btid
 %type   <tid>       class_struct_btid class_struct_btid_opt
 %type   <tid>       class_struct_union_btid class_struct_union_btid_exp
 %type   <oper_id>   c_operator
@@ -5282,7 +5289,7 @@ east_modified_type_c_ast
 
 atomic_builtin_typedef_type_c_ast
   : atomic_specifier_type_c_ast
-  | builtin_type_ast
+  | builtin_type_c_ast
   | typedef_type_c_ast
   ;
 
@@ -5334,21 +5341,37 @@ atomic_specifier_type_c_ast
 
 /// Gibberish C/C++ built-in types ////////////////////////////////////////////
 
-builtin_type_ast
-  : builtin_btid
+builtin_type_c_ast
+  : builtin_no_BitInt_ast
+  | BitInt_c_int
     {
-      DUMP_START( "builtin_type_ast", "builtin_btid" );
-      DUMP_TID( "builtin_btid", $1 );
+      DUMP_START( "builtin_type_c_ast", "BitInt_c_int" );
+      DUMP_INT( "int", $1 );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
+      $$->type.btids = TB_BITINT;
+      $$->as.builtin.as.BitInt.width = STATIC_CAST( unsigned, $1 );
 
-      DUMP_AST( "builtin_type_ast", $$ );
+      DUMP_AST( "builtin_type_c_ast", $$ );
       DUMP_END();
     }
   ;
 
-builtin_btid
+builtin_no_BitInt_ast
+  : builtin_no_BitInt_btid
+    {
+      DUMP_START( "builtin_no_BitInt_ast", "builtin_no_BitInt_btid" );
+      DUMP_TID( "builtin_no_BitInt_btid", $1 );
+
+      $$ = c_ast_new_gc( K_BUILTIN, &@$ );
+      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
+
+      DUMP_AST( "builtin_no_BitInt_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+builtin_no_BitInt_btid
   : Y_void
   | Y_auto_TYPE
   | Y__Bool
@@ -5363,6 +5386,13 @@ builtin_btid
   | Y_double
   | Y_EMC__Accum
   | Y_EMC__Fract
+  ;
+
+BitInt_c_int
+  : Y__BitInt lparen_exp int_exp rparen_exp
+    {
+      $$ = $3;
+    }
   ;
 
 /// Gibberish C/C++ enum, class, struct, & union types ////////////////////////
@@ -5553,7 +5583,7 @@ enum_fixed_type_modifier_btid
   ;
 
 enum_unmodified_fixed_type_c_ast
-  : builtin_type_ast
+  : builtin_type_c_ast
   | typedef_type_c_ast
   ;
 
@@ -6661,10 +6691,45 @@ type_modifier_english_type
   ;
 
 unmodified_type_english_ast
-  : builtin_type_ast
+  : builtin_type_english_ast
   | class_struct_union_english_ast
   | enum_english_ast
   | typedef_type_c_ast
+  ;
+
+builtin_type_english_ast
+  : builtin_no_BitInt_ast
+  | BitInt_english_int
+    {
+      DUMP_START( "builtin_type_english_ast", "BitInt_english_int" );
+      DUMP_INT( "int", $1 );
+
+      $$ = c_ast_new_gc( K_BUILTIN, &@$ );
+      $$->type.btids = TB_BITINT;
+      $$->as.builtin.as.BitInt.width = STATIC_CAST( unsigned, $1 );
+
+      DUMP_AST( "builtin_type_english_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+BitInt_english_int
+  : Y__BitInt Y_INT_LIT bits_opt
+    {
+      $$ = $2;
+    }
+  | Y__BitInt '(' int_exp rparen_exp
+    {
+      $$ = $3;
+    }
+  | Y__BitInt Y_width int_exp bits_opt
+    {
+      $$ = $3;
+    }
+  | Y__BitInt error
+    {
+      elaborate_error( "integer literal, '(', or \"width\" expected" );
+    }
   ;
 
 class_struct_union_english_ast
@@ -6769,7 +6834,7 @@ enum_fixed_type_modifier_list_english_btid
   ;
 
 enum_unmodified_fixed_type_english_ast
-  : builtin_type_ast
+  : builtin_type_english_ast
   | sname_english_ast
   ;
 

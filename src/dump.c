@@ -267,6 +267,10 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
     case K_BUILTIN:
       DUMP_COMMA;
       DUMP_FORMAT( "bit_width = %u", ast->as.builtin.bit_width );
+      if ( ast->as.builtin.as.BitInt.width > 0 ) {
+        FPUTS( ",\n", dout );
+        DUMP_FORMAT( "BitInt.width = %u", ast->as.builtin.as.BitInt.width );
+      }
       break;
 
     case K_USER_DEF_CONVERSION:

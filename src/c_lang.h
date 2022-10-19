@@ -362,6 +362,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_AUTO_RETURN_TYPE           LANG_CPP_MIN(14)
 
 /**
+ * Languages the `_BitInt` keyword is supported in.
+ */
+#define LANG__BITINT                    LANG_C_MIN(23)
+
+/**
  * Languages the `_Bool` keyword is supported in.
  *
  * @sa #LANG_BOOL

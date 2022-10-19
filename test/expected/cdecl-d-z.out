@@ -9,7 +9,7 @@ typedef_type_c_ast ::= any_typedef = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-20,
-    type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
+    type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   sub_scope_sname_c_opt = "",
@@ -21,7 +21,7 @@ typedef_type_c_ast ::= any_typedef = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 37,
@@ -30,7 +30,7 @@ typedef_type_c_ast ::= any_typedef = {
       depth = 0,
       parent->unique_id = -1,
       loc = 8-20,
-      type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
       bit_width = 0
     },
     bit_width = 0
@@ -46,7 +46,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 37,
@@ -55,7 +55,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
       depth = 0,
       parent->unique_id = -1,
       loc = 8-20,
-      type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
       bit_width = 0
     },
     bit_width = 0
@@ -69,7 +69,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 37,
@@ -78,7 +78,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
       depth = 0,
       parent->unique_id = -1,
       loc = 8-20,
-      type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
       bit_width = 0
     },
     bit_width = 0
@@ -99,7 +99,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 37,
@@ -108,7 +108,7 @@ sname_c_ast ::= sname_c = {
       depth = 0,
       parent->unique_id = -1,
       loc = 8-20,
-      type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
       bit_width = 0
     },
     bit_width = 0
@@ -123,7 +123,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 37,
@@ -132,7 +132,7 @@ sname_c_ast ::= sname_c = {
       depth = 0,
       parent->unique_id = -1,
       loc = 8-20,
-      type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
       bit_width = 0
     },
     bit_width = 0
@@ -149,7 +149,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 1360,
@@ -158,7 +158,7 @@ decl_c ::= decl_c_astp = {
       depth = 0,
       parent->unique_id = 1359,
       loc = 8-20,
-      type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
       bit_width = 0
     },
     bit_width = 0
@@ -171,7 +171,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 37,
@@ -180,7 +180,7 @@ decl_c ::= decl_c_astp = {
       depth = 0,
       parent->unique_id = -1,
       loc = 8-20,
-      type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
       bit_width = 0
     },
     bit_width = 0
@@ -193,7 +193,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 37,
@@ -202,7 +202,7 @@ decl_c ::= decl_c_astp = {
       depth = 0,
       parent->unique_id = -1,
       loc = 8-20,
-      type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
       bit_width = 0
     },
     bit_width = 0

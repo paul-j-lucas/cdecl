@@ -119,10 +119,12 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       dup_ast->as.array.stids = ast->as.array.stids;
       break;
 
-    case K_TYPEDEF:
-      // for_ast duplicated by referrer code below
     case K_BUILTIN:
+      dup_ast->as.builtin.as.BitInt.width = ast->as.builtin.as.BitInt.width;
+      FALLTHROUGH;
+    case K_TYPEDEF:
       dup_ast->as.builtin.bit_width = ast->as.builtin.bit_width;
+      // for_ast duplicated by referrer code below
       break;
 
     case K_CLASS_STRUCT_UNION:
@@ -196,11 +198,16 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
     }
 
-    case K_TYPEDEF:
-      // for_ast compared by referrer code below
     case K_BUILTIN:
+      if ( i_ast->as.builtin.as.BitInt.width !=
+           j_ast->as.builtin.as.BitInt.width ) {
+        return false;
+      }
+      FALLTHROUGH;
+    case K_TYPEDEF:
       if ( i_ast->as.builtin.bit_width != j_ast->as.builtin.bit_width )
         return false;
+      // for_ast compared by referrer code below
       break;
 
     case K_OPERATOR:

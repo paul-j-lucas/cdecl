@@ -106,6 +106,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_ati-02.test \
 	tests/declare_atpi-01.test \
 	tests/declare_b.test \
+	tests/declare_bi4.test \
 	tests/declare_blii_d.test \
 	tests/declare_c.test \
 	tests/declare_c_al0.test \
@@ -358,6 +359,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_atpi-01.test \
 	tests/explain_atpi-02.test \
 	tests/explain_b.test \
+	tests/explain_bi4.test \
 	tests/explain_blii_d.test \
 	tests/explain_c.test \
 	tests/explain_cast_pblv_pi.test \
@@ -459,8 +461,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ni.test \
 	tests/explain_npii-c89.test \
 	tests/explain_npiii-c89.test \
-	tests/explain_nrfi_v.test \
 	tests/explain_nrfi_v-c17.test \
+	tests/explain_nrfi_v.test \
 	tests/explain_oi.test \
 	tests/explain_ovo_minus2_i_rk.test \
 	tests/explain_ovo_minus_rk_rk.test \
@@ -495,8 +497,10 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_rro_plus_rk_rk.test \
 	tests/explain_rtpi.test \
 	tests/explain_rttdpi.test \
-	tests/explain_sta2i.test \
+	tests/explain_sibi2.test \
+	tests/explain_sibi4.test \
 	tests/explain_sic.test \
+	tests/explain_sta2i.test \
 	tests/explain_stf_v.test \
 	tests/explain_sti.test \
 	tests/explain_tli.test \
@@ -504,6 +508,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_typedef_ii32.test \
 	tests/explain_typedef_pfc_i.test \
 	tests/explain_typedef_ulz.test \
+	tests/explain_ubi1.test \
+	tests/explain_ubi4.test \
 	tests/explain_uc.test \
 	tests/explain_ull.test \
 	tests/explain_uw3.test \
@@ -554,6 +560,8 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_atci.test \
 	tests/explain_attda2i.test \
 	tests/explain_b-c89.test \
+	tests/explain_bi0.test \
+	tests/explain_bi1.test \
 	tests/explain_bl_ai.test \
 	tests/explain_c-02.test \
 	tests/explain_c-c.test \
@@ -642,6 +650,8 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_rtpf_v.test \
 	tests/explain_rttdi.test \
 	tests/explain_sib.test \
+	tests/explain_sibi0.test \
+	tests/explain_sibi1.test \
 	tests/explain_sic-knr.test \
 	tests/explain_sic16.test \
 	tests/explain_sic32.test \
@@ -654,6 +664,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_type_i.test \
 	tests/explain_typedef_ci32.test \
 	tests/explain_ub.test \
+	tests/explain_ubi0.test \
 	tests/explain_uc16.test \
 	tests/explain_uc32.test \
 	tests/explain_uc8.test \

@@ -315,6 +315,9 @@ static c_type_info_t const C_TYPE_INFO[] = {
     C_LANG_LIT( { ~LANG_AUTO_TYPE, L_GNU___auto_type },
                 { LANG_ANY,        L_auto            } ) },
 
+  { TB_BITINT, LANG__BITINT, NULL,
+    C_LANG_LIT( { LANG_ANY, L__BitInt } ) },
+
   { TB_BOOL, LANG_BOOL, NULL,
     C_LANG_LIT( { LANG_C_ANY, L__Bool },
                 { LANG_ANY,   L_bool  } ) },
@@ -402,6 +405,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define C95         LANG_MIN(C_95)
 #define c99         LANG_C_99
 #define C99         LANG_MIN(C_99)
+#define C23         LANG_MIN(C_23)
 #define C11         LANG_MIN(C_11)
 #define CPP         LANG_CPP_ANY
 #define P03         LANG_CPP_MIN(03)
@@ -491,33 +495,34 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
  */
 static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 // Only the lower triangle is used.
-//  vod aut boo cha ch8 c16 c32 wch sho int lon lol sig uns flo dou com ima enu str uni cla typ aca fra sat
-  { C89,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// void
-  { XXX,C89,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// auto
-  { XXX,XXX,C99,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// bool
-  { XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char
-  { XXX,XXX,XXX,XXX,E30,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char8_t
-  { XXX,XXX,XXX,XXX,XXX,E11,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char16_t
-  { XXX,XXX,XXX,XXX,XXX,XXX,E11,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char32_t
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,C95,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// wchar_t
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// short
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// int
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// long
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,___,C99,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// long long
-  { XXX,XXX,XXX,C89,XXX,XXX,XXX,XXX,C89,C89,C89,C89,C89,___,___,___,___,___,___,___,___,___,___,___,___,___ },// signed
-  { XXX,XXX,XXX,___,XXX,XXX,XXX,XXX,___,___,___,C89,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___ },// unsigned
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,KNR,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___ },// float
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C89,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___ },// double
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,C99,C99,___,___,___,___,___,___,___,___,___ },// complex
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,C99,XXX,C99,___,___,___,___,___,___,___,___ },// imaginary
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C89,___,___,___,___,___,___,___ },// enum
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P11,___,___,___,___,___,___,___ },// struct
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___ },// union
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P11,XXX,XXX,CPP,___,___,___,___ },// class
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___ },// typedef
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,XXX,C99,XXX,C99,C99,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,___,___ },// _Accum
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,XXX,C99,XXX,C99,C99,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,___ },// _Fract
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,XXX,C99,XXX,C99,C99,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,C99,C99 },// _Sat
+//  voi aut Bit boo cha ch8 c16 c32 wch sho int lon lol sig uns flo dou com ima enu str uni cla typ aca fra sat
+  { C89,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// void
+  { XXX,C89,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// auto
+  { XXX,XXX,C23,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// _BitInt
+  { XXX,XXX,XXX,C99,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// bool
+  { XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char
+  { XXX,XXX,XXX,XXX,XXX,E30,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char8_t
+  { XXX,XXX,XXX,XXX,XXX,XXX,E11,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char16_t
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,E11,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char32_t
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C95,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// wchar_t
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// short
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// int
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// long
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,___,C99,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// long long
+  { XXX,XXX,C23,XXX,C89,XXX,XXX,XXX,XXX,C89,C89,C89,C89,C89,___,___,___,___,___,___,___,___,___,___,___,___,___ },// signed
+  { XXX,XXX,C23,XXX,___,XXX,XXX,XXX,XXX,___,___,___,C89,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___ },// unsigned
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,KNR,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___ },// float
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C89,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___ },// double
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,C99,C99,___,___,___,___,___,___,___,___,___ },// complex
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,C99,XXX,C99,___,___,___,___,___,___,___,___ },// imaginary
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C89,___,___,___,___,___,___,___ },// enum
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P11,___,___,___,___,___,___,___ },// struct
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___ },// union
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P11,XXX,XXX,CPP,___,___,___,___ },// class
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___ },// typedef
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,XXX,C99,XXX,C99,C99,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,___,___ },// _Accum
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,XXX,C99,XXX,C99,C99,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,___ },// _Fract
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,XXX,C99,XXX,C99,C99,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,C99,C99 },// _Sat
 };
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -987,6 +992,7 @@ static char const* c_type_name_impl( c_type_t const *type,
 
     TB_VOID,
     TB_AUTO,
+    TB_BITINT,
     TB_BOOL,
     TB_CHAR,
     TB_CHAR8_T,

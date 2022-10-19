@@ -6,7 +6,7 @@ sname_c ::= NAME = {
 
 class_struct_union_declaration_c ::= class_struct_union_btid sname '{' in_scope_declaration_c_opt '}' ';' = {
   (current_scope) = "",
-  class_struct_union_btid = "struct" (btid = 0x800001),
+  class_struct_union_btid = "struct" (btid = 0x1000001),
   any_sname_c = "S" (none),
   class_struct_union_declaration_c = {
     sname = "S" (struct),
@@ -16,14 +16,14 @@ class_struct_union_declaration_c ::= class_struct_union_btid sname '{' in_scope_
     depth = 0,
     parent->unique_id = -1,
     loc = 7,
-    type = "struct" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    type = "struct" (btid = 0x1000001, stid = 0x2, atid = 0x4),
     csu_sname = "S" (none)
   }
 }
 
-builtin_type_ast ::= builtin_btid = {
-  builtin_btid = "bool" (btid = 0x41),
-  builtin_type_ast = {
+builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
+  builtin_no_BitInt_btid = "bool" (btid = 0x81),
+  builtin_no_BitInt_ast = {
     sname = "",
     unique_id = 1359,
     kind = "built-in type",
@@ -31,7 +31,7 @@ builtin_type_ast ::= builtin_btid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-11,
-    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -45,7 +45,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 8-11,
-    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
@@ -57,7 +57,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 8-11,
-    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -77,7 +77,7 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_
     depth = 0,
     parent->unique_id = -1,
     loc = 8-11,
-    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   scope_sname_c_opt = "S" (struct),
@@ -108,7 +108,7 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_
       depth = 0,
       parent->unique_id = 1360,
       loc = 8-11,
-      type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+      type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -124,7 +124,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-11,
-    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   decl_c_astp = {
@@ -147,7 +147,7 @@ decl_c ::= decl_c_astp = {
       depth = 0,
       parent->unique_id = 1360,
       loc = 8-11,
-      type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+      type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -171,7 +171,7 @@ decl_c ::= decl_c_astp = {
       depth = 0,
       parent->unique_id = 1360,
       loc = 8-11,
-      type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+      type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }

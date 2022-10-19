@@ -1,0 +1,4 @@
+EXPECTED_EXIT=0
+cdecl <<END
+explain unsigned _BitInt(1) x
+END

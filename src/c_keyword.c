@@ -251,6 +251,10 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_char32_t,             Y_char32_t,           KC__, TB_CHAR32_T,
     LANG_CHAR16_32_T,       AC_LANG(CHAR16_32_T)                          },
 
+  // C23
+  { L__BitInt,              Y__BitInt,            KC__, TB_BITINT,
+    LANG__BITINT,           AC_LANG(_BITINT)                              },
+
   // C23 & C++11
   { L_nullptr,              Y_nullptr,            KC__, TX_NONE,
     LANG_NULLPTR,           AC_LANG(NONE)                                 },

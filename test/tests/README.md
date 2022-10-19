@@ -39,6 +39,7 @@ The characters are:
 + `al` = `_Alignas` or `alignas`
 + `at` = `_Atomic` or `atomic`
 + `b` = `bool`
++ `bi` = `_BitInt` (following digits specify number of bits)
 + `bl` = block (Apple extension)
 + `c` = `char`, `class`, or `const`
 + `c8` = `char8_t`

@@ -1,0 +1,1 @@
+declare x as unsigned _BitInt width 1 bits

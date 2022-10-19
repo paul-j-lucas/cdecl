@@ -1,7 +1,7 @@
 
-builtin_type_ast ::= builtin_btid = {
-  builtin_btid = "void" (btid = 0x11),
-  builtin_type_ast = {
+builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
+  builtin_no_BitInt_btid = "void" (btid = 0x11),
+  builtin_no_BitInt_ast = {
     sname = "",
     unique_id = 1358,
     kind = "built-in type",
@@ -72,9 +72,9 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-builtin_type_ast ::= builtin_btid = {
-  builtin_btid = "int" (btid = 0x2001),
-  builtin_type_ast = {
+builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
+  builtin_no_BitInt_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_ast = {
     sname = "",
     unique_id = 1359,
     kind = "built-in type",
@@ -82,7 +82,7 @@ builtin_type_ast ::= builtin_btid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 16-18,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -96,7 +96,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 16-18,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
@@ -108,7 +108,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 16-18,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -127,7 +127,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 16-18,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   sname = "a" (none),
@@ -140,7 +140,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 16-18,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -154,7 +154,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 16-18,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   cast_c_astp_opt = {
@@ -165,7 +165,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 16-18,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   target_ast = NULL,
@@ -199,7 +199,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
       depth = 0,
       parent->unique_id = 1360,
       loc = 16-18,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -215,7 +215,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
     depth = 0,
     parent->unique_id = 1360,
     loc = 16-18,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   cast_c_astp_opt = {
@@ -236,7 +236,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
       depth = 0,
       parent->unique_id = 1360,
       loc = 16-18,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -258,7 +258,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
       depth = 0,
       parent->unique_id = 1360,
       loc = 16-18,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -283,7 +283,7 @@ param_list_c_ast ::= param_c_ast = {
       depth = 0,
       parent->unique_id = 1360,
       loc = 16-18,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -306,16 +306,16 @@ param_list_c_ast ::= param_c_ast = {
         depth = 0,
         parent->unique_id = 1360,
         loc = 16-18,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     }
   ]
 }
 
-builtin_type_ast ::= builtin_btid = {
-  builtin_btid = "int" (btid = 0x2001),
-  builtin_type_ast = {
+builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
+  builtin_no_BitInt_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_ast = {
     sname = "",
     unique_id = 1362,
     kind = "built-in type",
@@ -323,7 +323,7 @@ builtin_type_ast ::= builtin_btid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 25-27,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -337,7 +337,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 25-27,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
@@ -349,7 +349,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 25-27,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -368,7 +368,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 25-27,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   sname = "b" (none),
@@ -381,7 +381,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 25-27,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -395,7 +395,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 25-27,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   cast_c_astp_opt = {
@@ -406,7 +406,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 25-27,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   target_ast = NULL,
@@ -440,7 +440,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
       depth = 0,
       parent->unique_id = 1363,
       loc = 25-27,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -456,7 +456,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
     depth = 0,
     parent->unique_id = 1363,
     loc = 25-27,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   cast_c_astp_opt = {
@@ -477,7 +477,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
       depth = 0,
       parent->unique_id = 1363,
       loc = 25-27,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -499,7 +499,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
       depth = 0,
       parent->unique_id = 1363,
       loc = 25-27,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -525,7 +525,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1360,
         loc = 16-18,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     }
@@ -548,7 +548,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       depth = 0,
       parent->unique_id = 1363,
       loc = 25-27,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -571,7 +571,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1360,
         loc = 16-18,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -593,16 +593,16 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1363,
         loc = 25-27,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     }
   ]
 }
 
-builtin_type_ast ::= builtin_btid = {
-  builtin_btid = "int" (btid = 0x2001),
-  builtin_type_ast = {
+builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
+  builtin_no_BitInt_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_ast = {
     sname = "",
     unique_id = 1365,
     kind = "built-in type",
@@ -610,7 +610,7 @@ builtin_type_ast ::= builtin_btid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 35-37,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -624,7 +624,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 35-37,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
@@ -636,7 +636,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 35-37,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -655,7 +655,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 35-37,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   sname = "c" (none),
@@ -668,7 +668,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 35-37,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -682,7 +682,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 35-37,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   cast_c_astp_opt = {
@@ -693,7 +693,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 35-37,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   target_ast = NULL,
@@ -727,7 +727,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
       depth = 0,
       parent->unique_id = 1366,
       loc = 35-37,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -743,7 +743,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
     depth = 0,
     parent->unique_id = 1366,
     loc = 35-37,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   cast_c_astp_opt = {
@@ -764,7 +764,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
       depth = 0,
       parent->unique_id = 1366,
       loc = 35-37,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -786,7 +786,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
       depth = 0,
       parent->unique_id = 1366,
       loc = 35-37,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -812,7 +812,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1360,
         loc = 16-18,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -834,7 +834,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1363,
         loc = 25-27,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     }
@@ -857,7 +857,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       depth = 0,
       parent->unique_id = 1366,
       loc = 35-37,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -880,7 +880,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1360,
         loc = 16-18,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -902,7 +902,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1363,
         loc = 25-27,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -924,16 +924,16 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1366,
         loc = 35-37,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     }
   ]
 }
 
-builtin_type_ast ::= builtin_btid = {
-  builtin_btid = "int" (btid = 0x2001),
-  builtin_type_ast = {
+builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
+  builtin_no_BitInt_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_ast = {
     sname = "",
     unique_id = 1368,
     kind = "built-in type",
@@ -941,7 +941,7 @@ builtin_type_ast ::= builtin_btid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 45-47,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -955,7 +955,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 45-47,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
@@ -967,7 +967,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 45-47,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -986,7 +986,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 45-47,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   sname = "d" (none),
@@ -999,7 +999,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 45-47,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -1013,7 +1013,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 45-47,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   cast_c_astp_opt = {
@@ -1024,7 +1024,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 45-47,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   target_ast = NULL,
@@ -1060,7 +1060,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
       depth = 0,
       parent->unique_id = 1369,
       loc = 45-47,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -1076,7 +1076,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
     depth = 0,
     parent->unique_id = 1369,
     loc = 45-47,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   cast_c_astp_opt = {
@@ -1098,7 +1098,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
       depth = 0,
       parent->unique_id = 1369,
       loc = 45-47,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -1121,7 +1121,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
       depth = 0,
       parent->unique_id = 1369,
       loc = 45-47,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -1147,7 +1147,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1360,
         loc = 16-18,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1169,7 +1169,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1363,
         loc = 25-27,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1191,7 +1191,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1366,
         loc = 35-37,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     }
@@ -1215,7 +1215,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       depth = 0,
       parent->unique_id = 1369,
       loc = 45-47,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -1238,7 +1238,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1360,
         loc = 16-18,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1260,7 +1260,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1363,
         loc = 25-27,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1282,7 +1282,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1366,
         loc = 35-37,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1305,16 +1305,16 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1369,
         loc = 45-47,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     }
   ]
 }
 
-builtin_type_ast ::= builtin_btid = {
-  builtin_btid = "int" (btid = 0x2001),
-  builtin_type_ast = {
+builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
+  builtin_no_BitInt_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_ast = {
     sname = "",
     unique_id = 1371,
     kind = "built-in type",
@@ -1322,7 +1322,7 @@ builtin_type_ast ::= builtin_btid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 59-61,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -1336,7 +1336,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 59-61,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
@@ -1348,7 +1348,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 59-61,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -1367,7 +1367,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 59-61,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   sname = "e" (none),
@@ -1380,7 +1380,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 59-61,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -1394,7 +1394,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 59-61,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   cast_c_astp_opt = {
@@ -1405,7 +1405,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 59-61,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   target_ast = NULL,
@@ -1441,7 +1441,7 @@ array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
       depth = 0,
       parent->unique_id = 1372,
       loc = 59-61,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -1457,7 +1457,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
     depth = 0,
     parent->unique_id = 1372,
     loc = 59-61,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   cast_c_astp_opt = {
@@ -1479,7 +1479,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
       depth = 0,
       parent->unique_id = 1372,
       loc = 59-61,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -1502,7 +1502,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
       depth = 0,
       parent->unique_id = 1372,
       loc = 59-61,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -1528,7 +1528,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1360,
         loc = 16-18,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1550,7 +1550,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1363,
         loc = 25-27,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1572,7 +1572,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1366,
         loc = 35-37,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1595,7 +1595,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1369,
         loc = 45-47,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     }
@@ -1619,7 +1619,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       depth = 0,
       parent->unique_id = 1372,
       loc = 59-61,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -1642,7 +1642,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1360,
         loc = 16-18,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1664,7 +1664,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1363,
         loc = 25-27,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1686,7 +1686,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1366,
         loc = 35-37,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1709,7 +1709,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1369,
         loc = 45-47,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1732,7 +1732,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
         depth = 0,
         parent->unique_id = 1372,
         loc = 59-61,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     }
@@ -1781,7 +1781,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
         depth = 0,
         parent->unique_id = 1360,
         loc = 16-18,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1803,7 +1803,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
         depth = 0,
         parent->unique_id = 1363,
         loc = 25-27,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1825,7 +1825,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
         depth = 0,
         parent->unique_id = 1366,
         loc = 35-37,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1848,7 +1848,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
         depth = 0,
         parent->unique_id = 1369,
         loc = 45-47,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     },
@@ -1871,7 +1871,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
         depth = 0,
         parent->unique_id = 1372,
         loc = 59-61,
-        type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
         bit_width = 0
       }
     }
@@ -1911,7 +1911,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
           depth = 0,
           parent->unique_id = 1360,
           loc = 16-18,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -1933,7 +1933,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
           depth = 0,
           parent->unique_id = 1363,
           loc = 25-27,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -1955,7 +1955,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
           depth = 0,
           parent->unique_id = 1366,
           loc = 35-37,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -1978,7 +1978,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
           depth = 0,
           parent->unique_id = 1369,
           loc = 45-47,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -2001,7 +2001,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
           depth = 0,
           parent->unique_id = 1372,
           loc = 59-61,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       }
@@ -2062,7 +2062,7 @@ decl_c ::= decl_c_astp = {
           depth = 0,
           parent->unique_id = 1360,
           loc = 16-18,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -2084,7 +2084,7 @@ decl_c ::= decl_c_astp = {
           depth = 0,
           parent->unique_id = 1363,
           loc = 25-27,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -2106,7 +2106,7 @@ decl_c ::= decl_c_astp = {
           depth = 0,
           parent->unique_id = 1366,
           loc = 35-37,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -2129,7 +2129,7 @@ decl_c ::= decl_c_astp = {
           depth = 0,
           parent->unique_id = 1369,
           loc = 45-47,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -2152,7 +2152,7 @@ decl_c ::= decl_c_astp = {
           depth = 0,
           parent->unique_id = 1372,
           loc = 59-61,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       }
@@ -2198,7 +2198,7 @@ decl_c ::= decl_c_astp = {
           depth = 0,
           parent->unique_id = 1360,
           loc = 16-18,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -2220,7 +2220,7 @@ decl_c ::= decl_c_astp = {
           depth = 0,
           parent->unique_id = 1363,
           loc = 25-27,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -2242,7 +2242,7 @@ decl_c ::= decl_c_astp = {
           depth = 0,
           parent->unique_id = 1366,
           loc = 35-37,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -2265,7 +2265,7 @@ decl_c ::= decl_c_astp = {
           depth = 0,
           parent->unique_id = 1369,
           loc = 45-47,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       },
@@ -2288,7 +2288,7 @@ decl_c ::= decl_c_astp = {
           depth = 0,
           parent->unique_id = 1372,
           loc = 59-61,
-          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
           bit_width = 0
         }
       }

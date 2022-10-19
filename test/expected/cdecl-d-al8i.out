@@ -3,9 +3,9 @@ alignas_specifier_c ::= ALIGNAS '(' Y_INT_LIT ')' = {
   INT_LIT = 8
 }
 
-builtin_type_ast ::= builtin_btid = {
-  builtin_btid = "int" (btid = 0x2001),
-  builtin_type_ast = {
+builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
+  builtin_no_BitInt_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_ast = {
     sname = "",
     unique_id = 1358,
     kind = "built-in type",
@@ -13,7 +13,7 @@ builtin_type_ast ::= builtin_btid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 20-22,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -27,7 +27,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 20-22,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
@@ -39,7 +39,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 20-22,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -58,7 +58,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 20-22,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   sname = "i" (none),
@@ -71,7 +71,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 20-22,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -87,7 +87,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 20-22,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   decl_c_astp = {
@@ -98,7 +98,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 20-22,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   decl_c = {
@@ -111,7 +111,7 @@ decl_c ::= decl_c_astp = {
     alignas.expr = 8,
     alignas_loc = 8-15,
     loc = 20-22,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }

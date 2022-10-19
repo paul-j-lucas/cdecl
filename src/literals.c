@@ -231,6 +231,9 @@ char const H_user_defined[]       = "user-defined";
 char const L_char16_t[]           = "char16_t";
 char const L_char32_t[]           = "char32_t";
 
+// C23
+char const L__BitInt[]            = "_BitInt";
+
 // C23 & C++11
 char const L_nullptr[]            = "nullptr";
 char const L_static_assert[]      = "static_assert";

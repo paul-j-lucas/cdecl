@@ -258,6 +258,9 @@ extern char const H_user_defined[];
 extern char const L_char16_t[];
 extern char const L_char32_t[];
 
+// C23
+extern char const L__BitInt[];
+
 // C23 & C++11
 extern char const L_nullptr[];
 extern char const L_static_assert[];

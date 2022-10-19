@@ -1,0 +1,8 @@
+EXPECTED_EXIT=0
+cdecl <<END
+declare x as _BitInt 4
+declare x as _BitInt 4 bits
+declare x as _BitInt(4)
+declare x as _BitInt width 4
+declare x as _BitInt width 4 bits
+END

@@ -236,34 +236,35 @@ enum c_tpid {
 #define TB_ANY                0xFFFFFFFFFFFFFFF1ull /**< Any base type.       */
 #define TB_VOID               0x0000000000000011ull /**< `void`               */
 #define TB_AUTO               0x0000000000000021ull /**< C++11's `auto`.      */
-#define TB_BOOL               0x0000000000000041ull /**< `_Bool` or `bool`    */
-#define TB_CHAR               0x0000000000000081ull /**< `char`               */
-#define TB_CHAR8_T            0x0000000000000101ull /**< `char8_t`            */
-#define TB_CHAR16_T           0x0000000000000201ull /**< `char16_t`           */
-#define TB_CHAR32_T           0x0000000000000401ull /**< `char32_t`           */
-#define TB_WCHAR_T            0x0000000000000801ull /**< `wchar_t`            */
-#define TB_SHORT              0x0000000000001001ull /**< `short`              */
-#define TB_INT                0x0000000000002001ull /**< `int`                */
-#define TB_LONG               0x0000000000004001ull /**< `long`               */
-#define TB_LONG_LONG          0x0000000000008001ull /**< `long long`          */
-#define TB_SIGNED             0x0000000000010001ull /**< `signed`             */
-#define TB_UNSIGNED           0x0000000000020001ull /**< `unsigned`           */
-#define TB_FLOAT              0x0000000000040001ull /**< `float`              */
-#define TB_DOUBLE             0x0000000000080001ull /**< `double`             */
-#define TB_COMPLEX            0x0000000000100001ull /**< `_Complex`           */
-#define TB_IMAGINARY          0x0000000000200001ull /**< `_Imaginary`         */
-#define TB_ENUM               0x0000000000400001ull /**< `enum`               */
-#define TB_STRUCT             0x0000000000800001ull /**< `struct`             */
-#define TB_UNION              0x0000000001000001ull /**< `union`              */
-#define TB_CLASS              0x0000000002000001ull /**< `class`              */
-#define TB_NAMESPACE          0x0000000004000001ull /**< `namespace`          */
-#define TB_SCOPE              0x0000000008000001ull /**< Generic scope.       */
-#define TB_TYPEDEF            0x0000000010000001ull /**< E.g., `size_t`       */
+#define TB_BITINT             0x0000000000000041ull /**< `_BitInt`            */
+#define TB_BOOL               0x0000000000000081ull /**< `_Bool` or `bool`    */
+#define TB_CHAR               0x0000000000000101ull /**< `char`               */
+#define TB_CHAR8_T            0x0000000000000201ull /**< `char8_t`            */
+#define TB_CHAR16_T           0x0000000000000401ull /**< `char16_t`           */
+#define TB_CHAR32_T           0x0000000000000801ull /**< `char32_t`           */
+#define TB_WCHAR_T            0x0000000000001001ull /**< `wchar_t`            */
+#define TB_SHORT              0x0000000000002001ull /**< `short`              */
+#define TB_INT                0x0000000000004001ull /**< `int`                */
+#define TB_LONG               0x0000000000008001ull /**< `long`               */
+#define TB_LONG_LONG          0x0000000000010001ull /**< `long long`          */
+#define TB_SIGNED             0x0000000000020001ull /**< `signed`             */
+#define TB_UNSIGNED           0x0000000000040001ull /**< `unsigned`           */
+#define TB_FLOAT              0x0000000000080001ull /**< `float`              */
+#define TB_DOUBLE             0x0000000000100001ull /**< `double`             */
+#define TB_COMPLEX            0x0000000000200001ull /**< `_Complex`           */
+#define TB_IMAGINARY          0x0000000000400001ull /**< `_Imaginary`         */
+#define TB_ENUM               0x0000000000800001ull /**< `enum`               */
+#define TB_STRUCT             0x0000000001000001ull /**< `struct`             */
+#define TB_UNION              0x0000000002000001ull /**< `union`              */
+#define TB_CLASS              0x0000000004000001ull /**< `class`              */
+#define TB_NAMESPACE          0x0000000008000001ull /**< `namespace`          */
+#define TB_SCOPE              0x0000000010000001ull /**< Generic scope.       */
+#define TB_TYPEDEF            0x0000000020000001ull /**< E.g., `size_t`       */
 
 // Embedded C types & modifiers
-#define TB_EMC_ACCUM          0x0000000020000001ull /**< `_Accum`             */
-#define TB_EMC_FRACT          0x0000000040000001ull /**< `_Fract`             */
-#define TB_EMC_SAT            0x0000000080000001ull /**< `_Sat`               */
+#define TB_EMC_ACCUM          0x0000000040000001ull /**< `_Accum`             */
+#define TB_EMC_FRACT          0x0000000080000001ull /**< `_Fract`             */
+#define TB_EMC_SAT            0x0000000100000001ull /**< `_Sat`               */
 
 // storage classes
 #define TS_NONE               0x0000000000000002ull /**< No storage type.     */
@@ -356,7 +357,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TB_ANY_FLOAT          ( TB_FLOAT | TB_DOUBLE )
 
 /// Shorthand for any integral type.
-#define TB_ANY_INTEGRAL       ( TB_BOOL | TB_ANY_CHAR | TB_INT \
+#define TB_ANY_INTEGRAL       ( TB_BOOL | TB_ANY_CHAR | TB_BITINT | TB_INT \
                               | TB_ANY_MODIFIER )
 
 /// Shorthand for an any modifier.

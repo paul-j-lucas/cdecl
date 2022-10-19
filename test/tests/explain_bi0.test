@@ -1,0 +1,4 @@
+EXPECTED_EXIT=65
+cdecl <<END
+explain _BitInt(0) x
+END

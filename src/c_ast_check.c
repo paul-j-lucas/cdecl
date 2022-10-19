@@ -473,7 +473,17 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
     return false;
   }
 
-  if ( ast->as.builtin.bit_width > 0 ) {
+  if ( c_tid_is_any( ast->type.btids, TB_BITINT ) ) {
+    unsigned const min_bits = 1 + !c_tid_is_any( ast->type.btids, TB_UNSIGNED );
+    if ( ast->as.builtin.as.BitInt.width < min_bits ) {
+      print_error( &ast->loc,
+        "%s must be at least %u bit%s\n",
+        c_type_name_error( &ast->type ), min_bits, plural_s( min_bits )
+      );
+      return false;
+    }
+  }
+  else if ( ast->as.builtin.bit_width > 0 ) {
     if ( c_sname_count( &ast->sname ) > 1 ) {
       print_error( &ast->loc, "scoped names can not have bit-field widths\n" );
       return false;

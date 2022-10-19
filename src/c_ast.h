@@ -273,6 +273,15 @@ struct c_builtin_ast {
   ///@}
 
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
+
+  /**
+   * Which `union` variant `struct` to use is specified by \ref c_ast::type.
+   */
+  union {
+    struct {
+      unsigned    width;                ///< Width.
+    } BitInt;                           ///< `_BitInt` data.
+  } as;
 };
 
 /**

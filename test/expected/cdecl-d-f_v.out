@@ -1,7 +1,7 @@
 
-builtin_type_ast ::= builtin_btid = {
-  builtin_btid = "void" (btid = 0x11),
-  builtin_type_ast = {
+builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
+  builtin_no_BitInt_btid = "void" (btid = 0x11),
+  builtin_no_BitInt_ast = {
     sname = "",
     unique_id = 1358,
     kind = "built-in type",

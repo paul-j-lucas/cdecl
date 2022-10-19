@@ -1,7 +1,7 @@
 
-builtin_type_ast ::= builtin_btid = {
-  builtin_btid = "int" (btid = 0x2001),
-  builtin_type_ast = {
+builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
+  builtin_no_BitInt_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_ast = {
     sname = "",
     unique_id = 1358,
     kind = "built-in type",
@@ -9,7 +9,7 @@ builtin_type_ast ::= builtin_btid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-10,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -23,7 +23,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 8-10,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
@@ -35,7 +35,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     depth = 0,
     parent->unique_id = -1,
     loc = 8-10,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
 }
@@ -54,7 +54,7 @@ pointer_to_member_type_c_ast ::= sname '::*' cv_qualifier_list_stid_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-10,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   sname = "S" (none),
@@ -67,7 +67,7 @@ pointer_to_member_type_c_ast ::= sname '::*' cv_qualifier_list_stid_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 12-15,
-    type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {
       sname = "",
@@ -77,7 +77,7 @@ pointer_to_member_type_c_ast ::= sname '::*' cv_qualifier_list_stid_opt = {
       depth = 0,
       parent->unique_id = 1359,
       loc = 8-10,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -97,7 +97,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 12-15,
-    type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {
       sname = "",
@@ -107,7 +107,7 @@ sname_c_ast ::= sname_c = {
       depth = 0,
       parent->unique_id = 1359,
       loc = 8-10,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -121,7 +121,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 12-15,
-    type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {
       sname = "",
@@ -131,7 +131,7 @@ sname_c_ast ::= sname_c = {
       depth = 0,
       parent->unique_id = 1359,
       loc = 8-10,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -146,7 +146,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 12-15,
-    type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {
       sname = "",
@@ -156,7 +156,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
       depth = 0,
       parent->unique_id = 1359,
       loc = 8-10,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -168,7 +168,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 12-15,
-    type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {
       sname = "",
@@ -178,7 +178,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
       depth = 0,
       parent->unique_id = 1359,
       loc = 8-10,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -190,7 +190,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 12-16,
-    type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {
       sname = "",
@@ -200,7 +200,7 @@ pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
       depth = 0,
       parent->unique_id = 1359,
       loc = 8-10,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
@@ -216,7 +216,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-10,
-    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
   decl_c_astp = {
@@ -227,7 +227,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 12-16,
-    type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {
       sname = "",
@@ -237,7 +237,7 @@ decl_c ::= decl_c_astp = {
       depth = 0,
       parent->unique_id = 1359,
       loc = 8-10,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   },
@@ -249,7 +249,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 12-16,
-    type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
     class_sname = "S" (class),
     to_ast = {
       sname = "",
@@ -259,7 +259,7 @@ decl_c ::= decl_c_astp = {
       depth = 0,
       parent->unique_id = 1359,
       loc = 8-10,
-      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
       bit_width = 0
     }
   }
