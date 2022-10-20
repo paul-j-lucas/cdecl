@@ -457,6 +457,15 @@
 
 /** @} */
 
+/**
+ * Shorthand for calling unsupported() with \a LANG_MACRO.
+ *
+ * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
+ *
+ * @sa unsupported()
+ */
+#define UNSUPPORTED(LANG_MACRO)   unsupported( LANG_##LANG_MACRO )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -612,6 +621,8 @@ static inline void sti_cleanup( show_type_info_t *sti ) {
  * @param lang_ids The bitwise-or of language(s).
  * @return Returns `true` only if **cdecl** has been initialized and \ref
  * opt_lang is _not_ among \a lang_ids.
+ *
+ * @sa #UNSUPPORTED()
  */
 NODISCARD
 static inline bool unsupported( c_lang_id_t lang_ids ) {
@@ -1871,7 +1882,7 @@ cast_command
       DUMP_AST( "decl_english_ast", $4 );
       DUMP_END();
 
-      if ( unsupported( LANG_CPP_ANY ) ) {
+      if ( UNSUPPORTED( CPP_ANY ) ) {
         print_error( &@1,
           "%s not supported%s\n", cast_literal,
           C_LANG_WHICH( CPP_ANY )
@@ -2035,7 +2046,7 @@ declare_command
       // that "operator" is a keyword in C++98 which skims right past the
       // bigger error that operator overloading isn't supported in C.
       //
-      if ( unsupported( LANG_CPP_ANY ) ) {
+      if ( UNSUPPORTED( CPP_ANY ) ) {
         print_error( &@2, "operator overloading not supported in C\n" );
         PARSE_ABORT();
       }
@@ -2735,7 +2746,7 @@ new_style_cast_expr_c
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
 
-      if ( unsupported( LANG_CPP_ANY ) ) {
+      if ( UNSUPPORTED( CPP_ANY ) ) {
         print_error( &@1, "%s_cast not supported in C\n", cast_literal );
         PARSE_ABORT();
       }
@@ -2949,7 +2960,7 @@ namespace_declaration_c
       // AST because the AST has no "memory" of how a namespace was
       // constructed.
       //
-      if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_NESTED_namespace ) ) {
+      if ( c_sname_count( &$3 ) > 1 && UNSUPPORTED( NESTED_namespace ) ) {
         print_error( &@3,
           "nested namespace declarations not supported%s\n",
           C_LANG_WHICH( NESTED_namespace )
@@ -3367,7 +3378,7 @@ using_decl_c_ast
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      if ( unsupported( LANG_using_DECLARATION ) ) {
+      if ( UNSUPPORTED( using_DECLARATION ) ) {
         print_error( &@1,
           "\"using\" not supported%s\n",
           C_LANG_WHICH( using_DECLARATION )
@@ -4134,7 +4145,7 @@ trailing_return_type_c_ast_opt
       // later in the AST because the AST has no "memory" of where the return-
       // type came from.
       //
-      if ( unsupported( LANG_TRAILING_RETURN_TYPE ) ) {
+      if ( UNSUPPORTED( TRAILING_RETURN_TYPE ) ) {
         print_error( &@1,
           "trailing return type not supported%s\n",
           C_LANG_WHICH( TRAILING_RETURN_TYPE )
@@ -5738,7 +5749,7 @@ storage_class_c_type
       // the AST because the _Noreturn keyword is mapped to the [[noreturn]]
       // attribute and the AST has no "memory" that it was _Noreturn.
       //
-      if ( unsupported( LANG__Noreturn ) ) {
+      if ( UNSUPPORTED( _Noreturn ) ) {
         print_error( &@1,
           "\"%s\" keyword not supported%s",
           lexer_token, C_LANG_WHICH( _Noreturn )
@@ -5780,7 +5791,7 @@ attribute_specifier_list_c_atid_opt
 attribute_specifier_list_c_atid
   : Y_ATTR_BEGIN '['
     {
-      if ( unsupported( LANG_ATTRIBUTES ) ) {
+      if ( UNSUPPORTED( ATTRIBUTES ) ) {
         print_error( &@1,
           "\"[[\" attribute syntax not supported%s\n",
           C_LANG_WHICH( ATTRIBUTES )
@@ -6591,7 +6602,7 @@ user_defined_literal_decl_english_ast
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( unsupported( LANG_USER_DEFINED_LITERAL ) ) {
+      if ( UNSUPPORTED( USER_DEFINED_LITERAL ) ) {
         print_error( &@1,
           "user-defined literal not supported%s\n",
           C_LANG_WHICH( USER_DEFINED_LITERAL )
@@ -7043,7 +7054,7 @@ sname_c
   : sname_c Y_COLON2 Y_NAME
     {
       // see the comment in "of_scope_english"
-      if ( unsupported( LANG_CPP_ANY ) ) {
+      if ( UNSUPPORTED( CPP_ANY ) ) {
         print_error( &@2, "scoped names not supported in C\n" );
         c_sname_cleanup( &$1 );
         free( $3 );
@@ -7581,7 +7592,7 @@ of_scope_english
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( unsupported( LANG_CPP_ANY ) ) {
+      if ( UNSUPPORTED( CPP_ANY ) ) {
         print_error( &@2, "scoped names not supported in C\n" );
         c_sname_cleanup( &$3 );
         PARSE_ABORT();
