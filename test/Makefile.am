@@ -110,6 +110,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_blii_d.test \
 	tests/declare_c.test \
 	tests/declare_c_al0.test \
+	tests/declare_c_al8-c17.test \
 	tests/declare_c_al8.test \
 	tests/declare_c_alpv.test \
 	tests/declare_cdecl_f.test \

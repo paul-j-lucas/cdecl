@@ -1,1 +1,1 @@
-_Alignas(4) enum E x;
+alignas(4) enum E x;

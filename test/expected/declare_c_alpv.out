@@ -1,1 +1,1 @@
-_Alignas(void*) char c;
+alignas(void*) char c;

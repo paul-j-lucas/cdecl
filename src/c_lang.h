@@ -288,7 +288,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG__Alignas
  */
-#define LANG_alignas                    LANG_CPP_MIN(11)
+#define LANG_alignas                    LANG_C_CPP_MIN(23,11)
 
 /**
  * Lanuages aligned storage is supported in.
@@ -310,7 +310,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG__Alignof
  */
-#define LANG_alignof                    LANG_CPP_MIN(11)
+#define LANG_alignof                    LANG_C_CPP_MIN(23,11)
 
 /**
  * Languages "alternative tokens" are supported in.

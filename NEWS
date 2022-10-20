@@ -20,6 +20,9 @@ Declarations like:
 
 are now supported better.
 
+** `alignas`
+In C23, `alignas`  is now used instead of `_Alignas`.
+
 ** `_BitInt(N)`
 The `_BitInt(N)` type in C23 in now supported.
 

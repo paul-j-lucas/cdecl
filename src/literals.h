@@ -381,11 +381,12 @@ extern char const L_MSC_WINAPI[];         // synonym for "__stdcall"
 /**
  * Gets the alignas literal for the current language.
  *
- * @return Returns either `_Alignas` (for C) or `alignas` (for C++).
+ * @return Returns either `_Alignas` (for C17 or earlier) or `alignas` (for C23
+ * or later, or C++).
  */
 NODISCARD C_LITERALS_H_INLINE
 char const* alignas_name( void ) {
-  return OPT_LANG_IS( C_ANY ) ? L__Alignas : L_alignas;
+  return OPT_LANG_IS( alignas ) ? L_alignas : L__Alignas;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

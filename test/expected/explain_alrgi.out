@@ -1,3 +1,3 @@
-explain _Alignas(4) register int x
+explain alignas(4) register int x
         ^
-9: error: "_Alignas" can not be combined with "register"
+9: error: "alignas" can not be combined with "register"

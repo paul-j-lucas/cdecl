@@ -1,0 +1,4 @@
+EXPECTED_EXIT=0
+cdecl -xc17 <<END
+declare c as char aligned as 8 bytes
+END
