@@ -637,28 +637,40 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_noexcept                   LANG_CPP_MIN(11)
 
 /**
- * Languages the `__noreturn__` attribute is supported in.
+ * Languages the `_Noreturn` keyword is supported in.
  *
  * @sa #LANG_noreturn
+ * @sa #LANG___noreturn__
  * @sa #LANG_NONRETURNING_FUNC
  */
-#define LANG___noreturn__               LANG_C_MIN(11)
+#define LANG__Noreturn                  LANG_C_MIN(11)
 
 /**
  * Languages the `noreturn` keyword is supported in.
  *
+ * @sa #LANG__Noreturn
  * @sa #LANG___noreturn__
  * @sa #LANG_NONRETURNING_FUNC
  */
-#define LANG_noreturn                   LANG_CPP_MIN(11)
+#define LANG_noreturn                   LANG_C_CPP_MIN(23,11)
+
+/**
+ * Languages the `__noreturn__` attribute is supported in.
+ *
+ * @sa #LANG__Noreturn
+ * @sa #LANG_noreturn
+ * @sa #LANG_NONRETURNING_FUNC
+ */
+#define LANG___noreturn__               LANG_C_MIN(23)
 
 /**
  * Languages that support non-returning functions.
  *
+ * @sa #LANG__Noreturn
  * @sa #LANG___noreturn__
  * @sa #LANG_noreturn
  */
-#define LANG_NONRETURNING_FUNC          (LANG___noreturn__ | LANG_noreturn)
+#define LANG_NONRETURNING_FUNC          (LANG__Noreturn | LANG_noreturn)
 
 /**
  * Languages the `no_unique_address` atttribute is supported in.

@@ -159,7 +159,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L__Generic,             Y__Generic,           KC__, TX_NONE,
     LANG__Generic,          AC_LANG(NONE)                                 },
   { L__Noreturn,            Y__Noreturn,          KC__, TA_NORETURN,
-    LANG___noreturn__,      AC_LANG(__noreturn__)                         },
+    LANG__Noreturn,         AC_LANG(_Noreturn)                            },
   { L__Static_assert,       Y__Static_assert,     KC__, TX_NONE,
     LANG__Static_assert,    AC_LANG(NONE)                                 },
   { L__Thread_local,        Y__Thread_local,      KC__, TS_THREAD_LOCAL,
@@ -312,7 +312,9 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C++11 attributes
   { L_carries_dependency,   Y_carries_dependency, KC_A, TA_CARRIES_DEPENDENCY,
     LANG_carries_dependency,AC_LANG(carries_dependency)                   },
-  { L_noreturn,             Y_noreturn,           KC_A, TA_NORETURN,
+
+  // C23 & C++11 attributes
+  { L_noreturn,             Y_noreturn,           KC__, TA_NORETURN,
     LANG_noreturn,          AC_LANG(noreturn)                             },
 
   // C23 & C++14 attributes

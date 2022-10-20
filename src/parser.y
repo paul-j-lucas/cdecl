@@ -1471,8 +1471,6 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_maybe_unused
 %token              Y_maybe Y_unused
 %token  <tid>       Y_nodiscard
-
-                    // C++17
 %token  <tid>       Y_noreturn
 
                     // C23 & C++20
@@ -1713,6 +1711,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  msc_calling_convention_c_astp
 
                     // Miscellaneous
+%type   <tid>       _Noreturn_atid
 %type   <name>      any_name any_name_exp
 %type   <tdef>      any_typedef
 %type   <ast>       builtin_no_BitInt_ast
@@ -5732,8 +5731,31 @@ storage_class_c_type
   | Y_friend                      { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_inline                      { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_mutable                     { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y__Noreturn                   { $$ = C_TYPE_LIT_A( $1 ); }
-  | Y_noreturn                    { $$ = C_TYPE_LIT_A( $1 ); }
+  | _Noreturn_atid
+    {
+      //
+      // These checks have to be done now in the parser rather than later in
+      // the AST because the _Noreturn keyword is mapped to the [[noreturn]]
+      // attribute and the AST has no "memory" that it was _Noreturn.
+      //
+      if ( unsupported( LANG__Noreturn ) ) {
+        print_error( &@1,
+          "\"%s\" keyword not supported%s",
+          lexer_token, C_LANG_WHICH( _Noreturn )
+        );
+        print_hint( "[[noreturn]]" );
+        PARSE_ABORT();
+      }
+      if ( OPT_LANG_IS( C_MIN(23)) ) {
+        print_warning( &@1,
+          "\"%s\" is deprecated%s",
+          lexer_token, C_LANG_WHICH( C_MAX(17) )
+        );
+        print_hint( "[[noreturn]]" );
+      }
+
+      $$ = C_TYPE_LIT_A( $1 );
+    }
   | Y_override                    { $$ = C_TYPE_LIT_S( $1 ); }
 //| Y_register                          // in type_modifier_base_type
   | Y_static                      { $$ = C_TYPE_LIT_S( $1 ); }
@@ -5741,6 +5763,11 @@ storage_class_c_type
   | Y__Thread_local               { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_thread_local                { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_virtual                     { $$ = C_TYPE_LIT_S( $1 ); }
+  ;
+
+_Noreturn_atid
+  : Y__Noreturn
+  | Y_noreturn
   ;
 
 /// Gibberish C/C++ attributes ////////////////////////////////////////////////

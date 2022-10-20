@@ -2548,14 +2548,6 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
           c_kind_name( ast->kind )
         );
       }
-      if ( c_tid_is_any( ast->type.atids, TA_NORETURN ) &&
-           OPT_LANG_IS( C_MIN(23)) ) {
-        print_warning( &ret_ast->loc,
-          "\"_Noreturn\" is deprecated%s",
-          C_LANG_WHICH( C_MAX(17) )
-        );
-        print_hint( "[[noreturn]]" );
-      }
       FALLTHROUGH;
     }
 
