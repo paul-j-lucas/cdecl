@@ -130,16 +130,16 @@ static char const L_typedef_TYPE[] = "";
  * Type mapping for attributes.
  */
 static c_type_info_t const C_ATTRIBUTE_INFO[] = {
-  { TA_CARRIES_DEPENDENCY, LANG_CARRIES_DEPENDENCY, "carries dependency",
+  { TA_CARRIES_DEPENDENCY, LANG_carries_dependency, "carries dependency",
     C_LANG_LIT( { LANG_ANY, L_carries_dependency } ) },
 
-  { TA_DEPRECATED, LANG_DEPRECATED, NULL,
+  { TA_DEPRECATED, LANG_deprecated, NULL,
     C_LANG_LIT( { LANG_ANY, L_deprecated } ) },
 
-  { TA_MAYBE_UNUSED, LANG_MAYBE_UNUSED, "maybe unused",
+  { TA_MAYBE_UNUSED, LANG_maybe_unused, "maybe unused",
     C_LANG_LIT( { LANG_ANY, L_maybe_unused } ) },
 
-  { TA_NODISCARD, LANG_NODISCARD, H_non_discardable,
+  { TA_NODISCARD, LANG_nodiscard, H_non_discardable,
     C_LANG_LIT( { LANG_ANY, L_nodiscard } ) },
 
   { TA_NORETURN, LANG_NONRETURNING_FUNC, H_non_returning,
@@ -181,11 +181,11 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
  * @note This array _must_ have the same size and order as OK_QUALIFIER_LANGS.
  */
 static c_type_info_t const C_QUALIFIER_INFO[] = {
-  { TS_ATOMIC, LANG__ATOMIC, L_atomic,
+  { TS_ATOMIC, LANG__Atomic, L_atomic,
     C_LANG_LIT( { LANG_ANY, L__Atomic } ) },
 
   { TS_CONST, LANG_ANY, L_constant,
-    C_LANG_LIT( { ~LANG_CONST, L_GNU___const },
+    C_LANG_LIT( { ~LANG_const, L_GNU___const },
                 { LANG_ANY,    L_const       } ) },
 
   { TS_REFERENCE, LANG_CPP_MIN(11), NULL,
@@ -195,11 +195,11 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
     C_LANG_LIT( { LANG_ANY, L_rvalue_reference } ) },
 
   { TS_RESTRICT, LANG_ANY, L_restricted,
-    C_LANG_LIT( { ~LANG_RESTRICT, L_GNU___restrict },
+    C_LANG_LIT( { ~LANG_restrict, L_GNU___restrict },
                 { LANG_ANY,       L_restrict       } ) },
 
   { TS_VOLATILE, LANG_ANY, NULL,
-    C_LANG_LIT( { ~LANG_VOLATILE, L_GNU___volatile },
+    C_LANG_LIT( { ~LANG_volatile, L_GNU___volatile },
                 { LANG_ANY,       L_volatile       } ) },
 
   // Unified Parallel C extensions
@@ -221,7 +221,7 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
  */
 static c_type_info_t const C_STORAGE_INFO[] = {
   // storage classes
-  { TS_AUTO, LANG_AUTO_STORAGE, L_automatic,
+  { TS_AUTO, LANG_auto_STORAGE, L_automatic,
     C_LANG_LIT( { LANG_ANY, L_auto } ) },
 
   { TS_APPLE_BLOCK, LANG_ANY, NULL,
@@ -233,7 +233,7 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_EXTERN_C, LANG_CPP_ANY, "external \"C\" linkage",
     C_LANG_LIT( { LANG_ANY, "extern \"C\"" } ) },
 
-  { TS_REGISTER, LANG_REGISTER, NULL,
+  { TS_REGISTER, LANG_register, NULL,
     C_LANG_LIT( { LANG_ANY, L_register } ) },
 
   { TS_STATIC, LANG_ANY, NULL,
@@ -241,51 +241,51 @@ static c_type_info_t const C_STORAGE_INFO[] = {
 
   { TS_THREAD_LOCAL, LANG_ANY, "thread local",
     C_LANG_LIT( { ~LANG_THREAD_LOCAL_STORAGE,  L_GNU___thread  },
-                { LANG__THREAD_LOCAL,          L__Thread_local },
+                { LANG__Thread_local,          L__Thread_local },
                 { LANG_ANY,                    L_thread_local  } ) },
 
   { TS_TYPEDEF, LANG_ANY, L_type,
     C_LANG_LIT( { LANG_ANY, L_typedef } ) },
 
   // storage-class-like
-  { TS_CONSTEVAL, LANG_CONSTEVAL, "constant evaluation",
+  { TS_CONSTEVAL, LANG_consteval, "constant evaluation",
     C_LANG_LIT( { LANG_ANY, L_consteval } ) },
 
-  { TS_CONSTEXPR, LANG_CONSTEXPR, "constant expression",
+  { TS_CONSTEXPR, LANG_constexpr, "constant expression",
     C_LANG_LIT( { LANG_ANY, L_constexpr } ) },
 
-  { TS_CONSTINIT, LANG_CONSTINIT, "constant initialization",
+  { TS_CONSTINIT, LANG_constinit, "constant initialization",
     C_LANG_LIT( { LANG_ANY, L_constinit } ) },
 
-  { TS_DEFAULT, LANG_DEFAULT_DELETE_FUNC, NULL,
+  { TS_DEFAULT, LANG_default_delete_FUNC, NULL,
     C_LANG_LIT( { LANG_ANY, L_default } ) },
 
-  { TS_DELETE, LANG_DEFAULT_DELETE_FUNC, L_deleted,
+  { TS_DELETE, LANG_default_delete_FUNC, L_deleted,
     C_LANG_LIT( { LANG_ANY, L_delete } ) },
 
   { TS_EXPLICIT, LANG_CPP_ANY, NULL,
     C_LANG_LIT( { LANG_ANY, L_explicit } ) },
 
-  { TS_EXPORT, LANG_EXPORT, L_exported,
+  { TS_EXPORT, LANG_export, L_exported,
     C_LANG_LIT( { LANG_ANY, L_export } ) },
 
-  { TS_FINAL, LANG_FINAL, NULL,
+  { TS_FINAL, LANG_final, NULL,
     C_LANG_LIT( { LANG_ANY, L_final } ) },
 
   { TS_FRIEND, LANG_CPP_ANY, NULL,
     C_LANG_LIT( { LANG_ANY, L_friend } ) },
 
   { TS_INLINE, LANG_ANY, NULL,
-    C_LANG_LIT( { ~LANG_INLINE, L_GNU___inline },
+    C_LANG_LIT( { ~LANG_inline, L_GNU___inline },
                 { LANG_ANY,     L_inline       } ) },
 
   { TS_MUTABLE, LANG_CPP_ANY, NULL,
     C_LANG_LIT( { LANG_ANY, L_mutable } ) },
 
-  { TS_NOEXCEPT, LANG_NOEXCEPT, H_no_exception,
+  { TS_NOEXCEPT, LANG_noexcept, H_no_exception,
     C_LANG_LIT( { LANG_ANY, L_noexcept } ) },
 
-  { TS_OVERRIDE, LANG_OVERRIDE, L_overridden,
+  { TS_OVERRIDE, LANG_override, L_overridden,
     C_LANG_LIT( { LANG_ANY, L_override } ) },
 
   { TS_THIS, LANG_EXPLICIT_OBJ_PARAM_DECL, NULL,
@@ -308,33 +308,33 @@ static c_type_info_t const C_STORAGE_INFO[] = {
  * This array _must_ have the same size and order as OK_TYPE_LANGS.
  */
 static c_type_info_t const C_TYPE_INFO[] = {
-  { TB_VOID, LANG_VOID, NULL,
+  { TB_VOID, LANG_void, NULL,
     C_LANG_LIT( { LANG_ANY, L_void } ) },
 
   { TB_AUTO, LANG_MIN(C_89), L_automatic,
-    C_LANG_LIT( { ~LANG_AUTO_TYPE, L_GNU___auto_type },
+    C_LANG_LIT( { ~LANG_auto_TYPE, L_GNU___auto_type },
                 { LANG_ANY,        L_auto            } ) },
 
-  { TB_BITINT, LANG__BITINT, NULL,
+  { TB_BITINT, LANG__BitInt, NULL,
     C_LANG_LIT( { LANG_ANY, L__BitInt } ) },
 
-  { TB_BOOL, LANG_BOOL, NULL,
+  { TB_BOOL, LANG_bool, NULL,
     C_LANG_LIT( { LANG_C_ANY, L__Bool },
                 { LANG_ANY,   L_bool  } ) },
 
   { TB_CHAR, LANG_ANY, NULL,
     C_LANG_LIT( { LANG_ANY, L_char } ) },
 
-  { TB_CHAR8_T, LANG_CHAR8_T, NULL,
+  { TB_CHAR8_T, LANG_char8_t, NULL,
     C_LANG_LIT( { LANG_ANY, L_char8_t } ) },
 
-  { TB_CHAR16_T, LANG_CHAR16_32_T, NULL,
+  { TB_CHAR16_T, LANG_char16_32_t, NULL,
     C_LANG_LIT( { LANG_ANY, L_char16_t } ) },
 
-  { TB_CHAR32_T, LANG_CHAR16_32_T, NULL,
+  { TB_CHAR32_T, LANG_char16_32_t, NULL,
     C_LANG_LIT( { LANG_ANY, L_char32_t } ) },
 
-  { TB_WCHAR_T, LANG_WCHAR_T, NULL,
+  { TB_WCHAR_T, LANG_wchar_t, NULL,
     C_LANG_LIT( { LANG_ANY, L_wchar_t } ) },
 
   { TB_SHORT, LANG_ANY, NULL,
@@ -346,11 +346,11 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { TB_LONG, LANG_ANY, NULL,
     C_LANG_LIT( { LANG_ANY, L_long } ) },
 
-  { TB_LONG_LONG, LANG_LONG_LONG, NULL,
+  { TB_LONG_LONG, LANG_long_long, NULL,
     C_LANG_LIT( { LANG_ANY, L_long_long } ) },
 
   { TB_SIGNED, LANG_ANY, NULL,
-    C_LANG_LIT( { ~LANG_SIGNED, L_GNU___signed },
+    C_LANG_LIT( { ~LANG_signed, L_GNU___signed },
                 { LANG_ANY,     L_signed       } ) },
 
   { TB_UNSIGNED, LANG_ANY, NULL,
@@ -363,13 +363,13 @@ static c_type_info_t const C_TYPE_INFO[] = {
     C_LANG_LIT( { LANG_ANY, L_double } ) },
 
   { TB_COMPLEX, LANG_C_ANY, L_complex,
-    C_LANG_LIT( { ~LANG__COMPLEX, L_GNU___complex },
+    C_LANG_LIT( { ~LANG__Complex, L_GNU___complex },
                 { LANG_ANY,       L__Complex      } ) },
 
-  { TB_IMAGINARY, LANG__IMAGINARY, L_imaginary,
+  { TB_IMAGINARY, LANG__Imaginary, L_imaginary,
     C_LANG_LIT( { LANG_ANY, L__Imaginary } ) },
 
-  { TB_ENUM, LANG_ENUM, L_enumeration,
+  { TB_ENUM, LANG_enum, L_enumeration,
     C_LANG_LIT( { LANG_ANY, L_enum } ) },
 
   { TB_STRUCT, LANG_ANY, L_structure,

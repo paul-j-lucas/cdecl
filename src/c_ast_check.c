@@ -475,20 +475,20 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
 
-  if ( ast->type.btids == TB_NONE && !OPT_LANG_IS( IMPLICIT_INT ) &&
+  if ( ast->type.btids == TB_NONE && !OPT_LANG_IS( IMPLICIT_int ) &&
        !c_ast_parent_is_kind( ast, K_USER_DEF_CONVERSION ) ) {
     print_error( &ast->loc,
       "implicit \"int\" is illegal%s\n",
-      C_LANG_WHICH( IMPLICIT_INT )
+      C_LANG_WHICH( IMPLICIT_int )
     );
     return false;
   }
 
   if ( c_tid_is_any( ast->type.stids, TS_INLINE ) &&
-       !OPT_LANG_IS( INLINE_VARIABLE ) ) {
+       !OPT_LANG_IS( inline_VARIABLE ) ) {
     print_error( &ast->loc,
       "inline variables not supported%s\n",
-      C_LANG_WHICH( INLINE_VARIABLE )
+      C_LANG_WHICH( inline_VARIABLE )
     );
     return false;
   }
@@ -737,10 +737,10 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
 
   c_ast_t const *const of_ast = ast->as.enum_.of_ast;
   if ( of_ast != NULL ) {
-    if ( !OPT_LANG_IS( FIXED_TYPE_ENUM ) ) {
+    if ( !OPT_LANG_IS( FIXED_TYPE_enum ) ) {
       print_error( &of_ast->loc,
         "enum with underlying type not supported%s\n",
-        C_LANG_WHICH( FIXED_TYPE_ENUM )
+        C_LANG_WHICH( FIXED_TYPE_enum )
       );
       return false;
     }
@@ -958,7 +958,7 @@ only_special:
   print_error( &ast->loc,
     "\"%s\" can be used only for special member functions%s\n",
     c_type_name_error( &ast->type ),
-    OPT_LANG_IS( DEFAULT_RELOPS ) &&
+    OPT_LANG_IS( default_RELOPS ) &&
     c_tid_is_any( ast->type.stids, TS_DEFAULT ) ?
       " and relational operators" : ""
   );
@@ -1135,10 +1135,10 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     switch ( raw_param_ast->kind ) {
       case K_BUILTIN:
         if ( c_tid_is_any( raw_param_ast->type.btids, TB_AUTO ) &&
-             !OPT_LANG_IS( AUTO_PARAMETER ) ) {
+             !OPT_LANG_IS( auto_PARAMETER ) ) {
           print_error( &param_ast->loc,
             "parameters can not be \"auto\"%s\n",
-            C_LANG_WHICH( AUTO_PARAMETER )
+            C_LANG_WHICH( auto_PARAMETER )
           );
           return false;
         }
@@ -1485,7 +1485,7 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
     default:
       print_error( &ast->loc,
         "only operator =%s operators can be default\n",
-        OPT_LANG_IS( DEFAULT_RELOPS ) ? " and relational" : ""
+        OPT_LANG_IS( default_RELOPS ) ? " and relational" : ""
       );
       return false;
   } // switch
@@ -1770,10 +1770,10 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
 
   c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
 
-  if ( !OPT_LANG_IS( DEFAULT_RELOPS ) ) {
+  if ( !OPT_LANG_IS( default_RELOPS ) ) {
     print_error( &ast->loc,
       "default operator %s not supported%s\n",
-      op->name, C_LANG_WHICH( DEFAULT_RELOPS )
+      op->name, C_LANG_WHICH( default_RELOPS )
     );
     return false;
   }
@@ -1990,10 +1990,10 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       return false;
     case K_BUILTIN:
       if ( c_tid_is_any( raw_ret_ast->type.btids, TB_AUTO ) &&
-           !OPT_LANG_IS( AUTO_RETURN_TYPE ) ) {
+           !OPT_LANG_IS( auto_RETURN_TYPE ) ) {
         print_error( &ret_ast->loc,
           "\"auto\" return type not supported%s\n",
-          C_LANG_WHICH( AUTO_RETURN_TYPE )
+          C_LANG_WHICH( auto_RETURN_TYPE )
         );
         return false;
       }
@@ -2122,7 +2122,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
               "%schar16_t, "
               "char32_t, "
               "or wchar_t\n",
-              OPT_LANG_IS( CHAR8_T ) ? "char8_t, " : ""
+              OPT_LANG_IS( char8_t ) ? "char8_t, " : ""
             );
             return false;
           }
@@ -2268,10 +2268,10 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
       }
 
       if ( c_tid_is_any( ast->type.stids, TS_THROW ) &&
-           !OPT_LANG_IS( THROW ) ) {
+           !OPT_LANG_IS( throw ) ) {
         print_error( &ast->loc,
           "\"throw\" not supported%s",
-          C_LANG_WHICH( THROW )
+          C_LANG_WHICH( throw )
         );
         print_hint( "\"noexcept\"" );
         return VISITOR_ERROR_FOUND;
@@ -2411,13 +2411,13 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
 
   if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
     if ( c_tid_is_any( ast->type.stids, TS_CONSTEXPR ) &&
-         !OPT_LANG_IS( CONSTEXPR_RETURN_TYPE ) &&
+         !OPT_LANG_IS( constexpr_RETURN_TYPE ) &&
          c_ast_is_builtin_any( ast->as.func.ret_ast, TB_VOID ) ) {
       print_error( &ast->loc,
         "%s %s is illegal%s\n",
         c_tid_name_error( ast->type.stids ),
         c_tid_name_error( ast->as.func.ret_ast->type.btids ),
-        C_LANG_WHICH( CONSTEXPR_RETURN_TYPE )
+        C_LANG_WHICH( constexpr_RETURN_TYPE )
       );
       return VISITOR_ERROR_FOUND;
     }
@@ -2577,7 +2577,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
 
     case K_DESTRUCTOR:
       if ( c_tid_is_any( ast->type.stids, TS_THROW ) &&
-           OPT_LANG_IS( NOEXCEPT ) ) {
+           OPT_LANG_IS( noexcept ) ) {
         print_warning( &ast->loc,
           "\"throw\" is deprecated%s",
           C_LANG_WHICH( CPP_MAX(03) )

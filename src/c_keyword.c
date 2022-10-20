@@ -60,7 +60,7 @@
 static c_keyword_t const C_KEYWORDS[] = {
   // K&R C
   { L_auto,                 Y_auto_STORAGE,       KC__, TS_AUTO,
-    LANG_AUTO_STORAGE,      AC_LANG(AUTO_STORAGE)                         },
+    LANG_auto_STORAGE,      AC_LANG(auto_STORAGE)                         },
   { L_break,                Y_break,              KC__, TX_NONE,
     LANG_ANY,               AC_LANG(NONE)                                 },
   { L_case,                 Y_case,               KC__, TX_NONE,
@@ -72,7 +72,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   // Allow "default" in any language version since it's a keyword, but only
   // make it auto-completable in languages where it's allowed in declarations.
   { L_default,              Y_default,            KC__, TS_DEFAULT,
-    LANG_ANY,               AC_LANG(DEFAULT_DELETE_FUNC)                  },
+    LANG_ANY,               AC_LANG(default_delete_FUNC)                  },
   { L_do,                   Y_do,                 KC__, TX_NONE,
     LANG_ANY,               AC_LANG(NONE)                                 },
   { L_double,               Y_double,             KC__, TB_DOUBLE,
@@ -96,7 +96,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   // Allow "register" in any language since it's (still) a keyword, but only
   // make it auto-completable in languages where it's allowed in declarations.
   { L_register,             Y_register,           KC__, TS_REGISTER,
-    LANG_ANY,               AC_LANG(REGISTER)                             },
+    LANG_ANY,               AC_LANG(register)                             },
   { L_return,               Y_return,             KC__, TX_NONE,
     LANG_ANY,               AC_LANG(NONE)                                 },
   { L_short,                Y_short,              KC__, TB_SHORT,
@@ -120,54 +120,54 @@ static c_keyword_t const C_KEYWORDS[] = {
 
   // C89
   { L_asm,                  Y_asm,                KC__, TX_NONE,
-    LANG_ASM,               AC_LANG(NONE)                                 },
+    LANG_asm,               AC_LANG(NONE)                                 },
   { L_const,                Y_const,              KC__, TS_CONST,
-    LANG_CONST,             AC_LANG(CONST)                                },
+    LANG_const,             AC_LANG(const)                                },
   { L_enum,                 Y_enum,               KC__, TB_ENUM,
-    LANG_ENUM,              AC_LANG(ENUM)                                 },
+    LANG_enum,              AC_LANG(enum)                                 },
   { L_signed,               Y_signed,             KC__, TB_SIGNED,
-    LANG_SIGNED,            AC_LANG(SIGNED)                               },
+    LANG_signed,            AC_LANG(signed)                               },
   { L_void,                 Y_void,               KC__, TB_VOID,
-    LANG_VOID,              AC_LANG(VOID)                                 },
+    LANG_void,              AC_LANG(void)                                 },
   { L_volatile,             Y_volatile,           KC__, TS_VOLATILE,
-    LANG_VOLATILE,          AC_LANG(VOLATILE)                             },
+    LANG_volatile,          AC_LANG(volatile)                             },
 
   // C99
   { L__Bool,                Y__Bool,              KC__, TB_BOOL,
-    LANG__BOOL,             AC_LANG(_BOOL)                                },
+    LANG__Bool,             AC_LANG(_Bool)                                },
   { L__Complex,             Y__Complex,           KC__, TB_COMPLEX,
-    LANG__COMPLEX,          AC_LANG(_COMPLEX)                             },
+    LANG__Complex,          AC_LANG(_Complex)                             },
   { L__Imaginary,           Y__Imaginary,         KC__, TB_IMAGINARY,
-    LANG__IMAGINARY,        AC_LANG(_IMAGINARY)                           },
+    LANG__Imaginary,        AC_LANG(_Imaginary)                           },
   { L_inline,               Y_inline,             KC__, TS_INLINE,
-    LANG_INLINE,            AC_LANG(INLINE)                               },
+    LANG_inline,            AC_LANG(inline)                               },
   // Allow "restrict" to be recognized in C++ also so the parser can give a
   // better error messsage -- see "restrict_qualifier_c_tid" in parser.y.
   { L_restrict,             Y_restrict,           KC__, TS_RESTRICT,
-    LANG_RESTRICT | LANG_CPP_ANY,
-                            AC_LANG(RESTRICT)                             },
+    LANG_restrict | LANG_CPP_ANY,
+                            AC_LANG(restrict)                             },
   { L_wchar_t,              Y_wchar_t,            KC__, TB_WCHAR_T,
-    LANG_WCHAR_T,           AC_LANG(WCHAR_T)                              },
+    LANG_wchar_t,           AC_LANG(wchar_t)                              },
 
   // C11
   { L__Alignas,             Y__Alignas,           KC__, TX_NONE,
-    LANG__ALIGNAS,          AC_LANG(_ALIGNAS)                             },
+    LANG__Alignas,          AC_LANG(_Alignas)                             },
   { L__Alignof,             Y__Alignof,           KC__, TX_NONE,
-    LANG__ALIGNOF,          AC_LANG(NONE)                                 },
+    LANG__Alignof,          AC_LANG(NONE)                                 },
   { L__Atomic,              Y__Atomic_QUAL,       KC__, TS_ATOMIC,
-    LANG__ATOMIC,           AC_LANG(_ATOMIC)                              },
+    LANG__Atomic,           AC_LANG(_Atomic)                              },
   { L__Generic,             Y__Generic,           KC__, TX_NONE,
-    LANG__GENERIC,          AC_LANG(NONE)                                 },
+    LANG__Generic,          AC_LANG(NONE)                                 },
   { L__Noreturn,            Y__Noreturn,          KC__, TA_NORETURN,
-    LANG___NORETURN__,      AC_LANG(__NORETURN__)                         },
+    LANG___noreturn__,      AC_LANG(__noreturn__)                         },
   { L__Static_assert,       Y__Static_assert,     KC__, TX_NONE,
-    LANG__STATIC_ASSERT,    AC_LANG(NONE)                                 },
+    LANG__Static_assert,    AC_LANG(NONE)                                 },
   { L__Thread_local,        Y__Thread_local,      KC__, TS_THREAD_LOCAL,
-    LANG__THREAD_LOCAL,     AC_LANG(_THREAD_LOCAL)                        },
+    LANG__Thread_local,     AC_LANG(_Thread_local)                        },
 
   // C++
   { L_bool,                 Y_bool,               KC__, TB_BOOL,
-    LANG_CPP_ANY,           AC_LANG(BOOL)                                 },
+    LANG_CPP_ANY,           AC_LANG(bool)                                 },
   { L_catch,                Y_catch,              KC__, TX_NONE,
     LANG_CPP_ANY,           AC_LANG(NONE)                                 },
   { L_class,                Y_class,              KC__, TB_CLASS,
@@ -177,13 +177,13 @@ static c_keyword_t const C_KEYWORDS[] = {
   // Allow "delete" in any C++ version since it's a keyword, but make it auto-
   // completable only in languages where it's allowed in declarations.
   { L_delete,               Y_delete,             KC__, TS_DELETE,
-    LANG_CPP_ANY,           AC_LANG(DEFAULT_DELETE_FUNC)                  },
+    LANG_CPP_ANY,           AC_LANG(default_delete_FUNC)                  },
   { L_dynamic_cast,         Y_dynamic_cast,       KC__, TX_NONE,
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
   { L_explicit,             Y_explicit,           KC__, TS_EXPLICIT,
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
   { L_false,                Y_false,              KC__, TX_NONE,
-    LANG_TRUE_FALSE,        AC_LANG(TRUE_FALSE)                           },
+    LANG_true_false,        AC_LANG(true_false)                           },
   { L_friend,               Y_friend,             KC__, TS_FRIEND,
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
   { L_mutable,              Y_mutable,            KC__, TS_MUTABLE,
@@ -209,9 +209,9 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_this,                 Y_this,               KC__, TS_THIS,
     LANG_CPP_ANY,           AC_LANG(EXPLICIT_OBJ_PARAM_DECL)              },
   { L_throw,                Y_throw,              KC__, TS_THROW,
-    LANG_CPP_ANY,           AC_LANG(THROW)                                },
+    LANG_CPP_ANY,           AC_LANG(throw)                                },
   { L_true,                 Y_true,               KC__, TS_NOEXCEPT,
-    LANG_TRUE_FALSE,        AC_LANG(TRUE_FALSE)                           },
+    LANG_true_false,        AC_LANG(true_false)                           },
   { L_try,                  Y_try,                KC__, TX_NONE,
     LANG_CPP_ANY,           AC_LANG(NONE)                                 },
   { L_typeid,               Y_typeid,             KC__, TX_NONE,
@@ -219,61 +219,61 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_typename,             Y_typename,           KC__, TX_NONE,
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
   { L_using,                Y_using,              KC__, TS_TYPEDEF,
-    LANG_CPP_ANY,           AC_LANG(USING_DECLARATION)                    },
+    LANG_CPP_ANY,           AC_LANG(using_DECLARATION)                    },
   { L_virtual,              Y_virtual,            KC__, TS_VIRTUAL,
     LANG_CPP_ANY,           AC_LANG(CPP_ANY)                              },
 
   // C++11
   { L_alignas,              Y_alignas,            KC__, TX_NONE,
-    LANG_ALIGNAS,           AC_LANG(ALIGNMENT)                            },
+    LANG_alignas,           AC_LANG(ALIGNMENT)                            },
   { L_alignof,              Y_alignof,            KC__, TX_NONE,
-    LANG_ALIGNOF,           AC_LANG(NONE)                                 },
+    LANG_alignof,           AC_LANG(NONE)                                 },
   { L_auto,                 Y_auto_TYPE,          KC__, TB_AUTO,
-    LANG_AUTO_TYPE,         AC_LANG(AUTO_TYPE)                            },
+    LANG_auto_TYPE,         AC_LANG(auto_TYPE)                            },
   { L_constexpr,            Y_constexpr,          KC__, TS_CONSTEXPR,
-    LANG_CONSTEXPR,         AC_LANG(CONSTEXPR)                            },
+    LANG_constexpr,         AC_LANG(constexpr)                            },
   { L_decltype,             Y_decltype,           KC__, TX_NONE,
-    LANG_DECLTYPE,          AC_LANG(NONE)                                 },
+    LANG_decltype,          AC_LANG(NONE)                                 },
   { L_final,                Y_final,              KC_F, TS_FINAL,
-    LANG_FINAL,             AC_LANG(FINAL)                                },
+    LANG_final,             AC_LANG(final)                                },
   { L_noexcept,             Y_noexcept,           KC__, TS_NOEXCEPT,
-    LANG_NOEXCEPT,          AC_LANG(NOEXCEPT)                             },
+    LANG_noexcept,          AC_LANG(noexcept)                             },
   { L_override,             Y_override,           KC_F, TS_OVERRIDE,
-    LANG_OVERRIDE,          AC_LANG(OVERRIDE)                             },
+    LANG_override,          AC_LANG(override)                             },
 
   // C11 & C++11
   { L_char16_t,             Y_char16_t,           KC__, TB_CHAR16_T,
-    LANG_CHAR16_32_T,       AC_LANG(CHAR16_32_T)                          },
+    LANG_char16_32_t,       AC_LANG(char16_32_t)                          },
   { L_char32_t,             Y_char32_t,           KC__, TB_CHAR32_T,
-    LANG_CHAR16_32_T,       AC_LANG(CHAR16_32_T)                          },
+    LANG_char16_32_t,       AC_LANG(char16_32_t)                          },
 
   // C23
   { L__BitInt,              Y__BitInt,            KC__, TB_BITINT,
-    LANG__BITINT,           AC_LANG(_BITINT)                              },
+    LANG__BitInt,           AC_LANG(_BitInt)                              },
   { L_typeof,               Y_typeof,             KC__, TX_NONE,
-    LANG_TYPEOF,            AC_LANG(NONE)                                 },
+    LANG_typeof,            AC_LANG(NONE)                                 },
   { L_typeof_unqual,        Y_typeof_unqual,      KC__, TX_NONE,
-    LANG_TYPEOF,            AC_LANG(NONE)                                 },
+    LANG_typeof,            AC_LANG(NONE)                                 },
 
   // C23 & C++11
   { L_nullptr,              Y_nullptr,            KC__, TX_NONE,
-    LANG_NULLPTR,           AC_LANG(NONE)                                 },
+    LANG_nullptr,           AC_LANG(NONE)                                 },
   { L_static_assert,        Y_static_assert,      KC__, TX_NONE,
-    LANG_STATIC_ASSERT,     AC_LANG(NONE)                                 },
+    LANG_static_assert,     AC_LANG(NONE)                                 },
   { L_thread_local,         Y_thread_local,       KC__, TS_THREAD_LOCAL,
-    LANG_THREAD_LOCAL,      AC_LANG(THREAD_LOCAL_STORAGE)                 },
+    LANG_thread_local,      AC_LANG(THREAD_LOCAL_STORAGE)                 },
 
   // C23 & C++20
   { L_char8_t,              Y_char8_t,            KC__, TB_CHAR8_T,
-    LANG_CHAR8_T,           AC_LANG(CHAR8_T)                              },
+    LANG_char8_t,           AC_LANG(char8_t)                              },
 
   // C++20
   { L_concept,              Y_concept,            KC__, TX_NONE,
     LANG_CONCEPTS,          AC_LANG(NONE)                                 },
   { L_consteval,            Y_consteval,          KC__, TS_CONSTEVAL,
-    LANG_CONSTEVAL,         AC_LANG(CONSTEVAL)                            },
+    LANG_consteval,         AC_LANG(consteval)                            },
   { L_constinit,            Y_constinit,          KC__, TS_CONSTINIT,
-    LANG_CONSTINIT,         AC_LANG(CONSTINIT)                            },
+    LANG_constinit,         AC_LANG(constinit)                            },
   { L_co_await,             Y_co_await,           KC__, TX_NONE,
     LANG_COROUTINES,        AC_LANG(COROUTINES)                           },
   { L_co_return,            Y_co_return,          KC__, TX_NONE,
@@ -281,7 +281,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_co_yield,             Y_co_yield,           KC__, TX_NONE,
     LANG_COROUTINES,        AC_LANG(NONE)                                 },
   { L_export,               Y_export,             KC__, TS_EXPORT,
-    LANG_EXPORT,            AC_LANG(EXPORT)                               },
+    LANG_export,            AC_LANG(export)                               },
   { L_requires,             Y_requires,           KC__, TX_NONE,
     LANG_CONCEPTS,          AC_LANG(NONE)                                 },
 
@@ -311,25 +311,25 @@ static c_keyword_t const C_KEYWORDS[] = {
 
   // C++11 attributes
   { L_carries_dependency,   Y_carries_dependency, KC_A, TA_CARRIES_DEPENDENCY,
-    LANG_CARRIES_DEPENDENCY,AC_LANG(CARRIES_DEPENDENCY)                   },
+    LANG_carries_dependency,AC_LANG(carries_dependency)                   },
   { L_noreturn,             Y_noreturn,           KC_A, TA_NORETURN,
-    LANG_NORETURN,          AC_LANG(NORETURN)                             },
+    LANG_noreturn,          AC_LANG(noreturn)                             },
 
   // C23 & C++14 attributes
   { L_deprecated,           Y_deprecated,         KC_A, TA_DEPRECATED,
-    LANG_DEPRECATED,        AC_LANG(DEPRECATED)                           },
+    LANG_deprecated,        AC_LANG(deprecated)                           },
   { L___deprecated__,       Y_deprecated,         KC_A, TA_DEPRECATED,
-    LANG___DEPRECATED__,    AC_LANG(__DEPRECATED__)                       },
+    LANG___deprecated__,    AC_LANG(__deprecated__)                       },
 
   // C23 & C++17 attributes
   { L_maybe_unused,         Y_maybe_unused,       KC_A, TA_MAYBE_UNUSED,
-    LANG_MAYBE_UNUSED,      AC_LANG(MAYBE_UNUSED)                         },
+    LANG_maybe_unused,      AC_LANG(maybe_unused)                         },
   { L___maybe_unused__,     Y_maybe_unused,       KC_A, TA_MAYBE_UNUSED,
-    LANG___MAYBE_UNUSED__,  AC_LANG(__MAYBE_UNUSED__)                     },
+    LANG___maybe_unused__,  AC_LANG(__maybe_unused__)                     },
   { L_nodiscard,            Y_nodiscard,          KC_A, TA_NODISCARD,
-    LANG_NODISCARD,         AC_LANG(NODISCARD)                            },
+    LANG_nodiscard,         AC_LANG(nodiscard)                            },
   { L___nodiscard__,        Y_nodiscard,          KC_A, TA_NODISCARD,
-    LANG___NODISCARD__,     AC_LANG(__NODISCARD__)                        },
+    LANG___nodiscard__,     AC_LANG(__nodiscard__)                        },
 
   // C++20 attributes
 #if 0                       // Not implemented because:
@@ -341,7 +341,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_UNLIKELY,             //   declarations.
 #endif
   { L_no_unique_address,    Y_no_unique_address,  KC_A, TA_NO_UNIQUE_ADDRESS,
-    LANG_NO_UNIQUE_ADDRESS, AC_LANG(NO_UNIQUE_ADDRESS)                    },
+    LANG_no_unique_address, AC_LANG(no_unique_address)                    },
 
   // Embedded C extensions
   { L_EMC__Accum,           Y_EMC__Accum,         KC__, TB_EMC_ACCUM,
@@ -391,7 +391,7 @@ static c_keyword_t const C_KEYWORDS[] = {
 
   // Apple extensions
   { L_Apple___block,        Y_Apple___block,      KC__, TS_APPLE_BLOCK,
-    LANG_APPLE___BLOCK,     AC_LANG(APPLE___BLOCK)                        },
+    LANG_APPLE___block,     AC_LANG(APPLE___block)                        },
 
   // Microsoft extensions
   { L_MSC__asm,             Y_asm,                KC__, TX_NONE,

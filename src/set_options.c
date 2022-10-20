@@ -235,10 +235,10 @@ static bool set_digraphs( set_option_fn_args_t const *args ) {
  */
 static bool set_east_const( set_option_fn_args_t const *args ) {
   opt_east_const = args->opt_enabled;
-  if ( opt_east_const && !OPT_LANG_IS( CONST ) ) {
+  if ( opt_east_const && !OPT_LANG_IS( const ) ) {
     print_warning( args->opt_name_loc,
       "east-const not supported%s\n",
-      C_LANG_WHICH( CONST )
+      C_LANG_WHICH( const )
     );
   }
   return true;
@@ -431,10 +431,10 @@ static bool set_trigraphs( set_option_fn_args_t const *args ) {
  */
 static bool set_using( set_option_fn_args_t const *args ) {
   opt_using = args->opt_enabled;
-  if ( opt_using && !OPT_LANG_IS( USING_DECLARATION ) ) {
+  if ( opt_using && !OPT_LANG_IS( using_DECLARATION ) ) {
     print_warning( args->opt_name_loc,
       "using not supported%s\n",
-      C_LANG_WHICH( USING_DECLARATION )
+      C_LANG_WHICH( using_DECLARATION )
     );
   }
   return true;

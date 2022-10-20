@@ -65,12 +65,12 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
   { L_declare,              PROG_NAME,  LANG_SAME(ANY)                },
   { L_define,               FIRST_ARG,  LANG_SAME(ANY)                },
   { L_dynamic /*cast*/,     FIRST_ARG,  LANG_SAME(CPP_ANY)            },
-  { L_enum,                 FIRST_ARG,  LANG_SAME(ENUM)               },
+  { L_enum,                 FIRST_ARG,  LANG_SAME(enum)               },
   { L_exit,                 LANG_ONLY,  LANG_DIFF(ANY,NONE)           },
   { L_explain,              PROG_NAME,  LANG_SAME(ANY)                },
   { L_help,                 FIRST_ARG,  LANG_SAME(ANY)                },
   { L_include,              FIRST_ARG,  LANG_SAME(ANY)                },
-  { L_inline,               FIRST_ARG,  LANG_SAME(INLINE_NAMESPACE)   },
+  { L_inline,               FIRST_ARG,  LANG_SAME(inline_namespace)   },
   { L_namespace,            FIRST_ARG,  LANG_SAME(CPP_ANY)            },
   { L_quit,                 LANG_ONLY,  LANG_SAME(ANY)                },
   { L_reinterpret /*cast*/, FIRST_ARG,  LANG_SAME(CPP_ANY)            },
@@ -80,7 +80,7 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
   { L_struct,               FIRST_ARG,  LANG_SAME(ANY)                },
   { L_typedef,              FIRST_ARG,  LANG_SAME(ANY)                },
   { L_union,                FIRST_ARG,  LANG_SAME(ANY)                },
-  { L_using,                FIRST_ARG,  LANG_SAME(USING_DECLARATION)  },
+  { L_using,                FIRST_ARG,  LANG_SAME(using_DECLARATION)  },
   { NULL,                   0,          LANG_SAME(NONE)               },
 };
 

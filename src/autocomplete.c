@@ -429,7 +429,7 @@ static char* keyword_generator( char const *text, int state ) {
         L_using,
         NULL
       };
-      command_keywords = OPT_LANG_IS( USING_DECLARATION ) ?
+      command_keywords = OPT_LANG_IS( using_DECLARATION ) ?
         show_keywords_with_using : show_keywords;
     }
     else {

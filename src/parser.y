@@ -2574,7 +2574,7 @@ show_command
       char const *const *const type_commands =
         OPT_LANG_IS( C_KNR )             ? type_commands_knr :
         OPT_LANG_IS( C_ANY )             ? type_commands_c :
-        OPT_LANG_IS( USING_DECLARATION ) ? type_commands_cpp_with_using :
+        OPT_LANG_IS( using_DECLARATION ) ? type_commands_cpp_with_using :
                                            type_commands_cpp_without_using;
 
       print_error( &@2, "\"%s\": not defined as type via ", $2 );
@@ -2598,10 +2598,10 @@ show_format
   | Y_typedef                     { $$ = C_GIB_TYPEDEF; }
   | Y_using
     {
-      if ( !OPT_LANG_IS( USING_DECLARATION ) ) {
+      if ( !OPT_LANG_IS( using_DECLARATION ) ) {
         print_error( &@1,
           "\"using\" not supported%s\n",
-          C_LANG_WHICH( USING_DECLARATION )
+          C_LANG_WHICH( using_DECLARATION )
         );
         PARSE_ABORT();
       }
@@ -2613,7 +2613,7 @@ show_format_exp
   : show_format
   | error
     {
-      if ( OPT_LANG_IS( USING_DECLARATION ) )
+      if ( OPT_LANG_IS( using_DECLARATION ) )
         elaborate_error( "\"english\", \"typedef\", or \"using\" expected" );
       else
         elaborate_error( "\"english\" or \"typedef\" expected" );
@@ -2950,10 +2950,10 @@ namespace_declaration_c
       // AST because the AST has no "memory" of how a namespace was
       // constructed.
       //
-      if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_NESTED_NAMESPACE ) ) {
+      if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_NESTED_namespace ) ) {
         print_error( &@3,
           "nested namespace declarations not supported%s\n",
-          C_LANG_WHICH( NESTED_NAMESPACE )
+          C_LANG_WHICH( NESTED_namespace )
         );
         c_sname_cleanup( &$3 );
         PARSE_ABORT();
@@ -3368,10 +3368,10 @@ using_decl_c_ast
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      if ( unsupported( LANG_USING_DECLARATION ) ) {
+      if ( unsupported( LANG_using_DECLARATION ) ) {
         print_error( &@1,
           "\"using\" not supported%s\n",
-          C_LANG_WHICH( USING_DECLARATION )
+          C_LANG_WHICH( using_DECLARATION )
         );
         PARSE_ABORT();
       }
@@ -3977,7 +3977,7 @@ pc99_func_or_constructor_decl_c
         ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       }
       else {
-        if ( !OPT_LANG_IS( IMPLICIT_INT ) ) {
+        if ( !OPT_LANG_IS( IMPLICIT_int ) ) {
           //
           // In C99 and later, implicit int is an error.  This check has to be
           // done now in the parser rather than later in the AST since the AST
@@ -3985,7 +3985,7 @@ pc99_func_or_constructor_decl_c
           //
           print_error( &@1,
             "implicit \"int\" functions are illegal%s\n",
-            C_LANG_WHICH( IMPLICIT_INT )
+            C_LANG_WHICH( IMPLICIT_int )
           );
           free( $1 );
           PARSE_ABORT();
@@ -4087,14 +4087,14 @@ noexcept_c_stid_opt
     {
       c_ast_list_cleanup( &$3 );
 
-      if ( OPT_LANG_IS( THROW ) ) {
+      if ( OPT_LANG_IS( throw ) ) {
         print_error( &@3,
           "dynamic exception specifications not supported by %s\n", CDECL
         );
       } else {
         print_error( &@3,
           "dynamic exception specifications not supported%s\n",
-          C_LANG_WHICH( THROW )
+          C_LANG_WHICH( throw )
         );
       }
       PARSE_ABORT();
@@ -4184,7 +4184,7 @@ func_equals_c_stid_opt
     }
   | '=' error
     {
-      if ( OPT_LANG_IS( DEFAULT_DELETE_FUNC ) )
+      if ( OPT_LANG_IS( default_delete_FUNC ) )
         elaborate_error( "'0', \"default\", or \"delete\" expected" );
       else
         elaborate_error( "'0' expected" );
@@ -4448,7 +4448,7 @@ pc99_pointer_decl_c
 pc99_pointer_type_c_ast
   : '*' type_qualifier_list_c_stid_opt
     {
-      if ( OPT_LANG_IS( C_ANY ) && !OPT_LANG_IS( IMPLICIT_INT ) ) {
+      if ( OPT_LANG_IS( C_ANY ) && !OPT_LANG_IS( IMPLICIT_int ) ) {
         //
         // In C99 and later, implicit int is an error.  This check has to be
         // done now in the parser rather than later in the AST since the AST
@@ -4456,7 +4456,7 @@ pc99_pointer_type_c_ast
         //
         print_error( &@1,
           "implicit \"int\" is illegal%s\n",
-          C_LANG_WHICH( IMPLICIT_INT )
+          C_LANG_WHICH( IMPLICIT_int )
         );
         PARSE_ABORT();
       }
@@ -5150,7 +5150,7 @@ type_c_ast
       //      const    j;   // illegal in C99
       //      register k;   // illegal in C99
       //
-      c_type_t type = OPT_LANG_IS( IMPLICIT_INT ) ?
+      c_type_t type = OPT_LANG_IS( IMPLICIT_int ) ?
         C_TYPE_LIT_B( TB_INT ) : T_NONE;
 
       C_TYPE_ADD( &type, &$1, @1 );
@@ -6279,7 +6279,7 @@ returning_english_ast_opt
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       // see the comment in "type_c_ast"
-      $$->type.btids = OPT_LANG_IS( IMPLICIT_INT ) ? TB_INT : TB_VOID;
+      $$->type.btids = OPT_LANG_IS( IMPLICIT_int ) ? TB_INT : TB_VOID;
 
       DUMP_AST( "returning_english_ast_opt", $$ );
       DUMP_END();
@@ -6668,7 +6668,7 @@ type_english_ast
 
       // see the comment in "type_c_ast"
       c_type_t type =
-        C_TYPE_LIT_B( OPT_LANG_IS( IMPLICIT_INT ) ? TB_INT : TB_NONE );
+        C_TYPE_LIT_B( OPT_LANG_IS( IMPLICIT_int ) ? TB_INT : TB_NONE );
 
       C_TYPE_ADD( &type, &$1, @1 );
 

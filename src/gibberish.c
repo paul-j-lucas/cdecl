@@ -240,7 +240,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       // Depending on the C++ language version, change noexcept to throw() or
       // vice versa.
       //
-      if ( OPT_LANG_IS( NOEXCEPT ) ) {
+      if ( OPT_LANG_IS( noexcept ) ) {
         if ( true_clear( &is_throw ) )
           is_noexcept = true;
       } else {
@@ -1059,7 +1059,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
     // struct, or union.
     //
     if ( scope_type.btids != TB_NAMESPACE ||
-         opt_lang_is_any( LANG_NESTED_NAMESPACE | LANG_C_ANY ) ) {
+         opt_lang_is_any( LANG_NESTED_namespace | LANG_C_ANY ) ) {
       //
       // All C++ versions support nested class/struct/union declarations, e.g.:
       //

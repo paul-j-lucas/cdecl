@@ -279,38 +279,38 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `_Alignas` keyword is supported in.
  *
- * @sa #LANG_ALIGNAS
+ * @sa #LANG_alignas
  */
-#define LANG__ALIGNAS                   LANG_C_MIN(11)
+#define LANG__Alignas                   LANG_C_MIN(11)
 
 /**
  * Lanuages aligned storage is supported in.
  *
- * @sa #LANG__ALIGNAS
- * @sa #LANG_ALIGNAS
+ * @sa #LANG__Alignas
+ * @sa #LANG_alignas
  */
-#define LANG_ALIGNMENT                  (LANG__ALIGNAS | LANG_ALIGNAS)
+#define LANG_ALIGNMENT                  (LANG__Alignas | LANG_alignas)
 
 /**
  * Languages the `alignas` keyword is supported in.
  *
- * @sa #LANG__ALIGNAS
+ * @sa #LANG__Alignas
  */
-#define LANG_ALIGNAS                    LANG_CPP_MIN(11)
+#define LANG_alignas                    LANG_CPP_MIN(11)
 
 /**
  * Languages the `_Alignof` keyword is supported in.
  *
- * @sa #LANG_ALIGNOF
+ * @sa #LANG_alignof
  */
-#define LANG__ALIGNOF                   LANG_C_MIN(11)
+#define LANG__Alignof                   LANG_C_MIN(11)
 
 /**
  * Languages the `alignof` keyword is supported in.
  *
- * @sa #LANG__ALIGNOF
+ * @sa #LANG__Alignof
  */
-#define LANG_ALIGNOF                    LANG_CPP_MIN(11)
+#define LANG_alignof                    LANG_CPP_MIN(11)
 
 /**
  * Languages "alternative tokens" are supported in.
@@ -320,17 +320,17 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages Apple's `__block` keyword is supported in.
  */
-#define LANG_APPLE___BLOCK              LANG_MIN(C_89)
+#define LANG_APPLE___block              LANG_MIN(C_89)
 
 /**
  * Languages the `asm` keyword is supported in.
  */
-#define LANG_ASM                        LANG_MIN(C_89)
+#define LANG_asm                        LANG_MIN(C_89)
 
 /**
  * Languages the `_Atomic` keyword is supported in.
  */
-#define LANG__ATOMIC                    LANG_C_CPP_MIN(11,23)
+#define LANG__Atomic                    LANG_C_CPP_MIN(11,23)
 
 /**
  * Languages `[[`...`]]` attribute syntax is supported in.
@@ -340,39 +340,39 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `auto` keyword as a storage class is supported in.
  *
- * @sa #LANG_AUTO_TYPE
+ * @sa #LANG_auto_TYPE
  */
-#define LANG_AUTO_STORAGE               LANG_MAX(CPP_03)
+#define LANG_auto_STORAGE               LANG_MAX(CPP_03)
 
 /**
  * Languages the `auto` keyword as a type is supported in.
  *
- * @sa #LANG_AUTO_STORAGE
+ * @sa #LANG_auto_STORAGE
  */
-#define LANG_AUTO_TYPE                  LANG_MIN(CPP_11)
+#define LANG_auto_TYPE                  LANG_MIN(CPP_11)
 
 /**
  * Languages the `auto` keyword for parameters are supported in.
  */
-#define LANG_AUTO_PARAMETER             LANG_CPP_MIN(20)
+#define LANG_auto_PARAMETER             LANG_CPP_MIN(20)
 
 /**
  * Languages the `auto` keyword for return types are supported in.
  */
-#define LANG_AUTO_RETURN_TYPE           LANG_CPP_MIN(14)
+#define LANG_auto_RETURN_TYPE           LANG_CPP_MIN(14)
 
 /**
  * Languages the `_BitInt` keyword is supported in.
  */
-#define LANG__BITINT                    LANG_C_MIN(23)
+#define LANG__BitInt                    LANG_C_MIN(23)
 
 /**
  * Languages the `_Bool` keyword is supported in.
  *
- * @sa #LANG_BOOL
- * @sa #LANG_TRUE_FALSE
+ * @sa #LANG_bool
+ * @sa #LANG_true_false
  */
-#define LANG__BOOL                      LANG_C_MIN(99)
+#define LANG__Bool                      LANG_C_MIN(99)
 
 /**
  * Languages the `bool` keyword is supported in.
@@ -380,36 +380,36 @@ _GL_INLINE_HEADER_BEGIN
  * @note Even though `bool` as a keyword isn't supportd in C until C23, we
  * support it starting in C99 due to the `bool` macro in `stdbool.h`.
  *
- * @sa #LANG__BOOL
- * @sa #LANG_TRUE_FALSE
+ * @sa #LANG__Bool
+ * @sa #LANG_true_false
  */
-#define LANG_BOOL                       LANG_MIN(C_99)
+#define LANG_bool                       LANG_MIN(C_99)
 
 /**
  * Languages the `carries_dependency` attribiue is supported in.
  */
-#define LANG_CARRIES_DEPENDENCY         LANG_CPP_MIN(11)
+#define LANG_carries_dependency         LANG_CPP_MIN(11)
 
 /**
  * Languages the `char16_t` and `char_32_t` keywords are supported in.
  *
- * @sa #LANG_CHAR8_T
+ * @sa #LANG_char8_t
  */
-#define LANG_CHAR16_32_T                LANG_C_CPP_MIN(11,11)
+#define LANG_char16_32_t                LANG_C_CPP_MIN(11,11)
 
 /**
  * Languages the `char8_t` keyword is supported in.
  *
- * @sa #LANG_CHAR16_32_T
+ * @sa #LANG_char16_32_t
  */
-#define LANG_CHAR8_T                    LANG_C_CPP_MIN(23,20)
+#define LANG_char8_t                    LANG_C_CPP_MIN(23,20)
 
 /**
  * Languages the `_Complex` keyword is supported in.
  *
- * @sa #LANG__IMAGINARY
+ * @sa #LANG__Imaginary
  */
-#define LANG__COMPLEX                   LANG_C_MIN(99)
+#define LANG__Complex                   LANG_C_MIN(99)
 
 /**
  * Languages "concepts" are supported in.
@@ -424,33 +424,33 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `const` keyword is supported in.
  *
- * @sa #LANG_VOLATILE
+ * @sa #LANG_volatile
  */
-#define LANG_CONST                      LANG_MIN(C_89)
+#define LANG_const                      LANG_MIN(C_89)
 
 /**
  * Languages the `consteval` keyword is supported in.
  */
-#define LANG_CONSTEVAL                  LANG_CPP_MIN(20)
+#define LANG_consteval                  LANG_CPP_MIN(20)
 
 /**
  * Languages the `constexpr` keyword is supported in.
  *
- * @sa #LANG_CONSTEXPR_RETURN_TYPE
+ * @sa #LANG_constexpr_RETURN_TYPE
  */
-#define LANG_CONSTEXPR                  LANG_C_CPP_MIN(23,11)
+#define LANG_constexpr                  LANG_C_CPP_MIN(23,11)
 
 /**
  * Languages the `constexpr` keyword for return types are supported in.
  *
- * @sa #LANG_CONSTEXPR
+ * @sa #LANG_constexpr
  */
-#define LANG_CONSTEXPR_RETURN_TYPE      LANG_CPP_MIN(14)
+#define LANG_constexpr_RETURN_TYPE      LANG_CPP_MIN(14)
 
 /**
  * Languages the `constinit` keyword is supported in.
  */
-#define LANG_CONSTINIT                  LANG_CPP_MIN(20)
+#define LANG_constinit                  LANG_CPP_MIN(20)
 
 /**
  * Languages `class`, `struct`, or `union` for return types are supported.
@@ -460,32 +460,32 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `decltype` keyword is supported in.
  */
-#define LANG_DECLTYPE                   LANG_CPP_MIN(11)
+#define LANG_decltype                   LANG_CPP_MIN(11)
 
 /**
  * Languages the `default` and `delete` keywords for functions are supported
  * in.
  */
-#define LANG_DEFAULT_DELETE_FUNC        LANG_CPP_MIN(11)
+#define LANG_default_delete_FUNC        LANG_CPP_MIN(11)
 
 /**
  * Languages the `default` keyword for relational operators are supported in.
  */
-#define LANG_DEFAULT_RELOPS             LANG_CPP_MIN(20)
+#define LANG_default_RELOPS             LANG_CPP_MIN(20)
 
 /**
  * Languages the `__deprecated__` attribute is supported in.
  *
- * @sa #LANG_DEPRECATED
+ * @sa #LANG_deprecated
  */
-#define LANG___DEPRECATED__             LANG_C_MIN(23)
+#define LANG___deprecated__             LANG_C_MIN(23)
 
 /**
  * Languages the `deprecated` attribute is supported in.
  *
- * @sa #LANG___DEPRECATED__
+ * @sa #LANG___deprecated__
  */
-#define LANG_DEPRECATED                 LANG_C_CPP_MIN(23,14)
+#define LANG_deprecated                 LANG_C_CPP_MIN(23,14)
 
 /**
  * Languages "digraphs" are supported in.
@@ -495,12 +495,12 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `enum` keyword is supported in.
  */
-#define LANG_ENUM                       LANG_MIN(C_89)
+#define LANG_enum                       LANG_MIN(C_89)
 
 /**
  * Languages `enum class` is supported in.
  */
-#define LANG_ENUM_CLASS                 LANG_MIN(CPP_11)
+#define LANG_enum_class                 LANG_MIN(CPP_11)
 
 /**
  * Languages explicit `this` parameter supported in.
@@ -515,60 +515,60 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `export` keyword is supported in.
  */
-#define LANG_EXPORT                     LANG_CPP_MIN(20)
+#define LANG_export                     LANG_CPP_MIN(20)
 
 /**
  * Languages the `final` keyword is supported in.
  *
- * @sa #LANG_OVERRIDE
+ * @sa #LANG_override
  */
-#define LANG_FINAL                      LANG_CPP_MIN(11)
+#define LANG_final                      LANG_CPP_MIN(11)
 
 /**
  * Languages fixed type `enum`s are supported in.
  */
-#define LANG_FIXED_TYPE_ENUM            LANG_CPP_MIN(11)
+#define LANG_FIXED_TYPE_enum            LANG_CPP_MIN(11)
 
 /**
  * Languages the `_Generic` keyword is supported in.
  */
-#define LANG__GENERIC                   LANG_C_MIN(11)
+#define LANG__Generic                   LANG_C_MIN(11)
 
 /**
  * Languages the `_Imaginary` keyword is supported in.
  *
- * @sa #LANG__COMPLEX
+ * @sa #LANG__Complex
  */
-#define LANG__IMAGINARY                 LANG__COMPLEX
+#define LANG__Imaginary                 LANG__Complex
 
 /**
  * Languages where `int` is implicit.
  */
-#define LANG_IMPLICIT_INT               LANG_MAX(C_95)
+#define LANG_IMPLICIT_int               LANG_MAX(C_95)
 
 /**
  * Languages the `inline` keyword is supported in.
  *
- * @sa #LANG_INLINE_NAMESPACE
- * @sa #LANG_INLINE_VARIABLE
+ * @sa #LANG_inline_namespace
+ * @sa #LANG_inline_VARIABLE
  */
-#define LANG_INLINE                     LANG_MIN(C_99)
+#define LANG_inline                     LANG_MIN(C_99)
 
 /**
  * Languages `inline namespace` is supported in.
  *
- * @sa #LANG_INLINE
- * @sa #LANG_INLINE_VARIABLE
+ * @sa #LANG_inline
+ * @sa #LANG_inline_VARIABLE
  */
-#define LANG_INLINE_NAMESPACE           LANG_CPP_MIN(11)
+#define LANG_inline_namespace           LANG_CPP_MIN(11)
 
 /**
  * Languages `inline` variables are supported in.
  *
- * @sa #LANG_INLINE
- * @sa #LANG_INLINE_NAMESPACE
+ * @sa #LANG_inline
+ * @sa #LANG_inline_namespace
  */
-#define LANG_INLINE_VARIABLE            LANG_CPP_MIN(17)
+#define LANG_inline_VARIABLE            LANG_CPP_MIN(17)
 
 /**
  * Languages K&R style function definitions are supported in.
@@ -580,21 +580,21 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Lanuages the `long long` type is supportd in.
  */
-#define LANG_LONG_LONG                  LANG_MIN(C_99)
+#define LANG_long_long                  LANG_MIN(C_99)
 
 /**
  * Languages the `__maybe_unused__` attribute is supported in.
  *
- * @sa #LANG_MAYBE_UNUSED
+ * @sa #LANG_maybe_unused
  */
-#define LANG___MAYBE_UNUSED__           LANG_C_MIN(23)
+#define LANG___maybe_unused__           LANG_C_MIN(23)
 
 /**
  * Languages the `maybe_unused` attribute is supported in.
  *
- * @sa #LANG___MAYBE_UNUSED__
+ * @sa #LANG___maybe_unused__
  */
-#define LANG_MAYBE_UNUSED               LANG_C_CPP_MIN(23,17)
+#define LANG_maybe_unused               LANG_C_CPP_MIN(23,17)
 
 /**
  * Languages Microsoft extensions are supported in.
@@ -604,69 +604,69 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages nested `namespace` declarations  are supported in.
  */
-#define LANG_NESTED_NAMESPACE           LANG_CPP_MIN(17)
+#define LANG_NESTED_namespace           LANG_CPP_MIN(17)
 
 /**
  * Languages the `__nodiscard__` attribute is supported in.
  *
- * @sa #LANG_NODISCARD
+ * @sa #LANG_nodiscard
  */
-#define LANG___NODISCARD__              LANG_C_MIN(23)
+#define LANG___nodiscard__              LANG_C_MIN(23)
 
 /**
  * Languages the `nodiscard` attribute is supported in.
  *
- * @sa #LANG___NODISCARD__
+ * @sa #LANG___nodiscard__
  */
-#define LANG_NODISCARD                  LANG_C_CPP_MIN(23,17)
+#define LANG_nodiscard                  LANG_C_CPP_MIN(23,17)
 
 /**
  * Languages the `noexcept` keyword is supported in.
  */
-#define LANG_NOEXCEPT                   LANG_CPP_MIN(11)
+#define LANG_noexcept                   LANG_CPP_MIN(11)
 
 /**
  * Languages the `__noreturn__` attribute is supported in.
  *
- * @sa #LANG_NORETURN
+ * @sa #LANG_noreturn
  * @sa #LANG_NONRETURNING_FUNC
  */
-#define LANG___NORETURN__               LANG_C_MIN(11)
+#define LANG___noreturn__               LANG_C_MIN(11)
 
 /**
  * Languages the `noreturn` keyword is supported in.
  *
- * @sa #LANG___NORETURN__
+ * @sa #LANG___noreturn__
  * @sa #LANG_NONRETURNING_FUNC
  */
-#define LANG_NORETURN                   LANG_CPP_MIN(11)
+#define LANG_noreturn                   LANG_CPP_MIN(11)
 
 /**
  * Languages that support non-returning functions.
  *
- * @sa #LANG___NORETURN__
- * @sa #LANG_NORETURN
+ * @sa #LANG___noreturn__
+ * @sa #LANG_noreturn
  */
-#define LANG_NONRETURNING_FUNC          (LANG___NORETURN__ | LANG_NORETURN)
+#define LANG_NONRETURNING_FUNC          (LANG___noreturn__ | LANG_noreturn)
 
 /**
  * Languages the `no_unique_address` atttribute is supported in.
  *
  * @sa #LANG_ATTRIBUTES
  */
-#define LANG_NO_UNIQUE_ADDRESS          LANG_CPP_MIN(20)
+#define LANG_no_unique_address          LANG_CPP_MIN(20)
 
 /**
  * Languages the `nullptr` keyword is supported in.
  */
-#define LANG_NULLPTR                    LANG_C_CPP_MIN(23,11)
+#define LANG_nullptr                    LANG_C_CPP_MIN(23,11)
 
 /**
  * Languages the `override` keyword is supported in.
  *
- * @sa #LANG_FINAL
+ * @sa #LANG_final
  */
-#define LANG_OVERRIDE                   LANG_CPP_MIN(11)
+#define LANG_override                   LANG_CPP_MIN(11)
 
 /**
  * Languages function prototypes are supported in.
@@ -688,12 +688,12 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages `register` variables are supported in.
  */
-#define LANG_REGISTER                   LANG_MAX(CPP_14)
+#define LANG_register                   LANG_MAX(CPP_14)
 
 /**
  * Languages the `restrict` keyword is supported in.
  */
-#define LANG_RESTRICT                   LANG_C_MIN(99)
+#define LANG_restrict                   LANG_C_MIN(99)
 
 /**
  * Languages rvalue references are supported in.
@@ -703,21 +703,21 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `signed` keyword is supported in.
  */
-#define LANG_SIGNED                     LANG_MIN(C_89)
+#define LANG_signed                     LANG_MIN(C_89)
 
 /**
  * Languages the `_Static_assert` keyword is supported in.
  *
- * @sa #LANG_STATIC_ASSERT
+ * @sa #LANG_static_assert
  */
-#define LANG__STATIC_ASSERT             LANG_C_MIN(11)
+#define LANG__Static_assert             LANG_C_MIN(11)
 
 /**
  * Languages the `static_assert` keyword is supported in.
  *
- * @sa #LANG__STATIC_ASSERT
+ * @sa #LANG__Static_assert
  */
-#define LANG_STATIC_ASSERT              LANG_C_CPP_MIN(23,11)
+#define LANG_static_assert              LANG_C_CPP_MIN(23,11)
 
 /**
  * Languages `operator()` can be a `static` member.
@@ -727,31 +727,31 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `_Thread_local` keyword is supported in.
  *
- * @sa #LANG_THREAD_LOCAL
+ * @sa #LANG_thread_local
  * @sa #LANG_THREAD_LOCAL_STORAGE
  */
-#define LANG__THREAD_LOCAL              LANG_C_MIN(11)
+#define LANG__Thread_local              LANG_C_MIN(11)
 
 /**
  * Languages the `thread_local` keyword is supported in.
  *
- * @sa #LANG__THREAD_LOCAL
+ * @sa #LANG__Thread_local
  * @sa #LANG_THREAD_LOCAL_STORAGE
  */
-#define LANG_THREAD_LOCAL               LANG_C_CPP_MIN(23,11)
+#define LANG_thread_local               LANG_C_CPP_MIN(23,11)
 
 /**
  * Language thread-local storage is supported in.
  *
- * @sa #LANG__THREAD_LOCAL
- * @sa #LANG_THREAD_LOCAL
+ * @sa #LANG__Thread_local
+ * @sa #LANG_thread_local
  */
-#define LANG_THREAD_LOCAL_STORAGE       (LANG__THREAD_LOCAL | LANG_THREAD_LOCAL)
+#define LANG_THREAD_LOCAL_STORAGE       (LANG__Thread_local | LANG_thread_local)
 
 /**
  * Languages `throw` with dynamic exception specifications are supported in.
  */
-#define LANG_THROW                      LANG_CPP_MAX(14)
+#define LANG_throw                      LANG_CPP_MAX(14)
 
 /**
  * Languages trailing return types are supported in.
@@ -766,15 +766,15 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `true` and `false` keywords are supported in.
  *
- * @sa #LANG__BOOL
- * @sa #LANG_BOOL
+ * @sa #LANG__Bool
+ * @sa #LANG_bool
  */
-#define LANG_TRUE_FALSE                 LANG_MIN(C_23)
+#define LANG_true_false                 LANG_MIN(C_23)
 
 /**
  * Languages `typeof` and `typeof_unqual` are supported in.
  */
-#define LANG_TYPEOF                     LANG_C_MIN(23)
+#define LANG_typeof                     LANG_C_MIN(23)
 
 /**
  * Languages user-defined literals are supported in.
@@ -784,7 +784,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages `using` declarations are supported in.
  */
-#define LANG_USING_DECLARATION          LANG_CPP_MIN(11)
+#define LANG_using_DECLARATION          LANG_CPP_MIN(11)
 
 /**
  * Languages variable length arrays are supported in.
@@ -794,19 +794,19 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `void` keyword is supported in.
  */
-#define LANG_VOID                       LANG_MIN(C_89)  
+#define LANG_void                       LANG_MIN(C_89)  
 
 /**
  * Languages the `volatile` keyword is supported in.
  *
- * @sa #LANG_CONST
+ * @sa #LANG_const
  */
-#define LANG_VOLATILE                   LANG_CONST
+#define LANG_volatile                   LANG_const
 
 /**
  * Languages the `wchar_t` keyword is supported in.
  */
-#define LANG_WCHAR_T                    LANG_MIN(C_95)
+#define LANG_wchar_t                    LANG_MIN(C_95)
 
 ///////////////////////////////////////////////////////////////////////////////
 
