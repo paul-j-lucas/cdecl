@@ -284,19 +284,19 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG__Alignas                   LANG_C_MIN(11)
 
 /**
+ * Languages the `alignas` keyword is supported in.
+ *
+ * @sa #LANG__Alignas
+ */
+#define LANG_alignas                    LANG_CPP_MIN(11)
+
+/**
  * Lanuages aligned storage is supported in.
  *
  * @sa #LANG__Alignas
  * @sa #LANG_alignas
  */
 #define LANG_ALIGNMENT                  (LANG__Alignas | LANG_alignas)
-
-/**
- * Languages the `alignas` keyword is supported in.
- *
- * @sa #LANG__Alignas
- */
-#define LANG_alignas                    LANG_CPP_MIN(11)
 
 /**
  * Languages the `_Alignof` keyword is supported in.
