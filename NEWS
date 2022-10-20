@@ -32,6 +32,9 @@ In C23, `bool` is now used instead of `_Bool`.
 ** `constexpr`
 `constexpr` in C23 is now supported.
 
+** Digit seperators
+Digit seperators in C23 are now supported.
+
 ** `thread_local`
 In C23, `thread_local` is now used instead of `_Thread_local`.
 

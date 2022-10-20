@@ -184,6 +184,41 @@ static void       lexer_fatal( char const* );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Duplicates \a s with \a except characters stripped and checks for failure.
+ * If memory allocation fails, prints an error message and exits.
+ *
+ * @param s The null-terminated string to duplicate or NULL.
+ * @param except The character not to duplicate.  If `\0`, all characters are
+ * duplicated.
+ * @return Returns a copy of \a s with \a except characters stripped or NULL if
+ * \a s is NULL.
+ */
+NODISCARD
+char* check_strdup_except( char const *s, char except ) {
+  if ( s == NULL )
+    return NULL;
+  if ( except == '\0' )
+    return check_strdup( s );
+
+  size_t dup_len = strlen( s );
+  for ( char const *t = s; *t; ++t ) {
+    if ( *t == except )
+      --dup_len;
+  } // for
+
+  char *const dup_s = MALLOC( char, dup_len + 1/*\0*/ );
+  PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
+
+  char *t = dup_s;
+  do {
+    if ( *s != except )
+      *t++ = *s;
+  } while ( *s++ != '\0' );
+
+  return dup_s;
+}
+
+/**
  * Frees all memory associated with \a ifi _including_ \a ifi itself.
  *
  * @param ifi The \ref include_file_info to free.
@@ -297,6 +332,10 @@ static inline void newline( void ) {
  */
 NODISCARD
 static inline int parse_int( int base ) {
+  char const *s = lexer_token;
+  if ( strchr( lexer_token, '\'' ) != NULL )
+    s = check_strdup_except( lexer_token, '\'' );
+
   //
   // We don't need to check for errors from strtol(3) here since the lexer
   // guarantees that we'll be passed only a valid number token.
@@ -304,9 +343,13 @@ static inline int parse_int( int base ) {
   // Standard strtol(3) doesn't understand a "0b" (binary) prefix, so skip over
   // it if the base is 2.
   //
-  return STATIC_CAST( int,
-    strtol( lexer_token + (base == 2 ? 2 : 0), /*endptr=*/NULL, base )
+  int const rv = STATIC_CAST( int,
+    strtol( s + (base == 2 ? 2 : 0), /*endptr=*/NULL, base )
   );
+
+  if ( s != lexer_token )
+    FREE( s );
+  return rv;
 }
 
 /**
@@ -506,13 +549,13 @@ glob          (\*\*|{glob_scope})({S}*::{S}*{glob_scope})*
 
 cstr_pfx      L|u8?|U
 rstr_pfx      {cstr_pfx}?R\"[^ \f\n\r\t\v()\\]*"("
-int_sfx       [lL][lL]?[uU]?|[uU]([lL][lL]?|[zZ])?|[zZ][uU]?
+int_sfx       [lL][lL]?[uU]?|wb|WB|[uU]([lL][lL]?|wb|WB|[zZ])?|[zZ][uU]?
 set_option    [^=; \f\n\r\t\v]+
 
-bin_int       0[bB]{B}+{int_sfx}?
+bin_int       0[bB]{B}+('{B}+)*{int_sfx}?
 oct_int       0{O}*{int_sfx}?
-dec_int       [1-9]{D}*{int_sfx}?
-hex_int       0[xX]{H}+{int_sfx}?
+dec_int       [1-9]{D}*('{D}+)*{int_sfx}?
+hex_int       0[xX]{H}+('{H}+)*{int_sfx}?
 
 /*
  * For "include" files.

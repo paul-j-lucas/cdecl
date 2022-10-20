@@ -1,0 +1,48 @@
+EXPECTED_EXIT=0
+cdecl <<END
+explain int a[1]
+explain int a[12]
+
+explain int a[0b1]
+explain int a[0b10]
+
+explain int a[01]
+explain int a[012]
+
+explain int a[0x1]
+explain int a[0x1f]
+explain int a[0X1]
+explain int a[0X1F]
+
+explain int a[2l]
+explain int a[2L]
+explain int a[2ll]
+explain int a[2LL]
+explain int a[2u]
+explain int a[2ul]
+explain int a[2ull]
+explain int a[2ulL]
+explain int a[2U]
+explain int a[2UL]
+explain int a[2ULL]
+explain int a[2ULl]
+
+explain int a[2wb]
+explain int a[2WB]
+
+explain int a[2z]
+explain int a[2Z]
+
+explain int a[2uz]
+explain int a[2uZ]
+explain int a[2UZ]
+explain int a[2zu]
+explain int a[2Zu]
+explain int a[2ZU]
+
+explain int a[1'2]
+explain int a[1'23]
+explain int a[12'3]
+explain int a[1'2'3]
+explain int a[1'23'4]
+END

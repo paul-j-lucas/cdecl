@@ -1961,6 +1961,7 @@ TESTS+=	tests/help-c++.test \
 	tests/help_english-c89.test \
 	tests/help_english-knr.test \
 	tests/help_options.test \
+	tests/integers.test \
 	tests/set.test \
 	tests/set_-e-a--st-.test \
 	tests/set_alt-tokens.test \
