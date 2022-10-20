@@ -29,6 +29,9 @@ The `_BitInt(N)` type in C23 in now supported.
 ** `true`, `false`, `nullptr`, `static_assert`, & `thread_local`
 These are now also keywords in C23.
 
+** `typeof` & `typeof_unqual`
+These C23 keywords are now recognized, but not supported by cdecl.
+
 ** More C++23 standard types
 Added the standard C++23 types `std::bfloat16_t`, `std::float128_t`,
 `std::float16_t`, `std::float32_t`, `std::float64_t`, `std::ospanstream`,

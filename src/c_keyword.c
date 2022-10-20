@@ -250,6 +250,10 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C23
   { L__BitInt,              Y__BitInt,            KC__, TB_BITINT,
     LANG__BITINT,           AC_LANG(_BITINT)                              },
+  { L_typeof,               Y_typeof,             KC__, TX_NONE,
+    LANG_TYPEOF,            AC_LANG(NONE)                                 },
+  { L_typeof_unqual,        Y_typeof_unqual,      KC__, TX_NONE,
+    LANG_TYPEOF,            AC_LANG(NONE)                                 },
 
   // C23 & C++11
   { L_nullptr,              Y_nullptr,            KC__, TX_NONE,

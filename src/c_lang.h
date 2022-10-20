@@ -772,6 +772,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_TRUE_FALSE                 LANG_MIN(C_23)
 
 /**
+ * Languages `typeof` and `typeof_unqual` are supported in.
+ */
+#define LANG_TYPEOF                     LANG_C_MIN(23)
+
+/**
  * Languages user-defined literals are supported in.
  */
 #define LANG_USER_DEFINED_LITERAL       LANG_CPP_MIN(11)

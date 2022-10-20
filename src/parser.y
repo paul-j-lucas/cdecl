@@ -1438,6 +1438,11 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_char16_t
 %token  <tid>       Y_char32_t
 
+                    // C23
+%token  <tid>       Y__BitInt
+%token              Y_typeof
+%token              Y_typeof_unqual
+
                     // C23 & C++11
 %token              Y_ATTR_BEGIN        // First '[' of "[[" for an attribute.
 
@@ -1457,9 +1462,6 @@ static void yyerror( char const *msg ) {
 %token              Y_QUOTE2            // for user-defined literals
 %token              Y_static_assert
 %token  <tid>       Y_thread_local
-
-                    // C23
-%token  <tid>       Y__BitInt
 
                     // C23 & C++14
 %token  <tid>       Y_deprecated
@@ -1690,6 +1692,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>     typedef_sname_c
 %type   <ast>       typedef_type_c_ast
 %type   <ast>       typedef_type_decl_c_ast
+%type   <ast>       typeof_type_c_ast
 %type   <type>      type_modifier_c_type
 %type   <type>      type_modifier_list_c_type type_modifier_list_c_type_opt
 %type   <tid>       type_qualifier_c_stid
@@ -5291,6 +5294,7 @@ atomic_builtin_typedef_type_c_ast
   : atomic_specifier_type_c_ast
   | builtin_type_c_ast
   | typedef_type_c_ast
+  | typeof_type_c_ast
   ;
 
 /// C Gibberish _Atomic types /////////////////////////////////////////////////
@@ -5393,6 +5397,19 @@ BitInt_c_int
     {
       $$ = $3;
     }
+  ;
+
+typeof_type_c_ast
+  : typeof
+    {
+      print_error( &@1, "typeof declarations not supported by %s\n", CDECL );
+      PARSE_ABORT();
+    }
+  ;
+
+typeof
+  : Y_typeof
+  | Y_typeof_unqual
   ;
 
 /// Gibberish C/C++ enum, class, struct, & union types ////////////////////////
@@ -5585,6 +5602,7 @@ enum_fixed_type_modifier_btid
 enum_unmodified_fixed_type_c_ast
   : builtin_type_c_ast
   | typedef_type_c_ast
+  | typeof_type_c_ast
   ;
 
 /// Gibberish C/C++ class, struct, & union types //////////////////////////////
