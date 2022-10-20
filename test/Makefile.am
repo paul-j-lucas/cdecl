@@ -1956,6 +1956,7 @@ TESTS+=	tests/help-c++.test \
 	tests/help_english-c++.test \
 	tests/help_english-c++03.test \
 	tests/help_english-c.test \
+	tests/help_english-c17.test \
 	tests/help_english-c89.test \
 	tests/help_english-knr.test \
 	tests/help_options.test \
@@ -2016,9 +2017,9 @@ TESTS+=	tests/help-c++.test \
 	tests/set_prompt_x.test \
 	tests/set_semicolon.test \
 	tests/set_trigraphs-c++.test \
+	tests/set_trigraphs-c++17.test \
 	tests/set_trigraphs-cknr.test \
 	tests/set_trigraphs.test \
-	tests/set_trigraphs-c++17.test \
 	tests/set_xxx.test
 
 if ENABLE_CDECL_DEBUG

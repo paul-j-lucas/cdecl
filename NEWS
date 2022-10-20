@@ -21,13 +21,16 @@ Declarations like:
 are now supported better.
 
 ** `alignas`
-In C23, `alignas`  is now used instead of `_Alignas`.
+In C23, `alignas` is now used instead of `_Alignas`.
 
 ** `_BitInt(N)`
 The `_BitInt(N)` type in C23 in now supported.
 
 ** `constexpr`
 `constexpr` in C23 is now supported.
+
+** `thread_local`
+In C23, `thread_local` is now used instead of `_Thread_local`.
 
 ** `true`, `false`, `nullptr`, `static_assert`, & `thread_local`
 These are now also keywords in C23.

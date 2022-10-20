@@ -241,8 +241,8 @@ static c_type_info_t const C_STORAGE_INFO[] = {
 
   { TS_THREAD_LOCAL, LANG_ANY, "thread local",
     C_LANG_LIT( { ~LANG_THREAD_LOCAL_STORAGE,  L_GNU___thread  },
-                { LANG__Thread_local,          L__Thread_local },
-                { LANG_ANY,                    L_thread_local  } ) },
+                { LANG_thread_local,           L_thread_local  },
+                { LANG_ANY,                    L__Thread_local } ) },
 
   { TS_TYPEDEF, LANG_ANY, L_type,
     C_LANG_LIT( { LANG_ANY, L_typedef } ) },

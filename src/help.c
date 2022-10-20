@@ -279,7 +279,9 @@ static void print_help_english( void ) {
 
     print_help_name();
     print_h( "store: auto | extern | register | static" );
-    if ( OPT_LANG_IS( _Thread_local ) )
+    if ( OPT_LANG_IS( thread_local ) )
+      print_h( " | thread_local" );
+    else if ( OPT_LANG_IS( _Thread_local ) )
       print_h( " | _Thread_local" );
     print_h( " | typedef" );
     print_h( "\n" );
