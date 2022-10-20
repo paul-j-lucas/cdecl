@@ -146,7 +146,7 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
     C_LANG_LIT( { LANG_noreturn, L_noreturn  },
                 { LANG_ANY,      L__Noreturn } ) },
 
-  { TA_NO_UNIQUE_ADDRESS, LANG_CPP_MIN(20), H_non_unique_address,
+  { TA_NO_UNIQUE_ADDRESS, LANG_no_unique_address, H_non_unique_address,
     C_LANG_LIT( { LANG_ANY, L_no_unique_address } ) },
 
   // Microsoft extensions
