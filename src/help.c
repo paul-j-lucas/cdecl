@@ -242,7 +242,9 @@ static void print_help_english( void ) {
       print_h( "[<name> as] <english>\n" );
 
     print_h( "C-type:" );
-    if ( OPT_LANG_IS( _Bool ) )
+    if ( OPT_LANG_IS( bool ) )
+      print_h( " bool |" );
+    else if ( OPT_LANG_IS( _Bool ) )
       print_h( " _Bool |" );
     print_h( " char" );
     if ( OPT_LANG_IS( char16_32_t ) ) {

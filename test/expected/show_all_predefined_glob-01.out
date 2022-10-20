@@ -1,4 +1,4 @@
-typedef _Atomic _Bool atomic_bool;
+typedef _Atomic bool atomic_bool;
 typedef _Atomic char atomic_char;
 typedef _Atomic char16_t atomic_char16_t;
 typedef _Atomic char32_t atomic_char32_t;

@@ -105,6 +105,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_ati-01.test \
 	tests/declare_ati-02.test \
 	tests/declare_atpi-01.test \
+	tests/declare_b-c17.test \
 	tests/declare_b.test \
 	tests/declare_bi4.test \
 	tests/declare_blii_d.test \

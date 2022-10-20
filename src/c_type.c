@@ -318,9 +318,9 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { TB_BITINT, LANG__BitInt, NULL,
     C_LANG_LIT( { LANG_ANY, L__BitInt } ) },
 
-  { TB_BOOL, LANG_bool, NULL,
-    C_LANG_LIT( { LANG_C_ANY, L__Bool },
-                { LANG_ANY,   L_bool  } ) },
+  { TB_BOOL, LANG_BOOL_TYPE, NULL,
+    C_LANG_LIT( { LANG_bool, L_bool  },
+                { LANG_ANY,  L__Bool } ) },
 
   { TB_CHAR, LANG_ANY, NULL,
     C_LANG_LIT( { LANG_ANY, L_char } ) },

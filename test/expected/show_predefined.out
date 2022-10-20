@@ -202,7 +202,7 @@ define _int16 as __int16
 define _int32 as __int32
 define _int64 as __int64
 define _int8 as __int8
-define atomic_bool as atomic _Bool
+define atomic_bool as atomic bool
 define atomic_char as atomic char
 define atomic_char16_t as atomic char16_t
 define atomic_char32_t as atomic char32_t
