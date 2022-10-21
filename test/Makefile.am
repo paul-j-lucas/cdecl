@@ -391,6 +391,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_cvpi.test \
 	tests/explain_cxd.test \
 	tests/explain_cxf.test \
+	tests/explain_efi-c.test \
 	tests/explain_en.test \
 	tests/explain_eta2i.test \
 	tests/explain_f_pi.test \
@@ -582,7 +583,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_c_al3.test \
 	tests/explain_cf_v-c.test \
 	tests/explain_ci-knr.test \
-	tests/explain_efi-c.test \
+	tests/explain_efi-c17.test \
 	tests/explain_en-knr.test \
 	tests/explain_enw3-c.test \
 	tests/explain_etstf_v.test \
@@ -1389,8 +1390,8 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_ecf_v-Rstr-01.test \
 	tests/explain_ecf_v-Rstr-02.test \
 	tests/explain_ecf_v.test \
-	tests/explain_efi-itself.test \
-	tests/explain_efi.test \
+	tests/explain_efi-c++.test \
+	tests/explain_efi-itself-c++.test \
 	tests/explain_efui.test \
 	tests/explain_efz.test \
 	tests/explain_enw3-c++.test \

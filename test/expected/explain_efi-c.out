@@ -1,3 +1,1 @@
-explain enum E : int x
-                 ^
-18: error: enum with underlying type not supported in C
+declare x as enumeration E of type int

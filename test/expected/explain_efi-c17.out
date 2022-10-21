@@ -1,0 +1,3 @@
+explain enum E : int x
+                 ^
+18: error: enum with underlying type not supported until C23

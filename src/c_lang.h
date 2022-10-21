@@ -538,7 +538,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages fixed type `enum`s are supported in.
  */
-#define LANG_FIXED_TYPE_enum            LANG_CPP_MIN(11)
+#define LANG_FIXED_TYPE_enum            LANG_C_CPP_MIN(23,11)
 
 /**
  * Languages the `_Generic` keyword is supported in.

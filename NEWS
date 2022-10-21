@@ -32,6 +32,9 @@ In C23, `bool` is now used instead of `_Bool`.
 ** C23 `constexpr`
 The `constexpr` storage class in C23 is now supported.
 
+** C23 fixed type `enum`
+Fixed-type enumerations in C23 are now supported.
+
 ** Digit seperators
 Digit seperators are now supported.
 
