@@ -494,7 +494,8 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
   }
 
   if ( c_tid_is_any( ast->type.btids, TB_BITINT ) ) {
-    unsigned const min_bits = 1 + !c_tid_is_any( ast->type.btids, TB_UNSIGNED );
+    unsigned const min_bits =
+      1u + !c_tid_is_any( ast->type.btids, TB_UNSIGNED );
     if ( ast->as.builtin.as.BitInt.width < min_bits ) {
       print_error( &ast->loc,
         "%s must be at least %u bit%s\n",
