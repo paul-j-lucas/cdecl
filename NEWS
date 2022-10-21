@@ -20,31 +20,31 @@ Declarations like:
 
 are now supported better.
 
-** `alignas`
+** C23 `alignas`
 In C23, `alignas` is now used instead of `_Alignas`.
 
-** `_BitInt(N)`
+** C23 `_BitInt(N)`
 The `_BitInt(N)` type in C23 in now supported.
 
-** `bool`
+** C23 `bool`
 In C23, `bool` is now used instead of `_Bool`.
 
-** `constexpr`
-`constexpr` in C23 is now supported.
+** C23 `constexpr`
+The `constexpr` storage class in C23 is now supported.
 
 ** Digit seperators
-Digit seperators in C23 are now supported.
+Digit seperators are now supported.
 
-** `reproducible` & `unsequenced`
+** C23 `reproducible` & `unsequenced`
 These C23 attributes are now supported.
 
-** `thread_local`
+** C23 `thread_local`
 In C23, `thread_local` is now used instead of `_Thread_local`.
 
-** `true`, `false`, `nullptr`, `static_assert`, & `thread_local`
+** C23 `true`, `false`, `nullptr`, `static_assert`, & `thread_local`
 These are now also keywords in C23.
 
-** `typeof` & `typeof_unqual`
+** C23 `typeof` & `typeof_unqual`
 These C23 keywords are now recognized, but not supported by cdecl.
 
 ** More C++23 standard types
@@ -56,10 +56,10 @@ Added the standard C++23 types `std::bfloat16_t`, `std::float128_t`,
 ** Enumeration bit-fields
 Enumerations in C++ can now be bit fields.
 
-** Explicit object parameters
+** C++23 explicit object parameters
 Explicit object parameters in C++23 are preliminarily supported.
 
-** `static` `operator()`
+** C++ `static` `operator()`
 Now allow `operator()` to be `static` in C++23.
 
 ** Added `std::bernoulli_distribution` and `std::random_device`
@@ -70,7 +70,7 @@ Both `static` or `const` array declarations are now additionally recognized
 outside of function parameters allowing more specific error reporting (since
 they're still illegal).
 
-** Explicit user-defined conversion operators
+** C++11 explicit user-defined conversion operators
 Explicit user-defined conversion operators are now correctly allowed in C++11
 and later.
 
