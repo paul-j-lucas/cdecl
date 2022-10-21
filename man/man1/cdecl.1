@@ -2573,8 +2573,7 @@ See also:
 .SH CAVEATS
 .SS Unsupported Declarations
 The following types of declarations are not currently supported:
-.nr step 1 1
-.IP \n[step]. 4
+.IP \(bu 3
 Only
 \f(CWenum\fP,
 \f(CWclass\fP,
@@ -2590,15 +2589,15 @@ struct S { typedef int Int; };  // supported (C++ only)
 struct S { int i; char c; } s;  // not supported
 .cE 0
 .RE
-.IP \n+[step].
+.IP \(bu
 Arbitrary expressions for array sizes are not supported.
-.IP \n+[step].
+.IP \(bu
 C
 \f(CWtypeof\fP
 and
 \f(CWtypeof_unqual\fP
 declarations are not supported.
-.IP \n+[step].
+.IP \(bu
 C++
 \f(CWdecltype\fP,
 default argument,
@@ -2607,8 +2606,8 @@ structured binding,
 and
 template
 declarations are not supported.
-.IP \n+[step].
-For function exception specifications,
+.IP \(bu
+For C++ function exception specifications,
 only
 \f(CWnoexcept\fP,
 \f(CWnoexcept(true)\fP,
@@ -2619,19 +2618,19 @@ are supported;
 arbitrary expressions for \f(CWnoexcept\fP
 or types for \f(CWthrow\fP
 are not.
-.IP \n+[step].
-Namespace alias declarations are not supported:
+.IP \(bu
+C++ namespace alias declarations are not supported:
 .RS
 .cS
 namespace ALN = A_Long_Name;    // not supported
 .cE 0
 .RE
-.IP \n+[step].
+.IP \(bu
 Multiple \f(CW_Alignas\fP
 or \f(CWalignas\fP
 specifiers in the same declaration
 are not supported.
-.IP \n+[step].
+.IP \(bu
 Only integer literals
 or types
 as the argument to either the
@@ -2640,13 +2639,13 @@ or \f(CWalignas\fP
 specifier
 are supported;
 arbitrary expressions are not.
-.IP \n+[step].
+.IP \(bu
 Only simple C++ attribute specifiers like \f(CW[[this]]\fP
 are supported;
 attribute specifiers with namespaces are not.
 Additionally,
 optional arguments for \f(CWdeprecated\fP and \f(CWnodiscard\fP are ignored.
-.IP \n+[step].
+.IP \(bu
 C++20 contracts
 (\f(CW[[assert]]\fP,
 \f(CW[[ensures]]\fP,
@@ -2654,8 +2653,7 @@ and
 \f(CW[[expects]]\fP)
 are not supported.
 .SS Other Minor Caveats
-.nr step 1 1
-.IP \n[step]. 4
+.IP \(bu 3
 When converting from pseudo-English to a C++ declaration,
 any
 \f(CWenum\fP,
@@ -2719,7 +2717,7 @@ c++decl> explain T *pt
 declare pt as pointer to T
 .cE 0
 .RE
-.IP \n+[step].
+.IP \(bu
 While
 .BR class ,
 .BR enum ,
@@ -2749,7 +2747,7 @@ cdecl> declare explain as int
 9: syntax error: "explain": name expected
 .cE 0
 .RE
-.IP \n+[step].
+.IP \(bu
 When converting from one of the C++ overloaded operators
 \f(CW&\fP,
 \f(CW*\fP,
@@ -2799,7 +2797,7 @@ omits either
 or
 .B non-member
 from its output.
-.IP \n+[step].
+.IP \(bu
 When converting from pseudo-English to a C++ declaration
 for \f(CWauto\fP
 (or \f(CW__auto_type\fP in GNU C),
@@ -2823,20 +2821,20 @@ These are illegal C++ declarations
 since such declarations
 .I must
 be initialized.
-.IP \n+[step].
+.IP \(bu
 While
 .B explain
 supports the C++11 function trailing return-type syntax,
 .B declare
 always prints in the traditional syntax.
-.IP \n+[step].
+.IP \(bu
 Only casting a name is supported;
 casting an expression is not.
-.IP \n+[step].
+.IP \(bu
 When converting from or to a C++ new-style cast,
 only some semantic validation is performed
 to determine whether the type of cast is legal.
-.IP \n+[step].
+.IP \(bu
 When a predefined type,
 e.g.,
 \f(CWsize_t\fP,
@@ -2851,12 +2849,12 @@ the underlying type on any particular platform
 or even the platform on which
 .B cdecl
 is running.
-.IP \n+[step].
+.IP \(bu
 An integer literal given as the argument for an alignment specifier
 is only checked to ensure it's either zero or a power of two;
 it is not checked to see whether it meets the minimum alignment
 for the type.
-.IP \n+[step].
+.IP \(bu
 In GNU C,
 the type
 \f(CW__int128\fP
