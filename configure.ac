@@ -31,7 +31,7 @@ AC_ARG_ENABLE([coverage],
   [],
   [enable_coverage=no]
 )
-AS_IF([test x$enable_coverage = xyes],
+AS_IF([test "x$enable_coverage" = xyes],
   #
   # When code coverage is desired, we have to set CFLAGS so it doesn't include
   # -O2 (so we can add -O0 later in src/Makefile.am) before AC_PROG_CC is
@@ -71,11 +71,11 @@ AC_ARG_WITH([readline],
   [],
   [with_readline=yes]
 )
-AS_IF([test x$with_readline != xno],
+AS_IF([test "x$with_readline" != xno],
   [
     AC_DEFINE([WITH_READLINE], [1],
       [Define to 1 if readline support is enabled.])
-    AS_IF([test x$withval != xyes],
+    AS_IF([test "x$withval" != xyes],
       [
         CPPFLAGS="-I${withval}/include ${CPPFLAGS}"
         LDFLAGS="-L${withval}/lib ${LDFLAGS}"
@@ -84,28 +84,54 @@ AS_IF([test x$with_readline != xno],
   ]
 )
 
+# Program feature: cdecl-debug (enabled by default)
+AC_ARG_ENABLE([cdecl-debug],
+  AS_HELP_STRING([--disable-cdecl-debug], [disable cdecl debugging]),
+  [],
+  [enable_cdecl_debug=yes]
+)
+AS_IF([test "x$enable_cdecl_debug" = xyes],
+  [AC_DEFINE([ENABLE_CDECL_DEBUG], [1],
+    [Define to 1 if cdecl debugging is enabled.])]
+)
+
+# Program feature: term-size (enabled by default)
+AC_ARG_ENABLE([term-size],
+  AS_HELP_STRING([--disable-term-size], [disable terminal size]),
+  [],
+  [enable_term_size=yes]
+)
+AS_IF([test "x$enable_term_size" = xyes],
+  [AC_DEFINE([ENABLE_TERM_SIZE], [1],
+    [Define to 1 if term-size is enabled.])]
+)
+
 # Checks for libraries.
 
 # Checks for header files.
+AS_IF([test "x$with_readline" != xno],
+  [
+    AC_CHECK_HEADERS([readline/readline.h readline/history.h])
+  ]
+)
+AS_IF([test "x$enable_term_size" = xyes],
+  [
+    AC_CHECK_HEADERS([curses.h ncurses.h])
+    AC_CHECK_HEADERS([term.h], [], [],
+    [#if defined(HAVE_CURSES_H)
+    #include <curses.h>
+    #elif defined(HAVE_NCURSES_H)
+    #include <ncurses.h>
+    #endif
+    ])
+  ]
+)
 AC_HEADER_ASSERT
-AC_CHECK_HEADERS([curses.h ncurses.h])
 AC_CHECK_HEADERS([fnmatch.h])
 AC_CHECK_HEADERS([getopt.h])
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([pwd.h])
 AC_CHECK_HEADERS([sysexits.h])
-AS_IF([test x$with_readline != xno],
-  [
-    AC_CHECK_HEADERS([readline/readline.h readline/history.h])
-  ]
-)
-AC_CHECK_HEADERS([term.h], [], [],
-[#if defined(HAVE_CURSES_H)
-#include <curses.h>
-#elif defined(HAVE_NCURSES_H)
-#include <ncurses.h>
-#endif
-])
 gl_INIT
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -119,7 +145,7 @@ PJL_COMPILE([__typeof__],[],[__typeof__(1) x __attribute__((unused)) = 1;])
 
 # Checks for library functions.
 AC_FUNC_REALLOC
-AS_IF([test x$with_readline != xno],
+AS_IF([test "x$with_readline" != xno],
   [
     AC_CHECK_DECLS([rl_completion_matches],[],[],
     [#include <stdio.h>
@@ -137,38 +163,23 @@ AS_IF([test x$with_readline != xno],
     AC_SEARCH_LIBS([add_history],[readline history])
     # If readline wasn't disabled by the user, does it actually exist and is it
     # a proper readline?
-    AS_IF([test x$ac_cv_search_readline = xno],
+    AS_IF([test "x$ac_cv_search_readline" = xno],
       [AC_MSG_ERROR([readline library not found; use --without-readline])]
     )
   ]
 )
 AC_CHECK_FUNCS([geteuid getpwuid fmemopen strsep])
-AC_SEARCH_LIBS([endwin],[curses ncurses])
-AC_SEARCH_LIBS([tigetnum],[curses ncurses tinfo])
-
-# Program feature: cdecl-debug (enabled by default)
-AC_ARG_ENABLE([cdecl-debug],
-  AS_HELP_STRING([--disable-cdecl-debug], [disable cdecl debugging]),
-  [],
-  [enable_cdecl_debug=yes]
-)
-AS_IF([test x$enable_cdecl_debug = xyes],
-  [AC_DEFINE([ENABLE_CDECL_DEBUG], [1],
-    [Define to 1 if cdecl debugging is enabled.])]
-)
-
-# Program feature: term-size (enabled by default)
-AC_ARG_ENABLE([term-size],
-  AS_HELP_STRING([--disable-term-size], [disable terminal size]),
-  [],
-  [enable_term_size=yes]
-)
-AS_IF([test x$enable_term_size = xyes -a x$ac_cv_search_endwin = xno],
-  [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
-)
-AS_IF([test x$enable_term_size = xyes],
-  [AC_DEFINE([ENABLE_TERM_SIZE], [1],
-    [Define to 1 if term-size is enabled.])]
+AS_IF([test "x$enable_term_size" = xyes],
+  [
+    AC_SEARCH_LIBS([endwin],[curses ncurses])
+    AS_IF([test "x$ac_cv_search_endwin" = xno],
+      [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
+    )
+    AC_SEARCH_LIBS([tigetnum],[curses ncurses tinfo])
+    AS_IF([test "x$ac_cv_search_tigetnum" = xno],
+      [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
+    )
+  ]
 )
 
 # Testing feature: Address Sanitizer (ASan)
@@ -178,7 +189,7 @@ AC_ARG_ENABLE([asan],
   [],
   [enable_asan=no]
 )
-AS_IF([test x$enable_asan = xyes],
+AS_IF([test "x$enable_asan" = xyes],
   [AC_DEFINE([ENABLE_ASAN], [1],
     [Define to 1 if Address Sanitizer is enabled.])]
 )
@@ -190,7 +201,7 @@ AC_ARG_ENABLE([msan],
   [],
   [enable_msan=no]
 )
-AS_IF([test x$enable_msan = xyes],
+AS_IF([test "x$enable_msan" = xyes],
   [AC_DEFINE([ENABLE_MSAN], [1],
     [Define to 1 if Memory Sanitizer is enabled.])]
 )
@@ -202,7 +213,7 @@ AC_ARG_ENABLE([ubsan],
   [],
   [enable_ubsan=no]
 )
-AS_IF([test x$enable_ubsan = xyes],
+AS_IF([test "x$enable_ubsan" = xyes],
   [AC_DEFINE([ENABLE_UBSAN], [1],
     [Define to 1 if Undefined Bahavior Sanitizer is enabled.])]
 )
@@ -213,7 +224,7 @@ AC_ARG_ENABLE([flex-debug],
   [],
   [enable_flex_debug=no]
 )
-AS_IF([test x$enable_flex_debug = xyes],
+AS_IF([test "x$enable_flex_debug" = xyes],
   [AC_DEFINE([ENABLE_FLEX_DEBUG], [1],
     [Define to 1 if Flex debugging is enabled.])]
 )
@@ -224,24 +235,24 @@ AC_ARG_ENABLE([bison-debug],
   [],
   [enable_bison_debug=no]
 )
-AS_IF([test x$enable_bison_debug = xyes],
+AS_IF([test "x$enable_bison_debug" = xyes],
   [AC_DEFINE([YYDEBUG], [1],
     [Define to 1 if Bison debugging is enabled.])]
 )
 
 # Testing feature: code coverage, part 2
-AS_IF([test x$enable_coverage = xyes],
+AS_IF([test "x$enable_coverage" = xyes],
   [
-    AS_IF([test x$GCC != xyes],
+    AS_IF([test "x$GCC" != xyes],
       [AC_MSG_ERROR([gcc is required for code coverage])])
     AC_CHECK_TOOL([GCOV], [gcov], [gcov])
-    AS_IF([test x$GCOV = "x:"],
+    AS_IF([test "x$GCOV" = "x:"],
       [AC_MSG_ERROR([required program "gcov" for code coverage not found])])
     AC_CHECK_PROG([LCOV], [lcov], [lcov])
-    AS_IF([test x$LCOV = x],
+    AS_IF([test "x$LCOV" = x],
       [AC_MSG_ERROR([required program "lcov" for code coverage not found])])
     AC_CHECK_PROG([GENHTML], [genhtml], [genhtml])
-    AS_IF([test x$GENHTML = x],
+    AS_IF([test "x$GENHTML" = x],
       [AC_MSG_ERROR([required program "genhtml" for code coverage not found])])
     AC_DEFINE([ENABLE_COVERAGE], [1],
       [Define to 1 if code coverage is enabled.])
@@ -249,24 +260,24 @@ AS_IF([test x$enable_coverage = xyes],
 )
 
 # Testing program: expect
-AS_IF([test x$with_readline != xno],
+AS_IF([test "x$with_readline" != xno],
   [
     AC_CHECK_PROG([EXPECT], [expect], [expect])
-    AS_IF([test x$EXPECT = x],
+    AS_IF([test "x$EXPECT" = x],
       [AC_MSG_WARN([optionl program "expect" for testing autocompletion not found])])
   ]
 )
 
 # Makefile conditionals.
-AM_CONDITIONAL([ENABLE_ASAN],         [test x$enable_asan         = xyes])
-AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_cdecl_debug  = xyes])
-AM_CONDITIONAL([ENABLE_COVERAGE],     [test x$enable_coverage     = xyes])
-AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test x$enable_bison_debug  = xyes])
-AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test x$enable_flex_debug   = xyes])
-AM_CONDITIONAL([ENABLE_MSAN],         [test x$enable_msan         = xyes])
-AM_CONDITIONAL([ENABLE_UBSAN],        [test x$enable_ubsan        = xyes])
-AM_CONDITIONAL([WITH_EXPECT],         [test x$EXPECT             != x   ])
-AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline      != xno ])
+AM_CONDITIONAL([ENABLE_ASAN],         [test "x$enable_asan"         = xyes])
+AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test "x$enable_cdecl_debug"  = xyes])
+AM_CONDITIONAL([ENABLE_COVERAGE],     [test "x$enable_coverage"     = xyes])
+AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test "x$enable_bison_debug"  = xyes])
+AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test "x$enable_flex_debug"   = xyes])
+AM_CONDITIONAL([ENABLE_MSAN],         [test "x$enable_msan"         = xyes])
+AM_CONDITIONAL([ENABLE_UBSAN],        [test "x$enable_ubsan"        = xyes])
+AM_CONDITIONAL([WITH_EXPECT],         [test "x$EXPECT"             != x   ])
+AM_CONDITIONAL([WITH_READLINE],       [test "x$with_readline"      != xno ])
 
 # Miscellaneous.
 AX_C___ATTRIBUTE__
