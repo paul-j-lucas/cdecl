@@ -397,7 +397,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_BOOL_TYPE                  (LANG__Bool | LANG_bool)
 
 /**
- * Languages the `carries_dependency` attribiue is supported in.
+ * Languages the `carries_dependency` attribute is supported in.
  */
 #define LANG_carries_dependency         LANG_CPP_MIN(11)
 
@@ -714,6 +714,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_register                   LANG_MAX(CPP_14)
 
 /**
+ * Languages the `reproducible` attribute is supported in.
+ */
+#define LANG_reproducible               LANG_C_MIN(23)
+
+/**
  * Languages the `restrict` keyword is supported in.
  */
 #define LANG_restrict                   LANG_C_MIN(99)
@@ -799,6 +804,11 @@ _GL_INLINE_HEADER_BEGIN
  * Languages `typeof` and `typeof_unqual` are supported in.
  */
 #define LANG_typeof                     LANG_C_MIN(23)
+
+/**
+ * Languages the `unsequenced` attribute is supported in.
+ */
+#define LANG_unsequenced                LANG_C_MIN(23)
 
 /**
  * Languages user-defined literals are supported in.

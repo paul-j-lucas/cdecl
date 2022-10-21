@@ -35,6 +35,9 @@ In C23, `bool` is now used instead of `_Bool`.
 ** Digit seperators
 Digit seperators in C23 are now supported.
 
+** `reproducible` & `unsequenced`
+These C23 attributes are now supported.
+
 ** `thread_local`
 In C23, `thread_local` is now used instead of `_Thread_local`.
 

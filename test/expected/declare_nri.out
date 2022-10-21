@@ -1,3 +1,3 @@
 declare x as non-returning int
         ^
-9: error: "non-returning" can only appear on functions
+9: error: built-in type can not be non-returning

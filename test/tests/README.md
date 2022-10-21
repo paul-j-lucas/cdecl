@@ -35,6 +35,8 @@ The characters are:
 + `a_mu_` = `maybe_unused`
 + `a_nd_` = `nodiscard`
 + `a_nua_` = `no_unique_address`
++ `a_re_` = `reproducible`
++ `a_us_` = `unsequenced`
 + `a_using_` = attribute with `using`
 + `al` = `_Alignas` or `alignas`
 + `at` = `_Atomic` or `atomic`

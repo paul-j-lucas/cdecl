@@ -309,13 +309,19 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_xor_eq,               Y_CIRC_EQ,            KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
 
-  // C++11 attributes
-  { L_carries_dependency,   Y_carries_dependency, KC_A, TA_CARRIES_DEPENDENCY,
-    LANG_carries_dependency,AC_LANG(carries_dependency)                   },
+  // C23 attributes
+  { L_reproducible,         Y_reproducible,       KC_A, TA_REPRODUCIBLE,
+    LANG_reproducible,      AC_LANG(reproducible)                         },
+  { L_unsequenced,          Y_unsequenced,        KC_A, TA_UNSEQUENCED,
+    LANG_unsequenced,       AC_LANG(unsequenced)                          },
 
   // C23 & C++11 attributes
   { L_noreturn,             Y_noreturn,           KC__, TA_NORETURN,
     LANG_noreturn,          AC_LANG(noreturn)                             },
+
+  // C++11 attributes
+  { L_carries_dependency,   Y_carries_dependency, KC_A, TA_CARRIES_DEPENDENCY,
+    LANG_carries_dependency,AC_LANG(carries_dependency)                   },
 
   // C23 & C++14 attributes
   { L_deprecated,           Y_deprecated,         KC_A, TA_DEPRECATED,

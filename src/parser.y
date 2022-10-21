@@ -1451,8 +1451,10 @@ static void yyerror( char const *msg ) {
 
                     // C23
 %token  <tid>       Y__BitInt
+%token  <tid>       Y_reproducible
 %token              Y_typeof
 %token              Y_typeof_unqual
+%token  <tid>       Y_unsequenced
 
                     // C23 & C++11
 %token              Y_ATTR_BEGIN        // First '[' of "[[" for an attribute.
@@ -5860,6 +5862,8 @@ attribute_c_atid_exp
   | Y_nodiscard attribute_str_arg_c_opt
   | Y_noreturn
   | Y_no_unique_address
+  | Y_reproducible
+  | Y_unsequenced
   | sname_c
     {
       if ( c_sname_count( &$1 ) > 1 ) {
@@ -6408,6 +6412,8 @@ attribute_english_atid
   | Y_noreturn
   | Y_no Y_unique address_exp     { $$ = TA_NO_UNIQUE_ADDRESS; }
   | Y_no_unique_address
+  | Y_reproducible
+  | Y_unsequenced
   ;
 
 storage_class_english_stid

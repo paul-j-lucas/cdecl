@@ -1,0 +1,1 @@
+declare f as reproducible function returning void

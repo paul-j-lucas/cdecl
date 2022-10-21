@@ -230,8 +230,8 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_ast3i.test \
 	tests/declare_avi.test \
 	tests/declare_b-c89.test \
-	tests/declare_bl_ai.test \
 	tests/declare_b_f_i.test \
+	tests/declare_bl_ai.test \
 	tests/declare_c-c.test \
 	tests/declare_c16-c++03.test \
 	tests/declare_c16-c99.test \
@@ -315,6 +315,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_wt-c89.test \
 	tests/declare_xvi-c.test \
 	tests/declare_xxi-c17.test \
+	tests/explain_a_us_i.test \
 	tests/k_declare_i.test
 
 ###############################################################################
@@ -353,6 +354,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a9pi.test \
 	tests/explain_a_mu_k-01.test \
 	tests/explain_a_mu_k-02.test \
+	tests/explain_a_re_f_v.test \
+	tests/explain_a_us_f_v.test \
 	tests/explain_ai.test \
 	tests/explain_al0_c.test \
 	tests/explain_al8_c.test \
@@ -553,6 +556,8 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_a4v.test \
 	tests/explain_a5fd_i.test \
 	tests/explain_a5fd_pi.test \
+	tests/explain_a_nd_i.test \
+	tests/explain_a_re_i.test \
 	tests/explain_ac9i.test \
 	tests/explain_af-c.test \
 	tests/explain_al3_c.test \
@@ -1078,8 +1083,6 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_fa_dep_i_v.test \
 	tests/declare_fa_mu_i_v-01.test \
 	tests/declare_fa_mu_i_v-02.test \
-	tests/declare_fa_nd_i_v-01.test \
-	tests/declare_fa_nd_i_v-02.test \
 	tests/declare_frri_v.test \
 	tests/declare_ftsrk_v.test \
 	tests/declare_grtpi.test \
@@ -1406,7 +1409,6 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_fa_cd_i_i.test \
 	tests/explain_fa_dep_i_v.test \
 	tests/explain_fa_mu_i_v.test \
-	tests/explain_fa_nd_i_v.test \
 	tests/explain_fa_v.test \
 	tests/explain_fctor_i.test \
 	tests/explain_frri_v.test \

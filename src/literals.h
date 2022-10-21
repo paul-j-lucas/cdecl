@@ -260,8 +260,10 @@ extern char const L_char32_t[];
 
 // C23
 extern char const L__BitInt[];
+extern char const L_reproducible[];
 extern char const L_typeof[];
 extern char const L_typeof_unqual[];
+extern char const L_unsequenced[];
 
 // C23 & C++11
 extern char const L_nullptr[];

@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 18, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "October 20, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -595,8 +595,10 @@ Adds support for
 \f(CWfalse\fP,
 \f(CW[[maybe_unused]]\fP,
 \f(CW[[nodiscard]]\fP,
+\f(CW[[reproducible]]\fP,
+\f(CWtrue\fP,
 and
-\f(CWtrue\fP.
+\f(CW[[unsequenced]]\fP.
 .TP
 .B C++
 Use the latest supported version of the C++ language.

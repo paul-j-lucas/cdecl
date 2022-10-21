@@ -931,8 +931,9 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     } // switch
   }
 
-  if ( c_tid_is_any( ast->type.atids, TA_NO_UNIQUE_ADDRESS ) ) {
-    error_kind_not_tid( ast, TA_NO_UNIQUE_ADDRESS, LANG_NONE, "\n" );
+  c_tid_t const not_func_atids = ast->type.atids & c_tid_compl( TA_FUNC );
+  if ( not_func_atids != TA_NONE ) {
+    error_kind_not_tid( ast, not_func_atids, LANG_NONE, "\n" );
     return false;
   }
 
@@ -2441,11 +2442,9 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
       return VISITOR_ERROR_FOUND;
     }
 
-    if ( c_tid_is_any( ast->type.atids, TA_NORETURN ) ) {
-      print_error( &ast->loc,
-        "\"%s\" can only appear on functions\n",
-        c_tid_name_error( TA_NORETURN )
-      );
+    c_tid_t const not_object_atids = ast->type.atids & c_tid_compl( TA_OBJECT );
+    if ( not_object_atids != TA_NONE ) {
+      error_kind_not_tid( ast, not_object_atids, LANG_NONE, "\n" );
       return VISITOR_ERROR_FOUND;
     }
   }

@@ -321,6 +321,8 @@ enum c_tpid {
 #define TA_NODISCARD          0x0000000000000084ull /**< `nodiscard`          */
 #define TA_NORETURN           0x0000000000000104ull /**< `noreturn`           */
 #define TA_NO_UNIQUE_ADDRESS  0x0000000000000204ull /**< `no_unique_address`  */
+#define TA_REPRODUCIBLE       0x0000000000000404ull /**< `reproducible`       */
+#define TA_UNSEQUENCED        0x0000000000000804ull /**< `unsequenced`        */
 
 // Microsoft calling conventions
 #define TA_MSC_CDECL          0x0000000000001004ull /**< `__cdecl`            */
@@ -339,6 +341,24 @@ extern c_type_t const T_ANY_CONST_CLASS;///< Any `const` `class`-like type.
 extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 
 // shorthands
+
+/**
+ * The only attributes that can apply to functions.
+ *
+ * @sa #TA_OBJECT
+ */
+#define TA_FUNC               ( TA_ANY_MSC_CALL | TA_CARRIES_DEPENDENCY \
+                              | TA_DEPRECATED | TA_MAYBE_UNUSED \
+                              | TA_NODISCARD | TA_NORETURN | TA_REPRODUCIBLE \
+                              | TA_UNSEQUENCED )
+
+/**
+ * The only attributes that can apply to objects.
+ *
+ * @sa #TA_FUNC
+ */
+#define TA_OBJECT             ( TA_CARRIES_DEPENDENCY | TA_DEPRECATED \
+                              | TA_MAYBE_UNUSED | TA_NO_UNIQUE_ADDRESS )
 
 /// Shorthand for any character type.
 #define TB_ANY_CHAR           ( TB_CHAR | TB_WCHAR_T \

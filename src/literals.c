@@ -233,8 +233,10 @@ char const L_char32_t[]           = "char32_t";
 
 // C23
 char const L__BitInt[]            = "_BitInt";
+char const L_reproducible[]       = "reproducible";
 char const L_typeof[]             = "typeof";
 char const L_typeof_unqual[]      = "typeof_unqual";
+char const L_unsequenced[]        = "unsequenced";
 
 // C23 & C++11
 char const L_nullptr[]            = "nullptr";

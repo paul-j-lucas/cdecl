@@ -149,6 +149,12 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
   { TA_NO_UNIQUE_ADDRESS, LANG_no_unique_address, H_non_unique_address,
     C_LANG_LIT( { LANG_ANY, L_no_unique_address } ) },
 
+  { TA_REPRODUCIBLE, LANG_reproducible, NULL,
+    C_LANG_LIT( { LANG_ANY, L_reproducible } ) },
+
+  { TA_UNSEQUENCED, LANG_unsequenced, NULL,
+    C_LANG_LIT( { LANG_ANY, L_unsequenced } ) },
+
   // Microsoft extensions
   { TA_MSC_CDECL, LANG_MSC_EXTENSIONS, L_MSC_cdecl,
     C_LANG_LIT( { LANG_ANY, L_MSC___cdecl } ) },
@@ -819,6 +825,8 @@ static char const* c_type_name_impl( c_type_t const *type,
       TA_NODISCARD,
       TA_NORETURN,                      // still here for C++'s [[noreturn]]
       TA_NO_UNIQUE_ADDRESS,
+      TA_REPRODUCIBLE,
+      TA_UNSEQUENCED,
       // Microsoft calling conventions must be handled later -- see below.
     };
 

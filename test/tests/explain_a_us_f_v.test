@@ -1,0 +1,4 @@
+EXPECTED_EXIT=0
+cdecl <<END
+explain [[unsequenced]] void f()
+END
