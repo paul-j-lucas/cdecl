@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 20, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "October 21, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2574,7 +2574,7 @@ See also:
 .SS Unsupported Declarations
 The following types of declarations are not currently supported:
 .nr step 1 1
-.IP \n[step]. 3
+.IP \n[step]. 4
 Only
 \f(CWenum\fP,
 \f(CWclass\fP,
@@ -2593,14 +2593,20 @@ struct S { int i; char c; } s;  // not supported
 .IP \n+[step].
 Arbitrary expressions for array sizes are not supported.
 .IP \n+[step].
+C
+\f(CWtypeof\fP
+and
+\f(CWtypeof_unqual\fP
+declarations are not supported.
+.IP \n+[step].
 C++
 \f(CWdecltype\fP,
 default argument,
 lambda,
 structured binding,
 and
-template declarations
-are not supported.
+template
+declarations are not supported.
 .IP \n+[step].
 For function exception specifications,
 only
