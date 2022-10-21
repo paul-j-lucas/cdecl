@@ -40,14 +40,14 @@
 #include <stdlib.h>                     /* for free(3) */
 #include <string.h>
 
-#if WITH_READLINE
-#include <readline/readline.h>          /* for rl_gnu_readline_p */
+#ifdef HAVE_READLINE_READLINE_H
+# include <readline/readline.h>         /* for rl_gnu_readline_p */
+#endif /* HAVE_READLINE_READLINE_H */
 
-#if !HAVE_DECL_RL_PROMPT_START_IGNORE
+#if defined(WITH_READLINE) && !HAVE_DECL_RL_PROMPT_START_IGNORE
 # define RL_PROMPT_START_IGNORE   '\1'
 # define RL_PROMPT_END_IGNORE     '\2'
-#endif /* !HAVE_DECL_RL_PROMPT_START_IGNORE */
-#endif /* WITH_READLINE */
+#endif /* defined(WITH_READLINE) && !HAVE_DECL_RL_PROMPT_START_IGNORE */
 
 /// @endcond
 

@@ -94,7 +94,11 @@ AC_CHECK_HEADERS([getopt.h])
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([pwd.h])
 AC_CHECK_HEADERS([sysexits.h])
-AC_CHECK_HEADERS([readline/readline.h readline/history.h])
+AS_IF([test x$with_readline != xno],
+  [
+    AC_CHECK_HEADERS([readline/readline.h readline/history.h])
+  ]
+)
 AC_CHECK_HEADERS([term.h], [], [],
 [#if defined(HAVE_CURSES_H)
 #include <curses.h>
@@ -115,29 +119,32 @@ PJL_COMPILE([__typeof__],[],[__typeof__(1) x __attribute__((unused)) = 1;])
 
 # Checks for library functions.
 AC_FUNC_REALLOC
-AC_CHECK_DECLS([rl_completion_matches],[],[],
-[#include <stdio.h>
-#include <readline/readline.h>
-])
-AC_CHECK_DECLS([RL_PROMPT_START_IGNORE],[],[],
-[#include <stdio.h>
-#include <readline/readline.h>
-])
-AC_CHECK_DECLS([rl_gnu_readline_p],[],[],
-[#include <stdio.h>
-#include <readline/readline.h>
-])
+AS_IF([test x$with_readline != xno],
+  [
+    AC_CHECK_DECLS([rl_completion_matches],[],[],
+    [#include <stdio.h>
+    #include <readline/readline.h>
+    ])
+    AC_CHECK_DECLS([RL_PROMPT_START_IGNORE],[],[],
+    [#include <stdio.h>
+    #include <readline/readline.h>
+    ])
+    AC_CHECK_DECLS([rl_gnu_readline_p],[],[],
+    [#include <stdio.h>
+    #include <readline/readline.h>
+    ])
+    AC_SEARCH_LIBS([readline],[readline])
+    AC_SEARCH_LIBS([add_history],[readline history])
+    # If readline wasn't disabled by the user, does it actually exist and is it
+    # a proper readline?
+    AS_IF([test x$ac_cv_search_readline = xno],
+      [AC_MSG_ERROR([readline library not found; use --without-readline])]
+    )
+  ]
+)
 AC_CHECK_FUNCS([geteuid getpwuid fmemopen strsep])
 AC_SEARCH_LIBS([endwin],[curses ncurses])
-AC_SEARCH_LIBS([readline],[readline])
-AC_SEARCH_LIBS([add_history],[readline history])
 AC_SEARCH_LIBS([tigetnum],[curses ncurses tinfo])
-
-# If readline wasn't disabled by the user, does it actually exist and is it a
-# proper readline?
-AS_IF([test x$with_readline != xno -a x$ac_cv_search_readline = xno],
-  [AC_MSG_ERROR([readline library not found; use --without-readline])]
-)
 
 # Program feature: cdecl-debug (enabled by default)
 AC_ARG_ENABLE([cdecl-debug],
