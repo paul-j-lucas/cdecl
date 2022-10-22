@@ -84,6 +84,17 @@ AS_IF([test "x$with_readline" != xno],
   ]
 )
 
+# Program feature: Bison debug (disabled by default)
+AC_ARG_ENABLE([bison-debug],
+  AS_HELP_STRING([--enable-bison-debug], [enable Bison debug output]),
+  [],
+  [enable_bison_debug=no]
+)
+AS_IF([test "x$enable_bison_debug" = xyes],
+  [AC_DEFINE([YYDEBUG], [1],
+    [Define to 1 if Bison debugging is enabled.])]
+)
+
 # Program feature: cdecl-debug (enabled by default)
 AC_ARG_ENABLE([cdecl-debug],
   AS_HELP_STRING([--disable-cdecl-debug], [disable cdecl debugging]),
@@ -93,6 +104,17 @@ AC_ARG_ENABLE([cdecl-debug],
 AS_IF([test "x$enable_cdecl_debug" = xyes],
   [AC_DEFINE([ENABLE_CDECL_DEBUG], [1],
     [Define to 1 if cdecl debugging is enabled.])]
+)
+
+# Program feature: Flex debug (disabled by default)
+AC_ARG_ENABLE([flex-debug],
+  AS_HELP_STRING([--enable-flex-debug], [enable Flex debug output]),
+  [],
+  [enable_flex_debug=no]
+)
+AS_IF([test "x$enable_flex_debug" = xyes],
+  [AC_DEFINE([ENABLE_FLEX_DEBUG], [1],
+    [Define to 1 if Flex debugging is enabled.])]
 )
 
 # Program feature: term-size (enabled by default)
@@ -145,6 +167,7 @@ PJL_COMPILE([__typeof__],[],[__typeof__(1) x __attribute__((unused)) = 1;])
 
 # Checks for library functions.
 AC_FUNC_REALLOC
+AC_CHECK_FUNCS([geteuid getpwuid fmemopen strsep])
 AS_IF([test "x$with_readline" != xno],
   [
     AC_CHECK_DECLS([rl_completion_matches],[],[],
@@ -168,7 +191,6 @@ AS_IF([test "x$with_readline" != xno],
     )
   ]
 )
-AC_CHECK_FUNCS([geteuid getpwuid fmemopen strsep])
 AS_IF([test "x$enable_term_size" = xyes],
   [
     AC_SEARCH_LIBS([endwin],[curses ncurses])
@@ -216,28 +238,6 @@ AC_ARG_ENABLE([ubsan],
 AS_IF([test "x$enable_ubsan" = xyes],
   [AC_DEFINE([ENABLE_UBSAN], [1],
     [Define to 1 if Undefined Bahavior Sanitizer is enabled.])]
-)
-
-# Program feature: Flex debug (disabled by default)
-AC_ARG_ENABLE([flex-debug],
-  AS_HELP_STRING([--enable-flex-debug], [enable Flex debug output]),
-  [],
-  [enable_flex_debug=no]
-)
-AS_IF([test "x$enable_flex_debug" = xyes],
-  [AC_DEFINE([ENABLE_FLEX_DEBUG], [1],
-    [Define to 1 if Flex debugging is enabled.])]
-)
-
-# Program feature: Bison debug (disabled by default)
-AC_ARG_ENABLE([bison-debug],
-  AS_HELP_STRING([--enable-bison-debug], [enable Bison debug output]),
-  [],
-  [enable_bison_debug=no]
-)
-AS_IF([test "x$enable_bison_debug" = xyes],
-  [AC_DEFINE([YYDEBUG], [1],
-    [Define to 1 if Bison debugging is enabled.])]
 )
 
 # Testing feature: code coverage, part 2
