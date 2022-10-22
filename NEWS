@@ -83,6 +83,9 @@ Improved the location of alignment errors.
 ** Fixed aligned bit fields
 Aligned bit fields are now correctly forbidden.
 
+** Fixed `noprompt` error column
+Fixed the error column when the prompt is disabled.
+
 ** Fixed function returning pointer to member pointer to T
 The output of a declaration like:
 

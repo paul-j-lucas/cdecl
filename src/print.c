@@ -37,6 +37,7 @@
 #include "gibberish.h"
 #include "lexer.h"
 #include "options.h"
+#include "prompt.h"
 #include "strbuf.h"
 #include "util.h"
 
@@ -151,9 +152,7 @@ static size_t print_caret( size_t error_column ) {
     // the user typed for the recent command, but we have to add the length of
     // the prompt.
     //
-    caret_column = error_column
-      + strlen( OPT_LANG_IS( C_ANY ) ? CDECL : CPPDECL )
-      + 2 /* "> " */;
+    caret_column = error_column + strlen( cdecl_prompt[0] );
     if ( term_columns > 0 )
       caret_column %= term_columns;
   }
