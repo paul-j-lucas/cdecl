@@ -64,6 +64,7 @@ extern bool         opt_cdecl_debug;    ///< Print JSON-like debug output?
 #endif /* ENABLE_CDECL_DEBUG */
 extern char const  *opt_conf_path;      ///< Configuration file path.
 extern bool         opt_east_const;     ///< Print in "east const" form?
+extern bool         opt_echo_commands;  ///< Echo commands?
 extern bool         opt_explain;        ///< Assume `explain` if no command?
 extern c_tid_t      opt_explicit_ecsu;  ///< Explicit `class`|`struct`|`union`?
 #ifdef ENABLE_FLEX_DEBUG

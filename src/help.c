@@ -373,6 +373,7 @@ static void print_help_options( void ) {
   print_h( "  [no]debug\n" );
   print_h( "  {di|tri|no}graphs\n" );
   print_h( "  [no]east-const\n" );
+  print_h( "  [no]echo-commands\n" );
   print_h( "  [no]explain-by-default\n" );
   print_h( "  [no]explicit-ecsu[={e|c|s|u}+]\n" );
   print_h( "  [no]explicit-int[=<types>]\n" );

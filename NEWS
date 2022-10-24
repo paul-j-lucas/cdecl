@@ -77,6 +77,11 @@ they're still illegal).
 Explicit user-defined conversion operators are now correctly allowed in C++11
 and later.
 
+** Echoing commands
+A new `--echo-commands`/`-O` command-line option and `echo-commands` set option
+has been added that echos command given before corresponding output.  (This is
+primarily useful for associating command output with input in test scripts.)
+
 ** Better alignment error location
 Improved the location of alignment errors.
 

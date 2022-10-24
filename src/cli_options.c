@@ -60,6 +60,7 @@
 #ifdef ENABLE_CDECL_DEBUG
 #define OPT_CDECL_DEBUG     d
 #endif /* ENABLE_CDECL_DEBUG */
+#define OPT_ECHO_COMMANDS   O
 #define OPT_EXPLAIN         e
 #define OPT_EAST_CONST      E
 #define OPT_FILE            f
@@ -111,6 +112,7 @@ static struct option const CLI_OPTIONS_LONG[] = {
 #endif /* ENABLE_CDECL_DEBUG */
   { "digraphs",       no_argument,        NULL, COPT(DIGRAPHS)      },
   { "east-const",     no_argument,        NULL, COPT(EAST_CONST)    },
+  { "echo-commands",  no_argument,        NULL, COPT(ECHO_COMMANDS) },
   { "explain",        no_argument,        NULL, COPT(EXPLAIN)       },
   { "explicit-ecsu",  required_argument,  NULL, COPT(EXPLICIT_ECSU) },
   { "explicit-int",   required_argument,  NULL, COPT(EXPLICIT_INT)  },
@@ -157,6 +159,7 @@ static char const   CLI_OPTIONS_SHORT[] = ":"
   SOPT(CONFIG)        SOPT_REQUIRED_ARGUMENT
   SOPT(DIGRAPHS)      SOPT_NO_ARGUMENT
   SOPT(EAST_CONST)    SOPT_NO_ARGUMENT
+  SOPT(ECHO_COMMANDS) SOPT_NO_ARGUMENT
   SOPT(EXPLAIN)       SOPT_NO_ARGUMENT
   SOPT(EXPLICIT_ECSU) SOPT_REQUIRED_ARGUMENT
   SOPT(EXPLICIT_INT)  SOPT_REQUIRED_ARGUMENT
@@ -400,6 +403,9 @@ static void parse_options( int argc, char const *argv[const] ) {
       case COPT(EAST_CONST):
         opt_east_const = true;
         break;
+      case COPT(ECHO_COMMANDS):
+        opt_echo_commands = true;
+        break;
       case COPT(EXPLAIN):
         opt_explain = true;
         break;
@@ -515,6 +521,7 @@ use_help:
     SOPT(CONFIG)
     SOPT(DIGRAPHS)
     SOPT(EAST_CONST)
+    SOPT(ECHO_COMMANDS)
     SOPT(EXPLAIN)
     SOPT(EXPLICIT_ECSU)
     SOPT(EXPLICIT_INT)
@@ -546,6 +553,7 @@ use_help:
     SOPT(CONFIG)
     SOPT(DIGRAPHS)
     SOPT(EAST_CONST)
+    SOPT(ECHO_COMMANDS)
     SOPT(EXPLAIN)
     SOPT(EXPLICIT_ECSU)
     SOPT(EXPLICIT_INT)
@@ -619,6 +627,7 @@ static void usage( int status ) {
 #endif /* ENABLE_CDECL_DEBUG */
 "  --digraphs           (-%c) Print digraphs.\n"
 "  --east-const         (-%c) Print in \"east const\" form.\n"
+"  --echo-commands      (-%c) Echo commands given before corresponding output.\n"
 "  --explain            (-%c) Assume \"explain\" when no other command is given.\n"
 "  --explicit-ecsu=WHEN (-%c) Print \"class\", \"struct\", \"union\" explicitly WHEN.\n"
 "  --explicit-int=WHEN  (-%c) Print \"int\" explicitly WHEN.\n"
@@ -652,6 +661,7 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n",
 #endif /* ENABLE_CDECL_DEBUG */
     COPT(DIGRAPHS),
     COPT(EAST_CONST),
+    COPT(ECHO_COMMANDS),
     COPT(EXPLAIN),
     COPT(EXPLICIT_ECSU),
     COPT(EXPLICIT_INT),

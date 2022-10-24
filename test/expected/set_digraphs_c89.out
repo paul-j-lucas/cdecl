@@ -2,6 +2,7 @@ warning: digraphs not supported until C95
   noalt-tokens
   nodebug
   noeast-const
+  noecho-commands
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int

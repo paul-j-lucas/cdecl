@@ -1,6 +1,7 @@
   noalt-tokens
   nodebug
   noeast-const
+  noecho-commands
   noexplain-by-default
     explicit-ecsu=ecsu
   noexplicit-int

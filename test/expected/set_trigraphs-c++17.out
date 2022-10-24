@@ -2,6 +2,7 @@ warning: trigraphs not supported since C++17
   noalt-tokens
   nodebug
   noeast-const
+  noecho-commands
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int

@@ -44,6 +44,7 @@ bool                opt_cdecl_debug;
 #endif /* ENABLE_CDECL_DEBUG */
 char const         *opt_conf_path;
 bool                opt_east_const;
+bool                opt_echo_commands;
 bool                opt_explain;
 c_tid_t             opt_explicit_ecsu = TB_STRUCT | TB_UNION;
 c_graph_t           opt_graph;

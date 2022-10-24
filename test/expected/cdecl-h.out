@@ -6,6 +6,7 @@ options:
   --debug              (-d) Print cdecl debug output.
   --digraphs           (-2) Print digraphs.
   --east-const         (-E) Print in "east const" form.
+  --echo-commands      (-O) Echo commands given before corresponding output.
   --explain            (-e) Assume "explain" when no other command is given.
   --explicit-ecsu=WHEN (-S) Print "class", "struct", "union" explicitly WHEN.
   --explicit-int=WHEN  (-I) Print "int" explicitly WHEN.

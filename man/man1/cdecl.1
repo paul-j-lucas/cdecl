@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 21, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "October 24, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -333,6 +333,14 @@ are printed to the right
 (``east'')
 of the type.
 (Not supported in K&R\~C.)
+.TP
+.BR \-\-echo-commands " | " \-O
+Echo commands given
+before corresponding output.
+(This is primarily useful
+for associating command output
+with input
+in test scripts.)
 .TP
 .BR \-\-explain " | " \-e
 Assumes \f(CWexplain\fP
@@ -1413,6 +1421,11 @@ are printed to the right
 of the type
 \(em default is off.
 (Not supported in K&R\~C.)
+.TP
+.RB [ no ] echo-commands
+Turns [off] on echoing commands
+before corresponding output
+\(em default is off.
 .TP
 .RB [ no ] explain-by-default
 Turns [off] on \f(CWexplain\fP being assumed
