@@ -626,7 +626,7 @@ static inline void sti_cleanup( show_type_info_t *sti ) {
  */
 NODISCARD
 static inline bool unsupported( c_lang_id_t lang_ids ) {
-  return cdecl_initialized && !opt_lang_is_any( lang_ids );
+  return !opt_lang_is_any( lang_ids ) && cdecl_initialized;
 }
 
 ////////// local functions ////////////////////////////////////////////////////
