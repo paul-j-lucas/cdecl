@@ -113,6 +113,13 @@ static set_option_t const SET_OPTIONS[] = {
   { NULL,                 SET_OPTION_TOGGLE,   false, NULL                    }
 };
 
+/**
+ * Always-enabled `set_*()` arguments used when re-setting options.
+ */
+static set_option_fn_args_t const enabled_args = {
+  /*opt_enabled=*/true, NULL, NULL, NULL
+};
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -377,19 +384,16 @@ static bool set_lang_impl( char const *name ) {
   // Every time the language changes, re-set language-specific options so the
   // user is re-warned if the option is not supported in the current language.
   //
-  static set_option_fn_args_t const args = {
-    /*opt_enabled=*/true, NULL, NULL, NULL
-  };
   if ( opt_alt_tokens )
-    PJL_IGNORE_RV( set_alt_tokens( &args ) );
+    PJL_IGNORE_RV( set_alt_tokens( &enabled_args ) );
   switch ( opt_graph ) {
     case C_GRAPH_NONE:
       break;
     case C_GRAPH_DI:
-      PJL_IGNORE_RV( set_digraphs( &args ) );
+      PJL_IGNORE_RV( set_digraphs( &enabled_args ) );
       break;
     case C_GRAPH_TRI:
-      PJL_IGNORE_RV( set_trigraphs( &args ) );
+      PJL_IGNORE_RV( set_trigraphs( &enabled_args ) );
       break;
   } // switch
 
