@@ -1,0 +1,18 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+explain __attribute__(( foo("x") )) int i
+explain __attribute__(( foo('x') )) int i
+explain __attribute__(( foo() )) int i
+explain __attribute__(( foo(1) )) int i
+explain __attribute__(( foo(1), bar )) int i
+explain __attribute__(( foo(1,2) )) int i
+explain __attribute__(( foo(name) )) int i
+explain __attribute__((const)) int i
+explain __attribute__((unused)) int i
+
+explain int *__attribute__(( foo )) const p
+explain int *const __attribute__(( foo )) p
+explain int *const __attribute__(( foo )) __attribute__(( bar )) p
+explain int *volatile __attribute__(( foo )) const p
+explain int *volatile __attribute__(( foo )) const __attribute__(( bar )) p
+END

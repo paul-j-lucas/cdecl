@@ -1,1 +1,0 @@
-declare f as non-returning function (int) returning void

@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-show int8_t typedef
-END

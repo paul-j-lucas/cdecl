@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc99 <<END
-explain short _Accum x
-END

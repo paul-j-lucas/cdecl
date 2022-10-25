@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-explain __attribute__(( foo(1), bar )) int i
-END

@@ -1,4 +1,5 @@
 EXPECTED_EXIT=0
 cdecl <<END
 set debug
+set nodebug
 END

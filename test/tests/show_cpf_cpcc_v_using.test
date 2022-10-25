@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-typedef void (*const CPF)(const char *const s)
-show using
-END

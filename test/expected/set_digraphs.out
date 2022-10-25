@@ -1,1 +1,7 @@
+cdecl> set digraphs
+cdecl> declare x as array of int
 int x<::>;
+cdecl> set nographs
+cdecl> set c89 digraphs
+               ^
+9: warning: digraphs not supported until C95

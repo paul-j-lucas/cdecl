@@ -1,1 +1,43 @@
+cdecl> set trigraphs
+cdecl> declare x as array of int
 int x??(??);
+cdecl> set nographs
+cdecl> set knr
+cdecl> set trigraphs
+           ^
+5: warning: trigraphs not supported until C89
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+ trigraphs
+    lang=K&RC
+    prompt
+    semicolon
+    using
+cdecl> set nographs
+cdecl> set c++
+c++decl> set trigraphs
+             ^
+5: warning: trigraphs not supported since C++17
+c++decl> set nographs
+c++decl> set c
+cdecl> set trigraphs c++17
+warning: trigraphs not supported since C++17
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+ trigraphs
+    lang=C++17
+    prompt
+    semicolon
+    using

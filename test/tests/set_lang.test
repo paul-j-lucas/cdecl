@@ -1,0 +1,102 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+
+set c
+set
+set ck&r
+set
+set k&r
+set
+set k&rc
+set
+set cknr
+set
+set knr
+set
+set knrc
+set
+set c78
+set
+set c89
+set
+set c90
+set
+set c95
+set
+set c99
+set
+set c11
+set
+set c17
+set
+set c18
+set
+set c23
+set
+set c++
+set
+set c++98
+set
+set c++03
+set
+set c++11
+set
+set c++14
+set
+set c++17
+set
+set c++20
+set
+set c++23
+set
+
+set lang=c
+set
+set lang=ck&r
+set
+set lang=k&r
+set
+set lang=k&rc
+set
+set lang=cknr
+set
+set lang=knr
+set
+set lang=knrc
+set
+set lang=c78
+set
+set lang=c89
+set
+set lang=c90
+set
+set lang=c95
+set
+set lang=c99
+set
+set lang=c11
+set
+set lang=c17
+set
+set lang=c18
+set
+set lang=c23
+set
+set lang=c++
+set
+set lang=c++98
+set
+set lang=c++03
+set
+set lang=c++11
+set
+set lang=c++14
+set
+set lang=c++17
+set
+set lang=c++20
+set
+set lang=c++23
+set
+
+END

@@ -1,0 +1,14 @@
+bool operator not(const S bitand r);
+bool operator not_eq(const S bitand r, int);
+S operator bitand(const S bitand r, int x);
+bool operator and(const S bitand r);
+S bitand operator and_eq(S bitand r, int x);
+compl D();
+S bitand operator xor_eq(int);
+S operator bitor(const S bitand x, const S bitand y);
+int and rr;
+S operator xor(const S bitand x, int n);
+S bitand operator bitor(int x);
+S bitand operator or_eq(int);
+bool operator or(const S bitand r);
+S operator compl();

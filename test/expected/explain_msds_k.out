@@ -1,4 +1,0 @@
-explain __declspec(dllexport) struct S x
-        ^
-9: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
-declare x as structure S

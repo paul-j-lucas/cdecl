@@ -1,0 +1,14 @@
+declare x as accum
+declare x as short accum
+declare x as short fract
+declare x as long accum
+declare x as long fract
+declare x as fract
+declare x as saturated accum
+declare x as saturated fract
+declare x as unsigned saturated accum
+declare x as unsigned accum
+declare x as unsigned short saturated accum
+declare x as unsigned short saturated fract
+declare x as unsigned fract
+declare x as unsigned saturated accum

@@ -1,4 +1,7 @@
 EXPECTED_EXIT=0
 cdecl <<END
+set nosemicolon
+declare x as int
 set semicolon
+declare x as int
 END

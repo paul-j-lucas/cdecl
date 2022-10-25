@@ -1,5 +1,19 @@
 EXPECTED_EXIT=0
-cdecl <<END
+cdecl -O <<END
 set trigraphs
 declare x as array of int
+set nographs
+
+set knr
+set trigraphs
+set
+set nographs
+
+set c++
+set trigraphs
+set nographs
+
+set c
+set trigraphs c++17
+set
 END

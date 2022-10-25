@@ -1,0 +1,5 @@
+EXPECTED_EXIT=0
+cdecl --explain -O <<END
+int x
+const int x
+END

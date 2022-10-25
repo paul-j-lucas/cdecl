@@ -1,0 +1,31 @@
+EXPECTED_EXIT=0
+cdecl -3 -O <<END
+struct S
+
+declare a as array 9 of int
+explain int a??(9??)
+
+set c++
+declare f as non-returning function (int) returning void
+
+set c++11
+declare f as non-returning function (int) returning void
+declare ??'= as operator (int) returning reference to S
+declare ??' as operator (reference to constant S, int) returning S
+declare ??!??! as operator (reference to constant S, reference to constant S) returning bool
+declare ??! as operator (reference to constant S, reference to constant S) returning S
+declare ??!= as operator (int) returning reference to S
+declare ??- as operator returning S
+
+set c++
+explain int a??(9??)
+
+set c++11
+explain ??(??(noreturn??)??) void f(int)
+explain S& operator??'=(int)
+explain S operator??'(const S&, int)
+explain bool operator??!??!(const S&, const S&)
+explain S operator??!(const S&, const S&)
+explain S& operator??!=(int)
+explain S operator??-()
+END

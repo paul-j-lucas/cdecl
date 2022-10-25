@@ -1,3 +1,0 @@
-set c89 digraphs
-        ^
-9: warning: digraphs not supported until C95

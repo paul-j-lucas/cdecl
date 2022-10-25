@@ -1,0 +1,16 @@
+EXPECTED_EXIT=0
+cdecl -2 -O <<END
+declare a as array 9 of int
+
+set c++
+declare f as non-returning function (int) returning void
+
+set c
+explain int a<:9:>
+
+set c89
+explain int a<:9:>
+
+set c++
+explain <:<:noreturn:>:> void f(int)
+END

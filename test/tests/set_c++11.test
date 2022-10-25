@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-set c++11
-set
-END

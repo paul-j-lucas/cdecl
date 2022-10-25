@@ -54,18 +54,7 @@ TESTS =	tests/cdecl--kolor.test \
 	tests/cdecl-t.test
 
 if ENABLE_CDECL_DEBUG
-TESTS+=	tests/cdecl--debug.test \
-	tests/cdecl-d-+i.test \
-	tests/cdecl-d-al8i.test \
-	tests/cdecl-d-alli.test \
-	tests/cdecl-d-cmo_exclam__b.test \
-	tests/cdecl-d-eni.test \
-	tests/cdecl-d-f2i_pi.test \
-	tests/cdecl-d-f_v.test \
-	tests/cdecl-d-faia4iaviaciast6i_v.test \
-	tests/cdecl-d-pmki.test \
-	tests/cdecl-d-udc_i.test \
-	tests/cdecl-d-z.test
+TESTS+=	tests/cdecl-d.test
 endif
 
 #
@@ -541,8 +530,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 # C explain-by-default tests
 # ==========================
 #
-TESTS+=	tests/ci.test \
-	tests/i.test
+TESTS+=	tests/explain-by-default.test
 
 #
 # C explain error tests
@@ -702,58 +690,6 @@ TESTS+=	tests/explain_+i-c.test \
 #
 TESTS+=	tests/k_typedef_i-c.test
 
-#
-# C++ declare alt-tokens tests
-# ============================
-#
-TESTS+=	tests/declare_alttokens_dtor.test \
-	tests/declare_alttokens_o_amper2_rck_b.test \
-	tests/declare_alttokens_o_amper_eq_rki_rk.test \
-	tests/declare_alttokens_o_amper_rcki_k.test \
-	tests/declare_alttokens_o_circ_eq_i_rk.test \
-	tests/declare_alttokens_o_circ_rcki_k.test \
-	tests/declare_alttokens_o_exclam_eq_rcki_b.test \
-	tests/declare_alttokens_o_exclam_rck_b.test \
-	tests/declare_alttokens_o_pipe2_rck_b.test \
-	tests/declare_alttokens_o_pipe_2rck_k.test \
-	tests/declare_alttokens_o_pipe_eq_i_rk.test \
-	tests/declare_alttokens_o_pipe_i_rk.test \
-	tests/declare_alttokens_o_tilde_k.test \
-	tests/declare_alttokens_rri.test
-
-#
-# C++ declare digraph & trigraph tests
-# ====================================
-#
-TESTS+=	tests/declare_digraphs_a9i.test \
-	tests/declare_digraphs_nrfi_v-c++.test \
-	tests/declare_trigraphs_a9i.test \
-	tests/declare_trigraphs_nrfi_v-c++.test \
-	tests/declare_trigraphs_nrfi_v-c++14.test \
-	tests/declare_trigraphs_o_circ_eq_i_rk.test \
-	tests/declare_trigraphs_o_circ_rcki_k.test \
-	tests/declare_trigraphs_o_pipe2_2rck_b.test \
-	tests/declare_trigraphs_o_pipe_2rck_k.test \
-	tests/declare_trigraphs_o_pipe_eq_i_rk.test \
-	tests/declare_trigraphs_o_tilde_k.test
-
-#
-# C++ explain digraph & trigraph tests
-# ====================================
-#
-TESTS+=	tests/explain_digraphs_a9i-c89.test \
-	tests/explain_digraphs_a9i.test \
-	tests/explain_digraphs_nrfi_v-c++.test \
-	tests/explain_trigraphs_a9i-c++.test \
-	tests/explain_trigraphs_a9i.test \
-	tests/explain_trigraphs_nrfi_v-c++11.test \
-	tests/explain_trigraphs_o_circ_eq_i_rk.test \
-	tests/explain_trigraphs_o_circ_rcki_k.test \
-	tests/explain_trigraphs_o_pipe2_2rck_b.test \
-	tests/explain_trigraphs_o_pipe_2rck_k.test \
-	tests/explain_trigraphs_o_pipe_eq_i_rk.test \
-	tests/explain_trigraphs_o_tilde_k.test
-
 ###############################################################################
 
 #
@@ -883,27 +819,7 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 # C show tests
 # ============
 #
-TESTS+=	tests/show_all.test \
-	tests/show_all-c++.test \
-	tests/show_all_predefined-c++.test \
-	tests/show_all_predefined.test \
-	tests/show_all_predefined_glob-01.test \
-	tests/show_all_predefined_glob-02.test \
-	tests/show_all_predefined_glob-03.test \
-	tests/show_all_predefined_glob-04.test \
-	tests/show_all_predefined_typedef-c++.test \
-	tests/show_all_typedef.test \
-	tests/show_cpf_cpcc_v_using.test \
-	tests/show_cpi_using.test \
-	tests/show_cpmki_using.test \
-	tests/show_int8_t.test \
-	tests/show_int8_t_typedef.test \
-	tests/show_predefined-c++.test \
-	tests/show_predefined.test \
-	tests/show_predefined_typedef.test \
-	tests/show_predefined_using.test \
-	tests/show_user.test \
-	tests/show_user_typedef.test
+TESTS+=	tests/show.test
 
 #
 # C show error tests
@@ -1830,8 +1746,7 @@ TESTS+=	tests/file-cast_x.test \
 # include tests
 # =============
 #
-TESTS+=
-	tests/include-ok-nested-01.test \
+TESTS+= tests/include-ok-nested-01.test \
 	tests/include-ok.test
 
 #
@@ -1845,54 +1760,10 @@ TESTS+=	tests/include-err-01.test \
 ###############################################################################
 
 #
-# GNU __attribute__ tests
-# =======================
-#
-TESTS+=	tests/explain_2gat_cpi.test \
-	tests/explain_c_gat_pi.test \
-	tests/explain_c_gat_vpi.test \
-	tests/explain_gat_c_gat_vpi.test \
-	tests/explain_gat_cpi.test \
-	tests/explain_gat_i-01.test \
-	tests/explain_gat_i-02.test \
-	tests/explain_gat_i-03.test \
-	tests/explain_gat_i-04.test \
-	tests/explain_gat_i-05.test \
-	tests/explain_gat_i-06.test \
-	tests/explain_gat_i-07.test \
-	tests/explain_gat_i-08.test \
-	tests/explain_gat_i-09.test
-
-#
-# Microsoft __declspec tests
-# ==========================
-#
-TESTS+=	tests/explain_i_msds.test \
-	tests/explain_k_msds.test \
-	tests/explain_msds_i.test \
-	tests/explain_msds_k.test \
-	tests/explain_p_msds_i.test
-
-###############################################################################
-
-#
 # Embedded C tests
 # ================
 #
-TESTS+=	tests/xec_explain_a.test \
-	tests/xec_explain_ha.test \
-	tests/xec_explain_hr.test \
-	tests/xec_explain_la.test \
-	tests/xec_explain_lr.test \
-	tests/xec_explain_r.test \
-	tests/xec_explain_ta.test \
-	tests/xec_explain_tr.test \
-	tests/xec_explain_tua.test \
-	tests/xec_explain_ua.test \
-	tests/xec_explain_uhta.test \
-	tests/xec_explain_uhtr.test \
-	tests/xec_explain_ur.test \
-	tests/xec_explain_uta.test
+TESTS+=	tests/xec.test
 
 #
 # Embedded C error tests
@@ -1907,21 +1778,7 @@ TESTS+=	tests/xec_explain_lla.test \
 # Unified Parallel C tests
 # ========================
 #
-TESTS+=	tests/xupc_declare_a2di.test \
-	tests/xupc_declare_dpi.test \
-	tests/xupc_declare_pdi.test \
-	tests/xupc_declare_ptdi.test \
-	tests/xupc_declare_rdi.test \
-	tests/xupc_declare_rdpi.test \
-	tests/xupc_declare_tdi.test \
-	tests/xupc_explain_da2i.test \
-	tests/xupc_explain_dpi.test \
-	tests/xupc_explain_dq+a4i.test \
-	tests/xupc_explain_pdi.test \
-	tests/xupc_explain_ptdi.test \
-	tests/xupc_explain_rdi.test \
-	tests/xupc_explain_rdpi.test \
-	tests/xupc_explain_tdi.test
+TESTS+=	tests/xupc.test
 
 #
 # Unified Parallel C error tests
@@ -1950,48 +1807,16 @@ endif
 # Miscellaneous tests
 # ===================
 #
-TESTS+=	tests/help-c++.test \
-	tests/help-c.test \
-	tests/help_command-c++.test \
-	tests/help_command-c++03.test \
-	tests/help_command-c.test \
-	tests/help_commands-c++.test \
-	tests/help_commands-c.test \
-	tests/help_english-c++.test \
-	tests/help_english-c++03.test \
-	tests/help_english-c.test \
-	tests/help_english-c17.test \
-	tests/help_english-c89.test \
-	tests/help_english-knr.test \
-	tests/help_options.test \
+TESTS+=	tests/__declspec.test \
+	tests/alttokens.test \
+	tests/digraphs.test \
+	tests/gnu_attributes.test \
+	tests/help.test \
 	tests/integers.test \
 	tests/set.test \
-	tests/set_-e-a--st-.test \
 	tests/set_alt-tokens.test \
-	tests/set_c++.test \
-	tests/set_c++03.test \
-	tests/set_c++11.test \
-	tests/set_c++14.test \
-	tests/set_c++17.test \
-	tests/set_c++20.test \
-	tests/set_c++23.test \
-	tests/set_c++98.test \
-	tests/set_c.test \
-	tests/set_c11.test \
-	tests/set_c17.test \
-	tests/set_c18.test \
-	tests/set_c89.test \
-	tests/set_c90.test \
-	tests/set_c95.test \
-	tests/set_c99.test \
-	tests/set_cknr.test \
-	tests/set_digraphs-c89.test \
 	tests/set_digraphs.test \
-	tests/set_digraphs_c89.test \
-	tests/set_ea.test \
 	tests/set_east-const.test \
-	tests/set_east.test \
-	tests/set_eastconst.test \
 	tests/set_expl.test \
 	tests/set_explain-by-default.test \
 	tests/set_explain.test \
@@ -2004,9 +1829,7 @@ TESTS+=	tests/help-c++.test \
 	tests/set_explicit-int_u.test \
 	tests/set_explicit-int_x.test \
 	tests/set_graphs.test \
-	tests/set_knr.test \
-	tests/set_knrc.test \
-	tests/set_lang_c++.test \
+	tests/set_lang.test \
 	tests/set_lang_xxx.test \
 	tests/set_nodigraphs.test \
 	tests/set_noexplain-by-default.test \
@@ -2015,21 +1838,17 @@ TESTS+=	tests/help-c++.test \
 	tests/set_noexplicit-int_u.test \
 	tests/set_nographs.test \
 	tests/set_noprompt.test \
-	tests/set_nosemicolon.test \
 	tests/set_nousing-c++.test \
 	tests/set_options.test \
 	tests/set_prompt.test \
 	tests/set_prompt_x.test \
 	tests/set_semicolon.test \
-	tests/set_trigraphs-c++.test \
-	tests/set_trigraphs-c++17.test \
-	tests/set_trigraphs-cknr.test \
 	tests/set_trigraphs.test \
-	tests/set_xxx.test
+	tests/set_xxx.test \
+	tests/trigraphs.test
 
 if ENABLE_CDECL_DEBUG
-TESTS+=	tests/set_debug.test \
-	tests/set_nodebug.test
+TESTS+=	tests/set_debug.test
 endif
 
 if ENABLE_BISON_DEBUG

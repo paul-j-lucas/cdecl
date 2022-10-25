@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-typedef int Int
-show all predefined
-END

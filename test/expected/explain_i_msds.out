@@ -1,4 +1,0 @@
-explain int __declspec(dllexport) i
-            ^
-13: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
-declare i as int

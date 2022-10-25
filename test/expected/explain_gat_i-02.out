@@ -1,4 +1,0 @@
-explain __attribute__((const)) int i
-        ^
-9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
-declare i as int

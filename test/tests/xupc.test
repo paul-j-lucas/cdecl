@@ -1,0 +1,18 @@
+EXPECTED_EXIT=0
+cdecl -xc99 <<END
+declare p as pointer to shared int
+declare p as pointer to strict shared int
+declare p as relaxed shared pointer to int
+declare p as shared pointer to int
+declare x as array 2 of shared int
+declare x as relaxed shared int
+declare x as strict shared int
+explain int *relaxed shared p
+explain int *shared p
+explain relaxed shared int x
+explain shared int *p
+explain shared int x[]
+explain shared[*] int a[4]
+explain strict shared int *p
+explain strict shared int x
+END

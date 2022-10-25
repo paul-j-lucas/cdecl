@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -a -xc++ <<END
-struct S
-declare xor as operator (x as reference to constant S, n as int) returning S
-END

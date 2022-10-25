@@ -1,0 +1,37 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+typedef int Int
+
+show all
+show all predefined
+show all predefined atomic* as typedef
+show all typedef
+show int8_t
+show int8_t typedef
+show predefined
+show predefined typedef
+show user
+show user typedef
+
+set c++
+show all predefined typedef
+show all predefined *::atomic* as typedef
+show all predefined **::*clock as typedef
+show all predefined ** :: *clock as typedef
+show predefined
+shoe predefined typedef
+show predefined using
+
+typedef int (*const CPF)(const char *const s)
+typedef int *const CPI
+typedef int S::*const CPMSI
+
+show CPMSI
+show CPMSI typedef
+show CPMSI using
+show user
+show user typedef
+show user using
+show using
+
+END

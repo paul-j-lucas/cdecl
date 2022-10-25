@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -d <<END
-explain void f( int a[], int b[4], int c[*], int d[const], int e[static 6] )
-END

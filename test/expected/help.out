@@ -1,0 +1,575 @@
+cdecl> help
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help command
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help commands
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help english
+english:
+  <store>* <cv-qual>* array [[static] <cv-qual>* {<number>|*}] of <english>
+  <store>* <cv-qual>* variable [length] array <cv-qual>* of <english>
+  <store>* function [([<args>])] [returning <english>]
+  <store>* <cv-qual>* pointer to <english>
+  { enum | struct | union } <name>
+  block [([<args>])] [returning <english>]
+  <store>* <modifier>* [<C-type>]
+args: a comma separated list of [<name> as] <english>
+C-type: bool | char[{8|16|32}_t] | wchar_t | int | float | double | void
+cv-qual: _Atomic | const | restrict | volatile
+modifier: short | long | signed | unsigned | <cv-qual>
+name: a C identifier
+store: auto | extern | register | static | thread_local | typedef
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help options
+option:
+  [no]alt-tokens
+  [no]debug
+  {di|tri|no}graphs
+  [no]east-const
+  [no]echo-commands
+  [no]explain-by-default
+  [no]explicit-ecsu[={e|c|s|u}+]
+  [no]explicit-int[=<types>]
+  lang=<lang>
+  <lang>
+  [no]prompt
+  [no]semicolon
+  [no]using
+lang:
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+types:
+  i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> set knr
+cdecl> help
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help command
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help commands
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help english
+english:
+  <store>* array [<number>] of <english>
+  <store>* function [([<args>])] [returning <english>]
+  <store>* pointer to <english>
+  { struct | union } <name>
+  block [([<args>])] [returning <english>]
+  <store>* <modifier>* [<C-type>]
+args: a comma separated list of <name>
+C-type: char | int | float | double
+modifier: short | long | unsigned
+name: a C identifier
+store: auto | extern | register | static | typedef
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help options
+option:
+  [no]alt-tokens
+  [no]debug
+  {di|tri|no}graphs
+  [no]east-const
+  [no]echo-commands
+  [no]explain-by-default
+  [no]explicit-ecsu[={e|c|s|u}+]
+  [no]explicit-int[=<types>]
+  lang=<lang>
+  <lang>
+  [no]prompt
+  [no]semicolon
+  [no]using
+lang:
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+types:
+  i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> set c89
+cdecl> help
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help command
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help commands
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help english
+english:
+  <store>* <cv-qual>* array [<number>] of <english>
+  <store>* function [([<args>])] [returning <english>]
+  <store>* <cv-qual>* pointer to <english>
+  { enum | struct | union } <name>
+  block [([<args>])] [returning <english>]
+  <store>* <modifier>* [<C-type>]
+args: a comma separated list of <name>, <english>, or <name> as <english>
+C-type: char | int | float | double | void
+cv-qual: const | volatile
+modifier: short | long | signed | unsigned | <cv-qual>
+name: a C identifier
+store: auto | extern | register | static | typedef
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help options
+option:
+  [no]alt-tokens
+  [no]debug
+  {di|tri|no}graphs
+  [no]east-const
+  [no]echo-commands
+  [no]explain-by-default
+  [no]explicit-ecsu[={e|c|s|u}+]
+  [no]explicit-int[=<types>]
+  lang=<lang>
+  <lang>
+  [no]prompt
+  [no]semicolon
+  [no]using
+lang:
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+types:
+  i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> set c17
+cdecl> help
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help command
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help commands
+command:
+  cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  exit | q[uit]
+declare-options:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+name: a C identifier
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help english
+english:
+  <store>* <cv-qual>* array [[static] <cv-qual>* {<number>|*}] of <english>
+  <store>* <cv-qual>* variable [length] array <cv-qual>* of <english>
+  <store>* function [([<args>])] [returning <english>]
+  <store>* <cv-qual>* pointer to <english>
+  { enum | struct | union } <name>
+  block [([<args>])] [returning <english>]
+  <store>* <modifier>* [<C-type>]
+args: a comma separated list of <name>, <english>, or <name> as <english>
+C-type: _Bool | char[{16|32}_t] | wchar_t | int | float | double | void
+cv-qual: _Atomic | const | restrict | volatile
+modifier: short | long | signed | unsigned | <cv-qual>
+name: a C identifier
+store: auto | extern | register | static | _Thread_local | typedef
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help options
+option:
+  [no]alt-tokens
+  [no]debug
+  {di|tri|no}graphs
+  [no]east-const
+  [no]echo-commands
+  [no]explain-by-default
+  [no]explicit-ecsu[={e|c|s|u}+]
+  [no]explicit-int[=<types>]
+  lang=<lang>
+  <lang>
+  [no]prompt
+  [no]semicolon
+  [no]using
+lang:
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+types:
+  i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> set c++
+c++decl> help
+command:
+  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  declare <operator> as <english>
+  declare [<english>] user-def[ined] <user-defined-english>
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  type[def] <gibberish> [, <gibberish>]*
+  <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  using <name> = <gibberish>
+  exit | q[uit]
+declare-options:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
+name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+scope-c: class | struct | union | [inline] namespace
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help command
+command:
+  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  declare <operator> as <english>
+  declare [<english>] user-def[ined] <user-defined-english>
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  type[def] <gibberish> [, <gibberish>]*
+  <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  using <name> = <gibberish>
+  exit | q[uit]
+declare-options:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
+name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+scope-c: class | struct | union | [inline] namespace
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help commands
+command:
+  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  declare <operator> as <english>
+  declare [<english>] user-def[ined] <user-defined-english>
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  type[def] <gibberish> [, <gibberish>]*
+  <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  using <name> = <gibberish>
+  exit | q[uit]
+declare-options:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
+name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+scope-c: class | struct | union | [inline] namespace
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help english
+english:
+  <store>* <cv-qual>* array [<number>] of <english>
+  <store>* constructor [([<args>])]
+  [virtual] destructor [()]
+  <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
+  <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]
+  <store>* <cv-qual>* pointer to [member of { class | struct } <name>] <english>
+  { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
+  <store>* [rvalue] reference to <english>
+  <store>* <modifier>* [<C++-type>]
+user-defined-english:
+  conversion [operator] [of <scope-e> <name>]* returning <english>
+  literal [([<args>])] [returning <english>]
+args: a comma separated list of [<name> as] <english>
+C++-type: bool | char[{8|16|32}_t] | wchar_t | int | float | double | void
+cv-qual: const | volatile
+fn-qual: <cv-qual> | [rvalue] reference
+modifier: short | long | signed | unsigned | <cv-qual>
+name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+scope-e: scope | class | struct | union | [inline] namespace
+store: const[eval|expr|init] | explicit | extern ["C" [linkage]] | friend |
+       mutable | static | this | thread_local | typedef | [pure] virtual
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help options
+option:
+  [no]alt-tokens
+  [no]debug
+  {di|tri|no}graphs
+  [no]east-const
+  [no]echo-commands
+  [no]explain-by-default
+  [no]explicit-ecsu[={e|c|s|u}+]
+  [no]explicit-int[=<types>]
+  lang=<lang>
+  <lang>
+  [no]prompt
+  [no]semicolon
+  [no]using
+lang:
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+types:
+  i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> set c++03
+c++decl> help
+command:
+  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  declare <operator> as <english>
+  declare [<english>] user-def[ined] <user-defined-english>
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
+  exit | q[uit]
+declare-options:
+  width <number> [bits]
+gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
+name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+scope-c: class | struct | union | namespace
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help command
+command:
+  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  declare <operator> as <english>
+  declare [<english>] user-def[ined] <user-defined-english>
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
+  exit | q[uit]
+declare-options:
+  width <number> [bits]
+gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
+name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+scope-c: class | struct | union | namespace
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help commands
+command:
+  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  declare <name> [, <name>]* as <english> [<declare-options>]
+  declare <operator> as <english>
+  declare [<english>] user-def[ined] <user-defined-english>
+  define <name> as <english>
+  explain <gibberish> [, <gibberish>]*
+  { help | ? } [command[s] | english | options]
+  include "<path>"
+  set [<option> [= <value>] | options | <lang>]*
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  type[def] <gibberish> [, <gibberish>]*
+  <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
+  exit | q[uit]
+declare-options:
+  width <number> [bits]
+gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
+name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+scope-c: class | struct | union | namespace
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help english
+english:
+  <store>* <cv-qual>* array [<number>] of <english>
+  <store>* constructor [([<args>])]
+  [virtual] destructor [()]
+  <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
+  <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]
+  <store>* <cv-qual>* pointer to [member of { class | struct } <name>] <english>
+  { enum | class | struct | union } <name>
+  <store>* reference to <english>
+  <store>* <modifier>* [<C++-type>]
+user-defined-english:
+  conversion [operator] [of <scope-e> <name>]* returning <english>
+args: a comma separated list of [<name> as] <english>
+C++-type: bool | char | wchar_t | int | float | double | void
+cv-qual: const | volatile
+fn-qual: <cv-qual>
+modifier: short | long | signed | unsigned | <cv-qual>
+name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+scope-e: scope | class | struct | union | namespace
+store: auto | const | explicit | extern ["C" [linkage]] | friend |
+       mutable | static | typedef | [pure] virtual
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help options
+option:
+  [no]alt-tokens
+  [no]debug
+  {di|tri|no}graphs
+  [no]east-const
+  [no]echo-commands
+  [no]explain-by-default
+  [no]explicit-ecsu[={e|c|s|u}+]
+  [no]explicit-int[=<types>]
+  lang=<lang>
+  <lang>
+  [no]prompt
+  [no]semicolon
+  [no]using
+lang:
+  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
+types:
+  i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

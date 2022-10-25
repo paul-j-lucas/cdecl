@@ -1,5 +1,29 @@
 EXPECTED_EXIT=0
 cdecl <<END
+
+set -e-a--st-
+declare x as const int
+set no-e-a--st-
+declare x as const int
+
+set ea
+declare x as const int
+set noea
+declare x as const int
+
+set east
+declare x as const int
+set noeast
+declare x as const int
+
+set eastconst
+declare x as const int
+set noeastconst
+declare x as const int
+
 set east-const
 declare x as const int
+set noeast-const
+declare x as const int
+
 END

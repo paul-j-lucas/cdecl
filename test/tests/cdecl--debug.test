@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl --debug <<END
-explain int* f(int x, int y)
-END

@@ -1,8 +1,0 @@
-namespace std::chrono { struct file_clock; }
-namespace std::chrono { struct gps_clock; }
-namespace std::chrono { class high_resolution_clock; }
-namespace std::chrono { struct is_clock; }
-namespace std::chrono { class steady_clock; }
-namespace std::chrono { class system_clock; }
-namespace std::chrono { struct tai_clock; }
-namespace std::chrono { struct utc_clock; }

@@ -1,1 +1,0 @@
-bool operator or(const S bitand r);

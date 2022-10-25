@@ -1,1 +1,0 @@
-using CPF = void(*const)(const char *const);

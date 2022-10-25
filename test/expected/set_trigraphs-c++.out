@@ -1,3 +1,0 @@
-set trigraphs
-    ^
-5: warning: trigraphs not supported since C++17

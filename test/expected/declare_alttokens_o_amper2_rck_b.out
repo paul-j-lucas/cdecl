@@ -1,1 +1,0 @@
-bool operator and(const S bitand r);

@@ -1,0 +1,20 @@
+EXPECTED_EXIT=0
+cdecl -d -O <<END
+struct S
+
+explain _Alignas(8) int i
+explain _Alignas(long) int i
+explain int* f(int x, int y)
+explain size_t i
+explain void f(int a[], int b[4], int c[*], int d[const], int e[static 6])
+explain void f()
+
+set c++
+
+explain bool S::operator!() const
+explain enum E : int
+explain int S::*p
+explain int S::x
+explain operator int()
+
+END

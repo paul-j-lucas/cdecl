@@ -1,7 +1,0 @@
-explain int *const __attribute__(( foo )) __attribute__(( bar )) p
-                   ^
-20: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
-explain int *const __attribute__(( foo )) __attribute__(( bar )) p
-                                          ^
-43: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
-declare p as constant pointer to int

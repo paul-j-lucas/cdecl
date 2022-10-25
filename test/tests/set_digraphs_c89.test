@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-set digraphs c89
-set
-END

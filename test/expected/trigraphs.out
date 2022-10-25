@@ -1,0 +1,45 @@
+cdecl> struct S
+cdecl> declare a as array 9 of int
+int a??(9??);
+cdecl> explain int a??(9??)
+declare a as array 9 of int
+cdecl> set c++
+warning: trigraphs not supported since C++17
+c++decl> declare f as non-returning function (int) returning void
+[[noreturn]] void f(int);
+c++decl> set c++11
+c++decl> declare f as non-returning function (int) returning void
+??(??(noreturn??)??) void f(int);
+c++decl> declare ??'= as operator (int) returning reference to S
+S& operator??'=(int);
+c++decl> declare ??' as operator (reference to constant S, int) returning S
+S operator??'(const S&, int);
+c++decl> declare ??!??! as operator (reference to constant S, reference to constant S) returning bool
+bool operator??!??!(const S&, const S&);
+c++decl> declare ??! as operator (reference to constant S, reference to constant S) returning S
+S operator??!(const S&, const S&);
+c++decl> declare ??!= as operator (int) returning reference to S
+S& operator??!=(int);
+c++decl> declare ??- as operator returning S
+S operator??-();
+c++decl> set c++
+warning: trigraphs not supported since C++17
+c++decl> explain int a??(9??)
+                      ^
+14: warning: trigraphs not supported since C++17
+declare a as array 9 of int
+c++decl> set c++11
+c++decl> explain ??(??(noreturn??)??) void f(int)
+declare f as non-returning function (int) returning void
+c++decl> explain S& operator??'=(int)
+declare ??'= as member operator (int) returning reference to S
+c++decl> explain S operator??'(const S&, int)
+declare ??' as non-member operator (reference to constant S, int) returning S
+c++decl> explain bool operator??!??!(const S&, const S&)
+declare ??!??! as non-member operator (reference to constant S, reference to constant S) returning bool
+c++decl> explain S operator??!(const S&, const S&)
+declare ??! as non-member operator (reference to constant S, reference to constant S) returning S
+c++decl> explain S& operator??!=(int)
+declare ??!= as member operator (int) returning reference to S
+c++decl> explain S operator??-()
+declare ??- as member operator returning S

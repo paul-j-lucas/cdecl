@@ -1,4 +1,0 @@
-explain int a??(9??)
-             ^
-14: warning: trigraphs not supported since C++17
-declare a as array 9 of int

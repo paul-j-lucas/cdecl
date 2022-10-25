@@ -1,0 +1,17 @@
+cdecl> declare a as array 9 of int
+int a<:9:>;
+cdecl> set c++
+c++decl> declare f as non-returning function (int) returning void
+<:<:noreturn:>:> void f(int);
+c++decl> set c
+cdecl> explain int a<:9:>
+declare a as array 9 of int
+cdecl> set c89
+warning: digraphs not supported until C95
+cdecl> explain int a<:9:>
+                    ^
+14: warning: digraphs not supported until C95
+declare a as array 9 of int
+cdecl> set c++
+c++decl> explain <:<:noreturn:>:> void f(int)
+declare f as non-returning function (int) returning void

@@ -1,0 +1,17 @@
+EXPECTED_EXIT=0
+cdecl -xc99 <<END
+explain _Accum x
+explain short _Accum x
+explain short _Fract x
+explain long _Accum x
+explain long _Fract x
+explain _Fract x
+explain _Sat _Accum x
+explain _Sat _Fract x
+explain _Sat unsigned _Accum x
+explain unsigned _Accum x
+explain unsigned short _Sat _Accum x
+explain unsigned short _Sat _Fract x
+explain unsigned _Fract x
+explain unsigned _Sat _Accum x
+END

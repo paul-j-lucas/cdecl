@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-typedef int S::*const CPMSI
-show CPMSI using
-END

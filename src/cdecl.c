@@ -374,6 +374,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     FPRINTF( cdecl_fout,
       "%s%.*s\n", cdecl_prompt[0], STATIC_CAST( int, s_len ), s
     );
+    FFLUSH( cdecl_fout );
   }
 
   int const status = yyparse() == 0 ? EX_OK : EX_DATAERR;
