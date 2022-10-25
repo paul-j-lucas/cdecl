@@ -369,7 +369,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   PERROR_EXIT_IF( temp_file == NULL, EX_IOERR );
   yyrestart( temp_file );
 
-  if ( opt_echo_commands && cdecl_initialized ) {
+  if ( opt_echo_commands && !opt_interactive && cdecl_initialized ) {
     str_rtrim_len( s, &s_len );
     FPRINTF( cdecl_fout,
       "%s%.*s\n", cdecl_prompt[0], STATIC_CAST( int, s_len ), s

@@ -255,6 +255,11 @@ static bool set_east_const( set_option_fn_args_t const *args ) {
  */
 static bool set_echo_commands( set_option_fn_args_t const *args ) {
   opt_echo_commands = args->opt_enabled;
+  if ( opt_echo_commands && opt_interactive ) {
+    print_warning( args->opt_name_loc,
+      "echo-commands has no effect when interactive\n"
+    );
+  }
   return true;
 }
 

@@ -146,11 +146,11 @@ static size_t print_caret( size_t error_column ) {
 
   size_t caret_column;
 
-  if ( opt_interactive ) {
+  if ( opt_echo_commands || opt_interactive ) {
     //
-    // If we're interactive, we can put the ^ under the already existing token
-    // the user typed for the recent command, but we have to add the length of
-    // the prompt.
+    // If we're either echoing commands or interactive, we can put the ^ under
+    // the already existing token we printed or the user typed for the recent
+    // command, but we have to add the length of the prompt.
     //
     caret_column = (error_column + strlen( cdecl_prompt[0] )) % term_columns;
   }

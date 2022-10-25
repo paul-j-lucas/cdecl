@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 24, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "October 25, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -180,7 +180,11 @@ If standard input is coming from a terminal
 .B \-\-interactive
 or
 .B \-i
-option is specified),
+option
+or the
+.B "set interactive"
+command
+was given),
 a prompt of either
 \f(CWcdecl>\fP
 or
@@ -190,7 +194,7 @@ The prompt can be turned off by either the
 .B \-\-no-prompt
 or
 .B \-p
-option,
+option
 or the
 .B set noprompt
 command.
@@ -335,8 +339,9 @@ of the type.
 (Not supported in K&R\~C.)
 .TP
 .BR \-\-echo-commands " | " \-O
-Echo commands given
-before corresponding output.
+Echoes commands
+before their corresponding output,
+but only when not interactive.
 (This is primarily useful
 for associating command output
 with input
@@ -447,16 +452,39 @@ for command-line options
 and exits.
 .TP
 .BR \-\-interactive " | " \-i
-Forces interactive mode,
-that is
-turns on prompting
+Sets interactive mode
+(even when not connected to a terminal),
+that is:
+.RS 4
+.IP \(bu 3
+Turns on prompting
 (unless either the
 .B \-\-no-prompt
 or
 .B \-p
-option is given)
-and
-enables line-editing and history.
+option
+or the
+.B "set noprompt"
+command
+was given).
+.IP \(bu
+Enables line-editing and history
+via the
+.BR readline (3)
+library
+(if available and compiled in).
+.IP \(bu
+Disables command echoing
+if set via the
+.B \-\-echo-commands
+or
+.B \-O
+option
+or the
+.B "set echo-commands"
+command.
+.RE
+.IP
 (This is the default when connected to a terminal.)
 .TP
 .BI \-\-language \f1=\fPs "\f1 | \fP" "" \-x " s"
