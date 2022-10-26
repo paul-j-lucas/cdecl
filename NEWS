@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 12.1
+* Changes in Cdecl 13.0
 
 ** Better copy constructor support
 Declarations like:
