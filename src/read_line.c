@@ -62,7 +62,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
     static char *line;
     bool got_line;
 
-#ifdef WITH_READLINE
+#ifdef HAVE_READLINE_READLINE_H
     if ( interactive ) {
       extern void readline_init( FILE*, FILE* );
       readline_init( fin, fout );
@@ -75,7 +75,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
       FPUTS( prompts[ is_cont_line ], fout );
       FFLUSH( fout );
     }
-#endif /* WITH_READLINE */
+#endif /* HAVE_READLINE_READLINE_H */
     {
       static size_t line_cap;
       got_line = getline( &line, &line_cap, fin ) != -1;
@@ -106,10 +106,10 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
 
   assert( sbuf->str != NULL );
   assert( sbuf->str[0] != '\0' );
-#ifdef WITH_READLINE
+#ifdef HAVE_READLINE_HISTORY_H
   if ( interactive )
     add_history( sbuf->str );
-#endif /* WITH_READLINE */
+#endif /* HAVE_READLINE_HISTORY_H */
   return true;
 }
 

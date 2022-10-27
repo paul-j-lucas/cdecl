@@ -133,12 +133,16 @@ AS_IF([test "x$enable_term_size" = xyes],
 # Checks for header files.
 AS_IF([test "x$with_readline" != xno],
   [
-    AC_CHECK_HEADERS([readline/readline.h readline/history.h])
+    AC_CHECK_HEADERS([readline/readline.h readline/history.h], [],
+      [AC_MSG_ERROR([readline.h header not found; use --without-readline])]
+    )
   ]
 )
 AS_IF([test "x$enable_term_size" = xyes],
   [
-    AC_CHECK_HEADERS([curses.h ncurses.h])
+    AC_CHECK_HEADERS([curses.h ncurses.h], [],
+      [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
+    )
     AC_CHECK_HEADERS([term.h], [], [],
     [#if defined(HAVE_CURSES_H)
     #include <curses.h>
@@ -182,23 +186,18 @@ AS_IF([test "x$with_readline" != xno],
     [#include <stdio.h>
     #include <readline/readline.h>
     ])
-    AC_SEARCH_LIBS([readline],[readline])
-    AC_SEARCH_LIBS([add_history],[readline history])
-    # If readline wasn't disabled by the user, does it actually exist and is it
-    # a proper readline?
-    AS_IF([test "x$ac_cv_search_readline" = xno],
+    AC_SEARCH_LIBS([readline],[readline], [],
       [AC_MSG_ERROR([readline library not found; use --without-readline])]
     )
+    AC_SEARCH_LIBS([add_history],[readline history])
   ]
 )
 AS_IF([test "x$enable_term_size" = xyes],
   [
-    AC_SEARCH_LIBS([endwin],[curses ncurses])
-    AS_IF([test "x$ac_cv_search_endwin" = xno],
+    AC_SEARCH_LIBS([endwin],[curses ncurses], [],
       [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
     )
-    AC_SEARCH_LIBS([tigetnum],[curses ncurses tinfo])
-    AS_IF([test "x$ac_cv_search_tigetnum" = xno],
+    AC_SEARCH_LIBS([tigetnum],[curses ncurses tinfo], [],
       [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
     )
   ]
