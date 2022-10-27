@@ -80,7 +80,9 @@ Paul J. Lucas <paul@lucasmail.org>
 	added C99 standard types, e.g., int8_t
 	added C11 _Atomic, char16_t, char32_t, _Noreturn, thread_local
 	added C11 standard types, e.g., atomic_int
-	added C23 char8_t
+	added C23 _BitInt(N), char8_t, constexpr, digit seperators,
+		and fixed-type enums
+	added C23 and C++11 later attribute specifiers
 	added inline functions and variables
 	added enum, define, struct, show, typedef, union, and using commands
 	added alternative tokens
@@ -95,11 +97,9 @@ Paul J. Lucas <paul@lucasmail.org>
 		function trailing return-type syntax, inline namespaces,
 		noexcept, override, ref-qualifiers, rvalue references,
 		thread_local, and user-defined literals
-	added C23 and C++11 later attribute specifiers
-	added C23 _BitInt(N).
-	added C++23 explicit object parameters
 	added C++20 consteval, constinit, export, operator<=>, and nested
 		inline namespaces
+	added C++23 explicit object parameters and static operator()
 	added Embedded C types _Accum, _Fract, _Sat, and typedefs
 	added Unified Parallel C qualifiers relaxed, shared, and strict
 	independently added typedef declarations
