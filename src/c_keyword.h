@@ -52,19 +52,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * C++ keyword contexts.  A context specifies where particular literals are
- * recognized as keywords in gibberish.  For example, `final` and `override`
- * are recognized as keywords only within C++ member function declarations.
- *
- * @note These matter only when converting gibberish to pseudo-English.
- */
-enum c_keyword_ctx {
-  C_KW_CTX_DEFAULT,                     ///< Default context.
-  C_KW_CTX_ATTRIBUTE,                   ///< Attribute declaration.
-  C_KW_CTX_MBR_FUNC                     ///< Member function declaration.
-};
-
-/**
  * C/C++ language keyword or C23/C++11 (or later) attribute information.
  */
 struct c_keyword {

@@ -61,6 +61,337 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * The argument kind for the `alignas` specifier.
+ */
+enum c_alignas_kind {
+  C_ALIGNAS_NONE,                       ///< No `alignas` specifier.
+  C_ALIGNAS_EXPR,                       ///< `alignas(` _expr_ `)`
+  C_ALIGNAS_TYPE                        ///< `alignas(` _type_ `)`
+};
+
+/**
+ * @ingroup c-kinds-group
+ * Kinds of AST nodes comprising a C/C++ declaration.
+ *
+ * A given AST node may only have a single kind and _not_ be a bitwise-or of
+ * kinds.  However, a bitwise-or of kinds may be used to test whether a given
+ * AST node is any _one_ of those kinds.
+ */
+enum c_ast_kind {
+  /**
+   * Temporary node in an AST.  This is needed in two cases:
+   *
+   * 1. Array declarations or casts.  Consider:
+   *
+   *         int a[2][3]
+   *
+   *    At the first `[`, we know it's an _array 2 of [something of]*_ `int`,
+   *    but we don't yet know either what the "something" is or whether it will
+   *    turn out to be nothing.  It's not until the second `[` that we know
+   *    it's an _array 2 of array 3 of_ `int`.  (Had the `[3]` not been there,
+   *    then it would have been just _array 2 of_ `int`.)
+   *
+   * 2. Nested declarations or casts (inside parentheses).  Consider:
+   *
+   *         int (*a)[2]
+   *
+   *    At the `*`, we know it's a _pointer to [something of]*_ `int`, but,
+   *    similar to the array case, we don't yet know either what the
+   *    "something" is or whether it will turn out to be nothing.  It's not
+   *    until the `[` that we know it's a _pointer to array 2 of_ `int`.  (Had
+   *    the `[2]` not been there, then it would have been just _pointer to_
+   *    `int` (with unnecessary parentheses).
+   *
+   * In either case, a placeholder node is created to hold the place of the
+   * "something" in the AST.
+   */
+  K_PLACEHOLDER             = (1u << 0),
+
+  /**
+   * Built-in type, e.g., `void`, `char`, `int`, etc.
+   */
+  K_BUILTIN                 = (1u << 1),
+
+  /**
+   * A `class,` `struct,` or `union`.
+   */
+  K_CLASS_STRUCT_UNION      = (1u << 2),
+
+  /**
+   * Name only.  It's used as the initial kind for an identifier ("name") until
+   * we know its actual type (if ever).  However, it's also used for pre-
+   * prototype typeless function parameters in K&R C, e.g., `double sin(x)`.
+   */
+  K_NAME                    = (1u << 3),
+
+  /**
+   * `typedef` type, e.g., `size_t`.
+   */
+  K_TYPEDEF                 = (1u << 4),
+
+  /**
+   * Variadic (`...`) function parameter.
+   */
+  K_VARIADIC                = (1u << 5),
+
+  ////////// "parent" kinds ///////////////////////////////////////////////////
+
+  /**
+   * Array.
+   */
+  K_ARRAY                   = (1u << 6),
+
+  /**
+   * An `enum`.
+   *
+   * @note This is a "parent" kind because `enum` in C++11 and later can be
+   * "of" a fixed type.
+   */
+  K_ENUM                    = (1u << 7),
+
+  /**
+   * C or C++ pointer.
+   */
+  K_POINTER                 = (1u << 8),
+
+  /**
+   * C++ pointer-to-member.
+   */
+  K_POINTER_TO_MEMBER       = (1u << 9),
+
+  /**
+   * C++ reference.
+   */
+  K_REFERENCE               = (1u << 10),
+
+  /**
+   * C++11 rvalue reference.
+   */
+  K_RVALUE_REFERENCE        = (1u << 11),
+
+  ////////// function-like "parent" kinds /////////////////////////////////////
+
+  /**
+   * C++ constructor.
+   */
+  K_CONSTRUCTOR             = (1u << 12),
+
+  /**
+   * C++ destructor.
+   */
+  K_DESTRUCTOR              = (1u << 13),
+
+  ////////// function-like "parent" kinds that have return values /////////////
+
+  /**
+   * Block (Apple extension).
+   *
+   * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
+   * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
+   */
+  K_APPLE_BLOCK             = (1u << 14),
+
+  /**
+   * Function.
+   */
+  K_FUNCTION                = (1u << 15),
+
+  /**
+   * C++ overloaded operator.
+   */
+  K_OPERATOR                = (1u << 16),
+
+  /**
+   * C++ user-defined conversion operator.
+   */
+  K_USER_DEF_CONVERSION     = (1u << 17),
+
+  /**
+   * C++11 user-defined literal.
+   */
+  K_USER_DEF_LITERAL        = (1u << 18),
+};
+
+/**
+ * C/C++ cast kinds.
+ */
+enum c_cast_kind {
+  C_CAST_NONE,                          ///< Not a cast.
+  C_CAST_C,                             ///< C-style cast.
+  C_CAST_CONST,                         ///< C++ `const_cast`.
+  C_CAST_DYNAMIC,                       ///< C++ `dynamic_cast`.
+  C_CAST_REINTERPRET,                   ///< C++ `reinterpret_cast`.
+  C_CAST_STATIC                         ///< C++ `static_cast`.
+};
+
+/**
+ * @ingroup c-keywords-group
+ * C++ keyword contexts.  A context specifies where particular literals are
+ * recognized as keywords in gibberish.  For example, `final` and `override`
+ * are recognized as keywords only within C++ member function declarations.
+ *
+ * @note These matter only when converting gibberish to pseudo-English.
+ */
+enum c_keyword_ctx {
+  C_KW_CTX_DEFAULT,                     ///< Default context.
+  C_KW_CTX_ATTRIBUTE,                   ///< Attribute declaration.
+  C_KW_CTX_MBR_FUNC                     ///< Member function declaration.
+};
+
+/**
+ * Di/Trigraph mode.
+ */
+enum c_graph {
+  C_GRAPH_NONE,                         ///< Ordinary characters.
+  C_GRAPH_DI,                           ///< Digraphs.
+  C_GRAPH_TRI                           ///< Trigraphs.
+};
+
+/**
+ * @ingroup cpp-operators-group
+ * C++ operators.
+ *
+ * @note Operators are named based on the characters comprising them rather
+ * than their semantics because many operators have more than one meaning
+ * depending upon context, e.g. `*` is both the "times" and the "dereference"
+ * operator.
+ */
+enum c_oper_id {
+  C_OP_NONE,            ///< No operator.
+  C_OP_CO_AWAIT,        ///< The `co_await` operator.
+  C_OP_NEW,             ///< The `new` operator.
+  C_OP_NEW_ARRAY,       ///< The `new[]` operator.
+  C_OP_DELETE,          ///< The `delete` operator.
+  C_OP_DELETE_ARRAY,    ///< The `delete[]` operator.
+  C_OP_EXCLAM,          ///< The `!` operator.
+  C_OP_EXCLAM_EQ,       ///< The `!=` operator.
+  C_OP_PERCENT,         ///< The `%` operator.
+  C_OP_PERCENT_EQ,      ///< The `%=` operator.
+  C_OP_AMPER,           ///< The `&` operator.
+  C_OP_AMPER2,          ///< The `&&` operator.
+  C_OP_AMPER_EQ,        ///< The `&=` operator.
+  C_OP_PARENS,          ///< The `()` operator.
+  C_OP_STAR,            ///< The `*` operator.
+  C_OP_STAR_EQ,         ///< The `*=` operator.
+  C_OP_PLUS,            ///< The `+` operator.
+  C_OP_PLUS2,           ///< The `++` operator.
+  C_OP_PLUS_EQ,         ///< The `+=` operator.
+  C_OP_COMMA,           ///< The `,` operator.
+  C_OP_MINUS,           ///< The `-` operator.
+  C_OP_MINUS2,          ///< The `--` operator.
+  C_OP_MINUS_EQ,        ///< The `-=` operator.
+  C_OP_ARROW,           ///< The `->` operator.
+  C_OP_ARROW_STAR,      ///< The `->*` operator.
+  C_OP_DOT,             ///< The `.` operator.
+  C_OP_DOT_STAR,        ///< The `.*` operator.
+  C_OP_SLASH,           ///< The `/` operator.
+  C_OP_SLASH_EQ,        ///< The `/=` operator.
+  C_OP_COLON2,          ///< The `::` operator.
+  C_OP_LESS,            ///< The `<` operator.
+  C_OP_LESS2,           ///< The `<<` operator.
+  C_OP_LESS2_EQ,        ///< The `<<=` operator.
+  C_OP_LESS_EQ,         ///< The `<=` operator.
+  C_OP_LESS_EQ_GREATER, ///< The `<=>` operator.
+  C_OP_EQ,              ///< The `=` operator.
+  C_OP_EQ2,             ///< The `==` operator.
+  C_OP_GREATER,         ///< The `>` operator.
+  C_OP_GREATER_EQ,      ///< The `>=` operator.
+  C_OP_GREATER2,        ///< The `>>` operator.
+  C_OP_GREATER2_EQ,     ///< The `>>=` operator.
+  C_OP_QMARK_COLON,     ///< The `?:` operator.
+  C_OP_BRACKETS,        ///< The `[]` operator.
+  C_OP_CIRC,            ///< The `^` operator.
+  C_OP_CIRC_EQ,         ///< The `^=` operator.
+  C_OP_PIPE,            ///< The `|` operator.
+  C_OP_PIPE_EQ,         ///< The `|=` operator.
+  C_OP_PIPE2,           ///< The `||` operator.
+  C_OP_TILDE,           ///< The `~` operator.
+};
+
+/**
+ * @ingroup c-types-group
+ * For \ref c_tid_t values, the low-order 4 bits specify the type part ID and
+ * thus how the value should be interpreted.
+ */
+enum c_tpid {
+  //
+  // Type part IDs start at 1 so we know a c_tid_t value has been initialized
+  // properly as opposed to it being 0 by default.
+  //
+  C_TPID_NONE   = 0u,                   ///< No types.
+  C_TPID_BASE   = (1u << 0),            ///< Base types, e.g., `int`.
+  C_TPID_STORE  = (1u << 1),            ///< Storage types, e.g., `static`.
+  C_TPID_ATTR   = (1u << 2)             ///< Attributes.
+};
+
+/**
+ * The direction to traverse an AST using c_ast_visit().
+ */
+enum c_visit_dir {
+  C_VISIT_DOWN,                         ///< Root to leaves.
+  C_VISIT_UP                            ///< Leaf to root.
+};
+
+/**
+ * The kind of **cdecl** command.
+ */
+enum cdecl_command_kind {
+  /**
+   * Command is valid _only_ within the **cdecl** language and _not_ as either
+   * the command-line command (`argv[0]`) or the first word of the first
+   * command-line argument (`argv[1]`):
+   *
+   * `cdecl>` _command_ _args_
+   */
+  CDECL_COMMAND_LANG_ONLY,
+
+  /**
+   * Command is valid within the **cdecl** language _and_ as the first word of
+   * the first command-line argument (`argv[1]`):
+   *
+   * `$ cdecl` _command_ _args_
+   */
+  CDECL_COMMAND_FIRST_ARG,
+
+  /**
+   * Command is valid within the **cdecl** language _and_ as the
+   * program name (`argv[0]`):
+   *
+   * `$` _command_ _args_
+   */
+  CDECL_COMMAND_PROG_NAME,
+};
+
+/**
+ * Types of help.
+ */
+enum cdecl_help {
+  CDECL_HELP_COMMANDS,                  ///< Help for cdecl commands.
+  CDECL_HELP_ENGLISH,                   ///< Help for cdecl pseudo-English.
+  CDECL_HELP_OPTIONS                    ///< Help for cdecl options.
+};
+
+/**
+ * Mode of operation.
+ */
+enum cdecl_mode {
+  CDECL_ENGLISH_TO_GIBBERISH,           ///< Convert English into gibberish.
+  CDECL_GIBBERISH_TO_ENGLISH            ///< Decipher gibberish into English.
+};
+
+/**
+ * @ingroup set-options-group
+ * **cdecl** `set` option kind.
+ */
+enum set_option_kind {
+  SET_OPTION_TOGGLE,                    ///< Toggle, e.g., `foo` & `nofoo`.
+  SET_OPTION_AFF_ONLY,                  ///< Affirmative only, e.g., `foo`.
+  SET_OPTION_NEG_ONLY                   ///< Negative only, e.g., `nofoo`.
+};
+
+///////////////////////////////////////////////////////////////////////////////
+
 typedef struct slist              slist_t;
 typedef struct slist_node         slist_node_t;
 
@@ -126,13 +457,14 @@ typedef struct print_params       print_params_t;
 typedef struct set_option         set_option_t;
 typedef struct set_option_fn_args set_option_fn_args_t;
 typedef enum   set_option_kind    set_option_kind_t;
-typedef enum   yytokentype        yytokentype;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 /// @cond DOXYGEN_IGNORE
 #define YYLTYPE_IS_DECLARED       1
 #define YYLTYPE_IS_TRIVIAL        1
 /// @endcond
+
+///////////////////////////////////////////////////////////////////////////////
 
 /**
  * A pair of AST pointers used as one of the synthesized attribute types in the
@@ -153,27 +485,6 @@ struct c_ast_pair {
 };
 
 /**
- * C/C++ cast kinds.
- */
-enum c_cast_kind {
-  C_CAST_NONE,                          ///< Not a cast.
-  C_CAST_C,                             ///< C-style cast.
-  C_CAST_CONST,                         ///< C++ `const_cast`.
-  C_CAST_DYNAMIC,                       ///< C++ `dynamic_cast`.
-  C_CAST_REINTERPRET,                   ///< C++ `reinterpret_cast`.
-  C_CAST_STATIC                         ///< C++ `static_cast`.
-};
-
-/**
- * Di/Trigraph mode.
- */
-enum c_graph {
-  C_GRAPH_NONE,                         ///< Ordinary characters.
-  C_GRAPH_DI,                           ///< Digraphs.
-  C_GRAPH_TRI                           ///< Trigraphs.
-};
-
-/**
  * The source location used by Bison.
  */
 struct c_loc {
@@ -190,23 +501,6 @@ struct c_loc {
   //
   int last_line;                        ///< Last line of location range.
   int last_column;                      ///< Last column of location range.
-};
-
-/**
- * Types of help.
- */
-enum cdecl_help {
-  CDECL_HELP_COMMANDS,                  ///< Help for cdecl commands.
-  CDECL_HELP_ENGLISH,                   ///< Help for cdecl pseudo-English.
-  CDECL_HELP_OPTIONS                    ///< Help for cdecl options.
-};
-
-/**
- * Mode of operation.
- */
-enum cdecl_mode {
-  CDECL_ENGLISH_TO_GIBBERISH,           ///< Convert English into gibberish.
-  CDECL_GIBBERISH_TO_ENGLISH            ///< Decipher gibberish into English.
 };
 
 ///////////////////////////////////////////////////////////////////////////////

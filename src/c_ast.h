@@ -125,15 +125,6 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * The argument kind for the `alignas` specifier.
- */
-enum c_alignas_kind {
-  C_ALIGNAS_NONE,                       ///< No `alignas` specifier.
-  C_ALIGNAS_EXPR,                       ///< `alignas(` _expr_ `)`
-  C_ALIGNAS_TYPE                        ///< `alignas(` _type_ `)`
-};
-
-/**
  * Data for the `alignas` specifier.
  */
 struct c_alignas {
@@ -163,14 +154,6 @@ typedef uintmax_t c_ast_visit_data_t;
  * returned to the caller of c_ast_visit().
  */
 typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visit_data_t avd );
-
-/**
- * The direction to traverse an AST using c_ast_visit().
- */
-enum c_visit_dir {
-  C_VISIT_DOWN,                         ///< Root to leaves.
-  C_VISIT_UP                            ///< Leaf to root.
-};
 
 ///////////////////////////////////////////////////////////////////////////////
 

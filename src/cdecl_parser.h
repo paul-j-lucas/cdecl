@@ -29,5 +29,7 @@
 // local
 #include "parser.h"
 
+typedef enum yytokentype yytokentype;
+
 #endif /* cdecl_parser_H */
 /* vim:set et sw=2 ts=2: */

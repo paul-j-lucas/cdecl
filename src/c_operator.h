@@ -112,66 +112,6 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * C++ operators.
- *
- * @note Operators are named based on the characters comprising them rather
- * than their semantics because many operators have more than one meaning
- * depending upon context, e.g. `*` is both the "times" and the "dereference"
- * operator.
- */
-enum c_oper_id {
-  C_OP_NONE,            ///< No operator.
-  C_OP_CO_AWAIT,        ///< The `co_await` operator.
-  C_OP_NEW,             ///< The `new` operator.
-  C_OP_NEW_ARRAY,       ///< The `new[]` operator.
-  C_OP_DELETE,          ///< The `delete` operator.
-  C_OP_DELETE_ARRAY,    ///< The `delete[]` operator.
-  C_OP_EXCLAM,          ///< The `!` operator.
-  C_OP_EXCLAM_EQ,       ///< The `!=` operator.
-  C_OP_PERCENT,         ///< The `%` operator.
-  C_OP_PERCENT_EQ,      ///< The `%=` operator.
-  C_OP_AMPER,           ///< The `&` operator.
-  C_OP_AMPER2,          ///< The `&&` operator.
-  C_OP_AMPER_EQ,        ///< The `&=` operator.
-  C_OP_PARENS,          ///< The `()` operator.
-  C_OP_STAR,            ///< The `*` operator.
-  C_OP_STAR_EQ,         ///< The `*=` operator.
-  C_OP_PLUS,            ///< The `+` operator.
-  C_OP_PLUS2,           ///< The `++` operator.
-  C_OP_PLUS_EQ,         ///< The `+=` operator.
-  C_OP_COMMA,           ///< The `,` operator.
-  C_OP_MINUS,           ///< The `-` operator.
-  C_OP_MINUS2,          ///< The `--` operator.
-  C_OP_MINUS_EQ,        ///< The `-=` operator.
-  C_OP_ARROW,           ///< The `->` operator.
-  C_OP_ARROW_STAR,      ///< The `->*` operator.
-  C_OP_DOT,             ///< The `.` operator.
-  C_OP_DOT_STAR,        ///< The `.*` operator.
-  C_OP_SLASH,           ///< The `/` operator.
-  C_OP_SLASH_EQ,        ///< The `/=` operator.
-  C_OP_COLON2,          ///< The `::` operator.
-  C_OP_LESS,            ///< The `<` operator.
-  C_OP_LESS2,           ///< The `<<` operator.
-  C_OP_LESS2_EQ,        ///< The `<<=` operator.
-  C_OP_LESS_EQ,         ///< The `<=` operator.
-  C_OP_LESS_EQ_GREATER, ///< The `<=>` operator.
-  C_OP_EQ,              ///< The `=` operator.
-  C_OP_EQ2,             ///< The `==` operator.
-  C_OP_GREATER,         ///< The `>` operator.
-  C_OP_GREATER_EQ,      ///< The `>=` operator.
-  C_OP_GREATER2,        ///< The `>>` operator.
-  C_OP_GREATER2_EQ,     ///< The `>>=` operator.
-  C_OP_QMARK_COLON,     ///< The `?:` operator.
-  C_OP_BRACKETS,        ///< The `[]` operator.
-  C_OP_CIRC,            ///< The `^` operator.
-  C_OP_CIRC_EQ,         ///< The `^=` operator.
-  C_OP_PIPE,            ///< The `|` operator.
-  C_OP_PIPE_EQ,         ///< The `|=` operator.
-  C_OP_PIPE2,           ///< The `||` operator.
-  C_OP_TILDE,           ///< The `~` operator.
-};
-
-/**
  * C++ operator information.
  *
  * @note \ref params_min and \ref params_max comprise the inclusive range for
