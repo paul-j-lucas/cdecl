@@ -59,7 +59,10 @@
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// enumerations ///////////////////////////////////////////////////////
+
+// Enumerations have to be declared before typedefs of them since ISO C doesn't
+// allow forward declarations of enums.
 
 /**
  * The argument kind for the `alignas` specifier.
@@ -226,6 +229,15 @@ enum c_cast_kind {
 };
 
 /**
+ * Di/Trigraph mode.
+ */
+enum c_graph {
+  C_GRAPH_NONE,                         ///< Ordinary characters.
+  C_GRAPH_DI,                           ///< Digraphs.
+  C_GRAPH_TRI                           ///< Trigraphs.
+};
+
+/**
  * @ingroup c-keywords-group
  * C++ keyword contexts.  A context specifies where particular literals are
  * recognized as keywords in gibberish.  For example, `final` and `override`
@@ -237,15 +249,6 @@ enum c_keyword_ctx {
   C_KW_CTX_DEFAULT,                     ///< Default context.
   C_KW_CTX_ATTRIBUTE,                   ///< Attribute declaration.
   C_KW_CTX_MBR_FUNC                     ///< Member function declaration.
-};
-
-/**
- * Di/Trigraph mode.
- */
-enum c_graph {
-  C_GRAPH_NONE,                         ///< Ordinary characters.
-  C_GRAPH_DI,                           ///< Digraphs.
-  C_GRAPH_TRI                           ///< Trigraphs.
 };
 
 /**
@@ -390,7 +393,7 @@ enum set_option_kind {
   SET_OPTION_NEG_ONLY                   ///< Negative only, e.g., `nofoo`.
 };
 
-///////////////////////////////////////////////////////////////////////////////
+////////// typedefs ///////////////////////////////////////////////////////////
 
 typedef struct slist              slist_t;
 typedef struct slist_node         slist_node_t;
@@ -464,7 +467,7 @@ typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 #define YYLTYPE_IS_TRIVIAL        1
 /// @endcond
 
-///////////////////////////////////////////////////////////////////////////////
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * A pair of AST pointers used as one of the synthesized attribute types in the
