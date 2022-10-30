@@ -432,9 +432,9 @@ typedef struct c_lang             c_lang_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_lang_lit         c_lang_lit_t;
 typedef struct c_loc              c_loc_t;
+typedef struct c_operator         c_operator_t;
 typedef struct c_operator_ast     c_operator_ast_t;
 typedef enum   c_oper_id          c_oper_id_t;
-typedef struct c_operator         c_operator_t;
 typedef slist_node_t              c_param_t;      ///< Function-like parameter.
 typedef struct c_parent_ast       c_parent_ast_t;
 typedef struct c_ptr_mbr_ast      c_ptr_mbr_ast_t;
