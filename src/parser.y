@@ -2239,7 +2239,7 @@ alignas_or_width_decl_english_ast
       if ( !c_ast_is_bit_field( $1 ) ) {
         print_error( &@2,
           "bit-fields can be only of integral %stypes\n",
-          OPT_LANG_IS( CPP_ANY ) ? "or enumeration " : ""
+          OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
         );
         PARSE_ABORT();
       }
@@ -7277,7 +7277,7 @@ sname_c_ast
       if ( !ok ) {
         print_error( &@2,
           "bit-fields can be only of integral %stypes\n",
-          OPT_LANG_IS( CPP_ANY ) ? "or enumeration " : ""
+          OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
         );
         PARSE_ABORT();
       }

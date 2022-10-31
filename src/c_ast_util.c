@@ -562,7 +562,7 @@ bool c_ast_is_bit_field( c_ast_t const *ast ) {
       return is_1n_bit_only_in_set( c_tid_no_tpid( btids ), TB_ANY_INTEGRAL );
     }
     case K_ENUM:
-      return OPT_LANG_IS( CPP_ANY );
+      return OPT_LANG_IS( enum_BITFIELDS );
     default:
       return false;
   } // switch

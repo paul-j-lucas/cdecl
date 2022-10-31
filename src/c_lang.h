@@ -509,6 +509,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_enum                       LANG_MIN(C_89)
 
 /**
+ * Languages `enum` bitfields are supported in.
+ */
+#define LANG_enum_BITFIELDS             LANG_CPP_ANY
+
+/**
  * Languages `enum class` is supported in.
  */
 #define LANG_enum_class                 LANG_MIN(CPP_11)
