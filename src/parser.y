@@ -2445,16 +2445,7 @@ explain_command
      *
      * are handled by the common declaration rule.
      */
-  | explain user_defined_conversion_decl_c_astp
-    {
-      DUMP_START( "explain_command",
-                  "EXPLAIN user_defined_conversion_decl_c_astp" );
-      DUMP_AST( "user_defined_conversion_decl_c_astp", $2.ast );
-      DUMP_END();
-
-      C_AST_CHECK( $2.ast );
-      c_ast_english( $2.ast, cdecl_fout );
-    }
+  | explain user_defined_conversion_declaration_c
 
     /*
      * C++ using declaration.
@@ -3362,6 +3353,21 @@ typedef_decl_c_exp
   | error
     {
       elaborate_error( "type expected" );
+    }
+  ;
+
+/// Gibberish C++ user-defined conversion operator declaration ////////////////
+
+user_defined_conversion_declaration_c
+  : user_defined_conversion_decl_c_astp
+    {
+      DUMP_START( "user_defined_conversion_declaration_c",
+                  "user_defined_conversion_decl_c_astp" );
+      DUMP_AST( "user_defined_conversion_declaration_c", $1.ast );
+      DUMP_END();
+
+      C_AST_CHECK( $1.ast );
+      c_ast_english( $1.ast, cdecl_fout );
     }
   ;
 

@@ -4709,8 +4709,8 @@ user_defined_conversion_decl_c_astp ::= scope_sname_c_opt OPERATOR type_c_ast ud
   }
 }
 
-explain_command ::= EXPLAIN user_defined_conversion_decl_c_astp = {
-  user_defined_conversion_decl_c_astp = {
+user_defined_conversion_declaration_c ::= user_defined_conversion_decl_c_astp = {
+  user_defined_conversion_declaration_c = {
     sname = "",
     unique_id = 1406,
     kind = "user-defined conversion operator",
