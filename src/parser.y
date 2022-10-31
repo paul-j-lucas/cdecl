@@ -3756,7 +3756,7 @@ block_decl_c_astp                       // Apple extension
     }
   ;
 
-/// Gibberish in-class destructor declaration /////////////////////////////////
+/// Gibberish C++ in-class destructor declaration /////////////////////////////
 
 destructor_decl_c
     /*
@@ -3797,7 +3797,7 @@ destructor_decl_c
     }
   ;
 
-/// Gibberish file-scope constructor declaration //////////////////////////////
+/// Gibberish C++ file-scope constructor declaration //////////////////////////
 
 file_scope_constructor_decl_c
   : inline_stid_opt Y_CONSTRUCTOR_SNAME
@@ -3835,7 +3835,7 @@ file_scope_constructor_decl_c
     }
   ;
 
-/// Gibberish file-scope destructor declaration ///////////////////////////////
+/// Gibberish C++ file-scope destructor declaration ///////////////////////////
 
 file_scope_destructor_decl_c
   : inline_stid_opt Y_DESTRUCTOR_SNAME
@@ -3871,7 +3871,7 @@ file_scope_destructor_decl_c
     }
   ;
 
-/// Gibberish function declaration ////////////////////////////////////////////
+/// Gibberish C/C++ function declaration //////////////////////////////////////
 
 func_decl_c_astp
     /*
@@ -4694,7 +4694,7 @@ reference_type_c_ast
     }
   ;
 
-/// Gibberish typedef type declaration ////////////////////////////////////////
+/// Gibberish C/C++ typedef type declaration //////////////////////////////////
 
 typedef_type_decl_c_ast
   : // in_attr: type_c_ast
@@ -4949,7 +4949,7 @@ array_cast_c_astp
     }
   ;
 
-/// Gibberish block cast (Apple extension) ////////////////////////////////////
+/// Gibberish C/C++ block cast (Apple extension) //////////////////////////////
 
 block_cast_c_astp                       // Apple extension
   : // in_attr: type_c_ast
@@ -5410,7 +5410,7 @@ atomic_builtin_typedef_type_c_ast
   | typeof_type_c_ast
   ;
 
-/// C Gibberish _Atomic types /////////////////////////////////////////////////
+/// Gibberish C _Atomic types /////////////////////////////////////////////////
 
 atomic_specifier_type_c_ast
   : Y__Atomic_SPEC lparen_exp type_c_ast
