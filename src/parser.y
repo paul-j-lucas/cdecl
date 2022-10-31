@@ -4832,7 +4832,7 @@ user_defined_conversion_decl_c_astp
     }
   ;
 
-/// C++ user-definer literal declaration //////////////////////////////////////
+/// C++ user-defined literal declaration //////////////////////////////////////
 
 user_defined_literal_decl_c_astp
   : // in_attr: type_c_ast
