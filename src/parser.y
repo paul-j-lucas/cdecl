@@ -4048,8 +4048,7 @@ pc99_func_or_constructor_decl_c
         assert( csu_tdef->ast == csu_ast );
       }
     }
-    param_c_ast_list_opt ')' noexcept_c_stid_opt
-    func_equals_c_stid_opt
+    param_c_ast_list_opt ')' noexcept_c_stid_opt func_equals_c_stid_opt
     {
       char const *const name = $1;
       c_tid_t     const noexcept_stid = $6;
