@@ -2809,8 +2809,8 @@ new_style_cast_c
 /// Gibberish C/C++ aligned declaration ///////////////////////////////////////
 
 aligned_declaration_c
-  : alignas_specifier_c { in_attr.align = $1; }
-    typename_flag_opt { in_attr.is_typename = $3; }
+  : alignas_specifier_c           { in_attr.align = $1; }
+    typename_flag_opt             { in_attr.is_typename = $3; }
     typed_declaration_c
   ;
 
