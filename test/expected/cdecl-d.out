@@ -546,7 +546,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
   }
 }
 
-param_list_c_ast ::= param_c_ast = {
+param_c_ast_list ::= param_c_ast = {
   param_c_ast = {
     sname = "x" (none),
     unique_id = 1366,
@@ -558,7 +558,7 @@ param_list_c_ast ::= param_c_ast = {
     type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  param_list_c_ast = [
+  param_c_ast_list = [
     {
       sname = "x" (none),
       unique_id = 1366,
@@ -683,8 +683,8 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
   }
 }
 
-param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
-  param_list_c_ast = [
+param_c_ast_list ::= param_c_ast_list ',' param_c_ast = {
+  param_c_ast_list = [
     {
       sname = "x" (none),
       unique_id = 1366,
@@ -708,7 +708,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
     type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  param_list_c_ast = [
+  param_c_ast_list = [
     {
       sname = "x" (none),
       unique_id = 1366,
@@ -734,7 +734,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
   ]
 }
 
-func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
   (type_c_ast) = {
     sname = "f" (none),
     unique_id = 1365,
@@ -777,7 +777,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
       bit_width = 0
     }
   },
-  param_list_c_ast_opt = [
+  param_c_ast_list_opt = [
     {
       sname = "x" (none),
       unique_id = 1366,
@@ -1607,7 +1607,7 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
   }
 }
 
-param_list_c_ast ::= param_c_ast = {
+param_c_ast_list ::= param_c_ast = {
   param_c_ast = {
     sname = "a" (none),
     unique_id = 1375,
@@ -1630,7 +1630,7 @@ param_list_c_ast ::= param_c_ast = {
       bit_width = 0
     }
   },
-  param_list_c_ast = [
+  param_c_ast_list = [
     {
       sname = "a" (none),
       unique_id = 1375,
@@ -1848,8 +1848,8 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
   }
 }
 
-param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
-  param_list_c_ast = [
+param_c_ast_list ::= param_c_ast_list ',' param_c_ast = {
+  param_c_ast_list = [
     {
       sname = "a" (none),
       unique_id = 1375,
@@ -1895,7 +1895,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       bit_width = 0
     }
   },
-  param_list_c_ast = [
+  param_c_ast_list = [
     {
       sname = "a" (none),
       unique_id = 1375,
@@ -2135,8 +2135,8 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
   }
 }
 
-param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
-  param_list_c_ast = [
+param_c_ast_list ::= param_c_ast_list ',' param_c_ast = {
+  param_c_ast_list = [
     {
       sname = "a" (none),
       unique_id = 1375,
@@ -2204,7 +2204,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       bit_width = 0
     }
   },
-  param_list_c_ast = [
+  param_c_ast_list = [
     {
       sname = "a" (none),
       unique_id = 1375,
@@ -2470,8 +2470,8 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
   }
 }
 
-param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
-  param_list_c_ast = [
+param_c_ast_list ::= param_c_ast_list ',' param_c_ast = {
+  param_c_ast_list = [
     {
       sname = "a" (none),
       unique_id = 1375,
@@ -2562,7 +2562,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       bit_width = 0
     }
   },
-  param_list_c_ast = [
+  param_c_ast_list = [
     {
       sname = "a" (none),
       unique_id = 1375,
@@ -2851,8 +2851,8 @@ param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
   }
 }
 
-param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
-  param_list_c_ast = [
+param_c_ast_list ::= param_c_ast_list ',' param_c_ast = {
+  param_c_ast_list = [
     {
       sname = "a" (none),
       unique_id = 1375,
@@ -2966,7 +2966,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       bit_width = 0
     }
   },
-  param_list_c_ast = [
+  param_c_ast_list = [
     {
       sname = "a" (none),
       unique_id = 1375,
@@ -3082,7 +3082,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
   ]
 }
 
-func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
   (type_c_ast) = {
     sname = "f" (none),
     unique_id = 1373,
@@ -3105,7 +3105,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
     type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  param_list_c_ast_opt = [
+  param_c_ast_list_opt = [
     {
       sname = "a" (none),
       unique_id = 1375,
@@ -3725,7 +3725,7 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
   (type_c_ast) = {
     sname = "f" (none),
     unique_id = 1391,
@@ -3748,7 +3748,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
     type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  param_list_c_ast_opt = [],
+  param_c_ast_list_opt = [],
   func_qualifier_list_c_stid_opt = "" (stid = 0x2),
   func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
   noexcept_c_stid_opt = "" (stid = 0x2),
@@ -3891,7 +3891,7 @@ func_qualifier_list_c_stid_opt ::= func_qualifier_list_c_stid_opt func_qualifier
   func_qualifier_list_c_stid_opt = "const" (stid = 0x200000002)
 }
 
-oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
   (type_c_ast) = {
     sname = "",
     unique_id = 1394,
@@ -3905,7 +3905,7 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_list_c_ast_
   },
   scope_sname_c_opt = "S" (struct),
   c_operator = "!",
-  param_list_c_ast_opt = [],
+  param_c_ast_list_opt = [],
   func_qualifier_list_c_stid_opt = "const" (stid = 0x200000002),
   func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
   noexcept_c_stid_opt = "" (stid = 0x2),

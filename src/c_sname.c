@@ -163,7 +163,7 @@ void c_scope_data_free( c_scope_data_t *data ) {
   }
 }
 
-void c_sname_append_name( c_sname_t *sname, char *name ) {
+void c_sname_append_name( c_sname_t *sname, char const *name ) {
   assert( sname != NULL );
   assert( name != NULL );
   c_scope_data_t *const data = MALLOC( c_scope_data_t, 1 );

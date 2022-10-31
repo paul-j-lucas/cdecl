@@ -165,7 +165,7 @@ void c_scope_data_free( c_scope_data_t *data );
  * @sa c_sname_prepend_sname()
  * @sa c_sname_set()
  */
-void c_sname_append_name( c_sname_t *sname, char *name );
+void c_sname_append_name( c_sname_t *sname, char const *name );
 
 /**
  * Appends \a src onto the end of \a dst.
@@ -268,6 +268,22 @@ bool c_sname_empty( c_sname_t const *sname ) {
 void c_sname_fill_in_namespaces( c_sname_t *sname );
 
 /**
+ * Gets the first scope-type of \a sname (which is the type of the outermost
+ * scope).
+ *
+ * @param sname The scoped name to get the first scope-type of.
+ * @return Returns the first scope-type or #T_NONE if \a sname is empty.
+ *
+ * @sa c_sname_local_type()
+ * @sa c_sname_scope_type()
+ * @sa c_sname_set_first_type()
+ */
+NODISCARD C_SNAME_H_INLINE
+c_type_t const* c_sname_first_type( c_sname_t const *sname ) {
+  return c_sname_empty( sname ) ? &T_NONE : &c_scope_data( sname->head )->type;
+}
+
+/**
  * Frees all memory associated with \a sname _including_ \a sname itself.
  *
  * @param sname The scoped name to free.  If NULL, does nothing.
@@ -306,6 +322,7 @@ char const* c_sname_full_name( c_sname_t const *sname );
  * @sa c_sname_cleanup()
  * @sa c_sname_free()
  * @sa c_sname_init_name()
+ * @sa c_sname_move()
  */
 C_SNAME_H_INLINE
 void c_sname_init( c_sname_t *sname ) {
@@ -323,7 +340,7 @@ void c_sname_init( c_sname_t *sname ) {
  * @sa c_sname_init()
  */
 C_SNAME_H_INLINE
-void c_sname_init_name( c_sname_t *sname, char *name ) {
+void c_sname_init_name( c_sname_t *sname, char const *name ) {
   slist_init( sname );
   c_sname_append_name( sname, name );
 }
@@ -374,22 +391,6 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
 }
 
 /**
- * Gets the first scope-type of \a sname (which is the type of the outermost
- * scope).
- *
- * @param sname The scoped name to get the first scope-type of.
- * @return Returns the first scope-type or #T_NONE if \a sname is empty.
- *
- * @sa c_sname_local_type()
- * @sa c_sname_scope_type()
- * @sa c_sname_set_first_type()
- */
-NODISCARD C_SNAME_H_INLINE
-c_type_t const* c_sname_first_type( c_sname_t const *sname ) {
-  return c_sname_empty( sname ) ? &T_NONE : &c_scope_data( sname->head )->type;
-}
-
-/**
  * Gets the local scope-type of \a sname (which is the type of the innermost
  * scope).
  *
@@ -429,6 +430,25 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
  */
 NODISCARD
 bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
+
+/**
+ * Reinitializes \a sname and returns its former value so that it can be
+ * "moved" into another scoped name via assignment.  For example:
+ * @code
+ *  c_sname_t new_sname = c_sname_move( old_sname );
+ * @endcode
+ *
+ * @param sname The scoped name to move.
+ * @return Returns the former value of \a sname.
+ * @warning The recipient scoped name _must_ be either uninitialized or empty.
+ *
+ * @sa c_sname_init()
+ * @sa c_sname_set()
+ */
+NODISCARD C_SNAME_H_INLINE
+c_sname_t c_sname_move( c_sname_t *sname ) {
+  return slist_move( sname );
+}
 
 /**
  * Gets the name at \a roffset of \a sname.
@@ -530,6 +550,7 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
  *
  * @sa c_sname_append_name()
  * @sa c_sname_append_sname()
+ * @sa c_sname_move()
  * @sa c_sname_prepend_sname()
  */
 C_SNAME_H_INLINE

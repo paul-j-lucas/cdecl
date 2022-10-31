@@ -390,6 +390,7 @@ void* slist_front( slist_t const *list ) {
  * @param list A pointer to the \ref slist to initialize.
  *
  * @sa slist_cleanup()
+ * @sa slist_move()
  */
 SLIST_H_INLINE
 void slist_init( slist_t *list ) {
@@ -409,6 +410,25 @@ void slist_init( slist_t *list ) {
 NODISCARD SLIST_H_INLINE
 size_t slist_len( slist_t const *list ) {
   return list->len;
+}
+
+/**
+ * Reinitializes \a list and returns its former value so that it can be "moved"
+ * into another list via assignment.  For example:
+ * @code
+ *  slist new_list = slist_move( old_list );
+ * @endcode
+ *
+ * @param list The \ref slist to move.
+ * @return Returns the former value of \a list.
+ *
+ * @sa slist_init()
+ */
+NODISCARD SLIST_H_INLINE
+slist_t slist_move( slist_t *list ) {
+  slist_t const rv_list = *list;
+  MEM_ZERO( list );
+  return rv_list;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
