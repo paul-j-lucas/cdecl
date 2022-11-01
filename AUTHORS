@@ -80,7 +80,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added C99 standard types, e.g., int8_t
 	added C11 _Atomic, char16_t, char32_t, _Noreturn, thread_local
 	added C11 standard types, e.g., atomic_int
-	added C23 _BitInt(N), char8_t, constexpr, digit seperators,
+	added C23 _BitInt(N), char8_t, constexpr, digit separators,
 		and fixed-type enums
 	added C23 and C++11 later attribute specifiers
 	added inline functions and variables

@@ -35,8 +35,8 @@ The `constexpr` storage class in C23 is now supported.
 ** C23 fixed type `enum`
 Fixed-type enumerations in C23 are now supported.
 
-** Digit seperators
-Digit seperators are now supported.
+** Digit separators
+Digit separators are now supported.
 
 ** C23 `reproducible` & `unsequenced`
 These C23 attributes are now supported.
