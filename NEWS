@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** C23 `constexpr` help
 Added missing `constexpr` to the help for C23.
 
+** `reproducible` and `unsequenced` man page
+Added missing `reproducible` and `unsequenced` to the manual page.
+
 
 * Changes in Cdecl 13.0
 
