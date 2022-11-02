@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 13.1
+
+** C23 `constexpr` help
+Added missing `constexpr` to the help for C23.
+
+
 * Changes in Cdecl 13.0
 
 ** Better copy constructor support

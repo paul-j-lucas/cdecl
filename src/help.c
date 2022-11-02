@@ -280,7 +280,11 @@ static void print_help_english( void ) {
     print_h( "\n" );
 
     print_help_name();
-    print_h( "store: auto | extern | register | static" );
+
+    print_h( "store: auto" );
+    if ( OPT_LANG_IS( constexpr ) )
+      print_h( " | constexpr" );
+    print_h( " | extern | register | static" );
     if ( OPT_LANG_IS( thread_local ) )
       print_h( " | thread_local" );
     else if ( OPT_LANG_IS( _Thread_local ) )
