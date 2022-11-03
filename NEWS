@@ -12,6 +12,22 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 13.1
 
+** More English synonyms
+The following English synonyms have been added:
+
+                     char 8  char8_t
+                    char 16  char16_t
+                    char 32  char32_t
+                 const-eval  consteval
+        constant-evaluation  consteval
+                 const-expr  constexpr
+        constant-expression  constexpr
+                 const-init  constinit
+    constant-initialization  constinit
+           double precision  double
+             floating point  float
+             wide character  wchar_t
+
 ** C23 `constexpr` help
 Added missing `constexpr` to the help for C23.
 

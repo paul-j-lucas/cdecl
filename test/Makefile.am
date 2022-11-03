@@ -1809,6 +1809,7 @@ endif
 #
 TESTS+=	tests/__declspec.test \
 	tests/alttokens.test \
+	tests/declare_synonyms.test \
 	tests/digraphs.test \
 	tests/gnu_attributes.test \
 	tests/help.test \

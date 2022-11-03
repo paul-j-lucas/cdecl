@@ -27,9 +27,9 @@ alignas_specifier_c ::= ALIGNAS '(' Y_INT_LIT ')' = {
   INT_LIT = 8
 }
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1359,
     kind = "built-in type",
@@ -172,9 +172,9 @@ alignas_specifier_c ::= ALIGNAS '(' type_c_ast cast_c_astp_opt ')' = {
   cast_c_astp_opt = NULL
 }
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1362,
     kind = "built-in type",
@@ -307,9 +307,9 @@ decl_c ::= decl_c_astp = {
 declare i as int aligned as long int
 cdecl> explain int* f(int x, int y)
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1364,
     kind = "built-in type",
@@ -436,9 +436,9 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1366,
     kind = "built-in type",
@@ -573,9 +573,9 @@ param_c_ast_list ::= param_c_ast = {
   ]
 }
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1367,
     kind = "built-in type",
@@ -1342,9 +1342,9 @@ decl_c ::= decl_c_astp = {
 declare i as size_t
 cdecl> explain void f(int a[], int b[4], int c[*], int d[const], int e[static 6])
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "void" (btid = 0x11),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "void" (btid = 0x11),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1373,
     kind = "built-in type",
@@ -1415,9 +1415,9 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1374,
     kind = "built-in type",
@@ -1656,9 +1656,9 @@ param_c_ast_list ::= param_c_ast = {
   ]
 }
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1377,
     kind = "built-in type",
@@ -1943,9 +1943,9 @@ param_c_ast_list ::= param_c_ast_list ',' param_c_ast = {
   ]
 }
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1380,
     kind = "built-in type",
@@ -2274,9 +2274,9 @@ param_c_ast_list ::= param_c_ast_list ',' param_c_ast = {
   ]
 }
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1383,
     kind = "built-in type",
@@ -2655,9 +2655,9 @@ param_c_ast_list ::= param_c_ast_list ',' param_c_ast = {
   ]
 }
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1386,
     kind = "built-in type",
@@ -3652,9 +3652,9 @@ decl_c ::= decl_c_astp = {
 declare f as function (a as array of int, b as array 4 of int, c as variable length array of int, d as array constant of int, e as array static 6 of int) returning void
 cdecl> explain void f()
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "void" (btid = 0x11),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "void" (btid = 0x11),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1391,
     kind = "built-in type",
@@ -3844,9 +3844,9 @@ declare f as function returning void
 cdecl> set c++
 c++decl> explain bool S::operator!() const
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "bool" (btid = 0x81),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "bool" (btid = 0x81),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1394,
     kind = "built-in type",
@@ -4007,9 +4007,9 @@ sname_c ::= NAME = {
   sname_c = "E" (none)
 }
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1397,
     kind = "built-in type",
@@ -4206,9 +4206,9 @@ decl_list_c_opt ::= <empty> = {
 define E as enumeration E of type int
 c++decl> explain int S::*p
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1399,
     kind = "built-in type",
@@ -4469,9 +4469,9 @@ decl_c ::= decl_c_astp = {
 declare p as pointer to member of structure S int
 c++decl> explain int S::x
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1402,
     kind = "built-in type",
@@ -4627,9 +4627,9 @@ decl_c ::= decl_c_astp = {
 declare x of structure S as int
 c++decl> explain operator int()
 
-builtin_no_BitInt_ast ::= builtin_no_BitInt_btid = {
-  builtin_no_BitInt_btid = "int" (btid = 0x4001),
-  builtin_no_BitInt_ast = {
+builtin_no_BitInt_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_no_BitInt_c_ast = {
     sname = "",
     unique_id = 1405,
     kind = "built-in type",

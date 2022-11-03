@@ -1,0 +1,59 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+declare c as character
+declare c as char 8
+declare c as char 16
+declare c as char 32
+
+declare c as constant char
+
+declare c as complex float
+declare i as imaginary float
+
+declare c as constant expression int
+
+declare d as double precision
+declare d as double-precision
+
+declare f as floating point
+declare f as floating-point
+
+declare i as integer
+
+declare f as external function
+declare f as no discard function
+declare f as no-discard function
+declare f as non-discardable function
+declare f as no return function
+declare f as no-return function
+declare f as non-returning function
+
+declare m as maybe unused int
+declare m as maybe-unused int
+
+declare p as restricted pointer to int
+
+declare t as thread local int
+declare t as thread-local int
+
+declare w as wide char
+declare w as wide character
+
+set c++
+
+declare f as constant evaluation function returning int
+declare f as constant-evaluation function returning int
+declare f as const-eval function returning int
+
+declare f as constant expression function returning int
+declare f as constant-expression function returning int
+declare f as const-expr function returning int
+
+declare i as constant initialization int
+declare i as constant-initialization int
+declare i as const-init int
+
+declare n as no unique address int
+declare n as no-unique-address int
+declare n as non-unique-address int
+END

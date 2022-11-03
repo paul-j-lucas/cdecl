@@ -1256,6 +1256,7 @@ static void yyerror( char const *msg ) {
 %token              Y_english
 %token              Y_evaluation
 %token              Y_expression
+%token              Y_floating
 %token              Y_function
 %token              Y_initialization
 %token              Y_into
@@ -1266,7 +1267,9 @@ static void yyerror( char const *msg ) {
 %token              Y_non_member
 %token              Y_of
 %token              Y_options
+%token              Y_point
 %token              Y_pointer
+%token              Y_precision
 %token              Y_predefined
 %token              Y_pure
 %token              Y_reference
@@ -1277,6 +1280,7 @@ static void yyerror( char const *msg ) {
 %token              Y_user
 %token              Y_user_defined
 %token              Y_variable
+%token              Y_wide
 %token              Y_width
 
                     // Precedence
@@ -1621,6 +1625,8 @@ static void yyerror( char const *msg ) {
 %type   <int_val>   array_size_int_opt
 %type   <tid>       attribute_english_atid
 %type   <int_val>   BitInt_english_int
+%type   <ast>       builtin_no_BitInt_english_ast
+%type   <tid>       builtin_no_BitInt_english_btid
 %type   <ast>       block_decl_english_ast
 %type   <ast>       builtin_type_english_ast
 %type   <ast>       class_struct_union_english_ast
@@ -1697,6 +1703,8 @@ static void yyerror( char const *msg ) {
 %type   <uint_val>  bit_field_c_uint_opt
 %type   <int_val>   BitInt_c_int
 %type   <ast_pair>  block_decl_c_astp
+%type   <ast>       builtin_no_BitInt_c_ast
+%type   <tid>       builtin_no_BitInt_c_btid
 %type   <ast>       builtin_type_c_ast
 %type   <ast>       class_struct_union_c_ast
 %type   <ast_pair>  decl_c_astp decl2_c_astp
@@ -1763,8 +1771,6 @@ static void yyerror( char const *msg ) {
 %type   <tid>       _Noreturn_atid
 %type   <name>      any_name any_name_exp
 %type   <tdef>      any_typedef
-%type   <ast>       builtin_no_BitInt_ast
-%type   <tid>       builtin_no_BitInt_btid
 %type   <tid>       class_struct_btid class_struct_btid_opt
 %type   <tid>       class_struct_union_btid class_struct_union_btid_exp
 %type   <oper_id>   c_operator
@@ -1773,7 +1779,7 @@ static void yyerror( char const *msg ) {
 %type   <name>      glob glob_opt
 %type   <help>      help_what_opt
 %type   <tid>       inline_stid_opt
-%type   <int_val>   int_exp
+%type   <int_val>   int_exp int_opt
 %type   <ast>       name_ast
 %type   <name>      name_exp
 %type   <tid>       namespace_btid_exp
@@ -5468,7 +5474,7 @@ atomic_specifier_type_c_ast
 /// Gibberish C/C++ built-in types ////////////////////////////////////////////
 
 builtin_type_c_ast
-  : builtin_no_BitInt_ast
+  : builtin_no_BitInt_c_ast
   | BitInt_c_int
     {
       DUMP_START( "builtin_type_c_ast", "BitInt_c_int" );
@@ -5483,21 +5489,21 @@ builtin_type_c_ast
     }
   ;
 
-builtin_no_BitInt_ast
-  : builtin_no_BitInt_btid
+builtin_no_BitInt_c_ast
+  : builtin_no_BitInt_c_btid
     {
-      DUMP_START( "builtin_no_BitInt_ast", "builtin_no_BitInt_btid" );
-      DUMP_TID( "builtin_no_BitInt_btid", $1 );
+      DUMP_START( "builtin_no_BitInt_c_ast", "builtin_no_BitInt_c_btid" );
+      DUMP_TID( "builtin_no_BitInt_c_btid", $1 );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = c_tid_check( $1, C_TPID_BASE );
 
-      DUMP_AST( "builtin_no_BitInt_ast", $$ );
+      DUMP_AST( "builtin_no_BitInt_c_ast", $$ );
       DUMP_END();
     }
   ;
 
-builtin_no_BitInt_btid
+builtin_no_BitInt_c_btid
   : Y_void
   | Y_auto_TYPE
   | Y__Bool
@@ -6900,7 +6906,7 @@ unmodified_type_english_ast
   ;
 
 builtin_type_english_ast
-  : builtin_no_BitInt_ast
+  : builtin_no_BitInt_english_ast
   | BitInt_english_int
     {
       DUMP_START( "builtin_type_english_ast", "BitInt_english_int" );
@@ -6913,6 +6919,51 @@ builtin_type_english_ast
       DUMP_AST( "builtin_type_english_ast", $$ );
       DUMP_END();
     }
+  ;
+
+builtin_no_BitInt_english_ast
+  : builtin_no_BitInt_english_btid
+    {
+      DUMP_START( "builtin_no_BitInt_english_ast",
+                  "builtin_no_BitInt_english_btid" );
+      DUMP_TID( "builtin_no_BitInt_english_btid", $1 );
+
+      $$ = c_ast_new_gc( K_BUILTIN, &@$ );
+      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
+
+      DUMP_AST( "builtin_no_BitInt_english_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+builtin_no_BitInt_english_btid
+  : Y_void
+  | Y_auto_TYPE
+  | Y__Bool
+  | Y_bool
+  | Y_char int_opt
+    {
+      switch ( $2 ) {
+        case  0: $$ = TB_CHAR    ; break;
+        case  8: $$ = TB_CHAR8_T ; break;
+        case 16: $$ = TB_CHAR16_T; break;
+        case 32: $$ = TB_CHAR32_T; break;
+        default:
+          print_error( &@2, "bits must be one of 8, 16, or 32\n" );
+          PARSE_ABORT();
+      } // switch
+    }
+  | Y_char8_t
+  | Y_char16_t
+  | Y_char32_t
+  | Y_wchar_t
+  | Y_wide char_exp               { $$ = TB_WCHAR_T; }
+  | Y_int
+  | Y_float
+  | Y_floating point_exp          { $$ = TB_FLOAT; }
+  | Y_double precision_opt        { $$ = TB_DOUBLE; }
+  | Y_EMC__Accum
+  | Y_EMC__Fract
   ;
 
 BitInt_english_int
@@ -7517,6 +7568,14 @@ cast_exp
     }
   ;
 
+char_exp
+  : Y_char
+  | error
+    {
+      keyword_expected( L_char );
+    }
+  ;
+
 class_struct_union_btid_exp
   : class_struct_union_btid
   | error
@@ -7670,6 +7729,11 @@ int_exp
     }
   ;
 
+int_opt
+  : /* empty */                   { $$ = 0; }
+  | Y_INT_LIT
+  ;
+
 literal_exp
   : Y_literal
   | error
@@ -7779,6 +7843,18 @@ operator_exp
 operator_opt
   : /* empty */
   | Y_operator
+  ;
+
+point_exp
+  : Y_point
+  | error
+    {
+      keyword_expected( L_point );
+    }
+
+precision_opt
+  : /* empty */
+  | Y_precision
   ;
 
 quote2_exp

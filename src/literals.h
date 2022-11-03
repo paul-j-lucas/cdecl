@@ -81,6 +81,7 @@ extern char const L_exit[];
 extern char const L_explain[];
 extern char const L_expr[];               // synonym for "expression"
 extern char const L_expression[];
+extern char const L_floating[];           // "floating point"
 extern char const L_func[];               // synonym for "function"
 extern char const L_function[];
 extern char const L_help[];
@@ -96,7 +97,9 @@ extern char const H_non_mbr[];            // synonym for "non-member"
 extern char const H_non_member[];
 extern char const L_of[];
 extern char const L_options[];
+extern char const L_point[];
 extern char const L_pointer[];
+extern char const L_precision[];
 extern char const L_predef[];             // synonym for "predefined"
 extern char const L_predefined[];
 extern char const L_ptr[];                // synonym for "pointer"
@@ -112,6 +115,7 @@ extern char const L_show[];
 extern char const L_to[];
 extern char const L_user[];
 extern char const L_vector[];             // synonym for "array"
+extern char const L_wide[];               // "wide character"
 extern char const L_width[];
 
 // K&R
@@ -240,7 +244,6 @@ extern char const L_alignof[];
 extern char const L_carries_dependency[];
 extern char const L_carries[], L_dependency[];
 extern char const H_carries_dependency[]; // English for "carries_dependency"
-extern char const L_constexpr[];
 extern char const L_decltype[];
 extern char const L_final[];
 extern char const L_noexcept[];
@@ -266,6 +269,9 @@ extern char const L_typeof_unqual[];
 extern char const L_unsequenced[];
 
 // C23 & C++11
+extern char const L_constexpr[];
+extern char const H_const_expr[];
+extern char const H_constant_expression[];
 extern char const L_nullptr[];
 extern char const L_static_assert[];
 extern char const L_thread_local[];
@@ -289,7 +295,11 @@ extern char const H_non_discardable[];    // English for "nodiscard"
 extern char const L_char8_t[];
 extern char const L_concept[];
 extern char const L_consteval[];
+extern char const H_const_eval[];
+extern char const H_constant_evaluation[];
 extern char const L_constinit[];
+extern char const H_const_init[];
+extern char const H_constant_initialization[];
 extern char const L_co_await[];
 extern char const L_co_return[];
 extern char const L_co_yield[];
