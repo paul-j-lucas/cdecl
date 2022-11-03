@@ -2220,6 +2220,7 @@ udc_storage_class_english_stid
   | Y_final
   | Y_friend
   | Y_inline
+  | Y_no Y_except                 { $$ = TS_NOEXCEPT; }
   | Y_noexcept
   | Y_override
   | Y_throw
