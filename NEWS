@@ -28,6 +28,11 @@ The following English synonyms have been added:
              floating point  float
              wide character  wchar_t
 
+** More english for user-defined conversions
+User-defined conversions in pseudo-English now allow "const[ant] eval[uation]",
+"const[ant] expr[ession]", and "const[ant] init[ialization]" for a storage
+class.
+
 ** C23 `constexpr` help
 Added missing `constexpr` to the help for C23.
 

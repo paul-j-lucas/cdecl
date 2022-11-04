@@ -1223,6 +1223,7 @@ static void yyerror( char const *msg ) {
 %token              Y_cast
 //                  Y_class             // covered in C++
 //                  Y_const             // covered in C89
+%token              Y_const_ENG         // see comment in lexer.l
 %token              Y_declare
 %token              Y_define
 %token              Y_dynamic
@@ -1776,6 +1777,7 @@ static void yyerror( char const *msg ) {
 %type   <oper_id>   c_operator
 %type   <tid>       cv_qualifier_stid cv_qualifier_list_stid_opt
 %type   <tid>       enum_btid
+%type   <tid>       eval_expr_init_stid
 %type   <name>      glob glob_opt
 %type   <help>      help_what_opt
 %type   <tid>       inline_stid_opt
@@ -2212,7 +2214,11 @@ udc_storage_class_english_type
    * since only special members can be deleted anyway.
    */
 udc_storage_class_english_stid
-  : Y_consteval
+  : Y_const_ENG eval_expr_init_stid
+    {
+      $$ = $2;
+    }
+  | Y_consteval
   | Y_constexpr
   | Y_constinit
   | Y_explicit
@@ -6563,9 +6569,10 @@ attribute_english_atid
 storage_class_english_stid
   : Y_auto_STORAGE
   | Y_Apple___block
-  | Y_const Y_evaluation          { $$ = TS_CONSTEVAL; }
-  | Y_const Y_expression          { $$ = TS_CONSTEXPR; }
-  | Y_const Y_initialization      { $$ = TS_CONSTINIT; }
+  | Y_const_ENG eval_expr_init_stid
+    {
+      $$ = $2;
+    }
   | Y_consteval
   | Y_constexpr
   | Y_constinit
@@ -6595,6 +6602,19 @@ storage_class_english_stid
   | Y_typedef
   | Y_virtual
   | Y_pure virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
+  ;
+
+eval_expr_init_stid
+  : Y_evaluation                  { $$ = TS_CONSTEVAL; }
+  | Y_expression                  { $$ = TS_CONSTEXPR; }
+  | Y_initialization              { $$ = TS_CONSTINIT; }
+  //
+  // Normally, this rule would be named eval_expr_init_stid_exp and there would
+  // be "| error" as the last alternate.  However, this rule is only ever
+  // preceded by the Y_const_ENG token in the grammar and that token is a
+  // special case that's returned only when followed by one of these three
+  // tokens so we can't possibly get something else here.
+  //
   ;
 
 linkage_stid
