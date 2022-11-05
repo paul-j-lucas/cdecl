@@ -166,15 +166,14 @@ void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn ) {
     if ( curr == NULL )
       break;
     if ( !(*pred_fn)( curr->data ) ) {
-      prev = prev->next;
+      prev = curr;
+      continue;
     }
-    else {
-      if ( list->tail == curr )
-        list->tail = prev;
-      prev->next = curr->next;
-      free( curr );
-      --list->len;
-    }
+    if ( list->tail == curr )
+      list->tail = prev;
+    prev->next = curr->next;
+    free( curr );
+    --list->len;
   } // for
 }
 
