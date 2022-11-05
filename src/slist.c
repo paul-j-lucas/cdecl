@@ -179,45 +179,44 @@ void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn ) {
 
 void* slist_pop_front( slist_t *list ) {
   assert( list != NULL );
-  if ( list->head != NULL ) {
-    void *const data = list->head->data;
-    slist_node_t *const next = list->head->next;
-    FREE( list->head );
-    list->head = next;
-    if ( list->head == NULL )
-      list->tail = NULL;
-    --list->len;
-    return data;
-  }
-  return NULL;
+  if ( list->head == NULL )
+    return NULL;
+  void *const data = list->head->data;
+  slist_node_t *const next = list->head->next;
+  FREE( list->head );
+  list->head = next;
+  if ( list->head == NULL )
+    list->tail = NULL;
+  --list->len;
+  return data;
 }
 
 void slist_push_back( slist_t *list, void *data ) {
   assert( list != NULL );
-  slist_node_t *const new_tail_node = MALLOC( slist_node_t, 1 );
-  new_tail_node->data = data;
-  new_tail_node->next = NULL;
+  slist_node_t *const new_tail = MALLOC( slist_node_t, 1 );
+  new_tail->data = data;
+  new_tail->next = NULL;
 
   if ( list->head == NULL ) {
     assert( list->tail == NULL );
-    list->head = new_tail_node;
+    list->head = new_tail;
   } else {
     assert( list->tail != NULL );
     assert( list->tail->next == NULL );
-    list->tail->next = new_tail_node;
+    list->tail->next = new_tail;
   }
-  list->tail = new_tail_node;
+  list->tail = new_tail;
   ++list->len;
 }
 
 void slist_push_front( slist_t *list, void *data ) {
   assert( list != NULL );
-  slist_node_t *const new_head_node = MALLOC( slist_node_t, 1 );
-  new_head_node->data = data;
-  new_head_node->next = list->head;
-  list->head = new_head_node;
+  slist_node_t *const new_head = MALLOC( slist_node_t, 1 );
+  new_head->data = data;
+  new_head->next = list->head;
+  list->head = new_head;
   if ( list->tail == NULL )
-    list->tail = new_head_node;
+    list->tail = new_head;
   ++list->len;
 }
 
