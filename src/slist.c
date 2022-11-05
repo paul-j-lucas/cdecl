@@ -183,7 +183,7 @@ void* slist_pop_front( slist_t *list ) {
     return NULL;
   void *const data = list->head->data;
   slist_node_t *const next = list->head->next;
-  FREE( list->head );
+  free( list->head );
   list->head = next;
   if ( list->head == NULL )
     list->tail = NULL;
