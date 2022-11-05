@@ -181,9 +181,9 @@ void* slist_pop_front( slist_t *list ) {
   assert( list != NULL );
   if ( list->head != NULL ) {
     void *const data = list->head->data;
-    slist_node_t *const next_node = list->head->next;
+    slist_node_t *const next = list->head->next;
     FREE( list->head );
-    list->head = next_node;
+    list->head = next;
     if ( list->head == NULL )
       list->tail = NULL;
     --list->len;
