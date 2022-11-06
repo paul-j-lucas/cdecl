@@ -164,7 +164,7 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
 
 void strbuf_reset( strbuf_t *sbuf ) {
   assert( sbuf != NULL );
-  if ( sbuf->len > 0 ) {
+  if ( sbuf->str != NULL ) {
     sbuf->str[0] = '\0';
     sbuf->len = 0;
   }
