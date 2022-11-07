@@ -2268,13 +2268,13 @@ alignas_specifier_english
     {
       $$.kind = C_ALIGNAS_EXPR;
       $$.loc = @1;
-      $$.as.expr = STATIC_CAST( unsigned, $2 );
+      $$.expr = STATIC_CAST( unsigned, $2 );
     }
   | aligned_english decl_english_ast
     {
       $$.kind = C_ALIGNAS_TYPE;
       $$.loc = @1;
-      $$.as.type_ast = $2;
+      $$.type_ast = $2;
     }
   | aligned_english error
     {
@@ -2836,7 +2836,7 @@ alignas_specifier_c
 
       $$.kind = C_ALIGNAS_EXPR;
       $$.loc = @1;
-      $$.as.expr = STATIC_CAST( unsigned, $3 );
+      $$.expr = STATIC_CAST( unsigned, $3 );
     }
 
   | alignas lparen_exp type_c_ast { ia_type_ast_push( $3 ); }
@@ -2855,7 +2855,7 @@ alignas_specifier_c
 
       $$.kind = C_ALIGNAS_TYPE;
       $$.loc = @1;
-      $$.as.type_ast = c_ast_patch_placeholder( type_ast, cast_ast );
+      $$.type_ast = c_ast_patch_placeholder( type_ast, cast_ast );
     }
 
   | alignas lparen_exp error ')'
@@ -3551,11 +3551,11 @@ decl_c
         case C_ALIGNAS_NONE:
           break;
         case C_ALIGNAS_EXPR:
-          DUMP_INT( "(alignas_specifier_c.as.expr)", in_attr.align.as.expr );
+          DUMP_INT( "(alignas_specifier_c.expr)", in_attr.align.expr );
           break;
         case C_ALIGNAS_TYPE:
           DUMP_AST(
-            "(alignas_specifier_c.as.type_ast)", in_attr.align.as.type_ast
+            "(alignas_specifier_c.type_ast)", in_attr.align.type_ast
           );
           break;
       } // switch
@@ -5489,7 +5489,7 @@ builtin_type_c_ast
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = TB_BITINT;
-      $$->as.builtin.as.BitInt.width = STATIC_CAST( unsigned, $1 );
+      $$->as.builtin.BitInt.width = STATIC_CAST( unsigned, $1 );
 
       DUMP_AST( "builtin_type_c_ast", $$ );
       DUMP_END();
@@ -6935,7 +6935,7 @@ builtin_type_english_ast
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = TB_BITINT;
-      $$->as.builtin.as.BitInt.width = STATIC_CAST( unsigned, $1 );
+      $$->as.builtin.BitInt.width = STATIC_CAST( unsigned, $1 );
 
       DUMP_AST( "builtin_type_english_ast", $$ );
       DUMP_END();

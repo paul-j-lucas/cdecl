@@ -184,8 +184,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
 
     case K_BUILTIN:
       FPUTS( c_type_name_english( &ast->type ), eout );
-      if ( ast->as.builtin.as.BitInt.width > 0 )
-        FPRINTF( eout, " width %u bits", ast->as.builtin.as.BitInt.width );
+      if ( ast->as.builtin.BitInt.width > 0 )
+        FPRINTF( eout, " width %u bits", ast->as.builtin.BitInt.width );
       c_ast_bit_width_english( ast, eout );
       break;
 
@@ -355,12 +355,12 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
     case C_ALIGNAS_NONE:
       break;
     case C_ALIGNAS_EXPR:
-      if ( ast->align.as.expr > 0 )
-        FPRINTF( eout, " aligned as %u bytes", ast->align.as.expr );
+      if ( ast->align.expr > 0 )
+        FPRINTF( eout, " aligned as %u bytes", ast->align.expr );
       break;
     case C_ALIGNAS_TYPE:
       FPUTS( " aligned as ", eout );
-      c_ast_visit_english( ast->align.as.type_ast, eout );
+      c_ast_visit_english( ast->align.type_ast, eout );
       break;
   } // switch
 

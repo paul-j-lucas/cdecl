@@ -131,7 +131,7 @@ struct c_alignas {
   union {
     unsigned        expr;               ///< Aligned to this number of bytes.
     c_ast_t        *type_ast;           ///< Aligned the same as this type.
-  } as;                                 ///< Union discriminator.
+  };
   c_alignas_kind_t  kind;               ///< Kind of `alignas` argument.
   c_loc_t           loc;                ///< Source location.
 };
@@ -264,7 +264,7 @@ struct c_builtin_ast {
     struct {
       unsigned    width;                ///< Width.
     } BitInt;                           ///< `_BitInt` data.
-  } as;
+  };
 };
 
 /**

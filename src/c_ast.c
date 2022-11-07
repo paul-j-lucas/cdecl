@@ -69,9 +69,9 @@ static bool c_alignas_equal( c_alignas_t const *i_align,
     case C_ALIGNAS_NONE:
       return true;
     case C_ALIGNAS_EXPR:
-      return i_align->as.expr == j_align->as.expr;
+      return i_align->expr == j_align->expr;
     case C_ALIGNAS_TYPE:
-      return c_ast_equal( i_align->as.type_ast, j_align->as.type_ast );
+      return c_ast_equal( i_align->type_ast, j_align->type_ast );
   } // switch
 
   UNEXPECTED_INT_VALUE( i_align->kind );
@@ -120,7 +120,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       break;
 
     case K_BUILTIN:
-      dup_ast->as.builtin.as.BitInt.width = ast->as.builtin.as.BitInt.width;
+      dup_ast->as.builtin.BitInt.width = ast->as.builtin.BitInt.width;
       FALLTHROUGH;
     case K_TYPEDEF:
       dup_ast->as.builtin.bit_width = ast->as.builtin.bit_width;
@@ -199,10 +199,8 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     }
 
     case K_BUILTIN:
-      if ( i_ast->as.builtin.as.BitInt.width !=
-           j_ast->as.builtin.as.BitInt.width ) {
+      if ( i_ast->as.builtin.BitInt.width != j_ast->as.builtin.BitInt.width )
         return false;
-      }
       FALLTHROUGH;
     case K_TYPEDEF:
       if ( i_ast->as.builtin.bit_width != j_ast->as.builtin.bit_width )

@@ -138,11 +138,11 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
       case C_ALIGNAS_NONE:
         break;                        // LCOV_EXCL_LINE
       case C_ALIGNAS_EXPR:
-        DUMP_FORMAT( "alignas.expr = %u,\n", ast->align.as.expr );
+        DUMP_FORMAT( "alignas.expr = %u,\n", ast->align.expr );
         break;
       case C_ALIGNAS_TYPE:
         c_ast_dump_impl(
-          ast->align.as.type_ast, indent, "alignas.type_ast", dout
+          ast->align.type_ast, indent, "alignas.type_ast", dout
         );
         FPUTS( ",\n", dout );
         break;
@@ -267,9 +267,9 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
     case K_BUILTIN:
       DUMP_COMMA;
       DUMP_FORMAT( "bit_width = %u", ast->as.builtin.bit_width );
-      if ( ast->as.builtin.as.BitInt.width > 0 ) {
+      if ( ast->as.builtin.BitInt.width > 0 ) {
         FPUTS( ",\n", dout );
-        DUMP_FORMAT( "BitInt.width = %u", ast->as.builtin.as.BitInt.width );
+        DUMP_FORMAT( "BitInt.width = %u", ast->as.builtin.BitInt.width );
       }
       break;
 

@@ -326,7 +326,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
       case C_ALIGNAS_NONE:
         break;                          // LCOV_EXCL_LINE
       case C_ALIGNAS_EXPR: {
-        unsigned const alignment = ast->align.as.expr;
+        unsigned const alignment = ast->align.expr;
         if ( !is_01_bit( alignment ) ) {
           print_error( &ast->align.loc,
             "\"%u\": alignment must be a power of 2\n", alignment
@@ -336,7 +336,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
         break;
       }
       case C_ALIGNAS_TYPE:
-        return c_ast_check_declaration( ast->align.as.type_ast );
+        return c_ast_check_declaration( ast->align.type_ast );
     } // switch
   }
 
@@ -496,7 +496,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
   if ( c_tid_is_any( ast->type.btids, TB_BITINT ) ) {
     unsigned const min_bits =
       1u + !c_tid_is_any( ast->type.btids, TB_UNSIGNED );
-    if ( ast->as.builtin.as.BitInt.width < min_bits ) {
+    if ( ast->as.builtin.BitInt.width < min_bits ) {
       print_error( &ast->loc,
         "%s must be at least %u bit%s\n",
         c_type_name_error( &ast->type ), min_bits, plural_s( min_bits )

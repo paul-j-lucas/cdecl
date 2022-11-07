@@ -300,8 +300,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_BUILTIN:
       if ( (g->flags & C_GIB_OMIT_TYPE) == 0 )
         FPUTS( c_type_name_c( &type ), g->gout );
-      if ( ast->as.builtin.as.BitInt.width > 0 )
-        FPRINTF( g->gout, "(%u)", ast->as.builtin.as.BitInt.width );
+      if ( ast->as.builtin.BitInt.width > 0 )
+        FPRINTF( g->gout, "(%u)", ast->as.builtin.BitInt.width );
       g_print_space_ast_name( g, ast );
       g_print_ast_bit_width( g, ast );
       break;
@@ -1003,11 +1003,11 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
         case C_ALIGNAS_NONE:
           break;
         case C_ALIGNAS_EXPR:
-          FPRINTF( gout, "%s(%u) ", alignas_name(), ast->align.as.expr );
+          FPRINTF( gout, "%s(%u) ", alignas_name(), ast->align.expr );
           break;
         case C_ALIGNAS_TYPE:
           FPRINTF( gout, "%s(", alignas_name() );
-          c_ast_gibberish( ast->align.as.type_ast, C_GIB_DECL, gout );
+          c_ast_gibberish( ast->align.type_ast, C_GIB_DECL, gout );
           FPUTS( ") ", gout );
           break;
       } // switch
