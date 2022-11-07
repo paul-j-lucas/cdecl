@@ -54,7 +54,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern FILE        *cdecl_fin;          ///< File in.
 extern FILE        *cdecl_fout;         ///< File out.
 extern bool         cdecl_initialized;  ///< Initialized (read conf. file)?
 extern bool         cdecl_interactive;  ///< Interactive (connected to a tty)?

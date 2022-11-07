@@ -46,6 +46,7 @@
 #include <stdnoreturn.h>
 #include <string.h>
 #include <sysexits.h>
+#include <unistd.h>                     /* for dup2(2) */
 
 // in ascending option character ASCII order
 #define OPT_DIGRAPHS        2
@@ -564,17 +565,19 @@ use_help:
     SOPT(TRIGRAPHS)
   );
 
-  if ( strcmp( fin_path, "-" ) != 0 &&
-       (cdecl_fin = fopen( fin_path, "r" )) == NULL ) {
-    FATAL_ERR( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
-  }
-  if ( strcmp( fout_path, "-" ) != 0 &&
-       (cdecl_fout = fopen( fout_path, "w" )) == NULL ) {
-    FATAL_ERR( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
+  if ( strcmp( fin_path, "-" ) != 0 ) {
+    FILE *const fin = fopen( fin_path, "r" );
+    if ( fin == NULL )
+      FATAL_ERR( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
+    MAYBE_UNUSED int const fd = dup2( fileno( fin ), STDIN_FILENO );
+    assert( fd == STDIN_FILENO );
   }
 
-  if ( cdecl_fin == NULL )
-    cdecl_fin = stdin;
+  if ( strcmp( fout_path, "-" ) != 0 ) {
+    cdecl_fout = fopen( fout_path, "w" );
+    if ( cdecl_fout == NULL )
+      FATAL_ERR( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
+  }
   if ( cdecl_fout == NULL )
     cdecl_fout = stdout;
 

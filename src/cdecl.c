@@ -60,7 +60,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variable definitions
-FILE         *cdecl_fin;
 FILE         *cdecl_fout;
 bool          cdecl_initialized;
 bool          cdecl_interactive;
@@ -110,7 +109,7 @@ int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   check_atexit( &cdecl_cleanup );
   cli_options_init( &argc, &argv );
-  cdecl_interactive = isatty( fileno( cdecl_fin ) );
+  cdecl_interactive = isatty( STDIN_FILENO );
   lexer_init();
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
@@ -281,7 +280,7 @@ NODISCARD
 static int cdecl_parse_stdin( void ) {
   if ( cdecl_interactive && opt_prompt )
     FPUTS( "Type \"help\" or \"?\" for help\n", cdecl_fout );
-  return cdecl_parse_file( cdecl_fin, cdecl_fout, /*return_on_error=*/false );
+  return cdecl_parse_file( stdin, cdecl_fout, /*return_on_error=*/false );
 }
 
 /**
