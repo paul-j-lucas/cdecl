@@ -331,7 +331,7 @@ static inline void newline( void ) {
  * @return Returns the integer value.
  */
 NODISCARD
-static inline int parse_int( int base ) {
+static int parse_int( int base ) {
   char const *s = lexer_token;
   if ( strchr( lexer_token, '\'' ) != NULL )
     s = check_strdup_except( lexer_token, '\'' );
