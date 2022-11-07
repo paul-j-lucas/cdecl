@@ -300,8 +300,8 @@
  *
  * @sa #DUMP_AST()
  */
-#define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " );         \
+#define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG(   \
+  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout );  \
   c_ast_list_dump( &(AST_LIST), stdout ); )
 
 /**
@@ -310,8 +310,8 @@
  * @param KEY The key name to print.
  * @param BOOL The `bool` to dump.
  */
-#define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(  \
-  DUMP_COMMA; PUTS( "  " KEY " = " );   \
+#define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(          \
+  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout );  \
   bool_dump( BOOL, stdout ); )
 
 /**
@@ -319,7 +319,7 @@
  *
  * @sa #DUMP_START()
  */
-#define DUMP_END()                IF_DEBUG( PUTS( "\n}\n" ); )
+#define DUMP_END()                IF_DEBUG( FPUTS( "\n}\n", stdout ); )
 
 /**
  * Dumps an integer.
@@ -341,8 +341,8 @@
  * @sa #DUMP_SNAME_LIST()
  * @sa #DUMP_STR()
  */
-#define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " );   \
+#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(         \
+  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout );  \
   c_sname_dump( &(SNAME), stdout ); )
 
 /**
@@ -353,8 +353,8 @@
  *
  * @sa #DUMP_SNAME()
  */
-#define DUMP_SNAME_LIST(KEY,LIST) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " );       \
+#define DUMP_SNAME_LIST(KEY,LIST) IF_DEBUG(     \
+  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout );  \
   c_sname_list_dump( &(LIST), stdout ); )
 
 #ifdef ENABLE_CDECL_DEBUG
@@ -414,9 +414,9 @@
  * @sa #DUMP_TID
  * @sa #DUMP_TYPE
  */
-#define DUMP_START(NAME,PROD)                           \
-  bool dump_comma = false;                              \
-  IF_DEBUG( PUTS( "\n" NAME " ::= " PROD " = {\n" ); )
+#define DUMP_START(NAME,PROD) \
+  bool dump_comma = false;    \
+  IF_DEBUG( FPUTS( "\n" NAME " ::= " PROD " = {\n", stdout ); )
 #else
 #define DUMP_START(NAME,PROD)     /* nothing */
 #endif
@@ -431,7 +431,7 @@
  * @sa #DUMP_SNAME()
  */
 #define DUMP_STR(KEY,STR) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " ); str_dump( (STR), stdout ); )
+  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout ); str_dump( (STR), stdout ); )
 
 /**
  * Dumps a \ref c_tid_t.
@@ -442,7 +442,7 @@
  * @sa #DUMP_TYPE()
  */
 #define DUMP_TID(KEY,TID) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " ); c_tid_dump( (TID), stdout ); )
+  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout ); c_tid_dump( (TID), stdout ); )
 
 /**
  * Dumps a \ref c_type.
@@ -453,7 +453,7 @@
  * @sa #DUMP_TID()
  */
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_dump( &(TYPE), stdout ); )
+  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout ); c_type_dump( &(TYPE), stdout ); )
 
 /** @} */
 

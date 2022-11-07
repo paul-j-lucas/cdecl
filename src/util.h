@@ -252,7 +252,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPRINTF()
  * @sa #EPUTC()
  * @sa #FPUTS()
- * @sa #PUTS()
  */
 #define EPUTS(S)                  fputs( (S), stderr )
 
@@ -451,16 +450,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #STATIC_CAST()
  */
 #define POINTER_CAST(T,EXPR)      ((T)(uintptr_t)(EXPR))
-
-/**
- * Shorthand for printing a C string to standard output.
- *
- * @param S The C string to print.
- *
- * @sa #EPUTS()
- * @sa #FPUTS()
- */
-#define PUTS(S)                   FPUTS( (S), stdout )
 
 /**
  * Convenience macro for calling check_realloc().
