@@ -146,9 +146,9 @@ static size_t print_caret( size_t error_column ) {
 
   size_t caret_column;
 
-  if ( opt_echo_commands || opt_interactive ) {
+  if ( cdecl_interactive || opt_echo_commands ) {
     //
-    // If we're either echoing commands or interactive, we can put the ^ under
+    // If we're either interactive or echoing commands, we can put the ^ under
     // the already existing token we printed or the user typed for the recent
     // command, but we have to add the length of the prompt.
     //

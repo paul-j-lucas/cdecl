@@ -46,7 +46,6 @@
 #include <stdnoreturn.h>
 #include <string.h>
 #include <sysexits.h>
-#include <unistd.h>                     /* for isatty(3) */
 
 // in ascending option character ASCII order
 #define OPT_DIGRAPHS        2
@@ -68,7 +67,6 @@
 #define OPT_FLEX_DEBUG      F
 #endif /* ENABLE_FLEX_DEBUG */
 #define OPT_HELP            h
-#define OPT_INTERACTIVE     i
 #define OPT_EXPLICIT_INT    I
 #define OPT_COLOR           k
 #define OPT_OUTPUT          o
@@ -121,7 +119,6 @@ static struct option const CLI_OPTIONS_LONG[] = {
   { "flex-debug",     no_argument,        NULL, COPT(FLEX_DEBUG)    },
 #endif /* ENABLE_FLEX_DEBUG */
   { "help",           no_argument,        NULL, COPT(HELP)          },
-  { "interactive",    no_argument,        NULL, COPT(INTERACTIVE)   },
   { "language",       required_argument,  NULL, COPT(LANGUAGE)      },
   { "no-config",      no_argument,        NULL, COPT(NO_CONFIG)     },
   { "no-prompt",      no_argument,        NULL, COPT(NO_PROMPT)     },
@@ -168,7 +165,6 @@ static char const   CLI_OPTIONS_SHORT[] = ":"
   SOPT(FLEX_DEBUG)    SOPT_NO_ARGUMENT
 #endif /* ENABLE_FLEX_DEBUG */
   SOPT(HELP)          SOPT_NO_ARGUMENT
-  SOPT(INTERACTIVE)   SOPT_NO_ARGUMENT
   SOPT(LANGUAGE)      SOPT_REQUIRED_ARGUMENT
   SOPT(NO_CONFIG)     SOPT_NO_ARGUMENT
   SOPT(NO_PROMPT)     SOPT_NO_ARGUMENT
@@ -432,9 +428,6 @@ static void parse_options( int argc, char const *argv[const] ) {
       case COPT(HELP):
         print_usage = true;
         break;
-      case COPT(INTERACTIVE):
-        opt_interactive = true;
-        break;
       case COPT(LANGUAGE):
         opt_lang = parse_lang( optarg );
         break;
@@ -529,7 +522,6 @@ use_help:
 #ifdef ENABLE_FLEX_DEBUG
     SOPT(FLEX_DEBUG)
 #endif /* ENABLE_FLEX_DEBUG */
-    SOPT(INTERACTIVE)
     SOPT(LANGUAGE)
     SOPT(NO_CONFIG)
     SOPT(NO_PROMPT)
@@ -562,7 +554,6 @@ use_help:
     SOPT(FLEX_DEBUG)
 #endif /* ENABLE_FLEX_DEBUG */
     SOPT(HELP)
-    SOPT(INTERACTIVE)
     SOPT(LANGUAGE)
     SOPT(NO_CONFIG)
     SOPT(NO_PROMPT)
@@ -636,7 +627,6 @@ static void usage( int status ) {
 "  --flex-debug         (-%c) Print Flex debug output.\n"
 #endif /* ENABLE_FLEX_DEBUG */
 "  --help               (-%c) Print this help and exit.\n"
-"  --interactive        (-%c) Force interactive mode.\n"
 "  --language=LANG      (-%c) Use LANG.\n"
 "  --no-config          (-%c) Suppress reading configuration file.\n"
 "  --no-prompt          (-%c) Suppress prompt.\n"
@@ -670,7 +660,6 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n",
     COPT(FLEX_DEBUG),
 #endif /* ENABLE_FLEX_DEBUG */
     COPT(HELP),
-    COPT(INTERACTIVE),
     COPT(LANGUAGE),
     COPT(NO_CONFIG),
     COPT(NO_PROMPT),
@@ -702,8 +691,6 @@ void cli_options_init( int *pargc, char const **pargv[const] ) {
   opt_flex_debug = false;
 #endif /* ENABLE_FLEX_DEBUG */
   parse_options( *pargc, *pargv );
-  if ( !opt_interactive )
-    opt_interactive = isatty( fileno( cdecl_fin ) );
   c_lang_set( opt_lang );
   *pargc -= optind;
   *pargv += optind;

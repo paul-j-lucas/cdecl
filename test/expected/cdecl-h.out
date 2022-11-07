@@ -12,7 +12,6 @@ options:
   --explicit-int=WHEN  (-I) Print "int" explicitly WHEN.
   --file=FILE          (-f) Read from FILE [default: stdin].
   --help               (-h) Print this help and exit.
-  --interactive        (-i) Force interactive mode.
   --language=LANG      (-x) Use LANG.
   --no-config          (-C) Suppress reading configuration file.
   --no-prompt          (-p) Suppress prompt.

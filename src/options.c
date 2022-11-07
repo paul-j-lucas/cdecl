@@ -48,7 +48,6 @@ bool                opt_echo_commands;
 bool                opt_explain;
 c_tid_t             opt_explicit_ecsu = TB_STRUCT | TB_UNION;
 c_graph_t           opt_graph;
-bool                opt_interactive;
 c_lang_id_t         opt_lang;
 bool                opt_prompt = true;
 bool                opt_read_conf = true;

@@ -33,6 +33,10 @@ User-defined conversions in pseudo-English now allow "const[ant] eval[uation]",
 "const[ant] expr[ession]", and "const[ant] init[ialization]" for a storage
 class.
 
+** Removed `--interactive` & `-i` options
+Removed these command-line options.  They've been in cdecl since the beginning,
+but never seemed to have a justification.
+
 ** C23 `constexpr` help
 Added missing `constexpr` to the help for C23.
 

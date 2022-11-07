@@ -53,6 +53,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sysexits.h>
+#include <unistd.h>                     /* for isatty(3) */
 
 /// @endcond
 
@@ -62,6 +63,7 @@
 FILE         *cdecl_fin;
 FILE         *cdecl_fout;
 bool          cdecl_initialized;
+bool          cdecl_interactive;
 cdecl_mode_t  cdecl_mode;
 char const   *me;
 
@@ -108,6 +110,7 @@ int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   check_atexit( &cdecl_cleanup );
   cli_options_init( &argc, &argv );
+  cdecl_interactive = isatty( fileno( cdecl_fin ) );
   lexer_init();
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
@@ -276,7 +279,7 @@ static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
  */
 NODISCARD
 static int cdecl_parse_stdin( void ) {
-  if ( opt_interactive && opt_prompt )
+  if ( cdecl_interactive && opt_prompt )
     FPUTS( "Type \"help\" or \"?\" for help\n", cdecl_fout );
   return cdecl_parse_file( cdecl_fin, cdecl_fout, /*return_on_error=*/false );
 }
@@ -369,7 +372,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   PERROR_EXIT_IF( temp_file == NULL, EX_IOERR );
   yyrestart( temp_file );
 
-  if ( opt_echo_commands && !opt_interactive && cdecl_initialized ) {
+  if ( opt_echo_commands && !cdecl_interactive && cdecl_initialized ) {
     str_rtrim_len( s, &s_len );
     FPRINTF( cdecl_fout,
       "%s%.*s\n", cdecl_prompt[0], STATIC_CAST( int, s_len ), s

@@ -175,13 +175,7 @@ where \f(CW<CR>\fP is the
 .I return
 key.
 .SS Interactive Input
-If standard input is coming from a terminal
-(or either the
-.B \-\-interactive
-or
-.B \-i
-option
-was given),
+If standard input is coming from a terminal,
 a prompt of either
 \f(CWcdecl>\fP
 or
@@ -448,42 +442,6 @@ Prints a help message
 for command-line options
 and exits.
 .TP
-.BR \-\-interactive " | " \-i
-Sets interactive mode
-(even when not connected to a terminal),
-that is:
-.RS 4
-.IP \(bu 3
-Turns on prompting
-(unless either the
-.B \-\-no-prompt
-or
-.B \-p
-option
-or the
-.B "set noprompt"
-command
-was given).
-.IP \(bu
-Enables line-editing and history
-via the
-.BR readline (3)
-library
-(if available and compiled in).
-.IP \(bu
-Disables command echoing
-if set via the
-.B \-\-echo-commands
-or
-.B \-O
-option
-or the
-.B "set echo-commands"
-command.
-.RE
-.IP
-(This is the default when connected to a terminal.)
-.TP
 .BI \-\-language \f1=\fPs "\f1 | \fP" "" \-x " s"
 Specifies which version of what language
 .I s
@@ -509,7 +467,7 @@ or
 .BR \-c .
 .TP
 .BR \-\-no-prompt " | " \-p
-Suppresses printing of the prompt in interactive mode.
+Suppresses printing of the prompt.
 .TP
 .BR \-\-no-semicolon " | " \-s
 Suppresses printing of a final semicolon for C (and C++) declarations.
@@ -1041,7 +999,7 @@ commands may be given that span multiple lines
 when newlines are escaped via \f(CW\\\fP.
 When a newline is escaped,
 the next prompt
-(if interactive and enabled)
+(if enabled)
 changes to either
 .B cdecl+
 or

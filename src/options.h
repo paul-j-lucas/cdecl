@@ -72,7 +72,6 @@ extern c_tid_t      opt_explicit_ecsu;  ///< Explicit `class`|`struct`|`union`?
 #define             opt_flex_debug      yy_flex_debug
 #endif /* ENABLE_FLEX_DEBUG */
 extern c_graph_t    opt_graph;          ///< Di/Trigraph mode.
-extern bool         opt_interactive;    ///< Interactive mode?
 extern c_lang_id_t  opt_lang;           ///< Current language.
 extern bool         opt_prompt;         ///< Print the prompt?
 extern bool         opt_read_conf;      ///< Read configuration file?
