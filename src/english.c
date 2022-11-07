@@ -75,8 +75,8 @@ static void c_ast_bit_width_english( c_ast_t const *ast, FILE *eout ) {
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_BIT_FIELD ) );
   assert( eout != NULL );
 
-  if ( ast->as.bit_field.bit_width > 0 )
-    FPRINTF( eout, " width %u bits", ast->as.bit_field.bit_width );
+  if ( ast->bit_field.bit_width > 0 )
+    FPRINTF( eout, " width %u bits", ast->bit_field.bit_width );
 }
 
 /**
@@ -139,12 +139,12 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
   switch ( ast->kind ) {
     case K_ARRAY:
       c_type_print_not_base( &ast->type, eout );
-      if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
+      if ( ast->array.size == C_ARRAY_SIZE_VARIABLE )
         FPUTS( "variable length ", eout );
       FPUTS( "array ", eout );
-      fputs_sp( c_tid_name_english( ast->as.array.stids ), eout );
-      if ( ast->as.array.size >= 0 )
-        FPRINTF( eout, PRId_C_ARRAY_SIZE_T " ", ast->as.array.size );
+      fputs_sp( c_tid_name_english( ast->array.stids ), eout );
+      if ( ast->array.size >= 0 )
+        FPRINTF( eout, PRId_C_ARRAY_SIZE_T " ", ast->array.size );
       FPUTS( "of ", eout );
       break;
 
@@ -178,26 +178,26 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
         FPUTC( ' ', eout );
         c_ast_func_params_english( ast, eout );
       }
-      if ( ast->as.func.ret_ast != NULL )
+      if ( ast->func.ret_ast != NULL )
         FPUTS( " returning ", eout );
       break;
 
     case K_BUILTIN:
       FPUTS( c_type_name_english( &ast->type ), eout );
-      if ( ast->as.builtin.BitInt.width > 0 )
-        FPRINTF( eout, " width %u bits", ast->as.builtin.BitInt.width );
+      if ( ast->builtin.BitInt.width > 0 )
+        FPRINTF( eout, " width %u bits", ast->builtin.BitInt.width );
       c_ast_bit_width_english( ast, eout );
       break;
 
     case K_CLASS_STRUCT_UNION:
       FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
-      c_sname_english( &ast->as.csu.csu_sname, eout );
+      c_sname_english( &ast->csu.csu_sname, eout );
       break;
 
     case K_ENUM:
       FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
-      c_sname_english( &ast->as.enum_.enum_sname, eout );
-      if ( ast->as.enum_.of_ast != NULL )
+      c_sname_english( &ast->enum_.enum_sname, eout );
+      if ( ast->enum_.of_ast != NULL )
         FPUTS( " of type ", eout );
       else
         c_ast_bit_width_english( ast, eout );
@@ -228,14 +228,14 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       c_type_print_not_base( &ast->type, eout );
       FPRINTF( eout, "%s of ", c_kind_name( ast->kind ) );
       fputs_sp( c_tid_name_english( ast->type.btids ), eout );
-      c_sname_english( &ast->as.ptr_mbr.class_sname, eout );
+      c_sname_english( &ast->ptr_mbr.class_sname, eout );
       FPUTC( ' ', eout );
       break;
 
     case K_TYPEDEF:
       if ( !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) ) )
         FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
-      c_sname_english( &ast->as.tdef.for_ast->sname, eout );
+      c_sname_english( &ast->tdef.for_ast->sname, eout );
       c_ast_bit_width_english( ast, eout );
       break;
 
@@ -314,7 +314,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       c_type_t const *scope_type = NULL;
 
       if ( ast->kind == K_OPERATOR ) {
-        local_name = c_oper_token_c( ast->as.oper.oper_id );
+        local_name = c_oper_token_c( ast->oper.oper_id );
         if ( found_sname != NULL ) {
           scope_name = c_sname_full_name( found_sname );
           scope_type = c_sname_local_type( found_sname );

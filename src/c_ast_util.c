@@ -65,8 +65,8 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
                                       c_ast_t *of_ast ) {
   assert( array_ast != NULL );
   assert( array_ast->kind == K_ARRAY );
-  assert( array_ast->as.array.of_ast != NULL );
-  assert( array_ast->as.array.of_ast->kind == K_PLACEHOLDER );
+  assert( array_ast->array.of_ast != NULL );
+  assert( array_ast->array.of_ast->kind == K_PLACEHOLDER );
   assert( of_ast != NULL );
 
   if ( ast == NULL )
@@ -106,7 +106,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
         // int."
         //
         PJL_IGNORE_RV(
-          c_ast_add_array_impl( ast->as.ptr_ref.to_ast, array_ast, of_ast )
+          c_ast_add_array_impl( ast->ptr_ref.to_ast, array_ast, of_ast )
         );
         return ast;
       }
@@ -129,7 +129,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
         //      ast-child --> array_ast --> ast
         //
         if ( c_ast_is_parent( ast ) )
-          c_ast_set_parent( ast->as.parent.of_ast, array_ast );
+          c_ast_set_parent( ast->parent.of_ast, array_ast );
         c_ast_set_parent( array_ast, ast );
         return ast;
       }
@@ -182,8 +182,8 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast,
   assert( ast != NULL );
   assert( array_ast != NULL );
   assert( array_ast->kind == K_ARRAY );
-  assert( array_ast->as.array.of_ast != NULL );
-  assert( array_ast->as.array.of_ast->kind == K_PLACEHOLDER );
+  assert( array_ast->array.of_ast != NULL );
+  assert( array_ast->array.of_ast->kind == K_PLACEHOLDER );
   assert( of_ast != NULL );
 
   switch ( ast->kind ) {
@@ -207,7 +207,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast,
       // array of the new array; for all prior recursive calls, it's a no-op.
       //
       c_ast_t *const child_ast =
-        c_ast_append_array( ast->as.array.of_ast, array_ast, of_ast );
+        c_ast_append_array( ast->array.of_ast, array_ast, of_ast );
       c_ast_set_parent( child_ast, ast );
       return ast;
     }
@@ -240,11 +240,11 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
   assert( ast != NULL );
   assert( func_ast != NULL );
   assert( is_1_bit_only_in_set( func_ast->kind, K_ANY_FUNCTION_LIKE ) );
-  assert( func_ast->as.func.ret_ast == NULL );
+  assert( func_ast->func.ret_ast == NULL );
   assert( ret_ast != NULL );
 
   if ( (ast->kind & (K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE)) != 0 ) {
-    switch ( ast->as.parent.of_ast->kind ) {
+    switch ( ast->parent.of_ast->kind ) {
       case K_ARRAY:
       case K_POINTER:
       case K_POINTER_TO_MEMBER:
@@ -252,7 +252,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
       case K_RVALUE_REFERENCE:
         if ( ast->depth > func_ast->depth ) {
           PJL_IGNORE_RV(
-            c_ast_add_func_impl( ast->as.ptr_ref.to_ast, func_ast, ret_ast )
+            c_ast_add_func_impl( ast->ptr_ref.to_ast, func_ast, ret_ast )
           );
           return ast;
         }
@@ -273,7 +273,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
           // Note that an array of function is illegal, but we still construct
           // the AST properly and let c_ast_check_array() catch the error.
           //
-          c_ast_set_parent( ast->as.array.of_ast, func_ast );
+          c_ast_set_parent( ast->array.of_ast, func_ast );
           c_ast_set_parent( func_ast, ast );
           return ast;
         }
@@ -400,7 +400,7 @@ static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
   if ( ast->kind != K_POINTER )
     return NULL;
 
-  ast = ast->as.ptr_ref.to_ast;
+  ast = ast->ptr_ref.to_ast;
   assert( ast != NULL );
   assert( qual_stids != NULL );
   *qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
@@ -457,7 +457,7 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
   if ( ast->kind != K_REFERENCE )
     return NULL;
 
-  ast = ast->as.ptr_ref.to_ast;
+  ast = ast->ptr_ref.to_ast;
   assert( ast != NULL );
   assert( qual_stids != NULL );
   *qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
@@ -520,7 +520,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast ) {
   assert( rv_ast != NULL );
   if ( c_sname_empty( &rv_ast->sname ) )
     rv_ast->sname = c_ast_take_name( ast );
-  c_type_t const taken_type = c_ast_take_storage( array_ast->as.array.of_ast );
+  c_type_t const taken_type = c_ast_take_storage( array_ast->array.of_ast );
   c_type_or_eq( &array_ast->type, &taken_type );
   return rv_ast;
 }
@@ -530,7 +530,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
   assert( rv_ast != NULL );
   if ( c_sname_empty( &rv_ast->sname ) )
     rv_ast->sname = c_ast_take_name( ast );
-  c_type_t const taken_type = c_ast_take_storage( func_ast->as.func.ret_ast );
+  c_type_t const taken_type = c_ast_take_storage( func_ast->func.ret_ast );
   c_type_or_eq( &rv_ast->type, &taken_type );
   return rv_ast;
 }
@@ -612,7 +612,7 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
 
 bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname ) {
   ast = c_ast_is_ref_to_tid_any( ast, TB_ANY_CLASS );
-  return ast != NULL && c_sname_cmp( &ast->as.csu.csu_sname, sname ) == 0;
+  return ast != NULL && c_sname_cmp( &ast->csu.csu_sname, sname ) == 0;
 }
 
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
@@ -650,7 +650,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   //
   // If the operator is either member or non-member only, then it's that.
   //
-  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
+  c_operator_t const *const op = c_oper_get( ast->oper.oper_id );
   switch ( op->flags ) {
     case C_OP_MEMBER:
     case C_OP_NON_MEMBER:
@@ -662,10 +662,10 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   // Otherwise, the operator can be either: see if the user specified which one
   // explicitly.
   //
-  switch ( ast->as.oper.flags ) {
+  switch ( ast->oper.flags ) {
     case C_OP_MEMBER:
     case C_OP_NON_MEMBER:
-      return ast->as.oper.flags;
+      return ast->oper.flags;
   } // switch
 
   //
@@ -677,7 +677,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
 
   size_t const n_params = c_ast_params_count( ast );
 
-  switch ( ast->as.oper.oper_id ) {
+  switch ( ast->oper.oper_id ) {
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
     case C_OP_DELETE:
@@ -818,8 +818,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type ) {
 
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
   ast = c_ast_untypedef( ast );
-  return  ast->kind == K_POINTER ?
-          c_ast_untypedef( ast->as.ptr_ref.to_ast ) : NULL;
+  return ast->kind == K_POINTER ? c_ast_untypedef( ast->ptr_ref.to_ast ) : NULL;
 }
 
 c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
@@ -828,7 +827,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
     ast = c_ast_untypedef( ast );
     if ( ast->kind != K_REFERENCE )
       return ast;
-    ast = ast->as.ptr_ref.to_ast;
+    ast = ast->ptr_ref.to_ast;
   } // for
 }
 
@@ -838,7 +837,7 @@ c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast ) {
     ast = c_ast_untypedef( ast );
     if ( ast->kind != K_RVALUE_REFERENCE )
       return ast;
-    ast = ast->as.ptr_ref.to_ast;
+    ast = ast->ptr_ref.to_ast;
   } // for
 }
 
@@ -847,7 +846,7 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
     assert( ast != NULL );
     if ( ast->kind != K_TYPEDEF )
       return ast;
-    ast = ast->as.tdef.for_ast;
+    ast = ast->tdef.for_ast;
   } // for
 }
 
@@ -859,7 +858,7 @@ c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast, c_tid_t *qual_stids ) {
     *qual_stids |= ast->type.stids & TS_ANY_QUALIFIER;
     if ( ast->kind != K_TYPEDEF )
       return ast;
-    ast = ast->as.tdef.for_ast;
+    ast = ast->tdef.for_ast;
   } // for
 }
 

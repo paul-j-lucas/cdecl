@@ -2114,7 +2114,7 @@ declare_command
 
       c_sname_set( &oper_ast->sname, &$4 );
       oper_ast->loc = @2;
-      oper_ast->as.oper.oper_id = oper_id;
+      oper_ast->oper.oper_id = oper_id;
 
       DUMP_AST( "declare_command", oper_ast );
       DUMP_END();
@@ -2259,7 +2259,7 @@ alignas_or_width_decl_english_ast
 
       $$ = $1;
       $$->loc = @$;
-      $$->as.bit_field.bit_width = $2;
+      $$->bit_field.bit_width = $2;
     }
   ;
 
@@ -2935,7 +2935,7 @@ class_struct_union_declaration_c
       c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@3 );
       csu_ast->sname = c_sname_dup( &in_attr.current_scope );
       c_sname_append_name(
-        &csu_ast->as.csu.csu_sname,
+        &csu_ast->csu.csu_sname,
         check_strdup( c_sname_local_name( &in_attr.current_scope ) )
       );
       csu_ast->type.btids = c_tid_check( csu_btid, C_TPID_BASE );
@@ -2979,9 +2979,9 @@ enum_declaration_c
       c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM, &@3 );
       enum_ast->sname = enum_sname;
       enum_ast->type.btids = c_tid_check( enum_btid, C_TPID_BASE );
-      enum_ast->as.enum_.of_ast = fixed_type_ast;
+      enum_ast->enum_.of_ast = fixed_type_ast;
       c_sname_append_name(
-        &enum_ast->as.enum_.enum_sname,
+        &enum_ast->enum_.enum_sname,
         check_strdup( c_sname_local_name( &enum_sname ) )
       );
 
@@ -3321,7 +3321,7 @@ typedef_decl_c
         //
         typedef_ast = type_ast;
         if ( c_sname_empty( &typedef_ast->sname ) )
-          typedef_ast->sname = c_sname_dup( &decl_ast->as.tdef.for_ast->sname );
+          typedef_ast->sname = c_sname_dup( &decl_ast->tdef.for_ast->sname );
       }
       else {
         //
@@ -3505,7 +3505,7 @@ decl_list_c_opt
         PARSE_ABORT();
       }
 
-      c_sname_t const *const ecsu_sname = &type_ast->as.csu.csu_sname;
+      c_sname_t const *const ecsu_sname = &type_ast->csu.csu_sname;
       assert( !c_sname_empty( ecsu_sname ) );
 
       if ( c_sname_count( ecsu_sname ) > 1 ) {
@@ -3701,31 +3701,31 @@ array_size_c_ast
   : array_size_c_int
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = $1;
+      $$->array.size = $1;
     }
   | '[' type_qualifier_list_c_stid rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = C_ARRAY_SIZE_NONE;
-      $$->as.array.stids = c_tid_check( $2, C_TPID_STORE );
+      $$->array.size = C_ARRAY_SIZE_NONE;
+      $$->array.stids = c_tid_check( $2, C_TPID_STORE );
     }
   | '[' type_qualifier_list_c_stid static_stid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = $4;
-      $$->as.array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
+      $$->array.size = $4;
+      $$->array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
     }
   | '[' type_qualifier_list_c_stid_opt '*' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
-      $$->as.array.stids = c_tid_check( $2, C_TPID_STORE );
+      $$->array.size = C_ARRAY_SIZE_VARIABLE;
+      $$->array.stids = c_tid_check( $2, C_TPID_STORE );
     }
   | '[' Y_static type_qualifier_list_c_stid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = $4;
-      $$->as.array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
+      $$->array.size = $4;
+      $$->array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
     }
   ;
 
@@ -3766,9 +3766,9 @@ block_decl_c_astp                       // Apple extension
       DUMP_AST_LIST( "param_c_ast_list_opt", $8 );
 
       C_TYPE_ADD_TID( &block_ast->type, type_qual_stids, @4 );
-      block_ast->as.block.param_ast_list = slist_move( &$8 );
+      block_ast->block.param_ast_list = slist_move( &$8 );
       $$.ast = c_ast_add_func( decl_ast, block_ast, type_ast );
-      $$.target_ast = block_ast->as.block.ret_ast;
+      $$.target_ast = block_ast->block.ret_ast;
 
       DUMP_AST( "block_decl_c_astp", $$.ast );
       DUMP_END();
@@ -3844,7 +3844,7 @@ file_scope_constructor_decl_c
         inline_stid | func_qual_stids | noexcept_stid,
         C_TPID_STORE
       );
-      ast->as.ctor.param_ast_list = slist_move( &$4 );
+      ast->ctor.param_ast_list = slist_move( &$4 );
 
       DUMP_AST( "file_scope_constructor_decl_c", ast );
       DUMP_END();
@@ -3989,7 +3989,7 @@ func_decl_c_astp
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
       func_ast->type.stids = c_tid_check( func_stid, C_TPID_STORE );
-      func_ast->as.func.param_ast_list = slist_move( &$3 );
+      func_ast->func.param_ast_list = slist_move( &$3 );
 
       if ( assume_constructor ) {
         assert( trailing_ret_ast == NULL );
@@ -4008,7 +4008,7 @@ func_decl_c_astp
         );
       }
 
-      $$.target_ast = func_ast->as.func.ret_ast;
+      $$.target_ast = func_ast->func.ret_ast;
 
       c_tid_t const msc_call_atids = $$.ast->type.atids & TA_ANY_MSC_CALL;
       if ( msc_call_atids != TA_NONE ) {
@@ -4059,8 +4059,8 @@ pc99_func_or_constructor_decl_c
         //
         c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@1 );
         csu_ast->type.btids = TB_CLASS;
-        c_sname_init_name( &csu_ast->as.csu.csu_sname, check_strdup( $1 ) );
-        csu_ast->sname = c_sname_dup( &csu_ast->as.csu.csu_sname );
+        c_sname_init_name( &csu_ast->csu.csu_sname, check_strdup( $1 ) );
+        csu_ast->sname = c_sname_dup( &csu_ast->csu.csu_sname );
 
         in_attr.tdef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
         MAYBE_UNUSED c_typedef_t *const csu_tdef = in_attr.tdef_rb->data;
@@ -4123,13 +4123,13 @@ pc99_func_or_constructor_decl_c
         ret_ast->type.btids = TB_INT;
 
         ast = c_ast_new_gc( K_FUNCTION, &@$ );
-        ast->as.func.ret_ast = ret_ast;
+        ast->func.ret_ast = ret_ast;
       }
 
       c_sname_init_name( &ast->sname, name );
       ast->type.stids =
         c_tid_check( noexcept_stid | func_equals_stid, C_TPID_STORE );
-      ast->as.func.param_ast_list = slist_move( &$4 );
+      ast->func.param_ast_list = slist_move( &$4 );
 
       DUMP_AST( "pc99_func_or_constructor_decl_c", ast );
       DUMP_END();
@@ -4480,14 +4480,14 @@ oper_decl_c_astp
       c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@$ );
       oper_ast->sname = c_sname_move( &$1 );
       oper_ast->type.stids = c_tid_check( oper_stid, C_TPID_STORE );
-      oper_ast->as.oper.param_ast_list = slist_move( &$4 );
-      oper_ast->as.oper.oper_id = oper_id;
+      oper_ast->oper.param_ast_list = slist_move( &$4 );
+      oper_ast->oper.oper_id = oper_id;
 
       c_ast_t *const ret_ast = trailing_ret_ast != NULL ?
         trailing_ret_ast : type_ast;
 
       $$.ast = c_ast_add_func( type_ast, oper_ast, ret_ast );
-      $$.target_ast = oper_ast->as.oper.ret_ast;
+      $$.target_ast = oper_ast->oper.ret_ast;
 
       DUMP_AST( "oper_decl_c_astp", $$.ast );
       DUMP_END();
@@ -4650,7 +4650,7 @@ pointer_to_member_type_c_ast
       // adopt sname's scope-type for the AST
       $$->type = c_type_or( &C_TYPE_LIT_S( $3 ), &scope_type );
 
-      $$->as.ptr_mbr.class_sname = c_sname_move( &$1 );
+      $$->ptr_mbr.class_sname = c_sname_move( &$1 );
       c_ast_set_parent( type_ast, $$ );
 
       DUMP_AST( "pointer_to_member_type_c_ast", $$ );
@@ -4843,8 +4843,8 @@ user_defined_conversion_decl_c_astp
       );
       if ( type_ast != NULL )
         c_type_or_eq( &$$.ast->type, &type_ast->type );
-      $$.ast->as.udef_conv.conv_ast = udc_ast != NULL ? udc_ast : conv_ast;
-      $$.target_ast = $$.ast->as.udef_conv.conv_ast;
+      $$.ast->udef_conv.conv_ast = udc_ast != NULL ? udc_ast : conv_ast;
+      $$.target_ast = $$.ast->udef_conv.conv_ast;
 
       DUMP_AST( "user_defined_conversion_decl_c_astp", $$.ast );
       DUMP_END();
@@ -4874,7 +4874,7 @@ user_defined_literal_decl_c_astp
 
       c_ast_t *const udl_ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
       udl_ast->type.stids = c_tid_check( noexcept_stid, C_TPID_STORE );
-      udl_ast->as.udef_lit.param_ast_list = slist_move( &$3 );
+      udl_ast->udef_lit.param_ast_list = slist_move( &$3 );
 
       $$.ast = c_ast_add_func(
         udl_c_ast,
@@ -4882,7 +4882,7 @@ user_defined_literal_decl_c_astp
         trailing_ret_ast != NULL ? trailing_ret_ast : type_ast
       );
 
-      $$.target_ast = udl_ast->as.udef_lit.ret_ast;
+      $$.target_ast = udl_ast->udef_lit.ret_ast;
 
       DUMP_AST( "user_defined_literal_decl_c_astp", $$.ast );
       DUMP_END();
@@ -4996,9 +4996,9 @@ block_cast_c_astp                       // Apple extension
       DUMP_AST_LIST( "param_c_ast_list_opt", $8 );
 
       C_TYPE_ADD_TID( &block_ast->type, type_qual_stids, @4 );
-      block_ast->as.block.param_ast_list = slist_move( &$8 );
+      block_ast->block.param_ast_list = slist_move( &$8 );
       $$.ast = c_ast_add_func( cast_ast, block_ast, type_ast );
-      $$.target_ast = block_ast->as.block.ret_ast;
+      $$.target_ast = block_ast->block.ret_ast;
 
       DUMP_AST( "block_cast_c_astp", $$.ast );
       DUMP_END();
@@ -5060,7 +5060,7 @@ func_cast_c_astp
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
       c_tid_t const func_stid = func_ref_qualifier_stid | noexcept_stid;
       func_ast->type.stids = c_tid_check( func_stid, C_TPID_STORE );
-      func_ast->as.func.param_ast_list = slist_move( &$3 );
+      func_ast->func.param_ast_list = slist_move( &$3 );
 
       if ( $1.target_ast != NULL ) {
         $$.ast = cast2_c_ast;
@@ -5074,7 +5074,7 @@ func_cast_c_astp
         );
       }
 
-      $$.target_ast = func_ast->as.func.ret_ast;
+      $$.target_ast = func_ast->func.ret_ast;
 
       DUMP_AST( "func_cast_c_astp", $$.ast );
       DUMP_END();
@@ -5489,7 +5489,7 @@ builtin_type_c_ast
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = TB_BITINT;
-      $$->as.builtin.BitInt.width = STATIC_CAST( unsigned, $1 );
+      $$->builtin.BitInt.width = STATIC_CAST( unsigned, $1 );
 
       DUMP_AST( "builtin_type_c_ast", $$ );
       DUMP_END();
@@ -5570,7 +5570,7 @@ class_struct_union_c_ast
       $$ = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@$ );
       $$->type.btids = c_tid_check( csu_tid, C_TPID_BASE );
       $$->type.atids = c_tid_check( atids, C_TPID_ATTR );
-      $$->as.csu.csu_sname = c_sname_move( &$3 );
+      $$->csu.csu_sname = c_sname_move( &$3 );
 
       DUMP_AST( "class_struct_union_c_ast", $$ );
       DUMP_END();
@@ -5607,8 +5607,8 @@ enum_c_ast
       $$ = c_ast_new_gc( K_ENUM, &@$ );
       $$->type.btids = c_tid_check( enum_btid, C_TPID_BASE );
       $$->type.atids = c_tid_check( atids, C_TPID_ATTR );
-      $$->as.enum_.of_ast = fixed_type_ast;
-      $$->as.enum_.enum_sname = c_sname_move( &$3 );
+      $$->enum_.of_ast = fixed_type_ast;
+      $$->enum_.enum_sname = c_sname_move( &$3 );
 
       DUMP_AST( "enum_c_ast", $$ );
       DUMP_END();
@@ -6191,8 +6191,8 @@ array_decl_english_ast
       DUMP_AST( "decl_english_ast", decl_ast );
 
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = array_size;
-      $$->as.array.stids =
+      $$->array.size = array_size;
+      $$->array.stids =
         c_tid_check( static_stid | array_qual_stids, C_TPID_STORE );
       c_ast_set_parent( decl_ast, $$ );
 
@@ -6213,8 +6213,8 @@ array_decl_english_ast
       DUMP_AST( "decl_english_ast", decl_ast );
 
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
-      $$->as.array.stids = c_tid_check( array_qual_stids, C_TPID_STORE );
+      $$->array.size = C_ARRAY_SIZE_VARIABLE;
+      $$->array.stids = c_tid_check( array_qual_stids, C_TPID_STORE );
       c_ast_set_parent( decl_ast, $$ );
 
       DUMP_AST( "array_decl_english_ast", $$ );
@@ -6257,7 +6257,7 @@ block_decl_english_ast                  // Apple extension
       DUMP_AST( "returning_english_ast_opt", ret_ast );
 
       $$ = c_ast_new_gc( K_APPLE_BLOCK, &@$ );
-      $$->as.block.param_ast_list = slist_move( &$2 );
+      $$->block.param_ast_list = slist_move( &$2 );
       c_ast_set_parent( ret_ast, $$ );
 
       DUMP_AST( "block_decl_english_ast", $$ );
@@ -6275,7 +6275,7 @@ constructor_decl_english_ast
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $2 );
 
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      $$->as.ctor.param_ast_list = slist_move( &$2 );
+      $$->ctor.param_ast_list = slist_move( &$2 );
 
       DUMP_AST( "constructor_decl_english_ast", $$ );
       DUMP_END();
@@ -6324,8 +6324,8 @@ func_decl_english_ast
 
       $$ = c_ast_new_gc( K_FUNCTION, &@$ );
       $$->type = func_qual_type;
-      $$->as.func.param_ast_list = slist_move( &$4 );
-      $$->as.func.flags = flags;
+      $$->func.param_ast_list = slist_move( &$4 );
+      $$->func.flags = flags;
       c_ast_set_parent( ret_ast, $$ );
 
       DUMP_AST( "func_decl_english_ast", $$ );
@@ -6380,8 +6380,8 @@ oper_decl_english_ast
       $$ = c_ast_new_gc( K_OPERATOR, &@$ );
       C_TYPE_ADD( &$$->type, &qual_type, @1 );
       C_TYPE_ADD_TID( &$$->type, ref_qual_stid, @2 );
-      $$->as.oper.param_ast_list = slist_move( &$5 );
-      $$->as.oper.flags = flags;
+      $$->oper.param_ast_list = slist_move( &$5 );
+      $$->oper.flags = flags;
       c_ast_set_parent( ret_ast, $$ );
 
       DUMP_AST( "oper_decl_english_ast", $$ );
@@ -6713,7 +6713,7 @@ pointer_decl_english_ast
       DUMP_AST( "decl_english_ast", decl_ast );
 
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
-      $$->as.ptr_mbr.class_sname = c_sname_move( &$6 );
+      $$->ptr_mbr.class_sname = c_sname_move( &$6 );
       c_ast_set_parent( decl_ast, $$ );
       C_TYPE_ADD_TID( &$$->type, csu_btid, @5 );
 
@@ -6790,7 +6790,7 @@ user_defined_literal_decl_english_ast
       DUMP_AST( "returning_english_ast_opt", $4 );
 
       $$ = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      $$->as.udef_lit.param_ast_list = slist_move( &$3 );
+      $$->udef_lit.param_ast_list = slist_move( &$3 );
       c_ast_set_parent( $4, $$ );
 
       DUMP_AST( "user_defined_literal_decl_english_ast", $$ );
@@ -6935,7 +6935,7 @@ builtin_type_english_ast
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = TB_BITINT;
-      $$->as.builtin.BitInt.width = STATIC_CAST( unsigned, $1 );
+      $$->builtin.BitInt.width = STATIC_CAST( unsigned, $1 );
 
       DUMP_AST( "builtin_type_english_ast", $$ );
       DUMP_END();
@@ -7016,7 +7016,7 @@ class_struct_union_english_ast
 
       $$ = c_ast_new_gc( $1 == TB_ENUM ? K_ENUM : K_CLASS_STRUCT_UNION, &@$ );
       $$->type.btids = c_tid_check( $1, C_TPID_BASE );
-      $$->as.csu.csu_sname = c_sname_move( &$2 );
+      $$->csu.csu_sname = c_sname_move( &$2 );
 
       DUMP_AST( "enum_class_struct_union_english_ast", $$ );
       DUMP_END();
@@ -7034,8 +7034,8 @@ enum_english_ast
 
       $$ = c_ast_new_gc(  K_ENUM, &@$ );
       $$->type.btids = c_tid_check( $1, C_TPID_BASE );
-      $$->as.enum_.of_ast = $3;
-      $$->as.enum_.enum_sname = c_sname_move( &$2 );
+      $$->enum_.of_ast = $3;
+      $$->enum_.enum_sname = c_sname_move( &$2 );
 
       DUMP_AST( "enum_english_ast", $$ );
       DUMP_END();
@@ -7195,7 +7195,7 @@ typedef_type_c_ast
       if ( c_sname_empty( &$2 ) ) {
 ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
         $$->type.btids = TB_TYPEDEF;
-        $$->as.tdef.for_ast = type_for_ast;
+        $$->tdef.for_ast = type_for_ast;
       }
       else {
         c_sname_t temp_name = c_sname_dup( &$1->ast->sname );
@@ -7346,7 +7346,7 @@ sname_c_ast
       // AST since we need to use the builtin union member now.
       //
       if ( bit_width != 0 && (ok = c_ast_is_bit_field( $$ )) )
-        $$->as.bit_field.bit_width = bit_width;
+        $$->bit_field.bit_width = bit_width;
 
       DUMP_AST( "sname_c_ast", $$ );
       DUMP_END();
@@ -7426,7 +7426,7 @@ sname_english_ast
       if ( tdef != NULL ) {
         $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
         $$->type.btids = TB_TYPEDEF;
-        $$->as.tdef.for_ast = tdef->ast;
+        $$->tdef.for_ast = tdef->ast;
         c_sname_cleanup( &sname );
       } else {
         $$ = c_ast_new_gc( K_NAME, &@$ );

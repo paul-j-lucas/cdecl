@@ -257,8 +257,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           FPRINTF( g->gout, "%s::", c_sname_full_name( &ast->sname ) );
         FPUTS( "operator ", g->gout );
       }
-      if ( ast->as.parent.of_ast != NULL )
-        g_print_ast( g, ast->as.parent.of_ast );
+      if ( ast->parent.of_ast != NULL )
+        g_print_ast( g, ast->parent.of_ast );
       if ( msc_call_atids != TA_NONE &&
            !c_ast_parent_is_kind( ast, K_POINTER ) ) {
         //
@@ -300,14 +300,14 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_BUILTIN:
       if ( (g->flags & C_GIB_OMIT_TYPE) == 0 )
         FPUTS( c_type_name_c( &type ), g->gout );
-      if ( ast->as.builtin.BitInt.width > 0 )
-        FPRINTF( g->gout, "(%u)", ast->as.builtin.BitInt.width );
+      if ( ast->builtin.BitInt.width > 0 )
+        FPRINTF( g->gout, "(%u)", ast->builtin.BitInt.width );
       g_print_space_ast_name( g, ast );
       g_print_ast_bit_width( g, ast );
       break;
 
     case K_ENUM:
-      is_fixed_enum = ast->as.enum_.of_ast != NULL;
+      is_fixed_enum = ast->enum_.of_ast != NULL;
       //
       // Special case: an enum class must be written as just "enum" when doing
       // an elaborated-type-specifier:
@@ -357,7 +357,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         FPRINTF( g->gout,
           "%s%s",
           type_name[0] != '\0' ? " " : "",
-          c_sname_full_name( &ast->as.csu.csu_sname )
+          c_sname_full_name( &ast->csu.csu_sname )
         );
       }
 
@@ -382,7 +382,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           printed_name = true;
         }
         FPUTS( " : ", g->gout );
-        g_print_ast( g, ast->as.enum_.of_ast );
+        g_print_ast( g, ast->enum_.of_ast );
       }
 
       if ( cv_qual_stids != TS_NONE )
@@ -421,7 +421,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         c_tid_t const stids = type.stids & TS_ANY_STORAGE;
         fputs_sp( c_tid_name_c( stids ), g->gout );
       }
-      g_print_ast( g, ast->as.ptr_ref.to_ast );
+      g_print_ast( g, ast->ptr_ref.to_ast );
       if ( g_space_before_ptr_ref( g, ast ) )
         g_print_space_once( g );
       if ( !g->postfix )
@@ -429,7 +429,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_POINTER_TO_MEMBER:
-      g_print_ast( g, ast->as.ptr_mbr.to_ast );
+      g_print_ast( g, ast->ptr_mbr.to_ast );
       if ( !g->printed_space )
         FPUTC( ' ', g->gout );
       if ( !g->postfix )
@@ -479,7 +479,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         //
         unsigned const orig_flags = g->flags;
         g->flags &= ~C_GIB_USING;
-        g_print_ast_name( g, ast->as.tdef.for_ast );
+        g_print_ast_name( g, ast->tdef.for_ast );
         g->flags = orig_flags;
         if ( print_parens_for_Atomic )
           FPUTC( ')', g->gout );
@@ -511,18 +511,18 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
   assert( ast->kind == K_ARRAY );
 
   FPUTS( graph_token_c( "[" ), g->gout );
-  FPUTS( c_tid_name_c( ast->as.array.stids ), g->gout );
+  FPUTS( c_tid_name_c( ast->array.stids ), g->gout );
 
-  switch ( ast->as.array.size ) {
+  switch ( ast->array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;
     case C_ARRAY_SIZE_VARIABLE:
       FPUTC( '*', g->gout );
       break;
     default:
-      if ( ast->as.array.stids != TS_NONE )
+      if ( ast->array.stids != TS_NONE )
         FPUTC( ' ', g->gout );
-      FPRINTF( g->gout, PRId_C_ARRAY_SIZE_T, ast->as.array.size );
+      FPRINTF( g->gout, PRId_C_ARRAY_SIZE_T, ast->array.size );
   } // switch
 
   FPUTS( graph_token_c( "]" ), g->gout );
@@ -540,8 +540,8 @@ static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_BIT_FIELD ) );
 
-  if ( ast->as.bit_field.bit_width > 0 )
-    FPRINTF( g->gout, " : %u", ast->as.bit_field.bit_width );
+  if ( ast->bit_field.bit_width > 0 )
+    FPRINTF( g->gout, " : %u", ast->bit_field.bit_width );
 }
 
 /**
@@ -745,7 +745,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
       FPUTC( '(', g->gout );
-      g_print_ast_list( g, &ast->as.func.param_ast_list );
+      g_print_ast_list( g, &ast->func.param_ast_list );
       FPUTC( ')', g->gout );
       break;
     case K_DESTRUCTOR:
@@ -813,7 +813,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
 
     case K_POINTER_TO_MEMBER:
       FPRINTF( g->gout,
-        "%s::*", c_sname_full_name( &ast->as.ptr_mbr.class_sname )
+        "%s::*", c_sname_full_name( &ast->ptr_mbr.class_sname )
       );
       break;
 
@@ -890,7 +890,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       g_print_space_once( g );
       if ( !c_sname_empty( &ast->sname ) )
         FPRINTF( g->gout, "%s::", c_sname_full_name( &ast->sname ) );
-      char const *const token = c_oper_token_c( ast->as.oper.oper_id );
+      char const *const token = c_oper_token_c( ast->oper.oper_id );
       FPRINTF( g->gout, "operator%s%s", isalpha( token[0] ) ? " " : "", token );
       break;
     }

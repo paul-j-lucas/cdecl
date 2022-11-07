@@ -115,29 +115,29 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      dup_ast->as.array.size = ast->as.array.size;
-      dup_ast->as.array.stids = ast->as.array.stids;
+      dup_ast->array.size = ast->array.size;
+      dup_ast->array.stids = ast->array.stids;
       break;
 
     case K_BUILTIN:
-      dup_ast->as.builtin.BitInt.width = ast->as.builtin.BitInt.width;
+      dup_ast->builtin.BitInt.width = ast->builtin.BitInt.width;
       FALLTHROUGH;
     case K_TYPEDEF:
-      dup_ast->as.builtin.bit_width = ast->as.builtin.bit_width;
+      dup_ast->builtin.bit_width = ast->builtin.bit_width;
       // for_ast duplicated by referrer code below
       break;
 
     case K_CLASS_STRUCT_UNION:
     case K_ENUM:
     case K_POINTER_TO_MEMBER:
-      dup_ast->as.csu.csu_sname = c_sname_dup( &ast->as.csu.csu_sname );
+      dup_ast->csu.csu_sname = c_sname_dup( &ast->csu.csu_sname );
       break;
 
     case K_OPERATOR:
-      dup_ast->as.oper.oper_id = ast->as.oper.oper_id;
+      dup_ast->oper.oper_id = ast->oper.oper_id;
       FALLTHROUGH;
     case K_FUNCTION:
-      dup_ast->as.func.flags = ast->as.func.flags;
+      dup_ast->func.flags = ast->func.flags;
       FALLTHROUGH;
     case K_APPLE_BLOCK:
       // ret_ast duplicated by referrer code below
@@ -146,7 +146,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       FOREACH_AST_FUNC_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
         c_ast_t *const dup_param_ast = c_ast_dup( param_ast, ast_list );
-        slist_push_back( &dup_ast->as.func.param_ast_list, dup_param_ast );
+        slist_push_back( &dup_ast->func.param_ast_list, dup_param_ast );
       } // for
       break;
 
@@ -164,7 +164,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
   } // switch
 
   if ( c_ast_is_referrer( ast ) ) {
-    c_ast_t *const child_ast = ast->as.parent.of_ast;
+    c_ast_t *const child_ast = ast->parent.of_ast;
     if ( child_ast != NULL )
       c_ast_set_parent( c_ast_dup( child_ast, ast_list ), dup_ast );
   }
@@ -189,8 +189,8 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
 
   switch ( i_ast->kind ) {
     case K_ARRAY: {
-      c_array_ast_t const *const ai_ast = &i_ast->as.array;
-      c_array_ast_t const *const aj_ast = &j_ast->as.array;
+      c_array_ast_t const *const ai_ast = &i_ast->array;
+      c_array_ast_t const *const aj_ast = &j_ast->array;
       if ( ai_ast->size != aj_ast->size )
         return false;
       if ( ai_ast->stids != aj_ast->stids )
@@ -199,21 +199,21 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     }
 
     case K_BUILTIN:
-      if ( i_ast->as.builtin.BitInt.width != j_ast->as.builtin.BitInt.width )
+      if ( i_ast->builtin.BitInt.width != j_ast->builtin.BitInt.width )
         return false;
       FALLTHROUGH;
     case K_TYPEDEF:
-      if ( i_ast->as.builtin.bit_width != j_ast->as.builtin.bit_width )
+      if ( i_ast->builtin.bit_width != j_ast->builtin.bit_width )
         return false;
       // for_ast compared by referrer code below
       break;
 
     case K_OPERATOR:
-      if ( i_ast->as.oper.oper_id != j_ast->as.oper.oper_id )
+      if ( i_ast->oper.oper_id != j_ast->oper.oper_id )
         return false;
       FALLTHROUGH;
     case K_FUNCTION:
-      if ( i_ast->as.func.flags != j_ast->as.func.flags )
+      if ( i_ast->func.flags != j_ast->func.flags )
         return false;
       FALLTHROUGH;
     case K_APPLE_BLOCK:
@@ -234,13 +234,10 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
 
     case K_CLASS_STRUCT_UNION:
     case K_ENUM:
-    case K_POINTER_TO_MEMBER: {
-      c_csu_ast_t const *const csui_ast = &i_ast->as.csu;
-      c_csu_ast_t const *const csuj_ast = &j_ast->as.csu;
-      if ( c_sname_cmp( &csui_ast->csu_sname, &csuj_ast->csu_sname ) != 0 )
+    case K_POINTER_TO_MEMBER:
+      if ( c_sname_cmp( &i_ast->csu.csu_sname, &j_ast->csu.csu_sname ) != 0 )
         return false;
       break;
-    }
 
     case K_POINTER:
     case K_REFERENCE:
@@ -261,7 +258,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
   }
   assert( c_ast_is_referrer( j_ast ) );
 
-  return c_ast_equal( i_ast->as.parent.of_ast, j_ast->as.parent.of_ast );
+  return c_ast_equal( i_ast->parent.of_ast, j_ast->parent.of_ast );
 }
 
 void c_ast_free( c_ast_t *ast ) {
@@ -276,12 +273,12 @@ void c_ast_free( c_ast_t *ast ) {
       case K_FUNCTION:
       case K_OPERATOR:
       case K_USER_DEF_LITERAL:
-        c_ast_list_cleanup( &ast->as.func.param_ast_list );
+        c_ast_list_cleanup( &ast->func.param_ast_list );
         break;
       case K_CLASS_STRUCT_UNION:
       case K_ENUM:
       case K_POINTER_TO_MEMBER:
-        c_sname_cleanup( &ast->as.csu.csu_sname );
+        c_sname_cleanup( &ast->csu.csu_sname );
         break;
       case K_ARRAY:
       case K_BUILTIN:
@@ -329,7 +326,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
 
   switch ( kind ) {
     case K_ARRAY:
-      ast->as.array.stids = TS_NONE;
+      ast->array.stids = TS_NONE;
       break;
     case K_APPLE_BLOCK:
     case K_BUILTIN:
@@ -364,7 +361,7 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   assert( c_ast_is_referrer( parent_ast ) );
 
   child_ast->parent_ast = parent_ast;
-  parent_ast->as.parent.of_ast = child_ast;
+  parent_ast->parent.of_ast = child_ast;
 
   assert( !c_ast_has_cycle( child_ast ) );
 }
@@ -376,7 +373,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
   switch ( dir ) {
     case C_VISIT_DOWN:
       while ( ast != NULL && !(*visit_fn)( ast, avd ) )
-        ast = c_ast_is_parent( ast ) ? ast->as.parent.of_ast : NULL;
+        ast = c_ast_is_parent( ast ) ? ast->parent.of_ast : NULL;
       break;
     case C_VISIT_UP:
       while ( ast != NULL && !(*visit_fn)( ast, avd ) )

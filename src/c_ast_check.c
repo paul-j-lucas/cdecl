@@ -310,7 +310,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
     }
 
     if ( (raw_ast->kind & K_ANY_BIT_FIELD) != 0 &&
-         ast->as.bit_field.bit_width > 0 ) {
+         ast->bit_field.bit_width > 0 ) {
       print_error( &ast->align.loc, "bit fields can not be aligned\n" );
       return false;
     }
@@ -361,7 +361,7 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
     return false;
   }
 
-  switch ( ast->as.array.size ) {
+  switch ( ast->array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;
     case C_ARRAY_SIZE_VARIABLE:
@@ -380,19 +380,19 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
       }
       break;
     default:
-      if ( ast->as.array.size == 0 ) {
+      if ( ast->array.size == 0 ) {
         print_error( &ast->loc, "array size must be greater than 0\n" );
         return false;
       }
-      assert( ast->as.array.size > 0 );
+      assert( ast->array.size > 0 );
       break;
   } // switch
 
-  if ( ast->as.array.stids != TS_NONE ) {
+  if ( ast->array.stids != TS_NONE ) {
     if ( !OPT_LANG_IS( QUALIFIED_ARRAY ) ) {
       print_error( &ast->loc,
         "\"%s\" arrays not supported%s\n",
-        c_tid_name_error( ast->as.array.stids ),
+        c_tid_name_error( ast->array.stids ),
         C_LANG_WHICH( QUALIFIED_ARRAY )
       );
       return false;
@@ -400,13 +400,13 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
     if ( !is_func_param ) {
       print_error( &ast->loc,
         "\"%s\" arrays are illegal outside of parameters\n",
-        c_tid_name_error( ast->as.array.stids )
+        c_tid_name_error( ast->array.stids )
       );
       return false;
     }
   }
 
-  c_ast_t const *const of_ast = ast->as.array.of_ast;
+  c_ast_t const *const of_ast = ast->array.of_ast;
   c_ast_t const *const raw_of_ast = c_ast_untypedef( of_ast );
   switch ( raw_of_ast->kind ) {
     case K_ARRAY:
@@ -496,7 +496,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
   if ( c_tid_is_any( ast->type.btids, TB_BITINT ) ) {
     unsigned const min_bits =
       1u + !c_tid_is_any( ast->type.btids, TB_UNSIGNED );
-    if ( ast->as.builtin.BitInt.width < min_bits ) {
+    if ( ast->builtin.BitInt.width < min_bits ) {
       print_error( &ast->loc,
         "%s must be at least %u bit%s\n",
         c_type_name_error( &ast->type ), min_bits, plural_s( min_bits )
@@ -504,7 +504,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
       return false;
     }
   }
-  else if ( ast->as.builtin.bit_width > 0 ) {
+  else if ( ast->builtin.bit_width > 0 ) {
     if ( c_sname_count( &ast->sname ) > 1 ) {
       print_error( &ast->loc, "scoped names can not have bit-field widths\n" );
       return false;
@@ -736,7 +736,7 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
     return false;
   }
 
-  c_ast_t const *const of_ast = ast->as.enum_.of_ast;
+  c_ast_t const *const of_ast = ast->enum_.of_ast;
   if ( of_ast != NULL ) {
     if ( !OPT_LANG_IS( FIXED_TYPE_enum ) ) {
       print_error( &of_ast->loc,
@@ -848,7 +848,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     return false;
   }
 
-  switch ( ast->as.func.flags ) {
+  switch ( ast->func.flags ) {
     case C_FUNC_MEMBER:
       // nothing to do
       break;
@@ -891,14 +891,14 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         break;
 
       case K_OPERATOR:
-        switch ( ast->as.oper.oper_id ) {
+        switch ( ast->oper.oper_id ) {
           case C_OP_EQ: {               // C& operator=(C const&)
             //
             // For C& operator=(C const&), the parameter and the return type
             // must both be a reference to the same class, struct, or union.
             //
             c_ast_t const *const ret_ast =
-              c_ast_is_ref_to_tid_any( ast->as.oper.ret_ast, TB_ANY_CLASS );
+              c_ast_is_ref_to_tid_any( ast->oper.ret_ast, TB_ANY_CLASS );
             if ( ret_ast == NULL || c_ast_params_count( ast ) != 1 )
               goto only_special;
             param_ast = c_ast_is_ref_to_tid_any( param_ast, TB_ANY_CLASS );
@@ -987,7 +987,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
     return false;
   }
 
-  c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+  c_ast_t const *const ret_ast = ast->func.ret_ast;
   if ( !c_ast_is_builtin_any( ret_ast, TB_INT ) ) {
     print_error( &ret_ast->loc, "main() must return int\n" );
     return false;
@@ -1066,7 +1066,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
   switch ( raw_ast->kind ) {
     case K_ARRAY:                       // char *argv[]
     case K_POINTER:                     // char **argv
-      if ( !c_ast_is_ptr_to_type_any( param_ast->as.parent.of_ast,
+      if ( !c_ast_is_ptr_to_type_any( param_ast->parent.of_ast,
               &C_TYPE_LIT_S_ANY( c_tid_compl( TS_CONST ) ),
               &C_TYPE_LIT_B( TB_CHAR ) ) ) {
         print_error( &param_ast->loc,
@@ -1171,7 +1171,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
             goto only_void;             // R f(T, void)
           continue;
         }
-        if ( param_ast->as.builtin.bit_width > 0 ) {
+        if ( param_ast->builtin.bit_width > 0 ) {
           print_error( &param_ast->loc,
             "parameters can not have bit-field widths\n"
           );
@@ -1196,10 +1196,10 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         break;
 
       case K_VARIADIC:
-        if ( ast->kind == K_OPERATOR && ast->as.oper.oper_id != C_OP_PARENS ) {
+        if ( ast->kind == K_OPERATOR && ast->oper.oper_id != C_OP_PARENS ) {
           print_error( &param_ast->loc,
             "operator %s can not have a variadic parameter\n",
-            c_oper_get( ast->as.oper.oper_id )->name
+            c_oper_get( ast->oper.oper_id )->name
           );
           return false;
         }
@@ -1331,7 +1331,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
 
-  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
+  c_operator_t const *const op = c_oper_get( ast->oper.oper_id );
 
   if ( (opt_lang & op->lang_ids) == LANG_NONE ) {
     print_error( &ast->loc,
@@ -1346,8 +1346,8 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( ast->as.oper.flags != C_OP_UNSPECIFIED &&
-      (ast->as.oper.flags & op->flags) == 0 ) {
+  if ( ast->oper.flags != C_OP_UNSPECIFIED &&
+      (ast->oper.flags & op->flags) == 0 ) {
     //
     // The user explicitly specified either member or non-member, but the
     // operator can't be that.
@@ -1362,7 +1362,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   if ( op->flags == C_OP_MEMBER &&
        c_tid_is_any( ast->type.stids, TS_STATIC ) ) {
     c_lang_id_t ok_lang_ids = LANG_NONE;
-    switch ( ast->as.oper.oper_id ) {
+    switch ( ast->oper.oper_id ) {
       case C_OP_PARENS:
         if ( OPT_LANG_IS( STATIC_OP_PARENS ) )
           break;
@@ -1377,7 +1377,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     } // switch
   }
 
-  switch ( ast->as.oper.oper_id ) {
+  switch ( ast->oper.oper_id ) {
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
     case C_OP_DELETE:
@@ -1399,9 +1399,9 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
+  c_ast_t const *const ret_ast = ast->oper.ret_ast;
 
-  switch ( ast->as.oper.oper_id ) {
+  switch ( ast->oper.oper_id ) {
     case C_OP_ARROW:
       //
       // Special case for operator-> that must return a pointer to a struct,
@@ -1467,7 +1467,7 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
   assert( ast->kind == K_OPERATOR );
   assert( c_tid_is_any( ast->type.stids, TS_DEFAULT ) );
 
-  switch ( ast->as.oper.oper_id ) {
+  switch ( ast->oper.oper_id ) {
     case C_OP_EQ:
       //
       // Detailed checks for defaulted assignment operators are done in
@@ -1506,8 +1506,8 @@ NODISCARD
 static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
-  assert( ast->as.oper.oper_id == C_OP_DELETE ||
-          ast->as.oper.oper_id == C_OP_DELETE_ARRAY );
+  assert( ast->oper.oper_id == C_OP_DELETE ||
+          ast->oper.oper_id == C_OP_DELETE_ARRAY );
 
   // minimum number of parameters checked in c_ast_check_oper_params()
 
@@ -1519,7 +1519,7 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
     print_error( &param_ast->loc,
       "invalid parameter type for operator %s; "
       "must be a pointer to void, class, struct, or union\n",
-      c_oper_get( ast->as.oper.oper_id )->name
+      c_oper_get( ast->oper.oper_id )->name
     );
     return false;
   }
@@ -1537,8 +1537,8 @@ NODISCARD
 static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
-  assert( ast->as.oper.oper_id == C_OP_NEW ||
-          ast->as.oper.oper_id == C_OP_NEW_ARRAY );
+  assert( ast->oper.oper_id == C_OP_NEW ||
+          ast->oper.oper_id == C_OP_NEW_ARRAY );
 
   // minimum number of parameters checked in c_ast_check_oper_params()
 
@@ -1550,7 +1550,7 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
     print_error( &param_ast->loc,
       "invalid parameter type for operator %s; "
       "must be std::size_t (or equivalent)\n",
-      c_oper_get( ast->as.oper.oper_id )->name
+      c_oper_get( ast->oper.oper_id )->name
     );
     return false;
   }
@@ -1569,7 +1569,7 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
 
-  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
+  c_operator_t const *const op = c_oper_get( ast->oper.oper_id );
   unsigned const overload_flags = c_ast_oper_overload( ast );
   char const *const member_or_nonmember =
     overload_flags == C_OP_MEMBER     ? "member "     :
@@ -1674,7 +1674,7 @@ same: print_error( c_ast_params_loc( ast ),
       // Ensure non-member operators (except new, new[], delete, and delete[])
       // have at least one enum, class, struct, or union parameter.
       //
-      switch ( ast->as.oper.oper_id ) {
+      switch ( ast->oper.oper_id ) {
         case C_OP_NEW:
         case C_OP_NEW_ARRAY:
         case C_OP_DELETE:
@@ -1713,7 +1713,7 @@ same: print_error( c_ast_params_loc( ast ),
       break;
   } // switch
 
-  switch ( ast->as.oper.oper_id ) {
+  switch ( ast->oper.oper_id ) {
     case C_OP_MINUS2:
     case C_OP_PLUS2: {
       //
@@ -1770,7 +1770,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
 
   // number of parameters checked in c_ast_check_oper_params()
 
-  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
+  c_operator_t const *const op = c_oper_get( ast->oper.oper_id );
 
   if ( !OPT_LANG_IS( default_RELOPS ) ) {
     print_error( &ast->loc,
@@ -1847,10 +1847,10 @@ rel_2par: print_error( &ast->loc,
     }
   } // switch
 
-  c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
+  c_ast_t const *const ret_ast = ast->oper.ret_ast;
   c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
-  if ( ast->as.oper.oper_id == C_OP_LESS_EQ_GREATER ) {
+  if ( ast->oper.oper_id == C_OP_LESS_EQ_GREATER ) {
     static c_ast_t const *std_partial_ordering_ast;
     static c_ast_t const *std_strong_ordering_ast;
     static c_ast_t const *std_weak_ordering_ast;
@@ -1898,7 +1898,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER ) );
 
-  c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
+  c_ast_t const *const to_ast = ast->ptr_ref.to_ast;
   c_ast_t const *const raw_to_ast = c_ast_untypedef( to_ast );
 
   switch ( raw_to_ast->kind ) {
@@ -1950,7 +1950,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
     return false;
   }
 
-  c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
+  c_ast_t const *const to_ast = ast->ptr_ref.to_ast;
   switch ( to_ast->kind ) {
     case K_FUNCTION:
     case K_REFERENCE:
@@ -1982,7 +1982,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
 
   char const *const kind_name = c_kind_name( ast->kind );
-  c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+  c_ast_t const *const ret_ast = ast->func.ret_ast;
   c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
   switch ( raw_ret_ast->kind ) {
@@ -2062,7 +2062,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
     );
     return false;
   }
-  c_ast_t const *const conv_ast = ast->as.udef_conv.conv_ast;
+  c_ast_t const *const conv_ast = ast->udef_conv.conv_ast;
   c_ast_t const *const raw_conv_ast = c_ast_untypedef( conv_ast );
   if ( raw_conv_ast->kind == K_ARRAY ) {
     print_error( &conv_ast->loc,
@@ -2414,11 +2414,11 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
   if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
     if ( c_tid_is_any( ast->type.stids, TS_CONSTEXPR ) &&
          !OPT_LANG_IS( constexpr_RETURN_TYPE ) &&
-         c_ast_is_builtin_any( ast->as.func.ret_ast, TB_VOID ) ) {
+         c_ast_is_builtin_any( ast->func.ret_ast, TB_VOID ) ) {
       print_error( &ast->loc,
         "%s %s is illegal%s\n",
         c_tid_name_error( ast->type.stids ),
-        c_tid_name_error( ast->as.func.ret_ast->type.btids ),
+        c_tid_name_error( ast->func.ret_ast->type.btids ),
         C_LANG_WHICH( constexpr_RETURN_TYPE )
       );
       return VISITOR_ERROR_FOUND;
@@ -2533,7 +2533,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
     case K_APPLE_BLOCK:
     case K_FUNCTION:
     case K_OPERATOR: {
-      c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+      c_ast_t const *const ret_ast = ast->func.ret_ast;
       if ( c_tid_is_any( ret_ast->type.stids, TS_VOLATILE ) &&
            OPT_LANG_IS( CPP_MIN(20) ) ) {
         print_warning( &ret_ast->loc,
@@ -2610,7 +2610,7 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
     case K_CLASS_STRUCT_UNION:
     case K_ENUM:
     case K_POINTER_TO_MEMBER:
-      c_sname_warn( &ast->as.csu.csu_sname, &ast->loc );
+      c_sname_warn( &ast->csu.csu_sname, &ast->loc );
       break;
     default:
       /* suppress warning */;

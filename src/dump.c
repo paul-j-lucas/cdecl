@@ -168,7 +168,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
     case K_ARRAY:
       DUMP_COMMA;
       DUMP_FORMAT( "size = " );
-      switch ( ast->as.array.size ) {
+      switch ( ast->array.size ) {
         case C_ARRAY_SIZE_NONE:
           FPUTS( "unspecified", dout );
           break;
@@ -176,35 +176,35 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
           FPUTC( '*', dout );
           break;
         default:
-          FPRINTF( dout, PRId_C_ARRAY_SIZE_T, ast->as.array.size );
+          FPRINTF( dout, PRId_C_ARRAY_SIZE_T, ast->array.size );
       } // switch
       FPUTS( ",\n", dout );
-      if ( ast->as.array.stids != TS_NONE ) {
-        c_type_t const type = C_TYPE_LIT_S( ast->as.array.stids );
+      if ( ast->array.stids != TS_NONE ) {
+        c_type_t const type = C_TYPE_LIT_S( ast->array.stids );
         DUMP_TYPE( &type );
         FPUTS( ",\n", dout );
       }
-      c_ast_dump_impl( ast->as.array.of_ast, indent, "of_ast", dout );
+      c_ast_dump_impl( ast->array.of_ast, indent, "of_ast", dout );
       break;
 
     case K_CLASS_STRUCT_UNION:
       DUMP_COMMA;
-      DUMP_SNAME( "csu_sname", &ast->as.csu.csu_sname );
+      DUMP_SNAME( "csu_sname", &ast->csu.csu_sname );
       break;
 
     case K_OPERATOR:
       DUMP_COMMA;
       DUMP_FORMAT(
         "oper_id = \"%s\" (%d),\n",
-        c_oper_get( ast->as.oper.oper_id )->name,
-        ast->as.oper.oper_id
+        c_oper_get( ast->oper.oper_id )->name,
+        ast->oper.oper_id
       );
       FALLTHROUGH;
 
     case K_FUNCTION:
       DUMP_COMMA;
       DUMP_FORMAT( "flags = " );
-      switch ( ast->as.func.flags ) {
+      switch ( ast->func.flags ) {
         case C_FUNC_UNSPECIFIED:
           FPUTS( "unspecified", dout );
           break;
@@ -221,7 +221,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
           FPUTC( '?', dout );
           break;
       } // switch
-      FPRINTF( dout, " (0x%x),\n", ast->as.func.flags );
+      FPRINTF( dout, " (0x%x),\n", ast->func.flags );
       FALLTHROUGH;
 
     case K_APPLE_BLOCK:
@@ -229,25 +229,25 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
     case K_USER_DEF_LITERAL:
       DUMP_COMMA;
       DUMP_FORMAT( "param_ast_list = " );
-      c_ast_list_dump_impl( &ast->as.func.param_ast_list, indent, dout );
-      if ( ast->as.func.ret_ast != NULL ) {
+      c_ast_list_dump_impl( &ast->func.param_ast_list, indent, dout );
+      if ( ast->func.ret_ast != NULL ) {
         FPUTS( ",\n", dout );
-        c_ast_dump_impl( ast->as.func.ret_ast, indent, "ret_ast", dout );
+        c_ast_dump_impl( ast->func.ret_ast, indent, "ret_ast", dout );
       }
       break;
 
     case K_ENUM:
       DUMP_COMMA;
-      DUMP_SNAME( "enum_sname", &ast->as.enum_.enum_sname );
-      if ( ast->as.enum_.of_ast != NULL ) {
+      DUMP_SNAME( "enum_sname", &ast->enum_.enum_sname );
+      if ( ast->enum_.of_ast != NULL ) {
         FPUTS( ",\n", dout );
-        c_ast_dump_impl( ast->as.enum_.of_ast, indent, "of_ast", dout );
+        c_ast_dump_impl( ast->enum_.of_ast, indent, "of_ast", dout );
       }
       break;
 
     case K_POINTER_TO_MEMBER:
       DUMP_COMMA;
-      DUMP_SNAME( "class_sname", &ast->as.ptr_mbr.class_sname );
+      DUMP_SNAME( "class_sname", &ast->ptr_mbr.class_sname );
       FPUTS( ",\n", dout );
       FALLTHROUGH;
 
@@ -255,27 +255,27 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       DUMP_COMMA;
-      c_ast_dump_impl( ast->as.ptr_ref.to_ast, indent, "to_ast", dout );
+      c_ast_dump_impl( ast->ptr_ref.to_ast, indent, "to_ast", dout );
       break;
 
     case K_TYPEDEF:
       DUMP_COMMA;
-      c_ast_dump_impl( ast->as.tdef.for_ast, indent, "for_ast", dout );
+      c_ast_dump_impl( ast->tdef.for_ast, indent, "for_ast", dout );
       FPUTS( ",\n", dout );
       FALLTHROUGH;
 
     case K_BUILTIN:
       DUMP_COMMA;
-      DUMP_FORMAT( "bit_width = %u", ast->as.builtin.bit_width );
-      if ( ast->as.builtin.BitInt.width > 0 ) {
+      DUMP_FORMAT( "bit_width = %u", ast->builtin.bit_width );
+      if ( ast->builtin.BitInt.width > 0 ) {
         FPUTS( ",\n", dout );
-        DUMP_FORMAT( "BitInt.width = %u", ast->as.builtin.BitInt.width );
+        DUMP_FORMAT( "BitInt.width = %u", ast->builtin.BitInt.width );
       }
       break;
 
     case K_USER_DEF_CONVERSION:
       DUMP_COMMA;
-      c_ast_dump_impl( ast->as.udef_conv.conv_ast, indent, "conv_ast", dout );
+      c_ast_dump_impl( ast->udef_conv.conv_ast, indent, "conv_ast", dout );
       break;
   } // switch
 

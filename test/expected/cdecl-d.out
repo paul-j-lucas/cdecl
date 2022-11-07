@@ -101,7 +101,7 @@ sname_c_ast ::= sname_c = {
 }
 
 decl_c ::= decl_c_astp = {
-  (alignas_specifier_c.as.expr) = 8,
+  (alignas_specifier_c.expr) = 8,
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "i" (none),
@@ -246,7 +246,7 @@ sname_c_ast ::= sname_c = {
 }
 
 decl_c ::= decl_c_astp = {
-  (alignas_specifier_c.as.type_ast) = {
+  (alignas_specifier_c.type_ast) = {
     sname = "",
     unique_id = 1361,
     kind = "built-in type",

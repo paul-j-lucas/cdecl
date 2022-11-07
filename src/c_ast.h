@@ -120,7 +120,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FOREACH_AST_FUNC_PARAM()
  */
 #define FOREACH_AST_FUNC_PARAM_UNTIL(VAR,AST,END) \
-  FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->as.func.param_ast_list, END )
+  FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->func.param_ast_list, END )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -462,7 +462,7 @@ struct c_ast {
     c_udef_conv_ast_t   udef_conv;  ///< #K_USER_DEF_CONVERSION members.
     c_udef_lit_ast_t    udef_lit;   ///< #K_USER_DEF_LITERAL members.
                     // nothing needed for K_VARIADIC
-  } as;                                 ///< Union discriminator.
+  };
 };
 
 /** @} */
@@ -540,7 +540,7 @@ void c_ast_free( c_ast_t *ast );
  */
 NODISCARD C_AST_H_INLINE
 bool c_ast_is_orphan( c_ast_t const *ast ) {
-  return ast->parent_ast == NULL || ast->parent_ast->as.parent.of_ast != ast;
+  return ast->parent_ast == NULL || ast->parent_ast->parent.of_ast != ast;
 }
 
 /**
@@ -610,7 +610,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
  */
 NODISCARD C_AST_H_INLINE
 c_param_t const* c_ast_params( c_ast_t const *ast ) {
-  return ast->as.func.param_ast_list.head;
+  return ast->func.param_ast_list.head;
 }
 
 /**
@@ -626,7 +626,7 @@ c_param_t const* c_ast_params( c_ast_t const *ast ) {
  */
 NODISCARD C_AST_H_INLINE
 size_t c_ast_params_count( c_ast_t const *ast ) {
-  return slist_len( &ast->as.func.param_ast_list );
+  return slist_len( &ast->func.param_ast_list );
 }
 
 /**
