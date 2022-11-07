@@ -135,6 +135,18 @@ static void cdecl_cleanup( void ) {
 }
 
 /**
+ * Checks whether we're **cdecl**.
+ *
+ * @returns Returns `true` only if we are.
+ *
+ * @sa is_cppdecl()
+ */
+NODISCARD
+static inline bool is_cdecl( void ) {
+  return strcmp( me, CDECL ) == 0;
+}
+
+/**
  * Parses the command-line.
  *
  * @param cli_count The size of \a cli_value.
@@ -153,7 +165,7 @@ static int cdecl_parse_cli( size_t cli_count,
   char const *command_literal = NULL;
   char const *invalid_when = "";
 
-  if ( is_cdecl( me ) || is_cppdecl( me ) )
+  if ( is_cdecl() || is_cppdecl() )
     goto parse_command;
 
   //
@@ -390,11 +402,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   return status;
 }
 
-bool is_cdecl( char const *prog_name ) {
-  return strcmp( prog_name, CDECL ) == 0;
-}
-
-bool is_cppdecl( char const *prog_name ) {
+bool is_cppdecl( void ) {
   static char const *const NAMES[] = {
     CPPDECL,
     "cppdecl",
@@ -403,7 +411,7 @@ bool is_cppdecl( char const *prog_name ) {
   };
 
   for ( char const *const *pname = NAMES; *pname != NULL; ++pname ) {
-    if ( strcmp( *pname, prog_name ) == 0 )
+    if ( strcmp( *pname, me ) == 0 )
       return true;
   } // for
   return false;

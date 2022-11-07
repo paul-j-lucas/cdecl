@@ -686,7 +686,7 @@ void cli_options_init( int *pargc, char const **pargv[const] ) {
   assert( pargc != NULL );
   assert( pargv != NULL );
 
-  opt_lang = is_cppdecl( me ) ? LANG_CPP_NEW : LANG_C_NEW;
+  opt_lang = is_cppdecl() ? LANG_CPP_NEW : LANG_C_NEW;
 #ifdef ENABLE_FLEX_DEBUG
   //
   // When -d is specified, Flex enables debugging by default -- undo that.

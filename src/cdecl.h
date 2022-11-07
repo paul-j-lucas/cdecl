@@ -76,26 +76,14 @@ NODISCARD
 int cdecl_parse_string( char const *s, size_t s_len );
 
 /**
- * Checks whether \a prog_name is **cdecl**.
+ * Checks whether we're **c++decl** or a variant.
  *
- * @param prog_name The name of the program.
- * @returns Returns `true` only if we are.
- *
- * @sa is_cppdecl()
- */
-NODISCARD
-bool is_cdecl( char const *prog_name );
-
-/**
- * Checks whether \a prog_name is **c++decl** or a variant.
- *
- * @param prog_name The name of the program.
  * @returns Returns `true` only if we are.
  *
  * @sa is_cdecl()
  */
 NODISCARD
-bool is_cppdecl( char const *prog_name );
+bool is_cppdecl( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 
