@@ -369,7 +369,6 @@ void str_rtrim_len( char const *s, size_t *s_len ) {
 }
 
 // LCOV_EXCL_START
-noreturn
 void perror_exit( int status ) {
   perror( me );
   exit( status );
