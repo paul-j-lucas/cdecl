@@ -20,6 +20,7 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+AC_PREREQ([2.69])
 AC_INIT([cdecl],[13.1],[https://github.com/paul-j-lucas/cdecl/issues],[],[https://github.com/paul-j-lucas/cdecl])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
@@ -51,6 +52,8 @@ AS_IF([test "x$enable_coverage" = xyes],
 # Checks for programs.
 AC_LANG(C)
 AC_PROG_CC
+AS_IF([test "x$ac_cv_prog_cc_c11" = xno],
+  [AC_MSG_ERROR([a C11 compiler is required to compile $PACKAGE_NAME])])
 gl_EARLY
 AX_PROG_FLEX(
   [AC_DEFINE([LEX], [flex], ["flex" found])],
