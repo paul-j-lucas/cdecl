@@ -155,12 +155,12 @@ AS_IF([test "x$enable_term_size" = xyes],
     ])
   ]
 )
-AC_HEADER_ASSERT
 AC_CHECK_HEADERS([fnmatch.h])
 AC_CHECK_HEADERS([getopt.h])
-AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([pwd.h])
 AC_CHECK_HEADERS([sysexits.h])
+AC_HEADER_ASSERT
+AC_HEADER_STDBOOL
 gl_INIT
 
 # Checks for typedefs, structures, and compiler characteristics.
