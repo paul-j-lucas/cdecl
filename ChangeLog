@@ -1,3 +1,454 @@
+2022-11-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Removed "inline".
+   * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, dump.c, english.c,
+     gibberish.c, parser.y, cdecl-d.out: Eliminated "as" union descriminator in
+     c_ast.
+   * c_ast.c, c_ast.h, c_ast_check.c, dump.c, english.c, gibberish.c, parser.y:
+     Eliminated "as" union descriminators in c_alignas and c_builtin_ast.
+   * configure.ac: Now requiring at least autoconf 2.69 and C11.
+   * util.c: Removed unnecessary "noreturn".
+   * cdecl.c, cdecl.h, cli_options.c: Removed parameter from is_cdecl() and
+     is_cppdecl(); made is_cdecl() local.
+   * cdecl.h: Sorted.
+   * parser.y, util.h: Eliminated PUTS().
+   * cdecl.c, cdecl.h, cli_options.c: Eliminated cdecl_fin.
+   * NEWS, cdecl.1, cdecl.c, cdecl.h, cli_options.c, options.c, options.h,
+     print.c, set_options.c, cdecl-h.out: Removed `--interactive` & `-i`
+     options.
+   * NEWS, cdecl.1: Added some missing C++23 types to the manual page.
+
+2022-11-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * strbuf.c: Changed to compare str.
+
+2022-11-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.c: s/FREE/free/
+   * slist.c: Simplification.
+
+2022-11-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, lexer.l, parser.y: User-defined conversions in pseudo-English now
+     allow "const[ant] eval[uation]", "const[ant] expr[ession]", and
+     "const[ant] init[ialization]" for a storage class.
+
+2022-11-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added "no except" to udc_storage_class_english_stid.
+   * NEWS, cdecl.1, cdecl_keyword.c, literals.c, literals.h, parser.y,
+     test/Makefile.am, cdecl-d.out, declare_synonyms.out,
+     declare_synonyms.test: The following English synonyms have been added:
+   * NEWS, cdecl.1: Added missing `reproducible` and `unsequenced` to the
+     manual page.
+   * NEWS, configure.ac, help.c, help.out: Added missing `constexpr` to C23
+     help.
+
+2022-10-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, cdecl-d.out: Added user_defined_conversion_declaration_c.
+
+2022-10-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_lang.h, parser.y: Added LANG_enum_BITFIELDS.
+   * c_sname.c, c_sname.h, parser.y, slist.h, cdecl-d.out: Added slist_move()
+     and c_sname_move() to avoid possible double-free of slist or c_sname
+     objects.
+
+2022-10-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * types.h: Sorted.
+   * configure.ac: Sorted -W flags.
+   * configure.ac, c_ast.h, c_keyword.h, c_kind.h, c_operator.h, c_type.h,
+     cdecl_command.h, cdecl_parser.h, red_black.h, set_options.h, types.h: Made
+     cdecl compile with -Wpedantic that meant not forward-declaring enums.
+   * types.h: Removed unused c_typedef_add_rv_t.
+
+2022-10-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, read_line.c: Correct (?) way to check for libraries and
+     headers.
+   * assert_h.m4, getdelim.m4: Updated Gnulib.
+
+2022-10-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS: Updated.
+
+2022-10-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated version to 13.0.
+   * cdecl.c, test/Makefile.am, __declspec.out, alttokens.out, cdecl-d.out,
+     digraphs.out, explain-by-default.out, gnu_attributes.out, help.out,
+     set_digraphs.out, set_east-const.out, set_lang.out, set_semicolon.out,
+     set_trigraphs.out, show.out, trigraphs.out, xec.out, xupc.out,
+     __declspec.test, alttokens.test, cdecl-d.test, digraphs.test,
+     gnu_attributes.test, help.test, set_debug.test, set_digraphs.test,
+     set_east-const.test, set_lang.test, set_semicolon.test,
+     set_trigraphs.test, show.test, trigraphs.test, xec.test, xupc.test:
+     Consolidated tests.
+   * cdecl.1: Removed "set interactive".
+   * set_options.c: Added enabled_args.
+   * cdecl.1, cdecl.c, print.c, set_options.c: Now echo commands only when not
+     interactive.
+
+2022-10-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, cdecl.c, cli_options.c, help.c, options.c, options.h,
+     set_options.c, cdecl-h.out, help_options.out, set.out, set_c++.out,
+     set_c++03.out, set_c++11.out, set_c++14.out, set_c++17.out, set_c++20.out,
+     set_c++23.out, set_c++98.out, set_c11.out, set_c17.out, set_c18.out,
+     set_c89.out, set_c90.out, set_c95.out, set_c99.out, set_cknr.out,
+     set_digraphs_c89.out, set_explicit-ecsu_ecsu.out, set_explicit-int_i.out,
+     set_explicit-int_u.out, set_lang_c++.out, set_noexplicit-int.out,
+     set_options.out, set_trigraphs-c++17.out: Added --echo-commands/-O
+     command-line options and echo-commands set option.
+   * cdecl.1: s/ccsu/ecsu/
+   * parser.y: Flipped order of comparison.
+
+2022-10-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c: Removed uncessary `if`.
+   * NEWS, print.c: Fixed the error column when the prompt is disabled.
+
+2022-10-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Reorganization.
+   * configure.ac: Now checking for readline and curses headers and libries
+     only if those features are enabled; also wrapped all `test` arguments in
+     quotes.
+   * configure.ac, prompt.c: Now doing readline-related stuff only if readline
+     was not disabled.
+   * c_ast_check.c: Fixed warning.
+   * NEWS, cdecl.1, c_lang.h, test/Makefile.am, explain_efi-c.out,
+     explain_efi-c17.out, explain_efi-c.test, explain_efi-c17.test: Fixed-type
+     enumerations in C23 are now supported.
+   * cdecl.1: Changed to bullets.
+   * cdecl.1: Added mention of typeof declations not being supported.
+
+2022-10-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_ast_check.c, c_keyword.c, c_lang.h, c_type.c, c_type.h,
+     literals.c, literals.h, parser.y, test/Makefile.am, declare_nri.out,
+     explain_a_nd_i.out, explain_a_re_f_v.out, explain_a_re_i.out,
+     explain_a_us_f_v.out, explain_a_us_i.out, explain_a_nd_i.test,
+     explain_a_re_f_v.test, explain_a_re_i.test, explain_a_us_f_v.test,
+     explain_a_us_i.test: Added [[reproducible]] and [[unsequenced]] attributes
+     for C23.
+   * NEWS, lexer.l, test/Makefile.am, integers.out, integers.test: Digit
+     seperators in C23 are now supported.
+   * c_type.c: s/LANG_CPP_MIN(20)/LANG_no_unique_address/
+   * parser.y: Added UNSUPPORTED().
+   * NEWS, c_lang.h, c_type.c, help.c, test/Makefile.am, declare_b-c17.out,
+     declare_b.out, declare_hb.out, declare_lb.out, declare_sib.out,
+     declare_ub.out, explain_b.out, explain_hb.out, explain_keywords.out,
+     explain_lb.out, explain_sib.out, explain_ub.out, help_english-c.out,
+     show_all.out, show_all_predefined.out, show_all_predefined_glob-01.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out,
+     declare_b-c17.test: In C23, `bool` is now used instead of `_Bool`.
+   * NEWS, c_type.c, help.c, test/Makefile.am, help_english-c.out,
+     help_english-c17.out, help_english-c17.test: In C23, `thread_local` is now
+     used instead of `_Thread_local`.
+   * NEWS, c_lang.h, literals.h, test/Makefile.am, declare_c_al0.out,
+     declare_c_al8-c17.out, declare_c_al8.out, declare_c_alpv.out,
+     declare_en_al4.out, explain_alrgi.out, declare_c_al8-c17.test,
+     explain_alrgi.test: In C23, `alignas`  is now used instead of `_Alignas`.
+
+2022-10-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.h: Sorted.
+   * autocomplete.c, c_ast_check.c, c_ast_util.h, c_keyword.c, c_lang.h,
+     c_type.c, cdecl_command.c, cdecl_keyword.c, gibberish.c, help.c, parser.y,
+     print.c, set_options.c: Renamed LANG_XXX macros to use correct
+     capitalization for keywords.
+   * NEWS, c_keyword.c, c_lang.h, literals.c, literals.h, parser.y: Now
+     recognize `typeof` and `typeof_unqual` C23 keywords.
+   * NEWS, cdecl.1, c_keyword.c, c_lang.h, did_you_mean.c, explain_pcf_i.out,
+     explain_th_f_v.out: Added `false` and `true` to C23.
+   * c_ast_check.c, explain_xxvi.out: Put type in quotes in error message.
+   * NEWS, cdecl.1, c_ast_check.c, c_lang.h, c_type.c, test/Makefile.am,
+     declare_xvi-c.out, declare_xxi-c.out, declare_xxi-c17.out,
+     explain_xxi-c.out, explain_xxi-c17.out, explain_xxvi.out,
+     declare_xxi-c.test, declare_xxi-c17.test, explain_xxi-c.test,
+     explain_xxi-c17.test, explain_xxvi.test: Added `constexpr` to C23.
+
+2022-10-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_keyword.c,
+     c_lang.h, c_type.c, c_type.h, dump.c, english.c, gibberish.c, literals.c,
+     literals.h, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d-+i.out,
+     cdecl-d-al8i.out, cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out,
+     cdecl-d-eni.out, cdecl-d-f2i_pi.out, cdecl-d-f_v.out,
+     cdecl-d-faia4iaviaciast6i_v.out, cdecl-d-pmki.out, cdecl-d-udc_i.out,
+     cdecl-d-z.out, declare_bi4.out, explain_bi0.out, explain_bi1.out,
+     explain_bi4.out, explain_sibi0.out, explain_sibi1.out, explain_sibi2.out,
+     explain_sibi4.out, explain_ubi0.out, explain_ubi1.out, explain_ubi4.out,
+     declare_bi4.test, explain_bi0.test, explain_bi1.test, explain_bi4.test,
+     explain_sibi0.test, explain_sibi1.test, explain_sibi2.test,
+     explain_sibi4.test, explain_ubi0.test, explain_ubi1.test,
+     explain_ubi4.test: The `_BitInt(N)` type in C23 in now supported.
+
+2022-10-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am: Changed naming of block tests from 'b' to 'bl'.
+   * NEWS, c_keyword.c, c_lang.h, c_typedef.c, literals.c, literals.h,
+     cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out, cdecl-d-alli.out,
+     cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out, cdecl-d-f2i_pi.out,
+     cdecl-d-f_v.out, cdecl-d-faia4iaviaciast6i_v.out, cdecl-d-pmki.out,
+     cdecl-d-udc_i.out, cdecl-d-z.out, explain_static_cast_i-c.out,
+     explain_tli-c99.out, show_all-c++.out, show_all.out,
+     show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: `nullptr`, `static_assert`, & `thread_local`
+     are now also keywords in C23.
+
+2022-10-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_ast_check.c, c_keyword.c, c_operator.c, c_sname.c,
+     c_type.c, cdecl.c, cdecl_command.c, cdecl_keyword.c, dump.c, english.c,
+     gibberish.c, lexer.l, literals.c, literals.h, parser.y: Changed [HL]_XXX
+     literals to [HL]_xxx and Y_XXX literals to Y_xxx.
+
+2022-10-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added mention of static operator().
+   * c_sname.c, cdecl.c, lexer.l, parser.y: Using cast macros more.
+   * c_ast_check.c: Added POINTER_CAST.
+   * c_ast.h: s/uint64_t/uintmax_t/ for c_ast_visit_data_t.
+
+2022-10-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Simplified pc99_func_or_constructor_decl_c code.
+   * parser.y: Added free().
+   * parser.y: Similified.
+
+2022-10-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, did_you_mean.c, red_black_test.c: Reworked *_cmp() functions
+     to use their natural pointer types; eliminated test_rb_data_cmp().
+
+2022-10-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+     cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
+     cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviaciast6i_v.out,
+     cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined_using.out: Added the standard
+     C++23 types `std::bfloat16_t`, `std::float128_t`, `std::float16_t`,
+     `std::float32_t`, `std::float64_t`, `std::ospanstream`, `std::spanbuf`,
+     `std::spanstream`, `std::stacktrace`, `std::unexpect_t`,
+     `std::wospanstream`, `std::wspanbuf`, and `std::wspanstream`.
+
+2022-10-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_typedef.c, c_typedef.h, parser.y, test/Makefile.am,
+     explain_ctor_rcc.out, explain_ctor_rcc.test: Partially fixed "explain C(C
+     const&)".
+
+2022-10-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, test/Makefile.am, explain_k_al64.out, explain_k_al64.test:
+     Now checking for aligned structs in C.
+
+2022-10-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Eliminated `if`.
+   * gibberish.c: Eliminated "space".
+   * cdecl_keyword.c: s/CPP_MIN(11)/RVALUE_REFERENCE/ for "rvalue"
+     auto-completion.
+   * NEWS, cdecl_keyword.c: `pointer` is now auto-completable.
+   * Doxyfile: Added ENABLE_FLEX_DEBUG.
+   * Doxyfile, c_ast.c, c_ast.h: unique_id is now used only when
+     ENABLE_CDECL_DEBUG.
+
+2022-10-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, gibberish.c: s/of_ast/to_ast/ for c_ptr_mbr_ast.
+   * c_type.h: Simplified TS_MEMBER_FUNC_ONLY.
+   * c_type.h: Defined TS_MAIN_FUNC_CPP in terms of TS_MAIN_FUNC_C.
+
+2022-10-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.c, slist.h: s/slist_at_nocheck_offset/slist_at_nocheck/
+
+2022-10-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, assert.in.h, fnmatch.c, fnmatch_loop.c, hard-locale.h,
+     intprops-internal.h, mbrtowc.c, mbsinit.c, stdckdint.in.h, stdlib.in.h,
+     string.in.h, unistd.in.h, verify.h, wchar.in.h, assert_h.m4, c-bool.m4,
+     gnulib-common.m4, gnulib-comp.m4, warn-on-use.m4: Updated Gnulib.
+
+2022-10-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * declare_pmf_pi.out: Fixed expected output.
+   * NEWS, gibberish.c, test/Makefile.am, declare_f_pmpi.out,
+     declare_pmf_pi.out, declare_f_pmpi.test, declare_pmf_pi.test: Fixed output
+     of "declare f as function returning pointer to member of class C pointer
+     to int" which should be "int* C::* f()".
+
+2022-10-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.h, parser.y: Now comparing ast pointers directly.
+
+2022-09-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c, c_type.h: s/c_tid_is_except/c_tid_is_except_any/
+   * Doxyfile, NEWS, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.h, english.c,
+     gibberish.c, parser.y, test/Makefile.am, declare_enw3-c++.out,
+     declare_puw3.out, explain_enw3-c++.out, explain_enw3-c.out,
+     declare_enw3-c++.test, explain_enw3-c++.test, explain_enw3-c.test:
+     Enumerations in C++ can now be bit fields.
+
+2022-09-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, strbuf.c, util.c, util.h: Made perror_exit_if() back into a
+     PERROR_EXIT_IF() macro so it can use unlikely().
+   * english.c: Eliminated c_ast_english_cast().
+
+2022-09-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * english.c: s/c_sname_english_impl/c_scope_english/
+   * english.c: Eliminated c_ast_english_impl().
+   * c_ast.h, c_ast_check.c, c_kind.h, english.c, gibberish.c, parser.y,
+     types.h: Added c_bit_field_ast; s/K_ANY_BIT_WIDTH/K_ANY_BIT_FIELD/;
+     removed c_bit_width_t.
+   * english.c: Added c_ast_visit_english().
+
+2022-09-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_ast_check.c, declare_typedef_i_al8.out, explain_al3_c.out,
+     explain_alf_i.out, explain_alrgi.out, explain_c_al3.out: Improved the
+     location of alignment errors.
+   * NEWS, c_ast_check.c, c_kind.h, english.c, gibberish.c, test/Makefile.am,
+     explain_al4_cw3.out, explain_al4_cw3.test: Aligned bit fields are now
+     correctly forbidden.
+
+2022-09-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Simplified is_1_bit_only_in_set().
+   * NEWS, gibberish.c, test/Makefile.am, define_efi.out, define_efi.test:
+     Fixed fixed type `enum` definition.
+   * gibberish.c: s/printed_typedef/print_typedef/;
+     s/printing_using/print_using/
+
+2022-09-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: s/printing_typedef/printed_typedef/
+   * gibberish.c: s/msc_call_atid/msc_call_atids/
+   * gibberish.c: Eliminated skip_name_for_using flag.
+   * gibberish.c: Simplified with is_fixed_enum.
+
+2022-09-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Undid previous setting of temp_sname inside DUMP_AST().
+   * parser.y: Moved setting of temp_sname inside DUMP_AST().
+
+2022-09-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_operator.c: Replaces some uses of INTERNAL_ERR() with assert().
+
+2022-09-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c, red_black_test.c, slist_test.c: Added `const` for array
+     parameters.
+   * read_line.c, read_line.h: Removed incorrect "static".
+   * AUTHORS: Added mention of C++23 explicit object parameters.
+   * NEWS: Formatting.
+   * NEWS: s/12.0.1/12.1/
+
+2022-09-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, help_english-c++.out: Added "this" to "store" in English help.
+   * src/Makefile.am: Put slist.[ch] back.
+   * cdecl.1: Added mention of explicit object parameters.
+
+2022-09-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Removed incorrect slist.[ch] dependency from
+     red_black_test_SOURCES.
+
+2022-09-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_ast_util.c, declare_frg_v.out, explain_frg_v.out: Fixed implicit
+     `int` checking error message
+   * NEWS, c_ast_check.c, c_keyword.c, c_lang.h, c_type.c, c_type.h, parser.y,
+     test/Makefile.am, cdecl--debug.out, cdecl-d-cmo_exclam__b.out,
+     cdecl-d-f2i_pi.out, cdecl-d-faia4iaviaciast6i_v.out, declare_ftsrk_v.out,
+     explain_cftsrk_v.out, explain_ftsrk_v.out, explain_rftsrk_v.out,
+     explain_stftsrk_v.out, explain_vftsrk_v.out, declare_ftsrk_v.test,
+     explain_cftsrk_v.test, explain_ftsrk_v.test, explain_rftsrk_v.test,
+     explain_stftsrk_v.test, explain_vftsrk_v.test: Added preliminary explicit
+     object parameter support for C++23.
+   * c_keyword.c: s/CPP_MAX(03)/THROW/; s/CPP_MIN(11)/USING_DECLARATION/
+
+2022-09-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Expanded language shorthands to 3 letters.
+   * configure.ac: Changed version to 12.1.
+   * c_type.c: Removed incorrect P1 from OK_STORAGE_LANGS.
+
+2022-09-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_ast_check.c, c_lang.h, test/Makefile.am, explain_sto_eq_i_v.out,
+     explain_sto_parens_2i_v-cpp20.out, explain_sto_parens_2i_v.out,
+     explain_sto_eq_i_v.test, explain_sto_parens_2i_v-cpp20.test,
+     explain_sto_parens_2i_v.test: Now allow `operator()` to be `static` in
+     C++23.
+   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+     cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
+     cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviaciast6i_v.out,
+     cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined_using.out: Added
+     `std::bernoulli_distribution` and `std::random_device`.
+
+2022-09-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y, explain_a0i.out, explain_a4v.out, explain_a5fd_i.out,
+     explain_ac9i.out, explain_ast9i.out, explain_b_ai.out, explain_f_ai.out:
+     Now recognizing `static` or `const` array declarations outside of function
+     parameters allowing more specific error reporting.
+
+2022-09-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, gibberish.c, test/Makefile.am, declare_fac_v.out,
+     declare_facv_v.out, declare_fac_v.test: Array parameters no longer have a
+     space wrongly emitted after `const`.
+
+2022-08-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: s/which_lang_id/which_lang_ids/
+   * c_ast_check.c, explain_studc_i.out: Now using error_kind_not_tid().
+
+2022-08-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, declare_b_f_i.out, declare_f_f_i.out,
+     explain_ff_i_v-02.out: The "function returning function" error now has "
+     is illegal".
+
+2022-08-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, c_ast_check.c, c_lang.h, test/Makefile.am,
+     explain_epudc_b-c++03.out, explain_epudc_b.out,
+     explain_epudc_b-c++03.test, explain_epudc_b.test: Now correctly allowing
+     explicit user-defined conversion operators in C++11 and later.
+
+2022-08-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, cdecl.c, lexer.l, util.c, util.h: Added check_atexit().
+   * lexer.l: Added lexer_cleanup().
+
+2022-08-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Added missing '*'.
+
+2022-08-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Removed erroneous "explain"; added ';'.
+
 2022-08-07  Jan Engelhardt <jengelh@inai.de>
 
    * c_ast.h, c_ast_util.h, c_lang.h, c_operator.h, c_sglob.h, c_sname.h,
@@ -3397,6 +3848,9 @@
 
    * c_type.c: Added c_type_id_normalize().
    * c_type.c: Simplified c_type_is_any().
+
+2021-05-18  Marco Sirabella <marco@sirabella.org>
+
    * configure.ac: Search for the library containing: tigetnum (tinfo)
 
 2021-05-17  Paul J. Lucas <paul@lucasmail.org>
