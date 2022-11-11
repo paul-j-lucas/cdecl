@@ -561,7 +561,8 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @param dst_tids The \ref c_tid_t to add to.
  * @param new_tids The \ref c_tid_t to add.
  * @param new_loc The source location of \a new_id.
- * @return Returns `true` only if the type added successfully.
+ * @return Returns `true` only if the type added successfully; otherwise,
+ * prints an error message at \a new_loc and returns `false`.
  *
  * @sa c_type_add(()
  */
@@ -686,7 +687,8 @@ c_tpid_t c_tid_tpid( c_tid_t tids );
  * @param dst_type The \ref c_type to add to.
  * @param new_type The \ref c_type to add.
  * @param new_loc The source location of \a new_type.
- * @return Returns `true` only if \a new_type added successfully.
+ * @return Returns `true` only if \a new_type added successfully; otherwise,
+ * prints an error message at \a new_loc and returns `false`.
  *
  * @sa c_tid_add(()
  * @sa c_type_add_tid()
@@ -702,7 +704,8 @@ bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
  * @param dst_type The \ref c_type to add to.
  * @param new_tids The \ref c_tid_t to add.
  * @param new_loc The source location of \a new_tids.
- * @return Returns `true` only if \a new_tids added successfully.
+ * @return Returns `true` only if \a new_tids added successfully; otherwise,
+ * prints an error message at \a new_loc and returns `false`.
  *
  * @sa c_type_add()
  */
