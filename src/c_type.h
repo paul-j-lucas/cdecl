@@ -479,7 +479,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_STATIC | TS_VIRTUAL )
 
 /**
- * The storage types that can _not_ apply to C++ function like things
+ * The only storage types that can _not_ apply to C++ function like things
  * (functions and operators) that have an explicit object parameter (`this`).
  */
 #define TS_FUNC_LIKE_NOT_EXPLICIT_OBJ_PARAM \
@@ -487,7 +487,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_VIRTUAL )
 
 /**
- * The storage types that can apply to C++ function-like parameters.
+ * The only storage types that can apply to C++ function-like parameters.
  */
 #define TS_FUNC_LIKE_PARAM    ( TS_REGISTER | TS_THIS )
 
