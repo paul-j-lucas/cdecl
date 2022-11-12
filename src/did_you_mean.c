@@ -302,8 +302,8 @@ static void dym_free_tokens( did_you_mean_t const *dym ) {
  * Hence, you need a heuristic to know whether a least edit distance is
  * "similar enough" to the target string even to bother offering suggestions.
  * This can be done by checking whether the distance is less than or equal to
- * some percentage, say, 40%, of the target string's length in order to be
- * considered "similar enough" to be a reasonable suggestion.
+ * some percentage of the target string's length in order to be considered
+ * "similar enough" to be a reasonable suggestion.
  *
  * @param dam_lev_dist A Damerau-Levenshtein edit distance.
  * @param percent The edit distance must be less than or equal to this percent
