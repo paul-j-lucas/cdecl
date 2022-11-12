@@ -358,8 +358,8 @@ enum cdecl_command_kind {
   CDECL_COMMAND_FIRST_ARG,
 
   /**
-   * Command is valid within the **cdecl** language _and_ as the
-   * program name (`argv[0]`):
+   * Command is valid within the **cdecl** language _and_ as the program name
+   * (`argv[0]`):
    *
    * `$` _command_ _args_
    */
