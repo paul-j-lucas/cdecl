@@ -153,7 +153,6 @@ static inline bool is_cdecl( void ) {
  * @param cli_value The command-line argument values, if any.  Note that,
  * unlike `main()`'s `argv`, this contains _only_ the command-line arguments
  * _after_ the program name.
-
  * @return Returns `EX_OK` upon success or another value upon failure.
  *
  * @note The parameters are _not_ named `argc` and `argv` intentionally to
@@ -174,15 +173,12 @@ static int cdecl_parse_cli( size_t cli_count,
   char const *find_what = me;
   cdecl_command_t const *found_command = cdecl_command_find( find_what );
   if ( found_command != NULL ) {
-    switch ( found_command->kind ) {
-      case CDECL_COMMAND_FIRST_ARG:
-      case CDECL_COMMAND_LANG_ONLY:
-        invalid_when = " (as a program name)";
-        goto invalid_command;
-      case CDECL_COMMAND_PROG_NAME:
-        command_literal = me;
-        goto parse_command;
-    } // switch
+    if ( found_command->kind == CDECL_COMMAND_PROG_NAME ) {
+      command_literal = me;
+      goto parse_command;
+    }
+    invalid_when = " (as a program name)";
+    goto invalid_command;
   }
 
   if ( cli_count > 0 ) {
@@ -192,14 +188,10 @@ static int cdecl_parse_cli( size_t cli_count,
     find_what = cli_value[0];
     found_command = cdecl_command_find( find_what );
     if ( found_command != NULL ) {
-      switch ( found_command->kind ) {
-        case CDECL_COMMAND_FIRST_ARG:
-        case CDECL_COMMAND_PROG_NAME:
-          goto parse_command;
-        case CDECL_COMMAND_LANG_ONLY:
-          invalid_when = " (as a first argument)";
-          goto invalid_command;
-      } // switch
+      if ( found_command->kind >= CDECL_COMMAND_FIRST_ARG )
+        goto parse_command;
+      invalid_when = " (as a first argument)";
+      goto invalid_command;
     }
   }
 
