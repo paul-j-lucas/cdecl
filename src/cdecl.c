@@ -162,48 +162,44 @@ NODISCARD
 static int cdecl_parse_cli( size_t cli_count,
                             char const *const cli_value[const] ) {
   char const *command_literal = NULL;
-  char const *invalid_when = "";
+  char const *find_what;
+  cdecl_command_t const *found_command;
+  char const *invalid_as;
 
-  if ( is_cdecl() || is_cppdecl() )
-    goto parse_command;
-
-  //
-  // Is the program name itself a command, i.e., cast, declare, or explain?
-  //
-  char const *find_what = me;
-  cdecl_command_t const *found_command = cdecl_command_find( find_what );
-  if ( found_command != NULL ) {
-    if ( found_command->kind == CDECL_COMMAND_PROG_NAME ) {
-      command_literal = me;
-      goto parse_command;
+  if ( is_cdecl() || is_cppdecl() ) {
+    if ( cli_count > 0 ) {
+      //
+      // Is the first word of the first argument a command?
+      //
+      find_what = cli_value[0];
+      found_command = cdecl_command_find( find_what );
+      if ( found_command != NULL ) {
+        if ( found_command->kind == CDECL_COMMAND_LANG_ONLY ) {
+          invalid_as = "a first argument";
+          goto invalid_command;
+        }
+      }
     }
-    invalid_when = " (as a program name)";
-    goto invalid_command;
   }
-
-  if ( cli_count > 0 ) {
+  else {
     //
-    // Is the first word of the first argument a command?
+    // Is the program name itself a command, i.e., cast, declare, or explain?
     //
-    find_what = cli_value[0];
+    find_what = me;
     found_command = cdecl_command_find( find_what );
     if ( found_command != NULL ) {
-      if ( found_command->kind >= CDECL_COMMAND_FIRST_ARG )
-        goto parse_command;
-      invalid_when = " (as a first argument)";
-      goto invalid_command;
+      if ( found_command->kind != CDECL_COMMAND_PROG_NAME ) {
+        invalid_as = "a program name";
+        goto invalid_command;
+      }
+      command_literal = me;
     }
   }
 
-  if ( opt_explain )
-    command_literal = L_explain;
-
-parse_command:
   return cdecl_parse_command( command_literal, cli_count, cli_value );
 
 invalid_command:
-  assert( find_what != NULL );
-  EPRINTF( "%s: \"%s\": invalid command%s", me, find_what, invalid_when );
+  EPRINTF( "%s: \"%s\": invalid command (as %s)", me, find_what, invalid_as );
   if ( found_command == NULL && print_suggestions( DYM_COMMANDS, find_what ) )
     EPUTC( '\n' );
   else

@@ -1720,7 +1720,9 @@ TESTS+=	tests/explain_udl__i.test \
 #
 TESTS+=	tests/cl-cast_i.test \
 	tests/cl-declare_i.test \
-	tests/cl-explain_i.test
+	tests/cl-exit.test \
+	tests/cl-explain_i.test \
+	tests/cl-quit.test
 
 ###############################################################################
 

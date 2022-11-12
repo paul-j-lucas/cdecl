@@ -37,6 +37,10 @@ class.
 Removed these command-line options.  They've been in cdecl since the beginning,
 but never seemed to have a justification.
 
+** `exit` and `quit` command line arguments
+Both the `exit` and `quit` commands when given as the first word of the first
+argument on the command line are now correctly reported as an error.
+
 ** C23 `constexpr` help
 Added missing `constexpr` to the help for C23.
 

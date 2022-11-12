@@ -1,0 +1,2 @@
+EXPECTED_EXIT=64
+cdecl exit
