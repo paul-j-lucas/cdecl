@@ -350,16 +350,16 @@ enum cdecl_command_kind {
   CDECL_COMMAND_LANG_ONLY,
 
   /**
-   * Command is valid within the **cdecl** language _and_ as the first word of
-   * the first command-line argument (`argv[1]`):
+   * Same as \ref CDECL_COMMAND_LANG_ONLY, but command is also valid as the
+   * first word of the first command-line argument (`argv[1]`):
    *
    * `$ cdecl` _command_ _args_
    */
   CDECL_COMMAND_FIRST_ARG,
 
   /**
-   * Command is valid within the **cdecl** language _and_ as the program name
-   * (`argv[0]`):
+   * Same as \ref CDECL_COMMAND_FIRST_ARG, but command is also valid as the
+   * program name (`argv[0]`):
    *
    * `$` _command_ _args_
    */
@@ -370,9 +370,9 @@ enum cdecl_command_kind {
  * Types of help.
  */
 enum cdecl_help {
-  CDECL_HELP_COMMANDS,                  ///< Help for cdecl commands.
-  CDECL_HELP_ENGLISH,                   ///< Help for cdecl pseudo-English.
-  CDECL_HELP_OPTIONS                    ///< Help for cdecl options.
+  CDECL_HELP_COMMANDS,                  ///< Help for **cdecl** commands.
+  CDECL_HELP_ENGLISH,                   ///< Help for **cdecl** pseudo-English.
+  CDECL_HELP_OPTIONS                    ///< Help for **cdecl** options.
 };
 
 /**
