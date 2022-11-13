@@ -134,7 +134,8 @@ size_t dam_lev_dist( char const *source, char const *target ) {
       //
       size_t const xpos_dist = dist_matrix[ last_match_row ][ last_match_col ]
         + (row - last_match_row - 1)
-        + (col - last_match_col - 1) + 1;
+        + (col - last_match_col - 1)
+        + 1;
 
       // Use the minimum distance.
       size_t dist_min = min_dist( ins_dist, del_dist );
