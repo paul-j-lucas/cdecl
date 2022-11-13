@@ -20,6 +20,27 @@ help commands
 help english
 help options
 
+set c95
+help
+help command
+help commands
+help english
+help options
+
+set c99
+help
+help command
+help commands
+help english
+help options
+
+set c11
+help
+help command
+help commands
+help english
+help options
+
 set c17
 help
 help command
@@ -34,7 +55,42 @@ help commands
 help english
 help options
 
+set c++98
+help
+help command
+help commands
+help english
+help options
+
 set c++03
+help
+help command
+help commands
+help english
+help options
+
+set c++11
+help
+help command
+help commands
+help english
+help options
+
+set c++14
+help
+help command
+help commands
+help english
+help options
+
+set c++17
+help
+help command
+help commands
+help english
+help options
+
+set c++20
 help
 help command
 help commands
