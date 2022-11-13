@@ -113,14 +113,17 @@
  * use #TOKEN:
  *
  *      // The "aligned" literal maps to the Y_aligned token:
- *      { L_aligned,        TOKEN( Y_aligned, AC_LANG(NONE)  ) }
+ *      { L_aligned,        TOKEN( Y_aligned, AC_LANG(ALIGNMENT)  ) }
  *
  * To have a literal that is a synonym for another literal for a **cdecl**
  * keyword map to the other literal's same token, use #TOKEN with the other
  * literal's token:
  *
  *      // The "align" literal synonym also maps to the Y_aligned token:
- *      { L_align,          TOKEN( Y_aligned, AC_LANG(ALIGNMENT) ) },
+ *      { L_align,          TOKEN( Y_aligned, AC_LANG(NONE) ) },
+ *
+ * Note that synonyms should _not_ be auto-completable because they'd be
+ * ambiguous with each other.
  *
  * To have a literal that is pseudo-English be a synonym for exactly one
  * corresponding C/C++ keyword literal, but only when converting pseudo-English
@@ -128,7 +131,7 @@
  *
  *      // The "atomic" literal is a synonym for the "_Atomic" literal, but
  *      // only when converting from pseudo-English to gibberish:
- *      { L_atomic,         C_SYE( L__Atomic, AC_LANG(C_MIN(11)) ) },
+ *      { L_atomic,         C_SYE( L__Atomic, AC_LANG(_Atomic) ) },
  *
  * To do the same, but allow the literal at any time (i.e., also when
  * converting gibberish to pseudo-English), use #C_SYA:
@@ -143,9 +146,9 @@
  *
  *      // The "noreturn" literal is a synonym for the "_Noreturn" literal only
  *      // in C11 and later.
- *      { L_noreturn,       C_SYN( true, AC_LANG(C_CPP_MIN(11,11)),
- *                            { { LANG__NORETURN__, L__Noreturn },
- *                              { LANG_ANY,         L_noreturn  } } ) },
+ *      { L_noreturn,       C_SYN( true, AC_LANG(NONRETURNING_FUNC),
+ *                            { { ~LANG_noreturn, L__Noreturn },
+ *                              { LANG_ANY,       L_noreturn  } } ) },
  *
  * ## Autocompletion
  *
