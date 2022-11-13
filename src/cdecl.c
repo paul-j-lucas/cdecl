@@ -195,16 +195,16 @@ invalid_command:
  *
  * @param command The **cdecl** command to parse, but only if its \ref
  * cdecl_command::kind "kind" is #CDECL_COMMAND_PROG_NAME; NULL otherwise.
- * @param arg_count The size of \a arg_value.
- * @param arg_value The argument values, if any.  Note that, unlike `main()`'s
+ * @param cli_count The size of \a cli_value.
+ * @param cli_value The argument values, if any.  Note that, unlike `main()`'s
  * `argv`, this contains _only_ the command-line arguments _after_ the program
  * name.
  * @return Returns `EX_OK` upon success or another value upon failure.
  */
 NODISCARD
-static int cdecl_parse_command( char const *command, size_t arg_count,
-                                char const *const arg_value[const] ) {
-  if ( command == NULL && arg_count == 0 ) // invoked as just cdecl or c++decl
+static int cdecl_parse_command( char const *command, size_t cli_count,
+                                char const *const cli_value[const] ) {
+  if ( command == NULL && cli_count == 0 ) // invoked as just cdecl or c++decl
     return cdecl_parse_stdin();
 
   strbuf_t sbuf;
@@ -215,8 +215,8 @@ static int cdecl_parse_command( char const *command, size_t arg_count,
   if ( (space = command != NULL) )
     strbuf_puts( &sbuf, command );
   // Concatenate arguments, if any, into a single string.
-  for ( size_t i = 0; i < arg_count; ++i )
-    strbuf_sepc_puts( &sbuf, ' ', &space, arg_value[i] );
+  for ( size_t i = 0; i < cli_count; ++i )
+    strbuf_sepc_puts( &sbuf, ' ', &space, cli_value[i] );
 
   int const status = cdecl_parse_string( sbuf.str, sbuf.len );
   strbuf_cleanup( &sbuf );
