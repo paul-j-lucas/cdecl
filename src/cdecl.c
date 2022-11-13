@@ -31,6 +31,7 @@
 #include "c_lang.h"
 #include "c_typedef.h"
 #include "cdecl_command.h"
+#include "cdecl_parser.h"
 #include "cli_options.h"
 #include "color.h"
 #include "help.h"
@@ -65,24 +66,6 @@ bool          cdecl_initialized;
 bool          cdecl_interactive;
 cdecl_mode_t  cdecl_mode;
 char const   *me;
-
-// extern functions
-extern void parser_cleanup( void );
-
-/**
- * Bison: parse input.
- *
- * @return Returns 0 only if parsing was successful.
- */
-NODISCARD
-extern int  yyparse( void );
-
-/**
- * Flex: immediately switch to reading \a file.
- *
- * @param in_file The `FILE` to read from.
- */
-extern void yyrestart( FILE *in_file );
 
 // local functions
 static void cdecl_cleanup( void );

@@ -36,6 +36,7 @@
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
+#include <stdio.h>                      /* for FILE */
 
 /// @endcond
 
@@ -118,7 +119,7 @@ c_loc_t lexer_loc( void );
 void lexer_reset( bool hard_reset );
 
 /**
- * Gets the next token ID.
+ * Flex: gets the next token ID.
  *
  * @return Returns the token ID.
  *
@@ -126,6 +127,15 @@ void lexer_reset( bool hard_reset );
  */
 NODISCARD
 int yylex( void );
+
+/**
+ * Flex: immediately switch to reading \a file.
+ *
+ * @param in_file The `FILE` to read from.
+ *
+ * @note The definition is provided by Flex.
+ */
+void yyrestart( FILE *in_file );
 
 ///////////////////////////////////////////////////////////////////////////////
 

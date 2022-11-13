@@ -23,13 +23,34 @@
 
 /**
  * @file
- * Wrapper around the Bison-generated parser.h to add `#include` guards.
+ * Wrapper around the Bison-generated parser.h to add `#include` guards as well
+ * as add declarations for Bison types and functions.
  */
 
 // local
 #include "parser.h"
 
+// standard
+#include <attribute.h>
+
+///////////////////////////////////////////////////////////////////////////////
+
 typedef enum yytokentype yytokentype;
+
+/**
+ * Cleans up global parser data at program termination.
+ */
+void parser_cleanup( void );
+
+/**
+ * Bison: parse input.
+ *
+ * @return Returns 0 only if parsing was successful.
+ */
+NODISCARD
+int yyparse( void );
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* cdecl_parser_H */
 /* vim:set et sw=2 ts=2: */

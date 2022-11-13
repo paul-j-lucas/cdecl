@@ -8038,9 +8038,6 @@ virtual_stid_opt
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-/**
- * Cleans up global parser data at program termination.
- */
 void parser_cleanup( void ) {
   c_ast_list_gc( &typedef_ast_list );
 }
