@@ -242,6 +242,8 @@ static void print_help_english( void ) {
       print_h( "[<name> as] <english>\n" );
 
     print_h( "C-type:" );
+    if ( OPT_LANG_IS( _BitInt ) )
+      print_h( " _BitInt(<int>) |" );
     if ( OPT_LANG_IS( bool ) )
       print_h( " bool |" );
     else if ( OPT_LANG_IS( _Bool ) )
@@ -255,7 +257,10 @@ static void print_help_english( void ) {
     }
     if ( OPT_LANG_IS( wchar_t ) )
       print_h( " | wchar_t" );
-    print_h( " | int | float | double" );
+    print_h( " | int | float |" );
+    if ( OPT_LANG_IS( _BitInt ) )
+      print_h( "\n       " );
+    print_h( " double" );
     if ( OPT_LANG_IS( void ) )
       print_h( " | void" );
     print_h( "\n" );
