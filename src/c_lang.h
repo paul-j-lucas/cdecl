@@ -526,7 +526,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages `explicit` user-defined conversion operators are supported in.
  */
-#define LANG_EXPLICIT_USER_DEF_CONV     LANG_MIN(CPP_11)
+#define LANG_explicit_USER_DEF_CONV     LANG_MIN(CPP_11)
 
 /**
  * Languages the `export` keyword is supported in.

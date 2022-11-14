@@ -2026,9 +2026,9 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
     c_lang_id_t which_lang_ids = LANG_NONE;
     switch ( ast->kind ) {
       case K_USER_DEF_CONVERSION:
-        if ( OPT_LANG_IS( EXPLICIT_USER_DEF_CONV ) )
+        if ( OPT_LANG_IS( explicit_USER_DEF_CONV ) )
           break;
-        which_lang_ids = LANG_EXPLICIT_USER_DEF_CONV;
+        which_lang_ids = LANG_explicit_USER_DEF_CONV;
         FALLTHROUGH;
       default:
         error_kind_not_tid( ast, TS_EXPLICIT, which_lang_ids, "\n" );
