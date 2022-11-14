@@ -39,11 +39,11 @@ cdecl> declare f as non-discardable function
 37: warning: [[nodiscard]] functions can not return void
 [[nodiscard]] void f();
 cdecl> declare f as no return function
-noreturn void f();
+[[noreturn]] void f();
 cdecl> declare f as no-return function
-noreturn void f();
+[[noreturn]] void f();
 cdecl> declare f as non-returning function
-noreturn void f();
+[[noreturn]] void f();
 cdecl> declare m as maybe unused int
 [[maybe_unused]] int m;
 cdecl> declare m as maybe-unused int

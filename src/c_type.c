@@ -802,11 +802,11 @@ static char const* c_type_name_impl( c_type_t const *type,
   c_tid_t stids = type->stids;
   c_tid_t atids = type->atids;
 
-  if ( OPT_LANG_IS( C_ANY ) && c_tid_is_any( atids, TA_NORETURN ) ) {
+  if ( c_tid_is_any( atids, TA_NORETURN ) && !OPT_LANG_IS( noreturn ) ) {
     //
-    // Special case: we store _Noreturn as an attribute, but in C, it's a
-    // distinct keyword and printed as such instead being printed between
-    // brackets [[like this]].
+    // Special case: we store _Noreturn as an attribute, but in C through C17,
+    // it's a distinct keyword and printed as such instead being printed
+    // between brackets [[like this]].
     //
     static c_tid_t const ATIDS[] = { TA_NORETURN };
     C_TID_NAME_CAT( sbuf, TA_NORETURN, ATIDS, in_english, ' ', &space );

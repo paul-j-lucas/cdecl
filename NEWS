@@ -36,6 +36,9 @@ User-defined conversions in pseudo-English now allow "const[ant] eval[uation]",
 "const[ant] expr[ession]", and "const[ant] init[ialization]" for a storage
 class.
 
+** `[[noreturn]]` in C23.
+`[[noreturn]]` is now printed rather than `_Noreturn` in C23.
+
 ** Removed `--interactive` & `-i` options
 Removed these command-line options.  They've been in cdecl since the beginning,
 but never seemed to have a justification.
