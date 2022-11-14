@@ -1097,7 +1097,6 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
-  assert( OPT_LANG_IS( PROTOTYPES ) );
 
   c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
   unsigned n_params = 0;
