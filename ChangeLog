@@ -1,3 +1,26 @@
+2022-11-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Added more compiler warnings.
+   * NEWS, c_type.c, declare_synonyms.out: `[[noreturn]]` is now printed rather
+     than `_Noreturn` in C23.
+   * c_ast_check.c, c_lang.h: s/EXPLICIT_USER_DEF_CONV/explicit_USER_DEF_CONV/
+   * c_ast_check.c: Removed pointless assert().
+
+2022-11-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.out, help.test: Now testing help for all languages.
+   * NEWS, help.c, help.out: `_BitInt(<int>)` was added to the help text.
+   * cdecl.c: Renamed parameters to match.
+   * cdecl.c, cdecl_parser.h, lexer.h, parser.y: Moved declarations for Flex &
+     Bison to lexer.h and cdecl_parser.h, respectively.
+
+2022-11-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.c, test/Makefile.am, cl-exit.out, cl-quit.out, cl-exit.test,
+     cl-quit.test: Fixed (hopefully for the last time) the way the program name
+     and CLI arguments are parsed.
+   * cdecl.c: Simplification.
+
 2022-11-07  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: Removed "inline".
