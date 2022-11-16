@@ -42,6 +42,15 @@ typedef enum yytokentype yytokentype;
  */
 void parser_cleanup( void );
 
+#ifdef __GNUC__
+# pragma GCC diagnostic push
+  // Some versions of Bison don't declare yyparse() in the generated header
+  // file so we declare it below.  However, if the current version of Bison
+  // does declare it, then we'd get a redundant declaration warning -- so
+  // suppress that.
+# pragma GCC diagnostic ignored "-Wredundant-decls"
+#endif /* __GNUC__ */
+
 /**
  * Bison: parse input.
  *
@@ -49,6 +58,10 @@ void parser_cleanup( void );
  */
 NODISCARD
 int yyparse( void );
+
+#ifdef __GNUC__
+# pragma GCC diagnostic pop
+#endif /* __GNUC__ */
 
 ///////////////////////////////////////////////////////////////////////////////
 
