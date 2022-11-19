@@ -1709,6 +1709,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       builtin_type_c_ast
 %type   <ast>       class_struct_union_c_ast
 %type   <ast_pair>  decl_c_astp decl2_c_astp
+%type   <sname>     destructor_sname
 %type   <ast>       east_modified_type_c_ast
 %type   <ast>       enum_c_ast
 %type   <ast>       enum_class_struct_union_c_ast
@@ -1835,6 +1836,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c_exp
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c_opt
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } destructor_sname
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_english
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_list_english
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_list_english_opt
@@ -3857,7 +3859,7 @@ file_scope_constructor_decl_c
 /// Gibberish C++ file-scope destructor declaration ///////////////////////////
 
 file_scope_destructor_decl_c
-  : inline_stid_opt Y_DESTRUCTOR_SNAME
+  : inline_stid_opt destructor_sname
     lparen_exp rparen_func_qualifier_list_c_stid_opt noexcept_c_stid_opt
     gnu_attribute_specifier_list_c_opt
     {
@@ -7685,6 +7687,15 @@ dependency_exp
   | error
     {
       keyword_expected( L_dependency );
+    }
+  ;
+
+destructor_sname
+  : Y_DESTRUCTOR_SNAME
+  | Y_LEXER_ERROR
+    {
+      c_sname_init( &$$ );
+      PARSE_ABORT();
     }
   ;
 

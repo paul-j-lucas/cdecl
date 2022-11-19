@@ -664,8 +664,10 @@ include{S}*\"  {
                   yylval.sname = sname;
                   return Y_DESTRUCTOR_SNAME;
                 }
-                YY_USER_ACTION_UNDO_FOR_REJECT;
-                REJECT;
+                print_error( &yylloc,
+                  "matching class name after '~' expected\n"
+                );
+                return Y_LEXER_ERROR;
               }
 
               /*

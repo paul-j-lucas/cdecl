@@ -39,6 +39,9 @@ class.
 ** `[[noreturn]]` in C23.
 `[[noreturn]]` is now printed rather than `_Noreturn` in C23.
 
+** Invalid destructor name error
+Improved the error message for an invalid destructor name, e.g., `S::~T`.
+
 ** Removed `--interactive` & `-i` options
 Removed these command-line options.  They've been in cdecl since the beginning,
 but never seemed to have a justification.
