@@ -661,11 +661,8 @@ include{S}*\"  {
 
                 c_sname_t sname;
                 if ( c_sname_parse_dtor( lexer_token, &sname ) ) {
-                  if ( c_sname_is_ctor( &sname ) ) {
-                    yylval.sname = sname;
-                    return Y_DESTRUCTOR_SNAME;
-                  }
-                  c_sname_cleanup( &sname );
+                  yylval.sname = sname;
+                  return Y_DESTRUCTOR_SNAME;
                 }
                 YY_USER_ACTION_UNDO_FOR_REJECT;
                 REJECT;

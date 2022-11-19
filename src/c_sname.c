@@ -57,7 +57,7 @@
  * @param sbuf The buffer to write into.
  * @param sname The scoped name to write.
  * @param end_scope The scope to stop before or NULL for all scopes.
- * @return If not NULL, returns \a sbuf->str; otherwise returns the empty
+ * @return If not NULL, returns \a sbuf&ndash;>str; otherwise returns the empty
  * string.
  */
 NODISCARD
@@ -89,7 +89,9 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
  * @param sname The scoped name to parse into.
  * @param is_dtor `true` only if a destructor name, e.g., `S::T::~T`, is to be
  * parsed.
- * @return Returns `true` only if the scoped name was successfully parsed.
+ * @return Returns `true` only if the scoped name was successfully parsed and,
+ * if \a is_dtor is `true`, only if the scope count &ge; 2 and the last two
+ * scope names match.
  */
 bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
   assert( s != NULL );
@@ -98,6 +100,8 @@ bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
   bool parsed_tilde = !is_dtor;
   c_sname_t rv;
   c_sname_init( &rv );
+
+  char const *prev_name = "";
 
   for ( char const *end; (end = parse_identifier( s )) != NULL; ) {
     char *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
@@ -121,6 +125,8 @@ bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
 
     SKIP_WS( end );
     if ( *end == '\0' && parsed_tilde ) {
+      if ( is_dtor && strcmp( name, prev_name ) != 0 )
+        goto error;
       *sname = rv;
       return true;
     }
@@ -134,8 +140,10 @@ tilde:
       SKIP_WS( s );
       parsed_tilde = true;
     }
+    prev_name = name;
   } // for
 
+error:
   c_sname_cleanup( &rv );
   return false;
 }
