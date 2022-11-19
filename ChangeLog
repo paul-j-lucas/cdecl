@@ -1,3 +1,10 @@
+2022-11-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, lexer.l, parser.y, explain_+dtor-error.out: Improved the error
+     message for an invalid destructor name, e.g., `S::~T`.
+   * c_sname.c, lexer.l: c_sname_parse_impl() now checks that the last 2 scope
+     names match when is_dtor is true.
+
 2022-11-15  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl_parser.h, lexer.h: Suppressing redundant declaration warning for
