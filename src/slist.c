@@ -92,7 +92,7 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
     for ( ; i_node != NULL && j_node != NULL;
           i_node = i_node->next, j_node = j_node->next ) {
       int const cmp = STATIC_CAST( int,
-        (intptr_t)i_node->data  - (intptr_t)j_node->data
+        (intptr_t)i_node->data - (intptr_t)j_node->data
       );
       if ( cmp != 0 )
         return cmp;
