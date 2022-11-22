@@ -60,7 +60,7 @@
 
 /**
  * Color capability used to map a `CDECL_COLORS` or `GCC_COLORS` "capability"
- * either to the variable to set or the function to call.
+ * to the variable to set.
  */
 struct color_cap {
   char const   *cap_name;               ///< Capability name.
@@ -122,7 +122,7 @@ static bool sgr_is_valid( char const* );
  * @return Returns `true` only if \a sgr_color is valid.
  */
 NODISCARD
-static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
+static bool sgr_cap_set( color_cap_t const *cap, char const *sgr_color ) {
   assert( cap != NULL );
   assert( cap->cap_var_to_set != NULL );
 
@@ -185,7 +185,7 @@ bool colors_parse( char const *capabilities ) {
       for ( color_cap_t const *cap = COLOR_CAPS; cap->cap_name; ++cap ) {
         if ( strcmp( cap_name, cap->cap_name ) == 0 ) {
           char const *const cap_value = strsep( &cap_name_val, "=" );
-          if ( cap_set( cap, cap_value ) )
+          if ( sgr_cap_set( cap, cap_value ) )
             set_something = true;
           break;
         }
