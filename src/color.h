@@ -30,11 +30,19 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "strbuf.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <stdbool.h>
+#include <stdio.h>
+
+_GL_INLINE_HEADER_BEGIN
+#ifndef COLOR_H_INLINE
+# define COLOR_H_INLINE _GL_INLINE
+#endif /* COLOR_H_INLINE */
 
 /// @endcond
 
@@ -93,54 +101,6 @@
 #define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
 
 /**
- * Starts printing in the predefined \a COLOR.
- *
- * @param STREAM The `FILE` to print to.
- * @param COLOR The predefined color without the `sgr_` prefix.
- *
- * @sa #SGR_END_COLOR
- * @sa #SGR_STRBUF_START_COLOR
- */
-#define SGR_START_COLOR(STREAM,COLOR) BLOCK(  \
-  if ( colorize && (sgr_ ## COLOR) != NULL )  \
-    FPRINTF( (STREAM), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
-
-/**
- * Ends printing in color.
- *
- * @param STREAM The `FILE` to print to.
- *
- * @sa #SGR_START_COLOR
- */
-#define SGR_END_COLOR(STREAM) \
-  BLOCK( if ( colorize ) FPUTS( SGR_END SGR_EL, (STREAM) ); )
-
-/**
- * Appends the bytes to \a SBUF that, when printed to a terminal, will start
- * printing in \a COLOR.
- *
- * @param SBUF The string buffer to write to.
- * @param COLOR The predefined color without the `sgr_` prefix.
- *
- * @sa #SGR_STRBUF_END_COLOR
- * @sa #SGR_START_COLOR
- */
-#define SGR_STRBUF_START_COLOR(SBUF,COLOR) BLOCK( \
-  if ( colorize && (sgr_ ## COLOR) != NULL )  \
-    strbuf_printf( (SBUF), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
-
-/**
- * Appends the bytes to \a SBUF that, when printed to a terminal, will end
- * printing in color.
- *
- * @param SBUF The string buffer to write to.
- *
- * @sa #SGR_STRBUF_START_COLOR
- */
-#define SGR_STRBUF_END_COLOR(SBUF) \
-  BLOCK( if ( colorize ) strbuf_puts( (SBUF), SGR_END SGR_EL ); )
-
-/**
  * When to colorize output.
  */
 enum color_when {
@@ -169,6 +129,68 @@ extern char const  *sgr_warning;        ///< Color of `warning`.
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Ends printing in \a sgr_color.
+ *
+ * @param file The `FILE` to print to.
+ * @param sgr_color The predefined color.  If NULL, does nothing.  This _must_
+ * be the same value that was passed to color_start().
+ *
+ * @sa color_start()
+ * @sa color_strbuf_end()
+ */
+COLOR_H_INLINE
+void color_end( FILE *file, char const *sgr_color ) {
+  if ( colorize && sgr_color != NULL )
+    FPUTS( SGR_END SGR_EL, file );
+}
+
+/**
+ * Starts printing in the predefined \a sgr_color.
+ *
+ * @param file The `FILE` to print to.
+ * @param sgr_color The predefined color.  If NULL, does nothing.
+ *
+ * @sa color_end()
+ */
+COLOR_H_INLINE
+void color_start( FILE *file, char const *sgr_color ) {
+  if ( colorize && sgr_color != NULL )
+    FPRINTF( file, SGR_START SGR_EL, sgr_color );
+}
+
+/**
+ * Appends the bytes to \a sbuf that, when printed to a terminal, will end
+ * printing in \a sgr_color.
+ *
+ * @param sbuf The string buffer to write to.
+ * @param sgr_color The predefined color.  If NULL, does nothing.  This _must_
+ * be the same value that was passed to color_strbuf_start().
+ *
+ * @sa color_strbuf_start()
+ */
+COLOR_H_INLINE
+void color_strbuf_end( strbuf_t *sbuf, char const *sgr_color ) {
+  if ( colorize && sgr_color != NULL )
+    strbuf_puts( sbuf, SGR_END SGR_EL );
+}
+
+/**
+ * Appends the bytes to \a sbuf that, when printed to a terminal, will start
+ * printing in \a sgr_color.
+ *
+ * @param sbuf The string buffer to write to.
+ * @param sgr_color The predefined color.  If NULL, does nothing.
+ *
+ * @sa color_start()
+ * @sa color_strbuf_end()
+ */
+COLOR_H_INLINE
+void color_strbuf_start( strbuf_t *sbuf, char const *sgr_color ) {
+  if ( colorize && sgr_color != NULL )
+    strbuf_printf( sbuf, SGR_START SGR_EL, sgr_color );
+}
+
+/**
  * Parses and sets the sequence of gcc color capabilities.
  *
  * @param capabilities The gcc capabilities to parse.
@@ -190,6 +212,8 @@ bool should_colorize( color_when_t when );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+_GL_INLINE_HEADER_END
 
 #endif /* cdecl_color_H */
 /* vim:set et sw=2 ts=2: */

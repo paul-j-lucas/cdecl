@@ -84,9 +84,10 @@ static void print_h( char const *line ) {
 
   bool is_escaped = false;              // was preceding char a '\'?
   bool in_title = is_title( line );     // is current char within a title?
+  char const *recent_color = NULL;      // most recent color set
 
   if ( in_title )
-    SGR_START_COLOR( cdecl_fout, help_title );
+    color_start( cdecl_fout, recent_color = sgr_help_title );
 
   for ( char const *s = line; *s != '\0'; ++s ) {
     if ( !is_escaped ) {
@@ -96,10 +97,10 @@ static void print_h( char const *line ) {
           continue;
         case ':':                       // ends a title
           if ( true_clear( &in_title ) )
-            SGR_END_COLOR( cdecl_fout );
+            color_end( cdecl_fout, recent_color );
           break;
         case '<':                       // begins non-terminal
-          SGR_START_COLOR( cdecl_fout, help_nonterm );
+          color_start( cdecl_fout, recent_color = sgr_help_nonterm );
           break;
         case '*':                       // other EBNF chars
         case '+':
@@ -108,11 +109,11 @@ static void print_h( char const *line ) {
         case '{':
         case '|':
         case '}':
-          SGR_START_COLOR( cdecl_fout, help_punct );
+          color_start( cdecl_fout, recent_color = sgr_help_punct );
           FALLTHROUGH;
         case '>':                       // ends non-terminal
           FPUTC( *s, cdecl_fout );
-          SGR_END_COLOR( cdecl_fout );
+          color_end( cdecl_fout, recent_color );
           continue;
       } // switch
     }

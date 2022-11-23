@@ -233,9 +233,9 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
             c_sname_full_name( sname ),
             c_type_name_error( tdef_type )
           );
-          SGR_START_COLOR( stderr, caret );
+          color_start( stderr, sgr_caret );
           EPUTC( '>' );
-          SGR_END_COLOR( stderr );
+          color_end( stderr, sgr_caret );
           EPUTC( ' ' );
           print_type( tdef, stderr );
           scope->next = orig_next;

@@ -99,7 +99,7 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
     strbuf_putc( sbuf, RL_PROMPT_START_IGNORE );
-    SGR_STRBUF_START_COLOR( sbuf, prompt );
+    color_strbuf_start( sbuf, sgr_prompt );
     strbuf_putc( sbuf, RL_PROMPT_END_IGNORE );
   }
 #endif /* WITH_READLINE */
@@ -109,7 +109,7 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
     strbuf_putc( sbuf, RL_PROMPT_START_IGNORE );
-    SGR_STRBUF_END_COLOR( sbuf );
+    color_strbuf_end( sbuf, sgr_prompt );
     strbuf_putc( sbuf, RL_PROMPT_END_IGNORE );
   }
 #endif /* WITH_READLINE */

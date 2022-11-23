@@ -1170,9 +1170,9 @@ static void yyerror( char const *msg ) {
   c_loc_t const loc = lexer_loc();
   print_loc( &loc );
 
-  SGR_START_COLOR( stderr, error );
+  color_start( stderr, sgr_error );
   EPUTS( msg );                         // no newline
-  SGR_END_COLOR( stderr );
+  color_end( stderr, sgr_error );
 
   //
   // A syntax error has occurred, but syntax errors aren't fatal since Bison

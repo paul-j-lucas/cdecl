@@ -164,9 +164,9 @@ static size_t print_caret( size_t error_column ) {
   }
 
   EPRINTF( "%*s", STATIC_CAST( int, caret_column ), "" );
-  SGR_START_COLOR( stderr, caret );
+  color_start( stderr, sgr_caret );
   EPUTC( '^' );
-  SGR_END_COLOR( stderr );
+  color_end( stderr, sgr_caret );
   EPUTC( '\n' );
 
   return error_column;
@@ -316,9 +316,9 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
 
   if ( loc != NULL ) {
     print_loc( loc );
-    SGR_START_COLOR( stderr, error );
+    color_start( stderr, sgr_error );
     EPUTS( "error" );
-    SGR_END_COLOR( stderr );
+    color_end( stderr, sgr_error );
     EPUTS( ": " );
   }
 
@@ -388,9 +388,9 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
 
   if ( loc != NULL )
     print_loc( loc );
-  SGR_START_COLOR( stderr, warning );
+  color_start( stderr, sgr_warning );
   EPUTS( "warning" );
-  SGR_END_COLOR( stderr );
+  color_end( stderr, sgr_warning );
   EPUTS( ": " );
 
   print_debug_file_line( file, line );
@@ -426,11 +426,11 @@ void print_hint( char const *format, ... ) {
 void print_loc( c_loc_t const *loc ) {
   assert( loc != NULL );
   size_t const column = print_caret( STATIC_CAST( size_t, loc->first_column ) );
-  SGR_START_COLOR( stderr, locus );
+  color_start( stderr, sgr_locus );
   if ( print_params.conf_path != NULL )
     EPRINTF( "%s:%d,", print_params.conf_path, loc->first_line + 1 );
   EPRINTF( "%zu", column + 1 );
-  SGR_END_COLOR( stderr );
+  color_end( stderr, sgr_locus );
   EPUTS( ": " );
 }
 
