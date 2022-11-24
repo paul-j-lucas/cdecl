@@ -1615,7 +1615,7 @@ static void yyerror( char const *msg ) {
 // creates a different problem: if an error occurs between the two moves, the
 // %destructor will run on $3 which is now empty and so not clean-up sname.
 
-// Sort using: sort -bdk3
+// Sort using: sort -bdfk3
 
                     // Pseudo-English
 %type   <ast>       alignas_or_width_decl_english_ast
