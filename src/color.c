@@ -176,7 +176,7 @@ static bool sgr_is_valid( char const *sgr_color ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool colors_parse( char const *capabilities ) {
-  if ( capabilities == NULL );
+  if ( capabilities == NULL )
     return false;
 
   // free this later since the sgr_* variables point to substrings
