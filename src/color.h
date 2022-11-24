@@ -105,7 +105,7 @@ _GL_INLINE_HEADER_BEGIN
  */
 enum color_when {
   COLOR_NEVER,                          ///< Never colorize.
-  COLOR_ISATTY,                         ///< Colorize only if `isatty`(3).
+  COLOR_ISATTY,                         ///< Colorize only if **isatty**(3).
   COLOR_NOT_FILE,                       ///< Colorize only if `!ISREG` stdout.
   COLOR_ALWAYS                          ///< Always colorize.
 };
