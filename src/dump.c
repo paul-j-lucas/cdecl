@@ -419,10 +419,10 @@ void c_type_dump( c_type_t const *type, FILE *dout ) {
 
 void str_dump( char const *value, FILE *dout ) {
   assert( dout != NULL );
-  if ( value != NULL )
-    FPRINTF( dout, "\"%s\"", value );
-  else
+  if ( value == NULL )
     FPUTS( "null", dout );
+  else
+    FPRINTF( dout, "\"%s\"", value );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -57,25 +57,26 @@ void* slist_at_nocheck( slist_t const *list, size_t offset ) {
 }
 
 void slist_cleanup( slist_t *list, slist_free_fn_t free_fn ) {
-  if ( list != NULL ) {
-    slist_node_t *curr = list->head, *next;
+  if ( list == NULL )
+    return;
 
-    if ( free_fn == NULL ) {            // avoid repeated check in loop
-      for ( ; curr != NULL; curr = next ) {
-        next = curr->next;
-        free( curr );
-      } // for
-    }
-    else {
-      for ( ; curr != NULL; curr = next ) {
-        (*free_fn)( curr->data );
-        next = curr->next;
-        free( curr );
-      } // for
-    }
+  slist_node_t *curr = list->head, *next;
 
-    slist_init( list );
+  if ( free_fn == NULL ) {              // avoid repeated check in loop
+    for ( ; curr != NULL; curr = next ) {
+      next = curr->next;
+      free( curr );
+    } // for
   }
+  else {
+    for ( ; curr != NULL; curr = next ) {
+      (*free_fn)( curr->data );
+      next = curr->next;
+      free( curr );
+    } // for
+  }
+
+  slist_init( list );
 }
 
 int slist_cmp( slist_t const *i_list, slist_t const *j_list,

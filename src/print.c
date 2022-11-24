@@ -436,14 +436,13 @@ void print_loc( c_loc_t const *loc ) {
 
 bool print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
   did_you_mean_t const *const dym = dym_new( kinds, unknown_token );
-  if ( dym != NULL ) {
-    EPUTS( "; did you mean " );
-    fprint_list( stderr, dym, &fprint_list_dym_gets );
-    EPUTC( '?' );
-    dym_free( dym );
-    return true;
-  }
-  return false;
+  if ( dym == NULL )
+    return false;
+  EPUTS( "; did you mean " );
+  fprint_list( stderr, dym, &fprint_list_dym_gets );
+  EPUTC( '?' );
+  dym_free( dym );
+  return true;
 }
 
 void print_type( c_typedef_t const *tdef, FILE *tout ) {

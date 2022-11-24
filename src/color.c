@@ -176,25 +176,25 @@ static bool sgr_is_valid( char const *sgr_color ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool colors_parse( char const *capabilities ) {
+  if ( capabilities == NULL );
+    return false;
+
+  // free this later since the sgr_* variables point to substrings
+  char *next_cap = free_later( check_strdup( capabilities ) );
+
   bool set_something = false;
-
-  if ( capabilities != NULL ) {
-    // free this later since the sgr_* variables point to substrings
-    char *next_cap = free_later( check_strdup( capabilities ) );
-
-    for ( char *cap_name_val;
-          (cap_name_val = strsep( &next_cap, ":" )) != NULL; ) {
-      char const *const cap_name = strsep( &cap_name_val, "=" );
-      for ( color_cap_t const *cap = COLOR_CAPS; cap->cap_name; ++cap ) {
-        if ( strcmp( cap_name, cap->cap_name ) == 0 ) {
-          char const *const cap_value = strsep( &cap_name_val, "=" );
-          if ( sgr_cap_set( cap, cap_value ) )
-            set_something = true;
-          break;
-        }
-      } // for
+  for ( char *cap_name_val;
+        (cap_name_val = strsep( &next_cap, ":" )) != NULL; ) {
+    char const *const cap_name = strsep( &cap_name_val, "=" );
+    for ( color_cap_t const *cap = COLOR_CAPS; cap->cap_name; ++cap ) {
+      if ( strcmp( cap_name, cap->cap_name ) == 0 ) {
+        char const *const cap_value = strsep( &cap_name_val, "=" );
+        if ( sgr_cap_set( cap, cap_value ) )
+          set_something = true;
+        break;
+      }
     } // for
-  }
+  } // for
 
   return set_something;
 }
