@@ -139,6 +139,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, unsigned flags,
 static void g_init( g_state_t *g, unsigned flags, bool printed_typedef,
                     FILE *gout ) {
   assert( g != NULL );
+  assert( flags != C_GIB_NONE );
   assert( gout != NULL );
 
   MEM_ZERO( g );
