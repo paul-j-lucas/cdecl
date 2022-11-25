@@ -198,8 +198,7 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 
 // local functions
 NODISCARD
-static bool         c_ast_check_declaration( c_ast_t const* ),
-                    c_ast_check_emc( c_ast_t const* ),
+static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_errors( c_ast_t const*, unsigned ),
                     c_ast_check_func_main( c_ast_t const* ),
                     c_ast_check_func_main_char_ptr_param( c_ast_t const* ),
@@ -338,7 +337,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
       break;
     }
     case C_ALIGNAS_TYPE:
-      return c_ast_check_declaration( ast->align.type_ast );
+      return c_ast_check( ast->align.type_ast );
   } // switch
 
   return true;
@@ -454,8 +453,9 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
       }
       return false;
 
+    case K_CAST:                        // array of cast is impossible
     case K_TYPEDEF:                     // can't happen after c_ast_untypedef()
-    case K_VARIADIC:
+    case K_VARIADIC:                    // array of variadic is impossible
       UNEXPECTED_INT_VALUE( raw_of_ast->kind );
 
     CASE_K_PLACEHOLDER;
@@ -531,7 +531,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
        // it means we must be a variable of void which is an error.
        //
        ast->parent_ast == NULL &&
-       ast->cast_kind == C_CAST_NONE &&
+       ast->kind != K_CAST &&
        !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) &&
        (flags & C_IS_POINTED_TO) == 0 ) {
     print_error( &ast->loc, "variable of void" );
@@ -547,32 +547,30 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
  *
  * @param ast The AST to check.
  * @return Returns `true` only if all checks passed.
- *
- * @sa c_ast_check_declaration()
  */
 NODISCARD
 static bool c_ast_check_cast( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->cast_kind != C_CAST_NONE );
+  assert( ast->kind == K_CAST );
 
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_ast_t *const to_ast = ast->cast.to_ast;
   c_ast_t const *const storage_ast = c_ast_find_type_any(
-    nonconst_ast, C_VISIT_DOWN, &C_TYPE_LIT_S( TS_ANY_STORAGE )
+    to_ast, C_VISIT_DOWN, &C_TYPE_LIT_S( TS_ANY_STORAGE )
   );
 
   if ( storage_ast != NULL ) {
-    print_error( &ast->loc,
+    print_error( &to_ast->loc,
       "can not cast into %s\n",
       c_tid_name_error( storage_ast->type.stids & TS_ANY_STORAGE )
     );
     return false;
   }
 
-  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+  c_ast_t const *const raw_ast = c_ast_untypedef( to_ast );
 
   switch ( raw_ast->kind ) {
     case K_ARRAY:
-      error_kind_not_cast_into( ast, "pointer" );
+      error_kind_not_cast_into( to_ast, "pointer" );
       return false;
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
@@ -580,19 +578,16 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     case K_OPERATOR:
     case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
-      error_kind_not_cast_into( ast, "pointer to function" );
+      error_kind_not_cast_into( to_ast, "pointer to function" );
       return false;
     default:
       /* suppress warning */;
   } // switch
 
-  switch ( ast->cast_kind ) {
-    case C_CAST_NONE:
-      UNEXPECTED_INT_VALUE( ast->cast_kind );
-
+  switch ( ast->cast.cast_kind ) {
     case C_CAST_CONST:
       if ( (raw_ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) == 0 ) {
-        print_error( &ast->loc,
+        print_error( &to_ast->loc,
           "const_cast must be to a pointer, pointer-to-member, %s\n",
           OPT_LANG_IS( RVALUE_REFERENCE ) ?
             "reference, or rvalue reference" : "or reference"
@@ -604,7 +599,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     case C_CAST_DYNAMIC:
       if ( !c_ast_is_ptr_to_kind_any( raw_ast, K_CLASS_STRUCT_UNION ) &&
            !c_ast_is_ref_to_kind_any( raw_ast, K_CLASS_STRUCT_UNION ) ) {
-        print_error( &ast->loc,
+        print_error( &to_ast->loc,
           "dynamic_cast must be to a "
           "pointer or reference to a class, struct, or union\n"
         );
@@ -613,8 +608,8 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       break;
 
     case C_CAST_REINTERPRET:
-      if ( c_ast_is_builtin_any( ast, TB_VOID ) ) {
-        print_error( &ast->loc, "reinterpret_cast can not be to void\n" );
+      if ( c_ast_is_builtin_any( to_ast, TB_VOID ) ) {
+        print_error( &to_ast->loc, "reinterpret_cast can not be to void\n" );
         return false;
       }
       break;
@@ -670,25 +665,6 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
     return false;
   }
 
-  return true;
-}
-
-/**
- * Check a declaration AST for errors.
- *
- * @param ast The AST to check.
- * @return Returns `true` only if all checks passed.
- *
- * @sa c_ast_check_cast()
- */
-NODISCARD
-static bool c_ast_check_declaration( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  if ( !c_ast_check_errors( ast, /*flags=*/0 ) )
-    return false;
-  PJL_IGNORE_RV(
-    c_ast_check_visitor( ast, c_ast_visitor_warning, /*flags=*/0 )
-  );
   return true;
 }
 
@@ -1213,6 +1189,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
       case K_ARRAY:
       case K_APPLE_BLOCK:
+      case K_CAST:
       case K_CLASS_STRUCT_UNION:
       case K_CONSTRUCTOR:
       case K_DESTRUCTOR:
@@ -2230,6 +2207,11 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
         return VISITOR_ERROR_FOUND;
       break;
 
+    case K_CAST:
+      if ( !c_ast_check_cast( ast ) )
+        return VISITOR_ERROR_FOUND;
+      break;
+
     case K_CLASS_STRUCT_UNION:
       // nothing to check
       break;
@@ -2583,6 +2565,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast,
         print_warning( &ast->loc, "missing type specifier; int assumed\n" );
       break;
 
+    case K_CAST:
     case K_USER_DEF_CONVERSION:
     case K_VARIADIC:
       // nothing to check
@@ -2683,9 +2666,12 @@ static c_lang_id_t is_reserved_name( char const *name ) {
 
 bool c_ast_check( c_ast_t const *ast ) {
   assert( ast != NULL );
-  if ( ast->cast_kind != C_CAST_NONE && !c_ast_check_cast( ast ) )
+  if ( !c_ast_check_errors( ast, /*flags=*/0 ) )
     return false;
-  return c_ast_check_declaration( ast );
+  PJL_IGNORE_RV(
+    c_ast_check_visitor( ast, c_ast_visitor_warning, /*flags=*/0 )
+  );
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

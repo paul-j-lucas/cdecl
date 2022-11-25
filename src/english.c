@@ -189,6 +189,17 @@ static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
       c_ast_bit_width_english( ast, eout );
       break;
 
+    case K_CAST:
+      if ( ast->cast.cast_kind != C_CAST_C )
+        FPRINTF( eout, "%s ", c_cast_english( ast->cast.cast_kind ) );
+      FPUTS( L_cast, eout );
+      if ( !c_sname_empty( &ast->sname ) ) {
+        FPUTC( ' ', eout );
+        c_sname_english( &ast->sname, eout );
+      }
+      FPUTS( " into ", eout );
+      break;
+
     case K_CLASS_STRUCT_UNION:
       FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
       c_sname_english( &ast->csu.csu_sname, eout );
@@ -303,7 +314,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
   assert( eout != NULL );
 
-  if ( ast->cast_kind == C_CAST_NONE ) {
+  if ( ast->kind != K_CAST ) {
     FPUTS( "declare ", eout );
     if ( ast->kind != K_USER_DEF_CONVERSION ) {
       //
@@ -338,16 +349,6 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       FPUTS( "as ", eout );
     }
   }
-  else {                                // it's a cast
-    if ( ast->cast_kind != C_CAST_C )
-      FPRINTF( eout, "%s ", c_cast_english( ast->cast_kind ) );
-    FPUTS( L_cast, eout );
-    if ( !c_sname_empty( &ast->sname ) ) {
-      FPUTC( ' ', eout );
-      c_sname_english( &ast->sname, eout );
-    }
-    FPUTS( " into ", eout );
-  }
 
   c_ast_visit_english( ast, eout );
 
@@ -369,7 +370,6 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 
 char const* c_cast_english( c_cast_kind_t kind ) {
   switch ( kind ) {
-    case C_CAST_NONE        : return "none";
     case C_CAST_C           : return "C";
     case C_CAST_CONST       : return L_const;
     case C_CAST_DYNAMIC     : return L_dynamic;

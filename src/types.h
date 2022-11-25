@@ -146,44 +146,49 @@ enum c_ast_kind {
   K_ARRAY                   = (1u << 6),
 
   /**
+   * Cast.
+   */
+  K_CAST                    = (1u << 7),
+
+  /**
    * An `enum`.
    *
    * @note This is a "parent" kind because `enum` in C++11 and later can be
    * "of" a fixed type.
    */
-  K_ENUM                    = (1u << 7),
+  K_ENUM                    = (1u << 8),
 
   /**
    * C or C++ pointer.
    */
-  K_POINTER                 = (1u << 8),
+  K_POINTER                 = (1u << 9),
 
   /**
    * C++ pointer-to-member.
    */
-  K_POINTER_TO_MEMBER       = (1u << 9),
+  K_POINTER_TO_MEMBER       = (1u << 10),
 
   /**
    * C++ reference.
    */
-  K_REFERENCE               = (1u << 10),
+  K_REFERENCE               = (1u << 11),
 
   /**
    * C++11 rvalue reference.
    */
-  K_RVALUE_REFERENCE        = (1u << 11),
+  K_RVALUE_REFERENCE        = (1u << 12),
 
   ////////// function-like "parent" kinds /////////////////////////////////////
 
   /**
    * C++ constructor.
    */
-  K_CONSTRUCTOR             = (1u << 12),
+  K_CONSTRUCTOR             = (1u << 13),
 
   /**
    * C++ destructor.
    */
-  K_DESTRUCTOR              = (1u << 13),
+  K_DESTRUCTOR              = (1u << 14),
 
   ////////// function-like "parent" kinds that have return values /////////////
 
@@ -193,34 +198,33 @@ enum c_ast_kind {
    * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
    * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
    */
-  K_APPLE_BLOCK             = (1u << 14),
+  K_APPLE_BLOCK             = (1u << 15),
 
   /**
    * Function.
    */
-  K_FUNCTION                = (1u << 15),
+  K_FUNCTION                = (1u << 16),
 
   /**
    * C++ overloaded operator.
    */
-  K_OPERATOR                = (1u << 16),
+  K_OPERATOR                = (1u << 17),
 
   /**
    * C++ user-defined conversion operator.
    */
-  K_USER_DEF_CONVERSION     = (1u << 17),
+  K_USER_DEF_CONVERSION     = (1u << 18),
 
   /**
    * C++11 user-defined literal.
    */
-  K_USER_DEF_LITERAL        = (1u << 18),
+  K_USER_DEF_LITERAL        = (1u << 19),
 };
 
 /**
  * C/C++ cast kinds.
  */
 enum c_cast_kind {
-  C_CAST_NONE,                          ///< Not a cast.
   C_CAST_C,                             ///< C-style cast.
   C_CAST_CONST,                         ///< C++ `const_cast`.
   C_CAST_DYNAMIC,                       ///< C++ `dynamic_cast`.
@@ -420,6 +424,7 @@ typedef struct c_ast_pair         c_ast_pair_t;
 typedef int                       c_ast_sid_t;    ///< Signed \ref c_ast_id_t.
 typedef struct c_bit_field_ast    c_bit_field_ast_t;
 typedef struct c_builtin_ast      c_builtin_ast_t;
+typedef struct c_cast_ast         c_cast_ast_t;
 typedef enum   c_cast_kind        c_cast_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_csu_ast          c_csu_ast_t;

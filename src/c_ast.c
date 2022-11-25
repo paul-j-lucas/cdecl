@@ -109,7 +109,6 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
     c_ast_new( ast->kind, ast->depth, &ast->loc, ast_list );
 
   dup_ast->align = ast->align;
-  dup_ast->cast_kind = ast->cast_kind;
   dup_ast->sname = c_sname_dup( &ast->sname );
   dup_ast->type = ast->type;
 
@@ -125,6 +124,10 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
     case K_TYPEDEF:
       dup_ast->builtin.bit_width = ast->builtin.bit_width;
       // for_ast duplicated by referrer code below
+      break;
+
+    case K_CAST:
+      dup_ast->cast.cast_kind = ast->cast.cast_kind;
       break;
 
     case K_CLASS_STRUCT_UNION:
@@ -180,8 +183,6 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
 
   if ( i_ast->kind != j_ast->kind )
     return false;
-  if ( i_ast->cast_kind != j_ast->cast_kind )
-    return false;
   if ( !c_alignas_equal( &i_ast->align, &j_ast->align ) )
     return false;
   if ( !c_type_equiv( &i_ast->type, &j_ast->type ) )
@@ -206,6 +207,11 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       if ( i_ast->builtin.bit_width != j_ast->builtin.bit_width )
         return false;
       // for_ast compared by referrer code below
+      break;
+
+    case K_CAST:
+      if ( i_ast->cast.cast_kind != j_ast->cast.cast_kind )
+        return false;
       break;
 
     case K_OPERATOR:
@@ -282,6 +288,7 @@ void c_ast_free( c_ast_t *ast ) {
         break;
       case K_ARRAY:
       case K_BUILTIN:
+      case K_CAST:
       case K_DESTRUCTOR:
       case K_NAME:
       case K_PLACEHOLDER:
@@ -330,6 +337,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
       break;
     case K_APPLE_BLOCK:
     case K_BUILTIN:
+    case K_CAST:
     case K_CLASS_STRUCT_UNION:
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:

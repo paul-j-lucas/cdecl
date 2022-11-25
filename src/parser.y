@@ -1902,16 +1902,18 @@ cast_command
      */
   : Y_cast sname_english_exp as_into_to_exp decl_english_ast
     {
-      c_ast_t *const cast_ast = $4;
+      c_ast_t *const decl_ast = $4;
 
       DUMP_START( "cast_command",
                   "CAST sname_english_exp as_into_to_exp decl_english_ast" );
       DUMP_SNAME( "sname_english_exp", $2 );
-      DUMP_AST( "decl_english_ast", cast_ast );
+      DUMP_AST( "decl_english_ast", decl_ast );
       DUMP_END();
 
-      cast_ast->cast_kind = C_CAST_C;
+      c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$2 );
+      cast_ast->cast.cast_kind = C_CAST_C;
+      cast_ast->cast.to_ast = decl_ast;
       C_AST_CHECK( cast_ast );
       c_ast_gibberish( cast_ast, C_GIB_CAST, cdecl_fout );
     }
@@ -1922,15 +1924,16 @@ cast_command
   | new_style_cast_english sname_english_exp as_into_to_exp
     decl_english_ast
     {
-      char const *const cast_literal = c_cast_gibberish( $1 );
-      c_ast_t    *const cast_ast = $4;
+      c_cast_kind_t const cast_kind = $1;
+      char const   *const cast_literal = c_cast_gibberish( cast_kind );
+      c_ast_t      *const decl_ast = $4;
 
       DUMP_START( "cast_command",
                   "new_style_cast_english CAST sname_english_exp "
                   "as_into_to_exp decl_english_ast" );
       DUMP_STR( "new_style_cast_english", cast_literal );
       DUMP_SNAME( "sname_english_exp", $2 );
-      DUMP_AST( "decl_english_ast", cast_ast );
+      DUMP_AST( "decl_english_ast", decl_ast );
       DUMP_END();
 
       if ( UNSUPPORTED( CPP_ANY ) ) {
@@ -1941,8 +1944,10 @@ cast_command
         PARSE_ABORT();
       }
 
-      cast_ast->cast_kind = $1;
+      c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$2 );
+      cast_ast->cast.cast_kind = cast_kind;
+      cast_ast->cast.to_ast = decl_ast;
       C_AST_CHECK( cast_ast );
       c_ast_gibberish( cast_ast, C_GIB_CAST, cdecl_fout );
     }
@@ -2738,17 +2743,18 @@ c_style_cast_expr_c
       ia_type_ast_pop();
 
       c_ast_t *const  type_ast = $2;
-      c_ast_t *       cast_ast = $4.ast;
+      c_ast_t *const  decl_ast = $4.ast;
 
       DUMP_START( "explain_command",
                   "EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt" );
       DUMP_AST( "type_c_ast", type_ast );
-      DUMP_AST( "cast_c_astp_opt", cast_ast );
+      DUMP_AST( "cast_c_astp_opt", decl_ast );
       DUMP_SNAME( "sname_c_opt", $6 );
 
-      cast_ast = c_ast_patch_placeholder( type_ast, cast_ast );
-      cast_ast->cast_kind = C_CAST_C;
+      c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$6 );
+      cast_ast->cast.cast_kind = C_CAST_C;
+      cast_ast->cast.to_ast = c_ast_patch_placeholder( type_ast, decl_ast );
 
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
@@ -2783,19 +2789,20 @@ new_style_cast_expr_c
       c_cast_kind_t const cast_kind = $1;
       char const   *const cast_literal = c_cast_english( cast_kind );
       c_ast_t      *const type_ast = $3;
-      c_ast_t      *      cast_ast = $5.ast;
+      c_ast_t      *const decl_ast = $5.ast;
 
       DUMP_START( "explain_command",
                   "EXPLAIN new_style_cast_c"
                   "'<' type_c_ast cast_c_astp_opt '>' '(' sname ')'" );
       DUMP_STR( "new_style_cast_c", cast_literal );
       DUMP_AST( "type_c_ast", type_ast );
-      DUMP_AST( "cast_c_astp_opt", cast_ast );
+      DUMP_AST( "cast_c_astp_opt", decl_ast );
       DUMP_SNAME( "sname", $8 );
 
-      cast_ast = c_ast_patch_placeholder( type_ast, cast_ast );
-      cast_ast->cast_kind = cast_kind;
+      c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$8 );
+      cast_ast->cast.cast_kind = cast_kind;
+      cast_ast->cast.to_ast = c_ast_patch_placeholder( type_ast, decl_ast );
 
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();

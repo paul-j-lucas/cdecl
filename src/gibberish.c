@@ -87,28 +87,6 @@ static inline void g_print_space_once( g_state_t *g ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for c_ast_gibberish() that prints \a ast as a C/C++ cast.
- *
- * @param ast The AST to print.
- * @param gout The `FILE` to print to.
- */
-static void c_ast_cast_gibberish( c_ast_t const *ast, FILE *gout ) {
-  assert( ast != NULL );
-  assert( ast->cast_kind != C_CAST_NONE );
-  assert( gout != NULL );
-
-  if ( ast->cast_kind == C_CAST_C ) {
-    FPUTC( '(', gout );
-    c_ast_gibberish_impl( ast, C_GIB_CAST, /*printed_typedef=*/false, gout );
-    FPRINTF( gout, ")%s\n", c_sname_full_name( &ast->sname ) );
-  } else {
-    FPRINTF( gout, "%s<", c_cast_gibberish( ast->cast_kind ) );
-    c_ast_gibberish_impl( ast, C_GIB_CAST, /*printed_typedef=*/false, gout );
-    FPRINTF( gout, ">(%s)\n", c_sname_full_name( &ast->sname ) );
-  }
-}
-
-/**
  * Helper function for c_ast_gibberish() that prints \a ast as a C/C++
  * declaration or cast.
  *
@@ -305,6 +283,23 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         FPRINTF( g->gout, "(%u)", ast->builtin.BitInt.width );
       g_print_space_ast_name( g, ast );
       g_print_ast_bit_width( g, ast );
+      break;
+
+    case K_CAST:
+      assert( g->flags == C_GIB_CAST );
+      if ( ast->cast.cast_kind == C_CAST_C ) {
+        FPUTC( '(', g->gout );
+        c_ast_gibberish_impl(
+          ast->cast.to_ast, C_GIB_CAST, /*printed_typedef=*/false, g->gout
+        );
+        FPRINTF( g->gout, ")%s\n", c_sname_full_name( &ast->sname ) );
+      } else {
+        FPRINTF( g->gout, "%s<", c_cast_gibberish( ast->cast.cast_kind ) );
+        c_ast_gibberish_impl(
+          ast->cast.to_ast, C_GIB_CAST, /*printed_typedef=*/false, g->gout
+        );
+        FPRINTF( g->gout, ">(%s)\n", c_sname_full_name( &ast->sname ) );
+      }
       break;
 
     case K_ENUM:
@@ -584,8 +579,8 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
   if ( (g->flags & C_GIB_CAST) != 0 ) {
     //
     // When printing a cast, the cast itself and the AST's name (the thing
-    // that's being cast) is printed in c_ast_cast_gibberish(), so we mustn't
-    // print it here and print only the type T:
+    // that's being cast) is printed in g_print_ast(), so we mustn't print it
+    // here and print only the type T:
     //
     //      (T)name
     //      static_cast<T>(name)
@@ -710,6 +705,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
         break;
 
       case K_BUILTIN:
+      case K_CAST:
       case K_CLASS_STRUCT_UNION:
       case K_ENUM:
       case K_NAME:
@@ -754,6 +750,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       FPUTS( "()", g->gout );
       break;
     case K_BUILTIN:
+    case K_CAST:
     case K_CLASS_STRUCT_UNION:
     case K_ENUM:
     case K_NAME:
@@ -965,16 +962,8 @@ static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
 
 void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
   assert( ast != NULL );
-  assert( (flags & (C_GIB_TYPEDEF | C_GIB_USING)) == 0 );
+  assert( is_1_bit_in_set( flags, C_GIB_DECL | C_GIB_CAST ) );
   assert( gout != NULL );
-
-  if ( (flags & C_GIB_CAST) != 0 ) {
-    assert( flags == C_GIB_CAST );
-    c_ast_cast_gibberish( ast, gout );
-    return;
-  }
-
-  assert( (flags & C_GIB_DECL) != 0 );
 
   if ( c_ast_print_as_using( ast ) ) {
     //
@@ -1023,7 +1012,6 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
 
 char const* c_cast_gibberish( c_cast_kind_t kind ) {
   switch ( kind ) {
-    case C_CAST_NONE:
     case C_CAST_C:
       break;                            // LCOV_EXCL_LINE
     case C_CAST_CONST       : return L_const_cast;

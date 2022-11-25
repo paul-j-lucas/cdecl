@@ -268,6 +268,14 @@ struct c_builtin_ast {
 };
 
 /**
+ * AST node for a #K_CAST.
+ */
+struct c_cast_ast {
+  c_ast_t        *to_ast;               ///< Cast type.
+  c_cast_kind_t   cast_kind;            ///< Cast kind.
+};
+
+/**
  * AST node for a #K_CONSTRUCTOR.
  *
  * @note Members are laid out in the same order as c_function_ast: this is
@@ -434,7 +442,6 @@ struct c_ast {
   c_alignas_t           align;      ///< Alignment, if any.
   unsigned              depth;      ///< How many `()` deep.
   c_ast_kind_t          kind;       ///< AST kind.
-  c_cast_kind_t         cast_kind;  ///< Cast kind, if any.
   c_loc_t               loc;        ///< Source location.
   c_sname_t             sname;      ///< Scoped name, if any.
   c_type_t              type;       ///< Type, if any.
@@ -449,6 +456,7 @@ struct c_ast {
     c_bit_field_ast_t   bit_field;  ///< #K_ANY_BIT_FIELD members.
     c_apple_block_ast_t block;      ///< #K_APPLE_BLOCK members.
     c_builtin_ast_t     builtin;    ///< #K_BUILTIN members.
+    c_cast_ast_t        cast;       ///< #K_CAST members.
     c_csu_ast_t         csu;        ///< #K_CLASS_STRUCT_UNION members.
     c_constructor_ast_t ctor;       ///< #K_CONSTRUCTOR members.
                     // nothing needed for K_DESTRUCTOR

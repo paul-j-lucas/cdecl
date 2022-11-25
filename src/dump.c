@@ -122,8 +122,6 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
   DUMP_FORMAT( "unique_id = " PRId_C_AST_ID_T ",\n", ast->unique_id );
   DUMP_STR( "kind", c_kind_name( ast->kind ) );
   FPUTS( ",\n", dout );
-  DUMP_STR( "cast_kind", c_cast_english( ast->cast_kind ) );
-  FPUTS( ",\n", dout );
   DUMP_FORMAT( "depth = %u,\n", ast->depth );
 
   DUMP_FORMAT(
@@ -185,6 +183,13 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
         FPUTS( ",\n", dout );
       }
       c_ast_dump_impl( ast->array.of_ast, indent, "of_ast", dout );
+      break;
+
+    case K_CAST:
+      DUMP_COMMA;
+      DUMP_STR( "cast_kind", c_cast_english( ast->cast.cast_kind ) );
+      FPUTS( ",\n", dout );
+      c_ast_dump_impl( ast->cast.to_ast, indent, "to_ast", dout );
       break;
 
     case K_CLASS_STRUCT_UNION:

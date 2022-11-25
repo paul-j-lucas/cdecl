@@ -93,9 +93,9 @@
                                   | K_TYPEDEF )
 
 /**
- * Shorthand for any kind of parent: #K_APPLE_BLOCK, #K_ARRAY, #K_CONSTRUCTOR,
- * #K_DESTRUCTOR, #K_ENUM, #K_FUNCTION, #K_OPERATOR, #K_POINTER,
- * #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE,
+ * Shorthand for any kind of parent: #K_APPLE_BLOCK, #K_ARRAY, #K_CAST,
+ * #K_CONSTRUCTOR, #K_DESTRUCTOR, #K_ENUM, #K_FUNCTION, #K_OPERATOR,
+ * #K_POINTER, #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE,
  * #K_USER_DEF_CONVERSION, or #K_USER_DEF_LITERAL.
  *
  * @note #K_TYPEDEF is intentionally _not_ included.
@@ -103,7 +103,8 @@
  * @sa #K_ANY_REFERRER
  */
 #define K_ANY_PARENT              ( K_ANY_FUNCTION_LIKE | K_ANY_POINTER \
-                                  | K_ANY_REFERENCE | K_ARRAY | K_ENUM )
+                                  | K_ANY_REFERENCE | K_ARRAY | K_CAST \
+                                  | K_ENUM )
 
 /**
  * Shorthand for any kind of pointer: #K_POINTER or #K_POINTER_TO_MEMBER.
