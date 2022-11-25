@@ -37,8 +37,63 @@
 // standard
 #include <assert.h>
 #include <stdbool.h>
+#include <stddef.h>                     /* for offsetof() */
 
 /// @endcond
+
+static_assert(
+  offsetof( c_builtin_ast_t, bit_width ) ==
+  offsetof( c_bit_field_ast_t, bit_width ),
+  "offsetof bit_width in c_builtin_ast_t & c_bit_field_ast_t must equal"
+);
+
+static_assert(
+  offsetof( c_enum_ast_t, bit_width ) ==
+  offsetof( c_bit_field_ast_t, bit_width ),
+  "offsetof bit_width in enum_ast_t & c_bit_field_ast_t must equal"
+);
+
+static_assert(
+  offsetof( c_typedef_ast_t, bit_width ) ==
+  offsetof( c_bit_field_ast_t, bit_width ),
+  "offsetof bit_width in c_typedef_ast_t & c_bit_field_ast_t must equal"
+);
+
+static_assert(
+  offsetof( c_constructor_ast_t, param_ast_list ) ==
+  offsetof( c_function_ast_t, param_ast_list ),
+  "offsetof param_ast_list in c_constructor_ast_t & c_function_ast_t must equal"
+);
+
+static_assert(
+  offsetof( c_operator_ast_t, param_ast_list ) ==
+  offsetof( c_function_ast_t, param_ast_list ),
+  "offsetof param_ast_list in c_operator_ast_t & c_function_ast_t must equal"
+);
+
+static_assert(
+  offsetof( c_udef_lit_ast_t, param_ast_list ) ==
+  offsetof( c_function_ast_t, param_ast_list ),
+  "offsetof param_ast_list in c_udef_lit_ast_t & c_function_ast_t must equal"
+);
+
+static_assert(
+  offsetof( c_csu_ast_t, csu_sname ) ==
+  offsetof( c_enum_ast_t, enum_sname ),
+  "offsetof csu_sname != offsetof enum_sname"
+);
+
+static_assert(
+  offsetof( c_enum_ast_t, enum_sname ) ==
+  offsetof( c_ptr_mbr_ast_t, class_sname ),
+  "offsetof enum_sname != offsetof class_sname"
+);
+
+static_assert(
+  offsetof( c_operator_ast_t, flags ) ==
+  offsetof( c_function_ast_t, flags ),
+  "offsetof flags in c_operator_ast_t & c_function_ast_t must equal"
+);
 
 ///////////////////////////////////////////////////////////////////////////////
 
