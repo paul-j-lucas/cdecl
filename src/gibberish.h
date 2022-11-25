@@ -55,12 +55,17 @@
 /**
  * Flag for c_ast_gibberish() to print as a cast.
  *
+ * @note May _not_ be used in combination with any other flags.
+ *
  * @sa #C_GIB_DECL
  */
 #define C_GIB_CAST        (1u << 0)
 
 /**
  * Flag for c_ast_gibberish() to print as a declaration.
+ *
+ * @note May be used _only_ in combination with #C_GIB_FINAL_SEMI,
+ * #C_GIB_MULTI_DECL, and #C_GIB_OMIT_TYPE.
  *
  * @sa #C_GIB_CAST
  * @sa #C_GIB_MULTI_DECL
@@ -71,6 +76,8 @@
 /**
  * Flag for c_ast_gibberish() or c_typedef_gibberish() to print the final
  * semicolon after a type declaration.
+ *
+ * @note May be used in combination with any other flags _except_ #C_GIB_CAST.
  */
 #define C_GIB_FINAL_SEMI  (1u << 2)
 
@@ -110,12 +117,16 @@
 /**
  * Flag for c_typedef_gibberish() to print as a `typedef` declaration.
  *
+ * @note May be used _only_ in combination with #C_GIB_FINAL_SEMI.
+ *
  * @sa #C_GIB_USING
  */
 #define C_GIB_TYPEDEF     (1u << 5)
 
 /**
  * Flag for c_typedef_gibberish() to print as a `using` declaration.
+ *
+ * @note May be used _only_ in combination with #C_GIB_FINAL_SEMI.
  *
  * @sa #C_GIB_TYPEDEF
  */
