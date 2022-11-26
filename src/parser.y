@@ -2103,7 +2103,10 @@ declare_command
       // bigger error that operator overloading isn't supported in C.
       //
       if ( UNSUPPORTED( CPP_ANY ) ) {
-        print_error( &@2, "operator overloading not supported in C\n" );
+        print_error( &@2,
+          "operator overloading not supported%s\n",
+          C_LANG_WHICH( CPP_ANY )
+        );
         PARSE_ABORT();
       }
     }
@@ -2808,7 +2811,10 @@ new_style_cast_expr_c
       DUMP_END();
 
       if ( UNSUPPORTED( CPP_ANY ) ) {
-        print_error( &@1, "%s_cast not supported in C\n", cast_literal );
+        print_error( &@1,
+          "%s_cast not supported%s\n",
+          cast_literal, C_LANG_WHICH( CPP_ANY )
+        );
         PARSE_ABORT();
       }
 
@@ -7282,7 +7288,10 @@ sname_c
     {
       // see the comment in "of_scope_english"
       if ( UNSUPPORTED( CPP_ANY ) ) {
-        print_error( &@2, "scoped names not supported in C\n" );
+        print_error( &@2,
+          "scoped names not supported%s\n",
+          C_LANG_WHICH( CPP_ANY )
+        );
         c_sname_cleanup( &$1 );
         free( $3 );
         PARSE_ABORT();
@@ -7843,7 +7852,10 @@ of_scope_english
       // better error location.
       //
       if ( UNSUPPORTED( CPP_ANY ) ) {
-        print_error( &@2, "scoped names not supported in C\n" );
+        print_error( &@2,
+          "scoped names not supported%s\n",
+          C_LANG_WHICH( CPP_ANY )
+        );
         c_sname_cleanup( &$3 );
         PARSE_ABORT();
       }
