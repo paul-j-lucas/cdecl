@@ -2665,7 +2665,7 @@ show_format
   | Y_typedef                     { $$ = C_GIB_TYPEDEF; }
   | Y_using
     {
-      if ( !OPT_LANG_IS( using_DECLARATION ) ) {
+      if ( UNSUPPORTED( using_DECLARATION ) ) {
         print_error( &@1,
           "\"using\" not supported%s\n",
           C_LANG_WHICH( using_DECLARATION )
@@ -4108,7 +4108,7 @@ pc99_func_or_constructor_decl_c
         ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       }
       else {
-        if ( !OPT_LANG_IS( IMPLICIT_int ) ) {
+        if ( UNSUPPORTED( IMPLICIT_int ) ) {
           //
           // In C99 and later, implicit int is an error.  This check has to be
           // done now in the parser rather than later in the AST since the AST
@@ -4578,7 +4578,7 @@ pc99_pointer_decl_c
 pc99_pointer_type_c_ast
   : '*' type_qualifier_list_c_stid_opt
     {
-      if ( OPT_LANG_IS( C_ANY ) && !OPT_LANG_IS( IMPLICIT_int ) ) {
+      if ( OPT_LANG_IS( C_ANY ) && UNSUPPORTED( IMPLICIT_int ) ) {
         //
         // In C99 and later, implicit int is an error.  This check has to be
         // done now in the parser rather than later in the AST since the AST
