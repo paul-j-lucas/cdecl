@@ -109,10 +109,10 @@ void c_sglob_init( c_sglob_t *sglob ) {
 /**
  * Parses the glob string \a s into \a sglob.
  *
- * @param s The glob string to parse.  May be NULL.  If not, it _must_ be a
- * valid glob string.
- * @param sglob The scoped glob to parse into.  The caller is responsible for
- * calling c_sglob_cleanup().
+ * @param s The glob string to parse.  If NULL, empty, or all whitespace, does
+ * nothing; if not, it _must_ be a valid glob string.
+ * @param sglob The scoped glob to parse into.  It _must_ be in an initialized
+ * state. The caller is responsible for calling c_sglob_cleanup().
  *
  * @sa c_sglob_cleanup()
  */

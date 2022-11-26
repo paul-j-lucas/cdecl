@@ -52,6 +52,8 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
   if ( s == NULL )
     return;
   SKIP_WS( s );
+  if ( s[0] == '\0' )
+    return;
 
   //
   // Scan through the scoped glob to count the number of scopes which is the
