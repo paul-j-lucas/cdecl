@@ -39,9 +39,11 @@
 
 void c_sglob_cleanup( c_sglob_t *sglob ) {
   if ( sglob != NULL ) {
-    for ( size_t i = 0; i < sglob->count; ++i )
-      free( sglob->pattern[i] );
-    free( sglob->pattern );
+    if ( sglob->pattern != NULL ) {
+      for ( size_t i = 0; i < sglob->count; ++i )
+        free( sglob->pattern[i] );
+      free( sglob->pattern );
+    }
     c_sglob_init( sglob );
   }
 }
