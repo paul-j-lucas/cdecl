@@ -1,3 +1,30 @@
+2022-11-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added mention that default is on for "using" option.
+   * cdecl.1: Added mention that echo-commands works only when not interactive.
+   * c_ast.c: Added static_assert()s.
+   * c_ast.c, c_ast.h, c_ast_check.c, c_kind.c, c_kind.h, dump.c, english.c,
+     gibberish.c, parser.y, types.h, cdecl-d.out, cdecl-d.test: Made casts be a
+     c_kind of K_CAST to eliminate cast_kind from every AST node.
+   * gibberish.c: Added assert().
+
+2022-11-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c: Removed extraneous ';'.
+   * c_ast_check.c, color.c, dump.c, print.c, slist.c: Changed != to == where
+     simpler.
+
+2022-11-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, color.c, color.h, help.c, parser.y, print.c, prompt.c: Replaced
+     color macros with functions; now passing color variable to end color as
+     well.
+
+2022-11-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.c: Whitespace.
+   * color.c: Added explicit != NULL.
+
 2022-11-19  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, lexer.l, parser.y, explain_+dtor-error.out: Improved the error
