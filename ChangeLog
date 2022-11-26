@@ -1,3 +1,8 @@
+2022-11-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Using C_LANG_WHICH() more.
+   * parser.y: s/!OPT_LANG_IS/UNSUPPORTED/
+
 2022-11-25  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Added mention that default is on for "using" option.
