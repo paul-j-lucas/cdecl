@@ -88,7 +88,7 @@ static char* check_prefix_strdup( char const *prefix, char const *s ) {
   assert( s != NULL );
 
   size_t const prefix_len = strlen( prefix );
-  char *const dup_s = MALLOC( char*, prefix_len + strlen( s ) + 1/*\0*/ );
+  char *const dup_s = MALLOC( char, prefix_len + strlen( s ) + 1/*\0*/ );
   strcpy( dup_s, prefix );
   strcpy( dup_s + prefix_len, s );
   return dup_s;
