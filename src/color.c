@@ -47,15 +47,15 @@
 // Color capabilities.  Names containing Upper-case are unique to cdecl and
 // upper-case to avoid conflict with gcc.
 //
-#define CAP_CARET             "caret"
-#define CAP_ERROR             "error"
-#define CAP_HELP_KEYWORD      "HELP-keyword"
-#define CAP_HELP_NONTERM      "HELP-nonterm"
-#define CAP_HELP_PUNCT        "HELP-punct"
-#define CAP_HELP_TITLE        "HELP-title"
-#define CAP_LOCUS             "locus"
-#define CAP_PROMPT            "PROMPT"
-#define CAP_WARNING           "warning"
+#define CAP_CARET               "caret"
+#define CAP_ERROR               "error"
+#define CAP_HELP_KEYWORD        "HELP-keyword"
+#define CAP_HELP_NONTERM        "HELP-nonterm"
+#define CAP_HELP_PUNCT          "HELP-punct"
+#define CAP_HELP_TITLE          "HELP-title"
+#define CAP_LOCUS               "locus"
+#define CAP_PROMPT              "PROMPT"
+#define CAP_WARNING             "warning"
 
 /// @endcond
 
