@@ -1,5 +1,7 @@
 2022-11-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sglob.c: Added "if ( sglob->pattern != NULL )" check.
+   * c_sglob.c, c_sglob.h: Made c_sglob_parse() a bit more robust.
    * parser.y: Using C_LANG_WHICH() more.
    * parser.y: s/!OPT_LANG_IS/UNSUPPORTED/
 
