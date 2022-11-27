@@ -114,6 +114,11 @@ void c_sglob_init( c_sglob_t *sglob ) {
  * @param sglob The scoped glob to parse into.  It _must_ be in an initialized
  * state. The caller is responsible for calling c_sglob_cleanup().
  *
+ * @warning This function assumes \a s, if non-NULL, non-empty, and non-all-
+ * whitespace, is a valid glob string returned by the lexer.  This function
+ * does _not_ do a full syntax-checking parse so an invalid glob string may not
+ * be detected.
+ *
  * @sa c_sglob_cleanup()
  */
 void c_sglob_parse( char const *s, c_sglob_t *sglob );
