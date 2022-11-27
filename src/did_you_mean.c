@@ -224,7 +224,7 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
 
 /**
  * A \ref c_typedef visitor function to copy names of types that are only valid
- * in the current language to the candidate list pointed to
+ * in the current language to the candidate list pointed to.
  *
  * @param tdef The c_typedef to visit.
  * @param data A pointer to a \ref copy_typedef_visit_data.
