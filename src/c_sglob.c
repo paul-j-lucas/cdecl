@@ -58,21 +58,7 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
     return;
 
   //
-  // Scan through the scoped glob to count the number of scopes which is the
-  // number of occurrences of `::` plus 1, e.g., `a::b::c` yields 3.
-  //
-  sglob->count = 1;
-  for ( char const *t = s; *t != '\0'; ++t ) {
-    if ( *t == ':' ) {
-      ++t;
-      assert( *t == ':' );
-      ++sglob->count;
-    }
-  } // for
-
-  //
   // Special case: if the scoped glob starts with `**`, match in any scope.
-  // Skip past `**::` and decrement scope count.
   //
   sglob->match_in_any_scope = s[0] == '*' && s[1] == '*';
   if ( sglob->match_in_any_scope ) {
@@ -80,42 +66,42 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
     SKIP_WS( s );
     assert( s[0] == ':' && s[1] == ':' );
     s += 2 /* "::" */;
-    --sglob->count;
+    SKIP_WS( s );
   }
 
-  sglob->pattern = MALLOC( char*, sglob->count );
+  //
+  // Scan through the scoped glob to count the number of scopes which is the
+  // number of occurrences of `::` plus 1, e.g., `a::b::c` yields 3.
+  //
+  size_t scope_count = 1;
+  for ( char const *t = s; *t != '\0'; ++t ) {
+    if ( *t == ':' ) {
+      ++t;
+      assert( *t == ':' );
+      ++scope_count;
+    }
+  } // for
+
+  sglob->pattern = MALLOC( char*, scope_count );
 
   //
   // Break up scoped glob into array of globs.
   //
-  char const *glob_begin = SKIP_WS( s );
-  size_t glob_index = 0;
+  char const *glob_begin = s;
   for (;;) {
-    switch ( *s ) {
-      case ':':
-      case '\0': {                      // found end of glob
-        size_t const glob_len = STATIC_CAST( size_t, s - glob_begin );
-        assert( glob_len > 0 );
-        assert( glob_index < sglob->count );
-        sglob->pattern[ glob_index ] = check_strndup( glob_begin, glob_len );
-        if ( *s == '\0' )
-          return;
-        assert( s[0] == ':' && s[1] == ':' );
-        s += 2 /* "::" */;
-        SKIP_WS( s );
-        assert( is_ident( *s ) || *s == '*' );
-        glob_begin = s;
-        ++glob_index;
-        break;
-      }
-
-      default:
-        assert( is_ident( *s ) );
-        FALLTHROUGH;
-      case '*':
-        ++s;
-        break;
-    } // switch
+    if ( *s == ':' || *s == '\0' /* end of glob */ ) {
+      size_t const glob_len = STATIC_CAST( size_t, s - glob_begin );
+      assert( glob_len > 0 );
+      assert( sglob->count < scope_count );
+      sglob->pattern[ sglob->count++ ] = check_strndup( glob_begin, glob_len );
+      if ( *s == '\0' )
+        return;
+      s += 2 /* "::" */;
+      SKIP_WS( s );
+      glob_begin = s;
+      continue;
+    }
+    ++s;
   } // for
 }
 
