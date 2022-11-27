@@ -440,6 +440,7 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
  *
  * @param sname The scoped name to move.
  * @return Returns the former value of \a sname.
+ *
  * @warning The recipient scoped name _must_ be either uninitialized or empty.
  *
  * @sa c_sname_init()
@@ -515,6 +516,7 @@ void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
  * @param sname The scoped name to get the scope name of.  May be NULL.
  * @return Returns said name or the empty string if \a sname is empty, NULL, or
  * not within a scope.
+ *
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
