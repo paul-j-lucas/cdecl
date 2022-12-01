@@ -159,7 +159,7 @@ static bool sgr_is_valid( char const *sgr_color ) {
     char *end;
     errno = 0;
     unsigned long long const n = strtoull( sgr_color, &end, 10 );
-    if ( unlikely( errno || n > 255 ) )
+    if ( unlikely( errno != 0 || n > 255 ) )
       return false;
     switch ( *end ) {
       case '\0':
