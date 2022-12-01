@@ -84,6 +84,8 @@ struct option const* cli_option_next( struct option const *opt );
  * On return, `*pargc` and `*pargv` are updated to reflect the remaining
  * command-line with the options removed.
  *
+ * @note This function must be called exactly once.
+ *
  * @param pargc A pointer to the argument count from main().
  * @param pargv A pointer to the argument values from main().
  */

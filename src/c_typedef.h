@@ -123,6 +123,8 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname );
 
 /**
  * Initializes all \ref c_typedef data.
+ *
+ * @note This function must be called exactly once.
  */
 void c_typedef_init( void );
 

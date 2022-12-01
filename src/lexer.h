@@ -90,6 +90,8 @@ extern char const      *lexer_token;
 
 /**
  * Initializes the lexer.
+ *
+ * @note This function must be called exactly once.
  */
 void lexer_init( void );
 

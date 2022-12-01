@@ -1074,6 +1074,10 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
 }
 
 void c_typedef_init( void ) {
+  static bool initialized;
+  assert( !initialized );
+  initialized = true;
+
   rb_tree_init( &typedef_set, POINTER_CAST( rb_cmp_fn_t, &c_typedef_cmp ) );
   check_atexit( &c_typedef_cleanup );
 

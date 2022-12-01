@@ -205,12 +205,23 @@ static void ifi_free( include_file_info_t *ifi ) {
 
 /**
  * Frees all memory used by include files.
+ *
+ * @sa include_init()
  */
 static void include_cleanup( void ) {
   slist_cleanup( &include_stack, POINTER_CAST( slist_free_fn_t, &ifi_free ) );
   // Do not pass free() as the second argument since the resolved include path
   // strings are shared with and owned by include_stack.
   rb_tree_cleanup( &include_set, /*free_fn=*/NULL );
+}
+
+/**
+ * Initializes include files.
+ *
+ * @sa include_cleanup()
+ */
+static void include_init( void ) {
+  rb_tree_init( &include_set, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
 }
 
 /**
@@ -1181,8 +1192,11 @@ static void lexer_fatal( char const *msg ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void lexer_init( void ) {
-  rb_tree_init( &include_set, POINTER_CAST( rb_cmp_fn_t, &strcmp ) );
+  static bool initialized;
+  assert( !initialized );
+  initialized = true;
   check_atexit( &lexer_cleanup );
+  include_init();
 }
 
 char const* lexer_input_line( size_t *plen ) {
@@ -1214,7 +1228,7 @@ void lexer_reset( bool hard_reset ) {
   if ( hard_reset ) {
     is_eof = false;
     include_cleanup();
-    lexer_init();
+    include_init();
     yylineno = 0;
   }
   BEGIN( INITIAL );
