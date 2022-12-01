@@ -57,6 +57,8 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>                     /* for strtol(3) */
 #include <stdnoreturn.h>
@@ -78,6 +80,12 @@
 #endif /* __clang__ */
 
 /// @endcond
+
+/**
+ * The maximum number of decimal digits in the unsigned 64-bit integer
+ * 18446744073709551615.
+ */
+#define MAX_DIGITS_64             20u
 
 /**
  * C++ raw string delimiter maximum length.
@@ -182,41 +190,6 @@ noreturn
 static void       lexer_fatal( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Duplicates \a s with \a except characters stripped and checks for failure.
- * If memory allocation fails, prints an error message and exits.
- *
- * @param s The null-terminated string to duplicate or NULL.
- * @param except The character not to duplicate.  If `\0`, all characters are
- * duplicated.
- * @return Returns a copy of \a s with \a except characters stripped or NULL if
- * \a s is NULL.
- */
-NODISCARD
-char* check_strdup_except( char const *s, char except ) {
-  if ( s == NULL )
-    return NULL;
-  if ( except == '\0' )
-    return check_strdup( s );
-
-  size_t dup_len = strlen( s );
-  for ( char const *t = s; *t; ++t ) {
-    if ( *t == except )
-      --dup_len;
-  } // for
-
-  char *const dup_s = MALLOC( char, dup_len + 1/*\0*/ );
-  PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
-
-  char *t = dup_s;
-  do {
-    if ( *s != except )
-      *t++ = *s;
-  } while ( *s++ != '\0' );
-
-  return dup_s;
-}
 
 /**
  * Frees all memory associated with \a ifi _including_ \a ifi itself.
@@ -333,23 +306,31 @@ static inline void newline( void ) {
 NODISCARD
 static int parse_int( int base ) {
   char const *s = lexer_token;
-  if ( strchr( lexer_token, '\'' ) != NULL )
-    s = check_strdup_except( lexer_token, '\'' );
 
-  //
-  // We don't need to check for errors from strtol(3) here since the lexer
-  // guarantees that we'll be passed only a valid number token.
-  //
-  // Standard strtol(3) doesn't understand a "0b" (binary) prefix, so skip over
-  // it if the base is 2.
-  //
-  int const rv = STATIC_CAST( int,
-    strtol( s + (base == 2 ? 2 : 0), /*endptr=*/NULL, base )
-  );
+  if ( base == 2 ) {
+    // strtol(3) doesn't understand a "0b" (binary) prefix, so skip over it.
+    s += 2;
+  }
 
-  if ( s != lexer_token )
-    FREE( s );
-  return rv;
+  char no_digit_seps[ MAX_DIGITS_64 + 1/*\0*/ ];
+
+  if ( strchr( s, '\'' ) != NULL ) {
+    char *t = no_digit_seps;
+    do {
+      if ( *s != '\'' )
+        *t++ = *s;
+    } while ( *s++ != '\0' );
+    s = no_digit_seps;
+  }
+
+  errno = 0;
+  long const rv = strtol( s, /*endptr=*/NULL, base );
+  if ( unlikely( errno != 0 || rv > INT_MAX ) ) {
+    print_warning( &yylloc, "integer out of range; clamped to %d\n", INT_MAX );
+    return INT_MAX;
+  }
+
+  return STATIC_CAST( int, rv );
 }
 
 /**
