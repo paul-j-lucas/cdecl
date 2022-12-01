@@ -1,3 +1,20 @@
+2022-12-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Eliminated dynamic memory allocation in parse_int().
+   * lexer.l: Fixed Flex URL.
+   * color.c: Made comparison explicit.
+
+2022-11-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, cdecl-d.out: Simplified _BitInt rules.
+   * NEWS, c_ast_check.c, test/Makefile.am, declare_bi65.out,
+     declare_bi65.test: Now check that the maximum number of bits for `_BitInt`
+     is 64.
+
+2022-11-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Fixed malloc() type.
+
 2022-11-26  Paul J. Lucas <paul@lucasmail.org>
 
    * c_sglob.c: Added "if ( sglob->pattern != NULL )" check.
