@@ -591,11 +591,11 @@ _Atomic/{S}*\( {
               }
 
               /*
-               * Special case: if "const[ant]" is followed by one of
-               * "eval[uation]", "expr[ession]", or "init[ialization]", return
-               * a special English version of the "const" token to disambiguate
-               * it (as part of one of those three storage classes) from the
-               * normal "const" that's a CV qualifier.
+               * Special case: if "const[ant]" is immediately followed by one
+               * of "eval[uation]", "expr[ession]", or "init[ialization]",
+               * return a special English version of the "const" token to
+               * disambiguate it (as part of one of those three storage
+               * classes) from the normal "const" that's a CV qualifier.
                */
 const(ant)?/{S}+(eval(uation)?|expr(ession)?|init(ialization)?){NI} {
                 SET_TOKEN;
