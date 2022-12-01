@@ -36,6 +36,9 @@ User-defined conversions in pseudo-English now allow "const[ant] eval[uation]",
 "const[ant] expr[ession]", and "const[ant] init[ialization]" for a storage
 class.
 
+** `_BitInt` maximum bits
+Now check that the maximum number of bits for `_BitInt` is 64.
+
 ** `[[noreturn]]` in C23.
 `[[noreturn]]` is now printed rather than `_Noreturn` in C23.
 

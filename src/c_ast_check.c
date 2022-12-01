@@ -504,6 +504,13 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
       );
       return false;
     }
+    if ( ast->builtin.BitInt.width > 64 ) {
+      print_error( &ast->loc,
+        "%s can be at most 64 bits\n",
+        c_type_name_error( &ast->type )
+      );
+      return false;
+    }
   }
   else if ( ast->builtin.bit_width > 0 ) {
     if ( c_sname_count( &ast->sname ) > 1 ) {

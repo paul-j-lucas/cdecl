@@ -1,0 +1,3 @@
+declare x as _BitInt(65)
+        ^
+9: error: _BitInt can be at most 64 bits
