@@ -358,7 +358,7 @@ static int parse_int( int base ) {
  * @return Returns `true` only if an include file was popped.
  *
  * @sa push_file()
- * @sa http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
+ * @sa https://westes.github.io/flex/manual/Multiple-Input-Buffers.html
  */
 NODISCARD
 static bool pop_file( void ) {
