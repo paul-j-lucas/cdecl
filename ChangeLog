@@ -1,3 +1,8 @@
+2022-12-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, lexer.l, integers.out, integers.test: Digit separators are now
+     supported for octal integers.
+
 2022-12-01  Paul J. Lucas <paul@lucasmail.org>
 
    * c_typedef.c, c_typedef.h, cdecl.c, cli_options.c, cli_options.h, lexer.h,
