@@ -35,3 +35,12 @@ declare a as array 123 of int
 declare a as array 123 of int
 declare a as array 123 of int
 declare a as array 1234 of int
+declare a as array 4 of int
+declare a as array 4 of int
+declare a as array 4 of int
+declare a as array 10 of int
+declare a as array 10 of int
+declare a as array 10 of int
+declare a as array 256 of int
+declare a as array 256 of int
+declare a as array 256 of int

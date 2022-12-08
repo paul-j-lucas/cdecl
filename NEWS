@@ -59,6 +59,9 @@ Added missing `constexpr` to the help for C23.
 ** Missing C++ types man page
 Added some missing C++23 types to the manual page.
 
+** Octal digit separators
+Digit separators are now supported for octal integers.
+
 ** `reproducible` and `unsequenced` man page
 Added missing `reproducible` and `unsequenced` to the manual page.
 

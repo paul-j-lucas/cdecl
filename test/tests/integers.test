@@ -45,4 +45,16 @@ explain int a[1'23]
 explain int a[12'3]
 explain int a[1'2'3]
 explain int a[1'23'4]
+
+explain int a[0b1'00]
+explain int a[0b10'0]
+explain int a[0b1'0'0]
+
+explain int a[0'12]
+explain int a[01'2]
+explain int a[0'1'2]
+
+explain int a[0x1'00]
+explain int a[0x10'0]
+explain int a[0x1'0'0]
 END

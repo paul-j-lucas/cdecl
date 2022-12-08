@@ -544,7 +544,7 @@ int_sfx       [lL][lL]?[uU]?|wb|WB|[uU]([lL][lL]?|wb|WB|[zZ])?|[zZ][uU]?
 set_option    [^=; \f\n\r\t\v]+
 
 bin_int       0[bB]{B}+('{B}+)*{int_sfx}?
-oct_int       0{O}*{int_sfx}?
+oct_int       0{O}*('{O}+)*{int_sfx}?
 dec_int       [1-9]{D}*('{D}+)*{int_sfx}?
 hex_int       0[xX]{H}+('{H}+)*{int_sfx}?
 
