@@ -35,6 +35,7 @@ EXCLUDE                 = src/config.h \
                           src/literals.h src/literals.c \
                           src/parser.h src/parser.c
 OUTPUT_DIRECTORY        = docs
+HTML_EXTRA_STYLESHEET   = cdecl.css
 HTML_OUTPUT             = .
 
 EXTRACT_ALL             = YES
@@ -44,7 +45,6 @@ EXTRACT_STATIC          = YES
 DISABLE_INDEX           = YES
 GENERATE_LATEX          = NO
 GENERATE_TREEVIEW       = YES
-HTML_EXTRA_STYLESHEET   = cdecl.css
 
 ALPHABETICAL_INDEX      = YES
 DISTRIBUTE_GROUP_DOC    = YES
@@ -56,18 +56,17 @@ MARKDOWN_SUPPORT        = YES
 MAX_INITIALIZER_LINES   = 0
 OPTIMIZE_OUTPUT_FOR_C   = YES
 QUIET                   = YES
+REFERENCED_BY_RELATION  = YES
+REFERENCES_LINK_SOURCE  = YES
+REFERENCES_RELATION     = YES
 SHOW_INCLUDE_FILES      = NO
 SORT_BRIEF_DOCS         = YES
 SORT_GROUP_NAMES        = YES
+SOURCE_BROWSER          = YES
+STRIP_CODE_COMMENTS     = NO
 TAB_SIZE                = 2
 TYPEDEF_HIDES_STRUCT    = YES
 USE_MDFILE_AS_MAINPAGE  = README.md
 WARN_NO_PARAMDOC        = YES
-
-SOURCE_BROWSER          = YES
-STRIP_CODE_COMMENTS     = NO
-REFERENCED_BY_RELATION  = YES
-REFERENCES_LINK_SOURCE  = YES
-REFERENCES_RELATION     = YES
 
 # vim:set et sw=4 ts=4:
