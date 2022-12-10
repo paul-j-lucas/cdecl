@@ -9,7 +9,6 @@
 /limits.h
 /locale.h
 /stdarg.h
-/stdbool.h
 /stdckdint.h
 /stddef.h
 /stdint.h
