@@ -31,6 +31,9 @@
  * `typedef` definitions in one file.
  */
 
+// local
+#include "pjl_config.h"                 /* must go first */
+
 // standard
 #include <stdint.h>                     /* for uint*_t */
 
