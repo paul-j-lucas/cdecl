@@ -312,7 +312,7 @@
  */
 #define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(          \
   DUMP_COMMA; FPUTS( "  " KEY " = ", stdout );  \
-  bool_dump( BOOL, stdout ); )
+  bool_dump( (BOOL), stdout ); )
 
 /**
  * Ends a dump block.
