@@ -162,16 +162,19 @@ typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, c_ast_visit_data_t avd );
  *
  * ## Layout
  *
- * The AST node `struct`s contain data specific to each \ref c_ast_kind_t.  In
- * all cases where an AST node contains:
+ * The AST node `struct`s contain members specific to each \ref c_ast_kind_t.
+ * In all cases where an AST node contains:
  *
  *  1. A pointer to another, that pointer is always declared first.
- *  2. Parameters, they are always declared second.
- *  3. Flags, they are always declared third.
+ *  2. A bit-width or parameter list, that is always declared second.
+ *  3. A scoped name or flags, that are always declared third.
  *
  * Since all the different kinds of AST nodes are declared within a `union`,
  * these `struct` members are at the same offsets.  This makes traversing and
  * manipulating an AST easy.
+ *
+ * To ensure the members remain at the same offsets, a series of
+ * `static_assert`s are in c_ast.c.
  *
  * ## Memory Management
  *
@@ -233,11 +236,8 @@ struct c_apple_block_ast {
  * @sa c_typedef_ast
  */
 struct c_bit_field_ast {
-  ///@{
   /// So \ref bit_width is at the same offset as in c_enum_ast.
   c_ast_t        *unused_ast;
-  c_sname_t       unused_sname;
-  ///@}
 
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
 };
@@ -249,11 +249,8 @@ struct c_bit_field_ast {
  * c_typedef_ast: this is taken advantage of.
  */
 struct c_builtin_ast {
-  ///@{
   /// So \ref bit_width is at the same offset as in c_enum_ast.
   c_ast_t        *unused_ast;
-  c_sname_t       unused_sname;
-  ///@}
 
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
 
@@ -296,11 +293,13 @@ struct c_constructor_ast {
  * c_ptr_mbr_ast: this is taken advantage of.
  */
 struct c_csu_ast {
-  /// Class, struct, and union types don't have an "of" type, but we need an
-  /// unused pointer so \ref csu_sname is at the same offset as \ref
-  /// c_enum_ast::enum_sname "enum_sname" and \ref c_ptr_mbr_ast::class_sname
-  /// "class_sname".
+  ///@{
+  /// Class, struct, and union types don't have an "of" type, but \ref
+  /// csu_sname needs to be at the same offset as \ref c_enum_ast::enum_sname
+  /// "enum_sname" and \ref c_ptr_mbr_ast::class_sname "class_sname".
   c_ast_t        *unused_ast;
+  unsigned        unused_unsigned;
+  ///@}
 
   c_sname_t       csu_sname;            ///< Class, struct, or union name.
 };
@@ -313,8 +312,8 @@ struct c_csu_ast {
  */
 struct c_enum_ast {
   c_ast_t        *of_ast;               ///< The fixed type, if any.
-  c_sname_t       enum_sname;           ///< Enumeration name.
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
+  c_sname_t       enum_sname;           ///< Enumeration name.
 };
 
 /**
@@ -387,6 +386,10 @@ struct c_operator_ast {
  */
 struct c_ptr_mbr_ast {
   c_ast_t        *to_ast;               ///< Member type.
+
+  /// So \ref class_sname is at the same offset as in c_csu_ast and c_enum_ast.
+  unsigned        unused_unsigned;
+
   c_sname_t       class_sname;          ///< Class pointer-to-member of.
 };
 
@@ -410,10 +413,6 @@ struct c_ptr_ref_ast {
  */
 struct c_typedef_ast {
   c_ast_t const  *for_ast;              ///< What it's a `typedef` for.
-
-  /// So \ref bit_width is at the same offset as in c_enum_ast.
-  c_sname_t       unused_sname;
-
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
 };
 
