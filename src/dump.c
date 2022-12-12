@@ -202,7 +202,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
       DUMP_FORMAT(
         "oper_id = \"%s\" (%d),\n",
         c_oper_get( ast->oper.oper_id )->name,
-        ast->oper.oper_id
+        (int)ast->oper.oper_id
       );
       FALLTHROUGH;
 
