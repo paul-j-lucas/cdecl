@@ -60,6 +60,12 @@ static_assert(
 );
 
 static_assert(
+  offsetof( c_apple_block_ast_t, param_ast_list ) ==
+  offsetof( c_function_ast_t, param_ast_list ),
+  "offsetof param_ast_list in c_apple_block_ast_t & c_function_ast_t must equal"
+);
+
+static_assert(
   offsetof( c_constructor_ast_t, param_ast_list ) ==
   offsetof( c_function_ast_t, param_ast_list ),
   "offsetof param_ast_list in c_constructor_ast_t & c_function_ast_t must equal"
