@@ -134,7 +134,7 @@ static void print_help_commands( void ) {
     print_h( "[const | dynamic | reinterpret | static] " );
   print_h( "cast <name> {as|[in]to} <english>\n" );
 
-  print_h( "  declare <name> [, <name>]* as <english> [<declare-options>]\n" );
+  print_h( "  declare <name> [, <name>]* as <english> [<declare-option>]\n" );
 
   if ( OPT_LANG_IS( CPP_ANY ) ) {
     print_h( "  declare <operator> as <english>\n" );
@@ -166,7 +166,7 @@ static void print_help_commands( void ) {
 
   print_h( "  exit | q[uit]\n" );
 
-  print_h( "declare-options:\n" );
+  print_h( "declare-option:\n" );
   if ( OPT_LANG_IS( ALIGNMENT ) )
     print_h( "  align[ed] [as|to] {<number> [bytes] | <english>}\n" );
   print_h( "  width <number> [bits]\n" );
