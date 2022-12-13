@@ -93,7 +93,7 @@ cdecl> set knr
 cdecl> help
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -102,15 +102,13 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -119,15 +117,13 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -136,8 +132,6 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -179,7 +173,7 @@ cdecl> set c89
 cdecl> help
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -188,15 +182,13 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -205,15 +197,13 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -222,8 +212,6 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -266,7 +254,7 @@ cdecl> set c95
 cdecl> help
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -275,15 +263,13 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -292,15 +278,13 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -309,8 +293,6 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -353,7 +335,7 @@ cdecl> set c99
 cdecl> help
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -362,15 +344,13 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -379,15 +359,13 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
@@ -396,8 +374,6 @@ command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   type[def] <gibberish> [, <gibberish>]*
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -737,7 +713,7 @@ c++decl> set c++98
 c++decl> help
 command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
@@ -749,8 +725,6 @@ command:
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-c: class | struct | union | namespace
@@ -758,7 +732,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
@@ -770,8 +744,6 @@ command:
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-c: class | struct | union | namespace
@@ -779,7 +751,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
@@ -791,8 +763,6 @@ command:
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-c: class | struct | union | namespace
@@ -844,7 +814,7 @@ c++decl> set c++03
 c++decl> help
 command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
@@ -856,8 +826,6 @@ command:
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-c: class | struct | union | namespace
@@ -865,7 +833,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
@@ -877,8 +845,6 @@ command:
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-c: class | struct | union | namespace
@@ -886,7 +852,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
-  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
@@ -898,8 +864,6 @@ command:
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   exit | q[uit]
-declare-option:
-  width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-c: class | struct | union | namespace
