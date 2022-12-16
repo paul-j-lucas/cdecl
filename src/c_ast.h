@@ -139,11 +139,52 @@ struct c_alignas {
 /**
  * Type of optional data passed to c_ast_visit().
  *
+ * @note This isn't just a `void*` as is typically used for "user data" since
+ * `void*` can't hold a 64-bit integer value on 32-bit platforms.
+ * @note Almost all built-in types are included to avoid casting.
+ * @note `long double` is not included since that would double the size of the
+ * `union`.
+ */
+union c_ast_visit_data {
+  bool                b;                ///< `bool` value.
+  char                c;                ///< `char` value.
+  signed char         sc;               ///< `signed char` value.
+  wchar_t             wc;               ///< `wchar_t` value.
+  short               s;                ///< `short` value.
+  int                 i;                ///< `int` value.
+  long                l;                ///< `long` value.
+  long long           ll;               ///< `long long` value.
+  unsigned char       uc;               ///< `unsigned char` value.
+  unsigned short      us;               ///< `unsigned short` value.
+  unsigned int        ui;               ///< `unsigned int` value.
+  unsigned long       ul;               ///< `unsigned long` value.
+  unsigned long long  ull;              ///< `unsigned long long` value.
+
+  int8_t              i8;               ///< `int8_t` value.
+  int16_t             i16;              ///< `int16_t` value.
+  int32_t             i32;              ///< `int32_t` value.
+  int64_t             i64;              ///< `int64_t` value.
+
+  uint8_t             ui8;              ///< `uint8_t` value.
+  uint16_t            ui16;             ///< `uint16_t` value.
+  uint32_t            ui32;             ///< `uint32_t` value.
+  uint64_t            ui64;             ///< `uint64_t` value.
+
+  float               f;                ///< `float` value.
+  double              d;                ///< `double` value.
+
+  void               *p;                ///< Pointer (to non-`const`) value.
+  void const         *pc;               ///< Pointer to `const` value.
+};
+
+/**
+ * Type of optional data passed to c_ast_visit().
+ *
  * @note This is `uintmax_t` so it can hold either the largest possible integer
  * or a pointer.  It is _not_ `uintptr_t` because that can't hold a 64-bit
  * integer on a 32-bit pointer platform.
  */
-typedef uintmax_t c_ast_visit_data_t;
+typedef union c_ast_visit_data c_ast_visit_data_t;
 
 /**
  * The signature for functions passed to c_ast_visit().

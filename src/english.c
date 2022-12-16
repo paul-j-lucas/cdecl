@@ -57,7 +57,7 @@ static void c_type_print_not_base( c_type_t const*, FILE* );
  */
 static inline void c_ast_visit_english( c_ast_t const *ast, FILE *eout ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_visit_data_t const avd = POINTER_CAST( c_ast_visit_data_t, eout );
+  c_ast_visit_data_t const avd = { .p = eout };
   c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, avd );
 }
 
@@ -133,7 +133,7 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
 NODISCARD
 static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  FILE *const eout = POINTER_CAST( FILE*, avd );
+  FILE *const eout = avd.p;
   assert( eout != NULL );
 
   switch ( ast->kind ) {

@@ -425,6 +425,7 @@ typedef enum   c_ast_kind         c_ast_kind_t;
 typedef slist_t                   c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;
 typedef int                       c_ast_sid_t;    ///< Signed \ref c_ast_id_t.
+typedef union  c_ast_visit_data   c_ast_visit_data_t;
 typedef struct c_bit_field_ast    c_bit_field_ast_t;
 typedef struct c_builtin_ast      c_builtin_ast_t;
 typedef struct c_cast_ast         c_cast_ast_t;

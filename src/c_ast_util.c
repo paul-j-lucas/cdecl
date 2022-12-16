@@ -479,7 +479,7 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
 NODISCARD
 static bool c_ast_vistor_kind_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  c_ast_kind_t const kinds = INTEGER_CAST( c_ast_kind_t, avd );
+  c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, avd.ui32 );
   return (ast->kind & kinds) != 0;
 }
 
@@ -508,7 +508,7 @@ static bool c_ast_visitor_name( c_ast_t *ast, c_ast_visit_data_t avd ) {
 NODISCARD
 static bool c_ast_vistor_type_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
   assert( ast != NULL );
-  c_type_t const *const type = POINTER_CAST( c_type_t*, avd );
+  c_type_t const *const type = avd.pc;
   return c_type_is_any( &ast->type, type );
 }
 
@@ -538,19 +538,20 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_ast_kind_t kinds ) {
   assert( kinds != 0 );
-  c_ast_visit_data_t const avd = INTEGER_CAST( c_ast_visit_data_t, kinds );
+  c_ast_visit_data_t const avd = { .ui32 = kinds };
   return c_ast_visit( ast, dir, c_ast_vistor_kind_any, avd );
 }
 
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir ) {
+  c_ast_visit_data_t avd = { .ull = 0 };
   c_ast_t *const found_ast =
-    c_ast_visit( CONST_CAST( c_ast_t*, ast ), dir, c_ast_visitor_name, 0 );
+    c_ast_visit( CONST_CAST( c_ast_t*, ast ), dir, c_ast_visitor_name, avd );
   return found_ast != NULL ? &found_ast->sname : NULL;
 }
 
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_type_t const *type ) {
-  c_ast_visit_data_t const avd = POINTER_CAST( c_ast_visit_data_t, type );
+  c_ast_visit_data_t const avd = { .pc = type };
   return c_ast_visit( ast, dir, c_ast_vistor_type_any, avd );
 }
 
