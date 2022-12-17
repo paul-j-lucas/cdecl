@@ -1,5 +1,29 @@
+2022-12-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, english.c, types.h:
+     s/c_ast_visit_data/user_data/
+   * c_ast.h, c_ast_check.c, c_ast_util.c, english.c, types.h: Changed
+     c_ast_visit_data_t to be a union to eliminate casting in most cases.
+
+2022-12-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, help.out: For C89 and earlier, now eliding <declare-option>.
+   * help.c, help.out: s/declare-options/declare-option/
+
+2022-12-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c: Added cast to suppress warning.
+   * c_ast.h: Reduced "unused_*" members from 7 total to 6.
+   * c_ast.c: Added a static_assert for c_apple_block_ast.
+
+2022-12-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_parser.h, types.h: Added missing: #include "pjl_config.h"
+   * parser.y: Added ().
+
 2022-12-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * Doxyfile: Reordering.
    * lib/Makefile.am, string.in.h, verify.h, string_h.m4: Updated Gnulib.
 
 2022-12-07  Paul J. Lucas <paul@lucasmail.org>
