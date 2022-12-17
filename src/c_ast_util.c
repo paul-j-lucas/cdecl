@@ -473,13 +473,13 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
  * A visitor function to find an AST node having a particular kind(s).
  *
  * @param ast The AST to check.
- * @param avd The bitwise-or of the kind(s) \a ast can be.
+ * @param data The bitwise-or of the kind(s) \a ast can be.
  * @return Returns `true` only if the kind of \a ast is one of the kinds.
  */
 NODISCARD
-static bool c_ast_vistor_kind_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
+static bool c_ast_vistor_kind_any( c_ast_t *ast, user_data_t data ) {
   assert( ast != NULL );
-  c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, avd.ui32 );
+  c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, data.ui32 );
   return (ast->kind & kinds) != 0;
 }
 
@@ -487,13 +487,13 @@ static bool c_ast_vistor_kind_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
  * A visitor function to find an AST node having a non-empty name.
  *
  * @param ast The AST to check.
- * @param avd Not used.
+ * @param data Not used.
  * @return Returns `true` only if \a ast has such a scoped name.
  */
 NODISCARD
-static bool c_ast_visitor_name( c_ast_t *ast, c_ast_visit_data_t avd ) {
+static bool c_ast_visitor_name( c_ast_t *ast, user_data_t data ) {
   assert( ast != NULL );
-  (void)avd;
+  (void)data;
   return !c_sname_empty( &ast->sname );
 }
 
@@ -501,14 +501,14 @@ static bool c_ast_visitor_name( c_ast_t *ast, c_ast_visit_data_t avd ) {
  * A visitor function to find an AST node having a particular type(s).
  *
  * @param ast The AST to check.
- * @param avd A pointer to a type where each type part is the bitwise-or of
+ * @param data A pointer to a type where each type part is the bitwise-or of
  * type IDs to find.
  * @return Returns `true` only if the type of \a ast is one of the types.
  */
 NODISCARD
-static bool c_ast_vistor_type_any( c_ast_t *ast, c_ast_visit_data_t avd ) {
+static bool c_ast_vistor_type_any( c_ast_t *ast, user_data_t data ) {
   assert( ast != NULL );
-  c_type_t const *const type = avd.pc;
+  c_type_t const *const type = data.pc;
   return c_type_is_any( &ast->type, type );
 }
 
@@ -538,21 +538,21 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_ast_kind_t kinds ) {
   assert( kinds != 0 );
-  c_ast_visit_data_t const avd = { .ui32 = kinds };
-  return c_ast_visit( ast, dir, c_ast_vistor_kind_any, avd );
+  user_data_t const data = { .ui32 = kinds };
+  return c_ast_visit( ast, dir, c_ast_vistor_kind_any, data );
 }
 
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir ) {
-  c_ast_visit_data_t avd = { .ull = 0 };
+  user_data_t data = { .ull = 0 };
   c_ast_t *const found_ast =
-    c_ast_visit( CONST_CAST( c_ast_t*, ast ), dir, c_ast_visitor_name, avd );
+    c_ast_visit( CONST_CAST( c_ast_t*, ast ), dir, c_ast_visitor_name, data );
   return found_ast != NULL ? &found_ast->sname : NULL;
 }
 
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_type_t const *type ) {
-  c_ast_visit_data_t const avd = { .pc = type };
-  return c_ast_visit( ast, dir, c_ast_vistor_type_any, avd );
+  user_data_t const data = { .pc = type };
+  return c_ast_visit( ast, dir, c_ast_vistor_type_any, data );
 }
 
 bool c_ast_is_bit_field( c_ast_t const *ast ) {

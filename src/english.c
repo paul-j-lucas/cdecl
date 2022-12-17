@@ -42,7 +42,7 @@
 
 // local functions
 NODISCARD
-static bool c_ast_visitor_english( c_ast_t*, c_ast_visit_data_t );
+static bool c_ast_visitor_english( c_ast_t*, user_data_t );
 
 static void c_type_print_not_base( c_type_t const*, FILE* );
 
@@ -57,8 +57,8 @@ static void c_type_print_not_base( c_type_t const*, FILE* );
  */
 static inline void c_ast_visit_english( c_ast_t const *ast, FILE *eout ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_visit_data_t const avd = { .p = eout };
-  c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, avd );
+  user_data_t const data = { .p = eout };
+  c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, data );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -127,13 +127,13 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
  * Visitor function that prints \a ast as pseudo-English.
  *
  * @param ast The AST to print.
- * @param avd A pointer to a `FILE` to emit to.
+ * @param data A pointer to a `FILE` to emit to.
  * @return Always returns `false`.
  */
 NODISCARD
-static bool c_ast_visitor_english( c_ast_t *ast, c_ast_visit_data_t avd ) {
+static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
   assert( ast != NULL );
-  FILE *const eout = avd.p;
+  FILE *const eout = data.p;
   assert( eout != NULL );
 
   switch ( ast->kind ) {

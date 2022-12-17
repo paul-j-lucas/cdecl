@@ -158,10 +158,10 @@
  * The signature for functions passed to c_ast_check_visitor().
  *
  * @param ast The AST to check.
- * @param avd The flags to use.
+ * @param data The flags to use.
  * @return Returns `true` only if all checks passed.
  */
-typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast, c_ast_visit_data_t avd );
+typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast, user_data_t data );
 
 // local constants
 
@@ -209,9 +209,9 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_oper_relational_default( c_ast_t const* ),
                     c_ast_check_upc( c_ast_t const* ),
                     c_ast_name_equal( c_ast_t const*, char const* ),
-                    c_ast_visitor_error( c_ast_t const*, c_ast_visit_data_t ),
-                    c_ast_visitor_type( c_ast_t const*, c_ast_visit_data_t ),
-                    c_ast_visitor_warning( c_ast_t const*, c_ast_visit_data_t );
+                    c_ast_visitor_error( c_ast_t const*, user_data_t ),
+                    c_ast_visitor_type( c_ast_t const*, user_data_t ),
+                    c_ast_visitor_warning( c_ast_t const*, user_data_t );
 
 static void         c_ast_warn_name( c_ast_t const* );
 static void         c_sname_warn( c_sname_t const*, c_loc_t const* );
@@ -235,8 +235,8 @@ static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         unsigned flags ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_visit_fn_t const visit_fn = POINTER_CAST( c_ast_visit_fn_t, check_fn );
-  c_ast_visit_data_t const avd = { .ui = flags };
-  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, avd ) == NULL;
+  user_data_t const data = { .ui = flags };
+  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, data ) == NULL;
 }
 
 /**
@@ -2191,14 +2191,14 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
  * Visitor function that checks an AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param avd The flags to use.
+ * @param data The flags to use.
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 NODISCARD
-static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
+static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
   assert( ast != NULL );
-  unsigned flags = avd.ui;
+  unsigned flags = data.ui;
 
   if ( !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
@@ -2328,8 +2328,8 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
       temp_ast.loc = ast->loc;
       temp_ast.type.stids |= qual_stids;
 
-      avd.ui = flags;
-      return c_ast_visitor_error( &temp_ast, avd );
+      data.ui = flags;
+      return c_ast_visitor_error( &temp_ast, data );
     }
 
     case K_USER_DEF_CONVERSION:
@@ -2365,14 +2365,14 @@ static bool c_ast_visitor_error( c_ast_t const *ast, c_ast_visit_data_t avd ) {
  * Visitor function that checks an AST for type errors.
  *
  * @param ast The AST to visit.
- * @param avd The flags to use.
+ * @param data The flags to use.
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 NODISCARD
-static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
+static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
   assert( ast != NULL );
-  unsigned const flags = avd.ui;
+  unsigned const flags = data.ui;
   bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
   c_lang_id_t const ok_lang_ids = c_type_check( &ast->type );
@@ -2485,14 +2485,13 @@ static bool c_ast_visitor_type( c_ast_t const *ast, c_ast_visit_data_t avd ) {
  * Visitor function that checks an AST for semantic warnings.
  *
  * @param ast The AST to check.
- * @param avd The flags to use.
+ * @param data The flags to use.
  * @return Always returns `false`.
  */
 NODISCARD
-static bool c_ast_visitor_warning( c_ast_t const *ast,
-                                   c_ast_visit_data_t avd ) {
+static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
   assert( ast != NULL );
-  unsigned const flags = avd.ui;
+  unsigned const flags = data.ui;
 
   switch ( ast->kind ) {
     case K_ARRAY:
