@@ -530,7 +530,6 @@ union user_data {
   char                c;                ///< `char` value.
   signed char         sc;               ///< `signed char` value.
   unsigned char       uc;               ///< `unsigned char` value.
-  wchar_t             wc;               ///< `wchar_t` value.
 
   short               s;                ///< `short` value.
   int                 i;                ///< `int` value.
