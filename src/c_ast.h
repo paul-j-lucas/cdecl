@@ -227,7 +227,8 @@ struct c_apple_block_ast {
  * @sa c_typedef_ast
  */
 struct c_bit_field_ast {
-  /// So \ref bit_width is at the same offset as in c_enum_ast.
+  /// So \ref bit_width is at the same offset as in c_builtin_ast, c_enum_ast,
+  /// and c_typedef_ast.
   c_ast_t        *unused_ast;
 
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
@@ -240,7 +241,8 @@ struct c_bit_field_ast {
  * c_typedef_ast: this is taken advantage of.
  */
 struct c_builtin_ast {
-  /// So \ref bit_width is at the same offset as in c_enum_ast.
+  /// So \ref bit_width is at the same offset as in c_bit_field_ast,
+  /// c_enum_ast, and c_typedef_ast.
   c_ast_t        *unused_ast;
 
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
@@ -285,9 +287,10 @@ struct c_constructor_ast {
  */
 struct c_csu_ast {
   ///@{
-  /// Class, struct, and union types don't have an "of" type, but \ref
-  /// csu_sname needs to be at the same offset as \ref c_enum_ast::enum_sname
-  /// "enum_sname" and \ref c_ptr_mbr_ast::class_sname "class_sname".
+  /// Class, struct, and union types have neither an "of" type nor a bit width,
+  /// but \ref csu_sname needs to be at the same offset as \ref
+  /// c_enum_ast::enum_sname "enum_sname" and \ref c_ptr_mbr_ast::class_sname
+  /// "class_sname".
   c_ast_t        *unused_ast;
   unsigned        unused_unsigned;
   ///@}
