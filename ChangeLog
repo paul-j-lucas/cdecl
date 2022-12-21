@@ -1,3 +1,12 @@
+2022-12-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl_config.h: Reordering.
+   * autocomplete.c: Split out specific_command_keywords().
+
+2022-12-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * types.h: Removed wchar_t.
+
 2022-12-16  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, english.c, types.h:
