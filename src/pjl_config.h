@@ -74,6 +74,14 @@
 
 ////////// compiler attributes ////////////////////////////////////////////////
 
+/**
+ * Denote that a function's return value may be discarded without warning.
+ *
+ * @note There is no compiler attribute for this.  It's just a visual cue in
+ * code that `NODISCARD`  wasn't forgotten.
+ */
+#define PJL_DISCARD               /* nothing */
+
 #ifdef HAVE___ATTRIBUTE__
 
 /**
@@ -87,14 +95,6 @@
 
 #endif /* HAVE___ATTRIBUTE__ */
 
-/**
- * Denote that a function's return value may be discarded without warning.
- *
- * @note There is no compiler attribute for this.  It's just a visual cue in
- * code that `NODISCARD`  wasn't forgotten.
- */
-#define PJL_DISCARD               /* nothing */
-
 #ifdef HAVE___TYPEOF__
 /**
  * Ignore the return value of a non-`void` function even if it was declared
@@ -105,6 +105,8 @@
 #define PJL_IGNORE_RV(FN_CALL) \
   do { MAYBE_UNUSED __typeof__(FN_CALL) _rv = (FN_CALL); } while (0)
 #endif /* HAVE___TYPEOF__ */
+
+///////////////////////////////////////////////////////////////////////////////
 
 #ifndef PJL_IGNORE_RV
 #define PJL_IGNORE_RV(FN_CALL)    ((void)(FN_CALL))
