@@ -1,5 +1,11 @@
+2022-12-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c: Fixed use-after-free bug.
+   * c_ast.c: Simplified NULL checks.
+
 2022-12-21  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Added -Wredundant-decls in parser.y.
    * pjl_config.h: Reordering.
    * autocomplete.c: Split out specific_command_keywords().
 
