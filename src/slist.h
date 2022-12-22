@@ -59,7 +59,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FOREACH_SLIST_NODE_UNTIL()
  */
 #define FOREACH_SLIST_NODE(VAR,SLIST) \
-  FOREACH_SLIST_NODE_UNTIL( VAR, SLIST, /*END=*/NULL )
+  FOREACH_SLIST_NODE_UNTIL( VAR, (SLIST), /*END=*/NULL )
 
 /**
  * Convenience macro for iterating over the nodes of \a SLIST up to but not
@@ -72,7 +72,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FOREACH_SLIST_NODE()
  */
 #define FOREACH_SLIST_NODE_UNTIL(VAR,SLIST,END) \
-  for ( slist_node_t *VAR = CONST_CAST( slist_t*, SLIST )->head; VAR != (END); VAR = VAR->next )
+  for ( slist_node_t *VAR = CONST_CAST( slist_t*, (SLIST) )->head; VAR != (END); VAR = VAR->next )
 
 /**
  * Creates a single-node \ref slist on the stack with \a NODE_DATA.

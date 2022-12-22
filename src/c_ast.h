@@ -106,7 +106,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */
 #define FOREACH_AST_FUNC_PARAM(VAR,AST) \
-  FOREACH_AST_FUNC_PARAM_UNTIL( VAR, AST, /*END=*/NULL )
+  FOREACH_AST_FUNC_PARAM_UNTIL( VAR, (AST), /*END=*/NULL )
 
 /**
  * Convenience macro for iterating over all parameters of a function-like AST
@@ -120,7 +120,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FOREACH_AST_FUNC_PARAM()
  */
 #define FOREACH_AST_FUNC_PARAM_UNTIL(VAR,AST,END) \
-  FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->func.param_ast_list, END )
+  FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->func.param_ast_list, (END) )
 
 ///////////////////////////////////////////////////////////////////////////////
 
