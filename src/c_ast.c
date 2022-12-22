@@ -239,9 +239,8 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
 bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
   if ( i_ast == j_ast )
     return true;
-  if ( (i_ast != NULL && j_ast == NULL) || (i_ast == NULL && j_ast != NULL) )
+  if ( i_ast == NULL || j_ast == NULL )
     return false;
-
   if ( i_ast->kind != j_ast->kind )
     return false;
   if ( !c_alignas_equal( &i_ast->align, &j_ast->align ) )
