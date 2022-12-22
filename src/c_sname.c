@@ -116,7 +116,9 @@ bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
         char const *const t = s + strlen( L_compl );
         if ( isspace( *t ) ) {          // except treat "compl" as '~'
           s = t + 1;
-          goto tilde;
+          SKIP_WS( s );
+          parsed_tilde = true;
+          continue;
         }
       }
       break;
@@ -136,7 +138,6 @@ bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
     SKIP_WS( s );
     if ( is_dtor && *s == '~' ) {
       ++s;
-tilde:
       SKIP_WS( s );
       parsed_tilde = true;
     }
