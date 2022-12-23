@@ -47,6 +47,44 @@ static inline size_t min_dist( size_t i, size_t j ) {
   return i < j ? i : j;
 }
 
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Frees the two-dimensional matrix \a matrix.
+ *
+ * @param matrix The pointer to the matrix to free.  If NULL, does nothing.
+ *
+ * @sa matrix2_new()
+ */
+static void matrix2_free( void *matrix ) {
+  if ( matrix != NULL ) {
+    free( ((void**)matrix)[0] );        // free elements
+    free( matrix );                     // free row pointers
+  }
+}
+
+/**
+ * Dynamically allocates a two-dimensional matrix \a idim by \a jdim of
+ * elements of size \a esize.
+ *
+ * @param esize The size in bytes of a single element.
+ * @param idim The number of elements in the _i_ dimension.
+ * @param jdim The number of elements in the _j_ dimension.
+ * @return Returns a pointer that may be cast to `T**` where `T` is the type of
+ * element.
+ *
+ * @sa matrix2_free()
+ */
+NODISCARD
+static void* matrix2_new( size_t esize, size_t idim, size_t jdim ) {
+  size_t const row_size = esize * jdim;
+  char *const elements = MALLOC( char, idim * row_size );
+  char **const rows = MALLOC( char*, idim );
+  for ( size_t i = 0; i < idim; ++i )
+    rows[i] = &elements[ i * row_size ];
+  return rows;
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 size_t dam_lev_dist( char const *source, char const *target ) {
@@ -71,10 +109,8 @@ size_t dam_lev_dist( char const *source, char const *target ) {
   // extras with higher-than-possible distances to prevent erroneous detection
   // of transpositions that would be outside the bounds of the strings.
   //
-  size_t *const dist_array = MALLOC( size_t, (slen + 2) * (tlen + 2) );
-  size_t **const dist_matrix = MALLOC( size_t*, slen + 2 );
-  for ( size_t i = 0; i < slen + 2; ++i )
-    dist_matrix[i] = &dist_array[ i * (tlen + 2) ];
+  size_t **const dist_matrix =
+    (size_t**)matrix2_new( sizeof(size_t), slen + 2, tlen + 2 );
 
   size_t const inf = slen + tlen;
   dist_matrix[0][0] = inf;
@@ -151,8 +187,7 @@ size_t dam_lev_dist( char const *source, char const *target ) {
   } // for
 
   size_t const edit_dist = dist_matrix[ slen+1 ][ tlen+1 ];
-  free( dist_matrix );
-  free( dist_array );
+  matrix2_free( dist_matrix );
   return edit_dist;
 }
 
