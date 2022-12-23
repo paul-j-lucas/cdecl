@@ -196,10 +196,8 @@ void fprint_list( FILE *out, void const *elt,
   char const *s = (*gets)( &elt );
   for ( size_t i = 0; s != NULL; ++i ) {
     char const *const next_s = (*gets)( &elt );
-    if ( i > 0 ) {
-      char const *const sep = next_s != NULL ? ", " : i > 1 ? ", or " : " or ";
-      FPUTS( sep, out );
-    }
+    if ( i > 0 )
+      FPUTS( next_s != NULL ? ", " : i > 1 ? ", or " : " or ", out );
     FPUTS( s, out );
     s = next_s;
   } // for
