@@ -35,9 +35,9 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Implements the Damerau-Levenshtein algorithm to calculate an _edit distance_
- * between strings, i.e., how many letters need to be transposed within,
- * substituted within, deleted from, or added to \a source to get \a target.
+ * Calculates the _Damerau-Levenshtein distance_ between two strings, that is
+ * the number of letters that need to be transposed within, substituted within,
+ * deleted from, or added to \a source to get \a target.
  *
  * @param source The source string.
  * @param target The target string.
