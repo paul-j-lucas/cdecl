@@ -1,5 +1,12 @@
+2022-12-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * dam_lev.c: Now using a single malloc().
+   * dam_lev.c: s/char/void/
+   * dam_lev.c: Factored out matrix2_*() functions.
+
 2022-12-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.h, slist.h: Added more ().
    * c_sname.c: Fixed use-after-free bug.
    * c_ast.c: Simplified NULL checks.
 
