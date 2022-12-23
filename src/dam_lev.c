@@ -50,8 +50,8 @@ static inline size_t min_dist( size_t i, size_t j ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Dynamically allocates a two-dimensional matrix \a idim by \a jdim of
- * elements of size \a esize.
+ * Dynamically allocates a two-dimensional matrix [\a idim][\a jdim] elements
+ * of size \a esize.
  *
  * @param esize The size in bytes of a single element.
  * @param idim The number of elements in the _i_ dimension.
