@@ -79,7 +79,7 @@ NODISCARD
 static void* matrix2_new( size_t esize, size_t idim, size_t jdim ) {
   size_t const row_size = esize * jdim;
   char *const elements = MALLOC( char, idim * row_size );
-  char **const rows = MALLOC( char*, idim );
+  void **const rows = MALLOC( void*, idim );
   for ( size_t i = 0; i < idim; ++i )
     rows[i] = &elements[ i * row_size ];
   return rows;
