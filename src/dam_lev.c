@@ -50,20 +50,6 @@ static inline size_t min_dist( size_t i, size_t j ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Frees the two-dimensional matrix \a matrix.
- *
- * @param matrix The pointer to the matrix to free.  If NULL, does nothing.
- *
- * @sa matrix2_new()
- */
-static void matrix2_free( void *matrix ) {
-  if ( matrix != NULL ) {
-    free( ((void**)matrix)[0] );        // free elements
-    free( matrix );                     // free row pointers
-  }
-}
-
-/**
  * Dynamically allocates a two-dimensional matrix \a idim by \a jdim of
  * elements of size \a esize.
  *
@@ -72,14 +58,14 @@ static void matrix2_free( void *matrix ) {
  * @param jdim The number of elements in the _j_ dimension.
  * @return Returns a pointer that may be cast to `T**` where `T` is the type of
  * element.
- *
- * @sa matrix2_free()
  */
 NODISCARD
 static void* matrix2_new( size_t esize, size_t idim, size_t jdim ) {
+  size_t const ptrs_size = sizeof(void*) * idim;
   size_t const row_size = esize * jdim;
-  char *const elements = MALLOC( char, idim * row_size );
-  void **const rows = MALLOC( void*, idim );
+  // allocate the row pointers followed by the elements
+  void **const rows = malloc( ptrs_size + idim * row_size );
+  char *const elements = (char*)rows + ptrs_size;
   for ( size_t i = 0; i < idim; ++i )
     rows[i] = &elements[ i * row_size ];
   return rows;
@@ -187,7 +173,7 @@ size_t dam_lev_dist( char const *source, char const *target ) {
   } // for
 
   size_t const edit_dist = dist_matrix[ slen+1 ][ tlen+1 ];
-  matrix2_free( dist_matrix );
+  free( dist_matrix );
   return edit_dist;
 }
 
