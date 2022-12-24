@@ -2,6 +2,7 @@ EXPECTED_EXIT=0
 cdecl -3 -O <<END
 struct S
 
+set c17
 declare a as array 9 of int
 explain int a??(9??)
 

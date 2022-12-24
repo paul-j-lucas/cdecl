@@ -794,7 +794,8 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages "trigraphs" are supported in.
  */
-#define LANG_TRIGRAPHS                  LANG_RANGE(C_89,CPP_14)
+#define LANG_TRIGRAPHS \
+  (LANG_RANGE(C_89,C_17) | LANG_CPP_MAX(14))
 
 /**
  * Languages the `true` and `false` keywords are supported in.

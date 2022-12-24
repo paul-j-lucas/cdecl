@@ -1,4 +1,5 @@
 cdecl> struct S
+cdecl> set c17
 cdecl> declare a as array 9 of int
 int a??(9??);
 cdecl> explain int a??(9??)

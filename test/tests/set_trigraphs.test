@@ -1,6 +1,6 @@
 EXPECTED_EXIT=0
 cdecl -O <<END
-set trigraphs
+set c17 trigraphs
 declare x as array of int
 set nographs
 
@@ -13,7 +13,7 @@ set c++
 set trigraphs
 set nographs
 
-set c
+set c17
 set trigraphs c++17
 set
 END

@@ -1,4 +1,4 @@
-cdecl> set trigraphs
+cdecl> set c17 trigraphs
 cdecl> declare x as array of int
 int x??(??);
 cdecl> set nographs
@@ -25,7 +25,7 @@ c++decl> set trigraphs
              ^
 5: warning: trigraphs not supported since C++17
 c++decl> set nographs
-c++decl> set c
+c++decl> set c17
 cdecl> set trigraphs c++17
 warning: trigraphs not supported since C++17
 c++decl> set

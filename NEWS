@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** C23 `auto`
 Added support for `auto` as a deduced type in C23.
 
+** C23 trigraphs
+Trigraphs are no longer supported in C23.
+
 ** `_BitInt(<int>)` help
 `_BitInt(<int>)` was added to the help text.
 

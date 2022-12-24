@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "November 25, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 24, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -502,8 +502,8 @@ The trigraph tokens are:
 \f(CW??!??!\fP (\f(CW||\fP),
 and
 \f(CW??-\fP (\f(CW~\fP).
-(Supported only in C89 and later
-and only through C++14.)
+(Supported only between C89 and C17
+and between C++03 and C++14.)
 .TP
 .BR \-\-version " | " \-v
 Prints the version number
@@ -1512,8 +1512,8 @@ for
 and
 \f(CW~\fP
 \(em default is off.
-(Supported only in C89 and later
-and only through C++14.)
+(Supported only between C89 and C17
+and between C++03 and C++14.)
 .TP
 .RB [ no ] using
 Turns [off] on declaring types with \f(CWusing\fP
