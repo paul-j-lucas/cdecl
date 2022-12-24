@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 13.1
 
+** C23 `auto`
+Added support for `auto` as a deduced type in C23.
+
 ** `_BitInt(<int>)` help
 `_BitInt(<int>)` was added to the help text.
 

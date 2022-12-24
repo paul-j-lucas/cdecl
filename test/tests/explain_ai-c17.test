@@ -1,4 +1,4 @@
 EXPECTED_EXIT=0
-cdecl <<END
+cdecl -xc17 <<END
 explain auto int x
 END

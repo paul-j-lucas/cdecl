@@ -1,4 +1,4 @@
 EXPECTED_EXIT=65
-cdecl <<END
+cdecl -xc17 <<END
 define SI as auto int
 END

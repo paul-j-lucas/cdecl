@@ -342,14 +342,14 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG_auto_TYPE
  */
-#define LANG_auto_STORAGE               LANG_MAX(CPP_03)
+#define LANG_auto_STORAGE               LANG_C_CPP_MAX(17,03)
 
 /**
  * Languages the `auto` keyword as a type is supported in.
  *
  * @sa #LANG_auto_STORAGE
  */
-#define LANG_auto_TYPE                  LANG_MIN(CPP_11)
+#define LANG_auto_TYPE                  LANG_C_CPP_MIN(23,11)
 
 /**
  * Languages the `auto` keyword for parameters are supported in.

@@ -90,7 +90,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_a9cpi.test \
 	tests/declare_a9i.test \
 	tests/declare_a9pi.test \
-	tests/declare_ai.test \
+	tests/declare_ai-c17.test \
 	tests/declare_ati-01.test \
 	tests/declare_ati-02.test \
 	tests/declare_atpi-01.test \
@@ -158,7 +158,7 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_fv_pa3i.test \
 	tests/declare_fv_pa3pi.test \
 	tests/declare_fv_v.test \
-	tests/declare_gau.test \
+	tests/declare_gau-c17.test \
 	tests/declare_if_v.test \
 	tests/declare_imd.test \
 	tests/declare_imf.test \
@@ -346,7 +346,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a_mu_k-02.test \
 	tests/explain_a_re_f_v.test \
 	tests/explain_a_us_f_v.test \
-	tests/explain_ai.test \
+	tests/explain_ai-c17.test \
 	tests/explain_al0_c.test \
 	tests/explain_al8_c.test \
 	tests/explain_alpv_c.test \
@@ -804,7 +804,7 @@ TESTS+=	tests/explain_cast_ci.test \
 TESTS+=	tests/explain_cast_a3a5a7i.test \
 	tests/explain_cast_a3a5i.test \
 	tests/explain_cast_a3i.test \
-	tests/explain_cast_ai.test \
+	tests/explain_cast_ai-c17.test \
 	tests/explain_cast_eti.test \
 	tests/explain_cast_rgi.test \
 	tests/explain_cast_lll.test \
@@ -878,7 +878,7 @@ TESTS+=	tests/2k_typedef_i.test \
 	tests/ins_ns_typedef_i.test \
 	tests/ns_+typedef_i-c++14.test \
 	tests/ns_c_ns_c.test \
-	tests/typedef_ai.test \
+	tests/typedef_ai-c17.test \
 	tests/typedef_c_int_least32_t.test \
 	tests/typedef_eti.test \
 	tests/typedef_rgi.test \
@@ -916,7 +916,7 @@ TESTS+=	tests/define_i.test \
 # C define error tests
 # ====================
 #
-TESTS+=	tests/define_ai.test \
+TESTS+=	tests/define_ai-c17.test \
 	tests/define_c_int_least32_t.test \
 	tests/define_eti.test \
 	tests/define_rgi.test \

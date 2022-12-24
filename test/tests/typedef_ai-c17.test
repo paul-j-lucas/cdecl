@@ -1,4 +1,4 @@
 EXPECTED_EXIT=65
-cdecl <<END
+cdecl -xc17 <<END
 typedef auto int SI
 END
