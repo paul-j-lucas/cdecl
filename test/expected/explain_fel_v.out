@@ -1,3 +1,2 @@
-explain void f( ... )
-                ^
-17: error: variadic specifier can not be only parameter
+declare f as function (variadic) returning void
+declare f as function (variadic) returning void

@@ -65,6 +65,10 @@ Digit separators are now supported for octal integers.
 ** `reproducible` and `unsequenced` man page
 Added missing `reproducible` and `unsequenced` to the manual page.
 
+** Variadic function parameter
+A `...` is now correctly allowed as the only function parameter in C++ as well
+as C23.
+
 
 * Changes in Cdecl 13.0
 

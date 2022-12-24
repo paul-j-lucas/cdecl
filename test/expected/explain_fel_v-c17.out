@@ -1,0 +1,3 @@
+explain void f( ... )
+                ^
+17: error: variadic specifier can not be only parameter until C23

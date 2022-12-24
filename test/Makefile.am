@@ -395,6 +395,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fastc3_v.test \
 	tests/explain_fav_v.test \
 	tests/explain_fccel_v.test \
+	tests/explain_fel_v.test \
 	tests/explain_ff_i_v-01.test \
 	tests/explain_ff_v.test \
 	tests/explain_fid_v.test \
@@ -583,7 +584,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_fastv_v.test \
 	tests/explain_fcv_v.test \
 	tests/explain_fd_i-cknr.test \
-	tests/explain_fel_v.test \
+	tests/explain_fel_v-c17.test \
 	tests/explain_felcc_v.test \
 	tests/explain_felel_v.test \
 	tests/explain_felv_v.test \

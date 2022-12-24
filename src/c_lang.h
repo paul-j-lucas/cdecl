@@ -826,6 +826,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_using_DECLARATION          LANG_CPP_MIN(11)
 
 /**
+ * Languages that allow `...` as the only function parameter.
+ */
+#define LANG_VARIADIC_ONLY_PARAMETER    LANG_C_CPP_MIN(23,OLD)
+
+/**
  * Languages variable length arrays are supported in.
  */
 #define LANG_VLA                        LANG_C_MIN(99)
