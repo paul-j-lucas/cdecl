@@ -46,9 +46,23 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
+#include <errno.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>                     /* for close() */
+
+#ifdef ENABLE_TERM_SIZE
+# include <fcntl.h>                     /* for open(2) */
+# define _BOOL /* nothing */            /* prevent bool clash on AIX/Solaris */
+# if defined(HAVE_CURSES_H)
+#   include <curses.h>
+# elif defined(HAVE_NCURSES_H)
+#   include <ncurses.h>
+# endif
+# include <term.h>                      /* for setupterm(3) */
+# undef _BOOL
+#endif /* ENABLE_TERM_SIZE */
 
 /// @endcond
 
@@ -71,6 +85,104 @@ static size_t             token_len( char const*, size_t, size_t );
 print_params_t            print_params;
 
 ////////// local functions ////////////////////////////////////////////////////
+
+#ifdef ENABLE_TERM_SIZE
+/**
+ * Gets a terminal capability value and checks it for an error.
+ * If there is an error, prints an error message and exits.
+ *
+ * @param capname The name of the terminal capability.
+ * @return Returns said value or 0 if it could not be determined.
+ */
+NODISCARD
+static unsigned check_tigetnum( char const *capname ) {
+  int const num = tigetnum( CONST_CAST(char*, capname) );
+  if ( unlikely( num < 0 ) ) {
+    FATAL_ERR( EX_UNAVAILABLE,
+      "tigetnum(\"%s\") returned error code %d", capname, num
+    );
+  }
+  return STATIC_CAST( unsigned, num );
+}
+#endif /* ENABLE_TERM_SIZE */
+
+/**
+ * Gets the number of columns of the terminal.
+ *
+ * @return Returns the number of columns or 0 if can not be determined.
+ */
+static unsigned get_term_columns( void ) {
+  unsigned    cols = TERM_COLUMNS_DEFAULT;
+#ifdef ENABLE_TERM_SIZE
+  int         cterm_fd = -1;
+  char        reason_buf[ 128 ];
+  char const *reason = NULL;
+
+  char const *const term = getenv( "TERM" );
+  if ( unlikely( term == NULL ) ) {
+    // LCOV_EXCL_START
+    reason = "TERM environment variable not set";
+    goto error;
+    // LCOV_EXCL_STOP
+  }
+
+  char const *const cterm_path = ctermid( NULL );
+  if ( unlikely( cterm_path == NULL || *cterm_path == '\0' ) ) {
+    // LCOV_EXCL_START
+    reason = "ctermid(3) failed to get controlling terminal";
+    goto error;
+    // LCOV_EXCL_STOP
+  }
+
+  if ( unlikely( (cterm_fd = open( cterm_path, O_RDWR )) == -1 ) ) {
+    // LCOV_EXCL_START
+    reason = STRERROR();
+    goto error;
+    // LCOV_EXCL_STOP
+  }
+
+  int sut_err;
+  if ( setupterm( CONST_CAST(char*, term), cterm_fd, &sut_err ) == ERR ) {
+    // LCOV_EXCL_START
+    reason = reason_buf;
+    switch ( sut_err ) {
+      case -1:
+        reason = "terminfo database not found";
+        break;
+      case 0:
+        snprintf(
+          reason_buf, sizeof reason_buf,
+          "TERM=%s not found in database or too generic", term
+        );
+        break;
+      case 1:
+        reason = "terminal is hardcopy";
+        break;
+      default:
+        snprintf(
+          reason_buf, sizeof reason_buf,
+          "setupterm(3) returned error code %d", sut_err
+        );
+    } // switch
+    goto error;
+    // LCOV_EXCL_STOP
+  }
+
+  cols = check_tigetnum( "cols" );
+
+error:
+  if ( likely( cterm_fd != -1 ) )
+    PJL_IGNORE_RV( close( cterm_fd ) );
+  if ( unlikely( reason != NULL ) ) {
+    FATAL_ERR( EX_UNAVAILABLE,
+      "failed to determine number of columns or lines in terminal: %s\n",
+      reason
+    );
+  }
+#endif /* ENABLE_TERM_SIZE */
+
+  return cols;
+}
 
 /**
  * Helper function for print_suggestions() and fprint_list() that gets the
@@ -137,13 +249,7 @@ static size_t print_caret( size_t error_column ) {
   if ( error_column >= print_params.inserted_len )
     error_column -= print_params.inserted_len;
 
-  unsigned term_columns;
-#ifdef ENABLE_TERM_SIZE
-  get_term_columns_lines( &term_columns, /*plines=*/NULL );
-  if ( term_columns == 0 )
-#endif /* ENABLE_TERM_SIZE */
-    term_columns = TERM_COLUMNS_DEFAULT;
-
+  unsigned const term_columns = get_term_columns();
   size_t caret_column;
 
   if ( cdecl_interactive || opt_echo_commands ) {

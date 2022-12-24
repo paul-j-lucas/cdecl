@@ -759,18 +759,6 @@ void* free_later( void *p );
  */
 void free_now( void );
 
-#ifdef ENABLE_TERM_SIZE
-/**
- * Gets the number of columns and/or lines of the terminal.
- *
- * @param ncolumns If not NULL, receives the number of columns or 0 if can not
- * be determined.
- * @param nlines If not NULL, receives the number of lines or 0 if it can not
- * be determined.
- */
-void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines );
-#endif /* ENABLE_TERM_SIZE */
-
 /**
  * Gets the full path of the user's home directory.
  *
