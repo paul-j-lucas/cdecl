@@ -1,5 +1,11 @@
+2022-12-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c, util.c, util.h: Moved term-columns code.
+
 2022-12-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.c: Eliminated local variable.
+   * dam_lev.c: s/malloc/check_realloc/
    * dam_lev.c: Now using a single malloc().
    * dam_lev.c: s/char/void/
    * dam_lev.c: Factored out matrix2_*() functions.
