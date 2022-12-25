@@ -56,9 +56,9 @@
 #define C_TID_CHECK_LEGAL(TID,TINFO) C_TYPE_CHECK( \
   c_tid_check_legal( (TID), (TINFO), ARRAY_SIZE(TINFO) ) )
 
-#define C_TID_NAME_CAT(SBUF,TIDS,TIDS_SET,IN_ENGLISH,SEP,PSEP)      \
-  c_tid_name_cat( (SBUF), (TIDS), (TIDS_SET), ARRAY_SIZE(TIDS_SET), \
-                  (IN_ENGLISH), (SEP), (PSEP) )
+#define C_TID_NAME_CAT(SBUF,TIDS,TIDS_SET,IN_ENGLISH,IS_ERROR,SEP,PSEP) \
+  c_tid_name_cat( (SBUF), (TIDS), (TIDS_SET), ARRAY_SIZE(TIDS_SET),     \
+                  (IN_ENGLISH), (IS_ERROR), (SEP), (PSEP) )
 
 /// @endcond
 
@@ -90,7 +90,7 @@ typedef struct c_type_info c_type_info_t;
 
 // local functions
 NODISCARD
-static char const*  c_type_literal( c_type_info_t const*, bool );
+static char const*  c_type_literal( c_type_info_t const*, bool, bool );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -605,10 +605,11 @@ c_tid_check_legal( c_tid_t tids, c_type_info_t const type_infos[const],
  * one_ bit set.
  * @param in_english If `true`, return the pseudo-English literal if one
  * exists.
+ * @param is_error If `true`, the name is intended for use in an error message.
  * @return Returns said name.
  */
 NODISCARD
-static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
+static char const* c_tid_name_1( c_tid_t tid, bool in_english, bool is_error ) {
   assert( is_1_bit( c_tid_no_tpid( tid ) ) );
 
   switch ( c_tid_tpid( tid ) ) {
@@ -619,7 +620,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
       for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_TYPE_INFO[i];
         if ( tid == ti->tid )
-          return c_type_literal( ti, in_english );
+          return c_type_literal( ti, in_english, is_error );
       } // for
       break;                            // LCOV_EXCL_LINE
 
@@ -627,13 +628,13 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
       for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_QUALIFIER_INFO[i];
         if ( tid == ti->tid )
-          return c_type_literal( ti, in_english );
+          return c_type_literal( ti, in_english, is_error );
       } // for
 
       for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_STORAGE_INFO[i];
         if ( tid == ti->tid )
-          return c_type_literal( ti, in_english );
+          return c_type_literal( ti, in_english, is_error );
       } // for
       break;                            // LCOV_EXCL_LINE
 
@@ -641,7 +642,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
       for ( size_t i = 0; i < ARRAY_SIZE( C_ATTRIBUTE_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_ATTRIBUTE_INFO[i];
         if ( tid == ti->tid )
-          return c_type_literal( ti, in_english );
+          return c_type_literal( ti, in_english, is_error );
       } // for
       break;                            // LCOV_EXCL_LINE
   } // switch
@@ -658,17 +659,20 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
  * @param tids_set_size The size of \a tids_set.
  * @param in_english If `true`, return the pseudo-English literal if one
  * exists.
+ * @param is_error If `true`, the name is intended for use in an error message.
  * @param sep The separator character.
  * @param sep_flag A pointer to a variable to keep track of whether \a sep has
  * been concatenated.
  */
 static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
                             c_tid_t const tids_set[const],
-                            size_t tids_set_size, bool in_english,
+                            size_t tids_set_size,
+                            bool in_english, bool is_error,
                             char sep, bool *sep_flag ) {
   for ( size_t i = 0; i < tids_set_size; ++i ) {
     if ( !c_tid_is_none( tids & tids_set[i] ) ) {
-      char const *const name = c_tid_name_1( tids_set[i], in_english );
+      char const *const name =
+        c_tid_name_1( tids_set[i], in_english, is_error );
       strbuf_sepc_puts( sbuf, sep, sep_flag, name );
     }
   } // for
@@ -759,11 +763,13 @@ static c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids ) {
  * @param ti The \ref c_type_info to get the literal of.
  * @param in_english If `true`, return the pseudo-English literal if one
  * exists.
+ * @param is_error If `true`, the name is intended for use in an error message.
  * @return Returns said literal.
  */
 NODISCARD
-static char const* c_type_literal( c_type_info_t const *ti, bool in_english ) {
-  return in_english && ti->english_lit != NULL ?
+static char const* c_type_literal( c_type_info_t const *ti,
+                                   bool in_english, bool is_error ) {
+  return in_english && ti->english_lit != NULL && !is_error ?
     ti->english_lit : c_lang_literal( ti->lang_lit );
 }
 
@@ -809,7 +815,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     // between brackets [[like this]].
     //
     static c_tid_t const ATIDS[] = { TA_NORETURN };
-    C_TID_NAME_CAT( sbuf, TA_NORETURN, ATIDS, in_english, ' ', &space );
+    C_TID_NAME_CAT( sbuf, TA_NORETURN, ATIDS, in_english, is_error, ' ', &space );
     //
     // Now that we've handled _Noreturn for C, remove its bit and fall through
     // to the regular attribute-printing code.
@@ -840,7 +846,7 @@ static char const* c_type_name_impl( c_type_t const *type,
 
     if ( print_brackets )
       strbuf_sepc_puts( sbuf, ' ', &space, graph_token_c( "[[" ) );
-    C_TID_NAME_CAT( sbuf, atids, ATIDS, in_english, sep, sep_cat );
+    C_TID_NAME_CAT( sbuf, atids, ATIDS, in_english, is_error, sep, sep_cat );
     if ( print_brackets )
       strbuf_puts( sbuf, graph_token_c( "]]" ) );
     space = true;
@@ -922,7 +928,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     TS_CONSTEXPR,
     TS_CONSTINIT,
   };
-  C_TID_NAME_CAT( sbuf, stids, STIDS, in_english, ' ', &space );
+  C_TID_NAME_CAT( sbuf, stids, STIDS, in_english, is_error, ' ', &space );
 
   c_tid_t east_stids = TS_NONE;
   if ( opt_east_const && !in_english ) {
@@ -948,7 +954,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     // This is last so we get names like "const _Atomic".
     TS_ATOMIC,
   };
-  C_TID_NAME_CAT( sbuf, stids, QUAL_STIDS, in_english, ' ', &space );
+  C_TID_NAME_CAT( sbuf, stids, QUAL_STIDS, in_english, is_error, ' ', &space );
 
   if ( OPT_LANG_IS( CPP_ANY ) && apply_explicit_ecsu &&
        !in_english && !is_error && c_tid_is_any( btids, TB_ANY_ECSU ) ) {
@@ -1024,7 +1030,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     TB_EMC_ACCUM,
     TB_EMC_FRACT,
   };
-  C_TID_NAME_CAT( sbuf, btids, BTIDS, in_english, ' ', &space );
+  C_TID_NAME_CAT( sbuf, btids, BTIDS, in_english, is_error, ' ', &space );
 
   if ( print_parens_for_Atomic )
     strbuf_putc( sbuf, ')' );
@@ -1038,10 +1044,10 @@ static char const* c_type_name_impl( c_type_t const *type,
     TA_MSC_THISCALL,
     TA_MSC_VECTORCALL,
   };
-  C_TID_NAME_CAT( sbuf, atids, MSC_CALL_ATIDS, in_english, ' ', &space );
+  C_TID_NAME_CAT( sbuf, atids, MSC_CALL_ATIDS, in_english, is_error, ' ', &space );
 
   if ( east_stids != TS_NONE )
-    C_TID_NAME_CAT( sbuf, east_stids, QUAL_STIDS, in_english, ' ', &space );
+    C_TID_NAME_CAT( sbuf, east_stids, QUAL_STIDS, in_english, is_error, ' ', &space );
 
   // Really special cases.
   if ( c_tid_is_any( btids, TB_NAMESPACE ) )
