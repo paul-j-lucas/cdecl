@@ -62,12 +62,12 @@ english:
   block [([<args>])] [returning <english>]
   <store>* <modifier>* [<C-type>]
 args: a comma separated list of [<name> as] <english>
-C-type: _BitInt(<int>) | bool | char[{8|16|32}_t] | wchar_t | int | float |
-        double | void
+C-type: auto | _BitInt(<int>) | bool | char[{8|16|32}_t] | wchar_t | int |
+        float | double | void
 cv-qual: _Atomic | const | restrict | volatile
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
-store: auto | constexpr | extern | register | static | thread_local | typedef
+store: constexpr | extern | register | static | thread_local | typedef
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
 option:

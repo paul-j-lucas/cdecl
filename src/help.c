@@ -247,14 +247,16 @@ static void print_help_english( void ) {
     else
       print_h( "[<name> as] <english>\n" );
 
-    print_h( "C-type:" );
+    print_h( "C-type: " );
+    if ( OPT_LANG_IS( auto_TYPE ) )
+      print_h( "auto | " );
     if ( OPT_LANG_IS( _BitInt ) )
-      print_h( " _BitInt(<int>) |" );
+      print_h( "_BitInt(<int>) | " );
     if ( OPT_LANG_IS( bool ) )
-      print_h( " bool |" );
+      print_h( "bool | " );
     else if ( OPT_LANG_IS( _Bool ) )
-      print_h( " _Bool |" );
-    print_h( " char" );
+      print_h( "_Bool | " );
+    print_h( "char" );
     if ( OPT_LANG_IS( char16_32_t ) ) {
       print_h( "[{" );
       if ( OPT_LANG_IS( char8_t ) )
@@ -263,10 +265,10 @@ static void print_help_english( void ) {
     }
     if ( OPT_LANG_IS( wchar_t ) )
       print_h( " | wchar_t" );
-    print_h( " | int | float |" );
-    if ( OPT_LANG_IS( _BitInt ) )
+    print_h( " | int |" );
+    if ( OPT_LANG_IS( auto_TYPE ) || OPT_LANG_IS( _BitInt ) )
       print_h( "\n       " );
-    print_h( " double" );
+    print_h( " float | double" );
     if ( OPT_LANG_IS( void ) )
       print_h( " | void" );
     print_h( "\n" );
@@ -292,10 +294,12 @@ static void print_help_english( void ) {
 
     print_help_name();
 
-    print_h( "store: auto" );
+    print_h( "store: " );
+    if ( OPT_LANG_IS( auto_STORAGE ) )
+      print_h( "auto | " );
     if ( OPT_LANG_IS( constexpr ) )
-      print_h( " | constexpr" );
-    print_h( " | extern | register | static" );
+      print_h( "constexpr | " );
+    print_h( "extern | register | static" );
     if ( OPT_LANG_IS( thread_local ) )
       print_h( " | thread_local" );
     else if ( OPT_LANG_IS( _Thread_local ) )
