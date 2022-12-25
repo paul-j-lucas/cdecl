@@ -19,7 +19,7 @@ show all predefined *::atomic* as typedef
 show all predefined **::*clock as typedef
 show all predefined ** :: *clock as typedef
 show predefined
-shoe predefined typedef
+show predefined typedef
 show predefined using
 
 typedef int (*const CPF)(const char *const s)
