@@ -220,7 +220,7 @@ struct c_type {
 #define TB_NONE               0x0000000000000001ull /**< No base type.        */
 #define TB_ANY                0xFFFFFFFFFFFFFFF1ull /**< Any base type.       */
 #define TB_VOID               0x0000000000000011ull /**< `void`               */
-#define TB_AUTO               0x0000000000000021ull /**< C++11's `auto`.      */
+#define TB_AUTO               0x0000000000000021ull /**< C23, C++11 `auto`.   */
 #define TB_BITINT             0x0000000000000041ull /**< `_BitInt`            */
 #define TB_BOOL               0x0000000000000081ull /**< `_Bool` or `bool`    */
 #define TB_CHAR               0x0000000000000101ull /**< `char`               */
