@@ -2639,7 +2639,9 @@ struct S { int i; char c; } s;  // not supported
 .cE 0
 .RE
 .IP \(bu
-Arbitrary expressions for array sizes are not supported.
+For array sizes,
+only integer literals are supported;
+arbitrary expressions are not.
 .IP \(bu
 C
 \f(CWtypeof\fP
@@ -2680,12 +2682,12 @@ or \f(CWalignas\fP
 specifiers in the same declaration
 are not supported.
 .IP \(bu
-Only integer literals
-or types
-as the argument to either the
+For the argument to either the
 \f(CW_Alignas\fP
 or \f(CWalignas\fP
-specifier
+specifier,
+only integer literals
+or types
 are supported;
 arbitrary expressions are not.
 .IP \(bu
