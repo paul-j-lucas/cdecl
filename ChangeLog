@@ -1,5 +1,6 @@
 2022-12-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Added mention of more C23 features.
    * help.c, help.out: Updated help for C23's .
    * NEWS, cdecl.1, c_lang.h, set_trigraphs.out, trigraphs.out,
      set_trigraphs.test, trigraphs.test: Trigraphs are no longer supported in
