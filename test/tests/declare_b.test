@@ -1,4 +1,6 @@
 EXPECTED_EXIT=0
 cdecl <<END
 declare x as bool
+declare x as boolean
+declare x as Boolean
 END

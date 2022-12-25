@@ -66,6 +66,8 @@ extern char const L_all[];
 extern char const L_array[];
 extern char const L_as[];
 extern char const L_bits[];
+extern char const L_boolean[];
+extern char const L_Boolean[];
 extern char const L_bytes[];
 extern char const L_cast[];
 extern char const L_command[];            // synonym for "commands"

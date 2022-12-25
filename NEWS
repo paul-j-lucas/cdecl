@@ -24,6 +24,8 @@ Trigraphs are no longer supported in C23.
 ** More English synonyms
 The following English synonyms have been added:
 
+                    boolean  _Bool
+                    Boolean  _Bool
                      char 8  char8_t
                     char 16  char16_t
                     char 32  char32_t
