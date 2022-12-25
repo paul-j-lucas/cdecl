@@ -1,1 +1,1 @@
-declare C as friend constructor (int)
+declare C as friend constructor (integer)

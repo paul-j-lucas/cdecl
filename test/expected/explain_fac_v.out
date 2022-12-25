@@ -1,1 +1,1 @@
-declare f as function (array of char) returning void
+declare f as function (array of character) returning void

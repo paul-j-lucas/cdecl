@@ -1,1 +1,1 @@
-declare ++ as final virtual member operator (int) returning reference to S
+declare ++ as final virtual member operator (integer) returning reference to S

@@ -1,1 +1,1 @@
-declare _x as user-defined literal (char8_t) returning int
+declare _x as user-defined literal (character 8) returning integer

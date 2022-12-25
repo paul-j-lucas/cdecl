@@ -1,1 +1,1 @@
-cast x into volatile pointer to int
+cast x into volatile pointer to integer

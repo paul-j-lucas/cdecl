@@ -4,4 +4,4 @@ explain int operator"" _x(char)
 explain int operator"" _x(char)
                     ^
 21: syntax error: """": unexpected token
-declare operator as int
+declare operator as integer

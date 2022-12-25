@@ -1,1 +1,1 @@
-declare x as function (void) returning pointer to array 3 of pointer to int
+declare x as function (void) returning pointer to array 3 of pointer to integer

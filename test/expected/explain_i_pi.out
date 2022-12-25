@@ -1,2 +1,2 @@
-declare x as int
-declare p as pointer to int
+declare x as integer
+declare p as pointer to integer

@@ -1,1 +1,1 @@
-declare == as non-member operator (S, int) returning bool
+declare == as non-member operator (S, integer) returning boolean

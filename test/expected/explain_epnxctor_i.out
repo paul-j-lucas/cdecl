@@ -1,1 +1,1 @@
-declare C as explicit no-exception constructor (int)
+declare C as explicit no-exception constructor (integer)

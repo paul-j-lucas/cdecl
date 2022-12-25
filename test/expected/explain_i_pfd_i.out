@@ -1,2 +1,2 @@
-declare x as int
-declare f as pointer to function (double) returning int
+declare x as integer
+declare f as pointer to function (double precision) returning integer

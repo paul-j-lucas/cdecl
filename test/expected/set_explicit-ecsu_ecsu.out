@@ -2,6 +2,7 @@
   nodebug
   noeast-const
   noecho-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=ecsu
   noexplicit-int

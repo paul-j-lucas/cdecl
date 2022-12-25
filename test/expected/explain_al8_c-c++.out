@@ -1,1 +1,1 @@
-declare c as char aligned as 8 bytes
+declare c as character aligned as 8 bytes

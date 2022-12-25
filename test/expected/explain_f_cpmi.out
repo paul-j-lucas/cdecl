@@ -1,1 +1,1 @@
-declare f as function returning constant pointer to member of class C int
+declare f as function returning constant pointer to member of class C integer

@@ -68,6 +68,7 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
 #endif /* ENABLE_CDECL_DEBUG */
             set_digraphs( set_option_fn_args_t const* ),
             set_east_const( set_option_fn_args_t const* ),
+            set_english_types( set_option_fn_args_t const* ),
             set_echo_commands( set_option_fn_args_t const* ),
             set_explain_by_default( set_option_fn_args_t const* ),
             set_explicit_ecsu( set_option_fn_args_t const* ),
@@ -99,6 +100,7 @@ static set_option_t const SET_OPTIONS[] = {
   { "graphs",             SET_OPTION_NEG_ONLY, false, &set_digraphs           },
   { "east-const",         SET_OPTION_TOGGLE,   false, &set_east_const         },
   { "echo-commands",      SET_OPTION_TOGGLE,   false, &set_echo_commands      },
+  { "english-types",      SET_OPTION_TOGGLE,   false, &set_english_types      },
   { "explain-by-default", SET_OPTION_TOGGLE,   false, &set_explain_by_default },
   { "explicit-ecsu",      SET_OPTION_TOGGLE,   true,  &set_explicit_ecsu      },
   { "explicit-int",       SET_OPTION_TOGGLE,   true,  &set_explicit_int       },
@@ -149,6 +151,7 @@ static void print_options( FILE *out ) {
 #endif /* ENABLE_CDECL_DEBUG */
   FPRINTF( out, "  %seast-const\n", maybe_no( opt_east_const ) );
   FPRINTF( out, "  %secho-commands\n", maybe_no( opt_echo_commands ) );
+  FPRINTF( out, "  %senglish-types\n", maybe_no( opt_english_types ) );
   FPRINTF( out, "  %sexplain-by-default\n", maybe_no( opt_explain ) );
 
   if ( opt_explicit_ecsu != TB_NONE ) {
@@ -267,6 +270,17 @@ static bool set_echo_commands( set_option_fn_args_t const *args ) {
       "echo-commands has no effect when interactive\n"
     );
   }
+  return true;
+}
+
+/**
+ * Sets the english-types option.
+ *
+ * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
+ */
+static bool set_english_types( set_option_fn_args_t const *args ) {
+  opt_english_types = args->opt_enabled;
   return true;
 }
 

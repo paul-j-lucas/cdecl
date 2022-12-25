@@ -49,35 +49,36 @@
 #include <unistd.h>                     /* for dup2(2) */
 
 // in ascending option character ASCII order
-#define OPT_DIGRAPHS        2
-#define OPT_TRIGRAPHS       3
-#define OPT_ALT_TOKENS      a
+#define OPT_DIGRAPHS          2
+#define OPT_TRIGRAPHS         3
+#define OPT_ALT_TOKENS        a
 #ifdef YYDEBUG
-#define OPT_BISON_DEBUG     B
+#define OPT_BISON_DEBUG       B
 #endif /* YYDEBUG */
-#define OPT_CONFIG          c
-#define OPT_NO_CONFIG       C
+#define OPT_CONFIG            c
+#define OPT_NO_CONFIG         C
 #ifdef ENABLE_CDECL_DEBUG
-#define OPT_CDECL_DEBUG     d
+#define OPT_CDECL_DEBUG       d
 #endif /* ENABLE_CDECL_DEBUG */
-#define OPT_ECHO_COMMANDS   O
-#define OPT_EXPLAIN         e
-#define OPT_EAST_CONST      E
-#define OPT_FILE            f
+#define OPT_ECHO_COMMANDS     O
+#define OPT_EXPLAIN           e
+#define OPT_EAST_CONST        E
+#define OPT_FILE              f
 #ifdef ENABLE_FLEX_DEBUG
-#define OPT_FLEX_DEBUG      F
+#define OPT_FLEX_DEBUG        F
 #endif /* ENABLE_FLEX_DEBUG */
-#define OPT_HELP            h
-#define OPT_EXPLICIT_INT    I
-#define OPT_COLOR           k
-#define OPT_OUTPUT          o
-#define OPT_NO_PROMPT       p
-#define OPT_NO_SEMICOLON    s
-#define OPT_EXPLICIT_ECSU   S
-#define OPT_NO_TYPEDEFS     t
-#define OPT_NO_USING        u
-#define OPT_VERSION         v
-#define OPT_LANGUAGE        x
+#define OPT_HELP              h
+#define OPT_EXPLICIT_INT      I
+#define OPT_COLOR             k
+#define OPT_OUTPUT            o
+#define OPT_NO_PROMPT         p
+#define OPT_NO_SEMICOLON      s
+#define OPT_EXPLICIT_ECSU     S
+#define OPT_NO_TYPEDEFS       t
+#define OPT_NO_ENGLISH_TYPES  T
+#define OPT_NO_USING          u
+#define OPT_VERSION           v
+#define OPT_LANGUAGE          x
 
 /// Command-line option character as a character literal.
 #define COPT(X)                   CHARIFY(OPT_##X)
@@ -100,36 +101,37 @@ static struct option const CLI_OPTIONS_LONG[] = {
   // check_mutually_exclusive() in parse_options(), the message in usage(), and
   // the corresponding "set" option in SET_OPTIONS in set_options.c.
   //
-  { "alt-tokens",     no_argument,        NULL, COPT(ALT_TOKENS)    },
+  { "alt-tokens",       no_argument,        NULL, COPT(ALT_TOKENS)        },
 #ifdef YYDEBUG
-  { "bison-debug",    no_argument,        NULL, COPT(BISON_DEBUG)   },
-#endif /* YYDEBUG */  
-  { "color",          required_argument,  NULL, COPT(COLOR)         },
-  { "config",         required_argument,  NULL, COPT(CONFIG)        },
+  { "bison-debug",      no_argument,        NULL, COPT(BISON_DEBUG)       },
+#endif /* YYDEBUG */    
+  { "color",            required_argument,  NULL, COPT(COLOR)             },
+  { "config",           required_argument,  NULL, COPT(CONFIG)            },
 #ifdef ENABLE_CDECL_DEBUG
-  { "debug",          no_argument,        NULL, COPT(CDECL_DEBUG)   },
+  { "debug",            no_argument,        NULL, COPT(CDECL_DEBUG)       },
 #endif /* ENABLE_CDECL_DEBUG */
-  { "digraphs",       no_argument,        NULL, COPT(DIGRAPHS)      },
-  { "east-const",     no_argument,        NULL, COPT(EAST_CONST)    },
-  { "echo-commands",  no_argument,        NULL, COPT(ECHO_COMMANDS) },
-  { "explain",        no_argument,        NULL, COPT(EXPLAIN)       },
-  { "explicit-ecsu",  required_argument,  NULL, COPT(EXPLICIT_ECSU) },
-  { "explicit-int",   required_argument,  NULL, COPT(EXPLICIT_INT)  },
-  { "file",           required_argument,  NULL, COPT(FILE)          },
+  { "digraphs",         no_argument,        NULL, COPT(DIGRAPHS)          },
+  { "east-const",       no_argument,        NULL, COPT(EAST_CONST)        },
+  { "echo-commands",    no_argument,        NULL, COPT(ECHO_COMMANDS)     },
+  { "explain",          no_argument,        NULL, COPT(EXPLAIN)           },
+  { "explicit-ecsu",    required_argument,  NULL, COPT(EXPLICIT_ECSU)     },
+  { "explicit-int",     required_argument,  NULL, COPT(EXPLICIT_INT)      },
+  { "file",             required_argument,  NULL, COPT(FILE)              },
 #ifdef ENABLE_FLEX_DEBUG
-  { "flex-debug",     no_argument,        NULL, COPT(FLEX_DEBUG)    },
+  { "flex-debug",       no_argument,        NULL, COPT(FLEX_DEBUG)        },
 #endif /* ENABLE_FLEX_DEBUG */
-  { "help",           no_argument,        NULL, COPT(HELP)          },
-  { "language",       required_argument,  NULL, COPT(LANGUAGE)      },
-  { "no-config",      no_argument,        NULL, COPT(NO_CONFIG)     },
-  { "no-prompt",      no_argument,        NULL, COPT(NO_PROMPT)     },
-  { "no-semicolon",   no_argument,        NULL, COPT(NO_SEMICOLON)  },
-  { "no-typedefs",    no_argument,        NULL, COPT(NO_TYPEDEFS)   },
-  { "no-using",       no_argument,        NULL, COPT(NO_USING)      },
-  { "output",         required_argument,  NULL, COPT(OUTPUT)        },
-  { "trigraphs",      no_argument,        NULL, COPT(TRIGRAPHS)     },
-  { "version",        no_argument,        NULL, COPT(VERSION)       },
-  { NULL,             0,                  NULL, 0                   }
+  { "help",             no_argument,        NULL, COPT(HELP)              },
+  { "language",         required_argument,  NULL, COPT(LANGUAGE)          },
+  { "no-config",        no_argument,        NULL, COPT(NO_CONFIG)         },
+  { "no-english-types", no_argument,        NULL, COPT(NO_ENGLISH_TYPES)  },
+  { "no-prompt",        no_argument,        NULL, COPT(NO_PROMPT)         },
+  { "no-semicolon",     no_argument,        NULL, COPT(NO_SEMICOLON)      },
+  { "no-typedefs",      no_argument,        NULL, COPT(NO_TYPEDEFS)       },
+  { "no-using",         no_argument,        NULL, COPT(NO_USING)          },
+  { "output",           required_argument,  NULL, COPT(OUTPUT)            },
+  { "trigraphs",        no_argument,        NULL, COPT(TRIGRAPHS)         },
+  { "version",          no_argument,        NULL, COPT(VERSION)           },
+  { NULL,               0,                  NULL, 0                       }
 };
 
 /// @cond DOXYGEN_IGNORE
@@ -146,35 +148,36 @@ static struct option const CLI_OPTIONS_LONG[] = {
  * @sa CLI_OPTIONS_LONG
  */
 static char const   CLI_OPTIONS_SHORT[] = ":"
-  SOPT(ALT_TOKENS)    SOPT_NO_ARGUMENT
+  SOPT(ALT_TOKENS)        SOPT_NO_ARGUMENT
 #ifdef YYDEBUG
-  SOPT(BISON_DEBUG)   SOPT_NO_ARGUMENT
+  SOPT(BISON_DEBUG)       SOPT_NO_ARGUMENT
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-  SOPT(CDECL_DEBUG)   SOPT_NO_ARGUMENT
+  SOPT(CDECL_DEBUG)       SOPT_NO_ARGUMENT
 #endif /* ENABLE_CDECL_DEBUG */
-  SOPT(COLOR)         SOPT_REQUIRED_ARGUMENT
-  SOPT(CONFIG)        SOPT_REQUIRED_ARGUMENT
-  SOPT(DIGRAPHS)      SOPT_NO_ARGUMENT
-  SOPT(EAST_CONST)    SOPT_NO_ARGUMENT
-  SOPT(ECHO_COMMANDS) SOPT_NO_ARGUMENT
-  SOPT(EXPLAIN)       SOPT_NO_ARGUMENT
-  SOPT(EXPLICIT_ECSU) SOPT_REQUIRED_ARGUMENT
-  SOPT(EXPLICIT_INT)  SOPT_REQUIRED_ARGUMENT
-  SOPT(FILE)          SOPT_REQUIRED_ARGUMENT
+  SOPT(COLOR)             SOPT_REQUIRED_ARGUMENT
+  SOPT(CONFIG)            SOPT_REQUIRED_ARGUMENT
+  SOPT(DIGRAPHS)          SOPT_NO_ARGUMENT
+  SOPT(EAST_CONST)        SOPT_NO_ARGUMENT
+  SOPT(ECHO_COMMANDS)     SOPT_NO_ARGUMENT
+  SOPT(EXPLAIN)           SOPT_NO_ARGUMENT
+  SOPT(EXPLICIT_ECSU)     SOPT_REQUIRED_ARGUMENT
+  SOPT(EXPLICIT_INT)      SOPT_REQUIRED_ARGUMENT
+  SOPT(FILE)              SOPT_REQUIRED_ARGUMENT
 #ifdef ENABLE_FLEX_DEBUG
-  SOPT(FLEX_DEBUG)    SOPT_NO_ARGUMENT
+  SOPT(FLEX_DEBUG)        SOPT_NO_ARGUMENT
 #endif /* ENABLE_FLEX_DEBUG */
-  SOPT(HELP)          SOPT_NO_ARGUMENT
-  SOPT(LANGUAGE)      SOPT_REQUIRED_ARGUMENT
-  SOPT(NO_CONFIG)     SOPT_NO_ARGUMENT
-  SOPT(NO_PROMPT)     SOPT_NO_ARGUMENT
-  SOPT(NO_SEMICOLON)  SOPT_NO_ARGUMENT
-  SOPT(NO_TYPEDEFS)   SOPT_NO_ARGUMENT
-  SOPT(NO_USING)      SOPT_NO_ARGUMENT
-  SOPT(OUTPUT)        SOPT_REQUIRED_ARGUMENT
-  SOPT(TRIGRAPHS)     SOPT_NO_ARGUMENT
-  SOPT(VERSION)       SOPT_NO_ARGUMENT
+  SOPT(HELP)              SOPT_NO_ARGUMENT
+  SOPT(LANGUAGE)          SOPT_REQUIRED_ARGUMENT
+  SOPT(NO_CONFIG)         SOPT_NO_ARGUMENT
+  SOPT(NO_ENGLISH_TYPES)  SOPT_NO_ARGUMENT
+  SOPT(NO_PROMPT)         SOPT_NO_ARGUMENT
+  SOPT(NO_SEMICOLON)      SOPT_NO_ARGUMENT
+  SOPT(NO_TYPEDEFS)       SOPT_NO_ARGUMENT
+  SOPT(NO_USING)          SOPT_NO_ARGUMENT
+  SOPT(OUTPUT)            SOPT_REQUIRED_ARGUMENT
+  SOPT(TRIGRAPHS)         SOPT_NO_ARGUMENT
+  SOPT(VERSION)           SOPT_NO_ARGUMENT
 ;
 
 // local variables
@@ -438,6 +441,9 @@ static void parse_options( int argc, char const *argv[const] ) {
       case COPT(NO_CONFIG):
         opt_read_conf = false;
         break;
+      case COPT(NO_ENGLISH_TYPES):
+        opt_english_types = false;
+        break;
       case COPT(NO_PROMPT):
         opt_prompt = false;
         break;
@@ -525,6 +531,7 @@ use_help:
 #endif /* ENABLE_FLEX_DEBUG */
     SOPT(LANGUAGE)
     SOPT(NO_CONFIG)
+    SOPT(NO_ENGLISH_TYPES)
     SOPT(NO_PROMPT)
     SOPT(NO_SEMICOLON)
     SOPT(NO_TYPEDEFS)
@@ -557,6 +564,7 @@ use_help:
     SOPT(HELP)
     SOPT(LANGUAGE)
     SOPT(NO_CONFIG)
+    SOPT(NO_ENGLISH_TYPES)
     SOPT(NO_PROMPT)
     SOPT(NO_SEMICOLON)
     SOPT(NO_TYPEDEFS)
@@ -632,6 +640,7 @@ static void usage( int status ) {
 "  --help               (-%c) Print this help and exit.\n"
 "  --language=LANG      (-%c) Use LANG.\n"
 "  --no-config          (-%c) Suppress reading configuration file.\n"
+"  --no-english-types   (-%c) Print types in C/C++, not English.\n"
 "  --no-prompt          (-%c) Suppress prompt.\n"
 "  --no-semicolon       (-%c) Suppress printing final semicolon for declarations.\n"
 "  --no-typedefs        (-%c) Suppress predefining standard types.\n"
@@ -665,6 +674,7 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n",
     COPT(HELP),
     COPT(LANGUAGE),
     COPT(NO_CONFIG),
+    COPT(NO_ENGLISH_TYPES),
     COPT(NO_PROMPT),
     COPT(NO_SEMICOLON),
     COPT(NO_TYPEDEFS),

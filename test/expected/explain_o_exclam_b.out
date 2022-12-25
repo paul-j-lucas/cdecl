@@ -1,1 +1,1 @@
-declare ! as member operator returning bool
+declare ! as member operator returning boolean

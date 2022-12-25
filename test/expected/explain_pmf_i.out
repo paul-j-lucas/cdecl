@@ -1,1 +1,1 @@
-declare p as pointer to member of class C function returning int
+declare p as pointer to member of class C function returning integer

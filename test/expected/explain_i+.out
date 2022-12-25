@@ -1,1 +1,1 @@
-declare x of scope s as int
+declare x of scope s as integer

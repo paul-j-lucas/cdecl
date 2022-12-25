@@ -1,1 +1,1 @@
-declare >> as non-member operator (reference to constant S, int) returning S
+declare >> as non-member operator (reference to constant S, integer) returning S

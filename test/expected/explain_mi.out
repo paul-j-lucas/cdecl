@@ -1,1 +1,1 @@
-declare x as mutable int
+declare x as mutable integer

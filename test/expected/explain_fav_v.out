@@ -1,1 +1,1 @@
-declare f as function (x as variable length array of int) returning void
+declare f as function (x as variable length array of integer) returning void

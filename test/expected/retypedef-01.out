@@ -1,2 +1,2 @@
-define Int as int
+define Int as integer
 define T as Int

@@ -1,1 +1,1 @@
-declare signal as function (sig as int, f as pointer to function (int) returning void) returning pointer to function (int) returning void
+declare signal as function (sig as integer, f as pointer to function (integer) returning void) returning pointer to function (integer) returning void

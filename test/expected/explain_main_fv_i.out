@@ -1,1 +1,1 @@
-declare main as function (void) returning int
+declare main as function (void) returning integer

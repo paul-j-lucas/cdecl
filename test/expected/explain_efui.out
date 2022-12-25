@@ -1,1 +1,1 @@
-declare x as enumeration E of type unsigned int
+declare x as enumeration E of type unsigned integer

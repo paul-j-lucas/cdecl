@@ -1,1 +1,1 @@
-declare && as non-member operator (reference to constant S, reference to constant S) returning bool
+declare && as non-member operator (reference to constant S, reference to constant S) returning boolean

@@ -1,1 +1,1 @@
-declare x as restricted reference to int
+declare x as restricted reference to integer

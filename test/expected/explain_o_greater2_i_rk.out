@@ -1,1 +1,1 @@
-declare >> as member operator (int) returning reference to S
+declare >> as member operator (integer) returning reference to S

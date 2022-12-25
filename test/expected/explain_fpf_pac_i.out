@@ -1,1 +1,1 @@
-declare f as function (pointer to function returning pointer to array of char) returning int
+declare f as function (pointer to function returning pointer to array of character) returning integer

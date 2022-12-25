@@ -1,1 +1,1 @@
-declare x as pointer to block (void) returning pointer to int
+declare x as pointer to block (void) returning pointer to integer

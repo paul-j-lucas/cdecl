@@ -1,1 +1,1 @@
-declare v3 as type array 3 of int
+declare v3 as type array 3 of integer

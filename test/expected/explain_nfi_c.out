@@ -1,1 +1,1 @@
-declare f as function (int) returning char
+declare f as function (integer) returning character

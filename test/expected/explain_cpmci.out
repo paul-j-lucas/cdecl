@@ -1,1 +1,1 @@
-declare p as constant pointer to member of class C constant int
+declare p as constant pointer to member of class C constant integer

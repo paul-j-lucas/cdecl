@@ -14,6 +14,7 @@ options:
   --help               (-h) Print this help and exit.
   --language=LANG      (-x) Use LANG.
   --no-config          (-C) Suppress reading configuration file.
+  --no-english-types   (-T) Print types in C/C++, not English.
   --no-prompt          (-p) Suppress prompt.
   --no-semicolon       (-s) Suppress printing final semicolon for declarations.
   --no-typedefs        (-t) Suppress predefining standard types.

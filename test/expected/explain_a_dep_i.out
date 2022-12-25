@@ -1,1 +1,1 @@
-declare x as deprecated int
+declare x as deprecated integer

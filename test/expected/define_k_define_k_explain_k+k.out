@@ -1,1 +1,1 @@
-declare x of structure S::T as int
+declare x of structure S::T as integer

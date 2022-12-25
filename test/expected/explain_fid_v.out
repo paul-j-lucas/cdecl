@@ -1,1 +1,1 @@
-declare f as function (i as int, d as double) returning void
+declare f as function (i as integer, d as double precision) returning void

@@ -1,1 +1,1 @@
-declare C as explicit inline constructor (int)
+declare C as explicit inline constructor (integer)

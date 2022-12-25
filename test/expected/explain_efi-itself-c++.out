@@ -1,1 +1,1 @@
-define E as enumeration E of type int
+define E as enumeration E of type integer

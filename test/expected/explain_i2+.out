@@ -1,1 +1,1 @@
-declare x of scope s::t as int
+declare x of scope s::t as integer

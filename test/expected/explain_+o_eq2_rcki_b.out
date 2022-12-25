@@ -1,1 +1,1 @@
-declare == of scope S as non-member operator (reference to constant T, int) returning bool
+declare == of scope S as non-member operator (reference to constant T, integer) returning boolean

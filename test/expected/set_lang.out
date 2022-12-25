@@ -4,6 +4,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -18,6 +19,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -32,6 +34,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -46,6 +49,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -60,6 +64,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -74,6 +79,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -88,6 +94,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -102,6 +109,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -116,6 +124,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -130,6 +139,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -144,6 +154,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -158,6 +169,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -172,6 +184,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -186,6 +199,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -200,6 +214,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -214,6 +229,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -228,6 +244,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -242,6 +259,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -256,6 +274,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -270,6 +289,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -284,6 +304,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -298,6 +319,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -312,6 +334,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -326,6 +349,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -340,6 +364,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -354,6 +379,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -368,6 +394,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -382,6 +409,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -396,6 +424,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -410,6 +439,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -424,6 +454,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -438,6 +469,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -452,6 +484,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -466,6 +499,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -480,6 +514,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -494,6 +529,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -508,6 +544,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -522,6 +559,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -536,6 +574,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -550,6 +589,7 @@ cdecl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -564,6 +604,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -578,6 +619,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -592,6 +634,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -606,6 +649,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -620,6 +664,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -634,6 +679,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -648,6 +694,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
@@ -662,6 +709,7 @@ c++decl> set
   nodebug
   noeast-const
     echo-commands
+    english-types
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int

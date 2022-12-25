@@ -130,7 +130,7 @@ decl_c ::= decl_c_astp = {
     bit_width = 0
   }
 }
-declare i as int aligned as 8 bytes
+declare i as integer aligned as 8 bytes
 cdecl> explain _Alignas(long) int i
 
 type_c_ast ::= type_modifier_list_c_type = {
@@ -283,7 +283,7 @@ decl_c ::= decl_c_astp = {
     bit_width = 0
   }
 }
-declare i as int aligned as long int
+declare i as integer aligned as long integer
 cdecl> explain int* f(int x, int y)
 
 builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
@@ -1040,7 +1040,7 @@ decl_c ::= decl_c_astp = {
     }
   }
 }
-declare f as function (x as int, y as int) returning pointer to int
+declare f as function (x as integer, y as integer) returning pointer to integer
 cdecl> explain size_t i
 
 typedef_type_c_ast ::= any_typedef = {
@@ -3356,7 +3356,7 @@ decl_c ::= decl_c_astp = {
     }
   }
 }
-declare f as function (a as array of int, b as array 4 of int, c as variable length array of int, d as array constant of int, e as array static 6 of int) returning void
+declare f as function (a as array of integer, b as array 4 of integer, c as variable length array of integer, d as array constant of integer, e as array static 6 of integer) returning void
 cdecl> explain void f()
 
 builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
@@ -3613,7 +3613,7 @@ explain_command ::= EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt = {
     }
   }
 }
-cast x into int
+cast x into integer
 cdecl> explain (int*)p
 
 builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
@@ -3795,7 +3795,7 @@ explain_command ::= EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt = {
     }
   }
 }
-cast p into pointer to int
+cast p into pointer to integer
 cdecl> cast x into int
 
 sname_c ::= NAME = {
@@ -4204,7 +4204,7 @@ decl_c ::= decl_c_astp = {
     }
   }
 }
-declare ! of structure S as constant member operator returning bool
+declare ! of structure S as constant member operator returning boolean
 c++decl> explain enum E : int
 
 sname_c ::= NAME = {
@@ -4392,7 +4392,7 @@ decl_list_c_opt ::= <empty> = {
     }
   }
 }
-define E as enumeration E of type int
+define E as enumeration E of type integer
 c++decl> explain int S::*p
 
 builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
@@ -4634,7 +4634,7 @@ decl_c ::= decl_c_astp = {
     }
   }
 }
-declare p as pointer to member of structure S int
+declare p as pointer to member of structure S integer
 c++decl> explain int S::x
 
 builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
@@ -4780,7 +4780,7 @@ decl_c ::= decl_c_astp = {
     bit_width = 0
   }
 }
-declare x of structure S as int
+declare x of structure S as integer
 c++decl> explain operator int()
 
 builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
@@ -4880,7 +4880,7 @@ user_defined_conversion_declaration_c ::= user_defined_conversion_decl_c_astp = 
     }
   }
 }
-declare user-defined conversion operator returning int
+declare user-defined conversion operator returning integer
 c++decl> explain const_cast<int*>(p)
 
 builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
@@ -5063,7 +5063,7 @@ explain_command ::= EXPLAIN new_style_cast_c'<' type_c_ast cast_c_astp_opt '>' '
     }
   }
 }
-const cast p into pointer to int
+const cast p into pointer to integer
 c++decl> explain dynamic_cast<S*>(p)
 
 typedef_type_c_ast ::= any_typedef = {
@@ -5540,7 +5540,7 @@ explain_command ::= EXPLAIN new_style_cast_c'<' type_c_ast cast_c_astp_opt '>' '
     }
   }
 }
-reinterpret cast p into pointer to int
+reinterpret cast p into pointer to integer
 c++decl> explain static_cast<int>(x)
 
 builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
@@ -5621,7 +5621,7 @@ explain_command ::= EXPLAIN new_style_cast_c'<' type_c_ast cast_c_astp_opt '>' '
     }
   }
 }
-static cast x into int
+static cast x into integer
 c++decl> const cast p to pointer to char
 
 sname_c ::= NAME = {

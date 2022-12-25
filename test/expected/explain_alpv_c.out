@@ -1,1 +1,1 @@
-declare c as char aligned as pointer to void
+declare c as character aligned as pointer to void

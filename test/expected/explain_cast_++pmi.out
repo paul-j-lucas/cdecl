@@ -1,1 +1,1 @@
-cast p of scope S into pointer to member of class C int
+cast p of scope S into pointer to member of class C integer

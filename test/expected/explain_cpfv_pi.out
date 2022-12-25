@@ -1,1 +1,1 @@
-declare x as constant pointer to function (void) returning pointer to int
+declare x as constant pointer to function (void) returning pointer to integer

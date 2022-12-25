@@ -5,11 +5,11 @@ int *shared p;
 shared int x[2];
 relaxed shared int x;
 strict shared int x;
-declare p as relaxed shared pointer to int
-declare p as shared pointer to int
-declare x as relaxed shared int
-declare p as pointer to shared int
-declare x as array of shared int
-declare a as array 4 of shared int
-declare p as pointer to strict shared int
-declare x as strict shared int
+declare p as relaxed shared pointer to integer
+declare p as shared pointer to integer
+declare x as relaxed shared integer
+declare p as pointer to shared integer
+declare x as array of shared integer
+declare a as array 4 of shared integer
+declare p as pointer to strict shared integer
+declare x as strict shared integer

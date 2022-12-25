@@ -1,1 +1,1 @@
-declare f as function (i as register int) returning void
+declare f as function (i as register integer) returning void

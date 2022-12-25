@@ -1,1 +1,1 @@
-define f as function (int) returning void
+define f as function (integer) returning void

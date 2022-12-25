@@ -1,1 +1,1 @@
-declare & as operator (int) returning int
+declare & as operator (integer) returning integer

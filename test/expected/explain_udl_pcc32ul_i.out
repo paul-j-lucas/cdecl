@@ -1,1 +1,1 @@
-declare _x as user-defined literal (pointer to constant char32_t, unsigned long int) returning int
+declare _x as user-defined literal (pointer to constant character 32, unsigned long integer) returning integer

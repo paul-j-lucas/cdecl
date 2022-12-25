@@ -1,1 +1,1 @@
-declare main as function (int, argv as array of pointer to char, envp as array of pointer to char) returning int
+declare main as function (integer, argv as array of pointer to character, envp as array of pointer to character) returning integer

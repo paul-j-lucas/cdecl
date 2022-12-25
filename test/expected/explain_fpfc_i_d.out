@@ -1,1 +1,1 @@
-declare f as function (g as pointer to function (c as char) returning int) returning double
+declare f as function (g as pointer to function (c as character) returning integer) returning double precision

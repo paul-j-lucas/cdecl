@@ -1,4 +1,4 @@
 explain register int i
         ^
 9: warning: "register" is deprecated since C++11
-declare i as register int
+declare i as register integer

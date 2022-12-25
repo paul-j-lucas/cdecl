@@ -1,4 +1,4 @@
 cdecl> explain int x
-declare x as int
+declare x as integer
 cdecl> explain const int x
-declare x as constant int
+declare x as constant integer

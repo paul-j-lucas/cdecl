@@ -1,1 +1,1 @@
-declare [] as member operator (int, int) returning int
+declare [] as member operator (integer, integer) returning integer

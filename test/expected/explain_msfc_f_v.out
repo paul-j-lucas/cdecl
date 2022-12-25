@@ -1,1 +1,1 @@
-declare f as fastcall function returning int
+declare f as fastcall function returning integer

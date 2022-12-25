@@ -1,1 +1,1 @@
-declare x as long double
+declare x as long double precision

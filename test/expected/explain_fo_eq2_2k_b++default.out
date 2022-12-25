@@ -1,1 +1,1 @@
-declare == as default friend non-member operator (S, S) returning bool
+declare == as default friend non-member operator (S, S) returning boolean

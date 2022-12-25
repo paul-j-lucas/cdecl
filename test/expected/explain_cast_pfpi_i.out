@@ -1,1 +1,1 @@
-cast x into pointer to function (pointer to int) returning int
+cast x into pointer to function (pointer to integer) returning integer

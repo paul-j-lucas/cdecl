@@ -1,1 +1,1 @@
-declare _x as user-defined literal (wchar_t) returning int
+declare _x as user-defined literal (wide character) returning integer

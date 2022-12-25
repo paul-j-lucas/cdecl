@@ -1,1 +1,1 @@
-declare p as restricted pointer to int
+declare p as restricted pointer to integer

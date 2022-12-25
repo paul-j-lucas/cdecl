@@ -230,7 +230,7 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_AUTO, LANG_auto_STORAGE, L_automatic,
     C_LANG_LIT( { LANG_ANY, L_auto } ) },
 
-  { TS_APPLE_BLOCK, LANG_ANY, NULL,
+  { TS_APPLE_BLOCK, LANG_ANY, L_Apple_block,
     C_LANG_LIT( { LANG_ANY, L_Apple___block } ) },
 
   { TS_EXTERN, LANG_ANY, L_external,
@@ -324,29 +324,29 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { TB_BITINT, LANG__BitInt, NULL,
     C_LANG_LIT( { LANG_ANY, L__BitInt } ) },
 
-  { TB_BOOL, LANG_BOOL_TYPE, NULL,
+  { TB_BOOL, LANG_BOOL_TYPE, L_boolean,
     C_LANG_LIT( { LANG_bool, L_bool  },
                 { LANG_ANY,  L__Bool } ) },
 
-  { TB_CHAR, LANG_ANY, NULL,
+  { TB_CHAR, LANG_ANY, L_character,
     C_LANG_LIT( { LANG_ANY, L_char } ) },
 
-  { TB_CHAR8_T, LANG_char8_t, NULL,
+  { TB_CHAR8_T, LANG_char8_t, "character 8",
     C_LANG_LIT( { LANG_ANY, L_char8_t } ) },
 
-  { TB_CHAR16_T, LANG_char16_32_t, NULL,
+  { TB_CHAR16_T, LANG_char16_32_t, "character 16",
     C_LANG_LIT( { LANG_ANY, L_char16_t } ) },
 
-  { TB_CHAR32_T, LANG_char16_32_t, NULL,
+  { TB_CHAR32_T, LANG_char16_32_t, "character 32",
     C_LANG_LIT( { LANG_ANY, L_char32_t } ) },
 
-  { TB_WCHAR_T, LANG_wchar_t, NULL,
+  { TB_WCHAR_T, LANG_wchar_t, "wide character",
     C_LANG_LIT( { LANG_ANY, L_wchar_t } ) },
 
   { TB_SHORT, LANG_ANY, NULL,
     C_LANG_LIT( { LANG_ANY, L_short } ) },
 
-  { TB_INT, LANG_ANY, NULL,
+  { TB_INT, LANG_ANY, L_integer,
     C_LANG_LIT( { LANG_ANY, L_int } ) },
 
   { TB_LONG, LANG_ANY, NULL,
@@ -362,10 +362,10 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { TB_UNSIGNED, LANG_ANY, NULL,
     C_LANG_LIT( { LANG_ANY, L_unsigned } ) },
 
-  { TB_FLOAT, LANG_ANY, NULL,
+  { TB_FLOAT, LANG_ANY, "floating point",
     C_LANG_LIT( { LANG_ANY, L_float } ) },
 
-  { TB_DOUBLE, LANG_ANY, NULL,
+  { TB_DOUBLE, LANG_ANY, "double precision",
     C_LANG_LIT( { LANG_ANY, L_double } ) },
 
   { TB_COMPLEX, LANG_C_ANY, L_complex,
@@ -769,8 +769,9 @@ static c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids ) {
 NODISCARD
 static char const* c_type_literal( c_type_info_t const *ti,
                                    bool in_english, bool is_error ) {
-  return in_english && ti->english_lit != NULL && !is_error ?
-    ti->english_lit : c_lang_literal( ti->lang_lit );
+  return  in_english && ti->english_lit != NULL &&
+          opt_english_types && !is_error ?
+            ti->english_lit : c_lang_literal( ti->lang_lit );
 }
 
 /**

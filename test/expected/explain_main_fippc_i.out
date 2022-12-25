@@ -1,1 +1,1 @@
-declare main as function (int, argv as pointer to pointer to char) returning int
+declare main as function (integer, argv as pointer to pointer to character) returning integer

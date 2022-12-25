@@ -1,1 +1,1 @@
-declare _x as user-defined literal (pointer to constant wchar_t, unsigned long int) returning int
+declare _x as user-defined literal (pointer to constant wide character, unsigned long integer) returning integer

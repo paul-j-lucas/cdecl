@@ -1,1 +1,1 @@
-declare friend user-defined conversion operator of class C returning int
+declare friend user-defined conversion operator of class C returning integer

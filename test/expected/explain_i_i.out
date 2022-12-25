@@ -1,2 +1,2 @@
-declare x as int
-declare y as int
+declare x as integer
+declare y as integer

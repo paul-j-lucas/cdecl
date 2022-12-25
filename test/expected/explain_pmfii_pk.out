@@ -1,1 +1,1 @@
-declare c as pointer to member of class C function (x as int, y as int) returning pointer to structure S
+declare c as pointer to member of class C function (x as integer, y as integer) returning pointer to structure S

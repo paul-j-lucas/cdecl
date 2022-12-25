@@ -1,1 +1,1 @@
-declare f as function (g as pointer to function returning int) returning void
+declare f as function (g as pointer to function returning integer) returning void

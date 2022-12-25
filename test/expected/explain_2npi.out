@@ -1,2 +1,2 @@
-declare p as pointer to int
-declare q as pointer to int
+declare p as pointer to integer
+declare q as pointer to integer

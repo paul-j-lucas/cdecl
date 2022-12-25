@@ -466,6 +466,13 @@ even one explicitly specified via either
 or
 .BR \-c .
 .TP
+.BR \-\-no-english-types " | " \-T
+Prints types in C/C++
+(e.g., \f(CWint\fP),
+not pseudo-English
+(e.g., \f(CWinteger\fP)
+when explaining gibberish.
+.TP
 .BR \-\-no-prompt " | " \-p
 Suppresses printing of the prompt.
 .TP
@@ -1430,6 +1437,14 @@ Turns [off] on echoing commands
 before corresponding output,
 but only when not interactive
 \(em default is off.
+.TP
+.RB [ no ] english-types
+Turns [off] on printing types in C/C++
+(e.g., \f(CWint\fP),
+not pseudo-English
+(e.g., \f(CWinteger\fP)
+when explaining gibberish
+\(em default is on.
 .TP
 .RB [ no ] explain-by-default
 Turns [off] on \f(CWexplain\fP being assumed

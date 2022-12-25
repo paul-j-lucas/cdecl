@@ -1,1 +1,1 @@
-declare x as static constant expression int
+declare x as static constant expression integer

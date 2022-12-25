@@ -1,1 +1,1 @@
-declare () as member operator (int) returning void
+declare () as member operator (integer) returning void

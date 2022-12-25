@@ -1,1 +1,1 @@
-declare x of structure S as int
+declare x of structure S as integer

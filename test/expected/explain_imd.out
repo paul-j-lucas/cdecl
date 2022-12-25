@@ -1,1 +1,1 @@
-declare x as imaginary double
+declare x as imaginary double precision

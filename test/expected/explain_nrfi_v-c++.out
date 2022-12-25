@@ -1,1 +1,1 @@
-declare f as non-returning function (int) returning void
+declare f as non-returning function (integer) returning void

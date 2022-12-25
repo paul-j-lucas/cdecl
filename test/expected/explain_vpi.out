@@ -1,1 +1,1 @@
-declare x as volatile pointer to int
+declare x as volatile pointer to integer

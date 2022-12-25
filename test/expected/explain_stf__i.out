@@ -1,1 +1,1 @@
-declare f as static function returning int
+declare f as static function returning integer

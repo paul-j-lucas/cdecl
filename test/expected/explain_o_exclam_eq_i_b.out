@@ -1,1 +1,1 @@
-declare != as member operator (int) returning bool
+declare != as member operator (integer) returning boolean

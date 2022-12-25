@@ -1,1 +1,1 @@
-declare > as non-member operator (reference to constant S, int) returning bool
+declare > as non-member operator (reference to constant S, integer) returning boolean

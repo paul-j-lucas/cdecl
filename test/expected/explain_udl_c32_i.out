@@ -1,1 +1,1 @@
-declare _x as user-defined literal (char32_t) returning int
+declare _x as user-defined literal (character 32) returning integer

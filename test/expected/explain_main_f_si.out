@@ -1,1 +1,1 @@
-declare main as function returning int
+declare main as function returning integer

@@ -3,7 +3,7 @@ cdecl> set c17
 cdecl> declare a as array 9 of int
 int a??(9??);
 cdecl> explain int a??(9??)
-declare a as array 9 of int
+declare a as array 9 of integer
 cdecl> set c++
 warning: trigraphs not supported since C++17
 c++decl> declare f as non-returning function (int) returning void
@@ -28,19 +28,19 @@ warning: trigraphs not supported since C++17
 c++decl> explain int a??(9??)
                       ^
 14: warning: trigraphs not supported since C++17
-declare a as array 9 of int
+declare a as array 9 of integer
 c++decl> set c++11
 c++decl> explain ??(??(noreturn??)??) void f(int)
-declare f as non-returning function (int) returning void
+declare f as non-returning function (integer) returning void
 c++decl> explain S& operator??'=(int)
-declare ??'= as member operator (int) returning reference to S
+declare ??'= as member operator (integer) returning reference to S
 c++decl> explain S operator??'(const S&, int)
-declare ??' as non-member operator (reference to constant S, int) returning S
+declare ??' as non-member operator (reference to constant S, integer) returning S
 c++decl> explain bool operator??!??!(const S&, const S&)
-declare ??!??! as non-member operator (reference to constant S, reference to constant S) returning bool
+declare ??!??! as non-member operator (reference to constant S, reference to constant S) returning boolean
 c++decl> explain S operator??!(const S&, const S&)
 declare ??! as non-member operator (reference to constant S, reference to constant S) returning S
 c++decl> explain S& operator??!=(int)
-declare ??!= as member operator (int) returning reference to S
+declare ??!= as member operator (integer) returning reference to S
 c++decl> explain S operator??-()
 declare ??- as member operator returning S

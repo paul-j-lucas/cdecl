@@ -1,1 +1,1 @@
-declare x as exported int
+declare x as exported integer

@@ -1,1 +1,1 @@
-declare x as type pointer to function (char) returning int
+declare x as type pointer to function (character) returning integer

@@ -1,1 +1,1 @@
-declare x as register int
+declare x as register integer

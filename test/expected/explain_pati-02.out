@@ -1,1 +1,1 @@
-declare x as pointer to atomic int
+declare x as pointer to atomic integer

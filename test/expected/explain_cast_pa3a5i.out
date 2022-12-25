@@ -1,1 +1,1 @@
-cast x into pointer to array 3 of array 5 of int
+cast x into pointer to array 3 of array 5 of integer

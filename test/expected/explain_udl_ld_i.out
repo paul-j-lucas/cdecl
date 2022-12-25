@@ -1,1 +1,1 @@
-declare _x as user-defined literal (long double) returning int
+declare _x as user-defined literal (long double precision) returning integer

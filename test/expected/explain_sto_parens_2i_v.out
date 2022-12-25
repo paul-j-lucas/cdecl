@@ -1,1 +1,1 @@
-declare () as static member operator (int, int) returning void
+declare () as static member operator (integer, integer) returning void

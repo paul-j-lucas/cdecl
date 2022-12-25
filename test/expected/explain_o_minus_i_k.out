@@ -1,1 +1,1 @@
-declare - as operator (int) returning S
+declare - as operator (integer) returning S

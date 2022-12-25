@@ -1,1 +1,1 @@
-declare int32_t as type int
+declare int32_t as type integer
