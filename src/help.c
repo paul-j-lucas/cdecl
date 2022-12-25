@@ -389,7 +389,12 @@ static void print_help_name( void ) {
 static void print_help_options( void ) {
   print_h( "option:\n" );
   print_h( "  [no]alt-tokens\n" );
+#ifdef YYDEBUG
+  print_h( "  [no]bison-debug\n" );
+#endif /* YYDEBUG */
+#ifdef ENABLE_CDECL_DEBUG
   print_h( "  [no]debug\n" );
+#endif /* ENABLE_CDECL_DEBUG */
   print_h( "  {di|tri|no}graphs\n" );
   print_h( "  [no]east-const\n" );
   print_h( "  [no]echo-commands\n" );
@@ -397,6 +402,9 @@ static void print_help_options( void ) {
   print_h( "  [no]explain-by-default\n" );
   print_h( "  [no]explicit-ecsu[={e|c|s|u}+]\n" );
   print_h( "  [no]explicit-int[=<types>]\n" );
+#ifdef ENABLE_FLEX_DEBUG
+  print_h( "  [no]flex-debug\n" );
+#endif /* ENABLE_FLEX_DEBUG */
   print_h( "  lang=<lang>\n" );
   print_h( "  <lang>\n" );
   print_h( "  [no]prompt\n" );
