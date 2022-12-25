@@ -1,5 +1,17 @@
 2022-12-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * help.c, help.out: Updated help for C23's .
+   * NEWS, cdecl.1, c_lang.h, set_trigraphs.out, trigraphs.out,
+     set_trigraphs.test, trigraphs.test: Trigraphs are no longer supported in
+     C23.
+   * NEWS, c_lang.h, test/Makefile.am, declare_af.out, explain_af-c.out: Added
+     support for `auto` as a deduced type in C23.
+   * NEWS, c_ast_check.c, c_lang.h, test/Makefile.am, explain_fel_v-c17.out,
+     explain_fel_v.out, explain_fel_v-c17.test, explain_fel_v.test: A `...` is
+     now correctly allowed as the only function parameter in C++ as well as
+     C23.
+   * attribute.h, limits.in.h, stdnoreturn.in.h, gnulib-common.m4: Upgraded
+     Gnulib.
    * print.c, util.c, util.h: Moved term-columns code.
 
 2022-12-23  Paul J. Lucas <paul@lucasmail.org>
