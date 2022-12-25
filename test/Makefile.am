@@ -94,7 +94,6 @@ TESTS+=	tests/declare_2a4i.test \
 	tests/declare_ati-01.test \
 	tests/declare_ati-02.test \
 	tests/declare_atpi-01.test \
-	tests/declare_b-c17.test \
 	tests/declare_b.test \
 	tests/declare_bi4.test \
 	tests/declare_blii_d.test \
@@ -976,7 +975,6 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_a_nd_f_i-01.test \
 	tests/declare_a_nd_f_i-02.test \
 	tests/declare_af-c++.test \
-	tests/declare_b-c++.test \
 	tests/declare_c_al0-c++.test \
 	tests/declare_c_al8-c++.test \
 	tests/declare_cf_v.test \

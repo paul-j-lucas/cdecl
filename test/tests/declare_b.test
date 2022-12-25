@@ -3,4 +3,10 @@ cdecl <<END
 declare x as bool
 declare x as boolean
 declare x as Boolean
+
+set c17
+declare x as bool
+
+set c++
+declare x as bool
 END
