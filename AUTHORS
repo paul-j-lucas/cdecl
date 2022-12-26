@@ -80,8 +80,9 @@ Paul J. Lucas <paul@lucasmail.org>
 	added C99 standard types, e.g., int8_t
 	added C11 _Atomic, char16_t, char32_t, _Noreturn, thread_local
 	added C11 standard types, e.g., atomic_int
-	added C23 _BitInt(N), char8_t, constexpr, digit separators,
-		and fixed-type enums
+	added C23 alignas, auto, _BitInt(N), bool, char8_t, constexpr, digit
+		separators, fixed-type enums, [[reproducible]], thread_local,
+		and [[unsequenced]]
 	added C23 and C++11 later attribute specifiers
 	added inline functions and variables
 	added enum, define, struct, show, typedef, union, and using commands
@@ -103,7 +104,10 @@ Paul J. Lucas <paul@lucasmail.org>
 	added Embedded C types _Accum, _Fract, _Sat, and typedefs
 	added Unified Parallel C qualifiers relaxed, shared, and strict
 	independently added typedef declarations
-	added the "include" command
+	added command autocompletion
+	added --echo-commands and -O command-line options and echo-commands
+		set option
+	added "include" command
 	added "using" declarations
 	made "returning" optional in all cases where it is actually optional
 	added binary, octal, and hexadecimal array sizes
@@ -114,6 +118,8 @@ Paul J. Lucas <paul@lucasmail.org>
 	added "did you mean ...?" suggestions
 	added Microsoft calling convention support
 	added optional code coverage
+	added optional Address Sanitizer, Memory Sanitizer, and Undefined
+		Bahavior Sanitizer builds
 	now ignoring C /*...*/ and C++ // comments in lexer
 	now treating cdecl keywords in declarations as ordinary names
 	revamped the manual page
