@@ -31,14 +31,11 @@
 #include "color.h"
 #include "options.h"
 #include "strbuf.h"
-#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <stdbool.h>
-#include <stdlib.h>                     /* for free(3) */
-#include <string.h>
 
 #ifdef HAVE_READLINE_READLINE_H
 # include <readline/readline.h>         /* for rl_gnu_readline_p */
