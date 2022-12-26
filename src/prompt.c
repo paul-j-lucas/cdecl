@@ -94,7 +94,8 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
   strbuf_reset( sbuf );
 
 #ifdef WITH_READLINE
-  if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
+  bool const color_prompt = have_genuine_gnu_readline() && sgr_prompt != NULL;
+  if ( color_prompt ) {
     strbuf_putc( sbuf, RL_PROMPT_START_IGNORE );
     color_strbuf_start( sbuf, sgr_prompt );
     strbuf_putc( sbuf, RL_PROMPT_END_IGNORE );
@@ -104,7 +105,7 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
   strbuf_printf( sbuf, "%s%c", OPT_LANG_IS( C_ANY ) ? CDECL : CPPDECL, suffix );
 
 #ifdef WITH_READLINE
-  if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
+  if ( color_prompt ) {
     strbuf_putc( sbuf, RL_PROMPT_START_IGNORE );
     color_strbuf_end( sbuf, sgr_prompt );
     strbuf_putc( sbuf, RL_PROMPT_END_IGNORE );
