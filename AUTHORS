@@ -62,7 +62,7 @@ Peter Ammon <cdecl@ridiculousfish.com>
 	added Apple's "blocks"
 
 Paul J. Lucas <paul@lucasmail.org>
-	converted to C99
+	converted to C11
 	converted to GNU Autotools build
 	added GNU-style test suite and many more tests
 	added more semantic checks
