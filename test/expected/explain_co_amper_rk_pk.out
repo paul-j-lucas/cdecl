@@ -1,1 +1,0 @@
-declare & as constant member operator (reference to S) returning pointer to S

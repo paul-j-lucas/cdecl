@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-struct T
-explain bool S::operator==(T const&, int)
-END

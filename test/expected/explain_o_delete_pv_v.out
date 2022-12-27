@@ -1,1 +1,0 @@
-declare delete as non-member operator (p as pointer to void) returning void

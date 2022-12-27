@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-struct S
-explain void* operator new(size_t, S&&)
-END

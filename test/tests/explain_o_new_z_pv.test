@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-explain void* operator new(std::size_t n)
-END

@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-struct S
-explain bool S::operator==(S const&) const = default
-END

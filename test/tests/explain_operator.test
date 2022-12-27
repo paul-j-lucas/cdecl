@@ -1,0 +1,135 @@
+EXPECTED_EXIT=0
+cdecl -O -xc++ <<END
+struct S
+struct T
+
+explain bool S::operator==(S const&) const = default
+explain void S::operator delete[](void *p)
+explain void S::operator delete(void *p)
+explain bool S::operator==(T const&, int)
+explain S& S::operator=(S const&)
+explain S& S::operator=(S const&) = default
+explain S& S::operator=(S const&) = delete
+explain void* S::operator new[](std::size_t n)
+explain void* S::operator new(std::size_t n)
+explain virtual S* operator&(S&) = 0
+explain virtual S& operator*(S&) = 0
+explain auto operator<=>(const S&) const = default
+explain S* operator&(S&) const
+explain bool operator==(S const&) const = default
+explain S& operator*(S&) const
+explain S operator~() const
+explain ~S() = delete
+explain friend bool S::operator!()
+explain friend bool operator==(S const&, S const&) = default
+explain friend bool operator==(S, S) = default
+explain auto operator<=>(const S&)
+explain bool operator&&(const S&, const S&)
+explain bool operator&&(const S&)
+explain S operator&(const S&, const S&)
+explain S& operator&=(int)
+explain S& operator&=(S&, int)
+explain int operator&(int)
+explain S& operator&(int)
+explain S* operator&()
+explain S operator&(const S&, int)
+explain S* operator&(S&)
+explain S* operator->()
+explain S& operator->*(int)
+explain S& operator->*(S&, int)
+explain int operator[](int, int)
+explain int operator[](int)
+explain S& operator^=(int)
+explain S& operator^=(S&, int)
+explain S operator^(const S&, int)
+explain S& operator,(int)
+explain S operator,(const S&, int)
+explain S& operator,(S&, int)
+explain void operator delete[]( void *p )
+explain void operator delete( void *p )
+explain bool operator ==(int)
+explain bool operator==(S, int)
+explain bool operator!()
+explain bool operator!=(int)
+explain bool operator!=(S, int)
+explain S operator!(const S&)
+explain S& operator>>=(int)
+explain S& operator>>=(S&, int)
+explain S operator>>(int)
+explain S& operator>>(int)
+explain S operator>>(const S&, int)
+explain S& operator>>(S&, int)
+explain bool operator>=(const S&, int)
+explain bool operator>(const S&, int)
+explain S& operator<<=(int)
+explain S& operator<<=(S&, int)
+explain S operator<<(int)
+explain S& operator<<(int)
+explain S operator<<(const S&, int)
+explain S& operator<<(S&, int)
+explain auto operator<=>(const S&, const S&)
+explain int operator<=>(const S&, const S&)
+explain std::partial_ordering operator<=>(const S&, const S&)
+explain std::strong_ordering operator<=>(const S&, const S&)
+explain std::weak_ordering operator<=>(const S&, const S&)
+explain bool operator<=(const S&, int)
+explain bool operator<(const S&, int)
+explain S& operator--(S&, int)
+explain S operator-(const S&, const S&)
+explain S& operator-=(int)
+explain S& operator-=(S&, int)
+explain S operator-(int)
+explain S operator-(const S&, int)
+explain void* operator new[](std::size_t n)
+explain void* operator new(std::size_t n)
+explain void* operator new(size_t, S&&)
+explain void operator()(int, int)
+explain void operator()(int, int, int)
+explain void operator()(int)
+explain void operator()()
+explain S operator%(const S&, const S&)
+explain S& operator%=(int)
+explain S& operator%=(S&, int)
+explain S operator%(int)
+explain S operator%(const S&, int)
+explain bool operator||(const S&, const S&)
+explain bool operator||(const S&)
+explain S operator|(const S&, const S&)
+explain S& operator|=(int)
+explain S& operator|=(S&, int)
+explain S& operator|(int)
+explain S& operator++()
+explain S& operator++(S&)
+explain S& operator++(S&, int)
+explain S operator+(const S&, const S&)
+explain S& operator+=(int)
+explain S& operator+=(S&, int)
+explain S operator+(int)
+explain S operator+(const S&, int)
+explain S operator/(const S&, const S&)
+explain S& operator/=(int)
+explain S& operator/=(S&, int)
+explain S operator/(const S&, int)
+explain S operator*(const S&, const S&)
+explain S& operator*=(int)
+explain S& operator*=(S&, int)
+explain S& operator*(int)
+explain S operator*(const S&)
+explain S operator*(const S&, int)
+explain S& operator*()
+explain S operator~()
+explain S operator~(S const&)
+explain S* operator&(S&) override
+explain S& operator*(S&) override
+explain S* operator&(S&) &
+explain S& operator*(S&) &
+explain S* operator&(S&) &&
+explain S& operator*(S&) &&
+explain static void operator delete( void *p )
+explain static void* operator new( std::size_t )
+explain static void operator()(int, int)
+explain S* operator&(S&) volatile
+explain S& operator*(S&) volatile
+explain S* operator&(S&) final
+explain S& operator*(S&) final
+END

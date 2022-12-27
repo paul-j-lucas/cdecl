@@ -1,1 +1,0 @@
-declare == as non-member operator (S, integer) returning boolean

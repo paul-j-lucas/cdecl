@@ -1,1 +1,0 @@
-declare == of scope S as non-member operator (reference to constant T, integer) returning boolean
