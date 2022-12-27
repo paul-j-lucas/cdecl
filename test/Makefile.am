@@ -697,43 +697,7 @@ TESTS+=	tests/k_typedef_i-c.test
 # C cast tests
 # ============
 #
-TESTS+=	tests/cast_blii_d.test \
-	tests/cast_ci.test \
-	tests/cast_constant.test \
-	tests/cast_cpa3cpa5i.test \
-	tests/cast_cpa3pa5i.test \
-	tests/cast_cpa9ci.test \
-	tests/cast_cpa9i.test \
-	tests/cast_cpblv_pi.test \
-	tests/cast_cpcpi.test \
-	tests/cast_cpfv_pi.test \
-	tests/cast_cpi.test \
-	tests/cast_cppi.test \
-	tests/cast_cvpi.test \
-	tests/cast_ll.test \
-	tests/cast_pa3cpa5i.test \
-	tests/cast_pa3pa5i.test \
-	tests/cast_pa9i.test \
-	tests/cast_pblv_pi.test \
-	tests/cast_pci.test \
-	tests/cast_pcpi.test \
-	tests/cast_pf_i-01.test \
-	tests/cast_pf_i-02.test \
-	tests/cast_pfii_i.test \
-	tests/cast_pfkr_i-c17.test \
-	tests/cast_pfkr_i-cknr.test \
-	tests/cast_pfv_pi.test \
-	tests/cast_pi.test \
-	tests/cast_ppi.test \
-	tests/cast_sic.test \
-	tests/cast_sii.test \
-	tests/cast_sill.test \
-	tests/cast_u.test \
-	tests/cast_uc.test \
-	tests/cast_ui.test \
-	tests/cast_ull.test \
-	tests/cast_vcpi.test \
-	tests/cast_vpi.test
+TESTS+=	tests/cast.test
 
 #
 # C cast error tests

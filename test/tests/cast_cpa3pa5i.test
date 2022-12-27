@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-cast x into const pointer to array 3 of pointer to array 5 of int
-END

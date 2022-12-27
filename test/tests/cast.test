@@ -1,0 +1,45 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+cast b into block (x as int, y as int) returning double
+cast p into const pointer to array 3 of const pointer to array 5 of int
+cast p into const pointer to array 3 of pointer to array 5 of int
+cast p into const pointer to array 9 of const int
+cast p into const pointer to array 9 of int
+cast p into const pointer to block (void) returning pointer to int
+cast p into const pointer to const pointer to int
+cast p into const pointer to function (void) returning pointer to int
+cast p into const pointer to int
+cast p into const pointer to pointer to int
+cast p into const volatile pointer to int
+cast p into const volatile pointer to int
+cast p into pointer to array 3 of const pointer to array 5 of int
+cast p into pointer to array 3 of pointer to array 5 of int
+cast p into pointer to array 9 of int
+cast p into pointer to block (void) returning pointer to int
+cast p into pointer to const int
+cast p into pointer to const pointer to int
+cast p into pointer to function () returning int
+cast p into pointer to function (void) returning pointer to int
+cast p into pointer to function (x as int, y as int) returning int
+cast p into pointer to function returning int
+cast p into pointer to int
+cast p into pointer to pointer to int
+cast p into volatile pointer to int
+cast x into const int
+cast x into constant int
+cast x into long long
+cast x into signed char
+cast x into signed int
+cast x into signed long long
+cast x into unsigned
+cast x into unsigned char
+cast x into unsigned int
+cast x into unsigned long long
+
+set knr
+cast p into pointer to function (x) returning int
+
+set c17
+cast p into pointer to function (x) returning int
+
+END
