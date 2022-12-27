@@ -21,6 +21,9 @@ Trigraphs are no longer supported in C23.
 ** `_BitInt(<int>)` help
 `_BitInt(<int>)` was added to the help text.
 
+** Color prompt
+Now printing the prompt in color even when readline is disabled.
+
 ** More English synonyms
 The following English synonyms have been added:
 

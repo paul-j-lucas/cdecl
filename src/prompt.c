@@ -50,6 +50,20 @@
 
 /// @endcond
 
+#ifdef WITH_READLINE
+  /**
+   * Appends the character to start or end ignoring of characters to the prompt
+   * for length calculation by readline.
+   *
+   * @param SBUF A pointer to the \ref strbuf to use.
+   * @param WHEN Either the literal `START` or `END`.
+   */
+# define RL_PROMPT_IGNORE( SBUF, WHEN ) \
+    strbuf_putc( (SBUF), RL_PROMPT_##WHEN##_IGNORE )
+#else
+# define RL_PROMPT_IGNORE( SBUF, WHEN ) NO_OP
+#endif /* WITH_READLINE */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variable definitions
@@ -84,6 +98,20 @@ static inline bool have_genuine_gnu_readline( void ) {
 }
 #endif /* WITH_READLINE */
 
+/**
+ * Gets whether the prompt can and should be printed in color.
+ *
+ * @return Returns `true` only if so.
+ */
+NODISCARD
+static inline bool color_prompt( void ) {
+  return  sgr_prompt != NULL
+#ifdef WITH_READLINE
+          && have_genuine_gnu_readline()
+#endif /* WITH_READLINE */
+          ;
+}
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -95,24 +123,19 @@ static inline bool have_genuine_gnu_readline( void ) {
 static void prompt_create( char suffix, strbuf_t *sbuf ) {
   strbuf_reset( sbuf );
 
-#ifdef WITH_READLINE
-  bool const color_prompt = have_genuine_gnu_readline() && sgr_prompt != NULL;
-  if ( color_prompt ) {
-    strbuf_putc( sbuf, RL_PROMPT_START_IGNORE );
+  if ( color_prompt() ) {
+    RL_PROMPT_IGNORE( sbuf, START );
     color_strbuf_start( sbuf, sgr_prompt );
-    strbuf_putc( sbuf, RL_PROMPT_END_IGNORE );
+    RL_PROMPT_IGNORE( sbuf, END );
   }
-#endif /* WITH_READLINE */
 
   strbuf_printf( sbuf, "%s%c", OPT_LANG_IS( C_ANY ) ? CDECL : CPPDECL, suffix );
 
-#ifdef WITH_READLINE
-  if ( color_prompt ) {
-    strbuf_putc( sbuf, RL_PROMPT_START_IGNORE );
+  if ( color_prompt() ) {
+    RL_PROMPT_IGNORE( sbuf, START );
     color_strbuf_end( sbuf, sgr_prompt );
-    strbuf_putc( sbuf, RL_PROMPT_END_IGNORE );
+    RL_PROMPT_IGNORE( sbuf, END );
   }
-#endif /* WITH_READLINE */
 
   strbuf_putc( sbuf, ' ' );
 }
