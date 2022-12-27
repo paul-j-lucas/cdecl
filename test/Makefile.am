@@ -690,7 +690,7 @@ TESTS+=	tests/k_typedef_i-c.test
 ###############################################################################
 
 #
-# C cast tests
+# Cast tests
 # ============
 #
 TESTS+=	tests/cast.test
