@@ -1,1 +1,0 @@
-declare _x as user-defined literal (pointer to constant wide character, size_t) returning integer

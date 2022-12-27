@@ -1,0 +1,23 @@
+EXPECTED_EXIT=0
+cdecl -O -xc++ <<END
+explain int S::operator"" _x(char)
+explain int operator"" _x(char16_t)
+explain int operator"" _x(char32_t)
+explain int operator"" _x(char8_t)
+explain int operator"" m(char)
+explain int operator"" _x(char)
+explain int operator"" _x(long double)
+explain int operator"" _x(const char16_t*, unsigned long)
+explain int operator"" _x(const char16_t*, size_t)
+explain int operator"" _x(const char32_t*, unsigned long)
+explain int operator"" _x(const char32_t*, size_t)
+explain int operator"" _x(const char8_t*, unsigned long)
+explain int operator"" _x(const char8_t*, size_t)
+explain int operator"" _x(const char*)
+explain int operator"" _x(const char*, unsigned long)
+explain int operator"" _x(const char*, size_t)
+explain int operator"" _x(const wchar_t*, unsigned long)
+explain int operator"" _x(const wchar_t*, size_t)
+explain int operator"" _x(unsigned long long)
+explain int operator"" _x(wchar_t)
+END

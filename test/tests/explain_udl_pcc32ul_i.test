@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-explain int operator"" _x(const char32_t*, unsigned long)
-END

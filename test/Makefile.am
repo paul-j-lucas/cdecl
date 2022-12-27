@@ -1609,26 +1609,7 @@ TESTS+=	tests/explain_+udc_i.test \
 # C++ explain user-defined literal tests
 # ======================================
 #
-TESTS+=	tests/explain_+udl_c_i.test \
-	tests/explain_udl_c16_i.test \
-	tests/explain_udl_c32_i.test \
-	tests/explain_udl_c8_i.test \
-	tests/explain_udl_c_i-01.test \
-	tests/explain_udl_c_i.test \
-	tests/explain_udl_ld_i.test \
-	tests/explain_udl_pcc16ul_i.test \
-	tests/explain_udl_pcc16z_i.test \
-	tests/explain_udl_pcc32ul_i.test \
-	tests/explain_udl_pcc32z_i.test \
-	tests/explain_udl_pcc8ul_i.test \
-	tests/explain_udl_pcc8z_i.test \
-	tests/explain_udl_pcc_i.test \
-	tests/explain_udl_pccul_i.test \
-	tests/explain_udl_pccz_i.test \
-	tests/explain_udl_pcwtul_i.test \
-	tests/explain_udl_pcwtz_i.test \
-	tests/explain_udl_ull_i.test \
-	tests/explain_udl_wt_i.test
+TESTS+=	tests/explain_udl.test
 
 #
 # C++ explain user-defined conversion error tests

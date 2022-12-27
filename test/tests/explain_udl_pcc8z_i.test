@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-explain int operator"" _x(const char8_t*, size_t)
-END
