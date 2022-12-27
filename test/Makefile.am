@@ -726,8 +726,8 @@ TESTS+=	tests/cast_a.test \
 ###############################################################################
 
 #
-# C explain cast tests
-# ====================
+# Explain cast tests
+# ==================
 #
 TESTS+=	tests/explain_cast.test
 
@@ -1299,21 +1299,6 @@ TESTS+=	tests/explain_+co_eq2_rck_b++default-cpp17.test \
 	tests/explain_vo_exclam_k_b.test \
 	tests/explain_vv_o_new_z.test \
 	tests/explain_yo_exclam_k_b.test
-
-#
-# C++ explain cast tests
-# ======================
-#
-TESTS+=	tests/explain_cast_pmi.test \
-	tests/explain_cast_++pmi.test \
-	tests/explain_cast_pmc++i.test \
-	tests/explain_const_cast_+pi.test \
-	tests/explain_const_cast_pi.test \
-	tests/explain_dynamic_cast_p+c+.test \
-	tests/explain_dynamic_cast_pc.test \
-	tests/explain_reinterpret_cast_pv.test \
-	tests/explain_static_cast_i+.test \
-	tests/explain_static_cast_i.test
 
 #
 # C++ explain user-defined conversion tests

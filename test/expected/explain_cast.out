@@ -61,3 +61,23 @@ cast x into volatile pointer to integer
 cdecl> set c++
 c++decl> explain (int&)x
 cast x into reference to integer
+c++decl> explain (int C::*)p
+cast p into pointer to member of class C integer
+c++decl> explain (int C::*)S::p
+cast p of scope S into pointer to member of class C integer
+c++decl> explain (int S::C::*)p
+cast p into pointer to member of class C of scope S integer
+c++decl> explain const_cast<int*>(S::x)
+const cast x of scope S into pointer to integer
+c++decl> explain const_cast<int*>(x)
+const cast x into pointer to integer
+c++decl> explain dynamic_cast<class S::C*>(T::x)
+dynamic cast x of scope T into pointer to class C of scope S
+c++decl> explain dynamic_cast<class C*>(x)
+dynamic cast x into pointer to class C
+c++decl> explain reinterpret_cast<void*>(x)
+reinterpret cast x into pointer to void
+c++decl> explain static_cast<int>(S::x)
+static cast x of scope S into integer
+c++decl> explain static_cast<int>(x)
+static cast x into integer

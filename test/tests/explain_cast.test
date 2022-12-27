@@ -33,4 +33,15 @@ explain (int *volatile)x
 
 set c++
 explain (int&)x
+explain (int C::*)p
+explain (int C::*)S::p
+explain (int S::C::*)p
+explain const_cast<int*>(S::x)
+explain const_cast<int*>(x)
+explain dynamic_cast<class S::C*>(T::x)
+explain dynamic_cast<class C*>(x)
+explain reinterpret_cast<void*>(x)
+explain static_cast<int>(S::x)
+explain static_cast<int>(x)
+
 END

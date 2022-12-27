@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-explain dynamic_cast<class S::C*>(T::x)
-END
