@@ -69,7 +69,6 @@ TESTS+=	tests/cdecl-23.test \
 #
 # C declare tests
 # ===============
-# Almost every test here has a corresponding cast_ and explain_ test.
 #
 TESTS+=	tests/declare_2a4i.test \
 	tests/declare_2i.test \
@@ -209,7 +208,6 @@ TESTS+=	tests/declare_2a4i.test \
 #
 # C declare error tests
 # =====================
-# Almost every test here has a corresponding explain_ error test.
 #
 TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_++i-c.test \
@@ -312,7 +310,6 @@ TESTS+=	tests/declare_0f_v-c.test \
 #
 # C explain tests
 # ===============
-# Almost every test here has a corresponding cast_ and declare_ test.
 #
 TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_0o_minus2_i_rk.test \
@@ -536,7 +533,6 @@ TESTS+=	tests/explain-by-default.test
 #
 # C explain error tests
 # =====================
-# Almost every test here has a corresponding declare_ error test.
 #
 TESTS+=	tests/explain_+i-c.test \
 	tests/explain_0f_v-02.test \
