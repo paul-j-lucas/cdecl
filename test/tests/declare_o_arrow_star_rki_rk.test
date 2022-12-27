@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-struct S
-declare ->* as operator (reference to S, int) returning reference to S
-END

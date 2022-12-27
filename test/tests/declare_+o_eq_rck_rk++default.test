@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-struct S
-declare = of structure S as default member operator (reference to constant S) returning reference to S
-END

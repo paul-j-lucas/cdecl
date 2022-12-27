@@ -1,0 +1,131 @@
+EXPECTED_EXIT=0
+cdecl -O -xc++ <<END
+struct S
+
+declare ! as member operator returning bool
+declare != as member operator (int) returning bool
+declare % as member operator (int) returning S
+declare %= as member operator (int) returning reference to S
+declare & as member operator (int) returning reference to S
+declare & as member operator returning pointer to S
+declare && as member operator (reference to const S) returning bool
+declare &= as member operator (int) returning reference to S
+declare * as member operator (int) returning reference to S
+declare * as member operator returning reference to S
+declare *= as member operator (int) returning reference to S
+declare + as member operator (int) returning S
+declare += as member operator (int) returning reference to S
+declare , as member operator (int) returning reference to S
+declare - as member operator (int) returning S
+declare -= as member operator (int) returning reference to S
+declare -> as member operator returning pointer to S
+declare ->* as member operator (int) returning reference to S
+declare /= as member operator (int) returning reference to S
+declare << as member operator (int) returning S
+declare <<= as member operator (int) returning reference to S
+declare <= as member operator (int) returning bool
+declare >= as member operator (int) returning bool
+declare >> as member operator (int) returning S
+declare >>= as member operator (int) returning reference to S
+declare [] as member operator (int) returning int
+declare ^= as member operator (int) returning reference to S
+declare delete as static member operator (p as pointer to void) returning void
+declare delete of struct S as operator (p as pointer to void) returning void
+declare delete[] of struct S as operator (p as pointer to void) returning void
+declare new of struct S as operator (n as std::size_t) returning pointer to void
+declare new[] of struct S as operator (n as std::size_t) returning pointer to void
+declare | as member operator (int) returning reference to S
+declare |= as member operator (int) returning reference to S
+declare || as member operator (reference to const S) returning bool
+declare ~ as member operator returning S
+
+declare ! as non-member operator (S) returning bool
+declare != as non-member operator (S, int) returning bool
+declare % as non-member operator (reference to const S, int) returning S
+declare %= as non-member operator (reference to S, int) returning reference to S
+declare & as non-member operator (reference to S) returning pointer to S
+declare & as non-member operator (reference to const S, int) returning S
+declare && as non-member operator (reference to const S, reference to const S) returning bool
+declare &= as non-member operator (reference to S, int) returning reference to S
+declare &= as non-member operator (reference to S, int) returning reference to S
+declare * as non-member operator (reference to const S) returning S
+declare * as non-member operator (reference to const S, int) returning S
+declare *= as non-member operator (reference to S, int) returning reference to S
+declare + as non-member operator (reference to const S, int) returning S
+declare ++ as non-member operator (reference to S, int) returning reference to S
+declare += as non-member operator (reference to S, int) returning reference to S
+declare , as non-member operator (reference to S, int) returning reference to S
+declare - as non-member operator (reference to const S, int) returning S
+declare -- as non-member operator (reference to S, int) returning reference to S
+declare -= as non-member operator (reference to S, int) returning reference to S
+declare ->* as non-member operator (reference to S, int) returning reference to S
+declare / as non-member operator (reference to const S, int) returning S
+declare /= as non-member operator (reference to S, int) returning reference to S
+declare < as non-member operator (reference to const S, int) returning bool
+declare << as non-member operator (reference to const S, int) returning S
+declare <<= as non-member operator (reference to S, int) returning reference to S
+declare <= as non-member operator (reference to const S, int) returning bool
+declare > as non-member operator (reference to const S, int) returning bool
+declare >= as non-member operator (reference to const S, int) returning bool
+declare >> as non-member operator (reference to const S, int) returning S
+declare ^ as non-member operator (reference to const S, int) returning S
+declare |= as non-member operator (reference to S, int) returning reference to S
+declare || as non-member operator (reference to const S, reference to const S) returning bool
+declare ~ as non-member operator (reference to const S) returning S
+
+declare ! as operator (reference to const S) returning bool
+declare ! as operator returning bool
+declare ! of scope A::B as operator returning bool
+declare != as operator (S, int) returning bool
+declare != as operator (int) returning bool
+declare % as operator (int) returning S
+declare % as operator (reference to const S, int) returning S
+declare %= as operator (int) returning reference to S
+declare %= as operator (reference to S, int) returning reference to S
+declare & as operator (int) returning reference to S
+declare & as operator (reference to const S, int) returning S
+declare & as operator (reference to const S, reference to const S) returning S
+declare & as operator returning pointer to S
+declare && as operator (reference to const S) returning bool
+declare && as operator (reference to const S, reference to const S) returning bool
+declare &= as operator (int) returning reference to S
+declare () as operator
+declare () as operator (int)
+declare () as operator (int, int)
+declare () as operator (int, int, int)
+declare * as operator (int) returning reference to S
+declare * as operator (reference to const S) returning S
+declare * as operator (reference to const S, int) returning S
+declare * as operator returning reference to S
+declare *= as operator (int) returning reference to S
+declare *= as operator (reference to S, int) returning reference to S
+declare + as operator (int) returning S
+declare , as operator (reference to S, int) returning reference to S
+declare - as operator (int) returning S
+declare ->* as operator (int) returning reference to S
+declare ->* as operator (reference to S, int) returning reference to S
+declare /= as operator (int) returning reference to S
+declare << as operator (int) returning S
+declare << as operator (reference to const S, int) returning S
+declare <<= as operator (int) returning reference to S
+declare <= as operator (int) returning bool
+declare <=> as operator (reference to const S, reference to const S) returning auto
+declare = of structure S as default member operator (reference to constant S) returning reference to S
+declare = of structure S as deleted member operator (reference to constant S) returning reference to S
+declare == as operator (S, int) returning bool
+declare == as operator (int) returning bool
+declare >= as operator (int) returning bool
+declare >> as operator (int) returning S
+declare >> as operator (reference to const S, int) returning S
+declare >>= as operator (int) returning reference to S
+declare [] as operator (int, int) returning int
+declare ^= as operator (int) returning reference to S
+declare | as operator (int) returning reference to S
+declare |= as operator (int) returning reference to S
+declare |= as operator (reference to S, int) returning reference to S
+declare || as operator (reference to const S) returning bool
+declare || as operator (reference to const S, reference to const S) returning bool
+declare ~ as operator (reference to const S) returning S
+declare ~ as operator returning S
+
+END

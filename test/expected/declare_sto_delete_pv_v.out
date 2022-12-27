@@ -1,1 +1,0 @@
-static void operator delete(void *p);

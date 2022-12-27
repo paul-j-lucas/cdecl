@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-struct S
-declare new of struct S as operator (n as std::size_t) returning pointer to void
-END

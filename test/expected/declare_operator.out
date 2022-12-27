@@ -1,0 +1,247 @@
+c++decl> struct S
+c++decl> declare ! as member operator returning bool
+bool operator!();
+c++decl> declare != as member operator (int) returning bool
+bool operator!=(int);
+c++decl> declare % as member operator (int) returning S
+S operator%(int);
+c++decl> declare %= as member operator (int) returning reference to S
+S& operator%=(int);
+c++decl> declare & as member operator (int) returning reference to S
+S& operator&(int);
+c++decl> declare & as member operator returning pointer to S
+S* operator&();
+c++decl> declare && as member operator (reference to const S) returning bool
+bool operator&&(const S&);
+c++decl> declare &= as member operator (int) returning reference to S
+S& operator&=(int);
+c++decl> declare * as member operator (int) returning reference to S
+S& operator*(int);
+c++decl> declare * as member operator returning reference to S
+S& operator*();
+c++decl> declare *= as member operator (int) returning reference to S
+S& operator*=(int);
+c++decl> declare + as member operator (int) returning S
+S operator+(int);
+c++decl> declare += as member operator (int) returning reference to S
+S& operator+=(int);
+c++decl> declare , as member operator (int) returning reference to S
+S& operator,(int);
+c++decl> declare - as member operator (int) returning S
+S operator-(int);
+c++decl> declare -= as member operator (int) returning reference to S
+S& operator-=(int);
+c++decl> declare -> as member operator returning pointer to S
+S* operator->();
+c++decl> declare ->* as member operator (int) returning reference to S
+S& operator->*(int);
+c++decl> declare /= as member operator (int) returning reference to S
+S& operator/=(int);
+c++decl> declare << as member operator (int) returning S
+S operator<<(int);
+c++decl> declare <<= as member operator (int) returning reference to S
+S& operator<<=(int);
+c++decl> declare <= as member operator (int) returning bool
+bool operator<=(int);
+c++decl> declare >= as member operator (int) returning bool
+bool operator>=(int);
+c++decl> declare >> as member operator (int) returning S
+S operator>>(int);
+c++decl> declare >>= as member operator (int) returning reference to S
+S& operator>>=(int);
+c++decl> declare [] as member operator (int) returning int
+int operator[](int);
+c++decl> declare ^= as member operator (int) returning reference to S
+S& operator^=(int);
+c++decl> declare delete as static member operator (p as pointer to void) returning void
+static void operator delete(void *p);
+c++decl> declare delete of struct S as operator (p as pointer to void) returning void
+void S::operator delete(void *p);
+c++decl> declare delete[] of struct S as operator (p as pointer to void) returning void
+void S::operator delete[](void *p);
+c++decl> declare new of struct S as operator (n as std::size_t) returning pointer to void
+void* S::operator new(std::size_t n);
+c++decl> declare new[] of struct S as operator (n as std::size_t) returning pointer to void
+void* S::operator new[](std::size_t n);
+c++decl> declare | as member operator (int) returning reference to S
+S& operator|(int);
+c++decl> declare |= as member operator (int) returning reference to S
+S& operator|=(int);
+c++decl> declare || as member operator (reference to const S) returning bool
+bool operator||(const S&);
+c++decl> declare ~ as member operator returning S
+S operator~();
+c++decl> declare ! as non-member operator (S) returning bool
+bool operator!(S);
+c++decl> declare != as non-member operator (S, int) returning bool
+bool operator!=(S, int);
+c++decl> declare % as non-member operator (reference to const S, int) returning S
+S operator%(const S&, int);
+c++decl> declare %= as non-member operator (reference to S, int) returning reference to S
+S& operator%=(S&, int);
+c++decl> declare & as non-member operator (reference to S) returning pointer to S
+S* operator&(S&);
+c++decl> declare & as non-member operator (reference to const S, int) returning S
+S operator&(const S&, int);
+c++decl> declare && as non-member operator (reference to const S, reference to const S) returning bool
+bool operator&&(const S&, const S&);
+c++decl> declare &= as non-member operator (reference to S, int) returning reference to S
+S& operator&=(S&, int);
+c++decl> declare &= as non-member operator (reference to S, int) returning reference to S
+S& operator&=(S&, int);
+c++decl> declare * as non-member operator (reference to const S) returning S
+S operator*(const S&);
+c++decl> declare * as non-member operator (reference to const S, int) returning S
+S operator*(const S&, int);
+c++decl> declare *= as non-member operator (reference to S, int) returning reference to S
+S& operator*=(S&, int);
+c++decl> declare + as non-member operator (reference to const S, int) returning S
+S operator+(const S&, int);
+c++decl> declare ++ as non-member operator (reference to S, int) returning reference to S
+S& operator++(S&, int);
+c++decl> declare += as non-member operator (reference to S, int) returning reference to S
+S& operator+=(S&, int);
+c++decl> declare , as non-member operator (reference to S, int) returning reference to S
+S& operator,(S&, int);
+c++decl> declare - as non-member operator (reference to const S, int) returning S
+S operator-(const S&, int);
+c++decl> declare -- as non-member operator (reference to S, int) returning reference to S
+S& operator--(S&, int);
+c++decl> declare -= as non-member operator (reference to S, int) returning reference to S
+S& operator-=(S&, int);
+c++decl> declare ->* as non-member operator (reference to S, int) returning reference to S
+S& operator->*(S&, int);
+c++decl> declare / as non-member operator (reference to const S, int) returning S
+S operator/(const S&, int);
+c++decl> declare /= as non-member operator (reference to S, int) returning reference to S
+S& operator/=(S&, int);
+c++decl> declare < as non-member operator (reference to const S, int) returning bool
+bool operator<(const S&, int);
+c++decl> declare << as non-member operator (reference to const S, int) returning S
+S operator<<(const S&, int);
+c++decl> declare <<= as non-member operator (reference to S, int) returning reference to S
+S& operator<<=(S&, int);
+c++decl> declare <= as non-member operator (reference to const S, int) returning bool
+bool operator<=(const S&, int);
+c++decl> declare > as non-member operator (reference to const S, int) returning bool
+bool operator>(const S&, int);
+c++decl> declare >= as non-member operator (reference to const S, int) returning bool
+bool operator>=(const S&, int);
+c++decl> declare >> as non-member operator (reference to const S, int) returning S
+S operator>>(const S&, int);
+c++decl> declare ^ as non-member operator (reference to const S, int) returning S
+S operator^(const S&, int);
+c++decl> declare |= as non-member operator (reference to S, int) returning reference to S
+S& operator|=(S&, int);
+c++decl> declare || as non-member operator (reference to const S, reference to const S) returning bool
+bool operator||(const S&, const S&);
+c++decl> declare ~ as non-member operator (reference to const S) returning S
+S operator~(const S&);
+c++decl> declare ! as operator (reference to const S) returning bool
+bool operator!(const S&);
+c++decl> declare ! as operator returning bool
+bool operator!();
+c++decl> declare ! of scope A::B as operator returning bool
+bool A::B::operator!();
+c++decl> declare != as operator (S, int) returning bool
+bool operator!=(S, int);
+c++decl> declare != as operator (int) returning bool
+bool operator!=(int);
+c++decl> declare % as operator (int) returning S
+S operator%(int);
+c++decl> declare % as operator (reference to const S, int) returning S
+S operator%(const S&, int);
+c++decl> declare %= as operator (int) returning reference to S
+S& operator%=(int);
+c++decl> declare %= as operator (reference to S, int) returning reference to S
+S& operator%=(S&, int);
+c++decl> declare & as operator (int) returning reference to S
+S& operator&(int);
+c++decl> declare & as operator (reference to const S, int) returning S
+S operator&(const S&, int);
+c++decl> declare & as operator (reference to const S, reference to const S) returning S
+S operator&(const S&, const S&);
+c++decl> declare & as operator returning pointer to S
+S* operator&();
+c++decl> declare && as operator (reference to const S) returning bool
+bool operator&&(const S&);
+c++decl> declare && as operator (reference to const S, reference to const S) returning bool
+bool operator&&(const S&, const S&);
+c++decl> declare &= as operator (int) returning reference to S
+S& operator&=(int);
+c++decl> declare () as operator
+void operator()();
+c++decl> declare () as operator (int)
+void operator()(int);
+c++decl> declare () as operator (int, int)
+void operator()(int, int);
+c++decl> declare () as operator (int, int, int)
+void operator()(int, int, int);
+c++decl> declare * as operator (int) returning reference to S
+S& operator*(int);
+c++decl> declare * as operator (reference to const S) returning S
+S operator*(const S&);
+c++decl> declare * as operator (reference to const S, int) returning S
+S operator*(const S&, int);
+c++decl> declare * as operator returning reference to S
+S& operator*();
+c++decl> declare *= as operator (int) returning reference to S
+S& operator*=(int);
+c++decl> declare *= as operator (reference to S, int) returning reference to S
+S& operator*=(S&, int);
+c++decl> declare + as operator (int) returning S
+S operator+(int);
+c++decl> declare , as operator (reference to S, int) returning reference to S
+S& operator,(S&, int);
+c++decl> declare - as operator (int) returning S
+S operator-(int);
+c++decl> declare ->* as operator (int) returning reference to S
+S& operator->*(int);
+c++decl> declare ->* as operator (reference to S, int) returning reference to S
+S& operator->*(S&, int);
+c++decl> declare /= as operator (int) returning reference to S
+S& operator/=(int);
+c++decl> declare << as operator (int) returning S
+S operator<<(int);
+c++decl> declare << as operator (reference to const S, int) returning S
+S operator<<(const S&, int);
+c++decl> declare <<= as operator (int) returning reference to S
+S& operator<<=(int);
+c++decl> declare <= as operator (int) returning bool
+bool operator<=(int);
+c++decl> declare <=> as operator (reference to const S, reference to const S) returning auto
+auto operator<=>(const S&, const S&);
+c++decl> declare = of structure S as default member operator (reference to constant S) returning reference to S
+S& S::operator=(const S&) = default;
+c++decl> declare = of structure S as deleted member operator (reference to constant S) returning reference to S
+S& S::operator=(const S&) = delete;
+c++decl> declare == as operator (S, int) returning bool
+bool operator==(S, int);
+c++decl> declare == as operator (int) returning bool
+bool operator==(int);
+c++decl> declare >= as operator (int) returning bool
+bool operator>=(int);
+c++decl> declare >> as operator (int) returning S
+S operator>>(int);
+c++decl> declare >> as operator (reference to const S, int) returning S
+S operator>>(const S&, int);
+c++decl> declare >>= as operator (int) returning reference to S
+S& operator>>=(int);
+c++decl> declare [] as operator (int, int) returning int
+int operator[](int, int);
+c++decl> declare ^= as operator (int) returning reference to S
+S& operator^=(int);
+c++decl> declare | as operator (int) returning reference to S
+S& operator|(int);
+c++decl> declare |= as operator (int) returning reference to S
+S& operator|=(int);
+c++decl> declare |= as operator (reference to S, int) returning reference to S
+S& operator|=(S&, int);
+c++decl> declare || as operator (reference to const S) returning bool
+bool operator||(const S&);
+c++decl> declare || as operator (reference to const S, reference to const S) returning bool
+bool operator||(const S&, const S&);
+c++decl> declare ~ as operator (reference to const S) returning S
+S operator~(const S&);
+c++decl> declare ~ as operator returning S
+S operator~();
