@@ -1301,22 +1301,6 @@ TESTS+=	tests/explain_+co_eq2_rck_b++default-cpp17.test \
 	tests/explain_yo_exclam_k_b.test
 
 #
-# C++ cast tests
-# ==============
-#
-TESTS+=	tests/cast_+i.test \
-	tests/cast_pmi.test \
-	tests/const_cast_+pi.test \
-	tests/const_cast_pi.test \
-	tests/dynamic_cast_+pc.test \
-	tests/dynamic_cast_pc.test \
-	tests/dynamic_cast_pk.test \
-	tests/reinterpret_cast_+pv.test \
-	tests/reinterpret_cast_pv.test \
-	tests/static_cast_+i.test \
-	tests/static_cast_i.test
-
-#
 # C++ explain cast tests
 # ======================
 #
