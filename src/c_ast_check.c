@@ -573,6 +573,15 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     return false;
   }
 
+  c_ast_t const *const leaf_ast = c_ast_leaf( ast );
+  if ( c_ast_is_tid_any( leaf_ast, TB_AUTO ) ) {
+    print_error( &leaf_ast->loc,
+      "can not cast into \"%s\"\n",
+      c_type_name_error( &leaf_ast->type )
+    );
+    return false;
+  }
+
   c_ast_t const *const raw_ast = c_ast_untypedef( to_ast );
 
   switch ( raw_ast->kind ) {

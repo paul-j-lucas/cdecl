@@ -12,6 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 13.1
 
+** `auto` type definitions and casts
+Defining or casting a type containing `auto` is now correctly reported as an
+error.
+
 ** C23 `auto`
 Added support for `auto` as a deduced type in C23.
 

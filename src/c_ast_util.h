@@ -297,6 +297,16 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
                                       c_tid_t *qual_stids );
 
 /**
+ * Gets the leat AST node starting at \a ast.
+ *
+ * @param ast The AST to start from.  May be NULL.
+ * @return Returns said AST or NULL if \a ast is NULL.
+ *
+ * @sa c_ast_root()
+ */
+c_ast_t const* c_ast_leaf( c_ast_t const *ast );
+
+/**
  * Gets whether the operator is a member, non-member, or unspecified.
  *
  * @param ast The AST of the operator.
@@ -337,6 +347,8 @@ c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list );
  *
  * @param ast The AST node to start from.
  * @return Returns said AST node.
+ *
+ * @sa c_ast_leaf()
  */
 NODISCARD
 c_ast_t* c_ast_root( c_ast_t *ast );

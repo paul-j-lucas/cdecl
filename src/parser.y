@@ -646,6 +646,15 @@ NODISCARD
 static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
   assert( type_ast != NULL );
 
+  c_ast_t const *const leaf_ast = c_ast_leaf( type_ast );
+  if ( c_ast_is_tid_any( leaf_ast, TB_AUTO ) ) {
+    print_error( &leaf_ast->loc,
+      "\"%s\" not allowed in type definition\n",
+      c_type_name_error( &leaf_ast->type )
+    );
+    return false;
+  }
+
   rb_node_t const *const tdef_rb = c_typedef_add( type_ast, gib_flags );
   c_typedef_t const *const tdef = tdef_rb->data;
 

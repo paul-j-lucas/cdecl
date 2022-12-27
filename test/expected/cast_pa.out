@@ -1,0 +1,3 @@
+cast x into pointer to auto
+                       ^
+24: error: can not cast into "auto"

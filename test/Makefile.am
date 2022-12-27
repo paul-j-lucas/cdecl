@@ -757,6 +757,13 @@ TESTS+=	tests/cast_a3i.test \
 	tests/reinterpret_cast_v.test \
 	tests/static_cast_i-c.test
 
+#
+# C++ cast error tests
+# ====================
+#
+TESTS+=	tests/cast_a.test \
+	tests/cast_pa.test
+
 ###############################################################################
 
 #
@@ -877,9 +884,11 @@ TESTS+=	tests/2k_typedef_i.test \
 	tests/ins_ns_typedef_i.test \
 	tests/ns_+typedef_i-c++14.test \
 	tests/ns_c_ns_c.test \
+	tests/typedef_a.test \
 	tests/typedef_ai-c17.test \
 	tests/typedef_c_int_least32_t.test \
 	tests/typedef_eti.test \
+	tests/typedef_pa.test \
 	tests/typedef_rgi.test \
 	tests/typedef_sti.test \
 	tests/typedef_tni.test \

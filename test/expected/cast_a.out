@@ -1,0 +1,3 @@
+cast x into auto
+            ^
+13: error: can not cast into "auto"
