@@ -1183,10 +1183,7 @@ TESTS+=	tests/declare_+o_eq_rck_rk++default-c++03.test \
 # C++ declare user-defined conversion tests
 # =========================================
 #
-TESTS+=	tests/declare_+udc_i.test \
-	tests/declare_ovc_udc_i.test \
-	tests/declare_udc_i.test \
-	tests/declare_udc_rcc.test
+TESTS+=	tests/declare_udc.test
 
 #
 # C++ declare user-defined conversion error tests
