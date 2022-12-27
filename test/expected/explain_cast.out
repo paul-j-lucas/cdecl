@@ -1,0 +1,63 @@
+cdecl> explain (const int)x
+cast x into constant integer
+cdecl> explain (int(*const(*const)[3])[5])x
+cast x into constant pointer to array 3 of constant pointer to array 5 of integer
+cdecl> explain (int(*(*const)[3])[5])x
+cast x into constant pointer to array 3 of pointer to array 5 of integer
+cdecl> explain (const int(*const)[9])x
+cast x into constant pointer to array 9 of constant integer
+cdecl> explain (int(*const)[9])x
+cast x into constant pointer to array 9 of integer
+cdecl> explain (int*(^*const)(void))x
+cast x into constant pointer to block (void) returning pointer to integer
+cdecl> explain (int *const *const)x
+cast x into constant pointer to constant pointer to integer
+cdecl> explain (int*(*const)(void))x
+cast x into constant pointer to function (void) returning pointer to integer
+cdecl> explain (int *const)x
+cast x into constant pointer to integer
+cdecl> explain (int **const)x
+cast x into constant pointer to pointer to integer
+cdecl> explain (int *volatile const)x
+cast x into constant volatile pointer to integer
+cdecl> explain (int const)x
+cast x into constant integer
+cdecl> explain (long long)x
+cast x into long long integer
+cdecl> explain (int (*)[3][5])x
+cast x into pointer to array 3 of array 5 of integer
+cdecl> explain (int (*const (*)[3])[5])x
+cast x into pointer to array 3 of constant pointer to array 5 of integer
+cdecl> explain (int (*(*)[3])[5])x
+cast x into pointer to array 3 of pointer to array 5 of integer
+cdecl> explain (int (*)[9])x
+cast x into pointer to array 9 of integer
+cdecl> explain (const int*)x
+cast x into pointer to constant integer
+cdecl> explain (int *const*)x
+cast x into pointer to constant pointer to integer
+cdecl> explain (int (*)())x
+cast x into pointer to function returning integer
+cdecl> explain (int (*)(char*,int))x
+cast x into pointer to function (pointer to character, integer) returning integer
+cdecl> explain (int (*)(int*))x
+cast x into pointer to function (pointer to integer) returning integer
+cdecl> explain (int* (*)(void))x
+cast x into pointer to function (void) returning pointer to integer
+cdecl> explain (int*)x
+cast x into pointer to integer
+cdecl> explain (int const*)x
+cast x into pointer to constant integer
+cdecl> explain (int**)x
+cast x into pointer to pointer to integer
+cdecl> explain (int *restrict)p
+cast p into restricted pointer to integer
+cdecl> explain (unsigned long long)x
+cast x into unsigned long long integer
+cdecl> explain (int *const volatile)x
+cast x into constant volatile pointer to integer
+cdecl> explain (int *volatile)x
+cast x into volatile pointer to integer
+cdecl> set c++
+c++decl> explain (int&)x
+cast x into reference to integer

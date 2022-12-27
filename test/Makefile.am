@@ -696,7 +696,6 @@ TESTS+=	tests/k_typedef_i-c.test
 #
 # C cast tests
 # ============
-# Almost every test here has a corresponding declare_ and explain_ test.
 #
 TESTS+=	tests/cast_blii_d.test \
 	tests/cast_ci.test \
@@ -769,39 +768,8 @@ TESTS+=	tests/cast_a.test \
 #
 # C explain cast tests
 # ====================
-# Almost every test here has a corresponding cast_ test.
 #
-TESTS+=	tests/explain_cast_ci.test \
-	tests/explain_cast_cpa3cpa5i.test \
-	tests/explain_cast_cpa3pa5i.test \
-	tests/explain_cast_cpa9ci.test \
-	tests/explain_cast_cpa9i.test \
-	tests/explain_cast_cpblv_pi.test \
-	tests/explain_cast_cpcpi.test \
-	tests/explain_cast_cpfv_pi.test \
-	tests/explain_cast_cpi.test \
-	tests/explain_cast_cppi.test \
-	tests/explain_cast_cvpi.test \
-	tests/explain_cast_ic.test \
-	tests/explain_cast_ll.test \
-	tests/explain_cast_pa3a5i.test \
-	tests/explain_cast_pa3cpa5i.test \
-	tests/explain_cast_pa3pa5i.test \
-	tests/explain_cast_pa9i.test \
-	tests/explain_cast_pci.test \
-	tests/explain_cast_pcpi.test \
-	tests/explain_cast_pf_i.test \
-	tests/explain_cast_pfpci_i.test \
-	tests/explain_cast_pfpi_i.test \
-	tests/explain_cast_pfv_pi.test \
-	tests/explain_cast_pi.test \
-	tests/explain_cast_pic.test \
-	tests/explain_cast_ppi.test \
-	tests/explain_cast_ri.test \
-	tests/explain_cast_rtpi.test \
-	tests/explain_cast_ull.test \
-	tests/explain_cast_vcpi.test \
-	tests/explain_cast_vpi.test
+TESTS+=	tests/explain_cast.test
 
 #
 # C explain cast error tests

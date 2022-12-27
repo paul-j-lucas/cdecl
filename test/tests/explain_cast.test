@@ -1,0 +1,36 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+explain (const int)x
+explain (int(*const(*const)[3])[5])x
+explain (int(*(*const)[3])[5])x
+explain (const int(*const)[9])x
+explain (int(*const)[9])x
+explain (int*(^*const)(void))x
+explain (int *const *const)x
+explain (int*(*const)(void))x
+explain (int *const)x
+explain (int **const)x
+explain (int *volatile const)x
+explain (int const)x
+explain (long long)x
+explain (int (*)[3][5])x
+explain (int (*const (*)[3])[5])x
+explain (int (*(*)[3])[5])x
+explain (int (*)[9])x
+explain (const int*)x
+explain (int *const*)x
+explain (int (*)())x
+explain (int (*)(char*,int))x
+explain (int (*)(int*))x
+explain (int* (*)(void))x
+explain (int*)x
+explain (int const*)x
+explain (int**)x
+explain (int *restrict)p
+explain (unsigned long long)x
+explain (int *const volatile)x
+explain (int *volatile)x
+
+set c++
+explain (int&)x
+END
