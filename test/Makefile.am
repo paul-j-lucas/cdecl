@@ -29,7 +29,6 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 TESTS =	tests/cdecl--kolor.test \
 	tests/cdecl--no-semicolon.test \
 	tests/cdecl--no-typedefs.test \
-	tests/cdecl-9.test \
 	tests/cdecl-Ii.test \
 	tests/cdecl-Iiu.test \
 	tests/cdecl-Il.test \
@@ -47,9 +46,7 @@ TESTS =	tests/cdecl--kolor.test \
 	tests/cdecl-Ix.test \
 	tests/cdecl-Sx.test \
 	tests/cdecl-h.test \
-	tests/cdecl-k.test \
 	tests/cdecl-knever.test \
-	tests/cdecl-kxxx.test \
 	tests/cdecl-s.test \
 	tests/cdecl-t.test
 
@@ -62,6 +59,9 @@ endif
 # ===============================
 #
 TESTS+=	tests/cdecl-23.test \
+	tests/cdecl-9.test \
+	tests/cdecl-k.test \
+	tests/cdecl-kxxx.test \
 	tests/cdecl-xx.test
 
 ###############################################################################
