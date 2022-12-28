@@ -67,8 +67,8 @@ TESTS+=	tests/cdecl--kolor.test \
 ###############################################################################
 
 #
-# C declare tests
-# ===============
+# Declare tests
+# =============
 #
 TESTS+=	tests/declare.test
 
@@ -171,6 +171,33 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_xxi-c17.test \
 	tests/explain_a_us_i.test \
 	tests/k_declare_i.test
+
+#
+# C++ declare error tests
+# =======================
+#
+TESTS+=	tests/declare_+ctor-error.test \
+	tests/declare_a_cd_i.test \
+	tests/declare_a_nua_f.test \
+	tests/declare_ai-c++11.test \
+	tests/declare_ari.test \
+	tests/declare_ati-c++20.test \
+	tests/declare_cnmf_v.test \
+	tests/declare_epf.test \
+	tests/declare_exsti.test \
+	tests/declare_fcf.test \
+	tests/declare_fco_exclam_b.test \
+	tests/declare_nrfi_v-01-c++.test \
+	tests/declare_pmri.test \
+	tests/declare_pri.test \
+	tests/declare_rrgi.test \
+	tests/declare_rv.test \
+	tests/declare_stctor.test \
+	tests/declare_stmi.test \
+	tests/declare_th_f_v.test \
+	tests/declare_udl_pcci_i.test \
+	tests/declare_v+f_v.test \
+	tests/declare_xvi.test
 
 ###############################################################################
 
@@ -342,6 +369,73 @@ TESTS+=	tests/explain_+i-c.test \
 # ===================
 #
 TESTS+=	tests/k_typedef_i-c.test
+
+#
+# C++ explain error tests
+# =======================
+#
+TESTS+=	tests/explain_+ctor-error.test \
+	tests/explain_+dtor-error.test \
+	tests/explain_0f_v-03.test \
+	tests/explain_2i-redef-c++.test \
+	tests/explain_a_cd_i.test \
+	tests/explain_a_nua_f.test \
+	tests/explain_af-c++11.test \
+	tests/explain_ai-c++11.test \
+	tests/explain_ari.test \
+	tests/explain_ati-c++20.test \
+	tests/explain_cepctor_i.test \
+	tests/explain_cftsrk_v.test \
+	tests/explain_cri.test \
+	tests/explain_ctor_2i++default.test \
+	tests/explain_ecf_v-Rstr-03.test \
+	tests/explain_efd.test \
+	tests/explain_enc.test \
+	tests/explain_enk.test \
+	tests/explain_epudc_b-c++03.test \
+	tests/explain_exsti.test \
+	tests/explain_f+_v.test \
+	tests/explain_f__v-c++03.test \
+	tests/explain_f_v++default.test \
+	tests/explain_f_v__v.test \
+	tests/explain_fa_v-c++17.test \
+	tests/explain_fac3_v-c++.test \
+	tests/explain_fast3_v-c++.test \
+	tests/explain_fav_v-c++.test \
+	tests/explain_fkr_v.test \
+	tests/explain_fpcf_i_v.test \
+	tests/explain_frri_v-c++03.test \
+	tests/explain_fstf_v.test \
+	tests/explain_i+w3.test \
+	tests/explain_ktnk.test \
+	tests/explain_nrfi_v-c++-error.test \
+	tests/explain_p_typedef_ri.test \
+	tests/explain_pcf_i.test \
+	tests/explain_pmrgi.test \
+	tests/explain_pri.test \
+	tests/explain_prri.test \
+	tests/explain_rf_i.test \
+	tests/explain_rf_v-c++03.test \
+	tests/explain_rftsrk_v.test \
+	tests/explain_rr.test \
+	tests/explain_rrf_v-c++03.test \
+	tests/explain_rrgi.test \
+	tests/explain_rrr-1.test \
+	tests/explain_rrr-2.test \
+	tests/explain_rrrr.test \
+	tests/explain_rtpi-c++-error.test \
+	tests/explain_rv.test \
+	tests/explain_stcf_v.test \
+	tests/explain_stftsrk_v.test \
+	tests/explain_stmi.test \
+	tests/explain_strf_v.test \
+	tests/explain_strrf_v.test \
+	tests/explain_th_f_v.test \
+	tests/explain_unknown_attribute.test \
+	tests/explain_v+f_v.test \
+	tests/explain_vftsrk_v.test \
+	tests/explain_xif_i.test \
+	tests/explain_xxf_v-c++11.test
 
 ###############################################################################
 
@@ -546,33 +640,6 @@ TESTS+=	tests/declare_config_tdu.test \
 ###############################################################################
 
 #
-# C++ declare error tests
-# =======================
-#
-TESTS+=	tests/declare_+ctor-error.test \
-	tests/declare_a_cd_i.test \
-	tests/declare_a_nua_f.test \
-	tests/declare_ai-c++11.test \
-	tests/declare_ari.test \
-	tests/declare_ati-c++20.test \
-	tests/declare_cnmf_v.test \
-	tests/declare_epf.test \
-	tests/declare_exsti.test \
-	tests/declare_fcf.test \
-	tests/declare_fco_exclam_b.test \
-	tests/declare_nrfi_v-01-c++.test \
-	tests/declare_pmri.test \
-	tests/declare_pri.test \
-	tests/declare_rrgi.test \
-	tests/declare_rv.test \
-	tests/declare_stctor.test \
-	tests/declare_stmi.test \
-	tests/declare_th_f_v.test \
-	tests/declare_udl_pcci_i.test \
-	tests/declare_v+f_v.test \
-	tests/declare_xvi.test
-
-#
 # C++ declare operator tests
 # ==========================
 #
@@ -631,73 +698,6 @@ TESTS+=	tests/declare_udc_a4i.test
 #
 TESTS+=	tests/declare_+udl_c_i.test \
 	tests/explain_udl_pccz_ul.test
-
-#
-# C++ explain error tests
-# =======================
-#
-TESTS+=	tests/explain_+ctor-error.test \
-	tests/explain_+dtor-error.test \
-	tests/explain_0f_v-03.test \
-	tests/explain_2i-redef-c++.test \
-	tests/explain_a_cd_i.test \
-	tests/explain_a_nua_f.test \
-	tests/explain_af-c++11.test \
-	tests/explain_ai-c++11.test \
-	tests/explain_ari.test \
-	tests/explain_ati-c++20.test \
-	tests/explain_cepctor_i.test \
-	tests/explain_cftsrk_v.test \
-	tests/explain_cri.test \
-	tests/explain_ctor_2i++default.test \
-	tests/explain_ecf_v-Rstr-03.test \
-	tests/explain_efd.test \
-	tests/explain_enc.test \
-	tests/explain_enk.test \
-	tests/explain_epudc_b-c++03.test \
-	tests/explain_exsti.test \
-	tests/explain_f+_v.test \
-	tests/explain_f__v-c++03.test \
-	tests/explain_f_v++default.test \
-	tests/explain_f_v__v.test \
-	tests/explain_fa_v-c++17.test \
-	tests/explain_fac3_v-c++.test \
-	tests/explain_fast3_v-c++.test \
-	tests/explain_fav_v-c++.test \
-	tests/explain_fkr_v.test \
-	tests/explain_fpcf_i_v.test \
-	tests/explain_frri_v-c++03.test \
-	tests/explain_fstf_v.test \
-	tests/explain_i+w3.test \
-	tests/explain_ktnk.test \
-	tests/explain_nrfi_v-c++-error.test \
-	tests/explain_p_typedef_ri.test \
-	tests/explain_pcf_i.test \
-	tests/explain_pmrgi.test \
-	tests/explain_pri.test \
-	tests/explain_prri.test \
-	tests/explain_rf_i.test \
-	tests/explain_rf_v-c++03.test \
-	tests/explain_rftsrk_v.test \
-	tests/explain_rr.test \
-	tests/explain_rrf_v-c++03.test \
-	tests/explain_rrgi.test \
-	tests/explain_rrr-1.test \
-	tests/explain_rrr-2.test \
-	tests/explain_rrrr.test \
-	tests/explain_rtpi-c++-error.test \
-	tests/explain_rv.test \
-	tests/explain_stcf_v.test \
-	tests/explain_stftsrk_v.test \
-	tests/explain_stmi.test \
-	tests/explain_strf_v.test \
-	tests/explain_strrf_v.test \
-	tests/explain_th_f_v.test \
-	tests/explain_unknown_attribute.test \
-	tests/explain_v+f_v.test \
-	tests/explain_vftsrk_v.test \
-	tests/explain_xif_i.test \
-	tests/explain_xxf_v-c++11.test
 
 #
 # C++ explain operator tests
