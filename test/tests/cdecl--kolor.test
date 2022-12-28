@@ -1,4 +1,2 @@
 EXPECTED_EXIT=64
-cdecl --kolor <<END
-
-END
+echo | cdecl --kolor

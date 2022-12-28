@@ -1,8 +1,16 @@
+cdecl> declare x as short
 short int x;
+cdecl> declare x as int
 int x;
+cdecl> declare x as long
 long int x;
+cdecl> declare x as long long
 long long int x;
+cdecl> declare x as unsigned short
 unsigned short int x;
+cdecl> declare x as unsigned
 unsigned int x;
+cdecl> declare x as unsigned long
 unsigned long int x;
+cdecl> declare x as unsigned long long
 unsigned long long int x;

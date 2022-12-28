@@ -1,4 +1,2 @@
 EXPECTED_EXIT=64
-cdecl -xc++ -Sx <<END
-
-END
+echo | cdecl -xc++ -Sx

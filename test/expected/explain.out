@@ -544,14 +544,6 @@ c++decl> explain using f = void (*)(int)
 declare f as type pointer to function (integer) returning void
 c++decl> explain using v3 = int[3]
 declare v3 as type array 3 of integer
-c++decl> explain virtual S& operator+(S&) = 0
-declare + as pure virtual member operator (reference to S) returning reference to S
-c++decl> explain virtual S& operator++(int) = 0
-declare ++ as pure virtual member operator (integer) returning reference to S
-c++decl> explain virtual S& operator-(S&) = 0
-declare - as pure virtual member operator (reference to S) returning reference to S
-c++decl> explain virtual S& operator--(int) = 0
-declare -- as pure virtual member operator (integer) returning reference to S
 c++decl> explain virtual compl C()
 declare C as virtual destructor
 c++decl> explain virtual short main()
@@ -604,54 +596,6 @@ c++decl> explain ~C()
 declare C as destructor
 c++decl> explain ~C() final
 declare C as final virtual destructor
-c++decl> explain S& operator+(S&) &
-declare + as reference member operator (reference to S) returning reference to S
-c++decl> explain S& operator+(S&) &&
-declare + as rvalue reference member operator (reference to S) returning reference to S
-c++decl> explain S& operator+(S&) const
-declare + as constant member operator (reference to S) returning reference to S
-c++decl> explain S& operator+(S&) final
-declare + as final virtual member operator (reference to S) returning reference to S
-c++decl> explain S& operator+(S&) override
-declare + as overridden virtual member operator (reference to S) returning reference to S
-c++decl> explain S& operator+(S&) volatile
-declare + as volatile member operator (reference to S) returning reference to S
-c++decl> explain S& operator++(int) &
-declare ++ as reference member operator (integer) returning reference to S
-c++decl> explain S& operator++(int) &&
-declare ++ as rvalue reference member operator (integer) returning reference to S
-c++decl> explain S& operator++(int) const
-declare ++ as constant member operator (integer) returning reference to S
-c++decl> explain S& operator++(int) final
-declare ++ as final virtual member operator (integer) returning reference to S
-c++decl> explain S& operator++(int) override
-declare ++ as overridden virtual member operator (integer) returning reference to S
-c++decl> explain S& operator++(int) volatile
-declare ++ as volatile member operator (integer) returning reference to S
-c++decl> explain S& operator-(S&) &
-declare - as reference member operator (reference to S) returning reference to S
-c++decl> explain S& operator-(S&) &&
-declare - as rvalue reference member operator (reference to S) returning reference to S
-c++decl> explain S& operator-(S&) const
-declare - as constant member operator (reference to S) returning reference to S
-c++decl> explain S& operator-(S&) final
-declare - as final virtual member operator (reference to S) returning reference to S
-c++decl> explain S& operator-(S&) override
-declare - as overridden virtual member operator (reference to S) returning reference to S
-c++decl> explain S& operator-(S&) volatile
-declare - as volatile member operator (reference to S) returning reference to S
-c++decl> explain S& operator--(int) &
-declare -- as reference member operator (integer) returning reference to S
-c++decl> explain S& operator--(int) &&
-declare -- as rvalue reference member operator (integer) returning reference to S
-c++decl> explain S& operator--(int) const
-declare -- as constant member operator (integer) returning reference to S
-c++decl> explain S& operator--(int) final
-declare -- as final virtual member operator (integer) returning reference to S
-c++decl> explain S& operator--(int) override
-declare -- as overridden virtual member operator (integer) returning reference to S
-c++decl> explain S& operator--(int) volatile
-declare -- as volatile member operator (integer) returning reference to S
 c++decl> namespace N { class C { typedef int I; }; }
 c++decl> explain N::C::I x
 declare x as I of class C of namespace N

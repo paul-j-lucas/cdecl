@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -Ius <<END
+cdecl -Ius -O <<END
 declare x as short
 declare x as int
 declare x as long

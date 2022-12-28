@@ -275,10 +275,6 @@ explain struct [[maybe_unused]] S s
 explain using Int [[maybe_unused]] = int
 explain using f = void (*)(int)
 explain using v3 = int[3]
-explain virtual S& operator+(S&) = 0
-explain virtual S& operator++(int) = 0
-explain virtual S& operator-(S&) = 0
-explain virtual S& operator--(int) = 0
 explain virtual compl C()
 explain virtual short main()
 explain virtual void f()
@@ -305,31 +301,6 @@ explain void f([[maybe_unused]] int x)
 explain void f(auto)
 explain ~C()
 explain ~C() final
-
-explain S& operator+(S&) &
-explain S& operator+(S&) &&
-explain S& operator+(S&) const
-explain S& operator+(S&) final
-explain S& operator+(S&) override
-explain S& operator+(S&) volatile
-explain S& operator++(int) &
-explain S& operator++(int) &&
-explain S& operator++(int) const
-explain S& operator++(int) final
-explain S& operator++(int) override
-explain S& operator++(int) volatile
-explain S& operator-(S&) &
-explain S& operator-(S&) &&
-explain S& operator-(S&) const
-explain S& operator-(S&) final
-explain S& operator-(S&) override
-explain S& operator-(S&) volatile
-explain S& operator--(int) &
-explain S& operator--(int) &&
-explain S& operator--(int) const
-explain S& operator--(int) final
-explain S& operator--(int) override
-explain S& operator--(int) volatile
 
 namespace N { class C { typedef int I; }; }
 explain N::C::I x

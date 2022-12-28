@@ -1,4 +1,2 @@
 EXPECTED_EXIT=0
-cdecl -h <<END
-
-END
+echo | cdecl -h

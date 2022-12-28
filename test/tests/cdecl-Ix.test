@@ -1,4 +1,2 @@
 EXPECTED_EXIT=64
-cdecl -Ix <<END
-
-END
+echo | cdecl -Ix

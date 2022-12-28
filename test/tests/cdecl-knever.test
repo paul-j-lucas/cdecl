@@ -1,4 +1,2 @@
 EXPECTED_EXIT=0
-cdecl -k never <<END
-
-END
+echo | cdecl -k never

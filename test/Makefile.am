@@ -26,8 +26,7 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 # Command-line option tests
 # =========================
 #
-TESTS =	tests/cdecl--kolor.test \
-	tests/cdecl--no-semicolon.test \
+TESTS =	tests/cdecl--no-semicolon.test \
 	tests/cdecl--no-typedefs.test \
 	tests/cdecl-Ii.test \
 	tests/cdecl-Iiu.test \
@@ -58,7 +57,8 @@ endif
 # Command-line option error tests
 # ===============================
 #
-TESTS+=	tests/cdecl-23.test \
+TESTS+=	tests/cdecl--kolor.test \
+	tests/cdecl-23.test \
 	tests/cdecl-9.test \
 	tests/cdecl-k.test \
 	tests/cdecl-kxxx.test \
