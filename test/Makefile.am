@@ -203,7 +203,7 @@ TESTS+=	tests/declare_+ctor-error.test \
 
 #
 # Explain tests
-# ===============
+# =============
 #
 TESTS+=	tests/explain.test
 
