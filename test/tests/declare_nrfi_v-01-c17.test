@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc17 <<END
-declare f as _Noreturn function (int) returning void
-END

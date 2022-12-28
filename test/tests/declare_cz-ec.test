@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl --east-const <<END
-declare x as const size_t
-END

@@ -1,1 +1,0 @@
-alignas(4) enum E x;

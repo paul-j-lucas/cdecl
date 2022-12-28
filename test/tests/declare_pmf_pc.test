@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-declare p as pointer to member of class C function returning pointer to class D
-END

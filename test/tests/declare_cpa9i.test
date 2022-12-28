@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-declare a as const pointer to array 9 of int
-END

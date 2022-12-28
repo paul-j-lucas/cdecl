@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-declare x as extern array 2 of int
-END

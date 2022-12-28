@@ -1,1 +1,0 @@
-void f([[deprecated]] int x);

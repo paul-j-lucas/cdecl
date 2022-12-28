@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-declare x as type pointer to function (char) returning int
-END

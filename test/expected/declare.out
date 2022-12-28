@@ -1,0 +1,486 @@
+cdecl> struct S
+cdecl> declare a as array 3 of array 5 of array 7 of int
+int a[3][5][7];
+cdecl> declare a as array 3 of array 5 of int
+int a[3][5];
+cdecl> declare a as array 3 of array 5 of pointer to function (void) returning int
+int (*a[3][5])(void);
+cdecl> declare a as array 3 of array 5 of pointer to function (void) returning pointer to int
+int* (*a[3][5])(void);
+cdecl> declare a as array 3 of array 5 of pointer to function (void) returning pointer to pointer to array 7 of array 9 of int
+int (**(*a[3][5])(void))[7][9];
+cdecl> declare a as array 3 of array 5 of pointer to function (void) returning pointer to pointer to array 7 of array 9 of pointer to char
+char* (**(*a[3][5])(void))[7][9];
+cdecl> declare a as array 3 of array 5 of pointer to function (void) returning pointer to pointer to array 7 of int
+int (**(*a[3][5])(void))[7];
+cdecl> declare a as array 3 of array 5 of pointer to function (void) returning pointer to pointer to array 7 of pointer to int
+int* (**(*a[3][5])(void))[7];
+cdecl> declare a as array 3 of array 5 of pointer to function (void) returning pointer to pointer to int
+int** (*a[3][5])(void);
+cdecl> declare a as array 3 of pointer to function (void) returning int
+int (*a[3])(void);
+cdecl> declare a as array 3 of pointer to pointer to function (void) returning int
+int (**a[3])(void);
+cdecl> declare a as array 9 of const pointer to int
+int *const a[9];
+cdecl> declare a as array 9 of int
+int a[9];
+cdecl> declare a as array 9 of pointer to int
+int *a[9];
+cdecl> declare f as function
+void f();
+cdecl> declare f as function (fmt as pointer to const char, ...) returning void
+void f(const char *fmt, ...);
+cdecl> declare f as function (fmt as pointer to const char, varargs) returning void
+void f(const char *fmt, ...);
+cdecl> declare f as function (fmt as pointer to const char, variadic) returning void
+void f(const char *fmt, ...);
+cdecl> declare f as function (g as function returning int) returning void
+void f(int (*g)());
+cdecl> declare f as function (g as pointer to function (c as char) returning int) returning double
+double f(int (*g)(char c));
+cdecl> declare f as function (i as int, d as double) returning void
+void f(int i, double d);
+cdecl> declare f as function (pointer to char) returning pointer to int
+int* f(char*);
+cdecl> declare f as function (pointer to char, int) returning pointer to int
+int* f(char*, int);
+cdecl> declare f as function (void) returning pointer to array 3 of array 5 of int
+int (*f(void))[3][5];
+cdecl> declare f as function (void) returning pointer to array 3 of array 5 of pointer to int
+int* (*f(void))[3][5];
+cdecl> declare f as function (void) returning pointer to array 3 of int
+int (*f(void))[3];
+cdecl> declare f as function (void) returning pointer to array 3 of pointer to int
+int* (*f(void))[3];
+cdecl> declare f as function (void) returning void
+void f(void);
+cdecl> declare f as function (x as array const of int) returning void
+void f(int x[const]);
+cdecl> declare f as function (x as array static 3 of int) returning void
+void f(int x[static 3]);
+cdecl> declare f as function (x as array static const 3 of int) returning void
+void f(int x[static const 3]);
+cdecl> declare f as function (x as int, y as int) returning void
+void f(int x, int y);
+cdecl> declare f as function (x as variable length array const of int) returning void
+void f(int x[const*]);
+cdecl> declare f as function (x as variable length array of int) returning void
+void f(int x[*]);
+cdecl> declare f as function returning pointer to int
+int* f();
+cdecl> declare f as inline function returning void
+inline void f();
+cdecl> declare f as static function returning void
+static void f();
+cdecl> declare f as static inline function returning void
+static inline void f();
+cdecl> declare p as const pointer to array 3 of const pointer to array 5 of int
+int (*const (*const p)[3])[5];
+cdecl> declare p as const pointer to array 3 of pointer to array 5 of int
+int (*(*const p)[3])[5];
+cdecl> declare p as const pointer to array 9 of const int
+const int (*const p)[9];
+cdecl> declare p as const pointer to array 9 of int
+int (*const p)[9];
+cdecl> declare p as const pointer to block (void) returning pointer to int
+int* (^*const p)(void);
+cdecl> declare p as const pointer to const pointer to int
+int *const *const p;
+cdecl> declare p as const pointer to function (void) returning pointer to int
+int* (*const p)(void);
+cdecl> declare p as const pointer to int
+int *const p;
+cdecl> declare p as const pointer to pointer to int
+int **const p;
+cdecl> declare p as const volatile pointer to int
+int *const volatile p;
+cdecl> declare p as pointer to array 3 of const pointer to array 5 of int
+int (*const (*p)[3])[5];
+cdecl> declare p as pointer to array 3 of pointer to array 5 of int
+int (*(*p)[3])[5];
+cdecl> declare p as pointer to array 9 of int
+int (*p)[9];
+cdecl> declare p as pointer to atomic int
+_Atomic int *p;
+cdecl> declare p as pointer to block (void) returning pointer to int
+int* (^*p)(void);
+cdecl> declare p as pointer to function (void) returning pointer to int
+int* (*p)(void);
+cdecl> declare p as pointer to int
+int *p;
+cdecl> declare p as pointer to pointer to int
+int **p;
+cdecl> declare signal as func (sig as int, f as ptr to func (int) ret void) ret ptr to func (int) ret void
+void (*signal(int sig, void (*f)(int)))(int);
+cdecl> declare x as Boolean
+bool x;
+cdecl> declare x as _Atomic int
+_Atomic int x;
+cdecl> declare x as _BitInt 4
+_BitInt(4) x;
+cdecl> declare x as _BitInt 4 bits
+_BitInt(4) x;
+cdecl> declare x as _BitInt width 4
+_BitInt(4) x;
+cdecl> declare x as _BitInt width 4 bits
+_BitInt(4) x;
+cdecl> declare x as _BitInt(4)
+_BitInt(4) x;
+cdecl> declare x as atomic int
+_Atomic int x;
+cdecl> declare x as atomic pointer to int
+int *_Atomic x;
+cdecl> declare x as auto int
+                         ^
+19: syntax error: "int": unexpected token ("int" is a keyword)
+auto x;
+cdecl> declare x as block (x as int, y as int) returning double
+double (^x)(int x, int y);
+cdecl> declare x as bool
+bool x;
+cdecl> declare x as boolean
+bool x;
+cdecl> declare x as char aligned as 0 bytes
+alignas(0) char x;
+cdecl> declare x as char aligned as 8 bytes
+alignas(8) char x;
+cdecl> declare x as char aligned as pointer to void
+alignas(void*) char x;
+cdecl> declare x as complex double
+_Complex double x;
+cdecl> declare x as complex float
+_Complex float x;
+cdecl> declare x as const unsigned
+const unsigned x;
+cdecl> declare x as const volatile pointer to int
+int *const volatile x;
+cdecl> declare x as constant int
+const int x;
+cdecl> declare x as enum E
+enum E x;
+cdecl> declare x as enum E aligned 4
+alignas(4) enum E x;
+cdecl> declare x as extern array 2 of int
+extern int x[2];
+cdecl> declare x as imaginary double
+_Imaginary double x;
+cdecl> declare x as imaginary float
+_Imaginary float x;
+cdecl> declare x as long double
+long double x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as signed char
+signed char x;
+cdecl> declare x as signed int
+int x;
+cdecl> declare x as signed long long
+long long x;
+cdecl> declare x as size_t
+size_t x;
+cdecl> declare x as size_t width 3 bits
+size_t x : 3;
+cdecl> declare x as ssize_t
+ssize_t x;
+cdecl> declare x as static array 2 of int
+static int x[2];
+cdecl> declare x as struct S
+struct S x;
+cdecl> declare x as type int
+typedef int x;
+cdecl> declare x as type pointer to function (char) returning int
+typedef int (*x)(char);
+cdecl> declare x as typedef int
+typedef int x;
+cdecl> declare x as union U
+union U x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned char
+unsigned char x;
+cdecl> declare x as unsigned int
+unsigned x;
+cdecl> declare x as unsigned long long
+unsigned long long x;
+cdecl> declare x as unsigned width 3 bits
+unsigned x : 3;
+cdecl> declare x as volatile pointer to int
+int *volatile x;
+cdecl> declare x as wchar_t
+wchar_t x;
+cdecl> declare x, y as array 4 of int
+int x[4], y[4];
+cdecl> declare x, y as int
+int x, y;
+cdecl> declare x, y as pointer to function (int, double) returning pointer to char
+char *(*x)(int, double), *(*y)(int, double);
+cdecl> declare x, y as pointer to function (int, double) returning pointer to const char
+const char *(*x)(int, double), *(*y)(int, double);
+cdecl> declare x, y as pointer to function (int, double) returning void
+void (*x)(int, double), (*y)(int, double);
+cdecl> declare x, y as pointer to int
+int *x, *y;
+cdecl> declare x as register int
+register int x;
+cdecl> declare f as function (i as register int) returning void
+void f(register int i);
+cdecl> declare f as cdecl function
+void __cdecl f();
+cdecl> declare p as pointer to cdecl function
+void (__cdecl *p)();
+cdecl> declare x as const int
+const int x;
+cdecl> declare x as const S
+const S x;
+cdecl> declare x as const size_t
+const size_t x;
+cdecl> declare x as const struct S
+const struct S x;
+cdecl> declare p as pointer to const int
+const int *p;
+cdecl> declare p as pointer to const pointer to int
+int *const *p;
+cdecl> set east-const
+cdecl> declare x as const int
+int const x;
+cdecl> declare x as const S
+S const x;
+cdecl> declare x as const size_t
+size_t const x;
+cdecl> declare x as const struct S
+struct S const x;
+cdecl> declare p as pointer to const int
+int const *p;
+cdecl> declare p as pointer to const pointer to int
+int *const *p;
+cdecl> set noeast-const
+cdecl> set knr
+cdecl> declare f as function (x) returning pointer to int
+int* f(x);
+cdecl> declare x as const int
+__const int x;
+cdecl> declare x as long float
+long float x;
+cdecl> declare x as volatile int
+__volatile int x;
+cdecl> set c89
+cdecl> declare f as function (i as register) returning void
+void f(register int i);
+cdecl> declare p as pointer to function (x) returning int
+                                         ^
+35: warning: missing type specifier; int assumed
+int (*p)(int x);
+cdecl> set c17
+cdecl> declare f as function (x) returning pointer to int
+                              ^
+24: warning: missing type specifier; int assumed
+int* f(int x);
+cdecl> declare f as _Noreturn function (int) returning void
+_Noreturn void f(int);
+cdecl> declare f as non-returning function (int) returning void
+_Noreturn void f(int);
+cdecl> declare f as noreturn function (int) returning void
+_Noreturn void f(int);
+cdecl> declare x as __auto_type
+__auto_type x;
+cdecl> declare x as bool
+_Bool x;
+cdecl> declare x as char aligned as 8 bytes
+_Alignas(8) char x;
+cdecl> set c++
+c++decl> declare C as constructor
+C();
+c++decl> declare C as constructor (int)
+C(int);
+c++decl> declare C as destructor
+~C();
+c++decl> declare C as explicit constructor (int)
+explicit C(int);
+c++decl> declare C as virtual destructor
+virtual ~C();
+c++decl> declare C of class C as destructor
+C::~C();
+c++decl> declare S::T::f as function
+void S::T::f();
+c++decl> declare S::f as function
+void S::f();
+c++decl> declare c as char aligned as 0 bytes
+alignas(0) char c;
+c++decl> declare c as char aligned as 8 bytes
+alignas(8) char c;
+c++decl> declare delete as operator (p as pointer to void) returning void
+void operator delete(void *p);
+c++decl> declare delete[] as operator (p as pointer to void) returning void
+void operator delete[](void *p);
+c++decl> declare f as carries-dependency function (x as carries-dependency int) returning int
+[[carries_dependency]] int f([[carries_dependency]] int x);
+c++decl> declare f as carries-dependency function (x as int) returning int
+[[carries_dependency]] int f(int x);
+c++decl> declare f as consteval function returning int
+consteval int f();
+c++decl> declare f as exported function returning int
+export int f();
+c++decl> declare f as external "C" linkage function returning void
+extern "C" void f();
+c++decl> declare f as final function
+void f() final;
+c++decl> declare f as friend function
+friend void f();
+c++decl> declare f as function (r as rvalue reference to int) returning void
+void f(int &&r);
+c++decl> declare f as function (self as this reference to S) returning void
+void f(this S &self);
+c++decl> declare f as function (x as S::T)
+                                ^
+24: error: type specifier required in C++
+c++decl> declare f as function (x as carries-dependency int) returning int
+int f([[carries_dependency]] int x);
+c++decl> declare f as function (x as deprecated int)
+void f([[deprecated]] int x);
+c++decl> declare f as function (x as maybe-unused int)
+void f([[maybe_unused]] int x);
+c++decl> declare f as function (x as maybe_unused int)
+void f([[maybe_unused]] int x);
+c++decl> declare f as function returning auto
+auto f();
+c++decl> declare f as function returning pointer to member of class C int
+int C::* f();
+c++decl> declare f as function returning pointer to member of class C pointer to int
+int* C::* f();
+c++decl> declare f as deprecated function returning void
+[[deprecated]] void f();
+c++decl> declare f as maybe unused int
+[[maybe_unused]] int f;
+c++decl> declare x as maybe-unused int
+[[maybe_unused]] int x;
+c++decl> declare x as maybe_unused int
+[[maybe_unused]] int x;
+c++decl> declare f as maybe unused function
+[[maybe_unused]] void f();
+c++decl> declare f as maybe-unused function
+[[maybe_unused]] void f();
+c++decl> declare f as maybe_unused function
+[[maybe_unused]] void f();
+c++decl> declare f as nodiscard function returning int
+[[nodiscard]] int f();
+c++decl> declare f as no discard function returning int
+[[nodiscard]] int f();
+c++decl> declare f as non-discardable function returning int
+[[nodiscard]] int f();
+c++decl> declare f as noexcept function
+void f() noexcept;
+c++decl> declare f as no except function
+void f() noexcept;
+c++decl> declare f as non-throwing function returning void
+                 ^
+9: error: "throw" not supported since C++17; did you mean "noexcept"?
+c++decl> declare f as noreturn function (int) returning void
+[[noreturn]] void f(int);
+c++decl> declare f as no return function (int) returning void
+[[noreturn]] void f(int);
+c++decl> declare f as non-returning function (int) returning void
+[[noreturn]] void f(int);
+c++decl> declare f as override final function
+void f() final;
+c++decl> declare f as overridden final function
+void f() final;
+c++decl> declare f as pure virtual function returning void
+virtual void f() = 0;
+c++decl> declare f as restricted function
+void f() __restrict;
+c++decl> declare f as reference function returning void
+void f() &;
+c++decl> declare f as rvalue reference function returning void
+void f() &&;
+c++decl> declare f as const reference function returning void
+void f() const &;
+c++decl> declare f as const rvalue reference function returning void
+void f() const &&;
+c++decl> declare f as virtual function returning void
+virtual void f();
+c++decl> declare f as virtual override final function
+void f() final;
+c++decl> declare final as int
+                       ^
+15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
+c++decl> declare x as constexpr int
+constexpr int x;
+c++decl> declare x as const expression int
+constexpr int x;
+c++decl> declare x as constant expression int
+constexpr int x;
+c++decl> declare new as operator (n as std::size_t) returning pointer to void
+void* operator new(std::size_t n);
+c++decl> declare new[] as operator (n as std::size_t) returning pointer to void
+void* operator new[](std::size_t n);
+c++decl> declare p as const pointer to member of class C int
+int C::*const p;
+c++decl> declare p as pointer to member of class C const int
+const int C::*p;
+c++decl> declare p as pointer to member of class C function returning int
+int (C::*p)();
+c++decl> declare p as pointer to member of class C function returning pointer to class D
+D* (C::*p)();
+c++decl> declare p as pointer to member of class C function returning pointer to int
+int* (C::*p)();
+c++decl> declare p as pointer to member of class C function returning pointer to struct S
+struct S* (C::*p)();
+c++decl> declare p as pointer to member of class C int
+int C::*p;
+c++decl> declare p as restricted pointer to int
+int *__restrict p;
+c++decl> declare r as reference to array 3 of int
+int (&r)[3];
+c++decl> declare x as auto
+auto x;
+c++decl> declare x as bool
+bool x;
+c++decl> declare x as class C
+C x;
+c++decl> declare x as constinit constant int
+constinit const int x;
+c++decl> declare x as deprecated maybe-unused int
+[[deprecated,maybe_unused]] int x;
+c++decl> declare x as enum E
+E x;
+c++decl> declare x as enum E of type int
+enum E : int x;
+c++decl> declare x as enum class C
+C x;
+c++decl> declare x as enum struct C
+C x;
+c++decl> declare x as enumeration E width 3 bits
+E x : 3;
+c++decl> declare x as exported int
+export int x;
+c++decl> declare x as inline int
+inline int x;
+c++decl> declare x as mutable int
+mutable int x;
+c++decl> declare x as pointer to function (void) returning reference to int
+int& (*x)(void);
+c++decl> declare x as ref to int
+int &x;
+c++decl> declare x as reference to const int
+const int &x;
+c++decl> declare x as reference to const pointer to int
+int *const &x;
+c++decl> declare x as reference to int
+int &x;
+c++decl> declare x as reference to pointer to int
+int *&x;
+c++decl> declare x as static constexpr int
+static constexpr int x;
+c++decl> declare x as type int
+using x = int;
+c++decl> declare x of scope s as int
+int s::x;
+c++decl> declare x of scope s of scope t::u as int
+int t::u::s::x;
+c++decl> declare x of scope s::t as int
+int s::t::x;
+c++decl> declare x, y as type int
+using x = int;
+using y = int;
+c++decl> define S::T as struct S

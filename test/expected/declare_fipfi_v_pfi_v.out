@@ -1,1 +1,0 @@
-void (*signal(int sig, void (*f)(int)))(int);

@@ -1,4 +1,0 @@
-declare f as function (x) returning pointer to int
-                       ^
-24: warning: missing type specifier; int assumed
-int* f(int x);

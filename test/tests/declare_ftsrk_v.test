@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-struct S
-declare f as function (self as this reference to S) returning void
-END

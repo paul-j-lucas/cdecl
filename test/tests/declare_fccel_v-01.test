@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-declare f as function (fmt as pointer to const char, ...) returning void
-END

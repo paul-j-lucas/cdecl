@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++03 <<END
-declare f as non-throwing function returning void
-END

@@ -1,1 +1,0 @@
-int (*const (*const x)[3])[5];

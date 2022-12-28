@@ -1,1 +1,0 @@
-double f(int (*g)(char c));

@@ -1,4 +1,0 @@
-declare final as int
-        ^
-9: warning: "final" is a keyword in C++11
-int final;

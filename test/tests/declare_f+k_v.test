@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-define S::T as struct S
-declare f as function (x as S::T)
-END

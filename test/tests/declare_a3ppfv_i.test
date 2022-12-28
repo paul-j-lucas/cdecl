@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-declare a as array 3 of pointer to pointer to function (void) returning int
-END

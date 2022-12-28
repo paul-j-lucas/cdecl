@@ -1,1 +1,0 @@
-[[carries_dependency]] int f([[carries_dependency]] int x);

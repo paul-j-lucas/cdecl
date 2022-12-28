@@ -1,4 +1,0 @@
-declare p as pointer to function (x) returning int
-                                  ^
-35: warning: missing type specifier; int assumed
-int (*p)(int x);

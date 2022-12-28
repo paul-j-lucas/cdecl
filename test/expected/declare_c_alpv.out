@@ -1,1 +1,0 @@
-alignas(void*) char c;

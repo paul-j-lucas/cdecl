@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-declare x, y as pointer to function (int, double) returning void
-END

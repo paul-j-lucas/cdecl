@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -x c++ <<END
-declare x, y as type int
-END

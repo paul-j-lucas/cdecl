@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl --east-const <<END
-struct S
-declare x as const S
-END

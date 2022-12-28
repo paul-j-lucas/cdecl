@@ -1,1 +1,0 @@
-void f(int x[static const 3]);

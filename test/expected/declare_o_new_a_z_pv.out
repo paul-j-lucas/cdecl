@@ -1,1 +1,0 @@
-void* operator new[](std::size_t n);
