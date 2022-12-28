@@ -1,0 +1,15 @@
+EXPECTED_EXIT=0
+cdecl -O -xc++ <<END
+
+explain friend C::operator int()
+
+class C
+
+explain C::operator int()
+
+explain operator C const&()
+
+explain operator int()
+explain operator int() const override
+
+END

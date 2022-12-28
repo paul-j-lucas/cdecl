@@ -1,0 +1,11 @@
+c++decl> explain friend C::operator int()
+declare friend user-defined conversion operator of class C returning integer
+c++decl> class C
+c++decl> explain C::operator int()
+declare user-defined conversion operator of class C returning integer
+c++decl> explain operator C const&()
+declare user-defined conversion operator returning reference to constant C
+c++decl> explain operator int()
+declare user-defined conversion operator returning integer
+c++decl> explain operator int() const override
+declare overridden virtual constant user-defined conversion operator returning integer

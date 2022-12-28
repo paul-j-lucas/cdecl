@@ -761,17 +761,7 @@ TESTS+=	tests/explain_+co_eq2_rck_b++default-cpp17.test \
 # C++ explain user-defined conversion tests
 # =========================================
 #
-TESTS+=	tests/explain_+udc_i.test \
-	tests/explain_f+udc_i.test \
-	tests/explain_ovc_udc_i.test \
-	tests/explain_udc_i.test \
-	tests/explain_udc_rcc.test
-
-#
-# C++ explain user-defined literal tests
-# ======================================
-#
-TESTS+=	tests/explain_udl.test
+TESTS+=	tests/explain_udc.test
 
 #
 # C++ explain user-defined conversion error tests
@@ -780,6 +770,12 @@ TESTS+=	tests/explain_udl.test
 TESTS+=	tests/explain_fudc_i.test \
 	tests/explain_studc_i.test \
 	tests/explain_udc_a4i.test
+
+#
+# C++ explain user-defined literal tests
+# ======================================
+#
+TESTS+=	tests/explain_udl.test
 
 #
 # C++ explain user-defined literal error tests
