@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-explain int func( char const array[], void *pointer, bool cast )
-END

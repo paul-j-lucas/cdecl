@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-explain signed _BitInt(2) x
-END

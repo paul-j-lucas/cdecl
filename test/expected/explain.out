@@ -1,0 +1,660 @@
+cdecl> explain (int* (^*)(void))x
+cast x into pointer to block (void) returning pointer to integer
+cdecl> explain [[reproducible]] void f()
+declare f as reproducible function returning void
+cdecl> explain [[unsequenced]] void f()
+declare f as unsequenced function returning void
+cdecl> explain _Alignas(0) char c
+declare c as character
+cdecl> explain _Alignas(8) char c
+declare c as character aligned as 8 bytes
+cdecl> explain _Alignas(void*) char c
+declare c as character aligned as pointer to void
+cdecl> explain _Atomic int *x
+declare x as pointer to atomic integer
+cdecl> explain _Atomic int x
+declare x as atomic integer
+cdecl> explain _Atomic(int) *x
+declare x as pointer to atomic integer
+cdecl> explain _Atomic(int) x
+declare x as atomic integer
+cdecl> explain _Atomic(int*) x
+declare x as atomic pointer to integer
+cdecl> explain _BitInt(4) x
+declare x as _BitInt width 4 bits
+cdecl> explain _Thread_local int x
+declare x as thread local integer
+cdecl> explain __auto_type x
+declare x as automatic
+cdecl> explain __inline__ void f()
+declare f as inline function returning void
+cdecl> explain bool x
+declare x as boolean
+cdecl> explain char (f)(int)
+declare f as function (integer) returning character
+cdecl> explain char signed x
+declare x as signed character
+cdecl> explain char* (**(*x[3][5])(void))[7][9]
+declare x as array 3 of array 5 of pointer to function (void) returning pointer to pointer to array 7 of array 9 of pointer to character
+cdecl> explain char** f()
+declare f as function returning pointer to pointer to character
+cdecl> explain complex double x
+declare x as complex double precision
+cdecl> explain complex float x
+declare x as complex floating point
+cdecl> explain const int (*const a)[9]
+declare a as constant pointer to array 9 of constant integer
+cdecl> explain const int x
+declare x as constant integer
+cdecl> explain const struct S x
+declare x as constant structure S
+cdecl> explain const struct S x
+declare x as constant structure S
+cdecl> explain const unsigned x
+declare x as constant unsigned integer
+cdecl> explain constexpr int x
+declare x as constant expression integer
+cdecl> explain double (^x)(int x, int y)
+declare x as block (x as integer, y as integer) returning double precision
+cdecl> explain double f( int (*g)(char c) )
+declare f as function (g as pointer to function (c as character) returning integer) returning double precision
+cdecl> explain enum E : int x
+declare x as enumeration E of type integer
+cdecl> explain enum E x
+declare x as enumeration E
+cdecl> explain extern int x[2]
+declare x as external array 2 of integer
+cdecl> explain imaginary double x
+declare x as imaginary double precision
+cdecl> explain imaginary float x
+declare x as imaginary floating point
+cdecl> explain inline void f()
+declare f as inline function returning void
+cdecl> explain int (*(*const x)[3])[5]
+declare x as constant pointer to array 3 of pointer to array 5 of integer
+cdecl> explain int (*(*x)[3])[5]
+declare x as pointer to array 3 of pointer to array 5 of integer
+cdecl> explain int (**(*x[3][5])(void))[7]
+declare x as array 3 of array 5 of pointer to function (void) returning pointer to pointer to array 7 of integer
+cdecl> explain int (**(*x[3][5])(void))[7][9]
+declare x as array 3 of array 5 of pointer to function (void) returning pointer to pointer to array 7 of array 9 of integer
+cdecl> explain int (**a[3])(void)
+declare a as array 3 of pointer to pointer to function (void) returning integer
+cdecl> explain int (*a)[9]
+declare a as pointer to array 9 of integer
+cdecl> explain int (*a[3])(void)
+declare a as array 3 of pointer to function (void) returning integer
+cdecl> explain int (*const (*const x)[3])[5]
+declare x as constant pointer to array 3 of constant pointer to array 5 of integer
+cdecl> explain int (*const (*x)[3])[5]
+declare x as pointer to array 3 of constant pointer to array 5 of integer
+cdecl> explain int (*const a)[9]
+declare a as constant pointer to array 9 of integer
+cdecl> explain int (*f(void))[3][5]
+declare f as function (void) returning pointer to array 3 of array 5 of integer
+cdecl> explain int (*p), (*q)
+declare p as pointer to integer
+declare q as pointer to integer
+cdecl> explain int (*x(void))[3]
+declare x as function (void) returning pointer to array 3 of integer
+cdecl> explain int (*x)[3][5]
+declare x as pointer to array 3 of array 5 of integer
+cdecl> explain int (*x[3][5])(void)
+declare x as array 3 of array 5 of pointer to function (void) returning integer
+cdecl> explain int (__stdcall **f)()
+declare f as pointer to pointer to stdcall function returning integer
+cdecl> explain int (__stdcall *f)()
+declare f as pointer to stdcall function returning integer
+cdecl> explain int (a)[4]
+declare a as array 4 of integer
+cdecl> explain int (x)
+declare x as integer
+cdecl> explain int **const x
+declare x as constant pointer to pointer to integer
+cdecl> explain int **x
+declare x as pointer to pointer to integer
+cdecl> explain int *_Atomic x
+declare x as atomic pointer to integer
+cdecl> explain int *const *const x
+declare x as constant pointer to constant pointer to integer
+cdecl> explain int *const *x
+declare x as pointer to constant pointer to integer
+cdecl> explain int *const a[9]
+declare a as array 9 of constant pointer to integer
+cdecl> explain int *const volatile x
+declare x as constant volatile pointer to integer
+cdecl> explain int *const x
+declare x as constant pointer to integer
+cdecl> explain int *restrict p
+declare p as restricted pointer to integer
+cdecl> explain int *volatile const x
+declare x as constant volatile pointer to integer
+cdecl> explain int *volatile x
+declare x as volatile pointer to integer
+cdecl> explain int *x
+declare x as pointer to integer
+cdecl> explain int WINAPI f()
+declare f as stdcall function returning integer
+cdecl> explain int _A
+               ^
+9: warning: "_A" is a reserved identifier
+declare _A as integer
+cdecl> explain int __cdecl f()
+declare f as cdecl function returning integer
+cdecl> explain int __clrcall f()
+declare f as clrcall function returning integer
+cdecl> explain int __fastcall f()
+declare f as fastcall function returning integer
+cdecl> explain int __stdcall f()
+declare f as stdcall function returning integer
+cdecl> explain int __thiscall f()
+declare f as thiscall function returning integer
+cdecl> explain int __vectorcall f()
+declare f as vectorcall function returning integer
+cdecl> explain int a[ 0b10 ]
+declare a as array 2 of integer
+cdecl> explain int a[012]
+declare a as array 10 of integer
+cdecl> explain int a[0xA]
+declare a as array 10 of integer
+cdecl> explain int a[0xa]
+declare a as array 10 of integer
+cdecl> explain int a[9]
+declare a as array 9 of integer
+cdecl> explain int a__a
+               ^
+9: warning: "a__a" is a reserved identifier in C++
+declare a__a as integer
+cdecl> explain int const x
+declare x as constant integer
+cdecl> explain int f( void() )
+declare f as function (pointer to function returning void) returning integer
+cdecl> explain int f(char (*(*)())[])
+declare f as function (pointer to function returning pointer to array of character) returning integer
+cdecl> explain int final
+declare final as integer
+cdecl> explain int func( char const array[], void *pointer, bool cast )
+declare func as function (array as array of constant character, pointer as pointer to void, cast as boolean) returning integer
+cdecl> explain int main( int, char **argv )
+declare main as function (integer, argv as pointer to pointer to character) returning integer
+cdecl> explain int main( int, char **argv, char **envp )
+declare main as function (integer, argv as pointer to pointer to character, envp as pointer to pointer to character) returning integer
+cdecl> explain int main( int, char *argv[] )
+declare main as function (integer, argv as array of pointer to character) returning integer
+cdecl> explain int main( int, char *argv[], char *envp[] )
+declare main as function (integer, argv as array of pointer to character, envp as array of pointer to character) returning integer
+cdecl> explain int main( int, char const **argv )
+declare main as function (integer, argv as pointer to pointer to constant character) returning integer
+cdecl> explain int main( int, char const *argv[] )
+declare main as function (integer, argv as array of pointer to constant character) returning integer
+cdecl> explain int main( void )
+declare main as function (void) returning integer
+cdecl> explain int main()
+declare main as function returning integer
+cdecl> explain int register x
+declare x as register integer
+cdecl> explain int static x
+declare x as static integer
+cdecl> explain int typedef x
+declare x as type integer
+cdecl> explain int x, (*f)(double)
+declare x as integer
+declare f as pointer to function (double precision) returning integer
+cdecl> explain int x, *p
+declare x as integer
+declare p as pointer to integer
+cdecl> explain int x, x
+declare x as integer
+declare x as integer
+cdecl> explain int x, y
+declare x as integer
+declare y as integer
+cdecl> explain int x[3][5]
+declare x as array 3 of array 5 of integer
+cdecl> explain int x[3][5][7]
+declare x as array 3 of array 5 of array 7 of integer
+cdecl> explain int* (**(*x[3][5])(void))[7]
+declare x as array 3 of array 5 of pointer to function (void) returning pointer to pointer to array 7 of pointer to integer
+cdecl> explain int* (*const x)(void)
+declare x as constant pointer to function (void) returning pointer to integer
+cdecl> explain int* (*x(void))[3]
+declare x as function (void) returning pointer to array 3 of pointer to integer
+cdecl> explain int* (*x(void))[3][5]
+declare x as function (void) returning pointer to array 3 of array 5 of pointer to integer
+cdecl> explain int* (*x)(void)
+declare x as pointer to function (void) returning pointer to integer
+cdecl> explain int* (*x[3][5])(void)
+declare x as array 3 of array 5 of pointer to function (void) returning pointer to integer
+cdecl> explain int* (^*const x)(void)
+declare x as constant pointer to block (void) returning pointer to integer
+cdecl> explain int* (^*x)(void)
+declare x as pointer to block (void) returning pointer to integer
+cdecl> explain int* a[9]
+declare a as array 9 of pointer to integer
+cdecl> explain int* f()
+declare f as function returning pointer to integer
+cdecl> explain int* f(char*)
+declare f as function (pointer to character) returning pointer to integer
+cdecl> explain int* f(char*, int)
+declare f as function (pointer to character, integer) returning pointer to integer
+cdecl> explain int* f(void)
+declare f as function (void) returning pointer to integer
+cdecl> explain int** (*x[3][5])(void)
+declare x as array 3 of array 5 of pointer to function (void) returning pointer to pointer to integer
+cdecl> explain long double x
+declare x as long double precision
+cdecl> explain long long x
+declare x as long long integer
+cdecl> explain noreturn void f(int)
+               ^
+9: warning: "noreturn" is deprecated since C23; did you mean [[noreturn]]?
+declare f as non-returning function (integer) returning void
+cdecl> explain register int x
+declare x as register integer
+cdecl> explain register struct S x
+declare x as register structure S
+cdecl> explain signed _BitInt(2) x
+declare x as _BitInt width 2 bits
+cdecl> explain signed _BitInt(4) x
+declare x as _BitInt width 4 bits
+cdecl> explain signed char x
+declare x as signed character
+cdecl> explain signed main()
+declare main as function returning integer
+cdecl> explain size_t x
+declare x as size_t
+cdecl> explain size_t x : 3
+declare x as size_t width 3 bits
+cdecl> explain ssize_t x
+declare x as ssize_t
+cdecl> explain static int x
+declare x as static integer
+cdecl> explain static int x[2]
+declare x as static array 2 of integer
+cdecl> explain static void f()
+declare f as static function returning void
+cdecl> explain struct S
+define S as structure S
+cdecl> explain struct S x
+declare x as structure S
+cdecl> explain thread_local int x
+declare x as thread local integer
+cdecl> explain typedef int (*x)(char)
+declare x as type pointer to function (character) returning integer
+cdecl> explain typedef int int32_t
+declare int32_t as type integer
+cdecl> explain typedef int x
+declare x as type integer
+cdecl> explain typedef unsigned long size_t
+declare size_t as type unsigned long integer
+cdecl> explain union U x
+declare x as union U
+cdecl> explain unsigned _BitInt(1) x
+declare x as unsigned _BitInt width 1 bits
+cdecl> explain unsigned _BitInt(4) x
+declare x as unsigned _BitInt width 4 bits
+cdecl> explain unsigned char x
+declare x as unsigned character
+cdecl> explain unsigned long long x
+declare x as unsigned long long integer
+cdecl> explain unsigned x : 3
+declare x as unsigned integer width 3 bits
+cdecl> explain void (*signal(int sig, void (*f)(int)))(int)
+declare signal as function (sig as integer, f as pointer to function (integer) returning void) returning pointer to function (integer) returning void
+cdecl> explain void (__cdecl *f)()
+declare f as pointer to cdecl function returning void
+cdecl> explain void __cdecl f()
+declare f as cdecl function returning void
+cdecl> explain void f( ... )
+declare f as function (variadic) returning void
+cdecl> explain void f( char const *fmt, ... )
+declare f as function (fmt as pointer to constant character, variadic) returning void
+cdecl> explain void f( double (*a)[5] )
+declare f as function (a as pointer to array 5 of double precision) returning void
+cdecl> explain void f( int g() )
+declare f as function (g as pointer to function returning integer) returning void
+cdecl> explain void f(char[])
+declare f as function (array of character) returning void
+cdecl> explain void f(int i, double d)
+declare f as function (i as integer, d as double precision) returning void
+cdecl> explain void f(int x, int y)
+declare f as function (x as integer, y as integer) returning void
+cdecl> explain void f(int x[*])
+declare f as function (x as variable length array of integer) returning void
+cdecl> explain void f(int x[const *])
+declare f as function (x as variable length array constant of integer) returning void
+cdecl> explain void f(int x[const static 3])
+declare f as function (x as array static constant 3 of integer) returning void
+cdecl> explain void f(int x[const])
+declare f as function (x as array constant of integer) returning void
+cdecl> explain void f(int x[static 3])
+declare f as function (x as array static 3 of integer) returning void
+cdecl> explain void f(int x[static const 3])
+declare f as function (x as array static constant 3 of integer) returning void
+cdecl> explain void f(register int i)
+declare f as function (i as register integer) returning void
+cdecl> explain void f(void)
+declare f as function (void) returning void
+cdecl> explain wchar_t x
+declare x as wide character
+cdecl> typedef int *pint
+cdecl> explain restrict pint p
+declare p as restricted pint
+cdecl> typedef void V
+cdecl> explain V *p
+declare p as pointer to V
+cdecl> set knr
+cdecl> explain f(x)
+declare f as function (x as int) returning integer
+cdecl> explain long float x
+declare x as long floating point
+cdecl> set c89
+cdecl> explain *p, *q
+declare p as pointer to integer
+declare q as pointer to integer
+cdecl> explain *a[4]
+declare a as array 4 of pointer to integer
+cdecl> explain *f()
+declare f as function returning pointer to integer
+cdecl> explain void f(register i)
+declare f as function (i as register integer) returning void
+cdecl> explain (*p)
+declare p as pointer to integer
+cdecl> explain (*p, i)
+declare p as pointer to integer
+declare i as integer
+cdecl> explain *p
+declare p as pointer to integer
+cdecl> explain *p, i
+declare p as pointer to integer
+declare i as integer
+cdecl> set c17
+cdecl> explain auto int x
+declare x as automatic integer
+cdecl> explain noreturn void f(int)
+declare f as non-returning function (integer) returning void
+cdecl> set c18
+cdecl> explain int* f(x)
+                      ^
+16: warning: missing type specifier; int assumed
+declare f as function (x as int) returning pointer to integer
+cdecl> set c++
+c++decl> struct S
+c++decl> explain A::C::~C()
+declare C of class A::C as destructor
+c++decl> explain C() = default
+declare C as default constructor
+c++decl> explain C(C const&)
+declare C as constructor (reference to constant C)
+c++decl> explain C(int)
+declare C as constructor (integer)
+c++decl> explain C::C()
+declare C of class C as constructor
+c++decl> explain C::C(int)
+declare C of class C as constructor (integer)
+c++decl> explain C::compl C()
+declare C of class C as destructor
+c++decl> explain C::~C()
+declare C of class C as destructor
+c++decl> explain S::T x
+declare x as T of structure S
+c++decl> explain [[carries_dependency]] int f([[carries_dependency]] int x)
+declare f as carries dependency function (x as carries dependency integer) returning integer
+c++decl> explain [[carries_dependency]] int f(int x)
+declare f as carries dependency function (x as integer) returning integer
+c++decl> explain [[deprecated,maybe_unused]] int x
+declare x as deprecated maybe unused integer
+c++decl> explain [[deprecated]] [[maybe_unused]] int x
+declare x as deprecated maybe unused integer
+c++decl> explain [[deprecated]] int x
+declare x as deprecated integer
+c++decl> explain [[deprecated]] void f()
+declare f as deprecated function returning void
+c++decl> explain [[maybe_unused]] int x
+declare x as maybe unused integer
+c++decl> explain [[maybe_unused]] struct S s
+declare s as maybe unused structure S
+c++decl> explain [[maybe_unused]] void f()
+declare f as maybe unused function returning void
+c++decl> explain [[no_unique_address]] S x
+declare x as non-unique-address S
+c++decl> explain [[no_unique_address]] struct S x
+declare x as non-unique-address structure S
+c++decl> explain [[nodiscard]] void f()
+                 ^
+9: warning: [[nodiscard]] functions can not return void
+declare f as non-discardable function returning void
+c++decl> explain [[noreturn]] void f(int)
+declare f as non-returning function (integer) returning void
+c++decl> explain [[using foo : maybe_unused]] int i
+                   ^
+11: warning: "using" in attributes not supported by cdecl (ignoring)
+declare i as maybe unused integer
+c++decl> explain alignas(0) char c
+declare c as character
+c++decl> explain alignas(8) char c
+declare c as character aligned as 8 bytes
+c++decl> explain auto f() -> auto (*)() -> void
+declare f as function returning pointer to function returning void
+c++decl> explain auto f() -> void
+declare f as function returning void
+c++decl> explain auto f() -> void*
+declare f as function returning pointer to void
+c++decl> explain auto x
+declare x as automatic
+c++decl> explain class C x
+declare x as class C
+c++decl> explain class D *(C::*p)()
+declare p as pointer to member of class C function returning pointer to class D
+c++decl> explain compl C()
+declare C as destructor
+c++decl> explain const int C::*const p
+declare p as constant pointer to member of class C constant integer
+c++decl> explain constexpr C()
+declare C as constant expression constructor
+c++decl> explain constexpr int x
+declare x as constant expression integer
+c++decl> explain enum E : int
+define E as enumeration E of type integer
+c++decl> explain enum E : int x
+declare x as enumeration E of type integer
+c++decl> explain enum E : size_t x
+declare x as enumeration E of type size_t
+c++decl> explain enum E : unsigned int x
+declare x as enumeration E of type unsigned integer
+c++decl> explain enum E x : 3
+declare x as enumeration E width 3 bits
+c++decl> explain explicit C(int)
+declare C as explicit constructor (integer)
+c++decl> explain explicit C(int) noexcept
+declare C as explicit no-exception constructor (integer)
+c++decl> explain explicit operator bool()
+declare explicit user-defined conversion operator returning boolean
+c++decl> explain export int f()
+declare f as exported function returning integer
+c++decl> explain export int x
+declare x as exported integer
+c++decl> explain extern "C" typedef int Int
+declare Int as external "C" linkage type integer
+c++decl> explain extern "C" using Int = int
+declare Int as external "C" linkage type integer
+c++decl> explain extern "C" void f()
+declare f as external "C" linkage function returning void
+c++decl> explain extern R"(C)" void f()
+declare f as external "C" linkage function returning void
+c++decl> explain extern R"abc(C)abc" void f()
+declare f as external "C" linkage function returning void
+c++decl> explain friend C(int)
+declare C as friend constructor (integer)
+c++decl> explain friend void f()
+declare f as friend function returning void
+c++decl> explain inline C(int)
+declare C as inline constructor (integer)
+c++decl> explain inline C::C() noexcept
+declare C of class C as inline no-exception constructor
+c++decl> explain inline C::~C() noexcept
+declare C of class C as inline no-exception destructor
+c++decl> explain inline explicit C(int)
+declare C as explicit inline constructor (integer)
+c++decl> explain inline int x
+declare x as inline integer
+c++decl> explain int &&__restrict x
+declare x as restricted rvalue reference to integer
+c++decl> explain int &__restrict x
+declare x as restricted reference to integer
+c++decl> explain int &x
+declare x as reference to integer
+c++decl> explain int (&r)[3]
+declare r as reference to array 3 of integer
+c++decl> explain int (C::*p)()
+declare p as pointer to member of class C function returning integer
+c++decl> explain int *__restrict p
+declare p as restricted pointer to integer
+c++decl> explain int C::* f()
+declare f as function returning pointer to member of class C integer
+c++decl> explain int C::*const f()
+declare f as function returning constant pointer to member of class C integer
+c++decl> explain int C::*const p
+declare p as constant pointer to member of class C integer
+c++decl> explain int C::*p
+declare p as pointer to member of class C integer
+c++decl> explain int S::x
+declare x of structure S as integer
+c++decl> explain int bitand x
+declare x as reference to integer
+c++decl> explain int f([[carries_dependency]] int x)
+declare f as function (x as carries dependency integer) returning integer
+c++decl> explain int s::t::x
+declare x of scope s::t as integer
+c++decl> explain int s::x
+declare x of scope s as integer
+c++decl> explain mutable int x
+declare x as mutable integer
+c++decl> explain static auto f() -> int
+declare f as static function returning integer
+c++decl> explain static constexpr int x
+declare x as static constant expression integer
+c++decl> explain struct S *(C::*c)(int x, int y)
+declare c as pointer to member of class C function (x as integer, y as integer) returning pointer to structure S
+c++decl> explain struct [[maybe_unused]] S s
+declare s as maybe unused structure S
+c++decl> explain using Int [[maybe_unused]] = int
+declare Int as maybe unused type integer
+c++decl> explain using f = void (*)(int)
+declare f as type pointer to function (integer) returning void
+c++decl> explain using v3 = int[3]
+declare v3 as type array 3 of integer
+c++decl> explain virtual S& operator+(S&) = 0
+declare + as pure virtual member operator (reference to S) returning reference to S
+c++decl> explain virtual S& operator++(int) = 0
+declare ++ as pure virtual member operator (integer) returning reference to S
+c++decl> explain virtual S& operator-(S&) = 0
+declare - as pure virtual member operator (reference to S) returning reference to S
+c++decl> explain virtual S& operator--(int) = 0
+declare -- as pure virtual member operator (integer) returning reference to S
+c++decl> explain virtual compl C()
+declare C as virtual destructor
+c++decl> explain virtual short main()
+declare main as virtual member function returning short integer
+c++decl> explain virtual void f()
+declare f as virtual member function returning void
+c++decl> explain virtual void f() = 0
+declare f as pure virtual member function returning void
+c++decl> explain virtual void f() override final
+declare f as overridden final virtual member function returning void
+c++decl> explain virtual ~C()
+declare C as virtual destructor
+c++decl> explain virtual ~S() = 0
+declare S as pure virtual destructor
+c++decl> explain void f( ... )
+declare f as function (variadic) returning void
+c++decl> explain void f( int &&r )
+declare f as function (r as rvalue reference to integer) returning void
+c++decl> explain void f( this S &self )
+declare f as function (self as this reference to S) returning void
+c++decl> explain void f() &
+declare f as reference member function returning void
+c++decl> explain void f() &&
+declare f as rvalue reference member function returning void
+c++decl> explain void f() = delete
+declare f as deleted member function returning void
+c++decl> explain void f() const
+declare f as constant member function returning void
+c++decl> explain void f() const &
+declare f as constant reference member function returning void
+c++decl> explain void f() const volatile
+declare f as constant volatile member function returning void
+c++decl> explain void f() final
+declare f as final virtual member function returning void
+c++decl> explain void f() noexcept
+declare f as no-exception function returning void
+c++decl> explain void f() noexcept(false)
+declare f as function returning void
+c++decl> explain void f() noexcept(true)
+declare f as no-exception function returning void
+c++decl> explain void f() override final
+declare f as overridden final virtual member function returning void
+c++decl> explain void f([[deprecated]] int x)
+declare f as function (x as deprecated integer) returning void
+c++decl> explain void f([[maybe_unused]] int x)
+declare f as function (x as maybe unused integer) returning void
+c++decl> explain void f(auto)
+declare f as function (automatic) returning void
+c++decl> explain ~C()
+declare C as destructor
+c++decl> explain ~C() final
+declare C as final virtual destructor
+c++decl> explain S& operator+(S&) &
+declare + as reference member operator (reference to S) returning reference to S
+c++decl> explain S& operator+(S&) &&
+declare + as rvalue reference member operator (reference to S) returning reference to S
+c++decl> explain S& operator+(S&) const
+declare + as constant member operator (reference to S) returning reference to S
+c++decl> explain S& operator+(S&) final
+declare + as final virtual member operator (reference to S) returning reference to S
+c++decl> explain S& operator+(S&) override
+declare + as overridden virtual member operator (reference to S) returning reference to S
+c++decl> explain S& operator+(S&) volatile
+declare + as volatile member operator (reference to S) returning reference to S
+c++decl> explain S& operator++(int) &
+declare ++ as reference member operator (integer) returning reference to S
+c++decl> explain S& operator++(int) &&
+declare ++ as rvalue reference member operator (integer) returning reference to S
+c++decl> explain S& operator++(int) const
+declare ++ as constant member operator (integer) returning reference to S
+c++decl> explain S& operator++(int) final
+declare ++ as final virtual member operator (integer) returning reference to S
+c++decl> explain S& operator++(int) override
+declare ++ as overridden virtual member operator (integer) returning reference to S
+c++decl> explain S& operator++(int) volatile
+declare ++ as volatile member operator (integer) returning reference to S
+c++decl> explain S& operator-(S&) &
+declare - as reference member operator (reference to S) returning reference to S
+c++decl> explain S& operator-(S&) &&
+declare - as rvalue reference member operator (reference to S) returning reference to S
+c++decl> explain S& operator-(S&) const
+declare - as constant member operator (reference to S) returning reference to S
+c++decl> explain S& operator-(S&) final
+declare - as final virtual member operator (reference to S) returning reference to S
+c++decl> explain S& operator-(S&) override
+declare - as overridden virtual member operator (reference to S) returning reference to S
+c++decl> explain S& operator-(S&) volatile
+declare - as volatile member operator (reference to S) returning reference to S
+c++decl> explain S& operator--(int) &
+declare -- as reference member operator (integer) returning reference to S
+c++decl> explain S& operator--(int) &&
+declare -- as rvalue reference member operator (integer) returning reference to S
+c++decl> explain S& operator--(int) const
+declare -- as constant member operator (integer) returning reference to S
+c++decl> explain S& operator--(int) final
+declare -- as final virtual member operator (integer) returning reference to S
+c++decl> explain S& operator--(int) override
+declare -- as overridden virtual member operator (integer) returning reference to S
+c++decl> explain S& operator--(int) volatile
+declare -- as volatile member operator (integer) returning reference to S
+c++decl> namespace N { class C { typedef int I; }; }
+c++decl> explain N::C::I x
+declare x as I of class C of namespace N
+c++decl> set c++98
+c++decl> explain void f() throw()
+declare f as non-throwing function returning void

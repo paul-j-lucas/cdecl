@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-explain char* (**(*x[3][5])(void))[7][9]
-END

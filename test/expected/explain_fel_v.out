@@ -1,2 +1,0 @@
-declare f as function (variadic) returning void
-declare f as function (variadic) returning void

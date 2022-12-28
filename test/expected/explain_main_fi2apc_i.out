@@ -1,1 +1,0 @@
-declare main as function (integer, argv as array of pointer to character, envp as array of pointer to character) returning integer

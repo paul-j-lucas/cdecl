@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-explain double f( int (*g)(char c) )
-END

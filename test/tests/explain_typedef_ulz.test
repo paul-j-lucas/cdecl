@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-explain typedef unsigned long size_t
-END

@@ -1,4 +1,0 @@
-explain int* f(x)
-               ^
-16: warning: missing type specifier; int assumed
-declare f as function (x as int) returning pointer to integer

@@ -1,1 +1,0 @@
-declare + as overridden virtual member operator (reference to S) returning reference to S

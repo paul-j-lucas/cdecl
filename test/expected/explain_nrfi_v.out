@@ -1,4 +1,0 @@
-explain noreturn void f(int)
-        ^
-9: warning: "noreturn" is deprecated since C23; did you mean [[noreturn]]?
-declare f as non-returning function (integer) returning void

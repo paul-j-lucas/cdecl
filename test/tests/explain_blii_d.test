@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-explain double (^x)(int x, int y)
-END

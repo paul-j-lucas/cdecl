@@ -1,1 +1,0 @@
-declare f as function (x as carries dependency integer) returning integer

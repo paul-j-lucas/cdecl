@@ -1,1 +1,0 @@
-declare f as type pointer to function (integer) returning void

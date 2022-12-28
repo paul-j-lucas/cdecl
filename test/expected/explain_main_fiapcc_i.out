@@ -1,1 +1,0 @@
-declare main as function (integer, argv as array of pointer to constant character) returning integer

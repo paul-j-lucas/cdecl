@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xknr <<END
-explain f(x)
-END

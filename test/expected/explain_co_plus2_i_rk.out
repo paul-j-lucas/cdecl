@@ -1,1 +1,0 @@
-declare ++ as constant member operator (integer) returning reference to S

@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-explain void f(int x[const static 3])
-END

@@ -1,1 +1,0 @@
-declare x as pointer to pointer to integer

@@ -1,4 +1,0 @@
-explain int a__a
-        ^
-9: warning: "a__a" is a reserved identifier in C++
-declare a__a as integer

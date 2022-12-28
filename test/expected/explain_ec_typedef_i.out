@@ -1,1 +1,0 @@
-declare Int as external "C" linkage type integer

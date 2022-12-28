@@ -1,1 +1,0 @@
-declare C as constructor (reference to constant C)

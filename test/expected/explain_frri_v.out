@@ -1,1 +1,0 @@
-declare f as function (r as rvalue reference to integer) returning void

@@ -1,1 +1,0 @@
-declare f as function (x as array static constant 3 of integer) returning void

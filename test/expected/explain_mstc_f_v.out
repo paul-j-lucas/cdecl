@@ -1,1 +1,0 @@
-declare f as thiscall function returning integer

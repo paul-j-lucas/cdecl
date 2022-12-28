@@ -1,2 +1,0 @@
-declare p as pointer to integer
-declare i as integer

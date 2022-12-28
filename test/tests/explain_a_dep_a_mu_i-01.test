@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-explain [[deprecated]] [[maybe_unused]] int x
-END

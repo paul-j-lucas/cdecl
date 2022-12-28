@@ -1,1 +1,0 @@
-declare func as function (array as array of constant character, pointer as pointer to void, cast as boolean) returning integer

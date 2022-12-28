@@ -1,4 +1,0 @@
-explain int _A
-        ^
-9: warning: "_A" is a reserved identifier
-declare _A as integer

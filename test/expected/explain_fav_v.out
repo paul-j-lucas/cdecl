@@ -1,1 +1,0 @@
-declare f as function (x as variable length array of integer) returning void

@@ -1,1 +1,0 @@
-declare x as type pointer to function (character) returning integer

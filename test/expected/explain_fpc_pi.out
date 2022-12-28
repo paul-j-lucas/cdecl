@@ -1,1 +1,0 @@
-declare f as function (pointer to character) returning pointer to integer

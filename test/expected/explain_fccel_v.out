@@ -1,1 +1,0 @@
-declare f as function (fmt as pointer to constant character, variadic) returning void

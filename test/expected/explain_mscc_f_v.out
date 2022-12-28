@@ -1,1 +1,0 @@
-declare f as clrcall function returning integer

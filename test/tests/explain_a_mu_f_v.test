@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-explain [[maybe_unused]] void f()
-END
