@@ -1,3 +1,61 @@
+2022-12-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Eliminated scope_sname_c_opt_operator.
+   * parser.y: Eliminated user_defined_literal_c_ast.
+   * explain_udc.out, explain_udc.test: Additional user-defined conversion
+     test.
+
+2022-12-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.h, parser.y: Added extern int yychar.
+   * cdecl.1, parser.y: In debug mode, now also prints the token-id of the
+     token that caused a syntax error.
+   * test/Makefile.am, explain_udc.out, explain_udc.test: Test consolidation.
+   * test/Makefile.am: Test reorganization.
+   * test/Makefile.am, cdecl-Ii.out, cdecl-Iiu.out, cdecl-Il.out,
+     cdecl-Ill.out, cdecl-Ilull.out, cdecl-Is.out, cdecl-Iu.out, cdecl-Iui.out,
+     cdecl-Iul,ll.out, cdecl-Iul.out, cdecl-Iull.out, cdecl-Iulll.out,
+     cdecl-Iulull.out, cdecl-Ius.out, explain.out, explain_operator.out,
+     cdecl--kolor.test, cdecl-23.test, cdecl-9.test, cdecl-Ii.test,
+     cdecl-Iiu.test, cdecl-Il.test, cdecl-Ill.test, cdecl-Ilull.test,
+     cdecl-Is.test, cdecl-Iu.test, cdecl-Iui.test, cdecl-Iul,ll.test,
+     cdecl-Iul.test, cdecl-Iull.test, cdecl-Iulll.test, cdecl-Iulull.test,
+     cdecl-Ius.test, cdecl-Ix.test, cdecl-Sx.test, cdecl-h.test, cdecl-k.test,
+     cdecl-knever.test, cdecl-kxxx.test, cdecl-xx.test, explain.test,
+     explain_operator.test: Test clean-up.
+
+2022-12-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am, explain.out, explain.test: Test consolidation.
+   * test/Makefile.am, declare.out, declare.test: Test consolidation.
+   * test/Makefile.am, explain_cast.out, explain_cast.test: Test consolidation.
+   * test/Makefile.am, cast.out, cast.test: Test consolidation.
+   * test/Makefile.am, explain_operator.out, explain_operator.test: Test
+     consolidation.
+   * test/Makefile.am, declare_operator.out, declare_operator.test: Test
+     consolidation.
+   * test/Makefile.am, declare_udc.out, declare_udc.test: Test consolidation.
+   * test/Makefile.am, explain_udl.out, explain_udl.test: Test consolidation.
+   * test/Makefile.am, cast.out, cast.test: cast_* test consolidation.
+   * test/Makefile.am, explain_cast.out, explain_cast.test: explain_cast_* test
+     consolidation.
+   * test/Makefile.am: Moved tests.
+   * NEWS, c_ast_check.c, c_ast_util.c, c_ast_util.h, parser.y,
+     test/Makefile.am, cast_a.out, cast_pa.out, typedef_a.out, typedef_pa.out,
+     using_ai.out, cast_a.test, cast_pa.test, typedef_a.test, typedef_pa.test:
+     Defining or casting a type containing `auto` is now correctly reported as
+     an error.
+   * NEWS, prompt.c: Now printing the prompt in color even when readline is
+     disabled.
+
+2022-12-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * prompt.c: Added color_prompt variable.
+   * prompt.c: Removed unnecessary #includes.
+   * AUTHORS: s/C99/C11/
+   * cdecl.1: Added "over".
+   * AUTHORS: Added mention of more stuff.
+
 2022-12-25  Paul J. Lucas <paul@lucasmail.org>
 
    * help.c: Added missing bison-debug & flex-debug options from set option
