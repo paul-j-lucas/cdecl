@@ -1753,7 +1753,6 @@ static void yyerror( char const *msg ) {
 %type   <tid>       restrict_qualifier_c_stid
 %type   <tid>       rparen_func_qualifier_list_c_stid_opt
 %type   <sname>     scope_sname_c_opt sub_scope_sname_c_opt
-%type   <sname>     scope_sname_c_opt_operator
 %type   <sname>     sname_c sname_c_exp sname_c_opt
 %type   <ast>       sname_c_ast
 %type   <type>      storage_class_c_type
@@ -4471,16 +4470,16 @@ nested_decl_c_astp
 
 oper_decl_c_astp
   : // in_attr: type_c_ast
-    scope_sname_c_opt_operator c_operator lparen_exp param_c_ast_list_opt
+    scope_sname_c_opt Y_operator c_operator lparen_exp param_c_ast_list_opt
     rparen_func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt
     noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt
     {
-      c_tid_t      const func_qualifier_stid = $5;
-      c_tid_t      const func_ref_qualifier_stid = $6;
-      c_tid_t      const func_equals_stid = $9;
-      c_tid_t      const noexcept_stid = $7;
-      c_oper_id_t  const oper_id = $2;
-      c_ast_t     *const trailing_ret_ast = $8;
+      c_tid_t      const func_qualifier_stid = $6;
+      c_tid_t      const func_ref_qualifier_stid = $7;
+      c_tid_t      const func_equals_stid = $10;
+      c_tid_t      const noexcept_stid = $8;
+      c_oper_id_t  const oper_id = $3;
+      c_ast_t     *const trailing_ret_ast = $9;
       c_ast_t     *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "oper_decl_c_astp",
@@ -4493,7 +4492,7 @@ oper_decl_c_astp
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_SNAME( "scope_sname_c_opt", $1 );
       DUMP_STR( "c_operator", c_oper_get( oper_id )->name );
-      DUMP_AST_LIST( "param_c_ast_list_opt", $4 );
+      DUMP_AST_LIST( "param_c_ast_list_opt", $5 );
       DUMP_TID( "func_qualifier_list_c_stid_opt", func_qualifier_stid );
       DUMP_TID( "func_ref_qualifier_c_stid_opt", func_ref_qualifier_stid );
       DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
@@ -4507,7 +4506,7 @@ oper_decl_c_astp
       c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@$ );
       oper_ast->sname = c_sname_move( &$1 );
       oper_ast->type.stids = c_tid_check( oper_stid, C_TPID_STORE );
-      oper_ast->oper.param_ast_list = slist_move( &$4 );
+      oper_ast->oper.param_ast_list = slist_move( &$5 );
       oper_ast->oper.oper_id = oper_id;
 
       c_ast_t *const ret_ast = trailing_ret_ast != NULL ?
@@ -4519,10 +4518,6 @@ oper_decl_c_astp
       DUMP_AST( "oper_decl_c_astp", $$.ast );
       DUMP_END();
     }
-  ;
-
-scope_sname_c_opt_operator
-  : scope_sname_c_opt Y_operator  { $$ = $1; }
   ;
 
 /// Gibberish C/C++ pointer declaration ///////////////////////////////////////
