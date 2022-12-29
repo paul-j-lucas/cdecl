@@ -791,10 +791,8 @@ static void fl_elaborate_error( char const *file, int line,
   if ( error_token != NULL ) {
     EPRINTF( "\"%s\"", error_token );
 #ifdef ENABLE_CDECL_DEBUG
-    if ( opt_cdecl_debug ) {
-      extern int yychar;
+    if ( opt_cdecl_debug )
       EPRINTF( " [%d]", yychar );
-    }
 #endif /* ENABLE_CDECL_DEBUG */
     EPUTS( ": " );
   }

@@ -86,6 +86,11 @@ extern c_keyword_ctx_t  lexer_keyword_ctx;
  */
 extern char const      *lexer_token;
 
+/**
+ * Flex ID of current token.
+ */
+extern int              yychar;
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
