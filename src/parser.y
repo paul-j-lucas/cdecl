@@ -788,8 +788,16 @@ static void fl_elaborate_error( char const *file, int line,
   print_debug_file_line( file, line );
 
   char const *const error_token = printable_token();
-  if ( error_token != NULL )
-    EPRINTF( "\"%s\": ", error_token );
+  if ( error_token != NULL ) {
+    EPRINTF( "\"%s\"", error_token );
+#ifdef ENABLE_CDECL_DEBUG
+    if ( opt_cdecl_debug ) {
+      extern int yychar;
+      EPRINTF( " [%d]", yychar );
+    }
+#endif /* ENABLE_CDECL_DEBUG */
+    EPUTS( ": " );
+  }
 
   va_list args;
   va_start( args, format );

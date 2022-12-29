@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "December 24, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 28, 2022" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -307,6 +307,11 @@ When an error or warning message is printed,
 includes the
 .RI \f(CW[\fP file \f(CW:\fP line \f(CW]\fP
 of the code that generated said message.
+.IP \(bu
+For syntax errors,
+includes the numeric
+.RI \f(CW[\fP id \f(CW]\fP
+of the token that caused the error.
 .RE
 .IP
 (This is a debugging aid for developers of
