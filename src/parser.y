@@ -1451,6 +1451,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_namespace
 %token              Y_new
 %token              Y_operator
+%token  <sname>     Y_OPERATOR_SNAME    // e.g., S::T::operator
 %token              Y_private
 %token              Y_protected
 %token              Y_public
@@ -1741,6 +1742,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  nested_decl_c_astp
 %type   <tid>       noexcept_c_stid_opt
 %type   <ast_pair>  oper_decl_c_astp
+%type   <sname>     oper_sname_c_opt
 %type   <ast>       param_c_ast param_c_ast_exp
 %type   <ast_list>  param_c_ast_list param_c_ast_list_exp param_c_ast_list_opt
 %type   <ast>       pc99_pointer_type_c_ast
@@ -1752,7 +1754,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       reference_type_c_ast
 %type   <tid>       restrict_qualifier_c_stid
 %type   <tid>       rparen_func_qualifier_list_c_stid_opt
-%type   <sname>     scope_sname_c_opt sub_scope_sname_c_opt
+%type   <sname>     sub_scope_sname_c_opt
 %type   <sname>     sname_c sname_c_exp sname_c_opt
 %type   <ast>       sname_c_ast
 %type   <type>      storage_class_c_type
@@ -1851,7 +1853,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_english
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_list_english
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_list_english_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } scope_sname_c_opt
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } oper_sname_c_opt
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c_exp
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c_opt
@@ -1861,6 +1863,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } typedef_sname_c
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } Y_CONSTRUCTOR_SNAME
 %destructor { DTRACE; c_sname_cleanup( &$$ ); } Y_DESTRUCTOR_SNAME
+%destructor { DTRACE; c_sname_cleanup( &$$ ); } Y_OPERATOR_SNAME
 
 // sname_list
 %destructor { DTRACE; c_sname_list_cleanup( &$$ ); } sname_list_english
@@ -4470,7 +4473,7 @@ nested_decl_c_astp
 
 oper_decl_c_astp
   : // in_attr: type_c_ast
-    scope_sname_c_opt Y_operator c_operator lparen_exp param_c_ast_list_opt
+    oper_sname_c_opt Y_operator c_operator lparen_exp param_c_ast_list_opt
     rparen_func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt
     noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt
     {
@@ -4483,14 +4486,14 @@ oper_decl_c_astp
       c_ast_t     *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "oper_decl_c_astp",
-                  "scope_sname_c_opt OPERATOR c_operator "
+                  "oper_sname_c_opt OPERATOR c_operator "
                   "'(' param_c_ast_list_opt ')' "
                   "func_qualifier_list_c_stid_opt "
                   "func_ref_qualifier_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt "
                   "func_equals_c_stid_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_SNAME( "scope_sname_c_opt", $1 );
+      DUMP_SNAME( "oper_sname_c_opt", $1 );
       DUMP_STR( "c_operator", c_oper_get( oper_id )->name );
       DUMP_AST_LIST( "param_c_ast_list_opt", $5 );
       DUMP_TID( "func_qualifier_list_c_stid_opt", func_qualifier_stid );
@@ -4828,7 +4831,7 @@ typedef_type_decl_c_ast
 
 user_defined_conversion_decl_c_astp
   : // in_attr: type_c_ast
-    scope_sname_c_opt Y_operator type_c_ast
+    oper_sname_c_opt Y_operator type_c_ast
     {
       ia_type_ast_push( $3 );
     }
@@ -4845,12 +4848,12 @@ user_defined_conversion_decl_c_astp
       c_tid_t  const  func_equals_stid = $9;
 
       DUMP_START( "user_defined_conversion_decl_c_astp",
-                  "scope_sname_c_opt OPERATOR "
+                  "oper_sname_c_opt OPERATOR "
                   "type_c_ast udc_decl_c_ast_opt '(' ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                   "func_equals_c_stid_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_SNAME( "scope_sname_c_opt", $1 );
+      DUMP_SNAME( "oper_sname_c_opt", $1 );
       DUMP_AST( "type_c_ast", conv_ast );
       DUMP_AST( "udc_decl_c_ast_opt", udc_ast );
       DUMP_TID( "func_qualifier_list_c_stid_opt", func_qual_stids );
@@ -4877,7 +4880,7 @@ user_defined_conversion_decl_c_astp
 
 user_defined_literal_decl_c_astp
   : // in_attr: type_c_ast
-    scope_sname_c_opt Y_operator quote2_exp name_exp
+    oper_sname_c_opt Y_operator quote2_exp name_exp
     lparen_exp param_c_ast_list_exp ')' noexcept_c_stid_opt
     trailing_return_type_c_ast_opt
     {
@@ -4887,11 +4890,11 @@ user_defined_literal_decl_c_astp
       c_ast_t    *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "user_defined_literal_decl_c_astp",
-                  "scope_sname_c_opt OPERATOR \"\" "
+                  "oper_sname_c_opt OPERATOR \"\" "
                   "'(' param_c_ast_list_exp ')' noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_SNAME( "scope_sname_c_opt", $1 );
+      DUMP_SNAME( "oper_sname_c_opt", $1 );
       DUMP_STR( "name", name );
       DUMP_AST_LIST( "param_c_ast_list_exp", $6 );
       DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
@@ -7174,6 +7177,17 @@ name_exp
     }
   ;
 
+oper_sname_c_opt
+  : /* empty */                   { c_sname_init( &$$ ); }
+
+  | Y_OPERATOR_SNAME Y_COLON2
+    {
+      $$ = $1;
+      if ( c_type_is_none( c_sname_local_type( &$$ ) ) )
+        c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
+    }
+  ;
+
 typedef_type_c_ast
   : any_typedef sub_scope_sname_c_opt
     {
@@ -7237,28 +7251,6 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
 sub_scope_sname_c_opt
   : /* empty */                   { c_sname_init( &$$ ); }
   | Y_COLON2 any_sname_c          { $$ = $2; }
-  ;
-
-scope_sname_c_opt
-  : /* empty */                   { c_sname_init( &$$ ); }
-
-  | sname_c Y_COLON2
-    {
-      $$ = $1;
-      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
-    }
-
-  | any_typedef Y_COLON2
-    { //
-      // This is for a case like:
-      //
-      //      define S as struct S
-      //      explain bool S::operator!() const
-      //
-      // that is: a typedef'd type used for a scope.
-      //
-      $$ = c_sname_dup( &$1->ast->sname );
-    }
   ;
 
 sname_c

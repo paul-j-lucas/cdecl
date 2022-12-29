@@ -62,6 +62,13 @@ class.
 ** `_BitInt` maximum bits
 Now check that the maximum number of bits for `_BitInt` is 64.
 
+** `friend` scoped user-defined conversion operators
+Explaining a `friend` scoped user-defined conversion operator, e.g.:
+
+    explain friend C::operator int()
+
+is now parsed correctly.
+
 ** `[[noreturn]]` in C23.
 `[[noreturn]]` is now printed rather than `_Noreturn` in C23.
 

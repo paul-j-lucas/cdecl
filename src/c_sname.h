@@ -473,12 +473,13 @@ char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
  *
  * @param s The string to parse.
  * @param sname The scoped name to parse into.
- * @return Returns `true` only if the scoped name was successfully parsed.
+ * @return Returns the number of characters of \a s that were successfully
+ * parsed.
  *
  * @sa c_sname_parse_dtor()
  */
 NODISCARD
-bool c_sname_parse( char const *s, c_sname_t *sname );
+size_t c_sname_parse( char const *s, c_sname_t *sname );
 
 /**
  * Parses a scoped destructor name, for example `S::T::~T`.

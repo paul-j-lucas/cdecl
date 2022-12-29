@@ -533,6 +533,7 @@ S             [ \f\r\t\v]
 identifier    {L}({L}|{D})*
 sname         {identifier}({S}*::{S}*{identifier})+
 dtor_sname    ({identifier}{S}*::{S}*)+(~|compl{S}){S}*{identifier}
+oper_sname    ({identifier}{S}*::{S}*)+operator{NI}
 hyphenated    [a-z]+-([a-z]+-)*[a-z]+
 
 glob_scope    \*?({identifier}\*?)*
@@ -662,6 +663,42 @@ include{S}*\"  {
               }
 
               /*
+               * Special case: case: similar to {sname} below, handle scoped
+               * operators in the lexer to simplify the grammar, e.g.:
+               *
+               *      S::T::operator    // sname = "S::T"
+               */
+{oper_sname}  {
+                SET_TOKEN;
+
+                c_sname_t sname;
+                size_t const sname_len = c_sname_parse( lexer_token, &sname );
+                assert( sname_len > 0 );
+
+                //
+                // c_sname_parse() will not include "::operator" in the parsed
+                // scoped name, so the returned length will only include the
+                // actual scoped name, e.g., "S::T".  We therefore have to tell
+                // Flex to put the characters "::operator" back onto the input
+                // stream.
+                //
+                yyless( STATIC_CAST( int, sname_len ) );
+
+                //
+                // See if it's a typedef'd type: if so, copy the type's scoped
+                // name so we get its scope types (if any).
+                //
+                c_typedef_t const *const tdef = c_typedef_find_sname( &sname );
+                if ( tdef != NULL ) {
+                  c_sname_cleanup( &sname );
+                  sname = c_sname_dup( &tdef->ast->sname );
+                }
+
+                yylval.sname = sname;
+                return Y_OPERATOR_SNAME;
+              }
+
+              /*
                * Special case: handle scoped names in the lexer so:
                *
                * 1. Constructors are recognized as such, specifically, when the
@@ -712,7 +749,11 @@ include{S}*\"  {
                 SET_TOKEN;
 
                 c_sname_t sname;
-                if ( c_sname_parse( lexer_token, &sname ) ) {
+                size_t const sname_len = c_sname_parse( lexer_token, &sname );
+                if ( sname_len > 0 ) {
+                  if ( sname_len < STATIC_CAST( size_t, yyleng ) )
+                    yyless( sname_len );
+
                   //
                   // 1. See if it's a constructor name.
                   //

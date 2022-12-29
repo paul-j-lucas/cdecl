@@ -89,11 +89,14 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
  * @param sname The scoped name to parse into.
  * @param is_dtor `true` only if a destructor name, e.g., `S::T::~T`, is to be
  * parsed.
- * @return Returns `true` only if the scoped name was successfully parsed and,
- * if \a is_dtor is `true`, only if the scope count &ge; 2 and the last two
- * scope names match.
+ * @return
+ *  + The number of characters of \a s that were successfully parsed.
+ *  + If \a is_dtor is `true`, that includes whether and the scope count &ge;
+ *    2, the last two scope names match, and the last scope name is preceded by
+ *    either `~` or `compl `.
+ *  + Otherwise 0.
  */
-bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
+size_t c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
   assert( s != NULL );
   assert( sname != NULL );
 
@@ -101,9 +104,12 @@ bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
   c_sname_t rv;
   c_sname_init( &rv );
 
+  char const *const s_orig = s;
+  char const *end;
+  char const *prev_end = s_orig;
   char const *prev_name = "";
 
-  for ( char const *end; (end = parse_identifier( s )) != NULL; ) {
+  while ( (end = parse_identifier( s )) != NULL ) {
     char *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
 
     // Ensure that the name is NOT a keyword.
@@ -121,16 +127,18 @@ bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
           continue;
         }
       }
-      break;
+      if ( c_sname_empty( &rv ) )
+        return 0;
+      goto done;
     }
     c_sname_append_name( &rv, name );
 
+    prev_end = end;
     SKIP_WS( end );
     if ( *end == '\0' && parsed_tilde ) {
       if ( is_dtor && strcmp( name, prev_name ) != 0 )
         goto error;
-      *sname = rv;
-      return true;
+      goto done;
     }
     if ( strncmp( end, "::", 2 ) != 0 )
       break;
@@ -142,11 +150,15 @@ bool c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
       parsed_tilde = true;
     }
     prev_name = name;
-  } // for
+  } // while
 
 error:
   c_sname_cleanup( &rv );
-  return false;
+  return 0;
+
+done:
+  *sname = rv;
+  return STATIC_CAST( size_t, prev_end - s_orig );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -364,12 +376,12 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
   return true;
 }
 
-bool c_sname_parse( char const *s, c_sname_t *sname ) {
+size_t c_sname_parse( char const *s, c_sname_t *sname ) {
   return c_sname_parse_impl( s, sname, /*is_dtor=*/false );
 }
 
 bool c_sname_parse_dtor( char const *s, c_sname_t *sname ) {
-  return c_sname_parse_impl( s, sname, /*is_dtor=*/true );
+  return c_sname_parse_impl( s, sname, /*is_dtor=*/true ) > 0;
 }
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {

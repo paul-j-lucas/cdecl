@@ -4104,7 +4104,7 @@ func_qualifier_list_c_stid_opt ::= func_qualifier_list_c_stid_opt func_qualifier
   func_qualifier_list_c_stid_opt = "const" (stid = 0x200000002)
 }
 
-oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+oper_decl_c_astp ::= oper_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
   (type_c_ast) = {
     sname = "",
     unique_id = 1404,
@@ -4115,7 +4115,7 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_
     type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  scope_sname_c_opt = "S" (struct),
+  oper_sname_c_opt = "S" (struct),
   c_operator = "!",
   param_c_ast_list_opt = [],
   func_qualifier_list_c_stid_opt = "const" (stid = 0x200000002),
@@ -4129,7 +4129,7 @@ oper_decl_c_astp ::= scope_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_
     kind = "operator",
     depth = 0,
     parent->unique_id = -1,
-    loc = 13-32,
+    loc = 13-43,
     type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
     oper_id = "!" (6),
     flags = unspecified (0x0),
@@ -4165,7 +4165,7 @@ decl_c ::= decl_c_astp = {
     kind = "operator",
     depth = 0,
     parent->unique_id = -1,
-    loc = 13-32,
+    loc = 13-43,
     type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
     oper_id = "!" (6),
     flags = unspecified (0x0),
@@ -4187,7 +4187,7 @@ decl_c ::= decl_c_astp = {
     kind = "operator",
     depth = 0,
     parent->unique_id = -1,
-    loc = 13-32,
+    loc = 13-43,
     type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
     oper_id = "!" (6),
     flags = unspecified (0x0),
@@ -4821,9 +4821,9 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
   }
 }
 
-user_defined_conversion_decl_c_astp ::= scope_sname_c_opt OPERATOR type_c_ast udc_decl_c_ast_opt '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt func_equals_c_stid_opt = {
+user_defined_conversion_decl_c_astp ::= oper_sname_c_opt OPERATOR type_c_ast udc_decl_c_ast_opt '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt func_equals_c_stid_opt = {
   (type_c_ast) = NULL,
-  scope_sname_c_opt = "",
+  oper_sname_c_opt = "",
   type_c_ast = {
     sname = "",
     unique_id = 1415,

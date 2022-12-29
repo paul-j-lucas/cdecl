@@ -7,6 +7,7 @@ explain friend C::operator int()
 class C
 
 explain C::operator int()
+explain friend C::operator int()
 
 explain operator C const&()
 
