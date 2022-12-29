@@ -1768,7 +1768,6 @@ static void yyerror( char const *msg ) {
 %type   <tid>       type_qualifier_c_stid
 %type   <tid>       type_qualifier_list_c_stid type_qualifier_list_c_stid_opt
 %type   <ast_pair>  user_defined_conversion_decl_c_astp
-%type   <ast>       user_defined_literal_c_ast
 %type   <ast_pair>  user_defined_literal_decl_c_astp
 %type   <ast>       using_decl_c_ast
 
@@ -4883,29 +4882,35 @@ user_defined_conversion_decl_c_astp
 
 user_defined_literal_decl_c_astp
   : // in_attr: type_c_ast
-    user_defined_literal_c_ast lparen_exp param_c_ast_list_exp ')'
-    noexcept_c_stid_opt trailing_return_type_c_ast_opt
+    scope_sname_c_opt Y_operator quote2_exp name_exp
+    lparen_exp param_c_ast_list_exp ')' noexcept_c_stid_opt
+    trailing_return_type_c_ast_opt
     {
-      c_ast_t *const  udl_c_ast = $1;
-      c_tid_t  const  noexcept_stid = $5;
-      c_ast_t *const  trailing_ret_ast = $6;
-      c_ast_t *const  type_ast = ia_type_ast_peek();
+      char const *const name = $4;
+      c_tid_t     const noexcept_stid = $8;
+      c_ast_t    *const trailing_ret_ast = $9;
+      c_ast_t    *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "user_defined_literal_decl_c_astp",
-                  "user_defined_literal_c_ast '(' param_c_ast_list_exp ')' "
-                  "noexcept_c_stid_opt trailing_return_type_c_ast_opt" );
+                  "scope_sname_c_opt OPERATOR \"\" "
+                  "'(' param_c_ast_list_exp ')' noexcept_c_stid_opt "
+                  "trailing_return_type_c_ast_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_AST( "user_defined_literal_c_ast", udl_c_ast );
-      DUMP_AST_LIST( "param_c_ast_list_exp", $3 );
+      DUMP_SNAME( "scope_sname_c_opt", $1 );
+      DUMP_STR( "name", name );
+      DUMP_AST_LIST( "param_c_ast_list_exp", $6 );
       DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
 
+      c_sname_set( &type_ast->sname, &$1 );
+      c_sname_append_name( &type_ast->sname, name );
+
       c_ast_t *const udl_ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
       udl_ast->type.stids = c_tid_check( noexcept_stid, C_TPID_STORE );
-      udl_ast->udef_lit.param_ast_list = slist_move( &$3 );
+      udl_ast->udef_lit.param_ast_list = slist_move( &$6 );
 
       $$.ast = c_ast_add_func(
-        udl_c_ast,
+        type_ast,
         udl_ast,
         trailing_ret_ast != NULL ? trailing_ret_ast : type_ast
       );
@@ -4913,26 +4918,6 @@ user_defined_literal_decl_c_astp
       $$.target_ast = udl_ast->udef_lit.ret_ast;
 
       DUMP_AST( "user_defined_literal_decl_c_astp", $$.ast );
-      DUMP_END();
-    }
-  ;
-
-user_defined_literal_c_ast
-  : // in_attr: type_c_ast
-    scope_sname_c_opt Y_operator quote2_exp name_exp
-    {
-      c_ast_t *const type_ast = ia_type_ast_peek();
-
-      DUMP_START( "user_defined_literal_c_ast", "OPERATOR \"\" NAME" );
-      DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_SNAME( "scope_sname_c_opt", $1 );
-      DUMP_STR( "name", $4 );
-
-      $$ = type_ast;
-      c_sname_set( &$$->sname, &$1 );
-      c_sname_append_name( &$$->sname, $4 );
-
-      DUMP_AST( "user_defined_literal_c_ast", $$ );
       DUMP_END();
     }
   ;
