@@ -1,3 +1,5 @@
+c++decl> explain C::operator int()
+declare user-defined conversion operator of scope C returning integer
 c++decl> explain friend C::operator int()
 declare friend user-defined conversion operator of class C returning integer
 c++decl> class C
