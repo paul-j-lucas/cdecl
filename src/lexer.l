@@ -1067,7 +1067,7 @@ include{S}*\"  {
                 str_lit_loc = yylloc;
 
                 char const quote = yytext[ yyleng - 1 ];
-                BEGIN( quote == '"' ? X_STR : X_CHAR );
+                BEGIN( (quote == '"' ? X_STR : X_CHAR) );
               }
 
               /*
