@@ -1112,9 +1112,9 @@ include{S}*\"  {
               }
 
 <X_INCL>\"    {
-                BEGIN( INITIAL );
                 push_file( str_lit_buf.str, &str_lit_loc );
                 strbuf_reset( &str_lit_buf );
+                BEGIN( INITIAL );
               }
 
 <X_STR>\"     {
