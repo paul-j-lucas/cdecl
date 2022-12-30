@@ -1,5 +1,13 @@
+2022-12-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Added () around BEGIN argument.
+   * lexer.l: Moved BEGIN( INITIAL ).
+
 2022-12-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, c_sname.c, c_sname.h, lexer.l, parser.y, cdecl-d.out,
+     explain_udc.out, explain_udc.test: Can now explain a `friend` scoped
+     user-defined conversion operator correctly.
    * parser.y: Eliminated scope_sname_c_opt_operator.
    * parser.y: Eliminated user_defined_literal_c_ast.
    * explain_udc.out, explain_udc.test: Additional user-defined conversion
