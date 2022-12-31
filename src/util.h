@@ -701,7 +701,7 @@ bool fd_is_file( int fd );
  * either \a size is 0 or upon error.
  */
 NODISCARD
-FILE* fmemopen( void *buf, size_t size, char const *mode );
+FILE* fmemopen( void *restrict buf, size_t size, char const *restrict mode );
 #endif /* HAVE_FMEMOPEN */
 
 /**
