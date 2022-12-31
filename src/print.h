@@ -122,6 +122,7 @@ extern print_params_t print_params;     ///< Print parameters.
  * @note This function isn't normally called directly; use the #print_error()
  * macro instead.
  *
+ * @sa fl_print_warning()
  * @sa #print_error()
  */
 PJL_PRINTF_LIKE_FUNC(4)
@@ -167,6 +168,7 @@ void fl_print_error_unknown_name( char const *file, int line,
  * @note This function isn't normally called directly; use the #print_warning()
  * macro instead.
  *
+ * @sa fl_print_error()
  * @sa #print_warning()
  */
 PJL_PRINTF_LIKE_FUNC(4)
