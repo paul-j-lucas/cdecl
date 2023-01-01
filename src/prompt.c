@@ -53,7 +53,7 @@
 #ifdef WITH_READLINE
   /**
    * Appends the character to start or end ignoring of characters to the prompt
-   * for length calculation by readline.
+   * for length calculation by **readline**(3).
    *
    * @param SBUF A pointer to the \ref strbuf to use.
    * @param WHEN Either the literal `START` or `END`.
