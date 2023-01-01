@@ -125,6 +125,7 @@ declare x as const size_t
 declare x as const struct S
 declare p as pointer to const int
 declare p as pointer to const pointer to int
+
 set east-const
 declare x as const int
 declare x as const S
@@ -133,6 +134,11 @@ declare x as const struct S
 declare p as pointer to const int
 declare p as pointer to const pointer to int
 set noeast-const
+
+declare _x as int
+declare _X as int
+declare __x as int
+declare x__x as int
 
 set knr
 declare f as function (x) returning pointer to int

@@ -2640,7 +2640,7 @@ static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
       continue;
     }
 
-    // Next, check to see if the name is a reserved name in some language.
+    // Next, check to see if the name is reserved in any language.
     c_lang_id_t const reserved_lang_ids = is_reserved_name( name );
     if ( reserved_lang_ids != LANG_NONE ) {
       print_warning( loc, "\"%s\" is a reserved identifier", name );

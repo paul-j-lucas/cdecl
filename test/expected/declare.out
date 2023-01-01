@@ -255,6 +255,20 @@ int const *p;
 cdecl> declare p as pointer to const pointer to int
 int *const *p;
 cdecl> set noeast-const
+cdecl> declare _x as int
+int _x;
+cdecl> declare _X as int
+               ^
+9: warning: "_X" is a reserved identifier
+int _X;
+cdecl> declare __x as int
+               ^
+9: warning: "__x" is a reserved identifier
+int __x;
+cdecl> declare x__x as int
+               ^
+9: warning: "x__x" is a reserved identifier in C++
+int x__x;
 cdecl> set knr
 cdecl> declare f as function (x) returning pointer to int
 int* f(x);
