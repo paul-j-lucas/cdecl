@@ -1,5 +1,12 @@
+2022-12-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Fixed newline position.
+   * util.c, util.h: Added `restrict` to match real fmemopen().
+
 2022-12-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * string.in.h, verify.h, wchar.in.h, extensions.m4, gnulib-common.m4:
+     Updated Gnulib.
    * lexer.l: Added () around BEGIN argument.
    * lexer.l: Moved BEGIN( INITIAL ).
 
