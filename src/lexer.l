@@ -1270,6 +1270,7 @@ void lexer_reset( bool hard_reset ) {
     is_eof = false;
     include_cleanup();
     include_init();
+    newline();
     yylineno = 0;
   }
   BEGIN( INITIAL );
@@ -1277,7 +1278,6 @@ void lexer_reset( bool hard_reset ) {
   input_len = input_sent = 0;
   lexer_find = LEXER_FIND_ANY;
   lexer_keyword_ctx = C_KW_CTX_DEFAULT;
-  newline();
   strbuf_reset( &str_lit_buf );
 }
 
