@@ -258,8 +258,8 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Prints an error message to standard error and exits with \a STATUS code.
  *
- * @param STATUS The status code to **exit**(3) with.
- * @param FORMAT The `printf()` format to use.
+ * @param STATUS The status code to exit with.
+ * @param FORMAT The `printf()` format string literal to use.
  * @param ... The `printf()` arguments.
  *
  * @sa #INTERNAL_ERR()
@@ -375,7 +375,7 @@ _GL_INLINE_HEADER_BEGIN
  * A special-case of #FATAL_ERR that additionally prints the file and line
  * where an internal error occurred.
  *
- * @param FORMAT The `printf()` format to use.
+ * @param FORMAT The `printf()` format string literal to use.
  * @param ... The `printf()` arguments.
  *
  * @sa #FATAL_ERR()
