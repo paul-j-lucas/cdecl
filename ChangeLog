@@ -1,3 +1,16 @@
+2023-01-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, util.h: Replaced /* nothing */ with NO_OP in the few cases where
+     it mattered.
+   * util.h: Added ().
+   * c_typedef.c, cdecl.c, cli_options.c, lexer.l, util.h: Added
+     ASSERT_RUN_ONCE() to eliminate an unused variable warning when compiling
+     with --disable-assert.
+
+2023-01-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, declare.out, declare.test: Added reserved identifier tests.
+
 2022-12-31  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: Fixed newline position.
