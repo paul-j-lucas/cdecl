@@ -145,7 +145,7 @@ _GL_INLINE_HEADER_BEGIN
   assert( !_called );             \
   _called = true; )
 #else
-#define ASSERT_RUN_ONCE()         /* nothing */
+#define ASSERT_RUN_ONCE()         NO_OP
 #endif /* NDEBUG */
 
 /**

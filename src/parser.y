@@ -89,7 +89,7 @@
 #define IF_DEBUG(...) \
   BLOCK( if ( opt_cdecl_debug ) { __VA_ARGS__ } )
 #else
-#define IF_DEBUG(...)             /* nothing */
+#define IF_DEBUG(...)             NO_OP
 #endif /* ENABLE_CDECL_DEBUG */
 
 /// @endcond
@@ -419,7 +419,7 @@
   bool dump_comma = false;    \
   IF_DEBUG( FPUTS( "\n" NAME " ::= " PROD " = {\n", stdout ); )
 #else
-#define DUMP_START(NAME,PROD)     /* nothing */
+#define DUMP_START(NAME,PROD)     NO_OP
 #endif
 
 /**
