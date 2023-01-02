@@ -15,3 +15,15 @@ declare a as array 9 of integer
 cdecl> set c++
 c++decl> explain <:<:noreturn:>:> void f(int)
 declare f as non-returning function (integer) returning void
+c++decl> set nographs
+c++decl> declare a as array 9 of int
+int a[9];
+c++decl> set di
+c++decl> declare a as array 9 of int
+int a<:9:>;
+c++decl> set nog
+c++decl> declare a as array 9 of int
+int a[9];
+c++decl> set c89 digraphs
+               ^
+9: warning: digraphs not supported until C95

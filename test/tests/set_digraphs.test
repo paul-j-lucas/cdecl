@@ -1,8 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -O <<END
-set digraphs
-declare x as array of int
-
-set nographs
-set c89 digraphs
-END

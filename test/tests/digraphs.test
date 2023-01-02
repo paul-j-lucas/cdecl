@@ -13,4 +13,15 @@ explain int a<:9:>
 
 set c++
 explain <:<:noreturn:>:> void f(int)
+
+set nographs
+declare a as array 9 of int
+
+set di
+declare a as array 9 of int
+
+set nog
+declare a as array 9 of int
+
+set c89 digraphs
 END

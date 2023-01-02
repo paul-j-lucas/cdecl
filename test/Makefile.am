@@ -893,8 +893,6 @@ TESTS+=	tests/__declspec.test \
 	tests/help.test \
 	tests/integers.test \
 	tests/set.test \
-	tests/set_alt-tokens.test \
-	tests/set_digraphs.test \
 	tests/set_east-const.test \
 	tests/set_expl.test \
 	tests/set_explain-by-default.test \
@@ -915,7 +913,6 @@ TESTS+=	tests/__declspec.test \
 	tests/set_noexplain.test \
 	tests/set_noexplicit-int.test \
 	tests/set_noexplicit-int_u.test \
-	tests/set_nographs.test \
 	tests/set_noprompt.test \
 	tests/set_nousing-c++.test \
 	tests/set_options.test \
