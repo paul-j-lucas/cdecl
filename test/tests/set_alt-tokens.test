@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-set alt-tokens
-declare T as destructor
-END

@@ -1,5 +1,7 @@
 EXPECTED_EXIT=0
-cdecl -a -xc++ <<END
+cdecl -O -a -xc++ <<END
+set
+
 struct S
 
 declare ! as operator (r as reference to const S) returning bool
@@ -16,4 +18,17 @@ declare | as operator (x as int) returning reference to S
 declare |= as operator (int) returning reference to S
 declare || as operator (r as reference to const S) returning bool
 declare ~ as operator returning S
+
+set noalt-tokens
+declare D as destructor
+
+set alt-tokens
+declare D as destructor
+
+# Test that abbreviations work.
+set noalt
+declare D as destructor
+set alt
+declare D as destructor
+
 END

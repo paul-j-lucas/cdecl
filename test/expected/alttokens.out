@@ -1,14 +1,56 @@
+c++decl> set
+    alt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+    lang=C++23
+    prompt
+    semicolon
+    using
+c++decl> struct S
+c++decl> declare ! as operator (r as reference to const S) returning bool
 bool operator not(const S bitand r);
+c++decl> declare != as operator (r as reference to const S, int) returning bool
 bool operator not_eq(const S bitand r, int);
+c++decl> declare & as operator (r as reference to const S, x as int) returning S
 S operator bitand(const S bitand r, int x);
+c++decl> declare && as operator (r as reference to const S) returning bool
 bool operator and(const S bitand r);
+c++decl> declare &= as non-member operator (r as reference to S, x as int) returning reference to S
 S bitand operator and_eq(S bitand r, int x);
+c++decl> declare D as destructor
 compl D();
+c++decl> declare ^= as operator (int) returning reference to S
 S bitand operator xor_eq(int);
+c++decl> declare bitor as operator (x as reference to constant S, y as reference to constant S) returning S
 S operator bitor(const S bitand x, const S bitand y);
+c++decl> declare rr as rvalue reference to int
 int and rr;
+c++decl> declare xor as operator (x as reference to constant S, n as int) returning S
 S operator xor(const S bitand x, int n);
+c++decl> declare | as operator (x as int) returning reference to S
 S bitand operator bitor(int x);
+c++decl> declare |= as operator (int) returning reference to S
 S bitand operator or_eq(int);
+c++decl> declare || as operator (r as reference to const S) returning bool
 bool operator or(const S bitand r);
+c++decl> declare ~ as operator returning S
 S operator compl();
+c++decl> set noalt-tokens
+c++decl> declare D as destructor
+~D();
+c++decl> set alt-tokens
+c++decl> declare D as destructor
+compl D();
+c++decl> # Test that abbreviations work.
+c++decl> set noalt
+c++decl> declare D as destructor
+~D();
+c++decl> set alt
+c++decl> declare D as destructor
+compl D();
