@@ -133,7 +133,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param A The array to get the number of elements of.
  */
-#define ARRAY_SIZE(A)             (sizeof(A) / sizeof(A[0]))
+#define ARRAY_SIZE(A)             (sizeof(A) / sizeof((A)[0]))
 
 #ifndef NDEBUG
 /**
