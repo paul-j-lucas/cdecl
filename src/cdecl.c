@@ -277,9 +277,7 @@ static int cdecl_parse_stdin( void ) {
  * @note This function must be called exactly once.
  */
 static void conf_init( void ) {
-  static bool initialized;
-  assert( !initialized );
-  initialized = true;
+  ASSERT_RUN_ONCE();
 
   char const *conf_path = opt_conf_path;
   if ( conf_path == NULL )

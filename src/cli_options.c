@@ -693,11 +693,9 @@ struct option const* cli_option_next( struct option const *opt ) {
 }
 
 void cli_options_init( int *pargc, char const **pargv[const] ) {
-  static bool initialized;
-  assert( !initialized );
+  ASSERT_RUN_ONCE();
   assert( pargc != NULL );
   assert( pargv != NULL );
-  initialized = true;
 
   opt_lang = is_cppdecl() ? LANG_CPP_NEW : LANG_C_NEW;
 #ifdef ENABLE_FLEX_DEBUG

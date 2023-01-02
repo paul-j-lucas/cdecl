@@ -1233,9 +1233,7 @@ static void lexer_fatal( char const *msg ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void lexer_init( void ) {
-  static bool initialized;
-  assert( !initialized );
-  initialized = true;
+  ASSERT_RUN_ONCE();
   check_atexit( &lexer_cleanup );
   include_init();
 }

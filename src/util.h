@@ -135,6 +135,19 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define ARRAY_SIZE(A)             (sizeof(A) / sizeof(A[0]))
 
+#ifndef NDEBUG
+/**
+ * Asserts that this line of code is run at most once &mdash; useful in
+ * initialization functions that must be called at most once.
+ */
+#define ASSERT_RUN_ONCE() BLOCK(  \
+  static bool _called;            \
+  assert( !_called );             \
+  _called = true; )
+#else
+#define ASSERT_RUN_ONCE()      /* nothing */
+#endif /* NDEBUG */
+
 /**
  * Gets a value where all bits that are greater than or equal to the one bit
  * set in \a N are also set, e.g., <code>%BITS_GE(00010000)</code> =
