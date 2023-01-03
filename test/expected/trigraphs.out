@@ -44,3 +44,67 @@ c++decl> explain S& operator??!=(int)
 declare ??!= as member operator (integer) returning reference to S
 c++decl> explain S operator??-()
 declare ??- as member operator returning S
+c++decl> set nographs
+c++decl> set knr
+cdecl> set trigraphs
+           ^
+5: warning: trigraphs not supported until C89
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+ trigraphs
+    lang=K&RC
+    prompt
+    semicolon
+    using
+cdecl> declare a as array 9 of int
+int a[9];
+cdecl> set nographs
+cdecl> set c23
+cdecl> set trigraphs
+           ^
+5: warning: trigraphs not supported since C23
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+ trigraphs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare a as array 9 of int
+int a[9];
+cdecl> set nographs
+cdecl> set c++
+c++decl> set trigraphs
+             ^
+5: warning: trigraphs not supported since C++17
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+ trigraphs
+    lang=C++23
+    prompt
+    semicolon
+    using
+c++decl> declare a as array 9 of int
+int a[9];
+c++decl> set nographs

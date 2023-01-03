@@ -919,7 +919,6 @@ TESTS+=	tests/__declspec.test \
 	tests/set_prompt.test \
 	tests/set_prompt_x.test \
 	tests/set_semicolon.test \
-	tests/set_trigraphs.test \
 	tests/set_xxx.test \
 	tests/trigraphs.test
 

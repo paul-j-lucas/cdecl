@@ -29,4 +29,25 @@ explain bool operator??!??!(const S&, const S&)
 explain S operator??!(const S&, const S&)
 explain S& operator??!=(int)
 explain S operator??-()
+
+set nographs
+
+set knr
+set trigraphs
+set
+declare a as array 9 of int
+set nographs
+
+set c23
+set trigraphs
+set
+declare a as array 9 of int
+set nographs
+
+set c++
+set trigraphs
+set
+declare a as array 9 of int
+set nographs
+
 END
