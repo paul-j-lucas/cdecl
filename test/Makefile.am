@@ -891,13 +891,12 @@ TESTS+=	tests/__declspec.test \
 	tests/digraphs.test \
 	tests/east-const.test \
 	tests/english-types.test \
+	tests/explain-by-default.test \
 	tests/gnu_attributes.test \
 	tests/help.test \
 	tests/integers.test \
 	tests/set.test \
 	tests/set_expl.test \
-	tests/set_explain-by-default.test \
-	tests/set_explain.test \
 	tests/set_expli.test \
 	tests/set_explicit-ecsu.test \
 	tests/set_explicit-ecsu_ecsu.test \
@@ -910,8 +909,6 @@ TESTS+=	tests/__declspec.test \
 	tests/set_lang.test \
 	tests/set_lang_xxx.test \
 	tests/set_nodigraphs.test \
-	tests/set_noexplain-by-default.test \
-	tests/set_noexplain.test \
 	tests/set_noexplicit-int.test \
 	tests/set_noexplicit-int_u.test \
 	tests/set_noprompt.test \
