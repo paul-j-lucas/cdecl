@@ -1,0 +1,61 @@
+c++decl> explain auto x
+declare x as auto
+c++decl> explain bool x
+declare x as bool
+c++decl> explain double x
+declare x as double
+c++decl> explain char x
+declare x as char
+c++decl> explain char8_t x
+declare x as char8_t
+c++decl> explain char16_t x
+declare x as char16_t
+c++decl> explain char32_t x
+declare x as char32_t
+c++decl> explain consteval int f()
+declare f as consteval function returning int
+c++decl> explain constexpr int x
+declare x as constexpr int
+c++decl> explain constinit int x
+declare x as constinit int
+c++decl> explain enum E x
+declare x as enum E
+c++decl> explain float x
+declare x as float
+c++decl> explain int const x
+declare x as const int
+c++decl> explain struct S
+define S as struct S
+c++decl> explain wchar_t x
+declare x as wchar_t
+c++decl> set english-types
+c++decl> explain auto x
+declare x as automatic
+c++decl> explain bool x
+declare x as boolean
+c++decl> explain double x
+declare x as double precision
+c++decl> explain char x
+declare x as character
+c++decl> explain char8_t x
+declare x as character 8
+c++decl> explain char16_t x
+declare x as character 16
+c++decl> explain char32_t x
+declare x as character 32
+c++decl> explain consteval int f()
+declare f as constant evaluation function returning integer
+c++decl> explain constexpr int x
+declare x as constant expression integer
+c++decl> explain constinit int x
+declare x as constant initialization integer
+c++decl> explain enum E x
+declare x as enumeration E
+c++decl> explain float x
+declare x as floating point
+c++decl> explain int const x
+declare x as constant integer
+c++decl> explain struct S
+define S as structure S
+c++decl> explain wchar_t x
+declare x as wide character

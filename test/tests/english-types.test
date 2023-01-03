@@ -1,0 +1,38 @@
+EXPECTED_EXIT=0
+cdecl --no-english-types -xc++ -O <<END
+
+explain auto x
+explain bool x
+explain double x
+explain char x
+explain char8_t x
+explain char16_t x
+explain char32_t x
+explain consteval int f()
+explain constexpr int x
+explain constinit int x
+explain enum E x
+explain float x
+explain int const x
+explain struct S
+explain wchar_t x
+
+set english-types
+
+explain auto x
+explain bool x
+explain double x
+explain char x
+explain char8_t x
+explain char16_t x
+explain char32_t x
+explain consteval int f()
+explain constexpr int x
+explain constinit int x
+explain enum E x
+explain float x
+explain int const x
+explain struct S
+explain wchar_t x
+
+END

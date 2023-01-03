@@ -889,11 +889,12 @@ TESTS+=	tests/__declspec.test \
 	tests/alttokens.test \
 	tests/declare_synonyms.test \
 	tests/digraphs.test \
+	tests/east-const.test \
+	tests/english-types.test \
 	tests/gnu_attributes.test \
 	tests/help.test \
 	tests/integers.test \
 	tests/set.test \
-	tests/set_east-const.test \
 	tests/set_expl.test \
 	tests/set_explain-by-default.test \
 	tests/set_explain.test \
