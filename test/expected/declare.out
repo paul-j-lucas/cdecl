@@ -241,20 +241,6 @@ cdecl> declare p as pointer to const int
 const int *p;
 cdecl> declare p as pointer to const pointer to int
 int *const *p;
-cdecl> set east-const
-cdecl> declare x as const int
-int const x;
-cdecl> declare x as const S
-S const x;
-cdecl> declare x as const size_t
-size_t const x;
-cdecl> declare x as const struct S
-struct S const x;
-cdecl> declare p as pointer to const int
-int const *p;
-cdecl> declare p as pointer to const pointer to int
-int *const *p;
-cdecl> set noeast-const
 cdecl> declare _x as int
 int _x;
 cdecl> declare _X as int

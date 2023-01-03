@@ -1,9 +1,23 @@
 EXPECTED_EXIT=0
-cdecl <<END
+cdecl --east-const -O <<END
+struct S
 
-set -e-a--st-
 declare x as const int
-set no-e-a--st-
+declare x as const S
+declare x as const size_t
+declare x as const struct S
+declare p as const pointer to int
+declare p as pointer to const int
+declare p as pointer to const pointer to int
+declare p as const pointer to pointer to int
+declare p as const pointer to const pointer to int
+
+set noeast-const
+declare x as const int
+
+set east-const
+declare x as const int
+set noeast-const
 declare x as const int
 
 set ea
@@ -21,9 +35,9 @@ declare x as const int
 set noeastconst
 declare x as const int
 
-set east-const
+set -e-a--st-
 declare x as const int
-set noeast-const
+set no-e-a--st-
 declare x as const int
 
 END
