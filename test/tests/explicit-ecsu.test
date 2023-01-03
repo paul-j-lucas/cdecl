@@ -1,0 +1,25 @@
+EXPECTED_EXIT=0
+cdecl -xc++ -O <<END
+
+declare s as struct S
+declare u as union U
+declare e as enum E
+declare c as class C
+
+set explicit-ecsu=ecsu
+set
+
+declare s as struct S
+declare u as union U
+declare e as enum E
+declare c as class C
+
+set noexplicit-ecsu
+set
+
+declare s as struct S
+declare u as union U
+declare e as enum E
+declare c as class C
+
+END

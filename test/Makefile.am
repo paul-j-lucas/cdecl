@@ -886,6 +886,7 @@ TESTS+=	tests/__declspec.test \
 	tests/east-const.test \
 	tests/english-types.test \
 	tests/explain-by-default.test \
+	tests/explicit-ecsu.test \
 	tests/gnu_attributes.test \
 	tests/help.test \
 	tests/integers.test \
@@ -893,7 +894,6 @@ TESTS+=	tests/__declspec.test \
 	tests/set_expl.test \
 	tests/set_expli.test \
 	tests/set_explicit-ecsu.test \
-	tests/set_explicit-ecsu_ecsu.test \
 	tests/set_explicit-ecsu_x.test \
 	tests/set_explicit-int.test \
 	tests/set_explicit-int_i.test \

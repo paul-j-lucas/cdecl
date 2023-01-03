@@ -1,0 +1,54 @@
+c++decl> declare s as struct S
+struct S s;
+c++decl> declare u as union U
+union U u;
+c++decl> declare e as enum E
+E e;
+c++decl> declare c as class C
+C c;
+c++decl> set explicit-ecsu=ecsu
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=ecsu
+  noexplicit-int
+  nographs
+    lang=C++23
+    prompt
+    semicolon
+    using
+c++decl> declare s as struct S
+struct S s;
+c++decl> declare u as union U
+union U u;
+c++decl> declare e as enum E
+enum E e;
+c++decl> declare c as class C
+class C c;
+c++decl> set noexplicit-ecsu
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+  noexplicit-ecsu
+  noexplicit-int
+  nographs
+    lang=C++23
+    prompt
+    semicolon
+    using
+c++decl> declare s as struct S
+S s;
+c++decl> declare u as union U
+U u;
+c++decl> declare e as enum E
+E e;
+c++decl> declare c as class C
+C c;
