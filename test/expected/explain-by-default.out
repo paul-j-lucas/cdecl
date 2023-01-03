@@ -12,9 +12,9 @@ c++decl> set
     prompt
     semicolon
     using
-c++decl> explain int x
+c++decl> int x
 declare x as integer
-c++decl> explain const int x
+c++decl> const int x
 declare x as constant integer
 c++decl> const cast p into pointer to int
 const_cast<int*>(p)
@@ -48,5 +48,5 @@ c++decl> set
     prompt
     semicolon
     using
-c++decl> explain int x
+c++decl> int x
 declare x as integer

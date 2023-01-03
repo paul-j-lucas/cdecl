@@ -208,12 +208,6 @@ TESTS+=	tests/declare_+ctor-error.test \
 TESTS+=	tests/explain.test
 
 #
-# C explain-by-default tests
-# ==========================
-#
-TESTS+=	tests/explain-by-default.test
-
-#
 # C explain error tests
 # =====================
 #

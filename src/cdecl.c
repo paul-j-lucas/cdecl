@@ -359,9 +359,16 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   yyrestart( temp_file );
 
   if ( opt_echo_commands && !cdecl_interactive && cdecl_initialized ) {
-    str_rtrim_len( s, &s_len );
+    //
+    // Echo the original command (without "explain" possibly having been
+    // inserted) without a trailing newline (if any) so we can always print a
+    // newline ourselves -- but don't touch the original command line.
+    //
+    size_t echo_len = print_params.command_line_len;
+    str_rtrim_len( print_params.command_line, &echo_len );
     FPRINTF( cdecl_fout,
-      "%s%.*s\n", cdecl_prompt[0], STATIC_CAST( int, s_len ), s
+      "%s%.*s\n",
+      cdecl_prompt[0], STATIC_CAST( int, echo_len ), print_params.command_line
     );
     FFLUSH( cdecl_fout );
   }
