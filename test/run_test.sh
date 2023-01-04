@@ -237,9 +237,7 @@ run_cdecl_test() {
 }
 
 run_script_test() {
-  $TEST > $LOG_FILE 2>&1
-  ACTUAL_EXIT=$?
-  if [ $ACTUAL_EXIT -eq 0 ]
+  if $TEST > $LOG_FILE 2>&1
   then pass
   else fail
   fi
