@@ -1,0 +1,25 @@
+EXPECTED_EXIT=0
+cdecl -xc++ -O <<END
+typedef int Int
+
+set nosemicolon
+set
+declare x as int
+declare x, y as int
+declare I, J as type int
+declare ! as operator returning bool
+declare user-defined conversion operator returning bool
+show as typedef
+show as using
+
+set semicolon
+set
+declare x as int
+declare x, y as int
+declare I, J as type int
+declare ! as operator returning bool
+declare user-defined conversion operator returning bool
+show as typedef
+show as using
+
+END

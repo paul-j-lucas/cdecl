@@ -1,0 +1,61 @@
+c++decl> typedef int Int
+c++decl> set nosemicolon
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+    lang=C++23
+    prompt
+  nosemicolon
+    using
+c++decl> declare x as int
+int x
+c++decl> declare x, y as int
+int x, y
+c++decl> declare I, J as type int
+using I = int
+using J = int
+c++decl> declare ! as operator returning bool
+bool operator!()
+c++decl> declare user-defined conversion operator returning bool
+operator bool()
+c++decl> show as typedef
+typedef int Int
+c++decl> show as using
+using Int = int
+c++decl> set semicolon
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+    lang=C++23
+    prompt
+    semicolon
+    using
+c++decl> declare x as int
+int x;
+c++decl> declare x, y as int
+int x, y;
+c++decl> declare I, J as type int
+using I = int;
+using J = int;
+c++decl> declare ! as operator returning bool
+bool operator!();
+c++decl> declare user-defined conversion operator returning bool
+operator bool();
+c++decl> show as typedef
+typedef int Int;
+c++decl> show as using
+using Int = int;

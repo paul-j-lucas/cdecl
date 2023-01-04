@@ -26,8 +26,7 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 # Command-line option tests
 # =========================
 #
-TESTS =	tests/cdecl--no-semicolon.test \
-	tests/cdecl--no-typedefs.test \
+TESTS =	tests/cdecl--no-typedefs.test \
 	tests/cdecl-Sx.test \
 	tests/cdecl-h.test \
 	tests/cdecl-knever.test \
@@ -877,6 +876,7 @@ TESTS+=	tests/__declspec.test \
 	tests/help.test \
 	tests/integers.test \
 	tests/prompt.test \
+	tests/semicolon.test \
 	tests/set.test \
 	tests/set_expl.test \
 	tests/set_expli.test \
@@ -891,7 +891,6 @@ TESTS+=	tests/__declspec.test \
 	tests/set_nousing-c++.test \
 	tests/set_options.test \
 	tests/set_prompt_x.test \
-	tests/set_semicolon.test \
 	tests/set_xxx.test \
 	tests/trigraphs.test
 
