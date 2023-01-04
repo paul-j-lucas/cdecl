@@ -41,12 +41,7 @@ endif
 # Command-line option error tests
 # ===============================
 #
-TESTS+=	tests/cdecl--kolor.test \
-	tests/cdecl-23.test \
-	tests/cdecl-9.test \
-	tests/cdecl-k.test \
-	tests/cdecl-kxxx.test \
-	tests/cdecl-xx.test
+TESTS+=	tests/bad_cli_options.test
 
 ###############################################################################
 

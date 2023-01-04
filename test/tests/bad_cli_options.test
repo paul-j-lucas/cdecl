@@ -1,0 +1,31 @@
+EXPECTED_EXIT=64
+
+bad_opts() {
+  echo | cdecl $* && exit 1
+}
+
+bad_opts -23
+bad_opts -9
+
+bad_opts --color
+bad_opts -k
+bad_opts --color=xxx
+bad_opts -kxxx
+bad_opts --kolor
+
+bad_opts --explicit-ecsu
+bad_opts -S
+bad_opts --explicit-ecsu=x
+bad_opts -Sx
+
+bad_opts --explicit-int
+bad_opts -I
+bad_opts --explicit-int=x
+bad_opts -Ix
+
+bad_opts -hv
+
+bad_opts --lang=x
+bad_opts -xx
+
+# vim:set et sw=2 ts=2:
