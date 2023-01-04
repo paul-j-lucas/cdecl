@@ -1,0 +1,357 @@
+cdecl> declare x as short
+short x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned short
+unsigned short x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned long
+unsigned long x;
+cdecl> declare x as unsigned long long
+unsigned long long x;
+cdecl> set explicit-int=s
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=s
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short int x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned short
+unsigned short x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned long
+unsigned long x;
+cdecl> declare x as unsigned long long
+unsigned long long x;
+cdecl> set explicit-int=i
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=i
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short int x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long int x;
+cdecl> declare x as long long
+long long int x;
+cdecl> declare x as unsigned short
+unsigned short x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned long
+unsigned long x;
+cdecl> declare x as unsigned long long
+unsigned long long x;
+cdecl> set explicit-int=iu
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=iu
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short int x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long int x;
+cdecl> declare x as long long
+long long int x;
+cdecl> declare x as unsigned short
+unsigned short int x;
+cdecl> declare x as unsigned
+unsigned int x;
+cdecl> declare x as unsigned long
+unsigned long int x;
+cdecl> declare x as unsigned long long
+unsigned long long int x;
+cdecl> set explicit-int=l
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=l
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long int x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned short
+unsigned short x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned long
+unsigned long x;
+cdecl> declare x as unsigned long long
+unsigned long long x;
+cdecl> set explicit-int=ll
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=ll
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long x;
+cdecl> declare x as long long
+long long int x;
+cdecl> declare x as unsigned short
+unsigned short x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned long
+unsigned long x;
+cdecl> declare x as unsigned long long
+unsigned long long x;
+cdecl> set explicit-int=u
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=u
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned short
+unsigned short int x;
+cdecl> declare x as unsigned
+unsigned int x;
+cdecl> declare x as unsigned long
+unsigned long int x;
+cdecl> declare x as unsigned long long
+unsigned long long int x;
+cdecl> set explicit-int=us
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=us
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned short
+unsigned short int x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned long
+unsigned long x;
+cdecl> declare x as unsigned long long
+unsigned long long x;
+cdecl> set explicit-int=ui
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=ui
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned short
+unsigned short x;
+cdecl> declare x as unsigned
+unsigned int x;
+cdecl> declare x as unsigned long
+unsigned long x;
+cdecl> declare x as unsigned long long
+unsigned long long x;
+cdecl> set explicit-int=ul
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=ul
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned short
+unsigned short x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned long
+unsigned long int x;
+cdecl> declare x as unsigned long long
+unsigned long long x;
+cdecl> set explicit-int=ull
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=ull
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned short
+unsigned short x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned long
+unsigned long x;
+cdecl> declare x as unsigned long long
+unsigned long long int x;
+cdecl> set noexplicit-int
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as short
+short x;
+cdecl> declare x as int
+int x;
+cdecl> declare x as long
+long x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned short
+unsigned short x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned long
+unsigned long x;
+cdecl> declare x as unsigned long long
+unsigned long long x;

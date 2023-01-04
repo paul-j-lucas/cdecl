@@ -887,6 +887,7 @@ TESTS+=	tests/__declspec.test \
 	tests/english-types.test \
 	tests/explain-by-default.test \
 	tests/explicit-ecsu.test \
+	tests/explicit-int.test \
 	tests/gnu_attributes.test \
 	tests/help.test \
 	tests/integers.test \
@@ -895,14 +896,11 @@ TESTS+=	tests/__declspec.test \
 	tests/set_expli.test \
 	tests/set_explicit-ecsu_x.test \
 	tests/set_explicit-int.test \
-	tests/set_explicit-int_i.test \
-	tests/set_explicit-int_u.test \
 	tests/set_explicit-int_x.test \
 	tests/set_graphs.test \
 	tests/set_lang.test \
 	tests/set_lang_xxx.test \
 	tests/set_nodigraphs.test \
-	tests/set_noexplicit-int.test \
 	tests/set_noexplicit-int_u.test \
 	tests/set_noprompt.test \
 	tests/set_nousing-c++.test \

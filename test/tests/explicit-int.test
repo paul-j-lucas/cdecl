@@ -1,0 +1,134 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set explicit-int=s
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set explicit-int=i
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set explicit-int=iu
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set explicit-int=l
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set explicit-int=ll
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set explicit-int=u
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set explicit-int=us
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set explicit-int=ui
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set explicit-int=ul
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set explicit-int=ull
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+set noexplicit-int
+set
+declare x as short
+declare x as int
+declare x as long
+declare x as long long
+declare x as unsigned short
+declare x as unsigned
+declare x as unsigned long
+declare x as unsigned long long
+
+END

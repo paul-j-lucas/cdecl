@@ -134,6 +134,7 @@ bool parse_explicit_int( char const *ei_format ) {
   assert( ei_format != NULL );
 
   c_tid_t tid = TB_NONE;
+  opt_explicit_int[0] = opt_explicit_int[1] = TB_NONE;
 
   for ( char const *s = ei_format; *s != '\0'; ++s ) {
     switch ( *s ) {

@@ -62,6 +62,10 @@ class.
 ** `_BitInt` maximum bits
 Now check that the maximum number of bits for `_BitInt` is 64.
 
+** `explicit-int` parsing
+Fixed a bug of not resetting the current `explicit-int` option to none before
+parsing a new string.
+
 ** `friend` scoped user-defined conversion operators
 Explaining a `friend` scoped user-defined conversion operator, e.g.:
 
