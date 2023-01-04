@@ -1,5 +1,8 @@
 2023-01-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * test/Makefile.am, bad_cli_options.out, bad_cli_options.test: Test
+     consolidation.
+   * test/Makefile.am, semicolon.out, semicolon.test: Test consolidation.
    * run_test.sh: Simplified.
    * Doxyfile, Makefile.am, NEWS, bootstrap, cdecl.css, configure.ac, lcovrc,
      makedoc.sh, man/Makefile.am, man/man1/Makefile.am, man/man1/c++decl.1,
