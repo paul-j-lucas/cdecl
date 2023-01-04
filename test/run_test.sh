@@ -53,20 +53,20 @@ pass() {
 }
 
 fail() {
-  RESULT=$1; shift; [ "$RESULT" ] || RESULT=FAIL
-  print_result $RESULT $TEST_NAME $*
+  result=$1; shift; [ "$result" ] || result=FAIL
+  print_result $result $TEST_NAME $*
   {
-    echo ":test-result: $RESULT"
+    echo ":test-result: $result"
     echo ":copy-in-global-log: yes"
   } > $TRS_FILE
 }
 
 print_result() {
-  RESULT=$1; shift
-  COLOR=`eval echo \\$COLOR_$RESULT`
+  result=$1; shift
+  COLOR=`eval echo \\$COLOR_$result`
   if [ "$COLOR" ]
-  then echo $COLOR$RESULT$COLOR_NONE: $*
-  else echo $RESULT: $*
+  then echo $COLOR$result$COLOR_NONE: $*
+  else echo $result: $*
   fi
 }
 
