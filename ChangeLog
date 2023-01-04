@@ -1,5 +1,49 @@
+2023-01-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * run_test.sh: Simplified.
+   * Doxyfile, Makefile.am, NEWS, bootstrap, cdecl.css, configure.ac, lcovrc,
+     makedoc.sh, man/Makefile.am, man/man1/Makefile.am, man/man1/c++decl.1,
+     cdecl.1, src/Makefile.am, autocomplete.c, c_ast.c, c_ast.h, c_ast_check.c,
+     c_ast_check.h, c_ast_util.c, c_ast_util.h, c_keyword.c, c_keyword.h,
+     c_kind.c, c_kind.h, c_lang.c, c_lang.h, c_operator.c, c_operator.h,
+     c_sglob.c, c_sglob.h, c_sname.c, c_sname.h, c_type.c, c_type.h,
+     c_typedef.c, c_typedef.h, cdecl.c, cdecl.h, cdecl_command.c,
+     cdecl_command.h, cdecl_keyword.c, cdecl_keyword.h, cdecl_lldb.py,
+     cdecl_parser.h, cli_options.c, cli_options.h, color.c, color.h, dam_lev.c,
+     dam_lev.h, did_you_mean.c, did_you_mean.h, dump.c, dump.h, english.c,
+     english.h, gibberish.c, gibberish.h, help.c, help.h, lexer.h, lexer.l,
+     lines.sh, literals.c, literals.h, options.c, options.h, parser.y,
+     pjl_config.h, print.c, print.h, prompt.c, prompt.h, read_line.c,
+     read_line.h, red_black.c, red_black.h, red_black_test.c, set_options.c,
+     set_options.h, slist.c, slist.h, slist_test.c, strbuf.c, strbuf.h,
+     types.h, unit_test.h, util.c, util.h, test/Makefile.am,
+     not_in_Makefile.sh, run_test.sh, update_test.sh: Updated copyright year
+     range latest year to 2023.
+   * test/Makefile.am: Test consolidation.
+
+2023-01-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c: Simplification.
+   * test/Makefile.am, prompt.out, prompt.test: Test consolidation.
+   * NEWS, options.c, test/Makefile.am, explicit-int.out, explicit-int.test:
+     Now resetting the current `explicit-int` option to none before parsing a
+     new string.
+   * test/Makefile.am: Test consolidation.
+   * test/Makefile.am, explicit-ecsu.out, explicit-ecsu.test: Test
+     consolidation.
+   * cdecl.c, test/Makefile.am, explain-by-default.out: No longer echoing
+     "explain" when explain-by-default.
+   * test/Makefile.am, explain-by-default.out, explain-by-default.test: Test
+     consolidation.
+   * test/Makefile.am, english-types.out, english-types.test: New
+     english-types.test.
+   * test/Makefile.am, trigraphs.out, trigraphs.test: Test consolidation.
+
 2023-01-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * test/Makefile.am, digraphs.out, digraphs.test: Test consolidation.
+   * alttokens.test: Fixed mode.
+   * alttokens.out, alttokens.test: Test consolidation.
    * parser.y, util.h: Replaced /* nothing */ with NO_OP in the few cases where
      it mattered.
    * util.h: Added ().
