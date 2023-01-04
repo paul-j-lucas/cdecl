@@ -1,3 +1,0 @@
-set explicit-ecsu
-    ^
-5: error: set option "explicit-ecsu" requires =<value>

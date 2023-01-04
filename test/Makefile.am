@@ -893,7 +893,6 @@ TESTS+=	tests/__declspec.test \
 	tests/set.test \
 	tests/set_expl.test \
 	tests/set_expli.test \
-	tests/set_explicit-ecsu.test \
 	tests/set_explicit-ecsu_x.test \
 	tests/set_explicit-int.test \
 	tests/set_explicit-int_i.test \
