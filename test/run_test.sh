@@ -218,6 +218,7 @@ run_cdecl_test() {
   EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
   assert_exists $EXPECTED_OUTPUT
 
+  # Dot-execute the test so we get its value of EXPECTED_EXIT.
   . $TEST > $LOG_FILE 2>&1
 
   ACTUAL_EXIT=$?
