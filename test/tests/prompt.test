@@ -1,0 +1,7 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+set noprompt
+set
+set prompt
+set
+END

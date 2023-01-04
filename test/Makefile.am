@@ -891,6 +891,7 @@ TESTS+=	tests/__declspec.test \
 	tests/gnu_attributes.test \
 	tests/help.test \
 	tests/integers.test \
+	tests/prompt.test \
 	tests/set.test \
 	tests/set_expl.test \
 	tests/set_expli.test \
@@ -902,10 +903,8 @@ TESTS+=	tests/__declspec.test \
 	tests/set_lang_xxx.test \
 	tests/set_nodigraphs.test \
 	tests/set_noexplicit-int_u.test \
-	tests/set_noprompt.test \
 	tests/set_nousing-c++.test \
 	tests/set_options.test \
-	tests/set_prompt.test \
 	tests/set_prompt_x.test \
 	tests/set_semicolon.test \
 	tests/set_xxx.test \
