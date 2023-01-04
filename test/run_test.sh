@@ -206,6 +206,10 @@ PATH=$BUILD_SRC:$PATH
 
 trap "x=$?; rm -f /tmp/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
+##
+# Disable core dumps so we won't fill up the disk with them if a bunch of tests
+# crash.
+##
 ulimit -c 0
 
 ########## Run test ###########################################################
