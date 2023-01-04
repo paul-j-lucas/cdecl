@@ -139,12 +139,11 @@ bool parse_explicit_int( char const *ei_format ) {
     switch ( *s ) {
       case 'i':
       case 'I':
+        tid |= TB_INT;
         if ( (tid & TB_UNSIGNED) == TB_NONE ) {
           // If only 'i' is specified, it means all signed integer types shall
           // be explicit.
-          tid |= TB_SHORT | TB_INT | TB_LONG | TB_LONG_LONG;
-        } else {
-          tid |= TB_INT;
+          tid |= TB_SHORT | TB_LONG | TB_LONG_LONG;
         }
         break;
       case 'l':
