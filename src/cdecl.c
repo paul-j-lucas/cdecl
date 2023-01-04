@@ -92,7 +92,6 @@ int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   check_atexit( &cdecl_cleanup );
   cli_options_init( &argc, &argv );
-  cdecl_interactive = isatty( STDIN_FILENO );
   lexer_init();
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
@@ -261,6 +260,7 @@ static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
  */
 NODISCARD
 static int cdecl_parse_stdin( void ) {
+  cdecl_interactive = isatty( STDIN_FILENO );
   if ( cdecl_interactive && opt_prompt )
     FPUTS( "Type \"help\" or \"?\" for help\n", cdecl_fout );
   return cdecl_parse_file( stdin, cdecl_fout, /*return_on_error=*/false );
