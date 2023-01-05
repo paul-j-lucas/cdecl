@@ -890,7 +890,7 @@ TESTS+=	tests/__declspec.test \
 	tests/using.test
 
 if ENABLE_CDECL_DEBUG
-TESTS+=	tests/set_debug.test
+TESTS+=	tests/cdecl-debug.test
 endif
 
 if ENABLE_BISON_DEBUG

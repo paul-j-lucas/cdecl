@@ -1,0 +1,30 @@
+cdecl> set debug
+cdecl> set
+  noalt-tokens
+    debug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> set nodebug
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
