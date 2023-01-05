@@ -767,10 +767,13 @@ TESTS+=	tests/explain_udl__i.test \
 # Command-line tests
 # ==================
 #
-TESTS+=	tests/cl-cast_i.test \
-	tests/cl-declare_i.test \
-	tests/cl-exit.test \
-	tests/cl-explain_i.test \
+TESTS+=	tests/cl.test
+
+#
+# Command-line error tests
+# ========================
+#
+TESTS+=	tests/cl-exit.test \
 	tests/cl-quit.test
 
 ###############################################################################
