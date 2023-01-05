@@ -859,7 +859,7 @@ endif
 # ===================
 #
 TESTS+=	tests/__declspec.test \
-	tests/alttokens.test \
+	tests/alt-tokens.test \
 	tests/declare_synonyms.test \
 	tests/digraphs.test \
 	tests/east-const.test \
