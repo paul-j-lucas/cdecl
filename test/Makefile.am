@@ -893,11 +893,6 @@ if ENABLE_CDECL_DEBUG
 TESTS+=	tests/cdecl-debug.test
 endif
 
-if ENABLE_BISON_DEBUG
-TESTS+=	tests/set_bison-debug.test \
-	tests/set_nobison-debug.test
-endif
-
 ###############################################################################
 
 BUILD_SRC = $(abs_top_builddir)/src
