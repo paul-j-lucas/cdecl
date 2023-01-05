@@ -883,11 +883,11 @@ TESTS+=	tests/__declspec.test \
 	tests/set_lang_xxx.test \
 	tests/set_nodigraphs.test \
 	tests/set_noexplicit-int_u.test \
-	tests/set_nousing-c++.test \
 	tests/set_options.test \
 	tests/set_prompt_x.test \
 	tests/set_xxx.test \
-	tests/trigraphs.test
+	tests/trigraphs.test \
+	tests/using.test
 
 if ENABLE_CDECL_DEBUG
 TESTS+=	tests/set_debug.test

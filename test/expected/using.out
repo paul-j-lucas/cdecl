@@ -1,0 +1,34 @@
+c++decl> set nousing
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+    lang=C++23
+    prompt
+    semicolon
+  nousing
+c++decl> declare Int as type int
+typedef int Int;
+c++decl> set using
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+    lang=C++23
+    prompt
+    semicolon
+    using
+c++decl> declare Int as type int
+using Int = int;

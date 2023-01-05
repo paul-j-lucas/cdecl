@@ -1,0 +1,12 @@
+EXPECTED_EXIT=0
+cdecl -xc++ -O <<END
+
+set nousing
+set
+declare Int as type int
+
+set using
+set
+declare Int as type int
+
+END
