@@ -870,6 +870,7 @@ TESTS+=	tests/__declspec.test \
 	tests/gnu_attributes.test \
 	tests/help.test \
 	tests/integers.test \
+	tests/lang.test \
 	tests/prompt.test \
 	tests/semicolon.test \
 	tests/set.test \
@@ -879,7 +880,6 @@ TESTS+=	tests/__declspec.test \
 	tests/set_explicit-int.test \
 	tests/set_explicit-int_x.test \
 	tests/set_graphs.test \
-	tests/set_lang.test \
 	tests/set_lang_xxx.test \
 	tests/set_nodigraphs.test \
 	tests/set_noexplicit-int_u.test \
