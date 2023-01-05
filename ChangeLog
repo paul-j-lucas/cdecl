@@ -1,5 +1,15 @@
+2023-01-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am, cl.out, cl.test: Test consolidation.
+   * test/Makefile.am: Removed.
+   * test/Makefile.am, cdecl-debug.out: Better cdecl debug test.
+   * test/Makefile.am: Test renaming.
+   * test/Makefile.am, using.out, using.test: Better `using` tests.
+   * test/Makefile.am: Test renaming.
+
 2023-01-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.c: Now setting interactive mode only when reading via stdin.
    * test/Makefile.am, bad_cli_options.out, bad_cli_options.test: Test
      consolidation.
    * test/Makefile.am, semicolon.out, semicolon.test: Test consolidation.
