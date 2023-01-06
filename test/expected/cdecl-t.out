@@ -1,1 +1,6 @@
-int x;
+cdecl> define Int as int
+cdecl> show all
+define Int as integer
+define partial_ordering of namespace std as structure partial_ordering
+define strong_ordering of namespace std as structure strong_ordering
+define weak_ordering of namespace std as structure weak_ordering

@@ -1,4 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -t <<END
-declare x as int
+cdecl -t -O <<END
+define Int as int
+show all
 END
