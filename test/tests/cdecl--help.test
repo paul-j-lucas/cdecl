@@ -1,2 +1,2 @@
 EXPECTED_EXIT=0
-echo | cdecl -h
+cdecl --help
