@@ -26,8 +26,8 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 # Command-line option tests
 # =========================
 #
-TESTS =	tests/cdecl--help.test \
-	tests/cdecl-knever.test \
+TESTS = tests/cdecl--color.test \
+	tests/cdecl--help.test \
 	tests/cdecl--no-typedefs.test
 
 if ENABLE_CDECL_DEBUG
