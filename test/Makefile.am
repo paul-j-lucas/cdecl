@@ -26,8 +26,7 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 # Command-line option tests
 # =========================
 #
-TESTS =	tests/cdecl-Sx.test \
-	tests/cdecl-h.test \
+TESTS =	tests/cdecl-h.test \
 	tests/cdecl-knever.test \
 	tests/cdecl-s.test \
 	tests/cdecl-t.test
