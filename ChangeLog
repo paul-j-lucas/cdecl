@@ -1,3 +1,11 @@
+2023-01-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am: Test renaming.
+   * test/Makefile.am, semicolon.out, semicolon.test: Test consolidation.
+   * test/Makefile.am: Test renaming.
+   * test/Makefile.am: Test consolidation.
+   * test/Makefile.am, cdecl-t.out, cdecl-t.test: Test consolidation.
+
 2023-01-05  Paul J. Lucas <paul@lucasmail.org>
 
    * test/Makefile.am, cl.out, cl.test: Test consolidation.
