@@ -1,5 +1,3 @@
-c++decl> typedef int Int
-c++decl> set nosemicolon
 c++decl> set
   noalt-tokens
   nodebug
@@ -14,6 +12,7 @@ c++decl> set
     prompt
   nosemicolon
     using
+c++decl> typedef int Int
 c++decl> declare x as int
 int x
 c++decl> declare x, y as int
