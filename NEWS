@@ -46,6 +46,9 @@ The following English synonyms have been added:
              floating point  float
              wide character  wchar_t
 
+** C++ `auto` help
+`auto` is now correctly listed as a C++ type in the help for C++11 and later.
+
 ** More pseudo-English type names
 When explaining gibberish, print types in C/C++ (e.g., `int`), not pseudo-
 English (e.g., `integer`).

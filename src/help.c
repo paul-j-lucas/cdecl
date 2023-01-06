@@ -323,14 +323,20 @@ static void print_help_english( void ) {
 
     print_h( "args: a comma separated list of [<name> as] <english>\n" );
 
-    print_h( "C\\+\\+-type: bool | char" );
+    print_h( "C\\+\\+-type: " );
+    if ( OPT_LANG_IS( auto_TYPE ) )
+      print_h( "auto | " );
+    print_h( "bool | char" );
     if ( OPT_LANG_IS( char16_32_t ) ) {
       print_h( "[{" );
       if ( OPT_LANG_IS( char8_t ) )
         print_h( "8|" );
       print_h( "16|32}_t]" );
     }
-    print_h( " | wchar_t | int | float | double | void\n" );
+    print_h( " | wchar_t | int | float | double |" );
+    if ( OPT_LANG_IS( char8_t ) && OPT_LANG_IS( auto_TYPE ) )
+      print_h( "\n         " );
+    print_h( " void\n" );
 
     print_h( "cv-qual: const | volatile\n" );
 
