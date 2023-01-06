@@ -1,0 +1,14 @@
+EXPECTED_EXIT=0
+cdecl --debug -O <<END
+set
+explain int x
+
+set nodebug
+set
+explain int x
+
+set debug
+set
+explain int x
+
+END

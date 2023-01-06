@@ -1,7 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -O <<END
-set debug
-set
-set nodebug
-set
-END

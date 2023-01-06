@@ -30,10 +30,6 @@ TESTS = tests/cdecl--color.test \
 	tests/cdecl--help.test \
 	tests/cdecl--no-typedefs.test
 
-if ENABLE_CDECL_DEBUG
-TESTS+=	tests/cdecl--debug.test
-endif
-
 #
 # Command-line option error tests
 # ===============================
@@ -890,7 +886,7 @@ TESTS+=	tests/__declspec.test \
 	tests/using.test
 
 if ENABLE_CDECL_DEBUG
-TESTS+=	tests/cdecl-debug.test
+TESTS+=	tests/debug.test
 endif
 
 ###############################################################################
