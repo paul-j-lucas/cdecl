@@ -1,0 +1,23 @@
+EXPECTED_EXIT=0
+cdecl -xc++ -O <<END
+declare _x of scope S as user-defined literal (character) returning integer
+declare _x as user-defined literal (character 16) returning integer
+declare _x as user-defined literal (character 32) returning integer
+declare _x as user-defined literal (character 8) returning integer
+declare m as user-defined literal (character) returning integer
+declare _x as user-defined literal (character) returning integer
+declare _x as user-defined literal (long double precision) returning integer
+declare _x as user-defined literal (pointer to constant character 16, unsigned long integer) returning integer
+declare _x as user-defined literal (pointer to constant character 16, size_t) returning integer
+declare _x as user-defined literal (pointer to constant character 32, unsigned long integer) returning integer
+declare _x as user-defined literal (pointer to constant character 32, size_t) returning integer
+declare _x as user-defined literal (pointer to constant character 8, unsigned long integer) returning integer
+declare _x as user-defined literal (pointer to constant character 8, size_t) returning integer
+declare _x as user-defined literal (pointer to constant character) returning integer
+declare _x as user-defined literal (pointer to constant character, unsigned long integer) returning integer
+declare _x as user-defined literal (pointer to constant character, size_t) returning integer
+declare _x as user-defined literal (pointer to constant wide character, unsigned long integer) returning integer
+declare _x as user-defined literal (pointer to constant wide character, size_t) returning integer
+declare _x as user-defined literal (unsigned long long integer) returning integer
+declare _x as user-defined literal (wide character) returning integer
+END

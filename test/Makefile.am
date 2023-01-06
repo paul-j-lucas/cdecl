@@ -167,7 +167,6 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_stctor.test \
 	tests/declare_stmi.test \
 	tests/declare_th_f_v.test \
-	tests/declare_udl_pcci_i.test \
 	tests/declare_v+f_v.test \
 	tests/declare_xvi.test
 
@@ -662,8 +661,13 @@ TESTS+=	tests/declare_udc_a4i.test
 # C++ declare user-defined literal tests
 # ======================================
 #
-TESTS+=	tests/declare_+udl_c_i.test \
-	tests/explain_udl_pccz_ul.test
+TESTS+=	tests/declare_udl.test
+
+#
+# C++ declare user-defined literal error tests
+# ============================================
+#
+TESTS+=	tests/declare_udl_pcci_i.test
 
 #
 # C++ explain operator tests
