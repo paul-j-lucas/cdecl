@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -d -O <<END
+cdecl --debug -O <<END
 struct S
 
 explain _Alignas(8) int i

@@ -31,7 +31,7 @@ TESTS = tests/cdecl--color.test \
 	tests/cdecl--no-typedefs.test
 
 if ENABLE_CDECL_DEBUG
-TESTS+=	tests/cdecl-d.test
+TESTS+=	tests/cdecl--debug.test
 endif
 
 #
