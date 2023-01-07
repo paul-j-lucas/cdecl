@@ -1,10 +1,8 @@
 EXPECTED_EXIT=0
 cdecl -xc++ -O <<END
-declare _x of scope S as user-defined literal (character) returning integer
 declare _x as user-defined literal (character 16) returning integer
 declare _x as user-defined literal (character 32) returning integer
 declare _x as user-defined literal (character 8) returning integer
-declare m as user-defined literal (character) returning integer
 declare _x as user-defined literal (character) returning integer
 declare _x as user-defined literal (long double precision) returning integer
 declare _x as user-defined literal (pointer to constant character 16, unsigned long integer) returning integer
@@ -20,4 +18,9 @@ declare _x as user-defined literal (pointer to constant wide character, unsigned
 declare _x as user-defined literal (pointer to constant wide character, size_t) returning integer
 declare _x as user-defined literal (unsigned long long integer) returning integer
 declare _x as user-defined literal (wide character) returning integer
+
+declare _x as user defined literal (character) returning integer
+declare _x of scope S as user-defined literal (character) returning integer
+
+declare m as user-defined literal (character) returning integer
 END

@@ -48,6 +48,7 @@ char const L_commands[]                 = "commands";
 char const L_declare[]                  = "declare";
 char const L_defaulted[]                = "defaulted";
 char const L_define[]                   = "define";
+char const L_defined[]                  = "defined";
 char const L_deleted[]                  = "deleted";
 char const L_english[]                  = "english";
 char const L_eval[]                     = "eval";

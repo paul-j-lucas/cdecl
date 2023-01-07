@@ -1269,6 +1269,7 @@ static void yyerror( char const *msg ) {
 %token              Y_commands
 %token              Y_constructor
 %token              Y_conversion
+%token              Y_defined
 %token              Y_destructor
 %token              Y_english
 %token              Y_evaluation
@@ -2155,7 +2156,7 @@ declare_command
      * C++ user-defined conversion operator declaration.
      */
   | Y_declare udc_storage_class_list_english_type_opt cv_qualifier_list_stid_opt
-    Y_user_defined conversion_exp operator_opt of_scope_list_english_opt
+    user_defined conversion_exp operator_opt of_scope_list_english_opt
     returning_exp decl_english_ast
     {
       c_type_t const  storage_type = $2;
@@ -6765,7 +6766,7 @@ reference_english_ast
 /// English C++ user-defined literal declaration //////////////////////////////
 
 user_defined_literal_decl_english_ast
-  : Y_user_defined literal_exp paren_param_decl_list_english_opt
+  : user_defined literal_exp paren_param_decl_list_english_opt
     returning_english_ast_opt
     { //
       // User-defined literals are supported only in C++11 and later.
@@ -7668,6 +7669,14 @@ c_operator
   | Y_TILDE                         { $$ = C_OP_TILDE           ; }
   ;
 
+defined_exp
+  : Y_defined
+  | error
+    {
+      keyword_expected( L_defined );
+    }
+  ;
+
 dependency_exp
   : Y_dependency
   | error
@@ -8017,6 +8026,11 @@ unused_exp
     {
       keyword_expected( L_unused );
     }
+  ;
+
+user_defined
+  : Y_user_defined
+  | Y_user defined_exp
   ;
 
 virtual_stid_exp

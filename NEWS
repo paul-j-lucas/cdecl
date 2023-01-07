@@ -44,6 +44,7 @@ The following English synonyms have been added:
     constant-initialization  constinit
            double precision  double
              floating point  float
+               user defined  user-defined
              wide character  wchar_t
 
 ** C++ `auto` help

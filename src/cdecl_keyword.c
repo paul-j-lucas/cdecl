@@ -227,6 +227,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_declare,        TOKEN( Y_declare,           AC_LANG(ANY)              ) },
   { L_defaulted,      C_SYE( L_default,           AC_LANG(NONE)             ) },
   { L_define,         TOKEN( Y_define,            AC_LANG(ANY)              ) },
+  { L_defined,        TOKEN( Y_defined,           AC_LANG(CPP_ANY)          ) },
   { L_deleted,        C_SYE( L_delete,            AC_LANG(NONE)             ) },
   { L_dependency,     TOKEN( Y_dependency,
                                                 AC_LANG(carries_dependency) ) },

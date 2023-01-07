@@ -75,6 +75,7 @@ extern char const L_commands[];
 extern char const L_declare[];
 extern char const L_defaulted[];          // synonym for "default"
 extern char const L_define[];
+extern char const L_defined[];
 extern char const L_deleted[];            // synonym for "delete"
 extern char const L_english[];
 extern char const L_eval[];               // synonym for "evaluation"
