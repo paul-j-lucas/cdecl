@@ -295,6 +295,14 @@ Note, however, that I am not a lawyer;
 but my layman's anaysis
 seems reasonable.
 
+## Notice of Non-Affiliation
+
+The site `https://github.com/paul-j-lucas/cdecl`
+is the _only_ offical site for **cdecl**
+versions 3.0 and later.
+I am _not_ affiliated with any other site
+you might find some version of **cdecl** on.
+
 **Paul J. Lucas**  
 San Francisco Bay Area, California, USA  
-28 February 2022
+5 January 2023
