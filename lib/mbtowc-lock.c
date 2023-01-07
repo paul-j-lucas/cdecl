@@ -1,5 +1,5 @@
 /* Return the internal lock used by mbrtowc and mbrtoc32.
-   Copyright (C) 2019-2022 Free Software Foundation, Inc.
+   Copyright (C) 2019-2023 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as

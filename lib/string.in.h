@@ -1,6 +1,6 @@
 /* A GNU-like <string.h>.
 
-   Copyright (C) 1995-1996, 2001-2022 Free Software Foundation, Inc.
+   Copyright (C) 1995-1996, 2001-2023 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -59,10 +59,11 @@
 # include <unistd.h>
 #endif
 
-/* AIX 7.2 declares ffsl and ffsll in <strings.h>, not in <string.h>.  */
+/* AIX 7.2 and Android 13 declare ffsl and ffsll in <strings.h>, not in
+   <string.h>.  */
 /* But in any case avoid namespace pollution on glibc systems.  */
 #if ((@GNULIB_FFSL@ || @GNULIB_FFSLL@ || defined GNULIB_POSIXCHECK) \
-     && defined _AIX) \
+     && (defined _AIX || defined __ANDROID__)) \
     && ! defined __GLIBC__
 # include <strings.h>
 #endif
@@ -343,7 +344,7 @@ _GL_CXXALIAS_SYS_CAST2 (memrchr,
          || defined __clang__)
 _GL_CXXALIASWARN1 (memrchr, void *, (void *, int, size_t) throw ());
 _GL_CXXALIASWARN1 (memrchr, void const *, (void const *, int, size_t) throw ());
-# else
+# elif __GLIBC__ >= 2
 _GL_CXXALIASWARN (memrchr);
 # endif
 #elif defined GNULIB_POSIXCHECK
@@ -498,7 +499,7 @@ _GL_CXXALIAS_SYS_CAST2 (strchrnul,
 _GL_CXXALIASWARN1 (strchrnul, char *, (char *__s, int __c_in) throw ());
 _GL_CXXALIASWARN1 (strchrnul, char const *,
                    (char const *__s, int __c_in) throw ());
-# else
+# elif __GLIBC__ >= 2
 _GL_CXXALIASWARN (strchrnul);
 # endif
 #elif defined GNULIB_POSIXCHECK
@@ -863,7 +864,7 @@ _GL_CXXALIASWARN1 (strcasestr, char *,
                    (char *haystack, const char *needle) throw ());
 _GL_CXXALIASWARN1 (strcasestr, const char *,
                    (const char *haystack, const char *needle) throw ());
-# else
+# elif __GLIBC__ >= 2
 _GL_CXXALIASWARN (strcasestr);
 # endif
 #elif defined GNULIB_POSIXCHECK

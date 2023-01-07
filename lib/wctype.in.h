@@ -1,6 +1,6 @@
 /* A substitute for ISO C99 <wctype.h>, for platforms that lack it.
 
-   Copyright (C) 2006-2022 Free Software Foundation, Inc.
+   Copyright (C) 2006-2023 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
