@@ -1,5 +1,11 @@
 2023-01-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, cdecl.1, cdecl_keyword.c, literals.c, literals.h, parser.y,
+     declare_udc.out, declare_udl.out, declare_udc.test, declare_udl.test:
+     Added `user defined` as a synonym for `user-defined`.
+   * explain_udl.test: chmod -x
+   * cli_options.c, cdecl--help.out: s/Suppress prompt/Suppress printing
+     prompts/
    * lib/Makefile.am, _Noreturn.h, alloca.in.h, arg-nonnull.h, assert.in.h,
      attribute.h, btowc.c, c++defs.h, cdefs.h, ctype.in.h, errno.in.h,
      flexmember.h, fnmatch.c, fnmatch.in.h, fnmatch_loop.c, getdelim.c,
