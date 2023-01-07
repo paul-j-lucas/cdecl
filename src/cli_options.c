@@ -641,7 +641,7 @@ static void usage( int status ) {
 "  --language=LANG      (-%c) Use LANG.\n"
 "  --no-config          (-%c) Suppress reading configuration file.\n"
 "  --no-english-types   (-%c) Print types in C/C++, not English.\n"
-"  --no-prompt          (-%c) Suppress prompt.\n"
+"  --no-prompt          (-%c) Suppress printing prompts.\n"
 "  --no-semicolon       (-%c) Suppress printing final semicolon for declarations.\n"
 "  --no-typedefs        (-%c) Suppress predefining standard types.\n"
 "  --no-using           (-%c) Declare types with typedef, not using, in C++.\n"
