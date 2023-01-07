@@ -1,3 +1,38 @@
+2023-01-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, _Noreturn.h, alloca.in.h, arg-nonnull.h, assert.in.h,
+     attribute.h, btowc.c, c++defs.h, cdefs.h, ctype.in.h, errno.in.h,
+     flexmember.h, fnmatch.c, fnmatch.in.h, fnmatch_loop.c, getdelim.c,
+     getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
+     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
+     getopt_int.h, gettext.h, hard-locale.c, hard-locale.h, idx.h,
+     intprops-internal.h, inttypes.in.h, isblank.c, lc-charset-dispatch.c,
+     lc-charset-dispatch.h, libc-config.h, limits.in.h, localcharset.c,
+     localcharset.h, locale.in.h, mbrtowc-impl-utf8.h, mbrtowc-impl.h,
+     mbrtowc.c, mbsinit.c, mbsrtowcs-impl.h, mbsrtowcs-state.c, mbsrtowcs.c,
+     mbtowc-impl.h, mbtowc-lock.c, mbtowc-lock.h, mbtowc.c, memchr.c,
+     memchr.valgrind, mempcpy.c, setlocale-lock.c, setlocale_null.c,
+     setlocale_null.h, stdarg.in.h, stdckdint.in.h, stddef.in.h, stdint.in.h,
+     stdio-read.c, stdio-write.c, stdio.in.h, stdlib.in.h, stdnoreturn.in.h,
+     streq.h, string.in.h, strndup.c, strnlen.c, strnlen1.c, strnlen1.h,
+     strsep.c, sys_types.in.h, sysexits.in.h, unistd.c, unistd.in.h, verify.h,
+     warn-on-use.h, wchar.in.h, wctype-h.c, wctype.in.h, windows-initguard.h,
+     wmemchr-impl.h, wmemchr.c, wmempcpy.c, 00gnulib.m4, __inline.m4,
+     absolute-header.m4, alloca.m4, assert_h.m4, btowc.m4, builtin-expect.m4,
+     c-bool.m4, codeset.m4, ctype_h.m4, errno_h.m4, extensions.m4,
+     extern-inline.m4, flexmember.m4, fnmatch.m4, fnmatch_h.m4, getdelim.m4,
+     getline.m4, getopt.m4, gnulib-cache.m4, gnulib-common.m4, gnulib-comp.m4,
+     gnulib-tool.m4, include_next.m4, inttypes.m4, isblank.m4, limits-h.m4,
+     localcharset.m4, locale-fr.m4, locale-ja.m4, locale-zh.m4, locale_h.m4,
+     mbrtowc.m4, mbsinit.m4, mbsrtowcs.m4, mbstate_t.m4, mbtowc.m4, memchr.m4,
+     mempcpy.m4, mmap-anon.m4, multiarch.m4, nocrash.m4, off_t.m4, pid_t.m4,
+     setlocale_null.m4, ssize_t.m4, std-gnu11.m4, stdarg.m4, stddef_h.m4,
+     stdint.m4, stdio_h.m4, stdlib_h.m4, stdnoreturn.m4, string_h.m4,
+     strndup.m4, strnlen.m4, strsep.m4, sys_types_h.m4, sysexits.m4,
+     threadlib.m4, unistd_h.m4, vararrays.m4, visibility.m4, warn-on-use.m4,
+     wchar_h.m4, wchar_t.m4, wctype_h.m4, wint_t.m4, wmemchr.m4, wmempcpy.m4,
+     zzgnulib.m4: Updated Gnulib.
+
 2023-01-06  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, help.c, help.out: `auto` is now correctly listed as a C++ type in
