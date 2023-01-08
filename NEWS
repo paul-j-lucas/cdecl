@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 13.2
+
+** `extern void v`
+C allows you to declare an object of an incomplete type, so C allows:
+
+    extern void v
+
+Now cdecl does also.
+
+
 * Changes in Cdecl 13.1
 
 ** `auto` type definitions and casts

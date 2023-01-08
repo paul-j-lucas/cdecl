@@ -64,6 +64,8 @@ cdecl> explain enum E x
 declare x as enumeration E
 cdecl> explain extern int x[2]
 declare x as external array 2 of integer
+cdecl> explain extern void v
+declare v as external void
 cdecl> explain imaginary double x
 declare x as imaginary double precision
 cdecl> explain imaginary float x

@@ -533,6 +533,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
        //   + Not: int f(void)     // not a zero-parameter function; and:
        //   + Not: (void)x         // not a cast to void; and:
        //   + Not: typedef void V  // not a typedef of void; and:
+       //   + Not: extern void V   // not an extern void (in C); and:
        //   + Not: V *p            // not a pointer to typedef of void; then:
        //
        // it means we must be a variable of void which is an error.
@@ -540,6 +541,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
        ast->parent_ast == NULL &&
        ast->kind != K_CAST &&
        !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) &&
+       !(OPT_LANG_IS( C_ANY ) && c_tid_is_any( ast->type.stids, TS_EXTERN )) &&
        (flags & C_IS_POINTED_TO) == 0 ) {
     print_error( &ast->loc, "variable of void" );
     print_hint( "pointer to void" );

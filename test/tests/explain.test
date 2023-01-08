@@ -33,6 +33,7 @@ explain double f( int (*g)(char c) )
 explain enum E : int x
 explain enum E x
 explain extern int x[2]
+explain extern void v
 explain imaginary double x
 explain imaginary float x
 explain inline void f()
