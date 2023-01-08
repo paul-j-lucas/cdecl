@@ -58,6 +58,9 @@
 
 /// @cond DOXYGEN_IGNORE
 
+// standard
+#include <stdbool.h>
+
 _GL_INLINE_HEADER_BEGIN
 #ifndef RED_BLACK_H_INLINE
 # define RED_BLACK_H_INLINE _GL_INLINE
