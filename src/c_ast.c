@@ -103,8 +103,10 @@ static_assert(
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifndef NDEBUG
 // local variable definitions
 static size_t c_ast_count;              ///< ASTs allocated but not yet freed.
+#endif /* NDEBUG */
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -329,8 +331,10 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
 
 void c_ast_free( c_ast_t *ast ) {
   if ( ast != NULL ) {
+#ifndef NDEBUG
     assert( c_ast_count > 0 );
     --c_ast_count;
+#endif /* NDEBUG */
 
     c_sname_cleanup( &ast->sname );
     switch ( ast->kind ) {
@@ -418,7 +422,9 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
       break;
   } // switch
 
+#ifndef NDEBUG
   ++c_ast_count;
+#endif /* NDEBUG */
   slist_push_back( ast_list, ast );
   return ast;
 }
