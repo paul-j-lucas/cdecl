@@ -1796,7 +1796,7 @@ static void yyerror( char const *msg ) {
 %type   <name>      glob glob_opt
 %type   <help>      help_what_opt
 %type   <tid>       inline_stid_opt
-%type   <int_val>   int_exp int_opt
+%type   <int_val>   int_lit_exp int_lit_opt
 %type   <ast>       name_ast
 %type   <name>      name_exp
 %type   <tid>       namespace_btid_exp
@@ -2327,7 +2327,7 @@ bytes_opt
   ;
 
 width_specifier_english_uint
-  : Y_width int_exp bits_opt
+  : Y_width int_lit_exp bits_opt
     { //
       // This check has to be done now in the parser rather than later in the
       // AST since we use 0 to mean "no bit-field."
@@ -5504,9 +5504,9 @@ builtin_type_c_ast
       DUMP_AST( "builtin_type_c_ast", $$ );
       DUMP_END();
     }
-  | Y__BitInt lparen_exp int_exp rparen_exp
+  | Y__BitInt lparen_exp int_lit_exp rparen_exp
     {
-      DUMP_START( "builtin_type_c_ast", "_BitInt '(' int_exp ')'" );
+      DUMP_START( "builtin_type_c_ast", "_BitInt '(' int_lit_exp ')'" );
       DUMP_INT( "int", $3 );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
@@ -6959,7 +6959,7 @@ builtin_no_BitInt_english_btid
   | Y_auto_TYPE
   | Y__Bool
   | Y_bool
-  | Y_char int_opt
+  | Y_char int_lit_opt
     {
       switch ( $2 ) {
         case  0: $$ = TB_CHAR    ; break;
@@ -6989,11 +6989,11 @@ BitInt_english_int
     {
       $$ = $2;
     }
-  | Y__BitInt '(' int_exp rparen_exp
+  | Y__BitInt '(' int_lit_exp rparen_exp
     {
       $$ = $3;
     }
-  | Y__BitInt Y_width int_exp bits_opt
+  | Y__BitInt Y_width int_lit_exp bits_opt
     {
       $$ = $3;
     }
@@ -7352,7 +7352,7 @@ sname_c_ast
 
 bit_field_c_uint_opt
   : /* empty */                   { $$ = 0; }
-  | ':' int_exp
+  | ':' int_lit_exp
     { //
       // This check has to be done now in the parser rather than later in the
       // AST since we use 0 to mean "no bit-field."
@@ -7748,15 +7748,15 @@ inline_stid_opt
   | Y_inline
   ;
 
-int_exp
+int_lit_exp
   : Y_INT_LIT
   | error
     {
-      elaborate_error( "integer expected" );
+      elaborate_error( "integer literal expected" );
     }
   ;
 
-int_opt
+int_lit_opt
   : /* empty */                   { $$ = 0; }
   | Y_INT_LIT
   ;
