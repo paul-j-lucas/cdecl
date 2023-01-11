@@ -71,9 +71,6 @@ static char*              keyword_generator( char const*, int );
 NODISCARD
 static bool               is_command( char const*, char const*, size_t );
 
-NODISCARD
-static char const *const* specific_command_keywords( char const* );
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -259,6 +256,57 @@ static bool is_english_command( char const *command ) {
           command == L_set;
 }
 
+/**
+ * Gets a specific list of keywords to autocomplete for \a command, if any.
+ *
+ * @param command The command to get the specific list of keywords for.
+ * @return Returns a NULL-terminated array of keywords for \a command or NULL
+ * if \a command has no specific keywords.
+ */
+NODISCARD
+static char const *const* specific_command_keywords( char const *command ) {
+  if ( command == L_help ) {
+    static char const *const help_keywords[] = {
+      L_commands,
+      L_english,
+      L_options,
+      NULL
+    };
+    return help_keywords;
+  }
+
+  if ( command == L_set ) {
+    static char const *const *set_options;
+    if ( set_options == NULL )
+      set_options = init_set_options();
+    return set_options;
+  }
+
+  if ( command == L_show ) {
+    static char const *const show_keywords[] = {
+      L_all,
+      L_english,
+      L_predefined,
+      L_typedef,
+      L_user,
+      NULL
+    };
+    static char const *const show_keywords_with_using[] = {
+      L_all,
+      L_english,
+      L_predefined,
+      L_typedef,
+      L_user,
+      L_using,
+      NULL
+    };
+    return OPT_LANG_IS( using_DECLARATION ) ?
+      show_keywords_with_using : show_keywords;
+  }
+
+  return NULL;
+}
+
 ////////// readline callback functions ////////////////////////////////////////
 
 /**
@@ -439,57 +487,6 @@ static char* keyword_generator( char const *text, int state ) {
       if ( strncmp( text, k->literal, text_len ) == 0 )
         return check_strdup( k->literal );
     } // for
-  }
-
-  return NULL;
-}
-
-/**
- * Gets a specific list of keywords to autocomplete for \a command, if any.
- *
- * @param command The command to get the specific list of keywords for.
- * @return Returns a NULL-terminated array of keywords for \a command or NULL
- * if \a command has no specific keywords.
- */
-NODISCARD
-static char const *const* specific_command_keywords( char const *command ) {
-  if ( command == L_help ) {
-    static char const *const help_keywords[] = {
-      L_commands,
-      L_english,
-      L_options,
-      NULL
-    };
-    return help_keywords;
-  }
-
-  if ( command == L_set ) {
-    static char const *const *set_options;
-    if ( set_options == NULL )
-      set_options = init_set_options();
-    return set_options;
-  }
-
-  if ( command == L_show ) {
-    static char const *const show_keywords[] = {
-      L_all,
-      L_english,
-      L_predefined,
-      L_typedef,
-      L_user,
-      NULL
-    };
-    static char const *const show_keywords_with_using[] = {
-      L_all,
-      L_english,
-      L_predefined,
-      L_typedef,
-      L_user,
-      L_using,
-      NULL
-    };
-    return OPT_LANG_IS( using_DECLARATION ) ?
-      show_keywords_with_using : show_keywords;
   }
 
   return NULL;
