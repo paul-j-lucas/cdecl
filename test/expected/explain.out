@@ -21,7 +21,7 @@ declare x as atomic integer
 cdecl> explain _Atomic(int*) x
 declare x as atomic pointer to integer
 cdecl> explain _BitInt(4) x
-declare x as _BitInt width 4 bits
+declare x as bit-precise integer width 4 bits
 cdecl> explain _Thread_local int x
 declare x as thread local integer
 cdecl> explain __auto_type x
@@ -256,9 +256,9 @@ declare x as register integer
 cdecl> explain register struct S x
 declare x as register structure S
 cdecl> explain signed _BitInt(2) x
-declare x as _BitInt width 2 bits
+declare x as bit-precise integer width 2 bits
 cdecl> explain signed _BitInt(4) x
-declare x as _BitInt width 4 bits
+declare x as bit-precise integer width 4 bits
 cdecl> explain signed char x
 declare x as signed character
 cdecl> explain signed main()
@@ -292,9 +292,9 @@ declare size_t as type unsigned long integer
 cdecl> explain union U x
 declare x as union U
 cdecl> explain unsigned _BitInt(1) x
-declare x as unsigned _BitInt width 1 bits
+declare x as unsigned bit-precise integer width 1 bits
 cdecl> explain unsigned _BitInt(4) x
-declare x as unsigned _BitInt width 4 bits
+declare x as unsigned bit-precise integer width 4 bits
 cdecl> explain unsigned char x
 declare x as unsigned character
 cdecl> explain unsigned long long x

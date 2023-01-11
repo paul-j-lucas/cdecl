@@ -321,7 +321,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
     C_LANG_LIT( { ~LANG_auto_TYPE, L_GNU___auto_type },
                 { LANG_ANY,        L_auto            } ) },
 
-  { TB_BITINT, LANG__BitInt, NULL,
+  { TB_BITINT, LANG__BitInt, "bit-precise integer",
     C_LANG_LIT( { LANG_ANY, L__BitInt } ) },
 
   { TB_BOOL, LANG_BOOL_TYPE, L_boolean,

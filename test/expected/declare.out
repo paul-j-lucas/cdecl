@@ -127,6 +127,10 @@ cdecl> declare x as _BitInt width 4 bits
 _BitInt(4) x;
 cdecl> declare x as _BitInt(4)
 _BitInt(4) x;
+cdecl> declare x as bit-precise integer 4
+_BitInt(4) x;
+cdecl> declare x as bit precise integer 4
+_BitInt(4) x;
 cdecl> declare x as atomic int
 _Atomic int x;
 cdecl> declare x as atomic pointer to int

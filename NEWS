@@ -19,6 +19,12 @@ C allows you to declare an object of an incomplete type, so C allows:
 
 Now cdecl does also.
 
+** More English synonyms
+The following English synonyms have been added:
+
+        bit-precise integer  _BitInt
+        bit precise integer  _BitInt
+
 
 * Changes in Cdecl 13.1
 

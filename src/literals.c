@@ -38,6 +38,8 @@ char const L_aligned[]                  = "aligned";
 char const L_all[]                      = "all";
 char const L_array[]                    = "array";
 char const L_as[]                       = "as";
+char const L_bit[]                      = "bit", L_precise[] = "precise";
+char const H_bit_precise[]              = "bit-precise";
 char const L_bits[]                     = "bits";
 char const L_boolean[]                  = "boolean";
 char const L_Boolean[]                  = "Boolean";

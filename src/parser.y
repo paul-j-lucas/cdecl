@@ -1264,6 +1264,8 @@ static void yyerror( char const *msg ) {
 %token              Y_all
 %token              Y_array
 %token              Y_as
+%token              Y_bit
+%token              Y_bit_precise
 %token              Y_bits
 %token              Y_bytes
 %token              Y_commands
@@ -1287,6 +1289,7 @@ static void yyerror( char const *msg ) {
 %token              Y_options
 %token              Y_point
 %token              Y_pointer
+%token              Y_precise
 %token              Y_precision
 %token              Y_predefined
 %token              Y_pure
@@ -2342,6 +2345,7 @@ width_specifier_english_uint
 
 bits_opt
   : /* empty */
+  | Y_bit
   | Y_bits
   ;
 
@@ -6985,22 +6989,33 @@ builtin_no_BitInt_english_btid
   ;
 
 BitInt_english_int
-  : Y__BitInt Y_INT_LIT bits_opt
+  : BitInt_english Y_INT_LIT bits_opt
     {
       $$ = $2;
     }
-  | Y__BitInt '(' int_lit_exp rparen_exp
+  | BitInt_english '(' int_lit_exp rparen_exp
     {
       $$ = $3;
     }
-  | Y__BitInt Y_width int_lit_exp bits_opt
+  | BitInt_english Y_width int_lit_exp bits_opt
     {
       $$ = $3;
     }
-  | Y__BitInt error
+  | BitInt_english error
     {
       elaborate_error( "integer literal, '(', or \"width\" expected" );
     }
+  ;
+
+BitInt_english
+  : Y__BitInt
+  | Y_bit_precise int_exp
+  | Y_bit precise_opt int_exp
+  ;
+
+precise_opt
+  : /* empty */
+  | Y_precise
   ;
 
 class_struct_union_english_ast
@@ -7746,6 +7761,14 @@ gt_exp
 inline_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
   | Y_inline
+  ;
+
+int_exp
+  : Y_int
+  | error
+    {
+      elaborate_error( "int[eger] expected" );
+    }
   ;
 
 int_lit_exp

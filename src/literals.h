@@ -65,6 +65,8 @@ extern char const L_aligned[];
 extern char const L_all[];
 extern char const L_array[];
 extern char const L_as[];
+extern char const L_bit[], L_precise[];
+extern char const H_bit_precise[];
 extern char const L_bits[];
 extern char const L_boolean[];
 extern char const L_Boolean[];
