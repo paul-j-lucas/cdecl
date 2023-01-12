@@ -53,6 +53,7 @@
  * @sa #CDECL_KEYWORDS for examples.
  * @sa #C_SYA()
  * @sa #C_SYE()
+ * @sa #TOKEN()
  */
 #define C_SYN(ALWAYS_FIND,LANG,...) \
   (ALWAYS_FIND), /*y_token_id=*/0, C_LANG_LIT( __VA_ARGS__ ), LANG
@@ -68,6 +69,7 @@
  * @sa #CDECL_KEYWORDS for examples.
  * @sa #C_SYE()
  * @sa #C_SYN()
+ * @sa #TOKEN()
  */
 #define C_SYA(C_KEYWORD,LANG) \
   C_SYN( /*always_find=*/true, LANG, { LANG_ANY, C_KEYWORD } )
@@ -81,8 +83,9 @@
  * since it _may_ expand into nothing.
  *
  * @sa #CDECL_KEYWORDS for examples.
- * @sa #C_SYE()
+ * @sa #C_SYA()
  * @sa #C_SYN()
+ * @sa #TOKEN()
  */
 #define C_SYE(C_KEYWORD,LANG) \
   C_SYN( /*always_find=*/false, LANG, { LANG_ANY, C_KEYWORD } )
@@ -95,6 +98,9 @@
  * since it _may_ expand into nothing.
  *
  * @sa #CDECL_KEYWORDS for examples.
+ * @sa #C_SYA()
+ * @sa #C_SYE()
+ * @sa #C_SYN()
  */
 #define TOKEN(Y_ID,LANG) \
   /*always_find=*/false, (Y_ID), /*lang_syn=*/NULL, LANG
