@@ -361,7 +361,7 @@ static char* command_generator( char const *text, int state ) {
     match_command = ac_cdecl_command_next( match_command );
     if ( !opt_lang_is_any( c->lang_ids ) )
       continue;
-    if ( strncmp( text, c->literal, text_len ) == 0 )
+    if ( strncmp( c->literal, text, text_len ) == 0 )
       return check_strdup( c->literal );
   } // while
 
@@ -434,7 +434,7 @@ static char* keyword_generator( char const *text, int state ) {
   // "into", and the user hasn't typed "into" yet, complete as "into".
   //
   if ( command == L_cast &&
-       strncmp( text, L_into, text_len ) == 0 &&
+       strncmp( L_into, text, text_len ) == 0 &&
        strstr( rl_line_buffer, L_into ) == NULL ) {
     command = NULL;                     // unambiguously match "into"
     return check_strdup( L_into );
@@ -457,7 +457,7 @@ static char* keyword_generator( char const *text, int state ) {
     //
     for ( char const *s; (s = specific_ac_keywords[ match_index ]) != NULL; ) {
       ++match_index;
-      if ( strncmp( text, s, text_len ) == 0 )
+      if ( strncmp( s, text, text_len ) == 0 )
         return check_strdup( s );
     } // for
   }
@@ -484,7 +484,7 @@ static char* keyword_generator( char const *text, int state ) {
       }
       if ( !opt_lang_is_any( k->ac_lang_ids ) )
         continue;
-      if ( strncmp( text, k->literal, text_len ) == 0 )
+      if ( strncmp( k->literal, text, text_len ) == 0 )
         return check_strdup( k->literal );
     } // for
   }
