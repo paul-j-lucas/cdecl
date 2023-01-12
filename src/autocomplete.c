@@ -257,15 +257,17 @@ static bool is_english_command( char const *command ) {
 }
 
 /**
- * Gets a specific list of keywords to autocomplete for \a command, if any.
+ * Gets a specific list of keywords to autocomplete next (after \a keyword), if
+ * any.
  *
- * @param command The command to get the specific list of keywords for.
- * @return Returns a NULL-terminated array of keywords for \a command or NULL
- * if \a command has no specific keywords.
+ * @param keyword The keyword to get the specific list of autocomplete keywords
+ * for.
+ * @return Returns a NULL-terminated array of keywords for \a keyword or NULL
+ * for none.
  */
 NODISCARD
-static char const *const* specific_command_keywords( char const *command ) {
-  if ( command == L_help ) {
+static char const *const* next_ac_keywords( char const *keyword ) {
+  if ( keyword == L_help ) {
     static char const *const help_keywords[] = {
       L_commands,
       L_english,
@@ -275,14 +277,14 @@ static char const *const* specific_command_keywords( char const *command ) {
     return help_keywords;
   }
 
-  if ( command == L_set ) {
+  if ( keyword == L_set ) {
     static char const *const *set_options;
     if ( set_options == NULL )
       set_options = init_set_options();
     return set_options;
   }
 
-  if ( command == L_show ) {
+  if ( keyword == L_show ) {
     static char const *const show_keywords[] = {
       L_all,
       L_english,
@@ -447,7 +449,7 @@ static char* keyword_generator( char const *text, int state ) {
     // Special case: for certain commands, complete using specific keywords for
     // that command.
     //
-    specific_ac_keywords = specific_command_keywords( command );
+    specific_ac_keywords = next_ac_keywords( command );
   }
 
   if ( specific_ac_keywords != NULL ) {
