@@ -105,7 +105,7 @@ static inline bool have_genuine_gnu_readline( void ) {
  */
 NODISCARD
 static inline bool color_prompt( void ) {
-  return  sgr_prompt != NULL
+  return  colorize && sgr_prompt != NULL
 #ifdef WITH_READLINE
           && have_genuine_gnu_readline()
 #endif /* WITH_READLINE */

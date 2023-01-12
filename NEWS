@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 13.3
+
+** Fixed color prompts
+Prompts were always being displayed in color even when --color=never.  Fixed.
+
+
 * Changes in Cdecl 13.2
 
 ** `extern void v`
