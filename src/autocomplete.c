@@ -440,22 +440,22 @@ static char* keyword_generator( char const *text, int state ) {
     return check_strdup( L_into );
   }
 
-  static char const *const *command_keywords;
+  static char const *const *specific_ac_keywords;
 
   if ( state == 0 ) {
     //
     // Special case: for certain commands, complete using specific keywords for
     // that command.
     //
-    command_keywords = specific_command_keywords( command );
+    specific_ac_keywords = specific_command_keywords( command );
   }
 
-  if ( command_keywords != NULL ) {
+  if ( specific_ac_keywords != NULL ) {
     //
     // There's a special-case command having specific keywords in effect:
     // attempt to match against only those.
     //
-    for ( char const *s; (s = command_keywords[ match_index ]) != NULL; ) {
+    for ( char const *s; (s = specific_ac_keywords[ match_index ]) != NULL; ) {
       ++match_index;
       if ( strncmp( text, s, text_len ) == 0 )
         return check_strdup( s );
