@@ -436,7 +436,7 @@ static char* keyword_generator( char const *text, int state ) {
   // "into", and the user hasn't typed "into" yet, complete as "into".
   //
   if ( command == L_cast &&
-       strncmp( L_into, text, text_len ) == 0 &&
+       text_len > 0 && strncmp( L_into, text, text_len ) == 0 &&
        strstr( rl_line_buffer, L_into ) == NULL ) {
     command = NULL;                     // unambiguously match "into"
     return check_strdup( L_into );
