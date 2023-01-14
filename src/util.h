@@ -352,8 +352,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param PTR The pointer to the memory to free.
  *
- * @remarks
- * This macro exists since free'ing a pointer to `const` generates a warning.
+ * @remarks This macro exists since free'ing a pointer to `const` generates a
+ * warning.
  */
 #define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
 

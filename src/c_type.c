@@ -97,20 +97,18 @@ static char const*  c_type_literal( c_type_info_t const*, bool, bool );
 /**
  * Literal for `long long`.
  *
- * @remarks
- * As part of the special case for `long long`, its literal is only `long`
- * because its type, #TB_LONG_LONG, is always combined with #TB_LONG, i.e., two
- * bits are set.  Therefore, when printed, it prints one `long` for #TB_LONG
- * and another `long` for #TB_LONG_LONG (this literal).  That explains why this
- * literal is only one `long`.
+ * @remarks As part of the special case for `long long`, its literal is only
+ * `long` because its type, #TB_LONG_LONG, is always combined with #TB_LONG,
+ * i.e., two bits are set.  Therefore, when printed, it prints one `long` for
+ * #TB_LONG and another `long` for #TB_LONG_LONG (this literal).  That explains
+ * why this literal is only one `long`.
  */
 static char const L_long_long[] = "long";
 
 /**
  * Literal for `rvalue reference`.
 
- * @remarks
- * For convenience, this is just a concatenation of `L_rvalue` and
+ * @remarks For convenience, this is just a concatenation of `L_rvalue` and
  * `L_reference`.
  */
 static char const L_rvalue_reference[] = "rvalue reference";
@@ -118,9 +116,8 @@ static char const L_rvalue_reference[] = "rvalue reference";
 /**
  * "Literal" for a `typedef` type, e.g., `size_t`.
  *
- * @remarks
- * #TB_TYPEDEF exists only so there can be a row/column for it in the \ref
- * OK_TYPE_LANGS table to make things like `signed size_t` illegal.
+ * @remarks #TB_TYPEDEF exists only so there can be a row/column for it in the
+ * \ref OK_TYPE_LANGS table to make things like `signed size_t` illegal.
  * #TB_TYPEDEF doesn't have any printable representation (only the name of the
  * type is printed); therefore, its literal is the empty string.
  */
@@ -178,11 +175,10 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
 /**
  * Type mapping for qualifiers.
  *
- * @remarks
- * Even though `const`, `restrict`, and `volatile` weren't supported until C89,
- * they're allowed in all languages since **cdecl** supports their GNU
- * extension counterparts of `__const`, `__restrict`, and `__volatile` in K&R
- * C.
+ * @remarks Even though `const`, `restrict`, and `volatile` weren't supported
+ * until C89, they're allowed in all languages since **cdecl** supports their
+ * GNU extension counterparts of `__const`, `__restrict`, and `__volatile` in
+ * K&R C.
  *
  * @note This array _must_ have the same size and order as OK_QUALIFIER_LANGS.
  */
@@ -431,14 +427,13 @@ static c_type_info_t const C_TYPE_INFO[] = {
 /**
  * Legal combinations of qualifiers in languages.
  *
- * @remarks
- * Even though `const`, `restrict`, and `volatile` weren't supported until C89,
- * they're allowed in all languages since **cdecl** supports their GNU
- * extension counterparts of `__const`, `__restrict`, and `__volatile` in K&R
- * C.
+ * @remarks Even though `const`, `restrict`, and `volatile` weren't supported
+ * until C89, they're allowed in all languages since **cdecl** supports their
+ * GNU extension counterparts of `__const`, `__restrict`, and `__volatile` in
+ * K&R C.
  *
- * @note
- * This array _must_ have the same size and order as \ref C_QUALIFIER_INFO.
+ * @note This array _must_ have the same size and order as \ref
+ * C_QUALIFIER_INFO.
  */
 static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] = {
 // Only the lower triangle is used.
