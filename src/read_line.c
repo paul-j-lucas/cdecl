@@ -49,7 +49,7 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
-                       char const *const prompts[const] ) {
+                       char const *const prompts[static const 2] ) {
   assert( sbuf != NULL );
   assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
