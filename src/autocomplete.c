@@ -503,6 +503,9 @@ static char* keyword_generator( char const *text, int state ) {
  * @param rout The `FILE` to write to.
  */
 void readline_init( FILE *rin, FILE *rout ) {
+  assert( rin != NULL );
+  assert( rout != NULL );
+
   // allow conditional ~/.inputrc parsing
   rl_readline_name = CONST_CAST( char*, CDECL );
 
