@@ -232,7 +232,7 @@ static char const* get_input_line( size_t *input_line_len ) {
   //
   // Chop off whitespace (if any) so we can always print a newline ourselves.
   //
-  str_rtrim_len( input_line, input_line_len );
+  strn_rtrim( input_line, input_line_len );
 
   return input_line;
 }

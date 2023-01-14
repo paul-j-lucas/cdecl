@@ -1019,6 +1019,14 @@ NODISCARD
 bool path_is_file( char const *path );
 
 /**
+ * Decrements \a *s_len as if to trim whitespace, if any, from the end of \a s.
+ *
+ * @param s The null-terminated string to trim.
+ * @param s_len A pointer to the length of \a s.
+ */
+void strn_rtrim( char const *s, size_t *s_len );
+
+/**
  * Like **strspn**(3) except it limits its scan to at most \a n characters.
  *
  * @param s The string to span.
@@ -1028,14 +1036,6 @@ bool path_is_file( char const *path );
  */
 NODISCARD
 size_t strnspn( char const *s, char const *charset, size_t n );
-
-/**
- * Decrements \a *s_len as if to trim whitespace, if any, from the end of \a s.
- *
- * @param s The null-terminated string to trim.
- * @param s_len A pointer to the length of \a s.
- */
-void str_rtrim_len( char const *s, size_t *s_len );
 
 /**
  * Checks \a flag: if `false`, sets it to `true`.

@@ -239,6 +239,14 @@ bool path_is_file( char const *path ) {
   return S_ISREG( path_stat.st_mode );
 }
 
+void strn_rtrim( char const *s, size_t *s_len ) {
+  assert( s != NULL );
+  assert( s_len != NULL );
+
+  while ( *s_len > 0 && strchr( WS, s[ *s_len - 1 ] ) != NULL )
+    --*s_len;
+}
+
 size_t strnspn( char const *s, char const *charset, size_t n ) {
   assert( s != NULL );
   assert( charset != NULL );
@@ -247,14 +255,6 @@ size_t strnspn( char const *s, char const *charset, size_t n ) {
   while ( n-- > 0 && strchr( charset, *s ) != NULL )
     ++s;
   return STATIC_CAST( size_t, s - s0 );
-}
-
-void str_rtrim_len( char const *s, size_t *s_len ) {
-  assert( s != NULL );
-  assert( s_len != NULL );
-
-  while ( *s_len > 0 && strchr( WS, s[ *s_len - 1 ] ) != NULL )
-    --*s_len;
 }
 
 // LCOV_EXCL_START

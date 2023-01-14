@@ -365,7 +365,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     // newline ourselves -- but don't touch the original command line.
     //
     size_t echo_len = print_params.command_line_len;
-    str_rtrim_len( print_params.command_line, &echo_len );
+    strn_rtrim( print_params.command_line, &echo_len );
     FPRINTF( cdecl_fout,
       "%s%.*s\n",
       cdecl_prompt[0], STATIC_CAST( int, echo_len ), print_params.command_line
