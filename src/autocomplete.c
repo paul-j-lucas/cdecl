@@ -97,7 +97,7 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
  */
 NODISCARD
 static ac_keyword_t const* init_ac_keywords( void ) {
-  size_t n = 1;                         // for terminating empty element
+  size_t n = 0;
 
   // pre-flight to calculate array size
   FOREACH_C_KEYWORD( k )
@@ -105,7 +105,7 @@ static ac_keyword_t const* init_ac_keywords( void ) {
   FOREACH_CDECL_KEYWORD( k )
     n += k->ac_lang_ids != LANG_NONE;
 
-  ac_keyword_t *const ac_keywords = free_later( MALLOC( ac_keyword_t, n ) );
+  ac_keyword_t *const ac_keywords = free_later( MALLOC( ac_keyword_t, n + 1 ) );
   ac_keyword_t *p = ac_keywords;
 
   FOREACH_C_KEYWORD( k ) {
@@ -139,9 +139,7 @@ static ac_keyword_t const* init_ac_keywords( void ) {
  */
 NODISCARD
 static char const* const* init_set_options( void ) {
-  size_t n =
-      1                                 // for "options"
-    + 1;                                // for terminating NULL pointer
+  size_t n = 1;                         // for "options"
 
   // pre-flight to calculate array size
   FOREACH_SET_OPTION( opt )
@@ -149,7 +147,7 @@ static char const* const* init_set_options( void ) {
   FOREACH_LANG( lang )
     n += !lang->is_alias;
 
-  char **const set_options = free_later( MALLOC( char*, n ) );
+  char **const set_options = free_later( MALLOC( char*, n + 1 ) );
   char **p = set_options;
 
   *p++ = CONST_CAST( char*, L_options );
