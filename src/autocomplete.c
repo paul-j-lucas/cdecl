@@ -255,17 +255,20 @@ static bool is_english_command( char const *command ) {
 }
 
 /**
- * Gets a specific list of keywords to autocomplete next (after \a keyword), if
- * any.
+ * Gets a specific list of keywords to autocomplete after \a command, if any.
  *
- * @param keyword The keyword to get the specific list of autocomplete keywords
+ * @param command The command to get the specific list of autocomplete keywords
  * for.
- * @return Returns a NULL-terminated array of keywords for \a keyword or NULL
+ * @return Returns a NULL-terminated array of keywords for \a command or NULL
  * for none.
  */
 NODISCARD
-static char const *const* next_ac_keywords( char const *keyword ) {
-  if ( keyword == L_help ) {
+static char const *const* next_ac_keywords( char const *command ) {
+  if ( command == L_help ) {
+    //
+    // This needs to be here instead of in CDECL_KEYWORDS because
+    // str_prev_token() wouldn't match `?` as `help`.
+    //
     static char const *const help_keywords[] = {
       L_commands,
       L_english,
@@ -275,14 +278,22 @@ static char const *const* next_ac_keywords( char const *keyword ) {
     return help_keywords;
   }
 
-  if ( keyword == L_set ) {
+  if ( command == L_set ) {
+    //
+    // This needs to be here instead of in CDECL_KEYWORDS because the list of
+    // keywords is generated (not static).
+    //
     static char const *const *set_options;
     if ( set_options == NULL )
       set_options = init_set_options();
     return set_options;
   }
 
-  if ( keyword == L_show ) {
+  if ( command == L_show ) {
+    //
+    // This needs to be here instead of in CDECL_KEYWORDS because `using` is a
+    // language-senstive C++ keyword.
+    //
     static char const *const show_keywords[] = {
       L_all,
       L_english,
