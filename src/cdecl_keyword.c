@@ -44,8 +44,8 @@
  * Specify that the previosuly given literal is a synonym for the given
  * language-specific literals.
  *
- * @param ALWAYS_FIND If `true`, always find this synonym, even when explaining
- * C/C++.
+ * @param AC_IN_GIBBERISH If `true`, autocomplete this synonym even when
+ * explaining C/C++.
  * @param LANG The #AC_LANG macro to use.  It _must not_ be enclosed in `()`
  * since it _may_ expand into nothing.
  * @param ... Array of c_lang_lit.
@@ -55,8 +55,8 @@
  * @sa #C_SYE()
  * @sa #TOKEN()
  */
-#define C_SYN(ALWAYS_FIND,LANG,...) \
-  (ALWAYS_FIND), /*y_token_id=*/0, C_LANG_LIT( __VA_ARGS__ ), LANG
+#define C_SYN(AC_IN_GIBBERISH,LANG,...) \
+  (AC_IN_GIBBERISH), /*y_token_id=*/0, C_LANG_LIT( __VA_ARGS__ ), LANG
 
 /**
  * Special-case of #C_SYN when there is only one language(s)/literal pair _and_
@@ -72,7 +72,7 @@
  * @sa #TOKEN()
  */
 #define C_SYA(C_KEYWORD,LANG) \
-  C_SYN( /*always_find=*/true, LANG, { LANG_ANY, C_KEYWORD } )
+  C_SYN( /*ac_in_gibberish=*/true, LANG, { LANG_ANY, C_KEYWORD } )
 
 /**
  * Special-case of #C_SYN when there is only one language(s)/literal pair _but_
@@ -88,7 +88,7 @@
  * @sa #TOKEN()
  */
 #define C_SYE(C_KEYWORD,LANG) \
-  C_SYN( /*always_find=*/false, LANG, { LANG_ANY, C_KEYWORD } )
+  C_SYN( /*ac_in_gibberish=*/false, LANG, { LANG_ANY, C_KEYWORD } )
 
 /**
  * Specify that the previosuly given literal maps to Bison tokan \a Y_ID.
@@ -103,7 +103,7 @@
  * @sa #C_SYN()
  */
 #define TOKEN(Y_ID,LANG) \
-  /*always_find=*/false, (Y_ID), /*lang_syn=*/NULL, LANG
+  /*ac_in_gibberish=*/false, (Y_ID), /*lang_syn=*/NULL, LANG
 
 /**
  * All **cdecl** keywords that are (mostly) _not_ C/C++ keywords.  Exceptions
