@@ -60,7 +60,7 @@
 struct ac_keyword {
   char const *literal;                  ///< C string literal of the keyword.
   c_lang_id_t ac_lang_ids;              ///< Language(s) auto-completable in.
-  bool        always_autocomplete;      ///< Auto-complete even for gibberish?
+  bool        ac_in_gibberish;          ///< Auto-complete even for gibberish?
 };
 typedef struct ac_keyword ac_keyword_t;
 
@@ -179,7 +179,7 @@ static ac_keyword_t const* init_ac_keywords( void ) {
     if ( k->ac_lang_ids != LANG_NONE ) {
       p->literal = k->literal;
       p->ac_lang_ids = k->ac_lang_ids;
-      p->always_autocomplete = true;
+      p->ac_in_gibberish = true;
       ++p;
     }
   } // for
@@ -188,7 +188,7 @@ static ac_keyword_t const* init_ac_keywords( void ) {
     if ( k->ac_lang_ids != LANG_NONE ) {
       p->literal = k->literal;
       p->ac_lang_ids = k->ac_lang_ids;
-      p->always_autocomplete = k->always_find;
+      p->ac_in_gibberish = k->always_find;
       ++p;
     }
   } // for
@@ -489,7 +489,7 @@ static char* keyword_generator( char const *text, int state ) {
     for ( ac_keyword_t const *k;
           (k = ac_keywords + match_index)->literal != NULL; ) {
       ++match_index;
-      if ( is_gibberish && !k->always_autocomplete ) {
+      if ( is_gibberish && !k->ac_in_gibberish ) {
         //
         // The keywords following the command are in gibberish, but the
         // keyword is a cdecl keyword, so skip it.
