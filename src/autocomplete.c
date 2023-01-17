@@ -69,6 +69,9 @@ static char*              command_generator( char const*, int );
 static char*              keyword_generator( char const*, int );
 
 NODISCARD
+static char const* const* init_set_options( void );
+
+NODISCARD
 static bool               is_command( char const*, char const*, size_t );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -87,6 +90,70 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
     command = cdecl_command_next( command );
   } while ( command != NULL && command->ac_lang_ids == LANG_NONE );
   return command;
+}
+
+/**
+ * Gets a specific list of keywords to autocomplete after \a command, if any.
+ *
+ * @param command The command to get the specific list of autocomplete keywords
+ * for.
+ * @return Returns a NULL-terminated array of keywords for \a command or NULL
+ * for none.
+ */
+NODISCARD
+static char const *const* command_ac_keywords( char const *command ) {
+  if ( command == L_help ) {
+    //
+    // This needs to be here instead of in CDECL_KEYWORDS because
+    // str_prev_token() wouldn't match `?` as `help`.
+    //
+    static char const *const help_keywords[] = {
+      L_commands,
+      L_english,
+      L_options,
+      NULL
+    };
+    return help_keywords;
+  }
+
+  if ( command == L_set ) {
+    //
+    // This needs to be here instead of in CDECL_KEYWORDS because the list of
+    // keywords is generated (not static).
+    //
+    static char const *const *set_options;
+    if ( set_options == NULL )
+      set_options = init_set_options();
+    return set_options;
+  }
+
+  if ( command == L_show ) {
+    //
+    // This needs to be here instead of in CDECL_KEYWORDS because `using` is a
+    // language-senstive C++ keyword.
+    //
+    static char const *const show_keywords[] = {
+      L_all,
+      L_english,
+      L_predefined,
+      L_typedef,
+      L_user,
+      NULL
+    };
+    static char const *const show_keywords_with_using[] = {
+      L_all,
+      L_english,
+      L_predefined,
+      L_typedef,
+      L_user,
+      L_using,
+      NULL
+    };
+    return OPT_LANG_IS( using_DECLARATION ) ?
+      show_keywords_with_using : show_keywords;
+  }
+
+  return NULL;
 }
 
 /**
@@ -254,70 +321,6 @@ static bool is_english_command( char const *command ) {
           command == L_set;
 }
 
-/**
- * Gets a specific list of keywords to autocomplete after \a command, if any.
- *
- * @param command The command to get the specific list of autocomplete keywords
- * for.
- * @return Returns a NULL-terminated array of keywords for \a command or NULL
- * for none.
- */
-NODISCARD
-static char const *const* next_ac_keywords( char const *command ) {
-  if ( command == L_help ) {
-    //
-    // This needs to be here instead of in CDECL_KEYWORDS because
-    // str_prev_token() wouldn't match `?` as `help`.
-    //
-    static char const *const help_keywords[] = {
-      L_commands,
-      L_english,
-      L_options,
-      NULL
-    };
-    return help_keywords;
-  }
-
-  if ( command == L_set ) {
-    //
-    // This needs to be here instead of in CDECL_KEYWORDS because the list of
-    // keywords is generated (not static).
-    //
-    static char const *const *set_options;
-    if ( set_options == NULL )
-      set_options = init_set_options();
-    return set_options;
-  }
-
-  if ( command == L_show ) {
-    //
-    // This needs to be here instead of in CDECL_KEYWORDS because `using` is a
-    // language-senstive C++ keyword.
-    //
-    static char const *const show_keywords[] = {
-      L_all,
-      L_english,
-      L_predefined,
-      L_typedef,
-      L_user,
-      NULL
-    };
-    static char const *const show_keywords_with_using[] = {
-      L_all,
-      L_english,
-      L_predefined,
-      L_typedef,
-      L_user,
-      L_using,
-      NULL
-    };
-    return OPT_LANG_IS( using_DECLARATION ) ?
-      show_keywords_with_using : show_keywords;
-  }
-
-  return NULL;
-}
-
 ////////// readline callback functions ////////////////////////////////////////
 
 /**
@@ -458,7 +461,7 @@ static char* keyword_generator( char const *text, int state ) {
     // Special case: for certain commands, complete using specific keywords for
     // that command.
     //
-    specific_ac_keywords = next_ac_keywords( command );
+    specific_ac_keywords = command_ac_keywords( command );
   }
 
   if ( specific_ac_keywords != NULL ) {
