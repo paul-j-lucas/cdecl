@@ -1,3 +1,56 @@
+2023-01-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: s/always_autocomplete/ac_in_gibberish/
+
+2023-01-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Renamed function.
+
+2023-01-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Now using n+1 for MALLOC().
+
+2023-01-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * read_line.c, read_line.h: Added static 2.
+   * autocomplete.c: Added asserts.
+   * cdecl.c, print.c, util.c, util.h: s/str_rtrim_len/strn_rtrim/
+
+2023-01-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Now limiting autocompleting `into` only to when the text
+     string typed is not empty.
+
+2023-01-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: strncmp() arg reordering.
+   * autocomplete.c: s/command_keywords/specific_ac_keywords/
+   * NEWS, configure.ac, prompt.c: Prompts were always being displayed in color
+     even when --color=never.  Fixed.
+
+2023-01-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Function reordering.
+
+2023-01-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_type.c, cdecl_keyword.c, literals.c, literals.h,
+     parser.y, declare.out, explain.out, declare.test: Added "bit-precise
+     integer" as an English synonym for _BitInt.
+   * parser.y: s/int_exp/int_lit_exp/; s/int_opt/int_lit_opt/'
+
+2023-01-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: Added `#ifndef NDEBUG` around c_ast_count.
+   * red_black.c: Added designated initializers.
+
+2023-01-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, c_ast_check.c, test/Makefile.am, explain.out,
+     explain_etv-c++.out, explain.test, explain_etv-c++.test: Now allow `extern
+     void v` in C.
+   * red_black.h: Added missing #include.
+
 2023-01-07  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.1, cdecl_keyword.c, literals.c, literals.h, parser.y,
