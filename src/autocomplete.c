@@ -518,6 +518,10 @@ void readline_init( FILE *rin, FILE *rout ) {
   assert( rin != NULL );
   assert( rout != NULL );
 
+  // allow any non-identifier character to break a word
+  rl_basic_word_break_characters =
+    CONST_CAST( char*, " \t\n \"!#$%&'()*+,-./:;<=>?@[\\]^`{|}" );
+
   // allow conditional ~/.inputrc parsing
   rl_readline_name = CONST_CAST( char*, CDECL );
 
