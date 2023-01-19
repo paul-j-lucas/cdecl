@@ -15,6 +15,10 @@ with their complete changes, see the AUTHORS file.
 ** Fixed color prompts
 Prompts were always being displayed in color even when --color=never.  Fixed.
 
+** `[[no_unique_address]]` bit fields
+Bit-fields having `[[no_unique_address]]` are now correctly reported as an
+error.
+
 
 * Changes in Cdecl 13.2
 
