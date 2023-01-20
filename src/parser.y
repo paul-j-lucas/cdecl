@@ -6770,7 +6770,7 @@ reference_english_ast
 /// English C++ user-defined literal declaration //////////////////////////////
 
 user_defined_literal_decl_english_ast
-  : user_defined literal_exp paren_param_decl_list_english_opt
+  : user_defined literal_exp lparen_exp param_decl_list_english_opt ')'
     returning_english_ast_opt
     { //
       // User-defined literals are supported only in C++11 and later.
@@ -6789,14 +6789,14 @@ user_defined_literal_decl_english_ast
       }
 
       DUMP_START( "user_defined_literal_decl_english_ast",
-                  "USER-DEFINED LITERAL paren_param_decl_list_english_opt "
+                  "USER-DEFINED LITERAL '(' param_decl_list_english_opt ')' "
                   "returning_english_ast_opt" );
-      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $3 );
-      DUMP_AST( "returning_english_ast_opt", $4 );
+      DUMP_AST_LIST( "param_decl_list_english_opt", $4 );
+      DUMP_AST( "returning_english_ast_opt", $6 );
 
       $$ = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      $$->udef_lit.param_ast_list = slist_move( &$3 );
-      c_ast_set_parent( $4, $$ );
+      $$->udef_lit.param_ast_list = slist_move( &$4 );
+      c_ast_set_parent( $6, $$ );
 
       DUMP_AST( "user_defined_literal_decl_english_ast", $$ );
       DUMP_END();
