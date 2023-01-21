@@ -54,10 +54,10 @@
 static cdecl_command_t const CDECL_COMMANDS[] = {
   //
   // The `exit` command shares the same 2-character prefix of `ex` with
-  // `explain` and it's far more likely that a user wants to auto-complete
+  // `explain` and it's far more likely that a user wants to autocomplete
   // `explain` than `exit`.  Therefore, make `exit` not auto-completable so
-  // `explain` auto-completes after typing `ex` rather than `exp`.  Note that
-  // the user can alternatively auto-complete `quit` (or just type `q`).
+  // `explain` autocompletes after typing `ex` rather than `exp`.  Note that
+  // the user can alternatively autocomplete `quit` (or just type `q`).
   //
   { L_cast,                 PROG_NAME,  LANG_SAME(ANY)                },
   { L_class,                FIRST_ARG,  LANG_SAME(CPP_ANY)            },

@@ -59,7 +59,7 @@
 struct ac_keyword {
   char const         *literal;          ///< C string literal of the keyword.
   c_lang_id_t         ac_lang_ids;      ///< Language(s) auto-completable in.
-  bool                ac_in_gibberish;  ///< Auto-complete even for gibberish?
+  bool                ac_in_gibberish;  ///< Autocomplete even for gibberish?
   ac_policy_t         ac_policy;        ///< See \ref cdecl_keyword::ac_policy.
   c_lang_lit_t const *lang_syn;         ///< See \ref cdecl_keyword::lang_syn.
 };
