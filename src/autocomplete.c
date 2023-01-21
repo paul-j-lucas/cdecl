@@ -596,8 +596,10 @@ static char* keyword_generator( char const *text, int state ) {
       cdecl_keyword_t const *const k = cdecl_keyword_find( s );
       if ( k != NULL && !opt_lang_is_any( k->ac_lang_ids ) )
         continue;
-      if ( strncmp( s, text, text_len ) == 0 )
+      if ( strncmp( s, text, text_len ) == 0 ) {
+        returned_any = true;
         return check_strdup( s );
+      }
     } // for
   }
   else if ( text_len > 0 ) {
@@ -611,7 +613,7 @@ static char* keyword_generator( char const *text, int state ) {
     // The keywords following the command are in gibberish, not English.
     bool const is_gibberish = !is_english_command( command );
 
-    ac_keyword_t const *reserve_k = NULL;
+    ac_keyword_t const *no_other_k = NULL;
 
     for ( ac_keyword_t const *k;
           (k = ac_keywords + match_index)->literal != NULL; ) {
@@ -658,10 +660,10 @@ static char* keyword_generator( char const *text, int state ) {
       switch ( k->ac_policy ) {
         case AC_POLICY_DEFAULT:
           break;
-        case AC_POLICY_NO_OTHER:
-          reserve_k = k;
-          continue;
         case AC_POLICY_IN_NEXT_ONLY:
+          continue;
+        case AC_POLICY_NO_OTHER:
+          no_other_k = k;
           continue;
       } // switch
 
@@ -669,9 +671,9 @@ static char* keyword_generator( char const *text, int state ) {
       return check_strdup( k->literal );
     } // for
 
-    if ( reserve_k != NULL && !returned_any ) {
+    if ( no_other_k != NULL && !returned_any ) {
       returned_any = true;
-      return check_strdup( reserve_k->literal );
+      return check_strdup( no_other_k->literal );
     }
   }
 
