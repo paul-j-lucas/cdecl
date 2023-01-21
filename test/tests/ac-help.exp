@@ -1,26 +1,41 @@
 #! /usr/bin/env expect --
 
+#exp_internal 1
 spawn cdecl --color=never
-set timeout 1
 
 expect "cdecl> "
 # help
 send "h\t\r"
-expect default { exit 1 } "command:"
+expect default { exit 1 } -ex {command:}
 
 expect "cdecl> "
 # help commands
 send "h\tc\t\r"
-expect default { exit 1 } "command:"
+expect default { exit 1 } -ex {command:}
 
 expect "cdecl> "
 # help english
 send "h\te\t\r"
-expect default { exit 1 } "english:"
+expect default { exit 1 } -ex {english:}
 
 expect "cdecl> "
 # help options
 send "h\to\t\r"
-expect default { exit 1 } "option:"
+expect default { exit 1 } -ex {option:}
+
+expect "cdecl> "
+# ? commands
+send "? c\t\r"
+expect default { exit 1 } -ex {command:}
+
+expect "cdecl> "
+# ? english
+send "? e\t\r"
+expect default { exit 1 } -ex {english:}
+
+expect "cdecl> "
+# ? options
+send "? o\t\r"
+expect default { exit 1 } -ex {option:}
 
 # vim:set et sw=2 ts=2:

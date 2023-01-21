@@ -56,17 +56,6 @@ struct copy_typedef_visit_data {
 typedef struct copy_typedef_visit_data copy_typedef_visit_data_t;
 
 /**
- * The signature for a function passed to qsort().
- *
- * @param i_data A pointer to data.
- * @param j_data A pointer to data.
- * @return Returns an integer less than, equal to, or greater than 0, according
- * to whether the data pointed to by \a i_data is less than, equal to, or
- * greater than the data pointed to by \a j_data.
- */
-typedef int (*qsort_cmp_fn_t)( void const *i_data, void const *j_data );
-
-/**
  * The edit distance must be less than or equal to this percent of a target
  * string's length in order to be considered "similar enough" to be a
  * reasonable suggestion.

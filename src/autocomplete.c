@@ -32,6 +32,7 @@
 #include "literals.h"
 #include "options.h"
 #include "set_options.h"
+#include "strbuf.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -40,6 +41,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <readline/readline.h>          /* must go last */
 
@@ -52,15 +54,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Auto-completable keyword.
- *
- * This is either a of C/C++ keyword or a **cdecl** keyword that is auto-
- * completable.
+ * Either a C/C++ or **cdecl** keyword that is auto-completable.
  */
 struct ac_keyword {
-  char const *literal;                  ///< C string literal of the keyword.
-  c_lang_id_t ac_lang_ids;              ///< Language(s) auto-completable in.
-  bool        ac_in_gibberish;          ///< Auto-complete even for gibberish?
+  char const         *literal;          ///< C string literal of the keyword.
+  c_lang_id_t         ac_lang_ids;      ///< Language(s) auto-completable in.
+  bool                ac_in_gibberish;  ///< Auto-complete even for gibberish?
+  ac_policy_t         ac_policy;        ///< See \ref cdecl_keyword::ac_policy.
+  c_lang_lit_t const *lang_syn;         ///< See \ref cdecl_keyword::lang_syn.
 };
 typedef struct ac_keyword ac_keyword_t;
 
@@ -73,6 +74,24 @@ static char const* const* init_set_options( void );
 
 NODISCARD
 static bool               is_command( char const*, char const*, size_t );
+
+NODISCARD
+static char const*        str_prev_token( char const*, size_t, size_t* );
+
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Checks whether \a literal is a C/C++ keyword.
+ *
+ * @param literal The literal to check.
+ * @return Returns `true` only of \a literal is a C/C++ keyword.
+ *
+ * @sa c_keyword_find()
+ */
+NODISCARD
+static inline bool is_c_keyword( char const *literal ) {
+  return c_keyword_find( literal, LANG_ANY, C_KW_CTX_DEFAULT ) != NULL;
+}
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -93,6 +112,20 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
 }
 
 /**
+ * Compares two \ref ac_keyword objects.
+ *
+ * @param i_keyword The first \ref ac_keyword to compare.
+ * @param j_keyword The second \ref ac_keyword to compare.
+ * Returns a number less than 0, 0, or greater than 0 if \a i_keyword is
+ * less than, equal to, or greater than \a j_keyword, respectively.
+ */
+NODISCARD
+static int ac_keyword_cmp( ac_keyword_t const *i_keyword,
+                           ac_keyword_t const *j_keyword ) {
+  return strcmp( i_keyword->literal, j_keyword->literal );
+}
+
+/**
  * Gets a specific list of keywords to autocomplete after \a command, if any.
  *
  * @param command The command to get the specific list of autocomplete keywords
@@ -102,6 +135,14 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
  */
 NODISCARD
 static char const *const* command_ac_keywords( char const *command ) {
+  if ( command == L_const || command == L_static ) {
+    static char const *const cast_keywords[] = {
+      L_cast,
+      NULL
+    };
+    return cast_keywords;
+  }
+
   if ( command == L_help ) {
     //
     // This needs to be here instead of in CDECL_KEYWORDS because
@@ -169,31 +210,49 @@ static ac_keyword_t const* init_ac_keywords( void ) {
   // pre-flight to calculate array size
   FOREACH_C_KEYWORD( k )
     n += k->ac_lang_ids != LANG_NONE;
-  FOREACH_CDECL_KEYWORD( k )
-    n += k->ac_lang_ids != LANG_NONE;
+  FOREACH_CDECL_KEYWORD( k ) {
+    if ( !is_c_keyword( k->literal ) )
+      n += k->ac_lang_ids != LANG_NONE;
+  } // for
 
   ac_keyword_t *const ac_keywords = free_later( MALLOC( ac_keyword_t, n + 1 ) );
   ac_keyword_t *p = ac_keywords;
 
   FOREACH_C_KEYWORD( k ) {
     if ( k->ac_lang_ids != LANG_NONE ) {
-      p->literal = k->literal;
-      p->ac_lang_ids = k->ac_lang_ids;
-      p->ac_in_gibberish = true;
-      ++p;
+      *p++ = (ac_keyword_t){
+        .literal = k->literal,
+        .ac_lang_ids = k->ac_lang_ids,
+        .ac_in_gibberish = true,
+        .ac_policy = AC_POLICY_DEFAULT,
+        .lang_syn = NULL
+      };
     }
   } // for
 
   FOREACH_CDECL_KEYWORD( k ) {
-    if ( k->ac_lang_ids != LANG_NONE ) {
-      p->literal = k->literal;
-      p->ac_lang_ids = k->ac_lang_ids;
-      p->ac_in_gibberish = k->always_find;
-      ++p;
+    if ( k->ac_lang_ids != LANG_NONE && !is_c_keyword( k->literal ) ) {
+      *p++ = (ac_keyword_t){
+        .literal = k->literal,
+        .ac_lang_ids = k->ac_lang_ids,
+        .ac_in_gibberish = k->always_find,
+        .ac_policy = k->ac_policy,
+        .lang_syn = k->lang_syn
+      };
     }
   } // for
 
   MEM_ZERO( p );
+
+  //
+  // Sort so C/C++ keywords come before their pseudo-English synonyms (e.g.,
+  // `enum` before `enumeration`).  This matters when attempting to match
+  // (almost) any keyword in keyword_generator().
+  //
+  qsort(
+    ac_keywords, n, sizeof( ac_keyword_t ),
+    POINTER_CAST( qsort_cmp_fn_t, &ac_keyword_cmp )
+  );
 
   return ac_keywords;
 }
@@ -250,36 +309,12 @@ static char const* const* init_set_options( void ) {
 }
 
 /**
- * Checks whether \a s is a cast command.  In C, this can only be `cast`; in
- * C++, this can also be `const`, `dynamic`, `static`, or `reinterpret`.
- *
- * @param s The string to check.  Leading whitespace must have been skipped.
- * @param s_len The length of \a s.
- * @return Returns `true` only if it's a cast command.
- *
- * @sa is_command()
- */
-NODISCARD
-static bool is_cast_command( char const *s, size_t s_len ) {
-  if ( is_command( L_cast, s, s_len ) )
-    return true;
-  if ( OPT_LANG_IS( C_ANY ) )
-    return false;
-  return  is_command( L_const,       s, s_len ) ||
-          is_command( L_dynamic,     s, s_len ) ||
-          is_command( L_static,      s, s_len ) ||
-          is_command( L_reinterpret, s, s_len );
-}
-
-/**
  * Checks whether \a s is a particular **cdecl** command.
  *
  * @param command The command to check for.
  * @param s The string to check.  Leading whitespace must have been skipped.
  * @param s_len The length of \a s.
  * @return Returns `true` only if it is.
- *
- * @sa is_cast_command()
  */
 NODISCARD
 static bool is_command( char const *command, char const *s, size_t s_len ) {
@@ -319,6 +354,93 @@ static bool is_english_command( char const *command ) {
           command == L_define   ||
           command == L_help     ||
           command == L_set;
+}
+
+/**
+ * Attempts to find the previous **cdecl** keyword in \a s relative to \a pos.
+ *
+ * @remarks This function exists to find the previous **cdecl** keyword for
+ * autocompletion skipping over non-kewywords.  For example, given:
+ * ```
+ * cdecl> declare x as int width 4 <tab>
+ * ```
+ * hitting _tab_ finds the previous word `width` skipping over `4` since it's
+ * not a keyword.  (The next autocompletion word for `width` can therefore
+ * specify `bits` even though it's not adjacent.)
+ *
+ * @param s The string to find the previous keyword in.
+ * @param pos The position within \a s to start looking before.
+ * @return Returns the previous keyword or NULL if none.
+ *
+ * @sa str_prev_token()
+ */
+NODISCARD
+static cdecl_keyword_t const* str_prev_keyword( char const *s, size_t pos ) {
+  for (;;) {
+    size_t token_len;
+    char const *const token = str_prev_token( s, pos, &token_len );
+    if ( token == NULL )
+      return NULL;
+    static strbuf_t token_buf;
+    strbuf_reset( &token_buf );
+    strbuf_putsn( &token_buf, token, token_len );
+    cdecl_keyword_t const *const k = cdecl_keyword_find( token_buf.str );
+    if ( k != NULL )
+      return k;
+    pos = (size_t)(token - s);
+  } // for
+}
+
+/**
+ * Attempts to find the start of the previous token in \a s relative to \a pos.
+ * For example, given the string and position:
+ *
+ *      Lorem ipsum
+ *             ^
+ *
+ * will return a pointer to `L` and a length of 5.
+ *
+ * @param s The string to find the previous token in.
+ * @param pos The position within \a s to start looking before.
+ * @param token_len If a previous token has been found, receives its length.
+ * @return Returns a pointer to the start of the previous token or NULL if
+ * none.
+ */
+NODISCARD
+static char const* str_prev_token( char const *s, size_t pos,
+                                   size_t *token_len ) {
+  assert( s != NULL );
+  assert( token_len != NULL );
+
+  if ( pos == 0 )
+    return NULL;
+
+  char const *p = s + pos - 1;
+
+  // Back up over current token.
+  while ( !isspace( *p ) ) {
+    if ( --p == s )
+      return NULL;
+  } // while
+
+  // Back up over whitespace between previous and current tokens.
+  while ( isspace( *p ) ) {
+    if ( --p == s )
+      return NULL;
+  } // while
+
+  // Back up to the start of the previous token.
+  for ( char const *const last = p--; ; --p ) {
+    if ( p > s ) {
+      if ( !isspace( *p ) )
+        continue;
+      ++p;
+    }
+    *token_len = STATIC_CAST( size_t, last - p + 1 );
+    return p;
+  } // for
+
+  return NULL;
 }
 
 ////////// readline callback functions ////////////////////////////////////////
@@ -395,6 +517,7 @@ static char* keyword_generator( char const *text, int state ) {
 
   static char const  *command;          // current command
   static size_t       match_index;
+  static bool         returned_any;
   static size_t       text_len;
 
   if ( state == 0 ) {                   // new word? reset
@@ -407,6 +530,7 @@ static char* keyword_generator( char const *text, int state ) {
 
     command = NULL;
     match_index = 0;
+    returned_any = false;
     text_len = strlen( text );
 
     //
@@ -419,8 +543,6 @@ static char* keyword_generator( char const *text, int state ) {
     //
     if ( is_command( "?", buf, buf_len ) )
       command = L_help;
-    else if ( is_cast_command( buf, buf_len ) )
-      command = L_cast;
     else {
       FOREACH_CDECL_COMMAND( c ) {
         if ( !opt_lang_is_any( c->lang_ids ) )
@@ -443,17 +565,6 @@ static char* keyword_generator( char const *text, int state ) {
     return NULL;
   }
 
-  //
-  // Special case: if it's the "cast" command, the text partially matches
-  // "into", and the user hasn't typed "into" yet, complete as "into".
-  //
-  if ( command == L_cast &&
-       text_len > 0 && strncmp( L_into, text, text_len ) == 0 &&
-       strstr( rl_line_buffer, L_into ) == NULL ) {
-    command = NULL;                     // unambiguously match "into"
-    return check_strdup( L_into );
-  }
-
   static char const *const *specific_ac_keywords;
 
   if ( state == 0 ) {
@@ -462,6 +573,17 @@ static char* keyword_generator( char const *text, int state ) {
     // that command.
     //
     specific_ac_keywords = command_ac_keywords( command );
+
+    if ( specific_ac_keywords == NULL ) {
+      //
+      // Special case: for certain keywords, complete using specific keywords
+      // for that keyword.
+      //
+      assert( rl_point >= 0 );
+      cdecl_keyword_t const *const k =
+        str_prev_keyword( rl_line_buffer, STATIC_CAST( size_t, rl_point ) );
+      specific_ac_keywords = k != NULL ? k->ac_next_keywords : NULL;
+    }
   }
 
   if ( specific_ac_keywords != NULL ) {
@@ -471,11 +593,14 @@ static char* keyword_generator( char const *text, int state ) {
     //
     for ( char const *s; (s = specific_ac_keywords[ match_index ]) != NULL; ) {
       ++match_index;
+      cdecl_keyword_t const *const k = cdecl_keyword_find( s );
+      if ( k != NULL && !opt_lang_is_any( k->ac_lang_ids ) )
+        continue;
       if ( strncmp( s, text, text_len ) == 0 )
         return check_strdup( s );
     } // for
   }
-  else {
+  else if ( text_len > 0 ) {
     //
     // Otherwise, just attempt to match (almost) any keyword.
     //
@@ -486,21 +611,68 @@ static char* keyword_generator( char const *text, int state ) {
     // The keywords following the command are in gibberish, not English.
     bool const is_gibberish = !is_english_command( command );
 
+    ac_keyword_t const *reserve_k = NULL;
+
     for ( ac_keyword_t const *k;
           (k = ac_keywords + match_index)->literal != NULL; ) {
       ++match_index;
-      if ( is_gibberish && !k->ac_in_gibberish ) {
-        //
-        // The keywords following the command are in gibberish, but the
-        // keyword is a cdecl keyword, so skip it.
-        //
+
+      //
+      // If we're deciphering gibberish into pseudo-English, but the current
+      // keyword shouldn't be autocompleted in gibberish, skip it.
+      //
+      if ( is_gibberish && !k->ac_in_gibberish )
         continue;
-      }
+
       if ( !opt_lang_is_any( k->ac_lang_ids ) )
         continue;
-      if ( strncmp( k->literal, text, text_len ) == 0 )
-        return check_strdup( k->literal );
+      if ( strncmp( k->literal, text, text_len ) != 0 )
+        continue;
+
+      if ( k->lang_syn != NULL ) {      // must be a cdecl keyword
+        //
+        // If this keyword is a prefix of the next keyword, skip it.
+        //
+        ac_keyword_t const *const next_k = k + 1;
+        if ( next_k->literal != NULL &&
+             opt_lang_is_any( next_k->ac_lang_ids ) &&
+             str_is_prefix( k->literal, next_k->literal ) ) {
+          continue;
+        }
+
+        //
+        // If this keyword is a synonym for another keyword and the text typed
+        // so far is a prefix of the synonym, skip this keyword because the
+        // synonym was previously returned and we don't want to return this
+        // keyword and its synonym since it's redundant.
+        //
+        // For example, if this keyword is "character" (a synonym for "char"),
+        // and the text typed so far is "char", skip this keyword since
+        // "character" would be redundant with "char".
+        //
+        char const *const synonym = c_lang_literal( k->lang_syn );
+        if ( synonym != NULL && str_is_prefix( text, synonym ) )
+          continue;
+      }
+
+      switch ( k->ac_policy ) {
+        case AC_POLICY_DEFAULT:
+          break;
+        case AC_POLICY_NO_OTHER:
+          reserve_k = k;
+          continue;
+        case AC_POLICY_IN_NEXT_ONLY:
+          continue;
+      } // switch
+
+      returned_any = true;
+      return check_strdup( k->literal );
     } // for
+
+    if ( reserve_k != NULL && !returned_any ) {
+      returned_any = true;
+      return check_strdup( reserve_k->literal );
+    }
   }
 
   return NULL;
@@ -518,11 +690,12 @@ void readline_init( FILE *rin, FILE *rout ) {
   assert( rin != NULL );
   assert( rout != NULL );
 
-  // allow any non-identifier character to break a word
+  // Allow almost any non-identifier character to break a word -- except '-'
+  // since we use that as part of hyphenated keywords.
   rl_basic_word_break_characters =
-    CONST_CAST( char*, " \t\n \"!#$%&'()*+,-./:;<=>?@[\\]^`{|}" );
+    CONST_CAST( char*, " \t\n \"!#$%&'()*+,./:;<=>?@[\\]^`{|}" );
 
-  // allow conditional ~/.inputrc parsing
+  // Allow conditional ~/.inputrc parsing.
   rl_readline_name = CONST_CAST( char*, CDECL );
 
   rl_attempted_completion_function = cdecl_rl_completion;

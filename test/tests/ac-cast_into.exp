@@ -1,11 +1,31 @@
 #! /usr/bin/env expect --
 
-spawn cdecl --color=never
-set timeout 1
+#exp_internal 1
+spawn cdecl --color=never -xc++
 
-expect "cdecl> "
+expect "c++decl> "
 # cast x into int
 send "cast x i\tint\r"
-expect default { exit 1 } "(int)x"
+expect default { exit 1 } -ex {(int)x}
+
+expect "c++decl> "
+# const cast p into pointer to struct S
+send "const c\t p into pointer to struct S\r"
+expect default { exit 1 } -ex {const_cast<struct S*>(p)}
+
+expect "c++decl> "
+# dynamic cast p into pointer to struct S
+send "dynamic c\t p into pointer to struct S\r"
+expect default { exit 1 } -ex {dynamic_cast<struct S*>(p)}
+
+expect "c++decl> "
+# static cast x into int
+send "static c\t x into int\r"
+expect default { exit 1 } -ex {static_cast<int>(x)}
+
+expect "c++decl> "
+# reinterpret cast x into int
+send "reinterpret c\t x into int\r"
+expect default { exit 1 } -ex {reinterpret_cast<int>(x)}
 
 # vim:set et sw=2 ts=2:

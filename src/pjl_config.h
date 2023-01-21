@@ -72,6 +72,16 @@
 // local
 #include "config.h"                     /* must go first */
 
+/**
+ * Expands into the given arguments only if GNU **readline**(3) is compiled in;
+ * nothing if not.
+ */
+#ifdef WITH_READLINE
+# define IF_AC(...)               __VA_ARGS__
+#else
+# define IF_AC(...)               /* nothing */
+#endif /* WITH_READLINE */
+
 ////////// compiler attributes ////////////////////////////////////////////////
 
 /**

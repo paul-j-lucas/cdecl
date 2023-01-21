@@ -1,16 +1,16 @@
 #! /usr/bin/env expect --
 
+#exp_internal 1
 spawn cdecl --color=never
-set timeout 1
 
 expect "cdecl> "
 # explain int x
 send "ex\tint x\r";
-expect default { exit 1 } "declare x as int"
+expect default { exit 1 } -ex {declare x as int}
 
 expect "cdecl> "
 # explain int ret[urn] -- check that "ret" is _not_ completed to "returning"
 send "explain int ret\t\r"
-expect default { exit 1 } "declare ret as int"
+expect default { exit 1 } -ex {declare ret as int}
 
 # vim:set et sw=2 ts=2:

@@ -1,21 +1,21 @@
 #! /usr/bin/env expect --
 
+#exp_internal 1
 spawn cdecl --color=never
-set timeout 1
 
 expect "cdecl> "
 # set options
 send "set o\t\r"
-expect default { exit 1 } " using"
+expect default { exit 1 } -ex { using}
 
 expect "cdecl> "
 # set alt-tokens
 send "set a\t; set\r"
-expect default { exit 1 } " alt-tokens"
+expect default { exit 1 } -ex { alt-tokens}
 
 expect "cdecl> "
 # set nousing
 send "set nou\t; set\r"
-expect default { exit 1 } " nousing"
+expect default { exit 1 } -ex { nousing}
 
 # vim:set et sw=2 ts=2:

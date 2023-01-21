@@ -924,10 +924,26 @@ bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @param c The character to check.
  * @return Returns `true` only if \a c is either an alphanumeric or `_`
  * character.
+ *
+ * @sa is_ident_first()
  */
 NODISCARD C_UTIL_H_INLINE
 bool is_ident( char c ) {
   return isalnum( c ) || c == '_';
+}
+
+/**
+ * Checks whether \a c is an identifier first character.
+ *
+ * @param c The character to check.
+ * @return Returns `true` only if \a c is either an alphabetic or `_`
+ * character.
+ *
+ * @sa is_ident()
+ */
+NODISCARD C_UTIL_H_INLINE
+bool is_ident_first( char c ) {
+  return isalpha( c ) || c == '_';
 }
 
 /**
@@ -1017,6 +1033,17 @@ char const* null_if_empty( char const *s ) {
  */
 NODISCARD
 bool path_is_file( char const *path );
+
+/**
+ * Checks whether \a s1 is a prefix of (or equal to) \a s2.
+ *
+ * @param s1 The candidate prefix string.
+ * @param s2 The larger string.
+ * @return Returns `true` only if \a s1 is not the empty string and is a prefix
+ * of (or equal to) \a s2.
+ */
+NODISCARD
+bool str_is_prefix( char const *s1, char const *s2 );
 
 /**
  * Decrements \a *s_len as if to trim whitespace, if any, from the end of \a s.

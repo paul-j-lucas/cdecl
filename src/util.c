@@ -239,6 +239,18 @@ bool path_is_file( char const *path ) {
   return S_ISREG( path_stat.st_mode );
 }
 
+bool str_is_prefix( char const *s1, char const *s2 ) {
+  assert( s1 != NULL );
+  assert( s2 != NULL );
+  if ( s1[0] == '\0' )
+    return false;
+  do {
+    if ( *s1++ != *s2++ )
+      return false;
+  } while ( *s1 != '\0' );
+  return true;
+}
+
 void strn_rtrim( char const *s, size_t *s_len ) {
   assert( s != NULL );
   assert( s_len != NULL );

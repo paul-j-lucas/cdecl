@@ -1,16 +1,126 @@
 #! /usr/bin/env expect --
 
+#exp_internal 1
 spawn cdecl --color=never
-set timeout 1
+
+expect "cdecl> "
+# declare x as floating point
+send "declare x as floating \t\r"
+expect default { exit 1 } -ex {float x;}
 
 expect "cdecl> "
 # declare x as int
 send "dec\tx as int\r"
-expect default { exit 1 } "int x;"
+expect default { exit 1 } -ex {int x;}
+
+expect "cdecl> "
+# declare x as bit precise integer 4
+send "declare x as bit \t\t 4\r"
+expect default { exit 1 } -ex {_BitInt(4) x;}
+
+expect "cdecl> "
+# declare x as bit-precise integer 4
+send "declare x as bit-prec\t\t 4\r"
+expect default { exit 1 } -ex {_BitInt(4) x;}
+
+expect "cdecl> "
+# declare x as int width 4 bits
+send "declare x as int width 4 \t\r"
+expect default { exit 1 } -ex {int x : 4;}
+
+expect "cdecl> "
+# declare x as int aligned 8 bytes
+send "declare x as int aligned 8 \t\r"
+expect default { exit 1 } -ex {alignas(8) int x;}
 
 expect "cdecl> "
 # declare f as function returning int
 send "declare f as fu\tret\tint\r"
-expect default { exit 1 } "int f();"
+expect default { exit 1 } -ex {int f();}
+
+expect "cdecl> "
+# declare f as function (x as array const of int)
+send "declare f as function (x as array c\tof int)\r"
+expect default { exit 1 } -ex {void f(int x[const]);}
+
+expect "cdecl> "
+# declare f as function (x as array volatile of int)
+send "declare f as function (x as array v\tof int)\r"
+expect default { exit 1 } -ex {void f(int x[volatile]);}
+
+expect "cdecl> "
+# declare f as function (x as array static 2 of int)
+send "declare f as function (x as array s\t2 of int)\r"
+expect default { exit 1 } -ex {void f(int x[static 2]);}
+
+expect "cdecl> "
+# declare x as pointer to int
+send "declare x as po\t\t int\r"
+expect default { exit 1 } -ex {int *x;}
+
+expect "cdecl> "
+# declare x as variable length array
+send "declare f as function (x as variable l\ta\t of int)\r"
+expect default { exit 1 } -ex {void f(int x[*]);}
+
+expect "cdecl> "
+# declare x as wide char
+send "declare x as wide \t\r"
+expect default { exit 1 } -ex {wchar_t x;}
+
+##### C++
+
+expect "cdecl> "
+send "set c++\r"
+
+expect "c++decl> "
+# declare x as maybe unused int
+send "declare x as maybe \tint\r"
+expect default { exit 1 } -ex {[[maybe_unused]] int x;}
+
+expect "c++decl> "
+# declare f as carries dependency function
+send "declare f as carries d\tfunction\r"
+expect default { exit 1 } -ex {[[carries_dependency]] void f();}
+
+expect "c++decl> "
+# declare f as no discard function returning int
+send "declare f as no d\tfunction returning int\r"
+expect default { exit 1 } -ex {[[nodiscard]] int f();}
+
+expect "c++decl> "
+# declare f as no except function
+send "declare f as no e\tfunction\r"
+expect default { exit 1 } -ex {void f() noexcept;}
+
+expect "c++decl> "
+# declare f as no return function
+send "declare f as no r\tfunction\r"
+expect default { exit 1 } -ex {[[noreturn]] void f();}
+
+expect "c++decl> "
+# declare x as no unique address int
+send "declare x as no u\t\t int\r"
+expect default { exit 1 } -ex {[[no_unique_address]] int x;}
+
+expect "c++decl> "
+# declare f as pure virtua function
+send "declare f as pu\t \tfunction\r"
+expect default { exit 1 } -ex {virtual void f() = 0;}
+
+expect "c++decl> "
+# declare x as rvalue reference to int
+send "declare x as rv\t\t t\tint\r"
+expect default { exit 1 } -ex {int &&x;}
+
+expect "c++decl> "
+# declare user defined conversion operator returning int
+send "declare user \tc\to\treturning int\r"
+expect default { exit 1 } -ex {operator int();}
+
+expect "c++decl> "
+# declare _x as user defined literal (char) returning int
+send "declare _x as user \tl\t(char) returning int\r"
+expect default { exit 1 } -ex {int operator"" _x(char);}
 
 # vim:set et sw=2 ts=2:

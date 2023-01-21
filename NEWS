@@ -12,6 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 13.3
 
+** Improved autocompletion
+In cases where words in pseudo-Engish can only have a limited set of words that
+follow in the grammar, only those are now suggested.
+
 ** Fixed color prompts
 Prompts were always being displayed in color even when --color=never.  Fixed.
 

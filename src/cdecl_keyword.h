@@ -55,6 +55,44 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Autocompletion policy for a particular \ref cdecl_keyword.
+ */
+enum ac_policy {
+  /**
+   * Default autocompletion policy.
+   */
+  AC_POLICY_DEFAULT,
+
+  /**
+   * Autocomplete only when a keyword is explicitly listed in the \ref
+   * cdecl_keyword::ac_next_keywords "ac_next_keywords" of some other keyword.
+   *
+   * For example, the `bytes` token should be autocompleted only when it
+   * follows `aligned`.
+   */
+  AC_POLICY_IN_NEXT_ONLY,
+
+  /**
+   * Autocomplete only if no other keyword matches.
+   *
+   * For example, the **cdecl** `boolean` keyword is a synonym for either
+   * `_Bool` in C or `bool` in C++.  However, `boolean` should _not_ be offered
+   * as an autocompletion choice initially since it would be ambiguous with
+   * `bool` which is redundant:
+   *
+   *      cdecl> declare x as bo<tab>
+   *      bool boolean
+   *
+   * Instead, `boolean` should be offered only if the user typed enough as to
+   * make it unambiguous (no other keyword matches):
+   *
+   *      cdecl> declare x as boole<tab>
+   */
+  AC_POLICY_NO_OTHER
+};
+typedef enum ac_policy ac_policy_t;
+
+/**
  * **Cdecl** keyword info.
  */
 struct cdecl_keyword {
@@ -79,6 +117,13 @@ struct cdecl_keyword {
 
 #ifdef WITH_READLINE
   c_lang_id_t         ac_lang_ids;      ///< Language(s) auto-completable in.
+  ac_policy_t         ac_policy;        ///< Autocompletion policy.
+
+  /**
+   * Pointer to a NULL-terminated array of keywords that should be auto-
+   * completed next (after this keyword), if any; otherwise NULL.
+   */
+  char const *const  *ac_next_keywords;
 #endif /* WITH_READLINE */
 };
 
