@@ -596,10 +596,8 @@ static char* keyword_generator( char const *text, int state ) {
       cdecl_keyword_t const *const k = cdecl_keyword_find( s );
       if ( k != NULL && !opt_lang_is_any( k->ac_lang_ids ) )
         continue;
-      if ( strncmp( s, text, text_len ) == 0 ) {
-        returned_any = true;
+      if ( strncmp( s, text, text_len ) == 0 )
         return check_strdup( s );
-      }
     } // for
   }
   else if ( text_len > 0 ) {
@@ -659,22 +657,19 @@ static char* keyword_generator( char const *text, int state ) {
 
       switch ( k->ac_policy ) {
         case AC_POLICY_DEFAULT:
-          break;
+          returned_any = true;
+          return check_strdup( k->literal );
         case AC_POLICY_IN_NEXT_ONLY:
           continue;
         case AC_POLICY_NO_OTHER:
           no_other_k = k;
           continue;
       } // switch
-
-      returned_any = true;
-      return check_strdup( k->literal );
+      UNEXPECTED_INT_VALUE( k->ac_policy );
     } // for
 
-    if ( no_other_k != NULL && !returned_any ) {
-      returned_any = true;
+    if ( no_other_k != NULL && !returned_any )
       return check_strdup( no_other_k->literal );
-    }
   }
 
   return NULL;
