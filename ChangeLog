@@ -1,5 +1,9 @@
 2023-01-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl_keyword.c, pjl_config.h: s/IF_AC/AC_SETTINGS/
+   * cdecl_keyword.c: No longer autocompleting `scope` in C.
+   * cdecl_keyword.c, parser.y: s/Y_Apple_BLOCK/Y_Apple_block/
+   * cdecl_keyword.c: Removed #undef restrict -- no longer needed.
    * NEWS, configure.ac: Version number and NEWS fix-up.
    * lib/Makefile.am, _Noreturn.h, hard-locale.c, stdlib.in.h, verify.h,
      assert_h.m4, getdelim.m4, getline.m4, gnulib-common.m4, gnulib-comp.m4,
