@@ -40,14 +40,16 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifdef WITH_READLINE
+
 /**
  * For \ref CDECL_KEYWORDS, used to specify which keywords to autocomplete next
  * (after the current keyword).
  *
  * @param ... A comma-separated list of keywords to autocomplete next.
  *
+ * @sa #AC_NO_NEXT_KEYWORDS
  * @sa CDECL_KEYWORDS
- * @sa AC_NO_NEXT_KEYWORDS
  */
 #define AC_NEXT_KEYWORDS(...)     (char const *const[]){ __VA_ARGS__, NULL }
 
@@ -55,17 +57,27 @@
  * For \ref CDECL_KEYWORDS, used to specify that the current keyword has no
  * next autocomplete keywords.
  *
- * @sa AC_NEXT_KEYWORDS
+ * @sa #AC_NEXT_KEYWORDS
  * @sa CDECL_KEYWORDS
  */
 #define AC_NO_NEXT_KEYWORDS       NULL
 
 /**
- * Languages the **cdecl** `automatic` keyword is supported in (which is the
- * union of the languages the `auto` C/C++ keyword is supported in as either
- * a storage class or a type.
+ * For \ref CDECL_KEYWORDS, expands into the given arguments only if GNU
+ * **readline**(3) is compiled in (hence, autocompletion is enabled); nothing
+ * if not.
+ *
+ * @remarks This macro exists because using it within \ref CDECL_KEYWORDS is
+ * not as visually jarring as having <code>\#ifdef&nbsp;WITH_READLINE</code>
+ * all over the place.
+ *
+ * @sa CDECL_KEYWORDS
  */
-#define LANG_automatic            (LANG_auto_STORAGE | LANG_auto_TYPE)
+#define AC_SETTINGS(...)          __VA_ARGS__
+
+#else /* WITH_READLINE */
+# define AC_SETTINGS(...)         /* nothing */
+#endif /* WITH_READLINE */
 
 /**
  * Specify that the previosuly given keyword is a synonym for the given
@@ -75,7 +87,7 @@
  * C/C++; if `false`, find only when composing C/C++.
  * @param ... Array of c_lang_lit.
  *
- * @sa #CDECL_KEYWORDS for examples.
+ * @sa CDECL_KEYWORDS for examples.
  * @sa #SYNONYM()
  * @sa #TOKEN()
  */
@@ -89,7 +101,7 @@
  * C/C++; if `false`, find only when composing C/C++.
  * @param C_KEYWORD The C/C++ keyword literal (`L_xxx`) that is the synonym.
  *
- * @sa #CDECL_KEYWORDS for examples.
+ * @sa CDECL_KEYWORDS for examples.
  * @sa #SYNONYMS()
  * @sa #TOKEN()
  */
@@ -101,7 +113,7 @@
  *
  * @param Y_ID The Bison token ID (`Y_xxx`).
  *
- * @sa #CDECL_KEYWORDS for examples.
+ * @sa CDECL_KEYWORDS for examples.
  * @sa #SYNONYM()
  * @sa #SYNONYMS()
  */
@@ -182,8 +194,8 @@ static bool const FIND_IN_ENGLISH_ONLY  = false;
  *
  * ## Autocompletion
  *
- * Within #IF_AC() are the autocompletion settings for a **cdecl** keyword.
- * They are:
+ * Within #AC_SETTINGS() are the autocompletion settings for a **cdecl**
+ * keyword.  They are:
  *
  * 1. The bitwise-or of languages it should be autocompleted in.  A keyword
  *    should be autocompletable _unless_ it:
@@ -206,7 +218,7 @@ static bool const FIND_IN_ENGLISH_ONLY  = false;
 static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_address,
     TOKEN( Y_address ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_no_unique_address,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -215,7 +227,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_align,
     TOKEN( Y_aligned ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "aligned"
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_bytes )
@@ -226,7 +238,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( ALWAYS_FIND,
       { LANG__Alignas, L__Alignas },
       { LANG_ANY,      L_alignas  } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "aligned"
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_bytes )
@@ -235,7 +247,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_aligned,
     TOKEN( Y_aligned ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ALIGNMENT,
       AC_POLICY_NO_OTHER,
       AC_NEXT_KEYWORDS( L_bytes )
@@ -244,7 +256,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_all,
     TOKEN( Y_all ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -253,7 +265,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_Apple_block,
     TOKEN( Y_Apple_block ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -262,7 +274,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_array,
     TOKEN( Y_array ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_static, L_const, L_volatile )
@@ -271,7 +283,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_as,
     TOKEN( Y_as ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // too short
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -280,7 +292,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_atomic,
     SYNONYM( ALWAYS_FIND, L__Atomic ),
-    IF_AC(
+    AC_SETTINGS(
       LANG__Atomic,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -289,8 +301,8 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_automatic,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_auto ),
-    IF_AC(
-      LANG_automatic,
+    AC_SETTINGS(
+      LANG_auto_STORAGE | LANG_auto_TYPE,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
     )
@@ -298,7 +310,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_bit,
     TOKEN( Y_bit ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // too short
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_precise )
@@ -307,7 +319,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_bit_precise,
     TOKEN( Y_bit_precise ),
-    IF_AC(
+    AC_SETTINGS(
       LANG__BitInt,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_int )
@@ -316,7 +328,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_bits,
     TOKEN( Y_bits ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -327,7 +339,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( ALWAYS_FIND,
       { LANG__Bool, L__Bool },
       { LANG_ANY,   L_bool  } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_BOOL_TYPE,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -338,7 +350,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( ALWAYS_FIND,
       { LANG__Bool, L__Bool },
       { LANG_ANY,   L_bool  } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_BOOL_TYPE,
       AC_POLICY_NO_OTHER,
       AC_NO_NEXT_KEYWORDS
@@ -349,7 +361,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( ALWAYS_FIND,
       { LANG__Bool, L__Bool },
       { LANG_ANY,   L_bool  } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_BOOL_TYPE,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -358,7 +370,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_bytes,
     TOKEN( Y_bytes ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ALIGNMENT,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -367,7 +379,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_carries,
     TOKEN( Y_carries ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "carries_dependency"
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_dependency )
@@ -376,7 +388,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_carries_dependency,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_carries_dependency ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_carries_dependency,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -385,7 +397,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_cast,
     TOKEN( Y_cast ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_into )
@@ -394,7 +406,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_character,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_char ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -406,7 +418,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
       { ~LANG__Complex & LANG_C_ANY, L_GNU___complex },
       { LANG__Complex,               L__Complex      },
       { LANG_ANY,                    L_complex       } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG__Complex,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -415,7 +427,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_command,
     TOKEN( Y_commands ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "commands"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -424,7 +436,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_commands,
     TOKEN( Y_commands ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -435,7 +447,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
       { ~LANG_const, L_GNU___const },
       { LANG_ANY,    L_const       } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_const,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -446,7 +458,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
       { ~LANG_const, L_GNU___const },
       { LANG_ANY,    L_const       } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_const,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -455,7 +467,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_const_eval,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_consteval ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_consteval,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -464,7 +476,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_constant_evaluation,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_consteval ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_consteval,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -473,7 +485,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_const_expr,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_constexpr ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_constexpr,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -482,7 +494,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_constant_expression,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_constexpr ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_constexpr,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -491,7 +503,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_const_init,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_constinit ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_constinit,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -500,7 +512,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_constant_initialization,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_constinit ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_constinit,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -509,7 +521,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_constructor,
     TOKEN( Y_constructor ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -518,7 +530,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_conv,
     TOKEN( Y_conversion ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "conversion"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -527,7 +539,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_conversion,
     TOKEN( Y_conversion ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_operator, L_returning )
@@ -536,7 +548,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_ctor,
     TOKEN( Y_constructor ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // too short
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -545,7 +557,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_declare,
     TOKEN( Y_declare ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -554,7 +566,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_defaulted,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_default ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_default_delete_FUNC,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -563,7 +575,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_define,
     TOKEN( Y_define ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -572,7 +584,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_defined,
     TOKEN( Y_defined ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_conversion, L_literal )
@@ -581,7 +593,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_deleted,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_delete ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_default_delete_FUNC,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -590,7 +602,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_dependency,
     TOKEN( Y_dependency ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_carries_dependency,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -599,7 +611,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_destructor,
     TOKEN( Y_destructor ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -608,7 +620,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_discard,
     TOKEN( Y_discard ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_nodiscard,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -617,7 +629,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_double_precision,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_double ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -626,7 +638,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_dtor,
     TOKEN( Y_destructor ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -635,7 +647,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_dynamic,
     TOKEN( Y_dynamic ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_cast )
@@ -644,7 +656,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_english,
     TOKEN( Y_english ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -653,7 +665,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_enumeration,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_enum ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_enum,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -662,7 +674,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_eval,
     TOKEN( Y_evaluation ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "evaluation"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -671,7 +683,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_evaluation,
     TOKEN( Y_evaluation ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_consteval,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -680,7 +692,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_except,
     TOKEN( Y_except ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_noexcept,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -689,7 +701,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_exit,
     TOKEN( Y_quit ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // only do this once
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -698,7 +710,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_explain,
     TOKEN( Y_explain ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -707,7 +719,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_exported,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_export ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_export,
       AC_POLICY_NO_OTHER,
       AC_NO_NEXT_KEYWORDS
@@ -716,7 +728,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_expr,
     TOKEN( Y_expression ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "expression"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -725,7 +737,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_expression,
     TOKEN( Y_expression ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_constexpr,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -734,7 +746,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_external,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_extern ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_NO_OTHER,
       AC_NO_NEXT_KEYWORDS
@@ -743,7 +755,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_floating,
     TOKEN( Y_floating ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "floating-point"
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_point )
@@ -752,7 +764,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_floating_point,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_float ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -761,7 +773,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_func,
     TOKEN( Y_function ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "function"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -770,7 +782,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_function,
     TOKEN( Y_function ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -779,7 +791,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_help,
     TOKEN( Y_help ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS               // see command_ac_keywords()
@@ -790,7 +802,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( ALWAYS_FIND,
         { LANG__Imaginary, L__Imaginary },
         { LANG_ANY,        L_imaginary  } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG__Imaginary,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -799,7 +811,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_init,
     TOKEN( Y_initialization ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "initialization"
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -808,7 +820,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_initialization,
     TOKEN( Y_initialization ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_constinit,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -817,7 +829,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_integer,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_int ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -826,7 +838,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_into,
     TOKEN( Y_into ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -835,7 +847,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_len,
     TOKEN( Y_length ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "length"
       AC_POLICY_IN_NEXT_ONLY,
       AC_NEXT_KEYWORDS( L_array )
@@ -844,7 +856,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_length,
     TOKEN( Y_length ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_VLA,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NEXT_KEYWORDS( L_array )
@@ -853,7 +865,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_linkage,
     TOKEN( Y_linkage ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -862,7 +874,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_literal,
     TOKEN( Y_literal ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_USER_DEFINED_LITERAL,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -871,7 +883,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_local,
     TOKEN( Y_local ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_THREAD_LOCAL_STORAGE,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -880,7 +892,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_maybe,
     TOKEN( Y_maybe ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "maybe_unused"
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_unused )
@@ -889,7 +901,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_maybe_unused,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_maybe_unused ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_maybe_unused,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -898,7 +910,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_mbr,
     TOKEN( Y_member ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // too short
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -907,7 +919,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_member,
     TOKEN( Y_member ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -916,7 +928,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_no,
     TOKEN( Y_no ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // too short
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_discard, L_except, L_return, L_unique )
@@ -925,7 +937,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_no_discard,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_nodiscard ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_nodiscard,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -934,7 +946,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_no_except,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_noexcept ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "no-exception"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -943,7 +955,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_no_exception,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_noexcept ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_noexcept,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -954,7 +966,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
         { ~LANG_noreturn, L__Noreturn },
         { LANG_ANY,       L_noreturn  } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_noreturn,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -963,7 +975,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_non_discardable,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_nodiscard ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_nodiscard,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -972,7 +984,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_non_mbr,
     TOKEN( Y_non_member ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "non-member"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -981,7 +993,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_non_member,
     TOKEN( Y_non_member ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -992,7 +1004,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
         { ~LANG_noreturn, L__Noreturn },
         { LANG_ANY,       L_noreturn  } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_noreturn,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1001,7 +1013,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_non_throwing,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_throw ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1010,7 +1022,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_no_unique_address,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_no_unique_address ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_no_unique_address,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1019,7 +1031,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_non_unique_address,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_no_unique_address ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_no_unique_address,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1030,7 +1042,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( ALWAYS_FIND,
         { ~LANG_noreturn, L__Noreturn },
         { LANG_ANY,       L_noreturn  } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONRETURNING_FUNC,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1039,7 +1051,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_of,
     TOKEN( Y_of ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // too short
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1048,7 +1060,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_oper,
     TOKEN( Y_operator ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "operator"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1057,7 +1069,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_options,
     TOKEN( Y_options ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -1066,7 +1078,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_overridden,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_override ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_override,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1075,7 +1087,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_point,
     TOKEN( Y_point ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -1084,7 +1096,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_pointer,
     TOKEN( Y_pointer ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_to )
@@ -1093,7 +1105,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_precise,
     TOKEN( Y_precise ),
-    IF_AC(
+    AC_SETTINGS(
       LANG__BitInt,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NEXT_KEYWORDS( L_int )
@@ -1102,7 +1114,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_precision,
     TOKEN( Y_precision ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -1111,7 +1123,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_predef,
     TOKEN( Y_predefined ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "predefined"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1120,7 +1132,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_predefined,
     TOKEN( Y_predefined ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1129,7 +1141,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_ptr,
     TOKEN( Y_pointer ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // too short
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_to )
@@ -1138,7 +1150,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_pure,
     TOKEN( Y_pure ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_virtual )
@@ -1147,7 +1159,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_q,
     TOKEN( Y_quit ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "quit"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1156,7 +1168,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_quit,
     TOKEN( Y_quit ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1165,7 +1177,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_ref,
     TOKEN( Y_reference ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                      // in deference to "reference"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1174,7 +1186,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_reference,
     TOKEN( Y_reference ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_to )
@@ -1183,7 +1195,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_reinterpret,
     TOKEN( Y_reinterpret ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_cast )
@@ -1194,7 +1206,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
         { ~LANG_restrict, L_GNU___restrict },
         { LANG_ANY,       L_restrict       } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_restrict,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1203,7 +1215,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_ret,
     TOKEN( Y_returning ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "return"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1212,7 +1224,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_returning,
     TOKEN( Y_returning ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1221,7 +1233,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_rvalue,
     TOKEN( Y_rvalue ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_RVALUE_REFERENCE,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_reference )
@@ -1230,7 +1242,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_scope,
     TOKEN( Y_scope ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1239,7 +1251,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_set,
     TOKEN( Y_set ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS               // see command_ac_keywords()
@@ -1248,7 +1260,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_show,
     TOKEN( Y_show ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS               // see command_ac_keywords()
@@ -1257,7 +1269,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_structure,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_struct ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1266,7 +1278,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_thread,
     TOKEN( Y_thread ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "thread_local"
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_local )
@@ -1298,7 +1310,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
         //
         { LANG__Thread_local, L__Thread_local },
         { LANG_ANY,           L_thread_local  } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_THREAD_LOCAL_STORAGE,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1310,7 +1322,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
         { ~LANG_THREAD_LOCAL_STORAGE, L_GNU___thread  },
         { LANG__Thread_local,         L__Thread_local },
         { LANG_ANY,                   L_thread_local  } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_THREAD_LOCAL_STORAGE,
       AC_POLICY_NO_OTHER,
       AC_NO_NEXT_KEYWORDS
@@ -1319,7 +1331,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_to,
     TOKEN( Y_to ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1328,7 +1340,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_type,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_typedef ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "typedef"
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1337,7 +1349,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_unique,
     TOKEN( Y_unique ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_no_unique_address,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NEXT_KEYWORDS( L_address )
@@ -1346,7 +1358,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_unused,
     TOKEN( Y_unused ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_maybe_unused,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
@@ -1355,7 +1367,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_user,
     TOKEN( Y_user ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "user-defined"
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_defined )
@@ -1364,7 +1376,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_user_def,
     TOKEN( Y_user_defined ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // in deference to "user-defined"
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_conversion, L_literal )
@@ -1373,7 +1385,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { H_user_defined,
     TOKEN( Y_user_defined ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_conversion, L_literal )
@@ -1382,7 +1394,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_var,
     TOKEN( Y_variable ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // too short
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_length, L_array )
@@ -1391,7 +1403,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_varargs,
     TOKEN( Y_ELLIPSIS ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_PROTOTYPES,
       AC_POLICY_NO_OTHER,
       AC_NO_NEXT_KEYWORDS
@@ -1400,7 +1412,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_variable,
     TOKEN( Y_variable ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_VLA,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_length, L_array )
@@ -1409,7 +1421,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_variadic,
     TOKEN( Y_ELLIPSIS ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_PROTOTYPES,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1418,7 +1430,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_vector,
     TOKEN( Y_array ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1429,7 +1441,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
         { ~LANG_volatile, L_GNU___volatile },
         { LANG_ANY,       L_volatile       } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_volatile,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1438,7 +1450,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_wide,
     TOKEN( Y_wide ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_wchar_t,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_char )
@@ -1447,7 +1459,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_width,
     TOKEN( Y_width ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_DEFAULT,
       AC_NEXT_KEYWORDS( L_bits )
@@ -1459,7 +1471,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( ALWAYS_FIND,
         { LANG_C_99, L_EMC__Accum },
         { LANG_ANY,  NULL         } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_C_99,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1470,7 +1482,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( ALWAYS_FIND,
         { LANG_C_99, L_EMC__Fract },
         { LANG_ANY,  NULL         } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_C_99,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1481,7 +1493,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
         { LANG_C_99, L_EMC__Sat   },
         { LANG_ANY,  NULL         } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,                        // too short
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1492,7 +1504,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYMS( ALWAYS_FIND,
         { LANG_C_99, L_EMC__Sat   },
         { LANG_ANY,  NULL         } ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_C_99,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1502,7 +1514,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   // Microsoft extensions
   { L_MSC_cdecl,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___cdecl ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_MSC_EXTENSIONS,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1511,7 +1523,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_MSC_clrcall,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___clrcall ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_MSC_EXTENSIONS,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1520,7 +1532,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_MSC_fastcall,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___fastcall ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_MSC_EXTENSIONS,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1529,7 +1541,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_MSC_stdcall,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___stdcall ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_MSC_EXTENSIONS,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1538,7 +1550,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_MSC_thiscall,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___thiscall ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_MSC_EXTENSIONS,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1547,7 +1559,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_MSC_vectorcall,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_MSC___vectorcall ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_MSC_EXTENSIONS,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1556,7 +1568,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_MSC_WINAPI,
     SYNONYM( ALWAYS_FIND, L_MSC___stdcall ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_MSC_EXTENSIONS,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
@@ -1565,7 +1577,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { NULL,
     TOKEN( 0 ),
-    IF_AC(
+    AC_SETTINGS(
       LANG_NONE,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
