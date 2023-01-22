@@ -1,5 +1,22 @@
+2023-01-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, _Noreturn.h, hard-locale.c, stdlib.in.h, verify.h,
+     assert_h.m4, getdelim.m4, getline.m4, gnulib-common.m4, gnulib-comp.m4,
+     mbrtowc.m4, mbtowc.m4, mempcpy.m4, setlocale_null.m4, stdlib_h.m4,
+     threadlib.m4, wmempcpy.m4: Updated Gnulib.
+
+2023-01-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Removed unnecessary heuristic.
+   * NEWS, autocomplete.c, cdecl_keyword.c, cdecl_keyword.h, did_you_mean.c,
+     pjl_config.h, types.h, util.c, util.h, ac-cast_into.exp, ac-declare.exp,
+     ac-explain.exp, ac-help.exp, ac-set.exp, ac-show.exp: For some keywords,
+     now autocompleting only a certain set of next keywords.
+
 2023-01-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Fixed requiring parameter list for user-defined literals in
+     English.
    * NEWS, autocomplete.c: The set of word-break characters for autocompletion
      has been expanded to be all non-identifier characters.
    * NEWS, c_ast_check.c, test/Makefile.am, explain_a_nua_iw4.out,
