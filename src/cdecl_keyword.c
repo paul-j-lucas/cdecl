@@ -252,7 +252,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   },
 
   { L_Apple_block,
-    TOKEN( Y_Apple_BLOCK ),
+    TOKEN( Y_Apple_block ),
     IF_AC(
       LANG_ANY,
       AC_POLICY_DEFAULT,

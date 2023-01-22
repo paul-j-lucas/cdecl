@@ -1544,7 +1544,7 @@ static void yyerror( char const *msg ) {
 
                     // Apple extensions
 %token  <tid>       Y_Apple___block     // __block storage class
-%token              Y_Apple_BLOCK       // English for '^'
+%token              Y_Apple_block       // English for '^'
 
                     // Microsoft extensions
 %token  <tid>       Y_MSC___cdecl
@@ -6251,7 +6251,7 @@ length_opt
 
 block_decl_english_ast                  // Apple extension
   : // in_attr: qualifier
-    Y_Apple_BLOCK paren_param_decl_list_english_opt returning_english_ast_opt
+    Y_Apple_block paren_param_decl_list_english_opt returning_english_ast_opt
     {
       c_ast_t *const ret_ast = $3;
 
