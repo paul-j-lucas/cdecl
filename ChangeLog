@@ -1,5 +1,6 @@
 2023-01-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, configure.ac: Version number and NEWS fix-up.
    * lib/Makefile.am, _Noreturn.h, hard-locale.c, stdlib.in.h, verify.h,
      assert_h.m4, getdelim.m4, getline.m4, gnulib-common.m4, gnulib-comp.m4,
      mbrtowc.m4, mbtowc.m4, mempcpy.m4, setlocale_null.m4, stdlib_h.m4,
