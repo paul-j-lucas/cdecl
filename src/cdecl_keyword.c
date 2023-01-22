@@ -1231,7 +1231,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_scope,
     TOKEN( Y_scope ),
     IF_AC(
-      LANG_ANY,
+      LANG_CPP_ANY,
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
     )
