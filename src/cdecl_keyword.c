@@ -61,6 +61,13 @@
 #define AC_NO_NEXT_KEYWORDS       NULL
 
 /**
+ * Languages the **cdecl** `automatic` keyword is supported in (which is the
+ * union of the languages the `auto` C/C++ keyword is supported in as either
+ * a storage class or a type.
+ */
+#define LANG_automatic            (LANG_auto_STORAGE | LANG_auto_TYPE)
+
+/**
  * Specify that the previosuly given keyword is a synonym for the given
  * language-specific keywords.
  *
@@ -88,13 +95,6 @@
  */
 #define SYNONYM(ALWAYS_FIND,C_KEYWORD) \
   SYNONYMS( (ALWAYS_FIND), { LANG_ANY, (C_KEYWORD) } )
-
-/**
- * Languages the **cdecl** `automatic` keyword is supported in (which is the
- * union of the languages the `auto` C/C++ keyword is supported in as either
- * a storage class or a type.
- */
-#define LANG_automatic            (LANG_auto_STORAGE | LANG_auto_TYPE)
 
 /**
  * Specify that the previosuly given keyword maps to Bison tokan \a Y_ID.
