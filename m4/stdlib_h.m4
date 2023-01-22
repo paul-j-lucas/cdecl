@@ -1,4 +1,4 @@
-# stdlib_h.m4 serial 66
+# stdlib_h.m4 serial 67
 dnl Copyright (C) 2007-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -23,7 +23,7 @@ AC_DEFUN_ONCE([gl_STDLIB_H],
 # include <random.h>
 #endif
     ]], [_Exit aligned_alloc atoll canonicalize_file_name free
-    getloadavg getsubopt grantpt
+    getloadavg getprogname getsubopt grantpt
     initstate initstate_r mbtowc mkdtemp mkostemp mkostemps mkstemp mkstemps
     posix_memalign posix_openpt ptsname ptsname_r qsort_r
     random random_r reallocarray realpath rpmatch secure_getenv setenv
@@ -73,6 +73,7 @@ AC_DEFUN([gl_STDLIB_H_REQUIRE_DEFAULTS],
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_CANONICALIZE_FILE_NAME])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_FREE_POSIX])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_GETLOADAVG])
+    gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_GETPROGNAME])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_GETSUBOPT])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_GRANTPT])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_MALLOC_GNU])
@@ -130,6 +131,7 @@ AC_DEFUN([gl_STDLIB_H_DEFAULTS],
   HAVE_DECL_FCVT=1;          AC_SUBST([HAVE_DECL_FCVT])
   HAVE_DECL_GCVT=1;          AC_SUBST([HAVE_DECL_GCVT])
   HAVE_DECL_GETLOADAVG=1;    AC_SUBST([HAVE_DECL_GETLOADAVG])
+  HAVE_GETPROGNAME=1;        AC_SUBST([HAVE_GETPROGNAME])
   HAVE_GETSUBOPT=1;          AC_SUBST([HAVE_GETSUBOPT])
   HAVE_GRANTPT=1;            AC_SUBST([HAVE_GRANTPT])
   HAVE_INITSTATE=1;          AC_SUBST([HAVE_INITSTATE])

@@ -430,6 +430,26 @@ _GL_WARN_ON_USE (getloadavg, "getloadavg is not portable - "
 # endif
 #endif
 
+#if @GNULIB_GETPROGNAME@
+/* Return the base name of the executing program.
+   On native Windows this will usually end in ".exe" or ".EXE". */
+# if !@HAVE_GETPROGNAME@
+#  ifdef HAVE_DECL_PROGRAM_INVOCATION_NAME
+_GL_FUNCDECL_SYS (getprogname, const char *, (void) _GL_ATTRIBUTE_PURE);
+#  else
+_GL_FUNCDECL_SYS (getprogname, const char *, (void));
+#  endif
+# endif
+_GL_CXXALIAS_SYS (getprogname, const char *, (void));
+_GL_CXXALIASWARN (getprogname);
+#elif defined GNULIB_POSIXCHECK
+# undef getprogname
+# if HAVE_RAW_DECL_GETPROGNAME
+_GL_WARN_ON_USE (getprogname, "getprogname is unportable - "
+                 "use gnulib module getprogname for portability");
+# endif
+#endif
+
 #if @GNULIB_GETSUBOPT@
 /* Assuming *OPTIONP is a comma separated list of elements of the form
    "token" or "token=value", getsubopt parses the first of these elements.
