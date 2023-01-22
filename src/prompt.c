@@ -58,10 +58,10 @@
    * @param SBUF A pointer to the \ref strbuf to use.
    * @param WHEN Either the literal `START` or `END`.
    */
-# define RL_PROMPT_IGNORE( SBUF, WHEN ) \
+# define RL_PROMPT_IGNORE(SBUF,WHEN) \
     strbuf_putc( (SBUF), RL_PROMPT_##WHEN##_IGNORE )
 #else
-# define RL_PROMPT_IGNORE( SBUF, WHEN ) NO_OP
+# define RL_PROMPT_IGNORE(SBUF,WHEN) NO_OP
 #endif /* WITH_READLINE */
 
 ///////////////////////////////////////////////////////////////////////////////
