@@ -38,12 +38,6 @@
 
 /// @endcond
 
-#ifdef restrict
-// The generated config.h #defines restrict that messes up our use of
-// "restrict" below, so #undef it.
-#undef restrict
-#endif /* restrict */
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
