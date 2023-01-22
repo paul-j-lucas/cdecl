@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 13.3
+* Changes in Cdecl 13.2
 
 ** Improved autocompletion
 In cases where words in pseudo-Engish can only have a limited set of words that
@@ -20,15 +20,8 @@ follow in the grammar, only those are now suggested.
 Prompts were always being displayed in color even when --color=never.  Fixed.
 
 ** Autocompletion word-break characters
-The set of word-break characters for autocompletion has been expanded to be all
-non-identifier characters.
-
-** `[[no_unique_address]]` bit fields
-Bit-fields having `[[no_unique_address]]` are now correctly reported as an
-error.
-
-
-* Changes in Cdecl 13.2
+The set of word-break characters for autocompletion has been expanded to be
+(almost) all non-identifier characters.
 
 ** `extern void v`
 C allows you to declare an object of an incomplete type, so C allows:
@@ -40,8 +33,15 @@ Now cdecl does also.
 ** More English synonyms
 The following English synonyms have been added:
 
-        bit-precise integer  _BitInt
-        bit precise integer  _BitInt
+    bit-precise integer  _BitInt
+    bit precise integer  _BitInt
+
+** `[[no_unique_address]]` bit fields
+Bit-fields having `[[no_unique_address]]` are now correctly reported as an
+error.
+
+** User-defined literal parameter lists
+Fixed requiring parameter list for user-defined literals in English.
 
 
 * Changes in Cdecl 13.1
