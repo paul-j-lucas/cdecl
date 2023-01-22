@@ -782,7 +782,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     IF_AC(
       LANG_ANY,
       AC_POLICY_DEFAULT,
-      AC_NEXT_KEYWORDS( L_commands, L_english, L_options )
+      AC_NO_NEXT_KEYWORDS               // see command_ac_keywords()
     )
   },
 
@@ -1242,7 +1242,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     IF_AC(
       LANG_ANY,
       AC_POLICY_DEFAULT,
-      AC_NO_NEXT_KEYWORDS
+      AC_NO_NEXT_KEYWORDS               // see command_ac_keywords()
     )
   },
 
@@ -1251,7 +1251,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     IF_AC(
       LANG_ANY,
       AC_POLICY_DEFAULT,
-      AC_NO_NEXT_KEYWORDS
+      AC_NO_NEXT_KEYWORDS               // see command_ac_keywords()
     )
   },
 

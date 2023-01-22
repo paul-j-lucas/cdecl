@@ -136,6 +136,11 @@ static int ac_keyword_cmp( ac_keyword_t const *i_keyword,
 NODISCARD
 static char const *const* command_ac_keywords( char const *command ) {
   if ( command == L_const || command == L_static ) {
+    //
+    // This needs to be here instead of in CDECL_KEYWORDS because `const` and
+    // `static` as cdecl commands can only be followed by `cast` -- that isn't
+    // true when `const` and `static` are used as C/C++ keywords.
+    //
     static char const *const cast_keywords[] = {
       L_cast,
       NULL
