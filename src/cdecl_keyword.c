@@ -1275,9 +1275,29 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_thread_local,
     SYNONYMS( ALWAYS_FIND,
-     // { ~LANG_THREAD_LOCAL_STORAGE, L_GNU___thread  },
-        { LANG__Thread_local,         L__Thread_local },
-        { LANG_ANY,                   L_thread_local  } ),
+        //
+        // Unlike H_thread_local (below), this row:
+        //
+        //     { ~LANG_THREAD_LOCAL_STORAGE, L_GNU___thread },
+        //
+        // isn't here because `thread_local` is either a C/C++ keyword or macro
+        // and so should only be a synonym for the actual language-specific
+        // keywords in C/C++, not as a synonym for "thread local" as a concept.
+        // For that, `thread-local` should be used.
+        //
+        // If this row were included here, then the following:
+        //
+        //     cdecl> set c99
+        //     cdecl> explain thread_local int x
+        //     declare x as thread local integer
+        //
+        // would be legal (becasuse `thread_local` would map to GNU C's
+        // `__thread` that's legal in all languages) when it shouldn't be
+        // (because neither the C macro `thread_local` nor the C keyword
+        // `_Thread_local` were supported until C11).
+        //
+        { LANG__Thread_local, L__Thread_local },
+        { LANG_ANY,           L_thread_local  } ),
     IF_AC(
       LANG_THREAD_LOCAL_STORAGE,
       AC_POLICY_DEFAULT,
