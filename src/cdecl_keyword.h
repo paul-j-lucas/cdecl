@@ -116,7 +116,7 @@ struct cdecl_keyword {
   c_lang_lit_t const *lang_syn;
 
 #ifdef WITH_READLINE
-  c_lang_id_t         ac_lang_ids;      ///< Language(s) auto-completable in.
+  c_lang_id_t         ac_lang_ids;      ///< Language(s) autocompletable in.
   ac_policy_t         ac_policy;        ///< Autocompletion policy.
 
   /**

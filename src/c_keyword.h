@@ -62,20 +62,20 @@ struct c_keyword {
   c_lang_id_t     lang_ids;             ///< Language(s) OK in.
 #ifdef WITH_READLINE
   /**
-   * Language(s) auto-completable in.  Relative to `lang_ids`, this field:
+   * Language(s) autocompletable in.  Relative to `lang_ids`, this field:
    *
-   *  1. Is exactly the same in which case it's auto-completable in all (and
+   *  1. Is exactly the same in which case it's autocompletable in all (and
    *     only) those language(s) in which it's valid.
    *
    *  2. Is a subset.  This is for a case like `restrict` where it's a C-only
    *     keyword, but we also allow it to be recognized in C++ so we can give a
    *     better error message (saying it's not supported in C++).  However,
    *     even though we also allow it to be recognized in C++, we do _not_
-   *     allow it to be auto-completable in C++.
+   *     allow it to be autocompletable in C++.
    *
    *  3. Is #LANG_NONE.  This is for a case like `break` where it's a keyword
    *     in all languages, but it's not used in declarations; hence there's no
-   *     reason to allow it to be auto-completable.
+   *     reason to allow it to be autocompletable.
    */
   c_lang_id_t     ac_lang_ids;
 #endif /* WITH_READLINE */

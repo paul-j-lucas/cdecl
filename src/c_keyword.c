@@ -70,7 +70,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_continue,             Y_continue,           KC__, TX_NONE,
     LANG_ANY,               AC_LANG(NONE)                                 },
   // Allow "default" in any language version since it's a keyword, but only
-  // make it auto-completable in languages where it's allowed in declarations.
+  // make it autocompletable in languages where it's allowed in declarations.
   { L_default,              Y_default,            KC__, TS_DEFAULT,
     LANG_ANY,               AC_LANG(default_delete_FUNC)                  },
   { L_do,                   Y_do,                 KC__, TX_NONE,
@@ -94,7 +94,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_long,                 Y_long,               KC__, TB_LONG,
     LANG_ANY,               AC_LANG(ANY)                                  },
   // Allow "register" in any language since it's (still) a keyword, but only
-  // make it auto-completable in languages where it's allowed in declarations.
+  // make it autocompletable in languages where it's allowed in declarations.
   { L_register,             Y_register,           KC__, TS_REGISTER,
     LANG_ANY,               AC_LANG(register)                             },
   { L_return,               Y_return,             KC__, TX_NONE,

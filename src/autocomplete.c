@@ -54,11 +54,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Either a C/C++ or **cdecl** keyword that is auto-completable.
+ * Either a C/C++ or **cdecl** keyword that is autocompletable.
  */
 struct ac_keyword {
   char const         *literal;          ///< C string literal of the keyword.
-  c_lang_id_t         ac_lang_ids;      ///< Language(s) auto-completable in.
+  c_lang_id_t         ac_lang_ids;      ///< Language(s) autocompletable in.
   bool                ac_in_gibberish;  ///< Autocomplete even for gibberish?
   ac_policy_t         ac_policy;        ///< See \ref cdecl_keyword::ac_policy.
   c_lang_lit_t const *lang_syn;         ///< See \ref cdecl_keyword::lang_syn.
@@ -96,12 +96,12 @@ static inline bool is_c_keyword( char const *literal ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Auto-completion wrapper around cdecl_command_next() that returns only auto-
- * completable **cdecl** commands.
+ * Autocompletion wrapper around cdecl_command_next() that returns only
+ * autocompletable **cdecl** commands.
  *
  * @param command A pointer to the previous command. For the first iteration,
  * NULL should be passed.
- * @return Returns the next auto-completable command or NULL for none.
+ * @return Returns the next autocompletable command or NULL for none.
  */
 NODISCARD static
 cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
@@ -203,8 +203,8 @@ static char const *const* command_ac_keywords( char const *command ) {
 }
 
 /**
- * Creates and initializes an array of all auto-completable keywords composed
- * of C/C++ keywords and **cdecl** keywords.
+ * Creates and initializes an array of all autocompletable keywords composed of
+ * C/C++ keywords and **cdecl** keywords.
  *
  * @return Returns a pointer to said array.
  */
