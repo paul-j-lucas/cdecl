@@ -631,16 +631,6 @@ static char* keyword_generator( char const *text, int state ) {
 
       if ( k->lang_syn != NULL ) {      // must be a cdecl keyword
         //
-        // If this keyword is a prefix of the next keyword, skip it.
-        //
-        ac_keyword_t const *const next_k = k + 1;
-        if ( next_k->literal != NULL &&
-             opt_lang_is_any( next_k->ac_lang_ids ) &&
-             str_is_prefix( k->literal, next_k->literal ) ) {
-          continue;
-        }
-
-        //
         // If this keyword is a synonym for another keyword and the text typed
         // so far is a prefix of the synonym, skip this keyword because the
         // synonym was previously returned and we don't want to return this
