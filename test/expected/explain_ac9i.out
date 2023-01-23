@@ -1,3 +1,0 @@
-explain int a[const 9]
-             ^
-14: error: "const" arrays are illegal outside of parameters

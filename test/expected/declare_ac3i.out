@@ -1,3 +1,0 @@
-declare x as array const 3 of int
-        ^
-9: error: "const" arrays are illegal outside of parameters

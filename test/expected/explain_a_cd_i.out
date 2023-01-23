@@ -1,3 +1,0 @@
-explain [[carries_dependency]] int x
-        ^
-9: error: "carries_dependency" can only appear on functions or parameters

@@ -50,10 +50,7 @@ TESTS+=	tests/declare.test
 #
 TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_++i-c.test \
-	tests/declare_ac3i.test \
 	tests/declare_af.test \
-	tests/declare_ast3i.test \
-	tests/declare_avi.test \
 	tests/declare_b-c89.test \
 	tests/declare_b_f_i.test \
 	tests/declare_bi65.test \
@@ -149,7 +146,6 @@ TESTS+=	tests/declare_0f_v-c.test \
 # =======================
 #
 TESTS+=	tests/declare_+ctor-error.test \
-	tests/declare_a_cd_i.test \
 	tests/declare_a_nua_f.test \
 	tests/declare_ai-c++11.test \
 	tests/declare_ari.test \
@@ -193,14 +189,12 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_a_nd_i.test \
 	tests/explain_a_re_i.test \
 	tests/explain_aai.test \
-	tests/explain_ac9i.test \
 	tests/explain_af-c.test \
 	tests/explain_al3_c.test \
 	tests/explain_al4_cw3.test \
 	tests/explain_al8ty_i.test \
 	tests/explain_alf_i.test \
 	tests/explain_alrgi.test \
-	tests/explain_ast9i.test \
 	tests/explain_atci.test \
 	tests/explain_attda2i.test \
 	tests/explain_b-c89.test \
@@ -344,7 +338,6 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_+dtor-error.test \
 	tests/explain_0f_v-03.test \
 	tests/explain_2i-redef-c++.test \
-	tests/explain_a_cd_i.test \
 	tests/explain_a_nua_f.test \
 	tests/explain_a_nua_iw4.test \
 	tests/explain_af-c++11.test \

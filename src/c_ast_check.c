@@ -347,14 +347,12 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
  * Checks an array AST for errors.
  *
  * @param ast The array AST to check.
- * @param flags The flags to use.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
+static bool c_ast_check_array( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
-  bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
 
   if ( c_tid_is_any( ast->type.stids, TS_ATOMIC ) ) {
     error_kind_not_tid( ast, TS_ATOMIC, LANG_NONE, "\n" );
@@ -369,12 +367,6 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
         print_error( &ast->loc,
           "variable length arrays not supported%s\n",
           C_LANG_WHICH( VLA )
-        );
-        return false;
-      }
-      if ( !is_func_param ) {
-        print_error( &ast->loc,
-          "variable length arrays are illegal outside of parameters\n"
         );
         return false;
       }
@@ -394,13 +386,6 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
         "\"%s\" arrays not supported%s\n",
         c_tid_name_error( ast->array.stids ),
         C_LANG_WHICH( QUALIFIED_ARRAY )
-      );
-      return false;
-    }
-    if ( !is_func_param ) {
-      print_error( &ast->loc,
-        "\"%s\" arrays are illegal outside of parameters\n",
-        c_tid_name_error( ast->array.stids )
       );
       return false;
     }
@@ -2231,7 +2216,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      if ( !c_ast_check_array( ast, flags ) )
+      if ( !c_ast_check_array( ast ) )
         return VISITOR_ERROR_FOUND;
       break;
 
@@ -2398,8 +2383,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
 NODISCARD
 static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
   assert( ast != NULL );
-  unsigned const flags = data.ui;
-  bool const is_func_param = (flags & C_IS_FUNC_PARAM) != 0;
+  (void)data;
 
   c_lang_id_t const ok_lang_ids = c_type_check( &ast->type );
   if ( ok_lang_ids != LANG_ANY ) {
@@ -2445,15 +2429,6 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
          c_tid_is_any( ast->type.stids, TS_NOT_CONSTEXPR_C_ONLY ) ) {
       error_tid_not_tid( ast,
         TS_CONSTEXPR, ast->type.stids & TS_NOT_CONSTEXPR_C_ONLY, " in C\n"
-      );
-      return VISITOR_ERROR_FOUND;
-    }
-
-    if ( c_tid_is_any( ast->type.atids, TA_CARRIES_DEPENDENCY ) &&
-         !is_func_param ) {
-      print_error( &ast->loc,
-        "\"%s\" can only appear on functions or parameters\n",
-        c_tid_name_error( TA_CARRIES_DEPENDENCY )
       );
       return VISITOR_ERROR_FOUND;
     }

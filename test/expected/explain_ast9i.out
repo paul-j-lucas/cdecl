@@ -1,3 +1,0 @@
-explain int a[static 9]
-             ^
-14: error: "static" arrays are illegal outside of parameters

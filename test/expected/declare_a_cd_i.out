@@ -1,3 +1,0 @@
-declare x as carries-dependency int
-        ^
-9: error: "carries_dependency" can only appear on functions or parameters

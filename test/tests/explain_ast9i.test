@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-explain int a[static 9]
-END
