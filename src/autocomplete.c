@@ -380,7 +380,7 @@ static bool is_english_command( char const *command ) {
  * @sa str_prev_token()
  */
 NODISCARD
-static cdecl_keyword_t const* str_prev_keyword( char const *s, size_t pos ) {
+static cdecl_keyword_t const* prev_cdecl_keyword( char const *s, size_t pos ) {
   for (;;) {
     size_t token_len;
     char const *const token = str_prev_token( s, pos, &token_len );
@@ -586,7 +586,7 @@ static char* keyword_generator( char const *text, int state ) {
       //
       assert( rl_point >= 0 );
       cdecl_keyword_t const *const k =
-        str_prev_keyword( rl_line_buffer, STATIC_CAST( size_t, rl_point ) );
+        prev_cdecl_keyword( rl_line_buffer, STATIC_CAST( size_t, rl_point ) );
       specific_ac_keywords = k != NULL ? k->ac_next_keywords : NULL;
     }
   }
@@ -642,8 +642,8 @@ static char* keyword_generator( char const *text, int state ) {
         // keyword and its synonym since it's redundant.
         //
         // For example, if this keyword is "character" (a synonym for "char"),
-        // and the text typed so far is "char", skip this keyword since
-        // "character" would be redundant with "char".
+        // and the text typed so far is "char", skip "character" since it would
+        // be redundant with "char".
         //
         char const *const synonym = c_lang_literal( k->lang_syn );
         if ( synonym != NULL && str_is_prefix( text, synonym ) )
