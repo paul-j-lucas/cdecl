@@ -615,14 +615,14 @@ static char* keyword_generator( char const *text, int state ) {
     return NULL;
 
   static ac_keyword_t const *ac_keywords, *no_other_k;
+  static bool is_gibberish;
 
   if ( ac_keywords == NULL )
     ac_keywords = init_ac_keywords();
-  if ( state == 0 )
+  if ( state == 0 ) {
+    is_gibberish = !is_english_command( command );
     no_other_k = NULL;
-
-  // The keywords following the command are in gibberish, not English.
-  bool const is_gibberish = !is_english_command( command );
+  }
 
   for ( ac_keyword_t const *k;
         (k = ac_keywords + match_index)->literal != NULL; ) {
