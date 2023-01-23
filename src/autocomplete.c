@@ -634,7 +634,7 @@ static char* keyword_generator( char const *text, int state ) {
       if ( strncmp( k->literal, text, text_len ) != 0 )
         continue;
 
-      if ( k->lang_syn != NULL ) {      // must be a cdecl keyword
+      if ( k->lang_syn != NULL ) {
         //
         // If this keyword is a synonym for another keyword and the text typed
         // so far is a prefix of the synonym, skip this keyword because the
