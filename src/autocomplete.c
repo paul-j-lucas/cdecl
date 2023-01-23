@@ -685,7 +685,7 @@ void readline_init( FILE *rin, FILE *rout ) {
   // Allow almost any non-identifier character to break a word -- except '-'
   // since we use that as part of hyphenated keywords.
   rl_basic_word_break_characters =
-    CONST_CAST( char*, " \t\n \"!#$%&'()*+,./:;<=>?@[\\]^`{|}" );
+    CONST_CAST( char*, "\t\n \"!#$%&'()*+,./:;<=>?@[\\]^`{|}" );
 
   // Allow conditional ~/.inputrc parsing.
   rl_readline_name = CONST_CAST( char*, CDECL );
