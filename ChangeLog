@@ -1,5 +1,8 @@
 2023-01-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c, c_ast_util.h: Now initializing qual_stids.
+   * autocomplete.c, c_keyword.c, c_keyword.h, cdecl_command.c,
+     cdecl_command.h, cdecl_keyword.h: s/[Aa]uto-complet/[Aa]utocomplet/g
    * cdecl_keyword.c, pjl_config.h: s/IF_AC/AC_SETTINGS/
    * cdecl_keyword.c: No longer autocompleting `scope` in C.
    * cdecl_keyword.c, parser.y: s/Y_Apple_BLOCK/Y_Apple_block/
