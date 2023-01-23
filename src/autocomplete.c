@@ -604,68 +604,73 @@ static char* keyword_generator( char const *text, int state ) {
       if ( strncmp( s, text, text_len ) == 0 )
         return check_strdup( s );
     } // for
+    return NULL;
   }
-  else if ( text_len > 0 ) {
+
+  //
+  // Otherwise, just attempt to match (almost) any keyword (if any text has
+  // been typed).
+  //
+  if ( text_len == 0 )
+    return NULL;
+
+  static ac_keyword_t const *ac_keywords, *no_other_k;
+
+  if ( ac_keywords == NULL )
+    ac_keywords = init_ac_keywords();
+  if ( state == 0 )
+    no_other_k = NULL;
+
+  // The keywords following the command are in gibberish, not English.
+  bool const is_gibberish = !is_english_command( command );
+
+  for ( ac_keyword_t const *k;
+        (k = ac_keywords + match_index)->literal != NULL; ) {
+    ++match_index;
+
     //
-    // Otherwise, just attempt to match (almost) any keyword.
+    // If we're deciphering gibberish into pseudo-English, but the current
+    // keyword shouldn't be autocompleted in gibberish, skip it.
     //
-    static ac_keyword_t const *ac_keywords;
-    if ( ac_keywords == NULL )
-      ac_keywords = init_ac_keywords();
+    if ( is_gibberish && !k->ac_in_gibberish )
+      continue;
 
-    // The keywords following the command are in gibberish, not English.
-    bool const is_gibberish = !is_english_command( command );
+    if ( !opt_lang_is_any( k->ac_lang_ids ) )
+      continue;
+    if ( strncmp( k->literal, text, text_len ) != 0 )
+      continue;
 
-    ac_keyword_t const *no_other_k = NULL;
-
-    for ( ac_keyword_t const *k;
-          (k = ac_keywords + match_index)->literal != NULL; ) {
-      ++match_index;
-
+    if ( k->lang_syn != NULL ) {
       //
-      // If we're deciphering gibberish into pseudo-English, but the current
-      // keyword shouldn't be autocompleted in gibberish, skip it.
+      // If this keyword is a synonym for another keyword and the text typed so
+      // far is a prefix of the synonym, skip this keyword because the synonym
+      // was previously returned and we don't want to return this keyword and
+      // its synonym since it's redundant.
       //
-      if ( is_gibberish && !k->ac_in_gibberish )
+      // For example, if this keyword is "character" (a synonym for "char"),
+      // and the text typed so far is "char", skip "character" since it would
+      // be redundant with "char".
+      //
+      char const *const synonym = c_lang_literal( k->lang_syn );
+      if ( synonym != NULL && str_is_prefix( text, synonym ) )
         continue;
+    }
 
-      if ( !opt_lang_is_any( k->ac_lang_ids ) )
+    switch ( k->ac_policy ) {
+      case AC_POLICY_DEFAULT:
+        returned_any = true;
+        return check_strdup( k->literal );
+      case AC_POLICY_IN_NEXT_ONLY:
         continue;
-      if ( strncmp( k->literal, text, text_len ) != 0 )
+      case AC_POLICY_NO_OTHER:
+        no_other_k = k;
         continue;
+    } // switch
+    UNEXPECTED_INT_VALUE( k->ac_policy );
+  } // for
 
-      if ( k->lang_syn != NULL ) {
-        //
-        // If this keyword is a synonym for another keyword and the text typed
-        // so far is a prefix of the synonym, skip this keyword because the
-        // synonym was previously returned and we don't want to return this
-        // keyword and its synonym since it's redundant.
-        //
-        // For example, if this keyword is "character" (a synonym for "char"),
-        // and the text typed so far is "char", skip "character" since it would
-        // be redundant with "char".
-        //
-        char const *const synonym = c_lang_literal( k->lang_syn );
-        if ( synonym != NULL && str_is_prefix( text, synonym ) )
-          continue;
-      }
-
-      switch ( k->ac_policy ) {
-        case AC_POLICY_DEFAULT:
-          returned_any = true;
-          return check_strdup( k->literal );
-        case AC_POLICY_IN_NEXT_ONLY:
-          continue;
-        case AC_POLICY_NO_OTHER:
-          no_other_k = k;
-          continue;
-      } // switch
-      UNEXPECTED_INT_VALUE( k->ac_policy );
-    } // for
-
-    if ( no_other_k != NULL && !returned_any )
-      return check_strdup( no_other_k->literal );
-  }
+  if ( no_other_k != NULL && !returned_any )
+    return check_strdup( no_other_k->literal );
 
   return NULL;
 }
