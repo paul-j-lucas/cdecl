@@ -1,5 +1,15 @@
 2023-01-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, c_ast_check.c, test/Makefile.am: No longer require certain
+     declarations to be a function parameters: `const`, `volatile`, `static`,
+     and variable length arrays; `[[carries_dependency]]`.
+   * NEWS, c_ast_check.c, test/Makefile.am, explain_aai.out, explain_aai.test:
+     Now correctly reporting declarations of arrays of incomplete arrays as an
+     error.
+   * autocomplete.c: Made is_gibberish static.
+   * autocomplete.c: Simplification.
+   * autocomplete.c: s/str_prev_keyword/prev_cdecl_keyword/
+   * autocomplete.c: Removed untrue comment.
    * autocomplete.c: Removed redundant space.
 
 2023-01-22  Paul J. Lucas <paul@lucasmail.org>
