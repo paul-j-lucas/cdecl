@@ -1,0 +1,3 @@
+explain void f(int x[][])
+                      ^
+23: error: array dimension required

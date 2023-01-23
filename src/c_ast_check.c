@@ -410,6 +410,12 @@ static bool c_ast_check_array( c_ast_t const *ast, unsigned flags ) {
   c_ast_t const *const raw_of_ast = c_ast_untypedef( of_ast );
   switch ( raw_of_ast->kind ) {
     case K_ARRAY:
+      if ( of_ast->array.size == C_ARRAY_SIZE_NONE ) {
+        print_error( &of_ast->loc, "array dimension required\n" );
+        return false;
+      }
+      break;
+
     case K_CLASS_STRUCT_UNION:
     case K_ENUM:
     case K_POINTER:

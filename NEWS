@@ -16,6 +16,14 @@ with their complete changes, see the AUTHORS file.
 In cases where words in pseudo-Engish can only have a limited set of words that
 follow in the grammar, only those are now suggested.
 
+** Array of array check
+Now correctly reporting declarations of arrays of incomplete arrays as an
+error, e.g.:
+
+    cdecl> explain void f(int x[][])
+                                 ^
+    23: error: array dimension required
+
 ** Fixed color prompts
 Prompts were always being displayed in color even when --color=never.  Fixed.
 
