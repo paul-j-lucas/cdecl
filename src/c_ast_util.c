@@ -593,7 +593,7 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
                                c_type_t const *type ) {
   assert( mask_type != NULL );
 
-  c_tid_t qual_stids;
+  c_tid_t qual_stids = TS_NONE;
   ast = c_ast_unpointer_qual( ast, &qual_stids );
   if ( ast == NULL )
     return false;
@@ -624,7 +624,7 @@ c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
 
 c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
                                          c_type_t const *type ) {
-  c_tid_t qual_stids;
+  c_tid_t qual_stids = TS_NONE;
   ast = c_ast_unreference_qual( ast, &qual_stids );
   if ( ast == NULL )
     return NULL;

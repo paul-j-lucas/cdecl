@@ -508,7 +508,7 @@ bool c_ast_is_size_t( c_ast_t const *ast ) {
  */
 NODISCARD C_AST_UTIL_H_INLINE
 c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
-  c_tid_t qual_stids;
+  c_tid_t qual_stids = TS_NONE;
   return c_ast_is_tid_any_qual( ast, tids, &qual_stids );
 }
 
