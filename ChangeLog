@@ -1,3 +1,7 @@
+2023-01-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Removed redundant space.
+
 2023-01-22  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, c_ast_util.h: Now initializing qual_stids.
