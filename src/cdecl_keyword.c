@@ -200,8 +200,8 @@ static bool const FIND_IN_ENGLISH_ONLY  = false;
  * 1. The bitwise-or of languages it should be autocompleted in.  A keyword
  *    should be autocompletable _unless_ it:
  *
- *    + Is shorthand for a more-preferred keyword, e.g., `conv` is not
- *      autocompletable because `conversion` is more-preferred.
+ *    + Is shorthand for a preferred keyword, e.g., `conv` is not
+ *      autocompletable because `conversion` is preferred.
  *
  *    + Is too short, e.g, `all`, `as`, `bit`, `exit`, `mbr`, `no`, `of`,
  *      `ptr`, and `to` are not autocompletable.
