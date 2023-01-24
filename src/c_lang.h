@@ -594,6 +594,16 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_KNR_FUNC_DEFINITION        LANG_C_MAX(17)
 
 /**
+ * Lanuages the `long double` type is supportd in.
+ */
+#define LANG_long_double                LANG_MIN(C_89)
+
+/**
+ * Lanuages the `long float` type is supportd in.
+ */
+#define LANG_long_float                 LANG_C_KNR
+
+/**
  * Lanuages the `long long` type is supportd in.
  */
 #define LANG_long_long                  LANG_MIN(C_99)

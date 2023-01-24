@@ -402,22 +402,40 @@ static c_type_info_t const C_TYPE_INFO[] = {
 //      shorthand   legal in ...
 #define ___         LANG_ANY
 #define XXX         LANG_NONE
-#define KNR         LANG_C_KNR
-#define C89         LANG_MIN(C_89)
-#define C95         LANG_MIN(C_95)
-#define c99         LANG_C_99
-#define C99         LANG_MIN(C_99)
-#define C23         LANG_MIN(C_23)
-#define C11         LANG_MIN(C_11)
+#define ATO         LANG__Atomic
+#define AUS         LANG_auto_STORAGE
+#define AUT         LANG_MIN(C_89)
+#define BIT         LANG__BitInt
+#define BOO         LANG_BOOL_TYPE
+#define C08         LANG_char8_t
+#define C16         LANG_char16_32_t
+#define C32         LANG_char16_32_t
+#define CEV         LANG_consteval
+#define CEX         LANG_constexpr
+#define CIN         LANG_constinit
+#define COM         LANG__Complex
 #define CPP         LANG_CPP_ANY
-#define P03         LANG_CPP_MIN(03)
-#define P11         LANG_CPP_MIN(11)
-#define P20         LANG_CPP_MIN(20)
-#define P23         LANG_CPP_MIN(23)
-#define E11         LANG_C_CPP_MIN(11,11)
-#define E13         LANG_C_CPP_MIN(11,23)
-#define E30         LANG_C_CPP_MIN(23,20)
-#define E31         LANG_C_CPP_MIN(23,11)
+#define DDF         LANG_default_delete_FUNC
+#define ENC         LANG_enum_class
+#define ENU         LANG_enum
+#define EXP         LANG_export
+#define FIN         LANG_final
+#define IMA         LANG__Imaginary
+#define INF         LANG_inline
+#define LDO         LANG_long_double
+#define LFL         LANG_long_float
+#define LLO         LANG_long_long
+#define NOE         LANG_noexcept
+#define OVR         LANG_override
+#define REG         LANG_register
+#define RVR         LANG_RVALUE_REFERENCE
+#define SIG         LANG_signed
+#define THI         LANG_EXPLICIT_OBJ_PARAM_DECL
+#define TLS         LANG_THREAD_LOCAL_STORAGE
+#define UPC         LANG_C_99
+#define VIR_CEX     LANG_CPP_MIN(20)
+#define VOL         LANG_volatile
+#define WCH         LANG_wchar_t
 
 /// @endcond
 
@@ -438,17 +456,17 @@ static c_type_info_t const C_TYPE_INFO[] = {
 static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] = {
 // Only the lower triangle is used.
 //  ato con ref rva res vol   rel sha str
-  { E13,___,___,___,___,___,  ___,___,___ }, // atomic
-  { E11,___,___,___,___,___,  ___,___,___ }, // const
+  { ATO,___,___,___,___,___,  ___,___,___ }, // atomic
+  { ATO,___,___,___,___,___,  ___,___,___ }, // const
   { XXX,CPP,CPP,___,___,___,  ___,___,___ }, // reference
-  { XXX,P11,XXX,P11,___,___,  ___,___,___ }, // rvalue reference
-  { XXX,___,CPP,P11,___,___,  ___,___,___ }, // restrict
-  { E11,___,CPP,P11,___,___,  ___,___,___ }, // volatile
+  { XXX,RVR,XXX,RVR,___,___,  ___,___,___ }, // rvalue reference
+  { XXX,___,CPP,RVR,___,___,  ___,___,___ }, // restrict
+  { ATO,___,CPP,RVR,___,___,  ___,___,___ }, // volatile
 
   // Unified Parallel C extensions
-  { XXX,c99,XXX,XXX,c99,c99,  c99,___,___ }, // relaxed
-  { XXX,c99,XXX,XXX,c99,c99,  c99,c99,___ }, // shared
-  { XXX,c99,XXX,XXX,c99,c99,  XXX,c99,c99 }, // strict
+  { XXX,UPC,XXX,XXX,UPC,UPC,  UPC,___,___ }, // relaxed
+  { XXX,UPC,XXX,XXX,UPC,UPC,  UPC,UPC,___ }, // shared
+  { XXX,UPC,XXX,XXX,UPC,UPC,  XXX,UPC,UPC }, // strict
 };
 
 /**
@@ -459,34 +477,34 @@ static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] 
  */
 static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
-//  aut blo ext exc reg sta thr typ   cev cex cin def del exp exp fin fri inl mut noe ove thi thr vir pur
-  { ___,___,___,___,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// auto
-  { ___,___,___,___,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// block
-  { XXX,___,___,___,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// extern
-  { XXX,___,___,CPP,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// extern C
-  { XXX,___,XXX,XXX,___,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// register
-  { XXX,XXX,XXX,XXX,XXX,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// static
-  { XXX,___,___,P11,XXX,___,___,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// thread
-  { XXX,___,XXX,CPP,XXX,XXX,XXX,___,  ___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// typedef
+//  auto    block   extern  exter-C registe static  thread  typedef c'eval  c'expr  c'init  default delete  explici export  final   friend  inline  mutable noexcep overrid this    thread  virtual pure
+  { ___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// auto
+  { ___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// block
+  { XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// extern
+  { XXX    ,___    ,___    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// extern-C
+  { XXX    ,___    ,XXX    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// register
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// static
+  { XXX    ,___    ,___    ,TLS    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// thread
+  { XXX    ,___    ,XXX    ,CPP    ,XXX    ,XXX    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// typedef
 
-  // storage-class-like
-  { P11,P11,P11,P20,XXX,P11,XXX,XXX,  P20,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'eval
-  { C23,E31,P11,P11,C23,P11,XXX,XXX,  XXX,E31,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'expr
-  { XXX,XXX,P20,P20,XXX,P20,P20,XXX,  XXX,XXX,P20,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// c'init
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P11,P11,XXX,P11,___,___,___,___,___,___,___,___,___,___,___,___,___ },// default
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P11,P11,XXX,XXX,P11,___,___,___,___,___,___,___,___,___,___,___,___ },// delete
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P11,XXX,P11,P11,CPP,___,___,___,___,___,___,___,___,___,___,___ },// explicit
-  { XXX,XXX,P20,XXX,XXX,XXX,XXX,XXX,  XXX,P20,P20,XXX,XXX,XXX,P20,___,___,___,___,___,___,___,___,___,___ },// export
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P11,XXX,XXX,XXX,XXX,XXX,P11,___,___,___,___,___,___,___,___,___ },// final
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  P20,P11,XXX,P20,XXX,XXX,XXX,XXX,CPP,___,___,___,___,___,___,___,___ },// friend
-  { XXX,XXX,___,CPP,XXX,___,XXX,XXX,  P20,P11,P20,P11,P11,CPP,P20,P11,CPP,C99,___,___,___,___,___,___,___ },// inline
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P03,___,___,___,___,___,___ },// mutable
-  { XXX,XXX,P11,CPP,XXX,P11,XXX,P11,  P20,P11,XXX,P11,P11,CPP,P20,P11,P11,P11,XXX,P11,___,___,___,___,___ },// noexcept
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P11,XXX,XXX,XXX,XXX,XXX,P11,XXX,C11,XXX,C11,P11,___,___,___,___ },// override
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P23,___,___,___ },// this
-  { XXX,XXX,CPP,CPP,XXX,CPP,XXX,CPP,  P20,P11,XXX,P11,P11,CPP,XXX,CPP,XXX,CPP,XXX,XXX,CPP,P23,CPP,___,___ },// throw
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P20,XXX,XXX,XXX,XXX,XXX,P11,XXX,CPP,XXX,C11,P11,XXX,CPP,CPP,___ },// virtual
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,  XXX,P20,XXX,XXX,XXX,XXX,XXX,XXX,XXX,CPP,XXX,C11,P11,XXX,CPP,CPP,CPP },// pure
+  // storage-class-like            
+  { XXX    ,CEV    ,CEV    ,CEV    ,XXX    ,CEV    ,XXX    ,XXX    ,CEV    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// c'eval
+  { AUS&CEX,CEX    ,XXX    ,XXX    ,CEX&REG,CEX    ,XXX    ,XXX    ,XXX    ,CEX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// c'expr
+  { XXX    ,XXX    ,CIN    ,CIN    ,XXX    ,CIN    ,CIN&TLS,XXX    ,XXX    ,XXX    ,CIN    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// c'init
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEV&DDF,CEX&DDF,XXX    ,DDF    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// default
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEV&DDF,CEX&DDF,XXX    ,XXX    ,DDF    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// delete
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX    ,XXX    ,DDF    ,DDF    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// explicit
+  { XXX    ,XXX    ,EXP    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&EXP,CIN    ,XXX    ,XXX    ,XXX    ,EXP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// export
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&FIN,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// final
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEV    ,CEX    ,XXX    ,DDF    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// friend
+  { XXX    ,XXX    ,___    ,CPP    ,XXX    ,___    ,XXX    ,XXX    ,CEV    ,CEX    ,CIN    ,DDF    ,DDF    ,CPP    ,EXP    ,FIN    ,CPP    ,INF    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// inline
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___ },// mutable
+  { XXX    ,XXX    ,NOE    ,NOE    ,XXX    ,NOE    ,XXX    ,NOE    ,CEV&NOE,CEX&NOE,XXX    ,NOE    ,NOE    ,NOE    ,EXP    ,NOE    ,NOE    ,NOE    ,XXX    ,NOE    ,___    ,___    ,___    ,___    ,___ },// noexcept
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&OVR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN&OVR,XXX    ,OVR    ,XXX    ,NOE&OVR,OVR    ,___    ,___    ,___    ,___ },// override
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,THI    ,___    ,___    ,___ },// this
+  { XXX    ,XXX    ,CPP    ,CPP    ,XXX    ,CPP    ,XXX    ,CPP    ,CEV    ,CEX    ,XXX    ,DDF    ,DDF    ,CPP    ,XXX    ,FIN    ,XXX    ,CPP    ,XXX    ,XXX    ,OVR    ,THI    ,CPP    ,___    ,___ },// throw
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,VIR_CEX,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN    ,XXX    ,CPP    ,XXX    ,NOE    ,OVR    ,XXX    ,CPP    ,CPP    ,___ },// virtual
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,VIR_CEX,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,XXX    ,NOE    ,OVR    ,XXX    ,CPP    ,CPP    ,CPP },// pure
 };
 
 /**
@@ -498,33 +516,33 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 // Only the lower triangle is used.
 //  voi aut Bit boo cha ch8 c16 c32 wch sho int lon lol sig uns flo dou com ima enu str uni cla typ aca fra sat
-  { C89,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// void
-  { XXX,C89,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// auto
-  { XXX,XXX,C23,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// _BitInt
-  { XXX,XXX,XXX,C99,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// bool
+  { VOL,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// void
+  { XXX,AUT,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// auto
+  { XXX,XXX,BIT,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// _BitInt
+  { XXX,XXX,XXX,BOO,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// bool
   { XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char
-  { XXX,XXX,XXX,XXX,XXX,E30,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char8_t
-  { XXX,XXX,XXX,XXX,XXX,XXX,E11,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char16_t
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,E11,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char32_t
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C95,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// wchar_t
+  { XXX,XXX,XXX,XXX,XXX,C08,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char8_t
+  { XXX,XXX,XXX,XXX,XXX,XXX,C16,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char16_t
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,C32,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char32_t
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,WCH,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// wchar_t
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// short
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// int
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// long
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,___,C99,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// long long
-  { XXX,XXX,C23,XXX,C89,XXX,XXX,XXX,XXX,C89,C89,C89,C89,C89,___,___,___,___,___,___,___,___,___,___,___,___,___ },// signed
-  { XXX,XXX,C23,XXX,___,XXX,XXX,XXX,XXX,___,___,___,C89,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___ },// unsigned
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,KNR,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___ },// float
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C89,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___ },// double
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,C99,C99,___,___,___,___,___,___,___,___,___ },// complex
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,C99,XXX,C99,___,___,___,___,___,___,___,___ },// imaginary
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C89,___,___,___,___,___,___,___ },// enum
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P11,___,___,___,___,___,___,___ },// struct
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,LLO,___,LLO,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// long long
+  { XXX,XXX,BIT,XXX,SIG,XXX,XXX,XXX,XXX,SIG,SIG,SIG,SIG,SIG,___,___,___,___,___,___,___,___,___,___,___,___,___ },// signed
+  { XXX,XXX,BIT,XXX,___,XXX,XXX,XXX,XXX,___,___,___,LLO,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___ },// unsigned
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,LFL,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___ },// float
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,LDO,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___ },// double
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,COM,COM,COM,___,___,___,___,___,___,___,___,___ },// complex
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,IMA,IMA,XXX,IMA,___,___,___,___,___,___,___,___ },// imaginary
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,ENU,___,___,___,___,___,___,___ },// enum
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,ENC,___,___,___,___,___,___,___ },// struct
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___ },// union
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,P11,XXX,XXX,CPP,___,___,___,___ },// class
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,ENC,XXX,XXX,CPP,___,___,___,___ },// class
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___ },// typedef
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,XXX,C99,XXX,C99,C99,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,___,___ },// _Accum
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,XXX,C99,XXX,C99,C99,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,___ },// _Fract
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,XXX,C99,XXX,C99,C99,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,C99,C99,C99 },// _Sat
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,XXX,UPC,XXX,UPC,UPC,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,___,___ },// _Accum
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,XXX,UPC,XXX,UPC,UPC,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,___ },// _Fract
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,XXX,UPC,XXX,UPC,UPC,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,UPC,UPC },// _Sat
 };
 
 ////////// inline functions ///////////////////////////////////////////////////
