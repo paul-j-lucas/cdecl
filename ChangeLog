@@ -1,3 +1,8 @@
+2023-01-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.h, c_type.c: Reworked OK_*_LANGS arrays to use mnemonic element
+     initializer macros.
+
 2023-01-23  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, c_ast_check.c, test/Makefile.am: No longer require certain
