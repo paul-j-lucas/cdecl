@@ -402,7 +402,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_carries_dependency         LANG_CPP_MIN(11)
 
 /**
- * Languages the `char16_t` and `char_32_t` keywords are supported in.
+ * Languages the `char16_t` and `char32_t` keywords are supported in.
  *
  * @sa #LANG_char8_t
  */
