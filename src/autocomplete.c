@@ -680,10 +680,11 @@ static char* keyword_generator( char const *text, int state ) {
 /**
  * Initializes readline.
  *
+ * @param prog_name The name of the running program to parse from `~/.inputrc`.
  * @param rin The `FILE` to read from.
  * @param rout The `FILE` to write to.
  */
-void readline_init( FILE *rin, FILE *rout ) {
+void readline_init( char const *prog_name, FILE *rin, FILE *rout ) {
   assert( rin != NULL );
   assert( rout != NULL );
 
@@ -692,12 +693,10 @@ void readline_init( FILE *rin, FILE *rout ) {
   rl_basic_word_break_characters =
     CONST_CAST( char*, "\t\n \"!#$%&'()*+,./:;<=>?@[\\]^`{|}" );
 
-  // Allow conditional ~/.inputrc parsing.
-  rl_readline_name = CONST_CAST( char*, CDECL );
-
   rl_attempted_completion_function = cdecl_rl_completion;
   rl_instream = rin;
   rl_outstream = rout;
+  rl_readline_name = CONST_CAST( char*, prog_name );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

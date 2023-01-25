@@ -50,6 +50,7 @@
  *  + Adds non-whitespace-only lines to the history.
  *
  * @param sbuf The \ref strbuf to use.
+ * @param prog_name The name of the running program to parse from `~/.inputrc`.
  * @param fin The file to read from.
  * @param fout The file to print the prompts, if any, to.  If NULL, does not
  * read interactively.
@@ -59,8 +60,8 @@
  * @return Returns `false` only if encountered EOF.
  */
 NODISCARD
-bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
-                       char const *const prompts[static const 2] );
+bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
+                       FILE *fout, char const *const prompts[static const 2] );
 
 ///////////////////////////////////////////////////////////////////////////////
 

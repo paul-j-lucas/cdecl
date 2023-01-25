@@ -48,8 +48,8 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
-                       char const *const prompts[static const 2] ) {
+bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
+                       FILE *fout, char const *const prompts[static const 2] ) {
   assert( sbuf != NULL );
   assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
@@ -64,8 +64,8 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, FILE *fout,
 
 #ifdef HAVE_READLINE_READLINE_H
     if ( interactive ) {
-      extern void readline_init( FILE*, FILE* );
-      readline_init( fin, fout );
+      extern void readline_init( char const*, FILE*, FILE* );
+      readline_init( prog_name, fin, fout );
       free( line );
       got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
     }

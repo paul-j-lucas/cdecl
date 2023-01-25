@@ -240,7 +240,7 @@ static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
   strbuf_init( &sbuf );
   int status = EX_OK;
 
-  while ( strbuf_read_line( &sbuf, fin, fout, cdecl_prompt ) ) {
+  while ( strbuf_read_line( &sbuf, CDECL, fin, fout, cdecl_prompt ) ) {
     // We don't just call yyrestart( fin ) and yyparse() directly because
     // cdecl_parse_string() also inserts "explain " for opt_explain.
     status = cdecl_parse_string( sbuf.str, sbuf.len );
