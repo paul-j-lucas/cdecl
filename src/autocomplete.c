@@ -596,8 +596,10 @@ static char* keyword_generator( char const *text, int state ) {
     for ( char const *s; (s = specific_ac_keywords[ match_index ]) != NULL; ) {
       ++match_index;
       cdecl_keyword_t const *const k = cdecl_keyword_find( s );
-      if ( k != NULL && !opt_lang_is_any( k->ac_lang_ids ) )
+      if ( k != NULL && k->ac_lang_ids != LANG_NONE &&
+           !opt_lang_is_any( k->ac_lang_ids ) ) {
         continue;
+      }
       if ( strncmp( s, text, text_len ) == 0 )
         return check_strdup( s );
     } // for
