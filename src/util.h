@@ -160,7 +160,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #BITS_LE()
  * @sa #BITS_LT()
  */
-#define BITS_GE(N)                (~((N) - 1u))
+#define BITS_GE(N)                (~BITS_LT(N))
 
 /**
  * Gets a value where all bits that are greater than the one bit set in \a N
