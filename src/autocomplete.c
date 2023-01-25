@@ -215,10 +215,8 @@ static ac_keyword_t const* init_ac_keywords( void ) {
   // pre-flight to calculate array size
   FOREACH_C_KEYWORD( k )
     n += k->ac_lang_ids != LANG_NONE;
-  FOREACH_CDECL_KEYWORD( k ) {
-    if ( !is_c_keyword( k->literal ) )
-      n += k->ac_lang_ids != LANG_NONE;
-  } // for
+  FOREACH_CDECL_KEYWORD( k )
+    n += k->ac_lang_ids != LANG_NONE && !is_c_keyword( k->literal );
 
   ac_keyword_t *const ac_keywords = free_later( MALLOC( ac_keyword_t, n + 1 ) );
   ac_keyword_t *p = ac_keywords;
