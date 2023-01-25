@@ -55,13 +55,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Autocompletion policy for a particular \ref cdecl_keyword.
+ * Special autocompletion policy for a particular \ref cdecl_keyword.
  */
 enum ac_policy {
   /**
-   * Default autocompletion policy.
+   * No special autocompletion policy.
    */
-  AC_POLICY_DEFAULT,
+  AC_POLICY_NONE,
 
   /**
    * Autocomplete only when a keyword is explicitly listed in the \ref

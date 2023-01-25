@@ -227,7 +227,7 @@ static ac_keyword_t const* init_ac_keywords( void ) {
         .literal = k->literal,
         .ac_lang_ids = k->ac_lang_ids,
         .ac_in_gibberish = true,
-        .ac_policy = AC_POLICY_DEFAULT,
+        .ac_policy = AC_POLICY_NONE,
         .lang_syn = NULL
       };
     }
@@ -658,7 +658,7 @@ static char* keyword_generator( char const *text, int state ) {
     }
 
     switch ( k->ac_policy ) {
-      case AC_POLICY_DEFAULT:
+      case AC_POLICY_NONE:
         returned_any = true;
         return check_strdup( k->literal );
       case AC_POLICY_IN_NEXT_ONLY:
