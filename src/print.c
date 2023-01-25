@@ -186,7 +186,7 @@ error:
 
 /**
  * Helper function for print_suggestions() and fprint_list() that gets the
- * string for a \ref did_you_mean token.
+ * string for a \ref did_you_mean literal.
  *
  * @param ppelt A pointer to the pointer to the \ref did_you_mean element to
  * get the string of.  On return, it is advanced to the next element.
@@ -196,7 +196,7 @@ error:
 NODISCARD
 static char const* fprint_list_dym_gets( void const **ppelt ) {
   did_you_mean_t const *const dym = *ppelt;
-  if ( dym->token == NULL )
+  if ( dym->literal == NULL )
     return NULL;
   *ppelt = dym + 1;
 
@@ -205,7 +205,7 @@ static char const* fprint_list_dym_gets( void const **ppelt ) {
 
   strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
   strbuf_reset( sbuf );
-  strbuf_printf( sbuf, "\"%s\"", dym->token );
+  strbuf_printf( sbuf, "\"%s\"", dym->literal );
   return sbuf->str;
 }
 

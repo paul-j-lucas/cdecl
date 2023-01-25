@@ -43,10 +43,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Data structure to hold a "Did you mean ...?" token.
+ * Data structure to hold a "Did you mean ...?" literal.
  */
 struct did_you_mean {
-  char const *token;                    ///< Candidate token.
+  char const *literal;                  ///< Candidate literal.
   size_t      dam_lev_dist;             ///< Damerau-Levenshtein edit distance.
 };
 typedef struct did_you_mean did_you_mean_t;
@@ -85,17 +85,17 @@ void dym_free( did_you_mean_t const *dym_array );
 
 /**
  * Creates a new array of \ref did_you_mean elements containing "Did you mean
- * ...?" tokens for \a unknown_token.
+ * ...?" literals for \a unknown_literal.
  *
  * @param kinds The bitwise-or of the kind(s) of things possibly meant.
- * @param unknown_token The unknown token.
+ * @param unknown_literal The unknown literal.
  * @return Returns a pointer to an array of elements terminated by one having a
- * NULL `token` pointer if there are suggestions or NULL if not.
+ * NULL `literal` pointer if there are suggestions or NULL if not.
  *
  * @sa dym_free()
  */
 NODISCARD
-did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token );
+did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal );
 
 ///////////////////////////////////////////////////////////////////////////////
 
