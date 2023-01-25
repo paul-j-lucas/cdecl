@@ -483,10 +483,10 @@ struct in_attr {
   c_sname_t     current_scope;    ///< C++ only: current scope, if any.
   bool          is_implicit_int;  ///< Created implicit `int` AST?
   bool          is_typename;      ///< C++ only: `typename` specified?
-  rb_node_t    *tdef_rb;          ///< Red-black node for temporary `typedef`.
   c_ast_list_t  type_ast_stack;   ///< Type AST stack.
+  c_ast_t      *typedef_ast;      ///< AST of `typedef` being declared.
   c_ast_list_t  typedef_ast_list; ///< AST nodes of `typedef` being declared.
-  c_ast_t      *typedef_type_ast; ///< AST of `typedef` being declared.
+  rb_node_t    *typedef_rb;       ///< Red-black node for temporary `typedef`.
 };
 typedef struct in_attr in_attr_t;
 
@@ -655,8 +655,8 @@ static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
     return false;
   }
 
-  rb_node_t const *const tdef_rb = c_typedef_add( type_ast, gib_flags );
-  c_typedef_t const *const tdef = tdef_rb->data;
+  rb_node_t const *const typedef_rb = c_typedef_add( type_ast, gib_flags );
+  c_typedef_t const *const tdef = typedef_rb->data;
 
   if ( tdef->ast == type_ast ) {
     //
@@ -3305,8 +3305,8 @@ typedef_declaration_c
       //
       assert( slist_empty( &in_attr.typedef_ast_list ) );
       slist_push_list_back( &in_attr.typedef_ast_list, &gc_ast_list );
-      in_attr.typedef_type_ast = type_ast;
-      ia_type_ast_push( c_ast_dup( in_attr.typedef_type_ast, &gc_ast_list ) );
+      in_attr.typedef_ast = type_ast;
+      ia_type_ast_push( c_ast_dup( in_attr.typedef_ast, &gc_ast_list ) );
     }
     typedef_decl_list_c
     {
@@ -3322,7 +3322,7 @@ typedef_decl_list_c
       // pristine one we kept earlier.
       //
       ia_type_ast_pop();
-      ia_type_ast_push( c_ast_dup( in_attr.typedef_type_ast, &gc_ast_list ) );
+      ia_type_ast_push( c_ast_dup( in_attr.typedef_ast, &gc_ast_list ) );
     }
     typedef_decl_c_exp
 
@@ -4096,8 +4096,8 @@ pc99_func_or_constructor_decl_c
         c_sname_init_name( &csu_ast->csu.csu_sname, check_strdup( $1 ) );
         csu_ast->sname = c_sname_dup( &csu_ast->csu.csu_sname );
 
-        in_attr.tdef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
-        MAYBE_UNUSED c_typedef_t *const csu_tdef = in_attr.tdef_rb->data;
+        in_attr.typedef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
+        MAYBE_UNUSED c_typedef_t *const csu_tdef = in_attr.typedef_rb->data;
         assert( csu_tdef->ast == csu_ast );
       }
     }
@@ -4124,7 +4124,7 @@ pc99_func_or_constructor_decl_c
         // Note that we free only the typedef and not its AST; its AST will be
         // garbage collected.
         //
-        free( c_typedef_remove( in_attr.tdef_rb ) );
+        free( c_typedef_remove( in_attr.typedef_rb ) );
 
         //
         // In C++, encountering a name followed by '(' declares an in-class
