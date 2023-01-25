@@ -721,7 +721,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_export ),
     AC_SETTINGS(
       LANG_export,
-      AC_POLICY_NO_OTHER,
+      AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
     )
   },
@@ -748,7 +748,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_extern ),
     AC_SETTINGS(
       LANG_ANY,
-      AC_POLICY_NO_OTHER,
+      AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
     )
   },

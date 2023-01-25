@@ -518,10 +518,7 @@ static char* command_generator( char const *text, int state ) {
 static char* keyword_generator( char const *text, int state ) {
   assert( text != NULL );
 
-  static char const  *command;          // current command
-  static size_t       match_index;
-  static bool         returned_any;
-  static size_t       text_len;
+  static char const *command;           // current command
 
   if ( state == 0 ) {                   // new word? reset
     size_t const rl_size = STATIC_CAST( size_t, rl_end );
@@ -532,9 +529,6 @@ static char* keyword_generator( char const *text, int state ) {
     char const *const buf = rl_line_buffer + leading_spaces;
 
     command = NULL;
-    match_index = 0;
-    returned_any = false;
-    text_len = strlen( text );
 
     //
     // Retroactively figure out what the current command is so we can do some
@@ -568,9 +562,14 @@ static char* keyword_generator( char const *text, int state ) {
     return NULL;
   }
 
+  static size_t match_index;
+  static size_t text_len;
   static char const *const *specific_ac_keywords;
 
   if ( state == 0 ) {
+    match_index = 0;
+    text_len = strlen( text );
+
     //
     // Special case: for certain commands, complete using specific keywords for
     // that command.
@@ -614,12 +613,14 @@ static char* keyword_generator( char const *text, int state ) {
 
   static ac_keyword_t const *ac_keywords, *no_other_k;
   static bool is_gibberish;
+  static bool returned_any;
 
-  if ( ac_keywords == NULL )
-    ac_keywords = init_ac_keywords();
   if ( state == 0 ) {
+    if ( ac_keywords == NULL )
+      ac_keywords = init_ac_keywords();
     is_gibberish = !is_english_command( command );
     no_other_k = NULL;
+    returned_any = false;
   }
 
   for ( ac_keyword_t const *k;
@@ -667,8 +668,10 @@ static char* keyword_generator( char const *text, int state ) {
     UNEXPECTED_INT_VALUE( k->ac_policy );
   } // for
 
-  if ( no_other_k != NULL && !returned_any )
+  if ( no_other_k != NULL && !returned_any ) {
+    returned_any = true;
     return check_strdup( no_other_k->literal );
+  }
 
   return NULL;
 }
