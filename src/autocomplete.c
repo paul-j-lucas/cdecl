@@ -75,6 +75,9 @@ static bool               is_command( char const*, char const*, size_t );
 NODISCARD
 static char const*        str_prev_token( char const*, size_t, size_t* );
 
+NODISCARD
+static int                str_ptr_cmp( char const**, char const** );
+
 // local variables
 static ac_keyword_t const *ac_keywords; ///< Autocompletion keywords.
 
@@ -139,8 +142,8 @@ static ac_keyword_t const* ac_keyword_find( char const *s ) {
     int const cmp = strcmp( s, k->literal );
     if ( cmp == 0 )
       return k;
-    if ( cmp < 0 )
-      break;                            // the list is sorted
+    if ( cmp < 0 )                      // the list is sorted
+      break;
   } // for
   return NULL;
 }
@@ -251,6 +254,11 @@ static char const* const* ac_set_options_new( void ) {
 
   *p = NULL;
 
+  qsort(
+    ac_set_options, n, sizeof( char* ),
+    POINTER_CAST( qsort_cmp_fn_t, &str_ptr_cmp )
+  );
+
   return CONST_CAST( char const* const*, ac_set_options );
 }
 
@@ -283,6 +291,7 @@ static char const *const* command_ac_keywords( char const *command ) {
     // str_prev_token() wouldn't match `?` as `help`.
     //
     static char const *const ac_help_keywords[] = {
+      // must be in sorted order
       L_commands,
       L_english,
       L_options,
@@ -308,6 +317,7 @@ static char const *const* command_ac_keywords( char const *command ) {
     // language-senstive C++ keyword.
     //
     static char const *const ac_show_keywords[] = {
+      // must be in sorted order
       L_all,
       L_english,
       L_predefined,
@@ -316,6 +326,7 @@ static char const *const* command_ac_keywords( char const *command ) {
       NULL
     };
     static char const *const ac_show_keywords_with_using[] = {
+      // must be in sorted order
       L_all,
       L_english,
       L_predefined,
@@ -466,6 +477,19 @@ static char const* str_prev_token( char const *s, size_t pos,
   return NULL;
 }
 
+/**
+ * Compares two string pointers.
+ *
+ * @param i_sptr The first string pointer to compare.
+ * @param j_sptr The first string pointer to compare.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a i_sptr is
+ * less than, equal to, or greater than \a j_sptr, respectively.
+ */
+NODISCARD
+static int str_ptr_cmp( char const **i_sptr, char const **j_sptr ) {
+  return strcmp( *i_sptr, *j_sptr );
+}
+
 ////////// readline callback functions ////////////////////////////////////////
 
 /**
@@ -518,10 +542,11 @@ static char* command_generator( char const *text, int state ) {
   while ( match_command != NULL ) {
     cdecl_command_t const *const c = match_command;
     match_command = ac_cdecl_command_next( match_command );
-    if ( !opt_lang_is_any( c->lang_ids ) )
-      continue;
-    if ( strncmp( c->literal, text, text_len ) == 0 )
+    int const cmp = strncmp( text, c->literal, text_len );
+    if ( cmp == 0 && opt_lang_is_any( c->lang_ids ) )
       return check_strdup( c->literal );
+    if ( cmp < 0 )
+      break;
   } // while
 
   return NULL;
@@ -618,10 +643,13 @@ static char* keyword_generator( char const *text, int state ) {
     //
     for ( char const *s; (s = specific_ac_keywords[ match_index ]) != NULL; ) {
       ++match_index;
-      ac_keyword_t const *const k = ac_keyword_find( s );
-      if ( k != NULL && !opt_lang_is_any( k->ac_lang_ids ) )
+      int const cmp = strncmp( text, s, text_len );
+      if ( cmp > 0 )
         continue;
-      if ( strncmp( s, text, text_len ) == 0 )
+      if ( cmp < 0 )
+        break;
+      ac_keyword_t const *const k = ac_keyword_find( s );
+      if ( k == NULL || opt_lang_is_any( k->ac_lang_ids ) )
         return check_strdup( s );
     } // for
     return NULL;
@@ -648,6 +676,12 @@ static char* keyword_generator( char const *text, int state ) {
         (k = ac_keywords + match_index)->literal != NULL; ) {
     ++match_index;
 
+    int const cmp = strncmp( text, k->literal, text_len );
+    if ( cmp > 0 )
+      continue;
+    if ( cmp < 0 )
+      break;
+
     //
     // If we're deciphering gibberish into pseudo-English, but the current
     // keyword shouldn't be autocompleted in gibberish, skip it.
@@ -656,8 +690,6 @@ static char* keyword_generator( char const *text, int state ) {
       continue;
 
     if ( !opt_lang_is_any( k->ac_lang_ids ) )
-      continue;
-    if ( strncmp( k->literal, text, text_len ) != 0 )
       continue;
 
     if ( k->lang_syn != NULL ) {
