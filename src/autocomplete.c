@@ -117,15 +117,14 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
 /**
  * Compares two \ref ac_keyword objects.
  *
- * @param i_keyword The first \ref ac_keyword to compare.
- * @param j_keyword The second \ref ac_keyword to compare.
- * Returns a number less than 0, 0, or greater than 0 if \a i_keyword is
- * less than, equal to, or greater than \a j_keyword, respectively.
+ * @param i_k The first \ref ac_keyword to compare.
+ * @param j_k The second \ref ac_keyword to compare.
+ * Returns a number less than 0, 0, or greater than 0 if \a i_k is less than,
+ * equal to, or greater than \a j_k, respectively.
  */
 NODISCARD
-static int ac_keyword_cmp( ac_keyword_t const *i_keyword,
-                           ac_keyword_t const *j_keyword ) {
-  return strcmp( i_keyword->literal, j_keyword->literal );
+static int ac_keyword_cmp( ac_keyword_t const *i_k, ac_keyword_t const *j_k ) {
+  return strcmp( i_k->literal, j_k->literal );
 }
 
 /**
