@@ -151,16 +151,15 @@ void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
 bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
   assert( sbuf != NULL );
   size_t const buf_rem = sbuf->cap - sbuf->len;
-  if ( res_len >= buf_rem ) {
-    //
-    // We don't need to add +1 for the terminating '\0' since next_pow_2(n) is
-    // guaranteed to be at least n+1.
-    //
-    sbuf->cap = next_pow_2( sbuf->len + res_len );
-    REALLOC( sbuf->str, char, sbuf->cap );
-    return true;
-  }
-  return false;
+  if ( res_len < buf_rem )
+    return false;
+  //
+  // We don't need to add +1 for the terminating '\0' since next_pow_2(n) is
+  // guaranteed to be at least n+1.
+  //
+  sbuf->cap = next_pow_2( sbuf->len + res_len );
+  REALLOC( sbuf->str, char, sbuf->cap );
+  return true;
 }
 
 void strbuf_reset( strbuf_t *sbuf ) {
