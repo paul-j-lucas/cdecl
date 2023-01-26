@@ -29,11 +29,13 @@
 #include "c_lang.h"
 #include "cdecl_keyword.h"
 #include "literals.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
+#include <stdlib.h>
 #include <string.h>
 
 /// @endcond
@@ -254,7 +256,7 @@ static bool const FIND_IN_ENGLISH_ONLY  = false;
  * @sa C_KEYWORDS
  * @sa CDECL_COMMANDS
  */
-static cdecl_keyword_t const CDECL_KEYWORDS[] = {
+static cdecl_keyword_t CDECL_KEYWORDS[] = {
   { L_address,
     TOKEN( Y_address ),
     AC_SETTINGS(
@@ -1624,14 +1626,44 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   }
 };
 
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Compares two \ref cdecl_keyword objects.
+ *
+ * @param i_k The first \ref cdecl_keyword to compare.
+ * @param j_k The second \ref cdecl_keyword to compare.
+ * @return @return Returns a number less than 0, 0, or greater than 0 if \a i_k
+ * is less than, equal to, or greater than \a j_k, respectively.
+ */
+NODISCARD
+static int cdecl_keyword_cmp( cdecl_keyword_t const *i_k,
+                              cdecl_keyword_t const *j_k ) {
+  return strcmp( i_k->literal, j_k->literal );
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   assert( s != NULL );
+
+  static bool sorted;
+  if ( unlikely( !sorted ) ) {
+    qsort(                              // don't rely on manual sorting above
+      CDECL_KEYWORDS, ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/,
+      sizeof( cdecl_keyword_t ),
+      POINTER_CAST( qsort_cmp_fn_t, &cdecl_keyword_cmp )
+    );
+    sorted = true;
+  }
+
   // the list is small, so linear search is good enough
   for ( cdecl_keyword_t const *k = CDECL_KEYWORDS; k->literal != NULL; ++k ) {
-    if ( strcmp( s, k->literal ) == 0 )
+    int const cmp = strcmp( s, k->literal );
+    if ( cmp == 0 )
       return k;
+    if ( cmp < 0 )
+      break;
   } // for
   return NULL;
 }
