@@ -302,15 +302,6 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     )
   },
 
-  { L_Apple_block,
-    TOKEN( Y_Apple_block ),
-    AC_SETTINGS(
-      LANG_ANY,
-      AC_POLICY_NONE,
-      AC_NO_NEXT_KEYWORDS
-    )
-  },
-
   { L_array,
     TOKEN( Y_array ),
     AC_SETTINGS(
@@ -367,6 +358,15 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 
   { L_bits,
     TOKEN( Y_bits ),
+    AC_SETTINGS(
+      LANG_ANY,
+      AC_POLICY_NONE,
+      AC_NO_NEXT_KEYWORDS
+    )
+  },
+
+  { L_Apple_block,
+    TOKEN( Y_Apple_block ),
     AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_NONE,
@@ -452,18 +452,6 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     )
   },
 
-  { L_complex,
-    SYNONYMS( ALWAYS_FIND,
-      { ~LANG__Complex & LANG_C_ANY, L_GNU___complex },
-      { LANG__Complex,               L__Complex      },
-      { LANG_ANY,                    L_complex       } ),
-    AC_SETTINGS(
-      LANG__Complex,
-      AC_POLICY_NONE,
-      AC_NO_NEXT_KEYWORDS
-    )
-  },
-
   { L_command,
     TOKEN( Y_commands ),
     AC_SETTINGS(
@@ -477,6 +465,18 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
     TOKEN( Y_commands ),
     AC_SETTINGS(
       LANG_ANY,
+      AC_POLICY_NONE,
+      AC_NO_NEXT_KEYWORDS
+    )
+  },
+
+  { L_complex,
+    SYNONYMS( ALWAYS_FIND,
+      { ~LANG__Complex & LANG_C_ANY, L_GNU___complex },
+      { LANG__Complex,               L__Complex      },
+      { LANG_ANY,                    L_complex       } ),
+    AC_SETTINGS(
+      LANG__Complex,
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
