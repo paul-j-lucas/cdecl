@@ -59,6 +59,8 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
   // `explain` autocompletes after typing `ex` rather than `exp`.  Note that
   // the user can alternatively autocomplete `quit` (or just type `q`).
   //
+  // This _must_ be in sorted order.
+  //
   { L_cast,                 PROG_NAME,  LANG_SAME(ANY)                },
   { L_class,                FIRST_ARG,  LANG_SAME(CPP_ANY)            },
   { L_const /*cast*/,       FIRST_ARG,  LANG_SAME(CPP_ANY)            },
