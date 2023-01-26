@@ -73,9 +73,6 @@ NODISCARD
 static bool               is_command( char const*, char const*, size_t );
 
 NODISCARD
-static char const* const* set_options_new( void );
-
-NODISCARD
 static char const*        str_prev_token( char const*, size_t, size_t* );
 
 // local variables
@@ -207,6 +204,57 @@ static void ac_keywords_init( void ) {
 }
 
 /**
+ * Creates and initializes an array of all `set` option strings to be used for
+ * autocompletion for the `set` command.
+ *
+ * @return Returns a pointer to said array.
+ */
+NODISCARD
+static char const* const* ac_set_options_new( void ) {
+  size_t n = 1;                         // for "options"
+
+  // pre-flight to calculate array size
+  FOREACH_SET_OPTION( opt )
+    n += 1u + (opt->kind == SET_OPTION_TOGGLE /* "no" */);
+  FOREACH_LANG( lang )
+    n += !lang->is_alias;
+
+  char **const ac_set_options = free_later( MALLOC( char*, n + 1 ) );
+  char **p = ac_set_options;
+
+  *p++ = CONST_CAST( char*, L_options );
+
+  FOREACH_SET_OPTION( opt ) {
+    switch ( opt->kind ) {
+      case SET_OPTION_AFF_ONLY:
+        *p++ = CONST_CAST( char*, opt->name );
+        break;
+
+      case SET_OPTION_TOGGLE:
+        *p++ = CONST_CAST( char*, opt->name );
+        FALLTHROUGH;
+
+      case SET_OPTION_NEG_ONLY:
+        *p = free_later(
+          MALLOC( char, 2/*no*/ + strlen( opt->name ) + 1/*\0*/ )
+        );
+        strcpy( *p + 0, "no" );
+        strcpy( *p + 2, opt->name );
+        ++p;
+        break;
+    } // switch
+  } // for
+  FOREACH_LANG( lang ) {
+    if ( !lang->is_alias )
+      *p++ = free_later( check_strdup_tolower( lang->name ) );
+  } // for
+
+  *p = NULL;
+
+  return (char const*const*)ac_set_options;
+}
+
+/**
  * Gets a specific list of keywords to autocomplete after \a command, if any.
  *
  * @param command The command to get the specific list of autocomplete keywords
@@ -222,11 +270,11 @@ static char const *const* command_ac_keywords( char const *command ) {
     // `static` as cdecl commands can only be followed by `cast` -- that isn't
     // true when `const` and `static` are used as C/C++ keywords.
     //
-    static char const *const cast_keywords[] = {
+    static char const *const ac_cast_keywords[] = {
       L_cast,
       NULL
     };
-    return cast_keywords;
+    return ac_cast_keywords;
   }
 
   if ( command == L_help ) {
@@ -234,13 +282,13 @@ static char const *const* command_ac_keywords( char const *command ) {
     // This needs to be here instead of in CDECL_KEYWORDS because
     // str_prev_token() wouldn't match `?` as `help`.
     //
-    static char const *const help_keywords[] = {
+    static char const *const ac_help_keywords[] = {
       L_commands,
       L_english,
       L_options,
       NULL
     };
-    return help_keywords;
+    return ac_help_keywords;
   }
 
   if ( command == L_set ) {
@@ -248,10 +296,10 @@ static char const *const* command_ac_keywords( char const *command ) {
     // This needs to be here instead of in CDECL_KEYWORDS because the list of
     // keywords is generated (not static).
     //
-    static char const *const *set_options;
-    if ( set_options == NULL )
-      set_options = set_options_new();
-    return set_options;
+    static char const *const *ac_set_options;
+    if ( ac_set_options == NULL )
+      ac_set_options = ac_set_options_new();
+    return ac_set_options;
   }
 
   if ( command == L_show ) {
@@ -259,7 +307,7 @@ static char const *const* command_ac_keywords( char const *command ) {
     // This needs to be here instead of in CDECL_KEYWORDS because `using` is a
     // language-senstive C++ keyword.
     //
-    static char const *const show_keywords[] = {
+    static char const *const ac_show_keywords[] = {
       L_all,
       L_english,
       L_predefined,
@@ -267,7 +315,7 @@ static char const *const* command_ac_keywords( char const *command ) {
       L_user,
       NULL
     };
-    static char const *const show_keywords_with_using[] = {
+    static char const *const ac_show_keywords_with_using[] = {
       L_all,
       L_english,
       L_predefined,
@@ -277,7 +325,7 @@ static char const *const* command_ac_keywords( char const *command ) {
       NULL
     };
     return OPT_LANG_IS( using_DECLARATION ) ?
-      show_keywords_with_using : show_keywords;
+      ac_show_keywords_with_using : ac_show_keywords;
   }
 
   return NULL;
@@ -364,57 +412,6 @@ static cdecl_keyword_t const* prev_cdecl_keyword( char const *s, size_t pos ) {
       return k;
     pos = (size_t)(token - s);
   } // for
-}
-
-/**
- * Creates and initializes an array of all `set` option strings to be used for
- * autocompletion for the `set` command.
- *
- * @return Returns a pointer to said array.
- */
-NODISCARD
-static char const* const* set_options_new( void ) {
-  size_t n = 1;                         // for "options"
-
-  // pre-flight to calculate array size
-  FOREACH_SET_OPTION( opt )
-    n += 1u + (opt->kind == SET_OPTION_TOGGLE /* "no" */);
-  FOREACH_LANG( lang )
-    n += !lang->is_alias;
-
-  char **const set_options = free_later( MALLOC( char*, n + 1 ) );
-  char **p = set_options;
-
-  *p++ = CONST_CAST( char*, L_options );
-
-  FOREACH_SET_OPTION( opt ) {
-    switch ( opt->kind ) {
-      case SET_OPTION_AFF_ONLY:
-        *p++ = CONST_CAST( char*, opt->name );
-        break;
-
-      case SET_OPTION_TOGGLE:
-        *p++ = CONST_CAST( char*, opt->name );
-        FALLTHROUGH;
-
-      case SET_OPTION_NEG_ONLY:
-        *p = free_later(
-          MALLOC( char, 2/*no*/ + strlen( opt->name ) + 1/*\0*/ )
-        );
-        strcpy( *p + 0, "no" );
-        strcpy( *p + 2, opt->name );
-        ++p;
-        break;
-    } // switch
-  } // for
-  FOREACH_LANG( lang ) {
-    if ( !lang->is_alias )
-      *p++ = free_later( check_strdup_tolower( lang->name ) );
-  } // for
-
-  *p = NULL;
-
-  return (char const*const*)set_options;
 }
 
 /**
