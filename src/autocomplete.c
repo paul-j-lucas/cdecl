@@ -142,7 +142,7 @@ static ac_keyword_t const* ac_keyword_find( char const *s ) {
     int const cmp = strcmp( s, k->literal );
     if ( cmp == 0 )
       return k;
-    if ( cmp > 0 )
+    if ( cmp < 0 )
       break;                            // the list is sorted
   } // for
   return NULL;
