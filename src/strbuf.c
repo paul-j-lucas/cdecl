@@ -129,9 +129,10 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
   //
   size_t const args_len = STATIC_CAST( size_t, rv );
   if ( strbuf_reserve( sbuf, args_len ) ) {
+    buf = sbuf->str + sbuf->len;
     buf_rem = sbuf->cap - sbuf->len;
     va_start( args, format );
-    rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args );
+    rv = vsnprintf( buf, buf_rem, format, args );
     va_end( args );
     PERROR_EXIT_IF( rv < 0, EX_IOERR );
   }
