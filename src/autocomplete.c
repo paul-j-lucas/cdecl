@@ -70,13 +70,16 @@ static char*              command_generator( char const*, int );
 static char*              keyword_generator( char const*, int );
 
 NODISCARD
-static char const* const* init_set_options( void );
-
-NODISCARD
 static bool               is_command( char const*, char const*, size_t );
 
 NODISCARD
+static char const* const* set_options_new( void );
+
+NODISCARD
 static char const*        str_prev_token( char const*, size_t, size_t* );
+
+// local variables
+static ac_keyword_t const *ac_keywords; ///< Autocompletion keywords.
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -126,6 +129,82 @@ static int ac_keyword_cmp( ac_keyword_t const *i_keyword,
 }
 
 /**
+ * Given a literal, gets the corresponding ac_keyword, if any.
+ *
+ * @param s The literal to find.
+ * @return Returns a pointer to the corresponding ac_keyword or NULL if not
+ * found.
+ */
+NODISCARD
+static ac_keyword_t const* ac_keyword_find( char const *s ) {
+  assert( s != NULL );
+  // the list is small, so linear search is good enough
+  for ( ac_keyword_t const *k = ac_keywords; k->literal != NULL; ++k ) {
+    if ( strcmp( s, k->literal ) == 0 )
+      return k;
+  } // for
+  return NULL;
+}
+
+/**
+ * Creates and initializes an array of all autocompletable keywords composed of
+ * C/C++ keywords and **cdecl** keywords.
+ */
+static void ac_keywords_init( void ) {
+  assert( ac_keywords == NULL );
+
+  size_t n = 0;
+
+  // pre-flight to calculate array size
+  FOREACH_C_KEYWORD( k )
+    n += k->ac_lang_ids != LANG_NONE;
+  FOREACH_CDECL_KEYWORD( k )
+    n += k->ac_lang_ids != LANG_NONE && !is_c_keyword( k->literal );
+
+  ac_keyword_t *const ac_keywords_array =
+    free_later( MALLOC( ac_keyword_t, n + 1 ) );
+  ac_keyword_t *p = ac_keywords_array;
+
+  FOREACH_C_KEYWORD( k ) {
+    if ( k->ac_lang_ids != LANG_NONE ) {
+      *p++ = (ac_keyword_t){
+        .literal = k->literal,
+        .ac_lang_ids = k->ac_lang_ids,
+        .ac_in_gibberish = true,
+        .ac_policy = AC_POLICY_NONE,
+        .lang_syn = NULL
+      };
+    }
+  } // for
+
+  FOREACH_CDECL_KEYWORD( k ) {
+    if ( k->ac_lang_ids != LANG_NONE && !is_c_keyword( k->literal ) ) {
+      *p++ = (ac_keyword_t){
+        .literal = k->literal,
+        .ac_lang_ids = k->ac_lang_ids,
+        .ac_in_gibberish = k->always_find,
+        .ac_policy = k->ac_policy,
+        .lang_syn = k->lang_syn
+      };
+    }
+  } // for
+
+  MEM_ZERO( p );
+
+  //
+  // Sort so C/C++ keywords come before their pseudo-English synonyms (e.g.,
+  // `enum` before `enumeration`).  This matters when attempting to match
+  // (almost) any keyword in keyword_generator().
+  //
+  qsort(
+    ac_keywords_array, n, sizeof( ac_keyword_t ),
+    POINTER_CAST( qsort_cmp_fn_t, &ac_keyword_cmp )
+  );
+
+  ac_keywords = ac_keywords_array;
+}
+
+/**
  * Gets a specific list of keywords to autocomplete after \a command, if any.
  *
  * @param command The command to get the specific list of autocomplete keywords
@@ -169,7 +248,7 @@ static char const *const* command_ac_keywords( char const *command ) {
     //
     static char const *const *set_options;
     if ( set_options == NULL )
-      set_options = init_set_options();
+      set_options = set_options_new();
     return set_options;
   }
 
@@ -200,115 +279,6 @@ static char const *const* command_ac_keywords( char const *command ) {
   }
 
   return NULL;
-}
-
-/**
- * Creates and initializes an array of all autocompletable keywords composed of
- * C/C++ keywords and **cdecl** keywords.
- *
- * @return Returns a pointer to said array.
- */
-NODISCARD
-static ac_keyword_t const* init_ac_keywords( void ) {
-  size_t n = 0;
-
-  // pre-flight to calculate array size
-  FOREACH_C_KEYWORD( k )
-    n += k->ac_lang_ids != LANG_NONE;
-  FOREACH_CDECL_KEYWORD( k )
-    n += k->ac_lang_ids != LANG_NONE && !is_c_keyword( k->literal );
-
-  ac_keyword_t *const ac_keywords = free_later( MALLOC( ac_keyword_t, n + 1 ) );
-  ac_keyword_t *p = ac_keywords;
-
-  FOREACH_C_KEYWORD( k ) {
-    if ( k->ac_lang_ids != LANG_NONE ) {
-      *p++ = (ac_keyword_t){
-        .literal = k->literal,
-        .ac_lang_ids = k->ac_lang_ids,
-        .ac_in_gibberish = true,
-        .ac_policy = AC_POLICY_NONE,
-        .lang_syn = NULL
-      };
-    }
-  } // for
-
-  FOREACH_CDECL_KEYWORD( k ) {
-    if ( k->ac_lang_ids != LANG_NONE && !is_c_keyword( k->literal ) ) {
-      *p++ = (ac_keyword_t){
-        .literal = k->literal,
-        .ac_lang_ids = k->ac_lang_ids,
-        .ac_in_gibberish = k->always_find,
-        .ac_policy = k->ac_policy,
-        .lang_syn = k->lang_syn
-      };
-    }
-  } // for
-
-  MEM_ZERO( p );
-
-  //
-  // Sort so C/C++ keywords come before their pseudo-English synonyms (e.g.,
-  // `enum` before `enumeration`).  This matters when attempting to match
-  // (almost) any keyword in keyword_generator().
-  //
-  qsort(
-    ac_keywords, n, sizeof( ac_keyword_t ),
-    POINTER_CAST( qsort_cmp_fn_t, &ac_keyword_cmp )
-  );
-
-  return ac_keywords;
-}
-
-/**
- * Creates and initializes an array of all `set` option strings to be used for
- * autocompletion for the `set` command.
- *
- * @return Returns a pointer to said array.
- */
-NODISCARD
-static char const* const* init_set_options( void ) {
-  size_t n = 1;                         // for "options"
-
-  // pre-flight to calculate array size
-  FOREACH_SET_OPTION( opt )
-    n += 1u + (opt->kind == SET_OPTION_TOGGLE /* "no" */);
-  FOREACH_LANG( lang )
-    n += !lang->is_alias;
-
-  char **const set_options = free_later( MALLOC( char*, n + 1 ) );
-  char **p = set_options;
-
-  *p++ = CONST_CAST( char*, L_options );
-
-  FOREACH_SET_OPTION( opt ) {
-    switch ( opt->kind ) {
-      case SET_OPTION_AFF_ONLY:
-        *p++ = CONST_CAST( char*, opt->name );
-        break;
-
-      case SET_OPTION_TOGGLE:
-        *p++ = CONST_CAST( char*, opt->name );
-        FALLTHROUGH;
-
-      case SET_OPTION_NEG_ONLY:
-        *p = free_later(
-          MALLOC( char, 2/*no*/ + strlen( opt->name ) + 1/*\0*/ )
-        );
-        strcpy( *p + 0, "no" );
-        strcpy( *p + 2, opt->name );
-        ++p;
-        break;
-    } // switch
-  } // for
-  FOREACH_LANG( lang ) {
-    if ( !lang->is_alias )
-      *p++ = free_later( check_strdup_tolower( lang->name ) );
-  } // for
-
-  *p = NULL;
-
-  return (char const*const*)set_options;
 }
 
 /**
@@ -392,6 +362,57 @@ static cdecl_keyword_t const* prev_cdecl_keyword( char const *s, size_t pos ) {
       return k;
     pos = (size_t)(token - s);
   } // for
+}
+
+/**
+ * Creates and initializes an array of all `set` option strings to be used for
+ * autocompletion for the `set` command.
+ *
+ * @return Returns a pointer to said array.
+ */
+NODISCARD
+static char const* const* set_options_new( void ) {
+  size_t n = 1;                         // for "options"
+
+  // pre-flight to calculate array size
+  FOREACH_SET_OPTION( opt )
+    n += 1u + (opt->kind == SET_OPTION_TOGGLE /* "no" */);
+  FOREACH_LANG( lang )
+    n += !lang->is_alias;
+
+  char **const set_options = free_later( MALLOC( char*, n + 1 ) );
+  char **p = set_options;
+
+  *p++ = CONST_CAST( char*, L_options );
+
+  FOREACH_SET_OPTION( opt ) {
+    switch ( opt->kind ) {
+      case SET_OPTION_AFF_ONLY:
+        *p++ = CONST_CAST( char*, opt->name );
+        break;
+
+      case SET_OPTION_TOGGLE:
+        *p++ = CONST_CAST( char*, opt->name );
+        FALLTHROUGH;
+
+      case SET_OPTION_NEG_ONLY:
+        *p = free_later(
+          MALLOC( char, 2/*no*/ + strlen( opt->name ) + 1/*\0*/ )
+        );
+        strcpy( *p + 0, "no" );
+        strcpy( *p + 2, opt->name );
+        ++p;
+        break;
+    } // switch
+  } // for
+  FOREACH_LANG( lang ) {
+    if ( !lang->is_alias )
+      *p++ = free_later( check_strdup_tolower( lang->name ) );
+  } // for
+
+  *p = NULL;
+
+  return (char const*const*)set_options;
 }
 
 /**
@@ -570,6 +591,9 @@ static char* keyword_generator( char const *text, int state ) {
     match_index = 0;
     text_len = strlen( text );
 
+    if ( ac_keywords == NULL )
+      ac_keywords_init();
+
     //
     // Special case: for certain commands, complete using specific keywords for
     // that command.
@@ -595,11 +619,9 @@ static char* keyword_generator( char const *text, int state ) {
     //
     for ( char const *s; (s = specific_ac_keywords[ match_index ]) != NULL; ) {
       ++match_index;
-      cdecl_keyword_t const *const k = cdecl_keyword_find( s );
-      if ( k != NULL && k->ac_lang_ids != LANG_NONE &&
-           !opt_lang_is_any( k->ac_lang_ids ) ) {
+      ac_keyword_t const *const k = ac_keyword_find( s );
+      if ( k != NULL && !opt_lang_is_any( k->ac_lang_ids ) )
         continue;
-      }
       if ( strncmp( s, text, text_len ) == 0 )
         return check_strdup( s );
     } // for
@@ -613,13 +635,11 @@ static char* keyword_generator( char const *text, int state ) {
   if ( text_len == 0 )
     return NULL;
 
-  static ac_keyword_t const *ac_keywords, *no_other_k;
-  static bool is_gibberish;
-  static bool returned_any;
+  static bool                 is_gibberish;
+  static ac_keyword_t const  *no_other_k;
+  static bool                 returned_any;
 
   if ( state == 0 ) {
-    if ( ac_keywords == NULL )
-      ac_keywords = init_ac_keywords();
     is_gibberish = !is_english_command( command );
     no_other_k = NULL;
     returned_any = false;

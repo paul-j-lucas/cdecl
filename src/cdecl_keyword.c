@@ -43,6 +43,29 @@
 #ifdef WITH_READLINE
 
 /**
+ * Mnemonic value to be used in place of #LANG_NONE within #AC_SETTINGS when
+ * the keyword should _not_ be autocompleted and defer to \a KEYWORD instead.
+ *
+ * @param KEYWORD The keyword literal to defer autocompletion to.
+ *
+ * @note \a KEYWORD isn't actually used, but providing it ensures it still
+ * exists at compile-time.
+ *
+ * @sa #AC_DEFER_TO_C_KEYWORD
+ * @sa #AC_SETTINGS
+ */
+#define AC_DEFER_TO(KEYWORD)      ((void)(KEYWORD), LANG_NONE)
+
+/**
+ * Mnemonic value to be used in place of #LANG_NONE within #AC_SETTINGS when
+ * the keyword should defer to the autocompletion of the same C/C++ keyword.
+ *
+ * @sa #AC_DEFER_TO()
+ * @sa #AC_SETTINGS
+ */
+#define AC_DEFER_TO_C_KEYWORD     LANG_NONE
+
+/**
  * For \ref CDECL_KEYWORDS, used to specify which keywords to autocomplete next
  * (after the current keyword).
  *
@@ -71,9 +94,18 @@
  * not as visually jarring as having <code>\#ifdef&nbsp;WITH_READLINE</code>
  * all over the place.
  *
+ * @sa #AC_TOO_SHORT
  * @sa CDECL_KEYWORDS
  */
 #define AC_SETTINGS(...)          __VA_ARGS__
+
+/**
+ * Mnemonic value to be used in place of #LANG_NONE within #AC_SETTINGS when
+ * the keyword is too short to warrant autocompletion.
+ *
+ * @sa #AC_SETTINGS
+ */
+#define AC_TOO_SHORT              LANG_NONE
 
 #else /* WITH_READLINE */
 # define AC_SETTINGS(...)         /* nothing */
@@ -204,16 +236,23 @@ static bool const FIND_IN_ENGLISH_ONLY  = false;
  *      autocompletable because `conversion` is preferred.
  *
  *    + Is too short, e.g, `all`, `as`, `bit`, `exit`, `mbr`, `no`, `of`,
- *      `ptr`, and `to` are not autocompletable.
+ *      `ptr`, and `to` should not be autocompletable.  In this case, the
+ *      #AC_TOO_SHORT macro should be used.
  *
  * 2. The autocompletion policy.
  *
  * 3. The \ref cdecl_keyword::ac_next_keywords "ac_next_keywords" using either
  *    the #AC_NEXT_KEYWORDS() or #AC_NO_NEXT_KEYWORDS macro.
  *
+ * @sa #AC_DEFER_TO
+ * @sa #AC_DEFER_TO_C_KEYWORD
+ * @sa #AC_NEXT_KEYWORDS()
+ * @sa #AC_NO_NEXT_KEYWORDS
  * @sa ac_policy
- * @sa CDECL_COMMANDS
+ * @sa #AC_SETTINGS()
+ * @sa #AC_TOO_SHORT
  * @sa C_KEYWORDS
+ * @sa CDECL_COMMANDS
  */
 static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_address,
@@ -228,7 +267,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_align,
     TOKEN( Y_aligned ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "aligned"
+      AC_DEFER_TO( L_aligned ),
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_bytes )
     )
@@ -239,7 +278,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
       { LANG__Alignas, L__Alignas },
       { LANG_ANY,      L_alignas  } ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to C's "alignas"
+      AC_DEFER_TO_C_KEYWORD,
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_bytes )
     )
@@ -284,7 +323,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_as,
     TOKEN( Y_as ),
     AC_SETTINGS(
-      LANG_NONE,                        // too short
+      AC_TOO_SHORT,
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -311,7 +350,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_bit,
     TOKEN( Y_bit ),
     AC_SETTINGS(
-      LANG_NONE,                        // too short
+      AC_TOO_SHORT,
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_precise )
     )
@@ -380,7 +419,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_carries,
     TOKEN( Y_carries ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "carries_dependency"
+      AC_DEFER_TO( L_carries_dependency ),
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_dependency )
     )
@@ -428,7 +467,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_command,
     TOKEN( Y_commands ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "commands"
+      AC_DEFER_TO( L_commands ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -448,7 +487,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
       { ~LANG_const, L_GNU___const },
       { LANG_ANY,    L_const       } ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to C's "const"
+      AC_DEFER_TO_C_KEYWORD,
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -531,7 +570,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_conv,
     TOKEN( Y_conversion ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "conversion"
+      AC_DEFER_TO( L_conversion ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -549,7 +588,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_ctor,
     TOKEN( Y_constructor ),
     AC_SETTINGS(
-      LANG_NONE,                        // too short
+      AC_TOO_SHORT,
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -675,7 +714,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_eval,
     TOKEN( Y_evaluation ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "evaluation"
+      AC_DEFER_TO( L_evaluation ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -729,7 +768,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_expr,
     TOKEN( Y_expression ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "expression"
+      AC_DEFER_TO( L_expression ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -756,7 +795,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_floating,
     TOKEN( Y_floating ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "floating-point"
+      AC_DEFER_TO( H_floating_point ),
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_point )
     )
@@ -774,7 +813,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_func,
     TOKEN( Y_function ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "function"
+      AC_DEFER_TO( L_function ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -812,7 +851,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_init,
     TOKEN( Y_initialization ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "initialization"
+      AC_DEFER_TO( L_initialization ),
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
     )
@@ -848,7 +887,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_len,
     TOKEN( Y_length ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "length"
+      AC_DEFER_TO( L_length ),
       AC_POLICY_IN_NEXT_ONLY,
       AC_NEXT_KEYWORDS( L_array )
     )
@@ -893,7 +932,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_maybe,
     TOKEN( Y_maybe ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "maybe_unused"
+      AC_DEFER_TO( L_maybe_unused ),
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_unused )
     )
@@ -911,7 +950,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_mbr,
     TOKEN( Y_member ),
     AC_SETTINGS(
-      LANG_NONE,                        // too short
+      AC_TOO_SHORT,
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -929,7 +968,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_no,
     TOKEN( Y_no ),
     AC_SETTINGS(
-      LANG_NONE,                        // too short
+      AC_TOO_SHORT,
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_discard, L_except, L_return, L_unique )
     )
@@ -947,7 +986,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { H_no_except,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_noexcept ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "no-exception"
+      AC_DEFER_TO( H_no_exception ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -985,7 +1024,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { H_non_mbr,
     TOKEN( Y_non_member ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "non-member"
+      AC_DEFER_TO( H_non_member ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -1052,7 +1091,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_of,
     TOKEN( Y_of ),
     AC_SETTINGS(
-      LANG_NONE,                        // too short
+      AC_TOO_SHORT,
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -1061,7 +1100,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_oper,
     TOKEN( Y_operator ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "operator"
+      AC_DEFER_TO( L_operator ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -1124,7 +1163,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_predef,
     TOKEN( Y_predefined ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "predefined"
+      AC_DEFER_TO( L_predefined ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -1142,7 +1181,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_ptr,
     TOKEN( Y_pointer ),
     AC_SETTINGS(
-      LANG_NONE,                        // too short
+      AC_TOO_SHORT,
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_to )
     )
@@ -1160,7 +1199,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_q,
     TOKEN( Y_quit ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "quit"
+      AC_DEFER_TO( L_quit ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -1178,7 +1217,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_ref,
     TOKEN( Y_reference ),
     AC_SETTINGS(
-      LANG_NONE,                      // defer to "reference"
+      AC_DEFER_TO( L_reference ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -1216,7 +1255,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_ret,
     TOKEN( Y_returning ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "return"
+      AC_DEFER_TO( L_return ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -1279,7 +1318,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_thread,
     TOKEN( Y_thread ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "thread_local"
+      AC_DEFER_TO( L_thread_local ),
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_local )
     )
@@ -1341,7 +1380,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_type,
     SYNONYM( FIND_IN_ENGLISH_ONLY, L_typedef ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "typedef"
+      AC_DEFER_TO( L_typedef ),
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -1368,7 +1407,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_user,
     TOKEN( Y_user ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "user-defined"
+      AC_DEFER_TO( H_user_defined ),
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_defined )
     )
@@ -1377,7 +1416,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { H_user_def,
     TOKEN( Y_user_defined ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to "user-defined"
+      AC_DEFER_TO( H_user_defined ),
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_conversion, L_literal )
     )
@@ -1395,7 +1434,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_var,
     TOKEN( Y_variable ),
     AC_SETTINGS(
-      LANG_NONE,                        // too short
+      AC_TOO_SHORT,
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_length, L_array )
     )
@@ -1442,7 +1481,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
         { ~LANG_volatile, L_GNU___volatile },
         { LANG_ANY,       L_volatile       } ),
     AC_SETTINGS(
-      LANG_NONE,                        // defer to C's "volatile"
+      AC_DEFER_TO_C_KEYWORD,
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
@@ -1494,7 +1533,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
         { LANG_C_99, L_EMC__Sat   },
         { LANG_ANY,  NULL         } ),
     AC_SETTINGS(
-      LANG_NONE,                        // too short
+      AC_TOO_SHORT,
       AC_POLICY_NONE,
       AC_NO_NEXT_KEYWORDS
     )
