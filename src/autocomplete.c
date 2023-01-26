@@ -582,9 +582,9 @@ static char* keyword_generator( char const *text, int state ) {
     return NULL;
   }
 
-  static size_t match_index;
-  static size_t text_len;
+  static size_t             match_index;
   static char const *const *specific_ac_keywords;
+  static size_t             text_len;
 
   if ( state == 0 ) {
     match_index = 0;
