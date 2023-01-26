@@ -73,6 +73,8 @@
  *
  * @param ... A comma-separated list of keywords to autocomplete next.
  *
+ * @note The keywords _must_ be in sorted order.
+ *
  * @sa #AC_NO_NEXT_KEYWORDS
  * @sa CDECL_KEYWORDS
  */
@@ -309,7 +311,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     AC_SETTINGS(
       LANG_ANY,
       AC_POLICY_NONE,
-      AC_NEXT_KEYWORDS( L_static, L_const, L_volatile )
+      AC_NEXT_KEYWORDS( L_const, L_static, L_volatile )
     )
   },
 
@@ -1438,7 +1440,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     AC_SETTINGS(
       AC_TOO_SHORT,
       AC_POLICY_NONE,
-      AC_NEXT_KEYWORDS( L_length, L_array )
+      AC_NEXT_KEYWORDS( L_array, L_length )
     )
   },
 
@@ -1456,7 +1458,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     AC_SETTINGS(
       LANG_VLA,
       AC_POLICY_NONE,
-      AC_NEXT_KEYWORDS( L_length, L_array )
+      AC_NEXT_KEYWORDS( L_array, L_length )
     )
   },
 
