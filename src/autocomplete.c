@@ -251,7 +251,7 @@ static char const* const* ac_set_options_new( void ) {
 
   *p = NULL;
 
-  return (char const*const*)ac_set_options;
+  return CONST_CAST( char const* const*, ac_set_options );
 }
 
 /**
