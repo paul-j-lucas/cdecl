@@ -140,8 +140,11 @@ static ac_keyword_t const* ac_keyword_find( char const *s ) {
   assert( s != NULL );
   // the list is small, so linear search is good enough
   for ( ac_keyword_t const *k = ac_keywords; k->literal != NULL; ++k ) {
-    if ( strcmp( s, k->literal ) == 0 )
+    int const cmp = strcmp( s, k->literal );
+    if ( cmp == 0 )
       return k;
+    if ( cmp > 0 )
+      break;                            // the list is sorted
   } // for
   return NULL;
 }
