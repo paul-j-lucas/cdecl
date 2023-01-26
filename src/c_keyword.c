@@ -33,12 +33,14 @@
 #include "c_type.h"
 #include "cdecl.h"
 #include "literals.h"
+#include "util.h"
 #include "cdecl_parser.h"               /* must go last */
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
+#include <stdlib.h>
 #include <string.h>
 
 // shorthands
@@ -57,7 +59,7 @@
  * storage class in C and C++ up to C++03 and the other as an automatically
  * deduced type in C++11 and later).
  */
-static c_keyword_t const C_KEYWORDS[] = {
+static c_keyword_t C_KEYWORDS[] = {
   // K&R C
   { L_auto,                 Y_auto_STORAGE,       KC__, TS_AUTO,
     LANG_auto_STORAGE,      AC_LANG(auto_STORAGE)                         },
@@ -443,6 +445,21 @@ static c_keyword_t const C_KEYWORDS[] = {
     LANG_NONE,              AC_LANG(NONE)                                 }
 };
 
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Compares two \ref c_keyword objects.
+ *
+ * @param i_k The first \ref c_keyword to compare.
+ * @param j_k The second \ref c_keyword to compare.
+ * @return @return Returns a number less than 0, 0, or greater than 0 if \a i_k
+ * is less than, equal to, or greater than \a j_k, respectively.
+ */
+NODISCARD
+static int c_keyword_cmp( c_keyword_t const *i_k, c_keyword_t const *j_k ) {
+  return strcmp( i_k->literal, j_k->literal );
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
@@ -450,7 +467,22 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
   assert( literal != NULL );
   assert( lang_ids != LANG_NONE );
 
+  static bool sorted;
+  if ( unlikely( !sorted ) ) {
+    qsort(
+      C_KEYWORDS, ARRAY_SIZE( C_KEYWORDS ) - 1/*NULL*/, sizeof( c_keyword_t ),
+      POINTER_CAST( qsort_cmp_fn_t, &c_keyword_cmp )
+    );
+    sorted = true;
+  }
+
   for ( c_keyword_t const *k = C_KEYWORDS; k->literal != NULL; ++k ) {
+    int const cmp = strcmp( literal, k->literal );
+    if ( cmp > 0 )
+      continue;
+    if ( cmp < 0 )
+      break;
+
     if ( (k->lang_ids & lang_ids) == LANG_NONE )
       continue;
 
@@ -476,8 +508,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
       //
     }
 
-    if ( strcmp( literal, k->literal ) == 0 )
-      return k;
+    return k;
   } // for
 
   return NULL;
