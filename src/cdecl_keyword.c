@@ -50,13 +50,13 @@
  *
  * @param KEYWORD The keyword literal to defer autocompletion to.
  *
- * @note \a KEYWORD isn't actually used, but providing it ensures it still
- * exists at compile-time.
+ * @note \a KEYWORD isn't actually used, but providing it serves as
+ * documentation.
  *
  * @sa #AC_DEFER_TO_C_KEYWORD
  * @sa #AC_SETTINGS
  */
-#define AC_DEFER_TO(KEYWORD)      ((void)(KEYWORD), LANG_NONE)
+#define AC_DEFER_TO(KEYWORD)      LANG_NONE
 
 /**
  * Mnemonic value to be used in place of #LANG_NONE within #AC_SETTINGS when
