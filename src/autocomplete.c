@@ -721,10 +721,8 @@ static char* keyword_generator( char const *text, int state ) {
     UNEXPECTED_INT_VALUE( k->ac_policy );
   } // for
 
-  if ( no_other_k != NULL && !returned_any ) {
-    returned_any = true;
+  if ( no_other_k != NULL && false_set( &returned_any ) )
     return check_strdup( no_other_k->literal );
-  }
 
   return NULL;
 }
