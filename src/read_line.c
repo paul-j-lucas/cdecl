@@ -37,12 +37,14 @@
 #include <string.h>
 #include <unistd.h>                     /* for isatty(3) */
 
-#ifdef HAVE_READLINE_READLINE_H
-# include <readline/readline.h>
-#endif /* HAVE_READLINE_READLINE_H */
-#ifdef HAVE_READLINE_HISTORY_H
-# include <readline/history.h>
-#endif /* HAVE_READLINE_HISTORY_H */
+#ifdef WITH_READLINE
+# ifdef HAVE_READLINE_READLINE_H
+#   include <readline/readline.h>
+# endif /* HAVE_READLINE_READLINE_H */
+# ifdef HAVE_READLINE_HISTORY_H
+#   include <readline/history.h>
+# endif /* HAVE_READLINE_HISTORY_H */
+#endif /* WITH_READLINE */
 
 /// @endcond
 
@@ -51,8 +53,13 @@
 bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
                        FILE *fout, char const *const prompts[static const 2] ) {
   assert( sbuf != NULL );
+  assert( prog_name != NULL );
   assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
+
+#ifndef WITH_READLINE
+  (void)prog_name;
+#endif /* WITH_READLINE */
 
   bool const is_fin_a_tty = isatty( fileno( fin ) );
   bool const interactive = is_fin_a_tty && fout != NULL && prompts != NULL;
@@ -62,7 +69,7 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
     static char *line;
     bool got_line;
 
-#ifdef HAVE_READLINE_READLINE_H
+#ifdef WITH_READLINE
     if ( interactive ) {
       extern void readline_init( char const*, FILE*, FILE* );
       readline_init( prog_name, fin, fout );
@@ -70,12 +77,12 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
       got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
     }
     else
-#else
+#else /* WITH_READLINE */
     if ( interactive ) {
       FPUTS( prompts[ is_cont_line ], fout );
       FFLUSH( fout );
     }
-#endif /* HAVE_READLINE_READLINE_H */
+#endif /* WITH_READLINE */
     {
       static size_t line_cap;
       got_line = getline( &line, &line_cap, fin ) != -1;
