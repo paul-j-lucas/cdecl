@@ -1,5 +1,37 @@
+2023-01-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, inttypes.in.h, locale.in.h, stdio.in.h, stdlib.in.h,
+     string.in.h, unistd.in.h, wchar.in.h, getdelim.m4, getline.m4,
+     gnulib-common.m4, gnulib-comp.m4, inttypes.m4, mbtowc.m4, mempcpy.m4,
+     stdlib_h.m4, string_h.m4, threadlib.m4, unistd_h.m4, wchar_h.m4,
+     wmempcpy.m4: Updated Gnulib.
+   * autocomplete.c: Now taking advantage of sorted order.
+   * cdecl_keyword.c: Sorted next keywords.
+   * autocomplete.c: Whitespace.
+   * autocomplete.c: Now using CONST_CAST.
+   * c_keyword.c: Now sorting C/C++ keywords.
+   * cdecl_keyword.c: Now sorting CDECL_KEYWORDS.
+   * autocomplete.c: s/>/</
+   * cdecl_keyword.c: Sorted.
+   * autocomplete.c: breaking early.
+   * strbuf.c: Using "early return" style.
+   * strbuf.c: Now resetting and using buf.
+
+2023-01-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, cdecl_keyword.c: More autocompletion clean-up.
+   * autocomplete.c, cdecl_keyword.c, cdecl_keyword.h:
+     s/AC_POLICY_DEFAULT/AC_POLICY_NONE/
+   * autocomplete.c, cdecl_keyword.c: Fix hang; clean-up.
+   * autocomplete.c: Simplified.
+   * autocomplete.c, cdecl.c, read_line.c, read_line.h: strbuf_read_line() now
+     takes prog_name.
+   * util.h: Simplified BITS_GE().
+
 2023-01-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Renaming.
+   * did_you_mean.c, did_you_mean.h, print.c: s/token/literal/
    * c_lang.h, c_type.c: Reworked OK_*_LANGS arrays to use mnemonic element
      initializer macros.
 
