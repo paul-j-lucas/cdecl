@@ -229,7 +229,7 @@ _GL_CXXALIAS_SYS (newlocale, locale_t,
                   (int category_mask, const char *name, locale_t base));
 #  endif
 # endif
-# if @HAVE_NEWLOCALE@
+# if __GLIBC__ >= 2 && @HAVE_NEWLOCALE@
 _GL_CXXALIASWARN (newlocale);
 # endif
 # if @HAVE_NEWLOCALE@ || @REPLACE_NEWLOCALE@
@@ -258,7 +258,7 @@ _GL_CXXALIAS_RPL (duplocale, locale_t, (locale_t locale));
 _GL_CXXALIAS_SYS (duplocale, locale_t, (locale_t locale));
 #  endif
 # endif
-# if @HAVE_DUPLOCALE@
+# if __GLIBC__ >= 2 && @HAVE_DUPLOCALE@
 _GL_CXXALIASWARN (duplocale);
 # endif
 # if @HAVE_DUPLOCALE@ || @REPLACE_DUPLOCALE@
@@ -290,7 +290,7 @@ _GL_CXXALIAS_RPL (freelocale, void, (locale_t locale));
 _GL_CXXALIAS_SYS_CAST (freelocale, void, (locale_t locale));
 #  endif
 # endif
-# if @HAVE_FREELOCALE@
+# if __GLIBC__ >= 2 && @HAVE_FREELOCALE@
 _GL_CXXALIASWARN (freelocale);
 # endif
 #elif defined GNULIB_POSIXCHECK

@@ -1,4 +1,4 @@
-# threadlib.m4 serial 34
+# threadlib.m4 serial 35
 dnl Copyright (C) 2005-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -261,7 +261,9 @@ AC_DEFUN([gl_PTHREADLIB_BODY],
              # On Solaris 10 or newer, this test is no longer needed, because
              # libc contains the fully functional pthread functions.
              case "$host_os" in
+changequote(,)dnl
                solaris | solaris2.[1-9] | solaris2.[1-9].* | hpux*)
+changequote([,])dnl
                  AC_DEFINE([PTHREAD_IN_USE_DETECTION_HARD], [1],
                    [Define if the pthread_in_use() detection is hard.])
              esac

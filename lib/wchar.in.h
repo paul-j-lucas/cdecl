@@ -441,7 +441,9 @@ _GL_CXXALIAS_SYS (mbsnrtowcs, size_t,
                    const char **restrict srcp, size_t srclen, size_t len,
                    mbstate_t *restrict ps));
 # endif
+# if __GLIBC__ >= 2
 _GL_CXXALIASWARN (mbsnrtowcs);
+# endif
 #elif defined GNULIB_POSIXCHECK
 # undef mbsnrtowcs
 # if HAVE_RAW_DECL_MBSNRTOWCS
@@ -694,14 +696,27 @@ _GL_WARN_ON_USE (wmemmove, "wmemmove is unportable - "
 /* Copy N wide characters of SRC to DEST.
    Return pointer to wide characters after the last written wide character.  */
 #if @GNULIB_WMEMPCPY@
-# if !@HAVE_WMEMPCPY@
+# if @REPLACE_WMEMPCPY@
+#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#   undef wmempcpy
+#   define wmempcpy rpl_wmempcpy
+#  endif
+_GL_FUNCDECL_RPL (wmempcpy, wchar_t *,
+                  (wchar_t *restrict dest,
+                   const wchar_t *restrict src, size_t n));
+_GL_CXXALIAS_RPL (wmempcpy, wchar_t *,
+                  (wchar_t *restrict dest,
+                   const wchar_t *restrict src, size_t n));
+# else
+#  if !@HAVE_WMEMPCPY@
 _GL_FUNCDECL_SYS (wmempcpy, wchar_t *,
                   (wchar_t *restrict dest,
                    const wchar_t *restrict src, size_t n));
-# endif
+#  endif
 _GL_CXXALIAS_SYS (wmempcpy, wchar_t *,
                   (wchar_t *restrict dest,
                    const wchar_t *restrict src, size_t n));
+# endif
 # if __GLIBC__ >= 2
 _GL_CXXALIASWARN (wmempcpy);
 # endif
