@@ -106,6 +106,9 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
  * @return Returns the next C/C++ keyword or C23/C++11 (or later) attribute, or
  * NULL for none.
  *
+ * @note This function isn't normally called directly; use the
+ * #FOREACH_C_KEYWORD() macro instead.
+ *
  * @sa #FOREACH_C_KEYWORD()
  */
 NODISCARD

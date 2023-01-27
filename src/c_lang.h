@@ -357,7 +357,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_auto_PARAMETER             LANG_CPP_MIN(20)
 
 /**
- * Languages the `auto` keyword for return types are supported in.
+ * Languages the `auto` keyword for function return types are supported in.
  */
 #define LANG_auto_RETURN_TYPE           LANG_CPP_MIN(14)
 
