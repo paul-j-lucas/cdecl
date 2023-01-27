@@ -115,6 +115,12 @@
 # define AC_SETTINGS(...)         /* nothing */
 #endif /* WITH_READLINE */
 
+/// Mnemonic value to specify \ref cdecl_keyword::always_find as `true`.
+#define ALWAYS_FIND               true
+
+/// Mnemonic value to specify \ref cdecl_keyword::always_find as `false`.
+#define FIND_IN_ENGLISH_ONLY      false
+
 /**
  * Specify that the previosuly given keyword is a synonym for the given
  * language-specific keywords.
@@ -157,12 +163,6 @@
   FIND_IN_ENGLISH_ONLY, (Y_ID), /*lang_syn=*/NULL
 
 ///////////////////////////////////////////////////////////////////////////////
-
-/// Mnemonic value to specify \ref cdecl_keyword::always_find as `true`.
-static bool const ALWAYS_FIND           =  true;
-
-/// Mnemonic value to specify \ref cdecl_keyword::always_find as `false`.
-static bool const FIND_IN_ENGLISH_ONLY  = false;
 
 /**
  * All **cdecl** keywords that are (mostly) _not_ C/C++ keywords.  Exceptions
