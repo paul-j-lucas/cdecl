@@ -28,7 +28,7 @@ error, e.g.:
 Prompts were always being displayed in color even when --color=never.  Fixed.
 
 ** Function parameter checks
-No longer require certain declarations to be a function parameters: `const`,
+No longer require certain declarations to be function parameters: `const`,
 `volatile`, `static`, and variable length arrays; `[[carries_dependency]]`.
 This was changed so you can explain an individual function parameter
 declaration without having to wrap it inside a function declaration.
