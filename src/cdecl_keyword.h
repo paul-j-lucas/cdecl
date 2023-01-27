@@ -120,8 +120,8 @@ struct cdecl_keyword {
   ac_policy_t         ac_policy;        ///< Autocompletion policy.
 
   /**
-   * Pointer to a NULL-terminated array of keywords that should be auto-
-   * completed next (after this keyword), if any; otherwise NULL.
+   * Pointer to a NULL-terminated array of keywords that should be
+   * autocompleted next (after this keyword), if any; otherwise NULL.
    */
   char const *const  *ac_next_keywords;
 #endif /* WITH_READLINE */

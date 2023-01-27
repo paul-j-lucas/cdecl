@@ -46,7 +46,8 @@
  * If \a fin is connected to a TTY, both \a fout and \a prompts are non-NULL,
  * and GNU **readline**(3) is compiled in, also:
  *
- *  + Uses GNU readline to read the line with editing and autocompletion.
+ *  + Uses GNU **readline**(3) to read the line with editing and
+ *    autocompletion.
  *  + Adds non-whitespace-only lines to the history.
  *
  * @param sbuf The \ref strbuf to use.
