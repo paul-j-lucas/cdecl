@@ -90,7 +90,8 @@ void dym_free( did_you_mean_t const *dym_array );
  * @param kinds The bitwise-or of the kind(s) of things possibly meant.
  * @param unknown_literal The unknown literal.
  * @return Returns a pointer to an array of elements terminated by one having a
- * NULL `literal` pointer if there are suggestions or NULL if not.
+ * NULL `literal` pointer if there are suggestions or NULL if not.  The caller
+ * is responsible for calling dym_free().
  *
  * @sa dym_free()
  */

@@ -25,13 +25,6 @@
  * @file
  * Declares functions for dealing with "sglob" (C++ scoped name glob) objects,
  * e.g., `S::T::*`, that are used to match snames (C++ scoped names).
- *
- * As a special case, the first glob may be `**` that is used to match any
- * scope.
- *
- * @note For C, an sglob is simply a single glob, e.g., `x*`.
- *
- * @sa c_sname_match()
  */
 
 // local
@@ -54,7 +47,15 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * @defgroup sglob-group Scoped Globs
- * Functions for accessing and manipulating C++ scoped globs.
+ * Functions for dealing with "sglob" (C++ scoped name glob) objects, e.g.,
+ * `S::T::*`, that are used to match snames (C++ scoped names).
+ *
+ * As a special case, the first glob may be `**` that is used to match any
+ * scope.
+ *
+ * @note For C, an sglob is simply a single glob, e.g., `x*`.
+ *
+ * @sa \ref sname-group
  * @{
  */
 

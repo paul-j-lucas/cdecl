@@ -25,15 +25,6 @@
  * @file
  * Declares functions for dealing with "sname" (C++ scoped name) objects, e.g.,
  * `S::T::x`.
- *
- * + An sname also has a type (one of of #TB_CLASS, #TB_NAMESPACE, #TB_SCOPE,
- *   #TB_STRUCT, or #TB_UNION) for each scope.
- * + The "local" of an sname is the innermost scope, e.g., `x`.  A non-empty
- *   sname always has a local.
- * + The "scope" of an sname is all but the innermost scope, e.g., `S::T`.  A
- *   non-empty sname may or may not have a scope.
- *
- * @note For C, an sname is simply a single (unscoped) name, e.g., `x`.
  */
 
 // local
@@ -57,7 +48,20 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * @defgroup sname-group Scoped Names
- * Functions for accessing and manipulating C++ scoped names.
+ * Functions for dealing with "sname" (C++ scoped name) objects, e.g.,
+ * `S::T::x`.
+ *
+ * + An sname also has a type for each scope, one of of #TB_CLASS,
+ *   #TB_NAMESPACE (and possibly #TS_INLINE), #TB_SCOPE, #TB_STRUCT, or
+ *   #TB_UNION.
+ * + The "local" of an sname is the innermost scope, e.g., `x`.  A non-empty
+ *   sname always has a local.
+ * + The "scope" of an sname is all but the innermost scope, e.g., `S::T`.  A
+ *   non-empty sname may or may not have a scope.
+ *
+ * @note For C, an sname is simply a single (unscoped) name, e.g., `x`.
+ *
+ * @sa \ref sglob-group
  * @{
  */
 
