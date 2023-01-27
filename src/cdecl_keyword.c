@@ -45,8 +45,9 @@
 #ifdef WITH_READLINE
 
 /**
- * Mnemonic value to be used in place of #LANG_NONE within #AC_SETTINGS when
- * the keyword should _not_ be autocompleted and defer to \a KEYWORD instead.
+ * Within \ref CDECL_KEYWORDS, a mnemonic value to be used in place of
+ * #LANG_NONE within #AC_SETTINGS when the keyword should _not_ be
+ * autocompleted and defer to \a KEYWORD instead.
  *
  * @param KEYWORD The keyword literal to defer autocompletion to.
  *
@@ -55,42 +56,45 @@
  *
  * @sa #AC_DEFER_TO_C_KEYWORD
  * @sa #AC_SETTINGS
+ * @sa CDECL_KEYWORDS for examples.
  */
 #define AC_DEFER_TO(KEYWORD)      LANG_NONE
 
 /**
- * Mnemonic value to be used in place of #LANG_NONE within #AC_SETTINGS when
- * the keyword should defer to the autocompletion of the same C/C++ keyword.
+ * Within \ref CDECL_KEYWORDS, a mnemonic value to be used in place of
+ * #LANG_NONE within #AC_SETTINGS when the keyword should defer to the
+ * autocompletion of the same C/C++ keyword.
  *
  * @sa #AC_DEFER_TO()
  * @sa #AC_SETTINGS
+ * @sa CDECL_KEYWORDS for examples.
  */
 #define AC_DEFER_TO_C_KEYWORD     LANG_NONE
 
 /**
- * For \ref CDECL_KEYWORDS, used to specify which keywords to autocomplete next
- * (after the current keyword).
+ * Within \ref CDECL_KEYWORDS, used to specify which keywords to autocomplete
+ * next (after the current keyword).
  *
  * @param ... A comma-separated list of keywords to autocomplete next.
  *
  * @note The keywords _must_ be in sorted order.
  *
  * @sa #AC_NO_NEXT_KEYWORDS
- * @sa CDECL_KEYWORDS
+ * @sa CDECL_KEYWORDS for examples.
  */
 #define AC_NEXT_KEYWORDS(...)     (char const *const[]){ __VA_ARGS__, NULL }
 
 /**
- * For \ref CDECL_KEYWORDS, used to specify that the current keyword has no
+ * Within \ref CDECL_KEYWORDS, used to specify that the current keyword has no
  * next autocomplete keywords.
  *
  * @sa #AC_NEXT_KEYWORDS
- * @sa CDECL_KEYWORDS
+ * @sa CDECL_KEYWORDS for examples.
  */
 #define AC_NO_NEXT_KEYWORDS       NULL
 
 /**
- * For \ref CDECL_KEYWORDS, expands into the given arguments only if GNU
+ * Within \ref CDECL_KEYWORDS, expands into the given arguments only if GNU
  * **readline**(3) is compiled in (hence, autocompletion is enabled); nothing
  * if not.
  *
@@ -99,15 +103,17 @@
  * all over the place.
  *
  * @sa #AC_TOO_SHORT
- * @sa CDECL_KEYWORDS
+ * @sa CDECL_KEYWORDS for examples.
  */
 #define AC_SETTINGS(...)          __VA_ARGS__
 
 /**
- * Mnemonic value to be used in place of #LANG_NONE within #AC_SETTINGS when
- * the keyword is too short to warrant autocompletion.
+ * Within \ref CDECL_KEYWORDS, a mnemonic value to be used in place of
+ * #LANG_NONE within #AC_SETTINGS when the keyword is too short to warrant
+ * autocompletion.
  *
  * @sa #AC_SETTINGS
+ * @sa CDECL_KEYWORDS for examples.
  */
 #define AC_TOO_SHORT              LANG_NONE
 
@@ -115,43 +121,58 @@
 # define AC_SETTINGS(...)         /* nothing */
 #endif /* WITH_READLINE */
 
-/// Mnemonic value to specify \ref cdecl_keyword::always_find as `true`.
+/**
+ * Within \ref CDECL_KEYWORDS, a mnemonic value to specify \ref
+ * cdecl_keyword::always_find as `true`.
+ *
+ * @sa CDECL_KEYWORDS for examples.
+ * @sa #FIND_IN_ENGLISH_ONLY
+ */
 #define ALWAYS_FIND               true
 
-/// Mnemonic value to specify \ref cdecl_keyword::always_find as `false`.
+/**
+ * Within \ref CDECL_KEYWORDS, a mnemonic value to specify \ref
+ * cdecl_keyword::always_find as `false`.
+ *
+ * @sa CDECL_KEYWORDS for examples.
+ * @sa #ALWAYS_FIND
+ */
 #define FIND_IN_ENGLISH_ONLY      false
 
 /**
- * Specify that the previosuly given keyword is a synonym for the given
- * language-specific keywords.
+ * Within \ref CDECL_KEYWORDS, specify that the previosuly given keyword is a
+ * synonym for the given language-specific keywords.
  *
- * @param ALWAYS_FIND If `true`, always find this synonym even when explaining
- * C/C++; if `false`, find only when composing C/C++.
- * @param ... Array of c_lang_lit.
+ * @param FIND_WHEN Either #ALWAYS_FIND or #FIND_IN_ENGLISH_ONLY.
  *
+ * @sa #ALWAYS_FIND
  * @sa CDECL_KEYWORDS for examples.
+ * @sa #FIND_IN_ENGLISH_ONLY
  * @sa #SYNONYM()
  * @sa #TOKEN()
  */
-#define SYNONYMS(ALWAYS_FIND,...) \
-  (ALWAYS_FIND), /*y_token_id=*/0, C_LANG_LIT( __VA_ARGS__ )
+#define SYNONYMS(FIND_WHEN,...) \
+  (FIND_WHEN), /*y_token_id=*/0, C_LANG_LIT( __VA_ARGS__ )
 
 /**
- * Special-case of #SYNONYMS when there is only one language(s)/literal pair.
+ * Within \ref CDECL_KEYWORDS, a special-case of #SYNONYMS when there is only
+ * one language(s)/literal pair.
  *
- * @param ALWAYS_FIND If `true`, always find this synonym even when explaining
- * C/C++; if `false`, find only when composing C/C++.
+ * @param FIND_WHEN Either #ALWAYS_FIND or #FIND_IN_ENGLISH_ONLY.
  * @param C_KEYWORD The C/C++ keyword literal (`L_xxx`) that is the synonym.
  *
+ * @sa #ALWAYS_FIND
  * @sa CDECL_KEYWORDS for examples.
+ * @sa #FIND_IN_ENGLISH_ONLY
  * @sa #SYNONYMS()
  * @sa #TOKEN()
  */
-#define SYNONYM(ALWAYS_FIND,C_KEYWORD) \
-  SYNONYMS( (ALWAYS_FIND), { LANG_ANY, (C_KEYWORD) } )
+#define SYNONYM(FIND_WHEN,C_KEYWORD) \
+  SYNONYMS( (FIND_WHEN), { LANG_ANY, (C_KEYWORD) } )
 
 /**
- * Specify that the previosuly given keyword maps to Bison tokan \a Y_ID.
+ * Within \ref CDECL_KEYWORDS, specify that the previosuly given keyword maps
+ * to Bison tokan \a Y_ID.
  *
  * @param Y_ID The Bison token ID (`Y_xxx`).
  *
@@ -165,68 +186,69 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * All **cdecl** keywords that are (mostly) _not_ C/C++ keywords.  Exceptions
- * are `alignas`, `bool`, `complex`, `const`, and `volatile` that are included
- * here as **cdecl** keywords so each maps to its language-specific literal,
- * e.g., `_Alignas` in C vs. `alignas` in C++.
+ * All **cdecl** keywords that are (mostly) _not_ C/C++ keywords.
+ *
+ * @note Exceptions are `alignas`, `bool`, `complex`, `const`, and `volatile`
+ * that are included here as **cdecl** keywords so each maps to its language-
+ * specific literal, e.g., `_Alignas` in C vs. `alignas` in C++.
  *
  * ## Initialization Macros
  *
  * The #SYNONYM, #SYNONYMS, and #TOKEN macros are used to initialize entries in
- * the array as follows.
+ * the array as follows:
  *
- * To have a **cdecl** keyword literal map to its corresponding Bison token,
- * use #TOKEN:
+ * + To have a **cdecl** keyword literal map to its corresponding Bison token,
+ *   use #TOKEN:
  *
- *      // The "aligned" literal maps to the Y_aligned token:
- *      { L_aligned,
- *        TOKEN( Y_aligned ),
- *        ...
- *      }
+ *          // The "aligned" literal maps to the Y_aligned token:
+ *          { L_aligned,
+ *            TOKEN( Y_aligned ),
+ *            ...
+ *          }
  *
- * To have a **cdecl** keyword literal that is a synonym for another **cdecl**
- * keyword literal map to the other literal's same Bison token, use #TOKEN with
- * the other literal's token:
+ * + To have a **cdecl** keyword literal that is a synonym for another
+ *   **cdecl** keyword literal map to the other literal's same Bison token, use
+ *   #TOKEN with the other literal's token:
  *
- *      // The "align" literal synonym also maps to the Y_aligned token:
- *      { L_align,
- *        TOKEN( Y_aligned ),
- *        ...
- *      }
+ *          // The "align" literal synonym also maps to the Y_aligned token:
+ *          { L_align,
+ *            TOKEN( Y_aligned ),
+ *            ...
+ *          }
  *
- * To have a **cdecl** keyword literal be a synonym for exactly one
- * corresponding C/C++ keyword literal, but only when converting pseudo-English
- * to gibberish, use #SYNONYM with FIND_IN_ENGLISH_ONLY:
+ * + To have a **cdecl** keyword literal be a synonym for exactly one
+ *   corresponding C/C++ keyword literal, but only when converting pseudo-
+ *   English to gibberish, use #SYNONYM with #FIND_IN_ENGLISH_ONLY:
  *
- *      // The "automatic" literal is a synonym for the "auto" literal, but
- *      // only when converting from pseudo-English to gibberish:
- *      { L_automatic,
- *        SYNONYM( FIND_IN_ENGLISH_ONLY, L_auto ),
- *        ...
- *      }
+ *          // The "automatic" literal is a synonym for the "auto" literal, but
+ *          // only when converting from pseudo-English to gibberish:
+ *          { L_automatic,
+ *            SYNONYM( FIND_IN_ENGLISH_ONLY, L_auto ),
+ *            ...
+ *          }
  *
- * To do the same, but allow the literal at any time (i.e., also when
- * converting gibberish to pseudo-English), use with ALWAYS_FIND:
+ * + To do the same, but allow the literal at any time (i.e., also when
+ *   converting gibberish to pseudo-English), use with #ALWAYS_FIND:
  *
- *      // The "WINAPI" literal is always a synonym for the "__stdcall"
- *      // literal.
- *      { L_MSC_WINAPI,
- *        SYNONYM( ALWAYS_FIND, L_MSC___stdcall ),
- *        ...
- *      }
+ *          // The "WINAPI" literal is always a synonym for the "__stdcall"
+ *          // literal.
+ *          { L_MSC_WINAPI,
+ *            SYNONYM( ALWAYS_FIND, L_MSC___stdcall ),
+ *            ...
+ *          }
  *
- * To have a **cdecl** keyword literal be a synonym for more than one
- * corresponding C/C++ keyword literal depending on the current language, use
- * #SYNONYMS with the last row always containing #LANG_ANY:
+ * + To have a **cdecl** keyword literal be a synonym for more than one
+ *   corresponding C/C++ keyword literal depending on the current language, use
+ *   #SYNONYMS with the last row always containing #LANG_ANY:
  *
- *      // In languages that do not support the `noreturn` keyword/macro, it's
- *      // a synonym for `_Noreturn`; otherwise it just maps to itself.
- *      { L_noreturn,
- *        SYNONYMS( ALWAYS_FIND,
- *          { ~LANG_noreturn, L__Noreturn },
- *          { LANG_ANY,       L_noreturn  } ),
- *        ...
- *      }
+ *          // In languages that do not support the `noreturn` keyword/macro,
+ *          // it's a synonym for `_Noreturn`; otherwise it just maps to itself.
+ *          { L_noreturn,
+ *            SYNONYMS( ALWAYS_FIND,
+ *              { ~LANG_noreturn, L__Noreturn },
+ *              { LANG_ANY,       L_noreturn  } ),
+ *            ...
+ *          }
  *
  * ## Autocompletion
  *
@@ -237,7 +259,8 @@
  *    should be autocompletable _unless_ it:
  *
  *    + Is shorthand for a preferred keyword, e.g., `conv` is not
- *      autocompletable because `conversion` is preferred.
+ *      autocompletable because `conversion` is preferred.  In this case,
+ *      either the #AC_DEFER_TO or #AC_DEFER_TO_C_KEYWORD macro should be used.
  *
  *    + Is too short, e.g, `all`, `as`, `bit`, `exit`, `mbr`, `no`, `of`,
  *      `ptr`, and `to` should not be autocompletable.  In this case, the
@@ -255,8 +278,10 @@
  * @sa ac_policy
  * @sa #AC_SETTINGS()
  * @sa #AC_TOO_SHORT
+ * @sa #ALWAYS_FIND
  * @sa C_KEYWORDS
  * @sa CDECL_COMMANDS
+ * @sa #FIND_IN_ENGLISH_ONLY
  */
 static cdecl_keyword_t CDECL_KEYWORDS[] = {
   { L_address,
