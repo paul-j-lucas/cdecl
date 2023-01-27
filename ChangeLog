@@ -1,5 +1,8 @@
 2023-01-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * read_line.c: Fixed prog_name not used warning.
+   * cdecl_keyword.c: Fix PPC errors.
+   * cdecl_keyword.c: Fix compile error on Linux.
    * lib/Makefile.am, inttypes.in.h, locale.in.h, stdio.in.h, stdlib.in.h,
      string.in.h, unistd.in.h, wchar.in.h, getdelim.m4, getline.m4,
      gnulib-common.m4, gnulib-comp.m4, inttypes.m4, mbtowc.m4, mempcpy.m4,
