@@ -289,7 +289,7 @@ for which there are four factors to consider:
    with the evolution
    of C and C++.
    Hence,
-   it has is no market value.
+   it has no market value.
 
 Note, however, that I am not a lawyer;
 but my layman's anaysis
