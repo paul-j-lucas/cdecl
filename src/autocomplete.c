@@ -346,7 +346,7 @@ static char const *const* command_ac_keywords( char const *command ) {
  * Checks whether \a s is a particular **cdecl** command.
  *
  * @param command The command to check for.
- * @param s The string to check.  Leading whitespace must have been skipped.
+ * @param s The string to check.  Leading whitespace _must_ have been skipped.
  * @param s_len The length of \a s.
  * @return Returns `true` only if it is.
  */
@@ -374,11 +374,11 @@ static bool is_command( char const *command, char const *s, size_t s_len ) {
 }
 
 /**
- * Gets whether \a command is an English command, that is followed by pseudo-
- * English instead of gibberish.
+ * Gets whether \a command is a pseudo-English command (that is followed by
+ * pseudo-English) instead of gibberish.
  *
  * @param command The **cdecl** command to check.
- * @return Returns `true` only if \a command is an English command.
+ * @return Returns `true` only if \a command is a pseudo-English command.
  */
 NODISCARD
 static bool is_english_command( char const *command ) {
@@ -404,7 +404,7 @@ static bool is_english_command( char const *command ) {
  *
  * @param s The string to find the previous keyword in.
  * @param pos The position within \a s to start looking before.
- * @return Returns the previous keyword or NULL if none.
+ * @return Returns the previous **cdecl** keyword or NULL if none.
  *
  * @sa str_prev_token()
  */
@@ -493,7 +493,7 @@ static int str_ptr_cmp( char const **i_sptr, char const **j_sptr ) {
 ////////// readline callback functions ////////////////////////////////////////
 
 /**
- * Attempts command completion for readline().
+ * Attempts command completion for GNU **readline**(3).
  *
  * @param text The text read so far, without leading whitespace, if any, to
  * match against.
@@ -732,7 +732,7 @@ static char* keyword_generator( char const *text, int state ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Initializes readline.
+ * Initializes GNU **readline**(3).
  *
  * @param prog_name The name of the running program to parse from `~/.inputrc`.
  * @param rin The `FILE` to read from.
