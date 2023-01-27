@@ -260,8 +260,8 @@ for which there are four factors to consider:
    | :--------- | ----: | :--------- | ----: | ----: |
    | `cdgram.y` |  855  | `parser.y` |  8083 | 10.6% |
    | `cdlex.l`  |   75  | `lexer.l`  |  1283 |  5.8% |
-   | `cdecl.c`  | 1014  | `*.[ch]`   | 28724 |  3.5% |
-   | **Total**  | 1944  |            | 38090 |  5.1% |
+   | `cdecl.c`  | 1014  | `*.[ch]`   | 28940 |  3.5% |
+   | **Total**  | 1944  |            | 38306 |  5.1% |
 
    Hansen's version of **cdecl** accounts for only 5.1%
    of a recent total
