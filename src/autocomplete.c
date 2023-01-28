@@ -96,6 +96,17 @@ static inline bool is_c_keyword( char const *literal ) {
   return c_keyword_find( literal, LANG_ANY, C_KW_CTX_DEFAULT ) != NULL;
 }
 
+#if !HAVE_DECL_RL_DING
+/**
+ * Partial implementation of GNU readline's `rl_ding()` for systems that don't
+ * have it.  It doesn't respect the user's preferred bell style (none, audible,
+ * or visual): always does audible.
+ */
+static inline void rl_ding( void ) {
+  EPUTC( '\a' );
+}
+#endif /* !HAVE_DECL_RL_DING */
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -564,16 +575,18 @@ static char* keyword_generator( char const *text, int state ) {
   assert( text != NULL );
 
   static char const *command;           // current command
+  static bool        returned_any;      // returned at least one match?
 
   if ( state == 0 ) {                   // new word? reset
+    command = NULL;
+    returned_any = false;
+
     size_t const rl_size = STATIC_CAST( size_t, rl_end );
     size_t const leading_spaces = strnspn( rl_line_buffer, " ", rl_size );
     size_t const buf_len = rl_size - leading_spaces;
     if ( buf_len == 0 )
-      return NULL;
+      goto done;
     char const *const buf = rl_line_buffer + leading_spaces;
-
-    command = NULL;
 
     //
     // Retroactively figure out what the current command is so we can do some
@@ -604,7 +617,7 @@ static char* keyword_generator( char const *text, int state ) {
     // We haven't at least matched a command yet, so don't match any other
     // keywords.
     //
-    return NULL;
+    goto done;
   }
 
   static size_t             match_index;
@@ -649,10 +662,12 @@ static char* keyword_generator( char const *text, int state ) {
       if ( cmp < 0 )
         break;
       ac_keyword_t const *const k = ac_keyword_find( s );
-      if ( k == NULL || opt_lang_is_any( k->ac_lang_ids ) )
+      if ( k == NULL || opt_lang_is_any( k->ac_lang_ids ) ) {
+        returned_any = true;
         return check_strdup( s );
+      }
     } // for
-    return NULL;
+    goto done;
   }
 
   //
@@ -660,16 +675,14 @@ static char* keyword_generator( char const *text, int state ) {
   // been typed).
   //
   if ( text_len == 0 )
-    return NULL;
+    goto done;
 
   static bool                 is_gibberish;
   static ac_keyword_t const  *no_other_k;
-  static bool                 returned_any;
 
   if ( state == 0 ) {
     is_gibberish = !is_english_command( command );
     no_other_k = NULL;
-    returned_any = false;
   }
 
   for ( ac_keyword_t const *k;
@@ -724,6 +737,9 @@ static char* keyword_generator( char const *text, int state ) {
   if ( no_other_k != NULL && false_set( &returned_any ) )
     return check_strdup( no_other_k->literal );
 
+done:
+  if ( !returned_any )
+    rl_ding();
   return NULL;
 }
 

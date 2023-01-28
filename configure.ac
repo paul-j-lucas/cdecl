@@ -21,7 +21,7 @@
 ##
 
 AC_PREREQ([2.69])
-AC_INIT([cdecl],[13.2],[https://github.com/paul-j-lucas/cdecl/issues],[],[https://github.com/paul-j-lucas/cdecl])
+AC_INIT([cdecl],[13.3],[https://github.com/paul-j-lucas/cdecl/issues],[],[https://github.com/paul-j-lucas/cdecl])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AM_EXTRA_RECURSIVE_TARGETS([clean-coverage distclean-coverage])
@@ -178,6 +178,10 @@ AC_CHECK_FUNCS([geteuid getpwuid fmemopen strsep])
 AS_IF([test "x$with_readline" != xno],
   [
     AC_CHECK_DECLS([rl_completion_matches],[],[],
+    [#include <stdio.h>
+    #include <readline/readline.h>
+    ])
+    AC_CHECK_DECLS([rl_ding],[],[],
     [#include <stdio.h>
     #include <readline/readline.h>
     ])

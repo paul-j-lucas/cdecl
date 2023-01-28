@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 10, 2022" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 27, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2580,15 +2580,16 @@ configuration file
 Individual
 .BR editline (3)
 initialization file.
-On
-.BR macOS ,
-the
+On systems where the
 .BR readline (3)
-API is provided,
+API is provided
 but backed by
-.BR libedit ,
-hence
-.BR ~/.editrc ,
+.B libedit
+(e.g.,
+.BR macOS ),
+the
+.B ~/.editrc
+file,
 if present,
 is read instead of
 .BR ~/.inputrc .
@@ -2608,20 +2609,43 @@ Individual
 .BR readline (3)
 initialization file.
 .SH BUGS
-On
-.BR macOS ,
-the
+On systems where the
 .BR readline (3)
-API is provided,
+API is provided
 but backed by
 .B libedit
-that has a bug that prevents color prompts from working correctly.
-As such,
+(e.g.,
+.BR macOS ),
+there are a few issues:
+.IP \(bu 3
+The
+.B readline
+wrapper
+has a bug that prevents color prompts from working correctly.
+Therefore,
 the
 .B PROMPT
 color cabapility is ignored on systems
 that do not provide genuine GNU
 .BR readline (3).
+.IP \(bu
+Hitting
+.I tab
+when there are no completion matches
+ordinarily rings the terminal's bell.
+However,
+older versions of the
+.B readline
+wrapper
+don't provide the \f(CWrl_ding()\fP function
+needed to ring the bell
+so
+.B cdecl
+provides a substitute.
+However,
+the substitude doesn't respect the user's preferred bell style
+(none, audible, or visual)
+and always does an audible bell.
 .P
 See also:
 .nh
