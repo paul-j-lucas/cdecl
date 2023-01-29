@@ -233,7 +233,7 @@ static char const* const* ac_set_options_new( void ) {
   FOREACH_LANG( lang )
     n += !lang->is_alias;
 
-  char **const ac_set_options = free_later( MALLOC( char*, n + 1 ) );
+  char **const ac_set_options = free_later( MALLOC( char*, n + 1/*NULL*/ ) );
   char **p = ac_set_options;
 
   *p++ = CONST_CAST( char*, L_options );
