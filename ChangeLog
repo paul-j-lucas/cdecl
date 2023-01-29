@@ -1,3 +1,7 @@
+2023-01-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * gnulib-common.m4, stddef_h.m4: Updated Gnulib.
+
 2023-01-28  Paul J. Lucas <paul@lucasmail.org>
 
    * c_keyword.c, cdecl_keyword.c: Using false_set() more.
