@@ -81,7 +81,7 @@ char const  COLORS_DEFAULT[] =
   CAP_HELP_TITLE    "=" SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP
   CAP_LOCUS         "="                       SGR_BOLD  SGR_CAP_SEP
   CAP_PROMPT        "=" SGR_FG_GREEN                    SGR_CAP_SEP
-  CAP_WARNING       "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP;
+  CAP_WARNING       "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  ;
 
 // extern variable definitions
 bool        colorize;
