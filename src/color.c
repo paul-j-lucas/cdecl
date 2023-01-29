@@ -182,7 +182,7 @@ bool colors_parse( char const *capabilities ) {
   // free this later since the sgr_* variables point to substrings
   char *next_cap = free_later( check_strdup( capabilities ) );
 
-  bool set_something = false;
+  bool set_any = false;                 // set at least one?
   for ( char *cap_name_val;
         (cap_name_val = strsep( &next_cap, ":" )) != NULL; ) {
     char const *const cap_name = strsep( &cap_name_val, "=" );
@@ -190,13 +190,13 @@ bool colors_parse( char const *capabilities ) {
       if ( strcmp( cap_name, cap->cap_name ) == 0 ) {
         char const *const cap_value = strsep( &cap_name_val, "=" );
         if ( sgr_cap_set( cap, cap_value ) )
-          set_something = true;
+          set_any = true;
         break;
       }
     } // for
   } // for
 
-  return set_something;
+  return set_any;
 }
 
 bool should_colorize( color_when_t when ) {
