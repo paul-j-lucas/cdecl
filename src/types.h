@@ -516,7 +516,7 @@ struct c_loc {
 };
 
 /**
- * The signature for a function passed to qsort().
+ * The signature for a function passed to **qsort**(3).
  *
  * @param i_data A pointer to data.
  * @param j_data A pointer to data.
