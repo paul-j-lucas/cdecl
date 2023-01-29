@@ -1675,13 +1675,12 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   assert( s != NULL );
 
   static bool sorted;
-  if ( unlikely( !sorted ) ) {
+  if ( unlikely( false_set( &sorted ) ) ) {
     qsort(                              // don't rely on manual sorting above
       CDECL_KEYWORDS, ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/,
       sizeof( cdecl_keyword_t ),
       POINTER_CAST( qsort_cmp_fn_t, &cdecl_keyword_cmp )
     );
-    sorted = true;
   }
 
   // the list is small, so linear search is good enough
