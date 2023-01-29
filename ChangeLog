@@ -1,5 +1,12 @@
 2023-01-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Now using spelled-out English.
+   * c_ast_util.c, c_ast_util.h, c_sname.h, parser.y, print.h, red_black.h,
+     slist.h: Now using ``` instead of @code/@endcode.
+   * color.c: Now free'ing capabilities if we didn't set any.
+   * util.h: Made free_later() PJL_DISCARD.
+   * color.c: Now asserting not called again after a successful parse.
+   * color.c: Removed spurious SGR_CAP_SEP.
    * gnulib-common.m4, stddef_h.m4: Updated Gnulib.
 
 2023-01-28  Paul J. Lucas <paul@lucasmail.org>
