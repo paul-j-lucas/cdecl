@@ -1,3 +1,13 @@
+2023-01-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c, cdecl_keyword.c: Using false_set() more.
+
+2023-01-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, autocomplete.c: Now ringing the bell when
+     there are no autocompletion matches.
+   * autocomplete.c: Now using false_set().
+
 2023-01-26  Paul J. Lucas <paul@lucasmail.org>
 
    * read_line.c: Fixed prog_name not used warning.
