@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 27, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 29, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -123,7 +123,7 @@ When using
 care must be taken either to escape or quote shell metacharacters:
 .cS
 $ explain 'int *const (*p)[4]'
-declare p as pointer to array 4 of const pointer to int
+declare p as pointer to array 4 of constant pointer to integer
 .cE
 The default language can be specified via the
 .B cdeclrc
@@ -986,7 +986,7 @@ For example:
 .RS 9
 .cS
 c++decl> explain int T::x
-declare x of scope T as int
+declare x of scope T as integer
 .cE 0
 .RE
 .IP
@@ -2824,8 +2824,8 @@ not all explanations are ``round-trippable'':
 .RS
 .cS
 cdecl> explain int explain
-declare explain as int
-cdecl> declare explain as int
+declare explain as integer
+cdecl> declare explain as integer
                ^
 9: syntax error: "explain": name expected
 .cE 0
