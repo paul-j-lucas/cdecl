@@ -181,11 +181,9 @@ bool colors_parse( char const *capabilities ) {
 
   if ( capabilities == NULL )
     return false;
+  char *const capabilities_dup = check_strdup( capabilities );
 
-  // free this later since the sgr_* variables point to substrings
-  char *next_cap = free_later( check_strdup( capabilities ) );
-
-  for ( char *cap_name_val;
+  for ( char *next_cap = capabilities_dup, *cap_name_val;
         (cap_name_val = strsep( &next_cap, ":" )) != NULL; ) {
     char const *const cap_name = strsep( &cap_name_val, "=" );
     for ( color_cap_t const *cap = COLOR_CAPS; cap->cap_name; ++cap ) {
@@ -197,6 +195,11 @@ bool colors_parse( char const *capabilities ) {
       }
     } // for
   } // for
+
+  if ( set_any )
+    free_later( capabilities_dup );     // sgr_* variables point to substrings
+  else
+    free( capabilities_dup );
 
   return set_any;
 }
