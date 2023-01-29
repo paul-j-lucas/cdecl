@@ -868,8 +868,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_imaginary,
     SYNONYMS( ALWAYS_FIND,
-        { LANG__Imaginary, L__Imaginary },
-        { LANG_ANY,        L_imaginary  } ),
+      { LANG__Imaginary, L__Imaginary },
+      { LANG_ANY,        L_imaginary  } ),
     AC_SETTINGS(
       LANG__Imaginary,
       AC_POLICY_NONE,
@@ -1032,8 +1032,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { H_no_return,
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
-        { ~LANG_noreturn, L__Noreturn },
-        { LANG_ANY,       L_noreturn  } ),
+      { ~LANG_noreturn, L__Noreturn },
+      { LANG_ANY,       L_noreturn  } ),
     AC_SETTINGS(
       LANG_noreturn,
       AC_POLICY_NONE,
@@ -1070,8 +1070,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { H_non_returning,
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
-        { ~LANG_noreturn, L__Noreturn },
-        { LANG_ANY,       L_noreturn  } ),
+      { ~LANG_noreturn, L__Noreturn },
+      { LANG_ANY,       L_noreturn  } ),
     AC_SETTINGS(
       LANG_noreturn,
       AC_POLICY_NONE,
@@ -1108,8 +1108,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_noreturn,
     SYNONYMS( ALWAYS_FIND,
-        { ~LANG_noreturn, L__Noreturn },
-        { LANG_ANY,       L_noreturn  } ),
+      { ~LANG_noreturn, L__Noreturn },
+      { LANG_ANY,       L_noreturn  } ),
     AC_SETTINGS(
       LANG_NONRETURNING_FUNC,
       AC_POLICY_NONE,
@@ -1272,8 +1272,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_restricted,
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
-        { ~LANG_restrict, L_GNU___restrict },
-        { LANG_ANY,       L_restrict       } ),
+      { ~LANG_restrict, L_GNU___restrict },
+      { LANG_ANY,       L_restrict       } ),
     AC_SETTINGS(
       LANG_restrict,
       AC_POLICY_NONE,
@@ -1355,29 +1355,29 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_thread_local,
     SYNONYMS( ALWAYS_FIND,
-        //
-        // Unlike H_thread_local (below), this row:
-        //
-        //     { ~LANG_THREAD_LOCAL_STORAGE, L_GNU___thread },
-        //
-        // isn't here because `thread_local` is either a C/C++ keyword or macro
-        // and so should only be a synonym for the actual language-specific
-        // keywords in C/C++, not as a synonym for "thread local" as a concept.
-        // For that, `thread-local` should be used.
-        //
-        // If this row were included here, then the following:
-        //
-        //     cdecl> set c99
-        //     cdecl> explain thread_local int x
-        //     declare x as thread local integer
-        //
-        // would be legal (becasuse `thread_local` would map to GNU C's
-        // `__thread` that's legal in all languages) when it shouldn't be
-        // (because neither the C macro `thread_local` nor the C keyword
-        // `_Thread_local` were supported until C11).
-        //
-        { LANG__Thread_local, L__Thread_local },
-        { LANG_ANY,           L_thread_local  } ),
+      //
+      // Unlike H_thread_local (below), this row:
+      //
+      //     { ~LANG_THREAD_LOCAL_STORAGE, L_GNU___thread },
+      //
+      // isn't here because `thread_local` is either a C/C++ keyword or macro
+      // and so should only be a synonym for the actual language-specific
+      // keywords in C/C++, not as a synonym for "thread local" as a concept.
+      // For that, `thread-local` should be used.
+      //
+      // If this row were included here, then the following:
+      //
+      //     cdecl> set c99
+      //     cdecl> explain thread_local int x
+      //     declare x as thread local integer
+      //
+      // would be legal (becasuse `thread_local` would map to GNU C's
+      // `__thread` that's legal in all languages) when it shouldn't be
+      // (because neither the C macro `thread_local` nor the C keyword
+      // `_Thread_local` were supported until C11).
+      //
+      { LANG__Thread_local, L__Thread_local },
+      { LANG_ANY,           L_thread_local  } ),
     AC_SETTINGS(
       LANG_THREAD_LOCAL_STORAGE,
       AC_POLICY_NONE,
@@ -1387,9 +1387,9 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { H_thread_local,
     SYNONYMS( ALWAYS_FIND,
-        { ~LANG_THREAD_LOCAL_STORAGE, L_GNU___thread  },
-        { LANG__Thread_local,         L__Thread_local },
-        { LANG_ANY,                   L_thread_local  } ),
+      { ~LANG_THREAD_LOCAL_STORAGE, L_GNU___thread  },
+      { LANG__Thread_local,         L__Thread_local },
+      { LANG_ANY,                   L_thread_local  } ),
     AC_SETTINGS(
       LANG_THREAD_LOCAL_STORAGE,
       AC_POLICY_NO_OTHER,
@@ -1507,8 +1507,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_volatile,
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
-        { ~LANG_volatile, L_GNU___volatile },
-        { LANG_ANY,       L_volatile       } ),
+      { ~LANG_volatile, L_GNU___volatile },
+      { LANG_ANY,       L_volatile       } ),
     AC_SETTINGS(
       AC_DEFER_TO_C_KEYWORD,
       AC_POLICY_NONE,
@@ -1537,8 +1537,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   // Embedded C extensions
   { L_EMC_accum,
     SYNONYMS( ALWAYS_FIND,
-        { LANG_C_99, L_EMC__Accum },
-        { LANG_ANY,  NULL         } ),
+      { LANG_C_99, L_EMC__Accum },
+      { LANG_ANY,  NULL         } ),
     AC_SETTINGS(
       LANG_C_99,
       AC_POLICY_NONE,
@@ -1548,8 +1548,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_EMC_fract,
     SYNONYMS( ALWAYS_FIND,
-        { LANG_C_99, L_EMC__Fract },
-        { LANG_ANY,  NULL         } ),
+      { LANG_C_99, L_EMC__Fract },
+      { LANG_ANY,  NULL         } ),
     AC_SETTINGS(
       LANG_C_99,
       AC_POLICY_NONE,
@@ -1559,8 +1559,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_EMC_sat,
     SYNONYMS( FIND_IN_ENGLISH_ONLY,
-        { LANG_C_99, L_EMC__Sat   },
-        { LANG_ANY,  NULL         } ),
+      { LANG_C_99, L_EMC__Sat   },
+      { LANG_ANY,  NULL         } ),
     AC_SETTINGS(
       AC_TOO_SHORT,
       AC_POLICY_NONE,
@@ -1570,8 +1570,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_EMC_saturated,
     SYNONYMS( ALWAYS_FIND,
-        { LANG_C_99, L_EMC__Sat   },
-        { LANG_ANY,  NULL         } ),
+      { LANG_C_99, L_EMC__Sat   },
+      { LANG_ANY,  NULL         } ),
     AC_SETTINGS(
       LANG_C_99,
       AC_POLICY_NONE,
