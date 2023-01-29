@@ -762,7 +762,7 @@ void fputs_sp( char const *s, FILE *out );
  *
  * @sa free_now()
  */
-NODISCARD
+PJL_DISCARD
 void* free_later( void *p );
 
 /**
