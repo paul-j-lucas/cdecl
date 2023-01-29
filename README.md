@@ -28,7 +28,7 @@ For example:
 
 ```
 cdecl> explain int *const (*p)[4]
-declare p as pointer to array 4 of const pointer to int
+declare p as pointer to array 4 of constant pointer to integer
 
 cdecl> declare p as pointer to const pointer to const char
 const char *const *p;
