@@ -176,13 +176,15 @@ static bool sgr_is_valid( char const *sgr_color ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool colors_parse( char const *capabilities ) {
+  static bool set_any;                  // set at least one?
+  assert( !set_any );
+
   if ( capabilities == NULL )
     return false;
 
   // free this later since the sgr_* variables point to substrings
   char *next_cap = free_later( check_strdup( capabilities ) );
 
-  bool set_any = false;                 // set at least one?
   for ( char *cap_name_val;
         (cap_name_val = strsep( &next_cap, ":" )) != NULL; ) {
     char const *const cap_name = strsep( &cap_name_val, "=" );
