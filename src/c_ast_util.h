@@ -367,17 +367,17 @@ c_sname_t c_ast_take_name( c_ast_t *ast );
  * Checks \a ast to see if it contains one or more of \a type.
  * If so, removes them.
  * This is used in cases like:
- * @code
- *  explain typedef int *p
- * @endcode
+ * ```
+ * explain typedef int *p
+ * ```
  * that should be explained as:
- * @code
- *  declare p as type pointer to int
- * @endcode
+ * ```
+ * declare p as type pointer to integer
+ * ```
  * and _not_:
- * @code
- *  declare p as pointer to typedef int
- * @endcode
+ * ```
+ * declare p as pointer to typedef integer
+ * ```
  *
  * @param ast The AST to check.
  * @param type A type where each type ID is the bitwise-or of type IDs to find.

@@ -164,12 +164,12 @@
  * @param ... Arguments passed to fl_elaborate_error().
  *
  * @note This must be used _only_ after an `error` token, e.g.:
- * @code
+ * ```
  *  | Y_define error
  *    {
  *      elaborate_error( "name expected" );
  *    }
- * @endcode
+ * ```
  *
  * @sa elaborate_error_dym()
  * @sa keyword_expected()
@@ -185,12 +185,12 @@
  * @param ... Arguments passed to fl_elaborate_error().
  *
  * @note This must be used _only_ after an `error` token, e.g.:
- * @code
+ * ```
  *  | error
  *    {
  *      elaborate_error_dym( DYM_COMMANDS, "unexpected token" );
  *    }
- * @endcode
+ * ```
  *
  * @sa elaborate_error()
  * @sa keyword_expected()
@@ -205,13 +205,13 @@
  * @param KEYWORD A keyword literal.
  *
  * @note This must be used _only_ after an `error` token, e.g.:
- * @code
+ * ```
  *  : Y_virtual
  *  | error
  *    {
  *      keyword_expected( L_virtual );
  *    }
- * @endcode
+ * ```
  *
  * @sa elaborate_error()
  * @sa elaborate_error_dym()
@@ -232,13 +232,13 @@
  * @param PUNCT The punctuation character that was expected.
  *
  * @note This must be used _only_ after an `error` token, e.g.:
- * @code
+ * ```
  *  : ','
  *  | error
  *    {
  *      punct_expected( ',' );
  *    }
- * @endcode
+ * ```
  *
  * @sa elaborate_error()
  * @sa elaborate_error_dym()
@@ -365,7 +365,7 @@
  * Starts a dump block.  The dump block _must_ end with #DUMP_END().  If a rule
  * has a result, it should be dumped as the final thing before the #DUMP_END()
  * repeating the name of the rule, e.g.:
- * @code
+ * ```
  *  DUMP_START( "rule",                 // <-- This rule name ...
  *              "subrule_1 name subrule_2" );
  *  DUMP_AST( "subrule_1", $1 );
@@ -374,14 +374,14 @@
  *  // ...
  *  DUMP_AST( "rule", $$ );             // <-- ... is repeated here.
  *  DUMP_END();
- * @endcode
+ * ```
  *
  * Whenever possible, an entire dump block should be completed before any
  * actions are taken as a result of a failed semantic check or other error
  * (typically, calling print_error() and #PARSE_ABORT()) so that the entire
  * block is dumped for debugging purposes first. If necessary, set a flag
  * within the dump block, then check it after, e.g.:
- * @code
+ * ```
  *  DUMP_START( "rule", "subrule_1 name subrule_2" );
  *  DUMP_AST( "subrule_1", $1 );
  *  DUMP_STR( "name", $2 );
@@ -400,7 +400,7 @@
  *    print_error( &@1, "...\n" );
  *    PARSE_ABORT();
  *  }
- * @endcode
+ * ```
  *
  * @param NAME The grammar production name.
  * @param PROD The grammar production rule.
@@ -863,15 +863,15 @@ static bool fl_is_nested_type_ok( char const *file, int line,
  *
  * For example, if fl_elaborate_error() were used for the following \b cdecl
  * command when the current language is C, you'd get the following:
- * @code
+ * ```
  * declare f as virtual function returning void
  *              ^
  * 14: syntax error: "virtual": "virtual" expected; not a keyword until C++98
- * @endcode
+ * ```
  * because it's really this:
- * @code
+ * ```
  * ... "virtual" [the name]": "virtual" [the token] expected ...
- * @endcode
+ * ```
  * and that looks odd.
  *
  * @note This function isn't normally called directly; use the
@@ -925,11 +925,11 @@ static void fl_keyword_expected( char const *file, int line,
 
  * For example, if fl_elaborate_error() were used for the following \b cdecl
  * command, you'd get the following:
- * @code
+ * ```
  * explain void f(int g const)
  *                      ^
  * 29: syntax error: "const": ',' expected ("const" is a keyword)
- * @endcode
+ * ```
  * and that looks odd since, if a punctuation character was expected, it seems
  * silly to point out that the encountered token is a keyword.
  *

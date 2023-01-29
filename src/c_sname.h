@@ -438,9 +438,9 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
 /**
  * Reinitializes \a sname and returns its former value so that it can be
  * "moved" into another scoped name via assignment.  For example:
- * @code
- *  c_sname_t new_sname = c_sname_move( old_sname );
- * @endcode
+ * ```
+ * c_sname_t new_sname = c_sname_move( old_sname );
+ * ```
  *
  * @param sname The scoped name to move.
  * @return Returns the former value of \a sname.

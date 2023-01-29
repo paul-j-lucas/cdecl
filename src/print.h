@@ -189,9 +189,9 @@ void print_debug_file_line( char const *file, int line );
 
 /**
  * Prints a hint message to standard error in the form:
- * @code
+ * ```
  * ; did you mean ...?\n
- * @endcode
+ * ```
  * where `...` is the hint.
  *
  * @param format The `printf()` style format string.
@@ -221,9 +221,9 @@ void print_loc( c_loc_t const *loc );
  * If there is at least one "similar enough" suggestion for what \a
  * unknown_token might have meant, prints a message to standard error in the
  * form:
- * @code
+ * ```
  * ; did you mean ...?
- * @endcode
+ * ```
  * where `...` is a a comma-separated list of one or more suggestions.  If
  * there are no suggestions that are "similar enough," prints nothing.
  *

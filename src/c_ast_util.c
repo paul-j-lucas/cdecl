@@ -323,17 +323,17 @@ static c_ast_t const* c_ast_is_tid_any_qual_impl( c_ast_t const *ast,
  * Takes the storage (and attributes), if any, away from \a ast
  * (with the intent of giving them to another AST).
  * This is used is cases like:
- * @code
- *  explain static int f()
- * @endcode
+ * ```
+ * explain static int f()
+ * ```
  * that should be explained as:
- * @code
- *  declare f as static function () returning int
- * @endcode
+ * ```
+ * declare f as static function () returning integer
+ * ```
  * and _not_:
- * @code
- *  declare f as function () returning static int
- * @endcode
+ * ```
+ * declare f as function () returning static integer
+ * ```
  * i.e., the `static` has to be taken away from `int` and given to the function
  * because it's the function that's `static`, not the `int`.
  *

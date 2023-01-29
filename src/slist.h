@@ -415,9 +415,9 @@ size_t slist_len( slist_t const *list ) {
 /**
  * Reinitializes \a list and returns its former value so that it can be "moved"
  * into another list via assignment.  For example:
- * @code
- *  slist new_list = slist_move( old_list );
- * @endcode
+ * ```
+ * slist new_list = slist_move( old_list );
+ * ```
  *
  * @param list The \ref slist to move.
  * @return Returns the former value of \a list.
