@@ -221,7 +221,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
       // int:
       //
       //      cdecl> explain double f(x)
-      //      declare f as function (x as int) returning double
+      //      declare f as function (x as integer) returning double
       //
       // (The "x as" was printed in c_ast_func_params_english().)
       //
