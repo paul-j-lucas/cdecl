@@ -136,7 +136,6 @@ extern char const  *sgr_warning;        ///< Color of `warning`.
  * be the same value that was passed to color_start().
  *
  * @sa color_start()
- * @sa color_strbuf_end()
  */
 COLOR_H_INLINE
 void color_end( FILE *file, char const *sgr_color ) {
@@ -151,6 +150,7 @@ void color_end( FILE *file, char const *sgr_color ) {
  * @param sgr_color The predefined color.  If NULL, does nothing.
  *
  * @sa color_end()
+ * @sa color_strbuf_start()
  */
 COLOR_H_INLINE
 void color_start( FILE *file, char const *sgr_color ) {
@@ -193,9 +193,38 @@ void color_strbuf_start( strbuf_t *sbuf, char const *sgr_color ) {
 /**
  * Parses and sets the sequence of gcc color capabilities.
  *
- * @param capabilities The gcc capabilities to parse.
+ * @param capabilities The gcc capabilities to parse.  It's of the form:
+ *  <table border="0">
+ *    <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+ *    <tr>
+ *      <td><i>capapilities</i></td>
+ *      <td>::= <i>capability</i> [<tt>:</tt><i>capability</i>]*</td>
+ *    </tr>
+ *    <tr>
+ *      <td><i>capability</i></td>
+ *      <td>::= <i>cap-name</i><tt>=</tt><i>sgr-list</i></td>
+ *    </tr>
+ *    <tr>
+ *      <td><i>cap-name</i></td>
+ *      <td>::= [<tt>a-zA-Z-</tt>]+</td>
+ *    </tr>
+ *    <tr>
+ *      <td><i>sgr-list</i></td>
+ *      <td>::= <i>sgr</i>[<tt>;</tt><i>sgr</i>]*</td>
+ *    </tr>
+ *    <tr>
+ *      <td><i>sgr</i></td>
+ *      <td>::= [<tt>1-9</tt>][<tt>0-9</tt>]*</td>
+ *    </tr>
+ *    <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+ *  </table>
+ * where <i>sgr</i> is a [Select Graphics
+ * Rendition](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR) code.  An
+ * example \a capabilities is: `caret=42;1:error=41;1:warning=43;1`.
  * @return Returns `true` only if at least one capability was parsed
  * successfully.
+ *
+ * @warning If this function returns `true`, it must never be called again.
  */
 NODISCARD
 bool colors_parse( char const *capabilities );
