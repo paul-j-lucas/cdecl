@@ -651,8 +651,8 @@ static char* keyword_generator( char const *text, int state ) {
 
   if ( specific_ac_keywords != NULL ) {
     //
-    // There's a special-case command having specific keywords in effect:
-    // attempt to match against only those.
+    // There's a special-case command or keyword having specific keywords in
+    // effect: attempt to match against only those.
     //
     for ( char const *s; (s = specific_ac_keywords[ match_index ]) != NULL; ) {
       ++match_index;
