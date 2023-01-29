@@ -181,7 +181,7 @@
 /**
  * Calls fl_elaborate_error() followed by #PARSE_ABORT().
  *
- * @param DYM_KINDS The bitwise-or of the kind(s) of things possibly meant.
+ * @param DYM_KINDS The bitwise-or of \ref dym_kind_t things possibly meant.
  * @param ... Arguments passed to fl_elaborate_error().
  *
  * @note This must be used _only_ after an `error` token, e.g.:
