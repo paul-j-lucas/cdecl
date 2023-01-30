@@ -193,8 +193,10 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       dup_ast->cast.cast_kind = ast->cast.cast_kind;
       break;
 
-    case K_CLASS_STRUCT_UNION:
     case K_ENUM:
+      dup_ast->enum_.bit_width = ast->enum_.bit_width;
+      FALLTHROUGH;
+    case K_CLASS_STRUCT_UNION:
     case K_POINTER_TO_MEMBER:
       dup_ast->csu.csu_sname = c_sname_dup( &ast->csu.csu_sname );
       break;
@@ -300,8 +302,11 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
     }
 
-    case K_CLASS_STRUCT_UNION:
     case K_ENUM:
+      if ( i_ast->enum_.bit_width != j_ast->enum_.bit_width )
+        return false;
+      FALLTHROUGH;
+    case K_CLASS_STRUCT_UNION:
     case K_POINTER_TO_MEMBER:
       if ( c_sname_cmp( &i_ast->csu.csu_sname, &j_ast->csu.csu_sname ) != 0 )
         return false;
