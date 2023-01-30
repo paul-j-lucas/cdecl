@@ -114,13 +114,13 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_type_t const *type );
 
 /**
- * Checks whether \a ast can be a bit field.
+ * Checks whether the kind of \a ast can be a bit field.
  *
  * @param ast The AST to check.
- * @return Returns `true` only if \a ast can be a bit field.
+ * @return Returns `true` only if the kind of \a ast can be a bit field.
  */
 NODISCARD
-bool c_ast_is_bit_field( c_ast_t const *ast );
+bool c_ast_is_bit_field_kind( c_ast_t const *ast );
 
 /**
  * Checks whether \a ast is a #K_BUILTIN having one of \a btids built-in

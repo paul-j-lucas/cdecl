@@ -2277,7 +2277,7 @@ alignas_or_width_decl_english_ast
       // This check has to be done now in the parser rather than later in the
       // AST since we need to use the builtin union member now.
       //
-      if ( !c_ast_is_bit_field( $1 ) ) {
+      if ( !c_ast_is_bit_field_kind( $1 ) ) {
         print_error( &@2,
           "bit-fields can be only of integral %stypes\n",
           OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
@@ -7349,7 +7349,7 @@ sname_c_ast
       // This check has to be done now in the parser rather than later in the
       // AST since we need to use the builtin union member now.
       //
-      if ( bit_width != 0 && (ok = c_ast_is_bit_field( $$ )) )
+      if ( bit_width != 0 && (ok = c_ast_is_bit_field_kind( $$ )) )
         $$->bit_field.bit_width = bit_width;
 
       DUMP_AST( "sname_c_ast", $$ );

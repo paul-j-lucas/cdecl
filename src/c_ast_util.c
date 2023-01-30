@@ -558,7 +558,7 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
   return c_ast_visit( ast, dir, c_ast_vistor_type_any, data );
 }
 
-bool c_ast_is_bit_field( c_ast_t const *ast ) {
+bool c_ast_is_bit_field_kind( c_ast_t const *ast ) {
   ast = c_ast_untypedef( ast );
   switch ( ast->kind ) {
     case K_BUILTIN: {
