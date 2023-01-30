@@ -1,5 +1,7 @@
 2023-01-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, english.c, explain.out: Fixed English "integer" name for K&R
+     typeless function parameter.
    * c_ast_util.c, c_ast_util.h, parser.y:
      s/c_ast_is_bit_field/c_ast_is_bit_field_kind/
    * c_ast_util.c: Added assert()s.
