@@ -309,6 +309,7 @@ static c_ast_t const* c_ast_is_tid_any_qual_impl( c_ast_t const *ast,
                                                   c_tid_t tids,
                                                   c_tid_t qual_stids ) {
   if ( ast != NULL ) {
+    assert( c_tid_tpid( qual_stids ) == C_TPID_STORE );
     c_tid_t ast_tids = c_type_get_tid( &ast->type, tids );
     ast_tids = c_tid_normalize( ast_tids );
     if ( c_tid_tpid( tids ) == C_TPID_STORE )
@@ -403,6 +404,7 @@ static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
   ast = ast->ptr_ref.to_ast;
   assert( ast != NULL );
   assert( qual_stids != NULL );
+  assert( c_tid_tpid( *qual_stids ) == C_TPID_STORE );
   *qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
   //
   // Now that we've gotten the cv qualifiers of the first pointed-to type, we
@@ -460,6 +462,7 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
   ast = ast->ptr_ref.to_ast;
   assert( ast != NULL );
   assert( qual_stids != NULL );
+  assert( c_tid_tpid( *qual_stids ) == C_TPID_STORE );
   *qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
   //
   // Now that we've gotten the cv qualifiers of the first referred-to type, we
