@@ -225,7 +225,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
       //
       // (The "x as" was printed in c_ast_func_params_english().)
       //
-      FPUTS( L_int, eout );
+      FPUTS( c_tid_name_english( TB_INT ), eout );
       break;
 
     case K_POINTER:
