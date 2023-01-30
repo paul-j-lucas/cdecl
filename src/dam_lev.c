@@ -56,16 +56,17 @@ static inline size_t min_dist( size_t i, size_t j ) {
  * @param esize The size in bytes of a single element.
  * @param idim The number of elements in the _i_ dimension.
  * @param jdim The number of elements in the _j_ dimension.
- * @return Returns a pointer that may be cast to `T**` where `T` is the type of
- * element.
+ * @return Returns a pointer to a new two-dimensional array that may be cast to
+ * `T**` where `T` is the type of element.  The caller is responsible for
+ * freeing it via **free**(3).
  */
 NODISCARD
-static void* matrix2_new( size_t esize, size_t idim, size_t jdim ) {
+static void** matrix2_new( size_t esize, size_t idim, size_t jdim ) {
   size_t const ptrs_size = sizeof(void*) * idim;
   size_t const row_size = esize * jdim;
   // allocate the row pointers followed by the elements
   void **const rows = check_realloc( NULL, ptrs_size + idim * row_size );
-  char *const elements = (char*)rows + ptrs_size;
+  char *const elements = STATIC_CAST( char*, rows ) + ptrs_size;
   for ( size_t i = 0; i < idim; ++i )
     rows[i] = &elements[ i * row_size ];
   return rows;
