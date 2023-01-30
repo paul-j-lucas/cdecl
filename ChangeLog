@@ -1,3 +1,7 @@
+2023-01-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * dam_lev.c: Added `const`.
+
 2023-01-29  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Now using spelled-out English.
