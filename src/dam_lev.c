@@ -96,7 +96,7 @@ size_t dam_lev_dist( char const *source, char const *target ) {
   // extras with higher-than-possible distances to prevent erroneous detection
   // of transpositions that would be outside the bounds of the strings.
   //
-  size_t **const dist_matrix =
+  size_t *const *const dist_matrix =
     (size_t**)matrix2_new( sizeof(size_t), slen + 2, tlen + 2 );
 
   size_t const inf = slen + tlen;
@@ -174,7 +174,7 @@ size_t dam_lev_dist( char const *source, char const *target ) {
   } // for
 
   size_t const edit_dist = dist_matrix[ slen+1 ][ tlen+1 ];
-  free( dist_matrix );
+  FREE( dist_matrix );
   return edit_dist;
 }
 
