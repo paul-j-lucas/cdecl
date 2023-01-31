@@ -1,5 +1,8 @@
 2023-01-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, english.c, explain.out: Undid a change in **cdecl** 11.5 where K&R C
+     typeless function parameters were printed as being of type `int`: they now
+     again print as only their names.
    * NEWS, english.c, explain.out: Fixed English "integer" name for K&R
      typeless function parameter.
    * c_ast_util.c, c_ast_util.h, parser.y:
