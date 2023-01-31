@@ -96,7 +96,10 @@ update_cdecl_test() {
 }
 
 for TEST in $*
-do update_cdecl_test $TEST
+do
+  case $TEST in
+  *.test) update_cdecl_test $TEST ;;
+  esac
 done
 
 # vim:set et sw=2 ts=2:
