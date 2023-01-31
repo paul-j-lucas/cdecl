@@ -197,8 +197,12 @@ set c++
 struct S
 
 explain A::C::~C()
+explain C()
 explain C() = default
+explain C() = delete
 explain C(C const&)
+explain C(C const&) = default
+explain C(C const&) = delete
 explain C(int)
 explain C::C()
 explain C::C(int)
