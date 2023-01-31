@@ -268,7 +268,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
     CASE_K_PLACEHOLDER;
   } // switch
 
-  return false;
+  return /*stop=*/false;
 }
 
 /**

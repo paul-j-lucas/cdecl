@@ -142,7 +142,8 @@ struct c_alignas {
  * @param ast The AST to visit.
  * @param data Optional data passed to c_ast_visit().
  * @return Returning `true` will cause traversal to stop and \a ast to be
- * returned to the caller of c_ast_visit().
+ * returned to the caller of c_ast_visit(); `false` will will cause traversal
+ * to continue.
  */
 typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, user_data_t data );
 

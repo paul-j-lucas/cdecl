@@ -2584,7 +2584,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
   if ( cdecl_initialized )              // don't warn for predefined types
     c_ast_warn_name( ast );
 
-  return false;
+  return /*stop=*/false;
 }
 
 /**
