@@ -427,10 +427,6 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
       print_hint( "array of pointer to function" );
       return false;
 
-    case K_NAME:
-      print_error_unknown_name( &of_ast->loc, &of_ast->sname );
-      return false;
-
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       error_kind_of_kind( ast, raw_of_ast, "" );
@@ -445,6 +441,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
       return false;
 
     case K_CAST:                        // array of cast is impossible
+    case K_NAME:                        // array of untyped name is impossible
     case K_TYPEDEF:                     // can't happen after c_ast_untypedef()
     case K_VARIADIC:                    // array of variadic is impossible
       UNEXPECTED_INT_VALUE( raw_of_ast->kind );
