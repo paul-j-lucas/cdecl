@@ -16,13 +16,9 @@ with their complete changes, see the AUTHORS file.
 When hitting TAB and there are no completion matches, **cdecl** now rings the
 terminal's bell.
 
-** K&R typeless function parameter English
-When 13.1 switched to more English names for types (e.g., `integer` for `int`),
-K&R typeless function parameters, e.g.:
-
-    int f(x);                           // type of `x` is int
-
-still always printed `int`.  Now it's fixed.
+** Undid K&R function parameter printed as `int`
+Undid a change in **cdecl** 11.5 where K&R C typeless function parameters were
+printed as being of type `int`: they now again print as only their names.
 
 
 * Changes in Cdecl 13.2

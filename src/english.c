@@ -101,13 +101,21 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
     c_sname_t const *const sname = c_ast_find_name( param_ast, C_VISIT_DOWN );
     if ( sname != NULL ) {
       //
-      // If there's a name, we have to print:
+      // For all kinds except K_NAME, we have to print:
       //
-      //      <name> as ...
+      //      <name> as <english>
+      //
+      // For K_NAME, e.g.:
+      //
+      //      void f(x)                 // untyped K&R C function parameter
+      //
+      // there's no "as <english>" part.
       //
       c_sname_english( sname, eout );
-      FPUTS( " as ", eout );
-    } else {
+      if ( param_ast->kind != K_NAME )
+        FPUTS( " as ", eout );
+    }
+    else {
       //
       // If there's no name, it's an unnamed parameter, e.g.:
       //
@@ -215,17 +223,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
       break;
 
     case K_NAME:
-      assert( OPT_LANG_IS( KNR_FUNC_DEFINITION ) );
-      //
-      // In C17 and earlier, just a name for a function parameter is implicitly
-      // int:
-      //
-      //      cdecl> explain double f(x)
-      //      declare f as function (x as integer) returning double
-      //
-      // (The "x as" was printed in c_ast_func_params_english().)
-      //
-      FPUTS( c_tid_name_english( TB_INT ), eout );
+      // A K_NAME can occur only as an untyped K&R C function parameter.  The
+      // name was printed in c_ast_func_params_english().
       break;
 
     case K_POINTER:

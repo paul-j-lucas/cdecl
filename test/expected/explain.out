@@ -347,7 +347,7 @@ cdecl> explain V *p
 declare p as pointer to V
 cdecl> set knr
 cdecl> explain f(x)
-declare f as function (x as integer) returning integer
+declare f as function (x) returning integer
 cdecl> explain long float x
 declare x as long floating point
 cdecl> set c89
@@ -379,7 +379,7 @@ cdecl> set c18
 cdecl> explain int* f(x)
                       ^
 16: warning: missing type specifier; int assumed
-declare f as function (x as integer) returning pointer to integer
+declare f as function (x) returning pointer to integer
 cdecl> set c++
 c++decl> struct S
 c++decl> explain A::C::~C()
