@@ -487,7 +487,8 @@ int s::t::x;
 c++decl> declare x, y as type int
 using x = int;
 using y = int;
-c++decl> define S::T as struct S
+c++decl> declare T as type deprecated int
+using T [[deprecated]] = int;
 c++decl> set c++03
 c++decl> declare C as non-throwing destructor
 ~C() throw();

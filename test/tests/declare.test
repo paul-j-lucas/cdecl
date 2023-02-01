@@ -263,7 +263,8 @@ declare x of scope s as int
 declare x of scope s of scope t::u as int
 declare x of scope s::t as int
 declare x, y as type int
-define S::T as struct S
+
+declare T as type deprecated int
 
 set c++03
 declare C as non-throwing destructor
