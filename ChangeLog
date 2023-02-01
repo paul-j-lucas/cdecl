@@ -1,3 +1,19 @@
+2023-02-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, gibberish.c, lexer.l, digraphs.out, digraphs.test: Digraph fixes.
+   * declare.out, declare.test: Added test.
+
+2023-01-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Added LCOV_EXCL_LINE.
+   * debug.out, debug.test: More tests.
+   * test/Makefile.am, explain.out, explain_fithrk_v.out, explain.test,
+     explain_fithrk_v.test: More tests.
+   * update_test.sh: Now updating only *.test tests.
+   * c_ast_check.c: Array of K_NAME is impossible.
+   * explain.out, explain.test: More tests.
+   * cdefs.h, libc-config.h: Updated Gnulib.
+
 2023-01-30  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, english.c, explain.out: Undid a change in **cdecl** 11.5 where K&R C
