@@ -16,6 +16,9 @@ with their complete changes, see the AUTHORS file.
 When hitting TAB and there are no completion matches, **cdecl** now rings the
 terminal's bell.
 
+** Destructors in C
+**Cdecl** now correctly reports destructors in C as an error.
+
 ** Digraph & trigraph fixes
 The digraphs and trigraphs for `{` and `}` weren't emitted when they should
 have been for nested types.  The digraphs & trigraphs for `{` and `}` weren't

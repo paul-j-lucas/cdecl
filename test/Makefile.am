@@ -211,6 +211,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_c_al3.test \
 	tests/explain_cf_v-c.test \
 	tests/explain_ci-knr.test \
+	tests/explain_dtor.test \
 	tests/explain_efi-c17.test \
 	tests/explain_en-knr.test \
 	tests/explain_enw3-c.test \

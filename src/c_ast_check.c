@@ -649,6 +649,15 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_CONSTRUCTOR | K_DESTRUCTOR ) );
 
+  if ( OPT_LANG_IS( C_ANY ) ) {
+    print_error( &ast->loc,
+      "%ss not supported%s\n",
+      c_kind_name( ast->kind ),
+      C_LANG_WHICH( CPP_ANY )
+    );
+    return false;
+  }
+
   bool const is_definition = c_sname_count( &ast->sname ) > 1;
 
   if ( is_definition && !c_sname_is_ctor( &ast->sname ) ) {
