@@ -304,6 +304,8 @@ explain void f() override final
 explain void f([[deprecated]] int x)
 explain void f([[maybe_unused]] int x)
 explain void f(auto)
+explain void f(volatile int x)
+explain volatile int f()
 explain ~C()
 explain ~C() final
 
@@ -312,5 +314,9 @@ explain N::C::I x
 
 set c++98
 explain void f() throw()
+
+set c++11
+explain register int x
+explain ~C() throw()
 
 END

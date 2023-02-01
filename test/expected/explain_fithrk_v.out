@@ -1,0 +1,3 @@
+explain void f( int x, this S &self )
+                              ^
+31: error: "this" can be only first parameter

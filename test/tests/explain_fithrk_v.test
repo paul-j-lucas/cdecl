@@ -1,0 +1,5 @@
+EXPECTED_EXIT=65
+cdecl -xc++ <<END
+struct S
+explain void f( int x, this S &self )
+END
