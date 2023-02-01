@@ -1,5 +1,6 @@
 2023-02-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, lexer.l, trigraphs.out, trigraphs.test: Trigraph fixes.
    * NEWS, gibberish.c, lexer.l, digraphs.out, digraphs.test: Digraph fixes.
    * declare.out, declare.test: Added test.
 
