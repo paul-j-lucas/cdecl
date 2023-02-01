@@ -927,7 +927,13 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         break;
 
       default:
-        goto only_special;
+        //
+        // The grammar allows only functions, operators, constructors,
+        // destructors, and user-defined conversion operators to be either
+        // `default` or `delete`.  This function isn't called for destructors
+        // and the others have cases above.
+        //
+        UNEXPECTED_INT_VALUE( ast->kind );
     } // switch
   }
 
