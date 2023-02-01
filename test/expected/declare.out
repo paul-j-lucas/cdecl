@@ -488,3 +488,6 @@ c++decl> declare x, y as type int
 using x = int;
 using y = int;
 c++decl> define S::T as struct S
+c++decl> set c++03
+c++decl> declare C as non-throwing destructor
+~C() throw();
