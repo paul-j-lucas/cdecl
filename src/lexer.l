@@ -890,6 +890,8 @@ include{S}*\"  {
 "["/{S}*"["     { SET_TOKEN;           return Y_ATTR_BEGIN; }
 
               /* Digraphs. */
+"<%"          { set_digraph( "{" ); return '{'; }
+"%>"          { set_digraph( "}" ); return '}'; }
 "<:"          { set_digraph( "[" ); return '['; }
 ":>"          { set_digraph( "]" ); return ']'; }
 

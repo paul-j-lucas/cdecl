@@ -15,6 +15,13 @@ declare a as array 9 of integer
 cdecl> set c++
 c++decl> explain <:<:noreturn:>:> void f(int)
 declare f as non-returning function (integer) returning void
+c++decl> struct S { typedef int I; }
+c++decl> struct T <% typedef int I; %>
+c++decl> show typedef
+struct S;
+struct S <% typedef int I; %>;
+struct T;
+struct T <% typedef int I; %>;
 c++decl> set nographs
 c++decl> declare a as array 9 of int
 int a[9];

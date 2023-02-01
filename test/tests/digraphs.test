@@ -13,6 +13,9 @@ explain int a<:9:>
 
 set c++
 explain <:<:noreturn:>:> void f(int)
+struct S { typedef int I; }
+struct T <% typedef int I; %>
+show typedef
 
 set nographs
 declare a as array 9 of int

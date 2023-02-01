@@ -1109,7 +1109,9 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
       }
 
       FPRINTF( gout,
-        "%s %s { ", c_type_name_c( &scope_type ), c_sname_scope_name( sname )
+        "%s %s %s ",
+        c_type_name_c( &scope_type ), c_sname_scope_name( sname ),
+        graph_token_c( "{" )
       );
       c_sname_cleanup( &temp_sname );
       scope_close_braces_to_print = 1;
@@ -1123,8 +1125,9 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
       FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
         scope_type = c_scope_data( scope )->type;
         FPRINTF( gout,
-          "%s %s { ",
-          c_type_name_c( &scope_type ), c_scope_data( scope )->name
+          "%s %s %s ",
+          c_type_name_c( &scope_type ), c_scope_data( scope )->name,
+          graph_token_c( "{" )
         );
       } // for
       scope_close_braces_to_print = c_sname_count( sname ) - 1;
@@ -1176,7 +1179,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
   if ( scope_close_braces_to_print > 0 ) {
     FPUTC( ';', gout );
     while ( scope_close_braces_to_print-- > 0 )
-      FPUTS( " }", gout );
+      FPRINTF( gout, " %s", graph_token_c( "}" ) );
   }
 
   if ( (flags & C_GIB_FINAL_SEMI) != 0 && scope_type.btids != TB_NAMESPACE )

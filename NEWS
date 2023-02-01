@@ -16,6 +16,10 @@ with their complete changes, see the AUTHORS file.
 When hitting TAB and there are no completion matches, **cdecl** now rings the
 terminal's bell.
 
+** Digraph fixes
+The digraphs for `{` and `}` weren't emitted when they should have been for
+nested types.  Digraphs weren't parsed at all.  Both fixed.
+
 ** Undid K&R function parameter printed as `int`
 Undid a change in **cdecl** 11.5 where K&R C typeless function parameters were
 printed as being of type `int`: they now again print as only their names.
