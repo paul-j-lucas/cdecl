@@ -712,7 +712,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       case K_TYPEDEF:
       case K_VARIADIC:
         // nothing to do
-        break;
+        break;                          // LCOV_EXCL_LINE
 
       CASE_K_PLACEHOLDER;
     } // switch
