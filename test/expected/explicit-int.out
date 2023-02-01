@@ -355,3 +355,49 @@ cdecl> declare x as unsigned long
 unsigned long x;
 cdecl> declare x as unsigned long long
 unsigned long long x;
+cdecl> set explicit-int=u,l
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+    explicit-int=lu
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as long
+long int x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned
+unsigned int x;
+cdecl> declare x as unsigned long
+unsigned long int x;
+cdecl> set noexplicit-int
+cdecl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+    lang=C23
+    prompt
+    semicolon
+    using
+cdecl> declare x as long
+long x;
+cdecl> declare x as long long
+long long x;
+cdecl> declare x as unsigned
+unsigned x;
+cdecl> declare x as unsigned long
+unsigned long x;

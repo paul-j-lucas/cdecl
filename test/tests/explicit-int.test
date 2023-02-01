@@ -131,4 +131,18 @@ declare x as unsigned
 declare x as unsigned long
 declare x as unsigned long long
 
+set explicit-int=u,l
+set
+declare x as long
+declare x as long long
+declare x as unsigned
+declare x as unsigned long
+
+set noexplicit-int
+set
+declare x as long
+declare x as long long
+declare x as unsigned
+declare x as unsigned long
+
 END
