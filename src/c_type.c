@@ -421,7 +421,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define EXP         LANG_export
 #define FIN         LANG_final
 #define IMA         LANG__Imaginary
-#define INF         LANG_inline
+#define INL         LANG_inline
 #define LDO         LANG_long_double
 #define LFL         LANG_long_float
 #define LLO         LANG_long_long
@@ -497,7 +497,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
   { XXX    ,XXX    ,EXP    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&EXP,CIN    ,XXX    ,XXX    ,XXX    ,EXP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// export
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&FIN,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// final
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEV    ,CEX    ,XXX    ,DDF    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// friend
-  { XXX    ,XXX    ,___    ,CPP    ,XXX    ,___    ,XXX    ,XXX    ,CEV    ,CEX    ,CIN    ,DDF    ,DDF    ,CPP    ,EXP    ,FIN    ,CPP    ,INF    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// inline
+  { XXX    ,XXX    ,___    ,CPP    ,XXX    ,___    ,XXX    ,XXX    ,CEV    ,CEX    ,CIN    ,DDF    ,DDF    ,CPP    ,EXP    ,FIN    ,CPP    ,INL    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// inline
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___ },// mutable
   { XXX    ,XXX    ,NOE    ,NOE    ,XXX    ,NOE    ,XXX    ,NOE    ,CEV&NOE,CEX&NOE,XXX    ,NOE    ,NOE    ,NOE    ,EXP    ,NOE    ,NOE    ,NOE    ,XXX    ,NOE    ,___    ,___    ,___    ,___    ,___ },// noexcept
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&OVR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN&OVR,XXX    ,OVR    ,XXX    ,NOE&OVR,OVR    ,___    ,___    ,___    ,___ },// override
