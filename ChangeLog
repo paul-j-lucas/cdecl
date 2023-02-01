@@ -1,5 +1,8 @@
 2023-02-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, c_ast_check.c, test/Makefile.am, explain_dtor.out,
+     explain_dtor.test: Cdecl now correctly reports destructors in C as an
+     error.
    * NEWS, lexer.l, trigraphs.out, trigraphs.test: Trigraph fixes.
    * NEWS, gibberish.c, lexer.l, digraphs.out, digraphs.test: Digraph fixes.
    * declare.out, declare.test: Added test.
