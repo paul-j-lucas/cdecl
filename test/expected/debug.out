@@ -12,7 +12,7 @@ cdecl> set
     prompt
     semicolon
     using
-cdecl> explain int x
+cdecl> explain (int)x
 
 builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
   builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
@@ -22,7 +22,7 @@ builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
-    loc = 8-10,
+    loc = 9-11,
     type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   }
@@ -35,7 +35,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
-    loc = 8-10,
+    loc = 9-11,
     type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
@@ -43,6 +43,813 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
   type_c_ast = {
     sname = "",
     unique_id = 1358,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 9-11,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+explain_command ::= EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt = {
+  type_c_ast = {
+    sname = "",
+    unique_id = 1358,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 9-11,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  cast_c_astp_opt = NULL,
+  sname_c_opt = "x" (none),
+  explain_command = {
+    sname = "x" (none),
+    unique_id = 1359,
+    kind = "cast",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    cast_kind = "C",
+    to_ast = {
+      sname = "",
+      unique_id = 1358,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 9-11,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+cast x into integer
+cdecl> explain _BitInt(4) x
+
+builtin_type_c_ast ::= _BitInt '(' int_lit_exp ')' = {
+  int = 4,
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1360,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-17,
+    type = "_BitInt" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0,
+    BitInt.width = 4
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1360,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-17,
+    type = "_BitInt" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0,
+    BitInt.width = 4
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1360,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-17,
+    type = "_BitInt" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0,
+    BitInt.width = 4
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1360,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-17,
+    type = "_BitInt" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0,
+    BitInt.width = 4
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1360,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-17,
+    type = "_BitInt" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0,
+    BitInt.width = 4
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1361,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-17,
+    type = "_BitInt" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0,
+    BitInt.width = 4
+  },
+  decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1360,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-17,
+    type = "_BitInt" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0,
+    BitInt.width = 4
+  },
+  decl_c = {
+    sname = "x" (none),
+    unique_id = 1360,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-17,
+    type = "_BitInt" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0,
+    BitInt.width = 4
+  }
+}
+declare x as bit-precise integer width 4 bits
+cdecl> explain alignas(8) int x
+
+alignas_specifier_c ::= ALIGNAS '(' Y_INT_LIT ')' = {
+  INT_LIT = 8
+}
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1362,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 19-21,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1362,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 19-21,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1362,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 19-21,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1362,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 19-21,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1362,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 19-21,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (alignas_specifier_c.expr) = 8,
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1363,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 19-21,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1362,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 19-21,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c = {
+    sname = "x" (none),
+    unique_id = 1362,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    alignas.expr = 8,
+    alignas_loc = 8-14,
+    loc = 19-21,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+declare x as integer aligned as 8 bytes
+cdecl> explain alignas(long) int x
+
+type_c_ast ::= type_modifier_list_c_type = {
+  type_modifier_list_c_type = "long" (btid = 0x8001, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1364,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 16-19,
+    type = "long" (btid = 0x8001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+alignas_specifier_c ::= ALIGNAS '(' type_c_ast cast_c_astp_opt ')' = {
+  type_c_ast = {
+    sname = "",
+    unique_id = 1364,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 16-19,
+    type = "long" (btid = 0x8001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  cast_c_astp_opt = NULL
+}
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1365,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-24,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1365,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-24,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1365,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-24,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1365,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-24,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1365,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-24,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (alignas_specifier_c.type_ast) = {
+    sname = "",
+    unique_id = 1364,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 16-19,
+    type = "long" (btid = 0x8001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1366,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-24,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1365,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-24,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c = {
+    sname = "x" (none),
+    unique_id = 1365,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    alignas.type_ast = {
+      sname = "",
+      unique_id = 1364,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 16-19,
+      type = "long" (btid = 0x8001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    alignas_loc = 8-14,
+    loc = 22-24,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+declare x as integer aligned as long integer
+cdecl> explain enum E : int x
+
+sname_c ::= NAME = {
+  NAME = "E",
+  sname_c = "E" (none)
+}
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1367,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+enum_fixed_type_c_ast ::= enum_unmodified_fixed_type_c_ast enum_fixed_type_modifier_list_btid_opt = {
+  enum_unmodified_fixed_type_c_ast = {
+    sname = "",
+    unique_id = 1367,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  enum_fixed_type_modifier_list_btid_opt = "" (btid = 0x1),
+  enum_fixed_type_c_ast = {
+    sname = "",
+    unique_id = 1367,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+enum_c_ast ::= enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt = {
+  enum_btid = "enum" (btid = 0x800001),
+  attribute_specifier_list_c_atid_opt = "" (atid = 0x4),
+  any_sname_c = "E" (none),
+  enum_fixed_type_c_ast_opt = {
+    sname = "",
+    unique_id = 1367,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  enum_c_ast = {
+    sname = "",
+    unique_id = 1368,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1367,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_stid_opt = {
+  enum_class_struct_union_c_ast = {
+    sname = "",
+    unique_id = 1368,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1367,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  cv_qualifier_list_stid_opt = "" (stid = 0x2),
+  east_modified_type_c_ast = {
+    sname = "",
+    unique_id = 1368,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1367,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1368,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1367,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1368,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1367,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1369,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1370,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1369,
+      loc = 17-19,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1368,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1367,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c = {
+    sname = "x" (none),
+    unique_id = 1368,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1367,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare x as enumeration E of type integer
+cdecl> explain enum E x
+
+sname_c ::= NAME = {
+  NAME = "E",
+  sname_c = "E" (none)
+}
+
+enum_c_ast ::= enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt = {
+  enum_btid = "enum" (btid = 0x800001),
+  attribute_specifier_list_c_atid_opt = "" (atid = 0x4),
+  any_sname_c = "E" (none),
+  enum_fixed_type_c_ast_opt = NULL,
+  enum_c_ast = {
+    sname = "",
+    unique_id = 1371,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none)
+  }
+}
+
+east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_stid_opt = {
+  enum_class_struct_union_c_ast = {
+    sname = "",
+    unique_id = 1371,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none)
+  },
+  cv_qualifier_list_stid_opt = "" (stid = 0x2),
+  east_modified_type_c_ast = {
+    sname = "",
+    unique_id = 1371,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none)
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1371,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none)
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1371,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none)
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1372,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none)
+  },
+  decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1371,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none)
+  },
+  decl_c = {
+    sname = "x" (none),
+    unique_id = 1371,
+    kind = "enumeration",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "enum" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    enum_sname = "E" (none)
+  }
+}
+declare x as enumeration E
+cdecl> explain int x
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1373,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1373,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1373,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -60,7 +867,7 @@ sname_c ::= NAME = {
 sname_c_ast ::= sname_c = {
   (type_c_ast) = {
     sname = "",
-    unique_id = 1358,
+    unique_id = 1373,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -72,7 +879,7 @@ sname_c_ast ::= sname_c = {
   bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "x" (none),
-    unique_id = 1358,
+    unique_id = 1373,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -86,7 +893,7 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "x" (none),
-    unique_id = 1359,
+    unique_id = 1374,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -96,7 +903,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c_astp = {
     sname = "x" (none),
-    unique_id = 1358,
+    unique_id = 1373,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -106,7 +913,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c = {
     sname = "x" (none),
-    unique_id = 1358,
+    unique_id = 1373,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -116,8 +923,3213 @@ decl_c ::= decl_c_astp = {
   }
 }
 declare x as integer
-cdecl> set nodebug
-cdecl> set
+cdecl> explain int x[4]
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1375,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1375,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1375,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1375,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1375,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+array_decl_c_astp ::= decl2_c_astp array_size_c_ast = {
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1375,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl2_c_astp = {
+    sname = "x" (none),
+    unique_id = 1375,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  target_ast = NULL,
+  array_size_c_ast = {
+    sname = "",
+    unique_id = 1376,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-15,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = 4,
+    of_ast = NULL
+  },
+  array_decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1376,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-15,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = 4,
+    of_ast = {
+      sname = "",
+      unique_id = 1375,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1376,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1378,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1376,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-15,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = 4,
+    of_ast = {
+      sname = "",
+      unique_id = 1375,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1376,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c = {
+    sname = "x" (none),
+    unique_id = 1376,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-15,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = 4,
+    of_ast = {
+      sname = "",
+      unique_id = 1375,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1376,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare x as array 4 of integer
+cdecl> explain int x[]
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1379,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1379,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1379,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1379,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1379,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+array_decl_c_astp ::= decl2_c_astp array_size_c_ast = {
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1379,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl2_c_astp = {
+    sname = "x" (none),
+    unique_id = 1379,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  target_ast = NULL,
+  array_size_c_ast = {
+    sname = "",
+    unique_id = 1380,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-14,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = unspecified,
+    of_ast = NULL
+  },
+  array_decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1380,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-14,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = unspecified,
+    of_ast = {
+      sname = "",
+      unique_id = 1379,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1380,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1382,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1380,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-14,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = unspecified,
+    of_ast = {
+      sname = "",
+      unique_id = 1379,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1380,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c = {
+    sname = "x" (none),
+    unique_id = 1380,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-14,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = unspecified,
+    of_ast = {
+      sname = "",
+      unique_id = 1379,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1380,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare x as array of integer
+cdecl> explain size_t x
+
+typedef_type_c_ast ::= any_typedef = {
+  (type_c_ast) = NULL,
+  any_typedef.ast = {
+    sname = "size_t" (none),
+    unique_id = 37,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-20,
+    type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sub_scope_sname_c_opt = "",
+  typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1383,
+    kind = "typedef",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
+    for_ast = {
+      sname = "size_t" (none),
+      unique_id = 37,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 8-20,
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1383,
+    kind = "typedef",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
+    for_ast = {
+      sname = "size_t" (none),
+      unique_id = 37,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 8-20,
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1383,
+    kind = "typedef",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
+    for_ast = {
+      sname = "size_t" (none),
+      unique_id = 37,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 8-20,
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1383,
+    kind = "typedef",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
+    for_ast = {
+      sname = "size_t" (none),
+      unique_id = 37,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 8-20,
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    bit_width = 0
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1383,
+    kind = "typedef",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
+    for_ast = {
+      sname = "size_t" (none),
+      unique_id = 37,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 8-20,
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    bit_width = 0
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1384,
+    kind = "typedef",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
+    for_ast = {
+      sname = "size_t" (none),
+      unique_id = 1385,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1384,
+      loc = 8-20,
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1383,
+    kind = "typedef",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
+    for_ast = {
+      sname = "size_t" (none),
+      unique_id = 37,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 8-20,
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    bit_width = 0
+  },
+  decl_c = {
+    sname = "x" (none),
+    unique_id = 1383,
+    kind = "typedef",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-13,
+    type = "none" (btid = 0x20000001, stid = 0x2, atid = 0x4),
+    for_ast = {
+      sname = "size_t" (none),
+      unique_id = 37,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 8-20,
+      type = "unsigned long" (btid = 0x48001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    bit_width = 0
+  }
+}
+declare x as size_t
+cdecl> explain struct S x
+
+sname_c ::= NAME = {
+  NAME = "S",
+  sname_c = "S" (none)
+}
+
+enum_class_struct_union_c_ast ::= class_struct_union_btid attribute_specifier_list_c_atid_opt sname = {
+  class_struct_union_btid = "struct" (btid = 0x1000001),
+  attribute_specifier_list_c_atid_opt = "" (atid = 0x4),
+  any_sname_c = "S" (none),
+  class_struct_union_c_ast = {
+    sname = "",
+    unique_id = 1386,
+    kind = "struct or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-15,
+    type = "struct" (btid = 0x1000001, stid = 0x2, atid = 0x4),
+    csu_sname = "S" (none)
+  }
+}
+
+east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_stid_opt = {
+  enum_class_struct_union_c_ast = {
+    sname = "",
+    unique_id = 1386,
+    kind = "struct or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-15,
+    type = "struct" (btid = 0x1000001, stid = 0x2, atid = 0x4),
+    csu_sname = "S" (none)
+  },
+  cv_qualifier_list_stid_opt = "" (stid = 0x2),
+  east_modified_type_c_ast = {
+    sname = "",
+    unique_id = 1386,
+    kind = "struct or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-15,
+    type = "struct" (btid = 0x1000001, stid = 0x2, atid = 0x4),
+    csu_sname = "S" (none)
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1386,
+    kind = "struct or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-15,
+    type = "struct" (btid = 0x1000001, stid = 0x2, atid = 0x4),
+    csu_sname = "S" (none)
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1386,
+    kind = "struct or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-15,
+    type = "struct" (btid = 0x1000001, stid = 0x2, atid = 0x4),
+    csu_sname = "S" (none)
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1387,
+    kind = "struct or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-15,
+    type = "struct" (btid = 0x1000001, stid = 0x2, atid = 0x4),
+    csu_sname = "S" (none)
+  },
+  decl_c_astp = {
+    sname = "x" (none),
+    unique_id = 1386,
+    kind = "struct or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-15,
+    type = "struct" (btid = 0x1000001, stid = 0x2, atid = 0x4),
+    csu_sname = "S" (none)
+  },
+  decl_c = {
+    sname = "x" (none),
+    unique_id = 1386,
+    kind = "struct or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-15,
+    type = "struct" (btid = 0x1000001, stid = 0x2, atid = 0x4),
+    csu_sname = "S" (none)
+  }
+}
+declare x as structure S
+cdecl> explain void f()
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "void" (btid = 0x11),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1388,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1388,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1388,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "f",
+  sname_c = "f" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1388,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "f" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "f" (none),
+    unique_id = 1388,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+  (type_c_ast) = {
+    sname = "f" (none),
+    unique_id = 1388,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl2_c_astp = {
+    sname = "f" (none),
+    unique_id = 1388,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  param_c_ast_list_opt = [],
+  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
+  noexcept_c_stid_opt = "" (stid = 0x2),
+  trailing_return_type_c_ast_opt = NULL,
+  func_equals_c_stid_opt = "" (stid = 0x2),
+  target_ast = NULL,
+  func_decl_c_astp = {
+    sname = "f" (none),
+    unique_id = 1389,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-15,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [],
+    ret_ast = {
+      sname = "",
+      unique_id = 1388,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1389,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1390,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "f" (none),
+    unique_id = 1389,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-15,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [],
+    ret_ast = {
+      sname = "",
+      unique_id = 1388,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1389,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c = {
+    sname = "f" (none),
+    unique_id = 1389,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-15,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [],
+    ret_ast = {
+      sname = "",
+      unique_id = 1388,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1389,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare f as function returning void
+cdecl> explain void f(int i, char const *fmt, ... )
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "void" (btid = 0x11),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1391,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1391,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1391,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "f",
+  sname_c = "f" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1391,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "f" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "f" (none),
+    unique_id = 1391,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1392,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1392,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1392,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "i",
+  sname_c = "i" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1392,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "i" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "i" (none),
+    unique_id = 1392,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
+  type_c_ast = {
+    sname = "i" (none),
+    unique_id = 1392,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  cast_c_astp_opt = {
+    sname = "i" (none),
+    unique_id = 1392,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  param_c_ast = {
+    sname = "i" (none),
+    unique_id = 1392,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+param_c_ast_list ::= param_c_ast = {
+  param_c_ast = {
+    sname = "i" (none),
+    unique_id = 1392,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  param_c_ast_list = [
+    {
+      sname = "i" (none),
+      unique_id = 1392,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  ]
+}
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "char" (btid = 0x101),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1393,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-25,
+    type = "char" (btid = 0x101, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1393,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-25,
+    type = "char" (btid = 0x101, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1393,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-31,
+    type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+pointer_type_c_ast ::= * type_qualifier_list_c_stid_opt = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1393,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 22-31,
+    type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+    bit_width = 0
+  },
+  type_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  pointer_type_c_ast = {
+    sname = "",
+    unique_id = 1394,
+    kind = "pointer",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 33,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    to_ast = {
+      sname = "",
+      unique_id = 1393,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1394,
+      loc = 22-31,
+      type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "fmt",
+  sname_c = "fmt" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1394,
+    kind = "pointer",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 33,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    to_ast = {
+      sname = "",
+      unique_id = 1393,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1394,
+      loc = 22-31,
+      type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  sname = "fmt" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "fmt" (none),
+    unique_id = 1394,
+    kind = "pointer",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 33,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    to_ast = {
+      sname = "",
+      unique_id = 1393,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1394,
+      loc = 22-31,
+      type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+pointer_cast_c_astp ::= pointer_type_c_ast cast_c_astp_opt = {
+  pointer_type_c_ast = {
+    sname = "fmt" (none),
+    unique_id = 1394,
+    kind = "pointer",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 33,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    to_ast = {
+      sname = "",
+      unique_id = 1393,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1394,
+      loc = 22-31,
+      type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  cast_c_astp_opt = {
+    sname = "fmt" (none),
+    unique_id = 1394,
+    kind = "pointer",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 33,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    to_ast = {
+      sname = "",
+      unique_id = 1393,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1394,
+      loc = 22-31,
+      type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  pointer_cast_c_astp = {
+    sname = "fmt" (none),
+    unique_id = 1394,
+    kind = "pointer",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 33,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    to_ast = {
+      sname = "",
+      unique_id = 1393,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1394,
+      loc = 22-31,
+      type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1393,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = 1394,
+    loc = 22-31,
+    type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+    bit_width = 0
+  },
+  cast_c_astp_opt = {
+    sname = "fmt" (none),
+    unique_id = 1394,
+    kind = "pointer",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 33,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    to_ast = {
+      sname = "",
+      unique_id = 1393,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1394,
+      loc = 22-31,
+      type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  param_c_ast = {
+    sname = "fmt" (none),
+    unique_id = 1394,
+    kind = "pointer",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 33,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    to_ast = {
+      sname = "",
+      unique_id = 1393,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1394,
+      loc = 22-31,
+      type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+param_c_ast_list ::= param_c_ast_list ',' param_c_ast = {
+  param_c_ast_list = [
+    {
+      sname = "i" (none),
+      unique_id = 1392,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  ],
+  param_c_ast = {
+    sname = "fmt" (none),
+    unique_id = 1394,
+    kind = "pointer",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 33,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    to_ast = {
+      sname = "",
+      unique_id = 1393,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1394,
+      loc = 22-31,
+      type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  param_c_ast_list = [
+    {
+      sname = "i" (none),
+      unique_id = 1392,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    {
+      sname = "fmt" (none),
+      unique_id = 1394,
+      kind = "pointer",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 33,
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+      to_ast = {
+        sname = "",
+        unique_id = 1393,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = 1394,
+        loc = 22-31,
+        type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+        bit_width = 0
+      }
+    }
+  ]
+}
+
+param_c_ast ::= ... = {
+  param_c_ast = {
+    sname = "",
+    unique_id = 1395,
+    kind = "variadic",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 39-41,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4)
+  }
+}
+
+param_c_ast_list ::= param_c_ast_list ',' param_c_ast = {
+  param_c_ast_list = [
+    {
+      sname = "i" (none),
+      unique_id = 1392,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    {
+      sname = "fmt" (none),
+      unique_id = 1394,
+      kind = "pointer",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 33,
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+      to_ast = {
+        sname = "",
+        unique_id = 1393,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = 1394,
+        loc = 22-31,
+        type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+        bit_width = 0
+      }
+    }
+  ],
+  param_c_ast = {
+    sname = "",
+    unique_id = 1395,
+    kind = "variadic",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 39-41,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4)
+  },
+  param_c_ast_list = [
+    {
+      sname = "i" (none),
+      unique_id = 1392,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    {
+      sname = "fmt" (none),
+      unique_id = 1394,
+      kind = "pointer",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 33,
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+      to_ast = {
+        sname = "",
+        unique_id = 1393,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = 1394,
+        loc = 22-31,
+        type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+        bit_width = 0
+      }
+    },
+    {
+      sname = "",
+      unique_id = 1395,
+      kind = "variadic",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 39-41,
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4)
+    }
+  ]
+}
+
+func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+  (type_c_ast) = {
+    sname = "f" (none),
+    unique_id = 1391,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl2_c_astp = {
+    sname = "f" (none),
+    unique_id = 1391,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  param_c_ast_list_opt = [
+    {
+      sname = "i" (none),
+      unique_id = 1392,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    },
+    {
+      sname = "fmt" (none),
+      unique_id = 1394,
+      kind = "pointer",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 33,
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+      to_ast = {
+        sname = "",
+        unique_id = 1393,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = 1394,
+        loc = 22-31,
+        type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+        bit_width = 0
+      }
+    },
+    {
+      sname = "",
+      unique_id = 1395,
+      kind = "variadic",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 39-41,
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4)
+    }
+  ],
+  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
+  noexcept_c_stid_opt = "" (stid = 0x2),
+  trailing_return_type_c_ast_opt = NULL,
+  func_equals_c_stid_opt = "" (stid = 0x2),
+  target_ast = NULL,
+  func_decl_c_astp = {
+    sname = "f" (none),
+    unique_id = 1396,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-43,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [
+      {
+        sname = "i" (none),
+        unique_id = 1392,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 15-17,
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+        bit_width = 0
+      },
+      {
+        sname = "fmt" (none),
+        unique_id = 1394,
+        kind = "pointer",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 33,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+        to_ast = {
+          sname = "",
+          unique_id = 1393,
+          kind = "built-in type",
+          depth = 0,
+          parent->unique_id = 1394,
+          loc = 22-31,
+          type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+          bit_width = 0
+        }
+      },
+      {
+        sname = "",
+        unique_id = 1395,
+        kind = "variadic",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 39-41,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4)
+      }
+    ],
+    ret_ast = {
+      sname = "",
+      unique_id = 1391,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1396,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1397,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "f" (none),
+    unique_id = 1396,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-43,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [
+      {
+        sname = "i" (none),
+        unique_id = 1392,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 15-17,
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+        bit_width = 0
+      },
+      {
+        sname = "fmt" (none),
+        unique_id = 1394,
+        kind = "pointer",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 33,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+        to_ast = {
+          sname = "",
+          unique_id = 1393,
+          kind = "built-in type",
+          depth = 0,
+          parent->unique_id = 1394,
+          loc = 22-31,
+          type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+          bit_width = 0
+        }
+      },
+      {
+        sname = "",
+        unique_id = 1395,
+        kind = "variadic",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 39-41,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4)
+      }
+    ],
+    ret_ast = {
+      sname = "",
+      unique_id = 1391,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1396,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c = {
+    sname = "f" (none),
+    unique_id = 1396,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-43,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [
+      {
+        sname = "i" (none),
+        unique_id = 1392,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 15-17,
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+        bit_width = 0
+      },
+      {
+        sname = "fmt" (none),
+        unique_id = 1394,
+        kind = "pointer",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 33,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+        to_ast = {
+          sname = "",
+          unique_id = 1393,
+          kind = "built-in type",
+          depth = 0,
+          parent->unique_id = 1394,
+          loc = 22-31,
+          type = "const char" (btid = 0x101, stid = 0x200000002, atid = 0x4),
+          bit_width = 0
+        }
+      },
+      {
+        sname = "",
+        unique_id = 1395,
+        kind = "variadic",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 39-41,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4)
+      }
+    ],
+    ret_ast = {
+      sname = "",
+      unique_id = 1391,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1396,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare f as function (i as integer, fmt as pointer to constant character, variadic) returning void
+cdecl> explain void f(int x[*])
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "void" (btid = 0x11),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1398,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1398,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1398,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "f",
+  sname_c = "f" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1398,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "f" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "f" (none),
+    unique_id = 1398,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1399,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1399,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1399,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1399,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1399,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1399,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  cast_c_astp_opt = {
+    sname = "x" (none),
+    unique_id = 1399,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  target_ast = NULL,
+  array_size_c_ast = {
+    sname = "",
+    unique_id = 1400,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 20-22,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = *,
+    of_ast = NULL
+  },
+  array_cast_c_astp = {
+    sname = "x" (none),
+    unique_id = 1400,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 20-22,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = *,
+    of_ast = {
+      sname = "",
+      unique_id = 1399,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1400,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1399,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = 1400,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  cast_c_astp_opt = {
+    sname = "x" (none),
+    unique_id = 1400,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 20-22,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = *,
+    of_ast = {
+      sname = "",
+      unique_id = 1399,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1400,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  param_c_ast = {
+    sname = "x" (none),
+    unique_id = 1400,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 20-22,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = *,
+    of_ast = {
+      sname = "",
+      unique_id = 1399,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1400,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+param_c_ast_list ::= param_c_ast = {
+  param_c_ast = {
+    sname = "x" (none),
+    unique_id = 1400,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 20-22,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = *,
+    of_ast = {
+      sname = "",
+      unique_id = 1399,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1400,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  param_c_ast_list = [
+    {
+      sname = "x" (none),
+      unique_id = 1400,
+      kind = "array",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 20-22,
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+      size = *,
+      of_ast = {
+        sname = "",
+        unique_id = 1399,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = 1400,
+        loc = 15-17,
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+        bit_width = 0
+      }
+    }
+  ]
+}
+
+func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+  (type_c_ast) = {
+    sname = "f" (none),
+    unique_id = 1398,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl2_c_astp = {
+    sname = "f" (none),
+    unique_id = 1398,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  param_c_ast_list_opt = [
+    {
+      sname = "x" (none),
+      unique_id = 1400,
+      kind = "array",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 20-22,
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+      size = *,
+      of_ast = {
+        sname = "",
+        unique_id = 1399,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = 1400,
+        loc = 15-17,
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+        bit_width = 0
+      }
+    }
+  ],
+  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
+  noexcept_c_stid_opt = "" (stid = 0x2),
+  trailing_return_type_c_ast_opt = NULL,
+  func_equals_c_stid_opt = "" (stid = 0x2),
+  target_ast = NULL,
+  func_decl_c_astp = {
+    sname = "f" (none),
+    unique_id = 1402,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-23,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [
+      {
+        sname = "x" (none),
+        unique_id = 1400,
+        kind = "array",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 20-22,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+        size = *,
+        of_ast = {
+          sname = "",
+          unique_id = 1399,
+          kind = "built-in type",
+          depth = 0,
+          parent->unique_id = 1400,
+          loc = 15-17,
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+          bit_width = 0
+        }
+      }
+    ],
+    ret_ast = {
+      sname = "",
+      unique_id = 1398,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1402,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1403,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "f" (none),
+    unique_id = 1402,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-23,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [
+      {
+        sname = "x" (none),
+        unique_id = 1400,
+        kind = "array",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 20-22,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+        size = *,
+        of_ast = {
+          sname = "",
+          unique_id = 1399,
+          kind = "built-in type",
+          depth = 0,
+          parent->unique_id = 1400,
+          loc = 15-17,
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+          bit_width = 0
+        }
+      }
+    ],
+    ret_ast = {
+      sname = "",
+      unique_id = 1398,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1402,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c = {
+    sname = "f" (none),
+    unique_id = 1402,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-23,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [
+      {
+        sname = "x" (none),
+        unique_id = 1400,
+        kind = "array",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 20-22,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+        size = *,
+        of_ast = {
+          sname = "",
+          unique_id = 1399,
+          kind = "built-in type",
+          depth = 0,
+          parent->unique_id = 1400,
+          loc = 15-17,
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+          bit_width = 0
+        }
+      }
+    ],
+    ret_ast = {
+      sname = "",
+      unique_id = 1398,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1402,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare f as function (x as variable length array of integer) returning void
+cdecl> explain void f(int x[static 2])
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "void" (btid = 0x11),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1404,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1404,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1404,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "f",
+  sname_c = "f" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1404,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "f" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "f" (none),
+    unique_id = 1404,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1405,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1405,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1405,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "x",
+  sname_c = "x" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1405,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "x" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "x" (none),
+    unique_id = 1405,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
+  (type_c_ast) = {
+    sname = "x" (none),
+    unique_id = 1405,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  cast_c_astp_opt = {
+    sname = "x" (none),
+    unique_id = 1405,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  target_ast = NULL,
+  array_size_c_ast = {
+    sname = "",
+    unique_id = 1406,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 20-29,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = 2,
+    type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
+    of_ast = NULL
+  },
+  array_cast_c_astp = {
+    sname = "x" (none),
+    unique_id = 1406,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 20-29,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = 2,
+    type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
+    of_ast = {
+      sname = "",
+      unique_id = 1405,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1406,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt = {
+  this_stid_opt = "" (stid = 0x2),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1405,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = 1406,
+    loc = 15-17,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  cast_c_astp_opt = {
+    sname = "x" (none),
+    unique_id = 1406,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 20-29,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = 2,
+    type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
+    of_ast = {
+      sname = "",
+      unique_id = 1405,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1406,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  param_c_ast = {
+    sname = "x" (none),
+    unique_id = 1406,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 20-29,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = 2,
+    type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
+    of_ast = {
+      sname = "",
+      unique_id = 1405,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1406,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+param_c_ast_list ::= param_c_ast = {
+  param_c_ast = {
+    sname = "x" (none),
+    unique_id = 1406,
+    kind = "array",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 20-29,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    size = 2,
+    type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
+    of_ast = {
+      sname = "",
+      unique_id = 1405,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1406,
+      loc = 15-17,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  param_c_ast_list = [
+    {
+      sname = "x" (none),
+      unique_id = 1406,
+      kind = "array",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 20-29,
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+      size = 2,
+      type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
+      of_ast = {
+        sname = "",
+        unique_id = 1405,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = 1406,
+        loc = 15-17,
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+        bit_width = 0
+      }
+    }
+  ]
+}
+
+func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+  (type_c_ast) = {
+    sname = "f" (none),
+    unique_id = 1404,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl2_c_astp = {
+    sname = "f" (none),
+    unique_id = 1404,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  param_c_ast_list_opt = [
+    {
+      sname = "x" (none),
+      unique_id = 1406,
+      kind = "array",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 20-29,
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+      size = 2,
+      type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
+      of_ast = {
+        sname = "",
+        unique_id = 1405,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = 1406,
+        loc = 15-17,
+        type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+        bit_width = 0
+      }
+    }
+  ],
+  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
+  noexcept_c_stid_opt = "" (stid = 0x2),
+  trailing_return_type_c_ast_opt = NULL,
+  func_equals_c_stid_opt = "" (stid = 0x2),
+  target_ast = NULL,
+  func_decl_c_astp = {
+    sname = "f" (none),
+    unique_id = 1408,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-30,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [
+      {
+        sname = "x" (none),
+        unique_id = 1406,
+        kind = "array",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 20-29,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+        size = 2,
+        type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
+        of_ast = {
+          sname = "",
+          unique_id = 1405,
+          kind = "built-in type",
+          depth = 0,
+          parent->unique_id = 1406,
+          loc = 15-17,
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+          bit_width = 0
+        }
+      }
+    ],
+    ret_ast = {
+      sname = "",
+      unique_id = 1404,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1408,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1409,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "f" (none),
+    unique_id = 1408,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-30,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [
+      {
+        sname = "x" (none),
+        unique_id = 1406,
+        kind = "array",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 20-29,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+        size = 2,
+        type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
+        of_ast = {
+          sname = "",
+          unique_id = 1405,
+          kind = "built-in type",
+          depth = 0,
+          parent->unique_id = 1406,
+          loc = 15-17,
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+          bit_width = 0
+        }
+      }
+    ],
+    ret_ast = {
+      sname = "",
+      unique_id = 1404,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1408,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c = {
+    sname = "f" (none),
+    unique_id = 1408,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-30,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+    flags = unspecified (0x0),
+    param_ast_list = [
+      {
+        sname = "x" (none),
+        unique_id = 1406,
+        kind = "array",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 20-29,
+        type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+        size = 2,
+        type = "static" (btid = 0x1, stid = 0x402, atid = 0x4),
+        of_ast = {
+          sname = "",
+          unique_id = 1405,
+          kind = "built-in type",
+          depth = 0,
+          parent->unique_id = 1406,
+          loc = 15-17,
+          type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+          bit_width = 0
+        }
+      }
+    ],
+    ret_ast = {
+      sname = "",
+      unique_id = 1404,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1408,
+      loc = 8-11,
+      type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare f as function (x as array static 2 of integer) returning void
+cdecl> set c++
+c++decl> class C
+
+sname_c ::= NAME = {
+  NAME = "C",
+  sname_c = "C" (none)
+}
+
+class_struct_union_declaration_c ::= class_struct_union_btid sname '{' in_scope_declaration_c_opt '}' ';' = {
+  (current_scope) = "",
+  class_struct_union_btid = "class" (btid = 0x4000001),
+  any_sname_c = "C" (none),
+  class_struct_union_declaration_c = {
+    sname = "C" (class),
+    unique_id = 1410,
+    kind = "class, struct, or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 6,
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
+    csu_sname = "C" (none)
+  }
+}
+c++decl> explain bool operator!() const
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "bool" (btid = 0x81),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1411,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1411,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1411,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+func_qualifier_list_c_stid_opt ::= func_qualifier_list_c_stid_opt func_qualifier_c_stid = {
+  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  func_qualifier_c_stid = "const" (stid = 0x200000002),
+  func_qualifier_list_c_stid_opt = "const" (stid = 0x200000002)
+}
+
+oper_decl_c_astp ::= oper_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1411,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  oper_sname_c_opt = "",
+  c_operator = "!",
+  param_c_ast_list_opt = [],
+  func_qualifier_list_c_stid_opt = "const" (stid = 0x200000002),
+  func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
+  noexcept_c_stid_opt = "" (stid = 0x2),
+  trailing_return_type_c_ast_opt = NULL,
+  func_equals_c_stid_opt = "" (stid = 0x2),
+  oper_decl_c_astp = {
+    sname = "",
+    unique_id = 1412,
+    kind = "operator",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 11-29,
+    type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
+    oper_id = "!" (6),
+    flags = unspecified (0x0),
+    param_ast_list = [],
+    ret_ast = {
+      sname = "",
+      unique_id = 1411,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1412,
+      loc = 8-11,
+      type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1413,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-11,
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "",
+    unique_id = 1412,
+    kind = "operator",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 11-29,
+    type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
+    oper_id = "!" (6),
+    flags = unspecified (0x0),
+    param_ast_list = [],
+    ret_ast = {
+      sname = "",
+      unique_id = 1411,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1412,
+      loc = 8-11,
+      type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c = {
+    sname = "",
+    unique_id = 1412,
+    kind = "operator",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 11-29,
+    type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
+    oper_id = "!" (6),
+    flags = unspecified (0x0),
+    param_ast_list = [],
+    ret_ast = {
+      sname = "",
+      unique_id = 1411,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1412,
+      loc = 8-11,
+      type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare ! as constant member operator returning boolean
+c++decl> explain int C::*p
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1414,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1414,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1414,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+pointer_to_member_type_c_ast ::= sname '::*' cv_qualifier_list_stid_opt = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1414,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  sname = "C" (class),
+  cv_qualifier_list_stid_opt = "" (stid = 0x2),
+  pointer_to_member_type_c_ast = {
+    sname = "",
+    unique_id = 1415,
+    kind = "pointer to member",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 12-15,
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
+    class_sname = "C" (class),
+    to_ast = {
+      sname = "",
+      unique_id = 1414,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1415,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+sname_c ::= NAME = {
+  NAME = "p",
+  sname_c = "p" (none)
+}
+
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1415,
+    kind = "pointer to member",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 12-15,
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
+    class_sname = "C" (class),
+    to_ast = {
+      sname = "",
+      unique_id = 1414,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1415,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  sname = "p" (none),
+  bit_field_c_uint_opt = 0,
+  sname_c_ast = {
+    sname = "p" (none),
+    unique_id = 1415,
+    kind = "pointer to member",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 12-15,
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
+    class_sname = "C" (class),
+    to_ast = {
+      sname = "",
+      unique_id = 1414,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1415,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp = {
+  pointer_to_member_type_c_ast = {
+    sname = "p" (none),
+    unique_id = 1415,
+    kind = "pointer to member",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 12-15,
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
+    class_sname = "C" (class),
+    to_ast = {
+      sname = "",
+      unique_id = 1414,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1415,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c_astp = {
+    sname = "p" (none),
+    unique_id = 1415,
+    kind = "pointer to member",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 12-15,
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
+    class_sname = "C" (class),
+    to_ast = {
+      sname = "",
+      unique_id = 1414,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1415,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  pointer_to_member_decl_c_astp = {
+    sname = "p" (none),
+    unique_id = 1415,
+    kind = "pointer to member",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 12-16,
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
+    class_sname = "C" (class),
+    to_ast = {
+      sname = "",
+      unique_id = 1414,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1415,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1416,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-10,
+    type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "p" (none),
+    unique_id = 1415,
+    kind = "pointer to member",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 12-16,
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
+    class_sname = "C" (class),
+    to_ast = {
+      sname = "",
+      unique_id = 1414,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1415,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c = {
+    sname = "p" (none),
+    unique_id = 1415,
+    kind = "pointer to member",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 12-16,
+    type = "class" (btid = 0x4000001, stid = 0x2, atid = 0x4),
+    class_sname = "C" (class),
+    to_ast = {
+      sname = "",
+      unique_id = 1414,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1415,
+      loc = 8-10,
+      type = "int" (btid = 0x4001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare p as pointer to member of class C integer
+c++decl> explain operator bool() const
+
+builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
+  builtin_no_BitInt_c_btid = "bool" (btid = 0x81),
+  builtin_type_c_ast = {
+    sname = "",
+    unique_id = 1417,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-20,
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  atomic_builtin_typedef_type_c_ast = {
+    sname = "",
+    unique_id = 1417,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-20,
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1417,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-20,
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+func_qualifier_list_c_stid_opt ::= func_qualifier_list_c_stid_opt func_qualifier_c_stid = {
+  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  func_qualifier_c_stid = "const" (stid = 0x200000002),
+  func_qualifier_list_c_stid_opt = "const" (stid = 0x200000002)
+}
+
+user_defined_conversion_decl_c_astp ::= oper_sname_c_opt OPERATOR type_c_ast udc_decl_c_ast_opt '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt func_equals_c_stid_opt = {
+  (type_c_ast) = NULL,
+  oper_sname_c_opt = "",
+  type_c_ast = {
+    sname = "",
+    unique_id = 1417,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-20,
+    type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  udc_decl_c_ast_opt = NULL,
+  func_qualifier_list_c_stid_opt = "const" (stid = 0x200000002),
+  noexcept_c_stid_opt = "" (stid = 0x2),
+  func_equals_c_stid_opt = "" (stid = 0x2),
+  user_defined_conversion_decl_c_astp = {
+    sname = "",
+    unique_id = 1418,
+    kind = "user-defined conversion operator",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 6-28,
+    type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
+    conv_ast = {
+      sname = "",
+      unique_id = 1417,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-20,
+      type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+user_defined_conversion_declaration_c ::= user_defined_conversion_decl_c_astp = {
+  user_defined_conversion_declaration_c = {
+    sname = "",
+    unique_id = 1418,
+    kind = "user-defined conversion operator",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 6-28,
+    type = "const" (btid = 0x1, stid = 0x200000002, atid = 0x4),
+    conv_ast = {
+      sname = "",
+      unique_id = 1417,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-20,
+      type = "bool" (btid = 0x81, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare constant user-defined conversion operator returning boolean
+c++decl> explain ~C()
+
+destructor_decl_c ::= virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt = {
+  virtual_stid_opt = "" (stid = 0x2),
+  any_name_exp = "C",
+  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  noexcept_c_stid_opt = "" (stid = 0x2),
+  func_equals_c_stid_opt = "" (stid = 0x2),
+  destructor_decl_c = {
+    sname = "C" (none),
+    unique_id = 1419,
+    kind = "destructor",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 6-11,
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4)
+  }
+}
+declare C as destructor
+c++decl> set nodebug
+c++decl> set
   noalt-tokens
   nodebug
   noeast-const
@@ -127,14 +4139,14 @@ cdecl> set
     explicit-ecsu=su
   noexplicit-int
   nographs
-    lang=C23
+    lang=C++23
     prompt
     semicolon
     using
-cdecl> explain int x
+c++decl> explain int x
 declare x as integer
-cdecl> set debug
-cdecl> set
+c++decl> set debug
+c++decl> set
   noalt-tokens
     debug
   noeast-const
@@ -144,17 +4156,17 @@ cdecl> set
     explicit-ecsu=su
   noexplicit-int
   nographs
-    lang=C23
+    lang=C++23
     prompt
     semicolon
     using
-cdecl> explain int x
+c++decl> explain int x
 
 builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
   builtin_no_BitInt_c_btid = "int" (btid = 0x4001),
   builtin_type_c_ast = {
     sname = "",
-    unique_id = 1362,
+    unique_id = 1422,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -167,7 +4179,7 @@ builtin_type_c_ast ::= builtin_no_BitInt_c_btid = {
 east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
   atomic_builtin_typedef_type_c_ast = {
     sname = "",
-    unique_id = 1362,
+    unique_id = 1422,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -178,7 +4190,7 @@ east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_lis
   type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
-    unique_id = 1362,
+    unique_id = 1422,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -196,7 +4208,7 @@ sname_c ::= NAME = {
 sname_c_ast ::= sname_c = {
   (type_c_ast) = {
     sname = "",
-    unique_id = 1362,
+    unique_id = 1422,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -208,7 +4220,7 @@ sname_c_ast ::= sname_c = {
   bit_field_c_uint_opt = 0,
   sname_c_ast = {
     sname = "x" (none),
-    unique_id = 1362,
+    unique_id = 1422,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -222,7 +4234,7 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "x" (none),
-    unique_id = 1363,
+    unique_id = 1423,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -232,7 +4244,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c_astp = {
     sname = "x" (none),
-    unique_id = 1362,
+    unique_id = 1422,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
@@ -242,7 +4254,7 @@ decl_c ::= decl_c_astp = {
   },
   decl_c = {
     sname = "x" (none),
-    unique_id = 1362,
+    unique_id = 1422,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,
