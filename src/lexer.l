@@ -903,6 +903,8 @@ include{S}*\"  {
 "??'"         { set_trigraph( "^"  ); return Y_CIRC   ; }
 "??("         { set_trigraph( "["  ); return '['      ; }
 "??)"         { set_trigraph( "]"  ); return ']'      ; }
+"??<"         { set_trigraph( "{"  ); return '{'      ; }
+"??>"         { set_trigraph( "}"  ); return '}'      ; }
 "??-"         { set_trigraph( "~"  ); return Y_TILDE  ; }
 
               /*

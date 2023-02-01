@@ -29,6 +29,11 @@ c++decl> explain int a??(9??)
                       ^
 14: warning: trigraphs not supported since C++17
 declare a as array 9 of integer
+c++decl> set c++03
+c++decl> struct S ??< typedef int I; ??>
+c++decl> show typedef
+typedef struct S S;
+struct S ??< typedef int I; ??>;
 c++decl> set c++11
 c++decl> explain ??(??(noreturn??)??) void f(int)
 declare f as non-returning function (integer) returning void

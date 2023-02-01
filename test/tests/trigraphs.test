@@ -21,6 +21,10 @@ declare ??- as operator returning S
 set c++
 explain int a??(9??)
 
+set c++03
+struct S ??< typedef int I; ??>
+show typedef
+
 set c++11
 explain ??(??(noreturn??)??) void f(int)
 explain S& operator??'=(int)
