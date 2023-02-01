@@ -1,5 +1,6 @@
 2023-02-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * explicit-int.out, explicit-int.test: More tests.
    * c_type.c: s/INF/INL/
    * c_ast_check.c: Replaced `goto only_special` with
      `UNEXPECTED_INT_VALUE(ast->kind)`.
