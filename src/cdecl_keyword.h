@@ -97,6 +97,13 @@ typedef enum ac_policy ac_policy_t;
  */
 struct cdecl_keyword {
   char const         *literal;          ///< C string literal of the keyword.
+
+  /**
+   * Language(s) OK in.  This is used only for construction of did-you-mean
+   * suggestions.
+   */
+  c_lang_id_t         lang_ids;
+
   bool                always_find;      ///< Find even when explaining C/C++?
 
   /**
@@ -116,7 +123,17 @@ struct cdecl_keyword {
   c_lang_lit_t const *lang_syn;
 
 #ifdef WITH_READLINE
-  c_lang_id_t         ac_lang_ids;      ///< Language(s) autocompletable in.
+  /**
+   * Language(s) autocompletable in.  Relative to `lang_ids`, this field:
+   *
+   *  1. Is exactly the same in which case it's autocompletable in all (and
+   *     only) those language(s) in which it's valid.
+   *
+   *  2. Is #LANG_NONE via #AC_DEFER_TO(), #AC_DEFER_TO_C_KEYWORD(), or
+   *     #AC_TOO_SHORT.
+   */
+  c_lang_id_t         ac_lang_ids;
+
   ac_policy_t         ac_policy;        ///< Autocompletion policy.
 
   /**
