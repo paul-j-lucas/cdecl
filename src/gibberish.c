@@ -287,14 +287,14 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
     case K_CAST:
       assert( g->flags == C_GIB_CAST );
-      if ( ast->cast.cast_kind == C_CAST_C ) {
+      if ( ast->cast.kind == C_CAST_C ) {
         FPUTC( '(', g->gout );
         c_ast_gibberish_impl(
           ast->cast.to_ast, C_GIB_CAST, /*printed_typedef=*/false, g->gout
         );
         FPRINTF( g->gout, ")%s\n", c_sname_full_name( &ast->sname ) );
       } else {
-        FPRINTF( g->gout, "%s<", c_cast_gibberish( ast->cast.cast_kind ) );
+        FPRINTF( g->gout, "%s<", c_cast_gibberish( ast->cast.kind ) );
         c_ast_gibberish_impl(
           ast->cast.to_ast, C_GIB_CAST, /*printed_typedef=*/false, g->gout
         );

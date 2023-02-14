@@ -187,7 +187,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
 
     case K_CAST:
       DUMP_COMMA;
-      DUMP_STR( "cast_kind", c_cast_english( ast->cast.cast_kind ) );
+      DUMP_STR( "cast_kind", c_cast_english( ast->cast.kind ) );
       FPUTS( ",\n", dout );
       c_ast_dump_impl( ast->cast.to_ast, indent, "to_ast", dout );
       break;

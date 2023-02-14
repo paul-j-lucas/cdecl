@@ -190,7 +190,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       break;
 
     case K_CAST:
-      dup_ast->cast.cast_kind = ast->cast.cast_kind;
+      dup_ast->cast.kind = ast->cast.kind;
       break;
 
     case K_ENUM:
@@ -274,7 +274,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
 
     case K_CAST:
-      if ( i_ast->cast.cast_kind != j_ast->cast.cast_kind )
+      if ( i_ast->cast.kind != j_ast->cast.kind )
         return false;
       break;
 

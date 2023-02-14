@@ -198,8 +198,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
       break;
 
     case K_CAST:
-      if ( ast->cast.cast_kind != C_CAST_C )
-        FPRINTF( eout, "%s ", c_cast_english( ast->cast.cast_kind ) );
+      if ( ast->cast.kind != C_CAST_C )
+        FPRINTF( eout, "%s ", c_cast_english( ast->cast.kind ) );
       FPUTS( L_cast, eout );
       if ( !c_sname_empty( &ast->sname ) ) {
         FPUTC( ' ', eout );

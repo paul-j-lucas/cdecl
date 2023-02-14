@@ -1930,7 +1930,7 @@ cast_command
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$2 );
-      cast_ast->cast.cast_kind = C_CAST_C;
+      cast_ast->cast.kind = C_CAST_C;
       cast_ast->cast.to_ast = decl_ast;
       C_AST_CHECK( cast_ast );
       c_ast_gibberish( cast_ast, C_GIB_CAST, cdecl_fout );
@@ -1964,7 +1964,7 @@ cast_command
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$2 );
-      cast_ast->cast.cast_kind = cast_kind;
+      cast_ast->cast.kind = cast_kind;
       cast_ast->cast.to_ast = decl_ast;
       C_AST_CHECK( cast_ast );
       c_ast_gibberish( cast_ast, C_GIB_CAST, cdecl_fout );
@@ -2775,7 +2775,7 @@ c_style_cast_expr_c
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$6 );
-      cast_ast->cast.cast_kind = C_CAST_C;
+      cast_ast->cast.kind = C_CAST_C;
       cast_ast->cast.to_ast = c_ast_patch_placeholder( type_ast, decl_ast );
 
       DUMP_AST( "explain_command", cast_ast );
@@ -2823,7 +2823,7 @@ new_style_cast_expr_c
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$8 );
-      cast_ast->cast.cast_kind = cast_kind;
+      cast_ast->cast.kind = cast_kind;
       cast_ast->cast.to_ast = c_ast_patch_placeholder( type_ast, decl_ast );
 
       DUMP_AST( "explain_command", cast_ast );

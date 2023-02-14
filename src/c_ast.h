@@ -263,7 +263,7 @@ struct c_builtin_ast {
  */
 struct c_cast_ast {
   c_ast_t        *to_ast;               ///< Cast type.
-  c_cast_kind_t   cast_kind;            ///< Cast kind.
+  c_cast_kind_t   kind;                 ///< Cast kind.
 };
 
 /**

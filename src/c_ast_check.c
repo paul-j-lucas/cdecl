@@ -597,7 +597,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  switch ( ast->cast.cast_kind ) {
+  switch ( ast->cast.kind ) {
     case C_CAST_CONST:
       if ( (raw_ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) == 0 ) {
         print_error( &to_ast->loc,
