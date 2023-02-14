@@ -306,9 +306,9 @@ static c_keyword_t C_KEYWORDS[] = {
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
   { L_or_eq,                Y_PIPE_EQ,            KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
-  { L_xor,                  Y_CIRC,               KC__, TX_NONE,
+  { L_xor,                  Y_CARET,              KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
-  { L_xor_eq,               Y_CIRC_EQ,            KC__, TX_NONE,
+  { L_xor_eq,               Y_CARET_EQ,           KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
 
   // C23 attributes

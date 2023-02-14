@@ -1358,7 +1358,7 @@ static void yyerror( char const *msg ) {
                     // C/C++ operators: precedence 7 (covered above)
 %left               Y_bit_and        // '&' -- covered by Y_AMPER
                     // C/C++ operators: precedence 6
-%left               Y_CIRC           // '^' -- also has alt. token "xor"
+%left               Y_CARET          // '^' -- also has alt. token "xor"
                     // C/C++ operators: precedence 5
 %left               Y_PIPE           // '|' -- also has alt. token "bitor"
                     // C/C++ operators: precedence 4
@@ -1376,7 +1376,7 @@ static void yyerror( char const *msg ) {
                     Y_SLASH_EQ          "/="
                     Y_LESS2_EQ          "<<="
                     Y_GREATER2_EQ       ">>="
-                    Y_CIRC_EQ        // "^=" -- also has alt. token "xor_eq"
+                    Y_CARET_EQ       // "^=" -- also has alt. token "xor_eq"
                     Y_PIPE_EQ        // "|=" -- also has alt. token "or_eq"
                     // C/C++ operators: precedence 1
 %left                                   ','
@@ -3776,7 +3776,7 @@ array_size_c_int
 
 block_decl_c_astp                       // Apple extension
   : // in_attr: type_c_ast
-    '(' Y_CIRC
+    '(' Y_CARET
     { //
       // A block AST has to be the type inherited attribute for decl_c_astp so
       // we have to create it here.
@@ -4988,7 +4988,7 @@ array_cast_c_astp
 
 block_cast_c_astp                       // Apple extension
   : // in_attr: type_c_ast
-    '(' Y_CIRC
+    '(' Y_CARET
     { //
       // A block AST has to be the type inherited attribute for cast_c_astp_opt
       // so we have to create it here.
@@ -7676,8 +7676,8 @@ c_operator
   | Y_GREATER_EQ                    { $$ = C_OP_GREATER_EQ      ; }
   | Y_QMARK_COLON                   { $$ = C_OP_QMARK_COLON     ; }
   | '[' rbracket_exp                { $$ = C_OP_BRACKETS        ; }
-  | Y_CIRC                          { $$ = C_OP_CIRC            ; }
-  | Y_CIRC_EQ                       { $$ = C_OP_CIRC_EQ         ; }
+  | Y_CARET                         { $$ = C_OP_CARET           ; }
+  | Y_CARET_EQ                      { $$ = C_OP_CARET_EQ        ; }
   | Y_PIPE                          { $$ = C_OP_PIPE            ; }
   | Y_PIPE2                         { $$ = C_OP_PIPE2           ; }
   | Y_PIPE_EQ                       { $$ = C_OP_PIPE_EQ         ; }

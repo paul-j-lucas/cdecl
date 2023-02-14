@@ -311,8 +311,8 @@ enum c_oper_id {
   C_OP_GREATER2_EQ,     ///< The `>>=` operator.
   C_OP_QMARK_COLON,     ///< The `?:` operator.
   C_OP_BRACKETS,        ///< The `[]` operator.
-  C_OP_CIRC,            ///< The `^` operator.
-  C_OP_CIRC_EQ,         ///< The `^=` operator.
+  C_OP_CARET,           ///< The `^` operator.
+  C_OP_CARET_EQ,        ///< The `^=` operator.
   C_OP_PIPE,            ///< The `|` operator.
   C_OP_PIPE_EQ,         ///< The `|=` operator.
   C_OP_PIPE2,           ///< The `||` operator.

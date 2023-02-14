@@ -896,16 +896,16 @@ include{S}*\"  {
 ":>"          { set_digraph( "]" ); return ']'; }
 
               /* Trigraphs. */
-"??'="        { set_trigraph( "^=" ); return Y_CIRC_EQ; }
-"??!="        { set_trigraph( "|=" ); return Y_PIPE_EQ; }
-"??!??!"      { set_trigraph( "||" ); return Y_PIPE2  ; }
-"??!"         { set_trigraph( "|"  ); return Y_PIPE   ; }
-"??'"         { set_trigraph( "^"  ); return Y_CIRC   ; }
-"??("         { set_trigraph( "["  ); return '['      ; }
-"??)"         { set_trigraph( "]"  ); return ']'      ; }
-"??<"         { set_trigraph( "{"  ); return '{'      ; }
-"??>"         { set_trigraph( "}"  ); return '}'      ; }
-"??-"         { set_trigraph( "~"  ); return Y_TILDE  ; }
+"??'="        { set_trigraph( "^=" ); return Y_CARET_EQ ; }
+"??!="        { set_trigraph( "|=" ); return Y_PIPE_EQ  ; }
+"??!??!"      { set_trigraph( "||" ); return Y_PIPE2    ; }
+"??!"         { set_trigraph( "|"  ); return Y_PIPE     ; }
+"??'"         { set_trigraph( "^"  ); return Y_CARET    ; }
+"??("         { set_trigraph( "["  ); return '['        ; }
+"??)"         { set_trigraph( "]"  ); return ']'        ; }
+"??<"         { set_trigraph( "{"  ); return '{'        ; }
+"??>"         { set_trigraph( "}"  ); return '}'        ; }
+"??-"         { set_trigraph( "~"  ); return Y_TILDE    ; }
 
               /*
                * Special case: if "::" is immediately followed by a '*', return
@@ -944,14 +944,14 @@ include{S}*\"  {
 ">>"          { SET_TOKEN; return Y_GREATER2        ; }
 ">>="         { SET_TOKEN; return Y_GREATER2_EQ     ; }
 "?:"          { SET_TOKEN; return Y_QMARK_COLON     ; }
-"^="          { SET_TOKEN; return Y_CIRC_EQ         ; }
+"^="          { SET_TOKEN; return Y_CARET_EQ        ; }
 "|="          { SET_TOKEN; return Y_PIPE_EQ         ; }
 "||"          { SET_TOKEN; return Y_PIPE2           ; }
 
               /* Single-character operators having alternative tokens. */
 "!"           { SET_TOKEN; return Y_EXCLAM          ; }
 "&"           { SET_TOKEN; return Y_AMPER           ; }
-"^"           { SET_TOKEN; return Y_CIRC            ; }
+"^"           { SET_TOKEN; return Y_CARET           ; }
 "|"           { SET_TOKEN; return Y_PIPE            ; }
 "~"           { SET_TOKEN; return Y_TILDE           ; }
 
