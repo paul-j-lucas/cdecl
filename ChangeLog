@@ -1,5 +1,8 @@
 2023-02-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * getopt-pfx-core.h, hard-locale.h, limits.in.h, setlocale_null.c,
+     string.in.h, verify.h, wchar.in.h, assert_h.m4, gnulib-common.m4,
+     limits-h.m4, setlocale_null.m4: Updated Gnulib.
    * NEWS, configure.ac: Updated to 14.0.
    * NEWS, cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_kind.c, c_kind.h,
      c_lang.h, c_type.c, c_type.h, cdecl_keyword.c, dump.c, english.c,
