@@ -1,4 +1,4 @@
-# setlocale_null.m4 serial 6
+# setlocale_null.m4 serial 7
 dnl Copyright (C) 2019-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -13,9 +13,23 @@ AC_DEFUN([gl_FUNC_SETLOCALE_NULL],
   AC_CACHE_CHECK([whether setlocale (LC_ALL, NULL) is multithread-safe],
     [gl_cv_func_setlocale_null_all_mtsafe],
     [case "$host_os" in
-       # Guess no on musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku, Cygwin.
-       *-musl* | darwin* | freebsd* | midnightbsd* | netbsd* | openbsd* | aix* | haiku* | cygwin*)
+       # Guess no on musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku.
+       *-musl* | darwin* | freebsd* | midnightbsd* | netbsd* | openbsd* | aix* | haiku*)
          gl_cv_func_setlocale_null_all_mtsafe=no ;;
+       # Guess no on Cygwin < 3.4.6.
+       cygwin*)
+         AC_EGREP_CPP([Lucky user],
+           [
+#if defined __CYGWIN__
+ #include <cygwin/version.h>
+ #if CYGWIN_VERSION_DLL_COMBINED >= CYGWIN_VERSION_DLL_MAKE_COMBINED (3004, 6)
+  Lucky user
+ #endif
+#endif
+          ],
+          [gl_cv_func_setlocale_null_all_mtsafe=yes],
+          [gl_cv_func_setlocale_null_all_mtsafe=no])
+        ;;
        # Guess yes on glibc, HP-UX, IRIX, Solaris, native Windows.
        *-gnu* | gnu* | hpux* | irix* | solaris* | mingw*)
          gl_cv_func_setlocale_null_all_mtsafe=yes ;;

@@ -173,7 +173,7 @@ setlocale_null_unlocked (int category, char *buf, size_t bufsize)
 #endif
 }
 
-#if !(SETLOCALE_NULL_ALL_MTSAFE && SETLOCALE_NULL_ONE_MTSAFE) /* musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku, Cygwin */
+#if !(SETLOCALE_NULL_ALL_MTSAFE && SETLOCALE_NULL_ONE_MTSAFE) /* musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku, Cygwin < 3.4.6 */
 
 /* Use a lock, so that no two threads can invoke setlocale_null_unlocked
    at the same time.  */
@@ -198,7 +198,7 @@ setlocale_null_with_lock (int category, char *buf, size_t bufsize)
   return ret;
 }
 
-# elif HAVE_PTHREAD_API /* musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku, Cygwin */
+# elif HAVE_PTHREAD_API /* musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku, Cygwin < 3.4.6 */
 
 extern
 #  if defined _WIN32 || defined __CYGWIN__
