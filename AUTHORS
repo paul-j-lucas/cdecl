@@ -96,7 +96,7 @@ Paul J. Lucas <paul@lucasmail.org>
 		conversion operators, virtual
 	added C++11 auto, constexpr, enum class, final, fixed-type enums,
 		function trailing return-type syntax, inline namespaces,
-		noexcept, override, ref-qualifiers, rvalue references,
+		lambdas, noexcept, override, ref-qualifiers, rvalue references,
 		thread_local, and user-defined literals
 	added C++20 consteval, constinit, export, operator<=>, and nested
 		inline namespaces

@@ -113,6 +113,7 @@ most notably:
   `enum class`,
   fixed-type enumerations,
   `final`,
+  lambdas,
   `noexcept`,
   `override`,
   rvalue references,
