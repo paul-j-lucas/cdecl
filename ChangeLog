@@ -1,3 +1,33 @@
+2023-02-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated to 14.0.
+   * NEWS, cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_kind.c, c_kind.h,
+     c_lang.h, c_type.c, c_type.h, cdecl_keyword.c, dump.c, english.c,
+     gibberish.c, help.c, literals.c, literals.h, parser.y, types.h,
+     test/Makefile.am, declare.out, explain.out, explain_la_coco.out,
+     explain_la_cor.out, explain_la_nco.out, explain_la_nn-error.out,
+     explain_la_nr.out, explain_la_rco.out, explain_la_rr.out,
+     explain_la_rrn.out, explain_la_star_ts_star_ts.out,
+     explain_la_star_tsts.out, explain_la_ts_star_ts.out, explain_la_tsts.out,
+     help.out, declare.test, explain.test, explain_la_coco.test,
+     explain_la_cor.test, explain_la_nco.test, explain_la_nn-error.test,
+     explain_la_nr.test, explain_la_rco.test, explain_la_rr.test,
+     explain_la_rrn.test, explain_la_star_ts_star_ts.test,
+     explain_la_star_tsts.test, explain_la_ts_star_ts.test,
+     explain_la_tsts.test: Added lambda support.
+
+2023-02-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c, c_operator.c, lexer.l, parser.y, types.h: s/CIRC/CARET/
+   * c_ast.c, c_ast.h, c_ast_check.c, dump.c, english.c, gibberish.c, parser.y:
+     s/cast_kind/kind/
+
+2023-02-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_keyword.c, cdecl_keyword.h, did_you_mean.c: Added
+     cdecl_keyword::lang_ids to elide language inappropriate did-you-mean
+     suggestions.
+
 2023-02-01  Paul J. Lucas <paul@lucasmail.org>
 
    * explicit-int.out, explicit-int.test: More tests.
