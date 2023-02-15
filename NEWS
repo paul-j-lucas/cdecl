@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 13.3
+* Changes in Cdecl 14.0
 
 ** Autocompletion bell
 When hitting TAB and there are no completion matches, **cdecl** now rings the
