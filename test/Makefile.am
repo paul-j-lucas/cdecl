@@ -371,6 +371,18 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_fstf_v.test \
 	tests/explain_i+w3.test \
 	tests/explain_ktnk.test \
+	tests/explain_la_coco.test \
+	tests/explain_la_cor.test \
+	tests/explain_la_nco.test \
+	tests/explain_la_nn-error.test \
+	tests/explain_la_nr.test \
+	tests/explain_la_rco.test \
+	tests/explain_la_rr.test \
+	tests/explain_la_rrn.test \
+	tests/explain_la_star_ts_star_ts.test \
+	tests/explain_la_star_tsts.test \
+	tests/explain_la_ts_star_ts.test \
+	tests/explain_la_tsts.test \
 	tests/explain_nrfi_v-c++-error.test \
 	tests/explain_p_typedef_ri.test \
 	tests/explain_pcf_i.test \

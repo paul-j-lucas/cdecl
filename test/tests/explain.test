@@ -312,6 +312,19 @@ explain ~C() final
 namespace N { class C { typedef int I; }; }
 explain N::C::I x
 
+explain []
+explain [i]
+explain [i](int x)
+explain [=]
+explain [=](int x)
+explain [=, i, &j]
+explain [&]
+explain [&, i]
+explain [&](int x)
+explain [] noexcept
+explain [](int x) noexcept
+explain [](int x) noexcept -> double
+
 set c++98
 explain void f() throw()
 

@@ -1,0 +1,3 @@
+explain [this,*this]
+              ^
+15: error: "this" previously captured

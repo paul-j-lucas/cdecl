@@ -397,6 +397,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_BOOL_TYPE                  (LANG__Bool | LANG_bool)
 
 /**
+ * Lanuages capturing `*this` in lambdas is supportd in.
+ */
+#define LANG_CAPTURE_STAR_THIS          LANG_CPP_MIN(17)
+
+/**
  * Languages the `carries_dependency` attribute is supported in.
  */
 #define LANG_carries_dependency         LANG_CPP_MIN(11)
@@ -592,6 +597,11 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_PROTOTYPES
  */
 #define LANG_KNR_FUNC_DEFINITION        LANG_C_MAX(17)
+
+/**
+ * Lanuages lambdas are supportd in.
+ */
+#define LANG_LAMBDA                     LANG_CPP_MIN(11)
 
 /**
  * Lanuages the `long double` type is supportd in.

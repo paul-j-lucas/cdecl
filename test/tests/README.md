@@ -47,6 +47,7 @@ The characters are:
 + `c8` = `char8_t`
 + `c16` = `char16_t`
 + `c32` = `char32_t`
++ `co` = copy (for lambda capture)
 + `ctor` = constructor
 + `cx` = `_Complex`
 + `d` = `double`
@@ -70,6 +71,7 @@ The characters are:
 + `k` = `struct`
 + `kr` = untyped K&R C function argument
 + `l` = `long`
++ `la` = lambda
 + `m` = member of class or `mutable`
 + `mo` = member operator
 + `mscc` = Microsoft C `__clrcall`

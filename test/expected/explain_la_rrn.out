@@ -1,0 +1,3 @@
+explain [&,&i]
+           ^
+12: error: default capture is already by reference

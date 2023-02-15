@@ -285,6 +285,26 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       g_print_ast_bit_width( g, ast );
       break;
 
+    case K_CAPTURE:
+      switch ( ast->capture.kind ) {
+        case C_CAPTURE_COPY:
+          FPUTC( '=', g->gout );
+          break;
+        case C_CAPTURE_REFERENCE:
+          FPUTC( '&', g->gout );
+          break;
+        case C_CAPTURE_THIS:
+          FPUTS( "this", g->gout );
+          break;
+        case C_CAPTURE_STAR_THIS:
+          FPUTS( "*this", g->gout );
+          break;
+        case C_CAPTURE_VARIABLE:
+          break;
+      } // switch
+      FPUTS( c_sname_full_name( &ast->sname ), g->gout );
+      break;
+
     case K_CAST:
       assert( g->flags == C_GIB_CAST );
       if ( ast->cast.kind == C_CAST_C ) {
@@ -391,6 +411,26 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         g_print_ast_bit_width( g, ast );
       break;
     }
+
+    case K_LAMBDA:
+      FPUTC( '[', g->gout );
+      g_print_ast_list( g, &ast->lambda.capture_ast_list );
+      FPUTC( ']', g->gout );
+      if ( c_ast_params_count( ast ) > 0 ) {
+        FPUTC( '(', g->gout );
+        g_print_ast_list( g, &ast->lambda.param_ast_list );
+        FPUTC( ')', g->gout );
+      }
+      if ( !c_tid_is_none( ast->type.stids ) )
+        FPRINTF( g->gout, " %s", c_tid_name_c( ast->type.stids ) );
+      if ( !c_tid_is_none( ast->type.atids ) )
+        FPRINTF( g->gout, " %s", c_tid_name_c( ast->type.atids ) );
+      if ( ast->lambda.ret_ast != NULL &&
+           !c_ast_is_builtin_any( ast->lambda.ret_ast, TB_AUTO | TB_VOID ) ) {
+        FPUTS( " -> ", g->gout );
+        g_print_ast( g, ast->lambda.ret_ast );
+      }
+      break;
 
     case K_NAME:
       assert( OPT_LANG_IS( KNR_FUNC_DEFINITION ) );
@@ -644,6 +684,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       case K_CONSTRUCTOR:
       case K_DESTRUCTOR:
       case K_FUNCTION:
+      case K_LAMBDA:
       case K_OPERATOR:
       case K_USER_DEF_CONVERSION:
       case K_USER_DEF_LITERAL:
@@ -705,6 +746,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
         break;
 
       case K_BUILTIN:
+      case K_CAPTURE:
       case K_CAST:
       case K_CLASS_STRUCT_UNION:
       case K_ENUM:
@@ -750,9 +792,11 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       FPUTS( "()", g->gout );
       break;
     case K_BUILTIN:
+    case K_CAPTURE:
     case K_CAST:
     case K_CLASS_STRUCT_UNION:
     case K_ENUM:
+    case K_LAMBDA:
     case K_NAME:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:

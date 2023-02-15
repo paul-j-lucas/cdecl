@@ -142,6 +142,8 @@ static void print_help_commands( void ) {
 
   if ( OPT_LANG_IS( CPP_ANY ) ) {
     print_h( "  declare <operator> as <english>\n" );
+    if ( OPT_LANG_IS( LAMBDA ) )
+      print_h( "  declare [<english>] lambda <lambda-english>\n" );
     print_h( "  declare [<english>] user-def[ined] <user-defined-english>\n" );
   }
 
@@ -315,6 +317,11 @@ static void print_help_english( void ) {
 
     print_h( "  <store>* <modifier>* [<C\\+\\+-type>]\n" );
 
+    if ( OPT_LANG_IS( LAMBDA ) ) {
+      print_h( "lambda-english:\n" );
+      print_h( "  [[capturing] \\[[<captures>]\\] [([<args>])] [returning <english>]\n" );
+    }
+
     print_h( "user-defined-english:\n" );
     print_h( "  conversion [operator] [of <scope-e> <name>]* returning <english>\n" );
 
@@ -322,6 +329,11 @@ static void print_help_english( void ) {
       print_h( "  literal [([<args>])] [returning <english>]\n" );
 
     print_h( "args: a comma separated list of [<name> as] <english>\n" );
+
+    if ( OPT_LANG_IS( LAMBDA ) ) {
+      print_h( "captures: [<capture-default>,] [[&]<name>][,[&]<name>]*\n" );
+      print_h( "capture-default: {copy|reference} [by] default | = | &\n" );
+    }
 
     print_h( "C\\+\\+-type: " );
     if ( OPT_LANG_IS( auto_TYPE ) )

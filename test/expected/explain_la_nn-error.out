@@ -1,0 +1,3 @@
+explain [i,i]
+           ^
+12: error: "i" previously captured

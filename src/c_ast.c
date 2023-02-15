@@ -211,6 +211,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       // ret_ast duplicated by referrer code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL:
+dup_params:
       FOREACH_AST_FUNC_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
         c_ast_t *const dup_param_ast = c_ast_dup( param_ast, ast_list );
@@ -218,6 +219,16 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       } // for
       break;
 
+    case K_LAMBDA:
+      // ret_ast duplicated by referrer code below
+      FOREACH_AST_LAMBDA_CAPTURE( capture, ast ) {
+        c_ast_t const *const capture_ast = c_capture_ast( capture );
+        c_ast_t *const dup_capture_ast = c_ast_dup( capture_ast, ast_list );
+        slist_push_back( &dup_ast->lambda.capture_ast_list, dup_capture_ast );
+      } // for
+      goto dup_params;
+
+    case K_CAPTURE:
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
@@ -290,16 +301,35 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       // ret_ast checked by referrer code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL: {
+equal_params:
+      NO_OP;
       c_param_t const *i_param = c_ast_params( i_ast );
       c_param_t const *j_param = c_ast_params( j_ast );
       for ( ; i_param != NULL && j_param != NULL;
               i_param = i_param->next, j_param = j_param->next ) {
-        if ( !c_ast_equal( c_param_ast( i_param ), c_param_ast( j_param ) ) )
+        c_ast_t const *const i_param_ast =  c_param_ast( i_param );
+        c_ast_t const *const j_param_ast =  c_param_ast( j_param );
+        if ( !c_ast_equal( i_param_ast, j_param_ast ) )
           return false;
       } // for
       if ( i_param != NULL || j_param != NULL )
         return false;
       break;
+    }
+
+    case K_LAMBDA: {
+      c_capture_t const *i_capture = c_ast_captures( i_ast );
+      c_capture_t const *j_capture = c_ast_captures( j_ast );
+      for ( ; i_capture != NULL && j_capture != NULL;
+              i_capture = i_capture->next, j_capture = j_capture->next ) {
+        c_ast_t const *const i_capture_ast =  c_capture_ast( i_capture );
+        c_ast_t const *const j_capture_ast =  c_capture_ast( j_capture );
+        if ( !c_ast_equal( i_capture_ast, j_capture_ast ) )
+          return false;
+      } // for
+      if ( i_capture != NULL || j_capture != NULL )
+        return false;
+      goto equal_params;
     }
 
     case K_ENUM:
@@ -312,6 +342,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
         return false;
       break;
 
+    case K_CAPTURE:
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
@@ -343,6 +374,9 @@ void c_ast_free( c_ast_t *ast ) {
 
     c_sname_cleanup( &ast->sname );
     switch ( ast->kind ) {
+      case K_LAMBDA:
+        c_ast_list_cleanup( &ast->lambda.capture_ast_list );
+        FALLTHROUGH;
       case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
       case K_FUNCTION:
@@ -357,6 +391,7 @@ void c_ast_free( c_ast_t *ast ) {
         break;
       case K_ARRAY:
       case K_BUILTIN:
+      case K_CAPTURE:
       case K_CAST:
       case K_DESTRUCTOR:
       case K_NAME:
@@ -406,12 +441,14 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
       break;
     case K_APPLE_BLOCK:
     case K_BUILTIN:
+    case K_CAPTURE:
     case K_CAST:
     case K_CLASS_STRUCT_UNION:
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_ENUM:
     case K_FUNCTION:
+    case K_LAMBDA:
     case K_NAME:
     case K_OPERATOR:
     case K_PLACEHOLDER:

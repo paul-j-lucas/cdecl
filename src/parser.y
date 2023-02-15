@@ -1267,10 +1267,13 @@ static void yyerror( char const *msg ) {
 %token              Y_bit
 %token              Y_bit_precise
 %token              Y_bits
+%token              Y_by
 %token              Y_bytes
+%token              Y_capturing
 %token              Y_commands
 %token              Y_constructor
 %token              Y_conversion
+%token              Y_copy
 %token              Y_defined
 %token              Y_destructor
 %token              Y_english
@@ -1280,6 +1283,7 @@ static void yyerror( char const *msg ) {
 %token              Y_function
 %token              Y_initialization
 %token              Y_into
+%token              Y_lambda
 %token              Y_length
 %token              Y_linkage
 %token              Y_literal
@@ -1647,9 +1651,12 @@ static void yyerror( char const *msg ) {
 %type   <int_val>   array_size_int_opt
 %type   <tid>       attribute_english_atid
 %type   <int_val>   BitInt_english_int
-%type   <tid>       builtin_no_BitInt_english_btid
 %type   <ast>       block_decl_english_ast
+%type   <tid>       builtin_no_BitInt_english_btid
 %type   <ast>       builtin_type_english_ast
+%type   <ast>       capture_decl_english_ast
+%type   <ast_list>  capture_decl_list_english capture_decl_list_english_opt
+%type   <ast_list>  capturing_paren_capture_decl_list_english_opt
 %type   <ast>       class_struct_union_english_ast
 %type   <ast>       constructor_decl_english_ast
 %type   <ast>       decl_english_ast decl_english_ast_exp
@@ -1668,6 +1675,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       of_type_enum_fixed_type_english_ast_opt
 %type   <ast>       oper_decl_english_ast
 %type   <ast_list>  param_decl_list_english param_decl_list_english_opt
+%type   <ast_list>  paren_capture_decl_list_english
 %type   <ast_list>  paren_param_decl_list_english
 %type   <ast_list>  paren_param_decl_list_english_opt
 %type   <ast>       pointer_decl_english_ast
@@ -1682,6 +1690,9 @@ static void yyerror( char const *msg ) {
 %type   <ast>       sname_english_ast
 %type   <list>      sname_list_english
 %type   <tid>       storage_class_english_stid
+%type   <tid>       storage_class_subset_english_stid
+%type   <type>      storage_class_subset_english_type
+%type   <type>      storage_class_subset_english_type_opt
 %type   <ast>       type_english_ast
 %type   <type>      type_modifier_english_type
 %type   <type>      type_modifier_list_english_type
@@ -1690,9 +1701,6 @@ static void yyerror( char const *msg ) {
 %type   <type>      type_qualifier_english_type
 %type   <type>      type_qualifier_list_english_type
 %type   <type>      type_qualifier_list_english_type_opt
-%type   <tid>       udc_storage_class_english_stid
-%type   <type>      udc_storage_class_english_type
-%type   <type>      udc_storage_class_list_english_type_opt
 %type   <ast>       unmodified_type_english_ast
 %type   <ast>       user_defined_literal_decl_english_ast
 %type   <ast>       var_decl_english_ast
@@ -1725,6 +1733,8 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  block_decl_c_astp
 %type   <tid>       builtin_no_BitInt_c_btid
 %type   <ast>       builtin_type_c_ast
+%type   <ast>       capture_decl_c_ast
+%type   <ast_list>  capture_decl_list_c capture_decl_list_c_opt
 %type   <ast>       class_struct_union_c_ast
 %type   <ast_pair>  decl_c_astp decl2_c_astp
 %type   <sname>     destructor_sname
@@ -1732,9 +1742,9 @@ static void yyerror( char const *msg ) {
 %type   <ast>       enum_c_ast
 %type   <ast>       enum_class_struct_union_c_ast
 %type   <ast>       enum_fixed_type_c_ast enum_fixed_type_c_ast_opt
+%type   <tid>       enum_fixed_type_modifier_btid
 %type   <tid>       enum_fixed_type_modifier_list_btid
 %type   <tid>       enum_fixed_type_modifier_list_btid_opt
-%type   <tid>       enum_fixed_type_modifier_btid
 %type   <ast>       enum_unmodified_fixed_type_c_ast
 %type   <tid>       extern_linkage_c_stid extern_linkage_c_stid_opt
 %type   <ast_pair>  func_decl_c_astp
@@ -1742,6 +1752,8 @@ static void yyerror( char const *msg ) {
 %type   <tid>       func_qualifier_c_stid
 %type   <tid>       func_qualifier_list_c_stid_opt
 %type   <tid>       func_ref_qualifier_c_stid_opt
+%type   <ast_list>  lambda_param_c_ast_list_opt
+%type   <ast>       lambda_return_type_c_ast_opt
 %type   <tid>       linkage_stid
 %type   <ast_pair>  nested_decl_c_astp
 %type   <tid>       noexcept_c_stid_opt
@@ -1758,18 +1770,18 @@ static void yyerror( char const *msg ) {
 %type   <ast>       reference_type_c_ast
 %type   <tid>       restrict_qualifier_c_stid
 %type   <tid>       rparen_func_qualifier_list_c_stid_opt
-%type   <sname>     sub_scope_sname_c_opt
 %type   <sname>     sname_c sname_c_exp sname_c_opt
 %type   <ast>       sname_c_ast
 %type   <type>      storage_class_c_type
+%type   <sname>     sub_scope_sname_c_opt
 %type   <ast>       trailing_return_type_c_ast_opt
 %type   <ast>       type_c_ast
 %type   <sname>     typedef_sname_c
 %type   <ast>       typedef_type_c_ast
 %type   <ast>       typedef_type_decl_c_ast
-%type   <ast>       typeof_type_c_ast
 %type   <type>      type_modifier_c_type
 %type   <type>      type_modifier_list_c_type type_modifier_list_c_type_opt
+%type   <ast>       typeof_type_c_ast
 %type   <tid>       type_qualifier_c_stid
 %type   <tid>       type_qualifier_list_c_stid type_qualifier_list_c_stid_opt
 %type   <ast_pair>  user_defined_conversion_decl_c_astp
@@ -2155,24 +2167,56 @@ declare_command
       FPUTC( '\n', cdecl_fout );
     }
 
+  /*
+   * C++ lambda.
+   */
+  | Y_declare storage_class_subset_english_type_opt Y_lambda
+    capturing_paren_capture_decl_list_english_opt
+    paren_param_decl_list_english_opt returning_english_ast_opt
+    {
+      DUMP_START( "declare_command",
+                  "DECLARE storage_class_subset_english_type_opt "
+                  "LAMBDA capturing_paren_capture_decl_list_english_opt "
+                  "paren_param_decl_list_english_opt"
+                  "returning_english_ast_opt" );
+      DUMP_TYPE( "storage_class_subset_english_type_opt", $2 );
+      DUMP_AST_LIST( "capturing_paren_capture_decl_list_english_opt", $4 );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $5 );
+      DUMP_AST( "returning_english_ast_opt", $6 );
+
+      c_ast_t *const lambda_ast = c_ast_new_gc( K_LAMBDA, &@$ );
+      lambda_ast->type = $2;
+      lambda_ast->lambda.capture_ast_list = slist_move( &$4 );
+      lambda_ast->lambda.param_ast_list = slist_move( &$5 );
+      c_ast_set_parent( $6, lambda_ast );
+
+      DUMP_AST( "declare_command", lambda_ast );
+      DUMP_END();
+
+      C_AST_CHECK( lambda_ast );
+      c_ast_gibberish( lambda_ast, C_GIB_DECL, cdecl_fout );
+      FPUTC( '\n', cdecl_fout );
+    }
+
     /*
      * C++ user-defined conversion operator declaration.
      */
-  | Y_declare udc_storage_class_list_english_type_opt cv_qualifier_list_stid_opt
-    user_defined conversion_exp operator_opt of_scope_list_english_opt
-    returning_exp decl_english_ast
+  | Y_declare storage_class_subset_english_type_opt
+    cv_qualifier_list_stid_opt user_defined conversion_exp operator_opt
+    of_scope_list_english_opt returning_exp decl_english_ast
     {
       c_type_t const  storage_type = $2;
       c_tid_t  const  cv_qual_stid = $3;
       c_ast_t *const  ret_ast = $9;
 
       DUMP_START( "declare_command",
-                  "DECLARE udc_storage_class_list_english_type_opt "
+                  "DECLARE storage_class_subset_english_type_opt "
                   "cv_qualifier_list_stid_opt "
                   "USER-DEFINED CONVERSION OPERATOR "
                   "of_scope_list_english_opt "
                   "RETURNING decl_english_ast" );
-      DUMP_TYPE( "udc_storage_class_list_english_type_opt", storage_type );
+      DUMP_TYPE( "storage_class_subset_english_type_opt",
+                 storage_type );
       DUMP_TID( "cv_qualifier_list_stid_opt", cv_qual_stid );
       DUMP_SNAME( "of_scope_list_english_opt", $7 );
       DUMP_AST( "decl_english_ast", ret_ast );
@@ -2200,66 +2244,6 @@ declare_command
       else
         elaborate_error( "name expected" );
     }
-  ;
-
-udc_storage_class_list_english_type_opt
-  : /* empty */                   { $$ = T_NONE; }
-  | udc_storage_class_list_english_type_opt udc_storage_class_english_type
-    {
-      DUMP_START( "udc_storage_class_list_english_type_opt",
-                  "udc_storage_class_list_english_type_opt "
-                  "udc_storage_class_english_type" );
-      DUMP_TYPE( "udc_storage_class_list_english_type_opt", $1 );
-      DUMP_TYPE( "udc_storage_class_english_type", $2 );
-
-      $$ = $1;
-      C_TYPE_ADD( &$$, &$2, @2 );
-
-      DUMP_TYPE( "udc_storage_class_list_english_type_opt", $$ );
-      DUMP_END();
-    }
-  ;
-
-udc_storage_class_english_type
-  : attribute_english_atid        { $$ = C_TYPE_LIT_A( $1 ); }
-  | udc_storage_class_english_stid
-    {
-      $$ = C_TYPE_LIT_S( $1 );
-    }
-  ;
-
-  /*
-   * We need a seperate storage class set for user-defined conversion operators
-   * without "delete" to eliminiate a shift/reduce conflict; shift:
-   *
-   *      declare delete as ...
-   *
-   * where "delete" is the operator; and reduce:
-   *
-   *      declare delete[d] user-defined conversion operator ...
-   *
-   * where "delete" is storage-class-like.  The "delete" can safely be removed
-   * since only special members can be deleted anyway.
-   */
-udc_storage_class_english_stid
-  : Y_const_ENG eval_expr_init_stid
-    {
-      $$ = $2;
-    }
-  | Y_consteval
-  | Y_constexpr
-  | Y_constinit
-  | Y_explicit
-  | Y_export
-  | Y_final
-  | Y_friend
-  | Y_inline
-  | Y_no Y_except                 { $$ = TS_NOEXCEPT; }
-  | Y_noexcept
-  | Y_override
-  | Y_throw
-  | Y_virtual
-  | Y_pure virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
   ;
 
 alignas_or_width_decl_english_ast
@@ -2318,15 +2302,91 @@ aligned_english
   | Y_alignas
   ;
 
-as_or_to_opt
-  : /* empty */
-  | Y_as
-  | Y_to
+capturing_paren_capture_decl_list_english_opt
+  : /* empty */                   { slist_init( &$$ ); }
+  | Y_capturing paren_capture_decl_list_english
+    {
+      $$ = $2;
+    }
+  | '[' capture_decl_list_english_opt ']'
+    {
+      $$ = $2;
+    }
   ;
 
-bytes_opt
+paren_capture_decl_list_english
+  : '[' capture_decl_list_english_opt ']'
+    {
+      $$ = $2;
+    }
+  | '(' capture_decl_list_english_opt ')'
+    {
+      $$ = $2;
+    }
+  | error
+    {
+      elaborate_error( "'[' or '(' expected\n" );
+    }
+  ;
+
+capture_decl_list_english_opt
+  : /* empty */                   { slist_init( &$$ ); }
+  | capture_decl_list_english
+  ;
+
+capture_decl_list_english
+  : capture_decl_list_english comma_exp capture_decl_english_ast
+    {
+      DUMP_START( "capture_decl_list_english",
+                  "capture_decl_list_english ',' capture_decl_english_ast" );
+      DUMP_AST_LIST( "capture_decl_list_english", $1 );
+      DUMP_AST( "capture_decl_english_ast", $3 );
+
+      $$ = $1;
+      slist_push_back( &$$, $3 );
+
+      DUMP_AST_LIST( "capture_decl_list_english", $$ );
+      DUMP_END();
+    }
+
+  | capture_decl_english_ast
+    {
+      DUMP_START( "capture_decl_list_english",
+                  "capture_decl_english_ast" );
+      DUMP_AST( "capture_decl_english_ast", $1 );
+
+      slist_init( &$$ );
+      slist_push_back( &$$, $1 );
+
+      DUMP_AST_LIST( "capture_decl_list_english", $$ );
+      DUMP_END();
+    }
+  ;
+
+capture_decl_english_ast
+  : Y_copy capture_default_opt
+    {
+      $$ = c_ast_new_gc( K_CAPTURE, &@$ );
+      $$->capture.kind = C_CAPTURE_COPY;
+    }
+  | Y_reference capture_default_opt
+    {
+      $$ = c_ast_new_gc( K_CAPTURE, &@$ );
+      $$->capture.kind = C_CAPTURE_REFERENCE;
+    }
+  | Y_reference Y_to name_exp
+    {
+      $$ = c_ast_new_gc( K_CAPTURE, &@$ );
+      c_sname_append_name( &$$->sname, $3 );
+      $$->capture.kind = C_CAPTURE_REFERENCE;
+    }
+  | capture_decl_c_ast
+  ;
+
+capture_default_opt
   : /* empty */
-  | Y_bytes
+  | Y_by default_exp
+  | Y_default
   ;
 
 width_specifier_english_uint
@@ -2343,10 +2403,68 @@ width_specifier_english_uint
     }
   ;
 
-bits_opt
-  : /* empty */
-  | Y_bit
-  | Y_bits
+storage_class_subset_english_type_opt
+  : /* empty */                   { $$ = T_NONE; }
+  | storage_class_subset_english_type_opt
+    storage_class_subset_english_type
+    {
+      DUMP_START( "storage_class_subset_english_type_opt",
+                  "storage_class_subset_english_type_opt "
+                  "storage_class_subset_english_type" );
+      DUMP_TYPE( "storage_class_subset_english_type_opt", $1 );
+      DUMP_TYPE( "storage_class_subset_english_type", $2 );
+
+      $$ = $1;
+      C_TYPE_ADD( &$$, &$2, @2 );
+
+      DUMP_TYPE( "storage_class_subset_english_type_opt", $$ );
+      DUMP_END();
+    }
+  ;
+
+storage_class_subset_english_type
+  : attribute_english_atid        { $$ = C_TYPE_LIT_A( $1 ); }
+  | storage_class_subset_english_stid
+    {
+      $$ = C_TYPE_LIT_S( $1 );
+    }
+  ;
+
+  /*
+   * We need a seperate storage class set for both lambdas and user-defined
+   * conversion operators without "delete" to eliminiate a shift/reduce
+   * conflict; shift:
+   *
+   *      declare delete as ...
+   *
+   * where "delete" is the operator; and reduce:
+   *
+   *      declare delete[d] user-defined conversion operator ...
+   *
+   * where "delete" is storage-class-like.  The "delete" can safely be removed
+   * since only special members can be deleted anyway.
+   */
+storage_class_subset_english_stid
+  : Y_const_ENG eval_expr_init_stid
+    {
+      $$ = $2;
+    }
+  | Y_consteval
+  | Y_constexpr
+  | Y_constinit
+  | Y_explicit
+  | Y_export
+  | Y_final
+  | Y_friend
+  | Y_inline
+  | Y_mutable
+  | Y_no Y_except                 { $$ = TS_NOEXCEPT; }
+  | Y_noexcept
+  | Y_override
+  | Y_static
+  | Y_throw
+  | Y_virtual
+  | Y_pure virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
   ;
 
 /// define command ////////////////////////////////////////////////////////////
@@ -2443,6 +2561,11 @@ explain_command
      * C++ file scope destructor definition, e.g.: S::~S().
      */
   | explain file_scope_destructor_decl_c
+
+    /*
+     * C++ lambda declaration.
+     */
+  | explain lambda_decl_c
 
     /*
      * Pre-C99 implicit int function and C++ in-class constructor declaration.
@@ -3251,6 +3374,131 @@ in_scope_declaration_c_exp
   | error
     {
       elaborate_error( "declaration expected" );
+    }
+  ;
+
+/// Gibberish C++ lambda declaration //////////////////////////////////////////
+
+lambda_decl_c
+  : '[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt
+    storage_class_subset_english_type_opt lambda_return_type_c_ast_opt
+    {
+      c_ast_t *const ret_ast = $6;
+      c_type_t const type = $5;
+
+      DUMP_START( "lambda_decl_c",
+                  "'[' capture_decl_list_c_opt ']' "
+                  "lambda_param_c_ast_list_opt "
+                  "lambda_return_type_c_ast_opt" );
+      DUMP_AST_LIST( "capture_decl_list_c_opt", $2 );
+      DUMP_AST_LIST( "lambda_param_c_ast_list_opt", $4 );
+      DUMP_TYPE( "storage_class_subset_english_type_opt", type );
+      DUMP_AST( "lambda_return_type_c_ast_opt", ret_ast );
+
+      c_ast_t *const lambda_ast = c_ast_new_gc( K_LAMBDA, &@$ );
+      lambda_ast->type = type;
+      lambda_ast->lambda.capture_ast_list = slist_move( &$2 );
+      lambda_ast->lambda.param_ast_list = slist_move( &$4 );
+      if ( ret_ast != NULL )
+        c_ast_set_parent( ret_ast, lambda_ast );
+
+      DUMP_AST( "lambda_decl_c", lambda_ast );
+      DUMP_END();
+
+      C_AST_CHECK( lambda_ast );
+      c_ast_english( lambda_ast, cdecl_fout );
+    }
+  ;
+
+capture_decl_list_c_opt
+  : /* empty */                   { slist_init( &$$ ); }
+  | capture_decl_list_c
+  ;
+
+capture_decl_list_c
+  : capture_decl_list_c comma_exp capture_decl_c_ast
+    {
+      DUMP_START( "capture_decl_list_c",
+                  "capture_decl_list_c ',' "
+                  "capture_decl_c_ast" );
+      DUMP_AST_LIST( "capture_decl_list_c", $1 );
+      DUMP_AST( "capture_decl_c_ast", $3 );
+
+      $$ = $1;
+      slist_push_back( &$$, $3 );
+
+      DUMP_AST_LIST( "capture_decl_list_c", $$ );
+      DUMP_END();
+    }
+
+  | capture_decl_c_ast
+    {
+      DUMP_START( "capture_decl_list_c",
+                  "capture_decl_c_ast" );
+      DUMP_AST( "capture_decl_c_ast", $1 );
+
+      slist_init( &$$ );
+      slist_push_back( &$$, $1 );
+
+      DUMP_AST_LIST( "capture_decl_list_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+capture_decl_c_ast
+  : Y_AMPER
+    {
+      $$ = c_ast_new_gc( K_CAPTURE, &@$ );
+      $$->capture.kind = C_CAPTURE_REFERENCE;
+    }
+  | Y_AMPER Y_NAME
+    {
+      $$ = c_ast_new_gc( K_CAPTURE, &@$ );
+      c_sname_append_name( &$$->sname, $2 );
+      $$->capture.kind = C_CAPTURE_REFERENCE;
+    }
+  | '='
+    {
+      $$ = c_ast_new_gc( K_CAPTURE, &@$ );
+      $$->capture.kind = C_CAPTURE_COPY;
+    }
+  | Y_NAME
+    {
+      $$ = c_ast_new_gc( K_CAPTURE, &@$ );
+      c_sname_append_name( &$$->sname, $1 );
+    }
+  | Y_this
+    {
+      $$ = c_ast_new_gc( K_CAPTURE, &@$ );
+      $$->capture.kind = C_CAPTURE_THIS;
+    }
+  | '*' this_exp
+    {
+      $$ = c_ast_new_gc( K_CAPTURE, &@$ );
+      $$->capture.kind = C_CAPTURE_STAR_THIS;
+    }
+  ;
+
+lambda_param_c_ast_list_opt
+  : /* empty */                   { slist_init( &$$ ); }
+  | '(' param_c_ast_list_opt ')'  { $$ = $2; }
+  ;
+
+lambda_return_type_c_ast_opt
+  : /* empty */                   { $$ = NULL; }
+  | Y_ARROW type_c_ast { ia_type_ast_push( $2 ); } cast_c_astp_opt
+    {
+      ia_type_ast_pop();
+
+      DUMP_START( "lambda_return_type_c_ast_opt",
+                  "type_c_ast cast_c_astp_opt" );
+      DUMP_AST( "type_c_ast", $2 );
+      DUMP_AST( "cast_c_astp_opt", $4.ast );
+
+      $$ = $4.ast != NULL ? $4.ast : $2;
+
+      DUMP_AST( "lambda_return_type_c_ast_opt", $$ );
+      DUMP_END();
     }
   ;
 
@@ -7585,6 +7833,23 @@ as_into_to_exp
     }
   ;
 
+as_or_to_opt
+  : /* empty */
+  | Y_as
+  | Y_to
+  ;
+
+bits_opt
+  : /* empty */
+  | Y_bit
+  | Y_bits
+  ;
+
+bytes_opt
+  : /* empty */
+  | Y_bytes
+  ;
+
 cast_exp
   : Y_cast
   | error
@@ -7682,6 +7947,14 @@ c_operator
   | Y_PIPE2                         { $$ = C_OP_PIPE2           ; }
   | Y_PIPE_EQ                       { $$ = C_OP_PIPE_EQ         ; }
   | Y_TILDE                         { $$ = C_OP_TILDE           ; }
+  ;
+
+default_exp
+  : Y_default
+  | error
+    {
+      keyword_expected( L_default );
+    }
   ;
 
 defined_exp
@@ -8017,6 +8290,14 @@ str_lit_exp
     {
       $$ = NULL;
       elaborate_error( "string literal expected" );
+    }
+  ;
+
+this_exp
+  : Y_this
+  | error
+    {
+      keyword_expected( L_this );
     }
   ;
 

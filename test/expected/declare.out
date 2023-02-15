@@ -489,6 +489,46 @@ using x = int;
 using y = int;
 c++decl> declare T as type deprecated int
 using T [[deprecated]] = int;
+c++decl> declare lambda
+[]
+c++decl> declare lambda [i]
+[i]
+c++decl> declare lambda [i] (x as int)
+[i](int x)
+c++decl> declare lambda capturing (i)
+[i]
+c++decl> declare lambda capturing (i) (x as int)
+[i](int x)
+c++decl> declare lambda [copy]
+[=]
+c++decl> declare lambda [copy default]
+[=]
+c++decl> declare lambda [copy by default]
+[=]
+c++decl> declare lambda [copy by default] (x as int)
+[=](int x)
+c++decl> declare lambda [copy by default, i, reference to j]
+[=, i, &j]
+c++decl> declare lambda [=]
+[=]
+c++decl> declare lambda [reference]
+[&]
+c++decl> declare lambda [reference default]
+[&]
+c++decl> declare lambda [reference by default]
+[&]
+c++decl> declare lambda [reference by default, i]
+[&, i]
+c++decl> declare lambda [reference by default] (x as int)
+[&](int x)
+c++decl> declare lambda [&]
+[&]
+c++decl> declare noexcept lambda
+[] noexcept
+c++decl> declare noexcept lambda (x as int)
+[](int x) noexcept
+c++decl> declare noexcept lambda (x as int) returning double
+[](int x) noexcept -> double
 c++decl> set c++03
 c++decl> declare C as non-throwing destructor
 ~C() throw();

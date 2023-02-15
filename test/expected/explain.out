@@ -617,6 +617,30 @@ declare C as final virtual destructor
 c++decl> namespace N { class C { typedef int I; }; }
 c++decl> explain N::C::I x
 declare x as I of class C of namespace N
+c++decl> explain []
+declare lambda
+c++decl> explain [i]
+declare lambda capturing [i]
+c++decl> explain [i](int x)
+declare lambda capturing [i] (x as integer)
+c++decl> explain [=]
+declare lambda capturing [copy by default]
+c++decl> explain [=](int x)
+declare lambda capturing [copy by default] (x as integer)
+c++decl> explain [=, i, &j]
+declare lambda capturing [copy by default, i, reference to j]
+c++decl> explain [&]
+declare lambda capturing [reference by default]
+c++decl> explain [&, i]
+declare lambda capturing [reference by default, i]
+c++decl> explain [&](int x)
+declare lambda capturing [reference by default] (x as integer)
+c++decl> explain [] noexcept
+declare no-exception lambda
+c++decl> explain [](int x) noexcept
+declare no-exception lambda (x as integer)
+c++decl> explain [](int x) noexcept -> double
+declare no-exception lambda (x as integer) returning double precision
 c++decl> set c++98
 c++decl> explain void f() throw()
 declare f as non-throwing function returning void

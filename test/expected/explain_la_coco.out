@@ -1,0 +1,3 @@
+explain [=,=]
+           ^
+12: error: default capture previously specified

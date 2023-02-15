@@ -492,6 +492,12 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_FUNC_LIKE_PARAM    ( TS_REGISTER | TS_THIS )
 
 /**
+ * The only storage types that can apply to a C++ lambda.
+ */
+#define TS_LAMBDA             ( TS_CONSTEXPR | TS_CONSTEVAL | TS_MUTABLE \
+                              | TS_NOEXCEPT | TS_STATIC | TS_THROW )
+
+/**
  * The only storage types that can apply to a C program's `main()` function.
  *
  * @sa #TS_FUNC_C

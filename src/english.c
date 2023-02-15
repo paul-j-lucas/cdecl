@@ -132,6 +132,90 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
 }
 
 /**
+ * Helper function for c_ast_visitor_english() that prints a lambda AST's
+ * captures, if any.
+ *
+ * @param ast The lambda AST to print the captures of.
+ * @param eout The `FILE` to emit to.
+ */
+static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *eout ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_LAMBDA );
+  assert( eout != NULL );
+
+  FPUTC( '[', eout );
+
+  bool comma = false;
+  FOREACH_AST_LAMBDA_CAPTURE( capture, ast ) {
+    fprint_sep( eout, ", ", &comma );
+
+    c_ast_t const *const capture_ast = c_capture_ast( capture );
+    assert( capture_ast->kind == K_CAPTURE );
+
+    switch ( capture_ast->capture.kind ) {
+      case C_CAPTURE_COPY:
+        assert( c_sname_empty( &capture_ast->sname ) );
+        FPUTS( "copy by default", eout );
+        break;
+      case C_CAPTURE_REFERENCE:
+        if ( c_sname_empty( &capture_ast->sname ) )
+          FPUTS( "reference by default", eout );
+        else
+          FPUTS( "reference to ", eout );
+        break;
+      case C_CAPTURE_THIS:
+        FPUTS( "this", eout );
+        break;
+      case C_CAPTURE_STAR_THIS:
+        FPUTS( "*this", eout );
+        break;
+      case C_CAPTURE_VARIABLE:
+        break;
+    } // switch
+
+    c_sname_english( &capture_ast->sname, eout );
+  } // for
+
+  FPUTC( ']', eout );
+}
+
+/**
+ * Prints the scoped name of \a AST in pseudo-English.
+ *
+ * @param ast The AST to print the name of.
+ * @param eout The `FILE` to emit to.
+ */
+static void c_ast_name_english( c_ast_t const *ast, FILE *eout ) {
+  assert( ast != NULL );
+  assert( eout != NULL );
+
+  c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
+  char const *local_name, *scope_name = "";
+  c_type_t const *scope_type = NULL;
+
+  if ( ast->kind == K_OPERATOR ) {
+    local_name = c_oper_token_c( ast->oper.oper_id );
+    if ( found_sname != NULL ) {
+      scope_name = c_sname_full_name( found_sname );
+      scope_type = c_sname_local_type( found_sname );
+    }
+  } else {
+    assert( found_sname != NULL );
+    assert( !c_sname_empty( found_sname ) );
+    local_name = c_sname_local_name( found_sname );
+    scope_name = c_sname_scope_name( found_sname );
+    scope_type = c_sname_scope_type( found_sname );
+  }
+
+  assert( local_name != NULL );
+  FPRINTF( eout, "%s ", local_name );
+  if ( scope_name[0] != '\0' ) {
+    assert( !c_type_is_none( scope_type ) );
+    FPRINTF( eout, "of %s %s ", c_type_name_english( scope_type ), scope_name );
+  }
+}
+
+/**
  * Visitor function that prints \a ast as pseudo-English.
  *
  * @param ast The AST to print.
@@ -197,6 +281,11 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
       c_ast_bit_width_english( ast, eout );
       break;
 
+    case K_CAPTURE:
+      // A K_CAPTURE can occur only in a lambda capture list, not at the top-
+      // level, and captures are never visited.
+      UNEXPECTED_INT_VALUE( ast->kind );
+
     case K_CAST:
       if ( ast->cast.kind != C_CAST_C )
         FPRINTF( eout, "%s ", c_cast_english( ast->cast.kind ) );
@@ -220,6 +309,22 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
         FPUTS( " of type ", eout );
       else
         c_ast_bit_width_english( ast, eout );
+      break;
+
+    case K_LAMBDA:
+      if ( !c_type_is_none( &ast->type ) )
+        FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
+      FPUTS( "lambda", eout );
+      if ( c_ast_captures_count( ast ) > 0 ) {
+        FPUTS( " capturing ", eout );
+        c_ast_lambda_captures_english( ast, eout );
+      }
+      if ( c_ast_params_count( ast ) > 0 ) {
+        FPUTC( ' ', eout );
+        c_ast_func_params_english( ast, eout );
+      }
+      if ( ast->lambda.ret_ast != NULL )
+        FPUTS( " returning ", eout );
       break;
 
     case K_NAME:
@@ -315,38 +420,14 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 
   if ( ast->kind != K_CAST ) {
     FPUTS( "declare ", eout );
-    if ( ast->kind != K_USER_DEF_CONVERSION ) {
-      //
-      // Every kind but a user-defined conversion has a name.
-      //
-      c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
-      char const *local_name, *scope_name = "";
-      c_type_t const *scope_type = NULL;
-
-      if ( ast->kind == K_OPERATOR ) {
-        local_name = c_oper_token_c( ast->oper.oper_id );
-        if ( found_sname != NULL ) {
-          scope_name = c_sname_full_name( found_sname );
-          scope_type = c_sname_local_type( found_sname );
-        }
-      } else {
-        assert( found_sname != NULL );
-        assert( !c_sname_empty( found_sname ) );
-        local_name = c_sname_local_name( found_sname );
-        scope_name = c_sname_scope_name( found_sname );
-        scope_type = c_sname_scope_type( found_sname );
-      }
-
-      assert( local_name != NULL );
-      FPRINTF( eout, "%s ", local_name );
-      if ( scope_name[0] != '\0' ) {
-        assert( !c_type_is_none( scope_type ) );
-        FPRINTF( eout,
-          "of %s %s ", c_type_name_english( scope_type ), scope_name
-        );
-      }
-      FPUTS( "as ", eout );
-    }
+    switch ( ast->kind ) {
+      case K_LAMBDA:
+      case K_USER_DEF_CONVERSION:
+        break;                          // these don't have names
+      default:
+        c_ast_name_english( ast, eout );
+        FPUTS( "as ", eout );
+    } // switch
   }
 
   c_ast_visit_english( ast, eout );

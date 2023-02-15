@@ -185,6 +185,28 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
       c_ast_dump_impl( ast->array.of_ast, indent, "of_ast", dout );
       break;
 
+    case K_CAPTURE:
+      DUMP_COMMA;
+      DUMP_FORMAT( "capture = " );
+      switch ( ast->capture.kind ) {
+        case C_CAPTURE_COPY:
+          FPUTS( "\"=\"", dout );
+          break;
+        case C_CAPTURE_REFERENCE:
+          FPUTS( "\"&\"", dout );
+          break;
+        case C_CAPTURE_THIS:
+          FPUTS( "this", dout );
+          break;
+        case C_CAPTURE_STAR_THIS:
+          FPUTS( "*this", dout );
+          break;
+        case C_CAPTURE_VARIABLE:
+          FPUTS( "variable", dout );
+          break;
+      } // switch
+      break;
+
     case K_CAST:
       DUMP_COMMA;
       DUMP_STR( "cast_kind", c_cast_english( ast->cast.kind ) );
@@ -233,6 +255,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL:
       DUMP_COMMA;
+dump_params:
       DUMP_FORMAT( "param_ast_list = " );
       c_ast_list_dump_impl( &ast->func.param_ast_list, indent, dout );
       if ( ast->func.ret_ast != NULL ) {
@@ -249,6 +272,13 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
         c_ast_dump_impl( ast->enum_.of_ast, indent, "of_ast", dout );
       }
       break;
+
+    case K_LAMBDA:
+      DUMP_COMMA;
+      DUMP_FORMAT( "capture_ast_list = " );
+      c_ast_list_dump_impl( &ast->lambda.capture_ast_list, indent, dout );
+      FPUTS( ",\n", dout );
+      goto dump_params;
 
     case K_POINTER_TO_MEMBER:
       DUMP_COMMA;

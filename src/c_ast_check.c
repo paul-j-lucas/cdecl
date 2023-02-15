@@ -204,6 +204,8 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_func_main_char_ptr_param( c_ast_t const* ),
                     c_ast_check_func_params_knr( c_ast_t const* ),
                     c_ast_check_func_params_redef( c_ast_t const* ),
+                    c_ast_check_lambda_captures( c_ast_t const* ),
+                    c_ast_check_lambda_captures_redef( c_ast_t const* ),
                     c_ast_check_oper_default( c_ast_t const* ),
                     c_ast_check_oper_params( c_ast_t const* ),
                     c_ast_check_oper_relational_default( c_ast_t const* ),
@@ -237,6 +239,18 @@ static inline bool c_ast_check_visitor( c_ast_t const *ast,
   c_ast_visit_fn_t const visit_fn = POINTER_CAST( c_ast_visit_fn_t, check_fn );
   user_data_t const data = { .ui = flags };
   return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, data ) == NULL;
+}
+
+/**
+ * Gets whether \a ast is a lambda capture for either `this` or `*this`.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if it is.
+ */
+NODISCARD
+static inline bool c_ast_is_capture_this( c_ast_t const *ast ) {
+  return  ast->capture.kind == C_CAPTURE_THIS ||
+          ast->capture.kind == C_CAPTURE_STAR_THIS;
 }
 
 /**
@@ -420,6 +434,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_FUNCTION:
+    case K_LAMBDA:
     case K_OPERATOR:
     case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
@@ -440,6 +455,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
       }
       return false;
 
+    case K_CAPTURE:                     // array of capture is impossible
     case K_CAST:                        // array of cast is impossible
     case K_NAME:                        // array of untyped name is impossible
     case K_TYPEDEF:                     // can't happen after c_ast_untypedef()
@@ -1217,12 +1233,14 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
       case K_ARRAY:
       case K_APPLE_BLOCK:
+      case K_CAPTURE:
       case K_CAST:
       case K_CLASS_STRUCT_UNION:
       case K_CONSTRUCTOR:
       case K_DESTRUCTOR:
       case K_ENUM:
       case K_FUNCTION:
+      case K_LAMBDA:
       case K_OPERATOR:
       case K_POINTER:
       case K_POINTER_TO_MEMBER:
@@ -1318,6 +1336,145 @@ static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
         print_error( &param_ast->loc,
           "\"%s\": redefinition of parameter\n",
           c_sname_full_name( &param_ast->sname )
+        );
+        return false;
+      }
+    } // for
+  } // for
+
+  return true;
+}
+
+/**
+ * Checks a lambda for semantic errors.
+ *
+ * @param ast The lambda AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_check_lambda( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_LAMBDA );
+
+  c_tid_t const stids = ast->type.stids & c_tid_compl( TS_LAMBDA );
+  if ( stids != TS_NONE ) {
+    print_error( &ast->loc,
+      "%s can not be %s\n",
+      c_kind_name( ast->kind ),
+      c_tid_name_error( stids )
+    );
+    return false;
+  }
+
+  return c_ast_check_lambda_captures( ast ) &&
+         c_ast_check_lambda_captures_redef( ast );
+}
+
+/**
+ * Checks lambda captures for semantic errors.
+ *
+ * @param ast The lambda AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_check_lambda_captures( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_LAMBDA );
+
+  c_ast_t const *default_capture_ast = NULL;
+  unsigned n_captures = 0;
+
+  FOREACH_AST_LAMBDA_CAPTURE( capture, ast ) {
+    c_ast_t const *const capture_ast = c_capture_ast( capture );
+    assert( capture_ast->kind == K_CAPTURE );
+    ++n_captures;
+
+    switch ( capture_ast->capture.kind ) {
+      case C_CAPTURE_COPY:
+        if ( default_capture_ast != NULL ) {
+prev:     print_error( &capture_ast->loc,
+            "default capture previously specified\n"
+          );
+          return false;
+        }
+        if ( n_captures > 1 ) {
+first:    print_error( &capture_ast->loc,
+            "default capture must be specified first\n"
+          );
+          return false;
+        }
+        assert( default_capture_ast == NULL );
+        default_capture_ast = capture_ast;
+        break;
+
+      case C_CAPTURE_REFERENCE:
+        if ( c_sname_empty( &capture_ast->sname ) ) {
+          if ( default_capture_ast != NULL )
+            goto prev;
+          if ( n_captures > 1 )
+            goto first;
+          assert( default_capture_ast == NULL );
+          default_capture_ast = capture_ast;
+        }
+        else {
+          if ( default_capture_ast != NULL &&
+               default_capture_ast->capture.kind == C_CAPTURE_REFERENCE ) {
+            print_error( &capture_ast->loc,
+              "default capture is already by reference\n"
+            );
+            return false;
+          }
+        }
+        break;
+
+      case C_CAPTURE_THIS:
+      case C_CAPTURE_VARIABLE:
+        // nothing to check
+        break;
+
+      case C_CAPTURE_STAR_THIS:
+        if ( !OPT_LANG_IS( CAPTURE_STAR_THIS ) ) {
+          print_error( &capture_ast->loc,
+            "capturing \"*this\" not supported%s\n",
+            C_LANG_WHICH( CAPTURE_STAR_THIS )
+          );
+          return false;
+        }
+        break;
+    } // switch
+  } // for
+
+  return true;
+}
+
+/**
+ * Checks lambda captures for redefinition (duplicate names, `this`, or
+ * `*this`).
+ *
+ * @param ast The lambda AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_check_lambda_captures_redef( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_LAMBDA );
+
+  FOREACH_AST_LAMBDA_CAPTURE( capture, ast ) {
+    c_ast_t const *const capture_ast = c_capture_ast( capture );
+    assert( capture_ast->kind == K_CAPTURE );
+    FOREACH_AST_LAMBDA_CAPTURE_UNTIL( prev_capture, ast, capture ) {
+      c_ast_t const *const prev_capture_ast = c_capture_ast( prev_capture );
+      if ( c_ast_is_capture_this( capture_ast ) &&
+           c_ast_is_capture_this( prev_capture_ast ) ) {
+        print_error( &capture_ast->loc, "\"this\" previously captured\n" );
+        return false;
+      }
+      if ( c_sname_empty( &prev_capture_ast->sname ) )
+        continue;
+      if ( c_sname_cmp( &capture_ast->sname, &prev_capture_ast->sname ) == 0 ) {
+        print_error( &capture_ast->loc,
+          "\"%s\" previously captured\n",
+          c_sname_full_name( &capture_ast->sname )
         );
         return false;
       }
@@ -1988,9 +2145,12 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
 
-  char const *const kind_name = c_kind_name( ast->kind );
   c_ast_t const *const ret_ast = ast->func.ret_ast;
+  if ( ret_ast == NULL )
+    return true;
   c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
+
+  char const *const kind_name = c_kind_name( ast->kind );
 
   switch ( raw_ret_ast->kind ) {
     case K_ARRAY:
@@ -2237,6 +2397,10 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
         return VISITOR_ERROR_FOUND;
       break;
 
+    case K_CAPTURE:
+      // checked in c_ast_check_lambda_captures()
+      break;
+
     case K_CAST:
       if ( !c_ast_check_cast( ast ) )
         return VISITOR_ERROR_FOUND;
@@ -2292,6 +2456,14 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       }
       break;
     }
+
+    case K_LAMBDA:
+      if ( !(c_ast_check_lambda( ast ) &&
+             c_ast_check_func_params( ast ) &&
+             c_ast_check_ret_type( ast )) ) {
+        return VISITOR_ERROR_FOUND;
+      }
+      break;
 
     case K_NAME:
       // nothing to check
@@ -2533,21 +2705,24 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
 
     case K_APPLE_BLOCK:
     case K_FUNCTION:
+    case K_LAMBDA:
     case K_OPERATOR: {
       c_ast_t const *const ret_ast = ast->func.ret_ast;
-      if ( c_tid_is_any( ret_ast->type.stids, TS_VOLATILE ) &&
-           OPT_LANG_IS( CPP_MIN(20) ) ) {
-        print_warning( &ret_ast->loc,
-          "\"volatile\" return types are deprecated%s\n",
-          C_LANG_WHICH( CPP_MAX(17) )
-        );
-      }
-      if ( c_tid_is_any( ast->type.atids, TA_NODISCARD ) &&
-           c_ast_is_builtin_any( ret_ast, TB_VOID ) ) {
-        print_warning( &ret_ast->loc,
-          "[[nodiscard]] %ss can not return void\n",
-          c_kind_name( ast->kind )
-        );
+      if ( ret_ast != NULL ) {
+        if ( c_tid_is_any( ret_ast->type.stids, TS_VOLATILE ) &&
+            OPT_LANG_IS( CPP_MIN(20) ) ) {
+          print_warning( &ret_ast->loc,
+            "\"volatile\" return types are deprecated%s\n",
+            C_LANG_WHICH( CPP_MAX(17) )
+          );
+        }
+        if ( c_tid_is_any( ast->type.atids, TA_NODISCARD ) &&
+            c_ast_is_builtin_any( ret_ast, TB_VOID ) ) {
+          print_warning( &ret_ast->loc,
+            "[[nodiscard]] %ss can not return void\n",
+            c_kind_name( ast->kind )
+          );
+        }
       }
       FALLTHROUGH;
     }
@@ -2584,6 +2759,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
         print_warning( &ast->loc, "missing type specifier; int assumed\n" );
       break;
 
+    case K_CAPTURE:
     case K_CAST:
     case K_USER_DEF_CONVERSION:
     case K_VARIADIC:

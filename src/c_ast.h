@@ -97,6 +97,34 @@ _GL_INLINE_HEADER_BEGIN
 #define C_FUNC_NON_MEMBER         (1u << 1)
 
 /**
+ * Convenience macro for iterating over all captures of a lambda AST.
+ *
+ * @param VAR The \ref c_capture_t loop variable.
+ * @param AST The lambda AST to iterate the captures of.
+ *
+ * @sa c_ast_captures()
+ * @sa #FOREACH_AST_FUNC_PARAM()
+ * @sa #FOREACH_AST_LAMBDA_CAPTURE_UNTIL()
+ */
+#define FOREACH_AST_LAMBDA_CAPTURE(VAR,AST) \
+  FOREACH_AST_LAMBDA_CAPTURE_UNTIL( VAR, (AST), /*END=*/NULL )
+
+/**
+ * Convenience macro for iterating over all captures of a lambda AST up to but
+ * not including \a END.
+ *
+ * @param VAR The \ref c_capture_t loop variable.
+ * @param AST The lambda AST to iterate the captures of.
+ * @param END A pointer to the capture to end before; may be NULL.
+ *
+ * @sa c_ast_captures()
+ * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
+ * @sa #FOREACH_AST_LAMBDA_CAPTURE()
+ */
+#define FOREACH_AST_LAMBDA_CAPTURE_UNTIL(VAR,AST,END) \
+  FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->lambda.capture_ast_list, (END) )
+
+/**
  * Convenience macro for iterating over all parameters of a function-like AST.
  *
  * @param VAR The \ref c_param_t loop variable.
@@ -104,6 +132,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa c_ast_params()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
+ * @sa #FOREACH_AST_LAMBDA_CAPTURE()
  */
 #define FOREACH_AST_FUNC_PARAM(VAR,AST) \
   FOREACH_AST_FUNC_PARAM_UNTIL( VAR, (AST), /*END=*/NULL )
@@ -118,6 +147,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa c_ast_params()
  * @sa #FOREACH_AST_FUNC_PARAM()
+ * @sa #FOREACH_AST_LAMBDA_CAPTURE_UNTIL()
  */
 #define FOREACH_AST_FUNC_PARAM_UNTIL(VAR,AST,END) \
   FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->func.param_ast_list, (END) )
@@ -259,6 +289,13 @@ struct c_builtin_ast {
 };
 
 /**
+ * AST node for a #K_CAPTURE.
+ */
+struct c_capture_ast {
+  c_capture_kind_t kind;                ///< Capture kind.
+};
+
+/**
  * AST node for a #K_CAST.
  */
 struct c_cast_ast {
@@ -327,6 +364,18 @@ struct c_function_ast {
    * @sa #C_FUNC_NON_MEMBER
    */
   unsigned        flags;
+};
+
+/**
+ * AST node for a #K_LAMBDA.
+ *
+ * @note Members are laid out in the same order as c_function_ast: this is
+ * taken advantage of.
+ */
+struct c_lambda_ast {
+  c_ast_t        *ret_ast;              ///< Return type.
+  c_ast_list_t    param_ast_list;       ///< Lambda parameter(s), if any.
+  c_ast_list_t    capture_ast_list;     ///< Lambda captures(s), if any.
 };
 
 /**
@@ -450,6 +499,7 @@ struct c_ast {
     c_bit_field_ast_t   bit_field;  ///< #K_ANY_BIT_FIELD members.
     c_apple_block_ast_t block;      ///< #K_APPLE_BLOCK members.
     c_builtin_ast_t     builtin;    ///< #K_BUILTIN members.
+    c_capture_ast_t     capture;    ///< #K_CAPTURE members.
     c_cast_ast_t        cast;       ///< #K_CAST members.
     c_csu_ast_t         csu;        ///< #K_CLASS_STRUCT_UNION members.
     c_constructor_ast_t ctor;       ///< #K_CONSTRUCTOR members.
@@ -457,6 +507,7 @@ struct c_ast {
     c_enum_ast_t        enum_;      ///< #K_ENUM members.
     c_function_ast_t    func;       ///< #K_FUNCTION members.
                     // nothing needed for K_NAME
+    c_lambda_ast_t      lambda;     ///< #K_LAMBDA members.
     c_operator_ast_t    oper;       ///< #K_OPERATOR members.
     c_ptr_mbr_ast_t     ptr_mbr;    ///< #K_POINTER_TO_MEMBER members.
     c_ptr_ref_ast_t     ptr_ref;    ///< #K_POINTER or #K_ANY_REFERENCE members.
@@ -600,11 +651,44 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
                     c_ast_list_t *ast_list );
 
 /**
+ * Convenience function for getting lambda captures.
+ *
+ * @param ast The lambda AST to get the captures of.
+ * @return Returns a pointer to the first capture or NULL if none.
+ *
+ * @sa c_ast_captures_count()
+ * @sa c_ast_params()
+ * @sa c_capture_ast()
+ * @sa #FOREACH_AST_LAMBDA_CAPTURE()
+ */
+NODISCARD C_AST_H_INLINE
+c_capture_t const* c_ast_captures( c_ast_t const *ast ) {
+  return ast->lambda.capture_ast_list.head;
+}
+
+/**
+ * Convenience function for getting the number of function-like parameters.
+ *
+ * @param ast The function-like AST to get the number of parameters of.
+ * @return Returns said number of parameters.
+ *
+ * @sa c_ast_captures()
+ * @sa c_ast_params_count()
+ * @sa c_capture_ast()
+ * @sa #FOREACH_AST_LAMBDA_CAPTURE()
+ */
+NODISCARD C_AST_H_INLINE
+size_t c_ast_captures_count( c_ast_t const *ast ) {
+  return slist_len( &ast->lambda.capture_ast_list );
+}
+
+/**
  * Convenience function for getting function-like parameters.
  *
  * @param ast The function-like AST to get the parameters of.
  * @return Returns a pointer to the first parameter or NULL if none.
  *
+ * @sa c_ast_captures()
  * @sa c_ast_params_count()
  * @sa c_param_ast()
  * @sa #FOREACH_AST_FUNC_PARAM()
@@ -658,6 +742,20 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
                       c_ast_visit_fn_t visit_fn, user_data_t data );
 
 /**
+ * Convenience function to get the AST given a \ref c_capture_t.
+ *
+ * @param capture A pointer to a \ref c_capture_t or NULL.
+ * @return Returns a pointer to the AST or NULL if \a capture is NULL.
+ *
+ * @sa c_ast_captures()
+ * @sa #FOREACH_AST_LAMBDA_CAPTURE()
+ */
+NODISCARD C_AST_H_INLINE
+c_ast_t const* c_capture_ast( c_capture_t const *capture ) {
+  return capture != NULL ? capture->data : NULL;
+}
+
+/**
  * Convenience function to get the AST given a \ref c_param_t.
  *
  * @param param A pointer to a \ref c_param_t or NULL.
@@ -665,6 +763,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
  *
  * @sa c_ast_params()
  * @sa c_ast_params_count()
+ * @sa c_capture_ast()
  * @sa #FOREACH_AST_FUNC_PARAM()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
  */

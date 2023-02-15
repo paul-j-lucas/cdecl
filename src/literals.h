@@ -70,10 +70,12 @@ extern char const H_bit_precise[];
 extern char const L_bits[];
 extern char const L_boolean[];
 extern char const L_Boolean[];
+extern char const L_by[];
 extern char const L_bytes[];
 extern char const L_cast[];
 extern char const L_command[];            // synonym for "commands"
 extern char const L_commands[];
+extern char const L_copy[];
 extern char const L_declare[];
 extern char const L_defaulted[];          // synonym for "default"
 extern char const L_define[];
@@ -246,11 +248,15 @@ extern char const L_virtual[];
 // C++11
 extern char const L_alignas[];
 extern char const L_alignof[];
+extern char const L_capture[];            // synonym for "capturing"
+extern char const L_captures[];           // synonym for "capturing"
+extern char const L_capturing[];
 extern char const L_carries_dependency[];
 extern char const L_carries[], L_dependency[];
 extern char const H_carries_dependency[]; // English for "carries_dependency"
 extern char const L_decltype[];
 extern char const L_final[];
+extern char const L_lambda[];
 extern char const L_noexcept[];
 extern char const L_except[];
 extern char const L_noreturn[];

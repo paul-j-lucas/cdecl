@@ -608,6 +608,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -631,6 +632,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -654,6 +656,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -683,10 +686,14 @@ english:
   { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
   <store>* [rvalue] reference to <english>
   <store>* <modifier>* [<C++-type>]
+lambda-english:
+  [[capturing] [[<captures>]] [([<args>])] [returning <english>]
 user-defined-english:
   conversion [operator] [of <scope-e> <name>]* returning <english>
   literal [([<args>])] [returning <english>]
 args: a comma separated list of [<name> as] <english>
+captures: [<capture-default>,] [[&]<name>][,[&]<name>]*
+capture-default: {copy|reference} [by] default | = | &
 C++-type: auto | bool | char[{8|16|32}_t] | wchar_t | int | float | double |
           void
 cv-qual: const | volatile
@@ -928,6 +935,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -951,6 +959,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -974,6 +983,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -1003,10 +1013,14 @@ english:
   { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
   <store>* [rvalue] reference to <english>
   <store>* <modifier>* [<C++-type>]
+lambda-english:
+  [[capturing] [[<captures>]] [([<args>])] [returning <english>]
 user-defined-english:
   conversion [operator] [of <scope-e> <name>]* returning <english>
   literal [([<args>])] [returning <english>]
 args: a comma separated list of [<name> as] <english>
+captures: [<capture-default>,] [[&]<name>][,[&]<name>]*
+capture-default: {copy|reference} [by] default | = | &
 C++-type: auto | bool | char[{16|32}_t] | wchar_t | int | float | double | void
 cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
@@ -1043,6 +1057,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -1066,6 +1081,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -1089,6 +1105,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -1118,10 +1135,14 @@ english:
   { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
   <store>* [rvalue] reference to <english>
   <store>* <modifier>* [<C++-type>]
+lambda-english:
+  [[capturing] [[<captures>]] [([<args>])] [returning <english>]
 user-defined-english:
   conversion [operator] [of <scope-e> <name>]* returning <english>
   literal [([<args>])] [returning <english>]
 args: a comma separated list of [<name> as] <english>
+captures: [<capture-default>,] [[&]<name>][,[&]<name>]*
+capture-default: {copy|reference} [by] default | = | &
 C++-type: auto | bool | char[{16|32}_t] | wchar_t | int | float | double | void
 cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
@@ -1158,6 +1179,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -1181,6 +1203,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -1204,6 +1227,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -1233,10 +1257,14 @@ english:
   { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
   <store>* [rvalue] reference to <english>
   <store>* <modifier>* [<C++-type>]
+lambda-english:
+  [[capturing] [[<captures>]] [([<args>])] [returning <english>]
 user-defined-english:
   conversion [operator] [of <scope-e> <name>]* returning <english>
   literal [([<args>])] [returning <english>]
 args: a comma separated list of [<name> as] <english>
+captures: [<capture-default>,] [[&]<name>][,[&]<name>]*
+capture-default: {copy|reference} [by] default | = | &
 C++-type: auto | bool | char[{16|32}_t] | wchar_t | int | float | double | void
 cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
@@ -1273,6 +1301,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -1296,6 +1325,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -1319,6 +1349,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -1348,10 +1379,14 @@ english:
   { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
   <store>* [rvalue] reference to <english>
   <store>* <modifier>* [<C++-type>]
+lambda-english:
+  [[capturing] [[<captures>]] [([<args>])] [returning <english>]
 user-defined-english:
   conversion [operator] [of <scope-e> <name>]* returning <english>
   literal [([<args>])] [returning <english>]
 args: a comma separated list of [<name> as] <english>
+captures: [<capture-default>,] [[&]<name>][,[&]<name>]*
+capture-default: {copy|reference} [by] default | = | &
 C++-type: auto | bool | char[{8|16|32}_t] | wchar_t | int | float | double |
           void
 cv-qual: const | volatile

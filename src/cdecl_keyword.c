@@ -456,11 +456,51 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     )
   },
 
+  { L_by,
+    LANG_LAMBDA,
+    TOKEN( Y_by ),
+    AC_SETTINGS(
+      AC_TOO_SHORT,
+      AC_POLICY_NONE,
+      AC_NO_NEXT_KEYWORDS
+    )
+  },
+
   { L_bytes,
     LANG_ALIGNMENT,
     TOKEN( Y_bytes ),
     AC_SETTINGS(
       LANG_ALIGNMENT,
+      AC_POLICY_IN_NEXT_ONLY,
+      AC_NO_NEXT_KEYWORDS
+    )
+  },
+
+  { L_capture,
+    LANG_LAMBDA,
+    TOKEN( Y_capturing ),
+    AC_SETTINGS(
+      AC_DEFER_TO( L_capturing ),
+      AC_POLICY_IN_NEXT_ONLY,
+      AC_NO_NEXT_KEYWORDS
+    )
+  },
+
+  { L_captures,
+    LANG_LAMBDA,
+    TOKEN( Y_capturing ),
+    AC_SETTINGS(
+      AC_DEFER_TO( L_capturing ),
+      AC_POLICY_IN_NEXT_ONLY,
+      AC_NO_NEXT_KEYWORDS
+    )
+  },
+
+  { L_capturing,
+    LANG_LAMBDA,
+    TOKEN( Y_capturing ),
+    AC_SETTINGS(
+      LANG_LAMBDA,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
     )
@@ -650,6 +690,16 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
       LANG_CPP_ANY,
       AC_POLICY_NONE,
       AC_NEXT_KEYWORDS( L_operator, L_returning )
+    )
+  },
+
+  { L_copy,
+    LANG_LAMBDA,
+    TOKEN( Y_copy ),
+    AC_SETTINGS(
+      LANG_LAMBDA,
+      AC_POLICY_NONE,
+      AC_NO_NEXT_KEYWORDS
     )
   },
 
@@ -982,6 +1032,17 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
       LANG_ANY,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
+    )
+  },
+
+  {
+    L_lambda,
+    LANG_LAMBDA,
+    TOKEN( Y_lambda ),
+    AC_SETTINGS(
+      LANG_LAMBDA,
+      AC_POLICY_NONE,
+      AC_NEXT_KEYWORDS( L_capturing )
     )
   },
 

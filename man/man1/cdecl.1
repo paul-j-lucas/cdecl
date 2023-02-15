@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "February 3, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "February 14, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -646,6 +646,7 @@ Adds support for
 \f(CWenum class\fP,
 fixed-type enumerations,
 \f(CWinline\fP namespaces,
+lambdas,
 \f(CWnoexcept\fP,
 \f(CW[[noreturn]]\fP,
 rvalue references,
@@ -732,6 +733,16 @@ or the same alignment as
 .BI declare " operator" " as" " english"
 For C++ only,
 composes an overloaded operator declaration from pseudo-English.
+.TP
+.BR declare " \f2store\fP* " lambda " [[" captures ] " [" \f2captures\fP ] "] [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" ]
+For C++ only,
+composes a lambda declaration
+from pseudo-English.
+.TP
+.BR declare " \f2store\fP* " "user-defined conversion" " [" operator "] [" "of " "\f2scope-e\fP" " \f2s-name\fP" ]* " returning " \f2english\fP
+For C++ only,
+composes a user-defined conversion operator
+from pseudo-English.
 .TP
 .BI define " s-name" " as" " english"
 Defines a type (\f(CWtypedef\fP) from pseudo-English.
@@ -921,6 +932,33 @@ Quits
 where:
 .RS 4
 .TP 10
+.I args
+A comma-separated list of
+.IR s-name ,
+.IR english ,
+.I s-name
+.B as
+.IR english ;
+or one of
+.BR varargs ,
+.BR variadic ,
+or
+.B ...
+(ellipsis).
+.TP
+.I captures
+Optionally either
+.B "copy by default"
+.RB "(or " = )
+or
+.B "reference by default"
+.RB "(or " & )
+followed by a comma-separated list of
+.I name
+or
+.B "reference to"
+.IR name .
+.TP
 .I name
 A valid C (or C++) identifier.
 .TP
@@ -950,7 +988,7 @@ may alternatively be specified as
 .I glob
 For C,
 a
-.IR name ,
+.IR name ;
 or for C++,
 a scoped name using \f(CW::\fP,
 that may contain one or more \f(CW*\fP,
@@ -1043,7 +1081,9 @@ operator,
 user-defined literal,
 or
 block
-arguments.
+arguments,
+and brackets around
+lambda captures.
 .P
 .I English
 is one of:
@@ -1067,8 +1107,6 @@ is one of:
 .br
 .RB [ rvalue "] " "reference to" " \f2english\fP"
 .br
-.BR \f2store\fP "* " "user-defined conversion " [ operator "] [" "of " "\f2scope-e\fP" " \f2s-name\fP" ]* " returning " \f2english\fP
-.br
 .BR \f2store\fP "* " "user-defined literal" " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
 .IR store "* " modifier "* [" C-type ]
@@ -1079,20 +1117,6 @@ is one of:
 where:
 .RS 4
 .TP 10
-.I args
-A comma-separated list of
-.IR s-name ,
-.IR english ,
-.I s-name
-.B as
-.IR english ;
-or one of
-.BR varargs ,
-.BR variadic ,
-or
-.B ...
-(ellipsis).
-.TP
 .I C-type
 One of:
 \f(CWauto\fP (C23 or C++11 or later),
@@ -1205,6 +1229,8 @@ The terms on the left are synonyms for what's on the right:
                    bool  _Bool
                 boolean  _Bool
                 Boolean  _Bool
+                capture  capturing
+               captures  capturing
      carries dependency  carries_dependency
      carries-dependency  carries_dependency
                  char 8  char8_t
@@ -2681,10 +2707,18 @@ and
 \f(CWtypeof_unqual\fP
 declarations are not supported.
 .IP \(bu
+Only C++ lambda signature declarations are supported;
+complete lambda declarations are not:
+.RS
+.cS
+[n](int x)                      // supported
+[n](int x) { return n * x; }    // not supported
+.cE 0
+.RE
+.IP \(bu
 C++
 \f(CWdecltype\fP,
 default argument,
-lambda,
 structured binding,
 and
 template

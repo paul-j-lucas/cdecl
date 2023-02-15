@@ -266,6 +266,27 @@ declare x, y as type int
 
 declare T as type deprecated int
 
+declare lambda
+declare lambda [i]
+declare lambda [i] (x as int)
+declare lambda capturing (i)
+declare lambda capturing (i) (x as int)
+declare lambda [copy]
+declare lambda [copy default]
+declare lambda [copy by default]
+declare lambda [copy by default] (x as int)
+declare lambda [copy by default, i, reference to j]
+declare lambda [=]
+declare lambda [reference]
+declare lambda [reference default]
+declare lambda [reference by default]
+declare lambda [reference by default, i]
+declare lambda [reference by default] (x as int)
+declare lambda [&]
+declare noexcept lambda
+declare noexcept lambda (x as int)
+declare noexcept lambda (x as int) returning double
+
 set c++03
 declare C as non-throwing destructor
 

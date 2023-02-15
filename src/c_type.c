@@ -431,6 +431,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define RVR         LANG_RVALUE_REFERENCE
 #define SIG         LANG_signed
 #define THI         LANG_EXPLICIT_OBJ_PARAM_DECL
+#define THR         LANG_throw
 #define TLS         LANG_THREAD_LOCAL_STORAGE
 #define UPC         LANG_C_99
 #define VIR_CEX     LANG_CPP_MIN(20)
@@ -499,10 +500,10 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEV    ,CEX    ,XXX    ,DDF    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// friend
   { XXX    ,XXX    ,___    ,CPP    ,XXX    ,___    ,XXX    ,XXX    ,CEV    ,CEX    ,CIN    ,DDF    ,DDF    ,CPP    ,EXP    ,FIN    ,CPP    ,INL    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// inline
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___ },// mutable
-  { XXX    ,XXX    ,NOE    ,NOE    ,XXX    ,NOE    ,XXX    ,NOE    ,CEV&NOE,CEX&NOE,XXX    ,NOE    ,NOE    ,NOE    ,EXP    ,NOE    ,NOE    ,NOE    ,XXX    ,NOE    ,___    ,___    ,___    ,___    ,___ },// noexcept
+  { XXX    ,XXX    ,NOE    ,NOE    ,XXX    ,NOE    ,XXX    ,NOE    ,CEV&NOE,CEX&NOE,XXX    ,NOE    ,NOE    ,NOE    ,EXP    ,NOE    ,NOE    ,NOE    ,NOE    ,NOE    ,___    ,___    ,___    ,___    ,___ },// noexcept
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&OVR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN&OVR,XXX    ,OVR    ,XXX    ,NOE&OVR,OVR    ,___    ,___    ,___    ,___ },// override
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,THI    ,___    ,___    ,___ },// this
-  { XXX    ,XXX    ,CPP    ,CPP    ,XXX    ,CPP    ,XXX    ,CPP    ,CEV    ,CEX    ,XXX    ,DDF    ,DDF    ,CPP    ,XXX    ,FIN    ,XXX    ,CPP    ,XXX    ,XXX    ,OVR    ,THI    ,CPP    ,___    ,___ },// throw
+  { XXX    ,XXX    ,CPP    ,CPP    ,XXX    ,CPP    ,XXX    ,CPP    ,CEV    ,CEX    ,XXX    ,DDF    ,DDF    ,CPP    ,XXX    ,FIN    ,XXX    ,CPP    ,THR    ,XXX    ,OVR    ,THI    ,CPP    ,___    ,___ },// throw
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,VIR_CEX,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN    ,XXX    ,CPP    ,XXX    ,NOE    ,OVR    ,XXX    ,CPP    ,CPP    ,___ },// virtual
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,VIR_CEX,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,XXX    ,NOE    ,OVR    ,XXX    ,CPP    ,CPP    ,CPP },// pure
 };

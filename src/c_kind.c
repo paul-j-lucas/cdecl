@@ -49,12 +49,14 @@ char const* c_kind_name( c_ast_kind_t kind ) {
     case K_APPLE_BLOCK        : return "block";
     case K_ARRAY              : return "array";
     case K_BUILTIN            : return "built-in type";
+    case K_CAPTURE            : return "capture";
     case K_CAST               : return "cast";
     case K_CONSTRUCTOR        : return "constructor";
     case K_DESTRUCTOR         : return "destructor";
     case K_ENUM               : return "enumeration";
     case K_FUNCTION           : return "function";
     case K_NAME               : return "name";
+    case K_LAMBDA             : return "lambda";
     case K_OPERATOR           : return "operator";
     case K_PLACEHOLDER        : return "placeholder";
     case K_POINTER            : return "pointer";

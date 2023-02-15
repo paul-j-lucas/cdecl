@@ -120,38 +120,43 @@ enum c_ast_kind {
   K_BUILTIN                 = (1u << 1),
 
   /**
+   * C++11 lambda capture.
+   */
+  K_CAPTURE                 = (1u << 2),
+
+  /**
    * A `class,` `struct,` or `union`.
    */
-  K_CLASS_STRUCT_UNION      = (1u << 2),
+  K_CLASS_STRUCT_UNION      = (1u << 3),
 
   /**
    * Name only.  It's used as the initial kind for an identifier ("name") until
    * we know its actual type (if ever).  However, it's also used for pre-
    * prototype typeless function parameters in K&R C, e.g., `double sin(x)`.
    */
-  K_NAME                    = (1u << 3),
+  K_NAME                    = (1u << 4),
 
   /**
    * `typedef` type, e.g., `size_t`.
    */
-  K_TYPEDEF                 = (1u << 4),
+  K_TYPEDEF                 = (1u << 5),
 
   /**
    * Variadic (`...`) function parameter.
    */
-  K_VARIADIC                = (1u << 5),
+  K_VARIADIC                = (1u << 6),
 
   ////////// "parent" kinds ///////////////////////////////////////////////////
 
   /**
    * Array.
    */
-  K_ARRAY                   = (1u << 6),
+  K_ARRAY                   = (1u << 7),
 
   /**
    * Cast.
    */
-  K_CAST                    = (1u << 7),
+  K_CAST                    = (1u << 8),
 
   /**
    * An `enum`.
@@ -159,39 +164,39 @@ enum c_ast_kind {
    * @note This is a "parent" kind because `enum` in C++11 and later can be
    * "of" a fixed type.
    */
-  K_ENUM                    = (1u << 8),
+  K_ENUM                    = (1u << 9),
 
   /**
    * C or C++ pointer.
    */
-  K_POINTER                 = (1u << 9),
+  K_POINTER                 = (1u << 10),
 
   /**
    * C++ pointer-to-member.
    */
-  K_POINTER_TO_MEMBER       = (1u << 10),
+  K_POINTER_TO_MEMBER       = (1u << 11),
 
   /**
    * C++ reference.
    */
-  K_REFERENCE               = (1u << 11),
+  K_REFERENCE               = (1u << 12),
 
   /**
    * C++11 rvalue reference.
    */
-  K_RVALUE_REFERENCE        = (1u << 12),
+  K_RVALUE_REFERENCE        = (1u << 13),
 
   ////////// function-like "parent" kinds /////////////////////////////////////
 
   /**
    * C++ constructor.
    */
-  K_CONSTRUCTOR             = (1u << 13),
+  K_CONSTRUCTOR             = (1u << 14),
 
   /**
    * C++ destructor.
    */
-  K_DESTRUCTOR              = (1u << 14),
+  K_DESTRUCTOR              = (1u << 15),
 
   ////////// function-like "parent" kinds that have return values /////////////
 
@@ -201,27 +206,43 @@ enum c_ast_kind {
    * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
    * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
    */
-  K_APPLE_BLOCK             = (1u << 15),
+  K_APPLE_BLOCK             = (1u << 16),
 
   /**
    * Function.
    */
-  K_FUNCTION                = (1u << 16),
+  K_FUNCTION                = (1u << 17),
+
+  /**
+   * C++ lambda.
+   */
+  K_LAMBDA                  = (1u << 18),
 
   /**
    * C++ overloaded operator.
    */
-  K_OPERATOR                = (1u << 17),
+  K_OPERATOR                = (1u << 19),
 
   /**
    * C++ user-defined conversion operator.
    */
-  K_USER_DEF_CONVERSION     = (1u << 18),
+  K_USER_DEF_CONVERSION     = (1u << 20),
 
   /**
    * C++11 user-defined literal.
    */
-  K_USER_DEF_LITERAL        = (1u << 19),
+  K_USER_DEF_LITERAL        = (1u << 21),
+};
+
+/**
+ * C++ lambda capture kind.
+ */
+enum c_capture_kind {
+  C_CAPTURE_VARIABLE,                   ///< Capture a variable.
+  C_CAPTURE_COPY,                       ///< Capture by copy (`=`).
+  C_CAPTURE_REFERENCE,                  ///< Capture by reference (`&`)
+  C_CAPTURE_THIS,                       ///< Capture `this`.
+  C_CAPTURE_STAR_THIS                   ///< Capture `*this`.
 };
 
 /**
@@ -427,6 +448,9 @@ typedef struct c_ast_pair         c_ast_pair_t;
 typedef int                       c_ast_sid_t;    ///< Signed \ref c_ast_id_t.
 typedef struct c_bit_field_ast    c_bit_field_ast_t;
 typedef struct c_builtin_ast      c_builtin_ast_t;
+typedef slist_node_t              c_capture_t;    ///< Lambda capture.
+typedef struct c_capture_ast      c_capture_ast_t;
+typedef enum   c_capture_kind     c_capture_kind_t;
 typedef struct c_cast_ast         c_cast_ast_t;
 typedef enum   c_cast_kind        c_cast_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
@@ -436,6 +460,7 @@ typedef struct c_function_ast     c_function_ast_t;
 typedef enum   c_graph            c_graph_t;
 typedef struct c_keyword          c_keyword_t;
 typedef enum   c_keyword_ctx      c_keyword_ctx_t;
+typedef struct c_lambda_ast       c_lambda_ast_t;
 typedef struct c_lang             c_lang_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_lang_lit         c_lang_lit_t;
