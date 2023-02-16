@@ -169,14 +169,6 @@ enum c_oper_id {
 };
 
 /**
- * The direction to traverse an AST using c_ast_visit().
- */
-enum c_visit_dir {
-  C_VISIT_DOWN,                         ///< Root to leaves.
-  C_VISIT_UP                            ///< Leaf to root.
-};
-
-/**
  * Types of help.
  */
 enum cdecl_help {
@@ -252,7 +244,6 @@ typedef struct c_typedef_ast      c_typedef_ast_t;
 typedef struct c_type             c_type_t;
 typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
-typedef enum   c_visit_dir        c_visit_dir_t;
 typedef struct cdecl_command      cdecl_command_t;
 typedef enum   cdecl_help         cdecl_help_t;
 typedef struct cdecl_keyword      cdecl_keyword_t;

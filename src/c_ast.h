@@ -167,6 +167,15 @@ struct c_alignas {
 };
 
 /**
+ * The direction to traverse an AST using c_ast_visit().
+ */
+enum c_visit_dir {
+  C_VISIT_DOWN,                         ///< Root to leaves.
+  C_VISIT_UP                            ///< Leaf to root.
+};
+typedef enum c_visit_dir c_visit_dir_t;
+
+/**
  * The signature for functions passed to c_ast_visit().
  *
  * @param ast The AST to visit.
