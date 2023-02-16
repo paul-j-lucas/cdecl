@@ -27,8 +27,11 @@
  *
  * Some headers are bidirectionally dependent, so `typedef`s were used
  * originally rather than `include`.  However, some old C compilers don't like
- * multiple `typedef` definitions even if the types match.  Hence, just put all
- * `typedef` definitions in one file.
+ * multiple `typedef` definitions even if the types match.  Hence, just put
+ * many `typedef` definitions in one file.
+ *
+ * Additionally, types that appear in Bison's `%union` declaration need to be
+ * here to work around Bison's placement of `#include`s.
  */
 
 // local
