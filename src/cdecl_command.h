@@ -87,6 +87,7 @@ struct cdecl_command {
   c_lang_id_t           ac_lang_ids;    ///< Language(s) autocompletable in.
 #endif /* WITH_READLINE */
 };
+typedef struct cdecl_command cdecl_command_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

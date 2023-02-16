@@ -43,20 +43,6 @@
 #define PRId_C_ARRAY_SIZE_T       "%d"
 
 /**
- * Decimal print conversion specifier for \ref c_ast_id_t.
- *
- * @sa #PRId_C_AST_SID_T
- */
-#define PRId_C_AST_ID_T           "%u"
-
-/**
- * Decimal print conversion specifier for \ref c_ast_sid_t.
- *
- * @sa #PRId_C_AST_ID_T
- */
-#define PRId_C_AST_SID_T          "%d"
-
-/**
  * @defgroup type-declarations-group Type Declarations
  * Declares many types and `typedef` declarations in one file.
  * @{
@@ -66,26 +52,6 @@
 
 // Enumerations have to be declared before typedefs of them since ISO C doesn't
 // allow forward declarations of enums.
-
-/**
- * The argument kind for the `alignas` specifier.
- */
-enum c_alignas_kind {
-  C_ALIGNAS_NONE,                       ///< No `alignas` specifier.
-  C_ALIGNAS_EXPR,                       ///< `alignas(` _expr_ `)`
-  C_ALIGNAS_TYPE                        ///< `alignas(` _type_ `)`
-};
-
-/**
- * C++ lambda capture kind.
- */
-enum c_capture_kind {
-  C_CAPTURE_VARIABLE,                   ///< Capture a variable.
-  C_CAPTURE_COPY,                       ///< Capture by copy (`=`).
-  C_CAPTURE_REFERENCE,                  ///< Capture by reference (`&`)
-  C_CAPTURE_THIS,                       ///< Capture `this`.
-  C_CAPTURE_STAR_THIS                   ///< Capture `*this`.
-};
 
 /**
  * C/C++ cast kinds.
@@ -191,29 +157,15 @@ typedef struct slist              slist_t;
 typedef struct slist_node         slist_node_t;
 
 typedef struct c_alignas          c_alignas_t;
-typedef enum   c_alignas_kind     c_alignas_kind_t;
 typedef struct c_apple_block_ast  c_apple_block_ast_t;
 typedef struct c_array_ast        c_array_ast_t;
-
-/**
- * One of:
- *
- *  + The actual size of a C array, but only when &ge; 0.
- *  + #C_ARRAY_SIZE_NONE
- *  + #C_ARRAY_SIZE_VARIABLE
- */
-typedef int                       c_array_size_t;
-
 typedef struct c_ast              c_ast_t;
-typedef unsigned                  c_ast_id_t;     ///< Unique AST node ID.
 typedef slist_t                   c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;
-typedef int                       c_ast_sid_t;    ///< Signed \ref c_ast_id_t.
 typedef struct c_bit_field_ast    c_bit_field_ast_t;
 typedef struct c_builtin_ast      c_builtin_ast_t;
 typedef slist_node_t              c_capture_t;    ///< Lambda capture.
 typedef struct c_capture_ast      c_capture_ast_t;
-typedef enum   c_capture_kind     c_capture_kind_t;
 typedef struct c_cast_ast         c_cast_ast_t;
 typedef enum   c_cast_kind        c_cast_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
@@ -221,13 +173,9 @@ typedef struct c_csu_ast          c_csu_ast_t;
 typedef struct c_enum_ast         c_enum_ast_t;
 typedef struct c_function_ast     c_function_ast_t;
 typedef enum   c_graph            c_graph_t;
-typedef struct c_keyword          c_keyword_t;
 typedef struct c_lambda_ast       c_lambda_ast_t;
-typedef struct c_lang             c_lang_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
-typedef struct c_lang_lit         c_lang_lit_t;
 typedef struct c_loc              c_loc_t;
-typedef struct c_operator         c_operator_t;
 typedef struct c_operator_ast     c_operator_ast_t;
 typedef enum   c_oper_id          c_oper_id_t;
 typedef slist_node_t              c_param_t;      ///< Function-like parameter.
@@ -235,7 +183,6 @@ typedef struct c_parent_ast       c_parent_ast_t;
 typedef struct c_ptr_mbr_ast      c_ptr_mbr_ast_t;
 typedef struct c_ptr_ref_ast      c_ptr_ref_ast_t;
 typedef slist_node_t              c_scope_t;      ///< Scope in \ref c_sname_t.
-typedef struct c_scope_data       c_scope_data_t;
 typedef struct c_sglob            c_sglob_t;
 typedef slist_t                   c_sname_t;      ///< C++ scoped name.
 typedef uint64_t                  c_tid_t;        ///< Type ID(s) bits.
@@ -244,11 +191,8 @@ typedef struct c_typedef_ast      c_typedef_ast_t;
 typedef struct c_type             c_type_t;
 typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
-typedef struct cdecl_command      cdecl_command_t;
 typedef enum   cdecl_help         cdecl_help_t;
-typedef struct cdecl_keyword      cdecl_keyword_t;
 typedef enum   cdecl_mode         cdecl_mode_t;
-typedef struct print_params       print_params_t;
 typedef union  user_data          user_data_t;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.

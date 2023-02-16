@@ -152,7 +152,35 @@ _GL_INLINE_HEADER_BEGIN
 #define FOREACH_AST_FUNC_PARAM_UNTIL(VAR,AST,END) \
   FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->func.param_ast_list, (END) )
 
+#ifdef ENABLE_CDECL_DEBUG
+
+/**
+ * Decimal print conversion specifier for \ref c_ast_id_t.
+ *
+ * @sa #PRId_C_AST_SID_T
+ */
+#define PRId_C_AST_ID_T           "%u"
+
+/**
+ * Decimal print conversion specifier for \ref c_ast_sid_t.
+ *
+ * @sa #PRId_C_AST_ID_T
+ */
+#define PRId_C_AST_SID_T          "%d"
+
+#endif /* ENABLE_CDECL_DEBUG */
+
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * The argument kind for the `alignas` specifier.
+ */
+enum c_alignas_kind {
+  C_ALIGNAS_NONE,                       ///< No `alignas` specifier.
+  C_ALIGNAS_EXPR,                       ///< `alignas(` _expr_ `)`
+  C_ALIGNAS_TYPE                        ///< `alignas(` _type_ `)`
+};
+typedef enum c_alignas_kind c_alignas_kind_t;
 
 /**
  * Data for the `alignas` specifier.
@@ -165,6 +193,20 @@ struct c_alignas {
   c_alignas_kind_t  kind;               ///< Kind of `alignas` argument.
   c_loc_t           loc;                ///< Source location.
 };
+
+/**
+ * One of:
+ *
+ *  + The actual size of a C array, but only when &ge; 0.
+ *  + #C_ARRAY_SIZE_NONE
+ *  + #C_ARRAY_SIZE_VARIABLE
+ */
+typedef int       c_array_size_t;
+
+#ifdef ENABLE_CDECL_DEBUG
+typedef unsigned  c_ast_id_t;           ///< Unique AST node ID.
+typedef int       c_ast_sid_t;          ///< Signed \ref c_ast_id_t.
+#endif /* ENABLE_CDECL_DEBUG */
 
 /**
  * The direction to traverse an AST using c_ast_visit().
@@ -185,6 +227,18 @@ typedef enum c_ast_visit_dir c_ast_visit_dir_t;
  * to continue.
  */
 typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, user_data_t data );
+
+/**
+ * C++ lambda capture kind.
+ */
+enum c_capture_kind {
+  C_CAPTURE_VARIABLE,                   ///< Capture a variable.
+  C_CAPTURE_COPY,                       ///< Capture by copy (`=`).
+  C_CAPTURE_REFERENCE,                  ///< Capture by reference (`&`)
+  C_CAPTURE_THIS,                       ///< Capture `this`.
+  C_CAPTURE_STAR_THIS                   ///< Capture `*this`.
+};
+typedef enum c_capture_kind c_capture_kind_t;
 
 ///////////////////////////////////////////////////////////////////////////////
 

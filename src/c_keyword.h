@@ -94,6 +94,7 @@ struct c_keyword {
   c_lang_id_t     ac_lang_ids;
 #endif /* WITH_READLINE */
 };
+typedef struct c_keyword c_keyword_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

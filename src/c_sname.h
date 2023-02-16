@@ -126,6 +126,7 @@ struct c_scope_data {
    */
   c_type_t type;
 };
+typedef struct c_scope_data c_scope_data_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

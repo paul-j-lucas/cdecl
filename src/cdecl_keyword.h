@@ -143,6 +143,7 @@ struct cdecl_keyword {
   char const *const  *ac_next_keywords;
 #endif /* WITH_READLINE */
 };
+typedef struct cdecl_keyword cdecl_keyword_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

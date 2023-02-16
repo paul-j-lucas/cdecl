@@ -28,6 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "c_lang.h"
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -139,6 +140,7 @@ struct c_operator {
   unsigned    params_max;               ///< Maximum number of parameters.
   c_lang_id_t lang_ids;                 ///< Language(s) OK in.
 };
+typedef struct c_operator c_operator_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 
