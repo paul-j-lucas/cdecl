@@ -169,22 +169,6 @@ enum c_oper_id {
 };
 
 /**
- * @ingroup c-types-group
- * For \ref c_tid_t values, the low-order 4 bits specify the type part ID and
- * thus how the value should be interpreted.
- */
-enum c_tpid {
-  //
-  // Type part IDs start at 1 so we know a c_tid_t value has been initialized
-  // properly as opposed to it being 0 by default.
-  //
-  C_TPID_NONE   = 0u,                   ///< No types.
-  C_TPID_BASE   = (1u << 0),            ///< Base types, e.g., `int`.
-  C_TPID_STORE  = (1u << 1),            ///< Storage types, e.g., `static`.
-  C_TPID_ATTR   = (1u << 2)             ///< Attributes.
-};
-
-/**
  * The direction to traverse an AST using c_ast_visit().
  */
 enum c_visit_dir {
@@ -293,7 +277,6 @@ typedef struct c_scope_data       c_scope_data_t;
 typedef struct c_sglob            c_sglob_t;
 typedef slist_t                   c_sname_t;      ///< C++ scoped name.
 typedef uint64_t                  c_tid_t;        ///< Type ID(s) bits.
-typedef enum   c_tpid             c_tpid_t;
 typedef struct c_typedef          c_typedef_t;
 typedef struct c_typedef_ast      c_typedef_ast_t;
 typedef struct c_type             c_type_t;
