@@ -46,6 +46,37 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * The kind of **cdecl** command.
+ */
+enum cdecl_command_kind {
+  /**
+   * Command is valid _only_ within the **cdecl** language and _not_ as either
+   * the command-line command (`argv[0]`) or the first word of the first
+   * command-line argument (`argv[1]`):
+   *
+   * `cdecl>` _command_ _args_
+   */
+  CDECL_COMMAND_LANG_ONLY,
+
+  /**
+   * Same as \ref CDECL_COMMAND_LANG_ONLY, but command is also valid as the
+   * first word of the first command-line argument (`argv[1]`):
+   *
+   * `$ cdecl` _command_ _args_
+   */
+  CDECL_COMMAND_FIRST_ARG,
+
+  /**
+   * Same as \ref CDECL_COMMAND_FIRST_ARG, but command is also valid as the
+   * program name (`argv[0]`):
+   *
+   * `$` _command_ _args_
+   */
+  CDECL_COMMAND_PROG_NAME,
+};
+typedef enum cdecl_command_kind cdecl_command_kind_t;
+
+/**
  * A **cdecl** command.
  */
 struct cdecl_command {

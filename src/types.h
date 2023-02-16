@@ -177,36 +177,6 @@ enum c_visit_dir {
 };
 
 /**
- * The kind of **cdecl** command.
- */
-enum cdecl_command_kind {
-  /**
-   * Command is valid _only_ within the **cdecl** language and _not_ as either
-   * the command-line command (`argv[0]`) or the first word of the first
-   * command-line argument (`argv[1]`):
-   *
-   * `cdecl>` _command_ _args_
-   */
-  CDECL_COMMAND_LANG_ONLY,
-
-  /**
-   * Same as \ref CDECL_COMMAND_LANG_ONLY, but command is also valid as the
-   * first word of the first command-line argument (`argv[1]`):
-   *
-   * `$ cdecl` _command_ _args_
-   */
-  CDECL_COMMAND_FIRST_ARG,
-
-  /**
-   * Same as \ref CDECL_COMMAND_FIRST_ARG, but command is also valid as the
-   * program name (`argv[0]`):
-   *
-   * `$` _command_ _args_
-   */
-  CDECL_COMMAND_PROG_NAME,
-};
-
-/**
  * Types of help.
  */
 enum cdecl_help {
@@ -284,7 +254,6 @@ typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
 typedef enum   c_visit_dir        c_visit_dir_t;
 typedef struct cdecl_command      cdecl_command_t;
-typedef enum   cdecl_command_kind cdecl_command_kind_t;
 typedef enum   cdecl_help         cdecl_help_t;
 typedef struct cdecl_keyword      cdecl_keyword_t;
 typedef enum   cdecl_mode         cdecl_mode_t;
