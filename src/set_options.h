@@ -64,6 +64,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+typedef struct set_option_fn_args set_option_fn_args_t;
+
 /**
  * The signature for a `set` option function.
  *
@@ -71,6 +73,16 @@
  * @return Returns `true` only if the option was set.
  */
 typedef bool (*set_option_fn_t)( set_option_fn_args_t const *args );
+
+/**
+ * **cdecl** `set` option kind.
+ */
+enum set_option_kind {
+  SET_OPTION_TOGGLE,                    ///< Toggle, e.g., `foo` & `nofoo`.
+  SET_OPTION_AFF_ONLY,                  ///< Affirmative only, e.g., `foo`.
+  SET_OPTION_NEG_ONLY                   ///< Negative only, e.g., `nofoo`.
+};
+typedef enum set_option_kind set_option_kind_t;
 
 /**
  * **cdecl** `set` option.
@@ -81,6 +93,7 @@ struct set_option {
   bool              takes_value;        ///< Takes a value?
   set_option_fn_t   set_fn;             ///< Set function.
 };
+typedef struct set_option set_option_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

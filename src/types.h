@@ -77,164 +77,6 @@ enum c_alignas_kind {
 };
 
 /**
- * @ingroup c-kinds-group
- * Kinds of AST nodes comprising a C/C++ declaration.
- *
- * A given AST node may only have a single kind and _not_ be a bitwise-or of
- * kinds.  However, a bitwise-or of kinds may be used to test whether a given
- * AST node is any _one_ of those kinds.
- */
-enum c_ast_kind {
-  /**
-   * Temporary node in an AST.  This is needed in two cases:
-   *
-   * 1. Array declarations or casts.  Consider:
-   *
-   *         int a[2][3]
-   *
-   *    At the first `[`, we know it's an _array 2 of [something of]*_ `int`,
-   *    but we don't yet know either what the "something" is or whether it will
-   *    turn out to be nothing.  It's not until the second `[` that we know
-   *    it's an _array 2 of array 3 of_ `int`.  (Had the `[3]` not been there,
-   *    then it would have been just _array 2 of_ `int`.)
-   *
-   * 2. Nested declarations or casts (inside parentheses).  Consider:
-   *
-   *         int (*a)[2]
-   *
-   *    At the `*`, we know it's a _pointer to [something of]*_ `int`, but,
-   *    similar to the array case, we don't yet know either what the
-   *    "something" is or whether it will turn out to be nothing.  It's not
-   *    until the `[` that we know it's a _pointer to array 2 of_ `int`.  (Had
-   *    the `[2]` not been there, then it would have been just _pointer to_
-   *    `int` (with unnecessary parentheses).
-   *
-   * In either case, a placeholder node is created to hold the place of the
-   * "something" in the AST.
-   */
-  K_PLACEHOLDER             = (1u << 0),
-
-  /**
-   * Built-in type, e.g., `void`, `char`, `int`, etc.
-   */
-  K_BUILTIN                 = (1u << 1),
-
-  /**
-   * C++11 lambda capture.
-   */
-  K_CAPTURE                 = (1u << 2),
-
-  /**
-   * A `class,` `struct,` or `union`.
-   */
-  K_CLASS_STRUCT_UNION      = (1u << 3),
-
-  /**
-   * Name only.  It's used as the initial kind for an identifier ("name") until
-   * we know its actual type (if ever).  However, it's also used for pre-
-   * prototype typeless function parameters in K&R C, e.g., `double sin(x)`.
-   */
-  K_NAME                    = (1u << 4),
-
-  /**
-   * `typedef` type, e.g., `size_t`.
-   */
-  K_TYPEDEF                 = (1u << 5),
-
-  /**
-   * Variadic (`...`) function parameter.
-   */
-  K_VARIADIC                = (1u << 6),
-
-  ////////// "parent" kinds ///////////////////////////////////////////////////
-
-  /**
-   * Array.
-   */
-  K_ARRAY                   = (1u << 7),
-
-  /**
-   * Cast.
-   */
-  K_CAST                    = (1u << 8),
-
-  /**
-   * An `enum`.
-   *
-   * @note This is a "parent" kind because `enum` in C++11 and later can be
-   * "of" a fixed type.
-   */
-  K_ENUM                    = (1u << 9),
-
-  /**
-   * C or C++ pointer.
-   */
-  K_POINTER                 = (1u << 10),
-
-  /**
-   * C++ pointer-to-member.
-   */
-  K_POINTER_TO_MEMBER       = (1u << 11),
-
-  /**
-   * C++ reference.
-   */
-  K_REFERENCE               = (1u << 12),
-
-  /**
-   * C++11 rvalue reference.
-   */
-  K_RVALUE_REFERENCE        = (1u << 13),
-
-  ////////// function-like "parent" kinds /////////////////////////////////////
-
-  /**
-   * C++ constructor.
-   */
-  K_CONSTRUCTOR             = (1u << 14),
-
-  /**
-   * C++ destructor.
-   */
-  K_DESTRUCTOR              = (1u << 15),
-
-  ////////// function-like "parent" kinds that have return values /////////////
-
-  /**
-   * Block (Apple extension).
-   *
-   * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
-   * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
-   */
-  K_APPLE_BLOCK             = (1u << 16),
-
-  /**
-   * Function.
-   */
-  K_FUNCTION                = (1u << 17),
-
-  /**
-   * C++ lambda.
-   */
-  K_LAMBDA                  = (1u << 18),
-
-  /**
-   * C++ overloaded operator.
-   */
-  K_OPERATOR                = (1u << 19),
-
-  /**
-   * C++ user-defined conversion operator.
-   */
-  K_USER_DEF_CONVERSION     = (1u << 20),
-
-  /**
-   * C++11 user-defined literal.
-   */
-  K_USER_DEF_LITERAL        = (1u << 21),
-};
-
-/**
  * C++ lambda capture kind.
  */
 enum c_capture_kind {
@@ -263,20 +105,6 @@ enum c_graph {
   C_GRAPH_NONE,                         ///< Ordinary characters.
   C_GRAPH_DI,                           ///< Digraphs.
   C_GRAPH_TRI                           ///< Trigraphs.
-};
-
-/**
- * @ingroup c-keywords-group
- * C++ keyword contexts.  A context specifies where particular literals are
- * recognized as keywords in gibberish.  For example, `final` and `override`
- * are recognized as keywords only within C++ member function declarations.
- *
- * @note These matter only when converting gibberish to pseudo-English.
- */
-enum c_keyword_ctx {
-  C_KW_CTX_DEFAULT,                     ///< Default context.
-  C_KW_CTX_ATTRIBUTE,                   ///< Attribute declaration.
-  C_KW_CTX_MBR_FUNC                     ///< Member function declaration.
 };
 
 /**
@@ -411,16 +239,6 @@ enum cdecl_mode {
   CDECL_GIBBERISH_TO_ENGLISH            ///< Decipher gibberish into English.
 };
 
-/**
- * @ingroup set-options-group
- * **cdecl** `set` option kind.
- */
-enum set_option_kind {
-  SET_OPTION_TOGGLE,                    ///< Toggle, e.g., `foo` & `nofoo`.
-  SET_OPTION_AFF_ONLY,                  ///< Affirmative only, e.g., `foo`.
-  SET_OPTION_NEG_ONLY                   ///< Negative only, e.g., `nofoo`.
-};
-
 ////////// typedefs ///////////////////////////////////////////////////////////
 
 typedef struct slist              slist_t;
@@ -442,7 +260,6 @@ typedef int                       c_array_size_t;
 
 typedef struct c_ast              c_ast_t;
 typedef unsigned                  c_ast_id_t;     ///< Unique AST node ID.
-typedef enum   c_ast_kind         c_ast_kind_t;
 typedef slist_t                   c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;
 typedef int                       c_ast_sid_t;    ///< Signed \ref c_ast_id_t.
@@ -459,7 +276,6 @@ typedef struct c_enum_ast         c_enum_ast_t;
 typedef struct c_function_ast     c_function_ast_t;
 typedef enum   c_graph            c_graph_t;
 typedef struct c_keyword          c_keyword_t;
-typedef enum   c_keyword_ctx      c_keyword_ctx_t;
 typedef struct c_lambda_ast       c_lambda_ast_t;
 typedef struct c_lang             c_lang_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
@@ -490,9 +306,6 @@ typedef enum   cdecl_help         cdecl_help_t;
 typedef struct cdecl_keyword      cdecl_keyword_t;
 typedef enum   cdecl_mode         cdecl_mode_t;
 typedef struct print_params       print_params_t;
-typedef struct set_option         set_option_t;
-typedef struct set_option_fn_args set_option_fn_args_t;
-typedef enum   set_option_kind    set_option_kind_t;
 typedef union  user_data          user_data_t;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
