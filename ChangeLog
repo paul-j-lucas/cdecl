@@ -1,5 +1,21 @@
+2023-02-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Now using STATIC_CAST().
+   * autocomplete.c: Now using is_token_char() in str_prev_token().
+
 2023-02-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.h, c_keyword.h, c_lang.h, c_operator.h, c_sname.h, cdecl_command.h,
+     cdecl_keyword.h, print.h, types.h: Moved types, part 5.
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h:
+     s/c_visit_dir_t/c_ast_visit_dir_t/
+   * c_ast.h, types.h: Moved types, part 4.
+   * cdecl_command.h, types.h: Moved types, part 3.
+   * c_type.h, types.h: Moved types, part 2.
+   * c_keyword.h, c_kind.h, lexer.h, set_options.h, types.h: Moved types
+     around.
+   * c_ast.c: Added static_assert() for c_ast_lambda::param_ast_list.
+   * AUTHORS: Added mention of lambdas.
    * getopt-pfx-core.h, hard-locale.h, limits.in.h, setlocale_null.c,
      string.in.h, verify.h, wchar.in.h, assert_h.m4, gnulib-common.m4,
      limits-h.m4, setlocale_null.m4: Updated Gnulib.
