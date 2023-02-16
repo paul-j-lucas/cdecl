@@ -1428,7 +1428,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     AC_SETTINGS(
       LANG_CPP_ANY,
       AC_POLICY_NONE,
-      AC_NEXT_KEYWORDS( L_to )
+      AC_NEXT_KEYWORDS( L_by, L_to )
     )
   },
 
