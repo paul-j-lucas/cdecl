@@ -460,8 +460,8 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     LANG_LAMBDA,
     TOKEN( Y_by ),
     AC_SETTINGS(
-      AC_TOO_SHORT,
-      AC_POLICY_NONE,
+      LANG_LAMBDA,
+      AC_POLICY_IN_NEXT_ONLY,
       AC_NEXT_KEYWORDS( L_default )
     )
   },
@@ -502,7 +502,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     AC_SETTINGS(
       LANG_LAMBDA,
       AC_POLICY_IN_NEXT_ONLY,
-      AC_NO_NEXT_KEYWORDS
+      AC_NEXT_KEYWORDS( L_copy, L_reference )
     )
   },
 
@@ -698,7 +698,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     TOKEN( Y_copy ),
     AC_SETTINGS(
       LANG_LAMBDA,
-      AC_POLICY_NONE,
+      AC_POLICY_IN_NEXT_ONLY,
       AC_NEXT_KEYWORDS( L_by )
     )
   },
