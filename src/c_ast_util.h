@@ -87,7 +87,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast );
  * none.
  */
 NODISCARD
-c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
+c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_ast_visit_dir_t dir,
                               c_ast_kind_t kinds );
 
 /**
@@ -98,7 +98,7 @@ c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
  * @return Returns said name or NULL if none.
  */
 NODISCARD
-c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
+c_sname_t* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir );
 
 /**
  * Traverses \a ast attempting to find an AST node having one of \a type.
@@ -110,7 +110,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
  * none.
  */
 NODISCARD
-c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
+c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
                               c_type_t const *type );
 
 /**

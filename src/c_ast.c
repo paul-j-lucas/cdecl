@@ -488,7 +488,7 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   assert( !c_ast_has_cycle( child_ast ) );
 }
 
-c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
+c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visit_dir_t dir,
                       c_ast_visit_fn_t visit_fn, user_data_t data ) {
   assert( visit_fn != NULL );
 

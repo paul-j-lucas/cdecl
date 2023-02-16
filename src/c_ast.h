@@ -169,11 +169,11 @@ struct c_alignas {
 /**
  * The direction to traverse an AST using c_ast_visit().
  */
-enum c_visit_dir {
+enum c_ast_visit_dir {
   C_VISIT_DOWN,                         ///< Root to leaves.
   C_VISIT_UP                            ///< Leaf to root.
 };
-typedef enum c_visit_dir c_visit_dir_t;
+typedef enum c_ast_visit_dir c_ast_visit_dir_t;
 
 /**
  * The signature for functions passed to c_ast_visit().
@@ -747,7 +747,7 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
  * distinct ASTs.
  */
 PJL_DISCARD
-c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir,
+c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visit_dir_t dir,
                       c_ast_visit_fn_t visit_fn, user_data_t data );
 
 /**
