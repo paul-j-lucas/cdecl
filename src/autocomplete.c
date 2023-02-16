@@ -402,6 +402,17 @@ static bool is_english_command( char const *command ) {
 }
 
 /**
+ * Checks whether \a c is a token character, that is one of `[A-Za-z0-9_-]`.
+ *
+ * @param c The character to check.
+ * @return Returns `true` only if \a c is a token character.
+ */
+NODISCARD
+static inline bool is_token_char( char c ) {
+  return is_ident( c ) || c == '-';
+}
+
+/**
  * Attempts to find the previous **cdecl** keyword in \a s relative to \a pos.
  *
  * @remarks This function exists to find the previous **cdecl** keyword for
@@ -463,13 +474,13 @@ static char const* str_prev_token( char const *s, size_t pos,
   char const *p = s + pos - 1;
 
   // Back up over current token.
-  while ( !isspace( *p ) ) {
+  while ( is_token_char( *p ) ) {
     if ( --p == s )
       return NULL;
   } // while
 
   // Back up over whitespace between previous and current tokens.
-  while ( isspace( *p ) ) {
+  while ( !is_token_char( *p ) ) {
     if ( --p == s )
       return NULL;
   } // while
@@ -477,7 +488,7 @@ static char const* str_prev_token( char const *s, size_t pos,
   // Back up to the start of the previous token.
   for ( char const *const last = p--; ; --p ) {
     if ( p > s ) {
-      if ( !isspace( *p ) )
+      if ( is_token_char( *p ) )
         continue;
       ++p;
     }
