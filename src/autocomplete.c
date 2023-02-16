@@ -443,7 +443,7 @@ static cdecl_keyword_t const* prev_cdecl_keyword( char const *s, size_t pos ) {
     cdecl_keyword_t const *const k = cdecl_keyword_find( token_buf.str );
     if ( k != NULL )
       return k;
-    pos = (size_t)(token - s);
+    pos = STATIC_CAST( size_t, token - s );
   } // for
 }
 
