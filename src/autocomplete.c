@@ -394,6 +394,7 @@ static bool is_command( char const *command, char const *s, size_t s_len ) {
 NODISCARD
 static bool is_english_command( char const *command ) {
   assert( command != NULL );
+  // command is set to L_* so == is OK
   return  command == L_cast     ||
           command == L_declare  ||
           command == L_define   ||
