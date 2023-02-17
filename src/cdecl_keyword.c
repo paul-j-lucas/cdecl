@@ -460,7 +460,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     LANG_LAMBDA,
     TOKEN( Y_by ),
     AC_SETTINGS(
-      LANG_LAMBDA,
+      AC_TOO_SHORT,
       AC_POLICY_IN_NEXT_ONLY,
       AC_NEXT_KEYWORDS( L_default )
     )
