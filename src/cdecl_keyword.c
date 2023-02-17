@@ -396,7 +396,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     AC_SETTINGS(
       LANG__BitInt,
       AC_POLICY_NONE,
-      AC_NEXT_KEYWORDS( L_int )
+      AC_NEXT_KEYWORDS( L_integer )
     )
   },
 
