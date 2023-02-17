@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "February 14, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "February 17, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2635,19 +2635,17 @@ Individual
 .BR readline (3)
 initialization file.
 .SH BUGS
+.SS Readline Wrapper Around Editline
 On systems where the
 .BR readline (3)
 API is provided
-but backed by
-.B libedit
-(e.g.,
-.BR macOS ),
+but is just a wrapper
+around the Editline Library,
+e.g.,
+.BR macOS ,
 there are a few issues:
 .IP \(bu 3
-The
-.B readline
-wrapper
-has a bug that prevents color prompts from working correctly.
+The wrapper has a bug that prevents color prompts from working correctly.
 Therefore,
 the
 .B PROMPT
@@ -2660,9 +2658,7 @@ Hitting
 when there are no completion matches
 ordinarily rings the terminal's bell.
 However,
-older versions of the
-.B readline
-wrapper
+older versions of the wrapper
 don't provide the \f(CWrl_ding()\fP function
 needed to ring the bell
 so
@@ -2672,10 +2668,21 @@ However,
 the substitute doesn't respect the user's preferred bell style
 (none, audible, or visual)
 and always does an audible bell.
+.IP \(bu
+In some cases,
+hitting
+.I tab
+causes the wrapper
+to suggest only a single completion
+rather than simply inserting it.
 .P
-See also:
+To avoid these issues,
+compile
+.B cdecl
+against the genuine GNU Readline Library.
+.SS See Also
 .nh
-<\f(CWhttps://github.com/paul-j-lucas/cdecl/issues\fP>.
+\f(CWhttps://github.com/paul-j-lucas/cdecl/issues\fP
 .hy
 .SH CAVEATS
 .SS Unsupported Declarations
