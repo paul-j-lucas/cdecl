@@ -1898,7 +1898,7 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
     int const cmp = strcmp( s, k->literal );
     if ( cmp > 0 )
       continue;
-    if ( cmp < 0 )
+    if ( cmp < 0 )                      // the array is sorted
       break;
     return k;
   } // for

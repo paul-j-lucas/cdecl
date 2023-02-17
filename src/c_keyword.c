@@ -480,7 +480,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
     int const cmp = strcmp( literal, k->literal );
     if ( cmp > 0 )
       continue;
-    if ( cmp < 0 )
+    if ( cmp < 0 )                      // the array is sorted
       break;
 
     if ( (k->lang_ids & lang_ids) == LANG_NONE )

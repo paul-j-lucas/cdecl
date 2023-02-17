@@ -153,7 +153,7 @@ static ac_keyword_t const* ac_keyword_find( char const *s ) {
     int const cmp = strcmp( s, k->literal );
     if ( cmp == 0 )
       return k;
-    if ( cmp < 0 )                      // the list is sorted
+    if ( cmp < 0 )                      // the array is sorted
       break;
   } // for
   return NULL;
@@ -568,7 +568,7 @@ static char* command_generator( char const *text, int state ) {
     int const cmp = strncmp( text, c->literal, text_len );
     if ( cmp == 0 && opt_lang_is_any( c->lang_ids ) )
       return check_strdup( c->literal );
-    if ( cmp < 0 )
+    if ( cmp < 0 )                      // the array is sorted
       break;
   } // while
 
@@ -671,7 +671,7 @@ static char* keyword_generator( char const *text, int state ) {
       int const cmp = strncmp( text, s, text_len );
       if ( cmp > 0 )
         continue;
-      if ( cmp < 0 )
+      if ( cmp < 0 )                      // the array is sorted
         break;
       ac_keyword_t const *const k = ac_keyword_find( s );
       if ( k == NULL || opt_lang_is_any( k->ac_lang_ids ) ) {
@@ -704,7 +704,7 @@ static char* keyword_generator( char const *text, int state ) {
     int const cmp = strncmp( text, k->literal, text_len );
     if ( cmp > 0 )
       continue;
-    if ( cmp < 0 )
+    if ( cmp < 0 )                      // the array is sorted
       break;
 
     //
