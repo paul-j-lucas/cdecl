@@ -113,12 +113,12 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
     char *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
 
     // Ensure that the name is NOT a keyword.
-    c_keyword_t const *const k =
+    c_keyword_t const *const ck =
       c_keyword_find( name, opt_lang, C_KW_CTX_DEFAULT );
-    if ( k != NULL ) {
+    if ( ck != NULL ) {
       FREE( name );
-      // k->literal is set to L_* so == is OK
-      if ( is_dtor && k->literal == L_compl ) {
+      // ck->literal is set to L_* so == is OK
+      if ( is_dtor && ck->literal == L_compl ) {
         char const *const t = s + strlen( L_compl );
         if ( isspace( *t ) ) {          // except treat "compl" as '~'
           s = t + 1;

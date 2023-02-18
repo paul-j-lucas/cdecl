@@ -476,18 +476,18 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
   }
 
   // the list is small, so linear search is good enough
-  for ( c_keyword_t const *k = C_KEYWORDS; k->literal != NULL; ++k ) {
-    int const cmp = strcmp( literal, k->literal );
+  for ( c_keyword_t const *ck = C_KEYWORDS; ck->literal != NULL; ++ck ) {
+    int const cmp = strcmp( literal, ck->literal );
     if ( cmp > 0 )
       continue;
     if ( cmp < 0 )                      // the array is sorted
       break;
 
-    if ( (k->lang_ids & lang_ids) == LANG_NONE )
+    if ( (ck->lang_ids & lang_ids) == LANG_NONE )
       continue;
 
     if ( cdecl_mode == CDECL_GIBBERISH_TO_ENGLISH &&
-         k->kw_ctx != C_KW_CTX_DEFAULT && kw_ctx != k->kw_ctx ) {
+         ck->kw_ctx != C_KW_CTX_DEFAULT && kw_ctx != ck->kw_ctx ) {
       //
       // Keyword contexts matter only when converting gibberish to pseudo-
       // English.  For example, we do NOT match attribute names when parsing
@@ -508,14 +508,14 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
       //
     }
 
-    return k;
+    return ck;
   } // for
 
   return NULL;
 }
 
-c_keyword_t const* c_keyword_next( c_keyword_t const *k ) {
-  return k == NULL ? C_KEYWORDS : (++k)->literal == NULL ? NULL : k;
+c_keyword_t const* c_keyword_next( c_keyword_t const *ck ) {
+  return ck == NULL ? C_KEYWORDS : (++ck)->literal == NULL ? NULL : ck;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

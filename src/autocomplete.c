@@ -149,10 +149,10 @@ NODISCARD
 static ac_keyword_t const* ac_keyword_find( char const *s ) {
   assert( s != NULL );
   // the list is small, so linear search is good enough
-  for ( ac_keyword_t const *k = ac_keywords; k->literal != NULL; ++k ) {
-    int const cmp = strcmp( s, k->literal );
+  for ( ac_keyword_t const *ack = ac_keywords; ack->literal != NULL; ++ack ) {
+    int const cmp = strcmp( s, ack->literal );
     if ( cmp == 0 )
-      return k;
+      return ack;
     if ( cmp < 0 )                      // the array is sorted
       break;
   } // for
@@ -169,20 +169,20 @@ static void ac_keywords_init( void ) {
   size_t n = 0;
 
   // pre-flight to calculate array size
-  FOREACH_C_KEYWORD( k )
-    n += k->ac_lang_ids != LANG_NONE;
-  FOREACH_CDECL_KEYWORD( k )
-    n += k->ac_lang_ids != LANG_NONE && !is_c_keyword( k->literal );
+  FOREACH_C_KEYWORD( ck )
+    n += ck->ac_lang_ids != LANG_NONE;
+  FOREACH_CDECL_KEYWORD( cdk )
+    n += cdk->ac_lang_ids != LANG_NONE && !is_c_keyword( cdk->literal );
 
   ac_keyword_t *const ac_keywords_array =
     free_later( MALLOC( ac_keyword_t, n + 1 ) );
   ac_keyword_t *p = ac_keywords_array;
 
-  FOREACH_C_KEYWORD( k ) {
-    if ( k->ac_lang_ids != LANG_NONE ) {
+  FOREACH_C_KEYWORD( ck ) {
+    if ( ck->ac_lang_ids != LANG_NONE ) {
       *p++ = (ac_keyword_t){
-        .literal = k->literal,
-        .ac_lang_ids = k->ac_lang_ids,
+        .literal = ck->literal,
+        .ac_lang_ids = ck->ac_lang_ids,
         .ac_in_gibberish = true,
         .ac_policy = AC_POLICY_NONE,
         .lang_syn = NULL
@@ -190,14 +190,14 @@ static void ac_keywords_init( void ) {
     }
   } // for
 
-  FOREACH_CDECL_KEYWORD( k ) {
-    if ( k->ac_lang_ids != LANG_NONE && !is_c_keyword( k->literal ) ) {
+  FOREACH_CDECL_KEYWORD( cdk ) {
+    if ( cdk->ac_lang_ids != LANG_NONE && !is_c_keyword( cdk->literal ) ) {
       *p++ = (ac_keyword_t){
-        .literal = k->literal,
-        .ac_lang_ids = k->ac_lang_ids,
-        .ac_in_gibberish = k->always_find,
-        .ac_policy = k->ac_policy,
-        .lang_syn = k->lang_syn
+        .literal = cdk->literal,
+        .ac_lang_ids = cdk->ac_lang_ids,
+        .ac_in_gibberish = cdk->always_find,
+        .ac_policy = cdk->ac_policy,
+        .lang_syn = cdk->lang_syn
       };
     }
   } // for
@@ -441,9 +441,9 @@ static cdecl_keyword_t const* prev_cdecl_keyword( char const *s, size_t pos ) {
     static strbuf_t token_buf;
     strbuf_reset( &token_buf );
     strbuf_putsn( &token_buf, token, token_len );
-    cdecl_keyword_t const *const k = cdecl_keyword_find( token_buf.str );
-    if ( k != NULL )
-      return k;
+    cdecl_keyword_t const *const cdk = cdecl_keyword_find( token_buf.str );
+    if ( cdk != NULL )
+      return cdk;
     pos = STATIC_CAST( size_t, token - s );
   } // for
 }
@@ -655,9 +655,9 @@ static char* keyword_generator( char const *text, int state ) {
       // for that keyword.
       //
       assert( rl_point >= 0 );
-      cdecl_keyword_t const *const k =
+      cdecl_keyword_t const *const cdk =
         prev_cdecl_keyword( rl_line_buffer, STATIC_CAST( size_t, rl_point ) );
-      specific_ac_keywords = k != NULL ? k->ac_next_keywords : NULL;
+      specific_ac_keywords = cdk != NULL ? cdk->ac_next_keywords : NULL;
     }
   }
 
@@ -673,8 +673,8 @@ static char* keyword_generator( char const *text, int state ) {
         continue;
       if ( cmp < 0 )                      // the array is sorted
         break;
-      ac_keyword_t const *const k = ac_keyword_find( s );
-      if ( k == NULL || opt_lang_is_any( k->ac_lang_ids ) ) {
+      ac_keyword_t const *const ack = ac_keyword_find( s );
+      if ( ack == NULL || opt_lang_is_any( ack->ac_lang_ids ) ) {
         returned_any = true;
         return check_strdup( s );
       }
@@ -690,18 +690,18 @@ static char* keyword_generator( char const *text, int state ) {
     goto done;
 
   static bool                 is_gibberish;
-  static ac_keyword_t const  *no_other_k;
+  static ac_keyword_t const  *no_other_ack;
 
   if ( state == 0 ) {
     is_gibberish = !is_english_command( command );
-    no_other_k = NULL;
+    no_other_ack = NULL;
   }
 
-  for ( ac_keyword_t const *k;
-        (k = ac_keywords + match_index)->literal != NULL; ) {
+  for ( ac_keyword_t const *ack;
+        (ack = ac_keywords + match_index)->literal != NULL; ) {
     ++match_index;
 
-    int const cmp = strncmp( text, k->literal, text_len );
+    int const cmp = strncmp( text, ack->literal, text_len );
     if ( cmp > 0 )
       continue;
     if ( cmp < 0 )                      // the array is sorted
@@ -711,13 +711,13 @@ static char* keyword_generator( char const *text, int state ) {
     // If we're deciphering gibberish into pseudo-English, but the current
     // keyword shouldn't be autocompleted in gibberish, skip it.
     //
-    if ( is_gibberish && !k->ac_in_gibberish )
+    if ( is_gibberish && !ack->ac_in_gibberish )
       continue;
 
-    if ( !opt_lang_is_any( k->ac_lang_ids ) )
+    if ( !opt_lang_is_any( ack->ac_lang_ids ) )
       continue;
 
-    if ( k->lang_syn != NULL ) {
+    if ( ack->lang_syn != NULL ) {
       //
       // If this keyword is a synonym for another keyword and the text typed so
       // far is a prefix of the synonym, skip this keyword because the synonym
@@ -728,26 +728,26 @@ static char* keyword_generator( char const *text, int state ) {
       // and the text typed so far is "char", skip "character" since it would
       // be redundant with "char".
       //
-      char const *const synonym = c_lang_literal( k->lang_syn );
+      char const *const synonym = c_lang_literal( ack->lang_syn );
       if ( synonym != NULL && str_is_prefix( text, synonym ) )
         continue;
     }
 
-    switch ( k->ac_policy ) {
+    switch ( ack->ac_policy ) {
       case AC_POLICY_NONE:
         returned_any = true;
-        return check_strdup( k->literal );
+        return check_strdup( ack->literal );
       case AC_POLICY_IN_NEXT_ONLY:
         continue;
       case AC_POLICY_NO_OTHER:
-        no_other_k = k;
+        no_other_ack = ack;
         continue;
     } // switch
-    UNEXPECTED_INT_VALUE( k->ac_policy );
+    UNEXPECTED_INT_VALUE( ack->ac_policy );
   } // for
 
-  if ( no_other_k != NULL && false_set( &returned_any ) )
-    return check_strdup( no_other_k->literal );
+  if ( no_other_ack != NULL && false_set( &returned_any ) )
+    return check_strdup( no_other_ack->literal );
 
 done:
   if ( !returned_any )

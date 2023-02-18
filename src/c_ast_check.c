@@ -2808,12 +2808,12 @@ static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
     char const *const name = c_scope_data( scope )->name;
 
     // First, check to see if the name is a keyword in some other language.
-    c_keyword_t const *const k =
+    c_keyword_t const *const ck =
       c_keyword_find( name, LANG_ANY, C_KW_CTX_DEFAULT );
-    if ( k != NULL ) {
+    if ( ck != NULL ) {
       print_warning( loc,
         "\"%s\" is a keyword in %s\n",
-        name, c_lang_name( c_lang_oldest( k->lang_ids ) )
+        name, c_lang_name( c_lang_oldest( ck->lang_ids ) )
       );
       continue;
     }

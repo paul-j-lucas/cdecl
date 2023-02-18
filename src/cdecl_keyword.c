@@ -1894,19 +1894,20 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   }
 
   // the list is small, so linear search is good enough
-  for ( cdecl_keyword_t const *k = CDECL_KEYWORDS; k->literal != NULL; ++k ) {
-    int const cmp = strcmp( s, k->literal );
+  for ( cdecl_keyword_t const *cdk = CDECL_KEYWORDS; cdk->literal != NULL;
+        ++cdk ) {
+    int const cmp = strcmp( s, cdk->literal );
     if ( cmp > 0 )
       continue;
     if ( cmp < 0 )                      // the array is sorted
       break;
-    return k;
+    return cdk;
   } // for
   return NULL;
 }
 
-cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *k ) {
-  return k == NULL ? CDECL_KEYWORDS : (++k)->literal == NULL ? NULL : k;
+cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *cdk ) {
+  return cdk == NULL ? CDECL_KEYWORDS : (++cdk)->literal == NULL ? NULL : cdk;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

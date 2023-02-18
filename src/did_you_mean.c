@@ -97,10 +97,10 @@ static char* check_prefix_strdup( char const *prefix, char const *s ) {
 PJL_DISCARD
 static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
   size_t count = 0;
-  FOREACH_C_KEYWORD( k ) {
-    if ( opt_lang_is_any( k->lang_ids ) && c_tid_tpid( k->tid ) == tpid ) {
+  FOREACH_C_KEYWORD( ck ) {
+    if ( opt_lang_is_any( ck->lang_ids ) && c_tid_tpid( ck->tid ) == tpid ) {
       if ( pdym != NULL )
-        (*pdym)++->literal = check_strdup( k->literal );
+        (*pdym)++->literal = check_strdup( ck->literal );
       ++count;
     }
   } // for
@@ -122,13 +122,13 @@ static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
   assert( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH );
 
   size_t count = 0;
-  FOREACH_CDECL_KEYWORD( k ) {
-    if ( !opt_lang_is_any( k->lang_ids ) )
+  FOREACH_CDECL_KEYWORD( cdk ) {
+    if ( !opt_lang_is_any( cdk->lang_ids ) )
       continue;
     char const *literal;
-    if ( k->lang_syn == NULL )
-      literal = k->literal;
-    else if ( (literal = c_lang_literal( k->lang_syn )) == NULL )
+    if ( cdk->lang_syn == NULL )
+      literal = cdk->literal;
+    else if ( (literal = c_lang_literal( cdk->lang_syn )) == NULL )
       continue;
     if ( pdym != NULL )
       (*pdym)++->literal = check_strdup( literal );

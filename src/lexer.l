@@ -236,10 +236,10 @@ static void include_init( void ) {
 NODISCARD
 static inline
 cdecl_keyword_t const* lexer_cdecl_keyword_find( char const *literal ) {
-  cdecl_keyword_t const *const k = cdecl_keyword_find( literal );
-  if ( k != NULL &&
-       ((lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0 || k->always_find) ) {
-    return k;
+  cdecl_keyword_t const *const cdk = cdecl_keyword_find( literal );
+  if ( cdk != NULL &&
+       ((lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0 || cdk->always_find) ) {
+    return cdk;
   }
   return NULL;
 }
@@ -811,11 +811,11 @@ include{S}*\"  {
                 //
         find_cdecl_keyword:
                 NO_OP;
-                cdecl_keyword_t const *const ck =
+                cdecl_keyword_t const *const cdk =
                   lexer_cdecl_keyword_find( lexer_token );
-                if ( ck != NULL ) {
-                  if ( ck->lang_syn == NULL ) {
-                    if ( ck->literal == L_set ) {
+                if ( cdk != NULL ) {
+                  if ( cdk->lang_syn == NULL ) {
+                    if ( cdk->literal == L_set ) {
                       //
                       // For the "set" command, we want to allow (almost) any
                       // character sequence for the command's options, so we
@@ -823,15 +823,15 @@ include{S}*\"  {
                       //
                       BEGIN( X_SET );
                     }
-                    else if ( ck->literal == L_show ) {
+                    else if ( cdk->literal == L_show ) {
                       //
                       // For the "show" command, we need to allow globs.
                       //
                       BEGIN( S_SHOW );
                     }
-                    return ck->y_token_id;
+                    return cdk->y_token_id;
                   }
-                  char const *const literal = c_lang_literal( ck->lang_syn );
+                  char const *const literal = c_lang_literal( cdk->lang_syn );
                   if ( literal != NULL ) {
                     SET_TOKEN_TO( literal );
                     goto find_c_keyword;
@@ -856,11 +856,11 @@ include{S}*\"  {
                   //
                   // 3. See if it's a C/C++ keyword.
                   //
-                  c_keyword_t const *const k =
+                  c_keyword_t const *const ck =
                     c_keyword_find( lexer_token, opt_lang, lexer_keyword_ctx );
-                  if ( k != NULL ) {
-                    yylval.tid = k->tid;
-                    return k->y_token_id;
+                  if ( ck != NULL ) {
+                    yylval.tid = ck->tid;
+                    return ck->y_token_id;
                   }
                 }
 

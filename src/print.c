@@ -445,12 +445,12 @@ void fl_print_error_unknown_name( char const *file, int line,
   // Must dup this since c_sname_full_name() returns a temporary buffer.
   char const *const name = check_strdup( c_sname_full_name( sname ) );
 
-  c_keyword_t const *const k =
+  c_keyword_t const *const ck =
     c_keyword_find( name, LANG_ANY, C_KW_CTX_DEFAULT );
-  if ( k != NULL ) {
+  if ( ck != NULL ) {
     char const *what = NULL;
 
-    switch ( c_tid_tpid( k->tid ) ) {
+    switch ( c_tid_tpid( ck->tid ) ) {
       case C_TPID_NONE:                 // e.g., "break"
       case C_TPID_STORE:                // e.g., "extern"
         dym_kind = DYM_C_KEYWORDS;
@@ -467,7 +467,7 @@ void fl_print_error_unknown_name( char const *file, int line,
     } // switch
 
     fl_print_error( file, line, loc,
-      "\"%s\": unsupported %s%s", name, what, c_lang_which( k->lang_ids )
+      "\"%s\": unsupported %s%s", name, what, c_lang_which( ck->lang_ids )
     );
   }
   else {
@@ -476,8 +476,8 @@ void fl_print_error_unknown_name( char const *file, int line,
     dym_kind = DYM_C_KEYWORDS | DYM_C_TYPES;
     if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
       dym_kind |= DYM_CDECL_KEYWORDS;
-      cdecl_keyword_t const *const ck = cdecl_keyword_find( name );
-      if ( ck != NULL )
+      cdecl_keyword_t const *const cdk = cdecl_keyword_find( name );
+      if ( cdk != NULL )
         EPRINTF( " (\"%s\" is a cdecl keyword)", name );
     }
   }

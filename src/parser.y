@@ -803,18 +803,18 @@ static void fl_elaborate_error( char const *file, int line,
   va_end( args );
 
   if ( error_token != NULL ) {
-    c_keyword_t const *const k =
+    c_keyword_t const *const ck =
       c_keyword_find( error_token, LANG_ANY, C_KW_CTX_DEFAULT );
-    if ( k != NULL ) {
-      c_lang_id_t const oldest_lang = c_lang_oldest( k->lang_ids );
+    if ( ck != NULL ) {
+      c_lang_id_t const oldest_lang = c_lang_oldest( ck->lang_ids );
       if ( oldest_lang > opt_lang )
         EPRINTF( "; not a keyword until %s", c_lang_name( oldest_lang ) );
       else
         EPRINTF( " (\"%s\" is a keyword)", error_token );
     }
     else if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
-      cdecl_keyword_t const *const ck = cdecl_keyword_find( error_token );
-      if ( ck != NULL )
+      cdecl_keyword_t const *const cdk = cdecl_keyword_find( error_token );
+      if ( cdk != NULL )
         EPRINTF( " (\"%s\" is a cdecl keyword)", error_token );
     }
 
@@ -900,10 +900,10 @@ static void fl_keyword_expected( char const *file, int line,
       // it as a name and not the token which likely means it's not a C/C++
       // keyword until a later version of the current language.
       //
-      c_keyword_t const *const k =
+      c_keyword_t const *const ck =
         c_keyword_find( keyword, LANG_ANY, C_KW_CTX_DEFAULT );
-      if ( k != NULL ) {
-        char const *const which_lang = c_lang_which( k->lang_ids );
+      if ( ck != NULL ) {
+        char const *const which_lang = c_lang_which( ck->lang_ids );
         if ( which_lang[0] != '\0' ) {
           EPRINTF( ": \"%s\" not supported%s\n", keyword, which_lang );
           return;
@@ -6260,11 +6260,11 @@ attribute_c_atid_exp
         c_lang_id_t lang_ids = LANG_NONE;
 
         char const *const name = c_sname_local_name( &$1 );
-        c_keyword_t const *const k =
+        c_keyword_t const *const ck =
           c_keyword_find( name, c_lang_newer( opt_lang ), C_KW_CTX_ATTRIBUTE );
-        if ( k != NULL && c_tid_tpid( k->tid ) == C_TPID_ATTR ) {
+        if ( ck != NULL && c_tid_tpid( ck->tid ) == C_TPID_ATTR ) {
           adj = "unsupported";
-          lang_ids = k->lang_ids;
+          lang_ids = ck->lang_ids;
         }
         print_warning( &@1,
           "\"%s\": %s attribute%s",
