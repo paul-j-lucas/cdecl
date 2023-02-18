@@ -1,3 +1,17 @@
+2023-02-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_keyword.c: Now AC_TOO_SHORT for L_by.
+   * cdecl_keyword.c: s/L_int/L_integer/ for bit-precise autocompletion.
+
+2023-02-17  Jan Engelhardt <jengelh@inai.de>
+
+   * cdecl_keyword.c: autocomplete: add L_by to L_reference next-keyword list
+     (#26)
+
+2023-02-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added mention of another editline bug.
+
 2023-02-16  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c: Now using STATIC_CAST().
