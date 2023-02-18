@@ -54,6 +54,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifdef WITH_READLINE
 /**
  * Special autocompletion policy for a particular \ref cdecl_keyword.
  */
@@ -61,10 +62,16 @@ enum ac_policy {
   /**
    * No special autocompletion policy.
    */
-  AC_POLICY_NONE,
+  AC_POLICY_DEFAULT,
 
   /**
-   * Autocomplete only when a keyword is explicitly listed in the \ref
+   * Do not autocomplete: defer to another keyword, e.g., `align` should defer
+   * to `aligned`, `const` should defer to its C keyword counterpart, etc.
+   */
+  AC_POLICY_DEFER,
+
+  /**
+   * Autocomplete only when the keyword is explicitly listed in the \ref
    * cdecl_keyword::ac_next_keywords "ac_next_keywords" of some other keyword.
    *
    * For example, the `bytes` token should be autocompleted only when it
@@ -88,9 +95,20 @@ enum ac_policy {
    *
    *      cdecl> declare x as boole<tab>
    */
-  AC_POLICY_NO_OTHER
+  AC_POLICY_NO_OTHER,
+
+  /**
+   * Do not autocomplete: the keyword is too short, e.g., `as`, `mbr`, `no`,
+   * `of`, `ptr`, `q`, etc.
+   *
+   * @note The keyword can still be autocompleted if it's explicitly listed in
+   * some other keyword's \ref cdecl_keyword::ac_next_keywords
+   * "ac_next_keywords".
+   */
+  AC_POLICY_TOO_SHORT
 };
 typedef enum ac_policy ac_policy_t;
+#endif /* WITH_READLINE */
 
 /**
  * **Cdecl** keyword info.
@@ -123,17 +141,6 @@ struct cdecl_keyword {
   c_lang_lit_t const *lang_syn;
 
 #ifdef WITH_READLINE
-  /**
-   * Language(s) autocompletable in.  Relative to `lang_ids`, this field:
-   *
-   *  1. Is exactly the same in which case it's autocompletable in all (and
-   *     only) those language(s) in which it's valid.
-   *
-   *  2. Is #LANG_NONE via #AC_DEFER_TO(), #AC_DEFER_TO_C_KEYWORD(), or
-   *     #AC_TOO_SHORT.
-   */
-  c_lang_id_t         ac_lang_ids;
-
   ac_policy_t         ac_policy;        ///< Autocompletion policy.
 
   /**

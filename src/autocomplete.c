@@ -172,29 +172,29 @@ static void ac_keywords_init( void ) {
   FOREACH_C_KEYWORD( ck )
     n += ck->ac_lang_ids != LANG_NONE;
   FOREACH_CDECL_KEYWORD( cdk )
-    n += cdk->ac_lang_ids != LANG_NONE && !is_c_keyword( cdk->literal );
+    n += !is_c_keyword( cdk->literal );
 
   ac_keyword_t *const ac_keywords_array =
     free_later( MALLOC( ac_keyword_t, n + 1 ) );
-  ac_keyword_t *p = ac_keywords_array;
+  ac_keyword_t *ack = ac_keywords_array;
 
   FOREACH_C_KEYWORD( ck ) {
     if ( ck->ac_lang_ids != LANG_NONE ) {
-      *p++ = (ac_keyword_t){
+      *ack++ = (ac_keyword_t){
         .literal = ck->literal,
         .ac_lang_ids = ck->ac_lang_ids,
         .ac_in_gibberish = true,
-        .ac_policy = AC_POLICY_NONE,
+        .ac_policy = AC_POLICY_DEFAULT,
         .lang_syn = NULL
       };
     }
   } // for
 
   FOREACH_CDECL_KEYWORD( cdk ) {
-    if ( cdk->ac_lang_ids != LANG_NONE && !is_c_keyword( cdk->literal ) ) {
-      *p++ = (ac_keyword_t){
+    if ( !is_c_keyword( cdk->literal ) ) {
+      *ack++ = (ac_keyword_t){
         .literal = cdk->literal,
-        .ac_lang_ids = cdk->ac_lang_ids,
+        .ac_lang_ids = cdk->lang_ids,
         .ac_in_gibberish = cdk->always_find,
         .ac_policy = cdk->ac_policy,
         .lang_syn = cdk->lang_syn
@@ -202,7 +202,7 @@ static void ac_keywords_init( void ) {
     }
   } // for
 
-  MEM_ZERO( p );
+  MEM_ZERO( ack );
 
   //
   // Sort so C/C++ keywords come before their pseudo-English synonyms (e.g.,
@@ -734,13 +734,15 @@ static char* keyword_generator( char const *text, int state ) {
     }
 
     switch ( ack->ac_policy ) {
-      case AC_POLICY_NONE:
+      case AC_POLICY_DEFAULT:
         returned_any = true;
         return check_strdup( ack->literal );
-      case AC_POLICY_IN_NEXT_ONLY:
-        continue;
       case AC_POLICY_NO_OTHER:
         no_other_ack = ack;
+        continue;
+      case AC_POLICY_DEFER:
+      case AC_POLICY_IN_NEXT_ONLY:
+      case AC_POLICY_TOO_SHORT:
         continue;
     } // switch
     UNEXPECTED_INT_VALUE( ack->ac_policy );
