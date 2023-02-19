@@ -747,7 +747,7 @@ static char* keyword_generator( char const *text, int state ) {
         no_other_ack = ack;
         continue;
       case AC_POLICY_DEFER:
-      case AC_POLICY_IN_NEXT_ONLY:
+      case AC_POLICY_IN_NEXT_ONLY:      // handled by specific_ac_keywords
       case AC_POLICY_TOO_SHORT:
         continue;
     } // switch
