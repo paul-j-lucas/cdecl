@@ -415,7 +415,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     LANG_LAMBDA,
     TOKEN( Y_capturing ),
     AC_SETTINGS(
-      AC_POLICY_IN_NEXT_ONLY,
+      AC_POLICY_DEFER,                  // to "capturing"
       AC_NO_NEXT_KEYWORDS
     )
   },
@@ -424,7 +424,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     LANG_LAMBDA,
     TOKEN( Y_capturing ),
     AC_SETTINGS(
-      AC_POLICY_IN_NEXT_ONLY,
+      AC_POLICY_DEFER,                  // to "capturing"
       AC_NO_NEXT_KEYWORDS
     )
   },
