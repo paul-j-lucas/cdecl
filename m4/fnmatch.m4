@@ -1,4 +1,4 @@
-# Check for fnmatch - serial 15.  -*- coding: utf-8 -*-
+# Check for fnmatch - serial 16.  -*- coding: utf-8 -*-
 
 # Copyright (C) 2000-2007, 2009-2023 Free Software Foundation, Inc.
 # This file is free software; the Free Software Foundation
@@ -119,10 +119,10 @@ AC_DEFUN([gl_FUNC_FNMATCH_POSIX],
          [eval "$gl_fnmatch_cache_var=yes"],
          [eval "$gl_fnmatch_cache_var=no"],
          [case "$host_os" in
-                     # Guess yes on musl systems.
-            *-musl*) eval "$gl_fnmatch_cache_var=\"guessing yes\"" ;;
-                     # Guess no otherwise, even on glibc systems.
-            *)       eval "$gl_fnmatch_cache_var=\"guessing no\"" ;;
+                                # Guess yes on musl systems.
+            *-musl* | midipix*) eval "$gl_fnmatch_cache_var=\"guessing yes\"" ;;
+                                # Guess no otherwise, even on glibc systems.
+            *)                  eval "$gl_fnmatch_cache_var=\"guessing no\"" ;;
           esac
          ])
       ])

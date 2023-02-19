@@ -1,4 +1,4 @@
-# setlocale_null.m4 serial 7
+# setlocale_null.m4 serial 8
 dnl Copyright (C) 2019-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -14,7 +14,7 @@ AC_DEFUN([gl_FUNC_SETLOCALE_NULL],
     [gl_cv_func_setlocale_null_all_mtsafe],
     [case "$host_os" in
        # Guess no on musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku.
-       *-musl* | darwin* | freebsd* | midnightbsd* | netbsd* | openbsd* | aix* | haiku*)
+       *-musl* | midipix* | darwin* | freebsd* | midnightbsd* | netbsd* | openbsd* | aix* | haiku*)
          gl_cv_func_setlocale_null_all_mtsafe=no ;;
        # Guess no on Cygwin < 3.4.6.
        cygwin*)
@@ -62,7 +62,7 @@ AC_DEFUN([gl_FUNC_SETLOCALE_NULL],
        openbsd* | aix*)
          gl_cv_func_setlocale_null_one_mtsafe=no ;;
        # Guess yes on glibc, musl libc, macOS, FreeBSD, NetBSD, HP-UX, IRIX, Solaris, Haiku, Cygwin, native Windows.
-       *-gnu* | gnu* | *-musl* | darwin* | freebsd* | midnightbsd* | netbsd* | hpux* | irix* | solaris* | haiku* | cygwin* | mingw*)
+       *-gnu* | gnu* | *-musl* | midipix* | darwin* | freebsd* | midnightbsd* | netbsd* | hpux* | irix* | solaris* | haiku* | cygwin* | mingw*)
          gl_cv_func_setlocale_null_one_mtsafe=yes ;;
        # If we don't know, obey --enable-cross-guesses.
        *)
