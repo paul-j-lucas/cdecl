@@ -599,8 +599,11 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 
   switch ( raw_ast->kind ) {
     case K_ARRAY:
-      error_kind_not_cast_into( to_ast, "pointer" );
-      return false;
+      if ( !c_sname_empty( &ast->sname ) ) {
+        print_error( &ast->loc, "arithmetic or pointer type expected\n" );
+        return false;
+      }
+      break;
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_FUNCTION:

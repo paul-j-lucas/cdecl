@@ -30,6 +30,11 @@ explain (int *restrict)p
 explain (unsigned long long)x
 explain (int *const volatile)x
 explain (int *volatile)x
+explain (int)
+explain (int*)
+explain (int[2])
+explain (void*[])
+explain (char const *const[])
 
 set c++
 explain (int&)x

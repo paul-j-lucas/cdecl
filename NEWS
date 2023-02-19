@@ -16,6 +16,12 @@ with their complete changes, see the AUTHORS file.
 When hitting TAB and there are no completion matches, **cdecl** now rings the
 terminal's bell.
 
+** Cast into array
+Now correctly allowing casting into an array when there is no name:
+
+    cdecl> explain (char const *const[])
+    cast into array of constant pointer to constant character
+
 ** Destructors in C
 **Cdecl** now correctly reports destructors in C as an error.
 

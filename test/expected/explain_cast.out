@@ -58,6 +58,16 @@ cdecl> explain (int *const volatile)x
 cast x into constant volatile pointer to integer
 cdecl> explain (int *volatile)x
 cast x into volatile pointer to integer
+cdecl> explain (int)
+cast into integer
+cdecl> explain (int*)
+cast into pointer to integer
+cdecl> explain (int[2])
+cast into array 2 of integer
+cdecl> explain (void*[])
+cast into array of pointer to void
+cdecl> explain (char const *const[])
+cast into array of constant pointer to constant character
 cdecl> set c++
 c++decl> explain (int&)x
 cast x into reference to integer
