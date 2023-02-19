@@ -31,7 +31,10 @@ have been for nested types.  The digraphs & trigraphs for `{` and `}` weren't
 parsed at all.  Both fixed.
 
 ** Lambdas
-Support for C++ lambdas has been added.
+Support for C++ lambdas has been added:
+
+    c++decl> explain [=,&x](int n)
+    declare lambda capturing [copy by default, reference to x] (n as integer)
 
 ** Undid K&R function parameter printed as `int`
 Undid a change in **cdecl** 11.5 where K&R C typeless function parameters were
