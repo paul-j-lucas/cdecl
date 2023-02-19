@@ -29,6 +29,9 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#ifdef WITH_READLINE
+#include "autocomplete.h"
+#endif /* WITH_READLINE */
 #include "c_ast.h"
 #include "types.h"
 #include "cdecl_parser.h"               /* must go last */
@@ -53,62 +56,6 @@
   for ( cdecl_keyword_t const *VAR = NULL; (VAR = cdecl_keyword_next( VAR )) != NULL; )
 
 ///////////////////////////////////////////////////////////////////////////////
-
-#ifdef WITH_READLINE
-/**
- * Special autocompletion policy for a particular \ref cdecl_keyword.
- */
-enum ac_policy {
-  /**
-   * No special autocompletion policy.
-   */
-  AC_POLICY_DEFAULT,
-
-  /**
-   * Do not autocomplete: defer to another keyword, e.g., `align` should defer
-   * to `aligned`, `const` should defer to its C keyword counterpart, etc.
-   */
-  AC_POLICY_DEFER,
-
-  /**
-   * Autocomplete only when the keyword is explicitly listed in the \ref
-   * cdecl_keyword::ac_next_keywords "ac_next_keywords" of some other keyword.
-   *
-   * For example, the `bytes` token should be autocompleted only when it
-   * follows `aligned`.
-   */
-  AC_POLICY_IN_NEXT_ONLY,
-
-  /**
-   * Autocomplete only if no other keyword matches.
-   *
-   * For example, the **cdecl** `boolean` keyword is a synonym for either
-   * `_Bool` in C or `bool` in C++.  However, `boolean` should _not_ be offered
-   * as an autocompletion choice initially since it would be ambiguous with
-   * `bool` which is redundant:
-   *
-   *      cdecl> declare x as bo<tab>
-   *      bool boolean
-   *
-   * Instead, `boolean` should be offered only if the user typed enough as to
-   * make it unambiguous (no other keyword matches):
-   *
-   *      cdecl> declare x as boole<tab>
-   */
-  AC_POLICY_NO_OTHER,
-
-  /**
-   * Do not autocomplete: the keyword is too short, e.g., `as`, `mbr`, `no`,
-   * `of`, `ptr`, `q`, etc.
-   *
-   * @note The keyword can still be autocompleted if it's explicitly listed in
-   * some other keyword's \ref cdecl_keyword::ac_next_keywords
-   * "ac_next_keywords".
-   */
-  AC_POLICY_TOO_SHORT
-};
-typedef enum ac_policy ac_policy_t;
-#endif /* WITH_READLINE */
 
 /**
  * **Cdecl** keyword info.

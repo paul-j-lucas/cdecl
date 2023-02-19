@@ -26,6 +26,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "autocomplete.h"
 #include "read_line.h"
 #include "cdecl.h"
 
@@ -71,7 +72,6 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
 
 #ifdef WITH_READLINE
     if ( interactive ) {
-      extern void readline_init( char const*, FILE*, FILE* );
       readline_init( prog_name, fin, fout );
       free( line );
       got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;

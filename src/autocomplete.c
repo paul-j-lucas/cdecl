@@ -25,6 +25,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "autocomplete.h"
 #include "c_keyword.h"
 #include "c_lang.h"
 #include "cdecl_command.h"
@@ -50,6 +51,11 @@
 #endif /* !HAVE_DECL_RL_COMPLETION_MATCHES */
 
 /// @endcond
+
+/**
+ * @addtogroup autocompletion-group
+ * @{
+ */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -759,13 +765,6 @@ done:
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-/**
- * Initializes GNU **readline**(3).
- *
- * @param prog_name The name of the running program to parse from `~/.inputrc`.
- * @param rin The `FILE` to read from.
- * @param rout The `FILE` to write to.
- */
 void readline_init( char const *prog_name, FILE *rin, FILE *rout ) {
   assert( rin != NULL );
   assert( rout != NULL );
@@ -782,4 +781,7 @@ void readline_init( char const *prog_name, FILE *rin, FILE *rout ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

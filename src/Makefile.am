@@ -91,7 +91,7 @@ cdecl_SOURCES += dump.c dump.h
 endif
 
 if WITH_READLINE
-cdecl_SOURCES += autocomplete.c
+cdecl_SOURCES += autocomplete.c autocomplete.h
 endif
 
 red_black_test_SOURCES = \
