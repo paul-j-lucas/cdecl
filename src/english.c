@@ -40,6 +40,11 @@
 
 /// @endcond
 
+/**
+ * @addtogroup printing-english-group
+ * @{
+ */
+
 // local functions
 NODISCARD
 static bool c_ast_visitor_english( c_ast_t*, user_data_t );
@@ -481,4 +486,7 @@ void c_typedef_english( c_typedef_t const *tdef, FILE *eout ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

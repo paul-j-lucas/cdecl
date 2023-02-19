@@ -45,6 +45,11 @@
 #include <string.h>
 
 /**
+ * @addtogroup printing-suggestions-group
+ * @{
+ */
+
+/**
  * Used by copy_typedefs() and copy_typedef_visitor() to pass and return data.
  */
 struct copy_typedef_visit_data {
@@ -426,4 +431,7 @@ none:
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

@@ -40,6 +40,11 @@
 
 /// @endcond
 
+/**
+ * @addtogroup cdecl-keywords-group
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifdef WITH_READLINE
@@ -1708,4 +1713,7 @@ cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *cdk ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

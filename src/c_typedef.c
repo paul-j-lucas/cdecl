@@ -44,6 +44,11 @@
 /// @endcond
 
 /**
+ * @addtogroup c-typedef-group
+ * @{
+ */
+
+/**
  * Convenience macro for specifying a \ref c_typedef literal with an AST having
  * \a SNAME.
  *
@@ -1196,4 +1201,7 @@ c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

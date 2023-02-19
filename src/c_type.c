@@ -62,6 +62,11 @@
 
 /// @endcond
 
+/**
+ * @addtogroup c-types-group
+ * @{
+ */
+
 // extern constants
 c_type_t const T_NONE             = { TB_NONE,      TS_NONE,    TA_NONE };
 c_type_t const T_ANY              = { TB_ANY,       TS_ANY,     TA_ANY  };
@@ -1340,4 +1345,7 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

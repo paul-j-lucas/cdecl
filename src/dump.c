@@ -64,6 +64,11 @@
 
 /// @endcond
 
+/**
+ * @addtogroup dump-group
+ * @{
+ */
+
 // local functions
 static void c_ast_list_dump_impl( c_ast_list_t const*, unsigned, FILE* );
 static void c_loc_dump( c_loc_t const*, FILE* );
@@ -461,4 +466,7 @@ void str_dump( char const *value, FILE *dout ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

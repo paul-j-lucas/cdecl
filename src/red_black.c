@@ -89,6 +89,11 @@
 /// @endcond
 
 /**
+ * @addtogroup red-black-group
+ * @{
+ */
+
+/**
  * Gets an l-value reference to the first node in \a TREE.
  *
  * @param TREE A pointer to the red-black tree to get the first node of.
@@ -571,4 +576,7 @@ rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

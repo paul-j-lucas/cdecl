@@ -50,6 +50,11 @@
 
 /// @endcond
 
+/**
+ * @addtogroup prompt-group
+ * @{
+ */
+
 #ifdef WITH_READLINE
   /**
    * Appends the character to start or end ignoring of characters to the prompt
@@ -158,4 +163,7 @@ void cdecl_prompt_init( void ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

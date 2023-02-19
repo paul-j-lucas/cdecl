@@ -81,6 +81,11 @@
 /// @endcond
 
 /**
+ * @addtogroup lexer-group
+ * @{
+ */
+
+/**
  * The maximum number of decimal digits in the unsigned 64-bit integer
  * 18446744073709551615.
  */
@@ -517,6 +522,8 @@ static int yywrap( void ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 /// @cond DOXYGEN_IGNORE
 
@@ -1214,6 +1221,11 @@ include{S}*\"  {
 
 ////////// local functions ////////////////////////////////////////////////////
 
+/**
+ * @addtogroup lexer-group
+ * @{
+ */
+
 // LCOV_EXCL_START
 /**
  * Called by Flex only when there's a fatal error.
@@ -1233,6 +1245,8 @@ static void lexer_fatal( char const *msg ) {
   yy_fatal_error( msg );
 }
 // LCOV_EXCL_STOP
+
+/** @} */
 
 ////////// extern functions ///////////////////////////////////////////////////
 

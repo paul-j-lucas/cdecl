@@ -48,6 +48,11 @@
 #include <fnmatch.h>
 #include <stdlib.h>                     /* for free(3) */
 
+/**
+ * @addtogroup sname-group
+ * @{
+ */
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -390,4 +395,7 @@ char const* c_sname_scope_name( c_sname_t const *sname ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

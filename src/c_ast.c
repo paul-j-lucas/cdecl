@@ -117,6 +117,11 @@ static size_t c_ast_count;              ///< ASTs allocated but not yet freed.
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * @addtogroup ast-functions-group
+ * @{
+ */
+
+/**
  * Checks whether two alignments are equal.
  *
  * @param i_align The first alignment.
@@ -506,4 +511,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visit_dir_t dir,
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

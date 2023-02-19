@@ -75,6 +75,11 @@ static unsigned const     TERM_COLUMNS_DEFAULT = 80;
 
 /// @endcond
 
+/**
+ * @addtogroup printing-errors-warnings-group
+ * @{
+ */
+
 // local functions
 static void               print_input_line( size_t*, size_t );
 
@@ -566,4 +571,7 @@ void print_type( c_typedef_t const *tdef, FILE *tout ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */
