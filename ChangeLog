@@ -1,3 +1,7 @@
+2023-02-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_keyword.c: s/AC_POLICY_IN_NEXT_ONLY/
+
 2023-02-18  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_keyword.c, c_lang.c, c_operator.c, c_sname.c, c_type.c,
