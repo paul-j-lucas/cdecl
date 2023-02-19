@@ -1,3 +1,17 @@
+2023-02-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_keyword.c, c_lang.c, c_operator.c, c_sname.c, c_type.c,
+     c_typedef.c, cdecl_keyword.c, cli_options.c, color.c, did_you_mean.c,
+     dump.c, english.c, gibberish.c, lexer.l, options.c, print.c, prompt.c,
+     red_black.c, set_options.c, util.c: Added @addtogroup in .c files.
+   * src/Makefile.am, autocomplete.c, autocomplete.h, cdecl_keyword.h,
+     read_line.c: Added autocomplete.h.
+   * autocomplete.c, cdecl_keyword.c, cdecl_keyword.h: Eliminated
+     cdecl_keyword::ac_lang_ids in favor of more autocompletion policies.
+   * autocomplete.c, c_ast_check.c, c_keyword.c, c_sname.c, cdecl_keyword.c,
+     did_you_mean.c, lexer.l, parser.y, print.c: c_keyword, cdecl_keyword,
+     ac_keyword variable renaming.
+
 2023-02-17  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl_keyword.c: Now AC_TOO_SHORT for L_by.
