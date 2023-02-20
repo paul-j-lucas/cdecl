@@ -105,6 +105,9 @@ typedef enum ac_policy ac_policy_t;
  * @param prog_name The name of the running program to parse from `~/.inputrc`.
  * @param rin The `FILE` to read from.
  * @param rout The `FILE` to write to.
+ *
+ * @note This function _must_ be called once before calling **readline**(3);
+ * however, calling it more than once is harmless.
  */
 void readline_init( char const *prog_name, FILE *rin, FILE *rout );
 

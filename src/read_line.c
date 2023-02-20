@@ -26,8 +26,10 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "autocomplete.h"
 #include "read_line.h"
+#ifdef WITH_READLINE
+#include "autocomplete.h"
+#endif /* WITH_READLINE */
 #include "cdecl.h"
 
 /// @cond DOXYGEN_IGNORE
