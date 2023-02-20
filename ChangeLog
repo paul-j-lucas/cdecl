@@ -1,5 +1,12 @@
+2023-02-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: s/flags/gib_flags/
+   * cdecl.c, cdecl_keyword.c, help.c: #include clean-up.
+   * autocomplete.h, read_line.c: #include clean-up; comment.
+
 2023-02-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS: Added example.
    * NEWS, c_ast_check.c, cast_a3i.out, explain_cast.out,
      explain_cast_a3a5a7i.out, explain_cast_a3a5i.out, explain_cast_a3i.out,
      explain_cast.test: Now correctly allowing casting into an array when there
