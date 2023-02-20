@@ -1,5 +1,6 @@
 2023-02-20  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c: Eliminated temp variable.
    * gibberish.c: s/flags/gib_flags/
    * cdecl.c, cdecl_keyword.c, help.c: #include clean-up.
    * autocomplete.h, read_line.c: #include clean-up; comment.
