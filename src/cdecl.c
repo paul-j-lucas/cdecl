@@ -36,7 +36,6 @@
 #include "color.h"
 #include "help.h"
 #include "lexer.h"
-#include "literals.h"
 #include "options.h"
 #include "print.h"
 #include "prompt.h"

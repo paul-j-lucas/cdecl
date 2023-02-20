@@ -25,6 +25,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "help.h"
 #include "c_lang.h"
 #include "cdecl.h"
 #include "color.h"
