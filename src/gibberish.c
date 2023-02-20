@@ -458,10 +458,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      if ( (g->gib_flags & C_GIB_OMIT_TYPE) == 0 ) {
-        c_tid_t const stids = type.stids & TS_ANY_STORAGE;
-        fputs_sp( c_tid_name_c( stids ), g->gout );
-      }
+      if ( (g->gib_flags & C_GIB_OMIT_TYPE) == 0 )
+        fputs_sp( c_tid_name_c( type.stids & TS_ANY_STORAGE ), g->gout );
       g_print_ast( g, ast->ptr_ref.to_ast );
       if ( g_space_before_ptr_ref( g, ast ) )
         g_print_space_once( g );
