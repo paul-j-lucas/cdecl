@@ -801,7 +801,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     case K_CAST:
     case K_CLASS_STRUCT_UNION:
     case K_ENUM:
-    case K_LAMBDA:
+    case K_LAMBDA:                      // handled in g_print_ast()
     case K_NAME:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
