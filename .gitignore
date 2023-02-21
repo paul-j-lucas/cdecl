@@ -4,6 +4,7 @@
 *.in
 *.log
 *.o
+*.tmp
 *.trs
 *~
 .deps/
