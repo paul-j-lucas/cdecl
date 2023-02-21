@@ -155,10 +155,10 @@ static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
 PJL_DISCARD
 static size_t copy_commands( did_you_mean_t **const pdym ) {
   size_t count = 0;
-  FOREACH_CDECL_COMMAND( c ) {
-    if ( opt_lang_is_any( c->lang_ids ) ) {
+  FOREACH_CDECL_COMMAND( command ) {
+    if ( opt_lang_is_any( command->lang_ids ) ) {
       if ( pdym != NULL )
-        (*pdym)++->literal = check_strdup( c->literal );
+        (*pdym)++->literal = check_strdup( command->literal );
       ++count;
     }
   } // for
