@@ -1,3 +1,7 @@
+2023-02-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Renaming.
+
 2023-02-20  Paul J. Lucas <paul@lucasmail.org>
 
    * gibberish.c: Eliminated temp variable.
