@@ -28,6 +28,9 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#ifndef ENABLE_CDECL_DEBUG
+#error "This file should not be included unless ENABLE_CDECL_DEBUG is defined."
+#endif /* ENABLE_CDECL_DEBUG */
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE

@@ -25,7 +25,9 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#ifdef ENABLE_CDECL_DEBUG
 #include "dump.h"
+#endif /* ENABLE_CDECL_DEBUG */
 #include "english.h"
 #include "cdecl.h"
 #include "c_ast.h"
