@@ -1,3 +1,7 @@
+2023-02-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, dump.h: Added #ifndef/#ifdef ENABLE_CDECL_DEBUG.
+
 2023-02-21  Paul J. Lucas <paul@lucasmail.org>
 
    * did_you_mean.c: Renaming.
