@@ -85,7 +85,7 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
       FFLUSH( fout );
     }
 #endif /* WITH_READLINE */
-    {
+    {                                   // needed for "else" for WITH_READLINE
       static size_t line_cap;
       got_line = getline( &line, &line_cap, fin ) != -1;
     }
