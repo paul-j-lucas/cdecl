@@ -416,5 +416,7 @@ char const* alignas_name( void ) {
 
 /** @} */
 
+_GL_INLINE_HEADER_END
+
 #endif /* cdecl_literals_H */
 /* vim:set et sw=2 ts=2: */
