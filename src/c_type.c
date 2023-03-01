@@ -621,7 +621,7 @@ c_tid_check_legal( c_tid_t tids, c_type_info_t const type_infos[const],
  * Gets the name of an individual type.
  *
  * @param tid The \ref c_tid_t to get the name for; \a tid _must_ have _exactly
- * one_ bit set.
+ * one_ bit set (not counting the type part ID).
  * @param in_english If `true`, return the pseudo-English literal if one
  * exists.
  * @param is_error If `true`, the name is intended for use in an error message.
