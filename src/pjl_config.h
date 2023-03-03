@@ -29,7 +29,7 @@
 
 #ifdef cdecl_config_H
 #error "Must #include pjl_config.h instead."
-#endif
+#endif /* cdecl_config_H */
 
 // standard
 #include <attribute.h>
