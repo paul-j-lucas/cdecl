@@ -654,8 +654,8 @@ static void usage( int status ) {
 "  --trigraphs          (-%c) Print trigraphs.\n"
 "  --version            (-%c) Print version and exit.\n"
 "\n"
-"Report bugs to: " PACKAGE_BUGREPORT "\n"
-PACKAGE_NAME " home page: " PACKAGE_URL "\n",
+PACKAGE_NAME " home page: " PACKAGE_URL "\n"
+"Report bugs to: " PACKAGE_BUGREPORT "\n",
     me,
     COPT(ALT_TOKENS),
 #ifdef YYDEBUG
