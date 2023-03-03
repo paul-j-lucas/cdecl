@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 14.1
+
+** Configure feature & package options
+These options given to `configure` are now printed as part of the `--version`
+or `-v` output.
+
+
 * Changes in Cdecl 14.0
 
 ** Autocompletion bell

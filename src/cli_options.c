@@ -194,7 +194,8 @@ static char const*  opt_format( char, strbuf_t* ),
                  *  opt_get_long( char );
 
 noreturn
-static void         usage( int );
+static void         usage( int ),
+                    version( void );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -600,8 +601,7 @@ use_help:
   if ( print_version ) {
     if ( argc > 2 )                     // cdecl -v foo
       usage( EX_USAGE );
-    fprintf( cdecl_fout, "%s\n", PACKAGE_STRING );
-    exit( EX_OK );
+    version();
   }
 
   colorize = should_colorize( color_when );
@@ -613,7 +613,7 @@ use_help:
 }
 
 /**
- * Prints the usage message and exits.
+ * Prints the **cdecl** usage message, then exits.
  *
  * @param status The status to exit with.  If it is `EX_OK`, prints to standard
  * output; otherwise prints to standard error.
@@ -689,6 +689,59 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n"
     COPT(VERSION)
   );
   exit( status );
+}
+
+/**
+ * Prints **cdecl** version and configure feature &amp; package options, then
+ * exits.
+ */
+noreturn
+static void version( void ) {
+  fputs(
+    PACKAGE_NAME " version: " PACKAGE_VERSION "\n"
+    "configure feature & package options:",
+    cdecl_fout
+  );
+  bool printed_opt = false;
+#ifdef ENABLE_ASAN
+  fputs( "\n  --enable-asan", cdecl_fout );
+  printed_opt = true;
+#endif /* ENABLE_ASAN */
+#ifdef NDEBUG
+  fputs( "\n  --disable-assert", cdecl_fout );
+  printed_opt = true;
+#endif /* NDEBUG */
+#ifdef ENABLE_BISON_DEBUG
+  fputs( "\n  --enable-bison-debug", cdecl_fout );
+  printed_opt = true;
+#endif /* ENABLE_BISON_DEBUG */
+#ifndef ENABLE_CDECL_DEBUG
+  fputs( "\n  --disable-cdecl-debug", cdecl_fout );
+  printed_opt = true;
+#endif /* ENABLE_CDECL_DEBUG */
+#ifdef ENABLE_FLEX_DEBUG
+  fputs( "\n  --enable-flex-debug", cdecl_fout );
+  printed_opt = true;
+#endif /* ENABLE_FLEX_DEBUG */
+#ifdef ENABLE_MSAN
+  fputs( "\n  --enable-msan", cdecl_fout );
+  printed_opt = true;
+#endif /* ENABLE_MSAN */
+#ifndef WITH_READLINE
+  fputs( "\n  --without-readline", cdecl_fout );
+  printed_opt = true;
+#endif /* WITH_READLINE */
+#ifndef ENABLE_TERM_SIZE
+  fputs( "\n  --disable-term-size", cdecl_fout );
+  printed_opt = true;
+#endif /* ENABLE_TERM_SIZE */
+#ifdef ENABLE_UBSAN
+  fputs( "\n  --enable-ubsan", cdecl_fout );
+  printed_opt = true;
+#endif /* ENABLE_UBSAN */
+  if ( !printed_opt )
+    fputs( " none\n", cdecl_fout );
+  exit( EX_OK );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
