@@ -26,6 +26,9 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "cli_options.h"
+#ifdef WITH_READLINE
+#include "autocomplete.h"
+#endif /* WITH_READLINE */
 #include "c_lang.h"
 #include "c_type.h"
 #include "cdecl.h"
@@ -194,8 +197,9 @@ static char const*  opt_format( char, strbuf_t* ),
                  *  opt_get_long( char );
 
 noreturn
-static void         usage( int ),
-                    version( void );
+static void         usage( int );
+
+static void         version( unsigned );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -374,7 +378,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   char const   *fin_path = "-";
   char const   *fout_path = "-";
   bool          print_usage = false;
-  bool          print_version = false;
+  unsigned      version_verbosity = 0;
 
   for (;;) {
     int const opt = getopt_long(
@@ -466,7 +470,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         fout_path = optarg;
         break;
       case COPT(VERSION):
-        print_version = true;
+        ++version_verbosity;
         break;
 
       case ':': {                       // option missing required argument
@@ -601,10 +605,11 @@ use_help:
   if ( print_usage )
     usage( *pargc > 2 ? EX_USAGE : EX_OK );
 
-  if ( print_version ) {
+  if ( version_verbosity > 0 ) {
     if ( *pargc > 2 )                   // cdecl -v foo
       usage( EX_USAGE );
-    version();
+    version( version_verbosity - 1 );
+    exit( EX_OK );
   }
 
   colorize = should_colorize( color_when );
@@ -695,16 +700,17 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n"
 }
 
 /**
- * Prints **cdecl** version and configure feature &amp; package options, then
- * exits.
+ * Prints the **cdecl** version and possibly configure feature &amp; package
+ * options and whether GNU **readline**(3) is genuine, then exits.
+ *
+ * @param verbose If &gt; 0, prints configure feature &amp; package options and
+ * whether GNU **readline**(3) is genuine.
  */
-noreturn
-static void version( void ) {
-  fputs(
-    PACKAGE_NAME " version: " PACKAGE_VERSION "\n"
-    "configure feature & package options:",
-    cdecl_fout
-  );
+static void version( unsigned verbose ) {
+  fputs( PACKAGE_NAME " version: " PACKAGE_VERSION "\n", cdecl_fout );
+  if ( verbose == 0 )
+    return;
+  fputs( "configure feature & package options:", cdecl_fout );
   bool printed_opt = false;
 #ifdef ENABLE_ASAN
   fputs( "\n  --enable-asan", cdecl_fout );
@@ -744,7 +750,9 @@ static void version( void ) {
 #endif /* ENABLE_UBSAN */
   if ( !printed_opt )
     fputs( " none\n", cdecl_fout );
-  exit( EX_OK );
+#ifdef WITH_READLINE
+  fprintf( cdecl_fout, "genuine GNU readline(3): %s\n", HAVE_GENUINE_GNU_READLINE ? "yes" : "no" );
+#endif /* WITH_READLINE */
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

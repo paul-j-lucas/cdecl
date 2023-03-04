@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "March 3, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "March 4, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -519,9 +519,15 @@ and between C++03 and C++14.)
 .TP
 .BR \-\-version " | " \-v
 Prints the version number
-and the set of configure
-feature & package options,
-then exits.
+and exits.
+If given twice,
+additionally prints
+the set of configure
+feature & package options
+and whether GNU
+.BR readline (3)
+(if compiled in)
+is genuine.
 .SH C AND C++ LANGUAGE VERSIONS
 The argument to the
 .B \-\-language

@@ -12,9 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 14.1
 
-** Configure feature & package options
-These options given to `configure` are now printed as part of the `--version`
-or `-v` output.
+** Verbose version
+If either the `--version` or `-v` is given twice, additionally prints the set
+of `configure` feature & package options and whether GNU readline (if compiled
+in) is genuine.
 
 
 * Changes in Cdecl 14.0

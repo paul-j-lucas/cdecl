@@ -26,6 +26,9 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "prompt.h"
+#ifdef WITH_READLINE
+#include "autocomplete.h"
+#endif /* WITH_READLINE */
 #include "c_lang.h"
 #include "cdecl.h"
 #include "color.h"
@@ -79,30 +82,6 @@ static strbuf_t     prompt_buf[2];      ///< Buffers for prompts.
 
 ////////// inline functions ///////////////////////////////////////////////////
 
-#ifdef WITH_READLINE
-/**
- * Checks to see whether we're running genuine GNU readline and not some other
- * library emulating it.
- *
- * Some readline emulators, e.g., editline, have a bug that makes color prompts
- * not work correctly.  So, unless we know we're using genuine GNU readline,
- * use this function to disable color prompts.
- *
- * @return Returns `true` only if we're running genuine GNU readline.
- *
- * @sa [The GNU Readline Library](https://tiswww.case.edu/php/chet/readline/rltop.html)
- * @sa http://stackoverflow.com/a/31333315/99089
- */
-NODISCARD
-static inline bool have_genuine_gnu_readline( void ) {
-#if HAVE_DECL_RL_GNU_READLINE_P
-  return rl_gnu_readline_p == 1;
-#else
-  return false;
-#endif /* HAVE_DECL_RL_GNU_READLINE_P */
-}
-#endif /* WITH_READLINE */
-
 /**
  * Gets whether the prompt can and should be printed in color.
  *
@@ -112,7 +91,7 @@ NODISCARD
 static inline bool color_prompt( void ) {
   return  colorize && sgr_prompt != NULL
 #ifdef WITH_READLINE
-          && have_genuine_gnu_readline()
+          && HAVE_GENUINE_GNU_READLINE
 #endif /* WITH_READLINE */
           ;
 }
