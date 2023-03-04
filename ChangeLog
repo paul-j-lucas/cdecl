@@ -1,3 +1,26 @@
+2023-03-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, autocomplete.h, cli_options.c, prompt.c: Now printing
+     configure feature & package options and whether GNU readline is genuine
+     when -v is given twice.
+   * cli_options.c: Now updating argc/argv immediately after processing
+     options.
+
+2023-03-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, cli_options.c: Now printing configure feature & package
+     options as part of --version output.
+   * configure.ac: Upped version to 14.1.
+   * cli_options.c, cdecl--help.out: Put home page URL first in help output.
+
+2023-03-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added missing " for formatting commands.
+
+2023-03-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * literals.h: Added missing _GL_INLINE_HEADER_END.
+
 2023-02-22  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, dump.h: Added #ifndef/#ifdef ENABLE_CDECL_DEBUG.
