@@ -363,10 +363,10 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
 /**
  * Parses command-line options.
  *
- * @param argc The argument count from main().
- * @param argv The argument values from main().
+ * @param pargc A pointer to the argument count from main().
+ * @param pargv A pointer to the argument values from main().
  */
-static void parse_options( int argc, char const *argv[const] ) {
+static void parse_options( int *pargc, char const **pargv[const] ) {
   opterr = 0;                           // suppress default error message
   optind = 1;
 
@@ -378,7 +378,7 @@ static void parse_options( int argc, char const *argv[const] ) {
 
   for (;;) {
     int const opt = getopt_long(
-      argc, CONST_CAST( char**, argv ), CLI_OPTIONS_SHORT, CLI_OPTIONS_LONG,
+      *pargc, CONST_CAST( char**, *pargv ), CLI_OPTIONS_SHORT, CLI_OPTIONS_LONG,
       /*longindex=*/NULL
     );
     if ( opt == -1 )
@@ -479,7 +479,7 @@ static void parse_options( int argc, char const *argv[const] ) {
 
       case '?':                         // invalid option
         if ( --optind > 0 ) {           // defensive check
-          char const *invalid_opt = argv[ optind ];
+          char const *invalid_opt = (*pargv)[ optind ];
           //
           // We can offer "did you mean ...?" suggestions only if the invalid
           // option is a long option.
@@ -512,6 +512,9 @@ use_help:
     } // switch
     opts_given[ opt ] = true;
   } // for
+
+  *pargc -= optind;
+  *pargv += optind;
 
   check_mutually_exclusive( SOPT(DIGRAPHS), SOPT(TRIGRAPHS) );
 
@@ -596,10 +599,10 @@ use_help:
     cdecl_fout = stdout;
 
   if ( print_usage )
-    usage( argc > 2 ? EX_USAGE : EX_OK );
+    usage( *pargc > 2 ? EX_USAGE : EX_OK );
 
   if ( print_version ) {
-    if ( argc > 2 )                     // cdecl -v foo
+    if ( *pargc > 2 )                   // cdecl -v foo
       usage( EX_USAGE );
     version();
   }
@@ -762,10 +765,8 @@ void cli_options_init( int *pargc, char const **pargv[const] ) {
   //
   opt_flex_debug = false;
 #endif /* ENABLE_FLEX_DEBUG */
-  parse_options( *pargc, *pargv );
+  parse_options( pargc, pargv );
   c_lang_set( opt_lang );
-  *pargc -= optind;
-  *pargv += optind;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
