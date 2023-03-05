@@ -728,6 +728,10 @@ static void version( unsigned verbose ) {
   fputs( "\n  --disable-cdecl-debug", cdecl_fout );
   printed_opt = true;
 #endif /* ENABLE_CDECL_DEBUG */
+#ifdef ENABLE_COVERAGE
+  fputs( "\n  --enable-coverage", cdecl_fout );
+  printed_opt = true;
+#endif /* ENABLE_COVERAGE */
 #ifdef ENABLE_FLEX_DEBUG
   fputs( "\n  --enable-flex-debug", cdecl_fout );
   printed_opt = true;
