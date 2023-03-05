@@ -377,8 +377,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   color_when_t  color_when = COLOR_WHEN_DEFAULT;
   char const   *fin_path = "-";
   char const   *fout_path = "-";
-  bool          print_usage = false;
-  unsigned      version_verbosity = 0;
+  bool          opt_usage = false;
+  unsigned      opt_version = 0;
 
   for (;;) {
     int const opt = getopt_long(
@@ -440,7 +440,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
 #endif /* ENABLE_FLEX_DEBUG */
       case COPT(HELP):
-        print_usage = true;
+        opt_usage = true;
         break;
       case COPT(LANGUAGE):
         opt_lang = parse_lang( optarg );
@@ -470,7 +470,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         fout_path = optarg;
         break;
       case COPT(VERSION):
-        ++version_verbosity;
+        ++opt_version;
         break;
 
       case ':': {                       // option missing required argument
@@ -602,13 +602,13 @@ use_help:
   if ( cdecl_fout == NULL )
     cdecl_fout = stdout;
 
-  if ( print_usage )
+  if ( opt_usage )
     usage( *pargc > 2 ? EX_USAGE : EX_OK );
 
-  if ( version_verbosity > 0 ) {
+  if ( opt_version > 0 ) {
     if ( *pargc > 2 )                   // cdecl -v foo
       usage( EX_USAGE );
-    version( version_verbosity - 1 );
+    version( opt_version - 1 );
     exit( EX_OK );
   }
 
