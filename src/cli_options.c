@@ -603,10 +603,10 @@ use_help:
     cdecl_fout = stdout;
 
   if ( opt_usage )
-    usage( *pargc > 2 ? EX_USAGE : EX_OK );
+    usage( *pargc > 0 ? EX_USAGE : EX_OK );
 
   if ( opt_version > 0 ) {
-    if ( *pargc > 2 )                   // cdecl -v foo
+    if ( *pargc > 0 )                   // cdecl -v foo
       usage( EX_USAGE );
     version( opt_version - 1 );
     exit( EX_OK );
