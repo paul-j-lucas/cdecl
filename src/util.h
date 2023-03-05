@@ -243,6 +243,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPUTC()
  * @sa #EPUTS()
  * @sa #FPRINTF()
+ * @sa #PRINTF()
  */
 #define EPRINTF(...)              fprintf( stderr, __VA_ARGS__ )
 
@@ -254,6 +255,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPRINTF()
  * @sa #EPUTS()
  * @sa #FPUTC()
+ * @sa #PUTC()
  */
 #define EPUTC(C)                  fputc( (C), stderr )
 
@@ -265,6 +267,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPRINTF()
  * @sa #EPUTC()
  * @sa #FPUTS()
+ * @sa #PUTS()
  */
 #define EPUTS(S)                  fputs( (S), stderr )
 
@@ -315,6 +318,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FPUTC()
  * @sa #FPUTS()
  * @sa #PERROR_EXIT_IF()
+ * @sa #PRINTF()
  */
 #define FPRINTF(STREAM,...) \
   PERROR_EXIT_IF( fprintf( (STREAM), __VA_ARGS__ ) < 0, EX_IOERR )
@@ -329,6 +333,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FPRINTF()
  * @sa #FPUTS()
  * @sa #PERROR_EXIT_IF()
+ * @sa #PUTC()
  */
 #define FPUTC(C,STREAM) \
   PERROR_EXIT_IF( putc( (C), (STREAM) ) == EOF, EX_IOERR )
@@ -343,6 +348,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FPRINTF()
  * @sa #FPUTC()
  * @sa #PERROR_EXIT_IF()
+ * @sa #PUTS()
  */
 #define FPUTS(S,STREAM) \
   PERROR_EXIT_IF( fputs( (S), (STREAM) ) == EOF, EX_IOERR )
@@ -463,6 +469,42 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #STATIC_CAST()
  */
 #define POINTER_CAST(T,EXPR)      ((T)(uintptr_t)(EXPR))
+
+/**
+ * Calls #FPRINTF() with `stdout`.
+ *
+ * @param ... The `fprintf()` arguments.
+ *
+ * @sa #EPRINTF()
+ * @sa #FPRINTF()
+ * @sa #PUTC()
+ * @sa #PUTS()
+ */
+#define PRINTF(...)               FPRINTF( stdout, __VA_ARGS__ )
+
+/**
+ * Calls #FPUTC() with `stdout`.
+ *
+ * @param C The character to print.
+ *
+ * @sa #EPUTC()
+ * @sa #FPUTC()
+ * @sa #PRINTF()
+ */
+#define PUTC(C)                   FPUTC( (C), stdout )
+
+/**
+ * Calls #FPUTS() with `stdout`.
+ *
+ * @param S The C string to print.
+ *
+ * @note Unlike **puts**(3), does _not_ print a newline.
+ *
+ * @sa #EPUTS()
+ * @sa #FPUTS()
+ * @sa #PRINTF()
+ */
+#define PUTS(S)                   FPUTS( (S), stdout )
 
 /**
  * Convenience macro for calling check_realloc().

@@ -301,8 +301,8 @@
  *
  * @sa #DUMP_AST()
  */
-#define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG(   \
-  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout );  \
+#define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
+  DUMP_COMMA; PUTS( "  " KEY " = " );         \
   c_ast_list_dump( &(AST_LIST), stdout ); )
 
 /**
@@ -311,8 +311,8 @@
  * @param KEY The key name to print.
  * @param BOOL The `bool` to dump.
  */
-#define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(          \
-  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout );  \
+#define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(  \
+  DUMP_COMMA; PUTS( "  " KEY " = " );   \
   bool_dump( (BOOL), stdout ); )
 
 /**
@@ -320,7 +320,7 @@
  *
  * @sa #DUMP_START()
  */
-#define DUMP_END()                IF_DEBUG( FPUTS( "\n}\n", stdout ); )
+#define DUMP_END()                IF_DEBUG( PUTS( "\n}\n" ); )
 
 /**
  * Dumps an integer.
@@ -331,7 +331,7 @@
  * @sa #DUMP_STR()
  */
 #define DUMP_INT(KEY,NUM) IF_DEBUG( \
-  DUMP_COMMA; FPRINTF( stdout, "  " KEY " = %d", STATIC_CAST( int, (NUM) ) ); )
+  DUMP_COMMA; PRINTF( "  " KEY " = %d", STATIC_CAST( int, (NUM) ) ); )
 
 /**
  * Dumps a scoped name.
@@ -342,8 +342,8 @@
  * @sa #DUMP_SNAME_LIST()
  * @sa #DUMP_STR()
  */
-#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(         \
-  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout );  \
+#define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
+  DUMP_COMMA; PUTS( "  " KEY " = " );   \
   c_sname_dump( &(SNAME), stdout ); )
 
 /**
@@ -354,8 +354,8 @@
  *
  * @sa #DUMP_SNAME()
  */
-#define DUMP_SNAME_LIST(KEY,LIST) IF_DEBUG(     \
-  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout );  \
+#define DUMP_SNAME_LIST(KEY,LIST) IF_DEBUG( \
+  DUMP_COMMA; PUTS( "  " KEY " = " );       \
   c_sname_list_dump( &(LIST), stdout ); )
 
 #ifdef ENABLE_CDECL_DEBUG
@@ -417,7 +417,7 @@
  */
 #define DUMP_START(NAME,PROD) \
   bool dump_comma = false;    \
-  IF_DEBUG( FPUTS( "\n" NAME " ::= " PROD " = {\n", stdout ); )
+  IF_DEBUG( PUTS( "\n" NAME " ::= " PROD " = {\n" ); )
 #else
 #define DUMP_START(NAME,PROD)     NO_OP
 #endif
@@ -432,7 +432,7 @@
  * @sa #DUMP_SNAME()
  */
 #define DUMP_STR(KEY,STR) IF_DEBUG( \
-  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout ); str_dump( (STR), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY " = " ); str_dump( (STR), stdout ); )
 
 /**
  * Dumps a \ref c_tid_t.
@@ -443,7 +443,7 @@
  * @sa #DUMP_TYPE()
  */
 #define DUMP_TID(KEY,TID) IF_DEBUG( \
-  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout ); c_tid_dump( (TID), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY " = " ); c_tid_dump( (TID), stdout ); )
 
 /**
  * Dumps a \ref c_type.
@@ -454,7 +454,7 @@
  * @sa #DUMP_TID()
  */
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
-  DUMP_COMMA; FPUTS( "  " KEY " = ", stdout ); c_type_dump( &(TYPE), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_dump( &(TYPE), stdout ); )
 
 /** @} */
 
@@ -1096,13 +1096,13 @@ static void quit( void ) {
 static void show_type( c_typedef_t const *tdef, unsigned flags ) {
   assert( tdef != NULL );
   if ( flags == C_GIB_NONE ) {
-    c_typedef_english( tdef, cdecl_fout );
+    c_typedef_english( tdef, stdout );
   } else {
     if ( opt_semicolon )
       flags |= C_GIB_FINAL_SEMI;
-    c_typedef_gibberish( tdef, flags, cdecl_fout );
+    c_typedef_gibberish( tdef, flags, stdout );
   }
-  FPUTC( '\n', cdecl_fout );
+  PUTC( '\n' );
 }
 
 /**
@@ -1945,7 +1945,7 @@ cast_command
       cast_ast->cast.kind = C_CAST_C;
       cast_ast->cast.to_ast = decl_ast;
       C_AST_CHECK( cast_ast );
-      c_ast_gibberish( cast_ast, C_GIB_CAST, cdecl_fout );
+      c_ast_gibberish( cast_ast, C_GIB_CAST, stdout );
     }
 
     /*
@@ -1979,7 +1979,7 @@ cast_command
       cast_ast->cast.kind = cast_kind;
       cast_ast->cast.to_ast = decl_ast;
       C_AST_CHECK( cast_ast );
-      c_ast_gibberish( cast_ast, C_GIB_CAST, cdecl_fout );
+      c_ast_gibberish( cast_ast, C_GIB_CAST, stdout );
     }
   ;
 
@@ -2087,7 +2087,7 @@ declare_command
           bool const is_last_sname = sname_node->next == NULL;
           if ( is_last_sname && opt_semicolon )
             gib_flags |= C_GIB_FINAL_SEMI;
-          c_ast_gibberish( decl_ast, gib_flags, cdecl_fout );
+          c_ast_gibberish( decl_ast, gib_flags, stdout );
           if ( is_last_sname )
             continue;
           if ( print_as_using ) {
@@ -2096,7 +2096,7 @@ declare_command
             // declarations, they need to be separated by newlines.  (The final
             // newine is handled below.)
             //
-            FPUTC( '\n', cdecl_fout );
+            PUTC( '\n' );
           }
           else {
             //
@@ -2111,7 +2111,7 @@ declare_command
             // the gibberish for `y` must not print the `int` again.
             //
             gib_flags |= C_GIB_OMIT_TYPE;
-            FPUTS( ", ", cdecl_fout );
+            PUTS( ", " );
           }
         } // for
       }
@@ -2119,7 +2119,7 @@ declare_command
       c_sname_list_cleanup( &$2 );
       if ( !ok )
         PARSE_ABORT();
-      FPUTC( '\n', cdecl_fout );
+      PUTC( '\n' );
     }
 
     /*
@@ -2163,8 +2163,8 @@ declare_command
       unsigned gib_flags = C_GIB_DECL;
       if ( opt_semicolon )
         gib_flags |= C_GIB_FINAL_SEMI;
-      c_ast_gibberish( oper_ast, gib_flags, cdecl_fout );
-      FPUTC( '\n', cdecl_fout );
+      c_ast_gibberish( oper_ast, gib_flags, stdout );
+      PUTC( '\n' );
     }
 
   /*
@@ -2194,8 +2194,8 @@ declare_command
       DUMP_END();
 
       C_AST_CHECK( lambda_ast );
-      c_ast_gibberish( lambda_ast, C_GIB_DECL, cdecl_fout );
-      FPUTC( '\n', cdecl_fout );
+      c_ast_gibberish( lambda_ast, C_GIB_DECL, stdout );
+      PUTC( '\n' );
     }
 
     /*
@@ -2233,8 +2233,8 @@ declare_command
       unsigned gib_flags = C_GIB_DECL;
       if ( opt_semicolon )
         gib_flags |= C_GIB_FINAL_SEMI;
-      c_ast_gibberish( udc_ast, gib_flags, cdecl_fout );
-      FPUTC( '\n', cdecl_fout );
+      c_ast_gibberish( udc_ast, gib_flags, stdout );
+      PUTC( '\n' );
     }
 
   | Y_declare error
@@ -2626,7 +2626,7 @@ explain_command
       C_TYPE_ADD_TID( &$3->type, $2, @2 );
 
       C_AST_CHECK( $3 );
-      c_ast_english( $3, cdecl_fout );
+      c_ast_english( $3, stdout );
     }
 
     /*
@@ -2905,7 +2905,7 @@ c_style_cast_expr_c
       DUMP_END();
 
       C_AST_CHECK( cast_ast );
-      c_ast_english( cast_ast, cdecl_fout );
+      c_ast_english( cast_ast, stdout );
     }
 
     /*
@@ -2961,7 +2961,7 @@ new_style_cast_expr_c
       }
 
       C_AST_CHECK( cast_ast );
-      c_ast_english( cast_ast, cdecl_fout );
+      c_ast_english( cast_ast, stdout );
     }
   ;
 
@@ -3406,7 +3406,7 @@ lambda_decl_c
       DUMP_END();
 
       C_AST_CHECK( lambda_ast );
-      c_ast_english( lambda_ast, cdecl_fout );
+      c_ast_english( lambda_ast, stdout );
     }
   ;
 
@@ -3662,7 +3662,7 @@ user_defined_conversion_declaration_c
       DUMP_END();
 
       C_AST_CHECK( $1.ast );
-      c_ast_english( $1.ast, cdecl_fout );
+      c_ast_english( $1.ast, stdout );
     }
   ;
 
@@ -3804,8 +3804,8 @@ decl_list_c_opt
       DUMP_END();
 
       C_AST_CHECK( type_ast );
-      c_typedef_english( &C_TYPEDEF_AST_LIT( type_ast ), cdecl_fout );
-      FPUTC( '\n', cdecl_fout );
+      c_typedef_english( &C_TYPEDEF_AST_LIT( type_ast ), stdout );
+      PUTC( '\n' );
     }
 
   | decl_list_c
@@ -3886,7 +3886,7 @@ decl_c
         slist_push_back( &decl_ast_list, CONST_CAST( void*, ast ) );
       }
 
-      c_ast_english( ast, cdecl_fout );
+      c_ast_english( ast, stdout );
 
       //
       // The type's AST takes on the name of the thing being declared, e.g.:
@@ -4094,7 +4094,7 @@ destructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_english( ast, cdecl_fout );
+      c_ast_english( ast, stdout );
     }
   ;
 
@@ -4132,7 +4132,7 @@ file_scope_constructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_english( ast, cdecl_fout );
+      c_ast_english( ast, stdout );
     }
   ;
 
@@ -4168,7 +4168,7 @@ file_scope_destructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_english( ast, cdecl_fout );
+      c_ast_english( ast, stdout );
     }
   ;
 
@@ -4417,7 +4417,7 @@ pc99_func_or_constructor_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_english( ast, cdecl_fout );
+      c_ast_english( ast, stdout );
     }
   ;
 
@@ -4840,7 +4840,7 @@ pc99_pointer_decl_c
       DUMP_END();
 
       C_AST_CHECK( ast );
-      c_ast_english( ast, cdecl_fout );
+      c_ast_english( ast, stdout );
     }
   ;
 

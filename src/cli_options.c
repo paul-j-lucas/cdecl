@@ -595,12 +595,12 @@ use_help:
   }
 
   if ( strcmp( fout_path, "-" ) != 0 ) {
-    cdecl_fout = fopen( fout_path, "w" );
-    if ( cdecl_fout == NULL )
+    FILE *const fout = fopen( fout_path, "w" );
+    if ( fout == NULL )
       FATAL_ERR( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
+    MAYBE_UNUSED int const fd = dup2( fileno( fout ), STDOUT_FILENO );
+    assert( fd == STDOUT_FILENO );
   }
-  if ( cdecl_fout == NULL )
-    cdecl_fout = stdout;
 
   if ( opt_usage )
     usage( *pargc > 0 ? EX_USAGE : EX_OK );
@@ -628,7 +628,7 @@ use_help:
  */
 noreturn
 static void usage( int status ) {
-  fprintf( status == EX_OK ? cdecl_fout : stderr,
+  fprintf( status == EX_OK ? stdout : stderr,
 "usage: %s [options] [command...]\n"
 "options:\n"
 "  --alt-tokens         (-%c) Print alternative tokens.\n"
@@ -707,55 +707,55 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n"
  * whether GNU **readline**(3) is genuine.
  */
 static void version( bool verbose ) {
-  fputs( PACKAGE_NAME " version: " PACKAGE_VERSION "\n", cdecl_fout );
+  fputs( PACKAGE_NAME " version: " PACKAGE_VERSION "\n", stdout );
   if ( !verbose )
     return;
-  fputs( "configure feature & package options:", cdecl_fout );
+  fputs( "configure feature & package options:", stdout );
   bool printed_opt = false;
 #ifdef ENABLE_ASAN
-  fputs( "\n  --enable-asan", cdecl_fout );
+  fputs( "\n  --enable-asan", stdout );
   printed_opt = true;
 #endif /* ENABLE_ASAN */
 #ifdef NDEBUG
-  fputs( "\n  --disable-assert", cdecl_fout );
+  fputs( "\n  --disable-assert", stdout );
   printed_opt = true;
 #endif /* NDEBUG */
 #ifdef ENABLE_BISON_DEBUG
-  fputs( "\n  --enable-bison-debug", cdecl_fout );
+  fputs( "\n  --enable-bison-debug", stdout );
   printed_opt = true;
 #endif /* ENABLE_BISON_DEBUG */
 #ifndef ENABLE_CDECL_DEBUG
-  fputs( "\n  --disable-cdecl-debug", cdecl_fout );
+  fputs( "\n  --disable-cdecl-debug", stdout );
   printed_opt = true;
 #endif /* ENABLE_CDECL_DEBUG */
 #ifdef ENABLE_COVERAGE
-  fputs( "\n  --enable-coverage", cdecl_fout );
+  fputs( "\n  --enable-coverage", stdout );
   printed_opt = true;
 #endif /* ENABLE_COVERAGE */
 #ifdef ENABLE_FLEX_DEBUG
-  fputs( "\n  --enable-flex-debug", cdecl_fout );
+  fputs( "\n  --enable-flex-debug", stdout );
   printed_opt = true;
 #endif /* ENABLE_FLEX_DEBUG */
 #ifdef ENABLE_MSAN
-  fputs( "\n  --enable-msan", cdecl_fout );
+  fputs( "\n  --enable-msan", stdout );
   printed_opt = true;
 #endif /* ENABLE_MSAN */
 #ifndef WITH_READLINE
-  fputs( "\n  --without-readline", cdecl_fout );
+  fputs( "\n  --without-readline", stdout );
   printed_opt = true;
 #endif /* WITH_READLINE */
 #ifndef ENABLE_TERM_SIZE
-  fputs( "\n  --disable-term-size", cdecl_fout );
+  fputs( "\n  --disable-term-size", stdout );
   printed_opt = true;
 #endif /* ENABLE_TERM_SIZE */
 #ifdef ENABLE_UBSAN
-  fputs( "\n  --enable-ubsan", cdecl_fout );
+  fputs( "\n  --enable-ubsan", stdout );
   printed_opt = true;
 #endif /* ENABLE_UBSAN */
   if ( !printed_opt )
-    fputs( " none\n", cdecl_fout );
+    fputs( " none\n", stdout );
 #ifdef WITH_READLINE
-  fprintf( cdecl_fout, "genuine GNU readline(3): %s\n", HAVE_GENUINE_GNU_READLINE ? "yes" : "no" );
+  printf( "genuine GNU readline(3): %s\n", HAVE_GENUINE_GNU_READLINE ? "yes" : "no" );
 #endif /* WITH_READLINE */
 }
 

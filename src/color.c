@@ -216,9 +216,9 @@ bool should_colorize( color_when_t when ) {
     default          : break;
   } // switch
 
-  int const fout_fd = fileno( cdecl_fout );
+  int const fd = fileno( stdout );
   if ( when == COLOR_ISATTY )           // emulate gcc's --color=auto
-    return isatty( fout_fd );
+    return isatty( fd );
 
   assert( when == COLOR_NOT_FILE );
   //
@@ -238,7 +238,7 @@ bool should_colorize( color_when_t when ) {
   //
   // Hence, we want to do color _except_ when ISREG=T.
   //
-  return !fd_is_file( fout_fd );
+  return !fd_is_file( fd );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

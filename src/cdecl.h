@@ -36,7 +36,6 @@
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
-#include <stdio.h>
 
 /// @endcond
 
@@ -54,7 +53,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern FILE        *cdecl_fout;         ///< File out.
 extern bool         cdecl_initialized;  ///< Initialized (read conf. file)?
 extern bool         cdecl_interactive;  ///< Interactive (connected to a tty)?
 extern cdecl_mode_t cdecl_mode;         ///< Converting English or gibberish?

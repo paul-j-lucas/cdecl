@@ -60,7 +60,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variable definitions
-FILE         *cdecl_fout;
 bool          cdecl_initialized;
 bool          cdecl_interactive;
 cdecl_mode_t  cdecl_mode;
@@ -261,8 +260,8 @@ NODISCARD
 static int cdecl_parse_stdin( void ) {
   cdecl_interactive = isatty( STDIN_FILENO );
   if ( cdecl_interactive && opt_prompt )
-    FPUTS( "Type \"help\" or \"?\" for help\n", cdecl_fout );
-  return cdecl_parse_file( stdin, cdecl_fout, /*return_on_error=*/false );
+    PUTS( "Type \"help\" or \"?\" for help\n" );
+  return cdecl_parse_file( stdin, stdout, /*return_on_error=*/false );
 }
 
 /**
@@ -365,11 +364,11 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     //
     size_t echo_len = print_params.command_line_len;
     strn_rtrim( print_params.command_line, &echo_len );
-    FPRINTF( cdecl_fout,
+    PRINTF(
       "%s%.*s\n",
       cdecl_prompt[0], STATIC_CAST( int, echo_len ), print_params.command_line
     );
-    FFLUSH( cdecl_fout );
+    FFLUSH( stdout );
   }
 
   int const status = yyparse() == 0 ? EX_OK : EX_DATAERR;
