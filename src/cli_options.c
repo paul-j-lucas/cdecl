@@ -199,7 +199,7 @@ static char const*  opt_format( char, strbuf_t* ),
 noreturn
 static void         usage( int );
 
-static void         version( unsigned );
+static void         version( bool );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -608,7 +608,7 @@ use_help:
   if ( opt_version > 0 ) {
     if ( *pargc > 0 )                   // cdecl -v foo
       usage( EX_USAGE );
-    version( opt_version - 1 );
+    version( opt_version > 1 );
     exit( EX_OK );
   }
 
@@ -703,12 +703,12 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n"
  * Prints the **cdecl** version and possibly configure feature &amp; package
  * options and whether GNU **readline**(3) is genuine, then exits.
  *
- * @param verbose If &gt; 0, prints configure feature &amp; package options and
+ * @param verbose If `true`, prints configure feature &amp; package options and
  * whether GNU **readline**(3) is genuine.
  */
-static void version( unsigned verbose ) {
+static void version( bool verbose ) {
   fputs( PACKAGE_NAME " version: " PACKAGE_VERSION "\n", cdecl_fout );
-  if ( verbose == 0 )
+  if ( !verbose )
     return;
   fputs( "configure feature & package options:", cdecl_fout );
   bool printed_opt = false;
