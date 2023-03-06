@@ -455,14 +455,14 @@ static c_keyword_t C_KEYWORDS[] = {
 /**
  * Compares two \ref c_keyword objects.
  *
- * @param i_k The first \ref c_keyword to compare.
- * @param j_k The second \ref c_keyword to compare.
- * @return @return Returns a number less than 0, 0, or greater than 0 if \a i_k
- * is less than, equal to, or greater than \a j_k, respectively.
+ * @param i_ck The first \ref c_keyword to compare.
+ * @param j_ck The second \ref c_keyword to compare.
+ * @return @return Returns a number less than 0, 0, or greater than 0 if \a
+ * i_ck is less than, equal to, or greater than \a j_ck, respectively.
  */
 NODISCARD
-static int c_keyword_cmp( c_keyword_t const *i_k, c_keyword_t const *j_k ) {
-  return strcmp( i_k->literal, j_k->literal );
+static int c_keyword_cmp( c_keyword_t const *i_ck, c_keyword_t const *j_ck ) {
+  return strcmp( i_ck->literal, j_ck->literal );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
