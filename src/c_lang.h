@@ -1098,12 +1098,14 @@ void c_lang_set( c_lang_id_t lang_id );
  *      + If the current language is any version of C++ and \a lang_ids does
  *        not contain any version of C++, returns `" in C++"`.
  *      + If the current language is older than oldest language in \a lang_ids,
- *        returns `" until "` followed by the name of the oldest C version (if
- *        the current language is C) or the name of the oldest C++ version (if
- *        the current language is C++).
+ *        returns `" until "` followed by the name of the oldest C language
+ *        version (if the current language is any version of C) or the name of
+ *        the oldest C++ language version (if the current language is any
+ *        version of C++).
  *      + Otherwise returns `" since "` followed by the name of the newest C
- *        version (if the current language is C) or the name of the newest C++
- *        version (if the current language is C++).
+ *        language version (if the current language is any version of C) or the
+ *        name of the newest C++ language version (if the current language is
+ *        any version of C++).
  *
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
