@@ -54,7 +54,7 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
-                       FILE *fout, char const *const prompts[static const 2] ) {
+                       FILE *fout, char const *const prompts[const] ) {
   assert( sbuf != NULL );
   assert( prog_name != NULL );
   assert( fin != NULL );
