@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "March 4, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "March 7, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -707,7 +707,9 @@ Use the C++23 version of the C++ language.
 Adds support for
 \f(CW_Atomic\fP,
 explicit object parameters,
-and \f(CWstatic operator()\fP.
+\f(CWstatic operator()\fP,
+and
+zero or more parameters for \f(CWoperator[]\fP.
 .SH CDECL LANGUAGE
 .SS Commands
 In what follows,
