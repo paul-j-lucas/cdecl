@@ -56,13 +56,8 @@
 bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
                        FILE *fout, char const *const prompts[const] ) {
   assert( sbuf != NULL );
-  assert( prog_name != NULL );
   assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
-
-#ifndef WITH_READLINE
-  (void)prog_name;
-#endif /* WITH_READLINE */
 
   bool const is_fin_a_tty = isatty( fileno( fin ) );
   bool const is_interactive = is_fin_a_tty && fout != NULL && prompts != NULL;
@@ -74,12 +69,14 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
 
     if ( is_interactive ) {
 #ifdef WITH_READLINE
+      assert( prog_name != NULL );
       readline_init( prog_name, fin, fout );
       free( line );
       got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
     }
     else
 #else /* WITH_READLINE */
+      (void)prog_name;
       FPUTS( prompts[ is_cont_line ], fout );
       FFLUSH( fout );
     }
