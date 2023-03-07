@@ -1,3 +1,11 @@
+2023-03-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * stdio.in.h: Updated Gnulib.
+
+2023-03-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_keyword.c, cdecl_keyword.c: Renaming.
+
 2023-03-05  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c, cdecl.h, cli_options.c, color.c, help.c, parser.y, set_options.c,
