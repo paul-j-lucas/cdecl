@@ -65,14 +65,14 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
 #endif /* WITH_READLINE */
 
   bool const is_fin_a_tty = isatty( fileno( fin ) );
-  bool const interactive = is_fin_a_tty && fout != NULL && prompts != NULL;
+  bool const is_interactive = is_fin_a_tty && fout != NULL && prompts != NULL;
   bool is_cont_line = false;
 
   for (;;) {
     static char *line;
     bool got_line;
 
-    if ( interactive ) {
+    if ( is_interactive ) {
 #ifdef WITH_READLINE
       readline_init( prog_name, fin, fout );
       free( line );
@@ -115,7 +115,7 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
   assert( sbuf->str != NULL );
   assert( sbuf->str[0] != '\0' );
 #ifdef HAVE_READLINE_HISTORY_H
-  if ( interactive )
+  if ( is_interactive )
     add_history( sbuf->str );
 #endif /* HAVE_READLINE_HISTORY_H */
   return true;
