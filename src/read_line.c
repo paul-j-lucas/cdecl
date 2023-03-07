@@ -72,15 +72,14 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
     static char *line;
     bool got_line;
 
-#ifdef WITH_READLINE
     if ( interactive ) {
+#ifdef WITH_READLINE
       readline_init( prog_name, fin, fout );
       free( line );
       got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
     }
     else
 #else /* WITH_READLINE */
-    if ( interactive ) {
       FPUTS( prompts[ is_cont_line ], fout );
       FFLUSH( fout );
     }
