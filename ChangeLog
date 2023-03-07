@@ -1,5 +1,11 @@
 2023-03-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.h, read_line.c: Made prog_name optional.
+   * read_line.c: Removed unnecessary #include.
+   * read_line.c: Made assert(prog_name != NULL) check only when interactive.
+   * read_line.c: Renaming.
+   * read_line.c, read_line.h: Removed `static` and `2` from `prompts`.
+   * read_line.c: Moved `if ( interactive )` outside of #ifdef.
    * cdecl.1: Added missing mention of support for zero or more parameters for
      operator[] in C++23.
    * stdio.in.h: Updated Gnulib.
