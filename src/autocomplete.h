@@ -123,7 +123,8 @@ typedef enum ac_policy ac_policy_t;
 /**
  * Initializes GNU **readline**(3).
  *
- * @param prog_name The name of the running program to parse from `~/.inputrc`.
+ * @param prog_name The name of the running program to parse from `~/.inputrc`
+ * or NULL for none.
  * @param rin The `FILE` to read from.
  * @param rout The `FILE` to write to.
  *

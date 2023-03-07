@@ -68,7 +68,6 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
 
     if ( is_interactive ) {
 #ifdef WITH_READLINE
-      assert( prog_name != NULL );
       readline_init( prog_name, fin, fout );
       free( line );
       got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
