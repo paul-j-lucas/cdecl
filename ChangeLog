@@ -1,5 +1,7 @@
 2023-03-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Added missing mention of support for zero or more parameters for
+     operator[] in C++23.
    * stdio.in.h: Updated Gnulib.
 
 2023-03-06  Paul J. Lucas <paul@lucasmail.org>
