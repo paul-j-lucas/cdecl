@@ -296,11 +296,11 @@ static char const *const* command_ac_keywords( char const *command ) {
     // `static` as cdecl commands can only be followed by `cast` -- that isn't
     // true when `const` and `static` are used as C/C++ keywords.
     //
-    static char const *const ac_cast_keywords[] = {
+    static char const *const AC_CAST_KEYWORDS[] = {
       L_cast,
       NULL
     };
-    return ac_cast_keywords;
+    return AC_CAST_KEYWORDS;
   }
 
   if ( command == L_help ) {
@@ -308,14 +308,14 @@ static char const *const* command_ac_keywords( char const *command ) {
     // This needs to be here instead of in CDECL_KEYWORDS because
     // str_prev_token() wouldn't match `?` as `help`.
     //
-    static char const *const ac_help_keywords[] = {
+    static char const *const AC_HELP_KEYWORDS[] = {
       // must be in sorted order
       L_commands,
       L_english,
       L_options,
       NULL
     };
-    return ac_help_keywords;
+    return AC_HELP_KEYWORDS;
   }
 
   if ( command == L_set ) {
@@ -334,7 +334,7 @@ static char const *const* command_ac_keywords( char const *command ) {
     // This needs to be here instead of in CDECL_KEYWORDS because `using` is a
     // language-senstive C++ keyword.
     //
-    static char const *const ac_show_keywords[] = {
+    static char const *const AC_SHOW_KEYWORDS[] = {
       // must be in sorted order
       L_all,
       L_english,
@@ -343,7 +343,7 @@ static char const *const* command_ac_keywords( char const *command ) {
       L_user,
       NULL
     };
-    static char const *const ac_show_keywords_with_using[] = {
+    static char const *const AC_SHOW_KEYWORDS_WITH_USING[] = {
       // must be in sorted order
       L_all,
       L_english,
@@ -354,7 +354,7 @@ static char const *const* command_ac_keywords( char const *command ) {
       NULL
     };
     return OPT_LANG_IS( using_DECLARATION ) ?
-      ac_show_keywords_with_using : ac_show_keywords;
+      AC_SHOW_KEYWORDS_WITH_USING : AC_SHOW_KEYWORDS;
   }
 
   return NULL;
