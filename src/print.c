@@ -267,8 +267,8 @@ static size_t print_caret( size_t error_column ) {
   }
   else {
     //
-    // Otherwise we have to print out the line containing the error then put
-    // the ^ under that.
+    // Otherwise we have to print the line containing the error then put the ^
+    // under that.
     //
     print_input_line( &error_column, term_columns );
     caret_column = error_column;
