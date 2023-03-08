@@ -180,7 +180,7 @@ error:
     PJL_IGNORE_RV( close( cterm_fd ) );
   if ( unlikely( reason != NULL ) ) {
     FATAL_ERR( EX_UNAVAILABLE,
-      "failed to determine number of columns or lines in terminal: %s\n",
+      "failed to determine number of columns in terminal: %s\n",
       reason
     );
   }
