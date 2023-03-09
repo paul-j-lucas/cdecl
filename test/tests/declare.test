@@ -58,6 +58,7 @@ declare p as pointer to block (void) returning pointer to int
 declare p as pointer to function (void) returning pointer to int
 declare p as pointer to int
 declare p as pointer to pointer to int
+declare p, q as pointer to int
 declare signal as func (sig as int, f as ptr to func (int) ret void) ret ptr to func (int) ret void
 declare x as Boolean
 declare x as _Atomic int
@@ -66,11 +67,11 @@ declare x as _BitInt 4 bits
 declare x as _BitInt width 4
 declare x as _BitInt width 4 bits
 declare x as _BitInt(4)
-declare x as bit-precise integer 4
-declare x as bit precise integer 4
 declare x as atomic int
 declare x as atomic pointer to int
 declare x as auto int
+declare x as bit precise integer 4
+declare x as bit-precise integer 4
 declare x as block (x as int, y as int) returning double
 declare x as bool
 declare x as boolean

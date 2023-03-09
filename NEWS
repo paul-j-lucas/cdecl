@@ -12,6 +12,15 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 14.1
 
+** Limit when `q` means `quit`
+The `q` command is now recognized as a synonym for `quit` only when it's the
+only thing on a line other than whitespace.  This now allows things like:
+
+    cdecl> declare p, q as pointer to int
+    int *p, *q;
+
+to work without complaining that `q` is a **cdecl** keyword.
+
 ** Verbose version
 If either the `--version` or `-v` is given twice, additionally prints the set
 of `configure` feature & package options and whether GNU readline (if compiled

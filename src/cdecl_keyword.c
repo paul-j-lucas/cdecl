@@ -1237,15 +1237,6 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     )
   },
 
-  { L_q,
-    LANG_ANY,
-    TOKEN( Y_quit ),
-    AC_SETTINGS(
-      AC_POLICY_TOO_SHORT,
-      AC_NO_NEXT_KEYWORDS
-    )
-  },
-
   { L_quit,
     LANG_ANY,
     TOKEN( Y_quit ),

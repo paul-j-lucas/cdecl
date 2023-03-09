@@ -110,7 +110,6 @@ extern char const L_precision[];
 extern char const L_predef[];             // synonym for "predefined"
 extern char const L_predefined[];
 extern char const L_ptr[];                // synonym for "pointer"
-extern char const L_q[];                  // synonym for "quit"
 extern char const L_quit[];
 extern char const L_ref[];                // synonym for "reference"
 extern char const L_reference[];

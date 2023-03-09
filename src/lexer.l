@@ -536,6 +536,7 @@ D             [0-9]
 H             [0-9A-Fa-f]
 NI            [^A-Za-z_0-9]
 S             [ \f\r\t\v]
+NS            [^ \f\r\t\v]
 
 identifier    {L}({L}|{D})*
 sname         {identifier}({S}*::{S}*{identifier})+
@@ -644,6 +645,37 @@ include{S}*\" {
                 str_lit_loc.first_column = yylloc.last_column;
                 BEGIN( X_INCL );
               }
+
+              /*
+               * Special case: make `q` a synonym for `quit`, but only when
+               * it's the only thing on a line other than whitespace.  In all
+               * other cases, `q` should be treated as an ordinary identifier.
+               * This is done to allow things like:
+               *
+               *      cdecl> declare p, q as pointer to int
+               *      int *p, *q;
+               *
+               * This isn't handled by having a `q` entry in CDECL_KEYWORDS
+               * because that would make `q` a synonym all the time.
+               *
+               * Note that we can't simply do:
+               *
+               *      ^{S}*q{S}*$
+               *
+               * because `$` only matches a newline and not "end of string."
+               *
+               * To forbid a string like `q x`, we first have to match its
+               * pattern explicitly and always forbid it.
+               */
+^{S}*q{S}+{NS} {
+                char const *s = yytext + yylloc.last_column;
+                // Set the offending token to the one past the `q`.
+                while ( !isspace( s[-1] ) )
+                  --s;
+                SET_TOKEN_TO( s );
+                return Y_LEXER_ERROR;
+              }
+^{S}*q{S}*    { SET_TOKEN_TO( L_quit ); return Y_quit; }
 
               /*
                * Special case: similar to {sname} below, handle scoped

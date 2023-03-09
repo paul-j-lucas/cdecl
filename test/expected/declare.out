@@ -111,6 +111,8 @@ cdecl> declare p as pointer to int
 int *p;
 cdecl> declare p as pointer to pointer to int
 int **p;
+cdecl> declare p, q as pointer to int
+int *p, *q;
 cdecl> declare signal as func (sig as int, f as ptr to func (int) ret void) ret ptr to func (int) ret void
 void (*signal(int sig, void (*f)(int)))(int);
 cdecl> declare x as Boolean
@@ -127,10 +129,6 @@ cdecl> declare x as _BitInt width 4 bits
 _BitInt(4) x;
 cdecl> declare x as _BitInt(4)
 _BitInt(4) x;
-cdecl> declare x as bit-precise integer 4
-_BitInt(4) x;
-cdecl> declare x as bit precise integer 4
-_BitInt(4) x;
 cdecl> declare x as atomic int
 _Atomic int x;
 cdecl> declare x as atomic pointer to int
@@ -139,6 +137,10 @@ cdecl> declare x as auto int
                          ^
 19: syntax error: "int": unexpected token ("int" is a keyword)
 auto x;
+cdecl> declare x as bit precise integer 4
+_BitInt(4) x;
+cdecl> declare x as bit-precise integer 4
+_BitInt(4) x;
 cdecl> declare x as block (x as int, y as int) returning double
 double (^x)(int x, int y);
 cdecl> declare x as bool

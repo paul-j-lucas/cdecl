@@ -83,7 +83,6 @@ char const L_precision[]                = "precision";
 char const L_predef[]                   = "predef";
 char const L_predefined[]               = "predefined";
 char const L_ptr[]                      = "ptr";
-char const L_q[]                        = "q";
 char const L_quit[]                     = "quit";
 char const L_ref[]                      = "ref";
 char const L_reference[]                = "reference";
