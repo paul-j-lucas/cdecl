@@ -1,5 +1,15 @@
+2023-03-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * declare.out, declare.test: Eliminated redundant test.
+   * NEWS, cdecl_keyword.c, lexer.l, literals.c, literals.h, declare.out,
+     declare.test: `q` is now a synonym for `quit` only when it's the only
+     thing on a line other than whitespace.
+   * autocomplete.c, util.c, util.h: Replaced is_command() with
+     is_ident_prefix().
+
 2023-03-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * print.c: Removed "or lines".
    * autocomplete.c: Renaming.
 
 2023-03-07  Paul J. Lucas <paul@lucasmail.org>
