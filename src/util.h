@@ -989,6 +989,29 @@ bool is_ident_first( char c ) {
 }
 
 /**
+ * Checks whether \a ident is a prefix if \a s.
+ *
+ * @remarks If \a s_len &gt; \a ident_len, then the first character past the
+ * end of \a s must _not_ be an identifier character.  For example, if \a ident
+ * is "foo", then \a s must be "foo" exactly; or \a s must be "foo" followed by
+ * a whitespace or punctuation character, but _not_ an identifier character:
+ *
+ *      "foo"   match
+ *      "foo "  match
+ *      "foo("  match
+ *      "foob"  no match
+ *
+ * @param ident The identidier to check for.
+ * @param ident_len The length of \a ident.
+ * @param s The string to check.  Leading whitespace _must_ have been skipped.
+ * @param s_len The length of \a s.
+ * @return Returns `true` only if it is.
+ */
+NODISCARD
+bool is_ident_prefix( char const *ident, size_t ident_len, char const *s,
+                      size_t s_len );
+
+/**
  * Gets the value of the least significant bit that's a 1 in \a n.
  * For example, for \a n of 12, returns 4.
  *

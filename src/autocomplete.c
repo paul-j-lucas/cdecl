@@ -76,9 +76,6 @@ static char*              command_generator( char const*, int );
 static char*              keyword_generator( char const*, int );
 
 NODISCARD
-static bool               is_command( char const*, char const*, size_t );
-
-NODISCARD
 static char const*        str_prev_token( char const*, size_t, size_t* );
 
 NODISCARD
@@ -361,37 +358,6 @@ static char const *const* command_ac_keywords( char const *command ) {
 }
 
 /**
- * Checks whether \a s is a particular **cdecl** command.
- *
- * @param command The command to check for.
- * @param s The string to check.  Leading whitespace _must_ have been skipped.
- * @param s_len The length of \a s.
- * @return Returns `true` only if it is.
- */
-NODISCARD
-static bool is_command( char const *command, char const *s, size_t s_len ) {
-  assert( command != NULL );
-  assert( s != NULL );
-  size_t const command_len = strlen( command );
-  if ( command_len > s_len || strncmp( s, command, command_len ) != 0 )
-    return false;
-  if ( command_len == s_len )
-    return true;
-  //
-  // If s_len > command_len, then the first character past the end of the
-  // command must not be an identifier character.  For example, if command is
-  // "foo", then it must be "foo" exactly (above); or "foo" followed by a
-  // whitespace or punctuation character, but not an identifier character:
-  //
-  //      "foo"   match
-  //      "foo "  match
-  //      "foo("  match
-  //      "foob"  no match
-  //
-  return !is_ident( s[ command_len ] );
-}
-
-/**
  * Gets whether \a command is a pseudo-English command (that is followed by
  * pseudo-English) instead of gibberish.
  *
@@ -615,13 +581,14 @@ static char* keyword_generator( char const *text, int state ) {
     //
     //      cdecl> set <tab>
     //
-    if ( is_command( "?", buf, buf_len ) )
+    if ( is_ident_prefix( "?", 1, buf, buf_len ) )
       command = L_help;
     else {
       FOREACH_CDECL_COMMAND( c ) {
         if ( !opt_lang_is_any( c->lang_ids ) )
           continue;
-        if ( is_command( c->literal, buf, buf_len ) ) {
+        if ( is_ident_prefix( c->literal, strlen( c->literal ),
+                              buf, buf_len ) ) {
           command = c->literal;
           break;
         }

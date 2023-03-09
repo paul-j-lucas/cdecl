@@ -209,6 +209,15 @@ char const* home_dir( void ) {
   return home;
 }
 
+bool is_ident_prefix( char const *ident, size_t ident_len, char const *s,
+                      size_t s_len ) {
+  assert( ident != NULL );
+  assert( s != NULL );
+  if ( ident_len > s_len || strncmp( s, ident, ident_len ) != 0 )
+    return false;
+  return !is_ident( s[ ident_len ] );
+}
+
 uint32_t ls_bit1_32( uint32_t n ) {
   if ( n != 0 ) {
     for ( uint32_t b = 1; b != 0; b <<= 1 ) {
