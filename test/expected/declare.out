@@ -111,6 +111,12 @@ cdecl> declare p as pointer to int
 int *p;
 cdecl> declare p as pointer to pointer to int
 int **p;
+cdecl> declare p, q as pointer to function (int, double) returning pointer to char
+char *(*p)(int, double), *(*q)(int, double);
+cdecl> declare p, q as pointer to function (int, double) returning pointer to const char
+const char *(*p)(int, double), *(*q)(int, double);
+cdecl> declare p, q as pointer to function (int, double) returning void
+void (*p)(int, double), (*q)(int, double);
 cdecl> declare p, q as pointer to int
 int *p, *q;
 cdecl> declare signal as func (sig as int, f as ptr to func (int) ret void) ret ptr to func (int) ret void
@@ -219,14 +225,6 @@ cdecl> declare x, y as array 4 of int
 int x[4], y[4];
 cdecl> declare x, y as int
 int x, y;
-cdecl> declare x, y as pointer to function (int, double) returning pointer to char
-char *(*x)(int, double), *(*y)(int, double);
-cdecl> declare x, y as pointer to function (int, double) returning pointer to const char
-const char *(*x)(int, double), *(*y)(int, double);
-cdecl> declare x, y as pointer to function (int, double) returning void
-void (*x)(int, double), (*y)(int, double);
-cdecl> declare x, y as pointer to int
-int *x, *y;
 cdecl> declare x as register int
 register int x;
 cdecl> declare f as function (i as register int) returning void

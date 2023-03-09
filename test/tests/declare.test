@@ -58,6 +58,9 @@ declare p as pointer to block (void) returning pointer to int
 declare p as pointer to function (void) returning pointer to int
 declare p as pointer to int
 declare p as pointer to pointer to int
+declare p, q as pointer to function (int, double) returning pointer to char
+declare p, q as pointer to function (int, double) returning pointer to const char
+declare p, q as pointer to function (int, double) returning void
 declare p, q as pointer to int
 declare signal as func (sig as int, f as ptr to func (int) ret void) ret ptr to func (int) ret void
 declare x as Boolean
@@ -111,10 +114,6 @@ declare x as volatile pointer to int
 declare x as wchar_t
 declare x, y as array 4 of int
 declare x, y as int
-declare x, y as pointer to function (int, double) returning pointer to char
-declare x, y as pointer to function (int, double) returning pointer to const char
-declare x, y as pointer to function (int, double) returning void
-declare x, y as pointer to int
 
 declare x as register int
 declare f as function (i as register int) returning void
