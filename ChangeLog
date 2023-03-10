@@ -1,5 +1,8 @@
 2023-03-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Now special-casing YYEMPYY and YYEOF when printing yychar.
+   * lexer.h, parser.y: Moved fl_elaborate_error() to eliminate declaration of
+     yychar.
    * lexer.l: Added #pragma <compiler> diagnostic push/pop.
    * lexer.l: Disabled -Wsign-compare for flex code.
 
