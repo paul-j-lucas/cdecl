@@ -67,10 +67,12 @@
 
 // Silence these warnings for Flex-generated code.
 #ifdef __clang__
+#pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wimplicit-int-conversion"
 #pragma clang diagnostic ignored "-Wshorten-64-to-32"
 #endif /* __clang__ */
 #ifdef __GNUC__
+#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"
@@ -1251,6 +1253,14 @@ include{S}*\" {
 %%
 
 /// @endcond
+
+// Re-enable warnings.
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif /* __clang__ */
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif /* __GNUC__ */
 
 ////////// local functions ////////////////////////////////////////////////////
 
