@@ -73,6 +73,7 @@
 
 #ifdef __GNUC__
 // Silence these warnings for Bison-generated code.
+#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wredundant-decls"
 #pragma GCC diagnostic ignored "-Wunreachable-code"
@@ -504,6 +505,10 @@ typedef struct show_type_info show_type_info_t;
 NODISCARD
 static bool c_ast_free_if_placeholder( c_ast_t* );
 
+PJL_PRINTF_LIKE_FUNC(4)
+static void fl_elaborate_error( char const*, int, dym_kind_t, char const*,
+                                ... );
+
 // local variables
 static c_ast_list_t   decl_ast_list;    ///< List of ASTs being declared.
 static c_ast_list_t   gc_ast_list;      ///< c_ast nodes freed after parse.
@@ -750,78 +755,6 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
     return false;
   }
   return true;
-}
-
-/**
- * Prints an additional parsing error message including a newline to standard
- * error that continues from where yyerror() left off.  Additionally:
- *
- * + If the printable_token() isn't NULL:
- *     + Checks to see if it's a keyword: if it is, mentions that it's a
- *       keyword in the error message.
- *     + May print "did you mean ...?" \a dym_kinds suggestions.
- *
- * + In debug mode, also prints the file & line where the function was called
- *   from.
- *
- * @note This function isn't normally called directly; use the
- * #elaborate_error() macro instead.
- *
- * @param file The name of the file where this function was called from.
- * @param line The line number within \a file where this function was called
- * from.
- * @param dym_kinds The bitwise-or of the kind(s) of things possibly meant.
- * @param format A `printf()` style format string.
- * @param ... Arguments to print.
- *
- * @sa fl_keyword_expected()
- * @sa fl_punct_expected()
- * @sa yyerror()
- */
-PJL_PRINTF_LIKE_FUNC(4)
-static void fl_elaborate_error( char const *file, int line,
-                                dym_kind_t dym_kinds, char const *format,
-                                ... ) {
-  assert( format != NULL );
-
-  EPUTS( ": " );
-  print_debug_file_line( file, line );
-
-  char const *const error_token = printable_token();
-  if ( error_token != NULL ) {
-    EPRINTF( "\"%s\"", error_token );
-#ifdef ENABLE_CDECL_DEBUG
-    if ( opt_cdecl_debug )
-      EPRINTF( " [%d]", yychar );
-#endif /* ENABLE_CDECL_DEBUG */
-    EPUTS( ": " );
-  }
-
-  va_list args;
-  va_start( args, format );
-  vfprintf( stderr, format, args );
-  va_end( args );
-
-  if ( error_token != NULL ) {
-    c_keyword_t const *const ck =
-      c_keyword_find( error_token, LANG_ANY, C_KW_CTX_DEFAULT );
-    if ( ck != NULL ) {
-      c_lang_id_t const oldest_lang = c_lang_oldest( ck->lang_ids );
-      if ( oldest_lang > opt_lang )
-        EPRINTF( "; not a keyword until %s", c_lang_name( oldest_lang ) );
-      else
-        EPRINTF( " (\"%s\" is a keyword)", error_token );
-    }
-    else if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
-      cdecl_keyword_t const *const cdk = cdecl_keyword_find( error_token );
-      if ( cdk != NULL )
-        EPRINTF( " (\"%s\" is a cdecl keyword)", error_token );
-    }
-
-    print_suggestions( dym_kinds, error_token );
-  }
-
-  EPUTC( '\n' );
 }
 
 /**
@@ -8354,6 +8287,90 @@ virtual_stid_opt
 
 /// @endcond
 
+// Re-enable warnings.
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif /* __GNUC__ */
+
+/**
+ * @addtogroup parser-group
+ * @{
+ */
+
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Prints an additional parsing error message including a newline to standard
+ * error that continues from where yyerror() left off.  Additionally:
+ *
+ * + If the printable_token() isn't NULL:
+ *     + Checks to see if it's a keyword: if it is, mentions that it's a
+ *       keyword in the error message.
+ *     + May print "did you mean ...?" \a dym_kinds suggestions.
+ *
+ * + In debug mode, also prints the file & line where the function was called
+ *   from.
+ *
+ * @note This function isn't normally called directly; use the
+ * #elaborate_error() macro instead.
+ *
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
+ * @param dym_kinds The bitwise-or of the kind(s) of things possibly meant.
+ * @param format A `printf()` style format string.
+ * @param ... Arguments to print.
+ *
+ * @sa fl_keyword_expected()
+ * @sa fl_punct_expected()
+ * @sa yyerror()
+ */
+PJL_PRINTF_LIKE_FUNC(4)
+static void fl_elaborate_error( char const *file, int line,
+                                dym_kind_t dym_kinds, char const *format,
+                                ... ) {
+  assert( format != NULL );
+
+  EPUTS( ": " );
+  print_debug_file_line( file, line );
+
+  char const *const error_token = printable_token();
+  if ( error_token != NULL ) {
+    EPRINTF( "\"%s\"", error_token );
+#ifdef ENABLE_CDECL_DEBUG
+    if ( opt_cdecl_debug )
+      EPRINTF( " [%d]", yychar );
+#endif /* ENABLE_CDECL_DEBUG */
+    EPUTS( ": " );
+  }
+
+  va_list args;
+  va_start( args, format );
+  vfprintf( stderr, format, args );
+  va_end( args );
+
+  if ( error_token != NULL ) {
+    c_keyword_t const *const ck =
+      c_keyword_find( error_token, LANG_ANY, C_KW_CTX_DEFAULT );
+    if ( ck != NULL ) {
+      c_lang_id_t const oldest_lang = c_lang_oldest( ck->lang_ids );
+      if ( oldest_lang > opt_lang )
+        EPRINTF( "; not a keyword until %s", c_lang_name( oldest_lang ) );
+      else
+        EPRINTF( " (\"%s\" is a keyword)", error_token );
+    }
+    else if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+      cdecl_keyword_t const *const cdk = cdecl_keyword_find( error_token );
+      if ( cdk != NULL )
+        EPRINTF( " (\"%s\" is a cdecl keyword)", error_token );
+    }
+
+    print_suggestions( dym_kinds, error_token );
+  }
+
+  EPUTC( '\n' );
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void parser_cleanup( void ) {
@@ -8361,4 +8378,7 @@ void parser_cleanup( void ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */
