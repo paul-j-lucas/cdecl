@@ -74,6 +74,7 @@
 // local functions
 static void c_ast_dump_impl( c_ast_t const*, unsigned, char const*, FILE* );
 static void c_ast_list_dump_impl( c_ast_list_t const*, unsigned, FILE* );
+static void c_capture_kind_dump( c_capture_kind_t, FILE* );
 static void c_loc_dump( c_loc_t const*, FILE* );
 
 // local constants
@@ -207,23 +208,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
     case K_CAPTURE:
       DUMP_COMMA;
       DUMP_FORMAT( "capture = " );
-      switch ( ast->capture.kind ) {
-        case C_CAPTURE_COPY:
-          FPUTS( "\"=\"", dout );
-          break;
-        case C_CAPTURE_REFERENCE:
-          FPUTS( "\"&\"", dout );
-          break;
-        case C_CAPTURE_THIS:
-          FPUTS( "this", dout );
-          break;
-        case C_CAPTURE_STAR_THIS:
-          FPUTS( "*this", dout );
-          break;
-        case C_CAPTURE_VARIABLE:
-          FPUTS( "variable", dout );
-          break;
-      } // switch
+      c_capture_kind_dump( ast->capture.kind, dout );
       break;
 
     case K_CAST:
@@ -364,6 +349,33 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list, unsigned indent,
     FPUTC( '\n', dout );
     DUMP_FORMAT( "]" );
   }
+}
+
+/**
+ * Dumps \a kind (for debugging).
+ *
+ * @param kind The \ref c_capture_kind to dump.
+ * @param dout The `FILE` to dump to.
+ */
+static void c_capture_kind_dump( c_capture_kind_t kind, FILE *dout ) {
+  assert( dout != NULL );
+  switch ( kind ) {
+    case C_CAPTURE_COPY:
+      FPUTS( "\"=\"", dout );
+      break;
+    case C_CAPTURE_REFERENCE:
+      FPUTS( "\"&\"", dout );
+      break;
+    case C_CAPTURE_THIS:
+      FPUTS( "this", dout );
+      break;
+    case C_CAPTURE_STAR_THIS:
+      FPUTS( "*this", dout );
+      break;
+    case C_CAPTURE_VARIABLE:
+      FPUTS( "variable", dout );
+      break;
+  } // switch
 }
 
 /**
