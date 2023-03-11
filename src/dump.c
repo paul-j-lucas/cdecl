@@ -72,6 +72,7 @@
  */
 
 // local functions
+static void c_ast_dump_impl( c_ast_t const*, unsigned, char const*, FILE* );
 static void c_ast_list_dump_impl( c_ast_list_t const*, unsigned, FILE* );
 static void c_loc_dump( c_loc_t const*, FILE* );
 
@@ -91,6 +92,33 @@ static inline void fprint_spaces( FILE *out, unsigned n ) {
 }
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Dumps \a align (for debugging).
+ *
+ * @param align The \ref c_alignas to dump.
+ * @param indent The current indent.
+ * @param dout The `FILE` to dump to.
+ */
+static void c_alignas_dump( c_alignas_t const *align, unsigned indent,
+                            FILE *dout ) {
+  assert( align != NULL );
+  assert( dout != NULL );
+
+  switch ( align->kind ) {
+    case C_ALIGNAS_NONE:
+      return;
+    case C_ALIGNAS_EXPR:
+      DUMP_FORMAT( "alignas.expr = %u,\n", align->expr );
+      break;
+    case C_ALIGNAS_TYPE:
+      c_ast_dump_impl( align->type_ast, indent, "alignas.type_ast", dout );
+      FPUTS( ",\n", dout );
+      break;
+  } // switch
+  DUMP_LOC( "alignas_loc", &align->loc );
+  FPUTS( ",\n", dout );
+}
 
 /**
  * Helper function for c_ast_dump().
@@ -138,23 +166,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
       STATIC_CAST( c_ast_sid_t, -1 )
   );
 
-  if ( ast->align.kind != C_ALIGNAS_NONE ) {
-    switch ( ast->align.kind ) {
-      case C_ALIGNAS_NONE:
-        break;                        // LCOV_EXCL_LINE
-      case C_ALIGNAS_EXPR:
-        DUMP_FORMAT( "alignas.expr = %u,\n", ast->align.expr );
-        break;
-      case C_ALIGNAS_TYPE:
-        c_ast_dump_impl(
-          ast->align.type_ast, indent, "alignas.type_ast", dout
-        );
-        FPUTS( ",\n", dout );
-        break;
-    } // switch
-    DUMP_LOC( "alignas_loc", &ast->align.loc );
-    FPUTS( ",\n", dout );
-  }
+  c_alignas_dump( &ast->align, indent, dout );
 
   DUMP_LOC( "loc", &ast->loc );
   FPUTS( ",\n", dout );
