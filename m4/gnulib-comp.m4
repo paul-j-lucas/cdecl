@@ -96,7 +96,6 @@ AC_DEFUN([gl_EARLY],
   # Code from module stdint:
   # Code from module stdio:
   # Code from module stdlib:
-  # Code from module stdnoreturn:
   # Code from module streq:
   # Code from module string:
   # Code from module strndup:
@@ -327,9 +326,6 @@ AC_DEFUN([gl_INIT],
   gl_STDIO_MODULE_INDICATOR([fwrite])
   gl_STDLIB_H
   gl_STDLIB_H_REQUIRE_DEFAULTS
-  AC_PROG_MKDIR_P
-  gl_STDNORETURN_H
-  gl_CONDITIONAL_HEADER([stdnoreturn.h])
   AC_PROG_MKDIR_P
   gl_STRING_H
   gl_STRING_H_REQUIRE_DEFAULTS
@@ -610,7 +606,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/stdio-write.c
   lib/stdio.in.h
   lib/stdlib.in.h
-  lib/stdnoreturn.in.h
   lib/streq.h
   lib/string.in.h
   lib/strndup.c
@@ -680,7 +675,6 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/stdint.m4
   m4/stdio_h.m4
   m4/stdlib_h.m4
-  m4/stdnoreturn.m4
   m4/string_h.m4
   m4/strndup.m4
   m4/strnlen.m4
