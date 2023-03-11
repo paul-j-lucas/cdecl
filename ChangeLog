@@ -1,3 +1,8 @@
+2023-03-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, gnulib-cache.m4, gnulib-comp.m4: Removed deprecated (and
+     no longer necessary) stdnoreturn GnuLib module.
+
 2023-03-10  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c: Added c_capture_kind_dump().
