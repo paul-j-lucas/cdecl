@@ -1,5 +1,7 @@
 2023-03-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c: Added c_capture_kind_dump().
+   * dump.c: Added c_alignas_dump().
    * parser.y: Now special-casing YYEMPYY and YYEOF when printing yychar.
    * lexer.h, parser.y: Moved fl_elaborate_error() to eliminate declaration of
      yychar.
