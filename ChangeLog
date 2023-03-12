@@ -1,3 +1,8 @@
+2023-03-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, print.c, util.h: Added FPUTNSP().
+   * dump.c: Removed unnecessary #ifdef.
+
 2023-03-11  Paul J. Lucas <paul@lucasmail.org>
 
    * lib/Makefile.am, gnulib-cache.m4, gnulib-comp.m4: Removed deprecated (and
