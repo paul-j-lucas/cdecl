@@ -375,7 +375,7 @@ static void print_input_line( size_t *error_column, size_t term_columns ) {
  * three classes:
  *
  *  + Whitespace.
- *  + Alpha-numeric.
+ *  + Identifier.
  *  + Everything else (e.g., punctuation).
  *
  * A token is composed of characters in exclusively one class.  The class is
@@ -397,13 +397,13 @@ static size_t token_len( char const *s, size_t s_len, size_t token_offset ) {
   if ( s >= end )
     return 0;
 
-  bool const is_s0_alnum = isalnum( s[0] );
+  bool const is_s0_ident = is_ident( s[0] );
   bool const is_s0_space = isspace( s[0] );
 
   char const *const s0 = s;
   while ( ++s < end && *s != '\0' ) {
-    if ( is_s0_alnum ) {
-      if ( !isalnum( *s ) )
+    if ( is_s0_ident ) {
+      if ( !is_ident( *s ) )
         break;
     }
     else if ( is_s0_space ) {
@@ -411,7 +411,7 @@ static size_t token_len( char const *s, size_t s_len, size_t token_offset ) {
         break;
     }
     else {
-      if ( isalnum( *s ) || isspace( *s ) )
+      if ( is_ident( *s ) || isspace( *s ) )
         break;
     }
   } // while
