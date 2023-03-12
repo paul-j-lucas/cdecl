@@ -274,7 +274,7 @@ static size_t print_caret( size_t error_column ) {
     caret_column = error_column;
   }
 
-  EPRINTF( "%*s", STATIC_CAST( int, caret_column ), "" );
+  FPUTNSP( caret_column, stderr );
   color_start( stderr, sgr_caret );
   EPUTC( '^' );
   color_end( stderr, sgr_caret );

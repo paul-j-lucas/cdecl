@@ -44,7 +44,7 @@
   BLOCK( if ( false_set( &comma ) ) FPUTS( ",\n", dout ); )
 
 #define DUMP_FORMAT(...) BLOCK( \
-  fprint_spaces( dout, indent * DUMP_INDENT ); FPRINTF( dout, __VA_ARGS__ ); )
+  FPUTNSP( indent * DUMP_INDENT, dout ); FPRINTF( dout, __VA_ARGS__ ); )
 
 #define DUMP_LOC(KEY,LOC)   \
   DUMP_FORMAT( KEY " = " ); \
@@ -77,18 +77,6 @@ static void c_loc_dump( c_loc_t const*, FILE* );
 
 // local constants
 static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
-
-////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Prints \a n spaces.
- *
- * @param out The `FILE` to print to.
- * @param n The number of spaces to print.
- */
-static inline void fprint_spaces( FILE *out, unsigned n ) {
-  FPRINTF( out, "%*s", STATIC_CAST( int, n ), "" );
-}
 
 ////////// local functions ////////////////////////////////////////////////////
 

@@ -347,11 +347,23 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPUTS()
  * @sa #FPRINTF()
  * @sa #FPUTC()
+ * @sa #FPUTNSP()
  * @sa #PERROR_EXIT_IF()
  * @sa #PUTS()
  */
 #define FPUTS(S,STREAM) \
   PERROR_EXIT_IF( fputs( (S), (STREAM) ) == EOF, EX_IOERR )
+
+/**
+ * Prints \a N spaces to \a STREAM.
+ *
+ * @param N The number of spaces to print.
+ * @param STREAM The `FILE` stream to print to.
+ *
+ * @sa #FPUTS()
+ */
+#define FPUTNSP(N,STREAM) \
+  FPRINTF( (STREAM), "%*s", STATIC_CAST( int, (N) ), "" )
 
 /**
  * Frees the given memory.
