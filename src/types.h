@@ -139,7 +139,7 @@ enum c_oper_id {
 
 /**
  * @ingroup printing-help-group
- * Types of help.
+ * Types of **cdecl** help.
  */
 enum cdecl_help {
   CDECL_HELP_COMMANDS,                  ///< Help for **cdecl** commands.
@@ -148,7 +148,7 @@ enum cdecl_help {
 };
 
 /**
- * Mode of operation.
+ * **Cdecl** mode of operation.
  */
 enum cdecl_mode {
   CDECL_ENGLISH_TO_GIBBERISH,           ///< Convert English into gibberish.
