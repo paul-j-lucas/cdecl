@@ -54,7 +54,7 @@
  *
  * @sa fl_print_error()
  * @sa print_error_unknown_name()
- * @sa print_warning()
+ * @sa #print_warning()
  */
 #define print_error(...) \
   fl_print_error( __FILE__, __LINE__, __VA_ARGS__ )
@@ -71,7 +71,7 @@
  * @note A newline _is_ printed.
  *
  * @sa fl_print_error_unknown_name()
- * @sa print_error()
+ * @sa #print_error()
  */
 #define print_error_unknown_name(LOC,SNAME) \
   fl_print_error_unknown_name( __FILE__, __LINE__, (LOC), (SNAME) )
@@ -86,7 +86,7 @@
  * @note A newline is _not_ printed.
  *
  * @sa fl_print_warning()
- * @sa print_error()
+ * @sa #print_error()
  */
 #define print_warning(...) \
   fl_print_warning( __FILE__, __LINE__, __VA_ARGS__ )
