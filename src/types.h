@@ -138,6 +138,7 @@ enum c_oper_id {
 };
 
 /**
+ * @ingroup printing-help-group
  * Types of help.
  */
 enum cdecl_help {

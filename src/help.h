@@ -30,6 +30,12 @@
 #include "pjl_config.h"                 /* must go first */
 #include "types.h"
 
+/**
+ * @defgroup printing-help-group Printing Help
+ * Types and functions for printing help.
+ * @{
+ */
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -45,6 +51,8 @@ void print_help( cdecl_help_t help );
 void print_use_help( void );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_help_H */
 /* vim:set et sw=2 ts=2: */
