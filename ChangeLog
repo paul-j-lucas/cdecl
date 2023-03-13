@@ -1,5 +1,12 @@
+2023-03-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.h: Added missing #.
+   * help.h, types.h: Added printing-help-group.
+   * lexer.l: Added missing {NI} for `declare` special-case.
+
 2023-03-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * print.c: s/isalnum/is_ident/
    * dump.c, print.c, util.h: Added FPUTNSP().
    * dump.c: Removed unnecessary #ifdef.
 
