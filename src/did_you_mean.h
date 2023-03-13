@@ -35,8 +35,8 @@
 
 /**
  * @defgroup printing-suggestions-group Printing Suggestions
- * Declares macros, types, and functions for printing suggestions for "Did you
- * mean ...?"
+ * Macros, types, and functions for printing suggestions for "Did you mean
+ * ...?"
  * @{
  */
 

@@ -43,11 +43,11 @@
 
 /**
  * @defgroup set-options-group Set Options
- * Declares global variables and functions for **cdecl** `set` command options.
+ * Macros, types, global variables, and functions for **cdecl** `set` command
+ * options.
  *
  * @sa \ref cdecl-options-group
  * @sa \ref cli-options-group
- *
  * @{
  */
 

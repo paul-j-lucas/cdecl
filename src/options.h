@@ -45,7 +45,7 @@
 
 /**
  * @defgroup cdecl-options-group Cdecl Options
- * Declares global variables and functions for **cdecl** options.
+ * Global variables and functions for **cdecl** options.
  *
  * @sa \ref cli-options-group
  * @sa \ref set-options-group

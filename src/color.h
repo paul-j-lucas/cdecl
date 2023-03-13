@@ -48,8 +48,8 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * @defgroup printing-color-group Printing Color
- * Declares constants, macros, types, global variables, and functions for
- * printing to an ANSI terminal in color using [Select Graphics Rendition
+ * Constants, macros, types, global variables, and functions for printing to an
+ * ANSI terminal in color using [Select Graphics Rendition
  * (SGR)](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR) codes.
  */
 

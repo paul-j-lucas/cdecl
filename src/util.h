@@ -51,7 +51,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * @defgroup util-group Utility Macros & Functions
- * Declares utility constants, macros, and functions.
+ * Utility macros, constants, and functions.
  * @{
  */
 

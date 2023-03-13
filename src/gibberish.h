@@ -39,7 +39,7 @@
 
 /**
  * @defgroup printing-gibberish-group Printing Gibberish
- * Declares functions for printing in gibberish, aka, a C/C++ declaration.
+ * Functions for printing in gibberish, aka, a C/C++ declaration.
  * @{
  */
 

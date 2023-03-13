@@ -46,7 +46,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * @defgroup slist-group Singly-Linked List
- * Types and functions for manipulating singly-linked lists.
+ * Macros, types, and functions for manipulating singly-linked lists.
  * @{
  */
 

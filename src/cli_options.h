@@ -43,7 +43,7 @@
 
 /**
  * @defgroup cli-options-group Command-Line Options
- * Declares global variables and functions for command-line options.
+ * Macros and functions for command-line options.
  *
  * @sa \ref cdecl-options-group
  * @sa \ref set-options-group
