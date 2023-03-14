@@ -601,10 +601,8 @@ static void g_print_ast_list( g_state_t const *g,
 
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     fprint_sep( g->gout, ", ", &comma );
-    g_state_t g2;
-    g_init( &g2, gib_flags, /*printed_typedef=*/false, g->gout );
     c_ast_t const *const ast = c_param_ast( ast_node );
-    g_print_ast( &g2, ast );
+    c_ast_gibberish_impl( ast, gib_flags, /*printed_typedef=*/false, g->gout );
   } // for
 }
 
