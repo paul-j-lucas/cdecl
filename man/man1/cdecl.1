@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "March 7, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "March 14, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1223,10 +1223,12 @@ If
 .I english
 is omitted,
 it's equivalent to
-.B "returning void"
-in C99 and later or
 .B "returning int"
-in C95 and earlier.
+in C95 and earlier
+or
+.B "returning void"
+in C99 and later
+or C++.
 .SS Synonyms
 Some synonyms are permitted within pseudo-English.
 The terms on the left are synonyms for what's on the right:
