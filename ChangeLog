@@ -1,3 +1,9 @@
+2023-03-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added note that `q` must be the only thing on a line.
+   * cdecl.1: s/When/If/
+   * cdecl.1: Added "or C++" when omitting "return".
+
 2023-03-13  Paul J. Lucas <paul@lucasmail.org>
 
    * print.h: Added missing #.
