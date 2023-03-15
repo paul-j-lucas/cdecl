@@ -782,9 +782,9 @@ size_t c_ast_params_count( c_ast_t const *ast ) {
  * Sets the two-way pointer links between parent/child AST nodes.
  *
  * @param child_ast The "child" AST node to set the parent of.  If it already
- * has a parent, it's overwritten.
+ * has a parent, it's overwritten.  May be NULL.
  * @param parent_ast The "parent" AST node to set the child of.  It it already
- * has a child, it's overwritten.
+ * has a child, it's overwritten.  May be NULL.
  */
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
 

@@ -240,6 +240,7 @@ explain enum E : int x
 explain enum E : size_t x
 explain enum E : unsigned int x
 explain enum E x : 3
+explain explicit (C)(int)
 explain explicit C(int)
 explain explicit C(int) noexcept
 explain explicit operator bool()

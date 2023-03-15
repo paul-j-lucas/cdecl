@@ -3332,8 +3332,7 @@ lambda_decl_c
       lambda_ast->type = type;
       lambda_ast->lambda.capture_ast_list = slist_move( &$2 );
       lambda_ast->lambda.param_ast_list = slist_move( &$4 );
-      if ( ret_ast != NULL )
-        c_ast_set_parent( ret_ast, lambda_ast );
+      c_ast_set_parent( ret_ast, lambda_ast );
 
       DUMP_AST( "lambda_decl_c", lambda_ast );
       DUMP_END();
@@ -4208,8 +4207,7 @@ func_decl_c_astp
 
       if ( assume_constructor ) {
         assert( trailing_ret_ast == NULL );
-        c_type_or_eq( &func_ast->type, &type_ast->type );
-        $$.ast = func_ast;
+        $$.ast = c_ast_add_func( decl2_ast, func_ast, /*ret_ast=*/NULL );
       }
       else if ( $1.target_ast != NULL ) {
         $$.ast = decl2_ast;

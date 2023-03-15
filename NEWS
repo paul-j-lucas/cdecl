@@ -31,6 +31,13 @@ If either the `--version` or `-v` is given twice, additionally prints the set
 of `configure` feature & package options and whether GNU readline (if compiled
 in) is genuine.
 
+** Fixed explicit constructor with unecessary `()`
+A declaration like:
+
+    explain explicit (C)(int)
+
+that's an explicit constructor with unnecessary `()` caused a crash.  Fixed.
+
 
 * Changes in Cdecl 14.0
 

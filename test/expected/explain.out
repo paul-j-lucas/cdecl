@@ -474,6 +474,8 @@ c++decl> explain enum E : unsigned int x
 declare x as enumeration E of type unsigned integer
 c++decl> explain enum E x : 3
 declare x as enumeration E width 3 bits
+c++decl> explain explicit (C)(int)
+declare C as explicit constructor (integer)
 c++decl> explain explicit C(int)
 declare C as explicit constructor (integer)
 c++decl> explain explicit C(int) noexcept

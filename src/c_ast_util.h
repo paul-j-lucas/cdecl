@@ -71,7 +71,8 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast );
  * @param ast The AST to append to.
  * @param func_ast The function-like AST to append.  Its `ret_ast` must be
  * NULL.
- * @param ret_ast The AST to become the `ret_ast` of \a func_ast.
+ * @param ret_ast The AST to become the `ret_ast` of \a func_ast.  Must be NULL
+ * only when \a func_ast is a #K_CONSTRUCTOR.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 NODISCARD
