@@ -1,5 +1,17 @@
+2023-03-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c: Now using L_options.
+   * NEWS, cdecl.1, c_kind.h, cli_options.c, gibberish.c, help.c, options.c,
+     options.h, set_options.c, alt-tokens.out, cdecl--help.out, cl.out,
+     debug.out, declare.out, explain-by-default.out, explicit-ecsu.out,
+     explicit-int.out, help.out, lang.out, prompt.out, semicolon.out, set.out,
+     set_options.out, trigraphs.out, using.out, declare.test: Added
+     trailing-return option.
+
 2023-03-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c, english.c, gibberish.c: Using L_xxx in easy cases.
+   * gibberish.c: Now using c_ast_gibberish_impl() in g_print_ast_list().
    * cdecl.1: Added note that `q` must be the only thing on a line.
    * cdecl.1: s/When/If/
    * cdecl.1: Added "or C++" when omitting "return".
