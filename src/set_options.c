@@ -29,6 +29,7 @@
 #include "c_lang.h"
 #include "c_type.h"
 #include "did_you_mean.h"
+#include "literals.h"
 #include "options.h"
 #include "print.h"
 #include "prompt.h"
@@ -543,7 +544,7 @@ static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
 
 bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc ) {
-  if ( opt_name == NULL || strcmp( opt_name, "options" ) == 0 ) {
+  if ( opt_name == NULL || strcmp( opt_name, L_options ) == 0 ) {
     print_options();
     return true;
   }
