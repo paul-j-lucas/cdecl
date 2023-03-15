@@ -190,7 +190,7 @@ static void print_options( void ) {
  * Sets the alt-tokens option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_alt_tokens( set_option_fn_args_t const *args ) {
   opt_alt_tokens = args->opt_enabled;
@@ -208,7 +208,7 @@ static bool set_alt_tokens( set_option_fn_args_t const *args ) {
  * Sets the Bison debugging option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_bison_debug( set_option_fn_args_t const *args ) {
   opt_bison_debug = args->opt_enabled;
@@ -221,7 +221,7 @@ static bool set_bison_debug( set_option_fn_args_t const *args ) {
  * Sets the debug option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_debug( set_option_fn_args_t const *args ) {
   opt_cdecl_debug = args->opt_enabled;
@@ -233,7 +233,7 @@ static bool set_debug( set_option_fn_args_t const *args ) {
  * Sets the digraphs-tokens option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_digraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_DI : C_GRAPH_NONE;
@@ -250,7 +250,7 @@ static bool set_digraphs( set_option_fn_args_t const *args ) {
  * Sets the east-const option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_east_const( set_option_fn_args_t const *args ) {
   opt_east_const = args->opt_enabled;
@@ -267,7 +267,7 @@ static bool set_east_const( set_option_fn_args_t const *args ) {
  * Sets the echo-commands option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_echo_commands( set_option_fn_args_t const *args ) {
   opt_echo_commands = args->opt_enabled;
@@ -283,7 +283,7 @@ static bool set_echo_commands( set_option_fn_args_t const *args ) {
  * Sets the english-types option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_english_types( set_option_fn_args_t const *args ) {
   opt_english_types = args->opt_enabled;
@@ -294,7 +294,7 @@ static bool set_english_types( set_option_fn_args_t const *args ) {
  * Sets the explain-by-default option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_explain_by_default( set_option_fn_args_t const *args ) {
   opt_explain = args->opt_enabled;
@@ -363,7 +363,7 @@ static bool set_explicit_int( set_option_fn_args_t const *args ) {
  * Sets the Flex debugging option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_flex_debug( set_option_fn_args_t const *args ) {
   opt_flex_debug = args->opt_enabled;
@@ -430,7 +430,7 @@ static bool set_lang_impl( char const *name ) {
  * Sets the prompt option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_prompt( set_option_fn_args_t const *args ) {
   opt_prompt = args->opt_enabled;
@@ -442,7 +442,7 @@ static bool set_prompt( set_option_fn_args_t const *args ) {
  * Sets the semicolon option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_semicolon( set_option_fn_args_t const *args ) {
   opt_semicolon = args->opt_enabled;
@@ -453,7 +453,7 @@ static bool set_semicolon( set_option_fn_args_t const *args ) {
  * Sets the trailing return type option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_trailing_return( set_option_fn_args_t const *args ) {
   opt_trailing_ret = args->opt_enabled;
@@ -470,7 +470,7 @@ static bool set_trailing_return( set_option_fn_args_t const *args ) {
  * Sets the trigraphs option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_trigraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
@@ -487,7 +487,7 @@ static bool set_trigraphs( set_option_fn_args_t const *args ) {
  * Sets the using option.
  *
  * @param args The set option arguments.
- * @return Returns `true` only if the option was set.
+ * @return Always returns `true`.
  */
 static bool set_using( set_option_fn_args_t const *args ) {
   opt_using = args->opt_enabled;
