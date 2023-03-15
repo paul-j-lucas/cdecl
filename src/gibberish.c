@@ -162,6 +162,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
   bool    is_override     = false;
   bool    is_pure_virtual = false;
   bool    is_throw        = false;
+  bool    is_trailing_ret = false;
   c_tid_t msc_call_atids  = TA_NONE;
   c_tid_t ref_qual_stids  = TS_NONE;
 
@@ -241,8 +242,14 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           FPRINTF( g->gout, "%s::", c_sname_full_name( &ast->sname ) );
         FPUTS( "operator ", g->gout );
       }
-      if ( ast->parent.of_ast != NULL )
-        g_print_ast( g, ast->parent.of_ast );
+      if ( ast->parent.of_ast != NULL ) {
+        is_trailing_ret = (ast->kind & K_ANY_TRAILING_RETURN) != 0 &&
+          opt_trailing_ret && OPT_LANG_IS( TRAILING_RETURN_TYPE );
+        if ( is_trailing_ret )
+          FPUTS( L_auto, g->gout );
+        else
+          g_print_ast( g, ast->parent.of_ast );
+      }
       if ( msc_call_atids != TA_NONE &&
            !c_ast_parent_is_kind( ast, K_POINTER ) ) {
         //
@@ -273,9 +280,23 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         FPUTS( " override", g->gout );
       else if ( is_final )
         FPUTS( " final", g->gout );
-      else if ( is_pure_virtual )
+      if ( is_trailing_ret ) {
+        FPUTS( " -> ", g->gout );
+        //
+        // Temporarily orphan the return type's AST in order to print it as a
+        // stand-alone trailing type.
+        //
+        c_ast_t *const ret_ast = ast->func.ret_ast;
+        c_ast_t *const orig_ret_ast_parent_ast = ret_ast->parent_ast;
+        ret_ast->parent_ast = NULL;
+        c_ast_gibberish_impl(
+          ret_ast, C_GIB_DECL, /*printed_typedef=*/false, g->gout
+        );
+        ret_ast->parent_ast = orig_ret_ast_parent_ast;
+      }
+      if ( is_pure_virtual )
         FPUTS( " = 0", g->gout );
-      if ( is_default )
+      else if ( is_default )
         FPUTS( " = default", g->gout );
       else if ( is_delete )
         FPUTS( " = delete", g->gout );

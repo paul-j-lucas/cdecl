@@ -51,6 +51,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> show predefined
 define ATOM as WORD

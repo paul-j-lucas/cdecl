@@ -10,4 +10,5 @@
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using

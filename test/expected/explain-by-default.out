@@ -11,6 +11,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> int x
 declare x as integer
@@ -32,6 +33,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set explain-by-default
 c++decl> set
@@ -47,6 +49,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> int x
 declare x as integer

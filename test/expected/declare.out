@@ -352,6 +352,22 @@ c++decl> declare f as function returning pointer to member of class C int
 int C::* f();
 c++decl> declare f as function returning pointer to member of class C pointer to int
 int* C::* f();
+c++decl> set trailing-return
+c++decl> declare f as function returning int
+auto f() -> int;
+c++decl> declare f as function returning pointer to int
+auto f() -> int*;
+c++decl> declare f as function returning pointer to const int
+auto f() -> const int*;
+c++decl> set east-const
+c++decl> declare f as function returning pointer to const int
+auto f() -> int const*;
+c++decl> set noeast-const
+c++decl> declare f as function returning pointer to function (int) returning pointer to const char
+auto f() -> auto (*)(int) -> const char*;
+c++decl> declare ! as operator (reference to const S) returning bool
+auto operator!(const S&) -> bool;
+c++decl> set notrailing-return
 c++decl> declare f as deprecated function returning void
 [[deprecated]] void f();
 c++decl> declare f as maybe unused int

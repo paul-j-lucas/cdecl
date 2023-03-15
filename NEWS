@@ -21,6 +21,11 @@ only thing on a line other than whitespace.  This now allows things like:
 
 to work without complaining that `q` is a **cdecl** keyword.
 
+** Trailing return type
+New `--trailing-return` and `-R` command-line options and `trailing-return`
+`set` option enable printing a function's or operator's return type using the
+trailing return type syntax in C++11 and later.
+
 ** Verbose version
 If either the `--version` or `-v` is given twice, additionally prints the set
 of `configure` feature & package options and whether GNU readline (if compiled

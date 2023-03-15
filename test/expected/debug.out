@@ -11,6 +11,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> explain (int)x
 
@@ -4142,6 +4143,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> explain int x
 declare x as integer
@@ -4159,6 +4161,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> explain int x
 

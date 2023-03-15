@@ -75,6 +75,7 @@
 #define OPT_COLOR             k
 #define OPT_OUTPUT            o
 #define OPT_NO_PROMPT         p
+#define OPT_TRAILING_RETURN   R
 #define OPT_NO_SEMICOLON      s
 #define OPT_EXPLICIT_ECSU     S
 #define OPT_NO_TYPEDEFS       t
@@ -137,6 +138,7 @@ static struct option const CLI_OPTIONS_LONG[] = {
   { "no-typedefs",      no_argument,        NULL, COPT(NO_TYPEDEFS)       },
   { "no-using",         no_argument,        NULL, COPT(NO_USING)          },
   { "output",           required_argument,  NULL, COPT(OUTPUT)            },
+  { "trailing-return",  no_argument,        NULL, COPT(TRAILING_RETURN)   },
   { "trigraphs",        no_argument,        NULL, COPT(TRIGRAPHS)         },
   { "version",          no_argument,        NULL, COPT(VERSION)           },
   { NULL,               0,                  NULL, 0                       }
@@ -184,6 +186,7 @@ static char const   CLI_OPTIONS_SHORT[] = ":"
   SOPT(NO_TYPEDEFS)       SOPT_NO_ARGUMENT
   SOPT(NO_USING)          SOPT_NO_ARGUMENT
   SOPT(OUTPUT)            SOPT_REQUIRED_ARGUMENT
+  SOPT(TRAILING_RETURN)   SOPT_NO_ARGUMENT
   SOPT(TRIGRAPHS)         SOPT_NO_ARGUMENT
   SOPT(VERSION)           SOPT_NO_ARGUMENT
 ;
@@ -466,6 +469,9 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(NO_USING):
         opt_using = false;
         break;
+      case COPT(TRAILING_RETURN):
+        opt_trailing_ret = true;
+        break;
       case COPT(OUTPUT):
         fout_path = optarg;
         break;
@@ -550,6 +556,7 @@ use_help:
     SOPT(NO_TYPEDEFS)
     SOPT(NO_USING)
     SOPT(OUTPUT)
+    SOPT(TRAILING_RETURN)
     SOPT(TRIGRAPHS)
     SOPT(VERSION)
   );
@@ -583,6 +590,7 @@ use_help:
     SOPT(NO_TYPEDEFS)
     SOPT(NO_USING)
     SOPT(OUTPUT)
+    SOPT(TRAILING_RETURN)
     SOPT(TRIGRAPHS)
   );
 
@@ -659,6 +667,7 @@ static void usage( int status ) {
 "  --no-typedefs        (-%c) Suppress predefining standard types.\n"
 "  --no-using           (-%c) Declare types with typedef, not using, in C++.\n"
 "  --output=FILE        (-%c) Write to FILE [default: stdout].\n"
+"  --trailing-return    (-%c) Print trailing return type in C++.\n"
 "  --trigraphs          (-%c) Print trigraphs.\n"
 "  --version            (-%c) Print version and exit.\n"
 "\n"
@@ -693,6 +702,7 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n"
     COPT(NO_TYPEDEFS),
     COPT(NO_USING),
     COPT(OUTPUT),
+    COPT(TRAILING_RETURN),
     COPT(TRIGRAPHS),
     COPT(VERSION)
   );

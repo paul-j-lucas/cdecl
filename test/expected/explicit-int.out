@@ -28,6 +28,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short int x;
@@ -59,6 +60,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short int x;
@@ -90,6 +92,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short int x;
@@ -121,6 +124,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short x;
@@ -152,6 +156,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short x;
@@ -183,6 +188,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short x;
@@ -214,6 +220,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short x;
@@ -245,6 +252,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short x;
@@ -276,6 +284,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short x;
@@ -307,6 +316,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short x;
@@ -338,6 +348,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as short
 short x;
@@ -369,6 +380,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as long
 long int x;
@@ -392,6 +404,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> declare x as long
 long x;

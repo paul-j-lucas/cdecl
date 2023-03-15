@@ -286,6 +286,12 @@ typedef enum c_ast_kind c_ast_kind_t;
  */
 #define K_ANY_REFERRER            ( K_ANY_PARENT | K_TYPEDEF )
 
+/**
+ * Shorthand for any kind of function-like AST that can have a trailing return
+ * type: #K_FUNCTION, #K_OPERATOR.
+ */
+#define K_ANY_TRAILING_RETURN     ( K_FUNCTION | K_OPERATOR )
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**

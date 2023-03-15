@@ -85,6 +85,7 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
             set_lang_impl( char const* ),
             set_prompt( set_option_fn_args_t const* ),
             set_semicolon( set_option_fn_args_t const* ),
+            set_trailing_return( set_option_fn_args_t const* ),
             set_trigraphs( set_option_fn_args_t const* ),
             set_using( set_option_fn_args_t const* );
 
@@ -115,6 +116,7 @@ static set_option_t const SET_OPTIONS[] = {
   { "lang",               SET_OPTION_AFF_ONLY, true,  &set_lang               },
   { "prompt",             SET_OPTION_TOGGLE,   false, &set_prompt             },
   { "semicolon",          SET_OPTION_TOGGLE,   false, &set_semicolon          },
+  { "trailing-return",    SET_OPTION_TOGGLE,   false, &set_trailing_return    },
   { "trigraphs",          SET_OPTION_AFF_ONLY, false, &set_trigraphs          },
   { "using",              SET_OPTION_TOGGLE,   false, &set_using              },
   { NULL,                 SET_OPTION_TOGGLE,   false, NULL                    }
@@ -180,6 +182,7 @@ static void print_options( void ) {
   PRINTF( "    lang=%s\n", c_lang_name( opt_lang ) );
   PRINTF( "  %sprompt\n", maybe_no( opt_prompt ) );
   PRINTF( "  %ssemicolon\n", maybe_no( opt_semicolon ) );
+  PRINTF( "  %strailing-return\n", maybe_no( opt_trailing_ret ) );
   PRINTF( "  %susing\n", maybe_no( opt_using ) );
 }
 
@@ -443,6 +446,23 @@ static bool set_prompt( set_option_fn_args_t const *args ) {
  */
 static bool set_semicolon( set_option_fn_args_t const *args ) {
   opt_semicolon = args->opt_enabled;
+  return true;
+}
+
+/**
+ * Sets the trailing return type option.
+ *
+ * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
+ */
+static bool set_trailing_return( set_option_fn_args_t const *args ) {
+  opt_trailing_ret = args->opt_enabled;
+  if ( opt_trailing_ret && !OPT_LANG_IS( TRAILING_RETURN_TYPE ) ) {
+    print_warning( args->opt_name_loc,
+      "trailing return type not supported%s\n",
+      C_LANG_WHICH( TRAILING_RETURN_TYPE )
+    );
+  }
   return true;
 }
 

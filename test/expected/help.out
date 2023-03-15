@@ -84,6 +84,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -165,6 +166,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -247,6 +249,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -329,6 +332,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -412,6 +416,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -504,6 +509,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -596,6 +602,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -719,6 +726,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -821,6 +829,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -923,6 +932,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -1045,6 +1055,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -1167,6 +1178,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -1289,6 +1301,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
@@ -1412,6 +1425,7 @@ option:
   <lang>
   [no]prompt
   [no]semicolon
+  [no]trailing-return
   [no]using
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]

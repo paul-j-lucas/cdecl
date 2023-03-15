@@ -12,6 +12,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set ck&r
 cdecl> set
@@ -27,6 +28,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set k&r
 cdecl> set
@@ -42,6 +44,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set k&rc
 cdecl> set
@@ -57,6 +60,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set cknr
 cdecl> set
@@ -72,6 +76,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set knr
 cdecl> set
@@ -87,6 +92,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set knrc
 cdecl> set
@@ -102,6 +108,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set c78
 cdecl> set
@@ -117,6 +124,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set c89
 cdecl> set
@@ -132,6 +140,7 @@ cdecl> set
     lang=C89
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set c90
 cdecl> set
@@ -147,6 +156,7 @@ cdecl> set
     lang=C89
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set c95
 cdecl> set
@@ -162,6 +172,7 @@ cdecl> set
     lang=C95
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set c99
 cdecl> set
@@ -177,6 +188,7 @@ cdecl> set
     lang=C99
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set c11
 cdecl> set
@@ -192,6 +204,7 @@ cdecl> set
     lang=C11
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set c17
 cdecl> set
@@ -207,6 +220,7 @@ cdecl> set
     lang=C17
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set c18
 cdecl> set
@@ -222,6 +236,7 @@ cdecl> set
     lang=C17
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set c23
 cdecl> set
@@ -237,6 +252,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set c++
 c++decl> set
@@ -252,6 +268,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set c++98
 c++decl> set
@@ -267,6 +284,7 @@ c++decl> set
     lang=C++98
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set c++03
 c++decl> set
@@ -282,6 +300,7 @@ c++decl> set
     lang=C++03
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set c++11
 c++decl> set
@@ -297,6 +316,7 @@ c++decl> set
     lang=C++11
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set c++14
 c++decl> set
@@ -312,6 +332,7 @@ c++decl> set
     lang=C++14
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set c++17
 c++decl> set
@@ -327,6 +348,7 @@ c++decl> set
     lang=C++17
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set c++20
 c++decl> set
@@ -342,6 +364,7 @@ c++decl> set
     lang=C++20
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set c++23
 c++decl> set
@@ -357,6 +380,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set lang=c
 cdecl> set
@@ -372,6 +396,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=ck&r
 cdecl> set
@@ -387,6 +412,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=k&r
 cdecl> set
@@ -402,6 +428,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=k&rc
 cdecl> set
@@ -417,6 +444,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=cknr
 cdecl> set
@@ -432,6 +460,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=knr
 cdecl> set
@@ -447,6 +476,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=knrc
 cdecl> set
@@ -462,6 +492,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=c78
 cdecl> set
@@ -477,6 +508,7 @@ cdecl> set
     lang=K&RC
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=c89
 cdecl> set
@@ -492,6 +524,7 @@ cdecl> set
     lang=C89
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=c90
 cdecl> set
@@ -507,6 +540,7 @@ cdecl> set
     lang=C89
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=c95
 cdecl> set
@@ -522,6 +556,7 @@ cdecl> set
     lang=C95
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=c99
 cdecl> set
@@ -537,6 +572,7 @@ cdecl> set
     lang=C99
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=c11
 cdecl> set
@@ -552,6 +588,7 @@ cdecl> set
     lang=C11
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=c17
 cdecl> set
@@ -567,6 +604,7 @@ cdecl> set
     lang=C17
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=c18
 cdecl> set
@@ -582,6 +620,7 @@ cdecl> set
     lang=C17
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=c23
 cdecl> set
@@ -597,6 +636,7 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using
 cdecl> set lang=c++
 c++decl> set
@@ -612,6 +652,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set lang=c++98
 c++decl> set
@@ -627,6 +668,7 @@ c++decl> set
     lang=C++98
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set lang=c++03
 c++decl> set
@@ -642,6 +684,7 @@ c++decl> set
     lang=C++03
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set lang=c++11
 c++decl> set
@@ -657,6 +700,7 @@ c++decl> set
     lang=C++11
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set lang=c++14
 c++decl> set
@@ -672,6 +716,7 @@ c++decl> set
     lang=C++14
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set lang=c++17
 c++decl> set
@@ -687,6 +732,7 @@ c++decl> set
     lang=C++17
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set lang=c++20
 c++decl> set
@@ -702,6 +748,7 @@ c++decl> set
     lang=C++20
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> set lang=c++23
 c++decl> set
@@ -717,4 +764,5 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using

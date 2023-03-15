@@ -12,6 +12,7 @@ set
     lang=C23
   noprompt
     semicolon
+  notrailing-return
     using
 set prompt
 cdecl> set
@@ -27,4 +28,5 @@ cdecl> set
     lang=C23
     prompt
     semicolon
+  notrailing-return
     using

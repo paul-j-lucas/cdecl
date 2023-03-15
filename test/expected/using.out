@@ -12,6 +12,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
   nousing
 c++decl> declare Int as type int
 typedef int Int;
@@ -29,6 +30,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> declare Int as type int
 using Int = int;

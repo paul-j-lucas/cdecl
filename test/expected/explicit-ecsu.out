@@ -20,6 +20,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> declare s as struct S
 struct S s;
@@ -43,6 +44,7 @@ c++decl> set
     lang=C++23
     prompt
     semicolon
+  notrailing-return
     using
 c++decl> declare s as struct S
 S s;

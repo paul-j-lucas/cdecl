@@ -517,6 +517,11 @@ and
 (Supported only between C89 and C17
 and between C++03 and C++14.)
 .TP
+.BR \-\-trailing-return " | " \-R
+Declares functions and operators
+using the trailing return type syntax
+in C++11 and later.
+.TP
 .BR \-\-version " | " \-v
 Prints the version number
 and exits.
@@ -1587,6 +1592,12 @@ and
 \(em default is off.
 (Supported only between C89 and C17
 and between C++03 and C++14.)
+.TP
+.RB [ no ] trailing-return
+Turns [off] on declaring functions and operators
+using the trailing return type syntax
+in C++11 and later
+\(em default is off.
 .TP
 .RB [ no ] using
 Turns [off] on declaring types with \f(CWusing\fP
@@ -2963,12 +2974,6 @@ These are illegal C++ declarations
 since such declarations
 .I must
 be initialized.
-.IP \(bu
-While
-.B explain
-supports the C++11 function trailing return-type syntax,
-.B declare
-always prints in the traditional syntax.
 .IP \(bu
 Only casting a name is supported;
 casting an expression is not.

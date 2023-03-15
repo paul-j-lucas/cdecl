@@ -58,6 +58,7 @@ c_lang_id_t         opt_lang;
 bool                opt_prompt = true;
 bool                opt_read_conf = true;
 bool                opt_semicolon = true;
+bool                opt_trailing_ret;
 bool                opt_typedefs = true;
 bool                opt_using = true;
 
