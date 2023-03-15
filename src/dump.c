@@ -353,13 +353,13 @@ static void c_capture_kind_dump( c_capture_kind_t kind, FILE *dout ) {
       FPUTS( "\"&\"", dout );
       break;
     case C_CAPTURE_THIS:
-      FPUTS( "this", dout );
+      FPUTS( L_this, dout );
       break;
     case C_CAPTURE_STAR_THIS:
       FPUTS( "*this", dout );
       break;
     case C_CAPTURE_VARIABLE:
-      FPUTS( "variable", dout );
+      FPUTS( L_variable, dout );
       break;
   } // switch
 }
@@ -403,7 +403,7 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
 
 void bool_dump( bool value, FILE *dout ) {
   assert( dout != NULL );
-  FPUTS( value ? "true" : "false", dout );
+  FPUTS( value ? L_true : L_false, dout );
 }
 
 void c_ast_dump( c_ast_t const *ast, char const *key, FILE *dout ) {

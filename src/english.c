@@ -169,7 +169,7 @@ static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *eout ) {
           FPUTS( "reference to ", eout );
         break;
       case C_CAPTURE_THIS:
-        FPUTS( "this", eout );
+        FPUTS( L_this, eout );
         break;
       case C_CAPTURE_STAR_THIS:
         FPUTS( "*this", eout );
@@ -319,7 +319,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
     case K_LAMBDA:
       if ( !c_type_is_none( &ast->type ) )
         FPRINTF( eout, "%s ", c_type_name_english( &ast->type ) );
-      FPUTS( "lambda", eout );
+      FPUTS( L_lambda, eout );
       if ( c_ast_captures_count( ast ) > 0 ) {
         FPUTS( " capturing ", eout );
         c_ast_lambda_captures_english( ast, eout );
