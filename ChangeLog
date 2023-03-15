@@ -1,5 +1,9 @@
 2023-03-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, parser.y, explain.out,
+     explain.test: Fixed explicit constructor with unecessary `()`.
+   * cdecl.1: Added mention that the C++20 explicit(expr) specifier is not
+     supported.
    * set_options.c: Now using L_options.
    * NEWS, cdecl.1, c_kind.h, cli_options.c, gibberish.c, help.c, options.c,
      options.h, set_options.c, alt-tokens.out, cdecl--help.out, cl.out,
