@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "March 14, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "March 15, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2805,6 +2805,9 @@ C++20 contracts
 and
 \f(CW[[expects]]\fP)
 are not supported.
+.IP \(bu
+The C++20 \f(CWexplicit\fP specifier with an expression
+is not supported.
 .SS Other Minor Caveats
 .IP \(bu 3
 When converting from pseudo-English to a C++ declaration,
