@@ -1,6 +1,6 @@
 2023-03-15  Paul J. Lucas <paul@lucasmail.org>
 
-   * help.c, help.out: Put {di
+   * help.c, help.out: Put {di|tri|no}graphs in same place as show via `set`.
    * NEWS, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, parser.y, explain.out,
      explain.test: Fixed explicit constructor with unecessary `()`.
    * cdecl.1: Added mention that the C++20 explicit(expr) specifier is not
@@ -2780,7 +2780,7 @@
      Alignment of `enum`, `struct`, and `union` is now correctly forbidden in
      C.
    * NEWS, cdecl_keyword.c, parser.y: `alignas` & `_Alignas` are now
-     additionally allowed instead of `aligned [as
+     additionally allowed instead of `aligned [as|to]` in pseudo-English.
    * NEWS, autocomplete.c, c_keyword.c, c_lang.h, cdecl_keyword.c,
      cdecl_keyword.h, lexer.l: Eliminated AC_CDECL_KEYWORDS; now _not_
      completing English keywords when C/C++ is expected.
@@ -5018,7 +5018,7 @@
 
    * parser.y: Added ret_ast local variable.
    * parser.y: Now using struct literals.
-   * lexer.l: Removed c == '\0' 
+   * lexer.l: Removed c == '\0' ||
    * NEWS, bootstrap: Added a bootstrap script.
 
 2021-05-07  Paul J. Lucas <paul@lucasmail.org>
@@ -5348,7 +5348,7 @@
      explain_ec_using_i.test: Now accepts extern "C" using declarations.
    * help.c, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c++03.out, help_command-c.out, help_commands-c++.out,
-     help_commands-c.out: s/into
+     help_commands-c.out: s/into|to/[in]to/
    * NEWS, help.c: The help for pseudo-English now correctly includes `auto` as
      a storage class for C++98 and C++03.
 
@@ -5418,7 +5418,8 @@
    * help.c, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c++03.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out, help_english-c++.out, help_english-c.out,
-     help_english-c89.out, help_english-knr.out: Added 
+     help_english-c89.out, help_english-knr.out: Added | between all alternates
+     in help.
 
 2021-02-19  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5472,7 +5473,7 @@
 2021-02-16  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS: Elaborated what a reserved identifier is.
-   * check.c: s/not supported/{is
+   * check.c: s/not supported/{is|are} not supported/
    * parser.y, explain_2gat_cpi.out, explain_a_using_a_mu_i.out,
      explain_c_gat_pi.out, explain_c_gat_vpi.out, explain_gat_c_gat_vpi.out,
      explain_gat_cpi.out, explain_gat_i-01.out, explain_gat_i-02.out,
@@ -6775,7 +6776,7 @@
    * NEWS, configure.ac, cdecl.1, help.c, parser.y, help-c++.out, help-c.out,
      help_command-c++.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out: Now allowing "to" in addition to "as" for "...
-     aligned [as
+     aligned [as|to] ...".
 
 2020-07-12  Paul J. Lucas <paul@lucasmail.org>
 
@@ -8119,7 +8120,7 @@
 
 2019-08-14  Paul J. Lucas <paul@lucasmail.org>
 
-   * errors.c: s/(T_CONST 
+   * errors.c: s/(T_CONST | T_VOLATILE)/T_MASK_QUALIFIER/
 
 2019-08-13  Paul J. Lucas <paul@lucasmail.org>
 
