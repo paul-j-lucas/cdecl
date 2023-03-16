@@ -1,5 +1,6 @@
 2023-03-16  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_lang.h: Simplified LANG_RANGE().
    * c_ast.h: Added asserts.
 
 2023-03-15  Paul J. Lucas <paul@lucasmail.org>
