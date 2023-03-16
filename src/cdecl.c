@@ -272,7 +272,7 @@ static int cdecl_parse_stdin( void ) {
  *  2. The value of the `CDECLRC` environment variable; or:
  *  3. `~/.cdeclrc`
  *
- * @note This function must be called exactly once.
+ * @note This function must be called as most once.
  */
 static void conf_init( void ) {
   ASSERT_RUN_ONCE();
