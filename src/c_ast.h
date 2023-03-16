@@ -772,6 +772,7 @@ c_param_t const* c_ast_params( c_ast_t const *ast ) {
  * @param ast The function-like AST to get the number of parameters of.
  * @return Returns said number of parameters.
  *
+ * @sa c_ast_captures_count()
  * @sa c_ast_params()
  * @sa c_param_ast()
  * @sa #FOREACH_AST_FUNC_PARAM()
