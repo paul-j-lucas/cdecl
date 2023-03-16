@@ -245,7 +245,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_MIN()
  */
 #define LANG_RANGE(LMIN,LMAX) \
-  (((BITS_GE( LANG_##LMIN ) & BITS_LT( LANG_##LMAX )) | LANG_##LMAX) & ~LANGX_MASK)
+  ((BITS_GE( LANG_##LMIN ) & BITS_LE( LANG_##LMAX )) & ~LANGX_MASK)
 
 /**
  * Convenience macro for specifying a constant array of \ref c_lang_lit.
