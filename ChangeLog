@@ -1,3 +1,7 @@
+2023-03-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h: Added asserts.
+
 2023-03-15  Paul J. Lucas <paul@lucasmail.org>
 
    * help.c, help.out: Put {di|tri|no}graphs in same place as show via `set`.
