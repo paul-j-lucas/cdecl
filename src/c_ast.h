@@ -42,6 +42,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 #include <stdint.h>
@@ -726,6 +727,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
  */
 NODISCARD C_AST_H_INLINE
 c_capture_t const* c_ast_captures( c_ast_t const *ast ) {
+  assert( ast->kind == K_LAMBDA );
   return ast->lambda.capture_ast_list.head;
 }
 
@@ -742,6 +744,7 @@ c_capture_t const* c_ast_captures( c_ast_t const *ast ) {
  */
 NODISCARD C_AST_H_INLINE
 size_t c_ast_captures_count( c_ast_t const *ast ) {
+  assert( ast->kind == K_LAMBDA );
   return slist_len( &ast->lambda.capture_ast_list );
 }
 
@@ -759,6 +762,7 @@ size_t c_ast_captures_count( c_ast_t const *ast ) {
  */
 NODISCARD C_AST_H_INLINE
 c_param_t const* c_ast_params( c_ast_t const *ast ) {
+  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
   return ast->func.param_ast_list.head;
 }
 
@@ -775,6 +779,7 @@ c_param_t const* c_ast_params( c_ast_t const *ast ) {
  */
 NODISCARD C_AST_H_INLINE
 size_t c_ast_params_count( c_ast_t const *ast ) {
+  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
   return slist_len( &ast->func.param_ast_list );
 }
 
