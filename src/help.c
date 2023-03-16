@@ -414,7 +414,6 @@ static void print_help_options( void ) {
 #ifdef ENABLE_CDECL_DEBUG
   print_h( "  [no]debug\n" );
 #endif /* ENABLE_CDECL_DEBUG */
-  print_h( "  {di|tri|no}graphs\n" );
   print_h( "  [no]east-const\n" );
   print_h( "  [no]echo-commands\n" );
   print_h( "  [no]english-types\n" );
@@ -424,6 +423,7 @@ static void print_help_options( void ) {
 #ifdef ENABLE_FLEX_DEBUG
   print_h( "  [no]flex-debug\n" );
 #endif /* ENABLE_FLEX_DEBUG */
+  print_h( "  {di|tri|no}graphs\n" );
   print_h( "  lang=<lang>\n" );
   print_h( "  <lang>\n" );
   print_h( "  [no]prompt\n" );

@@ -73,13 +73,13 @@ cdecl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -155,13 +155,13 @@ cdecl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -238,13 +238,13 @@ cdecl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -321,13 +321,13 @@ cdecl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -405,13 +405,13 @@ cdecl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -498,13 +498,13 @@ cdecl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -591,13 +591,13 @@ cdecl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -715,13 +715,13 @@ c++decl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -818,13 +818,13 @@ c++decl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -921,13 +921,13 @@ c++decl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -1044,13 +1044,13 @@ c++decl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -1167,13 +1167,13 @@ c++decl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -1290,13 +1290,13 @@ c++decl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
@@ -1414,13 +1414,13 @@ c++decl> help options
 option:
   [no]alt-tokens
   [no]debug
-  {di|tri|no}graphs
   [no]east-const
   [no]echo-commands
   [no]english-types
   [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
+  {di|tri|no}graphs
   lang=<lang>
   <lang>
   [no]prompt
