@@ -184,7 +184,9 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
 }
 
 char const* c_oper_token_c( c_oper_id_t oper_id ) {
-  return alt_token_c( graph_token_c( c_oper_get( oper_id )->name ) );
+  char const *const name = c_oper_get( oper_id )->name;
+  char const *const alt_token = alt_token_c( name );
+  return alt_token != name ? alt_token : graph_token_c( name );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
