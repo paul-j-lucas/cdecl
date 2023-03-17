@@ -1268,7 +1268,11 @@ char const* graph_token_c( char const *token ) {
         if ( OPT_LANG_IS( DIGRAPHS ) ) {
           switch ( token[0] ) {
             case '#'  : return token[1] == '#' ? "%:%:" : "%:";
-            case '['  : return token[1] == '[' ? "<:<:" : "<:";
+            case '['  : switch ( token[1] ) {
+                          case '[': return "<:<:";
+                          case ']': return "<::>";
+                          default : return "<:";
+                        } // switch
             case ']'  : return token[1] == ']' ? ":>:>" : ":>";
             case '{'  : return "<%";
             case '}'  : return "%>";
@@ -1279,7 +1283,11 @@ char const* graph_token_c( char const *token ) {
         if ( OPT_LANG_IS( TRIGRAPHS ) ) {
           switch ( token[0] ) {
             case '#'  : return "?\?=";
-            case '['  : return token[1] == '[' ? "?\?(?\?(" : "?\?(";
+            case '['  : switch ( token[1] ) {
+                          case '[': return "?\?(?\?(";
+                          case ']': return "?\?(?\?)";
+                          default : return "?\?(";
+                        } // switch
             case ']'  : return token[1] == ']' ? "?\?)?\?)" : "?\?)";
             case '\\' : return "?\?/";
             case '^'  : return token[1] == '=' ? "?\?'=" : "?\?'";

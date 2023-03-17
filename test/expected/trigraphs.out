@@ -23,6 +23,8 @@ c++decl> declare ??!= as operator (int) returning reference to S
 S& operator??!=(int);
 c++decl> declare ??- as operator returning S
 S operator??-();
+c++decl> declare [] as operator (int) returning int
+int operator??(??)(int);
 c++decl> set c++
 warning: trigraphs not supported since C++17
 c++decl> explain int a??(9??)

@@ -17,6 +17,7 @@ declare ??!??! as operator (reference to constant S, reference to constant S) re
 declare ??! as operator (reference to constant S, reference to constant S) returning S
 declare ??!= as operator (int) returning reference to S
 declare ??- as operator returning S
+declare [] as operator (int) returning int
 
 set c++
 explain int a??(9??)

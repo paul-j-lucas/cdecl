@@ -42,8 +42,11 @@ A declaration like:
 
 that's an explicit constructor with unnecessary `()` caused a crash.  Fixed.
 
-** Dr/Trigraph lambda captures
+** Di/Trigraph lambda captures
 Now correctly emitting di/trigraphs for lambda captures.
+
+** Di/Trigraph `operator[]`
+Now correctly emitting di/trigraphs for `operator[]`.
 
 
 * Changes in Cdecl 14.0
