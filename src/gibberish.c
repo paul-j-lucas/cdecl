@@ -439,9 +439,9 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     }
 
     case K_LAMBDA:
-      FPUTC( '[', g->gout );
+      FPUTS( graph_token_c( "[" ), g->gout );
       g_print_ast_list( g, &ast->lambda.capture_ast_list );
-      FPUTC( ']', g->gout );
+      FPUTS( graph_token_c( "]" ), g->gout );
       if ( c_ast_params_count( ast ) > 0 ) {
         FPUTC( '(', g->gout );
         g_print_ast_list( g, &ast->lambda.param_ast_list );

@@ -38,6 +38,9 @@ A declaration like:
 
 that's an explicit constructor with unnecessary `()` caused a crash.  Fixed.
 
+** Dr/Trigraph lambda captures
+Now correctly emitting di/trigraphs for lambda captures.
+
 
 * Changes in Cdecl 14.0
 
