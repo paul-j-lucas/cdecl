@@ -141,6 +141,8 @@
  * @return If we're emitting alternative tokens and if \a token is a token that
  * has an alternative token, returns said token; otherwise returns \a token as-
  * is.
+ *
+ * @sa graph_token_c()
  */
 NODISCARD
 char const* alt_token_c( char const *token );
@@ -192,6 +194,8 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
  * @return If we're emitting graphs and \a token contains one or more
  * characters that have a graph equivalent, returns \a token with said
  * characters replaced by their graphs; otherwise returns \a token as-is.
+ *
+ * @sa alt_token_c()
  */
 NODISCARD
 char const* graph_token_c( char const *token );
