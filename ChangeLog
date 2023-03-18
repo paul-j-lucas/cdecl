@@ -1,3 +1,21 @@
+2023-03-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, gibberish.c, alt-tokens.out, alt-tokens.test: Blocks now correctly
+     print alternative tokens when the option is enabled.
+   * NEWS, gibberish.c, alt-tokens.out, alt-tokens.test: Lambda captures now
+     correctly print alternative tokens when the option is enabled.
+   * NEWS, c_operator.c, gibberish.c, gibberish.h, alt-tokens.out,
+     alt-tokens.test: Reference and rvalue reference functions now correctly
+     print alternative tokens.
+
+2023-03-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, gibberish.c, digraphs.out, trigraphs.out, digraphs.test,
+     trigraphs.test: Now correctly emitting di/trigraphs for `operator[]`.
+   * NEWS, c_operator.c: Alternative tokens now have priority over
+     di/trigraphs.
+   * NEWS, gibberish.c: Now emitting di/trigraphs for [] lambda captures.
+
 2023-03-16  Paul J. Lucas <paul@lucasmail.org>
 
    * c_lang.h: Simplified LANG_RANGE().
