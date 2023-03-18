@@ -267,9 +267,10 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( cv_qual_stids != TS_NONE )
         FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stids ) );
       if ( ref_qual_stids != TS_NONE ) {
-        FPUTS(
-          c_tid_is_any( ref_qual_stids, TS_REFERENCE ) ?  " &" : " &&",
-          g->gout
+        FPRINTF( g->gout, " %s",
+          alt_token_c(
+            c_tid_is_any( ref_qual_stids, TS_REFERENCE ) ? "&" : "&&"
+          )
         );
       }
       if ( is_noexcept )
@@ -1025,6 +1026,36 @@ static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+char const* alt_token_c( char const *token ) {
+  assert( token != NULL );
+
+  if ( opt_alt_tokens ) {
+    switch ( token[0] ) {
+      case '!': switch ( token[1] ) {
+                  case '=': return L_not_eq;
+                  default : return L_not;
+                }
+      case '&': switch ( token[1] ) {
+                  case '&': return L_and;
+                  case '=': return L_and_eq;
+                  default : return L_bitand;
+                } // switch
+      case '|': switch ( token[1] ) {
+                  case '|': return L_or;
+                  case '=': return L_or_eq;
+                  default : return L_bitor;
+                } // switch
+      case '~': return L_compl;
+      case '^': switch ( token[1] ) {
+                  case '=': return L_xor_eq;
+                  default : return L_xor;
+                } // switch
+    } // switch
+  }
+
+  return token;
+}
 
 void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
   assert( ast != NULL );

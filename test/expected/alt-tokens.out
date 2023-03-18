@@ -14,6 +14,10 @@ c++decl> set
   notrailing-return
     using
 c++decl> struct S
+c++decl> declare f as reference function
+void f() bitand;
+c++decl> declare f as rvalue reference function
+void f() and;
 c++decl> declare ! as operator (r as reference to const S) returning bool
 bool operator not(const S bitand r);
 c++decl> declare != as operator (r as reference to const S, int) returning bool

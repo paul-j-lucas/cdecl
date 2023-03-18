@@ -135,6 +135,17 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Gets the alternative token of a C++ operator \a token.
+ *
+ * @param token The C++ operator token to get the alternative token for.
+ * @return If we're emitting alternative tokens and if \a token is a token that
+ * has an alternative token, returns said token; otherwise returns \a token as-
+ * is.
+ */
+NODISCARD
+char const* alt_token_c( char const *token );
+
+/**
  * Prints \a ast as gibberish, aka, a C/C++ declaration or cast.
  *
  * @param ast The AST to print.

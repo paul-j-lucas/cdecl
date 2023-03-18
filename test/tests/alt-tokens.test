@@ -4,6 +4,8 @@ set
 
 struct S
 
+declare f as reference function
+declare f as rvalue reference function
 declare ! as operator (r as reference to const S) returning bool
 declare != as operator (r as reference to const S, int) returning bool
 declare & as operator (r as reference to const S, x as int) returning S

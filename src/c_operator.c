@@ -111,47 +111,6 @@ static c_operator_t const C_OPERATOR[] = {
                           NULL,       XXX, 0, 0,    LANG_NONE         },
 };
 
-////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Gets the alternative token of a C++ operator \a token.
- *
- * @param token The C++ operator token to get the alternative token for.
- * @return If we're emitting alternative tokens and if \a token is a token that
- * has an alternative token, returns said token; otherwise returns \a token as-
- * is.
- */
-NODISCARD
-static char const* alt_token_c( char const *token ) {
-  assert( token != NULL );
-
-  if ( opt_alt_tokens ) {
-    switch ( token[0] ) {
-      case '!': switch ( token[1] ) {
-                  case '=': return L_not_eq;
-                  default : return L_not;
-                }
-      case '&': switch ( token[1] ) {
-                  case '&': return L_and;
-                  case '=': return L_and_eq;
-                  default : return L_bitand;
-                } // switch
-      case '|': switch ( token[1] ) {
-                  case '|': return L_or;
-                  case '=': return L_or_eq;
-                  default : return L_bitor;
-                } // switch
-      case '~': return L_compl;
-      case '^': switch ( token[1] ) {
-                  case '=': return L_xor_eq;
-                  default : return L_xor;
-                } // switch
-    } // switch
-  }
-
-  return token;
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
