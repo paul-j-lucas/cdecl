@@ -30,6 +30,9 @@
 #include "pjl_config.h"                 /* must go first */
 #include "types.h"
 
+// standard
+#include <stddef.h>                     /* for unreachable() */
+
 /**
  * @defgroup c-kinds-group C/C++ Declaration Kinds
  * Types and functions for kinds of AST nodes in C/C++ declarations.
@@ -40,8 +43,8 @@
  * Shorthand for use inside a `switch` statement on an AST's \ref c_ast::kind
  * "kind" to:
  *
- * 1. Assert that it's not #K_PLACEHOLDER because it shouldn't occur in a
- *    completed AST.
+ * 1. Tell the compiler that the code is unreachable because #K_PLACEHOLDER
+ *    shouldn't occur in a completed AST.
  *
  * 2. Suppress the warning that otherwise would be given because #K_PLACEHOLDER
  *    is not handled by the `switch`.
@@ -55,8 +58,7 @@
  */
 #define CASE_K_PLACEHOLDER  \
   case K_PLACEHOLDER:       \
-    assert( 0 );            \
-    break
+    unreachable()
 
 ///////////////////////////////////////////////////////////////////////////////
 
