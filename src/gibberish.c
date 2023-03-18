@@ -318,7 +318,9 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           FPUTC( '=', g->gout );
           break;
         case C_CAPTURE_REFERENCE:
-          FPUTC( '&', g->gout );
+          FPUTS( alt_token_c( "&" ), g->gout );
+          if ( opt_alt_tokens && !c_sname_empty( &ast->sname ) )
+            FPUTC( ' ', g->gout );
           break;
         case C_CAPTURE_THIS:
           FPUTS( L_this, g->gout );
