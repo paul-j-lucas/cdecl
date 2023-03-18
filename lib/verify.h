@@ -285,14 +285,16 @@ template <int w>
 # define _GL_HAS_BUILTIN_TRAP 0
 #endif
 
-#if defined __clang_major__ && __clang_major__ < 5
-# define _GL_HAS_BUILTIN_UNREACHABLE 0
-#elif 4 < __GNUC__ + (5 <= __GNUC_MINOR__)
-# define _GL_HAS_BUILTIN_UNREACHABLE 1
-#elif defined __has_builtin
-# define _GL_HAS_BUILTIN_UNREACHABLE __has_builtin (__builtin_unreachable)
-#else
-# define _GL_HAS_BUILTIN_UNREACHABLE 0
+#ifndef _GL_HAS_BUILTIN_UNREACHABLE
+# if defined __clang_major__ && __clang_major__ < 5
+#  define _GL_HAS_BUILTIN_UNREACHABLE 0
+# elif 4 < __GNUC__ + (5 <= __GNUC_MINOR__)
+#  define _GL_HAS_BUILTIN_UNREACHABLE 1
+# elif defined __has_builtin
+#  define _GL_HAS_BUILTIN_UNREACHABLE __has_builtin (__builtin_unreachable)
+# else
+#  define _GL_HAS_BUILTIN_UNREACHABLE 0
+# endif
 #endif
 
 /* Each of these macros verifies that its argument R is nonzero.  To
