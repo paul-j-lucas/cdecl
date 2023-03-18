@@ -4,6 +4,8 @@ set
 
 struct S
 
+declare b as block
+declare pb as pointer to block
 declare f as reference function
 declare f as rvalue reference function
 declare lambda capturing [reference by default]

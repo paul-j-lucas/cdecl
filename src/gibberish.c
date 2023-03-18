@@ -722,7 +722,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       case K_RVALUE_REFERENCE:
         switch ( ast->kind ) {
           case K_APPLE_BLOCK:
-            FPUTS( "(^", g->gout );
+            FPRINTF( g->gout, "(%s", c_oper_token_c( C_OP_CARET ) );
             break;
 
           default:
@@ -788,8 +788,11 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     // We've reached the root of the AST that has the name of the thing we're
     // printing the gibberish for.
     //
-    if ( ast->kind == K_APPLE_BLOCK )
-      FPUTS( "(^", g->gout );
+    if ( ast->kind == K_APPLE_BLOCK ) {
+      FPRINTF( g->gout, "(%s", c_oper_token_c( C_OP_CARET ) );
+      if ( opt_alt_tokens && !c_sname_empty( &ast->sname ) )
+        FPUTC( ' ', g->gout );
+    }
     g_print_space_ast_name( g, ast );
     if ( ast->kind == K_APPLE_BLOCK )
       FPUTC( ')', g->gout );
