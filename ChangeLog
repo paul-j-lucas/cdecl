@@ -1,5 +1,6 @@
 2023-03-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * stddef.in.h, verify.h, stddef_h.m4: Updated GnuLib.
    * NEWS, gibberish.c, alt-tokens.out, alt-tokens.test: Blocks now correctly
      print alternative tokens when the option is enabled.
    * NEWS, gibberish.c, alt-tokens.out, alt-tokens.test: Lambda captures now
