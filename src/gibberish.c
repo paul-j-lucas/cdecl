@@ -1332,8 +1332,8 @@ char const* graph_token_c( char const *token ) {
             case '|'  : switch ( token[1] ) {
                           case '=': return "?\?!=";
                           case '|': return "?\?!?\?!";
+                          default : return "?\?!";
                         } // switch
-                        return "?\?!";
             case '~'  : return "?\?-";
           } // switch
         }
