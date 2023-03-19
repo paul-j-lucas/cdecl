@@ -33,7 +33,6 @@
 #include "c_lang.h"
 #include "gibberish.h"
 #include "literals.h"
-#include "options.h"
 
 // standard
 #include <assert.h>
