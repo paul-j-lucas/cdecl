@@ -20,6 +20,9 @@ alternative tokens when the option is enabled.
 If both alternative token and either di/trigraph options are set, alternative
 tokens now have priority.
 
+** Di/Trigraphs
+Now correctly emitting di/trigraphs for lambda captures and `operator[]`.
+
 ** Limit when `q` means `quit`
 The `q` command is now recognized as a synonym for `quit` only when it's the
 only thing on a line other than whitespace.  This now allows things like:
@@ -45,12 +48,6 @@ A declaration like:
     explain explicit (C)(int)
 
 that's an explicit constructor with unnecessary `()` caused a crash.  Fixed.
-
-** Di/Trigraph lambda captures
-Now correctly emitting di/trigraphs for lambda captures.
-
-** Di/Trigraph `operator[]`
-Now correctly emitting di/trigraphs for `operator[]`.
 
 
 * Changes in Cdecl 14.0
