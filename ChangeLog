@@ -1,5 +1,7 @@
 2023-03-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_operator.c: Removed unnecessary #include.
+   * c_operator.c: Got rid of empty operator array entry.
    * gibberish.c: Moved "return".
 
 2023-03-18  Paul J. Lucas <paul@lucasmail.org>
