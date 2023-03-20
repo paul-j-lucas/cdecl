@@ -55,7 +55,7 @@
  * Array of c_operator for all C++ operators.
  */
 static c_operator_t const C_OPERATOR[] = {
-  { C_OP_NONE,            "none",     LANG_ANY,         XXX, 0, 0   },
+  { C_OP_NONE,            "none",     LANG_NONE,        XXX, 0, 0   },
   { C_OP_CO_AWAIT,        L_co_await, LANG_CPP_MIN(20), OVR, 0, 1   },
   { C_OP_NEW,             L_new,      LANG_CPP_ANY,     OVR, 1, UNL },
   { C_OP_NEW_ARRAY,       "new[]",    LANG_CPP_ANY,     OVR, 1, UNL },
