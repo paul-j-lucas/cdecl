@@ -2081,7 +2081,7 @@ declare_command
       DUMP_START( "declare_command",
                   "DECLARE c_operator of_scope_list_english_opt AS "
                   "oper_decl_english_ast" );
-      DUMP_STR( "c_operator", c_oper_get( oper_id )->name );
+      DUMP_STR( "c_operator", c_oper_get( oper_id )->literal );
       DUMP_SNAME( "of_scope_list_english_opt", $4 );
       DUMP_AST( "oper_decl_english_ast", oper_ast );
 
@@ -4678,7 +4678,7 @@ oper_decl_c_astp
                   "func_equals_c_stid_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_SNAME( "oper_sname_c_opt", $1 );
-      DUMP_STR( "c_operator", c_oper_get( oper_id )->name );
+      DUMP_STR( "c_operator", c_oper_get( oper_id )->literal );
       DUMP_AST_LIST( "param_c_ast_list_opt", $5 );
       DUMP_TID( "func_qualifier_list_c_stid_opt", func_qualifier_stid );
       DUMP_TID( "func_ref_qualifier_c_stid_opt", func_ref_qualifier_stid );

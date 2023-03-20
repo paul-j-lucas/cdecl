@@ -123,7 +123,7 @@ _GL_INLINE_HEADER_BEGIN
  */
 struct c_operator {
   c_oper_id_t oper_id;                  ///< ID.
-  char const *name;                     ///< Name.
+  char const *literal;                  ///< C string literal of the operator.
 
   /**
    * Bitwise-or of flags specifying whether the operator is a member, non-

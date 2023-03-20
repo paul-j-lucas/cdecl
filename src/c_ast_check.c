@@ -1222,7 +1222,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         if ( ast->kind == K_OPERATOR && ast->oper.oper_id != C_OP_PARENS ) {
           print_error( &param_ast->loc,
             "operator %s can not have a variadic parameter\n",
-            c_oper_get( ast->oper.oper_id )->name
+            c_oper_get( ast->oper.oper_id )->literal
           );
           return false;
         }
@@ -1503,13 +1503,15 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   if ( (opt_lang & op->lang_ids) == LANG_NONE ) {
     print_error( &ast->loc,
       "overloading operator \"%s\" not supported%s\n",
-      op->name, c_lang_which( op->lang_ids )
+      op->literal, c_lang_which( op->lang_ids )
     );
     return false;
   }
 
   if ( op->flags == C_OP_NOT_OVERLOADABLE ) {
-    print_error( &ast->loc, "operator %s can not be overloaded\n", op->name );
+    print_error( &ast->loc,
+      "operator %s can not be overloaded\n", op->literal
+    );
     return false;
   }
 
@@ -1521,7 +1523,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     //
     print_error( &ast->loc,
       "operator %s can only be a %s\n",
-      op->name, op->flags == C_OP_MEMBER ? L_member : H_non_member
+      op->literal, op->flags == C_OP_MEMBER ? L_member : H_non_member
     );
     return false;
   }
@@ -1538,7 +1540,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       default:
         print_error( &ast->loc,
           "operator %s must be non-static%s\n",
-          op->name, c_lang_which( ok_lang_ids )
+          op->literal, c_lang_which( ok_lang_ids )
         );
         return false;
     } // switch
@@ -1557,7 +1559,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
                          c_tid_compl( TS_NEW_DELETE_OPER ) ) ) {
         print_error( &ast->loc,
           "operator %s can not be %s\n",
-          op->name, c_type_name_error( &ast->type )
+          op->literal, c_type_name_error( &ast->type )
         );
         return false;
       }
@@ -1577,7 +1579,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       if ( !c_ast_is_ptr_to_kind_any( ret_ast, K_CLASS_STRUCT_UNION ) ) {
         print_error( &ret_ast->loc,
           "operator %s must return a pointer to struct, union, or class\n",
-          op->name
+          op->literal
         );
         return false;
       }
@@ -1590,7 +1592,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       //
       if ( !c_ast_is_builtin_any( ret_ast, TB_VOID ) ) {
         print_error( &ret_ast->loc,
-          "operator %s must return void\n", op->name
+          "operator %s must return void\n", op->literal
         );
         return false;
       }
@@ -1604,7 +1606,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       //
       if ( !c_ast_is_ptr_to_tid_any( ret_ast, TB_VOID ) ) {
         print_error( &ret_ast->loc,
-          "operator %s must return a pointer to void\n", op->name
+          "operator %s must return a pointer to void\n", op->literal
         );
         return false;
       }
@@ -1686,7 +1688,7 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
     print_error( &param_ast->loc,
       "invalid parameter type for operator %s; "
       "must be a pointer to void, class, struct, or union\n",
-      c_oper_get( ast->oper.oper_id )->name
+      c_oper_get( ast->oper.oper_id )->literal
     );
     return false;
   }
@@ -1717,7 +1719,7 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
     print_error( &param_ast->loc,
       "invalid parameter type for operator %s; "
       "must be std::size_t (or equivalent)\n",
-      c_oper_get( ast->oper.oper_id )->name
+      c_oper_get( ast->oper.oper_id )->literal
     );
     return false;
   }
@@ -1779,13 +1781,13 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
     if ( req_params_min == req_params_max )
 same: print_error( c_ast_params_loc( ast ),
         "%soperator %s must have exactly %u parameter%s\n",
-        member_or_nonmember, op->name,
+        member_or_nonmember, op->literal,
         req_params_min, plural_s( req_params_min )
       );
     else
       print_error( c_ast_params_loc( ast ),
         "%soperator %s must have at least %u parameter%s\n",
-        member_or_nonmember, op->name,
+        member_or_nonmember, op->literal,
         req_params_min, plural_s( req_params_min )
       );
     return false;
@@ -1795,7 +1797,7 @@ same: print_error( c_ast_params_loc( ast ),
       goto same;
     print_error( c_ast_params_loc( ast ),
       "%soperator %s can have at most %u parameter%s\n",
-      member_or_nonmember, op->name,
+      member_or_nonmember, op->literal,
       op->params_max, plural_s( op->params_max )
     );
     return false;
@@ -1901,7 +1903,7 @@ same: print_error( c_ast_params_loc( ast ),
       if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
         print_error( &param_ast->loc,
           "parameter of postfix %soperator %s must be int\n",
-          member_or_nonmember, op->name
+          member_or_nonmember, op->literal
         );
         return false;
       }
@@ -1942,7 +1944,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
   if ( !OPT_LANG_IS( default_RELOPS ) ) {
     print_error( &ast->loc,
       "default operator %s not supported%s\n",
-      op->name, C_LANG_WHICH( default_RELOPS )
+      op->literal, C_LANG_WHICH( default_RELOPS )
     );
     return false;
   }
@@ -1955,7 +1957,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
     case C_OP_NON_MEMBER: {
       if ( !c_tid_is_any( ast->type.stids, TS_FRIEND ) ) {
         print_error( &ast->loc,
-          "default non-member operator %s must also be friend\n", op->name
+          "default non-member operator %s must also be friend\n", op->literal
         );
         return false;
       }
@@ -1990,7 +1992,7 @@ rel_2par: print_error( &ast->loc,
     case C_OP_MEMBER: {
       if ( !c_tid_is_any( ast->type.stids, TS_CONST ) ) {
         print_error( &ast->loc,
-          "default member operator %s must also be const\n", op->name
+          "default member operator %s must also be const\n", op->literal
         );
         return false;
       }
@@ -2038,7 +2040,7 @@ rel_2par: print_error( &ast->loc,
         "std::partial_ordering, "
         "std::strong_ordering, or "
         "std::weak_ordering\n",
-        op->name
+        op->literal
       );
       return false;
     }
@@ -2046,7 +2048,7 @@ rel_2par: print_error( &ast->loc,
   else if ( !c_ast_is_builtin_any( ret_ast, TB_BOOL ) ) {
     print_error( &ret_ast->loc,
       "operator %s must return %s\n",
-      op->name, c_tid_name_error( TB_BOOL )
+      op->literal, c_tid_name_error( TB_BOOL )
     );
     return false;
   }
