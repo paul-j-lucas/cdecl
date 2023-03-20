@@ -1,3 +1,11 @@
+2023-03-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_operator.h: s/~0u/UINT_MAX/
+   * c_operator.c: s/LANG_ANY/LANG_NONE/
+   * c_ast_check.c, c_operator.c, c_operator.h, dump.c, parser.y:
+     s/name/literal/ for c_operator.
+   * NEWS: Updated.
+
 2023-03-19  Paul J. Lucas <paul@lucasmail.org>
 
    * c_operator.c: Removed unnecessary #include.
