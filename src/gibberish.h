@@ -142,6 +142,7 @@
  * has an alternative token, returns said token; otherwise returns \a token as-
  * is.
  *
+ * @sa c_oper_token_c()
  * @sa graph_token_c()
  */
 NODISCARD
@@ -196,6 +197,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
  * characters replaced by their graphs; otherwise returns \a token as-is.
  *
  * @sa alt_token_c()
+ * @sa c_oper_token_c()
  */
 NODISCARD
 char const* graph_token_c( char const *token );

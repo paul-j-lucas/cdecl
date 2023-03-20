@@ -197,6 +197,9 @@ bool c_oper_is_ambiguous( c_operator_t const *op ) {
  * @param oper_id The ID of the c_operator to get the token for.
  * @return Returns said token (including alternative or graph tokens, if either
  * is enabled); otherwise, returns the unaltered token.
+ *
+ * @sa alt_token_c()
+ * @sa graph_token_c()
  */
 NODISCARD
 char const* c_oper_token_c( c_oper_id_t oper_id );
