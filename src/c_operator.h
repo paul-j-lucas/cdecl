@@ -115,6 +115,11 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * C++ operator information.
  *
+ * @note There can be multiple `c_operator` objects having the sanme \ref
+ * oper_id and \ref literal, but with different values for \ref params_min and
+ * \ref params_max by \ref lang_ids.  Currently, `operator[]`, where the
+ * parameter values change in C++23, is the only such case.
+ *
  * @note \ref params_min and \ref params_max comprise the inclusive range for
  * the union of member and non-member versions.  If you know you're dealing
  * with a member operator, use only \ref params_min; if you know you're dealing
@@ -124,6 +129,7 @@ _GL_INLINE_HEADER_BEGIN
 struct c_operator {
   c_oper_id_t oper_id;                  ///< ID.
   char const *literal;                  ///< C string literal of the operator.
+  c_lang_id_t lang_ids;                 ///< Language(s) OK in.
 
   /**
    * Bitwise-or of flags specifying whether the operator is a member, non-
@@ -138,7 +144,6 @@ struct c_operator {
 
   unsigned    params_min;               ///< Minimum number of parameters.
   unsigned    params_max;               ///< Maximum number of parameters.
-  c_lang_id_t lang_ids;                 ///< Language(s) OK in.
 };
 typedef struct c_operator c_operator_t;
 
