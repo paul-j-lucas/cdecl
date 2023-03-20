@@ -34,6 +34,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <limits.h>
 #include <stdbool.h>
 
 _GL_INLINE_HEADER_BEGIN
@@ -65,7 +66,7 @@ _GL_INLINE_HEADER_BEGIN
  * For c_operator.params_max of `operator()` or `operator[]` (in C++23 or
  * later), denotes an unlimited number of parameters.
  */
-#define C_OP_PARAMS_UNLIMITED     (~0u)
+#define C_OP_PARAMS_UNLIMITED     UINT_MAX
 
 /**
  * For c_operator.flags, denotes that the operator overloadability (member or
