@@ -333,7 +333,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
 
     case K_NAME:
       // A K_NAME can occur only as an untyped K&R C function parameter.  The
-      // name was printed in c_ast_func_params_english().
+      // name was printed in c_ast_func_params_english() so we don't have to do
+      // anything here.
       break;
 
     case K_POINTER:
