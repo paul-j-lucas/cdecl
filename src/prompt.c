@@ -34,6 +34,7 @@
 #include "color.h"
 #include "options.h"
 #include "strbuf.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -99,6 +100,14 @@ static inline bool color_prompt( void ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Cleans-up prompt strings.
+ */
+static void prompt_cleanup( void ) {
+  strbuf_cleanup( &prompt_buf[0] );
+  strbuf_cleanup( &prompt_buf[1] );
+}
+
+/**
  * Creates a prompt.
  *
  * @param suffix The prompt suffix character to use.
@@ -136,6 +145,10 @@ void cdecl_prompt_enable( void ) {
 }
 
 void cdecl_prompt_init( void ) {
+  static bool initialized;
+  if ( false_set( &initialized ) )
+    check_atexit( &prompt_cleanup );
+
   prompt_create( '>', &prompt_buf[0] );
   prompt_create( '+', &prompt_buf[1] );
   cdecl_prompt_enable();
