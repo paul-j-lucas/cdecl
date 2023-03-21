@@ -1430,11 +1430,6 @@ first:    print_error( &capture_ast->loc,
         }
         break;
 
-      case C_CAPTURE_THIS:
-      case C_CAPTURE_VARIABLE:
-        // nothing to check
-        break;
-
       case C_CAPTURE_STAR_THIS:
         if ( !OPT_LANG_IS( CAPTURE_STAR_THIS ) ) {
           print_error( &capture_ast->loc,
@@ -1443,6 +1438,13 @@ first:    print_error( &capture_ast->loc,
           );
           return false;
         }
+        FALLTHROUGH;
+      case C_CAPTURE_THIS:
+        assert( c_sname_empty( &capture_ast->sname ) );
+        break;
+
+      case C_CAPTURE_VARIABLE:
+        // nothing to check
         break;
     } // switch
   } // for

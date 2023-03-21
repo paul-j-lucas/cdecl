@@ -159,7 +159,6 @@ static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *eout ) {
 
     switch ( capture_ast->capture.kind ) {
       case C_CAPTURE_COPY:
-        assert( c_sname_empty( &capture_ast->sname ) );
         FPUTS( "copy by default", eout );
         break;
       case C_CAPTURE_REFERENCE:
@@ -172,7 +171,6 @@ static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *eout ) {
         FPUTC( '*', eout );
         FALLTHROUGH;
       case C_CAPTURE_THIS:
-        assert( c_sname_empty( &capture_ast->sname ) );
         FPUTS( L_this, eout );
         break;
       case C_CAPTURE_VARIABLE:

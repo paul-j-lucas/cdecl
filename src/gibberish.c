@@ -322,11 +322,11 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           if ( opt_alt_tokens && !c_sname_empty( &ast->sname ) )
             FPUTC( ' ', g->gout );
           break;
+        case C_CAPTURE_STAR_THIS:
+          FPUTC( '*', g->gout );
+          FALLTHROUGH;
         case C_CAPTURE_THIS:
           FPUTS( L_this, g->gout );
-          break;
-        case C_CAPTURE_STAR_THIS:
-          FPUTS( "*this", g->gout );
           break;
         case C_CAPTURE_VARIABLE:
           break;
