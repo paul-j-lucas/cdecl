@@ -194,7 +194,7 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *eout ) {
   assert( eout != NULL );
 
   c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
-  char const *local_name, *scope_name = "";
+  char const *local_name = "", *scope_name = "";
   c_type_t const *scope_type = NULL;
 
   if ( ast->kind == K_OPERATOR ) {
@@ -211,7 +211,7 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *eout ) {
     scope_type = c_sname_scope_type( found_sname );
   }
 
-  assert( local_name != NULL );
+  assert( local_name[0] != '\0' );
   FPRINTF( eout, "%s ", local_name );
   if ( scope_name[0] != '\0' ) {
     assert( !c_type_is_none( scope_type ) );
