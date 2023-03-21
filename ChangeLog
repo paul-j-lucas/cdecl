@@ -1,3 +1,13 @@
+2023-03-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * prompt.c: Added prompt_cleanup().
+   * util.c: Now using false_set().
+   * english.c: Initializing local_name.
+   * c_ast_check.c, dump.c, english.c, gibberish.c: Reworked lambda capture
+     asserts.
+   * english.c: Added assert().
+   * english.c: s/c_type_print_not_base/c_type_name_nobase_english/
+
 2023-03-20  Paul J. Lucas <paul@lucasmail.org>
 
    * c_operator.h: s/~0u/UINT_MAX/
