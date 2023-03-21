@@ -168,11 +168,12 @@ static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *eout ) {
         else
           FPUTS( "reference to ", eout );
         break;
-      case C_CAPTURE_THIS:
-        FPUTS( L_this, eout );
-        break;
       case C_CAPTURE_STAR_THIS:
-        FPUTS( "*this", eout );
+        FPUTC( '*', eout );
+        FALLTHROUGH;
+      case C_CAPTURE_THIS:
+        assert( c_sname_empty( &capture_ast->sname ) );
+        FPUTS( L_this, eout );
         break;
       case C_CAPTURE_VARIABLE:
         break;
