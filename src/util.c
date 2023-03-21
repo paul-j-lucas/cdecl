@@ -194,7 +194,7 @@ char const* home_dir( void ) {
   static char const *home;
   static bool initialized;
 
-  if ( !initialized ) {
+  if ( false_set( &initialized ) ) {
     home = null_if_empty( getenv( "HOME" ) );
 #if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
     if ( home == NULL ) {
@@ -203,7 +203,6 @@ char const* home_dir( void ) {
         home = null_if_empty( pw->pw_dir );
     }
 #endif /* HAVE_GETEUID && && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR */
-    initialized = true;
   }
 
   return home;
