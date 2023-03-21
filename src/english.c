@@ -425,6 +425,8 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 
   if ( ast->kind != K_CAST ) {
     FPUTS( "declare ", eout );
+    // We can't just check to see if ast->sname is empty and print it only if
+    // it isn't because operators have a name but don't use ast->sname.
     switch ( ast->kind ) {
       case K_LAMBDA:
       case K_USER_DEF_CONVERSION:
