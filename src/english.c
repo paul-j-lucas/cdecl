@@ -49,7 +49,7 @@
 NODISCARD
 static bool c_ast_visitor_english( c_ast_t*, user_data_t );
 
-static void c_type_print_not_base( c_type_t const*, FILE* );
+static void c_type_name_nobase_english( c_type_t const*, FILE* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -235,7 +235,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      c_type_print_not_base( &ast->type, eout );
+      c_type_name_nobase_english( &ast->type, eout );
       if ( ast->array.size == C_ARRAY_SIZE_VARIABLE )
         FPUTS( "variable length ", eout );
       FPUTS( "array ", eout );
@@ -251,7 +251,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
-      c_type_print_not_base( &ast->type, eout );
+      c_type_name_nobase_english( &ast->type, eout );
       switch ( ast->kind ) {
         case K_FUNCTION:
           if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
@@ -340,12 +340,12 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      c_type_print_not_base( &ast->type, eout );
+      c_type_name_nobase_english( &ast->type, eout );
       FPRINTF( eout, "%s to ", c_kind_name( ast->kind ) );
       break;
 
     case K_POINTER_TO_MEMBER:
-      c_type_print_not_base( &ast->type, eout );
+      c_type_name_nobase_english( &ast->type, eout );
       FPRINTF( eout, "%s of ", c_kind_name( ast->kind ) );
       fputs_sp( c_tid_name_english( ast->type.btids ), eout );
       c_sname_english( &ast->ptr_mbr.class_sname, eout );
@@ -409,7 +409,7 @@ static void c_scope_english( c_scope_t const *scope, FILE *eout ) {
  * @param type The type to perhaps print.
  * @param eout The `FILE` to emit to.
  */
-static void c_type_print_not_base( c_type_t const *type, FILE *eout ) {
+static void c_type_name_nobase_english( c_type_t const *type, FILE *eout ) {
   assert( type != NULL );
   assert( eout != NULL );
 
