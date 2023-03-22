@@ -267,16 +267,16 @@ static void lexer_cleanup( void ) {
  * error message.
  *
  * @param buf A pointer to the buffer to write into.
- * @param buf_capacity The capacity of \a buf.
+ * @param buf_cap The capacity of \a buf.
  * @return Returns the number of bytes read.
  */
 NODISCARD
-static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
+static yy_size_t lexer_get_input( char *buf, yy_size_t buf_cap ) {
   assert( buf != NULL );
   yy_size_t input_avail = input_len - input_sent;
   if ( input_avail == 0 ) {
-    static size_t input_capacity;
-    ssize_t bytes_read = getline( &input_buf, &input_capacity, yyin );
+    static size_t input_cap;
+    ssize_t bytes_read = getline( &input_buf, &input_cap, yyin );
     if ( unlikely( bytes_read == -1 ) ) {
       FERROR( yyin );
       bytes_read = 0;
@@ -289,8 +289,8 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
   // 8192, it's unlikely that this will ever be true and that we'll have to
   // return the input line in chunks; but might as well code for the case.
   //
-  if ( unlikely( input_avail > buf_capacity ) )
-    input_avail = buf_capacity;
+  if ( unlikely( input_avail > buf_cap ) )
+    input_avail = buf_cap;
   memcpy( buf, input_buf + input_sent, input_avail );
   input_sent += input_avail;
   return input_avail;
