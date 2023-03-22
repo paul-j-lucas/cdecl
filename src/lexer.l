@@ -201,7 +201,7 @@ static void       lexer_fatal( char const* );
 /**
  * Frees all memory associated with \a ifi _including_ \a ifi itself.
  *
- * @param ifi The \ref include_file_info to free.
+ * @param ifi The \ref include_file_info to free.  If NULL, does nothing.
  */
 static void ifi_free( include_file_info_t *ifi ) {
   if ( ifi != NULL ) {
