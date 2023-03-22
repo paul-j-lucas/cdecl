@@ -245,10 +245,10 @@ NODISCARD
 static inline
 cdecl_keyword_t const* lexer_cdecl_keyword_find( char const *literal ) {
   cdecl_keyword_t const *const cdk = cdecl_keyword_find( literal );
-  if ( cdk != NULL &&
-       ((lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0 || cdk->always_find) ) {
+  if ( cdk == NULL )
+    return NULL;
+  if ( (lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0 || cdk->always_find )
     return cdk;
-  }
   return NULL;
 }
 
