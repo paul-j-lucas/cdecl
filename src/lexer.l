@@ -462,7 +462,9 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   // Now that we know the path resolves, it wasn't previously included, it's a
   // plain file, and we can open it, we can insert it into include_set.
   //
-  PJL_IGNORE_RV( rb_tree_insert( &include_set, (void*)real_path ) );
+  PJL_IGNORE_RV(
+    rb_tree_insert( &include_set, CONST_CAST( void*, real_path ) )
+  );
 
   include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );
   *ifi = (include_file_info_t){ print_params.conf_path, real_path, yylineno };
