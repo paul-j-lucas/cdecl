@@ -707,7 +707,7 @@ include{S}*\" {
               }
 
               /*
-               * Special case: case: similar to {sname} below, handle scoped
+               * Special case: similar to {sname} below, handle scoped
                * operators in the lexer to simplify the grammar, e.g.:
                *
                *      S::T::operator    // sname = "S::T"
