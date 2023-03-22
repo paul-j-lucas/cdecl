@@ -144,15 +144,15 @@
 /**
  * Data to keep for a file that is `include`d.
  *
- * When a file is included, an include_file_info is pushed onto include_stack
- * such that:
+ * When a file is included, an <code>%include_file_info</code> is pushed onto
+ * \ref include_stack such that:
  *
  *  + \ref prev_orig_path is the unresolved path of the _previous_ include (or
  *    configuration) file, if any, that is the value of print_params.conf_path.
  *
  *  + \ref curr_real_path is the resolved path of the _new_ file about to be
  *    included.  We need to remember the resolved path in order to be able to
- *    remove it from include_set upon EOF.
+ *    remove it from \ref include_set upon EOF.
  *
  * @note We need \ref include_file_info.prev_lineno "prev_lineno" because Flex
  * doesn't restore `yylineno` when `yypop_buffer_state()` is called.
