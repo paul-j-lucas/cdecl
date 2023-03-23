@@ -1,3 +1,3 @@
-declare x as _BitInt(65)
+declare x as _BitInt(129)
         ^
-9: error: _BitInt can be at most 64 bits
+9: error: _BitInt can be at most 128 bits

@@ -508,10 +508,10 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
       );
       return false;
     }
-    if ( ast->builtin.BitInt.width > 64 ) {
+    if ( ast->builtin.BitInt.width > C_BITINT_MAXWIDTH ) {
       print_error( &ast->loc,
-        "%s can be at most 64 bits\n",
-        c_type_name_error( &ast->type )
+        "%s can be at most %u bits\n",
+        c_type_name_error( &ast->type ), C_BITINT_MAXWIDTH
       );
       return false;
     }

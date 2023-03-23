@@ -53,7 +53,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_af.test \
 	tests/declare_b-c89.test \
 	tests/declare_b_f_i.test \
-	tests/declare_bi65.test \
+	tests/declare_bi129.test \
 	tests/declare_bl_ai.test \
 	tests/declare_c-c.test \
 	tests/declare_c16-c++03.test \

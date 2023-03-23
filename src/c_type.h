@@ -54,6 +54,14 @@ _GL_INLINE_HEADER_BEGIN
  * @{
  */
 
+/**
+ * The maximum width supported in the declaration of a `_BitInt(N)`.
+ *
+ * @note We don't use the standard `BITINT_MAXWIDTH` in `<limits.h>` because we
+ * want the value to be the same regardless of the underlying platorm.
+ */
+#define C_BITINT_MAXWIDTH         128u
+
 ////////// types //////////////////////////////////////////////////////////////
 
 /**
