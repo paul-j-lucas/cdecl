@@ -306,7 +306,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_BUILTIN:
       if ( (g->gib_flags & C_GIB_OMIT_TYPE) == 0 )
         FPUTS( c_type_name_c( &type ), g->gout );
-      if ( ast->builtin.BitInt.width > 0 )
+      if ( c_ast_is_tid_any( ast, TB_BITINT ) && ast->builtin.BitInt.width > 0 )
         FPRINTF( g->gout, "(%u)", ast->builtin.BitInt.width );
       g_print_space_ast_name( g, ast );
       g_print_ast_bit_width( g, ast );

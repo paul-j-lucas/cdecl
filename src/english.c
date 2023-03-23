@@ -280,7 +280,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
 
     case K_BUILTIN:
       FPUTS( c_type_name_english( &ast->type ), eout );
-      if ( ast->builtin.BitInt.width > 0 )
+      if ( c_ast_is_tid_any( ast, TB_BITINT ) && ast->builtin.BitInt.width > 0 )
         FPRINTF( eout, " width %u bits", ast->builtin.BitInt.width );
       c_ast_bit_width_english( ast, eout );
       break;

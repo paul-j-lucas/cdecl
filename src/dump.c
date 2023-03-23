@@ -29,6 +29,7 @@
 #include "english.h"
 #include "cdecl.h"
 #include "c_ast.h"
+#include "c_ast_util.h"
 #include "c_type.h"
 #include "literals.h"
 #include "util.h"
@@ -292,7 +293,8 @@ dump_params:
     case K_BUILTIN:
       DUMP_COMMA;
       DUMP_FORMAT( "bit_width = %u", ast->builtin.bit_width );
-      if ( ast->builtin.BitInt.width > 0 ) {
+      if ( c_ast_is_tid_any( ast, TB_BITINT ) &&
+           ast->builtin.BitInt.width > 0 ) {
         FPUTS( ",\n", dout );
         DUMP_FORMAT( "BitInt.width = %u", ast->builtin.BitInt.width );
       }
