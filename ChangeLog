@@ -1,3 +1,10 @@
+2023-03-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_type.h, test/Makefile.am, declare_bi129.out,
+     declare_bi129.test: Added C_BITINT_MAXWIDTH with value 128.
+   * dump.c, english.c, gibberish.c: Now checking for TB_BITINT before
+     accessing .BitInt.width.
+
 2023-03-22  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: Now using CONST_CAST.
