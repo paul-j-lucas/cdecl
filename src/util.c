@@ -192,9 +192,8 @@ void free_now( void ) {
 
 char const* home_dir( void ) {
   static char const *home;
-  static bool initialized;
 
-  if ( false_set( &initialized ) ) {
+  RUN_ONCE {
     home = null_if_empty( getenv( "HOME" ) );
 #if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
     if ( home == NULL ) {

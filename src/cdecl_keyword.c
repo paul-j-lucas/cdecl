@@ -1677,8 +1677,7 @@ static int cdecl_keyword_cmp( cdecl_keyword_t const *i_cdk,
 cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   assert( s != NULL );
 
-  static bool sorted;
-  if ( unlikely( false_set( &sorted ) ) ) {
+  RUN_ONCE {
     qsort(                              // don't rely on manual sorting above
       CDECL_KEYWORDS, ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/,
       sizeof( cdecl_keyword_t ),

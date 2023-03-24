@@ -139,6 +139,8 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Asserts that this line of code is run at most once &mdash; useful in
  * initialization functions that must be called at most once.
+ *
+ * @sa #RUN_ONCE
  */
 #define ASSERT_RUN_ONCE() BLOCK(  \
   static bool _called;            \
@@ -429,6 +431,21 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define MALLOC(TYPE,N)            check_realloc( NULL, sizeof(TYPE) * (N) )
 
+/// @cond DOXYGEN_IGNORE
+#define NAME2_IMPL(A,B)           A##B
+/// @endcond
+
+/**
+ * Concatenate \a A and \a B together to form a single token.
+ *
+ * @remarks This macro is needed instead of simply using `##` when either
+ * argument needs to be expanded first, e.g., `__LINE__`.
+ *
+ * @param A The first name.
+ * @param B The second name.
+ */
+#define NAME2(A,B)                NAME2_IMPL(A,B)
+
 /**
  * Zeros the memory pointed to by \a PTR.  The number of bytes to zero is given
  * by `sizeof *(PTR)`.
@@ -531,6 +548,24 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define REALLOC(PTR,TYPE,N) \
   ((PTR) = check_realloc( (PTR), sizeof(TYPE) * (N) ))
+
+/**
+ * Runs a statement at most once even if control passes through it more than
+ * once.  For example:
+ *
+ *      RUN_ONCE initialize();
+ *
+ * or:
+ *
+ *      RUN_ONCE {
+ *        // ...
+ *      }
+ *
+ * @sa #ASSERT_RUN_ONCE()
+ */
+#define RUN_ONCE                          \
+  static bool NAME2(_run_once_,__LINE__); \
+  if ( likely( true_or_set( &NAME2(_run_once_,__LINE__) ) ) ) ; else
 
 /**
  * Advances \a S over all \a CHARS.
