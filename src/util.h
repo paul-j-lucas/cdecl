@@ -174,7 +174,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #BITS_LE()
  * @sa #BITS_LT()
  */
-#define BITS_GT(N)                (~((N) | BITS_GE(N)))
+#define BITS_GT(N)                (~BITS_LE(N))
 
 /**
  * Gets a value where all bits that are less than or equal to the one bit set
