@@ -151,8 +151,8 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Gets a value where all bits that are greater than or equal to the one bit
- * set in \a N are also set, e.g., <code>%BITS_GE(00010000)</code> =
- * `11110000`.
+ * set in \a N are also set, e.g., <code>%BITS_GE(0b00010000)</code> =
+ * `0b11110000`.
  *
  * @param N The integer.  Exactly one bit _must_ be set.
  * @return Returns said value.
@@ -165,7 +165,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Gets a value where all bits that are greater than the one bit set in \a N
- * are set, e.g., <code>%BITS_GT(00010000)</code> = `11100000`.
+ * are set, e.g., <code>%BITS_GT(0b00010000)</code> = `0b11100000`.
  *
  * @param N The integer.  Exactly one bit _must_ be set.
  * @return Returns said value.
@@ -178,7 +178,8 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Gets a value where all bits that are less than or equal to the one bit set
- * in \a N are also set, e.g., <code>%BITS_GE(00010000)</code> = `00011111`.
+ * in \a N are also set, e.g., <code>%BITS_GE(0b00010000)</code> =
+ * `0b00011111`.
  *
  * @param N The integer.  Exactly one bit _must_ be set.
  * @return Returns said value.
@@ -191,7 +192,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Gets a value where all bits that are less than the one bit set in \a N are
- * set, e.g., <code>%BITS_GT(00010000)</code> = `00001111`.
+ * set, e.g., <code>%BITS_GT(0b00010000)</code> = `0b00001111`.
  *
  * @param N The integer.  Exactly one bit _must_ be set.
  * @return Returns said value.
