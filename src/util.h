@@ -123,7 +123,6 @@ _GL_INLINE_HEADER_BEGIN
 #define CHARIFY_y 'y'
 #define CHARIFY_z 'z'
 
-#define CHARIFY_IMPL(X)           CHARIFY_##X
 #define STRINGIFY_IMPL(X)         #X
 
 /// @endcond
@@ -219,7 +218,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #STRINGIFY()
  */
-#define CHARIFY(X)                CHARIFY_IMPL(X)
+#define CHARIFY(X)                NAME2(CHARIFY_,X)
 
 /**
  * C version of C++'s `const_cast`.
