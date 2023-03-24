@@ -1,5 +1,6 @@
 2023-03-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: Fixed definition of BITS_GT().
    * util.h: No longer need CHARIFY_IMPL().
    * c_keyword.c, cdecl_keyword.c, prompt.c, util.c, util.h: Added NAME2() and
      RUN_ONCE.
