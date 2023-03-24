@@ -1,3 +1,9 @@
+2023-03-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: No longer need CHARIFY_IMPL().
+   * c_keyword.c, cdecl_keyword.c, prompt.c, util.c, util.h: Added NAME2() and
+     RUN_ONCE.
+
 2023-03-23  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, c_type.h, test/Makefile.am, declare_bi129.out,
