@@ -123,7 +123,7 @@ _GL_INLINE_HEADER_BEGIN
 #define CHARIFY_y 'y'
 #define CHARIFY_z 'z'
 
-#define STRINGIFY_IMPL(X)         #X
+#define STRINGIFY_HELPER(X)       #X
 
 /// @endcond
 
@@ -432,7 +432,7 @@ _GL_INLINE_HEADER_BEGIN
 #define MALLOC(TYPE,N)            check_realloc( NULL, sizeof(TYPE) * (N) )
 
 /// @cond DOXYGEN_IGNORE
-#define NAME2_IMPL(A,B)           A##B
+#define NAME2_HELPER(A,B)         A##B
 /// @endcond
 
 /**
@@ -444,7 +444,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param A The first name.
  * @param B The second name.
  */
-#define NAME2(A,B)                NAME2_IMPL(A,B)
+#define NAME2(A,B)                NAME2_HELPER(A,B)
 
 /**
  * Zeros the memory pointed to by \a PTR.  The number of bytes to zero is given
@@ -631,7 +631,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #CHARIFY()
  */
-#define STRINGIFY(X)              STRINGIFY_IMPL(X)
+#define STRINGIFY(X)              STRINGIFY_HELPER(X)
 
 #ifdef __GNUC__
 
