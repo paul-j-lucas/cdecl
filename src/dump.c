@@ -48,19 +48,15 @@
   FPUTNSP( indent * DUMP_INDENT, dout ); FPRINTF( dout, __VA_ARGS__ ); )
 
 #define DUMP_LOC(KEY,LOC)   \
-  DUMP_FORMAT( KEY " = " ); \
+  DUMP_FORMAT( KEY ": " ); \
   c_loc_dump( (LOC), dout )
 
 #define DUMP_SNAME(KEY,SNAME) BLOCK(  \
-  DUMP_FORMAT( KEY " = " );           \
+  DUMP_FORMAT( KEY ": " );            \
   c_sname_dump( (SNAME), dout ); )
 
-#define DUMP_STR(KEY,VALUE) BLOCK(  \
-  DUMP_FORMAT( KEY " = " );         \
-  str_dump( (VALUE), dout ); )
-
 #define DUMP_TYPE(TYPE) BLOCK(  \
-  DUMP_FORMAT( "type = " );     \
+  DUMP_FORMAT( "type: " );      \
   c_type_dump( (TYPE), dout ); )
 
 /// @endcond
@@ -88,24 +84,35 @@ static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
  * @param indent The current indent.
  * @param dout The `FILE` to dump to.
  */
-static void c_alignas_dump( c_alignas_t const *align, unsigned indent,
+static bool c_alignas_dump( c_alignas_t const *align, unsigned indent,
                             FILE *dout ) {
   assert( align != NULL );
   assert( dout != NULL );
 
+  if ( align->kind == C_ALIGNAS_NONE )
+    return false;
+
+  DUMP_FORMAT( "alignas: {\n" );
+  ++indent;
+
   switch ( align->kind ) {
     case C_ALIGNAS_NONE:
-      return;
+      unreachable();
     case C_ALIGNAS_EXPR:
-      DUMP_FORMAT( "alignas.expr = %u,\n", align->expr );
+      DUMP_FORMAT( "expr: %u,\n", align->expr );
       break;
     case C_ALIGNAS_TYPE:
-      c_ast_dump_impl( align->type_ast, indent, "alignas.type_ast", dout );
+      c_ast_dump_impl( align->type_ast, indent, "type_ast", dout );
       FPUTS( ",\n", dout );
       break;
   } // switch
-  DUMP_LOC( "alignas_loc", &align->loc );
-  FPUTS( ",\n", dout );
+
+  DUMP_LOC( "loc", &align->loc );
+
+  FPUTC( '\n', dout );
+  --indent;
+  DUMP_FORMAT( "}" );
+  return true;
 }
 
 /**
@@ -123,17 +130,17 @@ static void c_alignas_dump( c_alignas_t const *align, unsigned indent,
 static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
                              char const *key, FILE *dout ) {
   assert( dout != NULL );
-  bool const has_key = key != NULL && key[0] != '\0';
+  key = null_if_empty( key );
 
-  if ( has_key )
-    DUMP_FORMAT( "%s = ", key );
+  if ( key != NULL )
+    DUMP_FORMAT( "%s: ", key );
 
   if ( ast == NULL ) {
-    FPUTS( "NULL", dout );
+    FPUTS( "null", dout );
     return;
   }
 
-  if ( has_key )
+  if ( key != NULL )
     FPUTS( "{\n", dout );
   else
     DUMP_FORMAT( "{\n" );
@@ -142,19 +149,22 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
 
   DUMP_SNAME( "sname", &ast->sname );
   FPUTS( ",\n", dout );
-  DUMP_FORMAT( "unique_id = " PRId_C_AST_ID_T ",\n", ast->unique_id );
-  DUMP_STR( "kind", c_kind_name( ast->kind ) );
-  FPUTS( ",\n", dout );
-  DUMP_FORMAT( "depth = %u,\n", ast->depth );
+  DUMP_FORMAT( "unique_id: " PRId_C_AST_ID_T ",\n", ast->unique_id );
+  DUMP_FORMAT(
+    "kind: { value: 0x%X, string: \"%s\" },\n",
+    ast->kind, c_kind_name( ast->kind )
+  );
+  DUMP_FORMAT( "depth: %u,\n", ast->depth );
 
   DUMP_FORMAT(
-    "parent->unique_id = " PRId_C_AST_SID_T ",\n",
+    "parent__unique_id: " PRId_C_AST_SID_T ",\n",
     ast->parent_ast != NULL ?
       STATIC_CAST( c_ast_sid_t, ast->parent_ast->unique_id ) :
       STATIC_CAST( c_ast_sid_t, -1 )
   );
 
-  c_alignas_dump( &ast->align, indent, dout );
+  if ( c_alignas_dump( &ast->align, indent, dout ) )
+    FPUTS( ",\n", dout );
 
   DUMP_LOC( "loc", &ast->loc );
   FPUTS( ",\n", dout );
@@ -172,13 +182,13 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
 
     case K_ARRAY:
       DUMP_COMMA;
-      DUMP_FORMAT( "size = " );
+      DUMP_FORMAT( "size: " );
       switch ( ast->array.size ) {
         case C_ARRAY_SIZE_NONE:
-          FPUTS( "unspecified", dout );
+          FPUTS( "\"unspecified\"", dout );
           break;
         case C_ARRAY_SIZE_VARIABLE:
-          FPUTC( '*', dout );
+          FPUTS( "'*'", dout );
           break;
         default:
           FPRINTF( dout, PRId_C_ARRAY_SIZE_T, ast->array.size );
@@ -194,14 +204,16 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
 
     case K_CAPTURE:
       DUMP_COMMA;
-      DUMP_FORMAT( "capture = " );
+      DUMP_FORMAT( "capture: " );
       c_capture_kind_dump( ast->capture.kind, dout );
       break;
 
     case K_CAST:
       DUMP_COMMA;
-      DUMP_STR( "cast_kind", c_cast_english( ast->cast.kind ) );
-      FPUTS( ",\n", dout );
+      DUMP_FORMAT(
+        "cast_kind: { value: 0x%X, string: \"%s\" },\n",
+        ast->cast.kind, c_cast_english( ast->cast.kind )
+      );
       c_ast_dump_impl( ast->cast.to_ast, indent, "to_ast", dout );
       break;
 
@@ -213,33 +225,33 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
     case K_OPERATOR:
       DUMP_COMMA;
       DUMP_FORMAT(
-        "oper_id = \"%s\" (%d),\n",
-        c_oper_get( ast->oper.oper_id )->literal,
-        (int)ast->oper.oper_id
+        "operator: { value: %d, string: \"%s\" },\n",
+        (int)ast->oper.oper_id,
+        c_oper_get( ast->oper.oper_id )->literal
       );
       FALLTHROUGH;
 
     case K_FUNCTION:
       DUMP_COMMA;
-      DUMP_FORMAT( "flags = " );
+      DUMP_FORMAT( "flags: { value: 0x%X, string: ", ast->func.flags );
       switch ( ast->func.flags ) {
         case C_FUNC_UNSPECIFIED:
-          FPUTS( "unspecified", dout );
+          FPUTS( "\"unspecified\"", dout );
           break;
         case C_FUNC_MEMBER:
-          FPUTS( L_member, dout );
+          FPUTS( "\"member\"", dout );
           break;
         case C_FUNC_NON_MEMBER:
-          FPUTS( H_non_member, dout );
+          FPUTS( "\"non-member\"", dout );
           break;
         case C_OP_OVERLOADABLE:
-          FPUTS( "overloadable", dout );
+          FPUTS( "\"overloadable\"", dout );
           break;
         default:
-          FPUTC( '?', dout );
+          FPUTS( "'?'", dout );
           break;
       } // switch
-      FPRINTF( dout, " (0x%x),\n", ast->func.flags );
+      FPUTS( " },\n", dout );
       FALLTHROUGH;
 
     case K_APPLE_BLOCK:
@@ -247,7 +259,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, unsigned indent,
     case K_USER_DEF_LITERAL:
       DUMP_COMMA;
 dump_params:
-      DUMP_FORMAT( "param_ast_list = " );
+      DUMP_FORMAT( "param_ast_list: " );
       c_ast_list_dump_impl( &ast->func.param_ast_list, indent, dout );
       if ( ast->func.ret_ast != NULL ) {
         FPUTS( ",\n", dout );
@@ -266,7 +278,7 @@ dump_params:
 
     case K_LAMBDA:
       DUMP_COMMA;
-      DUMP_FORMAT( "capture_ast_list = " );
+      DUMP_FORMAT( "capture_ast_list: " );
       c_ast_list_dump_impl( &ast->lambda.capture_ast_list, indent, dout );
       FPUTS( ",\n", dout );
       goto dump_params;
@@ -292,11 +304,11 @@ dump_params:
 
     case K_BUILTIN:
       DUMP_COMMA;
-      DUMP_FORMAT( "bit_width = %u", ast->builtin.bit_width );
+      DUMP_FORMAT( "bit_width: %u", ast->builtin.bit_width );
       if ( c_ast_is_tid_any( ast, TB_BITINT ) &&
            ast->builtin.BitInt.width > 0 ) {
         FPUTS( ",\n", dout );
-        DUMP_FORMAT( "BitInt.width = %u", ast->builtin.BitInt.width );
+        DUMP_FORMAT( "BitInt_width: %u", ast->builtin.BitInt.width );
       }
       break;
 
@@ -375,9 +387,10 @@ static void c_capture_kind_dump( c_capture_kind_t kind, FILE *dout ) {
 static void c_loc_dump( c_loc_t const *loc, FILE *dout ) {
   assert( loc != NULL );
   assert( dout != NULL );
-  FPRINTF( dout, "%d", loc->first_column );
+  FPRINTF( dout, "{ first_column: %d", loc->first_column );
   if ( loc->last_column != loc->first_column )
-    FPRINTF( dout, "-%d", loc->last_column );
+    FPRINTF( dout, ", last_column: %d", loc->last_column );
+  FPUTS( " }", dout );
 }
 
 /**
@@ -420,37 +433,42 @@ void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
   assert( sname != NULL );
   assert( dout != NULL );
 
-  FPRINTF( dout, "\"%s\"", c_sname_full_name( sname ) );
+  FPRINTF( dout, "{ string: \"%s\"", c_sname_full_name( sname ) );
   if ( !c_sname_empty( sname ) ) {
-    FPUTS( " (", dout );
+    FPUTS( ", scopes: \"", dout );
     bool colon2 = false;
     FOREACH_SNAME_SCOPE( scope, sname ) {
       fprint_sep( dout, "::", &colon2 );
       c_type_t const *const t = &c_scope_data( scope )->type;
       FPUTS( c_type_is_none( t ) ? "none" : c_type_name_c( t ), dout );
     } // for
-    FPUTC( ')', dout );
+    FPUTC( '"', dout );
   }
+  FPUTS( " }", dout );
 }
 
 void c_sname_list_dump( slist_t const *list, FILE *dout ) {
   assert( list != NULL );
   assert( dout != NULL );
 
-  FPUTC( '[', dout );
-  bool comma = false;
-  FOREACH_SLIST_NODE( node, list ) {
-    fprint_sep( dout, ", ", &comma );
-    c_sname_dump( node->data, dout );
-  } // for
-  FPUTC( ']', dout );
+  if ( slist_empty( list ) ) {
+    FPUTS( "[]", dout );
+  } else {
+    FPUTS( "[ ", dout );
+    bool comma = false;
+    FOREACH_SLIST_NODE( node, list ) {
+      fprint_sep( dout, ", ", &comma );
+      c_sname_dump( node->data, dout );
+    } // for
+    FPUTS( " ]", dout );
+  }
 }
 
 void c_tid_dump( c_tid_t tid, FILE *dout ) {
   assert( dout != NULL );
   FPRINTF( dout,
-    "\"%s\" (%s = 0x%" PRIX_C_TID_T ")",
-    c_tid_name_c( tid ), c_tpid_name( c_tid_tpid( tid ) ), tid
+    "{ %s: 0x%" PRIX_C_TID_T ", string: \"%s\" }",
+    c_tpid_name( c_tid_tpid( tid ) ), tid, c_tid_name_c( tid )
   );
 }
 
@@ -460,14 +478,14 @@ void c_type_dump( c_type_t const *type, FILE *dout ) {
 
   char const *const type_name = c_type_name_c( type );
   FPRINTF( dout,
-    "\"%s\" "
-     "(%s = 0x%" PRIX_C_TID_T
-    ", %s = 0x%" PRIX_C_TID_T
-    ", %s = 0x%" PRIX_C_TID_T ")",
-    type_name[0] != '\0' ? type_name : "none",
+    "{ %s: 0x%" PRIX_C_TID_T
+    ", %s: 0x%" PRIX_C_TID_T
+    ", %s: 0x%" PRIX_C_TID_T
+    ", string: \"%s\" }",
     c_tpid_name( C_TPID_BASE  ), type->btids,
     c_tpid_name( C_TPID_STORE ), type->stids,
-    c_tpid_name( C_TPID_ATTR  ), type->atids
+    c_tpid_name( C_TPID_ATTR  ), type->atids,
+    type_name[0] != '\0' ? type_name : "none"
   );
 }
 

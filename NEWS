@@ -23,6 +23,9 @@ tokens now have priority.
 ** Di/Trigraphs
 Now correctly emitting di/trigraphs for lambda captures and `operator[]`.
 
+** Debug output
+The format of the debug output has been more JSON5-like.
+
 ** Limit when `q` means `quit`
 The `q` command is now recognized as a synonym for `quit` only when it's the
 only thing on a line other than whitespace.  This now allows things like:

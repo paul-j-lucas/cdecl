@@ -303,7 +303,7 @@
  * @sa #DUMP_AST()
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " );         \
+  DUMP_COMMA; PUTS( "  " KEY ": " );          \
   c_ast_list_dump( &(AST_LIST), stdout ); )
 
 /**
@@ -313,7 +313,7 @@
  * @param BOOL The `bool` to dump.
  */
 #define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(  \
-  DUMP_COMMA; PUTS( "  " KEY " = " );   \
+  DUMP_COMMA; PUTS( "  " KEY ": " );    \
   bool_dump( (BOOL), stdout ); )
 
 /**
@@ -332,7 +332,7 @@
  * @sa #DUMP_STR()
  */
 #define DUMP_INT(KEY,NUM) IF_DEBUG( \
-  DUMP_COMMA; PRINTF( "  " KEY " = %d", STATIC_CAST( int, (NUM) ) ); )
+  DUMP_COMMA; PRINTF( "  " KEY ": %d", STATIC_CAST( int, (NUM) ) ); )
 
 /**
  * Dumps a scoped name.
@@ -344,7 +344,7 @@
  * @sa #DUMP_STR()
  */
 #define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " );   \
+  DUMP_COMMA; PUTS( "  " KEY ": " );    \
   c_sname_dump( &(SNAME), stdout ); )
 
 /**
@@ -356,7 +356,7 @@
  * @sa #DUMP_SNAME()
  */
 #define DUMP_SNAME_LIST(KEY,LIST) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " );       \
+  DUMP_COMMA; PUTS( "  " KEY ": " );        \
   c_sname_list_dump( &(LIST), stdout ); )
 
 #ifdef ENABLE_CDECL_DEBUG
@@ -418,7 +418,7 @@
  */
 #define DUMP_START(NAME,PROD) \
   bool dump_comma = false;    \
-  IF_DEBUG( PUTS( "\n" NAME " ::= " PROD " = {\n" ); )
+  IF_DEBUG( PUTS( "\n\"" NAME " ::= " PROD "\": {\n" ); )
 #else
 #define DUMP_START(NAME,PROD)     NO_OP
 #endif
@@ -433,7 +433,7 @@
  * @sa #DUMP_SNAME()
  */
 #define DUMP_STR(KEY,STR) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " ); str_dump( (STR), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY ": " ); str_dump( (STR), stdout ); )
 
 /**
  * Dumps a \ref c_tid_t.
@@ -444,7 +444,7 @@
  * @sa #DUMP_TYPE()
  */
 #define DUMP_TID(KEY,TID) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " ); c_tid_dump( (TID), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY ": " ); c_tid_dump( (TID), stdout ); )
 
 /**
  * Dumps a \ref c_type.
@@ -455,7 +455,7 @@
  * @sa #DUMP_TID()
  */
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_dump( &(TYPE), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY ": " ); c_type_dump( &(TYPE), stdout ); )
 
 /** @} */
 
@@ -3011,7 +3011,7 @@ class_struct_union_declaration_c
                   "class_struct_union_btid sname '{' "
                   "in_scope_declaration_c_opt "
                   "'}' ';'" );
-      DUMP_SNAME( "(current_scope)", in_attr.current_scope );
+      DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
       DUMP_TID( "class_struct_union_btid", csu_btid );
       DUMP_SNAME( "any_sname_c", $3 );
 
@@ -3099,7 +3099,7 @@ namespace_declaration_c
                   "namespace_type sname '{' "
                   "in_scope_declaration_c_opt "
                   "'}' [';']" );
-      DUMP_SNAME( "(current_scope)", in_attr.current_scope );
+      DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
       DUMP_TYPE( "namespace_type", ns_type );
       DUMP_SNAME( "any_sname_c", $3 );
       DUMP_END();
@@ -3517,8 +3517,8 @@ typedef_decl_c
       c_ast_t *const decl_ast = $1.ast;
 
       DUMP_START( "typedef_decl_c", "decl_c_astp" );
-      DUMP_SNAME( "(current_scope)", in_attr.current_scope );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "decl_c_astp", decl_ast );
 
       c_ast_t *typedef_ast;
@@ -3637,7 +3637,7 @@ using_decl_c_ast
       DUMP_START( "using_decl_c_ast",
                   "USING any_name_exp attribute_specifier_list_c_atid_opt '=' "
                   "type_c_ast cast_c_astp_opt" );
-      DUMP_SNAME( "(current_scope)", in_attr.current_scope );
+      DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
       DUMP_STR( "any_name_exp", name );
       DUMP_TID( "attribute_specifier_list_c_atid_opt", atids );
       DUMP_AST( "type_c_ast", type_ast );
@@ -3705,7 +3705,7 @@ decl_list_c_opt
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "decl_list_c_opt", "<empty>" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "decl_list_c_opt", type_ast );
 
       if ( (type_ast->kind & K_ANY_ENUM_CLASS_STRUCT_UNION) == 0 ) {
@@ -3765,16 +3765,16 @@ decl_c
         case C_ALIGNAS_NONE:
           break;
         case C_ALIGNAS_EXPR:
-          DUMP_INT( "(alignas_specifier_c.expr)", in_attr.align.expr );
+          DUMP_INT( "in_attr__alignas_specifier_c_expr", in_attr.align.expr );
           break;
         case C_ALIGNAS_TYPE:
           DUMP_AST(
-            "(alignas_specifier_c.type_ast)", in_attr.align.type_ast
+            "in_attr__alignas_specifier_c_type_ast", in_attr.align.type_ast
           );
           break;
       } // switch
-      DUMP_BOOL( "(typename_flag_opt)", in_attr.is_typename );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_BOOL( "in_attr__typename_flag_opt", in_attr.is_typename );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "decl_c_astp", decl_ast );
 
       c_ast_t const *const ast = join_type_decl( type_ast, decl_ast );
@@ -3891,7 +3891,7 @@ array_decl_c_astp
       c_ast_t *const array_ast = $2;
 
       DUMP_START( "array_decl_c_astp", "decl2_c_astp array_size_c_ast" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "decl2_c_astp", decl_ast );
       DUMP_AST( "target_ast", $1.target_ast );
       DUMP_AST( "array_size_c_ast", array_ast );
@@ -3974,7 +3974,7 @@ block_decl_c_astp                       // Apple extension
       DUMP_START( "block_decl_c_astp",
                   "'(' '^' type_qualifier_list_c_stid_opt decl_c_astp ')' "
                   "'(' param_c_ast_list_opt ')'" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", type_qual_stids );
       DUMP_AST( "decl_c_astp", decl_ast );
       DUMP_AST_LIST( "param_c_ast_list_opt", $8 );
@@ -4133,7 +4133,7 @@ func_decl_c_astp
                   "func_ref_qualifier_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt "
                   "func_equals_c_stid_opt" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "decl2_c_astp", decl2_ast );
       DUMP_AST_LIST( "param_c_ast_list_opt", $3 );
       DUMP_TID( "func_qualifier_list_c_stid_opt", func_qual_stid );
@@ -4456,7 +4456,7 @@ trailing_return_type_c_ast_opt
 
       DUMP_START( "trailing_return_type_c_ast_opt",
                   "type_c_ast cast_c_astp_opt" );
-      DUMP_AST( "(type_c_ast)", ret_ast );
+      DUMP_AST( "in_attr__type_c_ast", ret_ast );
       DUMP_AST( "type_c_ast", $2 );
       DUMP_AST( "cast_c_astp_opt", $4.ast );
 
@@ -4676,7 +4676,7 @@ oper_decl_c_astp
                   "func_ref_qualifier_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt "
                   "func_equals_c_stid_opt" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_SNAME( "oper_sname_c_opt", $1 );
       DUMP_STR( "c_operator", c_oper_get( oper_id )->literal );
       DUMP_AST_LIST( "param_c_ast_list_opt", $5 );
@@ -4734,7 +4734,7 @@ pointer_type_c_ast
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "pointer_type_c_ast", "* type_qualifier_list_c_stid_opt" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
 
       $$ = c_ast_new_gc( K_POINTER, &@$ );
@@ -4838,7 +4838,7 @@ pointer_to_member_type_c_ast
 
       DUMP_START( "pointer_to_member_type_c_ast",
                   "sname '::*' cv_qualifier_list_stid_opt" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_SNAME( "sname", $1 );
       DUMP_TID( "cv_qualifier_list_stid_opt", $3 );
 
@@ -4893,7 +4893,7 @@ reference_type_c_ast
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "reference_type_c_ast", "&" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
 
       $$ = c_ast_new_gc( K_REFERENCE, &@$ );
@@ -4910,7 +4910,7 @@ reference_type_c_ast
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "reference_type_c_ast", "&&" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
 
       $$ = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
@@ -4931,7 +4931,7 @@ typedef_type_decl_c_ast
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "typedef_type_decl_c_ast", "typedef_type_c_ast" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "typedef_type_c_ast", $1 );
 
       if ( c_tid_is_any( type_ast->type.stids, TS_TYPEDEF ) ) {
@@ -5036,7 +5036,7 @@ user_defined_conversion_decl_c_astp
                   "type_c_ast udc_decl_c_ast_opt '(' ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                   "func_equals_c_stid_opt" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_SNAME( "oper_sname_c_opt", $1 );
       DUMP_AST( "type_c_ast", conv_ast );
       DUMP_AST( "udc_decl_c_ast_opt", udc_ast );
@@ -5077,7 +5077,7 @@ user_defined_literal_decl_c_astp
                   "oper_sname_c_opt OPERATOR \"\" "
                   "'(' param_c_ast_list_exp ')' noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_SNAME( "oper_sname_c_opt", $1 );
       DUMP_STR( "name", name );
       DUMP_AST_LIST( "param_c_ast_list_exp", $6 );
@@ -5142,7 +5142,7 @@ array_cast_c_astp
       c_ast_t *const array_ast = $2;
 
       DUMP_START( "array_cast_c_astp", "cast_c_astp_opt array_size_c_ast" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "cast_c_astp_opt", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
       DUMP_AST( "array_size_c_ast", array_ast );
@@ -5185,7 +5185,7 @@ block_cast_c_astp                       // Apple extension
       DUMP_START( "block_cast_c_astp",
                   "'(' '^' type_qualifier_list_c_stid_opt cast_c_astp_opt ')' "
                   "'(' param_c_ast_list_opt ')'" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", type_qual_stids );
       DUMP_AST( "cast_c_astp_opt", cast_ast );
       DUMP_AST_LIST( "param_c_ast_list_opt", $8 );
@@ -5217,7 +5217,7 @@ func_cast_c_astp
                   "cast2_c_astp '(' param_c_ast_list_opt ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt" );
-      DUMP_AST( "(type_c_ast)", ret_ast );
+      DUMP_AST( "in_attr__type_c_ast", ret_ast );
       DUMP_AST( "cast2_c_ast", cast2_c_ast );
       DUMP_AST_LIST( "param_c_ast_list_opt", $3 );
       DUMP_TID( "func_qualifier_list_c_stid_opt", func_ref_qualifier_stid );
@@ -5292,7 +5292,7 @@ nested_cast_c_astp
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "nested_cast_c_astp", "'(' cast_c_astp_opt ')'" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "cast_c_astp_opt", $3.ast );
 
       $$ = $3;
@@ -7390,7 +7390,7 @@ typedef_type_c_ast
       c_ast_t const *type_for_ast = $1->ast;
 
       DUMP_START( "typedef_type_c_ast", "any_typedef" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "any_typedef.ast", type_for_ast );
       DUMP_SNAME( "sub_scope_sname_c_opt", $2 );
 
@@ -7516,7 +7516,7 @@ sname_c_ast
       unsigned const bit_width = STATIC_CAST( unsigned, $2 );
 
       DUMP_START( "sname_c_ast", "sname_c" );
-      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_SNAME( "sname", $1 );
       DUMP_INT( "bit_field_c_uint_opt", bit_width );
 
