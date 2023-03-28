@@ -31,9 +31,9 @@
 #ifndef WITH_READLINE
 #error "This file should not be included unless WITH_READLINE is defined."
 #endif /* WITH_READLINE */
-#include <readline/readline.h>          /* must go last */
 
 // standard
+#include <readline/readline.h>          /* must go last */
 #include <stdio.h>                      /* for FILE */
 
 /**
