@@ -61,7 +61,7 @@ void bool_dump( bool b, FILE *dout );
  * Dumps \a ast (for debugging).
  *
  * @param ast The AST to dump.  If NULL and \a key is not NULL, dumps only \a
- * key followed by `=&nbsp;NULL`.
+ * key followed by `:&nbsp;null`.
  * @param key The key for which \a ast is the value, or NULL for none.
  * @param dout The `FILE` to dump to.
  *

@@ -119,9 +119,9 @@ static bool c_alignas_dump( c_alignas_t const *align, unsigned indent,
  * Helper function for c_ast_dump().
  *
  * @param ast The AST to dump.  If NULL and \a key is not NULL, dumps only \a
- * key followed by `=&nbsp;NULL`.
+ * key followed by `:&nbsp;null`.
  * @param indent The current indent.
- * @param key If not NULL, prints \a key followed by ` = ` before dumping the
+ * @param key If not NULL, prints \a key followed by `: ` before dumping the
  * value of \a ast.
  * @param dout The `FILE` to dump to.
  *
