@@ -321,7 +321,7 @@
  *
  * @sa #DUMP_START()
  */
-#define DUMP_END()                IF_DEBUG( PUTS( "\n}\n" ); )
+#define DUMP_END()                IF_DEBUG( PUTS( "\n}\n\n" ); )
 
 /**
  * Dumps an integer.
@@ -418,7 +418,7 @@
  */
 #define DUMP_START(NAME,PROD) \
   bool dump_comma = false;    \
-  IF_DEBUG( PUTS( "\n\"" NAME " ::= " PROD "\": {\n" ); )
+  IF_DEBUG( PUTS( "\"" NAME " ::= " PROD "\": {\n" ); )
 #else
 #define DUMP_START(NAME,PROD)     NO_OP
 #endif

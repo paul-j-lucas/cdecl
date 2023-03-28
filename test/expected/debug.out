@@ -14,7 +14,6 @@ cdecl> set
   notrailing-return
     using
 cdecl> explain (int)x
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
@@ -92,9 +91,9 @@ cdecl> explain (int)x
     }
   }
 }
+
 cast x into integer
 cdecl> explain _BitInt(4) x
-
 "builtin_type_c_ast ::= _BitInt '(' int_lit_exp ')'": {
   int: 4,
   builtin_type_c_ast: {
@@ -204,9 +203,9 @@ cdecl> explain _BitInt(4) x
     BitInt_width: 4
   }
 }
+
 declare x as bit-precise integer width 4 bits
 cdecl> explain alignas(8) int x
-
 "alignas_specifier_c ::= ALIGNAS '(' Y_INT_LIT ')'": {
   INT_LIT: 8
 }
@@ -317,9 +316,9 @@ cdecl> explain alignas(8) int x
     bit_width: 0
   }
 }
+
 declare x as integer aligned as 8 bytes
 cdecl> explain alignas(long) int x
-
 "type_c_ast ::= type_modifier_list_c_type": {
   type_modifier_list_c_type: { btid: 0x8001, stid: 0x2, atid: 0x4, string: "long" },
   type_c_ast: {
@@ -472,9 +471,9 @@ cdecl> explain alignas(long) int x
     bit_width: 0
   }
 }
+
 declare x as integer aligned as long integer
 cdecl> explain enum E : int x
-
 "sname_c ::= NAME": {
   NAME: "E",
   sname_c: { string: "E", scopes: "none" }
@@ -711,9 +710,9 @@ cdecl> explain enum E : int x
     }
   }
 }
+
 declare x as enumeration E of type integer
 cdecl> explain enum E x
-
 "sname_c ::= NAME": {
   NAME: "E",
   sname_c: { string: "E", scopes: "none" }
@@ -823,9 +822,9 @@ cdecl> explain enum E x
     enum_sname: { string: "E", scopes: "none" }
   }
 }
+
 declare x as enumeration E
 cdecl> explain int x
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
@@ -927,9 +926,9 @@ cdecl> explain int x
     bit_width: 0
   }
 }
+
 declare x as integer
 cdecl> explain int x[4]
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
@@ -1106,9 +1105,9 @@ cdecl> explain int x[4]
     }
   }
 }
+
 declare x as array 4 of integer
 cdecl> explain int x[]
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
@@ -1285,9 +1284,9 @@ cdecl> explain int x[]
     }
   }
 }
+
 declare x as array of integer
 cdecl> explain size_t x
-
 "typedef_type_c_ast ::= any_typedef": {
   in_attr__type_c_ast: null,
   any_typedef.ast: {
@@ -1480,9 +1479,9 @@ cdecl> explain size_t x
     bit_width: 0
   }
 }
+
 declare x as size_t
 cdecl> explain struct S x
-
 "sname_c ::= NAME": {
   NAME: "S",
   sname_c: { string: "S", scopes: "none" }
@@ -1591,9 +1590,9 @@ cdecl> explain struct S x
     csu_sname: { string: "S", scopes: "none" }
   }
 }
+
 declare x as structure S
 cdecl> explain void f()
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
@@ -1768,9 +1767,9 @@ cdecl> explain void f()
     }
   }
 }
+
 declare f as function returning void
 cdecl> explain void f(int i, char const *fmt, ... )
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
@@ -2619,9 +2618,9 @@ cdecl> explain void f(int i, char const *fmt, ... )
     }
   }
 }
+
 declare f as function (i as integer, fmt as pointer to constant character, variadic) returning void
 cdecl> explain void f(int x[*])
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
@@ -3102,9 +3101,9 @@ cdecl> explain void f(int x[*])
     }
   }
 }
+
 declare f as function (x as variable length array of integer) returning void
 cdecl> explain void f(int x[static 2])
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
@@ -3595,10 +3594,10 @@ cdecl> explain void f(int x[static 2])
     }
   }
 }
+
 declare f as function (x as array static 2 of integer) returning void
 cdecl> set c++
 c++decl> class C
-
 "sname_c ::= NAME": {
   NAME: "C",
   sname_c: { string: "C", scopes: "none" }
@@ -3619,8 +3618,8 @@ c++decl> class C
     csu_sname: { string: "C", scopes: "none" }
   }
 }
-c++decl> explain bool operator!() const
 
+c++decl> explain bool operator!() const
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x81, string: "bool" },
   builtin_type_c_ast: {
@@ -3765,9 +3764,9 @@ c++decl> explain bool operator!() const
     }
   }
 }
+
 declare ! as constant member operator returning boolean
 c++decl> explain int C::*p
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
@@ -4007,9 +4006,9 @@ c++decl> explain int C::*p
     }
   }
 }
+
 declare p as pointer to member of class C integer
 c++decl> explain operator bool() const
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x81, string: "bool" },
   builtin_type_c_ast: {
@@ -4113,9 +4112,9 @@ c++decl> explain operator bool() const
     }
   }
 }
+
 declare constant user-defined conversion operator returning boolean
 c++decl> explain ~C()
-
 "destructor_decl_c ::= virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt": {
   virtual_stid_opt: { stid: 0x2, string: "" },
   any_name_exp: "C",
@@ -4132,6 +4131,7 @@ c++decl> explain ~C()
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
   }
 }
+
 declare C as destructor
 c++decl> set nodebug
 c++decl> set
@@ -4168,7 +4168,6 @@ c++decl> set
   notrailing-return
     using
 c++decl> explain int x
-
 "builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
@@ -4270,4 +4269,5 @@ c++decl> explain int x
     bit_width: 0
   }
 }
+
 declare x as integer
