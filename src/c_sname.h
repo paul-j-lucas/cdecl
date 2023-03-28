@@ -444,6 +444,10 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
  * c_sname_t new_sname = c_sname_move( old_sname );
  * ```
  *
+ * @remarks In many cases, a simple assignment would be fine; however, if
+ * there's code that modifies `old_sname` afterwards, it would interfere with
+ * `new_sname` since both point to the same underlying data.
+ *
  * @param sname The scoped name to move.
  * @return Returns the former value of \a sname.
  *
@@ -478,27 +482,27 @@ char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
  * Parses a scoped name, for example `a::b::c`.
  *
  * @param s The string to parse.
- * @param sname The scoped name to parse into.
+ * @param rv_sname The scoped name to parse into.
  * @return Returns the number of characters of \a s that were successfully
  * parsed.
  *
  * @sa c_sname_parse_dtor()
  */
 NODISCARD
-size_t c_sname_parse( char const *s, c_sname_t *sname );
+size_t c_sname_parse( char const *s, c_sname_t *rv_sname );
 
 /**
  * Parses a scoped destructor name, for example `S::T::~T`.
  *
  * @param s The string to parse.
- * @param sname The scoped name to parse into.
+ * @param rv_sname The scoped name to parse into.
  * @return Returns `true` only if the scoped destructor name was successfully
  * parsed.
  *
  * @sa c_sname_parse()
  */
 NODISCARD
-bool c_sname_parse_dtor( char const *s, c_sname_t *sname );
+bool c_sname_parse_dtor( char const *s, c_sname_t *rv_sname );
 
 /**
  * Prepends \a src onto the beginning of \a dst.

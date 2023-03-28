@@ -217,27 +217,27 @@ static char const* fprint_list_dym_gets( void const **ppelt ) {
 /**
  * Gets the current input line.
  *
- * @param input_line_len A pointer to receive the length of the input line.
+ * @param rv_len A pointer to receive the length of the input line.
  * @return Returns the input line.
  */
 NODISCARD
-static char const* get_input_line( size_t *input_line_len ) {
-  char const *input_line = lexer_input_line( input_line_len );
+static char const* get_input_line( size_t *rv_len ) {
+  char const *input_line = lexer_input_line( rv_len );
   assert( input_line != NULL );
-  if ( *input_line_len == 0 ) {         // no input? try command line
+  if ( *rv_len == 0 ) {                 // no input? try command line
     input_line = print_params.command_line;
     assert( input_line != NULL );
-    *input_line_len = print_params.command_line_len;
+    *rv_len = print_params.command_line_len;
   }
-  if ( *input_line_len >= print_params.inserted_len ) {
+  if ( *rv_len >= print_params.inserted_len ) {
     input_line += print_params.inserted_len;
-    *input_line_len -= print_params.inserted_len;
+    *rv_len -= print_params.inserted_len;
   }
 
   //
   // Chop off whitespace (if any) so we can always print a newline ourselves.
   //
-  strn_rtrim( input_line, input_line_len );
+  strn_rtrim( input_line, rv_len );
 
   return input_line;
 }

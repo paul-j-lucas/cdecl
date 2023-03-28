@@ -396,16 +396,16 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  */
 NODISCARD
 static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
-                                            c_tid_t *qual_stids ) {
+                                            c_tid_t *rv_qual_stids ) {
   ast = c_ast_untypedef( ast );
   if ( ast->kind != K_POINTER )
     return NULL;
 
   ast = ast->ptr_ref.to_ast;
   assert( ast != NULL );
-  assert( qual_stids != NULL );
-  assert( c_tid_tpid( *qual_stids ) == C_TPID_STORE );
-  *qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
+  assert( rv_qual_stids != NULL );
+  assert( c_tid_tpid( *rv_qual_stids ) == C_TPID_STORE );
+  *rv_qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
   //
   // Now that we've gotten the cv qualifiers of the first pointed-to type, we
   // can just call the ordinary c_ast_untypedef() to peel off any remaining
@@ -418,8 +418,8 @@ static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
  * Only if \a ast is a \ref K_REFERENCE, un-references \a ast.
  *
  * @param ast The AST to un-reference.
- * @param qual_stids If \a ast is a reference, receives the bitwise-of of the
- * qualifier(s) of the first referred-to type.  For a declaration like
+ * @param rv_qual_stids If \a ast is a reference, receives the bitwise-of of
+ * the qualifier(s) of the first referred-to type.  For a declaration like
  * <code>const&nbsp;S&nbsp;&x</code> (where `S` is a `struct`), the `const` is
  * associated with the `typedef` for the `struct` and _not_ the actual `struct`
  * the `typedef` is a `typedef` for:
@@ -454,16 +454,16 @@ static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
  */
 NODISCARD
 static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
-                                              c_tid_t *qual_stids ) {
+                                              c_tid_t *rv_qual_stids ) {
   ast = c_ast_untypedef( ast );
   if ( ast->kind != K_REFERENCE )
     return NULL;
 
   ast = ast->ptr_ref.to_ast;
   assert( ast != NULL );
-  assert( qual_stids != NULL );
-  assert( c_tid_tpid( *qual_stids ) == C_TPID_STORE );
-  *qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
+  assert( rv_qual_stids != NULL );
+  assert( c_tid_tpid( *rv_qual_stids ) == C_TPID_STORE );
+  *rv_qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
   //
   // Now that we've gotten the cv qualifiers of the first referred-to type, we
   // can just call the ordinary c_ast_unreference() to peel off any remaining
@@ -644,9 +644,9 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
 }
 
 c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
-                                      c_tid_t *qual_stids ) {
-  ast = c_ast_untypedef_qual( ast, qual_stids );
-  return c_ast_is_tid_any_qual_impl( ast, tids, *qual_stids );
+                                      c_tid_t *rv_qual_stids ) {
+  ast = c_ast_untypedef_qual( ast, rv_qual_stids );
+  return c_ast_is_tid_any_qual_impl( ast, tids, *rv_qual_stids );
 }
 
 c_ast_t const* c_ast_leaf( c_ast_t const *ast ) {
@@ -866,12 +866,13 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
   } // for
 }
 
-c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast, c_tid_t *qual_stids ) {
-  assert( qual_stids != NULL );
-  *qual_stids = TS_NONE;
+c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
+                                     c_tid_t *rv_qual_stids ) {
+  assert( rv_qual_stids != NULL );
+  *rv_qual_stids = TS_NONE;
   for (;;) {
     assert( ast != NULL );
-    *qual_stids |= ast->type.stids & TS_ANY_QUALIFIER;
+    *rv_qual_stids |= ast->type.stids & TS_ANY_QUALIFIER;
     if ( ast->kind != K_TYPEDEF )
       return ast;
     ast = ast->tdef.for_ast;

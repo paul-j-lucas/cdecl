@@ -99,11 +99,11 @@ void lexer_init( void );
 /**
  * Gets the current input line.
  *
- * @param plen The value pointed at is set to be the length of said line.
+ * @param rv_len Receives the length of said line.
  * @return Returns said line.
  */
 NODISCARD
-char const* lexer_input_line( size_t *plen );
+char const* lexer_input_line( size_t *rv_len );
 
 /**
  * Gets the lexer's current location.

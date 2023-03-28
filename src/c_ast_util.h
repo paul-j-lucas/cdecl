@@ -283,9 +283,9 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
- * @param qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with the
- * qualifier(s) \a ast is a `typedef` for (if \a ast is a #K_TYPEDEF), but only
- * if this function returns non-NULL.
+ * @param rv_qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with
+ * the qualifier(s) \a ast is a `typedef` for (if \a ast is a #K_TYPEDEF), but
+ * only if this function returns non-NULL.
  * @return If the type of \a ast has one of \a tids, returns the un-`typedef`d
  * AST of \a ast; otherwise returns NULL.
  *
@@ -295,7 +295,7 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
  */
 NODISCARD
 c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
-                                      c_tid_t *qual_stids );
+                                      c_tid_t *rv_qual_stids );
 
 /**
  * Gets the leat AST node starting at \a ast.
@@ -464,8 +464,8 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
  * `typedef` is for.
  *
  * @param ast The AST to un-`typedef`.
- * @param qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with the
- * qualifier(s) \a ast is a `typedef` for (if \a ast is a #K_TYPEDEF).
+ * @param rv_qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with
+ * the qualifier(s) \a ast is a `typedef` for (if \a ast is a #K_TYPEDEF).
  * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
  * `typedef`.
  *
@@ -475,7 +475,8 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
  * @sa c_ast_untypedef()
  */
 NODISCARD
-c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast, c_tid_t *qual_stids );
+c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
+                                     c_tid_t *rv_qual_stids );
 
 ////////// inline functions ///////////////////////////////////////////////////
 

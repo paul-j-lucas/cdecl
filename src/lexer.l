@@ -1301,9 +1301,9 @@ void lexer_init( void ) {
   include_init();
 }
 
-char const* lexer_input_line( size_t *plen ) {
-  assert( plen != NULL );
-  *plen = input_len;
+char const* lexer_input_line( size_t *rv_len ) {
+  assert( rv_len != NULL );
+  *rv_len = input_len;
   return input_buf;
 }
 

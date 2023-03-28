@@ -48,8 +48,8 @@ void c_sglob_cleanup( c_sglob_t *sglob ) {
   }
 }
 
-void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
-  assert( sglob != NULL );
+void c_sglob_parse( char const *s, c_sglob_t *rv_sglob ) {
+  assert( rv_sglob != NULL );
 
   if ( s == NULL )
     return;
@@ -60,8 +60,8 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
   //
   // Special case: if the scoped glob starts with `**`, match in any scope.
   //
-  sglob->match_in_any_scope = s[0] == '*' && s[1] == '*';
-  if ( sglob->match_in_any_scope ) {
+  rv_sglob->match_in_any_scope = s[0] == '*' && s[1] == '*';
+  if ( rv_sglob->match_in_any_scope ) {
     s += 2 /* "**" */;
     SKIP_WS( s );
     assert( s[0] == ':' && s[1] == ':' );
@@ -82,7 +82,7 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
     }
   } // for
 
-  sglob->pattern = MALLOC( char*, scope_count );
+  rv_sglob->pattern = MALLOC( char*, scope_count );
 
   //
   // Break up scoped glob into array of globs.
@@ -92,8 +92,9 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
     if ( *s == ':' || *s == '\0' /* end of glob */ ) {
       size_t const glob_len = STATIC_CAST( size_t, s - glob_begin );
       assert( glob_len > 0 );
-      assert( sglob->count < scope_count );
-      sglob->pattern[ sglob->count++ ] = check_strndup( glob_begin, glob_len );
+      assert( rv_sglob->count < scope_count );
+      rv_sglob->pattern[ rv_sglob->count++ ] =
+        check_strndup( glob_begin, glob_len );
       if ( *s == '\0' )
         return;
       s += 2 /* "::" */;

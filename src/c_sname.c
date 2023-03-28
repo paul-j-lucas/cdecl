@@ -91,7 +91,7 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
  * Helper function for c_sname_parse() and c_sname_parse_dtor().
  *
  * @param s The string to parse.
- * @param sname The scoped name to parse into.
+ * @param rv_sname The scoped name to parse into.
  * @param is_dtor `true` only if a destructor name, e.g., `S::T::~T`, is to be
  * parsed.
  * @return
@@ -101,9 +101,9 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
  *    either `~` or `compl `.
  *  + Otherwise 0.
  */
-size_t c_sname_parse_impl( char const *s, c_sname_t *sname, bool is_dtor ) {
+size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
   assert( s != NULL );
-  assert( sname != NULL );
+  assert( rv_sname != NULL );
 
   bool parsed_tilde = !is_dtor;
   c_sname_t rv;
@@ -162,7 +162,7 @@ error:
   return 0;
 
 done:
-  *sname = rv;
+  *rv_sname = rv;
   return STATIC_CAST( size_t, prev_end - s_orig );
 }
 
@@ -382,12 +382,12 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
   return true;
 }
 
-size_t c_sname_parse( char const *s, c_sname_t *sname ) {
-  return c_sname_parse_impl( s, sname, /*is_dtor=*/false );
+size_t c_sname_parse( char const *s, c_sname_t *rv_sname ) {
+  return c_sname_parse_impl( s, rv_sname, /*is_dtor=*/false );
 }
 
-bool c_sname_parse_dtor( char const *s, c_sname_t *sname ) {
-  return c_sname_parse_impl( s, sname, /*is_dtor=*/true ) > 0;
+bool c_sname_parse_dtor( char const *s, c_sname_t *rv_sname ) {
+  return c_sname_parse_impl( s, rv_sname, /*is_dtor=*/true ) > 0;
 }
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {
