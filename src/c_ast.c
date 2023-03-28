@@ -344,6 +344,7 @@ equal_params:
     }
 
     case K_ENUM:
+      // of_ast checked by referrer code below
       if ( i_ast->enum_.bit_width != j_ast->enum_.bit_width )
         return false;
       FALLTHROUGH;
