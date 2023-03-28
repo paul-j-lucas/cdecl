@@ -69,7 +69,7 @@ void bool_dump( bool b, FILE *dout );
  * @sa c_ast_list_dump()
  */
 void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
-                  FILE *dout );
+                 FILE *dout );
 
 /**
  * Dumps \a list of ASTs (for debugging).
