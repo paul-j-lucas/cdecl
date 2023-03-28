@@ -427,7 +427,7 @@ size_t slist_len( slist_t const *list ) {
 NODISCARD SLIST_H_INLINE
 slist_t slist_move( slist_t *list ) {
   slist_t const rv_list = *list;
-  MEM_ZERO( list );
+  slist_init( list );
   return rv_list;
 }
 
