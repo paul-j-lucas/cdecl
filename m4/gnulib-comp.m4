@@ -664,6 +664,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/mempcpy.m4
   m4/mmap-anon.m4
   m4/multiarch.m4
+  m4/musl.m4
   m4/nocrash.m4
   m4/off_t.m4
   m4/pid_t.m4

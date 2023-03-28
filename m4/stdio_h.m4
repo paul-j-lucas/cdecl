@@ -1,4 +1,4 @@
-# stdio_h.m4 serial 61
+# stdio_h.m4 serial 62
 dnl Copyright (C) 2007-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -39,6 +39,9 @@ AC_DEFUN_ONCE([gl_STDIO_H],
       [Define to 1 if printf and friends should be labeled with
        attribute "__gnu_printf__" instead of "__printf__"])
   fi
+
+  dnl For defining _PRINTF_NAN_LEN_MAX.
+  gl_MUSL_LIBC
 
   dnl This ifdef is an optimization, to avoid performing a configure check whose
   dnl result is not used. But it does not make the test of

@@ -1234,12 +1234,25 @@ _GL_WARN_ON_USE (wcspbrk, "wcspbrk is unportable - "
 
 /* Find the first occurrence of NEEDLE in HAYSTACK.  */
 #if @GNULIB_WCSSTR@
-# if !@HAVE_WCSSTR@
+# if @REPLACE_WCSSTR@
+#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#   undef wcsstr
+#   define wcsstr rpl_wcsstr
+#  endif
+_GL_FUNCDECL_RPL (wcsstr, wchar_t *,
+                  (const wchar_t *restrict haystack,
+                   const wchar_t *restrict needle)
+                  _GL_ATTRIBUTE_PURE);
+_GL_CXXALIAS_RPL (wcsstr, wchar_t *,
+                  (const wchar_t *restrict haystack,
+                   const wchar_t *restrict needle));
+# else
+#  if !@HAVE_WCSSTR@
 _GL_FUNCDECL_SYS (wcsstr, wchar_t *,
                   (const wchar_t *restrict haystack,
                    const wchar_t *restrict needle)
                   _GL_ATTRIBUTE_PURE);
-# endif
+#  endif
   /* On some systems, this function is defined as an overloaded function:
        extern "C++" {
          const wchar_t * std::wcsstr (const wchar_t *, const wchar_t *);
@@ -1250,6 +1263,7 @@ _GL_CXXALIAS_SYS_CAST2 (wcsstr,
                         (const wchar_t *restrict, const wchar_t *restrict),
                         const wchar_t *,
                         (const wchar_t *restrict, const wchar_t *restrict));
+# endif
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
      && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4))
 _GL_CXXALIASWARN1 (wcsstr, wchar_t *,
