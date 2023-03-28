@@ -380,6 +380,9 @@ static bool is_english_command( char const *command ) {
 /**
  * Checks whether \a c is a token character, that is one of `[A-Za-z0-9_-]`.
  *
+ * @note The `-` character is included because **cdecl** uses it for hyphenated
+ * words.
+ *
  * @param c The character to check.
  * @return Returns `true` only if \a c is a token character.
  */
@@ -437,6 +440,8 @@ static cdecl_keyword_t const* prev_cdecl_keyword( char const *s, size_t pos ) {
  * @param token_len If a previous token has been found, receives its length.
  * @return Returns a pointer to the start of the previous token or NULL if
  * none.
+ *
+ * @sa is_token_char()
  */
 NODISCARD
 static char const* str_prev_token( char const *s, size_t pos,
@@ -476,12 +481,12 @@ static char const* str_prev_token( char const *s, size_t pos,
 }
 
 /**
- * Compares two string pointers.
+ * Compares two string pointers by comparing the string pointed to.
  *
  * @param i_sptr The first string pointer to compare.
  * @param j_sptr The first string pointer to compare.
- * @return Returns a number less than 0, 0, or greater than 0 if \a i_sptr is
- * less than, equal to, or greater than \a j_sptr, respectively.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a *i_sptr is
+ * less than, equal to, or greater than \a *j_sptr, respectively.
  */
 NODISCARD
 static int str_ptr_cmp( char const **i_sptr, char const **j_sptr ) {
