@@ -1,3 +1,21 @@
+2023-03-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.h: s/MEM_ZERO( list )/slist_init( list )/
+   * parser.y, debug.out: Added debug "rule" key/value.
+   * parser.y, debug.out: Now printing trailing blank line instead of leading
+     blank line when dumping.
+   * dump.c, dump.h, parser.y: Elimiated c_ast_dump_impl() and
+     c_ast_list_dump_impl() -- always passing indent.
+
+2023-03-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, dump.c, parser.y, debug.out: Made debug output more
+     JSON5-like.
+
+2023-03-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: s/_IMPL/_HELPER/
+
 2023-03-24  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Fixed definition of BITS_GT().
