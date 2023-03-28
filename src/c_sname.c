@@ -168,7 +168,8 @@ done:
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data ) {
+int c_scope_data_cmp( c_scope_data_t const *i_data,
+                      c_scope_data_t const *j_data ) {
   assert( i_data != NULL );
   assert( j_data != NULL );
   return strcmp( i_data->name, j_data->name );

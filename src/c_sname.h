@@ -139,7 +139,8 @@ typedef struct c_scope_data c_scope_data_t;
  * less than, equal to, or greater than \a j_data, respectively.
  */
 NODISCARD
-int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data );
+int c_scope_data_cmp( c_scope_data_t const *i_data,
+                      c_scope_data_t const *j_data );
 
 /**
  * Duplicates \a data.
