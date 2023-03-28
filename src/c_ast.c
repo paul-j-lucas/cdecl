@@ -318,8 +318,8 @@ equal_params:
       c_param_t const *j_param = c_ast_params( j_ast );
       for ( ; i_param != NULL && j_param != NULL;
               i_param = i_param->next, j_param = j_param->next ) {
-        c_ast_t const *const i_param_ast =  c_param_ast( i_param );
-        c_ast_t const *const j_param_ast =  c_param_ast( j_param );
+        c_ast_t const *const i_param_ast = c_param_ast( i_param );
+        c_ast_t const *const j_param_ast = c_param_ast( j_param );
         if ( !c_ast_equal( i_param_ast, j_param_ast ) )
           return false;
       } // for
@@ -333,8 +333,8 @@ equal_params:
       c_capture_t const *j_capture = c_ast_captures( j_ast );
       for ( ; i_capture != NULL && j_capture != NULL;
               i_capture = i_capture->next, j_capture = j_capture->next ) {
-        c_ast_t const *const i_capture_ast =  c_capture_ast( i_capture );
-        c_ast_t const *const j_capture_ast =  c_capture_ast( j_capture );
+        c_ast_t const *const i_capture_ast = c_capture_ast( i_capture );
+        c_ast_t const *const j_capture_ast = c_capture_ast( j_capture );
         if ( !c_ast_equal( i_capture_ast, j_capture_ast ) )
           return false;
       } // for
