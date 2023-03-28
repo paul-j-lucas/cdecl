@@ -206,6 +206,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
 
     case K_ENUM:
       dup_ast->enum_.bit_width = ast->enum_.bit_width;
+      // of_ast duplicated by referrer code below
       FALLTHROUGH;
     case K_CLASS_STRUCT_UNION:
     case K_POINTER_TO_MEMBER:
