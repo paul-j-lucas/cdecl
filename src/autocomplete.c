@@ -102,8 +102,10 @@ static inline bool is_c_keyword( char const *literal ) {
 #if !HAVE_DECL_RL_DING
 /**
  * Partial implementation of GNU readline's `rl_ding()` for systems that don't
- * have it.  It doesn't respect the user's preferred bell style (none, audible,
- * or visual): always does audible.
+ * have it.
+ *
+ * @note It doesn't respect the user's preferred bell style (none, audible, or
+ * visual): always does audible.
  */
 static inline void rl_ding( void ) {
   EPUTC( '\a' );
