@@ -304,7 +304,7 @@
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY ": " );          \
-  c_ast_list_dump( &(AST_LIST), 1, stdout ); )
+  c_ast_list_dump( &(AST_LIST), /*indent=*/1, stdout ); )
 
 /**
  * Dumps a `bool`.
@@ -404,7 +404,7 @@
  * ```
  *
  * @param NAME The grammar production name.
- * @param PROD The grammar production rule.
+ * @param RULE The grammar production rule.
  *
  * @sa #DUMP_AST
  * @sa #DUMP_AST_LIST
@@ -416,11 +416,11 @@
  * @sa #DUMP_TID
  * @sa #DUMP_TYPE
  */
-#define DUMP_START(NAME,PROD) \
+#define DUMP_START(NAME,RULE) \
   bool dump_comma = false;    \
-  IF_DEBUG( PUTS( "\"" NAME " ::= " PROD "\": {\n" ); )
+  IF_DEBUG( PUTS( NAME ": {\n" "  rule: \"" RULE "\",\n" ); )
 #else
-#define DUMP_START(NAME,PROD)     NO_OP
+#define DUMP_START(NAME,RULE)     NO_OP
 #endif
 
 /**

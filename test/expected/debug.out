@@ -14,7 +14,8 @@ cdecl> set
   notrailing-return
     using
 cdecl> explain (int)x
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -28,7 +29,8 @@ cdecl> explain (int)x
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1358,
@@ -52,12 +54,14 @@ cdecl> explain (int)x
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"explain_command ::= EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt": {
+explain_command: {
+  rule: "EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt",
   type_c_ast: {
     sname: { string: "" },
     unique_id: 1358,
@@ -94,7 +98,8 @@ cdecl> explain (int)x
 
 cast x into integer
 cdecl> explain _BitInt(4) x
-"builtin_type_c_ast ::= _BitInt '(' int_lit_exp ')'": {
+builtin_type_c_ast: {
+  rule: "_BitInt '(' int_lit_exp ')'",
   int: 4,
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -109,7 +114,8 @@ cdecl> explain _BitInt(4) x
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1360,
@@ -135,12 +141,14 @@ cdecl> explain _BitInt(4) x
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1360,
@@ -167,7 +175,8 @@ cdecl> explain _BitInt(4) x
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
@@ -206,11 +215,13 @@ cdecl> explain _BitInt(4) x
 
 declare x as bit-precise integer width 4 bits
 cdecl> explain alignas(8) int x
-"alignas_specifier_c ::= ALIGNAS '(' Y_INT_LIT ')'": {
+alignas_specifier_c: {
+  rule: "ALIGNAS '(' Y_INT_LIT ')'",
   INT_LIT: 8
 }
 
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -224,7 +235,8 @@ cdecl> explain alignas(8) int x
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1362,
@@ -248,12 +260,14 @@ cdecl> explain alignas(8) int x
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1362,
@@ -278,7 +292,8 @@ cdecl> explain alignas(8) int x
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__alignas_specifier_c_expr: 8,
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
@@ -319,7 +334,8 @@ cdecl> explain alignas(8) int x
 
 declare x as integer aligned as 8 bytes
 cdecl> explain alignas(long) int x
-"type_c_ast ::= type_modifier_list_c_type": {
+type_c_ast: {
+  rule: "type_modifier_list_c_type",
   type_modifier_list_c_type: { btid: 0x8001, stid: 0x2, atid: 0x4, string: "long" },
   type_c_ast: {
     sname: { string: "" },
@@ -333,7 +349,8 @@ cdecl> explain alignas(long) int x
   }
 }
 
-"alignas_specifier_c ::= ALIGNAS '(' type_c_ast cast_c_astp_opt ')'": {
+alignas_specifier_c: {
+  rule: "ALIGNAS '(' type_c_ast cast_c_astp_opt ')'",
   type_c_ast: {
     sname: { string: "" },
     unique_id: 1364,
@@ -347,7 +364,8 @@ cdecl> explain alignas(long) int x
   cast_c_astp_opt: null
 }
 
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -361,7 +379,8 @@ cdecl> explain alignas(long) int x
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1365,
@@ -385,12 +404,14 @@ cdecl> explain alignas(long) int x
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1365,
@@ -415,7 +436,8 @@ cdecl> explain alignas(long) int x
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__alignas_specifier_c_type_ast: {
     sname: { string: "" },
     unique_id: 1364,
@@ -474,12 +496,14 @@ cdecl> explain alignas(long) int x
 
 declare x as integer aligned as long integer
 cdecl> explain enum E : int x
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "E",
   sname_c: { string: "E", scopes: "none" }
 }
 
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -493,7 +517,8 @@ cdecl> explain enum E : int x
   }
 }
 
-"enum_fixed_type_c_ast ::= enum_unmodified_fixed_type_c_ast enum_fixed_type_modifier_list_btid_opt": {
+enum_fixed_type_c_ast: {
+  rule: "enum_unmodified_fixed_type_c_ast enum_fixed_type_modifier_list_btid_opt",
   enum_unmodified_fixed_type_c_ast: {
     sname: { string: "" },
     unique_id: 1367,
@@ -517,7 +542,8 @@ cdecl> explain enum E : int x
   }
 }
 
-"enum_c_ast ::= enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt": {
+enum_c_ast: {
+  rule: "enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt",
   enum_btid: { btid: 0x800001, string: "enum" },
   attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "" },
   any_sname_c: { string: "E", scopes: "none" },
@@ -553,7 +579,8 @@ cdecl> explain enum E : int x
   }
 }
 
-"east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_stid_opt": {
+east_modified_type_c_ast: {
+  rule: "enum_class_struct_union_c_ast cv_qualifier_list_stid_opt",
   enum_class_struct_union_c_ast: {
     sname: { string: "" },
     unique_id: 1368,
@@ -597,12 +624,14 @@ cdecl> explain enum E : int x
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1368,
@@ -647,7 +676,8 @@ cdecl> explain enum E : int x
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
@@ -713,12 +743,14 @@ cdecl> explain enum E : int x
 
 declare x as enumeration E of type integer
 cdecl> explain enum E x
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "E",
   sname_c: { string: "E", scopes: "none" }
 }
 
-"enum_c_ast ::= enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt": {
+enum_c_ast: {
+  rule: "enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt",
   enum_btid: { btid: 0x800001, string: "enum" },
   attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "" },
   any_sname_c: { string: "E", scopes: "none" },
@@ -735,7 +767,8 @@ cdecl> explain enum E x
   }
 }
 
-"east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_stid_opt": {
+east_modified_type_c_ast: {
+  rule: "enum_class_struct_union_c_ast cv_qualifier_list_stid_opt",
   enum_class_struct_union_c_ast: {
     sname: { string: "" },
     unique_id: 1371,
@@ -759,12 +792,14 @@ cdecl> explain enum E x
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1371,
@@ -789,7 +824,8 @@ cdecl> explain enum E x
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
@@ -825,7 +861,8 @@ cdecl> explain enum E x
 
 declare x as enumeration E
 cdecl> explain int x
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -839,7 +876,8 @@ cdecl> explain int x
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1373,
@@ -863,12 +901,14 @@ cdecl> explain int x
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1373,
@@ -893,7 +933,8 @@ cdecl> explain int x
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
@@ -929,7 +970,8 @@ cdecl> explain int x
 
 declare x as integer
 cdecl> explain int x[4]
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -943,7 +985,8 @@ cdecl> explain int x[4]
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1375,
@@ -967,12 +1010,14 @@ cdecl> explain int x[4]
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1375,
@@ -997,7 +1042,8 @@ cdecl> explain int x[4]
   }
 }
 
-"array_decl_c_astp ::= decl2_c_astp array_size_c_ast": {
+array_decl_c_astp: {
+  rule: "decl2_c_astp array_size_c_ast",
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1375,
@@ -1052,7 +1098,8 @@ cdecl> explain int x[4]
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "" },
@@ -1108,7 +1155,8 @@ cdecl> explain int x[4]
 
 declare x as array 4 of integer
 cdecl> explain int x[]
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -1122,7 +1170,8 @@ cdecl> explain int x[]
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1379,
@@ -1146,12 +1195,14 @@ cdecl> explain int x[]
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1379,
@@ -1176,7 +1227,8 @@ cdecl> explain int x[]
   }
 }
 
-"array_decl_c_astp ::= decl2_c_astp array_size_c_ast": {
+array_decl_c_astp: {
+  rule: "decl2_c_astp array_size_c_ast",
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1379,
@@ -1231,7 +1283,8 @@ cdecl> explain int x[]
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "" },
@@ -1287,7 +1340,8 @@ cdecl> explain int x[]
 
 declare x as array of integer
 cdecl> explain size_t x
-"typedef_type_c_ast ::= any_typedef": {
+typedef_type_c_ast: {
+  rule: "any_typedef",
   in_attr__type_c_ast: null,
   any_typedef.ast: {
     sname: { string: "size_t", scopes: "none" },
@@ -1322,7 +1376,8 @@ cdecl> explain size_t x
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1383,
@@ -1366,12 +1421,14 @@ cdecl> explain size_t x
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1383,
@@ -1416,7 +1473,8 @@ cdecl> explain size_t x
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
@@ -1482,12 +1540,14 @@ cdecl> explain size_t x
 
 declare x as size_t
 cdecl> explain struct S x
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "S",
   sname_c: { string: "S", scopes: "none" }
 }
 
-"enum_class_struct_union_c_ast ::= class_struct_union_btid attribute_specifier_list_c_atid_opt sname": {
+enum_class_struct_union_c_ast: {
+  rule: "class_struct_union_btid attribute_specifier_list_c_atid_opt sname",
   class_struct_union_btid: { btid: 0x1000001, string: "struct" },
   attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "" },
   any_sname_c: { string: "S", scopes: "none" },
@@ -1503,7 +1563,8 @@ cdecl> explain struct S x
   }
 }
 
-"east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_stid_opt": {
+east_modified_type_c_ast: {
+  rule: "enum_class_struct_union_c_ast cv_qualifier_list_stid_opt",
   enum_class_struct_union_c_ast: {
     sname: { string: "" },
     unique_id: 1386,
@@ -1527,12 +1588,14 @@ cdecl> explain struct S x
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1386,
@@ -1557,7 +1620,8 @@ cdecl> explain struct S x
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
@@ -1593,7 +1657,8 @@ cdecl> explain struct S x
 
 declare x as structure S
 cdecl> explain void f()
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -1607,7 +1672,8 @@ cdecl> explain void f()
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1388,
@@ -1631,12 +1697,14 @@ cdecl> explain void f()
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "f",
   sname_c: { string: "f", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1388,
@@ -1661,7 +1729,8 @@ cdecl> explain void f()
   }
 }
 
-"func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt": {
+func_decl_c_astp: {
+  rule: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1388,
@@ -1712,7 +1781,8 @@ cdecl> explain void f()
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "" },
@@ -1770,7 +1840,8 @@ cdecl> explain void f()
 
 declare f as function returning void
 cdecl> explain void f(int i, char const *fmt, ... )
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -1784,7 +1855,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1391,
@@ -1808,12 +1880,14 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "f",
   sname_c: { string: "f", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1391,
@@ -1838,7 +1912,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -1852,7 +1927,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1392,
@@ -1876,12 +1952,14 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "i",
   sname_c: { string: "i", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1392,
@@ -1906,7 +1984,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt": {
+param_c_ast: {
+  rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "" },
   type_c_ast: {
     sname: { string: "i", scopes: "none" },
@@ -1940,7 +2019,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"param_c_ast_list ::= param_c_ast": {
+param_c_ast_list: {
+  rule: "param_c_ast",
   param_c_ast: {
     sname: { string: "i", scopes: "none" },
     unique_id: 1392,
@@ -1965,7 +2045,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   ]
 }
 
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -1979,7 +2060,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1393,
@@ -2003,7 +2085,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"pointer_type_c_ast ::= * type_qualifier_list_c_stid_opt": {
+pointer_type_c_ast: {
+  rule: "* type_qualifier_list_c_stid_opt",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1393,
@@ -2036,12 +2119,14 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "fmt",
   sname_c: { string: "fmt", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1394,
@@ -2084,7 +2169,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"pointer_cast_c_astp ::= pointer_type_c_ast cast_c_astp_opt": {
+pointer_cast_c_astp: {
+  rule: "pointer_type_c_ast cast_c_astp_opt",
   pointer_type_c_ast: {
     sname: { string: "fmt", scopes: "none" },
     unique_id: 1394,
@@ -2144,7 +2230,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt": {
+param_c_ast: {
+  rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "" },
   type_c_ast: {
     sname: { string: "" },
@@ -2196,7 +2283,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"param_c_ast_list ::= param_c_ast_list ',' param_c_ast": {
+param_c_ast_list: {
+  rule: "param_c_ast_list ',' param_c_ast",
   param_c_ast_list: [
     {
       sname: { string: "i", scopes: "none" },
@@ -2261,7 +2349,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   ]
 }
 
-"param_c_ast ::= ...": {
+param_c_ast: {
+  rule: "...",
   param_c_ast: {
     sname: { string: "" },
     unique_id: 1395,
@@ -2273,7 +2362,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"param_c_ast_list ::= param_c_ast_list ',' param_c_ast": {
+param_c_ast_list: {
+  rule: "param_c_ast_list ',' param_c_ast",
   param_c_ast_list: [
     {
       sname: { string: "i", scopes: "none" },
@@ -2356,7 +2446,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   ]
 }
 
-"func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt": {
+func_decl_c_astp: {
+  rule: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1391,
@@ -2485,7 +2576,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "" },
@@ -2621,7 +2713,8 @@ cdecl> explain void f(int i, char const *fmt, ... )
 
 declare f as function (i as integer, fmt as pointer to constant character, variadic) returning void
 cdecl> explain void f(int x[*])
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -2635,7 +2728,8 @@ cdecl> explain void f(int x[*])
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1398,
@@ -2659,12 +2753,14 @@ cdecl> explain void f(int x[*])
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "f",
   sname_c: { string: "f", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1398,
@@ -2689,7 +2785,8 @@ cdecl> explain void f(int x[*])
   }
 }
 
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -2703,7 +2800,8 @@ cdecl> explain void f(int x[*])
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1399,
@@ -2727,12 +2825,14 @@ cdecl> explain void f(int x[*])
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1399,
@@ -2757,7 +2857,8 @@ cdecl> explain void f(int x[*])
   }
 }
 
-"array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast": {
+array_cast_c_astp: {
+  rule: "cast_c_astp_opt array_size_c_ast",
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1399,
@@ -2812,7 +2913,8 @@ cdecl> explain void f(int x[*])
   }
 }
 
-"param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt": {
+param_c_ast: {
+  rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "" },
   type_c_ast: {
     sname: { string: "" },
@@ -2866,7 +2968,8 @@ cdecl> explain void f(int x[*])
   }
 }
 
-"param_c_ast_list ::= param_c_ast": {
+param_c_ast_list: {
+  rule: "param_c_ast",
   param_c_ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1400,
@@ -2911,7 +3014,8 @@ cdecl> explain void f(int x[*])
   ]
 }
 
-"func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt": {
+func_decl_c_astp: {
+  rule: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1398,
@@ -3004,7 +3108,8 @@ cdecl> explain void f(int x[*])
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "" },
@@ -3104,7 +3209,8 @@ cdecl> explain void f(int x[*])
 
 declare f as function (x as variable length array of integer) returning void
 cdecl> explain void f(int x[static 2])
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -3118,7 +3224,8 @@ cdecl> explain void f(int x[static 2])
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1404,
@@ -3142,12 +3249,14 @@ cdecl> explain void f(int x[static 2])
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "f",
   sname_c: { string: "f", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1404,
@@ -3172,7 +3281,8 @@ cdecl> explain void f(int x[static 2])
   }
 }
 
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -3186,7 +3296,8 @@ cdecl> explain void f(int x[static 2])
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1405,
@@ -3210,12 +3321,14 @@ cdecl> explain void f(int x[static 2])
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1405,
@@ -3240,7 +3353,8 @@ cdecl> explain void f(int x[static 2])
   }
 }
 
-"array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast": {
+array_cast_c_astp: {
+  rule: "cast_c_astp_opt array_size_c_ast",
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1405,
@@ -3297,7 +3411,8 @@ cdecl> explain void f(int x[static 2])
   }
 }
 
-"param_c_ast ::= this_stid_opt type_c_ast cast_c_astp_opt": {
+param_c_ast: {
+  rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "" },
   type_c_ast: {
     sname: { string: "" },
@@ -3353,7 +3468,8 @@ cdecl> explain void f(int x[static 2])
   }
 }
 
-"param_c_ast_list ::= param_c_ast": {
+param_c_ast_list: {
+  rule: "param_c_ast",
   param_c_ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1406,
@@ -3400,7 +3516,8 @@ cdecl> explain void f(int x[static 2])
   ]
 }
 
-"func_decl_c_astp ::= decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt": {
+func_decl_c_astp: {
+  rule: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1404,
@@ -3495,7 +3612,8 @@ cdecl> explain void f(int x[static 2])
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "" },
@@ -3598,12 +3716,14 @@ cdecl> explain void f(int x[static 2])
 declare f as function (x as array static 2 of integer) returning void
 cdecl> set c++
 c++decl> class C
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "C",
   sname_c: { string: "C", scopes: "none" }
 }
 
-"class_struct_union_declaration_c ::= class_struct_union_btid sname '{' in_scope_declaration_c_opt '}' ';'": {
+class_struct_union_declaration_c: {
+  rule: "class_struct_union_btid sname '{' in_scope_declaration_c_opt '}' ';'",
   in_attr__current_scope: { string: "" },
   class_struct_union_btid: { btid: 0x4000001, string: "class" },
   any_sname_c: { string: "C", scopes: "none" },
@@ -3620,7 +3740,8 @@ c++decl> class C
 }
 
 c++decl> explain bool operator!() const
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x81, string: "bool" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -3634,7 +3755,8 @@ c++decl> explain bool operator!() const
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1411,
@@ -3658,13 +3780,15 @@ c++decl> explain bool operator!() const
   }
 }
 
-"func_qualifier_list_c_stid_opt ::= func_qualifier_list_c_stid_opt func_qualifier_c_stid": {
+func_qualifier_list_c_stid_opt: {
+  rule: "func_qualifier_list_c_stid_opt func_qualifier_c_stid",
   func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
   func_qualifier_c_stid: { stid: 0x200000002, string: "const" },
   func_qualifier_list_c_stid_opt: { stid: 0x200000002, string: "const" }
 }
 
-"oper_decl_c_astp ::= oper_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt": {
+oper_decl_c_astp: {
+  rule: "oper_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1411,
@@ -3707,7 +3831,8 @@ c++decl> explain bool operator!() const
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "" },
@@ -3767,7 +3892,8 @@ c++decl> explain bool operator!() const
 
 declare ! as constant member operator returning boolean
 c++decl> explain int C::*p
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -3781,7 +3907,8 @@ c++decl> explain int C::*p
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1414,
@@ -3805,7 +3932,8 @@ c++decl> explain int C::*p
   }
 }
 
-"pointer_to_member_type_c_ast ::= sname '::*' cv_qualifier_list_stid_opt": {
+pointer_to_member_type_c_ast: {
+  rule: "sname '::*' cv_qualifier_list_stid_opt",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1414,
@@ -3840,12 +3968,14 @@ c++decl> explain int C::*p
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "p",
   sname_c: { string: "p", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1415,
@@ -3890,7 +4020,8 @@ c++decl> explain int C::*p
   }
 }
 
-"pointer_to_member_decl_c_astp ::= pointer_to_member_type_c_ast decl_c_astp": {
+pointer_to_member_decl_c_astp: {
+  rule: "pointer_to_member_type_c_ast decl_c_astp",
   pointer_to_member_type_c_ast: {
     sname: { string: "p", scopes: "none" },
     unique_id: 1415,
@@ -3953,7 +4084,8 @@ c++decl> explain int C::*p
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "" },
@@ -4009,7 +4141,8 @@ c++decl> explain int C::*p
 
 declare p as pointer to member of class C integer
 c++decl> explain operator bool() const
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x81, string: "bool" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -4023,7 +4156,8 @@ c++decl> explain operator bool() const
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1417,
@@ -4047,13 +4181,15 @@ c++decl> explain operator bool() const
   }
 }
 
-"func_qualifier_list_c_stid_opt ::= func_qualifier_list_c_stid_opt func_qualifier_c_stid": {
+func_qualifier_list_c_stid_opt: {
+  rule: "func_qualifier_list_c_stid_opt func_qualifier_c_stid",
   func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
   func_qualifier_c_stid: { stid: 0x200000002, string: "const" },
   func_qualifier_list_c_stid_opt: { stid: 0x200000002, string: "const" }
 }
 
-"user_defined_conversion_decl_c_astp ::= oper_sname_c_opt OPERATOR type_c_ast udc_decl_c_ast_opt '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt func_equals_c_stid_opt": {
+user_defined_conversion_decl_c_astp: {
+  rule: "oper_sname_c_opt OPERATOR type_c_ast udc_decl_c_ast_opt '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: null,
   oper_sname_c_opt: { string: "" },
   type_c_ast: {
@@ -4091,7 +4227,8 @@ c++decl> explain operator bool() const
   }
 }
 
-"user_defined_conversion_declaration_c ::= user_defined_conversion_decl_c_astp": {
+user_defined_conversion_declaration_c: {
+  rule: "user_defined_conversion_decl_c_astp",
   user_defined_conversion_declaration_c: {
     sname: { string: "" },
     unique_id: 1418,
@@ -4115,7 +4252,8 @@ c++decl> explain operator bool() const
 
 declare constant user-defined conversion operator returning boolean
 c++decl> explain ~C()
-"destructor_decl_c ::= virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt": {
+destructor_decl_c: {
+  rule: "virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt",
   virtual_stid_opt: { stid: 0x2, string: "" },
   any_name_exp: "C",
   func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
@@ -4168,7 +4306,8 @@ c++decl> set
   notrailing-return
     using
 c++decl> explain int x
-"builtin_type_c_ast ::= builtin_no_BitInt_c_btid": {
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
@@ -4182,7 +4321,8 @@ c++decl> explain int x
   }
 }
 
-"east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt": {
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
     unique_id: 1422,
@@ -4206,12 +4346,14 @@ c++decl> explain int x
   }
 }
 
-"sname_c ::= NAME": {
+sname_c: {
+  rule: "NAME",
   NAME: "x",
   sname_c: { string: "x", scopes: "none" }
 }
 
-"sname_c_ast ::= sname_c": {
+sname_c_ast: {
+  rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1422,
@@ -4236,7 +4378,8 @@ c++decl> explain int x
   }
 }
 
-"decl_c ::= decl_c_astp": {
+decl_c: {
+  rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
