@@ -1,5 +1,11 @@
 2023-03-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * lib/Makefile.am, fnmatch.c, stdio.in.h, wchar.in.h, gnulib-comp.m4,
+     musl.m4, stdio_h.m4, wchar_h.m4: Updated GnuLib.
+   * c_ast_util.c, c_ast_util.h, c_sglob.c, c_sglob.h, c_sname.c, c_sname.h,
+     lexer.h, lexer.l, print.c: Renamed pointer parameters that receive return
+     values to be prefixed with `rv_`.
+   * c_sname.c, c_sname.h: Added missing `const`s.
    * slist.h: s/MEM_ZERO( list )/slist_init( list )/
    * parser.y, debug.out: Added debug "rule" key/value.
    * parser.y, debug.out: Now printing trailing blank line instead of leading
