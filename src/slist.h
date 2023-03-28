@@ -419,6 +419,10 @@ size_t slist_len( slist_t const *list ) {
  * slist new_list = slist_move( old_list );
  * ```
  *
+ * @remarks In many cases, a simple assignment would be fine; however, if
+ * there's code that modifies `old_list` afterwards, it would interfere with
+ * `new_list` since both point to the same underlying elements.
+ *
  * @param list The \ref slist to move.
  * @return Returns the former value of \a list.
  *
