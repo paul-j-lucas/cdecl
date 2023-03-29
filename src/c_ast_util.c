@@ -360,8 +360,8 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  * Only if \a ast is a \ref K_POINTER, un-pointers \a ast.
  *
  * @param ast The AST to un-pointer.
- * @param qual_stids If \a ast is a pointer, receives the qualifier(s) of the
- * first pointed-to type.  For a declaration like
+ * @param rv_qual_stids If \a ast is a pointer, receives the qualifier(s) of
+ * the first pointed-to type.  For a declaration like
  * <code>const&nbsp;S&nbsp;*x</code> (where `S` is a `struct`), the `const` is
  * associated with the `typedef` for the `struct` and _not_ the actual `struct`
  * the `typedef` is a `typedef` for:
