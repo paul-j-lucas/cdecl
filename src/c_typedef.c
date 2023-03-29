@@ -87,7 +87,7 @@ struct tdef_rb_visit_data {
 typedef struct tdef_rb_visit_data tdef_rb_visit_data_t;
 
 // local variables
-static c_lang_id_t  predefined_lang_ids;///< Languages when predefining types.
+static c_lang_id_t  predef_lang_ids;    ///< Languages when predefining types.
 static rb_tree_t    typedef_set;        ///< Global set of `typedef`s.
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1007,7 +1007,7 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
   assert( ast != NULL );
   assert( is_01_bit_only_in_set( gib_flags, C_GIB_TYPEDEF | C_GIB_USING ) );
 
-  bool const is_predefined = predefined_lang_ids != LANG_NONE;
+  bool const is_predefined = predef_lang_ids != LANG_NONE;
 
   c_typedef_t *const tdef = MALLOC( c_typedef_t, 1 );
   *tdef = (c_typedef_t){
@@ -1015,12 +1015,11 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
     .gib_flags = gib_flags,
     .is_predefined = is_predefined,
     //
-    // If predefined_lang_ids is set, we're predefining a type that's available
+    // If predef_lang_ids is set, we're predefining a type that's available
     // only in those language(s); otherwise we're defining a user-defined type
     // that's available in the current language and newer.
     //
-    .lang_ids = is_predefined ?
-      predefined_lang_ids : c_lang_and_newer( opt_lang )
+    .lang_ids = is_predefined ? predef_lang_ids : c_lang_and_newer( opt_lang )
   };
 
   return tdef;
@@ -1132,36 +1131,36 @@ void c_typedef_init( void ) {
     //
     opt_lang = LANG_C_NEW;
 
-    predefined_lang_ids = LANG_MIN(C_KNR);
+    predef_lang_ids = LANG_MIN(C_KNR);
     parse_predef_types( PREDEFINED_KNR_C );
 
-    predefined_lang_ids = LANG_MIN(C_89);
+    predef_lang_ids = LANG_MIN(C_89);
     parse_predef_types( PREDEFINED_STD_C_89 );
     parse_predef_types( PREDEFINED_FLOATING_POINT_EXTENSIONS );
     parse_predef_types( PREDEFINED_GNU_C );
 
-    predefined_lang_ids = LANG_MIN(C_95);
+    predef_lang_ids = LANG_MIN(C_95);
     parse_predef_types( PREDEFINED_STD_C_95 );
     parse_predef_types( PREDEFINED_PTHREAD_H );
     parse_predef_types( PREDEFINED_WIN32 );
 
-    predefined_lang_ids = LANG_MIN(C_99);
+    predef_lang_ids = LANG_MIN(C_99);
     parse_predef_types( PREDEFINED_STD_C_99 );
 
     // However, Embedded C extensions are available only in C99.
     opt_lang = LANG_C_99;
-    predefined_lang_ids = LANG_C_99;
+    predef_lang_ids = LANG_C_99;
     parse_predef_types( PREDEFINED_EMBEDDED_C );
     opt_lang = LANG_C_NEW;
 
     // Must be defined after C99.
-    predefined_lang_ids = LANG_MIN(C_89);
+    predef_lang_ids = LANG_MIN(C_89);
     parse_predef_types( PREDEFINED_MISC );
 
-    predefined_lang_ids = LANG_MIN(C_11);
+    predef_lang_ids = LANG_MIN(C_11);
     parse_predef_types( PREDEFINED_STD_C_11 );
 
-    predefined_lang_ids = LANG_MIN(C_23);
+    predef_lang_ids = LANG_MIN(C_23);
     parse_predef_types( PREDEFINED_STD_C_23 );
   }
 
@@ -1172,26 +1171,26 @@ void c_typedef_init( void ) {
   opt_lang = LANG_CPP_NEW;
 
   if ( opt_typedefs ) {
-    predefined_lang_ids = LANG_MIN(CPP_OLD);
+    predef_lang_ids = LANG_MIN(CPP_OLD);
     parse_predef_types( PREDEFINED_STD_CPP );
 
-    predefined_lang_ids = LANG_MIN(CPP_11);
+    predef_lang_ids = LANG_MIN(CPP_11);
     parse_predef_types( PREDEFINED_STD_CPP_11 );
 
-    predefined_lang_ids = LANG_MIN(CPP_17);
+    predef_lang_ids = LANG_MIN(CPP_17);
     parse_predef_types( PREDEFINED_STD_CPP_17 );
 
-    predefined_lang_ids = LANG_MIN(CPP_20);
+    predef_lang_ids = LANG_MIN(CPP_20);
     parse_predef_types( PREDEFINED_STD_CPP_20 );
 
-    predefined_lang_ids = LANG_MIN(CPP_23);
+    predef_lang_ids = LANG_MIN(CPP_23);
     parse_predef_types( PREDEFINED_STD_CPP_23 );
   }
 
-  predefined_lang_ids = LANG_MIN(CPP_20);
+  predef_lang_ids = LANG_MIN(CPP_20);
   parse_predef_types( PREDEFINED_STD_CPP_20_REQUIRED );
 
-  predefined_lang_ids = LANG_NONE;
+  predef_lang_ids = LANG_NONE;
   opt_lang = orig_lang;
 
 #ifdef ENABLE_CDECL_DEBUG
