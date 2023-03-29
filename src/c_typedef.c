@@ -57,7 +57,25 @@
 #define C_TYPEDEF_SNAME_LIT(SNAME) \
   C_TYPEDEF_AST_LIT( &(c_ast_t const){ .sname = (SNAME) } )
 
+/**
+ * Helper macro for adding a \ref predef_type to an array of them.  It includes
+ * the source line number it's defined on.
+ *
+ * @param S The string literal of the **cdecl** command defining a type.
+ */
+#define PT(S)                     { S, __LINE__ }
+
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Contains a **cdecl** command defining a type and the source line number it's
+ * defined on.
+ */
+struct predef_type {
+  char const *str;                      ///< **Cdecl** command defining a type.
+  unsigned    line;                     ///< Source line number.
+};
+typedef struct predef_type predef_type_t;
 
 /**
  * Data passed to our red-black tree visitor function.
@@ -86,17 +104,17 @@ static rb_tree_t    typedef_set;        ///< Global set of `typedef`s.
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_KNR_C[] = {
-  "typedef          char *caddr_t",
-  "typedef          long  daddr_t",
-  "typedef          int   dev_t",
-  "typedef struct _iobuf  FILE",
-  "typedef unsigned int   ino_t",
-  "typedef          int   jmp_buf[37]",
-  "typedef          long  off_t",
-  "typedef          long  time_t",
+static predef_type_t const PREDEFINED_KNR_C[] = {
+  PT( "typedef          char *caddr_t" ),
+  PT( "typedef          long  daddr_t" ),
+  PT( "typedef          int   dev_t" ),
+  PT( "typedef struct _iobuf  FILE" ),
+  PT( "typedef unsigned int   ino_t" ),
+  PT( "typedef          int   jmp_buf[37]" ),
+  PT( "typedef          long  off_t" ),
+  PT( "typedef          long  time_t" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -105,23 +123,23 @@ static char const *const PREDEFINED_KNR_C[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_STD_C_89[] = {
-  "typedef          long    clock_t",
-  "typedef struct _dirdesc  DIR",
-  "struct                   div_t",
-  "struct               imaxdiv_t",
-  "struct                  ldiv_t",
-  "struct                 lldiv_t",
-  "typedef          int     errno_t",
-  "struct                   fpos_t",
-  "struct                   lconv",
-  "typedef          long    ptrdiff_t",
-  "typedef          int     sig_atomic_t",
-  "typedef unsigned long    size_t",
-  "typedef          long   ssize_t",
-  "typedef          void   *va_list",
+static predef_type_t const PREDEFINED_STD_C_89[] = {
+  PT( "typedef          long    clock_t" ),
+  PT( "typedef struct _dirdesc  DIR" ),
+  PT( "struct                   div_t" ),
+  PT( "struct               imaxdiv_t" ),
+  PT( "struct                  ldiv_t" ),
+  PT( "struct                 lldiv_t" ),
+  PT( "typedef          int     errno_t" ),
+  PT( "struct                   fpos_t" ),
+  PT( "struct                   lconv" ),
+  PT( "typedef          long    ptrdiff_t" ),
+  PT( "typedef          int     sig_atomic_t" ),
+  PT( "typedef unsigned long    size_t" ),
+  PT( "typedef          long   ssize_t" ),
+  PT( "typedef          void   *va_list" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -130,13 +148,13 @@ static char const *const PREDEFINED_STD_C_89[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_STD_C_95[] = {
-  "struct                 mbstate_t",
-  "typedef          int   wctrans_t",
-  "typedef unsigned long  wctype_t",
-  "typedef          int   wint_t",
+static predef_type_t const PREDEFINED_STD_C_95[] = {
+  PT( "struct                 mbstate_t" ),
+  PT( "typedef          int   wctrans_t" ),
+  PT( "typedef unsigned long  wctype_t" ),
+  PT( "typedef          int   wint_t" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -145,40 +163,40 @@ static char const *const PREDEFINED_STD_C_95[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_STD_C_99[] = {
-  "typedef   signed char   int8_t",
-  "typedef          short  int16_t",
-  "typedef          int    int32_t",
-  "typedef          long   int64_t",
-  "typedef unsigned char  uint8_t",
-  "typedef unsigned short uint16_t",
-  "typedef unsigned int   uint32_t",
-  "typedef unsigned long  uint64_t",
+static predef_type_t const PREDEFINED_STD_C_99[] = {
+  PT( "typedef   signed char   int8_t" ),
+  PT( "typedef          short  int16_t" ),
+  PT( "typedef          int    int32_t" ),
+  PT( "typedef          long   int64_t" ),
+  PT( "typedef unsigned char  uint8_t" ),
+  PT( "typedef unsigned short uint16_t" ),
+  PT( "typedef unsigned int   uint32_t" ),
+  PT( "typedef unsigned long  uint64_t" ),
 
-  "typedef          long   intmax_t",
-  "typedef          long   intptr_t",
-  "typedef unsigned long  uintmax_t",
-  "typedef unsigned long  uintptr_t",
+  PT( "typedef          long   intmax_t" ),
+  PT( "typedef          long   intptr_t" ),
+  PT( "typedef unsigned long  uintmax_t" ),
+  PT( "typedef unsigned long  uintptr_t" ),
 
-  "typedef   signed char   int_fast8_t",
-  "typedef          short  int_fast16_t",
-  "typedef          int    int_fast32_t",
-  "typedef          long   int_fast64_t",
-  "typedef unsigned char  uint_fast8_t",
-  "typedef unsigned short uint_fast16_t",
-  "typedef unsigned int   uint_fast32_t",
-  "typedef unsigned long  uint_fast64_t",
+  PT( "typedef   signed char   int_fast8_t" ),
+  PT( "typedef          short  int_fast16_t" ),
+  PT( "typedef          int    int_fast32_t" ),
+  PT( "typedef          long   int_fast64_t" ),
+  PT( "typedef unsigned char  uint_fast8_t" ),
+  PT( "typedef unsigned short uint_fast16_t" ),
+  PT( "typedef unsigned int   uint_fast32_t" ),
+  PT( "typedef unsigned long  uint_fast64_t" ),
 
-  "typedef   signed char   int_least8_t",
-  "typedef          short  int_least16_t",
-  "typedef          int    int_least32_t",
-  "typedef          long   int_least64_t",
-  "typedef unsigned char  uint_least8_t",
-  "typedef unsigned short uint_least16_t",
-  "typedef unsigned int   uint_least32_t",
-  "typedef unsigned long  uint_least64_t",
+  PT( "typedef   signed char   int_least8_t" ),
+  PT( "typedef          short  int_least16_t" ),
+  PT( "typedef          int    int_least32_t" ),
+  PT( "typedef          long   int_least64_t" ),
+  PT( "typedef unsigned char  uint_least8_t" ),
+  PT( "typedef unsigned short uint_least16_t" ),
+  PT( "typedef unsigned int   uint_least32_t" ),
+  PT( "typedef unsigned long  uint_least64_t" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -187,64 +205,64 @@ static char const *const PREDEFINED_STD_C_99[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_STD_C_11[] = {
-  "typedef _Atomic          _Bool     atomic_bool",
-  "typedef _Atomic          char      atomic_char",
-  "typedef _Atomic   signed char      atomic_schar",
-  "typedef _Atomic          char8_t   atomic_char8_t",
-  "typedef _Atomic          char16_t  atomic_char16_t",
-  "typedef _Atomic          char32_t  atomic_char32_t",
-  "typedef _Atomic          wchar_t   atomic_wchar_t",
-  "typedef _Atomic          short     atomic_short",
-  "typedef _Atomic          int       atomic_int",
-  "typedef _Atomic          long      atomic_long",
-  "typedef _Atomic          long long atomic_llong",
-  "typedef _Atomic unsigned char      atomic_uchar",
-  "typedef _Atomic unsigned short     atomic_ushort",
-  "typedef _Atomic unsigned int       atomic_uint",
-  "typedef _Atomic unsigned long      atomic_ulong",
-  "typedef _Atomic unsigned long long atomic_ullong",
+static predef_type_t const PREDEFINED_STD_C_11[] = {
+  PT( "typedef _Atomic          _Bool     atomic_bool" ),
+  PT( "typedef _Atomic          char      atomic_char" ),
+  PT( "typedef _Atomic   signed char      atomic_schar" ),
+  PT( "typedef _Atomic          char8_t   atomic_char8_t" ),
+  PT( "typedef _Atomic          char16_t  atomic_char16_t" ),
+  PT( "typedef _Atomic          char32_t  atomic_char32_t" ),
+  PT( "typedef _Atomic          wchar_t   atomic_wchar_t" ),
+  PT( "typedef _Atomic          short     atomic_short" ),
+  PT( "typedef _Atomic          int       atomic_int" ),
+  PT( "typedef _Atomic          long      atomic_long" ),
+  PT( "typedef _Atomic          long long atomic_llong" ),
+  PT( "typedef _Atomic unsigned char      atomic_uchar" ),
+  PT( "typedef _Atomic unsigned short     atomic_ushort" ),
+  PT( "typedef _Atomic unsigned int       atomic_uint" ),
+  PT( "typedef _Atomic unsigned long      atomic_ulong" ),
+  PT( "typedef _Atomic unsigned long long atomic_ullong" ),
 
-  "struct                             atomic_flag",
-  "typedef _Atomic  ptrdiff_t         atomic_ptrdiff_t",
-  "typedef _Atomic  size_t            atomic_size_t",
+  PT( "struct                             atomic_flag" ),
+  PT( "typedef _Atomic  ptrdiff_t         atomic_ptrdiff_t" ),
+  PT( "typedef _Atomic  size_t            atomic_size_t" ),
 
-  "typedef _Atomic  intmax_t          atomic_intmax_t",
-  "typedef _Atomic  intptr_t          atomic_intptr_t",
-  "typedef _Atomic uintptr_t          atomic_uintptr_t",
-  "typedef _Atomic uintmax_t          atomic_uintmax_t",
+  PT( "typedef _Atomic  intmax_t          atomic_intmax_t" ),
+  PT( "typedef _Atomic  intptr_t          atomic_intptr_t" ),
+  PT( "typedef _Atomic uintptr_t          atomic_uintptr_t" ),
+  PT( "typedef _Atomic uintmax_t          atomic_uintmax_t" ),
 
-  "typedef _Atomic  int_fast8_t       atomic_int_fast8_t",
-  "typedef _Atomic  int_fast16_t      atomic_int_fast16_t",
-  "typedef _Atomic  int_fast32_t      atomic_int_fast32_t",
-  "typedef _Atomic  int_fast64_t      atomic_int_fast64_t",
-  "typedef _Atomic uint_fast8_t       atomic_uint_fast8_t",
-  "typedef _Atomic uint_fast16_t      atomic_uint_fast16_t",
-  "typedef _Atomic uint_fast32_t      atomic_uint_fast32_t",
-  "typedef _Atomic uint_fast64_t      atomic_uint_fast64_t",
+  PT( "typedef _Atomic  int_fast8_t       atomic_int_fast8_t" ),
+  PT( "typedef _Atomic  int_fast16_t      atomic_int_fast16_t" ),
+  PT( "typedef _Atomic  int_fast32_t      atomic_int_fast32_t" ),
+  PT( "typedef _Atomic  int_fast64_t      atomic_int_fast64_t" ),
+  PT( "typedef _Atomic uint_fast8_t       atomic_uint_fast8_t" ),
+  PT( "typedef _Atomic uint_fast16_t      atomic_uint_fast16_t" ),
+  PT( "typedef _Atomic uint_fast32_t      atomic_uint_fast32_t" ),
+  PT( "typedef _Atomic uint_fast64_t      atomic_uint_fast64_t" ),
 
-  "typedef _Atomic  int_least8_t      atomic_int_least8_t",
-  "typedef _Atomic  int_least16_t     atomic_int_least16_t",
-  "typedef _Atomic  int_least32_t     atomic_int_least32_t",
-  "typedef _Atomic  int_least64_t     atomic_int_least64_t",
-  "typedef _Atomic uint_least8_t      atomic_uint_least8_t",
-  "typedef _Atomic uint_least16_t     atomic_uint_least16_t",
-  "typedef _Atomic uint_least32_t     atomic_uint_least32_t",
-  "typedef _Atomic uint_least64_t     atomic_uint_least64_t",
+  PT( "typedef _Atomic  int_least8_t      atomic_int_least8_t" ),
+  PT( "typedef _Atomic  int_least16_t     atomic_int_least16_t" ),
+  PT( "typedef _Atomic  int_least32_t     atomic_int_least32_t" ),
+  PT( "typedef _Atomic  int_least64_t     atomic_int_least64_t" ),
+  PT( "typedef _Atomic uint_least8_t      atomic_uint_least8_t" ),
+  PT( "typedef _Atomic uint_least16_t     atomic_uint_least16_t" ),
+  PT( "typedef _Atomic uint_least32_t     atomic_uint_least32_t" ),
+  PT( "typedef _Atomic uint_least64_t     atomic_uint_least64_t" ),
 
-  "typedef pthread_cond_t             cnd_t",
-  "typedef void                     (*constraint_handler_t)(const char *restrict, void *restrict, errno_t)",
-  "typedef long     double            max_align_t",
-  "typedef enum memory_order          memory_order",
-  "typedef pthread_mutex_t            mtx_t",
-  "typedef          int               once_flag",
-  "typedef unsigned long              rsize_t",
-  "typedef pthread_t                  thrd_t",
-  "typedef          int             (*thrd_start_t)(void*)",
-  "typedef          void             *tss_t",
-  "typedef          void            (*tss_dtor_t)(void*)",
+  PT( "typedef pthread_cond_t             cnd_t" ),
+  PT( "typedef void                     (*constraint_handler_t)(const char *restrict, void *restrict, errno_t)" ),
+  PT( "typedef long     double            max_align_t" ),
+  PT( "typedef enum memory_order          memory_order" ),
+  PT( "typedef pthread_mutex_t            mtx_t" ),
+  PT( "typedef          int               once_flag" ),
+  PT( "typedef unsigned long              rsize_t" ),
+  PT( "typedef pthread_t                  thrd_t" ),
+  PT( "typedef          int             (*thrd_start_t)(void*)" ),
+  PT( "typedef          void             *tss_t" ),
+  PT( "typedef          void            (*tss_dtor_t)(void*)" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -253,10 +271,10 @@ static char const *const PREDEFINED_STD_C_11[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_STD_C_23[] = {
-  "typedef void  *nullptr_t",
+static predef_type_t const PREDEFINED_STD_C_23[] = {
+  PT( "typedef void  *nullptr_t" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -265,37 +283,37 @@ static char const *const PREDEFINED_STD_C_23[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_FLOATING_POINT_EXTENSIONS[] = {
-  "typedef          float       _Float16",
-  "typedef          _Float16    _Float16_t",
-  "typedef          float       _Float32",
-  "typedef          _Float32    _Float32_t",
-  "typedef          _Float32    _Float32x",
-  "typedef          double      _Float64",
-  "typedef          _Float64    _Float64_t",
-  "typedef          _Float64    _Float64x",
-  "typedef long     double      _Float128",
-  "typedef          _Float128   _Float128_t",
-  "typedef          _Float128   _Float128x",
+static predef_type_t const PREDEFINED_FLOATING_POINT_EXTENSIONS[] = {
+  PT( "typedef          float       _Float16" ),
+  PT( "typedef          _Float16    _Float16_t" ),
+  PT( "typedef          float       _Float32" ),
+  PT( "typedef          _Float32    _Float32_t" ),
+  PT( "typedef          _Float32    _Float32x" ),
+  PT( "typedef          double      _Float64" ),
+  PT( "typedef          _Float64    _Float64_t" ),
+  PT( "typedef          _Float64    _Float64x" ),
+  PT( "typedef long     double      _Float128" ),
+  PT( "typedef          _Float128   _Float128_t" ),
+  PT( "typedef          _Float128   _Float128x" ),
 
-  "typedef          float       _Decimal32",
-  "typedef          _Decimal32  _Decimal32_t",
-  "typedef          double      _Decimal64",
-  "typedef          _Decimal64  _Decimal64x",
-  "typedef          _Decimal64  _Decimal64_t",
-  "typedef long     double      _Decimal128",
-  "typedef          _Decimal128 _Decimal128_t",
-  "typedef          _Decimal128 _Decimal128x",
+  PT( "typedef          float       _Decimal32" ),
+  PT( "typedef          _Decimal32  _Decimal32_t" ),
+  PT( "typedef          double      _Decimal64" ),
+  PT( "typedef          _Decimal64  _Decimal64x" ),
+  PT( "typedef          _Decimal64  _Decimal64_t" ),
+  PT( "typedef long     double      _Decimal128" ),
+  PT( "typedef          _Decimal128 _Decimal128_t" ),
+  PT( "typedef          _Decimal128 _Decimal128x" ),
 
-  "typedef          double      double_t",
-  "typedef          float       float_t",
-  "typedef long     double      long_double_t",
+  PT( "typedef          double      double_t" ),
+  PT( "typedef          float       float_t" ),
+  PT( "typedef long     double      long_double_t" ),
 
-  "struct                       femode_t",
-  "struct                       fenv_t",
-  "typedef unsigned short       fexcept_t",
+  PT( "struct                       femode_t" ),
+  PT( "struct                       fenv_t" ),
+  PT( "typedef unsigned short       fexcept_t" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -304,21 +322,21 @@ static char const *const PREDEFINED_FLOATING_POINT_EXTENSIONS[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_PTHREAD_H[] = {
-  "typedef unsigned long  pthread_t",
-  "struct                 pthread_barrier_t",
-  "struct                 pthread_barrierattr_t",
-  "struct                 pthread_cond_t",
-  "struct                 pthread_condattr_t",
-  "typedef unsigned int   pthread_key_t",
-  "struct                 pthread_mutex_t",
-  "struct                 pthread_mutexattr_t",
-  "typedef          int   pthread_once_t",
-  "struct                 pthread_rwlock_t",
-  "struct                 pthread_rwlockattr_t",
-  "typedef volatile int   pthread_spinlock_t",
+static predef_type_t const PREDEFINED_PTHREAD_H[] = {
+  PT( "typedef unsigned long  pthread_t" ),
+  PT( "struct                 pthread_barrier_t" ),
+  PT( "struct                 pthread_barrierattr_t" ),
+  PT( "struct                 pthread_cond_t" ),
+  PT( "struct                 pthread_condattr_t" ),
+  PT( "typedef unsigned int   pthread_key_t" ),
+  PT( "struct                 pthread_mutex_t" ),
+  PT( "struct                 pthread_mutexattr_t" ),
+  PT( "typedef          int   pthread_once_t" ),
+  PT( "struct                 pthread_rwlock_t" ),
+  PT( "struct                 pthread_rwlockattr_t" ),
+  PT( "typedef volatile int   pthread_spinlock_t" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -327,79 +345,79 @@ static char const *const PREDEFINED_PTHREAD_H[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_STD_CPP[] = {
-  "namespace std { class                    bad_alloc; }",
-  "namespace std { class                    bad_cast; }",
-  "namespace std { class                    bad_exception; }",
-  "namespace std { class                    bad_typeid; }",
-  "namespace std { class                    codecvt_base; }",
-  "namespace std { class                    ctype_base; }",
-  "namespace std { struct                   div_t; }",
-  "namespace std { struct                  ldiv_t; }",
-  "namespace std { class                    domain_error; }",
-  "namespace std { class                    ios_base; }",
-  "namespace std { enum ios_base::          event; }",
-  "namespace std { class ios_base   { using event_callback = void (*)(std::ios_base::event, std::ios_base&, int); }; }",
-  "namespace std { class                    exception; }",
-  "namespace std { class                    filebuf; }",
-  "namespace std { class                   wfilebuf; }",
-  "namespace std { class ios_base   { using fmtflags = unsigned; }; }",
-  "namespace std { class ios_base::         Init; }",
-  "namespace std { class                    invalid_argument; }",
-  "namespace std { class                    ios; }",
-  "namespace std { class                   wios; }",
-  "namespace std { class ios_base   { using iostate = unsigned; }; }",
-  "namespace std { class                    length_error; }",
-  "namespace std { class                    locale; }",
-  "namespace std { class                    logic_error; }",
-  "namespace std { class ctype_base { using mask = unsigned; }; }",
-  "namespace std { class                    messages_base; }",
-  "namespace std { class                    money_base; }",
-  "namespace std { struct                   nothrow_t; }",
-  "namespace std { class ios_base   { using openmode = unsigned; }; }",
-  "namespace std { class                    out_of_range; }",
-  "namespace std { class                    overflow_error; }",
-  "namespace std                    { using ptrdiff_t = long; }",
-  "namespace std { class                    range_error; }",
-  "namespace std { class                    runtime_error; }",
-  "namespace std { class ios_base   { using seekdir = int; }; }",
-  "namespace std                    { using sig_atomic_t = int; }",
-  "namespace std                    { using size_t = unsigned long; }",
-  "namespace std { class                   fstream; }",
-  "namespace std { class                  ifstream; }",
-  "namespace std { class                  wfstream; }",
-  "namespace std { class                 wifstream; }",
-  "namespace std { class                  ofstream; }",
-  "namespace std { class                 wofstream; }",
-  "namespace std { class                   istream; }",
-  "namespace std { class                  wistream; }",
-  "namespace std { class                  iostream; }",
-  "namespace std { class                 wiostream; }",
-  "namespace std { class                   ostream; }",
-  "namespace std { class                  wostream; }",
-  "namespace std { class                    streambuf; }",
-  "namespace std { class                   wstreambuf; }",
-  "namespace std                    { using streamoff = long long; }",
-  "namespace std                    { using streamsize = long; }",
-  "namespace std { class                    string; }",
-  "namespace std { class                   wstring; }",
-  "namespace std { class                    stringbuf; }",
-  "namespace std { class                   wstringbuf; }",
-  "namespace std { class                    stringstream; }",
-  "namespace std { class                   istringstream; }",
-  "namespace std { class                   wstringstream; }",
-  "namespace std { class                  wistringstream; }",
-  "namespace std { class                   ostringstream; }",
-  "namespace std { class                  wostringstream; }",
-  "namespace std { class                    syncbuf; }",
-  "namespace std { class                   wsyncbuf; }",
-  "namespace std { class                   osyncstream; }",
-  "namespace std { class                  wosyncstream; }",
-  "namespace std { class                    time_base; }",
-  "namespace std { class                    type_info; }",
-  "namespace std { class                    underflow_error; }",
+static predef_type_t const PREDEFINED_STD_CPP[] = {
+  PT( "namespace std { class                    bad_alloc; }" ),
+  PT( "namespace std { class                    bad_cast; }" ),
+  PT( "namespace std { class                    bad_exception; }" ),
+  PT( "namespace std { class                    bad_typeid; }" ),
+  PT( "namespace std { class                    codecvt_base; }" ),
+  PT( "namespace std { class                    ctype_base; }" ),
+  PT( "namespace std { struct                   div_t; }" ),
+  PT( "namespace std { struct                  ldiv_t; }" ),
+  PT( "namespace std { class                    domain_error; }" ),
+  PT( "namespace std { class                    ios_base; }" ),
+  PT( "namespace std { enum ios_base::          event; }" ),
+  PT( "namespace std { class ios_base   { using event_callback = void (*)(std::ios_base::event, std::ios_base&, int); }; }" ),
+  PT( "namespace std { class                    exception; }" ),
+  PT( "namespace std { class                    filebuf; }" ),
+  PT( "namespace std { class                   wfilebuf; }" ),
+  PT( "namespace std { class ios_base   { using fmtflags = unsigned; }; }" ),
+  PT( "namespace std { class ios_base::         Init; }" ),
+  PT( "namespace std { class                    invalid_argument; }" ),
+  PT( "namespace std { class                    ios; }" ),
+  PT( "namespace std { class                   wios; }" ),
+  PT( "namespace std { class ios_base   { using iostate = unsigned; }; }" ),
+  PT( "namespace std { class                    length_error; }" ),
+  PT( "namespace std { class                    locale; }" ),
+  PT( "namespace std { class                    logic_error; }" ),
+  PT( "namespace std { class ctype_base { using mask = unsigned; }; }" ),
+  PT( "namespace std { class                    messages_base; }" ),
+  PT( "namespace std { class                    money_base; }" ),
+  PT( "namespace std { struct                   nothrow_t; }" ),
+  PT( "namespace std { class ios_base   { using openmode = unsigned; }; }" ),
+  PT( "namespace std { class                    out_of_range; }" ),
+  PT( "namespace std { class                    overflow_error; }" ),
+  PT( "namespace std                    { using ptrdiff_t = long; }" ),
+  PT( "namespace std { class                    range_error; }" ),
+  PT( "namespace std { class                    runtime_error; }" ),
+  PT( "namespace std { class ios_base   { using seekdir = int; }; }" ),
+  PT( "namespace std                    { using sig_atomic_t = int; }" ),
+  PT( "namespace std                    { using size_t = unsigned long; }" ),
+  PT( "namespace std { class                   fstream; }" ),
+  PT( "namespace std { class                  ifstream; }" ),
+  PT( "namespace std { class                  wfstream; }" ),
+  PT( "namespace std { class                 wifstream; }" ),
+  PT( "namespace std { class                  ofstream; }" ),
+  PT( "namespace std { class                 wofstream; }" ),
+  PT( "namespace std { class                   istream; }" ),
+  PT( "namespace std { class                  wistream; }" ),
+  PT( "namespace std { class                  iostream; }" ),
+  PT( "namespace std { class                 wiostream; }" ),
+  PT( "namespace std { class                   ostream; }" ),
+  PT( "namespace std { class                  wostream; }" ),
+  PT( "namespace std { class                    streambuf; }" ),
+  PT( "namespace std { class                   wstreambuf; }" ),
+  PT( "namespace std                    { using streamoff = long long; }" ),
+  PT( "namespace std                    { using streamsize = long; }" ),
+  PT( "namespace std { class                    string; }" ),
+  PT( "namespace std { class                   wstring; }" ),
+  PT( "namespace std { class                    stringbuf; }" ),
+  PT( "namespace std { class                   wstringbuf; }" ),
+  PT( "namespace std { class                    stringstream; }" ),
+  PT( "namespace std { class                   istringstream; }" ),
+  PT( "namespace std { class                   wstringstream; }" ),
+  PT( "namespace std { class                  wistringstream; }" ),
+  PT( "namespace std { class                   ostringstream; }" ),
+  PT( "namespace std { class                  wostringstream; }" ),
+  PT( "namespace std { class                    syncbuf; }" ),
+  PT( "namespace std { class                   wsyncbuf; }" ),
+  PT( "namespace std { class                   osyncstream; }" ),
+  PT( "namespace std { class                  wosyncstream; }" ),
+  PT( "namespace std { class                    time_base; }" ),
+  PT( "namespace std { class                    type_info; }" ),
+  PT( "namespace std { class                    underflow_error; }" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -408,221 +426,221 @@ static char const *const PREDEFINED_STD_CPP[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_STD_CPP_11[] = {
-  "namespace std           {    struct      adopt_lock_t; }",
+static predef_type_t const PREDEFINED_STD_CPP_11[] = {
+  PT( "namespace std           {    struct      adopt_lock_t; }" ),
   //
   // These atomic_* types are supposed to be typedefs, but they're typedefs to
   // instantiated templates and cdecl doesn't support templates, so we make
   // them structs instead.
   //
-  "namespace std          {     struct      atomic_bool; }",
-  "namespace std          {     struct      atomic_char8_t; }",
-  "namespace std          {     struct      atomic_char16_t; }",
-  "namespace std          {     struct      atomic_char32_t; }",
-  "namespace std          {     struct      atomic_char; }",
-  "namespace std          {     struct      atomic_flag; }",
-  "namespace std          {     struct      atomic_int8_t; }",
-  "namespace std          {     struct      atomic_int16_t; }",
-  "namespace std          {     struct      atomic_int32_t; }",
-  "namespace std          {     struct      atomic_int64_t; }",
-  "namespace std          {     struct      atomic_int; }",
-  "namespace std          {     struct      atomic_int_fast8_t; }",
-  "namespace std          {     struct      atomic_int_fast16_t; }",
-  "namespace std          {     struct      atomic_int_fast32_t; }",
-  "namespace std          {     struct      atomic_int_fast64_t; }",
-  "namespace std          {     struct      atomic_int_least8_t; }",
-  "namespace std          {     struct      atomic_int_least16_t; }",
-  "namespace std          {     struct      atomic_int_least32_t; }",
-  "namespace std          {     struct      atomic_int_least64_t; }",
-  "namespace std          {     struct      atomic_intmax_t; }",
-  "namespace std          {     struct      atomic_intptr_t; }",
-  "namespace std          {     struct      atomic_llong; }",
-  "namespace std          {     struct      atomic_long; }",
-  "namespace std          {     struct      atomic_ptrdiff_t; }",
-  "namespace std          {     struct      atomic_schar; }",
-  "namespace std          {     struct      atomic_short; }",
-  "namespace std          {     struct      atomic_signed_lock_free; }",
-  "namespace std          {     struct      atomic_size_t; }",
-  "namespace std          {     struct      atomic_uchar; }",
-  "namespace std          {     struct      atomic_uint16_t; }",
-  "namespace std          {     struct      atomic_uint32_t; }",
-  "namespace std          {     struct      atomic_uint64_t; }",
-  "namespace std          {     struct      atomic_uint8_t; }",
-  "namespace std          {     struct      atomic_uint; }",
-  "namespace std          {     struct      atomic_uint_fast8_t; }",
-  "namespace std          {     struct      atomic_uint_fast16_t; }",
-  "namespace std          {     struct      atomic_uint_fast32_t; }",
-  "namespace std          {     struct      atomic_uint_fast64_t; }",
-  "namespace std          {     struct      atomic_uint_least8_t; }",
-  "namespace std          {     struct      atomic_uint_least16_t; }",
-  "namespace std          {     struct      atomic_uint_least32_t; }",
-  "namespace std          {     struct      atomic_uint_least64_t; }",
-  "namespace std          {     struct      atomic_uintmax_t; }",
-  "namespace std          {     struct      atomic_uintptr_t; }",
-  "namespace std          {     struct      atomic_ullong; }",
-  "namespace std          {     struct      atomic_ulong; }",
-  "namespace std          {     struct      atomic_unsigned_lock_free; }",
-  "namespace std          {     struct      atomic_ushort; }",
-  "namespace std          {     struct      atomic_wchar_t; }",
-  "namespace std          {      class      bad_array_new_length; }",
-  "namespace std          {      class      bad_function_call; }",
-  "namespace std          {      class      bad_weak_ptr; }",
-  "namespace std          {      class      bernoulli_distribution; }",
-  "namespace std          {      class      condition_variable; }",
-  "namespace std          {      class      condition_variable_any; }",
-  "namespace std          { enum class      cv_status; }",
-  "namespace std          {     struct      defer_lock_t; }",
-  "namespace std          {     struct  imaxdiv_t; }",
-  "namespace std          {     struct    lldiv_t; }",
-  "namespace std          {      class      error_category; }",
-  "namespace std          {      class      error_code; }",
-  "namespace std          {      class      error_condition; }",
-  "namespace std          { class ios_base::failure; }",
-  "namespace std          { enum class      future_errc; }",
-  "namespace std          {      class      future_error; }",
-  "namespace std          { enum class      future_status; }",
-  "namespace std::chrono  {      class      high_resolution_clock; }",
-  "namespace std          { enum class      launch; }",
-  "namespace std::regex_constants { using   match_flag_type = unsigned; }",
-  "namespace std          {      using      max_align_t = long double; }",
-  "namespace std          {      class      mutex; }",
-  "namespace std          {      using      nullptr_t = void*; }",
-  "namespace std          {      class      random_device; }",
-  "namespace std          {      class      recursive_mutex; }",
-  "namespace std          {      class      recursive_timed_mutex; }",
-  "namespace std          {      class      regex; }",
-  "namespace std          {      class     wregex; }",
-  "namespace std          {     struct      regex_error; }",
-  "namespace std          {      class      shared_mutex; }",
-  "namespace std          {      class      shared_timed_mutex; }",
-  "namespace std          {      class   u16string; }",
-  "namespace std          {      class   u32string; }",
-  "namespace std::chrono  {      class      steady_clock; }",
-  "namespace std::regex_constants { using   syntax_option_type = unsigned; }",
-  "namespace std::chrono  {      class      system_clock; }",
-  "namespace std          {     struct      system_error; }",
-  "namespace std          {      class      thread; }",
-  "namespace std          {      class      timed_mutex; }",
-  "namespace std          {     struct      try_to_lock_t; }",
-  "namespace std          {      class      type_index; }",
+  PT( "namespace std          {     struct      atomic_bool; }" ),
+  PT( "namespace std          {     struct      atomic_char8_t; }" ),
+  PT( "namespace std          {     struct      atomic_char16_t; }" ),
+  PT( "namespace std          {     struct      atomic_char32_t; }" ),
+  PT( "namespace std          {     struct      atomic_char; }" ),
+  PT( "namespace std          {     struct      atomic_flag; }" ),
+  PT( "namespace std          {     struct      atomic_int8_t; }" ),
+  PT( "namespace std          {     struct      atomic_int16_t; }" ),
+  PT( "namespace std          {     struct      atomic_int32_t; }" ),
+  PT( "namespace std          {     struct      atomic_int64_t; }" ),
+  PT( "namespace std          {     struct      atomic_int; }" ),
+  PT( "namespace std          {     struct      atomic_int_fast8_t; }" ),
+  PT( "namespace std          {     struct      atomic_int_fast16_t; }" ),
+  PT( "namespace std          {     struct      atomic_int_fast32_t; }" ),
+  PT( "namespace std          {     struct      atomic_int_fast64_t; }" ),
+  PT( "namespace std          {     struct      atomic_int_least8_t; }" ),
+  PT( "namespace std          {     struct      atomic_int_least16_t; }" ),
+  PT( "namespace std          {     struct      atomic_int_least32_t; }" ),
+  PT( "namespace std          {     struct      atomic_int_least64_t; }" ),
+  PT( "namespace std          {     struct      atomic_intmax_t; }" ),
+  PT( "namespace std          {     struct      atomic_intptr_t; }" ),
+  PT( "namespace std          {     struct      atomic_llong; }" ),
+  PT( "namespace std          {     struct      atomic_long; }" ),
+  PT( "namespace std          {     struct      atomic_ptrdiff_t; }" ),
+  PT( "namespace std          {     struct      atomic_schar; }" ),
+  PT( "namespace std          {     struct      atomic_short; }" ),
+  PT( "namespace std          {     struct      atomic_signed_lock_free; }" ),
+  PT( "namespace std          {     struct      atomic_size_t; }" ),
+  PT( "namespace std          {     struct      atomic_uchar; }" ),
+  PT( "namespace std          {     struct      atomic_uint16_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint32_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint64_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint8_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint; }" ),
+  PT( "namespace std          {     struct      atomic_uint_fast8_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint_fast16_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint_fast32_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint_fast64_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint_least8_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint_least16_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint_least32_t; }" ),
+  PT( "namespace std          {     struct      atomic_uint_least64_t; }" ),
+  PT( "namespace std          {     struct      atomic_uintmax_t; }" ),
+  PT( "namespace std          {     struct      atomic_uintptr_t; }" ),
+  PT( "namespace std          {     struct      atomic_ullong; }" ),
+  PT( "namespace std          {     struct      atomic_ulong; }" ),
+  PT( "namespace std          {     struct      atomic_unsigned_lock_free; }" ),
+  PT( "namespace std          {     struct      atomic_ushort; }" ),
+  PT( "namespace std          {     struct      atomic_wchar_t; }" ),
+  PT( "namespace std          {      class      bad_array_new_length; }" ),
+  PT( "namespace std          {      class      bad_function_call; }" ),
+  PT( "namespace std          {      class      bad_weak_ptr; }" ),
+  PT( "namespace std          {      class      bernoulli_distribution; }" ),
+  PT( "namespace std          {      class      condition_variable; }" ),
+  PT( "namespace std          {      class      condition_variable_any; }" ),
+  PT( "namespace std          { enum class      cv_status; }" ),
+  PT( "namespace std          {     struct      defer_lock_t; }" ),
+  PT( "namespace std          {     struct  imaxdiv_t; }" ),
+  PT( "namespace std          {     struct    lldiv_t; }" ),
+  PT( "namespace std          {      class      error_category; }" ),
+  PT( "namespace std          {      class      error_code; }" ),
+  PT( "namespace std          {      class      error_condition; }" ),
+  PT( "namespace std          { class ios_base::failure; }" ),
+  PT( "namespace std          { enum class      future_errc; }" ),
+  PT( "namespace std          {      class      future_error; }" ),
+  PT( "namespace std          { enum class      future_status; }" ),
+  PT( "namespace std::chrono  {      class      high_resolution_clock; }" ),
+  PT( "namespace std          { enum class      launch; }" ),
+  PT( "namespace std::regex_constants { using   match_flag_type = unsigned; }" ),
+  PT( "namespace std          {      using      max_align_t = long double; }" ),
+  PT( "namespace std          {      class      mutex; }" ),
+  PT( "namespace std          {      using      nullptr_t = void*; }" ),
+  PT( "namespace std          {      class      random_device; }" ),
+  PT( "namespace std          {      class      recursive_mutex; }" ),
+  PT( "namespace std          {      class      recursive_timed_mutex; }" ),
+  PT( "namespace std          {      class      regex; }" ),
+  PT( "namespace std          {      class     wregex; }" ),
+  PT( "namespace std          {     struct      regex_error; }" ),
+  PT( "namespace std          {      class      shared_mutex; }" ),
+  PT( "namespace std          {      class      shared_timed_mutex; }" ),
+  PT( "namespace std          {      class   u16string; }" ),
+  PT( "namespace std          {      class   u32string; }" ),
+  PT( "namespace std::chrono  {      class      steady_clock; }" ),
+  PT( "namespace std::regex_constants { using   syntax_option_type = unsigned; }" ),
+  PT( "namespace std::chrono  {      class      system_clock; }" ),
+  PT( "namespace std          {     struct      system_error; }" ),
+  PT( "namespace std          {      class      thread; }" ),
+  PT( "namespace std          {      class      timed_mutex; }" ),
+  PT( "namespace std          {     struct      try_to_lock_t; }" ),
+  PT( "namespace std          {      class      type_index; }" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
  * Predefined types for C++17.
  */
-static char const *const PREDEFINED_STD_CPP_17[] = {
-  "namespace std             { enum class     align_val_t; }",
-  "namespace std             {      class     bad_any_cast; }",
-  "namespace std             {      class     bad_optional_access; }",
-  "namespace std             {      class     bad_variant_access; }",
-  "namespace std             { enum           byte; }",
-  "namespace std             { enum class     chars_format; }",
-  "namespace std::filesystem { enum class     copy_options; }",
-  "namespace std::filesystem {      class     directory_entry; }",
-  "namespace std::filesystem {      class     directory_iterator; }",
-  "namespace std::filesystem { enum class     directory_options; }",
-  "namespace std::filesystem {      class     file_status; }",
-  "namespace std::filesystem { enum class     file_type; }",
-  "namespace std::filesystem {      class     filesystem_error; }",
-  "namespace std::filesystem {      class     path; }",
-  "namespace std::filesystem { enum class     perms; }",
-  "namespace std::filesystem { enum class     perm_options; }",
-  "namespace std::filesystem {      class     recursive_directory_iterator; }",
-  "namespace std::filesystem {     struct     space_info; }",
-  "namespace std             {      class     string_view; }",
-  "namespace std             {      class  u16string_view; }",
-  "namespace std             {      class  u32string_view; }",
-  "namespace std             {      class    wstring_view; }",
+static predef_type_t const PREDEFINED_STD_CPP_17[] = {
+  PT( "namespace std             { enum class     align_val_t; }" ),
+  PT( "namespace std             {      class     bad_any_cast; }" ),
+  PT( "namespace std             {      class     bad_optional_access; }" ),
+  PT( "namespace std             {      class     bad_variant_access; }" ),
+  PT( "namespace std             { enum           byte; }" ),
+  PT( "namespace std             { enum class     chars_format; }" ),
+  PT( "namespace std::filesystem { enum class     copy_options; }" ),
+  PT( "namespace std::filesystem {      class     directory_entry; }" ),
+  PT( "namespace std::filesystem {      class     directory_iterator; }" ),
+  PT( "namespace std::filesystem { enum class     directory_options; }" ),
+  PT( "namespace std::filesystem {      class     file_status; }" ),
+  PT( "namespace std::filesystem { enum class     file_type; }" ),
+  PT( "namespace std::filesystem {      class     filesystem_error; }" ),
+  PT( "namespace std::filesystem {      class     path; }" ),
+  PT( "namespace std::filesystem { enum class     perms; }" ),
+  PT( "namespace std::filesystem { enum class     perm_options; }" ),
+  PT( "namespace std::filesystem {      class     recursive_directory_iterator; }" ),
+  PT( "namespace std::filesystem {     struct     space_info; }" ),
+  PT( "namespace std             {      class     string_view; }" ),
+  PT( "namespace std             {      class  u16string_view; }" ),
+  PT( "namespace std             {      class  u32string_view; }" ),
+  PT( "namespace std             {      class    wstring_view; }" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
  * Predefined types for C++20.
  */
-static char const *const PREDEFINED_STD_CPP_20[] = {
-  "namespace std         {      class   ambiguous_local_time; }",
-  "namespace std::chrono { enum class   choose; }",
-  "namespace std::chrono {      class   day; }",
-  "namespace std         {     struct   destroying_delete_t; }",
-  "namespace std::chrono {     struct   file_clock; }",
-  "namespace std         {      class   format_error; }",
-  "namespace std::chrono {     struct   gps_clock; }",
-  "namespace std::chrono {     struct   is_clock; }",
-  "namespace std         {      class   jthread; }",
-  "namespace std::chrono {     struct   last_spec; }",
-  "namespace std::chrono {      class   leap_second; }",
-  "namespace std::chrono {     struct   local_info; }",
-  "namespace std::chrono {     struct   local_t; }",
-  "namespace std::chrono {      class   month; }",
-  "namespace std::chrono {      class   month_day; }",
-  "namespace std::chrono {      class   month_day_last; }",
-  "namespace std::chrono {      class   month_weekday; }",
-  "namespace std::chrono {      class   month_weekday_last; }",
-  "namespace std::chrono {      class   nonexistent_local_time; }",
-  "namespace std         {     struct   nonstopstate_t; }",
-  "namespace std         {     struct   source_location; }",
-  "namespace std         {      class u8string_view; }",
-  "namespace std         {      class   stop_source; }",
-  "namespace std         {      class   stop_token; }",
-  "namespace std         {     struct   strong_equality; }",
-  "namespace std::chrono {     struct   sys_info; }",
-  "namespace std::chrono {     struct   tai_clock; }",
-  "namespace std::chrono {     struct   time_zone; }",
-  "namespace std::chrono {      class   time_zone_link; }",
-  "namespace std::chrono {     struct   tzdb; }",
-  "namespace std::chrono {     struct   tzdb_list; }",
-  "namespace std::chrono {     struct   utc_clock; }",
-  "namespace std::chrono {      class   weekday; }",
-  "namespace std::chrono {      class   weekday_indexed; }",
-  "namespace std::chrono {      class   weekday_last; }",
-  "namespace std         {     struct   weak_equality; }",
-  "namespace std::chrono {      class   year; }",
-  "namespace std::chrono {      class   year_month; }",
-  "namespace std::chrono {      class   year_month_day; }",
-  "namespace std::chrono {      class   year_month_day_last; }",
-  "namespace std::chrono {      class   year_month_weekday; }",
-  "namespace std::chrono {      class   year_month_weekday_last; }",
+static predef_type_t const PREDEFINED_STD_CPP_20[] = {
+  PT( "namespace std         {      class   ambiguous_local_time; }" ),
+  PT( "namespace std::chrono { enum class   choose; }" ),
+  PT( "namespace std::chrono {      class   day; }" ),
+  PT( "namespace std         {     struct   destroying_delete_t; }" ),
+  PT( "namespace std::chrono {     struct   file_clock; }" ),
+  PT( "namespace std         {      class   format_error; }" ),
+  PT( "namespace std::chrono {     struct   gps_clock; }" ),
+  PT( "namespace std::chrono {     struct   is_clock; }" ),
+  PT( "namespace std         {      class   jthread; }" ),
+  PT( "namespace std::chrono {     struct   last_spec; }" ),
+  PT( "namespace std::chrono {      class   leap_second; }" ),
+  PT( "namespace std::chrono {     struct   local_info; }" ),
+  PT( "namespace std::chrono {     struct   local_t; }" ),
+  PT( "namespace std::chrono {      class   month; }" ),
+  PT( "namespace std::chrono {      class   month_day; }" ),
+  PT( "namespace std::chrono {      class   month_day_last; }" ),
+  PT( "namespace std::chrono {      class   month_weekday; }" ),
+  PT( "namespace std::chrono {      class   month_weekday_last; }" ),
+  PT( "namespace std::chrono {      class   nonexistent_local_time; }" ),
+  PT( "namespace std         {     struct   nonstopstate_t; }" ),
+  PT( "namespace std         {     struct   source_location; }" ),
+  PT( "namespace std         {      class u8string_view; }" ),
+  PT( "namespace std         {      class   stop_source; }" ),
+  PT( "namespace std         {      class   stop_token; }" ),
+  PT( "namespace std         {     struct   strong_equality; }" ),
+  PT( "namespace std::chrono {     struct   sys_info; }" ),
+  PT( "namespace std::chrono {     struct   tai_clock; }" ),
+  PT( "namespace std::chrono {     struct   time_zone; }" ),
+  PT( "namespace std::chrono {      class   time_zone_link; }" ),
+  PT( "namespace std::chrono {     struct   tzdb; }" ),
+  PT( "namespace std::chrono {     struct   tzdb_list; }" ),
+  PT( "namespace std::chrono {     struct   utc_clock; }" ),
+  PT( "namespace std::chrono {      class   weekday; }" ),
+  PT( "namespace std::chrono {      class   weekday_indexed; }" ),
+  PT( "namespace std::chrono {      class   weekday_last; }" ),
+  PT( "namespace std         {     struct   weak_equality; }" ),
+  PT( "namespace std::chrono {      class   year; }" ),
+  PT( "namespace std::chrono {      class   year_month; }" ),
+  PT( "namespace std::chrono {      class   year_month_day; }" ),
+  PT( "namespace std::chrono {      class   year_month_day_last; }" ),
+  PT( "namespace std::chrono {      class   year_month_weekday; }" ),
+  PT( "namespace std::chrono {      class   year_month_weekday_last; }" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
  * Predefined required types for C++20.
  */
-static char const *const PREDEFINED_STD_CPP_20_REQUIRED[] = {
+static predef_type_t const PREDEFINED_STD_CPP_20_REQUIRED[] = {
   // required for operator <=>
-  "namespace std { struct partial_ordering; }",
-  "namespace std { struct strong_ordering; }",
-  "namespace std { struct weak_ordering; }",
+  PT( "namespace std { struct partial_ordering; }" ),
+  PT( "namespace std { struct strong_ordering; }" ),
+  PT( "namespace std { struct weak_ordering; }" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
  * Predefined types for C++23.
  */
-static char const *const PREDEFINED_STD_CPP_23[] = {
-  "namespace std {   using  float16_t = float; }",
-  "namespace std {   using bfloat16_t = float; }",
-  "namespace std {   using  float32_t = float; }",
-  "namespace std {   using  float64_t = double; }",
-  "namespace std {   using  float128_t = double[2]; }",
-  "namespace std { class    spanbuf; }",
-  "namespace std { class   wspanbuf; }",
-  "namespace std { class    spanstream; }",
-  "namespace std { class   ispanstream; }",
-  "namespace std { class  wispanstream; }",
-  "namespace std { class   ospanstream; }",
-  "namespace std { class  wospanstream; }",
-  "namespace std { class   wspanstream; }",
-  "namespace std { class    stacktrace; }",
-  "namespace std { class    stacktrace_entry; }",
-  "namespace std { struct   unexpect_t; }",
+static predef_type_t const PREDEFINED_STD_CPP_23[] = {
+  PT( "namespace std {   using  float16_t = float; }" ),
+  PT( "namespace std {   using bfloat16_t = float; }" ),
+  PT( "namespace std {   using  float32_t = float; }" ),
+  PT( "namespace std {   using  float64_t = double; }" ),
+  PT( "namespace std {   using  float128_t = double[2]; }" ),
+  PT( "namespace std { class    spanbuf; }" ),
+  PT( "namespace std { class   wspanbuf; }" ),
+  PT( "namespace std { class    spanstream; }" ),
+  PT( "namespace std { class   ispanstream; }" ),
+  PT( "namespace std { class  wispanstream; }" ),
+  PT( "namespace std { class   ospanstream; }" ),
+  PT( "namespace std { class  wospanstream; }" ),
+  PT( "namespace std { class   wspanstream; }" ),
+  PT( "namespace std { class    stacktrace; }" ),
+  PT( "namespace std { class    stacktrace_entry; }" ),
+  PT( "namespace std { struct   unexpect_t; }" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -630,21 +648,21 @@ static char const *const PREDEFINED_STD_CPP_23[] = {
  *
  * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
  */
-static char const *const PREDEFINED_EMBEDDED_C[] = {
-  "typedef          short _Accum int_hk_t",
-  "typedef          short _Fract int_hr_t",
-  "typedef                _Accum int_k_t",
-  "typedef          long  _Accum int_lk_t",
-  "typedef          long  _Fract int_lr_t",
-  "typedef                _Fract int_r_t",
-  "typedef unsigned short _Accum uint_uhk_t",
-  "typedef unsigned short _Fract uint_uhr_t",
-  "typedef unsigned       _Accum uint_uk_t",
-  "typedef unsigned long  _Accum uint_ulk_t",
-  "typedef unsigned long  _Fract uint_ulr_t",
-  "typedef unsigned       _Fract uint_ur_t",
+static predef_type_t const PREDEFINED_EMBEDDED_C[] = {
+  PT( "typedef          short _Accum int_hk_t" ),
+  PT( "typedef          short _Fract int_hr_t" ),
+  PT( "typedef                _Accum int_k_t" ),
+  PT( "typedef          long  _Accum int_lk_t" ),
+  PT( "typedef          long  _Fract int_lr_t" ),
+  PT( "typedef                _Fract int_r_t" ),
+  PT( "typedef unsigned short _Accum uint_uhk_t" ),
+  PT( "typedef unsigned short _Fract uint_uhr_t" ),
+  PT( "typedef unsigned       _Accum uint_uk_t" ),
+  PT( "typedef unsigned long  _Accum uint_ulk_t" ),
+  PT( "typedef unsigned long  _Fract uint_ulr_t" ),
+  PT( "typedef unsigned       _Fract uint_ur_t" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -653,11 +671,11 @@ static char const *const PREDEFINED_EMBEDDED_C[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_GNU_C[] = {
-  "typedef _Float128   __float128",
-  "typedef _Float16    __fp16",
-  "typedef long double __ibm128",
-  "typedef _Float64x   __float80",
+static predef_type_t const PREDEFINED_GNU_C[] = {
+  PT( "typedef _Float128   __float128" ),
+  PT( "typedef _Float16    __fp16" ),
+  PT( "typedef long double __ibm128" ),
+  PT( "typedef _Float64x   __float80" ),
   //
   // In GNU C, this is a distinct type, not a typedef, which means you can add
   // type modifiers:
@@ -686,11 +704,11 @@ static char const *const PREDEFINED_GNU_C[] = {
   // Hence, it's too much work to support this type as distinct and we'll live
   // with not being able to apply type modifiers.
   //
-  "typedef long long   __int128",
+  PT( "typedef long long   __int128" ),
 
-  "typedef void      (*sighandler_t)(int)",
+  PT( "typedef void      (*sighandler_t)(int)" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -699,47 +717,47 @@ static char const *const PREDEFINED_GNU_C[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_MISC[] = {
-  "typedef  int32_t       blkcnt_t",
-  "typedef  int32_t       blksize_t",
-  "typedef unsigned       cc_t",
-  "struct                 fd_set",
-  "typedef unsigned long  fsblkcnt_t",
-  "typedef unsigned long  fsfilcnt_t",
-  "typedef void          *iconv_t",
-  "typedef  int32_t       key_t",
-  "struct                 locale_t",
-  "typedef  int32_t       mode_t",
-  "typedef unsigned long  nfds_t",
-  "typedef uint32_t       nlink_t",
-  "typedef uint32_t       rlim_t",
-  "struct                 siginfo_t",
-  "typedef void         (*sig_t)(int)",
-  "typedef unsigned long  sigset_t",
-  "typedef  void         *timer_t",
+static predef_type_t const PREDEFINED_MISC[] = {
+  PT( "typedef  int32_t       blkcnt_t" ),
+  PT( "typedef  int32_t       blksize_t" ),
+  PT( "typedef unsigned       cc_t" ),
+  PT( "struct                 fd_set" ),
+  PT( "typedef unsigned long  fsblkcnt_t" ),
+  PT( "typedef unsigned long  fsfilcnt_t" ),
+  PT( "typedef void          *iconv_t" ),
+  PT( "typedef  int32_t       key_t" ),
+  PT( "struct                 locale_t" ),
+  PT( "typedef  int32_t       mode_t" ),
+  PT( "typedef unsigned long  nfds_t" ),
+  PT( "typedef uint32_t       nlink_t" ),
+  PT( "typedef uint32_t       rlim_t" ),
+  PT( "struct                 siginfo_t" ),
+  PT( "typedef void         (*sig_t)(int)" ),
+  PT( "typedef unsigned long  sigset_t" ),
+  PT( "typedef  void         *timer_t" ),
 
-  "enum                   clockid_t",
-  "typedef  int64_t       suseconds_t",
-  "typedef uint32_t       useconds_t",
+  PT( "enum                   clockid_t" ),
+  PT( "typedef  int64_t       suseconds_t" ),
+  PT( "typedef uint32_t       useconds_t" ),
 
-  "typedef uint32_t       id_t",
-  "typedef uint32_t       gid_t",
-  "typedef  int32_t       pid_t",
-  "typedef uint32_t       uid_t",
+  PT( "typedef uint32_t       id_t" ),
+  PT( "typedef uint32_t       gid_t" ),
+  PT( "typedef  int32_t       pid_t" ),
+  PT( "typedef uint32_t       uid_t" ),
 
-  "typedef void          *posix_spawnattr_t",
-  "typedef void          *posix_spawn_file_actions_t",
+  PT( "typedef void          *posix_spawnattr_t" ),
+  PT( "typedef void          *posix_spawn_file_actions_t" ),
 
-  "struct                 regex_t",
-  "struct                 regmatch_t",
-  "typedef size_t         regoff_t",
+  PT( "struct                 regex_t" ),
+  PT( "struct                 regmatch_t" ),
+  PT( "typedef size_t         regoff_t" ),
 
-  "typedef uint32_t       in_addr_t",
-  "typedef uint16_t       in_port_t",
-  "typedef uint32_t       sa_family_t",
-  "typedef uint32_t       socklen_t",
+  PT( "typedef uint32_t       in_addr_t" ),
+  PT( "typedef uint16_t       in_port_t" ),
+  PT( "typedef uint32_t       sa_family_t" ),
+  PT( "typedef uint32_t       socklen_t" ),
 
-  NULL
+  PT( NULL )
 };
 
 /**
@@ -747,200 +765,200 @@ static char const *const PREDEFINED_MISC[] = {
  *
  * @sa [Windows Data Types](https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types)
  */
-static char const *const PREDEFINED_WIN32[] = {
+static predef_type_t const PREDEFINED_WIN32[] = {
   //
   // The comment about GNU C's __int128 type applies to these also.
   //
-  "typedef   signed char          __int8",
-  "typedef          __int8        _int8",
-  "typedef          short         __int16",
-  "typedef          __int16       _int16",
-  "typedef          int           __int32",
-  "typedef          __int32       _int32",
-  "typedef          long long     __int64",
-  "typedef          __int64       _int64",
-  "typedef          wchar_t       __wchar_t",
+  PT( "typedef   signed char          __int8" ),
+  PT( "typedef          __int8        _int8" ),
+  PT( "typedef          short         __int16" ),
+  PT( "typedef          __int16       _int16" ),
+  PT( "typedef          int           __int32" ),
+  PT( "typedef          __int32       _int32" ),
+  PT( "typedef          long long     __int64" ),
+  PT( "typedef          __int64       _int64" ),
+  PT( "typedef          wchar_t       __wchar_t" ),
 
-  "struct                         __m128",
-  "struct                         __m128d",
-  "struct                         __m128i",
-  "struct                         __m64",
+  PT( "struct                         __m128" ),
+  PT( "struct                         __m128d" ),
+  PT( "struct                         __m128i" ),
+  PT( "struct                         __m64" ),
 
-  "typedef          int           BOOL",
-  "typedef BOOL                 *PBOOL",
-  "typedef BOOL                *LPBOOL",
-  "typedef          wchar_t       WCHAR",
-  "typedef WCHAR                *PWCHAR",
-  "typedef unsigned char          BYTE",
-  "typedef WCHAR                 TBYTE",
-  "typedef BYTE                 *PBYTE",
-  "typedef TBYTE               *PTBYTE",
-  "typedef BYTE                *LPBYTE",
-  "typedef BYTE                   BOOLEAN",
-  "typedef BOOLEAN              *PBOOLEAN",
-  "typedef          char          CHAR",
-  "typedef          char         CCHAR",
-  "typedef CHAR                 *PCHAR",
-  "typedef CHAR                *LPCHAR",
-  "typedef WCHAR                 TCHAR",
-  "typedef TCHAR               *PTCHAR",
-  "typedef          short         SHORT",
-  "typedef SHORT                *PSHORT",
-  "typedef          int           INT",
-  "typedef INT                  *PINT",
-  "typedef          int        *LPINT",
-  "typedef          long          LONG",
-  "typedef LONG                 *PLONG",
-  "typedef          long       *LPLONG",
-  "typedef          long long     LONGLONG",
-  "typedef LONGLONG             *PLONGLONG",
-  "typedef          float         FLOAT",
-  "typedef FLOAT                *PFLOAT",
-  "typedef          void        *PVOID",
-  "typedef          void       *LPVOID",
-  "typedef    const void      *LPCVOID",
+  PT( "typedef          int           BOOL" ),
+  PT( "typedef BOOL                 *PBOOL" ),
+  PT( "typedef BOOL                *LPBOOL" ),
+  PT( "typedef          wchar_t       WCHAR" ),
+  PT( "typedef WCHAR                *PWCHAR" ),
+  PT( "typedef unsigned char          BYTE" ),
+  PT( "typedef WCHAR                 TBYTE" ),
+  PT( "typedef BYTE                 *PBYTE" ),
+  PT( "typedef TBYTE               *PTBYTE" ),
+  PT( "typedef BYTE                *LPBYTE" ),
+  PT( "typedef BYTE                   BOOLEAN" ),
+  PT( "typedef BOOLEAN              *PBOOLEAN" ),
+  PT( "typedef          char          CHAR" ),
+  PT( "typedef          char         CCHAR" ),
+  PT( "typedef CHAR                 *PCHAR" ),
+  PT( "typedef CHAR                *LPCHAR" ),
+  PT( "typedef WCHAR                 TCHAR" ),
+  PT( "typedef TCHAR               *PTCHAR" ),
+  PT( "typedef          short         SHORT" ),
+  PT( "typedef SHORT                *PSHORT" ),
+  PT( "typedef          int           INT" ),
+  PT( "typedef INT                  *PINT" ),
+  PT( "typedef          int        *LPINT" ),
+  PT( "typedef          long          LONG" ),
+  PT( "typedef LONG                 *PLONG" ),
+  PT( "typedef          long       *LPLONG" ),
+  PT( "typedef          long long     LONGLONG" ),
+  PT( "typedef LONGLONG             *PLONGLONG" ),
+  PT( "typedef          float         FLOAT" ),
+  PT( "typedef FLOAT                *PFLOAT" ),
+  PT( "typedef          void        *PVOID" ),
+  PT( "typedef          void       *LPVOID" ),
+  PT( "typedef    const void      *LPCVOID" ),
 
-  "typedef unsigned char          UCHAR",
-  "typedef UCHAR                *PUCHAR",
-  "typedef unsigned short         USHORT",
-  "typedef USHORT               *PUSHORT",
-  "typedef unsigned int           UINT",
-  "typedef UINT                 *PUINT",
-  "typedef unsigned long          ULONG",
-  "typedef ULONG                *PULONG",
-  "typedef unsigned long long     ULONGLONG",
-  "typedef ULONGLONG            *PULONGLONG",
+  PT( "typedef unsigned char          UCHAR" ),
+  PT( "typedef UCHAR                *PUCHAR" ),
+  PT( "typedef unsigned short         USHORT" ),
+  PT( "typedef USHORT               *PUSHORT" ),
+  PT( "typedef unsigned int           UINT" ),
+  PT( "typedef UINT                 *PUINT" ),
+  PT( "typedef unsigned long          ULONG" ),
+  PT( "typedef ULONG                *PULONG" ),
+  PT( "typedef unsigned long long     ULONGLONG" ),
+  PT( "typedef ULONGLONG            *PULONGLONG" ),
 
-  "typedef unsigned short         WORD",
-  "typedef WORD                 *PWORD",
-  "typedef WORD                *LPWORD",
-  "typedef unsigned long          DWORD",
-  "typedef DWORD                *PDWORD",
-  "typedef DWORD               *LPDWORD",
-  "typedef unsigned long          DWORDLONG",
-  "typedef DWORDLONG            *PDWORDLONG",
-  "typedef unsigned int           DWORD32",
-  "typedef DWORD32              *PDWORD32",
-  "typedef unsigned long          DWORD64",
-  "typedef DWORD64              *PDWORD64",
-  "typedef unsigned long long     QWORD",
+  PT( "typedef unsigned short         WORD" ),
+  PT( "typedef WORD                 *PWORD" ),
+  PT( "typedef WORD                *LPWORD" ),
+  PT( "typedef unsigned long          DWORD" ),
+  PT( "typedef DWORD                *PDWORD" ),
+  PT( "typedef DWORD               *LPDWORD" ),
+  PT( "typedef unsigned long          DWORDLONG" ),
+  PT( "typedef DWORDLONG            *PDWORDLONG" ),
+  PT( "typedef unsigned int           DWORD32" ),
+  PT( "typedef DWORD32              *PDWORD32" ),
+  PT( "typedef unsigned long          DWORD64" ),
+  PT( "typedef DWORD64              *PDWORD64" ),
+  PT( "typedef unsigned long long     QWORD" ),
 
-  "typedef   signed char          INT8",
-  "typedef INT8                 *PINT8",
-  "typedef          short         INT16",
-  "typedef INT16                *PINT16",
-  "typedef          int           INT32",
-  "typedef INT32                *PINT32",
-  "typedef          long          INT64",
-  "typedef INT64                *PINT64",
-  "typedef          int           HALF_PTR",
-  "typedef HALF_PTR             *PHALF_PTR",
-  "typedef        __int64         INT_PTR",
-  "typedef INT_PTR              *PINT_PTR",
-  "typedef          int           LONG32",
-  "typedef LONG32               *PLONG32",
-  "typedef        __int64         LONG64",
-  "typedef LONG64               *PLONG64",
-  "typedef        __int64         LONG_PTR",
-  "typedef LONG_PTR             *PLONG_PTR",
+  PT( "typedef   signed char          INT8" ),
+  PT( "typedef INT8                 *PINT8" ),
+  PT( "typedef          short         INT16" ),
+  PT( "typedef INT16                *PINT16" ),
+  PT( "typedef          int           INT32" ),
+  PT( "typedef INT32                *PINT32" ),
+  PT( "typedef          long          INT64" ),
+  PT( "typedef INT64                *PINT64" ),
+  PT( "typedef          int           HALF_PTR" ),
+  PT( "typedef HALF_PTR             *PHALF_PTR" ),
+  PT( "typedef        __int64         INT_PTR" ),
+  PT( "typedef INT_PTR              *PINT_PTR" ),
+  PT( "typedef          int           LONG32" ),
+  PT( "typedef LONG32               *PLONG32" ),
+  PT( "typedef        __int64         LONG64" ),
+  PT( "typedef LONG64               *PLONG64" ),
+  PT( "typedef        __int64         LONG_PTR" ),
+  PT( "typedef LONG_PTR             *PLONG_PTR" ),
 
-  "typedef unsigned char          UINT8",
-  "typedef UINT8                *PUINT8",
-  "typedef unsigned short         UINT16",
-  "typedef UINT16               *PUINT16",
-  "typedef unsigned int           UINT32",
-  "typedef UINT32               *PUINT32",
-  "typedef unsigned long          UINT64",
-  "typedef UINT64               *PUINT64",
-  "typedef unsigned int           UHALF_PTR",
-  "typedef UHALF_PTR            *PUHALF_PTR",
-  "typedef unsigned long          UINT_PTR",
-  "typedef UINT_PTR             *PUINT_PTR",
-  "typedef unsigned int           ULONG32",
-  "typedef ULONG32              *PULONG32",
-  "typedef unsigned long          ULONG64",
-  "typedef ULONG64              *PULONG64",
-  "typedef unsigned long          ULONG_PTR",
-  "typedef ULONG_PTR            *PULONG_PTR",
+  PT( "typedef unsigned char          UINT8" ),
+  PT( "typedef UINT8                *PUINT8" ),
+  PT( "typedef unsigned short         UINT16" ),
+  PT( "typedef UINT16               *PUINT16" ),
+  PT( "typedef unsigned int           UINT32" ),
+  PT( "typedef UINT32               *PUINT32" ),
+  PT( "typedef unsigned long          UINT64" ),
+  PT( "typedef UINT64               *PUINT64" ),
+  PT( "typedef unsigned int           UHALF_PTR" ),
+  PT( "typedef UHALF_PTR            *PUHALF_PTR" ),
+  PT( "typedef unsigned long          UINT_PTR" ),
+  PT( "typedef UINT_PTR             *PUINT_PTR" ),
+  PT( "typedef unsigned int           ULONG32" ),
+  PT( "typedef ULONG32              *PULONG32" ),
+  PT( "typedef unsigned long          ULONG64" ),
+  PT( "typedef ULONG64              *PULONG64" ),
+  PT( "typedef unsigned long          ULONG_PTR" ),
+  PT( "typedef ULONG_PTR            *PULONG_PTR" ),
 
-  "typedef ULONG_PTR              DWORD_PTR",
-  "typedef DWORD_PTR            *PDWORD_PTR",
-  "typedef ULONG_PTR              SIZE_T",
-  "typedef SIZE_T               *PSIZE_T",
-  "typedef LONG_PTR               SSIZE_T",
-  "typedef SSIZE_T              *PSSIZE_T",
+  PT( "typedef ULONG_PTR              DWORD_PTR" ),
+  PT( "typedef DWORD_PTR            *PDWORD_PTR" ),
+  PT( "typedef ULONG_PTR              SIZE_T" ),
+  PT( "typedef SIZE_T               *PSIZE_T" ),
+  PT( "typedef LONG_PTR               SSIZE_T" ),
+  PT( "typedef SSIZE_T              *PSSIZE_T" ),
 
-  "typedef PVOID                  HANDLE",
-  "typedef HANDLE               *PHANDLE",
-  "typedef HANDLE              *LPHANDLE",
-  "typedef HANDLE                 HBITMAP",
-  "typedef HANDLE                 HBRUSH",
-  "typedef HANDLE                 HCOLORSPACE",
-  "typedef HANDLE                 HCONV",
-  "typedef HANDLE                 HCONVLIST",
-  "typedef HANDLE                 HDC",
-  "typedef HANDLE                 HDDEDATA",
-  "typedef HANDLE                 HDESK",
-  "typedef HANDLE                 HDROP",
-  "typedef HANDLE                 HDWP",
-  "typedef HANDLE                 HENHMETAFILE",
-  "typedef HANDLE                 HFONT",
-  "typedef HANDLE                 HGDIOBJ",
-  "typedef HANDLE                 HGLOBAL",
-  "typedef HANDLE                 HHOOK",
-  "typedef HANDLE                 HICON",
-  "typedef HICON                  HCURSOR",
-  "typedef HANDLE                 HINSTANCE",
-  "typedef HANDLE                 HKEY",
-  "typedef HKEY                 *PHKEY",
-  "typedef HANDLE                 HKL",
-  "typedef HANDLE                 HLOCAL",
-  "typedef HANDLE                 HMENU",
-  "typedef HANDLE                 HMETAFILE",
-  "typedef HINSTANCE              HMODULE",
-  "typedef HANDLE                 HMONITOR",
-  "typedef HANDLE                 HPALETTE",
-  "typedef HANDLE                 HPEN",
-  "typedef HANDLE                 HRGN",
-  "typedef HANDLE                 HRSRC",
-  "typedef HANDLE                 HSZ",
-  "typedef HANDLE                 HWINSTA",
-  "typedef HANDLE                 HWND",
+  PT( "typedef PVOID                  HANDLE" ),
+  PT( "typedef HANDLE               *PHANDLE" ),
+  PT( "typedef HANDLE              *LPHANDLE" ),
+  PT( "typedef HANDLE                 HBITMAP" ),
+  PT( "typedef HANDLE                 HBRUSH" ),
+  PT( "typedef HANDLE                 HCOLORSPACE" ),
+  PT( "typedef HANDLE                 HCONV" ),
+  PT( "typedef HANDLE                 HCONVLIST" ),
+  PT( "typedef HANDLE                 HDC" ),
+  PT( "typedef HANDLE                 HDDEDATA" ),
+  PT( "typedef HANDLE                 HDESK" ),
+  PT( "typedef HANDLE                 HDROP" ),
+  PT( "typedef HANDLE                 HDWP" ),
+  PT( "typedef HANDLE                 HENHMETAFILE" ),
+  PT( "typedef HANDLE                 HFONT" ),
+  PT( "typedef HANDLE                 HGDIOBJ" ),
+  PT( "typedef HANDLE                 HGLOBAL" ),
+  PT( "typedef HANDLE                 HHOOK" ),
+  PT( "typedef HANDLE                 HICON" ),
+  PT( "typedef HICON                  HCURSOR" ),
+  PT( "typedef HANDLE                 HINSTANCE" ),
+  PT( "typedef HANDLE                 HKEY" ),
+  PT( "typedef HKEY                 *PHKEY" ),
+  PT( "typedef HANDLE                 HKL" ),
+  PT( "typedef HANDLE                 HLOCAL" ),
+  PT( "typedef HANDLE                 HMENU" ),
+  PT( "typedef HANDLE                 HMETAFILE" ),
+  PT( "typedef HINSTANCE              HMODULE" ),
+  PT( "typedef HANDLE                 HMONITOR" ),
+  PT( "typedef HANDLE                 HPALETTE" ),
+  PT( "typedef HANDLE                 HPEN" ),
+  PT( "typedef HANDLE                 HRGN" ),
+  PT( "typedef HANDLE                 HRSRC" ),
+  PT( "typedef HANDLE                 HSZ" ),
+  PT( "typedef HANDLE                 HWINSTA" ),
+  PT( "typedef HANDLE                 HWND" ),
 
-  "typedef          CHAR        *PSTR",
-  "typedef   const  CHAR       *PCSTR",
-  "typedef          CHAR       *LPSTR",
-  "typedef   const  CHAR      *LPCSTR",
-  "typedef         WCHAR       *PWSTR",
-  "typedef   const WCHAR      *PCWSTR",
-  "typedef         WCHAR      *LPWSTR",
-  "typedef   const WCHAR     *LPCWSTR",
-  "typedef       LPWSTR         PTSTR",
-  "typedef       LPWSTR        LPTSTR",
-  "typedef      LPCWSTR        PCTSTR",
-  "typedef      LPCWSTR       LPCTSTR",
+  PT( "typedef          CHAR        *PSTR" ),
+  PT( "typedef   const  CHAR       *PCSTR" ),
+  PT( "typedef          CHAR       *LPSTR" ),
+  PT( "typedef   const  CHAR      *LPCSTR" ),
+  PT( "typedef         WCHAR       *PWSTR" ),
+  PT( "typedef   const WCHAR      *PCWSTR" ),
+  PT( "typedef         WCHAR      *LPWSTR" ),
+  PT( "typedef   const WCHAR     *LPCWSTR" ),
+  PT( "typedef       LPWSTR         PTSTR" ),
+  PT( "typedef       LPWSTR        LPTSTR" ),
+  PT( "typedef      LPCWSTR        PCTSTR" ),
+  PT( "typedef      LPCWSTR       LPCTSTR" ),
 
-  "typedef WORD                   ATOM",
-  "typedef DWORD                  COLORREF",
-  "typedef COLORREF            *LPCOLORREF",
-  "typedef          int           HFILE",
-  "typedef          long          HRESULT",
-  "typedef WORD                   LANGID",
-  "typedef union _LARGE_INTEGER   LARGE_INTEGER",
-  "typedef union _ULARGE_INTEGER ULARGE_INTEGER",
-  "typedef DWORD                  LCID",
-  "typedef PDWORD                PLCID",
-  "typedef DWORD                  LCTYPE",
-  "typedef DWORD                  LGRPID",
-  "typedef LONG_PTR               LRESULT",
-  "typedef HANDLE                 SC_HANDLE",
-  "typedef LPVOID                 SC_LOCK",
-  "typedef HANDLE                 SERVICE_STATUS_HANDLE",
-  "struct                         UNICODE_STRING",
-  "typedef LONGLONG               USN",
-  "typedef UINT_PTR               WPARAM",
+  PT( "typedef WORD                   ATOM" ),
+  PT( "typedef DWORD                  COLORREF" ),
+  PT( "typedef COLORREF            *LPCOLORREF" ),
+  PT( "typedef          int           HFILE" ),
+  PT( "typedef          long          HRESULT" ),
+  PT( "typedef WORD                   LANGID" ),
+  PT( "typedef union _LARGE_INTEGER   LARGE_INTEGER" ),
+  PT( "typedef union _ULARGE_INTEGER ULARGE_INTEGER" ),
+  PT( "typedef DWORD                  LCID" ),
+  PT( "typedef PDWORD                PLCID" ),
+  PT( "typedef DWORD                  LCTYPE" ),
+  PT( "typedef DWORD                  LGRPID" ),
+  PT( "typedef LONG_PTR               LRESULT" ),
+  PT( "typedef HANDLE                 SC_HANDLE" ),
+  PT( "typedef LPVOID                 SC_LOCK" ),
+  PT( "typedef HANDLE                 SERVICE_STATUS_HANDLE" ),
+  PT( "struct                         UNICODE_STRING" ),
+  PT( "typedef LONGLONG               USN" ),
+  PT( "typedef UINT_PTR               WPARAM" ),
 
-  NULL
+  PT( NULL )
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -1011,14 +1029,14 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
 /**
  * Parses an array of predefined type declarations.
  *
- * @param types An array of pointers to strings of **cdecl** commands that
- * define types.  The last element must be NULL.
+ * @param types The array of predefined types to parse.  The last element
+ * _must_ have its \ref predef_type::str "str" be NULL.
  */
-static void parse_predefined_types( char const *const types[static const 2] ) {
+static void parse_predef_types( predef_type_t const types[static const 2] ) {
   assert( types != NULL );
-  for ( char const *const *ptype = types; *ptype != NULL; ++ptype ) {
-    if ( unlikely( cdecl_parse_string( *ptype, strlen( *ptype ) ) != EX_OK ) )
-      INTERNAL_ERR( "\"%s\": failed to parse predefined type\n", *ptype );
+  for ( predef_type_t const *pt = types; pt->str != NULL; ++pt ) {
+    if ( unlikely( cdecl_parse_string( pt->str, strlen( pt->str ) ) != EX_OK ) )
+      INTERNAL_ERR( "failed parsing predefined type on line %u\n", pt->line );
   } // for
 }
 
@@ -1115,36 +1133,36 @@ void c_typedef_init( void ) {
     opt_lang = LANG_C_NEW;
 
     predefined_lang_ids = LANG_MIN(C_KNR);
-    parse_predefined_types( PREDEFINED_KNR_C );
+    parse_predef_types( PREDEFINED_KNR_C );
 
     predefined_lang_ids = LANG_MIN(C_89);
-    parse_predefined_types( PREDEFINED_STD_C_89 );
-    parse_predefined_types( PREDEFINED_FLOATING_POINT_EXTENSIONS );
-    parse_predefined_types( PREDEFINED_GNU_C );
+    parse_predef_types( PREDEFINED_STD_C_89 );
+    parse_predef_types( PREDEFINED_FLOATING_POINT_EXTENSIONS );
+    parse_predef_types( PREDEFINED_GNU_C );
 
     predefined_lang_ids = LANG_MIN(C_95);
-    parse_predefined_types( PREDEFINED_STD_C_95 );
-    parse_predefined_types( PREDEFINED_PTHREAD_H );
-    parse_predefined_types( PREDEFINED_WIN32 );
+    parse_predef_types( PREDEFINED_STD_C_95 );
+    parse_predef_types( PREDEFINED_PTHREAD_H );
+    parse_predef_types( PREDEFINED_WIN32 );
 
     predefined_lang_ids = LANG_MIN(C_99);
-    parse_predefined_types( PREDEFINED_STD_C_99 );
+    parse_predef_types( PREDEFINED_STD_C_99 );
 
     // However, Embedded C extensions are available only in C99.
     opt_lang = LANG_C_99;
     predefined_lang_ids = LANG_C_99;
-    parse_predefined_types( PREDEFINED_EMBEDDED_C );
+    parse_predef_types( PREDEFINED_EMBEDDED_C );
     opt_lang = LANG_C_NEW;
 
     // Must be defined after C99.
     predefined_lang_ids = LANG_MIN(C_89);
-    parse_predefined_types( PREDEFINED_MISC );
+    parse_predef_types( PREDEFINED_MISC );
 
     predefined_lang_ids = LANG_MIN(C_11);
-    parse_predefined_types( PREDEFINED_STD_C_11 );
+    parse_predef_types( PREDEFINED_STD_C_11 );
 
     predefined_lang_ids = LANG_MIN(C_23);
-    parse_predefined_types( PREDEFINED_STD_C_23 );
+    parse_predef_types( PREDEFINED_STD_C_23 );
   }
 
   //
@@ -1155,23 +1173,23 @@ void c_typedef_init( void ) {
 
   if ( opt_typedefs ) {
     predefined_lang_ids = LANG_MIN(CPP_OLD);
-    parse_predefined_types( PREDEFINED_STD_CPP );
+    parse_predef_types( PREDEFINED_STD_CPP );
 
     predefined_lang_ids = LANG_MIN(CPP_11);
-    parse_predefined_types( PREDEFINED_STD_CPP_11 );
+    parse_predef_types( PREDEFINED_STD_CPP_11 );
 
     predefined_lang_ids = LANG_MIN(CPP_17);
-    parse_predefined_types( PREDEFINED_STD_CPP_17 );
+    parse_predef_types( PREDEFINED_STD_CPP_17 );
 
     predefined_lang_ids = LANG_MIN(CPP_20);
-    parse_predefined_types( PREDEFINED_STD_CPP_20 );
+    parse_predef_types( PREDEFINED_STD_CPP_20 );
 
     predefined_lang_ids = LANG_MIN(CPP_23);
-    parse_predefined_types( PREDEFINED_STD_CPP_23 );
+    parse_predef_types( PREDEFINED_STD_CPP_23 );
   }
 
   predefined_lang_ids = LANG_MIN(CPP_20);
-  parse_predefined_types( PREDEFINED_STD_CPP_20_REQUIRED );
+  parse_predef_types( PREDEFINED_STD_CPP_20_REQUIRED );
 
   predefined_lang_ids = LANG_NONE;
   opt_lang = orig_lang;
