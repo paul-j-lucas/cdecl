@@ -51,7 +51,8 @@
  *  + Adds non-whitespace-only lines to the history.
  *
  * @param sbuf The \ref strbuf to use.
- * @param prog_name The name of the running program to parse from `~/.inputrc`.
+ * @param prog_name The program-specific values to parse from `~/.inputrc`.  If
+ * NULL, does not read program-specific values.
  * @param fin The file to read from.
  * @param fout The file to print the prompts, if any, to.  If NULL, does not
  * read interactively.
