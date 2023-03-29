@@ -1012,15 +1012,15 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
 /**
  * Parses an array of predefined type declarations.
  *
- * @param types A pointer to the start of an array of pointers to strings of
- * **cdecl** commands that define types.  The last element must be NULL.
+ * @param types An array of pointers to strings of **cdecl** commands that
+ * define types.  The last element must be NULL.
  */
-static void parse_predefined_types( char const *const *types ) {
+static void parse_predefined_types( char const *const types[static const 2] ) {
   assert( types != NULL );
-  do {
-    if ( unlikely( cdecl_parse_string( *types, strlen( *types ) ) != EX_OK ) )
-      INTERNAL_ERR( "\"%s\": failed to parse predefined type\n", *types );
-  } while ( *++types != NULL );
+  for ( char const *const *ptype = types; *ptype != NULL; ++ptype ) {
+    if ( unlikely( cdecl_parse_string( *ptype, strlen( *ptype ) ) != EX_OK ) )
+      INTERNAL_ERR( "\"%s\": failed to parse predefined type\n", *ptype );
+  } // for
 }
 
 /**
