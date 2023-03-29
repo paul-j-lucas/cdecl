@@ -281,7 +281,7 @@
  * Dumps a comma followed by a newline the _second_ and subsequent times it's
  * called.  It's used to separate items being dumped.
  */
-#define DUMP_COMMA                fprint_sep( stdout, ",\n", &dump_comma )
+#define DUMP_COMMA                fput_sep( ",\n", &dump_comma, stdout )
 
 /**
  * Dumps an AST.

@@ -624,7 +624,7 @@ static void g_print_ast_list( g_state_t const *g,
   unsigned const gib_flags = g->gib_flags & ~C_GIB_OMIT_TYPE;
 
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
-    fprint_sep( g->gout, ", ", &comma );
+    fput_sep( ", ", &comma, g->gout );
     c_ast_t const *const ast = c_param_ast( ast_node );
     c_ast_gibberish_impl( ast, gib_flags, /*printed_typedef=*/false, g->gout );
   } // for

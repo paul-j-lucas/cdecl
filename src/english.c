@@ -100,7 +100,7 @@ static void c_ast_func_params_english( c_ast_t const *ast, FILE *eout ) {
 
   bool comma = false;
   FOREACH_AST_FUNC_PARAM( param, ast ) {
-    fprint_sep( eout, ", ", &comma );
+    fput_sep( ", ", &comma, eout );
 
     c_ast_t const *const param_ast = c_param_ast( param );
     c_sname_t const *const sname = c_ast_find_name( param_ast, C_VISIT_DOWN );
@@ -152,7 +152,7 @@ static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *eout ) {
 
   bool comma = false;
   FOREACH_AST_LAMBDA_CAPTURE( capture, ast ) {
-    fprint_sep( eout, ", ", &comma );
+    fput_sep( ", ", &comma, eout );
 
     c_ast_t const *const capture_ast = c_capture_ast( capture );
     assert( capture_ast->kind == K_CAPTURE );

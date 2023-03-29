@@ -1215,7 +1215,7 @@ bool true_clear( bool *flag ) {
  * @param sout The `FILE` to print to.
  */
 C_UTIL_H_INLINE
-void fprint_sep( FILE *sout, char const *sep, bool *sep_flag ) {
+void fput_sep( char const *sep, bool *sep_flag, FILE *sout ) {
   if ( true_or_set( sep_flag ) )
     FPUTS( sep, sout );
 }
