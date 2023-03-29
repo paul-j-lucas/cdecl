@@ -589,7 +589,6 @@ static char const *const PREDEFINED_STD_CPP_20[] = {
   NULL
 };
 
-
 /**
  * Predefined required types for C++20.
  */
