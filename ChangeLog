@@ -1,3 +1,7 @@
+2023-03-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, english.c, gibberish.c, parser.y, util.h: s/fprint_sep/fput_sep/
+
 2023-03-28  Paul J. Lucas <paul@lucasmail.org>
 
    * lib/Makefile.am, fnmatch.c, stdio.in.h, wchar.in.h, gnulib-comp.m4,
