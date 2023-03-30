@@ -502,7 +502,7 @@ static bool set_using( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Helper function for fprint_list() that, given a pointer to a pointer to an
+ * Helper function for fput_list() that, given a pointer to a pointer to an
  * slist_node whose data is a `set_option_t*`, returns the option's name.
  *
  * @param ppelt A pointer to the pointer to the element to get the string of.
@@ -581,7 +581,7 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
       print_error( opt_name_loc,
         "\"%s\": ambiguous set option; could be ", orig_name
       );
-      fprint_list( stderr, found_opt_list.head, &slist_set_option_gets );
+      fput_list( stderr, found_opt_list.head, &slist_set_option_gets );
       EPUTC( '\n' );
       slist_cleanup( &found_opt_list, /*free_fn=*/NULL );
       return false;
