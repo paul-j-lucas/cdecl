@@ -16,7 +16,7 @@ cdecl> explain int x
 declare x as integer
 cdecl> help
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*

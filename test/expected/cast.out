@@ -1,5 +1,7 @@
 cdecl> cast b into block (x as int, y as int) returning double
 (double(^)(int, int))b
+cdecl> cast into array of constant pointer to constant character
+(const char*const[])
 cdecl> cast p into const pointer to array 3 of const pointer to array 5 of int
 (int(*const(*const)[3])[5])p
 cdecl> cast p into const pointer to array 3 of pointer to array 5 of int

@@ -1863,7 +1863,25 @@ cast_command
     /*
      * C-style cast.
      */
-  : Y_cast sname_english_exp as_into_to_exp decl_english_ast
+  : Y_cast as_into_to_exp decl_english_ast
+    {
+      c_ast_t *const decl_ast = $3;
+
+      DUMP_START( "cast_command", "CAST as_into_to_exp decl_english_ast" );
+      DUMP_AST( "decl_english_ast", decl_ast );
+      DUMP_END();
+
+      c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
+      cast_ast->cast.kind = C_CAST_C;
+      cast_ast->cast.to_ast = decl_ast;
+      C_AST_CHECK( cast_ast );
+      c_ast_gibberish( cast_ast, C_GIB_CAST, stdout );
+    }
+
+    /*
+     * C-style cast of a name.
+     */
+  | Y_cast sname_english as_into_to_exp decl_english_ast
     {
       c_ast_t *const decl_ast = $4;
 

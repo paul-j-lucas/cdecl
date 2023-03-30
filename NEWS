@@ -20,6 +20,12 @@ alternative tokens when the option is enabled.
 If both alternative token and either di/trigraph options are set, alternative
 tokens now have priority.
 
+** C casting without a name
+Now allowing C-style casting without a name:
+
+    cdecl> cast to pointer to char
+    (char*)
+
 ** Di/Trigraphs
 Now correctly emitting di/trigraphs for lambda captures and `operator[]`.
 

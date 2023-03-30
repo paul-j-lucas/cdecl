@@ -1,6 +1,6 @@
 cdecl> help
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -18,7 +18,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -36,7 +36,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -94,7 +94,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> set knr
 cdecl> help
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -109,7 +109,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -124,7 +124,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -176,7 +176,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> set c89
 cdecl> help
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -191,7 +191,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -206,7 +206,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -259,7 +259,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> set c95
 cdecl> help
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -274,7 +274,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -289,7 +289,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -342,7 +342,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> set c99
 cdecl> help
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -357,7 +357,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -372,7 +372,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -426,7 +426,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> set c11
 cdecl> help
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -444,7 +444,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -462,7 +462,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -519,7 +519,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> set c17
 cdecl> help
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -537,7 +537,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -555,7 +555,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
-  cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
@@ -612,7 +612,8 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> set c++
 c++decl> help
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -636,7 +637,8 @@ scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -660,7 +662,8 @@ scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -736,7 +739,8 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> set c++98
 c++decl> help
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
@@ -755,7 +759,8 @@ scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
@@ -774,7 +779,8 @@ scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
@@ -839,7 +845,8 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> set c++03
 c++decl> help
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
@@ -858,7 +865,8 @@ scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
@@ -877,7 +885,8 @@ scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
@@ -942,7 +951,8 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> set c++11
 c++decl> help
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -966,7 +976,8 @@ scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -990,7 +1001,8 @@ scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -1065,7 +1077,8 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> set c++14
 c++decl> help
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -1089,7 +1102,8 @@ scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -1113,7 +1127,8 @@ scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -1188,7 +1203,8 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> set c++17
 c++decl> help
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -1212,7 +1228,8 @@ scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -1236,7 +1253,8 @@ scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -1311,7 +1329,8 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> set c++20
 c++decl> help
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -1335,7 +1354,8 @@ scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
@@ -1359,7 +1379,8 @@ scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
+  cast [<name>] {as|[in]to} <english>
+  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   declare <operator> as <english>
   declare [<english>] lambda <lambda-english>
