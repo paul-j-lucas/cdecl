@@ -1,5 +1,6 @@
 2023-03-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Collapsed two C-style cast rules.
    * NEWS, cdecl.1, help.c, parser.y, cast.out, cl.out, help.out, cast.test:
      Now allowing C-style casting without a name.
    * NEWS: Grammar fix.
