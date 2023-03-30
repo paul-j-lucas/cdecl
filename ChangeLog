@@ -1,9 +1,8 @@
 2023-03-30  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Collapsed two C-style cast rules.
-   * NEWS, cdecl.1, help.c, parser.y, cast.out, cl.out, help.out, cast.test:
-     Now allowing C-style casting without a name.
-   * NEWS: Grammar fix.
+   * cdecl.1, help.c, parser.y, cast.out, cl.out, help.out, cast.test: Now
+     allowing C-style casting without a name.
    * parser.y, print.c, set_options.c, util.c, util.h: s/fprint_list/fput_list/
    * cli_options.c: Now checking -c/--config and -f/--file arguments for empty
      strings and complaining.
@@ -31,8 +30,7 @@
 
 2023-03-27  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, dump.c, parser.y, debug.out: Made debug output more
-     JSON5-like.
+   * cdecl.1, dump.c, parser.y, debug.out: Made debug output more JSON5-like.
 
 2023-03-25  Paul J. Lucas <paul@lucasmail.org>
 
@@ -74,7 +72,6 @@
    * c_operator.c: s/LANG_ANY/LANG_NONE/
    * c_ast_check.c, c_operator.c, c_operator.h, dump.c, parser.y:
      s/name/literal/ for c_operator.
-   * NEWS: Updated.
 
 2023-03-19  Paul J. Lucas <paul@lucasmail.org>
 
@@ -86,21 +83,20 @@
 
    * c_kind.h: Now using unreachable() for K_PLACEHOLDER.
    * stddef.in.h, verify.h, stddef_h.m4: Updated GnuLib.
-   * NEWS, gibberish.c, alt-tokens.out, alt-tokens.test: Blocks now correctly
-     print alternative tokens when the option is enabled.
-   * NEWS, gibberish.c, alt-tokens.out, alt-tokens.test: Lambda captures now
+   * gibberish.c, alt-tokens.out, alt-tokens.test: Blocks now correctly print
+     alternative tokens when the option is enabled.
+   * gibberish.c, alt-tokens.out, alt-tokens.test: Lambda captures now
      correctly print alternative tokens when the option is enabled.
-   * NEWS, c_operator.c, gibberish.c, gibberish.h, alt-tokens.out,
-     alt-tokens.test: Reference and rvalue reference functions now correctly
-     print alternative tokens.
+   * c_operator.c, gibberish.c, gibberish.h, alt-tokens.out, alt-tokens.test:
+     Reference and rvalue reference functions now correctly print alternative
+     tokens.
 
 2023-03-17  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, gibberish.c, digraphs.out, trigraphs.out, digraphs.test,
-     trigraphs.test: Now correctly emitting di/trigraphs for `operator[]`.
-   * NEWS, c_operator.c: Alternative tokens now have priority over
-     di/trigraphs.
-   * NEWS, gibberish.c: Now emitting di/trigraphs for [] lambda captures.
+   * gibberish.c, digraphs.out, trigraphs.out, digraphs.test, trigraphs.test:
+     Now correctly emitting di/trigraphs for `operator[]`.
+   * c_operator.c: Alternative tokens now have priority over di/trigraphs.
+   * gibberish.c: Now emitting di/trigraphs for [] lambda captures.
 
 2023-03-16  Paul J. Lucas <paul@lucasmail.org>
 
@@ -110,12 +106,12 @@
 2023-03-15  Paul J. Lucas <paul@lucasmail.org>
 
    * help.c, help.out: Put {di|tri|no}graphs in same place as show via `set`.
-   * NEWS, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, parser.y, explain.out,
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, parser.y, explain.out,
      explain.test: Fixed explicit constructor with unecessary `()`.
    * cdecl.1: Added mention that the C++20 explicit(expr) specifier is not
      supported.
    * set_options.c: Now using L_options.
-   * NEWS, cdecl.1, c_kind.h, cli_options.c, gibberish.c, help.c, options.c,
+   * cdecl.1, c_kind.h, cli_options.c, gibberish.c, help.c, options.c,
      options.h, set_options.c, alt-tokens.out, cdecl--help.out, cl.out,
      debug.out, declare.out, explain-by-default.out, explicit-ecsu.out,
      explicit-int.out, help.out, lang.out, prompt.out, semicolon.out, set.out,
@@ -160,7 +156,7 @@
 2023-03-09  Paul J. Lucas <paul@lucasmail.org>
 
    * declare.out, declare.test: Eliminated redundant test.
-   * NEWS, cdecl_keyword.c, lexer.l, literals.c, literals.h, declare.out,
+   * cdecl_keyword.c, lexer.l, literals.c, literals.h, declare.out,
      declare.test: `q` is now a synonym for `quit` only when it's the only
      thing on a line other than whitespace.
    * autocomplete.c, util.c, util.h: Replaced is_command() with
@@ -200,16 +196,16 @@
 2023-03-04  Paul J. Lucas <paul@lucasmail.org>
 
    * unistd.in.h: Updated Gnulib.
-   * NEWS, cdecl.1, autocomplete.h, cli_options.c, prompt.c: Now printing
-     configure feature & package options and whether GNU readline is genuine
-     when -v is given twice.
+   * cdecl.1, autocomplete.h, cli_options.c, prompt.c: Now printing configure
+     feature & package options and whether GNU readline is genuine when -v is
+     given twice.
    * cli_options.c: Now updating argc/argv immediately after processing
      options.
 
 2023-03-03  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, cli_options.c: Now printing configure feature & package
-     options as part of --version output.
+   * cdecl.1, cli_options.c: Now printing configure feature & package options
+     as part of --version output.
    * configure.ac: Upped version to 14.1.
    * cli_options.c, cdecl--help.out: Put home page URL first in help output.
 
@@ -238,11 +234,9 @@
 
 2023-02-19  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Added example.
-   * NEWS, c_ast_check.c, cast_a3i.out, explain_cast.out,
-     explain_cast_a3a5a7i.out, explain_cast_a3a5i.out, explain_cast_a3i.out,
-     explain_cast.test: Now correctly allowing casting into an array when there
-     is no name.
+   * c_ast_check.c, cast_a3i.out, explain_cast.out, explain_cast_a3a5a7i.out,
+     explain_cast_a3a5i.out, explain_cast_a3i.out, explain_cast.test: Now
+     correctly allowing casting into an array when there is no name.
    * fnmatch.m4, getdelim.m4, getline.m4, setlocale_null.m4: Updated Gnulib.
    * cdecl_keyword.c: s/AC_POLICY_IN_NEXT_ONLY/
 
@@ -295,21 +289,20 @@
    * getopt-pfx-core.h, hard-locale.h, limits.in.h, setlocale_null.c,
      string.in.h, verify.h, wchar.in.h, assert_h.m4, gnulib-common.m4,
      limits-h.m4, setlocale_null.m4: Updated Gnulib.
-   * NEWS, configure.ac: Updated to 14.0.
-   * NEWS, cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_kind.c, c_kind.h,
-     c_lang.h, c_type.c, c_type.h, cdecl_keyword.c, dump.c, english.c,
-     gibberish.c, help.c, literals.c, literals.h, parser.y, types.h,
-     test/Makefile.am, declare.out, explain.out, explain_la_coco.out,
-     explain_la_cor.out, explain_la_nco.out, explain_la_nn-error.out,
-     explain_la_nr.out, explain_la_rco.out, explain_la_rr.out,
-     explain_la_rrn.out, explain_la_star_ts_star_ts.out,
-     explain_la_star_tsts.out, explain_la_ts_star_ts.out, explain_la_tsts.out,
-     help.out, declare.test, explain.test, explain_la_coco.test,
-     explain_la_cor.test, explain_la_nco.test, explain_la_nn-error.test,
-     explain_la_nr.test, explain_la_rco.test, explain_la_rr.test,
-     explain_la_rrn.test, explain_la_star_ts_star_ts.test,
-     explain_la_star_tsts.test, explain_la_ts_star_ts.test,
-     explain_la_tsts.test: Added lambda support.
+   * configure.ac: Updated to 14.0.
+   * cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_kind.c, c_kind.h, c_lang.h,
+     c_type.c, c_type.h, cdecl_keyword.c, dump.c, english.c, gibberish.c,
+     help.c, literals.c, literals.h, parser.y, types.h, test/Makefile.am,
+     declare.out, explain.out, explain_la_coco.out, explain_la_cor.out,
+     explain_la_nco.out, explain_la_nn-error.out, explain_la_nr.out,
+     explain_la_rco.out, explain_la_rr.out, explain_la_rrn.out,
+     explain_la_star_ts_star_ts.out, explain_la_star_tsts.out,
+     explain_la_ts_star_ts.out, explain_la_tsts.out, help.out, declare.test,
+     explain.test, explain_la_coco.test, explain_la_cor.test,
+     explain_la_nco.test, explain_la_nn-error.test, explain_la_nr.test,
+     explain_la_rco.test, explain_la_rr.test, explain_la_rrn.test,
+     explain_la_star_ts_star_ts.test, explain_la_star_tsts.test,
+     explain_la_ts_star_ts.test, explain_la_tsts.test: Added lambda support.
 
 2023-02-14  Paul J. Lucas <paul@lucasmail.org>
 
@@ -329,11 +322,10 @@
    * c_type.c: s/INF/INL/
    * c_ast_check.c: Replaced `goto only_special` with
      `UNEXPECTED_INT_VALUE(ast->kind)`.
-   * NEWS, c_ast_check.c, test/Makefile.am, explain_dtor.out,
-     explain_dtor.test: Cdecl now correctly reports destructors in C as an
-     error.
-   * NEWS, lexer.l, trigraphs.out, trigraphs.test: Trigraph fixes.
-   * NEWS, gibberish.c, lexer.l, digraphs.out, digraphs.test: Digraph fixes.
+   * c_ast_check.c, test/Makefile.am, explain_dtor.out, explain_dtor.test:
+     Cdecl now correctly reports destructors in C as an error.
+   * lexer.l, trigraphs.out, trigraphs.test: Trigraph fixes.
+   * gibberish.c, lexer.l, digraphs.out, digraphs.test: Digraph fixes.
    * declare.out, declare.test: Added test.
 
 2023-01-31  Paul J. Lucas <paul@lucasmail.org>
@@ -349,11 +341,11 @@
 
 2023-01-30  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, english.c, explain.out: Undid a change in **cdecl** 11.5 where K&R C
+   * english.c, explain.out: Undid a change in **cdecl** 11.5 where K&R C
      typeless function parameters were printed as being of type `int`: they now
      again print as only their names.
-   * NEWS, english.c, explain.out: Fixed English "integer" name for K&R
-     typeless function parameter.
+   * english.c, explain.out: Fixed English "integer" name for K&R typeless
+     function parameter.
    * c_ast_util.c, c_ast_util.h, parser.y:
      s/c_ast_is_bit_field/c_ast_is_bit_field_kind/
    * c_ast_util.c: Added assert()s.
@@ -377,8 +369,8 @@
 
 2023-01-27  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, cdecl.1, autocomplete.c: Now ringing the bell when
-     there are no autocompletion matches.
+   * configure.ac, cdecl.1, autocomplete.c: Now ringing the bell when there are
+     no autocompletion matches.
    * autocomplete.c: Now using false_set().
 
 2023-01-26  Paul J. Lucas <paul@lucasmail.org>
@@ -423,11 +415,11 @@
 
 2023-01-23  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_ast_check.c, test/Makefile.am: No longer require certain
-     declarations to be a function parameters: `const`, `volatile`, `static`,
-     and variable length arrays; `[[carries_dependency]]`.
-   * NEWS, c_ast_check.c, test/Makefile.am, explain_aai.out, explain_aai.test:
-     Now correctly reporting declarations of arrays of incomplete arrays as an
+   * c_ast_check.c, test/Makefile.am: No longer require certain declarations to
+     be a function parameters: `const`, `volatile`, `static`, and variable
+     length arrays; `[[carries_dependency]]`.
+   * c_ast_check.c, test/Makefile.am, explain_aai.out, explain_aai.test: Now
+     correctly reporting declarations of arrays of incomplete arrays as an
      error.
    * autocomplete.c: Made is_gibberish static.
    * autocomplete.c: Simplification.
@@ -444,7 +436,7 @@
    * cdecl_keyword.c: No longer autocompleting `scope` in C.
    * cdecl_keyword.c, parser.y: s/Y_Apple_BLOCK/Y_Apple_block/
    * cdecl_keyword.c: Removed #undef restrict -- no longer needed.
-   * NEWS, configure.ac: Version number and NEWS fix-up.
+   * configure.ac: Version number and NEWS fix-up.
    * lib/Makefile.am, _Noreturn.h, hard-locale.c, stdlib.in.h, verify.h,
      assert_h.m4, getdelim.m4, getline.m4, gnulib-common.m4, gnulib-comp.m4,
      mbrtowc.m4, mbtowc.m4, mempcpy.m4, setlocale_null.m4, stdlib_h.m4,
@@ -453,7 +445,7 @@
 2023-01-21  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c: Removed unnecessary heuristic.
-   * NEWS, autocomplete.c, cdecl_keyword.c, cdecl_keyword.h, did_you_mean.c,
+   * autocomplete.c, cdecl_keyword.c, cdecl_keyword.h, did_you_mean.c,
      pjl_config.h, types.h, util.c, util.h, ac-cast_into.exp, ac-declare.exp,
      ac-explain.exp, ac-help.exp, ac-set.exp, ac-show.exp: For some keywords,
      now autocompleting only a certain set of next keywords.
@@ -462,9 +454,9 @@
 
    * parser.y: Fixed requiring parameter list for user-defined literals in
      English.
-   * NEWS, autocomplete.c: The set of word-break characters for autocompletion
-     has been expanded to be all non-identifier characters.
-   * NEWS, c_ast_check.c, test/Makefile.am, explain_a_nua_iw4.out,
+   * autocomplete.c: The set of word-break characters for autocompletion has
+     been expanded to be all non-identifier characters.
+   * c_ast_check.c, test/Makefile.am, explain_a_nua_iw4.out,
      explain_a_nua_iw4.test: Bit-fields having `[[no_unique_address]]` are now
      correctly reported as an error.
 
@@ -495,8 +487,8 @@
 
    * autocomplete.c: strncmp() arg reordering.
    * autocomplete.c: s/command_keywords/specific_ac_keywords/
-   * NEWS, configure.ac, prompt.c: Prompts were always being displayed in color
-     even when --color=never.  Fixed.
+   * configure.ac, prompt.c: Prompts were always being displayed in color even
+     when --color=never.  Fixed.
 
 2023-01-11  Paul J. Lucas <paul@lucasmail.org>
 
@@ -504,9 +496,9 @@
 
 2023-01-10  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_type.c, cdecl_keyword.c, literals.c, literals.h,
-     parser.y, declare.out, explain.out, declare.test: Added "bit-precise
-     integer" as an English synonym for _BitInt.
+   * cdecl.1, c_type.c, cdecl_keyword.c, literals.c, literals.h, parser.y,
+     declare.out, explain.out, declare.test: Added "bit-precise integer" as an
+     English synonym for _BitInt.
    * parser.y: s/int_exp/int_lit_exp/; s/int_opt/int_lit_opt/'
 
 2023-01-09  Paul J. Lucas <paul@lucasmail.org>
@@ -516,14 +508,14 @@
 
 2023-01-08  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, c_ast_check.c, test/Makefile.am, explain.out,
+   * configure.ac, c_ast_check.c, test/Makefile.am, explain.out,
      explain_etv-c++.out, explain.test, explain_etv-c++.test: Now allow `extern
      void v` in C.
    * red_black.h: Added missing #include.
 
 2023-01-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, cdecl_keyword.c, literals.c, literals.h, parser.y,
+   * cdecl.1, cdecl_keyword.c, literals.c, literals.h, parser.y,
      declare_udc.out, declare_udl.out, declare_udc.test, declare_udl.test:
      Added `user defined` as a synonym for `user-defined`.
    * explain_udl.test: chmod -x
@@ -564,8 +556,8 @@
 
 2023-01-06  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, help.c, help.out: `auto` is now correctly listed as a C++ type in
-     the help for C++11 and later.
+   * help.c, help.out: `auto` is now correctly listed as a C++ type in the help
+     for C++11 and later.
    * test/Makefile.am, declare_udl.out, declare_udl.test: Test consolidation.
    * test/Makefile.am, debug.out, debug.test: Test consolidation.
    * test/Makefile.am: Test renaming.
@@ -590,7 +582,7 @@
      consolidation.
    * test/Makefile.am, semicolon.out, semicolon.test: Test consolidation.
    * run_test.sh: Simplified.
-   * Doxyfile, Makefile.am, NEWS, bootstrap, cdecl.css, configure.ac, lcovrc,
+   * Doxyfile, Makefile.am, bootstrap, cdecl.css, configure.ac, lcovrc,
      makedoc.sh, man/Makefile.am, man/man1/Makefile.am, man/man1/c++decl.1,
      cdecl.1, src/Makefile.am, autocomplete.c, c_ast.c, c_ast.h, c_ast_check.c,
      c_ast_check.h, c_ast_util.c, c_ast_util.h, c_keyword.c, c_keyword.h,
@@ -614,9 +606,9 @@
 
    * options.c: Simplification.
    * test/Makefile.am, prompt.out, prompt.test: Test consolidation.
-   * NEWS, options.c, test/Makefile.am, explicit-int.out, explicit-int.test:
-     Now resetting the current `explicit-int` option to none before parsing a
-     new string.
+   * options.c, test/Makefile.am, explicit-int.out, explicit-int.test: Now
+     resetting the current `explicit-int` option to none before parsing a new
+     string.
    * test/Makefile.am: Test consolidation.
    * test/Makefile.am, explicit-ecsu.out, explicit-ecsu.test: Test
      consolidation.
@@ -658,9 +650,9 @@
 
 2022-12-29  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_sname.c, c_sname.h, lexer.l, parser.y, cdecl-d.out,
-     explain_udc.out, explain_udc.test: Can now explain a `friend` scoped
-     user-defined conversion operator correctly.
+   * c_sname.c, c_sname.h, lexer.l, parser.y, cdecl-d.out, explain_udc.out,
+     explain_udc.test: Can now explain a `friend` scoped user-defined
+     conversion operator correctly.
    * parser.y: Eliminated scope_sname_c_opt_operator.
    * parser.y: Eliminated user_defined_literal_c_ast.
    * explain_udc.out, explain_udc.test: Additional user-defined conversion
@@ -701,13 +693,11 @@
    * test/Makefile.am, explain_cast.out, explain_cast.test: explain_cast_* test
      consolidation.
    * test/Makefile.am: Moved tests.
-   * NEWS, c_ast_check.c, c_ast_util.c, c_ast_util.h, parser.y,
-     test/Makefile.am, cast_a.out, cast_pa.out, typedef_a.out, typedef_pa.out,
-     using_ai.out, cast_a.test, cast_pa.test, typedef_a.test, typedef_pa.test:
-     Defining or casting a type containing `auto` is now correctly reported as
-     an error.
-   * NEWS, prompt.c: Now printing the prompt in color even when readline is
-     disabled.
+   * c_ast_check.c, c_ast_util.c, c_ast_util.h, parser.y, test/Makefile.am,
+     cast_a.out, cast_pa.out, typedef_a.out, typedef_pa.out, using_ai.out,
+     cast_a.test, cast_pa.test, typedef_a.test, typedef_pa.test: Defining or
+     casting a type containing `auto` is now correctly reported as an error.
+   * prompt.c: Now printing the prompt in color even when readline is disabled.
 
 2022-12-26  Paul J. Lucas <paul@lucasmail.org>
 
@@ -721,7 +711,7 @@
 
    * help.c: Added missing bison-debug & flex-debug options from set option
      help.
-   * NEWS, cdecl.1, c_type.c, cli_options.c, help.c, options.c, options.h,
+   * cdecl.1, c_type.c, cli_options.c, help.c, options.c, options.h,
      set_options.c, __declspec.out, cdecl-d.out, cdecl-h.out, cl-explain_i.out,
      define_k_define_k_explain_k+k.out, define_k_explain_pmki.out,
      digraphs.out, explain-by-default.out, explain_+co_eq2_rck_b++default.out,
@@ -884,17 +874,16 @@
      define_ai-c17.out, define_eti.out, define_rgi.out, define_sti.out: Not
      printing types in English when there's an error.
    * test/Makefile.am, declare_b.out, declare_b.test: bool tests reduction.
-   * NEWS, cdecl.1, cdecl_keyword.c, literals.c, literals.h, declare_b.out,
+   * cdecl.1, cdecl_keyword.c, literals.c, literals.h, declare_b.out,
      declare_b.test: Added `boolean` and `Boolean` as Engish synonyms for
      `bool`.
    * cdecl.1: Added mention of more C23 features.
    * help.c, help.out: Updated help for C23's .
-   * NEWS, cdecl.1, c_lang.h, set_trigraphs.out, trigraphs.out,
-     set_trigraphs.test, trigraphs.test: Trigraphs are no longer supported in
-     C23.
-   * NEWS, c_lang.h, test/Makefile.am, declare_af.out, explain_af-c.out: Added
+   * cdecl.1, c_lang.h, set_trigraphs.out, trigraphs.out, set_trigraphs.test,
+     trigraphs.test: Trigraphs are no longer supported in C23.
+   * c_lang.h, test/Makefile.am, declare_af.out, explain_af-c.out: Added
      support for `auto` as a deduced type in C23.
-   * NEWS, c_ast_check.c, c_lang.h, test/Makefile.am, explain_fel_v-c17.out,
+   * c_ast_check.c, c_lang.h, test/Makefile.am, explain_fel_v-c17.out,
      explain_fel_v.out, explain_fel_v-c17.test, explain_fel_v.test: A `...` is
      now correctly allowed as the only function parameter in C++ as well as
      C23.
@@ -956,8 +945,8 @@
 
 2022-12-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, lexer.l, integers.out, integers.test: Digit separators are now
-     supported for octal integers.
+   * lexer.l, integers.out, integers.test: Digit separators are now supported
+     for octal integers.
 
 2022-12-01  Paul J. Lucas <paul@lucasmail.org>
 
@@ -971,9 +960,8 @@
 2022-11-30  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y, cdecl-d.out: Simplified _BitInt rules.
-   * NEWS, c_ast_check.c, test/Makefile.am, declare_bi65.out,
-     declare_bi65.test: Now check that the maximum number of bits for `_BitInt`
-     is 64.
+   * c_ast_check.c, test/Makefile.am, declare_bi65.out, declare_bi65.test: Now
+     check that the maximum number of bits for `_BitInt` is 64.
 
 2022-11-27  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1015,8 +1003,8 @@
 
 2022-11-19  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, lexer.l, parser.y, explain_+dtor-error.out: Improved the error
-     message for an invalid destructor name, e.g., `S::~T`.
+   * lexer.l, parser.y, explain_+dtor-error.out: Improved the error message for
+     an invalid destructor name, e.g., `S::~T`.
    * c_sname.c, lexer.l: c_sname_parse_impl() now checks that the last 2 scope
      names match when is_dtor is true.
 
@@ -1028,22 +1016,22 @@
 2022-11-14  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Added more compiler warnings.
-   * NEWS, c_type.c, declare_synonyms.out: `[[noreturn]]` is now printed rather
-     than `_Noreturn` in C23.
+   * c_type.c, declare_synonyms.out: `[[noreturn]]` is now printed rather than
+     `_Noreturn` in C23.
    * c_ast_check.c, c_lang.h: s/EXPLICIT_USER_DEF_CONV/explicit_USER_DEF_CONV/
    * c_ast_check.c: Removed pointless assert().
 
 2022-11-13  Paul J. Lucas <paul@lucasmail.org>
 
    * help.out, help.test: Now testing help for all languages.
-   * NEWS, help.c, help.out: `_BitInt(<int>)` was added to the help text.
+   * help.c, help.out: `_BitInt(<int>)` was added to the help text.
    * cdecl.c: Renamed parameters to match.
    * cdecl.c, cdecl_parser.h, lexer.h, parser.y: Moved declarations for Flex &
      Bison to lexer.h and cdecl_parser.h, respectively.
 
 2022-11-12  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.c, test/Makefile.am, cl-exit.out, cl-quit.out, cl-exit.test,
+   * cdecl.c, test/Makefile.am, cl-exit.out, cl-quit.out, cl-exit.test,
      cl-quit.test: Fixed (hopefully for the last time) the way the program name
      and CLI arguments are parsed.
    * cdecl.c: Simplification.
@@ -1063,10 +1051,9 @@
    * cdecl.h: Sorted.
    * parser.y, util.h: Eliminated PUTS().
    * cdecl.c, cdecl.h, cli_options.c: Eliminated cdecl_fin.
-   * NEWS, cdecl.1, cdecl.c, cdecl.h, cli_options.c, options.c, options.h,
-     print.c, set_options.c, cdecl-h.out: Removed `--interactive` & `-i`
-     options.
-   * NEWS, cdecl.1: Added some missing C++23 types to the manual page.
+   * cdecl.1, cdecl.c, cdecl.h, cli_options.c, options.c, options.h, print.c,
+     set_options.c, cdecl-h.out: Removed `--interactive` & `-i` options.
+   * cdecl.1: Added some missing C++23 types to the manual page.
 
 2022-11-06  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1079,20 +1066,19 @@
 
 2022-11-04  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, lexer.l, parser.y: User-defined conversions in pseudo-English now
-     allow "const[ant] eval[uation]", "const[ant] expr[ession]", and
-     "const[ant] init[ialization]" for a storage class.
+   * lexer.l, parser.y: User-defined conversions in pseudo-English now allow
+     "const[ant] eval[uation]", "const[ant] expr[ession]", and "const[ant]
+     init[ialization]" for a storage class.
 
 2022-11-02  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Added "no except" to udc_storage_class_english_stid.
-   * NEWS, cdecl.1, cdecl_keyword.c, literals.c, literals.h, parser.y,
+   * cdecl.1, cdecl_keyword.c, literals.c, literals.h, parser.y,
      test/Makefile.am, cdecl-d.out, declare_synonyms.out,
      declare_synonyms.test: The following English synonyms have been added:
-   * NEWS, cdecl.1: Added missing `reproducible` and `unsequenced` to the
-     manual page.
-   * NEWS, configure.ac, help.c, help.out: Added missing `constexpr` to C23
-     help.
+   * cdecl.1: Added missing `reproducible` and `unsequenced` to the manual
+     page.
+   * configure.ac, help.c, help.out: Added missing `constexpr` to C23 help.
 
 2022-10-31  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1126,7 +1112,7 @@
 
 2022-10-25  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Updated version to 13.0.
+   * configure.ac: Updated version to 13.0.
    * cdecl.c, test/Makefile.am, __declspec.out, alttokens.out, cdecl-d.out,
      digraphs.out, explain-by-default.out, gnu_attributes.out, help.out,
      set_digraphs.out, set_east-const.out, set_lang.out, set_semicolon.out,
@@ -1143,7 +1129,7 @@
 
 2022-10-24  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, cdecl.c, cli_options.c, help.c, options.c, options.h,
+   * cdecl.1, cdecl.c, cli_options.c, help.c, options.c, options.h,
      set_options.c, cdecl-h.out, help_options.out, set.out, set_c++.out,
      set_c++03.out, set_c++11.out, set_c++14.out, set_c++17.out, set_c++20.out,
      set_c++23.out, set_c++98.out, set_c11.out, set_c17.out, set_c18.out,
@@ -1158,7 +1144,7 @@
 2022-10-22  Paul J. Lucas <paul@lucasmail.org>
 
    * print.c: Removed uncessary `if`.
-   * NEWS, print.c: Fixed the error column when the prompt is disabled.
+   * print.c: Fixed the error column when the prompt is disabled.
 
 2022-10-21  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1169,7 +1155,7 @@
    * configure.ac, prompt.c: Now doing readline-related stuff only if readline
      was not disabled.
    * c_ast_check.c: Fixed warning.
-   * NEWS, cdecl.1, c_lang.h, test/Makefile.am, explain_efi-c.out,
+   * cdecl.1, c_lang.h, test/Makefile.am, explain_efi-c.out,
      explain_efi-c17.out, explain_efi-c.test, explain_efi-c17.test: Fixed-type
      enumerations in C23 are now supported.
    * cdecl.1: Changed to bullets.
@@ -1177,28 +1163,28 @@
 
 2022-10-20  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_ast_check.c, c_keyword.c, c_lang.h, c_type.c, c_type.h,
+   * cdecl.1, c_ast_check.c, c_keyword.c, c_lang.h, c_type.c, c_type.h,
      literals.c, literals.h, parser.y, test/Makefile.am, declare_nri.out,
      explain_a_nd_i.out, explain_a_re_f_v.out, explain_a_re_i.out,
      explain_a_us_f_v.out, explain_a_us_i.out, explain_a_nd_i.test,
      explain_a_re_f_v.test, explain_a_re_i.test, explain_a_us_f_v.test,
      explain_a_us_i.test: Added [[reproducible]] and [[unsequenced]] attributes
      for C23.
-   * NEWS, lexer.l, test/Makefile.am, integers.out, integers.test: Digit
-     seperators in C23 are now supported.
+   * lexer.l, test/Makefile.am, integers.out, integers.test: Digit seperators
+     in C23 are now supported.
    * c_type.c: s/LANG_CPP_MIN(20)/LANG_no_unique_address/
    * parser.y: Added UNSUPPORTED().
-   * NEWS, c_lang.h, c_type.c, help.c, test/Makefile.am, declare_b-c17.out,
+   * c_lang.h, c_type.c, help.c, test/Makefile.am, declare_b-c17.out,
      declare_b.out, declare_hb.out, declare_lb.out, declare_sib.out,
      declare_ub.out, explain_b.out, explain_hb.out, explain_keywords.out,
      explain_lb.out, explain_sib.out, explain_ub.out, help_english-c.out,
      show_all.out, show_all_predefined.out, show_all_predefined_glob-01.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out,
      declare_b-c17.test: In C23, `bool` is now used instead of `_Bool`.
-   * NEWS, c_type.c, help.c, test/Makefile.am, help_english-c.out,
+   * c_type.c, help.c, test/Makefile.am, help_english-c.out,
      help_english-c17.out, help_english-c17.test: In C23, `thread_local` is now
      used instead of `_Thread_local`.
-   * NEWS, c_lang.h, literals.h, test/Makefile.am, declare_c_al0.out,
+   * c_lang.h, literals.h, test/Makefile.am, declare_c_al0.out,
      declare_c_al8-c17.out, declare_c_al8.out, declare_c_alpv.out,
      declare_en_al4.out, explain_alrgi.out, declare_c_al8-c17.test,
      explain_alrgi.test: In C23, `alignas`  is now used instead of `_Alignas`.
@@ -1210,12 +1196,12 @@
      c_type.c, cdecl_command.c, cdecl_keyword.c, gibberish.c, help.c, parser.y,
      print.c, set_options.c: Renamed LANG_XXX macros to use correct
      capitalization for keywords.
-   * NEWS, c_keyword.c, c_lang.h, literals.c, literals.h, parser.y: Now
-     recognize `typeof` and `typeof_unqual` C23 keywords.
-   * NEWS, cdecl.1, c_keyword.c, c_lang.h, did_you_mean.c, explain_pcf_i.out,
+   * c_keyword.c, c_lang.h, literals.c, literals.h, parser.y: Now recognize
+     `typeof` and `typeof_unqual` C23 keywords.
+   * cdecl.1, c_keyword.c, c_lang.h, did_you_mean.c, explain_pcf_i.out,
      explain_th_f_v.out: Added `false` and `true` to C23.
    * c_ast_check.c, explain_xxvi.out: Put type in quotes in error message.
-   * NEWS, cdecl.1, c_ast_check.c, c_lang.h, c_type.c, test/Makefile.am,
+   * cdecl.1, c_ast_check.c, c_lang.h, c_type.c, test/Makefile.am,
      declare_xvi-c.out, declare_xxi-c.out, declare_xxi-c17.out,
      explain_xxi-c.out, explain_xxi-c17.out, explain_xxvi.out,
      declare_xxi-c.test, declare_xxi-c17.test, explain_xxi-c.test,
@@ -1223,8 +1209,8 @@
 
 2022-10-18  Paul J. Lucas <paul@lucasmail.org>
 
-   * AUTHORS, NEWS, cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_keyword.c,
-     c_lang.h, c_type.c, c_type.h, dump.c, english.c, gibberish.c, literals.c,
+   * AUTHORS, cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_keyword.c, c_lang.h,
+     c_type.c, c_type.h, dump.c, english.c, gibberish.c, literals.c,
      literals.h, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d-+i.out,
      cdecl-d-al8i.out, cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out,
      cdecl-d-eni.out, cdecl-d-f2i_pi.out, cdecl-d-f_v.out,
@@ -1240,7 +1226,7 @@
 2022-10-17  Paul J. Lucas <paul@lucasmail.org>
 
    * test/Makefile.am: Changed naming of block tests from 'b' to 'bl'.
-   * NEWS, c_keyword.c, c_lang.h, c_typedef.c, literals.c, literals.h,
+   * c_keyword.c, c_lang.h, c_typedef.c, literals.c, literals.h,
      cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out, cdecl-d-alli.out,
      cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out, cdecl-d-f2i_pi.out,
      cdecl-d-f_v.out, cdecl-d-faia4iaviaciast6i_v.out, cdecl-d-pmki.out,
@@ -1279,7 +1265,7 @@
 
 2022-10-12  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+   * c_typedef.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
      cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
      cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviaciast6i_v.out,
      cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out, show_all-c++.out,
@@ -1293,7 +1279,7 @@
 
 2022-10-11  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_typedef.c, c_typedef.h, parser.y, test/Makefile.am,
+   * c_typedef.c, c_typedef.h, parser.y, test/Makefile.am,
      explain_ctor_rcc.out, explain_ctor_rcc.test: Partially fixed "explain C(C
      const&)".
 
@@ -1308,7 +1294,7 @@
    * gibberish.c: Eliminated "space".
    * cdecl_keyword.c: s/CPP_MIN(11)/RVALUE_REFERENCE/ for "rvalue"
      auto-completion.
-   * NEWS, cdecl_keyword.c: `pointer` is now auto-completable.
+   * cdecl_keyword.c: `pointer` is now auto-completable.
    * Doxyfile: Added ENABLE_FLEX_DEBUG.
    * Doxyfile, c_ast.c, c_ast.h: unique_id is now used only when
      ENABLE_CDECL_DEBUG.
@@ -1333,10 +1319,10 @@
 2022-10-02  Paul J. Lucas <paul@lucasmail.org>
 
    * declare_pmf_pi.out: Fixed expected output.
-   * NEWS, gibberish.c, test/Makefile.am, declare_f_pmpi.out,
-     declare_pmf_pi.out, declare_f_pmpi.test, declare_pmf_pi.test: Fixed output
-     of "declare f as function returning pointer to member of class C pointer
-     to int" which should be "int* C::* f()".
+   * gibberish.c, test/Makefile.am, declare_f_pmpi.out, declare_pmf_pi.out,
+     declare_f_pmpi.test, declare_pmf_pi.test: Fixed output of "declare f as
+     function returning pointer to member of class C pointer to int" which
+     should be "int* C::* f()".
 
 2022-10-01  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1345,7 +1331,7 @@
 2022-09-30  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.c, c_type.h: s/c_tid_is_except/c_tid_is_except_any/
-   * Doxyfile, NEWS, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.h, english.c,
+   * Doxyfile, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.h, english.c,
      gibberish.c, parser.y, test/Makefile.am, declare_enw3-c++.out,
      declare_puw3.out, explain_enw3-c++.out, explain_enw3-c.out,
      declare_enw3-c++.test, explain_enw3-c++.test, explain_enw3-c.test:
@@ -1368,18 +1354,18 @@
 
 2022-09-25  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_ast_check.c, declare_typedef_i_al8.out, explain_al3_c.out,
+   * c_ast_check.c, declare_typedef_i_al8.out, explain_al3_c.out,
      explain_alf_i.out, explain_alrgi.out, explain_c_al3.out: Improved the
      location of alignment errors.
-   * NEWS, c_ast_check.c, c_kind.h, english.c, gibberish.c, test/Makefile.am,
+   * c_ast_check.c, c_kind.h, english.c, gibberish.c, test/Makefile.am,
      explain_al4_cw3.out, explain_al4_cw3.test: Aligned bit fields are now
      correctly forbidden.
 
 2022-09-24  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Simplified is_1_bit_only_in_set().
-   * NEWS, gibberish.c, test/Makefile.am, define_efi.out, define_efi.test:
-     Fixed fixed type `enum` definition.
+   * gibberish.c, test/Makefile.am, define_efi.out, define_efi.test: Fixed
+     fixed type `enum` definition.
    * gibberish.c: s/printed_typedef/print_typedef/;
      s/printing_using/print_using/
 
@@ -1405,8 +1391,6 @@
      parameters.
    * read_line.c, read_line.h: Removed incorrect "static".
    * AUTHORS: Added mention of C++23 explicit object parameters.
-   * NEWS: Formatting.
-   * NEWS: s/12.0.1/12.1/
 
 2022-09-15  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1421,9 +1405,9 @@
 
 2022-09-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_ast_util.c, declare_frg_v.out, explain_frg_v.out: Fixed implicit
-     `int` checking error message
-   * NEWS, c_ast_check.c, c_keyword.c, c_lang.h, c_type.c, c_type.h, parser.y,
+   * c_ast_util.c, declare_frg_v.out, explain_frg_v.out: Fixed implicit `int`
+     checking error message
+   * c_ast_check.c, c_keyword.c, c_lang.h, c_type.c, c_type.h, parser.y,
      test/Makefile.am, cdecl--debug.out, cdecl-d-cmo_exclam__b.out,
      cdecl-d-f2i_pi.out, cdecl-d-faia4iaviaciast6i_v.out, declare_ftsrk_v.out,
      explain_cftsrk_v.out, explain_ftsrk_v.out, explain_rftsrk_v.out,
@@ -1441,12 +1425,12 @@
 
 2022-09-11  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_ast_check.c, c_lang.h, test/Makefile.am, explain_sto_eq_i_v.out,
+   * c_ast_check.c, c_lang.h, test/Makefile.am, explain_sto_eq_i_v.out,
      explain_sto_parens_2i_v-cpp20.out, explain_sto_parens_2i_v.out,
      explain_sto_eq_i_v.test, explain_sto_parens_2i_v-cpp20.test,
      explain_sto_parens_2i_v.test: Now allow `operator()` to be `static` in
      C++23.
-   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+   * c_typedef.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
      cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
      cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviaciast6i_v.out,
      cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out, show_all-c++.out,
@@ -1457,16 +1441,16 @@
 
 2022-09-10  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, parser.y, explain_a0i.out, explain_a4v.out, explain_a5fd_i.out,
+   * parser.y, explain_a0i.out, explain_a4v.out, explain_a5fd_i.out,
      explain_ac9i.out, explain_ast9i.out, explain_b_ai.out, explain_f_ai.out:
      Now recognizing `static` or `const` array declarations outside of function
      parameters allowing more specific error reporting.
 
 2022-09-06  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, gibberish.c, test/Makefile.am, declare_fac_v.out,
-     declare_facv_v.out, declare_fac_v.test: Array parameters no longer have a
-     space wrongly emitted after `const`.
+   * gibberish.c, test/Makefile.am, declare_fac_v.out, declare_facv_v.out,
+     declare_fac_v.test: Array parameters no longer have a space wrongly
+     emitted after `const`.
 
 2022-08-29  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1481,7 +1465,7 @@
 
 2022-08-22  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, c_ast_check.c, c_lang.h, test/Makefile.am,
+   * configure.ac, c_ast_check.c, c_lang.h, test/Makefile.am,
      explain_epudc_b-c++03.out, explain_epudc_b.out,
      explain_epudc_b-c++03.test, explain_epudc_b.test: Now correctly allowing
      explicit user-defined conversion operators in C++11 and later.
@@ -1490,10 +1474,6 @@
 
    * c_typedef.c, cdecl.c, lexer.l, util.c, util.h: Added check_atexit().
    * lexer.l: Added lexer_cleanup().
-
-2022-08-08  Paul J. Lucas <paul@lucasmail.org>
-
-   * NEWS: Added missing '*'.
 
 2022-08-07  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1507,7 +1487,7 @@
 
 2022-08-06  Paul J. Lucas <paul@lucasmail.org>
 
-   * AUTHORS, NEWS, cdecl.1: s/C2X/C23/
+   * AUTHORS, cdecl.1: s/C2X/C23/
 
 2022-07-26  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1525,9 +1505,9 @@
 
 2022-07-21  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_ast_check.c, c_keyword.c, c_keyword.h, c_lang.c, c_lang.h,
-     c_type.c, help.c, literals.c, literals.h, parser.y, cast_pfx_i.out,
-     cdecl-xx.out, declare_fkr_pi.out, declare_pfkr_i.out, explain_fkr_pi.out,
+   * c_ast_check.c, c_keyword.c, c_keyword.h, c_lang.c, c_lang.h, c_type.c,
+     help.c, literals.c, literals.h, parser.y, cast_pfx_i.out, cdecl-xx.out,
+     declare_fkr_pi.out, declare_pfkr_i.out, explain_fkr_pi.out,
      explain_nrfi_v.out, help_options.out, set.out, set_explicit-int_i.out,
      set_explicit-int_u.out, set_noexplicit-int.out, set_options.out:
      s/C2X/C23/
@@ -1547,12 +1527,12 @@
 2022-07-17  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl_command.c: Simplification.
-   * NEWS, autocomplete.c, cdecl_command.c, cdecl_command.h, cdecl_keyword.c:
-     `exit` is no longer auto-completable.
+   * autocomplete.c, cdecl_command.c, cdecl_command.h, cdecl_keyword.c: `exit`
+     is no longer auto-completable.
 
 2022-07-16  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_keyword.c, c_operator.c, c_operator.h, parser.y,
+   * c_keyword.c, c_operator.c, c_operator.h, parser.y,
      cdecl-d-cmo_exclam__b.out: Can now overload the co_await operator.
    * c_ast.h, c_ast_check.c, declare_co_exclam_k_b.out,
      declare_nmo_amper_i_i.out, declare_o_arrow_rk_pk.out,
@@ -1570,7 +1550,7 @@
      explain_ro_exclam_k_b.out, explain_rro_exclam_k_b.out,
      explain_vo_exclam_k_b.out, explain_yo_exclam_k_b.out: Better error
      location for parameter-related errors.
-   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+   * c_typedef.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
      cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
      cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviaciast6i_v.out,
      cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out, show_all-c++.out,
@@ -1636,11 +1616,11 @@
 
 2022-07-05  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Changed version to 12.0.
+   * configure.ac: Changed version to 12.0.
    * string.in.h, wchar.in.h: Updated GnuLib.
-   * NEWS, cdecl.c, cdecl.h, cdecl_command.c, cdecl_command.h, cli_options.c:
-     Fixed when cdecl was invoked as `cast`, `declare`, or `explain`, or with a
-     name that isn't a command without command-line arguments.
+   * cdecl.c, cdecl.h, cdecl_command.c, cdecl_command.h, cli_options.c: Fixed
+     when cdecl was invoked as `cast`, `declare`, or `explain`, or with a name
+     that isn't a command without command-line arguments.
 
 2022-07-04  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2382,8 +2362,8 @@
 
 2022-06-21  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, src/Makefile.am: Added `--enable-msan` and
-     `--enable-ubsan`; renamed `--enable-address-sanitizer` to `--enable-asan`.
+   * configure.ac, src/Makefile.am: Added `--enable-msan` and `--enable-ubsan`;
+     renamed `--enable-address-sanitizer` to `--enable-asan`.
 
 2022-06-19  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2413,8 +2393,8 @@
 2022-06-11  Paul J. Lucas <paul@lucasmail.org>
 
    * test/Makefile.am, declare_en-c++.out, declare_en-c++.test: New enum test.
-   * NEWS, c_type.c, c_type.h, gibberish.c, declare_enc.out, declare_enk.out:
-     The `explicit-ecsu` option for enums is fixed.
+   * c_type.c, c_type.h, gibberish.c, declare_enc.out, declare_enk.out: The
+     `explicit-ecsu` option for enums is fixed.
 
 2022-06-10  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2432,8 +2412,8 @@
 
 2022-06-05  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, parser.y: Added suggestions to error messages in certain cases when
-     a keyword is expected.
+   * parser.y: Added suggestions to error messages in certain cases when a
+     keyword is expected.
    * did_you_mean.c: No longer offering a suggestion for an exact match.
 
 2022-06-03  Paul J. Lucas <paul@lucasmail.org>
@@ -2446,9 +2426,9 @@
 
 2022-06-01  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, help.c, help_english-c++.out, help_english-c++03.out: Added
+   * cdecl.1, help.c, help_english-c++.out, help_english-c++03.out: Added
      `explicit` to the help.
-   * NEWS, autocomplete.c: The `show` command now has command-specific
+   * autocomplete.c: The `show` command now has command-specific
      autocompletion.
 
 2022-05-31  Paul J. Lucas <paul@lucasmail.org>
@@ -2464,8 +2444,8 @@
    * cdecl.c, cli_options.c: Moved setting of "me" to main().
    * c_ast_check.c, gibberish.c, strbuf.c: Added PJL_WARN_UNUSED_RESULT.
    * gibberish.c: s/cdecl_fout/gout/
-   * NEWS, cdecl.1, color.c: TERM is no longer used when determining whether to
-     print in color.
+   * cdecl.1, color.c: TERM is no longer used when determining whether to print
+     in color.
 
 2022-05-29  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2501,7 +2481,7 @@
 
 2022-05-22  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, help.c, help_options.out: Help for options types was added.
+   * help.c, help_options.out: Help for options types was added.
    * util.c: Simlification.
    * print.c: Now incrementing *ppelt only if dym->token != NULL.
    * print.c, util.c: Renaming.
@@ -2510,7 +2490,7 @@
      variables.
    * c_ast_check.c, english.c: s/C_MAX(17)/KNR_FUNC_DEFINITION/
    * c_ast_check.c, english.c: More use of OPT_LANG_IS().
-   * NEWS, c_ast_check.c, test/Makefile.am, explain_nrfi_v-c17.out,
+   * c_ast_check.c, test/Makefile.am, explain_nrfi_v-c17.out,
      explain_nrfi_v.out, declare_nrfi_v-01-c17.test,
      declare_nrfi_v-02-c17.test, declare_nrfi_v-03-c17.test,
      explain_nrfi_v-c17.test: _Noreturn is now deprecated in C2X.
@@ -2535,15 +2515,15 @@
 
 2022-05-16  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, parser.y, test/Makefile.am, k_declare_i.out, k_declare_i.test: Now
+   * parser.y, test/Makefile.am, k_declare_i.out, k_declare_i.test: Now
      checking that previously declared types in pseudo-English are not being
      used as objects.
    * parser.y: s/$4/decl_ast/
 
 2022-05-15  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, c_sname.c, c_typedef.c, c_typedef.h, english.h,
-     gibberish.h, parser.y, print.c, print.h, define_c_int_least32_t.out,
+   * configure.ac, c_sname.c, c_typedef.c, c_typedef.h, english.h, gibberish.h,
+     parser.y, print.c, print.h, define_c_int_least32_t.out,
      explain_typedef_ci32.out, typedef_c_int_least32_t.out,
      using_c_int_least32_t.out: Now printing types in error messages as they
      were originally defined (pseudo-English vs. gibberish) in more cases.
@@ -2560,8 +2540,8 @@
 
 2022-05-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.c, config_using_i.cdeclrc: No longer temporarily setting
-     language to latest C++ while reading configuration file.
+   * cdecl.c, config_using_i.cdeclrc: No longer temporarily setting language to
+     latest C++ while reading configuration file.
    * cdecl.1: Added missing langauge feature support.
 
 2022-05-12  Paul J. Lucas <paul@lucasmail.org>
@@ -2572,7 +2552,7 @@
 
 2022-05-11  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_kind.c, c_kind.h,
+   * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_kind.c, c_kind.h,
      c_lang.h, dump.c, english.c, gibberish.c, parser.y, types.h,
      test/Makefile.am, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
      declare_en_al4.out, declare_en_al4.test: Split K_ENUM_CLASS_STRUCT_UNION
@@ -2585,7 +2565,7 @@
 
 2022-05-10  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, cdecl.c: Now can use the CDECLRC environment variable.
+   * cdecl.1, cdecl.c: Now can use the CDECLRC environment variable.
    * cdecl.c, cdecl.h, cli_options.c, options.c, options.h, print.c, print.h:
      s/opt_conf_file/opt_conf_path/; added print_params.conf_path;
      read_conf_file() now takes a path; CONF_FILE_NAME_DEFAULT no longer
@@ -2595,7 +2575,7 @@
 
    * cdefs.h, libc-config.h, stdlib.in.h, string.in.h, verify.h, wchar.in.h,
      gnulib-common.m4: Updated GnuLib.
-   * NEWS, parser.y, test/Makefile.am, k_explain_ai.out, k_explain_b_i.out,
+   * parser.y, test/Makefile.am, k_explain_ai.out, k_explain_b_i.out,
      k_explain_f_i.out, k_explain_i.out, k_explain_ai.test, k_explain_b_i.test,
      k_explain_f_i.test, k_explain_i.test: Now checking that previously
      declared types are not being used as objects.
@@ -2714,7 +2694,7 @@
 
 2022-04-18  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am,
+   * configure.ac, c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am,
      explain_attda2i.out, typedef_v_explain_v.out, explain_attda2i.test:
      _Atomic arrays are now correctly forbidden.
    * c_ast_util.c: Added PJL_WARN_UNUSED_RESULT.
@@ -2819,14 +2799,14 @@
 2022-03-07  Paul J. Lucas <paul@lucasmail.org>
 
    * options.c, options.h, set_options.c: Added print_explicit_ecsu().
-   * NEWS, set_options.c: Print a warning if alt-tokens is set and the current
+   * set_options.c: Print a warning if alt-tokens is set and the current
      language changes to one that doesn't support them.
    * c_lang.h, check.c, lexer.l, parser.y, set_options.c: Added C_LANG_WHICH().
-   * NEWS, options.h, set_options.c: Now prints a warning that neither
-     alternative tokens nor digraphs are supported until C95; now prints a
-     warning that `using` isn't supported until C++11.
-   * NEWS, set_options.c: Now prints a warning that `east-const` isn't
-     supported until C89.
+   * options.h, set_options.c: Now prints a warning that neither alternative
+     tokens nor digraphs are supported until C95; now prints a warning that
+     `using` isn't supported until C++11.
+   * set_options.c: Now prints a warning that `east-const` isn't supported
+     until C89.
    * cdecl.1: Removed yet another remnant of file arguments.
    * cdecl.1: s/current/default/
    * cdefs.h, gnulib-common.m4: Updated Gnulib.
@@ -2847,12 +2827,12 @@
 
 2022-02-28  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, options.c, cdecl-h.out: The old mention of `files...` was removed.
+   * options.c, cdecl-h.out: The old mention of `files...` was removed.
    * dump.c, english.c, gibberish.c, parser.y, util.h: Added print_sep().
 
 2022-02-27  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, parser.y, test/Makefile.am, explain_fpf_v_i.out,
+   * configure.ac, parser.y, test/Makefile.am, explain_fpf_v_i.out,
      explain_fpf_v_i.test: Finally fixed `explain void f(int())`.
    * c_ast_util.c: Now also checking placeholder_ast->parent_ast == NULL.
 
@@ -2870,8 +2850,8 @@
 
    * lib/Makefile.am: Updated Gnulib.
    * c_ast.h, parser.y: s/constructor/ctor/
-   * NEWS, parser.y, test/Makefile.am, explain_ff_i_v-02.out,
-     explain_ff_i_v-02.test: Fixed function returning function parameter crash.
+   * parser.y, test/Makefile.am, explain_ff_i_v-02.out, explain_ff_i_v-02.test:
+     Fixed function returning function parameter crash.
    * parser.y: s/type_ast/ret_ast/
    * dump.c, dump.h, parser.y, cdecl--debug.out, cdecl-d-alli.out,
      cdecl-d-cmo_exclam__b.out, cdecl-d-f2i_pi.out, cdecl-d-f_v.out,
@@ -2885,14 +2865,14 @@
 
 2022-02-19  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, check.c, test/Makefile.am, declare_en_al4.out, declare_en_al4.test:
+   * check.c, test/Makefile.am, declare_en_al4.out, declare_en_al4.test:
      Alignment of `enum`, `struct`, and `union` is now correctly forbidden in
      C.
-   * NEWS, cdecl_keyword.c, parser.y: `alignas` & `_Alignas` are now
-     additionally allowed instead of `aligned [as|to]` in pseudo-English.
-   * NEWS, autocomplete.c, c_keyword.c, c_lang.h, cdecl_keyword.c,
-     cdecl_keyword.h, lexer.l: Eliminated AC_CDECL_KEYWORDS; now _not_
-     completing English keywords when C/C++ is expected.
+   * cdecl_keyword.c, parser.y: `alignas` & `_Alignas` are now additionally
+     allowed instead of `aligned [as|to]` in pseudo-English.
+   * autocomplete.c, c_keyword.c, c_lang.h, cdecl_keyword.c, cdecl_keyword.h,
+     lexer.l: Eliminated AC_CDECL_KEYWORDS; now _not_ completing English
+     keywords when C/C++ is expected.
    * c_keyword.h, cdecl_keyword.h, lexer.l: s/yy_token_id/y_token_id/
 
 2022-02-18  Paul J. Lucas <paul@lucasmail.org>
@@ -2903,15 +2883,15 @@
 2022-02-17  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c: Now skipping leading spaces in is_command().
-   * NEWS, c_keyword.c: `new` is now autocompletable.  The following are now
-     _not_ autocompletable: `co_await`, `co_return`, `co_yield`, `concept`,
+   * c_keyword.c: `new` is now autocompletable.  The following are now _not_
+     autocompletable: `co_await`, `co_return`, `co_yield`, `concept`,
      `decltype`, and `requires`.
    * autocomplete.c: "variadic" is now autocompletable only in C89 and later.
 
 2022-02-16  Paul J. Lucas <paul@lucasmail.org>
 
    * c_keyword.c: "default" is now auto-completable only in C++11 and later.
-   * NEWS, parser.y: New-style cast keyword synonyms for corresponding two-word
+   * parser.y: New-style cast keyword synonyms for corresponding two-word
      English phrases.
    * parser.y: s/new_style_cast_c/new_style_cast_expr_c/ to remove duplicate
      name. (How did this ever work?)
@@ -2920,7 +2900,7 @@
 2022-02-15  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl_keyword.c: Using LANG_C_CPP_MAX().
-   * NEWS, parser.y: `return` is now accepted as a shorthand for `returning` in
+   * parser.y: `return` is now accepted as a shorthand for `returning` in
      pseudo-English.
    * color.c: Added color capability macros for names.
    * set_options.c: Now more simply using opt_prompt.
@@ -2936,13 +2916,13 @@
 
 2022-02-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_operator.c: Fixed a core dump when using the `--debug`/`-d` option
-     for an operator.
+   * c_operator.c: Fixed a core dump when using the `--debug`/`-d` option for
+     an operator.
    * c_ast_util.c, check.c, parser.y, declare_a_cd_i.out, declare_ac3i.out,
      declare_as3i.out, declare_avi.out, explain_a_cd_i.out,
      explain_udl_c_i-01.out: print_error() and print_warning() clean-up.
    * c_ast_util.c: Renaming.
-   * NEWS, configure.ac, c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am,
+   * configure.ac, c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am,
      explain_rttdi.out, explain_rttdpi.out, explain_rttdi.test,
      explain_rttdpi.test: `restrict` is now correctly allowed on `typedef`s of
      pointer.
@@ -2961,7 +2941,7 @@
 
 2022-02-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, print.c: Fixed interactive column number.
+   * print.c: Fixed interactive column number.
 
 2022-02-06  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2988,12 +2968,11 @@
 
    * parser.y: Bison %destructor clean-up.
    * parser.y: Improved error messages for syntax errors after commas.
-   * NEWS, parser.y, test/Makefile.am: Can now parse dynamic exception
+   * parser.y, test/Makefile.am: Can now parse dynamic exception
      specifications.
    * check.c, declare_thf_v.out: s/in/since/
-   * NEWS, parser.y: `noexcept` is now allowed for pointers to function
-     parameter arguments.
-   * NEWS: Fixed `show` command glob example.
+   * parser.y: `noexcept` is now allowed for pointers to function parameter
+     arguments.
    * c_typedef.c: Sorted PREDEFINED_KNR_C.
    * c_typedef.c, cdecl.c, cdecl.h: cdecl_parse_*() now return the exit status
      to use.
@@ -3019,9 +2998,8 @@
 
 2022-01-23  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Fixed tab.
-   * NEWS, configure.ac, autocomplete.c, util.c, util.h: Now matching a command
-     even when there's leading whitespace.
+   * configure.ac, autocomplete.c, util.c, util.h: Now matching a command even
+     when there's leading whitespace.
 
 2022-01-22  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3042,7 +3020,7 @@
 
 2022-01-21  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_ast_util.c, c_ast_util.h, check.c, english.c, english.h,
+   * cdecl.1, c_ast_util.c, c_ast_util.h, check.c, english.c, english.h,
      gibberish.c, help.c, options.c, options.h, parser.y, set_options.c,
      test/Makefile.am, cdecl-h.out, declare_type_2i-c++.out,
      declare_type_i-c++.out, help_options.out, set.out, set_c++.out,
@@ -3063,7 +3041,7 @@
    * gibberish.c: s/ast->type/type/
    * c_ast.c, c_ast.h: c_ast_dup() and c_ast_new() now require a non-null
      ast_list.
-   * NEWS, parser.y, test/Makefile.am, cast_type_i.out, cast_typedef_i.out,
+   * parser.y, test/Makefile.am, cast_type_i.out, cast_typedef_i.out,
      declare_af.out, declare_fsi_v.out, define_ai.out, define_eti.out,
      define_si.out, explain_using_a_mu_i.out, explain_using_a_mu_i.test: Now
      supporting attributes for "using" declarations.
@@ -3133,7 +3111,7 @@
 
    * c_ast.c, c_ast.h, c_ast_util.c, c_typedef.c, check.c, did_you_mean.c,
      english.c: Visitor data struct renaming.
-   * NEWS, configure.ac, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out,
+   * configure.ac, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out,
      cdecl-d-al8i.out, cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out,
      cdecl-d-eni.out, cdecl-d-f2i_pi.out, cdecl-d-f_v.out,
      cdecl-d-faia4iaviacias6i_v.out, cdecl-d-pmki.out, cdecl-d-udc_i.out,
@@ -3171,25 +3149,24 @@
 2022-01-02  Paul J. Lucas <paul@lucasmail.org>
 
    * check.c: s/ret_ast/raw_ret_ast/
-   * NEWS, parser.y, test/Makefile.am, explain_2pii-c89.out,
-     explain_a4pii-c89.out, explain_f_rpii-c89.out, explain_npii-c89.out,
-     explain_npiii-c89.out, explain_pii-c89.out, explain_piii-c89.out,
-     explain_2pii-c89.test, explain_a4pii-c89.test, explain_f_rpii-c89.test,
-     explain_npii-c89.test, explain_npiii-c89.test, explain_pii-c89.test,
-     explain_piii-c89.test: Support for pre-C99 pointer to implicit int
-     declarations.
+   * parser.y, test/Makefile.am, explain_2pii-c89.out, explain_a4pii-c89.out,
+     explain_f_rpii-c89.out, explain_npii-c89.out, explain_npiii-c89.out,
+     explain_pii-c89.out, explain_piii-c89.out, explain_2pii-c89.test,
+     explain_a4pii-c89.test, explain_f_rpii-c89.test, explain_npii-c89.test,
+     explain_npiii-c89.test, explain_pii-c89.test, explain_piii-c89.test:
+     Support for pre-C99 pointer to implicit int declarations.
    * parser.y: s/knr/pc99/
 
 2022-01-01  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am,
-     declare_frg_v.out, declare_fvx_v.out, explain_fcv_v.out,
-     explain_frg_v.out, explain_fvx_v.out, typedef_cv_explain_ftd_v.out,
-     explain_fcv_v.test, typedef_cv_explain_ftd_v.test: Now flagging `void
-     f(const void)` as an error.
+   * c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am, declare_frg_v.out,
+     declare_fvx_v.out, explain_fcv_v.out, explain_frg_v.out,
+     explain_fvx_v.out, typedef_cv_explain_ftd_v.out, explain_fcv_v.test,
+     typedef_cv_explain_ftd_v.test: Now flagging `void f(const void)` as an
+     error.
    * c_ast_util.c: s/ast_stids/ast_tids/
    * c_ast_util.c: Renaming.
-   * Doxyfile, Makefile.am, NEWS, bootstrap, cdecl.css, configure.ac, lcovrc,
+   * Doxyfile, Makefile.am, bootstrap, cdecl.css, configure.ac, lcovrc,
      makedoc.sh, man/Makefile.am, man/man1/c++decl.1, cdecl.1, src/Makefile.am,
      autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c,
      c_keyword.h, c_kind.c, c_kind.h, c_lang.c, c_lang.h, c_operator.c,
@@ -3231,13 +3208,13 @@
      tests.
    * util.c: s/str/s/
    * parser.y: s/slist_t/c_ast_list_t/
-   * NEWS, c_ast_util.c, c_ast_util.h, check.c, gibberish.c, test/Makefile.am,
+   * c_ast_util.c, c_ast_util.h, check.c, gibberish.c, test/Makefile.am,
      explain_rtpf_v.out, explain_rtpf_v.test: A restricted pointer to a
      non-object, e.g., function, is now correctly flagged as an error.
 
 2021-12-25  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, parser.y, test/Makefile.am, explain_2i-redef-c++.out,
+   * configure.ac, parser.y, test/Makefile.am, explain_2i-redef-c++.out,
      explain_2i-redef.out, explain_2i-redef-c++.test, explain_2i-redef.test:
      Redefinition in C++ is always an error.
    * gibberish.c: s/_[bsa]tid/_[bsa]tids/
@@ -3254,8 +3231,7 @@
 
    * read_line.c: Added assert().
    * file-cast_x.out: Fixed test.
-   * NEWS, read_line.c, read_line.h: Fixed reading from stdin when it's not a
-     TTY.
+   * read_line.c, read_line.h: Fixed reading from stdin when it's not a TTY.
    * src/Makefile.am: s/$</cdecl$(EXEEXT)/ since $< doesn't always work right.
    * run_test.sh: s/mv/cp/ to avoid user/group problem.
    * c_ast.c, c_ast.h, c_ast_util.c, check.c, english.c:
@@ -3266,12 +3242,11 @@
 
 2021-12-21  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out,
-     cdecl-d-al8i.out, cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out,
-     cdecl-d-eni.out, cdecl-d-f2i_pi.out, cdecl-d-f_v.out,
-     cdecl-d-faia4iaviacias6i_v.out, cdecl-d-pmki.out, cdecl-d-udc_i.out,
-     cdecl-d-z.out, show_all-c++.out, show_all.out,
-     show_all_predefined-c++.out, show_all_predefined.out,
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+     cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
+     cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out,
+     cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
      show_all_predefined_typedef-c++.out, show_all_typedef.out,
      show_predefined-c++.out, show_predefined_using.out: Added the standard C++
      types std::ispanstream, std::stacktrace_entry, and std::wispanstream.
@@ -3284,10 +3259,10 @@
    * c_ast.c, c_sname.c, c_sname.h, check.c, dump.c, gibberish.c, lexer.l,
      options.c, parser.y, print.c, red_black_test.c, set_options.c, slist.h,
      slist_test.c: Added FOREACH_SNAME_SCOPE_UNTIL(); argument comments.
-   * NEWS, parser.y, test/Makefile.am, explain_ipi-redef.out,
-     explain_ipi-redef.test: Names being redefined with a different type in the
-     same declaration are now correctly forbidden.
-   * NEWS, configure.ac, check.c, test/Makefile.am, explain_f2i_v-redef.out,
+   * parser.y, test/Makefile.am, explain_ipi-redef.out, explain_ipi-redef.test:
+     Names being redefined with a different type in the same declaration are
+     now correctly forbidden.
+   * configure.ac, check.c, test/Makefile.am, explain_f2i_v-redef.out,
      explain_f2i_v-redef.test: Now checking for function-like parameter
      redefinition.
 
@@ -3314,7 +3289,7 @@
 
 2021-12-14  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, autocomplete.c, c_type.c, cdecl_keyword.c, literals.c,
+   * cdecl.1, autocomplete.c, c_type.c, cdecl_keyword.c, literals.c,
      literals.h, parser.y, declare_a_cd_i.out, explain_a_cd_fa_cd_i_i.out,
      explain_a_cd_fi_i.out, explain_a_dep_a_mu_i-01.out,
      explain_a_dep_a_mu_i-02.out, explain_a_mu_f_v.out, explain_a_mu_i.out,
@@ -3323,17 +3298,16 @@
      explain_tli.out: Now allowing "carries dependency", "maybe unused", "no
      discard", "no except", "no return", "no unique address", and "thread
      local".
-   * NEWS, cdecl.c: The "no files as arguments" change broke reading of stdin;
-     fixed.
+   * cdecl.c: The "no files as arguments" change broke reading of stdin; fixed.
 
 2021-12-13  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Added "constant evaluation", "constant expression", and "constant
      initialization".
-   * NEWS, configure.ac, cdecl.1, c_type.c, cdecl_keyword.c, literals.c,
-     literals.h, parser.y, explain_sxxi.out, explain_xxctor.out,
-     explain_xxi.out: Added pseudo-English keywords `evaluation` (plus `eval`),
-     `expression` (plus `expr`), and `initialization` (plus `init`).
+   * configure.ac, cdecl.1, c_type.c, cdecl_keyword.c, literals.c, literals.h,
+     parser.y, explain_sxxi.out, explain_xxctor.out, explain_xxi.out: Added
+     pseudo-English keywords `evaluation` (plus `eval`), `expression` (plus
+     `expr`), and `initialization` (plus `init`).
 
 2021-12-11  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3371,7 +3345,7 @@
      Consolidated code that prints `; use --help or -h for help`.
    * options.c: Now using COPT(HELP) in "use --help ..." message.
    * cdecl.c: s/DYM_CLI_OPTIONS/DYM_COMMANDS/
-   * NEWS, cdecl.1, cdecl.c, read_line.c, read_line.h, file-cast_x.out,
+   * cdecl.1, cdecl.c, read_line.c, read_line.h, file-cast_x.out,
      file-cast_i.test, file-cast_x.test, file-declare_i.test,
      file-declare_x.test, file-explain_i.test, file-explain_x.test: Removed
      reading command-line arguments as files; made file-reading code
@@ -3415,12 +3389,11 @@
      s/FOREACH_COMMAND/FOREACH_CDECL_COMMAND/
    * cdecl_keyword.c: C_SYN() simplification.
    * c_keyword.h: s/int/yytokentype/
-   * NEWS, check.c, test/Makefile.am, explain_a0i.out, explain_a0i.test:
-     Zero-sized arrays are now correctly forbidden.
-   * NEWS, check.c, test/Makefile.am: `register` arrays are now correctly
-     allowed.
+   * check.c, test/Makefile.am, explain_a0i.out, explain_a0i.test: Zero-sized
+     arrays are now correctly forbidden.
+   * check.c, test/Makefile.am: `register` arrays are now correctly allowed.
    * gettext.h, gnulib-comp.m4, vararrays.m4: Updated Gnulib.
-   * NEWS, configure.ac, src/Makefile.am, cdecl_keyword.c, cdecl_keyword.h,
+   * configure.ac, src/Makefile.am, cdecl_keyword.c, cdecl_keyword.h,
      did_you_mean.c, did_you_mean.h, lexer.l, parser.y, print.c, types.h,
      declare_rgf_v.out, explain_ac9i.out, explain_as9i.out,
      explain_fpcf_i_v.out: Now mentioning that an unknown name is a cdecl
@@ -3458,8 +3431,7 @@
 
 2021-11-28  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Removed unnecessary ().
-   * NEWS, c_operator.c, c_operator.h, test/Makefile.am,
+   * c_operator.c, c_operator.h, test/Makefile.am,
      declare_o_brackets_2i_i-c++20.out, declare_o_brackets_2i_i.out,
      explain_o_brackets_2i_i-c++20.out, explain_o_brackets_2i_i.out,
      declare_o_brackets_2i_i-c++20.test, declare_o_brackets_2i_i.test,
@@ -3470,21 +3442,19 @@
 2021-11-27  Paul J. Lucas <paul@lucasmail.org>
 
    * declare_o_brackets_2i_i.out, declare_o_brackets_2i_i.test: Fixed test.
-   * NEWS, configure.ac, lexer.l: The case-insensitive integer literal suffixes
-     of `uz` and `zu` for `size_t` and `z` for `ssize_t` are now supported.
+   * configure.ac, lexer.l: The case-insensitive integer literal suffixes of
+     `uz` and `zu` for `size_t` and `z` for `ssize_t` are now supported.
 
 2021-11-26  Paul J. Lucas <paul@lucasmail.org>
 
    * gibberish.c: Added more assert() cheks in gibberish.c.
    * typedef_fi_v_show.test: Removed unncessary ().
-   * NEWS, c_type.h, test/Makefile.am, typedef_fi_v_show.out,
-     typedef_fi_v_show.test, typedef_pfi_v_show.test: typedefs of function are
-     now correctly allowed.
+   * c_type.h, test/Makefile.am, typedef_fi_v_show.out, typedef_fi_v_show.test,
+     typedef_pfi_v_show.test: typedefs of function are now correctly allowed.
 
 2021-11-25  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c: Removed unnecessary depth assignment.
-   * NEWS: s/30/35/
 
 2021-11-24  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3507,7 +3477,7 @@
 
 2021-11-19  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, c_ast_util.c, test/Makefile.am, explain_a5fd_i.out,
+   * configure.ac, c_ast_util.c, test/Makefile.am, explain_a5fd_i.out,
      explain_a5fd_pi.out, explain_a5fd_i.test, explain_a5fd_pi.test: Fixed bug
      with a declaration like int f[5](double).
 
@@ -3573,12 +3543,12 @@
      explain_rrr-2.out, explain_rrrr.out, explain_rtpi-c++-error.out,
      reinterpret_cast_pv-c.out, show_using-c++03.out, static_cast_i-c.out: s/is
      not supported/not supported/
-   * NEWS, parser.y, test/Makefile.am, show_using-c++03.out,
-     show_using-c++03.test: A `show using` before C++11 now prints an error.
+   * parser.y, test/Makefile.am, show_using-c++03.out, show_using-c++03.test: A
+     `show using` before C++11 now prints an error.
    * check.c: Properly calling c_ast_check_errors().
    * lexer.l: Added unlikely().
    * lexer.l: Moved lexer_update_loc().
-   * NEWS, check.c, english.c, gibberish.c, parser.y, test/Makefile.am,
+   * check.c, english.c, gibberish.c, parser.y, test/Makefile.am,
      cast_pfi_i-cknr.out, cast_pfkr_i-cknr.out, declare_fkr_pi-c17.out,
      declare_fkr_pi-cknr.out, declare_pfkr_i-c17.out, explain_fkr_i-cknr.out,
      explain_fkr_pi-c17.out, cast_pfi_i-cknr.test, cast_pfkr_i-cknr.test,
@@ -3588,7 +3558,7 @@
 
 2021-11-06  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, check.c, declare_rrgi.out: A deprecated warning is now printed for a
+   * check.c, declare_rrgi.out: A deprecated warning is now printed for a
      `register` array, enum, class, struct, union, pointer, pointer to member,
      reference, and rvalue reference between C++11 and C++14.  (Previously, a
      warning was printed only for built-in types and typedefs.)
@@ -3629,8 +3599,7 @@
    * c_lang.c, c_sname.c, c_type.c, cdecl.c, lexer.l, print.c, prompt.c,
      strbuf.c, strbuf.h: Added strbuf_reset().
    * parser.y, print.c, util.c, util.h: Added fprint_list().
-   * NEWS, parser.y, show_foo.out: `show` now lists all commands for defining
-     types.
+   * parser.y, show_foo.out: `show` now lists all commands for defining types.
 
 2021-10-28  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3658,10 +3627,10 @@
 
 2021-10-22  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, options.c: Previous explicit int for signed was a bad idea.
-   * NEWS, options.c: For explicit int, the special case of "unsigned" by
-     itself meaning "unsigned int" has been extened to "signed" by itself to
-     mean "signed int."
+   * options.c: Previous explicit int for signed was a bad idea.
+   * options.c: For explicit int, the special case of "unsigned" by itself
+     meaning "unsigned int" has been extened to "signed" by itself to mean
+     "signed int."
 
 2021-10-19  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3676,7 +3645,7 @@
 
    * c_ast_util.c, c_ast_util.h, parser.y, explain_typedef_ci32.out: Removed
      c_ast_join_type_decl() decl_loc parameter.
-   * NEWS, configure.ac, parser.y, cast_rgi.out, cdecl--debug.out,
+   * configure.ac, parser.y, cast_rgi.out, cdecl--debug.out,
      cdecl-d-f2i_pi.out, cdecl-d-pmki.out, declare_frg_v.out,
      declare_fvx_v.out, define_rgi.out, explain_+o_eq_rck_rk=default-02.out,
      explain_+o_eq_rck_rk=delete-02.out,
@@ -3717,13 +3686,9 @@
    * man/man1/Makefile.am: s/cdecl.1/$</
    * cdecl.1: s/no semantic/only some semantic/
 
-2021-10-14  Paul J. Lucas <paul@lucasmail.org>
-
-   * NEWS: Updated.
-
 2021-10-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_ast.h, c_ast_util.c, check.c, english.c, test/Makefile.am,
+   * c_ast.h, c_ast_util.c, check.c, english.c, test/Makefile.am,
      explain_ptdv.out, explain_ptdv.test: Fixed pointer to a `typedef` of
      `void`.
 
@@ -3751,7 +3716,7 @@
 
 2021-10-10  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, check.c, parser.y, test/Makefile.am, cdecl-d-z.out, explain_2+n.out,
+   * check.c, parser.y, test/Makefile.am, cdecl-d-z.out, explain_2+n.out,
      explain_2+n.test: Now assume an unknown scoped name is a type when used as
      one.
    * src/Makefile.am: Added parser.output to clean rule.
@@ -3772,13 +3737,12 @@
 
 2021-10-08  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, c_ast_util.c, c_keyword.c, c_type.c, c_type.h,
-     check.c, gibberish.c, parser.y, test/Makefile.am, declare_ati-c++20.out,
+   * configure.ac, c_ast_util.c, c_keyword.c, c_type.c, c_type.h, check.c,
+     gibberish.c, parser.y, test/Makefile.am, declare_ati-c++20.out,
      explain_atci.out, explain_ati-c++20.out,
      show_all_predefined_typedef-c++.out, show_predefined_using.out,
      declare_ati-c++20.test, explain_atci.test, explain_ati-c++20.test: Now
      allowing _Atomic(T) in C++23 but forbidding cvr-qualified types.
-   * NEWS: s/csu/ecsu/
 
 2021-10-07  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3786,7 +3750,7 @@
      cdecl.[hc].
    * parser.y: Now doing this more: c_ast_t *const type_ast =
      ia_type_ast_peek();
-   * NEWS, c_ast_util.c, c_ast_util.h, parser.y, test/Makefile.am,
+   * c_ast_util.c, c_ast_util.h, parser.y, test/Makefile.am,
      cdecl-d-faia4iaviacias6i_v.out, explain_na4i.out, explain_na4i.test: Fixed
      nested array declarations, e.g.: int (a)[4].
    * c_ast_util.c: s/c_ast_is_parent( ast->parent_ast )/ast->parent_ast !=
@@ -3803,7 +3767,7 @@
      help_command-c++03.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out: Added [, <sibberish>]* to help for explain.
    * help.c, help_options.out: Added missing explicit-ecsu to options help.
-   * NEWS, configure.ac, cdecl.1, c_type.c, c_type.h, gibberish.c, options.c,
+   * configure.ac, cdecl.1, c_type.c, c_type.h, gibberish.c, options.c,
      options.h, set_options.c, test/Makefile.am, cdecl-Ix.out, cdecl-Sx.out,
      cdecl-h.out, declare_c.out, declare_pmf_pc.out, declare_pmf_pk.out,
      dynamic_cast_+pc.out, dynamic_cast_pc.out, dynamic_cast_pk.out, set.out,
@@ -3843,23 +3807,21 @@
 2021-10-03  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Reverted AC_INIT change.
-   * NEWS: Updated.
    * help.c, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c++03.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out: Added "name" to commands help.
    * autocomplete.c: Fixed help command completion crash.
    * configure.ac: Expanded AC_INIT.
    * slist.c: Split the loop for efficiency.
-   * NEWS, configure.ac: Updated to 11.2 and fixed NEWS.
+   * configure.ac: Updated to 11.2 and fixed NEWS.
 
 2021-10-02  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c, c_kind.h, check.c,
      dump.c, english.c, gibberish.c, parser.y, types.h:
      s/c_kind_id_t/c_ast_kind_t/; s/kind_id/kind/
-   * NEWS: Fixed casting to void.
-   * NEWS, c_ast.h, c_ast_util.c, check.c, check.h, dump.c, english.c,
-     english.h, gibberish.c, gibberish.h, parser.y, types.h, test/Makefile.am,
+   * c_ast.h, c_ast_util.c, check.c, check.h, dump.c, english.c, english.h,
+     gibberish.c, gibberish.h, parser.y, types.h, test/Makefile.am,
      cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out, cdecl-d-alli.out,
      cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out, cdecl-d-f2i_pi.out,
      cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out, cdecl-d-pmki.out,
@@ -3884,7 +3846,7 @@
    * parser.y: Rearranged decl_list_english.
    * parser.y: No longer printing odd "operator expected" message.
    * parser.y: Better error message for invalid help option.
-   * NEWS, autocomplete.c: Now autocompletes for "help" command.
+   * autocomplete.c: Now autocompletes for "help" command.
    * slist.c: Reworked slist_free() to be more efficient.
    * c_ast.c, c_ast.h, c_ast_util.c: Moved c_ast_root() to c_ast_util.c.
    * c_ast.h, c_ast_util.c, c_typedef.c, check.c, english.c, gibberish.c,
@@ -3899,21 +3861,21 @@
 
 2021-09-29  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_sname.c, c_sname.h, dump.c, dump.h, gibberish.c,
-     gibberish.h, help.c, parser.y, types.h, test/Makefile.am,
-     declare_2a4i.out, declare_2i.out, declare_2pfid_pc.out,
-     declare_2pfid_pcc.out, declare_2pfid_v.out, declare_2pi.out, help-c++.out,
-     help-c.out, help_command-c++.out, help_command-c++03.out,
-     help_command-c.out, help_commands-c++.out, help_commands-c.out,
-     declare_2a4i.test, declare_2i.test, declare_2pfid_pc.test,
-     declare_2pfid_pcc.test, declare_2pfid_v.test, declare_2pi.test: Added
-     ability to declare multiple things in the same "declare" command.
-   * NEWS, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d-+i.out,
+   * cdecl.1, c_sname.c, c_sname.h, dump.c, dump.h, gibberish.c, gibberish.h,
+     help.c, parser.y, types.h, test/Makefile.am, declare_2a4i.out,
+     declare_2i.out, declare_2pfid_pc.out, declare_2pfid_pcc.out,
+     declare_2pfid_v.out, declare_2pi.out, help-c++.out, help-c.out,
+     help_command-c++.out, help_command-c++03.out, help_command-c.out,
+     help_commands-c++.out, help_commands-c.out, declare_2a4i.test,
+     declare_2i.test, declare_2pfid_pc.test, declare_2pfid_pcc.test,
+     declare_2pfid_v.test, declare_2pi.test: Added ability to declare multiple
+     things in the same "declare" command.
+   * parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d-+i.out,
      cdecl-d-al8i.out, cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out,
      cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out,
      cdecl-d-pmki.out, cdecl-d-z.out, explain_2npi.out, explain_2npi.test:
      Fixed multiple nested declarations crash.
-   * NEWS, configure.ac, cdecl.1, gibberish.c, help.c, lexer.l, literals.c,
+   * configure.ac, cdecl.1, gibberish.c, help.c, lexer.l, literals.c,
      literals.h, parser.y, types.h, test/Makefile.am,
      declare_trigraphs_nrfi_v-c++.out, declare_trigraphs_nrfi_v-c++14.out,
      help-c++.out, help-c.out, help_command-c++.out, help_command-c++03.out,
@@ -3940,15 +3902,15 @@
    * configure.ac, src/Makefile.am: s/ENABLE_CODE_COVERAGE/ENABLE_COVERAGE/
    * lib/Makefile.am, intprops.h, string.in.h, wchar.in.h, extern-inline.m4,
      string_h.m4, threadlib.m4, wchar_h.m4: Updated Gnulib.
-   * AUTHORS, Makefile.am, NEWS, configure.ac, lcovrc, src/Makefile.am,
-     c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c, c_sglob.c,
-     c_type.c, c_type.h, check.c, dump.c, lexer.l, options.c, options.h,
-     parser.y, red_black_test.c, set_options.c, set_options.h, util.c,
-     test/Makefile.am, cdecl--kolor.out, cdecl-9.out, cdecl-d-+i.out,
-     cdecl-d-al8i.out, cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out,
-     cdecl-d-eni.out, cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out,
-     cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out, cdecl-h.out,
-     cdecl-k.out, cdecl-knever.out, cdecl-kxxx.out, declare_=i-c.out,
+   * AUTHORS, Makefile.am, configure.ac, lcovrc, src/Makefile.am, c_ast.c,
+     c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c, c_sglob.c, c_type.c,
+     c_type.h, check.c, dump.c, lexer.l, options.c, options.h, parser.y,
+     red_black_test.c, set_options.c, set_options.h, util.c, test/Makefile.am,
+     cdecl--kolor.out, cdecl-9.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+     cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
+     cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out, cdecl-d-pmki.out,
+     cdecl-d-udc_i.out, cdecl-d-z.out, cdecl-h.out, cdecl-k.out,
+     cdecl-knever.out, cdecl-kxxx.out, declare_=i-c.out,
      declare_alttokens_dtor.out, declare_alttokens_o_pipe2_rck_b.out,
      declare_alttokens_rri.out, declare_ari.out, declare_cf_v-c.out,
      declare_cnmf_v-c.out, declare_cnmf_v.out, declare_efi.out, declare_ii.out,
@@ -4077,8 +4039,8 @@
    * c_typedef.c: s/td_rb_visitor_data/tdef_rb_visitor_data/
    * parser.y: Added assert().
    * travis.sh: Added MAKE_OPTS.
-   * NEWS, c_sname.c, c_sname.h, check.c, gibberish.c, parser.y, strbuf.c,
-     strbuf.h, test/Makefile.am, define_ins_ns_i.out, ins_ns_typedef_i.out,
+   * c_sname.c, c_sname.h, check.c, gibberish.c, parser.y, strbuf.c, strbuf.h,
+     test/Makefile.am, define_ins_ns_i.out, ins_ns_typedef_i.out,
      ns_ins_ns_typedef_i.out, ns_ins_typedef_i.out, define_ins_ns_i.test,
      ins_ns_typedef_i.test, ns_ins_ns_typedef_i.test, ns_ins_typedef_i.test:
      Added support for C++20's nested inline namespaces.
@@ -4087,11 +4049,11 @@
 
    * test/Makefile.am: Namespace test renaming.
    * test/Makefile.am: Removed duplicate test.
-   * NEWS, cdecl.1, autocomplete.c, cdecl.c: `inline` is now a command in C++11
-     and later (presumed to be followed by `namespace`) and `namespace` is
+   * cdecl.1, autocomplete.c, cdecl.c: `inline` is now a command in C++11 and
+     later (presumed to be followed by `namespace`) and `namespace` is
      auto-completable.
-   * NEWS, autocomplete.c: Added "typedef" and "using" to autocomplete for
-     "set" command.
+   * autocomplete.c: Added "typedef" and "using" to autocomplete for "set"
+     command.
    * test/Makefile.am, inamespace_typedef_i.out, inamespace_typedef_i.test:
      Added inline namespace test.
 
@@ -4102,16 +4064,16 @@
      namespace_c_namespace_c.out: Removed "a" from error message.
    * c_sname.c: Eliminated is_match local variable.
    * c_sname.c: Fixed crash for any-scope matches.
-   * NEWS, configure.ac: Changed version to 11.0.
-   * NEWS, lexer.l, set_options.c: Either using a digraph or setting the
-     digraphs option in a language before C95 now prints a warning that
-     digraphs are not supported until C95.
+   * configure.ac: Changed version to 11.0.
+   * lexer.l, set_options.c: Either using a digraph or setting the digraphs
+     option in a language before C95 now prints a warning that digraphs are not
+     supported until C95.
    * literals.c, literals.h: Reordering.
 
 2021-09-16  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, lexer.l, literals.c, literals.h: Added "floating-point".
-   * NEWS, cdecl.1, lexer.l, literals.c, literals.h: Added "double-precision".
+   * cdecl.1, lexer.l, literals.c, literals.h: Added "floating-point".
+   * cdecl.1, lexer.l, literals.c, literals.h: Added "double-precision".
 
 2021-09-15  Paul J. Lucas <paul@lucasmail.org>
 
@@ -4125,7 +4087,7 @@
    * .travis.yml: Now using && in script; added after_success.
    * .travis.yml: Travis CI Linux + FreeBSD, multiple architectures.
    * .travis.yml: Travis-CI integration.
-   * NEWS, cdecl.1, c_lang.c, c_lang.h, help.c, cdecl-xx.out, help-c++.out,
+   * cdecl.1, c_lang.c, c_lang.h, help.c, cdecl-xx.out, help-c++.out,
      help-c.out, help_command-c++.out, help_command-c++03.out,
      help_command-c.out, help_commands-c++.out, help_commands-c.out: Now allow
      and default to C++23 for C++.
@@ -4152,9 +4114,8 @@
      explicit with cases in some switches; now untypedefing more types before
      checks.
    * gibberish.c: Made kind switch cases explicit.
-   * NEWS, check.c, test/Makefile.am, explain_ari.out, explain_ari.test: An
-     array of reference (or rvalue reference) is now correctly flagged as an
-     error.
+   * check.c, test/Makefile.am, explain_ari.out, explain_ari.test: An array of
+     reference (or rvalue reference) is now correctly flagged as an error.
    * c_sname.c, c_sname.h: c_name_local_name() and c_name_full_name() now allow
      NULL.
    * cdecl.1: Removed ancient K&R C examples.
@@ -4166,16 +4127,15 @@
 
 2021-09-11  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, parser.y, test/Makefile.am, explain_fpf_pac_i.out,
-     explain_fpf_pac_i.test: Fixed "pointer to function returning pointer to
-     array" function argument.
-   * NEWS, check.c, test/Makefile.am, typedef_v.out, typedef_v_explain_v.out,
+   * parser.y, test/Makefile.am, explain_fpf_pac_i.out, explain_fpf_pac_i.test:
+     Fixed "pointer to function returning pointer to array" function argument.
+   * check.c, test/Makefile.am, typedef_v.out, typedef_v_explain_v.out,
      typedef_v.test, typedef_v_explain_v.test: `typedef void V` is now
      correctly allowed and `V p` is now correctly flagged as an error.
-   * NEWS, check.c, test/Makefile.am, explain_p_typedef_ri.out,
+   * check.c, test/Makefile.am, explain_p_typedef_ri.out,
      explain_p_typedef_ri.test: Declarations like "typedef int &RI; explain RI
      *p" are now correctly flagged as illegal.
-   * NEWS, check.c, test/Makefile.am, explain_f_typedef_ai.out,
+   * check.c, test/Makefile.am, explain_f_typedef_ai.out,
      explain_f_typedef_ai.test: Functions returning a typdef of an array are
      now flagged as illegal.
 
@@ -4187,13 +4147,12 @@
    * print.c: Setting term_columns = 0 only when !defined(ENABLE_TERM_SIZE).
    * lib/Makefile.am, attribute.h, idx.h, stdlib.in.h, string.in.h, wchar.in.h,
      gnulib-common.m4: Updated GnuLib.
-   * NEWS: Combined 2 items.
-   * NEWS, cdecl.1, c_keyword.c, literals.c, literals.h: Added partial support
-     for Microsoft's __forceinline.
+   * cdecl.1, c_keyword.c, literals.c, literals.h: Added partial support for
+     Microsoft's __forceinline.
 
 2021-09-09  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, lexer.l, set_options.c, test/Makefile.am,
+   * lexer.l, set_options.c, test/Makefile.am,
      declare_trigraphs_o_circ_eq_i_rk.test,
      declare_trigraphs_o_circ_rcki_k.test,
      declare_trigraphs_o_pipe2_2rck_b.test,
@@ -4206,18 +4165,16 @@
      explain_trigraphs_o_pipe_2rck_k.test,
      explain_trigraphs_o_pipe_eq_i_rk.test, explain_trigraphs_o_tilde_k.test:
      More trigraph warnings.
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
-     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
-     show_all_predefined.out, show_all_predefined_typedef-c++.out,
-     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
-     show_predefined_typedef.out, show_predefined_using.out: More
-     POSIX/standard-ish types.
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
-     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
-     show_all_predefined.out, show_all_predefined_typedef-c++.out,
-     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
-     show_predefined_typedef.out, show_predefined_using.out: Added sig_t and
-     sighandler_t.
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: More POSIX/standard-ish types.
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: Added sig_t and sighandler_t.
    * c_sglob.c: Made c_sglob_parse() more robust.
    * parser.y: Added MEM_ZERO().
    * c_ast.c: Added MEM_ZERO( ast ).
@@ -4227,14 +4184,14 @@
 
    * lexer.l: Removed unnecessary ().
    * lexer.l: Variable renaming.
-   * NEWS, parser.y, test/Makefile.am, explain_mscc_f_v.out,
-     explain_mscd_f_v.out, explain_msfc_f_v.out, explain_mssc_f_v.out,
-     explain_mstc_f_v.out, explain_msvc_f_v.out, explain_mswa_f_v.out,
-     explain_p_mssc_f_v.out, explain_pp_mssc_f_v.out, explain_mscc_f_v.test,
-     explain_mscd_f_v.test, explain_msfc_f_v.test, explain_mssc_f_v.test,
-     explain_mstc_f_v.test, explain_msvc_f_v.test, explain_mswa_f_v.test,
-     explain_p_mssc_f_v.test, explain_pp_mssc_f_v.test: Fixed declarations
-     like: explain int (__stdcall **f)()
+   * parser.y, test/Makefile.am, explain_mscc_f_v.out, explain_mscd_f_v.out,
+     explain_msfc_f_v.out, explain_mssc_f_v.out, explain_mstc_f_v.out,
+     explain_msvc_f_v.out, explain_mswa_f_v.out, explain_p_mssc_f_v.out,
+     explain_pp_mssc_f_v.out, explain_mscc_f_v.test, explain_mscd_f_v.test,
+     explain_msfc_f_v.test, explain_mssc_f_v.test, explain_mstc_f_v.test,
+     explain_msvc_f_v.test, explain_mswa_f_v.test, explain_p_mssc_f_v.test,
+     explain_pp_mssc_f_v.test: Fixed declarations like: explain int (__stdcall
+     **f)()
 
 2021-09-07  Paul J. Lucas <paul@lucasmail.org>
 
@@ -4243,7 +4200,6 @@
 2021-09-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_sglob.c: s/C_SGLOB/C_SGLOB_INLINE/
-   * NEWS: Formatting.
 
 2021-09-05  Paul J. Lucas <paul@lucasmail.org>
 
@@ -4260,8 +4216,8 @@
    * c_typedef.c, cdecl.c, cdecl.h: Added parse_cdecl_string() to cdecl.h.
    * c_typedef.c: s/c_typedef_parse_predefined/parse_predefined_types/
    * cdecl.1: s/earlier/later/
-   * NEWS, cdecl.1, help.c, parser.y, help_english-c++.out: Declaring a
-     destructor in English now optionally allows `()`.
+   * cdecl.1, help.c, parser.y, help_english-c++.out: Declaring a destructor in
+     English now optionally allows `()`.
 
 2021-09-03  Paul J. Lucas <paul@lucasmail.org>
 
@@ -4281,14 +4237,14 @@
 
 2021-09-01  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, lexer.l, test/Makefile.am, explain_ecf_v-Rstr-03.out,
+   * lexer.l, test/Makefile.am, explain_ecf_v-Rstr-03.out,
      explain_ecf_v-Rstr-03.test: Fixed parsing of C++ raw string literals.
    * c_type.c: Sorted functions.
 
 2021-08-31  Paul J. Lucas <paul@lucasmail.org>
 
    * c_typedef.c: s/PREDEFINED_STD_C89/PREDEFINED_STD_C_89/
-   * NEWS, lexer.l: In K&R C, now printing a warning that trigraphs are not
+   * lexer.l: In K&R C, now printing a warning that trigraphs are not
      supported.
    * c_type.c, c_type.h: Split off functionality for "de-signed"-ing into
      c_tid_simplify() and now calling it from c_type_name().  Made
@@ -4297,12 +4253,12 @@
 
 2021-08-30  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
      show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
      show_all_predefined_typedef-c++.out, show_all_typedef.out,
      show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
      show_predefined_using.out: Added the missing standard `DIR` type.
-   * NEWS, configure.ac, check.c, test/Makefile.am, explain_f_k-knr.out,
+   * configure.ac, check.c, test/Makefile.am, explain_f_k-knr.out,
      explain_f_k-knr.test: Now correctly forbidding functions returning
      `struct` in K&R C.
 
@@ -4318,40 +4274,38 @@
 
 2021-08-26  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
-     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
-     show_all_predefined.out, show_all_predefined_typedef-c++.out,
-     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
-     show_predefined_typedef.out, show_predefined_using.out: Added Microsoft
-     types `__m128`, `__m128d`, `__m128i`, and `__m64`.
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: Added Microsoft types `__m128`, `__m128d`,
+     `__m128i`, and `__m64`.
    * c_typedef.c: Added "Microsoft".
-   * NEWS, c_keyword.c, literals.c, literals.h: Added partial support for
-     Microsoft's __asm.
+   * c_keyword.c, literals.c, literals.h: Added partial support for Microsoft's
+     __asm.
 
 2021-08-24  Paul J. Lucas <paul@lucasmail.org>
 
    * c_keyword.c: s/LANG_MIN(C_89)/LANG_ANY/ for __attribute__ and __declspec
      -- why not?
    * configure.ac: Added AC_TYPE_UINT64_T.
-   * NEWS, cdecl.1, c_keyword.c, literals.c, literals.h, parser.y,
-     test/Makefile.am, explain_i_msds.out, explain_k_msds.out,
-     explain_msds_i.out, explain_msds_k.out, explain_p_msds_i.out,
-     explain_i_msds.test, explain_k_msds.test, explain_msds_i.test,
-     explain_msds_k.test, explain_p_msds_i.test: Added partial support for
-     Microsoft's __declspec.
+   * cdecl.1, c_keyword.c, literals.c, literals.h, parser.y, test/Makefile.am,
+     explain_i_msds.out, explain_k_msds.out, explain_msds_i.out,
+     explain_msds_k.out, explain_p_msds_i.out, explain_i_msds.test,
+     explain_k_msds.test, explain_msds_i.test, explain_msds_k.test,
+     explain_p_msds_i.test: Added partial support for Microsoft's __declspec.
 
 2021-08-22  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Updated for GnuLib gcc 11 fix.
    * getopt.c, stdio.in.h, stdlib.in.h, string.in.h, gnulib-common.m4: Updated
      GnuLib.
-   * NEWS, configure.ac, cdecl.1, c_ast.h, c_ast_util.c, c_ast_util.h,
-     c_keyword.c, c_type.c, c_type.h, check.c, gibberish.c, lexer.l,
-     literals.c, literals.h, parser.y, test/Makefile.am, declare_cdecl_f.out,
-     declare_p_cdecl_f.out, explain_cdecl_f.out, explain_p_cdecl_f.out,
-     explain_p_cdecl_v.out, declare_cdecl_f.test, declare_p_cdecl_f.test,
-     explain_cdecl_f.test, explain_p_cdecl_f.test, explain_p_cdecl_v.test:
-     Support for Microsoft calling conventions.
+   * configure.ac, cdecl.1, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c,
+     c_type.c, c_type.h, check.c, gibberish.c, lexer.l, literals.c, literals.h,
+     parser.y, test/Makefile.am, declare_cdecl_f.out, declare_p_cdecl_f.out,
+     explain_cdecl_f.out, explain_p_cdecl_f.out, explain_p_cdecl_v.out,
+     declare_cdecl_f.test, declare_p_cdecl_f.test, explain_cdecl_f.test,
+     explain_p_cdecl_f.test, explain_p_cdecl_v.test: Support for Microsoft
+     calling conventions.
 
 2021-08-21  Paul J. Lucas <paul@lucasmail.org>
 
@@ -4392,7 +4346,7 @@
 
 2021-08-05  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_type.c, c_type.h, check.c, parser.y, print.c, test/Makefile.am,
+   * c_type.c, c_type.h, check.c, parser.y, print.c, test/Makefile.am,
      2k_typedef_i.out, c_namespace_c.out, cast_a3i.out, cast_f_i.out,
      cast_pfx_i.out, cast_rgi.out, cast_type_i.out, cast_typedef_i.out,
      cdecl-23.out, cdecl-Ix.out, cdecl-xx.out, const_cast_pi-c.out,
@@ -4544,7 +4498,7 @@
 
 2021-07-16  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, check.c: Marking functions and conversion operators `=
+   * configure.ac, check.c: Marking functions and conversion operators `=
      delete` is now supported.
 
 2021-07-12  Paul J. Lucas <paul@lucasmail.org>
@@ -4611,7 +4565,7 @@
 
 2021-06-19  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, parser.y: Pointers to union members are now allowed.
+   * parser.y: Pointers to union members are now allowed.
    * c_ast.h, types.h: Moved c_visit_dir to c_ast.h.
 
 2021-06-17  Paul J. Lucas <paul@lucasmail.org>
@@ -4628,9 +4582,9 @@
 
    * lib/Makefile.am, libc-config.h, string.in.h, unistd.in.h,
      gnulib-common.m4, gnulib-comp.m4, unistd_h.m4: Updated Gnulib.
-   * NEWS, help.c, help_english-c++.out, help_english-c.out,
-     help_english-c89.out, help_english-knr.out: `typedef` has been added to
-     the "store" section of English help.
+   * help.c, help_english-c++.out, help_english-c.out, help_english-c89.out,
+     help_english-knr.out: `typedef` has been added to the "store" section of
+     English help.
    * c_keyword.c, c_lang.c, options.c, set_options.c: Simplified *_next()
      functions.
    * c_keyword.c, c_lang.c, set_options.c: Simplified *_next() functions.
@@ -4660,14 +4614,13 @@
 
 2021-06-11  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, parser.y, test/Makefile.am, using_f-name_v.test: `using`
-     declarations now correctly forbid names in the types on the right-hand
-     side.
+   * parser.y, test/Makefile.am, using_f-name_v.test: `using` declarations now
+     correctly forbid names in the types on the right-hand side.
    * cdecl.1: Added (missing) mention of `constexpr` to C++11.
 
 2021-06-10  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, c_type.c, gibberish.c, declare_ovc_udc_i.out,
+   * configure.ac, c_type.c, gibberish.c, declare_ovc_udc_i.out,
      declare_ovyf.out, declare_vovyf.out: In C++, at most one of `virtual`,
      `final`, or `override` is now printed.
    * c_type.c: Simplified c_type_name() a bit.
@@ -4698,7 +4651,6 @@
 
 2021-06-06  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Whitespace.
    * c_sname.h: Simplified SNAME_VAR_INIT().
    * parser.y: Didn't need c_type_is_none() check before setting TB_SCOPE.
    * parser.y: Now using c_sname_check() in of_scope_list_english.
@@ -4736,7 +4688,6 @@
    * c_ast_util.c, c_typedef.c, c_typedef.h, parser.y: When attempting to use
      an sname with a scope-type that doesn't match a previously declared type,
      the previously declared type is printed.
-   * NEWS: Updated.
    * c_type.h, parser.y, test/Makefile.am, define_namespace_c_namespace_c.test:
      Now also checking the scope-types of English snames.
    * parser.y: Fixed "previosuly declared as <type>".
@@ -4770,7 +4721,7 @@
      declaration syntax for more predefined types.
    * parser.y: Now setting intermediate scopes to TB_NAMESPACE if they don't
      already have a type.
-   * NEWS, cdecl.1, c_typedef.c, lexer.l, cdecl--debug.out, cdecl-d.out,
+   * cdecl.1, c_typedef.c, lexer.l, cdecl--debug.out, cdecl-d.out,
      show_all-c++.out, show_all.out, show_all_predefined-c++.out,
      show_all_predefined.out, show_all_predefined_typedef-c++.out,
      show_all_typedef.out, show_predefined-c++.out, show_predefined_using.out:
@@ -4787,7 +4738,7 @@
    * print.c, util.h: Added WS.
    * print.c: Made whitespace order sorted.
    * lexer.l: Reformatting.
-   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
      show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
      show_all_predefined_typedef-c++.out, show_all_typedef.out,
      show_predefined-c++.out, show_predefined_using.out: Added types
@@ -4801,7 +4752,7 @@
    * parser.y: For nested namespaces, now setting scope type only if they don't
      have one.
    * parser.y: s/any_sname_c/any_sname_c_exp; s/sname_c/any_sname_c_exp/
-   * NEWS, configure.ac, options.c: Fixed flex-debug build.
+   * configure.ac, options.c: Fixed flex-debug build.
 
 2021-05-27  Paul J. Lucas <paul@lucasmail.org>
 
@@ -4811,19 +4762,18 @@
 2021-05-26  Paul J. Lucas <paul@lucasmail.org>
 
    * Makefile.am: Added bootstrap ane makedoc.sh to EXTRA_DIST.
-   * NEWS, configure.ac: Updated version to 10.0.
+   * configure.ac: Updated version to 10.0.
    * check.c: Formatting.
    * cdecl.1: Added NOTES section about main().
    * cdecl.1: Rewording.
    * cdecl.1: Added "constant".
    * check.c: Always do main() checks in C.
-   * NEWS, c_type.h, check.c, test/Makefile.am, explain_main_vf_h.out,
+   * c_type.h, check.c, test/Makefile.am, explain_main_vf_h.out,
      explain_main_vf_h.test: If a function named "main" has any storage-like
      type that can't be used with the program's `main()`, assume it's just a
      member function named "main" and not the program's `main()`.
-   * NEWS: Formatting.
-   * NEWS, cdecl.1, c_ast_util.c, c_ast_util.h, c_type.c, c_type.h,
-     c_typedef.c, check.c, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
+   * cdecl.1, c_ast_util.c, c_ast_util.h, c_type.c, c_type.h, c_typedef.c,
+     check.c, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
      explain_+co_eq2_rck_b=default.out,
      explain_cmo_less_eq_greater_rck_a=default.out,
      explain_co_eq2_crk_b=default.out, explain_fo_eq2_2crk_b=default.out,
@@ -4847,9 +4797,9 @@
    * c_ast_util.c, c_ast_util.h: Removed c_ast_is_ref_to_type_any() --
      shouldn't be here yet.
    * test/Makefile.am: Fixed test run.
-   * NEWS, c_ast_util.c, test/Makefile.am, explain_rgk.out, explain_rgk.test:
-     The return type of `main()` is now correctly restricted to `int`.
-     Declaring a `struct` as `register` is now legal.
+   * c_ast_util.c, test/Makefile.am, explain_rgk.out, explain_rgk.test: The
+     return type of `main()` is now correctly restricted to `int`. Declaring a
+     `struct` as `register` is now legal.
    * test/Makefile.am: Fixed some duplicate/incorrect tests.
 
 2021-05-25  Paul J. Lucas <paul@lucasmail.org>
@@ -5072,7 +5022,7 @@
      explain_yo_minus2_i_rk.test, explain_yo_minus_rk_rk.test,
      explain_yo_plus2_i_rk.test, explain_yo_plus_rk_rk.test,
      explain_yo_star_rk_rk.test: s/define S as struct S/struct S/
-   * NEWS, check.c, test/Makefile.am, explain_o_less_eq_greater_2rck_a.out,
+   * check.c, test/Makefile.am, explain_o_less_eq_greater_2rck_a.out,
      explain_o_less_eq_greater_2rck_std_partial_ordering.out,
      explain_o_less_eq_greater_2rck_std_strong_ordering.out,
      explain_o_less_eq_greater_2rck_std_weak_ordering.out,
@@ -5099,7 +5049,6 @@
 2021-05-13  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am, red_black_test.c: Added unit tests for red-black tree.
-   * NEWS: Added mention of makedoc.sh.
 
 2021-05-12  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5121,30 +5070,29 @@
 2021-05-10  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c: s/print_indent/dump_indent/
-   * NEWS: Added another example of `show`.
 
 2021-05-08  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Added ret_ast local variable.
    * parser.y: Now using struct literals.
    * lexer.l: Removed c == '\0' ||
-   * NEWS, bootstrap: Added a bootstrap script.
+   * bootstrap: Added a bootstrap script.
 
 2021-05-07  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c, cdecl.h, options.c, parser.y, print.c, prompt.c: Added
      CDECL.
    * lexer.l: Now using strbuf_catf().
-   * NEWS, lexer.l, parser.y: When the lexer prints an error message, the
-     parser no longer does.
-   * NEWS, lexer.l, test/Makefile.am, explain_ecf_v-Rstr-01.out,
+   * lexer.l, parser.y: When the lexer prints an error message, the parser no
+     longer does.
+   * lexer.l, test/Makefile.am, explain_ecf_v-Rstr-01.out,
      explain_ecf_v-Rstr-02.out, explain_ecf_v-Rstr-01.test,
      explain_ecf_v-Rstr-02.test: Now support C++ raw string literals.
    * lexer.l: Reordering.
 
 2021-05-06  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, parser.y: Now recognizing "asm" just to say it's not
+   * configure.ac, parser.y: Now recognizing "asm" just to say it's not
      supported.
 
 2021-05-04  Paul J. Lucas <paul@lucasmail.org>
@@ -5180,9 +5128,8 @@
 
 2021-04-16  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, print.c: No longer sometime print "null" when an unknown name is
+   * print.c: No longer sometime print "null" when an unknown name is
      encountered.
-   * NEWS: Fixed formatting.
 
 2021-04-13  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5197,8 +5144,8 @@
 2021-04-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_sname.h: Added missing #include.
-   * AUTHORS, NEWS, configure.ac, lib/Makefile.am, alloca.in.h, attribute.h,
-     btowc.c, cdefs.h, ctype.in.h, flexmember.h, fnmatch.c, fnmatch.in.h,
+   * AUTHORS, configure.ac, lib/Makefile.am, alloca.in.h, attribute.h, btowc.c,
+     cdefs.h, ctype.in.h, flexmember.h, fnmatch.c, fnmatch.in.h,
      fnmatch_loop.c, hard-locale.c, hard-locale.h, idx.h, intprops.h,
      inttypes.in.h, isblank.c, lc-charset-dispatch.c, lc-charset-dispatch.h,
      libc-config.h, localcharset.c, localcharset.h, locale.in.h,
@@ -5266,7 +5213,7 @@
 
 2021-03-26  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, help.c, help-c++.out, help-c.out, help_command-c++.out,
+   * help.c, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c++03.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out: Added C78 to help text.
 
@@ -5283,7 +5230,7 @@
 
 2021-03-23  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, did_you_mean.c, did_you_mean.h, options.c, options.h,
+   * configure.ac, did_you_mean.c, did_you_mean.h, options.c, options.h,
      print.c, print.h, set_options.c, set_options.h: Added "did you mean ...?"
      suggestions for command-line options.
    * options.c: Renaming.
@@ -5328,7 +5275,7 @@
 
    * parser.y: Added assert().
    * parser.y: Nested types are now not defined when flagged as an error in C.
-   * NEWS, parser.y, test/Makefile.am, k_typedef_i-c.test: Nested types are now
+   * parser.y, test/Makefile.am, k_typedef_i-c.test: Nested types are now
      correctly caught as an error in C.
    * cdecl.1: Added "C++ only" for nested types.
    * cdecl.1: Added mention of complete set of commands useful in .cdeclrc
@@ -5340,13 +5287,13 @@
    * sysexits.in.h: Updated Gnulib.
    * check.c, pjl_config.h, strbuf.h: s/argument/parameter/ where appropriate.
    * c_type.h, english.c, parser.y: s/c_type_name_eng/c_type_name_english/
-   * NEWS, check.c: A declaration having a storage class and a bit-field width
-     is now correctly caught as an error.
+   * check.c: A declaration having a storage class and a bit-field width is now
+     correctly caught as an error.
 
 2021-03-14  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, check.c: A scoped name having a bit-field width is now correctly
-     caught as an error.
+   * check.c: A scoped name having a bit-field width is now correctly caught as
+     an error.
    * slist.c: Renaming.
    * slist.c, slist.h: Renaming.
    * slist.c: Added needed (intptr_t) cast.
@@ -5365,8 +5312,8 @@
    * did_you_mean.c, print.c: Added "Did you mean...?" suggestions for unknown
      name.
    * c_type.c, c_type.h, dump.c, print.c: Added C_TPID_NONE.
-   * NEWS, did_you_mean.c, did_you_mean.h, set_options.c: Added "Did you mean
-     ...?" for `set` options.
+   * did_you_mean.c, did_you_mean.h, set_options.c: Added "Did you mean ...?"
+     for `set` options.
    * c_typedef.c: Fixed warning.
    * help.c, help_english-c.out, help_english-c89.out: Changed order of long
      and unsigned in C help to match C++ help.
@@ -5385,12 +5332,12 @@
 
 2021-03-09  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
-     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
-     show_all_predefined.out, show_all_predefined_typedef-c++.out,
-     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
-     show_predefined_typedef.out, show_predefined_using.out: Added `iconv_t`,
-     `locale_t`, `posix_spawnattr_t`, `posix_spawn_file_actions_t`, `regex_t`,
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: Added `iconv_t`, `locale_t`,
+     `posix_spawnattr_t`, `posix_spawn_file_actions_t`, `regex_t`,
      `regmatch_t`, and `regoff_t`.
    * cdecl.c, strbuf.c, strbuf.h: Renaming.
    * options.c, options.h, set_options.c: Added PJL_WARN_UNUSED_RESULT; changed
@@ -5399,9 +5346,8 @@
    * help.c, help_english-c++.out, help_english-c.out: Joined char types in
      help.
    * check.c: s/error_kind_to_type/error_kind_to_tid/
-   * NEWS, check.c, test/Makefile.am, explain_fpcf_i_v.test,
-     explain_pcf_i.test: A pointer to function with qualifiers is now correctly
-     caught as an error.
+   * check.c, test/Makefile.am, explain_fpcf_i_v.test, explain_pcf_i.test: A
+     pointer to function with qualifiers is now correctly caught as an error.
 
 2021-03-08  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5420,9 +5366,8 @@
 2021-03-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.c: Added _Thread_local spelling for C types.
-   * NEWS, cdecl.1, c_lang.c: C78 is now accepted as an alias for K&RC.
-   * Makefile.am, NEWS: Added (the missing) `Doxyfile` to the dist-generated
-     tarball.
+   * cdecl.1, c_lang.c: C78 is now accepted as an alias for K&RC.
+   * Makefile.am: Added (the missing) `Doxyfile` to the dist-generated tarball.
 
 2021-03-05  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5430,7 +5375,7 @@
      strbuf.
    * strbuf.h: Sorted functions.
    * stddef.in.h: Updated Gnulib.
-   * NEWS, configure.ac: Updated version to 9.8.
+   * configure.ac: Updated version to 9.8.
 
 2021-03-04  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5438,7 +5383,7 @@
    * help.c, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c++03.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out: s/or cast/or a cast/
-   * NEWS, cdecl.1, options.c: Added (the missing) `--explicit-int` to the help
+   * cdecl.1, options.c: Added (the missing) `--explicit-int` to the help
      message.
 
 2021-03-03  Paul J. Lucas <paul@lucasmail.org>
@@ -5452,14 +5397,14 @@
 
    * c_lang.c, c_lang.h, check.c, parser.y, print.c, util.c, util.h: Now
      printing "... since <lang>" when the current language > oldest language.
-   * NEWS, parser.y, test/Makefile.am, explain_ec_typedef_i.out,
+   * parser.y, test/Makefile.am, explain_ec_typedef_i.out,
      explain_ec_using_i.out, explain_ec_typedef_i.test,
      explain_ec_using_i.test: Now accepts extern "C" using declarations.
    * help.c, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c++03.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out: s/into|to/[in]to/
-   * NEWS, help.c: The help for pseudo-English now correctly includes `auto` as
-     a storage class for C++98 and C++03.
+   * help.c: The help for pseudo-English now correctly includes `auto` as a
+     storage class for C++98 and C++03.
 
 2021-02-26  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5486,23 +5431,23 @@
    * gibberish.c, help.c, util.h: Added true_clear().
    * parser.y, util.c: More uses of false_set().
    * red_black.c: Fixed comment.
-   * NEWS, cdecl.1, lexer.l, literals.c, literals.h: Added new synonyms: conv,
-     ctor, & dtor.
+   * cdecl.1, lexer.l, literals.c, literals.h: Added new synonyms: conv, ctor,
+     & dtor.
    * autocomplete.c: "linkage" is now auto-completable.
 
 2021-02-23  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_ast.h, parser.y: Moved c_ast_dup().
-   * NEWS, configure.ac: Updated version.
+   * configure.ac: Updated version.
    * c_sname.c, c_type.c, cdecl.c, options.c, util.c, util.h: Added
      strbuf_catseps().
-   * NEWS, c_ast.c, help.c, parser.y, test/Makefile.am, cdecl--debug.out,
+   * c_ast.c, help.c, parser.y, test/Makefile.am, cdecl--debug.out,
      cdecl-d.out, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c++03.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out, typedef_i_pi.out, typedef_i_pi.test: Can now define
      multiple types in a single typedef.
    * parser.y: s/ast_type_stack/type_ast_stack/
-   * NEWS, configure.ac, gibberish.c, show_all_predefined_typedef-c++.out,
+   * configure.ac, gibberish.c, show_all_predefined_typedef-c++.out,
      show_all_typedef.out, show_predefined_typedef.out: Fixed spacing for
      qualified pointers.
 
@@ -5536,10 +5481,10 @@
    * did_you_mean.c: Got rid of "may change value" warning.
    * print.c: Silence warnings.
    * did_you_mean.c: Extracted SIMILAR_ENOUGH_PERCENT.
-   * NEWS, c_keyword.c: `_Bool` is now recognized only in C99 and later and not
-     in C++.
-   * NEWS, lexer.l: `imaginary` is now mapped only to `_Imaginary` in C99 and
-     later and not in C++.
+   * c_keyword.c: `_Bool` is now recognized only in C99 and later and not in
+     C++.
+   * lexer.l: `imaginary` is now mapped only to `_Imaginary` in C99 and later
+     and not in C++.
    * print.c: Simplified; now using c_lang_until().
    * c_keyword.c, c_keyword.h: s/context/kw_ctx/
    * c_type.c, c_type.h: Moved more code around.
@@ -5563,14 +5508,13 @@
 
 2021-02-17  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, check.c, test/Makefile.am, explain_fa_v.out,
-     explain_fa_v-c++17.test, explain_fa_v.test: Function parameters in C++20
-     now allow auto.
+   * check.c, test/Makefile.am, explain_fa_v.out, explain_fa_v-c++17.test,
+     explain_fa_v.test: Function parameters in C++20 now allow auto.
    * c_ast_util.c: The type redefinition error message now includes the
      existing type, part 2.
    * c_ast.c: Fixed warning.
-   * NEWS, parser.y: The type redefinition error message now includes the
-     existing type.
+   * parser.y: The type redefinition error message now includes the existing
+     type.
    * c_typedef.c, c_typedef.h, parser.y: c_typedef_add() now returns
      c_typedef_t*.
    * c_type.c, c_type.h, debug.c, english.c, gibberish.c, parser.y,
@@ -5581,7 +5525,6 @@
 
 2021-02-16  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Elaborated what a reserved identifier is.
    * check.c: s/not supported/{is|are} not supported/
    * parser.y, explain_2gat_cpi.out, explain_a_using_a_mu_i.out,
      explain_c_gat_pi.out, explain_c_gat_vpi.out, explain_gat_c_gat_vpi.out,
@@ -5597,10 +5540,8 @@
    * parser.y: Split out paren_decl_list_english and returning_english_ast.
    * help.c, help_english-c++.out, help_english-c.out, help_english-c89.out,
      help_english-knr.out: Added missing <cv-qual>* in places.
-   * NEWS, help.c, help_english-c.out: The help for `args` no longer prints
-     `<name>` for when the current language is either C2X or C++.
-   * NEWS: The help for `args` no longer prints `<name>` for when the current
-     language is either C2X or C++.
+   * help.c, help_english-c.out: The help for `args` no longer prints `<name>`
+     for when the current language is either C2X or C++.
    * c_ast.h, c_ast_util.c, check.c, english.c, parser.y: Function renaming.
 
 2021-02-15  Paul J. Lucas <paul@lucasmail.org>
@@ -5630,9 +5571,9 @@
    * autocomplete.c, c_lang.c, c_lang.h, c_type.c, c_typedef.c, check.c,
      gibberish.c, help.c, literals.h, parser.y, print.c, prompt.c:
      s/C_LANG_/OPT_LANG/ and made some former macros into inline functions.
-   * NEWS, c_lang.h, check.c: Warnings are now given for names that are
-     reserved identifiers.
-   * NEWS, lexer.l, test/Makefile.am, explain_tli.out, explain_tli-c99.test,
+   * c_lang.h, check.c: Warnings are now given for names that are reserved
+     identifiers.
+   * lexer.l, test/Makefile.am, explain_tli.out, explain_tli-c99.test,
      explain_tli.test: thread_local is now correctly allowed only in C11 or
      C++11 or later.
    * test/Makefile.am: Test renaming.
@@ -5643,11 +5584,11 @@
    * did_you_mean.h, types.h: Moved did_you_mean_t.
    * src/Makefile.am: Added all-local and clean-local targets to make and
      remove c++decl.
-   * NEWS, c_lang.c, c_lang.h, c_type.c, check.c, parser.y, set_options.c,
+   * c_lang.c, c_lang.h, c_type.c, check.c, parser.y, set_options.c,
      explain_tf_v-c++17.out: Improved error messages specifying when a feature
      becomes legal, if ever.
    * explain_tf_v-c++17.out: Fixed expected test result.
-   * NEWS, check.c: Constructors and destructors are now checked for `throw`. 
+   * check.c: Constructors and destructors are now checked for `throw`. 
      Constructor parameters are now checked for warnings.
    * c_lang.c: Fixed comment.
 
@@ -5681,7 +5622,7 @@
 2021-02-09  Paul J. Lucas <paul@lucasmail.org>
 
    * stddef.in.h: Updated Gnulib.
-   * NEWS, parser.y, test/Makefile.am, declare_ff_i_v.out, explain_ff_i_v.out,
+   * parser.y, test/Makefile.am, declare_ff_i_v.out, explain_ff_i_v.out,
      declare_ff_i_v.test, explain_ff_i_v.test: A function as a parameter is now
      automatically converted to a pointer to function per 6.3.2.1(4) of the C
      standard.
@@ -5704,14 +5645,14 @@
 2021-02-07  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: s/SET_TOKEN/SET_TOKEN_TO/ for "[".
-   * NEWS, lexer.l, parser.y: `[[` and `]]` "tokens" allow whitespace.
+   * lexer.l, parser.y: `[[` and `]]` "tokens" allow whitespace.
 
 2021-02-06  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Minor additions.
    * cdecl.1: Added missing "enum" and "show" to set of first-argument
      commands.
-   * NEWS, configure.ac: Updated version to 9.5.1.
+   * configure.ac: Updated version to 9.5.1.
    * configure.ac: Now using AX_CHECK_COMPILE_FLAG instead of
      AX_CFLAGS_GCC_OPTION.
 
@@ -5727,7 +5668,7 @@
    * autocomplete.c: Added some completable keywords.
    * parser.y: If an error token is a keyword in the current language, says so.
    * cdecl.c: Added missing "enum" as cdecl command.
-   * AUTHORS, NEWS, cdecl.1, c_ast.h, c_kind.h, check.c, debug.c, english.c,
+   * AUTHORS, cdecl.1, c_ast.h, c_kind.h, check.c, debug.c, english.c,
      gibberish.c, help.c, parser.y, test/Makefile.am, explain_efi-itself.out,
      explain_efi.out, explain_efui.out, explain_efz.out, help_english-c++.out,
      explain_efd.test, explain_efi-c.test, explain_efi-itself.test,
@@ -5735,7 +5676,7 @@
      enums having an underlying type.
    * c_type.h: Fixed comment.
    * c_ast_util.c, parser.y: Added missing calls to C_AST_CHECK_DECL().
-   * NEWS, check.c: Fixed register enum.
+   * check.c: Fixed register enum.
 
 2021-02-03  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5761,7 +5702,7 @@
    * help.c: s/stdout/fout/
    * debug.c, debug.h, parser.y: s/slist_t/c_ast_list_t/
    * lexer.l: s/EPRINTF/print_error/
-   * AUTHORS, NEWS, cdecl.1, c_type.c, c_type.h, help.c, lexer.l, literals.c,
+   * AUTHORS, cdecl.1, c_type.c, c_type.h, help.c, lexer.l, literals.c,
      literals.h, parser.y, util.c, util.h, test/Makefile.am, declare_ecf_v.out,
      explain_ecf_v.out, help_english-c++.out, declare_ecf_v.test,
      explain_ecf_v.test: Added support for extern "C" declarations.
@@ -5769,8 +5710,8 @@
 2021-02-01  Paul J. Lucas <paul@lucasmail.org>
 
    * c_typedef.c, c_typedef.h, parser.y: s/TD_/TDEF_/
-   * NEWS, c_ast_util.c, test/Makefile.am, explain_sf__i.out,
-     explain_sf__i.test: Fixed `auto` with storage class.
+   * c_ast_util.c, test/Makefile.am, explain_sf__i.out, explain_sf__i.test:
+     Fixed `auto` with storage class.
 
 2021-01-31  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5791,8 +5732,8 @@
    * parser.y: Renamed grammar rule.
    * c_ast_util.c, c_type.c, c_type.h, did_you_mean.c, options.c, parser.y,
      print.c: Renaming TPID.
-   * NEWS, parser.y: Added parsing support for attribute arguments.
-   * NEWS, parser.y, test/Makefile.am, explain_a_using_a_mu_i.out,
+   * parser.y: Added parsing support for attribute arguments.
+   * parser.y, test/Makefile.am, explain_a_using_a_mu_i.out,
      explain_a_using_a_mu_i.test: Added suppport for [[using : ... ]].
    * c_type.h, parser.y: Added c_type_id_check() into ia_qual_push_tid().
    * c_type.h, parser.y: Added c_type_id_check().
@@ -5801,8 +5742,8 @@
    * parser.y: Added missing dump of attribute_specifier_list_c_tid_opt.
    * test/Makefile.am: Test renaming.
    * parser.y: Attribues can now parse (but warn about) snames.
-   * NEWS, cdecl.1, c_keyword.c, lexer.h, lexer.l, literals.c, literals.h,
-     parser.y, print.c, util.h, test/Makefile.am, cast_pfx_i-c17.out,
+   * cdecl.1, c_keyword.c, lexer.h, lexer.l, literals.c, literals.h, parser.y,
+     print.c, util.h, test/Makefile.am, cast_pfx_i-c17.out,
      declare_fkr_pi-c17.out, declare_pfkr_i-c17.out, declare_yi.out,
      explain_2gat_cpi.out, explain_c_gat_pi.out, explain_c_gat_vpi.out,
      explain_fkr_pi-c17.out, explain_gat_c_gat_vpi.out, explain_gat_cpi.out,
@@ -5827,16 +5768,16 @@
 
 2021-01-27  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_lang.h, c_typedef.c, check.c, did_you_mean.c, parser.y, print.c,
+   * c_lang.h, c_typedef.c, check.c, did_you_mean.c, parser.y, print.c,
      print.h: When a name is unknown in the current language but exists in a
      later language, the type of name is now used in the error message.
 
 2021-01-26  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Simplified attribute_english_tid.
-   * NEWS, did_you_mean.c, did_you_mean.h, parser.y: Added "Did you mean ...?"
-     for attributes.
-   * NEWS, c_keyword.c, literals.c, literals.h: Added C2X `__attr__` aliases.
+   * did_you_mean.c, did_you_mean.h, parser.y: Added "Did you mean ...?" for
+     attributes.
+   * c_keyword.c, literals.c, literals.h: Added C2X `__attr__` aliases.
 
 2021-01-25  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5849,7 +5790,7 @@
 2021-01-24  Paul J. Lucas <paul@lucasmail.org>
 
    * set_options.c: Added DECLARE_SET_OPTION_FN().
-   * NEWS, parser.y, test/Makefile.am, explain_uk-01.out, explain_uk-02.out,
+   * parser.y, test/Makefile.am, explain_uk-01.out, explain_uk-02.out,
      explain_uk-01.test, explain_uk-02.test: Added `enum`, `class`, `struct`,
      and `union` attribute specifier support.
    * configure.ac: Updated version.
@@ -5868,8 +5809,8 @@
    * set_options.c: Now printing set options to fout.
    * cdecl.c: Remove old comment.
    * c_lang.c: Remove old comment.
-   * NEWS, c_ast_util.c, test/Makefile.am, explain_f_ppc.out,
-     explain_f_ppc.test: Fixed crash with: explain char** f().
+   * c_ast_util.c, test/Makefile.am, explain_f_ppc.out, explain_f_ppc.test:
+     Fixed crash with: explain char** f().
    * autocomplete.c: Fixed warning.
    * autocomplete.c: Fixed MALLOC() call.
    * autocomplete.c: Removed unnecessary ().
@@ -5888,8 +5829,8 @@
    * did_you_mean.c: Combined copy & count functions.
    * autocomplete.c: Added c90, c17, c2x, lang, to autocomplete; fixed knr for
      autocomplete.
-   * NEWS, check.c, test/Makefile.am, typedef_iw3.test: Types having bit-field
-     widths are now correctly reported as errors.
+   * check.c, test/Makefile.am, typedef_iw3.test: Types having bit-field widths
+     are now correctly reported as errors.
    * c_typedef.c: Sorted typedefs.
    * set.c: Added set_lang_impl() to factor out common code.
    * prompt.c: Simplified prompt_len calculation.
@@ -5928,9 +5869,9 @@
    * c_lang.h, c_typedef.c, parser.y, util.h: For an error token, now printing
      "not a keyword until <lang>" only if the oldest language the token is in
      is later than the current language.
-   * NEWS, parser.y, test/Makefile.am, explain_k-itself.out,
-     explain_i-itself.test, explain_k-itself.test: Forward `enum`, `class`,
-     `struct`, and `union` declarations are now supported.
+   * parser.y, test/Makefile.am, explain_k-itself.out, explain_i-itself.test,
+     explain_k-itself.test: Forward `enum`, `class`, `struct`, and `union`
+     declarations are now supported.
    * lexer.h, lexer.l, parser.y: lexer_loc() now returns a c_loc_t.
    * c_typedef.c: Renaming.
    * gibberish.c: Function renaming.
@@ -5943,23 +5884,22 @@
      literals.
    * gibberish.c: Made != LANG_NONE explicit.
    * gibberish.c: Simplification.
-   * NEWS, gibberish.c, types.h, test/Makefile.am, show_cpf_cpcc_v_using.out,
+   * gibberish.c, types.h, test/Makefile.am, show_cpf_cpcc_v_using.out,
      show_cpi_using.out, show_cpmki_using.out, show_predefined_using.out,
      show_cpf_cpcc_v_using.test, show_cpi_using.test, show_cpmki_using.test:
      Fixed showing of types having qualified pointers as `using` declarations.
 
 2021-01-18  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
-     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
-     show_all_predefined.out, show_all_predefined_typedef-c++.out,
-     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
-     show_predefined_typedef.out, show_predefined_using.out: Reworked languages
-     when predefining types so opt_lang only ever has 1 bit set; also now
-     setting opt_lang to latest C/C++ seperately so `restrict` that is not
-     valid in C++ is available in C; added constraint_handler_t.
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: Reworked languages when predefining types so
+     opt_lang only ever has 1 bit set; also now setting opt_lang to latest
+     C/C++ seperately so `restrict` that is not valid in C++ is available in C;
+     added constraint_handler_t.
    * c_keyword.c: s/LANG_MIN(C_11)/LANG_C_MIN(11)/ for _Atomic.
-   * NEWS: Added lconv predefined type.
    * cdecl--debug.out, cdecl-d.out, show_all-c++.out, show_all.out,
      show_all_predefined-c++.out, show_all_predefined.out,
      show_all_predefined_typedef-c++.out, show_all_typedef.out,
@@ -5975,7 +5915,7 @@
      s/params/param_ast_list/
    * autocomplete.c: s/no_more_matches/more_matches/
    * configure.ac: Updated version.
-   * NEWS, c_type.h, errors.c, parser.y, test/Makefile.am, explain_0dtor.out,
+   * c_type.h, errors.c, parser.y, test/Makefile.am, explain_0dtor.out,
      explain_dtor=delete.out, explain_inx+ctor.out, explain_inx+dtor.out,
      explain_ydtor.out, explain_0dtor.test, explain_dtor=delete.test,
      explain_inx+ctor.test, explain_inx+dtor.test, explain_ydtor.test: Now
@@ -6010,7 +5950,7 @@
 
 2021-01-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * AUTHORS, NEWS, cdecl.1, c_ast.h, c_type.h, debug.c, english.c, errors.c,
+   * AUTHORS, cdecl.1, c_ast.h, c_type.h, debug.c, english.c, errors.c,
      gibberish.c, help.c, lexer.l, literals.c, literals.h, parser.y, types.h,
      test/Makefile.am, cdecl--debug.out, cdecl-d.out, declare_uw3.out,
      declare_zw3.out, explain_uw3.out, explain_zw3.out, help-c++.out,
@@ -6026,8 +5966,8 @@
 
 2021-01-12  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, set.c: A warning is given if the digraph option is set
-     and the current language is C89 or earlier.
+   * configure.ac, set.c: A warning is given if the digraph option is set and
+     the current language is C89 or earlier.
    * cdecl.1: Added note about default language being able to be changed in
      cdeclrc file; improved code-fragment indentation; added caveat about not
      all explanations being round-trippable.
@@ -6044,8 +5984,8 @@
 
    * cdecl.1: Arranged predefined types by language introducted in.
    * _Noreturn.h, gnulib-common.m4: Updated Gnulib.
-   * NEWS, c_keyword.c, c_keyword.h, errors.c, lexer.h, lexer.l, parser.y,
-     print.c, types.h, test/Makefile.am, declare_yi.out, explain_yi.out,
+   * c_keyword.c, c_keyword.h, errors.c, lexer.h, lexer.l, parser.y, print.c,
+     types.h, test/Makefile.am, declare_yi.out, explain_yi.out,
      declare_yi.test, explain_yi.test: `final` and `override` are now
      regognized only in a function declaration context.
 
@@ -6101,7 +6041,7 @@
 
 2021-01-02  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, gibberish.c, parser.y, declare_ctor.out, declare_ctor_i.out,
+   * gibberish.c, parser.y, declare_ctor.out, declare_ctor_i.out,
      explain_ctor_i.out: Unscoped constructor declarations as input are left
      unscoped in output.
    * parser.y: knr_func_or_constructor_c_decl_ast is now of type ast rather
@@ -6114,7 +6054,7 @@
    * c_sname.h, parser.y: C++ file-scope constructor definition rule now uses
      c_ast_explain().
    * c_type.h, parser.y: Added TS_NOT_CONSTRUCTOR.
-   * NEWS, configure.ac, cdecl.1, c_sname.h, parser.y, test/Makefile.am,
+   * configure.ac, cdecl.1, c_sname.h, parser.y, test/Makefile.am,
      explain_ctor_i.out, explain_ctor_i.test: In-class constructor declarations
      without any storage-class-like type are now supported.
    * test/Makefile.am: Test renaming.
@@ -6145,26 +6085,25 @@
      stdnoreturn.m4, string_h.m4, strndup.m4, strnlen.m4, strsep.m4,
      sys_types_h.m4, sysexits.m4, unistd_h.m4, warn-on-use.m4, wchar_t.m4,
      wint_t.m4, zzgnulib.m4: Updated Gnulib.
-   * Doxyfile, Makefile.am, NEWS, configure.ac, pjl_compile.m4,
-     man/Makefile.am, man/man1/Makefile.am, cdecl.1, src/Makefile.am,
-     autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c,
-     c_keyword.h, c_kind.c, c_kind.h, c_lang.c, c_lang.h, c_operator.c,
-     c_operator.h, c_sname.c, c_sname.h, c_type.c, c_type.h, c_typedef.c,
-     c_typedef.h, cdecl.c, cdecl.h, cdecl_lldb.py, color.c, color.h, dam_lev.c,
-     dam_lev.h, debug.c, debug.h, did_you_mean.c, did_you_mean.h, english.c,
-     english.h, errors.c, gibberish.c, gibberish.h, help.c, lexer.h, lexer.l,
-     literals.c, literals.h, options.c, options.h, parser.y, pjl_config.h,
-     print.c, print.h, prompt.c, prompt.h, red_black.c, red_black.h, set.c,
-     slist.c, slist.h, types.h, util.c, util.h, test/Makefile.am,
-     not_in_Makefile.sh, run_test.sh, update_test.sh: Updated copyright year to
-     2021.
+   * Doxyfile, Makefile.am, configure.ac, pjl_compile.m4, man/Makefile.am,
+     man/man1/Makefile.am, cdecl.1, src/Makefile.am, autocomplete.c, c_ast.c,
+     c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c, c_keyword.h, c_kind.c,
+     c_kind.h, c_lang.c, c_lang.h, c_operator.c, c_operator.h, c_sname.c,
+     c_sname.h, c_type.c, c_type.h, c_typedef.c, c_typedef.h, cdecl.c, cdecl.h,
+     cdecl_lldb.py, color.c, color.h, dam_lev.c, dam_lev.h, debug.c, debug.h,
+     did_you_mean.c, did_you_mean.h, english.c, english.h, errors.c,
+     gibberish.c, gibberish.h, help.c, lexer.h, lexer.l, literals.c,
+     literals.h, options.c, options.h, parser.y, pjl_config.h, print.c,
+     print.h, prompt.c, prompt.h, red_black.c, red_black.h, set.c, slist.c,
+     slist.h, types.h, util.c, util.h, test/Makefile.am, not_in_Makefile.sh,
+     run_test.sh, update_test.sh: Updated copyright year to 2021.
 
 2020-12-31  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, parser.y: If `returning` <english> is omitted, it's
-     equivalent to `returning int` in C95 and earlier.
-   * NEWS, cdecl.1, lexer.l, literals.c, literals.h: Added no-return,
-     no-except, no-discard, and no-unique-address synonyms.
+   * cdecl.1, parser.y: If `returning` <english> is omitted, it's equivalent to
+     `returning int` in C95 and earlier.
+   * cdecl.1, lexer.l, literals.c, literals.h: Added no-return, no-except,
+     no-discard, and no-unique-address synonyms.
 
 2020-12-30  Paul J. Lucas <paul@lucasmail.org>
 
@@ -6185,21 +6124,20 @@
 
 2020-12-28  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, errors.c, test/Makefile.am, explain_main_fi2apc_i.out,
+   * errors.c, test/Makefile.am, explain_main_fi2apc_i.out,
      explain_main_fi2ppc_i.out, explain_main_fi2apc_i.test,
      explain_main_fi2ppc_i.test: main() now supports a third argument of either
      char*[] or char** (or const versions).
    * errors.c: Function sorting.
-   * NEWS, parser.y, test/Makefile.am, explain_fkr_i.out, explain_fkr_i.test:
+   * parser.y, test/Makefile.am, explain_fkr_i.out, explain_fkr_i.test:
      Implicit `int` functions in K&R C are now supported.
    * debug.c: Removed pointless assert().
-   * NEWS, c_typedef.c, show_all-c++.out, show_all.out,
-     show_all_predefined-c++.out, show_all_predefined.out,
-     show_all_predefined_typedef-c++.out, show_all_typedef.out,
-     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
-     show_predefined_using.out: K&R C now has a set of predefined typedef
-     declarations distinct from C89 that include only those shown in the first
-     edition of _The C Programming Language_.
+   * c_typedef.c, show_all-c++.out, show_all.out, show_all_predefined-c++.out,
+     show_all_predefined.out, show_all_predefined_typedef-c++.out,
+     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
+     show_predefined_typedef.out, show_predefined_using.out: K&R C now has a
+     set of predefined typedef declarations distinct from C89 that include only
+     those shown in the first edition of _The C Programming Language_.
    * lib/Makefile.am, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h,
      unistd.in.h, stdint.m4, stdio_h.m4, stdlib_h.m4, string_h.m4, unistd_h.m4,
      wint_t.m4: Updated Gnulib.
@@ -6216,7 +6154,6 @@
 
    * c_ast_util.c, c_type.h: Removed c_type_data_get() -- not needed.
    * c_ast.c: Reverted adding default to c_ast_new().
-   * NEWS: Updated.
    * c_type.h: Using TX_NONE more.
    * c_lang.c: Now using LANGX_MASK in c_set_lang().
    * c_ast.h, errors.c: Removed c_ast_find() -- not really needed.
@@ -6236,13 +6173,12 @@
      help_english-c89.out, help_english-knr.out: Reformatted help a bit.
    * help.c: Simplification.
    * configure.ac: Updated version to 9.1.
-   * NEWS, c_lang.h, errors.c, help.c, test/Makefile.am, help-c++.out,
-     help-c.out, help_command-c++.out, help_command-c++03.out,
-     help_command-c.out, help_commands-c++.out, help_commands-c.out,
-     help_english-c++.out, help_english-c.out, help_english-c89.out,
-     help_english-knr.out, help_command-c++03.test, help_english-c89.test,
-     help_english-knr.test: Help is now specific to particular language
-     versions, not just C or C++.
+   * c_lang.h, errors.c, help.c, test/Makefile.am, help-c++.out, help-c.out,
+     help_command-c++.out, help_command-c++03.out, help_command-c.out,
+     help_commands-c++.out, help_commands-c.out, help_english-c++.out,
+     help_english-c.out, help_english-c89.out, help_english-knr.out,
+     help_command-c++03.test, help_english-c89.test, help_english-knr.test:
+     Help is now specific to particular language versions, not just C or C++.
 
 2020-12-23  Paul J. Lucas <paul@lucasmail.org>
 
@@ -6279,9 +6215,9 @@
 
 2020-12-19  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, help.c, parser.y, help-c++.out, help-c.out,
-     help_command-c++.out, help_command-c.out, help_commands-c++.out,
-     help_commands-c.out: Now allowing "show ... [as] english".
+   * cdecl.1, help.c, parser.y, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out: Now
+     allowing "show ... [as] english".
    * c_kind.h, c_sname.h, did_you_mean.c, did_you_mean.h, red_black.h: Added
      "May be null."
    * c_ast.c, c_ast.h, c_keyword.c, c_sname.c, gibberish.h, types.h: Moded some
@@ -6291,20 +6227,20 @@
 
 2020-12-18  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Changed version to 9.0.
+   * configure.ac: Changed version to 9.0.
    * types.h: Moved declaration.
    * gibberish.c, gibberish.h: Now longer using bits for c_gib_kind.
    * gibberish.c: Added assert().
    * lib/Makefile.am, c++defs.h, stdio.in.h, stdlib.in.h, string.in.h,
      unistd.in.h, extensions.m4, gnulib-common.m4, pid_t.m4, stdint.m4,
      stdio_h.m4, stdlib_h.m4, sys_types_h.m4, unistd_h.m4: Updated Gnulib.
-   * NEWS, cdecl.1, c_keyword.c, gibberish.c, gibberish.h, help.c, lexer.l,
-     parser.y, types.h, test/Makefile.am, help-c++.out, help_command-c++.out,
+   * cdecl.1, c_keyword.c, gibberish.c, gibberish.h, help.c, lexer.l, parser.y,
+     types.h, test/Makefile.am, help-c++.out, help_command-c++.out,
      help_commands-c++.out, show_predefined_using.out,
      show_predefined_using.test: Added support for showing types as "using"
      declarations.
-   * NEWS, c_keyword.c, c_lang.h, c_typedef.c, gibberish.c, gibberish.h,
-     lexer.l, parser.y, test/Makefile.am, show_all_predefined_typedef-c++.out,
+   * c_keyword.c, c_lang.h, c_typedef.c, gibberish.c, gibberish.h, lexer.l,
+     parser.y, test/Makefile.am, show_all_predefined_typedef-c++.out,
      show_all_typedef.out, show_predefined_typedef.out,
      show_all_predefined_typedef-c++.test: The "show" command now prints types
      differently depending on the current language.
@@ -6318,8 +6254,8 @@
 
    * c_ast.h, c_kind.h, c_type.h, c_typedef.c, english.c: Removed unnecessary
      REINTERPRET_CAST().
-   * NEWS, cdecl.1, c_lang.h, c_typedef.c, c_typedef.h, help.c, parser.y,
-     util.h, test/Makefile.am, help-c++.out, help-c.out, help_command-c++.out,
+   * cdecl.1, c_lang.h, c_typedef.c, c_typedef.h, help.c, parser.y, util.h,
+     test/Makefile.am, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c.out, help_commands-c++.out, help_commands-c.out,
      show_all-c++.out, show_all.out, show_all_predefined-c++.out,
      show_all_predefined.out, show_all_typedef.out, show_predefined-c++.out,
@@ -6352,15 +6288,15 @@
 
    * parser.y: Now checking if the error token is a keyword: if so, mention it
      in the error message.
-   * NEWS, configure.ac, c_keyword.c, literals.c, literals.h, parser.y: Added
-     C++20 keywords co_await, co_return, and co_yield.
+   * configure.ac, c_keyword.c, literals.c, literals.h, parser.y: Added C++20
+     keywords co_await, co_return, and co_yield.
    * dam_lev.c, dam_lev.h, did_you_mean.c, did_you_mean.h: Added missing @file
      comments.
 
 2020-12-10  Paul J. Lucas <paul@lucasmail.org>
 
    * did_you_mean.c: Silenced warning.
-   * NEWS, src/Makefile.am, c_keyword.c, c_keyword.h, dam_lev.c, dam_lev.h,
+   * src/Makefile.am, c_keyword.c, c_keyword.h, dam_lev.c, dam_lev.h,
      did_you_mean.c, did_you_mean.h, errors.c, parser.y, print.c, print.h,
      types.h: Added "did you mean ...?" suggestions for typograpical errors for
      commands and types.
@@ -6397,7 +6333,7 @@
 2020-12-04  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, c_ast_util.h, parser.y: Moved some code to c_ast_util.c.
-   * NEWS, configure.ac, cdecl.1, parser.y, test/Makefile.am, cdecl--debug.out,
+   * configure.ac, cdecl.1, parser.y, test/Makefile.am, cdecl--debug.out,
      cdecl-d.out, explain_i_i.out, explain_i_pfd_i.out, explain_i_pi.out,
      explain_i_i.test, explain_i_pfd_i.test, explain_i_pi.test: Can now explain
      multiple, comma-separated declarations.
@@ -6411,7 +6347,7 @@
 
 2020-12-01  Paul J. Lucas <paul@lucasmail.org>
 
-   * AUTHORS, NEWS, cdecl.1, c_lang.c, c_lang.h, help.c, test/Makefile.am,
+   * AUTHORS, cdecl.1, c_lang.c, c_lang.h, help.c, test/Makefile.am,
      help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
      help_commands-c++.out, help_commands-c.out, set_c17.out, set_c90.out,
      cast_pfx_i-c17.test, declare_pfkr_i-c17.test, set_c17.test, set_c18.test,
@@ -6469,9 +6405,8 @@
    * c_ast.c: s/i_ast/j_ast/
    * lib/Makefile.am, stdlib.in.h, stdlib_h.m4: Updated Gnulib.
    * c_typedef.c, red_black.h, slist.h: Renaming.
-   * NEWS, parser.y, test/Makefile.am, explain_fac_v-1.out,
-     explain_fac_v-1.test: Added support for C99 type-qualified arrays of
-     unspecified size.
+   * parser.y, test/Makefile.am, explain_fac_v-1.out, explain_fac_v-1.test:
+     Added support for C99 type-qualified arrays of unspecified size.
    * autocomplete.c, c_lang.c, c_type.c, c_typedef.c, cdecl.c, options.c: Added
      "const" to array sizes.
    * c_typedef.c, red_black.c, red_black.h: Red-black trees are now
@@ -6492,7 +6427,7 @@
    * cdecl_lldb.py: Removed "et al.".
    * cdecl_lldb.py: Added LLDB pretty printer for c_scope_t.
    * extensions.m4, gnulib-common.m4, pid_t.m4, sys_types_h.m4: Updated Gnulib.
-   * NEWS, configure.ac: Updated to 8.2.
+   * configure.ac: Updated to 8.2.
    * cdecl.1, help.c, parser.y, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c.out, help_commands-c++.out, help_commands-c.out: The "set"
      command can now take multiple options.
@@ -6645,7 +6580,7 @@
    * debug.c: Now debug printing function flags better.
    * debug.c: Renamed variable.
    * debug.c: Added INDENT_PRINT_LOC().
-   * NEWS, cdecl.1, c_typedef.c, parser.y, cdecl--debug.out, cdecl-d.out,
+   * cdecl.1, c_typedef.c, parser.y, cdecl--debug.out, cdecl-d.out,
      show_all.out, show_all_typedef.out, show_predefined.out,
      show_predefined_typedef.out: Added many more standard C++ types.
 
@@ -6653,15 +6588,15 @@
 
    * parser.y: COmment fix.
    * parser.y: Parser macro clean-up.
-   * NEWS, parser.y, test/Makefile.am, explain_grtri.out, explain_grtrri.out,
+   * parser.y, test/Makefile.am, explain_grtri.out, explain_grtrri.out,
      explain_grtri.test, explain_grtrri.test: Added support for restricted
      references.
 
 2020-09-11  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.c: Fix build error on Linux.
-   * NEWS, configure.ac, cdecl.1, autocomplete.c, c_keyword.c, c_lang.c,
-     c_lang.h, c_type.c, c_type.h, errors.c, literals.c, literals.h, parser.y,
+   * configure.ac, cdecl.1, autocomplete.c, c_keyword.c, c_lang.c, c_lang.h,
+     c_type.c, c_type.h, errors.c, literals.c, literals.h, parser.y,
      test/Makefile.am, xupc_declare_a2di.out, xupc_declare_da2i.out,
      xupc_declare_dpi.out, xupc_declare_pdi.out, xupc_declare_ptdi.out,
      xupc_declare_rdi.out, xupc_declare_rdpi.out, xupc_declare_tdi.out,
@@ -6685,11 +6620,11 @@
 
 2020-08-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_typedef.c, parser.y: Can now declare a class as just "class C[;]".
+   * c_typedef.c, parser.y: Can now declare a class as just "class C[;]".
 
 2020-08-12  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added types std::condition_variable, std::condition_variable_any,
      std::mutex, std::recursive_mutex, std::recursive_timed_mutex, std::regex,
@@ -6714,7 +6649,7 @@
 
    * Makefile.am: s/gnulib/gnulib-tool/
    * types.h: Made c_lang_id_t be uint32_t to avoid warnings.
-   * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, lexer.l,
+   * cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, lexer.l,
      literals.c, literals.h, parser.y, test/Makefile.am, declare_exf_i.out,
      declare_exi.out, explain_exf_i.out, explain_exi.out, declare_exf_i.test,
      declare_exi.test, declare_exsi.test, explain_exf_i.test, explain_exi.test,
@@ -6723,26 +6658,25 @@
 
 2020-07-28  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, errors.c, lexer.l, test/Makefile.am, cast_pfx_i-c18.test,
-     cast_pfx_i.test, declare_fkr_pi-c18.test, declare_fkr_pi.test,
-     declare_pfkr_i-c18.test, declare_pfkr_i.test, explain_fkr_pi-c18.test,
-     explain_fkr_pi.test: Removed support for typeless function arguments in
-     C2X.
-   * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
+   * errors.c, lexer.l, test/Makefile.am, cast_pfx_i-c18.test, cast_pfx_i.test,
+     declare_fkr_pi-c18.test, declare_fkr_pi.test, declare_pfkr_i-c18.test,
+     declare_pfkr_i.test, explain_fkr_pi-c18.test, explain_fkr_pi.test: Removed
+     support for typeless function arguments in C2X.
+   * cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
      literals.c, literals.h, parser.y, test/Makefile.am, declare_xici.out,
      declare_xici.test, explain_xif_i.test: Added "constinit".
    * test/Makefile.am: Test renaming.
 
 2020-07-27  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_keyword.c, literals.c, literals.h, parser.y: Added "asm".
+   * c_keyword.c, literals.c, literals.h, parser.y: Added "asm".
    * cdecl.c, options.c, options.h: Uniform declaration of argv.
 
 2020-07-26  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, c_type.c, c_type.h, errors.c, gibberish.c, parser.y:
      Renaming all c_type_id_t to end in _id.
-   * NEWS, configure.ac: Upped version to 8.0.
+   * configure.ac: Upped version to 8.0.
    * english.c, parser.y: Simplified explaining typedefs.
    * english.c: Reformatting.
    * c_type.c: Added L_TYPE for English version of T_TYPEDEF.
@@ -6750,7 +6684,7 @@
    * parser.y: Simplified c_ast_explain() a bit.
    * c_ast_util.c, c_ast_util.h, parser.y:
      s/c_ast_take_typedef/c_ast_take_type_any/
-   * NEWS, cdecl.1, help.c, parser.y, help-c++.out, help_command-c++.out,
+   * cdecl.1, help.c, parser.y, help-c++.out, help_command-c++.out,
      help_commands-c++.out: {} are now optional for class/struct/union-alone
      declarations.
    * help.c, help-c++.out, help-c.out, help_command-c++.out,
@@ -6768,20 +6702,20 @@
 
 2020-07-25  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added types from Floating-point extensions for C.
    * c_lang.c: s/K&R C/K&RC/ for consistency.
-   * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_lang.c, c_lang.h, c_type.c,
+   * cdecl.1, autocomplete.c, c_keyword.c, c_lang.c, c_lang.h, c_type.c,
      parser.y, set.out, set_options.out: Added support for C2X.
    * cdecl.c, cdecl.h, parser.y, types.h: Replaced c_init_t by bool.
    * parser.y: Added unsupported().
    * c_lang.h, types.h: Reworked LANG_*.
    * util.h: UNEXPECTED_INT_VALUE() now also prints in hex.
-   * NEWS, parser.y: The [[xxx]] attribute syntax is now forbidden until C++11.
+   * parser.y: The [[xxx]] attribute syntax is now forbidden until C++11.
    * c_keyword.c, c_type.c: Reformatting.
-   * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_keyword.h, c_lang.c,
-     c_lang.h, c_type.c, c_type.h, c_typedef.c, errors.c, lexer.l, literals.c,
+   * cdecl.1, autocomplete.c, c_keyword.c, c_keyword.h, c_lang.c, c_lang.h,
+     c_type.c, c_type.h, c_typedef.c, errors.c, lexer.l, literals.c,
      literals.h, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
      show_all.out, show_all_typedef.out, show_predefined.out,
      show_predefined_typedef.out, xec_explain_a.out, xec_explain_ha.out,
@@ -6815,7 +6749,7 @@
    * c_ast.c: Removed silly assert()s.
    * c_ast.c, c_ast.h: Made c_ast_sname_dup() inline.
    * c_sname.c, c_sname.h: Removed c_sname_prepend_name() -- not used.
-   * NEWS, configure.ac, cdecl.1, autocomplete.c, cdecl.c, parser.y,
+   * configure.ac, cdecl.1, autocomplete.c, cdecl.c, parser.y,
      2c_typedef_i.out, namespace_c_typedef_i.out, namespace_k_typedef_i.out,
      namespace_n_typedef_i.out, typedef_tki.out: class/struct/union addionally
      define themselves. Added "class", "struct", and "union" as commands. ';'
@@ -6846,9 +6780,9 @@
 
 2020-07-18  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_sname.c, c_sname.h, english.c, errors.c, lexer.l, parser.y,
-     types.h, test/Makefile.am, explain_nsct.out, explain_nsct.test: Each scope
-     of a scoped name (sname) now has its own type.  Additionally, the English
+   * c_sname.c, c_sname.h, english.c, errors.c, lexer.l, parser.y, types.h,
+     test/Makefile.am, explain_nsct.out, explain_nsct.test: Each scope of a
+     scoped name (sname) now has its own type.	Additionally, the English
      printed order is now (correctly) inner-to-outermost.
 
 2020-07-17  Paul J. Lucas <paul@lucasmail.org>
@@ -6882,7 +6816,7 @@
 
 2020-07-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, cdecl.1, help.c, parser.y, help-c++.out, help-c.out,
+   * configure.ac, cdecl.1, help.c, parser.y, help-c++.out, help-c.out,
      help_command-c++.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out: Now allowing "to" in addition to "as" for "...
      aligned [as|to] ...".
@@ -6900,7 +6834,7 @@
    * c_ast.h: Moved some documentation.
    * configure.ac, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c,
      c_kind.h, errors.c, parser.y, types.h: s/c_kind/c_kind_id/
-   * NEWS, errors.c, test/Makefile.am, explain_rr.test, explain_rrr-1.test,
+   * errors.c, test/Makefile.am, explain_rr.test, explain_rrr-1.test,
      explain_rrr-2.test, explain_rrrr.test: References to references are now
      illegal.
 
@@ -7415,8 +7349,8 @@
    * cdecl.1: Fixed formatting.
    * test/Makefile.am, set_bison-debug.test, set_nobison-debug.test: Fixed
      bison-debug tests.
-   * NEWS, c_type.c, test/Makefile.am, explain_ci-ec.out, explain_ci-ec.test:
-     East const is now ignored when explaining gibberish.
+   * c_type.c, test/Makefile.am, explain_ci-ec.out, explain_ci-ec.test: East
+     const is now ignored when explaining gibberish.
    * options.c: Added comment.
 
 2020-07-04  Paul J. Lucas <paul@lucasmail.org>
@@ -7443,16 +7377,15 @@
 2020-07-01  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_type.h, errors.c, parser.y: s/T_CLASS_STRUCT_UNION/T_ANY_CLASS/
-   * NEWS, configure.ac: Updated version to 7.4.1; updated NEWS.
+   * configure.ac: Updated version to 7.4.1; updated NEWS.
    * c_ast_util.c, c_ast_util.h, c_type.c, c_type.h, test/Makefile.am,
      explain_main_f_s.out, explain_main_f_s.test: Now accepts "signed main()"
      as valid.
    * options.c: Fixed check_mutually_exclusive() for new -B and -F options.
-   * NEWS: Fixed -F to -B.
 
 2020-06-30  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Updated versio and NEWS.
+   * configure.ac: Updated versio and NEWS.
    * configure.ac, cdecl.1, src/Makefile.am, autocomplete.c, c_typedef.c,
      options.c, options.h, parser.y, print.c, set.c, test/Makefile.am: Added
      ability to enable Flex debugging; renamed Bison debugging.
@@ -7483,7 +7416,7 @@
 
 2020-06-27  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, errors.c, test/Makefile.am, explain_main_f_i.out,
+   * errors.c, test/Makefile.am, explain_main_f_i.out,
      explain_main_fiapc_i.out, explain_main_fiapcc_i.out,
      explain_main_fippc_i.out, explain_main_fippcc_i.out,
      explain_main_fv_i.out, explain_main_f2c_i.test, explain_main_f_i.test,
@@ -7494,7 +7427,7 @@
      explain_main_fv_i.test: Now checking main()'s signature.
    * parser.y: Added comment for Y_DELETE.
    * parser.y: Y_NEW is oper_id.
-   * NEWS, configure.ac: Changed version to 7.3.
+   * configure.ac: Changed version to 7.3.
 
 2020-06-26  Paul J. Lucas <paul@lucasmail.org>
 
@@ -7506,11 +7439,11 @@
 2020-06-25  Paul J. Lucas <paul@lucasmail.org>
 
    * errors.c: Added more C_WARN_UNUSED_RESULT.
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added types atomic_flag, double_t, fenv_t, fexcept_t, float_t, jmp_buf,
      memory_order, va_list, wctrans_t, and wctype_t.
-   * NEWS, configure.ac, parser.y, test/Makefile.am, explain_fpa5d_v.out,
+   * configure.ac, parser.y, test/Makefile.am, explain_fpa5d_v.out,
      explain_fpa5d_v.test: Fixed explaining pointer-to-array function
      arguments.
    * parser.y: Added comment.
@@ -7543,9 +7476,9 @@
 
 2020-06-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, cdecl.1, c_operator.c, c_operator.h, c_type.h,
-     c_typedef.c, errors.c, parser.y, test/Makefile.am, cdecl--debug.out,
-     cdecl-d.out, declare_+o_delete_a_pv_v.out, declare_+o_delete_pv_v.out,
+   * configure.ac, cdecl.1, c_operator.c, c_operator.h, c_type.h, c_typedef.c,
+     errors.c, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
+     declare_+o_delete_a_pv_v.out, declare_+o_delete_pv_v.out,
      declare_+o_new_a_z_pv.out, declare_+o_new_z_pv.out,
      declare_o_delete_a_pv_v.out, declare_o_delete_pv_v.out,
      declare_o_new_a_z_pv.out, declare_o_new_z_pv.out,
@@ -7578,9 +7511,9 @@
      type.
    * errors.c: Correctly reset arg_ast.
    * c_type.h, errors.c: Explicitly specifying "int" is now accepted, part 2.
-   * NEWS, errors.c: Explicitly specifying "int" is now accepted.
-   * NEWS, errors.c, test/Makefile.am, explain_scf_v.test: Extern or static
-     functions can not be const.
+   * errors.c: Explicitly specifying "int" is now accepted.
+   * errors.c, test/Makefile.am, explain_scf_v.test: Extern or static functions
+     can not be const.
 
 2020-06-12  Paul J. Lucas <paul@lucasmail.org>
 
@@ -7591,8 +7524,8 @@
    * print.c, print.h: s/print_error()/print_error_impl()/ and added
      print_error() macro that passes file & line information for debugging.
    * parser.y: Fixed dump of name_english_ast.
-   * NEWS, c_ast.h, parser.y: Now support scoped English types ("declare x as
-     Int of struct S").
+   * c_ast.h, parser.y: Now support scoped English types ("declare x as Int of
+     struct S").
    * c_ast.h: Fixed c_ast_sname_append_sname() declaration.
 
 2020-06-11  Paul J. Lucas <paul@lucasmail.org>
@@ -7623,7 +7556,6 @@
 
 2020-06-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Changes.
    * configure.ac: Upped version to 7.1.1.
    * parser.y: Removed special-case _Noreturn code.
    * c_keyword.c, parser.y: Added missing static_assert for C++11.
@@ -7656,8 +7588,8 @@
 2020-05-26  Paul J. Lucas <paul@lucasmail.org>
 
    * lib/Makefile.am, unistd.in.h, getdelim.m4, unistd_h.m4: Updated GnuLib.
-   * NEWS, configure.ac, cdecl.1, autocomplete.c, c_keyword.c, c_lang.c,
-     c_lang.h, c_type.c, lexer.l, literals.c, literals.h, parser.y, typedefs.h,
+   * configure.ac, cdecl.1, autocomplete.c, c_keyword.c, c_lang.c, c_lang.h,
+     c_type.c, lexer.l, literals.c, literals.h, parser.y, typedefs.h,
      test/Makefile.am, declare_b-c++.out, declare_b.out, declare_ci-knr.out,
      declare_grtpi.out, declare_rtf_v.out, declare_vi-knr.out, explain_b.out,
      explain_keywords.out, show_all.out, show_all_typedef.out,
@@ -7685,7 +7617,7 @@
 
 2020-05-15  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Updated version to 7.0.
+   * configure.ac: Updated version to 7.0.
    * AUTHORS: Added mention of "east const" and typename.
 
 2020-05-12  Paul J. Lucas <paul@lucasmail.org>
@@ -7741,7 +7673,7 @@
 
    * c_ast.h, c_ast_util.c, c_kind.h, errors.c, gibberish.c: Changed K_PARENT
      and K_MASK_FUNCTION_LIKE be proper bitmasks.
-   * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
+   * cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
      lexer.l, literals.c, literals.h, parser.y, test/Makefile.am,
      explain_a_nua_k-1.out, explain_a_nua_k-2.out, declare_a_nua_f.test,
      explain_a_nua_f.test, explain_a_nua_k-1.test, explain_a_nua_k-2.test:
@@ -7760,13 +7692,13 @@
    * autocomplete.c: Added missing noeast-const, noexplain-by-default, and
      noexplicit-int.
    * autocomplete.c: Now using LANG_C_MIN.
-   * NEWS, autocomplete.c, c_keyword.c, c_lang.h, errors.c, test/Makefile.am,
+   * autocomplete.c, c_keyword.c, c_lang.h, errors.c, test/Makefile.am,
      explain_tf_v-c++17.out, explain_tf_v-c++17.test, explain_tf_v.test:
      throw() deprecated/removed.
 
 2020-04-29  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, autocomplete.c, c_type.c, gibberish.c, help.c, options.c,
+   * cdecl.1, autocomplete.c, c_type.c, gibberish.c, help.c, options.c,
      options.h, set.c, test/Makefile.am, declare_ci-ec.out, declare_ck-ec.out,
      declare_ck.out, declare_ck2-ec.out, declare_ck2.out, declare_cz-ec.out,
      declare_pci-ec.out, help-c++.out, help-c.out, help_command-c++.out,
@@ -7783,21 +7715,20 @@
 
 2020-04-28  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, parser.y, test/Makefile.am, typedef_tki.out,
+   * configure.ac, parser.y, test/Makefile.am, typedef_tki.out,
      typedef_ti.test, typedef_tki.test: Now allowing use of "typename".
 
 2020-04-27  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, parser.y: Fixed unknown type crash.
-   * NEWS, english.c, test/Makefile.am, k_typedef_i_explain_i.out,
+   * parser.y: Fixed unknown type crash.
+   * english.c, test/Makefile.am, k_typedef_i_explain_i.out,
      k_typedef_i_explain_i.test: Print type of scope for nested types.
 
 2020-04-26  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, c_type.c, parser.y, test/Makefile.am,
-     declare_ovc_udc_i.out, explain_oc_udc_i.out, declare_ovc_udc_i.test,
-     explain_oc_udc_i.test: Can now declare const/volatile user-defined
-     conversion operators.
+   * configure.ac, c_type.c, parser.y, test/Makefile.am, declare_ovc_udc_i.out,
+     explain_oc_udc_i.out, declare_ovc_udc_i.test, explain_oc_udc_i.test: Can
+     now declare const/volatile user-defined conversion operators.
    * parser.y: Change from "switch" to "if".
    * parser.y: Moved type_pop() out of explain_type_decl().
    * parser.y: Made type_pop() be C_NOWARN_UNUSED_RESULT.
@@ -7811,13 +7742,12 @@
 
 2020-04-24  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_keyword.c, c_type.c, literals.c, literals.h: Added
-     support for GNU C's __thread.
+   * cdecl.1, c_keyword.c, c_type.c, literals.c, literals.h: Added support for
+     GNU C's __thread.
    * autocomplete.c, c_keyword.h, c_lang.h, c_operator.h, c_type.c,
      c_typedef.c, cdecl.c, help.c, lexer.l: Undid pointless *const.
    * c_type.c: Changed c_type struct to have language-specific literals.
    * cdecl.1: Fixed formatting of "options".
-   * NEWS: Added __inline__ and __restrict__.
    * cdecl.1, autocomplete.c, c_keyword.c, c_keyword.h, c_lang.h, c_operator.h,
      c_type.c, c_type.h, cdecl.c, errors.c, help.c, lexer.l, literals.c,
      literals.h, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
@@ -7832,7 +7762,7 @@
 
 2020-04-20  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added GNU C types.
 
@@ -7845,7 +7775,7 @@
 
 2020-04-18  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Updated.
+   * configure.ac: Updated.
    * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added WIN32 types.
@@ -7883,17 +7813,16 @@
    * c_ast.c: Being explicit about pointer-to-function call.
    * c_typedef.c: Being explicit about pointer-to-function call.
    * getopt-pfx-core.h: Updated Gnulib.
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added std::thread and std::jthread to predefined types.
 
 2020-04-12  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_keyword.c, c_type.c, c_type.h, lexer.l, literals.c,
-     literals.h, parser.y, cdecl--debug.out, cdecl-d.out: Added GNU C's
-     __auto_type extension.
-   * NEWS, configure.ac, c_type.c: Fixed "long long" type: no longer allowed in
-     C89.
+   * cdecl.1, c_keyword.c, c_type.c, c_type.h, lexer.l, literals.c, literals.h,
+     parser.y, cdecl--debug.out, cdecl-d.out: Added GNU C's __auto_type
+     extension.
+   * configure.ac, c_type.c: Fixed "long long" type: no longer allowed in C89.
    * c_lang.h, errors.c, parser.y: Added c_lang_is_c() and C_LANG_IS_C().
 
 2020-04-11  Paul J. Lucas <paul@lucasmail.org>
@@ -7941,10 +7870,6 @@
    * autocomplete.c: Removed [no]create from autocompletion -- not sure why it
      was ever added.
 
-2020-02-26  Paul J. Lucas <paul@lucasmail.org>
-
-   * NEWS: Updated.
-
 2020-02-25  Paul J. Lucas <paul@lucasmail.org>
 
    * _Noreturn.h, c++defs.h, stdio.in.h, stdlib.in.h, string.in.h, unistd.in.h,
@@ -7967,13 +7892,12 @@
 
 2020-01-24  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, cdecl.1, help.c, parser.y, help-c++.out, help-c.out,
+   * configure.ac, cdecl.1, help.c, parser.y, help-c++.out, help-c.out,
      help_command-c++.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out: Cast now accepts "as" and "to" in addition to "into".
 
 2020-01-23  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Updated.
    * configure.ac, cdecl.c, test/Makefile.am, cdecl-e-const_cast_pi.out,
      ci.out, cdecl-e-const_cast_pi.test, ci.test: Made special-case for const
      and static for explain-by-default.
@@ -7988,7 +7912,7 @@
 
    * c_ast.c: Removed unnecessary call to c_ast_equiv() because of_ast is
      checked below.
-   * NEWS, configure.ac: Updated version.
+   * configure.ac: Updated version.
    * 00gnulib.m4, gnulib-common.m4, gnulib-comp.m4, zzgnulib.m4: Updated
      GNUlib.
 
@@ -7998,8 +7922,8 @@
 
 2020-01-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, cdecl.1, src/Makefile.am, help.c, lexer.l, parser.y,
-     set.c, help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
+   * configure.ac, cdecl.1, src/Makefile.am, help.c, lexer.l, parser.y, set.c,
+     help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
      help_commands-c++.out, help_commands-c.out: Now allowing set lang=<lang>.
 
 2020-01-09  Paul J. Lucas <paul@lucasmail.org>
@@ -8021,9 +7945,8 @@
      lexer.h, lexer.l, literals.c, literals.h, pjl_config.h, prompt.c,
      prompt.h, red_black.c, red_black.h, slist.c, slist.h, typedefs.h, util.c,
      util.h, run_test.sh: Updated copyright year to 2020.
-   * NEWS: Added explicit int in English.
-   * NEWS, configure.ac, cdecl.1, c_type.c, options.c, options.h, parser.y,
-     print.c, print.h, set.c, test/Makefile.am, cdecl-Ii.out, cdecl-Iis.out,
+   * configure.ac, cdecl.1, c_type.c, options.c, options.h, parser.y, print.c,
+     print.h, set.c, test/Makefile.am, cdecl-Ii.out, cdecl-Iis.out,
      cdecl-Iiu.out, cdecl-Il.out, cdecl-Ill.out, cdecl-Ilull.out, cdecl-Is.out,
      cdecl-Iu.out, cdecl-Iui.out, cdecl-Iul,ll.out, cdecl-Iul.out,
      cdecl-Iull.out, cdecl-Iulll.out, cdecl-Iulull.out, cdecl-Ius.out, set.out,
@@ -8096,7 +8019,7 @@
 
 2019-12-11  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Updated to 6.6.2.
+   * configure.ac: Updated to 6.6.2.
    * configure.ac: Moved check for libcurses before libreadline since some
      implementations of the latter depend on the former (e.g., on Solaris 11).
 
@@ -8172,7 +8095,7 @@
 
 2019-10-31  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Updated to 6.6.1.
+   * configure.ac: Updated to 6.6.1.
    * set.c: Whitespace fix.
    * c_ast.c: Removed odd DOXYGEN_IGNORE.
 
@@ -8187,9 +8110,9 @@
 2019-10-23  Paul J. Lucas <paul@lucasmail.org>
 
    * options.c: More explicit about check.
-   * NEWS, cdecl.1, autocomplete.c, cdecl.c, cdecl.h, help.c, lexer.l,
-     options.c, options.h, parser.y, print.c, set.c, test/Makefile.am,
-     help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
+   * cdecl.1, autocomplete.c, cdecl.c, cdecl.h, help.c, lexer.l, options.c,
+     options.h, parser.y, print.c, set.c, test/Makefile.am, help-c++.out,
+     help-c.out, help_command-c++.out, help_command-c.out,
      help_commands-c++.out, help_commands-c.out, i.out, set.out,
      set_explain-by-default.out, set_explain.out, set_noexplain-by-default.out,
      set_noexplain.out, set_options.out, i.test, set_explain-by-default.test,
@@ -8199,7 +8122,7 @@
 
 2019-10-21  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, set.c: May now use unambiguous option name abbreviations.
+   * cdecl.1, set.c: May now use unambiguous option name abbreviations.
 
 2019-10-18  Paul J. Lucas <paul@lucasmail.org>
 
@@ -8223,9 +8146,9 @@
    * lib/Makefile.am, stddef.in.h, stdint.in.h, stdlib.in.h, string.in.h,
      unistd.in.h, extern-inline.m4, getdelim.m4, getline.m4, getopt.m4,
      gnulib-common.m4, nocrash.m4, unistd_h.m4: Updated GNUlib.
-   * NEWS, configure.ac, help.c, help-c++.out, help-c.out,
-     help_command-c++.out, help_command-c.out, help_commands-c++.out,
-     help_commands-c.out: Added "lang" to help.
+   * configure.ac, help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out: Added
+     "lang" to help.
 
 2019-08-14  Paul J. Lucas <paul@lucasmail.org>
 
@@ -8278,15 +8201,15 @@
    * errors.c: s/PLURAL_S/plural_s/
    * c_type.h, gibberish.c: Variable renaming.
    * errors.c: Added T_ANY_REFERENCE.
-   * NEWS, configure.ac, cdecl.1, c_type.c, c_type.h, errors.c, help.c,
-     parser.y, util.h, test/Makefile.am, explain_eictor_i.out,
-     explain_exctor_i.out, explain_fctor_i.out, explain_ictor_i.out,
-     explain_xctor.out, help-c++.out, help-c.out, help_command-c++.out,
-     help_command-c.out, help_commands-c++.out, help_commands-c.out,
-     help_english-c++.out, help_english-c.out, explain_cector_i.test,
-     explain_eictor_i.test, explain_exctor_i.test, explain_fctor_i.test,
-     explain_ictor_i.test, explain_xctor.test: Now support all
-     storage-class-like types for constructors.
+   * configure.ac, cdecl.1, c_type.c, c_type.h, errors.c, help.c, parser.y,
+     util.h, test/Makefile.am, explain_eictor_i.out, explain_exctor_i.out,
+     explain_fctor_i.out, explain_ictor_i.out, explain_xctor.out, help-c++.out,
+     help-c.out, help_command-c++.out, help_command-c.out,
+     help_commands-c++.out, help_commands-c.out, help_english-c++.out,
+     help_english-c.out, explain_cector_i.test, explain_eictor_i.test,
+     explain_exctor_i.test, explain_fctor_i.test, explain_ictor_i.test,
+     explain_xctor.test: Now support all storage-class-like types for
+     constructors.
 
 2019-07-23  Paul J. Lucas <paul@lucasmail.org>
 
@@ -8305,12 +8228,10 @@
 
 2019-07-15  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Fixed typo.
-   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast_util.c,
-     c_keyword.c, c_kind.h, c_operator.h, c_type.c, errors.c, gibberish.c,
-     gibberish.h, help.c, lexer.l, literals.c, literals.h, options.c,
-     options.h, parser.y, set.c, test/Makefile.am,
-     declare_alttokens_o_amper2_rck_b.out,
+   * AUTHORS, configure.ac, cdecl.1, autocomplete.c, c_ast_util.c, c_keyword.c,
+     c_kind.h, c_operator.h, c_type.c, errors.c, gibberish.c, gibberish.h,
+     help.c, lexer.l, literals.c, literals.h, options.c, options.h, parser.y,
+     set.c, test/Makefile.am, declare_alttokens_o_amper2_rck_b.out,
      declare_alttokens_o_amper_eq_rki_rk.out,
      declare_alttokens_o_amper_rcki_k.out,
      declare_alttokens_o_circ_eq_i_rk.out, declare_alttokens_o_circ_rcki_k.out,
@@ -8338,8 +8259,7 @@
 
 2019-07-11  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, print.c, print.h, set.c: Now warning about trigraphs in C++17 or
-     later.
+   * print.c, print.h, set.c: Now warning about trigraphs in C++17 or later.
 
 2019-07-09  Paul J. Lucas <paul@lucasmail.org>
 
@@ -8352,7 +8272,7 @@
 2019-07-07  Paul J. Lucas <paul@lucasmail.org>
 
    * unistd.in.h: Updated Gnulib.
-   * NEWS, cdecl.1, c_lang.c, cdecl.c, help.c, options.c, options.h, set.c,
+   * cdecl.1, c_lang.c, cdecl.c, help.c, options.c, options.h, set.c,
      help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
      help_commands-c++.out, help_commands-c.out, set.out, set_options.out:
      Changed -q to -p; set now only prints current options; added set help to
@@ -8361,7 +8281,7 @@
 2019-07-05  Paul J. Lucas <paul@lucasmail.org>
 
    * english.c: Added blank line.
-   * NEWS, errors.c: Improved K&R C function prototypes error message.
+   * errors.c: Improved K&R C function prototypes error message.
    * cdecl.1: Only C++ has overloaded operators.
 
 2019-07-03  Paul J. Lucas <paul@lucasmail.org>
@@ -8405,10 +8325,10 @@
 
 2019-06-25  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, ax_compile_check_sizeof.m4, c_ast.h, c_ast_util.c,
+   * configure.ac, ax_compile_check_sizeof.m4, c_ast.h, c_ast_util.c,
      c_ast_util.h, c_kind.h, c_sname.h, c_type.c, c_type.h, c_typedef.c,
      parser.y, red_black.h, slist.c, slist.h, util.c: Now 32-bit safe.
-   * NEWS, configure.ac: Updated.
+   * configure.ac: Updated.
    * configure.ac: Added bug report URL.
    * options.c: Now printing version and help to stdout per GNU guidelines;
      added long options and home page to --help.
@@ -8419,7 +8339,6 @@
 
 2019-06-20  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Updated.
    * prompt.c: Fixed HAVE_DECL_RL_PROMPT_START_IGNORE.
    * configure.ac, autocomplete.c: Work-around for CPPFunction deprecation
      warning.
@@ -8445,31 +8364,30 @@
    * errors.c: Added c_ast_check_alignas().
    * errors.c: Added c_ast_check_oper_args().
    * errors.c: Added error_kind_not_cast_into().
-   * NEWS, cdecl.1, c_ast.h, c_keyword.c, debug.c, english.c, errors.c,
-     gibberish.c, gibberish.h, help.c, lexer.l, literals.c, literals.h,
-     parser.y, typedefs.h, test/Makefile.am, declare_c_al0-c++.out,
-     declare_c_al0.out, declare_c_al8-c++.out, declare_c_al8.out,
-     declare_c_alpv.out, explain_al0_c-c++.out, explain_al0_c.out,
-     explain_al8_c-c++.out, explain_al8_c.out, explain_alpv_c.out,
-     help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
-     help_commands-c++.out, help_commands-c.out, declare_c_al0-c++.test,
-     declare_c_al0.test, declare_c_al3.test, declare_c_al8-c++.test,
-     declare_c_al8.test, declare_c_alpv.test, declare_ti_al8.test,
-     explain_al0_c-c++.test, explain_al0_c.test, explain_al3_c.test,
-     explain_al8_c-c++.test, explain_al8_c.test, explain_alpv_c.test: Added
-     _Alignas and alignas support.
+   * cdecl.1, c_ast.h, c_keyword.c, debug.c, english.c, errors.c, gibberish.c,
+     gibberish.h, help.c, lexer.l, literals.c, literals.h, parser.y,
+     typedefs.h, test/Makefile.am, declare_c_al0-c++.out, declare_c_al0.out,
+     declare_c_al8-c++.out, declare_c_al8.out, declare_c_alpv.out,
+     explain_al0_c-c++.out, explain_al0_c.out, explain_al8_c-c++.out,
+     explain_al8_c.out, explain_alpv_c.out, help-c++.out, help-c.out,
+     help_command-c++.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out, declare_c_al0-c++.test, declare_c_al0.test,
+     declare_c_al3.test, declare_c_al8-c++.test, declare_c_al8.test,
+     declare_c_alpv.test, declare_ti_al8.test, explain_al0_c-c++.test,
+     explain_al0_c.test, explain_al3_c.test, explain_al8_c-c++.test,
+     explain_al8_c.test, explain_alpv_c.test: Added _Alignas and alignas
+     support.
 
 2019-06-14  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Added user-defined conversion operator example.
    * errors.c: Fixed allowing user-defined conversion operators to be const.
 
 2019-06-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added predefined typedefs fd_set, nfds_t, and sigset_t.
-   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast.c, c_ast.h,
+   * AUTHORS, configure.ac, cdecl.1, autocomplete.c, c_ast.c, c_ast.h,
      c_kind.c, c_kind.h, debug.c, english.c, errors.c, gibberish.c, help.c,
      lexer.l, literals.c, literals.h, parser.y, typedefs.h, test/Makefile.am,
      declare_+udc_i.out, declare_udc_i.out, declare_udc_rcc.out,
@@ -8546,7 +8464,7 @@
 2019-05-23  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: s/define/declare/
-   * NEWS, configure.ac: Updated.
+   * configure.ac: Updated.
    * parser.y: Removed special-case for destructor; added
      destructor_decl_english_ast rule.
    * cdecl.1, help.c, help_english-c++.out: Added missing "virtual" for
@@ -8554,7 +8472,7 @@
 
 2019-05-22  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, errors.c, gibberish.c, parser.y, test/Makefile.am,
+   * configure.ac, errors.c, gibberish.c, parser.y, test/Makefile.am,
      declare_+dtor.out, declare_dtor.out, declare_vdtor.out, explain_vdtor.out,
      declare_+dtor.test, declare_dtor.test, declare_v+f_v.test,
      declare_vdtor.test, explain_v+f_v.test, explain_vdtor.test: Added support
@@ -8564,10 +8482,10 @@
    * cdecl.1: Expanded "Gibberish" section to include constructor, destructor,
      etc.
    * cdecl.1: Added "hyphens in hyphenated words".
-   * AUTHORS, NEWS, cdecl.1, autocomplete.c, c_ast.c, c_ast.h, c_kind.c,
-     c_kind.h, c_sname.c, c_sname.h, debug.c, english.c, errors.c, gibberish.c,
-     help.c, lexer.l, literals.c, literals.h, parser.y, slist.c, slist.h,
-     typedefs.h, test/Makefile.am, declare_ctor.out, declare_ctor_i.out,
+   * AUTHORS, cdecl.1, autocomplete.c, c_ast.c, c_ast.h, c_kind.c, c_kind.h,
+     c_sname.c, c_sname.h, debug.c, english.c, errors.c, gibberish.c, help.c,
+     lexer.l, literals.c, literals.h, parser.y, slist.c, slist.h, typedefs.h,
+     test/Makefile.am, declare_ctor.out, declare_ctor_i.out,
      declare_ector_i.out, explain_+dtor.out, explain_2+dtor.out,
      explain_ctor.out, explain_ctor_i.out, explain_dtor.out,
      explain_ector_i.out, help_english-c++.out, declare_+ctor-error.test,
@@ -8591,7 +8509,7 @@
    * help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
      help_commands-c++.out, help_commands-c.out: Fixed expected tests.
    * slist.c: Added (void).
-   * NEWS, configure.ac, cdecl.1, autocomplete.c, help.c, lexer.l, literals.c,
+   * configure.ac, cdecl.1, autocomplete.c, help.c, lexer.l, literals.c,
      literals.h, parser.y, test/Makefile.am, help-c++.out, help-c.out,
      help_command-c++.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out, help_english-c++.out, help_english-c.out,
@@ -8627,18 +8545,18 @@
 2019-05-11  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Added new typedefs to man page.
-   * NEWS, configure.ac: New release is 6.2.
+   * configure.ac: New release is 6.2.
 
 2019-05-10  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added typedef declarations for div_t, imaxdiv_t, etc.
    * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added max_align_t, std::max_align_t, std::size_t, and std::ptrdiff_t.
    * cdecl.1: Added mention of char8_t.
-   * AUTHORS, NEWS, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
+   * AUTHORS, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
      help.c, literals.c, literals.h, parser.y, test/Makefile.am,
      cdecl--debug.out, cdecl-d.out, explain_udl_c8_i.out,
      explain_udl_pcc8ul_i.out, explain_udl_pcc8z_i.out, help-c++.out,
@@ -8647,7 +8565,7 @@
      explain_hc8.test, explain_lc8.test, explain_sc8.test, explain_uc8.test,
      explain_udl_c8_i.test, explain_udl_pcc8ul_i.test,
      explain_udl_pcc8z_i.test: Added support for char8_t.
-   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast.c, c_ast.h,
+   * AUTHORS, configure.ac, cdecl.1, autocomplete.c, c_ast.c, c_ast.h,
      c_ast_util.c, c_ast_util.h, c_kind.c, c_kind.h, c_type.h, debug.c,
      english.c, errors.c, gibberish.c, help.c, lexer.l, literals.c, literals.h,
      parser.y, typedefs.h, test/Makefile.am, declare_+udl_c_i.out,
@@ -8693,10 +8611,6 @@
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added C++20 std::byte.
 
-2019-04-30  Paul J. Lucas <paul@lucasmail.org>
-
-   * NEWS: Added example for operator overloading.
-
 2019-04-26  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am: Added uninstall-hook to remove c++decl.
@@ -8707,8 +8621,8 @@
 
 2019-04-22  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, cdecl.1, cdecl.c: More commands are now recognized as
-     such when they are the first argument.
+   * configure.ac, cdecl.1, cdecl.c: More commands are now recognized as such
+     when they are the first argument.
    * autocomplete.c: Made check explicit.
 
 2019-04-17  Paul J. Lucas <paul@lucasmail.org>
@@ -8729,7 +8643,7 @@
 2019-04-15  Paul J. Lucas <paul@lucasmail.org>
 
    * _Noreturn.h: Updated Gnulib.
-   * NEWS, configure.ac, c_type.c, explain_oo_amper_rk_pk.out,
+   * configure.ac, c_type.c, explain_oo_amper_rk_pk.out,
      explain_oo_minus2_i_rk.out, explain_oo_minus_rk_rk.out,
      explain_oo_plus2_i_rk.out, explain_oo_plus_rk_rk.out,
      explain_oo_star_rk_rk.out, explain_oyf.out, explain_voyf.out,
@@ -8748,9 +8662,8 @@
 
 2019-03-30  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, util.h: Fixed "cast to pointer from integer of different size"
-     warning.
-   * NEWS, configure.ac: Updated version.
+   * util.h: Fixed "cast to pointer from integer of different size" warning.
+   * configure.ac: Updated version.
    * lib/Makefile.am, _Noreturn.h, gettext.h, stdio.in.h, stdlib.in.h,
      strndup.c, strnlen.c, unistd.in.h, getdelim.m4, getline.m4,
      gnulib-cache.m4, gnulib-common.m4, gnulib-comp.m4, stdlib_h.m4,
@@ -8768,8 +8681,7 @@
 
 2019-03-26  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Fixed typo.
-   * NEWS, configure.ac: Updated version to 6.0.1.
+   * configure.ac: Updated version to 6.0.1.
    * c_type.h, typedefs.h: Fixes uint64_t being undefined.
 
 2019-03-25  Paul J. Lucas <paul@lucasmail.org>
@@ -8780,7 +8692,7 @@
 
 2019-03-24  Paul J. Lucas <paul@lucasmail.org>
 
-   * AUTHORS, Doxyfile, Makefile.am, NEWS, configure.ac, man/Makefile.am,
+   * AUTHORS, Doxyfile, Makefile.am, configure.ac, man/Makefile.am,
      man/man1/Makefile.am, cdecl.1, src/Makefile.am, autocomplete.c, c_ast.c,
      c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c, c_keyword.h, c_kind.c,
      c_kind.h, c_lang.c, c_lang.h, c_operator.c, c_sname.c, c_sname.h,
@@ -8889,8 +8801,8 @@
 
 2018-12-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_type.c,
-     gibberish.c, lexer.l, options.c, options.h, parser.y, set.c, typedefs.h,
+   * AUTHORS, configure.ac, cdecl.1, autocomplete.c, c_type.c, gibberish.c,
+     lexer.l, options.c, options.h, parser.y, set.c, typedefs.h,
      test/Makefile.am, declare_digraphs_a9i.out,
      declare_digraphs_nfi_v-c++.out, declare_trigraphs_a9i.out,
      declare_trigraphs_nfi_v-c++.out, declare_trigraphs_o_circ_eq_i_rk.out,
@@ -8931,7 +8843,7 @@
    * configure.ac: Upped version to 5.1.
    * autocomplete.c, c_keyword.c, c_keyword.h, c_operator.h, c_type.c,
      errors.c, parser.y: s/ok_langs/lang_ids/
-   * AUTHORS, NEWS, cdecl.1, autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c,
+   * AUTHORS, cdecl.1, autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c,
      c_ast_util.h, c_keyword.c, c_kind.c, c_kind.h, c_lang.c, c_lang.h,
      c_operator.c, c_operator.h, c_type.c, c_type.h, c_typedef.c, c_typedef.h,
      cdecl.c, color.h, debug.c, debug.h, diagnostics.c, diagnostics.h,
@@ -8961,7 +8873,7 @@
    * lib/Makefile.am, _Noreturn.h, limits.in.h, stdlib.in.h, unistd.in.h,
      errno_h.m4, gnulib-common.m4, gnulib-comp.m4, limits-h.m4, longlong.m4,
      stdarg.m4, stddef_h.m4, stdint.m4, unistd_h.m4: Updated GNUlib.
-   * AUTHORS, NEWS, cdecl.1, src/Makefile.am, autocomplete.c, c_ast.c, c_ast.h,
+   * AUTHORS, cdecl.1, src/Makefile.am, autocomplete.c, c_ast.c, c_ast.h,
      c_ast_util.c, c_ast_util.h, c_keyword.c, c_kind.c, c_kind.h, c_lang.c,
      c_operator.c, c_operator.h, c_type.c, c_type.h, color.c, debug.c, debug.h,
      diagnostics.c, english.c, errors.c, gibberish.c, help.c, lexer.l,
@@ -9445,7 +9357,7 @@
 
    * parser.y: Combined pointer_decl_english and pointer_to_member_decl_english
      to produce better error messages.
-   * NEWS, configure.ac, c_keyword.c, c_keyword.h, c_lang.c, c_lang.h, cdecl.c,
+   * configure.ac, c_keyword.c, c_keyword.h, c_lang.c, c_lang.h, cdecl.c,
      errors.c, lexer.l, literals.c, literals.h, parser.y, test/Makefile.am,
      declare_pk.test: Added all remaining C/C++ keywords.
 
@@ -9459,7 +9371,7 @@
 
 2018-11-17  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, errors.c, test/Makefile.am, declare_cri.test,
+   * configure.ac, errors.c, test/Makefile.am, declare_cri.test,
      declare_vri.test: Fixed const/volatile reference.
 
 2018-11-01  Paul J. Lucas <paul@lucasmail.org>
@@ -9482,7 +9394,6 @@
 
 2018-10-16  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: s/printer/printed/
    * README-blocks.txt: Added "(and later)".
 
 2018-10-15  Paul J. Lucas <paul@lucasmail.org>
@@ -9491,13 +9402,13 @@
 
 2018-10-10  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, lexer.l: Fixed printing of ^.
+   * configure.ac, lexer.l: Fixed printing of ^.
    * cdecl.1: s/given/shown/
 
 2018-10-08  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: Removed L_TYPES.
-   * NEWS, configure.ac, cdecl.1, help.c, literals.c, literals.h, parser.y,
+   * configure.ac, cdecl.1, help.c, literals.c, literals.h, parser.y,
      test/Makefile.am, help-c++.out, help-c.out, show_all_typedef.out,
      show_int8_t_typedef.out, show_predefined_typedef.out,
      show_user_typedef.out, show_all.test, show_all_typedef.test,
@@ -9507,8 +9418,7 @@
 
 2018-09-11  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Added rsize_t.
-   * NEWS, configure.ac, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
+   * configure.ac, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
      show_all_types.out, show_predefined_types.out: Added more predefined
      types.
 
@@ -9538,7 +9448,6 @@
 
 2018-07-01  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Updated NEWS.
    * configure.ac, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
      explain_fac_v.out, explain_using_a3i.out, explain_fac_v.test,
      explain_using_a3i.test: Fixed parsing of unnamed function array arguments,
@@ -9553,7 +9462,7 @@
 
 2018-06-30  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, parser.y, test/Makefile.am, explain_using_pfi_v.out,
+   * configure.ac, parser.y, test/Makefile.am, explain_using_pfi_v.out,
      explain_using_pfi_v-c.test, explain_using_pfi_v.test: Added support for
      explaining C++11's using declarations.
    * explain_it.test: Fixed test.
@@ -9567,10 +9476,10 @@
 
 2018-06-29  Paul J. Lucas <paul@lucasmail.org>
 
-   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast_util.c,
-     c_keyword.c, cdecl.c, help.c, literals.c, literals.h, misc.h, parser.y,
-     typedefs.h, test/Makefile.am, config_using_i.cdeclrc, help-c++.out,
-     help-c.out, using_config_i.out, using_fi_v_show_f.out, using_i.out,
+   * AUTHORS, configure.ac, cdecl.1, autocomplete.c, c_ast_util.c, c_keyword.c,
+     cdecl.c, help.c, literals.c, literals.h, misc.h, parser.y, typedefs.h,
+     test/Makefile.am, config_using_i.cdeclrc, help-c++.out, help-c.out,
+     using_config_i.out, using_fi_v_show_f.out, using_i.out,
      using_i_declare_i.out, using_i_explain_i.out, using_i_int_least32_t.out,
      using_ai.test, using_c_int_least32_t.test, using_config_i.test,
      using_ei.test, using_fi_v_show_f.test, using_gi.test, using_i-c.test,
@@ -9604,7 +9513,6 @@
 
 2018-03-18  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Added 4.4.3 news.
    * configure.ac: Changed version to 4.4.3.
 
 2018-03-12  Paul J. Lucas <paul@lucasmail.org>
@@ -9657,7 +9565,7 @@
 
 2017-11-04  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, parser.y, test/Makefile.am, declare_fn.test,
+   * configure.ac, parser.y, test/Makefile.am, declare_fn.test,
      explain_fn.test: Fixed declare of function with an invalid argument.
    * src/Makefile.am, c_ast.c, c_ast.h, debug.c, debug.h, english.c, errors.c,
      gibberish.c, parser.y, slist.c, slist.h, typedefs.h, util.c, util.h: Now
@@ -9674,7 +9582,7 @@
    * color.h: Added != NULL.
    * c_ast.c, util.h: s/PTR_TO_OFFSET/PTR_OFFSET/
    * util.h: Fixed PTR_TO_OFFSET.
-   * NEWS, configure.ac: Updated version to 4.4.1.
+   * configure.ac: Updated version to 4.4.1.
    * parser.y: Now dumping final type in define_english.
    * c_ast.c, c_ast.h, c_typedef.c, cdecl.c, parser.y, util.h,
      test/Makefile.am, typedef_fi_v_show_f.out, typedef_fi_v_show_f.test: Fixed
@@ -9700,11 +9608,11 @@
    * autocomplete.c: Added missing options to autocomplete.
    * autocomplete.c: Whitespace changes.
    * c_type.c: Added missing @param.
-   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast_util.c,
-     c_keyword.c, c_keyword.h, c_type.c, c_type.h, errors.c, lexer.l,
-     literals.c, literals.h, parser.y, typedefs.h, util.c, util.h,
-     test/Makefile.am, declare_cdfcdi_i.out, declare_cdfi_i.out,
-     declare_df_v.out, declare_dui.out, declare_fcdi_i.out, declare_fdi_v.out,
+   * AUTHORS, configure.ac, cdecl.1, autocomplete.c, c_ast_util.c, c_keyword.c,
+     c_keyword.h, c_type.c, c_type.h, errors.c, lexer.l, literals.c,
+     literals.h, parser.y, typedefs.h, util.c, util.h, test/Makefile.am,
+     declare_cdfcdi_i.out, declare_cdfi_i.out, declare_df_v.out,
+     declare_dui.out, declare_fcdi_i.out, declare_fdi_v.out,
      declare_fti_v-01.out, declare_fti_v-02.out, declare_fui_v-01.out,
      declare_fui_v-02.out, declare_nfi_v-02-c++.out, declare_nfi_v-03-c++.out,
      declare_nfi_v-03.out, declare_tf_i-01.out, declare_tf_i-02.out,
@@ -9739,7 +9647,7 @@
 
 2017-10-14  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Updated to 4.3.
+   * configure.ac: Updated to 4.3.
    * cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, lexer.l,
      literals.c, literals.h, parser.y, test/Makefile.am, declare_md.out,
      declare_mf.out, explain_md.out, explain_mf.out, declare_md.test,
@@ -9779,9 +9687,9 @@
    * c_type.c, cdecl.c, prompt.c, util.c, util.h: Replaced strcpy_len() with
      strcpy_end().
    * c_type.c, c_type.h: Added L_TYPEDEF_TYPE.
-   * NEWS, configure.ac, cdecl.1, autocomplete.c, c_keyword.c, c_type.c,
-     c_type.h, errors.c, gibberish.c, lexer.l, literals.c, literals.h,
-     parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d.out, declare_xf.out,
+   * configure.ac, cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h,
+     errors.c, gibberish.c, lexer.l, literals.c, literals.h, parser.y,
+     test/Makefile.am, cdecl--debug.out, cdecl-d.out, declare_xf.out,
      explain_nfi_v.out, explain_tf_v.out, explain_xf_v.out, explain_xff_v.out,
      explain_xtf_v.out, declare_xf.test, explain_tf_v.test, explain_xf_v.test,
      explain_xff_v.test, explain_xtf_v.test: Added noexcept and throw()
@@ -9794,7 +9702,7 @@
    * errors.c: Fixed whitespace.
    * lib/Makefile.am, getopt-cdefs.in.h, getopt-pfx-core.h, getopt-pfx-ext.h,
      getopt.in.h, unistd.in.h, string_h.m4, sys_types_h.m4: Updated GNUlib.
-   * NEWS, configure.ac: Updated version.
+   * configure.ac: Updated version.
    * cdecl.c: Fixed handling of leading whitespace in command-line argument.
    * c_typedef.c: Minor clean-up.
    * c_type.c: Added name_cat().
@@ -9813,7 +9721,7 @@
 
 2017-10-08  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, parser.y, test/Makefile.am, define_ai.test, define_ei.test,
+   * parser.y, test/Makefile.am, define_ai.test, define_ei.test,
      define_gi.test, define_si.test, typedef_ai.test, typedef_ei.test,
      typedef_gi.test, typedef_si.test: Fixed typedef & define with storage
      classes.
@@ -9823,8 +9731,8 @@
 
 2017-10-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, cdecl.1, c_type.c, c_typedef.c, debug.c, debug.h,
-     english.c, parser.y, cdecl--debug.out, cdecl-d.out, show_all_types.out,
+   * configure.ac, cdecl.1, c_type.c, c_typedef.c, debug.c, debug.h, english.c,
+     parser.y, cdecl--debug.out, cdecl-d.out, show_all_types.out,
      show_predefined_types.out: Added support for stdatomic types.
 
 2017-10-06  Paul J. Lucas <paul@lucasmail.org>
@@ -9876,28 +9784,28 @@
      lexer.l, options.c, options.h, parser.y, prompt.c, set.c, typedefs.h,
      util.c, util.h: Fixed build on old gcc that doesn't allow multiple
      typedefs of the same type.
-   * NEWS, configure.ac: Changed version to 4.0.
-   * AUTHORS, NEWS, cdecl.1, errors.c, lang.c, lang.h, test/Makefile.am,
+   * configure.ac: Changed version to 4.0.
+   * AUTHORS, cdecl.1, errors.c, lang.c, lang.h, test/Makefile.am,
      declare_ii-c++.out, explain_ii-c++.out, declare_ii-c++.test,
      declare_ii.test, explain_ii-c++.test, explain_ii.test: Added C++17
      support: inline variables.
-   * NEWS, errors.c: Now warning on "register" >= C++11.
+   * errors.c: Now warning on "register" >= C++11.
    * lexer.l: Better C++ lang name handling for "set" command.
    * ast.c, gibberish.c, parser.y, util.h: Added ZERO().
    * ast.h, ast_util.h, keywords.c, lexer.l: Moved c_ast_pair to ast_util.h.
 
 2017-09-20  Paul J. Lucas <paul@lucasmail.org>
 
-   * AUTHORS, NEWS, configure.ac, cdecl.1, src/Makefile.am, ast.c, ast.h,
-     ast_util.c, autocomplete.c, cdecl.c, common.h, debug.c, diagnostics.c,
-     english.c, errors.c, gibberish.c, help.c, keywords.c, kinds.c, kinds.h,
-     lang.c, lang.h, lexer.h, lexer.l, literals.c, literals.h, options.c,
-     options.h, parser.y, red_black.c, red_black.h, set.c, typedefs.c,
-     typedefs.h, types.c, types.h, util.c, util.h, test/Makefile.am,
-     config_u.cdeclrc, cdecl--debug.out, cdecl-d.out, declare_config_u.out,
-     declare_cz.out, define_i.out, define_i_declare_i.out,
-     define_i_explain_i.out, define_i_int_least32_t.out, explain_config_u.out,
-     help-c++.out, help-c.out, show_all_types.out, show_int8_t.out,
+   * AUTHORS, configure.ac, cdecl.1, src/Makefile.am, ast.c, ast.h, ast_util.c,
+     autocomplete.c, cdecl.c, common.h, debug.c, diagnostics.c, english.c,
+     errors.c, gibberish.c, help.c, keywords.c, kinds.c, kinds.h, lang.c,
+     lang.h, lexer.h, lexer.l, literals.c, literals.h, options.c, options.h,
+     parser.y, red_black.c, red_black.h, set.c, typedefs.c, typedefs.h,
+     types.c, types.h, util.c, util.h, test/Makefile.am, config_u.cdeclrc,
+     cdecl--debug.out, cdecl-d.out, declare_config_u.out, declare_cz.out,
+     define_i.out, define_i_declare_i.out, define_i_explain_i.out,
+     define_i_int_least32_t.out, explain_config_u.out, help-c++.out,
+     help-c.out, show_all_types.out, show_int8_t.out,
      show_predefined_types.out, show_user_types.out, typedef_i.out,
      typedef_i_declare_i.out, typedef_i_explain_i.out,
      typedef_i_int_least32_t.out, run_test.sh, cast_a3i.test, cast_bii_d.test,
@@ -10107,8 +10015,8 @@
 
 2017-08-30  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, cdecl.1, cdecl.c: Now checking first word of first
-     argument for command.
+   * configure.ac, cdecl.1, cdecl.c: Now checking first word of first argument
+     for command.
 
 2017-08-26  Paul J. Lucas <paul@lucasmail.org>
 
@@ -10117,8 +10025,8 @@
      extensions.m4, getdelim.m4, getline.m4, include_next.m4, stdint.m4,
      stdlib_h.m4, string_h.m4, sys_types_h.m4, unistd_h.m4, wint_t.m4: Updated
      gnulib.
-   * NEWS, configure.ac, cdecl.1, autocomplete.c, keywords.c, literals.c,
-     literals.h, parser.y, types.c, types.h, test/Makefile.am, declare_zz.out,
+   * configure.ac, cdecl.1, autocomplete.c, keywords.c, literals.c, literals.h,
+     parser.y, types.c, types.h, test/Makefile.am, declare_zz.out,
      explain_zz.out, declare_zz-knr.test, declare_zz.test, explain_zz-knr.test,
      explain_zz.test: Added support for ssize_t.
 
@@ -10129,7 +10037,7 @@
 
 2017-07-17  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Updated version.
+   * configure.ac: Updated version.
    * parser.y: Fixed new-style casts C++ version.
    * cdecl.1: Added mention of new-style casts; added casting name only caveat.
    * parser.y: Added "new_style_cast_c" to dump line.
@@ -10144,16 +10052,16 @@
 
 2017-07-14  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.1, cdecl.c: Added "help" as a command-line argument.
+   * cdecl.1, cdecl.c: Added "help" as a command-line argument.
    * ast_util.c: Added missing "static".
 
 2017-07-12  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, gibberish.c, test/Makefile.am, declare_ra3i.out, explain_ra3i.out,
+   * gibberish.c, test/Makefile.am, declare_ra3i.out, explain_ra3i.out,
      declare_ra3i.test, explain_ra3i.test: Fixed reference to array.
-   * AUTHORS, NEWS, configure.ac, cdecl.1, ast.h, autocomplete.c, debug.c,
-     english.c, errors.c, gibberish.c, help.c, lexer.l, literals.c, literals.h,
-     parser.y, test/Makefile.am, declare_facs3_v.out, declare_facv_v.out,
+   * AUTHORS, configure.ac, cdecl.1, ast.h, autocomplete.c, debug.c, english.c,
+     errors.c, gibberish.c, help.c, lexer.l, literals.c, literals.h, parser.y,
+     test/Makefile.am, declare_facs3_v.out, declare_facv_v.out,
      declare_fas3_v.out, declare_fasc3_v.out, declare_fav_v.out,
      explain_facs3_v.out, explain_facv_v.out, explain_fas3_v.out,
      explain_fasc3_v.out, explain_fav_v.out, help-c++.out, help-c.out,
@@ -10176,7 +10084,7 @@
 
 2017-06-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, cdecl.1, options.c: Added -h and --help.
+   * configure.ac, cdecl.1, options.c: Added -h and --help.
    * parser.y, test/Makefile.am, explain_cpmci.out, explain_cpmi.out,
      explain_f_cpmi.out, explain_cpmci.test, explain_cpmi.test,
      explain_f_cpmi.test: Added support for explaining const/volatile pointers
@@ -10184,9 +10092,9 @@
 
 2017-05-29  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, cdecl.c, common.h, diagnostics.c: Fixed error printing if source is
+   * cdecl.c, common.h, diagnostics.c: Fixed error printing if source is
      command line.
-   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, cdecl.c, help.c,
+   * AUTHORS, configure.ac, cdecl.1, autocomplete.c, cdecl.c, help.c,
      keywords.c, lexer.l, literals.c, literals.h, parser.y, test/Makefile.am,
      const_cast_pi.out, dynamic_cast_pc.out, explain_const_cast_pi.out,
      explain_dynamic_cast_pc.out, explain_reinterpret_cast_pv.out,
@@ -10203,8 +10111,7 @@
 
 2017-05-28  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, diagnostics.c, prompt.h: Fixed color prompt caret
-     position.
+   * configure.ac, diagnostics.c, prompt.h: Fixed color prompt caret position.
    * cdecl.1: Fixed caveat auto example.
 
 2017-05-27  Paul J. Lucas <paul@lucasmail.org>
@@ -10214,8 +10121,8 @@
 
 2017-05-24  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, help.c, help-c++.out, help-c.out: Fixed cv-qualifier
-     in help text.
+   * configure.ac, help.c, help-c++.out, help-c.out: Fixed cv-qualifier in help
+     text.
 
 2017-05-10  Paul J. Lucas <paul@lucasmail.org>
 
@@ -10245,12 +10152,12 @@
 
    * lexer.l: Added "break" to cdecl_keyword_find().
    * lexer.l: Fixed typo incomment.
-   * NEWS, configure.ac, lexer.l, test/Makefile.am, explain_type_i.test: Fixed
+   * configure.ac, lexer.l, test/Makefile.am, explain_type_i.test: Fixed
      wrongly allowing keyword synonyms in explain.
 
 2017-05-05  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac, ast_util.c, gibberish.c, test/Makefile.am,
+   * configure.ac, ast_util.c, gibberish.c, test/Makefile.am,
      declare_tpfc_i.out, explain_tpfc_i.out, declare_tpfc_i.test,
      explain_tpfc_i.test: Fixed declarations with storage-class.
    * util.c: Reordered open().
@@ -10271,7 +10178,7 @@
 
 2017-04-30  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS, configure.ac: Updated to 3.1.1.
+   * configure.ac: Updated to 3.1.1.
    * src/Makefile.am: Added BUILT_SOURCES.
    * Makefile.am: Fixed to use new README files.
    * README-blocks.txt: Split out README info; disavowed associated with
@@ -10285,17 +10192,17 @@
 2017-04-29  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Added assert().
-   * NEWS, configure.ac, src/Makefile.am: Added c++decl symlink on install.
-   * AUTHORS, NEWS, configure.ac, cdecl.1, debug.c, english.c, errors.c,
-     gibberish.c, help.c, kinds.c, kinds.h, parser.y, types.c, types.h,
-     test/Makefile.am, cdecl--debug.out, cdecl-d.out, declare_crf_v.out,
-     declare_crrf_v.out, declare_rf_v.out, declare_rrf_v.out,
-     explain_crf_v.out, explain_rf_v.out, explain_rrf_v.out, help-c++.out,
-     help-c.out, declare_crf_v.test, declare_crrf_v.test, declare_rf_v-01.test,
-     declare_rf_v.test, declare_rrf_v.test, explain_crf_v.test,
-     explain_rf_v-01.test, explain_rf_v-c++03.test, explain_rf_v.test,
-     explain_rrf_v-c++03.test, explain_rrf_v.test, explain_srf_v.test,
-     explain_srrf_v.test: Added member function ref-qualifiers.
+   * configure.ac, src/Makefile.am: Added c++decl symlink on install.
+   * AUTHORS, configure.ac, cdecl.1, debug.c, english.c, errors.c, gibberish.c,
+     help.c, kinds.c, kinds.h, parser.y, types.c, types.h, test/Makefile.am,
+     cdecl--debug.out, cdecl-d.out, declare_crf_v.out, declare_crrf_v.out,
+     declare_rf_v.out, declare_rrf_v.out, explain_crf_v.out, explain_rf_v.out,
+     explain_rrf_v.out, help-c++.out, help-c.out, declare_crf_v.test,
+     declare_crrf_v.test, declare_rf_v-01.test, declare_rf_v.test,
+     declare_rrf_v.test, explain_crf_v.test, explain_rf_v-01.test,
+     explain_rf_v-c++03.test, explain_rf_v.test, explain_rrf_v-c++03.test,
+     explain_rrf_v.test, explain_srf_v.test, explain_srrf_v.test: Added member
+     function ref-qualifiers.
 
 2017-04-28  Paul J. Lucas <paul@lucasmail.org>
 
@@ -10311,8 +10218,7 @@
 
 2017-04-24  Paul J. Lucas <paul@lucasmail.org>
 
-   * NEWS: Now consistent with periods.
-   * NEWS, configure.ac: Upped version to 3.0.1.
+   * configure.ac: Upped version to 3.0.1.
    * configure.ac: Renamed --disable-debug to --disable-cdecl-debug to avoid
      clash with other --disable-debug.
    * util.c: Eliminated warning when not compiling with asserts.
@@ -10330,11 +10236,11 @@
 2017-04-21  Paul J. Lucas <paul@lucasmail.org>
 
    * ast_util.c, parser.y: More comments; clean-up.
-   * AUTHORS, NEWS, cdecl.1, lexer.l, parser.y, test/Makefile.am,
-     cdecl--debug.out, cdecl-d.out, explain_f__pf__v.out, explain_f__pv.out,
-     explain_f__v.out, explain_f__pf__v.test, explain_f__pv.test,
-     explain_f__v-c++03.test, explain_f__v.test, explain_f_v__v.test: Added
-     support for the C++11 function trailing return type syntax.
+   * AUTHORS, cdecl.1, lexer.l, parser.y, test/Makefile.am, cdecl--debug.out,
+     cdecl-d.out, explain_f__pf__v.out, explain_f__pv.out, explain_f__v.out,
+     explain_f__pf__v.test, explain_f__pv.test, explain_f__v-c++03.test,
+     explain_f__v.test, explain_f_v__v.test: Added support for the C++11
+     function trailing return type syntax.
    * cdecl.1: Removed mention of 'n' (not used); clean-up.
    * parser.y: Removed SYNTAX_ERROR -- no longer used.
    * parser.y: Simplified zero.
@@ -10358,7 +10264,6 @@
 
    * cdecl.1: Removed author contributions; the AUTHORS and NEWS files are
      enough.
-   * NEWS: Added NEWS file.
    * cdecl.1: s/--lang/--language/ to match reality.
    * autocomplete.c: Added setting of rl_instream and rl_outstream.
    * autocomplete.c: Added missing "c++14".
