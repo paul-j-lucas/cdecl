@@ -1619,7 +1619,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>       ref_qualifier_english_stid_opt
 %type   <ast>       returning_english_ast returning_english_ast_opt
 %type   <type>      scope_english_type scope_english_type_exp
-%type   <sname>     sname_english sname_english_exp
+%type   <sname>     sname_english sname_english_exp sname_english_opt
 %type   <ast>       sname_english_ast
 %type   <list>      sname_list_english
 %type   <tid>       storage_class_english_stid
@@ -1863,31 +1863,13 @@ cast_command
     /*
      * C-style cast.
      */
-  : Y_cast as_into_to_exp decl_english_ast
-    {
-      c_ast_t *const decl_ast = $3;
-
-      DUMP_START( "cast_command", "CAST as_into_to_exp decl_english_ast" );
-      DUMP_AST( "decl_english_ast", decl_ast );
-      DUMP_END();
-
-      c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
-      cast_ast->cast.kind = C_CAST_C;
-      cast_ast->cast.to_ast = decl_ast;
-      C_AST_CHECK( cast_ast );
-      c_ast_gibberish( cast_ast, C_GIB_CAST, stdout );
-    }
-
-    /*
-     * C-style cast of a name.
-     */
-  | Y_cast sname_english as_into_to_exp decl_english_ast
+  : Y_cast sname_english_opt as_into_to_exp decl_english_ast
     {
       c_ast_t *const decl_ast = $4;
 
       DUMP_START( "cast_command",
-                  "CAST sname_english_exp as_into_to_exp decl_english_ast" );
-      DUMP_SNAME( "sname_english_exp", $2 );
+                  "CAST sname_english_opt as_into_to_exp decl_english_ast" );
+      DUMP_SNAME( "sname_english_opt", $2 );
       DUMP_AST( "decl_english_ast", decl_ast );
       DUMP_END();
 
@@ -7646,6 +7628,11 @@ sname_english_exp
       c_sname_init( &$$ );
       elaborate_error( "name expected" );
     }
+  ;
+
+sname_english_opt
+  : /* empty */                   { c_sname_init( &$$ ); }
+  | sname_english
   ;
 
 sname_list_english
