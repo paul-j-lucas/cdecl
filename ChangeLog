@@ -1,5 +1,13 @@
+2023-03-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, print.c, set_options.c, util.c, util.h: s/fprint_list/fput_list/
+   * cli_options.c: Now checking -c/--config and -f/--file arguments for empty
+     strings and complaining.
+
 2023-03-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_typedef.c: s/predefined_lang_ids/predef_lang_ids/
+   * c_typedef.c: Added predef_type.
    * dump.c, english.c, gibberish.c, parser.y, util.h: s/fprint_sep/fput_sep/
 
 2023-03-28  Paul J. Lucas <paul@lucasmail.org>
