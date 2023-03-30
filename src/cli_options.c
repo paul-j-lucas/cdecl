@@ -380,11 +380,12 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   color_when_t  color_when = COLOR_WHEN_DEFAULT;
   char const   *fin_path = "-";
   char const   *fout_path = "-";
+  int           opt;
   bool          opt_usage = false;
   unsigned      opt_version = 0;
 
   for (;;) {
-    int const opt = getopt_long(
+    opt = getopt_long(
       *pargc, CONST_CAST( char**, *pargv ), CLI_OPTIONS_SHORT, CLI_OPTIONS_LONG,
       /*longindex=*/NULL
     );
@@ -408,6 +409,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         color_when = parse_color_when( optarg );
         break;
       case COPT(CONFIG):
+        if ( str_is_empty( optarg ) )
+          goto missing_arg;
         opt_conf_path = optarg;
         break;
       case COPT(DIGRAPHS):
@@ -435,6 +438,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
           );
         break;
       case COPT(FILE):
+        if ( str_is_empty( optarg ) )
+          goto missing_arg;
         fin_path = optarg;
         break;
 #ifdef ENABLE_FLEX_DEBUG
@@ -479,35 +484,10 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         ++opt_version;
         break;
 
-      case ':': {                       // option missing required argument
-        strbuf_t sbuf;
-        FATAL_ERR( EX_USAGE,
-          "\"%s\" requires an argument\n",
-          opt_format( STATIC_CAST( char, optopt ), &sbuf )
-        );
-      }
-
-      case '?':                         // invalid option
-        if ( --optind > 0 ) {           // defensive check
-          char const *invalid_opt = (*pargv)[ optind ];
-          //
-          // We can offer "did you mean ...?" suggestions only if the invalid
-          // option is a long option.
-          //
-          if ( invalid_opt != NULL && strncmp( invalid_opt, "--", 2 ) == 0 ) {
-            invalid_opt += 2;           // skip over "--"
-            EPRINTF( "%s: \"%s\": invalid option", me, invalid_opt );
-            if ( !print_suggestions( DYM_CLI_OPTIONS, invalid_opt ) )
-              goto use_help;
-            EPUTC( '\n' );
-            exit( EX_USAGE );
-          }
-        }
-        EPRINTF( "%s: '%c': invalid option", me, STATIC_CAST( char, optopt ) );
-
-use_help:
-        print_use_help();
-        exit( EX_USAGE );
+      case ':':
+        goto missing_arg;
+      case '?':
+        goto invalid_opt;
 
       default:
         // LCOV_EXCL_START
@@ -626,6 +606,38 @@ use_help:
          colors_parse( getenv( "GCC_COLORS"   ) )) ) {
     PJL_IGNORE_RV( colors_parse( COLORS_DEFAULT ) );
   }
+
+  return;
+
+invalid_opt:
+  if ( --optind > 0 ) {                 // defensive check
+    char const *invalid_opt = (*pargv)[ optind ];
+    //
+    // We can offer "did you mean ...?" suggestions only if the invalid option
+    // is a long option.
+    //
+    if ( invalid_opt != NULL && strncmp( invalid_opt, "--", 2 ) == 0 ) {
+      invalid_opt += 2;                 // skip over "--"
+      EPRINTF( "%s: \"%s\": invalid option", me, invalid_opt );
+      if ( !print_suggestions( DYM_CLI_OPTIONS, invalid_opt ) )
+        goto use_help;
+      EPUTC( '\n' );
+      exit( EX_USAGE );
+    }
+  }
+  EPRINTF( "%s: '%c': invalid option", me, STATIC_CAST( char, optopt ) );
+
+use_help:
+  print_use_help();
+  exit( EX_USAGE );
+
+missing_arg:
+  NO_OP;
+  strbuf_t sbuf;
+  FATAL_ERR( EX_USAGE,
+    "\"%s\" requires an argument\n",
+    opt_format( STATIC_CAST( char, opt != ':' ? opt : optopt ), &sbuf )
+  );
 }
 
 /**
