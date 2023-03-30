@@ -53,7 +53,7 @@
  * @note A newline is _not_ printed.
  *
  * @sa fl_print_error()
- * @sa print_error_unknown_name()
+ * @sa #print_error_unknown_name()
  * @sa #print_warning()
  */
 #define print_error(...) \
