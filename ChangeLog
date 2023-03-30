@@ -1,5 +1,8 @@
 2023-03-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, cdecl.1, help.c, parser.y, cast.out, cl.out, help.out, cast.test:
+     Now allowing C-style casting without a name.
+   * NEWS: Grammar fix.
    * parser.y, print.c, set_options.c, util.c, util.h: s/fprint_list/fput_list/
    * cli_options.c: Now checking -c/--config and -f/--file arguments for empty
      strings and complaining.
