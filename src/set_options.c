@@ -524,8 +524,8 @@ static char const* slist_set_option_gets( void const **ppelt ) {
  * @param s1 The first string.
  * @param s2 The second string.
  * @param n The maximum number of characters to check.
- * @return Returns `true` only if \a s1 equals \a s2 (ignoring hyphens)
- * for \a n characters.
+ * @return Returns `true` only if \a s1 equals \a s2 (ignoring hyphens) for \a
+ * n characters.
  */
 NODISCARD
 static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
