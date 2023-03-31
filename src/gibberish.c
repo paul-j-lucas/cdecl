@@ -464,7 +464,6 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_NAME:
-      assert( OPT_LANG_IS( KNR_FUNC_DEFINITION ) );
       if ( OPT_LANG_IS( PROTOTYPES ) ) {
         //
         // In C89-C17, just a name for a function parameter is implicitly int:
