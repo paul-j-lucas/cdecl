@@ -343,7 +343,8 @@ struct c_builtin_ast {
   unsigned        bit_width;            ///< Bit-field width when &gt; 0.
 
   /**
-   * Which `union` variant `struct` to use is specified by \ref c_ast::type.
+   * Additional data for some \ref c_type::btids "base types" within \ref
+   * c_ast::type "type".
    */
   union {
     struct {
@@ -557,6 +558,9 @@ struct c_ast {
   c_ast_id_t            unique_id;  ///< Unique id (starts at 1).
 #endif /* ENABLE_CDECL_DEBUG */
 
+  /**
+   * Additional data for each \ref kind.
+   */
   union {
     c_parent_ast_t      parent;     ///< #K_ANY_PARENT members.
     c_array_ast_t       array;      ///< #K_ARRAY members.
