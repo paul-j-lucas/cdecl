@@ -155,8 +155,6 @@ static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *eout ) {
     fput_sep( ", ", &comma, eout );
 
     c_ast_t const *const capture_ast = c_capture_ast( capture );
-    assert( capture_ast->kind == K_CAPTURE );
-
     switch ( capture_ast->capture.kind ) {
       case C_CAPTURE_COPY:
         FPUTS( "copy by default", eout );
