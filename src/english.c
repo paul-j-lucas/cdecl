@@ -162,10 +162,14 @@ static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *eout ) {
         FPUTS( "copy by default", eout );
         break;
       case C_CAPTURE_REFERENCE:
-        if ( c_sname_empty( &capture_ast->sname ) )
+        if ( c_sname_empty( &capture_ast->sname ) ) {
           FPUTS( "reference by default", eout );
-        else
-          FPUTS( "reference to ", eout );
+          break;
+        }
+        FPUTS( "reference to ", eout );
+        FALLTHROUGH;
+      case C_CAPTURE_VARIABLE:
+        c_sname_english( &capture_ast->sname, eout );
         break;
       case C_CAPTURE_STAR_THIS:
         FPUTC( '*', eout );
@@ -173,11 +177,7 @@ static void c_ast_lambda_captures_english( c_ast_t const *ast, FILE *eout ) {
       case C_CAPTURE_THIS:
         FPUTS( L_this, eout );
         break;
-      case C_CAPTURE_VARIABLE:
-        break;
     } // switch
-
-    c_sname_english( &capture_ast->sname, eout );
   } // for
 
   FPUTC( ']', eout );
