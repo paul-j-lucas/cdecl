@@ -1394,6 +1394,7 @@ static bool c_ast_check_lambda_captures( c_ast_t const *ast ) {
 
     switch ( capture_ast->capture.kind ) {
       case C_CAPTURE_COPY:
+        assert( c_sname_empty( &capture_ast->sname ) );
         if ( default_capture_ast != NULL ) {
 prev:     print_error( &capture_ast->loc,
             "default capture previously specified\n"
@@ -1444,7 +1445,7 @@ first:    print_error( &capture_ast->loc,
         break;
 
       case C_CAPTURE_VARIABLE:
-        // nothing to check
+        assert( !c_sname_empty( &capture_ast->sname ) );
         break;
     } // switch
   } // for
