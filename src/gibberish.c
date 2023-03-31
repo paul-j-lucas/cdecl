@@ -319,8 +319,13 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           break;
         case C_CAPTURE_REFERENCE:
           FPUTS( alt_token_c( "&" ), g->gout );
-          if ( opt_alt_tokens && !c_sname_empty( &ast->sname ) )
+          if ( c_sname_empty( &ast->sname ) )
+            break;
+          if ( opt_alt_tokens )
             FPUTC( ' ', g->gout );
+          FALLTHROUGH;
+        case C_CAPTURE_VARIABLE:
+          FPUTS( c_sname_full_name( &ast->sname ), g->gout );
           break;
         case C_CAPTURE_STAR_THIS:
           FPUTC( '*', g->gout );
@@ -328,10 +333,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         case C_CAPTURE_THIS:
           FPUTS( L_this, g->gout );
           break;
-        case C_CAPTURE_VARIABLE:
-          break;
       } // switch
-      FPUTS( c_sname_full_name( &ast->sname ), g->gout );
       break;
 
     case K_CAST:
