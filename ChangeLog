@@ -1,3 +1,12 @@
+2023-03-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Reworked gibberish of lambda captures to print the capture's
+     name only when necessary.
+   * english.c: Removed unnecessary assert().
+   * english.c: Reworked c_ast_lambda_captures_english() to call
+     c_sname_english() only when necessary.
+   * c_ast_check.c: Added assert()s.
+
 2023-03-30  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Collapsed two C-style cast rules.
