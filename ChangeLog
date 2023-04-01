@@ -1,5 +1,12 @@
+2023-04-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Now correctly list `long long` as a new type in C99, not C89.
+   * cdecl.1, c_lang.h, c_type.c: Now correctly restrict `unsigned` to `int`
+     only in K&R C.
+
 2023-03-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c: Removed assert().
    * gibberish.c: Reworked gibberish of lambda captures to print the capture's
      name only when necessary.
    * english.c: Removed unnecessary assert().
