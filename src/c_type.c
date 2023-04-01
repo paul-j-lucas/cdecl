@@ -439,6 +439,9 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define THR         LANG_throw
 #define TLS         LANG_THREAD_LOCAL_STORAGE
 #define UPC         LANG_C_99
+#define UNC         LANG_unsigned_char
+#define UNL         LANG_unsigned_long
+#define UNS         LANG_unsigned_short
 #define VIR_CEX     LANG_CPP_MIN(20)
 #define VOL         LANG_volatile
 #define WCH         LANG_wchar_t
@@ -536,7 +539,7 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// long
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,LLO,___,LLO,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// long long
   { XXX,XXX,BIT,XXX,SIG,XXX,XXX,XXX,XXX,SIG,SIG,SIG,SIG,SIG,___,___,___,___,___,___,___,___,___,___,___,___,___ },// signed
-  { XXX,XXX,BIT,XXX,___,XXX,XXX,XXX,XXX,___,___,___,LLO,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___ },// unsigned
+  { XXX,XXX,BIT,XXX,UNC,XXX,XXX,XXX,XXX,UNS,___,UNL,LLO,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___ },// unsigned
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,LFL,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___ },// float
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,LDO,XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___ },// double
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,COM,COM,COM,___,___,___,___,___,___,___,___,___ },// complex

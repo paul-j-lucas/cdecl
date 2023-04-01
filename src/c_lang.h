@@ -837,6 +837,21 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_unsequenced                LANG_C_MIN(23)
 
 /**
+ * Lanuages the `unsigned char` type is supported in.
+ */
+#define LANG_unsigned_char              LANG_MIN(C_89)
+
+/**
+ * Lanuages the `unsigned long` type is supported in.
+ */
+#define LANG_unsigned_long              LANG_MIN(C_89)
+
+/**
+ * Lanuages the `unsigned short` type is supported in.
+ */
+#define LANG_unsigned_short             LANG_MIN(C_89)
+
+/**
  * Languages user-defined literals are supported in.
  */
 #define LANG_USER_DEFINED_LITERAL       LANG_CPP_MIN(11)

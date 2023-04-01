@@ -46,6 +46,9 @@ New `--trailing-return` and `-R` command-line options and `trailing-return`
 `set` option enable printing a function's or operator's return type using the
 trailing return type syntax in C++11 and later.
 
+** `unsigned` in K&R C
+Now correctly restrict `unsigned` to `int` only in K&R C.
+
 ** Verbose version
 If either the `--version` or `-v` is given twice, additionally prints the set
 of `configure` feature & package options and whether GNU readline (if compiled
