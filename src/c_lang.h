@@ -378,7 +378,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `bool` keyword is supported in.
  *
- * @note Even though `bool` as a keyword isn't supportd in C until C23, we
+ * @note Even though `bool` as a keyword isn't supported in C until C23, we
  * support it starting in C99 due to the `bool` macro in `stdbool.h`.
  *
  * @sa #LANG__Bool
@@ -397,7 +397,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_BOOL_TYPE                  (LANG__Bool | LANG_bool)
 
 /**
- * Lanuages capturing `*this` in lambdas is supportd in.
+ * Lanuages capturing `*this` in lambdas is supported in.
  */
 #define LANG_CAPTURE_STAR_THIS          LANG_CPP_MIN(17)
 
@@ -599,22 +599,22 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_KNR_FUNC_DEFINITION        LANG_C_MAX(17)
 
 /**
- * Lanuages lambdas are supportd in.
+ * Lanuages lambdas are supported in.
  */
 #define LANG_LAMBDA                     LANG_CPP_MIN(11)
 
 /**
- * Lanuages the `long double` type is supportd in.
+ * Lanuages the `long double` type is supported in.
  */
 #define LANG_long_double                LANG_MIN(C_89)
 
 /**
- * Lanuages the `long float` type is supportd in.
+ * Lanuages the `long float` type is supported in.
  */
 #define LANG_long_float                 LANG_C_KNR
 
 /**
- * Lanuages the `long long` type is supportd in.
+ * Lanuages the `long long` type is supported in.
  */
 #define LANG_long_long                  LANG_MIN(C_99)
 
