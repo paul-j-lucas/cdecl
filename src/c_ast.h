@@ -475,17 +475,20 @@ struct c_operator_ast {
  *
  * has an AST like:
  *
- *      decl_c = {
- *        sname = "p",
- *        kind = "pointer to member",
+ *      decl_c: {
+ *        sname: { string: "p", scopes: "none" },
  *        ...
- *        type = "class" (btid = 0x2000001, stid = 0x2, atid = 0x4),
- *        class_sname = "C" (class),
- *        to_ast = {
- *          sname = "",
- *          kind = "built-in type",
+ *        kind: { value: 0x800, string: "pointer to member" },
+ *        ...
+ *        type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
+ *        class_sname: { string: "C", scopes: "class" },
+ *        to_ast: {
+ *          sname: { string: "" },
  *          ...
- *          type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+ *          kind: { value: 0x2, string: "built-in type" },
+ *          ...
+ *          type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+ *          ...
  *        }
  *      }
  *

@@ -366,22 +366,22 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  * associated with the `typedef` for the `struct` and _not_ the actual `struct`
  * the `typedef` is a `typedef` for:
  * ```
- * decl_c = {
- *   sname = "x" (none),
- *   kind = "pointer",
+ * decl_c: {
+ *   sname: { string: "x", scopes: "none" },
+ *   kind: { value: 0x400, string: "pointer" },
  *   ...
- *   type = "" (base = 0x1, store = 0x2, attr = 0x4),
- *   to_ast = {
- *     sname = "",
- *     kind = "typedef",
+ *   type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+ *   to_ast: {
+ *     sname: { string: "" },
+ *     kind: { value: 0x20, string: "typedef" },
  *     ...
- *     type = "const" (base = 0x10000001, store = 0x20000002, attr = 0x4),
- *     for_ast = {
- *       sname = "S" (struct),
- *       kind = "class, struct, or union",
+ *     type: { btid: 0x20000001, stid: 0x200000002, atid: 0x4, string: "const" }.
+ *     for_ast: {
+ *       sname: { string: "S", scopes: "struct" },
+ *       kind: { value: 0x8, string: "class, struct, or union" },
  *       ...
- *       type = "struct" (base = 0x800001, store = 0x2, attr = 0x4),
- *       csu_sname = "S" (none)
+ *       type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
+ *       csu_sname: { string: "S", scopes: "none" }
  *     },
  *     ...
  *   }
@@ -424,24 +424,24 @@ static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
  * associated with the `typedef` for the `struct` and _not_ the actual `struct`
  * the `typedef` is a `typedef` for:
  * ```
- * decl_c = {
- *   sname = "x" (none),
- *   kind = "reference",
+ * decl_c: {
+ *   sname: { string: "x", scopes: "none" },
+ *   kind: { value: 0x1000, string: "reference" },
  *   ...
- *   type = "" (base = 0x1, store = 0x2, attr = 0x4),
- *   to_ast = {
- *     sname = "",
- *     kind = "typedef",
+ *   type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+ *   to_ast: {
+ *     sname: { string: "" },
+ *     kind: { value: 0x20, string: "typedef" },
  *     ...
- *     type = "const" (base = 0x10000001, store = 0x20000002, attr = 0x4),
- *     for_ast = {
- *       sname = "S" (struct),
- *       kind = "class, struct, or union",
+ *     type: { btid: 0x20000001, stid: 0x200000002, atid: 0x4, string: "const" },
+ *     for_ast: {
+ *       sname: { string: "S", scopes: "struct" },
+ *       kind: { value: 0x8, string: "class, struct, or union" },
  *       ...
- *       type = "struct" (base = 0x800001, store = 0x2, attr = 0x4),
- *       csu_sname = "S" (none)
+ *       type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
+ *       csu_sname: { string: "S", scopes: "none" }
  *     },
- *     bit_width = 0
+ *     ..
  *   }
  * }
  * ```
