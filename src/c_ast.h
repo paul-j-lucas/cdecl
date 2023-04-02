@@ -310,8 +310,8 @@ struct c_array_ast {
  * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
  */
 struct c_apple_block_ast {
-  c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_list_t    param_ast_list;       ///< Block parameter(s), if any.
+  c_ast_t      *ret_ast;                ///< Return type.
+  c_ast_list_t  param_ast_list;         ///< Block parameter(s), if any.
 };
 
 /**
@@ -324,9 +324,9 @@ struct c_apple_block_ast {
 struct c_bit_field_ast {
   /// So \ref bit_width is at the same offset as in c_builtin_ast, c_enum_ast,
   /// and c_typedef_ast.
-  c_ast_t        *unused_ast;
+  c_ast_t  *unused_ast;
 
-  unsigned        bit_width;            ///< Bit-field width when &gt; 0.
+  unsigned  bit_width;                  ///< Bit-field width when &gt; 0.
 };
 
 /**
@@ -338,9 +338,9 @@ struct c_bit_field_ast {
 struct c_builtin_ast {
   /// So \ref bit_width is at the same offset as in c_bit_field_ast,
   /// c_enum_ast, and c_typedef_ast.
-  c_ast_t        *unused_ast;
+  c_ast_t      *unused_ast;
 
-  unsigned        bit_width;            ///< Bit-field width when &gt; 0.
+  unsigned      bit_width;              ///< Bit-field width when &gt; 0.
 
   /**
    * Additional data for some \ref c_type::btids "base types" within \ref
@@ -348,7 +348,7 @@ struct c_builtin_ast {
    */
   union {
     struct {
-      unsigned    width;                ///< Width.
+      unsigned  width;                  ///< Width.
     } BitInt;                           ///< `_BitInt` data.
   };
 };
@@ -377,9 +377,9 @@ struct c_cast_ast {
 struct c_constructor_ast {
   /// Constructors don't have a return type, but we need an unused pointer so
   /// \ref param_ast_list is at the same offset as in c_function_ast.
-  c_ast_t        *unused_ast;
+  c_ast_t      *unused_ast;
 
-  c_ast_list_t    param_ast_list;       ///< Constructor parameter(s), if any.
+  c_ast_list_t  param_ast_list;         ///< Constructor parameter(s), if any.
 };
 
 /**
@@ -394,11 +394,11 @@ struct c_csu_ast {
   /// but \ref csu_sname needs to be at the same offset as \ref
   /// c_enum_ast::enum_sname "enum_sname" and \ref c_ptr_mbr_ast::class_sname
   /// "class_sname".
-  c_ast_t        *unused_ast;
-  unsigned        unused_unsigned;
+  c_ast_t    *unused_ast;
+  unsigned    unused_unsigned;
   ///@}
 
-  c_sname_t       csu_sname;            ///< Class, struct, or union name.
+  c_sname_t   csu_sname;                ///< Class, struct, or union name.
 };
 
 /**
@@ -408,17 +408,17 @@ struct c_csu_ast {
  * c_ptr_mbr_ast, and c_typedef_ast: this is taken advantage of.
  */
 struct c_enum_ast {
-  c_ast_t        *of_ast;               ///< The fixed type, if any.
-  unsigned        bit_width;            ///< Bit-field width when &gt; 0.
-  c_sname_t       enum_sname;           ///< Enumeration name.
+  c_ast_t    *of_ast;                   ///< The fixed type, if any.
+  unsigned    bit_width;                ///< Bit-field width when &gt; 0.
+  c_sname_t   enum_sname;               ///< Enumeration name.
 };
 
 /**
  * AST node for a #K_FUNCTION.
  */
 struct c_function_ast {
-  c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_list_t    param_ast_list;       ///< Function parameter(s), if any.
+  c_ast_t      *ret_ast;                ///< Return type.
+  c_ast_list_t  param_ast_list;         ///< Function parameter(s), if any.
 
   /**
    * Indicates whether the function is a member, non-member, or neither.
@@ -427,7 +427,7 @@ struct c_function_ast {
    * @sa #C_FUNC_MEMBER
    * @sa #C_FUNC_NON_MEMBER
    */
-  unsigned        flags;
+  unsigned      flags;
 };
 
 /**
@@ -437,9 +437,9 @@ struct c_function_ast {
  * taken advantage of.
  */
 struct c_lambda_ast {
-  c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_list_t    param_ast_list;       ///< Lambda parameter(s), if any.
-  c_ast_list_t    capture_ast_list;     ///< Lambda captures(s), if any.
+  c_ast_t      *ret_ast;                ///< Return type.
+  c_ast_list_t  param_ast_list;         ///< Lambda parameter(s), if any.
+  c_ast_list_t  capture_ast_list;       ///< Lambda captures(s), if any.
 };
 
 /**
@@ -493,19 +493,19 @@ struct c_operator_ast {
  * this is taken advantage of.
  */
 struct c_ptr_mbr_ast {
-  c_ast_t        *to_ast;               ///< Member type.
+  c_ast_t    *to_ast;                   ///< Member type.
 
   /// So \ref class_sname is at the same offset as in c_csu_ast and c_enum_ast.
-  unsigned        unused_unsigned;
+  unsigned    unused_unsigned;
 
-  c_sname_t       class_sname;          ///< Class pointer-to-member of.
+  c_sname_t   class_sname;              ///< Class pointer-to-member of.
 };
 
 /**
  * AST node for a #K_POINTER, #K_REFERENCE, or #K_RVALUE_REFERENCE.
  */
 struct c_ptr_ref_ast {
-  c_ast_t        *to_ast;               ///< What it's a pointer/reference to.
+  c_ast_t  *to_ast;                     ///< What it's a pointer/reference to.
 };
 
 /**
@@ -528,7 +528,7 @@ struct c_typedef_ast {
  * AST node for a #K_USER_DEF_CONVERSION.
  */
 struct c_udef_conv_ast {
-  c_ast_t        *conv_ast;             ///< Conversion type.
+  c_ast_t  *conv_ast;                   ///< Conversion type.
 };
 
 /**
@@ -538,8 +538,8 @@ struct c_udef_conv_ast {
  * taken advantage of.
  */
 struct c_udef_lit_ast {
-  c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_list_t    param_ast_list;       ///< Literal parameter(s).
+  c_ast_t      *ret_ast;                ///< Return type.
+  c_ast_list_t  param_ast_list;         ///< Literal parameter(s).
 };
 
 /**
