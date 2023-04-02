@@ -1053,6 +1053,8 @@ bool is_ident_first( char c ) {
  * @param s The string to check.  Leading whitespace _must_ have been skipped.
  * @param s_len The length of \a s.
  * @return Returns `true` only if it is.
+ *
+ * @sa str_is_prefix()
  */
 NODISCARD
 bool is_ident_prefix( char const *ident, size_t ident_len, char const *s,
@@ -1153,6 +1155,8 @@ bool path_is_file( char const *path );
  * @param s2 The larger string.
  * @return Returns `true` only if \a s1 is not the empty string and is a prefix
  * of (or equal to) \a s2.
+ *
+ * @sa is_ident_prefix()
  */
 NODISCARD
 bool str_is_prefix( char const *s1, char const *s2 );
