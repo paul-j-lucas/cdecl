@@ -1,5 +1,10 @@
 2023-04-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, c_keyword.c, c_operator.c, lexer.l, parser.y, types.h:
+     s/_EQ/_EQUAL/
+   * c_ast.h, c_ast_check.c, c_ast_util.c, c_operator.h, dump.c, gibberish.c,
+     types.h: #include clean-up.
+   * parser.y: Sorted macros.
    * util.h: Arranged WS by likelihood of encounter.
 
 2023-04-01  Paul J. Lucas <paul@lucasmail.org>
