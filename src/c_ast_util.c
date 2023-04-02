@@ -666,7 +666,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   //
   // If the operator is either member or non-member only, then it's that.
   //
-  c_operator_t const *const op = c_oper_get( ast->oper.oper_id );
+  c_operator_t const *const op = ast->oper.operator;
   switch ( op->flags ) {
     case C_OP_MEMBER:
     case C_OP_NON_MEMBER:
@@ -693,7 +693,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
 
   size_t const n_params = c_ast_params_count( ast );
 
-  switch ( ast->oper.oper_id ) {
+  switch ( op->oper_id ) {
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
     case C_OP_DELETE:

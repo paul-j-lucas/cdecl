@@ -909,7 +909,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         break;
 
       case K_OPERATOR:
-        switch ( ast->oper.oper_id ) {
+        switch ( ast->oper.operator->oper_id ) {
           case C_OP_EQ: {               // C& operator=(C const&)
             //
             // For C& operator=(C const&), the parameter and the return type
@@ -1219,10 +1219,11 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         break;
 
       case K_VARIADIC:
-        if ( ast->kind == K_OPERATOR && ast->oper.oper_id != C_OP_PARENS ) {
+        if ( ast->kind == K_OPERATOR &&
+             ast->oper.operator->oper_id != C_OP_PARENS ) {
           print_error( &param_ast->loc,
             "operator %s can not have a variadic parameter\n",
-            c_oper_get( ast->oper.oper_id )->literal
+            ast->oper.operator->literal
           );
           return false;
         }
@@ -1501,7 +1502,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
 
-  c_operator_t const *const op = c_oper_get( ast->oper.oper_id );
+  c_operator_t const *const op = ast->oper.operator;
 
   if ( (opt_lang & op->lang_ids) == LANG_NONE ) {
     print_error( &ast->loc,
@@ -1534,7 +1535,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   if ( op->flags == C_OP_MEMBER &&
        c_tid_is_any( ast->type.stids, TS_STATIC ) ) {
     c_lang_id_t ok_lang_ids = LANG_NONE;
-    switch ( ast->oper.oper_id ) {
+    switch ( op->oper_id ) {
       case C_OP_PARENS:
         if ( OPT_LANG_IS( STATIC_OP_PARENS ) )
           break;
@@ -1549,7 +1550,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     } // switch
   }
 
-  switch ( ast->oper.oper_id ) {
+  switch ( op->oper_id ) {
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
     case C_OP_DELETE:
@@ -1573,7 +1574,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 
   c_ast_t const *const ret_ast = ast->oper.ret_ast;
 
-  switch ( ast->oper.oper_id ) {
+  switch ( op->oper_id ) {
     case C_OP_ARROW:
       //
       // Special case for operator-> that must return a pointer to a struct,
@@ -1639,7 +1640,7 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
   assert( ast->kind == K_OPERATOR );
   assert( c_tid_is_any( ast->type.stids, TS_DEFAULT ) );
 
-  switch ( ast->oper.oper_id ) {
+  switch ( ast->oper.operator->oper_id ) {
     case C_OP_EQ:
       //
       // Detailed checks for defaulted assignment operators are done in
@@ -1678,8 +1679,8 @@ NODISCARD
 static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
-  assert( ast->oper.oper_id == C_OP_DELETE ||
-          ast->oper.oper_id == C_OP_DELETE_ARRAY );
+  assert( ast->oper.operator->oper_id == C_OP_DELETE ||
+          ast->oper.operator->oper_id == C_OP_DELETE_ARRAY );
 
   // minimum number of parameters checked in c_ast_check_oper_params()
 
@@ -1691,7 +1692,7 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
     print_error( &param_ast->loc,
       "invalid parameter type for operator %s; "
       "must be a pointer to void, class, struct, or union\n",
-      c_oper_get( ast->oper.oper_id )->literal
+      ast->oper.operator->literal
     );
     return false;
   }
@@ -1709,8 +1710,8 @@ NODISCARD
 static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
-  assert( ast->oper.oper_id == C_OP_NEW ||
-          ast->oper.oper_id == C_OP_NEW_ARRAY );
+  assert( ast->oper.operator->oper_id == C_OP_NEW ||
+          ast->oper.operator->oper_id == C_OP_NEW_ARRAY );
 
   // minimum number of parameters checked in c_ast_check_oper_params()
 
@@ -1722,7 +1723,7 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
     print_error( &param_ast->loc,
       "invalid parameter type for operator %s; "
       "must be std::size_t (or equivalent)\n",
-      c_oper_get( ast->oper.oper_id )->literal
+      ast->oper.operator->literal
     );
     return false;
   }
@@ -1741,7 +1742,7 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
 
-  c_operator_t const *const op = c_oper_get( ast->oper.oper_id );
+  c_operator_t const *const op = ast->oper.operator;
   unsigned const overload_flags = c_ast_oper_overload( ast );
   char const *const member_or_nonmember =
     overload_flags == C_OP_MEMBER     ? "member "     :
@@ -1846,7 +1847,7 @@ same: print_error( c_ast_params_loc( ast ),
       // Ensure non-member operators (except new, new[], delete, and delete[])
       // have at least one enum, class, struct, or union parameter.
       //
-      switch ( ast->oper.oper_id ) {
+      switch ( op->oper_id ) {
         case C_OP_NEW:
         case C_OP_NEW_ARRAY:
         case C_OP_DELETE:
@@ -1885,7 +1886,7 @@ same: print_error( c_ast_params_loc( ast ),
       break;
   } // switch
 
-  switch ( ast->oper.oper_id ) {
+  switch ( op->oper_id ) {
     case C_OP_MINUS2:
     case C_OP_PLUS2: {
       //
@@ -1942,7 +1943,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
 
   // number of parameters checked in c_ast_check_oper_params()
 
-  c_operator_t const *const op = c_oper_get( ast->oper.oper_id );
+  c_operator_t const *const op = ast->oper.operator;
 
   if ( !OPT_LANG_IS( default_RELOPS ) ) {
     print_error( &ast->loc,
@@ -2022,7 +2023,7 @@ rel_2par: print_error( &ast->loc,
   c_ast_t const *const ret_ast = ast->oper.ret_ast;
   c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
-  if ( ast->oper.oper_id == C_OP_LESS_EQ_GREATER ) {
+  if ( op->oper_id == C_OP_LESS_EQ_GREATER ) {
     static c_ast_t const *std_partial_ordering_ast;
     static c_ast_t const *std_strong_ordering_ast;
     static c_ast_t const *std_weak_ordering_ast;

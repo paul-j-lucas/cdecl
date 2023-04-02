@@ -196,7 +196,7 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *eout ) {
   c_type_t const *scope_type = NULL;
 
   if ( ast->kind == K_OPERATOR ) {
-    local_name = c_oper_token_c( ast->oper.oper_id );
+    local_name = c_oper_token_c( ast->oper.operator->oper_id );
     if ( found_sname != NULL ) {
       scope_name = c_sname_full_name( found_sname );
       scope_type = c_sname_local_type( found_sname );

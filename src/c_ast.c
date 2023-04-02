@@ -214,7 +214,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       break;
 
     case K_OPERATOR:
-      dup_ast->oper.oper_id = ast->oper.oper_id;
+      dup_ast->oper.operator = ast->oper.operator;
       FALLTHROUGH;
     case K_FUNCTION:
       dup_ast->func.flags = ast->func.flags;
@@ -301,7 +301,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
 
     case K_OPERATOR:
-      if ( i_ast->oper.oper_id != j_ast->oper.oper_id )
+      if ( i_ast->oper.operator != j_ast->oper.operator )
         return false;
       FALLTHROUGH;
     case K_FUNCTION:

@@ -282,8 +282,8 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
       DUMP_COMMA;
       DUMP_FORMAT(
         "operator: { value: %d, string: \"%s\" },\n",
-        (int)ast->oper.oper_id,
-        c_oper_get( ast->oper.oper_id )->literal
+        STATIC_CAST( int, ast->oper.operator->oper_id ),
+        ast->oper.operator->literal
       );
       FALLTHROUGH;
 

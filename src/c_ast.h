@@ -421,8 +421,7 @@ struct c_function_ast {
   c_ast_list_t    param_ast_list;       ///< Function parameter(s), if any.
 
   /**
-   * Bitwise-or of flags indicating whether the function is a member, non-
-   * member, or neither.
+   * Indicates whether the function is a member, non-member, or neither.
    *
    * @sa #C_FUNC_UNSPECIFIED
    * @sa #C_FUNC_MEMBER
@@ -450,20 +449,20 @@ struct c_lambda_ast {
  * taken advantage of.
  */
 struct c_operator_ast {
-  c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_list_t    param_ast_list;       ///< Operator parameter(s), if any.
+  c_ast_t            *ret_ast;          ///< Return type.
+  c_ast_list_t        param_ast_list;   ///< Operator parameter(s), if any.
 
   /**
-   * Bitwise-or of flags indicating whether the user specified an operator as a
-   * member, non-member, or neither.
+   * Indicates whether the user specified an operator as a member, non-member,
+   * or neither.
    *
    * @sa #C_OP_UNSPECIFIED
    * @sa #C_OP_MEMBER
    * @sa #C_OP_NON_MEMBER
    */
-  unsigned        flags;
+  unsigned            flags;
 
-  c_oper_id_t     oper_id;              ///< Which operator it is.
+  c_operator_t const *operator;         ///< Which operator it is.
 };
 
 /**

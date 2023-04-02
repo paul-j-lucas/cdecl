@@ -2075,19 +2075,20 @@ declare_command
     }
     of_scope_list_english_opt as_exp oper_decl_english_ast
     {
-      c_oper_id_t const oper_id = $2;
-      c_ast_t    *const oper_ast = $6;
+      c_oper_id_t  const        oper_id = $2;
+      c_ast_t            *const oper_ast = $6;
+      c_operator_t const *const operator = c_oper_get( oper_id );
 
       DUMP_START( "declare_command",
                   "DECLARE c_operator of_scope_list_english_opt AS "
                   "oper_decl_english_ast" );
-      DUMP_STR( "c_operator", c_oper_get( oper_id )->literal );
+      DUMP_STR( "c_operator", operator->literal );
       DUMP_SNAME( "of_scope_list_english_opt", $4 );
       DUMP_AST( "oper_decl_english_ast", oper_ast );
 
       c_sname_set( &oper_ast->sname, &$4 );
       oper_ast->loc = @2;
-      oper_ast->oper.oper_id = oper_id;
+      oper_ast->oper.operator = operator;
 
       DUMP_AST( "declare_command", oper_ast );
       DUMP_END();
@@ -4661,13 +4662,14 @@ oper_decl_c_astp
     rparen_func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt
     noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt
     {
-      c_tid_t      const func_qualifier_stid = $6;
-      c_tid_t      const func_ref_qualifier_stid = $7;
-      c_tid_t      const func_equals_stid = $10;
-      c_tid_t      const noexcept_stid = $8;
-      c_oper_id_t  const oper_id = $3;
-      c_ast_t     *const trailing_ret_ast = $9;
-      c_ast_t     *const type_ast = ia_type_ast_peek();
+      c_tid_t      const        func_qualifier_stid = $6;
+      c_tid_t      const        func_ref_qualifier_stid = $7;
+      c_tid_t      const        func_equals_stid = $10;
+      c_tid_t      const        noexcept_stid = $8;
+      c_oper_id_t  const        oper_id = $3;
+      c_operator_t const *const operator = c_oper_get( oper_id );
+      c_ast_t            *const trailing_ret_ast = $9;
+      c_ast_t            *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "oper_decl_c_astp",
                   "oper_sname_c_opt OPERATOR c_operator "
@@ -4678,7 +4680,7 @@ oper_decl_c_astp
                   "func_equals_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_SNAME( "oper_sname_c_opt", $1 );
-      DUMP_STR( "c_operator", c_oper_get( oper_id )->literal );
+      DUMP_STR( "c_operator", operator->literal );
       DUMP_AST_LIST( "param_c_ast_list_opt", $5 );
       DUMP_TID( "func_qualifier_list_c_stid_opt", func_qualifier_stid );
       DUMP_TID( "func_ref_qualifier_c_stid_opt", func_ref_qualifier_stid );
@@ -4694,7 +4696,7 @@ oper_decl_c_astp
       oper_ast->sname = c_sname_move( &$1 );
       oper_ast->type.stids = c_tid_check( oper_stid, C_TPID_STORE );
       oper_ast->oper.param_ast_list = slist_move( &$5 );
-      oper_ast->oper.oper_id = oper_id;
+      oper_ast->oper.operator = operator;
 
       c_ast_t *const ret_ast = trailing_ret_ast != NULL ?
         trailing_ret_ast : type_ast;
