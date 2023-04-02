@@ -680,7 +680,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Whitespace characters.
  */
-#define WS                        " \f\n\r\t\v"
+#define WS                        " \n\t\r\f\v"
 
 ////////// extern functions ///////////////////////////////////////////////////
 
