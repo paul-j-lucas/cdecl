@@ -940,16 +940,16 @@ include{S}*\" {
 ":>"          { set_digraph( "]" ); return ']'; }
 
               /* Trigraphs. */
-"??'="        { set_trigraph( "^=" ); return Y_CARET_EQ ; }
-"??!="        { set_trigraph( "|=" ); return Y_PIPE_EQ  ; }
-"??!??!"      { set_trigraph( "||" ); return Y_PIPE2    ; }
-"??!"         { set_trigraph( "|"  ); return Y_PIPE     ; }
-"??'"         { set_trigraph( "^"  ); return Y_CARET    ; }
-"??("         { set_trigraph( "["  ); return '['        ; }
-"??)"         { set_trigraph( "]"  ); return ']'        ; }
-"??<"         { set_trigraph( "{"  ); return '{'        ; }
-"??>"         { set_trigraph( "}"  ); return '}'        ; }
-"??-"         { set_trigraph( "~"  ); return Y_TILDE    ; }
+"??'="        { set_trigraph( "^=" ); return Y_CARET_EQUAL; }
+"??!="        { set_trigraph( "|=" ); return Y_PIPE_EQUAL ; }
+"??!??!"      { set_trigraph( "||" ); return Y_PIPE2      ; }
+"??!"         { set_trigraph( "|"  ); return Y_PIPE       ; }
+"??'"         { set_trigraph( "^"  ); return Y_CARET      ; }
+"??("         { set_trigraph( "["  ); return '['          ; }
+"??)"         { set_trigraph( "]"  ); return ']'          ; }
+"??<"         { set_trigraph( "{"  ); return '{'          ; }
+"??>"         { set_trigraph( "}"  ); return '}'          ; }
+"??-"         { set_trigraph( "~"  ); return Y_TILDE      ; }
 
               /*
                * Special case: if "::" is immediately followed by a '*', return
@@ -960,47 +960,47 @@ include{S}*\" {
                *
                * in an LALR(1) parser.
                */
-"::"{S}*"*"   { SET_TOKEN; return Y_COLON2_STAR     ; }
-"::"          { SET_TOKEN; return Y_COLON2          ; }
+"::"{S}*"*"   { SET_TOKEN; return Y_COLON2_STAR       ; }
+"::"          { SET_TOKEN; return Y_COLON2            ; }
 
               /* Multi-character operators. */
-"!="          { SET_TOKEN; return Y_EXCLAM_EQ       ; }
-"\"\""        { SET_TOKEN; return Y_QUOTE2          ; }
-"%="          { SET_TOKEN; return Y_PERCENT_EQ      ; }
-"&&"          { SET_TOKEN; return Y_AMPER2          ; }
-"&="          { SET_TOKEN; return Y_AMPER_EQ        ; }
-"*="          { SET_TOKEN; return Y_STAR_EQ         ; }
-"++"          { SET_TOKEN; return Y_PLUS2           ; }
-"+="          { SET_TOKEN; return Y_PLUS_EQ         ; }
-"--"          { SET_TOKEN; return Y_MINUS2          ; }
-"-="          { SET_TOKEN; return Y_MINUS_EQ        ; }
-"->"          { SET_TOKEN; return Y_ARROW           ; }
-"->*"         { SET_TOKEN; return Y_ARROW_STAR      ; }
-".*"          { SET_TOKEN; return Y_DOT_STAR        ; }
-"..."         { SET_TOKEN; return Y_ELLIPSIS        ; }
-"/="          { SET_TOKEN; return Y_SLASH_EQ        ; }
-"<<"          { SET_TOKEN; return Y_LESS2           ; }
-"<<="         { SET_TOKEN; return Y_LESS2_EQ        ; }
-"<="          { SET_TOKEN; return Y_LESS_EQ         ; }
-"<=>"         { SET_TOKEN; return Y_LESS_EQ_GREATER ; }
-"=="          { SET_TOKEN; return Y_EQ2             ; }
-">="          { SET_TOKEN; return Y_GREATER_EQ      ; }
-">>"          { SET_TOKEN; return Y_GREATER2        ; }
-">>="         { SET_TOKEN; return Y_GREATER2_EQ     ; }
-"?:"          { SET_TOKEN; return Y_QMARK_COLON     ; }
-"^="          { SET_TOKEN; return Y_CARET_EQ        ; }
-"|="          { SET_TOKEN; return Y_PIPE_EQ         ; }
-"||"          { SET_TOKEN; return Y_PIPE2           ; }
+"!="          { SET_TOKEN; return Y_EXCLAM_EQUAL      ; }
+"\"\""        { SET_TOKEN; return Y_QUOTE2            ; }
+"%="          { SET_TOKEN; return Y_PERCENT_EQUAL     ; }
+"&&"          { SET_TOKEN; return Y_AMPER2            ; }
+"&="          { SET_TOKEN; return Y_AMPER_EQUAL       ; }
+"*="          { SET_TOKEN; return Y_STAR_EQUAL        ; }
+"++"          { SET_TOKEN; return Y_PLUS2             ; }
+"+="          { SET_TOKEN; return Y_PLUS_EQUAL        ; }
+"--"          { SET_TOKEN; return Y_MINUS2            ; }
+"-="          { SET_TOKEN; return Y_MINUS_EQUAL       ; }
+"->"          { SET_TOKEN; return Y_ARROW             ; }
+"->*"         { SET_TOKEN; return Y_ARROW_STAR        ; }
+".*"          { SET_TOKEN; return Y_DOT_STAR          ; }
+"..."         { SET_TOKEN; return Y_ELLIPSIS          ; }
+"/="          { SET_TOKEN; return Y_SLASH_EQUAL       ; }
+"<<"          { SET_TOKEN; return Y_LESS2             ; }
+"<<="         { SET_TOKEN; return Y_LESS2_EQUAL       ; }
+"<="          { SET_TOKEN; return Y_LESS_EQUAL        ; }
+"<=>"         { SET_TOKEN; return Y_LESS_EQUAL_GREATER; }
+"=="          { SET_TOKEN; return Y_EQUAL2            ; }
+">="          { SET_TOKEN; return Y_GREATER_EQUAL     ; }
+">>"          { SET_TOKEN; return Y_GREATER2          ; }
+">>="         { SET_TOKEN; return Y_GREATER2_EQUAL    ; }
+"?:"          { SET_TOKEN; return Y_QMARK_COLON       ; }
+"^="          { SET_TOKEN; return Y_CARET_EQUAL       ; }
+"|="          { SET_TOKEN; return Y_PIPE_EQUAL        ; }
+"||"          { SET_TOKEN; return Y_PIPE2             ; }
 
               /* Single-character operators having alternative tokens. */
-"!"           { SET_TOKEN; return Y_EXCLAM          ; }
-"&"           { SET_TOKEN; return Y_AMPER           ; }
-"^"           { SET_TOKEN; return Y_CARET           ; }
-"|"           { SET_TOKEN; return Y_PIPE            ; }
-"~"           { SET_TOKEN; return Y_TILDE           ; }
+"!"           { SET_TOKEN; return Y_EXCLAM            ; }
+"&"           { SET_TOKEN; return Y_AMPER             ; }
+"^"           { SET_TOKEN; return Y_CARET             ; }
+"|"           { SET_TOKEN; return Y_PIPE              ; }
+"~"           { SET_TOKEN; return Y_TILDE             ; }
 
               /* Synonym for "help", not "?:". */
-"?"           { SET_TOKEN; return Y_help            ; }
+"?"           { SET_TOKEN; return Y_help              ; }
 
               /* Single-character operators and miscellaneous punctuation. */
 "%"           |

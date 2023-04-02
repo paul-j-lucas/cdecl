@@ -88,46 +88,46 @@ enum c_oper_id {
   C_OP_DELETE,                          ///< The `delete` operator.
   C_OP_DELETE_ARRAY,                    ///< The `delete[]` operator.
   C_OP_EXCLAM,                          ///< The `!` operator.
-  C_OP_EXCLAM_EQ,                       ///< The `!=` operator.
+  C_OP_EXCLAM_EQUAL,                    ///< The `!=` operator.
   C_OP_PERCENT,                         ///< The `%` operator.
-  C_OP_PERCENT_EQ,                      ///< The `%=` operator.
+  C_OP_PERCENT_EQUAL,                   ///< The `%=` operator.
   C_OP_AMPER,                           ///< The `&` operator.
   C_OP_AMPER2,                          ///< The `&&` operator.
-  C_OP_AMPER_EQ,                        ///< The `&=` operator.
+  C_OP_AMPER_EQUAL,                     ///< The `&=` operator.
   C_OP_PARENS,                          ///< The `()` operator.
   C_OP_STAR,                            ///< The `*` operator.
-  C_OP_STAR_EQ,                         ///< The `*=` operator.
+  C_OP_STAR_EQUAL,                      ///< The `*=` operator.
   C_OP_PLUS,                            ///< The `+` operator.
   C_OP_PLUS2,                           ///< The `++` operator.
-  C_OP_PLUS_EQ,                         ///< The `+=` operator.
+  C_OP_PLUS_EQUAL,                      ///< The `+=` operator.
   C_OP_COMMA,                           ///< The `,` operator.
   C_OP_MINUS,                           ///< The `-` operator.
   C_OP_MINUS2,                          ///< The `--` operator.
-  C_OP_MINUS_EQ,                        ///< The `-=` operator.
+  C_OP_MINUS_EQUAL,                     ///< The `-=` operator.
   C_OP_ARROW,                           ///< The `->` operator.
   C_OP_ARROW_STAR,                      ///< The `->*` operator.
   C_OP_DOT,                             ///< The `.` operator.
   C_OP_DOT_STAR,                        ///< The `.*` operator.
   C_OP_SLASH,                           ///< The `/` operator.
-  C_OP_SLASH_EQ,                        ///< The `/=` operator.
+  C_OP_SLASH_EQUAL,                     ///< The `/=` operator.
   C_OP_COLON2,                          ///< The `::` operator.
   C_OP_LESS,                            ///< The `<` operator.
   C_OP_LESS2,                           ///< The `<<` operator.
-  C_OP_LESS2_EQ,                        ///< The `<<=` operator.
-  C_OP_LESS_EQ,                         ///< The `<=` operator.
-  C_OP_LESS_EQ_GREATER,                 ///< The `<=>` operator.
-  C_OP_EQ,                              ///< The `=` operator.
-  C_OP_EQ2,                             ///< The `==` operator.
+  C_OP_LESS2_EQUAL,                     ///< The `<<=` operator.
+  C_OP_LESS_EQUAL,                      ///< The `<=` operator.
+  C_OP_LESS_EQUAL_GREATER,              ///< The `<=>` operator.
+  C_OP_EQUAL,                           ///< The `=` operator.
+  C_OP_EQUAL2,                          ///< The `==` operator.
   C_OP_GREATER,                         ///< The `>` operator.
-  C_OP_GREATER_EQ,                      ///< The `>=` operator.
+  C_OP_GREATER_EQUAL,                   ///< The `>=` operator.
   C_OP_GREATER2,                        ///< The `>>` operator.
-  C_OP_GREATER2_EQ,                     ///< The `>>=` operator.
+  C_OP_GREATER2_EQUAL,                  ///< The `>>=` operator.
   C_OP_QMARK_COLON,                     ///< The `?:` operator.
   C_OP_BRACKETS,                        ///< The `[]` operator.
   C_OP_CARET,                           ///< The `^` operator.
-  C_OP_CARET_EQ,                        ///< The `^=` operator.
+  C_OP_CARET_EQUAL,                     ///< The `^=` operator.
   C_OP_PIPE,                            ///< The `|` operator.
-  C_OP_PIPE_EQ,                         ///< The `|=` operator.
+  C_OP_PIPE_EQUAL,                      ///< The `|=` operator.
   C_OP_PIPE2,                           ///< The `||` operator.
   C_OP_TILDE,                           ///< The `~` operator.
 };

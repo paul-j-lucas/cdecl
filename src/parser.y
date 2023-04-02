@@ -1252,71 +1252,71 @@ static void yyerror( char const *msg ) {
                     //
 
                     // C/C++ operators: precedence 17
-%left               Y_COLON2            "::"
-%left               Y_COLON2_STAR       "::*"
+%left               Y_COLON2              "::"
+%left               Y_COLON2_STAR         "::*"
                     // C/C++ operators: precedence 16
-%token              Y_PLUS2             "++"
-%token              Y_MINUS2            "--"
-%left                                   '(' ')'
-                                        '[' ']'
-                                        '.'
-                    Y_ARROW             "->"
+%token              Y_PLUS2               "++"
+%token              Y_MINUS2              "--"
+%left                                     '(' ')'
+                                          '[' ']'
+                                          '.'
+                    Y_ARROW               "->"
                     // C/C++ operators: precedence 15
-%right              Y_AMPER          // '&' -- also has alt. token "bitand"
-                                        '*'
-                    Y_EXCLAM         // '!' -- also has alt. token "not"
-                 // Y_UMINUS         // '-' -- covered by '-' below
-                 // Y_UPLUS          // '+' -- covered by '+' below
+%right              Y_AMPER           //  '&' -- also has alt. token "bitand"
+                                          '*'
+                    Y_EXCLAM          //  '!' -- also has alt. token "not"
+                 // Y_UMINUS          //  '-' -- covered by '-' below
+                 // Y_UPLUS           //  '+' -- covered by '+' below
                     Y_sizeof
-                    Y_TILDE          // '~' -- also has alt.token "compl"
+                    Y_TILDE           //  '~' -- also has alt.token "compl"
                     // C/C++ operators: precedence 14
-%left               Y_DOT_STAR          ".*"
-                    Y_ARROW_STAR        "->*"
+%left               Y_DOT_STAR            ".*"
+                    Y_ARROW_STAR          "->*"
                     // C/C++ operators: precedence 13
-%left                                // '*' -- covered by '*' above
-                                        '/'
-                                        '%'
+%left                                 //  '*' -- covered by '*' above
+                                          '/'
+                                          '%'
                     // C/C++ operators: precedence 12
-%left                                   '-'
-                                        '+'
+%left                                     '-'
+                                          '+'
                     // C/C++ operators: precedence 11
-%left               Y_LESS2             "<<"
-                    Y_GREATER2          ">>"
+%left               Y_LESS2               "<<"
+                    Y_GREATER2            ">>"
                     // C/C++ operators: precedence 10
-%left               Y_LESS_EQ_GREATER   "<=>"
+%left               Y_LESS_EQUAL_GREATER  "<=>"
                     // C/C++ operators: precedence 9
-%left                                   '<'
-                                        '>'
-                    Y_LESS_EQ           "<="
-                    Y_GREATER_EQ        ">="
+%left                                     '<'
+                                          '>'
+                    Y_LESS_EQUAL          "<="
+                    Y_GREATER_EQUAL       ">="
                     // C/C++ operators: precedence 8
-%left               Y_EQ2               "=="
-                    Y_EXCLAM_EQ      // "!=" -- also has alt. token "not_eq"
+%left               Y_EQUAL2              "=="
+                    Y_EXCLAM_EQUAL    //  "!=" -- also has alt. token "not_eq"
                     // C/C++ operators: precedence 7 (covered above)
-%left               Y_bit_and        // '&' -- covered by Y_AMPER
+%left               Y_bit_and         //  '&' -- covered by Y_AMPER
                     // C/C++ operators: precedence 6
-%left               Y_CARET          // '^' -- also has alt. token "xor"
+%left               Y_CARET           //  '^' -- also has alt. token "xor"
                     // C/C++ operators: precedence 5
-%left               Y_PIPE           // '|' -- also has alt. token "bitor"
+%left               Y_PIPE            //  '|' -- also has alt. token "bitor"
                     // C/C++ operators: precedence 4
-%left               Y_AMPER2         // "&&" -- also has alt. token "and"
+%left               Y_AMPER2          //  "&&" -- also has alt. token "and"
                     // C/C++ operators: precedence 3
-%left               Y_PIPE2          // "||" -- also has alt. token "or"
+%left               Y_PIPE2           //  "||" -- also has alt. token "or"
                     // C/C++ operators: precedence 2
-%right              Y_QMARK_COLON       "?:"
-                                        '='
-                    Y_PERCENT_EQ        "%="
-                    Y_AMPER_EQ       // "&=" -- also has alt. token "and_eq"
-                    Y_STAR_EQ           "*="
-                    Y_PLUS_EQ           "+="
-                    Y_MINUS_EQ          "-="
-                    Y_SLASH_EQ          "/="
-                    Y_LESS2_EQ          "<<="
-                    Y_GREATER2_EQ       ">>="
-                    Y_CARET_EQ       // "^=" -- also has alt. token "xor_eq"
-                    Y_PIPE_EQ        // "|=" -- also has alt. token "or_eq"
+%right              Y_QMARK_COLON         "?:"
+                                          '='
+                    Y_PERCENT_EQUAL       "%="
+                    Y_AMPER_EQUAL     //  "&=" -- also has alt. token "and_eq"
+                    Y_STAR_EQUAL          "*="
+                    Y_PLUS_EQUAL          "+="
+                    Y_MINUS_EQUAL         "-="
+                    Y_SLASH_EQUAL         "/="
+                    Y_LESS2_EQUAL         "<<="
+                    Y_GREATER2_EQUAL      ">>="
+                    Y_CARET_EQUAL     //  "^=" -- also has alt. token "xor_eq"
+                    Y_PIPE_EQUAL      //  "|=" -- also has alt. token "or_eq"
                     // C/C++ operators: precedence 1
-%left                                   ','
+%left                                     ','
 
                     // K&R C
 %token  <tid>       Y_auto_STORAGE      // C version of "auto"
@@ -7837,54 +7837,54 @@ conversion_exp
   ;
 
 c_operator
-  : Y_co_await                      { $$ = C_OP_CO_AWAIT        ; }
-  | Y_new                           { $$ = C_OP_NEW             ; }
-  | Y_new '[' rbracket_exp          { $$ = C_OP_NEW_ARRAY       ; }
-  | Y_delete                        { $$ = C_OP_DELETE          ; }
-  | Y_delete '[' rbracket_exp       { $$ = C_OP_DELETE_ARRAY    ; }
-  | Y_EXCLAM                        { $$ = C_OP_EXCLAM          ; }
-  | Y_EXCLAM_EQ                     { $$ = C_OP_EXCLAM_EQ       ; }
-  | '%'                             { $$ = C_OP_PERCENT         ; }
-  | Y_PERCENT_EQ                    { $$ = C_OP_PERCENT_EQ      ; }
-  | Y_AMPER                         { $$ = C_OP_AMPER           ; }
-  | Y_AMPER2                        { $$ = C_OP_AMPER2          ; }
-  | Y_AMPER_EQ                      { $$ = C_OP_AMPER_EQ        ; }
-  | '(' rparen_exp                  { $$ = C_OP_PARENS          ; }
-  | '*'                             { $$ = C_OP_STAR            ; }
-  | Y_STAR_EQ                       { $$ = C_OP_STAR_EQ         ; }
-  | '+'                             { $$ = C_OP_PLUS            ; }
-  | Y_PLUS2                         { $$ = C_OP_PLUS2           ; }
-  | Y_PLUS_EQ                       { $$ = C_OP_PLUS_EQ         ; }
-  | ','                             { $$ = C_OP_COMMA           ; }
-  | '-'                             { $$ = C_OP_MINUS           ; }
-  | Y_MINUS2                        { $$ = C_OP_MINUS2          ; }
-  | Y_MINUS_EQ                      { $$ = C_OP_MINUS_EQ        ; }
-  | Y_ARROW                         { $$ = C_OP_ARROW           ; }
-  | Y_ARROW_STAR                    { $$ = C_OP_ARROW_STAR      ; }
-  | '.'                             { $$ = C_OP_DOT             ; }
-  | Y_DOT_STAR                      { $$ = C_OP_DOT_STAR        ; }
-  | '/'                             { $$ = C_OP_SLASH           ; }
-  | Y_SLASH_EQ                      { $$ = C_OP_SLASH_EQ        ; }
-  | Y_COLON2                        { $$ = C_OP_COLON2          ; }
-  | '<'                             { $$ = C_OP_LESS            ; }
-  | Y_LESS2                         { $$ = C_OP_LESS2           ; }
-  | Y_LESS2_EQ                      { $$ = C_OP_LESS2_EQ        ; }
-  | Y_LESS_EQ                       { $$ = C_OP_LESS_EQ         ; }
-  | Y_LESS_EQ_GREATER               { $$ = C_OP_LESS_EQ_GREATER ; }
-  | '='                             { $$ = C_OP_EQ              ; }
-  | Y_EQ2                           { $$ = C_OP_EQ2             ; }
-  | '>'                             { $$ = C_OP_GREATER         ; }
-  | Y_GREATER2                      { $$ = C_OP_GREATER2        ; }
-  | Y_GREATER2_EQ                   { $$ = C_OP_GREATER2_EQ     ; }
-  | Y_GREATER_EQ                    { $$ = C_OP_GREATER_EQ      ; }
-  | Y_QMARK_COLON                   { $$ = C_OP_QMARK_COLON     ; }
-  | '[' rbracket_exp                { $$ = C_OP_BRACKETS        ; }
-  | Y_CARET                         { $$ = C_OP_CARET           ; }
-  | Y_CARET_EQ                      { $$ = C_OP_CARET_EQ        ; }
-  | Y_PIPE                          { $$ = C_OP_PIPE            ; }
-  | Y_PIPE2                         { $$ = C_OP_PIPE2           ; }
-  | Y_PIPE_EQ                       { $$ = C_OP_PIPE_EQ         ; }
-  | Y_TILDE                         { $$ = C_OP_TILDE           ; }
+  : Y_co_await                    { $$ = C_OP_CO_AWAIT          ; }
+  | Y_new                         { $$ = C_OP_NEW               ; }
+  | Y_new '[' rbracket_exp        { $$ = C_OP_NEW_ARRAY         ; }
+  | Y_delete                      { $$ = C_OP_DELETE            ; }
+  | Y_delete '[' rbracket_exp     { $$ = C_OP_DELETE_ARRAY      ; }
+  | Y_EXCLAM                      { $$ = C_OP_EXCLAM            ; }
+  | Y_EXCLAM_EQUAL                { $$ = C_OP_EXCLAM_EQUAL      ; }
+  | '%'                           { $$ = C_OP_PERCENT           ; }
+  | Y_PERCENT_EQUAL               { $$ = C_OP_PERCENT_EQUAL     ; }
+  | Y_AMPER                       { $$ = C_OP_AMPER             ; }
+  | Y_AMPER2                      { $$ = C_OP_AMPER2            ; }
+  | Y_AMPER_EQUAL                 { $$ = C_OP_AMPER_EQUAL       ; }
+  | '(' rparen_exp                { $$ = C_OP_PARENS            ; }
+  | '*'                           { $$ = C_OP_STAR              ; }
+  | Y_STAR_EQUAL                  { $$ = C_OP_STAR_EQUAL        ; }
+  | '+'                           { $$ = C_OP_PLUS              ; }
+  | Y_PLUS2                       { $$ = C_OP_PLUS2             ; }
+  | Y_PLUS_EQUAL                  { $$ = C_OP_PLUS_EQUAL        ; }
+  | ','                           { $$ = C_OP_COMMA             ; }
+  | '-'                           { $$ = C_OP_MINUS             ; }
+  | Y_MINUS2                      { $$ = C_OP_MINUS2            ; }
+  | Y_MINUS_EQUAL                 { $$ = C_OP_MINUS_EQUAL       ; }
+  | Y_ARROW                       { $$ = C_OP_ARROW             ; }
+  | Y_ARROW_STAR                  { $$ = C_OP_ARROW_STAR        ; }
+  | '.'                           { $$ = C_OP_DOT               ; }
+  | Y_DOT_STAR                    { $$ = C_OP_DOT_STAR          ; }
+  | '/'                           { $$ = C_OP_SLASH             ; }
+  | Y_SLASH_EQUAL                 { $$ = C_OP_SLASH_EQUAL       ; }
+  | Y_COLON2                      { $$ = C_OP_COLON2            ; }
+  | '<'                           { $$ = C_OP_LESS              ; }
+  | Y_LESS2                       { $$ = C_OP_LESS2             ; }
+  | Y_LESS2_EQUAL                 { $$ = C_OP_LESS2_EQUAL       ; }
+  | Y_LESS_EQUAL                  { $$ = C_OP_LESS_EQUAL        ; }
+  | Y_LESS_EQUAL_GREATER          { $$ = C_OP_LESS_EQUAL_GREATER; }
+  | '='                           { $$ = C_OP_EQUAL             ; }
+  | Y_EQUAL2                      { $$ = C_OP_EQUAL2            ; }
+  | '>'                           { $$ = C_OP_GREATER           ; }
+  | Y_GREATER2                    { $$ = C_OP_GREATER2          ; }
+  | Y_GREATER2_EQUAL              { $$ = C_OP_GREATER2_EQUAL    ; }
+  | Y_GREATER_EQUAL               { $$ = C_OP_GREATER_EQUAL     ; }
+  | Y_QMARK_COLON                 { $$ = C_OP_QMARK_COLON       ; }
+  | '[' rbracket_exp              { $$ = C_OP_BRACKETS          ; }
+  | Y_CARET                       { $$ = C_OP_CARET             ; }
+  | Y_CARET_EQUAL                 { $$ = C_OP_CARET_EQUAL       ; }
+  | Y_PIPE                        { $$ = C_OP_PIPE              ; }
+  | Y_PIPE2                       { $$ = C_OP_PIPE2             ; }
+  | Y_PIPE_EQUAL                  { $$ = C_OP_PIPE_EQUAL        ; }
+  | Y_TILDE                       { $$ = C_OP_TILDE             ; }
   ;
 
 default_exp

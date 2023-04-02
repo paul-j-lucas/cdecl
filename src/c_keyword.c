@@ -295,7 +295,7 @@ static c_keyword_t C_KEYWORDS[] = {
   // Alternative tokens
   { L_and,                  Y_AMPER2,             KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
-  { L_and_eq,               Y_AMPER_EQ,           KC__, TX_NONE,
+  { L_and_eq,               Y_AMPER_EQUAL,        KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
   { L_bitand,               Y_AMPER,              KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
@@ -305,15 +305,15 @@ static c_keyword_t C_KEYWORDS[] = {
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
   { L_not,                  Y_EXCLAM,             KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
-  { L_not_eq,               Y_EXCLAM_EQ,          KC__, TX_NONE,
+  { L_not_eq,               Y_EXCLAM_EQUAL,       KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
   { L_or,                   Y_PIPE2,              KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
-  { L_or_eq,                Y_PIPE_EQ,            KC__, TX_NONE,
+  { L_or_eq,                Y_PIPE_EQUAL,         KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
   { L_xor,                  Y_CARET,              KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
-  { L_xor_eq,               Y_CARET_EQ,           KC__, TX_NONE,
+  { L_xor_eq,               Y_CARET_EQUAL,        KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
 
   // C23 attributes

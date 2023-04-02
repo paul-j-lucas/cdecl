@@ -911,7 +911,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
 
       case K_OPERATOR:
         switch ( ast->oper.operator->oper_id ) {
-          case C_OP_EQ: {               // C& operator=(C const&)
+          case C_OP_EQUAL: {            // C& operator=(C const&)
             //
             // For C& operator=(C const&), the parameter and the return type
             // must both be a reference to the same class, struct, or union.
@@ -926,13 +926,13 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
             break;
           }
 
-          case C_OP_EQ2:
-          case C_OP_EXCLAM_EQ:
+          case C_OP_EQUAL2:
+          case C_OP_EXCLAM_EQUAL:
           case C_OP_GREATER:
-          case C_OP_GREATER_EQ:
+          case C_OP_GREATER_EQUAL:
           case C_OP_LESS:
-          case C_OP_LESS_EQ:
-          case C_OP_LESS_EQ_GREATER:
+          case C_OP_LESS_EQUAL:
+          case C_OP_LESS_EQUAL_GREATER:
             if ( c_tid_is_any( ast->type.stids, TS_DELETE ) )
               goto only_special;
             //
@@ -1642,20 +1642,20 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
   assert( c_tid_is_any( ast->type.stids, TS_DEFAULT ) );
 
   switch ( ast->oper.operator->oper_id ) {
-    case C_OP_EQ:
+    case C_OP_EQUAL:
       //
       // Detailed checks for defaulted assignment operators are done in
       // c_ast_check_func().
       //
       break;
 
-    case C_OP_EQ2:
-    case C_OP_EXCLAM_EQ:
+    case C_OP_EQUAL2:
+    case C_OP_EXCLAM_EQUAL:
     case C_OP_GREATER:
-    case C_OP_GREATER_EQ:
+    case C_OP_GREATER_EQUAL:
     case C_OP_LESS:
-    case C_OP_LESS_EQ:
-    case C_OP_LESS_EQ_GREATER:
+    case C_OP_LESS_EQUAL:
+    case C_OP_LESS_EQUAL_GREATER:
       return c_ast_check_oper_relational_default( ast );
 
     default:
@@ -2024,7 +2024,7 @@ rel_2par: print_error( &ast->loc,
   c_ast_t const *const ret_ast = ast->oper.ret_ast;
   c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
-  if ( op->oper_id == C_OP_LESS_EQ_GREATER ) {
+  if ( op->oper_id == C_OP_LESS_EQUAL_GREATER ) {
     static c_ast_t const *std_partial_ordering_ast;
     static c_ast_t const *std_strong_ordering_ast;
     static c_ast_t const *std_weak_ordering_ast;
