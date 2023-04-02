@@ -32,7 +32,6 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "c_kind.h"
-#include "c_operator.h"
 #include "c_sname.h"
 #include "c_type.h"
 #include "slist.h"
@@ -152,6 +151,11 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define FOREACH_AST_FUNC_PARAM_UNTIL(VAR,AST,END) \
   FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->func.param_ast_list, (END) )
+
+/**
+ * Decimal print conversion specifier for \ref c_array_size_t.
+ */
+#define PRId_C_ARRAY_SIZE_T       "%d"
 
 #ifdef ENABLE_CDECL_DEBUG
 

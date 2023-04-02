@@ -30,6 +30,7 @@
 #define C_AST_UTIL_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_ast_util.h"
+#include "c_operator.h"
 #include "c_typedef.h"
 #include "gibberish.h"
 #include "literals.h"

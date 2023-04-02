@@ -26,11 +26,12 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "dump.h"
-#include "english.h"
-#include "cdecl.h"
 #include "c_ast.h"
 #include "c_ast_util.h"
+#include "c_operator.h"
 #include "c_type.h"
+#include "cdecl.h"
+#include "english.h"
 #include "literals.h"
 #include "util.h"
 

@@ -30,6 +30,7 @@
 #include "c_ast_util.h"
 #include "c_keyword.h"
 #include "c_lang.h"
+#include "c_operator.h"
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"

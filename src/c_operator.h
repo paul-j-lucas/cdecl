@@ -28,7 +28,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "c_lang.h"
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -146,7 +145,6 @@ struct c_operator {
   unsigned    params_min;               ///< Minimum number of parameters.
   unsigned    params_max;               ///< Maximum number of parameters.
 };
-typedef struct c_operator c_operator_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

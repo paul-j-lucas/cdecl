@@ -41,11 +41,6 @@
 #include <stdint.h>                     /* for uint*_t */
 
 /**
- * Decimal print conversion specifier for \ref c_array_size_t.
- */
-#define PRId_C_ARRAY_SIZE_T       "%d"
-
-/**
  * @defgroup type-declarations-group Type Declarations
  * Declares many types and `typedef` declarations in one file.
  * @{
@@ -180,6 +175,7 @@ typedef enum   c_graph            c_graph_t;
 typedef struct c_lambda_ast       c_lambda_ast_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_loc              c_loc_t;
+typedef struct c_operator         c_operator_t;
 typedef struct c_operator_ast     c_operator_ast_t;
 typedef enum   c_oper_id          c_oper_id_t;
 typedef slist_node_t              c_param_t;      ///< Function-like parameter.
