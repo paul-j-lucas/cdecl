@@ -2704,24 +2704,24 @@ show_command
 
   | Y_show Y_NAME
     {
-      static char const *const type_commands_knr[] = {
+      static char const *const TYPE_COMMANDS_KNR[] = {
         L_define, L_struct, L_typedef, L_union, NULL
       };
-      static char const *const type_commands_c[] = {
+      static char const *const TYPE_COMMANDS_C[] = {
         L_define, L_enum, L_struct, L_typedef, L_union, NULL
       };
-      static char const *const type_commands_cpp_without_using[] = {
+      static char const *const TYPE_COMMANDS_CPP_WITHOUT_USING[] = {
         L_class, L_define, L_enum, L_struct, L_typedef, L_union, NULL
       };
-      static char const *const type_commands_cpp_with_using[] = {
+      static char const *const TYPE_COMMANDS_CPP_WITH_USING[] = {
         L_class, L_define, L_enum, L_struct, L_typedef, L_union, L_using, NULL
       };
 
       char const *const *const type_commands =
-        OPT_LANG_IS( C_KNR )             ? type_commands_knr :
-        OPT_LANG_IS( C_ANY )             ? type_commands_c :
-        OPT_LANG_IS( using_DECLARATION ) ? type_commands_cpp_with_using :
-                                           type_commands_cpp_without_using;
+        OPT_LANG_IS( C_KNR )             ? TYPE_COMMANDS_KNR :
+        OPT_LANG_IS( C_ANY )             ? TYPE_COMMANDS_C :
+        OPT_LANG_IS( using_DECLARATION ) ? TYPE_COMMANDS_CPP_WITH_USING :
+                                           TYPE_COMMANDS_CPP_WITHOUT_USING;
 
       print_error( &@2, "\"%s\": not defined as type via ", $2 );
       fput_list( stderr, type_commands, /*gets=*/NULL );
