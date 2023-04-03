@@ -174,7 +174,7 @@ struct rb_tree {
    * \ref rb_node::color "color" _must_ be #RB_BLACK.  Its children, parent,
    * and even data can take on arbitrary values.
    *
-   * @note There is one nil per tree instead of a single static nil for all
+   * @remarks There is one nil per tree instead of a single static nil for all
    * trees because those values can change.  In a multithreaded program,
    * updates to different trees could affect such a single nil that would
    * result in undefined behavior.
@@ -207,7 +207,7 @@ struct rb_insert_rv {
   /**
    * If `true`, \ref node refers to the newly inserted node; if `false`, \ref
    * node refers to the existing node having the same \ref rb_node::data
-   * "data".
+   * "data" according to the tree's \ref rb_tree::cmp_fn "cmp_fn".
    */
   bool inserted;
 };
