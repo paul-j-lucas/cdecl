@@ -1,3 +1,8 @@
+2023-04-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_sname.c, c_typedef.c, strbuf.c: Variable renaming.
+   * print.c: Sorted functions.
+
 2023-04-02  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, c_keyword.c, c_operator.c, lexer.l, parser.y, types.h:
