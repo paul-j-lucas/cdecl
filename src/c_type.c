@@ -1085,7 +1085,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   else if ( c_tid_is_any( btids, TB_SCOPE ) )
     strbuf_sepc_puts( sbuf, ' ', &space, L_scope );
 
-  return sbuf->str != NULL ? sbuf->str : "";
+  return empty_if_null( sbuf->str );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

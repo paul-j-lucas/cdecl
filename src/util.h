@@ -762,6 +762,19 @@ NODISCARD
 char* check_strndup( char const *s, size_t n );
 
 /**
+ * Checks whether \a s is null: if so, returns the empty string.
+ *
+ * @param s The pointer to check.
+ * @return If \a s is null, returns the empty string; otherwise returns \a s.
+ *
+ * @sa null_if_empty()
+ */
+NODISCARD C_UTIL_H_INLINE
+char const* empty_if_null( char const *s ) {
+  return s == NULL ? "" : s;
+}
+
+/**
  * Checks \a flag: if `false`, sets it to `true`.
  *
  * @param flag A pointer to the Boolean flag to be tested and, if `false`,
@@ -1130,6 +1143,7 @@ bool str_is_empty( char const *s ) {
  * @return Returns \a s only if it's neither the empty string nor only
  * whitespace; otherwise returns NULL.
  *
+ * @sa empty_if_null();
  * @sa str_is_empty()
  */
 NODISCARD C_UTIL_H_INLINE
