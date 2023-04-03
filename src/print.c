@@ -112,6 +112,59 @@ static unsigned check_tigetnum( char const *capname ) {
 #endif /* ENABLE_TERM_SIZE */
 
 /**
+ * Helper function for print_suggestions() and fput_list() that gets the string
+ * for a \ref did_you_mean literal.
+ *
+ * @param ppelt A pointer to the pointer to the \ref did_you_mean element to
+ * get the string of.  On return, it is advanced to the next element.
+ * @return Returns a pointer to the next "Did you mean" suggestion string or
+ * NULL if none.
+ */
+NODISCARD
+static char const* fput_list_dym_gets( void const **ppelt ) {
+  did_you_mean_t const *const dym = *ppelt;
+  if ( dym->literal == NULL )
+    return NULL;
+  *ppelt = dym + 1;
+
+  static strbuf_t sbufs[ 2 ];
+  static unsigned buf_index;
+
+  strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
+  strbuf_reset( sbuf );
+  strbuf_printf( sbuf, "\"%s\"", dym->literal );
+  return sbuf->str;
+}
+
+/**
+ * Gets the current input line.
+ *
+ * @param rv_len A pointer to receive the length of the input line.
+ * @return Returns the input line.
+ */
+NODISCARD
+static char const* get_input_line( size_t *rv_len ) {
+  char const *input_line = lexer_input_line( rv_len );
+  assert( input_line != NULL );
+  if ( *rv_len == 0 ) {                 // no input? try command line
+    input_line = print_params.command_line;
+    assert( input_line != NULL );
+    *rv_len = print_params.command_line_len;
+  }
+  if ( *rv_len >= print_params.inserted_len ) {
+    input_line += print_params.inserted_len;
+    *rv_len -= print_params.inserted_len;
+  }
+
+  //
+  // Chop off whitespace (if any) so we can always print a newline ourselves.
+  //
+  strn_rtrim( input_line, rv_len );
+
+  return input_line;
+}
+
+/**
  * Gets the number of columns of the terminal.
  *
  * @return Returns the number of columns or 0 if can not be determined.
@@ -187,59 +240,6 @@ error:
 #endif /* ENABLE_TERM_SIZE */
 
   return cols;
-}
-
-/**
- * Helper function for print_suggestions() and fput_list() that gets the string
- * for a \ref did_you_mean literal.
- *
- * @param ppelt A pointer to the pointer to the \ref did_you_mean element to
- * get the string of.  On return, it is advanced to the next element.
- * @return Returns a pointer to the next "Did you mean" suggestion string or
- * NULL if none.
- */
-NODISCARD
-static char const* fput_list_dym_gets( void const **ppelt ) {
-  did_you_mean_t const *const dym = *ppelt;
-  if ( dym->literal == NULL )
-    return NULL;
-  *ppelt = dym + 1;
-
-  static strbuf_t sbufs[ 2 ];
-  static unsigned buf_index;
-
-  strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
-  strbuf_reset( sbuf );
-  strbuf_printf( sbuf, "\"%s\"", dym->literal );
-  return sbuf->str;
-}
-
-/**
- * Gets the current input line.
- *
- * @param rv_len A pointer to receive the length of the input line.
- * @return Returns the input line.
- */
-NODISCARD
-static char const* get_input_line( size_t *rv_len ) {
-  char const *input_line = lexer_input_line( rv_len );
-  assert( input_line != NULL );
-  if ( *rv_len == 0 ) {                 // no input? try command line
-    input_line = print_params.command_line;
-    assert( input_line != NULL );
-    *rv_len = print_params.command_line_len;
-  }
-  if ( *rv_len >= print_params.inserted_len ) {
-    input_line += print_params.inserted_len;
-    *rv_len -= print_params.inserted_len;
-  }
-
-  //
-  // Chop off whitespace (if any) so we can always print a newline ourselves.
-  //
-  strn_rtrim( input_line, rv_len );
-
-  return input_line;
 }
 
 /**
