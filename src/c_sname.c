@@ -106,8 +106,8 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
   assert( rv_sname != NULL );
 
   bool parsed_tilde = !is_dtor;
-  c_sname_t rv;
-  c_sname_init( &rv );
+  c_sname_t temp_sname;
+  c_sname_init( &temp_sname );
 
   char const *const s_orig = s;
   char const *end;
@@ -132,11 +132,11 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
           continue;
         }
       }
-      if ( c_sname_empty( &rv ) )
+      if ( c_sname_empty( &temp_sname ) )
         return 0;
       goto done;
     }
-    c_sname_append_name( &rv, name );
+    c_sname_append_name( &temp_sname, name );
 
     prev_end = end;
     SKIP_WS( end );
@@ -158,11 +158,11 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
   } // while
 
 error:
-  c_sname_cleanup( &rv );
+  c_sname_cleanup( &temp_sname );
   return 0;
 
 done:
-  *rv_sname = rv;
+  *rv_sname = temp_sname;
   return STATIC_CAST( size_t, prev_end - s_orig );
 }
 

@@ -2269,7 +2269,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   assert( param != NULL );
   c_ast_t const *param_ast = c_param_ast( param );
   c_ast_t const *raw_param_ast = c_ast_untypedef( param_ast );
-  c_ast_t const *tmp_ast = NULL;
+  c_ast_t const *ptr_to_ast = NULL;
 
   size_t const n_params = c_ast_params_count( ast );
   switch ( n_params ) {
@@ -2309,10 +2309,10 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
       break;
 
     case 2:
-      tmp_ast = c_ast_unpointer( raw_param_ast );
-      if ( tmp_ast == NULL ||
-          !(c_ast_is_tid_any( tmp_ast, TS_CONST ) &&
-            c_ast_is_tid_any( tmp_ast, TB_ANY_CHAR )) ) {
+      ptr_to_ast = c_ast_unpointer( raw_param_ast );
+      if ( ptr_to_ast == NULL ||
+          !(c_ast_is_tid_any( ptr_to_ast, TS_CONST ) &&
+            c_ast_is_tid_any( ptr_to_ast, TB_ANY_CHAR )) ) {
         print_error( &param_ast->loc,
           "invalid parameter type for user-defined literal; must be one of: "
           "const (char|wchar_t|char8_t|char16_t|char32_t)*\n"
