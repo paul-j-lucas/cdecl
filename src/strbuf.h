@@ -105,8 +105,8 @@ void strbuf_init( strbuf_t *sbuf ) {
 void strbuf_paths( strbuf_t *sbuf, char const *component );
 
 /**
- * Appends \a format and the `printf`-style arguments onto the end of \a sbuf
- * growing the buffer if necessary.
+ * Using \a format, appends the `printf`-style arguments onto the end of \a
+ * sbuf growing the buffer if necessary.
  *
  * @param sbuf A pointer to the \ref strbuf to append onto.
  * @param format The `printf()` style format string.
@@ -179,10 +179,13 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len );
 
 /**
  * Resets \a sbuf by setting the string to zero length.
+ *
  * @param sbuf A pointer to the \ref strbuf to reset.
  *
  * @note This function is more efficient than strbuf_cleanup() when used
  * repeatedly on the same \ref strbuf.
+ * @note However, strbuf_cleanup() _must_ still be called when \a sbuf is no
+ * longer needed.
  *
  * @sa strbuf_cleanup()
  * @sa strbuf_init()
@@ -198,8 +201,8 @@ void strbuf_reset( strbuf_t *sbuf );
  * @param sep The separator string to append.
  * @param sep_len The number of bytes of \a sep to append.
  * @param sep_flag A pointer to a flag to determine whether \a sep should be
- * appended prior to \a s: if `false`, \a sep is _not_ appended and it is set
- * to `true`; if `true`, \a sep is appended.
+ * appended: if `false`, \a sep is _not_ appended and it is set to `true`; if
+ * `true`, \a sep is appended.
  *
  * @sa strbuf_sepc_puts()
  * @sa strbuf_sepc_putsn()
@@ -217,7 +220,7 @@ void strbuf_sepsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @param sep The separator string to append.
  * @param sep_len The number of bytes of \a sep to append.
  * @param sep_flag A pointer to a flag to determine whether \a sep should be
- * appended prior to \a s: if `false`, \a sep is _not_ appended and it is set
+ * appended before to \a s: if `false`, \a sep is _not_ appended and it is set
  * to `true`; if `true`, \a sep is appended.
  * @param s The string to append.
  * @param s_len The number of bytes of \a s to append.
@@ -310,9 +313,9 @@ void strbuf_sepc_puts( strbuf_t *sbuf, char sep, bool *sep_flag,
  */
 NODISCARD STRBUF_H_INLINE
 char* strbuf_take( strbuf_t *sbuf ) {
-  char *const str = sbuf->str;
+  char *const rv_str = sbuf->str;
   strbuf_init( sbuf );
-  return str;
+  return rv_str;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
