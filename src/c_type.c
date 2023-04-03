@@ -838,7 +838,9 @@ static char const* c_type_name_impl( c_type_t const *type,
     // between brackets [[like this]].
     //
     static c_tid_t const ATIDS[] = { TA_NORETURN };
-    C_TID_NAME_CAT( sbuf, TA_NORETURN, ATIDS, in_english, is_error, ' ', &space );
+    C_TID_NAME_CAT(
+      sbuf, TA_NORETURN, ATIDS, in_english, is_error, ' ', &space
+    );
     //
     // Now that we've handled _Noreturn for C, remove its bit and fall through
     // to the regular attribute-printing code.
@@ -1067,10 +1069,15 @@ static char const* c_type_name_impl( c_type_t const *type,
     TA_MSC_THISCALL,
     TA_MSC_VECTORCALL,
   };
-  C_TID_NAME_CAT( sbuf, atids, MSC_CALL_ATIDS, in_english, is_error, ' ', &space );
+  C_TID_NAME_CAT(
+    sbuf, atids, MSC_CALL_ATIDS, in_english, is_error, ' ', &space
+  );
 
-  if ( east_stids != TS_NONE )
-    C_TID_NAME_CAT( sbuf, east_stids, QUAL_STIDS, in_english, is_error, ' ', &space );
+  if ( east_stids != TS_NONE ) {
+    C_TID_NAME_CAT(
+      sbuf, east_stids, QUAL_STIDS, in_english, is_error, ' ', &space
+    );
+  }
 
   // Really special cases.
   if ( c_tid_is_any( btids, TB_NAMESPACE ) )
