@@ -1,5 +1,6 @@
 2023-04-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Capitalized constant arrays.
    * c_ast_check.c, c_sname.c, c_typedef.c, strbuf.c: Variable renaming.
    * print.c: Sorted functions.
 
