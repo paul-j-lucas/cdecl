@@ -33,8 +33,8 @@
 #endif /* WITH_READLINE */
 
 // standard
-#include <readline/readline.h>          /* must go last */
 #include <stdio.h>                      /* for FILE */
+#include <readline/readline.h>          /* must go last */
 
 /**
  * @defgroup autocompletion-group Autocompletion
