@@ -37,9 +37,9 @@
    remember if special invocation has ever been used to obtain wint_t,
    in which case we need to clean up NULL yet again.  */
 
-# if !(defined _@GUARD_PREFIX@_STDDEF_H && defined _GL_STDDEF_WINT_T)
+# if !(defined _@GUARD_PREFIX@_STDDEF_H && defined _@GUARD_PREFIX@_STDDEF_WINT_T)
 #  ifdef __need_wint_t
-#   define _GL_STDDEF_WINT_T
+#   define _@GUARD_PREFIX@_STDDEF_WINT_T
 #  endif
 #  @INCLUDE_NEXT@ @NEXT_STDDEF_H@
    /* On TinyCC, make sure that the macros that indicate the special invocation
@@ -80,7 +80,7 @@ typedef long max_align_t;
 
 /* On NetBSD 5.0, the definition of NULL lacks proper parentheses.  */
 #  if (@REPLACE_NULL@ \
-       && (!defined _@GUARD_PREFIX@_STDDEF_H || defined _GL_STDDEF_WINT_T))
+       && (!defined _@GUARD_PREFIX@_STDDEF_H || defined _@GUARD_PREFIX@_STDDEF_WINT_T))
 #   undef NULL
 #   ifdef __cplusplus
    /* ISO C++ says that the macro NULL must expand to an integer constant

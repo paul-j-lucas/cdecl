@@ -712,6 +712,10 @@ dnl Test whether mbrtowc reports encoding errors in the C locale.
 dnl Although POSIX was never intended to allow this, the GNU C Library
 dnl and other implementations do it.  See:
 dnl https://sourceware.org/bugzilla/show_bug.cgi?id=19932
+dnl POSIX has now clarified it:
+dnl <https://pubs.opengroup.org/onlinepubs/9699919799/functions/mbrtowc.html>
+dnl says: "In the POSIX locale an [EILSEQ] error cannot occur since all byte
+dnl values are valid characters."
 
 AC_DEFUN([gl_MBRTOWC_C_LOCALE],
 [

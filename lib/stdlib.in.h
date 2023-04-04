@@ -589,6 +589,36 @@ _GL_WARN_ON_USE (malloc, "malloc is not POSIX compliant everywhere - "
 # endif
 #endif
 
+/* Convert a string to a wide string.  */
+#if @GNULIB_MBSTOWCS@
+# if @REPLACE_MBSTOWCS@
+#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#   undef mbstowcs
+#   define mbstowcs rpl_mbstowcs
+#  endif
+_GL_FUNCDECL_RPL (mbstowcs, size_t,
+                  (wchar_t *restrict dest, const char *restrict src,
+                   size_t len)
+                  _GL_ARG_NONNULL ((2)));
+_GL_CXXALIAS_RPL (mbstowcs, size_t,
+                  (wchar_t *restrict dest, const char *restrict src,
+                   size_t len));
+# else
+_GL_CXXALIAS_SYS (mbstowcs, size_t,
+                  (wchar_t *restrict dest, const char *restrict src,
+                   size_t len));
+# endif
+# if __GLIBC__ >= 2
+_GL_CXXALIASWARN (mbstowcs);
+# endif
+#elif defined GNULIB_POSIXCHECK
+# undef mbstowcs
+# if HAVE_RAW_DECL_MBSTOWCS
+_GL_WARN_ON_USE (mbstowcs, "mbstowcs is unportable - "
+                 "use gnulib module mbstowcs for portability");
+# endif
+#endif
+
 /* Convert a multibyte character to a wide character.  */
 #if @GNULIB_MBTOWC@
 # if @REPLACE_MBTOWC@

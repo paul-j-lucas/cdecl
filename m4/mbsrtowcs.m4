@@ -1,4 +1,4 @@
-# mbsrtowcs.m4 serial 14
+# mbsrtowcs.m4 serial 15
 dnl Copyright (C) 2008-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -32,6 +32,13 @@ AC_DEFUN([gl_FUNC_MBSRTOWCS],
         *yes) ;;
         *) REPLACE_MBSRTOWCS=1 ;;
       esac
+      if test $REPLACE_MBSRTOWCS = 0; then
+        gl_MBRTOWC_C_LOCALE
+        case "$gl_cv_func_mbrtowc_C_locale_sans_EILSEQ" in
+          *yes) ;;
+          *) REPLACE_MBSRTOWCS=1 ;;
+        esac
+      fi
     fi
   fi
 ])
