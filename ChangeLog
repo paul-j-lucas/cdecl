@@ -1,5 +1,6 @@
 2023-04-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.h: Switched #include order.
    * lib/Makefile.am, btowc.c, stddef.in.h, stdlib.in.h, btowc.m4, mbrtowc.m4,
      mbsrtowcs.m4, stdlib_h.m4: Updated GnuLib.
 
