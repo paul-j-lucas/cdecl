@@ -460,9 +460,9 @@ struct c_operator_ast {
    * Indicates whether the user specified an operator as a member, non-member,
    * or neither.
    *
-   * @sa #C_OP_UNSPECIFIED
-   * @sa #C_OP_MEMBER
-   * @sa #C_OP_NON_MEMBER
+   * @sa #C_OPER_UNSPECIFIED
+   * @sa #C_OPER_MEMBER
+   * @sa #C_OPER_NON_MEMBER
    */
   unsigned            flags;
 

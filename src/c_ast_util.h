@@ -311,8 +311,8 @@ c_ast_t const* c_ast_leaf( c_ast_t const *ast );
  * Gets whether the operator is a member, non-member, or unspecified.
  *
  * @param ast The AST of the operator.
- * @return Returns one of \ref C_OP_MEMBER, \ref C_OP_NON_MEMBER, or \ref
- * C_OP_UNSPECIFIED.
+ * @return Returns one of #C_OPER_MEMBER, #C_OPER_NON_MEMBER, or
+ * #C_OPER_UNSPECIFIED.
  */
 NODISCARD
 unsigned c_ast_oper_overload( c_ast_t const *ast );
@@ -331,8 +331,8 @@ NODISCARD
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
- * Creates a # K_POINTER AST to \a ast.  The name of \a ast (or one of its
- * child nodes), if any, is moved to the new pointer AST.
+ * Creates a #K_POINTER AST to \a ast.  The name of \a ast (or one of its child
+ * nodes), if any, is moved to the new pointer AST.
  *
  * @param ast The AST to create a pointer to.
  * @param ast_list If not NULL, the new pointer AST is appended to the list.

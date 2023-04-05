@@ -39,10 +39,10 @@
 #include <assert.h>
 
 /// @cond DOXYGEN_IGNORE
-#define MBR                       C_OP_MEMBER
-#define OVR                       C_OP_OVERLOADABLE
-#define UNL                       C_OP_PARAMS_UNLIMITED
-#define XXX                       C_OP_NOT_OVERLOADABLE
+#define MBR                       C_OPER_MEMBER
+#define OVR                       C_OPER_OVERLOADABLE
+#define UNL                       C_OPER_PARAMS_UNLIMITED
+#define XXX                       C_OPER_NOT_OVERLOADABLE
 /// @endcond
 
 /**

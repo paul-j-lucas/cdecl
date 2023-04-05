@@ -669,9 +669,9 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   //
   c_operator_t const *const op = ast->oper.operator;
   switch ( op->flags ) {
-    case C_OP_MEMBER:
-    case C_OP_NON_MEMBER:
-    case C_OP_NOT_OVERLOADABLE:
+    case C_OPER_MEMBER:
+    case C_OPER_NON_MEMBER:
+    case C_OPER_NOT_OVERLOADABLE:
       return op->flags;
   } // switch
 
@@ -680,8 +680,8 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   // explicitly.
   //
   switch ( ast->oper.flags ) {
-    case C_OP_MEMBER:
-    case C_OP_NON_MEMBER:
+    case C_OPER_MEMBER:
+    case C_OPER_NON_MEMBER:
       return ast->oper.flags;
   } // switch
 
@@ -690,7 +690,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   // has a member-only type qualifier.
   //
   if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
-    return C_OP_MEMBER;
+    return C_OPER_MEMBER;
 
   size_t const n_params = c_ast_params_count( ast );
 
@@ -705,7 +705,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
       //
       return  !c_sname_empty( &ast->sname ) ||
               c_tid_is_any( ast->type.stids, TS_STATIC ) ?
-        C_OP_MEMBER : C_OP_NON_MEMBER;
+        C_OPER_MEMBER : C_OPER_NON_MEMBER;
 
     case C_OP_MINUS2:
     case C_OP_PLUS2:
@@ -719,7 +719,7 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
       if ( n_params == 1 ) {
         c_ast_t const *const param_ast = c_param_ast( c_ast_params( ast ) );
         return c_ast_is_builtin_any( param_ast, TB_INT ) ?
-          C_OP_MEMBER : C_OP_NON_MEMBER;
+          C_OPER_MEMBER : C_OPER_NON_MEMBER;
       }
       // The 0 and 2 cases are handled below.
       break;
@@ -733,14 +733,14 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   // parameters given.
   //
   if ( n_params == op->params_min )
-    return C_OP_MEMBER;
+    return C_OPER_MEMBER;
   if ( n_params == op->params_max )
-    return C_OP_NON_MEMBER;
+    return C_OPER_NON_MEMBER;
 
   //
   // We can't determine which one, so give up.
   //
-  return C_OP_UNSPECIFIED;
+  return C_OPER_UNSPECIFIED;
 }
 
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {

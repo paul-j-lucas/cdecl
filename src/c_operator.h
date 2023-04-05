@@ -53,60 +53,60 @@ _GL_INLINE_HEADER_BEGIN
  * For c_operator::flags, denotes that the operator overloadability (member or
  * non-member) is unspecified.
  *
- * @sa #C_OP_MEMBER
- * @sa #C_OP_NON_MEMBER
- * @sa #C_OP_NOT_OVERLOADABLE
- * @sa #C_OP_OVERLOADABLE
+ * @sa #C_OPER_MEMBER
+ * @sa #C_OPER_NON_MEMBER
+ * @sa #C_OPER_NOT_OVERLOADABLE
+ * @sa #C_OPER_OVERLOADABLE
  */
-#define C_OP_UNSPECIFIED          C_FUNC_UNSPECIFIED
+#define C_OPER_UNSPECIFIED        C_FUNC_UNSPECIFIED
 
 /**
  * For c_operator::flags, denotes that the operator is overload{able|ed} as a
  * member only.
  *
- * @sa #C_OP_NON_MEMBER
- * @sa #C_OP_NOT_OVERLOADABLE
- * @sa #C_OP_OVERLOADABLE
- * @sa #C_OP_UNSPECIFIED
+ * @sa #C_OPER_NON_MEMBER
+ * @sa #C_OPER_NOT_OVERLOADABLE
+ * @sa #C_OPER_OVERLOADABLE
+ * @sa #C_OPER_UNSPECIFIED
  */
-#define C_OP_MEMBER               C_FUNC_MEMBER
+#define C_OPER_MEMBER             C_FUNC_MEMBER
 
 /**
  * Denotes that an operator is overloaded as a non-member.
  *
- * @sa #C_OP_MEMBER
- * @sa #C_OP_NOT_OVERLOADABLE
- * @sa #C_OP_OVERLOADABLE
- * @sa #C_OP_UNSPECIFIED
+ * @sa #C_OPER_MEMBER
+ * @sa #C_OPER_NOT_OVERLOADABLE
+ * @sa #C_OPER_OVERLOADABLE
+ * @sa #C_OPER_UNSPECIFIED
  */
-#define C_OP_NON_MEMBER           C_FUNC_NON_MEMBER
+#define C_OPER_NON_MEMBER         C_FUNC_NON_MEMBER
 
 /**
  * For c_operator::flags, denotes that the operator is not overloadable.
  *
- * @sa #C_OP_MEMBER
- * @sa #C_OP_NON_MEMBER
- * @sa #C_OP_OVERLOADABLE
- * @sa #C_OP_UNSPECIFIED
+ * @sa #C_OPER_MEMBER
+ * @sa #C_OPER_NON_MEMBER
+ * @sa #C_OPER_OVERLOADABLE
+ * @sa #C_OPER_UNSPECIFIED
  */
-#define C_OP_NOT_OVERLOADABLE     (1u << 2)
+#define C_OPER_NOT_OVERLOADABLE   (1u << 2)
 
 /**
  * For c_operator::flags, denotes that the operator is overloadable as either a
  * member or non-member.
  *
- * @sa #C_OP_MEMBER
- * @sa #C_OP_NON_MEMBER
- * @sa #C_OP_NOT_OVERLOADABLE
- * @sa #C_OP_UNSPECIFIED
+ * @sa #C_OPER_MEMBER
+ * @sa #C_OPER_NON_MEMBER
+ * @sa #C_OPER_NOT_OVERLOADABLE
+ * @sa #C_OPER_UNSPECIFIED
  */
-#define C_OP_OVERLOADABLE         (C_OP_MEMBER | C_OP_NON_MEMBER)
+#define C_OPER_OVERLOADABLE       (C_OPER_MEMBER | C_OPER_NON_MEMBER)
 
 /**
  * For c_operator::params_max of `operator()` or `operator[]` (in C++23 or
  * later), denotes an unlimited number of parameters.
  */
-#define C_OP_PARAMS_UNLIMITED     UINT_MAX
+#define C_OPER_PARAMS_UNLIMITED   UINT_MAX
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -133,10 +133,10 @@ struct c_operator {
    * Bitwise-or of flags specifying whether the operator is a member, non-
    * member, both, or not overloadable.
    *
-   * @sa #C_OP_MEMBER
-   * @sa #C_OP_NON_MEMBER
-   * @sa #C_OP_OVERLOADABLE
-   * @sa #C_OP_NOT_OVERLOADABLE
+   * @sa #C_OPER_MEMBER
+   * @sa #C_OPER_NON_MEMBER
+   * @sa #C_OPER_OVERLOADABLE
+   * @sa #C_OPER_NOT_OVERLOADABLE
    */
   unsigned    flags;
 

@@ -257,8 +257,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
         case K_OPERATOR: {
           unsigned const overload_flags = c_ast_oper_overload( ast );
           char const *const op_literal =
-            overload_flags == C_OP_MEMBER     ? "member "     :
-            overload_flags == C_OP_NON_MEMBER ? "non-member " :
+            overload_flags == C_OPER_MEMBER     ? "member "     :
+            overload_flags == C_OPER_NON_MEMBER ? "non-member " :
             "";
           FPUTS( op_literal, eout );
           break;

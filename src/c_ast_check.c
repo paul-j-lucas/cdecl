@@ -1513,14 +1513,14 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( op->flags == C_OP_NOT_OVERLOADABLE ) {
+  if ( op->flags == C_OPER_NOT_OVERLOADABLE ) {
     print_error( &ast->loc,
       "operator %s can not be overloaded\n", op->literal
     );
     return false;
   }
 
-  if ( ast->oper.flags != C_OP_UNSPECIFIED &&
+  if ( ast->oper.flags != C_OPER_UNSPECIFIED &&
       (ast->oper.flags & op->flags) == 0 ) {
     //
     // The user explicitly specified either member or non-member, but the
@@ -1528,12 +1528,12 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     //
     print_error( &ast->loc,
       "operator %s can only be a %s\n",
-      op->literal, op->flags == C_OP_MEMBER ? L_member : H_non_member
+      op->literal, op->flags == C_OPER_MEMBER ? L_member : H_non_member
     );
     return false;
   }
 
-  if ( op->flags == C_OP_MEMBER &&
+  if ( op->flags == C_OPER_MEMBER &&
        c_tid_is_any( ast->type.stids, TS_STATIC ) ) {
     c_lang_id_t ok_lang_ids = LANG_NONE;
     switch ( op->oper_id ) {
@@ -1746,8 +1746,8 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   c_operator_t const *const op = ast->oper.operator;
   unsigned const overload_flags = c_ast_oper_overload( ast );
   char const *const member_or_nonmember =
-    overload_flags == C_OP_MEMBER     ? "member "     :
-    overload_flags == C_OP_NON_MEMBER ? "non-member " :
+    overload_flags == C_OPER_MEMBER     ? "member "     :
+    overload_flags == C_OPER_NON_MEMBER ? "non-member " :
     "";
 
   //
@@ -1756,23 +1756,23 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   //
   bool const is_ambiguous = c_oper_is_ambiguous( op );
   unsigned req_params_min = 0, req_params_max = 0;
-  bool const max_params_is_unlimited = op->params_max == C_OP_PARAMS_UNLIMITED;
+  bool const max_params_unlimited = op->params_max == C_OPER_PARAMS_UNLIMITED;
   switch ( overload_flags ) {
-    case C_OP_NON_MEMBER:
+    case C_OPER_NON_MEMBER:
       // Non-member operators must always take at least one parameter (the
       // enum, class, struct, or union for which it's overloaded).
-      req_params_min = is_ambiguous || max_params_is_unlimited ?
+      req_params_min = is_ambiguous || max_params_unlimited ?
         1 : op->params_max;
       req_params_max = op->params_max;
       break;
-    case C_OP_MEMBER:
-      if ( !max_params_is_unlimited ) {
+    case C_OPER_MEMBER:
+      if ( !max_params_unlimited ) {
         req_params_min = op->params_min;
         req_params_max = is_ambiguous ? 1 : op->params_min;
         break;
       }
       FALLTHROUGH;
-    case C_OP_UNSPECIFIED:
+    case C_OPER_UNSPECIFIED:
       req_params_min = op->params_min;
       req_params_max = op->params_max;
       break;
@@ -1843,7 +1843,7 @@ same: print_error( c_ast_params_loc( ast ),
     ecsu_obj_param_count + ecsu_lref_param_count + ecsu_rref_param_count;
 
   switch ( overload_flags ) {
-    case C_OP_NON_MEMBER:
+    case C_OPER_NON_MEMBER:
       //
       // Ensure non-member operators (except new, new[], delete, and delete[])
       // have at least one enum, class, struct, or union parameter.
@@ -1866,7 +1866,7 @@ same: print_error( c_ast_params_loc( ast ),
       } // switch
       break;
 
-    case C_OP_MEMBER:
+    case C_OPER_MEMBER:
       //
       // Ensure member operators are not friend, e.g.:
       //
@@ -1897,7 +1897,7 @@ same: print_error( c_ast_params_loc( ast ),
       c_param_t const *param = c_ast_params( ast );
       if ( param == NULL )              // member prefix
         break;
-      if ( overload_flags == C_OP_NON_MEMBER ) {
+      if ( overload_flags == C_OPER_NON_MEMBER ) {
         param = param->next;
         if ( param == NULL )            // non-member prefix
           break;
@@ -1959,7 +1959,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
   c_ast_t const *const param_ast = c_param_ast( param );
 
   switch ( c_ast_oper_overload( ast ) ) {
-    case C_OP_NON_MEMBER: {
+    case C_OPER_NON_MEMBER: {
       if ( !c_tid_is_any( ast->type.stids, TS_FRIEND ) ) {
         print_error( &ast->loc,
           "default non-member operator %s must also be friend\n", op->literal
@@ -1994,7 +1994,7 @@ rel_2par: print_error( &ast->loc,
       break;
     }
 
-    case C_OP_MEMBER: {
+    case C_OPER_MEMBER: {
       if ( !c_tid_is_any( ast->type.stids, TS_CONST ) ) {
         print_error( &ast->loc,
           "default member operator %s must also be const\n", op->literal

@@ -301,7 +301,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
         case C_FUNC_NON_MEMBER:
           FPUTS( "\"non-member\"", dout );
           break;
-        case C_OP_OVERLOADABLE:
+        case C_OPER_OVERLOADABLE:
           FPUTS( "\"overloadable\"", dout );
           break;
         default:
