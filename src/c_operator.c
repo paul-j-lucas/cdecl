@@ -33,6 +33,7 @@
 #include "c_lang.h"
 #include "gibberish.h"
 #include "literals.h"
+#include "util.h"
 
 // standard
 #include <assert.h>
@@ -120,10 +121,13 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
   // We can't just use oper_id as a direct index since operator[] has multiple
   // entries, but we can start looking there.
   //
-  for ( c_operator_t const *op = C_OPERATOR + oper_id; op->oper_id <= oper_id;
+  for ( c_operator_t const *op = C_OPERATOR + oper_id;
+        op < C_OPERATOR + ARRAY_SIZE( C_OPERATOR );
         ++op ) {
     if ( op->oper_id < oper_id )
       continue;
+    if ( op->oper_id > oper_id )        // the array is sorted
+      break;
     if ( opt_lang_is_any( op->lang_ids ) )
       return op;
     //
