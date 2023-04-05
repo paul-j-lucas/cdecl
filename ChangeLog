@@ -1,3 +1,7 @@
+2023-04-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_operator.c: Changed loop so as never to go beyond the end of the array.
+
 2023-04-04  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.h: Switched #include order.
