@@ -49,14 +49,6 @@ _GL_INLINE_HEADER_BEGIN
  * @{
  */
 
-// overloadability
-
-/**
- * For c_operator::params_max of `operator()` or `operator[]` (in C++23 or
- * later), denotes an unlimited number of parameters.
- */
-#define C_OP_PARAMS_UNLIMITED     UINT_MAX
-
 /**
  * For c_operator::flags, denotes that the operator overloadability (member or
  * non-member) is unspecified.
@@ -109,6 +101,12 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_OP_UNSPECIFIED
  */
 #define C_OP_OVERLOADABLE         (C_OP_MEMBER | C_OP_NON_MEMBER)
+
+/**
+ * For c_operator::params_max of `operator()` or `operator[]` (in C++23 or
+ * later), denotes an unlimited number of parameters.
+ */
+#define C_OP_PARAMS_UNLIMITED     UINT_MAX
 
 ///////////////////////////////////////////////////////////////////////////////
 
