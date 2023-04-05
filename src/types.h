@@ -77,8 +77,8 @@ enum c_graph {
  *
  * @note Operators are named based on the characters comprising them rather
  * than their semantics because many operators have more than one meaning
- * depending upon context, e.g. `*` is both the "times" and the "dereference"
- * operator.
+ * depending upon context, e.g. `*` is both the "multiplication" and the
+ * "dereference" operator.
  */
 enum c_oper_id {
   C_OP_NONE,                            ///< No operator.

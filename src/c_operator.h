@@ -52,13 +52,13 @@ _GL_INLINE_HEADER_BEGIN
 // overloadability
 
 /**
- * For c_operator.params_max of `operator()` or `operator[]` (in C++23 or
+ * For c_operator::params_max of `operator()` or `operator[]` (in C++23 or
  * later), denotes an unlimited number of parameters.
  */
 #define C_OP_PARAMS_UNLIMITED     UINT_MAX
 
 /**
- * For c_operator.flags, denotes that the operator overloadability (member or
+ * For c_operator::flags, denotes that the operator overloadability (member or
  * non-member) is unspecified.
  *
  * @sa #C_OP_MEMBER
@@ -69,7 +69,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_UNSPECIFIED          C_FUNC_UNSPECIFIED
 
 /**
- * For c_operator.flags, denotes that the operator is overload{able|ed} as a
+ * For c_operator::flags, denotes that the operator is overload{able|ed} as a
  * member only.
  *
  * @sa #C_OP_NON_MEMBER
@@ -90,7 +90,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_NON_MEMBER           C_FUNC_NON_MEMBER
 
 /**
- * For c_operator.flags, denotes that the operator is not overloadable.
+ * For c_operator::flags, denotes that the operator is not overloadable.
  *
  * @sa #C_OP_MEMBER
  * @sa #C_OP_NON_MEMBER
@@ -100,7 +100,7 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_NOT_OVERLOADABLE     (1u << 2)
 
 /**
- * For c_operator.flags, denotes that the operator is overloadable as either a
+ * For c_operator::flags, denotes that the operator is overloadable as either a
  * member or non-member.
  *
  * @sa #C_OP_MEMBER
