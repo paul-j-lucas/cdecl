@@ -158,6 +158,7 @@
  * @note Exceptions are `alignas`, `bool`, `complex`, `const`, and `volatile`
  * that are included here as **cdecl** keywords so each maps to its language-
  * specific literal, e.g., `_Alignas` in C vs. `alignas` in C++.
+ * @note This is not declared `const` because it's sorted once.
  *
  * ## Initialization Macros
  *

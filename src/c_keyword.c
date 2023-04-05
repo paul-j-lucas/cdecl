@@ -63,6 +63,7 @@
  * @note There are two rows for `auto` since it has two meanings (one as a
  * storage class in C and C++ up to C++03 and the other as an automatically
  * deduced type in C++11 and later).
+ * @note This is not declared `const` because it's sorted once.
  */
 static c_keyword_t C_KEYWORDS[] = {
   // K&R C
