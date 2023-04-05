@@ -1,5 +1,7 @@
 2023-04-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_keyword.c, c_keyword.h, cdecl.c, cdecl_keyword.c, cdecl_keyword.h: Added
+     c_keyword_init() and cdecl_keyword_init().
    * configure.ac, parser.y: Fixed a crash while dumping an operator.
    * c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, c_operator.c,
      c_operator.h, dump.c, english.c: Renamed C_OP_* (for overloadability) to
