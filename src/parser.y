@@ -484,6 +484,7 @@ struct in_attr {
   c_sname_t     current_scope;    ///< C++ only: current scope, if any.
   bool          is_implicit_int;  ///< Created implicit `int` AST?
   bool          is_typename;      ///< C++ only: `typename` specified?
+  c_operator_t const *operator;   ///< C++ only: current operator, if any.
   c_ast_list_t  type_ast_stack;   ///< Type AST stack.
   c_ast_t      *typedef_ast;      ///< AST of `typedef` being declared.
   c_ast_list_t  typedef_ast_list; ///< AST nodes of `typedef` being declared.
@@ -2072,23 +2073,21 @@ declare_command
         );
         PARSE_ABORT();
       }
+      in_attr.operator = c_oper_get( $2 );
     }
     of_scope_list_english_opt as_exp oper_decl_english_ast
     {
-      c_oper_id_t  const        oper_id = $2;
-      c_ast_t            *const oper_ast = $6;
-      c_operator_t const *const operator = c_oper_get( oper_id );
+      c_ast_t *const oper_ast = $6;
 
       DUMP_START( "declare_command",
                   "DECLARE c_operator of_scope_list_english_opt AS "
                   "oper_decl_english_ast" );
-      DUMP_STR( "c_operator", operator->literal );
+      DUMP_STR( "c_operator", oper_ast->oper.operator->literal );
       DUMP_SNAME( "of_scope_list_english_opt", $4 );
       DUMP_AST( "oper_decl_english_ast", oper_ast );
 
       c_sname_set( &oper_ast->sname, &$4 );
       oper_ast->loc = @2;
-      oper_ast->oper.operator = operator;
 
       DUMP_AST( "declare_command", oper_ast );
       DUMP_END();
@@ -6542,7 +6541,8 @@ msc_calling_convention_atid
 /// English C++ operator declaration //////////////////////////////////////////
 
 oper_decl_english_ast
-  : type_qualifier_list_english_type_opt ref_qualifier_english_stid_opt
+  : // in_attr: operator
+    type_qualifier_list_english_type_opt ref_qualifier_english_stid_opt
     member_or_non_member_flags_opt operator_exp
     paren_param_decl_list_english_opt returning_english_ast_opt
     {
@@ -6557,6 +6557,7 @@ oper_decl_english_ast
                   "member_or_non_member_flags_opt "
                   "OPERATOR paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
+      DUMP_STR( "in_attr__operator", in_attr.operator->literal );
       DUMP_TYPE( "type_qualifier_list_english_type_opt", qual_type );
       DUMP_TID( "ref_qualifier_english_stid_opt", ref_qual_stid );
       DUMP_INT( "member_or_non_member_flags_opt", flags );
@@ -6566,6 +6567,7 @@ oper_decl_english_ast
       $$ = c_ast_new_gc( K_OPERATOR, &@$ );
       C_TYPE_ADD( &$$->type, &qual_type, @1 );
       C_TYPE_ADD_TID( &$$->type, ref_qual_stid, @2 );
+      $$->oper.operator = in_attr.operator;
       $$->oper.param_ast_list = slist_move( &$5 );
       $$->oper.flags = flags;
       c_ast_set_parent( ret_ast, $$ );

@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 14.1.1
+
+** Fixed operator dump crash
+Dumping an operator caused a crash: fixed.
+
+
 * Changes in Cdecl 14.1
 
 ** Alternative tokens
