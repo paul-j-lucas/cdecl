@@ -28,9 +28,11 @@
 #include "pjl_config.h"                 /* must go first */
 #include "cdecl.h"
 #include "c_ast.h"
+#include "c_keyword.h"
 #include "c_lang.h"
 #include "c_typedef.h"
 #include "cdecl_command.h"
+#include "cdecl_keyword.h"
 #include "cdecl_parser.h"
 #include "cli_options.h"
 #include "color.h"
@@ -89,6 +91,8 @@ static bool read_conf_file( char const* );
 int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   check_atexit( &cdecl_cleanup );
+  c_keyword_init();
+  cdecl_keyword_init();
   cli_options_init( &argc, &argv );
   lexer_init();
   c_typedef_init();

@@ -1678,14 +1678,6 @@ static int cdecl_keyword_cmp( cdecl_keyword_t const *i_cdk,
 cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   assert( s != NULL );
 
-  RUN_ONCE {
-    qsort(                              // don't rely on manual sorting above
-      CDECL_KEYWORDS, ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/,
-      sizeof( cdecl_keyword_t ),
-      POINTER_CAST( qsort_cmp_fn_t, &cdecl_keyword_cmp )
-    );
-  }
-
   // the list is small, so linear search is good enough
   for ( cdecl_keyword_t const *cdk = CDECL_KEYWORDS; cdk->literal != NULL;
         ++cdk ) {
@@ -1696,7 +1688,17 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
       break;
     return cdk;
   } // for
+
   return NULL;
+}
+
+void cdecl_keyword_init( void ) {
+  ASSERT_RUN_ONCE();
+  qsort(                                // don't rely on manual sorting above
+    CDECL_KEYWORDS, ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/,
+    sizeof( cdecl_keyword_t ),
+    POINTER_CAST( qsort_cmp_fn_t, &cdecl_keyword_cmp )
+  );
 }
 
 cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *cdk ) {

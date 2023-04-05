@@ -112,6 +112,13 @@ NODISCARD
 cdecl_keyword_t const* cdecl_keyword_find( char const *literal );
 
 /**
+ * Initializes \ref cdecl_keyword data.
+ *
+ * @note This function must be called exactly once.
+ */
+void cdecl_keyword_init( void );
+
+/**
  * Iterates to the next **cdecl** keyword.
  *
  * @param k A pointer to the current keyword. For the first iteration, NULL
