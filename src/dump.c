@@ -304,6 +304,16 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
         case C_OPER_OVERLOADABLE:
           FPUTS( "\"overloadable\"", dout );
           break;
+     // case C_OPER_NOT_OVERLOADABLE:
+     //
+     //   This doesn't need to be here because these flags are what the user
+     //   specified:
+     //
+     //       declare ! as [[non-]member] operator ...
+     //
+     //   not c_operator::flags, so this can never be C_OPER_NOT_OVERLOADABLE.
+     //
+     //   break;
         default:
           FPUTS( "'?'", dout );
           break;
