@@ -1,3 +1,9 @@
+2023-04-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, parser.y, debug.out: When dumping, quotes in strings are now
+     properly escaped.
+   * debug.out, debug.test: More debug tests.
+
 2023-04-05  Paul J. Lucas <paul@lucasmail.org>
 
    * c_keyword.c, c_keyword.h, cdecl.c, cdecl_keyword.c, cdecl_keyword.h: Added
