@@ -12,6 +12,7 @@ explain int x[4]
 explain int x[]
 explain size_t x
 explain struct S x
+explain unsigned x : 4
 explain void f()
 explain void f(int i, char const *fmt, ... )
 explain void f(int x[*])
@@ -22,6 +23,7 @@ class C
 explain bool operator!() const
 explain int C::*p
 explain operator bool() const
+explain int operator ""_w(char const *arg)
 explain ~C()
 
 set nodebug
