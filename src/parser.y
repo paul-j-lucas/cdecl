@@ -416,9 +416,9 @@
  * @sa #DUMP_TID
  * @sa #DUMP_TYPE
  */
-#define DUMP_START(NAME,RULE) \
-  bool dump_comma = false;    \
-  IF_DEBUG( PUTS( NAME ": {\n" "  rule: \"" RULE "\",\n" ); )
+#define DUMP_START(NAME,RULE)         \
+  bool dump_comma = false; IF_DEBUG(  \
+  PUTS( NAME ": {\n  rule: " ); str_dump( (RULE), stdout ); PUTS( ",\n" ); )
 #else
 #define DUMP_START(NAME,RULE)     NO_OP
 #endif

@@ -4659,7 +4659,7 @@ param_c_ast_list: {
 }
 
 user_defined_literal_decl_c_astp: {
-  rule: "oper_sname_c_opt OPERATOR "" '(' param_c_ast_list_exp ')' noexcept_c_stid_opt trailing_return_type_c_ast_opt",
+  rule: "oper_sname_c_opt OPERATOR \"\" '(' param_c_ast_list_exp ')' noexcept_c_stid_opt trailing_return_type_c_ast_opt",
   in_attr__type_c_ast: {
     sname: { string: "" },
     unique_id: 1421,

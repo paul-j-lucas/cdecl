@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 14.1.1
 
+** Escaping quotes in dump strings
+When dumping, quotes in strings are now properly escaped.
+
 ** Fixed operator dump crash
 Dumping an operator caused a crash: fixed.
 
