@@ -34,6 +34,11 @@
 // standard
 #include <attribute.h>
 
+/**
+ * @ingroup parser-group
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef enum yytokentype yytokentype;
@@ -65,6 +70,8 @@ int yyparse( void );
 #endif /* __GNUC__ */
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_parser_H */
 /* vim:set et sw=2 ts=2: */
