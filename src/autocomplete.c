@@ -181,7 +181,7 @@ static void ac_keywords_init( void ) {
     n += !is_c_keyword( cdk->literal );
 
   ac_keyword_t *const ac_keywords_array =
-    free_later( MALLOC( ac_keyword_t, n + 1 ) );
+    free_later( MALLOC( ac_keyword_t, n + 1/*NULL*/ ) );
   ac_keyword_t *ack = ac_keywords_array;
 
   FOREACH_C_KEYWORD( ck ) {
