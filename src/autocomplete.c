@@ -240,36 +240,36 @@ static char const* const* ac_set_options_new( void ) {
     n += !lang->is_alias;
 
   char **const ac_set_options = free_later( MALLOC( char*, n + 1/*NULL*/ ) );
-  char **p = ac_set_options;
+  char **popt = ac_set_options;
 
-  *p++ = CONST_CAST( char*, L_options );
+  *popt++ = CONST_CAST( char*, L_options );
 
   FOREACH_SET_OPTION( opt ) {
     switch ( opt->kind ) {
       case SET_OPTION_AFF_ONLY:
-        *p++ = CONST_CAST( char*, opt->name );
+        *popt++ = CONST_CAST( char*, opt->name );
         break;
 
       case SET_OPTION_TOGGLE:
-        *p++ = CONST_CAST( char*, opt->name );
+        *popt++ = CONST_CAST( char*, opt->name );
         FALLTHROUGH;
 
       case SET_OPTION_NEG_ONLY:
-        *p = free_later(
+        *popt = free_later(
           MALLOC( char, 2/*no*/ + strlen( opt->name ) + 1/*\0*/ )
         );
-        strcpy( *p + 0, "no" );
-        strcpy( *p + 2, opt->name );
-        ++p;
+        strcpy( *popt + 0, "no" );
+        strcpy( *popt + 2, opt->name );
+        ++popt;
         break;
     } // switch
   } // for
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
-      *p++ = free_later( check_strdup_tolower( lang->name ) );
+      *popt++ = free_later( check_strdup_tolower( lang->name ) );
   } // for
 
-  *p = NULL;
+  *popt = NULL;
 
   qsort(
     ac_set_options, n, sizeof( char* ),
