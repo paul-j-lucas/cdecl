@@ -93,7 +93,7 @@ int main( int argc, char const *argv[] ) {
   check_atexit( &cdecl_cleanup );
   c_keyword_init();
   cdecl_keyword_init();
-  cli_options_init( &argc, &argv );
+  cli_option_init( &argc, &argv );
   lexer_init();
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
@@ -101,7 +101,7 @@ int main( int argc, char const *argv[] ) {
     conf_init();
   cdecl_initialized = true;
   //
-  // Note that cli_options_init() adjusts argv such that argv[0] becomes the
+  // Note that cli_option_init() adjusts argv such that argv[0] becomes the
   // first argument, if any, and no longer the program name.
   //
   exit( cdecl_parse_cli( STATIC_CAST( size_t, argc ), argv ) );
