@@ -89,21 +89,23 @@ void c_sglob_parse( char const *s, c_sglob_t *rv_sglob ) {
   //
   char const *glob_begin = s;
   for (;;) {
-    if ( *s == ':' || *s == '\0' /* end of glob */ ) {
-      size_t const glob_len = STATIC_CAST( size_t, s - glob_begin );
-      assert( glob_len > 0 );
-      assert( rv_sglob->count < scope_count );
-      rv_sglob->pattern[ rv_sglob->count++ ] =
-        check_strndup( glob_begin, glob_len );
-      if ( *s == '\0' )
-        return;
-      s += 2 /* "::" */;
-      SKIP_WS( s );
-      glob_begin = s;
+    if ( *s != ':' && *s != '\0' /* end of glob */ ) {
+      ++s;
       continue;
     }
-    ++s;
+    size_t const glob_len = STATIC_CAST( size_t, s - glob_begin );
+    assert( glob_len > 0 );
+    assert( rv_sglob->count < scope_count );
+    rv_sglob->pattern[ rv_sglob->count++ ] =
+      check_strndup( glob_begin, glob_len );
+    if ( *s == '\0' )
+      break;
+    s += 2 /* "::" */;
+    SKIP_WS( s );
+    glob_begin = s;
   } // for
+
+  assert( rv_sglob->count == scope_count );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
