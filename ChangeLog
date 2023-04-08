@@ -1,3 +1,12 @@
+2023-04-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, cli_options.c, cli_options.h:
+     s/cli_options_init()/cli_option_init()/ for consistency.
+
+2023-04-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Renaming.
+
 2023-04-06  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, parser.y, debug.out: When dumping, quotes in strings are now
