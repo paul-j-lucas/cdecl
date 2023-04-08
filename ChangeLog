@@ -1,5 +1,6 @@
 2023-04-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sglob.c: Reworked c_sglob_parse().
    * cdecl.c, cli_options.c, cli_options.h:
      s/cli_options_init()/cli_option_init()/ for consistency.
 
