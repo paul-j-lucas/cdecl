@@ -1,4 +1,4 @@
-# gnulib-common.m4 serial 82
+# gnulib-common.m4 serial 83
 dnl Copyright (C) 2007-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -526,6 +526,18 @@ AC_DEFUN([gl_COMMON_BODY], [
 # else
 #  define _GL_UNUSED_LABEL
 # endif
+#endif
+])
+  AH_VERBATIM([c_linkage],
+[/* In C++, there is the concept of "language linkage", that encompasses
+    name mangling and function calling conventions.
+    The following macros start and end a block of "C" linkage.  */
+#ifdef __cplusplus
+# define _GL_BEGIN_C_LINKAGE extern "C" {
+# define _GL_END_C_LINKAGE }
+#else
+# define _GL_BEGIN_C_LINKAGE
+# define _GL_END_C_LINKAGE
 #endif
 ])
   AH_VERBATIM([async_safe],

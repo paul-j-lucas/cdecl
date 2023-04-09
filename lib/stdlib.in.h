@@ -67,9 +67,7 @@
 #  include <random.h>
 # endif
 
-# if !@HAVE_STRUCT_RANDOM_DATA@ || @REPLACE_RANDOM_R@ || !@HAVE_RANDOM_R@
-#  include <stdint.h>
-# endif
+# include <stdint.h>
 
 # if !@HAVE_STRUCT_RANDOM_DATA@
 /* Define 'struct random_data'.
@@ -586,6 +584,21 @@ _GL_FUNCDECL_SYS (malloc, void *,
 /* Assume malloc is always declared.  */
 _GL_WARN_ON_USE (malloc, "malloc is not POSIX compliant everywhere - "
                  "use gnulib module malloc-posix for portability");
+# endif
+#endif
+
+/* Return maximum number of bytes of a multibyte character.  */
+#if @REPLACE_MB_CUR_MAX@
+# if !GNULIB_defined_MB_CUR_MAX
+static inline
+int gl_MB_CUR_MAX (void)
+{
+  /* Turn the value 3 to the value 4, as needed for the UTF-8 encoding.  */
+  return MB_CUR_MAX + (MB_CUR_MAX == 3);
+}
+#  undef MB_CUR_MAX
+#  define MB_CUR_MAX gl_MB_CUR_MAX ()
+#  define GNULIB_defined_MB_CUR_MAX 1
 # endif
 #endif
 

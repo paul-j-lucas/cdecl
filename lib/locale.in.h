@@ -245,23 +245,23 @@ _GL_WARN_ON_USE (newlocale, "newlocale is not portable");
 #endif
 
 #if @GNULIB_DUPLOCALE@ || (@GNULIB_LOCALENAME@ && @LOCALENAME_ENHANCE_LOCALE_FUNCS@ && @HAVE_DUPLOCALE@)
-# if @REPLACE_DUPLOCALE@
-#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
-#   undef duplocale
-#   define duplocale rpl_duplocale
-#   define GNULIB_defined_duplocale 1
-#  endif
+# if @HAVE_DUPLOCALE@ /* locale_t may be undefined if !@HAVE_DUPLOCALE@.  */
+#  if @REPLACE_DUPLOCALE@
+#   if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#    undef duplocale
+#    define duplocale rpl_duplocale
+#    define GNULIB_defined_duplocale 1
+#   endif
 _GL_FUNCDECL_RPL (duplocale, locale_t, (locale_t locale) _GL_ARG_NONNULL ((1)));
 _GL_CXXALIAS_RPL (duplocale, locale_t, (locale_t locale));
-# else
-#  if @HAVE_DUPLOCALE@
+#  else
 _GL_CXXALIAS_SYS (duplocale, locale_t, (locale_t locale));
 #  endif
 # endif
 # if __GLIBC__ >= 2 && @HAVE_DUPLOCALE@
 _GL_CXXALIASWARN (duplocale);
 # endif
-# if @HAVE_DUPLOCALE@ || @REPLACE_DUPLOCALE@
+# if @HAVE_DUPLOCALE@
 #  ifndef HAVE_WORKING_DUPLOCALE
 #   define HAVE_WORKING_DUPLOCALE 1
 #  endif

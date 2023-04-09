@@ -209,12 +209,11 @@
 #ifndef _PRINTF_NAN_LEN_MAX
 # if defined __FreeBSD__ || defined __DragonFly__ \
      || defined __NetBSD__ \
-     || defined __OpenBSD__ \
      || (defined __APPLE__ && defined __MACH__)
 /* On BSD systems, a NaN value prints as just "nan", without a sign.  */
 #  define _PRINTF_NAN_LEN_MAX 3
-# elif (__GLIBC__ >= 2) || MUSL_LIBC || defined __sun || defined __CYGWIN__
-/* glibc, musl libc, Solaris libc, and Cygwin produce "[-]nan".  */
+# elif (__GLIBC__ >= 2) || MUSL_LIBC || defined __OpenBSD__ || defined __sun || defined __CYGWIN__
+/* glibc, musl libc, OpenBSD, Solaris libc, and Cygwin produce "[-]nan".  */
 #  define _PRINTF_NAN_LEN_MAX 4
 # elif defined _AIX
 /* AIX produces "[-]NaNQ".  */
@@ -998,6 +997,10 @@ _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
 _GL_CXXALIAS_MDA (getw, int, (FILE *restrict stream));
 # else
 #  if @HAVE_DECL_GETW@
+#   if defined __APPLE__ && defined __MACH__
+/* The presence of the declaration depends on _POSIX_C_SOURCE.  */
+_GL_FUNCDECL_SYS (getw, int, (FILE *restrict stream));
+#   endif
 _GL_CXXALIAS_SYS (getw, int, (FILE *restrict stream));
 #  endif
 # endif
@@ -1241,6 +1244,10 @@ _GL_CXXALIASWARN (puts);
 _GL_CXXALIAS_MDA (putw, int, (int w, FILE *restrict stream));
 # else
 #  if @HAVE_DECL_PUTW@
+#   if defined __APPLE__ && defined __MACH__
+/* The presence of the declaration depends on _POSIX_C_SOURCE.  */
+_GL_FUNCDECL_SYS (putw, int, (int w, FILE *restrict stream));
+#   endif
 _GL_CXXALIAS_SYS (putw, int, (int w, FILE *restrict stream));
 #  endif
 # endif
