@@ -19,6 +19,6 @@
 ##
 
 geninfo_external  = 0
-lcov_excl_line    = LCOV_EXCL_LINE|CASE_K_PLACEHOLDER|FATAL_ERR|INTERNAL_ERR|UNEXPECTED_INT_VALUE
+lcov_excl_line    = LCOV_EXCL_LINE|CASE_K_PLACEHOLDER|FATAL_ERR|INTERNAL_ERR|UNEXPECTED_INT_VALUE|unreachable
 
 # vim:set et sw=2 ts=2:
