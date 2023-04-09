@@ -42,23 +42,20 @@
 #include <stdlib.h>
 #include <sysexits.h>
 
-#define DUMP_COMMA \
-  FPUTS( ",\n", dout )
-
 #define DUMP_FORMAT(...) BLOCK( \
   FPUTNSP( indent * DUMP_INDENT, dout ); FPRINTF( dout, __VA_ARGS__ ); )
 
-#define DUMP_LOC(KEY,LOC)   \
-  DUMP_FORMAT( KEY ": " ); \
-  c_loc_dump( (LOC), dout )
+#define DUMP_KEY(...) BLOCK( \
+  fput_sep( ",\n", comma, dout ); DUMP_FORMAT( __VA_ARGS__ ); )
 
-#define DUMP_SNAME(KEY,SNAME) BLOCK(  \
-  DUMP_FORMAT( KEY ": " );            \
-  c_sname_dump( (SNAME), dout ); )
+#define DUMP_LOC(KEY,LOC) \
+  DUMP_KEY( KEY ": " ); c_loc_dump( (LOC), dout )
 
-#define DUMP_TYPE(TYPE) BLOCK(  \
-  DUMP_FORMAT( "type: " );      \
-  c_type_dump( (TYPE), dout ); )
+#define DUMP_SNAME(KEY,SNAME) BLOCK( \
+  DUMP_KEY( KEY ": " ); c_sname_dump( (SNAME), dout ); )
+
+#define DUMP_TYPE(TYPE) BLOCK( \
+  DUMP_KEY( "type: " ); c_type_dump( (TYPE), dout ); )
 
 /// @endcond
 
@@ -68,6 +65,8 @@
  */
 
 // local functions
+static void c_ast_dump_impl( c_ast_t const*, unsigned, bool*, char const*,
+                             FILE* );
 static void c_capture_kind_dump( c_capture_kind_t, FILE* );
 static void c_loc_dump( c_loc_t const*, FILE* );
 
@@ -81,28 +80,31 @@ static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
  *
  * @param align The \ref c_alignas to dump.
  * @param indent The current indent.
+ * @param comma A pointer to a flag to know whether to print `,`.
  * @param dout The `FILE` to dump to.
  */
-static bool c_alignas_dump( c_alignas_t const *align, unsigned indent,
-                            FILE *dout ) {
+static void c_alignas_dump( c_alignas_t const *align, unsigned indent,
+                            bool *comma, FILE *dout ) {
   assert( align != NULL );
   assert( dout != NULL );
 
   if ( align->kind == C_ALIGNAS_NONE )
-    return false;
+    return;
 
-  DUMP_FORMAT( "alignas: {\n" );
+  DUMP_KEY( "alignas: {\n" );
+
+  bool const orig_comma = *comma;
+  *comma = false;
   ++indent;
 
   switch ( align->kind ) {
     case C_ALIGNAS_NONE:
       unreachable();
     case C_ALIGNAS_EXPR:
-      DUMP_FORMAT( "expr: %u,\n", align->expr );
+      DUMP_KEY( "expr: %u", align->expr );
       break;
     case C_ALIGNAS_TYPE:
-      c_ast_dump( align->type_ast, indent, "type_ast", dout );
-      FPUTS( ",\n", dout );
+      c_ast_dump_impl( align->type_ast, indent, comma, "type_ast", dout );
       break;
   } // switch
 
@@ -110,8 +112,197 @@ static bool c_alignas_dump( c_alignas_t const *align, unsigned indent,
 
   FPUTC( '\n', dout );
   --indent;
+  *comma = orig_comma;
   DUMP_FORMAT( "}" );
-  return true;
+}
+
+/**
+ * Dumps \a ast (for debugging).
+ *
+ * @param ast The AST to dump.  If NULL and \a key is not NULL, dumps only \a
+ * key followed by `:&nbsp;null`.
+ * @param indent The current indent.
+ * @param comma A pointer to a flag to know whether to print `,`.
+ * @param key The key for which \a ast is the value, or NULL for none.
+ * @param dout The `FILE` to dump to.
+ */
+void c_ast_dump_impl( c_ast_t const *ast, unsigned indent, bool *comma,
+                      char const *key, FILE *dout ) {
+  assert( dout != NULL );
+  key = null_if_empty( key );
+
+  if ( key != NULL )
+    DUMP_KEY( "%s: ", key );
+
+  if ( ast == NULL ) {
+    FPUTS( "null", dout );
+    return;
+  }
+
+  if ( key != NULL )
+    FPUTS( "{\n", dout );
+  else
+    DUMP_FORMAT( "{\n" );
+
+  bool const orig_comma = *comma;
+  *comma = false;
+  ++indent;
+
+  DUMP_SNAME( "sname", &ast->sname );
+  DUMP_KEY( "unique_id: " PRId_C_AST_ID_T, ast->unique_id );
+  DUMP_KEY(
+    "kind: { value: 0x%X, string: \"%s\" }",
+    ast->kind, c_kind_name( ast->kind )
+  );
+  DUMP_KEY( "depth: %u", ast->depth );
+  DUMP_KEY(
+    "parent__unique_id: " PRId_C_AST_SID_T,
+    ast->parent_ast != NULL ?
+      STATIC_CAST( c_ast_sid_t, ast->parent_ast->unique_id ) :
+      STATIC_CAST( c_ast_sid_t, -1 )
+  );
+  c_alignas_dump( &ast->align, indent, comma, dout );
+  DUMP_LOC( "loc", &ast->loc );
+  DUMP_TYPE( &ast->type );
+
+  switch ( ast->kind ) {
+    case K_DESTRUCTOR:
+    case K_NAME:
+    case K_PLACEHOLDER:
+    case K_VARIADIC:
+      // nothing to do
+      break;
+
+    case K_ARRAY:
+      DUMP_KEY( "size: " );
+      switch ( ast->array.size ) {
+        case C_ARRAY_SIZE_NONE:
+          FPUTS( "\"unspecified\"", dout );
+          break;
+        case C_ARRAY_SIZE_VARIABLE:
+          FPUTS( "'*'", dout );
+          break;
+        default:
+          FPRINTF( dout, PRId_C_ARRAY_SIZE_T, ast->array.size );
+      } // switch
+      if ( ast->array.stids != TS_NONE ) {
+        c_type_t const type = C_TYPE_LIT_S( ast->array.stids );
+        DUMP_TYPE( &type );
+      }
+      c_ast_dump_impl( ast->array.of_ast, indent, comma, "of_ast", dout );
+      break;
+
+    case K_CAPTURE:
+      DUMP_KEY( "capture: " );
+      c_capture_kind_dump( ast->capture.kind, dout );
+      break;
+
+    case K_CAST:
+      DUMP_KEY(
+        "cast_kind: { value: 0x%X, string: \"%s\" }",
+        ast->cast.kind, c_cast_english( ast->cast.kind )
+      );
+      c_ast_dump_impl( ast->cast.to_ast, indent, comma, "to_ast", dout );
+      break;
+
+    case K_CLASS_STRUCT_UNION:
+      DUMP_SNAME( "csu_sname", &ast->csu.csu_sname );
+      break;
+
+    case K_OPERATOR:
+      DUMP_KEY(
+        "operator: { value: %d, string: \"%s\" }",
+        STATIC_CAST( int, ast->oper.operator->oper_id ),
+        ast->oper.operator->literal
+      );
+      FALLTHROUGH;
+
+    case K_FUNCTION:
+      DUMP_KEY( "flags: { value: 0x%X, string: ", ast->func.flags );
+      switch ( ast->func.flags ) {
+        case C_FUNC_UNSPECIFIED:
+          FPUTS( "\"unspecified\"", dout );
+          break;
+        case C_FUNC_MEMBER:
+          FPUTS( "\"member\"", dout );
+          break;
+        case C_FUNC_NON_MEMBER:
+          FPUTS( "\"non-member\"", dout );
+          break;
+        case C_OPER_OVERLOADABLE:
+          FPUTS( "\"overloadable\"", dout );
+          break;
+     // case C_OPER_NOT_OVERLOADABLE:
+     //
+     //   This doesn't need to be here because these flags are what the user
+     //   specified:
+     //
+     //       declare ! as [[non-]member] operator ...
+     //
+     //   not c_operator::flags, so this can never be C_OPER_NOT_OVERLOADABLE.
+     //
+     //   break;
+        default:
+          FPUTS( "'?'", dout );
+          break;
+      } // switch
+      FPUTS( " }", dout );
+      FALLTHROUGH;
+
+    case K_APPLE_BLOCK:
+    case K_CONSTRUCTOR:
+    case K_USER_DEF_LITERAL:
+dump_params:
+      DUMP_KEY( "param_ast_list: " );
+      c_ast_list_dump( &ast->func.param_ast_list, indent, dout );
+      if ( ast->func.ret_ast != NULL )
+        c_ast_dump_impl( ast->func.ret_ast, indent, comma, "ret_ast", dout );
+      break;
+
+    case K_ENUM:
+      DUMP_SNAME( "enum_sname", &ast->enum_.enum_sname );
+      if ( ast->enum_.of_ast != NULL )
+        c_ast_dump_impl( ast->enum_.of_ast, indent, comma, "of_ast", dout );
+      break;
+
+    case K_LAMBDA:
+      DUMP_KEY( "capture_ast_list: " );
+      c_ast_list_dump( &ast->lambda.capture_ast_list, indent, dout );
+      goto dump_params;
+
+    case K_POINTER_TO_MEMBER:
+      DUMP_SNAME( "class_sname", &ast->ptr_mbr.class_sname );
+      FALLTHROUGH;
+
+    case K_POINTER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+      c_ast_dump_impl( ast->ptr_ref.to_ast, indent, comma, "to_ast", dout );
+      break;
+
+    case K_TYPEDEF:
+      c_ast_dump_impl( ast->tdef.for_ast, indent, comma, "for_ast", dout );
+      FALLTHROUGH;
+
+    case K_BUILTIN:
+      DUMP_KEY( "bit_width: %u", ast->builtin.bit_width );
+      if ( c_ast_is_tid_any( ast, TB_BITINT ) &&
+           ast->builtin.BitInt.width > 0 ) {
+        DUMP_KEY( "BitInt_width: %u", ast->builtin.BitInt.width );
+      }
+      break;
+
+    case K_USER_DEF_CONVERSION:
+      c_ast_dump_impl(
+        ast->udef_conv.conv_ast, indent, comma, "conv_ast", dout
+      );
+      break;
+  } // switch
+
+  FPUTC( '\n', dout );
+  --indent;
+  *comma = orig_comma;
+  DUMP_FORMAT( "}" );
 }
 
 /**
@@ -186,205 +377,8 @@ void bool_dump( bool value, FILE *dout ) {
 
 void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
                  FILE *dout ) {
-  assert( dout != NULL );
-  key = null_if_empty( key );
-
-  if ( key != NULL )
-    DUMP_FORMAT( "%s: ", key );
-
-  if ( ast == NULL ) {
-    FPUTS( "null", dout );
-    return;
-  }
-
-  if ( key != NULL )
-    FPUTS( "{\n", dout );
-  else
-    DUMP_FORMAT( "{\n" );
-
-  ++indent;
-
-  DUMP_SNAME( "sname", &ast->sname );
-  FPUTS( ",\n", dout );
-  DUMP_FORMAT( "unique_id: " PRId_C_AST_ID_T ",\n", ast->unique_id );
-  DUMP_FORMAT(
-    "kind: { value: 0x%X, string: \"%s\" },\n",
-    ast->kind, c_kind_name( ast->kind )
-  );
-  DUMP_FORMAT( "depth: %u,\n", ast->depth );
-
-  DUMP_FORMAT(
-    "parent__unique_id: " PRId_C_AST_SID_T ",\n",
-    ast->parent_ast != NULL ?
-      STATIC_CAST( c_ast_sid_t, ast->parent_ast->unique_id ) :
-      STATIC_CAST( c_ast_sid_t, -1 )
-  );
-
-  if ( c_alignas_dump( &ast->align, indent, dout ) )
-    FPUTS( ",\n", dout );
-
-  DUMP_LOC( "loc", &ast->loc );
-  FPUTS( ",\n", dout );
-  DUMP_TYPE( &ast->type );
-
   bool comma = false;
-
-  switch ( ast->kind ) {
-    case K_DESTRUCTOR:
-    case K_NAME:
-    case K_PLACEHOLDER:
-    case K_VARIADIC:
-      // nothing to do
-      break;
-
-    case K_ARRAY:
-      DUMP_COMMA;
-      DUMP_FORMAT( "size: " );
-      switch ( ast->array.size ) {
-        case C_ARRAY_SIZE_NONE:
-          FPUTS( "\"unspecified\"", dout );
-          break;
-        case C_ARRAY_SIZE_VARIABLE:
-          FPUTS( "'*'", dout );
-          break;
-        default:
-          FPRINTF( dout, PRId_C_ARRAY_SIZE_T, ast->array.size );
-      } // switch
-      if ( ast->array.stids != TS_NONE ) {
-        FPUTS( ",\n", dout );
-        c_type_t const type = C_TYPE_LIT_S( ast->array.stids );
-        DUMP_TYPE( &type );
-      }
-      FPUTS( ",\n", dout );
-      c_ast_dump( ast->array.of_ast, indent, "of_ast", dout );
-      break;
-
-    case K_CAPTURE:
-      DUMP_COMMA;
-      DUMP_FORMAT( "capture: " );
-      c_capture_kind_dump( ast->capture.kind, dout );
-      break;
-
-    case K_CAST:
-      DUMP_COMMA;
-      DUMP_FORMAT(
-        "cast_kind: { value: 0x%X, string: \"%s\" },\n",
-        ast->cast.kind, c_cast_english( ast->cast.kind )
-      );
-      c_ast_dump( ast->cast.to_ast, indent, "to_ast", dout );
-      break;
-
-    case K_CLASS_STRUCT_UNION:
-      DUMP_COMMA;
-      DUMP_SNAME( "csu_sname", &ast->csu.csu_sname );
-      break;
-
-    case K_OPERATOR:
-      DUMP_COMMA;
-      DUMP_FORMAT(
-        "operator: { value: %d, string: \"%s\" }",
-        STATIC_CAST( int, ast->oper.operator->oper_id ),
-        ast->oper.operator->literal
-      );
-      FALLTHROUGH;
-
-    case K_FUNCTION:
-      DUMP_COMMA;
-      DUMP_FORMAT( "flags: { value: 0x%X, string: ", ast->func.flags );
-      switch ( ast->func.flags ) {
-        case C_FUNC_UNSPECIFIED:
-          FPUTS( "\"unspecified\"", dout );
-          break;
-        case C_FUNC_MEMBER:
-          FPUTS( "\"member\"", dout );
-          break;
-        case C_FUNC_NON_MEMBER:
-          FPUTS( "\"non-member\"", dout );
-          break;
-        case C_OPER_OVERLOADABLE:
-          FPUTS( "\"overloadable\"", dout );
-          break;
-     // case C_OPER_NOT_OVERLOADABLE:
-     //
-     //   This doesn't need to be here because these flags are what the user
-     //   specified:
-     //
-     //       declare ! as [[non-]member] operator ...
-     //
-     //   not c_operator::flags, so this can never be C_OPER_NOT_OVERLOADABLE.
-     //
-     //   break;
-        default:
-          FPUTS( "'?'", dout );
-          break;
-      } // switch
-      FPUTS( " }", dout );
-      FALLTHROUGH;
-
-    case K_APPLE_BLOCK:
-    case K_CONSTRUCTOR:
-    case K_USER_DEF_LITERAL:
-dump_params:
-      DUMP_COMMA;
-      DUMP_FORMAT( "param_ast_list: " );
-      c_ast_list_dump( &ast->func.param_ast_list, indent, dout );
-      if ( ast->func.ret_ast != NULL ) {
-        FPUTS( ",\n", dout );
-        c_ast_dump( ast->func.ret_ast, indent, "ret_ast", dout );
-      }
-      break;
-
-    case K_ENUM:
-      DUMP_COMMA;
-      DUMP_SNAME( "enum_sname", &ast->enum_.enum_sname );
-      if ( ast->enum_.of_ast != NULL ) {
-        FPUTS( ",\n", dout );
-        c_ast_dump( ast->enum_.of_ast, indent, "of_ast", dout );
-      }
-      break;
-
-    case K_LAMBDA:
-      DUMP_COMMA;
-      DUMP_FORMAT( "capture_ast_list: " );
-      c_ast_list_dump( &ast->lambda.capture_ast_list, indent, dout );
-      goto dump_params;
-
-    case K_POINTER_TO_MEMBER:
-      DUMP_COMMA;
-      DUMP_SNAME( "class_sname", &ast->ptr_mbr.class_sname );
-      FALLTHROUGH;
-
-    case K_POINTER:
-    case K_REFERENCE:
-    case K_RVALUE_REFERENCE:
-      DUMP_COMMA;
-      c_ast_dump( ast->ptr_ref.to_ast, indent, "to_ast", dout );
-      break;
-
-    case K_TYPEDEF:
-      DUMP_COMMA;
-      c_ast_dump( ast->tdef.for_ast, indent, "for_ast", dout );
-      FALLTHROUGH;
-
-    case K_BUILTIN:
-      DUMP_COMMA;
-      DUMP_FORMAT( "bit_width: %u", ast->builtin.bit_width );
-      if ( c_ast_is_tid_any( ast, TB_BITINT ) &&
-           ast->builtin.BitInt.width > 0 ) {
-        FPUTS( ",\n", dout );
-        DUMP_FORMAT( "BitInt_width: %u", ast->builtin.BitInt.width );
-      }
-      break;
-
-    case K_USER_DEF_CONVERSION:
-      DUMP_COMMA;
-      c_ast_dump( ast->udef_conv.conv_ast, indent, "conv_ast", dout );
-      break;
-  } // switch
-
-  FPUTC( '\n', dout );
-  --indent;
-  DUMP_FORMAT( "}" );
+  c_ast_dump_impl( ast, indent, &comma, key, dout );
 }
 
 void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
