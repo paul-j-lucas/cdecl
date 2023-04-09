@@ -1,5 +1,7 @@
 2023-04-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c, debug.out, debug.test: When dumping, `variable` is no properly
+     quoted; more tests.
    * dump.c: Better `,` printing in debug output.
    * dump.c: Simplified printing of `,` in debug output.
    * debug.out, debug.test: Added lambda captures to debug test.
