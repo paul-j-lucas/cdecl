@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** Escaping quotes in dump strings
 When dumping, quotes in strings are now properly escaped.
 
+** Quoting lambda capture dump strings
+When dumping, `this` and `*this` are now properly quoted.
+
 ** Fixed operator dump crash
 Dumping an operator caused a crash: fixed.
 

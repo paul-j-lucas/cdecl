@@ -130,10 +130,10 @@ static void c_capture_kind_dump( c_capture_kind_t kind, FILE *dout ) {
       FPUTS( "\"&\"", dout );
       break;
     case C_CAPTURE_STAR_THIS:
-      FPUTC( '*', dout );
-      FALLTHROUGH;
+      FPUTS( "\"*this\"", dout );
+      break;
     case C_CAPTURE_THIS:
-      FPUTS( L_this, dout );
+      FPUTS( "\"this\"", dout );
       break;
     case C_CAPTURE_VARIABLE:
       FPUTS( L_variable, dout );
