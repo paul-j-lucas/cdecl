@@ -26,10 +26,18 @@ explain operator bool() const
 explain int operator ""_w(char const *arg)
 explain ~C()
 explain []
+explain [](char c)
+explain [x]
+explain [x](char c)
+explain [=]
 explain [=](char c)
 explain [&]
+explain [&](char c)
+explain [&x]
 explain [&x](char c)
 explain [this]
+explain [this](char c)
+explain [*this]
 explain [*this](char c)
 
 set nodebug

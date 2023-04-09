@@ -315,10 +315,10 @@ static void c_capture_kind_dump( c_capture_kind_t kind, FILE *dout ) {
   assert( dout != NULL );
   switch ( kind ) {
     case C_CAPTURE_COPY:
-      FPUTS( "\"=\"", dout );
+      FPUTS( "'='", dout );
       break;
     case C_CAPTURE_REFERENCE:
-      FPUTS( "\"&\"", dout );
+      FPUTS( "'&'", dout );
       break;
     case C_CAPTURE_STAR_THIS:
       FPUTS( "\"*this\"", dout );
@@ -327,7 +327,7 @@ static void c_capture_kind_dump( c_capture_kind_t kind, FILE *dout ) {
       FPUTS( "\"this\"", dout );
       break;
     case C_CAPTURE_VARIABLE:
-      FPUTS( L_variable, dout );
+      FPUTS( "\"variable\"", dout );
       break;
   } // switch
 }
