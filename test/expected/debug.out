@@ -4853,6 +4853,837 @@ destructor_decl_c: {
 }
 
 declare C as destructor
+c++decl> explain []
+lambda_decl_c: {
+  rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
+  capture_decl_list_c_opt: [],
+  lambda_param_c_ast_list_opt: [],
+  storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+  lambda_return_type_c_ast_opt: null,
+  lambda_decl_c: {
+    sname: { string: "" },
+    unique_id: 1427,
+    kind: { value: 0x40000, string: "lambda" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 8, last_column: 9 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture_ast_list: [],
+    param_ast_list: []
+  }
+}
+
+declare lambda
+c++decl> explain [=](char c)
+capture_decl_list_c: {
+  rule: "capture_decl_c_ast",
+  capture_decl_c_ast: {
+    sname: { string: "" },
+    unique_id: 1428,
+    kind: { value: 0x4, string: "capture" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 9 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture: "="
+  },
+  capture_decl_list_c: [
+    {
+      sname: { string: "" },
+      unique_id: 1428,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 9 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      capture: "="
+    }
+  ]
+}
+
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
+  builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
+  builtin_type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1429,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 12, last_column: 15 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
+  atomic_builtin_typedef_type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1429,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 12, last_column: 15 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+  type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1429,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 12, last_column: 15 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+sname_c: {
+  rule: "NAME",
+  NAME: "c",
+  sname_c: { string: "c", scopes: "none" }
+}
+
+sname_c_ast: {
+  rule: "sname_c",
+  in_attr__type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1429,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 12, last_column: 15 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  sname: { string: "c", scopes: "none" },
+  bit_field_c_uint_opt: 0,
+  sname_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1429,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 12, last_column: 15 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+param_c_ast: {
+  rule: "this_stid_opt type_c_ast cast_c_astp_opt",
+  this_stid_opt: { stid: 0x2, string: "" },
+  type_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1429,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 12, last_column: 15 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  cast_c_astp_opt: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1429,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 12, last_column: 15 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  param_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1429,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 12, last_column: 15 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+param_c_ast_list: {
+  rule: "param_c_ast",
+  param_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1429,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 12, last_column: 15 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  param_c_ast_list: [
+    {
+      sname: { string: "c", scopes: "none" },
+      unique_id: 1429,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 12, last_column: 15 },
+      type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+      bit_width: 0
+    }
+  ]
+}
+
+lambda_decl_c: {
+  rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
+  capture_decl_list_c_opt: [
+    {
+      sname: { string: "" },
+      unique_id: 1428,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 9 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      capture: "="
+    }
+  ],
+  lambda_param_c_ast_list_opt: [
+    {
+      sname: { string: "c", scopes: "none" },
+      unique_id: 1429,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 12, last_column: 15 },
+      type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+      bit_width: 0
+    }
+  ],
+  storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+  lambda_return_type_c_ast_opt: null,
+  lambda_decl_c: {
+    sname: { string: "" },
+    unique_id: 1430,
+    kind: { value: 0x40000, string: "lambda" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 8, last_column: 18 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture_ast_list: [
+      {
+        sname: { string: "" },
+        unique_id: 1428,
+        kind: { value: 0x4, string: "capture" },
+        depth: 0,
+        parent__unique_id: -1,
+        loc: { first_column: 9 },
+        type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+        capture: "="
+      }
+    ],
+    param_ast_list: [
+      {
+        sname: { string: "c", scopes: "none" },
+        unique_id: 1429,
+        kind: { value: 0x2, string: "built-in type" },
+        depth: 0,
+        parent__unique_id: -1,
+        loc: { first_column: 12, last_column: 15 },
+        type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+        bit_width: 0
+      }
+    ]
+  }
+}
+
+declare lambda capturing [copy by default] (c as character)
+c++decl> explain [&]
+capture_decl_list_c: {
+  rule: "capture_decl_c_ast",
+  capture_decl_c_ast: {
+    sname: { string: "" },
+    unique_id: 1431,
+    kind: { value: 0x4, string: "capture" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 9 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture: "&"
+  },
+  capture_decl_list_c: [
+    {
+      sname: { string: "" },
+      unique_id: 1431,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 9 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      capture: "&"
+    }
+  ]
+}
+
+lambda_decl_c: {
+  rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
+  capture_decl_list_c_opt: [
+    {
+      sname: { string: "" },
+      unique_id: 1431,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 9 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      capture: "&"
+    }
+  ],
+  lambda_param_c_ast_list_opt: [],
+  storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+  lambda_return_type_c_ast_opt: null,
+  lambda_decl_c: {
+    sname: { string: "" },
+    unique_id: 1432,
+    kind: { value: 0x40000, string: "lambda" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 8, last_column: 10 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture_ast_list: [
+      {
+        sname: { string: "" },
+        unique_id: 1431,
+        kind: { value: 0x4, string: "capture" },
+        depth: 0,
+        parent__unique_id: -1,
+        loc: { first_column: 9 },
+        type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+        capture: "&"
+      }
+    ],
+    param_ast_list: []
+  }
+}
+
+declare lambda capturing [reference by default]
+c++decl> explain [&x](char c)
+capture_decl_list_c: {
+  rule: "capture_decl_c_ast",
+  capture_decl_c_ast: {
+    sname: { string: "x", scopes: "none" },
+    unique_id: 1433,
+    kind: { value: 0x4, string: "capture" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 9, last_column: 10 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture: "&"
+  },
+  capture_decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      unique_id: 1433,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 9, last_column: 10 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      capture: "&"
+    }
+  ]
+}
+
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
+  builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
+  builtin_type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1434,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 13, last_column: 16 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
+  atomic_builtin_typedef_type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1434,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 13, last_column: 16 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+  type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1434,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 13, last_column: 16 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+sname_c: {
+  rule: "NAME",
+  NAME: "c",
+  sname_c: { string: "c", scopes: "none" }
+}
+
+sname_c_ast: {
+  rule: "sname_c",
+  in_attr__type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1434,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 13, last_column: 16 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  sname: { string: "c", scopes: "none" },
+  bit_field_c_uint_opt: 0,
+  sname_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1434,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 13, last_column: 16 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+param_c_ast: {
+  rule: "this_stid_opt type_c_ast cast_c_astp_opt",
+  this_stid_opt: { stid: 0x2, string: "" },
+  type_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1434,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 13, last_column: 16 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  cast_c_astp_opt: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1434,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 13, last_column: 16 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  param_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1434,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 13, last_column: 16 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+param_c_ast_list: {
+  rule: "param_c_ast",
+  param_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1434,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 13, last_column: 16 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  param_c_ast_list: [
+    {
+      sname: { string: "c", scopes: "none" },
+      unique_id: 1434,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 13, last_column: 16 },
+      type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+      bit_width: 0
+    }
+  ]
+}
+
+lambda_decl_c: {
+  rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
+  capture_decl_list_c_opt: [
+    {
+      sname: { string: "x", scopes: "none" },
+      unique_id: 1433,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 9, last_column: 10 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      capture: "&"
+    }
+  ],
+  lambda_param_c_ast_list_opt: [
+    {
+      sname: { string: "c", scopes: "none" },
+      unique_id: 1434,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 13, last_column: 16 },
+      type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+      bit_width: 0
+    }
+  ],
+  storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+  lambda_return_type_c_ast_opt: null,
+  lambda_decl_c: {
+    sname: { string: "" },
+    unique_id: 1435,
+    kind: { value: 0x40000, string: "lambda" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 8, last_column: 19 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture_ast_list: [
+      {
+        sname: { string: "x", scopes: "none" },
+        unique_id: 1433,
+        kind: { value: 0x4, string: "capture" },
+        depth: 0,
+        parent__unique_id: -1,
+        loc: { first_column: 9, last_column: 10 },
+        type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+        capture: "&"
+      }
+    ],
+    param_ast_list: [
+      {
+        sname: { string: "c", scopes: "none" },
+        unique_id: 1434,
+        kind: { value: 0x2, string: "built-in type" },
+        depth: 0,
+        parent__unique_id: -1,
+        loc: { first_column: 13, last_column: 16 },
+        type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+        bit_width: 0
+      }
+    ]
+  }
+}
+
+declare lambda capturing [reference to x] (c as character)
+c++decl> explain [this]
+capture_decl_list_c: {
+  rule: "capture_decl_c_ast",
+  capture_decl_c_ast: {
+    sname: { string: "" },
+    unique_id: 1436,
+    kind: { value: 0x4, string: "capture" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 9, last_column: 12 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture: "this"
+  },
+  capture_decl_list_c: [
+    {
+      sname: { string: "" },
+      unique_id: 1436,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 9, last_column: 12 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      capture: "this"
+    }
+  ]
+}
+
+lambda_decl_c: {
+  rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
+  capture_decl_list_c_opt: [
+    {
+      sname: { string: "" },
+      unique_id: 1436,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 9, last_column: 12 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      capture: "this"
+    }
+  ],
+  lambda_param_c_ast_list_opt: [],
+  storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+  lambda_return_type_c_ast_opt: null,
+  lambda_decl_c: {
+    sname: { string: "" },
+    unique_id: 1437,
+    kind: { value: 0x40000, string: "lambda" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 8, last_column: 13 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture_ast_list: [
+      {
+        sname: { string: "" },
+        unique_id: 1436,
+        kind: { value: 0x4, string: "capture" },
+        depth: 0,
+        parent__unique_id: -1,
+        loc: { first_column: 9, last_column: 12 },
+        type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+        capture: "this"
+      }
+    ],
+    param_ast_list: []
+  }
+}
+
+declare lambda capturing [this]
+c++decl> explain [*this](char c)
+capture_decl_list_c: {
+  rule: "capture_decl_c_ast",
+  capture_decl_c_ast: {
+    sname: { string: "" },
+    unique_id: 1438,
+    kind: { value: 0x4, string: "capture" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 9, last_column: 13 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture: "*this"
+  },
+  capture_decl_list_c: [
+    {
+      sname: { string: "" },
+      unique_id: 1438,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 9, last_column: 13 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      capture: "*this"
+    }
+  ]
+}
+
+builtin_type_c_ast: {
+  rule: "builtin_no_BitInt_c_btid",
+  builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
+  builtin_type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1439,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 16, last_column: 19 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+east_modified_type_c_ast: {
+  rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
+  atomic_builtin_typedef_type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1439,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 16, last_column: 19 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+  type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1439,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 16, last_column: 19 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+sname_c: {
+  rule: "NAME",
+  NAME: "c",
+  sname_c: { string: "c", scopes: "none" }
+}
+
+sname_c_ast: {
+  rule: "sname_c",
+  in_attr__type_c_ast: {
+    sname: { string: "" },
+    unique_id: 1439,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 16, last_column: 19 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  sname: { string: "c", scopes: "none" },
+  bit_field_c_uint_opt: 0,
+  sname_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1439,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 16, last_column: 19 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+param_c_ast: {
+  rule: "this_stid_opt type_c_ast cast_c_astp_opt",
+  this_stid_opt: { stid: 0x2, string: "" },
+  type_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1439,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 16, last_column: 19 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  cast_c_astp_opt: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1439,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 16, last_column: 19 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  param_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1439,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 16, last_column: 19 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  }
+}
+
+param_c_ast_list: {
+  rule: "param_c_ast",
+  param_c_ast: {
+    sname: { string: "c", scopes: "none" },
+    unique_id: 1439,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 16, last_column: 19 },
+    type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+    bit_width: 0
+  },
+  param_c_ast_list: [
+    {
+      sname: { string: "c", scopes: "none" },
+      unique_id: 1439,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 16, last_column: 19 },
+      type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+      bit_width: 0
+    }
+  ]
+}
+
+lambda_decl_c: {
+  rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
+  capture_decl_list_c_opt: [
+    {
+      sname: { string: "" },
+      unique_id: 1438,
+      kind: { value: 0x4, string: "capture" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 9, last_column: 13 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      capture: "*this"
+    }
+  ],
+  lambda_param_c_ast_list_opt: [
+    {
+      sname: { string: "c", scopes: "none" },
+      unique_id: 1439,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      parent__unique_id: -1,
+      loc: { first_column: 16, last_column: 19 },
+      type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+      bit_width: 0
+    }
+  ],
+  storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+  lambda_return_type_c_ast_opt: null,
+  lambda_decl_c: {
+    sname: { string: "" },
+    unique_id: 1440,
+    kind: { value: 0x40000, string: "lambda" },
+    depth: 0,
+    parent__unique_id: -1,
+    loc: { first_column: 8, last_column: 22 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    capture_ast_list: [
+      {
+        sname: { string: "" },
+        unique_id: 1438,
+        kind: { value: 0x4, string: "capture" },
+        depth: 0,
+        parent__unique_id: -1,
+        loc: { first_column: 9, last_column: 13 },
+        type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+        capture: "*this"
+      }
+    ],
+    param_ast_list: [
+      {
+        sname: { string: "c", scopes: "none" },
+        unique_id: 1439,
+        kind: { value: 0x2, string: "built-in type" },
+        depth: 0,
+        parent__unique_id: -1,
+        loc: { first_column: 16, last_column: 19 },
+        type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
+        bit_width: 0
+      }
+    ]
+  }
+}
+
+declare lambda capturing [*this] (c as character)
 c++decl> set nodebug
 c++decl> set
   noalt-tokens
@@ -4893,7 +5724,7 @@ builtin_type_c_ast: {
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
     sname: { string: "" },
-    unique_id: 1429,
+    unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: -1,
@@ -4907,7 +5738,7 @@ east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
     sname: { string: "" },
-    unique_id: 1429,
+    unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: -1,
@@ -4918,7 +5749,7 @@ east_modified_type_c_ast: {
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
     sname: { string: "" },
-    unique_id: 1429,
+    unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: -1,
@@ -4938,7 +5769,7 @@ sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
     sname: { string: "" },
-    unique_id: 1429,
+    unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: -1,
@@ -4950,7 +5781,7 @@ sname_c_ast: {
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
     sname: { string: "x", scopes: "none" },
-    unique_id: 1429,
+    unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: -1,
@@ -4965,7 +5796,7 @@ decl_c: {
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
-    unique_id: 1430,
+    unique_id: 1444,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: -1,
@@ -4975,7 +5806,7 @@ decl_c: {
   },
   decl_c_astp: {
     sname: { string: "x", scopes: "none" },
-    unique_id: 1429,
+    unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: -1,
@@ -4985,7 +5816,7 @@ decl_c: {
   },
   decl_c: {
     sname: { string: "x", scopes: "none" },
-    unique_id: 1429,
+    unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: -1,

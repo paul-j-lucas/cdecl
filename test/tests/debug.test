@@ -25,6 +25,12 @@ explain int C::*p
 explain operator bool() const
 explain int operator ""_w(char const *arg)
 explain ~C()
+explain []
+explain [=](char c)
+explain [&]
+explain [&x](char c)
+explain [this]
+explain [*this](char c)
 
 set nodebug
 set
