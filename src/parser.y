@@ -297,22 +297,22 @@
  * @sa #DUMP_AST()
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY ": " );          \
-  c_ast_list_dump( &(AST_LIST), /*indent=*/1, stdout ); )
+  DUMP_KEY( KEY ": " ); c_ast_list_dump( &(AST_LIST), /*indent=*/1, stdout ); )
 
 /**
  * Dumps a `bool`.
  *
  * @param KEY The key name to print.
  * @param BOOL The `bool` to dump.
+ *
+ * @sa #DUMP_KEY()
  */
 #define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(  \
-  DUMP_COMMA; PUTS( "  " KEY ": " );    \
-  bool_dump( (BOOL), stdout ); )
+  DUMP_KEY( KEY ": " ); bool_dump( (BOOL), stdout ); )
 
 /**
  * Dumps a comma followed by a newline the _second_ and subsequent times it's
- * called.  It's used to separate items being dumped.
+ * called used to separate items being dumped.
  */
 #define DUMP_COMMA                fput_sep( ",\n", &dump_comma, stdout )
 
@@ -324,15 +324,25 @@
 #define DUMP_END()                IF_DEBUG( PUTS( "\n}\n\n" ); )
 
 /**
+ * Possibly dumps a comma and a newline followed by the `printf()` arguments
+ * &mdash; used for printing a key followed by a value.
+ *
+ * @param ... The `printf()` arguments.
+ */
+#define DUMP_KEY(...) IF_DEBUG( \
+  DUMP_COMMA; PRINTF( "  " __VA_ARGS__ ); )
+
+/**
  * Dumps an integer.
  *
  * @param KEY The key name to print.
  * @param NUM The integer to dump.
  *
+ * @sa #DUMP_KEY()
  * @sa #DUMP_STR()
  */
-#define DUMP_INT(KEY,NUM) IF_DEBUG( \
-  DUMP_COMMA; PRINTF( "  " KEY ": %d", STATIC_CAST( int, (NUM) ) ); )
+#define DUMP_INT(KEY,NUM) \
+  DUMP_KEY( KEY ": %d", STATIC_CAST( int, (NUM) ) )
 
 /**
  * Dumps a scoped name.
@@ -340,12 +350,12 @@
  * @param KEY The key name to print.
  * @param SNAME The scoped name to dump.
  *
+ * @sa #DUMP_KEY()
  * @sa #DUMP_SNAME_LIST()
  * @sa #DUMP_STR()
  */
 #define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY ": " );    \
-  c_sname_dump( &(SNAME), stdout ); )
+  DUMP_KEY( KEY ": " ); c_sname_dump( &(SNAME), stdout ); )
 
 /**
  * Dumps a list of scoped names.
@@ -353,11 +363,11 @@
  * @param KEY The key name to print.
  * @param LIST The list of scoped names to dump.
  *
+ * @sa #DUMP_KEY()
  * @sa #DUMP_SNAME()
  */
 #define DUMP_SNAME_LIST(KEY,LIST) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY ": " );        \
-  c_sname_list_dump( &(LIST), stdout ); )
+  DUMP_KEY( KEY ": " ); c_sname_list_dump( &(LIST), stdout ); )
 
 #ifdef ENABLE_CDECL_DEBUG
 /**
@@ -433,7 +443,7 @@
  * @sa #DUMP_SNAME()
  */
 #define DUMP_STR(KEY,STR) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY ": " ); str_dump( (STR), stdout ); )
+  DUMP_KEY( KEY ": " ); str_dump( (STR), stdout ); )
 
 /**
  * Dumps a \ref c_tid_t.
@@ -444,7 +454,7 @@
  * @sa #DUMP_TYPE()
  */
 #define DUMP_TID(KEY,TID) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY ": " ); c_tid_dump( (TID), stdout ); )
+  DUMP_KEY( KEY ": " ); c_tid_dump( (TID), stdout ); )
 
 /**
  * Dumps a \ref c_type.
@@ -455,7 +465,7 @@
  * @sa #DUMP_TID()
  */
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY ": " ); c_type_dump( &(TYPE), stdout ); )
+  DUMP_KEY( KEY ": " ); c_type_dump( &(TYPE), stdout ); )
 
 /** @} */
 
