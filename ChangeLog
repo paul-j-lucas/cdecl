@@ -1,5 +1,8 @@
 2023-04-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c: Better `,` printing in debug output.
+   * dump.c: Simplified printing of `,` in debug output.
+   * debug.out, debug.test: Added lambda captures to debug test.
    * c_ast_check.c, c_type.c: Now using unreachable() more.
    * dump.c: s/break/return "none"/
    * dump.c: When dumping, `this` and `*this` are now properly quoted.
