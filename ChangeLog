@@ -1,3 +1,8 @@
+2023-04-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, locale.in.h, stdio.in.h, stdlib.in.h, gnulib-common.m4,
+     stdlib_h.m4: Updated GnuLib.
+
 2023-04-08  Paul J. Lucas <paul@lucasmail.org>
 
    * c_sglob.c: Reworked c_sglob_parse().
