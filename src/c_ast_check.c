@@ -340,7 +340,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
 
   switch ( ast->align.kind ) {
     case C_ALIGNAS_NONE:
-      break;                          // LCOV_EXCL_LINE
+      unreachable();
     case C_ALIGNAS_EXPR: {
       unsigned const alignment = ast->align.expr;
       if ( !is_01_bit( alignment ) ) {

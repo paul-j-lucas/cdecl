@@ -42,6 +42,7 @@
 
 // standard
 #include <assert.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -636,7 +637,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english, bool is_error ) {
 
   switch ( c_tid_tpid( tid ) ) {
     case C_TPID_NONE:
-      break;                            // LCOV_EXCL_LINE
+      unreachable();
 
     case C_TPID_BASE:
       for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
@@ -644,7 +645,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english, bool is_error ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english, is_error );
       } // for
-      break;                            // LCOV_EXCL_LINE
+      unreachable();
 
     case C_TPID_STORE:
       for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i ) {
@@ -658,7 +659,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english, bool is_error ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english, is_error );
       } // for
-      break;                            // LCOV_EXCL_LINE
+      unreachable();
 
     case C_TPID_ATTR:
       for ( size_t i = 0; i < ARRAY_SIZE( C_ATTRIBUTE_INFO ); ++i ) {
@@ -666,7 +667,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english, bool is_error ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english, is_error );
       } // for
-      break;                            // LCOV_EXCL_LINE
+      unreachable();
   } // switch
 
   UNEXPECTED_INT_VALUE( tid );
@@ -735,7 +736,7 @@ NODISCARD
 static c_type_t c_tid_to_type( c_tid_t tids ) {
   switch ( c_tid_tpid( tids ) ) {
     case C_TPID_NONE:
-      break;                            // LCOV_EXCL_LINE
+      return T_NONE;                    // LCOV_EXCL_LINE
     case C_TPID_BASE:
       return C_TYPE_LIT_B( tids );
     case C_TPID_STORE:
@@ -766,7 +767,7 @@ static c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids ) {
 
   switch ( c_tid_tpid( tids ) ) {
     case C_TPID_NONE:
-      break;                            // LCOV_EXCL_LINE
+      return NULL;                      // LCOV_EXCL_LINE
     case C_TPID_BASE:
       return &type->btids;
     case C_TPID_STORE:
@@ -1167,7 +1168,7 @@ c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tids ) {
 
   switch ( c_tid_tpid( tids ) ) {
     case C_TPID_NONE:
-      break;                            // LCOV_EXCL_LINE
+      return 0u;                        // LCOV_EXCL_LINE
     case C_TPID_BASE:
       return type->btids;
     case C_TPID_STORE:
