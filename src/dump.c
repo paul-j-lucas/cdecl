@@ -43,7 +43,7 @@
 #include <sysexits.h>
 
 #define DUMP_COMMA \
-  BLOCK( if ( false_set( &comma ) ) FPUTS( ",\n", dout ); )
+  FPUTS( ",\n", dout )
 
 #define DUMP_FORMAT(...) BLOCK( \
   FPUTNSP( indent * DUMP_INDENT, dout ); FPRINTF( dout, __VA_ARGS__ ); )
@@ -250,12 +250,12 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
         default:
           FPRINTF( dout, PRId_C_ARRAY_SIZE_T, ast->array.size );
       } // switch
-      FPUTS( ",\n", dout );
       if ( ast->array.stids != TS_NONE ) {
+        FPUTS( ",\n", dout );
         c_type_t const type = C_TYPE_LIT_S( ast->array.stids );
         DUMP_TYPE( &type );
-        FPUTS( ",\n", dout );
       }
+      FPUTS( ",\n", dout );
       c_ast_dump( ast->array.of_ast, indent, "of_ast", dout );
       break;
 
@@ -282,7 +282,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
     case K_OPERATOR:
       DUMP_COMMA;
       DUMP_FORMAT(
-        "operator: { value: %d, string: \"%s\" },\n",
+        "operator: { value: %d, string: \"%s\" }",
         STATIC_CAST( int, ast->oper.operator->oper_id ),
         ast->oper.operator->literal
       );
@@ -318,14 +318,14 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
           FPUTS( "'?'", dout );
           break;
       } // switch
-      FPUTS( " },\n", dout );
+      FPUTS( " }", dout );
       FALLTHROUGH;
 
     case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL:
-      DUMP_COMMA;
 dump_params:
+      DUMP_COMMA;
       DUMP_FORMAT( "param_ast_list: " );
       c_ast_list_dump( &ast->func.param_ast_list, indent, dout );
       if ( ast->func.ret_ast != NULL ) {
@@ -347,13 +347,11 @@ dump_params:
       DUMP_COMMA;
       DUMP_FORMAT( "capture_ast_list: " );
       c_ast_list_dump( &ast->lambda.capture_ast_list, indent, dout );
-      FPUTS( ",\n", dout );
       goto dump_params;
 
     case K_POINTER_TO_MEMBER:
       DUMP_COMMA;
       DUMP_SNAME( "class_sname", &ast->ptr_mbr.class_sname );
-      FPUTS( ",\n", dout );
       FALLTHROUGH;
 
     case K_POINTER:
@@ -366,7 +364,6 @@ dump_params:
     case K_TYPEDEF:
       DUMP_COMMA;
       c_ast_dump( ast->tdef.for_ast, indent, "for_ast", dout );
-      FPUTS( ",\n", dout );
       FALLTHROUGH;
 
     case K_BUILTIN:
