@@ -165,7 +165,7 @@ static void c_loc_dump( c_loc_t const *loc, FILE *dout ) {
 static char const* c_tpid_name( c_tpid_t tpid ) {
   switch ( tpid ) {
     case C_TPID_NONE:
-      break;                            // LCOV_EXCL_LINE
+      return "none";                    // LCOV_EXCL_LINE
     case C_TPID_BASE:
       return "btid";
     case C_TPID_STORE:
