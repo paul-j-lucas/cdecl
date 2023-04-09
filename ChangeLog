@@ -1,5 +1,9 @@
 2023-04-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, c_type.c: Now using unreachable() more.
+   * dump.c: s/break/return "none"/
+   * dump.c: When dumping, `this` and `*this` are now properly quoted.
+   * lcovrc: Added unreachable() to lcov exclusion pattern.
    * lib/Makefile.am, locale.in.h, stdio.in.h, stdlib.in.h, gnulib-common.m4,
      stdlib_h.m4: Updated GnuLib.
 
