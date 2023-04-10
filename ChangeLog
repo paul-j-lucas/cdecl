@@ -1,3 +1,11 @@
+2023-04-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, cli_options.c, lexer.l, util.h:
+     s/INTERNAL_ERR()/INTERNAL_ERROR()/
+   * cdecl.c, cli_options.c, lexer.l, print.c, util.c, util.h:
+     s/FATAL_ERR()/fatal_error()/
+   * dump.c: Eliminated temporary variable.
+
 2023-04-09  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, debug.out, debug.test: When dumping, `variable` is no properly
