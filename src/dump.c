@@ -185,10 +185,8 @@ void c_ast_dump_impl( c_ast_t const *ast, unsigned indent, bool *comma,
         default:
           FPRINTF( dout, PRId_C_ARRAY_SIZE_T, ast->array.size );
       } // switch
-      if ( ast->array.stids != TS_NONE ) {
-        c_type_t const type = C_TYPE_LIT_S( ast->array.stids );
-        DUMP_TYPE( &type );
-      }
+      if ( ast->array.stids != TS_NONE )
+        DUMP_TYPE( &C_TYPE_LIT_S( ast->array.stids ) );
       c_ast_dump_impl( ast->array.of_ast, indent, comma, "of_ast", dout );
       break;
 
