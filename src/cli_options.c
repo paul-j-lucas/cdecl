@@ -228,7 +228,7 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
         if ( ++gave_count > 1 ) {
           char const gave_opt2 = *opt;
           strbuf_t opt1_sbuf, opt2_sbuf;
-          FATAL_ERR( EX_USAGE,
+          fatal_error( EX_USAGE,
             "%s and %s are mutually exclusive\n",
             opt_format( gave_opt1, &opt1_sbuf ),
             opt_format( gave_opt2, &opt2_sbuf )
@@ -256,7 +256,7 @@ noreturn
 static void invalid_opt_value( char opt, char const *value,
                                char const *must_be ) {
   strbuf_t opt_sbuf;
-  FATAL_ERR( EX_USAGE,
+  fatal_error( EX_USAGE,
     "\"%s\": invalid value for %s; must be %s\n",
     value, opt_format( opt, &opt_sbuf ), must_be
   );
@@ -577,7 +577,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   if ( strcmp( fin_path, "-" ) != 0 ) {
     FILE *const fin = fopen( fin_path, "r" );
     if ( fin == NULL )
-      FATAL_ERR( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
+      fatal_error( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
     MAYBE_UNUSED int const fd = dup2( fileno( fin ), STDIN_FILENO );
     assert( fd == STDIN_FILENO );
   }
@@ -585,7 +585,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   if ( strcmp( fout_path, "-" ) != 0 ) {
     FILE *const fout = fopen( fout_path, "w" );
     if ( fout == NULL )
-      FATAL_ERR( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
+      fatal_error( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
     MAYBE_UNUSED int const fd = dup2( fileno( fout ), STDOUT_FILENO );
     assert( fd == STDOUT_FILENO );
   }
@@ -634,7 +634,7 @@ use_help:
 missing_arg:
   NO_OP;
   strbuf_t sbuf;
-  FATAL_ERR( EX_USAGE,
+  fatal_error( EX_USAGE,
     "\"%s\" requires an argument\n",
     opt_format( STATIC_CAST( char, opt != ':' ? opt : optopt ), &sbuf )
   );

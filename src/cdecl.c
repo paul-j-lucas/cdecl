@@ -300,7 +300,7 @@ static void conf_init( void ) {
   if ( conf_path != NULL ) {
     print_params.conf_path = conf_path;
     if ( !read_conf_file( conf_path ) && opt_conf_path != NULL )
-      FATAL_ERR( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
+      fatal_error( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
     print_params.conf_path = NULL;
     strbuf_cleanup( &sbuf );
   }

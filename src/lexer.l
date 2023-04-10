@@ -1279,15 +1279,17 @@ include{S}*\" {
  */
 noreturn
 static void lexer_fatal( char const *msg ) {
+  if ( msg == NULL ) {
+    // Never true -- here just to silence the "unused function" warning.
+    yy_fatal_error( msg );
+  }
+
   //
   // This is defined down here to avoid having to declare yy_fatal_error
   // ourselves and having to get it right being subject to possible changes in
   // its signature in different Flex versions.
   //
   INTERNAL_ERR( "lexer_fatal(): %s\n", msg );
-
-  // Not reached -- "called" just to silence the "unused function" warning.
-  yy_fatal_error( msg );
 }
 // LCOV_EXCL_STOP
 

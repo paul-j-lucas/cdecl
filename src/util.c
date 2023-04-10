@@ -125,6 +125,25 @@ char* check_strndup( char const *s, size_t n ) {
   return dup_s;
 }
 
+#ifdef __GNUC__
+  // Silence warning in call to vfprintf().
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#endif /* __GNUC__ */
+
+void fatal_error( int status, char const *format, ... ) {
+  EPRINTF( "%s: ", me );
+  va_list args;
+  va_start( args, format );
+  vfprintf( stderr, format, args );
+  va_end( args );
+  _Exit( status );
+}
+
+#ifdef __GNUC__
+# pragma GCC diagnostic pop
+#endif /* __GNUC__ */
+
 bool fd_is_file( int fd ) {
   struct stat fd_stat;
   FSTAT( fd, &fd_stat );

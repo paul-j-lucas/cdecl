@@ -274,21 +274,6 @@ _GL_INLINE_HEADER_BEGIN
 #define EPUTS(S)                  fputs( (S), stderr )
 
 /**
- * Prints an error message to standard error and exits with \a STATUS code.
- *
- * @param STATUS The status code to exit with.
- * @param FORMAT The `printf()` format string literal to use.
- * @param ... The `printf()` arguments.
- *
- * @sa #INTERNAL_ERR()
- * @sa perror_exit()
- * @sa #PERROR_EXIT_IF()
- * @sa #UNEXPECTED_INT_VALUE()
- */
-#define FATAL_ERR(STATUS,FORMAT,...) \
-  BLOCK( EPRINTF( "%s: " FORMAT, me, __VA_ARGS__ ); _Exit( STATUS ); )
-
-/**
  * Calls **ferror**(3) and exits if there was an error on \a STREAM.
  *
  * @param STREAM The `FILE` stream to check for an error.
@@ -405,19 +390,19 @@ _GL_INLINE_HEADER_BEGIN
 #define INTEGER_CAST(T,EXPR)      ((T)(uintmax_t)(EXPR))
 
 /**
- * A special-case of #FATAL_ERR that additionally prints the file and line
+ * A special-case of fatal_error() that additionally prints the file and line
  * where an internal error occurred.
  *
  * @param FORMAT The `printf()` format string literal to use.
  * @param ... The `printf()` arguments.
  *
- * @sa #FATAL_ERR()
+ * @sa fatal_error()
  * @sa perror_exit()
  * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()
  */
 #define INTERNAL_ERR(FORMAT,...) \
-  FATAL_ERR( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
+  fatal_error( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
 
 /**
  * Convenience macro for calling check_realloc().
@@ -474,7 +459,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param EXPR The expression.
  * @param STATUS The exit status code.
  *
- * @sa #FATAL_ERR()
+ * @sa fatal_error()
  * @sa #INTERNAL_ERR()
  * @sa perror_exit()
  * @sa #UNEXPECTED_INT_VALUE()
@@ -669,7 +654,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param EXPR The expression having the unexpected value.
  *
- * @sa #FATAL_ERR()
+ * @sa fatal_error()
  * @sa #INTERNAL_ERR()
  * @sa perror_exit()
  * @sa #PERROR_EXIT_IF()
@@ -788,6 +773,20 @@ NODISCARD C_UTIL_H_INLINE
 bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
 }
+
+/**
+ * Prints an error message to standard error and exits with \a status code.
+ *
+ * @param status The status code to exit with.
+ * @param format The `printf()` format string literal to use.
+ * @param ... The `printf()` arguments.
+ *
+ * @sa #INTERNAL_ERR()
+ * @sa perror_exit()
+ * @sa #PERROR_EXIT_IF()
+ * @sa #UNEXPECTED_INT_VALUE()
+ */
+noreturn void fatal_error( int status, char const *format, ... );
 
 /**
  * Checks whether \a fd refers to a regular file.
@@ -1113,7 +1112,7 @@ char const* parse_identifier( char const *s );
  *
  * @param status The exit status code.
  *
- * @sa #FATAL_ERR()
+ * @sa fatal_error()
  * @sa #INTERNAL_ERR()
  * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()

@@ -103,7 +103,7 @@ NODISCARD
 static unsigned check_tigetnum( char const *capname ) {
   int const num = tigetnum( CONST_CAST(char*, capname) );
   if ( unlikely( num < 0 ) ) {
-    FATAL_ERR( EX_UNAVAILABLE,
+    fatal_error( EX_UNAVAILABLE,
       "tigetnum(\"%s\") returned error code %d", capname, num
     );
   }
@@ -232,7 +232,7 @@ error:
   if ( likely( cterm_fd != -1 ) )
     PJL_IGNORE_RV( close( cterm_fd ) );
   if ( unlikely( reason != NULL ) ) {
-    FATAL_ERR( EX_UNAVAILABLE,
+    fatal_error( EX_UNAVAILABLE,
       "failed to determine number of columns in terminal: %s\n",
       reason
     );
