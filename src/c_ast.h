@@ -645,8 +645,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast );
  * @note Even though \a ast invariably is part of a larger abstract syntax
  * tree, this function frees _only_ \a ast and _not_ any child AST node \a ast
  * may have.  Hence to free all AST nodes, they all be kept track of
- * independently via some other data structure, e.g., a \ref
- * c_ast_list_t.
+ * independently via some other data structure, e.g., a \ref c_ast_list_t.
  *
  * @sa c_ast_cleanup()
  * @sa c_ast_dup()
