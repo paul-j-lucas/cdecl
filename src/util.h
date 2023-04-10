@@ -786,6 +786,7 @@ bool false_set( bool *flag ) {
  * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()
  */
+PJL_PRINTF_LIKE_FUNC(2)
 noreturn void fatal_error( int status, char const *format, ... );
 
 /**
