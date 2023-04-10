@@ -1,5 +1,6 @@
 2023-04-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: Added PJL_PRINTF_LIKE_FUNC(2).
    * c_typedef.c, cli_options.c, lexer.l, util.h:
      s/INTERNAL_ERR()/INTERNAL_ERROR()/
    * cdecl.c, cli_options.c, lexer.l, print.c, util.c, util.h:
