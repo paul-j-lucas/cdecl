@@ -492,10 +492,10 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       default:
         // LCOV_EXCL_START
         if ( isprint( opt ) )
-          INTERNAL_ERR(
+          INTERNAL_ERROR(
             "'%c': unaccounted-for getopt_long() return value\n", opt
           );
-        INTERNAL_ERR(
+        INTERNAL_ERROR(
           "%d: unaccounted-for getopt_long() return value\n", opt
         );
         // LCOV_EXCL_STOP

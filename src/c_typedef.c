@@ -1035,7 +1035,7 @@ static void parse_predef_types( predef_type_t const types[static const 2] ) {
   assert( types != NULL );
   for ( predef_type_t const *pt = types; pt->str != NULL; ++pt ) {
     if ( unlikely( cdecl_parse_string( pt->str, strlen( pt->str ) ) != EX_OK ) )
-      INTERNAL_ERR( "failed parsing predefined type on line %u\n", pt->line );
+      INTERNAL_ERROR( "failed parsing predefined type on line %u\n", pt->line );
   } // for
 }
 

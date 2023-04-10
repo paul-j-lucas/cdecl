@@ -1289,7 +1289,7 @@ static void lexer_fatal( char const *msg ) {
   // ourselves and having to get it right being subject to possible changes in
   // its signature in different Flex versions.
   //
-  INTERNAL_ERR( "lexer_fatal(): %s\n", msg );
+  INTERNAL_ERROR( "lexer_fatal(): %s\n", msg );
 }
 // LCOV_EXCL_STOP
 

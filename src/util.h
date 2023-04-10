@@ -401,7 +401,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()
  */
-#define INTERNAL_ERR(FORMAT,...) \
+#define INTERNAL_ERROR(FORMAT,...) \
   fatal_error( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
 
 /**
@@ -460,7 +460,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param STATUS The exit status code.
  *
  * @sa fatal_error()
- * @sa #INTERNAL_ERR()
+ * @sa #INTERNAL_ERROR()
  * @sa perror_exit()
  * @sa #UNEXPECTED_INT_VALUE()
  */
@@ -650,17 +650,17 @@ _GL_INLINE_HEADER_BEGIN
 #endif /* __GNUC__ */
 
 /**
- * A special-case of #INTERNAL_ERR() that prints an unexpected integer value.
+ * A special-case of #INTERNAL_ERROR() that prints an unexpected integer value.
  *
  * @param EXPR The expression having the unexpected value.
  *
  * @sa fatal_error()
- * @sa #INTERNAL_ERR()
+ * @sa #INTERNAL_ERROR()
  * @sa perror_exit()
  * @sa #PERROR_EXIT_IF()
  */
 #define UNEXPECTED_INT_VALUE(EXPR) \
-  INTERNAL_ERR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (unsigned long long)(EXPR) )
+  INTERNAL_ERROR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (unsigned long long)(EXPR) )
 
 /**
  * Whitespace characters.
@@ -781,7 +781,7 @@ bool false_set( bool *flag ) {
  * @param format The `printf()` format string literal to use.
  * @param ... The `printf()` arguments.
  *
- * @sa #INTERNAL_ERR()
+ * @sa #INTERNAL_ERROR()
  * @sa perror_exit()
  * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()
@@ -1113,7 +1113,7 @@ char const* parse_identifier( char const *s );
  * @param status The exit status code.
  *
  * @sa fatal_error()
- * @sa #INTERNAL_ERR()
+ * @sa #INTERNAL_ERROR()
  * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()
  */
