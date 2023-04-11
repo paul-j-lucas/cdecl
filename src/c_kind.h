@@ -116,14 +116,18 @@ enum c_ast_kind {
   K_CLASS_STRUCT_UNION      = (1u << 3),
 
   /**
-   * Name only.  It's used as the initial kind for an identifier ("name") until
-   * we know its actual type (if ever).  However, it's also used for pre-
-   * prototype typeless function parameters in K&R C, e.g., `double sin(x)`.
+   * Name only.
+   *
+   * This is used in two cases:
+   *  1. An initial kind for an identifier ("name") until we know its actual
+   *     type (if ever).
+   *  2. A pre-prototype typeless function parameter in K&R C, e.g., `double
+   *     sin(x)`.
    */
   K_NAME                    = (1u << 4),
 
   /**
-   * `typedef` type, e.g., `size_t`.
+   * A `typedef` type, e.g., `size_t`.
    */
   K_TYPEDEF                 = (1u << 5),
 

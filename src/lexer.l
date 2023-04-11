@@ -520,7 +520,7 @@ static void set_trigraph( char const *token ) {
  * Standard lex function to know whether to continue parsing upon reaching EOF.
  *
  * @return Returns 1 if done or 0 to continue parsing (a new file set via
- * \c yyin).
+ * `yyin`).
  */
 static int yywrap( void ) {
   return 1 /* done */;

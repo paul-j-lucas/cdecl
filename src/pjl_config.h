@@ -24,7 +24,7 @@
 /**
  * @file
  * Includes platform configuration information in the right order.  Always
- * \c \#include this file rather than config.h directly.
+ * `#include` this file rather than `config.h` directly.
  */
 
 #ifdef cdecl_config_H

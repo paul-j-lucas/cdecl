@@ -55,7 +55,7 @@
 /**
  * Array of c_operator for all C++ operators.
  *
- * @note Operators are in \c ref c_oper_id order.
+ * @note Operators are in \ref c_oper_id order.
  */
 static c_operator_t const C_OPERATOR[] = {
   { C_OP_NONE,                "none",     LANG_NONE,        XXX, 0, 0   },
