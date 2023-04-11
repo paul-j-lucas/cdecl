@@ -23,8 +23,8 @@
 
 /**
  * @file
- * Wrapper around the Bison-generated parser.h to add `#include` guards as well
- * as add declarations for Bison types and functions.
+ * Wrapper around the Bison-generated `parser.h` to add `#include` guards as
+ * well as declarations for Bison types and functions.
  */
 
 // local
