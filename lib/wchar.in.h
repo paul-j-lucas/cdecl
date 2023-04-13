@@ -84,6 +84,12 @@
 #ifndef _@GUARD_PREFIX@_WCHAR_H
 #define _@GUARD_PREFIX@_WCHAR_H
 
+/* This file uses _GL_ATTRIBUTE_DEALLOC, _GL_ATTRIBUTE_MALLOC,
+   _GL_ATTRIBUTE_PURE, GNULIB_POSIXCHECK.  */
+#if !_GL_CONFIG_H_INCLUDED
+ #error "Please include config.h first."
+#endif
+
 /* _GL_ATTRIBUTE_DEALLOC (F, I) declares that the function returns pointers
    that can be freed by passing them as the Ith argument to the
    function F.  */

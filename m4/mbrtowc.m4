@@ -1,4 +1,4 @@
-# mbrtowc.m4 serial 39  -*- coding: utf-8 -*-
+# mbrtowc.m4 serial 40  -*- coding: utf-8 -*-
 dnl Copyright (C) 2001-2002, 2004-2005, 2008-2023 Free Software Foundation,
 dnl Inc.
 dnl This file is free software; the Free Software Foundation
@@ -117,7 +117,7 @@ dnl Result is REPLACE_MBSTATE_T.
 dnl When this is set to 1, we replace both mbsinit() and mbrtowc(), in order to
 dnl avoid inconsistencies.
 
-AC_DEFUN([gl_MBSTATE_T_BROKEN],
+AC_DEFUN_ONCE([gl_MBSTATE_T_BROKEN],
 [
   AC_REQUIRE([gl_WCHAR_H_DEFAULTS])
   AC_REQUIRE([AC_CANONICAL_HOST])

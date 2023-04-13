@@ -101,6 +101,11 @@ typedef long max_align_t;
 #  ifndef _@GUARD_PREFIX@_STDDEF_H
 #   define _@GUARD_PREFIX@_STDDEF_H
 
+/* This file uses _Noreturn.  */
+#if !_GL_CONFIG_H_INCLUDED
+ #error "Please include config.h first."
+#endif
+
 /* Some platforms lack wchar_t.  */
 #if !@HAVE_WCHAR_T@
 # define wchar_t int

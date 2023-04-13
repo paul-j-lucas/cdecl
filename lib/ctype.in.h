@@ -36,6 +36,11 @@
 #ifndef _@GUARD_PREFIX@_CTYPE_H
 #define _@GUARD_PREFIX@_CTYPE_H
 
+/* This file uses GNULIB_POSIXCHECK.  */
+#if !_GL_CONFIG_H_INCLUDED
+ #error "Please include config.h first."
+#endif
+
 /* The definitions of _GL_FUNCDECL_RPL etc. are copied here.  */
 
 /* The definition of _GL_WARN_ON_USE is copied here.  */

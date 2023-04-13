@@ -1,4 +1,4 @@
-# gnulib-common.m4 serial 83
+# gnulib-common.m4 serial 84
 dnl Copyright (C) 2007-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -15,6 +15,10 @@ AC_DEFUN([gl_COMMON], [
   AC_REQUIRE([gl_ZZGNULIB])
 ])
 AC_DEFUN([gl_COMMON_BODY], [
+  AH_VERBATIM([0witness],
+[/* Witness that <config.h> has been included.  */
+#define _GL_CONFIG_H_INCLUDED 1
+])
   AH_VERBATIM([_GL_GNUC_PREREQ],
 [/* True if the compiler says it groks GNU C version MAJOR.MINOR.  */
 #if defined __GNUC__ && defined __GNUC_MINOR__

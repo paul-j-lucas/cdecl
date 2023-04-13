@@ -57,6 +57,12 @@
 #ifndef _@GUARD_PREFIX@_STDIO_H
 #define _@GUARD_PREFIX@_STDIO_H
 
+/* This file uses _GL_ATTRIBUTE_DEALLOC, _GL_ATTRIBUTE_FORMAT,
+   GNULIB_POSIXCHECK.  */
+#if !_GL_CONFIG_H_INCLUDED
+ #error "Please include config.h first."
+#endif
+
 /* Get va_list.  Needed on many systems, including glibc 2.8.  */
 #include <stdarg.h>
 

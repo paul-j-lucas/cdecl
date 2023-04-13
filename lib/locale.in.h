@@ -44,6 +44,11 @@
 #ifndef _@GUARD_PREFIX@_LOCALE_H
 #define _@GUARD_PREFIX@_LOCALE_H
 
+/* This file uses GNULIB_POSIXCHECK.  */
+#if !_GL_CONFIG_H_INCLUDED
+ #error "Please include config.h first."
+#endif
+
 /* NetBSD 5.0 mis-defines NULL.  */
 #include <stddef.h>
 
