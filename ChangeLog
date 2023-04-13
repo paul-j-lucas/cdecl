@@ -1,5 +1,7 @@
 2023-04-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am, lexer.l: Better work-around for
+     https://github.com/westes/flex/issues/564.
    * src/Makefile.am: Work-around for
      https://github.com/westes/flex/issues/564.
    * pjl_config.h: Fix for updated GnuLib !_GL_CONFIG_H_INCLUDED.
