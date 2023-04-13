@@ -1,3 +1,17 @@
+2023-04-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Work-around for
+     https://github.com/westes/flex/issues/564.
+   * pjl_config.h: Fix for updated GnuLib !_GL_CONFIG_H_INCLUDED.
+   * attribute.h, ctype.in.h, flexmember.h, fnmatch.in.h, inttypes.in.h,
+     locale.in.h, stdarg.in.h, stddef.in.h, stdio.in.h, stdlib.in.h,
+     string.in.h, strnlen1.h, unistd.in.h, wchar.in.h, wctype.in.h,
+     gnulib-common.m4, mbrtowc.m4: Updated GnuLib.
+
+2023-04-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Added missing #include <stdarg.h>.
+
 2023-04-10  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Added PJL_PRINTF_LIKE_FUNC(2).
