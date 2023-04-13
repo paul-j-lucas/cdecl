@@ -29,11 +29,14 @@
 %option warn
 %option yylineno
 
+%top {
+#include "pjl_config.h"                 /* must go first */
+}
+
 %{
 /** @endcond */
 
 // local
-#include "pjl_config.h"                 /* must go first */
 #include "lexer.h"
 #include "c_ast.h"
 #include "c_ast_util.h"

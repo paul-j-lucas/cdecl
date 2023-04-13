@@ -49,10 +49,6 @@ LDADD =		$(top_builddir)/lib/libgnu.a
 
 BUILT_SOURCES =	parser.c parser.h lexer.c
 
-# Work-around for https://github.com/westes/flex/issues/564
-lexer.c: lexer.l
-	{ echo '#include "pjl_config.h"'; flex $(AM_LFLAGS) -t lexer.l; } > $@
-
 cdecl_SOURCES =	parser.y \
 		lexer.l lexer.h \
 		c_ast.c c_ast.h \
