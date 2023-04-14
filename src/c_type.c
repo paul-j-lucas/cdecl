@@ -804,14 +804,14 @@ static char const* c_type_literal( c_type_info_t const *ti,
  * @param apply_explicit_ecsu If `true`, apply \ref opt_explicit_ecsu.
  * @param in_english If `true`, return the pseudo-English name if possible.
  * @param is_error If `true`, the name is intended for use in an error message.
- * Specifically, c_tid_normalize() is _not_ called.
+ * Specifically, c_tid_nosigned() is _not_ called.
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
- * @sa c_tid_normalize()
+ * @sa c_tid_nosigned()
  * @sa c_type_name_c()
  * @sa c_type_name_ecsu()
  * @sa c_type_name_english()
