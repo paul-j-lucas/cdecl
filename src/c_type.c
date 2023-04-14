@@ -186,7 +186,8 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
  * GNU extension counterparts of `__const`, `__restrict`, and `__volatile` in
  * K&R C.
  *
- * @note This array _must_ have the same size and order as OK_QUALIFIER_LANGS.
+ * @note This array _must_ have the same size and order as \ref
+ * OK_QUALIFIER_LANGS.
  */
 static c_type_info_t const C_QUALIFIER_INFO[] = {
   { TS_ATOMIC, LANG__Atomic, L_atomic,
@@ -224,8 +225,8 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
 /**
  * Type mapping for storage classes (or storage-class-like).
  *
- * @note
- * This array _must_ have the same size and order as OK_STORAGE_LANGS.
+ * @note This array _must_ have the same size and order as \ref
+ * OK_STORAGE_LANGS.
  */
 static c_type_info_t const C_STORAGE_INFO[] = {
   // storage classes
@@ -312,8 +313,7 @@ static c_type_info_t const C_STORAGE_INFO[] = {
 /**
  * Type mapping for simpler types.
  *
- * @note
- * This array _must_ have the same size and order as OK_TYPE_LANGS.
+ * @note This array _must_ have the same size and order as \ref OK_TYPE_LANGS.
  */
 static c_type_info_t const C_TYPE_INFO[] = {
   { TB_VOID, LANG_void, /*english_lit=*/NULL,
