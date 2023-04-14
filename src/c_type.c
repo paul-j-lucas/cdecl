@@ -784,8 +784,8 @@ static c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids ) {
  * appropriate and available, pseudo-English.
  *
  * @param ti The \ref c_type_info to get the literal of.
- * @param in_english If `true`, return the pseudo-English literal if one
- * exists.
+ * @param in_english If `true`, return the pseudo-English literal, but only if
+ * one exists, \ref opt_english_types is `true`, and \a is_error is `false`.
  * @param is_error If `true`, the name is intended for use in an error message.
  * @return Returns said literal.
  */
