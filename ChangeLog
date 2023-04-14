@@ -1,3 +1,7 @@
+2023-04-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Fixed explanation of english-types set option.
+
 2023-04-13  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am, lexer.l: Better work-around for
