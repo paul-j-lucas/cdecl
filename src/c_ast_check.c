@@ -200,7 +200,6 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 // local functions
 NODISCARD
 static bool         c_ast_check_emc( c_ast_t const* ),
-                    c_ast_check_errors( c_ast_t const*, unsigned ),
                     c_ast_check_func_main( c_ast_t const* ),
                     c_ast_check_func_main_char_ptr_param( c_ast_t const* ),
                     c_ast_check_func_params_knr( c_ast_t const* ),
