@@ -410,7 +410,6 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define XXX         LANG_NONE
 #define ATO         LANG__Atomic
 #define AUS         LANG_auto_STORAGE
-#define AUT         LANG_MIN(C_89)
 #define BIT         LANG__BitInt
 #define BOO         LANG_BOOL_TYPE
 #define C08         LANG_char8_t
@@ -482,8 +481,7 @@ static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] 
 /**
  * Legal combinations of storage classes in languages.
  *
- * @note
- * This array _must_ have the same size and order as \ref C_STORAGE_INFO.
+ * @note This array _must_ have the same size and order as \ref C_STORAGE_INFO.
  */
 static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
@@ -520,14 +518,13 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 /**
  * Legal combinations of types in languages.
  *
- * @note
- * This array _must_ have the same size and order as \ref C_TYPE_INFO.
+ * @note This array _must_ have the same size and order as \ref C_TYPE_INFO.
  */
 static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 // Only the lower triangle is used.
 //  voi aut Bit boo cha ch8 c16 c32 wch sho int lon lol sig uns flo dou com ima enu str uni cla typ aca fra sat
   { VOL,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// void
-  { XXX,AUT,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// auto
+  { XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// auto
   { XXX,XXX,BIT,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// _BitInt
   { XXX,XXX,XXX,BOO,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// bool
   { XXX,XXX,XXX,XXX,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// char
