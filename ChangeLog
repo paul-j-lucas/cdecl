@@ -1,5 +1,7 @@
 2023-04-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c: Removed unnecessary forward declaration.
+   * c_type.c: Eliminated AUT.
    * cdecl.1: Fixed explanation of english-types set option.
 
 2023-04-13  Paul J. Lucas <paul@lucasmail.org>
