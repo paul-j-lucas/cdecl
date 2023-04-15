@@ -105,53 +105,6 @@
  */
 
 /**
- * Calls c_ast_check(): if the check fails, calls #PARSE_ABORT().
- *
- * @param AST The AST to check.
- */
-#define C_AST_CHECK(AST) \
-  BLOCK( if ( !c_ast_check( AST ) ) PARSE_ABORT(); )
-
-/**
- * Calls c_type_add(): if adding the type fails, calls #PARSE_ABORT().
- *
- * @param DST_TYPE The \ref c_type to add to.
- * @param NEW_TYPE The \ref c_type to add.
- * @param NEW_LOC The source location of \a NEW_TYPE.
- *
- * @sa #C_TID_ADD()
- * @sa #C_TYPE_ADD_TID()
- */
-#define C_TYPE_ADD(DST_TYPE,NEW_TYPE,NEW_LOC) BLOCK( \
-  if ( !c_type_add( (DST_TYPE), (NEW_TYPE), &(NEW_LOC) ) ) PARSE_ABORT(); )
-
-/**
- * Calls c_type_add_tid(): if adding the type fails, calls #PARSE_ABORT().
- *
- * @param DST_TYPE The \ref c_type to add to.
- * @param NEW_TID The \ref c_tid_t to add.
- * @param NEW_LOC The source location of \a NEW_TID.
- *
- * @sa #C_TID_ADD()
- * @sa #C_TYPE_ADD()
- */
-#define C_TYPE_ADD_TID(DST_TYPE,NEW_TID,NEW_LOC) BLOCK( \
-  if ( !c_type_add_tid( (DST_TYPE), (NEW_TID), &(NEW_LOC) ) ) PARSE_ABORT(); )
-
-/**
- * Calls c_tid_add(): if adding the type fails, calls #PARSE_ABORT().
- *
- * @param DST_TID The \ref c_tid_t to add to.
- * @param NEW_TID The \ref c_tid_t to add.
- * @param NEW_LOC The source location of \a NEW_TID.
- *
- * @sa #C_TYPE_ADD()
- * @sa #C_TYPE_ADD_TID()
- */
-#define C_TID_ADD(DST_TID,NEW_TID,NEW_LOC) BLOCK( \
-  if ( !c_tid_add( (DST_TID), (NEW_TID), &(NEW_LOC) ) ) PARSE_ABORT(); )
-
-/**
  * Calls fl_is_nested_type_ok(): if it returns `false`, calls #PARSE_ABORT().
  *
  * @param TYPE_LOC The location of the type declaration.
@@ -223,9 +176,18 @@
 
 /**
  * Aborts the current parse after an error message has been printed.
+ *
+ * @sa #PARSE_ASSERT()
  */
 #define PARSE_ABORT() \
   BLOCK( parse_cleanup( /*fatal_error=*/true ); YYABORT; )
+
+/**
+ * Evaluates \a EXPR: if `false`, calls #PARSE_ABORT().
+ *
+ * @param EXPR The expression to evalulate.
+ */
+#define PARSE_ASSERT(EXPR)        BLOCK( if ( !(EXPR) ) PARSE_ABORT(); )
 
 /**
  * Calls fl_punct_expected() followed by #PARSE_ABORT().
@@ -1888,7 +1850,7 @@ cast_command
       cast_ast->sname = c_sname_move( &$2 );
       cast_ast->cast.kind = C_CAST_C;
       cast_ast->cast.to_ast = decl_ast;
-      C_AST_CHECK( cast_ast );
+      PARSE_ASSERT( c_ast_check( cast_ast ) );
       c_ast_gibberish( cast_ast, C_GIB_CAST, stdout );
     }
 
@@ -1922,7 +1884,7 @@ cast_command
       cast_ast->sname = c_sname_move( &$2 );
       cast_ast->cast.kind = cast_kind;
       cast_ast->cast.to_ast = decl_ast;
-      C_AST_CHECK( cast_ast );
+      PARSE_ASSERT( c_ast_check( cast_ast ) );
       c_ast_gibberish( cast_ast, C_GIB_CAST, stdout );
     }
   ;
@@ -2061,8 +2023,7 @@ declare_command
       }
 
       c_sname_list_cleanup( &$2 );
-      if ( !ok )
-        PARSE_ABORT();
+      PARSE_ASSERT( ok );
       PUTC( '\n' );
     }
 
@@ -2102,7 +2063,7 @@ declare_command
       DUMP_AST( "declare_command", oper_ast );
       DUMP_END();
 
-      C_AST_CHECK( oper_ast );
+      PARSE_ASSERT( c_ast_check( oper_ast ) );
       unsigned gib_flags = C_GIB_DECL;
       if ( opt_semicolon )
         gib_flags |= C_GIB_FINAL_SEMI;
@@ -2136,7 +2097,7 @@ declare_command
       DUMP_AST( "declare_command", lambda_ast );
       DUMP_END();
 
-      C_AST_CHECK( lambda_ast );
+      PARSE_ASSERT( c_ast_check( lambda_ast ) );
       c_ast_gibberish( lambda_ast, C_GIB_DECL, stdout );
       PUTC( '\n' );
     }
@@ -2172,7 +2133,7 @@ declare_command
       DUMP_AST( "declare_command", udc_ast );
       DUMP_END();
 
-      C_AST_CHECK( udc_ast );
+      PARSE_ASSERT( c_ast_check( udc_ast ) );
       unsigned gib_flags = C_GIB_DECL;
       if ( opt_semicolon )
         gib_flags |= C_GIB_FINAL_SEMI;
@@ -2358,7 +2319,7 @@ storage_class_subset_english_type_opt
       DUMP_TYPE( "storage_class_subset_english_type", $2 );
 
       $$ = $1;
-      C_TYPE_ADD( &$$, &$2, @2 );
+      PARSE_ASSERT( c_type_add( &$$, &$2, &@2 ) );
 
       DUMP_TYPE( "storage_class_subset_english_type_opt", $$ );
       DUMP_END();
@@ -2452,13 +2413,10 @@ define_command
       c_sname_fill_in_namespaces( &ast->sname );
 
       DUMP_AST( "defined.ast", ast );
-
-      if ( !c_sname_check( &ast->sname, &@2 ) )
-        PARSE_ABORT();
-      if ( !add_type( ast, C_GIB_NONE ) )
-        PARSE_ABORT();
-
       DUMP_END();
+
+      PARSE_ASSERT( c_sname_check( &ast->sname, &@2 ) );
+      PARSE_ASSERT( add_type( ast, C_GIB_NONE ) );
     }
   ;
 
@@ -2566,9 +2524,8 @@ explain_command
       DUMP_AST( "using_decl_c_ast", $3 );
       DUMP_END();
 
-      C_TYPE_ADD_TID( &$3->type, $2, @2 );
-
-      C_AST_CHECK( $3 );
+      PARSE_ASSERT( c_type_add_tid( &$3->type, $2, &@2 ) );
+      PARSE_ASSERT( c_ast_check( $3 ) );
       c_ast_english( $3, stdout );
     }
 
@@ -2638,8 +2595,7 @@ scoped_command
 set_command
   : Y_set
     {
-      if ( !set_option( NULL, NULL, NULL, NULL ) )
-        PARSE_ABORT();
+      PARSE_ASSERT( set_option( NULL, NULL, NULL, NULL ) );
     }
   | Y_set set_option_list
   ;
@@ -2655,8 +2611,7 @@ set_option
       bool const ok = set_option( $1, &@1, $2, &@2 );
       free( $1 );
       free( $2 );
-      if ( !ok )
-        PARSE_ABORT();
+      PARSE_ASSERT( ok );
     }
   ;
 
@@ -2847,7 +2802,7 @@ c_style_cast_expr_c
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
 
-      C_AST_CHECK( cast_ast );
+      PARSE_ASSERT( c_ast_check( cast_ast ) );
       c_ast_english( cast_ast, stdout );
     }
 
@@ -2903,7 +2858,7 @@ new_style_cast_expr_c
         PARSE_ABORT();
       }
 
-      C_AST_CHECK( cast_ast );
+      PARSE_ASSERT( c_ast_check( cast_ast ) );
       c_ast_english( cast_ast, stdout );
     }
   ;
@@ -3029,8 +2984,7 @@ class_struct_union_declaration_c
       c_sname_set_local_type(
         &in_attr.current_scope, &C_TYPE_LIT_B( csu_btid )
       );
-      if ( !c_sname_check( &in_attr.current_scope, &@3 ) )
-        PARSE_ABORT();
+      PARSE_ASSERT( c_sname_check( &in_attr.current_scope, &@3 ) );
 
       c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@3 );
       csu_ast->sname = c_sname_dup( &in_attr.current_scope );
@@ -3043,8 +2997,7 @@ class_struct_union_declaration_c
       DUMP_AST( "class_struct_union_declaration_c", csu_ast );
       DUMP_END();
 
-      if ( !add_type( csu_ast, C_GIB_TYPEDEF ) )
-        PARSE_ABORT();
+      PARSE_ASSERT( add_type( csu_ast, C_GIB_TYPEDEF ) );
     }
     brace_in_scope_declaration_c_opt
   ;
@@ -3088,8 +3041,7 @@ enum_declaration_c
       DUMP_AST( "enum_declaration_c", enum_ast );
       DUMP_END();
 
-      if ( !add_type( enum_ast, C_GIB_TYPEDEF ) )
-        PARSE_ABORT();
+      PARSE_ASSERT( add_type( enum_ast, C_GIB_TYPEDEF ) );
     }
   ;
 
@@ -3160,8 +3112,7 @@ namespace_declaration_c
       );
 
       c_sname_append_sname( &in_attr.current_scope, &$3 );
-      if ( !c_sname_check( &in_attr.current_scope, &@3 ) )
-        PARSE_ABORT();
+      PARSE_ASSERT( c_sname_check( &in_attr.current_scope, &@3 ) );
     }
     brace_in_scope_declaration_c_exp
   ;
@@ -3347,7 +3298,7 @@ lambda_decl_c
       DUMP_AST( "lambda_decl_c", lambda_ast );
       DUMP_END();
 
-      C_AST_CHECK( lambda_ast );
+      PARSE_ASSERT( c_ast_check( lambda_ast ) );
       c_ast_english( lambda_ast, stdout );
     }
   ;
@@ -3476,11 +3427,9 @@ typedef_declaration_c
     {
       c_ast_t *const type_ast = $4;
 
-      if ( $2 && !c_ast_is_typename_ok( type_ast ) )
-        PARSE_ABORT();
-
+      PARSE_ASSERT( !in_attr.is_typename || c_ast_is_typename_ok( type_ast ) );
       // see the comment in "define_command" about TS_TYPEDEF
-      C_TYPE_ADD_TID( &type_ast->type, TS_TYPEDEF, @4 );
+      PARSE_ASSERT( c_type_add_tid( &type_ast->type, TS_TYPEDEF, &@4 ) );
 
       //
       // We have to keep a pristine copy of the AST for the base type of the
@@ -3561,7 +3510,7 @@ typedef_decl_c
         c_sname_set( &typedef_ast->sname, &temp_sname );
       }
 
-      C_AST_CHECK( typedef_ast );
+      PARSE_ASSERT( c_ast_check( typedef_ast ) );
       // see the comment in "define_command" about TS_TYPEDEF
       PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_TYPEDEF ) );
 
@@ -3580,8 +3529,7 @@ typedef_decl_c
       DUMP_AST( "typedef_decl_c", typedef_ast );
       DUMP_END();
 
-      if ( !add_type( typedef_ast, C_GIB_TYPEDEF  ) )
-        PARSE_ABORT();
+      PARSE_ASSERT( add_type( typedef_ast, C_GIB_TYPEDEF  ) );
     }
   ;
 
@@ -3603,7 +3551,7 @@ user_defined_conversion_declaration_c
       DUMP_AST( "user_defined_conversion_declaration_c", $1.ast );
       DUMP_END();
 
-      C_AST_CHECK( $1.ast );
+      PARSE_ASSERT( c_ast_check( $1.ast ) );
       c_ast_english( $1.ast, stdout );
     }
   ;
@@ -3616,8 +3564,7 @@ using_declaration_c
       // see the comment in "define_command" about TS_TYPEDEF
       PJL_IGNORE_RV( c_ast_take_type_any( $1, &T_TS_TYPEDEF ) );
 
-      if ( !add_type( $1, C_GIB_USING ) )
-        PARSE_ABORT();
+      PARSE_ASSERT( add_type( $1, C_GIB_USING ) );
     }
   ;
 
@@ -3695,7 +3642,7 @@ using_decl_c_ast
         PARSE_ABORT();
       }
 
-      C_AST_CHECK( $$ );
+      PARSE_ASSERT( c_ast_check( $$ ) );
     }
   ;
 
@@ -3745,7 +3692,7 @@ decl_list_c_opt
       DUMP_AST( "decl_list_c_opt", type_ast );
       DUMP_END();
 
-      C_AST_CHECK( type_ast );
+      PARSE_ASSERT( c_ast_check( type_ast ) );
       c_typedef_english( &C_TYPEDEF_AST_LIT( type_ast ), stdout );
       PUTC( '\n' );
     }
@@ -3792,9 +3739,8 @@ decl_c
       DUMP_AST( "decl_c", ast );
       DUMP_END();
 
-      if ( ast == NULL )
-        PARSE_ABORT();
-      C_AST_CHECK( ast );
+      PARSE_ASSERT( ast != NULL );
+      PARSE_ASSERT( c_ast_check( ast ) );
 
       if ( !c_sname_empty( &ast->sname ) ) {
         //
@@ -3989,7 +3935,7 @@ block_decl_c_astp                       // Apple extension
       DUMP_AST( "decl_c_astp", decl_ast );
       DUMP_AST_LIST( "param_c_ast_list_opt", $8 );
 
-      C_TYPE_ADD_TID( &block_ast->type, type_qual_stids, @4 );
+      PARSE_ASSERT( c_type_add_tid( &block_ast->type, type_qual_stids, &@4 ) );
       block_ast->block.param_ast_list = slist_move( &$8 );
       $$.ast = c_ast_add_func( decl_ast, block_ast, type_ast );
       $$.target_ast = block_ast->block.ret_ast;
@@ -4035,7 +3981,7 @@ destructor_decl_c
       DUMP_AST( "destructor_decl_c", ast );
       DUMP_END();
 
-      C_AST_CHECK( ast );
+      PARSE_ASSERT( c_ast_check( ast ) );
       c_ast_english( ast, stdout );
     }
   ;
@@ -4073,7 +4019,7 @@ file_scope_constructor_decl_c
       DUMP_AST( "file_scope_constructor_decl_c", ast );
       DUMP_END();
 
-      C_AST_CHECK( ast );
+      PARSE_ASSERT( c_ast_check( ast ) );
       c_ast_english( ast, stdout );
     }
   ;
@@ -4109,7 +4055,7 @@ file_scope_destructor_decl_c
       DUMP_AST( "file_scope_destructor_decl_c", ast );
       DUMP_END();
 
-      C_AST_CHECK( ast );
+      PARSE_ASSERT( c_ast_check( ast ) );
       c_ast_english( ast, stdout );
     }
   ;
@@ -4357,7 +4303,7 @@ pc99_func_or_constructor_decl_c
       DUMP_AST( "pc99_func_or_constructor_decl_c", ast );
       DUMP_END();
 
-      C_AST_CHECK( ast );
+      PARSE_ASSERT( c_ast_check( ast ) );
       c_ast_english( ast, stdout );
     }
   ;
@@ -4391,7 +4337,7 @@ func_qualifier_list_c_stid_opt
       DUMP_TID( "func_qualifier_c_stid", $2 );
 
       $$ = $1;
-      C_TID_ADD( &$$, $2, @2 );
+      PARSE_ASSERT( c_tid_add( &$$, $2, &@2 ) );
 
       DUMP_TID( "func_qualifier_list_c_stid_opt", $$ );
       DUMP_END();
@@ -4606,7 +4552,7 @@ param_c_ast
         $$ = c_ast_pointer( $$, &gc_ast_list );
       }
 
-      C_TYPE_ADD_TID( &$$->type, $1, @1 );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $1, &@1 ) );
 
       DUMP_AST( "param_c_ast", $$ );
       DUMP_END();
@@ -4781,7 +4727,7 @@ pc99_pointer_decl_c
       DUMP_AST( "pc99_pointer_decl_c", ast );
       DUMP_END();
 
-      C_AST_CHECK( ast );
+      PARSE_ASSERT( c_ast_check( ast ) );
       c_ast_english( ast, stdout );
     }
   ;
@@ -5201,7 +5147,7 @@ block_cast_c_astp                       // Apple extension
       DUMP_AST( "cast_c_astp_opt", cast_ast );
       DUMP_AST_LIST( "param_c_ast_list_opt", $8 );
 
-      C_TYPE_ADD_TID( &block_ast->type, type_qual_stids, @4 );
+      PARSE_ASSERT( c_type_add_tid( &block_ast->type, type_qual_stids, &@4 ) );
       block_ast->block.param_ast_list = slist_move( &$8 );
       $$.ast = c_ast_add_func( cast_ast, block_ast, type_ast );
       $$.target_ast = block_ast->block.ret_ast;
@@ -5491,7 +5437,7 @@ type_c_ast
       c_type_t type = OPT_LANG_IS( IMPLICIT_int ) ?
         C_TYPE_LIT_B( TB_INT ) : T_NONE;
 
-      C_TYPE_ADD( &type, &$1, @1 );
+      PARSE_ASSERT( c_type_add( &type, &$1, &@1 ) );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type = type;
@@ -5514,7 +5460,7 @@ type_c_ast
 
       $$ = $2;
       $$->loc = @$;
-      C_TYPE_ADD( &$$->type, &$1, @1 );
+      PARSE_ASSERT( c_type_add( &$$->type, &$1, &@1 ) );
 
       DUMP_AST( "type_c_ast", $$ );
       DUMP_END();
@@ -5537,7 +5483,7 @@ type_modifier_list_c_type
       DUMP_TYPE( "type_modifier_c_type", $2 );
 
       $$ = $1;
-      C_TYPE_ADD( &$$, &$2, @2 );
+      PARSE_ASSERT( c_type_add( &$$, &$2, &@2 ) );
 
       DUMP_TYPE( "type_modifier_list_c_type", $$ );
       DUMP_END();
@@ -5606,7 +5552,7 @@ east_modified_type_c_ast
 
       $$ = $1;
       $$->loc = @$;
-      C_TYPE_ADD( &$$->type, &$2, @2 );
+      PARSE_ASSERT( c_type_add( &$$->type, &$2, &@2 ) );
 
       DUMP_AST( "type_c_ast", $$ );
       DUMP_END();
@@ -5621,7 +5567,7 @@ east_modified_type_c_ast
 
       $$ = $1;
       $$->loc = @$;
-      C_TYPE_ADD_TID( &$$->type, $2, @2 );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $2, &@2 ) );
 
       DUMP_AST( "east_modified_type_c_ast", $$ );
       DUMP_END();
@@ -5677,7 +5623,7 @@ atomic_specifier_type_c_ast
         PARSE_ABORT();
       }
 
-      C_TYPE_ADD_TID( &$$->type, TS_ATOMIC, @1 );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, TS_ATOMIC, &@1 ) );
 
       DUMP_AST( "atomic_specifier_type_c_ast", $$ );
       DUMP_END();
@@ -5876,8 +5822,8 @@ enum_fixed_type_c_ast
 
       $$ = $2;
       $$->loc = @$;
-      C_TYPE_ADD_TID( &$$->type, $1, @1 );
-      C_TYPE_ADD_TID( &$$->type, $3, @3 );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $1, &@1 ) );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $3, &@3 ) );
 
       DUMP_AST( "enum_fixed_type_c_ast", $$ );
       DUMP_END();
@@ -5898,7 +5844,7 @@ enum_fixed_type_c_ast
 
       $$ = $1;
       $$->loc = @$;
-      C_TYPE_ADD_TID( &$$->type, $2, @2 );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $2, &@2 ) );
 
       DUMP_AST( "enum_fixed_type_c_ast", $$ );
       DUMP_END();
@@ -5920,7 +5866,7 @@ enum_fixed_type_modifier_list_btid
       DUMP_TID( "enum_fixed_type_modifier_btid", $2 );
 
       $$ = $1;
-      C_TID_ADD( &$$, $2, @2 );
+      PARSE_ASSERT( c_tid_add( &$$, $2, &@2 ) );
 
       DUMP_TID( "enum_fixed_type_modifier_list_btid", $$ );
       DUMP_END();
@@ -5976,7 +5922,7 @@ type_qualifier_list_c_stid
       DUMP_TID( "type_qualifier_c_stid", $2 );
 
       $$ = $1;
-      C_TID_ADD( &$$, $2, @2 );
+      PARSE_ASSERT( c_tid_add( &$$, $2, &@2 ) );
 
       DUMP_TID( "type_qualifier_list_c_stid", $$ );
       DUMP_END();
@@ -6018,7 +5964,7 @@ cv_qualifier_list_stid_opt
       DUMP_TID( "cv_qualifier_stid", $2 );
 
       $$ = $1;
-      C_TID_ADD( &$$, $2, @2 );
+      PARSE_ASSERT( c_tid_add( &$$, $2, &@2 ) );
 
       DUMP_TID( "cv_qualifier_list_stid_opt", $$ );
       DUMP_END();
@@ -6171,7 +6117,7 @@ attribute_list_c_atid
       DUMP_TID( "attribute_c_atid_exp", $3 );
 
       $$ = $1;
-      C_TID_ADD( &$$, $3, @3 );
+      PARSE_ASSERT( c_tid_add( &$$, $3, &@3 ) );
 
       DUMP_TID( "attribute_list_c_atid", $$ );
       DUMP_END();
@@ -6575,8 +6521,8 @@ oper_decl_english_ast
       DUMP_AST( "returning_english_ast_opt", ret_ast );
 
       $$ = c_ast_new_gc( K_OPERATOR, &@$ );
-      C_TYPE_ADD( &$$->type, &qual_type, @1 );
-      C_TYPE_ADD_TID( &$$->type, ref_qual_stid, @2 );
+      PARSE_ASSERT( c_type_add( &$$->type, &qual_type, &@1 ) );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, ref_qual_stid, &@2 ) );
       $$->oper.operator = in_attr.operator;
       $$->oper.param_ast_list = slist_move( &$5 );
       $$->oper.flags = flags;
@@ -6710,7 +6656,7 @@ qualified_decl_english_ast
       $$ = $2;
       if ( !c_type_is_none( &$1 ) )
         $$->loc = @$;
-      C_TYPE_ADD( &$$->type, &$1, @1 );
+      PARSE_ASSERT( c_type_add( &$$->type, &$1, &@1 ) );
 
       DUMP_AST( "qualified_decl_english_ast", $$ );
       DUMP_END();
@@ -6732,7 +6678,7 @@ type_qualifier_list_english_type
       DUMP_TYPE( "type_qualifier_english_type", $2 );
 
       $$ = $1;
-      C_TYPE_ADD( &$$, &$2, @2 );
+      PARSE_ASSERT( c_type_add( &$$, &$2, &@2 ) );
 
       DUMP_TYPE( "type_qualifier_list_english_type", $$ );
       DUMP_END();
@@ -6831,8 +6777,7 @@ linkage_stid
       }
 
       free( $1 );
-      if ( !ok )
-        PARSE_ABORT();
+      PARSE_ASSERT( ok );
     }
   ;
 
@@ -6913,7 +6858,7 @@ pointer_decl_english_ast
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
       $$->ptr_mbr.class_sname = c_sname_move( &$6 );
       c_ast_set_parent( decl_ast, $$ );
-      C_TYPE_ADD_TID( &$$->type, csu_btid, @5 );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, csu_btid, &@5 ) );
 
       DUMP_AST( "pointer_to_member_decl_english", $$ );
       DUMP_END();
@@ -7062,7 +7007,7 @@ type_english_ast
         // optional rule is actually present, otherwise @$ refers to a column
         // before $2.
         $$->loc = @$;
-        C_TYPE_ADD( &$$->type, &$1, @1 );
+        PARSE_ASSERT( c_type_add( &$$->type, &$1, &@1 ) );
       }
 
       DUMP_AST( "type_english_ast", $$ );
@@ -7079,7 +7024,7 @@ type_english_ast
       c_type_t type =
         C_TYPE_LIT_B( OPT_LANG_IS( IMPLICIT_int ) ? TB_INT : TB_NONE );
 
-      C_TYPE_ADD( &type, &$1, @1 );
+      PARSE_ASSERT( c_type_add( &type, &$1, &@1 ) );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type = type;
@@ -7104,7 +7049,7 @@ type_modifier_list_english_type
       DUMP_TYPE( "type_modifier_english_type", $2 );
 
       $$ = $1;
-      C_TYPE_ADD( &$$, &$2, @2 );
+      PARSE_ASSERT( c_type_add( &$$, &$2, &@2 ) );
 
       DUMP_TYPE( "type_modifier_list_english_type", $$ );
       DUMP_END();
@@ -7267,7 +7212,7 @@ enum_fixed_type_english_ast
       $$ = $2;
       if ( $1 != TB_NONE ) {            // See comment in type_english_ast.
         $$->loc = @$;
-        C_TYPE_ADD_TID( &$$->type, $1, @1 );
+        PARSE_ASSERT( c_type_add_tid( &$$->type, $1, &@1 ) );
       }
 
       DUMP_AST( "enum_fixed_type_english_ast", $$ );
@@ -7303,7 +7248,7 @@ enum_fixed_type_modifier_list_english_btid
       DUMP_TID( "enum_fixed_type_modifier_btid", $2 );
 
       $$ = $1;
-      C_TID_ADD( &$$, $2, @2 );
+      PARSE_ASSERT( c_tid_add( &$$, $2, &@2 ) );
 
       DUMP_TID( "enum_fixed_type_modifier_list_english_btid", $$ );
       DUMP_END();
