@@ -1,5 +1,7 @@
 2023-04-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Got rid of C_AST_CHECK, C_TYPE_ADD, C_TYPE_ADD_TID, and
+     C_TID_ADD; now using PARSE_ASSERT.
    * parser.y: Removed unecessary assignment.
 
 2023-04-14  Paul J. Lucas <paul@lucasmail.org>
