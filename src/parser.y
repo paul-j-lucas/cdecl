@@ -2190,7 +2190,7 @@ declare_command
   ;
 
 alignas_or_width_decl_english_ast
-  : decl_english_ast              { $$ = $1; }
+  : decl_english_ast
 
   | decl_english_ast alignas_specifier_english
     {
