@@ -1098,8 +1098,7 @@ void c_lang_set( c_lang_id_t lang_id );
 
 /**
  * Gets a string specifying a language when a particular feature isn't, hasn't
- * been, or won't be legal unless, since, or until, if ever.  It is presumed to
- * follow `"not supported"` (with no trailing space).
+ * been, or won't be legal unless, since, or until, if ever.
  *
  * @param lang_ids The bitwise-or of legal language(s).
  * @return
@@ -1121,6 +1120,9 @@ void c_lang_set( c_lang_id_t lang_id );
  *        language version (if the current language is any version of C) or the
  *        name of the newest C++ language version (if the current language is
  *        any version of C++).
+ *
+ * @note The returned string is presumed to follow `"not supported"` (with no
+ * trailing space), e.g., `"... not supported until C99"`.
  *
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.

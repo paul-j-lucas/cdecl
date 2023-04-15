@@ -94,10 +94,11 @@ static rb_tree_t    typedef_set;        ///< Global set of `typedef`s.
 
 /**
  * Predefined types for K&R C.
- * The types here include those shown in:
+ *
+ * @remarks The types here include those shown in:
  *  + The first edition of _The C Programming Language_.
  *  + Various Version 7 Unix manual pages.
- *
+ * @par
  * There likely should be more, but it's hard to find documentation going back
  * that far.
  *

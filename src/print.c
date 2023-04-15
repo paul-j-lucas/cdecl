@@ -371,13 +371,16 @@ static void print_input_line( size_t *error_column, size_t term_columns ) {
 }
 
 /**
- * Gets the length of the first token in \a s.  Characters are divided into
- * three classes:
+ * Gets the length of the first token in \a s.
  *
+ * @remarks Characters are divided into three classes:
+ *
+ * @par
  *  + Whitespace.
  *  + Identifier.
  *  + Everything else (e.g., punctuation).
  *
+ * @par
  * A token is composed of characters in exclusively one class.  The class is
  * determined by `s[0]`.  The length of the token is the number of consecutive
  * characters of the same class starting at `s[0]`.

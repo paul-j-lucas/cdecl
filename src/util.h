@@ -671,15 +671,16 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Extracts the base portion of a path-name.
- * Unlike **basename**(3):
+ *
+ * @remarks Unlike **basename**(3):
  *  + Trailing `/` characters are not deleted.
  *  + \a path_name is never modified (hence can therefore be `const`).
  *  + Returns a pointer within \a path_name (hence is multi-call safe).
  *
  * @param path_name The path-name to extract the base portion of.
- * @return Returns a pointer to the last component of \a path_name.
- * If \a path_name consists entirely of `/` characters, a pointer to the string
- * `/` is returned.
+ * @return Returns a pointer to the last component of \a path_name.  If \a
+ * path_name consists entirely of `/` characters, a pointer to the string `/`
+ * is returned.
  */
 NODISCARD
 char const* base_name( char const *path_name );

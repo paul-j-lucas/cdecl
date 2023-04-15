@@ -94,21 +94,21 @@
  */
 
 /**
- * Gets an l-value reference to the first node in \a TREE.
+ * Gets an lvalue reference to the first node in \a TREE.
  *
  * @param TREE A pointer to the red-black tree to get the first node of.
- * @return Returns said l-value referene.
+ * @return Returns said lvalue referene.
  * @note This is a macro instead of an inline function so it'll:
  * + Work with either a `const` or non-`const` \a TREE.
- * + Be an l-value reference.
+ * + Be an lvalue reference.
  */
 #define RB_FIRST(TREE)            (RB_ROOT(TREE)->child[RB_L])
 
 /**
- * Gets an l-value reference to the root node of \a TREE.
+ * Gets an lvalue reference to the root node of \a TREE.
  *
  * @param TREE A pointer to the red-black tree to get the root node of.
- * @return Returns said l-value referene.
+ * @return Returns said lvalue referene.
  *
  * @note This is a macro instead of an inline function so it'll work with
  * either a `const` or non-`const` \a TREE.
@@ -116,19 +116,19 @@
 #define RB_NIL(TREE)              (&(TREE)->nil)
 
 /**
- * Gets an l-value reference to the child node pointer of \a NODE's parent,
+ * Gets an lvalue reference to the child node pointer of \a NODE's parent,
  * i.e., the parent's pointer to \a NODE.
  *
  * @param NODE A pointer to the node to get said reference from.
- * @return Returns said l-value reference.
+ * @return Returns said lvalue reference.
  */
 #define RB_PARENT_CHILD(NODE)     ((NODE)->parent->child[ child_dir( NODE ) ])
 
 /**
- * Gets an l-value reference to the root node of \a TREE.
+ * Gets an lvalue reference to the root node of \a TREE.
  *
  * @param TREE A pointer to the red-black tree to get the root node of.
- * @return Returns said l-value referene.
+ * @return Returns said lvalue referene.
  *
  * @note This is a macro instead of an inline function so it'll work with
  * either a `const` or non-`const` \a TREE.
