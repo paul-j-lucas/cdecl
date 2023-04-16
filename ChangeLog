@@ -1,5 +1,7 @@
 2023-04-16  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, debug.out: Now naming top-level C declarations more
+     consistently.
    * parser.y: Additional use of PARSE_ASSERT().
    * parser.y: Added local variable.
    * parser.y: Changed CHECK_NESTED_TYPE_OK() to use PARSE_ASSERT() instead.
