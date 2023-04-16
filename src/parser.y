@@ -1916,7 +1916,8 @@ declare_command
      */
   : Y_declare sname_list_english as_exp alignas_or_width_decl_english_ast
     {
-      c_ast_t *const decl_ast = $4;
+      slist_t         sname_list = slist_move( &$2 );
+      c_ast_t *const  decl_ast = $4;
 
       if ( decl_ast->kind == K_NAME ) {
         //
@@ -1934,14 +1935,14 @@ declare_command
         //
         assert( !c_sname_empty( &decl_ast->sname ) );
         print_error_unknown_name( &@4, &decl_ast->sname );
-        c_sname_list_cleanup( &$2 );
+        c_sname_list_cleanup( &sname_list );
         PARSE_ABORT();
       }
 
       DUMP_START( "declare_command",
                   "DECLARE sname_list_english AS "
                   "alignas_or_width_decl_english_ast" );
-      DUMP_SNAME_LIST( "sname_list_english", $2 );
+      DUMP_SNAME_LIST( "sname_list_english", sname_list );
       DUMP_AST( "alignas_or_width_decl_english_ast", decl_ast );
 
       decl_ast->loc = @2;
@@ -1950,7 +1951,7 @@ declare_command
       DUMP_END();
 
       // To check the declaration, it needs a name: just dup the first one.
-      c_sname_t temp_sname = c_sname_dup( slist_front( &$2 ) );
+      c_sname_t temp_sname = c_sname_dup( slist_front( &sname_list ) );
       c_sname_set( &decl_ast->sname, &temp_sname );
 
       bool ok = c_ast_check( decl_ast );
@@ -1965,7 +1966,7 @@ declare_command
         // This check is done now in the parser rather than later in the AST
         // since similar checks are also done here in the parser.
         //
-        FOREACH_SLIST_NODE( sname_node, &$2 ) {
+        FOREACH_SLIST_NODE( sname_node, &sname_list ) {
           c_sname_t const *const sname = sname_node->data;
           c_typedef_t const *const tdef = c_typedef_find_sname( sname );
           if ( tdef != NULL ) {
@@ -1982,7 +1983,7 @@ declare_command
 
       if ( ok ) {
         unsigned gib_flags = C_GIB_DECL;
-        if ( slist_len( &$2 ) > 1 )
+        if ( slist_len( &sname_list ) > 1 )
           gib_flags |= C_GIB_MULTI_DECL;
         bool const print_as_using = c_ast_print_as_using( decl_ast );
         if ( print_as_using && opt_semicolon ) {
@@ -1998,7 +1999,7 @@ declare_command
           gib_flags |= C_GIB_FINAL_SEMI;
         }
 
-        FOREACH_SLIST_NODE( sname_node, &$2 ) {
+        FOREACH_SLIST_NODE( sname_node, &sname_list ) {
           c_sname_t *const cur_sname = sname_node->data;
           c_sname_set( &decl_ast->sname, cur_sname );
           bool const is_last_sname = sname_node->next == NULL;
@@ -2033,7 +2034,7 @@ declare_command
         } // for
       }
 
-      c_sname_list_cleanup( &$2 );
+      c_sname_list_cleanup( &sname_list );
       PARSE_ASSERT( ok );
       PUTC( '\n' );
     }
