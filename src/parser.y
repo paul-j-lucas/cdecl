@@ -2462,27 +2462,27 @@ explain_command
     /*
      * C++ file-scope constructor definition, e.g.: S::S([params]).
      */
-  | explain file_scope_constructor_decl_c
+  | explain file_scope_constructor_declaration_c
 
     /*
      * C++ in-class destructor declaration, e.g.: ~S().
      */
-  | explain destructor_decl_c
+  | explain destructor_declaration_c
 
     /*
      * C++ file scope destructor definition, e.g.: S::~S().
      */
-  | explain file_scope_destructor_decl_c
+  | explain file_scope_destructor_declaration_c
 
     /*
      * C++ lambda declaration.
      */
-  | explain lambda_decl_c
+  | explain lambda_declaration_c
 
     /*
      * Pre-C99 implicit int function and C++ in-class constructor declaration.
      */
-  | explain pc99_func_or_constructor_decl_c
+  | explain pc99_func_or_constructor_declaration_c
 
     /*
      * Pre-C99 pointer to implicit int declaration:
@@ -3284,14 +3284,14 @@ in_scope_declaration_c_exp
 
 /// Gibberish C++ lambda declaration //////////////////////////////////////////
 
-lambda_decl_c
+lambda_declaration_c
   : '[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt
     storage_class_subset_english_type_opt lambda_return_type_c_ast_opt
     {
       c_ast_t *const ret_ast = $6;
       c_type_t const type = $5;
 
-      DUMP_START( "lambda_decl_c",
+      DUMP_START( "lambda_declaration_c",
                   "'[' capture_decl_list_c_opt ']' "
                   "lambda_param_c_ast_list_opt "
                   "lambda_return_type_c_ast_opt" );
@@ -3306,7 +3306,7 @@ lambda_decl_c
       lambda_ast->lambda.param_ast_list = slist_move( &$4 );
       c_ast_set_parent( ret_ast, lambda_ast );
 
-      DUMP_AST( "lambda_decl_c", lambda_ast );
+      DUMP_AST( "lambda_declaration_c", lambda_ast );
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( lambda_ast ) );
@@ -3958,7 +3958,7 @@ block_decl_c_astp                       // Apple extension
 
 /// Gibberish C++ in-class destructor declaration /////////////////////////////
 
-destructor_decl_c
+destructor_declaration_c
     /*
      * C++ in-class destructor declaration, e.g.: ~S().
      */
@@ -3972,7 +3972,7 @@ destructor_decl_c
       c_tid_t     const noexcept_stid = $6;
       c_tid_t     const func_equals_stid = $8;
 
-      DUMP_START( "destructor_decl_c",
+      DUMP_START( "destructor_declaration_c",
                   "virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt "
                   "noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt "
                   "func_equals_c_stid_opt" );
@@ -3989,7 +3989,7 @@ destructor_decl_c
         C_TPID_STORE
       );
 
-      DUMP_AST( "destructor_decl_c", ast );
+      DUMP_AST( "destructor_declaration_c", ast );
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( ast ) );
@@ -3999,7 +3999,7 @@ destructor_decl_c
 
 /// Gibberish C++ file-scope constructor declaration //////////////////////////
 
-file_scope_constructor_decl_c
+file_scope_constructor_declaration_c
   : inline_stid_opt Y_CONSTRUCTOR_SNAME
     lparen_exp param_c_ast_list_opt rparen_func_qualifier_list_c_stid_opt
     noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt
@@ -4008,7 +4008,7 @@ file_scope_constructor_decl_c
       c_tid_t const func_qual_stids = $5;
       c_tid_t const noexcept_stid = $6;
 
-      DUMP_START( "file_scope_constructor_decl_c",
+      DUMP_START( "file_scope_constructor_declaration_c",
                   "inline_opt CONSTRUCTOR_SNAME '(' param_c_ast_list_opt ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt" );
       DUMP_TID( "inline_stid_opt", inline_stid );
@@ -4027,7 +4027,7 @@ file_scope_constructor_decl_c
       );
       ast->ctor.param_ast_list = slist_move( &$4 );
 
-      DUMP_AST( "file_scope_constructor_decl_c", ast );
+      DUMP_AST( "file_scope_constructor_declaration_c", ast );
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( ast ) );
@@ -4037,7 +4037,7 @@ file_scope_constructor_decl_c
 
 /// Gibberish C++ file-scope destructor declaration ///////////////////////////
 
-file_scope_destructor_decl_c
+file_scope_destructor_declaration_c
   : inline_stid_opt destructor_sname
     lparen_exp rparen_func_qualifier_list_c_stid_opt noexcept_c_stid_opt
     gnu_attribute_specifier_list_c_opt
@@ -4046,7 +4046,7 @@ file_scope_destructor_decl_c
       c_tid_t const func_qual_stids = $4;
       c_tid_t const noexcept_stid = $5;
 
-      DUMP_START( "file_scope_destructor_decl_c",
+      DUMP_START( "file_scope_destructor_declaration_c",
                   "inline_opt DESTRUCTOR_SNAME '(' ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt" );
       DUMP_TID( "inline_stid_opt", inline_stid );
@@ -4063,7 +4063,7 @@ file_scope_destructor_decl_c
         C_TPID_STORE
       );
 
-      DUMP_AST( "file_scope_destructor_decl_c", ast );
+      DUMP_AST( "file_scope_destructor_declaration_c", ast );
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( ast ) );
@@ -4216,7 +4216,7 @@ func_decl_c_astp
     }
   ;
 
-pc99_func_or_constructor_decl_c
+pc99_func_or_constructor_declaration_c
     /*
      * Pre-C99 implicit int function and C++ in-class constructor declaration.
      *
@@ -4253,7 +4253,7 @@ pc99_func_or_constructor_decl_c
       c_tid_t     const noexcept_stid = $6;
       c_tid_t     const func_equals_stid = $7;
 
-      DUMP_START( "pc99_func_or_constructor_decl_c",
+      DUMP_START( "pc99_func_or_constructor_declaration_c",
                   "NAME '(' param_c_ast_list_opt ')' noexcept_c_stid_opt "
                   "func_equals_c_stid_opt" );
       DUMP_STR( "NAME", name );
@@ -4311,7 +4311,7 @@ pc99_func_or_constructor_decl_c
         c_tid_check( noexcept_stid | func_equals_stid, C_TPID_STORE );
       ast->func.param_ast_list = slist_move( &$4 );
 
-      DUMP_AST( "pc99_func_or_constructor_decl_c", ast );
+      DUMP_AST( "pc99_func_or_constructor_declaration_c", ast );
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( ast ) );

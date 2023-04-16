@@ -4834,14 +4834,14 @@ decl_c: {
 
 declare _w as user-defined literal (arg as pointer to constant character) returning integer
 c++decl> explain ~C()
-destructor_decl_c: {
+destructor_declaration_c: {
   rule: "virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt",
   virtual_stid_opt: { stid: 0x2, string: "" },
   any_name_exp: "C",
   func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
   noexcept_c_stid_opt: { stid: 0x2, string: "" },
   func_equals_c_stid_opt: { stid: 0x2, string: "" },
-  destructor_decl_c: {
+  destructor_declaration_c: {
     sname: { string: "C", scopes: "none" },
     unique_id: 1426,
     kind: { value: 0x8000, string: "destructor" },
@@ -4854,13 +4854,13 @@ destructor_decl_c: {
 
 declare C as destructor
 c++decl> explain []
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [],
   lambda_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1427,
     kind: { value: 0x40000, string: "lambda" },
@@ -5008,7 +5008,7 @@ param_c_ast_list: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [],
   lambda_param_c_ast_list_opt: [
@@ -5025,7 +5025,7 @@ lambda_decl_c: {
   ],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1429,
     kind: { value: 0x40000, string: "lambda" },
@@ -5077,7 +5077,7 @@ capture_decl_list_c: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -5094,7 +5094,7 @@ lambda_decl_c: {
   lambda_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1431,
     kind: { value: 0x40000, string: "lambda" },
@@ -5279,7 +5279,7 @@ param_c_ast_list: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -5307,7 +5307,7 @@ lambda_decl_c: {
   ],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1434,
     kind: { value: 0x40000, string: "lambda" },
@@ -5370,7 +5370,7 @@ capture_decl_list_c: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -5387,7 +5387,7 @@ lambda_decl_c: {
   lambda_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1436,
     kind: { value: 0x40000, string: "lambda" },
@@ -5572,7 +5572,7 @@ param_c_ast_list: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -5600,7 +5600,7 @@ lambda_decl_c: {
   ],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1439,
     kind: { value: 0x40000, string: "lambda" },
@@ -5663,7 +5663,7 @@ capture_decl_list_c: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -5680,7 +5680,7 @@ lambda_decl_c: {
   lambda_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1441,
     kind: { value: 0x40000, string: "lambda" },
@@ -5865,7 +5865,7 @@ param_c_ast_list: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -5893,7 +5893,7 @@ lambda_decl_c: {
   ],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1444,
     kind: { value: 0x40000, string: "lambda" },
@@ -5956,7 +5956,7 @@ capture_decl_list_c: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -5973,7 +5973,7 @@ lambda_decl_c: {
   lambda_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1446,
     kind: { value: 0x40000, string: "lambda" },
@@ -6158,7 +6158,7 @@ param_c_ast_list: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -6186,7 +6186,7 @@ lambda_decl_c: {
   ],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1449,
     kind: { value: 0x40000, string: "lambda" },
@@ -6249,7 +6249,7 @@ capture_decl_list_c: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -6266,7 +6266,7 @@ lambda_decl_c: {
   lambda_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1451,
     kind: { value: 0x40000, string: "lambda" },
@@ -6451,7 +6451,7 @@ param_c_ast_list: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -6479,7 +6479,7 @@ lambda_decl_c: {
   ],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1454,
     kind: { value: 0x40000, string: "lambda" },
@@ -6542,7 +6542,7 @@ capture_decl_list_c: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -6559,7 +6559,7 @@ lambda_decl_c: {
   lambda_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1456,
     kind: { value: 0x40000, string: "lambda" },
@@ -6744,7 +6744,7 @@ param_c_ast_list: {
   ]
 }
 
-lambda_decl_c: {
+lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
@@ -6772,7 +6772,7 @@ lambda_decl_c: {
   ],
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
-  lambda_decl_c: {
+  lambda_declaration_c: {
     sname: { string: "" },
     unique_id: 1459,
     kind: { value: 0x40000, string: "lambda" },
