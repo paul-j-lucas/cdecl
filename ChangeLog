@@ -1,5 +1,6 @@
 2023-04-16  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Added local variable.
    * parser.y: Changed CHECK_NESTED_TYPE_OK() to use PARSE_ASSERT() instead.
 
 2023-04-15  Paul J. Lucas <paul@lucasmail.org>
