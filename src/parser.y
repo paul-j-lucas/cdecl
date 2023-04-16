@@ -105,14 +105,6 @@
  */
 
 /**
- * Calls fl_is_nested_type_ok(): if it returns `false`, calls #PARSE_ABORT().
- *
- * @param TYPE_LOC The location of the type declaration.
- */
-#define CHECK_NESTED_TYPE_OK(TYPE_LOC) BLOCK( \
-  if ( !fl_is_nested_type_ok( __FILE__, __LINE__, TYPE_LOC ) ) PARSE_ABORT(); )
-
-/**
  * Calls #elaborate_error_dym() with #DYM_NONE.
  *
  * @param ... Arguments passed to fl_elaborate_error().
@@ -152,6 +144,24 @@
  */
 #define elaborate_error_dym(DYM_KINDS,...) BLOCK( \
   fl_elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
+
+/**
+ * Checks whether the type currently being declared (`enum`, `struct`,
+ * `typedef`, or `union`) is nested within some other type (`struct` or
+ * `union`) and whether the current language is C: if not, prints an error
+ * message.
+ *
+ * @remarks In debug mode, also includes the file & line where the function was
+ * called from in the error message.
+ *
+ * @param TYPE_LOC The location of the type declaration.
+ * @return Returns `true` only if the type currently being declared is either
+ * not nested or the current language is C++.
+ *
+ * @sa fl_is_nested_type_ok()
+ */
+#define is_nested_type_ok(TYPE_LOC) \
+  fl_is_nested_type_ok( __FILE__, __LINE__, (TYPE_LOC) )
 
 /**
  * Calls fl_keyword_expected() followed by #PARSE_ABORT().
@@ -733,14 +743,15 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
 /**
  * Checks whether the type currently being declared (`enum`, `struct`,
  * `typedef`, or `union`) is nested within some other type (`struct` or
- * `union`) and whether the current language is C.
+ * `union`) and whether the current language is C: if not, prints an error
+ * message.
  *
  * @note It is unnecessary to check either when a `class` is being declared or
  * when a type is being declared within a `namespace` since those are not legal
  * in C anyway.
  *
  * @note This function isn't normally called directly; use the
- * #CHECK_NESTED_TYPE_OK() macro instead.
+ * #is_nested_type_ok() macro instead.
  *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
@@ -2949,7 +2960,7 @@ class_struct_union_declaration_c
      */
   : class_struct_union_btid
     {
-      CHECK_NESTED_TYPE_OK( &@1 );
+      PARSE_ASSERT( is_nested_type_ok( &@1 ) );
       gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c_exp
@@ -3008,7 +3019,7 @@ enum_declaration_c
      */
   : enum_btid
     {
-      CHECK_NESTED_TYPE_OK( &@1 );
+      PARSE_ASSERT( is_nested_type_ok( &@1 ) );
       gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c_exp enum_fixed_type_c_ast_opt
@@ -3419,7 +3430,7 @@ typed_declaration_c
 typedef_declaration_c
   : Y_typedef typename_flag_opt
     {
-      CHECK_NESTED_TYPE_OK( &@1 );
+      PARSE_ASSERT( is_nested_type_ok( &@1 ) );
       in_attr.is_typename = $2;
       gibberish_to_english();           // see the comment in "explain"
     }
