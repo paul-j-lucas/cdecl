@@ -2414,10 +2414,9 @@ define_command
       //  i.e., a defined type with a storage class.  Once the semantic checks
       // pass, remove the TS_TYPEDEF.
       //
-      if ( !c_type_add( &ast->type, &T_TS_TYPEDEF, &@4 ) ||
-           !c_ast_check( ast ) ) {
-        PARSE_ABORT();
-      }
+      PARSE_ASSERT(
+        c_type_add( &ast->type, &T_TS_TYPEDEF, &@4 ) && c_ast_check( ast )
+      );
       PJL_IGNORE_RV( c_ast_take_type_any( ast, &T_TS_TYPEDEF ) );
 
       if ( c_tid_is_any( ast->type.btids, TB_ANY_SCOPE ) )
