@@ -197,10 +197,10 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
     C_LANG_LIT( { ~LANG_const, L_GNU___const },
                 { LANG_ANY,    L_const       } ) },
 
-  { TS_REFERENCE, LANG_CPP_MIN(11), /*english_lit=*/NULL,
+  { TS_REFERENCE, LANG_REF_QUALIFIED_FUNC, /*english_lit=*/NULL,
     C_LANG_LIT( { LANG_ANY, L_reference } ) },
 
-  { TS_RVALUE_REFERENCE, LANG_CPP_MIN(11), /*english_lit=*/NULL,
+  { TS_RVALUE_REFERENCE, LANG_REF_QUALIFIED_FUNC, /*english_lit=*/NULL,
     C_LANG_LIT( { LANG_ANY, L_rvalue_reference } ) },
 
   { TS_RESTRICT, LANG_ANY, L_restricted,
