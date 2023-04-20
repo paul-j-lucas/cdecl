@@ -396,9 +396,9 @@ static inline bool is_token_char( char c ) {
  *
  * @remarks This function exists to find the previous **cdecl** keyword for
  * autocompletion skipping over non-kewywords.  For example, given:
- * ```
- * cdecl> declare x as int width 4 <tab>
- * ```
+ *
+ *      cdecl> declare x as int width 4 <tab>
+ *
  * hitting _tab_ finds the previous word `width` skipping over `4` since it's
  * not a keyword.  (The next autocompletion word for `width` can therefore
  * specify `bits` even though it's not adjacent.)
