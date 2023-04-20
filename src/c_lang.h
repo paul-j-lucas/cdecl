@@ -59,6 +59,16 @@ _GL_INLINE_HEADER_BEGIN
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Convenience macro for iterating over all languages.
+ *
+ * @param VAR The \ref c_lang loop variable.
+ *
+ * @sa c_lang_next()
+ */
+#define FOREACH_LANG(VAR) \
+  for ( c_lang_t const *VAR = NULL; (VAR = c_lang_next( VAR )) != NULL; )
+
 // languages supported
 #define LANG_NONE     0u                /**< No languages. */
 #define LANG_ANY      (~LANGX_MASK)     /**< Any supported language. */
@@ -1131,16 +1141,6 @@ void c_lang_set( c_lang_id_t lang_id );
  */
 NODISCARD
 char const* c_lang_which( c_lang_id_t lang_ids );
-
-/**
- * Convenience macro for iterating over all languages.
- *
- * @param VAR The \ref c_lang loop variable.
- *
- * @sa c_lang_next()
- */
-#define FOREACH_LANG(VAR) \
-  for ( c_lang_t const *VAR = NULL; (VAR = c_lang_next( VAR )) != NULL; )
 
 /**
  * Convenience function for checking whether \ref opt_lang is among \a
