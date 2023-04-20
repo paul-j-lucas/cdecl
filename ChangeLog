@@ -1,3 +1,8 @@
+2023-04-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: s/LANG_CPP_MIN(11)/LANG_REF_QUALIFIED_FUNC/
+   * c_lang.h: Moved macro definition.
+
 2023-04-16  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y, debug.out: Now naming top-level C declarations more
