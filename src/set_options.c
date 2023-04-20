@@ -188,7 +188,7 @@ static void print_options( void ) {
 }
 
 /**
- * Sets the alt-tokens option.
+ * Sets the `alt-tokens` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -206,7 +206,7 @@ static bool set_alt_tokens( set_option_fn_args_t const *args ) {
 
 #ifdef YYDEBUG
 /**
- * Sets the Bison debugging option.
+ * Sets the `bison-debug` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -219,7 +219,7 @@ static bool set_bison_debug( set_option_fn_args_t const *args ) {
 
 #ifdef ENABLE_CDECL_DEBUG
 /**
- * Sets the debug option.
+ * Sets the **cdecl** `debug` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -231,7 +231,7 @@ static bool set_debug( set_option_fn_args_t const *args ) {
 #endif /* ENABLE_CDECL_DEBUG */
 
 /**
- * Sets the digraphs-tokens option.
+ * Sets the `digraphs` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -248,7 +248,7 @@ static bool set_digraphs( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the east-const option.
+ * Sets the `east-const` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -265,7 +265,7 @@ static bool set_east_const( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the echo-commands option.
+ * Sets the `echo-commands` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -281,7 +281,7 @@ static bool set_echo_commands( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the english-types option.
+ * Sets the `english-types` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -292,7 +292,7 @@ static bool set_english_types( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the explain-by-default option.
+ * Sets the `explain-by-default` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -303,7 +303,7 @@ static bool set_explain_by_default( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the explicit-ecsu option.
+ * Sets the `explicit-ecsu` option.
  *
  * @param args The set option arguments.
  * @return Returns `true` only if the option was set.
@@ -333,7 +333,7 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the explicit-int option.
+ * Sets the `explicit-int` option.
  *
  * @param args The set option arguments.
  * @return Returns `true` only if the option was set.
@@ -361,7 +361,7 @@ static bool set_explicit_int( set_option_fn_args_t const *args ) {
 
 #ifdef ENABLE_FLEX_DEBUG
 /**
- * Sets the Flex debugging option.
+ * Sets the `flex-debug` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -373,7 +373,7 @@ static bool set_flex_debug( set_option_fn_args_t const *args ) {
 #endif /* ENABLE_FLEX_DEBUG */
 
 /**
- * Sets the current language.
+ * Sets the `lang` option.
  *
  * @param args The set option arguments.
  * @return Returns `true` only if the option was set.
@@ -428,7 +428,7 @@ static bool set_lang_impl( char const *name ) {
 }
 
 /**
- * Sets the prompt option.
+ * Sets the `prompt` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -440,7 +440,7 @@ static bool set_prompt( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the semicolon option.
+ * Sets the `semicolon` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -451,7 +451,7 @@ static bool set_semicolon( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the trailing return type option.
+ * Sets the `trailing-return` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -468,7 +468,7 @@ static bool set_trailing_return( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the trigraphs option.
+ * Sets the `trigraphs` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
@@ -485,7 +485,7 @@ static bool set_trigraphs( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the using option.
+ * Sets the `using` option.
  *
  * @param args The set option arguments.
  * @return Always returns `true`.
