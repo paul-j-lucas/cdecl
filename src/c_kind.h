@@ -235,12 +235,6 @@ typedef enum c_ast_kind c_ast_kind_t;
 #define K_ANY_BIT_FIELD           ( K_BUILTIN | K_ENUM | K_TYPEDEF )
 
 /**
- * Shorthand for either #K_ENUM or #K_CLASS_STRUCT_UNION.
- */
-#define K_ANY_ENUM_CLASS_STRUCT_UNION \
-                                  ( K_ENUM | K_CLASS_STRUCT_UNION )
-
-/**
  * Shorthand for any kind of function-like AST: #K_APPLE_BLOCK, #K_CONSTRUCTOR,
  * #K_DESTRUCTOR, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_USER_DEF_CONVERSION,
  * or #K_USER_DEF_LITERAL.
@@ -257,7 +251,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  * #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE, or #K_TYPEDEF.
  */
 #define K_ANY_OBJECT              ( K_ANY_POINTER | K_ANY_REFERENCE | K_ARRAY \
-                                  | K_ANY_ENUM_CLASS_STRUCT_UNION | K_BUILTIN \
+                                  | K_BUILTIN | K_ENUM_CLASS_STRUCT_UNION \
                                   | K_TYPEDEF )
 
 /**
@@ -297,6 +291,11 @@ typedef enum c_ast_kind c_ast_kind_t;
  * type: #K_FUNCTION, #K_OPERATOR.
  */
 #define K_ANY_TRAILING_RETURN     ( K_FUNCTION | K_OPERATOR )
+
+/**
+ * Shorthand for either #K_ENUM or #K_CLASS_STRUCT_UNION.
+ */
+#define K_ENUM_CLASS_STRUCT_UNION ( K_ENUM | K_CLASS_STRUCT_UNION )
 
 ////////// extern functions ///////////////////////////////////////////////////
 

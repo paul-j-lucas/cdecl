@@ -1236,7 +1236,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
     }
   }
 
-  bool const is_ecsu = (tdef->ast->kind & K_ANY_ENUM_CLASS_STRUCT_UNION) != 0;
+  bool const is_ecsu = (tdef->ast->kind & K_ENUM_CLASS_STRUCT_UNION) != 0;
 
   //
   // When printing a type, all types except enum, class, struct, or union
