@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 14.2
+
+** Autocompletion `=`
+Autocompleting `set` options that take a value now includes `=`.
+
+
 * Changes in Cdecl 14.1.1
 
 ** Escaping quotes in dump strings
