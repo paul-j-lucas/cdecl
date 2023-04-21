@@ -1,3 +1,13 @@
+2023-04-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Added asserts.
+
+2023-04-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_kind.h, gibberish.c, parser.y:
+     s/K_ANY_ENUM_CLASS_STRUCT_UNION/K_ENUM_CLASS_STRUCT_UNION/
+   * gibberish.c: Simplification.
+
 2023-04-19  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.c: s/LANG_CPP_MIN(11)/LANG_REF_QUALIFIED_FUNC/
