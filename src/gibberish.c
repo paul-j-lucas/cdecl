@@ -1021,6 +1021,10 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
  */
 NODISCARD
 static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
+  assert( g != NULL );
+  assert( ast != NULL );
+  assert( is_1_bit_only_in_set( ast->kind, K_POINTER | K_ANY_REFERENCE ) );
+
   if ( (g->gib_flags & (C_GIB_CAST | C_GIB_USING)) != 0 )
     return false;
   if ( c_ast_find_name( ast, C_VISIT_UP ) == NULL )
