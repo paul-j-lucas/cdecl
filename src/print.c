@@ -127,7 +127,7 @@ static char const* fput_list_dym_gets( void const **ppelt ) {
     return NULL;
   *ppelt = dym + 1;
 
-  static strbuf_t sbufs[ 2 ];
+  static strbuf_t sbufs[2];
   static unsigned buf_index;
 
   strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
