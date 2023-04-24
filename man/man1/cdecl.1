@@ -537,11 +537,12 @@ is genuine.
 .BI \-\-west-pointer \f1=\fPs "\f1 | \fP" "" \-w " s"
 Sets when to print the \f(CW*\fP for pointer
 (and \f(CW&\fP and \f(CW&&\fP for reference)
-types adjacent to the type
+adjacent to the type
 (``west'')
 versus adjacent to a name
 to
 .I s
+(which is case-insensitive),
 e.g.:
 .RS
 .cS
@@ -583,6 +584,9 @@ All types
 .IP
 Multiple formats may be given,
 one immediately after the other.
+The default is
+.BR r .
+.IP
 However,
 when more than one name is given in the same
 .B declare

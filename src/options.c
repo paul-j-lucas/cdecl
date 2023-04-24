@@ -192,7 +192,7 @@ bool parse_west_pointer( char const *wd_format ) {
 
   unsigned wd = 0;
   for ( char const *s = wd_format; *s != '\0'; ++s ) {
-    switch ( *s ) {
+    switch ( tolower( *s ) ) {
       case 'b':
         wd |= K_APPLE_BLOCK;
         break;
