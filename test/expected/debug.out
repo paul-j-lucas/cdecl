@@ -13,6 +13,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> explain (int)x
 builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
@@ -6824,6 +6825,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> explain int x
 declare x as integer
 c++decl> set debug
@@ -6842,6 +6844,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> explain int x
 builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",

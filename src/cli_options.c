@@ -82,6 +82,7 @@
 #define OPT_NO_ENGLISH_TYPES  T
 #define OPT_NO_USING          u
 #define OPT_VERSION           v
+#define OPT_WEST_POINTER      w
 #define OPT_LANGUAGE          x
 
 /// Command-line option character as a character literal.
@@ -141,6 +142,7 @@ static struct option const CLI_OPTIONS_LONG[] = {
   { "trailing-return",  no_argument,        NULL, COPT(TRAILING_RETURN)   },
   { "trigraphs",        no_argument,        NULL, COPT(TRIGRAPHS)         },
   { "version",          no_argument,        NULL, COPT(VERSION)           },
+  { "west-pointer",     required_argument,  NULL, COPT(WEST_POINTER)      },
   { NULL,               0,                  NULL, 0                       }
 };
 
@@ -189,6 +191,7 @@ static char const   CLI_OPTIONS_SHORT[] = ":"
   SOPT(TRAILING_RETURN)   SOPT_NO_ARGUMENT
   SOPT(TRIGRAPHS)         SOPT_NO_ARGUMENT
   SOPT(VERSION)           SOPT_NO_ARGUMENT
+  SOPT(WEST_POINTER)      SOPT_REQUIRED_ARGUMENT
 ;
 
 // local variables
@@ -483,6 +486,13 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(VERSION):
         ++opt_version;
         break;
+      case COPT(WEST_POINTER):
+        if ( !parse_west_pointer( optarg ) )
+          invalid_opt_value(
+            COPT(WEST_POINTER), optarg,
+            "a combination of b, f, l, o, r, t, or *"
+          );
+        break;
 
       case ':':
         goto missing_arg;
@@ -539,6 +549,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     SOPT(TRAILING_RETURN)
     SOPT(TRIGRAPHS)
     SOPT(VERSION)
+    SOPT(WEST_POINTER)
   );
 
   check_mutually_exclusive( SOPT(VERSION),
@@ -572,6 +583,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     SOPT(OUTPUT)
     SOPT(TRAILING_RETURN)
     SOPT(TRIGRAPHS)
+    SOPT(WEST_POINTER)
   );
 
   if ( strcmp( fin_path, "-" ) != 0 ) {
@@ -682,6 +694,7 @@ static void usage( int status ) {
 "  --trailing-return    (-%c) Print trailing return type in C++.\n"
 "  --trigraphs          (-%c) Print trigraphs.\n"
 "  --version            (-%c) Print version and exit.\n"
+"  --west-pointer       (-%c) Print *, &, and && next to type.\n"
 "\n"
 PACKAGE_NAME " home page: " PACKAGE_URL "\n"
 "Report bugs to: " PACKAGE_BUGREPORT "\n",
@@ -716,7 +729,8 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n"
     COPT(OUTPUT),
     COPT(TRAILING_RETURN),
     COPT(TRIGRAPHS),
-    COPT(VERSION)
+    COPT(VERSION),
+    COPT(WEST_POINTER)
   );
   exit( status );
 }

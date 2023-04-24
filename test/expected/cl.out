@@ -53,6 +53,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> show predefined
 define ATOM as WORD
 define BOOL as integer

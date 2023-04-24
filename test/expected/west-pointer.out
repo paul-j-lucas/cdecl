@@ -1,0 +1,113 @@
+c++decl> set west-pointer=t
+c++decl> set
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+  noexplain-by-default
+    explicit-ecsu=su
+  noexplicit-int
+  nographs
+    lang=C++23
+    prompt
+    semicolon
+  notrailing-return
+    using
+    west-pointer=t
+c++decl> declare p as pointer to int
+int* p;
+c++decl> declare p as pointer to pointer to int
+int** p;
+c++decl> declare p, q as pointer to int
+int *p, *q;
+c++decl> declare p, q as pointer to pointer to int
+int **p, **q;
+c++decl> declare a as array of pointer to int
+int* a[];
+c++decl> declare a as array of pointer to pointer to int
+int** a[];
+c++decl> declare a, b as array of pointer to int
+int *a[], *b[];
+c++decl> declare a, b as array of pointer to pointer to int
+int **a[], **b[];
+c++decl> declare p as pointer to array of pointer to int
+int* (*p)[];
+c++decl> declare p as pointer to array of pointer to pointer to int
+int** (*p)[];
+c++decl> declare p, q as pointer to array of pointer to int
+int *(*p)[], *(*q)[];
+c++decl> declare p, q as pointer to array of pointer to pointer to int
+int **(*p)[], **(*q)[];
+c++decl> declare b as block returning pointer to int
+int *(^b)();
+c++decl> declare b as block returning pointer to pointer to int
+int **(^b)();
+c++decl> declare b, c as block returning pointer to int
+int *(^b)(), *(^c)();
+c++decl> declare b, c as block returning pointer to pointer to int
+int **(^b)(), **(^c)();
+c++decl> declare f as function returning pointer to int
+int *f();
+c++decl> declare f as function returning pointer to pointer to int
+int **f();
+c++decl> declare f, g as function returning pointer to int
+int *f(), *g();
+c++decl> declare f, g as function returning pointer to pointer to int
+int **f(), **g();
+c++decl> declare p as pointer to function returning int
+int (*p)();
+c++decl> declare p as pointer to function returning pointer to int
+int *(*p)();
+c++decl> declare p as pointer to function returning pointer to pointer to int
+int **(*p)();
+c++decl> declare p, q as pointer to function returning int
+int (*p)(), (*q)();
+c++decl> declare p, q as pointer to function returning pointer to int
+int *(*p)(), *(*q)();
+c++decl> declare p, q as pointer to function returning pointer to pointer to int
+int **(*p)(), **(*q)();
+c++decl> declare p as pointer to member of class C int
+int C::*p;
+c++decl> declare p as pointer to member of class C pointer to int
+int* C::*p;
+c++decl> declare p as pointer to member of class C pointer to pointer to int
+int** C::*p;
+c++decl> declare p, q as pointer to member of class C int
+int C::*p, C::*q;
+c++decl> declare p, q as pointer to member of class C pointer to int
+int *C::*p, *C::*q;
+c++decl> declare p, q as pointer to member of class C pointer to pointer to int
+int **C::*p, **C::*q;
+c++decl> declare f as function returning pointer to member of class C int
+int C::*f();
+c++decl> declare f as function returning pointer to member of class C pointer to int
+int *C::*f();
+c++decl> declare f as function returning pointer to member of class C pointer to pointer to int
+int **C::*f();
+c++decl> declare f, g as function returning pointer to member of class C int
+int C::*f(), C::*g();
+c++decl> declare f, g as function returning pointer to member of class C pointer to int
+int *C::*f(), *C::*g();
+c++decl> declare f, g as function returning pointer to member of class C pointer to pointer to int
+int **C::*f(), **C::*g();
+c++decl> declare p as pointer to function returning pointer to member of class C int
+int C::*(*p)();
+c++decl> declare p as pointer to function returning pointer to member of class C pointer to int
+int *C::*(*p)();
+c++decl> declare p as pointer to function returning pointer to member of class C pointer to pointer to int
+int **C::*(*p)();
+c++decl> declare p, q as pointer to function returning pointer to member of class C int
+int C::*(*p)(), C::*(*q)();
+c++decl> declare p, q as pointer to function returning pointer to member of class C pointer to int
+int *C::*(*p)(), *C::*(*q)();
+c++decl> declare p, q as pointer to function returning pointer to member of class C pointer to pointer to int
+int **C::*(*p)(), **C::*(*q)();
+c++decl> declare ! as operator returning pointer to int
+int *operator!();
+c++decl> declare ! as operator returning pointer to pointer to int
+int **operator!();
+c++decl> declare _x as user-defined literal( char ) returning pointer to int
+int *operator"" _x(char);
+c++decl> declare _x as user-defined literal( char ) returning pointer to pointer to int
+int **operator"" _x(char);

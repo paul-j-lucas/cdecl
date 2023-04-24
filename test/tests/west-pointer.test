@@ -1,0 +1,75 @@
+EXPECTED_EXIT=0
+cdecl -xc++ -O <<END
+
+set west-pointer=t
+set
+
+declare p as pointer to int
+declare p as pointer to pointer to int
+
+declare p, q as pointer to int
+declare p, q as pointer to pointer to int
+
+declare a as array of pointer to int
+declare a as array of pointer to pointer to int
+
+declare a, b as array of pointer to int
+declare a, b as array of pointer to pointer to int
+
+declare p as pointer to array of pointer to int
+declare p as pointer to array of pointer to pointer to int
+
+declare p, q as pointer to array of pointer to int
+declare p, q as pointer to array of pointer to pointer to int
+
+declare b as block returning pointer to int
+declare b as block returning pointer to pointer to int
+
+declare b, c as block returning pointer to int
+declare b, c as block returning pointer to pointer to int
+
+declare f as function returning pointer to int
+declare f as function returning pointer to pointer to int
+
+declare f, g as function returning pointer to int
+declare f, g as function returning pointer to pointer to int
+
+declare p as pointer to function returning int
+declare p as pointer to function returning pointer to int
+declare p as pointer to function returning pointer to pointer to int
+
+declare p, q as pointer to function returning int
+declare p, q as pointer to function returning pointer to int
+declare p, q as pointer to function returning pointer to pointer to int
+
+declare p as pointer to member of class C int
+declare p as pointer to member of class C pointer to int
+declare p as pointer to member of class C pointer to pointer to int
+
+declare p, q as pointer to member of class C int
+declare p, q as pointer to member of class C pointer to int
+declare p, q as pointer to member of class C pointer to pointer to int
+
+declare f as function returning pointer to member of class C int
+declare f as function returning pointer to member of class C pointer to int
+declare f as function returning pointer to member of class C pointer to pointer to int
+
+declare f, g as function returning pointer to member of class C int
+declare f, g as function returning pointer to member of class C pointer to int
+declare f, g as function returning pointer to member of class C pointer to pointer to int
+
+declare p as pointer to function returning pointer to member of class C int
+declare p as pointer to function returning pointer to member of class C pointer to int
+declare p as pointer to function returning pointer to member of class C pointer to pointer to int
+
+declare p, q as pointer to function returning pointer to member of class C int
+declare p, q as pointer to function returning pointer to member of class C pointer to int
+declare p, q as pointer to function returning pointer to member of class C pointer to pointer to int
+
+declare ! as operator returning pointer to int
+declare ! as operator returning pointer to pointer to int
+
+declare _x as user-defined literal( char ) returning pointer to int
+declare _x as user-defined literal( char ) returning pointer to pointer to int
+
+END

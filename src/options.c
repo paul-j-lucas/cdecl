@@ -61,6 +61,7 @@ bool                opt_semicolon = true;
 bool                opt_trailing_ret;
 bool                opt_typedefs = true;
 bool                opt_using = true;
+c_ast_kind_t        opt_west_kinds = K_ANY_FUNCTION_RETURN;
 
 /**
  * The integer type(s) that `int` shall be print explicitly for in C/C++
@@ -189,6 +190,42 @@ bool parse_explicit_int( char const *ei_format ) {
   return true;
 }
 
+bool parse_west_pointer( char const *wd_format ) {
+  assert( wd_format != NULL );
+
+  unsigned wd = 0;
+  for ( char const *s = wd_format; *s != '\0'; ++s ) {
+    switch ( *s ) {
+      case 'b':
+        wd |= K_APPLE_BLOCK;
+        break;
+      case 'f':
+        wd |= K_FUNCTION;
+        break;
+      case 'l':
+        wd |= K_USER_DEF_LITERAL;
+        break;
+      case 'o':
+        wd |= K_OPERATOR;
+        break;
+      case 'r':
+        wd |= K_ANY_FUNCTION_RETURN;
+        break;
+      case 't':
+        wd |= K_NON_PTR_REF_OBJECT;
+        break;
+      case '*':
+        wd |= K_ANY_FUNCTION_RETURN | K_NON_PTR_REF_OBJECT;
+        break;
+      default:
+        return false;
+    } // switch
+  } // for
+
+  opt_west_kinds = wd;
+  return true;
+}
+
 void print_explicit_ecsu( FILE *out ) {
   if ( (opt_explicit_ecsu & TB_ENUM) != TB_NONE )
     FPUTC( 'e', out );
@@ -230,6 +267,19 @@ void print_explicit_int( FILE *out ) {
     if ( is_explicit_ul  ) FPUTS( "ul",  out );
     if ( is_explicit_ull ) FPUTS( "ull", out );
   }
+}
+
+void print_west_pointer( FILE *out ) {
+  if ( (opt_west_kinds & K_APPLE_BLOCK) != 0 )
+    FPUTC( 'b', out );
+  if ( (opt_west_kinds & K_FUNCTION) != 0 )
+    FPUTC( 'f', out );
+  if ( (opt_west_kinds & K_USER_DEF_LITERAL) != 0 )
+    FPUTC( 'l', out );
+  if ( (opt_west_kinds & K_OPERATOR) != 0 )
+    FPUTC( 'o', out );
+  if ( (opt_west_kinds & K_NON_PTR_REF_OBJECT) != 0 )
+    FPUTC( 't', out );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

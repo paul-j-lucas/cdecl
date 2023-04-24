@@ -30,6 +30,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short int x;
 cdecl> declare x as int
@@ -62,6 +63,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short int x;
 cdecl> declare x as int
@@ -94,6 +96,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short int x;
 cdecl> declare x as int
@@ -126,6 +129,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short x;
 cdecl> declare x as int
@@ -158,6 +162,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short x;
 cdecl> declare x as int
@@ -190,6 +195,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short x;
 cdecl> declare x as int
@@ -222,6 +228,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short x;
 cdecl> declare x as int
@@ -254,6 +261,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short x;
 cdecl> declare x as int
@@ -286,6 +294,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short x;
 cdecl> declare x as int
@@ -318,6 +327,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short x;
 cdecl> declare x as int
@@ -350,6 +360,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as short
 short x;
 cdecl> declare x as int
@@ -382,6 +393,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as long
 long int x;
 cdecl> declare x as long long
@@ -406,6 +418,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> declare x as long
 long x;
 cdecl> declare x as long long

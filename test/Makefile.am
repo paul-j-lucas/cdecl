@@ -897,7 +897,8 @@ TESTS+=	tests/__declspec.test \
 	tests/set_prompt_x.test \
 	tests/set_xxx.test \
 	tests/trigraphs.test \
-	tests/using.test
+	tests/using.test \
+	tests/west-pointer.test
 
 if ENABLE_CDECL_DEBUG
 TESTS+=	tests/debug.test

@@ -117,6 +117,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added checking for reserved identifiers
 	added "did you mean ...?" suggestions
 	added Microsoft calling convention support
+	added west-pointer option
 	added optional code coverage
 	added optional Address Sanitizer, Memory Sanitizer, and Undefined
 		Bahavior Sanitizer builds

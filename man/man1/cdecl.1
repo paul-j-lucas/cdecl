@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 14, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 24, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -533,6 +533,72 @@ and whether GNU
 .BR readline (3)
 (if compiled in)
 is genuine.
+.TP
+.BI \-\-west-pointer \f1=\fPs "\f1 | \fP" "" \-w " s"
+Sets when to print the \f(CW*\fP for pointer
+(and \f(CW&\fP and \f(CW&&\fP for reference)
+types adjacent to the type
+(``west'')
+versus adjacent to a name
+to
+.I s
+e.g.:
+.RS
+.cS
+int *p;   // east
+int* p;   // west
+.cE 0
+.RE
+.IP
+Valid formats for
+.I s
+are:
+.RS 8
+.TP 4
+.B b
+Block return type.
+.TP
+.B f
+Function (and pointer to function) return type.
+.TP
+.B l
+User-defined literal return type.
+.TP
+.B o
+Operator return type.
+.TP
+.B r
+All return types
+(same as
+.BR bflo ).
+.TP
+.B t
+Non-return type.
+.TP
+.B *
+All types
+(same as
+.BR bflot ).
+.RE
+.IP
+Multiple formats may be given,
+one immediately after the other.
+However,
+when more than one name is given in the same
+.B declare
+command,
+the \f(CW*\fP,
+\f(CW&\fP,
+and
+\f(CW&&\fP
+are always printed adjacent to the name
+(``east''):
+.RS
+.cS
+cdecl> declare p, q as pointer to int
+int *p, *q;
+.cE 0
+.RE
 .SH C AND C++ LANGUAGE VERSIONS
 The argument to the
 .B \-\-language
@@ -1531,7 +1597,7 @@ option for details.)
 .TP
 .BI explicit-int \f1=\fPs
 Turns on explicit \f(CWint\fP for the integer types
-.IR s
+.I s
 \(em default is none.
 (See the
 .B \-\-explicit-int
@@ -1607,7 +1673,29 @@ Turns [off] on declaring types with \f(CWusing\fP
 rather than \f(CWtypedef\fP
 in C++11 and later
 \(em default is on.
-.RE
+.TP
+.BI west-pointer \f1=\fPs
+Turns on printing the \f(CW*\fP for pointer
+(and \f(CW&\fP and \f(CW&&\fP for reference)
+types adjacent to the type
+(``west'')
+to
+.I s
+\(em default is
+.B r
+(only all return types).
+(See the
+.B \-\-west-pointer
+or
+.B \-w
+option for details.)
+.TP
+.B nowest-pointer
+Turns off printing the \f(CW*\fP for pointer
+(and \f(CW&\fP and \f(CW&&\fP for reference)
+types adjacent to the type
+(``west'')
+for all types.
 .SH PREDEFINED TYPES
 The following types are predefined
 (unless either the

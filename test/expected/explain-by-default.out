@@ -13,6 +13,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> int x
 declare x as integer
 c++decl> const int x
@@ -35,6 +36,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set explain-by-default
 c++decl> set
   noalt-tokens
@@ -51,5 +53,6 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> int x
 declare x as integer

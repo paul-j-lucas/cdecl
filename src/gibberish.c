@@ -81,6 +81,21 @@ static bool g_space_before_ptr_ref( g_state_t const*, c_ast_t const* );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
+ * Convenience function for finding an ancestor of \a ast that is of kind
+ * #K_ANY_FUNCTION_LIKE, if any.
+ *
+ * @param ast The AST node whose parent to start from.
+ * @return Returns a pointer to an ancestor of \a ast that is of kind
+ * #K_ANY_FUNCTION_LIKE or NULL for none.
+ */
+NODISCARD
+static inline c_ast_t const* c_ast_find_parent_func( c_ast_t const *ast ) {
+  c_ast_t *const parent_ast = ast->parent_ast;
+  return parent_ast != NULL ?
+    c_ast_find_kind_any( parent_ast, C_VISIT_UP, K_ANY_FUNCTION_LIKE ) : NULL;
+}
+
+/**
  * Prints a space only if we haven't printed one yet.
  *
  * @param g The g_state to use.
@@ -883,11 +898,15 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       FPUTC( '*', g->gout );
       break;
 
-    case K_POINTER_TO_MEMBER:
+    case K_POINTER_TO_MEMBER: {
       FPRINTF( g->gout,
         "%s::*", c_sname_full_name( &ast->ptr_mbr.class_sname )
       );
+      c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
+      g->printed_space =
+        func_ast == NULL || (func_ast->kind & opt_west_kinds) == 0;
       break;
+    }
 
     case K_REFERENCE:
       if ( opt_alt_tokens ) {
@@ -924,10 +943,11 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       //      char *const p;
       //                 ^
       FPUTC( ' ', g->gout );
+      g->printed_space = true;
     }
   }
 
-  g_print_ast_name( g, ast );
+  g_print_space_ast_name( g, ast );
 }
 
 /**
@@ -987,21 +1007,21 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
 
 /**
  * Determine whether we should print a space before the `*`, `&`, or `&&` in a
- * declaration.  For all kinds _except_ function-like ASTs, we want the output
- * to be like:
+ * declaration.  By default, for all kinds _except_ function-like ASTs, we want
+ * the output to be like:
  *
  *      type *var
  *
- * i.e., the `*`, `&`, or `&&` adjacent to the variable; for function-like
- * ASTs, when there's no name for a parameter, or when we're casting, we want
- * the output to be like:
+ * i.e., the `*`, `&`, or `&&` adjacent to the variable ("east"); for function-
+ * like ASTs, when there's no name for a parameter, or when we're casting, we
+ * want the output to be like:
  *
  *      type* func()            // function
  *      type* (^block)()        // block
  *      func(type*)             // nameless function parameter
  *      (type*)expr             // cast
  *
- * i.e., the `*`, `&`, or `&&` adjacent to the type.
+ * i.e., the `*`, `&`, or `&&` adjacent to the type ("west").
  *
  * However, as an exception, if we're declaring more than one pointer to
  * function returning a pointer or reference in the same declaration, then keep
@@ -1023,14 +1043,25 @@ NODISCARD
 static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( is_1_bit_only_in_set( ast->kind, K_POINTER | K_ANY_REFERENCE ) );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER | K_ANY_REFERENCE ) );
 
   if ( (g->gib_flags & (C_GIB_CAST | C_GIB_USING)) != 0 )
     return false;
+  if ( (g->gib_flags & C_GIB_MULTI_DECL) != 0 )
+    return true;
+
+  c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
+  if ( func_ast != NULL )               // function returning pointer to ...
+    return (func_ast->kind & opt_west_kinds) == 0;
+
   if ( c_ast_find_name( ast, C_VISIT_UP ) == NULL )
     return false;
-  if ( c_ast_find_kind_any( ast->parent_ast, C_VISIT_UP, K_ANY_FUNCTION_LIKE ) )
-    return (g->gib_flags & C_GIB_MULTI_DECL) != 0;
+
+  c_ast_t const *const to_ast =
+    c_ast_find_kind_any( ast->ptr_ref.to_ast, C_VISIT_DOWN, opt_west_kinds );
+  if ( to_ast != NULL )
+    return false;
+
   return true;
 }
 

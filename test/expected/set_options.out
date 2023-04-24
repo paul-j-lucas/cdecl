@@ -12,3 +12,4 @@
     semicolon
   notrailing-return
     using
+    west-pointer=bflo

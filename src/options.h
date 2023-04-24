@@ -31,6 +31,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "c_kind.h"
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -80,6 +81,7 @@ extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?
 extern bool         opt_trailing_ret;   ///< Print trailing return type?
 extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s?
 extern bool         opt_using;          ///< Print `using` in C++11 and later?
+extern c_ast_kind_t opt_west_kinds;     ///< Kinds to print `*` and `&` "west."
 
 // other extern variables
 #ifdef ENABLE_FLEX_DEBUG
@@ -162,6 +164,28 @@ NODISCARD
 bool parse_explicit_int( char const *ei_format );
 
 /**
+ * Parses the `west-pointer` option.
+ *
+ * @param wd_format The null-terminated west pointer format string to parse.
+ * Valid formats are:
+ *      Format | Meaning
+ *      -------|-----------------------------------
+ *      `b`    | Apple block return type.
+ *      `f`    | Function (and pointer to function) return rype.
+ *      `l`    | User-defined literal return type.
+ *      `o`    | Operator return type.
+ *      `r`    | All return types (same as `bflo`).
+ *      `t`    | Non-return types.
+ *      `*`    | All types (same as `bflot`).
+ * Multiple formats may be given, one immediately after the other.
+ * @return Returns `true` only if \a wd_format was parsed successfully.
+ *
+ * @sa print_west_pointer()
+ */
+NODISCARD
+bool parse_west_pointer( char const *wd_format );
+
+/**
  * Prints the string representation of the explicit `enum`, `class`, `struct`,
  * `union` option.
  *
@@ -181,6 +205,15 @@ void print_explicit_ecsu( FILE *out );
  * @sa parse_explicit_int()
  */
 void print_explicit_int( FILE *out );
+
+/**
+ * Prints the string representation of the west pointer option.
+ *
+ * @param out The `FILE` to print to.
+ *
+ * @sa parse_west_pointer()
+ */
+void print_west_pointer( FILE *out );
 
 ///////////////////////////////////////////////////////////////////////////////
 

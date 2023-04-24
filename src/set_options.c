@@ -88,7 +88,8 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
             set_semicolon( set_option_fn_args_t const* ),
             set_trailing_return( set_option_fn_args_t const* ),
             set_trigraphs( set_option_fn_args_t const* ),
-            set_using( set_option_fn_args_t const* );
+            set_using( set_option_fn_args_t const* ),
+            set_west_pointer( set_option_fn_args_t const* );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -119,6 +120,7 @@ static set_option_t const SET_OPTIONS[] = {
   { "semicolon",          SET_OPTION_TOGGLE,   false, &set_semicolon          },
   { "trailing-return",    SET_OPTION_TOGGLE,   false, &set_trailing_return    },
   { "trigraphs",          SET_OPTION_AFF_ONLY, false, &set_trigraphs          },
+  { "west-pointer",       SET_OPTION_TOGGLE,   true,  &set_west_pointer       },
   { "using",              SET_OPTION_TOGGLE,   false, &set_using              },
   { NULL,                 SET_OPTION_TOGGLE,   false, NULL                    }
 };
@@ -185,6 +187,14 @@ static void print_options( void ) {
   PRINTF( "  %ssemicolon\n", maybe_no( opt_semicolon ) );
   PRINTF( "  %strailing-return\n", maybe_no( opt_trailing_ret ) );
   PRINTF( "  %susing\n", maybe_no( opt_using ) );
+
+  if ( opt_west_kinds != 0 ) {
+    PUTS( "    west-pointer=" );
+    print_west_pointer( stdout );
+    PUTC( '\n' );
+  } else {
+    PUTS( "  nowest-pointer\n" );
+  }
 }
 
 /**
@@ -499,6 +509,33 @@ static bool set_using( set_option_fn_args_t const *args ) {
     );
   }
   return true;
+}
+
+/**
+ * Sets the `west-pointer` option.
+ *
+ * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
+ */
+static bool set_west_pointer( set_option_fn_args_t const *args ) {
+  bool ok;
+
+  if ( args->opt_enabled ) {
+    ok = parse_west_pointer( args->opt_value );
+    if ( !ok ) {
+      print_error( args->opt_value_loc,
+        "\"%s\": invalid value for west-pointer;"
+        " must be a combination of b, f, l, o, r, t, or *\n",
+        args->opt_value
+      );
+    }
+  }
+  else {
+    ok = parse_west_pointer( "" );
+    assert( ok );
+  }
+
+  return ok;
 }
 
 /**

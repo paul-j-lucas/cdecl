@@ -14,6 +14,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set ck&r
 cdecl> set
   noalt-tokens
@@ -30,6 +31,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set k&r
 cdecl> set
   noalt-tokens
@@ -46,6 +48,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set k&rc
 cdecl> set
   noalt-tokens
@@ -62,6 +65,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set cknr
 cdecl> set
   noalt-tokens
@@ -78,6 +82,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set knr
 cdecl> set
   noalt-tokens
@@ -94,6 +99,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set knrc
 cdecl> set
   noalt-tokens
@@ -110,6 +116,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set c78
 cdecl> set
   noalt-tokens
@@ -126,6 +133,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set c89
 cdecl> set
   noalt-tokens
@@ -142,6 +150,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set c90
 cdecl> set
   noalt-tokens
@@ -158,6 +167,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set c95
 cdecl> set
   noalt-tokens
@@ -174,6 +184,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set c99
 cdecl> set
   noalt-tokens
@@ -190,6 +201,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set c11
 cdecl> set
   noalt-tokens
@@ -206,6 +218,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set c17
 cdecl> set
   noalt-tokens
@@ -222,6 +235,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set c18
 cdecl> set
   noalt-tokens
@@ -238,6 +252,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set c23
 cdecl> set
   noalt-tokens
@@ -254,6 +269,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set c++
 c++decl> set
   noalt-tokens
@@ -270,6 +286,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set c++98
 c++decl> set
   noalt-tokens
@@ -286,6 +303,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set c++03
 c++decl> set
   noalt-tokens
@@ -302,6 +320,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set c++11
 c++decl> set
   noalt-tokens
@@ -318,6 +337,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set c++14
 c++decl> set
   noalt-tokens
@@ -334,6 +354,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set c++17
 c++decl> set
   noalt-tokens
@@ -350,6 +371,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set c++20
 c++decl> set
   noalt-tokens
@@ -366,6 +388,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set c++23
 c++decl> set
   noalt-tokens
@@ -382,6 +405,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set lang=c
 cdecl> set
   noalt-tokens
@@ -398,6 +422,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=ck&r
 cdecl> set
   noalt-tokens
@@ -414,6 +439,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=k&r
 cdecl> set
   noalt-tokens
@@ -430,6 +456,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=k&rc
 cdecl> set
   noalt-tokens
@@ -446,6 +473,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=cknr
 cdecl> set
   noalt-tokens
@@ -462,6 +490,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=knr
 cdecl> set
   noalt-tokens
@@ -478,6 +507,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=knrc
 cdecl> set
   noalt-tokens
@@ -494,6 +524,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=c78
 cdecl> set
   noalt-tokens
@@ -510,6 +541,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=c89
 cdecl> set
   noalt-tokens
@@ -526,6 +558,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=c90
 cdecl> set
   noalt-tokens
@@ -542,6 +575,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=c95
 cdecl> set
   noalt-tokens
@@ -558,6 +592,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=c99
 cdecl> set
   noalt-tokens
@@ -574,6 +609,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=c11
 cdecl> set
   noalt-tokens
@@ -590,6 +626,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=c17
 cdecl> set
   noalt-tokens
@@ -606,6 +643,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=c18
 cdecl> set
   noalt-tokens
@@ -622,6 +660,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=c23
 cdecl> set
   noalt-tokens
@@ -638,6 +677,7 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 cdecl> set lang=c++
 c++decl> set
   noalt-tokens
@@ -654,6 +694,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set lang=c++98
 c++decl> set
   noalt-tokens
@@ -670,6 +711,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set lang=c++03
 c++decl> set
   noalt-tokens
@@ -686,6 +728,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set lang=c++11
 c++decl> set
   noalt-tokens
@@ -702,6 +745,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set lang=c++14
 c++decl> set
   noalt-tokens
@@ -718,6 +762,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set lang=c++17
 c++decl> set
   noalt-tokens
@@ -734,6 +779,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set lang=c++20
 c++decl> set
   noalt-tokens
@@ -750,6 +796,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 c++decl> set lang=c++23
 c++decl> set
   noalt-tokens
@@ -766,3 +813,4 @@ c++decl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo

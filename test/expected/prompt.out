@@ -14,6 +14,7 @@ set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
 set prompt
 cdecl> set
   noalt-tokens
@@ -30,3 +31,4 @@ cdecl> set
     semicolon
   notrailing-return
     using
+    west-pointer=bflo
