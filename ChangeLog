@@ -1,5 +1,6 @@
 2023-04-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * help.c, help.out: Added missing west-pointer to options help.
    * cdecl.1: Changed west-pointer example.
    * cdecl.1: Made west-pointer option value table single-spaced.
    * cdecl.1, options.c: Made value for --west-pointer to be case-insensitive.
