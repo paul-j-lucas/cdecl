@@ -1,5 +1,6 @@
 2023-04-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Made west-pointer option value table single-spaced.
    * cdecl.1, options.c: Made value for --west-pointer to be case-insensitive.
    * options.c: Now using tolower().
    * cli_options.c: opt_format() now uses internal buffers.
