@@ -1,5 +1,10 @@
 2023-04-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * lib/Makefile.am, c++defs.h, ctype.in.h, fnmatch.in.h, inttypes.in.h,
+     locale.in.h, stdio.in.h, stdlib.in.h, string.in.h, sys_types.in.h,
+     unistd.in.h, verify.h, wchar.in.h, wctype.in.h, gnulib-common.m4,
+     locale-fr.m4, locale-ja.m4, locale-zh.m4, stdlib_h.m4, threadlib.m4,
+     wchar_h.m4: Updated GnuLib.
    * AUTHORS, cdecl.1, c_kind.h, cli_options.c, gibberish.c, options.c,
      options.h, set_options.c, test/Makefile.am, alt-tokens.out,
      cdecl--help.out, cl.out, debug.out, explain-by-default.out,
