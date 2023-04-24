@@ -32,6 +32,7 @@
 
 // standard
 #include <assert.h>
+#include <ctype.h>
 
 /// @endcond
 
@@ -143,9 +144,8 @@ bool parse_explicit_int( char const *ei_format ) {
   c_tid_t tid = opt_explicit_int[0] = opt_explicit_int[1] = TB_NONE;
 
   for ( char const *s = ei_format; *s != '\0'; ++s ) {
-    switch ( *s ) {
+    switch ( tolower( *s ) ) {
       case 'i':
-      case 'I':
         tid |= TB_INT;
         if ( (tid & TB_UNSIGNED) == TB_NONE ) {
           // If only 'i' is specified, it means all signed integer types shall
@@ -154,7 +154,6 @@ bool parse_explicit_int( char const *ei_format ) {
         }
         break;
       case 'l':
-      case 'L':
         if ( s[1] == 'l' || s[1] == 'L' ) {
           tid |= TB_LONG_LONG;
           ++s;
@@ -163,11 +162,9 @@ bool parse_explicit_int( char const *ei_format ) {
         }
         break;
       case 's':
-      case 'S':
         tid |= TB_SHORT;
         break;
       case 'u':
-      case 'U':
         tid |= TB_UNSIGNED;
         if ( s[1] == '\0' || s[1] == ',' ) {
           // If only 'u' is specified, it means all unsigned integer types
