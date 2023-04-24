@@ -1,5 +1,16 @@
+2023-04-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, cdecl.1, c_kind.h, cli_options.c, gibberish.c, options.c,
+     options.h, set_options.c, test/Makefile.am, alt-tokens.out,
+     cdecl--help.out, cl.out, debug.out, explain-by-default.out,
+     explicit-ecsu.out, explicit-int.out, lang.out, prompt.out, semicolon.out,
+     set.out, set_options.out, trigraphs.out, using.out, west-pointer.out,
+     west-pointer.test: Added west-pointer option.
+
 2023-04-21  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac, autocomplete.c: Autocompleting `set` options that take a
+     value now includes `=`.
    * gibberish.c: Added asserts.
 
 2023-04-20  Paul J. Lucas <paul@lucasmail.org>
