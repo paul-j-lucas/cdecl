@@ -1,5 +1,8 @@
 2023-04-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1, options.c: Made value for --west-pointer to be case-insensitive.
+   * options.c: Now using tolower().
+   * cli_options.c: opt_format() now uses internal buffers.
    * lib/Makefile.am, c++defs.h, ctype.in.h, fnmatch.in.h, inttypes.in.h,
      locale.in.h, stdio.in.h, stdlib.in.h, string.in.h, sys_types.in.h,
      unistd.in.h, verify.h, wchar.in.h, wctype.in.h, gnulib-common.m4,
