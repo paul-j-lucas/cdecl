@@ -199,7 +199,7 @@ static bool         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
 NODISCARD
-static char const*  opt_format( char, strbuf_t* ),
+static char const*  opt_format( char ),
                  *  opt_get_long( char );
 
 noreturn
@@ -230,11 +230,10 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
       if ( opts_given[ (unsigned char)*opt ] ) {
         if ( ++gave_count > 1 ) {
           char const gave_opt2 = *opt;
-          strbuf_t opt1_sbuf, opt2_sbuf;
           fatal_error( EX_USAGE,
             "%s and %s are mutually exclusive\n",
-            opt_format( gave_opt1, &opt1_sbuf ),
-            opt_format( gave_opt2, &opt2_sbuf )
+            opt_format( gave_opt1 ),
+            opt_format( gave_opt2 )
           );
         }
         gave_opt1 = *opt;
@@ -258,10 +257,9 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
 noreturn
 static void invalid_opt_value( char opt, char const *value,
                                char const *must_be ) {
-  strbuf_t opt_sbuf;
   fatal_error( EX_USAGE,
     "\"%s\": invalid value for %s; must be %s\n",
-    value, opt_format( opt, &opt_sbuf ), must_be
+    value, opt_format( opt ), must_be
   );
 }
 
@@ -271,13 +269,20 @@ static void invalid_opt_value( char opt, char const *value,
  *
  * @param short_opt The short option (along with its corresponding long option,
  * if any) to format.
- * @param sbuf A pointer to the strbuf to use.
- * @return Returns \a sbuf->str.
+ * @return Returns said formatted string.
+ *
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
  */
 NODISCARD
-static char const* opt_format( char short_opt, strbuf_t *sbuf ) {
-  assert( sbuf != NULL );
-  strbuf_init( sbuf );
+static char const* opt_format( char short_opt ) {
+  static strbuf_t sbufs[2];
+  static unsigned buf_index;
+
+  strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
+  strbuf_reset( sbuf );
+
   char const *const long_opt = opt_get_long( short_opt );
   strbuf_printf(
     sbuf, "%s%s%s-%c",
@@ -644,11 +649,9 @@ use_help:
   exit( EX_USAGE );
 
 missing_arg:
-  NO_OP;
-  strbuf_t sbuf;
   fatal_error( EX_USAGE,
     "\"%s\" requires an argument\n",
-    opt_format( STATIC_CAST( char, opt != ':' ? opt : optopt ), &sbuf )
+    opt_format( STATIC_CAST( char, opt != ':' ? opt : optopt ) )
   );
 }
 
