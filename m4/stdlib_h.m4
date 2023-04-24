@@ -1,4 +1,4 @@
-# stdlib_h.m4 serial 73
+# stdlib_h.m4 serial 74
 dnl Copyright (C) 2007-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -175,6 +175,7 @@ AC_DEFUN([gl_STDLIB_H_DEFAULTS],
   HAVE_DECL_FCVT=1;          AC_SUBST([HAVE_DECL_FCVT])
   HAVE_DECL_GCVT=1;          AC_SUBST([HAVE_DECL_GCVT])
   HAVE_DECL_GETLOADAVG=1;    AC_SUBST([HAVE_DECL_GETLOADAVG])
+  HAVE_DECL_PROGRAM_INVOCATION_NAME=1; AC_SUBST([HAVE_DECL_PROGRAM_INVOCATION_NAME])
   HAVE_GETPROGNAME=1;        AC_SUBST([HAVE_GETPROGNAME])
   HAVE_GETSUBOPT=1;          AC_SUBST([HAVE_GETSUBOPT])
   HAVE_GRANTPT=1;            AC_SUBST([HAVE_GRANTPT])

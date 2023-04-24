@@ -85,7 +85,7 @@
 #define _@GUARD_PREFIX@_WCHAR_H
 
 /* This file uses _GL_ATTRIBUTE_DEALLOC, _GL_ATTRIBUTE_MALLOC,
-   _GL_ATTRIBUTE_PURE, GNULIB_POSIXCHECK.  */
+   _GL_ATTRIBUTE_PURE, GNULIB_POSIXCHECK, HAVE_RAW_DECL_*.  */
 #if !_GL_CONFIG_H_INCLUDED
  #error "Please include config.h first."
 #endif
@@ -641,13 +641,25 @@ _GL_WARN_ON_USE (wmemchr, "wmemchr is unportable - "
 
 /* Compare N wide characters of S1 and S2.  */
 #if @GNULIB_WMEMCMP@
-# if !@HAVE_WMEMCMP@
+# if @REPLACE_WMEMCMP@
+#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#   undef wmemcmp
+#   define wmemcmp rpl_wmemcmp
+#  endif
+_GL_FUNCDECL_RPL (wmemcmp, int,
+                  (const wchar_t *s1, const wchar_t *s2, size_t n)
+                  _GL_ATTRIBUTE_PURE);
+_GL_CXXALIAS_RPL (wmemcmp, int,
+                  (const wchar_t *s1, const wchar_t *s2, size_t n));
+# else
+#  if !@HAVE_WMEMCMP@
 _GL_FUNCDECL_SYS (wmemcmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n)
                   _GL_ATTRIBUTE_PURE);
-# endif
+#  endif
 _GL_CXXALIAS_SYS (wmemcmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n));
+# endif
 # if __GLIBC__ >= 2
 _GL_CXXALIASWARN (wmemcmp);
 # endif
@@ -926,11 +938,21 @@ _GL_WARN_ON_USE (wcsncat, "wcsncat is unportable - "
 
 /* Compare S1 and S2.  */
 #if @GNULIB_WCSCMP@
-# if !@HAVE_WCSCMP@
+# if @REPLACE_WCSCMP@
+#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#   undef wcscmp
+#   define wcscmp rpl_wcscmp
+#  endif
+_GL_FUNCDECL_RPL (wcscmp, int, (const wchar_t *s1, const wchar_t *s2)
+                               _GL_ATTRIBUTE_PURE);
+_GL_CXXALIAS_RPL (wcscmp, int, (const wchar_t *s1, const wchar_t *s2));
+# else
+#  if !@HAVE_WCSCMP@
 _GL_FUNCDECL_SYS (wcscmp, int, (const wchar_t *s1, const wchar_t *s2)
                                _GL_ATTRIBUTE_PURE);
-# endif
+#  endif
 _GL_CXXALIAS_SYS (wcscmp, int, (const wchar_t *s1, const wchar_t *s2));
+# endif
 # if __GLIBC__ >= 2
 _GL_CXXALIASWARN (wcscmp);
 # endif
@@ -945,13 +967,25 @@ _GL_WARN_ON_USE (wcscmp, "wcscmp is unportable - "
 
 /* Compare no more than N wide characters of S1 and S2.  */
 #if @GNULIB_WCSNCMP@
-# if !@HAVE_WCSNCMP@
+# if @REPLACE_WCSNCMP@
+#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#   undef wcsncmp
+#   define wcsncmp rpl_wcsncmp
+#  endif
+_GL_FUNCDECL_RPL (wcsncmp, int,
+                  (const wchar_t *s1, const wchar_t *s2, size_t n)
+                  _GL_ATTRIBUTE_PURE);
+_GL_CXXALIAS_RPL (wcsncmp, int,
+                  (const wchar_t *s1, const wchar_t *s2, size_t n));
+# else
+#  if !@HAVE_WCSNCMP@
 _GL_FUNCDECL_SYS (wcsncmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n)
                   _GL_ATTRIBUTE_PURE);
-# endif
+#  endif
 _GL_CXXALIAS_SYS (wcsncmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n));
+# endif
 # if __GLIBC__ >= 2
 _GL_CXXALIASWARN (wcsncmp);
 # endif

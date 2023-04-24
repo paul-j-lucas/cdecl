@@ -38,7 +38,7 @@
 #define _@GUARD_PREFIX@_STDLIB_H
 
 /* This file uses _Noreturn, _GL_ATTRIBUTE_DEALLOC, _GL_ATTRIBUTE_MALLOC,
-   _GL_ATTRIBUTE_PURE, GNULIB_POSIXCHECK.  */
+   _GL_ATTRIBUTE_PURE, GNULIB_POSIXCHECK, HAVE_RAW_DECL_*.  */
 #if !_GL_CONFIG_H_INCLUDED
  #error "Please include config.h first."
 #endif
@@ -465,7 +465,7 @@ _GL_WARN_ON_USE (getloadavg, "getloadavg is not portable - "
 #   undef getprogname
 #   define getprogname rpl_getprogname
 #  endif
-#  ifdef HAVE_DECL_PROGRAM_INVOCATION_NAME
+#  if @HAVE_DECL_PROGRAM_INVOCATION_NAME@
 _GL_FUNCDECL_RPL (getprogname, const char *, (void) _GL_ATTRIBUTE_PURE);
 #  else
 _GL_FUNCDECL_RPL (getprogname, const char *, (void));
@@ -473,7 +473,7 @@ _GL_FUNCDECL_RPL (getprogname, const char *, (void));
 _GL_CXXALIAS_RPL (getprogname, const char *, (void));
 # else
 #  if !@HAVE_GETPROGNAME@
-#   ifdef HAVE_DECL_PROGRAM_INVOCATION_NAME
+#   if @HAVE_DECL_PROGRAM_INVOCATION_NAME@
 _GL_FUNCDECL_SYS (getprogname, const char *, (void) _GL_ATTRIBUTE_PURE);
 #   else
 _GL_FUNCDECL_SYS (getprogname, const char *, (void));
@@ -1058,7 +1058,9 @@ _GL_FUNCDECL_SYS (random, long, (void));
                                int.  */
 _GL_CXXALIAS_SYS_CAST (random, long, (void));
 # endif
+# if __GLIBC__ >= 2
 _GL_CXXALIASWARN (random);
+# endif
 #elif defined GNULIB_POSIXCHECK
 # undef random
 # if HAVE_RAW_DECL_RANDOM
@@ -1083,7 +1085,9 @@ _GL_FUNCDECL_SYS (srandom, void, (unsigned int seed));
                                        unsigned long seed.  */
 _GL_CXXALIAS_SYS_CAST (srandom, void, (unsigned int seed));
 # endif
+# if __GLIBC__ >= 2
 _GL_CXXALIASWARN (srandom);
+# endif
 #elif defined GNULIB_POSIXCHECK
 # undef srandom
 # if HAVE_RAW_DECL_SRANDOM

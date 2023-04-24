@@ -1,4 +1,4 @@
-# locale-ja.m4 serial 15
+# locale-ja.m4 serial 16
 dnl Copyright (C) 2003, 2005-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -7,7 +7,7 @@ dnl with or without modifications, as long as this notice is preserved.
 dnl From Bruno Haible.
 
 dnl Determine the name of a japanese locale with EUC-JP encoding.
-AC_DEFUN([gt_LOCALE_JA],
+AC_DEFUN_ONCE([gt_LOCALE_JA],
 [
   AC_REQUIRE([AC_CANONICAL_HOST])
   AC_REQUIRE([AM_LANGINFO_CODESET])
