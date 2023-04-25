@@ -97,6 +97,12 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
  * **cdecl** `set` options.
  */
 static set_option_t const SET_OPTIONS[] = {
+  //
+  // If this is updated, ensure the following are updated to match:
+  //
+  //  1. print_options()
+  //  2. print_help_options()
+  //
   { "alt-tokens",         SET_OPTION_TOGGLE,   false, &set_alt_tokens         },
 #ifdef YYDEBUG
   { "bison-debug",        SET_OPTION_TOGGLE,   false, &set_bison_debug        },
