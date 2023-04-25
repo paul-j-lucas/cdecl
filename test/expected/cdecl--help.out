@@ -20,7 +20,7 @@ options:
   --no-typedefs        (-t) Suppress predefining standard types.
   --no-using           (-u) Declare types with typedef, not using, in C++.
   --output=FILE        (-o) Write to FILE [default: stdout].
-  --trailing-return    (-R) Print trailing return type in C++.
+  --trailing-return    (-r) Print trailing return type in C++.
   --trigraphs          (-3) Print trigraphs.
   --version            (-v) Print version and exit.
   --west-pointer       (-w) Print *, &, and && next to type.

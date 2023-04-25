@@ -75,7 +75,7 @@
 #define OPT_COLOR             k
 #define OPT_OUTPUT            o
 #define OPT_NO_PROMPT         p
-#define OPT_TRAILING_RETURN   R
+#define OPT_TRAILING_RETURN   r
 #define OPT_NO_SEMICOLON      s
 #define OPT_EXPLICIT_ECSU     S
 #define OPT_NO_TYPEDEFS       t

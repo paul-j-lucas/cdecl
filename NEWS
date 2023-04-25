@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** Autocompletion `=`
 Autocompleting `set` options that take a value now includes `=`.
 
+** `-R` changed to `-r`
+The `-R` option (`--trailing-return`) has been changed to `-r`.
+
 ** "West" pointer types
 New `--west-pointer` and `-w` command-line options and a new `west-pointer`
 `set` option allow specification of when to print `*`, `&`, and `&&` adjacent
