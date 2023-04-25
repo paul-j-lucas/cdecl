@@ -1,5 +1,10 @@
 2023-04-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1, cli_options.c, bad_cli_options.out, cdecl--help.out,
+     bad_cli_options.test: The `-I` option (`--explicit-int`) has been changed
+     to `-i`.
+   * cdecl.1, cli_options.c, cdecl--help.out: The `-R` option
+     (`--trailing-return`) has been changed to `-r`.
    * help.c, help.out: Added missing west-pointer to options help.
    * cdecl.1: Changed west-pointer example.
    * cdecl.1: Made west-pointer option value table single-spaced.
