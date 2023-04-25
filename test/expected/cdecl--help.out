@@ -9,7 +9,7 @@ options:
   --echo-commands      (-O) Echo commands given before corresponding output.
   --explain            (-e) Assume "explain" when no other command is given.
   --explicit-ecsu=WHEN (-S) Print "class", "struct", "union" explicitly WHEN.
-  --explicit-int=WHEN  (-I) Print "int" explicitly WHEN.
+  --explicit-int=WHEN  (-i) Print "int" explicitly WHEN.
   --file=FILE          (-f) Read from FILE [default: stdin].
   --help               (-h) Print this help and exit.
   --language=LANG      (-x) Use LANG.

@@ -71,7 +71,7 @@
 #define OPT_FLEX_DEBUG        F
 #endif /* ENABLE_FLEX_DEBUG */
 #define OPT_HELP              h
-#define OPT_EXPLICIT_INT      I
+#define OPT_EXPLICIT_INT      i
 #define OPT_COLOR             k
 #define OPT_OUTPUT            o
 #define OPT_NO_PROMPT         p

@@ -19,9 +19,9 @@ bad_opts --explicit-ecsu=x
 bad_opts -Sx
 
 bad_opts --explicit-int
-bad_opts -I
+bad_opts -i
 bad_opts --explicit-int=x
-bad_opts -Ix
+bad_opts -ix
 
 bad_opts -hv
 
