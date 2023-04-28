@@ -10,6 +10,14 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 14.3
+
+** `*` and `-`
+For the `explicit-ecsu`, `explicit-int`, and `west-pointer` options, `*` is a
+synonym for "all" and `-` is a synonym for "none" but only when they're by
+themselves.
+
+
 * Changes in Cdecl 14.2
 
 ** Autocompletion `=`

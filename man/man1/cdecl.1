@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 24, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 28, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -359,6 +359,10 @@ one or more of
 .BR s " (for \f(CWstruct\fP),"
 and
 .BR u " (for \f(CWunion\fP)."
+Alternatively,
+\f(CW*\fP may be given to mean ``all''
+or
+\f(CW-\fP may be given to mean ``none.''
 The default is
 .BR su .
 For example,
@@ -426,6 +430,10 @@ whereas \f(CWul,ll\fP is parsed as \f(CWunsigned long\fP and \f(CWlong long\fP.
 Note that since \f(CWu\fP is both a shorthand and a modifier,
 \f(CWiu\fP means all signed and unsigned integer types
 whereas \f(CWui\fP means just \f(CWunsigned int\fP.
+Alternatively,
+\f(CW*\fP may be given to mean ``all''
+or
+\f(CW-\fP may be given to mean ``none.''
 .TP
 .BI \-\-file \f1=\fPf "\f1 | \fP" "" \-f " f"
 Reads commands from file
@@ -576,16 +584,15 @@ All return types
 .TP
 .B t
 Non-return type.
-.TP
-.B *
-All types
-(same as
-.BR bflot ).
 .RE
 .PD
 .IP
 Multiple formats may be given,
 one immediately after the other.
+Alternatively,
+\f(CW*\fP may be given to mean ``all''
+or
+\f(CW-\fP may be given to mean ``none.''
 The default is
 .BR r .
 .IP

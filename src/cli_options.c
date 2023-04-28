@@ -436,13 +436,13 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(EXPLICIT_ECSU):
         if ( !parse_explicit_ecsu( optarg ) )
           invalid_opt_value(
-            COPT(EXPLICIT_ECSU), optarg, "a combination of e, c, s, or u"
+            COPT(EXPLICIT_ECSU), optarg, "*, -, or {e|c|s|u}+"
           );
         break;
       case COPT(EXPLICIT_INT):
         if ( !parse_explicit_int( optarg ) )
           invalid_opt_value(
-            COPT(EXPLICIT_INT), optarg, "i, u, or {[u]{isl[l]}[,]}+"
+            COPT(EXPLICIT_INT), optarg, "*, -, i, u, or {[u]{i|s|l[l]}[,]}+"
           );
         break;
       case COPT(FILE):
@@ -494,8 +494,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(WEST_POINTER):
         if ( !parse_west_pointer( optarg ) )
           invalid_opt_value(
-            COPT(WEST_POINTER), optarg,
-            "a combination of b, f, l, o, r, t, or *"
+            COPT(WEST_POINTER), optarg, "*, -, or {b|f|l|o|r|t}+"
           );
         break;
 

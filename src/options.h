@@ -131,7 +131,8 @@ bool is_explicit_int( c_tid_t btids );
  *      `s`    | `struct`
  *      `u`    | `union`
  * Multiple formats may be given, one immediately after the other, e.g., `su`
- * means `struct` and `union`.
+ * means `struct` and `union`.  Alternatively, `*` may be given to mean "all"
+ * or either the empty string or `-` may be given to mean "none."
  * @return Returns `true` only if \a ecsu_format was parsed successfully.
  *
  * @sa print_explicit_ecsu()
@@ -153,7 +154,9 @@ bool parse_explicit_ecsu( char const *ecsu_format );
  * means `unsigned short` and `long`.  Parsing is greedy so commas may be used
  * to separate formats.  For example, `ulll` is parsed as `unsigned long long`
  * and `long` whereas `ul,ll` is parsed as `unsigned long` and `long long`.  If
- * invalid, an error message is printed to standard error.
+ * invalid, an error message is printed to standard error.  Alternatively,
+ * `*` may be given to mean "all" or either the empty string or `-` may be
+ * given to mean "none."
  * @return Returns `true` only if \a ei_format was parsed successfully.
  *
  * @sa any_explicit_int()
@@ -176,8 +179,9 @@ bool parse_explicit_int( char const *ei_format );
  *      `o`    | Operator return type.
  *      `r`    | All return types (same as `bflo`).
  *      `t`    | Non-return types.
- *      `*`    | All types (same as `bflot`).
  * Multiple formats may be given, one immediately after the other.
+ * Alternatively, `*` may be given to mean "all" or either the empty string or
+ * `-` may be given to mean "none."
  * @return Returns `true` only if \a wp_format was parsed successfully.
  *
  * @sa print_west_pointer()

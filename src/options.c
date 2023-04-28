@@ -113,6 +113,15 @@ bool is_explicit_int( c_tid_t btids ) {
 bool parse_explicit_ecsu( char const *ecsu_format ) {
   assert( ecsu_format != NULL );
 
+  if ( strcmp( ecsu_format, "*" ) == 0 ) {
+    opt_explicit_ecsu = TB_ENUM | TB_CLASS | TB_STRUCT | TB_UNION;
+    return true;
+  }
+  if ( strcmp( ecsu_format, "-" ) == 0 ) {
+    opt_explicit_ecsu = TB_NONE;
+    return true;
+  }
+
   c_tid_t btids = TB_NONE;
 
   for ( char const *s = ecsu_format; *s != '\0'; ++s ) {
@@ -143,13 +152,18 @@ bool parse_explicit_int( char const *ei_format ) {
 
   c_tid_t tid = opt_explicit_int[0] = opt_explicit_int[1] = TB_NONE;
 
+  if ( strcmp( ei_format, "-" ) == 0 )
+    return true;
+  if ( strcmp( ei_format, "*" ) == 0 )
+    ei_format = "iu";
+
   for ( char const *s = ei_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
       case 'i':
         tid |= TB_INT;
         if ( (tid & TB_UNSIGNED) == TB_NONE ) {
-          // If only 'i' is specified, it means all signed integer types shall
-          // be explicit.
+          // If only 'i' is specified, it means all signed integer types
+          // shall be explicit.
           tid |= TB_SHORT | TB_LONG | TB_LONG_LONG;
         }
         break;
@@ -190,7 +204,17 @@ bool parse_explicit_int( char const *ei_format ) {
 bool parse_west_pointer( char const *wp_format ) {
   assert( wp_format != NULL );
 
+  if ( strcmp( wp_format, "*" ) == 0 ) {
+    opt_west_kinds = K_ANY_FUNCTION_RETURN | K_NON_PTR_REF_OBJECT;
+    return true;
+  }
+  if ( strcmp( wp_format, "-" ) == 0 ) {
+    opt_west_kinds = 0;
+    return true;
+  }
+
   unsigned wd = 0;
+
   for ( char const *s = wp_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
       case 'b':
@@ -210,9 +234,6 @@ bool parse_west_pointer( char const *wp_format ) {
         break;
       case 't':
         wd |= K_NON_PTR_REF_OBJECT;
-        break;
-      case '*':
-        wd |= K_ANY_FUNCTION_RETURN | K_NON_PTR_REF_OBJECT;
         break;
       default:
         return false;

@@ -332,7 +332,7 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
     if ( !ok ) {
       print_error( args->opt_value_loc,
         "\"%s\": invalid value for explicit-ecsu;"
-        " must be a combination of e, c, s, or u\n",
+        " must be *, -, or {e|c|s|u}+\n",
         args->opt_value
       );
     }
@@ -362,7 +362,7 @@ static bool set_explicit_int( set_option_fn_args_t const *args ) {
     if ( !ok ) {
       print_error( args->opt_value_loc,
         "\"%s\": invalid value for explicit-int;"
-        " must be i, u, or {[u]{isl[l]}[,]}+\n",
+        " must be *, -, i, u, or {[u]{i|s|l[l]}[,]}+\n",
         args->opt_value
       );
     }
@@ -531,7 +531,7 @@ static bool set_west_pointer( set_option_fn_args_t const *args ) {
     if ( !ok ) {
       print_error( args->opt_value_loc,
         "\"%s\": invalid value for west-pointer;"
-        " must be a combination of b, f, l, o, r, t, or *\n",
+        " must be *, -, or {b|f|l|o|r|t}+\n",
         args->opt_value
       );
     }

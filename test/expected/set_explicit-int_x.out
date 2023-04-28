@@ -1,3 +1,3 @@
 set explicit-int=x
                  ^
-18: error: "x": invalid value for explicit-int; must be i, u, or {[u]{isl[l]}[,]}+
+18: error: "x": invalid value for explicit-int; must be *, -, i, u, or {[u]{i|s|l[l]}[,]}+
