@@ -1,3 +1,16 @@
+2023-04-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, cdecl.1, cli_options.c, options.c, options.h, set_options.c,
+     bad_cli_options.out, set_explicit-ecsu_x.out, set_explicit-int_x.out: For
+     the `explicit-ecsu`, `explicit-int`, and `west-pointer` options, `*` is a
+     synonym for "all" and `-` is a synonym for "none" but only when they're by
+     themselves.
+   * options.c, options.h: s/wd_format/wp_format/
+
+2023-04-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Split && expression in PARSE_ASSERT().
+
 2023-04-24  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1, cli_options.c, bad_cli_options.out, cdecl--help.out,
