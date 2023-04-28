@@ -72,8 +72,10 @@
  */
 enum c_ast_kind {
   /**
-   * Temporary node in an AST.  This is needed in two cases:
+   * Temporary node in an AST.
    *
+   * @remarks This is needed in two cases:
+   * @par
    * 1. Array declarations or casts.  Consider:
    *
    *         int a[2][3]
@@ -94,7 +96,7 @@ enum c_ast_kind {
    *    until the `[` that we know it's a _pointer to array 2 of_ `int`.  (Had
    *    the `[2]` not been there, then it would have been just _pointer to_
    *    `int` (with unnecessary parentheses).
-   *
+   * @par
    * In either case, a placeholder node is created to hold the place of the
    * "something" in the AST.
    */
@@ -118,7 +120,7 @@ enum c_ast_kind {
   /**
    * Name only.
    *
-   * This is used in two cases:
+   * @remarks This is used in two cases:
    *  1. An initial kind for an identifier ("name") until we know its actual
    *     type (if ever).
    *  2. A pre-prototype typeless function parameter in K&R C, e.g., `double

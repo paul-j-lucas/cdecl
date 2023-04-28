@@ -64,8 +64,9 @@ struct cdecl_keyword {
   char const         *literal;          ///< C string literal of the keyword.
 
   /**
-   * Language(s) OK in.  This is used only for construction of did-you-mean
-   * suggestions.
+   * Language(s) OK in.
+   *
+   * @remarks This is used only for construction of did-you-mean suggestions.
    */
   c_lang_id_t         lang_ids;
 
@@ -80,10 +81,10 @@ struct cdecl_keyword {
    * Array of language(s)/synonym-keyword pair(s), but only if \ref y_token_id
    * is 0; otherwise NULL.
    *
-   * The array is terminated by an element that has #LANG_ANY for \ref
-   * c_lang_lit::lang_ids "lang_ids"; hence subset(s) of language(s) cases come
-   * first and, failing to match \ref opt_lang against any of those, matches
-   * the last (default) element.
+   * @note The array _must_ be terminated by an element that has #LANG_ANY for
+   * \ref c_lang_lit::lang_ids "lang_ids"; hence subset(s) of language(s) cases
+   * come first and, failing to match \ref opt_lang against any of those,
+   * matches the last (default) element.
    */
   c_lang_lit_t const *lang_syn;
 

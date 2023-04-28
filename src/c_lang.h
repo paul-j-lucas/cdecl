@@ -912,8 +912,10 @@ typedef struct c_lang c_lang_t;
 
 /**
  * C/C++ language(s)/literal pairs: for the given language(s) only, use the
- * given literal.  This allows different languages to use different literals,
- * e.g., `_Noreturn` for C and `noreturn` for C++.
+ * given literal.
+ *
+ * @remarks This allows different languages to use different literals, e.g.,
+ * `_Noreturn` for C and `noreturn` for C++.
  *
  * @sa #C_LANG_LIT()
  */

@@ -52,9 +52,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * C++ keyword contexts.  A context specifies where particular literals are
- * recognized as keywords in gibberish.  For example, `final` and `override`
- * are recognized as keywords only within C++ member function declarations.
+ * C++ keyword contexts.
+ *
+ * @remarks A context specifies where particular literals are recognized as
+ * keywords in gibberish.  For example, `final` and `override` are recognized
+ * as keywords only within C++ member function declarations.
  *
  * @note These matter only when converting gibberish to pseudo-English.
  */
@@ -76,8 +78,10 @@ struct c_keyword {
   c_lang_id_t     lang_ids;             ///< Language(s) OK in.
 #ifdef WITH_READLINE
   /**
-   * Language(s) autocompletable in.  Relative to `lang_ids`, this field:
+   * Language(s) autocompletable in.
    *
+   * @remarks Relative to `lang_ids`, this field:
+   * @par
    *  1. Is exactly the same in which case it's autocompletable in all (and
    *     only) those language(s) in which it's valid.
    *

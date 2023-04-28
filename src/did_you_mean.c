@@ -90,7 +90,7 @@ static char* check_prefix_strdup( char const *prefix, char const *s ) {
 
 /**
  * Copies C/C++ keywords in the current language to the candidate list pointed
- * to by \a pdym.  If \a pdym is NULL, only counts the number of keywords.
+ * to by \a pdym; if \a pdym is NULL, only counts the number of keywords.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count keywords, not copy.  If not NULL, on return, the pointed-to
@@ -114,7 +114,7 @@ static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
 
 /**
  * Copies **cdecl** keywords in the current language to the candidate list
- * pointed to by \a pdym.  If \a pdym is NULL, only counts the number of
+ * pointed to by \a pdym; if \a pdym is NULL, only counts the number of
  * keywords.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
@@ -144,7 +144,7 @@ static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
 
 /**
  * Copies **cdecl** commands in the current language to the candidate list
- * pointed to by \a pdym.  If \a pdym is NULL, only counts the number of
+ * pointed to by \a pdym; if \a pdym is NULL, only counts the number of
  * commands.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
@@ -167,7 +167,7 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
 
 /**
  * Copies **cdecl** command-line options to the candidate list pointed to by \a
- * pdym.  If \a pdym is NULL, only counts the number of options.
+ * pdym; if \a pdym is NULL, only counts the number of options.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count options, not copy.  If not NULL, on return, the pointed-to
@@ -186,8 +186,8 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
 }
 
 /**
- * Copies **cdecl** `set` options to the candidate list pointed to by \a pdym.
- * If \a pdym is NULL, only counts the number of options.
+ * Copies **cdecl** `set` options to the candidate list pointed to by \a pdym;
+ * if \a pdym is NULL, only counts the number of options.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count options, not copy.  If not NULL, on return, the pointed-to
@@ -290,13 +290,14 @@ static void dym_free_literals( did_you_mean_t const *dym ) {
 /**
  * Gets whether \a dam_lev_dist is "similar enough" to be a candidate.
  *
- * Using a Damerau-Levenshtein edit distance alone to implement "Did you mean
- * ...?" can yield poor results if you just always use the results with the
- * least distance.  For example, given a source string of "fixed" and the best
- * target string of "float", it's probably safe to assume that because "fixed"
- * is so different from "float" that there's no way "float" was meant.  It
- * would be better to offer _no_ suggestions than not-even-close suggestions.
- *
+ * @remarks Using a Damerau-Levenshtein edit distance alone to implement "Did
+ * you mean ...?" can yield poor results if you just always use the results
+ * with the least distance.  For example, given a source string of "fixed" and
+ * the best target string of "float", it's probably safe to assume that because
+ * "fixed" is so different from "float" that there's no way "float" was meant.
+ * It would be better to offer _no_ suggestions than not-even-close
+ * suggestions.
+ * @par
  * Hence, you need a heuristic to know whether a least edit distance is
  * "similar enough" to the target string even to bother offering suggestions.
  * This can be done by checking whether the distance is less than or equal to
@@ -304,9 +305,9 @@ static void dym_free_literals( did_you_mean_t const *dym ) {
  * "similar enough" to be a reasonable suggestion.
  *
  * @param dam_lev_dist A Damerau-Levenshtein edit distance.
- * @param percent The edit distance must be less than or equal to this percent
- * of \a target_len in order to be considered "similar enough" to be a
- * reasonable suggestion.
+ * @param percent A value in the range (0,1).  The edit distance must be less
+ * than or equal to this percent of \a target_len in order to be considered
+ * "similar enough" to be a reasonable suggestion.
  * @param target_len The length of the target string.
  * @return Returns `true` only if \a dam_lev_dist is "similar enough."
  */

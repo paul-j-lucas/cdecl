@@ -374,20 +374,20 @@ NODISCARD
 c_sname_t c_ast_take_name( c_ast_t *ast );
 
 /**
- * Checks \a ast to see if it contains one or more of \a type.
- * If so, removes them.
- * This is used in cases like:
- * ```
- * explain typedef int *p
- * ```
+ * Checks \a ast to see if it contains one or more of \a type: if so, removes
+ * them.
+ *
+ * @remarks This is used in cases like:
+ *
+ *      explain typedef int *p
+ *
  * that should be explained as:
- * ```
- * declare p as type pointer to integer
- * ```
+ *
+ *      declare p as type pointer to integer
+ *
  * and _not_:
- * ```
- * declare p as pointer to typedef integer
- * ```
+ *
+ *      declare p as pointer to typedef integer
  *
  * @param ast The AST to check.
  * @param type A type where each type ID is the bitwise-or of type IDs to find.
