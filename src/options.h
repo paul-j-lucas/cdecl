@@ -166,7 +166,7 @@ bool parse_explicit_int( char const *ei_format );
 /**
  * Parses the `west-pointer` option.
  *
- * @param wd_format The null-terminated west pointer format string to parse.
+ * @param wp_format The null-terminated west pointer format string to parse.
  * Valid formats are:
  *      Format | Meaning
  *      -------|-----------------------------------
@@ -178,12 +178,12 @@ bool parse_explicit_int( char const *ei_format );
  *      `t`    | Non-return types.
  *      `*`    | All types (same as `bflot`).
  * Multiple formats may be given, one immediately after the other.
- * @return Returns `true` only if \a wd_format was parsed successfully.
+ * @return Returns `true` only if \a wp_format was parsed successfully.
  *
  * @sa print_west_pointer()
  */
 NODISCARD
-bool parse_west_pointer( char const *wd_format );
+bool parse_west_pointer( char const *wp_format );
 
 /**
  * Prints the string representation of the explicit `enum`, `class`, `struct`,

@@ -187,11 +187,11 @@ bool parse_explicit_int( char const *ei_format ) {
   return true;
 }
 
-bool parse_west_pointer( char const *wd_format ) {
-  assert( wd_format != NULL );
+bool parse_west_pointer( char const *wp_format ) {
+  assert( wp_format != NULL );
 
   unsigned wd = 0;
-  for ( char const *s = wd_format; *s != '\0'; ++s ) {
+  for ( char const *s = wp_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
       case 'b':
         wd |= K_APPLE_BLOCK;
