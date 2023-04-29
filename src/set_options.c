@@ -168,7 +168,7 @@ static void print_options( void ) {
   PRINTF( "  %senglish-types\n", maybe_no( opt_english_types ) );
   PRINTF( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
 
-  if ( opt_explicit_ecsu != TB_NONE ) {
+  if ( opt_explicit_ecsu_btids != TB_NONE ) {
     PUTS( "    explicit-ecsu=" );
     print_explicit_ecsu( stdout );
     PUTC( '\n' );

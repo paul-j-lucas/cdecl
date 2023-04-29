@@ -392,7 +392,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         //
         // Special case: a fixed type enum must always have "enum" printed, so
         // we don't call c_type_name_ecsu() that may omit it by applying
-        // opt_explicit_ecsu.
+        // opt_explicit_ecsu_btids.
         //
         !is_fixed_enum ?
           c_type_name_ecsu( &type ) :

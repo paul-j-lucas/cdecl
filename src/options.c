@@ -53,7 +53,7 @@ bool                opt_east_const;
 bool                opt_echo_commands;
 bool                opt_english_types = true;
 bool                opt_explain;
-c_tid_t             opt_explicit_ecsu = TB_STRUCT | TB_UNION;
+c_tid_t             opt_explicit_ecsu_btids = TB_STRUCT | TB_UNION;
 c_graph_t           opt_graph;
 c_lang_id_t         opt_lang;
 bool                opt_prompt = true;
@@ -114,11 +114,11 @@ bool parse_explicit_ecsu( char const *ecsu_format ) {
   assert( ecsu_format != NULL );
 
   if ( strcmp( ecsu_format, "*" ) == 0 ) {
-    opt_explicit_ecsu = TB_ENUM | TB_CLASS | TB_STRUCT | TB_UNION;
+    opt_explicit_ecsu_btids = TB_ENUM | TB_CLASS | TB_STRUCT | TB_UNION;
     return true;
   }
   if ( strcmp( ecsu_format, "-" ) == 0 ) {
-    opt_explicit_ecsu = TB_NONE;
+    opt_explicit_ecsu_btids = TB_NONE;
     return true;
   }
 
@@ -143,7 +143,7 @@ bool parse_explicit_ecsu( char const *ecsu_format ) {
     } // switch
   } // for
 
-  opt_explicit_ecsu = btids;
+  opt_explicit_ecsu_btids = btids;
   return true;
 }
 
@@ -245,13 +245,13 @@ bool parse_west_pointer( char const *wp_format ) {
 }
 
 void print_explicit_ecsu( FILE *out ) {
-  if ( (opt_explicit_ecsu & TB_ENUM) != TB_NONE )
+  if ( (opt_explicit_ecsu_btids & TB_ENUM) != TB_NONE )
     FPUTC( 'e', out );
-  if ( (opt_explicit_ecsu & TB_CLASS) != TB_NONE )
+  if ( (opt_explicit_ecsu_btids & TB_CLASS) != TB_NONE )
     FPUTC( 'c', out );
-  if ( (opt_explicit_ecsu & TB_STRUCT) != TB_NONE )
+  if ( (opt_explicit_ecsu_btids & TB_STRUCT) != TB_NONE )
     FPUTC( 's', out );
-  if ( (opt_explicit_ecsu & TB_UNION) != TB_NONE )
+  if ( (opt_explicit_ecsu_btids & TB_UNION) != TB_NONE )
     FPUTC( 'u', out );
 }
 

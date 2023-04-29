@@ -68,11 +68,15 @@ extern bool         opt_east_const;     ///< Print in "east const" form?
 extern bool         opt_echo_commands;  ///< Echo commands?
 extern bool         opt_english_types;  ///< Print types in English, not C/C++.
 extern bool         opt_explain;        ///< Assume `explain` if no command?
-extern c_tid_t      opt_explicit_ecsu;  ///< Explicit `class`|`struct`|`union`?
+
+/// Explicit `enum` | `class` | `struct` | `union`?
+extern c_tid_t      opt_explicit_ecsu_btids;
+
 #ifdef ENABLE_FLEX_DEBUG
-                    /// Print Flex debug output?
+/// Print Flex debug output?
 #define             opt_flex_debug      yy_flex_debug
 #endif /* ENABLE_FLEX_DEBUG */
+
 extern c_graph_t    opt_graph;          ///< Di/Trigraph mode.
 extern c_lang_id_t  opt_lang;           ///< Current language.
 extern bool         opt_prompt;         ///< Print the prompt?

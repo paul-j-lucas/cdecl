@@ -798,7 +798,7 @@ static char const* c_type_literal( c_type_info_t const *ti,
  * Gets the name of \a type.
  *
  * @param type The type to get the name for.
- * @param apply_explicit_ecsu If `true`, apply \ref opt_explicit_ecsu.
+ * @param apply_explicit_ecsu If `true`, apply \ref opt_explicit_ecsu_btids.
  * @param in_english If `true`, return the pseudo-English name if possible.
  * @param is_error If `true`, the name is intended for use in an error message.
  * Specifically, c_tid_nosigned() is _not_ called.
@@ -996,7 +996,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     // (which sets apply_explicit_ecsu to false) instead of c_type_name_ecsu()
     // when the AST's kind is K_ENUM and its "of" type is not NULL.
     //
-    btids &= opt_explicit_ecsu;
+    btids &= opt_explicit_ecsu_btids;
   }
 
   //
