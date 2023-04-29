@@ -56,13 +56,19 @@
 
 // extern option variables
 extern bool         opt_alt_tokens;     ///< Print alternative tokens?
+
 #ifdef YYDEBUG
-                    /// Print Bison debug output?
+/// Print Bison debug output?
+///
+/// @note This is an alias for \ref yydebug defined for consistency with the
+/// naming of **cdecl**'s other options.
 #define             opt_bison_debug     yydebug
 #endif /* YYDEBUG */
+
 #ifdef ENABLE_CDECL_DEBUG
 extern bool         opt_cdecl_debug;    ///< Print JSON-like debug output?
 #endif /* ENABLE_CDECL_DEBUG */
+
 extern char const  *opt_conf_path;      ///< Configuration file path.
 extern bool         opt_east_const;     ///< Print in "east const" form?
 extern bool         opt_echo_commands;  ///< Echo commands?
@@ -74,6 +80,9 @@ extern c_tid_t      opt_explicit_ecsu_btids;
 
 #ifdef ENABLE_FLEX_DEBUG
 /// Print Flex debug output?
+///
+/// @note This is an alias for \ref yy_flex_debug defined for consistency with
+/// the naming of **cdecl**'s other options.
 #define             opt_flex_debug      yy_flex_debug
 #endif /* ENABLE_FLEX_DEBUG */
 
