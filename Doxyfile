@@ -29,7 +29,8 @@ PREDEFINED              = __GNUC__ \
                           ENABLE_CDECL_DEBUG \
                           ENABLE_FLEX_DEBUG \
                           ENABLE_TERM_SIZE \
-                          WITH_READLINE
+                          WITH_READLINE \
+                          YYDEBUG
 EXCLUDE                 = src/config.h \
                           src/lexer.c \
                           src/literals.h src/literals.c \
