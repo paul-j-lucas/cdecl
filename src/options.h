@@ -81,7 +81,9 @@ extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?
 extern bool         opt_trailing_ret;   ///< Print trailing return type?
 extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s?
 extern bool         opt_using;          ///< Print `using` in C++11 and later?
-extern c_ast_kind_t opt_west_kinds;     ///< Kinds to print `*` and `&` "west."
+
+/// Kinds to print `*` and `&` "west" of the space.
+extern c_ast_kind_t opt_west_pointer_kinds;
 
 // other extern variables
 #ifdef ENABLE_FLEX_DEBUG

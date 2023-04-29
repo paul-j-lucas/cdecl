@@ -194,7 +194,7 @@ static void print_options( void ) {
   PRINTF( "  %strailing-return\n", maybe_no( opt_trailing_ret ) );
   PRINTF( "  %susing\n", maybe_no( opt_using ) );
 
-  if ( opt_west_kinds != 0 ) {
+  if ( opt_west_pointer_kinds != 0 ) {
     PUTS( "    west-pointer=" );
     print_west_pointer( stdout );
     PUTC( '\n' );

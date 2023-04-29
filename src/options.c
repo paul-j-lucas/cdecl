@@ -62,7 +62,7 @@ bool                opt_semicolon = true;
 bool                opt_trailing_ret;
 bool                opt_typedefs = true;
 bool                opt_using = true;
-c_ast_kind_t        opt_west_kinds = K_ANY_FUNCTION_RETURN;
+c_ast_kind_t        opt_west_pointer_kinds = K_ANY_FUNCTION_RETURN;
 
 /**
  * The integer type(s) that `int` shall be print explicitly for in C/C++
@@ -205,42 +205,42 @@ bool parse_west_pointer( char const *wp_format ) {
   assert( wp_format != NULL );
 
   if ( strcmp( wp_format, "*" ) == 0 ) {
-    opt_west_kinds = K_ANY_FUNCTION_RETURN | K_NON_PTR_REF_OBJECT;
+    opt_west_pointer_kinds = K_ANY_FUNCTION_RETURN | K_NON_PTR_REF_OBJECT;
     return true;
   }
   if ( strcmp( wp_format, "-" ) == 0 ) {
-    opt_west_kinds = 0;
+    opt_west_pointer_kinds = 0;
     return true;
   }
 
-  unsigned wd = 0;
+  unsigned kinds = 0;
 
   for ( char const *s = wp_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
       case 'b':
-        wd |= K_APPLE_BLOCK;
+        kinds |= K_APPLE_BLOCK;
         break;
       case 'f':
-        wd |= K_FUNCTION;
+        kinds |= K_FUNCTION;
         break;
       case 'l':
-        wd |= K_USER_DEF_LITERAL;
+        kinds |= K_USER_DEF_LITERAL;
         break;
       case 'o':
-        wd |= K_OPERATOR;
+        kinds |= K_OPERATOR;
         break;
       case 'r':
-        wd |= K_ANY_FUNCTION_RETURN;
+        kinds |= K_ANY_FUNCTION_RETURN;
         break;
       case 't':
-        wd |= K_NON_PTR_REF_OBJECT;
+        kinds |= K_NON_PTR_REF_OBJECT;
         break;
       default:
         return false;
     } // switch
   } // for
 
-  opt_west_kinds = wd;
+  opt_west_pointer_kinds = kinds;
   return true;
 }
 
@@ -288,15 +288,15 @@ void print_explicit_int( FILE *out ) {
 }
 
 void print_west_pointer( FILE *out ) {
-  if ( (opt_west_kinds & K_APPLE_BLOCK) != 0 )
+  if ( (opt_west_pointer_kinds & K_APPLE_BLOCK) != 0 )
     FPUTC( 'b', out );
-  if ( (opt_west_kinds & K_FUNCTION) != 0 )
+  if ( (opt_west_pointer_kinds & K_FUNCTION) != 0 )
     FPUTC( 'f', out );
-  if ( (opt_west_kinds & K_USER_DEF_LITERAL) != 0 )
+  if ( (opt_west_pointer_kinds & K_USER_DEF_LITERAL) != 0 )
     FPUTC( 'l', out );
-  if ( (opt_west_kinds & K_OPERATOR) != 0 )
+  if ( (opt_west_pointer_kinds & K_OPERATOR) != 0 )
     FPUTC( 'o', out );
-  if ( (opt_west_kinds & K_NON_PTR_REF_OBJECT) != 0 )
+  if ( (opt_west_pointer_kinds & K_NON_PTR_REF_OBJECT) != 0 )
     FPUTC( 't', out );
 }
 

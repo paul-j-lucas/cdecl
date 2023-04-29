@@ -904,7 +904,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       );
       c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
       g->printed_space =
-        func_ast == NULL || (func_ast->kind & opt_west_kinds) == 0;
+        func_ast == NULL || (func_ast->kind & opt_west_pointer_kinds) == 0;
       break;
     }
 
@@ -1052,13 +1052,14 @@ static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
 
   c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
   if ( func_ast != NULL )               // function returning pointer to ...
-    return (func_ast->kind & opt_west_kinds) == 0;
+    return (func_ast->kind & opt_west_pointer_kinds) == 0;
 
   if ( c_ast_find_name( ast, C_VISIT_UP ) == NULL )
     return false;
 
-  c_ast_t const *const to_ast =
-    c_ast_find_kind_any( ast->ptr_ref.to_ast, C_VISIT_DOWN, opt_west_kinds );
+  c_ast_t const *const to_ast = c_ast_find_kind_any(
+    ast->ptr_ref.to_ast, C_VISIT_DOWN, opt_west_pointer_kinds
+  );
   if ( to_ast != NULL )
     return false;
 
