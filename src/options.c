@@ -76,6 +76,9 @@ c_ast_kind_t        opt_west_pointer_kinds = K_ANY_FUNCTION_RETURN;
  *  `0` | signed integers
  *  `1` | unsigned integers
  *
+ * @remarks Due to non-trivial representation and special cases, this option's
+ * variable is `static` and accessible only via `*_explicit_int()` functions.
+ *
  * @sa any_explicit_int()
  * @sa is_explicit_int()
  * @sa parse_explicit_int()
