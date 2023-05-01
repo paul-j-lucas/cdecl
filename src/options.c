@@ -83,12 +83,13 @@ c_ast_kind_t        opt_west_pointer_kinds = K_ANY_FUNCTION_RETURN;
  * @sa is_explicit_int()
  * @sa parse_explicit_int()
  */
-static c_tid_t      opt_explicit_int[] = { TB_NONE, TB_NONE };
+static c_tid_t      opt_explicit_int_btids[] = { TB_NONE, TB_NONE };
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool any_explicit_int( void ) {
-  return opt_explicit_int[0] != TB_NONE || opt_explicit_int[1] != TB_NONE;
+  return  opt_explicit_int_btids[0] != TB_NONE ||
+          opt_explicit_int_btids[1] != TB_NONE;
 }
 
 bool is_explicit_int( c_tid_t btids ) {
@@ -110,7 +111,7 @@ bool is_explicit_int( c_tid_t btids ) {
   }
   bool const is_unsigned = c_tid_is_any( btids, TB_UNSIGNED );
   btids &= c_tid_compl( TB_UNSIGNED );
-  return c_tid_is_any( btids, opt_explicit_int[ is_unsigned ] );
+  return c_tid_is_any( btids, opt_explicit_int_btids[ is_unsigned ] );
 }
 
 bool parse_explicit_ecsu( char const *ecsu_format ) {
@@ -153,12 +154,13 @@ bool parse_explicit_ecsu( char const *ecsu_format ) {
 bool parse_explicit_int( char const *ei_format ) {
   assert( ei_format != NULL );
 
-  c_tid_t btids = opt_explicit_int[0] = opt_explicit_int[1] = TB_NONE;
-
-  if ( strcmp( ei_format, "-" ) == 0 )
-    return true;
   if ( strcmp( ei_format, "*" ) == 0 )
     ei_format = "iu";
+  else if ( strcmp( ei_format, "-" ) == 0 )
+    ei_format = "";
+
+  c_tid_t btids = TB_NONE;
+  c_tid_t tmp_ei_btids[] = { TB_NONE, TB_NONE };
 
   for ( char const *s = ei_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
@@ -197,10 +199,12 @@ bool parse_explicit_int( char const *ei_format ) {
     } // switch
 
     bool const is_unsigned = c_tid_is_any( btids, TB_UNSIGNED );
-    opt_explicit_int[ is_unsigned ] |= btids & c_tid_compl( TB_UNSIGNED );
+    tmp_ei_btids[ is_unsigned ] |= btids & c_tid_compl( TB_UNSIGNED );
     btids = TB_NONE;
   } // for
 
+  opt_explicit_int_btids[0] = tmp_ei_btids[0];
+  opt_explicit_int_btids[1] = tmp_ei_btids[1];
   return true;
 }
 
