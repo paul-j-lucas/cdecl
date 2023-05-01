@@ -1,3 +1,17 @@
+2023-05-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c: Now setting opt_explicit_int_btids[*] only after a successful
+     parse.
+   * options.c: s/tid/btids/
+
+2023-04-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * Doxyfile: Enabled YYDEBUG.
+   * c_type.c, gibberish.c, options.c, options.h, set_options.c:
+     s/opt_explicit_ecsu/opt_explicit_ecsu_btids/
+   * gibberish.c, options.c, options.h, set_options.c:
+     s/opt_west_kinds/opt_west_pointer_kinds/
+
 2023-04-28  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, cdecl.1, cli_options.c, options.c, options.h, set_options.c,
