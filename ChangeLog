@@ -1,5 +1,7 @@
 2023-05-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * options.c: Now expanding ecsu_format and wp_format rather than early
+     return.
    * options.c: Now setting opt_explicit_int_btids[*] only after a successful
      parse.
    * options.c: s/tid/btids/
