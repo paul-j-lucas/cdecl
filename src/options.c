@@ -153,7 +153,7 @@ bool parse_explicit_ecsu( char const *ecsu_format ) {
 bool parse_explicit_int( char const *ei_format ) {
   assert( ei_format != NULL );
 
-  c_tid_t tid = opt_explicit_int[0] = opt_explicit_int[1] = TB_NONE;
+  c_tid_t btids = opt_explicit_int[0] = opt_explicit_int[1] = TB_NONE;
 
   if ( strcmp( ei_format, "-" ) == 0 )
     return true;
@@ -163,30 +163,30 @@ bool parse_explicit_int( char const *ei_format ) {
   for ( char const *s = ei_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
       case 'i':
-        tid |= TB_INT;
-        if ( (tid & TB_UNSIGNED) == TB_NONE ) {
+        btids |= TB_INT;
+        if ( (btids & TB_UNSIGNED) == TB_NONE ) {
           // If only 'i' is specified, it means all signed integer types
           // shall be explicit.
-          tid |= TB_SHORT | TB_LONG | TB_LONG_LONG;
+          btids |= TB_SHORT | TB_LONG | TB_LONG_LONG;
         }
         break;
       case 'l':
         if ( s[1] == 'l' || s[1] == 'L' ) {
-          tid |= TB_LONG_LONG;
+          btids |= TB_LONG_LONG;
           ++s;
         } else {
-          tid |= TB_LONG;
+          btids |= TB_LONG;
         }
         break;
       case 's':
-        tid |= TB_SHORT;
+        btids |= TB_SHORT;
         break;
       case 'u':
-        tid |= TB_UNSIGNED;
+        btids |= TB_UNSIGNED;
         if ( s[1] == '\0' || s[1] == ',' ) {
           // If only 'u' is specified, it means all unsigned integer types
           // shall be explicit.
-          tid |= TB_SHORT | TB_INT | TB_LONG | TB_LONG_LONG;
+          btids |= TB_SHORT | TB_INT | TB_LONG | TB_LONG_LONG;
           break;
         }
         continue;
@@ -196,9 +196,9 @@ bool parse_explicit_int( char const *ei_format ) {
         return false;
     } // switch
 
-    bool const is_unsigned = c_tid_is_any( tid, TB_UNSIGNED );
-    opt_explicit_int[ is_unsigned ] |= tid & c_tid_compl( TB_UNSIGNED );
-    tid = TB_NONE;
+    bool const is_unsigned = c_tid_is_any( btids, TB_UNSIGNED );
+    opt_explicit_int[ is_unsigned ] |= btids & c_tid_compl( TB_UNSIGNED );
+    btids = TB_NONE;
   } // for
 
   return true;
