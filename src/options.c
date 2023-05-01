@@ -117,14 +117,10 @@ bool is_explicit_int( c_tid_t btids ) {
 bool parse_explicit_ecsu( char const *ecsu_format ) {
   assert( ecsu_format != NULL );
 
-  if ( strcmp( ecsu_format, "*" ) == 0 ) {
-    opt_explicit_ecsu_btids = TB_ENUM | TB_CLASS | TB_STRUCT | TB_UNION;
-    return true;
-  }
-  if ( strcmp( ecsu_format, "-" ) == 0 ) {
-    opt_explicit_ecsu_btids = TB_NONE;
-    return true;
-  }
+  if ( strcmp( ecsu_format, "*" ) == 0 )
+    ecsu_format = "ecsu";
+  else if ( strcmp( ecsu_format, "-" ) == 0 )
+    ecsu_format = "";
 
   c_tid_t btids = TB_NONE;
 
@@ -211,14 +207,10 @@ bool parse_explicit_int( char const *ei_format ) {
 bool parse_west_pointer( char const *wp_format ) {
   assert( wp_format != NULL );
 
-  if ( strcmp( wp_format, "*" ) == 0 ) {
-    opt_west_pointer_kinds = K_ANY_FUNCTION_RETURN | K_NON_PTR_REF_OBJECT;
-    return true;
-  }
-  if ( strcmp( wp_format, "-" ) == 0 ) {
-    opt_west_pointer_kinds = 0;
-    return true;
-  }
+  if ( strcmp( wp_format, "*" ) == 0 )
+    wp_format = "rt";
+  else if ( strcmp( wp_format, "-" ) == 0 )
+    wp_format = "";
 
   unsigned kinds = 0;
 
