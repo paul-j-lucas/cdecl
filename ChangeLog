@@ -1,5 +1,6 @@
 2023-05-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * cli_options.c, util.c, util.h: Added check_dup2().
    * cli_options.c: For --config and --output, now skipping over any leading
      whitespace in argument.
    * util.h: null_if_empty() now returns non-null, non-empty strings skipping
