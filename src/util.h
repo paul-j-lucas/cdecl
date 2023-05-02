@@ -1122,11 +1122,12 @@ char const* parse_identifier( char const *s );
 noreturn void perror_exit( int status );
 
 /**
- * Checks whether \a s is a blank line, that is either an empty string or a
- * line consisting only of whitespace.
+ * Checks whether \a s is either an empty string or a line consisting only of
+ * whitespace.
  *
  * @param s The null-terminated string to check.
- * @return Returns `true` only if \a s is a blank line.
+ * @return Returns `true` only if \a s is either an empty string or a line
+ * consisting only of whitespace.
  *
  * @sa null_if_empty()
  */
@@ -1141,15 +1142,15 @@ bool str_is_empty( char const *s ) {
  * whitespace.
  *
  * @param s The null-terminated string to check.
- * @return Returns \a s only if it's neither the empty string nor only
- * whitespace; otherwise returns NULL.
+ * @return If \a s is either null or the empty string, returns NULL; otherwise
+ * returns a pointer to the first non-whitespace character in \a s.
  *
  * @sa empty_if_null();
  * @sa str_is_empty()
  */
 NODISCARD C_UTIL_H_INLINE
 char const* null_if_empty( char const *s ) {
-  return s != NULL && str_is_empty( s ) ? NULL : s;
+  return s != NULL && SKIP_WS( s )[0] == '\0' ? NULL : s;
 }
 
 /**
