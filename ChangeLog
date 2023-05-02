@@ -1,3 +1,10 @@
+2023-05-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: For --config and --output, now skipping over any leading
+     whitespace in argument.
+   * util.h: null_if_empty() now returns non-null, non-empty strings skipping
+     past whitespace.
+
 2023-05-01  Paul J. Lucas <paul@lucasmail.org>
 
    * options.c: Now expanding ecsu_format and wp_format rather than early
