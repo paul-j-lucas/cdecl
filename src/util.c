@@ -93,6 +93,11 @@ void check_atexit( void (*cleanup_fn)(void) ) {
   PERROR_EXIT_IF( atexit( cleanup_fn ) != 0, EX_OSERR );
 }
 
+void check_dup2( int old_fd, int new_fd ) {
+  int const dup_fd = dup2( old_fd, new_fd );
+  PERROR_EXIT_IF( dup_fd != new_fd, EX_OSERR );
+}
+
 void* check_realloc( void *p, size_t size ) {
   assert( size > 0 );
   p = p != NULL ? realloc( p, size ) : malloc( size );

@@ -693,6 +693,14 @@ char const* base_name( char const *path_name );
 void check_atexit( void (*cleanup_fn)(void) );
 
 /**
+ * Calls **dup2**(2) and checks for failure.
+ *
+ * @param old_fd The old file descriptor to duplicate.
+ * @param new_fd The new file descriptor to duplicate to.
+ */
+void check_dup2( int old_fd, int new_fd );
+
+/**
  * Calls **realloc**(3) and checks for failure.
  * If reallocation fails, prints an error message and exits.
  *

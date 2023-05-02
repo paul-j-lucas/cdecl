@@ -594,16 +594,14 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     FILE *const fin = fopen( fin_path, "r" );
     if ( fin == NULL )
       fatal_error( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
-    MAYBE_UNUSED int const fd = dup2( fileno( fin ), STDIN_FILENO );
-    assert( fd == STDIN_FILENO );
+    check_dup2( fileno( fin ), STDIN_FILENO );
   }
 
   if ( strcmp( fout_path, "-" ) != 0 ) {
     FILE *const fout = fopen( fout_path, "w" );
     if ( fout == NULL )
       fatal_error( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
-    MAYBE_UNUSED int const fd = dup2( fileno( fout ), STDOUT_FILENO );
-    assert( fd == STDOUT_FILENO );
+    check_dup2( fileno( fout ), STDOUT_FILENO );
   }
 
   if ( opt_usage )
