@@ -417,7 +417,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         color_when = parse_color_when( optarg );
         break;
       case COPT(CONFIG):
-        if ( str_is_empty( optarg ) )
+        if ( SKIP_WS( optarg )[0] == '\0' )
           goto missing_arg;
         opt_conf_path = optarg;
         break;
@@ -446,7 +446,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
           );
         break;
       case COPT(FILE):
-        if ( str_is_empty( optarg ) )
+        if ( SKIP_WS( optarg )[0] == '\0' )
           goto missing_arg;
         fin_path = optarg;
         break;
