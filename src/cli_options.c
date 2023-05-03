@@ -197,23 +197,6 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
 }
 
 /**
- * Prints that \a value is an invalid value for \a opt to standard error and
- * exits.
- *
- * @param opt The option that has the invalid \a value.
- * @param value The invalid value for \a opt.
- * @param must_be What \a opt must be instead.
- */
-noreturn
-static void invalid_opt_value( char opt, char const *value,
-                               char const *must_be ) {
-  fatal_error( EX_USAGE,
-    "\"%s\": invalid value for %s; must be %s\n",
-    value, opt_format( opt ), must_be
-  );
-}
-
-/**
  * Makes the `optstring` (short option) equivalent of \a opts for the third
  * argument of `getopt_long()`.
  *
@@ -302,6 +285,23 @@ static char const* opt_get_long( char short_opt ) {
 }
 
 /**
+ * Prints that \a value is an invalid value for \a opt to standard error and
+ * exits.
+ *
+ * @param opt The option that has the invalid \a value.
+ * @param value The invalid value for \a opt.
+ * @param must_be What \a opt must be instead.
+ */
+noreturn
+static void opt_invalid_value( char opt, char const *value,
+                               char const *must_be ) {
+  fatal_error( EX_USAGE,
+    "\"%s\": invalid value for %s; must be %s\n",
+    value, opt_format( opt ), must_be
+  );
+}
+
+/**
  * Parses a color "when" value.
  *
  * @param when The null-terminated "when" string to parse.
@@ -340,7 +340,7 @@ static color_when_t parse_color_when( char const *when ) {
   bool comma = false;
   for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m )
     strbuf_sepsn_puts( &when_sbuf, ", ", 2, &comma, m->map_when );
-  invalid_opt_value( COPT(COLOR), when, when_sbuf.str );
+  opt_invalid_value( COPT(COLOR), when, when_sbuf.str );
 }
 
 /**
@@ -364,7 +364,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
     if ( !lang->is_alias )
       strbuf_sepsn_puts( &langs_sbuf, ", ", 2, &comma, lang->name );
   } // for
-  invalid_opt_value( COPT(LANGUAGE), lang_name, langs_sbuf.str );
+  opt_invalid_value( COPT(LANGUAGE), lang_name, langs_sbuf.str );
 }
 
 /**
@@ -428,13 +428,13 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
       case COPT(EXPLICIT_ECSU):
         if ( !parse_explicit_ecsu( optarg ) )
-          invalid_opt_value(
+          opt_invalid_value(
             COPT(EXPLICIT_ECSU), optarg, "*, -, or {e|c|s|u}+"
           );
         break;
       case COPT(EXPLICIT_INT):
         if ( !parse_explicit_int( optarg ) )
-          invalid_opt_value(
+          opt_invalid_value(
             COPT(EXPLICIT_INT), optarg, "*, -, i, u, or {[u]{i|s|l[l]}[,]}+"
           );
         break;
@@ -486,7 +486,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
       case COPT(WEST_POINTER):
         if ( !parse_west_pointer( optarg ) )
-          invalid_opt_value(
+          opt_invalid_value(
             COPT(WEST_POINTER), optarg, "*, -, or {b|f|l|o|r|t}+"
           );
         break;
