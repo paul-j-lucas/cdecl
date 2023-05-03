@@ -239,6 +239,28 @@ static char* make_short_opts( struct option const opts[static const 2] ) {
 }
 
 /**
+ * If \a opt was given, checks that _only_ it was given and, if not, prints an
+ * error message and exits; if \a opt was not given, does nothing.
+ *
+ * @param opt The option to check for.
+ */
+static void opt_check_exclusive( char opt ) {
+  if ( !opts_given[ STATIC_CAST( unsigned char, opt ) ] )
+    return;
+  for ( size_t i = 0; i < ARRAY_SIZE( opts_given ); ++i ) {
+    char const curr_opt = STATIC_CAST( char, i );
+    if ( curr_opt == opt )
+      continue;
+    if ( opts_given[ STATIC_CAST( unsigned char, curr_opt ) ] ) {
+      fatal_error( EX_USAGE,
+        "%s can be given only by itself\n",
+        opt_format( opt )
+      );
+    }
+  } // for
+}
+
+/**
  * Formats an option as `[--%%s/]-%%c` where `%%s` is the long option (if any)
  * and `%%c` is the short option.
  *
@@ -516,74 +538,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   *pargv += optind;
 
   check_mutually_exclusive( SOPT(DIGRAPHS), SOPT(TRIGRAPHS) );
-
-  check_mutually_exclusive( SOPT(HELP),
-    SOPT(ALT_TOKENS)
-#ifdef YYDEBUG
-    SOPT(BISON_DEBUG)
-#endif /* YYDEBUG */
-#ifdef ENABLE_CDECL_DEBUG
-    SOPT(CDECL_DEBUG)
-#endif /* ENABLE_CDECL_DEBUG */
-    SOPT(COLOR)
-    SOPT(CONFIG)
-    SOPT(DIGRAPHS)
-    SOPT(EAST_CONST)
-    SOPT(ECHO_COMMANDS)
-    SOPT(EXPLAIN)
-    SOPT(EXPLICIT_ECSU)
-    SOPT(EXPLICIT_INT)
-    SOPT(FILE)
-#ifdef ENABLE_FLEX_DEBUG
-    SOPT(FLEX_DEBUG)
-#endif /* ENABLE_FLEX_DEBUG */
-    SOPT(LANGUAGE)
-    SOPT(NO_CONFIG)
-    SOPT(NO_ENGLISH_TYPES)
-    SOPT(NO_PROMPT)
-    SOPT(NO_SEMICOLON)
-    SOPT(NO_TYPEDEFS)
-    SOPT(NO_USING)
-    SOPT(OUTPUT)
-    SOPT(TRAILING_RETURN)
-    SOPT(TRIGRAPHS)
-    SOPT(VERSION)
-    SOPT(WEST_POINTER)
-  );
-
-  check_mutually_exclusive( SOPT(VERSION),
-    SOPT(ALT_TOKENS)
-#ifdef YYDEBUG
-    SOPT(BISON_DEBUG)
-#endif /* YYDEBUG */
-#ifdef ENABLE_CDECL_DEBUG
-    SOPT(CDECL_DEBUG)
-#endif /* ENABLE_CDECL_DEBUG */
-    SOPT(COLOR)
-    SOPT(CONFIG)
-    SOPT(DIGRAPHS)
-    SOPT(EAST_CONST)
-    SOPT(ECHO_COMMANDS)
-    SOPT(EXPLAIN)
-    SOPT(EXPLICIT_ECSU)
-    SOPT(EXPLICIT_INT)
-    SOPT(FILE)
-#ifdef ENABLE_FLEX_DEBUG
-    SOPT(FLEX_DEBUG)
-#endif /* ENABLE_FLEX_DEBUG */
-    SOPT(HELP)
-    SOPT(LANGUAGE)
-    SOPT(NO_CONFIG)
-    SOPT(NO_ENGLISH_TYPES)
-    SOPT(NO_PROMPT)
-    SOPT(NO_SEMICOLON)
-    SOPT(NO_TYPEDEFS)
-    SOPT(NO_USING)
-    SOPT(OUTPUT)
-    SOPT(TRAILING_RETURN)
-    SOPT(TRIGRAPHS)
-    SOPT(WEST_POINTER)
-  );
+  opt_check_exclusive( COPT(HELP) );
+  opt_check_exclusive( COPT(VERSION) );
 
   if ( strcmp( fin_path, "-" ) != 0 ) {
     FILE *const fin = fopen( fin_path, "r" );
