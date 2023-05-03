@@ -242,7 +242,7 @@ static void opt_check_mutually_exclusive( char const *opts1,
 
   for ( unsigned i = 0; i < 2; ++i ) {
     for ( ; *opt != '\0'; ++opt ) {
-      if ( opts_given[ (unsigned char)*opt ] ) {
+      if ( opts_given[ STATIC_CAST( unsigned char, *opt ) ] ) {
         if ( ++gave_count > 1 ) {
           char const gave_opt2 = *opt;
           fatal_error( EX_USAGE,
