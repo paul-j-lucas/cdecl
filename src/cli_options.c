@@ -105,9 +105,9 @@
  */
 static struct option const CLI_OPTIONS[] = {
   //
-  // If this array is modified, also modify the call(s) to
-  // check_mutually_exclusive(), the message in usage(), and the corresponding
-  // "set" option in SET_OPTIONS in set_options.c.
+  // If this array is modified, also modify the calls to opt_check_exclusive(),
+  // opt_check_mutually_exclusive(), the message in usage(), and the
+  // corresponding "set" option in SET_OPTIONS in set_options.c.
   //
   { "alt-tokens",       no_argument,        NULL, COPT(ALT_TOKENS)        },
 #ifdef YYDEBUG
@@ -158,43 +158,6 @@ static void         usage( int );
 static void         version( bool );
 
 ////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Checks that no options were given that are among the two given mutually
- * exclusive sets of short options.
- * Prints an error message and exits if any such options are found.
- *
- * @param opts1 The first set of short options.
- * @param opts2 The second set of short options.
- */
-static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
-  assert( opts1 != NULL );
-  assert( opts2 != NULL );
-
-  unsigned gave_count = 0;
-  char const *opt = opts1;
-  char gave_opt1 = '\0';
-
-  for ( unsigned i = 0; i < 2; ++i ) {
-    for ( ; *opt != '\0'; ++opt ) {
-      if ( opts_given[ (unsigned char)*opt ] ) {
-        if ( ++gave_count > 1 ) {
-          char const gave_opt2 = *opt;
-          fatal_error( EX_USAGE,
-            "%s and %s are mutually exclusive\n",
-            opt_format( gave_opt1 ),
-            opt_format( gave_opt2 )
-          );
-        }
-        gave_opt1 = *opt;
-        break;
-      }
-    } // for
-    if ( gave_count == 0 )
-      break;
-    opt = opts2;
-  } // for
-}
 
 /**
  * Makes the `optstring` (short option) equivalent of \a opts for the third
@@ -257,6 +220,44 @@ static void opt_check_exclusive( char opt ) {
         opt_format( opt )
       );
     }
+  } // for
+}
+
+/**
+ * Checks that no options were given that are among the two given mutually
+ * exclusive sets of short options.
+ * Prints an error message and exits if any such options are found.
+ *
+ * @param opts1 The first set of short options.
+ * @param opts2 The second set of short options.
+ */
+static void opt_check_mutually_exclusive( char const *opts1,
+                                          char const *opts2 ) {
+  assert( opts1 != NULL );
+  assert( opts2 != NULL );
+
+  unsigned gave_count = 0;
+  char const *opt = opts1;
+  char gave_opt1 = '\0';
+
+  for ( unsigned i = 0; i < 2; ++i ) {
+    for ( ; *opt != '\0'; ++opt ) {
+      if ( opts_given[ (unsigned char)*opt ] ) {
+        if ( ++gave_count > 1 ) {
+          char const gave_opt2 = *opt;
+          fatal_error( EX_USAGE,
+            "%s and %s are mutually exclusive\n",
+            opt_format( gave_opt1 ),
+            opt_format( gave_opt2 )
+          );
+        }
+        gave_opt1 = *opt;
+        break;
+      }
+    } // for
+    if ( gave_count == 0 )
+      break;
+    opt = opts2;
   } // for
 }
 
@@ -537,9 +538,9 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   *pargc -= optind;
   *pargv += optind;
 
-  check_mutually_exclusive( SOPT(DIGRAPHS), SOPT(TRIGRAPHS) );
   opt_check_exclusive( COPT(HELP) );
   opt_check_exclusive( COPT(VERSION) );
+  opt_check_mutually_exclusive( SOPT(DIGRAPHS), SOPT(TRIGRAPHS) );
 
   if ( strcmp( fin_path, "-" ) != 0 ) {
     FILE *const fin = fopen( fin_path, "r" );
