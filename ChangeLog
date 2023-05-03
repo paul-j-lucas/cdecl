@@ -1,5 +1,6 @@
 2023-05-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * cli_options.c: Now using STATIC_CAST().
    * cli_options.c: s/check_mutually_exclusive/opt_check_mutually_exclusive/
    * cli_options.c, bad_cli_options.out: Added opt_check_exclusive().
    * cli_options.c: s/invalid_opt_value/opt_invalid_value/
