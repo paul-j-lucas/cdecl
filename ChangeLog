@@ -1,3 +1,9 @@
+2023-05-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: s/invalid_opt_value/opt_invalid_value/
+   * cli_options.c: Eliminated CLI_OPTIONS_SHORT; added make_short_opts() to
+     make it.
+
 2023-05-02  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c, util.c, util.h: Added check_dup2().
