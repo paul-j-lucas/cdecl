@@ -102,14 +102,12 @@
 
 /**
  * Long command-line options.
- *
- * @sa CLI_OPTIONS_SHORT
  */
-static struct option const CLI_OPTIONS_LONG[] = {
+static struct option const CLI_OPTIONS[] = {
   //
-  // If this array is modified, also modify CLI_OPTIONS_SHORT, the call(s) to
-  // check_mutually_exclusive() in parse_options(), the message in usage(), and
-  // the corresponding "set" option in SET_OPTIONS in set_options.c.
+  // If this array is modified, also modify the call(s) to
+  // check_mutually_exclusive(), the message in usage(), and the corresponding
+  // "set" option in SET_OPTIONS in set_options.c.
   //
   { "alt-tokens",       no_argument,        NULL, COPT(ALT_TOKENS)        },
 #ifdef YYDEBUG
@@ -145,54 +143,6 @@ static struct option const CLI_OPTIONS_LONG[] = {
   { "west-pointer",     required_argument,  NULL, COPT(WEST_POINTER)      },
   { NULL,               0,                  NULL, 0                       }
 };
-
-/// @cond DOXYGEN_IGNORE
-#define SOPT_NO_ARGUMENT          /* nothing */
-#define SOPT_REQUIRED_ARGUMENT    ":"
-/// @endcond
-
-/**
- * Short command-line options.
- *
- * @note It _must_ start with `:` to make `getopt_long()` return `:` when a
- * required argument for a known option is missing.
- *
- * @sa CLI_OPTIONS_LONG
- */
-static char const   CLI_OPTIONS_SHORT[] = ":"
-  SOPT(ALT_TOKENS)        SOPT_NO_ARGUMENT
-#ifdef YYDEBUG
-  SOPT(BISON_DEBUG)       SOPT_NO_ARGUMENT
-#endif /* YYDEBUG */
-#ifdef ENABLE_CDECL_DEBUG
-  SOPT(CDECL_DEBUG)       SOPT_NO_ARGUMENT
-#endif /* ENABLE_CDECL_DEBUG */
-  SOPT(COLOR)             SOPT_REQUIRED_ARGUMENT
-  SOPT(CONFIG)            SOPT_REQUIRED_ARGUMENT
-  SOPT(DIGRAPHS)          SOPT_NO_ARGUMENT
-  SOPT(EAST_CONST)        SOPT_NO_ARGUMENT
-  SOPT(ECHO_COMMANDS)     SOPT_NO_ARGUMENT
-  SOPT(EXPLAIN)           SOPT_NO_ARGUMENT
-  SOPT(EXPLICIT_ECSU)     SOPT_REQUIRED_ARGUMENT
-  SOPT(EXPLICIT_INT)      SOPT_REQUIRED_ARGUMENT
-  SOPT(FILE)              SOPT_REQUIRED_ARGUMENT
-#ifdef ENABLE_FLEX_DEBUG
-  SOPT(FLEX_DEBUG)        SOPT_NO_ARGUMENT
-#endif /* ENABLE_FLEX_DEBUG */
-  SOPT(HELP)              SOPT_NO_ARGUMENT
-  SOPT(LANGUAGE)          SOPT_REQUIRED_ARGUMENT
-  SOPT(NO_CONFIG)         SOPT_NO_ARGUMENT
-  SOPT(NO_ENGLISH_TYPES)  SOPT_NO_ARGUMENT
-  SOPT(NO_PROMPT)         SOPT_NO_ARGUMENT
-  SOPT(NO_SEMICOLON)      SOPT_NO_ARGUMENT
-  SOPT(NO_TYPEDEFS)       SOPT_NO_ARGUMENT
-  SOPT(NO_USING)          SOPT_NO_ARGUMENT
-  SOPT(OUTPUT)            SOPT_REQUIRED_ARGUMENT
-  SOPT(TRAILING_RETURN)   SOPT_NO_ARGUMENT
-  SOPT(TRIGRAPHS)         SOPT_NO_ARGUMENT
-  SOPT(VERSION)           SOPT_NO_ARGUMENT
-  SOPT(WEST_POINTER)      SOPT_REQUIRED_ARGUMENT
-;
 
 // local variables
 static bool         opts_given[ 128 ];  ///< Table of options that were given.
@@ -261,6 +211,48 @@ static void invalid_opt_value( char opt, char const *value,
     "\"%s\": invalid value for %s; must be %s\n",
     value, opt_format( opt ), must_be
   );
+}
+
+/**
+ * Makes the `optstring` (short option) equivalent of \a opts for the third
+ * argument of `getopt_long()`.
+ *
+ * @param opts An array of options to make the short option string from.  Its
+ * last element must be all zeros.
+ * @return Returns the `optstring` for the third argument of `getopt_long()`.
+ * The caller is responsible for freeing it.
+ */
+NODISCARD
+static char* make_short_opts( struct option const opts[static const 2] ) {
+  strbuf_t sbuf;
+  strbuf_init( &sbuf );
+
+  // pre-flight to calculate string length
+  size_t len = 1;                       // for leading ':'
+  for ( struct option const *opt = opts; opt->name != NULL; ++opt ) {
+    assert( opt->has_arg >= 0 && opt->has_arg <= 2 );
+    len += 1 + STATIC_CAST( unsigned, opt->has_arg );
+  } // for
+
+  strbuf_reserve( &sbuf, len );
+  strbuf_putc( &sbuf, ':' );            // return missing argument as ':'
+
+  for ( struct option const *opt = opts; opt->name != NULL; ++opt ) {
+    assert( opt->val > 0 && opt->val < 128 );
+    strbuf_putc( &sbuf, STATIC_CAST( char, opt->val ) );
+    switch ( opt->has_arg ) {
+      case no_argument:
+        break;
+      case required_argument:
+        strbuf_putc( &sbuf, ':' );
+        break;
+      case optional_argument:
+        strbuf_putsn( &sbuf, "::", 2 );
+        break;
+    } // switch
+  } // for
+
+  return strbuf_take( &sbuf );
 }
 
 /**
@@ -385,16 +377,17 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   opterr = 0;                           // suppress default error message
   optind = 1;
 
-  color_when_t  color_when = COLOR_WHEN_DEFAULT;
-  char const   *fin_path = "-";
-  char const   *fout_path = "-";
-  int           opt;
-  bool          opt_usage = false;
-  unsigned      opt_version = 0;
+  color_when_t      color_when = COLOR_WHEN_DEFAULT;
+  char const *      fin_path = "-";
+  char const *      fout_path = "-";
+  int               opt;
+  bool              opt_usage = false;
+  unsigned          opt_version = 0;
+  char const *const short_opts = make_short_opts( CLI_OPTIONS );
 
   for (;;) {
     opt = getopt_long(
-      *pargc, CONST_CAST( char**, *pargv ), CLI_OPTIONS_SHORT, CLI_OPTIONS_LONG,
+      *pargc, CONST_CAST( char**, *pargv ), short_opts, CLI_OPTIONS,
       /*longindex=*/NULL
     );
     if ( opt == -1 )
@@ -516,6 +509,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     } // switch
     opts_given[ opt ] = true;
   } // for
+
+  FREE( short_opts );
 
   *pargc -= optind;
   *pargv += optind;
@@ -814,7 +809,7 @@ void cli_option_init( int *pargc, char const **pargv[const] ) {
 }
 
 struct option const* cli_option_next( struct option const *opt ) {
-  return opt == NULL ? CLI_OPTIONS_LONG : (++opt)->name == NULL ? NULL : opt;
+  return opt == NULL ? CLI_OPTIONS : (++opt)->name == NULL ? NULL : opt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
