@@ -170,9 +170,6 @@ static void         version( bool );
  */
 NODISCARD
 static char* make_short_opts( struct option const opts[static const 2] ) {
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
-
   // pre-flight to calculate string length
   size_t len = 1;                       // for leading ':'
   for ( struct option const *opt = opts; opt->name != NULL; ++opt ) {
@@ -180,6 +177,8 @@ static char* make_short_opts( struct option const opts[static const 2] ) {
     len += 1 + STATIC_CAST( unsigned, opt->has_arg );
   } // for
 
+  strbuf_t sbuf;
+  strbuf_init( &sbuf );
   strbuf_reserve( &sbuf, len );
   strbuf_putc( &sbuf, ':' );            // return missing argument as ':'
 
