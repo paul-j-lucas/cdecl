@@ -1,3 +1,8 @@
+2023-05-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Made make_short_opts() return char const*.
+   * cli_options.c: Moved code.
+
 2023-05-03  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: Now using STATIC_CAST().
