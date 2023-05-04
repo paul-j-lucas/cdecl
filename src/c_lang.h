@@ -884,7 +884,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `void` keyword is supported in.
  */
-#define LANG_void                       LANG_MIN(C_89)  
+#define LANG_void                       LANG_MIN(C_89)
 
 /**
  * Languages the `volatile` keyword is supported in.

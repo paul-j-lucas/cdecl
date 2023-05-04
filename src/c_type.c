@@ -495,7 +495,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
   { XXX    ,___    ,___    ,TLS    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// thread
   { XXX    ,___    ,XXX    ,CPP    ,XXX    ,XXX    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// typedef
 
-  // storage-class-like            
+  // storage-class-like
   { XXX    ,CEV    ,CEV    ,CEV    ,XXX    ,CEV    ,XXX    ,XXX    ,CEV    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// c'eval
   { AUS&CEX,CEX    ,XXX    ,XXX    ,CEX&REG,CEX    ,XXX    ,XXX    ,XXX    ,CEX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// c'expr
   { XXX    ,XXX    ,CIN    ,CIN    ,XXX    ,CIN    ,CIN&TLS,XXX    ,XXX    ,XXX    ,CIN    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// c'init

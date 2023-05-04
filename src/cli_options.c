@@ -112,7 +112,7 @@ static struct option const CLI_OPTIONS[] = {
   { "alt-tokens",       no_argument,        NULL, COPT(ALT_TOKENS)        },
 #ifdef YYDEBUG
   { "bison-debug",      no_argument,        NULL, COPT(BISON_DEBUG)       },
-#endif /* YYDEBUG */    
+#endif /* YYDEBUG */
   { "color",            required_argument,  NULL, COPT(COLOR)             },
   { "config",           required_argument,  NULL, COPT(CONFIG)            },
 #ifdef ENABLE_CDECL_DEBUG
