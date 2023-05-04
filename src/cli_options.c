@@ -177,27 +177,24 @@ static char const* make_short_opts( struct option const opts[static const 2] ) {
     len += 1 + STATIC_CAST( unsigned, opt->has_arg );
   } // for
 
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
-  strbuf_reserve( &sbuf, len );
-  strbuf_putc( &sbuf, ':' );            // return missing argument as ':'
+  char *const short_opts = MALLOC( char, len + 1/*\0*/ );
+  char *s = short_opts;
 
+  *s++ = ':';                           // return missing argument as ':'
   for ( struct option const *opt = opts; opt->name != NULL; ++opt ) {
     assert( opt->val > 0 && opt->val < 128 );
-    strbuf_putc( &sbuf, STATIC_CAST( char, opt->val ) );
+    *s++ = STATIC_CAST( char, opt->val );
     switch ( opt->has_arg ) {
-      case no_argument:
-        break;
-      case required_argument:
-        strbuf_putc( &sbuf, ':' );
-        break;
       case optional_argument:
-        strbuf_putsn( &sbuf, "::", 2 );
-        break;
+        *s++ = ':';
+        FALLTHROUGH;
+      case required_argument:
+        *s++ = ':';
     } // switch
   } // for
+  *s = '\0';
 
-  return strbuf_take( &sbuf );
+  return short_opts;
 }
 
 /**
