@@ -394,13 +394,12 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
  */
 static void parse_options( int *pargc, char const **pargv[const] ) {
   opterr = 0;                           // suppress default error message
-  optind = 1;
 
   color_when_t      color_when = COLOR_WHEN_DEFAULT;
   char const *      fin_path = "-";
   char const *      fout_path = "-";
   int               opt;
-  bool              opt_usage = false;
+  bool              opt_help = false;
   unsigned          opt_version = 0;
   char const *const short_opts = make_short_opts( CLI_OPTIONS );
 
@@ -468,7 +467,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
 #endif /* ENABLE_FLEX_DEBUG */
       case COPT(HELP):
-        opt_usage = true;
+        opt_help = true;
         break;
       case COPT(LANGUAGE):
         opt_lang = parse_lang( optarg );
@@ -552,7 +551,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     check_dup2( fileno( fout ), STDOUT_FILENO );
   }
 
-  if ( opt_usage )
+  if ( opt_help )
     usage( *pargc > 0 ? EX_USAGE : EX_OK );
 
   if ( opt_version > 0 ) {
