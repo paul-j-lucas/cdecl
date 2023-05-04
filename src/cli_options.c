@@ -169,7 +169,7 @@ static void         version( bool );
  * The caller is responsible for freeing it.
  */
 NODISCARD
-static char* make_short_opts( struct option const opts[static const 2] ) {
+static char const* make_short_opts( struct option const opts[static const 2] ) {
   // pre-flight to calculate string length
   size_t len = 1;                       // for leading ':'
   for ( struct option const *opt = opts; opt->name != NULL; ++opt ) {
