@@ -601,7 +601,7 @@ missing_arg:
 
 /// Command-line short option as a parenthesized, dashed string literal for the
 /// usage message.
-#define USOPT(X)                  "(-" SOPT(X) ")"
+#define USOPT(X)                  " (-" SOPT(X) ") "
 
 /**
  * Prints the **cdecl** usage message, then exits.
@@ -614,38 +614,38 @@ static void usage( int status ) {
   fprintf( status == EX_OK ? stdout : stderr,
     "usage: %s [options] [command...]\n"
     "options:\n"
-    "  --alt-tokens         " USOPT(ALT_TOKENS)       " Print alternative tokens.\n"
+    "  --alt-tokens        " USOPT(ALT_TOKENS)       "Print alternative tokens.\n"
 #ifdef YYDEBUG
-    "  --bison-debug        " USOPT(BISON_DEBUG)      " Print Bison debug output.\n"
+    "  --bison-debug       " USOPT(BISON_DEBUG)      "Print Bison debug output.\n"
 #endif /* YYDEBUG */
-    "  --color=WHEN         " USOPT(COLOR)            " Colorize output WHEN [default: not_file].\n"
-    "  --config=FILE        " USOPT(CONFIG)           " Configuration file path [default: ~/." CONF_FILE_NAME_DEFAULT "].\n"
+    "  --color=WHEN        " USOPT(COLOR)            "Colorize output WHEN [default: not_file].\n"
+    "  --config=FILE       " USOPT(CONFIG)           "Configuration file path [default: ~/." CONF_FILE_NAME_DEFAULT "].\n"
 #ifdef ENABLE_CDECL_DEBUG
-    "  --debug              " USOPT(CDECL_DEBUG)      " Print " CDECL " debug output.\n"
+    "  --debug             " USOPT(CDECL_DEBUG)      "Print " CDECL " debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
-    "  --digraphs           " USOPT(DIGRAPHS)         " Print digraphs.\n"
-    "  --east-const         " USOPT(EAST_CONST)       " Print in \"east const\" form.\n"
-    "  --echo-commands      " USOPT(ECHO_COMMANDS)    " Echo commands given before corresponding output.\n"
-    "  --explain            " USOPT(EXPLAIN)          " Assume \"explain\" when no other command is given.\n"
-    "  --explicit-ecsu=WHEN " USOPT(EXPLICIT_ECSU)    " Print \"class\", \"struct\", \"union\" explicitly WHEN.\n"
-    "  --explicit-int=WHEN  " USOPT(EXPLICIT_INT)     " Print \"int\" explicitly WHEN.\n"
-    "  --file=FILE          " USOPT(FILE)             " Read from FILE [default: stdin].\n"
+    "  --digraphs          " USOPT(DIGRAPHS)         "Print digraphs.\n"
+    "  --east-const        " USOPT(EAST_CONST)       "Print in \"east const\" form.\n"
+    "  --echo-commands     " USOPT(ECHO_COMMANDS)    "Echo commands given before corresponding output.\n"
+    "  --explain           " USOPT(EXPLAIN)          "Assume \"explain\" when no other command is given.\n"
+    "  --explicit-ecsu=WHEN" USOPT(EXPLICIT_ECSU)    "Print \"class\", \"struct\", \"union\" explicitly WHEN.\n"
+    "  --explicit-int=WHEN " USOPT(EXPLICIT_INT)     "Print \"int\" explicitly WHEN.\n"
+    "  --file=FILE         " USOPT(FILE)             "Read from FILE [default: stdin].\n"
 #ifdef ENABLE_FLEX_DEBUG
-    "  --flex-debug         " USOPT(FLEX_DEBUG)       " Print Flex debug output.\n"
+    "  --flex-debug        " USOPT(FLEX_DEBUG)       "Print Flex debug output.\n"
 #endif /* ENABLE_FLEX_DEBUG */
-    "  --help               " USOPT(HELP)             " Print this help and exit.\n"
-    "  --language=LANG      " USOPT(LANGUAGE)         " Use LANG.\n"
-    "  --no-config          " USOPT(NO_CONFIG)        " Suppress reading configuration file.\n"
-    "  --no-english-types   " USOPT(NO_ENGLISH_TYPES) " Print types in C/C++, not English.\n"
-    "  --no-prompt          " USOPT(NO_PROMPT)        " Suppress printing prompts.\n"
-    "  --no-semicolon       " USOPT(NO_SEMICOLON)     " Suppress printing final semicolon for declarations.\n"
-    "  --no-typedefs        " USOPT(NO_TYPEDEFS)      " Suppress predefining standard types.\n"
-    "  --no-using           " USOPT(NO_USING)         " Declare types with typedef, not using, in C++.\n"
-    "  --output=FILE        " USOPT(OUTPUT)           " Write to FILE [default: stdout].\n"
-    "  --trailing-return    " USOPT(TRAILING_RETURN)  " Print trailing return type in C++.\n"
-    "  --trigraphs          " USOPT(TRIGRAPHS)        " Print trigraphs.\n"
-    "  --version            " USOPT(VERSION)          " Print version and exit.\n"
-    "  --west-pointer       " USOPT(WEST_POINTER)     " Print *, &, and && next to type.\n"
+    "  --help              " USOPT(HELP)             "Print this help and exit.\n"
+    "  --language=LANG     " USOPT(LANGUAGE)         "Use LANG.\n"
+    "  --no-config         " USOPT(NO_CONFIG)        "Suppress reading configuration file.\n"
+    "  --no-english-types  " USOPT(NO_ENGLISH_TYPES) "Print types in C/C++, not English.\n"
+    "  --no-prompt         " USOPT(NO_PROMPT)        "Suppress printing prompts.\n"
+    "  --no-semicolon      " USOPT(NO_SEMICOLON)     "Suppress printing final semicolon for declarations.\n"
+    "  --no-typedefs       " USOPT(NO_TYPEDEFS)      "Suppress predefining standard types.\n"
+    "  --no-using          " USOPT(NO_USING)         "Declare types with typedef, not using, in C++.\n"
+    "  --output=FILE       " USOPT(OUTPUT)           "Write to FILE [default: stdout].\n"
+    "  --trailing-return   " USOPT(TRAILING_RETURN)  "Print trailing return type in C++.\n"
+    "  --trigraphs         " USOPT(TRIGRAPHS)        "Print trigraphs.\n"
+    "  --version           " USOPT(VERSION)          "Print version and exit.\n"
+    "  --west-pointer      " USOPT(WEST_POINTER)     "Print *, &, and && next to type.\n"
     "\n"
     PACKAGE_NAME " home page: " PACKAGE_URL "\n"
     "Report bugs to: " PACKAGE_BUGREPORT "\n",
