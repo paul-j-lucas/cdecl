@@ -85,10 +85,10 @@
 #define OPT_WEST_POINTER      w
 #define OPT_LANGUAGE          x
 
-/// Command-line option character as a character literal.
+/// Command-line short option as a character literal.
 #define COPT(X)                   CHARIFY(OPT_##X)
 
-/// Command-line option character as a single-character string literal.
+/// Command-line option as a string literal.
 #define SOPT(X)                   STRINGIFY(OPT_##X)
 
 /// @endcond
@@ -599,6 +599,10 @@ missing_arg:
   );
 }
 
+/// Command-line short option as a parenthesized, dashed string literal for the
+/// usage message.
+#define USOPT(X)                  "(-" SOPT(X) ")"
+
 /**
  * Prints the **cdecl** usage message, then exits.
  *
@@ -608,76 +612,44 @@ missing_arg:
 noreturn
 static void usage( int status ) {
   fprintf( status == EX_OK ? stdout : stderr,
-"usage: %s [options] [command...]\n"
-"options:\n"
-"  --alt-tokens         (-%c) Print alternative tokens.\n"
+    "usage: %s [options] [command...]\n"
+    "options:\n"
+    "  --alt-tokens         " USOPT(ALT_TOKENS)       " Print alternative tokens.\n"
 #ifdef YYDEBUG
-"  --bison-debug        (-%c) Print Bison debug output.\n"
+    "  --bison-debug        " USOPT(BISON_DEBUG)      " Print Bison debug output.\n"
 #endif /* YYDEBUG */
-"  --color=WHEN         (-%c) Colorize output WHEN [default: not_file].\n"
-"  --config=FILE        (-%c) Configuration file path [default: ~/." CONF_FILE_NAME_DEFAULT "].\n"
+    "  --color=WHEN         " USOPT(COLOR)            " Colorize output WHEN [default: not_file].\n"
+    "  --config=FILE        " USOPT(CONFIG)           " Configuration file path [default: ~/." CONF_FILE_NAME_DEFAULT "].\n"
 #ifdef ENABLE_CDECL_DEBUG
-"  --debug              (-%c) Print " CDECL " debug output.\n"
+    "  --debug              " USOPT(CDECL_DEBUG)      " Print " CDECL " debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
-"  --digraphs           (-%c) Print digraphs.\n"
-"  --east-const         (-%c) Print in \"east const\" form.\n"
-"  --echo-commands      (-%c) Echo commands given before corresponding output.\n"
-"  --explain            (-%c) Assume \"explain\" when no other command is given.\n"
-"  --explicit-ecsu=WHEN (-%c) Print \"class\", \"struct\", \"union\" explicitly WHEN.\n"
-"  --explicit-int=WHEN  (-%c) Print \"int\" explicitly WHEN.\n"
-"  --file=FILE          (-%c) Read from FILE [default: stdin].\n"
+    "  --digraphs           " USOPT(DIGRAPHS)         " Print digraphs.\n"
+    "  --east-const         " USOPT(EAST_CONST)       " Print in \"east const\" form.\n"
+    "  --echo-commands      " USOPT(ECHO_COMMANDS)    " Echo commands given before corresponding output.\n"
+    "  --explain            " USOPT(EXPLAIN)          " Assume \"explain\" when no other command is given.\n"
+    "  --explicit-ecsu=WHEN " USOPT(EXPLICIT_ECSU)    " Print \"class\", \"struct\", \"union\" explicitly WHEN.\n"
+    "  --explicit-int=WHEN  " USOPT(EXPLICIT_INT)     " Print \"int\" explicitly WHEN.\n"
+    "  --file=FILE          " USOPT(FILE)             " Read from FILE [default: stdin].\n"
 #ifdef ENABLE_FLEX_DEBUG
-"  --flex-debug         (-%c) Print Flex debug output.\n"
+    "  --flex-debug         " USOPT(FLEX_DEBUG)       " Print Flex debug output.\n"
 #endif /* ENABLE_FLEX_DEBUG */
-"  --help               (-%c) Print this help and exit.\n"
-"  --language=LANG      (-%c) Use LANG.\n"
-"  --no-config          (-%c) Suppress reading configuration file.\n"
-"  --no-english-types   (-%c) Print types in C/C++, not English.\n"
-"  --no-prompt          (-%c) Suppress printing prompts.\n"
-"  --no-semicolon       (-%c) Suppress printing final semicolon for declarations.\n"
-"  --no-typedefs        (-%c) Suppress predefining standard types.\n"
-"  --no-using           (-%c) Declare types with typedef, not using, in C++.\n"
-"  --output=FILE        (-%c) Write to FILE [default: stdout].\n"
-"  --trailing-return    (-%c) Print trailing return type in C++.\n"
-"  --trigraphs          (-%c) Print trigraphs.\n"
-"  --version            (-%c) Print version and exit.\n"
-"  --west-pointer       (-%c) Print *, &, and && next to type.\n"
-"\n"
-PACKAGE_NAME " home page: " PACKAGE_URL "\n"
-"Report bugs to: " PACKAGE_BUGREPORT "\n",
-    me,
-    COPT(ALT_TOKENS),
-#ifdef YYDEBUG
-    COPT(BISON_DEBUG),
-#endif /* YYDEBUG */
-    COPT(COLOR),
-    COPT(CONFIG),
-#ifdef ENABLE_CDECL_DEBUG
-    COPT(CDECL_DEBUG),
-#endif /* ENABLE_CDECL_DEBUG */
-    COPT(DIGRAPHS),
-    COPT(EAST_CONST),
-    COPT(ECHO_COMMANDS),
-    COPT(EXPLAIN),
-    COPT(EXPLICIT_ECSU),
-    COPT(EXPLICIT_INT),
-    COPT(FILE),
-#ifdef ENABLE_FLEX_DEBUG
-    COPT(FLEX_DEBUG),
-#endif /* ENABLE_FLEX_DEBUG */
-    COPT(HELP),
-    COPT(LANGUAGE),
-    COPT(NO_CONFIG),
-    COPT(NO_ENGLISH_TYPES),
-    COPT(NO_PROMPT),
-    COPT(NO_SEMICOLON),
-    COPT(NO_TYPEDEFS),
-    COPT(NO_USING),
-    COPT(OUTPUT),
-    COPT(TRAILING_RETURN),
-    COPT(TRIGRAPHS),
-    COPT(VERSION),
-    COPT(WEST_POINTER)
+    "  --help               " USOPT(HELP)             " Print this help and exit.\n"
+    "  --language=LANG      " USOPT(LANGUAGE)         " Use LANG.\n"
+    "  --no-config          " USOPT(NO_CONFIG)        " Suppress reading configuration file.\n"
+    "  --no-english-types   " USOPT(NO_ENGLISH_TYPES) " Print types in C/C++, not English.\n"
+    "  --no-prompt          " USOPT(NO_PROMPT)        " Suppress printing prompts.\n"
+    "  --no-semicolon       " USOPT(NO_SEMICOLON)     " Suppress printing final semicolon for declarations.\n"
+    "  --no-typedefs        " USOPT(NO_TYPEDEFS)      " Suppress predefining standard types.\n"
+    "  --no-using           " USOPT(NO_USING)         " Declare types with typedef, not using, in C++.\n"
+    "  --output=FILE        " USOPT(OUTPUT)           " Write to FILE [default: stdout].\n"
+    "  --trailing-return    " USOPT(TRAILING_RETURN)  " Print trailing return type in C++.\n"
+    "  --trigraphs          " USOPT(TRIGRAPHS)        " Print trigraphs.\n"
+    "  --version            " USOPT(VERSION)          " Print version and exit.\n"
+    "  --west-pointer       " USOPT(WEST_POINTER)     " Print *, &, and && next to type.\n"
+    "\n"
+    PACKAGE_NAME " home page: " PACKAGE_URL "\n"
+    "Report bugs to: " PACKAGE_BUGREPORT "\n",
+    me
   );
   exit( status );
 }
