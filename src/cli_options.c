@@ -571,20 +571,16 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   return;
 
 invalid_opt:
-  if ( --optind > 0 ) {                 // defensive check
-    char const *invalid_opt = (*pargv)[ optind ];
-    //
-    // We can offer "did you mean ...?" suggestions only if the invalid option
-    // is a long option.
-    //
-    if ( invalid_opt != NULL && strncmp( invalid_opt, "--", 2 ) == 0 ) {
-      invalid_opt += 2;                 // skip over "--"
-      EPRINTF( "%s: \"%s\": invalid option", me, invalid_opt );
-      if ( !print_suggestions( DYM_CLI_OPTIONS, invalid_opt ) )
-        goto use_help;
-      EPUTC( '\n' );
-      exit( EX_USAGE );
-    }
+  NO_OP;
+  // Determine whether the invalid option was short or long.
+  char const *invalid_opt = (*pargv)[ optind - 1 ];
+  if ( invalid_opt != NULL && strncmp( invalid_opt, "--", 2 ) == 0 ) {
+    invalid_opt += 2;                   // skip over "--"
+    EPRINTF( "%s: \"%s\": invalid option", me, invalid_opt );
+    if ( !print_suggestions( DYM_CLI_OPTIONS, invalid_opt ) )
+      goto use_help;
+    EPUTC( '\n' );
+    exit( EX_USAGE );
   }
   EPRINTF( "%s: '%c': invalid option", me, STATIC_CAST( char, optopt ) );
 
