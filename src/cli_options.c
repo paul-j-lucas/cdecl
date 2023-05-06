@@ -497,6 +497,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         opt_trailing_ret = true;
         break;
       case COPT(OUTPUT):
+        if ( SKIP_WS( optarg )[0] == '\0' )
+          goto missing_arg;
         fout_path = optarg;
         break;
       case COPT(VERSION):
