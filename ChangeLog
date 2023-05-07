@@ -1,3 +1,19 @@
+2023-05-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Added left-most array dimension.
+   * cli_options.c: s/unsigned char/unsigned/
+
+2023-05-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Remover " version:" from --version output.
+   * cli_options.c: Now calling SKIP_WS( optarg ) for -o/--output.
+   * cli_options.c: Simplified invalid_opt code.
+
+2023-05-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: "Inlined" short options in usage().
+   * pjl_config.h: Added #undef VERSION.
+
 2023-05-04  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: s/opt_usage/opt_help/
