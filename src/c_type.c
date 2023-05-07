@@ -462,7 +462,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
  * @note This array _must_ have the same size and order as \ref
  * C_QUALIFIER_INFO.
  */
-static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] = {
+static c_lang_id_t const OK_QUALIFIER_LANGS[ ARRAY_SIZE( C_QUALIFIER_INFO ) ][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] = {
 // Only the lower triangle is used.
 //  ato con ref rva res vol   rel sha str
   { ATO,___,___,___,___,___,  ___,___,___ }, // atomic
@@ -483,7 +483,7 @@ static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] 
  *
  * @note This array _must_ have the same size and order as \ref C_STORAGE_INFO.
  */
-static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
+static c_lang_id_t const OK_STORAGE_LANGS[ ARRAY_SIZE( C_STORAGE_INFO ) ][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
 //  auto    block   extern  exter-C registe static  thread  typedef c'eval  c'expr  c'init  default delete  explici export  final   friend  inline  mutable noexcep overrid this    thread  virtual pure
   { ___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// auto
@@ -520,7 +520,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
  *
  * @note This array _must_ have the same size and order as \ref C_TYPE_INFO.
  */
-static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
+static c_lang_id_t const OK_TYPE_LANGS[ ARRAY_SIZE( C_TYPE_INFO ) ][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 // Only the lower triangle is used.
 //  voi aut Bit boo cha ch8 c16 c32 wch sho int lon lol sig uns flo dou com ima enu str uni cla typ aca fra sat
   { VOL,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___,___ },// void
