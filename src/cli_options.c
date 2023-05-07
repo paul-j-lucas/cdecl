@@ -660,7 +660,7 @@ static void usage( int status ) {
  * whether GNU **readline**(3) is genuine.
  */
 static void version( bool verbose ) {
-  puts( PACKAGE_NAME " " PACKAGE_VERSION );
+  puts( PACKAGE_STRING );
   if ( !verbose )
     return;
   fputs( "configure feature & package options:", stdout );
