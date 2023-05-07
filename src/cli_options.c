@@ -204,13 +204,13 @@ static char const* make_short_opts( struct option const opts[static const 2] ) {
  * @param opt The option to check for.
  */
 static void opt_check_exclusive( char opt ) {
-  if ( !opts_given[ STATIC_CAST( unsigned char, opt ) ] )
+  if ( !opts_given[ STATIC_CAST( unsigned, opt ) ] )
     return;
   for ( size_t i = 0; i < ARRAY_SIZE( opts_given ); ++i ) {
     char const curr_opt = STATIC_CAST( char, i );
     if ( curr_opt == opt )
       continue;
-    if ( opts_given[ STATIC_CAST( unsigned char, curr_opt ) ] ) {
+    if ( opts_given[ STATIC_CAST( unsigned, curr_opt ) ] ) {
       fatal_error( EX_USAGE,
         "%s can be given only by itself\n",
         opt_format( opt )
@@ -238,7 +238,7 @@ static void opt_check_mutually_exclusive( char const *opts1,
 
   for ( unsigned i = 0; i < 2; ++i ) {
     for ( ; *opt != '\0'; ++opt ) {
-      if ( opts_given[ STATIC_CAST( unsigned char, *opt ) ] ) {
+      if ( opts_given[ STATIC_CAST( unsigned, *opt ) ] ) {
         if ( ++gave_count > 1 ) {
           char const gave_opt2 = *opt;
           fatal_error( EX_USAGE,
