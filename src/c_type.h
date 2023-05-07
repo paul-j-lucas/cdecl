@@ -240,7 +240,12 @@ typedef enum c_tpid c_tpid_t;
 
 #define TX_NONE               0x0000000000000000ull /**< No type at all.      */
 
-// base types & modifiers
+//
+// Base types & modifiers
+//
+// If you add a new TB_xxx here, it must also exist in BTIDS[] inside
+// c_type_name_impl().
+//
 #define TB_NONE               0x0000000000000001ull /**< No base type.        */
 #define TB_ANY                0xFFFFFFFFFFFFFFF1ull /**< Any base type.       */
 #define TB_VOID               0x0000000000000011ull /**< `void`               */
@@ -270,12 +275,22 @@ typedef enum c_tpid c_tpid_t;
 #define TB_SCOPE              0x0000000010000001ull /**< Generic scope.       */
 #define TB_TYPEDEF            0x0000000020000001ull /**< E.g., `size_t`       */
 
+//
 // Embedded C types & modifiers
+//
+// If you add a new TB_EMC_xxx here, it must also exist in BTIDS[] inside
+// c_type_name_impl().
+//
 #define TB_EMC_ACCUM          0x0000000040000001ull /**< `_Accum`             */
 #define TB_EMC_FRACT          0x0000000080000001ull /**< `_Fract`             */
 #define TB_EMC_SAT            0x0000000100000001ull /**< `_Sat`               */
 
-// storage classes
+//
+// Storage classes
+//
+// If you add a new TS_xxx here, it must also exist in STIDS[] inside
+// c_type_name_impl().
+//
 #define TS_NONE               0x0000000000000002ull /**< No storage type.     */
 #define TS_ANY                0xFFFFFFFFFFFFFFF2ull /**< Any storage type.    */
 #define TS_AUTO               0x0000000000000012ull /**< C's `auto`.          */
@@ -288,7 +303,12 @@ typedef enum c_tpid c_tpid_t;
 #define TS_THREAD_LOCAL       0x0000000000000802ull /**< `thread_local`       */
 #define TS_TYPEDEF            0x0000000000001002ull /**< `typedef` or `using` */
 
-// storage-class-like
+//
+// Storage-class-like
+//
+// If you add a new TS_xxx here, it must also exist in STIDS[] inside
+// c_type_name_impl().
+//
 #define TS_CONSTEVAL          0x0000000000002002ull /**< `consteval`          */
 #define TS_CONSTEXPR          0x0000000000004002ull /**< `constexpr`          */
 #define TS_CONSTINIT          0x0000000000008002ull /**< `constinit`          */
@@ -306,22 +326,42 @@ typedef enum c_tpid c_tpid_t;
 #define TS_THROW              0x0000000008000002ull /**< `throw()`            */
 #define TS_VIRTUAL            0x0000000010000002ull /**< `virtual`            */
 
-// qualifiers
+//
+// Qualifiers
+//
+// If you add a new TS_xxx here, it must also exist in QUAL_STIDS[] inside
+// c_type_name_impl().
+//
 #define TS_ATOMIC             0x0000000100000002ull /**< `_Atomic`            */
 #define TS_CONST              0x0000000200000002ull /**< `const`              */
 #define TS_RESTRICT           0x0000000400000002ull /**< `restrict`           */
 #define TS_VOLATILE           0x0000000800000002ull /**< `volatile`           */
 
+//
 // Unified Parallel C qualifiers
+//
+// If you add a new TS_UPS_xxx here, it must also exist in QUAL_STIDS[] inside
+// c_type_name_impl().
+//
 #define TS_UPC_RELAXED        0x0000001000000002ull /**< `relaxed`            */
 #define TS_UPC_SHARED         0x0000002000000002ull /**< `shared`             */
 #define TS_UPC_STRICT         0x0000004000000002ull /**< `strict`             */
 
-// ref-qualifiers
+//
+// Ref-qualifiers
+//
+// If you add a new TS_xxx here, it must also exist in QUAL_STIDS[] inside
+// c_type_name_impl().
+//
 #define TS_REFERENCE          0x0000010000000002ull /**< `void f() &`         */
 #define TS_RVALUE_REFERENCE   0x0000020000000002ull /**< `void f() &&`        */
 
-// attributes
+//
+// Attributes
+//
+// If you add a new TA_xxx here, it must also exist in ATIDS[] inside
+// c_type_name_impl().
+//
 #define TA_NONE               0x0000000000000004ull /**< No attribute.        */
 #define TA_ANY                0xFFFFFFFFFFFFFFF4ull /**< Any attribute.       */
 #define TA_CARRIES_DEPENDENCY 0x0000000000000014ull /**< `carries_dependency` */
@@ -333,7 +373,12 @@ typedef enum c_tpid c_tpid_t;
 #define TA_REPRODUCIBLE       0x0000000000000404ull /**< `reproducible`       */
 #define TA_UNSEQUENCED        0x0000000000000804ull /**< `unsequenced`        */
 
+//
 // Microsoft calling conventions
+//
+// If you add a new TA_MSC_xxx here, it must also exist in MSC_CALL_ATIDS[]
+// inside c_type_name_impl().
+//
 #define TA_MSC_CDECL          0x0000000000001004ull /**< `__cdecl`            */
 #define TA_MSC_CLRCALL        0x0000000000002004ull /**< `__clrcall`          */
 #define TA_MSC_FASTCALL       0x0000000000004004ull /**< `__fastcall`         */
