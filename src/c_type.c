@@ -959,6 +959,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     stids &= c_tid_compl( TS_CV );
   }
 
+  // Types here MUST have a corresponding row AND column in OK_QUALIFIER_LANGS.
   static c_tid_t const QUAL_STIDS[] = {
     // These are before "shared" so we get names like "strict shared".
     TS_UPC_RELAXED,
@@ -1018,6 +1019,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     space = false;
   }
 
+  // Types here MUST have a corresponding row AND column in OK_TYPE_LANGS.
   static c_tid_t const BTIDS[] = {
     // These are first so we get names like "unsigned int".
     TB_SIGNED,
