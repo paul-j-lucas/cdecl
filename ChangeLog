@@ -1,3 +1,7 @@
+2023-05-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: s/!=/==/
+
 2023-05-07  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: Now using PACKAGE_STRING.
