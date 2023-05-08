@@ -593,7 +593,7 @@ use_help:
 missing_arg:
   fatal_error( EX_USAGE,
     "\"%s\" requires an argument\n",
-    opt_format( STATIC_CAST( char, opt != ':' ? opt : optopt ) )
+    opt_format( STATIC_CAST( char, opt == ':' ? optopt : opt ) )
   );
 }
 
