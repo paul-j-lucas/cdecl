@@ -206,7 +206,7 @@ static char const* make_short_opts( struct option const opts[static const 2] ) {
 static void opt_check_exclusive( char opt ) {
   if ( !opts_given[ STATIC_CAST( unsigned, opt ) ] )
     return;
-  for ( size_t i = 0; i < ARRAY_SIZE( opts_given ); ++i ) {
+  for ( size_t i = '0'; i < ARRAY_SIZE( opts_given ); ++i ) {
     char const curr_opt = STATIC_CAST( char, i );
     if ( curr_opt == opt )
       continue;
