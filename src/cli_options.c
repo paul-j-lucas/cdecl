@@ -220,40 +220,25 @@ static void opt_check_exclusive( char opt ) {
 }
 
 /**
- * Checks that no options were given that are among the two given mutually
- * exclusive sets of short options.
- * Prints an error message and exits if any such options are found.
+ * If \a opt was given, checks that no option in \a opts was also given.  If it
+ * was, prints an error message and exits; if it wasn't, does nothing.
  *
- * @param opts1 The first set of short options.
- * @param opts2 The second set of short options.
+ * @param opt The option.
+ * @param opts The set of options.
  */
-static void opt_check_mutually_exclusive( char const *opts1,
-                                          char const *opts2 ) {
-  assert( opts1 != NULL );
-  assert( opts2 != NULL );
-
-  unsigned gave_count = 0;
-  char const *opt = opts1;
-  char gave_opt1 = '\0';
-
-  for ( unsigned i = 0; i < 2; ++i ) {
-    for ( ; *opt != '\0'; ++opt ) {
-      if ( opts_given[ STATIC_CAST( unsigned, *opt ) ] ) {
-        if ( ++gave_count > 1 ) {
-          char const gave_opt2 = *opt;
-          fatal_error( EX_USAGE,
-            "%s and %s are mutually exclusive\n",
-            opt_format( gave_opt1 ),
-            opt_format( gave_opt2 )
-          );
-        }
-        gave_opt1 = *opt;
-        break;
-      }
-    } // for
-    if ( gave_count == 0 )
-      break;
-    opt = opts2;
+static void opt_check_mutually_exclusive( char opt, char const *opts ) {
+  assert( opts != NULL );
+  if ( !opts_given[ STATIC_CAST( unsigned, opt ) ] )
+    return;
+  for ( ; *opts != '\0'; ++opts ) {
+    assert( *opts != opt );
+    if ( opts_given[ STATIC_CAST( unsigned, *opts ) ] ) {
+      fatal_error( EX_USAGE,
+        "%s and %s are mutually exclusive\n",
+        opt_format( opt ),
+        opt_format( *opts )
+      );
+    }
   } // for
 }
 
@@ -537,7 +522,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
 
   opt_check_exclusive( COPT(HELP) );
   opt_check_exclusive( COPT(VERSION) );
-  opt_check_mutually_exclusive( SOPT(DIGRAPHS), SOPT(TRIGRAPHS) );
+  opt_check_mutually_exclusive( COPT(DIGRAPHS), SOPT(TRIGRAPHS) );
 
   if ( strcmp( fin_path, "-" ) != 0 ) {
     FILE *const fin = fopen( fin_path, "r" );
