@@ -844,6 +844,21 @@ from pseudo-English.
 .BI define " s-name" " as" " english"
 Defines a type (\f(CWtypedef\fP) from pseudo-English.
 .TP
+.BR enum " [" class "] " \f2s-name\fP " [" ": " \f2type\fP "" ]
+Defines
+.I s-name
+as an \f(CWenum\fP
+(or an \f(CWenum class\fP in C++)
+type
+optionally of a fixed underlying type.
+In C,
+this is equivalent to:
+.RS
+.cS
+typedef enum \f2s-name\fP \f2s-name\fP
+.cE 0
+.RE
+.TP
 .BR explain " \f2gibberish\fP [" , " \f2gibberish\fP]*"
 Deciphers C (or C++) declarations or a new-style cast (C++ only)
 into pseudo-English.
@@ -869,21 +884,20 @@ is recognized as a
 command only when immediately followed
 by a string literal.
 .TP
-.RB "{ " struct " | " union " | " class " | " enum " } " \f2s-name\fP
+.RB "{ " struct " | " union " | " class " } " \f2s-name\fP
 Defines
 .I s-name
 as a
 \f(CWstruct\fP,
 \f(CWunion\fP,
-\f(CWclass\fP (C++ only),
 or
-\f(CWenum\fP
+\f(CWclass\fP (C++ only)
 type.
 In C,
 this is equivalent to:
 .RS
 .cS
-typedef \f1{\fP struct \f1|\fP union \f1|\fP enum \f1}\fP \f2s-name\fP \f2s-name\fP
+typedef \f1{\fP struct \f1|\fP union \f1}\fP \f2s-name\fP \f2s-name\fP
 .cE 0
 .RE
 .TP
