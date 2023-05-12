@@ -1,5 +1,7 @@
 2023-05-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Split out "enum" into its own section to add both "class" and
+     fixed types.
    * cdecl.1: s/a/the/
 
 2023-05-10  Paul J. Lucas <paul@lucasmail.org>
