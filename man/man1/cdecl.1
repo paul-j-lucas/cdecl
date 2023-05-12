@@ -2756,7 +2756,7 @@ initialization file.
 On systems where the
 .BR readline (3)
 API is provided
-but backed by
+but is just a wrapper around
 .B libedit
 (e.g.,
 .BR macOS ),
@@ -2788,8 +2788,8 @@ On systems where the
 API is provided
 but is just a wrapper
 around the Editline Library,
-e.g.,
-.BR macOS ,
+(e.g.,
+.BR macOS ),
 there are a few issues:
 .IP \(bu 3
 The wrapper has a bug that prevents color prompts from working correctly.
