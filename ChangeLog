@@ -1,3 +1,7 @@
+2023-05-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.h: Converted dym_kind to an enum.
+
 2023-05-12  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Made libedit wording more consistent.
