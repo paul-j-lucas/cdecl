@@ -52,26 +52,21 @@ struct did_you_mean {
 typedef struct did_you_mean did_you_mean_t;
 
 /**
- * The bitwise-or of kinds of things one might have meant.
+ * Kinds of things one might have meant.
  *
- * @sa #DYM_COMMANDS
- * @sa #DYM_CLI_OPTIONS
- * @sa #DYM_SET_OPTIONS
- * @sa #DYM_C_ATTRIBUTES
- * @sa #DYM_C_KEYWORDS
- * @sa #DYM_C_TYPES
- * @sa #DYM_CDECL_KEYWORDS
+ * A bitwise-or of these may be used to specify more than one kind.
  */
-typedef unsigned dym_kind_t;
-
-#define DYM_NONE            0u          /**< Did you mean nothing. */
-#define DYM_COMMANDS        (1u << 0)   /**< Did you mean cdecl _command_? */
-#define DYM_CLI_OPTIONS     (1u << 1)   /**< Did you mean _CLI option_? */
-#define DYM_SET_OPTIONS     (1u << 2)   /**< Did you mean _set option_? */
-#define DYM_C_ATTRIBUTES    (1u << 3)   /**< Did you mean C/C++ _attribute_? */
-#define DYM_C_KEYWORDS      (1u << 4)   /**< Did you mean C/C++ _keyword_? */
-#define DYM_C_TYPES         (1u << 5)   /**< Did you mean C/C++ _type_? */
-#define DYM_CDECL_KEYWORDS  (1u << 6)   /**< Did you mean cdecl _keyword_? */
+enum dym_kind {
+  DYM_NONE            = 0u,             ///< Did you mean nothing.
+  DYM_COMMANDS        = (1u << 0),      ///< Did you mean cdecl _command_?
+  DYM_CLI_OPTIONS     = (1u << 1),      ///< Did you mean _CLI option_?
+  DYM_SET_OPTIONS     = (1u << 2),      ///< Did you mean _set option_?
+  DYM_C_ATTRIBUTES    = (1u << 3),      ///< Did you mean C/C++ _attribute_?
+  DYM_C_KEYWORDS      = (1u << 4),      ///< Did you mean C/C++ _keyword_?
+  DYM_C_TYPES         = (1u << 5),      ///< Did you mean C/C++ _type_?
+  DYM_CDECL_KEYWORDS  = (1u << 6),      ///< Did you mean cdecl _keyword_?
+};
+typedef enum dym_kind dym_kind_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 
