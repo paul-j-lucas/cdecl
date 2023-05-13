@@ -228,7 +228,7 @@ void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn );
  *
  * @param list The pointer to the \ref slist.
  * @return Returns the data from the front of \a list.  The caller is
- * responsible for freeing it (if necessary).
+ * responsible for freeing it if necessary.
  *
  * @note This is an O(1) operation.
  */

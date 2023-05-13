@@ -132,8 +132,8 @@ void c_typedef_init( void );
  * Removes a `typedef` (or `using`) from the global set.
  *
  * @param node The rb_node containing the `typedef` to remove.
- * @return Returns the removed `typedef`.  It is the caller's responsibility to
- * delete it if necessary.
+ * @return Returns the removed `typedef`.  The caller is responsible for
+ * deleting it if necessary.
  *
  * @sa c_typedef_add()
  */

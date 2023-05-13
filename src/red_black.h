@@ -232,8 +232,8 @@ void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn );
  *
  * @param tree A pointer to the red-black tree to delete \a node from.
  * @param node A pointer to the node to delete.
- * @return Returns a pointer to the data of \a node.  It is the caller's
- * responsibility to delete said data if necessary.
+ * @return Returns a pointer to the data of \a node.  The caller is responsible
+ * for deleting said data if necessary.
  *
  * @sa rb_tree_insert()
  */
