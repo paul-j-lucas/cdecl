@@ -39,7 +39,9 @@
  * the number of letters that need to be transposed within, substituted within,
  * deleted from, or added to \a source to get \a target.
  *
+ * @param working_mem A pointer to working memory returned by dam_lev_new().
  * @param source The source string.
+ * @param source_len The length of \a source.
  * @param target The target string.
  * @return Returns said distance.
  *
@@ -47,7 +49,27 @@
  * @sa [Damerau–Levenshtein Edit Distance Explained](https://www.lemoda.net/text-fuzzy/damerau-levenshtein/)
  */
 NODISCARD
-size_t dam_lev_dist( char const *source, char const *target );
+size_t dam_lev_dist( size_t *const *const working_mem, char const *source,
+                     size_t source_len, char const *target );
+
+/**
+ * Allocates working memory for use with subsequent calls of dam_lev_dist().
+ *
+ * @remarks Typical use involves calling dam_lev_dist() in a loop to calculate
+ * the edit distances between an unknown word and a set of words the user might
+ * have meant, then sorting by distance.  This function allows the allocation
+ * and deallocation of the temporary working memory used by dam_lev_dist() to
+ * be hoisted out of the loop.
+ *
+ * @param max_source_len The maximum length of all source strings that will be
+ * passed to subsequent calls of dam_lev_dist().
+ * @param max_target_len The maximum length of all target strings that will be
+ * passed to subsequent calls of dam_lev_dist().
+ * @return Returns said working memory.  The caller is responsible for calling
+ * **free**(3) on it.
+ */
+NODISCARD
+size_t* const* dam_lev_new( size_t max_source_len, size_t max_target_len );
 
 ///////////////////////////////////////////////////////////////////////////////
 

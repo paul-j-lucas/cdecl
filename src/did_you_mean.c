@@ -386,14 +386,27 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
   }
   MEM_ZERO( dym );                      // one past last is zero'd
 
+  // calculate the maximum source and target lengths
+  size_t const source_len = strlen( unknown_literal );
+  size_t max_target_len = 0;
+  for ( dym = dym_array; dym->literal != NULL; ++dym ) {
+    size_t const len = strlen( dym->literal );
+    if ( len > max_target_len )
+      max_target_len = len;
+  } // for
+
   /*
    * Adapted from the code:
    * <https://github.com/git/git/blob/3a0b884caba2752da0af626fb2de7d597c844e8b/help.c#L516>
    */
 
   // calculate Damerau-Levenshtein edit distance for all candidates
-  for ( dym = dym_array; dym->literal != NULL; ++dym )
-    dym->dam_lev_dist = dam_lev_dist( unknown_literal, dym->literal );
+  size_t *const *const dam_lev_mem = dam_lev_new( source_len, max_target_len );
+  for ( dym = dym_array; dym->literal != NULL; ++dym ) {
+    dym->dam_lev_dist =
+      dam_lev_dist( dam_lev_mem, unknown_literal, source_len, dym->literal );
+  } // for
+  FREE( dam_lev_mem );
 
   // sort by Damerau-Levenshtein distance
   qsort(

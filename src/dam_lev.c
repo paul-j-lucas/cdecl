@@ -74,7 +74,9 @@ static void** matrix2_new( size_t esize, size_t idim, size_t jdim ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-size_t dam_lev_dist( char const *source, char const *target ) {
+size_t dam_lev_dist( size_t *const *const dist_matrix, char const *source,
+                     size_t slen, char const *target ) {
+  assert( dist_matrix != NULL );
   assert( source != NULL );
   assert( target != NULL );
 
@@ -83,9 +85,7 @@ size_t dam_lev_dist( char const *source, char const *target ) {
    * <https://gist.github.com/badocelot/5331587>
    */
 
-  size_t const slen = strlen( source );
   size_t const tlen = strlen( target );
-
   if ( slen == 0 )
     return tlen;
   if ( tlen == 0 )
@@ -96,9 +96,6 @@ size_t dam_lev_dist( char const *source, char const *target ) {
   // extras with higher-than-possible distances to prevent erroneous detection
   // of transpositions that would be outside the bounds of the strings.
   //
-  size_t *const *const dist_matrix =
-    (size_t**)matrix2_new( sizeof(size_t), slen + 2, tlen + 2 );
-
   size_t const inf = slen + tlen;
   dist_matrix[0][0] = inf;
   for ( size_t i = 0; i <= slen; ++i ) {
@@ -173,9 +170,13 @@ size_t dam_lev_dist( char const *source, char const *target ) {
     last_row[ (unsigned char)sc ] = row;
   } // for
 
-  size_t const edit_dist = dist_matrix[ slen+1 ][ tlen+1 ];
-  FREE( dist_matrix );
-  return edit_dist;
+  return dist_matrix[ slen+1 ][ tlen+1 ];
+}
+
+size_t* const* dam_lev_new( size_t max_source_len, size_t max_target_len ) {
+  return (size_t**)matrix2_new(
+    sizeof(size_t), max_source_len + 2, max_target_len + 2
+  );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
