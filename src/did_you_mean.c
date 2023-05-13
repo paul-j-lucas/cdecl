@@ -73,15 +73,16 @@ static double const SIMILAR_ENOUGH_PERCENT = .37;
  * Duplicates \a s prefixed by \a prefix.
  *
  * @param prefix The null-terminated prefix string to duplicate.
+ * @param prefix_len The length of \a prefix.
  * @param s The null-terminated string to duplicate.
  * @return Returns a copy of \a s prefixed by \a prefix.
  */
 NODISCARD
-static char* check_prefix_strdup( char const *prefix, char const *s ) {
+static char* check_prefix_strdup( char const *prefix, size_t prefix_len,
+                                  char const *s ) {
   assert( prefix != NULL );
   assert( s != NULL );
 
-  size_t const prefix_len = strlen( prefix );
   char *const dup_s = MALLOC( char, prefix_len + strlen( s ) + 1/*\0*/ );
   strcpy( dup_s, prefix );
   strcpy( dup_s + prefix_len, s );
@@ -202,7 +203,7 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
       case SET_OPTION_TOGGLE:
         if ( pdym != NULL ) {
           (*pdym)++->literal = check_strdup( opt->name );
-          (*pdym)++->literal = check_prefix_strdup( "no", opt->name );
+          (*pdym)++->literal = check_prefix_strdup( "no", 2, opt->name );
         }
         ++count;
         break;
@@ -212,7 +213,7 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
         break;
       case SET_OPTION_NEG_ONLY:
         if ( pdym != NULL )
-          (*pdym)++->literal = check_prefix_strdup( "no", opt->name );
+          (*pdym)++->literal = check_prefix_strdup( "no", 2, opt->name );
         break;
     } // switch
     ++count;
