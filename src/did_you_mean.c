@@ -270,10 +270,11 @@ static size_t copy_typedefs( did_you_mean_t **const pdym ) {
  */
 NODISCARD
 static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
-  int const cmp =
-    STATIC_CAST( int, i_dym->dam_lev_dist ) -
-    STATIC_CAST( int, j_dym->dam_lev_dist );
-  return cmp != 0 ? cmp : strcmp( i_dym->literal, j_dym->literal );
+  ssize_t const cmp =
+    STATIC_CAST( ssize_t, i_dym->dam_lev_dist ) -
+    STATIC_CAST( ssize_t, j_dym->dam_lev_dist );
+  return  cmp != 0 ? STATIC_CAST( int, cmp ) :
+          strcmp( i_dym->literal, j_dym->literal );
 }
 
 /**
