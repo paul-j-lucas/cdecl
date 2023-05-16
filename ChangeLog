@@ -1,3 +1,8 @@
+2023-05-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * dam_lev.c, dam_lev.h, did_you_mean.c: Added target_len parameter for
+     consistency.
+
 2023-05-13  Paul J. Lucas <paul@lucasmail.org>
 
    * dam_lev.c, dam_lev.h, did_you_mean.c: Now allocating dam_lev matrix only
