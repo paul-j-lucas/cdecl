@@ -74,8 +74,9 @@ static void** matrix2_new( size_t esize, size_t idim, size_t jdim ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-size_t dam_lev_dist( size_t *const *const dist_matrix, char const *source,
-                     size_t slen, char const *target ) {
+size_t dam_lev_dist( size_t *const *const dist_matrix,
+                     char const *source, size_t slen,
+                     char const *target, size_t tlen ) {
   assert( dist_matrix != NULL );
   assert( source != NULL );
   assert( target != NULL );
@@ -85,7 +86,6 @@ size_t dam_lev_dist( size_t *const *const dist_matrix, char const *source,
    * <https://gist.github.com/badocelot/5331587>
    */
 
-  size_t const tlen = strlen( target );
   if ( slen == 0 )
     return tlen;
   if ( tlen == 0 )

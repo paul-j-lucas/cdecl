@@ -43,14 +43,16 @@
  * @param source The source string.
  * @param source_len The length of \a source.
  * @param target The target string.
+ * @param target_len The length of \a target.
  * @return Returns said distance.
  *
  * @sa [Damerau–Levenshtein distance](https://en.wikipedia.org/wiki/Damerau–Levenshtein_distance)
  * @sa [Damerau–Levenshtein Edit Distance Explained](https://www.lemoda.net/text-fuzzy/damerau-levenshtein/)
  */
 NODISCARD
-size_t dam_lev_dist( size_t *const *const working_mem, char const *source,
-                     size_t source_len, char const *target );
+size_t dam_lev_dist( size_t *const *const working_mem,
+                     char const *source, size_t source_len,
+                     char const *target, size_t target_len );
 
 /**
  * Allocates working memory for use with subsequent calls of dam_lev_dist().

@@ -403,8 +403,11 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
   // calculate Damerau-Levenshtein edit distance for all candidates
   size_t *const *const dam_lev_mem = dam_lev_new( source_len, max_target_len );
   for ( dym = dym_array; dym->literal != NULL; ++dym ) {
-    dym->dam_lev_dist =
-      dam_lev_dist( dam_lev_mem, unknown_literal, source_len, dym->literal );
+    dym->dam_lev_dist = dam_lev_dist(
+      dam_lev_mem,
+      unknown_literal, source_len,
+      dym->literal, strlen( dym->literal )
+    );
   } // for
   FREE( dam_lev_mem );
 
