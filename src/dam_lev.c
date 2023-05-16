@@ -74,10 +74,9 @@ static void** matrix2_new( size_t esize, size_t idim, size_t jdim ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-size_t dam_lev_dist( size_t *const *const dist_matrix,
-                     char const *source, size_t slen,
+size_t dam_lev_dist( void *working_mem, char const *source, size_t slen,
                      char const *target, size_t tlen ) {
-  assert( dist_matrix != NULL );
+  assert( working_mem != NULL );
   assert( source != NULL );
   assert( target != NULL );
 
@@ -97,6 +96,7 @@ size_t dam_lev_dist( size_t *const *const dist_matrix,
   // of transpositions that would be outside the bounds of the strings.
   //
   size_t const inf = slen + tlen;
+  size_t *const *const dist_matrix = POINTER_CAST( size_t**, working_mem );
   dist_matrix[0][0] = inf;
   for ( size_t i = 0; i <= slen; ++i ) {
     dist_matrix[i+1][1] = i;
@@ -173,8 +173,8 @@ size_t dam_lev_dist( size_t *const *const dist_matrix,
   return dist_matrix[ slen+1 ][ tlen+1 ];
 }
 
-size_t* const* dam_lev_new( size_t max_source_len, size_t max_target_len ) {
-  return (size_t**)matrix2_new(
+void* dam_lev_new( size_t max_source_len, size_t max_target_len ) {
+  return matrix2_new(
     sizeof(size_t), max_source_len + 2, max_target_len + 2
   );
 }

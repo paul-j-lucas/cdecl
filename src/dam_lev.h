@@ -50,8 +50,7 @@
  * @sa [Damerau–Levenshtein Edit Distance Explained](https://www.lemoda.net/text-fuzzy/damerau-levenshtein/)
  */
 NODISCARD
-size_t dam_lev_dist( size_t *const *const working_mem,
-                     char const *source, size_t source_len,
+size_t dam_lev_dist( void *working_mem, char const *source, size_t source_len,
                      char const *target, size_t target_len );
 
 /**
@@ -71,7 +70,7 @@ size_t dam_lev_dist( size_t *const *const working_mem,
  * **free**(3) on it.
  */
 NODISCARD
-size_t* const* dam_lev_new( size_t max_source_len, size_t max_target_len );
+void* dam_lev_new( size_t max_source_len, size_t max_target_len );
 
 ///////////////////////////////////////////////////////////////////////////////
 
