@@ -1,4 +1,4 @@
-# stdlib_h.m4 serial 74
+# stdlib_h.m4 serial 75
 dnl Copyright (C) 2007-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,7 @@ int main ()
   return result;
 }]])],
           [gl_cv_macro_MB_CUR_MAX_good=yes],
-          [gl_cv_macro_MB_CUR_MAX_good=no]
+          [gl_cv_macro_MB_CUR_MAX_good=no],
           [:])
       fi
     ])

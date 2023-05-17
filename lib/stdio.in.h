@@ -58,7 +58,7 @@
 #define _@GUARD_PREFIX@_STDIO_H
 
 /* This file uses _GL_ATTRIBUTE_DEALLOC, _GL_ATTRIBUTE_FORMAT,
-   GNULIB_POSIXCHECK, HAVE_RAW_DECL_*.  */
+   _GL_ATTRIBUTE_MALLOC, GNULIB_POSIXCHECK, HAVE_RAW_DECL_*.  */
 #if !_GL_CONFIG_H_INCLUDED
  #error "Please include config.h first."
 #endif
@@ -130,6 +130,16 @@
 #  define _GL_ATTRIBUTE_FORMAT(spec) __attribute__ ((__format__ spec))
 # else
 #  define _GL_ATTRIBUTE_FORMAT(spec) /* empty */
+# endif
+#endif
+
+/* _GL_ATTRIBUTE_MALLOC declares that the function returns a pointer to freshly
+   allocated memory.  */
+#ifndef _GL_ATTRIBUTE_MALLOC
+# if __GNUC__ >= 3 || defined __clang__
+#  define _GL_ATTRIBUTE_MALLOC __attribute__ ((__malloc__))
+# else
+#  define _GL_ATTRIBUTE_MALLOC
 # endif
 #endif
 
@@ -322,7 +332,8 @@ _GL_CXXALIASWARN (fcloseall);
 #  endif
 _GL_FUNCDECL_RPL (fdopen, FILE *,
                   (int fd, const char *mode)
-                  _GL_ARG_NONNULL ((2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1));
+                  _GL_ARG_NONNULL ((2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1)
+                  _GL_ATTRIBUTE_MALLOC);
 _GL_CXXALIAS_RPL (fdopen, FILE *, (int fd, const char *mode));
 # elif defined _WIN32 && !defined __CYGWIN__
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
@@ -335,7 +346,8 @@ _GL_CXXALIAS_MDA (fdopen, FILE *, (int fd, const char *mode));
 /* For -Wmismatched-dealloc: Associate fdopen with fclose or rpl_fclose.  */
 _GL_FUNCDECL_SYS (fdopen, FILE *,
                   (int fd, const char *mode)
-                  _GL_ARG_NONNULL ((2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1));
+                  _GL_ARG_NONNULL ((2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1)
+                  _GL_ATTRIBUTE_MALLOC);
 #  endif
 _GL_CXXALIAS_SYS (fdopen, FILE *, (int fd, const char *mode));
 # endif
@@ -345,7 +357,8 @@ _GL_CXXALIASWARN (fdopen);
 /* For -Wmismatched-dealloc: Associate fdopen with fclose or rpl_fclose.  */
 _GL_FUNCDECL_SYS (fdopen, FILE *,
                   (int fd, const char *mode)
-                  _GL_ARG_NONNULL ((2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1));
+                  _GL_ARG_NONNULL ((2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1)
+                  _GL_ATTRIBUTE_MALLOC);
 # endif
 # if defined GNULIB_POSIXCHECK
 #  undef fdopen
@@ -456,7 +469,8 @@ _GL_CXXALIASWARN (fileno);
 #  endif
 _GL_FUNCDECL_RPL (fopen, FILE *,
                   (const char *restrict filename, const char *restrict mode)
-                  _GL_ARG_NONNULL ((1, 2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1));
+                  _GL_ARG_NONNULL ((1, 2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1)
+                  _GL_ATTRIBUTE_MALLOC);
 _GL_CXXALIAS_RPL (fopen, FILE *,
                   (const char *restrict filename, const char *restrict mode));
 # else
@@ -1111,13 +1125,15 @@ _GL_WARN_ON_USE (perror, "perror is not always POSIX compliant - "
 #  endif
 _GL_FUNCDECL_RPL (popen, FILE *,
                   (const char *cmd, const char *mode)
-                  _GL_ARG_NONNULL ((1, 2)) _GL_ATTRIBUTE_DEALLOC (pclose, 1));
+                  _GL_ARG_NONNULL ((1, 2)) _GL_ATTRIBUTE_DEALLOC (pclose, 1)
+                  _GL_ATTRIBUTE_MALLOC);
 _GL_CXXALIAS_RPL (popen, FILE *, (const char *cmd, const char *mode));
 # else
 #  if !@HAVE_POPEN@ || __GNUC__ >= 11
 _GL_FUNCDECL_SYS (popen, FILE *,
                   (const char *cmd, const char *mode)
-                  _GL_ARG_NONNULL ((1, 2)) _GL_ATTRIBUTE_DEALLOC (pclose, 1));
+                  _GL_ARG_NONNULL ((1, 2)) _GL_ATTRIBUTE_DEALLOC (pclose, 1)
+                  _GL_ATTRIBUTE_MALLOC);
 #  endif
 _GL_CXXALIAS_SYS (popen, FILE *, (const char *cmd, const char *mode));
 # endif
@@ -1127,7 +1143,8 @@ _GL_CXXALIASWARN (popen);
 /* For -Wmismatched-dealloc: Associate popen with pclose or rpl_pclose.  */
 _GL_FUNCDECL_SYS (popen, FILE *,
                   (const char *cmd, const char *mode)
-                  _GL_ARG_NONNULL ((1, 2)) _GL_ATTRIBUTE_DEALLOC (pclose, 1));
+                  _GL_ARG_NONNULL ((1, 2)) _GL_ATTRIBUTE_DEALLOC (pclose, 1)
+                  _GL_ATTRIBUTE_MALLOC);
 # endif
 # if defined GNULIB_POSIXCHECK
 #  undef popen
@@ -1465,13 +1482,15 @@ _GL_CXXALIASWARN (tempnam);
 #   define tmpfile rpl_tmpfile
 #  endif
 _GL_FUNCDECL_RPL (tmpfile, FILE *, (void)
-                                   _GL_ATTRIBUTE_DEALLOC (fclose, 1));
+                                   _GL_ATTRIBUTE_DEALLOC (fclose, 1)
+                                   _GL_ATTRIBUTE_MALLOC);
 _GL_CXXALIAS_RPL (tmpfile, FILE *, (void));
 # else
 #  if __GNUC__ >= 11
 /* For -Wmismatched-dealloc: Associate tmpfile with fclose or rpl_fclose.  */
 _GL_FUNCDECL_SYS (tmpfile, FILE *, (void)
-                                   _GL_ATTRIBUTE_DEALLOC (fclose, 1));
+                                   _GL_ATTRIBUTE_DEALLOC (fclose, 1)
+                                   _GL_ATTRIBUTE_MALLOC);
 #  endif
 _GL_CXXALIAS_SYS (tmpfile, FILE *, (void));
 # endif
@@ -1482,7 +1501,8 @@ _GL_CXXALIASWARN (tmpfile);
 # if @GNULIB_FCLOSE@ && __GNUC__ >= 11 && !defined tmpfile
 /* For -Wmismatched-dealloc: Associate tmpfile with fclose or rpl_fclose.  */
 _GL_FUNCDECL_SYS (tmpfile, FILE *, (void)
-                                   _GL_ATTRIBUTE_DEALLOC (fclose, 1));
+                                   _GL_ATTRIBUTE_DEALLOC (fclose, 1)
+                                   _GL_ATTRIBUTE_MALLOC);
 # endif
 # if defined GNULIB_POSIXCHECK
 #  undef tmpfile
