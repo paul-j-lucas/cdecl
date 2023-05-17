@@ -1,5 +1,7 @@
 2023-05-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * limits.in.h, stdio.in.h, extern-inline.m4, gnulib-common.m4,
+     gnulib-comp.m4, limits-h.m4, stdio_h.m4, stdlib_h.m4: Updated GnuLib.
    * did_you_mean.c: s/strcpy/strncpy/
 
 2023-05-16  Paul J. Lucas <paul@lucasmail.org>
