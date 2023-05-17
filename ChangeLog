@@ -1,3 +1,7 @@
+2023-05-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: s/strcpy/strncpy/
+
 2023-05-16  Paul J. Lucas <paul@lucasmail.org>
 
    * dam_lev.c, dam_lev.h, did_you_mean.c: Now returning void* for simplicity.
