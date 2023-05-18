@@ -98,6 +98,7 @@
  *
  * @param TREE A pointer to the red-black tree to get the first node of.
  * @return Returns said lvalue referene.
+ *
  * @note This is a macro instead of an inline function so it'll:
  * + Work with either a `const` or non-`const` \a TREE.
  * + Be an lvalue reference.

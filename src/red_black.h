@@ -160,12 +160,13 @@ struct rb_node {
  */
 struct rb_tree {
   /**
-   * A convenience sentinel for the root node.  Note, however, that it's _not_
-   * the true root node of the tree; it's just an object to which the \ref
-   * rb_node::parent "parent" node pointer of the true root node (`fake_root`'s
-   * left child node) can point.  That is, when a node's \ref rb_node::parent
-   * "parent" pointer points to `fake_root`, it means _that_ node _is_ the true
-   * root node.  The `fake_root` has no invariants.
+   * A convenience sentinel for the root node.
+   *
+   * @note This is _not_ the true root node of the tree; it's just an object to
+   * which the \ref rb_node::parent "parent" node pointer of the true root node
+   * (`fake_root`'s left child node) can point.  That is, when a node's \ref
+   * rb_node::parent "parent" pointer points to `fake_root`, it means _that_
+   * node _is_ the true root node.  The `fake_root` has no invariants.
    */
   rb_node_t   fake_root;
 
