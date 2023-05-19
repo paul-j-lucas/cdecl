@@ -38,7 +38,6 @@
 #include <stdint.h>
 #include <stdio.h>                      /* for FILE */
 #include <stdlib.h>
-#include <stdnoreturn.h>
 #include <string.h>
 #include <sysexits.h>
 
@@ -796,7 +795,7 @@ bool false_set( bool *flag ) {
  * @sa #UNEXPECTED_INT_VALUE()
  */
 PJL_PRINTF_LIKE_FUNC(2)
-noreturn void fatal_error( int status, char const *format, ... );
+_Noreturn void fatal_error( int status, char const *format, ... );
 
 /**
  * Checks whether \a fd refers to a regular file.
@@ -1127,7 +1126,7 @@ char const* parse_identifier( char const *s );
  * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()
  */
-noreturn void perror_exit( int status );
+_Noreturn void perror_exit( int status );
 
 /**
  * Checks whether \a s is either an empty string or a line consisting only of

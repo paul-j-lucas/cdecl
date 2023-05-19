@@ -64,7 +64,6 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>                     /* for strtol(3) */
-#include <stdnoreturn.h>
 #include <string.h>
 #include <wordexp.h>
 
@@ -197,7 +196,7 @@ static bool       trigraph_warned;      ///< Printed trigraph warning once?
 static char       rstr_delim[ RSTR_DELIM_LEN_MAX + 1/*"*/ + 1/*\0*/ ];
 
 // local functions
-noreturn
+_Noreturn
 static void       lexer_fatal( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -1281,7 +1280,7 @@ include{S}*\" {
  *
  * @param msg The error message to print.
  */
-noreturn
+_Noreturn
 static void lexer_fatal( char const *msg ) {
   if ( msg == NULL ) {
     // Never true -- here just to silence the "unused function" warning.

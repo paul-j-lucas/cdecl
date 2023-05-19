@@ -46,7 +46,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
-#include <stdnoreturn.h>
 #include <string.h>
 #include <sysexits.h>
 #include <unistd.h>                     /* for dup2(2) */
@@ -152,7 +151,7 @@ NODISCARD
 static char const*  opt_format( char ),
                  *  opt_get_long( char );
 
-noreturn
+_Noreturn
 static void         usage( int );
 
 static void         version( bool );
@@ -296,7 +295,7 @@ static char const* opt_get_long( char short_opt ) {
  * @param value The invalid value for \a opt.
  * @param must_be What \a opt must be instead.
  */
-noreturn
+_Noreturn
 static void opt_invalid_value( char opt, char const *value,
                                char const *must_be ) {
   fatal_error( EX_USAGE,
@@ -592,7 +591,7 @@ missing_arg:
  * @param status The status to exit with.  If it is `EX_OK`, prints to standard
  * output; otherwise prints to standard error.
  */
-noreturn
+_Noreturn
 static void usage( int status ) {
   fprintf( status == EX_OK ? stdout : stderr,
     "usage: %s [options] [command...]\n"

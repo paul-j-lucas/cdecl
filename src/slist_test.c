@@ -27,7 +27,6 @@
 // standard
 #include <stdbool.h>
 #include <stdlib.h>
-#include <stdnoreturn.h>
 #include <string.h>
 #include <sysexits.h>
 
@@ -635,7 +634,8 @@ static bool test_slist_push_back( void ) {
 }
 
 // LCOV_EXCL_START
-static noreturn void usage( void ) {
+_Noreturn
+static void usage( void ) {
   EPRINTF( "usage: %s\n", me );
   exit( EX_USAGE );
 }
