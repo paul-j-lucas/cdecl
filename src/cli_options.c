@@ -532,6 +532,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     if ( fin == NULL )
       fatal_error( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
     check_dup2( fileno( fin ), STDIN_FILENO );
+    PJL_IGNORE_RV( fclose( fin ) );
   }
 
   if ( strcmp( fout_path, "-" ) != 0 ) {
@@ -539,6 +540,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     if ( fout == NULL )
       fatal_error( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
     check_dup2( fileno( fout ), STDOUT_FILENO );
+    PJL_IGNORE_RV( fclose( fout ) );
   }
 
   if ( opt_help )
