@@ -90,6 +90,10 @@
 /// Command-line option as a string literal.
 #define SOPT(X)                   STRINGIFY(OPT_##X)
 
+/// Command-line short option as a parenthesized, dashed string literal for the
+/// usage message.
+#define UOPT(X)                   " (-" SOPT(X) ") "
+
 /// @endcond
 
 /**
@@ -580,10 +584,6 @@ missing_arg:
     opt_format( STATIC_CAST( char, opt == ':' ? optopt : opt ) )
   );
 }
-
-/// Command-line short option as a parenthesized, dashed string literal for the
-/// usage message.
-#define UOPT(X)                   " (-" SOPT(X) ") "
 
 /**
  * Prints the **cdecl** usage message, then exits.
