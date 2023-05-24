@@ -245,6 +245,8 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPUTS()
  * @sa #FPRINTF()
  * @sa #PRINTF()
+ * @sa #PUTC()
+ * @sa #PUTS()
  */
 #define EPRINTF(...)              fprintf( stderr, __VA_ARGS__ )
 
@@ -256,6 +258,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPRINTF()
  * @sa #EPUTS()
  * @sa #FPUTC()
+ * @sa #PRINTF()
  * @sa #PUTC()
  */
 #define EPUTC(C)                  fputc( (C), stderr )
@@ -268,6 +271,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPRINTF()
  * @sa #EPUTC()
  * @sa #FPUTS()
+ * @sa #PRINTF()
  * @sa #PUTS()
  */
 #define EPUTS(S)                  fputs( (S), stderr )
@@ -305,6 +309,8 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FPUTS()
  * @sa #PERROR_EXIT_IF()
  * @sa #PRINTF()
+ * @sa #PUTC()
+ * @sa #PUTS()
  */
 #define FPRINTF(STREAM,...) \
   PERROR_EXIT_IF( fprintf( (STREAM), __VA_ARGS__ ) < 0, EX_IOERR )
@@ -319,6 +325,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FPRINTF()
  * @sa #FPUTS()
  * @sa #PERROR_EXIT_IF()
+ * @sa #PRINTF()
  * @sa #PUTC()
  */
 #define FPUTC(C,STREAM) \
@@ -335,6 +342,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FPUTC()
  * @sa #FPUTNSP()
  * @sa #PERROR_EXIT_IF()
+ * @sa #PRINTF()
  * @sa #PUTS()
  */
 #define FPUTS(S,STREAM) \
@@ -503,6 +511,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPUTC()
  * @sa #FPUTC()
  * @sa #PRINTF()
+ * @sa #PUTS()
  */
 #define PUTC(C)                   FPUTC( (C), stdout )
 
@@ -516,6 +525,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPUTS()
  * @sa #FPUTS()
  * @sa #PRINTF()
+ * @sa #PUTC()
  */
 #define PUTS(S)                   FPUTS( (S), stdout )
 
