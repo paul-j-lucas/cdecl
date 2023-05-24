@@ -632,7 +632,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Specifies that \a EXPR is _very_ likely (as in 99.99% of the time) to be
  * non-zero (true) allowing the compiler to better order code blocks for
- * magrinally better performance.
+ * marginally better performance.
  *
  * @param EXPR An expression that can be cast to `bool`.
  *
@@ -644,7 +644,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Specifies that \a EXPR is _very_ unlikely (as in .01% of the time) to be
  * non-zero (true) allowing the compiler to better order code blocks for
- * magrinally better performance.
+ * marginally better performance.
  *
  * @param EXPR An expression that can be cast to `bool`.
  *
