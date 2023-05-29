@@ -21,7 +21,7 @@
 bin_PROGRAMS =	cdecl
 check_PROGRAMS=	red_black_test slist_test
 
-AM_CFLAGS =
+AM_CFLAGS =	$(CDECL_CFLAGS)
 
 if ENABLE_ASAN
 AM_CFLAGS +=	-fsanitize=address -fno-omit-frame-pointer
