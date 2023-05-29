@@ -1,3 +1,13 @@
+2023-05-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, src/Makefile.am: Added CDECL_CFLAGS so as not to compile
+     GnuLib code with cdecl CFLAGS.
+
+2023-05-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Now fclose'ing fin/fout after dup2().
+   * cli_options.c: Moved UOPT().
+
 2023-05-19  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c, lexer.l, red_black_test.c, slist_test.c, util.c, util.h: No
