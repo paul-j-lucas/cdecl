@@ -1,5 +1,7 @@
 2023-05-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * flexmember.h, getdelim.c, limits.in.h, gnulib-common.m4, limits-h.m4,
+     ssize_t.m4: Updated GnuLib.
    * configure.ac, src/Makefile.am: Added CDECL_CFLAGS so as not to compile
      GnuLib code with cdecl CFLAGS.
 
