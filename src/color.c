@@ -118,7 +118,7 @@ char const  COLORS_DEFAULT[] =
   CAP_WARNING       "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  ;
 
 // extern variable definitions
-bool        colorize;
+bool        cdecl_colorize;
 char const *sgr_caret;
 char const *sgr_error;
 char const *sgr_help_keyword;

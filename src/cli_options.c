@@ -553,8 +553,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     exit( EX_OK );
   }
 
-  colorize = should_colorize( color_when );
-  if ( colorize &&
+  cdecl_colorize = should_colorize( color_when );
+  if ( cdecl_colorize &&
        !(colors_parse( getenv( "CDECL_COLORS" ) ) ||
          colors_parse( getenv( "GCC_COLORS"   ) )) ) {
     PJL_IGNORE_RV( colors_parse( COLORS_DEFAULT ) );
