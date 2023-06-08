@@ -1,3 +1,8 @@
+2023-06-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c, color.c, color.h, prompt.c: s/colorize/cdecl_colorize/
+   * color.c, color.h: Moved most SGR_ macros to color.c file.
+
 2023-05-29  Paul J. Lucas <paul@lucasmail.org>
 
    * flexmember.h, getdelim.c, limits.in.h, gnulib-common.m4, limits-h.m4,
