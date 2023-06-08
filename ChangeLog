@@ -1,5 +1,8 @@
 2023-06-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * color.c: Factored out color_cap_find().
+   * color.c: Using SGR_CAP_SEP more.
+   * color.c, color.h: Revert "Moved most SGR_ macros to color.c file."
    * cli_options.c, color.c, color.h, prompt.c: s/colorize/cdecl_colorize/
    * color.c, color.h: Moved most SGR_ macros to color.c file.
 
