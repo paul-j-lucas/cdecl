@@ -100,27 +100,42 @@ char const *sgr_locus;
 char const *sgr_prompt;
 char const *sgr_warning;
 
-/**
- * Color capabilities table.
- */
-static color_cap_t const COLOR_CAPS[] = {
-  { CAP_CARET,        &sgr_caret        },
-  { CAP_ERROR,        &sgr_error        },
-  { CAP_HELP_KEYWORD, &sgr_help_keyword },
-  { CAP_HELP_NONTERM, &sgr_help_nonterm },
-  { CAP_HELP_PUNCT,   &sgr_help_punct   },
-  { CAP_HELP_TITLE,   &sgr_help_title   },
-  { CAP_LOCUS,        &sgr_locus        },
-  { CAP_PROMPT,       &sgr_prompt       },
-  { CAP_WARNING,      &sgr_warning      },
-  { NULL,             NULL              }
-};
-
 // local functions
 NODISCARD
 static bool sgr_is_valid( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Gets the \ref color_cap corresponding to \a name.
+ *
+ * @param name The name to get the corresponding \ref color_cap for.
+ * @return Returns said \ref color_cap or NULL if \a name doesn't correspond to
+ * any capability.
+ */
+static color_cap_t const* color_cap_find( char const *name ) {
+  assert( name != NULL );
+
+  static color_cap_t const COLOR_CAPS[] = {
+    { CAP_CARET,        &sgr_caret        },
+    { CAP_ERROR,        &sgr_error        },
+    { CAP_HELP_KEYWORD, &sgr_help_keyword },
+    { CAP_HELP_NONTERM, &sgr_help_nonterm },
+    { CAP_HELP_PUNCT,   &sgr_help_punct   },
+    { CAP_HELP_TITLE,   &sgr_help_title   },
+    { CAP_LOCUS,        &sgr_locus        },
+    { CAP_PROMPT,       &sgr_prompt       },
+    { CAP_WARNING,      &sgr_warning      },
+    { NULL,             NULL              }
+  };
+
+  for ( color_cap_t const *cap = COLOR_CAPS; cap->cap_name != NULL; ++cap ) {
+    if ( strcmp( name, cap->cap_name ) == 0 )
+      return cap;
+  } // for
+
+  return NULL;
+}
 
 /**
  * Sets the SGR color for the given capability.
@@ -130,16 +145,13 @@ static bool sgr_is_valid( char const* );
  * @return Returns `true` only if \a sgr_color is valid.
  */
 NODISCARD
-static bool sgr_cap_set( color_cap_t const *cap, char const *sgr_color ) {
+static bool color_cap_set( color_cap_t const *cap, char const *sgr_color ) {
   assert( cap != NULL );
   assert( cap->cap_var_to_set != NULL );
 
-  if ( sgr_color != NULL ) {
-    if ( *sgr_color == '\0' )           // empty string -> NULL = unset
-      sgr_color = NULL;
-    else if ( !sgr_is_valid( sgr_color ) )
-      return false;
-  }
+  sgr_color = null_if_empty( sgr_color );
+  if ( sgr_color != NULL && !sgr_is_valid( sgr_color ) )
+    return false;
   *cap->cap_var_to_set = sgr_color;
   return true;
 }
@@ -191,14 +203,12 @@ bool colors_parse( char const *capabilities ) {
   for ( char *next_cap = capabilities_dup, *cap_name_val;
         (cap_name_val = strsep( &next_cap, SGR_CAP_SEP )) != NULL; ) {
     char const *const cap_name = strsep( &cap_name_val, "=" );
-    for ( color_cap_t const *cap = COLOR_CAPS; cap->cap_name; ++cap ) {
-      if ( strcmp( cap_name, cap->cap_name ) == 0 ) {
-        char const *const cap_value = strsep( &cap_name_val, "=" );
-        if ( sgr_cap_set( cap, cap_value ) )
-          set_any = true;
-        break;
-      }
-    } // for
+    color_cap_t const *const cap = color_cap_find( cap_name );
+    if ( cap != NULL ) {
+      char const *const cap_value = strsep( &cap_name_val, "=" );
+      if ( color_cap_set( cap, cap_value ) )
+        set_any = true;
+    }
   } // for
 
   if ( set_any )
