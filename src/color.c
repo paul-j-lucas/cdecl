@@ -189,7 +189,7 @@ bool colors_parse( char const *capabilities ) {
   char *const capabilities_dup = check_strdup( capabilities );
 
   for ( char *next_cap = capabilities_dup, *cap_name_val;
-        (cap_name_val = strsep( &next_cap, ":" )) != NULL; ) {
+        (cap_name_val = strsep( &next_cap, SGR_CAP_SEP )) != NULL; ) {
     char const *const cap_name = strsep( &cap_name_val, "=" );
     for ( color_cap_t const *cap = COLOR_CAPS; cap->cap_name; ++cap ) {
       if ( strcmp( cap_name, cap->cap_name ) == 0 ) {
