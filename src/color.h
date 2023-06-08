@@ -64,28 +64,6 @@ _GL_INLINE_HEADER_BEGIN
  * @{
  */
 
-#define SGR_BG_BLACK        "40"        /**< Background black.            */
-#define SGR_BG_RED          "41"        /**< Background red.              */
-#define SGR_BG_GREEN        "42"        /**< Background green.            */
-#define SGR_BG_YELLOW       "43"        /**< Background yellow.           */
-#define SGR_BG_BLUE         "44"        /**< Background blue.             */
-#define SGR_BG_MAGENTA      "45"        /**< Background magenta.          */
-#define SGR_BG_CYAN         "46"        /**< Background cyan.             */
-#define SGR_BG_WHITE        "47"        /**< Background white.            */
-
-#define SGR_FG_BLACK        "30"        /**< Foreground black.            */
-#define SGR_FG_RED          "31"        /**< Foreground red.              */
-#define SGR_FG_GREEN        "32"        /**< Foreground green.            */
-#define SGR_FG_YELLOW       "33"        /**< Foreground yellow.           */
-#define SGR_FG_BLUE         "34"        /**< Foreground blue.             */
-#define SGR_FG_MAGENTA      "35"        /**< Foreground magenta.          */
-#define SGR_FG_CYAN         "36"        /**< Foreground cyan.             */
-#define SGR_FG_WHITE        "37"        /**< Foreground white.            */
-
-#define SGR_BOLD            "1"         /**< Bold.                        */
-#define SGR_CAP_SEP         ":"         /**< Capability separator.        */
-#define SGR_SEP             ";"         /**< Attribute/RGB separator.     */
-
 #define SGR_START           "\33[%sm"   /**< Start color sequence.        */
 #define SGR_END             "\33[m"     /**< End color sequence.          */
 #define SGR_EL              "\33[K"     /**< Erase in Line (EL) sequence. */
