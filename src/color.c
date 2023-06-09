@@ -172,11 +172,11 @@ static bool sgr_is_valid( char const *sgr_color ) {
 }
 
 /**
- * Sets the SGR color for the given capability.
+ * Sets an SGR variable to the given color.
  *
  * @param sgr_var A pointer to the SGR variable to set.
  * @param sgr_color The SGR color to set; or NULL or empty to unset.
- * @return Returns `true` only if \a sgr_color is valid.
+ * @return Returns `true` only if \a sgr_color is valid, NULL, or empty.
  */
 NODISCARD
 static bool sgr_var_set( char const **sgr_var, char const *sgr_color ) {
