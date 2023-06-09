@@ -32,6 +32,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "c_kind.h"
+#include "color.h"
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -69,6 +70,7 @@ extern bool         opt_alt_tokens;     ///< Print alternative tokens?
 extern bool         opt_cdecl_debug;    ///< Print JSON-like debug output?
 #endif /* ENABLE_CDECL_DEBUG */
 
+extern color_when_t opt_color_when;     ///< When to print color.
 extern char const  *opt_conf_path;      ///< Configuration file path.
 extern bool         opt_east_const;     ///< Print in "east const" form?
 extern bool         opt_echo_commands;  ///< Echo commands?

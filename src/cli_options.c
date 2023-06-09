@@ -386,7 +386,6 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   char const *      fin_path = "-";
   char const *      fout_path = "-";
   int               opt;
-  color_when_t      opt_color_when = COLOR_WHEN_DEFAULT;
   bool              opt_help = false;
   unsigned          opt_version = 0;
   char const *const short_opts = make_short_opts( CLI_OPTIONS );
@@ -551,13 +550,6 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       usage( EX_USAGE );
     version( opt_version > 1 );
     exit( EX_OK );
-  }
-
-  cdecl_colorize = should_colorize( opt_color_when );
-  if ( cdecl_colorize &&
-       !(colors_parse( getenv( "CDECL_COLORS" ) ) ||
-         colors_parse( getenv( "GCC_COLORS"   ) )) ) {
-    PJL_IGNORE_RV( colors_parse( COLORS_DEFAULT ) );
   }
 
   return;
