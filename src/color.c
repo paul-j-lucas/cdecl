@@ -100,10 +100,6 @@ char const *sgr_locus;
 char const *sgr_prompt;
 char const *sgr_warning;
 
-// local functions
-NODISCARD
-static bool sgr_is_valid( char const* );
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
