@@ -47,15 +47,15 @@
 // Color capabilities.  Names containing Upper-case are unique to cdecl and
 // upper-case to avoid conflict with gcc.
 //
-#define CAP_CARET               "caret"
-#define CAP_ERROR               "error"
-#define CAP_HELP_KEYWORD        "HELP-keyword"
-#define CAP_HELP_NONTERM        "HELP-nonterm"
-#define CAP_HELP_PUNCT          "HELP-punct"
-#define CAP_HELP_TITLE          "HELP-title"
-#define CAP_LOCUS               "locus"
-#define CAP_PROMPT              "PROMPT"
-#define CAP_WARNING             "warning"
+#define COLOR_CAP_CARET           "caret"
+#define COLOR_CAP_ERROR           "error"
+#define COLOR_CAP_HELP_KEYWORD    "HELP-keyword"
+#define COLOR_CAP_HELP_NONTERM    "HELP-nonterm"
+#define COLOR_CAP_HELP_PUNCT      "HELP-punct"
+#define COLOR_CAP_HELP_TITLE      "HELP-title"
+#define COLOR_CAP_LOCUS           "locus"
+#define COLOR_CAP_PROMPT          "PROMPT"
+#define COLOR_CAP_WARNING         "warning"
 
 /// @endcond
 
@@ -78,15 +78,15 @@ typedef struct color_cap color_cap_t;
 
 // extern constant definitions
 char const  COLORS_DEFAULT[] =
-  CAP_CARET         "=" SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
-  CAP_ERROR         "=" SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP
-  CAP_HELP_KEYWORD  "="                       SGR_BOLD  SGR_CAP_SEP
-  CAP_HELP_NONTERM  "=" SGR_FG_CYAN                     SGR_CAP_SEP
-  CAP_HELP_PUNCT    "=" SGR_FG_BLACK  SGR_SEP SGR_BOLD  SGR_CAP_SEP
-  CAP_HELP_TITLE    "=" SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP
-  CAP_LOCUS         "="                       SGR_BOLD  SGR_CAP_SEP
-  CAP_PROMPT        "=" SGR_FG_GREEN                    SGR_CAP_SEP
-  CAP_WARNING       "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  ;
+  COLOR_CAP_CARET         "=" SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  COLOR_CAP_ERROR         "=" SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  COLOR_CAP_HELP_KEYWORD  "="                       SGR_BOLD  SGR_CAP_SEP
+  COLOR_CAP_HELP_NONTERM  "=" SGR_FG_CYAN                     SGR_CAP_SEP
+  COLOR_CAP_HELP_PUNCT    "=" SGR_FG_BLACK  SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  COLOR_CAP_HELP_TITLE    "=" SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  COLOR_CAP_LOCUS         "="                       SGR_BOLD  SGR_CAP_SEP
+  COLOR_CAP_PROMPT        "=" SGR_FG_GREEN                    SGR_CAP_SEP
+  COLOR_CAP_WARNING       "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  ;
 
 // extern variable definitions
 bool        cdecl_colorize;
@@ -117,16 +117,16 @@ static color_cap_t const* color_cap_find( char const *name ) {
   assert( name != NULL );
 
   static color_cap_t const COLOR_CAPS[] = {
-    { CAP_CARET,        &sgr_caret        },
-    { CAP_ERROR,        &sgr_error        },
-    { CAP_HELP_KEYWORD, &sgr_help_keyword },
-    { CAP_HELP_NONTERM, &sgr_help_nonterm },
-    { CAP_HELP_PUNCT,   &sgr_help_punct   },
-    { CAP_HELP_TITLE,   &sgr_help_title   },
-    { CAP_LOCUS,        &sgr_locus        },
-    { CAP_PROMPT,       &sgr_prompt       },
-    { CAP_WARNING,      &sgr_warning      },
-    { NULL,             NULL              }
+    { COLOR_CAP_CARET,        &sgr_caret        },
+    { COLOR_CAP_ERROR,        &sgr_error        },
+    { COLOR_CAP_HELP_KEYWORD, &sgr_help_keyword },
+    { COLOR_CAP_HELP_NONTERM, &sgr_help_nonterm },
+    { COLOR_CAP_HELP_PUNCT,   &sgr_help_punct   },
+    { COLOR_CAP_HELP_TITLE,   &sgr_help_title   },
+    { COLOR_CAP_LOCUS,        &sgr_locus        },
+    { COLOR_CAP_PROMPT,       &sgr_prompt       },
+    { COLOR_CAP_WARNING,      &sgr_warning      },
+    { NULL,                   NULL              }
   };
 
   for ( color_cap_t const *cap = COLOR_CAPS; cap->cap_name != NULL; ++cap ) {
