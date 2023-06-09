@@ -70,11 +70,11 @@
  * Color capability used to map a `CDECL_COLORS` or `GCC_COLORS` "capability"
  * to the variable to set.
  */
-struct color_cap {
+struct color_cap_map {
   char const   *cap_name;               ///< Capability name.
   char const  **sgr_var;                ///< Pointer to SGR variable to set.
 };
-typedef struct color_cap color_cap_t;
+typedef struct color_cap_map color_cap_map_t;
 
 // extern constant definitions
 char const  COLORS_DEFAULT[] =
@@ -107,16 +107,16 @@ static bool sgr_is_valid( char const* );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Gets the \ref color_cap corresponding to \a name.
+ * Gets the \ref color_cap_map corresponding to \a name.
  *
- * @param name The name to get the corresponding \ref color_cap for.
- * @return Returns said \ref color_cap or NULL if \a name doesn't correspond to
- * any capability.
+ * @param name The name to get the corresponding \ref color_cap_map for.
+ * @return Returns said \ref color_cap_map or NULL if \a name doesn't
+ * correspond to any capability.
  */
-static color_cap_t const* color_cap_find( char const *name ) {
+static color_cap_map_t const* color_cap_find( char const *name ) {
   assert( name != NULL );
 
-  static color_cap_t const COLOR_CAPS[] = {
+  static color_cap_map_t const COLOR_CAP_MAP[] = {
     { COLOR_CAP_CARET,        &sgr_caret        },
     { COLOR_CAP_ERROR,        &sgr_error        },
     { COLOR_CAP_HELP_KEYWORD, &sgr_help_keyword },
@@ -129,9 +129,9 @@ static color_cap_t const* color_cap_find( char const *name ) {
     { NULL,                   NULL              }
   };
 
-  for ( color_cap_t const *cap = COLOR_CAPS; cap->cap_name != NULL; ++cap ) {
-    if ( strcmp( name, cap->cap_name ) == 0 )
-      return cap;
+  for ( color_cap_map_t const *m = COLOR_CAP_MAP; m->cap_name != NULL; ++m ) {
+    if ( strcmp( name, m->cap_name ) == 0 )
+      return m;
   } // for
 
   return NULL;
@@ -201,7 +201,7 @@ bool colors_parse( char const *capabilities ) {
   for ( char *next_cap = capabilities_dup, *cap_name_val;
         (cap_name_val = strsep( &next_cap, SGR_CAP_SEP )) != NULL; ) {
     char const *const cap_name = strsep( &cap_name_val, "=" );
-    color_cap_t const *const cap = color_cap_find( cap_name );
+    color_cap_map_t const *const cap = color_cap_find( cap_name );
     if ( cap != NULL ) {
       char const *const cap_value = strsep( &cap_name_val, "=" );
       if ( sgr_var_set( cap->sgr_var, cap_value ) )
