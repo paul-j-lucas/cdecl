@@ -72,7 +72,7 @@
  */
 struct color_cap {
   char const   *cap_name;               ///< Capability name.
-  char const  **cap_var_to_set;         ///< Pointer to variable to set.
+  char const  **sgr_var;                ///< Pointer to SGR variable to set.
 };
 typedef struct color_cap color_cap_t;
 
@@ -138,25 +138,6 @@ static color_cap_t const* color_cap_find( char const *name ) {
 }
 
 /**
- * Sets the SGR color for the given capability.
- *
- * @param cap The color capability to set the color for.
- * @param sgr_color The SGR color to set; or NULL or empty to unset.
- * @return Returns `true` only if \a sgr_color is valid.
- */
-NODISCARD
-static bool color_cap_set( color_cap_t const *cap, char const *sgr_color ) {
-  assert( cap != NULL );
-  assert( cap->cap_var_to_set != NULL );
-
-  sgr_color = null_if_empty( sgr_color );
-  if ( sgr_color != NULL && !sgr_is_valid( sgr_color ) )
-    return false;
-  *cap->cap_var_to_set = sgr_color;
-  return true;
-}
-
-/**
  * Parses an SGR (Select Graphic Rendition) value that matches the regular
  * expression of `n(;n)*` or a semicolon-separated list of integers in the
  * range 0-255.
@@ -190,6 +171,23 @@ static bool sgr_is_valid( char const *sgr_color ) {
   } // for
 }
 
+/**
+ * Sets the SGR color for the given capability.
+ *
+ * @param sgr_var A pointer to the SGR variable to set.
+ * @param sgr_color The SGR color to set; or NULL or empty to unset.
+ * @return Returns `true` only if \a sgr_color is valid.
+ */
+NODISCARD
+static bool sgr_var_set( char const **sgr_var, char const *sgr_color ) {
+  assert( sgr_var != NULL );
+  sgr_color = null_if_empty( sgr_color );
+  if ( sgr_color != NULL && !sgr_is_valid( sgr_color ) )
+    return false;
+  *sgr_var = sgr_color;
+  return true;
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool colors_parse( char const *capabilities ) {
@@ -206,7 +204,7 @@ bool colors_parse( char const *capabilities ) {
     color_cap_t const *const cap = color_cap_find( cap_name );
     if ( cap != NULL ) {
       char const *const cap_value = strsep( &cap_name_val, "=" );
-      if ( color_cap_set( cap, cap_value ) )
+      if ( sgr_var_set( cap->sgr_var, cap_value ) )
         set_any = true;
     }
   } // for
