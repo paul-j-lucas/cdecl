@@ -383,10 +383,10 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
 static void parse_options( int *pargc, char const **pargv[const] ) {
   opterr = 0;                           // suppress default error message
 
-  color_when_t      color_when = COLOR_WHEN_DEFAULT;
   char const *      fin_path = "-";
   char const *      fout_path = "-";
   int               opt;
+  color_when_t      opt_color_when = COLOR_WHEN_DEFAULT;
   bool              opt_help = false;
   unsigned          opt_version = 0;
   char const *const short_opts = make_short_opts( CLI_OPTIONS );
@@ -413,7 +413,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
 #endif /* ENABLE_CDECL_DEBUG */
       case COPT(COLOR):
-        color_when = parse_color_when( optarg );
+        opt_color_when = parse_color_when( optarg );
         break;
       case COPT(CONFIG):
         if ( SKIP_WS( optarg )[0] == '\0' )
@@ -553,7 +553,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     exit( EX_OK );
   }
 
-  cdecl_colorize = should_colorize( color_when );
+  cdecl_colorize = should_colorize( opt_color_when );
   if ( cdecl_colorize &&
        !(colors_parse( getenv( "CDECL_COLORS" ) ) ||
          colors_parse( getenv( "GCC_COLORS"   ) )) ) {
