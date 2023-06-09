@@ -1,3 +1,13 @@
+2023-06-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c: Removed unnecessary forward declaration.
+   * color.c: s/color_cap/color_cap_map/
+   * color.c: s/CAP_/COLOR_CAP_/
+   * color.c: Color clean-up.
+   * cdecl.c, cli_options.c, options.c, options.h: Moved color initialization
+     out of parse_options().
+   * cli_options.c: s/color_when/opt_color_when/
+
 2023-06-08  Paul J. Lucas <paul@lucasmail.org>
 
    * color.c: Factored out color_cap_find().
