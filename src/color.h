@@ -111,9 +111,6 @@ enum color_when {
 };
 typedef enum color_when color_when_t;
 
-// extern constants
-extern char const   COLORS_DEFAULT[];   ///< Default colors.
-
 // extern variables
 extern char const  *sgr_caret;          ///< Color of the caret `^`.
 extern char const  *sgr_error;          ///< Color of `error`.
@@ -141,6 +138,13 @@ void color_end( FILE *file, char const *sgr_color ) {
   if ( sgr_color != NULL )
     FPUTS( SGR_END SGR_EL, file );
 }
+
+/**
+ * Initializes when to print in color and the colors.
+ *
+ * @note This function must be called exactly once.
+ */
+void color_init( void );
 
 /**
  * Starts printing in the predefined \a sgr_color.
@@ -188,54 +192,6 @@ void color_strbuf_start( strbuf_t *sbuf, char const *sgr_color ) {
   if ( sgr_color != NULL )
     strbuf_printf( sbuf, SGR_START SGR_EL, sgr_color );
 }
-
-/**
- * Parses and sets the sequence of gcc color capabilities.
- *
- * @param capabilities The gcc capabilities to parse.  It's of the form:
- *  <table border="0">
- *    <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
- *    <tr>
- *      <td><i>capapilities</i></td>
- *      <td>::= <i>capability</i> [<tt>:</tt><i>capability</i>]*</td>
- *    </tr>
- *    <tr>
- *      <td><i>capability</i></td>
- *      <td>::= <i>cap-name</i><tt>=</tt><i>sgr-list</i></td>
- *    </tr>
- *    <tr>
- *      <td><i>cap-name</i></td>
- *      <td>::= [<tt>a-zA-Z-</tt>]+</td>
- *    </tr>
- *    <tr>
- *      <td><i>sgr-list</i></td>
- *      <td>::= <i>sgr</i>[<tt>;</tt><i>sgr</i>]*</td>
- *    </tr>
- *    <tr>
- *      <td><i>sgr</i></td>
- *      <td>::= [<tt>1-9</tt>][<tt>0-9</tt>]*</td>
- *    </tr>
- *    <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
- *  </table>
- * where <i>sgr</i> is a [Select Graphics
- * Rendition](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR) code.  An
- * example \a capabilities is: `caret=42;1:error=41;1:warning=43;1`.
- * @return Returns `true` only if at least one capability was parsed
- * successfully.
- *
- * @warning If this function returns `true`, it must never be called again.
- */
-NODISCARD
-bool colors_parse( char const *capabilities );
-
-/**
- * Determines whether we should emit escape sequences for color.
- *
- * @param when The \ref color_when value.
- * @return Returns `true` only if we should do color.
- */
-NODISCARD
-bool should_colorize( color_when_t when );
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -69,7 +69,6 @@ char const   *me;
 
 // local functions
 static void cdecl_cleanup( void );
-static void color_init( void );
 static void conf_init( void );
 
 NODISCARD
@@ -118,19 +117,6 @@ static void cdecl_cleanup( void ) {
   free_now();
   parser_cleanup();                     // must go before c_ast_cleanup()
   c_ast_cleanup();
-}
-
-/**
- * Initializes when to print in color and the colors.
- */
-static void color_init( void ) {
-  if ( !should_colorize( opt_color_when ) )
-    return;
-  if ( colors_parse( getenv( "CDECL_COLORS" ) ) )
-    return;
-  if ( colors_parse( getenv( "GCC_COLORS"  ) ) )
-    return;
-  PJL_IGNORE_RV( colors_parse( COLORS_DEFAULT ) );
 }
 
 /**

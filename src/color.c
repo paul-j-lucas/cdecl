@@ -29,7 +29,7 @@
 #define COLOR_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "color.h"
-#include "cdecl.h"
+#include "options.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -75,8 +75,12 @@ struct color_cap_map {
 };
 typedef struct color_cap_map color_cap_map_t;
 
-// extern constant definitions
-char const  COLORS_DEFAULT[] =
+// local functions
+NODISCARD
+static bool sgr_var_set( char const**, char const* );
+
+// local constant definitions
+static char const COLORS_DEFAULT[] =    ///< Default colors.
   COLOR_CAP_CARET         "=" SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
   COLOR_CAP_ERROR         "=" SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP
   COLOR_CAP_HELP_KEYWORD  "="                       SGR_BOLD  SGR_CAP_SEP
@@ -132,6 +136,70 @@ static color_cap_map_t const* color_cap_find( char const *name ) {
 }
 
 /**
+ * Parses and sets the sequence of gcc color capabilities.
+ *
+ * @param capabilities The gcc capabilities to parse.  It's of the form:
+ *  <table border="0">
+ *    <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+ *    <tr>
+ *      <td><i>capapilities</i></td>
+ *      <td>::= <i>capability</i> [<tt>:</tt><i>capability</i>]*</td>
+ *    </tr>
+ *    <tr>
+ *      <td><i>capability</i></td>
+ *      <td>::= <i>cap-name</i><tt>=</tt><i>sgr-list</i></td>
+ *    </tr>
+ *    <tr>
+ *      <td><i>cap-name</i></td>
+ *      <td>::= [<tt>a-zA-Z-</tt>]+</td>
+ *    </tr>
+ *    <tr>
+ *      <td><i>sgr-list</i></td>
+ *      <td>::= <i>sgr</i>[<tt>;</tt><i>sgr</i>]*</td>
+ *    </tr>
+ *    <tr>
+ *      <td><i>sgr</i></td>
+ *      <td>::= [<tt>1-9</tt>][<tt>0-9</tt>]*</td>
+ *    </tr>
+ *    <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+ *  </table>
+ * where <i>sgr</i> is a [Select Graphics
+ * Rendition](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR) code.  An
+ * example \a capabilities is: `caret=42;1:error=41;1:warning=43;1`.
+ * @return Returns `true` only if at least one capability was parsed
+ * successfully.
+ *
+ * @warning If this function returns `true`, it must never be called again.
+ */
+NODISCARD
+static bool colors_parse( char const *capabilities ) {
+  static bool set_any;                  // set at least one?
+  assert( !set_any );
+
+  if ( capabilities == NULL )
+    return false;
+  char *const capabilities_dup = check_strdup( capabilities );
+
+  for ( char *next_cap = capabilities_dup, *cap_name_val;
+        (cap_name_val = strsep( &next_cap, SGR_CAP_SEP )) != NULL; ) {
+    char const *const cap_name = strsep( &cap_name_val, "=" );
+    color_cap_map_t const *const cap = color_cap_find( cap_name );
+    if ( cap != NULL ) {
+      char const *const cap_value = strsep( &cap_name_val, "=" );
+      if ( sgr_var_set( cap->sgr_var, cap_value ) )
+        set_any = true;
+    }
+  } // for
+
+  if ( set_any )
+    free_later( capabilities_dup );     // sgr_* variables point to substrings
+  else
+    free( capabilities_dup );
+
+  return set_any;
+}
+
+/**
  * Parses an SGR (Select Graphic Rendition) value that matches the regular
  * expression of `n(;n)*` or a semicolon-separated list of integers in the
  * range 0-255.
@@ -182,36 +250,14 @@ static bool sgr_var_set( char const **sgr_var, char const *sgr_color ) {
   return true;
 }
 
-////////// extern functions ///////////////////////////////////////////////////
-
-bool colors_parse( char const *capabilities ) {
-  static bool set_any;                  // set at least one?
-  assert( !set_any );
-
-  if ( capabilities == NULL )
-    return false;
-  char *const capabilities_dup = check_strdup( capabilities );
-
-  for ( char *next_cap = capabilities_dup, *cap_name_val;
-        (cap_name_val = strsep( &next_cap, SGR_CAP_SEP )) != NULL; ) {
-    char const *const cap_name = strsep( &cap_name_val, "=" );
-    color_cap_map_t const *const cap = color_cap_find( cap_name );
-    if ( cap != NULL ) {
-      char const *const cap_value = strsep( &cap_name_val, "=" );
-      if ( sgr_var_set( cap->sgr_var, cap_value ) )
-        set_any = true;
-    }
-  } // for
-
-  if ( set_any )
-    free_later( capabilities_dup );     // sgr_* variables point to substrings
-  else
-    free( capabilities_dup );
-
-  return set_any;
-}
-
-bool should_colorize( color_when_t when ) {
+/**
+ * Determines whether we should emit escape sequences for color.
+ *
+ * @param when The \ref color_when value.
+ * @return Returns `true` only if we should do color.
+ */
+NODISCARD
+static bool should_colorize( color_when_t when ) {
   switch ( when ) {
     case COLOR_ALWAYS:
       return true;
@@ -240,6 +286,20 @@ bool should_colorize( color_when_t when ) {
       return !fd_is_file( STDOUT_FILENO );
   } // switch
   UNEXPECTED_INT_VALUE( when );
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+void color_init( void ) {
+  ASSERT_RUN_ONCE();
+
+  if ( !should_colorize( opt_color_when ) )
+    return;
+  if ( colors_parse( getenv( "CDECL_COLORS" ) ) )
+    return;
+  if ( colors_parse( getenv( "GCC_COLORS"  ) ) )
+    return;
+  PJL_IGNORE_RV( colors_parse( COLORS_DEFAULT ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
