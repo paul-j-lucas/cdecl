@@ -90,7 +90,7 @@ static strbuf_t     prompt_buf[2];      ///< Buffers for prompts.
  */
 NODISCARD
 static inline bool color_prompt( void ) {
-  return  cdecl_colorize && sgr_prompt != NULL
+  return  sgr_prompt != NULL
 #ifdef WITH_READLINE
           && HAVE_GENUINE_GNU_READLINE
 #endif /* WITH_READLINE */

@@ -124,8 +124,7 @@ static void cdecl_cleanup( void ) {
  * Initializes when to print in color and the colors.
  */
 static void color_init( void ) {
-  cdecl_colorize = should_colorize( opt_color_when );
-  if ( !cdecl_colorize )
+  if ( !should_colorize( opt_color_when ) )
     return;
   if ( colors_parse( getenv( "CDECL_COLORS" ) ) )
     return;

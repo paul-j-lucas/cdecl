@@ -115,7 +115,6 @@ typedef enum color_when color_when_t;
 extern char const   COLORS_DEFAULT[];   ///< Default colors.
 
 // extern variables
-extern bool         cdecl_colorize;     ///< Colorize errors & warnings?
 extern char const  *sgr_caret;          ///< Color of the caret `^`.
 extern char const  *sgr_error;          ///< Color of `error`.
 extern char const  *sgr_help_keyword;   ///< Color of cdecl keyword.
@@ -139,7 +138,7 @@ extern char const  *sgr_warning;        ///< Color of `warning`.
  */
 COLOR_H_INLINE
 void color_end( FILE *file, char const *sgr_color ) {
-  if ( cdecl_colorize && sgr_color != NULL )
+  if ( sgr_color != NULL )
     FPUTS( SGR_END SGR_EL, file );
 }
 
@@ -154,7 +153,7 @@ void color_end( FILE *file, char const *sgr_color ) {
  */
 COLOR_H_INLINE
 void color_start( FILE *file, char const *sgr_color ) {
-  if ( cdecl_colorize && sgr_color != NULL )
+  if ( sgr_color != NULL )
     FPRINTF( file, SGR_START SGR_EL, sgr_color );
 }
 
@@ -170,7 +169,7 @@ void color_start( FILE *file, char const *sgr_color ) {
  */
 COLOR_H_INLINE
 void color_strbuf_end( strbuf_t *sbuf, char const *sgr_color ) {
-  if ( cdecl_colorize && sgr_color != NULL )
+  if ( sgr_color != NULL )
     strbuf_puts( sbuf, SGR_END SGR_EL );
 }
 
@@ -186,7 +185,7 @@ void color_strbuf_end( strbuf_t *sbuf, char const *sgr_color ) {
  */
 COLOR_H_INLINE
 void color_strbuf_start( strbuf_t *sbuf, char const *sgr_color ) {
-  if ( cdecl_colorize && sgr_color != NULL )
+  if ( sgr_color != NULL )
     strbuf_printf( sbuf, SGR_START SGR_EL, sgr_color );
 }
 
