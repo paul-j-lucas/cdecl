@@ -38,6 +38,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
+#include <stdbool.h>
 #include <stdlib.h>                     /* for getenv() */
 #include <string.h>                     /* for str...() */
 #include <unistd.h>                     /* for isatty() */
