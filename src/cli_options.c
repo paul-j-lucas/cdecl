@@ -631,6 +631,14 @@ static void usage( int status ) {
 }
 
 /**
+ * Convenience macro for printing a `configure` option.
+ *
+ * @param OPT The option string literal to print (without the leading `--`).
+ */
+#define PUT_CONFIG_OPT(OPT) BLOCK( \
+  fputs( "\n  --" OPT, stdout ); printed_opt = true; )
+
+/**
  * Prints the **cdecl** version and possibly configure feature &amp; package
  * options and whether GNU **readline**(3) is genuine, then exits.
  *
@@ -644,47 +652,38 @@ static void version( bool verbose ) {
   fputs( "configure feature & package options:", stdout );
   bool printed_opt = false;
 #ifdef ENABLE_ASAN
-  fputs( "\n  --enable-asan", stdout );
-  printed_opt = true;
+  PUT_CONFIG_OPT( "enable-asan" );
 #endif /* ENABLE_ASAN */
 #ifdef NDEBUG
-  fputs( "\n  --disable-assert", stdout );
-  printed_opt = true;
+  PUT_CONFIG_OPT( "disable-assert" );
 #endif /* NDEBUG */
 #ifdef ENABLE_BISON_DEBUG
-  fputs( "\n  --enable-bison-debug", stdout );
-  printed_opt = true;
+  PUT_CONFIG_OPT( "enable-bison-debug" );
 #endif /* ENABLE_BISON_DEBUG */
 #ifndef ENABLE_CDECL_DEBUG
-  fputs( "\n  --disable-cdecl-debug", stdout );
-  printed_opt = true;
+  PUT_CONFIG_OPT( "disable-cdecl-debug" );
 #endif /* ENABLE_CDECL_DEBUG */
 #ifdef ENABLE_COVERAGE
-  fputs( "\n  --enable-coverage", stdout );
-  printed_opt = true;
+  PUT_CONFIG_OPT( "enable-coverage" );
 #endif /* ENABLE_COVERAGE */
 #ifdef ENABLE_FLEX_DEBUG
-  fputs( "\n  --enable-flex-debug", stdout );
-  printed_opt = true;
+  PUT_CONFIG_OPT( "enable-flex-debug" );
 #endif /* ENABLE_FLEX_DEBUG */
 #ifdef ENABLE_MSAN
-  fputs( "\n  --enable-msan", stdout );
-  printed_opt = true;
+  PUT_CONFIG_OPT( "enable-msan" );
 #endif /* ENABLE_MSAN */
 #ifndef WITH_READLINE
-  fputs( "\n  --without-readline", stdout );
-  printed_opt = true;
+  PUT_CONFIG_OPT( "without-readline" );
 #endif /* WITH_READLINE */
 #ifndef ENABLE_TERM_SIZE
-  fputs( "\n  --disable-term-size", stdout );
-  printed_opt = true;
+  PUT_CONFIG_OPT( "disable-term-size" );
 #endif /* ENABLE_TERM_SIZE */
 #ifdef ENABLE_UBSAN
-  fputs( "\n  --enable-ubsan", stdout );
-  printed_opt = true;
+  PUT_CONFIG_OPT( "enable-ubsan" );
 #endif /* ENABLE_UBSAN */
   if ( !printed_opt )
-    fputs( " none\n", stdout );
+    fputs( " none", stdout );
+  putchar( '\n' );
 #ifdef WITH_READLINE
   printf( "genuine GNU readline(3): %s\n", HAVE_GENUINE_GNU_READLINE ? "yes" : "no" );
 #endif /* WITH_READLINE */
