@@ -1,3 +1,9 @@
+2023-06-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, color.c, color.h: Moved color_init().
+   * cdecl.c, color.c, color.h, prompt.c: Don't need cdecl_colorize any more.
+   * color.c: Now using STDOUT_FILENO.
+
 2023-06-09  Paul J. Lucas <paul@lucasmail.org>
 
    * color.c: Removed unnecessary forward declaration.
