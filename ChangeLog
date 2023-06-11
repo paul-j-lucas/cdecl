@@ -1,3 +1,8 @@
+2023-06-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: For K&R C, the error message for main() not having the
+     right number of parameters has been changed to "0, 2, or 3".
+
 2023-06-10  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: Added PUT_CONFIG_OPT(); fixed option newline.
