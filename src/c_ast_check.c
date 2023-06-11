@@ -1018,6 +1018,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
   }
 
   size_t const n_params = c_ast_params_count( ast );
+  c_param_t const *param = c_ast_params( ast );
   c_ast_t const *param_ast;
 
   switch ( n_params ) {
@@ -1025,7 +1026,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
       break;
 
     case 1:                             // main(void)
-      param_ast = c_param_ast( c_ast_params( ast ) );
+      param_ast = c_param_ast( param );
       if ( opt_lang == LANG_C_KNR ) {
         print_error( &param_ast->loc,
           "main() must have 0, 2, or 3 parameters in %s\n",
@@ -1044,7 +1045,6 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
     case 2:                             // main(int, char *argv[])
     case 3:                             // main(int, char *argv[], char *envp[])
       if ( OPT_LANG_IS( PROTOTYPES ) ) {
-        c_param_t const *param = c_ast_params( ast );
         param_ast = c_param_ast( param );
         if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
           print_error( &param_ast->loc,
@@ -1069,7 +1069,8 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 
     default:
       print_error( c_ast_params_loc( ast ),
-        "main() must have 0-3 parameters\n"
+        "main() must have %s parameters\n",
+        OPT_LANG_IS( PROTOTYPES ) ? "0-3" : "0, 2, or 3"
       );
       return false;
   } // switch
