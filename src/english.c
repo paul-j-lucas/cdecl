@@ -210,10 +210,10 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *eout ) {
   }
 
   assert( local_name[0] != '\0' );
-  FPRINTF( eout, "%s ", local_name );
+  FPUTS( local_name, eout );
   if ( scope_name[0] != '\0' ) {
     assert( !c_type_is_none( scope_type ) );
-    FPRINTF( eout, "of %s %s ", c_type_name_english( scope_type ), scope_name );
+    FPRINTF( eout, " of %s %s", c_type_name_english( scope_type ), scope_name );
   }
 }
 
@@ -431,7 +431,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
         break;                          // these don't have names
       default:
         c_ast_name_english( ast, eout );
-        FPUTS( "as ", eout );
+        FPUTS( " as ", eout );
     } // switch
   }
 
