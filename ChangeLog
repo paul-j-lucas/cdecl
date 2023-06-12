@@ -1,3 +1,8 @@
+2023-06-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * english.c: Changed c_ast_name_english() so it never prints a trailing
+     space.
+
 2023-06-11  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c: For K&R C, the error message for main() not having the
