@@ -1,3 +1,7 @@
+2023-06-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Now calling cli_option_init() first.
+
 2023-06-12  Paul J. Lucas <paul@lucasmail.org>
 
    * english.c: Changed c_ast_name_english() so it never prints a trailing
