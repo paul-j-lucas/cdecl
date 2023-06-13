@@ -91,11 +91,11 @@ static bool read_conf_file( char const* );
 int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   check_atexit( &cdecl_cleanup );
+  cli_option_init( &argc, &argv );
   c_keyword_init();
   cdecl_keyword_init();
-  cli_option_init( &argc, &argv );
   color_init();
-  lexer_init();
+  lexer_init();                         // must come before c_typedef_init()
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
   if ( opt_read_conf )
