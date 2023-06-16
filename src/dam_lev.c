@@ -65,7 +65,7 @@ static void** matrix2_new( size_t esize, size_t idim, size_t jdim ) {
   size_t const ptrs_size = sizeof(void*) * idim;
   size_t const row_size = esize * jdim;
   // allocate the row pointers followed by the elements
-  void **const rows = check_realloc( NULL, ptrs_size + idim * row_size );
+  void **const rows = MALLOC( char, ptrs_size + idim * row_size );
   char *const elements = STATIC_CAST( char*, rows ) + ptrs_size;
   for ( size_t i = 0; i < idim; ++i )
     rows[i] = &elements[ i * row_size ];
