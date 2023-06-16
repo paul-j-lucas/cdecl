@@ -63,9 +63,9 @@ size_t dam_lev_dist( void *working_mem, char const *source, size_t source_len,
  * be hoisted out of the loop.
  *
  * @param max_source_len The maximum length of all source strings that will be
- * passed to subsequent calls of dam_lev_dist().
+ * passed to subsequent calls of dam_lev_dist().  Must be &gt; 0.
  * @param max_target_len The maximum length of all target strings that will be
- * passed to subsequent calls of dam_lev_dist().
+ * passed to subsequent calls of dam_lev_dist().  Must be &gt; 0.
  * @return Returns said working memory.  The caller is responsible for calling
  * **free**(3) on it.
  */
