@@ -1,3 +1,12 @@
+2023-06-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * dam_lev.c: Now ensuring 2D matrix elements are suitably aligned.
+
+2023-06-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * dam_lev.c, dam_lev.h: Added assert()s.
+   * dam_lev.c: s/check_realloc/MALLOC/
+
 2023-06-13  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c: Now calling cli_option_init() first.
