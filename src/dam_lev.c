@@ -30,6 +30,7 @@
 
 // standard
 #include <assert.h>
+#include <stdalign.h>
 #include <stdbool.h>
 #include <string.h>
 
@@ -47,6 +48,19 @@ static inline size_t min_dist( size_t i, size_t j ) {
   return i < j ? i : j;
 }
 
+/**
+ * Rounds \a n up to a multiple of \a multiple.
+ *
+ * @param n The number to round up.  Must be &gt; 0.
+ * @param multiple The multiple to round up to.
+ * @return Returns \a n rounded up to a multiple of \a multiple.
+ */
+NODISCARD
+static inline size_t round_up_to( size_t n, size_t multiple ) {
+  size_t const remainder = n % multiple;
+  return remainder == 0 ? n : n + multiple - remainder;
+}
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -54,15 +68,18 @@ static inline size_t min_dist( size_t i, size_t j ) {
  * of size \a esize.
  *
  * @param esize The size in bytes of a single element.
+ * @param ealign The alignment of a single element.
  * @param idim The number of elements in the _i_ dimension.
  * @param jdim The number of elements in the _j_ dimension.
- * @return Returns a pointer to a new two-dimensional array that may be cast to
- * `T**` where `T` is the type of element.  The caller is responsible for
+ * @return Returns a pointer to a new two-dimensional matrix that may be cast
+ * to `T**` where `T` is the type of element.  The caller is responsible for
  * freeing it via **free**(3).
  */
 NODISCARD
-static void** matrix2_new( size_t esize, size_t idim, size_t jdim ) {
-  size_t const ptrs_size = sizeof(void*) * idim;
+static void** matrix2_new( size_t esize, size_t ealign, size_t idim,
+                           size_t jdim ) {
+  // ensure &elements[0] is suitably aligned
+  size_t const ptrs_size = round_up_to( sizeof(void*) * idim, ealign );
   size_t const row_size = esize * jdim;
   // allocate the row pointers followed by the elements
   void **const rows = MALLOC( char, ptrs_size + idim * row_size );
@@ -176,7 +193,9 @@ size_t dam_lev_dist( void *working_mem, char const *source, size_t slen,
 void* dam_lev_new( size_t max_source_len, size_t max_target_len ) {
   assert( max_source_len > 0 );
   assert( max_target_len > 0 );
-  return matrix2_new( sizeof(size_t), max_source_len + 2, max_target_len + 2 );
+  return matrix2_new(
+    sizeof(size_t), alignof(size_t), max_source_len + 2, max_target_len + 2
+  );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
