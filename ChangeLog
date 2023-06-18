@@ -1,5 +1,7 @@
 2023-06-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * limits.in.h, wchar.in.h, locale-fr.m4, mbrtowc.m4, mbsrtowcs.m4: Updated
+     Gnulib.
    * dam_lev.c: s/matrix2_new/matrix2d_new/
 
 2023-06-17  Paul J. Lucas <paul@lucasmail.org>
