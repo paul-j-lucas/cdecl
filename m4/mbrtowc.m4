@@ -1,4 +1,4 @@
-# mbrtowc.m4 serial 40  -*- coding: utf-8 -*-
+# mbrtowc.m4 serial 41  -*- coding: utf-8 -*-
 dnl Copyright (C) 2001-2002, 2004-2005, 2008-2023 Free Software Foundation,
 dnl Inc.
 dnl This file is free software; the Free Software Foundation
@@ -429,7 +429,8 @@ int main ()
   int result = 0;
   int found_some_locale = 0;
   /* This fails on Solaris.  */
-  if (setlocale (LC_ALL, "$LOCALE_FR_UTF8") != NULL)
+  if (strcmp ("$LOCALE_FR_UTF8", "none") != 0
+      && setlocale (LC_ALL, "$LOCALE_FR_UTF8") != NULL)
     {
       char input[] = "B\303\274\303\237er"; /* "Büßer" */
       mbstate_t state;
@@ -445,7 +446,8 @@ int main ()
       found_some_locale = 1;
     }
   /* This fails on HP-UX 11.11.  */
-  if (setlocale (LC_ALL, "$LOCALE_JA") != NULL)
+  if (strcmp ("$LOCALE_JA", "none") != 0
+      && setlocale (LC_ALL, "$LOCALE_JA") != NULL)
     {
       char input[] = "B\217\253\344\217\251\316er"; /* "Büßer" */
       mbstate_t state;

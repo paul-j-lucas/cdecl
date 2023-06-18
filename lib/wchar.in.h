@@ -1199,7 +1199,7 @@ _GL_WARN_ON_USE (wcsrchr, "wcsrchr is unportable - "
 #endif
 
 
-/* Return the length of the initial segmet of WCS which consists entirely
+/* Return the length of the initial segment of WCS which consists entirely
    of wide characters not in REJECT.  */
 #if @GNULIB_WCSCSPN@
 # if !@HAVE_WCSCSPN@
@@ -1219,7 +1219,7 @@ _GL_WARN_ON_USE (wcscspn, "wcscspn is unportable - "
 #endif
 
 
-/* Return the length of the initial segmet of WCS which consists entirely
+/* Return the length of the initial segment of WCS which consists entirely
    of wide characters in ACCEPT.  */
 #if @GNULIB_WCSSPN@
 # if !@HAVE_WCSSPN@
