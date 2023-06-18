@@ -76,8 +76,8 @@ static inline size_t round_up_to( size_t n, size_t multiple ) {
  * freeing it via **free**(3).
  */
 NODISCARD
-static void** matrix2_new( size_t esize, size_t ealign, size_t idim,
-                           size_t jdim ) {
+static void** matrix2d_new( size_t esize, size_t ealign, size_t idim,
+                            size_t jdim ) {
   // ensure &elements[0] is suitably aligned
   size_t const ptrs_size = round_up_to( sizeof(void*) * idim, ealign );
   size_t const row_size = esize * jdim;
@@ -193,7 +193,7 @@ size_t dam_lev_dist( void *working_mem, char const *source, size_t slen,
 void* dam_lev_new( size_t max_source_len, size_t max_target_len ) {
   assert( max_source_len > 0 );
   assert( max_target_len > 0 );
-  return matrix2_new(
+  return matrix2d_new(
     sizeof(size_t), alignof(size_t), max_source_len + 2, max_target_len + 2
   );
 }
