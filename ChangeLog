@@ -1,5 +1,6 @@
 2023-06-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * not_in_Makefile.sh: Now checking for unused *.out files.
    * dam_lev.c, dam_lev.h: Undid assert()s.
 
 2023-06-18  Paul J. Lucas <paul@lucasmail.org>
