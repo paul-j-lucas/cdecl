@@ -1,1 +1,0 @@
-declare f as function (x as non-discardable int) returning void

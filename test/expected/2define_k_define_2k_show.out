@@ -1,3 +1,0 @@
-define S as struct S
-define T of struct S as struct S_T
-define T as struct T

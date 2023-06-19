@@ -1,4 +1,0 @@
-explain int a<:9:>
-             ^
-14: warning: digraphs not supported until C95
-declare a as array 9 of int
