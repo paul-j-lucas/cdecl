@@ -191,8 +191,6 @@ size_t dam_lev_dist( void *working_mem, char const *source, size_t slen,
 }
 
 void* dam_lev_new( size_t max_source_len, size_t max_target_len ) {
-  assert( max_source_len > 0 );
-  assert( max_target_len > 0 );
   return matrix2d_new(
     sizeof(size_t), alignof(size_t), max_source_len + 2, max_target_len + 2
   );
