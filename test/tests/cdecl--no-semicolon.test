@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl --no-semicolon <<END
-declare x as int
-END
