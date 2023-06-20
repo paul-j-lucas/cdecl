@@ -96,9 +96,6 @@ _GL_INLINE_HEADER_BEGIN
  * @{
  */
 
-/** When to colorize default. */
-#define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
-
 /**
  * When to colorize output.
  */

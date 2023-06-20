@@ -48,7 +48,7 @@ bool                opt_alt_tokens;
 #ifdef ENABLE_CDECL_DEBUG
 bool                opt_cdecl_debug;
 #endif /* ENABLE_CDECL_DEBUG */
-color_when_t        opt_color_when = COLOR_WHEN_DEFAULT;
+color_when_t        opt_color_when = COLOR_NOT_FILE;
 char const         *opt_conf_path;
 bool                opt_east_const;
 bool                opt_echo_commands;
