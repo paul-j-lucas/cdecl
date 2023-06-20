@@ -956,7 +956,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
  * declaration (not a cast).
  *
  * @param g The g_state to use.
- * @param ast The AST to print the name (if any) of.
+ * @param ast The AST to print the name of, if any.
  */
 static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
