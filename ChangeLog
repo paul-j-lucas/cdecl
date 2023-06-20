@@ -1,3 +1,9 @@
+2023-06-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c: s/color_cap_find/sgr_var_find/
+   * color.c: Moved COLORS_DEFAULT.
+   * color.h, options.c: Removed COLOR_WHEN_DEFAULT.
+
 2023-06-19  Paul J. Lucas <paul@lucasmail.org>
 
    * not_in_Makefile.sh: Now checking for unused *.out files.
