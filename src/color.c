@@ -66,19 +66,12 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Color capability used to map a `CDECL_COLORS` or `GCC_COLORS` "capability"
- * to the variable to set.
- */
-struct color_cap_map {
-  char const   *cap_name;               ///< Capability name.
-  char const  **sgr_var;                ///< Pointer to SGR variable to set.
-};
-typedef struct color_cap_map color_cap_map_t;
-
 // local functions
 NODISCARD
-static bool sgr_var_set( char const**, char const* );
+static char const** sgr_var_find( char const* );
+
+NODISCARD
+static bool         sgr_var_set( char const**, char const* );
 
 // extern variable definitions
 char const *sgr_caret;
@@ -92,37 +85,6 @@ char const *sgr_prompt;
 char const *sgr_warning;
 
 ////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Gets the \ref color_cap_map corresponding to \a name.
- *
- * @param name The name to get the corresponding \ref color_cap_map for.
- * @return Returns said \ref color_cap_map or NULL if \a name doesn't
- * correspond to any capability.
- */
-static color_cap_map_t const* color_cap_find( char const *name ) {
-  assert( name != NULL );
-
-  static color_cap_map_t const COLOR_CAP_MAP[] = {
-    { COLOR_CAP_CARET,        &sgr_caret        },
-    { COLOR_CAP_ERROR,        &sgr_error        },
-    { COLOR_CAP_HELP_KEYWORD, &sgr_help_keyword },
-    { COLOR_CAP_HELP_NONTERM, &sgr_help_nonterm },
-    { COLOR_CAP_HELP_PUNCT,   &sgr_help_punct   },
-    { COLOR_CAP_HELP_TITLE,   &sgr_help_title   },
-    { COLOR_CAP_LOCUS,        &sgr_locus        },
-    { COLOR_CAP_PROMPT,       &sgr_prompt       },
-    { COLOR_CAP_WARNING,      &sgr_warning      },
-    { NULL,                   NULL              }
-  };
-
-  for ( color_cap_map_t const *m = COLOR_CAP_MAP; m->cap_name != NULL; ++m ) {
-    if ( strcmp( name, m->cap_name ) == 0 )
-      return m;
-  } // for
-
-  return NULL;
-}
 
 /**
  * Parses and sets the sequence of gcc color capabilities.
@@ -172,10 +134,10 @@ static bool colors_parse( char const *capabilities ) {
   for ( char *next_cap = capabilities_dup, *cap_name_val;
         (cap_name_val = strsep( &next_cap, SGR_CAP_SEP )) != NULL; ) {
     char const *const cap_name = strsep( &cap_name_val, "=" );
-    color_cap_map_t const *const cap = color_cap_find( cap_name );
-    if ( cap != NULL ) {
+    char const **const sgr_var = sgr_var_find( cap_name );
+    if ( sgr_var != NULL ) {
       char const *const cap_value = strsep( &cap_name_val, "=" );
-      if ( sgr_var_set( cap->sgr_var, cap_value ) )
+      if ( sgr_var_set( sgr_var, cap_value ) )
         set_any = true;
     }
   } // for
@@ -220,6 +182,44 @@ static bool sgr_is_valid( char const *sgr_color ) {
         return false;
     } // switch
   } // for
+}
+
+/**
+ * Gets a pointer to the SGR (Select Graphic Rendition) variable corresponding
+ * to \a name, if any.
+ *
+ * @param name The name to get the corresponding SGR variable for.
+ * @return Returns said pointer or NULL if \a name doesn't correspond to any
+ * SGR variable.
+ */
+static char const** sgr_var_find( char const *name ) {
+  struct cap_var_map {
+    char const   *cap_name;             // color capability name
+    char const  **sgr_var;              // pointer to SGR variable
+  };
+  typedef struct cap_var_map cap_var_map_t;
+
+  static cap_var_map_t const CAP_VAR_MAP[] = {
+    { COLOR_CAP_CARET,        &sgr_caret        },
+    { COLOR_CAP_ERROR,        &sgr_error        },
+    { COLOR_CAP_HELP_KEYWORD, &sgr_help_keyword },
+    { COLOR_CAP_HELP_NONTERM, &sgr_help_nonterm },
+    { COLOR_CAP_HELP_PUNCT,   &sgr_help_punct   },
+    { COLOR_CAP_HELP_TITLE,   &sgr_help_title   },
+    { COLOR_CAP_LOCUS,        &sgr_locus        },
+    { COLOR_CAP_PROMPT,       &sgr_prompt       },
+    { COLOR_CAP_WARNING,      &sgr_warning      },
+    { NULL,                   NULL              }
+  };
+
+  assert( name != NULL );
+
+  for ( cap_var_map_t const *m = CAP_VAR_MAP; m->cap_name != NULL; ++m ) {
+    if ( strcmp( name, m->cap_name ) == 0 )
+      return m->sgr_var;
+  } // for
+
+  return NULL;
 }
 
 /**
