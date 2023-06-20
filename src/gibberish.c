@@ -653,6 +653,8 @@ static void g_print_ast_list( g_state_t const *g,
  *
  * @param g The g_state to use.
  * @param ast The AST to get the name of.
+ *
+ * @sa g_print_space_ast_name()
  */
 static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
@@ -684,7 +686,7 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
     //
     // had the "using PF =" part already printed in c_typedef_gibberish(), so
     // we don't print it again after the '*'; but we still need to print all
-    // subsequent names, if any.  Hence, reset the flags and print nothing.
+    // subsequent names, if any.  Hence, reset the flag and print nothing.
     //
     g->printed_space = true;
     return;
@@ -957,6 +959,8 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
  *
  * @param g The g_state to use.
  * @param ast The AST to print the name of, if any.
+ *
+ * @sa g_print_ast_name()
  */
 static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
