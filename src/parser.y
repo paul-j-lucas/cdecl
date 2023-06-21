@@ -2131,8 +2131,7 @@ declare_command
                   "USER-DEFINED CONVERSION OPERATOR "
                   "of_scope_list_english_opt "
                   "RETURNING decl_english_ast" );
-      DUMP_TYPE( "storage_class_subset_english_type_opt",
-                 storage_type );
+      DUMP_TYPE( "storage_class_subset_english_type_opt", storage_type );
       DUMP_TID( "cv_qualifier_list_stid_opt", cv_qual_stid );
       DUMP_SNAME( "of_scope_list_english_opt", $7 );
       DUMP_AST( "decl_english_ast", ret_ast );
