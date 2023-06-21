@@ -664,12 +664,10 @@ c_sname_t c_ast_move_sname( c_ast_t *ast ) {
   assert( ast != NULL );
   c_sname_t *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
   c_sname_t rv_sname;
-  if ( found_sname == NULL ) {
+  if ( found_sname == NULL )
     c_sname_init( &rv_sname );
-  } else {
-    rv_sname = *found_sname;
-    c_sname_init( found_sname );
-  }
+  else
+    rv_sname = c_sname_move( found_sname );
   return rv_sname;
 }
 
