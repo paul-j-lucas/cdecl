@@ -317,6 +317,18 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
 c_ast_t const* c_ast_leaf( c_ast_t const *ast );
 
 /**
+ * Takes the name, if any, away from \a ast
+ * (with the intent of giving it to another AST).
+ *
+ * @param ast The AST (or one of its child nodes) to take from.
+ * @return Returns said name or en empty name.
+ *
+ * @sa c_sname_move()
+ */
+NODISCARD
+c_sname_t c_ast_move_sname( c_ast_t *ast );
+
+/**
  * Gets whether the operator is a member, non-member, or unspecified.
  *
  * @param ast The AST of the operator.
@@ -362,16 +374,6 @@ c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list );
  */
 NODISCARD
 c_ast_t* c_ast_root( c_ast_t *ast );
-
-/**
- * Takes the name, if any, away from \a ast
- * (with the intent of giving it to another AST).
- *
- * @param ast The AST (or one of its child nodes) to take from.
- * @return Returns said name or en empty name.
- */
-NODISCARD
-c_sname_t c_ast_take_name( c_ast_t *ast );
 
 /**
  * Checks \a ast to see if it contains one or more of \a type: if so, removes

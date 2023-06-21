@@ -523,7 +523,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast ) {
   c_ast_t *const rv_ast = c_ast_add_array_impl( ast, array_ast, of_ast );
   assert( rv_ast != NULL );
   if ( c_sname_empty( &rv_ast->sname ) )
-    rv_ast->sname = c_ast_take_name( ast );
+    rv_ast->sname = c_ast_move_sname( ast );
   c_type_t const taken_type = c_ast_take_storage( array_ast->array.of_ast );
   c_type_or_eq( &array_ast->type, &taken_type );
   return rv_ast;
@@ -533,7 +533,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
   c_ast_t *const rv_ast = c_ast_add_func_impl( ast, func_ast, ret_ast );
   assert( rv_ast != NULL );
   if ( c_sname_empty( &rv_ast->sname ) )
-    rv_ast->sname = c_ast_take_name( ast );
+    rv_ast->sname = c_ast_move_sname( ast );
   if ( func_ast->func.ret_ast != NULL ) {
     c_type_t const taken_type = c_ast_take_storage( func_ast->func.ret_ast );
     c_type_or_eq( &rv_ast->type, &taken_type );
@@ -660,6 +660,19 @@ c_ast_t const* c_ast_leaf( c_ast_t const *ast ) {
   return ast;
 }
 
+c_sname_t c_ast_move_sname( c_ast_t *ast ) {
+  assert( ast != NULL );
+  c_sname_t *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
+  c_sname_t rv_sname;
+  if ( found_sname == NULL ) {
+    c_sname_init( &rv_sname );
+  } else {
+    rv_sname = *found_sname;
+    c_sname_init( found_sname );
+  }
+  return rv_sname;
+}
+
 unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
@@ -759,7 +772,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
         // is discarded.
         //
         if ( c_sname_empty( &type_ast->sname ) )
-          type_ast->sname = c_ast_take_name( decl_ast );
+          type_ast->sname = c_ast_move_sname( decl_ast );
         return type_ast;
       }
       //
@@ -788,7 +801,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   decl_ast->type.atids |= taken_type.atids;
 
   if ( c_sname_empty( &decl_ast->sname ) )
-    decl_ast->sname = c_ast_take_name( type_ast );
+    decl_ast->sname = c_ast_move_sname( type_ast );
 
   return decl_ast;
 }
@@ -797,7 +810,7 @@ c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list ) {
   assert( ast != NULL );
   c_ast_t *const ptr_ast =
     c_ast_new( K_POINTER, ast->depth, &ast->loc, ast_list );
-  ptr_ast->sname = c_ast_take_name( ast );
+  ptr_ast->sname = c_ast_move_sname( ast );
   c_ast_set_parent( ast, ptr_ast );
   return ptr_ast;
 }
@@ -807,19 +820,6 @@ c_ast_t* c_ast_root( c_ast_t *ast ) {
   while ( ast->parent_ast != NULL )
     ast = ast->parent_ast;
   return ast;
-}
-
-c_sname_t c_ast_take_name( c_ast_t *ast ) {
-  assert( ast != NULL );
-  c_sname_t *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
-  c_sname_t rv_sname;
-  if ( found_sname == NULL ) {
-    c_sname_init( &rv_sname );
-  } else {
-    rv_sname = *found_sname;
-    c_sname_init( found_sname );
-  }
-  return rv_sname;
 }
 
 c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type ) {

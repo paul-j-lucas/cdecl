@@ -3516,7 +3516,7 @@ typedef_decl_c
         // that is: any type name followed by a new name.
         //
         typedef_ast = c_ast_patch_placeholder( type_ast, decl_ast );
-        temp_sname = c_ast_take_name( decl_ast );
+        temp_sname = c_ast_move_sname( decl_ast );
         c_sname_set( &typedef_ast->sname, &temp_sname );
       }
 
