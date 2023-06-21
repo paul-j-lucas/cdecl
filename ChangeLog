@@ -1,5 +1,7 @@
 2023-06-21  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl_keyword.c: `returning` was added to the set of next autocompletable
+     keywords for `lambda`.
    * c_ast_util.c: Now using c_sname_move().
    * c_ast_util.c, c_ast_util.h, parser.y: s/c_ast_take_name/c_ast_move_sname/
 
