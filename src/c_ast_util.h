@@ -344,7 +344,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
  * nodes), if any, is moved to the new pointer AST.
  *
  * @param ast The AST to create a pointer to.
- * @param ast_list If not NULL, the new pointer AST is appended to the list.
+ * @param ast_list The list to append the new pointer AST node onto.
  * @return Returns the new pointer AST.
  *
  * @sa c_ast_unpointer()
