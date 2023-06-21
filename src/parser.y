@@ -2410,7 +2410,7 @@ define_command
       //      define sint as static int
       //      ...
       //
-      //  i.e., a defined type with a storage class.  Once the semantic checks
+      // i.e., a defined type with a storage class.  Once the semantic checks
       // pass, remove the TS_TYPEDEF.
       //
       PARSE_ASSERT( c_type_add( &ast->type, &T_TS_TYPEDEF, &@4 ) );
