@@ -922,7 +922,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     TOKEN( Y_lambda ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
-      AC_NEXT_KEYWORDS( L_capturing, L_copy, L_reference )
+      AC_NEXT_KEYWORDS( L_capturing, L_copy, L_reference, L_returning )
     )
   },
 

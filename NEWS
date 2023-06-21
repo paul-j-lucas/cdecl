@@ -17,6 +17,9 @@ For the `explicit-ecsu`, `explicit-int`, and `west-pointer` options, `*` is a
 synonym for "all" and `-` is a synonym for "none" but only when they're by
 themselves.
 
+** Autocompleting `returning` for lambdas
+`returning` was added to the set of next autocompletable keywords for `lambda`.
+
 
 * Changes in Cdecl 14.2
 
