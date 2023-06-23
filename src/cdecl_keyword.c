@@ -155,9 +155,12 @@
 /**
  * All **cdecl** keywords that are (mostly) _not_ C/C++ keywords.
  *
- * @note Exceptions are `alignas`, `bool`, `complex`, `const`, and `volatile`
- * that are included here as **cdecl** keywords so each maps to its language-
- * specific literal, e.g., `_Alignas` in C vs. `alignas` in C++.
+ * @note Exceptions are:
+ *  + `alignas`, `bool`, `complex`, `const`, and `volatile` so they can map to
+ *    their language-specific literals, e.g., `_Alignas` in C vs. `alignas` in
+ *    C++.
+ *  + `double` so it can specify the #AC_NEXT_KEYWORDS() of `precision`.
+ *
  * @note This is not declared `const` because it's sorted once.
  *
  * ## Initialization Macros
@@ -695,6 +698,15 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     AC_SETTINGS(
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
+    )
+  },
+
+  { L_double,
+    LANG_ANY,
+    SYNONYM( FIND_IN_ENGLISH_ONLY, L_double ),
+    AC_SETTINGS(
+      AC_POLICY_DEFER,                  // to C keyword
+      AC_NEXT_KEYWORDS( L_precision )
     )
   },
 
