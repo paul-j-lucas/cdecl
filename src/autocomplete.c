@@ -662,8 +662,8 @@ static char* keyword_generator( char const *text, int state ) {
       // for that keyword.
       //
       assert( rl_point >= 0 );
-      specific_ac_keywords =
-        prev_keyword_ac_next( rl_line_buffer, STATIC_CAST( size_t, rl_point ) );
+      size_t const rl_pos = STATIC_CAST( size_t, rl_point );
+      specific_ac_keywords = prev_keyword_ac_next( rl_line_buffer, rl_pos );
     }
   }
 
