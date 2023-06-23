@@ -1,3 +1,12 @@
+2023-06-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_keyword.c: `precision` is now autocompleted following `double` in
+     pseudo-English.
+
+2023-06-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Now returning ac_next_keywords directly.
+
 2023-06-21  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl_keyword.c: `returning` was added to the set of next autocompletable
