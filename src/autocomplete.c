@@ -416,9 +416,10 @@ static inline bool is_token_char( char c ) {
 }
 
 /**
- * Attempts to find the previous **cdecl** keyword in \a s relative to \a pos.
+ * Attempts to find the previous keyword in \a s relative to \a pos and, if
+ * found, returns that keyword's next autocompletion keywords, if any.
  *
- * @remarks This function exists to find the previous **cdecl** keyword for
+ * @remarks This function exists to find the previous keyword for
  * autocompletion skipping over non-kewywords.  For example, given:
  *
  *      cdecl> declare x as int width 4 <tab>
@@ -429,12 +430,13 @@ static inline bool is_token_char( char c ) {
  *
  * @param s The string to find the previous keyword in.
  * @param pos The position within \a s to start looking before.
- * @return Returns the previous **cdecl** keyword or NULL if none.
+ * @return Returns the previous keyword's next autocompletion keywords or NULL
+ * if none.
  *
  * @sa str_prev_token()
  */
 NODISCARD
-static cdecl_keyword_t const* prev_cdecl_keyword( char const *s, size_t pos ) {
+static char const* const* prev_keyword_ac_next( char const *s, size_t pos ) {
   for (;;) {
     size_t token_len;
     char const *const token = str_prev_token( s, pos, &token_len );
@@ -445,7 +447,7 @@ static cdecl_keyword_t const* prev_cdecl_keyword( char const *s, size_t pos ) {
     strbuf_putsn( &token_buf, token, token_len );
     cdecl_keyword_t const *const cdk = cdecl_keyword_find( token_buf.str );
     if ( cdk != NULL )
-      return cdk;
+      return cdk->ac_next_keywords;
     pos = STATIC_CAST( size_t, token - s );
   } // for
 }
@@ -660,9 +662,8 @@ static char* keyword_generator( char const *text, int state ) {
       // for that keyword.
       //
       assert( rl_point >= 0 );
-      cdecl_keyword_t const *const cdk =
-        prev_cdecl_keyword( rl_line_buffer, STATIC_CAST( size_t, rl_point ) );
-      specific_ac_keywords = cdk != NULL ? cdk->ac_next_keywords : NULL;
+      specific_ac_keywords =
+        prev_keyword_ac_next( rl_line_buffer, STATIC_CAST( size_t, rl_point ) );
     }
   }
 
