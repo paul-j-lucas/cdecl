@@ -98,16 +98,18 @@ static char* check_prefix_strdup( char const *prefix, size_t prefix_len,
  * pointer is incremented.
  * @param tpid The type part ID that a keyword must have in order to be copied
  * (or counted).
- * @return Returns said number of keywords.
+ * @return If \a pdym is NULL, returns said number of keywords; otherwise the
+ * return value is unspecifed.
  */
 PJL_DISCARD
 static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
   size_t count = 0;
   FOREACH_C_KEYWORD( ck ) {
     if ( opt_lang_is_any( ck->lang_ids ) && c_tid_tpid( ck->tid ) == tpid ) {
-      if ( pdym != NULL )
+      if ( pdym == NULL )
+        ++count;
+      else
         (*pdym)++->literal = check_strdup( ck->literal );
-      ++count;
     }
   } // for
   return count;
@@ -121,7 +123,8 @@ static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count keywords, not copy.  If not NULL, on return, the pointed-to
  * pointer is incremented.
- * @return Returns said number of keywords.
+ * @return If \a pdym is NULL, returns said number of keywords; otherwise the
+ * return value is unspecifed.
  */
 PJL_DISCARD
 static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
@@ -136,9 +139,10 @@ static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
       literal = cdk->literal;
     else if ( (literal = c_lang_literal( cdk->lang_syn )) == NULL )
       continue;
-    if ( pdym != NULL )
+    if ( pdym == NULL )
+      ++count;
+    else
       (*pdym)++->literal = check_strdup( literal );
-    ++count;
   } // for
   return count;
 }
@@ -151,16 +155,18 @@ static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count commands, not copy.  If not NULL, on return, the pointed-to
  * pointer is incremented.
- * @return Returns said number of commands.
+ * @return If \a pdym is NULL, returns said number of commands; otherwise the
+ * return value is unspecifed.
  */
 PJL_DISCARD
 static size_t copy_commands( did_you_mean_t **const pdym ) {
   size_t count = 0;
   FOREACH_CDECL_COMMAND( command ) {
     if ( opt_lang_is_any( command->lang_ids ) ) {
-      if ( pdym != NULL )
+      if ( pdym == NULL )
+        ++count;
+      else
         (*pdym)++->literal = check_strdup( command->literal );
-      ++count;
     }
   } // for
   return count;
@@ -173,15 +179,17 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count options, not copy.  If not NULL, on return, the pointed-to
  * pointer is incremented.
- * @return Returns said number of options.
+ * @return If \a pdym is NULL, returns said number of options; otherwise the
+ * return value is unspecifed.
  */
 PJL_DISCARD
 static size_t copy_cli_options( did_you_mean_t **pdym ) {
   size_t count = 0;
   FOREACH_CLI_OPTION( opt ) {
-    if ( pdym != NULL )
+    if ( pdym == NULL )
+      ++count;
+    else
       (*pdym)++->literal = check_strdup( opt->name );
-    ++count;
   } // for
   return count;
 }
@@ -193,7 +201,8 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count options, not copy.  If not NULL, on return, the pointed-to
  * pointer is incremented.
- * @return Returns said number of options.
+ * @return If \a pdym is NULL, returns said number of options; otherwise the
+ * return value is unspecifed.
  */
 PJL_DISCARD
 static size_t copy_set_options( did_you_mean_t **const pdym ) {
@@ -201,22 +210,26 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
   FOREACH_SET_OPTION( opt ) {
     switch ( opt->kind ) {
       case SET_OPTION_TOGGLE:
-        if ( pdym != NULL ) {
+        if ( pdym == NULL ) {
+          count += 2;
+        } else {
           (*pdym)++->literal = check_strdup( opt->name );
           (*pdym)++->literal = check_prefix_strdup( "no", 2, opt->name );
         }
-        ++count;
         break;
       case SET_OPTION_AFF_ONLY:
-        if ( pdym != NULL )
+        if ( pdym == NULL )
+          ++count;
+        else
           (*pdym)++->literal = check_strdup( opt->name );
         break;
       case SET_OPTION_NEG_ONLY:
-        if ( pdym != NULL )
+        if ( pdym == NULL )
+          ++count;
+        else
           (*pdym)++->literal = check_prefix_strdup( "no", 2, opt->name );
         break;
     } // switch
-    ++count;
   } // for
   return count;
 }
@@ -236,11 +249,12 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
 
   if ( opt_lang_is_any( tdef->lang_ids ) ) {
     copy_typedef_visit_data_t *const ctvd = data;
-    if ( ctvd->pdym != NULL ) {
+    if ( ctvd->pdym == NULL ) {
+      ++ctvd->count;
+    } else {
       char const *const name = c_sname_full_name( &tdef->ast->sname );
       (*ctvd->pdym)++->literal = check_strdup( name );
     }
-    ++ctvd->count;
   }
   return false;
 }
@@ -251,7 +265,8 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count typedefs, not copy.  If not NULL, on return, the pointed-to
  * pointer is incremented.
- * @return Returns said number of `typedef`s.
+ * @return If \a pdym is NULL, returns said number of `typedef`s; otherwise the
+ * return value is unspecifed.
  */
 PJL_DISCARD
 static size_t copy_typedefs( did_you_mean_t **const pdym ) {
