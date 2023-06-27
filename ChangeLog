@@ -1,3 +1,7 @@
+2023-06-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Now counting did-you-mean words only when pdym == NULL.
+
 2023-06-23  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl_keyword.c: `precision` is now autocompleted following `double` in
