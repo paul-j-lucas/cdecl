@@ -33,4 +33,5 @@ extern mbstate_t _gl_mbsrtowcs_state;
 #define DCHAR_T wchar_t
 #define INTERNAL_STATE _gl_mbsrtowcs_state
 #define MBRTOWC mbrtowc
+#define USES_C32 0
 #include "mbsrtowcs-impl.h"

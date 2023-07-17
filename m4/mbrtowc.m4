@@ -1,4 +1,4 @@
-# mbrtowc.m4 serial 41  -*- coding: utf-8 -*-
+# mbrtowc.m4 serial 43  -*- coding: utf-8 -*-
 dnl Copyright (C) 2001-2002, 2004-2005, 2008-2023 Free Software Foundation,
 dnl Inc.
 dnl This file is free software; the Free Software Foundation
@@ -682,31 +682,28 @@ AC_DEFUN([gl_MBRTOWC_EMPTY_INPUT],
   AC_REQUIRE([AC_CANONICAL_HOST]) dnl for cross-compiles
   AC_CACHE_CHECK([whether mbrtowc works on empty input],
     [gl_cv_func_mbrtowc_empty_input],
-    [
-      dnl Initial guess, used when cross-compiling or when no suitable locale
-      dnl is present.
-changequote(,)dnl
-      case "$host_os" in
-                              # Guess no on AIX and glibc systems.
-        aix* | *-gnu* | gnu*) gl_cv_func_mbrtowc_empty_input="guessing no" ;;
-                              # Guess yes on native Windows.
-        mingw*)               gl_cv_func_mbrtowc_empty_input="guessing yes" ;;
-        *)                    gl_cv_func_mbrtowc_empty_input="guessing yes" ;;
-      esac
-changequote([,])dnl
-      AC_RUN_IFELSE(
-        [AC_LANG_SOURCE([[
-           #include <wchar.h>
-           static wchar_t wc;
-           static mbstate_t mbs;
-           int
-           main (void)
-           {
-             return mbrtowc (&wc, "", 0, &mbs) != (size_t) -2;
-           }]])],
-        [gl_cv_func_mbrtowc_empty_input=yes],
-        [gl_cv_func_mbrtowc_empty_input=no],
-        [:])
+    [AC_RUN_IFELSE(
+       [AC_LANG_SOURCE([[
+          #include <wchar.h>
+          static wchar_t wc;
+          static mbstate_t mbs;
+          int
+          main (void)
+          {
+            return mbrtowc (&wc, "", 0, &mbs) != (size_t) -2;
+          }]])],
+       [gl_cv_func_mbrtowc_empty_input=yes],
+       [gl_cv_func_mbrtowc_empty_input=no],
+       [case "$host_os" in
+                                # Guess no on AIX and glibc systems.
+          aix* | *-gnu* | gnu*) gl_cv_func_mbrtowc_empty_input="guessing no" ;;
+                                # Guess no on Android.
+          linux*-android*)      gl_cv_func_mbrtowc_empty_input="guessing no" ;;
+                                # Guess no on native Windows.
+          mingw*)               gl_cv_func_mbrtowc_empty_input="guessing no" ;;
+          *)                    gl_cv_func_mbrtowc_empty_input="guessing yes" ;;
+        esac
+       ])
     ])
 ])
 
@@ -724,12 +721,7 @@ AC_DEFUN([gl_MBRTOWC_C_LOCALE],
   AC_REQUIRE([AC_CANONICAL_HOST]) dnl for cross-compiles
   AC_CACHE_CHECK([whether the C locale is free of encoding errors],
     [gl_cv_func_mbrtowc_C_locale_sans_EILSEQ],
-    [
-     dnl Initial guess, used when cross-compiling or when no suitable locale
-     dnl is present.
-     gl_cv_func_mbrtowc_C_locale_sans_EILSEQ="$gl_cross_guess_normal"
-
-     AC_RUN_IFELSE(
+    [AC_RUN_IFELSE(
        [AC_LANG_PROGRAM(
           [[#include <limits.h>
             #include <locale.h>
@@ -750,13 +742,14 @@ AC_DEFUN([gl_MBRTOWC_C_LOCALE],
               }
             return 0;
           ]])],
-      [gl_cv_func_mbrtowc_C_locale_sans_EILSEQ=yes],
-      [gl_cv_func_mbrtowc_C_locale_sans_EILSEQ=no],
-      [case "$host_os" in
-                 # Guess yes on native Windows.
-         mingw*) gl_cv_func_mbrtowc_C_locale_sans_EILSEQ="guessing yes" ;;
-       esac
-      ])
+       [gl_cv_func_mbrtowc_C_locale_sans_EILSEQ=yes],
+       [gl_cv_func_mbrtowc_C_locale_sans_EILSEQ=no],
+       [case "$host_os" in
+                  # Guess yes on native Windows.
+          mingw*) gl_cv_func_mbrtowc_C_locale_sans_EILSEQ="guessing yes" ;;
+          *)      gl_cv_func_mbrtowc_C_locale_sans_EILSEQ="$gl_cross_guess_normal" ;;
+        esac
+       ])
     ])
 ])
 

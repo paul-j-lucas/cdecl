@@ -36,7 +36,7 @@
        buffered bytes (in the range 0..3), followed by up to 3 buffered bytes.
        See mbrtowc.c.
      - In wc -> mb direction, mbstate_t contains no information. In other
-       words, it is always in the initial state.  */
+       words, it is always in an initial state.  */
 
 static_assert (sizeof (mbstate_t) >= 4);
 

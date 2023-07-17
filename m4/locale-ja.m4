@@ -1,4 +1,4 @@
-# locale-ja.m4 serial 16
+# locale-ja.m4 serial 17
 dnl Copyright (C) 2003, 2005-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -139,5 +139,11 @@ int main ()
     rm -fr conftest*
   ])
   LOCALE_JA=$gt_cv_locale_ja
+  case $LOCALE_JA in #(
+    '' | *[[[:space:]\"\$\'*@<:@]]*)
+      dnl This locale name might cause trouble with sh or make.
+      AC_MSG_WARN([invalid locale "$LOCALE_JA"; assuming "none"])
+      LOCALE_JA=none;;
+  esac
   AC_SUBST([LOCALE_JA])
 ])

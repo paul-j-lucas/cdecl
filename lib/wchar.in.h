@@ -232,6 +232,13 @@ _GL_EXTERN_C void free (void *);
 # endif
 #endif
 
+
+#if @GNULIB_MBSZERO@
+/* Get memset().  */
+# include <string.h>
+#endif
+
+
 /* Convert a single-byte character to a wide character.  */
 #if @GNULIB_BTOWC@
 # if @REPLACE_BTOWC@
@@ -288,7 +295,7 @@ _GL_WARN_ON_USE (wctob, "wctob is unportable - "
 #endif
 
 
-/* Test whether *PS is in the initial state.  */
+/* Test whether *PS is in an initial state.  */
 #if @GNULIB_MBSINIT@
 # if @REPLACE_MBSINIT@
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
@@ -312,6 +319,203 @@ _GL_CXXALIASWARN (mbsinit);
 _GL_WARN_ON_USE (mbsinit, "mbsinit is unportable - "
                  "use gnulib module mbsinit for portability");
 # endif
+#endif
+
+
+/* Put *PS into an initial state.  */
+#if @GNULIB_MBSZERO@
+/* ISO C 23 § 7.31.6.(3) says that zeroing an mbstate_t is a way to put the
+   mbstate_t into an initial state.  However, on many platforms an mbstate_t
+   is large, and it is possible - as an optimization - to get away with zeroing
+   only part of it.  So, instead of
+
+        mbstate_t state = { 0 };
+
+   or
+
+        mbstate_t state;
+        memset (&state, 0, sizeof (mbstate_t));
+
+   we can write this faster code:
+
+        mbstate_t state;
+        mbszero (&state);
+ */
+/* _GL_MBSTATE_INIT_SIZE describes how mbsinit() behaves: It is the number of
+   bytes at the beginning of an mbstate_t that need to be zero, for mbsinit()
+   to return true.
+   _GL_MBSTATE_ZERO_SIZE is the number of bytes at the beginning of an mbstate_t
+   that need to be zero,
+     - for mbsinit() to return true, and
+     - for all other multibyte-aware functions to operate properly.
+   0 < _GL_MBSTATE_INIT_SIZE <= _GL_MBSTATE_ZERO_SIZE <= sizeof (mbstate_t).
+   These values are determined by source code inspection.  */
+# if GNULIB_defined_mbstate_t                             /* AIX, IRIX */
+/* mbstate_t has at least 4 bytes.  They are used as coded in
+   gnulib/lib/mbrtowc.c.  */
+#  define _GL_MBSTATE_INIT_SIZE 1
+/* Note that 4 is not the correct value: it causes test failures.  */
+#  define _GL_MBSTATE_ZERO_SIZE sizeof (mbstate_t)
+# elif __GLIBC__ >= 2                                     /* glibc */
+/* mbstate_t is defined in <bits/types/__mbstate_t.h>.
+   For more details, see glibc/iconv/skeleton.c.  */
+#  define _GL_MBSTATE_INIT_SIZE 4
+#  define _GL_MBSTATE_ZERO_SIZE /* 8 */ sizeof (mbstate_t)
+# elif defined MUSL_LIBC                                  /* musl libc */
+/* mbstate_t is defined in <bits/alltypes.h>.
+   It is an opaque aligned 8-byte struct, of which at most the first
+   4 bytes are used.
+   For more details, see src/multibyte/mbrtowc.c.  */
+#  define _GL_MBSTATE_INIT_SIZE 4
+#  define _GL_MBSTATE_ZERO_SIZE 4
+# elif defined __APPLE__ && defined __MACH__              /* macOS */
+/* On macOS, mbstate_t is defined in <machine/_types.h>.
+   It is an opaque aligned 128-byte struct, of which at most the first
+   12 bytes are used.
+   For more details, see the __mbsinit implementations in
+   Libc-<version>/locale/FreeBSD/
+   {ascii,none,euc,mskanji,big5,gb2312,gbk,gb18030,utf8,utf2}.c.  */
+/* File       INIT_SIZE  ZERO_SIZE
+   ascii.c        0          0
+   none.c         0          0
+   euc.c         12         12
+   mskanji.c      4          4
+   big5.c         4          4
+   gb2312.c       4          6
+   gbk.c          4          4
+   gb18030.c      4          8
+   utf8.c         8         10
+   utf2.c         8         12 */
+#  define _GL_MBSTATE_INIT_SIZE 12
+#  define _GL_MBSTATE_ZERO_SIZE 12
+# elif defined __FreeBSD__                                /* FreeBSD */
+/* On FreeBSD, mbstate_t is defined in src/sys/sys/_types.h.
+   It is an opaque aligned 128-byte struct, of which at most the first
+   12 bytes are used.
+   For more details, see the __mbsinit implementations in
+   src/lib/libc/locale/
+   {ascii,none,euc,mskanji,big5,gb2312,gbk,gb18030,utf8}.c.  */
+/* File       INIT_SIZE  ZERO_SIZE
+   ascii.c        0          0
+   none.c         0          0
+   euc.c         12         12
+   mskanji.c      4          4
+   big5.c         4          4
+   gb2312.c       4          6
+   gbk.c          4          4
+   gb18030.c      4          8
+   utf8.c         8         12 */
+#  define _GL_MBSTATE_INIT_SIZE 12
+#  define _GL_MBSTATE_ZERO_SIZE 12
+# elif defined __NetBSD__                                 /* NetBSD */
+/* On NetBSD, mbstate_t is defined in src/sys/sys/ansi.h.
+   It is an opaque aligned 128-byte struct, of which at most the first
+   28 bytes are used.
+   For more details, see the *State types in
+   src/lib/libc/citrus/modules/citrus_*.c
+   (ignoring citrus_{hz,iso2022,utf7,viqr,zw}.c, since these implement
+   stateful encodings, not usable as locale encodings).  */
+/* File                                ZERO_SIZE
+   citrus/citrus_none.c                    0
+   citrus/modules/citrus_euc.c             8
+   citrus/modules/citrus_euctw.c           8
+   citrus/modules/citrus_mskanji.c         8
+   citrus/modules/citrus_big5.c            8
+   citrus/modules/citrus_gbk2k.c           8
+   citrus/modules/citrus_dechanyu.c        8
+   citrus/modules/citrus_johab.c           6
+   citrus/modules/citrus_utf8.c           12 */
+/* But 12 is not the correct value: we get test failures for values < 28.  */
+#  define _GL_MBSTATE_INIT_SIZE 28
+#  define _GL_MBSTATE_ZERO_SIZE 28
+# elif defined __OpenBSD__                                /* OpenBSD */
+/* On OpenBSD, mbstate_t is defined in src/sys/sys/_types.h.
+   It is an opaque aligned 128-byte struct, of which at most the first
+   12 bytes are used.
+   For more details, see src/lib/libc/citrus/citrus_*.c.  */
+/* File           INIT_SIZE  ZERO_SIZE
+   citrus_none.c      0          0
+   citrus_utf8.c     12         12 */
+#  define _GL_MBSTATE_INIT_SIZE 12
+#  define _GL_MBSTATE_ZERO_SIZE 12
+# elif defined __minix                                    /* Minix */
+/* On Minix, mbstate_t is defined in sys/sys/ansi.h.
+   It is an opaque aligned 128-byte struct.
+   For more details, see the *State types in
+   lib/libc/citrus/citrus_*.c.  */
+/* File           INIT_SIZE  ZERO_SIZE
+   citrus_none.c      0          0 */
+#  define _GL_MBSTATE_INIT_SIZE 1
+#  define _GL_MBSTATE_ZERO_SIZE 1
+# elif defined __sun                                      /* Solaris */
+/* On Solaris, mbstate_t is defined in <wchar_impl.h>.
+   It is an opaque aligned 24-byte or 32-byte struct, of which at most the first
+   20 or 28 bytes are used.
+   For more details, see the *State types in
+   illumos-gate/usr/src/lib/libc/port/locale/
+   {none,euc,mskanji,big5,gb2312,gbk,gb18030,utf8}.c.  */
+/* File       INIT_SIZE  ZERO_SIZE
+   none.c         0          0
+   euc.c         12         12
+   mskanji.c      4          4
+   big5.c         4          4
+   gb2312.c       4          6
+   gbk.c          4          4
+   gb18030.c      4          8
+   utf8.c        12         12 */
+/* But 12 is not the correct value: we get test failures
+     - in OpenIndiana and OmniOS: for values < 16,
+     - in Solaris 10 and 11: for values < 20 (in 32-bit mode)
+       or < 28 (in 64-bit mode).  */
+#  if defined _LP64
+#   define _GL_MBSTATE_INIT_SIZE 28
+#   define _GL_MBSTATE_ZERO_SIZE 28
+#  else
+#   define _GL_MBSTATE_INIT_SIZE 20
+#   define _GL_MBSTATE_ZERO_SIZE 20
+#  endif
+# elif defined __CYGWIN__                                 /* Cygwin */
+/* On Cygwin, mbstate_t is defined in <sys/_types.h>.
+   For more details, see newlib/libc/stdlib/mbtowc_r.c and
+   winsup/cygwin/strfuncs.cc.  */
+#  define _GL_MBSTATE_INIT_SIZE 4
+#  define _GL_MBSTATE_ZERO_SIZE 8
+# elif defined _WIN32 && !defined __CYGWIN__              /* Native Windows.  */
+/* MSVC defines 'mbstate_t' as an aligned 8-byte struct.
+   On mingw, 'mbstate_t' is sometimes defined as 'int', sometimes defined
+   as an aligned 8-byte struct, of which the first 4 bytes matter.  */
+#  define _GL_MBSTATE_INIT_SIZE sizeof (mbstate_t)
+#  define _GL_MBSTATE_ZERO_SIZE sizeof (mbstate_t)
+# elif defined __ANDROID__                                /* Android */
+/* Android defines 'mbstate_t' in <bits/mbstate_t.h>.
+   It is an opaque 4-byte or 8-byte struct.
+   For more details, see
+   bionic/libc/private/bionic_mbstate.h
+   bionic/libc/bionic/mbrtoc32.cpp
+   bionic/libc/bionic/mbrtoc16.cpp
+ */
+#  define _GL_MBSTATE_INIT_SIZE 4
+#  define _GL_MBSTATE_ZERO_SIZE 4
+# else
+/* On platforms where we don't know how the multibyte functions behave, use
+   these safe values.  */
+#  define _GL_MBSTATE_INIT_SIZE sizeof (mbstate_t)
+#  define _GL_MBSTATE_ZERO_SIZE sizeof (mbstate_t)
+# endif
+_GL_BEGIN_C_LINKAGE
+# if defined IN_MBSZERO
+_GL_EXTERN_INLINE
+# else
+_GL_INLINE
+# endif
+_GL_ARG_NONNULL ((1)) void
+mbszero (mbstate_t *ps)
+{
+  memset (ps, 0, _GL_MBSTATE_ZERO_SIZE);
+}
+_GL_END_C_LINKAGE
+_GL_CXXALIAS_SYS (mbszero, void, (mbstate_t *ps));
+_GL_CXXALIASWARN (mbszero);
 #endif
 
 

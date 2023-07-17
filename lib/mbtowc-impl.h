@@ -30,7 +30,7 @@ mbtowc (wchar_t *pwc, const char *s, size_t n)
       wchar_t wc;
       size_t result;
 
-      memset (&state, 0, sizeof (mbstate_t));
+      mbszero (&state);
       result = mbrtowc (&wc, s, n, &state);
       if (result == (size_t)-1 || result == (size_t)-2)
         {

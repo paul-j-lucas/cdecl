@@ -1,6 +1,5 @@
-/* Convert unibyte character to wide character.
-   Copyright (C) 2008, 2010-2023 Free Software Foundation, Inc.
-   Written by Bruno Haible <bruno@clisp.org>, 2008.
+/* Put an mbstate_t into an initial conversion state.
+   Copyright (C) 2023 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -15,33 +14,10 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
+/* Written by Bruno Haible <bruno@clisp.org>, 2023.  */
+
 #include <config.h>
 
-/* Specification.  */
+#define IN_MBSZERO
+/* Specification and implementation.  */
 #include <wchar.h>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-wint_t
-btowc (int c)
-{
-  if (c != EOF)
-    {
-      char buf[1];
-      wchar_t wc;
-
-      buf[0] = c;
-#if HAVE_MBRTOWC
-      mbstate_t state;
-      mbszero (&state);
-      size_t ret = mbrtowc (&wc, buf, 1, &state);
-      if (!(ret == (size_t)(-1) || ret == (size_t)(-2)))
-#else
-      if (mbtowc (&wc, buf, 1) >= 0)
-#endif
-        return wc;
-    }
-  return WEOF;
-}

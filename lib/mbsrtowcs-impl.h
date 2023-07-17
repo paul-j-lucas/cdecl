@@ -61,7 +61,8 @@ FUNC (DCHAR_T *dest, const char **srcp, size_t len, mbstate_t *ps)
                 /* Here mbsinit (ps).  */
                 break;
               }
-            src += ret;
+            if (!(USES_C32 && ret == (size_t)(-3)))
+              src += ret;
           }
 
         *srcp = src;

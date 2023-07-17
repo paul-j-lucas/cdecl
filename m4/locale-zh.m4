@@ -1,4 +1,4 @@
-# locale-zh.m4 serial 16
+# locale-zh.m4 serial 17
 dnl Copyright (C) 2003, 2005-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -133,5 +133,11 @@ int main ()
     rm -fr conftest*
   ])
   LOCALE_ZH_CN=$gt_cv_locale_zh_CN
+  case $LOCALE_ZH_CN in #(
+    '' | *[[[:space:]\"\$\'*@<:@]]*)
+      dnl This locale name might cause trouble with sh or make.
+      AC_MSG_WARN([invalid locale "$LOCALE_ZH_CN"; assuming "none"])
+      LOCALE_ZH_CN=none;;
+  esac
   AC_SUBST([LOCALE_ZH_CN])
 ])
