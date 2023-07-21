@@ -1,3 +1,16 @@
+2023-07-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: check_strdup_suffix() now copies only suffix_len characters.
+   * autocomplete.c, did_you_mean.c, util.c, util.h: Moved
+     check_prefix_strdup() and check_strdup_suffix() to util.c.
+
+2023-07-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, btowc.c, localcharset.h, mbsinit.c, mbsrtowcs-impl.h,
+     mbsrtowcs-state.c, mbsrtowcs.c, mbszero.c, mbtowc-impl.h, mbtowc-lock.h,
+     wchar.in.h, gnulib-comp.m4, locale-fr.m4, locale-ja.m4, locale-zh.m4,
+     mbrtowc.m4, wchar_h.m4: Updated Gnulib.
+
 2023-06-27  Paul J. Lucas <paul@lucasmail.org>
 
    * did_you_mean.c: Now counting did-you-mean words only when pdym == NULL.
