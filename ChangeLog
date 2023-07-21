@@ -1,5 +1,8 @@
 2023-07-21  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.c: Renaming.
+   * autocomplete.c: When no command is matched at all for autocompletion, we
+     now ring the bell.
    * util.c: check_strdup_suffix() now copies only suffix_len characters.
    * autocomplete.c, did_you_mean.c, util.c, util.h: Moved
      check_prefix_strdup() and check_strdup_suffix() to util.c.
