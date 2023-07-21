@@ -23,6 +23,9 @@ themselves.
 ** Autocompleting `returning` for lambdas
 `returning` was added to the set of next autocompletable keywords for `lambda`.
 
+** Ding on no command match
+When no command is matched at all for autocompletion, we now ring the bell.
+
 
 * Changes in Cdecl 14.2
 

@@ -535,10 +535,12 @@ static char* command_generator( char const *text, int state ) {
   assert( text != NULL );
 
   static cdecl_command_t const *match_command;
-  static size_t text_len;
+  static bool                   returned_any;
+  static size_t                 text_len;
 
   if ( state == 0 ) {                   // new word? reset
     match_command = ac_cdecl_command_next( NULL );
+    returned_any = false;
     text_len = strlen( text );
   }
 
@@ -546,12 +548,16 @@ static char* command_generator( char const *text, int state ) {
     cdecl_command_t const *const c = match_command;
     match_command = ac_cdecl_command_next( match_command );
     int const cmp = strncmp( text, c->literal, text_len );
-    if ( cmp == 0 && opt_lang_is_any( c->lang_ids ) )
+    if ( cmp == 0 && opt_lang_is_any( c->lang_ids ) ) {
+      returned_any = true;
       return check_strdup( c->literal );
+    }
     if ( cmp < 0 )                      // the array is sorted
       break;
   } // while
 
+  if ( !returned_any )
+    rl_ding();
   return NULL;
 }
 
