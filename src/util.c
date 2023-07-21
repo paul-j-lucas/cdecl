@@ -129,9 +129,11 @@ char* check_strdup_suffix( char const *s, char const *suffix,
   assert( suffix != NULL );
 
   size_t const s_len = strlen( s );
-  char *const dup_s = MALLOC( char, s_len + suffix_len + 1/*\0*/ );
+  size_t const dup_len = s_len + suffix_len;
+  char *const dup_s = MALLOC( char, dup_len + 1/*\0*/ );
   strcpy( dup_s, s );
-  strcpy( dup_s + s_len, suffix );
+  strncpy( dup_s + s_len, suffix, suffix_len );
+  dup_s[ dup_len ] = '\0';
   return dup_s;
 }
 
