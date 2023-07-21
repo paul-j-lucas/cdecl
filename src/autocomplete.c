@@ -534,19 +534,19 @@ static char** cdecl_rl_completion( char const *text, int start, int end ) {
 static char* command_generator( char const *text, int state ) {
   assert( text != NULL );
 
-  static cdecl_command_t const *match_command;
+  static cdecl_command_t const *command;
   static bool                   returned_any;
   static size_t                 text_len;
 
   if ( state == 0 ) {                   // new word? reset
-    match_command = ac_cdecl_command_next( NULL );
+    command = ac_cdecl_command_next( NULL );
     returned_any = false;
     text_len = strlen( text );
   }
 
-  while ( match_command != NULL ) {
-    cdecl_command_t const *const c = match_command;
-    match_command = ac_cdecl_command_next( match_command );
+  while ( command != NULL ) {
+    cdecl_command_t const *const c = command;
+    command = ac_cdecl_command_next( command );
     int const cmp = strncmp( text, c->literal, text_len );
     if ( cmp == 0 && opt_lang_is_any( c->lang_ids ) ) {
       returned_any = true;
