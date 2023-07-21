@@ -710,6 +710,20 @@ void check_atexit( void (*cleanup_fn)(void) );
 void check_dup2( int old_fd, int new_fd );
 
 /**
+ * Duplicates \a s prefixed by \a prefix.
+ *
+ * @param prefix The null-terminated prefix string to duplicate.
+ * @param prefix_len The length of \a prefix.
+ * @param s The null-terminated string to duplicate.
+ * @return Returns a copy of \a s prefixed by \a prefix.
+ *
+ * @sa check_strdup_suffix()
+ */
+NODISCARD
+char* check_prefix_strdup( char const *prefix, size_t prefix_len,
+                           char const *s );
+
+/**
  * Calls **realloc**(3) and checks for failure.
  * If reallocation fails, prints an error message and exits.
  *
@@ -735,6 +749,20 @@ void* check_realloc( void *p, size_t size );
  */
 NODISCARD
 char* check_strdup( char const *s );
+
+/**
+ * Duplicates \a s suffixed by \a suffix.
+ *
+ * @param s The null-terminated string to duplicate.
+ * @param suffix The null-terminated suffix string to duplicate.
+ * @param suffix_len The length of \a suffix.
+ * @return Returns a copy of \a s suffixed by \a suffix.
+ *
+ * @sa check_prefix_strdup()
+ */
+NODISCARD
+char* check_strdup_suffix( char const *s, char const *suffix,
+                           size_t suffix_len );
 
 /**
  * Duplicates \a s and checks for failure, but converts all characters to

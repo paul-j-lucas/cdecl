@@ -72,9 +72,6 @@ struct ac_keyword {
 typedef struct ac_keyword ac_keyword_t;
 
 // local functions
-NODISCARD
-static char*              check_strdup_suffix( char const*, char const* );
-
 static char*              command_generator( char const*, int );
 static char*              keyword_generator( char const*, int );
 
@@ -252,7 +249,7 @@ static char const* const* ac_set_options_new( void ) {
       case SET_OPTION_AFF_ONLY:
       case SET_OPTION_TOGGLE:
         if ( opt->takes_value )
-          *popt++ = free_later( check_strdup_suffix( opt->name, " =" ) );
+          *popt++ = free_later( check_strdup_suffix( opt->name, " =", 2 ) );
         else
           *popt++ = CONST_CAST( char*, opt->name );
         if ( opt->kind == SET_OPTION_AFF_ONLY )
@@ -260,11 +257,7 @@ static char const* const* ac_set_options_new( void ) {
         FALLTHROUGH;
 
       case SET_OPTION_NEG_ONLY:
-        *popt = free_later(
-          MALLOC( char, 2/*no*/ + strlen( opt->name ) + 1/*\0*/ )
-        );
-        strcpy( *popt + 0, "no" );
-        strcpy( *popt + 2, opt->name );
+        *popt = free_later( check_prefix_strdup( "no", 2, opt->name ) );
         ++popt;
         break;
     } // switch
@@ -282,25 +275,6 @@ static char const* const* ac_set_options_new( void ) {
   );
 
   return CONST_CAST( char const* const*, ac_set_options );
-}
-
-/**
- * Duplicates \a s suffixed by \a suffix.
- *
- * @param s The null-terminated string to duplicate.
- * @param suffix The null-terminated suffix string to duplicate.
- * @return Returns a copy of \a s suffixed by \a suffix.
- */
-NODISCARD
-static char* check_strdup_suffix( char const *s, char const *suffix ) {
-  assert( s != NULL );
-  assert( suffix != NULL );
-
-  size_t const s_len = strlen( s );
-  char *const dup_s = MALLOC( char, s_len + strlen( suffix ) + 1/*\0*/ );
-  strcpy( dup_s, s );
-  strcpy( dup_s + s_len, suffix );
-  return dup_s;
 }
 
 /**

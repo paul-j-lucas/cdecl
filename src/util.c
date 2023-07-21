@@ -97,6 +97,17 @@ void check_dup2( int old_fd, int new_fd ) {
   PERROR_EXIT_IF( dup_fd != new_fd, EX_OSERR );
 }
 
+char* check_prefix_strdup( char const *prefix, size_t prefix_len,
+                           char const *s ) {
+  assert( prefix != NULL );
+  assert( s != NULL );
+
+  char *const dup_s = MALLOC( char, prefix_len + strlen( s ) + 1/*\0*/ );
+  strncpy( dup_s, prefix, prefix_len );
+  strcpy( dup_s + prefix_len, s );
+  return dup_s;
+}
+
 void* check_realloc( void *p, size_t size ) {
   assert( size > 0 );
   p = p != NULL ? realloc( p, size ) : malloc( size );
@@ -109,6 +120,18 @@ char* check_strdup( char const *s ) {
     return NULL;                        // LCOV_EXCL_LINE
   char *const dup_s = strdup( s );
   PERROR_EXIT_IF( dup_s == NULL, EX_OSERR );
+  return dup_s;
+}
+
+char* check_strdup_suffix( char const *s, char const *suffix,
+                           size_t suffix_len ) {
+  assert( s != NULL );
+  assert( suffix != NULL );
+
+  size_t const s_len = strlen( s );
+  char *const dup_s = MALLOC( char, s_len + suffix_len + 1/*\0*/ );
+  strcpy( dup_s, s );
+  strcpy( dup_s + s_len, suffix );
   return dup_s;
 }
 
