@@ -1,1 +1,2 @@
-define f as function (integer) returning void
+define F as function (integer) returning void
+define PF as pointer to F

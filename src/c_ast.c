@@ -176,11 +176,11 @@ void c_ast_cleanup( void ) {
   assert( c_ast_count == 0 );
 }
 
-c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
+c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
   if ( ast == NULL )
     return NULL;                        // LCOV_EXCL_LINE
   c_ast_t *const dup_ast =
-    c_ast_new( ast->kind, ast->depth, &ast->loc, ast_list );
+    c_ast_new( ast->kind, ast->depth, &ast->loc, node_list );
 
   dup_ast->align = ast->align;
   dup_ast->sname = c_sname_dup( &ast->sname );
@@ -223,22 +223,17 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       // ret_ast duplicated by referrer code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL:
-dup_params:
-      FOREACH_AST_FUNC_PARAM( param, ast ) {
-        c_ast_t const *const param_ast = c_param_ast( param );
-        c_ast_t *const dup_param_ast = c_ast_dup( param_ast, ast_list );
-        slist_push_back( &dup_ast->func.param_ast_list, dup_param_ast );
-      } // for
+      dup_ast->func.param_ast_list =
+        c_ast_list_dup( &ast->func.param_ast_list, node_list );
       break;
 
     case K_LAMBDA:
       // ret_ast duplicated by referrer code below
-      FOREACH_AST_LAMBDA_CAPTURE( capture, ast ) {
-        c_ast_t const *const capture_ast = c_capture_ast( capture );
-        c_ast_t *const dup_capture_ast = c_ast_dup( capture_ast, ast_list );
-        slist_push_back( &dup_ast->lambda.capture_ast_list, dup_capture_ast );
-      } // for
-      goto dup_params;
+      dup_ast->func.param_ast_list =
+        c_ast_list_dup( &ast->func.param_ast_list, node_list );
+      dup_ast->lambda.capture_ast_list =
+        c_ast_list_dup( &ast->lambda.capture_ast_list, node_list );
+      break;
 
     case K_CAPTURE:
     case K_POINTER:
@@ -256,7 +251,7 @@ dup_params:
 
   if ( c_ast_is_referrer( ast ) ) {
     c_ast_t *const child_ast = ast->parent.of_ast;
-    c_ast_set_parent( c_ast_dup( child_ast, ast_list ), dup_ast );
+    c_ast_set_parent( c_ast_dup( child_ast, node_list ), dup_ast );
   }
 
   return dup_ast;
@@ -428,11 +423,27 @@ void c_ast_list_cleanup( c_ast_list_t *list ) {
   slist_cleanup( list, /*free_fn=*/NULL );
 }
 
+c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
+                             c_ast_list_t *node_list ) {
+  slist_t dup_list;
+  slist_init( &dup_list );
+
+  if ( src_list != NULL ) {
+    FOREACH_SLIST_NODE( src_node, src_list ) {
+      c_ast_t const *const src_ast = src_node->data;
+      c_ast_t *const dup_ast = c_ast_dup( src_ast, node_list );
+      slist_push_back( &dup_list, dup_ast );
+    } // for
+  }
+
+  return dup_list;
+}
+
 c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
-                    c_ast_list_t *ast_list ) {
+                    c_ast_list_t *node_list ) {
   assert( is_1_bit( kind ) );
   assert( loc != NULL );
-  assert( ast_list != NULL );
+  assert( node_list != NULL );
 
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
   MEM_ZERO( ast );
@@ -479,7 +490,7 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
 #ifndef NDEBUG
   ++c_ast_count;
 #endif /* NDEBUG */
-  slist_push_back( ast_list, ast );
+  slist_push_back( node_list, ast );
   return ast;
 }
 

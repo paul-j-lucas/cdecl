@@ -1,5 +1,6 @@
 EXPECTED_EXIT=0
 cdecl <<END
-typedef void f(int)
+typedef void F(int)
+typedef F *PF
 show
 END
