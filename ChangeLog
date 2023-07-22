@@ -1,5 +1,6 @@
 2023-07-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c, c_ast.h: Added c_ast_list_equal().
    * c_ast.c: Eliminated #ifndef NDEBUG.
    * c_ast.c, c_ast.h, typedef_fi_v_show.out, typedef_fi_v_show.test: Added
      c_ast_list_dup().
