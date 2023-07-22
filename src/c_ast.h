@@ -647,6 +647,8 @@ c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
  * @param j_ast The second AST.  May be NULL.
  * @return Returns `true` only if the two ASTs are equal _except_ for their
  * names.
+ *
+ * @sa c_ast_list_equal()
  */
 NODISCARD
 bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast );
@@ -719,6 +721,20 @@ bool c_ast_is_referrer( c_ast_t const *ast ) {
  * @sa c_ast_free()
  */
 void c_ast_list_cleanup( c_ast_list_t *list );
+
+/**
+ * Checks whether to AST lists are equals _except_ for AST node names.
+ *
+ * @param i_list The first AST list.
+ * @param j_list The second AST list.
+ * @return Returns `true` only if the to AST lists are equal _except_ for AST
+ * node names.
+ *
+ * @sa c_ast_equal()
+ */
+NODISCARD
+bool c_ast_list_equal( c_ast_list_t const *i_list,
+                       c_ast_list_t const *j_list );
 
 /**
  * Creates a new AST node.

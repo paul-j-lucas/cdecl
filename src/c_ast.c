@@ -306,37 +306,21 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_APPLE_BLOCK:
       // ret_ast checked by referrer code below
     case K_CONSTRUCTOR:
-    case K_USER_DEF_LITERAL: {
-equal_params:
-      NO_OP;
-      c_param_t const *i_param = c_ast_params( i_ast );
-      c_param_t const *j_param = c_ast_params( j_ast );
-      for ( ; i_param != NULL && j_param != NULL;
-              i_param = i_param->next, j_param = j_param->next ) {
-        c_ast_t const *const i_param_ast = c_param_ast( i_param );
-        c_ast_t const *const j_param_ast = c_param_ast( j_param );
-        if ( !c_ast_equal( i_param_ast, j_param_ast ) )
-          return false;
-      } // for
-      if ( i_param != NULL || j_param != NULL )
+    case K_USER_DEF_LITERAL:
+      if ( !c_ast_list_equal( &i_ast->func.param_ast_list,
+                              &j_ast->func.param_ast_list ) ) {
         return false;
+      }
       break;
-    }
 
-    case K_LAMBDA: {
-      c_capture_t const *i_capture = c_ast_captures( i_ast );
-      c_capture_t const *j_capture = c_ast_captures( j_ast );
-      for ( ; i_capture != NULL && j_capture != NULL;
-              i_capture = i_capture->next, j_capture = j_capture->next ) {
-        c_ast_t const *const i_capture_ast = c_capture_ast( i_capture );
-        c_ast_t const *const j_capture_ast = c_capture_ast( j_capture );
-        if ( !c_ast_equal( i_capture_ast, j_capture_ast ) )
-          return false;
-      } // for
-      if ( i_capture != NULL || j_capture != NULL )
+    case K_LAMBDA:
+      if ( !c_ast_list_equal( &i_ast->func.param_ast_list,
+                              &j_ast->func.param_ast_list ) ||
+           !c_ast_list_equal( &i_ast->lambda.capture_ast_list,
+                              &j_ast->lambda.capture_ast_list ) ) {
         return false;
-      goto equal_params;
-    }
+      }
+      break;
 
     case K_ENUM:
       // of_ast checked by referrer code below
@@ -434,6 +418,25 @@ c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
   }
 
   return dup_list;
+}
+
+bool c_ast_list_equal( c_ast_list_t const *i_list,
+                       c_ast_list_t const *j_list ) {
+  assert( i_list != NULL );
+  assert( j_list != NULL );
+
+  slist_node_t const *i_node = i_list->head;
+  slist_node_t const *j_node = j_list->head;
+
+  for ( ; i_node != NULL && j_node != NULL;
+          i_node = i_node->next, j_node = j_node->next ) {
+    c_ast_t const *const i_ast = i_node->data;
+    c_ast_t const *const j_ast = j_node->data;
+    if ( !c_ast_equal( i_ast, j_ast ) )
+      return false;
+  } // for
+
+  return i_node == NULL && j_node == NULL;
 }
 
 c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
