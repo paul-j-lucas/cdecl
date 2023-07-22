@@ -374,10 +374,7 @@ equal_params:
 
 void c_ast_free( c_ast_t *ast ) {
   if ( ast != NULL ) {
-#ifndef NDEBUG
-    assert( c_ast_count > 0 );
-    --c_ast_count;
-#endif /* NDEBUG */
+    assert( c_ast_count-- > 0 );        // side-effect is OK here
 
     c_sname_cleanup( &ast->sname );
     switch ( ast->kind ) {
