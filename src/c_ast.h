@@ -614,7 +614,7 @@ struct c_ast {
 void c_ast_cleanup( void );
 
 /**
- * Duplicates the entire AST starting at \a ast.
+ * Duplicates \a ast.
  *
  * @param ast The AST to duplicate.
  * @param ast_list The list to append the duplicated AST nodes onto.
