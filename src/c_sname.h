@@ -388,13 +388,8 @@ void c_sname_list_cleanup( slist_t *list );
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name()
  */
-NODISCARD C_SNAME_H_INLINE
-char const* c_sname_local_name( c_sname_t const *sname ) {
-  if ( sname == NULL )
-    return "";
-  c_scope_data_t const *const local_data = slist_back( sname );
-  return local_data == NULL ? "" : local_data->name;
-}
+NODISCARD
+char const* c_sname_local_name( c_sname_t const *sname );
 
 /**
  * Gets the local scope-type of \a sname (which is the type of the innermost
