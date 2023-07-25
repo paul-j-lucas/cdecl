@@ -2316,7 +2316,8 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
             c_ast_is_tid_any( ptr_to_ast, TB_ANY_CHAR )) ) {
         print_error( &param_ast->loc,
           "invalid parameter type for user-defined literal; must be one of: "
-          "const (char|wchar_t|char8_t|char16_t|char32_t)*\n"
+          "const (char|wchar_t%s|char16_t|char32_t)*\n",
+          OPT_LANG_IS( char8_t ) ? "|char8_t" : ""
         );
         return false;
       }
