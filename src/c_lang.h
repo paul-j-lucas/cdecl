@@ -531,7 +531,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages `enum class` is supported in.
  */
-#define LANG_enum_class                 LANG_MIN(CPP_11)
+#define LANG_enum_class                 LANG_CPP_MIN(11)
 
 /**
  * Languages explicit `this` parameter supported in.
@@ -541,7 +541,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages `explicit` user-defined conversion operators are supported in.
  */
-#define LANG_explicit_USER_DEF_CONV     LANG_MIN(CPP_11)
+#define LANG_explicit_USER_DEF_CONV     LANG_CPP_MIN(11)
 
 /**
  * Languages the `export` keyword is supported in.
