@@ -288,8 +288,10 @@ typedef enum c_tpid c_tpid_t;
 //
 // Storage classes
 //
-// If you add a new TS_xxx here, it must also exist in STIDS[] inside
-// c_type_name_impl().
+// If you add a new TS_xxx here:
+//
+// + It must also exist in STIDS[] inside c_type_name_impl().
+// + TS_ANY_STORAGE may need to be updated.
 //
 #define TS_NONE               0x0000000000000002ull /**< No storage type.     */
 #define TS_ANY                0xFFFFFFFFFFFFFFF2ull /**< Any storage type.    */
@@ -306,8 +308,10 @@ typedef enum c_tpid c_tpid_t;
 //
 // Storage-class-like
 //
-// If you add a new TS_xxx here, it must also exist in STIDS[] inside
-// c_type_name_impl().
+// If you add a new TS_xxx here:
+//
+// + It must also exist in STIDS[] inside c_type_name_impl().
+// + TS_ANY_STORAGE may need to be updated.
 //
 #define TS_CONSTEVAL          0x0000000000002002ull /**< `consteval`          */
 #define TS_CONSTEXPR          0x0000000000004002ull /**< `constexpr`          */
