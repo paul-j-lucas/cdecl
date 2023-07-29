@@ -4920,20 +4920,19 @@ typedef_type_decl_c_ast
         //
         // Note that typedef_type_c_ast is like:
         // ```
-        // typedef_type_c_ast = {
-        //   sname = "",
+        // typedef_type_c_ast: {
+        //   sname: { string: "" },
+        //   kind: { value: 0x20, string: "typedef" },
         //   ...
-        //   kind = "typedef",
+        //   type: { btid: 0x10000001, stid: 0x2, atid: 0x4, string: "none" },
+        //   for_ast: {
+        //     sname: { string: "S", scopes: "struct" },
+        //     kind: { value: 0x8, string: "struct or union" },
+        //     ...
+        //     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "struct" },
+        //     csu_sname: { string: "S", scopes: "none" }
+        //   },
         //   ...
-        //   type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
-        //   for_ast = {
-        //     sname = "S" (struct),
-        //     ...
-        //     kind = "enum, struct, or union",
-        //     ...
-        //     type = "struct" (btid = 0x800001, stid = 0x2, atid = 0x4),
-        //     csu_sname = "S" (none)
-        //   }
         // }
         // ```
         // That is, typedef_type_c_ast has no name itself (at this point), but

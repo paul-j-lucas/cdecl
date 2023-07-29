@@ -324,18 +324,19 @@ static c_ast_t const* c_ast_is_tid_any_qual_impl( c_ast_t const *ast,
 /**
  * Takes the storage (and attributes), if any, away from \a ast
  * (with the intent of giving them to another AST).
- * This is used is cases like:
- * ```
- * explain static int f()
- * ```
+ *
+ * @remarks This is used is cases like:
+ *
+ *      explain static int f()
+ *
  * that should be explained as:
- * ```
- * declare f as static function () returning integer
- * ```
+ *
+ *      declare f as static function () returning integer
+ *
  * and _not_:
- * ```
- * declare f as function () returning static integer
- * ```
+ *
+ *      declare f as function () returning static integer
+ *
  * i.e., the `static` has to be taken away from `int` and given to the function
  * because it's the function that's `static`, not the `int`.
  *
@@ -376,7 +377,7 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  *     sname: { string: "" },
  *     kind: { value: 0x20, string: "typedef" },
  *     ...
- *     type: { btid: 0x20000001, stid: 0x200000002, atid: 0x4, string: "const" }.
+ *     type: { btid: 0x20000001, stid: 0x200000002, atid: 0x4, string: "const" },
  *     for_ast: {
  *       sname: { string: "S", scopes: "struct" },
  *       kind: { value: 0x8, string: "class, struct, or union" },
