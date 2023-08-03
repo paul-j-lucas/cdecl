@@ -1,3 +1,40 @@
+2023-08-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, btoc32.c, c32_apply_type_test.c, c32_get_type_test.c,
+     c32is-impl.h, c32isalnum.c, c32isalpha.c, c32isblank.c, c32iscntrl.c,
+     c32isdigit.c, c32isgraph.c, c32islower.c, c32isprint.c, c32ispunct.c,
+     c32isspace.c, c32isupper.c, c32isxdigit.c, c32to-impl.h, c32tolower.c,
+     fnmatch.c, fnmatch.in.h, fnmatch_loop.c, iswblank.c, iswctype-impl.h,
+     iswctype.c, iswdigit.c, iswxdigit.c, mbrtoc32.c, mbsrtoc32s-state.c,
+     mbsrtoc32s.c, uchar.in.h, unicase.in.h, unicase/simple-mapping.h,
+     unicase/tolower.c, unicase/tolower.h, unictype.in.h, unictype/bitmap.h,
+     unictype/ctype_alnum.c, unictype/ctype_alnum.h, unictype/ctype_alpha.c,
+     unictype/ctype_alpha.h, unictype/ctype_blank.c, unictype/ctype_blank.h,
+     unictype/ctype_cntrl.c, unictype/ctype_cntrl.h, unictype/ctype_digit.c,
+     unictype/ctype_digit.h, unictype/ctype_graph.c, unictype/ctype_graph.h,
+     unictype/ctype_lower.c, unictype/ctype_lower.h, unictype/ctype_print.c,
+     unictype/ctype_print.h, unictype/ctype_punct.c, unictype/ctype_punct.h,
+     unictype/ctype_space.c, unictype/ctype_space.h, unictype/ctype_upper.c,
+     unictype/ctype_upper.h, unictype/ctype_xdigit.c, unictype/ctype_xdigit.h,
+     uninorm.in.h, unistr.in.h, unistr/u-cpy.h, unistr/u-pcpy.h,
+     unistr/u-strcat.h, unistr/u-strlen.h, unistr/u32-chr.c, unistr/u32-cpy.c,
+     unistr/u32-pcpy.c, unistr/u32-strcat.c, unistr/u32-strlen.c,
+     unitypes.in.h, wchar.in.h, wctype-impl.h, wctype.c, wctype.in.h,
+     fnmatch.m4, gnulib-comp.m4, inline.m4, iswblank.m4, iswctype.m4,
+     iswdigit.m4, iswxdigit.m4, libunistring-base.m4, mbrtoc32.m4, uchar_h.m4,
+     unicase_h.m4, unictype_h.m4, uninorm_h.m4, wctype.m4, wctype_h.m4: Updated
+     GnuLib.
+
+2023-07-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.h: s/LANG_MIN(CPP/LANG_CPP_MIN(/
+
+2023-07-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, explain_udl_2c_i.out, explain_udl_piul_i.out: Put "wchar_t"
+     last in list in error message.
+   * c_ast_check.c: Made "char8_t" conditionally in error message.
+
 2023-07-23  Paul J. Lucas <paul@lucasmail.org>
 
    * c_sname.c, c_sname.h: Moved c_sname_local_name() out of line.
