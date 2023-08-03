@@ -537,6 +537,26 @@ void print_hint( char const *format, ... ) {
   EPUTS( "?\n" );
 }
 
+void print_is_a_keyword( char const *error_token ) {
+  if ( error_token == NULL )
+    return;
+
+  c_keyword_t const *const ck =
+    c_keyword_find( error_token, LANG_ANY, C_KW_CTX_DEFAULT );
+  if ( ck != NULL ) {
+    c_lang_id_t const oldest_lang = c_lang_oldest( ck->lang_ids );
+    if ( oldest_lang > opt_lang )
+      EPRINTF( "; not a keyword until %s", c_lang_name( oldest_lang ) );
+    else
+      EPRINTF( " (\"%s\" is a keyword)", error_token );
+  }
+  else if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+    cdecl_keyword_t const *const cdk = cdecl_keyword_find( error_token );
+    if ( cdk != NULL )
+      EPRINTF( " (\"%s\" is a cdecl keyword)", error_token );
+  }
+}
+
 void print_loc( c_loc_t const *loc ) {
   assert( loc != NULL );
   size_t const column = print_caret( STATIC_CAST( size_t, loc->first_column ) );

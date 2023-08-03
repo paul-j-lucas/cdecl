@@ -3667,7 +3667,9 @@ decl_list_c_opt
         //      int
         //
         c_loc_t const loc = lexer_loc();
-        print_error( &loc, "declaration expected\n" );
+        print_error( &loc, "declaration expected" );
+        print_is_a_keyword( lexer_printable_token() );
+        EPUTC( '\n' );
         PARSE_ABORT();
       }
 
@@ -8315,24 +8317,10 @@ static void fl_elaborate_error( char const *file, int line,
   vfprintf( stderr, format, args );
   va_end( args );
 
-  if ( error_token != NULL ) {
-    c_keyword_t const *const ck =
-      c_keyword_find( error_token, LANG_ANY, C_KW_CTX_DEFAULT );
-    if ( ck != NULL ) {
-      c_lang_id_t const oldest_lang = c_lang_oldest( ck->lang_ids );
-      if ( oldest_lang > opt_lang )
-        EPRINTF( "; not a keyword until %s", c_lang_name( oldest_lang ) );
-      else
-        EPRINTF( " (\"%s\" is a keyword)", error_token );
-    }
-    else if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
-      cdecl_keyword_t const *const cdk = cdecl_keyword_find( error_token );
-      if ( cdk != NULL )
-        EPRINTF( " (\"%s\" is a cdecl keyword)", error_token );
-    }
+  print_is_a_keyword( error_token );
 
+  if ( error_token != NULL )
     print_suggestions( dym_kinds, error_token );
-  }
 
   EPUTC( '\n' );
 }

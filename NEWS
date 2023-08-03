@@ -26,6 +26,13 @@ themselves.
 ** Ding on no command match
 When no command is matched at all for autocompletion, we now ring the bell.
 
+** Improved "declaration expected" error message
+For declarations like:
+
+    cdecl> explain int float
+
+**cdecl** now mentions that "float" is a keyword in error messages.
+
 
 * Changes in Cdecl 14.2
 

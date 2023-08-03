@@ -206,6 +206,27 @@ PJL_PRINTF_LIKE_FUNC(1)
 void print_hint( char const *format, ... );
 
 /**
+ * If \a error_token is:
+ *
+ * + Is a C or C++ keyword:
+ *     + And the oldest language in which \a error_token is a keyword is later
+ *       than the current language, prints `"; not a keyword until"` followed
+ *       by the name of said oldest language.
+ *     + Otherwise prints `"(\"___\" is a keyword)"` where `___` is \a
+ *       error_token.
+ *
+ * + Is a **cdecl** keyword, prints `"(\"___\" is a cdecl keyword)"` where
+ *   `___` is \a error_token.
+ *
+ * + Is NULL, does nothing.
+ *
+ * @note A newline is _not_ printed.
+ *
+ * @param error_token The current error token or NULL.
+ */
+void print_is_a_keyword( char const *error_token );
+
+/**
  * Prints the location of the error including:
  *
  *  + The error line (if neither a TTY nor interactive).
