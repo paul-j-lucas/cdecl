@@ -349,24 +349,30 @@ _GL_WARN_ON_USE (mbsinit, "mbsinit is unportable - "
      - for mbsinit() to return true, and
      - for all other multibyte-aware functions to operate properly.
    0 < _GL_MBSTATE_INIT_SIZE <= _GL_MBSTATE_ZERO_SIZE <= sizeof (mbstate_t).
-   These values are determined by source code inspection.  */
+   These values are determined by source code inspection, where possible, and
+   by running the gnulib unit tests.
+   We need _GL_MBSTATE_INIT_SIZE because if we define _GL_MBSTATE_ZERO_SIZE
+   without considering what mbsinit() does, we get test failures such as
+     assertion "mbsinit (&iter->state)" failed
+ */
 # if GNULIB_defined_mbstate_t                             /* AIX, IRIX */
 /* mbstate_t has at least 4 bytes.  They are used as coded in
    gnulib/lib/mbrtowc.c.  */
 #  define _GL_MBSTATE_INIT_SIZE 1
-/* Note that 4 is not the correct value: it causes test failures.  */
-#  define _GL_MBSTATE_ZERO_SIZE sizeof (mbstate_t)
-# elif __GLIBC__ >= 2                                     /* glibc */
+/* define _GL_MBSTATE_ZERO_SIZE 4
+   does not work: it causes test failures.
+   So, use the safe fallback value, below.  */
+# elif __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2             /* glibc */
 /* mbstate_t is defined in <bits/types/__mbstate_t.h>.
    For more details, see glibc/iconv/skeleton.c.  */
-#  define _GL_MBSTATE_INIT_SIZE 4
+#  define _GL_MBSTATE_INIT_SIZE 4 /* sizeof (((mbstate_t) {0}).__count) */
 #  define _GL_MBSTATE_ZERO_SIZE /* 8 */ sizeof (mbstate_t)
 # elif defined MUSL_LIBC                                  /* musl libc */
 /* mbstate_t is defined in <bits/alltypes.h>.
    It is an opaque aligned 8-byte struct, of which at most the first
    4 bytes are used.
    For more details, see src/multibyte/mbrtowc.c.  */
-#  define _GL_MBSTATE_INIT_SIZE 4
+#  define _GL_MBSTATE_INIT_SIZE 4 /* sizeof (unsigned) */
 #  define _GL_MBSTATE_ZERO_SIZE 4
 # elif defined __APPLE__ && defined __MACH__              /* macOS */
 /* On macOS, mbstate_t is defined in <machine/_types.h>.
@@ -425,8 +431,8 @@ _GL_WARN_ON_USE (mbsinit, "mbsinit is unportable - "
    citrus/modules/citrus_dechanyu.c        8
    citrus/modules/citrus_johab.c           6
    citrus/modules/citrus_utf8.c           12 */
-/* But 12 is not the correct value: we get test failures for values < 28.  */
-#  define _GL_MBSTATE_INIT_SIZE 28
+/* But 12 is not the correct value for _GL_MBSTATE_ZERO_SIZE: we get test
+   failures for values < 28.  */
 #  define _GL_MBSTATE_ZERO_SIZE 28
 # elif defined __OpenBSD__                                /* OpenBSD */
 /* On OpenBSD, mbstate_t is defined in src/sys/sys/_types.h.
@@ -445,13 +451,14 @@ _GL_WARN_ON_USE (mbsinit, "mbsinit is unportable - "
    lib/libc/citrus/citrus_*.c.  */
 /* File           INIT_SIZE  ZERO_SIZE
    citrus_none.c      0          0 */
-#  define _GL_MBSTATE_INIT_SIZE 1
-#  define _GL_MBSTATE_ZERO_SIZE 1
+/* But 1 is not the correct value for _GL_MBSTATE_ZERO_SIZE: we get test
+   failures for values < 4.  */
+#  define _GL_MBSTATE_ZERO_SIZE 4
 # elif defined __sun                                      /* Solaris */
 /* On Solaris, mbstate_t is defined in <wchar_impl.h>.
    It is an opaque aligned 24-byte or 32-byte struct, of which at most the first
    20 or 28 bytes are used.
-   For more details, see the *State types in
+   For more details on OpenSolaris derivatives, see the *State types in
    illumos-gate/usr/src/lib/libc/port/locale/
    {none,euc,mskanji,big5,gb2312,gbk,gb18030,utf8}.c.  */
 /* File       INIT_SIZE  ZERO_SIZE
@@ -463,29 +470,25 @@ _GL_WARN_ON_USE (mbsinit, "mbsinit is unportable - "
    gbk.c          4          4
    gb18030.c      4          8
    utf8.c        12         12 */
-/* But 12 is not the correct value: we get test failures
+/* But 12 is not the correct value for _GL_MBSTATE_ZERO_SIZE: we get test
+   failures
      - in OpenIndiana and OmniOS: for values < 16,
      - in Solaris 10 and 11: for values < 20 (in 32-bit mode)
-       or < 28 (in 64-bit mode).  */
-#  if defined _LP64
-#   define _GL_MBSTATE_INIT_SIZE 28
-#   define _GL_MBSTATE_ZERO_SIZE 28
-#  else
-#   define _GL_MBSTATE_INIT_SIZE 20
-#   define _GL_MBSTATE_ZERO_SIZE 20
-#  endif
+       or < 28 (in 64-bit mode).
+   Since we don't have a good way to distinguish the OpenSolaris derivatives
+   from the proprietary Solaris versions, and can't inspect the Solaris source
+   code, use the safe fallback values, below.  */
 # elif defined __CYGWIN__                                 /* Cygwin */
 /* On Cygwin, mbstate_t is defined in <sys/_types.h>.
    For more details, see newlib/libc/stdlib/mbtowc_r.c and
    winsup/cygwin/strfuncs.cc.  */
-#  define _GL_MBSTATE_INIT_SIZE 4
+#  define _GL_MBSTATE_INIT_SIZE 4 /* sizeof (int) */
 #  define _GL_MBSTATE_ZERO_SIZE 8
 # elif defined _WIN32 && !defined __CYGWIN__              /* Native Windows.  */
 /* MSVC defines 'mbstate_t' as an aligned 8-byte struct.
    On mingw, 'mbstate_t' is sometimes defined as 'int', sometimes defined
-   as an aligned 8-byte struct, of which the first 4 bytes matter.  */
-#  define _GL_MBSTATE_INIT_SIZE sizeof (mbstate_t)
-#  define _GL_MBSTATE_ZERO_SIZE sizeof (mbstate_t)
+   as an aligned 8-byte struct, of which the first 4 bytes matter.
+   Use the safe values, below.  */
 # elif defined __ANDROID__                                /* Android */
 /* Android defines 'mbstate_t' in <bits/mbstate_t.h>.
    It is an opaque 4-byte or 8-byte struct.
@@ -496,10 +499,12 @@ _GL_WARN_ON_USE (mbsinit, "mbsinit is unportable - "
  */
 #  define _GL_MBSTATE_INIT_SIZE 4
 #  define _GL_MBSTATE_ZERO_SIZE 4
-# else
-/* On platforms where we don't know how the multibyte functions behave, use
-   these safe values.  */
+# endif
+/* Use safe values as defaults.  */
+# ifndef _GL_MBSTATE_INIT_SIZE
 #  define _GL_MBSTATE_INIT_SIZE sizeof (mbstate_t)
+# endif
+# ifndef _GL_MBSTATE_ZERO_SIZE
 #  define _GL_MBSTATE_ZERO_SIZE sizeof (mbstate_t)
 # endif
 _GL_BEGIN_C_LINKAGE

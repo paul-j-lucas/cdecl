@@ -270,7 +270,7 @@ FCT (const CHAR *pattern, const CHAR *string, const CHAR *string_end,
                     /* Leave room for the null.  */
                     CHAR str[CHAR_CLASS_MAX_LENGTH + 1];
                     size_t c1 = 0;
-                    wctype_t wt;
+                    WCTYPE_T wt;
                     const CHAR *startp = p;
 
                     for (;;)
@@ -310,7 +310,7 @@ FCT (const CHAR *pattern, const CHAR *string, const CHAR *string_end,
                     if (_ISCTYPE ((UCHAR) *n, wt))
                       goto matched;
 #else
-                    if (iswctype (BTOWC ((UCHAR) *n), wt))
+                    if (ISWCTYPE (UCHAR_TO_WCHAR ((UCHAR) *n), wt))
                       goto matched;
 #endif
                     c = *p++;
@@ -1206,6 +1206,6 @@ EXT (INT opt, const CHAR *pattern, const CHAR *string, const CHAR *string_end,
 #undef STRLEN
 #undef STRCAT
 #undef L_
-#undef BTOWC
+#undef UCHAR_TO_WCHAR
 #undef WIDE_CHAR_VERSION
 #undef FINDIDX

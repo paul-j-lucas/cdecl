@@ -1,4 +1,4 @@
-# wctype_h.m4 serial 30
+# wctype_h.m4 serial 32
 
 dnl A placeholder for ISO C99 <wctype.h>, for platforms that lack it.
 
@@ -197,4 +197,6 @@ AC_DEFUN([gl_WCTYPE_H_DEFAULTS],
   REPLACE_ISWBLANK=0;   AC_SUBST([REPLACE_ISWBLANK])
   REPLACE_ISWDIGIT=0;   AC_SUBST([REPLACE_ISWDIGIT])
   REPLACE_ISWXDIGIT=0;  AC_SUBST([REPLACE_ISWXDIGIT])
+  REPLACE_WCTRANS=0;    AC_SUBST([REPLACE_WCTRANS])
+  REPLACE_WCTYPE=0;     AC_SUBST([REPLACE_WCTYPE])
 ])
