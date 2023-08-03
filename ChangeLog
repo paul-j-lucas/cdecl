@@ -1,5 +1,8 @@
 2023-08-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, print.c, print.h, explain_ai-c++11.out: Added
+     print_is_a_keyword().
+   * lexer.h, lexer.l, parser.y: s/printable_token/lexer_printable_token/
    * lib/Makefile.am, btoc32.c, c32_apply_type_test.c, c32_get_type_test.c,
      c32is-impl.h, c32isalnum.c, c32isalpha.c, c32isblank.c, c32iscntrl.c,
      c32isdigit.c, c32isgraph.c, c32islower.c, c32isprint.c, c32ispunct.c,
