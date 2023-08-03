@@ -1331,6 +1331,14 @@ c_loc_t lexer_loc( void ) {
   return rv_loc;
 }
 
+char const* lexer_printable_token( void ) {
+  switch ( lexer_token[0] ) {
+    case '\0': return NULL;
+    case '\n': return "\\n";
+    default  : return lexer_token;
+  } // switch
+}
+
 void lexer_reset( bool hard_reset ) {
   if ( hard_reset ) {
     is_eof = false;

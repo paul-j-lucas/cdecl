@@ -84,6 +84,8 @@ extern c_keyword_ctx_t  lexer_keyword_ctx;
 
 /**
  * Text of current token.
+ *
+ * @sa lexer_printable_token()
  */
 extern char const      *lexer_token;
 
@@ -112,6 +114,14 @@ char const* lexer_input_line( size_t *rv_len );
  */
 NODISCARD
 c_loc_t lexer_loc( void );
+
+/**
+ * Gets a printable string of \ref lexer_token.
+ *
+ * @return Returns said string or NULL if \ref lexer_token is the empty string.
+ */
+NODISCARD
+char const* lexer_printable_token( void );
 
 /**
  * Resets the lexer to its initial state.

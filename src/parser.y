@@ -578,20 +578,6 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
 }
 
 /**
- * Gets a printable string of \ref lexer_token.
- *
- * @return Returns said string or NULL if \ref lexer_token is the empty string.
- */
-NODISCARD
-static inline char const* printable_token( void ) {
-  switch ( lexer_token[0] ) {
-    case '\0': return NULL;
-    case '\n': return "\\n";
-    default  : return lexer_token;
-  } // switch
-}
-
-/**
  * Cleans-up all memory associated with \a sti but does _not_ free \a sti
  * itself.
  *
@@ -809,7 +795,7 @@ static void fl_keyword_expected( char const *file, int line,
 
   dym_kind_t dym_kinds = DYM_NONE;
 
-  char const *const error_token = printable_token();
+  char const *const error_token = lexer_printable_token();
   if ( error_token != NULL ) {
     if ( strcmp( error_token, keyword ) == 0 ) {
       //
@@ -866,7 +852,7 @@ static void fl_punct_expected( char const *file, int line, char punct ) {
   EPUTS( ": " );
   print_debug_file_line( file, line );
 
-  char const *const error_token = printable_token();
+  char const *const error_token = lexer_printable_token();
   if ( error_token != NULL )
     EPRINTF( "\"%s\": ", error_token );
 
@@ -1830,7 +1816,7 @@ command
   | semi_or_end                         // allows for blank lines
   | error
     {
-      if ( printable_token() != NULL )
+      if ( lexer_printable_token() != NULL )
         elaborate_error_dym( DYM_COMMANDS, "unexpected token" );
       else
         elaborate_error( "unexpected end of command" );
@@ -8273,7 +8259,7 @@ virtual_stid_opt
  * Prints an additional parsing error message including a newline to standard
  * error that continues from where yyerror() left off.  Additionally:
  *
- * + If the printable_token() isn't NULL:
+ * + If the lexer_printable_token() isn't NULL:
  *     + Checks to see if it's a keyword: if it is, mentions that it's a
  *       keyword in the error message.
  *     + May print "did you mean ...?" \a dym_kinds suggestions.
@@ -8304,7 +8290,7 @@ static void fl_elaborate_error( char const *file, int line,
   EPUTS( ": " );
   print_debug_file_line( file, line );
 
-  char const *const error_token = printable_token();
+  char const *const error_token = lexer_printable_token();
   if ( error_token != NULL ) {
     EPRINTF( "\"%s\"", error_token );
 #ifdef ENABLE_CDECL_DEBUG
