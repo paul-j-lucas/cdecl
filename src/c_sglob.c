@@ -101,8 +101,7 @@ void c_sglob_parse( char const *s, c_sglob_t *rv_sglob ) {
     if ( *s == '\0' )
       break;
     s += 2 /* "::" */;
-    SKIP_WS( s );
-    glob_begin = s;
+    glob_begin = SKIP_WS( s );
   } // for
 
   assert( rv_sglob->count == scope_count );

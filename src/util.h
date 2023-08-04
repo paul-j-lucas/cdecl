@@ -1178,8 +1178,7 @@ _Noreturn void perror_exit( int status );
  */
 NODISCARD C_UTIL_H_INLINE
 bool str_is_empty( char const *s ) {
-  SKIP_WS( s );
-  return *s == '\0';
+  return *SKIP_WS( s ) == '\0';
 }
 
 /**
