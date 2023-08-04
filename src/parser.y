@@ -116,6 +116,7 @@
  *      elaborate_error( "name expected" );
  *    }
  * ```
+ * @note A newline _is_ printed.
  *
  * @sa elaborate_error_dym()
  * @sa keyword_expected()
@@ -137,6 +138,7 @@
  *      elaborate_error_dym( DYM_COMMANDS, "unexpected token" );
  *    }
  * ```
+ * @note A newline _is_ printed.
  *
  * @sa elaborate_error()
  * @sa keyword_expected()
@@ -8269,16 +8271,20 @@ virtual_stid_opt
  * + In debug mode, also prints the file & line where the function was called
  *   from as well as the ID of the lookahead token, if any.
  *
+ * @note A newline _is_ printed.
  * @note This function isn't normally called directly; use the
- * #elaborate_error() macro instead.
+ * #elaborate_error() or #elaborate_error_dym() macros instead.
  *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
  * from.
  * @param dym_kinds The bitwise-or of the kind(s) of things possibly meant.
- * @param format A `printf()` style format string.
+ * @param format A `printf()` style format string.  It _must not_ end in a
+ * newline since this function prints its own newline.
  * @param ... Arguments to print.
  *
+ * @sa #elaborate_error()
+ * @sa #elaborate_error_dym()
  * @sa fl_keyword_expected()
  * @sa fl_punct_expected()
  * @sa yyerror()
