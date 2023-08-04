@@ -287,7 +287,7 @@ uint32_t ms_bit1_32( uint32_t n ) {
 
 char const* parse_identifier( char const *s ) {
   assert( s != NULL );
-  if ( !(isalpha( s[0] ) || s[0] == '_') )
+  if ( !is_ident_first( s[0] ) )
     return NULL;
   while ( is_ident( *++s ) )
     ;
