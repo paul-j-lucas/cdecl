@@ -1,3 +1,7 @@
+2023-08-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Moved print_is_a_keyword() inside `if`.
+
 2023-08-03  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y, print.c, print.h, explain_ai-c++11.out: Added
