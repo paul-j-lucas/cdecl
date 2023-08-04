@@ -1275,7 +1275,7 @@ bool true_clear( bool *flag ) {
  *
  * @param sep The separator to print.
  * @param sep_flag If `true`, prints \a sep; if `false`, prints nothing, but
- * sets it flag to `true`.  The flag should be `false` initially.
+ * sets it to `true`.  The flag should be `false` initially.
  * @param sout The `FILE` to print to.
  */
 C_UTIL_H_INLINE
