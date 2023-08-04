@@ -8317,10 +8317,10 @@ static void fl_elaborate_error( char const *file, int line,
   vfprintf( stderr, format, args );
   va_end( args );
 
-  print_is_a_keyword( error_token );
-
-  if ( error_token != NULL )
+  if ( error_token != NULL ) {
+    print_is_a_keyword( error_token );
     print_suggestions( dym_kinds, error_token );
+  }
 
   EPUTC( '\n' );
 }
