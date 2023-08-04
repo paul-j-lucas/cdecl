@@ -5696,18 +5696,18 @@ enum_class_struct_union_c_ast
 class_struct_union_c_ast
   : class_struct_union_btid attribute_specifier_list_c_atid_opt any_sname_c_exp
     {
-      c_tid_t  const  csu_tid = $1;
+      c_tid_t  const  csu_btid = $1;
       c_tid_t  const  atids = $2;
 
       DUMP_START( "enum_class_struct_union_c_ast",
                   "class_struct_union_btid "
                   "attribute_specifier_list_c_atid_opt sname" );
-      DUMP_TID( "class_struct_union_btid", csu_tid );
+      DUMP_TID( "class_struct_union_btid", csu_btid );
       DUMP_TID( "attribute_specifier_list_c_atid_opt", atids );
       DUMP_SNAME( "any_sname_c", $3 );
 
       $$ = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@$ );
-      $$->type.btids = c_tid_check( csu_tid, C_TPID_BASE );
+      $$->type.btids = c_tid_check( csu_btid, C_TPID_BASE );
       $$->type.atids = c_tid_check( atids, C_TPID_ATTR );
       $$->csu.csu_sname = c_sname_move( &$3 );
 
