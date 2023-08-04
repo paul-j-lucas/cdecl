@@ -1194,7 +1194,7 @@ bool str_is_empty( char const *s ) {
  */
 NODISCARD C_UTIL_H_INLINE
 char const* null_if_empty( char const *s ) {
-  return s != NULL && SKIP_WS( s )[0] == '\0' ? NULL : s;
+  return s != NULL && *SKIP_WS( s ) == '\0' ? NULL : s;
 }
 
 /**
