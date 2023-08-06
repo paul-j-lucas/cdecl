@@ -1,5 +1,7 @@
 2023-08-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.h, c_ast_check.c, dump.c, english.c, gibberish.c, parser.y:
+     s/C_ARRAY_SIZE_VARIABLE/C_ARRAY_SIZE_VLA_STAR/
    * parser.y: Eliminated array_size_c_int.
    * cdecl.1: Added missing C78 aliases.
 
