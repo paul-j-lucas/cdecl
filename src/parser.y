@@ -1627,7 +1627,6 @@ static void yyerror( char const *msg ) {
 %type   <sname>     any_sname_c any_sname_c_exp any_sname_c_opt
 %type   <ast_pair>  array_decl_c_astp
 %type   <ast>       array_size_c_ast
-%type   <int_val>   array_size_c_int
 %type   <ast>       atomic_builtin_typedef_type_c_ast
 %type   <ast>       atomic_specifier_type_c_ast
 %type   <tid>       attribute_c_atid_exp
@@ -3867,10 +3866,15 @@ array_decl_c_astp
   ;
 
 array_size_c_ast
-  : array_size_c_int
+  : '[' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = $1;
+      $$->array.size = C_ARRAY_SIZE_NONE;
+    }
+  | '[' Y_INT_LIT rbracket_exp
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->array.size = $2;
     }
   | '[' type_qualifier_list_c_stid rbracket_exp
     {
@@ -3896,14 +3900,9 @@ array_size_c_ast
       $$->array.size = $4;
       $$->array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
     }
-  ;
-
-array_size_c_int
-  : '[' rbracket_exp              { $$ = C_ARRAY_SIZE_NONE; }
-  | '[' Y_INT_LIT rbracket_exp    { $$ = $2; }
   | '[' error ']'
     {
-      elaborate_error( "integer expected for array size" );
+      elaborate_error( "array size expected" );
     }
   ;
 
