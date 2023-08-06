@@ -1,5 +1,11 @@
+2023-08-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Eliminated array_size_c_int.
+   * cdecl.1: Added missing C78 aliases.
+
 2023-08-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Renaming.
    * util.c: Using is_ident_first().
    * parser.y: Moved print_is_a_keyword() inside `if`.
 
