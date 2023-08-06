@@ -233,7 +233,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
   switch ( ast->kind ) {
     case K_ARRAY:
       c_type_name_nobase_english( &ast->type, eout );
-      if ( ast->array.size == C_ARRAY_SIZE_VARIABLE )
+      if ( ast->array.size == C_ARRAY_SIZE_VLA_STAR )
         FPUTS( "variable length ", eout );
       FPUTS( "array ", eout );
       fputs_sp( c_tid_name_english( ast->array.stids ), eout );

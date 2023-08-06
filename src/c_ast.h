@@ -56,7 +56,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * For c_array_ast.size, denotes `array[]`.
  *
- * @sa #C_ARRAY_SIZE_VARIABLE
+ * @sa #C_ARRAY_SIZE_VLA_STAR
  * @sa c_array_size_t
  */
 #define C_ARRAY_SIZE_NONE         (-1)
@@ -67,7 +67,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_ARRAY_SIZE_NONE
  * @sa c_array_size_t
  */
-#define C_ARRAY_SIZE_VARIABLE     (-2)
+#define C_ARRAY_SIZE_VLA_STAR     (-2)
 
 /**
  * For c_function_ast.flags, denotes that the user didn't explicitly specify
@@ -204,7 +204,7 @@ struct c_alignas {
  *
  *  + The actual size of a C array, but only when &ge; 0.
  *  + #C_ARRAY_SIZE_NONE
- *  + #C_ARRAY_SIZE_VARIABLE
+ *  + #C_ARRAY_SIZE_VLA_STAR
  */
 typedef int       c_array_size_t;
 

@@ -179,7 +179,7 @@ void c_ast_dump_impl( c_ast_t const *ast, unsigned indent, bool *comma,
         case C_ARRAY_SIZE_NONE:
           FPUTS( "\"unspecified\"", dout );
           break;
-        case C_ARRAY_SIZE_VARIABLE:
+        case C_ARRAY_SIZE_VLA_STAR:
           FPUTS( "'*'", dout );
           break;
         default:

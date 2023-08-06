@@ -3891,7 +3891,7 @@ array_size_c_ast
   | '[' type_qualifier_list_c_stid_opt '*' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = C_ARRAY_SIZE_VARIABLE;
+      $$->array.size = C_ARRAY_SIZE_VLA_STAR;
       $$->array.stids = c_tid_check( $2, C_TPID_STORE );
     }
   | '[' Y_static type_qualifier_list_c_stid_opt Y_INT_LIT rbracket_exp
@@ -6351,7 +6351,7 @@ array_decl_english_ast
       DUMP_AST( "decl_english_ast", decl_ast );
 
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = C_ARRAY_SIZE_VARIABLE;
+      $$->array.size = C_ARRAY_SIZE_VLA_STAR;
       $$->array.stids = c_tid_check( array_qual_stids, C_TPID_STORE );
       c_ast_set_parent( decl_ast, $$ );
 
@@ -6372,7 +6372,7 @@ array_qualifier_list_english_stid
 array_size_int_opt
   : /* empty */                   { $$ = C_ARRAY_SIZE_NONE; }
   | Y_INT_LIT
-  | '*'                           { $$ = C_ARRAY_SIZE_VARIABLE; }
+  | '*'                           { $$ = C_ARRAY_SIZE_VLA_STAR; }
   ;
 
 length_opt

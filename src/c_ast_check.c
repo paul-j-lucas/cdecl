@@ -376,7 +376,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
   switch ( ast->array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;
-    case C_ARRAY_SIZE_VARIABLE:
+    case C_ARRAY_SIZE_VLA_STAR:
       if ( !OPT_LANG_IS( VLA ) ) {
         print_error( &ast->loc,
           "variable length arrays not supported%s\n",

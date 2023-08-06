@@ -596,7 +596,7 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
   switch ( ast->array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;
-    case C_ARRAY_SIZE_VARIABLE:
+    case C_ARRAY_SIZE_VLA_STAR:
       FPUTC( '*', g->gout );
       break;
     default:
