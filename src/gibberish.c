@@ -133,7 +133,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, unsigned gib_flags,
  * @param g The g_state to initialize.
  * @param gib_flags The gibberish flags to use.
  * @param printed_typedef Printed `typedef`?
- * @param gout The `FILE` to print it to.
+ * @param gout The `FILE` to print to.
  */
 static void g_init( g_state_t *g, unsigned gib_flags, bool printed_typedef,
                     FILE *gout ) {
