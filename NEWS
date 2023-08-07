@@ -17,6 +17,17 @@ For the `explicit-ecsu`, `explicit-int`, and `west-pointer` options, `*` is a
 synonym for "all" and `-` is a synonym for "none" but only when they're by
 themselves.
 
+** Arrays with named sizes
+Arrays can now have names to denote their size, e.g.:
+
+    cdecl> explain int a[N]
+    declare a as array N of integer
+
+When such an array is a function parameter, **cdecl** now knows it's a VLA:
+
+    cdecl> explain void f( int n, int a[n] )
+    declare f as function (n as integer, a as variable length array n of integer) returning void
+
 ** Autocompleting `precision`
 `precision` is now autocompleted following `double` in pseudo-English.
 

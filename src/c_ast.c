@@ -188,7 +188,19 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      dup_ast->array.size = ast->array.size;
+      dup_ast->array.kind = ast->array.kind;
+      switch ( ast->array.kind ) {
+        case C_ARRAY_INT_SIZE:
+          dup_ast->array.size_int = ast->array.size_int;
+          break;
+        case C_ARRAY_NAMED_SIZE:
+          dup_ast->array.size_name = check_strdup( ast->array.size_name );
+          break;
+        case C_ARRAY_EMPTY_SIZE:
+        case C_ARRAY_VLA_STAR:
+          // nothing to do
+          break;
+      } // switch
       dup_ast->array.stids = ast->array.stids;
       break;
 
@@ -273,8 +285,21 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_ARRAY: {
       c_array_ast_t const *const ai_ast = &i_ast->array;
       c_array_ast_t const *const aj_ast = &j_ast->array;
-      if ( ai_ast->size != aj_ast->size )
+      if ( ai_ast->kind != aj_ast->kind )
         return false;
+      switch ( ai_ast->kind ) {
+        case C_ARRAY_INT_SIZE:
+          if ( ai_ast->size_int != aj_ast->size_int )
+            return false;
+          break;
+        case C_ARRAY_NAMED_SIZE:
+          if ( strcmp( ai_ast->size_name, aj_ast->size_name ) != 0 )
+            return false;
+          break;
+        case C_ARRAY_EMPTY_SIZE:
+        case C_ARRAY_VLA_STAR:
+          break;
+      } // switch
       if ( ai_ast->stids != aj_ast->stids )
         return false;
       break;
@@ -362,6 +387,10 @@ void c_ast_free( c_ast_t *ast ) {
 
     c_sname_cleanup( &ast->sname );
     switch ( ast->kind ) {
+      case K_ARRAY:
+        if ( ast->array.kind == C_ARRAY_NAMED_SIZE )
+          FREE( ast->array.size_name );
+        break;
       case K_LAMBDA:
         c_ast_list_cleanup( &ast->lambda.capture_ast_list );
         FALLTHROUGH;
@@ -377,7 +406,6 @@ void c_ast_free( c_ast_t *ast ) {
       case K_POINTER_TO_MEMBER:
         c_sname_cleanup( &ast->csu.csu_sname );
         break;
-      case K_ARRAY:
       case K_BUILTIN:
       case K_CAPTURE:
       case K_CAST:

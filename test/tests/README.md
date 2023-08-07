@@ -39,6 +39,7 @@ The characters are:
 + `a_us_` = `unsequenced`
 + `a_using_` = attribute with `using`
 + `al` = `_Alignas` or `alignas`
++ `an` = array with name for size, e.g., `a[n]`
 + `at` = `_Atomic` or `atomic`
 + `b` = `bool`
 + `bi` = `_BitInt` (following digits specify number of bits)

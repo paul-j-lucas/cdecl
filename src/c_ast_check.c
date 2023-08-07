@@ -156,6 +156,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * State maintained by c_ast_check_visitor().
+ */
+struct c_state {
+  unsigned        flags;                ///< Flags.
+  c_ast_t const  *func_ast;             ///< The current function AST, if any.
+};
+typedef struct c_state c_state_t;
+
+/**
  * The signature for functions passed to c_ast_check_visitor().
  *
  * @param ast The AST to check.
@@ -165,11 +174,6 @@
 typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast, user_data_t data );
 
 // local constants
-
-/**
- * Flag for c_ast_check_visitor(): is an AST node a function-like parameter?
- */
-static unsigned const C_IS_FUNC_PARAM     = (1u << 0);
 
 /**
  * Flag for c_ast_check_visitor(): is an AST node the "of" type of a `typedef`
@@ -189,7 +193,7 @@ static unsigned const C_IS_FUNC_PARAM     = (1u << 0);
  *  + A pointer to `void` is also legal; therefore:
  *  + A pointer to a `typedef` of `void` is also legal.
  */
-static unsigned const C_IS_POINTED_TO     = (1u << 1);
+static unsigned const C_IS_POINTED_TO     = (1u << 0);
 
 /// Convenience return value for \ref c_ast_visit_fn_t functions.
 static bool const VISITOR_ERROR_FOUND     = true;
@@ -228,16 +232,16 @@ static c_lang_id_t  is_reserved_name( char const* );
  *
  * @param ast The AST to check.
  * @param check_fn The check function to use.
- * @param flags The flags to use.
+ * @param c The c_state to use.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         c_ast_check_fn_t check_fn,
-                                        unsigned flags ) {
+                                        c_state_t const *c ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_visit_fn_t const visit_fn = POINTER_CAST( c_ast_visit_fn_t, check_fn );
-  user_data_t const data = { .ui = flags };
+  user_data_t const data = { .pc = c };
   return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, data ) == NULL;
 }
 
@@ -361,22 +365,47 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
  * Checks an array AST for errors.
  *
  * @param ast The array AST to check.
+ * @param c The c_state to use.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_array( c_ast_t const *ast ) {
+static bool c_ast_check_array( c_ast_t const *ast, c_state_t const *c ) {
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
+  assert( c != NULL );
 
   if ( c_tid_is_any( ast->type.stids, TS_ATOMIC ) ) {
     error_kind_not_tid( ast, TS_ATOMIC, LANG_NONE, "\n" );
     return false;
   }
 
-  switch ( ast->array.size ) {
-    case C_ARRAY_SIZE_NONE:
+  switch ( ast->array.kind ) {
+    case C_ARRAY_EMPTY_SIZE:
       break;
-    case C_ARRAY_SIZE_VLA_STAR:
+    case C_ARRAY_INT_SIZE:
+      if ( ast->array.size_int == 0 ) {
+        print_error( &ast->loc, "array size must be greater than 0\n" );
+        return false;
+      }
+      break;
+    case C_ARRAY_NAMED_SIZE: {
+      if ( c->func_ast == NULL )
+        break;
+      c_ast_t const *const size_param_ast =
+        c_ast_find_param_named( c->func_ast, ast->array.size_name, ast );
+      if ( size_param_ast == NULL )
+        break;
+      // At this point, we know it's a VLA.
+      if ( !c_ast_is_integral( size_param_ast ) ) {
+        print_error( &ast->loc,
+          "size of array has non-integral type %s\n",
+          c_type_name_error( &size_param_ast->type )
+        );
+        return false;
+      }
+      FALLTHROUGH;
+    }
+    case C_ARRAY_VLA_STAR:
       if ( !OPT_LANG_IS( VLA ) ) {
         print_error( &ast->loc,
           "variable length arrays not supported%s\n",
@@ -384,13 +413,6 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
         );
         return false;
       }
-      break;
-    default:
-      if ( ast->array.size == 0 ) {
-        print_error( &ast->loc, "array size must be greater than 0\n" );
-        return false;
-      }
-      assert( ast->array.size > 0 );
       break;
   } // switch
 
@@ -409,7 +431,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
   c_ast_t const *const raw_of_ast = c_ast_untypedef( of_ast );
   switch ( raw_of_ast->kind ) {
     case K_ARRAY:
-      if ( of_ast->array.size == C_ARRAY_SIZE_NONE ) {
+      if ( of_ast->array.kind == C_ARRAY_EMPTY_SIZE ) {
         print_error( &of_ast->loc, "array dimension required\n" );
         return false;
       }
@@ -472,13 +494,14 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
  * Checks a built-in type AST for errors.
  *
  * @param ast The built-in AST to check.
- * @param flags The flags to use.
+ * @param c The c_state to use.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
+static bool c_ast_check_builtin( c_ast_t const *ast, c_state_t const *c ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
+  assert( c != NULL );
 
   if ( ast->type.btids == TB_NONE && !OPT_LANG_IS( IMPLICIT_int ) &&
        !c_ast_parent_is_kind( ast, K_USER_DEF_CONVERSION ) ) {
@@ -553,7 +576,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, unsigned flags ) {
        ast->kind != K_CAST &&
        !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) &&
        !(OPT_LANG_IS( C_ANY ) && c_tid_is_any( ast->type.stids, TS_EXTERN )) &&
-       (flags & C_IS_POINTED_TO) == 0 ) {
+       (c->flags & C_IS_POINTED_TO) == 0 ) {
     print_error( &ast->loc, "variable of void" );
     print_hint( "pointer to void" );
     return false;
@@ -777,15 +800,15 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
  * Checks an entire AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param flags The flags to use.
+ * @param c The c_state to use.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_errors( c_ast_t const *ast, unsigned flags ) {
+static bool c_ast_check_errors( c_ast_t const *ast, c_state_t const *c ) {
   assert( ast != NULL );
   // check in major-to-minor error order
-  return  c_ast_check_visitor( ast, c_ast_visitor_error, flags ) &&
-          c_ast_check_visitor( ast, c_ast_visitor_type, flags );
+  return  c_ast_check_visitor( ast, c_ast_visitor_error, c ) &&
+          c_ast_check_visitor( ast, c_ast_visitor_type, c );
 }
 
 /**
@@ -1260,7 +1283,10 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       CASE_K_PLACEHOLDER;
     } // switch
 
-    if ( !c_ast_check_errors( param_ast, C_IS_FUNC_PARAM ) )
+    c_state_t param_c;
+    MEM_ZERO( &param_c );
+    param_c.func_ast = ast;
+    if ( !c_ast_check_errors( param_ast, &param_c ) )
       return false;
   } // for
 
@@ -2386,26 +2412,26 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
  * Visitor function that checks an AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param data The flags to use.
+ * @param data The data to use.
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 NODISCARD
 static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
   assert( ast != NULL );
-  unsigned flags = data.ui;
+  c_state_t const *const c = data.pc;
 
   if ( !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      if ( !c_ast_check_array( ast ) )
+      if ( !c_ast_check_array( ast, c ) )
         return VISITOR_ERROR_FOUND;
       break;
 
     case K_BUILTIN:
-      if ( !c_ast_check_builtin( ast, flags ) )
+      if ( !c_ast_check_builtin( ast, c ) )
         return VISITOR_ERROR_FOUND;
       break;
 
@@ -2508,13 +2534,15 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       break;
 
     case K_TYPEDEF: {
+      c_state_t temp_c;
+      MEM_ZERO( &temp_c );
       //
       // K_TYPEDEF isn't a "parent" kind since it's not a parent "of" the
       // underlying type, but instead a synonym "for" it.  Hence, we have to
       // recurse into it manually.
       //
       if ( c_ast_parent_is_kind( ast, K_POINTER ) )
-        flags |= C_IS_POINTED_TO;       // see the comment for C_IS_POINTED_TO
+        temp_c.flags |= C_IS_POINTED_TO;
 
       //
       // Create a temporary AST node on the stack that is a copy of the
@@ -2535,7 +2563,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       temp_ast.loc = ast->loc;
       temp_ast.type.stids |= qual_stids;
 
-      data.ui = flags;
+      data.pc = &temp_c;
       return c_ast_visitor_error( &temp_ast, data );
     }
 
@@ -2553,7 +2581,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       break;
 
     case K_VARIADIC:
-      assert( (flags & C_IS_FUNC_PARAM) != 0 );
+      assert( c->func_ast != NULL );
       break;
 
     CASE_K_PLACEHOLDER;
@@ -2666,12 +2694,13 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
   }
 
   if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
+    c_state_t param_c;
+    MEM_ZERO( &param_c );
+    param_c.func_ast = ast;
     FOREACH_AST_FUNC_PARAM( param, ast ) {
       c_ast_t const *const param_ast = c_param_ast( param );
-      if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type,
-                                 C_IS_FUNC_PARAM ) ) {
+      if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type, &param_c ) )
         return VISITOR_ERROR_FOUND;
-      }
     } // for
   }
 
@@ -2682,13 +2711,13 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
  * Visitor function that checks an AST for semantic warnings.
  *
  * @param ast The AST to check.
- * @param data The flags to use.
+ * @param data Not used.
  * @return Always returns `false`.
  */
 NODISCARD
 static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
   assert( ast != NULL );
-  unsigned const flags = data.ui;
+  (void)data;
 
   switch ( ast->kind ) {
     case K_ARRAY:
@@ -2739,11 +2768,14 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
       FALLTHROUGH;
     }
 
-    case K_CONSTRUCTOR:
+    case K_CONSTRUCTOR: {
+      c_state_t param_c;
+      MEM_ZERO( &param_c );
+      param_c.func_ast = ast;
       FOREACH_AST_FUNC_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
         PJL_IGNORE_RV(
-          c_ast_check_visitor( param_ast, c_ast_visitor_warning, flags )
+          c_ast_check_visitor( param_ast, c_ast_visitor_warning, &param_c )
         );
         if ( c_tid_is_any( param_ast->type.stids, TS_VOLATILE ) &&
              OPT_LANG_IS( CPP_MIN(20) ) ) {
@@ -2754,6 +2786,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
         }
       } // for
       FALLTHROUGH;
+    }
 
     case K_DESTRUCTOR:
       if ( c_tid_is_any( ast->type.stids, TS_THROW ) &&
@@ -2873,10 +2906,12 @@ static c_lang_id_t is_reserved_name( char const *name ) {
 
 bool c_ast_check( c_ast_t const *ast ) {
   assert( ast != NULL );
-  if ( !c_ast_check_errors( ast, /*flags=*/0 ) )
+  c_state_t c;
+  MEM_ZERO( &c );
+  if ( !c_ast_check_errors( ast, &c ) )
     return false;
   PJL_IGNORE_RV(
-    c_ast_check_visitor( ast, c_ast_visitor_warning, /*flags=*/0 )
+    c_ast_check_visitor( ast, c_ast_visitor_warning, &c )
   );
   return true;
 }

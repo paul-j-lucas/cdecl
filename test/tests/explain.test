@@ -81,6 +81,11 @@ explain int a[012]
 explain int a[0xA]
 explain int a[0xa]
 explain int a[9]
+explain int a[N]
+explain int a[const N]
+explain int a[static N]
+explain int a[static const N]
+explain int a[*]
 explain int a__a
 explain int const x
 explain int f( void() )
@@ -153,17 +158,44 @@ explain void f( ... )
 explain void f( char const *fmt, ... )
 explain void f( double (*a)[5] )
 explain void f( int g() )
-explain void f(char[])
-explain void f(int i, double d)
-explain void f(int x, int y)
-explain void f(int x[*])
-explain void f(int x[const *])
-explain void f(int x[const static 3])
-explain void f(int x[const])
-explain void f(int x[static 3])
-explain void f(int x[static const 3])
-explain void f(register int i)
-explain void f(void)
+explain void f( char[] )
+explain void f( int i, double d )
+explain void f( int x, int y )
+explain void f( int x[*] )
+explain void f( int x[const *] )
+explain void f( int x[const static 3] )
+explain void f( int x[const] )
+explain void f( int x[static 3] )
+explain void f( int x[static const 3] )
+explain void f( int x[n] )
+explain void f( int x[const n] )
+explain void f( int x[static n] )
+explain void f( int x[static const n] )
+explain void f( int n, int x[const n] )
+explain void f( int n, int x[static n] )
+explain void f( int n, int x[static const n] )
+explain void f( register int i )
+
+explain void f( _BitInt(4) n, int x[n] )
+explain void f( char n, int x[n] )
+explain void f( char16_t n, int x[n] )
+explain void f( char32_t n, int x[n] )
+explain void f( char8_t n, int x[n] )
+explain void f( int n, int x[n] )
+explain void f( long long n, int x[n] )
+explain void f( long n, int x[n] )
+explain void f( short n, int x[n] )
+explain void f( signed char n, int x[n] )
+explain void f( size_t n, int x[n] )
+explain void f( ssize_t n, int x[n] )
+explain void f( unsigned char n, int x[n] )
+explain void f( unsigned long long n, int x[n] )
+explain void f( unsigned long n, int x[n] )
+explain void f( unsigned n, int x[n] )
+explain void f( unsigned short n, int x[n] )
+explain void f( wchar_t n, int x[n] )
+
+explain void f( void )
 explain wchar_t x
 
 typedef int *pint

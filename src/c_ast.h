@@ -54,22 +54,6 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
- * For c_array_ast.size, denotes `array[]`.
- *
- * @sa #C_ARRAY_SIZE_VLA_STAR
- * @sa c_array_size_t
- */
-#define C_ARRAY_SIZE_NONE         (-1)
-
-/**
- * For c_array_ast.size, denotes `array[*]`.
- *
- * @sa #C_ARRAY_SIZE_NONE
- * @sa c_array_size_t
- */
-#define C_ARRAY_SIZE_VLA_STAR     (-2)
-
-/**
  * For c_function_ast.flags, denotes that the user didn't explicitly specify
  * either `member` or `non-member` in pseudo-English.
  *
@@ -152,11 +136,6 @@ _GL_INLINE_HEADER_BEGIN
 #define FOREACH_AST_FUNC_PARAM_UNTIL(VAR,AST,END) \
   FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->func.param_ast_list, (END) )
 
-/**
- * Decimal print conversion specifier for \ref c_array_size_t.
- */
-#define PRId_C_ARRAY_SIZE_T       "%d"
-
 #ifdef ENABLE_CDECL_DEBUG
 
 /**
@@ -200,13 +179,15 @@ struct c_alignas {
 };
 
 /**
- * One of:
- *
- *  + The actual size of a C array, but only when &ge; 0.
- *  + #C_ARRAY_SIZE_NONE
- *  + #C_ARRAY_SIZE_VLA_STAR
+ * Kind of array.
  */
-typedef int       c_array_size_t;
+enum c_array_kind {
+  C_ARRAY_EMPTY_SIZE,                   ///< E.g., `a[]`.
+  C_ARRAY_INT_SIZE,                     ///< E.g., `a[4]`.
+  C_ARRAY_NAMED_SIZE,                   ///< E.g., `a[n]`.
+  C_ARRAY_VLA_STAR                      ///< E.g., `a[*]` (C99 and later only).
+};
+typedef enum c_array_kind c_array_kind_t;
 
 #ifdef ENABLE_CDECL_DEBUG
 typedef unsigned  c_ast_id_t;           ///< Unique AST node ID.
@@ -300,7 +281,11 @@ struct c_parent_ast {
  */
 struct c_array_ast {
   c_ast_t        *of_ast;               ///< What it's an array of.
-  c_array_size_t  size;                 ///< @copydoc c_array_size_t
+  c_array_kind_t  kind;                 ///< Kind.
+  union {
+    unsigned      size_int;             ///< For #C_ARRAY_INT_SIZE.
+    char const   *size_name;            ///< For #C_ARRAY_NAMED_SIZE.
+  };
   c_tid_t         stids;                ///< E.g., `array[static const 10]`
 };
 

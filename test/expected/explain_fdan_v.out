@@ -1,0 +1,3 @@
+explain void f(double d, int x[d])
+                              ^
+31: error: size of array has non-integral type double

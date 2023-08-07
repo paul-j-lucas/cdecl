@@ -556,6 +556,28 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir ) {
   return found_ast != NULL ? &found_ast->sname : NULL;
 }
 
+c_ast_t const* c_ast_find_param_named( c_ast_t const *func_ast,
+                                       char const *name,
+                                       c_ast_t const *stop_ast ) {
+  assert( func_ast != NULL );
+  assert( is_1_bit_only_in_set( func_ast->kind, K_ANY_FUNCTION_LIKE ) );
+  assert( name != NULL );
+
+  SNAME_VAR_INIT( sname, name );
+
+  FOREACH_AST_FUNC_PARAM( param, func_ast ) {
+    c_ast_t const *const param_ast = c_param_ast( param );
+    if ( param_ast == stop_ast )
+      break;
+    c_sname_t const *const param_sname =
+      c_ast_find_name( param_ast, C_VISIT_DOWN );
+    if ( param_sname != NULL && c_sname_cmp( param_sname, &sname ) == 0 )
+      return param_ast;
+  } // for
+
+  return NULL;
+}
+
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
                               c_type_t const *type ) {
   user_data_t const data = { .pc = type };
@@ -584,6 +606,18 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
     return false;
   c_tid_t const ast_btids = c_tid_normalize( ast->type.btids );
   return is_1n_bit_only_in_set( c_tid_no_tpid( ast_btids ), btids );
+}
+
+bool c_ast_is_integral( c_ast_t const *ast ) {
+  ast = c_ast_untypedef( ast );
+  switch ( ast->kind ) {
+    case K_BUILTIN:
+      return (c_tid_no_tpid( ast->type.btids ) & TB_ANY_INTEGRAL) != 0;
+    case K_ENUM:
+      return true;
+    default:
+      return false;
+  } // switch
 }
 
 bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {

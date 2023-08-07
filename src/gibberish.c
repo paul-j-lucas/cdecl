@@ -593,16 +593,22 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
   FPUTS( graph_token_c( "[" ), g->gout );
   FPUTS( c_tid_name_c( ast->array.stids ), g->gout );
 
-  switch ( ast->array.size ) {
-    case C_ARRAY_SIZE_NONE:
+  switch ( ast->array.kind ) {
+    case C_ARRAY_EMPTY_SIZE:
       break;
-    case C_ARRAY_SIZE_VLA_STAR:
-      FPUTC( '*', g->gout );
-      break;
-    default:
+    case C_ARRAY_INT_SIZE:
       if ( ast->array.stids != TS_NONE )
         FPUTC( ' ', g->gout );
-      FPRINTF( g->gout, PRId_C_ARRAY_SIZE_T, ast->array.size );
+      FPRINTF( g->gout, "%u", ast->array.size_int );
+      break;
+    case C_ARRAY_NAMED_SIZE:
+      if ( ast->array.stids != TS_NONE )
+        FPUTC( ' ', g->gout );
+      FPUTS( ast->array.size_name, g->gout );
+      break;
+    case C_ARRAY_VLA_STAR:
+      FPUTC( '*', g->gout );
+      break;
   } // switch
 
   FPUTS( graph_token_c( "]" ), g->gout );

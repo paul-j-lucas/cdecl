@@ -16,6 +16,14 @@ declare a as array 3 of pointer to pointer to function (void) returning int
 declare a as array 9 of const pointer to int
 declare a as array 9 of int
 declare a as array 9 of pointer to int
+declare a as array N of int
+declare a as array constant N of integer
+declare a as array static N of integer
+declare a as array static constant N of integer
+declare a as variable length array N of int
+declare a as variable length array constant N of integer
+declare a as variable length array static N of integer
+declare a as variable length array static constant N of integer
 declare f as function
 declare f as function (fmt as pointer to const char, ...) returning void
 declare f as function (fmt as pointer to const char, varargs) returning void

@@ -102,6 +102,20 @@ NODISCARD
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir );
 
 /**
+ * Find the parameter of \a func_ast having \a name, if any.
+ *
+ * @param func_ast The function-like AST to check.
+ * @param name The name to find.
+ * @param stop_ast The AST to stop at, if any.
+ * @return Returns the AST of the parameter of \a func_ast having \a name or
+ * NULL if none.
+ */
+NODISCARD
+c_ast_t const* c_ast_find_param_named( c_ast_t const *func_ast,
+                                       char const *name,
+                                       c_ast_t const *stop_ast );
+
+/**
  * Traverses \a ast attempting to find an AST node having one of \a type.
  *
  * @param ast The AST to start from; may be NULL.
@@ -119,6 +133,8 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
  *
  * @param ast The AST to check.
  * @return Returns `true` only if the kind of \a ast can be a bit field.
+ *
+ * @sa c_ast_is_integral()
  */
 NODISCARD
 bool c_ast_is_bit_field_kind( c_ast_t const *ast );
@@ -131,9 +147,24 @@ bool c_ast_is_bit_field_kind( c_ast_t const *ast );
  * @param btids The built-in type(s) \a ast can be.  They must be only base
  * types (no storage classes, qualfiers, or attributes).
  * @return Returns `true` only if the type of \a ast is one of \a btids.
+ *
+ * @sa c_ast_is_integral()
  */
 NODISCARD
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids );
+
+/**
+ * Checks whether \a ast is an integral type, that is either a #K_BUILTIN
+ * integral or a #K_ENUM type; or a `typedef` thereof.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if the type of \a ast is an integral type.
+ *
+ * @sa c_ast_is_bit_field_kind()
+ * @sa c_ast_is_builtin_any()
+ */
+NODISCARD
+bool c_ast_is_integral( c_ast_t const *ast );
 
 /**
  * Checks whether \a ast is an AST for a #K_POINTER to another AST that is one

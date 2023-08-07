@@ -27,6 +27,22 @@ cdecl> declare a as array 9 of int
 int a[9];
 cdecl> declare a as array 9 of pointer to int
 int *a[9];
+cdecl> declare a as array N of int
+int a[N];
+cdecl> declare a as array constant N of integer
+int a[const N];
+cdecl> declare a as array static N of integer
+int a[static N];
+cdecl> declare a as array static constant N of integer
+int a[static const N];
+cdecl> declare a as variable length array N of int
+int a[N];
+cdecl> declare a as variable length array constant N of integer
+int a[const N];
+cdecl> declare a as variable length array static N of integer
+int a[static N];
+cdecl> declare a as variable length array static constant N of integer
+int a[static const N];
 cdecl> declare f as function
 void f();
 cdecl> declare f as function (fmt as pointer to const char, ...) returning void

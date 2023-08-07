@@ -163,6 +163,16 @@ cdecl> explain int a[0xa]
 declare a as array 10 of integer
 cdecl> explain int a[9]
 declare a as array 9 of integer
+cdecl> explain int a[N]
+declare a as array N of integer
+cdecl> explain int a[const N]
+declare a as array constant N of integer
+cdecl> explain int a[static N]
+declare a as array static N of integer
+cdecl> explain int a[static const N]
+declare a as array static constant N of integer
+cdecl> explain int a[*]
+declare a as variable length array of integer
 cdecl> explain int a__a
                ^
 9: warning: "a__a" is a reserved identifier in C++
@@ -315,27 +325,77 @@ cdecl> explain void f( double (*a)[5] )
 declare f as function (a as pointer to array 5 of double precision) returning void
 cdecl> explain void f( int g() )
 declare f as function (g as pointer to function returning integer) returning void
-cdecl> explain void f(char[])
+cdecl> explain void f( char[] )
 declare f as function (array of character) returning void
-cdecl> explain void f(int i, double d)
+cdecl> explain void f( int i, double d )
 declare f as function (i as integer, d as double precision) returning void
-cdecl> explain void f(int x, int y)
+cdecl> explain void f( int x, int y )
 declare f as function (x as integer, y as integer) returning void
-cdecl> explain void f(int x[*])
+cdecl> explain void f( int x[*] )
 declare f as function (x as variable length array of integer) returning void
-cdecl> explain void f(int x[const *])
+cdecl> explain void f( int x[const *] )
 declare f as function (x as variable length array constant of integer) returning void
-cdecl> explain void f(int x[const static 3])
+cdecl> explain void f( int x[const static 3] )
 declare f as function (x as array static constant 3 of integer) returning void
-cdecl> explain void f(int x[const])
+cdecl> explain void f( int x[const] )
 declare f as function (x as array constant of integer) returning void
-cdecl> explain void f(int x[static 3])
+cdecl> explain void f( int x[static 3] )
 declare f as function (x as array static 3 of integer) returning void
-cdecl> explain void f(int x[static const 3])
+cdecl> explain void f( int x[static const 3] )
 declare f as function (x as array static constant 3 of integer) returning void
-cdecl> explain void f(register int i)
+cdecl> explain void f( int x[n] )
+declare f as function (x as array n of integer) returning void
+cdecl> explain void f( int x[const n] )
+declare f as function (x as array constant n of integer) returning void
+cdecl> explain void f( int x[static n] )
+declare f as function (x as array static n of integer) returning void
+cdecl> explain void f( int x[static const n] )
+declare f as function (x as array static constant n of integer) returning void
+cdecl> explain void f( int n, int x[const n] )
+declare f as function (n as integer, x as variable length array constant n of integer) returning void
+cdecl> explain void f( int n, int x[static n] )
+declare f as function (n as integer, x as variable length array static n of integer) returning void
+cdecl> explain void f( int n, int x[static const n] )
+declare f as function (n as integer, x as variable length array static constant n of integer) returning void
+cdecl> explain void f( register int i )
 declare f as function (i as register integer) returning void
-cdecl> explain void f(void)
+cdecl> explain void f( _BitInt(4) n, int x[n] )
+declare f as function (n as bit-precise integer width 4 bits, x as variable length array n of integer) returning void
+cdecl> explain void f( char n, int x[n] )
+declare f as function (n as character, x as variable length array n of integer) returning void
+cdecl> explain void f( char16_t n, int x[n] )
+declare f as function (n as character 16, x as variable length array n of integer) returning void
+cdecl> explain void f( char32_t n, int x[n] )
+declare f as function (n as character 32, x as variable length array n of integer) returning void
+cdecl> explain void f( char8_t n, int x[n] )
+declare f as function (n as character 8, x as variable length array n of integer) returning void
+cdecl> explain void f( int n, int x[n] )
+declare f as function (n as integer, x as variable length array n of integer) returning void
+cdecl> explain void f( long long n, int x[n] )
+declare f as function (n as long long integer, x as variable length array n of integer) returning void
+cdecl> explain void f( long n, int x[n] )
+declare f as function (n as long integer, x as variable length array n of integer) returning void
+cdecl> explain void f( short n, int x[n] )
+declare f as function (n as short integer, x as variable length array n of integer) returning void
+cdecl> explain void f( signed char n, int x[n] )
+declare f as function (n as signed character, x as variable length array n of integer) returning void
+cdecl> explain void f( size_t n, int x[n] )
+declare f as function (n as size_t, x as variable length array n of integer) returning void
+cdecl> explain void f( ssize_t n, int x[n] )
+declare f as function (n as ssize_t, x as variable length array n of integer) returning void
+cdecl> explain void f( unsigned char n, int x[n] )
+declare f as function (n as unsigned character, x as variable length array n of integer) returning void
+cdecl> explain void f( unsigned long long n, int x[n] )
+declare f as function (n as unsigned long long integer, x as variable length array n of integer) returning void
+cdecl> explain void f( unsigned long n, int x[n] )
+declare f as function (n as unsigned long integer, x as variable length array n of integer) returning void
+cdecl> explain void f( unsigned n, int x[n] )
+declare f as function (n as unsigned integer, x as variable length array n of integer) returning void
+cdecl> explain void f( unsigned short n, int x[n] )
+declare f as function (n as unsigned short integer, x as variable length array n of integer) returning void
+cdecl> explain void f( wchar_t n, int x[n] )
+declare f as function (n as wide character, x as variable length array n of integer) returning void
+cdecl> explain void f( void )
 declare f as function (void) returning void
 cdecl> explain wchar_t x
 declare x as wide character

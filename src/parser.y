@@ -1553,7 +1553,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       array_decl_english_ast
 %type   <tid>       array_qualifier_list_english_stid
 %type   <tid>       array_qualifier_list_english_stid_opt
-%type   <int_val>   array_size_int_opt
+%type   <ast>       array_size_decl_ast
 %type   <tid>       attribute_english_atid
 %type   <int_val>   BitInt_english_int
 %type   <ast>       block_decl_english_ast
@@ -1718,6 +1718,7 @@ static void yyerror( char const *msg ) {
 %type   <int_val>   int_lit_exp int_lit_opt
 %type   <ast>       name_ast
 %type   <name>      name_exp
+%type   <name>      name_opt
 %type   <tid>       namespace_btid_exp
 %type   <sname>     namespace_sname_c namespace_sname_c_exp
 %type   <type>      namespace_type
@@ -3869,35 +3870,58 @@ array_size_c_ast
   : '[' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = C_ARRAY_SIZE_NONE;
+      $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
   | '[' Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = $2;
+      $$->array.kind = C_ARRAY_INT_SIZE;
+      $$->array.size_int = $2;
+    }
+  | '[' Y_NAME rbracket_exp
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->array.kind = C_ARRAY_NAMED_SIZE;
+      $$->array.size_name = $2;
     }
   | '[' type_qualifier_list_c_stid rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = C_ARRAY_SIZE_NONE;
+      $$->array.kind = C_ARRAY_EMPTY_SIZE;
       $$->array.stids = c_tid_check( $2, C_TPID_STORE );
     }
   | '[' type_qualifier_list_c_stid static_stid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = $4;
+      $$->array.kind = C_ARRAY_INT_SIZE;
+      $$->array.size_int = $4;
+      $$->array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
+    }
+  | '[' type_qualifier_list_c_stid static_stid_opt Y_NAME rbracket_exp
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->array.kind = C_ARRAY_NAMED_SIZE;
+      $$->array.size_name = $4;
       $$->array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
     }
   | '[' type_qualifier_list_c_stid_opt '*' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = C_ARRAY_SIZE_VLA_STAR;
+      $$->array.kind = C_ARRAY_VLA_STAR;
       $$->array.stids = c_tid_check( $2, C_TPID_STORE );
     }
   | '[' Y_static type_qualifier_list_c_stid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = $4;
+      $$->array.kind = C_ARRAY_INT_SIZE;
+      $$->array.size_int = $4;
+      $$->array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
+    }
+  | '[' Y_static type_qualifier_list_c_stid_opt Y_NAME rbracket_exp
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->array.kind = C_ARRAY_NAMED_SIZE;
+      $$->array.size_name = $4;
       $$->array.stids = c_tid_check( $2 | $3, C_TPID_STORE );
     }
   | '[' error ']'
@@ -6313,11 +6337,11 @@ decl_english_ast
 
 array_decl_english_ast
   : Y_array static_stid_opt array_qualifier_list_english_stid_opt
-    array_size_int_opt of_exp decl_english_ast
+    array_size_decl_ast of_exp decl_english_ast
     {
       c_tid_t  const  static_stid = $2;
       c_tid_t  const  array_qual_stids = $3;
-      int      const  array_size = $4;
+      c_ast_t *const  array_size_ast = $4;
       c_ast_t *const  decl_ast = $6;
 
       DUMP_START( "array_decl_english_ast",
@@ -6325,11 +6349,11 @@ array_decl_english_ast
                   "array_size_num_opt OF decl_english_ast" );
       DUMP_TID( "static_stid_opt", static_stid );
       DUMP_TID( "array_qualifier_list_english_stid_opt", array_qual_stids );
-      DUMP_INT( "array_size_int_opt", array_size );
+      DUMP_AST( "array_size_decl_ast", array_size_ast );
       DUMP_AST( "decl_english_ast", decl_ast );
 
-      $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = array_size;
+      $$ = array_size_ast;
+      $$->loc = @1;
       $$->array.stids =
         c_tid_check( static_stid | array_qual_stids, C_TPID_STORE );
       c_ast_set_parent( decl_ast, $$ );
@@ -6338,21 +6362,31 @@ array_decl_english_ast
       DUMP_END();
     }
 
-  | Y_variable length_opt array_exp array_qualifier_list_english_stid_opt
-    of_exp decl_english_ast
+  | Y_variable length_opt array_exp static_stid_opt
+    array_qualifier_list_english_stid_opt name_opt of_exp decl_english_ast
     {
-      c_tid_t  const  array_qual_stids = $4;
-      c_ast_t *const  decl_ast = $6;
+      c_tid_t  const        static_stid = $4;
+      c_tid_t  const        array_qual_stids = $5;
+      char     const *const name = $6;
+      c_ast_t *const        decl_ast = $8;
 
       DUMP_START( "array_decl_english_ast",
-                  "VARIABLE LENGTH ARRAY array_qualifier_list_english_stid_opt "
-                  "OF decl_english_ast" );
+                  "VARIABLE LENGTH ARRAY name_opt "
+                  "array_qualifier_list_english_stid_opt OF decl_english_ast" );
+      DUMP_TID( "static_stid_opt", static_stid );
       DUMP_TID( "array_qualifier_list_english_stid_opt", array_qual_stids );
+      DUMP_STR( "name_opt", name );
       DUMP_AST( "decl_english_ast", decl_ast );
 
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.size = C_ARRAY_SIZE_VLA_STAR;
-      $$->array.stids = c_tid_check( array_qual_stids, C_TPID_STORE );
+      if ( name == NULL ) {
+        $$->array.kind = C_ARRAY_VLA_STAR;
+      } else {
+        $$->array.kind = C_ARRAY_NAMED_SIZE;
+        $$->array.size_name = name;
+      }
+      $$->array.stids =
+        c_tid_check( static_stid | array_qual_stids, C_TPID_STORE );
       c_ast_set_parent( decl_ast, $$ );
 
       DUMP_AST( "array_decl_english_ast", $$ );
@@ -6369,10 +6403,29 @@ array_qualifier_list_english_stid
   : cv_qualifier_stid
   ;
 
-array_size_int_opt
-  : /* empty */                   { $$ = C_ARRAY_SIZE_NONE; }
+array_size_decl_ast
+  : /* empty */
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->array.kind = C_ARRAY_EMPTY_SIZE;
+    }
   | Y_INT_LIT
-  | '*'                           { $$ = C_ARRAY_SIZE_VLA_STAR; }
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->array.kind = C_ARRAY_INT_SIZE;
+      $$->array.size_int = $1;
+    }
+  | Y_NAME
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->array.kind = C_ARRAY_NAMED_SIZE;
+      $$->array.size_name = $1;
+    }
+  | '*'
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->array.kind = C_ARRAY_VLA_STAR;
+    }
   ;
 
 length_opt
@@ -7326,6 +7379,11 @@ name_exp
       $$ = NULL;
       elaborate_error( "name expected" );
     }
+  ;
+
+name_opt
+  : /* empty */                   { $$ = NULL; }
+  | Y_NAME
   ;
 
 oper_sname_c_opt

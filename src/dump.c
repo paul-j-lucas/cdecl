@@ -175,15 +175,19 @@ void c_ast_dump_impl( c_ast_t const *ast, unsigned indent, bool *comma,
 
     case K_ARRAY:
       DUMP_KEY( "size: " );
-      switch ( ast->array.size ) {
-        case C_ARRAY_SIZE_NONE:
+      switch ( ast->array.kind ) {
+        case C_ARRAY_EMPTY_SIZE:
           FPUTS( "\"unspecified\"", dout );
           break;
-        case C_ARRAY_SIZE_VLA_STAR:
+        case C_ARRAY_INT_SIZE:
+          FPRINTF( dout, "%u", ast->array.size_int );
+          break;
+        case C_ARRAY_NAMED_SIZE:
+          FPRINTF( dout, "\"%s\"", ast->array.size_name );
+          break;
+        case C_ARRAY_VLA_STAR:
           FPUTS( "'*'", dout );
           break;
-        default:
-          FPRINTF( dout, PRId_C_ARRAY_SIZE_T, ast->array.size );
       } // switch
       if ( ast->array.stids != TS_NONE )
         DUMP_TYPE( &C_TYPE_LIT_S( ast->array.stids ) );
