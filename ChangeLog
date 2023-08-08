@@ -1,5 +1,6 @@
 2023-08-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * gnulib-comp.m4: Updated Gnulib.
    * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, dump.c,
      english.c, gibberish.c, parser.y, test/Makefile.am, declare.out,
      explain.out, explain_fdan_v.out, declare.test, explain.test,
