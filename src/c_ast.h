@@ -266,9 +266,11 @@ struct c_apple_block_ast {
  * @sa c_typedef_ast
  */
 struct c_bit_field_ast {
-  /// So \ref bit_width is at the same offset as in c_builtin_ast, c_enum_ast,
-  /// and c_typedef_ast.
-  c_ast_t  *unused_ast;
+  /// @cond DOXYGEN_IGNORE
+  /// So bit_width is at the same offset as in c_builtin_ast, c_enum_ast, and
+  /// c_typedef_ast.
+  DECL_UNUSED(c_ast_t*);
+  /// @endcond
 
   unsigned  bit_width;                  ///< Bit-field width when &gt; 0.
 };
@@ -280,9 +282,11 @@ struct c_bit_field_ast {
  * c_typedef_ast: this is taken advantage of.
  */
 struct c_builtin_ast {
-  /// So \ref bit_width is at the same offset as in c_bit_field_ast,
-  /// c_enum_ast, and c_typedef_ast.
-  c_ast_t      *unused_ast;
+  /// @cond DOXYGEN_IGNORE
+  /// So bit_width is at the same offset as in c_bit_field_ast, c_enum_ast, and
+  /// c_typedef_ast.
+  DECL_UNUSED(c_ast_t*);
+  /// @endcond
 
   unsigned      bit_width;              ///< Bit-field width when &gt; 0.
 
@@ -319,9 +323,11 @@ struct c_cast_ast {
  * taken advantage of.
  */
 struct c_constructor_ast {
+  /// @cond DOXYGEN_IGNORE
   /// Constructors don't have a return type, but we need an unused pointer so
-  /// \ref param_ast_list is at the same offset as in c_function_ast.
-  c_ast_t      *unused_ast;
+  /// param_ast_list is at the same offset as in c_function_ast.
+  DECL_UNUSED(c_ast_t*);
+  /// @endcond
 
   c_ast_list_t  param_ast_list;         ///< Constructor parameter(s), if any.
 };
@@ -333,14 +339,13 @@ struct c_constructor_ast {
  * c_ptr_mbr_ast: this is taken advantage of.
  */
 struct c_csu_ast {
-  ///@{
+  /// @cond DOXYGEN_IGNORE
   /// Class, struct, and union types have neither an "of" type nor a bit width,
-  /// but \ref csu_sname needs to be at the same offset as \ref
-  /// c_enum_ast::enum_sname "enum_sname" and \ref c_ptr_mbr_ast::class_sname
-  /// "class_sname".
-  c_ast_t    *unused_ast;
-  unsigned    unused_unsigned;
-  ///@}
+  /// but csu_sname needs to be at the same offset as enum_sname and
+  /// class_sname.
+  DECL_UNUSED(c_ast_t*);
+  DECL_UNUSED(unsigned);
+  /// @endcond
 
   c_sname_t   csu_sname;                ///< Class, struct, or union name.
 };
@@ -442,8 +447,10 @@ struct c_operator_ast {
 struct c_ptr_mbr_ast {
   c_ast_t    *to_ast;                   ///< Member type.
 
-  /// So \ref class_sname is at the same offset as in c_csu_ast and c_enum_ast.
-  unsigned    unused_unsigned;
+  /// @cond DOXYGEN_IGNORE
+  /// So class_sname is at the same offset as in c_csu_ast and c_enum_ast.
+  DECL_UNUSED(unsigned);
+  /// @endcond
 
   c_sname_t   class_sname;              ///< Class pointer-to-member of.
 };

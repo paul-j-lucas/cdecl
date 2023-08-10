@@ -237,6 +237,15 @@ _GL_INLINE_HEADER_BEGIN
 #define CONST_CAST(T,EXPR)        ((T)(EXPR))
 
 /**
+ * Declares a object with an unspecified name both aligned and sized as a \a T
+ * intended to be used inside a `struct` declaration to add padding.
+ *
+ * @param T The type of the object.
+ */
+#define DECL_UNUSED(T) \
+  _Alignas(T) char NAME2(unused_,__LINE__)[ sizeof(T) ]
+
+/**
  * Shorthand for printing to standard error.
  *
  * @param ... The `printf()` arguments.
