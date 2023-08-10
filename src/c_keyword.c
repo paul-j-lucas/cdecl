@@ -27,10 +27,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "c_keyword.h"
-#include "c_ast.h"
-#include "c_ast_util.h"
 #include "c_lang.h"
-#include "c_type.h"
 #include "cdecl.h"
 #include "literals.h"
 #include "util.h"

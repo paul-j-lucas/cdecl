@@ -156,39 +156,6 @@ _GL_INLINE_HEADER_BEGIN
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * The argument kind for the `alignas` specifier.
- */
-enum c_alignas_kind {
-  C_ALIGNAS_NONE,                       ///< No `alignas` specifier.
-  C_ALIGNAS_EXPR,                       ///< `alignas(` _expr_ `)`
-  C_ALIGNAS_TYPE                        ///< `alignas(` _type_ `)`
-};
-typedef enum c_alignas_kind c_alignas_kind_t;
-
-/**
- * Data for the `alignas` specifier.
- */
-struct c_alignas {
-  union {
-    unsigned        expr;               ///< Aligned to this number of bytes.
-    c_ast_t        *type_ast;           ///< Aligned the same as this type.
-  };
-  c_alignas_kind_t  kind;               ///< Kind of `alignas` argument.
-  c_loc_t           loc;                ///< Source location.
-};
-
-/**
- * Kind of array.
- */
-enum c_array_kind {
-  C_ARRAY_EMPTY_SIZE,                   ///< E.g., `a[]`.
-  C_ARRAY_INT_SIZE,                     ///< E.g., `a[4]`.
-  C_ARRAY_NAMED_SIZE,                   ///< E.g., `a[n]`.
-  C_ARRAY_VLA_STAR                      ///< E.g., `a[*]` (C99 and later only).
-};
-typedef enum c_array_kind c_array_kind_t;
-
 #ifdef ENABLE_CDECL_DEBUG
 typedef unsigned  c_ast_id_t;           ///< Unique AST node ID.
 typedef int       c_ast_sid_t;          ///< Signed \ref c_ast_id_t.
@@ -213,18 +180,6 @@ typedef enum c_ast_visit_dir c_ast_visit_dir_t;
  * to continue.
  */
 typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, user_data_t data );
-
-/**
- * C++ lambda capture kind.
- */
-enum c_capture_kind {
-  C_CAPTURE_VARIABLE,                   ///< Capture a variable.
-  C_CAPTURE_COPY,                       ///< Capture by copy (`=`).
-  C_CAPTURE_REFERENCE,                  ///< Capture by reference (`&`)
-  C_CAPTURE_THIS,                       ///< Capture `this`.
-  C_CAPTURE_STAR_THIS                   ///< Capture `*this`.
-};
-typedef enum c_capture_kind c_capture_kind_t;
 
 ///////////////////////////////////////////////////////////////////////////////
 

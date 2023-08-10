@@ -27,7 +27,6 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "did_you_mean.h"
-#include "c_ast.h"
 #include "c_keyword.h"
 #include "c_lang.h"
 #include "c_sname.h"

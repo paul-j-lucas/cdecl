@@ -52,7 +52,37 @@
 // allow forward declarations of enums.
 
 /**
- * C/C++ cast kinds.
+ * The argument kind for the `alignas` specifier.
+ */
+enum c_alignas_kind {
+  C_ALIGNAS_NONE,                       ///< No `alignas` specifier.
+  C_ALIGNAS_EXPR,                       ///< `alignas(` _expr_ `)`
+  C_ALIGNAS_TYPE                        ///< `alignas(` _type_ `)`
+};
+
+/**
+ * Array kind.
+ */
+enum c_array_kind {
+  C_ARRAY_EMPTY_SIZE,                   ///< E.g., `a[]`.
+  C_ARRAY_INT_SIZE,                     ///< E.g., `a[4]`.
+  C_ARRAY_NAMED_SIZE,                   ///< E.g., `a[n]`.
+  C_ARRAY_VLA_STAR                      ///< E.g., `a[*]` (C99 and later only).
+};
+
+/**
+ * C++ lambda capture kind.
+ */
+enum c_capture_kind {
+  C_CAPTURE_VARIABLE,                   ///< Capture a variable.
+  C_CAPTURE_COPY,                       ///< Capture by copy (`=`).
+  C_CAPTURE_REFERENCE,                  ///< Capture by reference (`&`)
+  C_CAPTURE_THIS,                       ///< Capture `this`.
+  C_CAPTURE_STAR_THIS                   ///< Capture `*this`.
+};
+
+/**
+ * C/C++ cast kind.
  */
 enum c_cast_kind {
   C_CAST_C,                             ///< C-style cast.
@@ -156,8 +186,10 @@ typedef struct slist              slist_t;
 typedef struct slist_node         slist_node_t;
 
 typedef struct c_alignas          c_alignas_t;
+typedef enum   c_alignas_kind     c_alignas_kind_t;
 typedef struct c_apple_block_ast  c_apple_block_ast_t;
 typedef struct c_array_ast        c_array_ast_t;
+typedef enum   c_array_kind       c_array_kind_t;
 typedef struct c_ast              c_ast_t;
 typedef slist_t                   c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;
@@ -165,6 +197,7 @@ typedef struct c_bit_field_ast    c_bit_field_ast_t;
 typedef struct c_builtin_ast      c_builtin_ast_t;
 typedef slist_node_t              c_capture_t;    ///< Lambda capture.
 typedef struct c_capture_ast      c_capture_ast_t;
+typedef enum   c_capture_kind     c_capture_kind_t;
 typedef struct c_cast_ast         c_cast_ast_t;
 typedef enum   c_cast_kind        c_cast_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
@@ -204,24 +237,6 @@ typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 ////////// structs ////////////////////////////////////////////////////////////
 
 /**
- * A pair of AST pointers used as one of the synthesized attribute types in the
- * parser.
- */
-struct c_ast_pair {
-  /**
-   * A pointer to the AST being built.
-   */
-  c_ast_t *ast;
-
-  /**
-   * Array and function-like declarations need a separate AST pointer that
-   * points to their `of_ast` or `ret_ast` (respectively) to be the "target" of
-   * subsequent additions to the AST.
-   */
-  c_ast_t *target_ast;
-};
-
-/**
  * The source location used by Bison.
  */
 struct c_loc {
@@ -238,6 +253,36 @@ struct c_loc {
   //
   int last_line;                        ///< Last line of location range.
   int last_column;                      ///< Last column of location range.
+};
+
+/**
+ * Data for the `alignas` specifier.
+ */
+struct c_alignas {
+  union {
+    unsigned        expr;               ///< Aligned to this number of bytes.
+    c_ast_t        *type_ast;           ///< Aligned the same as this type.
+  };
+  c_alignas_kind_t  kind;               ///< Kind of `alignas` argument.
+  c_loc_t           loc;                ///< Source location.
+};
+
+/**
+ * A pair of AST pointers used as one of the synthesized attribute types in the
+ * parser.
+ */
+struct c_ast_pair {
+  /**
+   * A pointer to the AST being built.
+   */
+  c_ast_t *ast;
+
+  /**
+   * Array and function-like declarations need a separate AST pointer that
+   * points to their `of_ast` or `ret_ast` (respectively) to be the "target" of
+   * subsequent additions to the AST.
+   */
+  c_ast_t *target_ast;
 };
 
 /**
