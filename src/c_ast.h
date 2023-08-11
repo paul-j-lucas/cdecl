@@ -803,7 +803,9 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visit_dir_t dir,
  * @return Returns a pointer to the AST or NULL if \a capture is NULL.
  *
  * @sa c_ast_captures()
+ * @sa c_ast_captures_count()
  * @sa #FOREACH_AST_LAMBDA_CAPTURE()
+ * @sa #FOREACH_AST_LAMBDA_CAPTURE_UNTIL()
  */
 NODISCARD C_AST_H_INLINE
 c_ast_t const* c_capture_ast( c_capture_t const *capture ) {
