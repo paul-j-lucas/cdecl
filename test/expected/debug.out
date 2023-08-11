@@ -530,7 +530,7 @@ enum_fixed_type_c_ast: {
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     bit_width: 0
   },
-  enum_fixed_type_modifier_list_btid_opt: { btid: 0x1, string: "" },
+  enum_fixed_type_modifier_list_btid_opt: { btid: 0x1, string: "none" },
   enum_fixed_type_c_ast: {
     sname: { string: "" },
     unique_id: 1367,
@@ -546,7 +546,7 @@ enum_fixed_type_c_ast: {
 enum_c_ast: {
   rule: "enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt",
   enum_btid: { btid: 0x800001, string: "enum" },
-  attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "" },
+  attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "none" },
   any_sname_c: { string: "E", scopes: "none" },
   enum_fixed_type_c_ast_opt: {
     sname: { string: "" },
@@ -602,7 +602,7 @@ east_modified_type_c_ast: {
       bit_width: 0
     }
   },
-  cv_qualifier_list_stid_opt: { stid: 0x2, string: "" },
+  cv_qualifier_list_stid_opt: { stid: 0x2, string: "none" },
   east_modified_type_c_ast: {
     sname: { string: "" },
     unique_id: 1368,
@@ -753,7 +753,7 @@ sname_c: {
 enum_c_ast: {
   rule: "enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt",
   enum_btid: { btid: 0x800001, string: "enum" },
-  attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "" },
+  attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "none" },
   any_sname_c: { string: "E", scopes: "none" },
   enum_fixed_type_c_ast_opt: null,
   enum_c_ast: {
@@ -780,7 +780,7 @@ east_modified_type_c_ast: {
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum_sname: { string: "E", scopes: "none" }
   },
-  cv_qualifier_list_stid_opt: { stid: 0x2, string: "" },
+  cv_qualifier_list_stid_opt: { stid: 0x2, string: "none" },
   east_modified_type_c_ast: {
     sname: { string: "" },
     unique_id: 1371,
@@ -1075,6 +1075,7 @@ array_decl_c_astp: {
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: 4,
+    stid: { stid: 0x2, string: "none" },
     of_ast: null
   },
   array_decl_c_astp: {
@@ -1086,6 +1087,7 @@ array_decl_c_astp: {
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: 4,
+    stid: { stid: 0x2, string: "none" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1375,
@@ -1121,6 +1123,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: 4,
+    stid: { stid: 0x2, string: "none" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1375,
@@ -1141,6 +1144,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: 4,
+    stid: { stid: 0x2, string: "none" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1375,
@@ -1260,6 +1264,7 @@ array_decl_c_astp: {
     loc: { first_column: 13, last_column: 14 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: "unspecified",
+    stid: { stid: 0x2, string: "none" },
     of_ast: null
   },
   array_decl_c_astp: {
@@ -1271,6 +1276,7 @@ array_decl_c_astp: {
     loc: { first_column: 13, last_column: 14 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: "unspecified",
+    stid: { stid: 0x2, string: "none" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1379,
@@ -1306,6 +1312,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 14 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: "unspecified",
+    stid: { stid: 0x2, string: "none" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1379,
@@ -1326,6 +1333,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 14 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: "unspecified",
+    stid: { stid: 0x2, string: "none" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1379,
@@ -1550,7 +1558,7 @@ sname_c: {
 enum_class_struct_union_c_ast: {
   rule: "class_struct_union_btid attribute_specifier_list_c_atid_opt sname",
   class_struct_union_btid: { btid: 0x1000001, string: "struct" },
-  attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "" },
+  attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "none" },
   any_sname_c: { string: "S", scopes: "none" },
   class_struct_union_c_ast: {
     sname: { string: "" },
@@ -1576,7 +1584,7 @@ east_modified_type_c_ast: {
     type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
     csu_sname: { string: "S", scopes: "none" }
   },
-  cv_qualifier_list_stid_opt: { stid: 0x2, string: "" },
+  cv_qualifier_list_stid_opt: { stid: 0x2, string: "none" },
   east_modified_type_c_ast: {
     sname: { string: "" },
     unique_id: 1386,
@@ -1837,11 +1845,11 @@ func_decl_c_astp: {
     bit_width: 0
   },
   param_c_ast_list_opt: [],
-  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
-  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "" },
-  noexcept_c_stid_opt: { stid: 0x2, string: "" },
+  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
+  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "none" },
+  noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
-  func_equals_c_stid_opt: { stid: 0x2, string: "" },
+  func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   target_ast: null,
   func_decl_c_astp: {
     sname: { string: "f", scopes: "none" },
@@ -2071,7 +2079,7 @@ sname_c_ast: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "i", scopes: "none" },
     unique_id: 1394,
@@ -2182,7 +2190,7 @@ pointer_type_c_ast: {
     type: { btid: 0x101, stid: 0x200000002, atid: 0x4, string: "const char" },
     bit_width: 0
   },
-  type_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
+  type_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
   pointer_type_c_ast: {
     sname: { string: "" },
     unique_id: 1396,
@@ -2317,7 +2325,7 @@ pointer_cast_c_astp: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "" },
     unique_id: 1395,
@@ -2593,11 +2601,11 @@ func_decl_c_astp: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
     }
   ],
-  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
-  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "" },
-  noexcept_c_stid_opt: { stid: 0x2, string: "" },
+  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
+  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "none" },
+  noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
-  func_equals_c_stid_opt: { stid: 0x2, string: "" },
+  func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   target_ast: null,
   func_decl_c_astp: {
     sname: { string: "f", scopes: "none" },
@@ -2974,6 +2982,7 @@ array_cast_c_astp: {
     loc: { first_column: 20, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: '*',
+    stid: { stid: 0x2, string: "none" },
     of_ast: null
   },
   array_cast_c_astp: {
@@ -2985,6 +2994,7 @@ array_cast_c_astp: {
     loc: { first_column: 20, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: '*',
+    stid: { stid: 0x2, string: "none" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1401,
@@ -3000,7 +3010,7 @@ array_cast_c_astp: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "" },
     unique_id: 1401,
@@ -3020,6 +3030,7 @@ param_c_ast: {
     loc: { first_column: 20, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: '*',
+    stid: { stid: 0x2, string: "none" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1401,
@@ -3040,6 +3051,7 @@ param_c_ast: {
     loc: { first_column: 20, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: '*',
+    stid: { stid: 0x2, string: "none" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1401,
@@ -3064,6 +3076,7 @@ param_c_ast_list: {
     loc: { first_column: 20, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: '*',
+    stid: { stid: 0x2, string: "none" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1401,
@@ -3085,6 +3098,7 @@ param_c_ast_list: {
       loc: { first_column: 20, last_column: 22 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       size: '*',
+      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1401,
@@ -3131,6 +3145,7 @@ func_decl_c_astp: {
       loc: { first_column: 20, last_column: 22 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       size: '*',
+      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1401,
@@ -3143,11 +3158,11 @@ func_decl_c_astp: {
       }
     }
   ],
-  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
-  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "" },
-  noexcept_c_stid_opt: { stid: 0x2, string: "" },
+  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
+  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "none" },
+  noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
-  func_equals_c_stid_opt: { stid: 0x2, string: "" },
+  func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   target_ast: null,
   func_decl_c_astp: {
     sname: { string: "f", scopes: "none" },
@@ -3168,6 +3183,7 @@ func_decl_c_astp: {
         loc: { first_column: 20, last_column: 22 },
         type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
         size: '*',
+        stid: { stid: 0x2, string: "none" },
         of_ast: {
           sname: { string: "" },
           unique_id: 1401,
@@ -3225,6 +3241,7 @@ decl_c: {
         loc: { first_column: 20, last_column: 22 },
         type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
         size: '*',
+        stid: { stid: 0x2, string: "none" },
         of_ast: {
           sname: { string: "" },
           unique_id: 1401,
@@ -3267,6 +3284,7 @@ decl_c: {
         loc: { first_column: 20, last_column: 22 },
         type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
         size: '*',
+        stid: { stid: 0x2, string: "none" },
         of_ast: {
           sname: { string: "" },
           unique_id: 1401,
@@ -3470,7 +3488,7 @@ array_cast_c_astp: {
     loc: { first_column: 20, last_column: 29 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: 2,
-    type: { btid: 0x1, stid: 0x402, atid: 0x4, string: "static" },
+    stid: { stid: 0x402, string: "static" },
     of_ast: null
   },
   array_cast_c_astp: {
@@ -3482,7 +3500,7 @@ array_cast_c_astp: {
     loc: { first_column: 20, last_column: 29 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: 2,
-    type: { btid: 0x1, stid: 0x402, atid: 0x4, string: "static" },
+    stid: { stid: 0x402, string: "static" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1407,
@@ -3498,7 +3516,7 @@ array_cast_c_astp: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "" },
     unique_id: 1407,
@@ -3518,7 +3536,7 @@ param_c_ast: {
     loc: { first_column: 20, last_column: 29 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: 2,
-    type: { btid: 0x1, stid: 0x402, atid: 0x4, string: "static" },
+    stid: { stid: 0x402, string: "static" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1407,
@@ -3539,7 +3557,7 @@ param_c_ast: {
     loc: { first_column: 20, last_column: 29 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: 2,
-    type: { btid: 0x1, stid: 0x402, atid: 0x4, string: "static" },
+    stid: { stid: 0x402, string: "static" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1407,
@@ -3564,7 +3582,7 @@ param_c_ast_list: {
     loc: { first_column: 20, last_column: 29 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     size: 2,
-    type: { btid: 0x1, stid: 0x402, atid: 0x4, string: "static" },
+    stid: { stid: 0x402, string: "static" },
     of_ast: {
       sname: { string: "" },
       unique_id: 1407,
@@ -3586,7 +3604,7 @@ param_c_ast_list: {
       loc: { first_column: 20, last_column: 29 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       size: 2,
-      type: { btid: 0x1, stid: 0x402, atid: 0x4, string: "static" },
+      stid: { stid: 0x402, string: "static" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1407,
@@ -3633,7 +3651,7 @@ func_decl_c_astp: {
       loc: { first_column: 20, last_column: 29 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       size: 2,
-      type: { btid: 0x1, stid: 0x402, atid: 0x4, string: "static" },
+      stid: { stid: 0x402, string: "static" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1407,
@@ -3646,11 +3664,11 @@ func_decl_c_astp: {
       }
     }
   ],
-  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
-  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "" },
-  noexcept_c_stid_opt: { stid: 0x2, string: "" },
+  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
+  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "none" },
+  noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
-  func_equals_c_stid_opt: { stid: 0x2, string: "" },
+  func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   target_ast: null,
   func_decl_c_astp: {
     sname: { string: "f", scopes: "none" },
@@ -3671,7 +3689,7 @@ func_decl_c_astp: {
         loc: { first_column: 20, last_column: 29 },
         type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
         size: 2,
-        type: { btid: 0x1, stid: 0x402, atid: 0x4, string: "static" },
+        stid: { stid: 0x402, string: "static" },
         of_ast: {
           sname: { string: "" },
           unique_id: 1407,
@@ -3729,7 +3747,7 @@ decl_c: {
         loc: { first_column: 20, last_column: 29 },
         type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
         size: 2,
-        type: { btid: 0x1, stid: 0x402, atid: 0x4, string: "static" },
+        stid: { stid: 0x402, string: "static" },
         of_ast: {
           sname: { string: "" },
           unique_id: 1407,
@@ -3772,7 +3790,7 @@ decl_c: {
         loc: { first_column: 20, last_column: 29 },
         type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
         size: 2,
-        type: { btid: 0x1, stid: 0x402, atid: 0x4, string: "static" },
+        stid: { stid: 0x402, string: "static" },
         of_ast: {
           sname: { string: "" },
           unique_id: 1407,
@@ -3867,7 +3885,7 @@ east_modified_type_c_ast: {
 
 func_qualifier_list_c_stid_opt: {
   rule: "func_qualifier_list_c_stid_opt func_qualifier_c_stid",
-  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
+  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
   func_qualifier_c_stid: { stid: 0x200000002, string: "const" },
   func_qualifier_list_c_stid_opt: { stid: 0x200000002, string: "const" }
 }
@@ -3888,10 +3906,10 @@ oper_decl_c_astp: {
   c_operator: "!",
   param_c_ast_list_opt: [],
   func_qualifier_list_c_stid_opt: { stid: 0x200000002, string: "const" },
-  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "" },
-  noexcept_c_stid_opt: { stid: 0x2, string: "" },
+  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "none" },
+  noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
-  func_equals_c_stid_opt: { stid: 0x2, string: "" },
+  func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   oper_decl_c_astp: {
     sname: { string: "" },
     unique_id: 1414,
@@ -4030,7 +4048,7 @@ pointer_to_member_type_c_ast: {
     bit_width: 0
   },
   sname: { string: "C", scopes: "class" },
-  cv_qualifier_list_stid_opt: { stid: 0x2, string: "" },
+  cv_qualifier_list_stid_opt: { stid: 0x2, string: "none" },
   pointer_to_member_type_c_ast: {
     sname: { string: "" },
     unique_id: 1417,
@@ -4268,7 +4286,7 @@ east_modified_type_c_ast: {
 
 func_qualifier_list_c_stid_opt: {
   rule: "func_qualifier_list_c_stid_opt func_qualifier_c_stid",
-  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
+  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
   func_qualifier_c_stid: { stid: 0x200000002, string: "const" },
   func_qualifier_list_c_stid_opt: { stid: 0x200000002, string: "const" }
 }
@@ -4289,8 +4307,8 @@ user_defined_conversion_decl_c_astp: {
   },
   udc_decl_c_ast_opt: null,
   func_qualifier_list_c_stid_opt: { stid: 0x200000002, string: "const" },
-  noexcept_c_stid_opt: { stid: 0x2, string: "" },
-  func_equals_c_stid_opt: { stid: 0x2, string: "" },
+  noexcept_c_stid_opt: { stid: 0x2, string: "none" },
+  func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   user_defined_conversion_decl_c_astp: {
     sname: { string: "" },
     unique_id: 1420,
@@ -4429,7 +4447,7 @@ pointer_type_c_ast: {
     type: { btid: 0x101, stid: 0x200000002, atid: 0x4, string: "const char" },
     bit_width: 0
   },
-  type_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
+  type_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
   pointer_type_c_ast: {
     sname: { string: "" },
     unique_id: 1423,
@@ -4564,7 +4582,7 @@ pointer_cast_c_astp: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "" },
     unique_id: 1422,
@@ -4694,7 +4712,7 @@ user_defined_literal_decl_c_astp: {
       }
     }
   ],
-  noexcept_c_stid_opt: { stid: 0x2, string: "" },
+  noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
   user_defined_literal_decl_c_astp: {
     sname: { string: "_w", scopes: "none" },
@@ -4837,11 +4855,11 @@ declare _w as user-defined literal (arg as pointer to constant character) return
 c++decl> explain ~C()
 destructor_declaration_c: {
   rule: "virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt",
-  virtual_stid_opt: { stid: 0x2, string: "" },
+  virtual_stid_opt: { stid: 0x2, string: "none" },
   any_name_exp: "C",
-  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "" },
-  noexcept_c_stid_opt: { stid: 0x2, string: "" },
-  func_equals_c_stid_opt: { stid: 0x2, string: "" },
+  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
+  noexcept_c_stid_opt: { stid: 0x2, string: "none" },
+  func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   destructor_declaration_c: {
     sname: { string: "C", scopes: "none" },
     unique_id: 1426,
@@ -4950,7 +4968,7 @@ sname_c_ast: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1428,
@@ -5221,7 +5239,7 @@ sname_c_ast: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1433,
@@ -5514,7 +5532,7 @@ sname_c_ast: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1438,
@@ -5807,7 +5825,7 @@ sname_c_ast: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1443,
@@ -6100,7 +6118,7 @@ sname_c_ast: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1448,
@@ -6393,7 +6411,7 @@ sname_c_ast: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1453,
@@ -6686,7 +6704,7 @@ sname_c_ast: {
 
 param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
-  this_stid_opt: { stid: 0x2, string: "" },
+  this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1458,

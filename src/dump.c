@@ -189,8 +189,8 @@ void c_ast_dump_impl( c_ast_t const *ast, unsigned indent, bool *comma,
           FPUTS( "'*'", dout );
           break;
       } // switch
-      if ( ast->array.stids != TS_NONE )
-        DUMP_TYPE( &C_TYPE_LIT_S( ast->array.stids ) );
+      DUMP_KEY( "stid: " );
+      c_tid_dump( ast->array.stids, dout );
       c_ast_dump_impl( ast->array.of_ast, indent, comma, "of_ast", dout );
       break;
 
@@ -442,7 +442,8 @@ void c_tid_dump( c_tid_t tid, FILE *dout ) {
   assert( dout != NULL );
   FPRINTF( dout,
     "{ %s: 0x%" PRIX_C_TID_T ", string: \"%s\" }",
-    c_tpid_name( c_tid_tpid( tid ) ), tid, c_tid_name_c( tid )
+    c_tpid_name( c_tid_tpid( tid ) ), tid,
+    c_tid_is_none( tid ) ? "none" : c_tid_name_c( tid )
   );
 }
 
