@@ -558,7 +558,7 @@ c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_ast_visit_dir_t dir,
 }
 
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir ) {
-  user_data_t data = { .ull = 0 };
+  user_data_t const data = { .ull = 0 };
   c_ast_t *const found_ast =
     c_ast_visit( CONST_CAST( c_ast_t*, ast ), dir, c_ast_visitor_name, data );
   return found_ast != NULL ? &found_ast->sname : NULL;
