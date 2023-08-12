@@ -428,14 +428,14 @@ struct c_operator_ast {
  *        sname: { string: "p", scopes: "none" },
  *        kind: { value: 0x800, string: "pointer to member" },
  *        ...
- *        type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
+ *        type: { btid: 0x4000001, ..., string: "class" },
  *        ptr_mbr: {
  *          class_sname: { string: "C", scopes: "class" },
  *          to_ast: {
  *            sname: { string: "" },
  *            kind: { value: 0x2, string: "built-in type" },
  *            ...
- *            type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+ *            type: { btid: 0x4001, ..., string: "int" },
  *            ...
  *          }
  *        }

@@ -372,19 +372,18 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  *   sname: { string: "x", scopes: "none" },
  *   kind: { value: 0x400, string: "pointer" },
  *   ...
- *   type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
  *   ptr_ref: {
  *     to_ast: {
  *       sname: { string: "" },
  *       kind: { value: 0x20, string: "typedef" },
  *       ...
- *       type: { btid: 0x20000001, stid: 0x200000002, atid: 0x4, string: "const" },
+ *       type: { btid: 0x20000001, stid: 0x200000002, ..., string: "const" },
  *       tdef: {
  *         for_ast: {
  *           sname: { string: "S", scopes: "struct" },
  *           kind: { value: 0x8, string: "class, struct, or union" },
  *           ...
- *           type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
+ *           type: { btid: 0x1000001, ..., string: "struct" },
  *           csu: {
  *             csu_sname: { string: "S", scopes: "none" }
  *           }
@@ -435,19 +434,18 @@ static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
  *   sname: { string: "x", scopes: "none" },
  *   kind: { value: 0x1000, string: "reference" },
  *   ...
- *   type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
  *   ptr_ref: {
  *     to_ast: {
  *       sname: { string: "" },
  *       kind: { value: 0x20, string: "typedef" },
  *       ...
- *       type: { btid: 0x20000001, stid: 0x200000002, atid: 0x4, string: "const" },
+ *       type: { btid: 0x20000001, stid: 0x200000002, ..., string: "const" },
  *       tdef: {
  *         for_ast: {
  *           sname: { string: "S", scopes: "struct" },
  *           kind: { value: 0x8, string: "class, struct, or union" },
  *           ...
- *           type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
+ *           type: { btid: 0x1000001, ..., string: "struct" },
  *           csu: {
  *             csu_sname: { string: "S", scopes: "none" }
  *           }

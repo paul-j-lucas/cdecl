@@ -4932,22 +4932,26 @@ typedef_type_decl_c_ast
         //      cdecl> explain int S    // error: "S": previously declared
         //
         // Note that typedef_type_c_ast is like:
-        // ```
-        // typedef_type_c_ast: {
-        //   sname: { string: "" },
-        //   kind: { value: 0x20, string: "typedef" },
-        //   ...
-        //   type: { btid: 0x10000001, stid: 0x2, atid: 0x4, string: "none" },
-        //   for_ast: {
-        //     sname: { string: "S", scopes: "struct" },
-        //     kind: { value: 0x8, string: "struct or union" },
-        //     ...
-        //     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "struct" },
-        //     csu_sname: { string: "S", scopes: "none" }
-        //   },
-        //   ...
-        // }
-        // ```
+        //
+        //      typedef_type_c_ast: {
+        //        sname: { string: "" },
+        //        kind: { value: 0x20, string: "typedef" },
+        //        ...
+        //        type: { btid: 0x10000001, ..., string: "none" },
+        //        tdef: {
+        //          for_ast: {
+        //            sname: { string: "S", scopes: "struct" },
+        //            kind: { value: 0x8, string: "struct or union" },
+        //            ...
+        //            type: { btid: 0x800001, ..., string: "struct" },
+        //            csu: {
+        //              csu_sname: { string: "S", scopes: "none" }
+        //            }
+        //          }
+        //        },
+        //        ...
+        //      }
+        //
         // That is, typedef_type_c_ast has no name itself (at this point), but
         // the raw type, of course, does, so it's that name we have to check.
         //

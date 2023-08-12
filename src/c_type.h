@@ -718,14 +718,16 @@ c_tid_t c_tid_normalize( c_tid_t tids );
 
 /**
  * Gets the "order" value of a \ref c_tid_t so it can be compared by its order.
+ *
  * The order is:
  *
- * + { _none_ | `scope` }  &lt; [`inline`] `namespace` &lt;
+ * + { _none_ | `scope` } &lt;
+ *   [`inline`] `namespace` &lt;
  *   { `struct` | `union` | `class` } &lt;
  *   `enum` [`class`]
  *
- * I.e., the order of T1 &le; T2 only if T1 can appear to the left (&lt;) of T2
- * in a declaration.  For example, given:
+ * I.e., order(T1) &le; order(T2) only if T1 can appear to the left of T2 in a
+ * declaration.  For example, given:
  * ```
  *  namespace N { class C { // ...
  * ```
