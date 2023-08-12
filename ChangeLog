@@ -1,5 +1,6 @@
 2023-08-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c: Added `const`.
    * dump.c, debug.out: Now nesting c_ast union data in dumps.
 
 2023-08-10  Paul J. Lucas <paul@lucasmail.org>
