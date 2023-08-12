@@ -39,23 +39,25 @@
 
 // standard
 #include <assert.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <sysexits.h>
 
-#define DUMP_FORMAT(...) BLOCK( \
-  FPUTNSP( indent * DUMP_INDENT, dout ); FPRINTF( dout, __VA_ARGS__ ); )
+#define DUMP_FORMAT(D,...) BLOCK(                   \
+  FPUTNSP( (D)->indent * DUMP_INDENT, (D)->dout );  \
+  FPRINTF( (D)->dout, __VA_ARGS__ ); )
 
-#define DUMP_KEY(...) BLOCK( \
-  fput_sep( ",\n", comma, dout ); DUMP_FORMAT( __VA_ARGS__ ); )
+#define DUMP_KEY(D,...) BLOCK( \
+  fput_sep( ",\n", &(D)->comma, (D)->dout ); DUMP_FORMAT( (D), __VA_ARGS__ ); )
 
-#define DUMP_LOC(KEY,LOC) \
-  DUMP_KEY( KEY ": " ); c_loc_dump( (LOC), dout )
+#define DUMP_LOC(D,KEY,LOC) \
+  DUMP_KEY( (D), KEY ": " ); c_loc_dump( (LOC), (D)->dout )
 
-#define DUMP_SNAME(KEY,SNAME) BLOCK( \
-  DUMP_KEY( KEY ": " ); c_sname_dump( (SNAME), dout ); )
+#define DUMP_SNAME(D,KEY,SNAME) BLOCK( \
+  DUMP_KEY( (D), KEY ": " ); c_sname_dump( (SNAME), (D)->dout ); )
 
-#define DUMP_TYPE(TYPE) BLOCK( \
-  DUMP_KEY( "type: " ); c_type_dump( (TYPE), dout ); )
+#define DUMP_TYPE(D,TYPE) BLOCK( \
+  DUMP_KEY( (D), "type: " ); c_type_dump( (TYPE), (D)->dout ); )
 
 /// @endcond
 
@@ -64,11 +66,36 @@
  * @{
  */
 
+/**
+ * Dump state.
+ */
+struct d_state {
+  FILE     *dout;                       ///< File to dump to.
+  unsigned  indent;                     ///< Current indentation.
+  bool      comma;                      ///< Print a comma?
+};
+typedef struct d_state d_state_t;
+
+/**
+ * JSON object state.
+ *
+ * The lower 2 bits `000000jc` are used:
+ *
+ *  Bit | Use
+ *  ----|----
+ *  `j` | Has a JSON object already been begun?
+ *  `c` | Previous comma state.
+ */
+typedef uint8_t j_state_t;
+
+static j_state_t const J_INIT = 0;      ///< JSON object initial state.
+
 // local functions
-static void c_ast_dump_impl( c_ast_t const*, unsigned, bool*, char const*,
-                             FILE* );
-static void c_capture_kind_dump( c_capture_kind_t, FILE* );
+static void c_ast_dump_impl( c_ast_t const*, char const*, d_state_t* );
 static void c_loc_dump( c_loc_t const*, FILE* );
+static void d_init( d_state_t*, unsigned, FILE* );
+static j_state_t json_object_begin( j_state_t, char const*, d_state_t* );
+static void json_object_end( j_state_t, d_state_t* );
 
 // local constants
 static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
@@ -79,41 +106,30 @@ static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
  * Dumps \a align (for debugging).
  *
  * @param align The \ref c_alignas to dump.
- * @param indent The current indent.
- * @param comma A pointer to a flag to know whether to print `,`.
- * @param dout The `FILE` to dump to.
+ * @param d The d_state to use.
  */
-static void c_alignas_dump( c_alignas_t const *align, unsigned indent,
-                            bool *comma, FILE *dout ) {
+static void c_alignas_dump( c_alignas_t const *align, d_state_t *d ) {
   assert( align != NULL );
-  assert( dout != NULL );
+  assert( d != NULL );
 
   if ( align->kind == C_ALIGNAS_NONE )
     return;
 
-  DUMP_KEY( "alignas: {\n" );
-
-  bool const orig_comma = *comma;
-  *comma = false;
-  ++indent;
+  j_state_t const j = json_object_begin( J_INIT, "alignas", d );
 
   switch ( align->kind ) {
     case C_ALIGNAS_NONE:
       unreachable();
     case C_ALIGNAS_EXPR:
-      DUMP_KEY( "expr: %u", align->expr );
+      DUMP_KEY( d, "expr: %u", align->expr );
       break;
     case C_ALIGNAS_TYPE:
-      c_ast_dump_impl( align->type_ast, indent, comma, "type_ast", dout );
+      c_ast_dump_impl( align->type_ast, "type_ast", d );
       break;
   } // switch
 
-  DUMP_LOC( "loc", &align->loc );
-
-  FPUTC( '\n', dout );
-  --indent;
-  *comma = orig_comma;
-  DUMP_FORMAT( "}" );
+  DUMP_LOC( d, "loc", &align->loc );
+  json_object_end( j, d );
 }
 
 /**
@@ -121,118 +137,132 @@ static void c_alignas_dump( c_alignas_t const *align, unsigned indent,
  *
  * @param ast The AST to dump.  If NULL and \a key is not NULL, dumps only \a
  * key followed by `:&nbsp;null`.
- * @param indent The current indent.
- * @param comma A pointer to a flag to know whether to print `,`.
  * @param key The key for which \a ast is the value, or NULL for none.
- * @param dout The `FILE` to dump to.
+ * @param d The d_state to use.
  */
-void c_ast_dump_impl( c_ast_t const *ast, unsigned indent, bool *comma,
-                      char const *key, FILE *dout ) {
-  assert( dout != NULL );
+void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
+  assert( d != NULL );
   key = null_if_empty( key );
 
   if ( key != NULL )
-    DUMP_KEY( "%s: ", key );
+    DUMP_KEY( d, "%s: ", key );
 
   if ( ast == NULL ) {
-    FPUTS( "null", dout );
+    FPUTS( "null", d->dout );
     return;
   }
 
-  if ( key != NULL )
-    FPUTS( "{\n", dout );
-  else
-    DUMP_FORMAT( "{\n" );
+  if ( key == NULL )
+    DUMP_FORMAT( d, "" );
 
-  bool const orig_comma = *comma;
-  *comma = false;
-  ++indent;
+  j_state_t const ast_j = json_object_begin( J_INIT, /*key=*/NULL, d );
 
-  DUMP_SNAME( "sname", &ast->sname );
-  DUMP_KEY( "unique_id: " PRId_C_AST_ID_T, ast->unique_id );
-  DUMP_KEY(
+  DUMP_SNAME( d, "sname", &ast->sname );
+  DUMP_KEY( d, "unique_id: " PRId_C_AST_ID_T, ast->unique_id );
+  DUMP_KEY( d,
     "kind: { value: 0x%X, string: \"%s\" }",
     ast->kind, c_kind_name( ast->kind )
   );
-  DUMP_KEY( "depth: %u", ast->depth );
-  DUMP_KEY(
+  DUMP_KEY( d, "depth: %u", ast->depth );
+  DUMP_KEY( d,
     "parent__unique_id: " PRId_C_AST_SID_T,
     ast->parent_ast != NULL ?
       STATIC_CAST( c_ast_sid_t, ast->parent_ast->unique_id ) :
       STATIC_CAST( c_ast_sid_t, -1 )
   );
-  c_alignas_dump( &ast->align, indent, comma, dout );
-  DUMP_LOC( "loc", &ast->loc );
-  DUMP_TYPE( &ast->type );
+  c_alignas_dump( &ast->align, d );
+  DUMP_LOC( d, "loc", &ast->loc );
+  DUMP_TYPE( d, &ast->type );
+
+  j_state_t kind_j = J_INIT;
 
   switch ( ast->kind ) {
-    case K_DESTRUCTOR:
-    case K_NAME:
-    case K_PLACEHOLDER:
-    case K_VARIADIC:
-      // nothing to do
-      break;
-
     case K_ARRAY:
-      DUMP_KEY( "size: " );
+      kind_j = json_object_begin( J_INIT, "array", d );
+      DUMP_KEY( d, "size: " );
       switch ( ast->array.kind ) {
         case C_ARRAY_EMPTY_SIZE:
-          FPUTS( "\"unspecified\"", dout );
+          FPUTS( "\"unspecified\"", d->dout );
           break;
         case C_ARRAY_INT_SIZE:
-          FPRINTF( dout, "%u", ast->array.size_int );
+          FPRINTF( d->dout, "%u", ast->array.size_int );
           break;
         case C_ARRAY_NAMED_SIZE:
-          FPRINTF( dout, "\"%s\"", ast->array.size_name );
+          FPRINTF( d->dout, "\"%s\"", ast->array.size_name );
           break;
         case C_ARRAY_VLA_STAR:
-          FPUTS( "'*'", dout );
+          FPUTS( "'*'", d->dout );
           break;
       } // switch
-      DUMP_KEY( "stid: " );
-      c_tid_dump( ast->array.stids, dout );
-      c_ast_dump_impl( ast->array.of_ast, indent, comma, "of_ast", dout );
+      DUMP_KEY( d, "stid: " );
+      c_tid_dump( ast->array.stids, d->dout );
+      c_ast_dump_impl( ast->array.of_ast, "of_ast", d );
+      json_object_end( kind_j, d );
       break;
 
     case K_CAPTURE:
-      DUMP_KEY( "capture: " );
-      c_capture_kind_dump( ast->capture.kind, dout );
+      kind_j = json_object_begin( J_INIT, "capture", d );
+      DUMP_KEY( d, "kind: " );
+      switch ( ast->capture.kind ) {
+        case C_CAPTURE_COPY:
+          FPUTS( "'='", d->dout );
+          break;
+        case C_CAPTURE_REFERENCE:
+          FPUTS( "'&'", d->dout );
+          break;
+        case C_CAPTURE_STAR_THIS:
+          FPUTS( "\"*this\"", d->dout );
+          break;
+        case C_CAPTURE_THIS:
+          FPUTS( "\"this\"", d->dout );
+          break;
+        case C_CAPTURE_VARIABLE:
+          FPUTS( "\"variable\"", d->dout );
+          break;
+      } // switch
+      json_object_end( kind_j, d );
       break;
 
     case K_CAST:
-      DUMP_KEY(
-        "cast_kind: { value: 0x%X, string: \"%s\" }",
+      kind_j = json_object_begin( J_INIT, "cast", d );
+      DUMP_KEY( d,
+        "kind: { value: 0x%X, string: \"%s\" }",
         ast->cast.kind, c_cast_english( ast->cast.kind )
       );
-      c_ast_dump_impl( ast->cast.to_ast, indent, comma, "to_ast", dout );
+      c_ast_dump_impl( ast->cast.to_ast, "to_ast", d );
+      json_object_end( kind_j, d );
       break;
 
     case K_CLASS_STRUCT_UNION:
-      DUMP_SNAME( "csu_sname", &ast->csu.csu_sname );
+      kind_j = json_object_begin( J_INIT, "csu", d );
+      DUMP_SNAME( d, "csu_sname", &ast->csu.csu_sname );
+      json_object_end( kind_j, d );
       break;
 
     case K_OPERATOR:
-      DUMP_KEY(
-        "operator: { value: %d, string: \"%s\" }",
+      kind_j = json_object_begin( J_INIT, "operator", d );
+      DUMP_KEY( d,
+        "oper_id: { value: %d, string: \"%s\" }",
         STATIC_CAST( int, ast->oper.operator->oper_id ),
         ast->oper.operator->literal
       );
       FALLTHROUGH;
 
     case K_FUNCTION:
-      DUMP_KEY( "flags: { value: 0x%X, string: ", ast->func.flags );
+      kind_j = json_object_begin( kind_j, "function", d );
+      DUMP_KEY( d, "flags: { value: 0x%X, string: ", ast->func.flags );
       switch ( ast->func.flags ) {
         case C_FUNC_UNSPECIFIED:
-          FPUTS( "\"unspecified\"", dout );
+          FPUTS( "\"unspecified\"", d->dout );
           break;
         case C_FUNC_MEMBER:
-          FPUTS( "\"member\"", dout );
+          FPUTS( "\"member\"", d->dout );
           break;
         case C_FUNC_NON_MEMBER:
-          FPUTS( "\"non-member\"", dout );
+          FPUTS( "\"non-member\"", d->dout );
           break;
         case C_OPER_OVERLOADABLE:
-          FPUTS( "\"overloadable\"", dout );
+          FPUTS( "\"overloadable\"", d->dout );
           break;
      // case C_OPER_NOT_OVERLOADABLE:
      //
@@ -245,93 +275,114 @@ void c_ast_dump_impl( c_ast_t const *ast, unsigned indent, bool *comma,
      //
      //   break;
         default:
-          FPUTS( "'?'", dout );
+          FPUTS( "'?'", d->dout );
           break;
       } // switch
-      FPUTS( " }", dout );
+      FPUTS( " }", d->dout );
       FALLTHROUGH;
 
     case K_APPLE_BLOCK:
+      kind_j = json_object_begin( kind_j, "block", d );
+      FALLTHROUGH;
     case K_CONSTRUCTOR:
+      kind_j = json_object_begin( kind_j, "constructor", d );
+      FALLTHROUGH;
     case K_USER_DEF_LITERAL:
+      kind_j = json_object_begin( kind_j, "udef_lit", d );
 dump_params:
-      DUMP_KEY( "param_ast_list: " );
-      c_ast_list_dump( &ast->func.param_ast_list, indent, dout );
+      DUMP_KEY( d, "param_ast_list: " );
+      c_ast_list_dump( &ast->func.param_ast_list, d->indent, d->dout );
       if ( ast->func.ret_ast != NULL )
-        c_ast_dump_impl( ast->func.ret_ast, indent, comma, "ret_ast", dout );
+        c_ast_dump_impl( ast->func.ret_ast, "ret_ast", d );
+      json_object_end( kind_j, d );
       break;
 
     case K_ENUM:
-      DUMP_SNAME( "enum_sname", &ast->enum_.enum_sname );
+      kind_j = json_object_begin( J_INIT, "enum", d );
+      DUMP_SNAME( d, "enum_sname", &ast->enum_.enum_sname );
       if ( ast->enum_.of_ast != NULL )
-        c_ast_dump_impl( ast->enum_.of_ast, indent, comma, "of_ast", dout );
+        c_ast_dump_impl( ast->enum_.of_ast, "of_ast", d );
+      if ( ast->enum_.bit_width > 0 )
+        DUMP_KEY( d, "bit_width: %u", ast->enum_.bit_width );
+      json_object_end( kind_j, d );
       break;
 
     case K_LAMBDA:
-      DUMP_KEY( "capture_ast_list: " );
-      c_ast_list_dump( &ast->lambda.capture_ast_list, indent, dout );
+      kind_j = json_object_begin( J_INIT, "lambda", d );
+      DUMP_KEY( d, "capture_ast_list: " );
+      c_ast_list_dump( &ast->lambda.capture_ast_list, d->indent, d->dout );
       goto dump_params;
 
     case K_POINTER_TO_MEMBER:
-      DUMP_SNAME( "class_sname", &ast->ptr_mbr.class_sname );
+      kind_j = json_object_begin( J_INIT, "ptr_mbr", d );
+      DUMP_SNAME( d, "class_sname", &ast->ptr_mbr.class_sname );
       FALLTHROUGH;
 
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      c_ast_dump_impl( ast->ptr_ref.to_ast, indent, comma, "to_ast", dout );
+      kind_j = json_object_begin( kind_j, "ptr_ref", d );
+      c_ast_dump_impl( ast->ptr_ref.to_ast, "to_ast", d );
+      json_object_end( kind_j, d );
       break;
 
     case K_TYPEDEF:
-      c_ast_dump_impl( ast->tdef.for_ast, indent, comma, "for_ast", dout );
+      kind_j = json_object_begin( J_INIT, "tdef", d );
+      c_ast_dump_impl( ast->tdef.for_ast, "for_ast", d );
       FALLTHROUGH;
 
     case K_BUILTIN:
-      DUMP_KEY( "bit_width: %u", ast->builtin.bit_width );
-      if ( c_ast_is_tid_any( ast, TB_BITINT ) &&
-           ast->builtin.BitInt.width > 0 ) {
-        DUMP_KEY( "BitInt_width: %u", ast->builtin.BitInt.width );
+      kind_j = json_object_begin( kind_j, "builtin", d );
+      DUMP_KEY( d, "bit_width: %u", ast->builtin.bit_width );
+      if ( c_ast_is_tid_any( ast, TB_BITINT ) ) {
+        j_state_t const BitInt_j = json_object_begin( J_INIT, "BitInt", d );
+        DUMP_KEY( d, "width: %u", ast->builtin.BitInt.width );
+        json_object_end( BitInt_j, d );
       }
+      json_object_end( kind_j, d );
       break;
 
     case K_USER_DEF_CONVERSION:
-      c_ast_dump_impl(
-        ast->udef_conv.conv_ast, indent, comma, "conv_ast", dout
-      );
+      kind_j = json_object_begin( J_INIT, "udef_conv", d );
+      c_ast_dump_impl( ast->udef_conv.conv_ast, "conv_ast", d );
+      json_object_end( kind_j, d );
+      break;
+
+    case K_DESTRUCTOR:
+    case K_NAME:
+    case K_PLACEHOLDER:
+    case K_VARIADIC:
+      // nothing to do
       break;
   } // switch
 
-  FPUTC( '\n', dout );
-  --indent;
-  *comma = orig_comma;
-  DUMP_FORMAT( "}" );
+  json_object_end( ast_j, d );
 }
 
 /**
- * Dumps \a kind (for debugging).
+ * Dumps \a list of ASTs (for debugging).
  *
- * @param kind The \ref c_capture_kind to dump.
- * @param dout The `FILE` to dump to.
+ * @param list The \ref slist of ASTs to dump.
+ * @param d The d_state to use.
  */
-static void c_capture_kind_dump( c_capture_kind_t kind, FILE *dout ) {
-  assert( dout != NULL );
-  switch ( kind ) {
-    case C_CAPTURE_COPY:
-      FPUTS( "'='", dout );
-      break;
-    case C_CAPTURE_REFERENCE:
-      FPUTS( "'&'", dout );
-      break;
-    case C_CAPTURE_STAR_THIS:
-      FPUTS( "\"*this\"", dout );
-      break;
-    case C_CAPTURE_THIS:
-      FPUTS( "\"this\"", dout );
-      break;
-    case C_CAPTURE_VARIABLE:
-      FPUTS( "\"variable\"", dout );
-      break;
-  } // switch
+static void c_ast_list_dump_impl( c_ast_list_t const *list,
+                                  d_state_t const *d ) {
+  assert( list != NULL );
+  assert( d != NULL );
+
+  if ( slist_empty( list ) ) {
+    FPUTS( "[]", d->dout );
+  } else {
+    FPUTS( "[\n", d->dout );
+    bool comma = false;
+    unsigned const indent = d->indent + 1;
+    FOREACH_SLIST_NODE( node, list ) {
+      fput_sep( ",\n", &comma, d->dout );
+      c_ast_dump( c_param_ast( node ), indent, /*key=*/NULL, d->dout );
+    } // for
+    FPUTC( '\n', d->dout );
+    DUMP_FORMAT( d, "]" );
+  }
 }
 
 /**
@@ -370,6 +421,88 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
   UNEXPECTED_INT_VALUE( tpid );
 }
 
+/**
+ * Initializes a d_state.
+ *
+ * @param d The d_state to initialize.
+ * @param indent The current indent.
+ * @param dout The `FILE` to dump to.
+ */
+static void d_init( d_state_t *d, unsigned indent, FILE *dout ) {
+  assert( d != NULL );
+  assert( dout != NULL );
+  MEM_ZERO( d );
+  d->indent = indent;
+  d->dout = dout;
+}
+
+/**
+ * Dumps the beginning of a JSON object.
+ *
+ * @param j The \ref j_state_t to use.  If not equal to #J_INIT, does nothing.
+ * It allows json_object_begin() to be to be called even inside a `switch`
+ * statement and the previous `case` (that also called json_object_begin())
+ * falls through and not begin a new JSON object when that happens allowing
+ * common code in the second case to be shared with the first and not be
+ * duplicated.  For example, given:
+ * ```cpp
+ *  case C1:
+ *    j = json_object_begin( J_INIT, "K1", d );
+ *    // Do stuff unique to C1.
+ *    FALLTHROUGH;
+ *  case C2:
+ *    j = json_object_begin( j, "K2", d );  // Note: passing 'j' here.
+ *    // Do stuff common to C1 and C2.
+ *    json_object_end( j, d );
+ *    break;
+ * ```
+ * There are two cases:
+ * 1. `case C2` is entered: a JSON object will be begun having the key `K2`.
+ *    (There is nothing special about this case.)
+ * 2. `case C1` is entered: a JSON object will be begun having the key `K1`.
+ *    When the case falls through into `case C2`, a second JSON object will
+ *    _not_ be begun: the call to the second json_object_begin() will do
+ *    nothing.
+ * @param key The key for the JSON object.  May be NULL.  If not NULL, dumps
+ * the key followed by `:`.
+ * @param d The d_state to use.
+ * @return Returns a new \ref j_state_t that must be passed to
+ * json_object_end().
+ *
+ * @sa json_object_end()
+ */
+NODISCARD
+static j_state_t json_object_begin( j_state_t j, char const *key,
+                                    d_state_t *d ) {
+  assert( d != NULL );
+  if ( j == J_INIT ) {
+    key = null_if_empty( key );
+    if ( key != NULL )
+      DUMP_KEY( d, "%s: ", key );
+    FPUTS( "{\n", d->dout );
+    j = (1u << 1) | d->comma;
+    d->comma = false;
+    ++d->indent;
+  }
+  return j;
+}
+
+/**
+ * Dumps the end of a JSON object.
+ *
+ * @param j The \ref j_state_t returned from json_object_begin().
+ * @param d The d_state to use.
+ *
+ * @sa json_object_begin()
+ */
+static void json_object_end( j_state_t j, d_state_t *d ) {
+  assert( d != NULL );
+  FPUTC( '\n', d->dout );
+  d->comma = !!(j & 1);
+  --d->indent;
+  DUMP_FORMAT( d, "}" );
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void bool_dump( bool value, FILE *dout ) {
@@ -379,28 +512,15 @@ void bool_dump( bool value, FILE *dout ) {
 
 void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
                  FILE *dout ) {
-  bool comma = false;
-  c_ast_dump_impl( ast, indent, &comma, key, dout );
+  d_state_t d;
+  d_init( &d, indent, dout );
+  c_ast_dump_impl( ast, key, &d );
 }
 
 void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
-  assert( list != NULL );
-  assert( dout != NULL );
-
-  if ( slist_empty( list ) ) {
-    FPUTS( "[]", dout );
-  } else {
-    FPUTS( "[\n", dout );
-    ++indent;
-    bool comma = false;
-    FOREACH_SLIST_NODE( node, list ) {
-      fput_sep( ",\n", &comma, dout );
-      c_ast_dump( c_param_ast( node ), indent, /*key=*/NULL, dout );
-    } // for
-    --indent;
-    FPUTC( '\n', dout );
-    DUMP_FORMAT( "]" );
-  }
+  d_state_t d;
+  d_init( &d, indent, dout );
+  c_ast_list_dump_impl( list, &d );
 }
 
 void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
@@ -427,15 +547,16 @@ void c_sname_list_dump( slist_t const *list, FILE *dout ) {
 
   if ( slist_empty( list ) ) {
     FPUTS( "[]", dout );
-  } else {
-    FPUTS( "[ ", dout );
-    bool comma = false;
-    FOREACH_SLIST_NODE( node, list ) {
-      fput_sep( ", ", &comma, dout );
-      c_sname_dump( node->data, dout );
-    } // for
-    FPUTS( " ]", dout );
+    return;
   }
+  FPUTS( "[ ", dout );
+  bool comma = false;
+  FOREACH_SLIST_NODE( node, list ) {
+    fput_sep( ", ", &comma, dout );
+    c_sname_dump( node->data, dout );
+  } // for
+  FPUTS( " ]", dout );
+
 }
 
 void c_tid_dump( c_tid_t tid, FILE *dout ) {
