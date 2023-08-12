@@ -1,5 +1,11 @@
+2023-08-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, debug.out: Now nesting c_ast union data in dumps.
+
 2023-08-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c, debug.out: Changed type to stid for dumping array's stids; now
+     printing 'none' for no type in c_tid_dump().
    * c_ast.h, util.h: Added DECL_UNUSED().
 
 2023-08-07  Paul J. Lucas <paul@lucasmail.org>
