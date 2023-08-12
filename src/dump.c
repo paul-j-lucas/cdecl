@@ -463,8 +463,8 @@ static void d_init( d_state_t *d, unsigned indent, FILE *dout ) {
  *    When the case falls through into `case C2`, a second JSON object will
  *    _not_ be begun: the call to the second json_object_begin() will do
  *    nothing.
- * @param key The key for the JSON object.  May be NULL.  If not NULL, dumps
- * the key followed by `:`.
+ * @param key The key for the JSON object; may be NULL.  If not NULL, dumps the
+ * key followed by `:`.
  * @param d The d_state to use.
  * @return Returns a new \ref j_state_t that must be passed to
  * json_object_end().

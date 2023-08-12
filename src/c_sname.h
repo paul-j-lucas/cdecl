@@ -304,7 +304,7 @@ void c_sname_free( c_sname_t *sname );
 /**
  * Gets the fully scoped name of \a sname.
  *
- * @param sname The scoped name to get the full name of.  May be NULL.
+ * @param sname The scoped name to get the full name of; may be NULL.
  * @return Returns said name or the empty string if \a sname is empty or NULL.
  *
  * @warning The pointer returned is to a static buffer, so you can't do
@@ -381,7 +381,7 @@ void c_sname_list_cleanup( slist_t *list );
  * Gets the local name of \a sname (which is the name of the last scope), for
  * example the local name of `S::T::x` is `x`.
  *
- * @param sname The scoped name to get the local name of.  May be NULL.
+ * @param sname The scoped name to get the local name of; may be NULL.
  * @return Returns said name or the empty string if \a sname is empty or NULL.
  *
  * @sa c_sname_full_name()
@@ -519,7 +519,7 @@ void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
  *  + For `a::b::c`, returns `a::b`.
  *  + For `c`, returns the empty string.
  *
- * @param sname The scoped name to get the scope name of.  May be NULL.
+ * @param sname The scoped name to get the scope name of; may be NULL.
  * @return Returns said name or the empty string if \a sname is empty, NULL, or
  * not within a scope.
  *

@@ -1049,7 +1049,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
  *
  * @param sti The \ref show_type_info to initialize.
  * @param show_which Which types to show: predefined, user, or both?
- * @param glob The glob string.  May be NULL.
+ * @param glob The glob string; may be NULL.
  * @param gib_flags The gibberish flags to use.
  *
  * @sa sti_cleanup()

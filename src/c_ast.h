@@ -590,8 +590,8 @@ c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
 /**
  * Checks whether two ASTs are equal _except_ for their names.
  *
- * @param i_ast The first AST.  May be NULL.
- * @param j_ast The second AST.  May be NULL.
+ * @param i_ast The first AST; may be NULL.
+ * @param j_ast The second AST; may be NULL.
  * @return Returns `true` only if the two ASTs are equal _except_ for their
  * names.
  *
@@ -635,7 +635,7 @@ bool c_ast_is_orphan( c_ast_t const *ast ) {
 /**
  * Checks whether \a ast is a #K_ANY_PARENT.
  *
- * @param ast The AST to check.  May be NULL.
+ * @param ast The AST to check; may be NULL.
  * @return Returns `true` only if it is.
  *
  * @sa c_ast_is_orphan()
@@ -649,7 +649,7 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
 /**
  * Checks whether \a ast is a #K_ANY_REFERRER.
  *
- * @param ast The AST to check.  May be NULL.
+ * @param ast The AST to check; may be NULL.
  * @return Returns `true` only if it is.
  *
  * @sa c_ast_is_orphan()
@@ -773,10 +773,10 @@ size_t c_ast_params_count( c_ast_t const *ast ) {
 /**
  * Sets the two-way pointer links between parent/child AST nodes.
  *
- * @param child_ast The "child" AST node to set the parent of.  If it already
- * has a parent, it's overwritten.  May be NULL.
- * @param parent_ast The "parent" AST node to set the child of.  If it already
- * has a child, it's overwritten.  May be NULL.
+ * @param child_ast The "child" AST node to set the parent of; may be NULL.  If
+ * it already has a parent, it's overwritten.
+ * @param parent_ast The "parent" AST node to set the child of; may be NULL.
+ * If it already has a child, it's overwritten.
  */
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
 

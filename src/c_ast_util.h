@@ -340,7 +340,7 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
 /**
  * Gets the leat AST node starting at \a ast.
  *
- * @param ast The AST to start from.  May be NULL.
+ * @param ast The AST to start from; may be NULL.
  * @return Returns said AST or NULL if \a ast is NULL.
  *
  * @sa c_ast_root()
