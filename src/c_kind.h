@@ -242,14 +242,16 @@ typedef enum c_ast_kind c_ast_kind_t;
  * or #K_USER_DEF_LITERAL.
  */
 #define K_ANY_FUNCTION_LIKE       ( K_ANY_FUNCTION_RETURN | K_CONSTRUCTOR \
-                                  | K_DESTRUCTOR | K_USER_DEF_CONVERSION )
+                                  | K_DESTRUCTOR )
 
 /**
  * Shorthand for any kind of function-like AST that has a return type:
- * #K_APPLE_BLOCK, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, or #K_USER_DEF_LITERAL.
+ * #K_APPLE_BLOCK, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_USER_DEF_CONVERSION,
+ * or #K_USER_DEF_LITERAL.
  */
 #define K_ANY_FUNCTION_RETURN     ( K_APPLE_BLOCK | K_FUNCTION | K_LAMBDA \
-                                  | K_OPERATOR | K_USER_DEF_LITERAL )
+                                  | K_OPERATOR | K_USER_DEF_CONVERSION \
+                                  | K_USER_DEF_LITERAL )
 
 /**
  * Shorthand for any kind of "object" that can be the type of a variable or
