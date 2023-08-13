@@ -1,3 +1,13 @@
+2023-08-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_kind.h, options.c: s/K_NON_PTR_REF_OBJECT/K_ANY_NON_PTR_REF_OBJECT/
+   * c_kind.h: Move K_USER_DEF_CONVERSION from K_ANY_FUNCTION_LIKE to
+     K_ANY_FUNCTION_RETURN.
+   * dump.c, debug.out: Made union JSON object names match C union declaration
+     names.
+   * dump.c: Added assert.
+   * dump.c: Made j_state an enum.
+
 2023-08-12  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c: Added `const`.
