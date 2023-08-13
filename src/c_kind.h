@@ -255,14 +255,25 @@ typedef enum c_ast_kind c_ast_kind_t;
 
 /**
  * Shorthand for any kind of "object" that can be the type of a variable or
+ * constant, i.e., something to which `sizeof` can be applied _except_ pointers
+ * or references: #K_ARRAY, #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_ENUM, or
+ * #K_TYPEDEF.
+ *
+ * @sa #K_ANY_OBJECT
+ */
+#define K_ANY_NON_PTR_REF_OBJECT  ( K_ARRAY | K_BUILTIN \
+                                  | K_ENUM_CLASS_STRUCT_UNION | K_TYPEDEF )
+
+/**
+ * Shorthand for any kind of "object" that can be the type of a variable or
  * constant, i.e., something to which `sizeof` can be applied: #K_ARRAY,
  * #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_ENUM, #K_POINTER,
  * #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE, or #K_TYPEDEF.
  *
- * @sa #K_NON_PTR_REF_OBJECT
+ * @sa #K_ANY_NON_PTR_REF_OBJECT
  */
-#define K_ANY_OBJECT              ( K_ANY_POINTER | K_ANY_REFERENCE \
-                                  | K_NON_PTR_REF_OBJECT )
+#define K_ANY_OBJECT              ( K_ANY_POINTER | K_ANY_NON_PTR_REF_OBJECT \
+                                  | K_ANY_REFERENCE )
 
 /**
  * Shorthand for any kind of parent: #K_APPLE_BLOCK, #K_ARRAY, #K_CAST,
@@ -306,17 +317,6 @@ typedef enum c_ast_kind c_ast_kind_t;
  * Shorthand for either #K_ENUM or #K_CLASS_STRUCT_UNION.
  */
 #define K_ENUM_CLASS_STRUCT_UNION ( K_ENUM | K_CLASS_STRUCT_UNION )
-
-/**
- * Shorthand for any kind of "object" that can be the type of a variable or
- * constant, i.e., something to which `sizeof` can be applied _except_ pointers
- * or references: #K_ARRAY, #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_ENUM, or
- * #K_TYPEDEF.
- *
- * @sa #K_ANY_OBJECT
- */
-#define K_NON_PTR_REF_OBJECT      ( K_ARRAY | K_BUILTIN \
-                                  | K_ENUM_CLASS_STRUCT_UNION | K_TYPEDEF )
 
 ////////// extern functions ///////////////////////////////////////////////////
 

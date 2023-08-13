@@ -233,7 +233,7 @@ bool parse_west_pointer( char const *wp_format ) {
         kinds |= K_ANY_FUNCTION_RETURN;
         break;
       case 't':
-        kinds |= K_NON_PTR_REF_OBJECT;
+        kinds |= K_ANY_NON_PTR_REF_OBJECT;
         break;
       default:
         return false;
@@ -296,7 +296,7 @@ void print_west_pointer( FILE *out ) {
     FPUTC( 'l', out );
   if ( (opt_west_pointer_kinds & K_OPERATOR) != 0 )
     FPUTC( 'o', out );
-  if ( (opt_west_pointer_kinds & K_NON_PTR_REF_OBJECT) != 0 )
+  if ( (opt_west_pointer_kinds & K_ANY_NON_PTR_REF_OBJECT) != 0 )
     FPUTC( 't', out );
 }
 
