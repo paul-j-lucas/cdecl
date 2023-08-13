@@ -2151,7 +2151,7 @@ func_decl_c_astp: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [],
       ret_ast: {
@@ -2193,7 +2193,7 @@ decl_c: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [],
       ret_ast: {
@@ -2218,7 +2218,7 @@ decl_c: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [],
       ret_ast: {
@@ -3027,7 +3027,7 @@ func_decl_c_astp: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 43 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [
         {
@@ -3114,7 +3114,7 @@ decl_c: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 43 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [
         {
@@ -3184,7 +3184,7 @@ decl_c: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 43 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [
         {
@@ -3672,7 +3672,7 @@ func_decl_c_astp: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 23 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [
         {
@@ -3740,7 +3740,7 @@ decl_c: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 23 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [
         {
@@ -3791,7 +3791,7 @@ decl_c: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 23 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [
         {
@@ -4260,7 +4260,7 @@ func_decl_c_astp: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 30 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [
         {
@@ -4328,7 +4328,7 @@ decl_c: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 30 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [
         {
@@ -4379,7 +4379,7 @@ decl_c: {
     parent__unique_id: -1,
     loc: { first_column: 13, last_column: 30 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
-    function: {
+    func: {
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [
         {
@@ -4536,7 +4536,7 @@ oper_decl_c_astp: {
     parent__unique_id: -1,
     loc: { first_column: 11, last_column: 29 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
-    operator: {
+    oper: {
       oper_id: { value: 6, string: "!" },
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [],
@@ -4579,7 +4579,7 @@ decl_c: {
     parent__unique_id: -1,
     loc: { first_column: 11, last_column: 29 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
-    operator: {
+    oper: {
       oper_id: { value: 6, string: "!" },
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [],
@@ -4605,7 +4605,7 @@ decl_c: {
     parent__unique_id: -1,
     loc: { first_column: 11, last_column: 29 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
-    operator: {
+    oper: {
       oper_id: { value: 6, string: "!" },
       flags: { value: 0x0, string: "unspecified" },
       param_ast_list: [],

@@ -236,7 +236,7 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
       break;
 
     case K_OPERATOR:
-      kind_j = json_object_begin( J_INIT, "operator", d );
+      kind_j = json_object_begin( J_INIT, "oper", d );
       DUMP_KEY( d,
         "oper_id: { value: %d, string: \"%s\" }",
         STATIC_CAST( int, ast->oper.operator->oper_id ),
@@ -245,7 +245,7 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
       FALLTHROUGH;
 
     case K_FUNCTION:
-      kind_j = json_object_begin( kind_j, "function", d );
+      kind_j = json_object_begin( kind_j, "func", d );
       DUMP_KEY( d, "flags: { value: 0x%X, string: ", ast->func.flags );
       switch ( ast->func.flags ) {
         case C_FUNC_UNSPECIFIED:
@@ -281,7 +281,7 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
       kind_j = json_object_begin( kind_j, "block", d );
       FALLTHROUGH;
     case K_CONSTRUCTOR:
-      kind_j = json_object_begin( kind_j, "constructor", d );
+      kind_j = json_object_begin( kind_j, "ctor", d );
       FALLTHROUGH;
     case K_USER_DEF_LITERAL:
       kind_j = json_object_begin( kind_j, "udef_lit", d );
