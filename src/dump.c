@@ -78,15 +78,13 @@ typedef struct d_state d_state_t;
 
 /**
  * JSON object state.
- *
- * The lower 2 bits `000000jc` are used:
- *
- *  Bit | Use
- *  ----|----
- *  `j` | Has a JSON object already been begun?
- *  `c` | Previous comma state.
  */
-typedef uint8_t j_state_t;
+enum j_state {
+  J_INIT      = 0,                      ///< Initial state.
+  J_COMMA     = (1u << 0),              ///< Previous "print a comma?" state.
+  J_OBJ_BEGUN = (1u << 1)               ///< Has a JSON object already begun?
+};
+typedef enum j_state j_state_t;
 
 // local functions
 static void c_ast_dump_impl( c_ast_t const*, char const*, d_state_t* );
@@ -96,8 +94,7 @@ static j_state_t json_object_begin( j_state_t, char const*, d_state_t* );
 static void json_object_end( j_state_t, d_state_t* );
 
 // local constants
-static unsigned const   DUMP_INDENT = 2; ///< Spaces per dump indent level.
-static j_state_t const  J_INIT = 0;      ///< JSON object initial state.
+static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -141,8 +138,8 @@ static void c_alignas_dump( c_alignas_t const *align, d_state_t *d ) {
  */
 void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
   assert( d != NULL );
-  key = null_if_empty( key );
 
+  key = null_if_empty( key );
   if ( key != NULL )
     DUMP_KEY( d, "%s: ", key );
 
@@ -479,8 +476,11 @@ static j_state_t json_object_begin( j_state_t j, char const *key,
     if ( key != NULL )
       DUMP_KEY( d, "%s: ", key );
     FPUTS( "{\n", d->dout );
-    j = (1u << 1) | d->comma;
-    d->comma = false;
+    j = J_OBJ_BEGUN;
+    if ( d->comma ) {
+      j |= J_COMMA;
+      d->comma = false;
+    }
     ++d->indent;
   }
   return j;
@@ -497,7 +497,7 @@ static j_state_t json_object_begin( j_state_t j, char const *key,
 static void json_object_end( j_state_t j, d_state_t *d ) {
   assert( d != NULL );
   FPUTC( '\n', d->dout );
-  d->comma = !!(j & 1);
+  d->comma = !!(j & J_COMMA);
   --d->indent;
   DUMP_FORMAT( d, "}" );
 }
