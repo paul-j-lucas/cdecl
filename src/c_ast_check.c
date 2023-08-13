@@ -437,13 +437,6 @@ static bool c_ast_check_array( c_ast_t const *ast, c_state_t const *c ) {
       }
       break;
 
-    case K_CLASS_STRUCT_UNION:
-    case K_ENUM:
-    case K_POINTER:
-    case K_POINTER_TO_MEMBER:
-      // nothing to do
-      break;
-
     case K_BUILTIN:
       if ( c_ast_is_builtin_any( raw_of_ast, TB_VOID ) ) {
         print_error( &ast->loc, "array of void" );
@@ -453,13 +446,7 @@ static bool c_ast_check_array( c_ast_t const *ast, c_state_t const *c ) {
       break;
 
     case K_APPLE_BLOCK:
-    case K_CONSTRUCTOR:
-    case K_DESTRUCTOR:
     case K_FUNCTION:
-    case K_LAMBDA:
-    case K_OPERATOR:
-    case K_USER_DEF_CONVERSION:
-    case K_USER_DEF_LITERAL:
       error_kind_of_kind( ast, raw_of_ast, "" );
       print_hint( "array of pointer to function" );
       return false;
@@ -477,11 +464,24 @@ static bool c_ast_check_array( c_ast_t const *ast, c_state_t const *c ) {
       }
       return false;
 
-    case K_CAPTURE:                     // array of capture is impossible
-    case K_CAST:                        // array of cast is impossible
-    case K_NAME:                        // array of untyped name is impossible
-    case K_TYPEDEF:                     // can't happen after c_ast_untypedef()
-    case K_VARIADIC:                    // array of variadic is impossible
+    case K_CLASS_STRUCT_UNION:
+    case K_ENUM:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+      // nothing to do
+      break;
+
+    case K_CAPTURE:                     // impossible
+    case K_CAST:                        // impossible
+    case K_CONSTRUCTOR:                 // impossible
+    case K_DESTRUCTOR:                  // impossible
+    case K_LAMBDA:                      // impossible
+    case K_NAME:                        // impossible
+    case K_OPERATOR:                    // impossible
+    case K_TYPEDEF:                     // impossible after c_ast_untypedef()
+    case K_USER_DEF_CONVERSION:         // impossible
+    case K_USER_DEF_LITERAL:            // impossible
+    case K_VARIADIC:                    // impossible
       UNEXPECTED_INT_VALUE( raw_of_ast->kind );
 
     CASE_K_PLACEHOLDER;
@@ -1274,7 +1274,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       case K_POINTER_TO_MEMBER:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
-      case K_TYPEDEF:                   // can't happen after c_ast_untypedef()
+      case K_TYPEDEF:                   // impossible after c_ast_untypedef()
       case K_USER_DEF_CONVERSION:
       case K_USER_DEF_LITERAL:
         // nothing to do
