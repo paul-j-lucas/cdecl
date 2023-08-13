@@ -427,6 +427,7 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
 static void d_init( d_state_t *d, unsigned indent, FILE *dout ) {
   assert( d != NULL );
   assert( dout != NULL );
+
   MEM_ZERO( d );
   d->indent = indent;
   d->dout = dout;
@@ -471,6 +472,7 @@ NODISCARD
 static j_state_t json_object_begin( j_state_t j, char const *key,
                                     d_state_t *d ) {
   assert( d != NULL );
+
   if ( j == J_INIT ) {
     key = null_if_empty( key );
     if ( key != NULL )
@@ -495,7 +497,9 @@ static j_state_t json_object_begin( j_state_t j, char const *key,
  * @sa json_object_begin()
  */
 static void json_object_end( j_state_t j, d_state_t *d ) {
+  assert( j != J_INIT );
   assert( d != NULL );
+
   FPUTC( '\n', d->dout );
   d->comma = !!(j & J_COMMA);
   --d->indent;
