@@ -60,10 +60,10 @@ void bool_dump( bool b, FILE *dout );
 /**
  * Dumps \a ast (for debugging).
  *
- * @param ast The AST to dump.  If NULL and \a key is not NULL, dumps only \a
- * key followed by `:&nbsp;null`.
+ * @param ast The AST to dump; may be NULL.  If NULL and \a key is not NULL,
+ * dumps only \a key followed by `:&nbsp;null`.
  * @param indent The current indent.
- * @param key The key for which \a ast is the value, or NULL for none.
+ * @param key The key for which \a ast is the value; may be NULL.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_ast_list_dump()
