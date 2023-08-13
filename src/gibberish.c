@@ -795,16 +795,18 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
           FPUTC( ')', g->gout );
         break;
 
-      case K_BUILTIN:
-      case K_CAPTURE:
-      case K_CAST:
       case K_CLASS_STRUCT_UNION:
-      case K_ENUM:
-      case K_NAME:
       case K_TYPEDEF:
-      case K_VARIADIC:
         // nothing to do
         break;                          // LCOV_EXCL_LINE
+
+      case K_BUILTIN:                   // impossible
+      case K_CAPTURE:                   // impossible
+      case K_CAST:                      // impossible
+      case K_ENUM:                      // impossible
+      case K_NAME:                      // impossible
+      case K_VARIADIC:                  // impossible
+        UNEXPECTED_INT_VALUE( parent_ast->kind );
 
       CASE_K_PLACEHOLDER;
     } // switch
