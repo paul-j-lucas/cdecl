@@ -1260,25 +1260,27 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         continue;
 
       case K_ARRAY:
-      case K_APPLE_BLOCK:
-      case K_CAPTURE:
-      case K_CAST:
       case K_CLASS_STRUCT_UNION:
-      case K_CONSTRUCTOR:
-      case K_DESTRUCTOR:
       case K_ENUM:
-      case K_FUNCTION:
-      case K_LAMBDA:
-      case K_OPERATOR:
       case K_POINTER:
       case K_POINTER_TO_MEMBER:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
-      case K_TYPEDEF:                   // impossible after c_ast_untypedef()
-      case K_USER_DEF_CONVERSION:
-      case K_USER_DEF_LITERAL:
         // nothing to do
         break;
+
+      case K_APPLE_BLOCK:               // impossible
+      case K_CAPTURE:                   // impossible
+      case K_CAST:                      // impossible
+      case K_CONSTRUCTOR:               // impossible
+      case K_DESTRUCTOR:                // impossible
+      case K_FUNCTION:                  // impossible
+      case K_LAMBDA:                    // impossible
+      case K_OPERATOR:                  // impossible
+      case K_TYPEDEF:                   // impossible after c_ast_untypedef()
+      case K_USER_DEF_CONVERSION:       // impossible
+      case K_USER_DEF_LITERAL:          // impossible
+        UNEXPECTED_INT_VALUE( raw_param_ast->kind );
 
       CASE_K_PLACEHOLDER;
     } // switch
