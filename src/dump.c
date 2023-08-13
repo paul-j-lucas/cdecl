@@ -88,8 +88,6 @@ typedef struct d_state d_state_t;
  */
 typedef uint8_t j_state_t;
 
-static j_state_t const J_INIT = 0;      ///< JSON object initial state.
-
 // local functions
 static void c_ast_dump_impl( c_ast_t const*, char const*, d_state_t* );
 static void c_loc_dump( c_loc_t const*, FILE* );
@@ -98,7 +96,8 @@ static j_state_t json_object_begin( j_state_t, char const*, d_state_t* );
 static void json_object_end( j_state_t, d_state_t* );
 
 // local constants
-static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
+static unsigned const   DUMP_INDENT = 2; ///< Spaces per dump indent level.
+static j_state_t const  J_INIT = 0;      ///< JSON object initial state.
 
 ////////// local functions ////////////////////////////////////////////////////
 
