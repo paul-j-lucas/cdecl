@@ -555,7 +555,6 @@ void c_sname_list_dump( slist_t const *list, FILE *dout ) {
     c_sname_dump( node->data, dout );
   } // for
   FPUTS( " ]", dout );
-
 }
 
 void c_tid_dump( c_tid_t tid, FILE *dout ) {
