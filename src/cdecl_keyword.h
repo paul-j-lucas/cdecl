@@ -75,7 +75,7 @@ struct cdecl_keyword {
   /**
    * The Bison token (`Y_xxx`), but only if \ref lang_syn is NULL; otherwise 0.
    */
-  yytokentype         y_token_id;
+  yytoken_kind_t      y_token_id;
 
   /**
    * Array of language(s)/synonym-keyword pair(s), but only if \ref y_token_id

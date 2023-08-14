@@ -72,7 +72,7 @@ typedef enum c_keyword_ctx c_keyword_ctx_t;
  */
 struct c_keyword {
   char const     *literal;              ///< C string literal of the keyword.
-  yytokentype     y_token_id;           ///< Bison token (`Y_xxx`).
+  yytoken_kind_t  y_token_id;           ///< Bison token (`Y_xxx`).
   c_keyword_ctx_t kw_ctx;               ///< Keyword context.
   c_tid_t         tid;                  ///< Type the keyword maps to, if any.
   c_lang_id_t     lang_ids;             ///< Language(s) OK in.

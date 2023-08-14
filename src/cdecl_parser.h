@@ -41,8 +41,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef enum yytokentype yytokentype;
-
 /**
  * Cleans up global parser data at program termination.
  */
