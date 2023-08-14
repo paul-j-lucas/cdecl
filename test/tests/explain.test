@@ -227,6 +227,7 @@ explain int* f(x)
 
 set c++
 struct S
+using vint = volatile int
 
 explain A::C::~C()
 explain C()
@@ -339,6 +340,7 @@ explain void f([[maybe_unused]] int x)
 explain void f(auto)
 explain void f(volatile int x)
 explain volatile int f()
+explain vint f()
 explain ~C()
 explain ~C() final
 

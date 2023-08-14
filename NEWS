@@ -10,6 +10,18 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 14.3.1
+
+** Function returing `typedef` of `volatile`
+Functions returning a `typedef` of `volatile` are now correctly warned about in
+C++20 and later:
+
+    c++decl> using vint = volatile int
+    c++decl> explain vint f()
+    9: warning: "volatile" return types are deprecated since C++20
+    declare f as function returning vint
+
+
 * Changes in Cdecl 14.3
 
 ** `*` and `-`

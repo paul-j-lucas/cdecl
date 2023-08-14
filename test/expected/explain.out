@@ -442,6 +442,7 @@ cdecl> explain int* f(x)
 declare f as function (x) returning pointer to integer
 cdecl> set c++
 c++decl> struct S
+c++decl> using vint = volatile int
 c++decl> explain A::C::~C()
 declare C of class A::C as destructor
 c++decl> explain C()
@@ -672,6 +673,10 @@ c++decl> explain volatile int f()
                  ^
 9: warning: "volatile" return types are deprecated since C++20
 declare f as function returning volatile integer
+c++decl> explain vint f()
+                 ^
+9: warning: "volatile" return types are deprecated since C++20
+declare f as function returning vint
 c++decl> explain ~C()
 declare C as destructor
 c++decl> explain ~C() final
