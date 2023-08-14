@@ -47,8 +47,9 @@
   FPUTNSP( (D)->indent * DUMP_INDENT, (D)->dout );  \
   FPRINTF( (D)->dout, __VA_ARGS__ ); )
 
-#define DUMP_KEY(D,...) BLOCK( \
-  fput_sep( ",\n", &(D)->comma, (D)->dout ); DUMP_FORMAT( (D), __VA_ARGS__ ); )
+#define DUMP_KEY(D,...) BLOCK(                \
+  fput_sep( ",\n", &(D)->comma, (D)->dout );  \
+  DUMP_FORMAT( (D), __VA_ARGS__ ); )
 
 #define DUMP_LOC(D,KEY,LOC) \
   DUMP_KEY( (D), KEY ": " ); c_loc_dump( (LOC), (D)->dout )
@@ -56,15 +57,14 @@
 #define DUMP_SNAME(D,KEY,SNAME) BLOCK( \
   DUMP_KEY( (D), KEY ": " ); c_sname_dump( (SNAME), (D)->dout ); )
 
-#define DUMP_TYPE(D,TYPE) BLOCK( \
-  DUMP_KEY( (D), "type: " ); c_type_dump( (TYPE), (D)->dout ); )
-
 /// @endcond
 
 /**
  * @addtogroup dump-group
  * @{
  */
+
+///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Dump state.
@@ -168,7 +168,8 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
   );
   c_alignas_dump( &ast->align, d );
   DUMP_LOC( d, "loc", &ast->loc );
-  DUMP_TYPE( d, &ast->type );
+  DUMP_KEY( d, "type: " );
+  c_type_dump( &ast->type, d->dout );
 
   j_state_t kind_j = J_INIT;
 
