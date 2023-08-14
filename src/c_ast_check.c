@@ -627,12 +627,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
         return false;
       }
       break;
-    case K_CONSTRUCTOR:
-    case K_DESTRUCTOR:
     case K_FUNCTION:
-    case K_OPERATOR:
-    case K_USER_DEF_CONVERSION:
-    case K_USER_DEF_LITERAL:
       error_kind_not_cast_into( to_ast, "pointer to function" );
       return false;
     default:
@@ -2186,9 +2181,9 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   c_ast_t const *const ret_ast = ast->func.ret_ast;
   if ( ret_ast == NULL )
     return true;
-  c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
   char const *const kind_name = c_kind_name( ast->kind );
+  c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
   switch ( raw_ret_ast->kind ) {
     case K_ARRAY:
@@ -2675,8 +2670,8 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
       case K_RVALUE_REFERENCE:
       case K_USER_DEF_CONVERSION:
         //
-        // These being declared "restrict" in C is already made an error by
-        // checks elsewhere.
+        // These being declared "restrict" is already made an error by checks
+        // elsewhere.
         //
         break;
       case K_POINTER:
