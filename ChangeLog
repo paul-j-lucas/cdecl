@@ -1,5 +1,13 @@
+2023-08-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c: Eliminated DUMP_TYPE().
+   * configure.ac, c_ast_check.c, explain.out, explain.test: Functions
+     returning a `typedef` of `volatile` are now correctly warned about in
+     C++20 and later.
+
 2023-08-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c: Made some kinds in switches unexpected.
    * c_kind.h, options.c: s/K_NON_PTR_REF_OBJECT/K_ANY_NON_PTR_REF_OBJECT/
    * c_kind.h: Move K_USER_DEF_CONVERSION from K_ANY_FUNCTION_LIKE to
      K_ANY_FUNCTION_RETURN.
