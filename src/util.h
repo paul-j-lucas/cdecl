@@ -430,7 +430,8 @@ _GL_INLINE_HEADER_BEGIN
  * @sa check_realloc()
  * @sa #REALLOC()
  */
-#define MALLOC(TYPE,N)            check_realloc( NULL, sizeof(TYPE) * (N) )
+#define MALLOC(TYPE,N) \
+  check_realloc( NULL, sizeof(TYPE) * STATIC_CAST( size_t, (N) ) )
 
 /// @cond DOXYGEN_IGNORE
 #define NAME2_HELPER(A,B)         A##B
