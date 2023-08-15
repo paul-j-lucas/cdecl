@@ -1407,7 +1407,7 @@ static void yyerror( char const *msg ) {
                     // C++11
 %token              Y_alignas
 %token              Y_alignof
-%token  <tid>       Y_auto_TYPE         // C++11 version of "auto"
+%token  <tid>       Y_auto_TYPE         // C23 & C++11 version of "auto"
 %token              Y_carries Y_dependency
 %token  <tid>       Y_carries_dependency
 %token  <tid>       Y_constexpr
