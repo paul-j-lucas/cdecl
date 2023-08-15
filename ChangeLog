@@ -1,5 +1,7 @@
 2023-08-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: s/argument/parameter/ (where appropriate).
+   * cdecl.1: Added mention of C23 and C++11 specifically for "auto".
    * cdecl.1: Added mention that abbreviated function template declarations are
      not supported.
    * cdecl.1: Added mention that `auto` as a storage-class specified is no
