@@ -155,10 +155,6 @@ cdecl> declare x as atomic int
 _Atomic int x;
 cdecl> declare x as atomic pointer to int
 int *_Atomic x;
-cdecl> declare x as auto int
-                         ^
-19: syntax error: "int": unexpected token ("int" is a keyword)
-auto x;
 cdecl> declare x as bit precise integer 4
 _BitInt(4) x;
 cdecl> declare x as bit-precise integer 4
@@ -276,6 +272,8 @@ cdecl> declare x__x as int
 9: warning: "x__x" is a reserved identifier in C++
 int x__x;
 cdecl> set knr
+cdecl> declare x as auto int
+auto int x;
 cdecl> declare f as function (x) returning pointer to int
 int* f(x);
 cdecl> declare x as const int
