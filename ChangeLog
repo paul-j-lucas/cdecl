@@ -1,5 +1,18 @@
+2023-08-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added mention that abbreviated function template declarations are
+     not supported.
+   * cdecl.1: Added mention that `auto` as a storage-class specified is no
+     longer supported in C23 and later.
+   * cdecl.1: s/C/C23/
+
 2023-08-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: Now using STATIC_CAST( size_t, (N) ) in MALLOC().
+   * declare.out, declare.test: Fixed C auto test.
+   * parser.y: Now using Bison api.header.include.
+   * c_keyword.h, cdecl_keyword.h, cdecl_parser.h: Removed `typedef enum
+     yytokentype yytokentype`; now using yytoken_kind_t.
    * dump.c: Eliminated DUMP_TYPE().
    * configure.ac, c_ast_check.c, explain.out, explain.test: Functions
      returning a `typedef` of `volatile` are now correctly warned about in
