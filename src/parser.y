@@ -26,6 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
+%define api.header.include { "parser.h" }
 %expect 17
 
 %{
