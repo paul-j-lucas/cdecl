@@ -1065,8 +1065,16 @@ static void sti_init( show_type_info_t *sti, unsigned show_which,
 }
 
 /**
- * Prints a parsing error message to standard error.  This function is called
- * directly by Bison to print just `syntax error` (usually).
+ * Called by Bison to print a parsing error message to standard error.
+ *
+ * @remarks A custom error printing function via `%%define parse.error custom`
+ * and `yyreport_syntax_error()` is not done because printing a (perhaps long)
+ * list of all the possible expected tokens isn't helpful.
+ * @par
+ * It's also more flexible to be able to call one of #elaborate_error(),
+ * #keyword_expected(), or #punct_expected() at the point of the error rather
+ * than having a single function try to figure out the best type of error
+ * message to print.
  *
  * @note A newline is _not_ printed since the error message will be appended to
  * by fl_elaborate_error().  For example, the parts of an error message are
@@ -1079,7 +1087,8 @@ static void sti_init( show_type_info_t *sti, unsigned show_which,
  *      |
  *      print_loc()
  *
- * @param msg The error message to print.
+ * @param msg The error message to print.  Bison invariably passes `syntax
+ * error`.
  *
  * @sa fl_elaborate_error()
  * @sa fl_keyword_expected()
