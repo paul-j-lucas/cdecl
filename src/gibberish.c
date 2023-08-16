@@ -65,7 +65,6 @@ struct g_state {
 typedef struct g_state g_state_t;
 
 // local functions
-static void c_ast_gibberish_impl( c_ast_t const*, unsigned, bool, FILE* );
 static void g_init( g_state_t*, unsigned, bool, FILE* );
 static void g_print_ast( g_state_t*, c_ast_t const* );
 static void g_print_ast_bit_width( g_state_t const*, c_ast_t const* );
@@ -108,26 +107,6 @@ static inline void g_print_space_once( g_state_t *g ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for c_ast_gibberish() that prints \a ast as a C/C++
- * declaration or cast.
- *
- * @param ast The AST to print.
- * @param gib_flags The gibberish flags to use.
- * @param printed_typedef Printed `typedef`?
- * @param gout The `FILE` to print to.
- */
-static void c_ast_gibberish_impl( c_ast_t const *ast, unsigned gib_flags,
-                                  bool printed_typedef, FILE *gout ) {
-  assert( ast != NULL );
-  assert( gib_flags != C_GIB_NONE );
-  assert( gout != NULL );
-
-  g_state_t g;
-  g_init( &g, gib_flags, printed_typedef, gout );
-  g_print_ast( &g, ast );
-}
-
-/**
  * Initializes a g_state.
  *
  * @param g The g_state to initialize.
@@ -158,6 +137,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
+  g_state_t child_g;
   c_type_t type = ast->type;
 
   if ( (g->gib_flags & C_GIB_USING) != 0 ) {
@@ -306,9 +286,9 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         c_ast_t *const ret_ast = ast->func.ret_ast;
         c_ast_t *const orig_ret_ast_parent_ast = ret_ast->parent_ast;
         ret_ast->parent_ast = NULL;
-        c_ast_gibberish_impl(
-          ret_ast, C_GIB_DECL, /*printed_typedef=*/false, g->gout
-        );
+
+        g_init( &child_g, C_GIB_DECL, /*printed_typedef=*/false, g->gout );
+        g_print_ast( &child_g, ret_ast );
         ret_ast->parent_ast = orig_ret_ast_parent_ast;
       }
       if ( is_pure_virtual )
@@ -354,17 +334,14 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
     case K_CAST:
       assert( g->gib_flags == C_GIB_CAST );
+      g_init( &child_g, C_GIB_CAST, /*printed_typedef=*/false, g->gout );
       if ( ast->cast.kind == C_CAST_C ) {
         FPUTC( '(', g->gout );
-        c_ast_gibberish_impl(
-          ast->cast.to_ast, C_GIB_CAST, /*printed_typedef=*/false, g->gout
-        );
+        g_print_ast( &child_g, ast->cast.to_ast );
         FPRINTF( g->gout, ")%s\n", c_sname_full_name( &ast->sname ) );
       } else {
         FPRINTF( g->gout, "%s<", c_cast_gibberish( ast->cast.kind ) );
-        c_ast_gibberish_impl(
-          ast->cast.to_ast, C_GIB_CAST, /*printed_typedef=*/false, g->gout
-        );
+        g_print_ast( &child_g, ast->cast.to_ast );
         FPRINTF( g->gout, ">(%s)\n", c_sname_full_name( &ast->sname ) );
       }
       break;
@@ -644,12 +621,12 @@ static void g_print_ast_list( g_state_t const *g,
   assert( ast_list != NULL );
 
   bool comma = false;
-  unsigned const gib_flags = g->gib_flags & ~C_GIB_OMIT_TYPE;
-
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
-    fput_sep( ", ", &comma, g->gout );
+    g_state_t node_g;
+    g_init( &node_g, g->gib_flags & ~C_GIB_OMIT_TYPE, /*printed_typedef=*/false, g->gout );
+    fput_sep( ", ", &comma, node_g.gout );
     c_ast_t const *const ast = c_param_ast( ast_node );
-    c_ast_gibberish_impl( ast, gib_flags, /*printed_typedef=*/false, g->gout );
+    g_print_ast( &node_g, ast );
   } // for
 }
 
@@ -1153,7 +1130,9 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
       } // switch
     }
 
-    c_ast_gibberish_impl( ast, gib_flags, /*printed_typedef=*/false, gout );
+    g_state_t g;
+    g_init( &g, gib_flags, /*printed_typedef=*/false, gout );
+    g_print_ast( &g, ast );
   }
 
   if ( (gib_flags & C_GIB_FINAL_SEMI) != 0 )
@@ -1322,9 +1301,9 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
     FPUTS( "= ", gout );
   }
 
-  c_ast_gibberish_impl(
-    tdef->ast, print_using ? C_GIB_USING : C_GIB_TYPEDEF, print_typedef, gout
-  );
+  g_state_t g;
+  g_init( &g, print_using ? C_GIB_USING : C_GIB_TYPEDEF, print_typedef, gout );
+  g_print_ast( &g, tdef->ast );
 
   if ( scope_close_braces_to_print > 0 ) {
     FPUTC( ';', gout );
