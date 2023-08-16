@@ -65,7 +65,7 @@ struct g_state {
 typedef struct g_state g_state_t;
 
 // local functions
-static void g_init( g_state_t*, unsigned, bool, FILE* );
+static void g_init( g_state_t*, unsigned, FILE* );
 static void g_print_ast( g_state_t*, c_ast_t const* );
 static void g_print_ast_bit_width( g_state_t const*, c_ast_t const* );
 static void g_print_ast_list( g_state_t const*, c_ast_list_t const* );
@@ -111,11 +111,9 @@ static inline void g_print_space_once( g_state_t *g ) {
  *
  * @param g The g_state to initialize.
  * @param gib_flags The gibberish flags to use.
- * @param printed_typedef Printed `typedef`?
  * @param gout The `FILE` to print to.
  */
-static void g_init( g_state_t *g, unsigned gib_flags, bool printed_typedef,
-                    FILE *gout ) {
+static void g_init( g_state_t *g, unsigned gib_flags, FILE *gout ) {
   assert( g != NULL );
   assert( gib_flags != C_GIB_NONE );
   assert( gout != NULL );
@@ -124,7 +122,6 @@ static void g_init( g_state_t *g, unsigned gib_flags, bool printed_typedef,
   g->gib_flags = gib_flags;
   g->gout = gout;
   g->printed_space = (gib_flags & C_GIB_OMIT_TYPE) != 0;
-  g->printed_typedef = printed_typedef;
 }
 
 /**
@@ -287,7 +284,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         c_ast_t *const orig_ret_ast_parent_ast = ret_ast->parent_ast;
         ret_ast->parent_ast = NULL;
 
-        g_init( &child_g, C_GIB_DECL, /*printed_typedef=*/false, g->gout );
+        g_init( &child_g, C_GIB_DECL, g->gout );
         g_print_ast( &child_g, ret_ast );
         ret_ast->parent_ast = orig_ret_ast_parent_ast;
       }
@@ -334,7 +331,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
     case K_CAST:
       assert( g->gib_flags == C_GIB_CAST );
-      g_init( &child_g, C_GIB_CAST, /*printed_typedef=*/false, g->gout );
+      g_init( &child_g, C_GIB_CAST, g->gout );
       if ( ast->cast.kind == C_CAST_C ) {
         FPUTC( '(', g->gout );
         g_print_ast( &child_g, ast->cast.to_ast );
@@ -623,10 +620,9 @@ static void g_print_ast_list( g_state_t const *g,
   bool comma = false;
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     g_state_t node_g;
-    g_init( &node_g, g->gib_flags & ~C_GIB_OMIT_TYPE, /*printed_typedef=*/false, g->gout );
-    fput_sep( ", ", &comma, node_g.gout );
-    c_ast_t const *const ast = c_param_ast( ast_node );
-    g_print_ast( &node_g, ast );
+    g_init( &node_g, g->gib_flags & ~C_GIB_OMIT_TYPE, g->gout );
+    fput_sep( ", ", &comma, g->gout );
+    g_print_ast( &node_g, c_param_ast( ast_node ) );
   } // for
 }
 
@@ -1131,7 +1127,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
     }
 
     g_state_t g;
-    g_init( &g, gib_flags, /*printed_typedef=*/false, gout );
+    g_init( &g, gib_flags, gout );
     g_print_ast( &g, ast );
   }
 
@@ -1302,7 +1298,8 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
   }
 
   g_state_t g;
-  g_init( &g, print_using ? C_GIB_USING : C_GIB_TYPEDEF, print_typedef, gout );
+  g_init( &g, print_using ? C_GIB_USING : C_GIB_TYPEDEF, gout );
+  g.printed_typedef = print_typedef;
   g_print_ast( &g, tdef->ast );
 
   if ( scope_close_braces_to_print > 0 ) {
