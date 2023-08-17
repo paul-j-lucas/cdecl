@@ -288,7 +288,6 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
           break;
       } // switch
       FPUTS( "array ", e->eout );
-      fputs_sp( c_tid_name_english( ast->array.stids ), e->eout );
       switch ( ast->array.kind ) {
         case C_ARRAY_INT_SIZE:
           FPRINTF( e->eout, "%u ", ast->array.size_int );

@@ -227,9 +227,12 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
       FALLTHROUGH;
 
-    case K_ARRAY:
     case K_APPLE_BLOCK:
-      fputs_sp( c_type_name_c( &type ), g->gout );
+    case K_ARRAY:
+      if ( ast->kind != K_ARRAY ||
+           ( !c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER ) ) ) {
+        fputs_sp( c_type_name_c( &type ), g->gout );
+      }
       if ( ast->kind == K_USER_DEF_CONVERSION ) {
         if ( !c_sname_empty( &ast->sname ) )
           FPRINTF( g->gout, "%s::", c_sname_full_name( &ast->sname ) );
@@ -565,18 +568,21 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
   assert( ast->kind == K_ARRAY );
 
   FPUTS( graph_token_c( "[" ), g->gout );
-  FPUTS( c_tid_name_c( ast->array.stids ), g->gout );
+
+  bool const is_qual = c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER );
+  if ( is_qual )
+    FPUTS( c_type_name_c( &ast->type ), g->gout );
 
   switch ( ast->array.kind ) {
     case C_ARRAY_EMPTY_SIZE:
       break;
     case C_ARRAY_INT_SIZE:
-      if ( ast->array.stids != TS_NONE )
+      if ( is_qual )
         FPUTC( ' ', g->gout );
       FPRINTF( g->gout, "%u", ast->array.size_int );
       break;
     case C_ARRAY_NAMED_SIZE:
-      if ( ast->array.stids != TS_NONE )
+      if ( is_qual )
         FPUTC( ' ', g->gout );
       FPUTS( ast->array.size_name, g->gout );
       break;

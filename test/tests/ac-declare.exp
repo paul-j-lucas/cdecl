@@ -39,18 +39,8 @@ send "declare f as fu\tret\tint\r"
 expect default { exit 1 } -ex {int f();}
 
 expect "cdecl> "
-# declare f as function (x as array const of int)
-send "declare f as function (x as array c\tof int)\r"
-expect default { exit 1 } -ex {void f(int x[const]);}
-
-expect "cdecl> "
-# declare f as function (x as array volatile of int)
-send "declare f as function (x as array v\tof int)\r"
-expect default { exit 1 } -ex {void f(int x[volatile]);}
-
-expect "cdecl> "
-# declare f as function (x as array static 2 of int)
-send "declare f as function (x as array s\t2 of int)\r"
+# declare f as function (x as non-empty array 2 of int)
+send "declare f as function (x as non-e\ta\t 2 of int)\r"
 expect default { exit 1 } -ex {void f(int x[static 2]);}
 
 expect "cdecl> "

@@ -1075,6 +1075,16 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     )
   },
 
+  {
+    H_non_empty,
+    LANG_QUALIFIED_ARRAY,
+    TOKEN( Y_non_empty ),
+    AC_SETTINGS(
+      AC_POLICY_DEFAULT,
+      AC_NEXT_KEYWORDS( L_array, L_const, L_restrict, L_variable, L_volatile )
+    )
+  },
+
   { H_non_mbr,
     LANG_CPP_ANY,
     TOKEN( Y_non_member ),

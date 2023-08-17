@@ -241,7 +241,6 @@ struct c_array_ast {
     unsigned      size_int;             ///< For #C_ARRAY_INT_SIZE.
     char const   *size_name;            ///< For #C_ARRAY_NAMED_SIZE.
   };
-  c_tid_t         stids;                ///< E.g., `array[static const 10]`
 };
 
 /**

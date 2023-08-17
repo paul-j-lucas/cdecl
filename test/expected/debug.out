@@ -1246,7 +1246,6 @@ array_decl_c_astp: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: 4,
-      stid: { stid: 0x2, string: "none" },
       of_ast: null
     }
   },
@@ -1260,7 +1259,6 @@ array_decl_c_astp: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: 4,
-      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1375,
@@ -1302,7 +1300,6 @@ decl_c: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: 4,
-      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1375,
@@ -1327,7 +1324,6 @@ decl_c: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: 4,
-      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1375,
@@ -1465,7 +1461,6 @@ array_decl_c_astp: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: "unspecified",
-      stid: { stid: 0x2, string: "none" },
       of_ast: null
     }
   },
@@ -1479,7 +1474,6 @@ array_decl_c_astp: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: "unspecified",
-      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1379,
@@ -1521,7 +1515,6 @@ decl_c: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: "unspecified",
-      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1379,
@@ -1546,7 +1539,6 @@ decl_c: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: "unspecified",
-      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1379,
@@ -3451,7 +3443,6 @@ array_cast_c_astp: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: '*',
-      stid: { stid: 0x2, string: "none" },
       of_ast: null
     }
   },
@@ -3465,7 +3456,6 @@ array_cast_c_astp: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: '*',
-      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1401,
@@ -3507,7 +3497,6 @@ param_c_ast: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: '*',
-      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1401,
@@ -3532,7 +3521,6 @@ param_c_ast: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: '*',
-      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1401,
@@ -3561,7 +3549,6 @@ param_c_ast_list: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
       size: '*',
-      stid: { stid: 0x2, string: "none" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1401,
@@ -3587,7 +3574,6 @@ param_c_ast_list: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       array: {
         size: '*',
-        stid: { stid: 0x2, string: "none" },
         of_ast: {
           sname: { string: "" },
           unique_id: 1401,
@@ -3642,7 +3628,6 @@ func_decl_c_astp: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       array: {
         size: '*',
-        stid: { stid: 0x2, string: "none" },
         of_ast: {
           sname: { string: "" },
           unique_id: 1401,
@@ -3685,7 +3670,6 @@ func_decl_c_astp: {
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           array: {
             size: '*',
-            stid: { stid: 0x2, string: "none" },
             of_ast: {
               sname: { string: "" },
               unique_id: 1401,
@@ -3753,7 +3737,6 @@ decl_c: {
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           array: {
             size: '*',
-            stid: { stid: 0x2, string: "none" },
             of_ast: {
               sname: { string: "" },
               unique_id: 1401,
@@ -3804,7 +3787,6 @@ decl_c: {
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           array: {
             size: '*',
-            stid: { stid: 0x2, string: "none" },
             of_ast: {
               sname: { string: "" },
               unique_id: 1401,
@@ -4036,10 +4018,9 @@ array_cast_c_astp: {
     depth: 0,
     parent__unique_id: -1,
     loc: { first_column: 20, last_column: 29 },
-    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
     array: {
       size: 2,
-      stid: { stid: 0x402, string: "static" },
       of_ast: null
     }
   },
@@ -4050,10 +4031,9 @@ array_cast_c_astp: {
     depth: 0,
     parent__unique_id: -1,
     loc: { first_column: 20, last_column: 29 },
-    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
     array: {
       size: 2,
-      stid: { stid: 0x402, string: "static" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1407,
@@ -4092,10 +4072,9 @@ param_c_ast: {
     depth: 0,
     parent__unique_id: -1,
     loc: { first_column: 20, last_column: 29 },
-    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
     array: {
       size: 2,
-      stid: { stid: 0x402, string: "static" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1407,
@@ -4117,10 +4096,9 @@ param_c_ast: {
     depth: 0,
     parent__unique_id: -1,
     loc: { first_column: 20, last_column: 29 },
-    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
     array: {
       size: 2,
-      stid: { stid: 0x402, string: "static" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1407,
@@ -4146,10 +4124,9 @@ param_c_ast_list: {
     depth: 0,
     parent__unique_id: -1,
     loc: { first_column: 20, last_column: 29 },
-    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
     array: {
       size: 2,
-      stid: { stid: 0x402, string: "static" },
       of_ast: {
         sname: { string: "" },
         unique_id: 1407,
@@ -4172,10 +4149,9 @@ param_c_ast_list: {
       depth: 0,
       parent__unique_id: -1,
       loc: { first_column: 20, last_column: 29 },
-      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
       array: {
         size: 2,
-        stid: { stid: 0x402, string: "static" },
         of_ast: {
           sname: { string: "" },
           unique_id: 1407,
@@ -4227,10 +4203,9 @@ func_decl_c_astp: {
       depth: 0,
       parent__unique_id: -1,
       loc: { first_column: 20, last_column: 29 },
-      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
       array: {
         size: 2,
-        stid: { stid: 0x402, string: "static" },
         of_ast: {
           sname: { string: "" },
           unique_id: 1407,
@@ -4270,10 +4245,9 @@ func_decl_c_astp: {
           depth: 0,
           parent__unique_id: -1,
           loc: { first_column: 20, last_column: 29 },
-          type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+          type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
           array: {
             size: 2,
-            stid: { stid: 0x402, string: "static" },
             of_ast: {
               sname: { string: "" },
               unique_id: 1407,
@@ -4338,10 +4312,9 @@ decl_c: {
           depth: 0,
           parent__unique_id: -1,
           loc: { first_column: 20, last_column: 29 },
-          type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+          type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
           array: {
             size: 2,
-            stid: { stid: 0x402, string: "static" },
             of_ast: {
               sname: { string: "" },
               unique_id: 1407,
@@ -4389,10 +4362,9 @@ decl_c: {
           depth: 0,
           parent__unique_id: -1,
           loc: { first_column: 20, last_column: 29 },
-          type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+          type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
           array: {
             size: 2,
-            stid: { stid: 0x402, string: "static" },
             of_ast: {
               sname: { string: "" },
               unique_id: 1407,
@@ -4424,7 +4396,7 @@ decl_c: {
   }
 }
 
-declare f as function (x as array static 2 of integer) returning void
+declare f as function (x as non-empty array 2 of integer) returning void
 cdecl> set c++
 c++decl> class C
 sname_c: {

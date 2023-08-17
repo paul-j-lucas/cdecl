@@ -201,7 +201,6 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
           // nothing to do
           break;
       } // switch
-      dup_ast->array.stids = ast->array.stids;
       break;
 
     case K_BUILTIN:
@@ -300,8 +299,6 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
         case C_ARRAY_VLA_STAR:
           break;
       } // switch
-      if ( ai_ast->stids != aj_ast->stids )
-        return false;
       break;
     }
 
@@ -485,35 +482,6 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
   static c_ast_id_t next_id;
   ast->unique_id = ++next_id;
 #endif /* ENABLE_CDECL_DEBUG */
-
-  switch ( kind ) {
-    case K_ARRAY:
-      ast->array.stids = TS_NONE;
-      break;
-    case K_APPLE_BLOCK:
-    case K_BUILTIN:
-    case K_CAPTURE:
-    case K_CAST:
-    case K_CLASS_STRUCT_UNION:
-    case K_CONSTRUCTOR:
-    case K_DESTRUCTOR:
-    case K_ENUM:
-    case K_FUNCTION:
-    case K_LAMBDA:
-    case K_NAME:
-    case K_OPERATOR:
-    case K_PLACEHOLDER:
-    case K_POINTER:
-    case K_POINTER_TO_MEMBER:
-    case K_REFERENCE:
-    case K_RVALUE_REFERENCE:
-    case K_TYPEDEF:
-    case K_USER_DEF_CONVERSION:
-    case K_USER_DEF_LITERAL:
-    case K_VARIADIC:
-      // nothing to do
-      break;
-  } // switch
 
 #ifndef NDEBUG
   ++c_ast_count;

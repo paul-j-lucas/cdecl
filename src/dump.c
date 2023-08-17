@@ -191,8 +191,6 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
           FPUTS( "'*'", d->dout );
           break;
       } // switch
-      DUMP_KEY( d, "stid: " );
-      c_tid_dump( ast->array.stids, d->dout );
       c_ast_dump_impl( ast->array.of_ast, "of_ast", d );
       json_object_end( kind_j, d );
       break;

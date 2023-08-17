@@ -197,6 +197,9 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
     C_LANG_LIT( { ~LANG_const, L_GNU___const },
                 { LANG_ANY,    L_const       } ) },
 
+  { TS_NON_EMPTY_ARRAY, LANG_QUALIFIED_ARRAY, H_non_empty,
+    C_LANG_LIT( { LANG_ANY, L_static } ) },
+
   { TS_REFERENCE, LANG_REF_QUALIFIED_FUNC, /*english_lit=*/NULL,
     C_LANG_LIT( { LANG_ANY, L_reference } ) },
 
@@ -432,6 +435,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define LLO         LANG_long_long
 #define NOE         LANG_noexcept
 #define OVR         LANG_override
+#define QAR         LANG_QUALIFIED_ARRAY
 #define REG         LANG_register
 #define RVR         LANG_RVALUE_REFERENCE
 #define SIG         LANG_signed
@@ -464,18 +468,19 @@ static c_type_info_t const C_TYPE_INFO[] = {
  */
 static c_lang_id_t const OK_QUALIFIER_LANGS[ ARRAY_SIZE( C_QUALIFIER_INFO ) ][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] = {
 // Only the lower triangle is used.
-//  ato con ref rva res vol   rel sha str
-  { ATO,___,___,___,___,___,  ___,___,___ }, // atomic
-  { ATO,___,___,___,___,___,  ___,___,___ }, // const
-  { XXX,CPP,CPP,___,___,___,  ___,___,___ }, // reference
-  { XXX,RVR,XXX,RVR,___,___,  ___,___,___ }, // rvalue reference
-  { XXX,___,CPP,RVR,___,___,  ___,___,___ }, // restrict
-  { ATO,___,CPP,RVR,___,___,  ___,___,___ }, // volatile
+//  ato con nea ref rva res vol   rel sha str
+  { ATO,___,___,___,___,___,___,  ___,___,___ }, // atomic
+  { ATO,___,___,___,___,___,___,  ___,___,___ }, // const
+  { XXX,QAR,QAR,___,___,___,___,  ___,___,___ }, // non-empty (array)
+  { XXX,CPP,XXX,CPP,___,___,___,  ___,___,___ }, // reference
+  { XXX,RVR,XXX,XXX,RVR,___,___,  ___,___,___ }, // rvalue reference
+  { XXX,___,QAR,CPP,RVR,___,___,  ___,___,___ }, // restrict
+  { ATO,___,QAR,CPP,RVR,___,___,  ___,___,___ }, // volatile
 
   // Unified Parallel C extensions
-  { XXX,UPC,XXX,XXX,UPC,UPC,  UPC,___,___ }, // relaxed
-  { XXX,UPC,XXX,XXX,UPC,UPC,  UPC,UPC,___ }, // shared
-  { XXX,UPC,XXX,XXX,UPC,UPC,  XXX,UPC,UPC }, // strict
+  { XXX,UPC,XXX,XXX,XXX,UPC,UPC,  UPC,___,___ }, // relaxed
+  { XXX,UPC,XXX,XXX,XXX,UPC,UPC,  UPC,UPC,___ }, // shared
+  { XXX,UPC,XXX,XXX,XXX,UPC,UPC,  XXX,UPC,UPC }, // strict
 };
 
 /**
@@ -970,6 +975,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     TS_CONST,
     TS_RESTRICT,
     TS_VOLATILE,
+    TS_NON_EMPTY_ARRAY,
 
     // These are next so we get names like "const reference".
     TS_REFERENCE,

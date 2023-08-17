@@ -203,14 +203,14 @@ static void print_help_english( void ) {
 
   if ( OPT_LANG_IS( C_ANY ) ) {
     print_h( "  <store>*" );
-    if ( OPT_LANG_IS( const ) )
-      print_h( " <cv-qual>*" );
     if ( OPT_LANG_IS( QUALIFIED_ARRAY ) )
-      print_h( " array [[static] <cv-qual>* {<number>|\\*}] of <english>\n" );
-    else
-      print_h( " array [<number>] of <english>\n" );
-    if ( OPT_LANG_IS( VLA ) )
-      print_h( "  <store>* <cv-qual>* variable [length] array <cv-qual>* of <english>\n" );
+      print_h( " <ar-qual>*" );
+    if ( OPT_LANG_IS( VLA ) ) {
+      print_h( " array [<number>|<name>|\\*] of <english>\n" );
+      print_h( "  <store>* <ar-qual>* variable [length] array of <english>\n" );
+    } else {
+      print_h( " array [<number>|<name>] of <english>\n" );
+    }
     print_h( "  <store>* function [([<args>])] [returning <english>]\n" );
     print_h( "  <store>*" );
     if ( OPT_LANG_IS( const ) )
@@ -240,6 +240,9 @@ static void print_help_english( void ) {
   if ( OPT_LANG_IS( C_ANY ) ) {
     print_h( "  block [([<args>])] [returning <english>]\n" );
     print_h( "  <store>* <modifier>* [<C-type>]\n" );
+
+    if ( OPT_LANG_IS( QUALIFIED_ARRAY ) )
+      print_h( "ar-qual: non-empty | const | restrict | volatile\n" );
 
     print_h( "args: a comma separated list of " );
     if ( OPT_LANG_IS( C_KNR ) )

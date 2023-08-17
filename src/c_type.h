@@ -340,6 +340,31 @@ typedef enum c_tpid c_tpid_t;
 #define TS_CONST              0x0000000200000002ull /**< `const`              */
 #define TS_RESTRICT           0x0000000400000002ull /**< `restrict`           */
 #define TS_VOLATILE           0x0000000800000002ull /**< `volatile`           */
+/**
+ * C99 adds yet another use for `static`: to make function parameters using
+ * array syntax (really, pointers) require their arguments to be both non-null
+ * and have a minimum size:
+ *
+ *      cdecl> explain int x[static 4]
+ *
+ * If `static` were used in the conversion to pseudo-English:
+ *
+ *      declare x as static array 4 of integer
+ *
+ * then it's ambiguous with:
+ *
+ *      cdecl> explain static int x[4]
+ *      declare x as static array 4 of integer
+ *
+ * Because the new `static` is more qualifier-like (e.g., `const`) than
+ * storage-class-like, we define a separate #TS_NON_EMPTY_ARRAY qualifier to
+ * mean a C99 "non-null, minimum-sized array" and use `non-empty` in pseudo-
+ * English to distinguish it from an ordinary "static array":
+ *
+ *      cdecl> explain int x[static 4]
+ *      declare x as non-empty array 4 of integer
+ */
+#define TS_NON_EMPTY_ARRAY    0x0000001000000002ull
 
 //
 // Unified Parallel C qualifiers
@@ -347,9 +372,9 @@ typedef enum c_tpid c_tpid_t;
 // If you add a new TS_UPS_xxx here, it must also exist in QUAL_STIDS[] inside
 // c_type_name_impl().
 //
-#define TS_UPC_RELAXED        0x0000001000000002ull /**< `relaxed`            */
-#define TS_UPC_SHARED         0x0000002000000002ull /**< `shared`             */
-#define TS_UPC_STRICT         0x0000004000000002ull /**< `strict`             */
+#define TS_UPC_RELAXED        0x0000002000000002ull /**< `relaxed`            */
+#define TS_UPC_SHARED         0x0000004000000002ull /**< `shared`             */
+#define TS_UPC_STRICT         0x0000008000000002ull /**< `strict`             */
 
 //
 // Ref-qualifiers
@@ -447,8 +472,13 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TA_MSC_FASTCALL | TA_MSC_STDCALL \
                               | TA_MSC_THISCALL | TA_MSC_VECTORCALL )
 
+/// Shorthand for any array qualifier.
+#define TS_ANY_ARRAY_QUALIFIER \
+                              ( TS_CVR | TS_NON_EMPTY_ARRAY )
+
 /// Shorthand for any qualifier.
-#define TS_ANY_QUALIFIER      ( TS_ATOMIC | TS_CV | TS_RESTRICT | TS_ANY_UPC )
+#define TS_ANY_QUALIFIER      ( TS_ANY_ARRAY_QUALIFIER | TS_ANY_UPC \
+                              | TS_ATOMIC )
 
 /// Shorthand for any reference qualifier.
 #define TS_ANY_REFERENCE      ( TS_REFERENCE | TS_RVALUE_REFERENCE )
@@ -464,6 +494,9 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 
 /// Shorthand for `const` or `volatile`.
 #define TS_CV                 ( TS_CONST | TS_VOLATILE )
+
+/// Shorthand for `const`, `volatile`, or `restrict`.
+#define TS_CVR                ( TS_CV | TS_RESTRICT )
 
 /**
  * The only types that can apply to constructor declarations.

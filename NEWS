@@ -10,7 +10,32 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 14.3.1
+* Changes in Cdecl 14.4
+
+** Reworked qualified array syntax
+C99 added the ability to qualify function parameters using array syntax, e.g.:
+
+    void f( int x[const] );             // or volatile or restrict
+    void f( int x[static 2] );          // must be non-null and 2 mininum size
+
+The problem was if this new use of `static` was converted to pseudo-English in
+the intuitive way:
+
+    declare f as function (x as static array 2 of integer) returning void
+
+then it would be ambiguous with conventional `static` arrays:
+
+    static int x[2];
+
+As an ugly fix, **cdecl** forced you to put the qualifiers _after_ `array`:
+
+    declare f as function (x as array static 2 of integer) returning void
+
+The new `static` is really a new qualifier, not a storage-class specifier.  To
+give **cdecl** an intuitive syntax, the new `static` is now `non-empty` in
+pseudo-English to disambiguate it and allow it to come _before_ `array`:
+
+    declare f as function (x as non-empty array 2 of integer) returning void
 
 ** Function returing `typedef` of `volatile`
 Functions returning a `typedef` of `volatile` are now correctly warned about in

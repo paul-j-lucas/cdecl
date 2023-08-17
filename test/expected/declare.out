@@ -29,20 +29,20 @@ cdecl> declare a as array 9 of pointer to int
 int *a[9];
 cdecl> declare a as array N of int
 int a[N];
-cdecl> declare a as array constant N of integer
+cdecl> declare a as constant array N of integer
 int a[const N];
-cdecl> declare a as array static N of integer
+cdecl> declare a as non-empty array N of integer
 int a[static N];
-cdecl> declare a as array static constant N of integer
-int a[static const N];
+cdecl> declare a as non-empty constant array N of integer
+int a[const static N];
 cdecl> declare a as variable length array N of int
 int a[N];
-cdecl> declare a as variable length array constant N of integer
+cdecl> declare a as constant variable length array N of integer
 int a[const N];
-cdecl> declare a as variable length array static N of integer
+cdecl> declare a as non-empty variable length array N of integer
 int a[static N];
-cdecl> declare a as variable length array static constant N of integer
-int a[static const N];
+cdecl> declare a as constant non-empty variable length array N of integer
+int a[const static N];
 cdecl> declare f as function
 void f();
 cdecl> declare f as function (fmt as pointer to const char, ...) returning void
@@ -71,15 +71,15 @@ cdecl> declare f as function (void) returning pointer to array 3 of pointer to i
 int* (*f(void))[3];
 cdecl> declare f as function (void) returning void
 void f(void);
-cdecl> declare f as function (x as array const of int) returning void
+cdecl> declare f as function (x as const array of int) returning void
 void f(int x[const]);
-cdecl> declare f as function (x as array static 3 of int) returning void
+cdecl> declare f as function (x as non-empty array 3 of int) returning void
 void f(int x[static 3]);
-cdecl> declare f as function (x as array static const 3 of int) returning void
-void f(int x[static const 3]);
+cdecl> declare f as function (x as non-empty const array 3 of int) returning void
+void f(int x[const static 3]);
 cdecl> declare f as function (x as int, y as int) returning void
 void f(int x, int y);
-cdecl> declare f as function (x as variable length array const of int) returning void
+cdecl> declare f as function (x as const variable length array of int) returning void
 void f(int x[const*]);
 cdecl> declare f as function (x as variable length array of int) returning void
 void f(int x[*]);

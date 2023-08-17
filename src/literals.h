@@ -100,6 +100,7 @@ extern char const L_linkage[];
 extern char const L_mbr[];                // synonym for "member"
 extern char const L_member[];
 extern char const L_no[];
+extern char const H_non_empty[];
 extern char const H_non_mbr[];            // synonym for "non-member"
 extern char const H_non_member[];
 extern char const L_of[];

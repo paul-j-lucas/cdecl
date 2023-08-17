@@ -54,13 +54,14 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
-  <store>* <cv-qual>* array [[static] <cv-qual>* {<number>|*}] of <english>
-  <store>* <cv-qual>* variable [length] array <cv-qual>* of <english>
+  <store>* <ar-qual>* array [<number>|<name>|*] of <english>
+  <store>* <ar-qual>* variable [length] array of <english>
   <store>* function [([<args>])] [returning <english>]
   <store>* <cv-qual>* pointer to <english>
   { enum | struct | union } <name>
   block [([<args>])] [returning <english>]
   <store>* <modifier>* [<C-type>]
+ar-qual: non-empty | const | restrict | volatile
 args: a comma separated list of [<name> as] <english>
 C-type: auto | _BitInt(<int>) | bool | char[{8|16|32}_t] | wchar_t | int |
         float | double | void
@@ -140,7 +141,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
-  <store>* array [<number>] of <english>
+  <store>* array [<number>|<name>] of <english>
   <store>* function [([<args>])] [returning <english>]
   <store>* pointer to <english>
   { struct | union } <name>
@@ -223,7 +224,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
-  <store>* <cv-qual>* array [<number>] of <english>
+  <store>* array [<number>|<name>] of <english>
   <store>* function [([<args>])] [returning <english>]
   <store>* <cv-qual>* pointer to <english>
   { enum | struct | union } <name>
@@ -307,7 +308,7 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
-  <store>* <cv-qual>* array [<number>] of <english>
+  <store>* array [<number>|<name>] of <english>
   <store>* function [([<args>])] [returning <english>]
   <store>* <cv-qual>* pointer to <english>
   { enum | struct | union } <name>
@@ -391,13 +392,14 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
-  <store>* <cv-qual>* array [[static] <cv-qual>* {<number>|*}] of <english>
-  <store>* <cv-qual>* variable [length] array <cv-qual>* of <english>
+  <store>* <ar-qual>* array [<number>|<name>|*] of <english>
+  <store>* <ar-qual>* variable [length] array of <english>
   <store>* function [([<args>])] [returning <english>]
   <store>* <cv-qual>* pointer to <english>
   { enum | struct | union } <name>
   block [([<args>])] [returning <english>]
   <store>* <modifier>* [<C-type>]
+ar-qual: non-empty | const | restrict | volatile
 args: a comma separated list of <name>, <english>, or <name> as <english>
 C-type: _Bool | char | wchar_t | int | float | double | void
 cv-qual: const | restrict | volatile
@@ -485,13 +487,14 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
-  <store>* <cv-qual>* array [[static] <cv-qual>* {<number>|*}] of <english>
-  <store>* <cv-qual>* variable [length] array <cv-qual>* of <english>
+  <store>* <ar-qual>* array [<number>|<name>|*] of <english>
+  <store>* <ar-qual>* variable [length] array of <english>
   <store>* function [([<args>])] [returning <english>]
   <store>* <cv-qual>* pointer to <english>
   { enum | struct | union } <name>
   block [([<args>])] [returning <english>]
   <store>* <modifier>* [<C-type>]
+ar-qual: non-empty | const | restrict | volatile
 args: a comma separated list of <name>, <english>, or <name> as <english>
 C-type: _Bool | char[{16|32}_t] | wchar_t | int | float | double | void
 cv-qual: _Atomic | const | restrict | volatile
@@ -579,13 +582,14 @@ name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
-  <store>* <cv-qual>* array [[static] <cv-qual>* {<number>|*}] of <english>
-  <store>* <cv-qual>* variable [length] array <cv-qual>* of <english>
+  <store>* <ar-qual>* array [<number>|<name>|*] of <english>
+  <store>* <ar-qual>* variable [length] array of <english>
   <store>* function [([<args>])] [returning <english>]
   <store>* <cv-qual>* pointer to <english>
   { enum | struct | union } <name>
   block [([<args>])] [returning <english>]
   <store>* <modifier>* [<C-type>]
+ar-qual: non-empty | const | restrict | volatile
 args: a comma separated list of <name>, <english>, or <name> as <english>
 C-type: _Bool | char[{16|32}_t] | wchar_t | int | float | double | void
 cv-qual: _Atomic | const | restrict | volatile

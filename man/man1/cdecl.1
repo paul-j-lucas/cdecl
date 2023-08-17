@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "August 15, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "August 17, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1206,9 +1206,9 @@ lambda captures.
 is one of:
 .P
 .RS 4
-.BR \f2store\fP "* " array " [[" static "] " \f2cv-qual\fP "* {" \f2number\fP | * "}] " of " \f2english\fP"
+.BR \f2store\fP "* " \f2ar-qual\fP "* " array " [" \f2number\fP | \f2name\fP | * "] " of " \f2english\fP"
 .br
-.BR \f2store\fP "* " variable " [" length "] " "array " \f2cv-qual\fP * " of" " \f2english\fP"
+.BR \f2store\fP "* " \f2ar-qual\fP "* " variable " [" length "] " "array of" " \f2english\fP"
 .br
 .BR block " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
@@ -1234,6 +1234,14 @@ is one of:
 where:
 .RS 4
 .TP 10
+.I ar-qual
+One of:
+\f(CWnon-empty\fP,
+\f(CWconst\fP,
+\f(CWrestrict\fP,
+or
+\f(CWvolatile\fP.
+.TP
 .I C-type
 One of:
 \f(CWauto\fP (C23 or C++11 or later),

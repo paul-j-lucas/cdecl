@@ -73,6 +73,7 @@ char const L_linkage[]                  = "linkage";
 char const L_mbr[]                      = "mbr";
 char const L_member[]                   = "member";
 char const L_no[]                       = "no";
+char const H_non_empty[]                = "non-empty";
 char const H_non_mbr[]                  = "non-mbr";
 char const H_non_member[]               = "non-member";
 char const L_of[]                       = "of";

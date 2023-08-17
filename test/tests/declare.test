@@ -17,13 +17,13 @@ declare a as array 9 of const pointer to int
 declare a as array 9 of int
 declare a as array 9 of pointer to int
 declare a as array N of int
-declare a as array constant N of integer
-declare a as array static N of integer
-declare a as array static constant N of integer
+declare a as constant array N of integer
+declare a as non-empty array N of integer
+declare a as non-empty constant array N of integer
 declare a as variable length array N of int
-declare a as variable length array constant N of integer
-declare a as variable length array static N of integer
-declare a as variable length array static constant N of integer
+declare a as constant variable length array N of integer
+declare a as non-empty variable length array N of integer
+declare a as constant non-empty variable length array N of integer
 declare f as function
 declare f as function (fmt as pointer to const char, ...) returning void
 declare f as function (fmt as pointer to const char, varargs) returning void
@@ -38,11 +38,11 @@ declare f as function (void) returning pointer to array 3 of array 5 of pointer 
 declare f as function (void) returning pointer to array 3 of int
 declare f as function (void) returning pointer to array 3 of pointer to int
 declare f as function (void) returning void
-declare f as function (x as array const of int) returning void
-declare f as function (x as array static 3 of int) returning void
-declare f as function (x as array static const 3 of int) returning void
+declare f as function (x as const array of int) returning void
+declare f as function (x as non-empty array 3 of int) returning void
+declare f as function (x as non-empty const array 3 of int) returning void
 declare f as function (x as int, y as int) returning void
-declare f as function (x as variable length array const of int) returning void
+declare f as function (x as const variable length array of int) returning void
 declare f as function (x as variable length array of int) returning void
 declare f as function returning pointer to int
 declare f as inline function returning void

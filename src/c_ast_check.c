@@ -416,15 +416,14 @@ static bool c_ast_check_array( c_ast_t const *ast, c_state_t const *c ) {
       break;
   } // switch
 
-  if ( ast->array.stids != TS_NONE ) {
-    if ( !OPT_LANG_IS( QUALIFIED_ARRAY ) ) {
-      print_error( &ast->loc,
-        "\"%s\" arrays not supported%s\n",
-        c_tid_name_error( ast->array.stids ),
-        C_LANG_WHICH( QUALIFIED_ARRAY )
-      );
-      return false;
-    }
+  if ( c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER ) &&
+       !OPT_LANG_IS( QUALIFIED_ARRAY ) ) {
+    print_error( &ast->loc,
+      "\"%s\" arrays not supported%s\n",
+      c_tid_name_error( ast->type.stids ),
+      C_LANG_WHICH( QUALIFIED_ARRAY )
+    );
+    return false;
   }
 
   c_ast_t const *const of_ast = ast->array.of_ast;
@@ -1163,19 +1162,22 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       return false;
     }
 
-    c_tid_t const param_stids =
-      TS_ANY_STORAGE & param_ast->type.stids &
-      c_tid_compl( TS_FUNC_LIKE_PARAM );
-    if ( param_stids != TS_NONE ) {
-      print_error( &param_ast->loc,
-        "%s parameters can not be %s\n",
-        c_kind_name( ast->kind ),
-        c_tid_name_error( param_stids )
-      );
-      return false;
+    c_ast_t const *const raw_param_ast = c_ast_untypedef( param_ast );
+
+    if ( raw_param_ast->kind != K_ARRAY ) {
+      c_tid_t const param_stids =
+        TS_ANY_STORAGE & param_ast->type.stids &
+        c_tid_compl( TS_FUNC_LIKE_PARAM );
+      if ( param_stids != TS_NONE ) {
+        print_error( &param_ast->loc,
+          "%s parameters can not be %s\n",
+          c_kind_name( ast->kind ),
+          c_tid_name_error( param_stids )
+        );
+        return false;
+      }
     }
 
-    c_ast_t const *const raw_param_ast = c_ast_untypedef( param_ast );
     switch ( raw_param_ast->kind ) {
       case K_BUILTIN:
         if ( c_tid_is_any( raw_param_ast->type.btids, TB_AUTO ) &&
@@ -2664,6 +2666,8 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
   if ( c_ast_is_tid_any( ast, TS_RESTRICT ) ) {
     c_ast_t const *const raw_ast = c_ast_untypedef( ast );
     switch ( raw_ast->kind ) {
+      case K_ARRAY:                     // legal in C; __restrict legal in C++
+        break;
       case K_FUNCTION:
       case K_OPERATOR:
       case K_REFERENCE:
