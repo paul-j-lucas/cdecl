@@ -2647,6 +2647,17 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
     }
   }
   else {
+    if ( ast->kind != K_ARRAY &&
+         c_tid_is_any( ast->type.stids, TS_NON_EMPTY_ARRAY ) ) {
+      // Can't use error_kind_not_tid() here because we need to call
+      // c_tid_name_english() for TS_NON_EMPTY_ARRAY, not c_tid_name_error().
+      print_error( &ast->loc,
+        "%s can not be %s\n",
+        c_kind_name( ast->kind ), c_tid_name_english( TS_NON_EMPTY_ARRAY )
+      );
+      return VISITOR_ERROR_FOUND;
+    }
+
     if ( c_tid_is_any( ast->type.stids, TS_CONSTEXPR ) &&
          OPT_LANG_IS( C_ANY ) &&
          c_tid_is_any( ast->type.stids, TS_NOT_CONSTEXPR_C_ONLY ) ) {

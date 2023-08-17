@@ -103,6 +103,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_lll.test \
 	tests/declare_lv.test \
 	tests/declare_lwt.test \
+	tests/declare_nei.test \
 	tests/declare_nri.test \
 	tests/declare_pfkr_i.test \
 	tests/declare_pk.test \

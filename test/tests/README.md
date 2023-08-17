@@ -84,6 +84,7 @@ The characters are:
 + `msvc` = Microsoft C `__vectorcall`
 + `mswa` = Microsoft C `WINAPI`
 + `n` = name, nested, or `union`
++ `ne` = `non-empty`
 + `nm` = non-member
 + `nr` = `noreturn`
 + `ns` = `namespace`
