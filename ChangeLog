@@ -1,3 +1,18 @@
+2023-08-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, test/Makefile.am, declare_nei.out, declare_nei.test: Now
+     check that only arrays can be `non-empty`.
+   * configure.ac, cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_type.c,
+     c_type.h, cdecl_keyword.c, dump.c, english.c, gibberish.c, help.c,
+     literals.c, literals.h, parser.y, debug.out, declare.out, explain.out,
+     help.out, ac-declare.exp, declare.test: Eliminated c_array_ast::stids;
+     better syntax for qualified array parameters.
+
+2023-08-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Eliminated g_init() printed_typedef argument.
+   * gibberish.c: Eliminated c_ast_gibberish_impl().
+
 2023-08-15  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: s/argument/parameter/ (where appropriate).
