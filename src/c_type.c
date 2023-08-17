@@ -438,10 +438,10 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define THI         LANG_EXPLICIT_OBJ_PARAM_DECL
 #define THR         LANG_throw
 #define TLS         LANG_THREAD_LOCAL_STORAGE
-#define UPC         LANG_C_99
 #define UNC         LANG_unsigned_char
 #define UNL         LANG_unsigned_long
 #define UNS         LANG_unsigned_short
+#define UPC         LANG_C_99
 #define VIR_CEX     LANG_CPP_MIN(20)
 #define VOL         LANG_volatile
 #define WCH         LANG_wchar_t
