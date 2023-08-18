@@ -309,7 +309,7 @@ typedef enum c_ast_kind c_ast_kind_t;
 
 /**
  * Shorthand for any kind of function-like AST that can have a trailing return
- * type: #K_FUNCTION, #K_OPERATOR.
+ * type: #K_FUNCTION or #K_OPERATOR.
  */
 #define K_ANY_TRAILING_RETURN     ( K_FUNCTION | K_OPERATOR )
 
