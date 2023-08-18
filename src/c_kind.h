@@ -108,7 +108,7 @@ enum c_ast_kind {
   K_BUILTIN                 = (1u << 1),
 
   /**
-   * C++11 lambda capture.
+   * C++ lambda capture.
    */
   K_CAPTURE                 = (1u << 2),
 
@@ -174,7 +174,7 @@ enum c_ast_kind {
   K_REFERENCE               = (1u << 12),
 
   /**
-   * C++11 rvalue reference.
+   * C++ rvalue reference.
    */
   K_RVALUE_REFERENCE        = (1u << 13),
 
@@ -221,7 +221,7 @@ enum c_ast_kind {
   K_USER_DEF_CONVERSION     = (1u << 20),
 
   /**
-   * C++11 user-defined literal.
+   * C++ user-defined literal.
    */
   K_USER_DEF_LITERAL        = (1u << 21),
 };
