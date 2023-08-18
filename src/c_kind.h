@@ -230,7 +230,8 @@ typedef enum c_ast_kind c_ast_kind_t;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Shorthand for any kind that can be a bit field.
+ * Shorthand for any kind that can be a bit field: #K_BUILTIN, #K_ENUM, or
+ * #K_TYPEDEF.
  *
  * @note Enumerations are allowed to be bit fields only in C++.
  */
@@ -283,6 +284,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  *
  * @note #K_TYPEDEF is intentionally _not_ included.
  *
+ * @sa c_typedef_ast
  * @sa #K_ANY_REFERRER
  */
 #define K_ANY_PARENT              ( K_ANY_FUNCTION_LIKE | K_ANY_POINTER \
