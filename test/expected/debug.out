@@ -23,7 +23,7 @@ builtin_type_c_ast: {
     unique_id: 1358,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9, last_column: 11 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -39,7 +39,7 @@ east_modified_type_c_ast: {
     unique_id: 1358,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9, last_column: 11 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -52,7 +52,7 @@ east_modified_type_c_ast: {
     unique_id: 1358,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9, last_column: 11 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -74,7 +74,7 @@ explain_command: {
     unique_id: 1358,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9, last_column: 11 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -88,7 +88,7 @@ explain_command: {
     unique_id: 1359,
     kind: { value: 0x100, string: "cast" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     cast: {
@@ -98,7 +98,7 @@ explain_command: {
         unique_id: 1358,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 9, last_column: 11 },
         type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
         builtin: {
@@ -119,7 +119,7 @@ builtin_type_c_ast: {
     unique_id: 1360,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
@@ -138,7 +138,7 @@ east_modified_type_c_ast: {
     unique_id: 1360,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
@@ -154,7 +154,7 @@ east_modified_type_c_ast: {
     unique_id: 1360,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
@@ -179,7 +179,7 @@ sname_c_ast: {
     unique_id: 1360,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
@@ -196,7 +196,7 @@ sname_c_ast: {
     unique_id: 1360,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
@@ -216,7 +216,7 @@ decl_c: {
     unique_id: 1361,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
@@ -231,7 +231,7 @@ decl_c: {
     unique_id: 1360,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
@@ -246,7 +246,7 @@ decl_c: {
     unique_id: 1360,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
@@ -273,7 +273,7 @@ builtin_type_c_ast: {
     unique_id: 1362,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 19, last_column: 21 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -289,7 +289,7 @@ east_modified_type_c_ast: {
     unique_id: 1362,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 19, last_column: 21 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -302,7 +302,7 @@ east_modified_type_c_ast: {
     unique_id: 1362,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 19, last_column: 21 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -324,7 +324,7 @@ sname_c_ast: {
     unique_id: 1362,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 19, last_column: 21 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -338,7 +338,7 @@ sname_c_ast: {
     unique_id: 1362,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 19, last_column: 21 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -356,7 +356,7 @@ decl_c: {
     unique_id: 1363,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 19, last_column: 21 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -368,7 +368,7 @@ decl_c: {
     unique_id: 1362,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 19, last_column: 21 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -380,7 +380,7 @@ decl_c: {
     unique_id: 1362,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     alignas: {
       expr: 8,
       loc: { first_column: 8, last_column: 14 }
@@ -403,7 +403,7 @@ type_c_ast: {
     unique_id: 1364,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x8001, stid: 0x2, atid: 0x4, string: "long" },
     builtin: {
@@ -419,7 +419,7 @@ alignas_specifier_c: {
     unique_id: 1364,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x8001, stid: 0x2, atid: 0x4, string: "long" },
     builtin: {
@@ -437,7 +437,7 @@ builtin_type_c_ast: {
     unique_id: 1365,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 24 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -453,7 +453,7 @@ east_modified_type_c_ast: {
     unique_id: 1365,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 24 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -466,7 +466,7 @@ east_modified_type_c_ast: {
     unique_id: 1365,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 24 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -488,7 +488,7 @@ sname_c_ast: {
     unique_id: 1365,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 24 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -502,7 +502,7 @@ sname_c_ast: {
     unique_id: 1365,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 24 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -518,7 +518,7 @@ decl_c: {
     unique_id: 1364,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x8001, stid: 0x2, atid: 0x4, string: "long" },
     builtin: {
@@ -531,7 +531,7 @@ decl_c: {
     unique_id: 1366,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 24 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -543,7 +543,7 @@ decl_c: {
     unique_id: 1365,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 24 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -555,14 +555,14 @@ decl_c: {
     unique_id: 1365,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     alignas: {
       type_ast: {
         sname: { string: "" },
         unique_id: 1364,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 16, last_column: 19 },
         type: { btid: 0x8001, stid: 0x2, atid: 0x4, string: "long" },
         builtin: {
@@ -595,7 +595,7 @@ builtin_type_c_ast: {
     unique_id: 1367,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 17, last_column: 19 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -611,7 +611,7 @@ enum_fixed_type_c_ast: {
     unique_id: 1367,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 17, last_column: 19 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -624,7 +624,7 @@ enum_fixed_type_c_ast: {
     unique_id: 1367,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 17, last_column: 19 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -643,7 +643,7 @@ enum_c_ast: {
     unique_id: 1367,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 17, last_column: 19 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -655,7 +655,7 @@ enum_c_ast: {
     unique_id: 1368,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -665,7 +665,7 @@ enum_c_ast: {
         unique_id: 1367,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 17, last_column: 19 },
         type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
         builtin: {
@@ -683,7 +683,7 @@ east_modified_type_c_ast: {
     unique_id: 1368,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -693,7 +693,7 @@ east_modified_type_c_ast: {
         unique_id: 1367,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 17, last_column: 19 },
         type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
         builtin: {
@@ -708,7 +708,7 @@ east_modified_type_c_ast: {
     unique_id: 1368,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -718,7 +718,7 @@ east_modified_type_c_ast: {
         unique_id: 1367,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 17, last_column: 19 },
         type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
         builtin: {
@@ -742,7 +742,7 @@ sname_c_ast: {
     unique_id: 1368,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -752,7 +752,7 @@ sname_c_ast: {
         unique_id: 1367,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 17, last_column: 19 },
         type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
         builtin: {
@@ -768,7 +768,7 @@ sname_c_ast: {
     unique_id: 1368,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -778,7 +778,7 @@ sname_c_ast: {
         unique_id: 1367,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 17, last_column: 19 },
         type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
         builtin: {
@@ -797,7 +797,7 @@ decl_c: {
     unique_id: 1369,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -821,7 +821,7 @@ decl_c: {
     unique_id: 1368,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -831,7 +831,7 @@ decl_c: {
         unique_id: 1367,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 17, last_column: 19 },
         type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
         builtin: {
@@ -845,7 +845,7 @@ decl_c: {
     unique_id: 1368,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -855,7 +855,7 @@ decl_c: {
         unique_id: 1367,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 17, last_column: 19 },
         type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
         builtin: {
@@ -885,7 +885,7 @@ enum_c_ast: {
     unique_id: 1371,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -901,7 +901,7 @@ east_modified_type_c_ast: {
     unique_id: 1371,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -914,7 +914,7 @@ east_modified_type_c_ast: {
     unique_id: 1371,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -936,7 +936,7 @@ sname_c_ast: {
     unique_id: 1371,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -950,7 +950,7 @@ sname_c_ast: {
     unique_id: 1371,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -967,7 +967,7 @@ decl_c: {
     unique_id: 1372,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -979,7 +979,7 @@ decl_c: {
     unique_id: 1371,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -991,7 +991,7 @@ decl_c: {
     unique_id: 1371,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x800001, stid: 0x2, atid: 0x4, string: "enum" },
     enum: {
@@ -1010,7 +1010,7 @@ builtin_type_c_ast: {
     unique_id: 1373,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1026,7 +1026,7 @@ east_modified_type_c_ast: {
     unique_id: 1373,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1039,7 +1039,7 @@ east_modified_type_c_ast: {
     unique_id: 1373,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1061,7 +1061,7 @@ sname_c_ast: {
     unique_id: 1373,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1075,7 +1075,7 @@ sname_c_ast: {
     unique_id: 1373,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1092,7 +1092,7 @@ decl_c: {
     unique_id: 1374,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1104,7 +1104,7 @@ decl_c: {
     unique_id: 1373,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1116,7 +1116,7 @@ decl_c: {
     unique_id: 1373,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1135,7 +1135,7 @@ builtin_type_c_ast: {
     unique_id: 1375,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1151,7 +1151,7 @@ east_modified_type_c_ast: {
     unique_id: 1375,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1164,7 +1164,7 @@ east_modified_type_c_ast: {
     unique_id: 1375,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1186,7 +1186,7 @@ sname_c_ast: {
     unique_id: 1375,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1200,7 +1200,7 @@ sname_c_ast: {
     unique_id: 1375,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1216,7 +1216,7 @@ array_decl_c_astp: {
     unique_id: 1375,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1228,7 +1228,7 @@ array_decl_c_astp: {
     unique_id: 1375,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1241,7 +1241,7 @@ array_decl_c_astp: {
     unique_id: 1376,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -1254,7 +1254,7 @@ array_decl_c_astp: {
     unique_id: 1376,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -1283,7 +1283,7 @@ decl_c: {
     unique_id: 1378,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1295,7 +1295,7 @@ decl_c: {
     unique_id: 1376,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -1319,7 +1319,7 @@ decl_c: {
     unique_id: 1376,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -1350,7 +1350,7 @@ builtin_type_c_ast: {
     unique_id: 1379,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1366,7 +1366,7 @@ east_modified_type_c_ast: {
     unique_id: 1379,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1379,7 +1379,7 @@ east_modified_type_c_ast: {
     unique_id: 1379,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1401,7 +1401,7 @@ sname_c_ast: {
     unique_id: 1379,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1415,7 +1415,7 @@ sname_c_ast: {
     unique_id: 1379,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1431,7 +1431,7 @@ array_decl_c_astp: {
     unique_id: 1379,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1443,7 +1443,7 @@ array_decl_c_astp: {
     unique_id: 1379,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1456,7 +1456,7 @@ array_decl_c_astp: {
     unique_id: 1380,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 14 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -1469,7 +1469,7 @@ array_decl_c_astp: {
     unique_id: 1380,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 14 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -1498,7 +1498,7 @@ decl_c: {
     unique_id: 1382,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1510,7 +1510,7 @@ decl_c: {
     unique_id: 1380,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 14 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -1534,7 +1534,7 @@ decl_c: {
     unique_id: 1380,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 14 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -1565,7 +1565,7 @@ typedef_type_c_ast: {
     unique_id: 37,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 20 },
     type: { btid: 0x48001, stid: 0x2, atid: 0x4, string: "unsigned long" },
     builtin: {
@@ -1578,7 +1578,7 @@ typedef_type_c_ast: {
     unique_id: 1383,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
@@ -1587,7 +1587,7 @@ typedef_type_c_ast: {
         unique_id: 37,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 8, last_column: 20 },
         type: { btid: 0x48001, stid: 0x2, atid: 0x4, string: "unsigned long" },
         builtin: {
@@ -1606,7 +1606,7 @@ east_modified_type_c_ast: {
     unique_id: 1383,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
@@ -1615,7 +1615,7 @@ east_modified_type_c_ast: {
         unique_id: 37,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 8, last_column: 20 },
         type: { btid: 0x48001, stid: 0x2, atid: 0x4, string: "unsigned long" },
         builtin: {
@@ -1631,7 +1631,7 @@ east_modified_type_c_ast: {
     unique_id: 1383,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
@@ -1640,7 +1640,7 @@ east_modified_type_c_ast: {
         unique_id: 37,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 8, last_column: 20 },
         type: { btid: 0x48001, stid: 0x2, atid: 0x4, string: "unsigned long" },
         builtin: {
@@ -1665,7 +1665,7 @@ sname_c_ast: {
     unique_id: 1383,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
@@ -1674,7 +1674,7 @@ sname_c_ast: {
         unique_id: 37,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 8, last_column: 20 },
         type: { btid: 0x48001, stid: 0x2, atid: 0x4, string: "unsigned long" },
         builtin: {
@@ -1691,7 +1691,7 @@ sname_c_ast: {
     unique_id: 1383,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
@@ -1700,7 +1700,7 @@ sname_c_ast: {
         unique_id: 37,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 8, last_column: 20 },
         type: { btid: 0x48001, stid: 0x2, atid: 0x4, string: "unsigned long" },
         builtin: {
@@ -1720,7 +1720,7 @@ decl_c: {
     unique_id: 1384,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
@@ -1744,7 +1744,7 @@ decl_c: {
     unique_id: 1383,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
@@ -1753,7 +1753,7 @@ decl_c: {
         unique_id: 37,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 8, last_column: 20 },
         type: { btid: 0x48001, stid: 0x2, atid: 0x4, string: "unsigned long" },
         builtin: {
@@ -1768,7 +1768,7 @@ decl_c: {
     unique_id: 1383,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
@@ -1777,7 +1777,7 @@ decl_c: {
         unique_id: 37,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 8, last_column: 20 },
         type: { btid: 0x48001, stid: 0x2, atid: 0x4, string: "unsigned long" },
         builtin: {
@@ -1807,7 +1807,7 @@ enum_class_struct_union_c_ast: {
     unique_id: 1386,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
     csu: {
@@ -1823,7 +1823,7 @@ east_modified_type_c_ast: {
     unique_id: 1386,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
     csu: {
@@ -1836,7 +1836,7 @@ east_modified_type_c_ast: {
     unique_id: 1386,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
     csu: {
@@ -1858,7 +1858,7 @@ sname_c_ast: {
     unique_id: 1386,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
     csu: {
@@ -1872,7 +1872,7 @@ sname_c_ast: {
     unique_id: 1386,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
     csu: {
@@ -1889,7 +1889,7 @@ decl_c: {
     unique_id: 1387,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
     csu: {
@@ -1901,7 +1901,7 @@ decl_c: {
     unique_id: 1386,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
     csu: {
@@ -1913,7 +1913,7 @@ decl_c: {
     unique_id: 1386,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x1000001, stid: 0x2, atid: 0x4, string: "struct" },
     csu: {
@@ -1932,7 +1932,7 @@ type_c_ast: {
     unique_id: 1388,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x40001, stid: 0x2, atid: 0x4, string: "unsigned" },
     builtin: {
@@ -1954,7 +1954,7 @@ sname_c_ast: {
     unique_id: 1388,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x40001, stid: 0x2, atid: 0x4, string: "unsigned" },
     builtin: {
@@ -1968,7 +1968,7 @@ sname_c_ast: {
     unique_id: 1388,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x40001, stid: 0x2, atid: 0x4, string: "unsigned" },
     builtin: {
@@ -1985,7 +1985,7 @@ decl_c: {
     unique_id: 1389,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x40001, stid: 0x2, atid: 0x4, string: "unsigned" },
     builtin: {
@@ -1997,7 +1997,7 @@ decl_c: {
     unique_id: 1388,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x40001, stid: 0x2, atid: 0x4, string: "unsigned" },
     builtin: {
@@ -2009,7 +2009,7 @@ decl_c: {
     unique_id: 1388,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 15 },
     type: { btid: 0x40001, stid: 0x2, atid: 0x4, string: "unsigned" },
     builtin: {
@@ -2028,7 +2028,7 @@ builtin_type_c_ast: {
     unique_id: 1390,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2044,7 +2044,7 @@ east_modified_type_c_ast: {
     unique_id: 1390,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2057,7 +2057,7 @@ east_modified_type_c_ast: {
     unique_id: 1390,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2079,7 +2079,7 @@ sname_c_ast: {
     unique_id: 1390,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2093,7 +2093,7 @@ sname_c_ast: {
     unique_id: 1390,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2109,7 +2109,7 @@ func_decl_c_astp: {
     unique_id: 1390,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2121,7 +2121,7 @@ func_decl_c_astp: {
     unique_id: 1390,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2140,7 +2140,7 @@ func_decl_c_astp: {
     unique_id: 1391,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -2170,7 +2170,7 @@ decl_c: {
     unique_id: 1392,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2182,7 +2182,7 @@ decl_c: {
     unique_id: 1391,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -2207,7 +2207,7 @@ decl_c: {
     unique_id: 1391,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -2239,7 +2239,7 @@ builtin_type_c_ast: {
     unique_id: 1393,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2255,7 +2255,7 @@ east_modified_type_c_ast: {
     unique_id: 1393,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2268,7 +2268,7 @@ east_modified_type_c_ast: {
     unique_id: 1393,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2290,7 +2290,7 @@ sname_c_ast: {
     unique_id: 1393,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2304,7 +2304,7 @@ sname_c_ast: {
     unique_id: 1393,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2321,7 +2321,7 @@ builtin_type_c_ast: {
     unique_id: 1394,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -2337,7 +2337,7 @@ east_modified_type_c_ast: {
     unique_id: 1394,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -2350,7 +2350,7 @@ east_modified_type_c_ast: {
     unique_id: 1394,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -2372,7 +2372,7 @@ sname_c_ast: {
     unique_id: 1394,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -2386,7 +2386,7 @@ sname_c_ast: {
     unique_id: 1394,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -2403,7 +2403,7 @@ param_c_ast: {
     unique_id: 1394,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -2415,7 +2415,7 @@ param_c_ast: {
     unique_id: 1394,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -2427,7 +2427,7 @@ param_c_ast: {
     unique_id: 1394,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -2443,7 +2443,7 @@ param_c_ast_list: {
     unique_id: 1394,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -2456,7 +2456,7 @@ param_c_ast_list: {
       unique_id: 1394,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 15, last_column: 17 },
       type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
       builtin: {
@@ -2474,7 +2474,7 @@ builtin_type_c_ast: {
     unique_id: 1395,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 25 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -2490,7 +2490,7 @@ east_modified_type_c_ast: {
     unique_id: 1395,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 25 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -2503,7 +2503,7 @@ east_modified_type_c_ast: {
     unique_id: 1395,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 31 },
     type: { btid: 0x101, stid: 0x200000002, atid: 0x4, string: "const char" },
     builtin: {
@@ -2519,7 +2519,7 @@ pointer_type_c_ast: {
     unique_id: 1395,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 22, last_column: 31 },
     type: { btid: 0x101, stid: 0x200000002, atid: 0x4, string: "const char" },
     builtin: {
@@ -2532,7 +2532,7 @@ pointer_type_c_ast: {
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 33 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -2565,7 +2565,7 @@ sname_c_ast: {
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 33 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -2590,7 +2590,7 @@ sname_c_ast: {
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 33 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -2617,7 +2617,7 @@ pointer_cast_c_astp: {
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 33 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -2640,7 +2640,7 @@ pointer_cast_c_astp: {
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 33 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -2663,7 +2663,7 @@ pointer_cast_c_astp: {
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 33 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -2703,7 +2703,7 @@ param_c_ast: {
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 33 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -2726,7 +2726,7 @@ param_c_ast: {
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 33 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -2754,7 +2754,7 @@ param_c_ast_list: {
       unique_id: 1394,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 15, last_column: 17 },
       type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
       builtin: {
@@ -2767,7 +2767,7 @@ param_c_ast_list: {
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 33 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -2791,7 +2791,7 @@ param_c_ast_list: {
       unique_id: 1394,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 15, last_column: 17 },
       type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
       builtin: {
@@ -2803,7 +2803,7 @@ param_c_ast_list: {
       unique_id: 1396,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 33 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
@@ -2831,7 +2831,7 @@ param_c_ast: {
     unique_id: 1397,
     kind: { value: 0x40, string: "variadic" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 39, last_column: 41 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
   }
@@ -2845,7 +2845,7 @@ param_c_ast_list: {
       unique_id: 1394,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 15, last_column: 17 },
       type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
       builtin: {
@@ -2857,7 +2857,7 @@ param_c_ast_list: {
       unique_id: 1396,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 33 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
@@ -2881,7 +2881,7 @@ param_c_ast_list: {
     unique_id: 1397,
     kind: { value: 0x40, string: "variadic" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 39, last_column: 41 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
   },
@@ -2891,7 +2891,7 @@ param_c_ast_list: {
       unique_id: 1394,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 15, last_column: 17 },
       type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
       builtin: {
@@ -2903,7 +2903,7 @@ param_c_ast_list: {
       unique_id: 1396,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 33 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
@@ -2926,7 +2926,7 @@ param_c_ast_list: {
       unique_id: 1397,
       kind: { value: 0x40, string: "variadic" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 39, last_column: 41 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
     }
@@ -2940,7 +2940,7 @@ func_decl_c_astp: {
     unique_id: 1393,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2952,7 +2952,7 @@ func_decl_c_astp: {
     unique_id: 1393,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -2965,7 +2965,7 @@ func_decl_c_astp: {
       unique_id: 1394,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 15, last_column: 17 },
       type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
       builtin: {
@@ -2977,7 +2977,7 @@ func_decl_c_astp: {
       unique_id: 1396,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 33 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
@@ -3000,7 +3000,7 @@ func_decl_c_astp: {
       unique_id: 1397,
       kind: { value: 0x40, string: "variadic" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 39, last_column: 41 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
     }
@@ -3016,7 +3016,7 @@ func_decl_c_astp: {
     unique_id: 1398,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 43 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -3027,7 +3027,7 @@ func_decl_c_astp: {
           unique_id: 1394,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 15, last_column: 17 },
           type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
           builtin: {
@@ -3039,7 +3039,7 @@ func_decl_c_astp: {
           unique_id: 1396,
           kind: { value: 0x400, string: "pointer" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 33 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           ptr_ref: {
@@ -3062,7 +3062,7 @@ func_decl_c_astp: {
           unique_id: 1397,
           kind: { value: 0x40, string: "variadic" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 39, last_column: 41 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
         }
@@ -3091,7 +3091,7 @@ decl_c: {
     unique_id: 1399,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3103,7 +3103,7 @@ decl_c: {
     unique_id: 1398,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 43 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -3114,7 +3114,7 @@ decl_c: {
           unique_id: 1394,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 15, last_column: 17 },
           type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
           builtin: {
@@ -3126,7 +3126,7 @@ decl_c: {
           unique_id: 1396,
           kind: { value: 0x400, string: "pointer" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 33 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           ptr_ref: {
@@ -3149,7 +3149,7 @@ decl_c: {
           unique_id: 1397,
           kind: { value: 0x40, string: "variadic" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 39, last_column: 41 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
         }
@@ -3173,7 +3173,7 @@ decl_c: {
     unique_id: 1398,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 43 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -3184,7 +3184,7 @@ decl_c: {
           unique_id: 1394,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 15, last_column: 17 },
           type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
           builtin: {
@@ -3196,7 +3196,7 @@ decl_c: {
           unique_id: 1396,
           kind: { value: 0x400, string: "pointer" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 33 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           ptr_ref: {
@@ -3219,7 +3219,7 @@ decl_c: {
           unique_id: 1397,
           kind: { value: 0x40, string: "variadic" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 39, last_column: 41 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
         }
@@ -3250,7 +3250,7 @@ builtin_type_c_ast: {
     unique_id: 1400,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3266,7 +3266,7 @@ east_modified_type_c_ast: {
     unique_id: 1400,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3279,7 +3279,7 @@ east_modified_type_c_ast: {
     unique_id: 1400,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3301,7 +3301,7 @@ sname_c_ast: {
     unique_id: 1400,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3315,7 +3315,7 @@ sname_c_ast: {
     unique_id: 1400,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3332,7 +3332,7 @@ builtin_type_c_ast: {
     unique_id: 1401,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3348,7 +3348,7 @@ east_modified_type_c_ast: {
     unique_id: 1401,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3361,7 +3361,7 @@ east_modified_type_c_ast: {
     unique_id: 1401,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3383,7 +3383,7 @@ sname_c_ast: {
     unique_id: 1401,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3397,7 +3397,7 @@ sname_c_ast: {
     unique_id: 1401,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3413,7 +3413,7 @@ array_cast_c_astp: {
     unique_id: 1401,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3425,7 +3425,7 @@ array_cast_c_astp: {
     unique_id: 1401,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3438,7 +3438,7 @@ array_cast_c_astp: {
     unique_id: 1402,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 20, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -3451,7 +3451,7 @@ array_cast_c_astp: {
     unique_id: 1402,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 20, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -3492,7 +3492,7 @@ param_c_ast: {
     unique_id: 1402,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 20, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -3516,7 +3516,7 @@ param_c_ast: {
     unique_id: 1402,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 20, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -3544,7 +3544,7 @@ param_c_ast_list: {
     unique_id: 1402,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 20, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     array: {
@@ -3569,7 +3569,7 @@ param_c_ast_list: {
       unique_id: 1402,
       kind: { value: 0x80, string: "array" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 20, last_column: 22 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       array: {
@@ -3598,7 +3598,7 @@ func_decl_c_astp: {
     unique_id: 1400,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3610,7 +3610,7 @@ func_decl_c_astp: {
     unique_id: 1400,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3623,7 +3623,7 @@ func_decl_c_astp: {
       unique_id: 1402,
       kind: { value: 0x80, string: "array" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 20, last_column: 22 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       array: {
@@ -3654,7 +3654,7 @@ func_decl_c_astp: {
     unique_id: 1404,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 23 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -3665,7 +3665,7 @@ func_decl_c_astp: {
           unique_id: 1402,
           kind: { value: 0x80, string: "array" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 20, last_column: 22 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           array: {
@@ -3709,7 +3709,7 @@ decl_c: {
     unique_id: 1405,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3721,7 +3721,7 @@ decl_c: {
     unique_id: 1404,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 23 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -3732,7 +3732,7 @@ decl_c: {
           unique_id: 1402,
           kind: { value: 0x80, string: "array" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 20, last_column: 22 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           array: {
@@ -3771,7 +3771,7 @@ decl_c: {
     unique_id: 1404,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 23 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -3782,7 +3782,7 @@ decl_c: {
           unique_id: 1402,
           kind: { value: 0x80, string: "array" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 20, last_column: 22 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           array: {
@@ -3828,7 +3828,7 @@ builtin_type_c_ast: {
     unique_id: 1406,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3844,7 +3844,7 @@ east_modified_type_c_ast: {
     unique_id: 1406,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3857,7 +3857,7 @@ east_modified_type_c_ast: {
     unique_id: 1406,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3879,7 +3879,7 @@ sname_c_ast: {
     unique_id: 1406,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3893,7 +3893,7 @@ sname_c_ast: {
     unique_id: 1406,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3910,7 +3910,7 @@ builtin_type_c_ast: {
     unique_id: 1407,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3926,7 +3926,7 @@ east_modified_type_c_ast: {
     unique_id: 1407,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3939,7 +3939,7 @@ east_modified_type_c_ast: {
     unique_id: 1407,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3961,7 +3961,7 @@ sname_c_ast: {
     unique_id: 1407,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3975,7 +3975,7 @@ sname_c_ast: {
     unique_id: 1407,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -3991,7 +3991,7 @@ array_cast_c_astp: {
     unique_id: 1407,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -4003,7 +4003,7 @@ array_cast_c_astp: {
     unique_id: 1407,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 17 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -4016,7 +4016,7 @@ array_cast_c_astp: {
     unique_id: 1408,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 20, last_column: 29 },
     type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
     array: {
@@ -4029,7 +4029,7 @@ array_cast_c_astp: {
     unique_id: 1408,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 20, last_column: 29 },
     type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
     array: {
@@ -4070,7 +4070,7 @@ param_c_ast: {
     unique_id: 1408,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 20, last_column: 29 },
     type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
     array: {
@@ -4094,7 +4094,7 @@ param_c_ast: {
     unique_id: 1408,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 20, last_column: 29 },
     type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
     array: {
@@ -4122,7 +4122,7 @@ param_c_ast_list: {
     unique_id: 1408,
     kind: { value: 0x80, string: "array" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 20, last_column: 29 },
     type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
     array: {
@@ -4147,7 +4147,7 @@ param_c_ast_list: {
       unique_id: 1408,
       kind: { value: 0x80, string: "array" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 20, last_column: 29 },
       type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
       array: {
@@ -4176,7 +4176,7 @@ func_decl_c_astp: {
     unique_id: 1406,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -4188,7 +4188,7 @@ func_decl_c_astp: {
     unique_id: 1406,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -4201,7 +4201,7 @@ func_decl_c_astp: {
       unique_id: 1408,
       kind: { value: 0x80, string: "array" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 20, last_column: 29 },
       type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
       array: {
@@ -4232,7 +4232,7 @@ func_decl_c_astp: {
     unique_id: 1410,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 30 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -4243,7 +4243,7 @@ func_decl_c_astp: {
           unique_id: 1408,
           kind: { value: 0x80, string: "array" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 20, last_column: 29 },
           type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
           array: {
@@ -4287,7 +4287,7 @@ decl_c: {
     unique_id: 1411,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -4299,7 +4299,7 @@ decl_c: {
     unique_id: 1410,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 30 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -4310,7 +4310,7 @@ decl_c: {
           unique_id: 1408,
           kind: { value: 0x80, string: "array" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 20, last_column: 29 },
           type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
           array: {
@@ -4349,7 +4349,7 @@ decl_c: {
     unique_id: 1410,
     kind: { value: 0x20000, string: "function" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 30 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
@@ -4360,7 +4360,7 @@ decl_c: {
           unique_id: 1408,
           kind: { value: 0x80, string: "array" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 20, last_column: 29 },
           type: { btid: 0x1, stid: 0x1000000002, atid: 0x4, string: "static" },
           array: {
@@ -4415,7 +4415,7 @@ class_struct_union_declaration_c: {
     unique_id: 1412,
     kind: { value: 0x8, string: "class, struct, or union" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 6 },
     type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
     csu: {
@@ -4433,7 +4433,7 @@ builtin_type_c_ast: {
     unique_id: 1413,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
     builtin: {
@@ -4449,7 +4449,7 @@ east_modified_type_c_ast: {
     unique_id: 1413,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
     builtin: {
@@ -4462,7 +4462,7 @@ east_modified_type_c_ast: {
     unique_id: 1413,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
     builtin: {
@@ -4485,7 +4485,7 @@ oper_decl_c_astp: {
     unique_id: 1413,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
     builtin: {
@@ -4505,7 +4505,7 @@ oper_decl_c_astp: {
     unique_id: 1414,
     kind: { value: 0x80000, string: "operator" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 29 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     oper: {
@@ -4536,7 +4536,7 @@ decl_c: {
     unique_id: 1415,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
     builtin: {
@@ -4548,7 +4548,7 @@ decl_c: {
     unique_id: 1414,
     kind: { value: 0x80000, string: "operator" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 29 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     oper: {
@@ -4574,7 +4574,7 @@ decl_c: {
     unique_id: 1414,
     kind: { value: 0x80000, string: "operator" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 29 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     oper: {
@@ -4607,7 +4607,7 @@ builtin_type_c_ast: {
     unique_id: 1416,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -4623,7 +4623,7 @@ east_modified_type_c_ast: {
     unique_id: 1416,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -4636,7 +4636,7 @@ east_modified_type_c_ast: {
     unique_id: 1416,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -4652,7 +4652,7 @@ pointer_to_member_type_c_ast: {
     unique_id: 1416,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -4666,7 +4666,7 @@ pointer_to_member_type_c_ast: {
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
     ptr_mbr: {
@@ -4700,7 +4700,7 @@ sname_c_ast: {
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
     ptr_mbr: {
@@ -4726,7 +4726,7 @@ sname_c_ast: {
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
     ptr_mbr: {
@@ -4754,7 +4754,7 @@ pointer_to_member_decl_c_astp: {
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
     ptr_mbr: {
@@ -4778,7 +4778,7 @@ pointer_to_member_decl_c_astp: {
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
     ptr_mbr: {
@@ -4802,7 +4802,7 @@ pointer_to_member_decl_c_astp: {
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 16 },
     type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
     ptr_mbr: {
@@ -4831,7 +4831,7 @@ decl_c: {
     unique_id: 1418,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -4843,7 +4843,7 @@ decl_c: {
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 16 },
     type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
     ptr_mbr: {
@@ -4867,7 +4867,7 @@ decl_c: {
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 16 },
     type: { btid: 0x4000001, stid: 0x2, atid: 0x4, string: "class" },
     ptr_mbr: {
@@ -4898,7 +4898,7 @@ builtin_type_c_ast: {
     unique_id: 1419,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 17, last_column: 20 },
     type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
     builtin: {
@@ -4914,7 +4914,7 @@ east_modified_type_c_ast: {
     unique_id: 1419,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 17, last_column: 20 },
     type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
     builtin: {
@@ -4927,7 +4927,7 @@ east_modified_type_c_ast: {
     unique_id: 1419,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 17, last_column: 20 },
     type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
     builtin: {
@@ -4952,7 +4952,7 @@ user_defined_conversion_decl_c_astp: {
     unique_id: 1419,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 17, last_column: 20 },
     type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
     builtin: {
@@ -4968,7 +4968,7 @@ user_defined_conversion_decl_c_astp: {
     unique_id: 1420,
     kind: { value: 0x100000, string: "user-defined conversion operator" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 6, last_column: 28 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     udef_conv: {
@@ -4977,7 +4977,7 @@ user_defined_conversion_decl_c_astp: {
         unique_id: 1419,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 17, last_column: 20 },
         type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
         builtin: {
@@ -4995,7 +4995,7 @@ user_defined_conversion_declaration_c: {
     unique_id: 1420,
     kind: { value: 0x100000, string: "user-defined conversion operator" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 6, last_column: 28 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     udef_conv: {
@@ -5004,7 +5004,7 @@ user_defined_conversion_declaration_c: {
         unique_id: 1419,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: -1,
+        parent__unique_id: 0,
         loc: { first_column: 17, last_column: 20 },
         type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
         builtin: {
@@ -5025,7 +5025,7 @@ builtin_type_c_ast: {
     unique_id: 1421,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -5041,7 +5041,7 @@ east_modified_type_c_ast: {
     unique_id: 1421,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -5054,7 +5054,7 @@ east_modified_type_c_ast: {
     unique_id: 1421,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -5071,7 +5071,7 @@ builtin_type_c_ast: {
     unique_id: 1422,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 26, last_column: 29 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5087,7 +5087,7 @@ east_modified_type_c_ast: {
     unique_id: 1422,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 26, last_column: 29 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5100,7 +5100,7 @@ east_modified_type_c_ast: {
     unique_id: 1422,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 26, last_column: 35 },
     type: { btid: 0x101, stid: 0x200000002, atid: 0x4, string: "const char" },
     builtin: {
@@ -5116,7 +5116,7 @@ pointer_type_c_ast: {
     unique_id: 1422,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 26, last_column: 35 },
     type: { btid: 0x101, stid: 0x200000002, atid: 0x4, string: "const char" },
     builtin: {
@@ -5129,7 +5129,7 @@ pointer_type_c_ast: {
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 37 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -5162,7 +5162,7 @@ sname_c_ast: {
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 37 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -5187,7 +5187,7 @@ sname_c_ast: {
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 37 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -5214,7 +5214,7 @@ pointer_cast_c_astp: {
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 37 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -5237,7 +5237,7 @@ pointer_cast_c_astp: {
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 37 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -5260,7 +5260,7 @@ pointer_cast_c_astp: {
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 37 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -5300,7 +5300,7 @@ param_c_ast: {
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 37 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -5323,7 +5323,7 @@ param_c_ast: {
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 37 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -5350,7 +5350,7 @@ param_c_ast_list: {
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 37 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
@@ -5374,7 +5374,7 @@ param_c_ast_list: {
       unique_id: 1423,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 37 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
@@ -5402,7 +5402,7 @@ user_defined_literal_decl_c_astp: {
     unique_id: 1421,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -5417,7 +5417,7 @@ user_defined_literal_decl_c_astp: {
       unique_id: 1423,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 37 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
@@ -5443,7 +5443,7 @@ user_defined_literal_decl_c_astp: {
     unique_id: 1424,
     kind: { value: 0x200000, string: "user-defined literal" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 10, last_column: 41 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     udef_lit: {
@@ -5453,7 +5453,7 @@ user_defined_literal_decl_c_astp: {
           unique_id: 1423,
           kind: { value: 0x400, string: "pointer" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 37 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           ptr_ref: {
@@ -5496,7 +5496,7 @@ decl_c: {
     unique_id: 1425,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -5508,7 +5508,7 @@ decl_c: {
     unique_id: 1424,
     kind: { value: 0x200000, string: "user-defined literal" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 10, last_column: 41 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     udef_lit: {
@@ -5518,7 +5518,7 @@ decl_c: {
           unique_id: 1423,
           kind: { value: 0x400, string: "pointer" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 37 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           ptr_ref: {
@@ -5556,7 +5556,7 @@ decl_c: {
     unique_id: 1424,
     kind: { value: 0x200000, string: "user-defined literal" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 10, last_column: 41 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     udef_lit: {
@@ -5566,7 +5566,7 @@ decl_c: {
           unique_id: 1423,
           kind: { value: 0x400, string: "pointer" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 37 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           ptr_ref: {
@@ -5615,7 +5615,7 @@ destructor_declaration_c: {
     unique_id: 1426,
     kind: { value: 0x8000, string: "destructor" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 6, last_column: 11 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
   }
@@ -5634,7 +5634,7 @@ lambda_declaration_c: {
     unique_id: 1427,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 9 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -5654,7 +5654,7 @@ builtin_type_c_ast: {
     unique_id: 1428,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 14 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5670,7 +5670,7 @@ east_modified_type_c_ast: {
     unique_id: 1428,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 14 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5683,7 +5683,7 @@ east_modified_type_c_ast: {
     unique_id: 1428,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 14 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5705,7 +5705,7 @@ sname_c_ast: {
     unique_id: 1428,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 14 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5719,7 +5719,7 @@ sname_c_ast: {
     unique_id: 1428,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 14 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5736,7 +5736,7 @@ param_c_ast: {
     unique_id: 1428,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 14 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5748,7 +5748,7 @@ param_c_ast: {
     unique_id: 1428,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 14 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5760,7 +5760,7 @@ param_c_ast: {
     unique_id: 1428,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 14 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5776,7 +5776,7 @@ param_c_ast_list: {
     unique_id: 1428,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 11, last_column: 14 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5789,7 +5789,7 @@ param_c_ast_list: {
       unique_id: 1428,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 11, last_column: 14 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -5808,7 +5808,7 @@ lambda_declaration_c: {
       unique_id: 1428,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 11, last_column: 14 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -5823,7 +5823,7 @@ lambda_declaration_c: {
     unique_id: 1429,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -5834,7 +5834,7 @@ lambda_declaration_c: {
           unique_id: 1428,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 11, last_column: 14 },
           type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
           builtin: {
@@ -5855,7 +5855,7 @@ capture_decl_list_c: {
     unique_id: 1430,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -5868,7 +5868,7 @@ capture_decl_list_c: {
       unique_id: 1430,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -5886,7 +5886,7 @@ lambda_declaration_c: {
       unique_id: 1430,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -5902,7 +5902,7 @@ lambda_declaration_c: {
     unique_id: 1431,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -5912,7 +5912,7 @@ lambda_declaration_c: {
           unique_id: 1430,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -5934,7 +5934,7 @@ capture_decl_list_c: {
     unique_id: 1432,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -5947,7 +5947,7 @@ capture_decl_list_c: {
       unique_id: 1432,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -5965,7 +5965,7 @@ builtin_type_c_ast: {
     unique_id: 1433,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5981,7 +5981,7 @@ east_modified_type_c_ast: {
     unique_id: 1433,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -5994,7 +5994,7 @@ east_modified_type_c_ast: {
     unique_id: 1433,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6016,7 +6016,7 @@ sname_c_ast: {
     unique_id: 1433,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6030,7 +6030,7 @@ sname_c_ast: {
     unique_id: 1433,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6047,7 +6047,7 @@ param_c_ast: {
     unique_id: 1433,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6059,7 +6059,7 @@ param_c_ast: {
     unique_id: 1433,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6071,7 +6071,7 @@ param_c_ast: {
     unique_id: 1433,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6087,7 +6087,7 @@ param_c_ast_list: {
     unique_id: 1433,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6100,7 +6100,7 @@ param_c_ast_list: {
       unique_id: 1433,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -6118,7 +6118,7 @@ lambda_declaration_c: {
       unique_id: 1432,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6132,7 +6132,7 @@ lambda_declaration_c: {
       unique_id: 1433,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -6147,7 +6147,7 @@ lambda_declaration_c: {
     unique_id: 1434,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 18 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -6157,7 +6157,7 @@ lambda_declaration_c: {
           unique_id: 1432,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -6171,7 +6171,7 @@ lambda_declaration_c: {
           unique_id: 1433,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 12, last_column: 15 },
           type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
           builtin: {
@@ -6192,7 +6192,7 @@ capture_decl_list_c: {
     unique_id: 1435,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -6205,7 +6205,7 @@ capture_decl_list_c: {
       unique_id: 1435,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6223,7 +6223,7 @@ lambda_declaration_c: {
       unique_id: 1435,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6239,7 +6239,7 @@ lambda_declaration_c: {
     unique_id: 1436,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -6249,7 +6249,7 @@ lambda_declaration_c: {
           unique_id: 1435,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -6271,7 +6271,7 @@ capture_decl_list_c: {
     unique_id: 1437,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -6284,7 +6284,7 @@ capture_decl_list_c: {
       unique_id: 1437,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6302,7 +6302,7 @@ builtin_type_c_ast: {
     unique_id: 1438,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6318,7 +6318,7 @@ east_modified_type_c_ast: {
     unique_id: 1438,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6331,7 +6331,7 @@ east_modified_type_c_ast: {
     unique_id: 1438,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6353,7 +6353,7 @@ sname_c_ast: {
     unique_id: 1438,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6367,7 +6367,7 @@ sname_c_ast: {
     unique_id: 1438,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6384,7 +6384,7 @@ param_c_ast: {
     unique_id: 1438,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6396,7 +6396,7 @@ param_c_ast: {
     unique_id: 1438,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6408,7 +6408,7 @@ param_c_ast: {
     unique_id: 1438,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6424,7 +6424,7 @@ param_c_ast_list: {
     unique_id: 1438,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6437,7 +6437,7 @@ param_c_ast_list: {
       unique_id: 1438,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -6455,7 +6455,7 @@ lambda_declaration_c: {
       unique_id: 1437,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6469,7 +6469,7 @@ lambda_declaration_c: {
       unique_id: 1438,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -6484,7 +6484,7 @@ lambda_declaration_c: {
     unique_id: 1439,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 18 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -6494,7 +6494,7 @@ lambda_declaration_c: {
           unique_id: 1437,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -6508,7 +6508,7 @@ lambda_declaration_c: {
           unique_id: 1438,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 12, last_column: 15 },
           type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
           builtin: {
@@ -6529,7 +6529,7 @@ capture_decl_list_c: {
     unique_id: 1440,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -6542,7 +6542,7 @@ capture_decl_list_c: {
       unique_id: 1440,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6560,7 +6560,7 @@ lambda_declaration_c: {
       unique_id: 1440,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6576,7 +6576,7 @@ lambda_declaration_c: {
     unique_id: 1441,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -6586,7 +6586,7 @@ lambda_declaration_c: {
           unique_id: 1440,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -6608,7 +6608,7 @@ capture_decl_list_c: {
     unique_id: 1442,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -6621,7 +6621,7 @@ capture_decl_list_c: {
       unique_id: 1442,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6639,7 +6639,7 @@ builtin_type_c_ast: {
     unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6655,7 +6655,7 @@ east_modified_type_c_ast: {
     unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6668,7 +6668,7 @@ east_modified_type_c_ast: {
     unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6690,7 +6690,7 @@ sname_c_ast: {
     unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6704,7 +6704,7 @@ sname_c_ast: {
     unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6721,7 +6721,7 @@ param_c_ast: {
     unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6733,7 +6733,7 @@ param_c_ast: {
     unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6745,7 +6745,7 @@ param_c_ast: {
     unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6761,7 +6761,7 @@ param_c_ast_list: {
     unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6774,7 +6774,7 @@ param_c_ast_list: {
       unique_id: 1443,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -6792,7 +6792,7 @@ lambda_declaration_c: {
       unique_id: 1442,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6806,7 +6806,7 @@ lambda_declaration_c: {
       unique_id: 1443,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -6821,7 +6821,7 @@ lambda_declaration_c: {
     unique_id: 1444,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 18 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -6831,7 +6831,7 @@ lambda_declaration_c: {
           unique_id: 1442,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -6845,7 +6845,7 @@ lambda_declaration_c: {
           unique_id: 1443,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 12, last_column: 15 },
           type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
           builtin: {
@@ -6866,7 +6866,7 @@ capture_decl_list_c: {
     unique_id: 1445,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9, last_column: 10 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -6879,7 +6879,7 @@ capture_decl_list_c: {
       unique_id: 1445,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 10 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6897,7 +6897,7 @@ lambda_declaration_c: {
       unique_id: 1445,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 10 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6913,7 +6913,7 @@ lambda_declaration_c: {
     unique_id: 1446,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -6923,7 +6923,7 @@ lambda_declaration_c: {
           unique_id: 1445,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9, last_column: 10 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -6945,7 +6945,7 @@ capture_decl_list_c: {
     unique_id: 1447,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9, last_column: 10 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -6958,7 +6958,7 @@ capture_decl_list_c: {
       unique_id: 1447,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 10 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -6976,7 +6976,7 @@ builtin_type_c_ast: {
     unique_id: 1448,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 16 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -6992,7 +6992,7 @@ east_modified_type_c_ast: {
     unique_id: 1448,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 16 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7005,7 +7005,7 @@ east_modified_type_c_ast: {
     unique_id: 1448,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 16 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7027,7 +7027,7 @@ sname_c_ast: {
     unique_id: 1448,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 16 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7041,7 +7041,7 @@ sname_c_ast: {
     unique_id: 1448,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 16 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7058,7 +7058,7 @@ param_c_ast: {
     unique_id: 1448,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 16 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7070,7 +7070,7 @@ param_c_ast: {
     unique_id: 1448,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 16 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7082,7 +7082,7 @@ param_c_ast: {
     unique_id: 1448,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 16 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7098,7 +7098,7 @@ param_c_ast_list: {
     unique_id: 1448,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 13, last_column: 16 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7111,7 +7111,7 @@ param_c_ast_list: {
       unique_id: 1448,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 13, last_column: 16 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -7129,7 +7129,7 @@ lambda_declaration_c: {
       unique_id: 1447,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 10 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -7143,7 +7143,7 @@ lambda_declaration_c: {
       unique_id: 1448,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 13, last_column: 16 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -7158,7 +7158,7 @@ lambda_declaration_c: {
     unique_id: 1449,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -7168,7 +7168,7 @@ lambda_declaration_c: {
           unique_id: 1447,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9, last_column: 10 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -7182,7 +7182,7 @@ lambda_declaration_c: {
           unique_id: 1448,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 13, last_column: 16 },
           type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
           builtin: {
@@ -7203,7 +7203,7 @@ capture_decl_list_c: {
     unique_id: 1450,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9, last_column: 12 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -7216,7 +7216,7 @@ capture_decl_list_c: {
       unique_id: 1450,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 12 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -7234,7 +7234,7 @@ lambda_declaration_c: {
       unique_id: 1450,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 12 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -7250,7 +7250,7 @@ lambda_declaration_c: {
     unique_id: 1451,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -7260,7 +7260,7 @@ lambda_declaration_c: {
           unique_id: 1450,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9, last_column: 12 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -7282,7 +7282,7 @@ capture_decl_list_c: {
     unique_id: 1452,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9, last_column: 12 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -7295,7 +7295,7 @@ capture_decl_list_c: {
       unique_id: 1452,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 12 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -7313,7 +7313,7 @@ builtin_type_c_ast: {
     unique_id: 1453,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 18 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7329,7 +7329,7 @@ east_modified_type_c_ast: {
     unique_id: 1453,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 18 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7342,7 +7342,7 @@ east_modified_type_c_ast: {
     unique_id: 1453,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 18 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7364,7 +7364,7 @@ sname_c_ast: {
     unique_id: 1453,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 18 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7378,7 +7378,7 @@ sname_c_ast: {
     unique_id: 1453,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 18 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7395,7 +7395,7 @@ param_c_ast: {
     unique_id: 1453,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 18 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7407,7 +7407,7 @@ param_c_ast: {
     unique_id: 1453,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 18 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7419,7 +7419,7 @@ param_c_ast: {
     unique_id: 1453,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 18 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7435,7 +7435,7 @@ param_c_ast_list: {
     unique_id: 1453,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 15, last_column: 18 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7448,7 +7448,7 @@ param_c_ast_list: {
       unique_id: 1453,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 15, last_column: 18 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -7466,7 +7466,7 @@ lambda_declaration_c: {
       unique_id: 1452,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 12 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -7480,7 +7480,7 @@ lambda_declaration_c: {
       unique_id: 1453,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 15, last_column: 18 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -7495,7 +7495,7 @@ lambda_declaration_c: {
     unique_id: 1454,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 21 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -7505,7 +7505,7 @@ lambda_declaration_c: {
           unique_id: 1452,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9, last_column: 12 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -7519,7 +7519,7 @@ lambda_declaration_c: {
           unique_id: 1453,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 15, last_column: 18 },
           type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
           builtin: {
@@ -7540,7 +7540,7 @@ capture_decl_list_c: {
     unique_id: 1455,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9, last_column: 13 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -7553,7 +7553,7 @@ capture_decl_list_c: {
       unique_id: 1455,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 13 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -7571,7 +7571,7 @@ lambda_declaration_c: {
       unique_id: 1455,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 13 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -7587,7 +7587,7 @@ lambda_declaration_c: {
     unique_id: 1456,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 14 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -7597,7 +7597,7 @@ lambda_declaration_c: {
           unique_id: 1455,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9, last_column: 13 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -7619,7 +7619,7 @@ capture_decl_list_c: {
     unique_id: 1457,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 9, last_column: 13 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     capture: {
@@ -7632,7 +7632,7 @@ capture_decl_list_c: {
       unique_id: 1457,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 13 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -7650,7 +7650,7 @@ builtin_type_c_ast: {
     unique_id: 1458,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7666,7 +7666,7 @@ east_modified_type_c_ast: {
     unique_id: 1458,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7679,7 +7679,7 @@ east_modified_type_c_ast: {
     unique_id: 1458,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7701,7 +7701,7 @@ sname_c_ast: {
     unique_id: 1458,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7715,7 +7715,7 @@ sname_c_ast: {
     unique_id: 1458,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7732,7 +7732,7 @@ param_c_ast: {
     unique_id: 1458,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7744,7 +7744,7 @@ param_c_ast: {
     unique_id: 1458,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7756,7 +7756,7 @@ param_c_ast: {
     unique_id: 1458,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7772,7 +7772,7 @@ param_c_ast_list: {
     unique_id: 1458,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 16, last_column: 19 },
     type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
     builtin: {
@@ -7785,7 +7785,7 @@ param_c_ast_list: {
       unique_id: 1458,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 16, last_column: 19 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -7803,7 +7803,7 @@ lambda_declaration_c: {
       unique_id: 1457,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 9, last_column: 13 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       capture: {
@@ -7817,7 +7817,7 @@ lambda_declaration_c: {
       unique_id: 1458,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
-      parent__unique_id: -1,
+      parent__unique_id: 0,
       loc: { first_column: 16, last_column: 19 },
       type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
       builtin: {
@@ -7832,7 +7832,7 @@ lambda_declaration_c: {
     unique_id: 1459,
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 22 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     lambda: {
@@ -7842,7 +7842,7 @@ lambda_declaration_c: {
           unique_id: 1457,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 9, last_column: 13 },
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           capture: {
@@ -7856,7 +7856,7 @@ lambda_declaration_c: {
           unique_id: 1458,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          parent__unique_id: -1,
+          parent__unique_id: 0,
           loc: { first_column: 16, last_column: 19 },
           type: { btid: 0x101, stid: 0x2, atid: 0x4, string: "char" },
           builtin: {
@@ -7914,7 +7914,7 @@ builtin_type_c_ast: {
     unique_id: 1462,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -7930,7 +7930,7 @@ east_modified_type_c_ast: {
     unique_id: 1462,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -7943,7 +7943,7 @@ east_modified_type_c_ast: {
     unique_id: 1462,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -7965,7 +7965,7 @@ sname_c_ast: {
     unique_id: 1462,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -7979,7 +7979,7 @@ sname_c_ast: {
     unique_id: 1462,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -7996,7 +7996,7 @@ decl_c: {
     unique_id: 1463,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -8008,7 +8008,7 @@ decl_c: {
     unique_id: 1462,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -8020,7 +8020,7 @@ decl_c: {
     unique_id: 1462,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: -1,
+    parent__unique_id: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {

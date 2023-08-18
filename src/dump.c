@@ -161,10 +161,8 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
   );
   DUMP_KEY( d, "depth: %u", ast->depth );
   DUMP_KEY( d,
-    "parent__unique_id: " PRId_C_AST_SID_T,
-    ast->parent_ast != NULL ?
-      STATIC_CAST( c_ast_sid_t, ast->parent_ast->unique_id ) :
-      STATIC_CAST( c_ast_sid_t, -1 )
+    "parent__unique_id: " PRId_C_AST_ID_T,
+    ast->parent_ast != NULL ? ast->parent_ast->unique_id : 0
   );
   c_alignas_dump( &ast->align, d );
   DUMP_LOC( d, "loc", &ast->loc );

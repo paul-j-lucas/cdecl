@@ -140,17 +140,8 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Decimal print conversion specifier for \ref c_ast_id_t.
- *
- * @sa #PRId_C_AST_SID_T
  */
 #define PRId_C_AST_ID_T           "%u"
-
-/**
- * Decimal print conversion specifier for \ref c_ast_sid_t.
- *
- * @sa #PRId_C_AST_ID_T
- */
-#define PRId_C_AST_SID_T          "%d"
 
 #endif /* ENABLE_CDECL_DEBUG */
 
@@ -158,7 +149,6 @@ _GL_INLINE_HEADER_BEGIN
 
 #ifdef ENABLE_CDECL_DEBUG
 typedef unsigned  c_ast_id_t;           ///< Unique AST node ID.
-typedef int       c_ast_sid_t;          ///< Signed \ref c_ast_id_t.
 #endif /* ENABLE_CDECL_DEBUG */
 
 /**
