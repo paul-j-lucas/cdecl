@@ -129,17 +129,6 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
                               c_type_t const *type );
 
 /**
- * Checks whether the kind of \a ast can be a bit field.
- *
- * @param ast The AST to check.
- * @return Returns `true` only if the kind of \a ast can be a bit field.
- *
- * @sa c_ast_is_integral()
- */
-NODISCARD
-bool c_ast_is_bit_field_kind( c_ast_t const *ast );
-
-/**
  * Checks whether \a ast is a #K_BUILTIN having one of \a btids built-in
  * type(s); or a `typedef` thereof.
  *
@@ -160,7 +149,6 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids );
  * @param ast The AST to check.
  * @return Returns `true` only if the type of \a ast is an integral type.
  *
- * @sa c_ast_is_bit_field_kind()
  * @sa c_ast_is_builtin_any()
  */
 NODISCARD

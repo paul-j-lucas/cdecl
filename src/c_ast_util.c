@@ -592,20 +592,6 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
   return c_ast_visit( ast, dir, c_ast_vistor_type_any, data );
 }
 
-bool c_ast_is_bit_field_kind( c_ast_t const *ast ) {
-  ast = c_ast_untypedef( ast );
-  switch ( ast->kind ) {
-    case K_BUILTIN: {
-      c_tid_t const btids = c_tid_normalize( ast->type.btids );
-      return is_1n_bit_only_in_set( c_tid_no_tpid( btids ), TB_ANY_INTEGRAL );
-    }
-    case K_ENUM:
-      return OPT_LANG_IS( enum_BITFIELDS );
-    default:
-      return false;
-  } // switch
-}
-
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
   c_tid_check( btids, C_TPID_BASE );
 

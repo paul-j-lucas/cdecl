@@ -771,6 +771,14 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
     return false;
   }
 
+  if ( ast->enum_.bit_width > 0 && !OPT_LANG_IS( enum_BITFIELDS ) ) {
+    print_error( &ast->loc,
+      "enum bit-fields not supported%s\n",
+      C_LANG_WHICH( enum_BITFIELDS )
+    );
+    return false;
+  }
+
   c_ast_t const *const of_ast = ast->enum_.of_ast;
   if ( of_ast != NULL ) {
     if ( !OPT_LANG_IS( FIXED_TYPE_enum ) ) {

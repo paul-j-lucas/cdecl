@@ -1,3 +1,3 @@
 explain enum E x : 3
-                 ^
-18: error: bit-fields can be only of integral types
+        ^
+9: error: enum bit-fields not supported in C
