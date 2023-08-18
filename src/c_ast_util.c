@@ -620,7 +620,7 @@ bool c_ast_is_integral( c_ast_t const *ast ) {
   ast = c_ast_untypedef( ast );
   switch ( ast->kind ) {
     case K_BUILTIN:
-      return (c_tid_no_tpid( ast->type.btids ) & TB_ANY_INTEGRAL) != 0;
+      return c_tid_is_any( ast->type.btids, TB_ANY_INTEGRAL );
     case K_ENUM:
       return true;
     default:
