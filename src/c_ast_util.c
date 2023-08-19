@@ -849,6 +849,20 @@ c_ast_t* c_ast_root( c_ast_t *ast ) {
   return ast;
 }
 
+c_ast_t c_ast_sub_typedef( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_TYPEDEF );
+
+  c_tid_t qual_stids;
+  c_ast_t rv_ast = *c_ast_untypedef_qual( ast, &qual_stids );
+  rv_ast.align = ast->align;
+  rv_ast.loc = ast->loc;
+  rv_ast.type.stids |= qual_stids;
+  if ( c_ast_is_integral( &rv_ast ) )
+    rv_ast.bit_field.bit_width = ast->bit_field.bit_width;
+  return rv_ast;
+}
+
 c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type ) {
   assert( ast != NULL );
   assert( type != NULL );

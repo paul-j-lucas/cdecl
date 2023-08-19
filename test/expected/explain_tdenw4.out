@@ -1,0 +1,3 @@
+explain T x : 4
+        ^
+9: error: enum bit-fields not supported in C

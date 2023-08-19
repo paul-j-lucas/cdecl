@@ -1,0 +1,5 @@
+EXPECTED_EXIT=65
+cdecl <<END
+typedef enum E T
+explain T x : 4
+END

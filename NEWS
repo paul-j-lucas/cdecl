@@ -12,6 +12,12 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 14.4
 
+** Bit-field `typedef`s for `enum`s
+A bit-field of a `typedef` for an `enum` is now correctly forbidden in C:
+
+    typedef enum E T
+    explain T x : 4                     // error: enum bit-field is illegal
+
 ** Reworked qualified array syntax
 C99 added the ability to qualify function parameters using array syntax, e.g.:
 

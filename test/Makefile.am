@@ -301,6 +301,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_sil-knr.test \
 	tests/explain_siv.test \
 	tests/explain_siwt.test \
+	tests/explain_tdenw4.test \
 	tests/explain_tli-c99.test \
 	tests/explain_type_i.test \
 	tests/explain_typedef_ci32.test \

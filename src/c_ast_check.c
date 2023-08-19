@@ -2541,35 +2541,16 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       break;
 
     case K_TYPEDEF: {
-      c_state_t temp_c;
-      MEM_ZERO( &temp_c );
       //
       // K_TYPEDEF isn't a "parent" kind since it's not a parent "of" the
       // underlying type, but instead a synonym "for" it.  Hence, we have to
       // recurse into it manually.
       //
+      c_ast_t const temp_ast = c_ast_sub_typedef( ast );
+      c_state_t temp_c;
+      MEM_ZERO( &temp_c );
       if ( c_ast_parent_is_kind( ast, K_POINTER ) )
         temp_c.flags |= C_IS_POINTED_TO;
-
-      //
-      // Create a temporary AST node on the stack that is a copy of the
-      // untypedef'd AST but with the qualifiers of the typedef bitwise-or'd.
-      // For example, given:
-      //
-      //      typedef int A[2];
-      //      _Atomic A x;              // error: arrays can't be _Atomic
-      //
-      // when we un-typedef the AST for "x" into "temp", we get the AST for
-      // "A", but we need to bitwise-or in the _Atomic from "x" into "temp" so
-      // we check the fully qualified AST.
-      //
-      // We also have to use "x"'s location rather than "A"'s location.
-      //
-      c_tid_t qual_stids;
-      c_ast_t temp_ast = *c_ast_untypedef_qual( ast, &qual_stids );
-      temp_ast.loc = ast->loc;
-      temp_ast.type.stids |= qual_stids;
-
       data.pc = &temp_c;
       return c_ast_visitor_error( &temp_ast, data );
     }
