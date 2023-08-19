@@ -1,3 +1,18 @@
+2023-08-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_ast_util.c, c_ast_util.h, test/Makefile.am,
+     explain_tdenw4.out, explain_tdenw4.test: A bit-field of a `typedef` for an
+     `enum` is now correctly forbidden in C.
+   * declare.test: Turned off execute bit.
+
+2023-08-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_ast_util.c, c_ast_util.h, parser.y, explain_enw3-c.out:
+     Moved enum bit-field checking from the parser to c_ast_check() since the
+     error message can include "... not supported in C."
+   * c_ast_util.c: Simplified.
+   * c_ast.h, dump.c, debug.out: Eliminated c_ast_sid_t.
+
 2023-08-17  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, test/Makefile.am, declare_nei.out, declare_nei.test: Now
