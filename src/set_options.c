@@ -103,39 +103,138 @@ static set_option_t const SET_OPTIONS[] = {
   //  1. print_options()
   //  2. print_help_options()
   //
-  { "alt-tokens",         SET_OPTION_TOGGLE,   false, &set_alt_tokens         },
+  { "alt-tokens",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_alt_tokens
+  },
+
 #ifdef YYDEBUG
-  { "bison-debug",        SET_OPTION_TOGGLE,   false, &set_bison_debug        },
+  { "bison-debug",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_bison_debug
+  },
 #endif /* YYDEBUG */
+
 #ifdef ENABLE_CDECL_DEBUG
-  { "debug",              SET_OPTION_TOGGLE,   false, &set_debug              },
+  { "debug",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_debug
+  },
 #endif /* ENABLE_CDECL_DEBUG */
-  { "digraphs",           SET_OPTION_AFF_ONLY, false, &set_digraphs           },
-  { "graphs",             SET_OPTION_NEG_ONLY, false, &set_digraphs           },
-  { "east-const",         SET_OPTION_TOGGLE,   false, &set_east_const         },
-  { "echo-commands",      SET_OPTION_TOGGLE,   false, &set_echo_commands      },
-  { "english-types",      SET_OPTION_TOGGLE,   false, &set_english_types      },
-  { "explain-by-default", SET_OPTION_TOGGLE,   false, &set_explain_by_default },
-  { "explicit-ecsu",      SET_OPTION_TOGGLE,   true,  &set_explicit_ecsu      },
-  { "explicit-int",       SET_OPTION_TOGGLE,   true,  &set_explicit_int       },
+
+  { "digraphs",
+    SET_OPTION_AFF_ONLY,
+    .takes_value = false,
+    &set_digraphs
+  },
+
+  { "graphs",
+    SET_OPTION_NEG_ONLY,
+    .takes_value = false,
+    &set_digraphs
+  },
+
+  { "east-const",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_east_const
+  },
+
+  { "echo-commands",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_echo_commands
+  },
+
+  { "english-types",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_english_types
+  },
+
+  { "explain-by-default",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_explain_by_default
+  },
+
+  { "explicit-ecsu",
+    SET_OPTION_TOGGLE,
+    .takes_value = true,
+    &set_explicit_ecsu
+  },
+
+  { "explicit-int",
+    SET_OPTION_TOGGLE,
+    .takes_value = true,
+    &set_explicit_int
+  },
+
 #ifdef ENABLE_FLEX_DEBUG
-  { "flex-debug",         SET_OPTION_TOGGLE,   false, &set_flex_debug         },
+  { "flex-debug",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_flex_debug
+  },
 #endif /* ENABLE_FLEX_DEBUG */
-  { "lang",               SET_OPTION_AFF_ONLY, true,  &set_lang               },
-  { "prompt",             SET_OPTION_TOGGLE,   false, &set_prompt             },
-  { "semicolon",          SET_OPTION_TOGGLE,   false, &set_semicolon          },
-  { "trailing-return",    SET_OPTION_TOGGLE,   false, &set_trailing_return    },
-  { "trigraphs",          SET_OPTION_AFF_ONLY, false, &set_trigraphs          },
-  { "west-pointer",       SET_OPTION_TOGGLE,   true,  &set_west_pointer       },
-  { "using",              SET_OPTION_TOGGLE,   false, &set_using              },
-  { NULL,                 SET_OPTION_TOGGLE,   false, NULL                    }
+
+  { "lang",
+    SET_OPTION_AFF_ONLY,
+    .takes_value = true,
+    &set_lang
+  },
+
+  { "prompt",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_prompt
+  },
+
+  { "semicolon",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_semicolon
+  },
+
+  { "trailing-return",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_trailing_return
+  },
+
+  { "trigraphs",
+    SET_OPTION_AFF_ONLY,
+    .takes_value = false,
+    &set_trigraphs
+  },
+
+  { "west-pointer",
+    SET_OPTION_TOGGLE,
+    .takes_value = true,
+    &set_west_pointer
+  },
+
+  { "using",
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    &set_using
+  },
+
+  { NULL,
+    SET_OPTION_TOGGLE,
+    .takes_value = false,
+    NULL
+  }
 };
 
 /**
  * Always-enabled `set_*()` arguments used when re-setting options.
  */
 static set_option_fn_args_t const enabled_args = {
-  /*opt_enabled=*/true, NULL, NULL, NULL
+  .opt_enabled = true, NULL, NULL, NULL
 };
 
 ////////// local functions ////////////////////////////////////////////////////

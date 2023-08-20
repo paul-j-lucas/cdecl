@@ -136,7 +136,7 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
   { TA_CARRIES_DEPENDENCY, LANG_carries_dependency, "carries dependency",
     C_LANG_LIT( { LANG_ANY, L_carries_dependency } ) },
 
-  { TA_DEPRECATED, LANG_deprecated, /*english_lit=*/NULL,
+  { TA_DEPRECATED, LANG_deprecated, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_deprecated } ) },
 
   { TA_MAYBE_UNUSED, LANG_maybe_unused, "maybe unused",
@@ -152,10 +152,10 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
   { TA_NO_UNIQUE_ADDRESS, LANG_no_unique_address, H_non_unique_address,
     C_LANG_LIT( { LANG_ANY, L_no_unique_address } ) },
 
-  { TA_REPRODUCIBLE, LANG_reproducible, /*english_lit=*/NULL,
+  { TA_REPRODUCIBLE, LANG_reproducible, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_reproducible } ) },
 
-  { TA_UNSEQUENCED, LANG_unsequenced, /*english_lit=*/NULL,
+  { TA_UNSEQUENCED, LANG_unsequenced, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_unsequenced } ) },
 
   // Microsoft extensions
@@ -200,28 +200,28 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
   { TS_NON_EMPTY_ARRAY, LANG_QUALIFIED_ARRAY, H_non_empty,
     C_LANG_LIT( { LANG_ANY, L_static } ) },
 
-  { TS_REFERENCE, LANG_REF_QUALIFIED_FUNC, /*english_lit=*/NULL,
+  { TS_REFERENCE, LANG_REF_QUALIFIED_FUNC, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_reference } ) },
 
-  { TS_RVALUE_REFERENCE, LANG_REF_QUALIFIED_FUNC, /*english_lit=*/NULL,
+  { TS_RVALUE_REFERENCE, LANG_REF_QUALIFIED_FUNC, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_rvalue_reference } ) },
 
   { TS_RESTRICT, LANG_ANY, L_restricted,
     C_LANG_LIT( { ~LANG_restrict, L_GNU___restrict },
                 { LANG_ANY,       L_restrict       } ) },
 
-  { TS_VOLATILE, LANG_ANY, /*english_lit=*/NULL,
+  { TS_VOLATILE, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { ~LANG_volatile, L_GNU___volatile },
                 { LANG_ANY,       L_volatile       } ) },
 
   // Unified Parallel C extensions
-  { TS_UPC_RELAXED, LANG_C_99, /*english_lit=*/NULL,
+  { TS_UPC_RELAXED, LANG_C_99, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_UPC_relaxed } ) },
 
-  { TS_UPC_SHARED, LANG_C_99, /*english_lit=*/NULL,
+  { TS_UPC_SHARED, LANG_C_99, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_UPC_shared } ) },
 
-  { TS_UPC_STRICT, LANG_C_99, /*english_lit=*/NULL,
+  { TS_UPC_STRICT, LANG_C_99, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_UPC_strict } ) },
 };
 
@@ -245,10 +245,10 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_EXTERN_C, LANG_CPP_ANY, "external \"C\" linkage",
     C_LANG_LIT( { LANG_ANY, "extern \"C\"" } ) },
 
-  { TS_REGISTER, LANG_register, /*english_lit=*/NULL,
+  { TS_REGISTER, LANG_register, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_register } ) },
 
-  { TS_STATIC, LANG_ANY, /*english_lit=*/NULL,
+  { TS_STATIC, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_static } ) },
 
   { TS_THREAD_LOCAL, LANG_ANY, "thread local",
@@ -269,29 +269,29 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_CONSTINIT, LANG_constinit, "constant initialization",
     C_LANG_LIT( { LANG_ANY, L_constinit } ) },
 
-  { TS_DEFAULT, LANG_default_delete_FUNC, /*english_lit=*/NULL,
+  { TS_DEFAULT, LANG_default_delete_FUNC, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_default } ) },
 
   { TS_DELETE, LANG_default_delete_FUNC, L_deleted,
     C_LANG_LIT( { LANG_ANY, L_delete } ) },
 
-  { TS_EXPLICIT, LANG_CPP_ANY, /*english_lit=*/NULL,
+  { TS_EXPLICIT, LANG_CPP_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_explicit } ) },
 
   { TS_EXPORT, LANG_export, L_exported,
     C_LANG_LIT( { LANG_ANY, L_export } ) },
 
-  { TS_FINAL, LANG_final, /*english_lit=*/NULL,
+  { TS_FINAL, LANG_final, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_final } ) },
 
-  { TS_FRIEND, LANG_CPP_ANY, /*english_lit=*/NULL,
+  { TS_FRIEND, LANG_CPP_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_friend } ) },
 
-  { TS_INLINE, LANG_ANY, /*english_lit=*/NULL,
+  { TS_INLINE, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { ~LANG_inline, L_GNU___inline },
                 { LANG_ANY,     L_inline       } ) },
 
-  { TS_MUTABLE, LANG_CPP_ANY, /*english_lit=*/NULL,
+  { TS_MUTABLE, LANG_CPP_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_mutable } ) },
 
   { TS_NOEXCEPT, LANG_noexcept, H_no_exception,
@@ -300,16 +300,16 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_OVERRIDE, LANG_override, L_overridden,
     C_LANG_LIT( { LANG_ANY, L_override } ) },
 
-  { TS_THIS, LANG_EXPLICIT_OBJ_PARAM_DECL, /*english_lit=*/NULL,
+  { TS_THIS, LANG_EXPLICIT_OBJ_PARAM_DECL, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_this } ) },
 
   { TS_THROW, LANG_CPP_ANY, H_non_throwing,
     C_LANG_LIT( { LANG_ANY, L_throw } ) },
 
-  { TS_VIRTUAL, LANG_CPP_ANY, /*english_lit=*/NULL,
+  { TS_VIRTUAL, LANG_CPP_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_virtual } ) },
 
-  { TS_PURE_VIRTUAL, LANG_CPP_ANY, /*english_lit=*/NULL,
+  { TS_PURE_VIRTUAL, LANG_CPP_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_pure } ) },
 };
 
@@ -319,7 +319,7 @@ static c_type_info_t const C_STORAGE_INFO[] = {
  * @note This array _must_ have the same size and order as \ref OK_TYPE_LANGS.
  */
 static c_type_info_t const C_TYPE_INFO[] = {
-  { TB_VOID, LANG_void, /*english_lit=*/NULL,
+  { TB_VOID, LANG_void, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_void } ) },
 
   { TB_AUTO, LANG_MIN(C_89), L_automatic,
@@ -348,23 +348,23 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { TB_WCHAR_T, LANG_wchar_t, "wide character",
     C_LANG_LIT( { LANG_ANY, L_wchar_t } ) },
 
-  { TB_SHORT, LANG_ANY, /*english_lit=*/NULL,
+  { TB_SHORT, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_short } ) },
 
   { TB_INT, LANG_ANY, L_integer,
     C_LANG_LIT( { LANG_ANY, L_int } ) },
 
-  { TB_LONG, LANG_ANY, /*english_lit=*/NULL,
+  { TB_LONG, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_long } ) },
 
-  { TB_LONG_LONG, LANG_long_long, /*english_lit=*/NULL,
+  { TB_LONG_LONG, LANG_long_long, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_long_long } ) },
 
-  { TB_SIGNED, LANG_ANY, /*english_lit=*/NULL,
+  { TB_SIGNED, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { ~LANG_signed, L_GNU___signed },
                 { LANG_ANY,     L_signed       } ) },
 
-  { TB_UNSIGNED, LANG_ANY, /*english_lit=*/NULL,
+  { TB_UNSIGNED, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_unsigned } ) },
 
   { TB_FLOAT, LANG_ANY, "floating point",
@@ -386,13 +386,13 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { TB_STRUCT, LANG_ANY, L_structure,
     C_LANG_LIT( { LANG_ANY, L_struct } ) },
 
-  { TB_UNION, LANG_ANY, /*english_lit=*/NULL,
+  { TB_UNION, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_union } ) },
 
-  { TB_CLASS, LANG_CPP_ANY, /*english_lit=*/NULL,
+  { TB_CLASS, LANG_CPP_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_class } ) },
 
-  { TB_TYPEDEF, LANG_ANY, /*english_lit=*/NULL,
+  { TB_TYPEDEF, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_typedef_TYPE } ) },
 
   // Embedded C extensions

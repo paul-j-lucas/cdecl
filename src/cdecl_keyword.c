@@ -119,7 +119,7 @@
  * @sa #TOKEN()
  */
 #define SYNONYMS(FIND_WHEN,...) \
-  (FIND_WHEN), /*y_token_id=*/0, C_LANG_LIT( __VA_ARGS__ )
+  (FIND_WHEN), .y_token_id = 0, C_LANG_LIT( __VA_ARGS__ )
 
 /**
  * Within \ref CDECL_KEYWORDS, a special-case of #SYNONYMS when there is only
@@ -148,7 +148,7 @@
  * @sa #SYNONYMS()
  */
 #define TOKEN(Y_ID) \
-  FIND_IN_ENGLISH_ONLY, (Y_ID), /*lang_syn=*/NULL
+  FIND_IN_ENGLISH_ONLY, (Y_ID), .lang_syn = NULL
 
 ///////////////////////////////////////////////////////////////////////////////
 
