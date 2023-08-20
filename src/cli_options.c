@@ -108,9 +108,12 @@
  */
 static struct option const CLI_OPTIONS[] = {
   //
-  // If this array is modified, also modify the calls to opt_check_exclusive(),
-  // opt_check_mutually_exclusive(), the message in usage(), and the
-  // corresponding "set" option in SET_OPTIONS in set_options.c.
+  // If this is updated, ensure the following are updated to match:
+  //
+  //  1. Calls to opt_check_exclusive().
+  //  2. Calls to opt_check_mutually_exclusive().
+  //  3. The message in usage().
+  //  4. The corresponding "set" option in SET_OPTIONS in set_options.c.
   //
   { "alt-tokens",       no_argument,        NULL, COPT(ALT_TOKENS)        },
 #ifdef YYDEBUG
