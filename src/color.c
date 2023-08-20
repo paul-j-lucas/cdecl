@@ -286,7 +286,7 @@ void color_init( void ) {
     return;
   if ( colors_parse( getenv( "CDECL_COLORS" ) ) )
     return;
-  if ( colors_parse( getenv( "GCC_COLORS"  ) ) )
+  if ( colors_parse( getenv( "GCC_COLORS" ) ) )
     return;
 
   static char const COLORS_DEFAULT[] =
