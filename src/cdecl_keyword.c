@@ -107,7 +107,7 @@
 #define FIND_IN_ENGLISH_ONLY      false
 
 /**
- * Within \ref CDECL_KEYWORDS, specify that the previosuly given keyword is a
+ * Within \ref CDECL_KEYWORDS, specify that the previously given keyword is a
  * synonym for the given language-specific keywords.
  *
  * @param FIND_WHEN Either #ALWAYS_FIND or #FIND_IN_ENGLISH_ONLY.
@@ -138,7 +138,7 @@
   SYNONYMS( (FIND_WHEN), { LANG_ANY, (C_KEYWORD) } )
 
 /**
- * Within \ref CDECL_KEYWORDS, specify that the previosuly given keyword maps
+ * Within \ref CDECL_KEYWORDS, specify that the previously given keyword maps
  * to Bison tokan \a Y_ID.
  *
  * @param Y_ID The Bison token ID (`Y_xxx`).
@@ -1398,7 +1398,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
       //     cdecl> explain thread_local int x
       //     declare x as thread local integer
       //
-      // would be legal (becasuse `thread_local` would map to GNU C's
+      // would be legal (because `thread_local` would map to GNU C's
       // `__thread` that's legal in all languages) when it shouldn't be
       // (because neither the C macro `thread_local` nor the C keyword
       // `_Thread_local` were supported until C11).

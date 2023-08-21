@@ -2343,7 +2343,7 @@ storage_class_subset_english_type
   ;
 
   /*
-   * We need a seperate storage class set for both lambdas and user-defined
+   * We need a separate storage class set for both lambdas and user-defined
    * conversion operators without "delete" to eliminiate a shift/reduce
    * conflict; shift:
    *

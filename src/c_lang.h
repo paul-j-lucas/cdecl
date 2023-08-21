@@ -708,7 +708,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_NONRETURNING_FUNC          (LANG__Noreturn | LANG_noreturn)
 
 /**
- * Languages the `no_unique_address` atttribute is supported in.
+ * Languages the `no_unique_address` attribute is supported in.
  *
  * @sa #LANG_ATTRIBUTES
  */

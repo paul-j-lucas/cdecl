@@ -147,7 +147,7 @@ static c_keyword_t C_KEYWORDS[] = {
   { L_inline,               Y_inline,             KC__, TS_INLINE,
     LANG_inline,            AC_LANG(inline)                               },
   // Allow "restrict" to be recognized in C++ also so the parser can give a
-  // better error messsage -- see "restrict_qualifier_c_tid" in parser.y.
+  // better error message -- see "restrict_qualifier_c_tid" in parser.y.
   { L_restrict,             Y_restrict,           KC__, TS_RESTRICT,
     LANG_restrict | LANG_CPP_ANY,
                             AC_LANG(restrict)                             },
