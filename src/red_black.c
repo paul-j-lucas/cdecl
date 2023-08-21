@@ -97,7 +97,7 @@
  * Gets an lvalue reference to the first node in \a TREE.
  *
  * @param TREE A pointer to the red-black tree to get the first node of.
- * @return Returns said lvalue referene.
+ * @return Returns said lvalue reference.
  *
  * @note This is a macro instead of an inline function so it'll:
  * + Work with either a `const` or non-`const` \a TREE.
@@ -109,7 +109,7 @@
  * Gets an lvalue reference to the root node of \a TREE.
  *
  * @param TREE A pointer to the red-black tree to get the root node of.
- * @return Returns said lvalue referene.
+ * @return Returns said lvalue reference.
  *
  * @note This is a macro instead of an inline function so it'll work with
  * either a `const` or non-`const` \a TREE.
@@ -129,7 +129,7 @@
  * Gets an lvalue reference to the root node of \a TREE.
  *
  * @param TREE A pointer to the red-black tree to get the root node of.
- * @return Returns said lvalue referene.
+ * @return Returns said lvalue reference.
  *
  * @note This is a macro instead of an inline function so it'll work with
  * either a `const` or non-`const` \a TREE.

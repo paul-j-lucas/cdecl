@@ -888,7 +888,7 @@ static char const* c_type_name_impl( c_type_t const *type,
       btids |= TB_INT;
     }
     if ( c_tid_is_any( stids, TS_FINAL | TS_OVERRIDE ) ) {
-      // In English, either "final" or "overrride" implies "virtual".
+      // In English, either "final" or "override" implies "virtual".
       stids |= TS_VIRTUAL;
     }
   }

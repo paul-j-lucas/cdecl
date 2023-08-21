@@ -435,7 +435,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
     default:
       UNEXPECTED_INT_VALUE( rv_we );
     // LCOV_EXCL_STOP
-  } // swtich
+  } // switch
 
   real_path = realpath( we.we_wordv[0], /*real_buf=*/NULL );
   if ( real_path == NULL ) {
@@ -612,7 +612,7 @@ const(ant)?/{S}+(eval(uation)?|expr(ession)?|init(ialization)?){NI} {
                * Special case: if "declare" is eventually followed by "user-
                * defined", e.g.:
                *
-               *      c++decl> declare overriden user-defined \
+               *      c++decl> declare overridden user-defined \
                *        conversion operator returning int
                *      operator int() override;
                *
