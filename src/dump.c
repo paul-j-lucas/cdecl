@@ -362,17 +362,17 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list,
 
   if ( slist_empty( list ) ) {
     FPUTS( "[]", d->dout );
-  } else {
-    FPUTS( "[\n", d->dout );
-    bool comma = false;
-    unsigned const indent = d->indent + 1;
-    FOREACH_SLIST_NODE( node, list ) {
-      fput_sep( ",\n", &comma, d->dout );
-      c_ast_dump( c_param_ast( node ), indent, /*key=*/NULL, d->dout );
-    } // for
-    FPUTC( '\n', d->dout );
-    DUMP_FORMAT( d, "]" );
+    return;
   }
+  FPUTS( "[\n", d->dout );
+  bool comma = false;
+  unsigned const indent = d->indent + 1;
+  FOREACH_SLIST_NODE( node, list ) {
+    fput_sep( ",\n", &comma, d->dout );
+    c_ast_dump( c_param_ast( node ), indent, /*key=*/NULL, d->dout );
+  } // for
+  FPUTC( '\n', d->dout );
+  DUMP_FORMAT( d, "]" );
 }
 
 /**
