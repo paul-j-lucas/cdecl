@@ -519,6 +519,7 @@ struct c_ast {
                     // nothing needed for K_NAME
     c_lambda_ast_t      lambda;     ///< #K_LAMBDA members.
     c_operator_ast_t    oper;       ///< #K_OPERATOR members.
+                    // nothing needed for K_PLACEHOLDER
     c_ptr_mbr_ast_t     ptr_mbr;    ///< #K_POINTER_TO_MEMBER members.
     c_ptr_ref_ast_t     ptr_ref;    ///< #K_POINTER or #K_ANY_REFERENCE members.
     c_typedef_ast_t     tdef;       ///< #K_TYPEDEF members.
