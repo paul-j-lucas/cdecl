@@ -1,4 +1,4 @@
-# mbrtoc32.m4 serial 17
+# mbrtoc32.m4 serial 18
 dnl Copyright (C) 2014-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -105,13 +105,13 @@ AC_DEFUN([gl_MBRTOC32_EMPTY_INPUT],
         [gl_cv_func_mbrtoc32_empty_input=yes],
         [gl_cv_func_mbrtoc32_empty_input=no],
         [case "$host_os" in
-                            # Guess no on glibc systems.
-           *-gnu* | gnu*)   gl_cv_func_mbrtoc32_empty_input="guessing no" ;;
-                            # Guess no on Android.
-           linux*-android*) gl_cv_func_mbrtoc32_empty_input="guessing no" ;;
-                            # Guess no on native Windows.
-           mingw*)          gl_cv_func_mbrtoc32_empty_input="guessing no" ;;
-           *)               gl_cv_func_mbrtoc32_empty_input="guessing yes" ;;
+                              # Guess no on glibc systems.
+           *-gnu* | gnu*)     gl_cv_func_mbrtoc32_empty_input="guessing no" ;;
+                              # Guess no on Android.
+           linux*-android*)   gl_cv_func_mbrtoc32_empty_input="guessing no" ;;
+                              # Guess no on native Windows.
+           mingw* | windows*) gl_cv_func_mbrtoc32_empty_input="guessing no" ;;
+           *)                 gl_cv_func_mbrtoc32_empty_input="guessing yes" ;;
          esac
         ])
     ])
@@ -154,9 +154,9 @@ AC_DEFUN([gl_MBRTOC32_C_LOCALE],
        [gl_cv_func_mbrtoc32_C_locale_sans_EILSEQ=yes],
        [gl_cv_func_mbrtoc32_C_locale_sans_EILSEQ=no],
        [case "$host_os" in
-                  # Guess yes on native Windows.
-          mingw*) gl_cv_func_mbrtoc32_C_locale_sans_EILSEQ="guessing yes" ;;
-          *)      gl_cv_func_mbrtoc32_C_locale_sans_EILSEQ="$gl_cross_guess_normal" ;;
+                             # Guess yes on native Windows.
+          mingw* | windows*) gl_cv_func_mbrtoc32_C_locale_sans_EILSEQ="guessing yes" ;;
+          *)                 gl_cv_func_mbrtoc32_C_locale_sans_EILSEQ="$gl_cross_guess_normal" ;;
         esac
        ])
     ])
@@ -184,7 +184,7 @@ AC_DEFUN([gl_MBRTOC32_SANITYCHECK],
 changequote(,)dnl
         case "$host_os" in
           # Guess no on FreeBSD, Solaris, native Windows.
-          freebsd* | midnightbsd* | solaris* | mingw*)
+          freebsd* | midnightbsd* | solaris* | mingw* | windows*)
             gl_cv_func_mbrtoc32_sanitycheck="guessing no"
             ;;
           # Guess yes otherwise.

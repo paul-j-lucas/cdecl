@@ -58,7 +58,7 @@
 
 /* On AIX 7.2, with xlc in 64-bit mode, <stddef.h> defines max_align_t to a
    type with alignment 4, but 'long' has alignment 8.  */
-#  if defined _AIX && defined __LP64__
+#  if defined _AIX && defined __LP64__ && !@HAVE_MAX_ALIGN_T@
 #   if !GNULIB_defined_max_align_t
 #    ifdef _MAX_ALIGN_T
 /* /usr/include/stddef.h has already defined max_align_t.  Override it.  */

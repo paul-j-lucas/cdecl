@@ -1,4 +1,4 @@
-# mbsrtowcs.m4 serial 16
+# mbsrtowcs.m4 serial 17
 dnl Copyright (C) 2008-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -61,10 +61,12 @@ AC_DEFUN([gl_MBSRTOWCS_WORKS],
       dnl is present.
 changequote(,)dnl
       case "$host_os" in
-                                   # Guess no on HP-UX, Solaris, mingw.
-        hpux* | solaris* | mingw*) gl_cv_func_mbsrtowcs_works="guessing no" ;;
-                                   # Guess yes otherwise.
-        *)                         gl_cv_func_mbsrtowcs_works="guessing yes" ;;
+          # Guess no on HP-UX, Solaris, mingw.
+        hpux* | solaris* | mingw* | windows*)
+          gl_cv_func_mbsrtowcs_works="guessing no" ;;
+          # Guess yes otherwise.
+        *)
+          gl_cv_func_mbsrtowcs_works="guessing yes" ;;
       esac
 changequote([,])dnl
       if test $LOCALE_FR != none || test $LOCALE_FR_UTF8 != none || test $LOCALE_JA != none || test $LOCALE_ZH_CN != none; then

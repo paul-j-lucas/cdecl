@@ -1,4 +1,4 @@
-# iswdigit.m4 serial 4
+# iswdigit.m4 serial 5
 dnl Copyright (C) 2020-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -25,7 +25,7 @@ AC_DEFUN([gl_FUNC_ISWDIGIT],
 changequote(,)dnl
        case "$host_os" in
          # Guess no on FreeBSD, NetBSD, Solaris, native Windows.
-         freebsd* | dragonfly* | netbsd* | solaris* | mingw*)
+         freebsd* | dragonfly* | netbsd* | solaris* | mingw* | windows*)
            gl_cv_func_iswdigit_works="guessing no" ;;
          # Guess yes otherwise.
          *) gl_cv_func_iswdigit_works="guessing yes" ;;

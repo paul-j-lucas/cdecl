@@ -1,4 +1,4 @@
-# locale_h.m4 serial 28
+# locale_h.m4 serial 29
 dnl Copyright (C) 2007, 2009-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -59,7 +59,12 @@ AC_DEFUN_ONCE([gl_LOCALE_H],
     dnl On native Windows with MSVC, merely define these member names as macros.
     dnl This avoids trouble in C++ mode.
     case "$host_os" in
-      mingw*)
+      windows*-gnu*)
+        REPLACE_STRUCT_LCONV=1
+        ;;
+      windows*-msvc*)
+        ;;
+      mingw* | windows*)
         AC_EGREP_CPP([Special], [
 #ifdef _MSC_VER
  Special

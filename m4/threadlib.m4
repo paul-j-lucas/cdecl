@@ -1,4 +1,4 @@
-# threadlib.m4 serial 38
+# threadlib.m4 serial 39
 dnl Copyright (C) 2005-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -85,7 +85,7 @@ AC_DEFUN([gl_WEAK_SYMBOLS],
   AC_CACHE_CHECK([whether imported symbols can be declared weak],
     [gl_cv_have_weak],
     [case "$host_os" in
-       cygwin* | mingw*)
+       cygwin* | mingw* | windows*)
          dnl On Cygwin 3.2.0 with gcc 10.2, and likewise on mingw 10.0.0 with
          dnl gcc 11.3, the test below would succeed, but programs that use
          dnl pthread_in_use() with weak symbol references crash miserably at
@@ -344,7 +344,7 @@ AC_DEFUN([gl_STDTHREADLIB_BODY],
     AC_CHECK_HEADERS_ONCE([threads.h])
 
     case "$host_os" in
-      mingw*)
+      mingw* | windows*)
         LIBSTDTHREAD=
         ;;
       *)
@@ -465,7 +465,7 @@ changequote(,)dnl
                esac
                ;;
          dnl Obey gl_AVOID_WINPTHREAD on mingw.
-         mingw*)
+         mingw* | windows*)
                case "$gl_use_winpthreads_default" in
                  yes) gl_use_threads=posix ;;
                  no)  gl_use_threads=windows ;;
@@ -564,7 +564,7 @@ AC_DEFUN([gl_THREADLIB_BODY],
       case "$gl_use_threads" in
         yes | windows | win32) # The 'win32' is for backward compatibility.
           if { case "$host_os" in
-                 mingw*) true;;
+                 mingw* | windows*) true;;
                  *) false;;
                esac
              }; then

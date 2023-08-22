@@ -255,6 +255,14 @@ mbrtoc32 (char32_t *pwc, const char *s, size_t n, mbstate_t *ps)
   /* char32_t and wchar_t are equivalent.  Use mbrtowc().  */
   wchar_t wc;
   size_t ret = mbrtowc (&wc, s, n, ps);
+
+#  if GNULIB_MBRTOC32_REGULAR
+  /* Ensure that mbrtoc32 is regular.  */
+  if (ret < (size_t) -2 && ! mbsinit (ps))
+    /* This occurs on glibc 2.12.  */
+    mbszero (ps);
+#  endif
+
 #  if GL_CHAR32_T_IS_UNICODE && GL_CHAR32_T_VS_WCHAR_T_NEEDS_CONVERSION
   if (ret < (size_t) -2 && wc != 0)
     {

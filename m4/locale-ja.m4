@@ -1,4 +1,4 @@
-# locale-ja.m4 serial 17
+# locale-ja.m4 serial 18
 dnl Copyright (C) 2003, 2005-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -90,7 +90,7 @@ int main ()
         # "ge"(!) or "deu"(!) as "German" or "German_Germany.1252",
         # "ja" as "Japanese" or "Japanese_Japan.932",
         # and similar.
-        mingw*)
+        mingw* | windows*)
           # Note that on native Windows, the Japanese locale is
           # Japanese_Japan.932, and CP932 is very different from EUC-JP, so we
           # cannot use it here.

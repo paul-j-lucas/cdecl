@@ -1,4 +1,4 @@
-# locale-zh.m4 serial 17
+# locale-zh.m4 serial 18
 dnl Copyright (C) 2003, 2005-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -91,7 +91,7 @@ int main ()
         # "ge"(!) or "deu"(!) as "German" or "German_Germany.1252",
         # "ja" as "Japanese" or "Japanese_Japan.932",
         # and similar.
-        mingw*)
+        mingw* | windows*)
           # Test for the hypothetical native Windows locale name.
           if (LC_ALL=Chinese_China.54936 LC_TIME= LC_CTYPE= ./conftest; exit) 2>/dev/null; then
             gt_cv_locale_zh_CN=Chinese_China.54936

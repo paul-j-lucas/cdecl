@@ -1,4 +1,4 @@
-# Check for fnmatch - serial 19  -*- coding: utf-8 -*-
+# Check for fnmatch - serial 20  -*- coding: utf-8 -*-
 
 # Copyright (C) 2000-2007, 2009-2023 Free Software Foundation, Inc.
 # This file is free software; the Free Software Foundation
@@ -108,6 +108,17 @@ AC_DEFUN([gl_FUNC_FNMATCH_POSIX],
                  exists in glibc 2.12, fixed in glibc 2.13.  */
               if (!y ("[/b", "[/b", 0)) /*"]]"*/
                 result |= 4;
+              /* glibc bug <https://sourceware.org/bugzilla/show_bug.cgi?id=17062>
+                 is fixed in glibc 2.20.
+                 glibc bugs <https://sourceware.org/bugzilla/show_bug.cgi?id=18032>
+                            <https://sourceware.org/bugzilla/show_bug.cgi?id=18036>
+                 are fixed in glibc 2.22.
+                 These bugs are not easy to test for reliably (without mmap),
+                 therefore test the glibc version.  */
+              #if defined __GLIBC__
+              if (__GLIBC__ == 2 && __GLIBC_MINOR__ < 22)
+                result |= 4;
+              #endif
               /* This test fails on FreeBSD 13.2, NetBSD 9.3, Cygwin 3.4.6.  */
               if (!y ("[[:alnum:]]", "a", 0))
                 result |= 8;

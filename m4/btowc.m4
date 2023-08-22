@@ -1,4 +1,4 @@
-# btowc.m4 serial 13
+# btowc.m4 serial 14
 dnl Copyright (C) 2008-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -40,12 +40,12 @@ int main ()
           [
 changequote(,)dnl
            case "$host_os" in
-                      # Guess no on Cygwin.
-             cygwin*) gl_cv_func_btowc_nul="guessing no" ;;
-                      # Guess yes on native Windows.
-             mingw*)  gl_cv_func_btowc_nul="guessing yes" ;;
-                      # Guess yes otherwise.
-             *)       gl_cv_func_btowc_nul="guessing yes" ;;
+                                # Guess no on Cygwin.
+             cygwin*)           gl_cv_func_btowc_nul="guessing no" ;;
+                                # Guess yes on native Windows.
+             mingw* | windows*) gl_cv_func_btowc_nul="guessing yes" ;;
+                                # Guess yes otherwise.
+             *)                 gl_cv_func_btowc_nul="guessing yes" ;;
            esac
 changequote([,])dnl
           ])
@@ -59,12 +59,12 @@ changequote([,])dnl
         dnl is present.
 changequote(,)dnl
         case "$host_os" in
-                  # Guess no on IRIX.
-          irix*)  gl_cv_func_btowc_eof="guessing no" ;;
-                  # Guess yes on native Windows.
-          mingw*) gl_cv_func_btowc_eof="guessing yes" ;;
-                  # Guess yes otherwise.
-          *)      gl_cv_func_btowc_eof="guessing yes" ;;
+                             # Guess no on IRIX.
+          irix*)             gl_cv_func_btowc_eof="guessing no" ;;
+                             # Guess yes on native Windows.
+          mingw* | windows*) gl_cv_func_btowc_eof="guessing yes" ;;
+                             # Guess yes otherwise.
+          *)                 gl_cv_func_btowc_eof="guessing yes" ;;
         esac
 changequote([,])dnl
         if test $LOCALE_FR != none; then
@@ -116,17 +116,18 @@ int main ()
           [gl_cv_func_btowc_consistent=yes],
           [gl_cv_func_btowc_consistent=no],
           [case "$host_os" in
-                     # Guess no on mingw.
-             mingw*) AC_EGREP_CPP([Problem], [
+               # Guess no on mingw.
+             mingw* | windows*)
+               AC_EGREP_CPP([Problem], [
 #ifdef __MINGW32__
  Problem
 #endif
-                       ],
-                       [gl_cv_func_btowc_consistent="guessing no"],
-                       [gl_cv_func_btowc_consistent="guessing yes"])
-                     ;;
-                     # Guess yes otherwise.
-             *)      gl_cv_func_btowc_consistent="guessing yes" ;;
+                 ],
+                 [gl_cv_func_btowc_consistent="guessing no"],
+                 [gl_cv_func_btowc_consistent="guessing yes"])
+               ;;
+               # Guess yes otherwise.
+             *) gl_cv_func_btowc_consistent="guessing yes" ;;
            esac
           ])
       ])

@@ -1,4 +1,4 @@
-# mbsinit.m4 serial 9
+# mbsinit.m4 serial 10
 dnl Copyright (C) 2008, 2010-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -32,7 +32,7 @@ AC_DEFUN([gl_FUNC_MBSINIT],
       dnl states produced by mbrtowc() for an incomplete multibyte character
       dnl in multibyte locales.
       case "$host_os" in
-        mingw*) REPLACE_MBSINIT=1 ;;
+        mingw* | windows*) REPLACE_MBSINIT=1 ;;
       esac
     fi
   fi
