@@ -1,5 +1,8 @@
 2023-08-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.h, c_ast_check.c, dump.c, parser.y, debug.out: s/conv_ast/to_ast/ --
+     simplifies dumping of c_udef_conf_ast.
+   * dump.c: Moved NODISCARD to declaration where it belongs.
    * parser.y: Removed %define api.header.include -- older Bison versions don't
      support it and it really isn't necessary.
 
