@@ -1,5 +1,10 @@
 2023-08-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * mbrtoc32.c, stddef.in.h, unistr/u-strlen.h, absolute-header.m4, btowc.m4,
+     fnmatch.m4, getopt.m4, iswdigit.m4, iswxdigit.m4, locale-fr.m4,
+     locale-ja.m4, locale-zh.m4, locale_h.m4, mbrtoc32.m4, mbrtowc.m4,
+     mbsinit.m4, mbsrtowcs.m4, memchr.m4, setlocale_null.m4, stdint.m4,
+     threadlib.m4, wctype.m4: Updated GnuLib.
    * dump.c: Simplified.
    * dump.c: Now returning "XTID" from c_tpid_name() for an unknown TPID.
    * c_ast.h, c_ast_check.c, dump.c, parser.y, debug.out: s/conv_ast/to_ast/ --
