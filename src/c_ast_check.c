@@ -2272,10 +2272,10 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
     );
     return false;
   }
-  c_ast_t const *const conv_ast = ast->udef_conv.conv_ast;
-  c_ast_t const *const raw_conv_ast = c_ast_untypedef( conv_ast );
-  if ( raw_conv_ast->kind == K_ARRAY ) {
-    print_error( &conv_ast->loc,
+  c_ast_t const *const to_ast = ast->udef_conv.to_ast;
+  c_ast_t const *const raw_to_ast = c_ast_untypedef( to_ast );
+  if ( raw_to_ast->kind == K_ARRAY ) {
+    print_error( &to_ast->loc,
       "user-defined conversion operator can not convert to an array"
     );
     print_hint( "pointer to array" );

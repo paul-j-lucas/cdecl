@@ -4972,7 +4972,7 @@ user_defined_conversion_decl_c_astp: {
     loc: { first_column: 6, last_column: 28 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     udef_conv: {
-      conv_ast: {
+      to_ast: {
         sname: { string: "" },
         unique_id: 1419,
         kind: { value: 0x2, string: "built-in type" },
@@ -4999,7 +4999,7 @@ user_defined_conversion_declaration_c: {
     loc: { first_column: 6, last_column: 28 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     udef_conv: {
-      conv_ast: {
+      to_ast: {
         sname: { string: "" },
         unique_id: 1419,
         kind: { value: 0x2, string: "built-in type" },

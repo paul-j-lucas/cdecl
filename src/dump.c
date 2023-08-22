@@ -327,18 +327,14 @@ dump_params:
       kind_j = json_object_begin( J_INIT, "ptr_mbr", d );
       DUMP_SNAME( d, "class_sname", &ast->ptr_mbr.class_sname );
       FALLTHROUGH;
-
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       kind_j = json_object_begin( kind_j, "ptr_ref", d );
-      c_ast_dump_impl( ast->ptr_ref.to_ast, "to_ast", d );
-      json_object_end( kind_j, d );
-      break;
-
+      FALLTHROUGH;
     case K_USER_DEF_CONVERSION:
-      kind_j = json_object_begin( J_INIT, "udef_conv", d );
-      c_ast_dump_impl( ast->udef_conv.conv_ast, "conv_ast", d );
+      kind_j = json_object_begin( kind_j, "udef_conv", d );
+      c_ast_dump_impl( ast->ptr_ref.to_ast, "to_ast", d );
       json_object_end( kind_j, d );
       break;
 

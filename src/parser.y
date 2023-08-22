@@ -5015,7 +5015,7 @@ user_defined_conversion_decl_c_astp
       ia_type_ast_pop();
 
       c_ast_t *const  type_ast = ia_type_ast_peek();
-      c_ast_t *const  conv_ast = $3;
+      c_ast_t *const  to_ast = $3;
       c_ast_t *const  udc_ast = $5;
       c_tid_t  const  func_qual_stids = $7;
       c_tid_t  const  noexcept_stid = $8;
@@ -5028,7 +5028,7 @@ user_defined_conversion_decl_c_astp
                   "func_equals_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_SNAME( "oper_sname_c_opt", $1 );
-      DUMP_AST( "type_c_ast", conv_ast );
+      DUMP_AST( "type_c_ast", to_ast );
       DUMP_AST( "udc_decl_c_ast_opt", udc_ast );
       DUMP_TID( "func_qualifier_list_c_stid_opt", func_qual_stids );
       DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
@@ -5042,8 +5042,8 @@ user_defined_conversion_decl_c_astp
       );
       if ( type_ast != NULL )
         c_type_or_eq( &$$.ast->type, &type_ast->type );
-      $$.ast->udef_conv.conv_ast = udc_ast != NULL ? udc_ast : conv_ast;
-      $$.target_ast = $$.ast->udef_conv.conv_ast;
+      $$.ast->udef_conv.to_ast = udc_ast != NULL ? udc_ast : to_ast;
+      $$.target_ast = $$.ast->udef_conv.to_ast;
 
       DUMP_AST( "user_defined_conversion_decl_c_astp", $$.ast );
       DUMP_END();

@@ -471,7 +471,7 @@ struct c_typedef_ast {
  * AST node for a #K_USER_DEF_CONVERSION.
  */
 struct c_udef_conv_ast {
-  c_ast_t  *conv_ast;                   ///< Conversion type.
+  c_ast_t  *to_ast;                     ///< What it's a conversion to.
 };
 
 /**
