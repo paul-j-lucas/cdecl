@@ -77,6 +77,8 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
  * @param list The \ref slist of ASTs to dump.
  * @param indent The current indent.
  * @param dout The `FILE` to dump to.
+ *
+ * @sa c_ast_dump()
  */
 void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout );
 
@@ -86,7 +88,6 @@ void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout );
  * @param sname The scoped name to dump.
  * @param dout The `FILE` to dump to.
  *
- * @sa c_ast_dump()
  * @sa c_sname_list_dump()
  */
 void c_sname_dump( c_sname_t const *sname, FILE *dout );
