@@ -1,5 +1,7 @@
 2023-08-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c: Simplified.
+   * dump.c: Now returning "XTID" from c_tpid_name() for an unknown TPID.
    * c_ast.h, c_ast_check.c, dump.c, parser.y, debug.out: s/conv_ast/to_ast/ --
      simplifies dumping of c_udef_conf_ast.
    * dump.c: Moved NODISCARD to declaration where it belongs.
