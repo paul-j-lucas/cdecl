@@ -634,8 +634,8 @@ enum_fixed_type_c_ast: {
 }
 
 enum_c_ast: {
-  rule: "enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt",
-  enum_btid: { btid: 0x800001, string: "enum" },
+  rule: "enum_btids attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt",
+  enum_btids: { btid: 0x800001, string: "enum" },
   attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "none" },
   any_sname_c: { string: "E", scopes: "none" },
   enum_fixed_type_c_ast_opt: {
@@ -875,8 +875,8 @@ sname_c: {
 }
 
 enum_c_ast: {
-  rule: "enum_btid attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt",
-  enum_btid: { btid: 0x800001, string: "enum" },
+  rule: "enum_btids attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt",
+  enum_btids: { btid: 0x800001, string: "enum" },
   attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "none" },
   any_sname_c: { string: "E", scopes: "none" },
   enum_fixed_type_c_ast_opt: null,

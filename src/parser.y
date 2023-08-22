@@ -1718,7 +1718,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>       class_struct_union_btid class_struct_union_btid_exp
 %type   <oper_id>   c_operator
 %type   <tid>       cv_qualifier_stid cv_qualifier_list_stid_opt
-%type   <tid>       enum_btid
+%type   <tid>       enum_btids
 %type   <tid>       eval_expr_init_stid
 %type   <name>      glob glob_opt
 %type   <help>      help_what_opt
@@ -3011,24 +3011,24 @@ enum_declaration_c
     /*
      * C/C++ enum declaration, e.g.: enum E;
      */
-  : enum_btid
+  : enum_btids
     {
       PARSE_ASSERT( is_nested_type_ok( &@1 ) );
       gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c_exp enum_fixed_type_c_ast_opt
     {
-      c_tid_t  const  enum_btid = $1;
+      c_tid_t  const  enum_btids = $1;
       c_ast_t *const  fixed_type_ast = $4;
 
-      DUMP_START( "enum_declaration_c", "enum_btid sname ';'" );
-      DUMP_TID( "enum_btid", enum_btid );
+      DUMP_START( "enum_declaration_c", "enum_btids sname ';'" );
+      DUMP_TID( "enum_btids", enum_btids );
       DUMP_SNAME( "any_sname_c", $3 );
       DUMP_AST( "enum_fixed_type_c_ast_opt", fixed_type_ast );
 
       c_sname_t enum_sname = c_sname_dup( &in_attr.current_scope );
       c_sname_append_sname( &enum_sname, &$3 );
-      c_sname_set_local_type( &enum_sname, &C_TYPE_LIT_B( enum_btid ) );
+      c_sname_set_local_type( &enum_sname, &C_TYPE_LIT_B( enum_btids ) );
       if ( !c_sname_check( &enum_sname, &@3 ) ) {
         c_sname_cleanup( &enum_sname );
         PARSE_ABORT();
@@ -3036,7 +3036,7 @@ enum_declaration_c
 
       c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM, &@3 );
       enum_ast->sname = enum_sname;
-      enum_ast->type.btids = c_tid_check( enum_btid, C_TPID_BASE );
+      enum_ast->type.btids = c_tid_check( enum_btids, C_TPID_BASE );
       enum_ast->enum_.of_ast = fixed_type_ast;
       c_sname_append_name(
         &enum_ast->enum_.enum_sname,
@@ -5763,23 +5763,23 @@ class_struct_union_c_ast
   ;
 
 enum_c_ast
-  : enum_btid attribute_specifier_list_c_atid_opt any_sname_c_exp
+  : enum_btids attribute_specifier_list_c_atid_opt any_sname_c_exp
     enum_fixed_type_c_ast_opt
     {
-      c_tid_t  const  enum_btid = $1;
+      c_tid_t  const  enum_btids = $1;
       c_tid_t  const  atids = $2;
       c_ast_t *const  fixed_type_ast = $4;
 
       DUMP_START( "enum_c_ast",
-                  "enum_btid attribute_specifier_list_c_atid_opt sname "
+                  "enum_btids attribute_specifier_list_c_atid_opt sname "
                   "enum_fixed_type_c_ast_opt" );
-      DUMP_TID( "enum_btid", enum_btid );
+      DUMP_TID( "enum_btids", enum_btids );
       DUMP_TID( "attribute_specifier_list_c_atid_opt", atids );
       DUMP_SNAME( "any_sname_c", $3 );
       DUMP_AST( "enum_fixed_type_c_ast_opt", fixed_type_ast );
 
       $$ = c_ast_new_gc( K_ENUM, &@$ );
-      $$->type.btids = c_tid_check( enum_btid, C_TPID_BASE );
+      $$->type.btids = c_tid_check( enum_btids, C_TPID_BASE );
       $$->type.atids = c_tid_check( atids, C_TPID_ATTR );
       $$->enum_.of_ast = fixed_type_ast;
       $$->enum_.enum_sname = c_sname_move( &$3 );
@@ -5788,7 +5788,7 @@ enum_c_ast
       DUMP_END();
     }
 
-  | enum_btid attribute_specifier_list_c_atid_opt any_sname_c_opt '{'
+  | enum_btids attribute_specifier_list_c_atid_opt any_sname_c_opt '{'
     {
       print_error( &@4,
         "explaining %s declarations not supported by %s\n",
@@ -5801,7 +5801,7 @@ enum_c_ast
 
 /// Gibberish C/C++ enum type /////////////////////////////////////////////////
 
-enum_btid
+enum_btids
   : Y_enum class_struct_btid_opt  { $$ = $1 | $2; }
   ;
 
@@ -7212,11 +7212,11 @@ class_struct_union_english_ast
   ;
 
 enum_english_ast
-  : enum_btid any_sname_c_exp of_type_enum_fixed_type_english_ast_opt
+  : enum_btids any_sname_c_exp of_type_enum_fixed_type_english_ast_opt
     {
       DUMP_START( "enum_english_ast",
-                  "enum_btid sname of_type_enum_fixed_type_english_ast_opt" );
-      DUMP_TID( "enum_btid", $1 );
+                  "enum_btids sname of_type_enum_fixed_type_english_ast_opt" );
+      DUMP_TID( "enum_btids", $1 );
       DUMP_SNAME( "sname", $2 );
       DUMP_AST( "enum_fixed_type_english_ast", $3 );
 
