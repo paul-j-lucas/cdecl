@@ -289,6 +289,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `_Alignas` keyword is supported in.
  *
+ * @sa #LANG_ALIGNED_CSU
  * @sa #LANG_alignas
  */
 #define LANG__Alignas                   LANG_C_MIN(11)
@@ -296,13 +297,25 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `alignas` keyword is supported in.
  *
+ * @sa #LANG_ALIGNED_CSU
  * @sa #LANG__Alignas
  */
 #define LANG_alignas                    LANG_C_CPP_MIN(23,11)
 
 /**
+ * Languages `alignas` may be used with `enum`, `class`, `struct`, and `union`
+ * declarations.
+ *
+ * @sa #LANG_ALIGNMENT
+ * @sa #LANG__Alignas
+ * @sa #LANG_alignas
+ */
+#define LANG_ALIGNED_CSU                LANG_CPP_MIN(11)
+
+/**
  * Lanuages aligned storage is supported in.
  *
+ * @sa #LANG_ALIGNED_CSU
  * @sa #LANG__Alignas
  * @sa #LANG_alignas
  */

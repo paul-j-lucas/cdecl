@@ -334,9 +334,12 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( raw_ast->kind == K_CLASS_STRUCT_UNION && OPT_LANG_IS( C_ANY ) ) {
+  if ( (raw_ast->kind & K_CLASS_STRUCT_UNION) != 0 &&
+       !OPT_LANG_IS( ALIGNED_CSU ) ) {
     print_error( &ast->align.loc,
-      "%s can not be aligned in C\n", c_kind_name( raw_ast->kind )
+      "%s can not be aligned%s\n",
+      c_kind_name( raw_ast->kind ),
+      C_LANG_WHICH( ALIGNED_CSU )
     );
     return false;
   }
