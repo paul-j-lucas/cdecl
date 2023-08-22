@@ -90,6 +90,7 @@ typedef enum j_state j_state_t;
 static void c_ast_dump_impl( c_ast_t const*, char const*, d_state_t* );
 static void c_loc_dump( c_loc_t const*, FILE* );
 static void d_init( d_state_t*, unsigned, FILE* );
+NODISCARD
 static j_state_t json_object_begin( j_state_t, char const*, d_state_t* );
 static void json_object_end( j_state_t, d_state_t* );
 
@@ -465,7 +466,6 @@ static void d_init( d_state_t *d, unsigned indent, FILE *dout ) {
  *
  * @sa json_object_end()
  */
-NODISCARD
 static j_state_t json_object_begin( j_state_t j, char const *key,
                                     d_state_t *d ) {
   assert( d != NULL );
