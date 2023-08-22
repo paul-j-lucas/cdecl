@@ -408,7 +408,7 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
       return "atid";
   } // switch
 
-  UNEXPECTED_INT_VALUE( tpid );
+  return "XTID";
 }
 
 /**
