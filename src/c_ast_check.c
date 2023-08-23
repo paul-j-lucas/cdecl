@@ -384,6 +384,27 @@ static bool c_ast_check_array( c_ast_t const *ast, c_state_t const *c ) {
 
   switch ( ast->array.kind ) {
     case C_ARRAY_EMPTY_SIZE:
+      if ( c_tid_is_any( ast->type.stids, TS_NON_EMPTY_ARRAY ) ) {
+        //
+        // When deciphering gibberish into pseudo-English, this situation is
+        // impossible because the C grammar requires that `static` is
+        // immediately followed by an array size, e.g.:
+        //
+        //      void f( int x[static 2] )
+        //
+        // so omitting the size would result in a syntax error.
+        //
+        // However, this situation can be true when converting pseudo-English
+        // into gibberish because the pseudo-English grammar has `non-empty`
+        // before `array` and the optional size after:
+        //
+        //      declare f as function ( x as non-empty array of int )
+        //
+        // so we have to check for it.
+        //
+        print_error( &ast->loc, "\"non-empty\" requires an array size\n" );
+        return false;
+      }
       break;
     case C_ARRAY_INT_SIZE:
       if ( ast->array.size_int == 0 ) {

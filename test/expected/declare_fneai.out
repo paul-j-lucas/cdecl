@@ -1,0 +1,3 @@
+declare f as function ( x as non-empty array of int )
+                        ^
+25: error: "non-empty" requires an array size

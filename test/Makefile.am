@@ -75,6 +75,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_fkr_pi.test \
 	tests/declare_fmf_v.test \
 	tests/declare_fn.test \
+	tests/declare_fneai.test \
 	tests/declare_frg_v.test \
 	tests/declare_fsti_v.test \
 	tests/declare_fuw3_v.test \
