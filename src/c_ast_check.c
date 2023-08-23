@@ -159,8 +159,27 @@
  * State maintained by c_ast_check_visitor().
  */
 struct c_state {
-  unsigned        flags;                ///< Flags.
   c_ast_t const  *func_ast;             ///< The current function AST, if any.
+
+  /**
+   * Is an AST node the "of" type of a `typedef` AST that is itself a "to" type
+   * of a pointer AST?  For example, given:
+   *
+   *      typedef void V;               // typedef AST1 AST2
+   *      explain V *p;                 // explain AST2 AST3
+   *
+   * That is, if AST3 (`p`) is a pointer to AST2 (`V`) that is a `typedef` of
+   * AST1 (`void`), then AST1 is a "pointee" because it is pointed to from AST3
+   * (indirectly via AST2).
+   *
+   * This is needed only for a pointer to a `typedef` of `void` since:
+   *
+   *  + A variable of `void` is illegal; but:
+   *  + A `typedef` of `void` is legal; and:
+   *  + A pointer to `void` is also legal; therefore:
+   *  + A pointer to a `typedef` of `void` is also legal.
+   */
+  bool            is_pointee;
 };
 typedef struct c_state c_state_t;
 
@@ -168,32 +187,12 @@ typedef struct c_state c_state_t;
  * The signature for functions passed to c_ast_check_visitor().
  *
  * @param ast The AST to check.
- * @param data The flags to use.
+ * @param data The data to use.
  * @return Returns `true` only if all checks passed.
  */
 typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast, user_data_t data );
 
 // local constants
-
-/**
- * Flag for c_ast_check_visitor(): is an AST node the "of" type of a `typedef`
- * AST that is itself a "to" type of a pointer AST?  For example, given:
- *
- *      typedef void V;                 // typedef AST1 AST2
- *      explain V *p;                   // explain AST2 AST3
- *
- * That is, if AST3 (`p`) is a pointer to AST2 (`V`) that is a `typedef` of
- * AST1 (`void`), then AST1 is a "pointee" because it is pointed to from AST3
- * (indirectly via AST2).
- *
- * This is needed only for a pointer to a `typedef` of `void` since:
- *
- *  + A variable of `void` is illegal; but:
- *  + A `typedef` of `void` is legal; and:
- *  + A pointer to `void` is also legal; therefore:
- *  + A pointer to a `typedef` of `void` is also legal.
- */
-static unsigned const C_IS_POINTED_TO     = (1u << 0);
 
 /// Convenience return value for \ref c_ast_visit_fn_t functions.
 static bool const VISITOR_ERROR_FOUND     = true;
@@ -599,7 +598,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_state_t const *c ) {
        ast->kind != K_CAST &&
        !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) &&
        !(OPT_LANG_IS( C_ANY ) && c_tid_is_any( ast->type.stids, TS_EXTERN )) &&
-       (c->flags & C_IS_POINTED_TO) == 0 ) {
+       !c->is_pointee ) {
     print_error( &ast->loc, "variable of void" );
     print_hint( "pointer to void" );
     return false;
@@ -2573,8 +2572,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       c_ast_t const temp_ast = c_ast_sub_typedef( ast );
       c_state_t temp_c;
       MEM_ZERO( &temp_c );
-      if ( c_ast_parent_is_kind( ast, K_POINTER ) )
-        temp_c.flags |= C_IS_POINTED_TO;
+      temp_c.is_pointee = c_ast_parent_is_kind( ast, K_POINTER );
       data.pc = &temp_c;
       return c_ast_visitor_error( &temp_ast, data );
     }
