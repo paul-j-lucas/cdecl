@@ -44,7 +44,7 @@ AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib
 if ENABLE_FLEX_DEBUG
 AM_LFLAGS =	-d
 endif
-AM_YFLAGS =	-d
+AM_YFLAGS =	-d -Wno-yacc
 LDADD =		$(top_builddir)/lib/libgnu.a
 
 BUILT_SOURCES =	parser.c parser.h lexer.c
