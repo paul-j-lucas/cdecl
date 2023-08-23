@@ -26,6 +26,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AM_EXTRA_RECURSIVE_TARGETS([clean-coverage distclean-coverage])
 
+
 # Testing feature: code coverage (disabled by default)
 AC_ARG_ENABLE([coverage],
   AS_HELP_STRING([--enable-coverage], [enable code coverage]),
@@ -55,16 +56,29 @@ AC_PROG_CC
 AS_IF([test "x$ac_cv_prog_cc_c11" = xno],
   [AC_MSG_ERROR([a C11 compiler is required to compile $PACKAGE_NAME])])
 gl_EARLY
-AX_PROG_FLEX(
-  [AC_DEFINE([LEX], [flex], ["flex" found])],
-  AS_IF([test ! -f "$srcdir/src/lexer.c"],
-        [AC_MSG_ERROR([required program "flex" not found])])
+
+# Check for flex & bison only if lexer.c & parser.c aren't present. If present,
+# it likely means a released version was downloaded so flex & bison shouldn't
+# be required.
+flex_min_version="2.5.30"
+bison_min_version="3.4.2"
+AS_IF([test ! -f "$srcdir/src/lexer.c"],
+  [
+    AX_PROG_FLEX([FLEX=$LEX],
+      [AC_MSG_ERROR([required program "flex" not found])])
+    AX_PROG_FLEX_VERSION([$flex_min_version],[],
+      [AC_MSG_ERROR([flex version $flex_min_version or later required])])
+  ]
 )
-AX_PROG_BISON(
-  [AC_DEFINE([YACC], [bison], ["bison" found])],
-  AS_IF([test ! -f "$srcdir/src/parser.c"],
-        [AC_MSG_ERROR([required program "bison" not found])])
+AS_IF([test ! -f "$srcdir/src/parser.c"],
+  [
+    AX_PROG_BISON([BISON=$YACC],
+      [AC_MSG_ERROR([required program "bison" not found])])
+    AX_PROG_BISON_VERSION([$bison_min_version],[],
+      [AC_MSG_ERROR([bison version $bison_min_version or later required])])
+  ]
 )
+
 AC_PROG_INSTALL
 AC_PROG_LN_S
 
