@@ -1863,12 +1863,12 @@ same: print_error( c_ast_params_loc( ast ),
         break;
       case K_REFERENCE:
         param_ast = c_ast_unreference( param_ast );
-        if ( (param_ast->kind & K_ENUM_CLASS_STRUCT_UNION) != 0 )
+        if ( (param_ast->kind & K_ANY_ECSU) != 0 )
           ++ecsu_lref_param_count;
         break;
       case K_RVALUE_REFERENCE:
         param_ast = c_ast_unrvalue_reference( param_ast );
-        if ( (param_ast->kind & K_ENUM_CLASS_STRUCT_UNION) != 0 )
+        if ( (param_ast->kind & K_ANY_ECSU) != 0 )
           ++ecsu_rref_param_count;
         break;
       default:
