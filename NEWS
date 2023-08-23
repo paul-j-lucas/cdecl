@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 14.4
 
+** `_Alignas` forward declarations
+`_Alignas` is now correctly forbidden on forward declarations.
+
 ** Bit-field `typedef`s for `enum`s
 A bit-field of a `typedef` for an `enum` is now correctly forbidden in C:
 

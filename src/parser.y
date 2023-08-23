@@ -3684,6 +3684,11 @@ decl_list_c_opt
         PARSE_ABORT();
       }
 
+      if ( in_attr.align.kind != C_ALIGNAS_NONE ) {
+        print_error( &in_attr.align.loc, "%s invalid here\n", alignas_name() );
+        PARSE_ABORT();
+      }
+
       c_sname_t const *const ecsu_sname = &type_ast->csu.csu_sname;
       assert( !c_sname_empty( ecsu_sname ) );
 
