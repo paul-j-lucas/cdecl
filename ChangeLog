@@ -1,5 +1,8 @@
 2023-08-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c: Replaced c_state::flags with is_pointee.
+   * c_ast_check.c, test/Makefile.am, declare_fneai.out, declare_fneai.test:
+     Now checking for non-empty arrays with no size.
    * c_ast_check.c, c_kind.h, gibberish.c, parser.y:
      s/K_ENUM_CLASS_STRUCT_UNION/K_ANY_ESCU/ so K_ENUM_CLASS_STRUCT_UNION isn't
      confused with a distinct AST kind.
