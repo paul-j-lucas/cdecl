@@ -1,5 +1,6 @@
 2023-08-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Finally worked around AC_PROG_LEX warnings (#9).
    * parser.y: Put %define api.header.include back now that we're requiring
      bison 3.4.* or later.
    * configure.ac, ax_compare_version.m4, ax_prog_bison_version.m4,
