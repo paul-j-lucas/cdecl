@@ -1562,7 +1562,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 
   c_operator_t const *const op = ast->oper.operator;
 
-  if ( (opt_lang & op->lang_ids) == LANG_NONE ) {
+  if ( !opt_lang_is_any( op->lang_ids ) ) {
     print_error( &ast->loc,
       "overloading operator \"%s\" not supported%s\n",
       op->literal, c_lang_which( op->lang_ids )
