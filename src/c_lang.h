@@ -47,7 +47,7 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
- * @defgroup c-lang-group C/C++ Language Versions
+ * @defgroup c-lang-vers-group C/C++ Language Versions
  * Macros, types, constants, and functions for C/C++ language versions.
  *
  * @note @anchor c-lang-order Despite the year of standardization, all versions

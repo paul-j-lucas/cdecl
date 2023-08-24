@@ -44,7 +44,7 @@
 /// @endcond
 
 /**
- * @addtogroup c-lang-group
+ * @addtogroup c-lang-vers-group
  * @{
  */
 
