@@ -359,7 +359,8 @@ struct c_function_ast {
   c_ast_list_t  param_ast_list;         ///< Function parameter(s), if any.
 
   /**
-   * Indicates whether the function is a member, non-member, or neither.
+   * Indicates whether the user specified a function as a member, non-member,
+   * or neither.
    *
    * @sa #C_FUNC_UNSPECIFIED
    * @sa #C_FUNC_MEMBER
