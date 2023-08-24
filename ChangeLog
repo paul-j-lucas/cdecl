@@ -1,3 +1,10 @@
+2023-08-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, c_operator.c,
+     c_operator.h, dump.c, english.c, parser.y, types.h, debug.out: Changed
+     c_function_ast::flags, c_operator_ast::flags, and c_operator::flags to
+     enums.
+
 2023-08-23  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c: Replaced c_state::flags with is_pointee.
