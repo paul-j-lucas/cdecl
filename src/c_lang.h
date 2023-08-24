@@ -46,6 +46,8 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
+///////////////////////////////////////////////////////////////////////////////
+
 /**
  * @defgroup c-lang-vers-group C/C++ Language Versions
  * Macros, types, constants, and functions for C/C++ language versions.
@@ -56,8 +58,6 @@ _GL_INLINE_HEADER_BEGIN
  * (any version of) C++ at any given time.
  * @{
  */
-
-///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Convenience macro for iterating over all languages.
@@ -284,7 +284,27 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define OPT_LANG_IS(LANG_MACRO)   opt_lang_is_any( LANG_##LANG_MACRO )
 
+/** @} */
+
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @defgroup c-lang-feat-group C/C++ Language Features
+ * Macros for C/C++ language features that can be used instead of hard-coding
+ * specific languages directly.  For example, instead of writing:
+ *
+ *      OPT_LANG_IS( MIN(C_95) )
+ *
+ * write:
+ *
+ *      OPT_LANG_IS( DIGRAPHS )
+ *
+ * Macros are in all upper-case except if they contain a C/C++ keyword that is
+ * written as it actually is, e.g., #LANG_const.
+ *
+ * @ingroup c-lang-vers-group
+ * @{
+ */
 
 /**
  * Languages the `_Alignas` keyword is supported in.
@@ -910,6 +930,13 @@ _GL_INLINE_HEADER_BEGIN
  * Languages the `wchar_t` keyword is supported in.
  */
 #define LANG_wchar_t                    LANG_MIN(C_95)
+
+/** @} */
+
+/**
+ * @addtogroup c-lang-vers-group
+ * @{
+ */
 
 ///////////////////////////////////////////////////////////////////////////////
 
