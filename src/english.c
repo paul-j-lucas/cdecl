@@ -315,10 +315,10 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
             FPUTS( "member ", e->eout );
           break;
         case K_OPERATOR: {
-          unsigned const overload_flags = c_ast_oper_overload( ast );
+          c_func_mbr_t const op_mbr = c_ast_oper_overload( ast );
           char const *const op_literal =
-            overload_flags == C_OPER_MEMBER     ? "member "     :
-            overload_flags == C_OPER_NON_MEMBER ? "non-member " :
+            op_mbr == C_FUNC_MEMBER     ? "member "     :
+            op_mbr == C_FUNC_NON_MEMBER ? "non-member " :
             "";
           FPUTS( op_literal, e->eout );
           break;

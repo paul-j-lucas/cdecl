@@ -1141,6 +1141,7 @@ static void yyerror( char const *msg ) {
   slist_t             list;       // multipurpose list
   char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // identifier name, cf. sname
+  c_func_mbr_t        mbr;        // member, non-member, or unspecified
   c_oper_id_t         oper_id;    // overloaded operator ID
   c_sname_t           sname;      // scoped identifier name, cf. name
   char               *str_val;    // quoted string value
@@ -1582,7 +1583,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       enum_unmodified_fixed_type_english_ast
 %type   <ast>       func_decl_english_ast
 %type   <type>      func_qualifier_english_type_opt
-%type   <flags>     member_or_non_member_flags_opt
+%type   <mbr>       member_or_non_member_opt
 %type   <cast_kind> new_style_cast_english
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
@@ -6489,27 +6490,27 @@ parens_opt
 
 func_decl_english_ast
   : // in_attr: qualifier
-    func_qualifier_english_type_opt member_or_non_member_flags_opt
-    Y_function paren_param_decl_list_english_opt returning_english_ast_opt
+    func_qualifier_english_type_opt member_or_non_member_opt Y_function
+    paren_param_decl_list_english_opt returning_english_ast_opt
     {
-      c_type_t const  func_qual_type = $1;
-      unsigned const  flags = $2;
-      c_ast_t *const  ret_ast = $5;
+      c_type_t const      func_qual_type = $1;
+      c_func_mbr_t const  mbr = $2;
+      c_ast_t *const      ret_ast = $5;
 
       DUMP_START( "func_decl_english_ast",
                   "ref_qualifier_english_stid_opt "
-                  "member_or_non_member_flags_opt "
+                  "member_or_non_member_opt "
                   "FUNCTION paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_TYPE( "func_qualifier_english_type_opt", func_qual_type );
-      DUMP_INT( "member_or_non_member_flags_opt", flags );
+      DUMP_INT( "member_or_non_member_opt", mbr );
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $4 );
       DUMP_AST( "returning_english_ast_opt", ret_ast );
 
       $$ = c_ast_new_gc( K_FUNCTION, &@$ );
       $$->type = func_qual_type;
       $$->func.param_ast_list = slist_move( &$4 );
-      $$->func.flags = flags;
+      $$->func.mbr = mbr;
       c_ast_set_parent( ret_ast, $$ );
 
       DUMP_AST( "func_decl_english_ast", $$ );
@@ -6542,24 +6543,24 @@ msc_calling_convention_atid
 oper_decl_english_ast
   : // in_attr: operator
     type_qualifier_list_english_type_opt ref_qualifier_english_stid_opt
-    member_or_non_member_flags_opt operator_exp
-    paren_param_decl_list_english_opt returning_english_ast_opt
+    member_or_non_member_opt operator_exp paren_param_decl_list_english_opt
+    returning_english_ast_opt
     {
-      c_type_t const  qual_type = $1;
-      c_tid_t  const  ref_qual_stid = $2;
-      unsigned const  flags = $3;
-      c_ast_t *const  ret_ast = $6;
+      c_type_t const      qual_type = $1;
+      c_tid_t  const      ref_qual_stid = $2;
+      c_func_mbr_t const  mbr = $3;
+      c_ast_t *const      ret_ast = $6;
 
       DUMP_START( "oper_decl_english_ast",
                   "type_qualifier_list_english_type_opt "
                   "ref_qualifier_english_stid_opt "
-                  "member_or_non_member_flags_opt "
+                  "member_or_non_member_opt "
                   "OPERATOR paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_STR( "in_attr__operator", in_attr.operator->literal );
       DUMP_TYPE( "type_qualifier_list_english_type_opt", qual_type );
       DUMP_TID( "ref_qualifier_english_stid_opt", ref_qual_stid );
-      DUMP_INT( "member_or_non_member_flags_opt", flags );
+      DUMP_INT( "member_or_non_member_opt", mbr );
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $5 );
       DUMP_AST( "returning_english_ast_opt", ret_ast );
 
@@ -6568,7 +6569,7 @@ oper_decl_english_ast
       PARSE_ASSERT( c_type_add_tid( &$$->type, ref_qual_stid, &@2 ) );
       $$->oper.operator = in_attr.operator;
       $$->oper.param_ast_list = slist_move( &$5 );
-      $$->oper.flags = flags;
+      $$->oper.mbr = mbr;
       c_ast_set_parent( ret_ast, $$ );
 
       DUMP_AST( "oper_decl_english_ast", $$ );
@@ -8033,7 +8034,7 @@ lt_exp
     }
   ;
 
-member_or_non_member_flags_opt
+member_or_non_member_opt
   : /* empty */                   { $$ = C_FUNC_UNSPECIFIED; }
   | Y_member                      { $$ = C_FUNC_MEMBER     ; }
   | Y_non_member                  { $$ = C_FUNC_NON_MEMBER ; }

@@ -348,14 +348,15 @@ NODISCARD
 c_sname_t c_ast_move_sname( c_ast_t *ast );
 
 /**
- * Gets whether the operator is a member, non-member, or unspecified.
+ * Gets whether the operator is overloaded as a member, non-member, or
+ * unspecified.
  *
  * @param ast The AST of the operator.
- * @return Returns one of #C_OPER_MEMBER, #C_OPER_NON_MEMBER, or
- * #C_OPER_UNSPECIFIED.
+ * @return Returns one of #C_FUNC_MEMBER, #C_FUNC_NON_MEMBER, or
+ * #C_FUNC_UNSPECIFIED.
  */
 NODISCARD
-unsigned c_ast_oper_overload( c_ast_t const *ast );
+c_func_mbr_t c_ast_oper_overload( c_ast_t const *ast );
 
 /**
  * "Patches" \a type_ast into \a decl_ast only if:

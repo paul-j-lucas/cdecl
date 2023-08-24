@@ -54,33 +54,6 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
- * For c_function_ast.flags, denotes that the user didn't explicitly specify
- * either `member` or `non-member` in pseudo-English.
- *
- * @sa #C_FUNC_MEMBER
- * @sa #C_FUNC_NON_MEMBER
- */
-#define C_FUNC_UNSPECIFIED        0u
-
-/**
- * For c_function_ast.flags, denotes that the user explicitly specified
- * `member` in pseudo-English.
- *
- * @sa #C_FUNC_NON_MEMBER
- * @sa #C_FUNC_UNSPECIFIED
- */
-#define C_FUNC_MEMBER             (1u << 0)
-
-/**
- * For c_function_ast.flags, denotes that the user explicitly specified
- * `non-member` in pseudo-English.
- *
- * @sa #C_FUNC_MEMBER
- * @sa #C_FUNC_UNSPECIFIED
- */
-#define C_FUNC_NON_MEMBER         (1u << 1)
-
-/**
  * Convenience macro for iterating over all captures of a lambda AST.
  *
  * @param VAR The \ref c_capture_t loop variable.
@@ -183,7 +156,7 @@ typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, user_data_t data );
  *
  *  1. A pointer to another, that pointer is always declared first.
  *  2. A bit-width or parameter list, that is always declared second.
- *  3. A scoped name or flags, that are always declared third.
+ *  3. A scoped name or \ref c_func_mbr_t, that are always declared third.
  *
  * Since all the different kinds of AST nodes are declared within a `union`,
  * these `struct` members are at the same offsets.  This makes traversing and
@@ -357,16 +330,7 @@ struct c_enum_ast {
 struct c_function_ast {
   c_ast_t      *ret_ast;                ///< Return type.
   c_ast_list_t  param_ast_list;         ///< Function parameter(s), if any.
-
-  /**
-   * Indicates whether the user specified a function as a member, non-member,
-   * or neither.
-   *
-   * @sa #C_FUNC_UNSPECIFIED
-   * @sa #C_FUNC_MEMBER
-   * @sa #C_FUNC_NON_MEMBER
-   */
-  unsigned      flags;
+  c_func_mbr_t  mbr;                    ///< [Non-]member or unspecified.
 };
 
 /**
@@ -390,17 +354,7 @@ struct c_lambda_ast {
 struct c_operator_ast {
   c_ast_t            *ret_ast;          ///< Return type.
   c_ast_list_t        param_ast_list;   ///< Operator parameter(s), if any.
-
-  /**
-   * Indicates whether the user specified an operator as a member, non-member,
-   * or neither.
-   *
-   * @sa #C_OPER_UNSPECIFIED
-   * @sa #C_OPER_MEMBER
-   * @sa #C_OPER_NON_MEMBER
-   */
-  unsigned            flags;
-
+  c_func_mbr_t        mbr;              ///< [Non-]member or unspecified.
   c_operator_t const *operator;         ///< Which operator it is.
 };
 

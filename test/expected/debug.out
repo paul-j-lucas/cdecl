@@ -2144,7 +2144,7 @@ func_decl_c_astp: {
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [],
       ret_ast: {
         sname: { string: "" },
@@ -2186,7 +2186,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [],
       ret_ast: {
         sname: { string: "" },
@@ -2211,7 +2211,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [],
       ret_ast: {
         sname: { string: "" },
@@ -3020,7 +3020,7 @@ func_decl_c_astp: {
     loc: { first_column: 13, last_column: 43 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [
         {
           sname: { string: "i", scopes: "none" },
@@ -3107,7 +3107,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 43 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [
         {
           sname: { string: "i", scopes: "none" },
@@ -3177,7 +3177,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 43 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [
         {
           sname: { string: "i", scopes: "none" },
@@ -3658,7 +3658,7 @@ func_decl_c_astp: {
     loc: { first_column: 13, last_column: 23 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
@@ -3725,7 +3725,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 23 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
@@ -3775,7 +3775,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 23 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
@@ -4236,7 +4236,7 @@ func_decl_c_astp: {
     loc: { first_column: 13, last_column: 30 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
@@ -4303,7 +4303,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 30 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
@@ -4353,7 +4353,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 30 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
@@ -4510,7 +4510,7 @@ oper_decl_c_astp: {
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     oper: {
       oper_id: { value: 6, string: "!" },
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [],
       ret_ast: {
         sname: { string: "" },
@@ -4553,7 +4553,7 @@ decl_c: {
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     oper: {
       oper_id: { value: 6, string: "!" },
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [],
       ret_ast: {
         sname: { string: "" },
@@ -4579,7 +4579,7 @@ decl_c: {
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     oper: {
       oper_id: { value: 6, string: "!" },
-      flags: { value: 0x0, string: "unspecified" },
+      mbr: "unspecified",
       param_ast_list: [],
       ret_ast: {
         sname: { string: "" },

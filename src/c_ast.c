@@ -102,9 +102,9 @@ static_assert(
 );
 
 static_assert(
-  offsetof( c_operator_ast_t, flags ) ==
-  offsetof( c_function_ast_t, flags ),
-  "offsetof flags in c_operator_ast_t & c_function_ast_t must equal"
+  offsetof( c_operator_ast_t, mbr ) ==
+  offsetof( c_function_ast_t, mbr ),
+  "offsetof mbr in c_operator_ast_t & c_function_ast_t must equal"
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -228,7 +228,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
       dup_ast->oper.operator = ast->oper.operator;
       FALLTHROUGH;
     case K_FUNCTION:
-      dup_ast->func.flags = ast->func.flags;
+      dup_ast->func.mbr = ast->func.mbr;
       FALLTHROUGH;
     case K_APPLE_BLOCK:
       // ret_ast duplicated by referrer code below
@@ -322,7 +322,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
         return false;
       FALLTHROUGH;
     case K_FUNCTION:
-      if ( i_ast->func.flags != j_ast->func.flags )
+      if ( i_ast->func.mbr != j_ast->func.mbr )
         return false;
       FALLTHROUGH;
     case K_APPLE_BLOCK:

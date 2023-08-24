@@ -260,35 +260,19 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
 
     case K_FUNCTION:
       kind_j = json_object_begin( kind_j, "func", d );
-      DUMP_KEY( d, "flags: { value: 0x%X, string: ", ast->func.flags );
-      switch ( ast->func.flags ) {
+      DUMP_KEY( d, "mbr: \"" );
+      switch ( ast->func.mbr ) {
         case C_FUNC_UNSPECIFIED:
-          FPUTS( "\"unspecified\"", d->dout );
+          FPUTS( "unspecified", d->dout );
           break;
         case C_FUNC_MEMBER:
-          FPUTS( "\"member\"", d->dout );
+          FPUTS( "member", d->dout );
           break;
         case C_FUNC_NON_MEMBER:
-          FPUTS( "\"non-member\"", d->dout );
-          break;
-        case C_OPER_OVERLOADABLE:
-          FPUTS( "\"overloadable\"", d->dout );
-          break;
-     // case C_OPER_NOT_OVERLOADABLE:
-     //
-     //   This doesn't need to be here because these flags are what the user
-     //   specified:
-     //
-     //       declare ! as [[non-]member] operator ...
-     //
-     //   not c_operator::flags, so this can never be C_OPER_NOT_OVERLOADABLE.
-     //
-     //   break;
-        default:
-          FPUTS( "'?'", d->dout );
+          FPUTS( "non-member", d->dout );
           break;
       } // switch
-      FPUTS( " }", d->dout );
+      FPUTC( '"', d->dout );
       FALLTHROUGH;
 
     case K_APPLE_BLOCK:

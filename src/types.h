@@ -93,6 +93,15 @@ enum c_cast_kind {
 };
 
 /**
+ * User-specified C++ member or non-member function (or operator).
+ */
+enum c_func_mbr {
+  C_FUNC_UNSPECIFIED  = 0u,             ///< Unspecified.
+  C_FUNC_MEMBER       = (1u << 0),      ///< Member function.
+  C_FUNC_NON_MEMBER   = (1u << 1)       ///< Non-member function.
+};
+
+/**
  * Di/Trigraph mode.
  */
 enum c_graph {
@@ -203,6 +212,7 @@ typedef enum   c_cast_kind        c_cast_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_csu_ast          c_csu_ast_t;
 typedef struct c_enum_ast         c_enum_ast_t;
+typedef enum   c_func_mbr         c_func_mbr_t;
 typedef struct c_function_ast     c_function_ast_t;
 typedef enum   c_graph            c_graph_t;
 typedef struct c_lambda_ast       c_lambda_ast_t;
