@@ -140,7 +140,7 @@ _GL_INLINE_HEADER_BEGIN
 // bit masks
 #define LANG_MASK_C   0x01FFu           /**< C languages bitmask. */
 #define LANG_MASK_CPP 0xFE00u           /**< C++ languages bitmask. */
-#define LANGX_MASK    0x0180u           /**< Language extensions bitmask. */
+#define LANGX_MASK    0x0180u           /**< Language eXtensions bitmask. */
 
 /**
  * Expands into \a LANG_MACRO for autocompletion only if GNU **readline**(3) is
