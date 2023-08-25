@@ -1,5 +1,11 @@
 2023-08-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, declare_af.out, explain_af-c++11.out, explain_af-c.out:
+     Made error messages consistent.
+   * c_ast_check.c, test/Makefile.am, explain.out, explain.test: cdecl now
+     correctly allows references to function and references.
+   * c_ast_check.c: Eliminated separate obj/lref/rref counts.
+   * c_ast_check.c: Moved C_OVERLOAD_NONE check first.
    * print.c: Removed redundant assert()s.
 
 2023-08-24  Paul J. Lucas <paul@lucasmail.org>
