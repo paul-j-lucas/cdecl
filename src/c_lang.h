@@ -471,6 +471,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG__Complex                   LANG_C_MIN(99)
 
 /**
+ * Languages the `co_await` operator is supported in.
+ */
+#define LANG_co_await                   LANG_CPP_MIN(20)
+
+/**
  * Languages "concepts" are supported in.
  */
 #define LANG_CONCEPTS                   LANG_CPP_MIN(20)
@@ -496,6 +501,7 @@ _GL_INLINE_HEADER_BEGIN
  * Languages the `constexpr` keyword is supported in.
  *
  * @sa #LANG_constexpr_RETURN_TYPE
+ * @sa #LANG_constexpr_virtual
  */
 #define LANG_constexpr                  LANG_C_CPP_MIN(23,11)
 
@@ -505,6 +511,13 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_constexpr
  */
 #define LANG_constexpr_RETURN_TYPE      LANG_CPP_MIN(14)
+
+/**
+ * Languages the `constexpr virtual` functions are supported in.
+ *
+ * @sa #LANG_constexpr
+ */
+#define LANG_constexpr_virtual          LANG_CPP_MIN(20)
 
 /**
  * Languages the `constinit` keyword is supported in.
@@ -645,6 +658,11 @@ _GL_INLINE_HEADER_BEGIN
  * Lanuages lambdas are supported in.
  */
 #define LANG_LAMBDA                     LANG_CPP_MIN(11)
+
+/**
+ * Languages the `<=>` operator is supported in.
+ */
+#define LANG_LESS_EQUAL_GREATER         LANG_CPP_MIN(20)
 
 /**
  * Lanuages the `long double` type is supported in.

@@ -420,6 +420,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define C32         LANG_char16_32_t
 #define CEV         LANG_consteval
 #define CEX         LANG_constexpr
+#define CEX_VIR     LANG_constexpr_virtual
 #define CIN         LANG_constinit
 #define COM         LANG__Complex
 #define CPP         LANG_CPP_ANY
@@ -446,7 +447,6 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define UNL         LANG_unsigned_long
 #define UNS         LANG_unsigned_short
 #define UPC         LANG_C_99
-#define VIR_CEX     LANG_CPP_MIN(20)
 #define VOL         LANG_volatile
 #define WCH         LANG_wchar_t
 
@@ -516,8 +516,8 @@ static c_lang_id_t const OK_STORAGE_LANGS[ ARRAY_SIZE( C_STORAGE_INFO ) ][ ARRAY
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&OVR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN&OVR,XXX    ,OVR    ,XXX    ,NOE&OVR,OVR    ,___    ,___    ,___    ,___ },// override
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,THI    ,___    ,___    ,___ },// this
   { XXX    ,XXX    ,CPP    ,CPP    ,XXX    ,CPP    ,XXX    ,CPP    ,CEV    ,CEX    ,XXX    ,DDF    ,DDF    ,CPP    ,XXX    ,FIN    ,XXX    ,CPP    ,THR    ,XXX    ,OVR    ,THI    ,CPP    ,___    ,___ },// throw
-  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,VIR_CEX,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN    ,XXX    ,CPP    ,XXX    ,NOE    ,OVR    ,XXX    ,CPP    ,CPP    ,___ },// virtual
-  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,VIR_CEX,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,XXX    ,NOE    ,OVR    ,XXX    ,CPP    ,CPP    ,CPP },// pure
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX_VIR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN    ,XXX    ,CPP    ,XXX    ,NOE    ,OVR    ,XXX    ,CPP    ,CPP    ,___ },// virtual
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX_VIR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,XXX    ,NOE    ,OVR    ,XXX    ,CPP    ,CPP    ,CPP },// pure
 };
 
 /**

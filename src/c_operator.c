@@ -59,7 +59,7 @@
  */
 static c_operator_t const C_OPERATOR[] = {
   { C_OP_NONE,                "none",     LANG_NONE,        XXX, 0, 0   },
-  { C_OP_CO_AWAIT,            L_co_await, LANG_CPP_MIN(20), EIT, 0, 1   },
+  { C_OP_CO_AWAIT,            L_co_await, LANG_co_await,    EIT, 0, 1   },
   { C_OP_NEW,                 L_new,      LANG_CPP_ANY,     EIT, 1, UNL },
   { C_OP_NEW_ARRAY,           "new[]",    LANG_CPP_ANY,     EIT, 1, UNL },
   { C_OP_DELETE,              L_delete,   LANG_CPP_ANY,     EIT, 1, UNL },
@@ -92,7 +92,8 @@ static c_operator_t const C_OPERATOR[] = {
   { C_OP_LESS2,               "<<",       LANG_CPP_ANY,     EIT, 1, 2   },
   { C_OP_LESS2_EQUAL,         "<<=",      LANG_CPP_ANY,     EIT, 1, 2   },
   { C_OP_LESS_EQUAL,          "<=",       LANG_CPP_ANY,     EIT, 1, 2   },
-  { C_OP_LESS_EQUAL_GREATER,  "<=>",      LANG_CPP_MIN(20), EIT, 1, 2   },
+  { C_OP_LESS_EQUAL_GREATER,  "<=>",      LANG_LESS_EQUAL_GREATER,
+                                                            EIT, 1, 2   },
   { C_OP_EQUAL,               "=",        LANG_CPP_ANY,     MBR, 1, 1   },
   { C_OP_EQUAL2,              "==",       LANG_CPP_ANY,     EIT, 1, 2   },
   { C_OP_GREATER,             ">",        LANG_CPP_ANY,     EIT, 1, 2   },
