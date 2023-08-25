@@ -1,5 +1,6 @@
 2023-08-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c, debug.out: Made dump of _BitInt more compact.
    * c_ast_check.c, declare_af.out, explain_af-c++11.out, explain_af-c.out:
      Made error messages consistent.
    * c_ast_check.c, test/Makefile.am, explain.out, explain.test: cdecl now
