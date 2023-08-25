@@ -63,7 +63,7 @@ _GL_INLINE_HEADER_BEGIN
  * @note #C_OVERLOAD_MEMBER and #C_OVERLOAD_NON_MEMBER _must_ have the same
  * values as #C_FUNC_MEMBER and #C_FUNC_NON_MEMBER, respectively.
  */
-enum c_oper_over {
+enum c_oper_overload {
   C_OVERLOAD_NONE       = 0u,                 ///< Not overloadable.
   C_OVERLOAD_MEMBER     = C_FUNC_MEMBER,      ///< Overloadable as member.
   C_OVERLOAD_NON_MEMBER = C_FUNC_NON_MEMBER,  ///< Overloadable as non-member.
@@ -71,7 +71,7 @@ enum c_oper_over {
   /** Overloadable as either member or non-member. */
   C_OVERLOAD_EITHER     = C_OVERLOAD_MEMBER | C_OVERLOAD_NON_MEMBER,
 };
-typedef enum c_oper_over c_oper_over_t;
+typedef enum c_oper_overload c_oper_overload_t;
 
 /**
  * C++ operator information.
@@ -88,12 +88,12 @@ typedef enum c_oper_over c_oper_over_t;
  * which, use both.
  */
 struct c_operator {
-  c_oper_id_t   oper_id;                ///< ID.
-  char const   *literal;                ///< C string literal of the operator.
-  c_lang_id_t   lang_ids;               ///< Language(s) OK in.
-  c_oper_over_t overload;               ///< Overloadability.
-  unsigned      params_min;             ///< Minimum number of parameters.
-  unsigned      params_max;             ///< Maximum number of parameters.
+  c_oper_id_t       oper_id;            ///< ID.
+  char const       *literal;            ///< C string literal of the operator.
+  c_lang_id_t       lang_ids;           ///< Language(s) OK in.
+  c_oper_overload_t overload;           ///< Overloadability.
+  unsigned          params_min;         ///< Minimum number of parameters.
+  unsigned          params_max;         ///< Maximum number of parameters.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
