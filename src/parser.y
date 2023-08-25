@@ -997,16 +997,16 @@ static void quit( void ) {
  * Shows (prints) the definition of \a tdef.
  *
  * @param tdef The \ref c_typedef to show.
- * @param flags The gibberish flags to use.
+ * @param gib_flags The gibberish flags to use.
  */
-static void show_type( c_typedef_t const *tdef, unsigned flags ) {
+static void show_type( c_typedef_t const *tdef, unsigned gib_flags ) {
   assert( tdef != NULL );
-  if ( flags == C_GIB_NONE ) {
+  if ( gib_flags == C_GIB_NONE ) {
     c_typedef_english( tdef, stdout );
   } else {
     if ( opt_semicolon )
-      flags |= C_GIB_FINAL_SEMI;
-    c_typedef_gibberish( tdef, flags, stdout );
+      gib_flags |= C_GIB_FINAL_SEMI;
+    c_typedef_gibberish( tdef, gib_flags, stdout );
   }
   PUTC( '\n' );
 }
@@ -1015,8 +1015,8 @@ static void show_type( c_typedef_t const *tdef, unsigned flags ) {
  * A visitor function to show (print) \a tdef.
  *
  * @param tdef The \ref c_typedef to show.
- * @param data Optional data passed to the visitor: in this case, the flags of
- * which `typedef`s to print.
+ * @param data Optional data passed to the visitor: in this case, a \ref
+ * show_type_info.
  * @return Always returns `false`.
  */
 NODISCARD
@@ -1042,7 +1042,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
       show_type( tdef, sti->gib_flags );
   }
 
-  return false;
+  return /*stop=*/false;
 }
 
 /**
