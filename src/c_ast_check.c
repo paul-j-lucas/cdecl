@@ -2205,6 +2205,11 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   }
 
   c_ast_t const *const to_ast = ast->ptr_ref.to_ast;
+  //
+  // We do _not_ need the raw type via c_ast_untypedef() because references to
+  // function are legal and references to references are also legal (due to
+  // reference collapsing).
+  //
   switch ( to_ast->kind ) {
     case K_FUNCTION:
     case K_REFERENCE:
