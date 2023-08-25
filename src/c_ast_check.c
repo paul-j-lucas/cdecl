@@ -1883,10 +1883,10 @@ same: print_error( c_ast_params_loc( ast ),
   }
 
   //
-  // Count the number of enum, class, struct, or union parameters.
+  // Count the number of enum, class, struct, or union parameters, or lvalue or
+  // rvalue references thereto.
   //
-  unsigned ecsu_obj_param_count = 0, ecsu_lref_param_count = 0,
-           ecsu_rref_param_count = 0;
+  unsigned ecsu_param_count = 0;
   FOREACH_AST_FUNC_PARAM( param, ast ) {
     //
     // Normally we could use c_param_ast( ast )->kind directly, but we need to
@@ -1897,24 +1897,22 @@ same: print_error( c_ast_params_loc( ast ),
     switch ( param_ast->kind ) {
       case K_CLASS_STRUCT_UNION:
       case K_ENUM:
-        ++ecsu_obj_param_count;
+        ++ecsu_param_count;
         break;
       case K_REFERENCE:
         param_ast = c_ast_unreference( param_ast );
         if ( (param_ast->kind & K_ANY_ECSU) != 0 )
-          ++ecsu_lref_param_count;
+          ++ecsu_param_count;
         break;
       case K_RVALUE_REFERENCE:
         param_ast = c_ast_unrvalue_reference( param_ast );
         if ( (param_ast->kind & K_ANY_ECSU) != 0 )
-          ++ecsu_rref_param_count;
+          ++ecsu_param_count;
         break;
       default:
         /* suppress warning */;
     } // switch
   } // for
-  unsigned const ecsu_param_count =
-    ecsu_obj_param_count + ecsu_lref_param_count + ecsu_rref_param_count;
 
   switch ( mbr ) {
     case C_FUNC_NON_MEMBER:
