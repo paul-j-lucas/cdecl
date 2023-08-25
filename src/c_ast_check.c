@@ -1580,17 +1580,17 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 
   c_operator_t const *const op = ast->oper.operator;
 
-  if ( !opt_lang_is_any( op->lang_ids ) ) {
+  if ( op->overload == C_OVERLOAD_NONE ) {
     print_error( &ast->loc,
-      "overloading operator \"%s\" not supported%s\n",
-      op->literal, c_lang_which( op->lang_ids )
+      "operator %s can not be overloaded\n", op->literal
     );
     return false;
   }
 
-  if ( op->overload == C_OVERLOAD_NONE ) {
+  if ( !opt_lang_is_any( op->lang_ids ) ) {
     print_error( &ast->loc,
-      "operator %s can not be overloaded\n", op->literal
+      "overloading operator \"%s\" not supported%s\n",
+      op->literal, c_lang_which( op->lang_ids )
     );
     return false;
   }
