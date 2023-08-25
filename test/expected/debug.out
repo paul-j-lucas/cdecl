@@ -124,9 +124,7 @@ builtin_type_c_ast: {
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
       bit_width: 0,
-      BitInt: {
-        width: 4
-      }
+      BitInt: { width: 4 }
     }
   }
 }
@@ -143,9 +141,7 @@ east_modified_type_c_ast: {
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
       bit_width: 0,
-      BitInt: {
-        width: 4
-      }
+      BitInt: { width: 4 }
     }
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
@@ -159,9 +155,7 @@ east_modified_type_c_ast: {
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
       bit_width: 0,
-      BitInt: {
-        width: 4
-      }
+      BitInt: { width: 4 }
     }
   }
 }
@@ -184,9 +178,7 @@ sname_c_ast: {
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
       bit_width: 0,
-      BitInt: {
-        width: 4
-      }
+      BitInt: { width: 4 }
     }
   },
   sname: { string: "x", scopes: "none" },
@@ -201,9 +193,7 @@ sname_c_ast: {
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
       bit_width: 0,
-      BitInt: {
-        width: 4
-      }
+      BitInt: { width: 4 }
     }
   }
 }
@@ -221,9 +211,7 @@ decl_c: {
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
       bit_width: 0,
-      BitInt: {
-        width: 4
-      }
+      BitInt: { width: 4 }
     }
   },
   decl_c_astp: {
@@ -236,9 +224,7 @@ decl_c: {
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
       bit_width: 0,
-      BitInt: {
-        width: 4
-      }
+      BitInt: { width: 4 }
     }
   },
   decl_c: {
@@ -251,9 +237,7 @@ decl_c: {
     type: { btid: 0x41, stid: 0x2, atid: 0x4, string: "_BitInt" },
     builtin: {
       bit_width: 0,
-      BitInt: {
-        width: 4
-      }
+      BitInt: { width: 4 }
     }
   }
 }

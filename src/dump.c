@@ -202,11 +202,8 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
     case K_BUILTIN:
       kind_j = json_object_begin( kind_j, "builtin", d );
       DUMP_KEY( d, "bit_width: %u", ast->builtin.bit_width );
-      if ( c_ast_is_tid_any( ast, TB_BITINT ) ) {
-        j_state_t const BitInt_j = json_object_begin( J_INIT, "BitInt", d );
-        DUMP_KEY( d, "width: %u", ast->builtin.BitInt.width );
-        json_object_end( BitInt_j, d );
-      }
+      if ( c_ast_is_tid_any( ast, TB_BITINT ) )
+        DUMP_KEY( d, "BitInt: { width: %u }", ast->builtin.BitInt.width );
       json_object_end( kind_j, d );
       break;
 
