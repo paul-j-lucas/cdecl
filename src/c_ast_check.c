@@ -2636,7 +2636,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
  * Visitor function that checks an AST for type errors.
  *
  * @param ast The AST to visit.
- * @param data The flags to use.
+ * @param data The data to use.
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
