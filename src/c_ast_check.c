@@ -2242,7 +2242,8 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       if ( c_tid_is_any( raw_ret_ast->type.btids, TB_AUTO ) &&
            !OPT_LANG_IS( auto_RETURN_TYPE ) ) {
         print_error( &ret_ast->loc,
-          "\"auto\" return type not supported%s\n",
+          "%s returning \"auto\" not supported%s\n",
+          kind_name,
           C_LANG_WHICH( auto_RETURN_TYPE )
         );
         return false;
@@ -2251,7 +2252,8 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
     case K_CLASS_STRUCT_UNION:
       if ( !OPT_LANG_IS( CSU_RETURN_TYPE ) ) {
         print_error( &ret_ast->loc,
-          "function returning %s not supported%s\n",
+          "%s returning %s not supported%s\n",
+          kind_name,
           c_kind_name( raw_ret_ast->kind ),
           C_LANG_WHICH( CSU_RETURN_TYPE )
         );
