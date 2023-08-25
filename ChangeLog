@@ -1,5 +1,10 @@
 2023-08-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_lang.h, c_operator.c, c_type.c: Added LANG_co_await,
+     LANG_constexpr_virtual, and LANG_LESS_EQUAL_GREATER.
+   * c_operator.h: s/c_oper_over/c_oper_overload/g
+   * c_ast_check.c: Added c_ast_oper_mbr_matches().
+   * c_ast_check.c: Now using opt_lang_is_any().
    * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, c_operator.c,
      c_operator.h, dump.c, english.c, parser.y, types.h, debug.out: Changed
      c_function_ast::flags, c_operator_ast::flags, and c_operator::flags to
