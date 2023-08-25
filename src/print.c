@@ -425,7 +425,6 @@ static size_t token_len( char const *s, size_t s_len, size_t token_offset ) {
 
 void fl_print_error( char const *file, int line, c_loc_t const *loc,
                      char const *format, ... ) {
-  assert( file != NULL );
   assert( format != NULL );
 
   if ( loc != NULL ) {
@@ -497,7 +496,6 @@ void fl_print_error_unknown_name( char const *file, int line,
 
 void fl_print_warning( char const *file, int line, c_loc_t const *loc,
                        char const *format, ... ) {
-  assert( file != NULL );
   assert( format != NULL );
 
   if ( loc != NULL )
