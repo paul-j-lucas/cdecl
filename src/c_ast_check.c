@@ -2205,20 +2205,6 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   }
 
   c_ast_t const *const to_ast = ast->ptr_ref.to_ast;
-  //
-  // We do _not_ need the raw type via c_ast_untypedef() because references to
-  // function are legal and references to references are also legal (due to
-  // reference collapsing).
-  //
-  switch ( to_ast->kind ) {
-    case K_FUNCTION:
-    case K_REFERENCE:
-    case K_RVALUE_REFERENCE:
-      error_kind_to_kind( ast, to_ast, "\n" );
-      return false;
-    default:
-      /* suppress warning */;
-  } // switch
 
   if ( c_ast_is_builtin_any( to_ast, TB_VOID ) ) {
     error_kind_to_tid( ast, TB_VOID, "" );

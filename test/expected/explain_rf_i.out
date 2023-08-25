@@ -1,3 +1,0 @@
-explain int (&f)()
-            ^
-13: error: reference to function is illegal

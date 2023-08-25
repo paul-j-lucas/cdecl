@@ -393,7 +393,6 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_pmrgi.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \
-	tests/explain_rf_i.test \
 	tests/explain_rf_v-c++03.test \
 	tests/explain_rftsrk_v.test \
 	tests/explain_rr.test \

@@ -631,6 +631,8 @@ c++decl> explain virtual ~C()
 declare C as virtual destructor
 c++decl> explain virtual ~S() = 0
 declare S as pure virtual destructor
+c++decl> explain void (&f)()
+declare f as reference to function returning void
 c++decl> explain void f( ... )
 declare f as function (variadic) returning void
 c++decl> explain void f( int &&r )

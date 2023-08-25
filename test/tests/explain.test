@@ -321,6 +321,7 @@ explain virtual void f() = 0
 explain virtual void f() override final
 explain virtual ~C()
 explain virtual ~S() = 0
+explain void (&f)()
 explain void f( ... )
 explain void f( int &&r )
 explain void f( this S &self )
