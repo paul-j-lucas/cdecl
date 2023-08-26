@@ -100,12 +100,12 @@
 #define RSTR_DELIM_LEN_MAX        16u
 
 /**
- * Sets <code>\ref lexer_token</code> to the current Flex token.
+ * Sets \ref lexer_token to the current Flex token.
  */
 #define SET_TOKEN                 SET_TOKEN_TO( yytext )
 
 /**
- * Sets <code>\ref lexer_token</code> to \a S.
+ * Sets \ref lexer_token to \a S.
  *
  * @param S The string to set the token to.
  */
@@ -317,7 +317,7 @@ static inline void newline( void ) {
 }
 
 /**
- * Parses an integer from <code>\ref lexer_token</code>.
+ * Parses an integer from \ref lexer_token.
  *
  * @param base The integer base to use.
  * @return Returns the integer value.
