@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "August 17, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "August 26, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2860,7 +2860,10 @@ struct S { int i; char c; } s;  // not supported
 .RE
 .IP \(bu
 For array sizes,
-only integer literals are supported;
+only integer literals,
+names,
+and \f(CW*\fP
+are supported;
 arbitrary expressions are not.
 .IP \(bu
 In C23 and later,
