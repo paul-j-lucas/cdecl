@@ -1138,12 +1138,12 @@ static void yyerror( char const *msg ) {
   unsigned            flags;      // multipurpose bitwise flags
   cdecl_help_t        help;       // type of help to print
   int                 int_val;    // signed integer value
-  slist_t             list;       // multipurpose list
   char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // identifier name, cf. sname
   c_func_mbr_t        mbr;        // member, non-member, or unspecified
   c_oper_id_t         oper_id;    // overloaded operator ID
   c_sname_t           sname;      // scoped identifier name, cf. name
+  slist_t             sname_list; // c_sname_t list
   char               *str_val;    // quoted string value
   c_typedef_t const  *tdef;       // typedef
   c_tid_t             tid;        // built-ins, storage classes, & qualifiers
@@ -1603,7 +1603,7 @@ static void yyerror( char const *msg ) {
 %type   <type>      scope_english_type scope_english_type_exp
 %type   <sname>     sname_english sname_english_exp sname_english_opt
 %type   <ast>       sname_english_ast
-%type   <list>      sname_list_english
+%type   <sname_list>  sname_list_english
 %type   <tid>       storage_class_english_stid
 %type   <tid>       storage_class_subset_english_stid
 %type   <type>      storage_class_subset_english_type
@@ -1746,58 +1746,15 @@ static void yyerror( char const *msg ) {
 %type   <tid>       virtual_stid_exp virtual_stid_opt
 
 //
-// Bison %destructors.  We don't use the <identifier> syntax because older
-// versions of Bison don't support it.  Each repeats %destructor so each gets
-// its own line number via DTRACE.
+// Bison %destructors.
 //
 // Clean-up of AST nodes is done via garbage collection using gc_ast_list.
 //
-
-// c_ast_list_t
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_decl_list_english
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_decl_list_english_opt
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_c_ast_list
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_c_ast_list_exp
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } param_c_ast_list_opt
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } paren_param_decl_list_english
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); } paren_param_decl_list_english_opt
-
-// name
-%destructor { DTRACE; FREE( $$ ); } any_name
-%destructor { DTRACE; FREE( $$ ); } any_name_exp
-%destructor { DTRACE; FREE( $$ ); } glob_opt
-%destructor { DTRACE; FREE( $$ ); } name_exp
-%destructor { DTRACE; FREE( $$ ); } set_option_value_opt
-%destructor { DTRACE; FREE( $$ ); } str_lit
-%destructor { DTRACE; FREE( $$ ); } str_lit_exp
-%destructor { DTRACE; FREE( $$ ); } Y_CHAR_LIT
-%destructor { DTRACE; FREE( $$ ); } Y_GLOB
-%destructor { DTRACE; FREE( $$ ); } Y_NAME
-%destructor { DTRACE; FREE( $$ ); } Y_SET_OPTION
-%destructor { DTRACE; FREE( $$ ); } Y_STR_LIT
-
-// sname
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c_exp
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } any_sname_c_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } destructor_sname
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_english
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_list_english
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } of_scope_list_english_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } oper_sname_c_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c_exp
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_c_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_english
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sname_english_exp
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } sub_scope_sname_c_opt
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } typedef_sname_c
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } Y_CONSTRUCTOR_SNAME
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } Y_DESTRUCTOR_SNAME
-%destructor { DTRACE; c_sname_cleanup( &$$ ); } Y_OPERATOR_SNAME
-
-// sname_list
-%destructor { DTRACE; c_sname_list_cleanup( &$$ ); } sname_list_english
+%destructor { DTRACE; c_ast_list_cleanup( &$$ ); }    <ast_list>
+%destructor { DTRACE; FREE( $$ ); }                   <name>
+%destructor { DTRACE; c_sname_cleanup( &$$ ); }       <sname>
+%destructor { DTRACE; c_sname_list_cleanup( &$$ ); }  <sname_list>
+%destructor { DTRACE; FREE( $$ ); }                   <str_val>
 
 ///////////////////////////////////////////////////////////////////////////////
 %%
@@ -2238,6 +2195,7 @@ paren_capture_decl_list_english
     }
   | error
     {
+      slist_init( &$$ );
       elaborate_error( "'[' or '(' expected\n" );
     }
   ;
