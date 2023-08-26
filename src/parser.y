@@ -1559,191 +1559,191 @@ static void yyerror( char const *msg ) {
 
 // Sort using: sort -bdfk3
 
-                    // Pseudo-English
-%type   <ast>       alignas_or_width_decl_english_ast
-%type   <align>     alignas_specifier_english
-%type   <ast>       array_decl_english_ast
-%type   <ast>       array_size_decl_ast
-%type   <tid>       attribute_english_atid
-%type   <int_val>   BitInt_english_int
-%type   <ast>       block_decl_english_ast
-%type   <tid>       builtin_no_BitInt_english_btid
-%type   <ast>       builtin_type_english_ast
-%type   <ast>       capture_decl_english_ast
-%type   <ast_list>  capture_decl_list_english capture_decl_list_english_opt
-%type   <ast_list>  capturing_paren_capture_decl_list_english_opt
-%type   <ast>       class_struct_union_english_ast
-%type   <ast>       constructor_decl_english_ast
-%type   <ast>       decl_english_ast decl_english_ast_exp
-%type   <ast>       destructor_decl_english_ast
-%type   <ast>       enum_english_ast
-%type   <ast>       enum_fixed_type_english_ast
-%type   <tid>       enum_fixed_type_modifier_list_english_btid
-%type   <tid>       enum_fixed_type_modifier_list_english_btid_opt
-%type   <ast>       enum_unmodified_fixed_type_english_ast
-%type   <ast>       func_decl_english_ast
-%type   <type>      func_qualifier_english_type_opt
-%type   <mbr>       member_or_non_member_opt
-%type   <cast_kind> new_style_cast_english
-%type   <sname>     of_scope_english
-%type   <sname>     of_scope_list_english of_scope_list_english_opt
-%type   <ast>       of_type_enum_fixed_type_english_ast_opt
-%type   <ast>       oper_decl_english_ast
-%type   <ast_list>  param_decl_list_english param_decl_list_english_opt
-%type   <ast_list>  paren_capture_decl_list_english
-%type   <ast_list>  paren_param_decl_list_english
-%type   <ast_list>  paren_param_decl_list_english_opt
-%type   <ast>       pointer_decl_english_ast
-%type   <ast>       qualifiable_decl_english_ast
-%type   <ast>       qualified_decl_english_ast
-%type   <ast>       reference_decl_english_ast
-%type   <ast>       reference_english_ast
-%type   <tid>       ref_qualifier_english_stid_opt
-%type   <ast>       returning_english_ast returning_english_ast_opt
-%type   <type>      scope_english_type scope_english_type_exp
-%type   <sname>     sname_english sname_english_exp sname_english_opt
-%type   <ast>       sname_english_ast
+                      // Pseudo-English
+%type   <ast>         alignas_or_width_decl_english_ast
+%type   <align>       alignas_specifier_english
+%type   <ast>         array_decl_english_ast
+%type   <ast>         array_size_decl_ast
+%type   <tid>         attribute_english_atid
+%type   <int_val>     BitInt_english_int
+%type   <ast>         block_decl_english_ast
+%type   <tid>         builtin_no_BitInt_english_btid
+%type   <ast>         builtin_type_english_ast
+%type   <ast>         capture_decl_english_ast
+%type   <ast_list>    capture_decl_list_english capture_decl_list_english_opt
+%type   <ast_list>    capturing_paren_capture_decl_list_english_opt
+%type   <ast>         class_struct_union_english_ast
+%type   <ast>         constructor_decl_english_ast
+%type   <ast>         decl_english_ast decl_english_ast_exp
+%type   <ast>         destructor_decl_english_ast
+%type   <ast>         enum_english_ast
+%type   <ast>         enum_fixed_type_english_ast
+%type   <tid>         enum_fixed_type_modifier_list_english_btid
+%type   <tid>         enum_fixed_type_modifier_list_english_btid_opt
+%type   <ast>         enum_unmodified_fixed_type_english_ast
+%type   <ast>         func_decl_english_ast
+%type   <type>        func_qualifier_english_type_opt
+%type   <mbr>         member_or_non_member_opt
+%type   <cast_kind>   new_style_cast_english
+%type   <sname>       of_scope_english
+%type   <sname>       of_scope_list_english of_scope_list_english_opt
+%type   <ast>         of_type_enum_fixed_type_english_ast_opt
+%type   <ast>         oper_decl_english_ast
+%type   <ast_list>    param_decl_list_english param_decl_list_english_opt
+%type   <ast_list>    paren_capture_decl_list_english
+%type   <ast_list>    paren_param_decl_list_english
+%type   <ast_list>    paren_param_decl_list_english_opt
+%type   <ast>         pointer_decl_english_ast
+%type   <ast>         qualifiable_decl_english_ast
+%type   <ast>         qualified_decl_english_ast
+%type   <ast>         reference_decl_english_ast
+%type   <ast>         reference_english_ast
+%type   <tid>         ref_qualifier_english_stid_opt
+%type   <ast>         returning_english_ast returning_english_ast_opt
+%type   <type>        scope_english_type scope_english_type_exp
+%type   <sname>       sname_english sname_english_exp sname_english_opt
+%type   <ast>         sname_english_ast
 %type   <sname_list>  sname_list_english
-%type   <tid>       storage_class_english_stid
-%type   <tid>       storage_class_subset_english_stid
-%type   <type>      storage_class_subset_english_type
-%type   <type>      storage_class_subset_english_type_opt
-%type   <ast>       type_english_ast
-%type   <type>      type_modifier_english_type
-%type   <type>      type_modifier_list_english_type
-%type   <type>      type_modifier_list_english_type_opt
-%type   <tid>       type_qualifier_english_stid
-%type   <type>      type_qualifier_english_type
-%type   <type>      type_qualifier_list_english_type
-%type   <type>      type_qualifier_list_english_type_opt
-%type   <ast>       unmodified_type_english_ast
-%type   <ast>       user_defined_literal_decl_english_ast
-%type   <ast>       var_decl_english_ast
-%type   <uint_val>  width_specifier_english_uint
+%type   <tid>         storage_class_english_stid
+%type   <tid>         storage_class_subset_english_stid
+%type   <type>        storage_class_subset_english_type
+%type   <type>        storage_class_subset_english_type_opt
+%type   <ast>         type_english_ast
+%type   <type>        type_modifier_english_type
+%type   <type>        type_modifier_list_english_type
+%type   <type>        type_modifier_list_english_type_opt
+%type   <tid>         type_qualifier_english_stid
+%type   <type>        type_qualifier_english_type
+%type   <type>        type_qualifier_list_english_type
+%type   <type>        type_qualifier_list_english_type_opt
+%type   <ast>         unmodified_type_english_ast
+%type   <ast>         user_defined_literal_decl_english_ast
+%type   <ast>         var_decl_english_ast
+%type   <uint_val>    width_specifier_english_uint
 
-                    // C/C++ casts
-%type   <ast_pair>  array_cast_c_astp
-%type   <ast_pair>  block_cast_c_astp
-%type   <ast_pair>  cast_c_astp cast_c_astp_opt cast2_c_astp
-%type   <ast_pair>  func_cast_c_astp
-%type   <ast_pair>  nested_cast_c_astp
-%type   <cast_kind> new_style_cast_c
-%type   <ast_pair>  pointer_cast_c_astp
-%type   <ast_pair>  pointer_to_member_cast_c_astp
-%type   <ast_pair>  reference_cast_c_astp
+                      // C/C++ casts
+%type   <ast_pair>    array_cast_c_astp
+%type   <ast_pair>    block_cast_c_astp
+%type   <ast_pair>    cast_c_astp cast_c_astp_opt cast2_c_astp
+%type   <ast_pair>    func_cast_c_astp
+%type   <ast_pair>    nested_cast_c_astp
+%type   <cast_kind>   new_style_cast_c
+%type   <ast_pair>    pointer_cast_c_astp
+%type   <ast_pair>    pointer_to_member_cast_c_astp
+%type   <ast_pair>    reference_cast_c_astp
 
-                    // C/C++ declarations
-%type   <align>     alignas_specifier_c
-%type   <sname>     any_sname_c any_sname_c_exp any_sname_c_opt
-%type   <ast_pair>  array_decl_c_astp
-%type   <ast>       array_size_c_ast
-%type   <ast>       atomic_builtin_typedef_type_c_ast
-%type   <ast>       atomic_specifier_type_c_ast
-%type   <tid>       attribute_c_atid_exp
-%type   <tid>       attribute_list_c_atid attribute_list_c_atid_opt
-%type   <tid>       attribute_specifier_list_c_atid
-%type   <tid>       attribute_specifier_list_c_atid_opt
-%type   <uint_val>  bit_field_c_uint_opt
-%type   <ast_pair>  block_decl_c_astp
-%type   <tid>       builtin_no_BitInt_c_btid
-%type   <ast>       builtin_type_c_ast
-%type   <ast>       capture_decl_c_ast
-%type   <ast_list>  capture_decl_list_c capture_decl_list_c_opt
-%type   <ast>       class_struct_union_c_ast
-%type   <ast_pair>  decl_c_astp decl2_c_astp
-%type   <sname>     destructor_sname
-%type   <ast>       east_modified_type_c_ast
-%type   <ast>       enum_c_ast
-%type   <ast>       enum_class_struct_union_c_ast
-%type   <ast>       enum_fixed_type_c_ast enum_fixed_type_c_ast_opt
-%type   <tid>       enum_fixed_type_modifier_btid
-%type   <tid>       enum_fixed_type_modifier_list_btid
-%type   <tid>       enum_fixed_type_modifier_list_btid_opt
-%type   <ast>       enum_unmodified_fixed_type_c_ast
-%type   <tid>       extern_linkage_c_stid extern_linkage_c_stid_opt
-%type   <ast_pair>  func_decl_c_astp
-%type   <tid>       func_equals_c_stid_opt
-%type   <tid>       func_qualifier_c_stid
-%type   <tid>       func_qualifier_list_c_stid_opt
-%type   <tid>       func_ref_qualifier_c_stid_opt
-%type   <ast_list>  lambda_param_c_ast_list_opt
-%type   <ast>       lambda_return_type_c_ast_opt
-%type   <tid>       linkage_stid
-%type   <ast_pair>  nested_decl_c_astp
-%type   <tid>       noexcept_c_stid_opt
-%type   <ast_pair>  oper_decl_c_astp
-%type   <sname>     oper_sname_c_opt
-%type   <ast>       param_c_ast param_c_ast_exp
-%type   <ast_list>  param_c_ast_list param_c_ast_list_exp param_c_ast_list_opt
-%type   <ast>       pc99_pointer_type_c_ast
-%type   <ast_pair>  pointer_decl_c_astp
-%type   <ast_pair>  pointer_to_member_decl_c_astp
-%type   <ast>       pointer_to_member_type_c_ast
-%type   <ast>       pointer_type_c_ast
-%type   <ast_pair>  reference_decl_c_astp
-%type   <ast>       reference_type_c_ast
-%type   <tid>       restrict_qualifier_c_stid
-%type   <tid>       rparen_func_qualifier_list_c_stid_opt
-%type   <sname>     sname_c sname_c_exp sname_c_opt
-%type   <ast>       sname_c_ast
-%type   <type>      storage_class_c_type
-%type   <sname>     sub_scope_sname_c_opt
-%type   <ast>       trailing_return_type_c_ast_opt
-%type   <ast>       type_c_ast
-%type   <sname>     typedef_sname_c
-%type   <ast>       typedef_type_c_ast
-%type   <ast>       typedef_type_decl_c_ast
-%type   <type>      type_modifier_c_type
-%type   <type>      type_modifier_list_c_type type_modifier_list_c_type_opt
-%type   <ast>       typeof_type_c_ast
-%type   <tid>       type_qualifier_c_stid
-%type   <tid>       type_qualifier_list_c_stid type_qualifier_list_c_stid_opt
-%type   <ast_pair>  user_defined_conversion_decl_c_astp
-%type   <ast_pair>  user_defined_literal_decl_c_astp
-%type   <ast>       using_decl_c_ast
+                      // C/C++ declarations
+%type   <align>       alignas_specifier_c
+%type   <sname>       any_sname_c any_sname_c_exp any_sname_c_opt
+%type   <ast_pair>    array_decl_c_astp
+%type   <ast>         array_size_c_ast
+%type   <ast>         atomic_builtin_typedef_type_c_ast
+%type   <ast>         atomic_specifier_type_c_ast
+%type   <tid>         attribute_c_atid_exp
+%type   <tid>         attribute_list_c_atid attribute_list_c_atid_opt
+%type   <tid>         attribute_specifier_list_c_atid
+%type   <tid>         attribute_specifier_list_c_atid_opt
+%type   <uint_val>    bit_field_c_uint_opt
+%type   <ast_pair>    block_decl_c_astp
+%type   <tid>         builtin_no_BitInt_c_btid
+%type   <ast>         builtin_type_c_ast
+%type   <ast>         capture_decl_c_ast
+%type   <ast_list>    capture_decl_list_c capture_decl_list_c_opt
+%type   <ast>         class_struct_union_c_ast
+%type   <ast_pair>    decl_c_astp decl2_c_astp
+%type   <sname>       destructor_sname
+%type   <ast>         east_modified_type_c_ast
+%type   <ast>         enum_c_ast
+%type   <ast>         enum_class_struct_union_c_ast
+%type   <ast>         enum_fixed_type_c_ast enum_fixed_type_c_ast_opt
+%type   <tid>         enum_fixed_type_modifier_btid
+%type   <tid>         enum_fixed_type_modifier_list_btid
+%type   <tid>         enum_fixed_type_modifier_list_btid_opt
+%type   <ast>         enum_unmodified_fixed_type_c_ast
+%type   <tid>         extern_linkage_c_stid extern_linkage_c_stid_opt
+%type   <ast_pair>    func_decl_c_astp
+%type   <tid>         func_equals_c_stid_opt
+%type   <tid>         func_qualifier_c_stid
+%type   <tid>         func_qualifier_list_c_stid_opt
+%type   <tid>         func_ref_qualifier_c_stid_opt
+%type   <ast_list>    lambda_param_c_ast_list_opt
+%type   <ast>         lambda_return_type_c_ast_opt
+%type   <tid>         linkage_stid
+%type   <ast_pair>    nested_decl_c_astp
+%type   <tid>         noexcept_c_stid_opt
+%type   <ast_pair>    oper_decl_c_astp
+%type   <sname>       oper_sname_c_opt
+%type   <ast>         param_c_ast param_c_ast_exp
+%type   <ast_list>    param_c_ast_list param_c_ast_list_exp param_c_ast_list_opt
+%type   <ast>         pc99_pointer_type_c_ast
+%type   <ast_pair>    pointer_decl_c_astp
+%type   <ast_pair>    pointer_to_member_decl_c_astp
+%type   <ast>         pointer_to_member_type_c_ast
+%type   <ast>         pointer_type_c_ast
+%type   <ast_pair>    reference_decl_c_astp
+%type   <ast>         reference_type_c_ast
+%type   <tid>         restrict_qualifier_c_stid
+%type   <tid>         rparen_func_qualifier_list_c_stid_opt
+%type   <sname>       sname_c sname_c_exp sname_c_opt
+%type   <ast>         sname_c_ast
+%type   <type>        storage_class_c_type
+%type   <sname>       sub_scope_sname_c_opt
+%type   <ast>         trailing_return_type_c_ast_opt
+%type   <ast>         type_c_ast
+%type   <sname>       typedef_sname_c
+%type   <ast>         typedef_type_c_ast
+%type   <ast>         typedef_type_decl_c_ast
+%type   <type>        type_modifier_c_type
+%type   <type>        type_modifier_list_c_type type_modifier_list_c_type_opt
+%type   <ast>         typeof_type_c_ast
+%type   <tid>         type_qualifier_c_stid
+%type   <tid>         type_qualifier_list_c_stid type_qualifier_list_c_stid_opt
+%type   <ast_pair>    user_defined_conversion_decl_c_astp
+%type   <ast_pair>    user_defined_literal_decl_c_astp
+%type   <ast>         using_decl_c_ast
 
-                    // C++ user-defined conversions
-%type   <ast>       pointer_to_member_udc_decl_c_ast
-%type   <ast>       pointer_udc_decl_c_ast
-%type   <ast>       reference_udc_decl_c_ast
-%type   <ast>       udc_decl_c_ast udc_decl_c_ast_opt
+                      // C++ user-defined conversions
+%type   <ast>         pointer_to_member_udc_decl_c_ast
+%type   <ast>         pointer_udc_decl_c_ast
+%type   <ast>         reference_udc_decl_c_ast
+%type   <ast>         udc_decl_c_ast udc_decl_c_ast_opt
 
-                    // Microsoft extensions
-%type   <tid>       msc_calling_convention_atid
-%type   <ast_pair>  msc_calling_convention_c_astp
+                      // Microsoft extensions
+%type   <tid>         msc_calling_convention_atid
+%type   <ast_pair>    msc_calling_convention_c_astp
 
-                    // Miscellaneous
-%type   <tid>       _Noreturn_atid
-%type   <name>      any_name any_name_exp
-%type   <tdef>      any_typedef
-%type   <tid>       class_struct_btid class_struct_btid_opt
-%type   <tid>       class_struct_union_btid class_struct_union_btid_exp
-%type   <oper_id>   c_operator
-%type   <tid>       cv_qualifier_stid cv_qualifier_list_stid_opt
-%type   <tid>       enum_btids
-%type   <tid>       eval_expr_init_stid
-%type   <name>      glob glob_opt
-%type   <help>      help_what_opt
-%type   <tid>       inline_stid_opt
-%type   <int_val>   int_lit_exp int_lit_opt
-%type   <ast>       name_ast
-%type   <name>      name_exp
-%type   <name>      name_opt
-%type   <tid>       namespace_btid_exp
-%type   <sname>     namespace_sname_c namespace_sname_c_exp
-%type   <type>      namespace_type
-%type   <sname>     namespace_typedef_sname_c
-%type   <tid>       noexcept_bool_stid_exp
-%type   <flags>     predefined_or_user_flags_opt
-%type   <str_val>   set_option_value_opt
-%type   <flags>     show_format show_format_exp show_format_opt
-%type   <flags>     show_which_types_flags_opt
-%type   <tid>       static_stid_opt
-%type   <str_val>   str_lit str_lit_exp
-%type   <tid>       this_stid_opt
-%type   <type>      type_modifier_base_type
-%type   <flag>      typename_flag_opt
-%type   <tid>       virtual_stid_exp virtual_stid_opt
+                      // Miscellaneous
+%type   <tid>         _Noreturn_atid
+%type   <name>        any_name any_name_exp
+%type   <tdef>        any_typedef
+%type   <tid>         class_struct_btid class_struct_btid_opt
+%type   <tid>         class_struct_union_btid class_struct_union_btid_exp
+%type   <oper_id>     c_operator
+%type   <tid>         cv_qualifier_stid cv_qualifier_list_stid_opt
+%type   <tid>         enum_btids
+%type   <tid>         eval_expr_init_stid
+%type   <name>        glob glob_opt
+%type   <help>        help_what_opt
+%type   <tid>         inline_stid_opt
+%type   <int_val>     int_lit_exp int_lit_opt
+%type   <ast>         name_ast
+%type   <name>        name_exp
+%type   <name>        name_opt
+%type   <tid>         namespace_btid_exp
+%type   <sname>       namespace_sname_c namespace_sname_c_exp
+%type   <type>        namespace_type
+%type   <sname>       namespace_typedef_sname_c
+%type   <tid>         noexcept_bool_stid_exp
+%type   <flags>       predefined_or_user_flags_opt
+%type   <str_val>     set_option_value_opt
+%type   <flags>       show_format show_format_exp show_format_opt
+%type   <flags>       show_which_types_flags_opt
+%type   <tid>         static_stid_opt
+%type   <str_val>     str_lit str_lit_exp
+%type   <tid>         this_stid_opt
+%type   <type>        type_modifier_base_type
+%type   <flag>        typename_flag_opt
+%type   <tid>         virtual_stid_exp virtual_stid_opt
 
 //
 // Bison %destructors.
