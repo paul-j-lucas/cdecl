@@ -1,3 +1,13 @@
+2023-08-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now using Bison named references.
+
+2023-08-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added mention of name and '*' support for array sizes.
+   * parser.y: Now using Bison "%destructor {...} <T>" syntax since we're now
+     requiring Bison 3.4.* or later.
+
 2023-08-25  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, debug.out: Made dump of _BitInt more compact.
