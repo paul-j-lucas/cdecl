@@ -378,6 +378,8 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
 
   int const status = yyparse() == 0 ? EX_OK : EX_DATAERR;
   PJL_IGNORE_RV( fclose( temp_file ) );
+  if ( unlikely( status == 2 ) )
+    fatal_error( EX_SOFTWARE, "yyparse(): out of memory\n" );
 
   if ( insert_explain ) {
     strbuf_cleanup( &explain_buf );
