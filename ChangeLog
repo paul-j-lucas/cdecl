@@ -1,5 +1,6 @@
 2023-08-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.c: Added (unlikely) check for yyparse() being out of memory.
    * parser.y: Now using Bison named references.
 
 2023-08-26  Paul J. Lucas <paul@lucasmail.org>
