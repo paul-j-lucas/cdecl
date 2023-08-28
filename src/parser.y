@@ -1521,41 +1521,6 @@ static void yyerror( char const *msg ) {
 //      + <uint_val>: "_uint" is appended.
 //  4. Is expected, "_exp" is appended; is optional, "_opt" is appended.
 //
-// Grammar rules still use traditional positional references ($n, $$, @n, and
-// @$) instead of named references because older versions of Bison don't
-// support them.
-//
-// However, to mitigate having to use positional references, blocks of C code
-// for rules having a lot of them start by assigning them to named local
-// variables, for example:
-//
-//      array_decl_c_astp
-//        : // in_attr: type_c_ast
-//          decl2_c_astp array_size_c_ast gnu_attribute_specifier_list_c_opt
-//          {
-//            c_ast_t *const type_ast = ia_type_ast_peek();
-//            c_ast_t *const decl_ast = $1.ast;
-//            c_ast_t *const array_ast = $2;
-//            ...
-//
-// However, this is not done for references of either slist_t or c_sname_t. For
-// example, this is not done:
-//
-//            c_sname_t sname = $3;
-//            ...
-//            ast->sname = c_sname_move( &sname );
-//
-// The problem is that if a parse error occurs, $2 will still refer to the
-// sname and Bison will call the %destructor for it that will result in the
-// same sname being free'd twice because it's also free'd when ast is garbage
-// collected.  Note that moving twice like:
-//
-//            c_sname_t sname = c_sname_move( &$3 );
-//            ...
-//            ast->sname = c_sname_move( &sname );
-//
-// creates a different problem: if an error occurs between the two moves, the
-// %destructor will run on $3 which is now empty and so not clean-up sname.
 
 // Sort using: sort -bdfk3
 
@@ -1802,20 +1767,18 @@ cast_command
     /*
      * C-style cast.
      */
-  : Y_cast sname_english_opt as_into_to_exp decl_english_ast
+  : Y_cast sname_english_opt[sname] as_into_to_exp decl_english_ast[decl_ast]
     {
-      c_ast_t *const decl_ast = $4;
-
       DUMP_START( "cast_command",
                   "CAST sname_english_opt as_into_to_exp decl_english_ast" );
-      DUMP_SNAME( "sname_english_opt", $2 );
-      DUMP_AST( "decl_english_ast", decl_ast );
+      DUMP_SNAME( "sname_english_opt", $sname );
+      DUMP_AST( "decl_english_ast", $decl_ast );
       DUMP_END();
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
-      cast_ast->sname = c_sname_move( &$2 );
+      cast_ast->sname = c_sname_move( &$sname );
       cast_ast->cast.kind = C_CAST_C;
-      cast_ast->cast.to_ast = decl_ast;
+      cast_ast->cast.to_ast = $decl_ast;
       PARSE_ASSERT( c_ast_check( cast_ast ) );
       c_ast_gibberish( cast_ast, C_GIB_CAST, stdout );
     }
@@ -1823,23 +1786,21 @@ cast_command
     /*
      * New C++-style cast.
      */
-  | new_style_cast_english sname_english_exp as_into_to_exp
-    decl_english_ast
+  | new_style_cast_english[cast_kind] sname_english_exp[sname] as_into_to_exp
+    decl_english_ast[decl_ast]
     {
-      c_cast_kind_t const cast_kind = $1;
-      char const   *const cast_literal = c_cast_gibberish( cast_kind );
-      c_ast_t      *const decl_ast = $4;
+      char const *const cast_literal = c_cast_gibberish( $cast_kind );
 
       DUMP_START( "cast_command",
                   "new_style_cast_english CAST sname_english_exp "
                   "as_into_to_exp decl_english_ast" );
       DUMP_STR( "new_style_cast_english", cast_literal );
-      DUMP_SNAME( "sname_english_exp", $2 );
-      DUMP_AST( "decl_english_ast", decl_ast );
+      DUMP_SNAME( "sname_english_exp", $sname );
+      DUMP_AST( "decl_english_ast", $decl_ast );
       DUMP_END();
 
       if ( UNSUPPORTED( CPP_ANY ) ) {
-        print_error( &@1,
+        print_error( &@cast_kind,
           "%s not supported%s\n", cast_literal,
           C_LANG_WHICH( CPP_ANY )
         );
@@ -1847,9 +1808,9 @@ cast_command
       }
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
-      cast_ast->sname = c_sname_move( &$2 );
-      cast_ast->cast.kind = cast_kind;
-      cast_ast->cast.to_ast = decl_ast;
+      cast_ast->sname = c_sname_move( &$sname );
+      cast_ast->cast.kind = $cast_kind;
+      cast_ast->cast.to_ast = $decl_ast;
       PARSE_ASSERT( c_ast_check( cast_ast ) );
       c_ast_gibberish( cast_ast, C_GIB_CAST, stdout );
     }
@@ -1869,12 +1830,10 @@ declare_command
     /*
      * Common declaration, e.g.: declare x as int.
      */
-  : Y_declare sname_list_english as_exp alignas_or_width_decl_english_ast
+  : Y_declare sname_list_english[sname_list] as_exp
+    alignas_or_width_decl_english_ast[decl_ast]
     {
-      slist_t         sname_list = slist_move( &$2 );
-      c_ast_t *const  decl_ast = $4;
-
-      if ( decl_ast->kind == K_NAME ) {
+      if ( $decl_ast->kind == K_NAME ) {
         //
         // This checks for a case like:
         //
@@ -1888,28 +1847,28 @@ declare_command
         // name, but the AST node is itself a name and overwriting it would
         // lose information.
         //
-        assert( !c_sname_empty( &decl_ast->sname ) );
-        print_error_unknown_name( &@4, &decl_ast->sname );
-        c_sname_list_cleanup( &sname_list );
+        assert( !c_sname_empty( &$decl_ast->sname ) );
+        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
+        c_sname_list_cleanup( &$sname_list );
         PARSE_ABORT();
       }
 
       DUMP_START( "declare_command",
                   "DECLARE sname_list_english AS "
                   "alignas_or_width_decl_english_ast" );
-      DUMP_SNAME_LIST( "sname_list_english", sname_list );
-      DUMP_AST( "alignas_or_width_decl_english_ast", decl_ast );
+      DUMP_SNAME_LIST( "sname_list_english", $sname_list );
+      DUMP_AST( "alignas_or_width_decl_english_ast", $decl_ast );
 
-      decl_ast->loc = @2;
+      $decl_ast->loc = @sname_list;
 
-      DUMP_AST( "decl_english", decl_ast );
+      DUMP_AST( "decl_english", $decl_ast );
       DUMP_END();
 
       // To check the declaration, it needs a name: just dup the first one.
-      c_sname_t temp_sname = c_sname_dup( slist_front( &sname_list ) );
-      c_sname_set( &decl_ast->sname, &temp_sname );
+      c_sname_t temp_sname = c_sname_dup( slist_front( &$sname_list ) );
+      c_sname_set( &$decl_ast->sname, &temp_sname );
 
-      bool ok = c_ast_check( decl_ast );
+      bool ok = c_ast_check( $decl_ast );
 
       if ( ok ) {
         //
@@ -1921,11 +1880,11 @@ declare_command
         // This check is done now in the parser rather than later in the AST
         // since similar checks are also done here in the parser.
         //
-        FOREACH_SLIST_NODE( sname_node, &sname_list ) {
+        FOREACH_SLIST_NODE( sname_node, &$sname_list ) {
           c_sname_t const *const sname = sname_node->data;
           c_typedef_t const *const tdef = c_typedef_find_sname( sname );
           if ( tdef != NULL ) {
-            print_error( &decl_ast->loc,
+            print_error( &$decl_ast->loc,
               "\"%s\": previously declared as type: ",
               c_sname_full_name( sname )
             );
@@ -1938,9 +1897,9 @@ declare_command
 
       if ( ok ) {
         unsigned gib_flags = C_GIB_DECL;
-        if ( slist_len( &sname_list ) > 1 )
+        if ( slist_len( &$sname_list ) > 1 )
           gib_flags |= C_GIB_MULTI_DECL;
-        bool const print_as_using = c_ast_print_as_using( decl_ast );
+        bool const print_as_using = c_ast_print_as_using( $decl_ast );
         if ( print_as_using && opt_semicolon ) {
           //
           // When declaring multiple types via the same "declare" as "using"
@@ -1954,13 +1913,13 @@ declare_command
           gib_flags |= C_GIB_FINAL_SEMI;
         }
 
-        FOREACH_SLIST_NODE( sname_node, &sname_list ) {
+        FOREACH_SLIST_NODE( sname_node, &$sname_list ) {
           c_sname_t *const cur_sname = sname_node->data;
-          c_sname_set( &decl_ast->sname, cur_sname );
+          c_sname_set( &$decl_ast->sname, cur_sname );
           bool const is_last_sname = sname_node->next == NULL;
           if ( is_last_sname && opt_semicolon )
             gib_flags |= C_GIB_FINAL_SEMI;
-          c_ast_gibberish( decl_ast, gib_flags, stdout );
+          c_ast_gibberish( $decl_ast, gib_flags, stdout );
           if ( is_last_sname )
             continue;
           if ( print_as_using ) {
@@ -1989,7 +1948,7 @@ declare_command
         } // for
       }
 
-      c_sname_list_cleanup( &sname_list );
+      c_sname_list_cleanup( &$sname_list );
       PARSE_ASSERT( ok );
       PUTC( '\n' );
     }
@@ -1997,7 +1956,7 @@ declare_command
     /*
      * C++ overloaded operator declaration.
      */
-  | Y_declare c_operator
+  | Y_declare c_operator[oper_id]
     { //
       // This check is done now in the parser rather than later in the AST
       // since it yields a better error message since otherwise it would warn
@@ -2005,61 +1964,62 @@ declare_command
       // bigger error that operator overloading isn't supported in C.
       //
       if ( UNSUPPORTED( CPP_ANY ) ) {
-        print_error( &@2,
+        print_error( &@oper_id,
           "operator overloading not supported%s\n",
           C_LANG_WHICH( CPP_ANY )
         );
         PARSE_ABORT();
       }
-      in_attr.operator = c_oper_get( $2 );
+      in_attr.operator = c_oper_get( $oper_id );
     }
-    of_scope_list_english_opt as_exp oper_decl_english_ast
+    of_scope_list_english_opt[scope_sname] as_exp
+    oper_decl_english_ast[oper_ast]
     {
-      c_ast_t *const oper_ast = $6;
-
       DUMP_START( "declare_command",
                   "DECLARE c_operator of_scope_list_english_opt AS "
                   "oper_decl_english_ast" );
-      DUMP_STR( "c_operator", oper_ast->oper.operator->literal );
-      DUMP_SNAME( "of_scope_list_english_opt", $4 );
-      DUMP_AST( "oper_decl_english_ast", oper_ast );
+      DUMP_STR( "c_operator", $oper_ast->oper.operator->literal );
+      DUMP_SNAME( "of_scope_list_english_opt", $scope_sname );
+      DUMP_AST( "oper_decl_english_ast", $oper_ast );
 
-      c_sname_set( &oper_ast->sname, &$4 );
-      oper_ast->loc = @2;
+      c_sname_set( &$oper_ast->sname, &$scope_sname );
+      $oper_ast->loc = @oper_id;
 
-      DUMP_AST( "declare_command", oper_ast );
+      DUMP_AST( "declare_command", $oper_ast );
       DUMP_END();
 
-      PARSE_ASSERT( c_ast_check( oper_ast ) );
+      PARSE_ASSERT( c_ast_check( $oper_ast ) );
       unsigned gib_flags = C_GIB_DECL;
       if ( opt_semicolon )
         gib_flags |= C_GIB_FINAL_SEMI;
-      c_ast_gibberish( oper_ast, gib_flags, stdout );
+      c_ast_gibberish( $oper_ast, gib_flags, stdout );
       PUTC( '\n' );
     }
 
   /*
    * C++ lambda.
    */
-  | Y_declare storage_class_subset_english_type_opt Y_lambda
-    capturing_paren_capture_decl_list_english_opt
-    paren_param_decl_list_english_opt returning_english_ast_opt
+  | Y_declare storage_class_subset_english_type_opt[store_type] Y_lambda
+    capturing_paren_capture_decl_list_english_opt[capture_ast_list]
+    paren_param_decl_list_english_opt[param_ast_list]
+    returning_english_ast_opt[ret_ast]
     {
       DUMP_START( "declare_command",
                   "DECLARE storage_class_subset_english_type_opt "
                   "LAMBDA capturing_paren_capture_decl_list_english_opt "
                   "paren_param_decl_list_english_opt"
                   "returning_english_ast_opt" );
-      DUMP_TYPE( "storage_class_subset_english_type_opt", $2 );
-      DUMP_AST_LIST( "capturing_paren_capture_decl_list_english_opt", $4 );
-      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $5 );
-      DUMP_AST( "returning_english_ast_opt", $6 );
+      DUMP_TYPE( "storage_class_subset_english_type_opt", $store_type );
+      DUMP_AST_LIST( "capturing_paren_capture_decl_list_english_opt",
+                     $capture_ast_list );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
+      DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
       c_ast_t *const lambda_ast = c_ast_new_gc( K_LAMBDA, &@$ );
-      lambda_ast->type = $2;
-      lambda_ast->lambda.capture_ast_list = slist_move( &$4 );
-      lambda_ast->lambda.param_ast_list = slist_move( &$5 );
-      c_ast_set_parent( $6, lambda_ast );
+      lambda_ast->type = $store_type;
+      lambda_ast->lambda.capture_ast_list = slist_move( &$capture_ast_list );
+      lambda_ast->lambda.param_ast_list = slist_move( &$param_ast_list );
+      c_ast_set_parent( $ret_ast, lambda_ast );
 
       DUMP_AST( "declare_command", lambda_ast );
       DUMP_END();
@@ -2072,29 +2032,26 @@ declare_command
     /*
      * C++ user-defined conversion operator declaration.
      */
-  | Y_declare storage_class_subset_english_type_opt
-    cv_qualifier_list_stid_opt user_defined conversion_exp operator_opt
-    of_scope_list_english_opt returning_exp decl_english_ast
+  | Y_declare storage_class_subset_english_type_opt[store_type]
+    cv_qualifier_list_stid_opt[cv_qual_stid] user_defined conversion_exp
+    operator_opt of_scope_list_english_opt[scope_sname] returning_exp
+    decl_english_ast[ret_ast]
     {
-      c_type_t const  storage_type = $2;
-      c_tid_t  const  cv_qual_stid = $3;
-      c_ast_t *const  ret_ast = $9;
-
       DUMP_START( "declare_command",
                   "DECLARE storage_class_subset_english_type_opt "
                   "cv_qualifier_list_stid_opt "
                   "USER-DEFINED CONVERSION OPERATOR "
                   "of_scope_list_english_opt "
                   "RETURNING decl_english_ast" );
-      DUMP_TYPE( "storage_class_subset_english_type_opt", storage_type );
-      DUMP_TID( "cv_qualifier_list_stid_opt", cv_qual_stid );
-      DUMP_SNAME( "of_scope_list_english_opt", $7 );
-      DUMP_AST( "decl_english_ast", ret_ast );
+      DUMP_TYPE( "storage_class_subset_english_type_opt", $store_type );
+      DUMP_TID( "cv_qualifier_list_stid_opt", $cv_qual_stid );
+      DUMP_SNAME( "of_scope_list_english_opt", $scope_sname );
+      DUMP_AST( "decl_english_ast", $ret_ast );
 
       c_ast_t *const udc_ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
-      c_sname_set( &udc_ast->sname, &$7 );
-      udc_ast->type = c_type_or( &storage_type, &C_TYPE_LIT_S( cv_qual_stid ) );
-      c_ast_set_parent( ret_ast, udc_ast );
+      c_sname_set( &udc_ast->sname, &$scope_sname );
+      udc_ast->type = c_type_or( &$store_type, &C_TYPE_LIT_S( $cv_qual_stid ) );
+      c_ast_set_parent( $ret_ast, udc_ast );
 
       DUMP_AST( "declare_command", udc_ast );
       DUMP_END();
@@ -2119,44 +2076,44 @@ declare_command
 alignas_or_width_decl_english_ast
   : decl_english_ast
 
-  | decl_english_ast alignas_specifier_english
+  | decl_english_ast[decl_ast] alignas_specifier_english[align]
     {
-      $$ = $1;
-      $$->align = $2;
+      $$ = $decl_ast;
+      $$->align = $align;
       $$->loc = @$;
     }
 
-  | decl_english_ast width_specifier_english_uint
+  | decl_english_ast[decl_ast] width_specifier_english_uint[bit_width]
     { //
       // This check has to be done now in the parser rather than later in the
       // AST since we need to use the builtin union member now.
       //
-      if ( !c_ast_is_integral( $1 ) ) {
-        print_error( &@2,
+      if ( !c_ast_is_integral( $decl_ast ) ) {
+        print_error( &@bit_width,
           "bit-fields can be only of integral %stypes\n",
           OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
         );
         PARSE_ABORT();
       }
 
-      $$ = $1;
+      $$ = $decl_ast;
       $$->loc = @$;
-      $$->bit_field.bit_width = $2;
+      $$->bit_field.bit_width = $bit_width;
     }
   ;
 
 alignas_specifier_english
-  : aligned_english Y_INT_LIT bytes_opt
+  : aligned_english Y_INT_LIT[width] bytes_opt
     {
       $$.kind = C_ALIGNAS_EXPR;
       $$.loc = @1;
-      $$.expr = STATIC_CAST( unsigned, $2 );
+      $$.expr = STATIC_CAST( unsigned, $width );
     }
-  | aligned_english decl_english_ast
+  | aligned_english decl_english_ast[decl_ast]
     {
       $$.kind = C_ALIGNAS_TYPE;
       $$.loc = @1;
-      $$.type_ast = $2;
+      $$.type_ast = $decl_ast;
     }
   | aligned_english error
     {
@@ -2174,24 +2131,24 @@ aligned_english
 
 capturing_paren_capture_decl_list_english_opt
   : /* empty */                   { slist_init( &$$ ); }
-  | Y_capturing paren_capture_decl_list_english
+  | Y_capturing paren_capture_decl_list_english[decl_ast_list]
     {
-      $$ = $2;
+      $$ = $decl_ast_list;
     }
-  | '[' capture_decl_list_english_opt ']'
+  | '[' capture_decl_list_english_opt[decl_ast_list] ']'
     {
-      $$ = $2;
+      $$ = $decl_ast_list;
     }
   ;
 
 paren_capture_decl_list_english
-  : '[' capture_decl_list_english_opt ']'
+  : '[' capture_decl_list_english_opt[decl_ast_list] ']'
     {
-      $$ = $2;
+      $$ = $decl_ast_list;
     }
-  | '(' capture_decl_list_english_opt ')'
+  | '(' capture_decl_list_english_opt[decl_ast_list] ')'
     {
-      $$ = $2;
+      $$ = $decl_ast_list;
     }
   | error
     {
@@ -2206,28 +2163,29 @@ capture_decl_list_english_opt
   ;
 
 capture_decl_list_english
-  : capture_decl_list_english comma_exp capture_decl_english_ast
+  : capture_decl_list_english[decl_ast_list] comma_exp
+    capture_decl_english_ast[decl_ast]
     {
       DUMP_START( "capture_decl_list_english",
                   "capture_decl_list_english ',' capture_decl_english_ast" );
-      DUMP_AST_LIST( "capture_decl_list_english", $1 );
-      DUMP_AST( "capture_decl_english_ast", $3 );
+      DUMP_AST_LIST( "capture_decl_list_english", $decl_ast_list );
+      DUMP_AST( "capture_decl_english_ast", $decl_ast );
 
-      $$ = $1;
-      slist_push_back( &$$, $3 );
+      $$ = $decl_ast_list;
+      slist_push_back( &$$, $decl_ast );
 
       DUMP_AST_LIST( "capture_decl_list_english", $$ );
       DUMP_END();
     }
 
-  | capture_decl_english_ast
+  | capture_decl_english_ast[decl_ast]
     {
       DUMP_START( "capture_decl_list_english",
                   "capture_decl_english_ast" );
-      DUMP_AST( "capture_decl_english_ast", $1 );
+      DUMP_AST( "capture_decl_english_ast", $decl_ast );
 
       slist_init( &$$ );
-      slist_push_back( &$$, $1 );
+      slist_push_back( &$$, $decl_ast );
 
       DUMP_AST_LIST( "capture_decl_list_english", $$ );
       DUMP_END();
@@ -2245,10 +2203,10 @@ capture_decl_english_ast
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
       $$->capture.kind = C_CAPTURE_REFERENCE;
     }
-  | Y_reference Y_to name_exp
+  | Y_reference Y_to name_exp[name]
     {
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
-      c_sname_append_name( &$$->sname, $3 );
+      c_sname_append_name( &$$->sname, $name );
       $$->capture.kind = C_CAPTURE_REFERENCE;
     }
   | capture_decl_c_ast
@@ -2261,32 +2219,32 @@ capture_default_opt
   ;
 
 width_specifier_english_uint
-  : Y_width int_lit_exp bits_opt
+  : Y_width int_lit_exp[bit_width] bits_opt
     { //
       // This check has to be done now in the parser rather than later in the
       // AST since we use 0 to mean "no bit-field."
       //
-      if ( $2 == 0 ) {
-        print_error( &@2, "bit-field width must be > 0\n" );
+      if ( $bit_width == 0 ) {
+        print_error( &@bit_width, "bit-field width must be > 0\n" );
         PARSE_ABORT();
       }
-      $$ = STATIC_CAST( unsigned, $2 );
+      $$ = STATIC_CAST( unsigned, $bit_width );
     }
   ;
 
 storage_class_subset_english_type_opt
   : /* empty */                   { $$ = T_NONE; }
-  | storage_class_subset_english_type_opt
-    storage_class_subset_english_type
+  | storage_class_subset_english_type_opt[left_store_type]
+    storage_class_subset_english_type[right_store_type]
     {
       DUMP_START( "storage_class_subset_english_type_opt",
                   "storage_class_subset_english_type_opt "
                   "storage_class_subset_english_type" );
-      DUMP_TYPE( "storage_class_subset_english_type_opt", $1 );
-      DUMP_TYPE( "storage_class_subset_english_type", $2 );
+      DUMP_TYPE( "storage_class_subset_english_type_opt", $left_store_type );
+      DUMP_TYPE( "storage_class_subset_english_type", $right_store_type );
 
-      $$ = $1;
-      PARSE_ASSERT( c_type_add( &$$, &$2, &@2 ) );
+      $$ = $left_store_type;
+      PARSE_ASSERT( c_type_add( &$$, &$right_store_type, &@right_store_type ) );
 
       DUMP_TYPE( "storage_class_subset_english_type_opt", $$ );
       DUMP_END();
@@ -2316,9 +2274,9 @@ storage_class_subset_english_type
    * since only special members can be deleted anyway.
    */
 storage_class_subset_english_stid
-  : Y_const_ENG eval_expr_init_stid
+  : Y_const_ENG eval_expr_init_stid[stid]
     {
-      $$ = $2;
+      $$ = $stid;
     }
   | Y_consteval
   | Y_constexpr
@@ -2341,20 +2299,18 @@ storage_class_subset_english_stid
 /// define command ////////////////////////////////////////////////////////////
 
 define_command
-  : Y_define sname_english_exp as_exp decl_english_ast
+  : Y_define sname_english_exp[sname] as_exp decl_english_ast[decl_ast]
     {
-      c_ast_t *const ast = $4;
-
       DUMP_START( "define_command",
                   "DEFINE sname_english AS decl_english_ast" );
-      DUMP_SNAME( "sname", $2 );
-      DUMP_AST( "decl_english_ast", ast );
+      DUMP_SNAME( "sname", $sname );
+      DUMP_AST( "decl_english_ast", $decl_ast );
 
-      c_sname_set( &ast->sname, &$2 );
+      c_sname_set( &$decl_ast->sname, &$sname );
 
-      if ( ast->kind == K_NAME ) {      // see the comment in "declare_command"
-        assert( !c_sname_empty( &ast->sname ) );
-        print_error_unknown_name( &@4, &ast->sname );
+      if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
+        assert( !c_sname_empty( &$decl_ast->sname ) );
+        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
         PARSE_ABORT();
       }
 
@@ -2369,19 +2325,19 @@ define_command
       // i.e., a defined type with a storage class.  Once the semantic checks
       // pass, remove the TS_TYPEDEF.
       //
-      PARSE_ASSERT( c_type_add( &ast->type, &T_TS_TYPEDEF, &@4 ) );
-      PARSE_ASSERT( c_ast_check( ast ) );
-      PJL_IGNORE_RV( c_ast_take_type_any( ast, &T_TS_TYPEDEF ) );
+      PARSE_ASSERT( c_type_add( &$decl_ast->type, &T_TS_TYPEDEF, &@decl_ast ) );
+      PARSE_ASSERT( c_ast_check( $decl_ast ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( $decl_ast, &T_TS_TYPEDEF ) );
 
-      if ( c_tid_is_any( ast->type.btids, TB_ANY_SCOPE ) )
-        c_sname_set_local_type( &ast->sname, &ast->type );
-      c_sname_fill_in_namespaces( &ast->sname );
+      if ( c_tid_is_any( $decl_ast->type.btids, TB_ANY_SCOPE ) )
+        c_sname_set_local_type( &$decl_ast->sname, &$decl_ast->type );
+      c_sname_fill_in_namespaces( &$decl_ast->sname );
 
-      DUMP_AST( "defined.ast", ast );
+      DUMP_AST( "defined.ast", $decl_ast );
       DUMP_END();
 
-      PARSE_ASSERT( c_sname_check( &ast->sname, &@2 ) );
-      PARSE_ASSERT( add_type( ast, C_GIB_NONE ) );
+      PARSE_ASSERT( c_sname_check( &$decl_ast->sname, &@sname ) );
+      PARSE_ASSERT( add_type( $decl_ast, C_GIB_NONE ) );
     }
   ;
 
@@ -2481,27 +2437,29 @@ explain_command
     /*
      * C++ using declaration.
      */
-  | explain extern_linkage_c_stid_opt using_decl_c_ast
+  | explain extern_linkage_c_stid_opt[extern_stid] using_decl_c_ast[decl_ast]
     {
       DUMP_START( "explain_command",
                   "EXPLAIN extern_linkage_c_stid_opt using_decl_c_ast" );
-      DUMP_TID( "extern_linkage_c_stid_opt", $2 );
-      DUMP_AST( "using_decl_c_ast", $3 );
+      DUMP_TID( "extern_linkage_c_stid_opt", $extern_stid );
+      DUMP_AST( "using_decl_c_ast", $decl_ast );
       DUMP_END();
 
-      PARSE_ASSERT( c_type_add_tid( &$3->type, $2, &@2 ) );
-      PARSE_ASSERT( c_ast_check( $3 ) );
-      c_ast_english( $3, stdout );
+      PARSE_ASSERT(
+        c_type_add_tid( &$decl_ast->type, $extern_stid, &@extern_stid )
+      );
+      PARSE_ASSERT( c_ast_check( $decl_ast ) );
+      c_ast_english( $decl_ast, stdout );
     }
 
     /*
      * If we match an sname, it means it wasn't an sname for a type (otherwise
      * we would have matched the "Common declaration" case above).
      */
-  | explain sname_c
+  | explain sname_c[sname]
     {
-      print_error_unknown_name( &@2, &$2 );
-      c_sname_cleanup( &$2 );
+      print_error_unknown_name( &@sname, &$sname );
+      c_sname_cleanup( &$sname );
       PARSE_ABORT();
     }
 
@@ -2529,7 +2487,7 @@ explain
 /// help command //////////////////////////////////////////////////////////////
 
 help_command
-  : Y_help help_what_opt          { print_help( $2 ); }
+  : Y_help help_what_opt[help]    { print_help( $help ); }
   ;
 
 help_what_opt
@@ -2571,18 +2529,18 @@ set_option_list
   ;
 
 set_option
-  : Y_SET_OPTION set_option_value_opt
+  : Y_SET_OPTION[option] set_option_value_opt[value]
     {
-      bool const ok = set_option( $1, &@1, $2, &@2 );
-      free( $1 );
-      free( $2 );
+      bool const ok = set_option( $option, &@option, $value, &@value );
+      free( $option );
+      free( $value );
       PARSE_ASSERT( ok );
     }
   ;
 
 set_option_value_opt
   : /* empty */                   { $$ = NULL; }
-  | '=' Y_SET_OPTION              { $$ = $2; @$ = @2; }
+  | '=' Y_SET_OPTION[option]      { $$ = $option; @$ = @option; }
   | '=' error
     {
       $$ = NULL;
@@ -2593,45 +2551,47 @@ set_option_value_opt
 /// show command //////////////////////////////////////////////////////////////
 
 show_command
-  : Y_show any_typedef show_format_opt
+  : Y_show any_typedef[tdef] show_format_opt[format]
     {
       DUMP_START( "show_command", "SHOW any_typedef show_format_opt" );
-      DUMP_AST( "any_typedef.ast", $2->ast );
-      DUMP_INT( "show_format_opt", $3 );
+      DUMP_AST( "any_typedef.ast", $tdef->ast );
+      DUMP_INT( "show_format_opt", $format );
       DUMP_END();
 
-      show_type( $2, $3 );
+      show_type( $tdef, $format );
     }
 
-  | Y_show any_typedef Y_as show_format_exp
+  | Y_show any_typedef[tdef] Y_as show_format_exp[format]
     {
       DUMP_START( "show_command", "SHOW any_typedef AS show_format_exp" );
-      DUMP_AST( "any_typedef.ast", $2->ast );
-      DUMP_INT( "show_format_exp", $4 );
+      DUMP_AST( "any_typedef.ast", $tdef->ast );
+      DUMP_INT( "show_format_exp", $format );
       DUMP_END();
 
-      show_type( $2, $4 );
+      show_type( $tdef, $format );
     }
 
-  | Y_show show_which_types_flags_opt glob_opt show_format_opt
+  | Y_show show_which_types_flags_opt[which] glob_opt[glob_name]
+    show_format_opt[format]
     {
       show_type_info_t sti;
-      sti_init( &sti, $2, $3, $4 );
+      sti_init( &sti, $which, $glob_name, $format );
       c_typedef_visit( &show_type_visitor, &sti );
       sti_cleanup( &sti );
-      free( $3 );
+      free( $glob_name );
     }
 
-  | Y_show show_which_types_flags_opt glob_opt Y_as show_format_exp
+  | Y_show show_which_types_flags_opt[which] glob_opt[glob_name]
+    Y_as show_format_exp[format]
     {
       show_type_info_t sti;
-      sti_init( &sti, $2, $3, $5 );
+      sti_init( &sti, $which, $glob_name, $format );
       c_typedef_visit( &show_type_visitor, &sti );
       sti_cleanup( &sti );
-      free( $3 );
+      free( $glob_name );
     }
 
-  | Y_show Y_NAME
+  | Y_show Y_NAME[name]
     {
       static char const *const TYPE_COMMANDS_KNR[] = {
         L_define, L_struct, L_typedef, L_union, NULL
@@ -2652,11 +2612,11 @@ show_command
         OPT_LANG_IS( using_DECLARATION ) ? TYPE_COMMANDS_CPP_WITH_USING :
                                            TYPE_COMMANDS_CPP_WITHOUT_USING;
 
-      print_error( &@2, "\"%s\": not defined as type via ", $2 );
+      print_error( &@name, "\"%s\": not defined as type via ", $name );
       fput_list( stderr, type_commands, /*gets=*/NULL );
-      print_suggestions( DYM_C_TYPES, $2 );
+      print_suggestions( DYM_C_TYPES, $name );
       EPUTC( '\n' );
-      free( $2 );
+      free( $name );
       PARSE_ABORT();
     }
 
@@ -2674,7 +2634,7 @@ show_format
   | Y_using
     {
       if ( UNSUPPORTED( using_DECLARATION ) ) {
-        print_error( &@1,
+        print_error( &@Y_using,
           "\"using\" not supported%s\n",
           C_LANG_WHICH( using_DECLARATION )
         );
@@ -2702,10 +2662,12 @@ show_format_opt
 
 show_which_types_flags_opt
   : /* empty */                   { $$ = SHOW_USER_DEFINED_TYPES; }
-  | Y_all predefined_or_user_flags_opt
+  | Y_all predefined_or_user_flags_opt[flags]
     {
       $$ = SHOW_ALL_TYPES |
-           ($2 != 0 ? $2 : SHOW_PREDEFINED_TYPES | SHOW_USER_DEFINED_TYPES);
+           ($flags != 0 ?
+            $flags :
+            SHOW_PREDEFINED_TYPES | SHOW_USER_DEFINED_TYPES);
     }
   | Y_predefined                  { $$ = SHOW_PREDEFINED_TYPES; }
   | Y_user                        { $$ = SHOW_USER_DEFINED_TYPES; }
@@ -2742,27 +2704,26 @@ using_command
 /// Gibberish C-style cast ////////////////////////////////////////////////////
 
 c_style_cast_expr_c
-  : '(' type_c_ast
+  : '(' type_c_ast[type_ast]
     {
-      ia_type_ast_push( $2 );
+      ia_type_ast_push( $type_ast );
     }
-    cast_c_astp_opt rparen_exp sname_c_opt
+    cast_c_astp_opt[cast_astp] rparen_exp sname_c_opt[sname]
     {
       ia_type_ast_pop();
 
-      c_ast_t *const  type_ast = $2;
-      c_ast_t *const  decl_ast = $4.ast;
+      c_ast_t *const decl_ast = $cast_astp.ast;
 
       DUMP_START( "explain_command",
                   "EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt" );
-      DUMP_AST( "type_c_ast", type_ast );
+      DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST( "cast_c_astp_opt", decl_ast );
-      DUMP_SNAME( "sname_c_opt", $6 );
+      DUMP_SNAME( "sname_c_opt", $sname );
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
-      cast_ast->sname = c_sname_move( &$6 );
+      cast_ast->sname = c_sname_move( &$sname );
       cast_ast->cast.kind = C_CAST_C;
-      cast_ast->cast.to_ast = c_ast_patch_placeholder( type_ast, decl_ast );
+      cast_ast->cast.to_ast = c_ast_patch_placeholder( $type_ast, decl_ast );
 
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
@@ -2786,37 +2747,35 @@ c_style_cast_expr_c
 /// Gibberish C++-style cast //////////////////////////////////////////////////
 
 new_style_cast_expr_c
-  : new_style_cast_c lt_exp type_c_ast
+  : new_style_cast_c[cast_kind] lt_exp type_c_ast[type_ast]
     {
-      ia_type_ast_push( $3 );
+      ia_type_ast_push( $type_ast );
     }
-    cast_c_astp_opt gt_exp lparen_exp sname_c_exp rparen_exp
+    cast_c_astp_opt[cast_astp] gt_exp lparen_exp sname_c_exp[sname] rparen_exp
     {
       ia_type_ast_pop();
 
-      c_cast_kind_t const cast_kind = $1;
-      char const   *const cast_literal = c_cast_english( cast_kind );
-      c_ast_t      *const type_ast = $3;
-      c_ast_t      *const decl_ast = $5.ast;
+      char const  *const cast_literal = c_cast_english( $cast_kind );
+      c_ast_t     *const decl_ast = $cast_astp.ast;
 
       DUMP_START( "explain_command",
                   "EXPLAIN new_style_cast_c"
                   "'<' type_c_ast cast_c_astp_opt '>' '(' sname ')'" );
       DUMP_STR( "new_style_cast_c", cast_literal );
-      DUMP_AST( "type_c_ast", type_ast );
+      DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST( "cast_c_astp_opt", decl_ast );
-      DUMP_SNAME( "sname", $8 );
+      DUMP_SNAME( "sname", $sname );
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
-      cast_ast->sname = c_sname_move( &$8 );
-      cast_ast->cast.kind = cast_kind;
-      cast_ast->cast.to_ast = c_ast_patch_placeholder( type_ast, decl_ast );
+      cast_ast->sname = c_sname_move( &$sname );
+      cast_ast->cast.kind = $cast_kind;
+      cast_ast->cast.to_ast = c_ast_patch_placeholder( $type_ast, decl_ast );
 
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
 
       if ( UNSUPPORTED( CPP_ANY ) ) {
-        print_error( &@1,
+        print_error( &@cast_kind,
           "%s_cast not supported%s\n",
           cast_literal, C_LANG_WHICH( CPP_ANY )
         );
@@ -2842,40 +2801,39 @@ new_style_cast_c
 /// Gibberish C/C++ aligned declaration ///////////////////////////////////////
 
 aligned_declaration_c
-  : alignas_specifier_c           { in_attr.align = $1; }
-    typename_flag_opt             { in_attr.is_typename = $3; }
+  : alignas_specifier_c[align]    { in_attr.align = $align; }
+    typename_flag_opt[flag]       { in_attr.is_typename = $flag; }
     typed_declaration_c
   ;
 
 alignas_specifier_c
-  : alignas lparen_exp Y_INT_LIT rparen_exp
+  : alignas lparen_exp Y_INT_LIT[bytes] rparen_exp
     {
       DUMP_START( "alignas_specifier_c", "ALIGNAS '(' Y_INT_LIT ')'" );
-      DUMP_INT( "INT_LIT", $3 );
+      DUMP_INT( "INT_LIT", $bytes );
       DUMP_END();
 
       $$.kind = C_ALIGNAS_EXPR;
-      $$.loc = @1;
-      $$.expr = STATIC_CAST( unsigned, $3 );
+      $$.loc = @alignas;
+      $$.expr = STATIC_CAST( unsigned, $bytes );
     }
 
-  | alignas lparen_exp type_c_ast { ia_type_ast_push( $3 ); }
-    cast_c_astp_opt rparen_exp
+  | alignas lparen_exp type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    cast_c_astp_opt[cast_astp] rparen_exp
     {
       ia_type_ast_pop();
 
-      c_ast_t *const  type_ast = $3;
-      c_ast_t *const  cast_ast = $5.ast;
+      c_ast_t *const cast_ast = $cast_astp.ast;
 
       DUMP_START( "alignas_specifier_c",
                   "ALIGNAS '(' type_c_ast cast_c_astp_opt ')'" );
-      DUMP_AST( "type_c_ast", type_ast );
+      DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST( "cast_c_astp_opt", cast_ast );
       DUMP_END();
 
       $$.kind = C_ALIGNAS_TYPE;
-      $$.loc = @1;
-      $$.type_ast = c_ast_patch_placeholder( type_ast, cast_ast );
+      $$.loc = @alignas;
+      $$.type_ast = c_ast_patch_placeholder( $type_ast, cast_ast );
     }
 
   | alignas lparen_exp error ')'
@@ -2892,10 +2850,10 @@ alignas
 /// Gibberish C/C++ asm declaration ///////////////////////////////////////////
 
 asm_declaration_c
-  : Y_asm lparen_exp str_lit_exp rparen_exp
+  : Y_asm lparen_exp str_lit_exp[str] rparen_exp
     {
-      free( $3 );
-      print_error( &@1, "asm declarations not supported by %s\n", CDECL );
+      free( $str );
+      print_error( &@Y_asm, "asm declarations not supported by %s\n", CDECL );
       PARSE_ABORT();
     }
   ;
@@ -2912,27 +2870,25 @@ class_struct_union_declaration_c
     /*
      * C++ scoped declaration, e.g.: class C { typedef int I; };
      */
-  : class_struct_union_btid
+  : class_struct_union_btid[csu_btid]
     {
-      PARSE_ASSERT( is_nested_type_ok( &@1 ) );
+      PARSE_ASSERT( is_nested_type_ok( &@csu_btid ) );
       gibberish_to_english();           // see the comment in "explain"
     }
-    any_sname_c_exp
+    any_sname_c_exp[sname]
     {
-      c_tid_t const csu_btid = $1;
-
       c_type_t const *const cur_type =
         c_sname_local_type( &in_attr.current_scope );
       if ( c_tid_is_any( cur_type->btids, TB_ANY_CLASS ) ) {
         char const *const cur_name =
           c_sname_local_name( &in_attr.current_scope );
-        char const *const mbr_name = c_sname_local_name( &$3 );
+        char const *const mbr_name = c_sname_local_name( &$sname );
         if ( strcmp( mbr_name, cur_name ) == 0 ) {
-          print_error( &@3,
+          print_error( &@sname,
             "\"%s\": member has the same name as its enclosing %s\n",
             mbr_name, c_type_name_c( cur_type )
           );
-          c_sname_cleanup( &$3 );
+          c_sname_cleanup( &$sname );
           PARSE_ABORT();
         }
       }
@@ -2942,22 +2898,22 @@ class_struct_union_declaration_c
                   "in_scope_declaration_c_opt "
                   "'}' ';'" );
       DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
-      DUMP_TID( "class_struct_union_btid", csu_btid );
-      DUMP_SNAME( "any_sname_c", $3 );
+      DUMP_TID( "class_struct_union_btid", $csu_btid );
+      DUMP_SNAME( "any_sname_c", $sname );
 
-      c_sname_append_sname( &in_attr.current_scope, &$3 );
+      c_sname_append_sname( &in_attr.current_scope, &$sname );
       c_sname_set_local_type(
-        &in_attr.current_scope, &C_TYPE_LIT_B( csu_btid )
+        &in_attr.current_scope, &C_TYPE_LIT_B( $csu_btid )
       );
-      PARSE_ASSERT( c_sname_check( &in_attr.current_scope, &@3 ) );
+      PARSE_ASSERT( c_sname_check( &in_attr.current_scope, &@sname ) );
 
-      c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@3 );
+      c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@sname );
       csu_ast->sname = c_sname_dup( &in_attr.current_scope );
       c_sname_append_name(
         &csu_ast->csu.csu_sname,
         check_strdup( c_sname_local_name( &in_attr.current_scope ) )
       );
-      csu_ast->type.btids = c_tid_check( csu_btid, C_TPID_BASE );
+      csu_ast->type.btids = c_tid_check( $csu_btid, C_TPID_BASE );
 
       DUMP_AST( "class_struct_union_declaration_c", csu_ast );
       DUMP_END();
@@ -2973,31 +2929,28 @@ enum_declaration_c
      */
   : enum_btids
     {
-      PARSE_ASSERT( is_nested_type_ok( &@1 ) );
+      PARSE_ASSERT( is_nested_type_ok( &@enum_btids ) );
       gibberish_to_english();           // see the comment in "explain"
     }
-    any_sname_c_exp enum_fixed_type_c_ast_opt
+    any_sname_c_exp[sname] enum_fixed_type_c_ast_opt[fixed_type_ast]
     {
-      c_tid_t  const  enum_btids = $1;
-      c_ast_t *const  fixed_type_ast = $4;
-
       DUMP_START( "enum_declaration_c", "enum_btids sname ';'" );
-      DUMP_TID( "enum_btids", enum_btids );
-      DUMP_SNAME( "any_sname_c", $3 );
-      DUMP_AST( "enum_fixed_type_c_ast_opt", fixed_type_ast );
+      DUMP_TID( "enum_btids", $enum_btids );
+      DUMP_SNAME( "any_sname_c", $sname );
+      DUMP_AST( "enum_fixed_type_c_ast_opt", $fixed_type_ast );
 
       c_sname_t enum_sname = c_sname_dup( &in_attr.current_scope );
-      c_sname_append_sname( &enum_sname, &$3 );
-      c_sname_set_local_type( &enum_sname, &C_TYPE_LIT_B( enum_btids ) );
-      if ( !c_sname_check( &enum_sname, &@3 ) ) {
+      c_sname_append_sname( &enum_sname, &$sname );
+      c_sname_set_local_type( &enum_sname, &C_TYPE_LIT_B( $enum_btids ) );
+      if ( !c_sname_check( &enum_sname, &@sname ) ) {
         c_sname_cleanup( &enum_sname );
         PARSE_ABORT();
       }
 
-      c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM, &@3 );
+      c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM, &@sname );
       enum_ast->sname = enum_sname;
-      enum_ast->type.btids = c_tid_check( enum_btids, C_TPID_BASE );
-      enum_ast->enum_.of_ast = fixed_type_ast;
+      enum_ast->type.btids = c_tid_check( $enum_btids, C_TPID_BASE );
+      enum_ast->enum_.of_ast = $fixed_type_ast;
       c_sname_append_name(
         &enum_ast->enum_.enum_sname,
         check_strdup( c_sname_local_name( &enum_sname ) )
@@ -3018,17 +2971,15 @@ namespace_declaration_c
     {
       gibberish_to_english();           // see the comment in "explain"
     }
-    namespace_sname_c_exp
+    namespace_sname_c_exp[sname]
     {
-      c_type_t const ns_type = $1;
-
       DUMP_START( "namespace_declaration_c",
                   "namespace_type sname '{' "
                   "in_scope_declaration_c_opt "
                   "'}' [';']" );
       DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
-      DUMP_TYPE( "namespace_type", ns_type );
-      DUMP_SNAME( "any_sname_c", $3 );
+      DUMP_TYPE( "namespace_type", $namespace_type );
+      DUMP_SNAME( "any_sname_c", $sname );
       DUMP_END();
 
       //
@@ -3039,12 +2990,12 @@ namespace_declaration_c
       // AST because the AST has no "memory" of how a namespace was
       // constructed.
       //
-      if ( c_sname_count( &$3 ) > 1 && UNSUPPORTED( NESTED_namespace ) ) {
-        print_error( &@3,
+      if ( c_sname_count( &$sname ) > 1 && UNSUPPORTED( NESTED_namespace ) ) {
+        print_error( &@sname,
           "nested namespace declarations not supported%s\n",
           C_LANG_WHICH( NESTED_namespace )
         );
-        c_sname_cleanup( &$3 );
+        c_sname_cleanup( &$sname );
         PARSE_ABORT();
       }
 
@@ -3053,12 +3004,12 @@ namespace_declaration_c
       // split across the namespace sname: only the storage classes (for
       // TS_INLINE) has to be or'd with the first scope-type of the sname ...
       //
-      c_type_t const *const sname_first_type = c_sname_first_type( &$3 );
+      c_type_t const *const sname_first_type = c_sname_first_type( &$sname );
       c_sname_set_first_type(
-        &$3,
+        &$sname,
         &C_TYPE_LIT(
           sname_first_type->btids,
-          sname_first_type->stids | ns_type.stids,
+          sname_first_type->stids | $namespace_type.stids,
           sname_first_type->atids
         )
       );
@@ -3066,18 +3017,18 @@ namespace_declaration_c
       // ... and only the base types (for TB_NAMESPACE) has to be or'd with the
       // local scope type of the sname.
       //
-      c_type_t const *const sname_local_type = c_sname_local_type( &$3 );
+      c_type_t const *const sname_local_type = c_sname_local_type( &$sname );
       c_sname_set_local_type(
-        &$3,
+        &$sname,
         &C_TYPE_LIT(
-          sname_local_type->btids | ns_type.btids,
+          sname_local_type->btids | $namespace_type.btids,
           sname_local_type->stids,
           sname_local_type->atids
         )
       );
 
-      c_sname_append_sname( &in_attr.current_scope, &$3 );
-      PARSE_ASSERT( c_sname_check( &in_attr.current_scope, &@3 ) );
+      c_sname_append_sname( &in_attr.current_scope, &$sname );
+      PARSE_ASSERT( c_sname_check( &in_attr.current_scope, &@sname ) );
     }
     brace_in_scope_declaration_c_exp
   ;
@@ -3098,55 +3049,57 @@ namespace_sname_c_exp
    * comments.
    */
 namespace_sname_c
-  : namespace_sname_c Y_COLON2 Y_NAME
+  : namespace_sname_c[sname] Y_COLON2 Y_NAME[name]
     {
       DUMP_START( "namespace_sname_c", "sname_c '::' NAME" );
-      DUMP_SNAME( "namespace_sname_c", $1 );
-      DUMP_STR( "name", $3 );
+      DUMP_SNAME( "namespace_sname_c", $sname );
+      DUMP_STR( "name", $name );
 
-      $$ = $1;
-      c_sname_append_name( &$$, $3 );
+      $$ = $sname;
+      c_sname_append_name( &$$, $name );
       c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
 
       DUMP_SNAME( "namespace_sname_c", $$ );
       DUMP_END();
     }
 
-  | namespace_sname_c Y_COLON2 any_typedef
+  | namespace_sname_c[sname] Y_COLON2 any_typedef[tdef]
     {
       DUMP_START( "namespace_sname_c", "namespace_sname_c '::' any_typedef" );
-      DUMP_SNAME( "namespace_sname_c", $1 );
-      DUMP_AST( "any_typedef.ast", $3->ast );
+      DUMP_SNAME( "namespace_sname_c", $sname );
+      DUMP_AST( "any_typedef.ast", $tdef->ast );
 
-      $$ = $1;
+      $$ = $sname;
       c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
-      c_sname_t temp_sname = c_sname_dup( &$3->ast->sname );
+      c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "namespace_sname_c", $$ );
       DUMP_END();
     }
 
-  | namespace_sname_c Y_COLON2 Y_inline name_exp
+  | namespace_sname_c[sname] Y_COLON2 Y_inline[inline_stid] name_exp[name]
     {
       DUMP_START( "namespace_sname_c", "sname_c '::' NAME INLINE NAME" );
-      DUMP_SNAME( "namespace_sname_c", $1 );
-      DUMP_STR( "name", $4 );
+      DUMP_SNAME( "namespace_sname_c", $sname );
+      DUMP_STR( "name", $name );
 
-      $$ = $1;
-      c_sname_append_name( &$$, $4 );
-      c_sname_set_local_type( &$$, &C_TYPE_LIT( TB_NAMESPACE, $3, TA_NONE ) );
+      $$ = $sname;
+      c_sname_append_name( &$$, $name );
+      c_sname_set_local_type( &$$,
+        &C_TYPE_LIT( TB_NAMESPACE, $inline_stid, TA_NONE )
+      );
 
       DUMP_SNAME( "namespace_sname_c", $$ );
       DUMP_END();
     }
 
-  | Y_NAME
+  | Y_NAME[name]
     {
       DUMP_START( "namespace_sname_c", "NAME" );
-      DUMP_STR( "NAME", $1 );
+      DUMP_STR( "NAME", $name );
 
-      c_sname_init_name( &$$, $1 );
+      c_sname_init_name( &$$, $name );
       c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
 
       DUMP_SNAME( "sname_c", $$ );
@@ -3160,52 +3113,55 @@ namespace_sname_c
    * detailed comments.
    */
 namespace_typedef_sname_c
-  : namespace_typedef_sname_c Y_COLON2 sname_c
+  : namespace_typedef_sname_c[ns_sname] Y_COLON2 sname_c[sname]
     {
       DUMP_START( "namespace_typedef_sname_c",
                   "namespace_typedef_sname_c '::' sname_c" );
-      DUMP_SNAME( "namespace_typedef_sname_c", $1 );
-      DUMP_SNAME( "sname_c", $3 );
+      DUMP_SNAME( "namespace_typedef_sname_c", $ns_sname );
+      DUMP_SNAME( "sname_c", $sname );
 
-      $$ = $1;
-      c_sname_append_sname( &$$, &$3 );
+      $$ = $ns_sname;
+      c_sname_append_sname( &$$, &$sname );
 
       DUMP_SNAME( "typedef_sname_c", $$ );
       DUMP_END();
     }
 
-  | namespace_typedef_sname_c Y_COLON2 any_typedef
+  | namespace_typedef_sname_c[ns_sname] Y_COLON2 any_typedef[tdef]
     {
       DUMP_START( "namespace_typedef_sname_c",
                   "namespace_typedef_sname_c '::' any_typedef" );
-      DUMP_SNAME( "namespace_typedef_sname_c", $1 );
-      DUMP_AST( "any_typedef", $3->ast );
+      DUMP_SNAME( "namespace_typedef_sname_c", $ns_sname );
+      DUMP_AST( "any_typedef", $tdef->ast );
 
-      $$ = $1;
-      c_sname_set_local_type( &$$, c_sname_local_type( &$3->ast->sname ) );
-      c_sname_t temp_sname = c_sname_dup( &$3->ast->sname );
+      $$ = $ns_sname;
+      c_sname_set_local_type( &$$, c_sname_local_type( &$tdef->ast->sname ) );
+      c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "typedef_sname_c", $$ );
       DUMP_END();
     }
 
-  | namespace_typedef_sname_c Y_COLON2 Y_inline name_exp
+  | namespace_typedef_sname_c[ns_sname] Y_COLON2 Y_inline[inline_stid]
+    name_exp[name]
     {
       DUMP_START( "namespace_typedef_sname_c",
                   "namespace_typedef_sname_c '::' INLINE NAME" );
-      DUMP_SNAME( "namespace_typedef_sname_c", $1 );
-      DUMP_STR( "name", $4 );
+      DUMP_SNAME( "namespace_typedef_sname_c", $ns_sname );
+      DUMP_STR( "name", $name );
 
-      $$ = $1;
-      c_sname_append_name( &$$, $4 );
-      c_sname_set_local_type( &$$, &C_TYPE_LIT( TB_NAMESPACE, $3, TA_NONE ) );
+      $$ = $ns_sname;
+      c_sname_append_name( &$$, $name );
+      c_sname_set_local_type( &$$,
+        &C_TYPE_LIT( TB_NAMESPACE, $inline_stid, TA_NONE )
+      );
 
       DUMP_SNAME( "namespace_typedef_sname_c", $$ );
       DUMP_END();
     }
 
-  | any_typedef                   { $$ = c_sname_dup( &$1->ast->sname ); }
+  | any_typedef[tdef]             { $$ = c_sname_dup( &$tdef->ast->sname ); }
   ;
 
 brace_in_scope_declaration_c_exp
@@ -3239,26 +3195,25 @@ in_scope_declaration_c_exp
 /// Gibberish C++ lambda declaration //////////////////////////////////////////
 
 lambda_declaration_c
-  : '[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt
-    storage_class_subset_english_type_opt lambda_return_type_c_ast_opt
+  : '[' capture_decl_list_c_opt[capture_ast_list] ']'
+    lambda_param_c_ast_list_opt[param_ast_list]
+    storage_class_subset_english_type_opt[type]
+    lambda_return_type_c_ast_opt[ret_ast]
     {
-      c_ast_t *const ret_ast = $6;
-      c_type_t const type = $5;
-
       DUMP_START( "lambda_declaration_c",
                   "'[' capture_decl_list_c_opt ']' "
                   "lambda_param_c_ast_list_opt "
                   "lambda_return_type_c_ast_opt" );
-      DUMP_AST_LIST( "capture_decl_list_c_opt", $2 );
-      DUMP_AST_LIST( "lambda_param_c_ast_list_opt", $4 );
-      DUMP_TYPE( "storage_class_subset_english_type_opt", type );
-      DUMP_AST( "lambda_return_type_c_ast_opt", ret_ast );
+      DUMP_AST_LIST( "capture_decl_list_c_opt", $capture_ast_list );
+      DUMP_AST_LIST( "lambda_param_c_ast_list_opt", $param_ast_list );
+      DUMP_TYPE( "storage_class_subset_english_type_opt", $type );
+      DUMP_AST( "lambda_return_type_c_ast_opt", $ret_ast );
 
       c_ast_t *const lambda_ast = c_ast_new_gc( K_LAMBDA, &@$ );
-      lambda_ast->type = type;
-      lambda_ast->lambda.capture_ast_list = slist_move( &$2 );
-      lambda_ast->lambda.param_ast_list = slist_move( &$4 );
-      c_ast_set_parent( ret_ast, lambda_ast );
+      lambda_ast->type = $type;
+      lambda_ast->lambda.capture_ast_list = slist_move( &$capture_ast_list );
+      lambda_ast->lambda.param_ast_list = slist_move( &$param_ast_list );
+      c_ast_set_parent( $ret_ast, lambda_ast );
 
       DUMP_AST( "lambda_declaration_c", lambda_ast );
       DUMP_END();
@@ -3274,29 +3229,30 @@ capture_decl_list_c_opt
   ;
 
 capture_decl_list_c
-  : capture_decl_list_c comma_exp capture_decl_c_ast
+  : capture_decl_list_c[capture_ast_list] comma_exp
+    capture_decl_c_ast[capture_ast]
     {
       DUMP_START( "capture_decl_list_c",
                   "capture_decl_list_c ',' "
                   "capture_decl_c_ast" );
-      DUMP_AST_LIST( "capture_decl_list_c", $1 );
-      DUMP_AST( "capture_decl_c_ast", $3 );
+      DUMP_AST_LIST( "capture_decl_list_c", $capture_ast_list );
+      DUMP_AST( "capture_decl_c_ast", $capture_ast );
 
-      $$ = $1;
-      slist_push_back( &$$, $3 );
+      $$ = $capture_ast_list;
+      slist_push_back( &$$, $capture_ast );
 
       DUMP_AST_LIST( "capture_decl_list_c", $$ );
       DUMP_END();
     }
 
-  | capture_decl_c_ast
+  | capture_decl_c_ast[decl_ast]
     {
       DUMP_START( "capture_decl_list_c",
                   "capture_decl_c_ast" );
-      DUMP_AST( "capture_decl_c_ast", $1 );
+      DUMP_AST( "capture_decl_c_ast", $decl_ast );
 
       slist_init( &$$ );
-      slist_push_back( &$$, $1 );
+      slist_push_back( &$$, $decl_ast );
 
       DUMP_AST_LIST( "capture_decl_list_c", $$ );
       DUMP_END();
@@ -3309,10 +3265,10 @@ capture_decl_c_ast
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
       $$->capture.kind = C_CAPTURE_REFERENCE;
     }
-  | Y_AMPER Y_NAME
+  | Y_AMPER Y_NAME[name]
     {
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
-      c_sname_append_name( &$$->sname, $2 );
+      c_sname_append_name( &$$->sname, $name );
       $$->capture.kind = C_CAPTURE_REFERENCE;
     }
   | '='
@@ -3320,10 +3276,10 @@ capture_decl_c_ast
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
       $$->capture.kind = C_CAPTURE_COPY;
     }
-  | Y_NAME
+  | Y_NAME[name]
     {
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
-      c_sname_append_name( &$$->sname, $1 );
+      c_sname_append_name( &$$->sname, $name );
     }
   | Y_this
     {
@@ -3344,16 +3300,17 @@ lambda_param_c_ast_list_opt
 
 lambda_return_type_c_ast_opt
   : /* empty */                   { $$ = NULL; }
-  | Y_ARROW type_c_ast { ia_type_ast_push( $2 ); } cast_c_astp_opt
+  | Y_ARROW type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    cast_c_astp_opt[cast_astp]
     {
       ia_type_ast_pop();
 
       DUMP_START( "lambda_return_type_c_ast_opt",
                   "type_c_ast cast_c_astp_opt" );
-      DUMP_AST( "type_c_ast", $2 );
-      DUMP_AST( "cast_c_astp_opt", $4.ast );
+      DUMP_AST( "type_c_ast", $type_ast );
+      DUMP_AST( "cast_c_astp_opt", $cast_astp.ast );
 
-      $$ = $4.ast != NULL ? $4.ast : $2;
+      $$ = $cast_astp.ast != NULL ? $cast_astp.ast : $type_ast;
 
       DUMP_AST( "lambda_return_type_c_ast_opt", $$ );
       DUMP_END();
@@ -3365,7 +3322,9 @@ lambda_return_type_c_ast_opt
 template_declaration_c
   : Y_template
     {
-      print_error( &@1, "template declarations not supported by %s\n", CDECL );
+      print_error( &@Y_template,
+        "template declarations not supported by %s\n", CDECL
+      );
       PARSE_ABORT();
     }
   ;
@@ -3373,7 +3332,7 @@ template_declaration_c
 /// Gibberish C/C++ typed declaration /////////////////////////////////////////
 
 typed_declaration_c
-  : type_c_ast { ia_type_ast_push( $1 ); } decl_list_c_opt
+  : type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); } decl_list_c_opt
     {
       ia_type_ast_pop();
     }
@@ -3382,19 +3341,19 @@ typed_declaration_c
 /// Gibberish C/C++ typedef declaration ///////////////////////////////////////
 
 typedef_declaration_c
-  : Y_typedef typename_flag_opt
+  : Y_typedef typename_flag_opt[flag]
     {
-      PARSE_ASSERT( is_nested_type_ok( &@1 ) );
-      in_attr.is_typename = $2;
+      PARSE_ASSERT( is_nested_type_ok( &@Y_typedef ) );
+      in_attr.is_typename = $flag;
       gibberish_to_english();           // see the comment in "explain"
     }
-    type_c_ast
+    type_c_ast[type_ast]
     {
-      c_ast_t *const type_ast = $4;
-
-      PARSE_ASSERT( !in_attr.is_typename || c_ast_is_typename_ok( type_ast ) );
+      PARSE_ASSERT( !in_attr.is_typename || c_ast_is_typename_ok( $type_ast ) );
       // see the comment in "define_command" about TS_TYPEDEF
-      PARSE_ASSERT( c_type_add_tid( &type_ast->type, TS_TYPEDEF, &@4 ) );
+      PARSE_ASSERT(
+        c_type_add_tid( &$type_ast->type, TS_TYPEDEF, &@type_ast )
+      );
 
       //
       // We have to keep a pristine copy of the AST for the base type of the
@@ -3409,7 +3368,7 @@ typedef_declaration_c
       //
       assert( slist_empty( &in_attr.typedef_ast_list ) );
       slist_push_list_back( &in_attr.typedef_ast_list, &gc_ast_list );
-      in_attr.typedef_ast = type_ast;
+      in_attr.typedef_ast = $type_ast;
       ia_type_ast_push( c_ast_dup( in_attr.typedef_ast, &gc_ast_list ) );
     }
     typedef_decl_list_c
@@ -3435,10 +3394,10 @@ typedef_decl_list_c
 
 typedef_decl_c
   : // in_attr: type_c_ast
-    decl_c_astp
+    decl_c_astp[decl_astp]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
-      c_ast_t *const decl_ast = $1.ast;
+      c_ast_t *const decl_ast = $decl_astp.ast;
 
       DUMP_START( "typedef_decl_c", "decl_c_astp" );
       DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
@@ -3480,7 +3439,7 @@ typedef_decl_c
       PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_TYPEDEF ) );
 
       if ( c_sname_count( &typedef_ast->sname ) > 1 ) {
-        print_error( &@1,
+        print_error( &@decl_astp,
           "typedef names can not be scoped; "
           "use: namespace %s { typedef ... }\n",
           c_sname_scope_name( &typedef_ast->sname )
@@ -3509,60 +3468,74 @@ typedef_decl_c_exp
 /// Gibberish C++ user-defined conversion operator declaration ////////////////
 
 user_defined_conversion_declaration_c
-  : user_defined_conversion_decl_c_astp
+  : user_defined_conversion_decl_c_astp[decl_astp]
     {
       DUMP_START( "user_defined_conversion_declaration_c",
                   "user_defined_conversion_decl_c_astp" );
-      DUMP_AST( "user_defined_conversion_declaration_c", $1.ast );
+      DUMP_AST( "user_defined_conversion_declaration_c", $decl_astp.ast );
       DUMP_END();
 
-      PARSE_ASSERT( c_ast_check( $1.ast ) );
-      c_ast_english( $1.ast, stdout );
+      PARSE_ASSERT( c_ast_check( $decl_astp.ast ) );
+      c_ast_english( $decl_astp.ast, stdout );
     }
   ;
 
 /// Gibberish C++ using declaration ///////////////////////////////////////////
 
 using_declaration_c
-  : using_decl_c_ast
+  : using_decl_c_ast[decl_ast]
     {
       // see the comment in "define_command" about TS_TYPEDEF
-      PJL_IGNORE_RV( c_ast_take_type_any( $1, &T_TS_TYPEDEF ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( $decl_ast, &T_TS_TYPEDEF ) );
 
-      PARSE_ASSERT( add_type( $1, C_GIB_USING ) );
+      PARSE_ASSERT( add_type( $decl_ast, C_GIB_USING ) );
     }
   ;
 
 using_decl_c_ast
   : Y_using
-    {
-      gibberish_to_english();           // see the comment in "explain"
-    }
-    any_name_exp attribute_specifier_list_c_atid_opt equals_exp type_c_ast
-    {
-      // see the comment in "define_command" about TS_TYPEDEF
-      if ( !c_type_add_tid( &$6->type, TS_TYPEDEF, &@6 ) ) {
-        free( $3 );
+    { //
+      // Using declarations are supported only in C++11 and later.  (However,
+      // we always allow them in configuration files.)
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST because using declarations are treated like typedef declarations
+      // and the AST has no "memory" that such a declaration was a using
+      // declaration.
+      //
+      if ( UNSUPPORTED( using_DECLARATION ) ) {
+        print_error( &@Y_using,
+          "\"using\" not supported%s\n",
+          C_LANG_WHICH( using_DECLARATION )
+        );
         PARSE_ABORT();
       }
-      ia_type_ast_push( $6 );
+
+      gibberish_to_english();           // see the comment in "explain"
     }
-    cast_c_astp_opt
+    any_name_exp[name] attribute_specifier_list_c_atid_opt[atids] equals_exp
+    type_c_ast[type_ast]
+    {
+      // see the comment in "define_command" about TS_TYPEDEF
+      if ( !c_type_add_tid( &$type_ast->type, TS_TYPEDEF, &@type_ast ) ) {
+        free( $name );
+        PARSE_ABORT();
+      }
+      ia_type_ast_push( $type_ast );
+    }
+    cast_c_astp_opt[cast_astp]
     {
       ia_type_ast_pop();
 
-      char const *const name = $3;
-      c_tid_t     const atids = $4;
-      c_ast_t    *const type_ast = $6;
-      c_ast_t    *const cast_ast = $8.ast;
+      c_ast_t *const cast_ast = $cast_astp.ast;
 
       DUMP_START( "using_decl_c_ast",
                   "USING any_name_exp attribute_specifier_list_c_atid_opt '=' "
                   "type_c_ast cast_c_astp_opt" );
       DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
-      DUMP_STR( "any_name_exp", name );
-      DUMP_TID( "attribute_specifier_list_c_atid_opt", atids );
-      DUMP_AST( "type_c_ast", type_ast );
+      DUMP_STR( "any_name_exp", $name );
+      DUMP_TID( "attribute_specifier_list_c_atid_opt", $atids );
+      DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST( "cast_c_astp_opt", cast_ast );
 
       //
@@ -3576,36 +3549,19 @@ using_decl_c_ast
       c_sname_t const *const sname = c_ast_find_name( cast_ast, C_VISIT_DOWN );
       if ( sname != NULL ) {
         print_error( &cast_ast->loc, "\"using\" type can not have a name\n" );
-        FREE( name );
+        FREE( $name );
         PARSE_ABORT();
       }
 
       c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
-      c_sname_append_name( &temp_sname, name );
+      c_sname_append_name( &temp_sname, $name );
 
-      $$ = c_ast_patch_placeholder( type_ast, cast_ast );
+      $$ = c_ast_patch_placeholder( $type_ast, cast_ast );
       c_sname_set( &$$->sname, &temp_sname );
-      $$->type.atids = c_tid_check( atids, C_TPID_ATTR );
+      $$->type.atids = c_tid_check( $atids, C_TPID_ATTR );
 
       DUMP_AST( "using_decl_c_ast", $$ );
       DUMP_END();
-
-      //
-      // Using declarations are supported only in C++11 and later.  (However,
-      // we always allow them in configuration files.)
-      //
-      // This check has to be done now in the parser rather than later in the
-      // AST because using declarations are treated like typedef declarations
-      // and the AST has no "memory" that such a declaration was a using
-      // declaration.
-      //
-      if ( UNSUPPORTED( using_DECLARATION ) ) {
-        print_error( &@1,
-          "\"using\" not supported%s\n",
-          C_LANG_WHICH( using_DECLARATION )
-        );
-        PARSE_ABORT();
-      }
 
       PARSE_ASSERT( c_ast_check( $$ ) );
     }
@@ -3679,7 +3635,7 @@ decl_list_c
 
 decl_c
   : // in_attr: alignas_specifier_c typename_flag_opt type_c_ast
-    decl_c_astp
+    decl_c_astp[decl_astp]
     { //
       // The type has to be duplicated to guarantee a fresh type AST in case
       // we're doing multiple declarations, e.g.:
@@ -3687,7 +3643,7 @@ decl_c
       //    explain int *p, *q
       //
       c_ast_t *const type_ast = c_ast_dup( ia_type_ast_peek(), &gc_ast_list );
-      c_ast_t *const decl_ast = $1.ast;
+      c_ast_t *const decl_ast = $decl_astp.ast;
 
       DUMP_START( "decl_c", "decl_c_astp" );
       switch ( in_attr.align.kind ) {
@@ -3780,11 +3736,11 @@ decl_c_astp
   | pointer_decl_c_astp
   | pointer_to_member_decl_c_astp
   | reference_decl_c_astp
-  | msc_calling_convention_atid msc_calling_convention_c_astp
+  | msc_calling_convention_atid[atid] msc_calling_convention_c_astp[astp]
     {
-      $$ = $2;
+      $$ = $astp;
       $$.ast->loc = @$;
-      $$.ast->type.atids |= $1;
+      $$.ast->type.atids |= $atid;
     }
   ;
 
@@ -3799,9 +3755,9 @@ decl2_c_astp
   | func_decl_c_astp
   | nested_decl_c_astp
   | oper_decl_c_astp
-  | sname_c_ast gnu_attribute_specifier_list_c_opt
+  | sname_c_ast[ast] gnu_attribute_specifier_list_c_opt
     {
-      $$ = (c_ast_pair_t){ $1, NULL };
+      $$ = (c_ast_pair_t){ $ast, NULL };
     }
   | typedef_type_decl_c_ast       { $$ = (c_ast_pair_t){ $1, NULL }; }
   | user_defined_conversion_decl_c_astp
@@ -3812,25 +3768,29 @@ decl2_c_astp
 
 array_decl_c_astp
   : // in_attr: type_c_ast
-    decl2_c_astp array_size_c_ast gnu_attribute_specifier_list_c_opt
+    decl2_c_astp[decl_astp] array_size_c_ast[array_ast]
+    gnu_attribute_specifier_list_c_opt
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
-      c_ast_t *const decl_ast = $1.ast;
-      c_ast_t *const array_ast = $2;
+      c_ast_t *const decl_ast = $decl_astp.ast;
 
       DUMP_START( "array_decl_c_astp", "decl2_c_astp array_size_c_ast" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "decl2_c_astp", decl_ast );
-      DUMP_AST( "target_ast", $1.target_ast );
-      DUMP_AST( "array_size_c_ast", array_ast );
+      DUMP_AST( "target_ast", $decl_astp.target_ast );
+      DUMP_AST( "array_size_c_ast", $array_ast );
 
-      c_ast_set_parent( c_ast_new_gc( K_PLACEHOLDER, &@1 ), array_ast );
+      c_ast_set_parent(
+        c_ast_new_gc( K_PLACEHOLDER, &@decl_astp ), $array_ast
+      );
 
-      if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
+      if ( $decl_astp.target_ast != NULL ) {
+        // array-of or function-like-ret type
         $$.ast = decl_ast;
-        $$.target_ast = c_ast_add_array( $1.target_ast, array_ast, type_ast );
+        $$.target_ast =
+          c_ast_add_array( $decl_astp.target_ast, $array_ast, type_ast );
       } else {
-        $$.ast = c_ast_add_array( decl_ast, array_ast, type_ast );
+        $$.ast = c_ast_add_array( decl_ast, $array_ast, type_ast );
         $$.target_ast = NULL;
       }
 
@@ -3845,57 +3805,63 @@ array_size_c_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
-  | '[' Y_INT_LIT rbracket_exp
+  | '[' Y_INT_LIT[size] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_INT_SIZE;
-      $$->array.size_int = $2;
+      $$->array.size_int = $size;
     }
-  | '[' Y_NAME rbracket_exp
+  | '[' Y_NAME[name] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_NAMED_SIZE;
-      $$->array.size_name = $2;
+      $$->array.size_name = $name;
     }
-  | '[' type_qualifier_list_c_stid rbracket_exp
+  | '[' type_qualifier_list_c_stid[qual_stid] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->type.stids = c_tid_check( $2, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stid, C_TPID_STORE );
       $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
-  | '[' type_qualifier_list_c_stid static_stid_opt Y_INT_LIT rbracket_exp
+  | '[' type_qualifier_list_c_stid[qual_stid] static_stid_opt[static_stid]
+    Y_INT_LIT[size] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->type.stids = c_tid_check( $2 | $3, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stid | $static_stid, C_TPID_STORE );
       $$->array.kind = C_ARRAY_INT_SIZE;
-      $$->array.size_int = $4;
+      $$->array.size_int = $size;
     }
-  | '[' type_qualifier_list_c_stid static_stid_opt Y_NAME rbracket_exp
+  | '[' type_qualifier_list_c_stid[qual_stid] static_stid_opt[static_stid]
+    Y_NAME[name] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->type.stids = c_tid_check( $2 | $3, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stid | $static_stid, C_TPID_STORE );
       $$->array.kind = C_ARRAY_NAMED_SIZE;
-      $$->array.size_name = $4;
+      $$->array.size_name = $name;
     }
-  | '[' type_qualifier_list_c_stid_opt '*' rbracket_exp
+  | '[' type_qualifier_list_c_stid_opt[qual_stid] '*' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->type.stids = c_tid_check( $2, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stid, C_TPID_STORE );
       $$->array.kind = C_ARRAY_VLA_STAR;
     }
-  | '[' Y_static type_qualifier_list_c_stid_opt Y_INT_LIT rbracket_exp
+  | '[' Y_static type_qualifier_list_c_stid_opt[qual_stid] Y_INT_LIT[size]
+    rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->type.stids = c_tid_check( TS_NON_EMPTY_ARRAY | $3, C_TPID_STORE );
+      $$->type.stids =
+        c_tid_check( TS_NON_EMPTY_ARRAY | $qual_stid, C_TPID_STORE );
       $$->array.kind = C_ARRAY_INT_SIZE;
-      $$->array.size_int = $4;
+      $$->array.size_int = $size;
     }
-  | '[' Y_static type_qualifier_list_c_stid_opt Y_NAME rbracket_exp
+  | '[' Y_static type_qualifier_list_c_stid_opt[qual_stid] Y_NAME[name]
+    rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->type.stids = c_tid_check( TS_NON_EMPTY_ARRAY | $3, C_TPID_STORE );
+      $$->type.stids =
+        c_tid_check( TS_NON_EMPTY_ARRAY | $qual_stid, C_TPID_STORE );
       $$->array.kind = C_ARRAY_NAMED_SIZE;
-      $$->array.size_name = $4;
+      $$->array.size_name = $name;
     }
   | '[' error ']'
     {
@@ -3914,24 +3880,26 @@ block_decl_c_astp                       // Apple extension
       //
       ia_type_ast_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
-    type_qualifier_list_c_stid_opt decl_c_astp rparen_exp
-    lparen_exp param_c_ast_list_opt ')' gnu_attribute_specifier_list_c_opt
+    type_qualifier_list_c_stid_opt[qual_stids] decl_c_astp[decl_astp] rparen_exp
+    lparen_exp param_c_ast_list_opt[param_ast_list] ')'
+    gnu_attribute_specifier_list_c_opt
     {
       c_ast_t *const  block_ast = ia_type_ast_pop();
       c_ast_t *const  type_ast = ia_type_ast_peek();
-      c_tid_t  const  type_qual_stids = $4;
-      c_ast_t *const  decl_ast = $5.ast;
+      c_ast_t *const  decl_ast = $decl_astp.ast;
 
       DUMP_START( "block_decl_c_astp",
                   "'(' '^' type_qualifier_list_c_stid_opt decl_c_astp ')' "
                   "'(' param_c_ast_list_opt ')'" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_TID( "type_qualifier_list_c_stid_opt", type_qual_stids );
+      DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_AST( "decl_c_astp", decl_ast );
-      DUMP_AST_LIST( "param_c_ast_list_opt", $8 );
+      DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
 
-      PARSE_ASSERT( c_type_add_tid( &block_ast->type, type_qual_stids, &@4 ) );
-      block_ast->block.param_ast_list = slist_move( &$8 );
+      PARSE_ASSERT(
+        c_type_add_tid( &block_ast->type, $qual_stids, &@qual_stids )
+      );
+      block_ast->block.param_ast_list = slist_move( &$param_ast_list );
       $$.ast = c_ast_add_func( decl_ast, block_ast, type_ast );
       $$.target_ast = block_ast->block.ret_ast;
 
@@ -3946,30 +3914,25 @@ destructor_declaration_c
     /*
      * C++ in-class destructor declaration, e.g.: ~S().
      */
-  : virtual_stid_opt Y_TILDE any_name_exp
-    lparen_exp rparen_func_qualifier_list_c_stid_opt noexcept_c_stid_opt
-    gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt
+  : virtual_stid_opt[virtual_stid] Y_TILDE any_name_exp[name]
+    lparen_exp rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    noexcept_c_stid_opt[noexcept_stid] gnu_attribute_specifier_list_c_opt
+    func_equals_c_stid_opt[equals_stid]
     {
-      c_tid_t     const virtual_stid = $1;
-      char const *const name = $3;
-      c_tid_t     const func_qual_stids = $5;
-      c_tid_t     const noexcept_stid = $6;
-      c_tid_t     const func_equals_stid = $8;
-
       DUMP_START( "destructor_declaration_c",
                   "virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt "
                   "noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt "
                   "func_equals_c_stid_opt" );
-      DUMP_TID( "virtual_stid_opt", virtual_stid );
-      DUMP_STR( "any_name_exp", name );
-      DUMP_TID( "func_qualifier_list_c_stid_opt", func_qual_stids );
-      DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
-      DUMP_TID( "func_equals_c_stid_opt", func_equals_stid );
+      DUMP_TID( "virtual_stid_opt", $virtual_stid );
+      DUMP_STR( "any_name_exp", $name );
+      DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
+      DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
+      DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
 
       c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      c_sname_append_name( &ast->sname, name );
+      c_sname_append_name( &ast->sname, $name );
       ast->type.stids = c_tid_check(
-        virtual_stid | func_qual_stids | noexcept_stid | func_equals_stid,
+        $virtual_stid | $qual_stids | $noexcept_stid | $equals_stid,
         C_TPID_STORE
       );
 
@@ -3984,32 +3947,29 @@ destructor_declaration_c
 /// Gibberish C++ file-scope constructor declaration //////////////////////////
 
 file_scope_constructor_declaration_c
-  : inline_stid_opt Y_CONSTRUCTOR_SNAME
-    lparen_exp param_c_ast_list_opt rparen_func_qualifier_list_c_stid_opt
-    noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt
+  : inline_stid_opt[inline_stid] Y_CONSTRUCTOR_SNAME[sname]
+    lparen_exp param_c_ast_list_opt[param_ast_list]
+    rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    noexcept_c_stid_opt[noexcept_stid] gnu_attribute_specifier_list_c_opt
     {
-      c_tid_t const inline_stid = $1;
-      c_tid_t const func_qual_stids = $5;
-      c_tid_t const noexcept_stid = $6;
-
       DUMP_START( "file_scope_constructor_declaration_c",
                   "inline_opt CONSTRUCTOR_SNAME '(' param_c_ast_list_opt ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt" );
-      DUMP_TID( "inline_stid_opt", inline_stid );
-      DUMP_SNAME( "CONSTRUCTOR_SNAME", $2 );
-      DUMP_AST_LIST( "param_c_ast_list_opt", $4 );
-      DUMP_TID( "func_qualifier_list_c_stid_opt", func_qual_stids );
-      DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
+      DUMP_TID( "inline_stid_opt", $inline_stid );
+      DUMP_SNAME( "CONSTRUCTOR_SNAME", $sname );
+      DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
+      DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
+      DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
 
-      c_sname_set_scope_type( &$2, &C_TYPE_LIT_B( TB_CLASS ) );
+      c_sname_set_scope_type( &$sname, &C_TYPE_LIT_B( TB_CLASS ) );
 
       c_ast_t *const ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      ast->sname = c_sname_move( &$2 );
+      ast->sname = c_sname_move( &$sname );
       ast->type.stids = c_tid_check(
-        inline_stid | func_qual_stids | noexcept_stid,
+        $inline_stid | $qual_stids | $noexcept_stid,
         C_TPID_STORE
       );
-      ast->ctor.param_ast_list = slist_move( &$4 );
+      ast->ctor.param_ast_list = slist_move( &$param_ast_list );
 
       DUMP_AST( "file_scope_constructor_declaration_c", ast );
       DUMP_END();
@@ -4022,28 +3982,24 @@ file_scope_constructor_declaration_c
 /// Gibberish C++ file-scope destructor declaration ///////////////////////////
 
 file_scope_destructor_declaration_c
-  : inline_stid_opt destructor_sname
-    lparen_exp rparen_func_qualifier_list_c_stid_opt noexcept_c_stid_opt
-    gnu_attribute_specifier_list_c_opt
+  : inline_stid_opt[inline_stid] destructor_sname[sname]
+    lparen_exp rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    noexcept_c_stid_opt[noexcept_stid] gnu_attribute_specifier_list_c_opt
     {
-      c_tid_t const inline_stid = $1;
-      c_tid_t const func_qual_stids = $4;
-      c_tid_t const noexcept_stid = $5;
-
       DUMP_START( "file_scope_destructor_declaration_c",
                   "inline_opt DESTRUCTOR_SNAME '(' ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt" );
-      DUMP_TID( "inline_stid_opt", inline_stid );
-      DUMP_SNAME( "DESTRUCTOR_SNAME", $2 );
-      DUMP_TID( "func_qualifier_list_c_stid_opt", func_qual_stids );
-      DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
+      DUMP_TID( "inline_stid_opt", $inline_stid );
+      DUMP_SNAME( "DESTRUCTOR_SNAME", $sname );
+      DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
+      DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
 
-      c_sname_set_scope_type( &$2, &C_TYPE_LIT_B( TB_CLASS ) );
+      c_sname_set_scope_type( &$sname, &C_TYPE_LIT_B( TB_CLASS ) );
 
       c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      ast->sname = c_sname_move( &$2 );
+      ast->sname = c_sname_move( &$sname );
       ast->type.stids = c_tid_check(
-        inline_stid | func_qual_stids | noexcept_stid,
+        $inline_stid | $qual_stids | $noexcept_stid,
         C_TPID_STORE
       );
 
@@ -4066,17 +4022,15 @@ func_decl_c_astp
      * parser).
      */
   : // in_attr: type_c_ast
-    decl2_c_astp '(' param_c_ast_list_opt
-    rparen_func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt
-    noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt
+    decl2_c_astp[decl_astp] '(' param_c_ast_list_opt[param_ast_list]
+    rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    func_ref_qualifier_c_stid_opt[ref_qual_stid]
+    noexcept_c_stid_opt[noexcept_stid]
+    trailing_return_type_c_ast_opt[trailing_ret_ast]
+    func_equals_c_stid_opt[equals_stid]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
-      c_ast_t *const decl2_ast = $1.ast;
-      c_tid_t  const func_qual_stid = $4;
-      c_tid_t  const func_ref_qual_stid = $5;
-      c_tid_t  const noexcept_stid = $6;
-      c_ast_t *const trailing_ret_ast = $7;
-      c_tid_t  const func_equals_stid = $8;
+      c_ast_t *const decl_ast = $decl_astp.ast;
 
       DUMP_START( "func_decl_c_astp",
                   "decl2_c_astp '(' param_c_ast_list_opt ')' "
@@ -4085,17 +4039,17 @@ func_decl_c_astp
                   "trailing_return_type_c_ast_opt "
                   "func_equals_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "decl2_c_astp", decl2_ast );
-      DUMP_AST_LIST( "param_c_ast_list_opt", $3 );
-      DUMP_TID( "func_qualifier_list_c_stid_opt", func_qual_stid );
-      DUMP_TID( "func_ref_qualifier_c_stid_opt", func_ref_qual_stid );
-      DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
-      DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
-      DUMP_TID( "func_equals_c_stid_opt", func_equals_stid );
-      DUMP_AST( "target_ast", $1.target_ast );
+      DUMP_AST( "decl2_c_astp", decl_ast );
+      DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
+      DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
+      DUMP_TID( "func_ref_qualifier_c_stid_opt", $ref_qual_stid );
+      DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
+      DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
+      DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
+      DUMP_AST( "target_ast", $decl_astp.target_ast );
 
-      c_tid_t const func_stid =
-        func_qual_stid | func_ref_qual_stid | noexcept_stid | func_equals_stid;
+      c_tid_t const func_stids =
+        $qual_stids | $ref_qual_stid | $noexcept_stid | $equals_stid;
 
       //
       // Cdecl can't know for certain whether a "function" name is really a
@@ -4149,26 +4103,28 @@ func_decl_c_astp
         ) &&
 
         // + The new type does _not_ have any non-constructor storage classes.
-        !c_tid_is_any( func_stid, TS_FUNC_LIKE_NOT_CTOR );
+        !c_tid_is_any( func_stids, TS_FUNC_LIKE_NOT_CTOR );
 
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
-      func_ast->type.stids = c_tid_check( func_stid, C_TPID_STORE );
-      func_ast->func.param_ast_list = slist_move( &$3 );
+      func_ast->type.stids = c_tid_check( func_stids, C_TPID_STORE );
+      func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
       if ( assume_constructor ) {
-        assert( trailing_ret_ast == NULL );
-        $$.ast = c_ast_add_func( decl2_ast, func_ast, /*ret_ast=*/NULL );
+        assert( $trailing_ret_ast == NULL );
+        $$.ast = c_ast_add_func( decl_ast, func_ast, /*ret_ast=*/NULL );
       }
-      else if ( $1.target_ast != NULL ) {
-        $$.ast = decl2_ast;
-        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, func_ast, type_ast ) );
+      else if ( $decl_astp.target_ast != NULL ) {
+        $$.ast = decl_ast;
+        PJL_IGNORE_RV(
+          c_ast_add_func( $decl_astp.target_ast, func_ast, type_ast )
+        );
       }
       else {
         $$.ast = c_ast_add_func(
-          decl2_ast,
+          decl_ast,
           func_ast,
-          trailing_ret_ast != NULL ? trailing_ret_ast : type_ast
+          $trailing_ret_ast != NULL ? $trailing_ret_ast : type_ast
         );
       }
 
@@ -4208,7 +4164,7 @@ pc99_func_or_constructor_declaration_c
      * cause grammar conflicts if they were separate rules in an LALR(1)
      * parser).
      */
-  : Y_NAME '('
+  : Y_NAME[name] '('
     {
       if ( OPT_LANG_IS( CPP_ANY ) ) {
         //
@@ -4221,9 +4177,9 @@ pc99_func_or_constructor_declaration_c
         //
         // it'll be recognized as such.
         //
-        c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@1 );
+        c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@name );
         csu_ast->type.btids = TB_CLASS;
-        c_sname_init_name( &csu_ast->csu.csu_sname, check_strdup( $1 ) );
+        c_sname_init_name( &csu_ast->csu.csu_sname, check_strdup( $name ) );
         csu_ast->sname = c_sname_dup( &csu_ast->csu.csu_sname );
 
         in_attr.typedef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
@@ -4231,19 +4187,16 @@ pc99_func_or_constructor_declaration_c
         assert( csu_tdef->ast == csu_ast );
       }
     }
-    param_c_ast_list_opt ')' noexcept_c_stid_opt func_equals_c_stid_opt
+    param_c_ast_list_opt[param_ast_list] ')' noexcept_c_stid_opt[noexcept_stid]
+    func_equals_c_stid_opt[equals_stid]
     {
-      char const *const name = $1;
-      c_tid_t     const noexcept_stid = $6;
-      c_tid_t     const func_equals_stid = $7;
-
       DUMP_START( "pc99_func_or_constructor_declaration_c",
                   "NAME '(' param_c_ast_list_opt ')' noexcept_c_stid_opt "
                   "func_equals_c_stid_opt" );
-      DUMP_STR( "NAME", name );
-      DUMP_AST_LIST( "param_c_ast_list_opt", $4 );
-      DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
-      DUMP_TID( "func_equals_c_stid_opt", func_equals_stid );
+      DUMP_STR( "NAME", $name );
+      DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
+      DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
+      DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
 
       c_ast_t *ast;
 
@@ -4269,11 +4222,11 @@ pc99_func_or_constructor_declaration_c
           // done now in the parser rather than later in the AST since the AST
           // would have no "memory" that the return type was implicitly int.
           //
-          print_error( &@1,
+          print_error( &@name,
             "implicit \"int\" functions are illegal%s\n",
             C_LANG_WHICH( IMPLICIT_int )
           );
-          FREE( name );
+          FREE( $name );
           PARSE_ABORT();
         }
 
@@ -4283,17 +4236,17 @@ pc99_func_or_constructor_declaration_c
         //
         //      power(x, n)             /* raise x to n-th power; n > 0 */
         //
-        c_ast_t *const ret_ast = c_ast_new_gc( K_BUILTIN, &@1 );
+        c_ast_t *const ret_ast = c_ast_new_gc( K_BUILTIN, &@name );
         ret_ast->type.btids = TB_INT;
 
         ast = c_ast_new_gc( K_FUNCTION, &@$ );
         ast->func.ret_ast = ret_ast;
       }
 
-      c_sname_init_name( &ast->sname, name );
+      c_sname_init_name( &ast->sname, $name );
       ast->type.stids =
-        c_tid_check( noexcept_stid | func_equals_stid, C_TPID_STORE );
-      ast->func.param_ast_list = slist_move( &$4 );
+        c_tid_check( $noexcept_stid | $equals_stid, C_TPID_STORE );
+      ast->func.param_ast_list = slist_move( &$param_ast_list );
 
       DUMP_AST( "pc99_func_or_constructor_declaration_c", ast );
       DUMP_END();
@@ -4315,24 +4268,24 @@ rparen_func_qualifier_list_c_stid_opt
         lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
       }
     }
-    func_qualifier_list_c_stid_opt
+    func_qualifier_list_c_stid_opt[stids]
     {
       lexer_keyword_ctx = C_KW_CTX_DEFAULT;
-      $$ = $3;
+      $$ = $stids;
     }
   ;
 
 func_qualifier_list_c_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | func_qualifier_list_c_stid_opt func_qualifier_c_stid
+  | func_qualifier_list_c_stid_opt[stids] func_qualifier_c_stid[stid]
     {
       DUMP_START( "func_qualifier_list_c_stid_opt",
                   "func_qualifier_list_c_stid_opt func_qualifier_c_stid" );
-      DUMP_TID( "func_qualifier_list_c_stid_opt", $1 );
-      DUMP_TID( "func_qualifier_c_stid", $2 );
+      DUMP_TID( "func_qualifier_list_c_stid_opt", $stids );
+      DUMP_TID( "func_qualifier_c_stid", $stid );
 
-      $$ = $1;
-      PARSE_ASSERT( c_tid_add( &$$, $2, &@2 ) );
+      $$ = $stids;
+      PARSE_ASSERT( c_tid_add( &$$, $stid, &@stid ) );
 
       DUMP_TID( "func_qualifier_list_c_stid_opt", $$ );
       DUMP_END();
@@ -4362,24 +4315,24 @@ func_ref_qualifier_c_stid_opt
 noexcept_c_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
   | Y_noexcept
-  | Y_noexcept '(' noexcept_bool_stid_exp rparen_exp
+  | Y_noexcept '(' noexcept_bool_stid_exp[stid] rparen_exp
     {
-      $$ = $3;
+      $$ = $stid;
     }
   | Y_throw lparen_exp rparen_exp
     {
-      $$ = $1;
+      $$ = $Y_throw;
     }
-  | Y_throw lparen_exp param_c_ast_list ')'
+  | Y_throw lparen_exp param_c_ast_list[ast_list] ')'
     {
-      c_ast_list_cleanup( &$3 );
+      c_ast_list_cleanup( &$ast_list );
 
       if ( OPT_LANG_IS( throw ) ) {
-        print_error( &@3,
+        print_error( &@ast_list,
           "dynamic exception specifications not supported by %s\n", CDECL
         );
       } else {
-        print_error( &@3,
+        print_error( &@ast_list,
           "dynamic exception specifications not supported%s\n",
           C_LANG_WHICH( throw )
         );
@@ -4400,35 +4353,35 @@ noexcept_bool_stid_exp
 trailing_return_type_c_ast_opt
   : /* empty */                   { $$ = NULL; }
   | // in_attr: type_c_ast
-    Y_ARROW type_c_ast { ia_type_ast_push( $2 ); } cast_c_astp_opt
-    {
-      ia_type_ast_pop();
-      c_ast_t const *const ret_ast = ia_type_ast_peek();
-
-      DUMP_START( "trailing_return_type_c_ast_opt",
-                  "type_c_ast cast_c_astp_opt" );
-      DUMP_AST( "in_attr__type_c_ast", ret_ast );
-      DUMP_AST( "type_c_ast", $2 );
-      DUMP_AST( "cast_c_astp_opt", $4.ast );
-
-      $$ = $4.ast != NULL ? $4.ast : $2;
-
-      DUMP_AST( "trailing_return_type_c_ast_opt", $$ );
-      DUMP_END();
-
-      //
+    Y_ARROW type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    cast_c_astp_opt[cast_astp]
+    { //
       // The function trailing return-type syntax is supported only in C++11
       // and later.  This check has to be done now in the parser rather than
       // later in the AST because the AST has no "memory" of where the return-
       // type came from.
       //
       if ( UNSUPPORTED( TRAILING_RETURN_TYPE ) ) {
-        print_error( &@1,
+        print_error( &@Y_ARROW,
           "trailing return type not supported%s\n",
           C_LANG_WHICH( TRAILING_RETURN_TYPE )
         );
         PARSE_ABORT();
       }
+
+      ia_type_ast_pop();
+      c_ast_t const *const ret_ast = ia_type_ast_peek();
+
+      DUMP_START( "trailing_return_type_c_ast_opt",
+                  "type_c_ast cast_c_astp_opt" );
+      DUMP_AST( "in_attr__type_c_ast", ret_ast );
+      DUMP_AST( "type_c_ast", $type_ast );
+      DUMP_AST( "cast_c_astp_opt", $cast_astp.ast );
+
+      $$ = $cast_astp.ast != NULL ? $cast_astp.ast : $type_ast;
+
+      DUMP_AST( "trailing_return_type_c_ast_opt", $$ );
+      DUMP_END();
 
       //
       // Ensure that a function using the C++11 trailing return type syntax
@@ -4495,26 +4448,26 @@ param_c_ast_list_opt
   ;
 
 param_c_ast_list
-  : param_c_ast_list comma_exp param_c_ast_exp
+  : param_c_ast_list[ast_list] comma_exp param_c_ast_exp[ast]
     {
       DUMP_START( "param_c_ast_list", "param_c_ast_list ',' param_c_ast" );
-      DUMP_AST_LIST( "param_c_ast_list", $1 );
-      DUMP_AST( "param_c_ast", $3 );
+      DUMP_AST_LIST( "param_c_ast_list", $ast_list );
+      DUMP_AST( "param_c_ast", $ast );
 
-      $$ = $1;
-      slist_push_back( &$$, $3 );
+      $$ = $ast_list;
+      slist_push_back( &$$, $ast );
 
       DUMP_AST_LIST( "param_c_ast_list", $$ );
       DUMP_END();
     }
 
-  | param_c_ast
+  | param_c_ast[param_ast]
     {
       DUMP_START( "param_c_ast_list", "param_c_ast" );
-      DUMP_AST( "param_c_ast", $1 );
+      DUMP_AST( "param_c_ast", $param_ast );
 
       slist_init( &$$ );
-      slist_push_back( &$$, $1 );
+      slist_push_back( &$$, $param_ast );
 
       DUMP_AST_LIST( "param_c_ast_list", $$ );
       DUMP_END();
@@ -4525,16 +4478,20 @@ param_c_ast
     /*
      * Ordinary function parameter declaration.
      */
-  : this_stid_opt type_c_ast { ia_type_ast_push( $2 ); } cast_c_astp_opt
+  : this_stid_opt[this_stid] type_c_ast[type_ast]
+    {
+      ia_type_ast_push( $type_ast );
+    }
+    cast_c_astp_opt[cast_astp]
     {
       ia_type_ast_pop();
 
       DUMP_START( "param_c_ast", "this_stid_opt type_c_ast cast_c_astp_opt" );
-      DUMP_TID( "this_stid_opt", $1 );
-      DUMP_AST( "type_c_ast", $2 );
-      DUMP_AST( "cast_c_astp_opt", $4.ast );
+      DUMP_TID( "this_stid_opt", $this_stid );
+      DUMP_AST( "type_c_ast", $type_ast );
+      DUMP_AST( "cast_c_astp_opt", $cast_astp.ast );
 
-      $$ = c_ast_patch_placeholder( $2, $4.ast );
+      $$ = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
 
       if ( $$->kind == K_FUNCTION ) {
         //
@@ -4547,7 +4504,7 @@ param_c_ast
         $$ = c_ast_pointer( $$, &gc_ast_list );
       }
 
-      PARSE_ASSERT( c_type_add_tid( &$$->type, $1, &@1 ) );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $this_stid, &@this_stid ) );
 
       DUMP_AST( "param_c_ast", $$ );
       DUMP_END();
@@ -4588,15 +4545,15 @@ nested_decl_c_astp
       ia_type_ast_push( c_ast_new_gc( K_PLACEHOLDER, &@$ ) );
       ++in_attr.ast_depth;
     }
-    decl_c_astp rparen_exp
+    decl_c_astp[decl_astp] rparen_exp
     {
       ia_type_ast_pop();
       --in_attr.ast_depth;
 
       DUMP_START( "nested_decl_c_astp", "'(' decl_c_astp ')'" );
-      DUMP_AST( "decl_c_astp", $3.ast );
+      DUMP_AST( "decl_c_astp", $decl_astp.ast );
 
-      $$ = $3;
+      $$ = $decl_astp;
       $$.ast->loc = @$;
 
       DUMP_AST( "nested_decl_c_astp", $$.ast );
@@ -4608,17 +4565,15 @@ nested_decl_c_astp
 
 oper_decl_c_astp
   : // in_attr: type_c_ast
-    oper_sname_c_opt Y_operator c_operator lparen_exp param_c_ast_list_opt
-    rparen_func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt
-    noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt
+    oper_sname_c_opt[sname] Y_operator c_operator[oper_id] lparen_exp
+    param_c_ast_list_opt[param_ast_list]
+    rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    func_ref_qualifier_c_stid_opt[ref_qual_stid]
+    noexcept_c_stid_opt[noexcept_stid]
+    trailing_return_type_c_ast_opt[trailing_ret_ast]
+    func_equals_c_stid_opt[equals_stid]
     {
-      c_tid_t      const        func_qualifier_stid = $6;
-      c_tid_t      const        func_ref_qualifier_stid = $7;
-      c_tid_t      const        func_equals_stid = $10;
-      c_tid_t      const        noexcept_stid = $8;
-      c_oper_id_t  const        oper_id = $3;
-      c_operator_t const *const operator = c_oper_get( oper_id );
-      c_ast_t            *const trailing_ret_ast = $9;
+      c_operator_t const *const operator = c_oper_get( $oper_id );
       c_ast_t            *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "oper_decl_c_astp",
@@ -4629,27 +4584,26 @@ oper_decl_c_astp
                   "trailing_return_type_c_ast_opt "
                   "func_equals_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_SNAME( "oper_sname_c_opt", $1 );
+      DUMP_SNAME( "oper_sname_c_opt", $sname );
       DUMP_STR( "c_operator", operator->literal );
-      DUMP_AST_LIST( "param_c_ast_list_opt", $5 );
-      DUMP_TID( "func_qualifier_list_c_stid_opt", func_qualifier_stid );
-      DUMP_TID( "func_ref_qualifier_c_stid_opt", func_ref_qualifier_stid );
-      DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
-      DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
-      DUMP_TID( "func_equals_c_stid_opt", func_equals_stid );
+      DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
+      DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
+      DUMP_TID( "func_ref_qualifier_c_stid_opt", $ref_qual_stid );
+      DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
+      DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
+      DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
 
-      c_tid_t const oper_stid =
-        func_qualifier_stid | func_ref_qualifier_stid | noexcept_stid |
-        func_equals_stid;
+      c_tid_t const oper_stids =
+        $qual_stids | $ref_qual_stid | $noexcept_stid | $equals_stid;
 
       c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@$ );
-      oper_ast->sname = c_sname_move( &$1 );
-      oper_ast->type.stids = c_tid_check( oper_stid, C_TPID_STORE );
-      oper_ast->oper.param_ast_list = slist_move( &$5 );
+      oper_ast->sname = c_sname_move( &$sname );
+      oper_ast->type.stids = c_tid_check( oper_stids, C_TPID_STORE );
+      oper_ast->oper.param_ast_list = slist_move( &$param_ast_list );
       oper_ast->oper.operator = operator;
 
-      c_ast_t *const ret_ast = trailing_ret_ast != NULL ?
-        trailing_ret_ast : type_ast;
+      c_ast_t *const ret_ast = $trailing_ret_ast != NULL ?
+        $trailing_ret_ast : type_ast;
 
       $$.ast = c_ast_add_func( type_ast, oper_ast, ret_ast );
       $$.target_ast = oper_ast->oper.ret_ast;
@@ -4662,16 +4616,17 @@ oper_decl_c_astp
 /// Gibberish C/C++ pointer declaration ///////////////////////////////////////
 
 pointer_decl_c_astp
-  : pointer_type_c_ast { ia_type_ast_push( $1 ); } decl_c_astp
+  : pointer_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    decl_c_astp[decl_astp]
     {
       ia_type_ast_pop();
 
       DUMP_START( "pointer_decl_c_astp", "pointer_type_c_ast decl_c_astp" );
-      DUMP_AST( "pointer_type_c_ast", $1 );
-      DUMP_AST( "decl_c_astp", $3.ast );
+      DUMP_AST( "pointer_type_c_ast", $type_ast );
+      DUMP_AST( "decl_c_astp", $decl_astp.ast );
 
-      PJL_IGNORE_RV( c_ast_patch_placeholder( $1, $3.ast ) );
-      $$ = $3;
+      PJL_IGNORE_RV( c_ast_patch_placeholder( $type_ast, $decl_astp.ast ) );
+      $$ = $decl_astp;
       $$.ast->loc = @$;
 
       DUMP_AST( "pointer_decl_c_astp", $$.ast );
@@ -4681,16 +4636,16 @@ pointer_decl_c_astp
 
 pointer_type_c_ast
   : // in_attr: type_c_ast
-    '*' type_qualifier_list_c_stid_opt
+    '*' type_qualifier_list_c_stid_opt[qual_stids]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "pointer_type_c_ast", "* type_qualifier_list_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
+      DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
       $$ = c_ast_new_gc( K_POINTER, &@$ );
-      $$->type.stids = c_tid_check( $2, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
       c_ast_set_parent( type_ast, $$ );
 
       DUMP_AST( "pointer_type_c_ast", $$ );
@@ -4706,17 +4661,18 @@ pc99_pointer_decl_list_c
   ;
 
 pc99_pointer_decl_c
-  : pc99_pointer_type_c_ast { ia_type_ast_push( $1 ); } decl_c_astp
+  : pc99_pointer_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+  decl_c_astp[decl_astp]
     {
       ia_type_ast_pop();
 
       DUMP_START( "pc99_pointer_decl_c",
                   "pc99_pointer_type_c_ast decl_c_astp" );
-      DUMP_AST( "pc99_pointer_type_c_ast", $1 );
-      DUMP_AST( "decl_c_astp", $3.ast );
+      DUMP_AST( "pc99_pointer_type_c_ast", $type_ast );
+      DUMP_AST( "decl_c_astp", $decl_astp.ast );
 
-      PJL_IGNORE_RV( c_ast_patch_placeholder( $1, $3.ast ) );
-      c_ast_t *const ast = $3.ast;
+      PJL_IGNORE_RV( c_ast_patch_placeholder( $type_ast, $decl_astp.ast ) );
+      c_ast_t *const ast = $decl_astp.ast;
       ast->loc = @$;
 
       DUMP_AST( "pc99_pointer_decl_c", ast );
@@ -4728,7 +4684,7 @@ pc99_pointer_decl_c
   ;
 
 pc99_pointer_type_c_ast
-  : '*' type_qualifier_list_c_stid_opt
+  : '*'[star] type_qualifier_list_c_stid_opt[qual_stids]
     {
       if ( OPT_LANG_IS( C_ANY ) && UNSUPPORTED( IMPLICIT_int ) ) {
         //
@@ -4736,7 +4692,7 @@ pc99_pointer_type_c_ast
         // done now in the parser rather than later in the AST since the AST
         // would have no "memory" that the return type was implicitly int.
         //
-        print_error( &@1,
+        print_error( &@star,
           "implicit \"int\" is illegal%s\n",
           C_LANG_WHICH( IMPLICIT_int )
         );
@@ -4745,17 +4701,17 @@ pc99_pointer_type_c_ast
 
       DUMP_START( "pc99_pointer_type_c_ast",
                   "* type_qualifier_list_c_stid_opt" );
-      DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
+      DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
       if ( false_set( &in_attr.is_implicit_int ) ) {
-        c_ast_t *const int_ast = c_ast_new_gc( K_BUILTIN, &@1 );
+        c_ast_t *const int_ast = c_ast_new_gc( K_BUILTIN, &@star );
         int_ast->type.btids = TB_INT;
         ia_type_ast_push( int_ast );
       }
 
       c_ast_t *const type_ast = c_ast_dup( ia_type_ast_peek(), &gc_ast_list );
       $$ = c_ast_pointer( type_ast, &gc_ast_list );
-      $$->type.stids = c_tid_check( $2, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
 
       DUMP_AST( "pc99_pointer_type_c_ast", $$ );
       DUMP_END();
@@ -4765,16 +4721,17 @@ pc99_pointer_type_c_ast
 /// Gibberish C++ pointer-to-member declaration ///////////////////////////////
 
 pointer_to_member_decl_c_astp
-  : pointer_to_member_type_c_ast { ia_type_ast_push( $1 ); } decl_c_astp
+  : pointer_to_member_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    decl_c_astp[decl_astp]
     {
       ia_type_ast_pop();
 
       DUMP_START( "pointer_to_member_decl_c_astp",
                   "pointer_to_member_type_c_ast decl_c_astp" );
-      DUMP_AST( "pointer_to_member_type_c_ast", $1 );
-      DUMP_AST( "decl_c_astp", $3.ast );
+      DUMP_AST( "pointer_to_member_type_c_ast", $type_ast );
+      DUMP_AST( "decl_c_astp", $decl_astp.ast );
 
-      $$ = $3;
+      $$ = $decl_astp;
       $$.ast->loc = @$;
 
       DUMP_AST( "pointer_to_member_decl_c_astp", $$.ast );
@@ -4784,19 +4741,19 @@ pointer_to_member_decl_c_astp
 
 pointer_to_member_type_c_ast
   : // in_attr: type_c_ast
-    any_sname_c Y_COLON2_STAR cv_qualifier_list_stid_opt
+    any_sname_c[sname] Y_COLON2_STAR cv_qualifier_list_stid_opt[qual_stids]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "pointer_to_member_type_c_ast",
                   "sname '::*' cv_qualifier_list_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_SNAME( "sname", $1 );
-      DUMP_TID( "cv_qualifier_list_stid_opt", $3 );
+      DUMP_SNAME( "sname", $sname );
+      DUMP_TID( "cv_qualifier_list_stid_opt", $qual_stids );
 
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
 
-      c_type_t scope_type = *c_sname_local_type( &$1 );
+      c_type_t scope_type = *c_sname_local_type( &$sname );
       if ( !c_tid_is_any( scope_type.btids, TB_ANY_SCOPE ) ) {
         //
         // The sname has no scope-type, but we now know there's a pointer-to-
@@ -4805,13 +4762,13 @@ pointer_to_member_type_c_ast
         // it's more C++-like.)
         //
         scope_type.btids = TB_CLASS;
-        c_sname_set_local_type( &$1, &scope_type );
+        c_sname_set_local_type( &$sname, &scope_type );
       }
 
       // adopt sname's scope-type for the AST
-      $$->type = c_type_or( &C_TYPE_LIT_S( $3 ), &scope_type );
+      $$->type = c_type_or( &C_TYPE_LIT_S( $qual_stids ), &scope_type );
 
-      $$->ptr_mbr.class_sname = c_sname_move( &$1 );
+      $$->ptr_mbr.class_sname = c_sname_move( &$sname );
       c_ast_set_parent( type_ast, $$ );
 
       DUMP_AST( "pointer_to_member_type_c_ast", $$ );
@@ -4822,15 +4779,16 @@ pointer_to_member_type_c_ast
 /// Gibberish C++ reference declaration ///////////////////////////////////////
 
 reference_decl_c_astp
-  : reference_type_c_ast { ia_type_ast_push( $1 ); } decl_c_astp
+  : reference_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    decl_c_astp[decl_astp]
     {
       ia_type_ast_pop();
 
       DUMP_START( "reference_decl_c_astp", "reference_type_c_ast decl_c_astp" );
-      DUMP_AST( "reference_type_c_ast", $1 );
-      DUMP_AST( "decl_c_astp", $3.ast );
+      DUMP_AST( "reference_type_c_ast", $type_ast );
+      DUMP_AST( "decl_c_astp", $decl_astp.ast );
 
-      $$ = $3;
+      $$ = $decl_astp;
       $$.ast->loc = @$;
 
       DUMP_AST( "reference_decl_c_astp", $$.ast );
@@ -4840,16 +4798,16 @@ reference_decl_c_astp
 
 reference_type_c_ast
   : // in_attr: type_c_ast
-    Y_AMPER type_qualifier_list_c_stid_opt
+    Y_AMPER type_qualifier_list_c_stid_opt[qual_stids]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "reference_type_c_ast", "&" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
+      DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
       $$ = c_ast_new_gc( K_REFERENCE, &@$ );
-      $$->type.stids = c_tid_check( $2, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
       c_ast_set_parent( type_ast, $$ );
 
       DUMP_AST( "reference_type_c_ast", $$ );
@@ -4857,16 +4815,16 @@ reference_type_c_ast
     }
 
   | // in_attr: type_c_ast
-    Y_AMPER2 type_qualifier_list_c_stid_opt
+    Y_AMPER2 type_qualifier_list_c_stid_opt[qual_stids]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "reference_type_c_ast", "&&" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
+      DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
       $$ = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
-      $$->type.stids = c_tid_check( $2, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
       c_ast_set_parent( type_ast, $$ );
 
       DUMP_AST( "reference_type_c_ast", $$ );
@@ -4878,25 +4836,25 @@ reference_type_c_ast
 
 typedef_type_decl_c_ast
   : // in_attr: type_c_ast
-    typedef_type_c_ast
+    typedef_type_c_ast[tdef_ast]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "typedef_type_decl_c_ast", "typedef_type_c_ast" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "typedef_type_c_ast", $1 );
+      DUMP_AST( "typedef_type_c_ast", $tdef_ast );
 
       if ( c_tid_is_any( type_ast->type.stids, TS_TYPEDEF ) ) {
         //
         // If we're defining a type, return the type as-is.
         //
-        $$ = $1;
+        $$ = $tdef_ast;
       }
       else {
         //
         // Otherwise, return the type that it's typedef'd as.
         //
-        c_ast_t const *const raw_ast = c_ast_untypedef( $1 );
+        c_ast_t const *const raw_ast = c_ast_untypedef( $tdef_ast );
 
         //
         // But first ensure the name isn't of a previously declared type:
@@ -4946,7 +4904,7 @@ typedef_type_decl_c_ast
         c_typedef_t const *const tdef = c_typedef_find_sname( &raw_ast->sname );
         if ( tdef != NULL ) {
           print_error(
-            &$1->loc,
+            &$tdef_ast->loc,
             "\"%s\": previously declared as type: ",
             c_sname_full_name( &raw_ast->sname )
           );
@@ -4958,7 +4916,7 @@ typedef_type_decl_c_ast
         // We have to duplicate the type to set the current location.
         //
         $$ = c_ast_dup( raw_ast, &gc_ast_list );
-        $$->loc = $1->loc;
+        $$->loc = $tdef_ast->loc;
       }
 
       DUMP_AST( "typedef_type_c_ast", $$ );
@@ -4970,21 +4928,17 @@ typedef_type_decl_c_ast
 
 user_defined_conversion_decl_c_astp
   : // in_attr: type_c_ast
-    oper_sname_c_opt Y_operator type_c_ast
+    oper_sname_c_opt[sname] Y_operator type_c_ast[to_ast]
     {
-      ia_type_ast_push( $3 );
+      ia_type_ast_push( $to_ast );
     }
-    udc_decl_c_ast_opt lparen_exp rparen_func_qualifier_list_c_stid_opt
-    noexcept_c_stid_opt func_equals_c_stid_opt
+    udc_decl_c_ast_opt[udc_ast] lparen_exp
+    rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    noexcept_c_stid_opt[noexcept_stid] func_equals_c_stid_opt[equals_stid]
     {
       ia_type_ast_pop();
 
-      c_ast_t *const  type_ast = ia_type_ast_peek();
-      c_ast_t *const  to_ast = $3;
-      c_ast_t *const  udc_ast = $5;
-      c_tid_t  const  func_qual_stids = $7;
-      c_tid_t  const  noexcept_stid = $8;
-      c_tid_t  const  func_equals_stid = $9;
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "user_defined_conversion_decl_c_astp",
                   "oper_sname_c_opt OPERATOR "
@@ -4992,22 +4946,22 @@ user_defined_conversion_decl_c_astp
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                   "func_equals_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_SNAME( "oper_sname_c_opt", $1 );
-      DUMP_AST( "type_c_ast", to_ast );
-      DUMP_AST( "udc_decl_c_ast_opt", udc_ast );
-      DUMP_TID( "func_qualifier_list_c_stid_opt", func_qual_stids );
-      DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
-      DUMP_TID( "func_equals_c_stid_opt", func_equals_stid );
+      DUMP_SNAME( "oper_sname_c_opt", $sname );
+      DUMP_AST( "type_c_ast", $to_ast );
+      DUMP_AST( "udc_decl_c_ast_opt", $udc_ast );
+      DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
+      DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
+      DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
 
       $$.ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
-      $$.ast->sname = c_sname_move( &$1 );
+      $$.ast->sname = c_sname_move( &$sname );
       $$.ast->type.stids = c_tid_check(
-        func_qual_stids | noexcept_stid | func_equals_stid,
+        $qual_stids | $noexcept_stid | $equals_stid,
         C_TPID_STORE
       );
       if ( type_ast != NULL )
         c_type_or_eq( &$$.ast->type, &type_ast->type );
-      $$.ast->udef_conv.to_ast = udc_ast != NULL ? udc_ast : to_ast;
+      $$.ast->udef_conv.to_ast = $udc_ast != NULL ? $udc_ast : $to_ast;
       $$.target_ast = $$.ast->udef_conv.to_ast;
 
       DUMP_AST( "user_defined_conversion_decl_c_astp", $$.ast );
@@ -5019,37 +4973,35 @@ user_defined_conversion_decl_c_astp
 
 user_defined_literal_decl_c_astp
   : // in_attr: type_c_ast
-    oper_sname_c_opt Y_operator quote2_exp name_exp
-    lparen_exp param_c_ast_list_exp ')' noexcept_c_stid_opt
-    trailing_return_type_c_ast_opt
+    oper_sname_c_opt[sname] Y_operator quote2_exp name_exp[name]
+    lparen_exp param_c_ast_list_exp[param_ast_list] ')'
+    noexcept_c_stid_opt[noexcept_stid]
+    trailing_return_type_c_ast_opt[trailing_ret_ast]
     {
-      char const *const name = $4;
-      c_tid_t     const noexcept_stid = $8;
-      c_ast_t    *const trailing_ret_ast = $9;
-      c_ast_t    *const type_ast = ia_type_ast_peek();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "user_defined_literal_decl_c_astp",
                   "oper_sname_c_opt OPERATOR \"\" "
                   "'(' param_c_ast_list_exp ')' noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_SNAME( "oper_sname_c_opt", $1 );
-      DUMP_STR( "name", name );
-      DUMP_AST_LIST( "param_c_ast_list_exp", $6 );
-      DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
-      DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
+      DUMP_SNAME( "oper_sname_c_opt", $sname );
+      DUMP_STR( "name", $name );
+      DUMP_AST_LIST( "param_c_ast_list_exp", $param_ast_list );
+      DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
+      DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
 
-      c_sname_set( &type_ast->sname, &$1 );
-      c_sname_append_name( &type_ast->sname, name );
+      c_sname_set( &type_ast->sname, &$sname );
+      c_sname_append_name( &type_ast->sname, $name );
 
       c_ast_t *const udl_ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      udl_ast->type.stids = c_tid_check( noexcept_stid, C_TPID_STORE );
-      udl_ast->udef_lit.param_ast_list = slist_move( &$6 );
+      udl_ast->type.stids = c_tid_check( $noexcept_stid, C_TPID_STORE );
+      udl_ast->udef_lit.param_ast_list = slist_move( &$param_ast_list );
 
       $$.ast = c_ast_add_func(
         type_ast,
         udl_ast,
-        trailing_ret_ast != NULL ? trailing_ret_ast : type_ast
+        $trailing_ret_ast != NULL ? $trailing_ret_ast : type_ast
       );
 
       $$.target_ast = udl_ast->udef_lit.ret_ast;
@@ -5091,25 +5043,28 @@ cast2_c_astp
 
 array_cast_c_astp
   : // in_attr: type_c_ast
-    cast_c_astp_opt array_size_c_ast
+    cast_c_astp_opt[cast_astp] array_size_c_ast[array_ast]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
-      c_ast_t *const array_ast = $2;
 
       DUMP_START( "array_cast_c_astp", "cast_c_astp_opt array_size_c_ast" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "cast_c_astp_opt", $1.ast );
-      DUMP_AST( "target_ast", $1.target_ast );
-      DUMP_AST( "array_size_c_ast", array_ast );
+      DUMP_AST( "cast_c_astp_opt", $cast_astp.ast );
+      DUMP_AST( "target_ast", $cast_astp.target_ast );
+      DUMP_AST( "array_size_c_ast", $array_ast );
 
-      c_ast_set_parent( c_ast_new_gc( K_PLACEHOLDER, &@1 ), array_ast );
+      c_ast_set_parent(
+        c_ast_new_gc( K_PLACEHOLDER, &@cast_astp ), $array_ast
+      );
 
-      if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
-        $$.ast = $1.ast;
-        $$.target_ast = c_ast_add_array( $1.target_ast, array_ast, type_ast );
+      if ( $cast_astp.target_ast != NULL ) {
+        // array-of or function-like-ret type
+        $$.ast = $cast_astp.ast;
+        $$.target_ast =
+          c_ast_add_array( $cast_astp.target_ast, $array_ast, type_ast );
       } else {
-        c_ast_t *const ast = $1.ast != NULL ? $1.ast : type_ast;
-        $$.ast = c_ast_add_array( ast, array_ast, type_ast );
+        c_ast_t *const ast = $cast_astp.ast != NULL ? $cast_astp.ast : type_ast;
+        $$.ast = c_ast_add_array( ast, $array_ast, type_ast );
         $$.target_ast = NULL;
       }
 
@@ -5129,24 +5084,25 @@ block_cast_c_astp                       // Apple extension
       //
       ia_type_ast_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
-    type_qualifier_list_c_stid_opt cast_c_astp_opt rparen_exp
-    lparen_exp param_c_ast_list_opt ')'
+    type_qualifier_list_c_stid_opt[qual_stids] cast_c_astp_opt[cast_astp]
+    rparen_exp lparen_exp param_c_ast_list_opt[param_ast_list] ')'
     {
       c_ast_t *const  block_ast = ia_type_ast_pop();
       c_ast_t *const  type_ast = ia_type_ast_peek();
-      c_tid_t  const  type_qual_stids = $4;
-      c_ast_t *const  cast_ast = $5.ast;
+      c_ast_t *const  cast_ast = $cast_astp.ast;
 
       DUMP_START( "block_cast_c_astp",
                   "'(' '^' type_qualifier_list_c_stid_opt cast_c_astp_opt ')' "
                   "'(' param_c_ast_list_opt ')'" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_TID( "type_qualifier_list_c_stid_opt", type_qual_stids );
+      DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_AST( "cast_c_astp_opt", cast_ast );
-      DUMP_AST_LIST( "param_c_ast_list_opt", $8 );
+      DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
 
-      PARSE_ASSERT( c_type_add_tid( &block_ast->type, type_qual_stids, &@4 ) );
-      block_ast->block.param_ast_list = slist_move( &$8 );
+      PARSE_ASSERT(
+        c_type_add_tid( &block_ast->type, $qual_stids, &@qual_stids )
+      );
+      block_ast->block.param_ast_list = slist_move( &$param_ast_list );
       $$.ast = c_ast_add_func( cast_ast, block_ast, type_ast );
       $$.target_ast = block_ast->block.ret_ast;
 
@@ -5159,28 +5115,27 @@ block_cast_c_astp                       // Apple extension
 
 func_cast_c_astp
   : // in_attr: type_c_ast
-    cast2_c_astp '(' param_c_ast_list_opt rparen_func_qualifier_list_c_stid_opt
-    noexcept_c_stid_opt trailing_return_type_c_ast_opt
+    cast2_c_astp[cast2_astp] '(' param_c_ast_list_opt[param_ast_list]
+    rparen_func_qualifier_list_c_stid_opt[ref_qual_stids]
+    noexcept_c_stid_opt[noexcept_stid]
+    trailing_return_type_c_ast_opt[trailing_ret_ast]
     {
-      c_ast_t *const cast2_c_ast = $1.ast;
-      c_tid_t  const func_ref_qualifier_stid = $4;
-      c_tid_t  const noexcept_stid = $5;
+      c_ast_t *const cast2_ast = $cast2_astp.ast;
       c_ast_t *      ret_ast = ia_type_ast_peek();
-      c_ast_t *const trailing_ret_ast = $6;
 
       DUMP_START( "func_cast_c_astp",
                   "cast2_c_astp '(' param_c_ast_list_opt ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt" );
       DUMP_AST( "in_attr__type_c_ast", ret_ast );
-      DUMP_AST( "cast2_c_ast", cast2_c_ast );
-      DUMP_AST_LIST( "param_c_ast_list_opt", $3 );
-      DUMP_TID( "func_qualifier_list_c_stid_opt", func_ref_qualifier_stid );
-      DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
-      DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
-      DUMP_AST( "target_ast", $1.target_ast );
+      DUMP_AST( "cast2_c_ast", cast2_ast );
+      DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
+      DUMP_TID( "func_qualifier_list_c_stid_opt", $ref_qual_stids );
+      DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
+      DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
+      DUMP_AST( "target_ast", $cast2_astp.target_ast );
 
-      if ( cast2_c_ast->kind == K_FUNCTION ) {
+      if ( cast2_ast->kind == K_FUNCTION ) {
         //
         // This is for a case like:
         //
@@ -5188,39 +5143,41 @@ func_cast_c_astp
         //              |   |  |
         //              |   |  func
         //              |   |
-        //              |   cast2_c_ast (func)
+        //              |   cast2_ast (func)
         //              |
         //              ret_ast
         //
-        // We replace ret_ast with cast2_c_ast:
+        // We replace ret_ast with cast2_ast:
         //
         //      void f( int() () )
         //              |     |
         //              |     func
         //              |
-        //              ret_ast <- cast2_c_ast (func)
+        //              ret_ast <- cast2_ast (func)
         //
         // that is, a "function returning function returning int" -- which is
         // illegal (since functions can't return functions) and will be caught
         // by c_ast_check_ret_type().
         //
-        ret_ast = cast2_c_ast;
+        ret_ast = cast2_ast;
       }
 
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
-      c_tid_t const func_stid = func_ref_qualifier_stid | noexcept_stid;
-      func_ast->type.stids = c_tid_check( func_stid, C_TPID_STORE );
-      func_ast->func.param_ast_list = slist_move( &$3 );
+      c_tid_t const func_stids = $ref_qual_stids | $noexcept_stid;
+      func_ast->type.stids = c_tid_check( func_stids, C_TPID_STORE );
+      func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
-      if ( $1.target_ast != NULL ) {
-        $$.ast = cast2_c_ast;
-        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, func_ast, ret_ast ) );
+      if ( $cast2_astp.target_ast != NULL ) {
+        $$.ast = cast2_ast;
+        PJL_IGNORE_RV(
+          c_ast_add_func( $cast2_astp.target_ast, func_ast, ret_ast )
+        );
       }
       else {
         $$.ast = c_ast_add_func(
-          cast2_c_ast,
+          cast2_ast,
           func_ast,
-          trailing_ret_ast != NULL ? trailing_ret_ast : ret_ast
+          $trailing_ret_ast != NULL ? $trailing_ret_ast : ret_ast
         );
       }
 
@@ -5239,7 +5196,7 @@ nested_cast_c_astp
       ia_type_ast_push( c_ast_new_gc( K_PLACEHOLDER, &@$ ) );
       ++in_attr.ast_depth;
     }
-    cast_c_astp_opt rparen_exp
+    cast_c_astp_opt[cast_astp] rparen_exp
     {
       ia_type_ast_pop();
       --in_attr.ast_depth;
@@ -5248,9 +5205,9 @@ nested_cast_c_astp
 
       DUMP_START( "nested_cast_c_astp", "'(' cast_c_astp_opt ')'" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "cast_c_astp_opt", $3.ast );
+      DUMP_AST( "cast_c_astp_opt", $cast_astp.ast );
 
-      $$ = $3;
+      $$ = $cast_astp;
 
       if ( $$.ast == NULL ) {
         //
@@ -5277,16 +5234,17 @@ nested_cast_c_astp
 /// Gibberish C/C++ pointer cast //////////////////////////////////////////////
 
 pointer_cast_c_astp
-  : pointer_type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
+  : pointer_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    cast_c_astp_opt[cast_astp]
     {
       ia_type_ast_pop();
 
       DUMP_START( "pointer_cast_c_astp", "pointer_type_c_ast cast_c_astp_opt" );
-      DUMP_AST( "pointer_type_c_ast", $1 );
-      DUMP_AST( "cast_c_astp_opt", $3.ast );
+      DUMP_AST( "pointer_type_c_ast", $type_ast );
+      DUMP_AST( "cast_c_astp_opt", $cast_astp.ast );
 
-      $$.ast = c_ast_patch_placeholder( $1, $3.ast );
-      $$.target_ast = $3.target_ast;
+      $$.ast = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
+      $$.target_ast = $cast_astp.target_ast;
 
       DUMP_AST( "pointer_cast_c_astp", $$.ast );
       DUMP_END();
@@ -5296,17 +5254,18 @@ pointer_cast_c_astp
 /// Gibberish C/C++ pointer-to-member cast ////////////////////////////////////
 
 pointer_to_member_cast_c_astp
-  : pointer_to_member_type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
+  : pointer_to_member_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    cast_c_astp_opt[cast_astp]
     {
       ia_type_ast_pop();
 
       DUMP_START( "pointer_to_member_cast_c_astp",
                   "pointer_to_member_type_c_ast cast_c_astp_opt" );
-      DUMP_AST( "pointer_to_member_type_c_ast", $1 );
-      DUMP_AST( "cast_c_astp_opt", $3.ast );
+      DUMP_AST( "pointer_to_member_type_c_ast", $type_ast );
+      DUMP_AST( "cast_c_astp_opt", $cast_astp.ast );
 
-      $$.ast = c_ast_patch_placeholder( $1, $3.ast );
-      $$.target_ast = $3.target_ast;
+      $$.ast = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
+      $$.target_ast = $cast_astp.target_ast;
 
       DUMP_AST( "pointer_to_member_cast_c_astp", $$.ast );
       DUMP_END();
@@ -5316,17 +5275,18 @@ pointer_to_member_cast_c_astp
 /// Gibberish C/C++ reference cast ////////////////////////////////////////////
 
 reference_cast_c_astp
-  : reference_type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
+  : reference_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    cast_c_astp_opt[cast_astp]
     {
       ia_type_ast_pop();
 
       DUMP_START( "reference_cast_c_astp",
                   "reference_type_c_ast cast_c_astp_opt" );
-      DUMP_AST( "reference_type_c_ast", $1 );
-      DUMP_AST( "cast_c_astp_opt", $3.ast );
+      DUMP_AST( "reference_type_c_ast", $type_ast );
+      DUMP_AST( "cast_c_astp_opt", $cast_astp.ast );
 
-      $$.ast = c_ast_patch_placeholder( $1, $3.ast );
-      $$.target_ast = $3.target_ast;
+      $$.ast = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
+      $$.target_ast = $cast_astp.target_ast;
 
       DUMP_AST( "reference_cast_c_astp", $$.ast );
       DUMP_END();
@@ -5354,16 +5314,17 @@ udc_decl_c_ast
   ;
 
 pointer_udc_decl_c_ast
-  : pointer_type_c_ast { ia_type_ast_push( $1 ); } udc_decl_c_ast_opt
+  : pointer_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    udc_decl_c_ast_opt[decl_ast]
     {
       ia_type_ast_pop();
 
       DUMP_START( "pointer_udc_decl_c_ast",
                   "pointer_type_c_ast udc_decl_c_ast_opt" );
-      DUMP_AST( "pointer_type_c_ast", $1 );
-      DUMP_AST( "udc_decl_c_ast_opt", $3 );
+      DUMP_AST( "pointer_type_c_ast", $type_ast );
+      DUMP_AST( "udc_decl_c_ast_opt", $decl_ast );
 
-      $$ = c_ast_patch_placeholder( $1, $3 );
+      $$ = c_ast_patch_placeholder( $type_ast, $decl_ast );
 
       DUMP_AST( "pointer_udc_decl_c_ast", $$ );
       DUMP_END();
@@ -5371,16 +5332,17 @@ pointer_udc_decl_c_ast
   ;
 
 pointer_to_member_udc_decl_c_ast
-  : pointer_to_member_type_c_ast { ia_type_ast_push( $1 ); } udc_decl_c_ast_opt
+  : pointer_to_member_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    udc_decl_c_ast_opt[decl_ast]
     {
       ia_type_ast_pop();
 
       DUMP_START( "pointer_to_member_udc_decl_c_ast",
                   "pointer_to_member_type_c_ast udc_decl_c_ast_opt" );
-      DUMP_AST( "pointer_to_member_type_c_ast", $1 );
-      DUMP_AST( "udc_decl_c_ast_opt", $3 );
+      DUMP_AST( "pointer_to_member_type_c_ast", $type_ast );
+      DUMP_AST( "udc_decl_c_ast_opt", $decl_ast );
 
-      $$ = c_ast_patch_placeholder( $1, $3 );
+      $$ = c_ast_patch_placeholder( $type_ast, $decl_ast );
 
       DUMP_AST( "pointer_to_member_udc_decl_c_ast", $$ );
       DUMP_END();
@@ -5388,16 +5350,17 @@ pointer_to_member_udc_decl_c_ast
   ;
 
 reference_udc_decl_c_ast
-  : reference_type_c_ast { ia_type_ast_push( $1 ); } udc_decl_c_ast_opt
+  : reference_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    udc_decl_c_ast_opt[decl_ast]
     {
       ia_type_ast_pop();
 
       DUMP_START( "reference_udc_decl_c_ast",
                   "reference_type_c_ast udc_decl_c_ast_opt" );
-      DUMP_AST( "reference_type_c_ast", $1 );
-      DUMP_AST( "udc_decl_c_ast_opt", $3 );
+      DUMP_AST( "reference_type_c_ast", $type_ast );
+      DUMP_AST( "udc_decl_c_ast_opt", $decl_ast );
 
-      $$ = c_ast_patch_placeholder( $1, $3 );
+      $$ = c_ast_patch_placeholder( $type_ast, $decl_ast );
 
       DUMP_AST( "reference_udc_decl_c_ast", $$ );
       DUMP_END();
@@ -5414,10 +5377,10 @@ type_c_ast
      *
      *      unsigned i;
      */
-  : type_modifier_list_c_type           // allows implicit int in pre-C99
+  : type_modifier_list_c_type[mod_list_type]
     {
       DUMP_START( "type_c_ast", "type_modifier_list_c_type" );
-      DUMP_TYPE( "type_modifier_list_c_type", $1 );
+      DUMP_TYPE( "type_modifier_list_c_type", $mod_list_type );
 
       //
       // Prior to C99, typeless declarations are implicitly int, so we set it
@@ -5435,7 +5398,7 @@ type_c_ast
       c_type_t type = OPT_LANG_IS( IMPLICIT_int ) ?
         C_TYPE_LIT_B( TB_INT ) : T_NONE;
 
-      PARSE_ASSERT( c_type_add( &type, &$1, &@1 ) );
+      PARSE_ASSERT( c_type_add( &type, &$mod_list_type, &@mod_list_type ) );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type = type;
@@ -5449,16 +5412,16 @@ type_c_ast
      *
      *      unsigned int const i;       // uncommon, but legal
      */
-  | type_modifier_list_c_type east_modified_type_c_ast
+  | type_modifier_list_c_type[mod_list_type] east_modified_type_c_ast[type_ast]
     {
       DUMP_START( "type_c_ast",
                   "type_modifier_list_c_type east_modified_type_c_ast " );
-      DUMP_TYPE( "type_modifier_list_c_type", $1 );
-      DUMP_AST( "east_modified_type_c_ast", $2 );
+      DUMP_TYPE( "type_modifier_list_c_type", $mod_list_type );
+      DUMP_AST( "east_modified_type_c_ast", $type_ast );
 
-      $$ = $2;
+      $$ = $type_ast;
       $$->loc = @$;
-      PARSE_ASSERT( c_type_add( &$$->type, &$1, &@1 ) );
+      PARSE_ASSERT( c_type_add( &$$->type, &$mod_list_type, &@mod_list_type ) );
 
       DUMP_AST( "type_c_ast", $$ );
       DUMP_END();
@@ -5473,15 +5436,15 @@ type_modifier_list_c_type_opt
   ;
 
 type_modifier_list_c_type
-  : type_modifier_list_c_type type_modifier_c_type
+  : type_modifier_list_c_type[mod_list_type] type_modifier_c_type[mod_type]
     {
       DUMP_START( "type_modifier_list_c_type",
                   "type_modifier_list_c_type type_modifier_c_type" );
-      DUMP_TYPE( "type_modifier_list_c_type", $1 );
-      DUMP_TYPE( "type_modifier_c_type", $2 );
+      DUMP_TYPE( "type_modifier_list_c_type", $mod_list_type );
+      DUMP_TYPE( "type_modifier_c_type", $mod_type );
 
-      $$ = $1;
-      PARSE_ASSERT( c_type_add( &$$, &$2, &@2 ) );
+      $$ = $mod_list_type;
+      PARSE_ASSERT( c_type_add( &$$, &$mod_type, &@mod_type ) );
 
       DUMP_TYPE( "type_modifier_list_c_type", $$ );
       DUMP_END();
@@ -5540,32 +5503,34 @@ type_modifier_base_type
   ;
 
 east_modified_type_c_ast
-  : atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt
+  : atomic_builtin_typedef_type_c_ast[type_ast]
+    type_modifier_list_c_type_opt[mod_list_type]
     {
       DUMP_START( "east_modified_type_c_ast",
                   "atomic_builtin_typedef_type_c_ast "
                   "type_modifier_list_c_type_opt" );
-      DUMP_AST( "atomic_builtin_typedef_type_c_ast", $1 );
-      DUMP_TYPE( "type_modifier_list_c_type_opt", $2 );
+      DUMP_AST( "atomic_builtin_typedef_type_c_ast", $type_ast );
+      DUMP_TYPE( "type_modifier_list_c_type_opt", $mod_list_type );
 
-      $$ = $1;
+      $$ = $type_ast;
       $$->loc = @$;
-      PARSE_ASSERT( c_type_add( &$$->type, &$2, &@2 ) );
+      PARSE_ASSERT( c_type_add( &$$->type, &$mod_list_type, &@mod_list_type ) );
 
       DUMP_AST( "type_c_ast", $$ );
       DUMP_END();
     }
 
-  | enum_class_struct_union_c_ast cv_qualifier_list_stid_opt
+  | enum_class_struct_union_c_ast[ecsu_ast]
+    cv_qualifier_list_stid_opt[qual_stids]
     {
       DUMP_START( "east_modified_type_c_ast",
                   "enum_class_struct_union_c_ast cv_qualifier_list_stid_opt" );
-      DUMP_AST( "enum_class_struct_union_c_ast", $1 );
-      DUMP_TID( "cv_qualifier_list_stid_opt", $2 );
+      DUMP_AST( "enum_class_struct_union_c_ast", $ecsu_ast );
+      DUMP_TID( "cv_qualifier_list_stid_opt", $qual_stids );
 
-      $$ = $1;
+      $$ = $ecsu_ast;
       $$->loc = @$;
-      PARSE_ASSERT( c_type_add_tid( &$$->type, $2, &@2 ) );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $qual_stids, &@qual_stids ) );
 
       DUMP_AST( "east_modified_type_c_ast", $$ );
       DUMP_END();
@@ -5582,23 +5547,22 @@ atomic_builtin_typedef_type_c_ast
 /// Gibberish C _Atomic types /////////////////////////////////////////////////
 
 atomic_specifier_type_c_ast
-  : Y__Atomic_SPEC lparen_exp type_c_ast
+  : Y__Atomic_SPEC[atomic] lparen_exp type_c_ast[type_ast]
     {
-      ia_type_ast_push( $3 );
+      ia_type_ast_push( $type_ast );
     }
-    cast_c_astp_opt rparen_exp
+    cast_c_astp_opt[cast_astp] rparen_exp
     {
       ia_type_ast_pop();
 
-      c_ast_t *const type_ast = $3;
-      c_ast_t *const cast_ast = $5.ast;
+      c_ast_t *const cast_ast = $cast_astp.ast;
 
       DUMP_START( "atomic_specifier_type_c_ast",
                   "ATOMIC '(' type_c_ast cast_c_astp_opt ')'" );
-      DUMP_AST( "type_c_ast", type_ast );
+      DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST( "cast_c_astp_opt", cast_ast );
 
-      $$ = cast_ast != NULL ? cast_ast : type_ast;
+      $$ = cast_ast != NULL ? cast_ast : $type_ast;
       $$->loc = @$;
 
       //
@@ -5615,13 +5579,13 @@ atomic_specifier_type_c_ast
       if ( $$->type.stids != TS_NONE || $$->type.atids != TA_NONE ) {
         static c_type_t const TSA_ANY = { TB_NONE, TS_ANY, TA_ANY };
         c_type_t const error_type = c_type_and( &$$->type, &TSA_ANY );
-        print_error( &@3,
+        print_error( &@type_ast,
           "_Atomic can not be of \"%s\"\n", c_type_name_c( &error_type )
         );
         PARSE_ABORT();
       }
 
-      PARSE_ASSERT( c_type_add_tid( &$$->type, TS_ATOMIC, &@1 ) );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, TS_ATOMIC, &@atomic ) );
 
       DUMP_AST( "atomic_specifier_type_c_ast", $$ );
       DUMP_END();
@@ -5631,25 +5595,25 @@ atomic_specifier_type_c_ast
 /// Gibberish C/C++ built-in types ////////////////////////////////////////////
 
 builtin_type_c_ast
-  : builtin_no_BitInt_c_btid
+  : builtin_no_BitInt_c_btid[btid]
     {
       DUMP_START( "builtin_type_c_ast", "builtin_no_BitInt_c_btid" );
-      DUMP_TID( "builtin_no_BitInt_c_btid", $1 );
+      DUMP_TID( "builtin_no_BitInt_c_btid", $btid );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
+      $$->type.btids = c_tid_check( $btid, C_TPID_BASE );
 
       DUMP_AST( "builtin_type_c_ast", $$ );
       DUMP_END();
     }
-  | Y__BitInt lparen_exp int_lit_exp rparen_exp
+  | Y__BitInt lparen_exp int_lit_exp[width] rparen_exp
     {
       DUMP_START( "builtin_type_c_ast", "_BitInt '(' int_lit_exp ')'" );
-      DUMP_INT( "int", $3 );
+      DUMP_INT( "int", $width );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = TB_BITINT;
-      $$->builtin.BitInt.width = STATIC_CAST( unsigned, $3 );
+      $$->builtin.BitInt.width = STATIC_CAST( unsigned, $width );
 
       DUMP_AST( "builtin_type_c_ast", $$ );
       DUMP_END();
@@ -5676,7 +5640,9 @@ builtin_no_BitInt_c_btid
 typeof_type_c_ast
   : typeof
     {
-      print_error( &@1, "typeof declarations not supported by %s\n", CDECL );
+      print_error( &@typeof,
+        "typeof declarations not supported by %s\n", CDECL
+      );
       PARSE_ABORT();
     }
   ;
@@ -5694,72 +5660,67 @@ enum_class_struct_union_c_ast
   ;
 
 class_struct_union_c_ast
-  : class_struct_union_btid attribute_specifier_list_c_atid_opt any_sname_c_exp
+  : class_struct_union_btid[csu_btid]
+    attribute_specifier_list_c_atid_opt[atids] any_sname_c_exp[sname]
     {
-      c_tid_t  const  csu_btid = $1;
-      c_tid_t  const  atids = $2;
-
       DUMP_START( "enum_class_struct_union_c_ast",
                   "class_struct_union_btid "
                   "attribute_specifier_list_c_atid_opt sname" );
-      DUMP_TID( "class_struct_union_btid", csu_btid );
-      DUMP_TID( "attribute_specifier_list_c_atid_opt", atids );
-      DUMP_SNAME( "any_sname_c", $3 );
+      DUMP_TID( "class_struct_union_btid", $csu_btid );
+      DUMP_TID( "attribute_specifier_list_c_atid_opt", $atids );
+      DUMP_SNAME( "any_sname_c", $sname );
 
       $$ = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@$ );
-      $$->type.btids = c_tid_check( csu_btid, C_TPID_BASE );
-      $$->type.atids = c_tid_check( atids, C_TPID_ATTR );
-      $$->csu.csu_sname = c_sname_move( &$3 );
+      $$->type.btids = c_tid_check( $csu_btid, C_TPID_BASE );
+      $$->type.atids = c_tid_check( $atids, C_TPID_ATTR );
+      $$->csu.csu_sname = c_sname_move( &$sname );
 
       DUMP_AST( "class_struct_union_c_ast", $$ );
       DUMP_END();
     }
 
-  | class_struct_union_btid attribute_specifier_list_c_atid_opt any_sname_c_opt
-    '{'
+  | class_struct_union_btid[csu_btid] attribute_specifier_list_c_atid_opt
+    any_sname_c_opt[sname] '{'[brace]
     {
-      print_error( &@4,
+      print_error( &@brace,
         "explaining %s declarations not supported by %s\n",
-        c_tid_name_c( $1 ), CDECL
+        c_tid_name_c( $csu_btid ), CDECL
       );
-      c_sname_cleanup( &$3 );
+      c_sname_cleanup( &$sname );
       PARSE_ABORT();
     }
   ;
 
 enum_c_ast
-  : enum_btids attribute_specifier_list_c_atid_opt any_sname_c_exp
-    enum_fixed_type_c_ast_opt
+  : enum_btids attribute_specifier_list_c_atid_opt[atids]
+    any_sname_c_exp[sname] enum_fixed_type_c_ast_opt[fixed_type_ast]
     {
-      c_tid_t  const  enum_btids = $1;
-      c_tid_t  const  atids = $2;
-      c_ast_t *const  fixed_type_ast = $4;
-
       DUMP_START( "enum_c_ast",
                   "enum_btids attribute_specifier_list_c_atid_opt sname "
                   "enum_fixed_type_c_ast_opt" );
-      DUMP_TID( "enum_btids", enum_btids );
-      DUMP_TID( "attribute_specifier_list_c_atid_opt", atids );
-      DUMP_SNAME( "any_sname_c", $3 );
-      DUMP_AST( "enum_fixed_type_c_ast_opt", fixed_type_ast );
+      DUMP_TID( "enum_btids", $enum_btids );
+      DUMP_TID( "attribute_specifier_list_c_atid_opt", $atids );
+      DUMP_SNAME( "any_sname_c", $sname );
+      DUMP_AST( "enum_fixed_type_c_ast_opt", $fixed_type_ast );
 
       $$ = c_ast_new_gc( K_ENUM, &@$ );
-      $$->type.btids = c_tid_check( enum_btids, C_TPID_BASE );
-      $$->type.atids = c_tid_check( atids, C_TPID_ATTR );
-      $$->enum_.of_ast = fixed_type_ast;
-      $$->enum_.enum_sname = c_sname_move( &$3 );
+      $$->type.btids = c_tid_check( $enum_btids, C_TPID_BASE );
+      $$->type.atids = c_tid_check( $atids, C_TPID_ATTR );
+      $$->enum_.of_ast = $fixed_type_ast;
+      $$->enum_.enum_sname = c_sname_move( &$sname );
 
       DUMP_AST( "enum_c_ast", $$ );
       DUMP_END();
     }
 
-  | enum_btids attribute_specifier_list_c_atid_opt any_sname_c_opt '{'
+  | enum_btids attribute_specifier_list_c_atid_opt any_sname_c_opt[sname]
+    '{'[brace]
     {
-      print_error( &@4,
+      print_error( &@brace,
         "explaining %s declarations not supported by %s\n",
-        c_tid_name_c( $1 ), CDECL
+        c_tid_name_c( $enum_btids ), CDECL
       );
-      c_sname_cleanup( &$3 );
+      c_sname_cleanup( &$sname );
       PARSE_ABORT();
     }
   ;
@@ -5789,14 +5750,14 @@ enum_fixed_type_c_ast
      *
      *      enum E : unsigned
      */
-  : enum_fixed_type_modifier_list_btid
+  : enum_fixed_type_modifier_list_btid[btids]
     {
       DUMP_START( "enum_fixed_type_c_ast",
                   "enum_fixed_type_modifier_list_btid" );
-      DUMP_TID( "enum_fixed_type_modifier_list_btid", $1 );
+      DUMP_TID( "enum_fixed_type_modifier_list_btid", $btids );
 
-      $$ = c_ast_new_gc( K_BUILTIN, &@1 );
-      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
+      $$ = c_ast_new_gc( K_BUILTIN, &@btids );
+      $$->type.btids = c_tid_check( $btids, C_TPID_BASE );
 
       DUMP_AST( "enum_fixed_type_c_ast", $$ );
       DUMP_END();
@@ -5807,21 +5768,22 @@ enum_fixed_type_c_ast
      *
      *      enum E : short int unsigned // uncommon, but legal
      */
-  | enum_fixed_type_modifier_list_btid enum_unmodified_fixed_type_c_ast
-    enum_fixed_type_modifier_list_btid_opt
+  | enum_fixed_type_modifier_list_btid[left_btids]
+    enum_unmodified_fixed_type_c_ast[fixed_type_ast]
+    enum_fixed_type_modifier_list_btid_opt[right_btids]
     {
       DUMP_START( "enum_fixed_type_c_ast",
                   "enum_fixed_type_modifier_list_btid "
                   "enum_unmodified_fixed_type_c_ast "
                   "enum_fixed_type_modifier_list_btid_opt" );
-      DUMP_TID( "enum_fixed_type_modifier_list_btid", $1 );
-      DUMP_AST( "enum_unmodified_fixed_type_c_ast", $2 );
-      DUMP_TID( "enum_fixed_type_modifier_list_btid_opt", $3 );
+      DUMP_TID( "enum_fixed_type_modifier_list_btid", $left_btids );
+      DUMP_AST( "enum_unmodified_fixed_type_c_ast", $fixed_type_ast );
+      DUMP_TID( "enum_fixed_type_modifier_list_btid_opt", $right_btids );
 
-      $$ = $2;
+      $$ = $fixed_type_ast;
       $$->loc = @$;
-      PARSE_ASSERT( c_type_add_tid( &$$->type, $1, &@1 ) );
-      PARSE_ASSERT( c_type_add_tid( &$$->type, $3, &@3 ) );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $left_btids, &@left_btids ) );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $right_btids, &@right_btids ) );
 
       DUMP_AST( "enum_fixed_type_c_ast", $$ );
       DUMP_END();
@@ -5832,17 +5794,18 @@ enum_fixed_type_c_ast
      *
      *      enum E : int unsigned       // uncommon, but legal
      */
-  | enum_unmodified_fixed_type_c_ast enum_fixed_type_modifier_list_btid_opt
+  | enum_unmodified_fixed_type_c_ast[fixed_type_ast]
+    enum_fixed_type_modifier_list_btid_opt[btids]
     {
       DUMP_START( "enum_fixed_type_c_ast",
                   "enum_unmodified_fixed_type_c_ast "
                   "enum_fixed_type_modifier_list_btid_opt" );
-      DUMP_AST( "enum_unmodified_fixed_type_c_ast", $1 );
-      DUMP_TID( "enum_fixed_type_modifier_list_btid_opt", $2 );
+      DUMP_AST( "enum_unmodified_fixed_type_c_ast", $fixed_type_ast );
+      DUMP_TID( "enum_fixed_type_modifier_list_btid_opt", $btids );
 
-      $$ = $1;
+      $$ = $fixed_type_ast;
       $$->loc = @$;
-      PARSE_ASSERT( c_type_add_tid( &$$->type, $2, &@2 ) );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $btids, &@btids ) );
 
       DUMP_AST( "enum_fixed_type_c_ast", $$ );
       DUMP_END();
@@ -5855,16 +5818,17 @@ enum_fixed_type_modifier_list_btid_opt
   ;
 
 enum_fixed_type_modifier_list_btid
-  : enum_fixed_type_modifier_list_btid enum_fixed_type_modifier_btid
+  : enum_fixed_type_modifier_list_btid[btids]
+    enum_fixed_type_modifier_btid[btid]
     {
       DUMP_START( "enum_fixed_type_modifier_list_btid",
                   "enum_fixed_type_modifier_list_btid "
                   "enum_fixed_type_modifier_btid" );
-      DUMP_TID( "enum_fixed_type_modifier_list_btid", $1 );
-      DUMP_TID( "enum_fixed_type_modifier_btid", $2 );
+      DUMP_TID( "enum_fixed_type_modifier_list_btid", $btids );
+      DUMP_TID( "enum_fixed_type_modifier_btid", $btid );
 
-      $$ = $1;
-      PARSE_ASSERT( c_tid_add( &$$, $2, &@2 ) );
+      $$ = $btids;
+      PARSE_ASSERT( c_tid_add( &$$, $btid, &@btid ) );
 
       DUMP_TID( "enum_fixed_type_modifier_list_btid", $$ );
       DUMP_END();
@@ -5911,29 +5875,29 @@ type_qualifier_list_c_stid_opt
   ;
 
 type_qualifier_list_c_stid
-  : type_qualifier_list_c_stid type_qualifier_c_stid
+  : type_qualifier_list_c_stid[stids] type_qualifier_c_stid[stid]
     gnu_or_msc_attribute_specifier_list_c_opt
     {
       DUMP_START( "type_qualifier_list_c_stid",
                   "type_qualifier_list_c_stid type_qualifier_c_stid" );
-      DUMP_TID( "type_qualifier_list_c_stid", $1 );
-      DUMP_TID( "type_qualifier_c_stid", $2 );
+      DUMP_TID( "type_qualifier_list_c_stid", $stids );
+      DUMP_TID( "type_qualifier_c_stid", $stid );
 
-      $$ = $1;
-      PARSE_ASSERT( c_tid_add( &$$, $2, &@2 ) );
+      $$ = $stids;
+      PARSE_ASSERT( c_tid_add( &$$, $stid, &@stid ) );
 
       DUMP_TID( "type_qualifier_list_c_stid", $$ );
       DUMP_END();
     }
 
-  | gnu_or_msc_attribute_specifier_list_c type_qualifier_c_stid
+  | gnu_or_msc_attribute_specifier_list_c type_qualifier_c_stid[stid]
     {
-      $$ = $2;
+      $$ = $stid;
     }
 
-  | type_qualifier_c_stid gnu_or_msc_attribute_specifier_list_c_opt
+  | type_qualifier_c_stid[stid] gnu_or_msc_attribute_specifier_list_c_opt
     {
-      $$ = $1;
+      $$ = $stid;
     }
   ;
 
@@ -5954,15 +5918,15 @@ cv_qualifier_stid
 
 cv_qualifier_list_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | cv_qualifier_list_stid_opt cv_qualifier_stid
+  | cv_qualifier_list_stid_opt[stids] cv_qualifier_stid[stid]
     {
       DUMP_START( "cv_qualifier_list_stid_opt",
                   "cv_qualifier_list_stid_opt cv_qualifier_stid" );
-      DUMP_TID( "cv_qualifier_list_stid_opt", $1 );
-      DUMP_TID( "cv_qualifier_stid", $2 );
+      DUMP_TID( "cv_qualifier_list_stid_opt", $stids );
+      DUMP_TID( "cv_qualifier_stid", $stid );
 
-      $$ = $1;
-      PARSE_ASSERT( c_tid_add( &$$, $2, &@2 ) );
+      $$ = $stids;
+      PARSE_ASSERT( c_tid_add( &$$, $stid, &@stid ) );
 
       DUMP_TID( "cv_qualifier_list_stid_opt", $$ );
       DUMP_END();
@@ -5977,7 +5941,7 @@ restrict_qualifier_c_stid
       // AST has no "memory" of which it was.
       //
       if ( OPT_LANG_IS( CPP_ANY ) ) {
-        print_error( &@1,
+        print_error( &@Y_restrict,
           "\"restrict\" not supported in C++; use \"%s\" instead\n",
           L_GNU___restrict
         );
@@ -6021,7 +5985,7 @@ storage_class_c_type
       // attribute and the AST has no "memory" that it was _Noreturn.
       //
       if ( UNSUPPORTED( _Noreturn ) ) {
-        print_error( &@1,
+        print_error( &@_Noreturn_atid,
           "\"%s\" keyword not supported%s",
           lexer_token, C_LANG_WHICH( _Noreturn )
         );
@@ -6029,14 +5993,14 @@ storage_class_c_type
         PARSE_ABORT();
       }
       if ( OPT_LANG_IS( C_MIN(23)) ) {
-        print_warning( &@1,
+        print_warning( &@_Noreturn_atid,
           "\"%s\" is deprecated%s",
           lexer_token, C_LANG_WHICH( C_MAX(17) )
         );
         print_hint( "[[noreturn]]" );
       }
 
-      $$ = C_TYPE_LIT_A( $1 );
+      $$ = C_TYPE_LIT_A( $_Noreturn_atid );
     }
   | Y_override                    { $$ = C_TYPE_LIT_S( $1 ); }
 //| Y_register                          // in type_modifier_base_type
@@ -6063,7 +6027,7 @@ attribute_specifier_list_c_atid
   : Y_ATTR_BEGIN '['
     {
       if ( UNSUPPORTED( ATTRIBUTES ) ) {
-        print_error( &@1,
+        print_error( &@Y_ATTR_BEGIN,
           "\"[[\" attribute syntax not supported%s\n",
           C_LANG_WHICH( ATTRIBUTES )
         );
@@ -6071,15 +6035,15 @@ attribute_specifier_list_c_atid
       }
       lexer_keyword_ctx = C_KW_CTX_ATTRIBUTE;
     }
-    using_opt attribute_list_c_atid_opt ']' rbracket_exp
+    using_opt attribute_list_c_atid_opt[atids] ']' rbracket_exp
     {
       lexer_keyword_ctx = C_KW_CTX_DEFAULT;
 
       DUMP_START( "attribute_specifier_list_c_atid",
                   "'[[' using_opt attribute_list_c_atid_opt ']]'" );
-      DUMP_TID( "attribute_list_c_atid_opt", $5 );
+      DUMP_TID( "attribute_list_c_atid_opt", $atids );
 
-      $$ = $5;
+      $$ = $atids;
 
       DUMP_END();
     }
@@ -6092,12 +6056,12 @@ attribute_specifier_list_c_atid
 
 using_opt
   : /* empty */
-  | Y_using name_exp colon_exp
+  | Y_using name_exp[name] colon_exp
     {
-      print_warning( &@1,
+      print_warning( &@Y_using,
         "\"using\" in attributes not supported by %s (ignoring)\n", CDECL
       );
-      free( $2 );
+      free( $name );
     }
   ;
 
@@ -6107,15 +6071,15 @@ attribute_list_c_atid_opt
   ;
 
 attribute_list_c_atid
-  : attribute_list_c_atid comma_exp attribute_c_atid_exp
+  : attribute_list_c_atid[atids] comma_exp attribute_c_atid_exp[atid]
     {
       DUMP_START( "attribute_list_c_atid",
                   "attribute_list_c_atid , attribute_c_atid" );
-      DUMP_TID( "attribute_list_c_atid", $1 );
-      DUMP_TID( "attribute_c_atid_exp", $3 );
+      DUMP_TID( "attribute_list_c_atid", $atids );
+      DUMP_TID( "attribute_c_atid_exp", $atid );
 
-      $$ = $1;
-      PARSE_ASSERT( c_tid_add( &$$, $3, &@3 ) );
+      $$ = $atids;
+      PARSE_ASSERT( c_tid_add( &$$, $atid, &@atid ) );
 
       DUMP_TID( "attribute_list_c_atid", $$ );
       DUMP_END();
@@ -6133,26 +6097,26 @@ attribute_c_atid_exp
   | Y_no_unique_address
   | Y_reproducible
   | Y_unsequenced
-  | sname_c
+  | sname_c[sname]
     {
-      if ( c_sname_count( &$1 ) > 1 ) {
-        print_warning( &@1,
+      if ( c_sname_count( &$sname ) > 1 ) {
+        print_warning( &@sname,
           "\"%s\": namespaced attributes not supported by %s\n",
-          c_sname_full_name( &$1 ), CDECL
+          c_sname_full_name( &$sname ), CDECL
         );
       }
       else {
         char const *adj = "unknown";
         c_lang_id_t lang_ids = LANG_NONE;
 
-        char const *const name = c_sname_local_name( &$1 );
+        char const *const name = c_sname_local_name( &$sname );
         c_keyword_t const *const ck =
           c_keyword_find( name, c_lang_newer( opt_lang ), C_KW_CTX_ATTRIBUTE );
         if ( ck != NULL && c_tid_tpid( ck->tid ) == C_TPID_ATTR ) {
           adj = "unsupported";
           lang_ids = ck->lang_ids;
         }
-        print_warning( &@1,
+        print_warning( &@sname,
           "\"%s\": %s attribute%s",
           name, adj, c_lang_which( lang_ids )
         );
@@ -6162,7 +6126,7 @@ attribute_c_atid_exp
       }
 
       $$ = TA_NONE;
-      c_sname_cleanup( &$1 );
+      c_sname_cleanup( &$sname );
     }
   | error
     {
@@ -6172,12 +6136,12 @@ attribute_c_atid_exp
 
 attribute_str_arg_c_opt
   : /* empty */
-  | '(' str_lit_exp rparen_exp
+  | '('[paren] str_lit_exp[str] rparen_exp
     {
-      print_warning( &@1,
+      print_warning( &@paren,
         "attribute arguments not supported by %s (ignoring)\n", CDECL
       );
-      free( $2 );
+      free( $str );
     }
   ;
 
@@ -6228,9 +6192,9 @@ gnu_attribuet_list_c
   ;
 
 gnu_attribute_c_exp
-  : Y_NAME gnu_attribute_decl_arg_list_c_opt
+  : Y_NAME[name] gnu_attribute_decl_arg_list_c_opt
     {
-      free( $1 );
+      free( $name );
     }
   | error
     {
@@ -6313,42 +6277,37 @@ decl_english_ast
 /// English C/C++ array declaration ///////////////////////////////////////////
 
 array_decl_english_ast
-  : Y_array array_size_decl_ast of_exp decl_english_ast
+  : Y_array array_size_decl_ast[array_ast] of_exp decl_english_ast[decl_ast]
     {
-      c_ast_t *const  array_size_ast = $2;
-      c_ast_t *const  decl_ast = $4;
-
       DUMP_START( "array_decl_english_ast",
                   "ARRAY array_size_num_opt OF decl_english_ast" );
-      DUMP_AST( "array_size_decl_ast", array_size_ast );
-      DUMP_AST( "decl_english_ast", decl_ast );
+      DUMP_AST( "array_size_decl_ast", $array_ast );
+      DUMP_AST( "decl_english_ast", $decl_ast );
 
-      $$ = array_size_ast;
-      $$->loc = @1;
-      c_ast_set_parent( decl_ast, $$ );
+      $$ = $array_ast;
+      $$->loc = @Y_array;
+      c_ast_set_parent( $decl_ast, $$ );
 
       DUMP_AST( "array_decl_english_ast", $$ );
       DUMP_END();
     }
 
-  | Y_variable length_opt array_exp name_opt of_exp decl_english_ast
+  | Y_variable length_opt array_exp name_opt[name] of_exp
+    decl_english_ast[decl_ast]
     {
-      char     const *const name = $4;
-      c_ast_t *const        decl_ast = $6;
-
       DUMP_START( "array_decl_english_ast",
                   "VARIABLE LENGTH ARRAY name_opt OF decl_english_ast" );
-      DUMP_STR( "name_opt", name );
-      DUMP_AST( "decl_english_ast", decl_ast );
+      DUMP_STR( "name_opt", $name );
+      DUMP_AST( "decl_english_ast", $decl_ast );
 
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      if ( name == NULL ) {
+      if ( $name == NULL ) {
         $$->array.kind = C_ARRAY_VLA_STAR;
       } else {
         $$->array.kind = C_ARRAY_NAMED_SIZE;
-        $$->array.size_name = name;
+        $$->array.size_name = $name;
       }
-      c_ast_set_parent( decl_ast, $$ );
+      c_ast_set_parent( $decl_ast, $$ );
 
       DUMP_AST( "array_decl_english_ast", $$ );
       DUMP_END();
@@ -6361,17 +6320,17 @@ array_size_decl_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
-  | Y_INT_LIT
+  | Y_INT_LIT[size]
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_INT_SIZE;
-      $$->array.size_int = $1;
+      $$->array.size_int = $size;
     }
-  | Y_NAME
+  | Y_NAME[name]
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_NAMED_SIZE;
-      $$->array.size_name = $1;
+      $$->array.size_name = $name;
     }
   | '*'
     {
@@ -6389,19 +6348,18 @@ length_opt
 
 block_decl_english_ast                  // Apple extension
   : // in_attr: qualifier
-    Y_Apple_block paren_param_decl_list_english_opt returning_english_ast_opt
+    Y_Apple_block paren_param_decl_list_english_opt[param_ast_list]
+    returning_english_ast_opt[ret_ast]
     {
-      c_ast_t *const ret_ast = $3;
-
       DUMP_START( "block_decl_english_ast",
                   "BLOCK paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
-      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $2 );
-      DUMP_AST( "returning_english_ast_opt", ret_ast );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
+      DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
       $$ = c_ast_new_gc( K_APPLE_BLOCK, &@$ );
-      $$->block.param_ast_list = slist_move( &$2 );
-      c_ast_set_parent( ret_ast, $$ );
+      $$->block.param_ast_list = $param_ast_list;
+      c_ast_set_parent( $ret_ast, $$ );
 
       DUMP_AST( "block_decl_english_ast", $$ );
       DUMP_END();
@@ -6411,14 +6369,14 @@ block_decl_english_ast                  // Apple extension
 /// English C++ constructor declaration ///////////////////////////////////////
 
 constructor_decl_english_ast
-  : Y_constructor paren_param_decl_list_english_opt
+  : Y_constructor paren_param_decl_list_english_opt[param_ast_list]
     {
       DUMP_START( "constructor_decl_english_ast",
                   "CONSTRUCTOR paren_param_decl_list_english_opt" );
-      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $2 );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
 
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      $$->ctor.param_ast_list = slist_move( &$2 );
+      $$->ctor.param_ast_list = $param_ast_list;
 
       DUMP_AST( "constructor_decl_english_ast", $$ );
       DUMP_END();
@@ -6448,28 +6406,25 @@ parens_opt
 
 func_decl_english_ast
   : // in_attr: qualifier
-    func_qualifier_english_type_opt member_or_non_member_opt Y_function
-    paren_param_decl_list_english_opt returning_english_ast_opt
+    func_qualifier_english_type_opt[qual_type] member_or_non_member_opt[mbr]
+    Y_function paren_param_decl_list_english_opt[param_ast_list]
+    returning_english_ast_opt[ret_ast]
     {
-      c_type_t const      func_qual_type = $1;
-      c_func_mbr_t const  mbr = $2;
-      c_ast_t *const      ret_ast = $5;
-
       DUMP_START( "func_decl_english_ast",
                   "ref_qualifier_english_stid_opt "
                   "member_or_non_member_opt "
                   "FUNCTION paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
-      DUMP_TYPE( "func_qualifier_english_type_opt", func_qual_type );
-      DUMP_INT( "member_or_non_member_opt", mbr );
-      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $4 );
-      DUMP_AST( "returning_english_ast_opt", ret_ast );
+      DUMP_TYPE( "func_qualifier_english_type_opt", $qual_type );
+      DUMP_INT( "member_or_non_member_opt", $mbr );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
+      DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
       $$ = c_ast_new_gc( K_FUNCTION, &@$ );
-      $$->type = func_qual_type;
-      $$->func.param_ast_list = slist_move( &$4 );
-      $$->func.mbr = mbr;
-      c_ast_set_parent( ret_ast, $$ );
+      $$->type = $qual_type;
+      $$->func.param_ast_list = $param_ast_list;
+      $$->func.mbr = $mbr;
+      c_ast_set_parent( $ret_ast, $$ );
 
       DUMP_AST( "func_decl_english_ast", $$ );
       DUMP_END();
@@ -6500,15 +6455,12 @@ msc_calling_convention_atid
 
 oper_decl_english_ast
   : // in_attr: operator
-    type_qualifier_list_english_type_opt ref_qualifier_english_stid_opt
-    member_or_non_member_opt operator_exp paren_param_decl_list_english_opt
-    returning_english_ast_opt
+    type_qualifier_list_english_type_opt[qual_type]
+    ref_qualifier_english_stid_opt[ref_qual_stid]
+    member_or_non_member_opt[mbr] operator_exp
+    paren_param_decl_list_english_opt[param_ast_list]
+    returning_english_ast_opt[ret_ast]
     {
-      c_type_t const      qual_type = $1;
-      c_tid_t  const      ref_qual_stid = $2;
-      c_func_mbr_t const  mbr = $3;
-      c_ast_t *const      ret_ast = $6;
-
       DUMP_START( "oper_decl_english_ast",
                   "type_qualifier_list_english_type_opt "
                   "ref_qualifier_english_stid_opt "
@@ -6516,19 +6468,21 @@ oper_decl_english_ast
                   "OPERATOR paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_STR( "in_attr__operator", in_attr.operator->literal );
-      DUMP_TYPE( "type_qualifier_list_english_type_opt", qual_type );
-      DUMP_TID( "ref_qualifier_english_stid_opt", ref_qual_stid );
-      DUMP_INT( "member_or_non_member_opt", mbr );
-      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $5 );
-      DUMP_AST( "returning_english_ast_opt", ret_ast );
+      DUMP_TYPE( "type_qualifier_list_english_type_opt", $qual_type );
+      DUMP_TID( "ref_qualifier_english_stid_opt", $ref_qual_stid );
+      DUMP_INT( "member_or_non_member_opt", $mbr );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
+      DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
       $$ = c_ast_new_gc( K_OPERATOR, &@$ );
-      PARSE_ASSERT( c_type_add( &$$->type, &qual_type, &@1 ) );
-      PARSE_ASSERT( c_type_add_tid( &$$->type, ref_qual_stid, &@2 ) );
+      PARSE_ASSERT( c_type_add( &$$->type, &$qual_type, &@qual_type ) );
+      PARSE_ASSERT(
+        c_type_add_tid( &$$->type, $ref_qual_stid, &@ref_qual_stid )
+      );
       $$->oper.operator = in_attr.operator;
-      $$->oper.param_ast_list = slist_move( &$5 );
-      $$->oper.mbr = mbr;
-      c_ast_set_parent( ret_ast, $$ );
+      $$->oper.param_ast_list = $param_ast_list;
+      $$->oper.mbr = $mbr;
+      c_ast_set_parent( $ret_ast, $$ );
 
       DUMP_AST( "oper_decl_english_ast", $$ );
       DUMP_END();
@@ -6543,13 +6497,13 @@ paren_param_decl_list_english_opt
   ;
 
 paren_param_decl_list_english
-  : '(' param_decl_list_english_opt ')'
+  : '(' param_decl_list_english_opt[param_ast_list] ')'
     {
       DUMP_START( "paren_param_decl_list_english",
                   "'(' param_decl_list_english_opt ')'" );
-      DUMP_AST_LIST( "param_decl_list_english_opt", $2 );
+      DUMP_AST_LIST( "param_decl_list_english_opt", $param_ast_list );
 
-      $$ = $2;
+      $$ = $param_ast_list;
 
       DUMP_AST_LIST( "paren_param_decl_list_english", $$ );
       DUMP_END();
@@ -6562,30 +6516,31 @@ param_decl_list_english_opt
   ;
 
 param_decl_list_english
-  : param_decl_list_english comma_exp decl_english_ast_exp
+  : param_decl_list_english[param_ast_list] comma_exp
+    decl_english_ast_exp[decl_ast]
     {
       DUMP_START( "param_decl_list_english",
                   "param_decl_list_english ',' decl_english_ast" );
-      DUMP_AST_LIST( "param_decl_list_english", $1 );
-      DUMP_AST( "decl_english_ast", $3 );
+      DUMP_AST_LIST( "param_decl_list_english", $param_ast_list );
+      DUMP_AST( "decl_english_ast", $decl_ast );
 
-      $$ = $1;
-      slist_push_back( &$$, $3 );
+      $$ = $param_ast_list;
+      slist_push_back( &$$, $decl_ast );
 
       DUMP_AST_LIST( "param_decl_list_english", $$ );
       DUMP_END();
     }
 
-  | decl_english_ast
+  | decl_english_ast[decl_ast]
     {
       DUMP_START( "param_decl_list_english", "decl_english_ast" );
-      DUMP_AST( "decl_english_ast", $1 );
+      DUMP_AST( "decl_english_ast", $decl_ast );
 
-      if ( $1->kind == K_FUNCTION )     // see the comment in param_c_ast
-        $1 = c_ast_pointer( $1, &gc_ast_list );
+      if ( $decl_ast->kind == K_FUNCTION ) // see the comment in param_c_ast
+        $decl_ast = c_ast_pointer( $decl_ast, &gc_ast_list );
 
       slist_init( &$$ );
-      slist_push_back( &$$, $1 );
+      slist_push_back( &$$, $decl_ast );
 
       DUMP_AST_LIST( "param_decl_list_english", $$ );
       DUMP_END();
@@ -6627,12 +6582,12 @@ returning_english_ast_opt
   ;
 
 returning_english_ast
-  : returning decl_english_ast
+  : returning decl_english_ast[decl_ast]
     {
       DUMP_START( "returning_english_ast", "RETURNING decl_english_ast" );
-      DUMP_AST( "decl_english_ast", $2 );
+      DUMP_AST( "decl_english_ast", $decl_ast );
 
-      $$ = $2;
+      $$ = $decl_ast;
 
       DUMP_AST( "returning_english_ast", $$ );
       DUMP_END();
@@ -6647,18 +6602,19 @@ returning_english_ast
 /// English C/C++ qualified declaration ///////////////////////////////////////
 
 qualified_decl_english_ast
-  : type_qualifier_list_english_type_opt qualifiable_decl_english_ast
+  : type_qualifier_list_english_type_opt[type]
+    qualifiable_decl_english_ast[decl_ast]
     {
       DUMP_START( "qualified_decl_english_ast",
                   "type_qualifier_list_english_type_opt "
                   "qualifiable_decl_english_ast" );
-      DUMP_TYPE( "type_qualifier_list_english_type_opt", $1 );
-      DUMP_AST( "qualifiable_decl_english_ast", $2 );
+      DUMP_TYPE( "type_qualifier_list_english_type_opt", $type );
+      DUMP_AST( "qualifiable_decl_english_ast", $decl_ast );
 
-      $$ = $2;
-      if ( !c_type_is_none( &$1 ) )
+      $$ = $decl_ast;
+      if ( !c_type_is_none( &$type ) )
         $$->loc = @$;
-      PARSE_ASSERT( c_type_add( &$$->type, &$1, &@1 ) );
+      PARSE_ASSERT( c_type_add( &$$->type, &$type, &@type ) );
 
       DUMP_AST( "qualified_decl_english_ast", $$ );
       DUMP_END();
@@ -6671,16 +6627,17 @@ type_qualifier_list_english_type_opt
   ;
 
 type_qualifier_list_english_type
-  : type_qualifier_list_english_type type_qualifier_english_type
+  : type_qualifier_list_english_type[left_type]
+    type_qualifier_english_type[right_type]
     {
       DUMP_START( "type_qualifier_list_english_type",
                   "type_qualifier_list_english_type "
                   "type_qualifier_english_type" );
-      DUMP_TYPE( "type_qualifier_list_english_type", $1 );
-      DUMP_TYPE( "type_qualifier_english_type", $2 );
+      DUMP_TYPE( "type_qualifier_list_english_type", $left_type );
+      DUMP_TYPE( "type_qualifier_english_type", $right_type );
 
-      $$ = $1;
-      PARSE_ASSERT( c_type_add( &$$, &$2, &@2 ) );
+      $$ = $left_type;
+      PARSE_ASSERT( c_type_add( &$$, &$right_type, &@right_type ) );
 
       DUMP_TYPE( "type_qualifier_list_english_type", $$ );
       DUMP_END();
@@ -6715,9 +6672,9 @@ attribute_english_atid
 storage_class_english_stid
   : Y_auto_STORAGE
   | Y_Apple___block
-  | Y_const_ENG eval_expr_init_stid
+  | Y_const_ENG eval_expr_init_stid[stid]
     {
-      $$ = $2;
+      $$ = $stid;
     }
   | Y_consteval
   | Y_constexpr
@@ -6727,9 +6684,9 @@ storage_class_english_stid
   | Y_explicit
   | Y_export
   | Y_extern
-  | Y_extern linkage_stid linkage_opt
+  | Y_extern linkage_stid[stid] linkage_opt
     {
-      $$ = $2;
+      $$ = $stid;
     }
   | Y_final
   | Y_friend
@@ -6765,21 +6722,21 @@ eval_expr_init_stid
   ;
 
 linkage_stid
-  : str_lit
+  : str_lit[str]
     {
       bool ok = true;
 
-      if ( strcmp( $1, "C" ) == 0 )
+      if ( strcmp( $str, "C" ) == 0 )
         $$ = TS_EXTERN_C;
-      else if ( strcmp( $1, "C++" ) == 0 )
+      else if ( strcmp( $str, "C++" ) == 0 )
         $$ = TS_NONE;
       else {
-        print_error( &@1, "\"%s\": unknown linkage language", $1 );
+        print_error( &@str, "\"%s\": unknown linkage language", $str );
         print_hint( "\"C\" or \"C++\"" );
         ok = false;
       }
 
-      free( $1 );
+      free( $str );
       PARSE_ASSERT( ok );
     }
   ;
@@ -6822,19 +6779,19 @@ pointer_decl_english_ast
      * Ordinary pointer declaration.
      */
   : // in_attr: qualifier
-    Y_pointer to_exp decl_english_ast
+    Y_pointer to_exp decl_english_ast[decl_ast]
     {
       DUMP_START( "pointer_decl_english_ast", "POINTER TO decl_english_ast" );
-      DUMP_AST( "decl_english_ast", $3 );
+      DUMP_AST( "decl_english_ast", $decl_ast );
 
-      if ( $3->kind == K_NAME ) {       // see the comment in "declare_command"
-        assert( !c_sname_empty( &$3->sname ) );
-        print_error_unknown_name( &@3, &$3->sname );
+      if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
+        assert( !c_sname_empty( &$decl_ast->sname ) );
+        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
         PARSE_ABORT();
       }
 
       $$ = c_ast_new_gc( K_POINTER, &@$ );
-      c_ast_set_parent( $3, $$ );
+      c_ast_set_parent( $decl_ast, $$ );
 
       DUMP_AST( "pointer_decl_english_ast", $$ );
       DUMP_END();
@@ -6844,24 +6801,21 @@ pointer_decl_english_ast
      * C++ pointer-to-member declaration.
      */
   | // in_attr: qualifier
-    Y_pointer to_exp Y_member of_exp class_struct_union_btid_exp
-    sname_english_exp decl_english_ast
+    Y_pointer to_exp Y_member of_exp class_struct_union_btid_exp[csu_btid]
+    sname_english_exp[sname] decl_english_ast[decl_ast]
     {
-      c_tid_t  const  csu_btid = $5;
-      c_ast_t *const  decl_ast = $7;
-
       DUMP_START( "pointer_to_member_decl_english",
                   "POINTER TO MEMBER OF "
                   "class_struct_union_btid_exp "
                   "sname_english decl_english_ast" );
-      DUMP_TID( "class_struct_union_btid_exp", csu_btid );
-      DUMP_SNAME( "sname_english_exp", $6 );
-      DUMP_AST( "decl_english_ast", decl_ast );
+      DUMP_TID( "class_struct_union_btid_exp", $csu_btid );
+      DUMP_SNAME( "sname_english_exp", $sname );
+      DUMP_AST( "decl_english_ast", $decl_ast );
 
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
-      $$->ptr_mbr.class_sname = c_sname_move( &$6 );
-      c_ast_set_parent( decl_ast, $$ );
-      PARSE_ASSERT( c_type_add_tid( &$$->type, csu_btid, &@5 ) );
+      $$->ptr_mbr.class_sname = c_sname_move( &$sname );
+      c_ast_set_parent( $decl_ast, $$ );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, $csu_btid, &@csu_btid ) );
 
       DUMP_AST( "pointer_to_member_decl_english", $$ );
       DUMP_END();
@@ -6880,16 +6834,16 @@ pointer_decl_english_ast
 
 reference_decl_english_ast
   : // in_attr: qualifier
-    reference_english_ast to_exp decl_english_ast
+    reference_english_ast[ref_ast] to_exp decl_english_ast[decl_ast]
     {
       DUMP_START( "reference_decl_english_ast",
                   "reference_english_ast TO decl_english_ast" );
-      DUMP_AST( "reference_english_ast", $1 );
-      DUMP_AST( "decl_english_ast", $3 );
+      DUMP_AST( "reference_english_ast", $ref_ast );
+      DUMP_AST( "decl_english_ast", $decl_ast );
 
-      $$ = $1;
+      $$ = $ref_ast;
       $$->loc = @$;
-      c_ast_set_parent( $3, $$ );
+      c_ast_set_parent( $decl_ast, $$ );
 
       DUMP_AST( "reference_decl_english_ast", $$ );
       DUMP_END();
@@ -6911,8 +6865,9 @@ reference_english_ast
 /// English C++ user-defined literal declaration //////////////////////////////
 
 user_defined_literal_decl_english_ast
-  : user_defined literal_exp lparen_exp param_decl_list_english_opt ')'
-    returning_english_ast_opt
+  : user_defined literal_exp lparen_exp
+    param_decl_list_english_opt[param_ast_list] ')'
+    returning_english_ast_opt[ret_ast]
     { //
       // User-defined literals are supported only in C++11 and later.
       // (However, we always allow them in configuration files.)
@@ -6922,7 +6877,7 @@ user_defined_literal_decl_english_ast
       // better error location.
       //
       if ( UNSUPPORTED( USER_DEFINED_LITERAL ) ) {
-        print_error( &@1,
+        print_error( &@user_defined,
           "user-defined literal not supported%s\n",
           C_LANG_WHICH( USER_DEFINED_LITERAL )
         );
@@ -6932,12 +6887,12 @@ user_defined_literal_decl_english_ast
       DUMP_START( "user_defined_literal_decl_english_ast",
                   "USER-DEFINED LITERAL '(' param_decl_list_english_opt ')' "
                   "returning_english_ast_opt" );
-      DUMP_AST_LIST( "param_decl_list_english_opt", $4 );
-      DUMP_AST( "returning_english_ast_opt", $6 );
+      DUMP_AST_LIST( "param_decl_list_english_opt", $param_ast_list );
+      DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
       $$ = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      $$->udef_lit.param_ast_list = slist_move( &$4 );
-      c_ast_set_parent( $6, $$ );
+      $$->udef_lit.param_ast_list = $param_ast_list;
+      c_ast_set_parent( $ret_ast, $$ );
 
       DUMP_AST( "user_defined_literal_decl_english_ast", $$ );
       DUMP_END();
@@ -6950,22 +6905,22 @@ var_decl_english_ast
     /*
      * Ordinary variable declaration.
      */
-  : sname_c Y_as decl_english_ast
+  : sname_c[sname] Y_as decl_english_ast[decl_ast]
     {
       DUMP_START( "var_decl_english_ast", "NAME AS decl_english_ast" );
-      DUMP_SNAME( "sname", $1 );
-      DUMP_AST( "decl_english_ast", $3 );
+      DUMP_SNAME( "sname", $sname );
+      DUMP_AST( "decl_english_ast", $decl_ast );
 
-      if ( $3->kind == K_NAME ) {       // see the comment in "declare_command"
-        assert( !c_sname_empty( &$3->sname ) );
-        print_error_unknown_name( &@3, &$3->sname );
-        c_sname_cleanup( &$1 );
+      if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
+        assert( !c_sname_empty( &$decl_ast->sname ) );
+        print_error_unknown_name( &@decl_ast, &$decl_ast->sname );
+        c_sname_cleanup( &$sname );
         PARSE_ABORT();
       }
 
-      $$ = $3;
+      $$ = $decl_ast;
       $$->loc = @$;
-      c_sname_set( &$$->sname, &$1 );
+      c_sname_set( &$$->sname, &$sname );
 
       DUMP_AST( "var_decl_english_ast", $$ );
       DUMP_END();
@@ -6996,21 +6951,21 @@ var_decl_english_ast
 
 type_english_ast
   : // in_attr: qualifier
-    type_modifier_list_english_type_opt unmodified_type_english_ast
+    type_modifier_list_english_type_opt[type] unmodified_type_english_ast[ast]
     {
       DUMP_START( "type_english_ast",
                   "type_modifier_list_english_type_opt "
                   "unmodified_type_english_ast" );
-      DUMP_TYPE( "type_modifier_list_english_type_opt", $1 );
-      DUMP_AST( "unmodified_type_english_ast", $2 );
+      DUMP_TYPE( "type_modifier_list_english_type_opt", $type );
+      DUMP_AST( "unmodified_type_english_ast", $ast );
 
-      $$ = $2;
-      if ( !c_type_is_none( &$1 ) ) {
+      $$ = $ast;
+      if ( !c_type_is_none( &$type ) ) {
         // Set the AST's location to the entire rule only if the leading
         // optional rule is actually present, otherwise @$ refers to a column
-        // before $2.
+        // before $ast.
         $$->loc = @$;
-        PARSE_ASSERT( c_type_add( &$$->type, &$1, &@1 ) );
+        PARSE_ASSERT( c_type_add( &$$->type, &$type, &@type ) );
       }
 
       DUMP_AST( "type_english_ast", $$ );
@@ -7018,19 +6973,19 @@ type_english_ast
     }
 
   | // in_attr: qualifier
-    type_modifier_list_english_type     // allows implicit int in pre-C99
+    type_modifier_list_english_type[type] // allows implicit int in pre-C99
     {
       DUMP_START( "type_english_ast", "type_modifier_list_english_type" );
-      DUMP_TYPE( "type_modifier_list_english_type", $1 );
+      DUMP_TYPE( "type_modifier_list_english_type", $type );
 
       // see the comment in "type_c_ast"
-      c_type_t type =
+      c_type_t new_type =
         C_TYPE_LIT_B( OPT_LANG_IS( IMPLICIT_int ) ? TB_INT : TB_NONE );
 
-      PARSE_ASSERT( c_type_add( &type, &$1, &@1 ) );
+      PARSE_ASSERT( c_type_add( &new_type, &$type, &@type ) );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$->type = type;
+      $$->type = new_type;
 
       DUMP_AST( "type_english_ast", $$ );
       DUMP_END();
@@ -7043,16 +6998,17 @@ type_modifier_list_english_type_opt
   ;
 
 type_modifier_list_english_type
-  : type_modifier_list_english_type type_modifier_english_type
+  : type_modifier_list_english_type[left_type]
+    type_modifier_english_type[right_type]
     {
       DUMP_START( "type_modifier_list_english_type",
                   "type_modifier_list_english_type "
                   "type_modifier_english_type" );
-      DUMP_TYPE( "type_modifier_list_english_type", $1 );
-      DUMP_TYPE( "type_modifier_english_type", $2 );
+      DUMP_TYPE( "type_modifier_list_english_type", $left_type );
+      DUMP_TYPE( "type_modifier_english_type", $right_type );
 
-      $$ = $1;
-      PARSE_ASSERT( c_type_add( &$$, &$2, &@2 ) );
+      $$ = $left_type;
+      PARSE_ASSERT( c_type_add( &$$, &$right_type, &@right_type ) );
 
       DUMP_TYPE( "type_modifier_list_english_type", $$ );
       DUMP_END();
@@ -7073,26 +7029,26 @@ unmodified_type_english_ast
   ;
 
 builtin_type_english_ast
-  : builtin_no_BitInt_english_btid
+  : builtin_no_BitInt_english_btid[btid]
     {
       DUMP_START( "builtin_type_english_ast",
                   "builtin_no_BitInt_english_btid" );
-      DUMP_TID( "builtin_no_BitInt_english_btid", $1 );
+      DUMP_TID( "builtin_no_BitInt_english_btid", $btid );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
+      $$->type.btids = c_tid_check( $btid, C_TPID_BASE );
 
       DUMP_AST( "builtin_type_english_ast", $$ );
       DUMP_END();
     }
-  | BitInt_english_int
+  | BitInt_english_int[width]
     {
       DUMP_START( "builtin_type_english_ast", "BitInt_english_int" );
-      DUMP_INT( "int", $1 );
+      DUMP_INT( "int", $width );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = TB_BITINT;
-      $$->builtin.BitInt.width = STATIC_CAST( unsigned, $1 );
+      $$->builtin.BitInt.width = STATIC_CAST( unsigned, $width );
 
       DUMP_AST( "builtin_type_english_ast", $$ );
       DUMP_END();
@@ -7104,15 +7060,15 @@ builtin_no_BitInt_english_btid
   | Y_auto_TYPE
   | Y__Bool
   | Y_bool
-  | Y_char int_lit_opt
+  | Y_char int_lit_opt[bits]
     {
-      switch ( $2 ) {
+      switch ( $bits ) {
         case  0: $$ = TB_CHAR    ; break;
         case  8: $$ = TB_CHAR8_T ; break;
         case 16: $$ = TB_CHAR16_T; break;
         case 32: $$ = TB_CHAR32_T; break;
         default:
-          print_error( &@2, "bits must be one of 8, 16, or 32\n" );
+          print_error( &@bits, "bits must be one of 8, 16, or 32\n" );
           PARSE_ABORT();
       } // switch
     }
@@ -7130,17 +7086,17 @@ builtin_no_BitInt_english_btid
   ;
 
 BitInt_english_int
-  : BitInt_english Y_INT_LIT bits_opt
+  : BitInt_english Y_INT_LIT[width] bits_opt
     {
-      $$ = $2;
+      $$ = $width;
     }
-  | BitInt_english '(' int_lit_exp rparen_exp
+  | BitInt_english '(' int_lit_exp[width] rparen_exp
     {
-      $$ = $3;
+      $$ = $width;
     }
-  | BitInt_english Y_width int_lit_exp bits_opt
+  | BitInt_english Y_width int_lit_exp[width] bits_opt
     {
-      $$ = $3;
+      $$ = $width;
     }
   | BitInt_english error
     {
@@ -7160,16 +7116,16 @@ precise_opt
   ;
 
 class_struct_union_english_ast
-  : class_struct_union_btid any_sname_c_exp
+  : class_struct_union_btid[csu_btid] any_sname_c_exp[sname]
     {
       DUMP_START( "class_struct_union_english_ast",
                   "class_struct_union_btid sname" );
-      DUMP_TID( "class_struct_union_btid", $1 );
-      DUMP_SNAME( "sname", $2 );
+      DUMP_TID( "class_struct_union_btid", $csu_btid );
+      DUMP_SNAME( "sname", $sname );
 
-      $$ = c_ast_new_gc( $1 == TB_ENUM ? K_ENUM : K_CLASS_STRUCT_UNION, &@$ );
-      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
-      $$->csu.csu_sname = c_sname_move( &$2 );
+      $$ = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@$ );
+      $$->type.btids = c_tid_check( $csu_btid, C_TPID_BASE );
+      $$->csu.csu_sname = c_sname_move( &$sname );
 
       DUMP_AST( "enum_class_struct_union_english_ast", $$ );
       DUMP_END();
@@ -7177,18 +7133,19 @@ class_struct_union_english_ast
   ;
 
 enum_english_ast
-  : enum_btids any_sname_c_exp of_type_enum_fixed_type_english_ast_opt
+  : enum_btids any_sname_c_exp[sname]
+    of_type_enum_fixed_type_english_ast_opt[fixed_type_ast]
     {
       DUMP_START( "enum_english_ast",
                   "enum_btids sname of_type_enum_fixed_type_english_ast_opt" );
-      DUMP_TID( "enum_btids", $1 );
-      DUMP_SNAME( "sname", $2 );
-      DUMP_AST( "enum_fixed_type_english_ast", $3 );
+      DUMP_TID( "enum_btids", $enum_btids );
+      DUMP_SNAME( "sname", $sname );
+      DUMP_AST( "enum_fixed_type_english_ast", $fixed_type_ast );
 
-      $$ = c_ast_new_gc(  K_ENUM, &@$ );
-      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
-      $$->enum_.of_ast = $3;
-      $$->enum_.enum_sname = c_sname_move( &$2 );
+      $$ = c_ast_new_gc( K_ENUM, &@$ );
+      $$->type.btids = c_tid_check( $enum_btids, C_TPID_BASE );
+      $$->enum_.of_ast = $fixed_type_ast;
+      $$->enum_.enum_sname = c_sname_move( &$sname );
 
       DUMP_AST( "enum_english_ast", $$ );
       DUMP_END();
@@ -7197,39 +7154,39 @@ enum_english_ast
 
 of_type_enum_fixed_type_english_ast_opt
   : /* empty */                         { $$ = NULL; }
-  | Y_of type_opt enum_fixed_type_english_ast
+  | Y_of type_opt enum_fixed_type_english_ast[fixed_type_ast]
     {
-      $$ = $3;
+      $$ = $fixed_type_ast;
     }
   ;
 
 enum_fixed_type_english_ast
-  : enum_fixed_type_modifier_list_english_btid_opt
-    enum_unmodified_fixed_type_english_ast
+  : enum_fixed_type_modifier_list_english_btid_opt[btids]
+    enum_unmodified_fixed_type_english_ast[fixed_type_ast]
     {
       DUMP_START( "enum_fixed_type_english_ast",
                   "enum_fixed_type_modifier_list_stid" );
-      DUMP_TID( "enum_fixed_type_modifier_list_stid", $1 );
-      DUMP_AST( "enum_unmodified_fixed_type_english_ast", $2 );
+      DUMP_TID( "enum_fixed_type_modifier_list_stid", $btids );
+      DUMP_AST( "enum_unmodified_fixed_type_english_ast", $fixed_type_ast );
 
-      $$ = $2;
-      if ( $1 != TB_NONE ) {            // See comment in type_english_ast.
+      $$ = $fixed_type_ast;
+      if ( $btids != TB_NONE ) {        // See comment in type_english_ast.
         $$->loc = @$;
-        PARSE_ASSERT( c_type_add_tid( &$$->type, $1, &@1 ) );
+        PARSE_ASSERT( c_type_add_tid( &$$->type, $btids, &@btids ) );
       }
 
       DUMP_AST( "enum_fixed_type_english_ast", $$ );
       DUMP_END();
     }
 
-  | enum_fixed_type_modifier_list_english_btid
+  | enum_fixed_type_modifier_list_english_btid[btids]
     {
       DUMP_START( "enum_fixed_type_english_ast",
                   "enum_fixed_type_modifier_list_english_btid" );
-      DUMP_TID( "enum_fixed_type_modifier_list_english_btid", $1 );
+      DUMP_TID( "enum_fixed_type_modifier_list_english_btid", $btids );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$->type.btids = c_tid_check( $1, C_TPID_BASE );
+      $$->type.btids = c_tid_check( $btids, C_TPID_BASE );
 
       DUMP_AST( "enum_fixed_type_english_ast", $$ );
       DUMP_END();
@@ -7242,16 +7199,17 @@ enum_fixed_type_modifier_list_english_btid_opt
   ;
 
 enum_fixed_type_modifier_list_english_btid
-  : enum_fixed_type_modifier_list_english_btid enum_fixed_type_modifier_btid
+  : enum_fixed_type_modifier_list_english_btid[btids]
+    enum_fixed_type_modifier_btid[btid]
     {
       DUMP_START( "enum_fixed_type_modifier_list_english_btid",
                   "enum_fixed_type_modifier_list_english_btid "
                   "enum_fixed_type_modifier_btid" );
-      DUMP_TID( "enum_fixed_type_modifier_list_english_btid", $1 );
-      DUMP_TID( "enum_fixed_type_modifier_btid", $2 );
+      DUMP_TID( "enum_fixed_type_modifier_list_english_btid", $btids );
+      DUMP_TID( "enum_fixed_type_modifier_btid", $btid );
 
-      $$ = $1;
-      PARSE_ASSERT( c_tid_add( &$$, $2, &@2 ) );
+      $$ = $btids;
+      PARSE_ASSERT( c_tid_add( &$$, $btid, &@btid ) );
 
       DUMP_TID( "enum_fixed_type_modifier_list_english_btid", $$ );
       DUMP_END();
@@ -7271,10 +7229,10 @@ enum_unmodified_fixed_type_english_ast
 
 any_name
   : Y_NAME
-  | Y_TYPEDEF_NAME
+  | Y_TYPEDEF_NAME[tdef]
     {
-      assert( c_sname_count( &$1->ast->sname ) == 1 );
-      $$ = check_strdup( c_sname_local_name( &$1->ast->sname ) );
+      assert( c_sname_count( &$tdef->ast->sname ) == 1 );
+      $$ = check_strdup( c_sname_local_name( &$tdef->ast->sname ) );
     }
   ;
 
@@ -7312,13 +7270,13 @@ any_typedef
   ;
 
 name_ast
-  : Y_NAME
+  : Y_NAME[name]
     {
       DUMP_START( "name_ast", "NAME" );
-      DUMP_STR( "NAME", $1 );
+      DUMP_STR( "NAME", $name );
 
       $$ = c_ast_new_gc( K_NAME, &@$ );
-      c_sname_append_name( &$$->sname, $1 );
+      c_sname_append_name( &$$->sname, $name );
 
       DUMP_AST( "name_ast", $$ );
       DUMP_END();
@@ -7342,33 +7300,33 @@ name_opt
 oper_sname_c_opt
   : /* empty */                   { c_sname_init( &$$ ); }
 
-  | Y_OPERATOR_SNAME Y_COLON2
+  | Y_OPERATOR_SNAME[sname] Y_COLON2
     {
-      $$ = $1;
+      $$ = $sname;
       if ( c_type_is_none( c_sname_local_type( &$$ ) ) )
         c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
     }
   ;
 
 typedef_type_c_ast
-  : any_typedef sub_scope_sname_c_opt
+  : any_typedef[tdef] sub_scope_sname_c_opt[sname]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
-      c_ast_t const *type_for_ast = $1->ast;
+      c_ast_t const *type_for_ast = $tdef->ast;
 
       DUMP_START( "typedef_type_c_ast", "any_typedef" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "any_typedef.ast", type_for_ast );
-      DUMP_SNAME( "sub_scope_sname_c_opt", $2 );
+      DUMP_SNAME( "sub_scope_sname_c_opt", $sname );
 
-      if ( c_sname_empty( &$2 ) ) {
+      if ( c_sname_empty( &$sname ) ) {
 ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
         $$->type.btids = TB_TYPEDEF;
         $$->tdef.for_ast = type_for_ast;
       }
       else {
-        c_sname_t temp_name = c_sname_dup( &$1->ast->sname );
-        c_sname_append_sname( &temp_name, &$2 );
+        c_sname_t temp_name = c_sname_dup( &$tdef->ast->sname );
+        c_sname_append_sname( &temp_name, &$sname );
 
         if ( type_ast == NULL ) {
           //
@@ -7381,7 +7339,7 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
           // name used as a type. Just assume the T is a type and create a name
           // for it.
           //
-          c_ast_t *const name_ast = c_ast_new_gc( K_NAME, &@2 );
+          c_ast_t *const name_ast = c_ast_new_gc( K_NAME, &@sname );
           c_sname_set( &name_ast->sname, &temp_name );
           type_for_ast = name_ast;
           goto ttntd;
@@ -7412,11 +7370,11 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
 
 sub_scope_sname_c_opt
   : /* empty */                   { c_sname_init( &$$ ); }
-  | Y_COLON2 any_sname_c          { $$ = $2; }
+  | Y_COLON2 any_sname_c[sname]   { $$ = $sname; }
   ;
 
 sname_c
-  : sname_c Y_COLON2 Y_NAME
+  : sname_c[sname] Y_COLON2 Y_NAME[name]
     {
       // see the comment in "of_scope_english"
       if ( UNSUPPORTED( CPP_ANY ) ) {
@@ -7424,24 +7382,24 @@ sname_c
           "scoped names not supported%s\n",
           C_LANG_WHICH( CPP_ANY )
         );
-        c_sname_cleanup( &$1 );
-        free( $3 );
+        c_sname_cleanup( &$sname );
+        free( $name );
         PARSE_ABORT();
       }
 
       DUMP_START( "sname_c", "sname_c '::' NAME" );
-      DUMP_SNAME( "sname_c", $1 );
-      DUMP_STR( "name", $3 );
+      DUMP_SNAME( "sname_c", $sname );
+      DUMP_STR( "name", $name );
 
-      $$ = $1;
+      $$ = $sname;
       c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
-      c_sname_append_name( &$$, $3 );
+      c_sname_append_name( &$$, $name );
 
       DUMP_SNAME( "sname_c", $$ );
       DUMP_END();
     }
 
-  | sname_c Y_COLON2 any_typedef
+  | sname_c[sname] Y_COLON2 any_typedef[tdef]
     { //
       // This is for a case like:
       //
@@ -7451,24 +7409,24 @@ sname_c
       // as a distinct type in a new scope.
       //
       DUMP_START( "sname_c", "sname_c '::' any_typedef" );
-      DUMP_SNAME( "sname_c", $1 );
-      DUMP_AST( "any_typedef.ast", $3->ast );
+      DUMP_SNAME( "sname_c", $sname );
+      DUMP_AST( "any_typedef.ast", $tdef->ast );
 
-      $$ = $1;
+      $$ = $sname;
       c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
-      c_sname_t temp_sname = c_sname_dup( &$3->ast->sname );
+      c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "sname_c", $$ );
       DUMP_END();
     }
 
-  | Y_NAME
+  | Y_NAME[name]
     {
       DUMP_START( "sname_c", "NAME" );
-      DUMP_STR( "NAME", $1 );
+      DUMP_STR( "NAME", $name );
 
-      c_sname_init_name( &$$, $1 );
+      c_sname_init_name( &$$, $name );
 
       DUMP_SNAME( "sname_c", $$ );
       DUMP_END();
@@ -7477,32 +7435,31 @@ sname_c
 
 sname_c_ast
   : // in_attr: type_c_ast
-    sname_c bit_field_c_uint_opt
+    sname_c[sname] bit_field_c_uint_opt[bit_width]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
-      unsigned const bit_width = STATIC_CAST( unsigned, $2 );
 
       DUMP_START( "sname_c_ast", "sname_c" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_SNAME( "sname", $1 );
-      DUMP_INT( "bit_field_c_uint_opt", bit_width );
+      DUMP_SNAME( "sname", $sname );
+      DUMP_INT( "bit_field_c_uint_opt", $bit_width );
 
       $$ = type_ast;
-      c_sname_set( &$$->sname, &$1 );
+      c_sname_set( &$$->sname, &$sname );
 
       bool ok = true;
       //
       // This check has to be done now in the parser rather than later in the
       // AST since we need to use the builtin union member now.
       //
-      if ( bit_width != 0 && (ok = c_ast_is_integral( $$ )) )
-        $$->bit_field.bit_width = bit_width;
+      if ( $bit_width != 0 && (ok = c_ast_is_integral( $$ )) )
+        $$->bit_field.bit_width = STATIC_CAST( unsigned, $bit_width );
 
       DUMP_AST( "sname_c_ast", $$ );
       DUMP_END();
 
       if ( !ok ) {
-        print_error( &@2,
+        print_error( &@bit_width,
           "bit-fields can be only of integral %stypes\n",
           OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
         );
@@ -7513,16 +7470,16 @@ sname_c_ast
 
 bit_field_c_uint_opt
   : /* empty */                   { $$ = 0; }
-  | ':' int_lit_exp
+  | ':' int_lit_exp[bit_width]
     { //
       // This check has to be done now in the parser rather than later in the
       // AST since we use 0 to mean "no bit-field."
       //
-      if ( $2 == 0 ) {
-        print_error( &@2, "bit-field width must be > 0\n" );
+      if ( $bit_width == 0 ) {
+        print_error( &@bit_width, "bit-field width must be > 0\n" );
         PARSE_ABORT();
       }
-      $$ = STATIC_CAST( unsigned, $2 );
+      $$ = STATIC_CAST( unsigned, $bit_width );
     }
   ;
 
@@ -7541,17 +7498,17 @@ sname_c_opt
   ;
 
 sname_english
-  : any_sname_c of_scope_list_english_opt
+  : any_sname_c[sname] of_scope_list_english_opt[scope_sname]
     {
       DUMP_START( "sname_english", "any_sname_c of_scope_list_english_opt" );
-      DUMP_SNAME( "any_sname_c", $1 );
-      DUMP_SNAME( "of_scope_list_english_opt", $2 );
+      DUMP_SNAME( "any_sname_c", $sname );
+      DUMP_SNAME( "of_scope_list_english_opt", $scope_sname );
 
-      c_type_t const *local_type = c_sname_local_type( &$2 );
+      c_type_t const *local_type = c_sname_local_type( &$scope_sname );
       if ( c_type_is_none( local_type ) )
-        local_type = c_sname_local_type( &$1 );
-      $$ = $2;
-      c_sname_append_sname( &$$, &$1 );
+        local_type = c_sname_local_type( &$sname );
+      $$ = $scope_sname;
+      c_sname_append_sname( &$$, &$sname );
       c_sname_set_local_type( &$$, local_type );
 
       DUMP_SNAME( "sname_english", $$ );
@@ -7560,14 +7517,14 @@ sname_english
   ;
 
 sname_english_ast
-  : Y_NAME of_scope_list_english_opt
+  : Y_NAME[name] of_scope_list_english_opt[scope_sname]
     {
       DUMP_START( "sname_english_ast", "NAME of_scope_list_english_opt" );
-      DUMP_STR( "NAME", $1 );
-      DUMP_SNAME( "of_scope_list_english_opt", $2 );
+      DUMP_STR( "NAME", $name );
+      DUMP_SNAME( "of_scope_list_english_opt", $scope_sname );
 
-      c_sname_t sname = c_sname_move( &$2 );
-      c_sname_append_name( &sname, $1 );
+      c_sname_t sname = c_sname_move( &$scope_sname );
+      c_sname_append_name( &sname, $name );
 
       //
       // See if the full name is the name of a typedef'd type.
@@ -7603,29 +7560,29 @@ sname_english_opt
   ;
 
 sname_list_english
-  : sname_list_english ',' sname_english_exp
+  : sname_list_english[left_sname] ',' sname_english_exp[right_sname]
     {
       DUMP_START( "sname_list_english",
                   "sname_list_english ',' sname_english" );
-      DUMP_SNAME_LIST( "sname_list_english", $1 );
-      DUMP_SNAME( "sname_english", $3 );
+      DUMP_SNAME_LIST( "sname_list_english", $left_sname );
+      DUMP_SNAME( "sname_english", $right_sname );
 
-      $$ = $1;
+      $$ = $left_sname;
       c_sname_t *const temp_sname = MALLOC( c_sname_t, 1 );
-      *temp_sname = c_sname_move( &$3 );
+      *temp_sname = c_sname_move( &$right_sname );
       slist_push_back( &$$, temp_sname );
 
       DUMP_SNAME_LIST( "sname_list_english", $$ );
       DUMP_END();
     }
 
-  | sname_english
+  | sname_english[sname]
     {
       DUMP_START( "sname_list_english", "sname_english" );
-      DUMP_SNAME( "sname_english", $1 );
+      DUMP_SNAME( "sname_english", $sname );
 
       c_sname_t *const temp_sname = MALLOC( c_sname_t, 1 );
-      *temp_sname = c_sname_move( &$1 );
+      *temp_sname = c_sname_move( &$sname );
       slist_init( &$$ );
       slist_push_back( &$$, temp_sname );
 
@@ -7635,11 +7592,11 @@ sname_list_english
   ;
 
 typedef_sname_c
-  : typedef_sname_c Y_COLON2 sname_c
+  : typedef_sname_c[tdef_sname] Y_COLON2 sname_c[sname]
     {
       DUMP_START( "typedef_sname_c", "typedef_sname_c '::' sname_c" );
-      DUMP_SNAME( "typedef_sname_c", $1 );
-      DUMP_SNAME( "sname_c", $3 );
+      DUMP_SNAME( "typedef_sname_c", $tdef_sname );
+      DUMP_SNAME( "sname_c", $sname );
 
       //
       // This is for a case like:
@@ -7647,18 +7604,18 @@ typedef_sname_c
       //      define S as struct S
       //      define S::T as struct T
       //
-      $$ = $1;
-      c_sname_append_sname( &$$, &$3 );
+      $$ = c_sname_move( &$tdef_sname );
+      c_sname_append_sname( &$$, &$sname );
 
       DUMP_SNAME( "typedef_sname_c", $$ );
       DUMP_END();
     }
 
-  | typedef_sname_c Y_COLON2 any_typedef
+  | typedef_sname_c[sname] Y_COLON2 any_typedef[tdef]
     {
       DUMP_START( "typedef_sname_c", "typedef_sname_c '::' any_typedef" );
-      DUMP_SNAME( "typedef_sname_c", $1 );
-      DUMP_AST( "any_typedef", $3->ast );
+      DUMP_SNAME( "typedef_sname_c", $sname );
+      DUMP_AST( "any_typedef", $tdef->ast );
 
       //
       // This is for a case like:
@@ -7667,16 +7624,16 @@ typedef_sname_c
       //      define T as struct T
       //      define S::T as struct S_T
       //
-      $$ = $1;
-      c_sname_set_local_type( &$$, c_sname_local_type( &$3->ast->sname ) );
-      c_sname_t temp_sname = c_sname_dup( &$3->ast->sname );
+      $$ = c_sname_move( &$sname );
+      c_sname_set_local_type( &$$, c_sname_local_type( &$tdef->ast->sname ) );
+      c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "typedef_sname_c", $$ );
       DUMP_END();
     }
 
-  | any_typedef                   { $$ = c_sname_dup( &$1->ast->sname ); }
+  | any_typedef[tdef]             { $$ = c_sname_dup( &$tdef->ast->sname ); }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7894,10 +7851,10 @@ equals_exp
   ;
 
 extern_linkage_c_stid
-  : Y_extern linkage_stid         { $$ = $2; }
-  | Y_extern linkage_stid '{'
+  : Y_extern linkage_stid[stid]   { $$ = $stid; }
+  | Y_extern linkage_stid '{'[brace]
     {
-      print_error( &@3,
+      print_error( &@brace,
         "scoped linkage declarations not supported by %s\n", CDECL
       );
       PARSE_ABORT();
@@ -7910,14 +7867,14 @@ extern_linkage_c_stid_opt
   ;
 
 glob
-  : Y_GLOB
+  : Y_GLOB[glob_name]
     {
-      if ( OPT_LANG_IS( C_ANY ) && strchr( $1, ':' ) != NULL ) {
-        print_error( &@1, "scoped names not supported in C\n" );
-        free( $1 );
+      if ( OPT_LANG_IS( C_ANY ) && strchr( $glob_name, ':' ) != NULL ) {
+        print_error( &@glob_name, "scoped names not supported in C\n" );
+        free( $glob_name );
         PARSE_ABORT();
       }
-      $$ = $1;
+      $$ = $glob_name;
     }
   ;
 
@@ -8020,7 +7977,7 @@ of_exp
   ;
 
 of_scope_english
-  : Y_of scope_english_type_exp any_sname_c_exp
+  : Y_of scope_english_type_exp[scope_type] any_sname_c_exp[sname]
     { //
       // Scoped names are supported only in C++.  (However, we always allow
       // them in configuration files.)
@@ -8030,25 +7987,26 @@ of_scope_english
       // better error location.
       //
       if ( UNSUPPORTED( CPP_ANY ) ) {
-        print_error( &@2,
+        print_error( &@scope_type,
           "scoped names not supported%s\n",
           C_LANG_WHICH( CPP_ANY )
         );
-        c_sname_cleanup( &$3 );
+        c_sname_cleanup( &$sname );
         PARSE_ABORT();
       }
-      $$ = $3;
-      c_sname_set_local_type( &$$, &$2 );
+      $$ = c_sname_move( &$sname );
+      c_sname_set_local_type( &$$, &$scope_type );
     }
   ;
 
 of_scope_list_english
-  : of_scope_list_english of_scope_english
+  : of_scope_list_english[left_sname] of_scope_english[right_sname]
     {
-      $$ = $2;                          // "of scope X of scope Y" means Y::X
-      c_sname_append_sname( &$$, &$1 );
+      // "of scope X of scope Y" means Y::X
+      $$ = c_sname_move( &$right_sname );
+      c_sname_append_sname( &$$, &$left_sname );
       c_sname_fill_in_namespaces( &$$ );
-      if ( !c_sname_check( &$$, &@1 ) ) {
+      if ( !c_sname_check( &$$, &@left_sname ) ) {
         c_sname_cleanup( &$$ );
         PARSE_ABORT();
       }
