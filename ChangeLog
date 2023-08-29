@@ -1,5 +1,6 @@
 2023-08-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * red_black.h: Removed unnecessary #include.
    * c_ast.c, c_ast_check.c, dump.c, english.c, gibberish.c, parser.y, types.h,
      debug.out: s/c_alignas::expr/c_alignas::bytes/
    * cdecl.c: Added (unlikely) check for yyparse() being out of memory.
