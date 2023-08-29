@@ -251,9 +251,9 @@ typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
  */
 struct c_loc {
   //
-  // These should be either unsigned or size_t, but Bison generates code that
-  // tests these for >= 0 which is always true for unsigned types so it
-  // generates warnings; hence these are kept as int to eliminate the warnings.
+  // These should be either unsigned or size_t, but Flex & Bison generate code
+  // that assumes these are signed.  Making them unsigned generates warnings;
+  // hence these are kept as int to eliminate the warnings.
   //
   int first_line;                       ///< First line of location range.
   int first_column;                     ///< First column of location range.
