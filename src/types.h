@@ -56,7 +56,7 @@
  */
 enum c_alignas_kind {
   C_ALIGNAS_NONE,                       ///< No `alignas` specifier.
-  C_ALIGNAS_EXPR,                       ///< `alignas(` _expr_ `)`
+  C_ALIGNAS_BYTES,                      ///< `alignas(` _bytes_ `)`
   C_ALIGNAS_TYPE                        ///< `alignas(` _type_ `)`
 };
 
@@ -270,7 +270,7 @@ struct c_loc {
  */
 struct c_alignas {
   union {
-    unsigned        expr;               ///< Aligned to this number of bytes.
+    unsigned        bytes;              ///< Aligned to this number of bytes.
     c_ast_t        *type_ast;           ///< Aligned the same as this type.
   };
   c_alignas_kind_t  kind;               ///< Kind of `alignas` argument.

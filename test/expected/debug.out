@@ -333,7 +333,7 @@ sname_c_ast: {
 
 decl_c: {
   rule: "decl_c_astp",
-  in_attr__alignas_specifier_c_expr: 8,
+  in_attr__alignas_bytes: 8,
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
@@ -366,7 +366,7 @@ decl_c: {
     depth: 0,
     parent__unique_id: 0,
     alignas: {
-      expr: 8,
+      bytes: 8,
       loc: { first_column: 8, last_column: 14 }
     },
     loc: { first_column: 19, last_column: 21 },
@@ -497,7 +497,7 @@ sname_c_ast: {
 
 decl_c: {
   rule: "decl_c_astp",
-  in_attr__alignas_specifier_c_type_ast: {
+  in_attr__alignas_type_ast: {
     sname: { string: "" },
     unique_id: 1364,
     kind: { value: 0x2, string: "built-in type" },

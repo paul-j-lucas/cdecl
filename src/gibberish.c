@@ -1121,8 +1121,8 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
       switch ( ast->align.kind ) {
         case C_ALIGNAS_NONE:
           break;
-        case C_ALIGNAS_EXPR:
-          FPRINTF( gout, "%s(%u) ", alignas_name(), ast->align.expr );
+        case C_ALIGNAS_BYTES:
+          FPRINTF( gout, "%s(%u) ", alignas_name(), ast->align.bytes );
           break;
         case C_ALIGNAS_TYPE:
           FPRINTF( gout, "%s(", alignas_name() );

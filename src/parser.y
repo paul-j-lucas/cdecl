@@ -2105,9 +2105,9 @@ alignas_or_width_decl_english_ast
 alignas_specifier_english
   : aligned_english Y_INT_LIT[width] bytes_opt
     {
-      $$.kind = C_ALIGNAS_EXPR;
+      $$.kind = C_ALIGNAS_BYTES;
       $$.loc = @1;
-      $$.expr = STATIC_CAST( unsigned, $width );
+      $$.bytes = STATIC_CAST( unsigned, $width );
     }
   | aligned_english decl_english_ast[decl_ast]
     {
@@ -2813,9 +2813,9 @@ alignas_specifier_c
       DUMP_INT( "INT_LIT", $bytes );
       DUMP_END();
 
-      $$.kind = C_ALIGNAS_EXPR;
+      $$.kind = C_ALIGNAS_BYTES;
       $$.loc = @alignas;
-      $$.expr = STATIC_CAST( unsigned, $bytes );
+      $$.bytes = STATIC_CAST( unsigned, $bytes );
     }
 
   | alignas lparen_exp type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
@@ -3649,13 +3649,11 @@ decl_c
       switch ( in_attr.align.kind ) {
         case C_ALIGNAS_NONE:
           break;
-        case C_ALIGNAS_EXPR:
-          DUMP_INT( "in_attr__alignas_specifier_c_expr", in_attr.align.expr );
+        case C_ALIGNAS_BYTES:
+          DUMP_INT( "in_attr__alignas_bytes", in_attr.align.bytes );
           break;
         case C_ALIGNAS_TYPE:
-          DUMP_AST(
-            "in_attr__alignas_specifier_c_type_ast", in_attr.align.type_ast
-          );
+          DUMP_AST( "in_attr__alignas_type_ast", in_attr.align.type_ast );
           break;
       } // switch
       DUMP_BOOL( "in_attr__typename_flag_opt", in_attr.is_typename );

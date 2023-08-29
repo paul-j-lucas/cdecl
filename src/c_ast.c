@@ -142,8 +142,8 @@ static bool c_alignas_equal( c_alignas_t const *i_align,
   switch ( i_align->kind ) {
     case C_ALIGNAS_NONE:
       return true;
-    case C_ALIGNAS_EXPR:
-      return i_align->expr == j_align->expr;
+    case C_ALIGNAS_BYTES:
+      return i_align->bytes == j_align->bytes;
     case C_ALIGNAS_TYPE:
       return c_ast_equal( i_align->type_ast, j_align->type_ast );
   } // switch

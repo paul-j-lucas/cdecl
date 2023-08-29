@@ -364,16 +364,14 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
   switch ( ast->align.kind ) {
     case C_ALIGNAS_NONE:
       unreachable();
-    case C_ALIGNAS_EXPR: {
-      unsigned const alignment = ast->align.expr;
-      if ( !is_01_bit( alignment ) ) {
+    case C_ALIGNAS_BYTES:
+      if ( !is_01_bit( ast->align.bytes ) ) {
         print_error( &ast->align.loc,
-          "\"%u\": alignment must be a power of 2\n", alignment
+          "\"%u\": alignment must be a power of 2\n", ast->align.bytes
         );
         return false;
       }
       break;
-    }
     case C_ALIGNAS_TYPE:
       return c_ast_check( ast->align.type_ast );
   } // switch

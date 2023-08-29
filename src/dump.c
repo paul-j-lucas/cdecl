@@ -117,8 +117,8 @@ static void c_alignas_dump( c_alignas_t const *align, d_state_t *d ) {
   switch ( align->kind ) {
     case C_ALIGNAS_NONE:
       unreachable();
-    case C_ALIGNAS_EXPR:
-      DUMP_KEY( d, "expr: %u", align->expr );
+    case C_ALIGNAS_BYTES:
+      DUMP_KEY( d, "bytes: %u", align->bytes );
       break;
     case C_ALIGNAS_TYPE:
       c_ast_dump_impl( align->type_ast, "type_ast", d );

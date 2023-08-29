@@ -516,9 +516,9 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   switch ( ast->align.kind ) {
     case C_ALIGNAS_NONE:
       break;
-    case C_ALIGNAS_EXPR:
-      if ( ast->align.expr > 0 )
-        FPRINTF( eout, " aligned as %u bytes", ast->align.expr );
+    case C_ALIGNAS_BYTES:
+      if ( ast->align.bytes > 0 )
+        FPRINTF( eout, " aligned as %u bytes", ast->align.bytes );
       break;
     case C_ALIGNAS_TYPE:
       FPUTS( " aligned as ", eout );
