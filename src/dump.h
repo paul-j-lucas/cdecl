@@ -83,6 +83,15 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
 void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout );
 
 /**
+ * Dumps \a astp (for debugging).
+ *
+ * @param astp The \ref c_ast_pair to dump.
+ * @param indent The current indent.
+ * @param dout The `FILE` to dump to.
+ */
+void c_ast_pair_dump( c_ast_pair_t const *astp, unsigned indent, FILE *dout );
+
+/**
  * Dumps \a sname (for debugging).
  *
  * @param sname The scoped name to dump.

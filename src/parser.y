@@ -259,6 +259,7 @@
  * @param AST The AST to dump.
  *
  * @sa #DUMP_AST_LIST()
+ * @sa #DUMP_AST_PAIR()
  */
 #define DUMP_AST(KEY,AST) IF_DEBUG( \
   DUMP_COMMA; c_ast_dump( (AST), /*indent=*/1, (KEY), stdout ); )
@@ -270,9 +271,21 @@
  * @param AST_LIST The \ref slist of AST to dump.
  *
  * @sa #DUMP_AST()
+ * @sa #DUMP_AST_PAIR()
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
   DUMP_KEY( KEY ": " ); c_ast_list_dump( &(AST_LIST), /*indent=*/1, stdout ); )
+
+/**
+ * Dump a \ref ast_pair.
+ *
+ * @param KEY The key name to print.
+ * @param ASTP The \ref ast_pair to dump.
+ *
+ * @sa #DUMP_AST()
+ */
+#define DUMP_AST_PAIR(KEY,ASTP) IF_DEBUG( \
+  DUMP_KEY( KEY ": " ); c_ast_pair_dump( &(ASTP), /*indent=*/1, stdout ); )
 
 /**
  * Dumps a `bool`.
@@ -2712,18 +2725,17 @@ c_style_cast_expr_c
     {
       ia_type_ast_pop();
 
-      c_ast_t *const decl_ast = $cast_astp.ast;
-
       DUMP_START( "explain_command",
                   "EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt" );
       DUMP_AST( "type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", decl_ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
       DUMP_SNAME( "sname_c_opt", $sname );
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$sname );
       cast_ast->cast.kind = C_CAST_C;
-      cast_ast->cast.to_ast = c_ast_patch_placeholder( $type_ast, decl_ast );
+      cast_ast->cast.to_ast =
+        c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
 
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
@@ -2755,21 +2767,21 @@ new_style_cast_expr_c
     {
       ia_type_ast_pop();
 
-      char const  *const cast_literal = c_cast_english( $cast_kind );
-      c_ast_t     *const decl_ast = $cast_astp.ast;
+      char const *const cast_literal = c_cast_english( $cast_kind );
 
       DUMP_START( "explain_command",
                   "EXPLAIN new_style_cast_c"
                   "'<' type_c_ast cast_c_astp_opt '>' '(' sname ')'" );
       DUMP_STR( "new_style_cast_c", cast_literal );
       DUMP_AST( "type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", decl_ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
       DUMP_SNAME( "sname", $sname );
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$sname );
       cast_ast->cast.kind = $cast_kind;
-      cast_ast->cast.to_ast = c_ast_patch_placeholder( $type_ast, decl_ast );
+      cast_ast->cast.to_ast =
+        c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
 
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
@@ -2823,17 +2835,15 @@ alignas_specifier_c
     {
       ia_type_ast_pop();
 
-      c_ast_t *const cast_ast = $cast_astp.ast;
-
       DUMP_START( "alignas_specifier_c",
                   "ALIGNAS '(' type_c_ast cast_c_astp_opt ')'" );
       DUMP_AST( "type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", cast_ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
       DUMP_END();
 
       $$.kind = C_ALIGNAS_TYPE;
       $$.loc = @alignas;
-      $$.type_ast = c_ast_patch_placeholder( $type_ast, cast_ast );
+      $$.type_ast = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
     }
 
   | alignas lparen_exp error ')'
@@ -3308,7 +3318,7 @@ lambda_return_type_c_ast_opt
       DUMP_START( "lambda_return_type_c_ast_opt",
                   "type_c_ast cast_c_astp_opt" );
       DUMP_AST( "type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", $cast_astp.ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
       $$ = $cast_astp.ast != NULL ? $cast_astp.ast : $type_ast;
 
@@ -3397,13 +3407,13 @@ typedef_decl_c
     decl_c_astp[decl_astp]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
-      c_ast_t *const decl_ast = $decl_astp.ast;
 
       DUMP_START( "typedef_decl_c", "decl_c_astp" );
       DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "decl_c_astp__ast", decl_ast );
+      DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
+      c_ast_t *const decl_ast = $decl_astp.ast;
       c_ast_t *typedef_ast;
       c_sname_t temp_sname;
 
@@ -3472,7 +3482,7 @@ user_defined_conversion_declaration_c
     {
       DUMP_START( "user_defined_conversion_declaration_c",
                   "user_defined_conversion_decl_c_astp" );
-      DUMP_AST( "user_defined_conversion_declaration_c__ast", $decl_astp.ast );
+      DUMP_AST_PAIR( "user_defined_conversion_declaration_c", $decl_astp );
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( $decl_astp.ast ) );
@@ -3527,8 +3537,6 @@ using_decl_c_ast
     {
       ia_type_ast_pop();
 
-      c_ast_t *const cast_ast = $cast_astp.ast;
-
       DUMP_START( "using_decl_c_ast",
                   "USING any_name_exp attribute_specifier_list_c_atid_opt '=' "
                   "type_c_ast cast_c_astp_opt" );
@@ -3536,7 +3544,9 @@ using_decl_c_ast
       DUMP_STR( "any_name_exp", $name );
       DUMP_TID( "attribute_specifier_list_c_atid_opt", $atids );
       DUMP_AST( "type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", cast_ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
+
+      c_ast_t *const cast_ast = $cast_astp.ast;
 
       //
       // Ensure the type on the right-hand side doesn't have a name, e.g.:
@@ -3643,7 +3653,6 @@ decl_c
       //    explain int *p, *q
       //
       c_ast_t *const type_ast = c_ast_dup( ia_type_ast_peek(), &gc_ast_list );
-      c_ast_t *const decl_ast = $decl_astp.ast;
 
       DUMP_START( "decl_c", "decl_c_astp" );
       switch ( in_attr.align.kind ) {
@@ -3658,9 +3667,9 @@ decl_c
       } // switch
       DUMP_BOOL( "in_attr__typename_flag_opt", in_attr.is_typename );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "decl_c_astp__ast", decl_ast );
+      DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
-      c_ast_t const *const ast = join_type_decl( type_ast, decl_ast );
+      c_ast_t const *const ast = join_type_decl( type_ast, $decl_astp.ast );
 
       DUMP_AST( "decl_c", ast );
       DUMP_END();
@@ -3774,8 +3783,7 @@ array_decl_c_astp
 
       DUMP_START( "array_decl_c_astp", "decl2_c_astp array_size_c_ast" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "decl2_c_astp__ast", decl_ast );
-      DUMP_AST( "decl2_c_astp__target_ast", $decl_astp.target_ast );
+      DUMP_AST_PAIR( "decl2_c_astp", $decl_astp );
       DUMP_AST( "array_size_c_ast", $array_ast );
 
       c_ast_set_parent(
@@ -3792,7 +3800,7 @@ array_decl_c_astp
         $$.target_ast = NULL;
       }
 
-      DUMP_AST( "array_decl_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "array_decl_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -3884,24 +3892,23 @@ block_decl_c_astp                       // Apple extension
     {
       c_ast_t *const  block_ast = ia_type_ast_pop();
       c_ast_t *const  type_ast = ia_type_ast_peek();
-      c_ast_t *const  decl_ast = $decl_astp.ast;
 
       DUMP_START( "block_decl_c_astp",
                   "'(' '^' type_qualifier_list_c_stid_opt decl_c_astp ')' "
                   "'(' param_c_ast_list_opt ')'" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
-      DUMP_AST( "decl_c_astp__ast", decl_ast );
+      DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
 
       PARSE_ASSERT(
         c_type_add_tid( &block_ast->type, $qual_stids, &@qual_stids )
       );
       block_ast->block.param_ast_list = slist_move( &$param_ast_list );
-      $$.ast = c_ast_add_func( decl_ast, block_ast, type_ast );
+      $$.ast = c_ast_add_func( $decl_astp.ast, block_ast, type_ast );
       $$.target_ast = block_ast->block.ret_ast;
 
-      DUMP_AST( "block_decl_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "block_decl_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -4028,7 +4035,6 @@ func_decl_c_astp
     func_equals_c_stid_opt[equals_stid]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
-      c_ast_t *const decl_ast = $decl_astp.ast;
 
       DUMP_START( "func_decl_c_astp",
                   "decl2_c_astp '(' param_c_ast_list_opt ')' "
@@ -4037,8 +4043,7 @@ func_decl_c_astp
                   "trailing_return_type_c_ast_opt "
                   "func_equals_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "decl2_c_astp__ast", decl_ast );
-      DUMP_AST( "decl2_c_astp__target_ast", $decl_astp.target_ast );
+      DUMP_AST_PAIR( "decl2_c_astp", $decl_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
       DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_TID( "func_ref_qualifier_c_stid_opt", $ref_qual_stid );
@@ -4110,17 +4115,17 @@ func_decl_c_astp
 
       if ( assume_constructor ) {
         assert( $trailing_ret_ast == NULL );
-        $$.ast = c_ast_add_func( decl_ast, func_ast, /*ret_ast=*/NULL );
+        $$.ast = c_ast_add_func( $decl_astp.ast, func_ast, /*ret_ast=*/NULL );
       }
       else if ( $decl_astp.target_ast != NULL ) {
-        $$.ast = decl_ast;
+        $$.ast = $decl_astp.ast;
         PJL_IGNORE_RV(
           c_ast_add_func( $decl_astp.target_ast, func_ast, type_ast )
         );
       }
       else {
         $$.ast = c_ast_add_func(
-          decl_ast,
+          $decl_astp.ast,
           func_ast,
           $trailing_ret_ast != NULL ? $trailing_ret_ast : type_ast
         );
@@ -4149,7 +4154,7 @@ func_decl_c_astp
         } // for
       }
 
-      DUMP_AST( "func_decl_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "func_decl_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -4374,7 +4379,7 @@ trailing_return_type_c_ast_opt
                   "type_c_ast cast_c_astp_opt" );
       DUMP_AST( "in_attr__type_c_ast", ret_ast );
       DUMP_AST( "type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", $cast_astp.ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
       $$ = $cast_astp.ast != NULL ? $cast_astp.ast : $type_ast;
 
@@ -4487,7 +4492,7 @@ param_c_ast
       DUMP_START( "param_c_ast", "this_stid_opt type_c_ast cast_c_astp_opt" );
       DUMP_TID( "this_stid_opt", $this_stid );
       DUMP_AST( "type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", $cast_astp.ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
       $$ = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
 
@@ -4549,12 +4554,12 @@ nested_decl_c_astp
       --in_attr.ast_depth;
 
       DUMP_START( "nested_decl_c_astp", "'(' decl_c_astp ')'" );
-      DUMP_AST( "decl_c_astp__ast", $decl_astp.ast );
+      DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
       $$ = $decl_astp;
       $$.ast->loc = @$;
 
-      DUMP_AST( "nested_decl_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "nested_decl_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -4606,7 +4611,7 @@ oper_decl_c_astp
       $$.ast = c_ast_add_func( type_ast, oper_ast, ret_ast );
       $$.target_ast = oper_ast->oper.ret_ast;
 
-      DUMP_AST( "oper_decl_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "oper_decl_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -4621,13 +4626,13 @@ pointer_decl_c_astp
 
       DUMP_START( "pointer_decl_c_astp", "pointer_type_c_ast decl_c_astp" );
       DUMP_AST( "pointer_type_c_ast", $type_ast );
-      DUMP_AST( "decl_c_astp__ast", $decl_astp.ast );
+      DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
       PJL_IGNORE_RV( c_ast_patch_placeholder( $type_ast, $decl_astp.ast ) );
       $$ = $decl_astp;
       $$.ast->loc = @$;
 
-      DUMP_AST( "pointer_decl_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "pointer_decl_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -4667,7 +4672,7 @@ pc99_pointer_decl_c
       DUMP_START( "pc99_pointer_decl_c",
                   "pc99_pointer_type_c_ast decl_c_astp" );
       DUMP_AST( "pc99_pointer_type_c_ast", $type_ast );
-      DUMP_AST( "decl_c_astp__ast", $decl_astp.ast );
+      DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
       PJL_IGNORE_RV( c_ast_patch_placeholder( $type_ast, $decl_astp.ast ) );
       c_ast_t *const ast = $decl_astp.ast;
@@ -4727,12 +4732,12 @@ pointer_to_member_decl_c_astp
       DUMP_START( "pointer_to_member_decl_c_astp",
                   "pointer_to_member_type_c_ast decl_c_astp" );
       DUMP_AST( "pointer_to_member_type_c_ast", $type_ast );
-      DUMP_AST( "decl_c_astp__ast", $decl_astp.ast );
+      DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
       $$ = $decl_astp;
       $$.ast->loc = @$;
 
-      DUMP_AST( "pointer_to_member_decl_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "pointer_to_member_decl_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -4784,12 +4789,12 @@ reference_decl_c_astp
 
       DUMP_START( "reference_decl_c_astp", "reference_type_c_ast decl_c_astp" );
       DUMP_AST( "reference_type_c_ast", $type_ast );
-      DUMP_AST( "decl_c_astp__ast", $decl_astp.ast );
+      DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
       $$ = $decl_astp;
       $$.ast->loc = @$;
 
-      DUMP_AST( "reference_decl_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "reference_decl_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -4962,7 +4967,7 @@ user_defined_conversion_decl_c_astp
       $$.ast->udef_conv.to_ast = $udc_ast != NULL ? $udc_ast : $to_ast;
       $$.target_ast = $$.ast->udef_conv.to_ast;
 
-      DUMP_AST( "user_defined_conversion_decl_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "user_defined_conversion_decl_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -5004,7 +5009,7 @@ user_defined_literal_decl_c_astp
 
       $$.target_ast = udl_ast->udef_lit.ret_ast;
 
-      DUMP_AST( "user_defined_literal_decl_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "user_defined_literal_decl_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -5047,8 +5052,7 @@ array_cast_c_astp
 
       DUMP_START( "array_cast_c_astp", "cast_c_astp_opt array_size_c_ast" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", $cast_astp.ast );
-      DUMP_AST( "cast_c_astp_opt__target_ast", $cast_astp.target_ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
       DUMP_AST( "array_size_c_ast", $array_ast );
 
       c_ast_set_parent(
@@ -5066,7 +5070,7 @@ array_cast_c_astp
         $$.target_ast = NULL;
       }
 
-      DUMP_AST( "array_cast_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "array_cast_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -5087,24 +5091,23 @@ block_cast_c_astp                       // Apple extension
     {
       c_ast_t *const  block_ast = ia_type_ast_pop();
       c_ast_t *const  type_ast = ia_type_ast_peek();
-      c_ast_t *const  cast_ast = $cast_astp.ast;
 
       DUMP_START( "block_cast_c_astp",
                   "'(' '^' type_qualifier_list_c_stid_opt cast_c_astp_opt ')' "
                   "'(' param_c_ast_list_opt ')'" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
-      DUMP_AST( "cast_c_astp_opt__ast", cast_ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
 
       PARSE_ASSERT(
         c_type_add_tid( &block_ast->type, $qual_stids, &@qual_stids )
       );
       block_ast->block.param_ast_list = slist_move( &$param_ast_list );
-      $$.ast = c_ast_add_func( cast_ast, block_ast, type_ast );
+      $$.ast = c_ast_add_func( $cast_astp.ast, block_ast, type_ast );
       $$.target_ast = block_ast->block.ret_ast;
 
-      DUMP_AST( "block_cast_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "block_cast_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -5118,21 +5121,20 @@ func_cast_c_astp
     noexcept_c_stid_opt[noexcept_stid]
     trailing_return_type_c_ast_opt[trailing_ret_ast]
     {
-      c_ast_t *const cast2_ast = $cast2_astp.ast;
-      c_ast_t *      ret_ast = ia_type_ast_peek();
+      c_ast_t *ret_ast = ia_type_ast_peek();
 
       DUMP_START( "func_cast_c_astp",
                   "cast2_c_astp '(' param_c_ast_list_opt ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt" );
       DUMP_AST( "in_attr__type_c_ast", ret_ast );
-      DUMP_AST( "cast2_c_astp__ast", cast2_ast );
-      DUMP_AST( "cast2_c_astp__target_ast", $cast2_astp.target_ast );
+      DUMP_AST_PAIR( "cast2_c_astp", $cast2_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
       DUMP_TID( "func_qualifier_list_c_stid_opt", $ref_qual_stids );
       DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
 
+      c_ast_t *const cast2_ast = $cast2_astp.ast;
       if ( cast2_ast->kind == K_FUNCTION ) {
         //
         // This is for a case like:
@@ -5181,7 +5183,7 @@ func_cast_c_astp
 
       $$.target_ast = func_ast->func.ret_ast;
 
-      DUMP_AST( "func_cast_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "func_cast_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -5203,7 +5205,7 @@ nested_cast_c_astp
 
       DUMP_START( "nested_cast_c_astp", "'(' cast_c_astp_opt ')'" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", $cast_astp.ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
       $$ = $cast_astp;
 
@@ -5224,7 +5226,7 @@ nested_cast_c_astp
         $$.ast->loc = @$;
       }
 
-      DUMP_AST( "nested_cast_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "nested_cast_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -5239,12 +5241,12 @@ pointer_cast_c_astp
 
       DUMP_START( "pointer_cast_c_astp", "pointer_type_c_ast cast_c_astp_opt" );
       DUMP_AST( "pointer_type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", $cast_astp.ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
       $$.ast = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
       $$.target_ast = $cast_astp.target_ast;
 
-      DUMP_AST( "pointer_cast_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "pointer_cast_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -5260,12 +5262,12 @@ pointer_to_member_cast_c_astp
       DUMP_START( "pointer_to_member_cast_c_astp",
                   "pointer_to_member_type_c_ast cast_c_astp_opt" );
       DUMP_AST( "pointer_to_member_type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", $cast_astp.ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
       $$.ast = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
       $$.target_ast = $cast_astp.target_ast;
 
-      DUMP_AST( "pointer_to_member_cast_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "pointer_to_member_cast_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -5281,12 +5283,12 @@ reference_cast_c_astp
       DUMP_START( "reference_cast_c_astp",
                   "reference_type_c_ast cast_c_astp_opt" );
       DUMP_AST( "reference_type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", $cast_astp.ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
       $$.ast = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
       $$.target_ast = $cast_astp.target_ast;
 
-      DUMP_AST( "reference_cast_c_astp__ast", $$.ast );
+      DUMP_AST_PAIR( "reference_cast_c_astp", $$ );
       DUMP_END();
     }
   ;
@@ -5553,13 +5555,12 @@ atomic_specifier_type_c_ast
     {
       ia_type_ast_pop();
 
-      c_ast_t *const cast_ast = $cast_astp.ast;
-
       DUMP_START( "atomic_specifier_type_c_ast",
                   "ATOMIC '(' type_c_ast cast_c_astp_opt ')'" );
       DUMP_AST( "type_c_ast", $type_ast );
-      DUMP_AST( "cast_c_astp_opt__ast", cast_ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
+      c_ast_t *const cast_ast = $cast_astp.ast;
       $$ = cast_ast != NULL ? cast_ast : $type_ast;
       $$->loc = @$;
 

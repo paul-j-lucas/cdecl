@@ -500,6 +500,17 @@ void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
   c_ast_list_dump_impl( list, &d );
 }
 
+void c_ast_pair_dump( c_ast_pair_t const *astp, unsigned indent, FILE *dout ) {
+  assert( astp != NULL );
+
+  d_state_t d;
+  d_init( &d, indent, dout );
+  j_state_t const j = json_object_begin( J_INIT, /*key=*/NULL, &d );
+  c_ast_dump_impl( astp->ast, "ast", &d );
+  c_ast_dump_impl( astp->target_ast, "target_ast", &d );
+  json_object_end( j, &d );
+}
+
 void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
   assert( sname != NULL );
   assert( dout != NULL );
