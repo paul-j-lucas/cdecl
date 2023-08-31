@@ -1,3 +1,12 @@
+2023-08-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, dump.h, parser.y: Eliminated "indent" parameter.
+   * dump.c, dump.h, parser.y: Eliminated "key" parameter from c_ast_dump().
+   * dump.c, dump.h, parser.y, debug.out: Added DUMP_AST_PAIR().
+   * parser.y, debug.out: Replaced invalid '.' in JSON5 key names with "__";
+     now also being explicit for "_astp" rule names in DUMPs.
+   * lexer.l: Added "Priot to C23, "; added asserts.
+
 2023-08-28  Paul J. Lucas <paul@lucasmail.org>
 
    * red_black.h: Removed unnecessary #include.
