@@ -65,6 +65,7 @@ void bool_dump( bool b, FILE *dout );
  * @param dout The `FILE` to dump to.
  *
  * @sa c_ast_list_dump()
+ * @sa c_ast_pair_dump()
  */
 void c_ast_dump( c_ast_t const *ast, FILE *dout );
 
@@ -75,6 +76,7 @@ void c_ast_dump( c_ast_t const *ast, FILE *dout );
  * @param dout The `FILE` to dump to.
  *
  * @sa c_ast_dump()
+ * @sa c_ast_pair_dump()
  */
 void c_ast_list_dump( c_ast_list_t const *list, FILE *dout );
 
@@ -83,6 +85,9 @@ void c_ast_list_dump( c_ast_list_t const *list, FILE *dout );
  *
  * @param astp The \ref c_ast_pair to dump.
  * @param dout The `FILE` to dump to.
+ *
+ * @sa c_ast_dump()
+ * @sa c_ast_list_dump()
  */
 void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *dout );
 
