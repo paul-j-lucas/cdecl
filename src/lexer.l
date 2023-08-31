@@ -327,7 +327,10 @@ static int parse_int( int base ) {
   char const *s = lexer_token;
 
   if ( base == 2 ) {
-    // strtol(3) doesn't understand a "0b" (binary) prefix, so skip over it.
+    // Prior to C23, strtol(3) doesn't understand a "0b" (binary) prefix, so
+    // skip over it.
+    assert( s[0] == '0' );
+    assert( tolower( s[1] ) == 'b' );
     s += 2;
   }
 
