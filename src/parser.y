@@ -262,7 +262,7 @@
  * @sa #DUMP_AST_PAIR()
  */
 #define DUMP_AST(KEY,AST) IF_DEBUG( \
-  DUMP_COMMA; c_ast_dump( (AST), /*indent=*/1, (KEY), stdout ); )
+  DUMP_KEY( KEY ": " ); c_ast_dump( (AST), /*indent=*/1, stdout ); )
 
 /**
  * Dumps an s_list of AST.

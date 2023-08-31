@@ -63,13 +63,11 @@ void bool_dump( bool b, FILE *dout );
  * @param ast The AST to dump; may be NULL.  If NULL and \a key is not NULL,
  * dumps only \a key followed by `:&nbsp;null`.
  * @param indent The current indent.
- * @param key The key for which \a ast is the value; may be NULL.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_ast_list_dump()
  */
-void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
-                 FILE *dout );
+void c_ast_dump( c_ast_t const *ast, unsigned indent, FILE *dout );
 
 /**
  * Dumps \a list of ASTs (for debugging).

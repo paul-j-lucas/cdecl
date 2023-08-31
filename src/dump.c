@@ -87,7 +87,7 @@ enum j_state {
 typedef enum j_state j_state_t;
 
 // local functions
-static void c_ast_dump_impl( c_ast_t const*, char const*, d_state_t* );
+static void c_ast_dump_impl( c_ast_t const*, d_state_t* );
 static void c_loc_dump( c_loc_t const*, FILE* );
 static void d_init( d_state_t*, unsigned, FILE* );
 NODISCARD
@@ -121,7 +121,8 @@ static void c_alignas_dump( c_alignas_t const *align, d_state_t *d ) {
       DUMP_KEY( d, "bytes: %u", align->bytes );
       break;
     case C_ALIGNAS_TYPE:
-      c_ast_dump_impl( align->type_ast, "type_ast", d );
+      DUMP_KEY( d, "type_ast: " );
+      c_ast_dump_impl( align->type_ast, d );
       break;
   } // switch
 
@@ -134,23 +135,15 @@ static void c_alignas_dump( c_alignas_t const *align, d_state_t *d ) {
  *
  * @param ast The AST to dump; may be NULL.  If NULL and \a key is not NULL,
  * dumps only \a key followed by `:&nbsp;null`.
- * @param key The key for which \a ast is the value; may be NULL.
  * @param d The d_state to use.
  */
-void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
+void c_ast_dump_impl( c_ast_t const *ast, d_state_t *d ) {
   assert( d != NULL );
-
-  key = null_if_empty( key );
-  if ( key != NULL )
-    DUMP_KEY( d, "%s: ", key );
 
   if ( ast == NULL ) {
     FPUTS( "null", d->dout );
     return;
   }
-
-  if ( key == NULL )
-    DUMP_FORMAT( d, "" );
 
   j_state_t const ast_j = json_object_begin( J_INIT, /*key=*/NULL, d );
 
@@ -190,13 +183,15 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
           FPUTS( "'*'", d->dout );
           break;
       } // switch
-      c_ast_dump_impl( ast->array.of_ast, "of_ast", d );
+      DUMP_KEY( d, "of_ast: " );
+      c_ast_dump_impl( ast->array.of_ast, d );
       json_object_end( kind_j, d );
       break;
 
     case K_TYPEDEF:
       kind_j = json_object_begin( J_INIT, "tdef", d );
-      c_ast_dump_impl( ast->tdef.for_ast, "for_ast", d );
+      DUMP_KEY( d, "for_ast: " );
+      c_ast_dump_impl( ast->tdef.for_ast, d );
       FALLTHROUGH;
 
     case K_BUILTIN:
@@ -236,7 +231,8 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
         "kind: { value: 0x%X, string: \"%s\" }",
         ast->cast.kind, c_cast_english( ast->cast.kind )
       );
-      c_ast_dump_impl( ast->cast.to_ast, "to_ast", d );
+      DUMP_KEY( d, "to_ast: " );
+      c_ast_dump_impl( ast->cast.to_ast, d );
       json_object_end( kind_j, d );
       break;
 
@@ -283,16 +279,20 @@ void c_ast_dump_impl( c_ast_t const *ast, char const *key, d_state_t *d ) {
 dump_params:
       DUMP_KEY( d, "param_ast_list: " );
       c_ast_list_dump( &ast->func.param_ast_list, d->indent, d->dout );
-      if ( ast->func.ret_ast != NULL )
-        c_ast_dump_impl( ast->func.ret_ast, "ret_ast", d );
+      if ( ast->func.ret_ast != NULL ) {
+        DUMP_KEY( d, "ret_ast: " );
+        c_ast_dump_impl( ast->func.ret_ast, d );
+      }
       json_object_end( kind_j, d );
       break;
 
     case K_ENUM:
       kind_j = json_object_begin( J_INIT, "enum", d );
       DUMP_SNAME( d, "enum_sname", &ast->enum_.enum_sname );
-      if ( ast->enum_.of_ast != NULL )
-        c_ast_dump_impl( ast->enum_.of_ast, "of_ast", d );
+      if ( ast->enum_.of_ast != NULL ) {
+        DUMP_KEY( d, "of_ast: " );
+        c_ast_dump_impl( ast->enum_.of_ast, d );
+      }
       if ( ast->enum_.bit_width > 0 )
         DUMP_KEY( d, "bit_width: %u", ast->enum_.bit_width );
       json_object_end( kind_j, d );
@@ -315,7 +315,8 @@ dump_params:
       FALLTHROUGH;
     case K_USER_DEF_CONVERSION:
       kind_j = json_object_begin( kind_j, "udef_conv", d );
-      c_ast_dump_impl( ast->ptr_ref.to_ast, "to_ast", d );
+      DUMP_KEY( d, "to_ast: " );
+      c_ast_dump_impl( ast->ptr_ref.to_ast, d );
       json_object_end( kind_j, d );
       break;
 
@@ -346,12 +347,15 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list,
     return;
   }
   FPUTS( "[\n", d->dout );
-  bool comma = false;
-  unsigned const indent = d->indent + 1;
+
+  d_state_t list_d;
+  d_init( &list_d, d->indent + 1, d->dout );
+
   FOREACH_SLIST_NODE( node, list ) {
-    fput_sep( ",\n", &comma, d->dout );
-    c_ast_dump( c_param_ast( node ), indent, /*key=*/NULL, d->dout );
+    DUMP_KEY( &list_d, "" );
+    c_ast_dump_impl( c_param_ast( node ), &list_d );
   } // for
+
   FPUTC( '\n', d->dout );
   DUMP_FORMAT( d, "]" );
 }
@@ -487,11 +491,10 @@ void bool_dump( bool value, FILE *dout ) {
   FPUTS( value ? L_true : L_false, dout );
 }
 
-void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key,
-                 FILE *dout ) {
+void c_ast_dump( c_ast_t const *ast, unsigned indent, FILE *dout ) {
   d_state_t d;
   d_init( &d, indent, dout );
-  c_ast_dump_impl( ast, key, &d );
+  c_ast_dump_impl( ast, &d );
 }
 
 void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
@@ -505,9 +508,12 @@ void c_ast_pair_dump( c_ast_pair_t const *astp, unsigned indent, FILE *dout ) {
 
   d_state_t d;
   d_init( &d, indent, dout );
+
   j_state_t const j = json_object_begin( J_INIT, /*key=*/NULL, &d );
-  c_ast_dump_impl( astp->ast, "ast", &d );
-  c_ast_dump_impl( astp->target_ast, "target_ast", &d );
+  DUMP_KEY( &d, "ast: " );
+  c_ast_dump_impl( astp->ast, &d );
+  DUMP_KEY( &d, "target_ast: " );
+  c_ast_dump_impl( astp->target_ast, &d );
   json_object_end( j, &d );
 }
 
