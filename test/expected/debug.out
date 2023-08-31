@@ -81,7 +81,7 @@ explain_command: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: null,
+  cast_c_astp_opt__ast: null,
   sname_c_opt: { string: "x", scopes: "none" },
   explain_command: {
     sname: { string: "x", scopes: "none" },
@@ -214,7 +214,7 @@ decl_c: {
       BitInt: { width: 4 }
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1360,
     kind: { value: 0x2, string: "built-in type" },
@@ -347,7 +347,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1362,
     kind: { value: 0x2, string: "built-in type" },
@@ -410,7 +410,7 @@ alignas_specifier_c: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: null
+  cast_c_astp_opt__ast: null
 }
 
 builtin_type_c_ast: {
@@ -522,7 +522,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1365,
     kind: { value: 0x2, string: "built-in type" },
@@ -800,7 +800,7 @@ decl_c: {
       }
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1368,
     kind: { value: 0x200, string: "enumeration" },
@@ -958,7 +958,7 @@ decl_c: {
       enum_sname: { string: "E", scopes: "none" }
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1371,
     kind: { value: 0x200, string: "enumeration" },
@@ -1083,7 +1083,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1373,
     kind: { value: 0x2, string: "built-in type" },
@@ -1207,7 +1207,7 @@ array_decl_c_astp: {
       bit_width: 0
     }
   },
-  decl2_c_astp: {
+  decl2_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1375,
     kind: { value: 0x2, string: "built-in type" },
@@ -1219,7 +1219,7 @@ array_decl_c_astp: {
       bit_width: 0
     }
   },
-  target_ast: null,
+  decl2_c_astp__target_ast: null,
   array_size_c_ast: {
     sname: { string: "" },
     unique_id: 1376,
@@ -1233,7 +1233,7 @@ array_decl_c_astp: {
       of_ast: null
     }
   },
-  array_decl_c_astp: {
+  array_decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1376,
     kind: { value: 0x80, string: "array" },
@@ -1274,7 +1274,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1376,
     kind: { value: 0x80, string: "array" },
@@ -1422,7 +1422,7 @@ array_decl_c_astp: {
       bit_width: 0
     }
   },
-  decl2_c_astp: {
+  decl2_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1379,
     kind: { value: 0x2, string: "built-in type" },
@@ -1434,7 +1434,7 @@ array_decl_c_astp: {
       bit_width: 0
     }
   },
-  target_ast: null,
+  decl2_c_astp__target_ast: null,
   array_size_c_ast: {
     sname: { string: "" },
     unique_id: 1380,
@@ -1448,7 +1448,7 @@ array_decl_c_astp: {
       of_ast: null
     }
   },
-  array_decl_c_astp: {
+  array_decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1380,
     kind: { value: 0x80, string: "array" },
@@ -1489,7 +1489,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1380,
     kind: { value: 0x80, string: "array" },
@@ -1544,7 +1544,7 @@ cdecl> explain size_t x
 typedef_type_c_ast: {
   rule: "any_typedef",
   in_attr__type_c_ast: null,
-  any_typedef.ast: {
+  any_typedef__ast: {
     sname: { string: "size_t", scopes: "none" },
     unique_id: 37,
     kind: { value: 0x2, string: "built-in type" },
@@ -1723,7 +1723,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1383,
     kind: { value: 0x20, string: "typedef" },
@@ -1880,7 +1880,7 @@ decl_c: {
       csu_sname: { string: "S", scopes: "none" }
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1386,
     kind: { value: 0x8, string: "struct or union" },
@@ -1976,7 +1976,7 @@ decl_c: {
       bit_width: 4
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1388,
     kind: { value: 0x2, string: "built-in type" },
@@ -2100,7 +2100,7 @@ func_decl_c_astp: {
       bit_width: 0
     }
   },
-  decl2_c_astp: {
+  decl2_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1390,
     kind: { value: 0x2, string: "built-in type" },
@@ -2112,14 +2112,14 @@ func_decl_c_astp: {
       bit_width: 0
     }
   },
+  decl2_c_astp__target_ast: null,
   param_c_ast_list_opt: [],
   func_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
   func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "none" },
   noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
-  target_ast: null,
-  func_decl_c_astp: {
+  func_decl_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1391,
     kind: { value: 0x20000, string: "function" },
@@ -2161,7 +2161,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1391,
     kind: { value: 0x20000, string: "function" },
@@ -2394,7 +2394,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "i", scopes: "none" },
     unique_id: 1394,
     kind: { value: 0x2, string: "built-in type" },
@@ -2619,7 +2619,7 @@ pointer_cast_c_astp: {
       }
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "fmt", scopes: "none" },
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
@@ -2642,7 +2642,7 @@ pointer_cast_c_astp: {
       }
     }
   },
-  pointer_cast_c_astp: {
+  pointer_cast_c_astp__ast: {
     sname: { string: "fmt", scopes: "none" },
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
@@ -2682,7 +2682,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "fmt", scopes: "none" },
     unique_id: 1396,
     kind: { value: 0x400, string: "pointer" },
@@ -2931,7 +2931,7 @@ func_decl_c_astp: {
       bit_width: 0
     }
   },
-  decl2_c_astp: {
+  decl2_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1393,
     kind: { value: 0x2, string: "built-in type" },
@@ -2943,6 +2943,7 @@ func_decl_c_astp: {
       bit_width: 0
     }
   },
+  decl2_c_astp__target_ast: null,
   param_c_ast_list_opt: [
     {
       sname: { string: "i", scopes: "none" },
@@ -2994,8 +2995,7 @@ func_decl_c_astp: {
   noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
-  target_ast: null,
-  func_decl_c_astp: {
+  func_decl_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1398,
     kind: { value: 0x20000, string: "function" },
@@ -3082,7 +3082,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1398,
     kind: { value: 0x20000, string: "function" },
@@ -3404,7 +3404,7 @@ array_cast_c_astp: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1401,
     kind: { value: 0x2, string: "built-in type" },
@@ -3416,7 +3416,7 @@ array_cast_c_astp: {
       bit_width: 0
     }
   },
-  target_ast: null,
+  cast_c_astp_opt__target_ast: null,
   array_size_c_ast: {
     sname: { string: "" },
     unique_id: 1402,
@@ -3430,7 +3430,7 @@ array_cast_c_astp: {
       of_ast: null
     }
   },
-  array_cast_c_astp: {
+  array_cast_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1402,
     kind: { value: 0x80, string: "array" },
@@ -3471,7 +3471,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1402,
     kind: { value: 0x80, string: "array" },
@@ -3589,7 +3589,7 @@ func_decl_c_astp: {
       bit_width: 0
     }
   },
-  decl2_c_astp: {
+  decl2_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1400,
     kind: { value: 0x2, string: "built-in type" },
@@ -3601,6 +3601,7 @@ func_decl_c_astp: {
       bit_width: 0
     }
   },
+  decl2_c_astp__target_ast: null,
   param_c_ast_list_opt: [
     {
       sname: { string: "x", scopes: "none" },
@@ -3632,8 +3633,7 @@ func_decl_c_astp: {
   noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
-  target_ast: null,
-  func_decl_c_astp: {
+  func_decl_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1404,
     kind: { value: 0x20000, string: "function" },
@@ -3700,7 +3700,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1404,
     kind: { value: 0x20000, string: "function" },
@@ -3982,7 +3982,7 @@ array_cast_c_astp: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1407,
     kind: { value: 0x2, string: "built-in type" },
@@ -3994,7 +3994,7 @@ array_cast_c_astp: {
       bit_width: 0
     }
   },
-  target_ast: null,
+  cast_c_astp_opt__target_ast: null,
   array_size_c_ast: {
     sname: { string: "" },
     unique_id: 1408,
@@ -4008,7 +4008,7 @@ array_cast_c_astp: {
       of_ast: null
     }
   },
-  array_cast_c_astp: {
+  array_cast_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1408,
     kind: { value: 0x80, string: "array" },
@@ -4049,7 +4049,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1408,
     kind: { value: 0x80, string: "array" },
@@ -4167,7 +4167,7 @@ func_decl_c_astp: {
       bit_width: 0
     }
   },
-  decl2_c_astp: {
+  decl2_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1406,
     kind: { value: 0x2, string: "built-in type" },
@@ -4179,6 +4179,7 @@ func_decl_c_astp: {
       bit_width: 0
     }
   },
+  decl2_c_astp__target_ast: null,
   param_c_ast_list_opt: [
     {
       sname: { string: "x", scopes: "none" },
@@ -4210,8 +4211,7 @@ func_decl_c_astp: {
   noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
-  target_ast: null,
-  func_decl_c_astp: {
+  func_decl_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1410,
     kind: { value: 0x20000, string: "function" },
@@ -4278,7 +4278,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "f", scopes: "none" },
     unique_id: 1410,
     kind: { value: 0x20000, string: "function" },
@@ -4484,7 +4484,7 @@ oper_decl_c_astp: {
   noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
-  oper_decl_c_astp: {
+  oper_decl_c_astp__ast: {
     sname: { string: "" },
     unique_id: 1414,
     kind: { value: 0x80000, string: "operator" },
@@ -4527,7 +4527,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "" },
     unique_id: 1414,
     kind: { value: 0x80000, string: "operator" },
@@ -4757,7 +4757,7 @@ pointer_to_member_decl_c_astp: {
       }
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "p", scopes: "none" },
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
@@ -4781,7 +4781,7 @@ pointer_to_member_decl_c_astp: {
       }
     }
   },
-  pointer_to_member_decl_c_astp: {
+  pointer_to_member_decl_c_astp__ast: {
     sname: { string: "p", scopes: "none" },
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
@@ -4822,7 +4822,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "p", scopes: "none" },
     unique_id: 1417,
     kind: { value: 0x800, string: "pointer to member" },
@@ -4947,7 +4947,7 @@ user_defined_conversion_decl_c_astp: {
   func_qualifier_list_c_stid_opt: { stid: 0x200000002, string: "const" },
   noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
-  user_defined_conversion_decl_c_astp: {
+  user_defined_conversion_decl_c_astp__ast: {
     sname: { string: "" },
     unique_id: 1420,
     kind: { value: 0x100000, string: "user-defined conversion operator" },
@@ -4974,7 +4974,7 @@ user_defined_conversion_decl_c_astp: {
 
 user_defined_conversion_declaration_c: {
   rule: "user_defined_conversion_decl_c_astp",
-  user_defined_conversion_declaration_c: {
+  user_defined_conversion_declaration_c__ast: {
     sname: { string: "" },
     unique_id: 1420,
     kind: { value: 0x100000, string: "user-defined conversion operator" },
@@ -5216,7 +5216,7 @@ pointer_cast_c_astp: {
       }
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "arg", scopes: "none" },
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
@@ -5239,7 +5239,7 @@ pointer_cast_c_astp: {
       }
     }
   },
-  pointer_cast_c_astp: {
+  pointer_cast_c_astp__ast: {
     sname: { string: "arg", scopes: "none" },
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
@@ -5279,7 +5279,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "arg", scopes: "none" },
     unique_id: 1423,
     kind: { value: 0x400, string: "pointer" },
@@ -5422,7 +5422,7 @@ user_defined_literal_decl_c_astp: {
   ],
   noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   trailing_return_type_c_ast_opt: null,
-  user_defined_literal_decl_c_astp: {
+  user_defined_literal_decl_c_astp__ast: {
     sname: { string: "_w", scopes: "none" },
     unique_id: 1424,
     kind: { value: 0x200000, string: "user-defined literal" },
@@ -5487,7 +5487,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "_w", scopes: "none" },
     unique_id: 1424,
     kind: { value: 0x200000, string: "user-defined literal" },
@@ -5727,7 +5727,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1428,
     kind: { value: 0x2, string: "built-in type" },
@@ -6038,7 +6038,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1433,
     kind: { value: 0x2, string: "built-in type" },
@@ -6375,7 +6375,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1438,
     kind: { value: 0x2, string: "built-in type" },
@@ -6712,7 +6712,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1443,
     kind: { value: 0x2, string: "built-in type" },
@@ -7049,7 +7049,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1448,
     kind: { value: 0x2, string: "built-in type" },
@@ -7386,7 +7386,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1453,
     kind: { value: 0x2, string: "built-in type" },
@@ -7723,7 +7723,7 @@ param_c_ast: {
       bit_width: 0
     }
   },
-  cast_c_astp_opt: {
+  cast_c_astp_opt__ast: {
     sname: { string: "c", scopes: "none" },
     unique_id: 1458,
     kind: { value: 0x2, string: "built-in type" },
@@ -7987,7 +7987,7 @@ decl_c: {
       bit_width: 0
     }
   },
-  decl_c_astp: {
+  decl_c_astp__ast: {
     sname: { string: "x", scopes: "none" },
     unique_id: 1462,
     kind: { value: 0x2, string: "built-in type" },
