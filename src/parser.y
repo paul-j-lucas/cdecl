@@ -262,7 +262,7 @@
  * @sa #DUMP_AST_PAIR()
  */
 #define DUMP_AST(KEY,AST) IF_DEBUG( \
-  DUMP_KEY( KEY ": " ); c_ast_dump( (AST), /*indent=*/1, stdout ); )
+  DUMP_KEY( KEY ": " ); c_ast_dump( (AST), stdout ); )
 
 /**
  * Dumps an s_list of AST.
@@ -274,7 +274,7 @@
  * @sa #DUMP_AST_PAIR()
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
-  DUMP_KEY( KEY ": " ); c_ast_list_dump( &(AST_LIST), /*indent=*/1, stdout ); )
+  DUMP_KEY( KEY ": " ); c_ast_list_dump( &(AST_LIST), stdout ); )
 
 /**
  * Dump a \ref ast_pair.
@@ -285,7 +285,7 @@
  * @sa #DUMP_AST()
  */
 #define DUMP_AST_PAIR(KEY,ASTP) IF_DEBUG( \
-  DUMP_KEY( KEY ": " ); c_ast_pair_dump( &(ASTP), /*indent=*/1, stdout ); )
+  DUMP_KEY( KEY ": " ); c_ast_pair_dump( &(ASTP), stdout ); )
 
 /**
  * Dumps a `bool`.

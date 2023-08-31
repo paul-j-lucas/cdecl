@@ -88,6 +88,7 @@ typedef enum j_state j_state_t;
 
 // local functions
 static void c_ast_dump_impl( c_ast_t const*, d_state_t* );
+static void c_ast_list_dump_impl( c_ast_list_t const*, d_state_t const* );
 static void c_loc_dump( c_loc_t const*, FILE* );
 static void d_init( d_state_t*, unsigned, FILE* );
 NODISCARD
@@ -278,7 +279,7 @@ void c_ast_dump_impl( c_ast_t const *ast, d_state_t *d ) {
       kind_j = json_object_begin( kind_j, "udef_lit", d );
 dump_params:
       DUMP_KEY( d, "param_ast_list: " );
-      c_ast_list_dump( &ast->func.param_ast_list, d->indent, d->dout );
+      c_ast_list_dump_impl( &ast->func.param_ast_list, d );
       if ( ast->func.ret_ast != NULL ) {
         DUMP_KEY( d, "ret_ast: " );
         c_ast_dump_impl( ast->func.ret_ast, d );
@@ -301,7 +302,7 @@ dump_params:
     case K_LAMBDA:
       kind_j = json_object_begin( J_INIT, "lambda", d );
       DUMP_KEY( d, "capture_ast_list: " );
-      c_ast_list_dump( &ast->lambda.capture_ast_list, d->indent, d->dout );
+      c_ast_list_dump_impl( &ast->lambda.capture_ast_list, d );
       goto dump_params;
 
     case K_POINTER_TO_MEMBER:
@@ -491,23 +492,23 @@ void bool_dump( bool value, FILE *dout ) {
   FPUTS( value ? L_true : L_false, dout );
 }
 
-void c_ast_dump( c_ast_t const *ast, unsigned indent, FILE *dout ) {
+void c_ast_dump( c_ast_t const *ast, FILE *dout ) {
   d_state_t d;
-  d_init( &d, indent, dout );
+  d_init( &d, 1, dout );
   c_ast_dump_impl( ast, &d );
 }
 
-void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
+void c_ast_list_dump( c_ast_list_t const *list, FILE *dout ) {
   d_state_t d;
-  d_init( &d, indent, dout );
+  d_init( &d, 1, dout );
   c_ast_list_dump_impl( list, &d );
 }
 
-void c_ast_pair_dump( c_ast_pair_t const *astp, unsigned indent, FILE *dout ) {
+void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *dout ) {
   assert( astp != NULL );
 
   d_state_t d;
-  d_init( &d, indent, dout );
+  d_init( &d, 1, dout );
 
   j_state_t const j = json_object_begin( J_INIT, /*key=*/NULL, &d );
   DUMP_KEY( &d, "ast: " );
