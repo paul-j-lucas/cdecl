@@ -80,7 +80,7 @@ typedef struct d_state d_state_t;
  * JSON object state.
  */
 enum j_state {
-  J_INIT      = 0,                      ///< Initial state.
+  J_INIT      = 0u,                     ///< Initial state.
   J_COMMA     = (1u << 0),              ///< Previous "print a comma?" state.
   J_OBJ_BEGUN = (1u << 1)               ///< Has a JSON object already begun?
 };
