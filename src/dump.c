@@ -101,7 +101,7 @@ static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Dumps \a align (for debugging).
+ * Dumps \a align in [JSON5](https://json5.org) format (for debugging).
  *
  * @param align The \ref c_alignas to dump.
  * @param d The d_state to use.
@@ -132,7 +132,7 @@ static void c_alignas_dump( c_alignas_t const *align, d_state_t *d ) {
 }
 
 /**
- * Dumps \a ast (for debugging).
+ * Dumps \a ast in [JSON5](https://json5.org) format (for debugging).
  *
  * @param ast The AST to dump.  If NULL, `null` is printed instead.
  * @param d The d_state to use.
@@ -332,7 +332,7 @@ dump_params:
 }
 
 /**
- * Dumps \a list of ASTs (for debugging).
+ * Dumps \a list of ASTs in [JSON5](https://json5.org) format (for debugging).
  *
  * @param list The \ref slist of ASTs to dump.
  * @param d The d_state to use.
@@ -361,7 +361,7 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list,
 }
 
 /**
- * Dumps \a loc (for debugging).
+ * Dumps \a loc in [JSON5](https://json5.org) format (for debugging).
  *
  * @param loc The location to dump.
  * @param dout The `FILE` to dump to.
@@ -437,12 +437,12 @@ static void d_init( d_state_t *d, unsigned indent, FILE *dout ) {
  *    (There is nothing special about this case.)
  * 2. `case C1` is entered: a JSON object will be begun having the key `K1`.
  *    When the case falls through into `case C2`, a second JSON object will
- *    _not_ be begun: the call to the second json_object_begin() will do
- *    nothing.
+ *    _not_ be begun: the call to the second <code>%json_object_begin()</code>
+ *    will do nothing.
  * @param key The key for the JSON object; may be NULL.  If neither NULL nor
  * empty, dumps \a key followed by `: `.
  * @param d The d_state to use.
- * @return Returns a new \ref j_state_t that must be passed to
+ * @return Returns a new \ref j_state_t that must eventually be passed to
  * json_object_end().
  *
  * @sa json_object_end()
