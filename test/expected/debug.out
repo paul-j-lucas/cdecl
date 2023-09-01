@@ -19,8 +19,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1358,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -35,8 +35,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1358,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -48,8 +48,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1358,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -70,8 +70,8 @@ sname_c: {
 explain_command: {
   rule: "EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt",
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1358,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -87,8 +87,8 @@ explain_command: {
   },
   sname_c_opt: { string: "x", scopes: "none" },
   explain_command: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1359,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x100, string: "cast" },
     depth: 0,
     parent__unique_id: 0,
@@ -97,8 +97,8 @@ explain_command: {
     cast: {
       kind: { value: 0x0, string: "C" },
       to_ast: {
-        sname: { string: "" },
         unique_id: 1358,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -118,8 +118,8 @@ builtin_type_c_ast: {
   rule: "_BitInt '(' int_lit_exp ')'",
   int: 4,
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1360,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -135,8 +135,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1360,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -149,8 +149,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1360,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -172,8 +172,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1360,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -187,8 +187,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1360,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -205,8 +205,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1361,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -219,8 +219,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1360,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -234,8 +234,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1360,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -259,8 +259,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1362,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -275,8 +275,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1362,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -288,8 +288,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1362,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -310,8 +310,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1362,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -324,8 +324,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1362,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -342,8 +342,8 @@ decl_c: {
   in_attr__alignas_bytes: 8,
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1363,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -355,8 +355,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1362,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -369,8 +369,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1362,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -392,8 +392,8 @@ type_c_ast: {
   rule: "type_modifier_list_c_type",
   type_modifier_list_c_type: { btid: 0x8001, stid: 0x2, atid: 0x4, string: "long" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1364,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -408,8 +408,8 @@ type_c_ast: {
 alignas_specifier_c: {
   rule: "ALIGNAS '(' type_c_ast cast_c_astp_opt ')'",
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1364,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -429,8 +429,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1365,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -445,8 +445,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1365,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -458,8 +458,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1365,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -480,8 +480,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1365,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -494,8 +494,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1365,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -510,8 +510,8 @@ sname_c_ast: {
 decl_c: {
   rule: "decl_c_astp",
   in_attr__alignas_type_ast: {
-    sname: { string: "" },
     unique_id: 1364,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -523,8 +523,8 @@ decl_c: {
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1366,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -536,8 +536,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1365,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -550,15 +550,15 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1365,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
     alignas: {
       type_ast: {
-        sname: { string: "" },
         unique_id: 1364,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -590,8 +590,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1367,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -606,8 +606,8 @@ builtin_type_c_ast: {
 enum_fixed_type_c_ast: {
   rule: "enum_unmodified_fixed_type_c_ast enum_fixed_type_modifier_list_btid_opt",
   enum_unmodified_fixed_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1367,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -619,8 +619,8 @@ enum_fixed_type_c_ast: {
   },
   enum_fixed_type_modifier_list_btid_opt: { btid: 0x1, string: "none" },
   enum_fixed_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1367,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -638,8 +638,8 @@ enum_c_ast: {
   attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "none" },
   any_sname_c: { string: "E", scopes: "none" },
   enum_fixed_type_c_ast_opt: {
-    sname: { string: "" },
     unique_id: 1367,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -650,8 +650,8 @@ enum_c_ast: {
     }
   },
   enum_c_ast: {
-    sname: { string: "" },
     unique_id: 1368,
+    sname: { string: "" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -660,8 +660,8 @@ enum_c_ast: {
     enum: {
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
-        sname: { string: "" },
         unique_id: 1367,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -678,8 +678,8 @@ enum_c_ast: {
 east_modified_type_c_ast: {
   rule: "enum_class_struct_union_c_ast cv_qualifier_list_stid_opt",
   enum_class_struct_union_c_ast: {
-    sname: { string: "" },
     unique_id: 1368,
+    sname: { string: "" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -688,8 +688,8 @@ east_modified_type_c_ast: {
     enum: {
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
-        sname: { string: "" },
         unique_id: 1367,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -703,8 +703,8 @@ east_modified_type_c_ast: {
   },
   cv_qualifier_list_stid_opt: { stid: 0x2, string: "none" },
   east_modified_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1368,
+    sname: { string: "" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -713,8 +713,8 @@ east_modified_type_c_ast: {
     enum: {
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
-        sname: { string: "" },
         unique_id: 1367,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -737,8 +737,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1368,
+    sname: { string: "" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -747,8 +747,8 @@ sname_c_ast: {
     enum: {
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
-        sname: { string: "" },
         unique_id: 1367,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -763,8 +763,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1368,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -773,8 +773,8 @@ sname_c_ast: {
     enum: {
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
-        sname: { string: "" },
         unique_id: 1367,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -792,8 +792,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1369,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -802,8 +802,8 @@ decl_c: {
     enum: {
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
-        sname: { string: "" },
         unique_id: 1370,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1369,
@@ -817,8 +817,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1368,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x200, string: "enumeration" },
       depth: 0,
       parent__unique_id: 0,
@@ -827,8 +827,8 @@ decl_c: {
       enum: {
         enum_sname: { string: "E", scopes: "none" },
         of_ast: {
-          sname: { string: "" },
           unique_id: 1367,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -843,8 +843,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1368,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -853,8 +853,8 @@ decl_c: {
     enum: {
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
-        sname: { string: "" },
         unique_id: 1367,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -883,8 +883,8 @@ enum_c_ast: {
   any_sname_c: { string: "E", scopes: "none" },
   enum_fixed_type_c_ast_opt: null,
   enum_c_ast: {
-    sname: { string: "" },
     unique_id: 1371,
+    sname: { string: "" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -899,8 +899,8 @@ enum_c_ast: {
 east_modified_type_c_ast: {
   rule: "enum_class_struct_union_c_ast cv_qualifier_list_stid_opt",
   enum_class_struct_union_c_ast: {
-    sname: { string: "" },
     unique_id: 1371,
+    sname: { string: "" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -912,8 +912,8 @@ east_modified_type_c_ast: {
   },
   cv_qualifier_list_stid_opt: { stid: 0x2, string: "none" },
   east_modified_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1371,
+    sname: { string: "" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -934,8 +934,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1371,
+    sname: { string: "" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -948,8 +948,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1371,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -965,8 +965,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1372,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -978,8 +978,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1371,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x200, string: "enumeration" },
       depth: 0,
       parent__unique_id: 0,
@@ -992,8 +992,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1371,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     parent__unique_id: 0,
@@ -1011,8 +1011,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1373,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1027,8 +1027,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1373,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1040,8 +1040,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1373,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1062,8 +1062,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1373,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1076,8 +1076,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1373,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1093,8 +1093,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1374,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1106,8 +1106,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1373,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -1120,8 +1120,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1373,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1139,8 +1139,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1375,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1155,8 +1155,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1375,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1168,8 +1168,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1375,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1190,8 +1190,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1375,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1204,8 +1204,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1375,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1220,8 +1220,8 @@ sname_c_ast: {
 array_decl_c_astp: {
   rule: "decl2_c_astp array_size_c_ast",
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1375,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1233,8 +1233,8 @@ array_decl_c_astp: {
   },
   decl2_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1375,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -1247,8 +1247,8 @@ array_decl_c_astp: {
     target_ast: null
   },
   array_size_c_ast: {
-    sname: { string: "" },
     unique_id: 1376,
+    sname: { string: "" },
     kind: { value: 0x80, string: "array" },
     depth: 0,
     parent__unique_id: 0,
@@ -1261,8 +1261,8 @@ array_decl_c_astp: {
   },
   array_decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1376,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -1271,8 +1271,8 @@ array_decl_c_astp: {
       array: {
         size: 4,
         of_ast: {
-          sname: { string: "" },
           unique_id: 1375,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1376,
@@ -1292,8 +1292,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1378,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1305,8 +1305,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1376,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -1315,8 +1315,8 @@ decl_c: {
       array: {
         size: 4,
         of_ast: {
-          sname: { string: "" },
           unique_id: 1375,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1376,
@@ -1331,8 +1331,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1376,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x80, string: "array" },
     depth: 0,
     parent__unique_id: 0,
@@ -1341,8 +1341,8 @@ decl_c: {
     array: {
       size: 4,
       of_ast: {
-        sname: { string: "" },
         unique_id: 1375,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1376,
@@ -1362,8 +1362,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1379,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1378,8 +1378,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1379,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1391,8 +1391,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1379,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1413,8 +1413,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1379,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1427,8 +1427,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1379,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1443,8 +1443,8 @@ sname_c_ast: {
 array_decl_c_astp: {
   rule: "decl2_c_astp array_size_c_ast",
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1379,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1456,8 +1456,8 @@ array_decl_c_astp: {
   },
   decl2_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1379,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -1470,8 +1470,8 @@ array_decl_c_astp: {
     target_ast: null
   },
   array_size_c_ast: {
-    sname: { string: "" },
     unique_id: 1380,
+    sname: { string: "" },
     kind: { value: 0x80, string: "array" },
     depth: 0,
     parent__unique_id: 0,
@@ -1484,8 +1484,8 @@ array_decl_c_astp: {
   },
   array_decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1380,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -1494,8 +1494,8 @@ array_decl_c_astp: {
       array: {
         size: "unspecified",
         of_ast: {
-          sname: { string: "" },
           unique_id: 1379,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1380,
@@ -1515,8 +1515,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1382,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1528,8 +1528,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1380,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -1538,8 +1538,8 @@ decl_c: {
       array: {
         size: "unspecified",
         of_ast: {
-          sname: { string: "" },
           unique_id: 1379,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1380,
@@ -1554,8 +1554,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1380,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x80, string: "array" },
     depth: 0,
     parent__unique_id: 0,
@@ -1564,8 +1564,8 @@ decl_c: {
     array: {
       size: "unspecified",
       of_ast: {
-        sname: { string: "" },
         unique_id: 1379,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1380,
@@ -1585,8 +1585,8 @@ typedef_type_c_ast: {
   rule: "any_typedef",
   in_attr__type_c_ast: null,
   any_typedef__ast: {
-    sname: { string: "size_t", scopes: "none" },
     unique_id: 37,
+    sname: { string: "size_t", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1598,8 +1598,8 @@ typedef_type_c_ast: {
   },
   sub_scope_sname_c_opt: { string: "" },
   typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1383,
+    sname: { string: "" },
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     parent__unique_id: 0,
@@ -1607,8 +1607,8 @@ typedef_type_c_ast: {
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
       for_ast: {
-        sname: { string: "size_t", scopes: "none" },
         unique_id: 37,
+        sname: { string: "size_t", scopes: "none" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -1626,8 +1626,8 @@ typedef_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1383,
+    sname: { string: "" },
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     parent__unique_id: 0,
@@ -1635,8 +1635,8 @@ east_modified_type_c_ast: {
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
       for_ast: {
-        sname: { string: "size_t", scopes: "none" },
         unique_id: 37,
+        sname: { string: "size_t", scopes: "none" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -1651,8 +1651,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1383,
+    sname: { string: "" },
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     parent__unique_id: 0,
@@ -1660,8 +1660,8 @@ east_modified_type_c_ast: {
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
       for_ast: {
-        sname: { string: "size_t", scopes: "none" },
         unique_id: 37,
+        sname: { string: "size_t", scopes: "none" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -1685,8 +1685,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1383,
+    sname: { string: "" },
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     parent__unique_id: 0,
@@ -1694,8 +1694,8 @@ sname_c_ast: {
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
       for_ast: {
-        sname: { string: "size_t", scopes: "none" },
         unique_id: 37,
+        sname: { string: "size_t", scopes: "none" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -1711,8 +1711,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1383,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     parent__unique_id: 0,
@@ -1720,8 +1720,8 @@ sname_c_ast: {
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
       for_ast: {
-        sname: { string: "size_t", scopes: "none" },
         unique_id: 37,
+        sname: { string: "size_t", scopes: "none" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -1740,8 +1740,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1384,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     parent__unique_id: 0,
@@ -1749,8 +1749,8 @@ decl_c: {
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
       for_ast: {
-        sname: { string: "size_t", scopes: "none" },
         unique_id: 1385,
+        sname: { string: "size_t", scopes: "none" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1384,
@@ -1765,8 +1765,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1383,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x20, string: "typedef" },
       depth: 0,
       parent__unique_id: 0,
@@ -1774,8 +1774,8 @@ decl_c: {
       type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
       tdef: {
         for_ast: {
-          sname: { string: "size_t", scopes: "none" },
           unique_id: 37,
+          sname: { string: "size_t", scopes: "none" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -1791,8 +1791,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1383,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     parent__unique_id: 0,
@@ -1800,8 +1800,8 @@ decl_c: {
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
       for_ast: {
-        sname: { string: "size_t", scopes: "none" },
         unique_id: 37,
+        sname: { string: "size_t", scopes: "none" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 0,
@@ -1830,8 +1830,8 @@ enum_class_struct_union_c_ast: {
   attribute_specifier_list_c_atid_opt: { atid: 0x4, string: "none" },
   any_sname_c: { string: "S", scopes: "none" },
   class_struct_union_c_ast: {
-    sname: { string: "" },
     unique_id: 1386,
+    sname: { string: "" },
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     parent__unique_id: 0,
@@ -1846,8 +1846,8 @@ enum_class_struct_union_c_ast: {
 east_modified_type_c_ast: {
   rule: "enum_class_struct_union_c_ast cv_qualifier_list_stid_opt",
   enum_class_struct_union_c_ast: {
-    sname: { string: "" },
     unique_id: 1386,
+    sname: { string: "" },
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     parent__unique_id: 0,
@@ -1859,8 +1859,8 @@ east_modified_type_c_ast: {
   },
   cv_qualifier_list_stid_opt: { stid: 0x2, string: "none" },
   east_modified_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1386,
+    sname: { string: "" },
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     parent__unique_id: 0,
@@ -1881,8 +1881,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1386,
+    sname: { string: "" },
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     parent__unique_id: 0,
@@ -1895,8 +1895,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1386,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     parent__unique_id: 0,
@@ -1912,8 +1912,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1387,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     parent__unique_id: 0,
@@ -1925,8 +1925,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1386,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x8, string: "struct or union" },
       depth: 0,
       parent__unique_id: 0,
@@ -1939,8 +1939,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1386,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     parent__unique_id: 0,
@@ -1958,8 +1958,8 @@ type_c_ast: {
   rule: "type_modifier_list_c_type",
   type_modifier_list_c_type: { btid: 0x40001, stid: 0x2, atid: 0x4, string: "unsigned" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1388,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1980,8 +1980,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1388,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -1994,8 +1994,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 4,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1388,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2011,8 +2011,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1389,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2024,8 +2024,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1388,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -2038,8 +2038,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1388,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2057,8 +2057,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1390,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2073,8 +2073,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1390,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2086,8 +2086,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1390,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2108,8 +2108,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1390,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2122,8 +2122,8 @@ sname_c_ast: {
   sname: { string: "f", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1390,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2138,8 +2138,8 @@ sname_c_ast: {
 func_decl_c_astp: {
   rule: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1390,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2151,8 +2151,8 @@ func_decl_c_astp: {
   },
   decl2_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1390,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -2172,8 +2172,8 @@ func_decl_c_astp: {
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   func_decl_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1391,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x20000, string: "function" },
       depth: 0,
       parent__unique_id: 0,
@@ -2183,8 +2183,8 @@ func_decl_c_astp: {
         mbr: "unspecified",
         param_ast_list: [],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1390,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1391,
@@ -2197,8 +2197,8 @@ func_decl_c_astp: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1390,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1391,
@@ -2215,8 +2215,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1392,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2228,8 +2228,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1391,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x20000, string: "function" },
       depth: 0,
       parent__unique_id: 0,
@@ -2239,8 +2239,8 @@ decl_c: {
         mbr: "unspecified",
         param_ast_list: [],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1390,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1391,
@@ -2253,8 +2253,8 @@ decl_c: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1390,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1391,
@@ -2266,8 +2266,8 @@ decl_c: {
     }
   },
   decl_c: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1391,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x20000, string: "function" },
     depth: 0,
     parent__unique_id: 0,
@@ -2277,8 +2277,8 @@ decl_c: {
       mbr: "unspecified",
       param_ast_list: [],
       ret_ast: {
-        sname: { string: "" },
         unique_id: 1390,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1391,
@@ -2298,8 +2298,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1393,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2314,8 +2314,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1393,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2327,8 +2327,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1393,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2349,8 +2349,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1393,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2363,8 +2363,8 @@ sname_c_ast: {
   sname: { string: "f", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1393,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2380,8 +2380,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1394,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2396,8 +2396,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1394,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2409,8 +2409,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1394,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2431,8 +2431,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1394,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2445,8 +2445,8 @@ sname_c_ast: {
   sname: { string: "i", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "i", scopes: "none" },
     unique_id: 1394,
+    sname: { string: "i", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2462,8 +2462,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "i", scopes: "none" },
     unique_id: 1394,
+    sname: { string: "i", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2475,8 +2475,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "i", scopes: "none" },
       unique_id: 1394,
+      sname: { string: "i", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -2489,8 +2489,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "i", scopes: "none" },
     unique_id: 1394,
+    sname: { string: "i", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2505,8 +2505,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "i", scopes: "none" },
     unique_id: 1394,
+    sname: { string: "i", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2518,8 +2518,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "i", scopes: "none" },
       unique_id: 1394,
+      sname: { string: "i", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -2536,8 +2536,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1395,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2552,8 +2552,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1395,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2565,8 +2565,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1395,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2581,8 +2581,8 @@ east_modified_type_c_ast: {
 pointer_type_c_ast: {
   rule: "* type_qualifier_list_c_stid_opt",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1395,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -2594,8 +2594,8 @@ pointer_type_c_ast: {
   },
   type_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
   pointer_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1396,
+    sname: { string: "" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -2603,8 +2603,8 @@ pointer_type_c_ast: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1395,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1396,
@@ -2627,8 +2627,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1396,
+    sname: { string: "" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -2636,8 +2636,8 @@ sname_c_ast: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1395,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1396,
@@ -2652,8 +2652,8 @@ sname_c_ast: {
   sname: { string: "fmt", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "fmt", scopes: "none" },
     unique_id: 1396,
+    sname: { string: "fmt", scopes: "none" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -2661,8 +2661,8 @@ sname_c_ast: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1395,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1396,
@@ -2679,8 +2679,8 @@ sname_c_ast: {
 pointer_cast_c_astp: {
   rule: "pointer_type_c_ast cast_c_astp_opt",
   pointer_type_c_ast: {
-    sname: { string: "fmt", scopes: "none" },
     unique_id: 1396,
+    sname: { string: "fmt", scopes: "none" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -2688,8 +2688,8 @@ pointer_cast_c_astp: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1395,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1396,
@@ -2703,8 +2703,8 @@ pointer_cast_c_astp: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "fmt", scopes: "none" },
       unique_id: 1396,
+      sname: { string: "fmt", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -2712,8 +2712,8 @@ pointer_cast_c_astp: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1395,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1396,
@@ -2729,8 +2729,8 @@ pointer_cast_c_astp: {
   },
   pointer_cast_c_astp: {
     ast: {
-      sname: { string: "fmt", scopes: "none" },
       unique_id: 1396,
+      sname: { string: "fmt", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -2738,8 +2738,8 @@ pointer_cast_c_astp: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1395,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1396,
@@ -2759,8 +2759,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1395,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 1396,
@@ -2772,8 +2772,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "fmt", scopes: "none" },
       unique_id: 1396,
+      sname: { string: "fmt", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -2781,8 +2781,8 @@ param_c_ast: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1395,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1396,
@@ -2797,8 +2797,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "fmt", scopes: "none" },
     unique_id: 1396,
+    sname: { string: "fmt", scopes: "none" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -2806,8 +2806,8 @@ param_c_ast: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1395,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1396,
@@ -2825,8 +2825,8 @@ param_c_ast_list: {
   rule: "param_c_ast_list ',' param_c_ast",
   param_c_ast_list: [
     {
-      sname: { string: "i", scopes: "none" },
       unique_id: 1394,
+      sname: { string: "i", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -2838,8 +2838,8 @@ param_c_ast_list: {
     }
   ],
   param_c_ast: {
-    sname: { string: "fmt", scopes: "none" },
     unique_id: 1396,
+    sname: { string: "fmt", scopes: "none" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -2847,8 +2847,8 @@ param_c_ast_list: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1395,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1396,
@@ -2862,8 +2862,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "i", scopes: "none" },
       unique_id: 1394,
+      sname: { string: "i", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -2874,8 +2874,8 @@ param_c_ast_list: {
       }
     },
     {
-      sname: { string: "fmt", scopes: "none" },
       unique_id: 1396,
+      sname: { string: "fmt", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -2883,8 +2883,8 @@ param_c_ast_list: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1395,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1396,
@@ -2902,8 +2902,8 @@ param_c_ast_list: {
 param_c_ast: {
   rule: "...",
   param_c_ast: {
-    sname: { string: "" },
     unique_id: 1397,
+    sname: { string: "" },
     kind: { value: 0x40, string: "variadic" },
     depth: 0,
     parent__unique_id: 0,
@@ -2916,8 +2916,8 @@ param_c_ast_list: {
   rule: "param_c_ast_list ',' param_c_ast",
   param_c_ast_list: [
     {
-      sname: { string: "i", scopes: "none" },
       unique_id: 1394,
+      sname: { string: "i", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -2928,8 +2928,8 @@ param_c_ast_list: {
       }
     },
     {
-      sname: { string: "fmt", scopes: "none" },
       unique_id: 1396,
+      sname: { string: "fmt", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -2937,8 +2937,8 @@ param_c_ast_list: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1395,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1396,
@@ -2952,8 +2952,8 @@ param_c_ast_list: {
     }
   ],
   param_c_ast: {
-    sname: { string: "" },
     unique_id: 1397,
+    sname: { string: "" },
     kind: { value: 0x40, string: "variadic" },
     depth: 0,
     parent__unique_id: 0,
@@ -2962,8 +2962,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "i", scopes: "none" },
       unique_id: 1394,
+      sname: { string: "i", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -2974,8 +2974,8 @@ param_c_ast_list: {
       }
     },
     {
-      sname: { string: "fmt", scopes: "none" },
       unique_id: 1396,
+      sname: { string: "fmt", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -2983,8 +2983,8 @@ param_c_ast_list: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1395,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1396,
@@ -2997,8 +2997,8 @@ param_c_ast_list: {
       }
     },
     {
-      sname: { string: "" },
       unique_id: 1397,
+      sname: { string: "" },
       kind: { value: 0x40, string: "variadic" },
       depth: 0,
       parent__unique_id: 0,
@@ -3011,8 +3011,8 @@ param_c_ast_list: {
 func_decl_c_astp: {
   rule: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1393,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3024,8 +3024,8 @@ func_decl_c_astp: {
   },
   decl2_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1393,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -3039,8 +3039,8 @@ func_decl_c_astp: {
   },
   param_c_ast_list_opt: [
     {
-      sname: { string: "i", scopes: "none" },
       unique_id: 1394,
+      sname: { string: "i", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -3051,8 +3051,8 @@ func_decl_c_astp: {
       }
     },
     {
-      sname: { string: "fmt", scopes: "none" },
       unique_id: 1396,
+      sname: { string: "fmt", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -3060,8 +3060,8 @@ func_decl_c_astp: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1395,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1396,
@@ -3074,8 +3074,8 @@ func_decl_c_astp: {
       }
     },
     {
-      sname: { string: "" },
       unique_id: 1397,
+      sname: { string: "" },
       kind: { value: 0x40, string: "variadic" },
       depth: 0,
       parent__unique_id: 0,
@@ -3090,8 +3090,8 @@ func_decl_c_astp: {
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   func_decl_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1398,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x20000, string: "function" },
       depth: 0,
       parent__unique_id: 0,
@@ -3101,8 +3101,8 @@ func_decl_c_astp: {
         mbr: "unspecified",
         param_ast_list: [
           {
-            sname: { string: "i", scopes: "none" },
             unique_id: 1394,
+            sname: { string: "i", scopes: "none" },
             kind: { value: 0x2, string: "built-in type" },
             depth: 0,
             parent__unique_id: 0,
@@ -3113,8 +3113,8 @@ func_decl_c_astp: {
             }
           },
           {
-            sname: { string: "fmt", scopes: "none" },
             unique_id: 1396,
+            sname: { string: "fmt", scopes: "none" },
             kind: { value: 0x400, string: "pointer" },
             depth: 0,
             parent__unique_id: 0,
@@ -3122,8 +3122,8 @@ func_decl_c_astp: {
             type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
             ptr_ref: {
               to_ast: {
-                sname: { string: "" },
                 unique_id: 1395,
+                sname: { string: "" },
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 parent__unique_id: 1396,
@@ -3136,8 +3136,8 @@ func_decl_c_astp: {
             }
           },
           {
-            sname: { string: "" },
             unique_id: 1397,
+            sname: { string: "" },
             kind: { value: 0x40, string: "variadic" },
             depth: 0,
             parent__unique_id: 0,
@@ -3146,8 +3146,8 @@ func_decl_c_astp: {
           }
         ],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1393,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1398,
@@ -3160,8 +3160,8 @@ func_decl_c_astp: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1393,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1398,
@@ -3178,8 +3178,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1399,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3191,8 +3191,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1398,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x20000, string: "function" },
       depth: 0,
       parent__unique_id: 0,
@@ -3202,8 +3202,8 @@ decl_c: {
         mbr: "unspecified",
         param_ast_list: [
           {
-            sname: { string: "i", scopes: "none" },
             unique_id: 1394,
+            sname: { string: "i", scopes: "none" },
             kind: { value: 0x2, string: "built-in type" },
             depth: 0,
             parent__unique_id: 0,
@@ -3214,8 +3214,8 @@ decl_c: {
             }
           },
           {
-            sname: { string: "fmt", scopes: "none" },
             unique_id: 1396,
+            sname: { string: "fmt", scopes: "none" },
             kind: { value: 0x400, string: "pointer" },
             depth: 0,
             parent__unique_id: 0,
@@ -3223,8 +3223,8 @@ decl_c: {
             type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
             ptr_ref: {
               to_ast: {
-                sname: { string: "" },
                 unique_id: 1395,
+                sname: { string: "" },
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 parent__unique_id: 1396,
@@ -3237,8 +3237,8 @@ decl_c: {
             }
           },
           {
-            sname: { string: "" },
             unique_id: 1397,
+            sname: { string: "" },
             kind: { value: 0x40, string: "variadic" },
             depth: 0,
             parent__unique_id: 0,
@@ -3247,8 +3247,8 @@ decl_c: {
           }
         ],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1393,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1398,
@@ -3261,8 +3261,8 @@ decl_c: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1393,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1398,
@@ -3274,8 +3274,8 @@ decl_c: {
     }
   },
   decl_c: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1398,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x20000, string: "function" },
     depth: 0,
     parent__unique_id: 0,
@@ -3285,8 +3285,8 @@ decl_c: {
       mbr: "unspecified",
       param_ast_list: [
         {
-          sname: { string: "i", scopes: "none" },
           unique_id: 1394,
+          sname: { string: "i", scopes: "none" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -3297,8 +3297,8 @@ decl_c: {
           }
         },
         {
-          sname: { string: "fmt", scopes: "none" },
           unique_id: 1396,
+          sname: { string: "fmt", scopes: "none" },
           kind: { value: 0x400, string: "pointer" },
           depth: 0,
           parent__unique_id: 0,
@@ -3306,8 +3306,8 @@ decl_c: {
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           ptr_ref: {
             to_ast: {
-              sname: { string: "" },
               unique_id: 1395,
+              sname: { string: "" },
               kind: { value: 0x2, string: "built-in type" },
               depth: 0,
               parent__unique_id: 1396,
@@ -3320,8 +3320,8 @@ decl_c: {
           }
         },
         {
-          sname: { string: "" },
           unique_id: 1397,
+          sname: { string: "" },
           kind: { value: 0x40, string: "variadic" },
           depth: 0,
           parent__unique_id: 0,
@@ -3330,8 +3330,8 @@ decl_c: {
         }
       ],
       ret_ast: {
-        sname: { string: "" },
         unique_id: 1393,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1398,
@@ -3351,8 +3351,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1400,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3367,8 +3367,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1400,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3380,8 +3380,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1400,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3402,8 +3402,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1400,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3416,8 +3416,8 @@ sname_c_ast: {
   sname: { string: "f", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1400,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3433,8 +3433,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1401,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3449,8 +3449,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1401,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3462,8 +3462,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1401,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3484,8 +3484,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1401,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3498,8 +3498,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1401,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3514,8 +3514,8 @@ sname_c_ast: {
 array_cast_c_astp: {
   rule: "cast_c_astp_opt array_size_c_ast",
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1401,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3527,8 +3527,8 @@ array_cast_c_astp: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1401,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -3541,8 +3541,8 @@ array_cast_c_astp: {
     target_ast: null
   },
   array_size_c_ast: {
-    sname: { string: "" },
     unique_id: 1402,
+    sname: { string: "" },
     kind: { value: 0x80, string: "array" },
     depth: 0,
     parent__unique_id: 0,
@@ -3555,8 +3555,8 @@ array_cast_c_astp: {
   },
   array_cast_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1402,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -3565,8 +3565,8 @@ array_cast_c_astp: {
       array: {
         size: '*',
         of_ast: {
-          sname: { string: "" },
           unique_id: 1401,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1402,
@@ -3586,8 +3586,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1401,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 1402,
@@ -3599,8 +3599,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1402,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -3609,8 +3609,8 @@ param_c_ast: {
       array: {
         size: '*',
         of_ast: {
-          sname: { string: "" },
           unique_id: 1401,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1402,
@@ -3625,8 +3625,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1402,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x80, string: "array" },
     depth: 0,
     parent__unique_id: 0,
@@ -3635,8 +3635,8 @@ param_c_ast: {
     array: {
       size: '*',
       of_ast: {
-        sname: { string: "" },
         unique_id: 1401,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1402,
@@ -3653,8 +3653,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1402,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x80, string: "array" },
     depth: 0,
     parent__unique_id: 0,
@@ -3663,8 +3663,8 @@ param_c_ast_list: {
     array: {
       size: '*',
       of_ast: {
-        sname: { string: "" },
         unique_id: 1401,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1402,
@@ -3678,8 +3678,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1402,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -3688,8 +3688,8 @@ param_c_ast_list: {
       array: {
         size: '*',
         of_ast: {
-          sname: { string: "" },
           unique_id: 1401,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1402,
@@ -3707,8 +3707,8 @@ param_c_ast_list: {
 func_decl_c_astp: {
   rule: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1400,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3720,8 +3720,8 @@ func_decl_c_astp: {
   },
   decl2_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1400,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -3735,8 +3735,8 @@ func_decl_c_astp: {
   },
   param_c_ast_list_opt: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1402,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -3745,8 +3745,8 @@ func_decl_c_astp: {
       array: {
         size: '*',
         of_ast: {
-          sname: { string: "" },
           unique_id: 1401,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1402,
@@ -3766,8 +3766,8 @@ func_decl_c_astp: {
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   func_decl_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1404,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x20000, string: "function" },
       depth: 0,
       parent__unique_id: 0,
@@ -3777,8 +3777,8 @@ func_decl_c_astp: {
         mbr: "unspecified",
         param_ast_list: [
           {
-            sname: { string: "x", scopes: "none" },
             unique_id: 1402,
+            sname: { string: "x", scopes: "none" },
             kind: { value: 0x80, string: "array" },
             depth: 0,
             parent__unique_id: 0,
@@ -3787,8 +3787,8 @@ func_decl_c_astp: {
             array: {
               size: '*',
               of_ast: {
-                sname: { string: "" },
                 unique_id: 1401,
+                sname: { string: "" },
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 parent__unique_id: 1402,
@@ -3802,8 +3802,8 @@ func_decl_c_astp: {
           }
         ],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1400,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1404,
@@ -3816,8 +3816,8 @@ func_decl_c_astp: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1400,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1404,
@@ -3834,8 +3834,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1405,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3847,8 +3847,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1404,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x20000, string: "function" },
       depth: 0,
       parent__unique_id: 0,
@@ -3858,8 +3858,8 @@ decl_c: {
         mbr: "unspecified",
         param_ast_list: [
           {
-            sname: { string: "x", scopes: "none" },
             unique_id: 1402,
+            sname: { string: "x", scopes: "none" },
             kind: { value: 0x80, string: "array" },
             depth: 0,
             parent__unique_id: 0,
@@ -3868,8 +3868,8 @@ decl_c: {
             array: {
               size: '*',
               of_ast: {
-                sname: { string: "" },
                 unique_id: 1401,
+                sname: { string: "" },
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 parent__unique_id: 1402,
@@ -3883,8 +3883,8 @@ decl_c: {
           }
         ],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1400,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1404,
@@ -3897,8 +3897,8 @@ decl_c: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1400,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1404,
@@ -3910,8 +3910,8 @@ decl_c: {
     }
   },
   decl_c: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1404,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x20000, string: "function" },
     depth: 0,
     parent__unique_id: 0,
@@ -3921,8 +3921,8 @@ decl_c: {
       mbr: "unspecified",
       param_ast_list: [
         {
-          sname: { string: "x", scopes: "none" },
           unique_id: 1402,
+          sname: { string: "x", scopes: "none" },
           kind: { value: 0x80, string: "array" },
           depth: 0,
           parent__unique_id: 0,
@@ -3931,8 +3931,8 @@ decl_c: {
           array: {
             size: '*',
             of_ast: {
-              sname: { string: "" },
               unique_id: 1401,
+              sname: { string: "" },
               kind: { value: 0x2, string: "built-in type" },
               depth: 0,
               parent__unique_id: 1402,
@@ -3946,8 +3946,8 @@ decl_c: {
         }
       ],
       ret_ast: {
-        sname: { string: "" },
         unique_id: 1400,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1404,
@@ -3967,8 +3967,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x11, string: "void" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1406,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3983,8 +3983,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1406,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -3996,8 +3996,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1406,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4018,8 +4018,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1406,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4032,8 +4032,8 @@ sname_c_ast: {
   sname: { string: "f", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1406,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4049,8 +4049,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1407,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4065,8 +4065,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1407,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4078,8 +4078,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1407,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4100,8 +4100,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1407,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4114,8 +4114,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1407,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4130,8 +4130,8 @@ sname_c_ast: {
 array_cast_c_astp: {
   rule: "cast_c_astp_opt array_size_c_ast",
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1407,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4143,8 +4143,8 @@ array_cast_c_astp: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1407,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -4157,8 +4157,8 @@ array_cast_c_astp: {
     target_ast: null
   },
   array_size_c_ast: {
-    sname: { string: "" },
     unique_id: 1408,
+    sname: { string: "" },
     kind: { value: 0x80, string: "array" },
     depth: 0,
     parent__unique_id: 0,
@@ -4171,8 +4171,8 @@ array_cast_c_astp: {
   },
   array_cast_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1408,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -4181,8 +4181,8 @@ array_cast_c_astp: {
       array: {
         size: 2,
         of_ast: {
-          sname: { string: "" },
           unique_id: 1407,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1408,
@@ -4202,8 +4202,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1407,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 1408,
@@ -4215,8 +4215,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1408,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -4225,8 +4225,8 @@ param_c_ast: {
       array: {
         size: 2,
         of_ast: {
-          sname: { string: "" },
           unique_id: 1407,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1408,
@@ -4241,8 +4241,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1408,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x80, string: "array" },
     depth: 0,
     parent__unique_id: 0,
@@ -4251,8 +4251,8 @@ param_c_ast: {
     array: {
       size: 2,
       of_ast: {
-        sname: { string: "" },
         unique_id: 1407,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1408,
@@ -4269,8 +4269,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1408,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x80, string: "array" },
     depth: 0,
     parent__unique_id: 0,
@@ -4279,8 +4279,8 @@ param_c_ast_list: {
     array: {
       size: 2,
       of_ast: {
-        sname: { string: "" },
         unique_id: 1407,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1408,
@@ -4294,8 +4294,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1408,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -4304,8 +4304,8 @@ param_c_ast_list: {
       array: {
         size: 2,
         of_ast: {
-          sname: { string: "" },
           unique_id: 1407,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1408,
@@ -4323,8 +4323,8 @@ param_c_ast_list: {
 func_decl_c_astp: {
   rule: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1406,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4336,8 +4336,8 @@ func_decl_c_astp: {
   },
   decl2_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1406,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -4351,8 +4351,8 @@ func_decl_c_astp: {
   },
   param_c_ast_list_opt: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1408,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x80, string: "array" },
       depth: 0,
       parent__unique_id: 0,
@@ -4361,8 +4361,8 @@ func_decl_c_astp: {
       array: {
         size: 2,
         of_ast: {
-          sname: { string: "" },
           unique_id: 1407,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1408,
@@ -4382,8 +4382,8 @@ func_decl_c_astp: {
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   func_decl_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1410,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x20000, string: "function" },
       depth: 0,
       parent__unique_id: 0,
@@ -4393,8 +4393,8 @@ func_decl_c_astp: {
         mbr: "unspecified",
         param_ast_list: [
           {
-            sname: { string: "x", scopes: "none" },
             unique_id: 1408,
+            sname: { string: "x", scopes: "none" },
             kind: { value: 0x80, string: "array" },
             depth: 0,
             parent__unique_id: 0,
@@ -4403,8 +4403,8 @@ func_decl_c_astp: {
             array: {
               size: 2,
               of_ast: {
-                sname: { string: "" },
                 unique_id: 1407,
+                sname: { string: "" },
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 parent__unique_id: 1408,
@@ -4418,8 +4418,8 @@ func_decl_c_astp: {
           }
         ],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1406,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1410,
@@ -4432,8 +4432,8 @@ func_decl_c_astp: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1406,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1410,
@@ -4450,8 +4450,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1411,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4463,8 +4463,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "f", scopes: "none" },
       unique_id: 1410,
+      sname: { string: "f", scopes: "none" },
       kind: { value: 0x20000, string: "function" },
       depth: 0,
       parent__unique_id: 0,
@@ -4474,8 +4474,8 @@ decl_c: {
         mbr: "unspecified",
         param_ast_list: [
           {
-            sname: { string: "x", scopes: "none" },
             unique_id: 1408,
+            sname: { string: "x", scopes: "none" },
             kind: { value: 0x80, string: "array" },
             depth: 0,
             parent__unique_id: 0,
@@ -4484,8 +4484,8 @@ decl_c: {
             array: {
               size: 2,
               of_ast: {
-                sname: { string: "" },
                 unique_id: 1407,
+                sname: { string: "" },
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 parent__unique_id: 1408,
@@ -4499,8 +4499,8 @@ decl_c: {
           }
         ],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1406,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1410,
@@ -4513,8 +4513,8 @@ decl_c: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1406,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1410,
@@ -4526,8 +4526,8 @@ decl_c: {
     }
   },
   decl_c: {
-    sname: { string: "f", scopes: "none" },
     unique_id: 1410,
+    sname: { string: "f", scopes: "none" },
     kind: { value: 0x20000, string: "function" },
     depth: 0,
     parent__unique_id: 0,
@@ -4537,8 +4537,8 @@ decl_c: {
       mbr: "unspecified",
       param_ast_list: [
         {
-          sname: { string: "x", scopes: "none" },
           unique_id: 1408,
+          sname: { string: "x", scopes: "none" },
           kind: { value: 0x80, string: "array" },
           depth: 0,
           parent__unique_id: 0,
@@ -4547,8 +4547,8 @@ decl_c: {
           array: {
             size: 2,
             of_ast: {
-              sname: { string: "" },
               unique_id: 1407,
+              sname: { string: "" },
               kind: { value: 0x2, string: "built-in type" },
               depth: 0,
               parent__unique_id: 1408,
@@ -4562,8 +4562,8 @@ decl_c: {
         }
       ],
       ret_ast: {
-        sname: { string: "" },
         unique_id: 1406,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1410,
@@ -4592,8 +4592,8 @@ class_struct_union_declaration_c: {
   class_struct_union_btid: { btid: 0x4000001, string: "class" },
   any_sname_c: { string: "C", scopes: "none" },
   class_struct_union_declaration_c: {
-    sname: { string: "C", scopes: "class" },
     unique_id: 1412,
+    sname: { string: "C", scopes: "class" },
     kind: { value: 0x8, string: "class, struct, or union" },
     depth: 0,
     parent__unique_id: 0,
@@ -4610,8 +4610,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x81, string: "bool" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1413,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4626,8 +4626,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1413,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4639,8 +4639,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1413,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4662,8 +4662,8 @@ func_qualifier_list_c_stid_opt: {
 oper_decl_c_astp: {
   rule: "oper_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1413,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4683,8 +4683,8 @@ oper_decl_c_astp: {
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   oper_decl_c_astp: {
     ast: {
-      sname: { string: "" },
       unique_id: 1414,
+      sname: { string: "" },
       kind: { value: 0x80000, string: "operator" },
       depth: 0,
       parent__unique_id: 0,
@@ -4695,8 +4695,8 @@ oper_decl_c_astp: {
         mbr: "unspecified",
         param_ast_list: [],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1413,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1414,
@@ -4709,8 +4709,8 @@ oper_decl_c_astp: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1413,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1414,
@@ -4727,8 +4727,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1415,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4740,8 +4740,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "" },
       unique_id: 1414,
+      sname: { string: "" },
       kind: { value: 0x80000, string: "operator" },
       depth: 0,
       parent__unique_id: 0,
@@ -4752,8 +4752,8 @@ decl_c: {
         mbr: "unspecified",
         param_ast_list: [],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1413,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1414,
@@ -4766,8 +4766,8 @@ decl_c: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1413,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1414,
@@ -4779,8 +4779,8 @@ decl_c: {
     }
   },
   decl_c: {
-    sname: { string: "" },
     unique_id: 1414,
+    sname: { string: "" },
     kind: { value: 0x80000, string: "operator" },
     depth: 0,
     parent__unique_id: 0,
@@ -4791,8 +4791,8 @@ decl_c: {
       mbr: "unspecified",
       param_ast_list: [],
       ret_ast: {
-        sname: { string: "" },
         unique_id: 1413,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1414,
@@ -4812,8 +4812,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1416,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4828,8 +4828,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1416,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4841,8 +4841,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1416,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4857,8 +4857,8 @@ east_modified_type_c_ast: {
 pointer_to_member_type_c_ast: {
   rule: "sname '::*' cv_qualifier_list_stid_opt",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1416,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -4871,8 +4871,8 @@ pointer_to_member_type_c_ast: {
   sname: { string: "C", scopes: "class" },
   cv_qualifier_list_stid_opt: { stid: 0x2, string: "none" },
   pointer_to_member_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1417,
+    sname: { string: "" },
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
     parent__unique_id: 0,
@@ -4881,8 +4881,8 @@ pointer_to_member_type_c_ast: {
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
       to_ast: {
-        sname: { string: "" },
         unique_id: 1416,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1417,
@@ -4905,8 +4905,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1417,
+    sname: { string: "" },
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
     parent__unique_id: 0,
@@ -4915,8 +4915,8 @@ sname_c_ast: {
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
       to_ast: {
-        sname: { string: "" },
         unique_id: 1416,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1417,
@@ -4931,8 +4931,8 @@ sname_c_ast: {
   sname: { string: "p", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "p", scopes: "none" },
     unique_id: 1417,
+    sname: { string: "p", scopes: "none" },
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
     parent__unique_id: 0,
@@ -4941,8 +4941,8 @@ sname_c_ast: {
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
       to_ast: {
-        sname: { string: "" },
         unique_id: 1416,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1417,
@@ -4959,8 +4959,8 @@ sname_c_ast: {
 pointer_to_member_decl_c_astp: {
   rule: "pointer_to_member_type_c_ast decl_c_astp",
   pointer_to_member_type_c_ast: {
-    sname: { string: "p", scopes: "none" },
     unique_id: 1417,
+    sname: { string: "p", scopes: "none" },
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
     parent__unique_id: 0,
@@ -4969,8 +4969,8 @@ pointer_to_member_decl_c_astp: {
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
       to_ast: {
-        sname: { string: "" },
         unique_id: 1416,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1417,
@@ -4984,8 +4984,8 @@ pointer_to_member_decl_c_astp: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "p", scopes: "none" },
       unique_id: 1417,
+      sname: { string: "p", scopes: "none" },
       kind: { value: 0x800, string: "pointer to member" },
       depth: 0,
       parent__unique_id: 0,
@@ -4994,8 +4994,8 @@ pointer_to_member_decl_c_astp: {
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
         to_ast: {
-          sname: { string: "" },
           unique_id: 1416,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1417,
@@ -5011,8 +5011,8 @@ pointer_to_member_decl_c_astp: {
   },
   pointer_to_member_decl_c_astp: {
     ast: {
-      sname: { string: "p", scopes: "none" },
       unique_id: 1417,
+      sname: { string: "p", scopes: "none" },
       kind: { value: 0x800, string: "pointer to member" },
       depth: 0,
       parent__unique_id: 0,
@@ -5021,8 +5021,8 @@ pointer_to_member_decl_c_astp: {
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
         to_ast: {
-          sname: { string: "" },
           unique_id: 1416,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1417,
@@ -5042,8 +5042,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1418,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5055,8 +5055,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "p", scopes: "none" },
       unique_id: 1417,
+      sname: { string: "p", scopes: "none" },
       kind: { value: 0x800, string: "pointer to member" },
       depth: 0,
       parent__unique_id: 0,
@@ -5065,8 +5065,8 @@ decl_c: {
       ptr_mbr: {
         class_sname: { string: "C", scopes: "class" },
         to_ast: {
-          sname: { string: "" },
           unique_id: 1416,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1417,
@@ -5081,8 +5081,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "p", scopes: "none" },
     unique_id: 1417,
+    sname: { string: "p", scopes: "none" },
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
     parent__unique_id: 0,
@@ -5091,8 +5091,8 @@ decl_c: {
     ptr_mbr: {
       class_sname: { string: "C", scopes: "class" },
       to_ast: {
-        sname: { string: "" },
         unique_id: 1416,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1417,
@@ -5112,8 +5112,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x81, string: "bool" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1419,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5128,8 +5128,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1419,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5141,8 +5141,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1419,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5166,8 +5166,8 @@ user_defined_conversion_decl_c_astp: {
   in_attr__type_c_ast: null,
   oper_sname_c_opt: { string: "" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1419,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5183,8 +5183,8 @@ user_defined_conversion_decl_c_astp: {
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   user_defined_conversion_decl_c_astp: {
     ast: {
-      sname: { string: "" },
       unique_id: 1420,
+      sname: { string: "" },
       kind: { value: 0x100000, string: "user-defined conversion operator" },
       depth: 0,
       parent__unique_id: 0,
@@ -5192,8 +5192,8 @@ user_defined_conversion_decl_c_astp: {
       type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
       udef_conv: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1419,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -5206,8 +5206,8 @@ user_defined_conversion_decl_c_astp: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1419,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -5224,8 +5224,8 @@ user_defined_conversion_declaration_c: {
   rule: "user_defined_conversion_decl_c_astp",
   user_defined_conversion_declaration_c: {
     ast: {
-      sname: { string: "" },
       unique_id: 1420,
+      sname: { string: "" },
       kind: { value: 0x100000, string: "user-defined conversion operator" },
       depth: 0,
       parent__unique_id: 0,
@@ -5233,8 +5233,8 @@ user_defined_conversion_declaration_c: {
       type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
       udef_conv: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1419,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -5247,8 +5247,8 @@ user_defined_conversion_declaration_c: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1419,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -5267,8 +5267,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1421,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5283,8 +5283,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1421,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5296,8 +5296,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1421,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5313,8 +5313,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1422,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5329,8 +5329,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1422,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5342,8 +5342,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1422,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5358,8 +5358,8 @@ east_modified_type_c_ast: {
 pointer_type_c_ast: {
   rule: "* type_qualifier_list_c_stid_opt",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1422,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5371,8 +5371,8 @@ pointer_type_c_ast: {
   },
   type_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
   pointer_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1423,
+    sname: { string: "" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -5380,8 +5380,8 @@ pointer_type_c_ast: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1422,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1423,
@@ -5404,8 +5404,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1423,
+    sname: { string: "" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -5413,8 +5413,8 @@ sname_c_ast: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1422,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1423,
@@ -5429,8 +5429,8 @@ sname_c_ast: {
   sname: { string: "arg", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "arg", scopes: "none" },
     unique_id: 1423,
+    sname: { string: "arg", scopes: "none" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -5438,8 +5438,8 @@ sname_c_ast: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1422,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1423,
@@ -5456,8 +5456,8 @@ sname_c_ast: {
 pointer_cast_c_astp: {
   rule: "pointer_type_c_ast cast_c_astp_opt",
   pointer_type_c_ast: {
-    sname: { string: "arg", scopes: "none" },
     unique_id: 1423,
+    sname: { string: "arg", scopes: "none" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -5465,8 +5465,8 @@ pointer_cast_c_astp: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1422,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1423,
@@ -5480,8 +5480,8 @@ pointer_cast_c_astp: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "arg", scopes: "none" },
       unique_id: 1423,
+      sname: { string: "arg", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -5489,8 +5489,8 @@ pointer_cast_c_astp: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1422,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1423,
@@ -5506,8 +5506,8 @@ pointer_cast_c_astp: {
   },
   pointer_cast_c_astp: {
     ast: {
-      sname: { string: "arg", scopes: "none" },
       unique_id: 1423,
+      sname: { string: "arg", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -5515,8 +5515,8 @@ pointer_cast_c_astp: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1422,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1423,
@@ -5536,8 +5536,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1422,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 1423,
@@ -5549,8 +5549,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "arg", scopes: "none" },
       unique_id: 1423,
+      sname: { string: "arg", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -5558,8 +5558,8 @@ param_c_ast: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1422,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1423,
@@ -5574,8 +5574,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "arg", scopes: "none" },
     unique_id: 1423,
+    sname: { string: "arg", scopes: "none" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -5583,8 +5583,8 @@ param_c_ast: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1422,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1423,
@@ -5601,8 +5601,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "arg", scopes: "none" },
     unique_id: 1423,
+    sname: { string: "arg", scopes: "none" },
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     parent__unique_id: 0,
@@ -5610,8 +5610,8 @@ param_c_ast_list: {
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     ptr_ref: {
       to_ast: {
-        sname: { string: "" },
         unique_id: 1422,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1423,
@@ -5625,8 +5625,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "arg", scopes: "none" },
       unique_id: 1423,
+      sname: { string: "arg", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -5634,8 +5634,8 @@ param_c_ast_list: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1422,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1423,
@@ -5653,8 +5653,8 @@ param_c_ast_list: {
 user_defined_literal_decl_c_astp: {
   rule: "oper_sname_c_opt OPERATOR \"\" '(' param_c_ast_list_exp ')' noexcept_c_stid_opt trailing_return_type_c_ast_opt",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1421,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5668,8 +5668,8 @@ user_defined_literal_decl_c_astp: {
   name: "_w",
   param_c_ast_list_exp: [
     {
-      sname: { string: "arg", scopes: "none" },
       unique_id: 1423,
+      sname: { string: "arg", scopes: "none" },
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       parent__unique_id: 0,
@@ -5677,8 +5677,8 @@ user_defined_literal_decl_c_astp: {
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       ptr_ref: {
         to_ast: {
-          sname: { string: "" },
           unique_id: 1422,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1423,
@@ -5695,8 +5695,8 @@ user_defined_literal_decl_c_astp: {
   trailing_return_type_c_ast_opt: null,
   user_defined_literal_decl_c_astp: {
     ast: {
-      sname: { string: "_w", scopes: "none" },
       unique_id: 1424,
+      sname: { string: "_w", scopes: "none" },
       kind: { value: 0x200000, string: "user-defined literal" },
       depth: 0,
       parent__unique_id: 0,
@@ -5705,8 +5705,8 @@ user_defined_literal_decl_c_astp: {
       udef_lit: {
         param_ast_list: [
           {
-            sname: { string: "arg", scopes: "none" },
             unique_id: 1423,
+            sname: { string: "arg", scopes: "none" },
             kind: { value: 0x400, string: "pointer" },
             depth: 0,
             parent__unique_id: 0,
@@ -5714,8 +5714,8 @@ user_defined_literal_decl_c_astp: {
             type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
             ptr_ref: {
               to_ast: {
-                sname: { string: "" },
                 unique_id: 1422,
+                sname: { string: "" },
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 parent__unique_id: 1423,
@@ -5729,8 +5729,8 @@ user_defined_literal_decl_c_astp: {
           }
         ],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1421,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1424,
@@ -5743,8 +5743,8 @@ user_defined_literal_decl_c_astp: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1421,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1424,
@@ -5761,8 +5761,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1425,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5774,8 +5774,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "_w", scopes: "none" },
       unique_id: 1424,
+      sname: { string: "_w", scopes: "none" },
       kind: { value: 0x200000, string: "user-defined literal" },
       depth: 0,
       parent__unique_id: 0,
@@ -5784,8 +5784,8 @@ decl_c: {
       udef_lit: {
         param_ast_list: [
           {
-            sname: { string: "arg", scopes: "none" },
             unique_id: 1423,
+            sname: { string: "arg", scopes: "none" },
             kind: { value: 0x400, string: "pointer" },
             depth: 0,
             parent__unique_id: 0,
@@ -5793,8 +5793,8 @@ decl_c: {
             type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
             ptr_ref: {
               to_ast: {
-                sname: { string: "" },
                 unique_id: 1422,
+                sname: { string: "" },
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 parent__unique_id: 1423,
@@ -5808,8 +5808,8 @@ decl_c: {
           }
         ],
         ret_ast: {
-          sname: { string: "" },
           unique_id: 1421,
+          sname: { string: "" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 1424,
@@ -5822,8 +5822,8 @@ decl_c: {
       }
     },
     target_ast: {
-      sname: { string: "" },
       unique_id: 1421,
+      sname: { string: "" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 1424,
@@ -5835,8 +5835,8 @@ decl_c: {
     }
   },
   decl_c: {
-    sname: { string: "_w", scopes: "none" },
     unique_id: 1424,
+    sname: { string: "_w", scopes: "none" },
     kind: { value: 0x200000, string: "user-defined literal" },
     depth: 0,
     parent__unique_id: 0,
@@ -5845,8 +5845,8 @@ decl_c: {
     udef_lit: {
       param_ast_list: [
         {
-          sname: { string: "arg", scopes: "none" },
           unique_id: 1423,
+          sname: { string: "arg", scopes: "none" },
           kind: { value: 0x400, string: "pointer" },
           depth: 0,
           parent__unique_id: 0,
@@ -5854,8 +5854,8 @@ decl_c: {
           type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
           ptr_ref: {
             to_ast: {
-              sname: { string: "" },
               unique_id: 1422,
+              sname: { string: "" },
               kind: { value: 0x2, string: "built-in type" },
               depth: 0,
               parent__unique_id: 1423,
@@ -5869,8 +5869,8 @@ decl_c: {
         }
       ],
       ret_ast: {
-        sname: { string: "" },
         unique_id: 1421,
+        sname: { string: "" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         parent__unique_id: 1424,
@@ -5894,8 +5894,8 @@ destructor_declaration_c: {
   noexcept_c_stid_opt: { stid: 0x2, string: "none" },
   func_equals_c_stid_opt: { stid: 0x2, string: "none" },
   destructor_declaration_c: {
-    sname: { string: "C", scopes: "none" },
     unique_id: 1426,
+    sname: { string: "C", scopes: "none" },
     kind: { value: 0x8000, string: "destructor" },
     depth: 0,
     parent__unique_id: 0,
@@ -5913,8 +5913,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1427,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -5933,8 +5933,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1428,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5949,8 +5949,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1428,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5962,8 +5962,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1428,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5984,8 +5984,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1428,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -5998,8 +5998,8 @@ sname_c_ast: {
   sname: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1428,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6015,8 +6015,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1428,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6028,8 +6028,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1428,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -6042,8 +6042,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1428,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6058,8 +6058,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1428,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6071,8 +6071,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1428,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -6090,8 +6090,8 @@ lambda_declaration_c: {
   capture_decl_list_c_opt: [],
   lambda_param_c_ast_list_opt: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1428,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -6105,8 +6105,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1429,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -6116,8 +6116,8 @@ lambda_declaration_c: {
       capture_ast_list: [],
       param_ast_list: [
         {
-          sname: { string: "c", scopes: "none" },
           unique_id: 1428,
+          sname: { string: "c", scopes: "none" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -6137,8 +6137,8 @@ c++decl> explain [x]
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1430,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -6150,8 +6150,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1430,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6168,8 +6168,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1430,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6184,8 +6184,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1431,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -6194,8 +6194,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "x", scopes: "none" },
           unique_id: 1430,
+          sname: { string: "x", scopes: "none" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -6216,8 +6216,8 @@ c++decl> explain [x](char c)
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1432,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -6229,8 +6229,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1432,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6247,8 +6247,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1433,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6263,8 +6263,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1433,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6276,8 +6276,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1433,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6298,8 +6298,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1433,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6312,8 +6312,8 @@ sname_c_ast: {
   sname: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1433,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6329,8 +6329,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1433,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6342,8 +6342,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1433,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -6356,8 +6356,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1433,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6372,8 +6372,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1433,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6385,8 +6385,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1433,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -6403,8 +6403,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1432,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6417,8 +6417,8 @@ lambda_declaration_c: {
   ],
   lambda_param_c_ast_list_opt: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1433,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -6432,8 +6432,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1434,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -6442,8 +6442,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "x", scopes: "none" },
           unique_id: 1432,
+          sname: { string: "x", scopes: "none" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -6456,8 +6456,8 @@ lambda_declaration_c: {
       ],
       param_ast_list: [
         {
-          sname: { string: "c", scopes: "none" },
           unique_id: 1433,
+          sname: { string: "c", scopes: "none" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -6477,8 +6477,8 @@ c++decl> explain [=]
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "" },
     unique_id: 1435,
+    sname: { string: "" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -6490,8 +6490,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "" },
       unique_id: 1435,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6508,8 +6508,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "" },
       unique_id: 1435,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6524,8 +6524,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1436,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -6534,8 +6534,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "" },
           unique_id: 1435,
+          sname: { string: "" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -6556,8 +6556,8 @@ c++decl> explain [=](char c)
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "" },
     unique_id: 1437,
+    sname: { string: "" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -6569,8 +6569,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "" },
       unique_id: 1437,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6587,8 +6587,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1438,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6603,8 +6603,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1438,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6616,8 +6616,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1438,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6638,8 +6638,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1438,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6652,8 +6652,8 @@ sname_c_ast: {
   sname: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1438,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6669,8 +6669,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1438,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6682,8 +6682,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1438,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -6696,8 +6696,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1438,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6712,8 +6712,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1438,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6725,8 +6725,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1438,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -6743,8 +6743,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "" },
       unique_id: 1437,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6757,8 +6757,8 @@ lambda_declaration_c: {
   ],
   lambda_param_c_ast_list_opt: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1438,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -6772,8 +6772,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1439,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -6782,8 +6782,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "" },
           unique_id: 1437,
+          sname: { string: "" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -6796,8 +6796,8 @@ lambda_declaration_c: {
       ],
       param_ast_list: [
         {
-          sname: { string: "c", scopes: "none" },
           unique_id: 1438,
+          sname: { string: "c", scopes: "none" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -6817,8 +6817,8 @@ c++decl> explain [&]
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "" },
     unique_id: 1440,
+    sname: { string: "" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -6830,8 +6830,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "" },
       unique_id: 1440,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6848,8 +6848,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "" },
       unique_id: 1440,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6864,8 +6864,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1441,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -6874,8 +6874,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "" },
           unique_id: 1440,
+          sname: { string: "" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -6896,8 +6896,8 @@ c++decl> explain [&](char c)
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "" },
     unique_id: 1442,
+    sname: { string: "" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -6909,8 +6909,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "" },
       unique_id: 1442,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -6927,8 +6927,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1443,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6943,8 +6943,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1443,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6956,8 +6956,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1443,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6978,8 +6978,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1443,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -6992,8 +6992,8 @@ sname_c_ast: {
   sname: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1443,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7009,8 +7009,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1443,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7022,8 +7022,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1443,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -7036,8 +7036,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1443,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7052,8 +7052,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1443,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7065,8 +7065,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1443,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -7083,8 +7083,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "" },
       unique_id: 1442,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7097,8 +7097,8 @@ lambda_declaration_c: {
   ],
   lambda_param_c_ast_list_opt: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1443,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -7112,8 +7112,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1444,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -7122,8 +7122,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "" },
           unique_id: 1442,
+          sname: { string: "" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -7136,8 +7136,8 @@ lambda_declaration_c: {
       ],
       param_ast_list: [
         {
-          sname: { string: "c", scopes: "none" },
           unique_id: 1443,
+          sname: { string: "c", scopes: "none" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -7157,8 +7157,8 @@ c++decl> explain [&x]
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1445,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -7170,8 +7170,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1445,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7188,8 +7188,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1445,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7204,8 +7204,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1446,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -7214,8 +7214,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "x", scopes: "none" },
           unique_id: 1445,
+          sname: { string: "x", scopes: "none" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -7236,8 +7236,8 @@ c++decl> explain [&x](char c)
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1447,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -7249,8 +7249,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1447,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7267,8 +7267,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1448,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7283,8 +7283,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1448,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7296,8 +7296,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1448,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7318,8 +7318,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1448,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7332,8 +7332,8 @@ sname_c_ast: {
   sname: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1448,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7349,8 +7349,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1448,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7362,8 +7362,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1448,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -7376,8 +7376,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1448,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7392,8 +7392,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1448,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7405,8 +7405,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1448,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -7423,8 +7423,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1447,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7437,8 +7437,8 @@ lambda_declaration_c: {
   ],
   lambda_param_c_ast_list_opt: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1448,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -7452,8 +7452,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1449,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -7462,8 +7462,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "x", scopes: "none" },
           unique_id: 1447,
+          sname: { string: "x", scopes: "none" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -7476,8 +7476,8 @@ lambda_declaration_c: {
       ],
       param_ast_list: [
         {
-          sname: { string: "c", scopes: "none" },
           unique_id: 1448,
+          sname: { string: "c", scopes: "none" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -7497,8 +7497,8 @@ c++decl> explain [this]
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "" },
     unique_id: 1450,
+    sname: { string: "" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -7510,8 +7510,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "" },
       unique_id: 1450,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7528,8 +7528,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "" },
       unique_id: 1450,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7544,8 +7544,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1451,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -7554,8 +7554,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "" },
           unique_id: 1450,
+          sname: { string: "" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -7576,8 +7576,8 @@ c++decl> explain [this](char c)
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "" },
     unique_id: 1452,
+    sname: { string: "" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -7589,8 +7589,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "" },
       unique_id: 1452,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7607,8 +7607,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1453,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7623,8 +7623,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1453,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7636,8 +7636,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1453,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7658,8 +7658,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1453,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7672,8 +7672,8 @@ sname_c_ast: {
   sname: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1453,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7689,8 +7689,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1453,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7702,8 +7702,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1453,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -7716,8 +7716,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1453,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7732,8 +7732,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1453,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7745,8 +7745,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1453,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -7763,8 +7763,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "" },
       unique_id: 1452,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7777,8 +7777,8 @@ lambda_declaration_c: {
   ],
   lambda_param_c_ast_list_opt: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1453,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -7792,8 +7792,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1454,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -7802,8 +7802,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "" },
           unique_id: 1452,
+          sname: { string: "" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -7816,8 +7816,8 @@ lambda_declaration_c: {
       ],
       param_ast_list: [
         {
-          sname: { string: "c", scopes: "none" },
           unique_id: 1453,
+          sname: { string: "c", scopes: "none" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -7837,8 +7837,8 @@ c++decl> explain [*this]
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "" },
     unique_id: 1455,
+    sname: { string: "" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -7850,8 +7850,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "" },
       unique_id: 1455,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7868,8 +7868,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "" },
       unique_id: 1455,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7884,8 +7884,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1456,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -7894,8 +7894,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "" },
           unique_id: 1455,
+          sname: { string: "" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -7916,8 +7916,8 @@ c++decl> explain [*this](char c)
 capture_decl_list_c: {
   rule: "capture_decl_c_ast",
   capture_decl_c_ast: {
-    sname: { string: "" },
     unique_id: 1457,
+    sname: { string: "" },
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     parent__unique_id: 0,
@@ -7929,8 +7929,8 @@ capture_decl_list_c: {
   },
   capture_decl_list_c: [
     {
-      sname: { string: "" },
       unique_id: 1457,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -7947,8 +7947,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x101, string: "char" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1458,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7963,8 +7963,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1458,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7976,8 +7976,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1458,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -7998,8 +7998,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1458,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8012,8 +8012,8 @@ sname_c_ast: {
   sname: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1458,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8029,8 +8029,8 @@ param_c_ast: {
   rule: "this_stid_opt type_c_ast cast_c_astp_opt",
   this_stid_opt: { stid: 0x2, string: "none" },
   type_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1458,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8042,8 +8042,8 @@ param_c_ast: {
   },
   cast_c_astp_opt: {
     ast: {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1458,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -8056,8 +8056,8 @@ param_c_ast: {
     target_ast: null
   },
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1458,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8072,8 +8072,8 @@ param_c_ast: {
 param_c_ast_list: {
   rule: "param_c_ast",
   param_c_ast: {
-    sname: { string: "c", scopes: "none" },
     unique_id: 1458,
+    sname: { string: "c", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8085,8 +8085,8 @@ param_c_ast_list: {
   },
   param_c_ast_list: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1458,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -8103,8 +8103,8 @@ lambda_declaration_c: {
   rule: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt",
   capture_decl_list_c_opt: [
     {
-      sname: { string: "" },
       unique_id: 1457,
+      sname: { string: "" },
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       parent__unique_id: 0,
@@ -8117,8 +8117,8 @@ lambda_declaration_c: {
   ],
   lambda_param_c_ast_list_opt: [
     {
-      sname: { string: "c", scopes: "none" },
       unique_id: 1458,
+      sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -8132,8 +8132,8 @@ lambda_declaration_c: {
   storage_class_subset_english_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   lambda_return_type_c_ast_opt: null,
   lambda_declaration_c: {
-    sname: { string: "" },
     unique_id: 1459,
+    sname: { string: "" },
     kind: { value: 0x40000, string: "lambda" },
     depth: 0,
     parent__unique_id: 0,
@@ -8142,8 +8142,8 @@ lambda_declaration_c: {
     lambda: {
       capture_ast_list: [
         {
-          sname: { string: "" },
           unique_id: 1457,
+          sname: { string: "" },
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           parent__unique_id: 0,
@@ -8156,8 +8156,8 @@ lambda_declaration_c: {
       ],
       param_ast_list: [
         {
-          sname: { string: "c", scopes: "none" },
           unique_id: 1458,
+          sname: { string: "c", scopes: "none" },
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           parent__unique_id: 0,
@@ -8214,8 +8214,8 @@ builtin_type_c_ast: {
   rule: "builtin_no_BitInt_c_btid",
   builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
   builtin_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1462,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8230,8 +8230,8 @@ builtin_type_c_ast: {
 east_modified_type_c_ast: {
   rule: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt",
   atomic_builtin_typedef_type_c_ast: {
-    sname: { string: "" },
     unique_id: 1462,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8243,8 +8243,8 @@ east_modified_type_c_ast: {
   },
   type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
   type_c_ast: {
-    sname: { string: "" },
     unique_id: 1462,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8265,8 +8265,8 @@ sname_c: {
 sname_c_ast: {
   rule: "sname_c",
   in_attr__type_c_ast: {
-    sname: { string: "" },
     unique_id: 1462,
+    sname: { string: "" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8279,8 +8279,8 @@ sname_c_ast: {
   sname: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   sname_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1462,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8296,8 +8296,8 @@ decl_c: {
   rule: "decl_c_astp",
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1463,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,
@@ -8309,8 +8309,8 @@ decl_c: {
   },
   decl_c_astp: {
     ast: {
-      sname: { string: "x", scopes: "none" },
       unique_id: 1462,
+      sname: { string: "x", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       parent__unique_id: 0,
@@ -8323,8 +8323,8 @@ decl_c: {
     target_ast: null
   },
   decl_c: {
-    sname: { string: "x", scopes: "none" },
     unique_id: 1462,
+    sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     parent__unique_id: 0,

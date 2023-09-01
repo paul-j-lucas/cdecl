@@ -147,8 +147,8 @@ void c_ast_dump_impl( c_ast_t const *ast, d_state_t *d ) {
 
   j_state_t const ast_j = json_object_begin( J_INIT, /*key=*/NULL, d );
 
-  DUMP_SNAME( d, "sname", &ast->sname );
   DUMP_KEY( d, "unique_id: " PRId_C_AST_ID_T, ast->unique_id );
+  DUMP_SNAME( d, "sname", &ast->sname );
   DUMP_KEY( d,
     "kind: { value: 0x%X, string: \"%s\" }",
     ast->kind, c_kind_name( ast->kind )
