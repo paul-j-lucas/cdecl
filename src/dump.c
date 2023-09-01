@@ -546,12 +546,15 @@ void c_sname_list_dump( slist_t const *list, FILE *dout ) {
     FPUTS( "[]", dout );
     return;
   }
+
   FPUTS( "[ ", dout );
+
   bool comma = false;
   FOREACH_SLIST_NODE( node, list ) {
     fput_sep( ", ", &comma, dout );
     c_sname_dump( node->data, dout );
   } // for
+
   FPUTS( " ]", dout );
 }
 
