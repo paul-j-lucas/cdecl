@@ -134,8 +134,7 @@ static void c_alignas_dump( c_alignas_t const *align, d_state_t *d ) {
 /**
  * Dumps \a ast (for debugging).
  *
- * @param ast The AST to dump; may be NULL.  If NULL and \a key is not NULL,
- * dumps only \a key followed by `:&nbsp;null`.
+ * @param ast The AST to dump.  If NULL, `null` is printed instead.
  * @param d The d_state to use.
  */
 void c_ast_dump_impl( c_ast_t const *ast, d_state_t *d ) {

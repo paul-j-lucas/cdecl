@@ -277,10 +277,10 @@
   DUMP_KEY( KEY ": " ); c_ast_list_dump( &(AST_LIST), stdout ); )
 
 /**
- * Dump a \ref ast_pair.
+ * Dump a \ref c_ast_pair.
  *
  * @param KEY The key name to print.
- * @param ASTP The \ref ast_pair to dump.
+ * @param ASTP The \ref c_ast_pair to dump.
  *
  * @sa #DUMP_AST()
  */

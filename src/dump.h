@@ -43,14 +43,15 @@
 
 /**
  * @defgroup dump-group Debug Output
- * Functions for dumping types for debugging.
+ * Functions for dumping types in [JSON5](https://json5.org) format (for
+ * debugging).
  * @{
  */
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Dumps a Boolean value (for debugging).
+ * Dumps a Boolean value as either `true` or `false` (for debugging).
  *
  * @param b The Boolean to dump.
  * @param dout The `FILE` to dump to.
@@ -58,10 +59,9 @@
 void bool_dump( bool b, FILE *dout );
 
 /**
- * Dumps \a ast (for debugging).
+ * Dumps \a ast in [JSON5](https://json5.org) format (for debugging).
  *
- * @param ast The AST to dump; may be NULL.  If NULL and \a key is not NULL,
- * dumps only \a key followed by `:&nbsp;null`.
+ * @param ast The AST to dump.  If NULL, `null` is printed instead.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_ast_list_dump()
@@ -70,7 +70,7 @@ void bool_dump( bool b, FILE *dout );
 void c_ast_dump( c_ast_t const *ast, FILE *dout );
 
 /**
- * Dumps \a list of ASTs (for debugging).
+ * Dumps \a list of ASTs in [JSON5](https://json5.org) format (for debugging).
  *
  * @param list The \ref slist of ASTs to dump.
  * @param dout The `FILE` to dump to.
@@ -81,7 +81,7 @@ void c_ast_dump( c_ast_t const *ast, FILE *dout );
 void c_ast_list_dump( c_ast_list_t const *list, FILE *dout );
 
 /**
- * Dumps \a astp (for debugging).
+ * Dumps \a astp in [JSON5](https://json5.org) format (for debugging).
  *
  * @param astp The \ref c_ast_pair to dump.
  * @param dout The `FILE` to dump to.
@@ -92,7 +92,7 @@ void c_ast_list_dump( c_ast_list_t const *list, FILE *dout );
 void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *dout );
 
 /**
- * Dumps \a sname (for debugging).
+ * Dumps \a sname in [JSON5](https://json5.org) format (for debugging).
  *
  * @param sname The scoped name to dump.
  * @param dout The `FILE` to dump to.
@@ -102,7 +102,8 @@ void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *dout );
 void c_sname_dump( c_sname_t const *sname, FILE *dout );
 
 /**
- * Dumps \a list of scoped names (for debugging).
+ * Dumps \a list of scoped names in [JSON5](https://json5.org) format (for
+ * debugging).
  *
  * @param list The list of scoped names to dump.
  * @param dout The `FILE` to dump to.
@@ -112,7 +113,7 @@ void c_sname_dump( c_sname_t const *sname, FILE *dout );
 void c_sname_list_dump( slist_t const *list, FILE *dout );
 
 /**
- * Dumps \a tid (for debugging).
+ * Dumps \a tid in [JSON5](https://json5.org) format (for debugging).
  *
  * @param tid The \ref c_tid_t to dump.
  * @param dout The `FILE` to dump to.
@@ -122,7 +123,7 @@ void c_sname_list_dump( slist_t const *list, FILE *dout );
 void c_tid_dump( c_tid_t tid, FILE *dout );
 
 /**
- * Dumps \a type (for debugging).
+ * Dumps \a type in [JSON5](https://json5.org) format (for debugging).
  *
  * @param type The \ref c_type to dump.
  * @param dout The `FILE` to dump to.
@@ -132,7 +133,7 @@ void c_tid_dump( c_tid_t tid, FILE *dout );
 void c_type_dump( c_type_t const *type, FILE *dout );
 
 /**
- * Dumps a string value (for debugging).
+ * Dumps a string value in [JSON5](https://json5.org) format (for debugging).
  *
  * @param s The string to dump, if any.  If NULL, `null` is printed instead.
  * @param dout The `FILE` to dump to.
