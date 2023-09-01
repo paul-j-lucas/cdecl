@@ -94,7 +94,7 @@ void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *dout );
 /**
  * Dumps \a sname in [JSON5](https://json5.org) format (for debugging).
  *
- * @param sname The scoped name to dump.
+ * @param sname The scoped name to dump.  If empty, prints `null` instead.
  * @param dout The `FILE` to dump to.
  *
  * @sa c_sname_list_dump()
@@ -135,7 +135,7 @@ void c_type_dump( c_type_t const *type, FILE *dout );
 /**
  * Dumps a string value in [JSON5](https://json5.org) format (for debugging).
  *
- * @param s The string to dump, if any.  If NULL, `null` is printed instead.
+ * @param s The string to dump, if any.  If NULL, prints `null` instead.
  * @param dout The `FILE` to dump to.
  */
 void str_dump( char const *s, FILE *dout );

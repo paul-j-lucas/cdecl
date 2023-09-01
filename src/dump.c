@@ -521,18 +521,21 @@ void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
   assert( sname != NULL );
   assert( dout != NULL );
 
-  FPRINTF( dout, "{ string: \"%s\"", c_sname_full_name( sname ) );
-  if ( !c_sname_empty( sname ) ) {
-    FPUTS( ", scopes: \"", dout );
-    bool colon2 = false;
-    FOREACH_SNAME_SCOPE( scope, sname ) {
-      fput_sep( "::", &colon2, dout );
-      c_type_t const *const t = &c_scope_data( scope )->type;
-      FPUTS( c_type_is_none( t ) ? "none" : c_type_name_c( t ), dout );
-    } // for
-    FPUTC( '"', dout );
+  if ( c_sname_empty( sname ) ) {
+    FPUTS( "null", dout );
+    return;
   }
-  FPUTS( " }", dout );
+
+  FPRINTF( dout, "{ string: \"%s\", scopes: \"", c_sname_full_name( sname ) );
+
+  bool colon2 = false;
+  FOREACH_SNAME_SCOPE( scope, sname ) {
+    fput_sep( "::", &colon2, dout );
+    c_type_t const *const t = &c_scope_data( scope )->type;
+    FPUTS( c_type_is_none( t ) ? "none" : c_type_name_c( t ), dout );
+  } // for
+
+  FPUTS( "\" }", dout );
 }
 
 void c_sname_list_dump( slist_t const *list, FILE *dout ) {
