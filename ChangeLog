@@ -1,5 +1,6 @@
 2023-09-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: s/JSON5-like/JSON5/
    * dump.c, dump.h, debug.out: Now printing "null" for empty snames.
    * dump.c, debug.out: Now dumping unique_id first.
    * dump.c: Added 'u'.
