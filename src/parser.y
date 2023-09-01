@@ -3939,18 +3939,18 @@ destructor_declaration_c
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
       DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
 
-      c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      c_sname_append_name( &ast->sname, $name );
-      ast->type.stids = c_tid_check(
+      c_ast_t *const dtor_ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
+      c_sname_append_name( &dtor_ast->sname, $name );
+      dtor_ast->type.stids = c_tid_check(
         $virtual_stid | $qual_stids | $noexcept_stid | $equals_stid,
         C_TPID_STORE
       );
 
-      DUMP_AST( "destructor_declaration_c", ast );
+      DUMP_AST( "destructor_declaration_c", dtor_ast );
       DUMP_END();
 
-      PARSE_ASSERT( c_ast_check( ast ) );
-      c_ast_english( ast, stdout );
+      PARSE_ASSERT( c_ast_check( dtor_ast ) );
+      c_ast_english( dtor_ast, stdout );
     }
   ;
 
@@ -3973,19 +3973,19 @@ file_scope_constructor_declaration_c
 
       c_sname_set_scope_type( &$sname, &C_TYPE_LIT_B( TB_CLASS ) );
 
-      c_ast_t *const ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      ast->sname = c_sname_move( &$sname );
-      ast->type.stids = c_tid_check(
+      c_ast_t *const ctor_ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
+      ctor_ast->sname = c_sname_move( &$sname );
+      ctor_ast->type.stids = c_tid_check(
         $inline_stid | $qual_stids | $noexcept_stid,
         C_TPID_STORE
       );
-      ast->ctor.param_ast_list = slist_move( &$param_ast_list );
+      ctor_ast->ctor.param_ast_list = slist_move( &$param_ast_list );
 
-      DUMP_AST( "file_scope_constructor_declaration_c", ast );
+      DUMP_AST( "file_scope_constructor_declaration_c", ctor_ast );
       DUMP_END();
 
-      PARSE_ASSERT( c_ast_check( ast ) );
-      c_ast_english( ast, stdout );
+      PARSE_ASSERT( c_ast_check( ctor_ast ) );
+      c_ast_english( ctor_ast, stdout );
     }
   ;
 
@@ -4006,18 +4006,18 @@ file_scope_destructor_declaration_c
 
       c_sname_set_scope_type( &$sname, &C_TYPE_LIT_B( TB_CLASS ) );
 
-      c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      ast->sname = c_sname_move( &$sname );
-      ast->type.stids = c_tid_check(
+      c_ast_t *const dtor_ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
+      dtor_ast->sname = c_sname_move( &$sname );
+      dtor_ast->type.stids = c_tid_check(
         $inline_stid | $qual_stids | $noexcept_stid,
         C_TPID_STORE
       );
 
-      DUMP_AST( "file_scope_destructor_declaration_c", ast );
+      DUMP_AST( "file_scope_destructor_declaration_c", dtor_ast );
       DUMP_END();
 
-      PARSE_ASSERT( c_ast_check( ast ) );
-      c_ast_english( ast, stdout );
+      PARSE_ASSERT( c_ast_check( dtor_ast ) );
+      c_ast_english( dtor_ast, stdout );
     }
   ;
 
