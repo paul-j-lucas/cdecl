@@ -240,66 +240,65 @@ static set_option_fn_args_t const enabled_args = {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Convenience function for getting `"no"` or not to print.
+ * A helper function for print_option() that converts \a b to a suitable
+ * `opt_value` argument.
  *
- * @param enabled Whether a toggle option is enabled.
- * @return If \a enabled is `true`, returns `"  "` (two spaces); if `false`,
- * returns `"no"`.
+ * @param b The Boolean value to use.
+ * @return If \a b is `true`, returns NULL; otherwise returns the empty string.
  */
 NODISCARD
-static inline char const* maybe_no( bool enabled ) {
-  return enabled ? "  " : "no";
+static inline char const* po_bool_value( bool b ) {
+  return b ? NULL : "";
+}
+
+/**
+ * Prints an option setting.
+ *
+ * @param opt_name The option name.
+ * @param opt_value The option value. If:
+ *  + NULL, prints \a opt_name.
+ *  + empty, prints `no` followed by \a opt_name.
+ *  + non-empty, prints \a opt_name followed by `=` followed by \a opt_value.
+ */
+static void print_option( char const *opt_name, char const *opt_value ) {
+  bool const is_no     = opt_value != NULL && opt_value[0] == '\0';
+  bool const has_value = opt_value != NULL && opt_value[0] != '\0';
+
+  PRINTF( "  %s%s%s%s\n",
+    is_no ? "no" : "  ",
+    opt_name,
+    has_value ? "=" : "",
+    has_value ? opt_value : ""
+  );
 }
 
 /**
  * Prints the current option settings.
  */
 static void print_options( void ) {
-  PRINTF( "  %salt-tokens\n", maybe_no( opt_alt_tokens ) );
+  print_option( "alt-tokens", po_bool_value( opt_alt_tokens ) );
 #ifdef YYDEBUG
-  PRINTF( "  %sbison-debug\n", maybe_no( opt_bison_debug ) );
+  print_option( "bison-debug", po_bool_value( opt_bison_debug ) );
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-  PRINTF( "  %sdebug\n", maybe_no( opt_cdecl_debug ) );
+  print_option( "debug", po_bool_value( opt_cdecl_debug ) );
 #endif /* ENABLE_CDECL_DEBUG */
-  PRINTF( "  %seast-const\n", maybe_no( opt_east_const ) );
-  PRINTF( "  %secho-commands\n", maybe_no( opt_echo_commands ) );
-  PRINTF( "  %senglish-types\n", maybe_no( opt_english_types ) );
-  PRINTF( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
-
-  if ( opt_explicit_ecsu_btids != TB_NONE ) {
-    PUTS( "    explicit-ecsu=" );
-    print_explicit_ecsu( stdout );
-    PUTC( '\n' );
-  } else {
-    PUTS( "  noexplicit-ecsu\n" );
-  }
-
-  if ( any_explicit_int() ) {
-    PUTS( "    explicit-int=" );
-    print_explicit_int( stdout );
-    PUTC( '\n' );
-  } else {
-    PUTS( "  noexplicit-int\n" );
-  }
-
+  print_option( "east-const", po_bool_value( opt_east_const ) );
+  print_option( "echo-commands", po_bool_value( opt_echo_commands ) );
+  print_option( "english-types", po_bool_value( opt_english_types ) );
+  print_option( "explain-by-default", po_bool_value( opt_explain ) );
+  print_option( "explicit-ecsu", explicit_ecsu_str() );
+  print_option( "explicit-int", explicit_int_str() );
 #ifdef ENABLE_FLEX_DEBUG
-  PRINTF( "  %sflex-debug\n", maybe_no( opt_flex_debug ) );
+  print_option( "flex-debug", po_bool_value( opt_flex_debug ) );
 #endif /* ENABLE_FLEX_DEBUG */
   PRINTF( " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
-  PRINTF( "    lang=%s\n", c_lang_name( opt_lang ) );
-  PRINTF( "  %sprompt\n", maybe_no( opt_prompt ) );
-  PRINTF( "  %ssemicolon\n", maybe_no( opt_semicolon ) );
-  PRINTF( "  %strailing-return\n", maybe_no( opt_trailing_ret ) );
-  PRINTF( "  %susing\n", maybe_no( opt_using ) );
-
-  if ( opt_west_pointer_kinds != 0 ) {
-    PUTS( "    west-pointer=" );
-    print_west_pointer( stdout );
-    PUTC( '\n' );
-  } else {
-    PUTS( "  nowest-pointer\n" );
-  }
+  print_option( "lang", c_lang_name( opt_lang ) );
+  print_option( "prompt", po_bool_value( opt_prompt ) );
+  print_option( "semicolon", po_bool_value( opt_semicolon ) );
+  print_option( "trailing-return", po_bool_value( opt_trailing_ret ) );
+  print_option( "using", po_bool_value( opt_using ) );
+  print_option( "west-pointer", west_pointer_str() );
 }
 
 /**

@@ -117,10 +117,33 @@ extern int          yydebug;            ///< Bison variable for debugging.
  *
  * @sa is_explicit_int()
  * @sa parse_explicit_int()
- * @sa print_explicit_int()
+ * @sa explicit_int_str()
  */
 NODISCARD
 bool any_explicit_int( void );
+
+/**
+ * Gets the string representation of the explicit `enum`, `class`, `struct`,
+ * `union` option.
+ *
+ * @return Returns said representation.
+ *
+ * @sa parse_explicit_ecsu()
+ */
+NODISCARD
+char const* explicit_ecsu_str( void );
+
+/**
+ * Gets the string representation of the explicit integer option.
+ *
+ * @return Returns said representation.
+ *
+ * @sa any_explicit_int()
+ * @sa is_explicit_int()
+ * @sa parse_explicit_int()
+ */
+NODISCARD
+char const* explicit_int_str( void );
 
 /**
  * Checks whether \a btids shall have `int` be printed explicitly for it.
@@ -131,7 +154,7 @@ bool any_explicit_int( void );
  *
  * @sa any_explicit_int()
  * @sa parse_explicit_int()
- * @sa print_explicit_int()
+ * @sa explicit_int_str()
  */
 NODISCARD
 bool is_explicit_int( c_tid_t btids );
@@ -152,7 +175,7 @@ bool is_explicit_int( c_tid_t btids );
  * or either the empty string or `-` may be given to mean "none."
  * @return Returns `true` only if \a ecsu_format was parsed successfully.
  *
- * @sa print_explicit_ecsu()
+ * @sa explicit_ecsu_str()
  */
 NODISCARD
 bool parse_explicit_ecsu( char const *ecsu_format );
@@ -178,7 +201,7 @@ bool parse_explicit_ecsu( char const *ecsu_format );
  *
  * @sa any_explicit_int()
  * @sa is_explicit_int()
- * @sa print_explicit_int()
+ * @sa explicit_int_str()
  */
 NODISCARD
 bool parse_explicit_int( char const *ei_format );
@@ -201,40 +224,20 @@ bool parse_explicit_int( char const *ei_format );
  * `-` may be given to mean "none."
  * @return Returns `true` only if \a wp_format was parsed successfully.
  *
- * @sa print_west_pointer()
+ * @sa west_pointer_str()
  */
 NODISCARD
 bool parse_west_pointer( char const *wp_format );
 
 /**
- * Prints the string representation of the explicit `enum`, `class`, `struct`,
- * `union` option.
+ * Gets the string representation of the west pointer option.
  *
- * @param out The `FILE` to print to.
- *
- * @sa parse_explicit_ecsu()
- */
-void print_explicit_ecsu( FILE *out );
-
-/**
- * Prints the string representation of the explicit integer option.
- *
- * @param out The `FILE` to print to.
- *
- * @sa any_explicit_int()
- * @sa is_explicit_int()
- * @sa parse_explicit_int()
- */
-void print_explicit_int( FILE *out );
-
-/**
- * Prints the string representation of the west pointer option.
- *
- * @param out The `FILE` to print to.
+ * @return Returns said representation.
  *
  * @sa parse_west_pointer()
  */
-void print_west_pointer( FILE *out );
+NODISCARD
+char const* west_pointer_str( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 

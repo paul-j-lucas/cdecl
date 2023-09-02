@@ -27,6 +27,7 @@
 #include "pjl_config.h"                 /* must go first */
 #include "options.h"
 #include "c_type.h"
+#include "strbuf.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -91,6 +92,60 @@ static c_tid_t      opt_explicit_int_btids[] = { TB_NONE, TB_NONE };
 bool any_explicit_int( void ) {
   return  opt_explicit_int_btids[0] != TB_NONE ||
           opt_explicit_int_btids[1] != TB_NONE;
+}
+
+char const* explicit_ecsu_str( void ) {
+  static char buf[5];
+  char *s = buf;
+
+  if ( (opt_explicit_ecsu_btids & TB_ENUM) != TB_NONE )
+    *s++ = 'e';
+  if ( (opt_explicit_ecsu_btids & TB_CLASS) != TB_NONE )
+    *s++ = 'c';
+  if ( (opt_explicit_ecsu_btids & TB_STRUCT) != TB_NONE )
+    *s++ = 's';
+  if ( (opt_explicit_ecsu_btids & TB_UNION) != TB_NONE )
+    *s++ = 'u';
+  *s = '\0';
+
+  return buf;
+}
+
+char const* explicit_int_str( void ) {
+  bool const is_explicit_s   = is_explicit_int( TB_SHORT );
+  bool const is_explicit_i   = is_explicit_int( TB_INT );
+  bool const is_explicit_l   = is_explicit_int( TB_LONG );
+  bool const is_explicit_ll  = is_explicit_int( TB_LONG_LONG );
+
+  bool const is_explicit_us  = is_explicit_int( TB_UNSIGNED | TB_SHORT );
+  bool const is_explicit_ui  = is_explicit_int( TB_UNSIGNED | TB_INT );
+  bool const is_explicit_ul  = is_explicit_int( TB_UNSIGNED | TB_LONG );
+  bool const is_explicit_ull = is_explicit_int( TB_UNSIGNED | TB_LONG_LONG );
+
+  static strbuf_t sbuf;
+  strbuf_reset( &sbuf );
+
+  if ( is_explicit_s & is_explicit_i && is_explicit_l && is_explicit_ll ) {
+    strbuf_putc( &sbuf, 'i' );
+  }
+  else {
+    if ( is_explicit_s  ) strbuf_putc ( &sbuf, 's'     );
+    if ( is_explicit_i  ) strbuf_putc ( &sbuf, 'i'     );
+    if ( is_explicit_l  ) strbuf_putc ( &sbuf, 'l'     );
+    if ( is_explicit_ll ) strbuf_putsn( &sbuf, "ll", 2 );
+  }
+
+  if ( is_explicit_us & is_explicit_ui && is_explicit_ul && is_explicit_ull ) {
+    strbuf_putc( &sbuf, 'u' );
+  }
+  else {
+    if ( is_explicit_us  ) strbuf_putsn( &sbuf, "us",  2 );
+    if ( is_explicit_ui  ) strbuf_putsn( &sbuf, "ui",  2 );
+    if ( is_explicit_ul  ) strbuf_putsn( &sbuf, "ul",  2 );
+    if ( is_explicit_ull ) strbuf_putsn( &sbuf, "ull", 3 );
+  }
+
+  return empty_if_null( sbuf.str );
 }
 
 bool is_explicit_int( c_tid_t btids ) {
@@ -244,60 +299,22 @@ bool parse_west_pointer( char const *wp_format ) {
   return true;
 }
 
-void print_explicit_ecsu( FILE *out ) {
-  if ( (opt_explicit_ecsu_btids & TB_ENUM) != TB_NONE )
-    FPUTC( 'e', out );
-  if ( (opt_explicit_ecsu_btids & TB_CLASS) != TB_NONE )
-    FPUTC( 'c', out );
-  if ( (opt_explicit_ecsu_btids & TB_STRUCT) != TB_NONE )
-    FPUTC( 's', out );
-  if ( (opt_explicit_ecsu_btids & TB_UNION) != TB_NONE )
-    FPUTC( 'u', out );
-}
+char const* west_pointer_str( void ) {
+  static char buf[6];
+  char *s = buf;
 
-void print_explicit_int( FILE *out ) {
-  bool const is_explicit_s   = is_explicit_int( TB_SHORT );
-  bool const is_explicit_i   = is_explicit_int( TB_INT );
-  bool const is_explicit_l   = is_explicit_int( TB_LONG );
-  bool const is_explicit_ll  = is_explicit_int( TB_LONG_LONG );
-
-  bool const is_explicit_us  = is_explicit_int( TB_UNSIGNED | TB_SHORT );
-  bool const is_explicit_ui  = is_explicit_int( TB_UNSIGNED | TB_INT );
-  bool const is_explicit_ul  = is_explicit_int( TB_UNSIGNED | TB_LONG );
-  bool const is_explicit_ull = is_explicit_int( TB_UNSIGNED | TB_LONG_LONG );
-
-  if ( is_explicit_s & is_explicit_i && is_explicit_l && is_explicit_ll ) {
-    FPUTC( 'i', out );
-  }
-  else {
-    if ( is_explicit_s   ) FPUTC(  's',  out );
-    if ( is_explicit_i   ) FPUTC(  'i',  out );
-    if ( is_explicit_l   ) FPUTC(  'l',  out );
-    if ( is_explicit_ll  ) FPUTS(  "ll", out );
-  }
-
-  if ( is_explicit_us & is_explicit_ui && is_explicit_ul && is_explicit_ull ) {
-    FPUTC( 'u', out );
-  }
-  else {
-    if ( is_explicit_us  ) FPUTS( "us",  out );
-    if ( is_explicit_ui  ) FPUTS( "ui",  out );
-    if ( is_explicit_ul  ) FPUTS( "ul",  out );
-    if ( is_explicit_ull ) FPUTS( "ull", out );
-  }
-}
-
-void print_west_pointer( FILE *out ) {
   if ( (opt_west_pointer_kinds & K_APPLE_BLOCK) != 0 )
-    FPUTC( 'b', out );
+    *s++ = 'b';
   if ( (opt_west_pointer_kinds & K_FUNCTION) != 0 )
-    FPUTC( 'f', out );
+    *s++ = 'f';
   if ( (opt_west_pointer_kinds & K_USER_DEF_LITERAL) != 0 )
-    FPUTC( 'l', out );
+    *s++ = 'l';
   if ( (opt_west_pointer_kinds & K_OPERATOR) != 0 )
-    FPUTC( 'o', out );
+    *s++ = 'o';
   if ( (opt_west_pointer_kinds & K_ANY_NON_PTR_REF_OBJECT) != 0 )
-    FPUTC( 't', out );
+    *s++ = 't';
+
+  return buf;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
