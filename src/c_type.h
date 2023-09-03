@@ -564,13 +564,12 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_NEW_DELETE_OPER
  * @sa #TS_USER_DEF_CONV
  */
-#define TS_FUNC_LIKE_CPP      ( TS_CV | TS_CONSTEVAL | TS_CONSTEXPR \
+#define TS_FUNC_LIKE_CPP      ( TS_CVR | TS_CONSTEVAL | TS_CONSTEXPR \
                               | TS_DEFAULT | TS_DELETE | TS_EXPLICIT \
                               | TS_EXPORT | TS_EXTERN_C | TS_FINAL \
                               | TS_FRIEND | TS_FUNC_C | TS_NOEXCEPT \
                               | TS_OVERRIDE | TS_PURE_VIRTUAL \
-                              | TS_ANY_REFERENCE | TS_RESTRICT | TS_THROW \
-                              | TS_VIRTUAL )
+                              | TS_ANY_REFERENCE | TS_THROW | TS_VIRTUAL )
 
 /**
  * The types that can apply only to function-like things except constructors.
@@ -580,9 +579,9 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_CONSTRUCTOR_ONLY
  * @sa #TS_FUNC_LIKE_CPP
  */
-#define TS_FUNC_LIKE_NOT_CTOR ( TS_CV | TS_EXTERN | TS_EXTERN_C | TS_FINAL \
-                              | TS_OVERRIDE | TS_ANY_REFERENCE | TS_RESTRICT \
-                              | TS_STATIC | TS_VIRTUAL )
+#define TS_FUNC_LIKE_NOT_CTOR ( TS_CVR | TS_EXTERN | TS_EXTERN_C | TS_FINAL \
+                              | TS_OVERRIDE | TS_ANY_REFERENCE | TS_STATIC \
+                              | TS_VIRTUAL )
 
 /**
  * The only storage types that can _not_ apply to C++ function like things
