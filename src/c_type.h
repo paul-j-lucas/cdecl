@@ -369,7 +369,7 @@ typedef enum c_tpid c_tpid_t;
 //
 // Unified Parallel C qualifiers
 //
-// If you add a new TS_UPS_xxx here, it must also exist in QUAL_STIDS[] inside
+// If you add a new TS_UPC_xxx here, it must also exist in QUAL_STIDS[] inside
 // c_type_name_impl().
 //
 #define TS_UPC_RELAXED        0x0000002000000002ull /**< `relaxed`            */
