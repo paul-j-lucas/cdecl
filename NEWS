@@ -58,6 +58,11 @@ C++20 and later:
     9: warning: "volatile" return types are deprecated since C++20
     declare f as function returning vint
 
+** Unsupported `set` options
+When printing all `set` options in response to the `set` command, **cdecl** now
+also prints `(Not supported ....)` next to options that are not supported in
+the current language.
+
 
 * Changes in Cdecl 14.3
 

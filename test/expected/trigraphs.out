@@ -63,14 +63,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
- trigraphs
+ trigraphs                   (Not supported until C89.)
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare a as array 9 of int
 int a[9];
@@ -86,14 +86,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
- trigraphs
+ trigraphs                   (Not supported since C23.)
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare a as array 9 of int
 int a[9];
@@ -111,7 +111,7 @@ c++decl> set
   noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
- trigraphs
+ trigraphs                   (Not supported since C++17.)
     lang=C++23
     prompt
     semicolon

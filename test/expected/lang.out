@@ -6,14 +6,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set ck&r
 cdecl> set
@@ -23,14 +23,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set k&r
 cdecl> set
@@ -40,14 +40,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set k&rc
 cdecl> set
@@ -57,14 +57,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set cknr
 cdecl> set
@@ -74,14 +74,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set knr
 cdecl> set
@@ -91,14 +91,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set knrc
 cdecl> set
@@ -108,14 +108,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set c78
 cdecl> set
@@ -125,14 +125,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set c89
 cdecl> set
@@ -142,14 +142,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C89
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set c90
 cdecl> set
@@ -159,14 +159,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C89
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set c95
 cdecl> set
@@ -176,14 +176,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C95
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set c99
 cdecl> set
@@ -193,14 +193,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C99
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set c11
 cdecl> set
@@ -210,14 +210,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C11
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set c17
 cdecl> set
@@ -227,14 +227,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C17
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set c18
 cdecl> set
@@ -244,14 +244,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C17
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set c23
 cdecl> set
@@ -261,14 +261,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set c++
 c++decl> set
@@ -302,7 +302,7 @@ c++decl> set
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported until C++11.)
     west-pointer=bflo
 c++decl> set c++03
 c++decl> set
@@ -319,7 +319,7 @@ c++decl> set
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported until C++11.)
     west-pointer=bflo
 c++decl> set c++11
 c++decl> set
@@ -414,14 +414,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=ck&r
 cdecl> set
@@ -431,14 +431,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=k&r
 cdecl> set
@@ -448,14 +448,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=k&rc
 cdecl> set
@@ -465,14 +465,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=cknr
 cdecl> set
@@ -482,14 +482,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=knr
 cdecl> set
@@ -499,14 +499,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=knrc
 cdecl> set
@@ -516,14 +516,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=c78
 cdecl> set
@@ -533,14 +533,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=K&RC
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=c89
 cdecl> set
@@ -550,14 +550,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C89
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=c90
 cdecl> set
@@ -567,14 +567,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C89
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=c95
 cdecl> set
@@ -584,14 +584,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C95
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=c99
 cdecl> set
@@ -601,14 +601,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C99
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=c11
 cdecl> set
@@ -618,14 +618,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C11
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=c17
 cdecl> set
@@ -635,14 +635,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C17
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=c18
 cdecl> set
@@ -652,14 +652,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C17
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=c23
 cdecl> set
@@ -669,14 +669,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> set lang=c++
 c++decl> set
@@ -710,7 +710,7 @@ c++decl> set
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported until C++11.)
     west-pointer=bflo
 c++decl> set lang=c++03
 c++decl> set
@@ -727,7 +727,7 @@ c++decl> set
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported until C++11.)
     west-pointer=bflo
 c++decl> set lang=c++11
 c++decl> set

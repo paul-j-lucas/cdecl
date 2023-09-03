@@ -5,14 +5,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> explain (int)x
 builtin_type_c_ast: {

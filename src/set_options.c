@@ -91,6 +91,12 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
             set_using( set_option_fn_args_t const* ),
             set_west_pointer( set_option_fn_args_t const* );
 
+/**
+ * The column at which to print `(Not supported ...)` when an option is not
+ * supported in the current language.
+ */
+static unsigned const OPTION_NOT_SUPPORTED_COLUMN = 30u;
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -252,6 +258,21 @@ static inline char const* po_bool_value( bool b ) {
 }
 
 /**
+ * Prints spaces to align printing `(Not supported ___.)` where `___` is the
+ * value of `c_lang_which(` \a ok_lang_ids `)`.
+ *
+ * @param chars The number of characters already printed on the line.
+ * @param ok_lang_ids The bitwise-or of language(s) the option is supported in.
+ */
+static void print_not_supported( unsigned chars, c_lang_id_t ok_lang_ids ) {
+  assert( chars < OPTION_NOT_SUPPORTED_COLUMN - 1 );
+  unsigned const align_spaces = OPTION_NOT_SUPPORTED_COLUMN - 1 - chars;
+  assert( align_spaces >= 1 );
+  FPUTNSP( align_spaces, stdout );
+  PRINTF( "(Not supported%s.)", c_lang_which( ok_lang_ids ) );
+}
+
+/**
  * Prints an option setting.
  *
  * @param opt_name The option name.
@@ -259,46 +280,67 @@ static inline char const* po_bool_value( bool b ) {
  *  + NULL, prints \a opt_name.
  *  + empty, prints `no` followed by \a opt_name.
  *  + non-empty, prints \a opt_name followed by `=` followed by \a opt_value.
+ * @param ok_lang_ids The bitwise-or of language(s) the option is supported in.
  */
-static void print_option( char const *opt_name, char const *opt_value ) {
+static void print_option( char const *opt_name, char const *opt_value,
+                          c_lang_id_t ok_lang_ids ) {
   bool const is_no     = opt_value != NULL && opt_value[0] == '\0';
   bool const has_value = opt_value != NULL && opt_value[0] != '\0';
 
-  PRINTF( "  %s%s%s%s\n",
+  int const chars = printf( "  %s%s%s%s",
     is_no ? "no" : "  ",
     opt_name,
     has_value ? "=" : "",
     has_value ? opt_value : ""
   );
+  PERROR_EXIT_IF( chars < 0, EX_IOERR );
+
+  if ( !is_no && !opt_lang_is_any( ok_lang_ids ) )
+    print_not_supported( STATIC_CAST( unsigned, chars ), ok_lang_ids );
+
+  PUTC( '\n' );
 }
 
 /**
  * Prints the current option settings.
  */
 static void print_options( void ) {
-  print_option( "alt-tokens", po_bool_value( opt_alt_tokens ) );
+  print_option( "alt-tokens", po_bool_value( opt_alt_tokens ), LANG_ALT_TOKENS );
 #ifdef YYDEBUG
-  print_option( "bison-debug", po_bool_value( opt_bison_debug ) );
+  print_option( "bison-debug", po_bool_value( opt_bison_debug ), LANG_ANY );
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-  print_option( "debug", po_bool_value( opt_cdecl_debug ) );
+  print_option( "debug", po_bool_value( opt_cdecl_debug ), LANG_ANY );
 #endif /* ENABLE_CDECL_DEBUG */
-  print_option( "east-const", po_bool_value( opt_east_const ) );
-  print_option( "echo-commands", po_bool_value( opt_echo_commands ) );
-  print_option( "english-types", po_bool_value( opt_english_types ) );
-  print_option( "explain-by-default", po_bool_value( opt_explain ) );
-  print_option( "explicit-ecsu", explicit_ecsu_str() );
-  print_option( "explicit-int", explicit_int_str() );
+  print_option( "east-const", po_bool_value( opt_east_const ), LANG_const );
+  print_option( "echo-commands", po_bool_value( opt_echo_commands ), LANG_ANY );
+  print_option( "english-types", po_bool_value( opt_english_types ), LANG_ANY );
+  print_option( "explain-by-default", po_bool_value( opt_explain ), LANG_ANY );
+  print_option( "explicit-ecsu", explicit_ecsu_str(), LANG_CPP_ANY );
+  print_option( "explicit-int", explicit_int_str(), LANG_ANY );
 #ifdef ENABLE_FLEX_DEBUG
-  print_option( "flex-debug", po_bool_value( opt_flex_debug ) );
+  print_option( "flex-debug", po_bool_value( opt_flex_debug ), LANG_ANY );
 #endif /* ENABLE_FLEX_DEBUG */
-  PRINTF( " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
-  print_option( "lang", c_lang_name( opt_lang ) );
-  print_option( "prompt", po_bool_value( opt_prompt ) );
-  print_option( "semicolon", po_bool_value( opt_semicolon ) );
-  print_option( "trailing-return", po_bool_value( opt_trailing_ret ) );
-  print_option( "using", po_bool_value( opt_using ) );
-  print_option( "west-pointer", west_pointer_str() );
+
+  // [di|tri|no]graphs is a special case
+  int const chars = printf(
+    " %sgraphs",
+    opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no"
+  );
+  if ( opt_graph != C_GRAPH_NONE ) {
+    c_lang_id_t const ok_lang_ids =
+      opt_graph == C_GRAPH_DI ? LANG_DIGRAPHS : LANG_TRIGRAPHS;
+    if ( !opt_lang_is_any( ok_lang_ids ) )
+      print_not_supported( STATIC_CAST( unsigned, chars ), ok_lang_ids );
+  }
+  PUTC( '\n' );
+
+  print_option( "lang", c_lang_name( opt_lang ), LANG_ANY );
+  print_option( "prompt", po_bool_value( opt_prompt ), LANG_ANY );
+  print_option( "semicolon", po_bool_value( opt_semicolon ), LANG_ANY );
+  print_option( "trailing-return", po_bool_value( opt_trailing_ret ), LANG_TRAILING_RETURN_TYPE );
+  print_option( "using", po_bool_value( opt_using ), LANG_using_DECLARATION );
+  print_option( "west-pointer", west_pointer_str(), LANG_ANY );
 }
 
 /**

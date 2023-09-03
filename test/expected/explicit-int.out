@@ -22,14 +22,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=s
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short int x;
@@ -55,14 +55,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=i
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short int x;
@@ -88,14 +88,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=iu
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short int x;
@@ -121,14 +121,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=l
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short x;
@@ -154,14 +154,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=ll
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short x;
@@ -187,14 +187,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=u
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short x;
@@ -220,14 +220,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=us
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short x;
@@ -253,14 +253,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=ui
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short x;
@@ -286,14 +286,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=ul
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short x;
@@ -319,14 +319,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=ull
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short x;
@@ -352,14 +352,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as short
 short x;
@@ -385,14 +385,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
     explicit-int=lu
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as long
 long int x;
@@ -410,14 +410,14 @@ cdecl> set
     echo-commands
     english-types
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
     lang=C23
     prompt
     semicolon
   notrailing-return
-    using
+    using                    (Not supported in C.)
     west-pointer=bflo
 cdecl> declare x as long
 long x;
