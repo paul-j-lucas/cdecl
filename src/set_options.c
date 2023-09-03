@@ -131,12 +131,28 @@ static set_option_t const SET_OPTIONS[] = {
   },
 #endif /* ENABLE_CDECL_DEBUG */
 
-  { "digraphs",
+  { "digraphs",                         // See comment for "graphs" entry.
     SET_OPTION_AFF_ONLY,
     .takes_value = false,
     &set_digraphs
   },
 
+  //
+  // [di|tri|no]graphs is a special case since it's the only 3-way option.
+  // Rather than make the code be able to handle 3-way options in general,
+  // split it into 3 set_option entries:
+  //
+  //  1. nographs (negative only)
+  //  2. digraphs (affirmative only)
+  //  3. trigraphs (affirmative only)
+  //
+  // and two `set_*()` functions:
+  //
+  //  1. set_digraphs() (handles "digraphs" and "nographs")
+  //  2. set_trigraphs()
+  //
+  // This does require the addition of SET_OPTION_NEG_ONLY, however.
+  //
   { "graphs",
     SET_OPTION_NEG_ONLY,
     .takes_value = false,
@@ -211,7 +227,7 @@ static set_option_t const SET_OPTIONS[] = {
     &set_trailing_return
   },
 
-  { "trigraphs",
+  { "trigraphs",                        // See comment for "graphs" entry.
     SET_OPTION_AFF_ONLY,
     .takes_value = false,
     &set_trigraphs
