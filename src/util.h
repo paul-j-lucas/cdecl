@@ -1199,7 +1199,7 @@ bool str_is_empty( char const *s ) {
  * @return If \a s is either null or the empty string, returns NULL; otherwise
  * returns a pointer to the first non-whitespace character in \a s.
  *
- * @sa empty_if_null();
+ * @sa empty_if_null()
  * @sa str_is_empty()
  */
 NODISCARD C_UTIL_H_INLINE
