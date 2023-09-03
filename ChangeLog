@@ -1,3 +1,14 @@
+2023-09-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c, cl.out, debug.out, explicit-int.out, lang.out, prompt.out,
+     set.out, set_options.out, trigraphs.out: Printing all `set` options now
+     also prints `(Not supported ....)` next to options that are not supported
+     in the current language.
+
+2023-09-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c, options.h, set_options.c: Added print_option() function.
+
 2023-09-01  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Now using c_ast_pair_t compound literals more.
