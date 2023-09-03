@@ -145,6 +145,18 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
   return best_op;
 }
 
+bool c_oper_is_new_delete( c_oper_id_t oper_id ) {
+  switch ( oper_id ) {
+    case C_OP_NEW:
+    case C_OP_NEW_ARRAY:
+    case C_OP_DELETE:
+    case C_OP_DELETE_ARRAY:
+      return true;
+    default:
+      return false;
+  } // switch
+}
+
 char const* c_oper_token_c( c_oper_id_t oper_id ) {
   char const *const literal = c_oper_get( oper_id )->literal;
   char const *const alt_token = alt_token_c( literal );

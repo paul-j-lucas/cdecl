@@ -154,6 +154,7 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_ati-c++20.test \
 	tests/declare_cnmf_v.test \
 	tests/declare_epf.test \
+	tests/declare_etmf.test \
 	tests/declare_exsti.test \
 	tests/declare_fcf.test \
 	tests/declare_fco_exclam_b.test \

@@ -907,11 +907,11 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
       );
       return false;
     }
-    if ( c_tid_is_any( ast->type.stids, TS_EXTERN | TS_STATIC ) ) {
+    if ( c_tid_is_any( ast->type.stids, TS_ANY_LINKAGE ) ) {
       print_error( &ast->loc,
         "reference qualified %ss can not be %s\n",
         c_kind_name( ast->kind ),
-        c_tid_name_error( ast->type.stids & (TS_EXTERN | TS_STATIC) )
+        c_tid_name_error( ast->type.stids & TS_ANY_LINKAGE )
       );
       return false;
     }
@@ -920,10 +920,10 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   c_tid_t const member_func_stids = ast->type.stids & TS_MEMBER_FUNC_ONLY;
 
   if ( member_func_stids != TS_NONE &&
-       c_tid_is_any( ast->type.stids, TS_EXTERN | TS_STATIC ) ) {
+       c_tid_is_any( ast->type.stids, TS_ANY_LINKAGE ) ) {
     print_error( &ast->loc,
-      "%s %s can not be %s\n",
-      c_tid_name_error( ast->type.stids & (TS_EXTERN | TS_STATIC) ),
+      "%s %ss can not be %s\n",
+      c_tid_name_error( ast->type.stids & TS_ANY_LINKAGE ),
       c_kind_name( ast->kind ),
       c_tid_name_error( member_func_stids )
     );
@@ -931,19 +931,38 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   }
 
   switch ( ast->func.mbr ) {
-    case C_FUNC_UNSPECIFIED:
-    case C_FUNC_MEMBER:
-      // nothing to do
+    case C_FUNC_MEMBER: {
+      //
+      // Member functions can't have linkage -- except the new & delete
+      // operators may have static explicitly specified.
+      //
+      c_tid_t linkage_stids = TS_EXTERN | TS_EXTERN_C;
+      if ( ast->kind == K_OPERATOR &&
+           !c_oper_is_new_delete( ast->oper.operator->oper_id ) ) {
+        linkage_stids |= TS_STATIC;
+      }
+      if ( c_tid_is_any( ast->type.stids, linkage_stids ) ) {
+        print_error( &ast->loc,
+          "member %ss can not be %s\n",
+          c_kind_name( ast->kind ),
+          c_tid_name_error( ast->type.stids & linkage_stids )
+        );
+        return false;
+      }
       break;
+    }
     case C_FUNC_NON_MEMBER:
       if ( member_func_stids != TS_NONE ) {
         print_error( &ast->loc,
-          "non-member %s can not be %s\n",
+          "non-member %ss can not be %s\n",
           c_kind_name( ast->kind ),
           c_tid_name_error( member_func_stids )
         );
         return false;
       }
+      break;
+    case C_FUNC_UNSPECIFIED:
+      // nothing to do
       break;
   } // switch
 
@@ -1623,27 +1642,18 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     } // switch
   }
 
-  switch ( op->oper_id ) {
-    case C_OP_NEW:
-    case C_OP_NEW_ARRAY:
-    case C_OP_DELETE:
-    case C_OP_DELETE_ARRAY:
-      //
-      // Special case for operators new, new[], delete, and delete[] that can
-      // only have specific types.
-      //
-      if ( c_tid_is_any( ast->type.stids,
-                         c_tid_compl( TS_NEW_DELETE_OPER ) ) ) {
-        print_error( &ast->loc,
-          "operator %s can not be %s\n",
-          op->literal, c_type_name_error( &ast->type )
-        );
-        return false;
-      }
-      break;
-    default:
-      /* suppress warning */;
-  } // switch
+  if ( c_oper_is_new_delete( op->oper_id ) &&
+       c_tid_is_any( ast->type.stids, c_tid_compl( TS_NEW_DELETE_OPER ) ) ) {
+    //
+    // Special case for operators new, new[], delete, and delete[] that can
+    // only have specific types.
+    //
+    print_error( &ast->loc,
+      "operator %s can not be %s\n",
+      op->literal, c_type_name_error( &ast->type )
+    );
+    return false;
+  }
 
   c_ast_t const *const ret_ast = ast->oper.ret_ast;
 
@@ -1918,22 +1928,14 @@ same: print_error( c_ast_params_loc( ast ),
       // Ensure non-member operators (except new, new[], delete, and delete[])
       // have at least one enum, class, struct, or union parameter.
       //
-      switch ( op->oper_id ) {
-        case C_OP_NEW:
-        case C_OP_NEW_ARRAY:
-        case C_OP_DELETE:
-        case C_OP_DELETE_ARRAY:
-          break;
-        default:
-          if ( ecsu_param_count == 0 ) {
-            print_error( c_ast_params_loc( ast ),
-              "at least 1 parameter of a non-member operator must be an "
-              "enum, class, struct, or union"
-              "; or a reference or rvalue reference thereto\n"
-            );
-            return false;
-          }
-      } // switch
+      if ( !c_oper_is_new_delete( op->oper_id ) && ecsu_param_count == 0 ) {
+        print_error( c_ast_params_loc( ast ),
+          "at least 1 parameter of a non-member operator must be an "
+          "enum, class, struct, or union"
+          "; or a reference or rvalue reference thereto\n"
+        );
+        return false;
+      }
       break;
 
     case C_FUNC_MEMBER:

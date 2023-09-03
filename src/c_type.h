@@ -463,6 +463,9 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TB_ANY_INTEGRAL       ( TB_BOOL | TB_ANY_CHAR | TB_BITINT | TB_INT \
                               | TB_ANY_MODIFIER )
 
+/// Shorthand for any linkage.
+#define TS_ANY_LINKAGE        ( TS_EXTERN | TS_EXTERN_C | TS_STATIC )
+
 /// Shorthand for an any modifier.
 #define TB_ANY_MODIFIER       ( TB_SHORT | TB_LONG | TB_LONG_LONG | TB_SIGNED \
                               | TB_UNSIGNED )
@@ -579,9 +582,8 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_CONSTRUCTOR_ONLY
  * @sa #TS_FUNC_LIKE_CPP
  */
-#define TS_FUNC_LIKE_NOT_CTOR ( TS_CVR | TS_EXTERN | TS_EXTERN_C | TS_FINAL \
-                              | TS_OVERRIDE | TS_ANY_REFERENCE | TS_STATIC \
-                              | TS_VIRTUAL )
+#define TS_FUNC_LIKE_NOT_CTOR ( TS_ANY_LINKAGE | TS_CVR | TS_FINAL \
+                              | TS_OVERRIDE | TS_ANY_REFERENCE | TS_VIRTUAL )
 
 /**
  * The only storage types that can _not_ apply to C++ function like things

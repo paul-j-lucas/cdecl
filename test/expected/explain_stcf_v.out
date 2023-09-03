@@ -1,3 +1,3 @@
 explain static void f() const
                     ^
-21: error: static function can not be const
+21: error: static functions can not be const
