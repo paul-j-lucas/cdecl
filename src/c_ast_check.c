@@ -283,7 +283,8 @@ NODISCARD
 static inline bool c_ast_oper_mbr_matches( c_ast_t const *ast,
                                            c_operator_t const *op ) {
   return  ast->oper.mbr == C_FUNC_UNSPECIFIED ||
-          ((unsigned)ast->oper.mbr & (unsigned)op->overload) != 0;
+          (STATIC_CAST( unsigned, ast->oper.mbr ) &
+           STATIC_CAST( unsigned, op->overload  )) != 0;
 }
 
 /**
@@ -657,9 +658,9 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     return false;
   }
 
-  c_ast_t const *const raw_ast = c_ast_untypedef( to_ast );
+  c_ast_t const *const raw_to_ast = c_ast_untypedef( to_ast );
 
-  switch ( raw_ast->kind ) {
+  switch ( raw_to_ast->kind ) {
     case K_ARRAY:
       if ( !c_sname_empty( &ast->sname ) ) {
         print_error( &ast->loc, "arithmetic or pointer type expected\n" );
@@ -675,7 +676,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 
   switch ( ast->cast.kind ) {
     case C_CAST_CONST:
-      if ( (raw_ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) == 0 ) {
+      if ( (raw_to_ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) == 0 ) {
         print_error( &to_ast->loc,
           "const_cast must be to a pointer, pointer-to-member, %s\n",
           OPT_LANG_IS( RVALUE_REFERENCE ) ?
@@ -686,8 +687,8 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       break;
 
     case C_CAST_DYNAMIC:
-      if ( !c_ast_is_ptr_to_kind_any( raw_ast, K_CLASS_STRUCT_UNION ) &&
-           !c_ast_is_ref_to_kind_any( raw_ast, K_CLASS_STRUCT_UNION ) ) {
+      if ( !c_ast_is_ptr_to_kind_any( raw_to_ast, K_CLASS_STRUCT_UNION ) &&
+           !c_ast_is_ref_to_kind_any( raw_to_ast, K_CLASS_STRUCT_UNION ) ) {
         print_error( &to_ast->loc,
           "dynamic_cast must be to a "
           "pointer or reference to a class, struct, or union\n"
@@ -1172,8 +1173,8 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
  */
 NODISCARD
 static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
-  c_ast_t const *const raw_ast = c_ast_untypedef( param_ast );
-  switch ( raw_ast->kind ) {
+  c_ast_t const *const raw_param_ast = c_ast_untypedef( param_ast );
+  switch ( raw_param_ast->kind ) {
     case K_ARRAY:                       // char *argv[]
     case K_POINTER:                     // char **argv
       if ( !c_ast_is_ptr_to_type_any( param_ast->parent.of_ast,

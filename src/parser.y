@@ -913,7 +913,7 @@ c_ast_t const* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     // that is: explaining an existing typedef.  In order to do that, we have
     // to un-typedef it so we explain the type that it's a typedef for.
     //
-    c_ast_t const *const raw_ast = c_ast_untypedef( decl_ast );
+    c_ast_t const *const raw_decl_ast = c_ast_untypedef( decl_ast );
 
     //
     // However, we also have to check whether the typedef being explained is
@@ -921,23 +921,24 @@ c_ast_t const* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     //
     //      explain typedef char int32_t;
     //
-    if ( !c_ast_equal( type_ast, raw_ast ) ) {
+    if ( !c_ast_equal( type_ast, raw_decl_ast ) ) {
       print_error( &decl_ast->loc,
         "\"%s\": type redefinition with different type; original is: ",
-        c_sname_full_name( &raw_ast->sname )
+        c_sname_full_name( &raw_decl_ast->sname )
       );
       // Look-up the type so we can print it how it was originally defined.
-      c_typedef_t const *const tdef = c_typedef_find_sname( &raw_ast->sname );
+      c_typedef_t const *const tdef =
+        c_typedef_find_sname( &raw_decl_ast->sname );
       assert( tdef != NULL );
       print_type( tdef, stderr );
       return NULL;
     }
 
     //
-    // Because the raw_ast for the existing type is about to be combined with
-    // type_ast, duplicate raw_ast first.
+    // Because the raw_decl_ast for the existing type is about to be combined
+    // with type_ast, duplicate raw_decl_ast first.
     //
-    decl_ast = c_ast_dup( raw_ast, &gc_ast_list );
+    decl_ast = c_ast_dup( raw_decl_ast, &gc_ast_list );
   }
 
   c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
@@ -4863,7 +4864,7 @@ typedef_type_decl_c_ast
         //
         // Otherwise, return the type that it's typedef'd as.
         //
-        c_ast_t const *const raw_ast = c_ast_untypedef( $tdef_ast );
+        c_ast_t const *const raw_tdef_ast = c_ast_untypedef( $tdef_ast );
 
         //
         // But first ensure the name isn't of a previously declared type:
@@ -4910,12 +4911,13 @@ typedef_type_decl_c_ast
         //
         // but that name isn't of a previously declared type, so it's OK.
         //
-        c_typedef_t const *const tdef = c_typedef_find_sname( &raw_ast->sname );
+        c_typedef_t const *const tdef =
+          c_typedef_find_sname( &raw_tdef_ast->sname );
         if ( tdef != NULL ) {
           print_error(
             &$tdef_ast->loc,
             "\"%s\": previously declared as type: ",
-            c_sname_full_name( &raw_ast->sname )
+            c_sname_full_name( &raw_tdef_ast->sname )
           );
           print_type( tdef, stderr );
           PARSE_ABORT();
@@ -4924,7 +4926,7 @@ typedef_type_decl_c_ast
         //
         // We have to duplicate the type to set the current location.
         //
-        $$ = c_ast_dup( raw_ast, &gc_ast_list );
+        $$ = c_ast_dup( raw_tdef_ast, &gc_ast_list );
         $$->loc = $tdef_ast->loc;
       }
 
