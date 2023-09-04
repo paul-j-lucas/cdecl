@@ -279,8 +279,8 @@ static inline bool c_ast_is_register( c_ast_t const *ast ) {
  *    op.
  */
 NODISCARD
-static bool c_ast_oper_mbr_matches( c_ast_t const *ast,
-                                    c_operator_t const *op ) {
+static inline bool c_ast_oper_mbr_matches( c_ast_t const *ast,
+                                           c_operator_t const *op ) {
   return  ast->oper.mbr == C_FUNC_UNSPECIFIED ||
           ((unsigned)ast->oper.mbr & (unsigned)op->overload) != 0;
 }
@@ -293,7 +293,7 @@ static bool c_ast_oper_mbr_matches( c_ast_t const *ast,
  * ast if \a ast has no parameters.
  */
 NODISCARD
-c_loc_t const* c_ast_params_loc( c_ast_t const *ast ) {
+static inline c_loc_t const* c_ast_params_loc( c_ast_t const *ast ) {
   c_ast_t const *const param_ast = c_param_ast( c_ast_params( ast ) );
   return &IF_ELSE( param_ast, ast )->loc;
 }
