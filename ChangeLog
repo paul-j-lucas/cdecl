@@ -1,5 +1,10 @@
 2023-09-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, c_operator.c, c_operator.h, c_type.h, test/Makefile.am,
+     declare_cnmf_v.out, declare_etmf.out, explain_stcf_v.out,
+     declare_etmf.test: Now flagging member functions with user-specified
+     linkage as an error.
+   * c_type.h: Now using TS_CVR more.
    * set_options.c, cl.out, debug.out, explicit-int.out, lang.out, prompt.out,
      set.out, set_options.out, trigraphs.out: Printing all `set` options now
      also prints `(Not supported ....)` next to options that are not supported
