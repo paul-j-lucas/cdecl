@@ -1,5 +1,10 @@
 2023-09-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, parser.y: s/raw_ast = c_ast_untypedef( foo_ast
+     )/raw_foo_ast = c_ast_untypedef( foo_ast )/
+   * c_ast_check.c: Added #include.
+   * c_ast_check.c: Added missing "inline".
+   * c_ast_check.c, parser.y, util.h: Added IF_ELSE() macro.
    * cdecl_keyword.c: Removed autocompletion next keywords from "array" --
      forgot to do this when "non-empty" was added.
 
