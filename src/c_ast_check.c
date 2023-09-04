@@ -295,7 +295,7 @@ static bool c_ast_oper_mbr_matches( c_ast_t const *ast,
 NODISCARD
 c_loc_t const* c_ast_params_loc( c_ast_t const *ast ) {
   c_ast_t const *const param_ast = c_param_ast( c_ast_params( ast ) );
-  return &(param_ast != NULL ? param_ast : ast)->loc;
+  return &IF_ELSE( param_ast, ast )->loc;
 }
 
 /**

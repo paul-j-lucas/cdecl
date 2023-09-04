@@ -390,6 +390,18 @@ _GL_INLINE_HEADER_BEGIN
   PERROR_EXIT_IF( fstat( (FD), (PSTAT) ) < 0, EX_IOERR )
 
 /**
+ * Shorthand for `((EXPR1) ? (EXPR1) : (EXPR2))`.
+ *
+ * @param EXPR1 The first expression.
+ * @param EXPR2 The second expression.
+ * @return Returns \a EXPR1 only if it evaluates to non-zero; otherwise returns
+ * \a EXPR2.
+ *
+ * @warning If \a EXPR1 is non-zero, it is evaluated twice.
+ */
+#define IF_ELSE(EXPR1,EXPR2)      ( (EXPR1) ? (EXPR1) : (EXPR2) )
+
+/**
  * Cast either from or to an integral type &mdash; similar to C++'s
  * `reinterpret_cast`, but for integers only.
  *
