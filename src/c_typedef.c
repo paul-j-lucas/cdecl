@@ -69,7 +69,8 @@
 
 /**
  * Contains a **cdecl** command defining a type and the source line number it's
- * defined on.
+ * defined on.  The line number is included in an error message if the type
+ * fails to parse.
  */
 struct predef_type {
   char const *str;                      ///< **Cdecl** command defining a type.
@@ -1036,7 +1037,7 @@ static void parse_predef_types( predef_type_t const types[static const 2] ) {
   assert( types != NULL );
   for ( predef_type_t const *pt = types; pt->str != NULL; ++pt ) {
     if ( unlikely( cdecl_parse_string( pt->str, strlen( pt->str ) ) != EX_OK ) )
-      INTERNAL_ERROR( "failed parsing predefined type on line %u\n", pt->line );
+      INTERNAL_ERROR( "failed parsing type predefined on line %u\n", pt->line );
   } // for
 }
 
