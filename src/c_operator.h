@@ -62,7 +62,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @note #C_OVERLOAD_MEMBER and #C_OVERLOAD_NON_MEMBER _must_ have the same
  * values as #C_FUNC_MEMBER and #C_FUNC_NON_MEMBER, respectively.  This enables
- * \ref c_function_ast::mbr (whether the user-specified member or non-member)
+ * \ref c_operator_ast::mbr (whether the user-specified member or non-member)
  * to be bitwise-and'd with \ref c_operator::overload (the overloadability of
  * the operator): if non-zero, it means what the user specified is allowed by
  * the operator.
