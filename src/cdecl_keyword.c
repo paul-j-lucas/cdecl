@@ -297,7 +297,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     TOKEN( Y_array ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
-      AC_NEXT_KEYWORDS( L_const, L_static, L_volatile )
+      AC_NO_NEXT_KEYWORDS
     )
   },
 
