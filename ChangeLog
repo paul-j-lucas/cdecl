@@ -1,3 +1,8 @@
+2023-09-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_keyword.c: Removed autocompletion next keywords from "array" --
+     forgot to do this when "non-empty" was added.
+
 2023-09-03  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, c_operator.c, c_operator.h, c_type.h, test/Makefile.am,
