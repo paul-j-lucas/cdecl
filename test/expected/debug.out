@@ -2180,7 +2180,7 @@ func_decl_c_astp: {
       loc: { first_column: 13, last_column: 15 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       func: {
-        mbr: "unspecified",
+        member: "unspecified",
         param_ast_list: [],
         ret_ast: {
           unique_id: 1390,
@@ -2236,7 +2236,7 @@ decl_c: {
       loc: { first_column: 13, last_column: 15 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       func: {
-        mbr: "unspecified",
+        member: "unspecified",
         param_ast_list: [],
         ret_ast: {
           unique_id: 1390,
@@ -2274,7 +2274,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 15 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      mbr: "unspecified",
+      member: "unspecified",
       param_ast_list: [],
       ret_ast: {
         unique_id: 1390,
@@ -3098,7 +3098,7 @@ func_decl_c_astp: {
       loc: { first_column: 13, last_column: 43 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       func: {
-        mbr: "unspecified",
+        member: "unspecified",
         param_ast_list: [
           {
             unique_id: 1394,
@@ -3199,7 +3199,7 @@ decl_c: {
       loc: { first_column: 13, last_column: 43 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       func: {
-        mbr: "unspecified",
+        member: "unspecified",
         param_ast_list: [
           {
             unique_id: 1394,
@@ -3282,7 +3282,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 43 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      mbr: "unspecified",
+      member: "unspecified",
       param_ast_list: [
         {
           unique_id: 1394,
@@ -3774,7 +3774,7 @@ func_decl_c_astp: {
       loc: { first_column: 13, last_column: 23 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       func: {
-        mbr: "unspecified",
+        member: "unspecified",
         param_ast_list: [
           {
             unique_id: 1402,
@@ -3855,7 +3855,7 @@ decl_c: {
       loc: { first_column: 13, last_column: 23 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       func: {
-        mbr: "unspecified",
+        member: "unspecified",
         param_ast_list: [
           {
             unique_id: 1402,
@@ -3918,7 +3918,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 23 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      mbr: "unspecified",
+      member: "unspecified",
       param_ast_list: [
         {
           unique_id: 1402,
@@ -4390,7 +4390,7 @@ func_decl_c_astp: {
       loc: { first_column: 13, last_column: 30 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       func: {
-        mbr: "unspecified",
+        member: "unspecified",
         param_ast_list: [
           {
             unique_id: 1408,
@@ -4471,7 +4471,7 @@ decl_c: {
       loc: { first_column: 13, last_column: 30 },
       type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
       func: {
-        mbr: "unspecified",
+        member: "unspecified",
         param_ast_list: [
           {
             unique_id: 1408,
@@ -4534,7 +4534,7 @@ decl_c: {
     loc: { first_column: 13, last_column: 30 },
     type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
     func: {
-      mbr: "unspecified",
+      member: "unspecified",
       param_ast_list: [
         {
           unique_id: 1408,
@@ -4692,7 +4692,7 @@ oper_decl_c_astp: {
       type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
       oper: {
         oper_id: { value: 6, string: "!" },
-        mbr: "unspecified",
+        member: "unspecified",
         param_ast_list: [],
         ret_ast: {
           unique_id: 1413,
@@ -4749,7 +4749,7 @@ decl_c: {
       type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
       oper: {
         oper_id: { value: 6, string: "!" },
-        mbr: "unspecified",
+        member: "unspecified",
         param_ast_list: [],
         ret_ast: {
           unique_id: 1413,
@@ -4788,7 +4788,7 @@ decl_c: {
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     oper: {
       oper_id: { value: 6, string: "!" },
-      mbr: "unspecified",
+      member: "unspecified",
       param_ast_list: [],
       ret_ast: {
         unique_id: 1413,

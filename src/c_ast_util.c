@@ -700,7 +700,7 @@ c_sname_t c_ast_move_sname( c_ast_t *ast ) {
   return rv_sname;
 }
 
-c_func_mbr_t c_ast_oper_overload( c_ast_t const *ast ) {
+c_func_member_t c_ast_oper_overload( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
 
@@ -712,7 +712,7 @@ c_func_mbr_t c_ast_oper_overload( c_ast_t const *ast ) {
     case C_OVERLOAD_NONE:
     case C_OVERLOAD_MEMBER:
     case C_OVERLOAD_NON_MEMBER:
-      return STATIC_CAST( c_func_mbr_t, op->overload );
+      return STATIC_CAST( c_func_member_t, op->overload );
     case C_OVERLOAD_EITHER:
       break;
   } // switch
@@ -721,12 +721,12 @@ c_func_mbr_t c_ast_oper_overload( c_ast_t const *ast ) {
   // Otherwise, the operator can be either: see if the user specified which one
   // explicitly.
   //
-  switch ( ast->oper.mbr ) {
+  switch ( ast->oper.member ) {
     case C_FUNC_UNSPECIFIED:
       break;
     case C_FUNC_MEMBER:
     case C_FUNC_NON_MEMBER:
-      return ast->oper.mbr;
+      return ast->oper.member;
   } // switch
 
   //

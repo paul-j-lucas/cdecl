@@ -253,8 +253,8 @@ void c_ast_dump_impl( c_ast_t const *ast, d_state_t *d ) {
 
     case K_FUNCTION:
       kind_j = json_object_begin( kind_j, "func", d );
-      DUMP_KEY( d, "mbr: \"" );
-      switch ( ast->func.mbr ) {
+      DUMP_KEY( d, "member: \"" );
+      switch ( ast->func.member ) {
         case C_FUNC_UNSPECIFIED:
           FPUTS( "unspecified", d->dout );
           break;

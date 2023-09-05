@@ -100,7 +100,7 @@ enum c_cast_kind {
  *
  * @sa c_oper_overload
  */
-enum c_func_mbr {
+enum c_func_member {
   C_FUNC_UNSPECIFIED  = 0u,             ///< Unspecified.
   C_FUNC_MEMBER       = (1u << 0),      ///< Member function.
   C_FUNC_NON_MEMBER   = (1u << 1)       ///< Non-member function.
@@ -217,7 +217,7 @@ typedef enum   c_cast_kind        c_cast_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_csu_ast          c_csu_ast_t;
 typedef struct c_enum_ast         c_enum_ast_t;
-typedef enum   c_func_mbr         c_func_mbr_t;
+typedef enum   c_func_member      c_func_member_t;
 typedef struct c_function_ast     c_function_ast_t;
 typedef enum   c_graph            c_graph_t;
 typedef struct c_lambda_ast       c_lambda_ast_t;

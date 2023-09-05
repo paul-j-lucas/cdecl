@@ -1154,7 +1154,7 @@ static void yyerror( char const *msg ) {
   int                 int_val;    // signed integer value
   char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // identifier name, cf. sname
-  c_func_mbr_t        mbr;        // member, non-member, or unspecified
+  c_func_member_t     member;     // member, non-member, or unspecified
   c_oper_id_t         oper_id;    // overloaded operator ID
   c_sname_t           sname;      // scoped identifier name, cf. name
   slist_t             sname_list; // c_sname_t list
@@ -1562,7 +1562,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>         enum_unmodified_fixed_type_english_ast
 %type   <ast>         func_decl_english_ast
 %type   <type>        func_qualifier_english_type_opt
-%type   <mbr>         member_or_non_member_opt
+%type   <member>      member_or_non_member_opt
 %type   <cast_kind>   new_style_cast_english
 %type   <sname>       of_scope_english
 %type   <sname>       of_scope_list_english of_scope_list_english_opt
@@ -6426,7 +6426,7 @@ parens_opt
 
 func_decl_english_ast
   : // in_attr: qualifier
-    func_qualifier_english_type_opt[qual_type] member_or_non_member_opt[mbr]
+    func_qualifier_english_type_opt[qual_type] member_or_non_member_opt[member]
     Y_function paren_param_decl_list_english_opt[param_ast_list]
     returning_english_ast_opt[ret_ast]
     {
@@ -6436,14 +6436,14 @@ func_decl_english_ast
                   "FUNCTION paren_param_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_TYPE( "func_qualifier_english_type_opt", $qual_type );
-      DUMP_INT( "member_or_non_member_opt", $mbr );
+      DUMP_INT( "member_or_non_member_opt", $member );
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
       DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
       $$ = c_ast_new_gc( K_FUNCTION, &@$ );
       $$->type = $qual_type;
       $$->func.param_ast_list = $param_ast_list;
-      $$->func.mbr = $mbr;
+      $$->func.member = $member;
       c_ast_set_parent( $ret_ast, $$ );
 
       DUMP_AST( "func_decl_english_ast", $$ );
@@ -6477,7 +6477,7 @@ oper_decl_english_ast
   : // in_attr: operator
     type_qualifier_list_english_type_opt[qual_type]
     ref_qualifier_english_stid_opt[ref_qual_stid]
-    member_or_non_member_opt[mbr] operator_exp
+    member_or_non_member_opt[member] operator_exp
     paren_param_decl_list_english_opt[param_ast_list]
     returning_english_ast_opt[ret_ast]
     {
@@ -6490,7 +6490,7 @@ oper_decl_english_ast
       DUMP_STR( "in_attr__operator", in_attr.operator->literal );
       DUMP_TYPE( "type_qualifier_list_english_type_opt", $qual_type );
       DUMP_TID( "ref_qualifier_english_stid_opt", $ref_qual_stid );
-      DUMP_INT( "member_or_non_member_opt", $mbr );
+      DUMP_INT( "member_or_non_member_opt", $member );
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
       DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
@@ -6501,7 +6501,7 @@ oper_decl_english_ast
       );
       $$->oper.operator = in_attr.operator;
       $$->oper.param_ast_list = $param_ast_list;
-      $$->oper.mbr = $mbr;
+      $$->oper.member = $member;
       c_ast_set_parent( $ret_ast, $$ );
 
       DUMP_AST( "oper_decl_english_ast", $$ );

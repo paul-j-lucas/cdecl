@@ -282,8 +282,8 @@ static inline bool c_ast_is_register( c_ast_t const *ast ) {
 NODISCARD
 static inline bool c_ast_oper_mbr_matches( c_ast_t const *ast,
                                            c_operator_t const *op ) {
-  return  ast->oper.mbr == C_FUNC_UNSPECIFIED ||
-          (STATIC_CAST( unsigned, ast->oper.mbr ) &
+  return  ast->oper.member == C_FUNC_UNSPECIFIED ||
+          (STATIC_CAST( unsigned, ast->oper.member ) &
            STATIC_CAST( unsigned, op->overload  )) != 0;
 }
 
@@ -932,7 +932,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     return false;
   }
 
-  switch ( ast->func.mbr ) {
+  switch ( ast->func.member ) {
     case C_FUNC_MEMBER: {
       //
       // Member functions can't have linkage -- except the new & delete
@@ -1828,10 +1828,10 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   assert( ast->kind == K_OPERATOR );
 
   c_operator_t const *const op = ast->oper.operator;
-  c_func_mbr_t const mbr = c_ast_oper_overload( ast );
+  c_func_member_t const member = c_ast_oper_overload( ast );
   char const *const member_or_nonmember =
-    mbr == C_FUNC_MEMBER     ? "member "     :
-    mbr == C_FUNC_NON_MEMBER ? "non-member " :
+    member == C_FUNC_MEMBER     ? "member "     :
+    member == C_FUNC_NON_MEMBER ? "non-member " :
     "";
 
   //
@@ -1841,7 +1841,7 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   bool const is_ambiguous = c_oper_is_ambiguous( op );
   unsigned req_params_min = 0, req_params_max = 0;
   bool const max_params_unlimited = op->params_max == C_OPER_PARAMS_UNLIMITED;
-  switch ( mbr ) {
+  switch ( member ) {
     case C_FUNC_NON_MEMBER:
       // Non-member operators must always take at least one parameter (the
       // enum, class, struct, or union for which it's overloaded).
@@ -1924,7 +1924,7 @@ same: print_error( c_ast_params_loc( ast ),
     } // switch
   } // for
 
-  switch ( mbr ) {
+  switch ( member ) {
     case C_FUNC_NON_MEMBER:
       //
       // Ensure non-member operators (except new, new[], delete, and delete[])
@@ -1975,7 +1975,7 @@ same: print_error( c_ast_params_loc( ast ),
       c_param_t const *param = c_ast_params( ast );
       if ( param == NULL )              // member prefix
         break;
-      if ( mbr == C_FUNC_NON_MEMBER ) {
+      if ( member == C_FUNC_NON_MEMBER ) {
         param = param->next;
         if ( param == NULL )            // non-member prefix
           break;

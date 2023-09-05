@@ -356,7 +356,7 @@ c_sname_t c_ast_move_sname( c_ast_t *ast );
  * #C_FUNC_UNSPECIFIED.
  */
 NODISCARD
-c_func_mbr_t c_ast_oper_overload( c_ast_t const *ast );
+c_func_member_t c_ast_oper_overload( c_ast_t const *ast );
 
 /**
  * "Patches" \a type_ast into \a decl_ast only if:
