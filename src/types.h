@@ -53,6 +53,9 @@
 
 /**
  * The argument kind for the `alignas` specifier.
+ *
+ * @note `alignas(` _expr_ `)` where _expr_ is an arbitrary expression is not
+ * supported by **cdecl**.
  */
 enum c_alignas_kind {
   C_ALIGNAS_NONE,                       ///< No `alignas` specifier.
@@ -94,6 +97,8 @@ enum c_cast_kind {
 
 /**
  * User-specified C++ member or non-member function (or operator).
+ *
+ * @sa c_oper_overload
  */
 enum c_func_mbr {
   C_FUNC_UNSPECIFIED  = 0u,             ///< Unspecified.

@@ -66,9 +66,9 @@
  * @ingroup c-kinds-group
  * Kinds of AST nodes comprising a C/C++ declaration.
  *
- * A given AST node may only have a single kind and _not_ be a bitwise-or of
- * kinds.  However, a bitwise-or of kinds may be used to test whether a given
- * AST node is any _one_ of those kinds.
+ * @note While a given AST node is only of a single kind, kinds can be bitwise-
+ * or'd together to test whether an AST node's kind is any _one_ of those
+ * kinds. The `K_ANY_*` macros are bitwise-ors of two or more kinds.
  */
 enum c_ast_kind {
   /**

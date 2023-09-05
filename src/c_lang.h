@@ -52,6 +52,11 @@ _GL_INLINE_HEADER_BEGIN
  * @defgroup c-lang-vers-group C/C++ Language Versions
  * Macros, types, constants, and functions for C/C++ language versions.
  *
+ * @remarks Languages can be bitwise-or'd together to represent a set of
+ * languages. The macros #LANG_MIN(), #LANG_MAX(), #LANG_C_MIN(),
+ * #LANG_C_MAX(), #LANG_CPP_MIN(), #LANG_CPP_MAX(), #LANG_C_CPP_MIN(),
+ * #LANG_C_CPP_MAX(), #LANG_RANGE(), and #OPT_LANG_IS() can be used with these.
+ *
  * @note @anchor c-lang-order Despite the year of standardization, all versions
  * of C++ are considered "newer" than all versions of C.  However, this isn't a
  * problem since **cdecl** is only ever parsing either (any version of) C or
@@ -290,8 +295,11 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * @defgroup c-lang-feat-group C/C++ Language Features
- * Macros for C/C++ language features that can be used instead of hard-coding
- * specific languages directly.  For example, instead of writing:
+ * Macros for C/C++ language features.
+ *
+ * @remarks The macros have the same `LANG_` prefix as \ref c-lang-vers-group
+ * so they can be used instead of hard-coding specific languages directly.  For
+ * example, instead of writing:
  *
  *      OPT_LANG_IS( MIN(C_95) )
  *
@@ -301,8 +309,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * Macros are in all upper-case except if they contain a C/C++ keyword that is
  * written as it actually is, e.g., #LANG_const.
- *
- * @ingroup c-lang-vers-group
  * @{
  */
 

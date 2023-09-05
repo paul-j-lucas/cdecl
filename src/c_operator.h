@@ -66,6 +66,8 @@ _GL_INLINE_HEADER_BEGIN
  * to be bitwise-and'd with \ref c_operator::overload (the overloadability of
  * the operator): if non-zero, it means what the user specified is allowed by
  * the operator.
+ *
+ * @sa c_func_mbr
  */
 enum c_oper_overload {
   C_OVERLOAD_NONE       = 0u,                 ///< Not overloadable.
