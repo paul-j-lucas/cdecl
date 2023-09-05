@@ -64,8 +64,8 @@ _GL_INLINE_HEADER_BEGIN
  * values as #C_FUNC_MEMBER and #C_FUNC_NON_MEMBER, respectively.  This enables
  * \ref c_operator_ast::member (whether the user-specified member or non-
  * member) to be bitwise-and'd with \ref c_operator::overload (the
- * overloadability of the operator): if non-zero, it means what the user
- * specified is allowed by the operator.
+ * overloadability of the operator): if the result is non-zero, it means what
+ * the user specified is allowed by the operator.
  *
  * @sa c_func_member
  */
