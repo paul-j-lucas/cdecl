@@ -1,3 +1,10 @@
+2023-09-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Using slist_move() more.
+   * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, c_operator.h,
+     dump.c, english.c, parser.y, types.h, debug.out:
+     s/c_func_mbr_t/c_func_member_t/ s/mbr/member/
+
 2023-09-04  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, parser.y: s/raw_ast = c_ast_untypedef( foo_ast
