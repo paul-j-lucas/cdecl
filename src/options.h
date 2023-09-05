@@ -67,7 +67,7 @@ extern bool         opt_alt_tokens;     ///< Print alternative tokens?
 #endif /* YYDEBUG */
 
 #ifdef ENABLE_CDECL_DEBUG
-extern bool         opt_cdecl_debug;    ///< Print JSON-like debug output?
+extern bool         opt_cdecl_debug;    ///< Print JSON debug output?
 #endif /* ENABLE_CDECL_DEBUG */
 
 extern color_when_t opt_color_when;     ///< When to print color.
