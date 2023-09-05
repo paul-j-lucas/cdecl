@@ -1,5 +1,6 @@
 2023-09-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_lang.h, c_operator.c: Added LANG_N_ARY_OP_BRACKETS.
    * parser.y: Using slist_move() more.
    * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, c_operator.h,
      dump.c, english.c, parser.y, types.h, debug.out:
