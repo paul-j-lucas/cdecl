@@ -2145,24 +2145,24 @@ aligned_english
 
 capturing_paren_capture_decl_list_english_opt
   : /* empty */                   { slist_init( &$$ ); }
-  | Y_capturing paren_capture_decl_list_english[decl_ast_list]
+  | Y_capturing paren_capture_decl_list_english[capture_decl_ast_list]
     {
-      $$ = $decl_ast_list;
+      $$ = $capture_decl_ast_list;
     }
-  | '[' capture_decl_list_english_opt[decl_ast_list] ']'
+  | '[' capture_decl_list_english_opt[capture_decl_ast_list] ']'
     {
-      $$ = $decl_ast_list;
+      $$ = $capture_decl_ast_list;
     }
   ;
 
 paren_capture_decl_list_english
-  : '[' capture_decl_list_english_opt[decl_ast_list] ']'
+  : '[' capture_decl_list_english_opt[capture_decl_ast_list] ']'
     {
-      $$ = $decl_ast_list;
+      $$ = $capture_decl_ast_list;
     }
-  | '(' capture_decl_list_english_opt[decl_ast_list] ')'
+  | '(' capture_decl_list_english_opt[capture_decl_ast_list] ')'
     {
-      $$ = $decl_ast_list;
+      $$ = $capture_decl_ast_list;
     }
   | error
     {
@@ -2177,29 +2177,29 @@ capture_decl_list_english_opt
   ;
 
 capture_decl_list_english
-  : capture_decl_list_english[decl_ast_list] comma_exp
-    capture_decl_english_ast[decl_ast]
+  : capture_decl_list_english[capture_decl_ast_list] comma_exp
+    capture_decl_english_ast[capture_decl_ast]
     {
       DUMP_START( "capture_decl_list_english",
                   "capture_decl_list_english ',' capture_decl_english_ast" );
-      DUMP_AST_LIST( "capture_decl_list_english", $decl_ast_list );
-      DUMP_AST( "capture_decl_english_ast", $decl_ast );
+      DUMP_AST_LIST( "capture_decl_list_english", $capture_decl_ast_list );
+      DUMP_AST( "capture_decl_english_ast", $capture_decl_ast );
 
-      $$ = $decl_ast_list;
-      slist_push_back( &$$, $decl_ast );
+      $$ = $capture_decl_ast_list;
+      slist_push_back( &$$, $capture_decl_ast );
 
       DUMP_AST_LIST( "capture_decl_list_english", $$ );
       DUMP_END();
     }
 
-  | capture_decl_english_ast[decl_ast]
+  | capture_decl_english_ast[capture_decl_ast]
     {
       DUMP_START( "capture_decl_list_english",
                   "capture_decl_english_ast" );
-      DUMP_AST( "capture_decl_english_ast", $decl_ast );
+      DUMP_AST( "capture_decl_english_ast", $capture_decl_ast );
 
       slist_init( &$$ );
-      slist_push_back( &$$, $decl_ast );
+      slist_push_back( &$$, $capture_decl_ast );
 
       DUMP_AST_LIST( "capture_decl_list_english", $$ );
       DUMP_END();
@@ -3256,14 +3256,14 @@ capture_decl_list_c
       DUMP_END();
     }
 
-  | capture_decl_c_ast[decl_ast]
+  | capture_decl_c_ast[capture_decl_ast]
     {
       DUMP_START( "capture_decl_list_c",
                   "capture_decl_c_ast" );
-      DUMP_AST( "capture_decl_c_ast", $decl_ast );
+      DUMP_AST( "capture_decl_c_ast", $capture_decl_ast );
 
       slist_init( &$$ );
-      slist_push_back( &$$, $decl_ast );
+      slist_push_back( &$$, $capture_decl_ast );
 
       DUMP_AST_LIST( "capture_decl_list_c", $$ );
       DUMP_END();
@@ -3780,7 +3780,6 @@ array_decl_c_astp
     gnu_attribute_specifier_list_c_opt
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
-      c_ast_t *const decl_ast = $decl_astp.ast;
 
       DUMP_START( "array_decl_c_astp", "decl2_c_astp array_size_c_ast" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
@@ -3794,12 +3793,12 @@ array_decl_c_astp
       if ( $decl_astp.target_ast != NULL ) {
         // array-of or function-like-ret type
         $$ = (c_ast_pair_t){
-          decl_ast,
+          $decl_astp.ast,
           c_ast_add_array( $decl_astp.target_ast, $array_ast, type_ast )
         };
       } else {
         $$ = (c_ast_pair_t){
-          c_ast_add_array( decl_ast, $array_ast, type_ast ),
+          c_ast_add_array( $decl_astp.ast, $array_ast, type_ast ),
           NULL
         };
       }
@@ -4672,7 +4671,7 @@ pc99_pointer_decl_list_c
 
 pc99_pointer_decl_c
   : pc99_pointer_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
-  decl_c_astp[decl_astp]
+    decl_c_astp[decl_astp]
     {
       ia_type_ast_pop();
 
@@ -5131,7 +5130,7 @@ block_cast_c_astp                       // Apple extension
 
 func_cast_c_astp
   : // in_attr: type_c_ast
-    cast2_c_astp[cast2_astp] '(' param_c_ast_list_opt[param_ast_list]
+    cast2_c_astp[cast_astp] '(' param_c_ast_list_opt[param_ast_list]
     rparen_func_qualifier_list_c_stid_opt[ref_qual_stids]
     noexcept_c_stid_opt[noexcept_stid]
     trailing_return_type_c_ast_opt[trailing_ret_ast]
@@ -5143,14 +5142,14 @@ func_cast_c_astp
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt" );
       DUMP_AST( "in_attr__type_c_ast", ret_ast );
-      DUMP_AST_PAIR( "cast2_c_astp", $cast2_astp );
+      DUMP_AST_PAIR( "cast2_c_astp", $cast_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
       DUMP_TID( "func_qualifier_list_c_stid_opt", $ref_qual_stids );
       DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
 
-      c_ast_t *const cast2_ast = $cast2_astp.ast;
-      if ( cast2_ast->kind == K_FUNCTION ) {
+      c_ast_t *const cast_ast = $cast_astp.ast;
+      if ( cast_ast->kind == K_FUNCTION ) {
         //
         // This is for a case like:
         //
@@ -5158,23 +5157,23 @@ func_cast_c_astp
         //              |   |  |
         //              |   |  func
         //              |   |
-        //              |   cast2_ast (func)
+        //              |   cast_ast (func)
         //              |
         //              ret_ast
         //
-        // We replace ret_ast with cast2_ast:
+        // We replace ret_ast with cast_ast:
         //
         //      void f( int() () )
         //              |     |
         //              |     func
         //              |
-        //              ret_ast <- cast2_ast (func)
+        //              ret_ast <- cast_ast (func)
         //
         // that is, a "function returning function returning int" -- which is
         // illegal (since functions can't return functions) and will be caught
         // by c_ast_check_ret_type().
         //
-        ret_ast = cast2_ast;
+        ret_ast = cast_ast;
       }
 
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
@@ -5182,15 +5181,15 @@ func_cast_c_astp
       func_ast->type.stids = c_tid_check( func_stids, C_TPID_STORE );
       func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
-      if ( $cast2_astp.target_ast != NULL ) {
-        $$.ast = cast2_ast;
+      if ( $cast_astp.target_ast != NULL ) {
+        $$.ast = cast_ast;
         PJL_IGNORE_RV(
-          c_ast_add_func( $cast2_astp.target_ast, func_ast, ret_ast )
+          c_ast_add_func( $cast_astp.target_ast, func_ast, ret_ast )
         );
       }
       else {
         $$.ast = c_ast_add_func(
-          cast2_ast,
+          cast_ast,
           func_ast,
           IF_ELSE( $trailing_ret_ast, ret_ast )
         );
@@ -5581,8 +5580,7 @@ atomic_specifier_type_c_ast
       DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
-      c_ast_t *const cast_ast = $cast_astp.ast;
-      $$ = IF_ELSE( cast_ast, $type_ast );
+      $$ = IF_ELSE( $cast_astp.ast, $type_ast );
       $$->loc = @$;
 
       //
