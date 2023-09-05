@@ -6378,7 +6378,7 @@ block_decl_english_ast                  // Apple extension
       DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
       $$ = c_ast_new_gc( K_APPLE_BLOCK, &@$ );
-      $$->block.param_ast_list = $param_ast_list;
+      $$->block.param_ast_list = slist_move( &$param_ast_list );
       c_ast_set_parent( $ret_ast, $$ );
 
       DUMP_AST( "block_decl_english_ast", $$ );
@@ -6396,7 +6396,7 @@ constructor_decl_english_ast
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
 
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      $$->ctor.param_ast_list = $param_ast_list;
+      $$->ctor.param_ast_list = slist_move( &$param_ast_list );
 
       DUMP_AST( "constructor_decl_english_ast", $$ );
       DUMP_END();
@@ -6442,7 +6442,7 @@ func_decl_english_ast
 
       $$ = c_ast_new_gc( K_FUNCTION, &@$ );
       $$->type = $qual_type;
-      $$->func.param_ast_list = $param_ast_list;
+      $$->func.param_ast_list = slist_move( &$param_ast_list );
       $$->func.member = $member;
       c_ast_set_parent( $ret_ast, $$ );
 
@@ -6500,7 +6500,7 @@ oper_decl_english_ast
         c_type_add_tid( &$$->type, $ref_qual_stid, &@ref_qual_stid )
       );
       $$->oper.operator = in_attr.operator;
-      $$->oper.param_ast_list = $param_ast_list;
+      $$->oper.param_ast_list = slist_move( &$param_ast_list );
       $$->oper.member = $member;
       c_ast_set_parent( $ret_ast, $$ );
 
@@ -6911,7 +6911,7 @@ user_defined_literal_decl_english_ast
       DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
       $$ = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      $$->udef_lit.param_ast_list = $param_ast_list;
+      $$->udef_lit.param_ast_list = slist_move( &$param_ast_list );
       c_ast_set_parent( $ret_ast, $$ );
 
       DUMP_AST( "user_defined_literal_decl_english_ast", $$ );
