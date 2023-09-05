@@ -705,6 +705,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_MSC_EXTENSIONS             LANG_MIN(C_89)
 
 /**
+ * Languages `operator[]` can have any number of parameters.
+ */
+#define LANG_N_ARY_OP_BRACKETS          LANG_CPP_MIN(23)
+
+/**
  * Languages nested `namespace` declarations  are supported in.
  */
 #define LANG_NESTED_namespace           LANG_CPP_MIN(17)
