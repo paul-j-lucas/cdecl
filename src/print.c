@@ -86,8 +86,13 @@ static void               print_input_line( size_t*, size_t );
 NODISCARD
 static size_t             token_len( char const*, size_t, size_t );
 
+/// @cond DOXYGEN_IGNORE
+/// Otherwise Doxygen generates two entries for each option.
+
 // extern variables
 print_params_t            print_params;
+
+/// @endcond
 
 ////////// local functions ////////////////////////////////////////////////////
 

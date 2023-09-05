@@ -208,17 +208,17 @@ void print_hint( char const *format, ... );
 /**
  * If \a error_token is:
  *
- * + Is a C or C++ keyword:
+ * + A C or C++ keyword:
  *     + And the oldest language in which \a error_token is a keyword is later
  *       than the current language, prints `"; not a keyword until"` followed
  *       by the name of said oldest language.
  *     + Otherwise prints `"(\"___\" is a keyword)"` where `___` is \a
  *       error_token.
  *
- * + Is a **cdecl** keyword, prints `"(\"___\" is a cdecl keyword)"` where
- *   `___` is \a error_token.
+ * + A **cdecl** keyword, prints `"(\"___\" is a cdecl keyword)"` where `___`
+ *   is \a error_token.
  *
- * + Is NULL, does nothing.
+ * + NULL, does nothing.
  *
  * @note A newline is _not_ printed.
  *

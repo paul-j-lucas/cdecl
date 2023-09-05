@@ -44,6 +44,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/// @cond DOXYGEN_IGNORE
+/// Otherwise Doxygen generates two entries for each option.
+
 // extern option variables
 bool                opt_alt_tokens;
 #ifdef ENABLE_CDECL_DEBUG
@@ -65,6 +68,8 @@ bool                opt_trailing_ret;
 bool                opt_typedefs = true;
 bool                opt_using = true;
 c_ast_kind_t        opt_west_pointer_kinds = K_ANY_FUNCTION_RETURN;
+
+/// @endcond
 
 /**
  * The integer type(s) that `int` shall be print explicitly for in C/C++
