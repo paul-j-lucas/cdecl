@@ -1,5 +1,8 @@
 2023-09-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * lib/Makefile.am, attribute.h, iswpunct.c, stdio.in.h, stdlib.in.h,
+     string.in.h, uchar.in.h, wchar.in.h, wctype.in.h, gnulib-common.m4,
+     gnulib-comp.m4, iswpunct.m4, wctype.m4, wctype_h.m4: Updated GnuLib.
    * c_lang.h, c_operator.c: Added LANG_N_ARY_OP_BRACKETS.
    * parser.y: Using slist_move() more.
    * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, c_operator.h,
