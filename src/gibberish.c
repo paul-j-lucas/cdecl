@@ -670,9 +670,9 @@ static void c_ast_name_gibberish( c_ast_t const *ast, g_state_t *g ) {
  * Helper function for c_ast_gibberish_impl() that handles the printing of
  * "postfix" cases:
  *
- *  + Array of pointer to function.
- *  + Pointer to array.
- *  + Reference to array.
+ *  + Array of pointer to function, e.g., `void (*a[4])(int)`.
+ *  + Pointer to array, e.g., `int (*p)[4]`.
+ *  + Reference to array, e.g., `int (&r)[4]`.
  *
  * @param ast The AST.
  * @param g The g_state to use.
