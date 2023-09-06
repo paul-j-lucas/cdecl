@@ -1,3 +1,15 @@
+2023-09-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, c_sname.h: Made c_sname_set() do nothing if dst_sname ==
+     src_sname.
+   * parser.y: Made join_type_decl() return non-const c_ast_t*.
+   * parser.y: Flipped pc99_pointer_decl_list_c rule order.
+   * c_ast_check.c, c_lang.h, test/Makefile.am, explain_pau-c.out,
+     explain_pau-c.test: auto` with a pointer declarator is now correctly
+     forbidden in C.
+   * test/Makefile.am: Renamed "auto" tests.
+   * gibberish.c: Switched to using g_print_space_once().
+
 2023-09-05  Paul J. Lucas <paul@lucasmail.org>
 
    * gibberish.c: Eliminated `if`s.
