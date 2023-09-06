@@ -895,7 +895,7 @@ static void ia_cleanup( void ) {
  * @return Returns the joined AST on success or NULL on error.
  */
 NODISCARD
-c_ast_t const* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
+c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
 
