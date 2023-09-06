@@ -126,14 +126,10 @@ static void c_ast_array_size_gibberish( c_ast_t const *ast,
     case C_ARRAY_EMPTY_SIZE:
       break;
     case C_ARRAY_INT_SIZE:
-      if ( is_qual )
-        FPUTC( ' ', g->gout );
-      FPRINTF( g->gout, "%u", ast->array.size_int );
+      FPRINTF( g->gout, "%s%u", is_qual ? " " : "", ast->array.size_int );
       break;
     case C_ARRAY_NAMED_SIZE:
-      if ( is_qual )
-        FPUTC( ' ', g->gout );
-      FPUTS( ast->array.size_name, g->gout );
+      FPRINTF( g->gout, "%s%s", is_qual ? " " : "", ast->array.size_name );
       break;
     case C_ARRAY_VLA_STAR:
       FPUTC( '*', g->gout );
