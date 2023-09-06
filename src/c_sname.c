@@ -404,6 +404,13 @@ char const* c_sname_scope_name( c_sname_t const *sname ) {
   return sname != NULL ? c_sname_name_impl( &sbuf, sname, sname->tail ) : "";
 }
 
+void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname ) {
+  if ( dst_sname != src_sname ) {
+    c_sname_cleanup( dst_sname );
+    c_sname_append_sname( dst_sname, src_sname );
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

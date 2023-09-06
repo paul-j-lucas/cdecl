@@ -556,16 +556,14 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
  * @param dst_sname The scoped name to set.
  * @param src_sname The scoped name to set \a dst_sname to. Ownership is taken.
  *
+ * @note If \a dst_sname `==` \a src_name, does nothing.
+ *
  * @sa c_sname_append_name()
  * @sa c_sname_append_sname()
  * @sa c_sname_move()
  * @sa c_sname_prepend_sname()
  */
-C_SNAME_H_INLINE
-void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname ) {
-  c_sname_cleanup( dst_sname );
-  c_sname_append_sname( dst_sname, src_sname );
-}
+void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname );
 
 /**
  * Sets the first scope-type of \a sname (which is the type of the outermost
