@@ -65,17 +65,15 @@ struct g_state {
 typedef struct g_state g_state_t;
 
 // local functions
+static void c_ast_list_gibberish( c_ast_list_t const*, g_state_t const* );
+static void c_ast_name_gibberish( c_ast_t const*, g_state_t* );
+static void c_ast_postfix_gibberish( c_ast_t const*, g_state_t* );
+static void c_ast_qual_name_gibberish( c_ast_t const*, g_state_t* );
+static void c_ast_space_name_gibberish( c_ast_t const*, g_state_t* );
 static void g_init( g_state_t*, unsigned, FILE* );
-static void g_print_ast( g_state_t*, c_ast_t const* );
-static void g_print_ast_bit_width( g_state_t const*, c_ast_t const* );
-static void g_print_ast_list( g_state_t const*, c_ast_list_t const* );
-static void g_print_ast_name( g_state_t*, c_ast_t const* );
-static void g_print_postfix( g_state_t*, c_ast_t const* );
-static void g_print_qual_name( g_state_t*, c_ast_t const* );
-static void g_print_space_ast_name( g_state_t*, c_ast_t const* );
 
 NODISCARD
-static bool g_space_before_ptr_ref( g_state_t const*, c_ast_t const* );
+static bool c_ast_space_before_ptr_ref( c_ast_t const*, g_state_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -107,32 +105,70 @@ static inline void g_print_space_once( g_state_t *g ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Initializes a g_state.
+ * Helper function for c_ast_gibberish_impl() that prints an array's size.
  *
- * @param g The g_state to initialize.
- * @param gib_flags The gibberish flags to use.
- * @param gout The `FILE` to print to.
+ * @param ast The AST that is a \ref K_ARRAY whose size to print.
+ * @param g The g_state to use.
  */
-static void g_init( g_state_t *g, unsigned gib_flags, FILE *gout ) {
+static void c_ast_array_size_gibberish( c_ast_t const *ast,
+                                        g_state_t const *g ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_ARRAY );
   assert( g != NULL );
-  assert( gib_flags != C_GIB_NONE );
-  assert( gout != NULL );
 
-  MEM_ZERO( g );
-  g->gib_flags = gib_flags;
-  g->gout = gout;
-  g->printed_space = (gib_flags & C_GIB_OMIT_TYPE) != 0;
+  FPUTS( graph_token_c( "[" ), g->gout );
+
+  bool const is_qual = c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER );
+  if ( is_qual )
+    FPUTS( c_type_name_c( &ast->type ), g->gout );
+
+  switch ( ast->array.kind ) {
+    case C_ARRAY_EMPTY_SIZE:
+      break;
+    case C_ARRAY_INT_SIZE:
+      if ( is_qual )
+        FPUTC( ' ', g->gout );
+      FPRINTF( g->gout, "%u", ast->array.size_int );
+      break;
+    case C_ARRAY_NAMED_SIZE:
+      if ( is_qual )
+        FPUTC( ' ', g->gout );
+      FPUTS( ast->array.size_name, g->gout );
+      break;
+    case C_ARRAY_VLA_STAR:
+      FPUTC( '*', g->gout );
+      break;
+  } // switch
+
+  FPUTS( graph_token_c( "]" ), g->gout );
+}
+
+/**
+ * Helper function for c_ast_visitor_english() that prints a bit-field width,
+ * if any.
+ *
+ * @param ast The AST to print the bit-field width of.
+ * @param g The g_state to use.
+ */
+static void c_ast_bit_width_gibberish( c_ast_t const *ast,
+                                       g_state_t const *g ) {
+  assert( ast != NULL );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_BIT_FIELD ) );
+  assert( g != NULL );
+
+  if ( ast->bit_field.bit_width > 0 )
+    FPRINTF( g->gout, " : %u", ast->bit_field.bit_width );
 }
 
 /**
  * Prints \a ast as gibberish, aka, a C/C++ declaration.
  *
- * @param g The g_state to use.
  * @param ast The AST to print.
+ * @param g The g_state to use.
  */
-static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
-  assert( g != NULL );
+static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
   assert( ast != NULL );
+  assert( g != NULL );
 
   g_state_t child_g;
   c_type_t type = ast->type;
@@ -244,21 +280,22 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         if ( is_trailing_ret )
           FPUTS( L_auto, g->gout );
         else
-          g_print_ast( g, ast->parent.of_ast );
+          c_ast_gibberish_impl( ast->parent.of_ast, g );
       }
       if ( msc_call_atids != TA_NONE &&
            !c_ast_parent_is_kind( ast, K_POINTER ) ) {
         //
         // If ast is a function having a Microsoft calling convention, but not
         // a pointer to such a function, print the calling convention.
-        // (Pointers to such functions are handled in g_print_postfix().)
+        // (Pointers to such functions are handled in
+        // c_ast_postfix_gibberish().)
         //
         FPRINTF( g->gout, " %s", c_tid_name_c( msc_call_atids ) );
       }
       if ( false_set( &g->postfix ) ) {
         if ( (g->gib_flags & (C_GIB_CAST | C_GIB_USING)) == 0 )
           g_print_space_once( g );
-        g_print_postfix( g, ast );
+        c_ast_postfix_gibberish( ast, g );
       }
       if ( cv_qual_stids != TS_NONE )
         FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stids ) );
@@ -288,7 +325,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         ret_ast->parent_ast = NULL;
 
         g_init( &child_g, C_GIB_DECL, g->gout );
-        g_print_ast( &child_g, ret_ast );
+        c_ast_gibberish_impl( ret_ast, &child_g );
         ret_ast->parent_ast = orig_ret_ast_parent_ast;
       }
       if ( is_pure_virtual )
@@ -304,8 +341,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         FPUTS( c_type_name_c( &type ), g->gout );
       if ( c_ast_is_tid_any( ast, TB_BITINT ) && ast->builtin.BitInt.width > 0 )
         FPRINTF( g->gout, "(%u)", ast->builtin.BitInt.width );
-      g_print_space_ast_name( g, ast );
-      g_print_ast_bit_width( g, ast );
+      c_ast_space_name_gibberish( ast, g );
+      c_ast_bit_width_gibberish( ast, g );
       break;
 
     case K_CAPTURE:
@@ -337,11 +374,11 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       g_init( &child_g, C_GIB_CAST, g->gout );
       if ( ast->cast.kind == C_CAST_C ) {
         FPUTC( '(', g->gout );
-        g_print_ast( &child_g, ast->cast.to_ast );
+        c_ast_gibberish_impl( ast->cast.to_ast, &child_g );
         FPRINTF( g->gout, ")%s\n", c_sname_full_name( &ast->sname ) );
       } else {
         FPRINTF( g->gout, "%s<", c_cast_gibberish( ast->cast.kind ) );
-        g_print_ast( &child_g, ast->cast.to_ast );
+        c_ast_gibberish_impl( ast->cast.to_ast, &child_g );
         FPRINTF( g->gout, ">(%s)\n", c_sname_full_name( &ast->sname ) );
       }
       break;
@@ -418,31 +455,31 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           // But if we print its name now, we can't print it again later, so
           // set a flag.
           //
-          g_print_space_ast_name( g, ast );
+          c_ast_space_name_gibberish( ast, g );
           printed_name = true;
         }
         FPUTS( " : ", g->gout );
-        g_print_ast( g, ast->enum_.of_ast );
+        c_ast_gibberish_impl( ast->enum_.of_ast, g );
       }
 
       if ( cv_qual_stids != TS_NONE )
         FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stids ) );
 
       if ( !printed_name )
-        g_print_space_ast_name( g, ast );
+        c_ast_space_name_gibberish( ast, g );
 
       if ( ast->kind == K_ENUM )
-        g_print_ast_bit_width( g, ast );
+        c_ast_bit_width_gibberish( ast, g );
       break;
     }
 
     case K_LAMBDA:
       FPUTS( graph_token_c( "[" ), g->gout );
-      g_print_ast_list( g, &ast->lambda.capture_ast_list );
+      c_ast_list_gibberish( &ast->lambda.capture_ast_list, g );
       FPUTS( graph_token_c( "]" ), g->gout );
       if ( c_ast_params_count( ast ) > 0 ) {
         FPUTC( '(', g->gout );
-        g_print_ast_list( g, &ast->lambda.param_ast_list );
+        c_ast_list_gibberish( &ast->lambda.param_ast_list, g );
         FPUTC( ')', g->gout );
       }
       if ( !c_tid_is_none( ast->type.stids ) )
@@ -452,7 +489,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( ast->lambda.ret_ast != NULL &&
            !c_ast_is_builtin_any( ast->lambda.ret_ast, TB_AUTO | TB_VOID ) ) {
         FPUTS( " -> ", g->gout );
-        g_print_ast( g, ast->lambda.ret_ast );
+        c_ast_gibberish_impl( ast->lambda.ret_ast, g );
       }
       break;
 
@@ -469,7 +506,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( (g->gib_flags & C_GIB_CAST) == 0 ) {
         if ( OPT_LANG_IS( PROTOTYPES ) )
           FPUTC( ' ', g->gout );
-        g_print_ast_name( g, ast );
+        c_ast_name_gibberish( ast, g );
       }
       break;
 
@@ -478,19 +515,19 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_RVALUE_REFERENCE:
       if ( (g->gib_flags & C_GIB_OMIT_TYPE) == 0 )
         fputs_sp( c_tid_name_c( type.stids & TS_ANY_STORAGE ), g->gout );
-      g_print_ast( g, ast->ptr_ref.to_ast );
-      if ( g_space_before_ptr_ref( g, ast ) )
+      c_ast_gibberish_impl( ast->ptr_ref.to_ast, g );
+      if ( c_ast_space_before_ptr_ref( ast, g ) )
         g_print_space_once( g );
       if ( !g->postfix )
-        g_print_qual_name( g, ast );
+        c_ast_qual_name_gibberish( ast, g );
       break;
 
     case K_POINTER_TO_MEMBER:
-      g_print_ast( g, ast->ptr_mbr.to_ast );
+      c_ast_gibberish_impl( ast->ptr_mbr.to_ast, g );
       if ( !g->printed_space )
         FPUTC( ' ', g->gout );
       if ( !g->postfix )
-        g_print_qual_name( g, ast );
+        c_ast_qual_name_gibberish( ast, g );
       break;
 
     case K_TYPEDEF:
@@ -536,7 +573,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         //
         unsigned const orig_flags = g->gib_flags;
         g->gib_flags &= ~C_GIB_USING;
-        g_print_ast_name( g, ast->tdef.for_ast );
+        c_ast_name_gibberish( ast->tdef.for_ast, g );
         g->gib_flags = orig_flags;
         if ( print_parens_for_Atomic )
           FPUTC( ')', g->gout );
@@ -544,8 +581,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           FPRINTF( g->gout, " %s", c_type_name_c( &ast->type ) );
       }
 
-      g_print_space_ast_name( g, ast );
-      g_print_ast_bit_width( g, ast );
+      c_ast_space_name_gibberish( ast, g );
+      c_ast_bit_width_gibberish( ast, g );
       break;
 
     case K_VARIADIC:
@@ -557,78 +594,24 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 }
 
 /**
- * Helper function for g_print_ast() that prints an array's size.
- *
- * @param g The g_state to use.
- * @param ast The AST that is a \ref K_ARRAY whose size to print.
- */
-static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
-  assert( g != NULL );
-  assert( ast != NULL );
-  assert( ast->kind == K_ARRAY );
-
-  FPUTS( graph_token_c( "[" ), g->gout );
-
-  bool const is_qual = c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER );
-  if ( is_qual )
-    FPUTS( c_type_name_c( &ast->type ), g->gout );
-
-  switch ( ast->array.kind ) {
-    case C_ARRAY_EMPTY_SIZE:
-      break;
-    case C_ARRAY_INT_SIZE:
-      if ( is_qual )
-        FPUTC( ' ', g->gout );
-      FPRINTF( g->gout, "%u", ast->array.size_int );
-      break;
-    case C_ARRAY_NAMED_SIZE:
-      if ( is_qual )
-        FPUTC( ' ', g->gout );
-      FPUTS( ast->array.size_name, g->gout );
-      break;
-    case C_ARRAY_VLA_STAR:
-      FPUTC( '*', g->gout );
-      break;
-  } // switch
-
-  FPUTS( graph_token_c( "]" ), g->gout );
-}
-
-/**
- * Helper function for c_ast_visitor_english() that prints a bit-field width,
- * if any.
- *
- * @param g The g_state to use.
- * @param ast The AST to print the bit-field width of.
- */
-static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
-  assert( g != NULL );
-  assert( ast != NULL );
-  assert( is_1_bit_only_in_set( ast->kind, K_ANY_BIT_FIELD ) );
-
-  if ( ast->bit_field.bit_width > 0 )
-    FPRINTF( g->gout, " : %u", ast->bit_field.bit_width );
-}
-
-/**
  * Prints a list of AST nodes separated by commas.
  *
- * @param g The g_state to use.
  * @param ast_list The list of AST nodes to print.
+ * @param g The g_state to use.
  *
- * @sa g_print_ast()
+ * @sa c_ast_gibberish_impl()
  */
-static void g_print_ast_list( g_state_t const *g,
-                              c_ast_list_t const *ast_list ) {
-  assert( g != NULL );
+static void c_ast_list_gibberish( c_ast_list_t const *ast_list,
+                                  g_state_t const *g ) {
   assert( ast_list != NULL );
+  assert( g != NULL );
 
   bool comma = false;
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     g_state_t node_g;
     g_init( &node_g, g->gib_flags & ~C_GIB_OMIT_TYPE, g->gout );
     fput_sep( ", ", &comma, g->gout );
-    g_print_ast( &node_g, c_param_ast( ast_node ) );
+    c_ast_gibberish_impl( c_param_ast( ast_node ), &node_g );
   } // for
 }
 
@@ -636,20 +619,20 @@ static void g_print_ast_list( g_state_t const *g,
  * Prints either the full or local name of \a ast based on whether we're
  * emitting the gibberish for a `typedef` since it can't have a scoped name.
  *
- * @param g The g_state to use.
  * @param ast The AST to get the name of.
+ * @param g The g_state to use.
  *
- * @sa g_print_space_ast_name()
+ * @sa c_ast_space_name_gibberish()
  */
-static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
-  assert( g != NULL );
+static void c_ast_name_gibberish( c_ast_t const *ast, g_state_t *g ) {
   assert( ast != NULL );
+  assert( g != NULL );
 
   if ( (g->gib_flags & C_GIB_CAST) != 0 ) {
     //
     // When printing a cast, the cast itself and the AST's name (the thing
-    // that's being cast) is printed in g_print_ast(), so we mustn't print it
-    // here and print only the type T:
+    // that's being cast) is printed in c_ast_gibberish_impl(), so we mustn't
+    // print it here and print only the type T:
     //
     //      (T)name
     //      static_cast<T>(name)
@@ -689,20 +672,20 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
 }
 
 /**
- * Helper function for g_print_ast() that handles the printing of "postfix"
- * cases:
+ * Helper function for c_ast_gibberish_impl() that handles the printing of
+ * "postfix" cases:
  *
  *  + Array of pointer to function.
  *  + Pointer to array.
  *  + Reference to array.
  *
- * @param g The g_state to use.
  * @param ast The AST.
+ * @param g The g_state to use.
  */
-static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
-  assert( g != NULL );
+static void c_ast_postfix_gibberish( c_ast_t const *ast, g_state_t *g ) {
   assert( ast != NULL );
   assert( c_ast_is_parent( ast ) );
+  assert( g != NULL );
 
   c_ast_t const *const parent_ast = ast->parent_ast;
 
@@ -717,7 +700,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       case K_OPERATOR:
       case K_USER_DEF_CONVERSION:
       case K_USER_DEF_LITERAL:
-        g_print_postfix( g, parent_ast );
+        c_ast_postfix_gibberish( parent_ast, g );
         break;
 
       case K_POINTER:
@@ -766,9 +749,9 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
             break;
         } // switch
 
-        g_print_qual_name( g, parent_ast );
+        c_ast_qual_name_gibberish( parent_ast, g );
         if ( c_ast_is_parent( parent_ast->parent_ast ) )
-          g_print_postfix( g, parent_ast );
+          c_ast_postfix_gibberish( parent_ast, g );
 
         if ( (ast->kind & K_ANY_POINTER) == 0 )
           FPUTC( ')', g->gout );
@@ -799,7 +782,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       if ( opt_alt_tokens && !c_sname_empty( &ast->sname ) )
         FPUTC( ' ', g->gout );
     }
-    g_print_space_ast_name( g, ast );
+    c_ast_space_name_gibberish( ast, g );
     if ( ast->kind == K_APPLE_BLOCK )
       FPUTC( ')', g->gout );
   }
@@ -810,7 +793,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
   //
   switch ( ast->kind ) {
     case K_ARRAY:
-      g_print_ast_array_size( g, ast );
+      c_ast_array_size_gibberish( ast, g );
       break;
     case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
@@ -818,7 +801,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
       FPUTC( '(', g->gout );
-      g_print_ast_list( g, &ast->func.param_ast_list );
+      c_ast_list_gibberish( &ast->func.param_ast_list, g );
       FPUTC( ')', g->gout );
       break;
     case K_DESTRUCTOR:
@@ -830,7 +813,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     case K_CAST:
     case K_CLASS_STRUCT_UNION:
     case K_ENUM:
-    case K_LAMBDA:                      // handled in g_print_ast()
+    case K_LAMBDA:                      // handled in c_ast_gibberish_impl()
     case K_NAME:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
@@ -845,18 +828,19 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
 }
 
 /**
- * Helper function for g_print_ast() that prints a pointer, pointer-to-member,
- * reference, or rvalue reference, its qualifier, if any, and the name, if any.
+ * Helper function for c_ast_gibberish_impl() that prints a pointer, pointer-
+ * to-member, reference, or rvalue reference, its qualifier, if any, and the
+ * name, if any.
  *
- * @param g The g_state to use.
  * @param ast The AST that is one of \ref K_POINTER, \ref K_POINTER_TO_MEMBER,
  * \ref K_REFERENCE, or \ref K_RVALUE_REFERENCE whose qualifier, if any, and
  * name, if any, to print.
+ * @param g The g_state to use.
  */
-static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
-  assert( g != NULL );
+static void c_ast_qual_name_gibberish( c_ast_t const *ast, g_state_t *g ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER | K_ANY_REFERENCE ) );
+  assert( g != NULL );
 
   c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
 
@@ -936,22 +920,84 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
     }
   }
 
-  g_print_space_ast_name( g, ast );
+  c_ast_space_name_gibberish( ast, g );
 }
 
 /**
- * Helper function for g_print_ast() that prints a space (if it hasn't printed
- * one before) and an AST node's name, if any; but only if we're printing a
- * declaration (not a cast).
+ * Determine whether we should print a space before the `*`, `&`, or `&&` in a
+ * declaration.  By default, for all kinds _except_ function-like ASTs, we want
+ * the output to be like:
  *
+ *      type *var
+ *
+ * i.e., the `*`, `&`, or `&&` adjacent to the variable ("east"); for function-
+ * like ASTs, when there's no name for a parameter, or when we're casting, we
+ * want the output to be like:
+ *
+ *      type* func()            // function
+ *      type* (^block)()        // block
+ *      func(type*)             // nameless function parameter
+ *      (type*)expr             // cast
+ *
+ * i.e., the `*`, `&`, or `&&` adjacent to the type ("west").
+ *
+ * However, as an exception, if we're declaring more than one pointer to
+ * function returning a pointer or reference in the same declaration, then keep
+ * the `*`, `&`, or `&&` adjacent to the function like:
+ *
+ *      type &(*f)(), &(*g)()
+ *
+ * not:
+ *
+ *      type& (*f)(), &(*g)()
+ *
+ * because the latter looks inconsistent (even though it's correct).
+ *
+ * @param ast The current AST node.
  * @param g The g_state to use.
- * @param ast The AST to print the name of, if any.
- *
- * @sa g_print_ast_name()
+ * @return Returns `true` only if we should print a space after type type.
  */
-static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
-  assert( g != NULL );
+NODISCARD
+static bool c_ast_space_before_ptr_ref( c_ast_t const *ast,
+                                        g_state_t const *g ) {
   assert( ast != NULL );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER | K_ANY_REFERENCE ) );
+  assert( g != NULL );
+
+  if ( (g->gib_flags & (C_GIB_CAST | C_GIB_USING)) != 0 )
+    return false;
+  if ( (g->gib_flags & C_GIB_MULTI_DECL) != 0 )
+    return true;
+
+  c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
+  if ( func_ast != NULL )               // function returning pointer to ...
+    return (func_ast->kind & opt_west_pointer_kinds) == 0;
+
+  if ( c_ast_find_name( ast, C_VISIT_UP ) == NULL )
+    return false;
+
+  c_ast_t const *const to_ast = c_ast_find_kind_any(
+    ast->ptr_ref.to_ast, C_VISIT_DOWN, opt_west_pointer_kinds
+  );
+  if ( to_ast != NULL )
+    return false;
+
+  return true;
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a space (if it hasn't
+ * printed one before) and an AST node's name, if any; but only if we're
+ * printing a declaration (not a cast).
+ *
+ * @param ast The AST to print the name of, if any.
+ * @param g The g_state to use.
+ *
+ * @sa c_ast_name_gibberish()
+ */
+static void c_ast_space_name_gibberish( c_ast_t const *ast, g_state_t *g ) {
+  assert( ast != NULL );
+  assert( g != NULL );
 
   if ( (g->gib_flags & C_GIB_CAST) != 0 )
     return;                             // for casts, print nothing
@@ -990,71 +1036,28 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       if ( !c_sname_empty( &ast->sname ) ) {
         if ( (g->gib_flags & C_GIB_USING) == 0 )
           g_print_space_once( g );
-        g_print_ast_name( g, ast );
+        c_ast_name_gibberish( ast, g );
       }
       break;
   } // switch
 }
 
 /**
- * Determine whether we should print a space before the `*`, `&`, or `&&` in a
- * declaration.  By default, for all kinds _except_ function-like ASTs, we want
- * the output to be like:
+ * Initializes a g_state.
  *
- *      type *var
- *
- * i.e., the `*`, `&`, or `&&` adjacent to the variable ("east"); for function-
- * like ASTs, when there's no name for a parameter, or when we're casting, we
- * want the output to be like:
- *
- *      type* func()            // function
- *      type* (^block)()        // block
- *      func(type*)             // nameless function parameter
- *      (type*)expr             // cast
- *
- * i.e., the `*`, `&`, or `&&` adjacent to the type ("west").
- *
- * However, as an exception, if we're declaring more than one pointer to
- * function returning a pointer or reference in the same declaration, then keep
- * the `*`, `&`, or `&&` adjacent to the function like:
- *
- *      type &(*f)(), &(*g)()
- *
- * not:
- *
- *      type& (*f)(), &(*g)()
- *
- * because the latter looks inconsistent (even though it's correct).
- *
- * @param g The g_state to use.
- * @param ast The current AST node.
- * @return Returns `true` only if we should print a space after type type.
+ * @param g The g_state to initialize.
+ * @param gib_flags The gibberish flags to use.
+ * @param gout The `FILE` to print to.
  */
-NODISCARD
-static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
+static void g_init( g_state_t *g, unsigned gib_flags, FILE *gout ) {
   assert( g != NULL );
-  assert( ast != NULL );
-  assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER | K_ANY_REFERENCE ) );
+  assert( gib_flags != C_GIB_NONE );
+  assert( gout != NULL );
 
-  if ( (g->gib_flags & (C_GIB_CAST | C_GIB_USING)) != 0 )
-    return false;
-  if ( (g->gib_flags & C_GIB_MULTI_DECL) != 0 )
-    return true;
-
-  c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
-  if ( func_ast != NULL )               // function returning pointer to ...
-    return (func_ast->kind & opt_west_pointer_kinds) == 0;
-
-  if ( c_ast_find_name( ast, C_VISIT_UP ) == NULL )
-    return false;
-
-  c_ast_t const *const to_ast = c_ast_find_kind_any(
-    ast->ptr_ref.to_ast, C_VISIT_DOWN, opt_west_pointer_kinds
-  );
-  if ( to_ast != NULL )
-    return false;
-
-  return true;
+  MEM_ZERO( g );
+  g->gib_flags = gib_flags;
+  g->gout = gout;
+  g->printed_space = (gib_flags & C_GIB_OMIT_TYPE) != 0;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -1134,7 +1137,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
 
     g_state_t g;
     g_init( &g, gib_flags, gout );
-    g_print_ast( &g, ast );
+    c_ast_gibberish_impl( ast, &g );
   }
 
   if ( (gib_flags & C_GIB_FINAL_SEMI) != 0 )
@@ -1306,7 +1309,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
   g_state_t g;
   g_init( &g, print_using ? C_GIB_USING : C_GIB_TYPEDEF, gout );
   g.printed_typedef = print_typedef;
-  g_print_ast( &g, tdef->ast );
+  c_ast_gibberish_impl( tdef->ast, &g );
 
   if ( scope_close_braces_to_print > 0 ) {
     FPUTC( ';', gout );
