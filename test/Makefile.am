@@ -184,6 +184,7 @@ TESTS+=	tests/explain.test
 TESTS+=	tests/explain_+i-c.test \
 	tests/explain_0f_v-02.test \
 	tests/explain_0f_v-c.test \
+	tests/explain_2au-c.test \
 	tests/explain_a0i.test \
 	tests/explain_a4f_i.test \
 	tests/explain_a4v.test \

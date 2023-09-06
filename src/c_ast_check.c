@@ -2973,6 +2973,20 @@ bool c_ast_check( c_ast_t const *ast ) {
 bool c_ast_list_check( c_ast_list_t const *ast_list ) {
   assert( ast_list != NULL );
 
+  size_t const ast_count = slist_len( ast_list );
+  if ( ast_count == 0 )
+    return true;
+
+  c_ast_t const *const first_ast = slist_front( ast_list );
+  if ( first_ast->type.btids == TB_AUTO && ast_count > 1 &&
+       !OPT_LANG_IS( auto_TYPE_MULTI_DECL ) ) {
+    print_error( &first_ast->loc,
+      "\"auto\" with multiple declarators is not supported%s\n",
+      C_LANG_WHICH( auto_TYPE_MULTI_DECL )
+    );
+    return false;
+  }
+
   c_ast_t const *prev_ast = NULL;
   FOREACH_SLIST_NODE( node, ast_list ) {
     c_ast_t const *const ast = node->data;

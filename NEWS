@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** `_Alignas` forward declarations
 `_Alignas` is now correctly forbidden on forward declarations.
 
+** `auto` with multiple declarators in C
+`auto` with multiple declarators is now correctly forbidden in C.
+
 ** `auto *p` in C
 `auto` with a pointer declarator is now correctly forbidden in C.
 
