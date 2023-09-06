@@ -1,4 +1,3 @@
 explain int x, *x
                ^
 16: error: "x": redefinition with different type
-declare x as integer

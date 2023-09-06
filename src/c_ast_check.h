@@ -49,6 +49,18 @@
 NODISCARD
 bool c_ast_check( c_ast_t const *ast );
 
+/**
+ * @ingroup ast-functions-group
+ * Checks a list of AST nodes for semantic errors and warnings.
+ *
+ * @param ast_list The list of AST nodes to check.
+ * @return Returns `true` only if all checks passed.
+ *
+ * @sa c_ast_check()
+ */
+NODISCARD
+bool c_ast_list_check( c_ast_list_t const *ast_list );
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif /* cdecl_c_ast_check_H */

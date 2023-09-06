@@ -2970,5 +2970,45 @@ bool c_ast_check( c_ast_t const *ast ) {
   return true;
 }
 
+bool c_ast_list_check( c_ast_list_t const *ast_list ) {
+  assert( ast_list != NULL );
+
+  c_ast_t const *prev_ast = NULL;
+  FOREACH_SLIST_NODE( node, ast_list ) {
+    c_ast_t const *const ast = node->data;
+    //
+    // Ensure that a name is not used more than once in the same declaration in
+    // C++ or with different types in C.  (In C, more than once with the same
+    // type are "tentative definitions" and OK.)
+    //
+    //      int i, i;                   // OK in C (same type); error in C++
+    //      int j, *j;                  // error (different types)
+    //
+    if ( prev_ast != NULL &&
+         c_sname_cmp( &ast->sname, &prev_ast->sname ) == 0 ) {
+      if ( OPT_LANG_IS( CPP_ANY ) ) {
+        print_error( &ast->loc,
+          "\"%s\": redefinition\n",
+          c_sname_full_name( &ast->sname )
+        );
+        return false;
+      }
+      else if ( !c_ast_equal( ast, prev_ast ) ) {
+        print_error( &ast->loc,
+          "\"%s\": redefinition with different type\n",
+          c_sname_full_name( &ast->sname )
+        );
+        return false;
+      }
+    }
+
+    if ( !c_ast_check( ast ) )
+      return false;
+    prev_ast = ast;
+  } // for
+
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

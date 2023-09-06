@@ -1,4 +1,3 @@
 explain int x, x
         ^
 9: error: "x": redefinition
-declare x as integer

@@ -529,6 +529,14 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   FPUTC( '\n', eout );
 }
 
+void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout ) {
+  assert( ast_list != NULL );
+  FOREACH_SLIST_NODE( node, ast_list ) {
+    c_ast_t const *const ast = node->data;
+    c_ast_english( ast, eout );
+  } // for
+}
+
 char const* c_cast_english( c_cast_kind_t kind ) {
   switch ( kind ) {
     case C_CAST_C           : return "C";

@@ -54,9 +54,24 @@
  * @note A newline _is_ printed.
  *
  * @sa c_ast_gibberish()
+ * @sa c_ast_list_english()
  * @sa c_typedef_english()
  */
 void c_ast_english( c_ast_t const *ast, FILE *eout );
+
+/**
+ * Explains \a ast_list in pseudo-English.
+ *
+ * @param ast_list The list of AST nodes to explain.
+ * @param eout The `FILE` to print to.
+ *
+ * @note A newline _is_ printed.
+ *
+ * @sa c_ast_english()
+ * @sa c_ast_gibberish()
+ * @sa c_typedef_english()
+ */
+void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout );
 
 /**
  * Given \a kind, gets the associated English literal.

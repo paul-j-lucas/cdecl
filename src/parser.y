@@ -509,7 +509,6 @@ static void fl_elaborate_error( char const*, int, dym_kind_t, char const*,
                                 ... );
 
 // local variables
-static c_ast_list_t   decl_ast_list;    ///< List of ASTs being declared.
 static c_ast_list_t   gc_ast_list;      ///< c_ast nodes freed after parse.
 static in_attr_t      in_attr;          ///< Inherited attributes.
 static c_ast_list_t   typedef_ast_list; ///< List of ASTs for `typedef`s.
@@ -988,10 +987,6 @@ static void parse_cleanup( bool fatal_error ) {
   // EOF flag of the lexer.
   //
   lexer_reset( /*hard_reset=*/fatal_error );
-
-  // Do _not_ pass &c_ast_free for the 2nd argument! All AST nodes will be
-  // free'd from the gc_ast_list below. Just free the slist nodes.
-  slist_cleanup( &decl_ast_list, /*free_fn=*/NULL );
 
   c_ast_list_gc( &gc_ast_list );
   ia_cleanup();
@@ -1572,6 +1567,8 @@ static void yyerror( char const *msg ) {
 %type   <ast_list>    paren_capture_decl_list_english
 %type   <ast_list>    paren_param_decl_list_english
 %type   <ast_list>    paren_param_decl_list_english_opt
+%type   <ast>         pc99_pointer_decl_c
+%type   <ast_list>    pc99_pointer_decl_list_c
 %type   <ast>         pointer_decl_english_ast
 %type   <ast>         qualifiable_decl_english_ast
 %type   <ast>         qualified_decl_english_ast
@@ -1629,7 +1626,9 @@ static void yyerror( char const *msg ) {
 %type   <ast>         capture_decl_c_ast
 %type   <ast_list>    capture_decl_list_c capture_decl_list_c_opt
 %type   <ast>         class_struct_union_c_ast
+%type   <ast>         decl_c decl_c_exp
 %type   <ast_pair>    decl_c_astp decl2_c_astp
+%type   <ast_list>    decl_list_c
 %type   <sname>       destructor_sname
 %type   <ast>         east_modified_type_c_ast
 %type   <ast>         enum_c_ast
@@ -2416,7 +2415,11 @@ explain_command
      *      *a[4];            // array 4 of pointer to int
      *      *f();             // function returning pointer to int
      */
-  | explain pc99_pointer_decl_list_c
+  | explain pc99_pointer_decl_list_c[decl_ast_list]
+    {
+      PARSE_ASSERT( c_ast_list_check( &$decl_ast_list ) );
+      c_ast_list_english( &$decl_ast_list, stdout );
+    }
 
     /*
      * Template declaration -- not supported.
@@ -2754,7 +2757,11 @@ c_style_cast_expr_c
      *      (*a[4]);          // array 4 of pointer to int
      *      (*f());           // function returning pointer to int
      */
-  | '(' pc99_pointer_decl_list_c rparen_exp
+  | '(' pc99_pointer_decl_list_c[decl_ast_list] rparen_exp
+    {
+      PARSE_ASSERT( c_ast_list_check( &$decl_ast_list ) );
+      c_ast_list_english( &$decl_ast_list, stdout );
+    }
   ;
 
 /// Gibberish C++-style cast //////////////////////////////////////////////////
@@ -3636,12 +3643,24 @@ decl_list_c_opt
       PUTC( '\n' );
     }
 
-  | decl_list_c
+  | decl_list_c[decl_ast_list]
+    {
+      PARSE_ASSERT( c_ast_list_check( &$decl_ast_list ) );
+      c_ast_list_english( &$decl_ast_list, stdout );
+    }
   ;
 
 decl_list_c
-  : decl_list_c ',' decl_c_exp
-  | decl_c
+  : decl_list_c[decl_ast_list] ',' decl_c_exp[decl_ast]
+    {
+      $$ = $decl_ast_list;
+      slist_push_back( &$$, $decl_ast );
+    }
+  | decl_c[decl_ast]
+    {
+      slist_init( &$$ );
+      slist_push_back( &$$, $decl_ast );
+    }
   ;
 
 decl_c
@@ -3670,64 +3689,11 @@ decl_c
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
-      c_ast_t const *const ast = join_type_decl( type_ast, $decl_astp.ast );
+      $$ = join_type_decl( type_ast, $decl_astp.ast );
+      PARSE_ASSERT( $$ != NULL );
 
-      DUMP_AST( "decl_c", ast );
+      DUMP_AST( "decl_c", $$ );
       DUMP_END();
-
-      PARSE_ASSERT( ast != NULL );
-      PARSE_ASSERT( c_ast_check( ast ) );
-
-      if ( !c_sname_empty( &ast->sname ) ) {
-        //
-        // For declarations that have a name, ensure that it's not used more
-        // than once in the same declaration in C++ or with different types in
-        // C.  (In C, more than once with the same type are "tentative
-        // definitions" and OK.)
-        //
-        //      int i, i;               // OK in C (same type); error in C++
-        //      int j, *j;              // error (different types)
-        //
-        FOREACH_SLIST_NODE( node, &decl_ast_list ) {
-          c_ast_t const *const prev_ast = node->data;
-          if ( c_sname_cmp( &ast->sname, &prev_ast->sname ) != 0 )
-            continue;
-          if ( OPT_LANG_IS( CPP_ANY ) ) {
-            print_error( &ast->loc,
-              "\"%s\": redefinition\n",
-              c_sname_full_name( &ast->sname )
-            );
-            PARSE_ABORT();
-          }
-          else if ( !c_ast_equal( ast, prev_ast ) ) {
-            print_error( &ast->loc,
-              "\"%s\": redefinition with different type\n",
-              c_sname_full_name( &ast->sname )
-            );
-            PARSE_ABORT();
-          }
-        } // for
-        slist_push_back( &decl_ast_list, CONST_CAST( void*, ast ) );
-      }
-
-      c_ast_english( ast, stdout );
-
-      //
-      // The type's AST takes on the name of the thing being declared, e.g.:
-      //
-      //      int x
-      //
-      // makes the type_ast (kind = "built-in type", type = "int") take on the
-      // name of "x" so it'll be explained as:
-      //
-      //      declare x as int
-      //
-      // Once explained, the name must be cleared for the subsequent
-      // declaration (if any) in the same declaration statement, e.g.:
-      //
-      //      int x, y
-      //
-      c_sname_cleanup( &type_ast->sname );
     }
   ;
 
@@ -4582,7 +4548,7 @@ oper_decl_c_astp
     func_equals_c_stid_opt[equals_stid]
     {
       c_operator_t const *const operator = c_oper_get( $oper_id );
-      c_ast_t            *const type_ast = ia_type_ast_peek();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "oper_decl_c_astp",
                   "oper_sname_c_opt OPERATOR c_operator "
@@ -4665,8 +4631,16 @@ pointer_type_c_ast
 /// Gibberish pre-C99 implicit int pointer declaration ////////////////////////
 
 pc99_pointer_decl_list_c
-  : pc99_pointer_decl_c ',' decl_list_c
-  | pc99_pointer_decl_c
+  : pc99_pointer_decl_c[decl_ast] ',' decl_list_c[decl_ast_list]
+    {
+      $$ = $decl_ast_list;
+      slist_push_front( &$$, $decl_ast );
+    }
+  | pc99_pointer_decl_c[decl_ast]
+    {
+      slist_init( &$$ );
+      slist_push_back( &$$, $decl_ast );
+    }
   ;
 
 pc99_pointer_decl_c
@@ -4680,15 +4654,11 @@ pc99_pointer_decl_c
       DUMP_AST( "pc99_pointer_type_c_ast", $type_ast );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
-      PJL_IGNORE_RV( c_ast_patch_placeholder( $type_ast, $decl_astp.ast ) );
-      c_ast_t *const ast = $decl_astp.ast;
-      ast->loc = @$;
+      $$ = c_ast_patch_placeholder( $type_ast, $decl_astp.ast );
+      $$->loc = @$;
 
-      DUMP_AST( "pc99_pointer_decl_c", ast );
+      DUMP_AST( "pc99_pointer_decl_c", $$ );
       DUMP_END();
-
-      PARSE_ASSERT( c_ast_check( ast ) );
-      c_ast_english( ast, stdout );
     }
   ;
 
@@ -7455,24 +7425,27 @@ sname_c_ast
   : // in_attr: type_c_ast
     sname_c[sname] bit_field_c_uint_opt[bit_width]
     {
-      c_ast_t *const type_ast = ia_type_ast_peek();
+      c_ast_t *type_ast = ia_type_ast_peek();
 
       DUMP_START( "sname_c_ast", "sname_c" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_SNAME( "sname", $sname );
       DUMP_INT( "bit_field_c_uint_opt", $bit_width );
 
-      $$ = type_ast;
-      c_sname_set( &$$->sname, &$sname );
+      if ( !c_sname_empty( &type_ast->sname ) )
+        type_ast = c_ast_dup( type_ast, &gc_ast_list );
+
+      c_sname_set( &type_ast->sname, &$sname );
 
       bool ok = true;
       //
       // This check has to be done now in the parser rather than later in the
       // AST since we need to use the builtin union member now.
       //
-      if ( $bit_width != 0 && (ok = c_ast_is_integral( $$ )) )
-        $$->bit_field.bit_width = STATIC_CAST( unsigned, $bit_width );
+      if ( $bit_width != 0 && (ok = c_ast_is_integral( type_ast )) )
+        type_ast->bit_field.bit_width = STATIC_CAST( unsigned, $bit_width );
 
+      $$ = type_ast;
       DUMP_AST( "sname_c_ast", $$ );
       DUMP_END();
 
