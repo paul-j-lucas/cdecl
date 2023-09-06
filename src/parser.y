@@ -4665,8 +4665,8 @@ pointer_type_c_ast
 /// Gibberish pre-C99 implicit int pointer declaration ////////////////////////
 
 pc99_pointer_decl_list_c
-  : pc99_pointer_decl_c
-  | pc99_pointer_decl_c ',' decl_list_c
+  : pc99_pointer_decl_c ',' decl_list_c
+  | pc99_pointer_decl_c
   ;
 
 pc99_pointer_decl_c
