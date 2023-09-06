@@ -520,8 +520,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
 
     case K_POINTER_TO_MEMBER:
       c_ast_gibberish_impl( ast->ptr_mbr.to_ast, g );
-      if ( !g->printed_space )
-        FPUTC( ' ', g->gout );
+      g_print_space_once( g );
       if ( !g->postfix )
         c_ast_qual_name_gibberish( ast, g );
       break;
