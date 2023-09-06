@@ -1,4 +1,4 @@
-# wctype.m4 serial 5
+# wctype.m4 serial 6
 dnl Copyright (C) 2011-2023 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -11,10 +11,11 @@ AC_DEFUN_ONCE([gl_FUNC_WCTYPE],
   AC_REQUIRE([AC_CANONICAL_HOST]) dnl for cross-compiles
   HAVE_WCTYPE=$HAVE_WCTYPE_T
   if test $HAVE_WCTYPE = 1; then
-    AC_CACHE_CHECK([whether wctype supports the "blank" character class],
+    AC_CACHE_CHECK([whether wctype supports the "blank" and "punct" character classes],
       [gl_cv_func_wctype_works],
       [AC_RUN_IFELSE(
          [AC_LANG_SOURCE([[
+            #include <ctype.h>
             #include <wchar.h>
             #include <wctype.h>
             int main ()
@@ -25,6 +26,9 @@ AC_DEFUN_ONCE([gl_FUNC_WCTYPE],
               /* This test fails on MSVC 14.  */
               if ((! iswctype ('\t', wctype ("blank"))) != (! iswblank ('\t')))
                 return 2;
+              /* This test fails on Android 11.  */
+              if ((! iswctype ('\`', wctype ("punct"))) != (! ispunct ('\`')))
+                return 4;
               return 0;
             }
          ]])],
@@ -32,6 +36,8 @@ AC_DEFUN_ONCE([gl_FUNC_WCTYPE],
          [case "$host_os" in
                                # Guess no on native Windows.
             mingw* | windows*) gl_cv_func_wctype_works="guessing no" ;;
+                               # Guess no on Android.
+            android*)          gl_cv_func_wctype_works="guessing no" ;;
                                # Guess yes otherwise.
             *)                 gl_cv_func_wctype_works="guessing yes" ;;
           esac

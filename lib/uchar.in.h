@@ -21,13 +21,13 @@
  */
 
 #ifndef _@GUARD_PREFIX@_UCHAR_H
-#define _@GUARD_PREFIX@_UCHAR_H
 
 #if __GNUC__ >= 3
 @PRAGMA_SYSTEM_HEADER@
 #endif
 @PRAGMA_COLUMNS@
 
+/* The include_next requires a split double-inclusion guard.  */
 #if @HAVE_UCHAR_H@
 # if defined __HAIKU__
 /* Work around <https://dev.haiku-os.org/ticket/17040>.  */
@@ -43,6 +43,9 @@
 # endif
 # @INCLUDE_NEXT@ @NEXT_UCHAR_H@
 #endif
+
+#ifndef _@GUARD_PREFIX@_UCHAR_H
+#define _@GUARD_PREFIX@_UCHAR_H
 
 /* This file uses _GL_INLINE_HEADER_BEGIN, _GL_INLINE, _GL_BEGIN_C_LINKAGE,
    _GL_ATTRIBUTE_PURE, GNULIB_POSIXCHECK, HAVE_RAW_DECL_*.  */
@@ -799,4 +802,5 @@ _GL_CXXALIASWARN (c32_apply_mapping);
 
 _GL_INLINE_HEADER_END
 
+#endif /* _@GUARD_PREFIX@_UCHAR_H */
 #endif /* _@GUARD_PREFIX@_UCHAR_H */

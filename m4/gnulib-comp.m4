@@ -87,6 +87,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module iswblank:
   # Code from module iswctype:
   # Code from module iswdigit:
+  # Code from module iswpunct:
   # Code from module iswxdigit:
   # Code from module libc-config:
   # Code from module limits-h:
@@ -352,6 +353,10 @@ AC_DEFUN([gl_INIT],
   gl_CONDITIONAL([GL_COND_OBJ_ISWDIGIT],
                  [! { test $HAVE_ISWCNTRL = 0 || test $REPLACE_ISWCNTRL = 1; } && test $REPLACE_ISWDIGIT = 1])
   gl_WCTYPE_MODULE_INDICATOR([iswdigit])
+  gl_FUNC_ISWPUNCT
+  gl_CONDITIONAL([GL_COND_OBJ_ISWPUNCT],
+                 [! { test $HAVE_ISWCNTRL = 0 || test $REPLACE_ISWCNTRL = 1; } && test $REPLACE_ISWPUNCT = 1])
+  gl_WCTYPE_MODULE_INDICATOR([iswpunct])
   gl_FUNC_ISWXDIGIT
   gl_CONDITIONAL([GL_COND_OBJ_ISWXDIGIT],
                  [! { test $HAVE_ISWCNTRL = 0 || test $REPLACE_ISWCNTRL = 1; } && test $REPLACE_ISWXDIGIT = 1])
@@ -830,6 +835,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/iswctype-impl.h
   lib/iswctype.c
   lib/iswdigit.c
+  lib/iswpunct.c
   lib/iswxdigit.c
   lib/lc-charset-dispatch.c
   lib/lc-charset-dispatch.h
@@ -959,6 +965,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/iswblank.m4
   m4/iswctype.m4
   m4/iswdigit.m4
+  m4/iswpunct.m4
   m4/iswxdigit.m4
   m4/libunistring-base.m4
   m4/limits-h.m4

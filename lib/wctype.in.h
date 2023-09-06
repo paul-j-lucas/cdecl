@@ -133,7 +133,7 @@ typedef unsigned int rpl_wint_t;
    Linux libc5 has <wctype.h> and the functions but they are broken.
    mingw and MSVC have <wctype.h> and the functions but they take a wchar_t
    as argument, not an rpl_wint_t.  Additionally, the mingw iswprint function
-   is broken.
+   and the Android iswpunct function are broken.
    Assume all 11 functions (all isw* except iswblank) are implemented the
    same way, or not at all.  */
 # if ! @HAVE_ISWCNTRL@ || @REPLACE_ISWCNTRL@
@@ -491,6 +491,16 @@ _GL_FUNCDECL_SYS (iswblank, int, (wint_t wc));
 #     define iswdigit rpl_iswdigit
 #    endif
 _GL_FUNCDECL_RPL (iswdigit, int, (wint_t wc));
+#   endif
+#  endif
+
+#  if @GNULIB_ISWPUNCT@
+#   if @REPLACE_ISWPUNCT@
+#    if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#     undef iswpunct
+#     define iswpunct rpl_iswpunct
+#    endif
+_GL_FUNCDECL_RPL (iswpunct, int, (wint_t wc));
 #   endif
 #  endif
 
