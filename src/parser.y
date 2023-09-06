@@ -375,32 +375,6 @@
  *  DUMP_END();
  * ```
  *
- * Whenever possible, an entire dump block should be completed before any
- * actions are taken as a result of a failed semantic check or other error
- * (typically, calling print_error() and #PARSE_ABORT()) so that the entire
- * block is dumped for debugging purposes first. If necessary, set a flag
- * within the dump block, then check it after, e.g.:
- * ```
- *  DUMP_START( "rule", "subrule_1 name subrule_2" );
- *  DUMP_AST( "subrule_1", $1 );
- *  DUMP_STR( "name", $2 );
- *  DUMP_AST( "subrule_2", $3 );
- *
- *  bool ok = true;
- *  if ( semantic_check_failed ) {
- *    // ...
- *    ok = false;
- *  }
- *
- *  DUMP_AST( "rule", $$ );
- *  DUMP_END();
- *
- *  if ( !ok ) {
- *    print_error( &@1, "...\n" );
- *    PARSE_ABORT();
- *  }
- * ```
- *
  * @param NAME The grammar production name.
  * @param RULE The grammar production rule.
  *
@@ -7437,25 +7411,24 @@ sname_c_ast
 
       c_sname_set( &type_ast->sname, &$sname );
 
-      bool ok = true;
-      //
-      // This check has to be done now in the parser rather than later in the
-      // AST since we need to use the builtin union member now.
-      //
-      if ( $bit_width != 0 && (ok = c_ast_is_integral( type_ast )) )
+      if ( $bit_width != 0 ) {
+        //
+        // This check has to be done now in the parser rather than later in the
+        // AST since we need to use the builtin union member now.
+        //
+        if ( !c_ast_is_integral( type_ast ) ) {
+          print_error( &@bit_width,
+            "bit-fields can be only of integral %stypes\n",
+            OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
+          );
+          PARSE_ABORT();
+        }
         type_ast->bit_field.bit_width = STATIC_CAST( unsigned, $bit_width );
+      }
 
       $$ = type_ast;
       DUMP_AST( "sname_c_ast", $$ );
       DUMP_END();
-
-      if ( !ok ) {
-        print_error( &@bit_width,
-          "bit-fields can be only of integral %stypes\n",
-          OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
-        );
-        PARSE_ABORT();
-      }
     }
   ;
 
