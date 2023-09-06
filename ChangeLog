@@ -1,5 +1,8 @@
 2023-09-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c: Eliminated `if`s.
+   * gibberish.c: Gibberish function renaming to parallel English function
+     names.
    * lib/Makefile.am, attribute.h, iswpunct.c, stdio.in.h, stdlib.in.h,
      string.in.h, uchar.in.h, wchar.in.h, wctype.in.h, gnulib-common.m4,
      gnulib-comp.m4, iswpunct.m4, wctype.m4, wctype_h.m4: Updated GnuLib.
