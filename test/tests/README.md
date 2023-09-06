@@ -29,7 +29,7 @@ The characters are:
 + `+` = scope (`S::x`; `2+` = `S::T::x`, etc.)
 + `++` = scope (`++` = `of scope S`; `2++` = `of scope S of scope T`, etc.)
 + `0` = pure virtual
-+ `a` = array (following digits specify array size) or `auto`
++ `a` = array (following digits specify array size)
 + `a_cd_` = `carries_dependency`
 + `a_dep_` = `deprecated`
 + `a_mu_` = `maybe_unused`
@@ -41,6 +41,7 @@ The characters are:
 + `al` = `_Alignas` or `alignas`
 + `an` = array with name for size, e.g., `a[n]`
 + `at` = `_Atomic` or `atomic`
++ `au` = `auto`
 + `b` = `bool`
 + `bi` = `_BitInt` (following digits specify number of bits)
 + `bl` = block (Apple extension)

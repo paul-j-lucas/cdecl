@@ -50,7 +50,7 @@ TESTS+=	tests/declare.test
 #
 TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_++i-c.test \
-	tests/declare_af.test \
+	tests/declare_auf.test \
 	tests/declare_b-c89.test \
 	tests/declare_b_f_i.test \
 	tests/declare_bi129.test \
@@ -149,9 +149,9 @@ TESTS+=	tests/declare_0f_v-c.test \
 #
 TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_a_nua_f.test \
-	tests/declare_ai-c++11.test \
 	tests/declare_ari.test \
 	tests/declare_ati-c++20.test \
+	tests/declare_aui-c++11.test \
 	tests/declare_cnmf_v.test \
 	tests/declare_epf.test \
 	tests/declare_etmf.test \
@@ -192,7 +192,6 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_a_nd_i.test \
 	tests/explain_a_re_i.test \
 	tests/explain_aai.test \
-	tests/explain_af-c.test \
 	tests/explain_al3_c.test \
 	tests/explain_al4_cw3.test \
 	tests/explain_al8ty_i.test \
@@ -200,6 +199,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_alrgi.test \
 	tests/explain_atci.test \
 	tests/explain_attda2i.test \
+	tests/explain_auf-c.test \
 	tests/explain_b-c89.test \
 	tests/explain_bi0.test \
 	tests/explain_bi1.test \
@@ -346,10 +346,10 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_2i-redef-c++.test \
 	tests/explain_a_nua_f.test \
 	tests/explain_a_nua_iw4.test \
-	tests/explain_af-c++11.test \
-	tests/explain_ai-c++11.test \
 	tests/explain_ari.test \
 	tests/explain_ati-c++20.test \
+	tests/explain_auf-c++11.test \
+	tests/explain_aui-c++11.test \
 	tests/explain_cepctor_i.test \
 	tests/explain_cftsrk_v.test \
 	tests/explain_cri.test \
@@ -365,9 +365,9 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_f__v-c++03.test \
 	tests/explain_f_v++default.test \
 	tests/explain_f_v__v.test \
-	tests/explain_fa_v-c++17.test \
 	tests/explain_fac3_v-c++.test \
 	tests/explain_fast3_v-c++.test \
+	tests/explain_fau_v-c++17.test \
 	tests/explain_fav_v-c++.test \
 	tests/explain_fithrk_v.test \
 	tests/explain_fkr_v.test \
@@ -449,8 +449,8 @@ TESTS+=	tests/cast_a3i.test \
 # C++ cast error tests
 # ====================
 #
-TESTS+=	tests/cast_a.test \
-	tests/cast_pa.test
+TESTS+=	tests/cast_au.test \
+	tests/cast_pau.test
 
 ###############################################################################
 
@@ -467,7 +467,7 @@ TESTS+=	tests/explain_cast.test
 TESTS+=	tests/explain_cast_a3a5a7i.test \
 	tests/explain_cast_a3a5i.test \
 	tests/explain_cast_a3i.test \
-	tests/explain_cast_ai-c17.test \
+	tests/explain_cast_aui-c17.test \
 	tests/explain_cast_eti.test \
 	tests/explain_cast_rgi.test \
 	tests/explain_cast_lll.test \
@@ -541,16 +541,16 @@ TESTS+=	tests/2k_typedef_i.test \
 	tests/ins_ns_typedef_i.test \
 	tests/ns_+typedef_i-c++14.test \
 	tests/ns_c_ns_c.test \
-	tests/typedef_a.test \
-	tests/typedef_ai-c17.test \
+	tests/typedef_au.test \
+	tests/typedef_aui-c17.test \
 	tests/typedef_c_int_least32_t.test \
 	tests/typedef_eti.test \
-	tests/typedef_pa.test \
+	tests/typedef_pau.test \
 	tests/typedef_rgi.test \
 	tests/typedef_sti.test \
 	tests/typedef_tni.test \
 	tests/typedef_v_explain_v.test \
-	tests/using_ai.test \
+	tests/using_aui.test \
 	tests/using_c_int_least32_t.test \
 	tests/using_eti.test \
 	tests/using_f-name_v.test \
@@ -581,7 +581,7 @@ TESTS+=	tests/define_i.test \
 # C define error tests
 # ====================
 #
-TESTS+=	tests/define_ai-c17.test \
+TESTS+=	tests/define_aui-c17.test \
 	tests/define_c_int_least32_t.test \
 	tests/define_eti.test \
 	tests/define_rgi.test \
@@ -645,7 +645,7 @@ TESTS+=	tests/declare_+o_eq_rck_rk++default-c++03.test \
 	tests/declare_o_dot_k.test \
 	tests/declare_o_dot_star_rk_rk.test \
 	tests/declare_o_exclam_2i.test \
-	tests/declare_o_less_eq_greater_2rck_a-c++17.test \
+	tests/declare_o_less_eq_greater_2rck_au-c++17.test \
 	tests/declare_o_minus2_d_rk.test \
 	tests/declare_o_minus2_rkd_rk.test \
 	tests/declare_o_minus_iel_i.test \
