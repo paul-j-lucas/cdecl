@@ -387,9 +387,41 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_ATTRIBUTES                 LANG_C_CPP_MIN(23,11)
 
 /**
- * Languages the `auto` keyword as a storage class is supported in.
+ * Languages the `auto` keyword for parameters are supported in.
  *
  * @sa #LANG_auto_POINTER_TYPE
+ * @sa #LANG_auto_RETURN_TYPE
+ * @sa #LANG_auto_STORAGE
+ * @sa #LANG_auto_TYPE
+ */
+#define LANG_auto_PARAMETER             LANG_CPP_MIN(20)
+
+/**
+ * Languages the `auto` keyword as a pointer type is supported in.
+ *
+ * @sa #LANG_auto_PARAMETER
+ * @sa #LANG_auto_RETURN_TYPE
+ * @sa #LANG_auto_STORAGE
+ * @sa #LANG_auto_TYPE
+ */
+#define LANG_auto_POINTER_TYPE          LANG_CPP_MIN(11)
+
+/**
+ * Languages the `auto` keyword for function return types are supported in.
+ *
+ * @sa #LANG_auto_PARAMETER
+ * @sa #LANG_auto_POINTER_TYPE
+ * @sa #LANG_auto_STORAGE
+ * @sa #LANG_auto_TYPE
+ */
+#define LANG_auto_RETURN_TYPE           LANG_CPP_MIN(14)
+
+/**
+ * Languages the `auto` keyword as a storage class is supported in.
+ *
+ * @sa #LANG_auto_PARAMETER
+ * @sa #LANG_auto_POINTER_TYPE
+ * @sa #LANG_auto_RETURN_TYPE
  * @sa #LANG_auto_TYPE
  */
 #define LANG_auto_STORAGE               LANG_C_CPP_MAX(17,03)
@@ -397,28 +429,12 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `auto` keyword as a type is supported in.
  *
+ * @sa #LANG_auto_PARAMETER
  * @sa #LANG_auto_POINTER_TYPE
+ * @sa #LANG_auto_RETURN_TYPE
  * @sa #LANG_auto_STORAGE
  */
 #define LANG_auto_TYPE                  LANG_C_CPP_MIN(23,11)
-
-/**
- * Languages the `auto` keyword as a pointer type is supported in.
- *
- * @sa #LANG_auto_STORAGE
- * @sa #LANG_auto_TYPE
- */
-#define LANG_auto_POINTER_TYPE          LANG_CPP_MIN(11)
-
-/**
- * Languages the `auto` keyword for parameters are supported in.
- */
-#define LANG_auto_PARAMETER             LANG_CPP_MIN(20)
-
-/**
- * Languages the `auto` keyword for function return types are supported in.
- */
-#define LANG_auto_RETURN_TYPE           LANG_CPP_MIN(14)
 
 /**
  * Languages the `_BitInt` keyword is supported in.
