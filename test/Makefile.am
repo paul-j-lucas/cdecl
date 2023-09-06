@@ -284,6 +284,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_main_fkr_i.test \
 	tests/explain_main_stf_i-c.test \
 	tests/explain_p_cdecl_v.test \
+	tests/explain_pau-c.test \
 	tests/explain_pmi-c.test \
 	tests/explain_puw3.test \
 	tests/explain_pv-knr.test \

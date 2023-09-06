@@ -2170,6 +2170,16 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
         EPUTC( '\n' );
       }
       return false;
+    case K_BUILTIN:
+      if ( c_tid_is_any( raw_to_ast->type.btids, TB_AUTO ) &&
+           !OPT_LANG_IS( auto_POINTER_TYPE ) ) {
+        print_error( &ast->loc,
+          "\"auto\" with pointer declarator not supported%s\n",
+          C_LANG_WHICH( auto_POINTER_TYPE )
+        );
+        return false;
+      }
+      FALLTHROUGH;
     default:
       if ( c_tid_is_any( ast->type.atids, TA_ANY_MSC_CALL ) ) {
         print_error( &ast->loc,

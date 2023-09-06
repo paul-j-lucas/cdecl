@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** `_Alignas` forward declarations
 `_Alignas` is now correctly forbidden on forward declarations.
 
+** `auto *p` in C
+`auto` with a pointer declarator is now correctly forbidden in C.
+
 ** Bit-field `typedef`s for `enum`s
 A bit-field of a `typedef` for an `enum` is now correctly forbidden in C:
 

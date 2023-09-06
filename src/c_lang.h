@@ -389,6 +389,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `auto` keyword as a storage class is supported in.
  *
+ * @sa #LANG_auto_POINTER_TYPE
  * @sa #LANG_auto_TYPE
  */
 #define LANG_auto_STORAGE               LANG_C_CPP_MAX(17,03)
@@ -396,9 +397,18 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `auto` keyword as a type is supported in.
  *
+ * @sa #LANG_auto_POINTER_TYPE
  * @sa #LANG_auto_STORAGE
  */
 #define LANG_auto_TYPE                  LANG_C_CPP_MIN(23,11)
+
+/**
+ * Languages the `auto` keyword as a pointer type is supported in.
+ *
+ * @sa #LANG_auto_STORAGE
+ * @sa #LANG_auto_TYPE
+ */
+#define LANG_auto_POINTER_TYPE          LANG_CPP_MIN(11)
 
 /**
  * Languages the `auto` keyword for parameters are supported in.

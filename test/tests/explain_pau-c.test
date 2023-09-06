@@ -1,0 +1,4 @@
+EXPECTED_EXIT=65
+cdecl <<END
+explain auto *p
+END
