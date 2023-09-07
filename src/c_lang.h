@@ -893,6 +893,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_STATIC_OP_PARENS           LANG_CPP_MIN(23)
 
 /**
+ * Languages "tentative definitions" are supported in.
+ */
+#define LANG_TENTATIVE_DEF              LANG_C_ANY
+
+/**
  * Languages the `_Thread_local` keyword is supported in.
  *
  * @sa #LANG_thread_local

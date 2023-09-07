@@ -3000,7 +3000,7 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
     //
     if ( prev_ast != NULL &&
          c_sname_cmp( &ast->sname, &prev_ast->sname ) == 0 ) {
-      if ( OPT_LANG_IS( CPP_ANY ) ) {
+      if ( !OPT_LANG_IS( TENTATIVE_DEF ) ) {
         print_error( &ast->loc,
           "\"%s\": redefinition\n",
           c_sname_full_name( &ast->sname )
