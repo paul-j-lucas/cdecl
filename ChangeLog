@@ -1,5 +1,9 @@
 2023-09-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.c, c_ast_check.c, c_ast_util.h, c_keyword.c, c_kind.c,
+     c_lang.h, c_operator.c, c_type.c, cdecl_command.c, cdecl_keyword.c,
+     gibberish.c, help.c, parser.y, print.c, set_options.c: Added more LANG_*
+     feature macros; normalized names.
    * c_ast_check.c, c_lang.h, help.c:
      s/LANG_KNR_FUNC_DEFINITION/LANG_KNR_FUNC_DEF/
    * c_ast_check.c, c_lang.h: Added LANG_TENTATIVE_DEF.
