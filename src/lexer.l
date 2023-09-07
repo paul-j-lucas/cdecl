@@ -527,7 +527,7 @@ static void set_trigraph( char const *token ) {
  * `yyin`).
  */
 static int yywrap( void ) {
-  return 1 /* done */;
+  return /*done=*/1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
