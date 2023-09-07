@@ -596,7 +596,7 @@ bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
  */
 NODISCARD C_AST_UTIL_H_INLINE
 bool c_ast_print_as_using( c_ast_t const *ast ) {
-  return  opt_using && OPT_LANG_IS( using_DECLARATION ) &&
+  return  opt_using && OPT_LANG_IS( using_DECLS ) &&
           c_tid_is_any( ast->type.stids, TS_TYPEDEF );
 }
 

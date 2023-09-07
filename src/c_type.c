@@ -145,7 +145,7 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
   { TA_NODISCARD, LANG_nodiscard, H_non_discardable,
     C_LANG_LIT( { LANG_ANY, L_nodiscard } ) },
 
-  { TA_NORETURN, LANG_NONRETURNING_FUNC, H_non_returning,
+  { TA_NORETURN, LANG_NONRETURNING_FUNCS, H_non_returning,
     C_LANG_LIT( { LANG_noreturn, L_noreturn  },
                 { LANG_ANY,      L__Noreturn } ) },
 
@@ -197,13 +197,13 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
     C_LANG_LIT( { ~LANG_const, L_GNU___const },
                 { LANG_ANY,    L_const       } ) },
 
-  { TS_NON_EMPTY_ARRAY, LANG_QUALIFIED_ARRAY, H_non_empty,
+  { TS_NON_EMPTY_ARRAY, LANG_QUALIFIED_ARRAYS, H_non_empty,
     C_LANG_LIT( { LANG_ANY, L_static } ) },
 
-  { TS_REFERENCE, LANG_REF_QUALIFIED_FUNC, .english_lit = NULL,
+  { TS_REFERENCE, LANG_REF_QUALIFIED_FUNCS, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_reference } ) },
 
-  { TS_RVALUE_REFERENCE, LANG_REF_QUALIFIED_FUNC, .english_lit = NULL,
+  { TS_RVALUE_REFERENCE, LANG_REF_QUALIFIED_FUNCS, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_rvalue_reference } ) },
 
   { TS_RESTRICT, LANG_ANY, L_restricted,
@@ -242,7 +242,7 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_EXTERN, LANG_ANY, L_external,
     C_LANG_LIT( { LANG_ANY, L_extern } ) },
 
-  { TS_EXTERN_C, LANG_CPP_ANY, "external \"C\" linkage",
+  { TS_EXTERN_C, LANG_LINKAGE_DECLS, "external \"C\" linkage",
     C_LANG_LIT( { LANG_ANY, "extern \"C\"" } ) },
 
   { TS_REGISTER, LANG_register, .english_lit = NULL,
@@ -269,13 +269,13 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_CONSTINIT, LANG_constinit, "constant initialization",
     C_LANG_LIT( { LANG_ANY, L_constinit } ) },
 
-  { TS_DEFAULT, LANG_default_delete_FUNC, .english_lit = NULL,
+  { TS_DEFAULT, LANG_default_delete_FUNCS, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_default } ) },
 
-  { TS_DELETE, LANG_default_delete_FUNC, L_deleted,
+  { TS_DELETE, LANG_default_delete_FUNCS, L_deleted,
     C_LANG_LIT( { LANG_ANY, L_delete } ) },
 
-  { TS_EXPLICIT, LANG_CPP_ANY, .english_lit = NULL,
+  { TS_EXPLICIT, LANG_explicit, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_explicit } ) },
 
   { TS_EXPORT, LANG_export, L_exported,
@@ -284,14 +284,14 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_FINAL, LANG_final, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_final } ) },
 
-  { TS_FRIEND, LANG_CPP_ANY, .english_lit = NULL,
+  { TS_FRIEND, LANG_friend, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_friend } ) },
 
   { TS_INLINE, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { ~LANG_inline, L_GNU___inline },
                 { LANG_ANY,     L_inline       } ) },
 
-  { TS_MUTABLE, LANG_CPP_ANY, .english_lit = NULL,
+  { TS_MUTABLE, LANG_mutable, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_mutable } ) },
 
   { TS_NOEXCEPT, LANG_noexcept, H_no_exception,
@@ -300,16 +300,16 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_OVERRIDE, LANG_override, L_overridden,
     C_LANG_LIT( { LANG_ANY, L_override } ) },
 
-  { TS_THIS, LANG_EXPLICIT_OBJ_PARAM_DECL, .english_lit = NULL,
+  { TS_THIS, LANG_EXPLICIT_OBJ_PARAM_DECLS, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_this } ) },
 
   { TS_THROW, LANG_CPP_ANY, H_non_throwing,
     C_LANG_LIT( { LANG_ANY, L_throw } ) },
 
-  { TS_VIRTUAL, LANG_CPP_ANY, .english_lit = NULL,
+  { TS_VIRTUAL, LANG_virtual, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_virtual } ) },
 
-  { TS_PURE_VIRTUAL, LANG_CPP_ANY, .english_lit = NULL,
+  { TS_PURE_VIRTUAL, LANG_virtual, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_pure } ) },
 };
 
@@ -389,7 +389,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { TB_UNION, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_union } ) },
 
-  { TB_CLASS, LANG_CPP_ANY, .english_lit = NULL,
+  { TB_CLASS, LANG_class, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_class } ) },
 
   { TB_TYPEDEF, LANG_ANY, .english_lit = NULL,
@@ -422,33 +422,40 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define CEX         LANG_constexpr
 #define CEX_VIR     LANG_constexpr_virtual
 #define CIN         LANG_constinit
+#define CLS         LANG_class
 #define COM         LANG__Complex
 #define CPP         LANG_CPP_ANY
-#define DDF         LANG_default_delete_FUNC
+#define DDF         LANG_default_delete_FUNCS
 #define ENC         LANG_enum_class
 #define ENU         LANG_enum
 #define EXP         LANG_export
 #define FIN         LANG_final
+#define FRI         LANG_friend
 #define IMA         LANG__Imaginary
 #define INL         LANG_inline
 #define LDO         LANG_long_double
 #define LFL         LANG_long_float
 #define LLO         LANG_long_long
+#define LNK         LANG_LINKAGE_DECLS
+#define MUT         LANG_mutable
 #define NOE         LANG_noexcept
 #define OVR         LANG_override
-#define QAR         LANG_QUALIFIED_ARRAY
+#define QAR         LANG_QUALIFIED_ARRAYS
+#define REF         LANG_REFERENCES
 #define REG         LANG_register
-#define RVR         LANG_RVALUE_REFERENCE
+#define RVR         LANG_RVALUE_REFERENCES
 #define SIG         LANG_signed
-#define THI         LANG_EXPLICIT_OBJ_PARAM_DECL
+#define THI         LANG_EXPLICIT_OBJ_PARAM_DECLS
 #define THR         LANG_throw
 #define TLS         LANG_THREAD_LOCAL_STORAGE
 #define UNC         LANG_unsigned_char
 #define UNL         LANG_unsigned_long
 #define UNS         LANG_unsigned_short
 #define UPC         LANG_C_99
+#define VIR         LANG_virtual
 #define VOL         LANG_volatile
 #define WCH         LANG_wchar_t
+#define XPL         LANG_explicit
 
 /// @endcond
 
@@ -472,10 +479,10 @@ static c_lang_id_t const OK_QUALIFIER_LANGS[ ARRAY_SIZE( C_QUALIFIER_INFO ) ][ A
   { ATO,___,___,___,___,___,___,  ___,___,___ }, // atomic
   { ATO,___,___,___,___,___,___,  ___,___,___ }, // const
   { XXX,QAR,QAR,___,___,___,___,  ___,___,___ }, // non-empty (array)
-  { XXX,CPP,XXX,CPP,___,___,___,  ___,___,___ }, // reference
+  { XXX,REF,XXX,REF,___,___,___,  ___,___,___ }, // reference
   { XXX,RVR,XXX,XXX,RVR,___,___,  ___,___,___ }, // rvalue reference
-  { XXX,___,QAR,CPP,RVR,___,___,  ___,___,___ }, // restrict
-  { ATO,___,QAR,CPP,RVR,___,___,  ___,___,___ }, // volatile
+  { XXX,___,QAR,REF,RVR,___,___,  ___,___,___ }, // restrict
+  { ATO,___,QAR,REF,RVR,___,___,  ___,___,___ }, // volatile
 
   // Unified Parallel C extensions
   { XXX,UPC,XXX,XXX,XXX,UPC,UPC,  UPC,___,___ }, // relaxed
@@ -490,15 +497,15 @@ static c_lang_id_t const OK_QUALIFIER_LANGS[ ARRAY_SIZE( C_QUALIFIER_INFO ) ][ A
  */
 static c_lang_id_t const OK_STORAGE_LANGS[ ARRAY_SIZE( C_STORAGE_INFO ) ][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
-//  auto    block   extern  exter-C registe static  thread  typedef c'eval  c'expr  c'init  default delete  explici export  final   friend  inline  mutable noexcep overrid this    thread  virtual pure
+//  auto    block   extern  exter-C registe static  thread  typedef c'eval  c'expr  c'init  default delete  explici export  final   friend  inline  mutable noexcep overrid this    throw   virtual pure
   { ___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// auto
   { ___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// block
   { XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// extern
-  { XXX    ,___    ,___    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// extern-C
+  { XXX    ,___    ,___    ,LNK    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// extern-C
   { XXX    ,___    ,XXX    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// register
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// static
   { XXX    ,___    ,___    ,TLS    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// thread
-  { XXX    ,___    ,XXX    ,CPP    ,XXX    ,XXX    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// typedef
+  { XXX    ,___    ,XXX    ,LNK    ,XXX    ,XXX    ,XXX    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// typedef
 
   // storage-class-like
   { XXX    ,CEV    ,CEV    ,CEV    ,XXX    ,CEV    ,XXX    ,XXX    ,CEV    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// c'eval
@@ -506,18 +513,18 @@ static c_lang_id_t const OK_STORAGE_LANGS[ ARRAY_SIZE( C_STORAGE_INFO ) ][ ARRAY
   { XXX    ,XXX    ,CIN    ,CIN    ,XXX    ,CIN    ,CIN&TLS,XXX    ,XXX    ,XXX    ,CIN    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// c'init
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEV&DDF,CEX&DDF,XXX    ,DDF    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// default
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEV&DDF,CEX&DDF,XXX    ,XXX    ,DDF    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// delete
-  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX    ,XXX    ,DDF    ,DDF    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// explicit
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX    ,XXX    ,DDF    ,DDF    ,XPL    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// explicit
   { XXX    ,XXX    ,EXP    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&EXP,CIN    ,XXX    ,XXX    ,XXX    ,EXP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// export
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&FIN,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// final
-  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEV    ,CEX    ,XXX    ,DDF    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// friend
-  { XXX    ,XXX    ,___    ,CPP    ,XXX    ,___    ,XXX    ,XXX    ,CEV    ,CEX    ,CIN    ,DDF    ,DDF    ,CPP    ,EXP    ,FIN    ,CPP    ,INL    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// inline
-  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,___    ,___    ,___    ,___    ,___    ,___ },// mutable
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEV    ,CEX    ,XXX    ,DDF    ,XXX    ,XXX    ,XXX    ,XXX    ,FRI    ,___    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// friend
+  { XXX    ,XXX    ,___    ,LNK    ,XXX    ,___    ,XXX    ,XXX    ,CEV    ,CEX    ,CIN    ,DDF    ,DDF    ,XPL    ,EXP    ,FIN    ,FRI    ,INL    ,___    ,___    ,___    ,___    ,___    ,___    ,___ },// inline
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,MUT    ,___    ,___    ,___    ,___    ,___    ,___ },// mutable
   { XXX    ,XXX    ,NOE    ,NOE    ,XXX    ,NOE    ,XXX    ,NOE    ,CEV&NOE,CEX&NOE,XXX    ,NOE    ,NOE    ,NOE    ,EXP    ,NOE    ,NOE    ,NOE    ,NOE    ,NOE    ,___    ,___    ,___    ,___    ,___ },// noexcept
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX&OVR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN&OVR,XXX    ,OVR    ,XXX    ,NOE&OVR,OVR    ,___    ,___    ,___    ,___ },// override
   { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,THI    ,___    ,___    ,___ },// this
-  { XXX    ,XXX    ,CPP    ,CPP    ,XXX    ,CPP    ,XXX    ,CPP    ,CEV    ,CEX    ,XXX    ,DDF    ,DDF    ,CPP    ,XXX    ,FIN    ,XXX    ,CPP    ,THR    ,XXX    ,OVR    ,THI    ,CPP    ,___    ,___ },// throw
-  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX_VIR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN    ,XXX    ,CPP    ,XXX    ,NOE    ,OVR    ,XXX    ,CPP    ,CPP    ,___ },// virtual
-  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX_VIR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CPP    ,XXX    ,NOE    ,OVR    ,XXX    ,CPP    ,CPP    ,CPP },// pure
+  { XXX    ,XXX    ,CPP    ,LNK    ,XXX    ,CPP    ,XXX    ,CPP    ,CEV    ,CEX    ,XXX    ,DDF    ,DDF    ,XPL    ,XXX    ,FIN    ,XXX    ,CPP    ,THR    ,XXX    ,OVR    ,THI    ,CPP    ,___    ,___ },// throw
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX_VIR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,FIN    ,XXX    ,VIR    ,XXX    ,NOE    ,OVR    ,XXX    ,VIR    ,VIR    ,___ },// virtual
+  { XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,CEX_VIR,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,XXX    ,VIR    ,XXX    ,NOE    ,OVR    ,XXX    ,VIR    ,VIR    ,VIR },// pure
 };
 
 /**
@@ -550,7 +557,7 @@ static c_lang_id_t const OK_TYPE_LANGS[ ARRAY_SIZE( C_TYPE_INFO ) ][ ARRAY_SIZE(
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,ENU,___,___,___,___,___,___,___ },// enum
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,ENC,___,___,___,___,___,___,___ },// struct
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___,___,___ },// union
-  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,ENC,XXX,XXX,CPP,___,___,___,___ },// class
+  { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,ENC,XXX,XXX,CLS,___,___,___,___ },// class
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,___,___,___,___ },// typedef
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,XXX,UPC,XXX,UPC,UPC,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,___,___ },// _Accum
   { XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,XXX,UPC,XXX,UPC,UPC,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,XXX,UPC,___ },// _Fract

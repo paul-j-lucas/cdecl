@@ -589,7 +589,7 @@ void print_type( c_typedef_t const *tdef, FILE *tout ) {
   if ( tdef->gib_flags == C_GIB_NONE ) {
     c_typedef_english( tdef, tout );
   } else {
-    unsigned const gib_flags = OPT_LANG_IS( using_DECLARATION ) ?
+    unsigned const gib_flags = OPT_LANG_IS( using_DECLS ) ?
       tdef->gib_flags : (tdef->gib_flags & ~C_GIB_USING) | C_GIB_TYPEDEF;
     c_typedef_gibberish( tdef, gib_flags, tout );
   }

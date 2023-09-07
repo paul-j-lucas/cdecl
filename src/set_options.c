@@ -354,8 +354,8 @@ static void print_options( void ) {
   print_option( "lang", c_lang_name( opt_lang ), LANG_ANY );
   print_option( "prompt", po_bool_value( opt_prompt ), LANG_ANY );
   print_option( "semicolon", po_bool_value( opt_semicolon ), LANG_ANY );
-  print_option( "trailing-return", po_bool_value( opt_trailing_ret ), LANG_TRAILING_RETURN_TYPE );
-  print_option( "using", po_bool_value( opt_using ), LANG_using_DECLARATION );
+  print_option( "trailing-return", po_bool_value( opt_trailing_ret ), LANG_TRAILING_RETURN_TYPES );
+  print_option( "using", po_bool_value( opt_using ), LANG_using_DECLS );
   print_option( "west-pointer", west_pointer_str(), LANG_ANY );
 }
 
@@ -630,10 +630,10 @@ static bool set_semicolon( set_option_fn_args_t const *args ) {
  */
 static bool set_trailing_return( set_option_fn_args_t const *args ) {
   opt_trailing_ret = args->opt_enabled;
-  if ( opt_trailing_ret && !OPT_LANG_IS( TRAILING_RETURN_TYPE ) ) {
+  if ( opt_trailing_ret && !OPT_LANG_IS( TRAILING_RETURN_TYPES ) ) {
     print_warning( args->opt_name_loc,
       "trailing return type not supported%s\n",
-      C_LANG_WHICH( TRAILING_RETURN_TYPE )
+      C_LANG_WHICH( TRAILING_RETURN_TYPES )
     );
   }
   return true;
@@ -664,10 +664,10 @@ static bool set_trigraphs( set_option_fn_args_t const *args ) {
  */
 static bool set_using( set_option_fn_args_t const *args ) {
   opt_using = args->opt_enabled;
-  if ( opt_using && !OPT_LANG_IS( using_DECLARATION ) ) {
+  if ( opt_using && !OPT_LANG_IS( using_DECLS ) ) {
     print_warning( args->opt_name_loc,
       "using not supported%s\n",
-      C_LANG_WHICH( using_DECLARATION )
+      C_LANG_WHICH( using_DECLS )
     );
   }
   return true;

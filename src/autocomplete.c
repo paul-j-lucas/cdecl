@@ -350,7 +350,7 @@ static char const *const* command_ac_keywords( char const *command ) {
       L_using,
       NULL
     };
-    return OPT_LANG_IS( using_DECLARATION ) ?
+    return OPT_LANG_IS( using_DECLS ) ?
       AC_SHOW_KEYWORDS_WITH_USING : AC_SHOW_KEYWORDS;
   }
 

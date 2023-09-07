@@ -272,7 +272,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
       }
       if ( ast->parent.of_ast != NULL ) {
         is_trailing_ret = (ast->kind & K_ANY_TRAILING_RETURN) != 0 &&
-          opt_trailing_ret && OPT_LANG_IS( TRAILING_RETURN_TYPE );
+          opt_trailing_ret && OPT_LANG_IS( TRAILING_RETURN_TYPES );
         if ( is_trailing_ret )
           FPUTS( L_auto, g->gout );
         else

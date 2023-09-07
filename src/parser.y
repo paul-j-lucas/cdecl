@@ -739,8 +739,12 @@ NODISCARD
 static bool fl_is_nested_type_ok( char const *file, int line,
                                   c_loc_t const *type_loc ) {
   assert( type_loc != NULL );
-  if ( !c_sname_empty( &in_attr.current_scope ) && OPT_LANG_IS( C_ANY ) ) {
-    fl_print_error( file, line, type_loc, "nested types not supported in C\n" );
+  if ( !c_sname_empty( &in_attr.current_scope ) &&
+       !OPT_LANG_IS( NESTED_TYPES ) ) {
+    fl_print_error( file, line, type_loc,
+      "nested types not supported%s\n",
+      C_LANG_WHICH( NESTED_TYPES )
+    );
     return false;
   }
   return true;
@@ -1786,10 +1790,10 @@ cast_command
       DUMP_AST( "decl_english_ast", $decl_ast );
       DUMP_END();
 
-      if ( UNSUPPORTED( CPP_ANY ) ) {
+      if ( UNSUPPORTED( NEW_STYLE_CASTS ) ) {
         print_error( &@cast_kind,
           "%s not supported%s\n", cast_literal,
-          C_LANG_WHICH( CPP_ANY )
+          C_LANG_WHICH( NEW_STYLE_CASTS )
         );
         PARSE_ABORT();
       }
@@ -1950,10 +1954,10 @@ declare_command
       // that "operator" is a keyword in C++98 which skims right past the
       // bigger error that operator overloading isn't supported in C.
       //
-      if ( UNSUPPORTED( CPP_ANY ) ) {
+      if ( UNSUPPORTED( operator ) ) {
         print_error( &@oper_id,
           "operator overloading not supported%s\n",
-          C_LANG_WHICH( CPP_ANY )
+          C_LANG_WHICH( operator )
         );
         PARSE_ABORT();
       }
@@ -2053,7 +2057,7 @@ declare_command
 
   | Y_declare error
     {
-      if ( OPT_LANG_IS( CPP_ANY ) )
+      if ( OPT_LANG_IS( operator ) )
         elaborate_error( "name or operator expected" );
       else
         elaborate_error( "name expected" );
@@ -2598,10 +2602,10 @@ show_command
       };
 
       char const *const *const type_commands =
-        OPT_LANG_IS( C_KNR )             ? TYPE_COMMANDS_KNR :
-        OPT_LANG_IS( C_ANY )             ? TYPE_COMMANDS_C :
-        OPT_LANG_IS( using_DECLARATION ) ? TYPE_COMMANDS_CPP_WITH_USING :
-                                           TYPE_COMMANDS_CPP_WITHOUT_USING;
+        OPT_LANG_IS( C_KNR )       ? TYPE_COMMANDS_KNR :
+        OPT_LANG_IS( C_ANY )       ? TYPE_COMMANDS_C :
+        OPT_LANG_IS( using_DECLS ) ? TYPE_COMMANDS_CPP_WITH_USING :
+                                     TYPE_COMMANDS_CPP_WITHOUT_USING;
 
       print_error( &@name, "\"%s\": not defined as type via ", $name );
       fput_list( stderr, type_commands, /*gets=*/NULL );
@@ -2624,10 +2628,10 @@ show_format
   | Y_typedef                     { $$ = C_GIB_TYPEDEF; }
   | Y_using
     {
-      if ( UNSUPPORTED( using_DECLARATION ) ) {
+      if ( UNSUPPORTED( using_DECLS ) ) {
         print_error( &@Y_using,
           "\"using\" not supported%s\n",
-          C_LANG_WHICH( using_DECLARATION )
+          C_LANG_WHICH( using_DECLS )
         );
         PARSE_ABORT();
       }
@@ -2639,7 +2643,7 @@ show_format_exp
   : show_format
   | error
     {
-      if ( OPT_LANG_IS( using_DECLARATION ) )
+      if ( OPT_LANG_IS( using_DECLS ) )
         elaborate_error( "\"english\", \"typedef\", or \"using\" expected" );
       else
         elaborate_error( "\"english\" or \"typedef\" expected" );
@@ -2768,10 +2772,10 @@ new_style_cast_expr_c
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
 
-      if ( UNSUPPORTED( CPP_ANY ) ) {
+      if ( UNSUPPORTED( NEW_STYLE_CASTS ) ) {
         print_error( &@cast_kind,
           "%s_cast not supported%s\n",
-          cast_literal, C_LANG_WHICH( CPP_ANY )
+          cast_literal, C_LANG_WHICH( NEW_STYLE_CASTS )
         );
         PARSE_ABORT();
       }
@@ -3495,10 +3499,10 @@ using_decl_c_ast
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      if ( UNSUPPORTED( using_DECLARATION ) ) {
+      if ( UNSUPPORTED( using_DECLS ) ) {
         print_error( &@Y_using,
           "\"using\" not supported%s\n",
-          C_LANG_WHICH( using_DECLARATION )
+          C_LANG_WHICH( using_DECLS )
         );
         PARSE_ABORT();
       }
@@ -4028,7 +4032,7 @@ func_decl_c_astp
       bool const assume_constructor =
 
         // + The current language is C++.
-        OPT_LANG_IS( CPP_ANY ) &&
+        OPT_LANG_IS( CONSTRUCTORS ) &&
 
         // + The existing base type is none (because constructors don't have
         //   return types).
@@ -4114,7 +4118,7 @@ pc99_func_or_constructor_declaration_c
      */
   : Y_NAME[name] '('
     {
-      if ( OPT_LANG_IS( CPP_ANY ) ) {
+      if ( OPT_LANG_IS( CONSTRUCTORS ) ) {
         //
         // In C++, encountering a name followed by '(' declares an in-class
         // constructor.  That means NAME is the name of a class, so we have to
@@ -4148,7 +4152,7 @@ pc99_func_or_constructor_declaration_c
 
       c_ast_t *ast;
 
-      if ( OPT_LANG_IS( CPP_ANY ) ) {
+      if ( OPT_LANG_IS( CONSTRUCTORS ) ) {
         //
         // Free the temporary typedef for the class.
         //
@@ -4309,10 +4313,10 @@ trailing_return_type_c_ast_opt
       // later in the AST because the AST has no "memory" of where the return-
       // type came from.
       //
-      if ( UNSUPPORTED( TRAILING_RETURN_TYPE ) ) {
+      if ( UNSUPPORTED( TRAILING_RETURN_TYPES ) ) {
         print_error( &@Y_ARROW,
           "trailing return type not supported%s\n",
-          C_LANG_WHICH( TRAILING_RETURN_TYPE )
+          C_LANG_WHICH( TRAILING_RETURN_TYPES )
         );
         PARSE_ABORT();
       }
@@ -4372,7 +4376,7 @@ func_equals_c_stid_opt
     }
   | '=' error
     {
-      if ( OPT_LANG_IS( default_delete_FUNC ) )
+      if ( OPT_LANG_IS( default_delete_FUNCS ) )
         elaborate_error( "'0', \"default\", or \"delete\" expected" );
       else
         elaborate_error( "'0' expected" );
@@ -6785,7 +6789,7 @@ pointer_decl_english_ast
 
   | Y_pointer to_exp error
     {
-      if ( OPT_LANG_IS( CPP_ANY ) )
+      if ( OPT_LANG_IS( POINTERS_TO_MEMBER ) )
         elaborate_error( "type name or \"member\" expected" );
       else
         elaborate_error( "type name expected" );
@@ -6838,10 +6842,10 @@ user_defined_literal_decl_english_ast
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( UNSUPPORTED( USER_DEFINED_LITERAL ) ) {
+      if ( UNSUPPORTED( USER_DEF_LITERALS ) ) {
         print_error( &@user_defined,
           "user-defined literal not supported%s\n",
-          C_LANG_WHICH( USER_DEFINED_LITERAL )
+          C_LANG_WHICH( USER_DEF_LITERALS )
         );
         PARSE_ABORT();
       }
@@ -7339,10 +7343,10 @@ sname_c
   : sname_c[sname] Y_COLON2 Y_NAME[name]
     {
       // see the comment in "of_scope_english"
-      if ( UNSUPPORTED( CPP_ANY ) ) {
+      if ( UNSUPPORTED( SCOPED_NAMES ) ) {
         print_error( &@2,
           "scoped names not supported%s\n",
-          C_LANG_WHICH( CPP_ANY )
+          C_LANG_WHICH( SCOPED_NAMES )
         );
         c_sname_cleanup( &$sname );
         free( $name );
@@ -7833,8 +7837,11 @@ extern_linkage_c_stid_opt
 glob
   : Y_GLOB[glob_name]
     {
-      if ( OPT_LANG_IS( C_ANY ) && strchr( $glob_name, ':' ) != NULL ) {
-        print_error( &@glob_name, "scoped names not supported in C\n" );
+      if ( !OPT_LANG_IS( SCOPED_NAMES ) && strchr( $glob_name, ':' ) != NULL ) {
+        print_error( &@glob_name,
+          "scoped names not supported%s\n",
+          C_LANG_WHICH( SCOPED_NAMES )
+        );
         free( $glob_name );
         PARSE_ABORT();
       }
@@ -7950,10 +7957,10 @@ of_scope_english
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( UNSUPPORTED( CPP_ANY ) ) {
+      if ( UNSUPPORTED( SCOPED_NAMES ) ) {
         print_error( &@scope_type,
           "scoped names not supported%s\n",
-          C_LANG_WHICH( CPP_ANY )
+          C_LANG_WHICH( SCOPED_NAMES )
         );
         c_sname_cleanup( &$sname );
         PARSE_ABORT();

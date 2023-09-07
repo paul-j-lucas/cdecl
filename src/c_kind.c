@@ -69,7 +69,7 @@ char const* c_kind_name( c_ast_kind_t kind ) {
     case K_VARIADIC           : return "variadic";
 
     case K_CLASS_STRUCT_UNION :
-      return OPT_LANG_IS( CPP_ANY ) ?
+      return OPT_LANG_IS( class ) ?
         "class, struct, or union" :
         "struct or union";
   } // switch

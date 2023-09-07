@@ -131,7 +131,7 @@ static void print_help_commands( void ) {
   print_h( "command:\n" );
 
   print_h( "  cast [<name>] {as|[in]to} <english>\n" );
-  if ( OPT_LANG_IS( CPP_ANY ) )
+  if ( OPT_LANG_IS( NEW_STYLE_CASTS ) )
     print_h( "  {const | dynamic | reinterpret | static} cast <name> {as|[in]to} <english>\n" );
 
   print_h( "  declare <name> [, <name>]* as <english> " );
@@ -140,9 +140,9 @@ static void print_help_commands( void ) {
   else
     print_h( "[width <number> [bits]]\n" );
 
-  if ( OPT_LANG_IS( CPP_ANY ) ) {
+  if ( OPT_LANG_IS( operator ) ) {
     print_h( "  declare <operator> as <english>\n" );
-    if ( OPT_LANG_IS( LAMBDA ) )
+    if ( OPT_LANG_IS( LAMBDAS ) )
       print_h( "  declare [<english>] lambda <lambda-english>\n" );
     print_h( "  declare [<english>] user-def[ined] <user-defined-english>\n" );
   }
@@ -154,20 +154,20 @@ static void print_help_commands( void ) {
   print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
 
   print_h( "  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef" );
-  if ( OPT_LANG_IS( using_DECLARATION ) )
+  if ( OPT_LANG_IS( using_DECLS ) )
     print_h( "|using" );
   print_h( "}]\n" );
 
   print_h( "  type[def] <gibberish> [, <gibberish>]*\n" );
 
-  if ( OPT_LANG_IS( CPP_ANY ) ) {
+  if ( OPT_LANG_IS( SCOPED_NAMES ) ) {
     print_h( "  <scope-c> <name> [\\{ [{ <scope-c> | <typedef>" );
-    if ( OPT_LANG_IS( using_DECLARATION ) )
+    if ( OPT_LANG_IS( using_DECLS ) )
       print_h( " | <using>" );
     print_h( " } ;]* \\}]\n" );
   }
 
-  if ( OPT_LANG_IS( using_DECLARATION ) )
+  if ( OPT_LANG_IS( using_DECLS ) )
     print_h( "  using <name> = <gibberish>\n" );
 
   print_h( "  exit | q[uit]\n" );
@@ -185,7 +185,7 @@ static void print_help_commands( void ) {
 
   print_help_name();
 
-  if ( OPT_LANG_IS( CPP_ANY ) ) {
+  if ( OPT_LANG_IS( SCOPED_NAMES ) ) {
     print_h( "scope-c: class | struct | union |" );
     if ( OPT_LANG_IS( inline_namespace ) )
       print_h( " [inline]" );
@@ -203,9 +203,9 @@ static void print_help_english( void ) {
 
   if ( OPT_LANG_IS( C_ANY ) ) {
     print_h( "  <store>*" );
-    if ( OPT_LANG_IS( QUALIFIED_ARRAY ) )
+    if ( OPT_LANG_IS( QUALIFIED_ARRAYS ) )
       print_h( " <ar-qual>*" );
-    if ( OPT_LANG_IS( VLA ) ) {
+    if ( OPT_LANG_IS( VLAS ) ) {
       print_h( " array [<number>|<name>|\\*] of <english>\n" );
       print_h( "  <store>* <ar-qual>* variable [length] array of <english>\n" );
     } else {
@@ -232,7 +232,7 @@ static void print_help_english( void ) {
     if ( OPT_LANG_IS( enum_class ) )
       print_h( " [class|struct] [of [type] <english>]" );
     print_h( " |" );
-    if ( OPT_LANG_IS( CPP_ANY ) )
+    if ( OPT_LANG_IS( class ) )
       print_h( " class |" );
   }
   print_h( " struct | union } <name>\n" );
@@ -241,13 +241,13 @@ static void print_help_english( void ) {
     print_h( "  block [([<args>])] [returning <english>]\n" );
     print_h( "  <store>* <modifier>* [<C-type>]\n" );
 
-    if ( OPT_LANG_IS( QUALIFIED_ARRAY ) )
+    if ( OPT_LANG_IS( QUALIFIED_ARRAYS ) )
       print_h( "ar-qual: non-empty | const | restrict | volatile\n" );
 
     print_h( "args: a comma separated list of " );
     if ( OPT_LANG_IS( C_KNR ) )
       print_h( "<name>\n" );
-    else if ( OPT_LANG_IS( KNR_FUNC_DEF ) )
+    else if ( OPT_LANG_IS( KNR_FUNC_DEFS ) )
       print_h( "<name>, <english>, or <name> as <english>\n" );
     else
       print_h( "[<name> as] <english>\n" );
@@ -314,13 +314,13 @@ static void print_help_english( void ) {
   }
   else /* C++ */ {
     print_h( "  <store>*" );
-    if ( OPT_LANG_IS( RVALUE_REFERENCE ) )
+    if ( OPT_LANG_IS( RVALUE_REFERENCES ) )
       print_h( " [rvalue]" );
     print_h( " reference to <english>\n" );
 
     print_h( "  <store>* <modifier>* [<C\\+\\+-type>]\n" );
 
-    if ( OPT_LANG_IS( LAMBDA ) ) {
+    if ( OPT_LANG_IS( LAMBDAS ) ) {
       print_h( "lambda-english:\n" );
       print_h( "  [[capturing] \\[[<captures>]\\] [([<args>])] [returning <english>]\n" );
     }
@@ -328,12 +328,12 @@ static void print_help_english( void ) {
     print_h( "user-defined-english:\n" );
     print_h( "  conversion [operator] [of <scope-e> <name>]* returning <english>\n" );
 
-    if ( OPT_LANG_IS( USER_DEFINED_LITERAL ) )
+    if ( OPT_LANG_IS( USER_DEF_LITERALS ) )
       print_h( "  literal [([<args>])] [returning <english>]\n" );
 
     print_h( "args: a comma separated list of [<name> as] <english>\n" );
 
-    if ( OPT_LANG_IS( LAMBDA ) ) {
+    if ( OPT_LANG_IS( LAMBDAS ) ) {
       print_h( "captures: [<capture-default>,] [[&]<name>][,[&]<name>]*\n" );
       print_h( "capture-default: {copy|reference} [by] default | = | &\n" );
     }
@@ -356,7 +356,7 @@ static void print_help_english( void ) {
     print_h( "cv-qual: const | volatile\n" );
 
     print_h( "fn-qual: <cv-qual>" );
-    if ( OPT_LANG_IS( RVALUE_REFERENCE ) )
+    if ( OPT_LANG_IS( RVALUE_REFERENCES ) )
       print_h( " | [rvalue] reference" );
     print_h( "\n" );
 
@@ -384,7 +384,7 @@ static void print_help_english( void ) {
       print_h( "]" );
     print_h( " | explicit | extern [\"C\" [linkage]] | friend |\n" );
     print_h( "       mutable | static" );
-    if ( OPT_LANG_IS( EXPLICIT_OBJ_PARAM_DECL ) )
+    if ( OPT_LANG_IS( EXPLICIT_OBJ_PARAM_DECLS ) )
       print_h( " | this" );
     if ( OPT_LANG_IS( thread_local ) )
       print_h( " | thread_local" );
