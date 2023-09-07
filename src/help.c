@@ -247,7 +247,7 @@ static void print_help_english( void ) {
     print_h( "args: a comma separated list of " );
     if ( OPT_LANG_IS( C_KNR ) )
       print_h( "<name>\n" );
-    else if ( OPT_LANG_IS( KNR_FUNC_DEFINITION ) )
+    else if ( OPT_LANG_IS( KNR_FUNC_DEF ) )
       print_h( "<name>, <english>, or <name> as <english>\n" );
     else
       print_h( "[<name> as] <english>\n" );

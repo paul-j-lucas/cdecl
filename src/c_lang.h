@@ -701,7 +701,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG_PROTOTYPES
  */
-#define LANG_KNR_FUNC_DEFINITION        LANG_C_MAX(17)
+#define LANG_KNR_FUNC_DEF               LANG_C_MAX(17)
 
 /**
  * Lanuages lambdas are supported in.
@@ -834,7 +834,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages function prototypes are supported in.
  *
- * @sa #LANG_KNR_FUNC_DEFINITION
+ * @sa #LANG_KNR_FUNC_DEF
  */
 #define LANG_PROTOTYPES                 LANG_MIN(C_89)
 
