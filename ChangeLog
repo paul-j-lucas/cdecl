@@ -1,5 +1,17 @@
 2023-09-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, c_lang.h, help.c:
+     s/LANG_KNR_FUNC_DEFINITION/LANG_KNR_FUNC_DEF/
+   * c_ast_check.c, c_lang.h: Added LANG_TENTATIVE_DEF.
+   * c_ast_check.c, c_lang.h, test/Makefile.am, explain_2au-c.out,
+     explain_2au-c.test: `auto` with multiple declarators is now correctly
+     forbidden in C.
+   * c_ast_check.c, c_ast_check.h, english.c, english.h, parser.y,
+     explain_2i-redef-c++.out, explain_ipi-redef.out: 1. Added
+     c_ast_list_check() and c_ast_list_english(). 2. Eliminated global
+     decl_ast_list. 3. Now building decl_list_c and pc99_pointer_decl_list_c
+     into proper AST lists. 4. Now checks for redefinitions before printing any
+     English.
    * c_sname.c, c_sname.h: Made c_sname_set() do nothing if dst_sname ==
      src_sname.
    * parser.y: Made join_type_decl() return non-const c_ast_t*.
