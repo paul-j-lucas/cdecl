@@ -61,6 +61,7 @@ C++20 and later:
 
     c++decl> using vint = volatile int
     c++decl> explain vint f()
+                     ^
     9: warning: "volatile" return types are deprecated since C++20
     declare f as function returning vint
 
