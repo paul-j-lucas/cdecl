@@ -369,7 +369,7 @@ static bool set_alt_tokens( set_option_fn_args_t const *args ) {
   opt_alt_tokens = args->opt_enabled;
   if ( opt_alt_tokens && !OPT_LANG_IS( ALT_TOKENS ) ) {
     print_warning( args->opt_name_loc,
-      "alt-tokens not supported%s\n",
+      "alternative tokens not supported%s\n",
       C_LANG_WHICH( ALT_TOKENS )
     );
   }
@@ -429,7 +429,7 @@ static bool set_east_const( set_option_fn_args_t const *args ) {
   opt_east_const = args->opt_enabled;
   if ( opt_east_const && !OPT_LANG_IS( const ) ) {
     print_warning( args->opt_name_loc,
-      "east-const not supported%s\n",
+      "\"const\" not supported%s\n",
       C_LANG_WHICH( const )
     );
   }
@@ -632,7 +632,7 @@ static bool set_trailing_return( set_option_fn_args_t const *args ) {
   opt_trailing_ret = args->opt_enabled;
   if ( opt_trailing_ret && !OPT_LANG_IS( TRAILING_RETURN_TYPES ) ) {
     print_warning( args->opt_name_loc,
-      "trailing return type not supported%s\n",
+      "trailing return types not supported%s\n",
       C_LANG_WHICH( TRAILING_RETURN_TYPES )
     );
   }
