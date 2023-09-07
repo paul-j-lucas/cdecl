@@ -55,7 +55,7 @@ pseudo-English to disambiguate it and allow it to come _before_ `array`:
 
     declare f as function (x as non-empty array 2 of integer) returning void
 
-** Function returing `typedef` of `volatile`
+** Function returning `typedef` of `volatile`
 Functions returning a `typedef` of `volatile` are now correctly warned about in
 C++20 and later:
 
