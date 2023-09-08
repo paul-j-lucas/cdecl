@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "September 1, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 7, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1757,7 +1757,8 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWino_t\fP,
 \f(CWjmp_buf\fP,
 \f(CWoff_t\fP,
-\f(CWtime_t\fP
+\f(CWtime_t\fP,
+\f(CWtm\fP
 .hy
 .ad
 .SS C89
@@ -2162,14 +2163,14 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWstd::ifstream\fP,
 \f(CWstd::invalid_argument\fP,
 \f(CWstd::ios\fP,
-\f(CWstd::ios_base\fP,
+\f(CWstd::ios_base::Init\fP,
 \f(CWstd::ios_base::event\fP,
 \f(CWstd::ios_base::event_callback\fP,
 \f(CWstd::ios_base::fmtflags\fP,
-\f(CWstd::ios_base::Init\fP,
 \f(CWstd::ios_base::iostate\fP,
 \f(CWstd::ios_base::openmode\fP,
 \f(CWstd::ios_base::seekdir\fP,
+\f(CWstd::ios_base\fP,
 \f(CWstd::iostream\fP,
 \f(CWstd::istream\fP,
 \f(CWstd::istringstream\fP,
@@ -2180,17 +2181,18 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWstd::logic_error\fP,
 \f(CWstd::messages_base\fP,
 \f(CWstd::money_base\fP,
+\f(CWstd::new_handler\fP,
 \f(CWstd::nothrow_t\fP,
 \f(CWstd::ofstream\fP,
 \f(CWstd::ostream\fP,
-\f(CWstd::runtime_error\fP,
-\f(CWstd::sig_atomic_t\fP,
-\f(CWstd::osyncstream\fP,
 \f(CWstd::ostringstream\fP,
+\f(CWstd::osyncstream\fP,
 \f(CWstd::out_of_range\fP,
 \f(CWstd::overflow_error\fP,
 \f(CWstd::ptrdiff_t\fP,
 \f(CWstd::range_error\fP,
+\f(CWstd::runtime_error\fP,
+\f(CWstd::sig_atomic_t\fP,
 \f(CWstd::size_t\fP,
 \f(CWstd::streambuf\fP,
 \f(CWstd::streamoff\fP,
@@ -2200,6 +2202,7 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWstd::stringstream\fP,
 \f(CWstd::syncbuf\fP,
 \f(CWstd::time_base\fP,
+\f(CWstd::tm\fP,
 \f(CWstd::underflow_error\fP,
 \f(CWstd::wfilebuf\fP,
 \f(CWstd::wfstream\fP,
@@ -2273,6 +2276,7 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWstd::atomic_wchar_t\fP,
 .P
 \f(CWstd::adopt_lock_t\fP,
+\f(CWstd::allocator_arg_t\fP,
 \f(CWstd::bad_array_new_length\fP,
 \f(CWstd::bad_function_call\fP,
 \f(CWstd::bad_weak_ptr\fP,
@@ -2300,6 +2304,7 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWstd::recursive_mutex\fP,
 \f(CWstd::recursive_timed_mutex\fP,
 \f(CWstd::regex\fP,
+\f(CWstd::regex_constants::error_type\fP,
 \f(CWstd::regex_constants::match_flag_type\fP,
 \f(CWstd::regex_constants::syntax_option_type\fP,
 \f(CWstd::regex_error\fP,
@@ -2318,12 +2323,17 @@ since they are required by \f(CWoperator<=>()\fP.
 .na
 .nh
 \f(CWstd::align_val_t\fP,
+\f(CWstd::any\fP,
 \f(CWstd::bad_any_cast\fP,
 \f(CWstd::bad_optional_access\fP,
 \f(CWstd::bad_variant_access\fP,
 \f(CWstd::byte\fP,
 \f(CWstd::chars_format\fP,
+\f(CWstd::from_chars_result\fP,
+\f(CWstd::memory_resource\fP,
+\f(CWstd::mono_state\fP,
 \f(CWstd::string_view\fP,
+\f(CWstd::to_chars_result\fP,
 \f(CWstd::u16string\fP,
 \f(CWstd::u16string_view\fP,
 \f(CWstd::wstring_view\fP,
@@ -2340,14 +2350,26 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWstd::filesystem::perms\fP,
 \f(CWstd::filesystem::recursive_directory_iterator\fP,
 \f(CWstd::filesystem::space_info\fP
+.P
+\f(CWstd::pmr::memory_resource\fP
+\f(CWstd::pmr::monotonic_buffer_resource\fP
+\f(CWstd::pmr::pool_options\fP
+\f(CWstd::pmr::synchronized_pool_resource\fP
+\f(CWstd::pmr::unsynchronized_pool_resource\fP
 .hy
 .ad
 .SS C++20
 .na
 .nh
 \f(CWstd::ambiguous_local_time\fP,
+\f(CWstd::compare_three_way\fP,
+\f(CWstd::endian\fP,
+\f(CWstd::latch\fP,
+\f(CWstd::noop_coroutine_promise\fP,
 \f(CWstd::strong_equality\fP,
 \f(CWstd::strong_ordering\fP,
+\f(CWstd::suspend_always\fP,
+\f(CWstd::suspend_never\fP,
 \f(CWstd::nonstopstate_t\fP,
 \f(CWstd::weak_equality\fP,
 \f(CWstd::stop_source\fP,
@@ -2403,6 +2425,7 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWstd::float64_t\fP,
 \f(CWstd::ispanstream\fP,
 \f(CWstd::ospanstream\fP,
+\f(CWstd::range_format\fP,
 \f(CWstd::spanbuf\fP,
 \f(CWstd::spanstream\fP,
 \f(CWstd::stacktrace\fP,

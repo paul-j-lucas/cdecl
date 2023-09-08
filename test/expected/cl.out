@@ -392,6 +392,7 @@ define thrd_start_t as pointer to function (pointer to void) returning integer
 define thrd_t as pthread_t
 define time_t as long integer
 define timer_t as pointer to void
+define tm as structure tm
 define tss_dtor_t as pointer to function (pointer to void) returning void
 define tss_t as pointer to void
 define uid_t as uint32_t

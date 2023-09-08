@@ -115,6 +115,7 @@ static predef_type_t const PREDEFINED_KNR_C[] = {
   PT( "typedef          int   jmp_buf[37]" ),
   PT( "typedef          long  off_t" ),
   PT( "typedef          long  time_t" ),
+  PT( "        struct         tm" ),
 
   PT( NULL )
 };
@@ -375,6 +376,7 @@ static predef_type_t const PREDEFINED_STD_CPP[] = {
   PT( "namespace std { class ctype_base { using mask = unsigned; }; }" ),
   PT( "namespace std { class                    messages_base; }" ),
   PT( "namespace std { class                    money_base; }" ),
+  PT( "namespace std                    { using new_handler = void (*)(); }" ),
   PT( "namespace std { struct                   nothrow_t; }" ),
   PT( "namespace std { class ios_base   { using openmode = unsigned; }; }" ),
   PT( "namespace std { class                    out_of_range; }" ),
@@ -416,6 +418,7 @@ static predef_type_t const PREDEFINED_STD_CPP[] = {
   PT( "namespace std { class                   osyncstream; }" ),
   PT( "namespace std { class                  wosyncstream; }" ),
   PT( "namespace std { class                    time_base; }" ),
+  PT( "namespace std { struct                   tm; }" ),
   PT( "namespace std { class                    type_info; }" ),
   PT( "namespace std { class                    underflow_error; }" ),
 
@@ -430,6 +433,7 @@ static predef_type_t const PREDEFINED_STD_CPP[] = {
  */
 static predef_type_t const PREDEFINED_STD_CPP_11[] = {
   PT( "namespace std           {    struct      adopt_lock_t; }" ),
+  PT( "namespace std           {    struct      allocator_arg_t; }" ),
   //
   // These atomic_* types are supposed to be typedefs, but they're typedefs to
   // instantiated templates and cdecl doesn't support templates, so we make
@@ -497,6 +501,7 @@ static predef_type_t const PREDEFINED_STD_CPP_11[] = {
   PT( "namespace std          {      class      error_category; }" ),
   PT( "namespace std          {      class      error_code; }" ),
   PT( "namespace std          {      class      error_condition; }" ),
+  PT( "namespace std::regex_constants { using   error_type = unsigned; }" ),
   PT( "namespace std          { class ios_base::failure; }" ),
   PT( "namespace std          { enum class      future_errc; }" ),
   PT( "namespace std          {      class      future_error; }" ),
@@ -534,6 +539,7 @@ static predef_type_t const PREDEFINED_STD_CPP_11[] = {
  */
 static predef_type_t const PREDEFINED_STD_CPP_17[] = {
   PT( "namespace std             { enum class     align_val_t; }" ),
+  PT( "namespace std             {     struct     any; }" ),
   PT( "namespace std             {      class     bad_any_cast; }" ),
   PT( "namespace std             {      class     bad_optional_access; }" ),
   PT( "namespace std             {      class     bad_variant_access; }" ),
@@ -546,15 +552,24 @@ static predef_type_t const PREDEFINED_STD_CPP_17[] = {
   PT( "namespace std::filesystem {      class     file_status; }" ),
   PT( "namespace std::filesystem { enum class     file_type; }" ),
   PT( "namespace std::filesystem {      class     filesystem_error; }" ),
+  PT( "namespace std             {     struct     from_chars_result; }" ),
+  PT( "namespace std::pmr        {      class     memory_resource; }" ),
+  PT( "namespace std             {     struct     mono_state; }" ),
+  PT( "namespace std::pmr        {      class     monotonic_buffer_resource; }" ),
   PT( "namespace std::filesystem {      class     path; }" ),
   PT( "namespace std::filesystem { enum class     perms; }" ),
   PT( "namespace std::filesystem { enum class     perm_options; }" ),
+  PT( "namespace std::pmr        {     struct     pool_options; }" ),
   PT( "namespace std::filesystem {      class     recursive_directory_iterator; }" ),
   PT( "namespace std::filesystem {     struct     space_info; }" ),
   PT( "namespace std             {      class     string_view; }" ),
   PT( "namespace std             {      class  u16string_view; }" ),
   PT( "namespace std             {      class  u32string_view; }" ),
   PT( "namespace std             {      class    wstring_view; }" ),
+  PT( "namespace std::pmr        {      class     synchronized_pool_resource; }" ),
+  PT( "namespace std             {     struct     time_spec; }" ),
+  PT( "namespace std             {     struct     to_chars_result; }" ),
+  PT( "namespace std::pmr        {      class     unsynchronized_pool_resource; }" ),
 
   PT( NULL )
 };
@@ -565,14 +580,17 @@ static predef_type_t const PREDEFINED_STD_CPP_17[] = {
 static predef_type_t const PREDEFINED_STD_CPP_20[] = {
   PT( "namespace std         {      class   ambiguous_local_time; }" ),
   PT( "namespace std::chrono { enum class   choose; }" ),
+  PT( "namespace std         {     struct   compare_three_way; }" ),
   PT( "namespace std::chrono {      class   day; }" ),
   PT( "namespace std         {     struct   destroying_delete_t; }" ),
+  PT( "namespace std         { enum class   endian; }" ),
   PT( "namespace std::chrono {     struct   file_clock; }" ),
   PT( "namespace std         {      class   format_error; }" ),
   PT( "namespace std::chrono {     struct   gps_clock; }" ),
   PT( "namespace std::chrono {     struct   is_clock; }" ),
   PT( "namespace std         {      class   jthread; }" ),
   PT( "namespace std::chrono {     struct   last_spec; }" ),
+  PT( "namespace std         {      class   latch; }" ),
   PT( "namespace std::chrono {      class   leap_second; }" ),
   PT( "namespace std::chrono {     struct   local_info; }" ),
   PT( "namespace std::chrono {     struct   local_t; }" ),
@@ -583,11 +601,14 @@ static predef_type_t const PREDEFINED_STD_CPP_20[] = {
   PT( "namespace std::chrono {      class   month_weekday_last; }" ),
   PT( "namespace std::chrono {      class   nonexistent_local_time; }" ),
   PT( "namespace std         {     struct   nonstopstate_t; }" ),
+  PT( "namespace std         {     struct   noop_coroutine_promise; }" ),
   PT( "namespace std         {     struct   source_location; }" ),
   PT( "namespace std         {      class u8string_view; }" ),
   PT( "namespace std         {      class   stop_source; }" ),
   PT( "namespace std         {      class   stop_token; }" ),
   PT( "namespace std         {     struct   strong_equality; }" ),
+  PT( "namespace std         {     struct   suspend_always; }" ),
+  PT( "namespace std         {     struct   suspend_never; }" ),
   PT( "namespace std::chrono {     struct   sys_info; }" ),
   PT( "namespace std::chrono {     struct   tai_clock; }" ),
   PT( "namespace std::chrono {     struct   time_zone; }" ),
@@ -625,22 +646,23 @@ static predef_type_t const PREDEFINED_STD_CPP_20_REQUIRED[] = {
  * Predefined types for C++23.
  */
 static predef_type_t const PREDEFINED_STD_CPP_23[] = {
-  PT( "namespace std {   using  float16_t = float; }" ),
-  PT( "namespace std {   using bfloat16_t = float; }" ),
-  PT( "namespace std {   using  float32_t = float; }" ),
-  PT( "namespace std {   using  float64_t = double; }" ),
-  PT( "namespace std {   using  float128_t = double[2]; }" ),
-  PT( "namespace std { class    spanbuf; }" ),
-  PT( "namespace std { class   wspanbuf; }" ),
-  PT( "namespace std { class    spanstream; }" ),
-  PT( "namespace std { class   ispanstream; }" ),
-  PT( "namespace std { class  wispanstream; }" ),
-  PT( "namespace std { class   ospanstream; }" ),
-  PT( "namespace std { class  wospanstream; }" ),
-  PT( "namespace std { class   wspanstream; }" ),
-  PT( "namespace std { class    stacktrace; }" ),
-  PT( "namespace std { class    stacktrace_entry; }" ),
-  PT( "namespace std { struct   unexpect_t; }" ),
+  PT( "namespace std {      using   float16_t = float; }" ),
+  PT( "namespace std {      using  bfloat16_t = float; }" ),
+  PT( "namespace std {      using   float32_t = float; }" ),
+  PT( "namespace std {      using   float64_t = double; }" ),
+  PT( "namespace std {      using   float128_t = double[2]; }" ),
+  PT( "namespace std { enum class   range_format; }" ),
+  PT( "namespace std {      class   spanbuf; }" ),
+  PT( "namespace std {      class  wspanbuf; }" ),
+  PT( "namespace std {      class   spanstream; }" ),
+  PT( "namespace std {      class  ispanstream; }" ),
+  PT( "namespace std {      class wispanstream; }" ),
+  PT( "namespace std {      class  ospanstream; }" ),
+  PT( "namespace std {      class wospanstream; }" ),
+  PT( "namespace std {      class  wspanstream; }" ),
+  PT( "namespace std {      class   stacktrace; }" ),
+  PT( "namespace std {      class   stacktrace_entry; }" ),
+  PT( "namespace std {     struct   unexpect_t; }" ),
 
   PT( NULL )
 };

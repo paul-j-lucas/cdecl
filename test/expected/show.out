@@ -341,7 +341,9 @@ define socklen_t as uint32_t
 define ssize_t as long integer
 define adopt_lock_t of namespace std as structure adopt_lock_t
 define align_val_t of namespace std as enumeration class align_val_t
+define allocator_arg_t of namespace std as structure allocator_arg_t
 define ambiguous_local_time of namespace std as class ambiguous_local_time
+define any of namespace std as structure any
 define atomic_bool of namespace std as structure atomic_bool
 define atomic_char of namespace std as structure atomic_char
 define atomic_char16_t of namespace std as structure atomic_char16_t
@@ -440,6 +442,7 @@ define year_month_day_last of namespace chrono of namespace std as class year_mo
 define year_month_weekday of namespace chrono of namespace std as class year_month_weekday
 define year_month_weekday_last of namespace chrono of namespace std as class year_month_weekday_last
 define codecvt_base of namespace std as class codecvt_base
+define compare_three_way of namespace std as structure compare_three_way
 define condition_variable of namespace std as class condition_variable
 define condition_variable_any of namespace std as class condition_variable_any
 define ctype_base of namespace std as class ctype_base
@@ -449,6 +452,7 @@ define defer_lock_t of namespace std as structure defer_lock_t
 define destroying_delete_t of namespace std as structure destroying_delete_t
 define div_t of namespace std as structure div_t
 define domain_error of namespace std as class domain_error
+define endian of namespace std as enumeration class endian
 define error_category of namespace std as class error_category
 define error_code of namespace std as class error_code
 define error_condition of namespace std as class error_condition
@@ -471,6 +475,7 @@ define float16_t of namespace std as floating point
 define float32_t of namespace std as floating point
 define float64_t of namespace std as double precision
 define format_error of namespace std as class format_error
+define from_chars_result of namespace std as structure from_chars_result
 define fstream of namespace std as class fstream
 define future_errc of namespace std as enumeration class future_errc
 define future_error of namespace std as class future_error
@@ -493,6 +498,7 @@ define ispanstream of namespace std as class ispanstream
 define istream of namespace std as class istream
 define istringstream of namespace std as class istringstream
 define jthread of namespace std as class jthread
+define latch of namespace std as class latch
 define launch of namespace std as enumeration class launch
 define ldiv_t of namespace std as structure ldiv_t
 define length_error of namespace std as class length_error
@@ -502,8 +508,11 @@ define logic_error of namespace std as class logic_error
 define max_align_t of namespace std as long double precision
 define messages_base of namespace std as class messages_base
 define money_base of namespace std as class money_base
+define mono_state of namespace std as structure mono_state
 define mutex of namespace std as class mutex
+define new_handler of namespace std as pointer to function returning void
 define nonstopstate_t of namespace std as structure nonstopstate_t
+define noop_coroutine_promise of namespace std as structure noop_coroutine_promise
 define nothrow_t of namespace std as structure nothrow_t
 define nullptr_t of namespace std as pointer to void
 define ofstream of namespace std as class ofstream
@@ -514,12 +523,19 @@ define osyncstream of namespace std as class osyncstream
 define out_of_range of namespace std as class out_of_range
 define overflow_error of namespace std as class overflow_error
 define partial_ordering of namespace std as structure partial_ordering
+define memory_resource of namespace pmr of namespace std as class memory_resource
+define monotonic_buffer_resource of namespace pmr of namespace std as class monotonic_buffer_resource
+define pool_options of namespace pmr of namespace std as structure pool_options
+define synchronized_pool_resource of namespace pmr of namespace std as class synchronized_pool_resource
+define unsynchronized_pool_resource of namespace pmr of namespace std as class unsynchronized_pool_resource
 define ptrdiff_t of namespace std as long integer
 define random_device of namespace std as class random_device
 define range_error of namespace std as class range_error
+define range_format of namespace std as enumeration class range_format
 define recursive_mutex of namespace std as class recursive_mutex
 define recursive_timed_mutex of namespace std as class recursive_timed_mutex
 define regex of namespace std as class regex
+define error_type of namespace regex_constants of namespace std as unsigned integer
 define match_flag_type of namespace regex_constants of namespace std as unsigned integer
 define syntax_option_type of namespace regex_constants of namespace std as unsigned integer
 define regex_error of namespace std as structure regex_error
@@ -544,11 +560,16 @@ define stringbuf of namespace std as class stringbuf
 define stringstream of namespace std as class stringstream
 define strong_equality of namespace std as structure strong_equality
 define strong_ordering of namespace std as structure strong_ordering
+define suspend_always of namespace std as structure suspend_always
+define suspend_never of namespace std as structure suspend_never
 define syncbuf of namespace std as class syncbuf
 define system_error of namespace std as structure system_error
 define thread of namespace std as class thread
 define time_base of namespace std as class time_base
+define time_spec of namespace std as structure time_spec
 define timed_mutex of namespace std as class timed_mutex
+define tm of namespace std as structure tm
+define to_chars_result of namespace std as structure to_chars_result
 define try_to_lock_t of namespace std as structure try_to_lock_t
 define type_index of namespace std as class type_index
 define type_info of namespace std as class type_info
@@ -588,6 +609,7 @@ define thrd_start_t as pointer to function (pointer to void) returning integer
 define thrd_t as pthread_t
 define time_t as long integer
 define timer_t as pointer to void
+define tm as structure tm
 define tss_dtor_t as pointer to function (pointer to void) returning void
 define tss_t as pointer to void
 define uid_t as uint32_t
@@ -957,7 +979,9 @@ define socklen_t as uint32_t
 define ssize_t as long integer
 define adopt_lock_t of namespace std as structure adopt_lock_t
 define align_val_t of namespace std as enumeration class align_val_t
+define allocator_arg_t of namespace std as structure allocator_arg_t
 define ambiguous_local_time of namespace std as class ambiguous_local_time
+define any of namespace std as structure any
 define atomic_bool of namespace std as structure atomic_bool
 define atomic_char of namespace std as structure atomic_char
 define atomic_char16_t of namespace std as structure atomic_char16_t
@@ -1056,6 +1080,7 @@ define year_month_day_last of namespace chrono of namespace std as class year_mo
 define year_month_weekday of namespace chrono of namespace std as class year_month_weekday
 define year_month_weekday_last of namespace chrono of namespace std as class year_month_weekday_last
 define codecvt_base of namespace std as class codecvt_base
+define compare_three_way of namespace std as structure compare_three_way
 define condition_variable of namespace std as class condition_variable
 define condition_variable_any of namespace std as class condition_variable_any
 define ctype_base of namespace std as class ctype_base
@@ -1065,6 +1090,7 @@ define defer_lock_t of namespace std as structure defer_lock_t
 define destroying_delete_t of namespace std as structure destroying_delete_t
 define div_t of namespace std as structure div_t
 define domain_error of namespace std as class domain_error
+define endian of namespace std as enumeration class endian
 define error_category of namespace std as class error_category
 define error_code of namespace std as class error_code
 define error_condition of namespace std as class error_condition
@@ -1087,6 +1113,7 @@ define float16_t of namespace std as floating point
 define float32_t of namespace std as floating point
 define float64_t of namespace std as double precision
 define format_error of namespace std as class format_error
+define from_chars_result of namespace std as structure from_chars_result
 define fstream of namespace std as class fstream
 define future_errc of namespace std as enumeration class future_errc
 define future_error of namespace std as class future_error
@@ -1109,6 +1136,7 @@ define ispanstream of namespace std as class ispanstream
 define istream of namespace std as class istream
 define istringstream of namespace std as class istringstream
 define jthread of namespace std as class jthread
+define latch of namespace std as class latch
 define launch of namespace std as enumeration class launch
 define ldiv_t of namespace std as structure ldiv_t
 define length_error of namespace std as class length_error
@@ -1118,8 +1146,11 @@ define logic_error of namespace std as class logic_error
 define max_align_t of namespace std as long double precision
 define messages_base of namespace std as class messages_base
 define money_base of namespace std as class money_base
+define mono_state of namespace std as structure mono_state
 define mutex of namespace std as class mutex
+define new_handler of namespace std as pointer to function returning void
 define nonstopstate_t of namespace std as structure nonstopstate_t
+define noop_coroutine_promise of namespace std as structure noop_coroutine_promise
 define nothrow_t of namespace std as structure nothrow_t
 define nullptr_t of namespace std as pointer to void
 define ofstream of namespace std as class ofstream
@@ -1130,12 +1161,19 @@ define osyncstream of namespace std as class osyncstream
 define out_of_range of namespace std as class out_of_range
 define overflow_error of namespace std as class overflow_error
 define partial_ordering of namespace std as structure partial_ordering
+define memory_resource of namespace pmr of namespace std as class memory_resource
+define monotonic_buffer_resource of namespace pmr of namespace std as class monotonic_buffer_resource
+define pool_options of namespace pmr of namespace std as structure pool_options
+define synchronized_pool_resource of namespace pmr of namespace std as class synchronized_pool_resource
+define unsynchronized_pool_resource of namespace pmr of namespace std as class unsynchronized_pool_resource
 define ptrdiff_t of namespace std as long integer
 define random_device of namespace std as class random_device
 define range_error of namespace std as class range_error
+define range_format of namespace std as enumeration class range_format
 define recursive_mutex of namespace std as class recursive_mutex
 define recursive_timed_mutex of namespace std as class recursive_timed_mutex
 define regex of namespace std as class regex
+define error_type of namespace regex_constants of namespace std as unsigned integer
 define match_flag_type of namespace regex_constants of namespace std as unsigned integer
 define syntax_option_type of namespace regex_constants of namespace std as unsigned integer
 define regex_error of namespace std as structure regex_error
@@ -1160,11 +1198,16 @@ define stringbuf of namespace std as class stringbuf
 define stringstream of namespace std as class stringstream
 define strong_equality of namespace std as structure strong_equality
 define strong_ordering of namespace std as structure strong_ordering
+define suspend_always of namespace std as structure suspend_always
+define suspend_never of namespace std as structure suspend_never
 define syncbuf of namespace std as class syncbuf
 define system_error of namespace std as structure system_error
 define thread of namespace std as class thread
 define time_base of namespace std as class time_base
+define time_spec of namespace std as structure time_spec
 define timed_mutex of namespace std as class timed_mutex
+define tm of namespace std as structure tm
+define to_chars_result of namespace std as structure to_chars_result
 define try_to_lock_t of namespace std as structure try_to_lock_t
 define type_index of namespace std as class type_index
 define type_info of namespace std as class type_info
@@ -1204,6 +1247,7 @@ define thrd_start_t as pointer to function (pointer to void) returning integer
 define thrd_t as pthread_t
 define time_t as long integer
 define timer_t as pointer to void
+define tm as structure tm
 define tss_dtor_t as pointer to function (pointer to void) returning void
 define tss_t as pointer to void
 define uid_t as uint32_t
@@ -1614,7 +1658,9 @@ typedef uint32_t socklen_t;
 typedef long ssize_t;
 namespace std { struct adopt_lock_t; }
 namespace std { enum align_val_t; }
+namespace std { struct allocator_arg_t; }
 namespace std { class ambiguous_local_time; }
+namespace std { struct any; }
 namespace std { struct atomic_bool; }
 namespace std { struct atomic_char; }
 namespace std { struct atomic_char16_t; }
@@ -1713,6 +1759,7 @@ namespace std::chrono { class year_month_day_last; }
 namespace std::chrono { class year_month_weekday; }
 namespace std::chrono { class year_month_weekday_last; }
 namespace std { class codecvt_base; }
+namespace std { struct compare_three_way; }
 namespace std { class condition_variable; }
 namespace std { class condition_variable_any; }
 namespace std { class ctype_base; }
@@ -1722,6 +1769,7 @@ namespace std { struct defer_lock_t; }
 namespace std { struct destroying_delete_t; }
 namespace std { struct div_t; }
 namespace std { class domain_error; }
+namespace std { enum endian; }
 namespace std { class error_category; }
 namespace std { class error_code; }
 namespace std { class error_condition; }
@@ -1744,6 +1792,7 @@ namespace std { typedef float float16_t; }
 namespace std { typedef float float32_t; }
 namespace std { typedef double float64_t; }
 namespace std { class format_error; }
+namespace std { struct from_chars_result; }
 namespace std { class fstream; }
 namespace std { enum future_errc; }
 namespace std { class future_error; }
@@ -1766,6 +1815,7 @@ namespace std { class ispanstream; }
 namespace std { class istream; }
 namespace std { class istringstream; }
 namespace std { class jthread; }
+namespace std { class latch; }
 namespace std { enum launch; }
 namespace std { struct ldiv_t; }
 namespace std { class length_error; }
@@ -1775,8 +1825,11 @@ namespace std { class logic_error; }
 namespace std { typedef long double max_align_t; }
 namespace std { class messages_base; }
 namespace std { class money_base; }
+namespace std { struct mono_state; }
 namespace std { class mutex; }
+namespace std { typedef void (*new_handler)(); }
 namespace std { struct nonstopstate_t; }
+namespace std { struct noop_coroutine_promise; }
 namespace std { struct nothrow_t; }
 namespace std { typedef void *nullptr_t; }
 namespace std { class ofstream; }
@@ -1787,12 +1840,19 @@ namespace std { class osyncstream; }
 namespace std { class out_of_range; }
 namespace std { class overflow_error; }
 namespace std { struct partial_ordering; }
+namespace std::pmr { class memory_resource; }
+namespace std::pmr { class monotonic_buffer_resource; }
+namespace std::pmr { struct pool_options; }
+namespace std::pmr { class synchronized_pool_resource; }
+namespace std::pmr { class unsynchronized_pool_resource; }
 namespace std { typedef long ptrdiff_t; }
 namespace std { class random_device; }
 namespace std { class range_error; }
+namespace std { enum range_format; }
 namespace std { class recursive_mutex; }
 namespace std { class recursive_timed_mutex; }
 namespace std { class regex; }
+namespace std::regex_constants { typedef unsigned error_type; }
 namespace std::regex_constants { typedef unsigned match_flag_type; }
 namespace std::regex_constants { typedef unsigned syntax_option_type; }
 namespace std { struct regex_error; }
@@ -1817,11 +1877,16 @@ namespace std { class stringbuf; }
 namespace std { class stringstream; }
 namespace std { struct strong_equality; }
 namespace std { struct strong_ordering; }
+namespace std { struct suspend_always; }
+namespace std { struct suspend_never; }
 namespace std { class syncbuf; }
 namespace std { struct system_error; }
 namespace std { class thread; }
 namespace std { class time_base; }
+namespace std { struct time_spec; }
 namespace std { class timed_mutex; }
+namespace std { struct tm; }
+namespace std { struct to_chars_result; }
 namespace std { struct try_to_lock_t; }
 namespace std { class type_index; }
 namespace std { class type_info; }
@@ -1861,6 +1926,7 @@ typedef int (*thrd_start_t)(void*);
 typedef pthread_t thrd_t;
 typedef long time_t;
 typedef void *timer_t;
+typedef struct tm tm;
 typedef void (*tss_dtor_t)(void*);
 typedef void *tss_t;
 typedef uint32_t uid_t;
@@ -2231,6 +2297,7 @@ define thrd_start_t as pointer to function (pointer to void) returning integer
 define thrd_t as pthread_t
 define time_t as long integer
 define timer_t as pointer to void
+define tm as structure tm
 define tss_dtor_t as pointer to function (pointer to void) returning void
 define tss_t as pointer to void
 define uid_t as uint32_t
@@ -2591,6 +2658,7 @@ typedef int (*thrd_start_t)(void*);
 typedef pthread_t thrd_t;
 typedef long time_t;
 typedef void *timer_t;
+typedef struct tm tm;
 typedef void (*tss_dtor_t)(void*);
 typedef void *tss_t;
 typedef uint32_t uid_t;
@@ -2959,7 +3027,9 @@ typedef uint32_t socklen_t;
 typedef long ssize_t;
 namespace std { struct adopt_lock_t; }
 namespace std { enum align_val_t; }
+namespace std { struct allocator_arg_t; }
 namespace std { class ambiguous_local_time; }
+namespace std { struct any; }
 namespace std { struct atomic_bool; }
 namespace std { struct atomic_char; }
 namespace std { struct atomic_char16_t; }
@@ -3058,6 +3128,7 @@ namespace std::chrono { class year_month_day_last; }
 namespace std::chrono { class year_month_weekday; }
 namespace std::chrono { class year_month_weekday_last; }
 namespace std { class codecvt_base; }
+namespace std { struct compare_three_way; }
 namespace std { class condition_variable; }
 namespace std { class condition_variable_any; }
 namespace std { class ctype_base; }
@@ -3067,6 +3138,7 @@ namespace std { struct defer_lock_t; }
 namespace std { struct destroying_delete_t; }
 namespace std { struct div_t; }
 namespace std { class domain_error; }
+namespace std { enum endian; }
 namespace std { class error_category; }
 namespace std { class error_code; }
 namespace std { class error_condition; }
@@ -3089,6 +3161,7 @@ namespace std { typedef float float16_t; }
 namespace std { typedef float float32_t; }
 namespace std { typedef double float64_t; }
 namespace std { class format_error; }
+namespace std { struct from_chars_result; }
 namespace std { class fstream; }
 namespace std { enum future_errc; }
 namespace std { class future_error; }
@@ -3111,6 +3184,7 @@ namespace std { class ispanstream; }
 namespace std { class istream; }
 namespace std { class istringstream; }
 namespace std { class jthread; }
+namespace std { class latch; }
 namespace std { enum launch; }
 namespace std { struct ldiv_t; }
 namespace std { class length_error; }
@@ -3120,8 +3194,11 @@ namespace std { class logic_error; }
 namespace std { typedef long double max_align_t; }
 namespace std { class messages_base; }
 namespace std { class money_base; }
+namespace std { struct mono_state; }
 namespace std { class mutex; }
+namespace std { typedef void (*new_handler)(); }
 namespace std { struct nonstopstate_t; }
+namespace std { struct noop_coroutine_promise; }
 namespace std { struct nothrow_t; }
 namespace std { typedef void *nullptr_t; }
 namespace std { class ofstream; }
@@ -3132,12 +3209,19 @@ namespace std { class osyncstream; }
 namespace std { class out_of_range; }
 namespace std { class overflow_error; }
 namespace std { struct partial_ordering; }
+namespace std::pmr { class memory_resource; }
+namespace std::pmr { class monotonic_buffer_resource; }
+namespace std::pmr { struct pool_options; }
+namespace std::pmr { class synchronized_pool_resource; }
+namespace std::pmr { class unsynchronized_pool_resource; }
 namespace std { typedef long ptrdiff_t; }
 namespace std { class random_device; }
 namespace std { class range_error; }
+namespace std { enum range_format; }
 namespace std { class recursive_mutex; }
 namespace std { class recursive_timed_mutex; }
 namespace std { class regex; }
+namespace std::regex_constants { typedef unsigned error_type; }
 namespace std::regex_constants { typedef unsigned match_flag_type; }
 namespace std::regex_constants { typedef unsigned syntax_option_type; }
 namespace std { struct regex_error; }
@@ -3162,11 +3246,16 @@ namespace std { class stringbuf; }
 namespace std { class stringstream; }
 namespace std { struct strong_equality; }
 namespace std { struct strong_ordering; }
+namespace std { struct suspend_always; }
+namespace std { struct suspend_never; }
 namespace std { class syncbuf; }
 namespace std { struct system_error; }
 namespace std { class thread; }
 namespace std { class time_base; }
+namespace std { struct time_spec; }
 namespace std { class timed_mutex; }
+namespace std { struct tm; }
+namespace std { struct to_chars_result; }
 namespace std { struct try_to_lock_t; }
 namespace std { class type_index; }
 namespace std { class type_info; }
@@ -3206,6 +3295,7 @@ typedef int (*thrd_start_t)(void*);
 typedef pthread_t thrd_t;
 typedef long time_t;
 typedef void *timer_t;
+typedef struct tm tm;
 typedef void (*tss_dtor_t)(void*);
 typedef void *tss_t;
 typedef uint32_t uid_t;
@@ -3637,7 +3727,9 @@ define socklen_t as uint32_t
 define ssize_t as long integer
 define adopt_lock_t of namespace std as structure adopt_lock_t
 define align_val_t of namespace std as enumeration class align_val_t
+define allocator_arg_t of namespace std as structure allocator_arg_t
 define ambiguous_local_time of namespace std as class ambiguous_local_time
+define any of namespace std as structure any
 define atomic_bool of namespace std as structure atomic_bool
 define atomic_char of namespace std as structure atomic_char
 define atomic_char16_t of namespace std as structure atomic_char16_t
@@ -3736,6 +3828,7 @@ define year_month_day_last of namespace chrono of namespace std as class year_mo
 define year_month_weekday of namespace chrono of namespace std as class year_month_weekday
 define year_month_weekday_last of namespace chrono of namespace std as class year_month_weekday_last
 define codecvt_base of namespace std as class codecvt_base
+define compare_three_way of namespace std as structure compare_three_way
 define condition_variable of namespace std as class condition_variable
 define condition_variable_any of namespace std as class condition_variable_any
 define ctype_base of namespace std as class ctype_base
@@ -3745,6 +3838,7 @@ define defer_lock_t of namespace std as structure defer_lock_t
 define destroying_delete_t of namespace std as structure destroying_delete_t
 define div_t of namespace std as structure div_t
 define domain_error of namespace std as class domain_error
+define endian of namespace std as enumeration class endian
 define error_category of namespace std as class error_category
 define error_code of namespace std as class error_code
 define error_condition of namespace std as class error_condition
@@ -3767,6 +3861,7 @@ define float16_t of namespace std as floating point
 define float32_t of namespace std as floating point
 define float64_t of namespace std as double precision
 define format_error of namespace std as class format_error
+define from_chars_result of namespace std as structure from_chars_result
 define fstream of namespace std as class fstream
 define future_errc of namespace std as enumeration class future_errc
 define future_error of namespace std as class future_error
@@ -3789,6 +3884,7 @@ define ispanstream of namespace std as class ispanstream
 define istream of namespace std as class istream
 define istringstream of namespace std as class istringstream
 define jthread of namespace std as class jthread
+define latch of namespace std as class latch
 define launch of namespace std as enumeration class launch
 define ldiv_t of namespace std as structure ldiv_t
 define length_error of namespace std as class length_error
@@ -3798,8 +3894,11 @@ define logic_error of namespace std as class logic_error
 define max_align_t of namespace std as long double precision
 define messages_base of namespace std as class messages_base
 define money_base of namespace std as class money_base
+define mono_state of namespace std as structure mono_state
 define mutex of namespace std as class mutex
+define new_handler of namespace std as pointer to function returning void
 define nonstopstate_t of namespace std as structure nonstopstate_t
+define noop_coroutine_promise of namespace std as structure noop_coroutine_promise
 define nothrow_t of namespace std as structure nothrow_t
 define nullptr_t of namespace std as pointer to void
 define ofstream of namespace std as class ofstream
@@ -3810,12 +3909,19 @@ define osyncstream of namespace std as class osyncstream
 define out_of_range of namespace std as class out_of_range
 define overflow_error of namespace std as class overflow_error
 define partial_ordering of namespace std as structure partial_ordering
+define memory_resource of namespace pmr of namespace std as class memory_resource
+define monotonic_buffer_resource of namespace pmr of namespace std as class monotonic_buffer_resource
+define pool_options of namespace pmr of namespace std as structure pool_options
+define synchronized_pool_resource of namespace pmr of namespace std as class synchronized_pool_resource
+define unsynchronized_pool_resource of namespace pmr of namespace std as class unsynchronized_pool_resource
 define ptrdiff_t of namespace std as long integer
 define random_device of namespace std as class random_device
 define range_error of namespace std as class range_error
+define range_format of namespace std as enumeration class range_format
 define recursive_mutex of namespace std as class recursive_mutex
 define recursive_timed_mutex of namespace std as class recursive_timed_mutex
 define regex of namespace std as class regex
+define error_type of namespace regex_constants of namespace std as unsigned integer
 define match_flag_type of namespace regex_constants of namespace std as unsigned integer
 define syntax_option_type of namespace regex_constants of namespace std as unsigned integer
 define regex_error of namespace std as structure regex_error
@@ -3840,11 +3946,16 @@ define stringbuf of namespace std as class stringbuf
 define stringstream of namespace std as class stringstream
 define strong_equality of namespace std as structure strong_equality
 define strong_ordering of namespace std as structure strong_ordering
+define suspend_always of namespace std as structure suspend_always
+define suspend_never of namespace std as structure suspend_never
 define syncbuf of namespace std as class syncbuf
 define system_error of namespace std as structure system_error
 define thread of namespace std as class thread
 define time_base of namespace std as class time_base
+define time_spec of namespace std as structure time_spec
 define timed_mutex of namespace std as class timed_mutex
+define tm of namespace std as structure tm
+define to_chars_result of namespace std as structure to_chars_result
 define try_to_lock_t of namespace std as structure try_to_lock_t
 define type_index of namespace std as class type_index
 define type_info of namespace std as class type_info
@@ -3884,6 +3995,7 @@ define thrd_start_t as pointer to function (pointer to void) returning integer
 define thrd_t as pthread_t
 define time_t as long integer
 define timer_t as pointer to void
+define tm as structure tm
 define tss_dtor_t as pointer to function (pointer to void) returning void
 define tss_t as pointer to void
 define uid_t as uint32_t
@@ -4241,7 +4353,9 @@ typedef uint32_t socklen_t;
 typedef long ssize_t;
 namespace std { struct adopt_lock_t; }
 namespace std { enum align_val_t; }
+namespace std { struct allocator_arg_t; }
 namespace std { class ambiguous_local_time; }
+namespace std { struct any; }
 namespace std { struct atomic_bool; }
 namespace std { struct atomic_char; }
 namespace std { struct atomic_char16_t; }
@@ -4340,6 +4454,7 @@ namespace std::chrono { class year_month_day_last; }
 namespace std::chrono { class year_month_weekday; }
 namespace std::chrono { class year_month_weekday_last; }
 namespace std { class codecvt_base; }
+namespace std { struct compare_three_way; }
 namespace std { class condition_variable; }
 namespace std { class condition_variable_any; }
 namespace std { class ctype_base; }
@@ -4349,6 +4464,7 @@ namespace std { struct defer_lock_t; }
 namespace std { struct destroying_delete_t; }
 namespace std { struct div_t; }
 namespace std { class domain_error; }
+namespace std { enum endian; }
 namespace std { class error_category; }
 namespace std { class error_code; }
 namespace std { class error_condition; }
@@ -4371,6 +4487,7 @@ namespace std { typedef float float16_t; }
 namespace std { typedef float float32_t; }
 namespace std { typedef double float64_t; }
 namespace std { class format_error; }
+namespace std { struct from_chars_result; }
 namespace std { class fstream; }
 namespace std { enum future_errc; }
 namespace std { class future_error; }
@@ -4393,6 +4510,7 @@ namespace std { class ispanstream; }
 namespace std { class istream; }
 namespace std { class istringstream; }
 namespace std { class jthread; }
+namespace std { class latch; }
 namespace std { enum launch; }
 namespace std { struct ldiv_t; }
 namespace std { class length_error; }
@@ -4402,8 +4520,11 @@ namespace std { class logic_error; }
 namespace std { typedef long double max_align_t; }
 namespace std { class messages_base; }
 namespace std { class money_base; }
+namespace std { struct mono_state; }
 namespace std { class mutex; }
+namespace std { typedef void (*new_handler)(); }
 namespace std { struct nonstopstate_t; }
+namespace std { struct noop_coroutine_promise; }
 namespace std { struct nothrow_t; }
 namespace std { typedef void *nullptr_t; }
 namespace std { class ofstream; }
@@ -4414,12 +4535,19 @@ namespace std { class osyncstream; }
 namespace std { class out_of_range; }
 namespace std { class overflow_error; }
 namespace std { struct partial_ordering; }
+namespace std::pmr { class memory_resource; }
+namespace std::pmr { class monotonic_buffer_resource; }
+namespace std::pmr { struct pool_options; }
+namespace std::pmr { class synchronized_pool_resource; }
+namespace std::pmr { class unsynchronized_pool_resource; }
 namespace std { typedef long ptrdiff_t; }
 namespace std { class random_device; }
 namespace std { class range_error; }
+namespace std { enum range_format; }
 namespace std { class recursive_mutex; }
 namespace std { class recursive_timed_mutex; }
 namespace std { class regex; }
+namespace std::regex_constants { typedef unsigned error_type; }
 namespace std::regex_constants { typedef unsigned match_flag_type; }
 namespace std::regex_constants { typedef unsigned syntax_option_type; }
 namespace std { struct regex_error; }
@@ -4444,11 +4572,16 @@ namespace std { class stringbuf; }
 namespace std { class stringstream; }
 namespace std { struct strong_equality; }
 namespace std { struct strong_ordering; }
+namespace std { struct suspend_always; }
+namespace std { struct suspend_never; }
 namespace std { class syncbuf; }
 namespace std { struct system_error; }
 namespace std { class thread; }
 namespace std { class time_base; }
+namespace std { struct time_spec; }
 namespace std { class timed_mutex; }
+namespace std { struct tm; }
+namespace std { struct to_chars_result; }
 namespace std { struct try_to_lock_t; }
 namespace std { class type_index; }
 namespace std { class type_info; }
@@ -4488,6 +4621,7 @@ typedef int (*thrd_start_t)(void*);
 typedef pthread_t thrd_t;
 typedef long time_t;
 typedef void *timer_t;
+typedef struct tm tm;
 typedef void (*tss_dtor_t)(void*);
 typedef void *tss_t;
 typedef uint32_t uid_t;
@@ -4845,7 +4979,9 @@ using socklen_t = uint32_t;
 using ssize_t = long;
 namespace std { struct adopt_lock_t; }
 namespace std { enum align_val_t; }
+namespace std { struct allocator_arg_t; }
 namespace std { class ambiguous_local_time; }
+namespace std { struct any; }
 namespace std { struct atomic_bool; }
 namespace std { struct atomic_char; }
 namespace std { struct atomic_char16_t; }
@@ -4944,6 +5080,7 @@ namespace std::chrono { class year_month_day_last; }
 namespace std::chrono { class year_month_weekday; }
 namespace std::chrono { class year_month_weekday_last; }
 namespace std { class codecvt_base; }
+namespace std { struct compare_three_way; }
 namespace std { class condition_variable; }
 namespace std { class condition_variable_any; }
 namespace std { class ctype_base; }
@@ -4953,6 +5090,7 @@ namespace std { struct defer_lock_t; }
 namespace std { struct destroying_delete_t; }
 namespace std { struct div_t; }
 namespace std { class domain_error; }
+namespace std { enum endian; }
 namespace std { class error_category; }
 namespace std { class error_code; }
 namespace std { class error_condition; }
@@ -4975,6 +5113,7 @@ namespace std { using float16_t = float; }
 namespace std { using float32_t = float; }
 namespace std { using float64_t = double; }
 namespace std { class format_error; }
+namespace std { struct from_chars_result; }
 namespace std { class fstream; }
 namespace std { enum future_errc; }
 namespace std { class future_error; }
@@ -4997,6 +5136,7 @@ namespace std { class ispanstream; }
 namespace std { class istream; }
 namespace std { class istringstream; }
 namespace std { class jthread; }
+namespace std { class latch; }
 namespace std { enum launch; }
 namespace std { struct ldiv_t; }
 namespace std { class length_error; }
@@ -5006,8 +5146,11 @@ namespace std { class logic_error; }
 namespace std { using max_align_t = long double; }
 namespace std { class messages_base; }
 namespace std { class money_base; }
+namespace std { struct mono_state; }
 namespace std { class mutex; }
+namespace std { using new_handler = void(*)(); }
 namespace std { struct nonstopstate_t; }
+namespace std { struct noop_coroutine_promise; }
 namespace std { struct nothrow_t; }
 namespace std { using nullptr_t = void*; }
 namespace std { class ofstream; }
@@ -5018,12 +5161,19 @@ namespace std { class osyncstream; }
 namespace std { class out_of_range; }
 namespace std { class overflow_error; }
 namespace std { struct partial_ordering; }
+namespace std::pmr { class memory_resource; }
+namespace std::pmr { class monotonic_buffer_resource; }
+namespace std::pmr { struct pool_options; }
+namespace std::pmr { class synchronized_pool_resource; }
+namespace std::pmr { class unsynchronized_pool_resource; }
 namespace std { using ptrdiff_t = long; }
 namespace std { class random_device; }
 namespace std { class range_error; }
+namespace std { enum range_format; }
 namespace std { class recursive_mutex; }
 namespace std { class recursive_timed_mutex; }
 namespace std { class regex; }
+namespace std::regex_constants { using error_type = unsigned; }
 namespace std::regex_constants { using match_flag_type = unsigned; }
 namespace std::regex_constants { using syntax_option_type = unsigned; }
 namespace std { struct regex_error; }
@@ -5048,11 +5198,16 @@ namespace std { class stringbuf; }
 namespace std { class stringstream; }
 namespace std { struct strong_equality; }
 namespace std { struct strong_ordering; }
+namespace std { struct suspend_always; }
+namespace std { struct suspend_never; }
 namespace std { class syncbuf; }
 namespace std { struct system_error; }
 namespace std { class thread; }
 namespace std { class time_base; }
+namespace std { struct time_spec; }
 namespace std { class timed_mutex; }
+namespace std { struct tm; }
+namespace std { struct to_chars_result; }
 namespace std { struct try_to_lock_t; }
 namespace std { class type_index; }
 namespace std { class type_info; }
@@ -5092,6 +5247,7 @@ using thrd_start_t = int(*)(void*);
 using thrd_t = pthread_t;
 using time_t = long;
 using timer_t = void*;
+struct tm;
 using tss_dtor_t = void(*)(void*);
 using tss_t = void*;
 using uid_t = uint32_t;

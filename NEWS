@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 14.5
+
+** More std types
+Added more standard types.
+
+
 * Changes in Cdecl 14.4
 
 ** `_Alignas` forward declarations
