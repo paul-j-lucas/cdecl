@@ -59,6 +59,7 @@
 #include "options.h"
 #include "print.h"
 #include "set_options.h"
+#include "show.h"
 #include "slist.h"
 #include "types.h"
 #include "util.h"
@@ -222,23 +223,6 @@
  */
 #define punct_expected(PUNCT) BLOCK( \
   fl_punct_expected( __FILE__, __LINE__, (PUNCT) ); PARSE_ABORT(); )
-
-/**
- * Show all (as opposed to only those that are supported in the current
- * language) predefined, user, or both types.
- */
-#define SHOW_ALL_TYPES            0x10u
-
-/**
-* Show only predefined types that are valid in the current language.
-*/
-#define SHOW_PREDEFINED_TYPES     (1u << 0)
-
-/**
- * Show only user-defined types that were defined in the current language or
- * earlier.
- */
-#define SHOW_USER_DEFINED_TYPES   (1u << 1)
 
 /** @} */
 
@@ -464,16 +448,6 @@ struct in_attr {
 };
 typedef struct in_attr in_attr_t;
 
-/**
- * Information for show_type_visitor().
- */
-struct show_type_info {
-  unsigned  show_which;                 ///< Predefined, user, or both?
-  unsigned  gib_flags;                  ///< Gibberish flags.
-  c_sglob_t sglob;                      ///< Scoped glob to match, if any.
-};
-typedef struct show_type_info show_type_info_t;
-
 // local functions
 NODISCARD
 static bool c_ast_free_if_placeholder( c_ast_t* );
@@ -564,19 +538,6 @@ static inline c_ast_t* ia_type_ast_pop( void ) {
  */
 static inline void ia_type_ast_push( c_ast_t *ast ) {
   slist_push_front( &in_attr.type_ast_stack, ast );
-}
-
-/**
- * Cleans-up all memory associated with \a sti but does _not_ free \a sti
- * itself.
- *
- * @param sti The \ref show_type_info to clean up.
- *
- * @sa sti_init()
- */
-static inline void sti_cleanup( show_type_info_t *sti ) {
-  c_sglob_cleanup( &sti->sglob );
-  MEM_ZERO( sti );
 }
 
 /**
@@ -981,84 +942,6 @@ static void quit( void ) {
 }
 
 /**
- * Shows (prints) the definition of \a tdef.
- *
- * @param tdef The \ref c_typedef to show.
- * @param gib_flags The gibberish flags to use.
- *
- * @sa print_type()
- */
-static void show_type( c_typedef_t const *tdef, unsigned gib_flags ) {
-  assert( tdef != NULL );
-  if ( gib_flags == C_GIB_NONE ) {
-    c_typedef_english( tdef, stdout );
-  } else {
-    if ( opt_semicolon )
-      gib_flags |= C_GIB_FINAL_SEMI;
-    c_typedef_gibberish( tdef, gib_flags, stdout );
-  }
-  PUTC( '\n' );
-}
-
-/**
- * A visitor function to show (print) \a tdef.
- *
- * @param tdef The \ref c_typedef to show.
- * @param data Optional data passed to the visitor: in this case, a \ref
- * show_type_info.
- * @return Always returns `false`.
- */
-NODISCARD
-static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
-  assert( tdef != NULL );
-  assert( data != NULL );
-
-  show_type_info_t const *const sti = data;
-
-  if ( (sti->show_which & SHOW_ALL_TYPES) == 0 &&
-       !opt_lang_is_any( tdef->lang_ids ) ) {
-    goto no_show;
-  }
-
-  if ( tdef->is_predefined ) {
-    if ( (sti->show_which & SHOW_PREDEFINED_TYPES) == 0 )
-      goto no_show;
-  } else {
-    if ( (sti->show_which & SHOW_USER_DEFINED_TYPES) == 0 )
-      goto no_show;
-  }
-
-  if ( !c_sglob_empty( &sti->sglob ) &&
-       !c_sname_match( &tdef->ast->sname, &sti->sglob ) ) {
-    goto no_show;
-  }
-
-  show_type( tdef, sti->gib_flags );
-
-no_show:
-  return /*stop=*/false;
-}
-
-/**
- * Initializes a show_type_info_t.
- *
- * @param sti The \ref show_type_info to initialize.
- * @param show_which Which types to show: predefined, user, or both?
- * @param glob The glob string; may be NULL.
- * @param gib_flags The gibberish flags to use.
- *
- * @sa sti_cleanup()
- */
-static void sti_init( show_type_info_t *sti, unsigned show_which,
-                      char const *glob, unsigned gib_flags ) {
-  assert( sti != NULL );
-  sti->show_which = show_which;
-  sti->gib_flags = gib_flags;
-  c_sglob_init( &sti->sglob );
-  c_sglob_parse( glob, &sti->sglob );
-}
-
-/**
  * Called by Bison to print a parsing error message to standard error.
  *
  * @remarks A custom error printing function via `%%define parse.error custom`
@@ -1136,6 +1019,7 @@ static void yyerror( char const *msg ) {
   char               *name;       // identifier name, cf. sname
   c_func_member_t     member;     // member, non-member, or unspecified
   c_oper_id_t         oper_id;    // overloaded operator ID
+  cdecl_show_t        show;       // which types to show
   c_sname_t           sname;      // scoped identifier name, cf. name
   slist_t             sname_list; // c_sname_t list
   char               *str_val;    // quoted string value
@@ -1697,10 +1581,10 @@ static void yyerror( char const *msg ) {
 %type   <type>        namespace_type
 %type   <sname>       namespace_typedef_sname_c
 %type   <tid>         noexcept_bool_stid_exp
-%type   <flags>       predefined_or_user_flags_opt
+%type   <show>        predefined_or_user_types_opt
 %type   <str_val>     set_option_value_opt
 %type   <flags>       show_format show_format_exp show_format_opt
-%type   <flags>       show_which_types_flags_opt
+%type   <show>        show_types_opt
 %type   <tid>         static_stid_opt
 %type   <str_val>     str_lit str_lit_exp
 %type   <tid>         this_stid_opt
@@ -2560,7 +2444,7 @@ show_command
       DUMP_INT( "show_format_opt", $format );
       DUMP_END();
 
-      show_type( $tdef, $format );
+      show_type( $tdef, $format, stdout );
     }
 
   | Y_show any_typedef[tdef] Y_as show_format_exp[format]
@@ -2570,26 +2454,18 @@ show_command
       DUMP_INT( "show_format_exp", $format );
       DUMP_END();
 
-      show_type( $tdef, $format );
+      show_type( $tdef, $format, stdout );
     }
 
-  | Y_show show_which_types_flags_opt[which] glob_opt[glob_name]
-    show_format_opt[format]
+  | Y_show show_types_opt[show] glob_opt[glob_name] show_format_opt[format]
     {
-      show_type_info_t sti;
-      sti_init( &sti, $which, $glob_name, $format );
-      c_typedef_visit( &show_type_visitor, &sti );
-      sti_cleanup( &sti );
+      show_types( $show, $glob_name, $format, stdout );
       free( $glob_name );
     }
 
-  | Y_show show_which_types_flags_opt[which] glob_opt[glob_name]
-    Y_as show_format_exp[format]
+  | Y_show show_types_opt[show] glob_opt[glob_name] Y_as show_format_exp[format]
     {
-      show_type_info_t sti;
-      sti_init( &sti, $which, $glob_name, $format );
-      c_typedef_visit( &show_type_visitor, &sti );
-      sti_cleanup( &sti );
+      show_types( $show, $glob_name, $format, stdout );
       free( $glob_name );
     }
 
@@ -2614,7 +2490,7 @@ show_command
         OPT_LANG_IS( using_DECLS ) ? TYPE_COMMANDS_CPP_WITH_USING :
                                      TYPE_COMMANDS_CPP_WITHOUT_USING;
 
-      print_error( &@name, "\"%s\": not defined as type via ", $name );
+      print_error( &@name, "\"%s\": no such type defined via ", $name );
       fput_list( stderr, type_commands, /*gets=*/NULL );
       print_suggestions( DYM_C_TYPES, $name );
       EPUTC( '\n' );
@@ -2662,23 +2538,23 @@ show_format_opt
   | show_format
   ;
 
-show_which_types_flags_opt
-  : /* empty */                   { $$ = SHOW_USER_DEFINED_TYPES; }
-  | Y_all predefined_or_user_flags_opt[flags]
+show_types_opt
+  : /* empty */                   { $$ = CDECL_SHOW_USER_DEFINED; }
+  | Y_all predefined_or_user_types_opt[show]
     {
-      $$ = SHOW_ALL_TYPES |
-           ($flags != 0 ?
-            $flags :
-            SHOW_PREDEFINED_TYPES | SHOW_USER_DEFINED_TYPES);
+      $$ = CDECL_SHOW_IGNORE_LANG | $show;
     }
-  | Y_predefined                  { $$ = SHOW_PREDEFINED_TYPES; }
-  | Y_user                        { $$ = SHOW_USER_DEFINED_TYPES; }
+  | Y_predefined                  { $$ = CDECL_SHOW_PREDEFINED; }
+  | Y_user                        { $$ = CDECL_SHOW_USER_DEFINED; }
   ;
 
-predefined_or_user_flags_opt
-  : /* empty */                   { $$ = 0; }
-  | Y_predefined                  { $$ = SHOW_PREDEFINED_TYPES; }
-  | Y_user                        { $$ = SHOW_USER_DEFINED_TYPES; }
+predefined_or_user_types_opt
+  : /* empty */
+    {
+      $$ = CDECL_SHOW_PREDEFINED | CDECL_SHOW_USER_DEFINED;
+    }
+  | Y_predefined                  { $$ = CDECL_SHOW_PREDEFINED; }
+  | Y_user                        { $$ = CDECL_SHOW_USER_DEFINED; }
   ;
 
 /// template command //////////////////////////////////////////////////////////

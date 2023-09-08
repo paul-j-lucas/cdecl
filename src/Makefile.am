@@ -81,6 +81,7 @@ cdecl_SOURCES =	parser.y \
 		read_line.c read_line.h \
 		red_black.c red_black.h \
 		set_options.c set_options.h \
+		show.c show.h \
 		slist.c slist.h \
 		strbuf.c strbuf.h \
 		types.h \
