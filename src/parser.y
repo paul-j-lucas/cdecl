@@ -1013,22 +1013,27 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
   show_type_info_t const *const sti = data;
 
-  bool const show_in_lang =
-    (sti->show_which & SHOW_ALL_TYPES) != 0 ||
-    opt_lang_is_any( tdef->lang_ids );
-
-  if ( show_in_lang ) {
-    bool const show_it =
-      ((tdef->is_predefined ?
-        (sti->show_which & SHOW_PREDEFINED_TYPES  ) != 0 :
-        (sti->show_which & SHOW_USER_DEFINED_TYPES) != 0)) &&
-      (c_sglob_empty( &sti->sglob ) ||
-       c_sname_match( &tdef->ast->sname, &sti->sglob ));
-
-    if ( show_it )
-      show_type( tdef, sti->gib_flags );
+  if ( (sti->show_which & SHOW_ALL_TYPES) == 0 &&
+       !opt_lang_is_any( tdef->lang_ids ) ) {
+    goto no_show;
   }
 
+  if ( tdef->is_predefined ) {
+    if ( (sti->show_which & SHOW_PREDEFINED_TYPES) == 0 )
+      goto no_show;
+  } else {
+    if ( (sti->show_which & SHOW_USER_DEFINED_TYPES) == 0 )
+      goto no_show;
+  }
+
+  if ( !c_sglob_empty( &sti->sglob ) &&
+       !c_sname_match( &tdef->ast->sname, &sti->sglob ) ) {
+    goto no_show;
+  }
+
+  show_type( tdef, sti->gib_flags );
+
+no_show:
   return /*stop=*/false;
 }
 
