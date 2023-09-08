@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** More std types
 Added more standard types.
 
+** Folded `cast` help
+Help for new-style casts has been folded into the same line for C-style casts.
+
 
 * Changes in Cdecl 14.4
 
