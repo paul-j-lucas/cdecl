@@ -28,6 +28,7 @@
 #include "cdecl_command.h"
 #include "c_lang.h"
 #include "literals.h"
+#include "options.h"
 #include "util.h"
 
 // standard
@@ -117,6 +118,8 @@ cdecl_command_t const* cdecl_command_find( char const *s ) {
     size_t const literal_len = strlen( command->literal );
     if ( !starts_with_token( s, command->literal, literal_len ) )
       continue;
+    if ( !opt_explain )
+      return command;
     if ( command->literal == L_const || command->literal == L_static ) {
       //
       // When in explain-by-default mode, a special case has to be made for
