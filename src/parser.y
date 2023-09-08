@@ -985,6 +985,8 @@ static void quit( void ) {
  *
  * @param tdef The \ref c_typedef to show.
  * @param gib_flags The gibberish flags to use.
+ *
+ * @sa print_type()
  */
 static void show_type( c_typedef_t const *tdef, unsigned gib_flags ) {
   assert( tdef != NULL );

@@ -278,6 +278,7 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
  *
  * @sa c_typedef_english()
  * @sa c_typedef_gibberish()
+ * @sa show_type()
  */
 void print_type( c_typedef_t const *tdef, FILE *tout );
 
