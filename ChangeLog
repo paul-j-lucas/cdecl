@@ -1,3 +1,14 @@
+2023-09-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, parser.y, show.c, show.h, types.h, show_foo.out: Moved
+     show-types code into new show.c file.
+
+2023-09-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Reworked show_type_visitor().
+   * configure.ac, cdecl.1, c_typedef.c, cl.out, debug.out, show.out: Added
+     more standard types.
+
 2023-09-06  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c, c_ast_check.c, c_ast_util.h, c_keyword.c, c_kind.c,
