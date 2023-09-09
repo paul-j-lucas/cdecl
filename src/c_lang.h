@@ -649,6 +649,7 @@ _GL_INLINE_HEADER_BEGIN
  * Languages `explicit` user-defined conversion operators are supported in.
  *
  * @sa #LANG_explicit
+ * @sa #LANG_USER_DEF_CONVS
  */
 #define LANG_explicit_USER_DEF_CONVS    LANG_CPP_MIN(11)
 
@@ -1045,6 +1046,13 @@ _GL_INLINE_HEADER_BEGIN
  * Lanuages the `unsigned short` type is supported in.
  */
 #define LANG_unsigned_short             LANG_MIN(C_89)
+
+/**
+ * Languages user-defined conversion operators are supported in.
+ *
+ * @sa #LANG_explicit_USER_DEF_CONVS
+ */
+#define LANG_USER_DEF_CONVS             LANG_CPP_ANY
 
 /**
  * Languages user-defined literals are supported in.
