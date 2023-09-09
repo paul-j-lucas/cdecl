@@ -1,5 +1,13 @@
+2023-09-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Fixed const-ness in ac_set_options_new().
+   * c_lang.h: Added LANG_USER_DEF_CONVS.
+
 2023-09-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl_command.c: Added check for opt_explain.
+   * help.c, help.out: Help for new-style casts has been folded into the same
+     line for C-style casts.
    * src/Makefile.am, parser.y, show.c, show.h, types.h, show_foo.out: Moved
      show-types code into new show.c file.
 
