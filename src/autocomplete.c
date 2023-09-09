@@ -239,10 +239,11 @@ static char const* const* ac_set_options_new( void ) {
   FOREACH_LANG( lang )
     n += !lang->is_alias;
 
-  char **const ac_set_options = free_later( MALLOC( char*, n + 1/*NULL*/ ) );
-  char **popt = ac_set_options;
+  char const **const ac_set_options =
+    free_later( MALLOC( char*, n + 1/*NULL*/ ) );
+  char const **popt = ac_set_options;
 
-  *popt++ = CONST_CAST( char*, L_options );
+  *popt++ = L_options;
 
   FOREACH_SET_OPTION( opt ) {
     switch ( opt->kind ) {
@@ -251,7 +252,7 @@ static char const* const* ac_set_options_new( void ) {
         if ( opt->takes_value )
           *popt++ = free_later( check_strdup_suffix( opt->name, " =", 2 ) );
         else
-          *popt++ = CONST_CAST( char*, opt->name );
+          *popt++ = opt->name;
         if ( opt->kind == SET_OPTION_AFF_ONLY )
           break;
         FALLTHROUGH;
@@ -274,7 +275,7 @@ static char const* const* ac_set_options_new( void ) {
     POINTER_CAST( qsort_cmp_fn_t, &str_ptr_cmp )
   );
 
-  return CONST_CAST( char const* const*, ac_set_options );
+  return ac_set_options;
 }
 
 /**
