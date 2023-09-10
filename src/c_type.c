@@ -184,7 +184,7 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
  * @remarks Even though `const`, `restrict`, and `volatile` weren't supported
  * until C89, they're allowed in all languages since **cdecl** supports their
  * GNU extension counterparts of `__const`, `__restrict`, and `__volatile` in
- * K&R C.
+ * K&R&nbsp;C.
  *
  * @note This array _must_ have the same size and order as \ref
  * OK_QUALIFIER_LANGS.
@@ -468,7 +468,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
  * @remarks Even though `const`, `restrict`, and `volatile` weren't supported
  * until C89, they're allowed in all languages since **cdecl** supports their
  * GNU extension counterparts of `__const`, `__restrict`, and `__volatile` in
- * K&R C.
+ * K&R&nbsp;C.
  *
  * @note This array _must_ have the same size and order as \ref
  * C_QUALIFIER_INFO.
@@ -568,8 +568,8 @@ static c_lang_id_t const OK_TYPE_LANGS[ ARRAY_SIZE( C_TYPE_INFO ) ][ ARRAY_SIZE(
 
 /**
  * Checks whether \a tids is some form of `long int` only, and _not_ one of
- * `long float` (K&R), `long double` (C89), or either `long _Accum` or `long
- * _Fract` (Embedded C).
+ * `long float` (K&R&nbsp;C), `long double` (C89), or either `long _Accum` or
+ * `long _Fract` (Embedded C).
  *
  * @param tids The \ref c_tid_t to check.
  * @return Returns `true` only if \a tids is some form of `long int`.

@@ -72,7 +72,7 @@ c_ast_kind_t        opt_west_pointer_kinds = K_ANY_FUNCTION_RETURN;
 /// @endcond
 
 /**
- * The integer type(s) that `int` shall be print explicitly for in C/C++
+ * The integer type(s) that `int` shall be printed explicitly for in C/C++
  * declarations even when not needed because the type(s) contain at least one
  * integer modifier, e.g., `unsigned`.
  *

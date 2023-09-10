@@ -99,12 +99,11 @@ struct c_type {
 /**
  * For \ref c_tid_t values, the low-order 4 bits specify the type part ID and
  * thus how the value should be interpreted.
+ *
+ * @remarks Type part IDs start at 1 so we know a \ref c_tid_t value has been
+ * initialized properly as opposed to it being 0 by default.
  */
 enum c_tpid {
-  //
-  // Type part IDs start at 1 so we know a c_tid_t value has been initialized
-  // properly as opposed to it being 0 by default.
-  //
   C_TPID_NONE   = 0u,                   ///< No types.
   C_TPID_BASE   = (1u << 0),            ///< Base types, e.g., `int`.
   C_TPID_STORE  = (1u << 1),            ///< Storage types, e.g., `static`.
@@ -741,6 +740,7 @@ char const* c_tid_name_error( c_tid_t tids );
  *
  *  1. If it's #TB_SIGNED and not #TB_CHAR, remove #TB_SIGNED.  If it becomes
  *     #TB_NONE, make it #TB_INT.
+ *
  *  2. If it's only implicitly #TB_INT (e.g., `unsigned`), make it explicitly
  *     #TB_INT (e.g., `unsigned int`).
  *
@@ -762,15 +762,15 @@ c_tid_t c_tid_normalize( c_tid_t tids );
  *
  * I.e., order(T1) &le; order(T2) only if T1 can appear to the left of T2 in a
  * declaration.  For example, given:
- * ```
- *  namespace N { class C { // ...
- * ```
+ *
+ *      namespace N { class C { // ...
+ *
  * order(`N`) &le; order(`C`) because `N` can appear to the left of `C` in a
  * declaration.  However, given:
- * ```
- *  class D { namespace M { // ...
- * ```
- * order(`D`) &gt; order(`M`) and so `D` can not appear to the left of `M`.
+ *
+ *      class D { namespace M { // ...
+ *
+ * order(`D`) &gt; order(`M`) and so `D` can _not_ appear to the left of `M`.
  *
  * @param btids The scope-type ID to get the order of.
  * @return Returns said order.
@@ -1041,9 +1041,11 @@ bool c_tid_is_compl( c_tid_t tids ) {
 }
 
 /**
- * Bitwise-complements \a tids.  The `~` operator can't be used alone because
- * the part ID of \a tids would be complemented also.  This function
- * complements \a tids while preserving the original part ID.
+ * Bitwise-complements \a tids.
+ *
+ * @remarks The `~` operator can't be used alone because the part ID of \a tids
+ * would be complemented also.  This function complements \a tids while
+ * preserving the original part ID.
  *
  * @param tids The \ref c_tid_t to complement.
  * @return Returns \a tids complemented.

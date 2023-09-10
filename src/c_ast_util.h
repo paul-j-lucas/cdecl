@@ -562,8 +562,8 @@ c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
  *
  *      cdecl> explain enum E x : 4
  *
- * so that we can check _that_ for errors.  (In this case, it's an error since
- * enumerations can't be bit-fields in C.)
+ * so that we can check _that_ for errors.  (In this case, it's an error in C
+ * since enumerations can't be bit-fields in C.)
  *
  * @param ast The AST to get what it's a `typedef` for .  It _must_ be of kind
  * #K_TYPEDEF.

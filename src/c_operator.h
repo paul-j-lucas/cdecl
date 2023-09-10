@@ -116,7 +116,9 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
 /**
  * Checks whether the C++ operator is ambiguous.
  *
- * @remarks The operators `&`, `*`, `+`, `++`, `-`, and `--`, when declared as:
+ * @remarks
+ * @parblock
+ * The operators `&`, `*`, `+`, `++`, `-`, and `--`, when declared as:
  *
  *      T operator OP(U);
  *
@@ -132,10 +134,11 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  *
  * then clearly it's a member operator; if it were declared at file scope, then
  * clearly it's a non-member operator; but **cdecl** doesn't have this context.
- * @par
+ *
  * We can tell if an operator is ambiguous if it can take 1 parameter when \ref
  * c_operator::params_min "params_min" is 0 and \ref c_operator::params_max
  * "params_max" is 2.
+ * @endparblock
  *
  * @param op The C++ operator to check.
  * @return Returns `true` only if the operator is ambiguous.

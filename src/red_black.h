@@ -135,12 +135,12 @@ struct rb_node {
    * the node's position within the tree according to the tree's \ref
    * rb_tree::cmp_fn "cmp_fn".  For example, if `data` points to a `struct`
    * like:
-   * ```
-   *  struct word_count {
-   *      char     *word;
-   *      unsigned  count;
-   *  };
-   * ```
+   *
+   *      struct word_count {
+   *          char     *word;
+   *          unsigned  count;
+   *      };
+   *
    * then, assuming the tree's \ref rb_tree::cmp_fn "cmp_fn" compares only
    * `word`, client code may then only safely modify `count`.
    */

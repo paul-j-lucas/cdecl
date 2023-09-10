@@ -59,16 +59,16 @@ enum cdecl_command_kind {
   CDECL_COMMAND_LANG_ONLY,
 
   /**
-   * Same as \ref CDECL_COMMAND_LANG_ONLY, but command is also valid as the
-   * first word of the first command-line argument (`argv[1]`):
+   * Same as #CDECL_COMMAND_LANG_ONLY, but command is also valid as the first
+   * word of the first command-line argument (`argv[1]`):
    *
    * `$ cdecl` _command_ _args_
    */
   CDECL_COMMAND_FIRST_ARG,
 
   /**
-   * Same as \ref CDECL_COMMAND_FIRST_ARG, but command is also valid as the
-   * program name (`argv[0]`):
+   * Same as #CDECL_COMMAND_FIRST_ARG, but command is also valid as the program
+   * name (`argv[0]`):
    *
    * `$` _command_ _args_
    */

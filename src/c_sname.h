@@ -54,8 +54,10 @@ _GL_INLINE_HEADER_BEGIN
  * + An sname also has a type for each scope, one of of #TB_CLASS,
  *   #TB_NAMESPACE (and possibly #TS_INLINE), #TB_SCOPE, #TB_STRUCT, or
  *   #TB_UNION.
+ *
  * + The "local" of an sname is the innermost scope, e.g., `x`.  A non-empty
  *   sname always has a local.
+ *
  * + The "scope" of an sname is all but the innermost scope, e.g., `S::T`.  A
  *   non-empty sname may or may not have a scope.
  *
@@ -414,10 +416,13 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
  * single scope.  Examples:
  *
  *  + `foo*` matches all names starting with `foo` in the global scope.
+ *
  *  + `s::&zwj;*foo` matches all names ending with `foo` only within the top-
  *    level scope `s`.
+ *
  *  + `s*::&zwj;foo` matches all names equal to `foo` in all top-level scopes
  *    starting with `s`.
+ *
  *  + `s::*::&zwj;foo` matches all names equal to `foo` in any scope within the
  *    top-level scope `s`.
  *
@@ -435,6 +440,7 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
 /**
  * Reinitializes \a sname and returns its former value so that it can be
  * "moved" into another scoped name via assignment.  For example:
+ *
  * ```
  * c_sname_t new_sname = c_sname_move( old_sname );
  * ```

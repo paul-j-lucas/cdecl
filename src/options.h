@@ -170,17 +170,22 @@ bool is_explicit_int( c_tid_t btids );
 /**
  * Parses the explicit `enum`, `class`, `struct`, `union` option.
  *
- * @param ecsu_format The null-terminated explicit `enum`, `class`, `struct`,
- * `union` format string (case insensitive) to parse.  Valid formats are:
- *      Format | Meaning
- *      -------|--------
- *      `e`    | `enum`
- *      `c`    | `class`
- *      `s`    | `struct`
- *      `u`    | `union`
+ * @param ecsu_format
+ * @parblock
+ * The null-terminated explicit `enum`, `class`, `struct`, `union` format
+ * string (case insensitive) to parse.  Valid formats are:
+ *
+ * Format | Meaning
+ * -------|--------
+ * `e`    | `enum`
+ * `c`    | `class`
+ * `s`    | `struct`
+ * `u`    | `union`
+ *
  * Multiple formats may be given, one immediately after the other, e.g., `su`
  * means `struct` and `union`.  Alternatively, `*` may be given to mean "all"
  * or either the empty string or `-` may be given to mean "none."
+ * @endparblock
  * @return Returns `true` only if \a ecsu_format was parsed successfully.
  *
  * @sa explicit_ecsu_str()
@@ -191,13 +196,17 @@ bool parse_explicit_ecsu( char const *ecsu_format );
 /**
  * Parses the explicit `int` option.
  *
- * @param ei_format The null-terminated explicit `int` format string (case
- * insensitive) to parse.  Valid formats are:
- *      Format                    | Meaning
- *      --------------------------|----------------------------
- *         `i`                    | All signed integer types.
- *      `u`                       | All unsigned integer types.
- *      [`u`]{`i`\|`s`\|`l`[`l`]} | Possibly `unsigned` `int`, `short`, `long`, or `long long`.
+ * @param ei_format
+ * @parblock
+ * The null-terminated explicit `int` format string (case insensitive) to
+ * parse.  Valid formats are:
+ *
+ * Format                    | Meaning
+ * --------------------------|----------------------------
+ *    `i`                    | All signed integer types.
+ * `u`                       | All unsigned integer types.
+ * [`u`]{`i`\|`s`\|`l`[`l`]} | Possibly `unsigned` `int`, `short`, `long`, or `long long`.
+
  * Multiple formats may be given, one immediately after the other, e.g., `usl`
  * means `unsigned short` and `long`.  Parsing is greedy so commas may be used
  * to separate formats.  For example, `ulll` is parsed as `unsigned long long`
@@ -205,6 +214,7 @@ bool parse_explicit_ecsu( char const *ecsu_format );
  * invalid, an error message is printed to standard error.  Alternatively,
  * `*` may be given to mean "all" or either the empty string or `-` may be
  * given to mean "none."
+ * @endparblock
  * @return Returns `true` only if \a ei_format was parsed successfully.
  *
  * @sa any_explicit_int()
@@ -217,19 +227,23 @@ bool parse_explicit_int( char const *ei_format );
 /**
  * Parses the `west-pointer` option.
  *
- * @param wp_format The null-terminated west pointer format string to parse.
- * Valid formats are:
- *      Format | Meaning
- *      -------|-----------------------------------
- *      `b`    | Apple block return type.
- *      `f`    | Function (and pointer to function) return rype.
- *      `l`    | User-defined literal return type.
- *      `o`    | Operator return type.
- *      `r`    | All return types (same as `bflo`).
- *      `t`    | Non-return types.
+ * @param wp_format
+ * @parblock
+ * The null-terminated west pointer format string to parse.  Valid formats are:
+ *
+ * Format | Meaning
+ * -------|-----------------------------------
+ * `b`    | Apple block return type.
+ * `f`    | Function (and pointer to function) return rype.
+ * `l`    | User-defined literal return type.
+ * `o`    | Operator return type.
+ * `r`    | All return types (same as `bflo`).
+ * `t`    | Non-return types.
+ *
  * Multiple formats may be given, one immediately after the other.
  * Alternatively, `*` may be given to mean "all" or either the empty string or
  * `-` may be given to mean "none."
+ * @endparblock
  * @return Returns `true` only if \a wp_format was parsed successfully.
  *
  * @sa west_pointer_str()

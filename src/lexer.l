@@ -170,6 +170,7 @@ typedef struct include_file_info include_file_info_t;
 static char const lexer_token_init_buf; ///< So lexer_token is never NULL.
 
 /// @cond DOXYGEN_IGNORE
+/// Otherwise Doxygen generates two entries for each option.
 
 // extern variables
 lexer_find_kind_t lexer_find = LEXER_FIND_ANY;
@@ -510,8 +511,8 @@ static void set_digraph( char const *token ) {
 
 /**
  * Sets the current token to \a token for the current trigraph sequence.
- * Additionally, if the current language is K&R C or C++17 or later, prints a
- * warning that trigraphs are not supported (only once per parse).
+ * Additionally, if the current language is K&R&nbsp;C or C++17 or later,
+ * prints a warning that trigraphs are not supported (only once per parse).
  *
  * @param token The token the trigraph maps to.
  *
