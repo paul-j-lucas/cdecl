@@ -80,8 +80,10 @@ struct c_keyword {
   /**
    * Language(s) autocompletable in.
    *
-   * @remarks Relative to `lang_ids`, this field:
-   * @par
+   * @remarks
+   * @parblock
+   * Relative to `lang_ids`, this field:
+   *
    *  1. Is exactly the same in which case it's autocompletable in all (and
    *     only) those language(s) in which it's valid.
    *
@@ -94,6 +96,7 @@ struct c_keyword {
    *  3. Is #LANG_NONE.  This is for a case like `break` where it's a keyword
    *     in all languages, but it's not used in declarations; hence there's no
    *     reason to allow it to be autocompletable.
+   * @endparblock
    */
   c_lang_id_t     ac_lang_ids;
 #endif /* WITH_READLINE */
