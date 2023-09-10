@@ -1,5 +1,11 @@
 2023-09-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1, autocomplete.c, help.c, help.h, parser.y, types.h, util.c,
+     util.h, cl.out, help.out, ac-help.exp, help.test: The `help` command now
+     accepts a cdecl command name and prints help for only that command.
+   * autocomplete.c: s/ac_keywords_init/ac_keywords_new/
+   * autocomplete.c: Made ac_keywords_init() return the new array like similar
+     functions.
    * autocomplete.c: Fixed const-ness in ac_set_options_new().
    * c_lang.h: Added LANG_USER_DEF_CONVS.
 
