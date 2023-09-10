@@ -450,6 +450,9 @@ bool c_ast_list_equal( c_ast_list_t const *i_list,
   assert( i_list != NULL );
   assert( j_list != NULL );
 
+  if ( slist_len( i_list ) != slist_len( j_list ) )
+    return false;
+
   slist_node_t const *i_node = i_list->head;
   slist_node_t const *j_node = j_list->head;
 
