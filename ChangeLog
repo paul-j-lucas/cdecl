@@ -1,3 +1,7 @@
+2023-09-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.h, lexer.l: Made lexer_find be an enum.
+
 2023-09-09  Paul J. Lucas <paul@lucasmail.org>
 
    * lib/Makefile.am, getopt-cdefs.in.h, stddef.in.h, stdlib.in.h, string.in.h,
