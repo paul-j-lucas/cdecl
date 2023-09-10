@@ -263,8 +263,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  * or #K_USER_DEF_LITERAL.
  */
 #define K_ANY_FUNCTION_RETURN     ( K_ANY_TRAILING_RETURN | K_APPLE_BLOCK \
-                                  | K_LAMBDA | K_USER_DEF_CONVERSION \
-                                  | K_USER_DEF_LITERAL )
+                                  | K_USER_DEF_CONVERSION | K_USER_DEF_LITERAL )
 
 /**
  * Shorthand for any kind of "object" that can be the type of a variable or
@@ -323,9 +322,9 @@ typedef enum c_ast_kind c_ast_kind_t;
 
 /**
  * Shorthand for any kind of function-like AST that can have a trailing return
- * type: #K_FUNCTION or #K_OPERATOR.
+ * type: #K_FUNCTION, #K_LAMBDA, or #K_OPERATOR.
  */
-#define K_ANY_TRAILING_RETURN     ( K_FUNCTION | K_OPERATOR )
+#define K_ANY_TRAILING_RETURN     ( K_FUNCTION | K_LAMBDA | K_OPERATOR )
 
 ////////// extern functions ///////////////////////////////////////////////////
 
