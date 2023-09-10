@@ -171,7 +171,7 @@ static ac_keyword_t const* ac_keyword_find( char const *s ) {
  *
  * @return Returns a pointer to said array.
  */
-static ac_keyword_t const* ac_keywords_init( void ) {
+static ac_keyword_t const* ac_keywords_new( void ) {
   size_t n = 0;
 
   // pre-flight to calculate array size
@@ -629,7 +629,7 @@ static char* keyword_generator( char const *text, int state ) {
     text_len = strlen( text );
 
     if ( ac_keywords == NULL )
-      ac_keywords = ac_keywords_init();
+      ac_keywords = ac_keywords_new();
 
     //
     // Special case: for certain commands, complete using specific keywords for
