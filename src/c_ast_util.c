@@ -292,7 +292,8 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
     } // switch
   }
 
-  c_ast_set_parent( ret_ast, func_ast );
+  if ( c_ast_is_parent( func_ast ) )
+    c_ast_set_parent( ret_ast, func_ast );
   return func_ast;
 }
 

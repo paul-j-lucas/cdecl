@@ -298,7 +298,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  * @sa c_typedef_ast
  * @sa #K_ANY_REFERRER
  */
-#define K_ANY_PARENT              ( K_ANY_FUNCTION_LIKE | K_ANY_POINTER \
+#define K_ANY_PARENT              ( K_ANY_FUNCTION_RETURN | K_ANY_POINTER \
                                   | K_ANY_REFERENCE | K_ARRAY | K_CAST \
                                   | K_ENUM )
 

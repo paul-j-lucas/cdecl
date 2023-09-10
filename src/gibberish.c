@@ -679,7 +679,6 @@ static void c_ast_name_gibberish( c_ast_t const *ast, g_state_t *g ) {
  */
 static void c_ast_postfix_gibberish( c_ast_t const *ast, g_state_t *g ) {
   assert( ast != NULL );
-  assert( c_ast_is_parent( ast ) );
   assert( g != NULL );
 
   c_ast_t const *const parent_ast = ast->parent_ast;
