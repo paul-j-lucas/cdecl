@@ -1244,6 +1244,19 @@ NODISCARD
 bool str_is_prefix( char const *s1, char const *s2 );
 
 /**
+ * Concatenates \a sep and \a src onto the end of \a dst.
+ *
+ * @param dst The string onto which \a sep and \a src are appended.
+ * @param sep The string to append to \a dst before appending \a src.
+ * @param src The string to append to \a dst after appending \a sep.
+ * @return Returns the concatenated string.
+ *
+ * @warning \a dst _must_ have been dynamically allocated.
+ */
+NODISCARD
+char* str_realloc_cat( char *dst, char const *sep, char const *src );
+
+/**
  * Decrements \a *s_len as if to trim whitespace, if any, from the end of \a s.
  *
  * @param s The null-terminated string to trim.

@@ -4,7 +4,7 @@ command:
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -16,13 +16,16 @@ declare-option:
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help cast
+command:
+  cast [<name>] {as|[in]to} <english>
 cdecl> help command
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -40,7 +43,7 @@ command:
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -52,6 +55,15 @@ declare-option:
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help declare
+command:
+  declare <name> [, <name>]* as <english> [<declare-option>]
+declare-option:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+cdecl> help define
+command:
+  define <name> as <english>
 cdecl> help english
 english:
   <store>* <ar-qual>* array [<number>|<name>|*] of <english>
@@ -70,6 +82,15 @@ modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
 store: constexpr | extern | register | static | thread_local | typedef
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help exit
+command:
+  exit | q[uit]
+cdecl> help explain
+command:
+  explain <gibberish> [, <gibberish>]*
+cdecl> help include
+command:
+  include "<path>"
 cdecl> help options
 option:
   [no]alt-tokens
@@ -93,6 +114,22 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> help quit
+command:
+  exit | q[uit]
+cdecl> help set
+command:
+  set [<option> [= <value>] | options | <lang>]*
+cdecl> help show
+command:
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+cdecl> help struct
+command:
+cdecl> help typedef
+command:
+  type[def] <gibberish> [, <gibberish>]*
+cdecl> help union
+command:
 cdecl> set knr
 cdecl> help
 command:
@@ -100,7 +137,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -115,7 +152,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -130,7 +167,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -183,7 +220,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -198,7 +235,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -213,7 +250,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -267,7 +304,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -282,7 +319,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -297,7 +334,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -351,7 +388,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -366,7 +403,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -381,7 +418,7 @@ command:
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -437,7 +474,7 @@ command:
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -455,7 +492,7 @@ command:
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -473,7 +510,7 @@ command:
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -532,7 +569,7 @@ command:
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -550,7 +587,7 @@ command:
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -568,7 +605,7 @@ command:
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -630,7 +667,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -654,7 +691,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -678,7 +715,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -693,6 +730,27 @@ gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help const
+command:
+  const cast [<name>] {as|[in]to} <english>
+c++decl> help const cast
+command:
+  const cast [<name>] {as|[in]to} <english>
+c++decl> help declare
+command:
+  declare <name> [, <name>]* as <english> [<declare-option>]
+  declare <operator> as <english>
+  declare [<english>] lambda <lambda-english>
+  declare [<english>] user-def[ined] <user-defined-english>
+declare-option:
+  align[ed] [as|to] {<number> [bytes] | <english>}
+  width <number> [bits]
+c++decl> help dynamic
+command:
+  dynamic cast [<name>] {as|[in]to} <english>
+c++decl> help dynamic cast
+command:
+  dynamic cast [<name>] {as|[in]to} <english>
 c++decl> help english
 english:
   <store>* <cv-qual>* array [<number>] of <english>
@@ -745,6 +803,24 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help reinterpret
+command:
+  reinterpret cast [<name>] {as|[in]to} <english>
+c++decl> help reinterpret cast
+command:
+  reinterpret cast [<name>] {as|[in]to} <english>
+c++decl> help show
+command:
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+c++decl> help static
+command:
+  static cast [<name>] {as|[in]to} <english>
+c++decl> help static cast
+command:
+  static cast [<name>] {as|[in]to} <english>
+c++decl> help using
+command:
+  using <name> = <gibberish>
 c++decl> set c++98
 c++decl> help
 command:
@@ -754,7 +830,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -773,7 +849,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -792,7 +868,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -858,7 +934,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -877,7 +953,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -896,7 +972,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
@@ -963,7 +1039,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -987,7 +1063,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -1011,7 +1087,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -1087,7 +1163,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -1111,7 +1187,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -1135,7 +1211,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -1211,7 +1287,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -1235,7 +1311,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -1259,7 +1335,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -1335,7 +1411,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -1359,7 +1435,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
@@ -1383,7 +1459,7 @@ command:
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]

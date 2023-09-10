@@ -1013,7 +1013,6 @@ static void yyerror( char const *msg ) {
   c_cast_kind_t       cast_kind;  // C/C++ cast kind
   bool                flag;       // simple flag
   unsigned            flags;      // multipurpose bitwise flags
-  cdecl_help_t        help;       // type of help to print
   int                 int_val;    // signed integer value
   char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // identifier name, cf. sname
@@ -1570,12 +1569,11 @@ static void yyerror( char const *msg ) {
 %type   <tid>         enum_btids
 %type   <tid>         eval_expr_init_stid
 %type   <name>        glob glob_opt
-%type   <help>        help_what_opt
+%type   <name>        help_what_opt
 %type   <tid>         inline_stid_opt
 %type   <int_val>     int_lit_exp int_lit_opt
 %type   <ast>         name_ast
-%type   <name>        name_exp
-%type   <name>        name_opt
+%type   <name>        name_cat name_exp name_opt
 %type   <tid>         namespace_btid_exp
 %type   <sname>       namespace_sname_c namespace_sname_c_exp
 %type   <type>        namespace_type
@@ -2373,16 +2371,30 @@ explain
 /// help command //////////////////////////////////////////////////////////////
 
 help_command
-  : Y_help help_what_opt[help]    { print_help( $help ); }
+  : Y_help
+    { //
+      // We want cdecl commands (like "declare", etc.), other cdecl keywords
+      // (like "cast", "commands", "english", "options", etc.), and C/C++
+      // keywords (like "const", "static", "typedef", etc.) all to be returned
+      // as just strings so we don't have to enumerate all the possible tokens
+      // in the grammar.
+      //
+      lexer_find &= ~(LEXER_FIND_C_KEYWORDS | LEXER_FIND_CDECL_KEYWORDS);
+    }
+    help_what_opt[what]
+    {
+      bool const ok = print_help( $what, &@what );
+      free( $what );
+      PARSE_ASSERT( ok );
+    }
   ;
 
 help_what_opt
-  : /* empty */                   { $$ = CDECL_HELP_COMMANDS; }
-  | Y_commands                    { $$ = CDECL_HELP_COMMANDS; }
-  | Y_english                     { $$ = CDECL_HELP_ENGLISH;  }
-  | Y_options                     { $$ = CDECL_HELP_OPTIONS;  }
+  : /* empty */                   { $$ = NULL; }
+  | name_cat
   | error
     {
+      $$ = NULL;
       elaborate_error( "\"commands\", \"english\", or \"options\" expected" );
     }
   ;
@@ -7139,6 +7151,15 @@ name_exp
       $$ = NULL;
       elaborate_error( "name expected" );
     }
+  ;
+
+name_cat
+  : name_cat[dst] Y_NAME[src]
+    {
+      $$ = str_realloc_cat( $dst, " ", $src );
+      free( $src );
+    }
+  | Y_NAME
   ;
 
 name_opt

@@ -12,6 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 14.5
 
+** Command help
+The `help` command now accepts a **cdecl** command name and prints help for
+only that command.
+
 ** More std types
 Added more standard types.
 

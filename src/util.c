@@ -312,6 +312,21 @@ bool str_is_prefix( char const *s1, char const *s2 ) {
   return true;
 }
 
+char* str_realloc_cat( char *dst, char const *sep, char const *src ) {
+  assert( dst != NULL );
+  assert( sep != NULL );
+  assert( src != NULL );
+
+  size_t const dst_len = strlen( dst );
+  size_t const sep_len = strlen( sep );
+  size_t const src_len = strlen( src );
+
+  REALLOC( dst, char*, dst_len + sep_len + src_len );
+  strcpy( dst + dst_len, sep );
+  strcpy( dst + dst_len + sep_len, src );
+  return dst;
+}
+
 void strn_rtrim( char const *s, size_t *s_len ) {
   assert( s != NULL );
   assert( s_len != NULL );

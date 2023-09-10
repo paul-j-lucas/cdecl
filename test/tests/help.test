@@ -1,10 +1,22 @@
 EXPECTED_EXIT=0
 cdecl -O <<END
 help
+help cast
 help command
 help commands
+help declare
+help define
 help english
+help exit
+help explain
+help include
 help options
+help quit
+help set
+help show
+help struct
+help typedef
+help union
 
 set knr
 help
@@ -52,8 +64,19 @@ set c++
 help
 help command
 help commands
+help const
+help const cast
+help declare
+help dynamic
+help dynamic cast
 help english
 help options
+help reinterpret
+help reinterpret cast
+help show
+help static
+help static cast
+help using
 
 set c++98
 help

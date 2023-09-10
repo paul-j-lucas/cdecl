@@ -177,16 +177,6 @@ enum c_oper_id {
 };
 
 /**
- * @ingroup printing-help-group
- * Types of **cdecl** help.
- */
-enum cdecl_help {
-  CDECL_HELP_COMMANDS,                  ///< Help for **cdecl** commands.
-  CDECL_HELP_ENGLISH,                   ///< Help for **cdecl** pseudo-English.
-  CDECL_HELP_OPTIONS                    ///< Help for **cdecl** options.
-};
-
-/**
  * **Cdecl** mode of operation.
  */
 enum cdecl_mode {
@@ -266,7 +256,6 @@ typedef struct c_typedef_ast      c_typedef_ast_t;
 typedef struct c_type             c_type_t;
 typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
-typedef enum   cdecl_help         cdecl_help_t;
 typedef enum   cdecl_mode         cdecl_mode_t;
 typedef enum   cdecl_show         cdecl_show_t;
 typedef union  user_data          user_data_t;

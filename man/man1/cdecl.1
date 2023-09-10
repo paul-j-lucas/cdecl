@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "September 7, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 9, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1005,7 +1005,7 @@ Defines types via a C (or C++) \f(CWtypedef\fP declaration.
 For C++11 or later only,
 defines a type via a \f(CWusing\fP declaration.
 .TP
-.RB "{ " help " | " ? " } [ " command [ s "] | " english " | " options " ]"
+.RB "{ " help " | " ? " } [ " command [ s "] | " \f2command\fP " | " english " | " options " ]"
 Prints help that's sensitive to the current programming language
 (C or C++).
 By default
@@ -1018,6 +1018,10 @@ prints help on
 .BR cdecl 's
 commands
 (this section);
+if
+.I command
+is given,
+prints help only for that command;
 if
 .B english
 is given,

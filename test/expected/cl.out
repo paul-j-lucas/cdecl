@@ -20,7 +20,7 @@ command:
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
   explain <gibberish> [, <gibberish>]*
-  { help | ? } [command[s] | english | options]
+  { help | ? } [command[s] | <command> | english | options]
   include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]

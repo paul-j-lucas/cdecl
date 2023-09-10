@@ -28,9 +28,11 @@
 #include "help.h"
 #include "c_lang.h"
 #include "cdecl.h"
+#include "cdecl_command.h"
 #include "color.h"
 #include "literals.h"
 #include "options.h"
+#include "print.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -38,6 +40,7 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -47,7 +50,59 @@
 static void print_help_name( void );
 static void print_help_where( void );
 
+/**
+ * @addtogroup printing-help-group
+ * @{
+ */
+
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Checks whether **cdecl** \a command is \a literal.
+ *
+ * @param command The **cdecl** command to check.
+ * @param literal The literal to compare against.
+ * @return Returns `true` only if \a command is either NULL or equal to \a
+ * literal.
+ *
+ * @sa command_is_any()
+ */
+NODISCARD
+static inline bool command_is( cdecl_command_t const *command,
+                               char const *literal ) {
+  return command == NULL || command->literal == literal;
+}
+
+/**
+ * Checks whether **cdecl** \a command is any of the given literals.
+ *
+ * @param command The **cdecl** command to check.
+ * @param ... A NULL-terminated list of string literal arguments to compare
+ * against.
+ * @return Returns `true` only if \a command is either NULL or equal to one of
+ * \a ... .
+ *
+ * @sa command_is()
+ */
+NODISCARD
+static bool command_is_any( cdecl_command_t const *command, ... ) {
+  if ( command == NULL )
+    return true;
+
+  va_list args;
+  va_start( args, command );
+
+  bool found = false;
+  do {
+    char const *const arg = va_arg( args, char const* );
+    if ( arg == NULL )
+      break;
+    found = command->literal == arg;
+  } while ( !found );
+
+  va_end( args );
+  return found;
+}
 
 /**
  * Checks whether the string \a s is a title.
@@ -125,79 +180,120 @@ static void print_h( char const *line ) {
 }
 
 /**
- * Prints the help for commands.
+ * Prints the help for a command or all commands.
+ *
+ * @param command
  */
-static void print_help_commands( void ) {
+static void print_help_command( cdecl_command_t const *command ) {
   print_h( "command:\n" );
 
-  print_h( "  " );
-  if ( OPT_LANG_IS( NEW_STYLE_CASTS ) )
-    print_h( "[const | dynamic | reinterpret | static] " );
-  print_h( "cast [<name>] {as|[in]to} <english>\n" );
+  if ( command_is_any( command, L_cast, L_const, L_dynamic, L_reinterpret,
+                       L_static, NULL ) ) {
+    print_h( "  " );
+    if ( command == NULL ) {
+      if ( OPT_LANG_IS( NEW_STYLE_CASTS ) )
+        print_h( "[const | dynamic | reinterpret | static] " );
+    }
+    else if ( command->literal != L_cast ) {
+      PRINTF( "%s ", command->literal );
+    }
+    print_h( "cast [<name>] {as|[in]to} <english>\n" );
+  }
 
-  print_h( "  declare <name> [, <name>]* as <english> " );
-  if ( OPT_LANG_IS( ALIGNMENT ) )
-    print_h( "[<declare-option>]\n" );
-  else
-    print_h( "[width <number> [bits]]\n" );
-
-  if ( OPT_LANG_IS( operator ) ) {
-    print_h( "  declare <operator> as <english>\n" );
+  if ( command_is( command, L_declare ) ) {
+    print_h( "  declare <name> [, <name>]* as <english> " );
+    if ( OPT_LANG_IS( ALIGNMENT ) )
+      print_h( "[<declare-option>]\n" );
+    else
+      print_h( "[width <number> [bits]]\n" );
+    if ( OPT_LANG_IS( operator ) )
+      print_h( "  declare <operator> as <english>\n" );
     if ( OPT_LANG_IS( LAMBDAS ) )
       print_h( "  declare [<english>] lambda <lambda-english>\n" );
-    print_h( "  declare [<english>] user-def[ined] <user-defined-english>\n" );
+    if ( OPT_LANG_IS( USER_DEF_CONVS ) )
+      print_h( "  declare [<english>] user-def[ined] <user-defined-english>\n" );
   }
 
-  print_h( "  define <name> as <english>\n" );
-  print_h( "  explain <gibberish> [, <gibberish>]*\n" );
-  print_h( "  { help | ? } [command[s] | english | options]\n" );
-  print_h( "  include \"<path>\"\n" );
-  print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
+  if ( command_is( command, L_define ) )
+    print_h( "  define <name> as <english>\n" );
 
-  print_h( "  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef" );
-  if ( OPT_LANG_IS( using_DECLS ) )
-    print_h( "|using" );
-  print_h( "}]\n" );
+  if ( command_is( command, L_explain ) )
+    print_h( "  explain <gibberish> [, <gibberish>]*\n" );
 
-  print_h( "  type[def] <gibberish> [, <gibberish>]*\n" );
+  if ( command_is( command, L_help ) )
+    print_h( "  { help | ? } [command[s] | <command> | english | options]\n" );
 
-  if ( OPT_LANG_IS( SCOPED_NAMES ) ) {
-    print_h( "  <scope-c> <name> [\\{ [{ <scope-c> | <typedef>" );
+  if ( command_is( command, L_include ) )
+    print_h( "  include \"<path>\"\n" );
+
+  if ( command_is( command, L_set ) )
+    print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
+
+  if ( command_is( command, L_show ) ) {
+    print_h( "  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef" );
     if ( OPT_LANG_IS( using_DECLS ) )
-      print_h( " | <using>" );
-    print_h( " } ;]* \\}]\n" );
+      print_h( "|using" );
+    print_h( "}]\n" );
   }
 
-  if ( OPT_LANG_IS( using_DECLS ) )
+  if ( command_is( command, L_typedef ) )
+    print_h( "  type[def] <gibberish> [, <gibberish>]*\n" );
+
+  if ( OPT_LANG_IS( SCOPED_NAMES ) &&
+       command_is_any( command, L_class, L_inline, L_namespace, L_struct,
+                       L_union, NULL ) ) {
+    print_h( "  " );
+    if ( command == NULL ) {
+      print_h( "<scope-c>" );
+    } else {
+      PUTS( command->literal );
+      if ( command->literal == L_inline )
+        PRINTF( " %s", L_namespace );
+    }
+    print_h( " <name>" );
+    if ( OPT_LANG_IS( NESTED_TYPES ) ) {
+      print_h( " [\\{ [{ <scope-c> | <typedef>" );
+      if ( OPT_LANG_IS( using_DECLS ) )
+        print_h( " | <using>" );
+      print_h( " } ;]* \\}]" );
+    }
+    print_h( "\n" );
+  }
+
+  if ( OPT_LANG_IS( using_DECLS ) && command_is( command, L_using ) )
     print_h( "  using <name> = <gibberish>\n" );
 
-  print_h( "  exit | q[uit]\n" );
+  if ( command_is_any( command, L_exit, L_quit, NULL ) )
+    print_h( "  exit | q[uit]\n" );
 
-  if ( OPT_LANG_IS( ALIGNMENT ) ) {
+  if ( OPT_LANG_IS( ALIGNMENT ) && command_is( command, L_declare ) ) {
     print_h( "declare-option:\n" );
     print_h( "  align[ed] [as|to] {<number> [bytes] | <english>}\n" );
     print_h( "  width <number> [bits]\n" );
   }
 
-  print_h( "gibberish: a C" );
-  if ( OPT_LANG_IS( CPP_ANY ) )
-    print_h( "\\+\\+" );
-  print_h( " declaration, like \"int x\"; or a cast, like \"(int)x\"\n" );
+  if ( command == NULL ) {
+    print_h( "gibberish: a C" );
+    if ( OPT_LANG_IS( CPP_ANY ) )
+      print_h( "\\+\\+" );
+    print_h( " declaration, like \"int x\"; or a cast, like \"(int)x\"\n" );
 
-  print_help_name();
+    print_help_name();
+  }
 
-  if ( OPT_LANG_IS( SCOPED_NAMES ) ) {
+  if ( command == NULL && OPT_LANG_IS( SCOPED_NAMES ) ) {
     print_h( "scope-c: class | struct | union |" );
     if ( OPT_LANG_IS( inline_namespace ) )
       print_h( " [inline]" );
     print_h( " namespace\n" );
   }
 
-  print_help_where();
+  if ( command == NULL )
+    print_help_where();
 }
 
 /**
- * Prints the help for pseudo-English.
+ * Prints help for pseudo-English.
  */
 static void print_help_english( void ) {
   print_h( "english:\n" );
@@ -396,7 +492,7 @@ static void print_help_english( void ) {
 }
 
 /**
- * Print the help for a **cdecl** name.
+ * Prints help for a **cdecl** name.
  */
 static void print_help_name( void ) {
   if ( OPT_LANG_IS( C_ANY ) )
@@ -406,7 +502,7 @@ static void print_help_name( void ) {
 }
 
 /**
- * Print the help for **cdecl** options.
+ * Prints help for `set` options.
  */
 static void print_help_options( void ) {
   print_h( "option:\n" );
@@ -448,19 +544,75 @@ static void print_help_where( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void print_help( cdecl_help_t help ) {
-  switch ( help ) {
-    case CDECL_HELP_COMMANDS:
-      print_help_commands();
-      return;
-    case CDECL_HELP_ENGLISH:
-      print_help_english();
-      return;
-    case CDECL_HELP_OPTIONS:
-      print_help_options();
-      return;
-  } // switch
-  UNEXPECTED_INT_VALUE( help );
+bool print_help( char const *what, c_loc_t const *what_loc ) {
+  assert( what_loc != NULL );
+
+  if ( what == NULL ||
+       strcmp( what, L_command ) == 0 || strcmp( what, L_commands ) == 0 ) {
+    print_help_command( /*command=*/NULL );
+    return true;
+  }
+
+  if ( strcmp( what, L_english ) == 0 ) {
+    print_help_english();
+    return true;
+  }
+
+  if ( strcmp( what, L_options ) == 0 ) {
+    print_help_options();
+    return true;
+  }
+
+  struct str_map {
+    char const *from;
+    char const *to;
+  };
+  typedef struct str_map str_map_t;
+
+  static str_map_t const STR_MAP[] = {
+    // Special cases: the cdecl commands are only "const", "dynamic",
+    // "reinterpret", and "static" without the "cast", but the user might type
+    // "cast" additionally: remove the "cast".
+    { "const cast",       L_const },
+    { "dynamic cast",     L_dynamic },
+    { "reinterpret cast", L_reinterpret },
+    { "static cast",      L_static },
+
+    // Special case: there is no "q" command, only "quit". The lexer maps "q"
+    // to "quit" internally, but only when "q" is the only thing on a line (so
+    // "q" can be used as a variable name), so we have to map "q" to "quit"
+    // here too.
+    { "q",                L_quit },
+
+    { NULL,               NULL }
+  };
+
+  char const *mapped_what = what;
+  for ( str_map_t const *m = STR_MAP; m->from != NULL; ++m ) {
+    if ( strcmp( what, m->from ) == 0 ) {
+      mapped_what = m->to;
+      break;
+    }
+  } // for
+
+  cdecl_command_t const *const command = cdecl_command_find( mapped_what );
+  if ( command == NULL ) {
+    print_error( what_loc, "\"%s\": no such command", what );
+    print_suggestions( DYM_COMMANDS, what );
+    EPUTC( '\n' );
+    return false;
+  }
+
+  if ( !opt_lang_is_any( command->lang_ids ) ) {
+    print_error( what_loc,
+      "\"%s\": not supported%s\n",
+      what, c_lang_which( command->lang_ids )
+    );
+    return false;
+  }
+
+  print_help_command( command );
+  return true;
 }
 
 void print_use_help( void ) {
@@ -468,4 +620,7 @@ void print_use_help( void ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

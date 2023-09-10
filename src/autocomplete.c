@@ -131,6 +131,44 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
 }
 
 /**
+ * Creates and initializes an array of all `help` command next keywords to be
+ * used for autocompletion for the `help` command.
+ *
+ * @return Returns a pointer to said array.
+ */
+NODISCARD
+static char const* const* ac_help_keywords_new( void ) {
+  static char const *const AC_HELP_KEYWORDS_INIT[] = {
+    L_commands,
+    L_english,
+    L_options
+  };
+
+  // pre-flight to calculate array size
+  size_t n = ARRAY_SIZE( AC_HELP_KEYWORDS_INIT );
+  FOREACH_CDECL_COMMAND( command )
+    ++n;
+
+  char const **const ac_help_keywords =
+    free_later( MALLOC( char*, n + 1/*NULL*/ ) );
+  char const **pk = ac_help_keywords;
+
+  for ( size_t i = 0; i < ARRAY_SIZE( AC_HELP_KEYWORDS_INIT ); ++i )
+    *pk++ = AC_HELP_KEYWORDS_INIT[ i ];
+  FOREACH_CDECL_COMMAND( command )
+    *pk++ = command->literal;
+
+  *pk = NULL;
+
+  qsort(
+    ac_help_keywords, n, sizeof( char* ),
+    POINTER_CAST( qsort_cmp_fn_t, &str_ptr_cmp )
+  );
+
+  return ac_help_keywords;
+}
+
+/**
  * Compares two \ref ac_keyword objects.
  *
  * @param i_ack The first \ref ac_keyword to compare.
@@ -303,17 +341,16 @@ static char const *const* command_ac_keywords( char const *command ) {
 
   if ( command == L_help ) {
     //
-    // This needs to be here instead of in CDECL_KEYWORDS because
-    // str_prev_token() wouldn't match `?` as `help`.
+    // This needs to be here instead of in CDECL_KEYWORDS because:
     //
-    static char const *const AC_HELP_KEYWORDS[] = {
-      // must be in sorted order
-      L_commands,
-      L_english,
-      L_options,
-      NULL
-    };
-    return AC_HELP_KEYWORDS;
+    // 1. str_prev_token() wouldn't match `?` as `help`.
+    // 2. The set of commands should be generated dynamically via
+    //    FOREACH_CDECL_COMMAND().
+    //
+    static char const *const *ac_help_keywords;
+    if ( ac_help_keywords == NULL )
+      ac_help_keywords = ac_help_keywords_new();
+    return ac_help_keywords;
   }
 
   if ( command == L_set ) {

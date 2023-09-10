@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares functions for printing help text.
+ * Declares functions for printing help.
  */
 
 // local
@@ -32,18 +32,32 @@
 
 /**
  * @defgroup printing-help-group Printing Help
- * Types and functions for printing help.
+ * Functions for printing help.
  * @{
  */
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Prints a help message.
+ * Prints **cdecl** help.
  *
- * @param help The type of help to print.
+ * @param what
+ * @parblock
+ * What to print help for, one of:
+ *  + `command`, `commands`, or NULL: All **cdecl** commands.
+ *  + `english`: Pseudo-English.
+ *  + `options`: **cdecl** `set` command options.
+ *  + A **cdecl** command.
+ *
+ * If \a what isn't any of those or is a command that's not supported in the
+ * current language, an error message is printed.
+ * @endparblock
+ * @param what_loc The location of \a what.
+ * @return Returns `true` only if \a what is valid and help was printed or
+ * `false` otherwise.
  */
-void print_help( cdecl_help_t help );
+NODISCARD
+bool print_help( char const *what, c_loc_t const *what_loc );
 
 /**
  * Prints `; use --help or -h for help` to stderr.
