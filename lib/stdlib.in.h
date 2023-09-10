@@ -223,7 +223,7 @@ _GL_WARN_ON_USE (_Exit, "_Exit is unportable - "
 #   define free rpl_free
 #  endif
 #  if defined __cplusplus && (__GLIBC__ + (__GLIBC_MINOR__ >= 14) > 2)
-_GL_FUNCDECL_RPL (free, void, (void *ptr) throw ());
+_GL_FUNCDECL_RPL (free, void, (void *ptr) _GL_ATTRIBUTE_NOTHROW);
 #  else
 _GL_FUNCDECL_RPL (free, void, (void *ptr));
 #  endif

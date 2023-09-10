@@ -156,7 +156,7 @@
       && !(defined __cplusplus && defined GNULIB_NAMESPACE))
 /* We can't do '#define free rpl_free' here.  */
 #  if defined __cplusplus && (__GLIBC__ + (__GLIBC_MINOR__ >= 14) > 2)
-_GL_EXTERN_C void rpl_free (void *) throw ();
+_GL_EXTERN_C void rpl_free (void *) _GL_ATTRIBUTE_NOTHROW;
 #  else
 _GL_EXTERN_C void rpl_free (void *);
 #  endif
@@ -171,7 +171,7 @@ _GL_EXTERN_C
      void __cdecl free (void *);
 #  else
 #   if defined __cplusplus && (__GLIBC__ + (__GLIBC_MINOR__ >= 14) > 2)
-_GL_EXTERN_C void free (void *) throw ();
+_GL_EXTERN_C void free (void *) _GL_ATTRIBUTE_NOTHROW;
 #   else
 _GL_EXTERN_C void free (void *);
 #   endif
@@ -186,7 +186,7 @@ _GL_EXTERN_C
      void __cdecl free (void *);
 # else
 #  if defined __cplusplus && (__GLIBC__ + (__GLIBC_MINOR__ >= 14) > 2)
-_GL_EXTERN_C void free (void *) throw ();
+_GL_EXTERN_C void free (void *) _GL_ATTRIBUTE_NOTHROW;
 #  else
 _GL_EXTERN_C void free (void *);
 #  endif
@@ -289,9 +289,12 @@ _GL_CXXALIAS_SYS_CAST2 (memchr,
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
      && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4) \
          || defined __clang__)
-_GL_CXXALIASWARN1 (memchr, void *, (void *__s, int __c, size_t __n) throw ());
+_GL_CXXALIASWARN1 (memchr, void *,
+                   (void *__s, int __c, size_t __n)
+                   _GL_ATTRIBUTE_NOTHROW);
 _GL_CXXALIASWARN1 (memchr, void const *,
-                   (void const *__s, int __c, size_t __n) throw ());
+                   (void const *__s, int __c, size_t __n)
+                   _GL_ATTRIBUTE_NOTHROW);
 # elif __GLIBC__ >= 2
 _GL_CXXALIASWARN (memchr);
 # endif
@@ -391,8 +394,12 @@ _GL_CXXALIAS_SYS_CAST2 (memrchr,
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
      && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4) \
          || defined __clang__)
-_GL_CXXALIASWARN1 (memrchr, void *, (void *, int, size_t) throw ());
-_GL_CXXALIASWARN1 (memrchr, void const *, (void const *, int, size_t) throw ());
+_GL_CXXALIASWARN1 (memrchr, void *,
+                   (void *, int, size_t)
+                   _GL_ATTRIBUTE_NOTHROW);
+_GL_CXXALIASWARN1 (memrchr, void const *,
+                   (void const *, int, size_t)
+                   _GL_ATTRIBUTE_NOTHROW);
 # elif __GLIBC__ >= 2
 _GL_CXXALIASWARN (memrchr);
 # endif
@@ -439,9 +446,12 @@ _GL_CXXALIAS_SYS_CAST2 (rawmemchr,
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
      && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4) \
          || defined __clang__)
-_GL_CXXALIASWARN1 (rawmemchr, void *, (void *__s, int __c_in) throw ());
+_GL_CXXALIASWARN1 (rawmemchr, void *,
+                   (void *__s, int __c_in)
+                   _GL_ATTRIBUTE_NOTHROW);
 _GL_CXXALIASWARN1 (rawmemchr, void const *,
-                   (void const *__s, int __c_in) throw ());
+                   (void const *__s, int __c_in)
+                   _GL_ATTRIBUTE_NOTHROW);
 # else
 _GL_CXXALIASWARN (rawmemchr);
 # endif
@@ -561,9 +571,12 @@ _GL_CXXALIAS_SYS_CAST2 (strchrnul,
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
      && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4) \
          || defined __clang__)
-_GL_CXXALIASWARN1 (strchrnul, char *, (char *__s, int __c_in) throw ());
+_GL_CXXALIASWARN1 (strchrnul, char *,
+                   (char *__s, int __c_in)
+                   _GL_ATTRIBUTE_NOTHROW);
 _GL_CXXALIASWARN1 (strchrnul, char const *,
-                   (char const *__s, int __c_in) throw ());
+                   (char const *__s, int __c_in)
+                   _GL_ATTRIBUTE_NOTHROW);
 # elif __GLIBC__ >= 2
 _GL_CXXALIASWARN (strchrnul);
 # endif
@@ -769,9 +782,12 @@ _GL_CXXALIAS_SYS_CAST2 (strpbrk,
 # if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 10) && !defined __UCLIBC__) \
      && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4) \
          || defined __clang__)
-_GL_CXXALIASWARN1 (strpbrk, char *, (char *__s, char const *__accept) throw ());
+_GL_CXXALIASWARN1 (strpbrk, char *,
+                   (char *__s, char const *__accept)
+                   _GL_ATTRIBUTE_NOTHROW);
 _GL_CXXALIASWARN1 (strpbrk, char const *,
-                   (char const *__s, char const *__accept) throw ());
+                   (char const *__s, char const *__accept)
+                   _GL_ATTRIBUTE_NOTHROW);
 # elif __GLIBC__ >= 2
 _GL_CXXALIASWARN (strpbrk);
 # endif
@@ -879,9 +895,11 @@ _GL_CXXALIAS_SYS_CAST2 (strstr,
      && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4) \
          || defined __clang__)
 _GL_CXXALIASWARN1 (strstr, char *,
-                   (char *haystack, const char *needle) throw ());
+                   (char *haystack, const char *needle)
+                   _GL_ATTRIBUTE_NOTHROW);
 _GL_CXXALIASWARN1 (strstr, const char *,
-                   (const char *haystack, const char *needle) throw ());
+                   (const char *haystack, const char *needle)
+                   _GL_ATTRIBUTE_NOTHROW);
 # elif __GLIBC__ >= 2
 _GL_CXXALIASWARN (strstr);
 # endif
@@ -930,9 +948,11 @@ _GL_CXXALIAS_SYS_CAST2 (strcasestr,
      && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4) \
          || defined __clang__)
 _GL_CXXALIASWARN1 (strcasestr, char *,
-                   (char *haystack, const char *needle) throw ());
+                   (char *haystack, const char *needle)
+                   _GL_ATTRIBUTE_NOTHROW);
 _GL_CXXALIASWARN1 (strcasestr, const char *,
-                   (const char *haystack, const char *needle) throw ());
+                   (const char *haystack, const char *needle)
+                   _GL_ATTRIBUTE_NOTHROW);
 # elif __GLIBC__ >= 2
 _GL_CXXALIASWARN (strcasestr);
 # endif

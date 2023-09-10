@@ -162,7 +162,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE _GL_ATTRIBUTE_PURE wint_t
 btoc32 (int c)
 {
-  return btowc (c);
+  return
+#  if @GNULIB_BTOWC@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         btowc (c);
 }
 _GL_END_C_LINKAGE
 # else
@@ -180,7 +184,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32isalnum (wint_t wc)
 {
-  return iswalnum (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswalnum (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -195,7 +203,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32isalpha (wint_t wc)
 {
-  return iswalpha (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswalpha (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -210,7 +222,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32isblank (wint_t wc)
 {
-  return iswblank (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswblank (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -225,7 +241,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32iscntrl (wint_t wc)
 {
-  return iswcntrl (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswcntrl (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -240,7 +260,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32isdigit (wint_t wc)
 {
-  return iswdigit (wc);
+  return
+#  if @GNULIB_ISWDIGIT@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswdigit (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -255,7 +279,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32isgraph (wint_t wc)
 {
-  return iswgraph (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswgraph (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -270,7 +298,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32islower (wint_t wc)
 {
-  return iswlower (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswlower (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -285,7 +317,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32isprint (wint_t wc)
 {
-  return iswprint (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswprint (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -300,7 +336,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32ispunct (wint_t wc)
 {
-  return iswpunct (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswpunct (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -315,7 +355,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32isspace (wint_t wc)
 {
-  return iswspace (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswspace (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -330,7 +374,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32isupper (wint_t wc)
 {
-  return iswupper (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswupper (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -345,7 +393,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32isxdigit (wint_t wc)
 {
-  return iswxdigit (wc);
+  return
+#  if @GNULIB_ISWXDIGIT@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswxdigit (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -363,7 +415,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE wint_t
 c32tolower (wint_t wc)
 {
-  return towlower (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         towlower (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -378,7 +434,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE wint_t
 c32toupper (wint_t wc)
 {
-  return towupper (wc);
+  return
+#  if defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         towupper (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -396,7 +456,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32width (char32_t wc)
 {
-  return wcwidth (wc);
+  return
+#  if @GNULIB_WCWIDTH@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         wcwidth (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -442,7 +506,11 @@ _GL_INLINE _GL_ARG_NONNULL ((2)) size_t
 c32snrtombs (char *dest, const char32_t **srcp, size_t srclen, size_t len,
              mbstate_t *ps)
 {
-  return wcsnrtombs (dest, (const wchar_t **) srcp, srclen, len, ps);
+  return
+#  if @GNULIB_WCSNRTOMBS@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         wcsnrtombs (dest, (const wchar_t **) srcp, srclen, len, ps);
 }
 _GL_END_C_LINKAGE
 # else
@@ -465,7 +533,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE _GL_ARG_NONNULL ((2)) size_t
 c32srtombs (char *dest, const char32_t **srcp, size_t len, mbstate_t *ps)
 {
-  return wcsrtombs (dest, (const wchar_t **) srcp, len, ps);
+  return
+#  if @GNULIB_WCSRTOMBS@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         wcsrtombs (dest, (const wchar_t **) srcp, len, ps);
 }
 _GL_END_C_LINKAGE
 # else
@@ -511,7 +583,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE _GL_ARG_NONNULL ((1)) int
 c32swidth (const char32_t *s, size_t n)
 {
-  return wcswidth ((const wchar_t *) s, n);
+  return
+#  if @GNULIB_WCSWIDTH@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         wcswidth ((const wchar_t *) s, n);
 }
 _GL_END_C_LINKAGE
 # else
@@ -532,7 +608,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32tob (wint_t wc)
 {
-  return wctob (wc);
+  return
+#  if @GNULIB_WCTOB@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         wctob (wc);
 }
 _GL_END_C_LINKAGE
 # else
@@ -614,7 +694,11 @@ _GL_INLINE _GL_ARG_NONNULL ((2)) size_t
 mbsnrtoc32s (char32_t *dest, const char **srcp, size_t srclen, size_t len,
              mbstate_t *ps)
 {
-  return mbsnrtowcs ((wchar_t *) dest, srcp, srclen, len, ps);
+  return
+#  if @GNULIB_MBSNRTOWCS@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         mbsnrtowcs ((wchar_t *) dest, srcp, srclen, len, ps);
 }
 _GL_END_C_LINKAGE
 # else
@@ -637,7 +721,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE _GL_ARG_NONNULL ((2)) size_t
 mbsrtoc32s (char32_t *dest, const char **srcp, size_t len, mbstate_t *ps)
 {
-  return mbsrtowcs ((wchar_t *) dest, srcp, len, ps);
+  return
+#  if @GNULIB_MBSRTOWCS@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         mbsrtowcs ((wchar_t *) dest, srcp, len, ps);
 }
 _GL_END_C_LINKAGE
 # else
@@ -700,7 +788,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE _GL_ARG_NONNULL ((1)) c32_type_test_t
 c32_get_type_test (const char *name)
 {
-  return wctype (name);
+  return
+#  if @GNULIB_WCTYPE@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         wctype (name);
 }
 _GL_END_C_LINKAGE
 # else
@@ -723,7 +815,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE int
 c32_apply_type_test (wint_t wc, c32_type_test_t property)
 {
-  return iswctype (wc, property);
+  return
+#  if @GNULIB_ISWCTYPE@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         iswctype (wc, property);
 }
 _GL_END_C_LINKAGE
 #  else
@@ -764,7 +860,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE _GL_ARG_NONNULL ((1)) c32_mapping_t
 c32_get_mapping (const char *name)
 {
-  return wctrans (name);
+  return
+#  if @GNULIB_WCTRANS@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         wctrans (name);
 }
 _GL_END_C_LINKAGE
 # else
@@ -786,7 +886,11 @@ _GL_BEGIN_C_LINKAGE
 _GL_INLINE _GL_ARG_NONNULL ((2)) wint_t
 c32_apply_mapping (wint_t wc, c32_mapping_t mapping)
 {
-  return towctrans (wc, mapping);
+  return
+#  if @GNULIB_TOWCTRANS@ && defined __cplusplus && defined GNULIB_NAMESPACE
+         GNULIB_NAMESPACE::
+#  endif
+         towctrans (wc, mapping);
 }
 _GL_END_C_LINKAGE
 # else
