@@ -262,8 +262,8 @@ typedef enum c_ast_kind c_ast_kind_t;
  * #K_APPLE_BLOCK, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_USER_DEF_CONVERSION,
  * or #K_USER_DEF_LITERAL.
  */
-#define K_ANY_FUNCTION_RETURN     ( K_APPLE_BLOCK | K_FUNCTION | K_LAMBDA \
-                                  | K_OPERATOR | K_USER_DEF_CONVERSION \
+#define K_ANY_FUNCTION_RETURN     ( K_ANY_TRAILING_RETURN | K_APPLE_BLOCK \
+                                  | K_LAMBDA | K_USER_DEF_CONVERSION \
                                   | K_USER_DEF_LITERAL )
 
 /**
