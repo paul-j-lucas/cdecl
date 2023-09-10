@@ -63,7 +63,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @ingroup c-kinds-group
  * Kinds of AST nodes comprising a C/C++ declaration.
  *
  * @note While a given AST node is only of a single kind, kinds can be bitwise-
