@@ -61,7 +61,7 @@ enum lexer_find_kind {
 };
 typedef enum lexer_find_kind lexer_find_kind_t;
 
-// extern variables
+////////// extern variables ///////////////////////////////////////////////////
 
 /**
  * For the lexer, specifies what to look-up when an identifier is lex'd.
