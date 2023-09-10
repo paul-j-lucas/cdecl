@@ -23,8 +23,8 @@
 
 /**
  * @file
- * Declares global variables and functions interacting with the lexical
- * analyzer.
+ * Declares types, global variables, and functions for interacting with the
+ * lexical analyzer.
  */
 
 // local
@@ -43,51 +43,51 @@
 
 /**
  * @defgroup lexer-group Lexical Analyzer
- * Macros, global variables, and functions interacting with the lexical
+ * Types, global variables, and functions for interacting with the lexical
  * analyzer.
  * @{
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/** For \ref lexer_find, look-up everything (the default). */
-#define LEXER_FIND_ANY            (~0u)
-
-/** For \ref lexer_find, look-up C/C++ keywords. */
-#define LEXER_FIND_C_KEYWORDS     (1u << 0)
-
-/** For \ref lexer_find, look-up **cdecl** keywords. */
-#define LEXER_FIND_CDECL_KEYWORDS (1u << 1)
-
-/** For \ref lexer_find, look-up type names. */
-#define LEXER_FIND_TYPES          (1u << 2)
+/**
+ * For the lexer, specifies what to look-up when an identifier is lex'd.
+ */
+enum lexer_find_kind {
+  LEXER_FIND_ANY            = ~0,       ///< Find everything (the default).
+  LEXER_FIND_C_KEYWORDS     = (1 << 0), ///< Find C/C++ keywords.
+  LEXER_FIND_CDECL_KEYWORDS = (1 << 1), ///< Find **cdecl** keywords.
+  LEXER_FIND_TYPES          = (1 << 2)  ///< Find `typedef`'d names.
+};
+typedef enum lexer_find_kind lexer_find_kind_t;
 
 // extern variables
 
 /**
- * The bitwise-or of what to look up.
- * Defaults to #LEXER_FIND_ANY, but #LEXER_FIND_C_KEYWORDS,
- * #LEXER_FIND_CDECL_KEYWORDS, or #LEXER_FIND_TYPES can be turned off to find
- * all _but_ that.
+ * For the lexer, specifies what to look-up when an identifier is lex'd.
  *
- * @sa #LEXER_FIND_ANY
- * @sa #LEXER_FIND_C_KEYWORDS
- * @sa #LEXER_FIND_CDECL_KEYWORDS
- * @sa #LEXER_FIND_TYPES
+ * @remarks Defaults to #LEXER_FIND_ANY, but other values can be turned off
+ * either individually or in combination via bitwise-and'ing the complement to
+ * find all _but_ those things.  For example:
+ *
+ *      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
+ *
+ * would find all _but_ **cdecl** keywords so they'd be returned as ordinary
+ * identifiers.
  */
-extern unsigned         lexer_find;
+extern lexer_find_kind_t  lexer_find;
 
 /**
- * Keyword context.
+ * Lexer keyword context.
  */
-extern c_keyword_ctx_t  lexer_keyword_ctx;
+extern c_keyword_ctx_t    lexer_keyword_ctx;
 
 /**
  * Text of current token.
  *
  * @sa lexer_printable_token()
  */
-extern char const      *lexer_token;
+extern char const        *lexer_token;
 
 ////////// extern functions ///////////////////////////////////////////////////
 

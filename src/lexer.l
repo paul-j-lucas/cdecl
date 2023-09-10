@@ -169,14 +169,18 @@ typedef struct include_file_info include_file_info_t;
 
 static char const lexer_token_init_buf; ///< So lexer_token is never NULL.
 
+/// @cond DOXYGEN_IGNORE
+
 // extern variables
-unsigned          lexer_find = LEXER_FIND_ANY;
+lexer_find_kind_t lexer_find = LEXER_FIND_ANY;
 c_keyword_ctx_t   lexer_keyword_ctx;
 
 // A separate pointer for the current token allows it:
 //  + To be `const`.
 //  + To be assigned to either other `const` strings or string literals.
 char const       *lexer_token = &lexer_token_init_buf;
+
+/// @endcond
 
 // local variables
 static bool       digraph_warned;       ///< Printed digraph warning once?
