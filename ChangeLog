@@ -1,5 +1,8 @@
 2023-09-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * lib/Makefile.am, getopt-cdefs.in.h, stddef.in.h, stdlib.in.h, string.in.h,
+     uchar.in.h, verify.h, wchar.in.h: Updated GnuLib.
+   * c_ast.c: Now comparins slist_len() in c_ast_list_equal().
    * cdecl.1, autocomplete.c, help.c, help.h, parser.y, types.h, util.c,
      util.h, cl.out, help.out, ac-help.exp, help.test: The `help` command now
      accepts a cdecl command name and prints help for only that command.
