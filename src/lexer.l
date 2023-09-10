@@ -144,10 +144,11 @@
 /**
  * Data to keep for a file that is `include`d.
  *
- * @remarks When a file is included, an <code>%include_file_info</code> is
+ * @remarks
+ * @parblock
+ * When a file is included, an <code>%include_file_info</code> is
  * pushed onto \ref include_stack such that:
  *
- * @par
  *  + \ref prev_orig_path is the unresolved path of the _previous_ include (or
  *    configuration) file, if any, that is the value of print_params.conf_path.
  *
@@ -155,6 +156,7 @@
  *    included.  We need to remember the resolved path in order to be able to
  *    remove it from \ref include_set upon EOF.
  *
+ * @endparblock
  * @note We need \ref prev_lineno because Flex doesn't restore `yylineno` when
  * `yypop_buffer_state()` is called.
  */
@@ -234,7 +236,7 @@ static void include_init( void ) {
 }
 
 /**
- * Lexer-specific wrapper around cdecl_keyword_find() that finds a cdecl
+ * Lexer-specific wrapper around cdecl_keyword_find() that finds a **cdecl**
  * keyword, but only if we're currently supposed to or we're always supposed to
  * find a particular keyword.
  *
