@@ -1,5 +1,10 @@
 2023-09-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c, c_kind.h, gibberish.c: K_ANY_PARENT now correctly includes
+     only K_ANY_FUNCTION_RETURN rather than K_ANY_FUNCTION_LIKE since neither
+     constructors nor destructors are parent kinds.
+   * c_kind.h: K_ANY_TRAILING_RETURN now includes K_LAMBDA.
+   * c_kind.h: Made K_ANY_FUNCTION_RETURN use K_ANY_TRAILING_RETURN.
    * lexer.h, lexer.l: Made lexer_find be an enum.
 
 2023-09-09  Paul J. Lucas <paul@lucasmail.org>
