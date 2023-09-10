@@ -168,10 +168,10 @@ static ac_keyword_t const* ac_keyword_find( char const *s ) {
 /**
  * Creates and initializes an array of all autocompletable keywords composed of
  * C/C++ keywords and **cdecl** keywords.
+ *
+ * @return Returns a pointer to said array.
  */
-static void ac_keywords_init( void ) {
-  assert( ac_keywords == NULL );
-
+static ac_keyword_t const* ac_keywords_init( void ) {
   size_t n = 0;
 
   // pre-flight to calculate array size
@@ -182,11 +182,11 @@ static void ac_keywords_init( void ) {
 
   ac_keyword_t *const ac_keywords_array =
     free_later( MALLOC( ac_keyword_t, n + 1/*NULL*/ ) );
-  ac_keyword_t *ack = ac_keywords_array;
+  ac_keyword_t *pack = ac_keywords_array;
 
   FOREACH_C_KEYWORD( ck ) {
     if ( ck->ac_lang_ids != LANG_NONE ) {
-      *ack++ = (ac_keyword_t){
+      *pack++ = (ac_keyword_t){
         .literal = ck->literal,
         .ac_lang_ids = ck->ac_lang_ids,
         .ac_in_gibberish = true,
@@ -198,7 +198,7 @@ static void ac_keywords_init( void ) {
 
   FOREACH_CDECL_KEYWORD( cdk ) {
     if ( !is_c_keyword( cdk->literal ) ) {
-      *ack++ = (ac_keyword_t){
+      *pack++ = (ac_keyword_t){
         .literal = cdk->literal,
         .ac_lang_ids = cdk->lang_ids,
         .ac_in_gibberish = cdk->always_find,
@@ -208,7 +208,7 @@ static void ac_keywords_init( void ) {
     }
   } // for
 
-  MEM_ZERO( ack );
+  MEM_ZERO( pack );
 
   //
   // Sort so C/C++ keywords come before their pseudo-English synonyms (e.g.,
@@ -220,7 +220,7 @@ static void ac_keywords_init( void ) {
     POINTER_CAST( qsort_cmp_fn_t, &ac_keyword_cmp )
   );
 
-  ac_keywords = ac_keywords_array;
+  return ac_keywords_array;
 }
 
 /**
@@ -629,7 +629,7 @@ static char* keyword_generator( char const *text, int state ) {
     text_len = strlen( text );
 
     if ( ac_keywords == NULL )
-      ac_keywords_init();
+      ac_keywords = ac_keywords_init();
 
     //
     // Special case: for certain commands, complete using specific keywords for
