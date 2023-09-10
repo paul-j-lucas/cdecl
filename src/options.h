@@ -128,6 +128,10 @@ bool any_explicit_int( void );
  *
  * @return Returns said representation.
  *
+ * @warning The pointer returned is to a static buffer.  Changing the value of
+ * \ref opt_explicit_ecsu_btids then calling this function again will change
+ * the value of the buffer.
+ *
  * @sa parse_explicit_ecsu()
  */
 NODISCARD
@@ -137,6 +141,10 @@ char const* explicit_ecsu_str( void );
  * Gets the string representation of the explicit integer option.
  *
  * @return Returns said representation.
+ *
+ * @warning The pointer returned is to a static buffer.  Changing the value of
+ * the option via parse_explicit_int() then calling this function again will
+ * change the value of the buffer.
  *
  * @sa any_explicit_int()
  * @sa is_explicit_int()
@@ -233,6 +241,10 @@ bool parse_west_pointer( char const *wp_format );
  * Gets the string representation of the west pointer option.
  *
  * @return Returns said representation.
+ *
+ * @warning The pointer returned is to a static buffer.  Changing the value of
+ * \ref opt_west_pointer_kinds then calling this function again will change the
+ * value of the buffer.
  *
  * @sa parse_west_pointer()
  */
