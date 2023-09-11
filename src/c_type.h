@@ -324,7 +324,7 @@ typedef enum c_tpid c_tpid_t;
 #define TS_STATIC             0x0000000000000402ull /**< `static`             */
 #define TS_THREAD_LOCAL       0x0000000000000802ull /**< `thread_local`       */
 /**
- * `typedef` "storage" class in a declaration like:
+ * `typedef` "storage class" in a declaration like:
  *
  *      typedef void F(int)
  *
