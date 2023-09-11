@@ -47,19 +47,16 @@
 NODISCARD
 static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t*, c_ast_t* );
 
+/**
+ * @addtogroup ast-functions-group
+ * @{
+ */
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for c_ast_add_array() that adds an array to the AST being
- * built.
- *
- * @param ast The AST to append to; may be NULL.
- * @param array_ast The array AST to append.  Its `of_ast` must be of kind
- * #K_PLACEHOLDER.
- * @param of_ast The AST to become the `of_ast` of \a array_ast.
- * @return Returns the AST to be used as the grammar production's return value.
- *
- * @sa c_ast_append_array()
+ * @copydoc c_ast_add_array
+ * @sa c_ast_add_array()
  */
 NODISCARD
 static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
@@ -225,14 +222,8 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast,
 }
 
 /**
- * Adds a function-like AST to the AST being built.
- *
- * @param ast The AST to append to.
- * @param func_ast The function-like AST to append.  Its `ret_ast` must be
- * NULL.
- * @param ret_ast The AST to become the `ret_ast` of \a func_ast.  Must be NULL
- * only when \a func_ast is a #K_CONSTRUCTOR.
- * @return Returns the AST to be used as the grammar production's return value.
+ * @copydoc c_ast_add_func()
+ * @sa c_ast_add_func()
  */
 NODISCARD
 static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
@@ -240,9 +231,9 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
   assert( ast != NULL );
   assert( func_ast != NULL );
   assert( is_1_bit_only_in_set( func_ast->kind, K_ANY_FUNCTION_LIKE ) );
+  assert( (func_ast->kind & K_ANY_FUNCTION_RETURN) == 0 || ret_ast != NULL );
+  assert( (func_ast->kind & K_ANY_FUNCTION_RETURN) != 0 || ret_ast == NULL );
   assert( func_ast->func.ret_ast == NULL );
-  assert( func_ast->kind != K_CONSTRUCTOR || ret_ast == NULL );
-  assert( func_ast->kind == K_CONSTRUCTOR || ret_ast != NULL );
 
   if ( (ast->kind & (K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE)) != 0 ) {
     switch ( ast->parent.of_ast->kind ) {
@@ -927,4 +918,7 @@ c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */

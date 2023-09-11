@@ -57,22 +57,25 @@ _GL_INLINE_HEADER_BEGIN
  * Adds an array to the AST being built.
  *
  * @param ast The AST to append to.
- * @param array_ast The array AST to append.  Its `of_ast` must be of kind
- * #K_PLACEHOLDER.
- * @param of_ast The AST to become the `of_ast` of \a array_ast.
+ * @param array_ast The array AST to append.  Its \ref c_array_ast::of_ast
+ * "of_ast" must be of kind #K_PLACEHOLDER.
+ * @param of_ast The AST to become the \ref c_array_ast::of_ast "of_ast" of \a
+ * array_ast.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 NODISCARD
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast );
 
 /**
- * Adds a function-like AST to the AST being built.
+ * Adds a #K_ANY_FUNCTION_LIKE AST to the AST being built.
  *
  * @param ast The AST to append to.
- * @param func_ast The function-like AST to append.  Its `ret_ast` must be
- * NULL.
- * @param ret_ast The AST to become the `ret_ast` of \a func_ast.  Must be NULL
- * only when \a func_ast is a #K_CONSTRUCTOR.
+ * @param func_ast The #K_ANY_FUNCTION_LIKE AST to append.  Its \ref
+ * c_function_ast::ret_ast "ret_ast" _must_ be NULL.
+ * @param ret_ast The AST to become the \ref c_function_ast::ret_ast "ret_ast"
+ * of \a func_ast.  If the \ref c_ast::kind "kind" of \a func_ast is:
+ *  + #K_ANY_FUNCTION_RETURN, then \a ret_ast must _not_ be NULL; or:
+ *  + Not #K_ANY_FUNCTION_RETURN, then \a ret_ast _must_ be NULL.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 NODISCARD
@@ -104,7 +107,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir );
 /**
  * Find the parameter of \a func_ast having \a name, if any.
  *
- * @param func_ast The function-like AST to check.
+ * @param func_ast The #K_ANY_FUNCTION_LIKE AST to check.
  * @param name The name to find.
  * @param stop_ast The AST to stop at, if any.
  * @return Returns the AST of the parameter of \a func_ast having \a name or
