@@ -74,8 +74,8 @@
 // extern constants
 c_type_t const T_NONE             = { TB_NONE,      TS_NONE,    TA_NONE };
 c_type_t const T_ANY              = { TB_ANY,       TS_ANY,     TA_ANY  };
-c_type_t const T_ANY_CONST_CLASS  = { TB_ANY_CLASS, TS_CONST,   TA_NONE };
-c_type_t const T_TS_TYPEDEF       = { TB_NONE,      TS_TYPEDEF, TA_NONE };
+c_type_t const T_ANY_CONST_CLASS  = { TB_ANY_CLASS, TS_const,   TA_NONE };
+c_type_t const T_TS_typedef       = { TB_NONE,      TS_typedef, TA_NONE };
 
 /// @endcond
 
@@ -109,9 +109,9 @@ static char const*  c_type_literal( c_type_info_t const*, bool, bool );
  * Literal for `long long`.
  *
  * @remarks As part of the special case for `long long`, its literal is only
- * `long` because its type, #TB_LONG_LONG, is always combined with #TB_LONG,
+ * `long` because its type, #TB_long_long, is always combined with #TB_long,
  * i.e., two bits are set.  Therefore, when printed, it prints one `long` for
- * #TB_LONG and another `long` for #TB_LONG_LONG (this literal).  That explains
+ * #TB_long and another `long` for #TB_long_long (this literal).  That explains
  * why this literal is only one `long`.
  */
 static char const L_long_long[] = "long";
@@ -127,9 +127,9 @@ static char const L_rvalue_reference[] = "rvalue reference";
 /**
  * "Literal" for a `typedef` type, e.g., `size_t`.
  *
- * @remarks #TB_TYPEDEF exists only so there can be a row/column for it in the
+ * @remarks #TB_typedef exists only so there can be a row/column for it in the
  * \ref OK_TYPE_LANGS table to make things like `signed size_t` illegal.
- * #TB_TYPEDEF doesn't have any printable representation (only the name of the
+ * #TB_typedef doesn't have any printable representation (only the name of the
  * type is printed); therefore, its literal is the empty string.
  */
 static char const L_typedef_TYPE[] = "";
@@ -138,48 +138,48 @@ static char const L_typedef_TYPE[] = "";
  * Type mapping for attributes.
  */
 static c_type_info_t const C_ATTRIBUTE_INFO[] = {
-  { TA_CARRIES_DEPENDENCY, LANG_carries_dependency, "carries dependency",
+  { TA_carries_dependency, LANG_carries_dependency, "carries dependency",
     C_LANG_LIT( { LANG_ANY, L_carries_dependency } ) },
 
-  { TA_DEPRECATED, LANG_deprecated, .english_lit = NULL,
+  { TA_deprecated, LANG_deprecated, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_deprecated } ) },
 
-  { TA_MAYBE_UNUSED, LANG_maybe_unused, "maybe unused",
+  { TA_maybe_unused, LANG_maybe_unused, "maybe unused",
     C_LANG_LIT( { LANG_ANY, L_maybe_unused } ) },
 
-  { TA_NODISCARD, LANG_nodiscard, H_non_discardable,
+  { TA_nodiscard, LANG_nodiscard, H_non_discardable,
     C_LANG_LIT( { LANG_ANY, L_nodiscard } ) },
 
-  { TA_NORETURN, LANG_NONRETURNING_FUNCS, H_non_returning,
+  { TA_noreturn, LANG_NONRETURNING_FUNCS, H_non_returning,
     C_LANG_LIT( { LANG_noreturn, L_noreturn  },
                 { LANG_ANY,      L__Noreturn } ) },
 
-  { TA_NO_UNIQUE_ADDRESS, LANG_no_unique_address, H_non_unique_address,
+  { TA_no_unique_address, LANG_no_unique_address, H_non_unique_address,
     C_LANG_LIT( { LANG_ANY, L_no_unique_address } ) },
 
-  { TA_REPRODUCIBLE, LANG_reproducible, .english_lit = NULL,
+  { TA_reproducible, LANG_reproducible, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_reproducible } ) },
 
-  { TA_UNSEQUENCED, LANG_unsequenced, .english_lit = NULL,
+  { TA_unsequenced, LANG_unsequenced, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_unsequenced } ) },
 
   // Microsoft extensions
-  { TA_MSC_CDECL, LANG_MSC_EXTENSIONS, L_MSC_cdecl,
+  { TA_MSC___cdecl, LANG_MSC_EXTENSIONS, L_MSC_cdecl,
     C_LANG_LIT( { LANG_ANY, L_MSC___cdecl } ) },
 
-  { TA_MSC_CLRCALL, LANG_MSC_EXTENSIONS, L_MSC_clrcall,
+  { TA_MSC___clrcall, LANG_MSC_EXTENSIONS, L_MSC_clrcall,
     C_LANG_LIT( { LANG_ANY, L_MSC___clrcall } ) },
 
-  { TA_MSC_FASTCALL, LANG_MSC_EXTENSIONS, L_MSC_fastcall,
+  { TA_MSC___fastcall, LANG_MSC_EXTENSIONS, L_MSC_fastcall,
     C_LANG_LIT( { LANG_ANY, L_MSC___fastcall } ) },
 
-  { TA_MSC_STDCALL, LANG_MSC_EXTENSIONS, L_MSC_stdcall,
+  { TA_MSC___stdcall, LANG_MSC_EXTENSIONS, L_MSC_stdcall,
     C_LANG_LIT( { LANG_ANY, L_MSC___stdcall } ) },
 
-  { TA_MSC_THISCALL, LANG_MSC_EXTENSIONS, L_MSC_thiscall,
+  { TA_MSC___thiscall, LANG_MSC_EXTENSIONS, L_MSC_thiscall,
     C_LANG_LIT( { LANG_ANY, L_MSC___thiscall } ) },
 
-  { TA_MSC_VECTORCALL, LANG_MSC_EXTENSIONS, L_MSC_vectorcall,
+  { TA_MSC___vectorcall, LANG_MSC_EXTENSIONS, L_MSC_vectorcall,
     C_LANG_LIT( { LANG_ANY, L_MSC___vectorcall } ) },
 };
 
@@ -195,10 +195,10 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
  * OK_QUALIFIER_LANGS.
  */
 static c_type_info_t const C_QUALIFIER_INFO[] = {
-  { TS_ATOMIC, LANG__Atomic, L_atomic,
+  { TS__Atomic, LANG__Atomic, L_atomic,
     C_LANG_LIT( { LANG_ANY, L__Atomic } ) },
 
-  { TS_CONST, LANG_ANY, L_constant,
+  { TS_const, LANG_ANY, L_constant,
     C_LANG_LIT( { ~LANG_const, L_GNU___const },
                 { LANG_ANY,    L_const       } ) },
 
@@ -211,22 +211,22 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
   { TS_RVALUE_REFERENCE, LANG_REF_QUALIFIED_FUNCS, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_rvalue_reference } ) },
 
-  { TS_RESTRICT, LANG_ANY, L_restricted,
+  { TS_restrict, LANG_ANY, L_restricted,
     C_LANG_LIT( { ~LANG_restrict, L_GNU___restrict },
                 { LANG_ANY,       L_restrict       } ) },
 
-  { TS_VOLATILE, LANG_ANY, .english_lit = NULL,
+  { TS_volatile, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { ~LANG_volatile, L_GNU___volatile },
                 { LANG_ANY,       L_volatile       } ) },
 
   // Unified Parallel C extensions
-  { TS_UPC_RELAXED, LANG_C_99, .english_lit = NULL,
+  { TS_UPC_relaxed, LANG_C_99, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_UPC_relaxed } ) },
 
-  { TS_UPC_SHARED, LANG_C_99, .english_lit = NULL,
+  { TS_UPC_shared, LANG_C_99, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_UPC_shared } ) },
 
-  { TS_UPC_STRICT, LANG_C_99, .english_lit = NULL,
+  { TS_UPC_strict, LANG_C_99, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_UPC_strict } ) },
 };
 
@@ -238,83 +238,83 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
  */
 static c_type_info_t const C_STORAGE_INFO[] = {
   // storage classes
-  { TS_AUTO, LANG_auto_STORAGE, L_automatic,
+  { TS_auto, LANG_auto_STORAGE, L_automatic,
     C_LANG_LIT( { LANG_ANY, L_auto } ) },
 
-  { TS_APPLE_BLOCK, LANG_ANY, L_Apple_block,
+  { TS_APPLE___block, LANG_ANY, L_Apple_block,
     C_LANG_LIT( { LANG_ANY, L_Apple___block } ) },
 
-  { TS_EXTERN, LANG_ANY, L_external,
+  { TS_extern, LANG_ANY, L_external,
     C_LANG_LIT( { LANG_ANY, L_extern } ) },
 
-  { TS_EXTERN_C, LANG_LINKAGE_DECLS, "external \"C\" linkage",
+  { TS_extern_C, LANG_LINKAGE_DECLS, "external \"C\" linkage",
     C_LANG_LIT( { LANG_ANY, "extern \"C\"" } ) },
 
-  { TS_REGISTER, LANG_register, .english_lit = NULL,
+  { TS_register, LANG_register, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_register } ) },
 
-  { TS_STATIC, LANG_ANY, .english_lit = NULL,
+  { TS_static, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_static } ) },
 
-  { TS_THREAD_LOCAL, LANG_ANY, "thread local",
+  { TS_thread_local, LANG_ANY, "thread local",
     C_LANG_LIT( { ~LANG_THREAD_LOCAL_STORAGE,  L_GNU___thread  },
                 { LANG_thread_local,           L_thread_local  },
                 { LANG_ANY,                    L__Thread_local } ) },
 
-  { TS_TYPEDEF, LANG_ANY, L_type,
+  { TS_typedef, LANG_ANY, L_type,
     C_LANG_LIT( { LANG_ANY, L_typedef } ) },
 
   // storage-class-like
-  { TS_CONSTEVAL, LANG_consteval, "constant evaluation",
+  { TS_consteval, LANG_consteval, "constant evaluation",
     C_LANG_LIT( { LANG_ANY, L_consteval } ) },
 
-  { TS_CONSTEXPR, LANG_constexpr, "constant expression",
+  { TS_constexpr, LANG_constexpr, "constant expression",
     C_LANG_LIT( { LANG_ANY, L_constexpr } ) },
 
-  { TS_CONSTINIT, LANG_constinit, "constant initialization",
+  { TS_constinit, LANG_constinit, "constant initialization",
     C_LANG_LIT( { LANG_ANY, L_constinit } ) },
 
-  { TS_DEFAULT, LANG_default_delete_FUNCS, .english_lit = NULL,
+  { TS_default, LANG_default_delete_FUNCS, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_default } ) },
 
-  { TS_DELETE, LANG_default_delete_FUNCS, L_deleted,
+  { TS_delete, LANG_default_delete_FUNCS, L_deleted,
     C_LANG_LIT( { LANG_ANY, L_delete } ) },
 
-  { TS_EXPLICIT, LANG_explicit, .english_lit = NULL,
+  { TS_explicit, LANG_explicit, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_explicit } ) },
 
-  { TS_EXPORT, LANG_export, L_exported,
+  { TS_export, LANG_export, L_exported,
     C_LANG_LIT( { LANG_ANY, L_export } ) },
 
-  { TS_FINAL, LANG_final, .english_lit = NULL,
+  { TS_final, LANG_final, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_final } ) },
 
-  { TS_FRIEND, LANG_friend, .english_lit = NULL,
+  { TS_friend, LANG_friend, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_friend } ) },
 
-  { TS_INLINE, LANG_ANY, .english_lit = NULL,
+  { TS_inline, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { ~LANG_inline, L_GNU___inline },
                 { LANG_ANY,     L_inline       } ) },
 
-  { TS_MUTABLE, LANG_mutable, .english_lit = NULL,
+  { TS_mutable, LANG_mutable, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_mutable } ) },
 
-  { TS_NOEXCEPT, LANG_noexcept, H_no_exception,
+  { TS_noexcept, LANG_noexcept, H_no_exception,
     C_LANG_LIT( { LANG_ANY, L_noexcept } ) },
 
-  { TS_OVERRIDE, LANG_override, L_overridden,
+  { TS_override, LANG_override, L_overridden,
     C_LANG_LIT( { LANG_ANY, L_override } ) },
 
-  { TS_THIS, LANG_EXPLICIT_OBJ_PARAM_DECLS, .english_lit = NULL,
+  { TS_this, LANG_EXPLICIT_OBJ_PARAM_DECLS, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_this } ) },
 
-  { TS_THROW, LANG_CPP_ANY, H_non_throwing,
+  { TS_throw, LANG_CPP_ANY, H_non_throwing,
     C_LANG_LIT( { LANG_ANY, L_throw } ) },
 
-  { TS_VIRTUAL, LANG_virtual, .english_lit = NULL,
+  { TS_virtual, LANG_virtual, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_virtual } ) },
 
-  { TS_PURE_VIRTUAL, LANG_virtual, .english_lit = NULL,
+  { TS_PURE_virtual, LANG_virtual, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_pure } ) },
 };
 
@@ -324,90 +324,90 @@ static c_type_info_t const C_STORAGE_INFO[] = {
  * @note This array _must_ have the same size and order as \ref OK_TYPE_LANGS.
  */
 static c_type_info_t const C_TYPE_INFO[] = {
-  { TB_VOID, LANG_void, .english_lit = NULL,
+  { TB_void, LANG_void, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_void } ) },
 
-  { TB_AUTO, LANG_MIN(C_89), L_automatic,
+  { TB_auto, LANG_MIN(C_89), L_automatic,
     C_LANG_LIT( { ~LANG_auto_TYPE, L_GNU___auto_type },
                 { LANG_ANY,        L_auto            } ) },
 
-  { TB_BITINT, LANG__BitInt, "bit-precise integer",
+  { TB__BitInt, LANG__BitInt, "bit-precise integer",
     C_LANG_LIT( { LANG_ANY, L__BitInt } ) },
 
-  { TB_BOOL, LANG_BOOL_TYPE, L_boolean,
+  { TB_bool, LANG_BOOL_TYPE, L_boolean,
     C_LANG_LIT( { LANG_bool, L_bool  },
                 { LANG_ANY,  L__Bool } ) },
 
-  { TB_CHAR, LANG_ANY, L_character,
+  { TB_char, LANG_ANY, L_character,
     C_LANG_LIT( { LANG_ANY, L_char } ) },
 
-  { TB_CHAR8_T, LANG_char8_t, "character 8",
+  { TB_char8_t, LANG_char8_t, "character 8",
     C_LANG_LIT( { LANG_ANY, L_char8_t } ) },
 
-  { TB_CHAR16_T, LANG_char16_32_t, "character 16",
+  { TB_char16_t, LANG_char16_32_t, "character 16",
     C_LANG_LIT( { LANG_ANY, L_char16_t } ) },
 
-  { TB_CHAR32_T, LANG_char16_32_t, "character 32",
+  { TB_char32_t, LANG_char16_32_t, "character 32",
     C_LANG_LIT( { LANG_ANY, L_char32_t } ) },
 
-  { TB_WCHAR_T, LANG_wchar_t, "wide character",
+  { TB_wchar_t, LANG_wchar_t, "wide character",
     C_LANG_LIT( { LANG_ANY, L_wchar_t } ) },
 
-  { TB_SHORT, LANG_ANY, .english_lit = NULL,
+  { TB_short, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_short } ) },
 
-  { TB_INT, LANG_ANY, L_integer,
+  { TB_int, LANG_ANY, L_integer,
     C_LANG_LIT( { LANG_ANY, L_int } ) },
 
-  { TB_LONG, LANG_ANY, .english_lit = NULL,
+  { TB_long, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_long } ) },
 
-  { TB_LONG_LONG, LANG_long_long, .english_lit = NULL,
+  { TB_long_long, LANG_long_long, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_long_long } ) },
 
-  { TB_SIGNED, LANG_ANY, .english_lit = NULL,
+  { TB_signed, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { ~LANG_signed, L_GNU___signed },
                 { LANG_ANY,     L_signed       } ) },
 
-  { TB_UNSIGNED, LANG_ANY, .english_lit = NULL,
+  { TB_unsigned, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_unsigned } ) },
 
-  { TB_FLOAT, LANG_ANY, "floating point",
+  { TB_float, LANG_ANY, "floating point",
     C_LANG_LIT( { LANG_ANY, L_float } ) },
 
-  { TB_DOUBLE, LANG_ANY, "double precision",
+  { TB_double, LANG_ANY, "double precision",
     C_LANG_LIT( { LANG_ANY, L_double } ) },
 
-  { TB_COMPLEX, LANG_C_ANY, L_complex,
+  { TB__Complex, LANG_C_ANY, L_complex,
     C_LANG_LIT( { ~LANG__Complex, L_GNU___complex },
                 { LANG_ANY,       L__Complex      } ) },
 
-  { TB_IMAGINARY, LANG__Imaginary, L_imaginary,
+  { TB__Imaginary, LANG__Imaginary, L_imaginary,
     C_LANG_LIT( { LANG_ANY, L__Imaginary } ) },
 
-  { TB_ENUM, LANG_enum, L_enumeration,
+  { TB_enum, LANG_enum, L_enumeration,
     C_LANG_LIT( { LANG_ANY, L_enum } ) },
 
-  { TB_STRUCT, LANG_ANY, L_structure,
+  { TB_struct, LANG_ANY, L_structure,
     C_LANG_LIT( { LANG_ANY, L_struct } ) },
 
-  { TB_UNION, LANG_ANY, .english_lit = NULL,
+  { TB_union, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_union } ) },
 
-  { TB_CLASS, LANG_class, .english_lit = NULL,
+  { TB_class, LANG_class, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_class } ) },
 
-  { TB_TYPEDEF, LANG_ANY, .english_lit = NULL,
+  { TB_typedef, LANG_ANY, .english_lit = NULL,
     C_LANG_LIT( { LANG_ANY, L_typedef_TYPE } ) },
 
   // Embedded C extensions
-  { TB_EMC_ACCUM, LANG_C_99, L_EMC_accum,
+  { TB_EMC__Accum, LANG_C_99, L_EMC_accum,
     C_LANG_LIT( { LANG_ANY, L_EMC__Accum } ) },
 
-  { TB_EMC_FRACT, LANG_C_99, L_EMC_fract,
+  { TB_EMC__Fract, LANG_C_99, L_EMC_fract,
     C_LANG_LIT( { LANG_ANY, L_EMC__Fract } ) },
 
-  { TB_EMC_SAT, LANG_C_99, L_EMC_saturated,
+  { TB_EMC__Sat, LANG_C_99, L_EMC_saturated,
     C_LANG_LIT( { LANG_ANY, L_EMC__Sat } ) },
 };
 
@@ -582,7 +582,7 @@ static c_lang_id_t const OK_TYPE_LANGS[ ARRAY_SIZE( C_TYPE_INFO ) ][ ARRAY_SIZE(
 NODISCARD
 static inline bool c_tid_is_long_int( c_tid_t tids ) {
   return  c_tid_tpid( tids ) == C_TPID_BASE &&
-          c_tid_is_except_any( tids, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC );
+          c_tid_is_except_any( tids, TB_long, TB_ANY_FLOAT | TB_ANY_EMC );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -716,13 +716,13 @@ static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
 }
 
 /**
- * Removes #TB_SIGNED from \a btids, if possible.  Specifically:
+ * Removes #TB_signed from \a btids, if possible.  Specifically:
  *
- * + If \a btids contains #TB_SIGNED but not #TB_CHAR, removes #TB_SIGNED.
- * + If \a btids then becomes #TB_NONE, makes it #TB_INT.
+ * + If \a btids contains #TB_signed but not #TB_char, removes #TB_signed.
+ * + If \a btids then becomes #TB_NONE, makes it #TB_int.
  *
- * @param btids The \ref c_tid_t to remove #TB_SIGNED from, if possible.
- * @return Returns a \ref c_tid_t with #TB_SIGNED removed, if possible.
+ * @param btids The \ref c_tid_t to remove #TB_signed from, if possible.
+ * @return Returns a \ref c_tid_t with #TB_signed removed, if possible.
  *
  * @note This function isn't called `c_tid_unsigned` to avoid confusion with
  * the `unsigned` type.
@@ -732,10 +732,10 @@ static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tids,
 NODISCARD
 static c_tid_t c_tid_nosigned( c_tid_t btids ) {
   c_tid_check( btids, C_TPID_BASE );
-  if ( c_tid_is_except_any( btids, TB_SIGNED, TB_CHAR ) ) {
-    btids &= c_tid_compl( TB_SIGNED );
+  if ( c_tid_is_except_any( btids, TB_signed, TB_char ) ) {
+    btids &= c_tid_compl( TB_signed );
     if ( btids == TB_NONE )
-      btids = TB_INT;
+      btids = TB_int;
   }
   return btids;
 }
@@ -846,33 +846,33 @@ static char const* c_type_name_impl( c_type_t const *type,
   c_tid_t stids = type->stids;
   c_tid_t atids = type->atids;
 
-  if ( c_tid_is_any( atids, TA_NORETURN ) && !OPT_LANG_IS( noreturn ) ) {
+  if ( c_tid_is_any( atids, TA_noreturn ) && !OPT_LANG_IS( noreturn ) ) {
     //
     // Special case: we store _Noreturn as an attribute, but in C through C17,
     // it's a distinct keyword and printed as such instead being printed
     // between brackets [[like this]].
     //
-    static c_tid_t const ATIDS[] = { TA_NORETURN };
+    static c_tid_t const ATIDS[] = { TA_noreturn };
     C_TID_NAME_CAT(
-      sbuf, TA_NORETURN, ATIDS, in_english, is_error, ' ', &space
+      sbuf, TA_noreturn, ATIDS, in_english, is_error, ' ', &space
     );
     //
     // Now that we've handled _Noreturn for C, remove its bit and fall through
     // to the regular attribute-printing code.
     //
-    atids &= c_tid_compl( TA_NORETURN );
+    atids &= c_tid_compl( TA_noreturn );
   }
 
   if ( c_tid_is_any( atids, c_tid_compl( TA_ANY_MSC_CALL ) ) ) {
     static c_tid_t const ATIDS[] = {
-      TA_CARRIES_DEPENDENCY,
-      TA_DEPRECATED,
-      TA_MAYBE_UNUSED,
-      TA_NODISCARD,
-      TA_NORETURN,                      // still here for C++'s [[noreturn]]
-      TA_NO_UNIQUE_ADDRESS,
-      TA_REPRODUCIBLE,
-      TA_UNSEQUENCED,
+      TA_carries_dependency,
+      TA_deprecated,
+      TA_maybe_unused,
+      TA_nodiscard,
+      TA_noreturn,                      // still here for C++'s [[noreturn]]
+      TA_no_unique_address,
+      TA_reproducible,
+      TA_unsequenced,
       // Microsoft calling conventions must be handled later -- see below.
     };
 
@@ -894,14 +894,14 @@ static char const* c_type_name_impl( c_type_t const *type,
 
   // Special cases.
   if ( in_english ) {
-    if ( c_tid_is_any( btids, TB_ANY_MODIFIER ) &&
-        !c_tid_is_any( btids, c_tid_compl( TB_ANY_MODIFIER ) ) ) {
+    if ( c_tid_is_any( btids, TB_ANY_INT_MODIFIER ) &&
+        !c_tid_is_any( btids, c_tid_compl( TB_ANY_INT_MODIFIER ) ) ) {
       // In English, be explicit about "int".
-      btids |= TB_INT;
+      btids |= TB_int;
     }
-    if ( c_tid_is_any( stids, TS_FINAL | TS_OVERRIDE ) ) {
+    if ( c_tid_is_any( stids, TS_final | TS_override ) ) {
       // In English, either "final" or "override" implies "virtual".
-      stids |= TS_VIRTUAL;
+      stids |= TS_virtual;
     }
   }
   else /* !in_english */ {
@@ -913,16 +913,16 @@ static char const* c_type_name_impl( c_type_t const *type,
     //
     assert(
       is_01_bit(
-        c_tid_no_tpid( stids & (TS_VIRTUAL | TS_OVERRIDE | TS_FINAL) )
+        c_tid_no_tpid( stids & (TS_virtual | TS_override | TS_final) )
       )
     );
 
     if ( is_explicit_int( btids ) ) {
-      btids |= TB_INT;
-    } else if ( c_tid_is_any( btids, TB_ANY_MODIFIER ) ) {
+      btids |= TB_int;
+    } else if ( c_tid_is_any( btids, TB_ANY_INT_MODIFIER ) ) {
       // In C/C++, explicit "int" isn't needed when at least one int modifier
       // is present.
-      btids &= c_tid_compl( TB_INT );
+      btids &= c_tid_compl( TB_int );
     }
   }
 
@@ -930,43 +930,43 @@ static char const* c_type_name_impl( c_type_t const *type,
   static c_tid_t const STIDS[] = {
 
     // These are first so we get names like "deleted constructor".
-    TS_DEFAULT,
-    TS_DELETE,
-    TS_EXTERN_C,
+    TS_default,
+    TS_delete,
+    TS_extern_C,
 
     // This is next so "typedef" comes before (almost) everything else.
-    TS_TYPEDEF,
+    TS_typedef,
 
     // These are next so we get names like "static int".
-    TS_AUTO,
-    TS_APPLE_BLOCK,
-    TS_EXPORT,
-    TS_EXTERN,
-    TS_FRIEND,
-    TS_REGISTER,
-    TS_MUTABLE,
-    TS_STATIC,
-    TS_THIS,
-    TS_THREAD_LOCAL,
+    TS_auto,
+    TS_APPLE___block,
+    TS_export,
+    TS_extern,
+    TS_friend,
+    TS_register,
+    TS_mutable,
+    TS_static,
+    TS_this,
+    TS_thread_local,
 
     // These are next so we get names like "static inline".
-    TS_EXPLICIT,
-    TS_INLINE,
+    TS_explicit,
+    TS_inline,
 
     // These are next so we get names like "static inline final".
-    TS_OVERRIDE,
-    TS_FINAL,
+    TS_override,
+    TS_final,
 
     // These are next so we get names like "overridden virtual".
-    TS_PURE_VIRTUAL,
-    TS_VIRTUAL,
-    TS_NOEXCEPT,
-    TS_THROW,
+    TS_PURE_virtual,
+    TS_virtual,
+    TS_noexcept,
+    TS_throw,
 
     // These are next so we get names like "static inline constexpr".
-    TS_CONSTEVAL,
-    TS_CONSTEXPR,
-    TS_CONSTINIT,
+    TS_consteval,
+    TS_constexpr,
+    TS_constinit,
   };
   C_TID_NAME_CAT( sbuf, stids, STIDS, in_english, is_error, ' ', &space );
 
@@ -979,14 +979,14 @@ static char const* c_type_name_impl( c_type_t const *type,
   // Types here MUST have a corresponding row AND column in OK_QUALIFIER_LANGS.
   static c_tid_t const QUAL_STIDS[] = {
     // These are before "shared" so we get names like "strict shared".
-    TS_UPC_RELAXED,
-    TS_UPC_STRICT,
+    TS_UPC_relaxed,
+    TS_UPC_strict,
 
-    TS_UPC_SHARED,
+    TS_UPC_shared,
 
-    TS_CONST,
-    TS_RESTRICT,
-    TS_VOLATILE,
+    TS_const,
+    TS_restrict,
+    TS_volatile,
     TS_NON_EMPTY_ARRAY,
 
     // These are next so we get names like "const reference".
@@ -994,7 +994,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     TS_RVALUE_REFERENCE,
 
     // This is last so we get names like "const _Atomic".
-    TS_ATOMIC,
+    TS__Atomic,
   };
   C_TID_NAME_CAT( sbuf, stids, QUAL_STIDS, in_english, is_error, ' ', &space );
 
@@ -1030,7 +1030,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   //
   bool const print_parens_for_Atomic =
     OPT_LANG_IS( CPP_MIN(23) ) && !in_english &&
-    c_tid_is_any( stids, TS_ATOMIC ) && !c_tid_is_any( btids, TB_TYPEDEF );
+    c_tid_is_any( stids, TS__Atomic ) && !c_tid_is_any( btids, TB_typedef );
 
   if ( print_parens_for_Atomic ) {
     strbuf_putc( sbuf, '(' );
@@ -1040,38 +1040,38 @@ static char const* c_type_name_impl( c_type_t const *type,
   // Types here MUST have a corresponding row AND column in OK_TYPE_LANGS.
   static c_tid_t const BTIDS[] = {
     // These are first so we get names like "unsigned int".
-    TB_SIGNED,
-    TB_UNSIGNED,
+    TB_signed,
+    TB_unsigned,
 
     // These are next so we get names like "unsigned long int".
-    TB_SHORT,
-    TB_LONG,
-    TB_LONG_LONG,
+    TB_short,
+    TB_long,
+    TB_long_long,
 
-    TB_VOID,
-    TB_AUTO,
-    TB_BITINT,
-    TB_BOOL,
-    TB_CHAR,
-    TB_CHAR8_T,
-    TB_CHAR16_T,
-    TB_CHAR32_T,
-    TB_WCHAR_T,
-    TB_INT,
-    TB_COMPLEX,
-    TB_IMAGINARY,
-    TB_FLOAT,
-    TB_DOUBLE,
-    TB_ENUM,
-    TB_STRUCT,
-    TB_UNION,
-    TB_CLASS,
+    TB_void,
+    TB_auto,
+    TB__BitInt,
+    TB_bool,
+    TB_char,
+    TB_char8_t,
+    TB_char16_t,
+    TB_char32_t,
+    TB_wchar_t,
+    TB_int,
+    TB__Complex,
+    TB__Imaginary,
+    TB_float,
+    TB_double,
+    TB_enum,
+    TB_struct,
+    TB_union,
+    TB_class,
 
     // This is next so we get names like "unsigned long _Sat _Fract".
-    TB_EMC_SAT,
+    TB_EMC__Sat,
 
-    TB_EMC_ACCUM,
-    TB_EMC_FRACT,
+    TB_EMC__Accum,
+    TB_EMC__Fract,
   };
   C_TID_NAME_CAT( sbuf, btids, BTIDS, in_english, is_error, ' ', &space );
 
@@ -1080,12 +1080,12 @@ static char const* c_type_name_impl( c_type_t const *type,
 
   // Microsoft calling conventions must be handled here.
   static c_tid_t const MSC_CALL_ATIDS[] = {
-    TA_MSC_CDECL,
-    TA_MSC_CLRCALL,
-    TA_MSC_FASTCALL,
-    TA_MSC_STDCALL,
-    TA_MSC_THISCALL,
-    TA_MSC_VECTORCALL,
+    TA_MSC___cdecl,
+    TA_MSC___clrcall,
+    TA_MSC___fastcall,
+    TA_MSC___stdcall,
+    TA_MSC___thiscall,
+    TA_MSC___vectorcall,
   };
   C_TID_NAME_CAT(
     sbuf, atids, MSC_CALL_ATIDS, in_english, is_error, ' ', &space
@@ -1098,7 +1098,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   }
 
   // Really special cases.
-  if ( c_tid_is_any( btids, TB_NAMESPACE ) )
+  if ( c_tid_is_any( btids, TB_namespace ) )
     strbuf_sepc_puts( sbuf, ' ', &space, L_namespace );
   else if ( c_tid_is_any( btids, TB_SCOPE ) )
     strbuf_sepc_puts( sbuf, ' ', &space, L_scope );
@@ -1207,7 +1207,7 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tids, c_loc_t const *new_loc ) {
     // Special case: if the existing type is "long" and the new type is "long",
     // turn the new type into "long long".
     //
-    new_tids = TB_LONG_LONG;
+    new_tids = TB_long_long;
   }
 
   if ( !c_tid_is_none( *dst_tids & new_tids ) ) {
@@ -1257,10 +1257,10 @@ c_tid_t c_tid_normalize( c_tid_t tids ) {
     case C_TPID_BASE:
       tids = c_tid_nosigned( tids );
       // If the type is only implicitly int, make it explicitly int.
-      if ( c_tid_is_except_any( tids, TB_SHORT, TB_ANY_EMC ) ||
-           c_tid_is_except_any( tids, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC ) ||
-           c_tid_is_except_any( tids, TB_UNSIGNED, TB_CHAR | TB_ANY_EMC ) ) {
-        tids |= TB_INT;
+      if ( c_tid_is_except_any( tids, TB_short, TB_ANY_EMC ) ||
+           c_tid_is_except_any( tids, TB_long, TB_ANY_FLOAT | TB_ANY_EMC ) ||
+           c_tid_is_except_any( tids, TB_unsigned, TB_char | TB_ANY_EMC ) ) {
+        tids |= TB_int;
       }
       break;
     default:
@@ -1271,18 +1271,18 @@ c_tid_t c_tid_normalize( c_tid_t tids ) {
 
 unsigned c_tid_scope_order( c_tid_t btids ) {
   c_tid_check( btids, C_TPID_BASE );
-  switch ( btids & (TB_ANY_SCOPE | TB_ENUM) ) {
+  switch ( btids & (TB_ANY_SCOPE | TB_enum) ) {
     case TB_NONE:
     case TB_SCOPE:
       return 0;
-    case TB_NAMESPACE:
+    case TB_namespace:
       return 1;
-    case TB_STRUCT:
-    case TB_UNION:
-    case TB_CLASS:
+    case TB_struct:
+    case TB_union:
+    case TB_class:
       return 2;
-    case TB_ENUM:
-    case TB_ENUM | TB_CLASS:
+    case TB_enum:
+    case TB_enum | TB_class:
       return 3;
   } // switch
 
@@ -1291,7 +1291,7 @@ unsigned c_tid_scope_order( c_tid_t btids ) {
 
 c_tpid_t c_tid_tpid( c_tid_t tids ) {
   //
-  // If tids has been complemented, e.g., ~TS_REGISTER to denote "all but
+  // If tids has been complemented, e.g., ~TS_register to denote "all but
   // register," then we have to complement tids back first.
   //
   if ( c_tid_is_compl( tids ) )

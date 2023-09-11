@@ -174,7 +174,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
     // If we're printing a "using" declaration, don't print either "typedef" or
     // attributes since they will have been printed in c_typedef_gibberish().
     //
-    type.stids &= c_tid_compl( TS_TYPEDEF );
+    type.stids &= c_tid_compl( TS_typedef );
     type.atids = TA_NONE;
   }
 
@@ -214,30 +214,30 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
       // them out of the type here, but print them after the parameters.
       //
       cv_qual_stids   = (type.stids & TS_ANY_QUALIFIER);
-      is_default      = (type.stids & TS_DEFAULT) != TS_NONE;
-      is_delete       = (type.stids & TS_DELETE) != TS_NONE;
-      is_final        = (type.stids & TS_FINAL) != TS_NONE;
-      is_noexcept     = (type.stids & TS_NOEXCEPT) != TS_NONE;
-      is_pure_virtual = (type.stids & TS_PURE_VIRTUAL) != TS_NONE;
-      is_throw        = (type.stids & TS_THROW) != TS_NONE;
+      is_default      = (type.stids & TS_default) != TS_NONE;
+      is_delete       = (type.stids & TS_delete) != TS_NONE;
+      is_final        = (type.stids & TS_final) != TS_NONE;
+      is_noexcept     = (type.stids & TS_noexcept) != TS_NONE;
+      is_pure_virtual = (type.stids & TS_PURE_virtual) != TS_NONE;
+      is_throw        = (type.stids & TS_throw) != TS_NONE;
       ref_qual_stids  = (type.stids & TS_ANY_REFERENCE);
 
       // In C++, "override" should be printed only if "final" isn't.
-      is_override     = !is_final && (type.stids & TS_OVERRIDE) != TS_NONE;
+      is_override     = !is_final && (type.stids & TS_override) != TS_NONE;
 
       type.stids &= c_tid_compl(
                        TS_ANY_QUALIFIER
                      | TS_ANY_REFERENCE
-                     | TS_DEFAULT
-                     | TS_DELETE
-                     | TS_FINAL
-                     | TS_NOEXCEPT
-                     | TS_OVERRIDE
-                     | TS_PURE_VIRTUAL
-                     | TS_THROW
+                     | TS_default
+                     | TS_delete
+                     | TS_final
+                     | TS_noexcept
+                     | TS_override
+                     | TS_PURE_virtual
+                     | TS_throw
                      // In C++, if either "override" or "final" is printed,
                      // "virtual" shouldn't be.
-                     | (is_override || is_final ? TS_VIRTUAL : TS_NONE)
+                     | (is_override || is_final ? TS_virtual : TS_NONE)
                    );
 
       //
@@ -335,7 +335,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
     case K_BUILTIN:
       if ( (g->gib_flags & C_GIB_OMIT_TYPE) == 0 )
         FPUTS( c_type_name_c( &type ), g->gout );
-      if ( c_ast_is_tid_any( ast, TB_BITINT ) && ast->builtin.BitInt.width > 0 )
+      if ( c_ast_is_tid_any( ast, TB__BitInt ) )
         FPRINTF( g->gout, "(%u)", ast->builtin.BitInt.width );
       c_ast_space_name_gibberish( ast, g );
       c_ast_bit_width_gibberish( ast, g );
@@ -388,7 +388,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
       //      c++decl> declare e as enum class C
       //      enum C e;                 // not: enum class C e;
       //
-      type.btids &= c_tid_compl( TB_STRUCT | TB_CLASS );
+      type.btids &= c_tid_compl( TB_struct | TB_class );
       FALLTHROUGH;
 
     case K_CLASS_STRUCT_UNION: {
@@ -483,7 +483,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
       if ( !c_tid_is_none( ast->type.atids ) )
         FPRINTF( g->gout, " %s", c_tid_name_c( ast->type.atids ) );
       if ( ast->lambda.ret_ast != NULL &&
-           !c_ast_is_builtin_any( ast->lambda.ret_ast, TB_AUTO | TB_VOID ) ) {
+           !c_ast_is_builtin_any( ast->lambda.ret_ast, TB_auto | TB_void ) ) {
         FPUTS( " -> ", g->gout );
         c_ast_gibberish_impl( ast->lambda.ret_ast, g );
       }
@@ -528,11 +528,11 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
     case K_TYPEDEF:
       if ( (g->gib_flags & C_GIB_OMIT_TYPE) == 0 ) {
         //
-        // Of course a K_TYPEDEF AST also has a type comprising TB_TYPEDEF, but
+        // Of course a K_TYPEDEF AST also has a type comprising TB_typedef, but
         // we need to see whether there's any more to the type, e.g., "const".
         //
         bool const is_more_than_plain_typedef =
-          !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) );
+          !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_typedef ) );
 
         if ( is_more_than_plain_typedef && !opt_east_const )
           FPUTS( c_type_name_c( &ast->type ), g->gout );
@@ -550,7 +550,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
         //
         bool const print_parens_for_Atomic =
           OPT_LANG_IS( CPP_MIN(23) ) &&
-          c_tid_is_any( type.stids, TS_ATOMIC );
+          c_tid_is_any( type.stids, TS__Atomic );
 
         if ( print_parens_for_Atomic )
           FPUTC( '(', g->gout );
@@ -1175,7 +1175,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
     // so we have to wrap it in a scoped declaration, one of: class, namespace,
     // struct, or union.
     //
-    if ( scope_type.btids != TB_NAMESPACE ||
+    if ( scope_type.btids != TB_namespace ||
          opt_lang_is_any( LANG_NESTED_namespace | LANG_C_ANY ) ) {
       //
       // All C++ versions support nested class/struct/union declarations, e.g.:
@@ -1191,7 +1191,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
       // might be being asked to print all types.
       //
       c_sname_t temp_sname;
-      if ( c_tid_is_any( scope_type.stids, TS_INLINE ) ) {
+      if ( c_tid_is_any( scope_type.stids, TS_inline ) ) {
         //
         // For an inline namespace, the "inline" is printed like:
         //
@@ -1201,10 +1201,10 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
         //
         //      namespace inline NS { // ...
         //
-        // so we have to turn off TS_INLINE on the sname's scope type.
+        // so we have to turn off TS_inline on the sname's scope type.
         //
         temp_sname = c_sname_dup( sname );
-        c_scope_data( temp_sname.head )->type.stids &= c_tid_compl( TS_INLINE );
+        c_scope_data( temp_sname.head )->type.stids &= c_tid_compl( TS_inline );
         sname = &temp_sname;
       }
       else {
@@ -1222,7 +1222,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
         //
         scope_type = *c_sname_scope_type( sname );
         if ( scope_type.btids == TB_SCOPE )
-          scope_type.btids = TB_NAMESPACE;
+          scope_type.btids = TB_namespace;
 
         //
         // Starting in C++20, non-inline namespace may still have nested inline
@@ -1233,7 +1233,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
         // so we turn off "inline" on the scope's type so "inline" isn't
         // printed before "namespace" as well.
         //
-        scope_type.stids &= c_tid_compl( TS_INLINE );
+        scope_type.stids &= c_tid_compl( TS_inline );
       }
 
       FPRINTF( gout,
@@ -1311,7 +1311,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
       FPRINTF( gout, " %s", graph_token_c( "}" ) );
   }
 
-  if ( (gib_flags & C_GIB_FINAL_SEMI) != 0 && scope_type.btids != TB_NAMESPACE )
+  if ( (gib_flags & C_GIB_FINAL_SEMI) != 0 && scope_type.btids != TB_namespace )
     FPUTC( ';', gout );
 }
 

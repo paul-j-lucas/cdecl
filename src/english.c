@@ -338,7 +338,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
 
     case K_BUILTIN:
       FPUTS( c_type_name_english( &ast->type ), e->eout );
-      if ( c_ast_is_tid_any( ast, TB_BITINT ) && ast->builtin.BitInt.width > 0 )
+      if ( c_ast_is_tid_any( ast, TB__BitInt ) )
         FPRINTF( e->eout, " width %u bits", ast->builtin.BitInt.width );
       c_ast_bit_width_english( ast, e->eout );
       break;
@@ -411,7 +411,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
       break;
 
     case K_TYPEDEF:
-      if ( !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) ) )
+      if ( !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_typedef ) ) )
         FPRINTF( e->eout, "%s ", c_type_name_english( &ast->type ) );
       c_sname_english( &ast->tdef.for_ast->sname, e->eout );
       c_ast_bit_width_english( ast, e->eout );

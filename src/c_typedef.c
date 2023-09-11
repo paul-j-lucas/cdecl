@@ -710,7 +710,7 @@ static predef_type_t const PREDEFINED_GNU_C[] = {
   //
   // To make it a distinct type in cdecl also, there would need to be a
   // distinct literal, token, and type.  The type has to be distinct in order
-  // to be round-trippable with pseudo-English.  If it reused TB_LONG_LONG,
+  // to be round-trippable with pseudo-English.  If it reused TB_long_long,
   // then you'd get:
   //
   //      cdecl> declare x as __int128

@@ -208,12 +208,12 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   if ( sname_count > 1 ) {
     c_type_t const *const scope_type = c_sname_first_type( sname );
     bool const is_inline_namespace =
-      c_tid_is_any( scope_type->stids, TS_INLINE ) &&
-      c_tid_is_any( scope_type->btids, TB_NAMESPACE );
+      c_tid_is_any( scope_type->stids, TS_inline ) &&
+      c_tid_is_any( scope_type->btids, TB_namespace );
     if ( is_inline_namespace ) {
       print_error( sname_loc,
         "nested namespace can not be %s\n",
-        c_tid_name_error( TS_INLINE )
+        c_tid_name_error( TS_inline )
       );
       return false;
     }
@@ -235,7 +235,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     c_typedef_t const *const tdef = c_typedef_find_sname( sname );
     if ( tdef != NULL ) {
       c_type_t const *const tdef_type = c_sname_local_type( &tdef->ast->sname );
-      if ( c_tid_is_any( tdef_type->btids, TB_ANY_SCOPE | TB_ENUM ) &&
+      if ( c_tid_is_any( tdef_type->btids, TB_ANY_SCOPE | TB_enum ) &&
            !c_type_equiv( scope_type, tdef_type ) ) {
         if ( c_tid_is_any( scope_type->btids, TB_ANY_SCOPE ) ) {
           //
@@ -293,14 +293,14 @@ void c_sname_cleanup( c_sname_t *sname ) {
 void c_sname_fill_in_namespaces( c_sname_t *sname ) {
   assert( sname != NULL );
   c_type_t const *const local_type = c_sname_local_type( sname );
-  if ( !c_tid_is_any( local_type->btids, TB_NAMESPACE ) )
+  if ( !c_tid_is_any( local_type->btids, TB_namespace ) )
     return;
 
   FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
     c_type_t *const type = &c_scope_data( scope )->type;
     if ( c_type_is_none( type ) || c_tid_is_any( type->btids, TB_SCOPE ) ) {
       type->btids &= c_tid_compl( TB_SCOPE );
-      type->btids |= TB_NAMESPACE;
+      type->btids |= TB_namespace;
     }
   } // for
 }

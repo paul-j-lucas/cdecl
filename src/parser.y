@@ -571,7 +571,7 @@ static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
   assert( type_ast != NULL );
 
   c_ast_t const *const leaf_ast = c_ast_leaf( type_ast );
-  if ( c_ast_is_tid_any( leaf_ast, TB_AUTO ) ) {
+  if ( c_ast_is_tid_any( leaf_ast, TB_auto ) ) {
     print_error( &leaf_ast->loc,
       "\"%s\" illegal in type definition\n",
       c_type_name_error( &leaf_ast->type )
@@ -840,9 +840,9 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   if ( in_attr.is_typename && !c_ast_is_typename_ok( type_ast ) )
     return NULL;
 
-  c_type_t type = c_ast_take_type_any( type_ast, &T_TS_TYPEDEF );
+  c_type_t type = c_ast_take_type_any( type_ast, &T_TS_typedef );
 
-  if ( c_tid_is_any( type.stids, TS_TYPEDEF ) && decl_ast->kind == K_TYPEDEF ) {
+  if ( c_tid_is_any( type.stids, TS_typedef ) && decl_ast->kind == K_TYPEDEF ) {
     //
     // This is for a case like:
     //
@@ -880,13 +880,13 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   }
 
   c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
-  c_type_t const tdef_type = c_ast_take_type_any( ast, &T_TS_TYPEDEF );
+  c_type_t const tdef_type = c_ast_take_type_any( ast, &T_TS_typedef );
   c_type_or_eq( &type, &tdef_type );
   c_type_or_eq( &ast->type, &type );
 
   if ( in_attr.align.kind != C_ALIGNAS_NONE ) {
     ast->align = in_attr.align;
-    if ( c_tid_is_any( type.stids, TS_TYPEDEF ) ) {
+    if ( c_tid_is_any( type.stids, TS_typedef ) ) {
       //
       // We check for illegal aligned typedef here rather than in c_ast_check.c
       // because the "typedef-ness" needed to be removed previously before the
@@ -902,9 +902,9 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     //
     // User-defined conversions don't have names, but they can still have a
     // scope.  Since only classes can have them, if the scope is still
-    // TB_SCOPE, change it to TB_CLASS.
+    // TB_SCOPE, change it to TB_class.
     //
-    c_sname_set_local_type( &ast->sname, &C_TYPE_LIT_B( TB_CLASS ) );
+    c_sname_set_local_type( &ast->sname, &C_TYPE_LIT_B( TB_class ) );
   }
 
   return ast;
@@ -2167,13 +2167,13 @@ storage_class_subset_english_stid
   | Y_friend
   | Y_inline
   | Y_mutable
-  | Y_no Y_except                 { $$ = TS_NOEXCEPT; }
+  | Y_no Y_except                 { $$ = TS_noexcept; }
   | Y_noexcept
   | Y_override
   | Y_static
   | Y_throw
   | Y_virtual
-  | Y_pure virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
+  | Y_pure virtual_stid_exp       { $$ = TS_PURE_virtual | $2; }
   ;
 
 /// define command ////////////////////////////////////////////////////////////
@@ -2195,7 +2195,7 @@ define_command
       }
 
       //
-      // Explicitly add TS_TYPEDEF to prohibit cases like:
+      // Explicitly add TS_typedef to prohibit cases like:
       //
       //      define eint as extern int
       //      define rint as register int
@@ -2203,11 +2203,11 @@ define_command
       //      ...
       //
       // i.e., a defined type with a storage class.  Once the semantic checks
-      // pass, remove the TS_TYPEDEF.
+      // pass, remove the TS_typedef.
       //
-      PARSE_ASSERT( c_type_add( &$decl_ast->type, &T_TS_TYPEDEF, &@decl_ast ) );
+      PARSE_ASSERT( c_type_add( &$decl_ast->type, &T_TS_typedef, &@decl_ast ) );
       PARSE_ASSERT( c_ast_check( $decl_ast ) );
-      PJL_IGNORE_RV( c_ast_take_type_any( $decl_ast, &T_TS_TYPEDEF ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( $decl_ast, &T_TS_typedef ) );
 
       if ( c_tid_is_any( $decl_ast->type.btids, TB_ANY_SCOPE ) )
         c_sname_set_local_type( &$decl_ast->sname, &$decl_ast->type );
@@ -2893,7 +2893,7 @@ namespace_declaration_c
       //
       // The namespace type (plain namespace or inline namespace) has to be
       // split across the namespace sname: only the storage classes (for
-      // TS_INLINE) has to be or'd with the first scope-type of the sname ...
+      // TS_inline) has to be or'd with the first scope-type of the sname ...
       //
       c_type_t const *const sname_first_type = c_sname_first_type( &$sname );
       c_sname_set_first_type(
@@ -2905,7 +2905,7 @@ namespace_declaration_c
         )
       );
       //
-      // ... and only the base types (for TB_NAMESPACE) has to be or'd with the
+      // ... and only the base types (for TB_namespace) has to be or'd with the
       // local scope type of the sname.
       //
       c_type_t const *const sname_local_type = c_sname_local_type( &$sname );
@@ -2948,7 +2948,7 @@ namespace_sname_c
 
       $$ = $sname;
       c_sname_append_name( &$$, $name );
-      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
+      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_namespace ) );
 
       DUMP_SNAME( "namespace_sname_c", $$ );
       DUMP_END();
@@ -2961,7 +2961,7 @@ namespace_sname_c
       DUMP_AST( "any_typedef__ast", $tdef->ast );
 
       $$ = $sname;
-      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
+      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_namespace ) );
       c_sname_t temp_sname = c_sname_dup( &$tdef->ast->sname );
       c_sname_append_sname( &$$, &temp_sname );
 
@@ -2978,7 +2978,7 @@ namespace_sname_c
       $$ = $sname;
       c_sname_append_name( &$$, $name );
       c_sname_set_local_type( &$$,
-        &C_TYPE_LIT( TB_NAMESPACE, $inline_stid, TA_NONE )
+        &C_TYPE_LIT( TB_namespace, $inline_stid, TA_NONE )
       );
 
       DUMP_SNAME( "namespace_sname_c", $$ );
@@ -2991,7 +2991,7 @@ namespace_sname_c
       DUMP_STR( "NAME", $name );
 
       c_sname_init_name( &$$, $name );
-      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
+      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_namespace ) );
 
       DUMP_SNAME( "sname_c", $$ );
       DUMP_END();
@@ -3045,7 +3045,7 @@ namespace_typedef_sname_c
       $$ = $ns_sname;
       c_sname_append_name( &$$, $name );
       c_sname_set_local_type( &$$,
-        &C_TYPE_LIT( TB_NAMESPACE, $inline_stid, TA_NONE )
+        &C_TYPE_LIT( TB_namespace, $inline_stid, TA_NONE )
       );
 
       DUMP_SNAME( "namespace_typedef_sname_c", $$ );
@@ -3241,9 +3241,9 @@ typedef_declaration_c
     type_c_ast[type_ast]
     {
       PARSE_ASSERT( !in_attr.is_typename || c_ast_is_typename_ok( $type_ast ) );
-      // see the comment in "define_command" about TS_TYPEDEF
+      // see the comment in "define_command" about TS_typedef
       PARSE_ASSERT(
-        c_type_add_tid( &$type_ast->type, TS_TYPEDEF, &@type_ast )
+        c_type_add_tid( &$type_ast->type, TS_typedef, &@type_ast )
       );
 
       //
@@ -3326,8 +3326,8 @@ typedef_decl_c
       }
 
       PARSE_ASSERT( c_ast_check( typedef_ast ) );
-      // see the comment in "define_command" about TS_TYPEDEF
-      PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_TYPEDEF ) );
+      // see the comment in "define_command" about TS_typedef
+      PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_typedef ) );
 
       if ( c_sname_count( &typedef_ast->sname ) > 1 ) {
         print_error( &@decl_astp,
@@ -3376,8 +3376,8 @@ user_defined_conversion_declaration_c
 using_declaration_c
   : using_decl_c_ast[decl_ast]
     {
-      // see the comment in "define_command" about TS_TYPEDEF
-      PJL_IGNORE_RV( c_ast_take_type_any( $decl_ast, &T_TS_TYPEDEF ) );
+      // see the comment in "define_command" about TS_typedef
+      PJL_IGNORE_RV( c_ast_take_type_any( $decl_ast, &T_TS_typedef ) );
 
       PARSE_ASSERT( add_type( $decl_ast, C_GIB_USING ) );
     }
@@ -3407,8 +3407,8 @@ using_decl_c_ast
     any_name_exp[name] attribute_specifier_list_c_atid_opt[atids] equals_exp
     type_c_ast[type_ast]
     {
-      // see the comment in "define_command" about TS_TYPEDEF
-      if ( !c_type_add_tid( &$type_ast->type, TS_TYPEDEF, &@type_ast ) ) {
+      // see the comment in "define_command" about TS_typedef
+      if ( !c_type_add_tid( &$type_ast->type, TS_typedef, &@type_ast ) ) {
         free( $name );
         PARSE_ABORT();
       }
@@ -3810,7 +3810,7 @@ file_scope_constructor_declaration_c
       DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
 
-      c_sname_set_scope_type( &$sname, &C_TYPE_LIT_B( TB_CLASS ) );
+      c_sname_set_scope_type( &$sname, &C_TYPE_LIT_B( TB_class ) );
 
       c_ast_t *const ctor_ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       ctor_ast->sname = c_sname_move( &$sname );
@@ -3843,7 +3843,7 @@ file_scope_destructor_declaration_c
       DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
 
-      c_sname_set_scope_type( &$sname, &C_TYPE_LIT_B( TB_CLASS ) );
+      c_sname_set_scope_type( &$sname, &C_TYPE_LIT_B( TB_class ) );
 
       c_ast_t *const dtor_ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       dtor_ast->sname = c_sname_move( &$sname );
@@ -4025,7 +4025,7 @@ pc99_func_or_constructor_declaration_c
         // it'll be recognized as such.
         //
         c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@name );
-        csu_ast->type.btids = TB_CLASS;
+        csu_ast->type.btids = TB_class;
         c_sname_init_name( &csu_ast->csu.csu_sname, check_strdup( $name ) );
         csu_ast->sname = c_sname_dup( &csu_ast->csu.csu_sname );
 
@@ -4084,7 +4084,7 @@ pc99_func_or_constructor_declaration_c
         //      power(x, n)             /* raise x to n-th power; n > 0 */
         //
         c_ast_t *const ret_ast = c_ast_new_gc( K_BUILTIN, &@name );
-        ret_ast->type.btids = TB_INT;
+        ret_ast->type.btids = TB_int;
 
         ast = c_ast_new_gc( K_FUNCTION, &@$ );
         ast->func.ret_ast = ret_ast;
@@ -4243,7 +4243,7 @@ trailing_return_type_c_ast_opt
       // C++11 and the AST node for the placeholder is discarded and never made
       // part of the AST.
       //
-      if ( ret_ast->type.btids != TB_AUTO ) {
+      if ( ret_ast->type.btids != TB_auto ) {
         print_error( &ret_ast->loc,
           "function with trailing return type must only specify \"auto\"\n"
         );
@@ -4267,7 +4267,7 @@ func_equals_c_stid_opt
         print_error( &@2, "'0' expected\n" );
         PARSE_ABORT();
       }
-      $$ = TS_PURE_VIRTUAL;
+      $$ = TS_PURE_virtual;
     }
   | '=' error
     {
@@ -4557,7 +4557,7 @@ pc99_pointer_type_c_ast
 
       if ( false_set( &in_attr.is_implicit_int ) ) {
         c_ast_t *const int_ast = c_ast_new_gc( K_BUILTIN, &@star );
-        int_ast->type.btids = TB_INT;
+        int_ast->type.btids = TB_int;
         ia_type_ast_push( int_ast );
       }
 
@@ -4613,7 +4613,7 @@ pointer_to_member_type_c_ast
         // struct, but we have no context to know, so just pick class because
         // it's more C++-like.)
         //
-        scope_type.btids = TB_CLASS;
+        scope_type.btids = TB_class;
         c_sname_set_local_type( &$sname, &scope_type );
       }
 
@@ -4696,7 +4696,7 @@ typedef_type_decl_c_ast
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "typedef_type_c_ast", $tdef_ast );
 
-      if ( c_tid_is_any( type_ast->type.stids, TS_TYPEDEF ) ) {
+      if ( c_tid_is_any( type_ast->type.stids, TS_typedef ) ) {
         //
         // If we're defining a type, return the type as-is.
         //
@@ -5259,7 +5259,7 @@ type_c_ast
       //      register k;   // illegal in C99
       //
       c_type_t type = OPT_LANG_IS( IMPLICIT_int ) ?
-        C_TYPE_LIT_B( TB_INT ) : T_NONE;
+        C_TYPE_LIT_B( TB_int ) : T_NONE;
 
       PARSE_ASSERT( c_type_add( &type, &$mod_list_type, &@mod_list_type ) );
 
@@ -5338,7 +5338,7 @@ type_modifier_c_type
       // modifier (except "register" since it's is really a storage class --
       // see the comment in type_modifier_base_type about "register").
       //
-      if ( $$.stids != TS_REGISTER )
+      if ( $$.stids != TS_register )
         lexer_find &= ~LEXER_FIND_TYPES;
     }
   | type_qualifier_c_stid         { $$ = C_TYPE_LIT_S( $1 ); }
@@ -5446,7 +5446,7 @@ atomic_specifier_type_c_ast
         PARSE_ABORT();
       }
 
-      PARSE_ASSERT( c_type_add_tid( &$$->type, TS_ATOMIC, &@atomic ) );
+      PARSE_ASSERT( c_type_add_tid( &$$->type, TS__Atomic, &@atomic ) );
 
       DUMP_AST( "atomic_specifier_type_c_ast", $$ );
       DUMP_END();
@@ -5473,7 +5473,7 @@ builtin_type_c_ast
       DUMP_INT( "int", $width );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$->type.btids = TB_BITINT;
+      $$->type.btids = TB__BitInt;
       $$->builtin.BitInt.width = STATIC_CAST( unsigned, $width );
 
       DUMP_AST( "builtin_type_c_ast", $$ );
@@ -5798,7 +5798,7 @@ restrict_qualifier_c_stid
   : Y_restrict                          // C only
     { //
       // This check has to be done now in the parser rather than later in the
-      // AST since both "restrict" and "__restrict" map to TS_RESTRICT and the
+      // AST since both "restrict" and "__restrict" map to TS_restrict and the
       // AST has no "memory" of which it was.
       //
       if ( OPT_LANG_IS( CPP_ANY ) ) {
@@ -6433,7 +6433,7 @@ returning_english_ast_opt
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       // see the comment in "type_c_ast"
-      $$->type.btids = OPT_LANG_IS( IMPLICIT_int ) ? TB_INT : TB_VOID;
+      $$->type.btids = OPT_LANG_IS( IMPLICIT_int ) ? TB_int : TB_void;
 
       DUMP_AST( "returning_english_ast_opt", $$ );
       DUMP_END();
@@ -6514,17 +6514,17 @@ type_qualifier_english_type
   ;
 
 attribute_english_atid
-  : Y_carries dependency_exp      { $$ = TA_CARRIES_DEPENDENCY; }
+  : Y_carries dependency_exp      { $$ = TA_carries_dependency; }
   | Y_carries_dependency
   | Y_deprecated
-  | Y_maybe unused_exp            { $$ = TA_MAYBE_UNUSED; }
+  | Y_maybe unused_exp            { $$ = TA_maybe_unused; }
   | Y_maybe_unused
-  | Y_no Y_discard                { $$ = TA_NODISCARD; }
+  | Y_no Y_discard                { $$ = TA_nodiscard; }
   | Y_nodiscard
-  | Y_no Y_return                 { $$ = TA_NORETURN; }
+  | Y_no Y_return                 { $$ = TA_noreturn; }
   | Y__Noreturn
   | Y_noreturn
-  | Y_no Y_unique address_exp     { $$ = TA_NO_UNIQUE_ADDRESS; }
+  | Y_no Y_unique address_exp     { $$ = TA_no_unique_address; }
   | Y_no_unique_address
   | Y_reproducible
   | Y_unsequenced
@@ -6553,26 +6553,26 @@ storage_class_english_stid
   | Y_friend
   | Y_inline
   | Y_mutable
-  | Y_no Y_except                 { $$ = TS_NOEXCEPT; }
+  | Y_no Y_except                 { $$ = TS_noexcept; }
   | Y_noexcept
   | Y_non_empty                   { $$ = TS_NON_EMPTY_ARRAY; }
   | Y_override
 //| Y_register                          // in type_modifier_list_english_type
   | Y_static
   | Y_this
-  | Y_thread local_exp            { $$ = TS_THREAD_LOCAL; }
+  | Y_thread local_exp            { $$ = TS_thread_local; }
   | Y__Thread_local
   | Y_thread_local
   | Y_throw
   | Y_typedef
   | Y_virtual
-  | Y_pure virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
+  | Y_pure virtual_stid_exp       { $$ = TS_PURE_virtual | $2; }
   ;
 
 eval_expr_init_stid
-  : Y_evaluation                  { $$ = TS_CONSTEVAL; }
-  | Y_expression                  { $$ = TS_CONSTEXPR; }
-  | Y_initialization              { $$ = TS_CONSTINIT; }
+  : Y_evaluation                  { $$ = TS_consteval; }
+  | Y_expression                  { $$ = TS_constexpr; }
+  | Y_initialization              { $$ = TS_constinit; }
   //
   // Normally, this rule would be named eval_expr_init_stid_exp and there would
   // be "| error" as the last alternate.  However, this rule is only ever
@@ -6588,7 +6588,7 @@ linkage_stid
       bool ok = true;
 
       if ( strcmp( $str, "C" ) == 0 )
-        $$ = TS_EXTERN_C;
+        $$ = TS_extern_C;
       else if ( strcmp( $str, "C++" ) == 0 )
         $$ = TS_NONE;
       else {
@@ -6841,7 +6841,7 @@ type_english_ast
 
       // see the comment in "type_c_ast"
       c_type_t new_type =
-        C_TYPE_LIT_B( OPT_LANG_IS( IMPLICIT_int ) ? TB_INT : TB_NONE );
+        C_TYPE_LIT_B( OPT_LANG_IS( IMPLICIT_int ) ? TB_int : TB_NONE );
 
       PARSE_ASSERT( c_type_add( &new_type, &$type, &@type ) );
 
@@ -6908,7 +6908,7 @@ builtin_type_english_ast
       DUMP_INT( "int", $width );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$->type.btids = TB_BITINT;
+      $$->type.btids = TB__BitInt;
       $$->builtin.BitInt.width = STATIC_CAST( unsigned, $width );
 
       DUMP_AST( "builtin_type_english_ast", $$ );
@@ -6924,10 +6924,10 @@ builtin_no_BitInt_english_btid
   | Y_char int_lit_opt[bits]
     {
       switch ( $bits ) {
-        case  0: $$ = TB_CHAR    ; break;
-        case  8: $$ = TB_CHAR8_T ; break;
-        case 16: $$ = TB_CHAR16_T; break;
-        case 32: $$ = TB_CHAR32_T; break;
+        case  0: $$ = TB_char    ; break;
+        case  8: $$ = TB_char8_t ; break;
+        case 16: $$ = TB_char16_t; break;
+        case 32: $$ = TB_char32_t; break;
         default:
           print_error( &@bits, "bits must be one of 8, 16, or 32\n" );
           PARSE_ABORT();
@@ -6937,11 +6937,11 @@ builtin_no_BitInt_english_btid
   | Y_char16_t
   | Y_char32_t
   | Y_wchar_t
-  | Y_wide char_exp               { $$ = TB_WCHAR_T; }
+  | Y_wide char_exp               { $$ = TB_wchar_t; }
   | Y_int
   | Y_float
-  | Y_floating point_exp          { $$ = TB_FLOAT; }
-  | Y_double precision_opt        { $$ = TB_DOUBLE; }
+  | Y_floating point_exp          { $$ = TB_float; }
+  | Y_double precision_opt        { $$ = TB_double; }
   | Y_EMC__Accum
   | Y_EMC__Fract
   ;
@@ -7191,7 +7191,7 @@ typedef_type_c_ast
 
       if ( c_sname_empty( &$sname ) ) {
 ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
-        $$->type.btids = TB_TYPEDEF;
+        $$->type.btids = TB_typedef;
         $$->tdef.for_ast = type_for_ast;
       }
       else {
@@ -7404,7 +7404,7 @@ sname_english_ast
       c_typedef_t const *const tdef = c_typedef_find_sname( &sname );
       if ( tdef != NULL ) {
         $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
-        $$->type.btids = TB_TYPEDEF;
+        $$->type.btids = TB_typedef;
         $$->tdef.for_ast = tdef->ast;
         c_sname_cleanup( &sname );
       } else {

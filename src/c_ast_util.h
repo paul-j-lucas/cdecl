@@ -204,18 +204,18 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  * Checks whether \a ast is an AST for a pointer to another AST having \a type;
  * or a `typedef` thereof.  For example:
  *
- *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT_B(TB_CHAR) )`
+ *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT_B(TB_char) )`
  *    @par
  *    Returns `true` only if \a ast is pointer to `char` (`char*`) _exactly_.
  *
- *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT(TB_CHAR, TS_CONST,
+ *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT(TB_char, TS_const,
  *    TA_NONE) )`
  *    @par
  *    Returns `true` only if \a ast is a pointer to `const char` (`char
  *    const*`) _exactly_.
  *
  *  + <code>c_ast_is_ptr_to_type_any( ast, &%C_TYPE_LIT_S_ANY(c_tid_compl(
- *    TS_CONST )), &%C_TYPE_LIT_B(TB_CHAR) )</code>
+ *    TS_const )), &%C_TYPE_LIT_B(TB_char) )</code>
  *    @par
  *    Returns `true` only if \a ast is a pointer to `char` regardless of
  *    `const` (`char*` or `char const*`).
@@ -615,7 +615,7 @@ bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
 NODISCARD C_AST_UTIL_H_INLINE
 bool c_ast_print_as_using( c_ast_t const *ast ) {
   return  opt_using && OPT_LANG_IS( using_DECLS ) &&
-          c_tid_is_any( ast->type.stids, TS_TYPEDEF );
+          c_tid_is_any( ast->type.stids, TS_typedef );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -743,7 +743,7 @@ c_func_member_t c_ast_oper_overload( c_ast_t const *ast ) {
       // they have a name (of a class) or declared static.
       //
       return  !c_sname_empty( &ast->sname ) ||
-              c_tid_is_any( ast->type.stids, TS_STATIC ) ?
+              c_tid_is_any( ast->type.stids, TS_static ) ?
         C_FUNC_MEMBER : C_FUNC_NON_MEMBER;
 
     case C_OP_MINUS2:
@@ -757,7 +757,7 @@ c_func_member_t c_ast_oper_overload( c_ast_t const *ast ) {
       //
       if ( n_params == 1 ) {
         c_ast_t const *const param_ast = c_param_ast( c_ast_params( ast ) );
-        return c_ast_is_builtin_any( param_ast, TB_INT ) ?
+        return c_ast_is_builtin_any( param_ast, TB_int ) ?
           C_FUNC_MEMBER : C_FUNC_NON_MEMBER;
       }
       // The 0 and 2 cases are handled below.

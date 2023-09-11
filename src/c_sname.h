@@ -51,9 +51,9 @@ _GL_INLINE_HEADER_BEGIN
  * Functions for dealing with "sname" (C++ scoped name) objects, e.g.,
  * `S::T::x`.
  *
- * + An sname also has a type for each scope, one of of #TB_CLASS,
- *   #TB_NAMESPACE (and possibly #TS_INLINE), #TB_SCOPE, #TB_STRUCT, or
- *   #TB_UNION.
+ * + An sname also has a type for each scope, one of of #TB_class,
+ *   #TB_namespace (and possibly #TS_inline), #TB_SCOPE, #TB_struct, or
+ *   #TB_union.
  *
  * + The "local" of an sname is the innermost scope, e.g., `x`.  A non-empty
  *   sname always has a local.
@@ -123,8 +123,8 @@ struct c_scope_data {
   char const *name;
 
   /**
-   * The scope's type, one of: #TB_CLASS, #TB_STRUCT, #TB_UNION, [#TS_INLINE]
-   * #TB_NAMESPACE, or #TB_SCOPE.
+   * The scope's type, one of: #TB_class, #TB_struct, #TB_union, [#TS_inline]
+   * #TB_namespace, or #TB_SCOPE.
    */
   c_type_t type;
 };
@@ -264,9 +264,9 @@ bool c_sname_empty( c_sname_t const *sname ) {
 }
 
 /**
- * If the local scope-type of \a sname is #TB_NAMESPACE, make all scope-types
+ * If the local scope-type of \a sname is #TB_namespace, make all scope-types
  * of all enclosing scopes that are either #TB_NONE or #TB_SCOPE also be
- * #TB_NAMESPACE since a namespace can only nest within another namespace.
+ * #TB_namespace since a namespace can only nest within another namespace.
  *
  * @param sname The scoped name to fill in namespaces.
  *

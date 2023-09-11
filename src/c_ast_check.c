@@ -53,7 +53,7 @@
 /**
  * Storage-class-like types that are _not_ legal with `constexpr` in C only.
  */
-#define TS_NOT_CONSTEXPR_C_ONLY   ( TS_ATOMIC | TS_RESTRICT | TS_VOLATILE )
+#define TS_NOT_CONSTEXPR_C_ONLY   ( TS__Atomic | TS_restrict | TS_volatile )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -265,7 +265,7 @@ static inline bool c_ast_is_capture_this( c_ast_t const *ast ) {
  */
 NODISCARD
 static inline bool c_ast_is_register( c_ast_t const *ast ) {
-  return c_tid_is_any( ast->type.stids, TS_REGISTER );
+  return c_tid_is_any( ast->type.stids, TS_register );
 }
 
 /**
@@ -326,7 +326,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
   if ( ast->align.kind == C_ALIGNAS_NONE )
     return true;
 
-  if ( c_tid_is_any( ast->type.stids, TS_TYPEDEF ) ) {
+  if ( c_tid_is_any( ast->type.stids, TS_typedef ) ) {
     print_error( &ast->align.loc, "types can not be aligned\n" );
     return false;
   }
@@ -394,8 +394,8 @@ static bool c_ast_check_array( c_ast_t const *ast, c_state_t const *c ) {
   assert( ast->kind == K_ARRAY );
   assert( c != NULL );
 
-  if ( c_tid_is_any( ast->type.stids, TS_ATOMIC ) ) {
-    error_kind_not_tid( ast, TS_ATOMIC, LANG_NONE, "\n" );
+  if ( c_tid_is_any( ast->type.stids, TS__Atomic ) ) {
+    error_kind_not_tid( ast, TS__Atomic, LANG_NONE, "\n" );
     return false;
   }
 
@@ -478,7 +478,7 @@ static bool c_ast_check_array( c_ast_t const *ast, c_state_t const *c ) {
       break;
 
     case K_BUILTIN:
-      if ( c_ast_is_builtin_any( raw_of_ast, TB_VOID ) ) {
+      if ( c_ast_is_builtin_any( raw_of_ast, TB_void ) ) {
         print_error( &ast->loc, "array of void" );
         print_hint( "array of pointer to void" );
         return false;
@@ -552,7 +552,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_state_t const *c ) {
     return false;
   }
 
-  if ( c_tid_is_any( ast->type.stids, TS_INLINE ) &&
+  if ( c_tid_is_any( ast->type.stids, TS_inline ) &&
        !OPT_LANG_IS( inline_VARIABLES ) ) {
     print_error( &ast->loc,
       "inline variables not supported%s\n",
@@ -561,9 +561,9 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_state_t const *c ) {
     return false;
   }
 
-  if ( c_tid_is_any( ast->type.btids, TB_BITINT ) ) {
+  if ( c_tid_is_any( ast->type.btids, TB__BitInt ) ) {
     unsigned const min_bits =
-      1u + !c_tid_is_any( ast->type.btids, TB_UNSIGNED );
+      1u + !c_tid_is_any( ast->type.btids, TB_unsigned );
     if ( ast->builtin.BitInt.width < min_bits ) {
       print_error( &ast->loc,
         "%s must be at least %u bit%s\n",
@@ -584,7 +584,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_state_t const *c ) {
       print_error( &ast->loc, "scoped names can not have bit-field widths\n" );
       return false;
     }
-    if ( c_tid_is_any( ast->type.atids, TA_NO_UNIQUE_ADDRESS ) ) {
+    if ( c_tid_is_any( ast->type.atids, TA_no_unique_address ) ) {
       print_error( &ast->loc,
         "[[no_unique_address]] %ss can not have bit-field widths\n",
         c_kind_name( ast->kind )
@@ -600,7 +600,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_state_t const *c ) {
     }
   }
 
-  if ( c_ast_is_builtin_any( ast, TB_VOID ) &&
+  if ( c_ast_is_builtin_any( ast, TB_void ) &&
        //
        // If we're of type void and:
        //
@@ -614,8 +614,8 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_state_t const *c ) {
        //
        ast->parent_ast == NULL &&
        ast->kind != K_CAST &&
-       !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) &&
-       !(OPT_LANG_IS( C_ANY ) && c_tid_is_any( ast->type.stids, TS_EXTERN )) &&
+       !c_tid_is_any( ast->type.stids, TS_typedef ) &&
+       !(OPT_LANG_IS( C_ANY ) && c_tid_is_any( ast->type.stids, TS_extern )) &&
        !c->is_pointee ) {
     print_error( &ast->loc, "variable of void" );
     print_hint( "pointer to void" );
@@ -650,7 +650,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   }
 
   c_ast_t const *const leaf_ast = c_ast_leaf( ast );
-  if ( c_ast_is_tid_any( leaf_ast, TB_AUTO ) ) {
+  if ( c_ast_is_tid_any( leaf_ast, TB_auto ) ) {
     print_error( &leaf_ast->loc,
       "can not cast into \"%s\"\n",
       c_type_name_error( &leaf_ast->type )
@@ -698,7 +698,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       break;
 
     case C_CAST_REINTERPRET:
-      if ( c_ast_is_builtin_any( to_ast, TB_VOID ) ) {
+      if ( c_ast_is_builtin_any( to_ast, TB_void ) ) {
         print_error( &to_ast->loc, "reinterpret_cast can not be to void\n" );
         return false;
       }
@@ -780,7 +780,7 @@ static bool c_ast_check_emc( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
 
-  if ( c_tid_is_any( ast->type.btids, TB_EMC_SAT ) &&
+  if ( c_tid_is_any( ast->type.btids, TB_EMC__Sat ) &&
       !c_tid_is_any( ast->type.btids, TB_ANY_EMC ) ) {
     print_error( &ast->loc,
       "\"_Sat\" requires either \"_Accum\" or \"_Fract\"\n"
@@ -803,8 +803,8 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
   assert( ast->kind == K_ENUM );
 
   if ( cdecl_mode == CDECL_GIBBERISH_TO_ENGLISH &&
-       c_tid_is_any( ast->type.btids, TB_STRUCT | TB_CLASS ) &&
-      !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) ) {
+       c_tid_is_any( ast->type.btids, TB_struct | TB_class ) &&
+      !c_tid_is_any( ast->type.stids, TS_typedef ) ) {
     print_error( &ast->loc,
       "\"%s\": enum classes must just use \"enum\"\n",
       c_type_name_error( &ast->type )
@@ -885,7 +885,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     return true;
 
   c_ast_t const *param_ast = c_param_ast( c_ast_params( ast ) );
-  if ( param_ast != NULL && c_ast_is_tid_any( param_ast, TS_THIS ) &&
+  if ( param_ast != NULL && c_ast_is_tid_any( param_ast, TS_this ) &&
        c_ast_is_tid_any( ast, TS_FUNC_LIKE_NOT_EXPLICIT_OBJ_PARAM ) ) {
     print_error( &param_ast->loc,
       "%s with \"this\" parameter can not be %s\n",
@@ -895,8 +895,8 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( c_tid_is_any( ast->type.stids, TS_CONSTINIT ) ) {
-    error_kind_not_tid( ast, TS_CONSTINIT, LANG_NONE, "\n" );
+  if ( c_tid_is_any( ast->type.stids, TS_constinit ) ) {
+    error_kind_not_tid( ast, TS_constinit, LANG_NONE, "\n" );
     return false;
   }
 
@@ -938,10 +938,10 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
       // Member functions can't have linkage -- except the new & delete
       // operators may have static explicitly specified.
       //
-      c_tid_t linkage_stids = TS_EXTERN | TS_EXTERN_C;
+      c_tid_t linkage_stids = TS_extern | TS_extern_C;
       if ( ast->kind == K_OPERATOR &&
            !c_oper_is_new_delete( ast->oper.operator->oper_id ) ) {
-        linkage_stids |= TS_STATIC;
+        linkage_stids |= TS_static;
       }
       if ( c_tid_is_any( ast->type.stids, linkage_stids ) ) {
         print_error( &ast->loc,
@@ -968,7 +968,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
       break;
   } // switch
 
-  if ( c_tid_is_any( ast->type.stids, TS_DEFAULT | TS_DELETE ) ) {
+  if ( c_tid_is_any( ast->type.stids, TS_default | TS_delete ) ) {
     switch ( ast->kind ) {
       case K_CONSTRUCTOR:
         switch ( c_ast_params_count( ast ) ) {
@@ -990,7 +990,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
 
       case K_FUNCTION:
       case K_USER_DEF_CONVERSION:
-        if ( c_tid_is_any( ast->type.stids, TS_DEFAULT ) )
+        if ( c_tid_is_any( ast->type.stids, TS_default ) )
           goto only_special;
         break;
 
@@ -1018,7 +1018,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
           case C_OP_LESS:
           case C_OP_LESS_EQUAL:
           case C_OP_LESS_EQUAL_GREATER:
-            if ( c_tid_is_any( ast->type.stids, TS_DELETE ) )
+            if ( c_tid_is_any( ast->type.stids, TS_delete ) )
               goto only_special;
             //
             // Detailed checks for defaulted overloaded relational operators
@@ -1048,7 +1048,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( c_tid_is_any( ast->type.stids, TS_VIRTUAL ) ) {
+  if ( c_tid_is_any( ast->type.stids, TS_virtual ) ) {
     if ( c_sname_count( &ast->sname ) > 1 ) {
       print_error( &ast->loc,
         "\"%s\": virtual can not be used in file-scoped %ss\n",
@@ -1057,7 +1057,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
       return false;
     }
   }
-  else if ( c_tid_is_any( ast->type.stids, TS_PURE_VIRTUAL ) ) {
+  else if ( c_tid_is_any( ast->type.stids, TS_PURE_virtual ) ) {
     print_error( &ast->loc,
       "non-virtual %s can not be pure\n", c_kind_name( ast->kind )
     );
@@ -1071,7 +1071,7 @@ only_special:
     "\"%s\" can be used only for special member functions%s\n",
     c_type_name_error( &ast->type ),
     OPT_LANG_IS( default_RELOPS ) &&
-    c_tid_is_any( ast->type.stids, TS_DEFAULT ) ?
+    c_tid_is_any( ast->type.stids, TS_default ) ?
       " and relational operators" : ""
   );
   return false;
@@ -1098,7 +1098,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
   }
 
   c_ast_t const *const ret_ast = ast->func.ret_ast;
-  if ( !c_ast_is_builtin_any( ret_ast, TB_INT ) ) {
+  if ( !c_ast_is_builtin_any( ret_ast, TB_int ) ) {
     print_error( &ret_ast->loc, "main() must return int\n" );
     return false;
   }
@@ -1120,7 +1120,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
         );
         return false;
       }
-      if ( !c_ast_is_builtin_any( param_ast, TB_VOID ) ) {
+      if ( !c_ast_is_builtin_any( param_ast, TB_void ) ) {
         print_error( &param_ast->loc,
           "a single parameter for main() must be void\n"
         );
@@ -1132,7 +1132,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
     case 3:                             // main(int, char *argv[], char *envp[])
       if ( OPT_LANG_IS( PROTOTYPES ) ) {
         param_ast = c_param_ast( param );
-        if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
+        if ( !c_ast_is_builtin_any( param_ast, TB_int ) ) {
           print_error( &param_ast->loc,
             "main()'s first parameter must be int\n"
           );
@@ -1178,8 +1178,8 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
     case K_ARRAY:                       // char *argv[]
     case K_POINTER:                     // char **argv
       if ( !c_ast_is_ptr_to_type_any( param_ast->parent.of_ast,
-              &C_TYPE_LIT_S_ANY( c_tid_compl( TS_CONST ) ),
-              &C_TYPE_LIT_B( TB_CHAR ) ) ) {
+              &C_TYPE_LIT_S_ANY( c_tid_compl( TS_const ) ),
+              &C_TYPE_LIT_B( TB_char ) ) ) {
         print_error( &param_ast->loc,
           "this parameter of main() must be %s %s pointer to [const] char\n",
           c_kind_name( param_ast->kind ),
@@ -1216,7 +1216,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
 
     if ( ++n_params > 1 ) {
-      if ( c_ast_is_tid_any( param_ast, TS_THIS ) ) {
+      if ( c_ast_is_tid_any( param_ast, TS_this ) ) {
         print_error( &param_ast->loc,
           "\"this\" can be only first parameter\n"
         );
@@ -1249,7 +1249,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
     switch ( raw_param_ast->kind ) {
       case K_BUILTIN:
-        if ( c_tid_is_any( raw_param_ast->type.btids, TB_AUTO ) &&
+        if ( c_tid_is_any( raw_param_ast->type.btids, TB_auto ) &&
              !OPT_LANG_IS( auto_PARAMETERS ) ) {
           print_error( &param_ast->loc,
             "parameters can not be \"auto\"%s\n",
@@ -1257,7 +1257,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           );
           return false;
         }
-        if ( c_ast_is_builtin_any( raw_param_ast, TB_VOID ) ) {
+        if ( c_ast_is_builtin_any( raw_param_ast, TB_void ) ) {
           //
           // Ordinarily, void parameters are invalid; but a single void
           // function "parameter" is valid (as long as it has neither a name
@@ -1627,7 +1627,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   }
 
   if ( op->overload == C_OVERLOAD_MEMBER &&
-       c_tid_is_any( ast->type.stids, TS_STATIC ) ) {
+       c_tid_is_any( ast->type.stids, TS_static ) ) {
     c_lang_id_t ok_lang_ids = LANG_NONE;
     switch ( op->oper_id ) {
       case C_OP_PARENS:
@@ -1679,7 +1679,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       //
       // Special case for operators delete and delete[] that must return void.
       //
-      if ( !c_ast_is_builtin_any( ret_ast, TB_VOID ) ) {
+      if ( !c_ast_is_builtin_any( ret_ast, TB_void ) ) {
         print_error( &ret_ast->loc,
           "operator %s must return void\n", op->literal
         );
@@ -1693,7 +1693,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       // Special case for operators new and new[] that must return pointer to
       // void.
       //
-      if ( !c_ast_is_ptr_to_tid_any( ret_ast, TB_VOID ) ) {
+      if ( !c_ast_is_ptr_to_tid_any( ret_ast, TB_void ) ) {
         print_error( &ret_ast->loc,
           "operator %s must return a pointer to void\n", op->literal
         );
@@ -1705,7 +1705,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  if ( c_tid_is_any( ast->type.stids, TS_DEFAULT ) &&
+  if ( c_tid_is_any( ast->type.stids, TS_default ) &&
        !c_ast_check_oper_default( ast ) ) {
     return false;
   }
@@ -1723,7 +1723,7 @@ NODISCARD
 static bool c_ast_check_oper_default( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
-  assert( c_tid_is_any( ast->type.stids, TS_DEFAULT ) );
+  assert( c_tid_is_any( ast->type.stids, TS_default ) );
 
   switch ( ast->oper.operator->oper_id ) {
     case C_OP_EQUAL:
@@ -1773,7 +1773,7 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
   assert( param != NULL );
   c_ast_t const *const param_ast = c_param_ast( param );
 
-  if ( !c_ast_is_ptr_to_tid_any( param_ast, TB_VOID | TB_ANY_CLASS ) ) {
+  if ( !c_ast_is_ptr_to_tid_any( param_ast, TB_void | TB_ANY_CLASS ) ) {
     print_error( &param_ast->loc,
       "invalid parameter type for operator %s; "
       "must be a pointer to void, class, struct, or union\n",
@@ -1953,7 +1953,7 @@ same: print_error( c_ast_params_loc( ast ),
       // then it's a member of S and not a member of the class that it's
       // presumably being declared within.
       //
-      if ( c_tid_is_any( ast->type.stids, TS_FRIEND ) &&
+      if ( c_tid_is_any( ast->type.stids, TS_friend ) &&
            c_sname_empty( &ast->sname ) ) {
         print_error( &ast->loc, "member operators can not be friend\n" );
         return false;
@@ -1983,7 +1983,7 @@ same: print_error( c_ast_params_loc( ast ),
       // At this point, it's either member or non-member postfix:
       // operator++(int) or operator++(S&,int).
       c_ast_t const *const param_ast = c_param_ast( param );
-      if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
+      if ( !c_ast_is_builtin_any( param_ast, TB_int ) ) {
         print_error( &param_ast->loc,
           "parameter of postfix %soperator %s must be int\n",
           member_or_nonmember, op->literal
@@ -2018,7 +2018,7 @@ NODISCARD
 static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
-  assert( c_tid_is_any( ast->type.stids, TS_DEFAULT ) );
+  assert( c_tid_is_any( ast->type.stids, TS_default ) );
 
   // number of parameters checked in c_ast_check_oper_params()
 
@@ -2038,7 +2038,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
 
   switch ( c_ast_oper_overload( ast ) ) {
     case C_FUNC_NON_MEMBER: {
-      if ( !c_tid_is_any( ast->type.stids, TS_FRIEND ) ) {
+      if ( !c_tid_is_any( ast->type.stids, TS_friend ) ) {
         print_error( &ast->loc,
           "default non-member operator %s must also be friend\n", op->literal
         );
@@ -2073,7 +2073,7 @@ rel_2par: print_error( &ast->loc,
     }
 
     case C_FUNC_MEMBER: {
-      if ( !c_tid_is_any( ast->type.stids, TS_CONST ) ) {
+      if ( !c_tid_is_any( ast->type.stids, TS_const ) ) {
         print_error( &ast->loc,
           "default member operator %s must also be const\n", op->literal
         );
@@ -2118,7 +2118,7 @@ rel_2par: print_error( &ast->loc,
       std_weak_ordering_ast =
         c_typedef_find_name( "std::weak_ordering" )->ast;
     }
-    if ( !c_ast_is_builtin_any( ret_ast, TB_AUTO ) &&
+    if ( !c_ast_is_builtin_any( ret_ast, TB_auto ) &&
          raw_ret_ast != std_partial_ordering_ast &&
          raw_ret_ast != std_strong_ordering_ast &&
          raw_ret_ast != std_weak_ordering_ast ) {
@@ -2132,10 +2132,10 @@ rel_2par: print_error( &ast->loc,
       return false;
     }
   }
-  else if ( !c_ast_is_builtin_any( ret_ast, TB_BOOL ) ) {
+  else if ( !c_ast_is_builtin_any( ret_ast, TB_bool ) ) {
     print_error( &ret_ast->loc,
       "operator %s must return %s\n",
-      op->literal, c_tid_name_error( TB_BOOL )
+      op->literal, c_tid_name_error( TB_bool )
     );
     return false;
   }
@@ -2171,7 +2171,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
       }
       return false;
     case K_BUILTIN:
-      if ( c_tid_is_any( raw_to_ast->type.btids, TB_AUTO ) &&
+      if ( c_tid_is_any( raw_to_ast->type.btids, TB_auto ) &&
            !OPT_LANG_IS( auto_POINTER_TYPES ) ) {
         print_error( &ast->loc,
           "\"auto\" with pointer declarator not supported%s\n",
@@ -2191,7 +2191,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   } // switch
 
   if ( c_ast_is_register( to_ast ) ) {
-    error_kind_to_tid( ast, TS_REGISTER, "\n" );
+    error_kind_to_tid( ast, TS_register, "\n" );
     return false;
   }
 
@@ -2218,8 +2218,8 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 
   c_ast_t const *const to_ast = ast->ptr_ref.to_ast;
 
-  if ( c_ast_is_builtin_any( to_ast, TB_VOID ) ) {
-    error_kind_to_tid( ast, TB_VOID, "" );
+  if ( c_ast_is_builtin_any( to_ast, TB_void ) ) {
+    error_kind_to_tid( ast, TB_void, "" );
     print_hint( "pointer to void" );
     return false;
   }
@@ -2251,7 +2251,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       print_hint( "%s returning pointer", kind_name );
       return false;
     case K_BUILTIN:
-      if ( c_tid_is_any( raw_ret_ast->type.btids, TB_AUTO ) &&
+      if ( c_tid_is_any( raw_ret_ast->type.btids, TB_auto ) &&
            !OPT_LANG_IS( auto_RETURN_TYPES ) ) {
         print_error( &ret_ast->loc,
           "%s returning \"auto\" not supported%s\n",
@@ -2285,7 +2285,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  if ( c_tid_is_any( ast->type.stids, TS_EXPLICIT ) ) {
+  if ( c_tid_is_any( ast->type.stids, TS_explicit ) ) {
     c_lang_id_t which_lang_ids = LANG_NONE;
     switch ( ast->kind ) {
       case K_USER_DEF_CONVERSION:
@@ -2294,7 +2294,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
         which_lang_ids = LANG_explicit_USER_DEF_CONVS;
         FALLTHROUGH;
       default:
-        error_kind_not_tid( ast, TS_EXPLICIT, which_lang_ids, "\n" );
+        error_kind_not_tid( ast, TS_explicit, which_lang_ids, "\n" );
         return false;
     } // switch
   }
@@ -2317,7 +2317,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
     error_kind_not_tid( ast, ast->type.stids, LANG_NONE, "\n" );
     return false;
   }
-  if ( c_tid_is_any( ast->type.stids, TS_FRIEND ) &&
+  if ( c_tid_is_any( ast->type.stids, TS_friend ) &&
        c_sname_empty( &ast->sname ) ) {
     print_error( &ast->loc,
       "friend user-defined conversion operator must use qualified name\n"
@@ -2364,18 +2364,18 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
 
     case 1:
       switch ( raw_param_ast->type.btids ) {
-        case TB_CHAR:
-        case TB_CHAR8_T:
-        case TB_CHAR16_T:
-        case TB_CHAR32_T:
-        case TB_WCHAR_T:
-        case TB_UNSIGNED | TB_LONG | TB_LONG_LONG:
-        case TB_UNSIGNED | TB_LONG | TB_LONG_LONG | TB_INT:
-        case TB_LONG | TB_DOUBLE:
+        case TB_char:
+        case TB_char8_t:
+        case TB_char16_t:
+        case TB_char32_t:
+        case TB_wchar_t:
+        case TB_unsigned | TB_long | TB_long_long:
+        case TB_unsigned | TB_long | TB_long_long | TB_int:
+        case TB_long | TB_double:
           break;
         default:                        // check for: char const*
           if ( !c_ast_is_ptr_to_type_any( param_ast,
-                  &T_ANY, &C_TYPE_LIT( TB_CHAR, TS_CONST, TA_NONE ) ) ) {
+                  &T_ANY, &C_TYPE_LIT( TB_char, TS_const, TA_NONE ) ) ) {
             print_error( &param_ast->loc,
               "invalid parameter type for user-defined literal; "
               "must be one of: "
@@ -2397,7 +2397,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
     case 2:
       ptr_to_ast = c_ast_unpointer( raw_param_ast );
       if ( ptr_to_ast == NULL ||
-          !(c_ast_is_tid_any( ptr_to_ast, TS_CONST ) &&
+          !(c_ast_is_tid_any( ptr_to_ast, TS_const ) &&
             c_ast_is_tid_any( ptr_to_ast, TB_ANY_CHAR )) ) {
         print_error( &param_ast->loc,
           "invalid parameter type for user-defined literal; must be one of: "
@@ -2440,8 +2440,8 @@ static bool c_ast_check_upc( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
 
-  if ( c_tid_is_any( ast->type.stids, TS_UPC_RELAXED | TS_UPC_STRICT ) &&
-      !c_tid_is_any( ast->type.stids, TS_UPC_SHARED ) ) {
+  if ( c_tid_is_any( ast->type.stids, TS_UPC_relaxed | TS_UPC_strict ) &&
+      !c_tid_is_any( ast->type.stids, TS_UPC_shared ) ) {
     print_error( &ast->loc,
       "\"%s\" requires \"shared\"\n", c_type_name_error( &ast->type )
     );
@@ -2542,7 +2542,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
         return VISITOR_ERROR_FOUND;
       }
 
-      if ( c_tid_is_any( ast->type.stids, TS_THROW ) &&
+      if ( c_tid_is_any( ast->type.stids, TS_throw ) &&
            !OPT_LANG_IS( throw ) ) {
         print_error( &ast->loc,
           "\"throw\" not supported%s",
@@ -2627,7 +2627,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
   } // switch
 
   if ( ast->kind != K_FUNCTION &&
-       c_tid_is_any( ast->type.stids, TS_CONSTEVAL ) ) {
+       c_tid_is_any( ast->type.stids, TS_consteval ) ) {
     print_error( &ast->loc, "only functions can be consteval\n" );
     return VISITOR_ERROR_FOUND;
   }
@@ -2674,9 +2674,9 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
   }
 
   if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
-    if ( c_tid_is_any( ast->type.stids, TS_CONSTEXPR ) &&
+    if ( c_tid_is_any( ast->type.stids, TS_constexpr ) &&
          !OPT_LANG_IS( constexpr_RETURN_TYPES ) &&
-         c_ast_is_builtin_any( ast->func.ret_ast, TB_VOID ) ) {
+         c_ast_is_builtin_any( ast->func.ret_ast, TB_void ) ) {
       print_error( &ast->loc,
         "%s %s is illegal%s\n",
         c_tid_name_error( ast->type.stids ),
@@ -2698,11 +2698,11 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
       return VISITOR_ERROR_FOUND;
     }
 
-    if ( c_tid_is_any( ast->type.stids, TS_CONSTEXPR ) &&
+    if ( c_tid_is_any( ast->type.stids, TS_constexpr ) &&
          OPT_LANG_IS( C_ANY ) &&
          c_tid_is_any( ast->type.stids, TS_NOT_CONSTEXPR_C_ONLY ) ) {
       error_tid_not_tid( ast,
-        TS_CONSTEXPR, ast->type.stids & TS_NOT_CONSTEXPR_C_ONLY, " in C\n"
+        TS_constexpr, ast->type.stids & TS_NOT_CONSTEXPR_C_ONLY, " in C\n"
       );
       return VISITOR_ERROR_FOUND;
     }
@@ -2714,7 +2714,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
     }
   }
 
-  if ( c_ast_is_tid_any( ast, TS_RESTRICT ) ) {
+  if ( c_ast_is_tid_any( ast, TS_restrict ) ) {
     c_ast_t const *const raw_ast = c_ast_untypedef( ast );
     switch ( raw_ast->kind ) {
       case K_ARRAY:                     // legal in C; __restrict legal in C++
@@ -2734,13 +2734,13 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
           print_error( &ast->loc,
             "pointer to %s can not be %s\n",
             c_kind_name( c_ast_unpointer( ast )->kind ),
-            c_tid_name_error( TS_RESTRICT )
+            c_tid_name_error( TS_restrict )
           );
           return VISITOR_ERROR_FOUND;
         }
         break;
       default:
-        error_kind_not_tid( raw_ast, TS_RESTRICT, LANG_NONE, "\n" );
+        error_kind_not_tid( raw_ast, TS_restrict, LANG_NONE, "\n" );
         return VISITOR_ERROR_FOUND;
     } // switch
   }
@@ -2804,15 +2804,15 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
       if ( ret_ast != NULL ) {
         c_tid_t qual_stids;
         PJL_IGNORE_RV( c_ast_untypedef_qual( ret_ast, &qual_stids ) );
-        if ( c_tid_is_any( qual_stids, TS_VOLATILE ) &&
+        if ( c_tid_is_any( qual_stids, TS_volatile ) &&
             OPT_LANG_IS( CPP_MIN(20) ) ) {
           print_warning( &ret_ast->loc,
             "\"volatile\" return types are deprecated%s\n",
             C_LANG_WHICH( CPP_MAX(17) )
           );
         }
-        if ( c_tid_is_any( ast->type.atids, TA_NODISCARD ) &&
-            c_ast_is_builtin_any( ret_ast, TB_VOID ) ) {
+        if ( c_tid_is_any( ast->type.atids, TA_nodiscard ) &&
+            c_ast_is_builtin_any( ret_ast, TB_void ) ) {
           print_warning( &ret_ast->loc,
             "[[nodiscard]] %ss can not return void\n",
             c_kind_name( ast->kind )
@@ -2831,7 +2831,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
         PJL_IGNORE_RV(
           c_ast_check_visitor( param_ast, c_ast_visitor_warning, &param_c )
         );
-        if ( c_tid_is_any( param_ast->type.stids, TS_VOLATILE ) &&
+        if ( c_tid_is_any( param_ast->type.stids, TS_volatile ) &&
              OPT_LANG_IS( CPP_MIN(20) ) ) {
           print_warning( &param_ast->loc,
             "\"volatile\" parameter types are deprecated%s\n",
@@ -2843,7 +2843,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
     }
 
     case K_DESTRUCTOR:
-      if ( c_tid_is_any( ast->type.stids, TS_THROW ) &&
+      if ( c_tid_is_any( ast->type.stids, TS_throw ) &&
            OPT_LANG_IS( noexcept ) ) {
         print_warning( &ast->loc,
           "\"throw\" is deprecated%s",
@@ -2978,7 +2978,7 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
     return true;
 
   c_ast_t const *const first_ast = slist_front( ast_list );
-  if ( first_ast->type.btids == TB_AUTO && ast_count > 1 &&
+  if ( first_ast->type.btids == TB_auto && ast_count > 1 &&
        !OPT_LANG_IS( auto_TYPE_MULTI_DECL ) ) {
     print_error( &first_ast->loc,
       "\"auto\" with multiple declarators is not supported%s\n",

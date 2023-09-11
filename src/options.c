@@ -58,7 +58,7 @@ bool                opt_east_const;
 bool                opt_echo_commands;
 bool                opt_english_types = true;
 bool                opt_explain;
-c_tid_t             opt_explicit_ecsu_btids = TB_STRUCT | TB_UNION;
+c_tid_t             opt_explicit_ecsu_btids = TB_struct | TB_union;
 c_graph_t           opt_graph;
 c_lang_id_t         opt_lang;
 bool                opt_prompt = true;
@@ -103,13 +103,13 @@ char const* explicit_ecsu_str( void ) {
   static char buf[5];
   char *s = buf;
 
-  if ( (opt_explicit_ecsu_btids & TB_ENUM) != TB_NONE )
+  if ( (opt_explicit_ecsu_btids & TB_enum) != TB_NONE )
     *s++ = 'e';
-  if ( (opt_explicit_ecsu_btids & TB_CLASS) != TB_NONE )
+  if ( (opt_explicit_ecsu_btids & TB_class) != TB_NONE )
     *s++ = 'c';
-  if ( (opt_explicit_ecsu_btids & TB_STRUCT) != TB_NONE )
+  if ( (opt_explicit_ecsu_btids & TB_struct) != TB_NONE )
     *s++ = 's';
-  if ( (opt_explicit_ecsu_btids & TB_UNION) != TB_NONE )
+  if ( (opt_explicit_ecsu_btids & TB_union) != TB_NONE )
     *s++ = 'u';
   *s = '\0';
 
@@ -117,15 +117,15 @@ char const* explicit_ecsu_str( void ) {
 }
 
 char const* explicit_int_str( void ) {
-  bool const is_explicit_s   = is_explicit_int( TB_SHORT );
-  bool const is_explicit_i   = is_explicit_int( TB_INT );
-  bool const is_explicit_l   = is_explicit_int( TB_LONG );
-  bool const is_explicit_ll  = is_explicit_int( TB_LONG_LONG );
+  bool const is_explicit_s   = is_explicit_int( TB_short );
+  bool const is_explicit_i   = is_explicit_int( TB_int );
+  bool const is_explicit_l   = is_explicit_int( TB_long );
+  bool const is_explicit_ll  = is_explicit_int( TB_long_long );
 
-  bool const is_explicit_us  = is_explicit_int( TB_UNSIGNED | TB_SHORT );
-  bool const is_explicit_ui  = is_explicit_int( TB_UNSIGNED | TB_INT );
-  bool const is_explicit_ul  = is_explicit_int( TB_UNSIGNED | TB_LONG );
-  bool const is_explicit_ull = is_explicit_int( TB_UNSIGNED | TB_LONG_LONG );
+  bool const is_explicit_us  = is_explicit_int( TB_unsigned | TB_short );
+  bool const is_explicit_ui  = is_explicit_int( TB_unsigned | TB_int );
+  bool const is_explicit_ul  = is_explicit_int( TB_unsigned | TB_long );
+  bool const is_explicit_ull = is_explicit_int( TB_unsigned | TB_long_long );
 
   static strbuf_t sbuf;
   strbuf_reset( &sbuf );
@@ -156,22 +156,22 @@ char const* explicit_int_str( void ) {
 bool is_explicit_int( c_tid_t btids ) {
   c_tid_check( btids, C_TPID_BASE );
 
-  if ( btids == TB_UNSIGNED ) {
+  if ( btids == TB_unsigned ) {
     //
     // Special case: "unsigned" by itself means "unsigned int."
     //
-    btids |= TB_INT;
+    btids |= TB_int;
   }
-  else if ( c_tid_is_any( btids, TB_LONG_LONG ) ) {
+  else if ( c_tid_is_any( btids, TB_long_long ) ) {
     //
-    // Special case: for long long, its type is always combined with TB_LONG,
+    // Special case: for long long, its type is always combined with TB_long,
     // i.e., two bits are set.  Therefore, to check for explicit int for long
-    // long, we first have to turn off the TB_LONG bit.
+    // long, we first have to turn off the TB_long bit.
     //
-    btids &= c_tid_compl( TB_LONG );
+    btids &= c_tid_compl( TB_long );
   }
-  bool const is_unsigned = c_tid_is_any( btids, TB_UNSIGNED );
-  btids &= c_tid_compl( TB_UNSIGNED );
+  bool const is_unsigned = c_tid_is_any( btids, TB_unsigned );
+  btids &= c_tid_compl( TB_unsigned );
   return c_tid_is_any( btids, opt_explicit_int_btids[ is_unsigned ] );
 }
 
@@ -188,16 +188,16 @@ bool parse_explicit_ecsu( char const *ecsu_format ) {
   for ( char const *s = ecsu_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
       case 'e':
-        btids |= TB_ENUM;
+        btids |= TB_enum;
         break;
       case 'c':
-        btids |= TB_CLASS;
+        btids |= TB_class;
         break;
       case 's':
-        btids |= TB_STRUCT;
+        btids |= TB_struct;
         break;
       case 'u':
-        btids |= TB_UNION;
+        btids |= TB_union;
         break;
       default:
         return false;
@@ -222,30 +222,30 @@ bool parse_explicit_int( char const *ei_format ) {
   for ( char const *s = ei_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
       case 'i':
-        btids |= TB_INT;
-        if ( (btids & TB_UNSIGNED) == TB_NONE ) {
+        btids |= TB_int;
+        if ( (btids & TB_unsigned) == TB_NONE ) {
           // If only 'i' is specified, it means all signed integer types
           // shall be explicit.
-          btids |= TB_SHORT | TB_LONG | TB_LONG_LONG;
+          btids |= TB_short | TB_long | TB_long_long;
         }
         break;
       case 'l':
         if ( s[1] == 'l' || s[1] == 'L' ) {
-          btids |= TB_LONG_LONG;
+          btids |= TB_long_long;
           ++s;
         } else {
-          btids |= TB_LONG;
+          btids |= TB_long;
         }
         break;
       case 's':
-        btids |= TB_SHORT;
+        btids |= TB_short;
         break;
       case 'u':
-        btids |= TB_UNSIGNED;
+        btids |= TB_unsigned;
         if ( s[1] == '\0' || s[1] == ',' ) {
           // If only 'u' is specified, it means all unsigned integer types
           // shall be explicit.
-          btids |= TB_SHORT | TB_INT | TB_LONG | TB_LONG_LONG;
+          btids |= TB_short | TB_int | TB_long | TB_long_long;
           break;
         }
         continue;
@@ -255,8 +255,8 @@ bool parse_explicit_int( char const *ei_format ) {
         return false;
     } // switch
 
-    bool const is_unsigned = c_tid_is_any( btids, TB_UNSIGNED );
-    tmp_ei_btids[ is_unsigned ] |= btids & c_tid_compl( TB_UNSIGNED );
+    bool const is_unsigned = c_tid_is_any( btids, TB_unsigned );
+    tmp_ei_btids[ is_unsigned ] |= btids & c_tid_compl( TB_unsigned );
     btids = TB_NONE;
   } // for
 
