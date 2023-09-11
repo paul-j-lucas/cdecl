@@ -83,7 +83,7 @@ enum ac_policy {
    * Autocomplete only when the keyword is explicitly listed in the \ref
    * cdecl_keyword::ac_next_keywords "ac_next_keywords" of some other keyword.
    *
-   * For example, the `bytes` token should be autocompleted only when it
+   * For example, the `bytes` keyword should be autocompleted only when it
    * follows `aligned`.
    */
   AC_POLICY_IN_NEXT_ONLY,

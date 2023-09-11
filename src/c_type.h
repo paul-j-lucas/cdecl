@@ -316,7 +316,13 @@ typedef enum c_tpid c_tpid_t;
 #define TS_NONE               0x0000000000000002ull /**< No storage type.     */
 #define TS_ANY                0xFFFFFFFFFFFFFFF2ull /**< Any storage type.    */
 #define TS_AUTO               0x0000000000000012ull /**< C's `auto`.          */
-#define TS_APPLE_BLOCK        0x0000000000000022ull /**< Block.               */
+/**
+ * Block storage class.
+ *
+ * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
+ * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
+ */
+#define TS_APPLE_BLOCK        0x0000000000000022ull
 #define TS_EXTERN             0x0000000000000042ull /**< `extern`             */
 #define TS_EXTERN_C           0x0000000000000082ull /**< `extern "C"`         */
 #define TS_MUTABLE            0x0000000000000102ull /**< `mutable`            */
