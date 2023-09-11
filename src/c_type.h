@@ -97,19 +97,64 @@ struct c_type {
 };
 
 /**
- * For \ref c_tid_t values, the low-order 4 bits specify the type part ID and
- * thus how the value should be interpreted.
+ * For \ref c_tid_t values, the low-order 4 bits specify the "type part ID"
+ * (TPID) and thus how the remaining bits of the value should be interpreted.
  *
+ * @remarks This is needed because the combination of all base types, all
+ * storage classes, all storage-like classes, and attributes would take more
+ * than 64 bits.
  * @remarks Type part IDs start at 1 so we know a \ref c_tid_t value has been
  * initialized properly as opposed to it being 0 by default.
  */
 enum c_tpid {
-  C_TPID_NONE   = 0u,                   ///< No types.
-  C_TPID_BASE   = (1u << 0),            ///< Base types, e.g., `int`.
-  C_TPID_STORE  = (1u << 1),            ///< Storage types, e.g., `static`.
-  C_TPID_ATTR   = (1u << 2)             ///< Attributes.
+  /**
+   * No types.
+   */
+  C_TPID_NONE   = 0u,
+
+  /**
+   * Base types, e.g., `int`.
+   *
+   * @sa \ref c-base-types-group
+   * @sa \ref c-emc-types-group
+   */
+  C_TPID_BASE   = (1u << 0),
+
+  /**
+   * Storage types, e.g., `static`.
+   *
+   * @sa \ref c-storage-types-group
+   * @sa \ref c-storage-like-types-group
+   * @sa \ref c-qualifiers-group
+   * @sa \ref c-ref-qualifiers-group
+   * @sa \ref c-upc-qualifiers-group
+   */
+  C_TPID_STORE  = (1u << 1),
+
+  /**
+   * Attributes.
+   *
+   * @sa \ref c-attributes-group
+   * @sa \ref c-msc-call-group
+   */
+  C_TPID_ATTR   = (1u << 2)
 };
 typedef enum c_tpid c_tpid_t;
+
+/**
+ * @defgroup c-type-literal-macros-group C/C++ Type Literal Macros
+ * Convenience macros for specifying a type literal.
+ *
+ * For example, instead of writing:
+ * ```
+ * c_type_t type = (c_type_t){ TB_CHAR, TS_NONE, TA_NONE };
+ * ```
+ * write:
+ * ```
+ * c_type_t type = C_TYPE_LIT_B( TB_CHAR );
+ * ```
+ * @{
+ */
 
 /**
  * Convenience macro for specifying a complete \ref c_type literal.
@@ -224,6 +269,8 @@ typedef enum c_tpid c_tpid_t;
  */
 #define C_TYPE_LIT_S_ANY(STID) \
   C_TYPE_LIT( TB_ANY, (STID), TA_ANY )
+
+/** @} */
 
 #define TX_NONE               0x0000000000000000ull /**< No type at all.      */
 
@@ -795,7 +842,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  *
  * @param dst_tids The \ref c_tid_t to add to.
  * @param new_tids The \ref c_tid_t to add.
- * @param new_loc The source location of \a new_id.
+ * @param new_loc The source location of \a new_tids.
  * @return Returns `true` only if the type added successfully; otherwise,
  * prints an error message at \a new_loc and returns `false`.
  *
