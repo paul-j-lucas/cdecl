@@ -39,6 +39,11 @@
 
 /// @endcond
 
+/**
+ * @addtogroup strbuf-group
+ * @{
+ */
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -184,4 +189,7 @@ void strbuf_sepsn_putsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */
