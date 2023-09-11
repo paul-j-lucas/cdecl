@@ -225,18 +225,6 @@ typedef enum c_tpid c_tpid_t;
 #define C_TYPE_LIT_S_ANY(STID) \
   C_TYPE_LIT( TB_ANY, (STID), TA_ANY )
 
-//
-// The difference between TB_TYPEDEF and TS_TYPEDEF is that:
-//
-//  * TS_TYPEDEF is the "storage class" for a declaration as a whole while it's
-//    being declared during parsing.
-//
-//  * TB_TYPEDEF is the "type" for a particular typedef'd type, e.g., size_t,
-//    after parsing a declaration and the new type has been defined.  Hence,
-//    TB_TYPEDEF is the somewhat unnecessary when the kind of an AST is
-//    K_TYPEDEF, but it has to have some type.
-//
-
 #define TX_NONE               0x0000000000000000ull /**< No type at all.      */
 
 /**
@@ -276,7 +264,25 @@ typedef enum c_tpid c_tpid_t;
 #define TB_CLASS              0x0000000004000001ull /**< `class`              */
 #define TB_NAMESPACE          0x0000000008000001ull /**< `namespace`          */
 #define TB_SCOPE              0x0000000010000001ull /**< Generic scope.       */
-#define TB_TYPEDEF            0x0000000020000001ull /**< E.g., `size_t`       */
+/**
+ * A `typedef`'d type, e.g., `size_t`.
+ *
+ * @remarks
+ * @parblock
+ * The difference between this and #TS_TYPEDEF is that:
+ *
+ *  + #TB_TYPEDEF is the "type" for a particular `typedef`'d type, e.g.,
+ *    `size_t`, after parsing a declaration and the new type has been defined.
+ *    Hence, #TB_TYPEDEF is somewhat unnecessary when the kind of an AST is
+ *    #K_TYPEDEF, but it has to have some type.
+ *
+ *  + #TS_TYPEDEF is the "storage class" for a declaration as a whole while
+ *    it's being declared during parsing.
+ * @endparblock
+ *
+ * @sa #TS_TYPEDEF
+ */
+#define TB_TYPEDEF            0x0000000020000001ull
 
 /** @} */
 
@@ -317,7 +323,29 @@ typedef enum c_tpid c_tpid_t;
 #define TS_REGISTER           0x0000000000000202ull /**< `register`           */
 #define TS_STATIC             0x0000000000000402ull /**< `static`             */
 #define TS_THREAD_LOCAL       0x0000000000000802ull /**< `thread_local`       */
-#define TS_TYPEDEF            0x0000000000001002ull /**< `typedef` or `using` */
+/**
+ * `typedef` "storage" class in a declaration like:
+ *
+ *      typedef void F(int)
+ *
+ * @remarks
+ * @parblock
+ * The difference between this and #TB_TYPEDEF is that:
+ *
+ *  + #TB_TYPEDEF is the "type" for a particular `typedef`'d type, e.g.,
+ *    `size_t`, after parsing a declaration and the new type has been defined.
+ *    Hence, #TB_TYPEDEF is somewhat unnecessary when the kind of an AST is
+ *    #K_TYPEDEF, but it has to have some type.
+ *
+ *  + #TS_TYPEDEF is the "storage class" for a declaration as a whole while
+ *    it's being declared during parsing.
+ * @endparblock
+ *
+ * @sa #TB_TYPEDEF
+ * @note C++ `using` declarations are stored as their equivalent `typedef`
+ * declarations.
+ */
+#define TS_TYPEDEF            0x0000000000001002ull
 
 /** @} */
 
