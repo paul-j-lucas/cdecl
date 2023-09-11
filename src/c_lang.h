@@ -121,6 +121,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * in a language other than C99, they'll get a warning.
  *
+ * @sa \ref c-emc-types-group
  * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
  */
 #define LANG_C_99_EMC (LANG_C_99 | LANGX_EMC)
@@ -138,6 +139,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * in a language other than C99, they'll get a warning.
  *
+ * @sa \ref c-upc-qualifiers-group
  * @sa [Unified Parallel C](http://upc-lang.org/)
  */
 #define LANG_C_99_UPC (LANG_C_99 | LANGX_UPC)

@@ -239,12 +239,16 @@ typedef enum c_tpid c_tpid_t;
 
 #define TX_NONE               0x0000000000000000ull /**< No type at all.      */
 
-//
-// Base types & modifiers
-//
-// If you add a new TB_xxx here, it must also exist in BTIDS[] inside
-// c_type_name_impl().
-//
+/**
+ * @defgroup c-base-types-group C/C++ Base Types
+ * @ingroup c-types-group
+ * Base types & modifiers.
+ *
+ * @note If you add a new `TB_xxx` macro, it _must_ also exist in `BTIDS[]`
+ * inside c_type_name_impl().
+ * @{
+ */
+
 #define TB_NONE               0x0000000000000001ull /**< No base type.        */
 #define TB_ANY                0xFFFFFFFFFFFFFFF1ull /**< Any base type.       */
 #define TB_VOID               0x0000000000000011ull /**< `void`               */
@@ -274,24 +278,35 @@ typedef enum c_tpid c_tpid_t;
 #define TB_SCOPE              0x0000000010000001ull /**< Generic scope.       */
 #define TB_TYPEDEF            0x0000000020000001ull /**< E.g., `size_t`       */
 
-//
-// Embedded C types & modifiers
-//
-// If you add a new TB_EMC_xxx here, it must also exist in BTIDS[] inside
-// c_type_name_impl().
-//
+/** @} */
+
+/**
+ * @defgroup c-emc-types-group Embedded C Base Types
+ * Embedded C types & modifiers.
+ *
+ * @note If you add a new `TB_EMC_xxx` macro, it must also exist in `BTIDS[]`
+ * inside c_type_name_impl().
+ *
+ * @sa #LANG_C_99_EMC
+ * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
+ * @{
+ */
 #define TB_EMC_ACCUM          0x0000000040000001ull /**< `_Accum`             */
 #define TB_EMC_FRACT          0x0000000080000001ull /**< `_Fract`             */
 #define TB_EMC_SAT            0x0000000100000001ull /**< `_Sat`               */
 
-//
-// Storage classes
-//
-// If you add a new TS_xxx here:
-//
-// + It must also exist in STIDS[] inside c_type_name_impl().
-// + TS_ANY_STORAGE may need to be updated.
-//
+/** @} */
+
+/**
+ * @defgroup c-storage-types-group C/C++ Storage Class Types
+ * C/C++ storage classes.
+ *
+ * @note If you add a new `TS_xxx` macro:
+ * 1. It must also exist in `STIDS[]` inside c_type_name_impl().
+ * 2. #TS_ANY_STORAGE may need to be updated.
+ *
+ * @{
+ */
 #define TS_NONE               0x0000000000000002ull /**< No storage type.     */
 #define TS_ANY                0xFFFFFFFFFFFFFFF2ull /**< Any storage type.    */
 #define TS_AUTO               0x0000000000000012ull /**< C's `auto`.          */
@@ -304,14 +319,18 @@ typedef enum c_tpid c_tpid_t;
 #define TS_THREAD_LOCAL       0x0000000000000802ull /**< `thread_local`       */
 #define TS_TYPEDEF            0x0000000000001002ull /**< `typedef` or `using` */
 
-//
-// Storage-class-like
-//
-// If you add a new TS_xxx here:
-//
-// + It must also exist in STIDS[] inside c_type_name_impl().
-// + TS_ANY_STORAGE may need to be updated.
-//
+/** @} */
+
+/**
+ * @defgroup c-storage-like-types-group C/C++ Storage-Like Types
+ * C/C++ storage-like types.
+ *
+ * @note If you add a new `TS_xxx` macro:
+ * 1. It must also exist in `STIDS[]` inside c_type_name_impl().
+ * 2. #TS_ANY_STORAGE may need to be updated.
+ *
+ * @{
+ */
 #define TS_CONSTEVAL          0x0000000000002002ull /**< `consteval`          */
 #define TS_CONSTEXPR          0x0000000000004002ull /**< `constexpr`          */
 #define TS_CONSTINIT          0x0000000000008002ull /**< `constinit`          */
@@ -329,12 +348,16 @@ typedef enum c_tpid c_tpid_t;
 #define TS_THROW              0x0000000008000002ull /**< `throw()`            */
 #define TS_VIRTUAL            0x0000000010000002ull /**< `virtual`            */
 
-//
-// Qualifiers
-//
-// If you add a new TS_xxx here, it must also exist in QUAL_STIDS[] inside
-// c_type_name_impl().
-//
+/** @} */
+
+/**
+ * @defgroup c-qualifiers-group C/C++ Qualifiers
+ * C/C++ qualifiers.
+ *
+ * @note If you add a new `TS_xxx` macro, it must also exist in `QUAL_STIDS[]`
+ * inside c_type_name_impl().
+ * @{
+ */
 #define TS_ATOMIC             0x0000000100000002ull /**< `_Atomic`            */
 #define TS_CONST              0x0000000200000002ull /**< `const`              */
 #define TS_RESTRICT           0x0000000400000002ull /**< `restrict`           */
@@ -365,31 +388,46 @@ typedef enum c_tpid c_tpid_t;
  */
 #define TS_NON_EMPTY_ARRAY    0x0000001000000002ull
 
-//
-// Unified Parallel C qualifiers
-//
-// If you add a new TS_UPC_xxx here, it must also exist in QUAL_STIDS[] inside
-// c_type_name_impl().
-//
+/** @} */
+
+/**
+ * @defgroup c-upc-qualifiers-group Unified Parallel C Qualifiers
+ * Unified Parallel C qualifiers.
+ *
+ * @note If you add a new `TS_xxx` macro, it must also exist in `QUAL_STIDS[]`
+ * inside c_type_name_impl().
+ *
+ * @sa #LANG_C_99_UPC
+ * @sa [Unified Parallel C](http://upc-lang.org/)
+ * @{
+ */
 #define TS_UPC_RELAXED        0x0000002000000002ull /**< `relaxed`            */
 #define TS_UPC_SHARED         0x0000004000000002ull /**< `shared`             */
 #define TS_UPC_STRICT         0x0000008000000002ull /**< `strict`             */
 
-//
-// Ref-qualifiers
-//
-// If you add a new TS_xxx here, it must also exist in QUAL_STIDS[] inside
-// c_type_name_impl().
-//
+/** @} */
+
+/**
+ * @defgroup c-ref-qualifiers-group C++ Ref Qualifiers
+ * C++ ref-qualifiers.
+ *
+ * @note If you add a new `TS_xxx` macro, it must also exist in `QUAL_STIDS[]`
+ * inside c_type_name_impl().
+ * @{
+ */
 #define TS_REFERENCE          0x0000010000000002ull /**< `void f() &`         */
 #define TS_RVALUE_REFERENCE   0x0000020000000002ull /**< `void f() &&`        */
 
-//
-// Attributes
-//
-// If you add a new TA_xxx here, it must also exist in ATIDS[] inside
-// c_type_name_impl().
-//
+/** @} */
+
+/**
+ * @defgroup c-attributes-group C/C++ Attributes
+ * C/C++ attributes.
+ *
+ * @note If you add a new `TA_xxx` macro, it must also exist in `ATIDS[]`
+ * inside c_type_name_impl().
+ * @{
+ */
 #define TA_NONE               0x0000000000000004ull /**< No attribute.        */
 #define TA_ANY                0xFFFFFFFFFFFFFFF4ull /**< Any attribute.       */
 #define TA_CARRIES_DEPENDENCY 0x0000000000000014ull /**< `carries_dependency` */
@@ -401,12 +439,18 @@ typedef enum c_tpid c_tpid_t;
 #define TA_REPRODUCIBLE       0x0000000000000404ull /**< `reproducible`       */
 #define TA_UNSEQUENCED        0x0000000000000804ull /**< `unsequenced`        */
 
-//
-// Microsoft calling conventions
-//
-// If you add a new TA_MSC_xxx here, it must also exist in MSC_CALL_ATIDS[]
-// inside c_type_name_impl().
-//
+/** @} */
+
+/**
+ * @defgroup c-msc-call-group Microsoft C/C++ Calling Conventions
+ * Microsoft Windows C/C++ calling conventions
+ *
+ * @note If you add a new `TA_MSC_xxx` macro, it must also exist in
+ * `MSC_CALL_ATIDS[]` inside c_type_name_impl().
+ *
+ * @sa [Microsoft Windows calling conventions](https://docs.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions)
+ * @{
+ */
 #define TA_MSC_CDECL          0x0000000000001004ull /**< `__cdecl`            */
 #define TA_MSC_CLRCALL        0x0000000000002004ull /**< `__clrcall`          */
 #define TA_MSC_FASTCALL       0x0000000000004004ull /**< `__fastcall`         */
@@ -414,17 +458,26 @@ typedef enum c_tpid c_tpid_t;
 #define TA_MSC_THISCALL       0x0000000000010004ull /**< `__thiscall`         */
 #define TA_MSC_VECTORCALL     0x0000000000020004ull /**< `__vectorcall`       */
 
+/** @} */
+
 // bit masks
 #define TX_MASK_TPID          0x000000000000000Full /**< Type part ID bitmask.*/
 
-extern c_type_t const T_NONE;           ///< No type.
-extern c_type_t const T_ANY;            ///< All types.
-extern c_type_t const T_ANY_CONST_CLASS;///< Any `const` `class`-like type.
-extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
-
-// shorthands
+////////// shorthands /////////////////////////////////////////////////////////
 
 /**
+ * @ingroup c-msc-call-group
+ * Shorthand for any Microsoft C/C++ calling convention.
+ *
+ * @sa \ref c-msc-call-group
+ * @sa [Microsoft Windows calling conventions](https://docs.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions)
+ */
+#define TA_ANY_MSC_CALL       ( TA_MSC_CDECL | TA_MSC_CLRCALL \
+                              | TA_MSC_FASTCALL | TA_MSC_STDCALL \
+                              | TA_MSC_THISCALL | TA_MSC_VECTORCALL )
+
+/**
+ * @ingroup c-attributes-group
  * The only attributes that can apply to functions.
  *
  * @sa #TA_OBJECT
@@ -435,6 +488,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TA_UNSEQUENCED )
 
 /**
+ * @ingroup c-attributes-group
  * The only attributes that can apply to objects.
  *
  * @sa #TA_FUNC
@@ -442,65 +496,77 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TA_OBJECT             ( TA_CARRIES_DEPENDENCY | TA_DEPRECATED \
                               | TA_MAYBE_UNUSED | TA_NO_UNIQUE_ADDRESS )
 
+/// @ingroup c-base-types-group
 /// Shorthand for any character type.
 #define TB_ANY_CHAR           ( TB_CHAR | TB_WCHAR_T \
                               | TB_CHAR8_T | TB_CHAR16_T | TB_CHAR32_T )
 
+/// @ingroup c-base-types-group
 /// Shorthand for `class`, `struct`, or `union`.
 #define TB_ANY_CLASS          ( TB_CLASS | TB_STRUCT | TB_UNION )
 
+/// @ingroup c-base-types-group
 /// Shorthand for `enum`, `class`, `struct`, or `union`.
 #define TB_ANY_ECSU           ( TB_ENUM | TB_ANY_CLASS )
 
+/// @ingroup c-emc-types-group
 /// Shorthand for any Embedded C type.
 #define TB_ANY_EMC            ( TB_EMC_ACCUM | TB_EMC_FRACT )
 
+/// @ingroup c-base-types-group
 /// Shorthand for any floating-point type.
 #define TB_ANY_FLOAT          ( TB_FLOAT | TB_DOUBLE )
 
+/// @ingroup c-base-types-group
 /// Shorthand for any integral type.
 #define TB_ANY_INTEGRAL       ( TB_BOOL | TB_ANY_CHAR | TB_BITINT | TB_INT \
                               | TB_ANY_MODIFIER )
 
-/// Shorthand for any linkage.
-#define TS_ANY_LINKAGE        ( TS_EXTERN | TS_EXTERN_C | TS_STATIC )
-
+/// @ingroup c-base-types-group
 /// Shorthand for an any modifier.
 #define TB_ANY_MODIFIER       ( TB_SHORT | TB_LONG | TB_LONG_LONG | TB_SIGNED \
                               | TB_UNSIGNED )
 
-/// Shorthand for any Microsoft C/C++ calling convention.
-#define TA_ANY_MSC_CALL       ( TA_MSC_CDECL | TA_MSC_CLRCALL \
-                              | TA_MSC_FASTCALL | TA_MSC_STDCALL \
-                              | TA_MSC_THISCALL | TA_MSC_VECTORCALL )
+/// @ingroup c-base-types-group
+/// Shorthand for `class`, `struct`, `union`, or `namespace`.
+#define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_NAMESPACE )
 
+/// @ingroup c-storage-types-group
+/// Shorthand for any linkage.
+#define TS_ANY_LINKAGE        ( TS_EXTERN | TS_EXTERN_C | TS_STATIC )
+
+/// @ingroup c-qualifiers-group
 /// Shorthand for any array qualifier.
 #define TS_ANY_ARRAY_QUALIFIER \
                               ( TS_CVR | TS_NON_EMPTY_ARRAY )
 
+/// @ingroup c-qualifiers-group
 /// Shorthand for any qualifier.
 #define TS_ANY_QUALIFIER      ( TS_ANY_ARRAY_QUALIFIER | TS_ANY_UPC \
                               | TS_ATOMIC )
 
+/// @ingroup c-ref-qualifiers-group
 /// Shorthand for any reference qualifier.
 #define TS_ANY_REFERENCE      ( TS_REFERENCE | TS_RVALUE_REFERENCE )
 
-/// Shorthand for `class`, `struct`, `union`, or `namespace`.
-#define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_NAMESPACE )
-
+/// @ingroup c-storage-types-group
 /// Shorthand for any storage.
 #define TS_ANY_STORAGE        0x00000000FFFFFFF2ull
 
+/// @ingroup c-upc-qualifiers-group
 /// Shorthand for any UPC qualifier.
 #define TS_ANY_UPC            ( TS_UPC_RELAXED | TS_UPC_SHARED | TS_UPC_STRICT )
 
+/// @ingroup c-qualifiers-group
 /// Shorthand for `const` or `volatile`.
 #define TS_CV                 ( TS_CONST | TS_VOLATILE )
 
+/// @ingroup c-qualifiers-group
 /// Shorthand for `const`, `volatile`, or `restrict`.
 #define TS_CVR                ( TS_CV | TS_RESTRICT )
 
 /**
+ * @ingroup c-storage-like-types-group
  * The only types that can apply to constructor declarations.
  *
  * @sa #TS_CONSTRUCTOR_DEF
@@ -511,6 +577,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_DEFAULT | TS_DELETE | TS_FRIEND )
 
 /**
+ * @ingroup c-storage-like-types-group
  * A subset of #TS_CONSTRUCTOR_DECL that can apply to file-scope constructor
  * definitions.
  *
@@ -521,6 +588,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_THROW )
 
 /**
+ * @ingroup c-storage-like-types-group
  * The types that can apply only to constructors.
  *
  * @sa #TS_CONSTRUCTOR_DECL
@@ -529,6 +597,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_CONSTRUCTOR_ONLY   TS_EXPLICIT
 
 /**
+ * @ingroup c-storage-like-types-group
  * The only types that can apply to destructor declarations.
  *
  * @sa #TS_CONSTRUCTOR_DECL
@@ -539,6 +608,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_VIRTUAL )
 
 /**
+ * @ingroup c-storage-like-types-group
  * A subset of #TS_DESTRUCTOR_DECL that can apply to file-scope destructor
  * definitions.
  *
@@ -547,6 +617,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_DESTRUCTOR_DEF     ( TS_INLINE | TS_NOEXCEPT | TS_THROW )
 
 /**
+ * @ingroup c-storage-types-group
  * The only storage types that can apply to C functions.
  *
  * @sa #TS_FUNC_LIKE_CPP
@@ -555,6 +626,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_FUNC_C             ( TS_EXTERN | TS_INLINE | TS_STATIC | TS_TYPEDEF )
 
 /**
+ * @ingroup c-storage-like-types-group
  * The only storage types that can apply to C++ function-like things
  * (functions, blocks, constructors, destructors, operators, and user-defined
  * conversion operators and literals).
@@ -574,6 +646,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_ANY_REFERENCE | TS_THROW | TS_VIRTUAL )
 
 /**
+ * @ingroup c-storage-like-types-group
  * The types that can apply only to function-like things except constructors.
  *
  * @sa #TS_CONSTRUCTOR_DECL
@@ -585,6 +658,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_OVERRIDE | TS_ANY_REFERENCE | TS_VIRTUAL )
 
 /**
+ * @ingroup c-storage-like-types-group
  * The only storage types that can _not_ apply to C++ function like things
  * (functions and operators) that have an explicit object parameter (`this`).
  */
@@ -593,17 +667,20 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_VIRTUAL )
 
 /**
+ * @ingroup c-storage-types-group
  * The only storage types that can apply to C++ function-like parameters.
  */
 #define TS_FUNC_LIKE_PARAM    ( TS_REGISTER | TS_THIS )
 
 /**
+ * @ingroup c-storage-like-types-group
  * The only storage types that can apply to a C++ lambda.
  */
 #define TS_LAMBDA             ( TS_CONSTEXPR | TS_CONSTEVAL | TS_MUTABLE \
                               | TS_NOEXCEPT | TS_STATIC | TS_THROW )
 
 /**
+ * @ingroup c-storage-types-group
  * The only storage types that can apply to a C program's `main()` function.
  *
  * @sa #TS_FUNC_C
@@ -612,6 +689,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_MAIN_FUNC_C        TS_EXTERN
 
 /**
+ * @ingroup c-storage-like-types-group
  * The only types that can apply to a C++ program's `main()` function.
  *
  * @sa #TS_FUNC_LIKE_CPP
@@ -621,6 +699,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_THROW )
 
 /**
+ * @ingroup c-storage-like-types-group
  * The types that can apply only to member functions, operators, or user-
  * defined conversions operators.
  *
@@ -631,6 +710,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_ANY_REFERENCE | TS_RESTRICT | TS_VIRTUAL )
 
 /**
+ * @ingroup c-storage-like-types-group
  * The only types that can apply to operators `new`, `new[]`, `delete`, or
  * `delete[]`.
  *
@@ -640,6 +720,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_STATIC | TS_THROW )
 
 /**
+ * @ingroup c-storage-like-types-group
  * The types that can apply only to non-member functions or operators.
  *
  * @sa #TS_MEMBER_FUNC_ONLY
@@ -647,6 +728,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_NONMEMBER_FUNC_ONLY TS_FRIEND
 
 /**
+ * @ingroup c-storage-like-types-group
  * The only types that can apply to user-defined conversion operators.
  *
  * @sa #TS_FUNC_LIKE_CPP
@@ -660,6 +742,13 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * Hexadecimal print conversion specifier for \ref c_tid_t.
  */
 #define PRIX_C_TID_T          PRIX64
+
+////////// extern constants ///////////////////////////////////////////////////
+
+extern c_type_t const T_NONE;           ///< No type.
+extern c_type_t const T_ANY;            ///< All types.
+extern c_type_t const T_ANY_CONST_CLASS;///< Any `const` `class`-like type.
+extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 
 ////////// extern functions ///////////////////////////////////////////////////
 
