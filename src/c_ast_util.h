@@ -54,11 +54,11 @@ _GL_INLINE_HEADER_BEGIN
  */
 
 /**
- * Adds an array to the AST being built.
+ * Adds a #K_ARRAY AST to the \a ast being built.
  *
  * @param ast The AST to append to.
- * @param array_ast The array AST to append.  Its \ref c_array_ast::of_ast
- * "of_ast" must be of kind #K_PLACEHOLDER.
+ * @param array_ast The #K_ARRAY AST to append.  Its \ref c_array_ast::of_ast
+ * "of_ast" _must_ be of kind #K_PLACEHOLDER.
  * @param of_ast The AST to become the \ref c_array_ast::of_ast "of_ast" of \a
  * array_ast.
  * @return Returns the AST to be used as the grammar production's return value.
@@ -67,7 +67,7 @@ NODISCARD
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast );
 
 /**
- * Adds a #K_ANY_FUNCTION_LIKE AST to the AST being built.
+ * Adds a #K_ANY_FUNCTION_LIKE AST to the \a ast being built.
  *
  * @param ast The AST to append to.
  * @param func_ast The #K_ANY_FUNCTION_LIKE AST to append.  Its \ref
@@ -89,6 +89,8 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast );
  * @param kinds The bitwise-or of kind(s) to find.
  * @return Returns a pointer to an AST node having one of \a kinds or NULL if
  * none.
+ *
+ * @sa c_ast_find_type_any()
  */
 NODISCARD
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_ast_visit_dir_t dir,
@@ -100,6 +102,8 @@ c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_ast_visit_dir_t dir,
  * @param ast The AST to start from; may be NULL.
  * @param dir The direction to search.
  * @return Returns said name or NULL if none.
+ *
+ * @sa c_ast_find_param_named()
  */
 NODISCARD
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir );
@@ -112,6 +116,8 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir );
  * @param stop_ast The AST to stop at, if any.
  * @return Returns the AST of the parameter of \a func_ast having \a name or
  * NULL if none.
+ *
+ * @sa c_ast_find_name()
  */
 NODISCARD
 c_ast_t const* c_ast_find_param_named( c_ast_t const *func_ast,
@@ -126,6 +132,8 @@ c_ast_t const* c_ast_find_param_named( c_ast_t const *func_ast,
  * @param type A type where each type ID is the bitwise-or of type IDs to find.
  * @return Returns a pointer to an AST node having one of \a type or NULL if
  * none.
+ *
+ * @sa c_ast_find_kind_any()
  */
 NODISCARD
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
@@ -363,8 +371,9 @@ c_func_member_t c_ast_oper_overload( c_ast_t const *ast );
 
 /**
  * "Patches" \a type_ast into \a decl_ast only if:
- *  + \a type_ast has no parent.
- *  + The depth of \a type_ast is less than that of \a decl_ast.
+ *  + \a type_ast has no \ref c_ast::parent_ast "parent_ast".
+ *  + The \ref c_ast::depth "depth" of \a type_ast is less than that of \a
+ *    decl_ast.
  *  + \a decl_ast still contains an AST node of kind #K_PLACEHOLDER.
  *
  * @param type_ast The AST of the initial type.
@@ -478,12 +487,12 @@ NODISCARD
 c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast );
 
 /**
- * Un-`typedef`s \a ast, i.e., if \a ast is a #K_TYPEDEF, returns the AST the
- * `typedef` is for.
+ * Un-`typedef`s \a ast, i.e., if \a ast is of \ref c_ast::kind "kind"
+ * #K_TYPEDEF, returns the AST's \ref c_typedef_ast::for_ast "for_ast".
  *
  * @param ast The AST to un-`typedef`.
- * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
- * `typedef`.
+ * @return Returns the AST the `typedef` is for or \a ast if \a ast is not of
+ * kind #K_TYPEDEF.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
@@ -494,14 +503,14 @@ NODISCARD
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 
 /**
- * Un-`typedef`s \a ast, i.e., if \a ast is a #K_TYPEDEF, returns the AST the
- * `typedef` is for.
+ * Un-`typedef`s \a ast, i.e., if \a ast is of \ref c_ast::kind "kind"
+ * #K_TYPEDEF, returns the AST's \ref c_typedef_ast::for_ast "for_ast".
  *
  * @param ast The AST to un-`typedef`.
  * @param rv_qual_stids Receives the qualifier(s) of \a ast bitwise-or'd with
  * the qualifier(s) \a ast is a `typedef` for (if \a ast is a #K_TYPEDEF).
- * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
- * `typedef`.
+ * @return Returns the AST the `typedef` is for or \a ast if \a ast is not of
+ * kind #K_TYPEDEF.
  *
  * @sa c_ast_sub_typedef()
  * @sa c_ast_unpointer()
@@ -521,7 +530,8 @@ c_ast_t const* c_ast_untypedef_qual( c_ast_t const *ast,
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast is `size_t`.
  *
- * @note In cdecl, `size_t` is `typedef`d to be `unsigned long` in c_typedef.c.
+ * @note In **cdecl**, `size_t` is `typedef`d to be `unsigned long` in
+ * c_typedef.c.
  *
  * @sa c_tid_is_size_t()
  */
@@ -579,11 +589,13 @@ c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
 c_ast_t c_ast_sub_typedef( c_ast_t const *ast );
 
 /**
- * Checks whether the parent AST of \a ast (if any) is \a kind.
+ * Checks whether the \ref c_ast::kind "kind" of \ref c_ast::parent_ast
+ * "parent_ast" of \a ast (if any) is \a kind.
  *
- * @param ast The AST to check the parent of.
+ * @param ast The AST to check the \ref c_ast::parent_ast "parent_ast" of.
  * @param kind The kind to check for.
- * @return Returns `true` only if the parent of \a ast is \a kind.
+ * @return Returns `true` only if the \ref c_ast::parent_ast "parent_ast" of \a
+ * ast is \a kind.
  */
 NODISCARD C_AST_UTIL_H_INLINE
 bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
@@ -596,6 +608,9 @@ bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast should be printed as a `using`
  * declaration.
+ *
+ * @sa #LANG_using_DECLS
+ * @sa opt_using
  */
 NODISCARD C_AST_UTIL_H_INLINE
 bool c_ast_print_as_using( c_ast_t const *ast ) {

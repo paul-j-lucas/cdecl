@@ -68,11 +68,16 @@
  * @{
  */
 
+/// @cond DOXYGEN_IGNORE
+/// Otherwise Doxygen generates two entries for each option.
+
 // extern constants
 c_type_t const T_NONE             = { TB_NONE,      TS_NONE,    TA_NONE };
 c_type_t const T_ANY              = { TB_ANY,       TS_ANY,     TA_ANY  };
 c_type_t const T_ANY_CONST_CLASS  = { TB_ANY_CLASS, TS_CONST,   TA_NONE };
 c_type_t const T_TS_TYPEDEF       = { TB_NONE,      TS_TYPEDEF, TA_NONE };
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
