@@ -301,6 +301,16 @@ static inline c_loc_t const* c_ast_params_loc( c_ast_t const *ast ) {
 }
 
 /**
+ * Initializes a check_state.
+ *
+ * @param check The check_state to initialize.
+ */
+static inline void check_state_init( check_state_t *check ) {
+  assert( check != NULL );
+  MEM_ZERO( check );
+}
+
+/**
  * Returns an `"s"` or not based on \a n to pluralize a word.
  *
  * @param n A quantity.
@@ -1355,7 +1365,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     } // switch
 
     check_state_t param_check;
-    MEM_ZERO( &param_check );
+    check_state_init( &param_check );
     param_check.func_ast = ast;
     if ( !c_ast_check_errors( param_ast, &param_check ) )
       return false;
@@ -2603,7 +2613,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       //
       c_ast_t const temp_ast = c_ast_sub_typedef( ast );
       check_state_t temp_check;
-      MEM_ZERO( &temp_check );
+      check_state_init( &temp_check );
       temp_check.is_pointee = c_ast_parent_is_kind( ast, K_POINTER );
       data.pc = &temp_check;
       return c_ast_visitor_error( &temp_ast, data );
@@ -2750,7 +2760,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
 
   if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
     check_state_t param_check;
-    MEM_ZERO( &param_check );
+    check_state_init( &param_check );
     param_check.func_ast = ast;
     FOREACH_AST_FUNC_PARAM( param, ast ) {
       c_ast_t const *const param_ast = c_param_ast( param );
@@ -2827,7 +2837,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
 
     case K_CONSTRUCTOR: {
       check_state_t param_check;
-      MEM_ZERO( &param_check );
+      check_state_init( &param_check );
       param_check.func_ast = ast;
       FOREACH_AST_FUNC_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
@@ -2964,7 +2974,7 @@ static c_lang_id_t is_reserved_name( char const *name ) {
 bool c_ast_check( c_ast_t const *ast ) {
   assert( ast != NULL );
   check_state_t check;
-  MEM_ZERO( &check );
+  check_state_init( &check );
   if ( !c_ast_check_errors( ast, &check ) )
     return false;
   PJL_IGNORE_RV(
