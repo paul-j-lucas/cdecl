@@ -62,7 +62,7 @@ static bool c_ast_visitor_english( c_ast_t*, user_data_t );
 
 static void c_type_name_nobase_english( c_type_t const*, FILE* );
 static void c_ast_visit_english( c_ast_t const*, eng_state_t const* );
-static void e_init( eng_state_t*, FILE* );
+static void eng_init( eng_state_t*, FILE* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -98,7 +98,7 @@ static void c_ast_func_params_english( c_ast_t const *ast,
   FPUTC( '(', eng->eout );
 
   eng_state_t param_eng;
-  e_init( &param_eng, eng->eout );
+  eng_init( &param_eng, eng->eout );
   param_eng.func_ast = ast;
 
   bool comma = false;
@@ -481,7 +481,7 @@ static void c_type_name_nobase_english( c_type_t const *type, FILE *eout ) {
  * @param eng The eng_state to initialize.
  * @param eout The `FILE` to print to.
  */
-static void e_init( eng_state_t *eng, FILE *eout ) {
+static void eng_init( eng_state_t *eng, FILE *eout ) {
   assert( eng != NULL );
   assert( eout != NULL );
 
@@ -510,7 +510,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   }
 
   eng_state_t eng;
-  e_init( &eng, eout );
+  eng_init( &eng, eout );
   c_ast_visit_english( ast, &eng );
 
   switch ( ast->align.kind ) {
@@ -568,7 +568,7 @@ void c_typedef_english( c_typedef_t const *tdef, FILE *eout ) {
   FPUTS( " as ", eout );
 
   eng_state_t eng;
-  e_init( &eng, eout );
+  eng_init( &eng, eout );
   c_ast_visit_english( tdef->ast, &eng );
 }
 
