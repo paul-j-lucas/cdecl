@@ -50,19 +50,19 @@
 /**
  * State maintained by c_ast_visit_english().
  */
-struct e_state {
+struct eng_state {
   FILE           *eout;                 ///< Where to print the English.
   c_ast_t const  *func_ast;             ///< The current function AST, if any.
 };
-typedef struct e_state e_state_t;
+typedef struct eng_state eng_state_t;
 
 // local functions
 NODISCARD
 static bool c_ast_visitor_english( c_ast_t*, user_data_t );
 
 static void c_type_name_nobase_english( c_type_t const*, FILE* );
-static void c_ast_visit_english( c_ast_t const*, e_state_t const* );
-static void e_init( e_state_t*, FILE* );
+static void c_ast_visit_english( c_ast_t const*, eng_state_t const* );
+static void e_init( eng_state_t*, FILE* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -87,23 +87,23 @@ static void c_ast_bit_width_english( c_ast_t const *ast, FILE *eout ) {
  * AST's parameters, if any.
  *
  * @param ast The AST to print the parameters of.
- * @param e The e_state to use.
+ * @param eng The eng_state to use.
  */
 static void c_ast_func_params_english( c_ast_t const *ast,
-                                       e_state_t const *e ) {
+                                       eng_state_t const *eng ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
-  assert( e != NULL );
+  assert( eng != NULL );
 
-  FPUTC( '(', e->eout );
+  FPUTC( '(', eng->eout );
 
-  e_state_t param_e;
-  e_init( &param_e, e->eout );
-  param_e.func_ast = ast;
+  eng_state_t param_eng;
+  e_init( &param_eng, eng->eout );
+  param_eng.func_ast = ast;
 
   bool comma = false;
   FOREACH_AST_FUNC_PARAM( param, ast ) {
-    fput_sep( ", ", &comma, e->eout );
+    fput_sep( ", ", &comma, eng->eout );
 
     c_ast_t const *const param_ast = c_param_ast( param );
     c_sname_t const *const sname = c_ast_find_name( param_ast, C_VISIT_DOWN );
@@ -119,9 +119,9 @@ static void c_ast_func_params_english( c_ast_t const *ast,
       //
       // there's no "as <english>" part.
       //
-      c_sname_english( sname, e->eout );
+      c_sname_english( sname, eng->eout );
       if ( param_ast->kind != K_NAME )
-        FPUTS( " as ", e->eout );
+        FPUTS( " as ", eng->eout );
     }
     else {
       //
@@ -133,10 +133,10 @@ static void c_ast_func_params_english( c_ast_t const *ast,
       //
     }
 
-    c_ast_visit_english( param_ast, &param_e );
+    c_ast_visit_english( param_ast, &param_eng );
   } // for
 
-  FPUTC( ')', e->eout );
+  FPUTC( ')', eng->eout );
 }
 
 /**
@@ -225,11 +225,11 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *eout ) {
  * declaration in pseudo-English.
  *
  * @param ast The AST to print.
- * @param e The e_state to use.
+ * @param eng The eng_state to use.
  */
-static void c_ast_visit_english( c_ast_t const *ast, e_state_t const *e ) {
+static void c_ast_visit_english( c_ast_t const *ast, eng_state_t const *eng ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  user_data_t const data = { .pc = e };
+  user_data_t const data = { .pc = eng };
   c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, data );
 }
 
@@ -243,18 +243,18 @@ static void c_ast_visit_english( c_ast_t const *ast, e_state_t const *e ) {
 NODISCARD
 static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
   assert( ast != NULL );
-  e_state_t const *const e = data.pc;
-  assert( e != NULL );
+  eng_state_t const *const eng = data.pc;
+  assert( eng != NULL );
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      c_type_name_nobase_english( &ast->type, e->eout );
+      c_type_name_nobase_english( &ast->type, eng->eout );
       switch ( ast->array.kind ) {
         case C_ARRAY_NAMED_SIZE:
           //
           // Just because an array has named size doesn't mean it's a VLA.
           //
-          if ( e->func_ast == NULL ) {
+          if ( eng->func_ast == NULL ) {
             //
             // Named size is presumably some previously declared name, e.g.:
             //
@@ -263,7 +263,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
             //
             break;
           }
-          if ( !c_ast_find_param_named( e->func_ast, ast->array.size_name,
+          if ( !c_ast_find_param_named( eng->func_ast, ast->array.size_name,
                                         ast ) ) {
             //
             // Named size doesn't equal any previous parameter's name, e.g.:
@@ -280,26 +280,26 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
           FALLTHROUGH;
 
         case C_ARRAY_VLA_STAR:
-          FPUTS( "variable length ", e->eout );
+          FPUTS( "variable length ", eng->eout );
           break;
 
         case C_ARRAY_EMPTY_SIZE:
         case C_ARRAY_INT_SIZE:
           break;
       } // switch
-      FPUTS( "array ", e->eout );
+      FPUTS( "array ", eng->eout );
       switch ( ast->array.kind ) {
         case C_ARRAY_INT_SIZE:
-          FPRINTF( e->eout, "%u ", ast->array.size_int );
+          FPRINTF( eng->eout, "%u ", ast->array.size_int );
           break;
         case C_ARRAY_NAMED_SIZE:
-          FPRINTF( e->eout, "%s ", ast->array.size_name );
+          FPRINTF( eng->eout, "%s ", ast->array.size_name );
           break;
         case C_ARRAY_EMPTY_SIZE:
         case C_ARRAY_VLA_STAR:
           break;
       } // switch
-      FPUTS( "of ", e->eout );
+      FPUTS( "of ", eng->eout );
       break;
 
     case K_APPLE_BLOCK:
@@ -308,11 +308,11 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_UDEF_LIT:
-      c_type_name_nobase_english( &ast->type, e->eout );
+      c_type_name_nobase_english( &ast->type, eng->eout );
       switch ( ast->kind ) {
         case K_FUNCTION:
           if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
-            FPUTS( "member ", e->eout );
+            FPUTS( "member ", eng->eout );
           break;
         case K_OPERATOR: {
           c_func_member_t const op_mbr = c_ast_oper_overload( ast );
@@ -320,27 +320,27 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
             op_mbr == C_FUNC_MEMBER     ? "member "     :
             op_mbr == C_FUNC_NON_MEMBER ? "non-member " :
             "";
-          FPUTS( op_literal, e->eout );
+          FPUTS( op_literal, eng->eout );
           break;
         }
         default:
           /* suppress warning */;
       } // switch
 
-      FPUTS( c_kind_name( ast->kind ), e->eout );
+      FPUTS( c_kind_name( ast->kind ), eng->eout );
       if ( c_ast_params_count( ast ) > 0 ) {
-        FPUTC( ' ', e->eout );
-        c_ast_func_params_english( ast, e );
+        FPUTC( ' ', eng->eout );
+        c_ast_func_params_english( ast, eng );
       }
       if ( ast->func.ret_ast != NULL )
-        FPUTS( " returning ", e->eout );
+        FPUTS( " returning ", eng->eout );
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name_english( &ast->type ), e->eout );
+      FPUTS( c_type_name_english( &ast->type ), eng->eout );
       if ( c_ast_is_tid_any( ast, TB__BitInt ) )
-        FPRINTF( e->eout, " width %u bits", ast->builtin.BitInt.width );
-      c_ast_bit_width_english( ast, e->eout );
+        FPRINTF( eng->eout, " width %u bits", ast->builtin.BitInt.width );
+      c_ast_bit_width_english( ast, eng->eout );
       break;
 
     case K_CAPTURE:
@@ -350,43 +350,43 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
 
     case K_CAST:
       if ( ast->cast.kind != C_CAST_C )
-        FPRINTF( e->eout, "%s ", c_cast_english( ast->cast.kind ) );
-      FPUTS( L_cast, e->eout );
+        FPRINTF( eng->eout, "%s ", c_cast_english( ast->cast.kind ) );
+      FPUTS( L_cast, eng->eout );
       if ( !c_sname_empty( &ast->sname ) ) {
-        FPUTC( ' ', e->eout );
-        c_sname_english( &ast->sname, e->eout );
+        FPUTC( ' ', eng->eout );
+        c_sname_english( &ast->sname, eng->eout );
       }
-      FPUTS( " into ", e->eout );
+      FPUTS( " into ", eng->eout );
       break;
 
     case K_CLASS_STRUCT_UNION:
-      FPRINTF( e->eout, "%s ", c_type_name_english( &ast->type ) );
-      c_sname_english( &ast->csu.csu_sname, e->eout );
+      FPRINTF( eng->eout, "%s ", c_type_name_english( &ast->type ) );
+      c_sname_english( &ast->csu.csu_sname, eng->eout );
       break;
 
     case K_ENUM:
-      FPRINTF( e->eout, "%s ", c_type_name_english( &ast->type ) );
-      c_sname_english( &ast->enum_.enum_sname, e->eout );
+      FPRINTF( eng->eout, "%s ", c_type_name_english( &ast->type ) );
+      c_sname_english( &ast->enum_.enum_sname, eng->eout );
       if ( ast->enum_.of_ast != NULL )
-        FPUTS( " of type ", e->eout );
+        FPUTS( " of type ", eng->eout );
       else
-        c_ast_bit_width_english( ast, e->eout );
+        c_ast_bit_width_english( ast, eng->eout );
       break;
 
     case K_LAMBDA:
       if ( !c_type_is_none( &ast->type ) )
-        FPRINTF( e->eout, "%s ", c_type_name_english( &ast->type ) );
-      FPUTS( L_lambda, e->eout );
+        FPRINTF( eng->eout, "%s ", c_type_name_english( &ast->type ) );
+      FPUTS( L_lambda, eng->eout );
       if ( c_ast_captures_count( ast ) > 0 ) {
-        FPUTS( " capturing ", e->eout );
-        c_ast_lambda_captures_english( ast, e->eout );
+        FPUTS( " capturing ", eng->eout );
+        c_ast_lambda_captures_english( ast, eng->eout );
       }
       if ( c_ast_params_count( ast ) > 0 ) {
-        FPUTC( ' ', e->eout );
-        c_ast_func_params_english( ast, e );
+        FPUTC( ' ', eng->eout );
+        c_ast_func_params_english( ast, eng );
       }
       if ( ast->lambda.ret_ast != NULL )
-        FPUTS( " returning ", e->eout );
+        FPUTS( " returning ", eng->eout );
       break;
 
     case K_NAME:
@@ -398,39 +398,39 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      c_type_name_nobase_english( &ast->type, e->eout );
-      FPRINTF( e->eout, "%s to ", c_kind_name( ast->kind ) );
+      c_type_name_nobase_english( &ast->type, eng->eout );
+      FPRINTF( eng->eout, "%s to ", c_kind_name( ast->kind ) );
       break;
 
     case K_POINTER_TO_MEMBER:
-      c_type_name_nobase_english( &ast->type, e->eout );
-      FPRINTF( e->eout, "%s of ", c_kind_name( ast->kind ) );
-      fputs_sp( c_tid_name_english( ast->type.btids ), e->eout );
-      c_sname_english( &ast->ptr_mbr.class_sname, e->eout );
-      FPUTC( ' ', e->eout );
+      c_type_name_nobase_english( &ast->type, eng->eout );
+      FPRINTF( eng->eout, "%s of ", c_kind_name( ast->kind ) );
+      fputs_sp( c_tid_name_english( ast->type.btids ), eng->eout );
+      c_sname_english( &ast->ptr_mbr.class_sname, eng->eout );
+      FPUTC( ' ', eng->eout );
       break;
 
     case K_TYPEDEF:
       if ( !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_typedef ) ) )
-        FPRINTF( e->eout, "%s ", c_type_name_english( &ast->type ) );
-      c_sname_english( &ast->tdef.for_ast->sname, e->eout );
-      c_ast_bit_width_english( ast, e->eout );
+        FPRINTF( eng->eout, "%s ", c_type_name_english( &ast->type ) );
+      c_sname_english( &ast->tdef.for_ast->sname, eng->eout );
+      c_ast_bit_width_english( ast, eng->eout );
       break;
 
     case K_UDEF_CONV:
-      fputs_sp( c_type_name_english( &ast->type ), e->eout );
-      FPUTS( c_kind_name( ast->kind ), e->eout );
+      fputs_sp( c_type_name_english( &ast->type ), eng->eout );
+      FPUTS( c_kind_name( ast->kind ), eng->eout );
       if ( !c_sname_empty( &ast->sname ) ) {
-        FPRINTF( e->eout,
+        FPRINTF( eng->eout,
           " of %s ", c_type_name_english( c_sname_local_type( &ast->sname ) )
         );
-        c_sname_english( &ast->sname, e->eout );
+        c_sname_english( &ast->sname, eng->eout );
       }
-      FPUTS( " returning ", e->eout );
+      FPUTS( " returning ", eng->eout );
       break;
 
     case K_VARIADIC:
-      FPUTS( c_kind_name( ast->kind ), e->eout );
+      FPUTS( c_kind_name( ast->kind ), eng->eout );
       break;
 
     CASE_K_PLACEHOLDER;
@@ -476,17 +476,17 @@ static void c_type_name_nobase_english( c_type_t const *type, FILE *eout ) {
 }
 
 /**
- * Initializes an e_state.
+ * Initializes an eng_state.
  *
- * @param e The e_state to initialize.
+ * @param eng The eng_state to initialize.
  * @param eout The `FILE` to print to.
  */
-static void e_init( e_state_t *e, FILE *eout ) {
-  assert( e != NULL );
+static void e_init( eng_state_t *eng, FILE *eout ) {
+  assert( eng != NULL );
   assert( eout != NULL );
 
-  MEM_ZERO( e );
-  e->eout = eout;
+  MEM_ZERO( eng );
+  eng->eout = eout;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -509,9 +509,9 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
     } // switch
   }
 
-  e_state_t e;
-  e_init( &e, eout );
-  c_ast_visit_english( ast, &e );
+  eng_state_t eng;
+  e_init( &eng, eout );
+  c_ast_visit_english( ast, &eng );
 
   switch ( ast->align.kind ) {
     case C_ALIGNAS_NONE:
@@ -522,7 +522,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       break;
     case C_ALIGNAS_TYPE:
       FPUTS( " aligned as ", eout );
-      c_ast_visit_english( ast->align.type_ast, &e );
+      c_ast_visit_english( ast->align.type_ast, &eng );
       break;
   } // switch
 
@@ -567,9 +567,9 @@ void c_typedef_english( c_typedef_t const *tdef, FILE *eout ) {
   c_sname_english( &tdef->ast->sname, eout );
   FPUTS( " as ", eout );
 
-  e_state_t e;
-  e_init( &e, eout );
-  c_ast_visit_english( tdef->ast, &e );
+  eng_state_t eng;
+  e_init( &eng, eout );
+  c_ast_visit_english( tdef->ast, &eng );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
