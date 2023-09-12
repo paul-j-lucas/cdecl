@@ -374,7 +374,7 @@
  */
 #define DUMP_START(NAME,RULE)         \
   bool dump_comma = false; IF_DEBUG(  \
-  PUTS( NAME ": {\n  rule: " ); str_dump( (RULE), stdout ); PUTS( ",\n" ); )
+  PUTS( "{\n  rule: {\n    lhs: \"" NAME "\",\n    rhs: \"" RULE "\"\n  },\n" ); )
 #else
 #define DUMP_START(NAME,RULE)     NO_OP
 #endif

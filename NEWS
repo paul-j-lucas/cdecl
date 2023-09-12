@@ -16,6 +16,9 @@ with their complete changes, see the AUTHORS file.
 The `help` command now accepts a **cdecl** command name and prints help for
 only that command.
 
+** Dump in JSON5 (really)
+The format of the dump output is now (really) in valid JSON5 format.
+
 ** More std types
 Added more standard types.
 
