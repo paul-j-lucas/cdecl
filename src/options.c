@@ -284,7 +284,7 @@ bool parse_west_pointer( char const *wp_format ) {
         kinds |= K_FUNCTION;
         break;
       case 'l':
-        kinds |= K_USER_DEF_LITERAL;
+        kinds |= K_UDEF_LIT;
         break;
       case 'o':
         kinds |= K_OPERATOR;
@@ -312,7 +312,7 @@ char const* west_pointer_str( void ) {
     *s++ = 'b';
   if ( (opt_west_pointer_kinds & K_FUNCTION) != 0 )
     *s++ = 'f';
-  if ( (opt_west_pointer_kinds & K_USER_DEF_LITERAL) != 0 )
+  if ( (opt_west_pointer_kinds & K_UDEF_LIT) != 0 )
     *s++ = 'l';
   if ( (opt_west_pointer_kinds & K_OPERATOR) != 0 )
     *s++ = 'o';

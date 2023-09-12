@@ -274,7 +274,7 @@ void c_ast_dump_impl( c_ast_t const *ast, d_state_t *d ) {
     case K_CONSTRUCTOR:
       kind_j = json_object_begin( kind_j, "ctor", d );
       FALLTHROUGH;
-    case K_USER_DEF_LITERAL:
+    case K_UDEF_LIT:
       kind_j = json_object_begin( kind_j, "udef_lit", d );
 dump_params:
       DUMP_KEY( d, "param_ast_list: " );
@@ -313,7 +313,7 @@ dump_params:
     case K_RVALUE_REFERENCE:
       kind_j = json_object_begin( kind_j, "ptr_ref", d );
       FALLTHROUGH;
-    case K_USER_DEF_CONVERSION:
+    case K_UDEF_CONV:
       kind_j = json_object_begin( kind_j, "udef_conv", d );
       DUMP_KEY( d, "to_ast: " );
       c_ast_dump_impl( ast->ptr_ref.to_ast, d );

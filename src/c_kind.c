@@ -64,8 +64,8 @@ char const* c_kind_name( c_ast_kind_t kind ) {
     case K_REFERENCE          : return "reference";
     case K_RVALUE_REFERENCE   : return "rvalue reference";
     case K_TYPEDEF            : return "typedef";
-    case K_USER_DEF_CONVERSION: return "user-defined conversion operator";
-    case K_USER_DEF_LITERAL   : return "user-defined literal";
+    case K_UDEF_CONV          : return "user-defined conversion operator";
+    case K_UDEF_LIT           : return "user-defined literal";
     case K_VARIADIC           : return "variadic";
 
     case K_CLASS_STRUCT_UNION :
@@ -75,7 +75,6 @@ char const* c_kind_name( c_ast_kind_t kind ) {
   } // switch
 
   UNEXPECTED_INT_VALUE( kind );
-  return NULL;                          // suppress warning; LCOV_EXCL_LINE
 }
 
 ///////////////////////////////////////////////////////////////////////////////

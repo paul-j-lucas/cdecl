@@ -897,7 +897,7 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     }
   }
 
-  if ( ast->kind == K_USER_DEF_CONVERSION &&
+  if ( ast->kind == K_UDEF_CONV &&
        c_sname_local_type( &ast->sname )->btids == TB_SCOPE ) {
     //
     // User-defined conversions don't have names, but they can still have a
@@ -1928,7 +1928,7 @@ declare_command
       DUMP_SNAME( "of_scope_list_english_opt", $scope_sname );
       DUMP_AST( "decl_english_ast", $ret_ast );
 
-      c_ast_t *const udc_ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
+      c_ast_t *const udc_ast = c_ast_new_gc( K_UDEF_CONV, &@$ );
       c_sname_set( &udc_ast->sname, &$scope_sname );
       udc_ast->type = c_type_or( &$store_type, &C_TYPE_LIT_S( $cv_qual_stid ) );
       c_ast_set_parent( $ret_ast, udc_ast );
@@ -4806,7 +4806,7 @@ user_defined_conversion_decl_c_astp
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
       DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
 
-      c_ast_t *const udc_ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
+      c_ast_t *const udc_ast = c_ast_new_gc( K_UDEF_CONV, &@$ );
       udc_ast->sname = c_sname_move( &$sname );
       udc_ast->type.stids = c_tid_check(
         $qual_stids | $noexcept_stid | $equals_stid,
@@ -4848,7 +4848,7 @@ user_defined_literal_decl_c_astp
       c_sname_set( &type_ast->sname, &$sname );
       c_sname_append_name( &type_ast->sname, $name );
 
-      c_ast_t *const udl_ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
+      c_ast_t *const udl_ast = c_ast_new_gc( K_UDEF_LIT, &@$ );
       udl_ast->type.stids = c_tid_check( $noexcept_stid, C_TPID_STORE );
       udl_ast->udef_lit.param_ast_list = slist_move( &$param_ast_list );
 
@@ -6751,7 +6751,7 @@ user_defined_literal_decl_english_ast
       DUMP_AST_LIST( "param_decl_list_english_opt", $param_ast_list );
       DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
-      $$ = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
+      $$ = c_ast_new_gc( K_UDEF_LIT, &@$ );
       $$->udef_lit.param_ast_list = slist_move( &$param_ast_list );
       c_ast_set_parent( $ret_ast, $$ );
 

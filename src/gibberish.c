@@ -198,7 +198,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
   switch ( ast->kind ) {
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
-    case K_USER_DEF_CONVERSION:
+    case K_UDEF_CONV:
       //
       // Since none of these have a return type, no space needs to be printed
       // before the name, so lie and set the "space" flag.
@@ -208,7 +208,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
 
     case K_FUNCTION:
     case K_OPERATOR:
-    case K_USER_DEF_LITERAL:
+    case K_UDEF_LIT:
       //
       // These things aren't printed as part of the type beforehand, so strip
       // them out of the type here, but print them after the parameters.
@@ -265,7 +265,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_state_t *g ) {
            ( !c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER ) ) ) {
         fputs_sp( c_type_name_c( &type ), g->gout );
       }
-      if ( ast->kind == K_USER_DEF_CONVERSION ) {
+      if ( ast->kind == K_UDEF_CONV ) {
         if ( !c_sname_empty( &ast->sname ) )
           FPRINTF( g->gout, "%s::", c_sname_full_name( &ast->sname ) );
         FPUTS( "operator ", g->gout );
@@ -692,8 +692,8 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, g_state_t *g ) {
       case K_FUNCTION:
       case K_LAMBDA:
       case K_OPERATOR:
-      case K_USER_DEF_CONVERSION:
-      case K_USER_DEF_LITERAL:
+      case K_UDEF_CONV:
+      case K_UDEF_LIT:
         c_ast_postfix_gibberish( parent_ast, g );
         break;
 
@@ -793,13 +793,13 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, g_state_t *g ) {
     case K_CONSTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
-    case K_USER_DEF_LITERAL:
+    case K_UDEF_LIT:
       FPUTC( '(', g->gout );
       c_ast_list_gibberish( &ast->func.param_ast_list, g );
       FPUTC( ')', g->gout );
       break;
     case K_DESTRUCTOR:
-    case K_USER_DEF_CONVERSION:
+    case K_UDEF_CONV:
       FPUTS( "()", g->gout );
       break;
     case K_BUILTIN:
@@ -1017,10 +1017,10 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, g_state_t *g ) {
       FPRINTF( g->gout, "operator%s%s", isalpha( token[0] ) ? " " : "", token );
       break;
     }
-    case K_USER_DEF_CONVERSION:
+    case K_UDEF_CONV:
       // Do nothing since these don't have names.
       break;
-    case K_USER_DEF_LITERAL:
+    case K_UDEF_LIT:
       g_print_space_once( g );
       if ( c_sname_count( &ast->sname ) > 1 )
         FPRINTF( g->gout, "%s::", c_sname_scope_name( &ast->sname ) );

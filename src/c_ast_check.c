@@ -519,8 +519,8 @@ static bool c_ast_check_array( c_ast_t const *ast, c_state_t const *c ) {
     case K_NAME:                        // impossible
     case K_OPERATOR:                    // impossible
     case K_TYPEDEF:                     // impossible after c_ast_untypedef()
-    case K_USER_DEF_CONVERSION:         // impossible
-    case K_USER_DEF_LITERAL:            // impossible
+    case K_UDEF_CONV:                   // impossible
+    case K_UDEF_LIT:                    // impossible
     case K_VARIADIC:                    // impossible
       UNEXPECTED_INT_VALUE( raw_of_ast->kind );
 
@@ -544,7 +544,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_state_t const *c ) {
   assert( c != NULL );
 
   if ( ast->type.btids == TB_NONE && !OPT_LANG_IS( IMPLICIT_int ) &&
-       !c_ast_parent_is_kind( ast, K_USER_DEF_CONVERSION ) ) {
+       !c_ast_parent_is_kind( ast, K_UDEF_CONV ) ) {
     print_error( &ast->loc,
       "implicit \"int\" is illegal%s\n",
       C_LANG_WHICH( IMPLICIT_int )
@@ -989,7 +989,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         break;
 
       case K_FUNCTION:
-      case K_USER_DEF_CONVERSION:
+      case K_UDEF_CONV:
         if ( c_tid_is_any( ast->type.stids, TS_default ) )
           goto only_special;
         break;
@@ -1344,8 +1344,8 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       case K_LAMBDA:                    // impossible
       case K_OPERATOR:                  // impossible
       case K_TYPEDEF:                   // impossible after c_ast_untypedef()
-      case K_USER_DEF_CONVERSION:       // impossible
-      case K_USER_DEF_LITERAL:          // impossible
+      case K_UDEF_CONV:                 // impossible
+      case K_UDEF_LIT:                  // impossible
         UNEXPECTED_INT_VALUE( raw_param_ast->kind );
 
       CASE_K_PLACEHOLDER;
@@ -2274,7 +2274,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       break;
     case K_FUNCTION:
     case K_OPERATOR:
-    case K_USER_DEF_LITERAL:
+    case K_UDEF_LIT:
       print_error( &ret_ast->loc,
         "%s returning %s is illegal",
         kind_name, c_kind_name( raw_ret_ast->kind )
@@ -2288,7 +2288,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   if ( c_tid_is_any( ast->type.stids, TS_explicit ) ) {
     c_lang_id_t which_lang_ids = LANG_NONE;
     switch ( ast->kind ) {
-      case K_USER_DEF_CONVERSION:
+      case K_UDEF_CONV:
         if ( OPT_LANG_IS( explicit_USER_DEF_CONVS ) )
           break;
         which_lang_ids = LANG_explicit_USER_DEF_CONVS;
@@ -2311,7 +2311,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
 NODISCARD
 static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind == K_USER_DEF_CONVERSION );
+  assert( ast->kind == K_UDEF_CONV );
 
   if ( c_tid_is_any( ast->type.stids, c_tid_compl( TS_USER_DEF_CONV ) ) ) {
     error_kind_not_tid( ast, ast->type.stids, LANG_NONE, "\n" );
@@ -2348,7 +2348,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
 NODISCARD
 static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind == K_USER_DEF_LITERAL );
+  assert( ast->kind == K_UDEF_LIT );
 
   c_param_t const *param = c_ast_params( ast );
   assert( param != NULL );
@@ -2606,12 +2606,12 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       return c_ast_visitor_error( &temp_ast, data );
     }
 
-    case K_USER_DEF_CONVERSION:
+    case K_UDEF_CONV:
       if ( !c_ast_check_udef_conv( ast ) )
         return VISITOR_ERROR_FOUND;
       break;
 
-    case K_USER_DEF_LITERAL:
+    case K_UDEF_LIT:
       if ( !(c_ast_check_ret_type( ast ) &&
              c_ast_check_func( ast ) &&
              c_ast_check_udef_lit_params( ast )) ) {
@@ -2723,7 +2723,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
       case K_OPERATOR:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
-      case K_USER_DEF_CONVERSION:
+      case K_UDEF_CONV:
         //
         // These being declared "restrict" is already made an error by checks
         // elsewhere.
@@ -2789,7 +2789,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
       }
       break;
 
-    case K_USER_DEF_LITERAL:
+    case K_UDEF_LIT:
       if ( c_sname_local_name( &ast->sname )[0] != '_' )
         print_warning( &ast->loc,
           "user-defined literals not starting with '_' are reserved\n"
@@ -2860,7 +2860,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
 
     case K_CAPTURE:
     case K_CAST:
-    case K_USER_DEF_CONVERSION:
+    case K_UDEF_CONV:
     case K_VARIADIC:
       // nothing to check
       break;

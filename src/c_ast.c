@@ -233,7 +233,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
     case K_APPLE_BLOCK:
       // ret_ast duplicated by referrer code below
     case K_CONSTRUCTOR:
-    case K_USER_DEF_LITERAL:
+    case K_UDEF_LIT:
       dup_ast->func.param_ast_list =
         c_ast_list_dup( &ast->func.param_ast_list, node_list );
       break;
@@ -250,7 +250,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-    case K_USER_DEF_CONVERSION:
+    case K_UDEF_CONV:
       // of_ast duplicated by referrer code below
     case K_DESTRUCTOR:
     case K_NAME:
@@ -328,7 +328,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_APPLE_BLOCK:
       // ret_ast checked by referrer code below
     case K_CONSTRUCTOR:
-    case K_USER_DEF_LITERAL:
+    case K_UDEF_LIT:
       if ( !c_ast_list_equal( &i_ast->func.param_ast_list,
                               &j_ast->func.param_ast_list ) ) {
         return false;
@@ -359,7 +359,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-    case K_USER_DEF_CONVERSION:
+    case K_UDEF_CONV:
       // checked by referrer code below
     case K_NAME:                        // names don't matter
     case K_DESTRUCTOR:
@@ -395,7 +395,7 @@ void c_ast_free( c_ast_t *ast ) {
       case K_CONSTRUCTOR:
       case K_FUNCTION:
       case K_OPERATOR:
-      case K_USER_DEF_LITERAL:
+      case K_UDEF_LIT:
         c_ast_list_cleanup( &ast->func.param_ast_list );
         break;
       case K_CLASS_STRUCT_UNION:
@@ -413,7 +413,7 @@ void c_ast_free( c_ast_t *ast ) {
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
       case K_TYPEDEF:
-      case K_USER_DEF_CONVERSION:
+      case K_UDEF_CONV:
       case K_VARIADIC:
         // nothing to do
         break;

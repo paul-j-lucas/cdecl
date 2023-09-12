@@ -307,7 +307,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
     case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
-    case K_USER_DEF_LITERAL:
+    case K_UDEF_LIT:
       c_type_name_nobase_english( &ast->type, e->eout );
       switch ( ast->kind ) {
         case K_FUNCTION:
@@ -417,7 +417,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
       c_ast_bit_width_english( ast, e->eout );
       break;
 
-    case K_USER_DEF_CONVERSION:
+    case K_UDEF_CONV:
       fputs_sp( c_type_name_english( &ast->type ), e->eout );
       FPUTS( c_kind_name( ast->kind ), e->eout );
       if ( !c_sname_empty( &ast->sname ) ) {
@@ -501,7 +501,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
     // it isn't because operators have a name but don't use ast->sname.
     switch ( ast->kind ) {
       case K_LAMBDA:
-      case K_USER_DEF_CONVERSION:
+      case K_UDEF_CONV:
         break;                          // these don't have names
       default:
         c_ast_name_english( ast, eout );

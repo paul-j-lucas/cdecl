@@ -102,22 +102,22 @@ enum c_ast_kind {
    * "something" in the AST.
    * @endparblock
    */
-  K_PLACEHOLDER             = (1u << 0),
+  K_PLACEHOLDER         = (1u << 0),
 
   /**
    * Built-in type, e.g., `void`, `char`, `int`, etc.
    */
-  K_BUILTIN                 = (1u << 1),
+  K_BUILTIN             = (1u << 1),
 
   /**
    * C++ lambda capture.
    */
-  K_CAPTURE                 = (1u << 2),
+  K_CAPTURE             = (1u << 2),
 
   /**
    * A `class,` `struct,` or `union`.
    */
-  K_CLASS_STRUCT_UNION      = (1u << 3),
+  K_CLASS_STRUCT_UNION  = (1u << 3),
 
   /**
    * Name only.
@@ -133,29 +133,29 @@ enum c_ast_kind {
    *     e.g., <code>double&nbsp;sin(x)</code>.
    * @endparblock
    */
-  K_NAME                    = (1u << 4),
+  K_NAME                = (1u << 4),
 
   /**
    * A `typedef` type, e.g., `size_t`.
    */
-  K_TYPEDEF                 = (1u << 5),
+  K_TYPEDEF             = (1u << 5),
 
   /**
    * Variadic (`...`) function parameter.
    */
-  K_VARIADIC                = (1u << 6),
+  K_VARIADIC            = (1u << 6),
 
   ////////// "parent" kinds ///////////////////////////////////////////////////
 
   /**
    * Array.
    */
-  K_ARRAY                   = (1u << 7),
+  K_ARRAY               = (1u << 7),
 
   /**
    * Cast.
    */
-  K_CAST                    = (1u << 8),
+  K_CAST                = (1u << 8),
 
   /**
    * An `enum`.
@@ -163,39 +163,39 @@ enum c_ast_kind {
    * @note This is a "parent" kind because `enum` in C23/C++11 and later can be
    * "of" a fixed type.
    */
-  K_ENUM                    = (1u << 9),
+  K_ENUM                = (1u << 9),
 
   /**
    * C or C++ pointer.
    */
-  K_POINTER                 = (1u << 10),
+  K_POINTER             = (1u << 10),
 
   /**
    * C++ pointer-to-member.
    */
-  K_POINTER_TO_MEMBER       = (1u << 11),
+  K_POINTER_TO_MEMBER   = (1u << 11),
 
   /**
    * C++ reference.
    */
-  K_REFERENCE               = (1u << 12),
+  K_REFERENCE           = (1u << 12),
 
   /**
    * C++ rvalue reference.
    */
-  K_RVALUE_REFERENCE        = (1u << 13),
+  K_RVALUE_REFERENCE    = (1u << 13),
 
   ////////// function-like "parent" kinds /////////////////////////////////////
 
   /**
    * C++ constructor.
    */
-  K_CONSTRUCTOR             = (1u << 14),
+  K_CONSTRUCTOR         = (1u << 14),
 
   /**
    * C++ destructor.
    */
-  K_DESTRUCTOR              = (1u << 15),
+  K_DESTRUCTOR          = (1u << 15),
 
   ////////// function-like "parent" kinds that have return types //////////////
 
@@ -205,32 +205,32 @@ enum c_ast_kind {
    * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
    * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
    */
-  K_APPLE_BLOCK             = (1u << 16),
+  K_APPLE_BLOCK         = (1u << 16),
 
   /**
    * Function.
    */
-  K_FUNCTION                = (1u << 17),
+  K_FUNCTION            = (1u << 17),
 
   /**
    * C++ lambda.
    */
-  K_LAMBDA                  = (1u << 18),
+  K_LAMBDA              = (1u << 18),
 
   /**
    * C++ overloaded operator.
    */
-  K_OPERATOR                = (1u << 19),
+  K_OPERATOR            = (1u << 19),
 
   /**
    * C++ user-defined conversion operator.
    */
-  K_USER_DEF_CONVERSION     = (1u << 20),
+  K_UDEF_CONV           = (1u << 20),
 
   /**
    * C++ user-defined literal.
    */
-  K_USER_DEF_LITERAL        = (1u << 21),
+  K_UDEF_LIT            = (1u << 21),
 };
 typedef enum c_ast_kind c_ast_kind_t;
 
@@ -251,19 +251,19 @@ typedef enum c_ast_kind c_ast_kind_t;
 
 /**
  * Shorthand for any kind of function-like AST: #K_APPLE_BLOCK, #K_CONSTRUCTOR,
- * #K_DESTRUCTOR, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_USER_DEF_CONVERSION,
- * or #K_USER_DEF_LITERAL.
+ * #K_DESTRUCTOR, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_UDEF_CONV, or
+ * #K_UDEF_LIT.
  */
 #define K_ANY_FUNCTION_LIKE       ( K_ANY_FUNCTION_RETURN | K_CONSTRUCTOR \
                                   | K_DESTRUCTOR )
 
 /**
  * Shorthand for any kind of function-like AST that has a return type:
- * #K_APPLE_BLOCK, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_USER_DEF_CONVERSION,
- * or #K_USER_DEF_LITERAL.
+ * #K_APPLE_BLOCK, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_UDEF_CONV, or
+ * #K_UDEF_LIT.
  */
 #define K_ANY_FUNCTION_RETURN     ( K_ANY_TRAILING_RETURN | K_APPLE_BLOCK \
-                                  | K_USER_DEF_CONVERSION | K_USER_DEF_LITERAL )
+                                  | K_UDEF_CONV | K_UDEF_LIT )
 
 /**
  * Shorthand for any kind of "object" that can be the type of a variable or
@@ -291,7 +291,7 @@ typedef enum c_ast_kind c_ast_kind_t;
  * Shorthand for any kind of parent: #K_APPLE_BLOCK, #K_ARRAY, #K_CAST,
  * #K_CONSTRUCTOR, #K_DESTRUCTOR, #K_ENUM, #K_FUNCTION, #K_OPERATOR,
  * #K_POINTER, #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE,
- * #K_USER_DEF_CONVERSION, or #K_USER_DEF_LITERAL.
+ * #K_UDEF_CONV, or #K_UDEF_LIT.
  *
  * @note #K_TYPEDEF is intentionally _not_ included.
  *
