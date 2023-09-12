@@ -1180,7 +1180,7 @@ static void yyerror( char const *msg ) {
 %left                                     ','
 
                     // K&R C
-%token  <tid>       Y_auto_STORAGE      // C version of "auto"
+%token  <tid>       Y_auto_STORAGE      // Pre-C23/C++11 version of "auto"
 %token              Y_break
 %token              Y_case
 %token  <tid>       Y_char
@@ -1286,7 +1286,7 @@ static void yyerror( char const *msg ) {
                     // C++11
 %token              Y_alignas
 %token              Y_alignof
-%token  <tid>       Y_auto_TYPE         // C23 & C++11 version of "auto"
+%token  <tid>       Y_auto_TYPE         // C23/C++11 version of "auto"
 %token              Y_carries Y_dependency
 %token  <tid>       Y_carries_dependency
 %token  <tid>       Y_constexpr
