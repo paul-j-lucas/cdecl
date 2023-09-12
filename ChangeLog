@@ -1,5 +1,12 @@
 2023-09-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c: s/g_state/gib_state/
+   * english.c: s/e_init()/eng_init()/
+   * english.c: s/e_state/eng_state/
+   * c_ast_check.c: Added check_state_init().
+   * c_ast_check.c: s/c_state/check_state/
+   * parser.y, debug.out: The format of the dump output is now (really) in
+     valid JSON5 format.
    * configure.ac, util.h: 1. Added IS_ARRAY(), IS_POINTER(), IS_SAME_TYPE(),
      and STATIC_ASSERT_EXPR() macros. 2. Reworked ARRAY_SIZE() so that it
      requires an array. 3. Reworked MEM_ZERO() to use _Static_assert().
