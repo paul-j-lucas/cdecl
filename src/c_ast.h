@@ -54,10 +54,11 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
- * Convenience macro for iterating over all captures of a lambda AST.
+ * Convenience macro for iterating over all \ref c_capture_ast nodes of a \ref
+ * c_lambda_ast.
  *
  * @param VAR The \ref c_capture_t loop variable.
- * @param AST The lambda AST to iterate the captures of.
+ * @param AST The \ref c_lambda_ast to iterate the captures of.
  *
  * @sa c_ast_captures()
  * @sa #FOREACH_AST_FUNC_PARAM()
@@ -67,12 +68,13 @@ _GL_INLINE_HEADER_BEGIN
   FOREACH_AST_LAMBDA_CAPTURE_UNTIL( VAR, (AST), /*END=*/NULL )
 
 /**
- * Convenience macro for iterating over all captures of a lambda AST up to but
- * not including \a END.
+ * Convenience macro for iterating over all \ref c_capture_ast nodes of a \ref
+ * c_lambda_ast up to but not including \a END.
  *
  * @param VAR The \ref c_capture_t loop variable.
- * @param AST The lambda AST to iterate the captures of.
- * @param END A pointer to the capture to end before; may be NULL.
+ * @param AST The \ref c_lambda_ast to iterate the captures of.
+ * @param END A pointer to the capture to end before.  If NULL, equivalent to
+ * #FOREACH_AST_LAMBDA_CAPTURE().
  *
  * @sa c_ast_captures()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
@@ -100,7 +102,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param VAR The \ref c_param_t loop variable.
  * @param AST The function-like AST to iterate the parameters of.
- * @param END A pointer to the parameter to end before; may be NULL.
+ * @param END A pointer to the parameter to end before.  If NULL, equivalent to
+ * #FOREACH_AST_FUNC_PARAM().
  *
  * @sa c_ast_params()
  * @sa #FOREACH_AST_FUNC_PARAM()
@@ -109,19 +112,22 @@ _GL_INLINE_HEADER_BEGIN
 #define FOREACH_AST_FUNC_PARAM_UNTIL(VAR,AST,END) \
   FOREACH_SLIST_NODE_UNTIL( VAR, &(AST)->func.param_ast_list, (END) )
 
+///////////////////////////////////////////////////////////////////////////////
+
 #ifdef ENABLE_CDECL_DEBUG
+
+/**
+ * Unique AST node ID (used only for debugging).
+ *
+ * @sa #PRId_C_AST_ID_T
+ */
+typedef unsigned c_ast_id_t;
 
 /**
  * Decimal print conversion specifier for \ref c_ast_id_t.
  */
 #define PRId_C_AST_ID_T           "%u"
 
-#endif /* ENABLE_CDECL_DEBUG */
-
-///////////////////////////////////////////////////////////////////////////////
-
-#ifdef ENABLE_CDECL_DEBUG
-typedef unsigned  c_ast_id_t;           ///< Unique AST node ID.
 #endif /* ENABLE_CDECL_DEBUG */
 
 /**
@@ -174,11 +180,11 @@ typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, user_data_t data );
  * list and calling c_ast_free() on each node individually.  It's done this way
  * to simplify node memory management.
  *
- * As an AST is being built, sometimes \ref K_PLACEHOLDER nodes are created
- * temporarily.  Later, once an actual node is created, the \ref K_PLACEHOLDER
- * node is replaced.  Rather than freeing a \ref K_PLACEHOLDER node immediately
- * (and, for a parent node, set its "of" node to NULL just prior to being freed
- * so as not to free its child node also), it's simply left on the list.  Once
+ * As an AST is being built, sometimes #K_PLACEHOLDER nodes are created
+ * temporarily.  Later, once an actual node is created, the #K_PLACEHOLDER node
+ * is replaced.  Rather than freeing a #K_PLACEHOLDER node immediately (and,
+ * for a parent node, set its "of" node to NULL just prior to being freed so as
+ * not to free its child node also), it's simply left on the list.  Once
  * parsing is complete, the entire list is freed effectively "garbage
  * collecting" all nodes.
  * @{
