@@ -1,3 +1,9 @@
+2023-09-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, util.h: 1. Added IS_ARRAY(), IS_POINTER(), IS_SAME_TYPE(),
+     and STATIC_ASSERT_EXPR() macros. 2. Reworked ARRAY_SIZE() so that it
+     requires an array. 3. Reworked MEM_ZERO() to use _Static_assert().
+
 2023-09-11  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_ast.h, c_ast_check.c, c_kind.c, c_kind.h, dump.c, english.c,
