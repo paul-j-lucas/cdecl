@@ -1,5 +1,9 @@
 2023-09-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c, c_ast.h, c_ast_check.c, c_kind.c, c_kind.h, dump.c, english.c,
+     gibberish.c, options.c, parser.y: s/K_USER_DEF_CONVERSION/K_UDEF_CONV/;
+     s/K_USER_DEF_LITERAL/K_UDEF_LIT/ to match c_udef_conv_ast and
+     c_udef_lit_ast.
    * c_ast_check.c, c_ast_util.c, c_ast_util.h, c_keyword.c, c_sname.c,
      c_sname.h, c_type.c, c_type.h, c_typedef.c, dump.c, english.c,
      gibberish.c, options.c, parser.y: Renamed TB_*, TS_*, TA_* macros to use
