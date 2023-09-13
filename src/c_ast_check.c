@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines a function for checking an AST for semantic errors.
+ * Defines functions for checking an AST for semantic errors.
  */
 
 // local
