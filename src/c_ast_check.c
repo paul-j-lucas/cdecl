@@ -163,8 +163,11 @@ struct check_state {
   c_ast_t const  *func_ast;             ///< The current function AST, if any.
 
   /**
-   * Is an AST node the "of" type of a `typedef` AST that is itself a "to" type
-   * of a pointer AST?  For example, given:
+   * If the current AST node is the \ref c_typedef_ast::for_ast "for_ast" of a
+   * #K_TYPEDEF AST, store that #K_TYPEDEF AST here.
+   *
+   * We need to know if `tdef_ast` is the \ref c_ptr_ref_ast::to_ast "to_ast"
+   * of a #K_POINTER AST for a case like:
    *
    *      typedef void V;               // typedef AST1 AST2
    *      explain V *p;                 // explain AST2 AST3
@@ -180,7 +183,7 @@ struct check_state {
    *  + A pointer to `void` is also legal; therefore:
    *  + A pointer to a `typedef` of `void` is also legal.
    */
-  bool            is_pointee;
+  c_ast_t const  *tdef_ast;
 };
 typedef struct check_state check_state_t;
 
@@ -628,7 +631,8 @@ static bool c_ast_check_builtin( c_ast_t const *ast,
        ast->kind != K_CAST &&
        !c_tid_is_any( ast->type.stids, TS_typedef ) &&
        !(OPT_LANG_IS( C_ANY ) && c_tid_is_any( ast->type.stids, TS_extern )) &&
-       !check->is_pointee ) {
+       (check->tdef_ast == NULL ||
+        !c_ast_parent_is_kind( check->tdef_ast, K_POINTER )) ) {
     print_error( &ast->loc, "variable of void" );
     print_hint( "pointer to void" );
     return false;
@@ -2610,7 +2614,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       c_ast_t const temp_ast = c_ast_sub_typedef( ast );
       check_state_t temp_check;
       check_state_init( &temp_check );
-      temp_check.is_pointee = c_ast_parent_is_kind( ast, K_POINTER );
+      temp_check.tdef_ast = ast;
       data.pc = &temp_check;
       return c_ast_visitor_error( &temp_ast, data );
     }
