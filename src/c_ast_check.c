@@ -2798,9 +2798,13 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
     case K_RVALUE_REFERENCE:
       if ( c_tid_is_any( qual_stids, TS_CV ) ) {
         //
-        // Either const or volatile applied to a reference directly (as opposed
-        // to typedef of a reference) is an error and checked for in
-        // c_ast_check_reference(); so if we get here, ast must be a typedef.
+        // Either const or volatile applied to a reference directly is an error
+        // and checked for in c_ast_check_reference(); so if we get here, the
+        // const or volatile must be applied to a typedef of a reference type,
+        // e.g.:
+        //
+        //      using rint = int&
+        //      const rint x            // warning: no effect
         //
         assert( ast->kind == K_TYPEDEF );
 
