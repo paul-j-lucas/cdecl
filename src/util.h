@@ -141,7 +141,12 @@ _GL_INLINE_HEADER_BEGIN
 #ifndef NDEBUG
 /**
  * Asserts that this line of code is run at most once &mdash; useful in
- * initialization functions that must be called at most once.
+ * initialization functions that must be called at most once.  For example:
+ *
+ *      void initialize() {
+ *        ASSERT_RUN_ONCE();
+ *        // ...
+ *      }
  *
  * @sa #RUN_ONCE
  */
