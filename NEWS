@@ -43,6 +43,14 @@ A bit-field of a `typedef` for an `enum` is now correctly forbidden in C:
     typedef enum E T
     explain T x : 4                     // error: enum bit-field is illegal
 
+** `const` `typedef` of reference
+**cdecl** will now warn about applying `const` to a reference `typedef`:
+
+    c++decl> using rint = int&;
+    c++decl> explain const rint x
+                     ^
+    9: warning: "const" on reference type has no effect
+
 ** Reference to function or reference
 **cdecl** now correctly allows references to function and references.
 

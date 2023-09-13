@@ -1,41 +1,56 @@
 EXPECTED_EXIT=0
 cdecl -O -xc++ <<END
 struct S
+using S2 = S
 using SR = S&
 struct T
 
 explain S operator!(const S&)
+explain S operator!(const S2&)
 explain S operator!(const SR)
 
 explain S operator%(const S&, const S&)
 explain S operator%(const S&, int)
 explain S operator%(int)
+
 explain S operator&(const S&, const S&)
 explain S operator&(const S&, int)
+
 explain S operator*(const S&)
 explain S operator*(const S&, const S&)
 explain S operator*(const S&, int)
+
 explain S operator+(const S&, const S&)
 explain S operator+(const S&, int)
 explain S operator+(int)
+
 explain S operator,(const S&, int)
+
 explain S operator-(const S&, const S&)
 explain S operator-(const S&, int)
 explain S operator-(int)
+
 explain S operator/(const S&, const S&)
 explain S operator/(const S&, int)
+
 explain S operator<<(const S&, int)
 explain S operator<<(int)
+
 explain S operator>>(const S&, int)
 explain S operator>>(int)
+
 explain S operator^(const S&, int)
+
 explain S operator|(const S&, const S&)
+
 explain S operator~()
 explain S operator~() const
 explain S operator~(S const&)
+
 explain S& S::operator=(S const&)
 explain S& S::operator=(S const&) = default
 explain S& S::operator=(S const&) = delete
+
 explain S& operator%=(S&, int)
 explain S& operator%=(int)
 explain S& operator&(int)

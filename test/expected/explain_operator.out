@@ -1,8 +1,11 @@
 c++decl> struct S
+c++decl> using S2 = S
 c++decl> using SR = S&
 c++decl> struct T
 c++decl> explain S operator!(const S&)
 declare ! as non-member operator (reference to constant S) returning S
+c++decl> explain S operator!(const S2&)
+declare ! as non-member operator (reference to constant S2) returning S
 c++decl> explain S operator!(const SR)
                              ^
 21: warning: "const" on reference type has no effect
