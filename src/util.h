@@ -246,7 +246,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param T The type of the object.
  */
 #define DECL_UNUSED(T) \
-  _Alignas(T) char NAME2(unused_,__LINE__)[ sizeof(T) ]
+  _Alignas(T) char UNIQUE_NAME(unused)[ sizeof(T) ]
 
 /**
  * Shorthand for printing to standard error.
@@ -692,6 +692,18 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #CHARIFY()
  */
 #define STRINGIFY(X)              STRINGIFY_HELPER(X)
+
+/**
+ * Synthesises a name prefixed by \a PREFIX unique to the line on which it's
+ * used.
+ *
+ * @param PREFIX The prefix of the synthesized name.
+ *
+ * @warning All uses for a given \a PREFIX _must_ be on the same line.  This is
+ * not a problem within macro definitions, but won't work outside of them since
+ * there's no way to refer to a previously used unique name.
+ */
+#define UNIQUE_NAME(PREFIX)       NAME2(NAME2(PREFIX,_),__LINE__)
 
 #ifdef __GNUC__
 
