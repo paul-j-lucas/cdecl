@@ -951,7 +951,7 @@ bool fd_is_file( int fd );
  * @warning \a buf must remain valid for as along as the `FILE` is open.
  */
 NODISCARD
-FILE* fmemopen( void *restrict buf, size_t size, char const *restrict mode );
+FILE* fmemopen( void *buf, size_t size, char const *mode );
 #endif /* HAVE_FMEMOPEN */
 
 /**

@@ -181,7 +181,7 @@ bool fd_is_file( int fd ) {
 }
 
 #ifndef HAVE_FMEMOPEN
-FILE* fmemopen( void *restrict buf, size_t size, char const *restrict mode ) {
+FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   assert( buf != NULL );
   assert( mode != NULL );
   assert( strchr( mode, 'r' ) != NULL );
