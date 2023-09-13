@@ -1,3 +1,19 @@
+2023-09-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: Simplified counting of ECSU parameters.
+   * c_ast_check.c, explain_operator.out, explain_operator.test: Now using
+     c_ast_unreference_any().
+   * c_ast_check.c, explain_operator.out, explain_operator.test: Now warn about
+     `const` on `typedef` of reference.
+   * c_ast_check.c: Replaced is_pointee by tdef_ast.
+   * c_ast_check.c: s/qual_stids/ret_qual_stids/
+   * parser.y, declare.out: Fixed: declare f as function (x as S::T)
+   * c_ast_check.c, c_ast_util.c, c_ast_util.h: Replaced
+     c_ast_unrvalue_reference() with c_ast_unreference_any().
+   * util.c, util.h: Removed `restrict`.
+   * util.h: Using UNIQUE_NAME() more.
+   * util.h: Added UNIQUE_NAME.
+
 2023-09-12  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c: s/d_state/dump_state/; s/j_state/json_state/
