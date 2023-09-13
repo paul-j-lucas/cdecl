@@ -7181,7 +7181,7 @@ oper_sname_c_opt
 typedef_type_c_ast
   : any_typedef[tdef] sub_scope_sname_c_opt[sname]
     {
-      c_ast_t *const type_ast = ia_type_ast_peek();
+      c_ast_t *type_ast = ia_type_ast_peek();
       c_ast_t const *type_for_ast = $tdef->ast;
 
       DUMP_START( "typedef_type_c_ast", "any_typedef" );
@@ -7206,12 +7206,13 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
           //      explain S::T x
           //
           // that is: a typedef'd type followed by ::T where T is an unknown
-          // name used as a type. Just assume the T is a type and create a name
-          // for it.
+          // name used as a type. Just assume the T is some type, say int, and
+          // create a name for it.
           //
-          c_ast_t *const name_ast = c_ast_new_gc( K_NAME, &@sname );
-          c_sname_set( &name_ast->sname, &temp_name );
-          type_for_ast = name_ast;
+          type_ast = c_ast_new_gc( K_BUILTIN, &@sname );
+          type_ast->type.btids = TB_int;
+          c_sname_set( &type_ast->sname, &temp_name );
+          type_for_ast = type_ast;
           goto ttntd;
         }
 

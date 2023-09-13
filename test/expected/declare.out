@@ -350,8 +350,7 @@ void f(int &&r);
 c++decl> declare f as function (self as this reference to S) returning void
 void f(this S &self);
 c++decl> declare f as function (x as S::T)
-                                ^
-24: error: type specifier required in C++
+void f(S::T x);
 c++decl> declare f as function (x as carries-dependency int) returning int
 int f([[carries_dependency]] int x);
 c++decl> declare f as function (x as deprecated int)
