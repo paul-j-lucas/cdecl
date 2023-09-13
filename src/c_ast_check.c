@@ -1923,12 +1923,8 @@ same: print_error( c_ast_params_loc( ast ),
         ++ecsu_param_count;
         break;
       case K_REFERENCE:
-        param_ast = c_ast_unreference( param_ast );
-        if ( (param_ast->kind & K_ANY_ECSU) != 0 )
-          ++ecsu_param_count;
-        break;
       case K_RVALUE_REFERENCE:
-        param_ast = c_ast_unrvalue_reference( param_ast );
+        param_ast = c_ast_unreference_any( param_ast );
         if ( (param_ast->kind & K_ANY_ECSU) != 0 )
           ++ecsu_param_count;
         break;

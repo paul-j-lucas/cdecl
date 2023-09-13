@@ -443,7 +443,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  *
  * @sa c_ast_pointer()
  * @sa c_ast_unreference()
- * @sa c_ast_unrvalue_reference()
+ * @sa c_ast_unreference_any()
  * @sa c_ast_untypedef()
  * @sa c_ast_untypedef_qual()
  */
@@ -461,7 +461,7 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * @note Only #K_REFERENCE is un-referenced, not #K_RVALUE_REFERENCE.
  *
  * @sa c_ast_unpointer()
- * @sa c_ast_unrvalue_reference()
+ * @sa c_ast_unreference_any()
  * @sa c_ast_untypedef()
  * @sa c_ast_untypedef_qual()
  */
@@ -469,14 +469,12 @@ NODISCARD
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
 /**
- * Un-rvalue-references \a ast, i.e., if \a ast is a #K_RVALUE_REFERENCE
- * returns the referred-to AST.
+ * Un-references \a ast, i.e., if \a ast is either a #K_REFERENCE or
+ * #K_RVALUE_REFERENCE returns the referred-to AST.
  *
  * @param ast The AST to un-reference.
  * @return If \a ast is an rvalue reference, returns the un-`typedef`d
  * referenced AST; otherwise returns \a ast.
- *
- * @note Only #K_RVALUE_REFERENCE is un-referenced, not #K_REFERENCE.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
@@ -484,7 +482,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * @sa c_ast_untypedef_qual()
  */
 NODISCARD
-c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast );
+c_ast_t const* c_ast_unreference_any( c_ast_t const *ast );
 
 /**
  * Un-`typedef`s \a ast, i.e., if \a ast is of \ref c_ast::kind "kind"
@@ -496,7 +494,7 @@ c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast );
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
- * @sa c_ast_unrvalue_reference()
+ * @sa c_ast_unreference_any()
  * @sa c_ast_untypedef_qual()
  */
 NODISCARD
@@ -515,7 +513,7 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
  * @sa c_ast_sub_typedef()
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
- * @sa c_ast_unrvalue_reference()
+ * @sa c_ast_unreference_any()
  * @sa c_ast_untypedef()
  */
 NODISCARD
