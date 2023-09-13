@@ -1235,7 +1235,7 @@ uint32_t ms_bit1_32( uint32_t n );
 /**
  * Parses a C/C++ identifier.
  *
- * @param s The string to parse.
+ * @param s The NULL-terminated string to parse.
  * @return Returns a pointer to the first character that is not an identifier
  * character only if an identifier was parsed or NULL if an identifier was not
  * parsed.
