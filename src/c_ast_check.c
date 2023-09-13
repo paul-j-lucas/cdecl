@@ -2216,9 +2216,9 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
  *      <br/>
  *      **warning**: `const` on reference type has no effect.
  *
- * This function checks for case 1; c_ast_visitor_warning() checks for case 2.
+ * This function checks for case 1 (along with `volatile`);
+ * c_ast_visitor_warning() checks for case 2.
  * @endparblock
- *
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -2797,6 +2797,13 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       if ( c_tid_is_any( qual_stids, TS_CV ) ) {
+        //
+        // Either const or volatile applied to a reference directly (as opposed
+        // to typedef of a reference) is an error and checked for in
+        // c_ast_check_reference(); so if we get here, ast must be a typedef.
+        //
+        assert( ast->kind == K_TYPEDEF );
+
         print_warning( &ast->loc,
           "\"%s\" on reference type has no effect\n",
           c_tid_name_error( qual_stids )
