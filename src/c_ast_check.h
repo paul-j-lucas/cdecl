@@ -54,7 +54,10 @@ NODISCARD
 bool c_ast_check( c_ast_t const *ast );
 
 /**
- * Checks a list of AST nodes for semantic errors and warnings.
+ * Checks a list of AST nodes that are part of the _same_ declaration for
+ * semantic errors and warnings, for example:
+ *
+ *      int *p, *f(char);
  *
  * @param ast_list The list of AST nodes to check.
  * @return Returns `true` only if all checks passed.

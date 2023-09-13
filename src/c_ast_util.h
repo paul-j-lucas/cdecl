@@ -56,7 +56,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Adds a #K_ARRAY AST to the \a ast being built.
  *
- * @param ast The AST to append to.
+ * @param ast The AST to add to.
  * @param array_ast The #K_ARRAY AST to append.  Its \ref c_array_ast::of_ast
  * "of_ast" _must_ be of kind #K_PLACEHOLDER.
  * @param of_ast The AST to become the \ref c_array_ast::of_ast "of_ast" of \a
@@ -69,7 +69,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast, c_ast_t *of_ast );
 /**
  * Adds a #K_ANY_FUNCTION_LIKE AST to the \a ast being built.
  *
- * @param ast The AST to append to.
+ * @param ast The AST to add to.
  * @param func_ast The #K_ANY_FUNCTION_LIKE AST to append.  Its \ref
  * c_function_ast::ret_ast "ret_ast" _must_ be NULL.
  * @param ret_ast The AST to become the \ref c_function_ast::ret_ast "ret_ast"
@@ -201,12 +201,12 @@ NODISCARD
 c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
- * Checks whether \a ast is an AST for a pointer to another AST having \a type;
- * or a `typedef` thereof.  For example:
+ * Checks whether \a ast is an AST for a #K_POINTER to another AST having \a
+ * type; or a `typedef` thereof.  For example:
  *
  *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT_B(TB_char) )`
  *    @par
- *    Returns `true` only if \a ast is pointer to `char` (`char*`) _exactly_.
+ *    Returns `true` only if \a ast is a pointer to `char` (`char*`) _exactly_.
  *
  *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT(TB_char, TS_const,
  *    TA_NONE) )`
@@ -240,7 +240,7 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
                                c_type_t const *type );
 
 /**
- * Checks whether \a ast is an AST for a reference to another AST that is a
+ * Checks whether \a ast is an AST for a #K_REFERENCE to another AST that is a
  * #TB_ANY_CLASS and has a name matching \a sname; or a `typedef` thereof.
  *
  * @param ast The AST to check.
@@ -256,8 +256,8 @@ NODISCARD
 bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname );
 
 /**
- * Checks whether \a ast is an AST for a reference to another AST that is one
- * of \a kinds; or a `typedef` thereof.
+ * Checks whether \a ast is an AST for a #K_REFERENCE to another AST that is
+ * one of \a kinds; or a `typedef` thereof.
  *
  * @param ast The AST to check.
  * @param kinds The bitwise-or of kind(s) to check for.
@@ -274,8 +274,8 @@ NODISCARD
 bool c_ast_is_ref_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds );
 
 /**
- * Checks whether \a ast is an AST for a reference to another AST having a type
- * that contains any one of \a tids; or a `typedef` thereof.
+ * Checks whether \a ast is an AST for a #K_REFERENCE to another AST having a
+ * type that contains any one of \a tids; or a `typedef` thereof.
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
@@ -295,7 +295,7 @@ NODISCARD
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
- * Checks whether \a ast is an AST for a reference to another AST having \a
+ * Checks whether \a ast is an AST for a #K_REFERENCE to another AST having \a
  * type; or a `typedef` thereof.
  *
  * @param ast The AST to check.
