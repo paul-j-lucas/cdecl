@@ -2811,9 +2811,9 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
     case K_OPERATOR: {
       c_ast_t const *const ret_ast = ast->func.ret_ast;
       if ( ret_ast != NULL ) {
-        c_tid_t qual_stids;
-        PJL_IGNORE_RV( c_ast_untypedef_qual( ret_ast, &qual_stids ) );
-        if ( c_tid_is_any( qual_stids, TS_volatile ) &&
+        c_tid_t ret_qual_stids;
+        PJL_IGNORE_RV( c_ast_untypedef_qual( ret_ast, &ret_qual_stids ) );
+        if ( c_tid_is_any( ret_qual_stids, TS_volatile ) &&
             OPT_LANG_IS( CPP_MIN(20) ) ) {
           print_warning( &ret_ast->loc,
             "\"volatile\" return types are deprecated%s\n",
