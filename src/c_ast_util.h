@@ -451,7 +451,7 @@ NODISCARD
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
 /**
- * Un-references \a ast, i.e., if \a ast is a #K_REFERENCE returns the
+ * Un-references \a ast, i.e., if \a ast is a #K_REFERENCE, returns the
  * referred-to AST.
  *
  * @param ast The AST to un-reference.
@@ -470,7 +470,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
 /**
  * Un-references \a ast, i.e., if \a ast is either a #K_REFERENCE or
- * #K_RVALUE_REFERENCE returns the referred-to AST.
+ * #K_RVALUE_REFERENCE, returns the referred-to AST.
  *
  * @param ast The AST to un-reference.
  * @return If \a ast is an rvalue reference, returns the un-`typedef`d
