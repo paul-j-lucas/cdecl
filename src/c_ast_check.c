@@ -2212,17 +2212,40 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
 }
 
 /**
- * Checks a reference or rvalue reference AST for errors.
+ * Checks a #K_REFERENCE or #K_RVALUE_REFERENCE AST for errors.
  *
- * @param ast The pointer or pointer-to-member AST to check.
+ * @param ast The #K_REFERENCE or #K_RVALUE_REFERENCE AST to check.
+ * @param tdef_ast
+ * @parblock
+ * A #K_TYPEDEF AST whose \ref c_typedef_ast::for_ast "for_ast"
+ * is \a ast or NULL otherwise.
+ * Given:
+ *
+ *      using rint = int&;
+ *
+ * we need to distinguish two cases:
+ *
+ *  1. `int &const x`
+ *      <br/>
+ *      **error**: `const` may not be applied to a reference (directly).
+ *
+ *  2. `const rint x`
+ *      <br/>
+ *      **warning**: `const` on reference type has no effect.
+ *
+ * This function checks for case 1; c_ast_visitor_warning() checks for case 2.
+ * @endparblock
+ *
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_reference( c_ast_t const *ast ) {
+static bool c_ast_check_reference( c_ast_t const *ast,
+                                   c_ast_t const *tdef_ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_REFERENCE ) );
+  assert( tdef_ast == NULL || tdef_ast->kind == K_TYPEDEF );
 
-  if ( c_tid_is_any( ast->type.stids, TS_CV ) ) {
+  if ( tdef_ast == NULL && c_tid_is_any( ast->type.stids, TS_CV ) ) {
     c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
     error_kind_not_tid( ast, qual_stids, LANG_NONE, "" );
     print_hint( "reference to %s", c_tid_name_error( qual_stids ) );
@@ -2601,7 +2624,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
         error_kind_not_supported( ast, LANG_REFERENCES );
         return VISITOR_ERROR_FOUND;
       }
-      if ( !c_ast_check_reference( ast ) )
+      if ( !c_ast_check_reference( ast, check->tdef_ast ) )
         return VISITOR_ERROR_FOUND;
       break;
 
@@ -2784,16 +2807,27 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
   assert( ast != NULL );
   (void)data;
 
-  switch ( ast->kind ) {
+  c_tid_t qual_stids;
+  c_ast_t const *const raw_ast = c_ast_untypedef_qual( ast, &qual_stids );
+
+  switch ( raw_ast->kind ) {
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+      if ( c_tid_is_any( qual_stids, TS_CV ) ) {
+        print_warning( &ast->loc,
+          "\"%s\" on reference type has no effect\n",
+          c_tid_name_error( qual_stids )
+        );
+        break;
+      }
+      FALLTHROUGH;
+
     case K_ARRAY:
     case K_BUILTIN:
     case K_CLASS_STRUCT_UNION:
     case K_ENUM:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
-    case K_REFERENCE:
-    case K_RVALUE_REFERENCE:
-    case K_TYPEDEF:
       if ( c_ast_is_register( ast ) && OPT_LANG_IS( MIN(CPP_11) ) ) {
         print_warning( &ast->loc,
           "\"register\" is deprecated%s\n",
@@ -2877,6 +2911,9 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
     case K_VARIADIC:
       // nothing to check
       break;
+
+    case K_TYPEDEF:                     // impossible after c_ast_untypedef()
+      unreachable();
 
     CASE_K_PLACEHOLDER;
   } // switch

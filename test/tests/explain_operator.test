@@ -1,9 +1,12 @@
 EXPECTED_EXIT=0
 cdecl -O -xc++ <<END
 struct S
+using SR = S&
 struct T
 
 explain S operator!(const S&)
+explain S operator!(const SR)
+
 explain S operator%(const S&, const S&)
 explain S operator%(const S&, int)
 explain S operator%(int)
