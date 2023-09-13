@@ -1,5 +1,6 @@
 2023-09-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c: s/d_state/dump_state/; s/j_state/json_state/
    * gibberish.c: s/g_state/gib_state/
    * english.c: s/e_init()/eng_init()/
    * english.c: s/e_state/eng_state/
