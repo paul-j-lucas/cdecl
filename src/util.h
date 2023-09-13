@@ -143,10 +143,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #RUN_ONCE
  */
-#define ASSERT_RUN_ONCE() BLOCK(  \
-  static bool _called;            \
-  assert( !_called );             \
-  _called = true; )
+#define ASSERT_RUN_ONCE() BLOCK(    \
+  static bool UNIQUE_NAME(called);  \
+  assert( !UNIQUE_NAME(called) );   \
+  UNIQUE_NAME(called) = true; )
 #else
 #define ASSERT_RUN_ONCE()         NO_OP
 #endif /* NDEBUG */
@@ -612,9 +612,9 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #ASSERT_RUN_ONCE()
  */
-#define RUN_ONCE                          \
-  static bool NAME2(_run_once_,__LINE__); \
-  if ( likely( true_or_set( &NAME2(_run_once_,__LINE__) ) ) ) ; else
+#define RUN_ONCE                      \
+  static bool UNIQUE_NAME(run_once);  \
+  if ( likely( true_or_set( &UNIQUE_NAME(run_once) ) ) ) ; else
 
 /**
  * Advances \a S over all \a CHARS.
@@ -699,9 +699,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param PREFIX The prefix of the synthesized name.
  *
- * @warning All uses for a given \a PREFIX _must_ be on the same line.  This is
- * not a problem within macro definitions, but won't work outside of them since
- * there's no way to refer to a previously used unique name.
+ * @warning All uses for a given \a PREFIX that refer to the same name _must_
+ * be on the same line.  This is not a problem within macro definitions, but
+ * won't work outside of them since there's no way to refer to a previously
+ * used unique name.
  */
 #define UNIQUE_NAME(PREFIX)       NAME2(NAME2(PREFIX,_),__LINE__)
 
