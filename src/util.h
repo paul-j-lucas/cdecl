@@ -131,6 +131,8 @@ _GL_INLINE_HEADER_BEGIN
  * Gets the number of elements of the given array.
  *
  * @param A The array to get the number of elements of.
+ *
+ * @note \a A _must_ be a statically allocated array.
  */
 #define ARRAY_SIZE(A) (     \
   sizeof(A) / sizeof(0[A])  \
