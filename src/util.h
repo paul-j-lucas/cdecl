@@ -797,6 +797,7 @@ void check_dup2( int old_fd, int new_fd );
 
 /**
  * Duplicates \a s prefixed by \a prefix.
+ * If duplication fails, prints an error message and exits.
  *
  * @param prefix The null-terminated prefix string to duplicate.
  * @param prefix_len The length of \a prefix.
@@ -838,6 +839,7 @@ char* check_strdup( char const *s );
 
 /**
  * Duplicates \a s suffixed by \a suffix.
+ * If duplication fails, prints an error message and exits.
  *
  * @param s The null-terminated string to duplicate.
  * @param suffix The null-terminated suffix string to duplicate.
@@ -939,13 +941,14 @@ bool fd_is_file( int fd );
  * were a `FILE`.
  *
  * @param buf A pointer to the buffer to use.  Unlike the standard
- * **fmemopen**, \a buf can not be NULL. The pointer must remain valid for as
- * along as the `FILE` is open.
+ * **fmemopen**, \a buf can not be NULL.
  * @param size The size of \a buf.
  * @param mode The open mode.  Unlike the standard **fmemopen**, it _must_
  * contain `r` and `b` (if given) is ignored.
  * @return Returns a `FILE*` containing the contents of \a buf or NULL if
  * either \a size is 0 or upon error.
+ *
+ * @warning \a buf must remain valid for as along as the `FILE` is open.
  */
 NODISCARD
 FILE* fmemopen( void *restrict buf, size_t size, char const *restrict mode );
