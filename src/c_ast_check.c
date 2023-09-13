@@ -1910,25 +1910,14 @@ same: print_error( c_ast_params_loc( ast ),
   }
 
   //
-  // Count the number of enum, class, struct, or union parameters, or lvalue or
-  // rvalue references thereto.
+  // Count the number of enum, class, struct, or union parameters, or
+  // references thereto.
   //
   unsigned ecsu_param_count = 0;
   FOREACH_AST_FUNC_PARAM( param, ast ) {
-    //
-    // Normally we could use c_param_ast( ast )->kind directly, but we need to
-    // count objects and lvalue references to objects distinctly to check
-    // default relational operators in C++20.
-    //
     c_ast_t const *param_ast = c_ast_unreference_any( c_param_ast( param ) );
-    switch ( param_ast->kind ) {
-      case K_CLASS_STRUCT_UNION:
-      case K_ENUM:
-        ++ecsu_param_count;
-        break;
-      default:
-        /* suppress warning */;
-    } // switch
+    if ( (param_ast->kind & K_ANY_ECSU) != 0 )
+      ++ecsu_param_count;
   } // for
 
   switch ( member ) {
