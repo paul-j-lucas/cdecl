@@ -140,7 +140,7 @@ static void c_ast_array_size_gibberish( c_ast_t const *ast,
 }
 
 /**
- * Helper function for c_ast_visitor_english() that prints a bit-field width,
+ * Helper function for c_ast_gibberish_impl() that prints a bit-field width,
  * if any.
  *
  * @param ast The AST to print the bit-field width of.
