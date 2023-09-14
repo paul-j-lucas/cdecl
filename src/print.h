@@ -269,7 +269,7 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
  *  + If it was defined using `using`, \ref opt_using is `true`, and the
  *    current language is C++11 or later, prints it as a `using` declaration;
  *
- *  + Otherwise, prints it as gibberish.
+ *  + Otherwise, prints it as as a `typedef` declaration.
  *
  * @note A newline _is_ printed.
  *
