@@ -32,7 +32,7 @@ AC_ARG_ENABLE([coverage],
   [],
   [enable_coverage=no]
 )
-AS_IF([test "x$enable_coverage" = xyes], [
+AS_IF([test "x$enable_coverage" = xyes],
   #
   # When code coverage is desired, we have to set CFLAGS so it doesn't include
   # -O2 (so we can add -O0 later in src/Makefile.am) before AC_PROG_CC is
@@ -46,8 +46,8 @@ AS_IF([test "x$enable_coverage" = xyes], [
   # There's still more to do after AC_PROG_CC is called and sets $GCC.  This is
   # handed below in part 2.
   #
-  : ${CFLAGS=""}
-])
+  [: ${CFLAGS=""}]
+)
 
 # Checks for programs.
 AC_LANG(C)
