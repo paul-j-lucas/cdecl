@@ -159,6 +159,8 @@ char const* alt_token_c( char const *token );
  *
  * @sa c_ast_english()
  * @sa c_typedef_gibberish()
+ * @sa print_type()
+ * @sa show_type()
  */
 void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout );
 
@@ -185,6 +187,7 @@ char const* c_cast_gibberish( c_cast_kind_t kind );
  * @sa c_ast_gibberish()
  * @sa c_typedef_english()
  * @sa print_type()
+ * @sa show_type()
  */
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
                           FILE *gout );

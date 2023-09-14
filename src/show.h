@@ -50,6 +50,10 @@
  *
  * @note A newline _is_ printed.
  *
+ * @sa c_ast_english()
+ * @sa c_ast_gibberish()
+ * @sa c_typedef_english()
+ * @sa c_typedef_gibberish()
  * @sa print_type()
  * @sa show_types()
  */
@@ -63,6 +67,7 @@ void show_type( c_typedef_t const *tdef, unsigned gib_flags, FILE *tout );
  * @param gib_flags The gibberish flags to use.
  * @param tout The `FILE` to print to.
  *
+ * @sa print_type()
  * @sa show_type()
  */
 void show_types( cdecl_show_t show, char const *glob, unsigned gib_flags,
