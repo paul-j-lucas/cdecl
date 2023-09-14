@@ -524,10 +524,10 @@ void print_ast_type_aka( c_ast_t const *ast, FILE *aout ) {
   assert( aout != NULL );
 
   if ( ast->kind == K_TYPEDEF ) {
-    c_ast_t const *const raw_ast = c_ast_untypedef( ast );
-    FPRINTF( aout, "\"%s\" (aka, \"", c_sname_full_name( &raw_ast->sname ) );
-    c_ast_gibberish( raw_ast, C_GIB_USING, stderr );
-    FPRINTF( aout, "\")" );
+    ast = c_ast_untypedef( ast );
+    FPRINTF( aout, "\"%s\" (aka, ", c_sname_full_name( &ast->sname ) );
+    print_ast_type_aka( ast, aout );
+    FPUTC( ')', aout );
   }
   else {
     FPUTC( '"', aout );
