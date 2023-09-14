@@ -26,6 +26,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "print.h"
+#include "c_ast_util.h"
 #include "c_keyword.h"
 #include "c_lang.h"
 #include "c_sname.h"
@@ -516,6 +517,23 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
   va_start( args, format );
   vfprintf( stderr, format, args );
   va_end( args );
+}
+
+void print_ast_type_aka( c_ast_t const *ast, FILE *aout ) {
+  assert( ast != NULL );
+  assert( aout != NULL );
+
+  if ( ast->kind == K_TYPEDEF ) {
+    c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+    FPRINTF( aout, "\"%s\" (aka, \"", c_sname_full_name( &raw_ast->sname ) );
+    c_ast_gibberish( raw_ast, C_GIB_USING, stderr );
+    FPRINTF( aout, "\")" );
+  }
+  else {
+    FPUTC( '"', aout );
+    c_ast_gibberish( ast, C_GIB_USING, aout );
+    FPUTC( '"', aout );
+  }
 }
 
 void print_debug_file_line( char const *file, int line ) {

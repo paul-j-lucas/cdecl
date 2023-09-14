@@ -1,3 +1,3 @@
 explain void operator delete(int)
                              ^
-30: error: invalid parameter type for operator delete; must be a pointer to void, class, struct, or union
+30: error: invalid parameter type "int" for operator delete; must be a pointer to void, class, struct, or union

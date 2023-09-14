@@ -452,10 +452,9 @@ static bool c_ast_check_array( c_ast_t const *ast,
         break;
       // At this point, we know it's a VLA.
       if ( !c_ast_is_integral( size_param_ast ) ) {
-        print_error( &ast->loc,
-          "size of array has non-integral type %s\n",
-          c_type_name_error( &size_param_ast->type )
-        );
+        print_error( &ast->loc, "invalid array dimension type " );
+        print_ast_type_aka( size_param_ast, stderr );
+        EPUTS( "; must be integral\n" );
         return false;
       }
       FALLTHROUGH;
@@ -847,7 +846,9 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
     }
 
     if ( !c_ast_is_builtin_any( of_ast, TB_ANY_INTEGRAL ) ) {
-      print_error( &of_ast->loc, "enum underlying type must be integral\n" );
+      print_error( &of_ast->loc, "invalid enum underlying type " );
+      print_ast_type_aka( of_ast, stderr );
+      EPUTS( "; must be integral\n" );
       return false;
     }
   }
@@ -1116,7 +1117,9 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 
   c_ast_t const *const ret_ast = ast->func.ret_ast;
   if ( !c_ast_is_builtin_any( ret_ast, TB_int ) ) {
-    print_error( &ret_ast->loc, "main() must return int\n" );
+    print_error( &ret_ast->loc, "invalid main() return type " );
+    print_ast_type_aka( ret_ast, stderr );
+    EPUTS( "; must be \"int\" or a typedef thereof\n" );
     return false;
   }
 
@@ -1151,8 +1154,10 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
         param_ast = c_param_ast( param );
         if ( !c_ast_is_builtin_any( param_ast, TB_int ) ) {
           print_error( &param_ast->loc,
-            "main()'s first parameter must be int\n"
+            "invalid main() first parameter type "
           );
+          print_ast_type_aka( param_ast, stderr );
+          EPUTS( "; must be \"int\" or a typedef thereof\n" );
           return false;
         }
 
@@ -1684,9 +1689,11 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       //
       if ( !c_ast_is_ptr_to_kind_any( ret_ast, K_CLASS_STRUCT_UNION ) ) {
         print_error( &ret_ast->loc,
-          "operator %s must return a pointer to struct, union, or class\n",
+          "invalid operator %s return type ",
           op->literal
         );
+        print_ast_type_aka( ret_ast, stderr );
+        EPUTS( "; must be a pointer to struct, union, or class\n" );
         return false;
       }
       break;
@@ -1698,8 +1705,11 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       //
       if ( !c_ast_is_builtin_any( ret_ast, TB_void ) ) {
         print_error( &ret_ast->loc,
-          "operator %s must return void\n", op->literal
+          "invalid operator %s return type ",
+          op->literal
         );
+        print_ast_type_aka( ret_ast, stderr );
+        EPUTS( "; must be \"void\"\n" );
         return false;
       }
       break;
@@ -1712,8 +1722,11 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       //
       if ( !c_ast_is_ptr_to_tid_any( ret_ast, TB_void ) ) {
         print_error( &ret_ast->loc,
-          "operator %s must return a pointer to void\n", op->literal
+          "invalid operator %s return type ",
+          op->literal
         );
+        print_ast_type_aka( ret_ast, stderr );
+        EPUTS( "; must be a pointer to void\n" );
         return false;
       }
       break;
@@ -1791,9 +1804,11 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
   c_ast_t const *const param_ast = c_param_ast( param );
 
   if ( !c_ast_is_ptr_to_tid_any( param_ast, TB_void | TB_ANY_CLASS ) ) {
-    print_error( &param_ast->loc,
-      "invalid parameter type for operator %s; "
-      "must be a pointer to void, class, struct, or union\n",
+    print_error( &param_ast->loc, "invalid parameter type " );
+    print_ast_type_aka( param_ast, stderr );
+    EPRINTF(
+      " for operator %s"
+      "; must be a pointer to void, class, struct, or union\n",
       ast->oper.operator->literal
     );
     return false;
@@ -1822,9 +1837,10 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
   c_ast_t const *const param_ast = c_param_ast( param );
 
   if ( !c_ast_is_size_t( param_ast ) ) {
-    print_error( &param_ast->loc,
-      "invalid parameter type for operator %s; "
-      "must be std::size_t (or equivalent)\n",
+    print_error( &param_ast->loc, "invalid parameter type " );
+    print_ast_type_aka( param_ast, stderr );
+    EPRINTF( " for operator %s"
+      "; must be std::size_t (or equivalent)\n",
       ast->oper.operator->literal
     );
     return false;
@@ -1981,9 +1997,11 @@ same: print_error( c_ast_params_loc( ast ),
       c_ast_t const *const param_ast = c_param_ast( param );
       if ( !c_ast_is_builtin_any( param_ast, TB_int ) ) {
         print_error( &param_ast->loc,
-          "parameter of postfix %soperator %s must be int\n",
+          "invalid postfix %soperator %s parameter type ",
           member_or_nonmember, op->literal
         );
+        print_ast_type_aka( param_ast, stderr );
+        EPUTS( "; must be \"int\" or a typedef thereof\n" );
         return false;
       }
       break;
@@ -2119,19 +2137,28 @@ rel_2par: print_error( &ast->loc,
          raw_ret_ast != std_strong_ordering_ast &&
          raw_ret_ast != std_weak_ordering_ast ) {
       print_error( &ret_ast->loc,
-        "operator %s must return one of auto, "
-        "std::partial_ordering, "
-        "std::strong_ordering, or "
-        "std::weak_ordering\n",
+        "invalid operator %s return type ",
         op->literal
+      );
+      print_ast_type_aka( ret_ast, stderr );
+      EPUTS(
+        "; must be one of \"auto\", "
+        "\"std::partial_ordering\", "
+        "\"std::strong_ordering\", or "
+        "\"std::weak_ordering\"\n"
       );
       return false;
     }
   }
   else if ( !c_ast_is_builtin_any( ret_ast, TB_bool ) ) {
     print_error( &ret_ast->loc,
-      "operator %s must return %s\n",
-      op->literal, c_tid_name_error( TB_bool )
+      "invalid operator %s return type ",
+      op->literal
+    );
+    print_ast_type_aka( ret_ast, stderr );
+    EPRINTF(
+      "; must be \"%s\" or a typedef thereof\n",
+      c_tid_name_error( TB_bool )
     );
     return false;
   }
@@ -2347,8 +2374,10 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
   c_ast_t const *const raw_to_ast = c_ast_untypedef( to_ast );
   if ( raw_to_ast->kind == K_ARRAY ) {
     print_error( &to_ast->loc,
-      "user-defined conversion operator can not convert to an array"
+      "user-defined conversion operator return type "
     );
+    print_ast_type_aka( to_ast, stderr );
+    EPUTS( " can not be an array" );
     print_hint( "pointer to array" );
     return false;
   }
@@ -2395,18 +2424,20 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
         default:                        // check for: char const*
           if ( !c_ast_is_ptr_to_type_any( param_ast,
                   &T_ANY, &C_TYPE_LIT( TB_char, TS_const, TA_NONE ) ) ) {
-            print_error( &param_ast->loc,
-              "invalid parameter type for user-defined literal; "
-              "must be one of: "
-              "unsigned long long, "
-              "long double, "
-              "char, "
-              "const char*, "
+            print_error( &param_ast->loc, "invalid parameter type " );
+            print_ast_type_aka( param_ast, stderr );
+            EPRINTF( " for user-defined literal"
+              "; must be one of "
+              "\"unsigned long long\", "
+              "\"long double\", "
+              "\"char\", "
+              "\"const char*\", "
               "%s"
-              "char16_t, "
-              "char32_t, "
-              "or wchar_t\n",
-              OPT_LANG_IS( char8_t ) ? "char8_t, " : ""
+              "\"char16_t\", "
+              "\"char32_t\", "
+              "or "
+              "\"wchar_t\"\n",
+              OPT_LANG_IS( char8_t ) ? "\"char8_t\", " : ""
             );
             return false;
           }
@@ -2418,8 +2449,9 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
       if ( ptr_to_ast == NULL ||
           !(c_ast_is_tid_any( ptr_to_ast, TS_const ) &&
             c_ast_is_tid_any( ptr_to_ast, TB_ANY_CHAR )) ) {
-        print_error( &param_ast->loc,
-          "invalid parameter type for user-defined literal; must be one of: "
+        print_error( &param_ast->loc, "invalid parameter type " );
+        print_ast_type_aka( param_ast, stderr );
+        EPRINTF( " for user-defined literal; must be one of "
           "const (char%s|char16_t|char32_t|wchar_t)*\n",
           OPT_LANG_IS( char8_t ) ? "|char8_t" : ""
         );
@@ -2427,9 +2459,11 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
       }
       param_ast = c_param_ast( param->next );
       if ( param_ast == NULL || !c_ast_is_size_t( param_ast ) ) {
-        print_error( &param_ast->loc,
-          "invalid parameter type for user-defined literal; "
-          "must be std::size_t (or equivalent)\n"
+        print_error( &param_ast->loc, "invalid parameter type " );
+        print_ast_type_aka( param_ast, stderr );
+        EPUTS(
+          " for user-defined literal; "
+          "must be \"std::size_t\" (or equivalent)\n"
         );
         return false;
       }
@@ -2809,9 +2843,11 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
         assert( ast->kind == K_TYPEDEF );
 
         print_warning( &ast->loc,
-          "\"%s\" on reference type has no effect\n",
+          "\"%s\" on reference type ",
           c_tid_name_error( qual_stids )
         );
+        print_ast_type_aka( ast, stderr );
+        EPUTS( " has no effect\n" );
         break;
       }
       FALLTHROUGH;

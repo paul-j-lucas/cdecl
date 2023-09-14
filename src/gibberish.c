@@ -1092,7 +1092,7 @@ char const* alt_token_c( char const *token ) {
 
 void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
   assert( ast != NULL );
-  assert( is_1_bit_in_set( gib_flags, C_GIB_DECL | C_GIB_CAST ) );
+  assert( is_1_bit_in_set( gib_flags, C_GIB_DECL | C_GIB_CAST | C_GIB_USING ) );
   assert( gout != NULL );
 
   if ( c_ast_print_as_using( ast ) ) {

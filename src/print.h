@@ -177,6 +177,33 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
                        char const *format, ... );
 
 /**
+ * If \a ast is:
+ *
+ *  + A #K_TYPEDEF, prints the name of the type in quotes followed by ` (aka `
+ *    followed by the underlying type in gibberish in quotes.  For example,
+ *    given:
+ *
+ *          using IR = int&
+ *
+ *    prints: `"IR" (aka "int&")`.
+ *
+ *  + Otherwise prints only the type of \a ast in gibberish in quotes without
+ *    its name, for example `"int&"`.
+ *
+ * @param ast The AST to print.
+ * @param aout The `FILE` to print to.
+ *
+ * @note A newline is _not_ printed.
+ *
+ * @sa #C_GIB_USING
+ * @sa c_typedef_english()
+ * @sa c_typedef_gibberish()
+ * @sa print_type()
+ * @sa show_type()
+ */
+void print_ast_type_aka( c_ast_t const *ast, FILE *aout );
+
+/**
  * If \ref opt_cdecl_debug is compiled in and enabled, prints \a file and \a
  * line to standard error in the form `"[<file>:<line>] "`; otherwise prints
  * nothing.

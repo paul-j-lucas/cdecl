@@ -25,6 +25,19 @@ Added more standard types.
 ** Folded `cast` help
 Help for new-style casts has been folded into the same line for C-style casts.
 
+** Types in error & warning messages
+The offending type is now included in error messages.  For example:
+
+    cdecl> explain void f(double d, int x[d])
+                                         ^
+    31: error: size of array has non-integral type "double"
+
+If the type is a `typedef`, also prints `aka` followed by its underlying type:
+
+   c++decl> explain std::size_t operator new( std::size_t )
+                    ^
+   9: error: operator new return type "std::size_t" (aka, "unsigned long") must be a pointer to void
+
 
 * Changes in Cdecl 14.4
 

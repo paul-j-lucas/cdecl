@@ -1969,8 +1969,9 @@ alignas_or_width_decl_english_ast
       // AST since we need to use the builtin union member now.
       //
       if ( !c_ast_is_integral( $decl_ast ) ) {
-        print_error( &@bit_width,
-          "bit-fields can be only of integral %stypes\n",
+        print_error( &@bit_width, "invalid bit-field type " );
+        print_ast_type_aka( $decl_ast, stderr );
+        EPRINTF( "; must be an integral %stype\n",
           OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
         );
         PARSE_ABORT();
@@ -7326,8 +7327,9 @@ sname_c_ast
         // AST since we need to use the builtin union member now.
         //
         if ( !c_ast_is_integral( type_ast ) ) {
-          print_error( &@bit_width,
-            "bit-fields can be only of integral %stypes\n",
+          print_error( &@bit_width, "invalid bit-field type " );
+          print_ast_type_aka( type_ast, stderr );
+          EPRINTF( "; must be an integral %stype\n",
             OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
           );
           PARSE_ABORT();

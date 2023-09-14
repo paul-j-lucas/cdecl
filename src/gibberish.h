@@ -124,11 +124,26 @@
 #define C_GIB_TYPEDEF     (1u << 5)
 
 /**
- * Flag for c_typedef_gibberish() to print as a `using` declaration.
+ * Flag for:
+ *
+ *  + c_ast_gibberish() to print only the right-hand side of a `using`
+ *    declaration.
+ *
+ *  + c_typedef_gibberish() to print as a `using` declaration.
+ *
+ * For example, given:
+ *
+ *      using IR = int&
+ *
+ * then:
+ *
+ *  + c_ast_gibberish() will print only `int&` whereas:
+ *  + c_typedef_gibberish() will print `using IR = int&`.
  *
  * @note May be used _only_ in combination with #C_GIB_FINAL_SEMI.
  *
  * @sa #C_GIB_TYPEDEF
+ * @sa print_ast_type_aka()
  */
 #define C_GIB_USING       (1u << 6)
 
@@ -153,8 +168,8 @@ char const* alt_token_c( char const *token );
  * Prints \a ast as gibberish, aka, a C/C++ declaration or cast.
  *
  * @param ast The AST to print.
- * @param flags The gibberish flags to use; _must_ include either #C_GIB_CAST
- * or #C_GIB_DECL.
+ * @param flags The gibberish flags to use; _must_ include one of #C_GIB_CAST,
+ * #C_GIB_DECL, or #C_GIB_USING.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_english()

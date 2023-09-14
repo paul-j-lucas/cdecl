@@ -8,7 +8,7 @@ c++decl> explain S operator!(const S2&)
 declare ! as non-member operator (reference to constant S2) returning S
 c++decl> explain S operator!(const SR)
                              ^
-21: warning: "const" on reference type has no effect
+21: warning: "const" on reference type "SR" (aka, "S&") has no effect
 declare ! as non-member operator (constant SR) returning S
 c++decl> explain S operator%(const S&, const S&)
 declare % as non-member operator (reference to constant S, reference to constant S) returning S

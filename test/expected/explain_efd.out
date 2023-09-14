@@ -1,3 +1,3 @@
 explain enum E : double x
                  ^
-18: error: enum underlying type must be integral
+18: error: invalid enum underlying type "double"; must be integral

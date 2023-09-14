@@ -1,3 +1,3 @@
 explain int operator->()
         ^
-9: error: operator -> must return a pointer to struct, union, or class
+9: error: invalid operator -> return type "int"; must be a pointer to struct, union, or class
