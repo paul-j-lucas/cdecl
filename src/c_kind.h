@@ -39,27 +39,6 @@
  * @{
  */
 
-/**
- * Shorthand for use inside a `switch` statement on an AST's \ref c_ast::kind
- * "kind" to:
- *
- * 1. Tell the compiler that the code is unreachable because #K_PLACEHOLDER
- *    shouldn't occur in a completed AST.
- *
- * 2. Suppress the warning that otherwise would be given because #K_PLACEHOLDER
- *    is not handled by the `switch`.
- *
- * For example:
- *
- *      switch ( ast->kind ) {
- *        // ...
- *        CASE_K_PLACEHOLDER;
- *      }
- */
-#define CASE_K_PLACEHOLDER  \
-  case K_PLACEHOLDER:       \
-    unreachable()
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**

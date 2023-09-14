@@ -524,20 +524,19 @@ static bool c_ast_check_array( c_ast_t const *ast,
       // nothing to do
       break;
 
-    case K_CAPTURE:                     // impossible
-    case K_CAST:                        // impossible
-    case K_CONSTRUCTOR:                 // impossible
-    case K_DESTRUCTOR:                  // impossible
-    case K_LAMBDA:                      // impossible
-    case K_NAME:                        // impossible
-    case K_OPERATOR:                    // impossible
+    case K_CAPTURE:
+    case K_CAST:
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
+    case K_LAMBDA:
+    case K_NAME:
+    case K_OPERATOR:
+    case K_PLACEHOLDER:
     case K_TYPEDEF:                     // impossible after c_ast_untypedef()
-    case K_UDEF_CONV:                   // impossible
-    case K_UDEF_LIT:                    // impossible
-    case K_VARIADIC:                    // impossible
+    case K_UDEF_CONV:
+    case K_UDEF_LIT:
+    case K_VARIADIC:
       UNEXPECTED_INT_VALUE( raw_of_ast->kind );
-
-    CASE_K_PLACEHOLDER;
   } // switch
 
   return true;
@@ -1357,20 +1356,19 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         // nothing to do
         break;
 
-      case K_APPLE_BLOCK:               // impossible
-      case K_CAPTURE:                   // impossible
-      case K_CAST:                      // impossible
-      case K_CONSTRUCTOR:               // impossible
-      case K_DESTRUCTOR:                // impossible
-      case K_FUNCTION:                  // impossible
-      case K_LAMBDA:                    // impossible
-      case K_OPERATOR:                  // impossible
+      case K_APPLE_BLOCK:
+      case K_CAPTURE:
+      case K_CAST:
+      case K_CONSTRUCTOR:
+      case K_DESTRUCTOR:
+      case K_FUNCTION:
+      case K_LAMBDA:
+      case K_OPERATOR:
+      case K_PLACEHOLDER:
       case K_TYPEDEF:                   // impossible after c_ast_untypedef()
-      case K_UDEF_CONV:                 // impossible
-      case K_UDEF_LIT:                  // impossible
+      case K_UDEF_CONV:
+      case K_UDEF_LIT:
         UNEXPECTED_INT_VALUE( raw_param_ast->kind );
-
-      CASE_K_PLACEHOLDER;
     } // switch
 
     check_state_t param_check;
@@ -1427,7 +1425,6 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
           C_LANG_WHICH( PROTOTYPES )
         );
         return false;
-      CASE_K_PLACEHOLDER;
     } // switch
   } // for
 
@@ -2676,7 +2673,8 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       assert( check->func_ast != NULL );
       break;
 
-    CASE_K_PLACEHOLDER;
+    case K_PLACEHOLDER:
+      unreachable();
   } // switch
 
   if ( ast->kind != K_FUNCTION &&
@@ -2942,10 +2940,9 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
       // nothing to check
       break;
 
+    case K_PLACEHOLDER:
     case K_TYPEDEF:                     // impossible after c_ast_untypedef()
       unreachable();
-
-    CASE_K_PLACEHOLDER;
   } // switch
 
   if ( cdecl_initialized )              // don't warn for predefined types

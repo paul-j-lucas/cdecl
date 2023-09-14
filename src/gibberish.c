@@ -584,7 +584,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       FPUTS( L_ellipsis, gib->gout );
       break;
 
-    CASE_K_PLACEHOLDER;
+    case K_PLACEHOLDER:
+      unreachable();
   } // switch
 }
 
@@ -756,15 +757,14 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
         // nothing to do
         break;                          // LCOV_EXCL_LINE
 
-      case K_BUILTIN:                   // impossible
-      case K_CAPTURE:                   // impossible
-      case K_CAST:                      // impossible
-      case K_ENUM:                      // impossible
-      case K_NAME:                      // impossible
-      case K_VARIADIC:                  // impossible
+      case K_BUILTIN:
+      case K_CAPTURE:
+      case K_CAST:
+      case K_ENUM:
+      case K_NAME:
+      case K_PLACEHOLDER:
+      case K_VARIADIC:
         UNEXPECTED_INT_VALUE( parent_ast->kind );
-
-      CASE_K_PLACEHOLDER;
     } // switch
   } else {
     //
@@ -817,7 +817,8 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_VARIADIC:
       // nothing to do
       break;
-    CASE_K_PLACEHOLDER;
+    case K_PLACEHOLDER:
+      unreachable();
   } // switch
 }
 

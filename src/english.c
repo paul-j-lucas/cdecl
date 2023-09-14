@@ -433,7 +433,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
       FPUTS( c_kind_name( ast->kind ), eng->eout );
       break;
 
-    CASE_K_PLACEHOLDER;
+    case K_PLACEHOLDER:
+      unreachable();
   } // switch
 
   return /*stop=*/false;
