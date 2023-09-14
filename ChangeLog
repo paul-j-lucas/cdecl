@@ -1,5 +1,26 @@
+2023-09-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, explain_main_fiapci_i.out, explain_main_fic_i.out:
+     s/illegal/invalid/
+   * c_ast_check.c, gibberish.c, gibberish.h, parser.y, print.c, print.h,
+     declare_mo_arrow_i.out, declare_o_arrow_i.out,
+     declare_o_minus2_rkd_rk.out, declare_o_plus2_rkd_rk.out, declare_puw3.out,
+     declare_udc_a4i.out, declare_udl_pcci_i.out,
+     explain_cmo_less_eq_greater_rck_i++default.out,
+     explain_co_less_rck_i++default.out, explain_efd.out, explain_fdan_v.out,
+     explain_fo_less_eq_greater_2rck_i++default.out, explain_main_f2c_i.out,
+     explain_main_f_v.out, explain_main_fiapc_hi.out, explain_o_arrow_i.out,
+     explain_o_delete_i_v.out, explain_o_delete_pv_i.out,
+     explain_o_minus2_rkd_rk.out, explain_o_new_i_pv.out,
+     explain_o_new_z_z.out, explain_o_plus2_rkd_rk.out, explain_operator.out,
+     explain_puw3.out, explain_udc_a4i.out, explain_udl_2c_i.out,
+     explain_udl_piul_i.out, explain_udl_ul_i.out: Now printing types in error
+     messages. If the type is a typedef, also prints its underlying type.
+   * configure.ac: Hopefully fixed weird ": command not found" error.
+
 2023-09-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c: Added assert().
    * c_ast_check.c: Simplified counting of ECSU parameters.
    * c_ast_check.c, explain_operator.out, explain_operator.test: Now using
      c_ast_unreference_any().
