@@ -176,8 +176,8 @@ char const* alt_token_c( char const *token );
  * Prints \a ast as gibberish, aka, a C/C++ declaration or cast.
  *
  * @param ast The AST to print.
- * @param flags The gibberish flags to use; _must_ include one of #C_GIB_CAST,
- * #C_GIB_DECL, or #C_GIB_USING.
+ * @param gib_flags The gibberish flags to use; _must_ include one of
+ * #C_GIB_CAST, #C_GIB_DECL, or #C_GIB_USING.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_english()
@@ -186,7 +186,7 @@ char const* alt_token_c( char const *token );
  * @sa print_type()
  * @sa show_type()
  */
-void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout );
+void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout );
 
 /**
  * Given \a kind, gets the associated C++ literal.
@@ -204,7 +204,7 @@ char const* c_cast_gibberish( c_cast_kind_t kind );
  * Prints \a tdef as a C/C++ type declaration.
  *
  * @param tdef The type to print.
- * @param flags The gibberish flags to use; _must_ include either
+ * @param gib_flags The gibberish flags to use; _must_ include either
  * #C_GIB_TYPEDEF or #C_GIB_USING.
  * @param gout The `FILE` to print to.
  *
@@ -213,7 +213,7 @@ char const* c_cast_gibberish( c_cast_kind_t kind );
  * @sa print_type()
  * @sa show_type()
  */
-void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
+void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
                           FILE *gout );
 
 /**
