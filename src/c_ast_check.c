@@ -58,18 +58,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Prints an error: `can not cast into <kind>`.
- *
- * @param AST The AST.
- * @param HINT The hint.
- */
-#define error_kind_not_cast_into(AST,HINT) BLOCK(       \
-  print_error( &(AST)->loc,                             \
-    "can not cast into %s", c_kind_name( (AST)->kind )  \
-  );                                                    \
-  print_hint( "cast into %s", (HINT) ); )
-
-/**
  * Prints an error: `<kind> not supported[ {in|since|unless|until} <lang>]`.
  *
  * @param AST The AST having the unsupported kind.
@@ -682,7 +670,11 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       }
       break;
     case K_FUNCTION:
-      error_kind_not_cast_into( to_ast, "pointer to function" );
+      print_error( &to_ast->loc,
+        "can not cast into %s",
+        c_kind_name( to_ast->kind )
+      );
+      print_hint( "cast into pointer to function" );
       return false;
     default:
       /* suppress warning */;
