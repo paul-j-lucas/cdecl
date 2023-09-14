@@ -195,6 +195,8 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
  *
  * @note A newline is _not_ printed.
  *
+ * @sa c_ast_english()
+ * @sa c_ast_gibberish()
  * @sa #C_GIB_USING
  * @sa c_typedef_english()
  * @sa c_typedef_gibberish()

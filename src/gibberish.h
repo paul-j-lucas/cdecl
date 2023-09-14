@@ -182,6 +182,7 @@ char const* alt_token_c( char const *token );
  *
  * @sa c_ast_english()
  * @sa c_typedef_gibberish()
+ * @sa print_ast_type_aka()
  * @sa print_type()
  * @sa show_type()
  */
