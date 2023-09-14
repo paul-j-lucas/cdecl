@@ -1211,7 +1211,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
       }
       break;
     default:                            // ???
-      print_error( &param_ast->loc, "illegal signature for main()\n" );
+      print_error( &param_ast->loc, "invalid signature for main()\n" );
       return false;
   } // switch
   return true;
