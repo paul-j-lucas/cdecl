@@ -38,12 +38,12 @@
 /// @endcond
 
 /**
- * @defgroup printing-gibberish-group Printing Gibberish
- * Functions for printing in gibberish, aka, a C/C++ declaration.
+ * @ingroup printing-gibberish-group
+ * @defgroup gibberish-flags Gibberish Flags
+ * Flags for c_ast_gibberish() and c_typedef_gibberish() that control how
+ * gibberish is printed.
  * @{
  */
-
-// Flags for c_ast_gibberish() and c_typedef_gibberish().
 
 /**
  * Unset value for gibberish flags for c_ast_gibberish() and
@@ -147,7 +147,15 @@
  */
 #define C_GIB_USING       (1u << 6)
 
+/** @} */
+
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * @defgroup printing-gibberish-group Printing Gibberish
+ * Functions for printing in gibberish, aka, a C/C++ declaration.
+ * @{
+ */
 
 /**
  * If \ref opt_alt_tokens is `true`, gets the alternative token of a C++
@@ -222,9 +230,9 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned flags,
 NODISCARD
 char const* graph_token_c( char const *token );
 
-///////////////////////////////////////////////////////////////////////////////
-
 /** @} */
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* cdecl_gibberish_H */
 /* vim:set et sw=2 ts=2: */
