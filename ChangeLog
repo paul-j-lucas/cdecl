@@ -1,5 +1,7 @@
 2023-09-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.h: s/flags/gib_flags/
+   * print.c: Simplified print_ast_type_aka().
    * c_ast_check.c, explain_main_fiapci_i.out, explain_main_fic_i.out:
      s/illegal/invalid/
    * c_ast_check.c, gibberish.c, gibberish.h, parser.y, print.c, print.h,
