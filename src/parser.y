@@ -2200,18 +2200,23 @@ define_command
         PARSE_ABORT();
       }
 
-      //
-      // Explicitly add TS_typedef to prohibit cases like:
-      //
-      //      define eint as extern int
-      //      define rint as register int
-      //      define sint as static int
-      //      ...
-      //
-      // i.e., a defined type with a storage class.  Once the semantic checks
-      // pass, remove the TS_typedef.
-      //
-      PARSE_ASSERT( c_type_add( &$decl_ast->type, &T_TS_typedef, &@decl_ast ) );
+      if ( !c_tid_is_any( $decl_ast->type.stids, TS_typedef ) ) {
+        //
+        // Explicitly add TS_typedef (if it doesn't have it already) to
+        // prohibit cases like:
+        //
+        //      define eint as extern int
+        //      define rint as register int
+        //      define sint as static int
+        //      ...
+        //
+        // i.e., a defined type with a storage class.  Once the semantic checks
+        // pass, remove the TS_typedef.
+        //
+        PARSE_ASSERT(
+          c_type_add( &$decl_ast->type, &T_TS_typedef, &@decl_ast )
+        );
+      }
       PARSE_ASSERT( c_ast_check( $decl_ast ) );
       PJL_IGNORE_RV( c_ast_take_type_any( $decl_ast, &T_TS_typedef ) );
 

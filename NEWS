@@ -25,6 +25,12 @@ Added more standard types.
 ** Folded `cast` help
 Help for new-style casts has been folded into the same line for C-style casts.
 
+** `type` in `define`
+**cdecl** now allows the word `type` to appear in a `define` command, e.g.:
+
+    define PI as pointer to int
+    define PI as type pointer to int    // same as above
+
 ** Types in error & warning messages
 The offending type is now included in error messages.  For example:
 
