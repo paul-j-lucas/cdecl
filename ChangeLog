@@ -1,5 +1,9 @@
 2023-09-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, debug.out: The result of a grammar rule now uses `$$` as the key
+     in a JSON5 dump.
+   * parser.y: cdecl now allows the word `type` to appear in a `define`
+     command.
    * c_ast_check.c, const_cast_i-c++03.out, const_cast_i.out,
      dynamic_cast_i.out, dynamic_cast_pi.out, reinterpret_cast_v.out:
      Normalized cast error messages.
