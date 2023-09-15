@@ -300,7 +300,7 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
  *
  *  + Otherwise, prints it as as a `typedef` declaration.
  *
- * @note A newline _is_ printed.
+ * @note A newline is _not_ printed.
  *
  * @param tdef The \ref c_typedef to print.
  * @param tout The `FILE` to print to.

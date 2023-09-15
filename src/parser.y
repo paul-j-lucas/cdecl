@@ -615,6 +615,7 @@ static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
         c_sname_full_name( &type_ast->sname )
       );
       print_type( tdef, stderr );
+      EPUTC( '\n' );
       return false;
     }
   }
@@ -869,6 +870,7 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
         c_typedef_find_sname( &raw_decl_ast->sname );
       assert( tdef != NULL );
       print_type( tdef, stderr );
+      EPUTC( '\n' );
       return NULL;
     }
 
@@ -1771,6 +1773,7 @@ declare_command
               c_sname_full_name( sname )
             );
             print_type( tdef, stderr );
+            EPUTC( '\n' );
             ok = false;
             break;
           }
@@ -4765,6 +4768,7 @@ typedef_type_decl_c_ast
             c_sname_full_name( &raw_tdef_ast->sname )
           );
           print_type( tdef, stderr );
+          EPUTC( '\n' );
           PARSE_ABORT();
         }
 
