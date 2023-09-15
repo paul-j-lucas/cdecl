@@ -1,5 +1,9 @@
 2023-09-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c: Eliminated a few error_*() macros.
+   * c_ast_check.c: Eliminated error_kind_not_cast_into().
+   * c_ast_check.c, c_kind.h, english.c, gibberish.c: Eliminated
+     CASE_K_PLACEHOLDER.
    * gibberish.h: s/flags/gib_flags/
    * print.c: Simplified print_ast_type_aka().
    * c_ast_check.c, explain_main_fiapci_i.out, explain_main_fic_i.out:
