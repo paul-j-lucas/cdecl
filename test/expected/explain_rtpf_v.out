@@ -1,3 +1,3 @@
 explain void (*restrict p)()
              ^
-14: error: pointer to function can not be restrict
+14: error: pointer to function can not be "restrict"

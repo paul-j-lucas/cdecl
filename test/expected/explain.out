@@ -438,7 +438,7 @@ declare f as non-returning function (integer) returning void
 cdecl> set c18
 cdecl> explain int* f(x)
                       ^
-16: warning: missing type specifier; int assumed
+16: warning: missing type specifier; "int" assumed
 declare f as function (x) returning pointer to integer
 cdecl> set c++
 c++decl> struct S

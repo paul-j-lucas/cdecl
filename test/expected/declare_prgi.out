@@ -1,3 +1,3 @@
 declare p as pointer to register int
         ^
-9: error: pointer to register is illegal
+9: error: pointer to "register" is illegal

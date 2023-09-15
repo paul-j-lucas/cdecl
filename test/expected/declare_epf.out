@@ -1,3 +1,3 @@
 declare f as explicit function
         ^
-9: error: function can not be explicit
+9: error: function can not be "explicit"

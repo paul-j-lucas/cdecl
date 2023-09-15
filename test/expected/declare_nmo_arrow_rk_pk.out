@@ -1,3 +1,3 @@
 declare -> as non-member operator (reference to S) returning pointer to S
         ^
-9: error: operator -> can only be a member
+9: error: operator "->" can only be a member

@@ -1769,11 +1769,11 @@ declare_command
           c_typedef_t const *const tdef = c_typedef_find_sname( sname );
           if ( tdef != NULL ) {
             print_error( &$decl_ast->loc,
-              "\"%s\": previously declared as type: ",
+              "\"%s\": previously declared as type \"",
               c_sname_full_name( sname )
             );
             print_type( tdef, stderr );
-            EPUTC( '\n' );
+            EPUTS( "\"\n" );
             ok = false;
             break;
           }
@@ -3497,7 +3497,10 @@ decl_list_c_opt
       }
 
       if ( in_attr.align.kind != C_ALIGNAS_NONE ) {
-        print_error( &in_attr.align.loc, "%s invalid here\n", alignas_name() );
+        print_error( &in_attr.align.loc,
+          "\"%s\" invalid here\n",
+          alignas_name()
+        );
         PARSE_ABORT();
       }
 
@@ -5448,7 +5451,7 @@ atomic_specifier_type_c_ast
         static c_type_t const TSA_ANY = { TB_NONE, TS_ANY, TA_ANY };
         c_type_t const error_type = c_type_and( &$$->type, &TSA_ANY );
         print_error( &@type_ast,
-          "_Atomic can not be of \"%s\"\n", c_type_name_c( &error_type )
+          "\"_Atomic\" can not be of \"%s\"\n", c_type_name_c( &error_type )
         );
         PARSE_ABORT();
       }

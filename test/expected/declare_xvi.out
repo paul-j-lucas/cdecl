@@ -1,3 +1,3 @@
 declare x as consteval int
         ^
-9: error: only functions can be consteval
+9: error: only functions can be "consteval"

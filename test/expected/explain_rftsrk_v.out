@@ -1,3 +1,3 @@
 explain void f( this S &self ) &
                        ^
-24: error: function with "this" parameter can not be reference
+24: error: function with "this" parameter can not be "reference"

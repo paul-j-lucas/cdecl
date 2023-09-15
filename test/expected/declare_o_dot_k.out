@@ -1,3 +1,3 @@
 declare . as operator returning S
         ^
-9: error: operator . can not be overloaded
+9: error: operator "." can not be overloaded

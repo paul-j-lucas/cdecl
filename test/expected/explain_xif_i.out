@@ -1,3 +1,3 @@
 explain constinit int f()
                       ^
-23: error: function can not be constinit
+23: error: function can not be "constinit"

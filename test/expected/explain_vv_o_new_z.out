@@ -1,3 +1,3 @@
 explain virtual void* operator new(size_t)
                     ^
-21: error: operator new can not be virtual
+21: error: operator "new" can not be "virtual"

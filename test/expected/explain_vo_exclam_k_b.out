@@ -1,3 +1,3 @@
 explain virtual bool operator!(S)
                                ^
-32: error: member operator ! must have exactly 0 parameters
+32: error: member operator "!" must have exactly 0 parameters

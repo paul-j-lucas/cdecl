@@ -287,12 +287,12 @@ cdecl> declare f as function (i as register) returning void
 void f(register int i);
 cdecl> declare p as pointer to function (x) returning int
                                          ^
-35: warning: missing type specifier; int assumed
+35: warning: missing type specifier; "int" assumed
 int (*p)(int x);
 cdecl> set c17
 cdecl> declare f as function (x) returning pointer to int
                               ^
-24: warning: missing type specifier; int assumed
+24: warning: missing type specifier; "int" assumed
 int* f(int x);
 cdecl> declare f as _Noreturn function (int) returning void
 _Noreturn void f(int);

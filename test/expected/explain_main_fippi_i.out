@@ -1,3 +1,3 @@
 explain int main( int, int** )
                            ^
-28: error: this parameter of main() must be pointer to pointer to [const] char
+28: error: invalid main() parameter type; must be pointer to pointer to [const] char

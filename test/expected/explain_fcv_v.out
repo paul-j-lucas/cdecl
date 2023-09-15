@@ -1,3 +1,3 @@
 explain void f(const void)
                ^
-16: error: void as parameter can not be const
+16: error: "void" parameters can not be "const"

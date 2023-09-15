@@ -1,3 +1,3 @@
 declare f as restricted function
         ^
-9: error: function can not be restrict
+9: error: function can not be "restrict"

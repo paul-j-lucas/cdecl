@@ -1,3 +1,3 @@
 explain void f(void x)
                ^
-16: error: void as parameter can not have a name
+16: error: "void" parameters can not have a name

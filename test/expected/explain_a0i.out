@@ -1,3 +1,3 @@
 explain int a[0]
              ^
-14: error: array size must be greater than 0
+14: error: array dimension must be > 0

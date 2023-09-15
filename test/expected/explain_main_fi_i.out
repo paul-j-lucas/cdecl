@@ -1,3 +1,3 @@
 explain int main( int )
                   ^
-19: error: a single parameter for main() must be void
+19: error: a single parameter for main() must be "void"

@@ -1,3 +1,3 @@
 declare ! as final operator (S) returning bool
                              ^
-30: error: member operator ! must have exactly 0 parameters
+30: error: member operator "!" must have exactly 0 parameters
