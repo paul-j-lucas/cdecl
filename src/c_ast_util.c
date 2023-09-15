@@ -566,7 +566,7 @@ c_ast_t const* c_ast_find_param_named( c_ast_t const *func_ast,
   assert( is_1_bit_only_in_set( func_ast->kind, K_ANY_FUNCTION_LIKE ) );
   assert( name != NULL );
 
-  SNAME_VAR_INIT( sname, name );
+  SNAME_VAR_INIT_NAME( sname, name );
 
   FOREACH_AST_FUNC_PARAM( param, func_ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );

@@ -2477,7 +2477,7 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
   assert( ast != NULL );
   assert( name != NULL );
 
-  SNAME_VAR_INIT( sname, name );
+  SNAME_VAR_INIT_NAME( sname, name );
   return c_sname_cmp( &ast->sname, &sname ) == 0;
 }
 

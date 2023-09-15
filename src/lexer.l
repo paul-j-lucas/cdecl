@@ -897,7 +897,7 @@ include{S}*\" {
                   //
                   // 2. See if it's a typedef'd type.
                   //
-                  SNAME_VAR_INIT( sname, lexer_token );
+                  SNAME_VAR_INIT_NAME( sname, lexer_token );
                   c_typedef_t const *const tdef =
                     c_typedef_find_sname( &sname );
                   if ( tdef != NULL ) {

@@ -70,10 +70,12 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Creates a scoped name variable \a VAR on the stack having a local \a NAME.
  *
- * @param VAR The name for the \ref c_sname_t variable.
+ * @param VAR The \ref c_sname_t variable.
  * @param NAME The name.
+ *
+ * @warning c_sname_cleanup() must _not_ be called on \a VAR.
  */
-#define SNAME_VAR_INIT(VAR,NAME) \
+#define SNAME_VAR_INIT_NAME(VAR,NAME) \
   SLIST_VAR_INIT( VAR, (&(c_scope_data_t){ (NAME), T_NONE }) )
 
 /**
