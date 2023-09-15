@@ -1647,7 +1647,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       //
       if ( !c_ast_is_ptr_to_kind_any( ret_ast, K_CLASS_STRUCT_UNION ) ) {
         print_error( &ret_ast->loc,
-          "invalid operator %s return type ",
+          "invalid operator \"%s\" return type ",
           op->literal
         );
         print_ast_type_aka( ret_ast, stderr );
@@ -1663,7 +1663,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       //
       if ( !c_ast_is_builtin_any( ret_ast, TB_void ) ) {
         print_error( &ret_ast->loc,
-          "invalid operator %s return type ",
+          "invalid operator \"%s\" return type ",
           op->literal
         );
         print_ast_type_aka( ret_ast, stderr );
@@ -1680,7 +1680,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       //
       if ( !c_ast_is_ptr_to_tid_any( ret_ast, TB_void ) ) {
         print_error( &ret_ast->loc,
-          "invalid operator %s return type ",
+          "invalid operator \"%s\" return type ",
           op->literal
         );
         print_ast_type_aka( ret_ast, stderr );
@@ -2095,7 +2095,7 @@ rel_2par: print_error( &ast->loc,
          raw_ret_ast != std_strong_ordering_ast &&
          raw_ret_ast != std_weak_ordering_ast ) {
       print_error( &ret_ast->loc,
-        "invalid operator %s return type ",
+        "invalid operator \"%s\" return type ",
         op->literal
       );
       print_ast_type_aka( ret_ast, stderr );
@@ -2110,7 +2110,7 @@ rel_2par: print_error( &ast->loc,
   }
   else if ( !c_ast_is_builtin_any( ret_ast, TB_bool ) ) {
     print_error( &ret_ast->loc,
-      "invalid operator %s return type ",
+      "invalid operator \"%s\" return type ",
       op->literal
     );
     print_ast_type_aka( ret_ast, stderr );
