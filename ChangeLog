@@ -1,3 +1,12 @@
+2023-09-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, declare_mo_arrow_i.out, declare_o_arrow_i.out,
+     explain_cmo_less_eq_greater_rck_i++default.out,
+     explain_co_less_rck_i++default.out,
+     explain_fo_less_eq_greater_2rck_i++default.out, explain_o_arrow_i.out,
+     explain_o_delete_pv_i.out, explain_o_new_z_z.out: Put operators in error
+     messages in quotes.
+
 2023-09-14  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c: Eliminated a few error_*() macros.
