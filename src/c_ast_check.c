@@ -652,8 +652,10 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   switch ( ast->cast.kind ) {
     case C_CAST_CONST:
       if ( (raw_to_ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) == 0 ) {
-        print_error( &to_ast->loc,
-          "const_cast type must be a pointer, pointer-to-member, %s\n",
+        print_error( &to_ast->loc, "invalid const_cast type " );
+        print_ast_type_aka( to_ast, stderr );
+        EPRINTF(
+          "; must be a pointer, pointer-to-member, %s\n",
           OPT_LANG_IS( RVALUE_REFERENCES ) ?
             "reference, or rvalue reference" : "or reference"
         );
@@ -664,9 +666,10 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     case C_CAST_DYNAMIC:
       if ( !c_ast_is_ptr_to_kind_any( raw_to_ast, K_CLASS_STRUCT_UNION ) &&
            !c_ast_is_ref_to_kind_any( raw_to_ast, K_CLASS_STRUCT_UNION ) ) {
-        print_error( &to_ast->loc,
-          "dynamic_cast type must be a "
-          "pointer or reference to a class, struct, or union\n"
+        print_error( &to_ast->loc, "invalid dynamic_cast type " );
+        print_ast_type_aka( to_ast, stderr );
+        EPRINTF(
+          "; must be a pointer or reference to a class, struct, or union\n"
         );
         return false;
       }
@@ -674,9 +677,9 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 
     case C_CAST_REINTERPRET:
       if ( c_ast_is_builtin_any( to_ast, TB_void ) ) {
-        print_error( &to_ast->loc,
-          "reinterpret_cast type can not be \"void\"\n"
-        );
+        print_error( &to_ast->loc, "invalid reinterpret_cast type " );
+        print_ast_type_aka( to_ast, stderr );
+        EPUTC( '\n' );
         return false;
       }
       break;
