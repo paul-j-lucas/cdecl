@@ -945,8 +945,10 @@ static void quit( void ) {
  * Called by Bison to print a parsing error message to standard error.
  *
  * @remarks A custom error printing function via `%%define parse.error custom`
- * and `yyreport_syntax_error()` is not done because printing a (perhaps long)
- * list of all the possible expected tokens isn't helpful.
+ * and
+ * [`yyreport_syntax_error()`](https://www.gnu.org/software/bison/manual/html_node/Syntax-Error-Reporting-Function.html)
+ * is not done because printing a (perhaps long) list of all the possible
+ * expected tokens isn't helpful.
  * @par
  * It's also more flexible to be able to call one of #elaborate_error(),
  * #keyword_expected(), or #punct_expected() at the point of the error rather
