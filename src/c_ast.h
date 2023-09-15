@@ -154,6 +154,7 @@ typedef bool (*c_ast_visit_fn_t)( c_ast_t *ast, user_data_t data );
 
 /**
  * @defgroup ast-nodes-group AST Nodes
+ * Declaration of various types of nodes in an AST for a C/C++ declaration.
  *
  * ## Layout
  *
