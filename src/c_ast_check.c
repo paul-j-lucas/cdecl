@@ -90,26 +90,10 @@
  *
  * @param AST1 The AST having the bad kind.
  * @param AST2 The AST having the other kind.
- * @param END_STR_LIT A string literal appended to the end of the error message
- * (either `"\n"` or `""`).
  */
-#define error_kind_of_kind(AST1,AST2,END_STR_LIT)             \
+#define error_kind_of_kind(AST1,AST2)                         \
   print_error( &(AST1)->loc,                                  \
-    "%s of %s is illegal" END_STR_LIT,                        \
-    c_kind_name( (AST1)->kind ), c_kind_name( (AST2)->kind )  \
-  )
-
-/**
- * Prints an error: `<kind> to <kind> is illegal`.
- *
- * @param AST1 The AST having the bad kind.
- * @param AST2 The AST having the other kind.
- * @param END_STR_LIT A string literal appended to the end of the error message
- * (either `"\n"` or `""`).
- */
-#define error_kind_to_kind(AST1,AST2,END_STR_LIT)             \
-  print_error( &(AST1)->loc,                                  \
-    "%s to %s is illegal" END_STR_LIT,                        \
+    "%s of %s is illegal",                                    \
     c_kind_name( (AST1)->kind ), c_kind_name( (AST2)->kind )  \
   )
 
@@ -125,21 +109,6 @@
   print_error( &(AST)->loc,                             \
     "%s to %s is illegal" END_STR_LIT,                  \
     c_kind_name( (AST)->kind ), c_tid_name_error( TID ) \
-  )
-
-/**
- * Prints an error: `<type> <type> is illegal`.
- *
- * @param AST The AST .
- * @param TID1 The first bad type.
- * @param TID2 The second bad type.
- * @param END_STR_LIT A string literal appended to the end of the error message
- * (usually `"\n"`).
- */
-#define error_tid_not_tid(AST,TID1,TID2,END_STR_LIT)    \
-  print_error( &(AST)->loc,                             \
-    "\"%s %s\" is illegal" END_STR_LIT,                 \
-    c_tid_name_error( TID1 ), c_tid_name_error( TID2 )  \
   )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -488,13 +457,13 @@ static bool c_ast_check_array( c_ast_t const *ast,
 
     case K_APPLE_BLOCK:
     case K_FUNCTION:
-      error_kind_of_kind( ast, raw_of_ast, "" );
+      error_kind_of_kind( ast, raw_of_ast );
       print_hint( "array of pointer to function" );
       return false;
 
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      error_kind_of_kind( ast, raw_of_ast, "" );
+      error_kind_of_kind( ast, raw_of_ast );
       if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
         print_hint( "%s to array", c_kind_name( raw_of_ast->kind ) );
       } else {
@@ -2172,7 +2141,10 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   switch ( raw_to_ast->kind ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      error_kind_to_kind( ast, raw_to_ast, "" );
+      print_error( &ast->loc,
+        "%s to %s is illegal",
+        c_kind_name( ast->kind ), c_kind_name( raw_to_ast->kind )
+      );
       if ( raw_to_ast == to_ast ) {
         if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
           print_hint( "reference to pointer" );
@@ -2744,8 +2716,10 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
     if ( c_tid_is_any( ast->type.stids, TS_constexpr ) &&
          OPT_LANG_IS( C_ANY ) &&
          c_tid_is_any( ast->type.stids, TS_NOT_CONSTEXPR_C_ONLY ) ) {
-      error_tid_not_tid( ast,
-        TS_constexpr, ast->type.stids & TS_NOT_CONSTEXPR_C_ONLY, " in C\n"
+      print_error( &ast->loc,
+        "\"%s %s\" is illegal in C\n",
+        c_tid_name_error( TS_constexpr ),
+        c_tid_name_error( ast->type.stids & TS_NOT_CONSTEXPR_C_ONLY )
       );
       return VISITOR_ERROR_FOUND;
     }
