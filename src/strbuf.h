@@ -53,8 +53,8 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * %strbuf maintains a C-style string that additionally knows its length and
- * capacity and can grow automatically when appended to.
+ * <code>%strbuf</code> maintains a C-style string that additionally knows its
+ * length and capacity and can grow automatically when appended to.
  */
 struct strbuf {
   char   *str;                          ///< String.
