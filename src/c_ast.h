@@ -375,7 +375,7 @@ struct c_operator_ast {
  *
  * has an AST like:
  *
- *      decl_c: {
+ *      $$_ast: {
  *        sname: { string: "p", scopes: "none" },
  *        kind: { value: 0x800, string: "pointer to member" },
  *        ...
@@ -383,7 +383,7 @@ struct c_operator_ast {
  *        ptr_mbr: {
  *          class_sname: { string: "C", scopes: "class" },
  *          to_ast: {
- *            sname: { string: "" },
+ *            sname: null,
  *            kind: { value: 0x2, string: "built-in type" },
  *            ...
  *            type: { btid: 0x4001, ..., string: "int" },

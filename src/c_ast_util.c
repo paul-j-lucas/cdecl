@@ -363,13 +363,13 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  * associated with the `typedef` for the `struct` and _not_ the actual `struct`
  * the `typedef` is a `typedef` for:
  * ```
- * decl_c: {
+ * $$_ast: {
  *   sname: { string: "x", scopes: "none" },
  *   kind: { value: 0x400, string: "pointer" },
  *   ...
  *   ptr_ref: {
  *     to_ast: {
- *       sname: { string: "" },
+ *       sname: null,
  *       kind: { value: 0x20, string: "typedef" },
  *       ...
  *       type: { btid: 0x20000001, stid: 0x200000002, ..., string: "const" },
@@ -425,13 +425,13 @@ static c_ast_t const* c_ast_unpointer_qual( c_ast_t const *ast,
  * associated with the `typedef` for the `struct` and _not_ the actual `struct`
  * the `typedef` is a `typedef` for:
  * ```
- * decl_c: {
+ * $$_ast: {
  *   sname: { string: "x", scopes: "none" },
  *   kind: { value: 0x1000, string: "reference" },
  *   ...
  *   ptr_ref: {
  *     to_ast: {
- *       sname: { string: "" },
+ *       sname: null,
  *       kind: { value: 0x20, string: "typedef" },
  *       ...
  *       type: { btid: 0x20000001, stid: 0x200000002, ..., string: "const" },
