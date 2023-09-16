@@ -2354,6 +2354,7 @@ explain_command
 
       PARSE_ASSERT( c_ast_check( $decl_ast ) );
       c_ast_english( $decl_ast, stdout );
+      PUTC( '\n' );
     }
 
     /*
@@ -2639,6 +2640,7 @@ c_style_cast_expr_c
 
       PARSE_ASSERT( c_ast_check( cast_ast ) );
       c_ast_english( cast_ast, stdout );
+      PUTC( '\n' );
     }
 
     /*
@@ -2697,6 +2699,7 @@ new_style_cast_expr_c
 
       PARSE_ASSERT( c_ast_check( cast_ast ) );
       c_ast_english( cast_ast, stdout );
+      PUTC( '\n' );
     }
   ;
 
@@ -3134,6 +3137,7 @@ lambda_declaration_c
 
       PARSE_ASSERT( c_ast_check( lambda_ast ) );
       c_ast_english( lambda_ast, stdout );
+      PUTC( '\n' );
     }
   ;
 
@@ -3391,6 +3395,7 @@ user_defined_conversion_declaration_c
 
       PARSE_ASSERT( c_ast_check( $decl_astp.ast ) );
       c_ast_english( $decl_astp.ast, stdout );
+      PUTC( '\n' );
     }
   ;
 
@@ -3816,6 +3821,7 @@ destructor_declaration_c
 
       PARSE_ASSERT( c_ast_check( dtor_ast ) );
       c_ast_english( dtor_ast, stdout );
+      PUTC( '\n' );
     }
   ;
 
@@ -3851,6 +3857,7 @@ file_scope_constructor_declaration_c
 
       PARSE_ASSERT( c_ast_check( ctor_ast ) );
       c_ast_english( ctor_ast, stdout );
+      PUTC( '\n' );
     }
   ;
 
@@ -3883,6 +3890,7 @@ file_scope_destructor_declaration_c
 
       PARSE_ASSERT( c_ast_check( dtor_ast ) );
       c_ast_english( dtor_ast, stdout );
+      PUTC( '\n' );
     }
   ;
 
@@ -4126,6 +4134,7 @@ pc99_func_or_constructor_declaration_c
 
       PARSE_ASSERT( c_ast_check( ast ) );
       c_ast_english( ast, stdout );
+      PUTC( '\n' );
     }
   ;
 

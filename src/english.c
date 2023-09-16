@@ -526,8 +526,6 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       c_ast_visit_english( ast->align.type_ast, &eng );
       break;
   } // switch
-
-  FPUTC( '\n', eout );
 }
 
 void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout ) {
@@ -535,6 +533,7 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout ) {
   FOREACH_SLIST_NODE( node, ast_list ) {
     c_ast_t const *const ast = node->data;
     c_ast_english( ast, eout );
+    FPUTC( '\n', eout );
   } // for
 }
 

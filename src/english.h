@@ -51,7 +51,7 @@
  * @param ast The AST to explain.
  * @param eout The `FILE` to print to.
  *
- * @note A newline _is_ printed.
+ * @note A newline is _not_ printed.
  *
  * @sa c_ast_gibberish()
  * @sa c_ast_list_english()
