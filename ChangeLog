@@ -1,3 +1,9 @@
+2023-09-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * english.c, english.h, parser.y: c_ast_english() no longer prints a newline
+     itself.
+   * c_typedef.c: Eliminated C_TYPEDEF_SNAME_LIT.
+
 2023-09-15  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y, debug.out: The result of a grammar rule now uses `$$` as the key
