@@ -49,15 +49,6 @@
  */
 
 /**
- * Convenience macro for specifying a \ref c_typedef literal with an AST having
- * \a SNAME.
- *
- * @param SNAME The sname.
- */
-#define C_TYPEDEF_SNAME_LIT(SNAME) \
-  C_TYPEDEF_AST_LIT( &(c_ast_t const){ .sname = (SNAME) } )
-
-/**
  * Helper macro for adding a \ref predef_type to an array of them.  It includes
  * the source line number it's defined on.
  *
@@ -1113,8 +1104,9 @@ c_typedef_t const* c_typedef_find_name( char const *name ) {
 
 c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
   assert( sname != NULL );
-  rb_node_t const *const found_rb =
-    rb_tree_find( &typedef_set, &C_TYPEDEF_SNAME_LIT( *sname ) );
+  c_typedef_t const tdef =
+    C_TYPEDEF_AST_LIT( &(c_ast_t const){ .sname = *sname } );
+  rb_node_t const *const found_rb = rb_tree_find( &typedef_set, &tdef );
   return found_rb != NULL ? found_rb->data : NULL;
 }
 
