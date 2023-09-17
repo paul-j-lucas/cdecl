@@ -1,3 +1,7 @@
+2023-09-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_type.c, c_type.h: s/T_ANY_CONST_CLASS/T_ANY_const_CLASS/
+
 2023-09-16  Paul J. Lucas <paul@lucasmail.org>
 
    * english.c, english.h, parser.y: c_ast_english() no longer prints a newline
