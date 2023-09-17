@@ -1,5 +1,23 @@
 2023-09-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am, c_ast_check.c, c_ast_util.h, c_sname.c, c_type.c,
+     c_type.h, c_typedef.c, c_typedef.h, decl_flags.h, english.c, english.h,
+     gibberish.c, gibberish.h, parser.y, print.c, print.h, show.c, show.h,
+     const_cast_i-c++03.out, const_cast_i.out, declare_mo_arrow_i.out,
+     declare_o_arrow_i.out, declare_o_minus2_rkd_rk.out,
+     declare_o_plus2_rkd_rk.out, declare_puw3.out, declare_udl_pcci_i.out,
+     define_c_int_least32_t.out, define_ns_c_ns_c.out, dynamic_cast_i.out,
+     dynamic_cast_pi.out, explain_cmo_less_eq_greater_rck_i++default.out,
+     explain_fo_less_eq_greater_2rck_i++default.out, explain_main_fiapci_i.out,
+     explain_main_fic_i.out, explain_main_fipc_i.out, explain_main_fippi_i.out,
+     explain_o_new_i_pv.out, explain_o_new_z_z.out, explain_operator.out,
+     explain_typedef_ci32.out, explain_udl_2c_i.out, explain_udl_piul_i.out,
+     explain_udl_ul_i.out, k_declare_i.out, k_explain_ai.out,
+     k_explain_bl_i.out, k_explain_f_i.out, k_explain_i.out, ns_c_ns_c.out,
+     typedef_c_int_least32_t.out, using_c_int_least32_t.out,
+     explain_operator.test: 1. Now printing typs in error messages. 2. In some
+     cases, now printing types as they were originally defined (English vs.
+     gibberish).
    * c_ast_check.c, c_type.c, c_type.h: s/T_ANY_CONST_CLASS/T_ANY_const_CLASS/
 
 2023-09-16  Paul J. Lucas <paul@lucasmail.org>
