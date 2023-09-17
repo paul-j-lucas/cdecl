@@ -622,16 +622,28 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Languages the `enum` keyword is supported in.
+ *
+ * @sa #LANG_enum_BITFIELDS
+ * @sa #LANG_enum_class
+ * @sa #LANG_FIXED_TYPE_enum
  */
 #define LANG_enum                       LANG_MIN(C_89)
 
 /**
  * Languages `enum` bitfields are supported in.
+ *
+ * @sa #LANG_enum
+ * @sa #LANG_enum_class
+ * @sa #LANG_FIXED_TYPE_enum
  */
 #define LANG_enum_BITFIELDS             LANG_CPP_ANY
 
 /**
  * Languages `enum class` is supported in.
+ *
+ * @sa #LANG_enum
+ * @sa #LANG_enum_BITFIELDS
+ * @sa #LANG_FIXED_TYPE_enum
  */
 #define LANG_enum_class                 LANG_CPP_MIN(11)
 
@@ -669,6 +681,10 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Languages fixed type `enum`s are supported in.
+ *
+ * @sa #LANG_enum
+ * @sa #LANG_enum_BITFIELDS
+ * @sa #LANG_enum_class
  */
 #define LANG_FIXED_TYPE_enum            LANG_C_CPP_MIN(23,11)
 
