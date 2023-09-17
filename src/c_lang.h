@@ -144,8 +144,10 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define LANG_C_99_UPC (LANG_C_99 | LANGX_UPC)
 
-// bit masks
-#define LANGX_MASK    0x0180u           /**< Language eXtensions bitmask. */
+/**
+ * Language eXtensions bitmask.
+ */
+#define LANGX_MASK    0x0180u
 
 /**
  * Expands into \a LANG_MACRO for autocompletion only if GNU **readline**(3) is
