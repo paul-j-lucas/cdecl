@@ -172,7 +172,7 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
     which_lang_id = lang_ids;
   }
   else {
-    lang_ids &= OPT_LANG_IS( C_ANY ) ? LANG_MASK_C : LANG_MASK_CPP;
+    lang_ids &= OPT_LANG_IS( C_ANY ) ? LANG_C_ANY : LANG_CPP_ANY;
     if ( lang_ids == LANG_NONE )
       return OPT_LANG_IS( C_ANY ) ? " in C" : " in C++";
 

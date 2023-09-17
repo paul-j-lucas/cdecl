@@ -98,7 +98,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CPP_20   (1u << 14)        /**< C++ 20. */
 #define LANG_CPP_23   (1u << 15)        /**< C++ 23. */
 #define LANG_CPP_NEW  LANG_CPP_23       /**< Newest supported C++ language. */
-#define LANG_CPP_ANY  LANG_MASK_CPP     /**< Any C++ language. */
+#define LANG_CPP_ANY  0xFE00u           /**< Any C++ language. */
 
 /** Language eXtensions for Embedded C. */
 #define LANGX_EMC     (1u << 7)
@@ -145,8 +145,6 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_99_UPC (LANG_C_99 | LANGX_UPC)
 
 // bit masks
-#define LANG_MASK_C   0x01FFu           /**< C languages bitmask. */
-#define LANG_MASK_CPP 0xFE00u           /**< C++ languages bitmask. */
 #define LANGX_MASK    0x0180u           /**< Language eXtensions bitmask. */
 
 /**
@@ -203,7 +201,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_C_MAX()
  * @sa #LANG_MIN()
  */
-#define LANG_C_MIN(L)             (LANG_MIN( C_##L ) & LANG_MASK_C)
+#define LANG_C_MIN(L)             (LANG_MIN( C_##L ) & LANG_C_ANY)
 
 /**
  * C++-only languages up to and including \a L.
@@ -214,7 +212,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_C_CPP_MAX()
  * @sa #LANG_MAX()
  */
-#define LANG_CPP_MAX(L)           (LANG_MAX( CPP_##L ) & LANG_MASK_CPP)
+#define LANG_CPP_MAX(L)           (LANG_MAX( CPP_##L ) & LANG_CPP_ANY)
 
 /**
  * C++-only languages \a L and later.
@@ -1203,7 +1201,7 @@ c_lang_id_t c_lang_find( char const *name );
  */
 NODISCARD C_LANG_H_INLINE
 bool c_lang_is_c( c_lang_id_t lang_ids ) {
-  return (lang_ids & LANG_MASK_C) != LANG_NONE;
+  return (lang_ids & LANG_C_ANY) != LANG_NONE;
 }
 
 /**
@@ -1217,7 +1215,7 @@ bool c_lang_is_c( c_lang_id_t lang_ids ) {
  */
 NODISCARD C_LANG_H_INLINE
 bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
-  return (lang_ids & LANG_MASK_CPP) != LANG_NONE;
+  return (lang_ids & LANG_CPP_ANY) != LANG_NONE;
 }
 
 /**
