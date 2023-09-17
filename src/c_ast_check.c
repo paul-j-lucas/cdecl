@@ -2033,7 +2033,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
       bool param1_is_ref_to_class = false;
       c_ast_t const *param1_ast = c_ast_is_tid_any( param_ast, TB_ANY_CLASS );
       if ( param1_ast == NULL ) {
-        param1_ast = c_ast_is_ref_to_type_any( param_ast, &T_ANY_CONST_CLASS );
+        param1_ast = c_ast_is_ref_to_type_any( param_ast, &T_ANY_const_CLASS );
         if ( param1_ast == NULL ) {
 rel_2par: print_error( &ast->loc,
             "default non-member relational operators must take two "
@@ -2046,7 +2046,7 @@ rel_2par: print_error( &ast->loc,
 
       c_ast_t const *param2_ast = c_param_ast( param->next );
       param2_ast = param1_is_ref_to_class ?
-        c_ast_is_ref_to_type_any( param2_ast, &T_ANY_CONST_CLASS ) :
+        c_ast_is_ref_to_type_any( param2_ast, &T_ANY_const_CLASS ) :
         c_ast_is_tid_any( param2_ast, TB_ANY_CLASS );
       if ( param2_ast == NULL || param1_ast != param2_ast )
         goto rel_2par;
@@ -2068,7 +2068,7 @@ rel_2par: print_error( &ast->loc,
       //
       c_ast_t const *param1_ast = c_ast_is_tid_any( param_ast, TB_ANY_CLASS );
       if ( param1_ast == NULL ) {
-        param1_ast = c_ast_is_ref_to_type_any( param_ast, &T_ANY_CONST_CLASS );
+        param1_ast = c_ast_is_ref_to_type_any( param_ast, &T_ANY_const_CLASS );
         if ( param1_ast == NULL ) {
           print_error( c_ast_params_loc( ast ),
             "default member relational operators must take one "

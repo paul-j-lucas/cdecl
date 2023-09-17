@@ -74,7 +74,7 @@
 // extern constants
 c_type_t const T_NONE             = { TB_NONE,      TS_NONE,    TA_NONE };
 c_type_t const T_ANY              = { TB_ANY,       TS_ANY,     TA_ANY  };
-c_type_t const T_ANY_CONST_CLASS  = { TB_ANY_CLASS, TS_const,   TA_NONE };
+c_type_t const T_ANY_const_CLASS  = { TB_ANY_CLASS, TS_const,   TA_NONE };
 c_type_t const T_TS_typedef       = { TB_NONE,      TS_typedef, TA_NONE };
 
 /// @endcond

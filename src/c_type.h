@@ -828,7 +828,7 @@ typedef enum c_tpid c_tpid_t;
 
 extern c_type_t const T_NONE;           ///< No type.
 extern c_type_t const T_ANY;            ///< All types.
-extern c_type_t const T_ANY_CONST_CLASS;///< Any `const` `class`-like type.
+extern c_type_t const T_ANY_const_CLASS;///< Any `const` `class`-like type.
 extern c_type_t const T_TS_typedef;     ///< Type containing only #TS_typedef.
 
 ////////// extern functions ///////////////////////////////////////////////////
