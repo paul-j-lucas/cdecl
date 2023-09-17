@@ -1,3 +1,3 @@
 const cast x into int
                   ^
-19: error: invalid const_cast type "int"; must be a pointer, pointer-to-member, or reference
+19: error: invalid const_cast type "integer"; must be a pointer, pointer to member, or reference

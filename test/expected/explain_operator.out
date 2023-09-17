@@ -1,15 +1,20 @@
 c++decl> struct S
 c++decl> using S2 = S
-c++decl> using SR = S&
+c++decl> define SRE as reference to S
+c++decl> using SRU = S&
 c++decl> struct T
 c++decl> explain S operator!(const S&)
 declare ! as non-member operator (reference to constant S) returning S
 c++decl> explain S operator!(const S2&)
 declare ! as non-member operator (reference to constant S2) returning S
-c++decl> explain S operator!(const SR)
+c++decl> explain S operator!(const SRE)
                              ^
-21: warning: "const" on reference type "SR" (aka, "S&") has no effect
-declare ! as non-member operator (constant SR) returning S
+21: warning: "const" on reference type "SRE" (aka, "reference to S") has no effect
+declare ! as non-member operator (constant SRE) returning S
+c++decl> explain S operator!(const SRU)
+                             ^
+21: warning: "const" on reference type "SRU" (aka, "S&") has no effect
+declare ! as non-member operator (constant SRU) returning S
 c++decl> explain S operator%(const S&, const S&)
 declare % as non-member operator (reference to constant S, reference to constant S) returning S
 c++decl> explain S operator%(const S&, int)

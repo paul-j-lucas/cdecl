@@ -37,118 +37,6 @@
 
 /// @endcond
 
-/**
- * @ingroup printing-gibberish-group
- * @defgroup gibberish-flags Gibberish Flags
- * Flags for c_ast_gibberish() and c_typedef_gibberish() that control how
- * gibberish is printed.
- * @{
- */
-
-/**
- * Unset value for gibberish flags for c_ast_gibberish() and
- * c_typedef_gibberish().  Can also be used to mean _not_ to print in gibberish
- * (hence, print in English).
- */
-#define C_GIB_NONE        0u
-
-/**
- * Flag for c_ast_gibberish() to print as a cast.
- *
- * @note May _not_ be used in combination with any other flags.
- *
- * @sa #C_GIB_DECL
- */
-#define C_GIB_CAST        (1u << 0)
-
-/**
- * Flag for c_ast_gibberish() to print as a declaration.
- *
- * @note May be used _only_ in combination with #C_GIB_FINAL_SEMI,
- * #C_GIB_MULTI_DECL, and #C_GIB_OMIT_TYPE.
- *
- * @sa #C_GIB_CAST
- * @sa #C_GIB_MULTI_DECL
- * @sa #C_GIB_OMIT_TYPE
- */
-#define C_GIB_DECL        (1u << 1)
-
-/**
- * Flag for c_ast_gibberish() or c_typedef_gibberish() to print the final
- * semicolon after a type declaration.
- *
- * @note May be used in combination with any other flags _except_ #C_GIB_CAST.
- */
-#define C_GIB_FINAL_SEMI  (1u << 2)
-
-/**
- * Flag for c_ast_gibberish() to indicate that the declaration is for multiple
- * types or objects, for example:
- *
- *      int *x, *y;
- *
- * @note Unlike #C_GIB_OMIT_TYPE, `C_GIB_MULTI_DECL` _must_ be used for the
- * entire declaration.
- * @note May be used _only_ in combination with #C_GIB_DECL and
- * #C_GIB_OMIT_TYPE.
- *
- * @sa #C_GIB_DECL
- * @sa #C_GIB_OMIT_TYPE
- */
-#define C_GIB_MULTI_DECL  (1u << 3)
-
-/**
- * Flag for c_ast_gibberish() to omit the type name when printing gibberish for
- * the _second_ and subsequent objects when printing multiple types or objects
- * in the same declaration.  For example, when printing:
- *
- *      int *x, *y;
- *
- * the gibberish for `y` _must not_ print the `int` again.
- *
- * @note May be used _only_ in combination with #C_GIB_DECL and
- * #C_GIB_MULTI_DECL.
- *
- * @sa #C_GIB_DECL
- * @sa #C_GIB_MULTI_DECL
- */
-#define C_GIB_OMIT_TYPE   (1u << 4)
-
-/**
- * Flag for c_typedef_gibberish() to print as a `typedef` declaration.
- *
- * @note May be used _only_ in combination with #C_GIB_FINAL_SEMI.
- *
- * @sa #C_GIB_USING
- */
-#define C_GIB_TYPEDEF     (1u << 5)
-
-/**
- * Flag for:
- *
- *  + c_ast_gibberish() to print only the right-hand side of a `using`
- *    declaration.
- *
- *  + c_typedef_gibberish() to print as a `using` declaration.
- *
- * For example, given:
- *
- *      using IR = int&
- *
- * then:
- *
- *  + c_ast_gibberish() will print only `int&` whereas:
- *  + c_typedef_gibberish() will print `using IR = int&`.
- *
- * @note May be used _only_ in combination with #C_GIB_FINAL_SEMI.
- *
- * @sa #C_GIB_TYPEDEF
- * @sa print_ast_type_aka()
- */
-#define C_GIB_USING       (1u << 6)
-
-/** @} */
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -177,13 +65,13 @@ char const* alt_token_c( char const *token );
  *
  * @param ast The AST to print.
  * @param gib_flags The gibberish flags to use; _must_ include one of
- * #C_GIB_CAST, #C_GIB_DECL, or #C_GIB_USING.
+ * #C_GIB_PRINT_CAST, #C_GIB_PRINT_DECL, or #C_GIB_USING.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_english()
  * @sa c_typedef_gibberish()
  * @sa print_ast_type_aka()
- * @sa print_type()
+ * @sa print_type_decl()
  * @sa show_type()
  */
 void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout );
@@ -210,7 +98,7 @@ char const* c_cast_gibberish( c_cast_kind_t kind );
  *
  * @sa c_ast_gibberish()
  * @sa c_typedef_english()
- * @sa print_type()
+ * @sa print_type_decl()
  * @sa show_type()
  */
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,

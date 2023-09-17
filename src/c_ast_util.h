@@ -208,8 +208,7 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  *    @par
  *    Returns `true` only if \a ast is a pointer to `char` (`char*`) _exactly_.
  *
- *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT(TB_char, TS_const,
- *    TA_NONE) )`
+ *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &T_const_char )`
  *    @par
  *    Returns `true` only if \a ast is a pointer to `const char` (`char
  *    const*`) _exactly_.

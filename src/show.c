@@ -31,9 +31,11 @@
 #include "c_sglob.h"
 #include "c_sname.h"
 #include "c_typedef.h"
+#include "decl_flags.h"
 #include "english.h"
 #include "gibberish.h"
 #include "options.h"
+#include "print.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -55,7 +57,7 @@
 struct show_info {
   cdecl_show_t  show;                   ///< Which types to show.
   c_sglob_t     sglob;                  ///< Scoped glob to match, if any.
-  unsigned      gib_flags;              ///< Gibberish flags.
+  unsigned      decl_flags;             ///< Declaration flags.
   FILE         *tout;                   ///< Where to print the types.
 };
 typedef struct show_info show_info_t;
@@ -95,7 +97,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
     goto no_show;
   }
 
-  show_type( tdef, si->gib_flags, si->tout );
+  show_type( tdef, si->decl_flags, si->tout );
 
 no_show:
   return /*stop=*/false;
@@ -103,28 +105,23 @@ no_show:
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void show_type( c_typedef_t const *tdef, unsigned gib_flags, FILE *tout ) {
+void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *tout ) {
   assert( tdef != NULL );
   assert( tout != NULL );
 
-  if ( gib_flags == C_GIB_NONE ) {
-    c_typedef_english( tdef, tout );
-  } else {
-    if ( opt_semicolon )
-      gib_flags |= C_GIB_FINAL_SEMI;
-    c_typedef_gibberish( tdef, gib_flags, tout );
-  }
-
+  if ( opt_semicolon )
+    decl_flags |= C_GIB_OPT_SEMICOLON;
+  print_type_decl( tdef, decl_flags, tout );
   FPUTC( '\n', tout );
 }
 
-void show_types( cdecl_show_t show, char const *glob, unsigned gib_flags,
+void show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
                  FILE *tout ) {
   assert( tout != NULL );
 
   show_info_t si = {
     .show = show,
-    .gib_flags = gib_flags,
+    .decl_flags = decl_flags,
     .tout = tout
   };
   c_sglob_init( &si.sglob );

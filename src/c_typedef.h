@@ -40,12 +40,13 @@
 /// @endcond
 
 /**
- * Convenience macro for specifying a \ref c_typedef literal having \a AST.
+ * Convenience macro for specifying a \ref c_typedef literal.
  *
  * @param AST The AST.
+ * @param DECL_FLAGS The declaration flags to use.
  */
-#define C_TYPEDEF_AST_LIT(AST) (c_typedef_t const) \
-  { (AST), LANG_ANY, .gib_flags = C_GIB_NONE, .is_predefined = false }
+#define C_TYPEDEF_LIT(AST,DECL_FLAGS) (c_typedef_t const) \
+  { (AST), LANG_ANY, (DECL_FLAGS), .is_predefined = false }
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -62,7 +63,7 @@
 struct c_typedef {
   c_ast_t const  *ast;                  ///< AST representing the type.
   c_lang_id_t     lang_ids;             ///< Language(s) available in.
-  unsigned        gib_flags;            ///< How was the type defined?
+  unsigned        decl_flags;           ///< How was the type defined?
   bool            is_predefined;        ///< Was the type predefined?
 };
 
@@ -84,8 +85,8 @@ typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
  *
  * @param type_ast The AST of the type to add.  Ownership is taken only if the
  * type was added.
- * @param gib_flags The gibberish flag indicating how the type was created;
- * must only be one of #C_GIB_NONE, #C_GIB_TYPEDEF, or #C_GIB_USING.
+ * @param decl_flags The declaration flag indicating how the type was created;
+ * must only be one of #C_ENG_DECL, #C_GIB_TYPEDEF, or #C_GIB_USING.
  * @return Returns an rb_node where \ref rb_node.data "data" points to a \ref
  * c_typedef of either:
  * + The newly added type (its \ref c_typedef.ast "ast" is equal to \a
@@ -95,7 +96,7 @@ typedef bool (*c_typedef_visit_fn_t)( c_typedef_t const *tdef, void *v_data );
  * @sa c_typedef_remove()
  */
 NODISCARD
-rb_node_t* c_typedef_add( c_ast_t const *type_ast, unsigned gib_flags );
+rb_node_t* c_typedef_add( c_ast_t const *type_ast, unsigned decl_flags );
 
 /**
  * Gets the \ref c_typedef for \a name.

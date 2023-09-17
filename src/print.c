@@ -34,6 +34,7 @@
 #include "cdecl.h"
 #include "cdecl_keyword.h"
 #include "color.h"
+#include "decl_flags.h"
 #include "english.h"
 #include "gibberish.h"
 #include "lexer.h"
@@ -519,20 +520,26 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
   va_end( args );
 }
 
-void print_ast_type_aka( c_ast_t const *ast, FILE *aout ) {
+void print_ast_type_aka( c_ast_t const *ast, FILE *tout ) {
   assert( ast != NULL );
-  assert( aout != NULL );
+  assert( tout != NULL );
 
   if ( ast->kind == K_TYPEDEF ) {
     ast = c_ast_untypedef( ast );
-    FPRINTF( aout, "\"%s\" (aka, ", c_sname_full_name( &ast->sname ) );
-    print_ast_type_aka( ast, aout );
-    FPUTC( ')', aout );
+    FPRINTF( tout, "\"%s\" (aka, \"", c_sname_full_name( &ast->sname ) );
+    // Look-up the type so we can print it how it was originally defined.
+    c_typedef_t const *const tdef = c_typedef_find_sname( &ast->sname );
+    assert( tdef != NULL );
+    print_type_ast( tdef, tout );
+    FPUTS( "\")", tout );
   }
   else {
-    FPUTC( '"', aout );
-    c_ast_gibberish( ast, C_GIB_USING, aout );
-    FPUTC( '"', aout );
+    FPUTC( '"', tout );
+    if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+      c_ast_english( ast, C_ENG_DECL | C_ENG_OPT_OMIT_DECLARE, tout );
+    else
+      c_ast_gibberish( ast, C_GIB_USING, tout );
+    FPUTC( '"', tout );
   }
 }
 
@@ -600,17 +607,26 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
   return true;
 }
 
-void print_type( c_typedef_t const *tdef, FILE *tout ) {
+void print_type_ast( c_typedef_t const *tdef, FILE *tout ) {
   assert( tdef != NULL );
   assert( tout != NULL );
 
-  if ( tdef->gib_flags == C_GIB_NONE ) {
+  if ( (tdef->decl_flags & C_ENG_DECL) != 0 )
+    c_ast_english( tdef->ast, tdef->decl_flags | C_ENG_OPT_OMIT_DECLARE, tout );
+  else
+    c_ast_gibberish( tdef->ast, C_GIB_USING, tout );
+}
+
+void print_type_decl( c_typedef_t const *tdef, unsigned decl_flags,
+                      FILE *tout ) {
+  assert( tdef != NULL );
+  assert( is_1_bit_in_set( decl_flags, C_TYPE_DECL_ANY ) );
+  assert( tout != NULL );
+
+  if ( (decl_flags & C_ENG_DECL) != 0 )
     c_typedef_english( tdef, tout );
-  } else {
-    unsigned const gib_flags = OPT_LANG_IS( using_DECLS ) ?
-      tdef->gib_flags : (tdef->gib_flags & ~C_GIB_USING) | C_GIB_TYPEDEF;
-    c_typedef_gibberish( tdef, gib_flags, tout );
-  }
+  else
+    c_typedef_gibberish( tdef, decl_flags, tout );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

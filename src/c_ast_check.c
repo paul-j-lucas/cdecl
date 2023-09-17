@@ -655,7 +655,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
         print_error( &to_ast->loc, "invalid const_cast type " );
         print_ast_type_aka( to_ast, stderr );
         EPRINTF(
-          "; must be a pointer, pointer-to-member, %s\n",
+          "; must be a pointer, pointer to member, %s\n",
           OPT_LANG_IS( RVALUE_REFERENCES ) ?
             "reference, or rvalue reference" : "or reference"
         );
@@ -1086,7 +1086,10 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
   if ( !c_ast_is_builtin_any( ret_ast, TB_int ) ) {
     print_error( &ret_ast->loc, "invalid main() return type " );
     print_ast_type_aka( ret_ast, stderr );
-    EPUTS( "; must be \"int\" or a typedef thereof\n" );
+    EPRINTF(
+      "; must be \"%s\" or a typedef thereof\n",
+      c_tid_name_error( TB_int )
+    );
     return false;
   }
 
@@ -1124,7 +1127,10 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
             "invalid main() first parameter type "
           );
           print_ast_type_aka( param_ast, stderr );
-          EPUTS( "; must be \"int\" or a typedef thereof\n" );
+          EPRINTF(
+            "; must be \"%s\" or a typedef thereof\n",
+            c_tid_name_error( TB_int )
+          );
           return false;
         }
 
@@ -1169,17 +1175,30 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
       if ( !c_ast_is_ptr_to_type_any( param_ast->parent.of_ast,
               &C_TYPE_LIT_S_ANY( c_tid_compl( TS_const ) ),
               &C_TYPE_LIT_B( TB_char ) ) ) {
-        print_error( &param_ast->loc,
-          "invalid main() parameter type"
-          "; must be %s %s pointer to [const] char\n",
-          c_kind_name( param_ast->kind ),
-          param_ast->kind == K_ARRAY ? "of" : "to"
-        );
+        print_error( &param_ast->loc, "invalid main() parameter type " );
+        print_ast_type_aka( param_ast, stderr );
+        EPUTS( "; must be " );
+        if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+          EPRINTF( "\"%s %s pointer to %s\"\n",
+            c_kind_name( param_ast->kind ),
+            param_ast->kind == K_ARRAY ? "of" : "to",
+            c_tid_name_error( TB_char )
+          );
+        }
+        else {
+          EPRINTF( "\"char*%s\"\n", param_ast->kind == K_ARRAY ? "[]" : "*" );
+        }
         return false;
       }
       break;
     default:                            // ???
-      print_error( &param_ast->loc, "invalid signature for main()\n" );
+      print_error( &param_ast->loc, "invalid main() parameter type " );
+      print_ast_type_aka( param_ast, stderr );
+      EPUTS( "; must be " );
+      if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+        EPRINTF( "\"array of pointer to %s\"\n", c_tid_name_error( TB_char ) );
+      else
+        EPRINTF( "\"char*[]\"\n" );
       return false;
   } // switch
   return true;
@@ -1692,7 +1711,11 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
           op->literal
         );
         print_ast_type_aka( ret_ast, stderr );
-        EPUTS( "; must be a pointer to void\n" );
+        EPUTS( "; must be " );
+        if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+          EPUTS( "\"pointer to void\"\n" );
+        else
+          EPUTS( "\"void*\"\n" );
         return false;
       }
       break;
@@ -1806,7 +1829,7 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
     print_error( &param_ast->loc, "invalid parameter type " );
     print_ast_type_aka( param_ast, stderr );
     EPRINTF( " for operator %s"
-      "; must be std::size_t (or equivalent)\n",
+      "; must be \"std::size_t\" (or equivalent)\n",
       ast->oper.operator->literal
     );
     return false;
@@ -1967,7 +1990,10 @@ same: print_error( c_ast_params_loc( ast ),
           member_or_nonmember, op->literal
         );
         print_ast_type_aka( param_ast, stderr );
-        EPUTS( "; must be \"int\" or a typedef thereof\n" );
+        EPRINTF(
+          "; must be \"%s\" or a typedef thereof\n",
+          c_tid_name_error( TB_int )
+        );
         return false;
       }
       break;
@@ -2110,9 +2136,11 @@ rel_2par: print_error( &ast->loc,
       );
       print_ast_type_aka( ret_ast, stderr );
       EPUTS(
-        "; must be one of \"auto\", "
+        "; must be "
+        "\"auto\", "
         "\"std::partial_ordering\", "
-        "\"std::strong_ordering\", or "
+        "\"std::strong_ordering\", "
+        "or "
         "\"std::weak_ordering\"\n"
       );
       return false;
@@ -2395,22 +2423,26 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
           break;
         default:                        // check for: char const*
           if ( !c_ast_is_ptr_to_type_any( param_ast,
-                  &T_ANY, &C_TYPE_LIT( TB_char, TS_const, TA_NONE ) ) ) {
+                  &T_ANY, &T_const_char ) ) {
             print_error( &param_ast->loc, "invalid parameter type " );
             print_ast_type_aka( param_ast, stderr );
-            EPRINTF( " for user-defined literal"
-              "; must be one of "
-              "\"unsigned long long\", "
-              "\"long double\", "
-              "\"char\", "
-              "\"const char*\", "
-              "%s"
-              "\"char16_t\", "
-              "\"char32_t\", "
-              "or "
-              "\"wchar_t\"\n",
-              OPT_LANG_IS( char8_t ) ? "\"char8_t\", " : ""
-            );
+            EPRINTF( " for user-defined literal; must be " );
+            EPRINTF( "\"%s\", ",
+                     c_tid_name_error( TB_unsigned | TB_long | TB_long_long ) );
+            EPRINTF( "\"%s\", ", c_tid_name_error( TB_long | TB_double ) );
+            EPRINTF( "\"%s\", ", c_tid_name_error( TB_char ) );
+            if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+              EPRINTF( "\"pointer to %s\", ",
+                       c_type_name_error( &T_const_char ) );
+            } else {
+              EPRINTF( "\"%s*\", ", c_type_name_error( &T_const_char ) );
+            }
+            if ( OPT_LANG_IS( char8_t ) )
+              EPRINTF( "\"%s\", ", c_tid_name_error( TB_char8_t ) );
+            EPRINTF( "\"%s\", ", c_tid_name_error( TB_char16_t ) );
+            EPRINTF( "\"%s\", ", c_tid_name_error( TB_char32_t ) );
+            EPUTS( "or " );
+            EPRINTF( "\"%s\"\n", c_tid_name_error( TB_wchar_t ) );
             return false;
           }
       } // switch
@@ -2423,7 +2455,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
             c_ast_is_tid_any( ptr_to_ast, TB_ANY_CHAR )) ) {
         print_error( &param_ast->loc, "invalid parameter type " );
         print_ast_type_aka( param_ast, stderr );
-        EPRINTF( " for user-defined literal; must be one of "
+        EPRINTF( " for user-defined literal; must be "
           "const (char%s|char16_t|char32_t|wchar_t)*\n",
           OPT_LANG_IS( char8_t ) ? "|char8_t" : ""
         );

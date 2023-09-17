@@ -27,10 +27,10 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "c_typedef.h"
-#include "cdecl.h"
 #include "c_ast.h"
 #include "c_lang.h"
-#include "gibberish.h"
+#include "cdecl.h"
+#include "decl_flags.h"
 #include "options.h"
 #include "util.h"
 
@@ -1013,21 +1013,21 @@ static int c_typedef_cmp( c_typedef_t const *i_tdef,
  * Creates a new \ref c_typedef.
  *
  * @param ast The AST of the type.
- * @param gib_flags The gibberish flags to use; must only be one of
- * #C_GIB_NONE, #C_GIB_TYPEDEF, or #C_GIB_USING.
+ * @param decl_flags The declaration flags to use; must only be one of
+ * #C_ENG_DECL, #C_GIB_TYPEDEF, or #C_GIB_USING.
  * @return Returns said \ref c_typedef.
  */
 NODISCARD
-static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned gib_flags ) {
+static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned decl_flags ) {
   assert( ast != NULL );
-  assert( is_01_bit_only_in_set( gib_flags, C_GIB_TYPEDEF | C_GIB_USING ) );
+  assert( is_1_bit_only_in_set( decl_flags, C_TYPE_DECL_ANY ) );
 
   bool const is_predefined = predef_lang_ids != LANG_NONE;
 
   c_typedef_t *const tdef = MALLOC( c_typedef_t, 1 );
   *tdef = (c_typedef_t){
     .ast = ast,
-    .gib_flags = gib_flags,
+    .decl_flags = decl_flags,
     .is_predefined = is_predefined,
     //
     // If predef_lang_ids is set, we're predefining a type that's available
@@ -1076,11 +1076,11 @@ static bool rb_visitor( void *node_data, void *v_data ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-rb_node_t* c_typedef_add( c_ast_t const *ast, unsigned gib_flags ) {
+rb_node_t* c_typedef_add( c_ast_t const *ast, unsigned decl_flags ) {
   assert( ast != NULL );
   assert( !c_sname_empty( &ast->sname ) );
 
-  c_typedef_t *const new_tdef = c_typedef_new( ast, gib_flags );
+  c_typedef_t *const new_tdef = c_typedef_new( ast, decl_flags );
   rb_insert_rv_t const rbi = rb_tree_insert( &typedef_set, new_tdef );
   if ( !rbi.inserted ) {
     //
@@ -1104,8 +1104,10 @@ c_typedef_t const* c_typedef_find_name( char const *name ) {
 
 c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
   assert( sname != NULL );
-  c_typedef_t const tdef =
-    C_TYPEDEF_AST_LIT( &(c_ast_t const){ .sname = *sname } );
+  c_typedef_t const tdef = C_TYPEDEF_LIT(
+    &(c_ast_t const){ .sname = *sname },
+    /*decl_flags=*/0                    // doesn't matter
+  );
   rb_node_t const *const found_rb = rb_tree_find( &typedef_set, &tdef );
   return found_rb != NULL ? found_rb->data : NULL;
 }

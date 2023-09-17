@@ -45,32 +45,31 @@
  * Shows (prints) the definition of \a tdef.
  *
  * @param tdef The \ref c_typedef to show.
- * @param gib_flags The gibberish flags to use.
+ * @param decl_flags The declaration flags to use.
  * @param tout The `FILE` to print to.
  *
  * @note A newline _is_ printed.
  *
- * @sa c_ast_english()
- * @sa c_ast_gibberish()
  * @sa c_typedef_english()
  * @sa c_typedef_gibberish()
- * @sa print_type()
+ * @sa print_type_ast()
+ * @sa print_type_decl()
  * @sa show_types()
  */
-void show_type( c_typedef_t const *tdef, unsigned gib_flags, FILE *tout );
+void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *tout );
 
 /**
  * Shows (prints) the definition of defined types.
  *
  * @param show Which types to show.
  * @param glob The glob string; may be NULL.
- * @param gib_flags The gibberish flags to use.
+ * @param decl_flags The declaration flags to use.
  * @param tout The `FILE` to print to.
  *
- * @sa print_type()
+ * @sa print_type_decl()
  * @sa show_type()
  */
-void show_types( cdecl_show_t show, char const *glob, unsigned gib_flags,
+void show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
                  FILE *tout );
 
 ///////////////////////////////////////////////////////////////////////////////

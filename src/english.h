@@ -49,6 +49,7 @@
  * Explains \a ast in pseudo-English.
  *
  * @param ast The AST to explain.
+ * @param eng_flags The English flags to use; _must_ include #C_ENG_DECL.
  * @param eout The `FILE` to print to.
  *
  * @note A newline is _not_ printed.
@@ -56,10 +57,10 @@
  * @sa c_ast_gibberish()
  * @sa c_ast_list_english()
  * @sa c_typedef_english()
- * @sa print_type()
+ * @sa print_type_decl()
  * @sa show_type()
  */
-void c_ast_english( c_ast_t const *ast, FILE *eout );
+void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *eout );
 
 /**
  * Explains \a ast_list in pseudo-English.
@@ -106,7 +107,7 @@ void c_sname_english( c_sname_t const *sname, FILE *eout );
  *
  * @sa c_ast_english()
  * @sa c_typedef_gibberish()
- * @sa print_type()
+ * @sa print_type_decl()
  * @sa show_type()
  */
 void c_typedef_english( c_typedef_t const *tdef, FILE *eout );

@@ -1,3 +1,3 @@
 typedef char int_least32_t
         ^
-9: error: "int_least32_t": type redefinition with different type; original is: typedef int int_least32_t
+9: error: type "char" redefinition incompatible with original type "int"

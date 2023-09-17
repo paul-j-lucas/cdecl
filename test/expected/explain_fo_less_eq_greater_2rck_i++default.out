@@ -1,3 +1,3 @@
 explain friend int operator<=>(const S&, const S&) = default
         ^
-9: error: invalid operator "<=>" return type "int"; must be one of "auto", "std::partial_ordering", "std::strong_ordering", or "std::weak_ordering"
+9: error: invalid operator "<=>" return type "int"; must be "auto", "std::partial_ordering", "std::strong_ordering", or "std::weak_ordering"

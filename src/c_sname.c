@@ -249,10 +249,10 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
           //
           print_error( sname_loc,
             "\"%s\" was previously declared as \"%s\" (\"",
-            c_sname_full_name( sname ),
+            c_sname_local_name( sname ),
             c_type_name_error( tdef_type )
           );
-          print_type( tdef, stderr );
+          print_type_decl( tdef, tdef->decl_flags, stderr );
           EPUTS( "\")\n" );
           scope->next = orig_next;
           return false;

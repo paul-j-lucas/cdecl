@@ -1,3 +1,3 @@
 namespace N::C { class D; }
           ^
-11: error: "N::C" was previously declared as "class" ("namespace N { class C; }")
+11: error: "C" was previously declared as "class" ("namespace N { class C; }")

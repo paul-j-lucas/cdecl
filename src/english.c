@@ -30,6 +30,7 @@
 #include "c_ast_util.h"
 #include "c_operator.h"
 #include "c_typedef.h"
+#include "decl_flags.h"
 #include "literals.h"
 #include "util.h"
 
@@ -492,11 +493,13 @@ static void eng_init( eng_state_t *eng, FILE *eout ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_english( c_ast_t const *ast, FILE *eout ) {
+void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *eout ) {
   assert( ast != NULL );
+  assert( is_1n_bit_only_in_set( eng_flags, C_ENG_ANY ) );
+  assert( (eng_flags & C_ENG_DECL) != 0 );
   assert( eout != NULL );
 
-  if ( ast->kind != K_CAST ) {
+  if ( (eng_flags & C_ENG_OPT_OMIT_DECLARE) == 0 && ast->kind != K_CAST ) {
     FPUTS( "declare ", eout );
     // We can't just check to see if ast->sname is empty and print it only if
     // it isn't because operators have a name but don't use ast->sname.
@@ -532,7 +535,7 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout ) {
   assert( ast_list != NULL );
   FOREACH_SLIST_NODE( node, ast_list ) {
     c_ast_t const *const ast = node->data;
-    c_ast_english( ast, eout );
+    c_ast_english( ast, C_ENG_DECL, eout );
     FPUTC( '\n', eout );
   } // for
 }

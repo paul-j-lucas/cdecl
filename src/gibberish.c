@@ -31,6 +31,7 @@
 #include "c_lang.h"
 #include "c_operator.h"
 #include "c_typedef.h"
+#include "decl_flags.h"
 #include "literals.h"
 #include "options.h"
 #include "util.h"
@@ -289,7 +290,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         FPRINTF( gib->gout, " %s", c_tid_name_c( msc_call_atids ) );
       }
       if ( false_set( &gib->postfix ) ) {
-        if ( (gib->gib_flags & (C_GIB_CAST | C_GIB_USING)) == 0 )
+        if ( (gib->gib_flags & (C_GIB_PRINT_CAST | C_GIB_USING)) == 0 )
           gib_print_space_once( gib );
         c_ast_postfix_gibberish( ast, gib );
       }
@@ -320,7 +321,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_t *const orig_ret_ast_parent_ast = ret_ast->parent_ast;
         ret_ast->parent_ast = NULL;
 
-        gib_init( &child_gib, C_GIB_DECL, gib->gout );
+        gib_init( &child_gib, C_GIB_PRINT_DECL, gib->gout );
         c_ast_gibberish_impl( ret_ast, &child_gib );
         ret_ast->parent_ast = orig_ret_ast_parent_ast;
       }
@@ -333,7 +334,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_BUILTIN:
-      if ( (gib->gib_flags & C_GIB_OMIT_TYPE) == 0 )
+      if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 )
         FPUTS( c_type_name_c( &type ), gib->gout );
       if ( c_ast_is_tid_any( ast, TB__BitInt ) )
         FPRINTF( gib->gout, "(%u)", ast->builtin.BitInt.width );
@@ -366,8 +367,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_CAST:
-      assert( gib->gib_flags == C_GIB_CAST );
-      gib_init( &child_gib, C_GIB_CAST, gib->gout );
+      assert( gib->gib_flags == C_GIB_PRINT_CAST );
+      gib_init( &child_gib, C_GIB_PRINT_CAST, gib->gout );
       if ( ast->cast.kind == C_CAST_C ) {
         FPUTC( '(', gib->gout );
         c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
@@ -398,7 +399,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       }
 
       char const *const type_name =
-        (gib->gib_flags & (C_GIB_CAST | C_GIB_DECL)) != 0 &&
+        (gib->gib_flags & (C_GIB_PRINT_CAST | C_GIB_PRINT_DECL)) != 0 &&
         //
         // Special case: a fixed type enum must always have "enum" printed, so
         // we don't call c_type_name_ecsu() that may omit it by applying
@@ -499,7 +500,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         //
         FPUTS( L_int, gib->gout );
       }
-      if ( (gib->gib_flags & C_GIB_CAST) == 0 ) {
+      if ( (gib->gib_flags & C_GIB_PRINT_CAST) == 0 ) {
         if ( OPT_LANG_IS( PROTOTYPES ) )
           FPUTC( ' ', gib->gout );
         c_ast_name_gibberish( ast, gib );
@@ -509,7 +510,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      if ( (gib->gib_flags & C_GIB_OMIT_TYPE) == 0 )
+      if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 )
         fputs_sp( c_tid_name_c( type.stids & TS_ANY_STORAGE ), gib->gout );
       c_ast_gibberish_impl( ast->ptr_ref.to_ast, gib );
       if ( c_ast_space_before_ptr_ref( ast, gib ) )
@@ -526,7 +527,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_TYPEDEF:
-      if ( (gib->gib_flags & C_GIB_OMIT_TYPE) == 0 ) {
+      if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 ) {
         //
         // Of course a K_TYPEDEF AST also has a type comprising TB_typedef, but
         // we need to see whether there's any more to the type, e.g., "const".
@@ -605,7 +606,7 @@ static void c_ast_list_gibberish( c_ast_list_t const *ast_list,
   bool comma = false;
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     gib_state_t node_gib;
-    gib_init( &node_gib, gib->gib_flags & ~C_GIB_OMIT_TYPE, gib->gout );
+    gib_init( &node_gib, gib->gib_flags & ~C_GIB_OPT_OMIT_TYPE, gib->gout );
     fput_sep( ", ", &comma, gib->gout );
     c_ast_gibberish_impl( c_param_ast( ast_node ), &node_gib );
   } // for
@@ -624,7 +625,7 @@ static void c_ast_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   assert( ast != NULL );
   assert( gib != NULL );
 
-  if ( (gib->gib_flags & C_GIB_CAST) != 0 ) {
+  if ( (gib->gib_flags & C_GIB_PRINT_CAST) != 0 ) {
     //
     // When printing a cast, the cast itself and the AST's name (the thing
     // that's being cast) is printed in c_ast_gibberish_impl(), so we mustn't
@@ -841,7 +842,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 
   switch ( ast->kind ) {
     case K_POINTER:
-      if ( qual_stids != TS_NONE && (gib->gib_flags & C_GIB_CAST) == 0 &&
+      if ( qual_stids != TS_NONE && (gib->gib_flags & C_GIB_PRINT_CAST) == 0 &&
            !c_ast_is_ptr_to_kind_any( ast, K_FUNCTION ) ) {
         //
         // If we're printing a type as a "using" declaration and there's a
@@ -901,7 +902,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   if ( qual_stids != TS_NONE ) {
     FPUTS( c_tid_name_c( qual_stids ), gib->gout );
 
-    if ( (gib->gib_flags & (C_GIB_DECL | C_GIB_TYPEDEF)) != 0 &&
+    if ( (gib->gib_flags & (C_GIB_PRINT_DECL | C_GIB_TYPEDEF)) != 0 &&
          c_ast_find_name( ast, C_VISIT_UP ) != NULL ) {
       //
       // For declarations and typedefs, if there is a qualifier and if a name
@@ -959,9 +960,9 @@ static bool c_ast_space_before_ptr_ref( c_ast_t const *ast,
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER | K_ANY_REFERENCE ) );
   assert( gib != NULL );
 
-  if ( (gib->gib_flags & (C_GIB_CAST | C_GIB_USING)) != 0 )
+  if ( (gib->gib_flags & (C_GIB_PRINT_CAST | C_GIB_USING)) != 0 )
     return false;
-  if ( (gib->gib_flags & C_GIB_MULTI_DECL) != 0 )
+  if ( (gib->gib_flags & C_GIB_OPT_MULTI_DECL) != 0 )
     return true;
 
   c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
@@ -994,7 +995,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   assert( ast != NULL );
   assert( gib != NULL );
 
-  if ( (gib->gib_flags & C_GIB_CAST) != 0 )
+  if ( (gib->gib_flags & C_GIB_PRINT_CAST) != 0 )
     return;                             // for casts, print nothing
 
   switch ( ast->kind ) {
@@ -1050,13 +1051,13 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
  */
 static void gib_init( gib_state_t *gib, unsigned gib_flags, FILE *gout ) {
   assert( gib != NULL );
-  assert( gib_flags != C_GIB_NONE );
+  assert( is_1n_bit_only_in_set( gib_flags, C_GIB_ANY ) );
   assert( gout != NULL );
 
   MEM_ZERO( gib );
   gib->gib_flags = gib_flags;
   gib->gout = gout;
-  gib->printed_space = (gib_flags & C_GIB_OMIT_TYPE) != 0;
+  gib->printed_space = (gib_flags & C_GIB_OPT_OMIT_TYPE) != 0;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -1093,7 +1094,12 @@ char const* alt_token_c( char const *token ) {
 
 void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
   assert( ast != NULL );
-  assert( is_1_bit_in_set( gib_flags, C_GIB_DECL | C_GIB_CAST | C_GIB_USING ) );
+  assert( is_1n_bit_only_in_set( gib_flags, C_GIB_ANY ) );
+  assert(
+    is_1_bit_in_set(
+      gib_flags, C_GIB_DECL_ANY | C_GIB_PRINT_DECL | C_GIB_PRINT_CAST
+    )
+  );
   assert( gout != NULL );
 
   if ( c_ast_print_as_using( ast ) ) {
@@ -1106,11 +1112,11 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
     // It's simpler just to create a temporary c_typedef_t and call
     // c_typedef_gibberish().
     //
-    c_typedef_t const tdef = C_TYPEDEF_AST_LIT( ast );
+    c_typedef_t const tdef = C_TYPEDEF_LIT( ast, C_GIB_USING );
     c_typedef_gibberish( &tdef, C_GIB_USING, gout );
   }
   else {
-    if ( (gib_flags & C_GIB_OMIT_TYPE) == 0 ) {
+    if ( (gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 ) {
       //
       // If we're declaring more than one variable in the same declaration,
       // print the alignment, if any, only when also printing the type for the
@@ -1128,7 +1134,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
           break;
         case C_ALIGNAS_TYPE:
           FPRINTF( gout, "%s(", alignas_name() );
-          c_ast_gibberish( ast->align.type_ast, C_GIB_DECL, gout );
+          c_ast_gibberish( ast->align.type_ast, C_GIB_PRINT_DECL, gout );
           FPUTS( ") ", gout );
           break;
       } // switch
@@ -1139,7 +1145,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
     c_ast_gibberish_impl( ast, &gib );
   }
 
-  if ( (gib_flags & C_GIB_FINAL_SEMI) != 0 )
+  if ( (gib_flags & C_GIB_OPT_SEMICOLON) != 0 )
     FPUTC( ';', gout );
 }
 
@@ -1158,11 +1164,9 @@ char const* c_cast_gibberish( c_cast_kind_t kind ) {
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
                           FILE *gout ) {
   assert( tdef != NULL );
-  assert( is_1_bit_in_set( gib_flags, C_GIB_TYPEDEF | C_GIB_USING ) );
+  assert( is_1_bit_in_set( gib_flags, C_GIB_DECL_ANY ) );
   assert(
-    is_1n_bit_only_in_set(
-      gib_flags, C_GIB_TYPEDEF | C_GIB_USING | C_GIB_FINAL_SEMI
-    )
+    is_1n_bit_only_in_set( gib_flags, C_GIB_DECL_ANY | C_GIB_OPT_SEMICOLON )
   );
   assert( gout != NULL );
 
@@ -1316,8 +1320,10 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
       FPRINTF( gout, " %s", graph_token_c( "}" ) );
   }
 
-  if ( (gib_flags & C_GIB_FINAL_SEMI) != 0 && scope_type.btids != TB_namespace )
+  if ( (gib_flags & C_GIB_OPT_SEMICOLON) != 0 &&
+       scope_type.btids != TB_namespace ) {
     FPUTC( ';', gout );
+  }
 }
 
 char const* graph_token_c( char const *token ) {

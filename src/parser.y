@@ -47,6 +47,7 @@
 #include "cdecl.h"
 #include "cdecl_keyword.h"
 #include "color.h"
+#include "decl_flags.h"
 #ifdef ENABLE_CDECL_DEBUG
 #include "dump.h"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -560,14 +561,14 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
  * Adds a type to the global set.
  *
  * @param type_ast The AST of the type to add.
- * @param gib_flags The gibberish flags to use; must only be one of
- * #C_GIB_NONE, #C_GIB_TYPEDEF, or #C_GIB_USING.
+ * @param decl_flags The declaration flags to use; must only be one of
+ * #C_ENG_DECL, #C_GIB_TYPEDEF, or #C_GIB_USING.
  * @return Returns `true` either if the type was added or it's equivalent to an
  * existing type; `false` if a different type already exists having the same
  * name.
  */
 NODISCARD
-static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
+static bool add_type( c_ast_t const *type_ast, unsigned decl_flags ) {
   assert( type_ast != NULL );
 
   c_ast_t const *const leaf_ast = c_ast_leaf( type_ast );
@@ -579,7 +580,7 @@ static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
     return false;
   }
 
-  rb_node_t const *const typedef_rb = c_typedef_add( type_ast, gib_flags );
+  rb_node_t const *const typedef_rb = c_typedef_add( type_ast, decl_flags );
   c_typedef_t const *const tdef = typedef_rb->data;
 
   if ( tdef->ast == type_ast ) {
@@ -610,12 +611,11 @@ static bool add_type( c_ast_t const *type_ast, unsigned gib_flags ) {
     //      typedef double T;             // error: types aren't equivalent
     //
     if ( !c_ast_equal( type_ast, tdef->ast ) ) {
-      print_error( &type_ast->loc,
-        "\"%s\": type redefinition with different type; original is: ",
-        c_sname_full_name( &type_ast->sname )
-      );
-      print_type( tdef, stderr );
-      EPUTC( '\n' );
+      print_error( &type_ast->loc, "type " );
+      print_ast_type_aka( type_ast, stderr );
+      EPRINTF( " redefinition incompatible with original type \"" );
+      print_type_ast( tdef, stderr );
+      EPUTS( "\"\n" );
       return false;
     }
   }
@@ -861,16 +861,15 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     //      explain typedef char int32_t;
     //
     if ( !c_ast_equal( type_ast, raw_decl_ast ) ) {
-      print_error( &decl_ast->loc,
-        "\"%s\": type redefinition with different type; original is: ",
-        c_sname_full_name( &raw_decl_ast->sname )
-      );
+      print_error( &decl_ast->loc, "type " );
+      print_ast_type_aka( type_ast, stderr );
+      EPRINTF( " redefinition incompatible with original type \"" );
       // Look-up the type so we can print it how it was originally defined.
       c_typedef_t const *const tdef =
         c_typedef_find_sname( &raw_decl_ast->sname );
       assert( tdef != NULL );
-      print_type( tdef, stderr );
-      EPUTC( '\n' );
+      print_type_ast( tdef, stderr );
+      EPUTS( "\"\n" );
       return NULL;
     }
 
@@ -1667,7 +1666,7 @@ cast_command
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( cast_ast ) );
-      c_ast_gibberish( cast_ast, C_GIB_CAST, stdout );
+      c_ast_gibberish( cast_ast, C_GIB_PRINT_CAST, stdout );
     }
 
     /*
@@ -1702,7 +1701,7 @@ cast_command
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( cast_ast ) );
-      c_ast_gibberish( cast_ast, C_GIB_CAST, stdout );
+      c_ast_gibberish( cast_ast, C_GIB_PRINT_CAST, stdout );
     }
   ;
 
@@ -1778,7 +1777,7 @@ declare_command
               "\"%s\": previously declared as type \"",
               c_sname_full_name( sname )
             );
-            print_type( tdef, stderr );
+            print_type_ast( tdef, stderr );
             EPUTS( "\"\n" );
             ok = false;
             break;
@@ -1787,9 +1786,9 @@ declare_command
       }
 
       if ( ok ) {
-        unsigned gib_flags = C_GIB_DECL;
+        unsigned decl_flags = C_GIB_PRINT_DECL;
         if ( slist_len( &$sname_list ) > 1 )
-          gib_flags |= C_GIB_MULTI_DECL;
+          decl_flags |= C_GIB_OPT_MULTI_DECL;
         bool const print_as_using = c_ast_print_as_using( $decl_ast );
         if ( print_as_using && opt_semicolon ) {
           //
@@ -1801,7 +1800,7 @@ declare_command
           //      using I = int;
           //      using J = int;
           //
-          gib_flags |= C_GIB_FINAL_SEMI;
+          decl_flags |= C_GIB_OPT_SEMICOLON;
         }
 
         FOREACH_SLIST_NODE( sname_node, &$sname_list ) {
@@ -1809,8 +1808,8 @@ declare_command
           c_sname_set( &$decl_ast->sname, cur_sname );
           bool const is_last_sname = sname_node->next == NULL;
           if ( is_last_sname && opt_semicolon )
-            gib_flags |= C_GIB_FINAL_SEMI;
-          c_ast_gibberish( $decl_ast, gib_flags, stdout );
+            decl_flags |= C_GIB_OPT_SEMICOLON;
+          c_ast_gibberish( $decl_ast, decl_flags, stdout );
           if ( is_last_sname )
             continue;
           if ( print_as_using ) {
@@ -1833,7 +1832,7 @@ declare_command
             //
             // the gibberish for `y` must not print the `int` again.
             //
-            gib_flags |= C_GIB_OMIT_TYPE;
+            decl_flags |= C_GIB_OPT_OMIT_TYPE;
             PUTS( ", " );
           }
         } // for
@@ -1880,10 +1879,10 @@ declare_command
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( $oper_ast ) );
-      unsigned gib_flags = C_GIB_DECL;
+      unsigned decl_flags = C_GIB_PRINT_DECL;
       if ( opt_semicolon )
-        gib_flags |= C_GIB_FINAL_SEMI;
-      c_ast_gibberish( $oper_ast, gib_flags, stdout );
+        decl_flags |= C_GIB_OPT_SEMICOLON;
+      c_ast_gibberish( $oper_ast, decl_flags, stdout );
       PUTC( '\n' );
     }
 
@@ -1916,7 +1915,7 @@ declare_command
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( lambda_ast ) );
-      c_ast_gibberish( lambda_ast, C_GIB_DECL, stdout );
+      c_ast_gibberish( lambda_ast, C_GIB_PRINT_DECL, stdout );
       PUTC( '\n' );
     }
 
@@ -1948,10 +1947,10 @@ declare_command
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( udc_ast ) );
-      unsigned gib_flags = C_GIB_DECL;
+      unsigned decl_flags = C_GIB_PRINT_DECL;
       if ( opt_semicolon )
-        gib_flags |= C_GIB_FINAL_SEMI;
-      c_ast_gibberish( udc_ast, gib_flags, stdout );
+        decl_flags |= C_GIB_OPT_SEMICOLON;
+      c_ast_gibberish( udc_ast, decl_flags, stdout );
       PUTC( '\n' );
     }
 
@@ -2234,7 +2233,7 @@ define_command
       DUMP_END();
 
       PARSE_ASSERT( c_sname_check( &$decl_ast->sname, &@sname ) );
-      PARSE_ASSERT( add_type( $decl_ast, C_GIB_NONE ) );
+      PARSE_ASSERT( add_type( $decl_ast, C_ENG_DECL ) );
     }
   ;
 
@@ -2353,7 +2352,7 @@ explain_command
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( $decl_ast ) );
-      c_ast_english( $decl_ast, stdout );
+      c_ast_english( $decl_ast, C_ENG_DECL, stdout );
       PUTC( '\n' );
     }
 
@@ -2540,7 +2539,7 @@ show_command
   ;
 
 show_format
-  : Y_english                     { $$ = C_GIB_NONE; }
+  : Y_english                     { $$ = C_ENG_DECL; }
   | Y_typedef                     { $$ = C_GIB_TYPEDEF; }
   | Y_using
     {
@@ -2567,7 +2566,7 @@ show_format_exp
   ;
 
 show_format_opt
-  : /* empty */                   { $$ = C_GIB_NONE; }
+  : /* empty */                   { $$ = C_ENG_DECL; }
   | show_format
   ;
 
@@ -2639,7 +2638,7 @@ c_style_cast_expr_c
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( cast_ast ) );
-      c_ast_english( cast_ast, stdout );
+      c_ast_english( cast_ast, C_ENG_DECL, stdout );
       PUTC( '\n' );
     }
 
@@ -2698,7 +2697,7 @@ new_style_cast_expr_c
       }
 
       PARSE_ASSERT( c_ast_check( cast_ast ) );
-      c_ast_english( cast_ast, stdout );
+      c_ast_english( cast_ast, C_ENG_DECL, stdout );
       PUTC( '\n' );
     }
   ;
@@ -3136,7 +3135,7 @@ lambda_declaration_c
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( lambda_ast ) );
-      c_ast_english( lambda_ast, stdout );
+      c_ast_english( lambda_ast, C_ENG_DECL, stdout );
       PUTC( '\n' );
     }
   ;
@@ -3394,7 +3393,7 @@ user_defined_conversion_declaration_c
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( $decl_astp.ast ) );
-      c_ast_english( $decl_astp.ast, stdout );
+      c_ast_english( $decl_astp.ast, C_ENG_DECL, stdout );
       PUTC( '\n' );
     }
   ;
@@ -3543,7 +3542,7 @@ decl_list_c_opt
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( type_ast ) );
-      c_typedef_english( &C_TYPEDEF_AST_LIT( type_ast ), stdout );
+      c_typedef_english( &C_TYPEDEF_LIT( type_ast, C_ENG_DECL ), stdout );
       PUTC( '\n' );
     }
 
@@ -3820,7 +3819,7 @@ destructor_declaration_c
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( dtor_ast ) );
-      c_ast_english( dtor_ast, stdout );
+      c_ast_english( dtor_ast, C_ENG_DECL, stdout );
       PUTC( '\n' );
     }
   ;
@@ -3856,7 +3855,7 @@ file_scope_constructor_declaration_c
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( ctor_ast ) );
-      c_ast_english( ctor_ast, stdout );
+      c_ast_english( ctor_ast, C_ENG_DECL, stdout );
       PUTC( '\n' );
     }
   ;
@@ -3889,7 +3888,7 @@ file_scope_destructor_declaration_c
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( dtor_ast ) );
-      c_ast_english( dtor_ast, stdout );
+      c_ast_english( dtor_ast, C_ENG_DECL, stdout );
       PUTC( '\n' );
     }
   ;
@@ -4133,7 +4132,7 @@ pc99_func_or_constructor_declaration_c
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( ast ) );
-      c_ast_english( ast, stdout );
+      c_ast_english( ast, C_ENG_DECL, stdout );
       PUTC( '\n' );
     }
   ;
@@ -4793,11 +4792,11 @@ typedef_type_decl_c_ast
         if ( tdef != NULL ) {
           print_error(
             &$tdef_ast->loc,
-            "\"%s\": previously declared as type: ",
+            "\"%s\": previously declared as type \"",
             c_sname_full_name( &raw_tdef_ast->sname )
           );
-          print_type( tdef, stderr );
-          EPUTC( '\n' );
+          print_type_ast( tdef, stderr );
+          EPUTS( "\"\n" );
           PARSE_ABORT();
         }
 
