@@ -268,6 +268,8 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
 /**
  * @defgroup printing-c-types-group Printing C/C++ Types
  * Functions for printing C/C++ types.
+ *
+ * @sa \ref showing-c-types-group
  * @{
  */
 

@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares macros and functions for showing types for the `show` command.
+ * Declares functions for showing types for the **cdecl** `show` command.
  */
 
 // local
@@ -34,8 +34,10 @@
 #include <stdio.h>
 
 /**
- * @defgroup showing-types-group Showing C/C++ Types
- * Functions for showing types for the `show` command.
+ * @defgroup showing-c-types-group Showing C/C++ Types
+ * Functions for showing types for the **cdecl** `show` command.
+ *
+ * @sa \ref printing-c-types-group
  * @{
  */
 
