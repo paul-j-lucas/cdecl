@@ -378,23 +378,24 @@ static void print_input_line( size_t *error_column, size_t term_columns ) {
 }
 
 /**
- * Gets the length of the first token in \a s.
+ * Gets the length of a token in \a s.
  *
- * @remarks Characters are divided into three classes:
+ * @remarks
+ * @parblock
+ * Characters are divided into three classes:
  *
- * @par
  *  + Whitespace.
- *  + Identifier.
+ *  + Identifier (`[A-Za-z0-9_]`).
  *  + Everything else (e.g., punctuation).
  *
- * @par
  * A token is composed of characters in exclusively one class.  The class is
- * determined by `s[0]`.  The length of the token is the number of consecutive
- * characters of the same class starting at `s[0]`.
+ * determined by `s[` \a token_offset `]`.  The length of the token is the
+ * number of consecutive characters of the same class.
+ * @endparblock
  *
  * @param s The string to use.
  * @param s_len The length of \a s.
- * @param token_offset The offset of the start of the token.
+ * @param token_offset The offset within \a s of the start of the token.
  * @return Returns the length of the token.
  */
 NODISCARD

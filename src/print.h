@@ -301,7 +301,7 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
  *
  * @note A newline is _not_ printed.
  *
- * @param ast The AST to print.
+ * @param ast The \ref c_ast to print.
  * @param tout The `FILE` to print to.
  *
  * @sa c_ast_english()
