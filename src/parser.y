@@ -6772,10 +6772,10 @@ user_defined_literal_decl_english_ast
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( UNSUPPORTED( USER_DEF_LITERALS ) ) {
+      if ( UNSUPPORTED( USER_DEF_LITS ) ) {
         print_error( &@user_defined,
           "user-defined literal not supported%s\n",
-          C_LANG_WHICH( USER_DEF_LITERALS )
+          C_LANG_WHICH( USER_DEF_LITS )
         );
         PARSE_ABORT();
       }

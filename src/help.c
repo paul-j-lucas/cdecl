@@ -425,7 +425,7 @@ static void print_help_english( void ) {
     print_h( "user-defined-english:\n" );
     print_h( "  conversion [operator] [of <scope-e> <name>]* returning <english>\n" );
 
-    if ( OPT_LANG_IS( USER_DEF_LITERALS ) )
+    if ( OPT_LANG_IS( USER_DEF_LITS ) )
       print_h( "  literal [([<args>])] [returning <english>]\n" );
 
     print_h( "args: a comma separated list of [<name> as] <english>\n" );

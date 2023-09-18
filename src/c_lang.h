@@ -432,12 +432,12 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_auto_TYPE
  * @sa #LANG_auto_TYPE_MULTI_DECL
  */
-#define LANG_auto_PARAMETERS            LANG_CPP_MIN(20)
+#define LANG_auto_PARAMS                LANG_CPP_MIN(20)
 
 /**
  * Languages the `auto` keyword as a pointer type is supported in.
  *
- * @sa #LANG_auto_PARAMETERS
+ * @sa #LANG_auto_PARAMS
  * @sa #LANG_auto_RETURN_TYPES
  * @sa #LANG_auto_STORAGE
  * @sa #LANG_auto_TYPE
@@ -448,7 +448,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `auto` keyword for function return types are supported in.
  *
- * @sa #LANG_auto_PARAMETERS
+ * @sa #LANG_auto_PARAMS
  * @sa #LANG_auto_POINTER_TYPES
  * @sa #LANG_auto_STORAGE
  * @sa #LANG_auto_TYPE
@@ -459,7 +459,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `auto` keyword as a storage class is supported in.
  *
- * @sa #LANG_auto_PARAMETERS
+ * @sa #LANG_auto_PARAMS
  * @sa #LANG_auto_POINTER_TYPES
  * @sa #LANG_auto_RETURN_TYPES
  * @sa #LANG_auto_TYPE
@@ -470,7 +470,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `auto` keyword as a type is supported in.
  *
- * @sa #LANG_auto_PARAMETERS
+ * @sa #LANG_auto_PARAMS
  * @sa #LANG_auto_POINTER_TYPES
  * @sa #LANG_auto_RETURN_TYPES
  * @sa #LANG_auto_STORAGE
@@ -482,7 +482,7 @@ _GL_INLINE_HEADER_BEGIN
  * Languages the `auto` keyword as a type declaring multiple variables is
  * supported in.
  *
- * @sa #LANG_auto_PARAMETERS
+ * @sa #LANG_auto_PARAMS
  * @sa #LANG_auto_POINTER_TYPES
  * @sa #LANG_auto_RETURN_TYPES
  * @sa #LANG_auto_STORAGE

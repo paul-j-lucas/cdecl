@@ -1259,10 +1259,10 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     switch ( raw_param_ast->kind ) {
       case K_BUILTIN:
         if ( c_tid_is_any( raw_param_ast->type.btids, TB_auto ) &&
-             !OPT_LANG_IS( auto_PARAMETERS ) ) {
+             !OPT_LANG_IS( auto_PARAMS ) ) {
           print_error( &param_ast->loc,
             "\"auto\" parameters not supported%s\n",
-            C_LANG_WHICH( auto_PARAMETERS )
+            C_LANG_WHICH( auto_PARAMS )
           );
           return false;
         }
