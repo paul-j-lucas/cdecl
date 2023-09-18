@@ -1261,9 +1261,9 @@ bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
  *
  * @param lang_ids The bitwise-of of language(s) to check.
  * @return
- *  + If \a lang_ids contains onlu any versions of C and no versions of C++,
+ *  + If \a lang_ids only contains any versions of C and no versions of C++,
  *    returns #LANG_C_ANY.
- *  + If \a lang_ids contains onlu any versions of C++ and no versions of C,
+ *  + If \a lang_ids only contains any versions of C++ and no versions of C,
  *    returns #LANG_CPP_ANY.
  *  + Otherwise returns #LANG_NONE.
  *
