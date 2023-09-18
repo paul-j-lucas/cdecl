@@ -284,12 +284,6 @@
   DUMP_KEY( KEY ": " ); bool_dump( (BOOL), stdout ); )
 
 /**
- * Dumps a comma followed by a newline the _second_ and subsequent times it's
- * called used to separate items being dumped.
- */
-#define DUMP_COMMA                fput_sep( ",\n", &dump_comma, stdout )
-
-/**
  * Ends a dump block.
  *
  * @sa #DUMP_START()
@@ -302,8 +296,9 @@
  *
  * @param ... The `printf()` arguments.
  */
-#define DUMP_KEY(...) IF_DEBUG( \
-  DUMP_COMMA; PRINTF( "  " __VA_ARGS__ ); )
+#define DUMP_KEY(...) IF_DEBUG(           \
+  fput_sep( ",\n", &dump_comma, stdout ); \
+  PRINTF( "  " __VA_ARGS__ ); )
 
 /**
  * Dumps an integer.
