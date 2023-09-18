@@ -46,6 +46,9 @@
 #define DUMP_AST(D,KEY,AST) BLOCK( \
   DUMP_KEY( (D), KEY ": " ); c_ast_dump_impl( (AST), (D) ); )
 
+#define DUMP_AST_LIST(D,KEY,LIST) BLOCK( \
+  DUMP_KEY( (D), KEY ": " ); c_ast_list_dump_impl( (LIST), (D) ); )
+
 #define DUMP_FORMAT(D,...) BLOCK(                   \
   FPUTNSP( (D)->indent * DUMP_INDENT, (D)->dout );  \
   FPRINTF( (D)->dout, __VA_ARGS__ ); )
@@ -278,8 +281,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
     case K_UDEF_LIT:
       kind_json = json_object_begin( kind_json, "udef_lit", dump );
 dump_params:
-      DUMP_KEY( dump, "param_ast_list: " );
-      c_ast_list_dump_impl( &ast->func.param_ast_list, dump );
+      DUMP_AST_LIST( dump, "param_ast_list", &ast->func.param_ast_list );
       if ( ast->func.ret_ast != NULL )
         DUMP_AST( dump, "ret_ast", ast->func.ret_ast );
       json_object_end( kind_json, dump );
@@ -297,8 +299,7 @@ dump_params:
 
     case K_LAMBDA:
       kind_json = json_object_begin( JSON_INIT, "lambda", dump );
-      DUMP_KEY( dump, "capture_ast_list: " );
-      c_ast_list_dump_impl( &ast->lambda.capture_ast_list, dump );
+      DUMP_AST_LIST( dump, "capture_ast_list", &ast->lambda.capture_ast_list );
       goto dump_params;
 
     case K_POINTER_TO_MEMBER:
