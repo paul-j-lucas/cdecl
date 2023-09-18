@@ -1,5 +1,7 @@
 2023-09-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Eliminated DUMP_COMMA.
+   * cli_options.c: s/usage()/print_usage()/, s/version()/print_version()/
    * c_lang.h, c_type.c, cdecl_keyword.c: s/LANG_BOOL_TYPE/LANG_BOOLEAN/
    * c_ast_check.c, c_lang.h, help.c, parser.y: Renaming.
    * c_lang.h, cdecl_keyword.c: s/LANG_USER_DEF_LITERALS/LANG_USER_DEF_LITS/
