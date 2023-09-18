@@ -177,46 +177,6 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
                        char const *format, ... );
 
 /**
- * If \a ast is:
- *
- *  + A #K_TYPEDEF, prints the name of the type followed by `(aka` followed by
- *    the underlying type in either pseudo-English or gibberish (depending on
- *    how it was declared).  For example, if a type was declared in pseudo-
- *    English like:
- *
- *          define IR as reference to int
- *
- *    prints `"IR" (aka "reference to integer")`, that is the type name 
- *    followed by `(aka` and the underlying type in pseudo-English.
- *
- *    However, if the underlying type was declared in gibberish like:
- *
- *          using IR = int&
- *
- *    prints `"IR" (aka "int&")`, that is the type name followed by `(aka` and
- *    the underlying type in gibberish.
- *
- *  + Otherwise prints only the type of \a ast either in pseudo-English or
- *    gibberish (depending on \ref cdecl_mode) without its name, for example
- *    `"reference to integer"` or `"int&"`.
- *
- * @note A newline is _not_ printed.
- *
- * @param ast The AST to print.
- * @param tout The `FILE` to print to.
- *
- * @sa c_ast_english()
- * @sa c_ast_gibberish()
- * @sa c_typedef_english()
- * @sa c_typedef_gibberish()
- * @sa opt_english_types
- * @sa print_type_ast()
- * @sa print_type_decl()
- * @sa show_type()
- */
-void print_ast_type_aka( c_ast_t const *ast, FILE *tout );
-
-/**
  * If \ref opt_cdecl_debug is compiled in and enabled, prints \a file and \a
  * line to standard error in the form `"[<file>:<line>] "`; otherwise prints
  * nothing.
@@ -300,6 +260,58 @@ void print_loc( c_loc_t const *loc );
  */
 PJL_DISCARD
 bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
+
+///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
+/**
+ * @defgroup printing-c-types-group Printing C/C++ Types
+ * Functions for printing C/C++ types.
+ * @{
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * If \a ast is:
+ *
+ *  + A #K_TYPEDEF, prints the name of the type followed by `(aka` followed by
+ *    the underlying type in either pseudo-English or gibberish (depending on
+ *    how it was declared).  For example, if a type was declared in pseudo-
+ *    English like:
+ *
+ *          define IR as reference to int
+ *
+ *    prints `"IR" (aka "reference to integer")`, that is the type name
+ *    followed by `(aka` and the underlying type in pseudo-English.
+ *
+ *    However, if the underlying type was declared in gibberish like:
+ *
+ *          using IR = int&
+ *
+ *    prints `"IR" (aka "int&")`, that is the type name followed by `(aka` and
+ *    the underlying type in gibberish.
+ *
+ *  + Otherwise prints only the type of \a ast either in pseudo-English or
+ *    gibberish (depending on \ref cdecl_mode) without its name, for example
+ *    `"reference to integer"` or `"int&"`.
+ *
+ * @note A newline is _not_ printed.
+ *
+ * @param ast The AST to print.
+ * @param tout The `FILE` to print to.
+ *
+ * @sa c_ast_english()
+ * @sa c_ast_gibberish()
+ * @sa c_typedef_english()
+ * @sa c_typedef_gibberish()
+ * @sa opt_english_types
+ * @sa print_type_ast()
+ * @sa print_type_decl()
+ * @sa show_type()
+ */
+void print_ast_type_aka( c_ast_t const *ast, FILE *tout );
 
 /**
  * Prints _only_ the underlying type of \a tdef either as pseudo-English via
