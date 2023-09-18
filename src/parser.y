@@ -465,8 +465,8 @@ static c_ast_list_t   typedef_ast_list; ///< List of ASTs for `typedef`s.
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Garbage-collect the AST nodes on \a ast_list but does _not_ free \a ast_list
- * itself.
+ * Garbage-collects the AST nodes on \a ast_list but does _not_ free \a
+ * ast_list itself.
  *
  * @param ast_list The AST list to free the nodes of.
  *
