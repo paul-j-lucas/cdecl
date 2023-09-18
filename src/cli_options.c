@@ -112,7 +112,7 @@ static struct option const CLI_OPTIONS[] = {
   //
   //  1. Calls to opt_check_exclusive().
   //  2. Calls to opt_check_mutually_exclusive().
-  //  3. The message in usage().
+  //  3. The message in print_usage().
   //  4. The corresponding "set" option in SET_OPTIONS in set_options.c.
   //
   { "alt-tokens",       no_argument,        NULL, COPT(ALT_TOKENS)        },
@@ -159,9 +159,9 @@ static char const*  opt_format( char ),
                  *  opt_get_long( char );
 
 _Noreturn
-static void         usage( int );
+static void         print_usage( int );
 
-static void         version( bool );
+static void         print_version( bool );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -546,12 +546,12 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   }
 
   if ( opt_help )
-    usage( *pargc > 0 ? EX_USAGE : EX_OK );
+    print_usage( *pargc > 0 ? EX_USAGE : EX_OK );
 
   if ( opt_version > 0 ) {
     if ( *pargc > 0 )                   // cdecl -v foo
-      usage( EX_USAGE );
-    version( opt_version > 1 );
+      print_usage( EX_USAGE );
+    print_version( /*verbose=*/opt_version > 1 );
     exit( EX_OK );
   }
 
@@ -589,7 +589,7 @@ missing_arg:
  * output; otherwise prints to standard error.
  */
 _Noreturn
-static void usage( int status ) {
+static void print_usage( int status ) {
   fprintf( status == EX_OK ? stdout : stderr,
     "usage: %s [options] [command...]\n"
     "options:\n"
@@ -648,7 +648,7 @@ static void usage( int status ) {
  * @param verbose If `true`, prints configure feature &amp; package options and
  * whether GNU **readline**(3) is genuine.
  */
-static void version( bool verbose ) {
+static void print_version( bool verbose ) {
   puts( PACKAGE_STRING );
   if ( !verbose )
     return;
