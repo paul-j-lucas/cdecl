@@ -966,7 +966,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   },
 
   { L_literal,
-    LANG_USER_DEF_LITERALS,
+    LANG_USER_DEF_LITS,
     TOKEN( Y_literal ),
     AC_SETTINGS(
       AC_POLICY_IN_NEXT_ONLY,

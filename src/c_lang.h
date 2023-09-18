@@ -1103,7 +1103,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages user-defined literals are supported in.
  */
-#define LANG_USER_DEF_LITERALS          LANG_CPP_MIN(11)
+#define LANG_USER_DEF_LITS              LANG_CPP_MIN(11)
 
 /**
  * Languages `using` declarations are supported in.
