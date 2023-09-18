@@ -189,12 +189,12 @@
  *
  *     For example, given:
  *
- *          using IR = int&
+ *          using RI = int&
  *
  *     then:
  *
  *      + c_ast_gibberish() will print only `int&` whereas:
- *      + c_typedef_gibberish() will print `using IR = int&`.
+ *      + c_typedef_gibberish() will print `using RI = int&`.
  *
  * @note When used for the second purpose, may be used _only_ in combination
  * with #C_GIB_OPT_SEMICOLON.

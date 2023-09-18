@@ -283,16 +283,16 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
  *    how it was declared).  For example, if a type was declared in pseudo-
  *    English like:
  *
- *          define IR as reference to int
+ *          define RI as reference to int
  *
- *    prints `"IR" (aka "reference to integer")`, that is the type name
+ *    prints `"RI" (aka "reference to integer")`, that is the type name
  *    followed by `(aka` and the underlying type in pseudo-English.
  *
  *    However, if the underlying type was declared in gibberish like:
  *
- *          using IR = int&
+ *          using RI = int&
  *
- *    prints `"IR" (aka "int&")`, that is the type name followed by `(aka` and
+ *    prints `"RI" (aka "int&")`, that is the type name followed by `(aka` and
  *    the underlying type in gibberish.
  *
  *  + Otherwise prints only the type of \a ast either in pseudo-English or
