@@ -43,6 +43,9 @@
 #include <stdlib.h>
 #include <sysexits.h>
 
+#define DUMP_AST(D,KEY,AST) BLOCK( \
+  DUMP_KEY( (D), KEY ": " ); c_ast_dump_impl( (AST), (D) ); )
+
 #define DUMP_FORMAT(D,...) BLOCK(                   \
   FPUTNSP( (D)->indent * DUMP_INDENT, (D)->dout );  \
   FPRINTF( (D)->dout, __VA_ARGS__ ); )
@@ -51,8 +54,8 @@
   fput_sep( ",\n", &(D)->comma, (D)->dout );  \
   DUMP_FORMAT( (D), __VA_ARGS__ ); )
 
-#define DUMP_LOC(D,KEY,LOC) \
-  DUMP_KEY( (D), KEY ": " ); c_loc_dump( (LOC), (D)->dout )
+#define DUMP_LOC(D,KEY,LOC) BLOCK( \
+  DUMP_KEY( (D), KEY ": " ); c_loc_dump( (LOC), (D)->dout ); )
 
 #define DUMP_SNAME(D,KEY,SNAME) BLOCK( \
   DUMP_KEY( (D), KEY ": " ); c_sname_dump( (SNAME), (D)->dout ); )
@@ -123,8 +126,7 @@ static void c_alignas_dump( c_alignas_t const *align, dump_state_t *dump ) {
       DUMP_KEY( dump, "bytes: %u", align->bytes );
       break;
     case C_ALIGNAS_TYPE:
-      DUMP_KEY( dump, "type_ast: " );
-      c_ast_dump_impl( align->type_ast, dump );
+      DUMP_AST( dump, "type_ast", align->type_ast );
       break;
   } // switch
 
@@ -185,15 +187,13 @@ void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
           FPUTS( "'*'", dump->dout );
           break;
       } // switch
-      DUMP_KEY( dump, "of_ast: " );
-      c_ast_dump_impl( ast->array.of_ast, dump );
+      DUMP_AST( dump, "of_ast", ast->array.of_ast );
       json_object_end( kind_json, dump );
       break;
 
     case K_TYPEDEF:
       kind_json = json_object_begin( JSON_INIT, "tdef", dump );
-      DUMP_KEY( dump, "for_ast: " );
-      c_ast_dump_impl( ast->tdef.for_ast, dump );
+      DUMP_AST( dump, "for_ast", ast->tdef.for_ast );
       FALLTHROUGH;
 
     case K_BUILTIN:
@@ -233,8 +233,7 @@ void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
         "kind: { value: 0x%X, string: \"%s\" }",
         ast->cast.kind, c_cast_english( ast->cast.kind )
       );
-      DUMP_KEY( dump, "to_ast: " );
-      c_ast_dump_impl( ast->cast.to_ast, dump );
+      DUMP_AST( dump, "to_ast", ast->cast.to_ast );
       json_object_end( kind_json, dump );
       break;
 
@@ -281,20 +280,16 @@ void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
 dump_params:
       DUMP_KEY( dump, "param_ast_list: " );
       c_ast_list_dump_impl( &ast->func.param_ast_list, dump );
-      if ( ast->func.ret_ast != NULL ) {
-        DUMP_KEY( dump, "ret_ast: " );
-        c_ast_dump_impl( ast->func.ret_ast, dump );
-      }
+      if ( ast->func.ret_ast != NULL )
+        DUMP_AST( dump, "ret_ast", ast->func.ret_ast );
       json_object_end( kind_json, dump );
       break;
 
     case K_ENUM:
       kind_json = json_object_begin( JSON_INIT, "enum", dump );
       DUMP_SNAME( dump, "enum_sname", &ast->enum_.enum_sname );
-      if ( ast->enum_.of_ast != NULL ) {
-        DUMP_KEY( dump, "of_ast: " );
-        c_ast_dump_impl( ast->enum_.of_ast, dump );
-      }
+      if ( ast->enum_.of_ast != NULL )
+        DUMP_AST( dump, "of_ast", ast->enum_.of_ast );
       if ( ast->enum_.bit_width > 0 )
         DUMP_KEY( dump, "bit_width: %u", ast->enum_.bit_width );
       json_object_end( kind_json, dump );
@@ -317,8 +312,7 @@ dump_params:
       FALLTHROUGH;
     case K_UDEF_CONV:
       kind_json = json_object_begin( kind_json, "udef_conv", dump );
-      DUMP_KEY( dump, "to_ast: " );
-      c_ast_dump_impl( ast->ptr_ref.to_ast, dump );
+      DUMP_AST( dump, "to_ast", ast->ptr_ref.to_ast );
       json_object_end( kind_json, dump );
       break;
 
@@ -512,10 +506,8 @@ void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *dout ) {
   dump_init( &dump, 1, dout );
 
   json_state_t const json = json_object_begin( JSON_INIT, /*key=*/NULL, &dump );
-  DUMP_KEY( &dump, "ast: " );
-  c_ast_dump_impl( astp->ast, &dump );
-  DUMP_KEY( &dump, "target_ast: " );
-  c_ast_dump_impl( astp->target_ast, &dump );
+  DUMP_AST( &dump, "ast", astp->ast );
+  DUMP_AST( &dump, "target_ast", astp->target_ast );
   json_object_end( json, &dump );
 }
 
