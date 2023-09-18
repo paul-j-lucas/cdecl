@@ -346,6 +346,7 @@ _GL_INLINE_HEADER_BEGIN
  * Languages the `_Alignas` keyword is supported in.
  *
  * @sa #LANG_ALIGNED_CSUS
+ * @sa #LANG_ALIGNMENT
  * @sa #LANG_alignas
  */
 #define LANG__Alignas                   LANG_C_MIN(11)
@@ -354,6 +355,7 @@ _GL_INLINE_HEADER_BEGIN
  * Languages the `alignas` keyword is supported in.
  *
  * @sa #LANG_ALIGNED_CSUS
+ * @sa #LANG_ALIGNMENT
  * @sa #LANG__Alignas
  */
 #define LANG_alignas                    LANG_C_CPP_MIN(23,11)
@@ -380,6 +382,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `_Alignof` keyword is supported in.
  *
+ * @sa #LANG_ALIGNMENT
  * @sa #LANG_alignof
  */
 #define LANG__Alignof                   LANG_C_MIN(11)
@@ -387,6 +390,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `alignof` keyword is supported in.
  *
+ * @sa #LANG_ALIGNMENT
  * @sa #LANG__Alignof
  */
 #define LANG_alignof                    LANG_C_CPP_MIN(23,11)
@@ -398,6 +402,9 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Languages Apple's `__block` keyword is supported in.
+ *
+ * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
+ * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
  */
 #define LANG_APPLE___block              LANG_MIN(C_89)
 
