@@ -140,7 +140,7 @@ static void c_alignas_dump( c_alignas_t const *align, dump_state_t *dump ) {
  * @param ast The AST to dump.  If NULL, `null` is printed instead.
  * @param dump The dump_state to use.
  */
-void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
+static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
   assert( dump != NULL );
 
   if ( ast == NULL ) {
