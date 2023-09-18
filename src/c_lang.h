@@ -100,11 +100,39 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CPP_NEW  LANG_CPP_23       /**< Newest supported C++ language. */
 #define LANG_CPP_ANY  0xFE00u           /**< Any C++ language. */
 
-/** Language eXtensions for Embedded C. */
+/**
+ * Language eXtensions for Embedded C.
+ *
+ * @sa #LANG_C_99_EMC
+ * @sa #LANGX_MASK
+ */
 #define LANGX_EMC     (1u << 7)
 
-/** Language eXtensions for Unified Parallel C. */
+/**
+ * Language eXtensions for Unified Parallel C.
+ *
+ * @sa #LANG_C_99_UPC
+ * @sa #LANGX_MASK
+ */
 #define LANGX_UPC     (1u << 8)
+
+/**
+ * Language eXtensions bitmask.
+ *
+ * @remarks The two currently supported language extensions, #LANGX_EMC and
+ * #LANGX_UPC, together use two bits between the normal C and C++ language bits
+ * within a \ref c_lang_id_t.  For many operations involving a \ref
+ * c_lang_id_t, the language extensions _must_ be masked off first, for
+ * example:
+ *
+ *      lang_ids &= ~LANGX_MASK;
+ *
+ * @sa #LANG_C_99_EMC
+ * @sa #LANG_C_99_UPC
+ * @sa #LANGX_EMC
+ * @sa #LANGX_UPC
+ */
+#define LANGX_MASK    0x0180u
 
 /**
  * Embedded C, or more formally, _Programming languages - C - Extensions to
@@ -121,6 +149,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * in a language other than C99, they'll get a warning.
  *
+ * @sa #LANG_C_99
+ * @sa #LANGX_EMC
  * @sa \ref c-emc-types-group
  * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
  */
@@ -139,15 +169,12 @@ _GL_INLINE_HEADER_BEGIN
  *
  * in a language other than C99, they'll get a warning.
  *
+ * @sa #LANG_C_99
+ * @sa #LANGX_UPC
  * @sa \ref c-upc-qualifiers-group
  * @sa [Unified Parallel C](http://upc-lang.org/)
  */
 #define LANG_C_99_UPC (LANG_C_99 | LANGX_UPC)
-
-/**
- * Language eXtensions bitmask.
- */
-#define LANGX_MASK    0x0180u
 
 /**
  * Expands into \a LANG_MACRO for autocompletion only if GNU **readline**(3) is
@@ -280,13 +307,14 @@ _GL_INLINE_HEADER_BEGIN
 #define C_LANG_WHICH(LANG_MACRO)  c_lang_which( LANG_##LANG_MACRO )
 
 /**
- * Shorthand for the common case of getting whether the current language is
- * among the languages specified by \a LANG_MACRO.
+ * Shorthand for the common case of getting whether \ref opt_lang is among the
+ * languages specified by \a LANG_MACRO.
  *
  * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
- * @return Returns `true` only if the current language is among the languages
+ * @return Returns `true` only if \ref opt_lang is among the languages
  * specified by \a LANG_MACRO.
  *
+ * @sa opt_lang
  * @sa opt_lang_is_any()
  */
 #define OPT_LANG_IS(LANG_MACRO)   opt_lang_is_any( LANG_##LANG_MACRO )
@@ -1321,7 +1349,7 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
  */
 NODISCARD C_LANG_H_INLINE
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
-  return ls_bit1_32( lang_ids & ~LANGX_MASK ) | (lang_ids & LANGX_MASK);
+  return ls_bit1_32( lang_ids & ~LANGMASK ) | (lang_ids & LANGX_MASK);
 }
 
 /**
@@ -1382,6 +1410,7 @@ char const* c_lang_which( c_lang_id_t lang_ids );
  * @param lang_ids The bitwise-or of language(s) to check.
  * @return Returns `true` only if it is.
  *
+ * @sa opt_lang
  * @sa #OPT_LANG_IS()
  */
 NODISCARD C_LANG_H_INLINE
