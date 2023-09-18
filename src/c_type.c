@@ -335,7 +335,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { TB__BitInt, LANG__BitInt, "bit-precise integer",
     C_LANG_LIT( { LANG_ANY, L__BitInt } ) },
 
-  { TB_bool, LANG_BOOL_TYPE, L_boolean,
+  { TB_bool, LANG_BOOLEAN, L_boolean,
     C_LANG_LIT( { LANG_bool, L_bool  },
                 { LANG_ANY,  L__Bool } ) },
 
@@ -420,7 +420,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define ATO         LANG__Atomic
 #define AUS         LANG_auto_STORAGE
 #define BIT         LANG__BitInt
-#define BOO         LANG_BOOL_TYPE
+#define BOO         LANG_BOOLEAN
 #define C08         LANG_char8_t
 #define C16         LANG_char16_32_t
 #define C32         LANG_char16_32_t

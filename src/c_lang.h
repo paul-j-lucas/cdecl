@@ -499,7 +499,7 @@ _GL_INLINE_HEADER_BEGIN
  * Languages the `_Bool` keyword is supported in.
  *
  * @sa #LANG_bool
- * @sa #LANG_BOOL_TYPE
+ * @sa #LANG_BOOLEAN
  * @sa #LANG_true_false
  */
 #define LANG__Bool                      LANG_C_MIN(99)
@@ -511,7 +511,7 @@ _GL_INLINE_HEADER_BEGIN
  * support it starting in C99 due to the `bool` macro in `stdbool.h`.
  *
  * @sa #LANG__Bool
- * @sa #LANG_BOOL_TYPE
+ * @sa #LANG_BOOLEAN
  * @sa #LANG_true_false
  */
 #define LANG_bool                       LANG_MIN(C_23)
@@ -523,7 +523,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_bool
  * @sa #LANG_true_false
  */
-#define LANG_BOOL_TYPE                  (LANG__Bool | LANG_bool)
+#define LANG_BOOLEAN                    (LANG__Bool | LANG_bool)
 
 /**
  * Lanuages capturing `*this` in lambdas is supported in.
@@ -1071,7 +1071,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG__Bool
  * @sa #LANG_bool
- * @sa #LANG_BOOL_TYPE
+ * @sa #LANG_BOOLEAN
  */
 #define LANG_true_false                 LANG_MIN(C_23)
 

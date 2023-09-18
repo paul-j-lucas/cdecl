@@ -365,7 +365,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   },
 
   { L_bool,
-    LANG_BOOL_TYPE,
+    LANG_BOOLEAN,
     SYNONYMS( ALWAYS_FIND,
       { LANG__Bool, L__Bool },
       { LANG_ANY,   L_bool  } ),
@@ -376,7 +376,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   },
 
   { L_boolean,
-    LANG_BOOL_TYPE,
+    LANG_BOOLEAN,
     SYNONYMS( ALWAYS_FIND,
       { LANG__Bool, L__Bool },
       { LANG_ANY,   L_bool  } ),
@@ -387,7 +387,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
   },
 
   { L_Boolean,
-    LANG_BOOL_TYPE,
+    LANG_BOOLEAN,
     SYNONYMS( ALWAYS_FIND,
       { LANG__Bool, L__Bool },
       { LANG_ANY,   L_bool  } ),
