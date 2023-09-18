@@ -1,5 +1,9 @@
 2023-09-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_lang.h, c_type.c, cdecl_keyword.c: s/LANG_BOOL_TYPE/LANG_BOOLEAN/
+   * c_ast_check.c, c_lang.h, help.c, parser.y: Renaming.
+   * c_lang.h, cdecl_keyword.c: s/LANG_USER_DEF_LITERALS/LANG_USER_DEF_LITS/
+   * c_lang.c, c_lang.h: Eliminated LANG_C_MASK and LANG_CPP_MASK.
    * src/Makefile.am, c_ast_check.c, c_ast_util.h, c_sname.c, c_type.c,
      c_type.h, c_typedef.c, c_typedef.h, decl_flags.h, english.c, english.h,
      gibberish.c, gibberish.h, parser.y, print.c, print.h, show.c, show.h,
