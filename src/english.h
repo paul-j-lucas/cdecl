@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Defines functions for printing in pseudo-English.
+ * Declares functions for printing in pseudo-English.
  */
 
 // local
