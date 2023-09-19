@@ -1,3 +1,8 @@
+2023-09-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: Removed unecessary #include.
+   * set_options.c: Removed assert().
+
 2023-09-17  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c: Added DUMP_AST_LIST().
