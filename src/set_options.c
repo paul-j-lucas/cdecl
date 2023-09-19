@@ -283,7 +283,6 @@ static inline char const* po_bool_value( bool b ) {
 static void print_not_supported( unsigned chars, c_lang_id_t ok_lang_ids ) {
   assert( chars < OPTION_NOT_SUPPORTED_COLUMN - 1 );
   unsigned const align_spaces = OPTION_NOT_SUPPORTED_COLUMN - 1 - chars;
-  assert( align_spaces >= 1 );
   FPUTNSP( align_spaces, stdout );
   PRINTF( "(Not supported%s.)", c_lang_which( ok_lang_ids ) );
 }
