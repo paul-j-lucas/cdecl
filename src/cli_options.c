@@ -48,7 +48,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sysexits.h>
-#include <unistd.h>                     /* for dup2(2) */
 
 // in ascending option character ASCII order
 #define OPT_DIGRAPHS          2
