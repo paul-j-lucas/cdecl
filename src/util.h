@@ -494,6 +494,37 @@ _GL_INLINE_HEADER_BEGIN
 # define IS_SAME_TYPE(T1,T2)      1
 #endif
 
+#ifdef __GNUC__
+
+/**
+ * Specifies that \a EXPR is _very_ likely (as in 99.99% of the time) to be
+ * non-zero (true) allowing the compiler to better order code blocks for
+ * marginally better performance.
+ *
+ * @param EXPR An expression that can be cast to `bool`.
+ *
+ * @sa #unlikely()
+ * @sa [Memory part 5: What programmers can do](http://lwn.net/Articles/255364/)
+ */
+#define likely(EXPR)              __builtin_expect( !!(EXPR), 1 )
+
+/**
+ * Specifies that \a EXPR is _very_ unlikely (as in .01% of the time) to be
+ * non-zero (true) allowing the compiler to better order code blocks for
+ * marginally better performance.
+ *
+ * @param EXPR An expression that can be cast to `bool`.
+ *
+ * @sa #likely()
+ * @sa [Memory part 5: What programmers can do](http://lwn.net/Articles/255364/)
+ */
+#define unlikely(EXPR)            __builtin_expect( !!(EXPR), 0 )
+
+#else
+# define likely(EXPR)             (EXPR)
+# define unlikely(EXPR)           (EXPR)
+#endif /* __GNUC__ */
+
 /**
  * Convenience macro for calling check_realloc().
  *
@@ -729,37 +760,6 @@ _GL_INLINE_HEADER_BEGIN
  * used unique name.
  */
 #define UNIQUE_NAME(PREFIX)       NAME2(NAME2(PREFIX,_),__LINE__)
-
-#ifdef __GNUC__
-
-/**
- * Specifies that \a EXPR is _very_ likely (as in 99.99% of the time) to be
- * non-zero (true) allowing the compiler to better order code blocks for
- * marginally better performance.
- *
- * @param EXPR An expression that can be cast to `bool`.
- *
- * @sa #unlikely()
- * @sa [Memory part 5: What programmers can do](http://lwn.net/Articles/255364/)
- */
-#define likely(EXPR)              __builtin_expect( !!(EXPR), 1 )
-
-/**
- * Specifies that \a EXPR is _very_ unlikely (as in .01% of the time) to be
- * non-zero (true) allowing the compiler to better order code blocks for
- * marginally better performance.
- *
- * @param EXPR An expression that can be cast to `bool`.
- *
- * @sa #likely()
- * @sa [Memory part 5: What programmers can do](http://lwn.net/Articles/255364/)
- */
-#define unlikely(EXPR)            __builtin_expect( !!(EXPR), 0 )
-
-#else
-# define likely(EXPR)             (EXPR)
-# define unlikely(EXPR)           (EXPR)
-#endif /* __GNUC__ */
 
 /**
  * A special-case of #INTERNAL_ERROR() that prints an unexpected integer value.
