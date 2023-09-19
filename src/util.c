@@ -92,11 +92,6 @@ void check_atexit( void (*cleanup_fn)(void) ) {
   PERROR_EXIT_IF( atexit( cleanup_fn ) != 0, EX_OSERR );
 }
 
-void check_dup2( int old_fd, int new_fd ) {
-  int const dup_fd = dup2( old_fd, new_fd );
-  PERROR_EXIT_IF( dup_fd != new_fd, EX_OSERR );
-}
-
 char* check_prefix_strdup( char const *prefix, size_t prefix_len,
                            char const *s ) {
   assert( prefix != NULL );
