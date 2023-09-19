@@ -1,3 +1,9 @@
+2023-09-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, cdecl.c, lexer.l, prompt.c, util.c, util.h: Replaced
+     check_atexit() with ATEXIT().
+   * cli_options.c, util.c, util.h: Replaced check_dup2() with DUP2().
+
 2023-09-18  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: Removed unecessary #include.
