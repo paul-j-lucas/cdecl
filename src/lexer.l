@@ -1310,7 +1310,7 @@ static void lexer_fatal( char const *msg ) {
 
 void lexer_init( void ) {
   ASSERT_RUN_ONCE();
-  check_atexit( &lexer_cleanup );
+  ATEXIT( &lexer_cleanup );
   include_init();
 }
 

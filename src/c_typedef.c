@@ -1116,7 +1116,7 @@ void c_typedef_init( void ) {
   ASSERT_RUN_ONCE();
 
   rb_tree_init( &typedef_set, POINTER_CAST( rb_cmp_fn_t, &c_typedef_cmp ) );
-  check_atexit( &c_typedef_cleanup );
+  ATEXIT( &c_typedef_cleanup );
 
 #ifdef ENABLE_CDECL_DEBUG
   //

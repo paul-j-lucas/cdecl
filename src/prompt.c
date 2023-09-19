@@ -145,7 +145,7 @@ void cdecl_prompt_enable( void ) {
 }
 
 void cdecl_prompt_init( void ) {
-  RUN_ONCE check_atexit( &prompt_cleanup );
+  RUN_ONCE ATEXIT( &prompt_cleanup );
 
   prompt_create( '>', &prompt_buf[0] );
   prompt_create( '+', &prompt_buf[1] );

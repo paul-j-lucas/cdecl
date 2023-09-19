@@ -90,7 +90,7 @@ static bool read_conf_file( char const* );
  */
 int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
-  check_atexit( &cdecl_cleanup );
+  ATEXIT( &cdecl_cleanup );
   cli_option_init( &argc, &argv );
   c_keyword_init();
   cdecl_keyword_init();
