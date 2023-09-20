@@ -1,3 +1,8 @@
+2023-09-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, util.h: Now using HAVE___BUILTIN_EXPECT rather than
+     __GNUC__.
+
 2023-09-19  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Sorted macros.
