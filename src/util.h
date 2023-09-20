@@ -494,7 +494,7 @@ _GL_INLINE_HEADER_BEGIN
 # define IS_SAME_TYPE(T1,T2)      1
 #endif
 
-#ifdef __GNUC__
+#ifdef HAVE___BUILTIN_EXPECT
 
 /**
  * Specifies that \a EXPR is _very_ likely (as in 99.99% of the time) to be
@@ -523,7 +523,7 @@ _GL_INLINE_HEADER_BEGIN
 #else
 # define likely(EXPR)             (EXPR)
 # define unlikely(EXPR)           (EXPR)
-#endif /* __GNUC__ */
+#endif /* HAVE___BUILTIN_EXPECT */
 
 /**
  * Convenience macro for calling check_realloc().
