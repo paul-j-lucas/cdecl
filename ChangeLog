@@ -1,5 +1,7 @@
 2023-09-20  Paul J. Lucas <paul@lucasmail.org>
 
+   * intprops-internal.h, mbtowc-lock.c, setlocale-lock.c, stdio.in.h,
+     stdlib.in.h, string.in.h, wchar.in.h: Updated GnuLib.
    * configure.ac, util.h: Now using HAVE___BUILTIN_EXPECT rather than
      __GNUC__.
 
