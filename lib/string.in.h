@@ -612,11 +612,18 @@ _GL_CXXALIAS_MDA (strdup, char *, (char const *__s));
 #   undef strdup
 #  endif
 #  if (!@HAVE_DECL_STRDUP@ || __GNUC__ >= 11) && !defined strdup
+#   if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (strdup, char *,
                   (char const *__s)
                   _GL_ATTRIBUTE_NOTHROW
                   _GL_ARG_NONNULL ((1))
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#   else
+_GL_FUNCDECL_SYS (strdup, char *,
+                  (char const *__s)
+                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#   endif
 #  endif
 _GL_CXXALIAS_SYS (strdup, char *, (char const *__s));
 # endif
@@ -624,11 +631,18 @@ _GL_CXXALIASWARN (strdup);
 #else
 # if __GNUC__ >= 11 && !defined strdup
 /* For -Wmismatched-dealloc: Associate strdup with free or rpl_free.  */
+#  if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (strdup, char *,
                   (char const *__s)
                   _GL_ATTRIBUTE_NOTHROW
                   _GL_ARG_NONNULL ((1))
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#  else
+_GL_FUNCDECL_SYS (strdup, char *,
+                  (char const *__s)
+                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#  endif
 # endif
 # if defined GNULIB_POSIXCHECK
 #  undef strdup
@@ -697,11 +711,18 @@ _GL_FUNCDECL_RPL (strndup, char *,
 _GL_CXXALIAS_RPL (strndup, char *, (char const *__s, size_t __n));
 # else
 #  if !@HAVE_DECL_STRNDUP@ || (__GNUC__ >= 11 && !defined strndup)
+#   if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (strndup, char *,
                   (char const *__s, size_t __n)
                   _GL_ATTRIBUTE_NOTHROW
                   _GL_ARG_NONNULL ((1))
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#   else
+_GL_FUNCDECL_SYS (strndup, char *,
+                  (char const *__s, size_t __n)
+                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#   endif
 #  endif
 _GL_CXXALIAS_SYS (strndup, char *, (char const *__s, size_t __n));
 # endif
@@ -709,11 +730,18 @@ _GL_CXXALIASWARN (strndup);
 #else
 # if __GNUC__ >= 11 && !defined strndup
 /* For -Wmismatched-dealloc: Associate strndup with free or rpl_free.  */
+#  if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (strndup, char *,
                   (char const *__s, size_t __n)
                   _GL_ATTRIBUTE_NOTHROW
                   _GL_ARG_NONNULL ((1))
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#  else
+_GL_FUNCDECL_SYS (strndup, char *,
+                  (char const *__s, size_t __n)
+                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#  endif
 # endif
 # if defined GNULIB_POSIXCHECK
 #  undef strndup

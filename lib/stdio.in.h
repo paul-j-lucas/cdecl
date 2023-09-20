@@ -367,11 +367,18 @@ _GL_CXXALIAS_MDA (fdopen, FILE *, (int fd, const char *mode));
 # else
 #  if __GNUC__ >= 11
 /* For -Wmismatched-dealloc: Associate fdopen with fclose or rpl_fclose.  */
+#   if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (fdopen, FILE *,
                   (int fd, const char *mode)
                   _GL_ATTRIBUTE_NOTHROW
                   _GL_ARG_NONNULL ((2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1)
                   _GL_ATTRIBUTE_MALLOC);
+#   else
+_GL_FUNCDECL_SYS (fdopen, FILE *,
+                  (int fd, const char *mode)
+                  _GL_ARG_NONNULL ((2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1)
+                  _GL_ATTRIBUTE_MALLOC);
+#   endif
 #  endif
 _GL_CXXALIAS_SYS (fdopen, FILE *, (int fd, const char *mode));
 # endif
@@ -379,11 +386,18 @@ _GL_CXXALIASWARN (fdopen);
 #else
 # if @GNULIB_FCLOSE@ && __GNUC__ >= 11 && !defined fdopen
 /* For -Wmismatched-dealloc: Associate fdopen with fclose or rpl_fclose.  */
+#  if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (fdopen, FILE *,
                   (int fd, const char *mode)
                   _GL_ATTRIBUTE_NOTHROW
                   _GL_ARG_NONNULL ((2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1)
                   _GL_ATTRIBUTE_MALLOC);
+#  else
+_GL_FUNCDECL_SYS (fdopen, FILE *,
+                  (int fd, const char *mode)
+                  _GL_ARG_NONNULL ((2)) _GL_ATTRIBUTE_DEALLOC (fclose, 1)
+                  _GL_ATTRIBUTE_MALLOC);
+#  endif
 # endif
 # if defined GNULIB_POSIXCHECK
 #  undef fdopen

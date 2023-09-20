@@ -1326,10 +1326,16 @@ _GL_CXXALIAS_MDA (wcsdup, wchar_t *, (const wchar_t *s));
    namespace, not in the global namespace.  So, force a declaration in
    the global namespace.  */
 #  if !@HAVE_WCSDUP@ || (defined __sun && defined __cplusplus) || __GNUC__ >= 11
+#   if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (wcsdup, wchar_t *,
                   (const wchar_t *s)
                   _GL_ATTRIBUTE_NOTHROW
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#   else
+_GL_FUNCDECL_SYS (wcsdup, wchar_t *,
+                  (const wchar_t *s)
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#   endif
 #  endif
 _GL_CXXALIAS_SYS (wcsdup, wchar_t *, (const wchar_t *s));
 # endif
@@ -1337,10 +1343,16 @@ _GL_CXXALIASWARN (wcsdup);
 #else
 # if __GNUC__ >= 11 && !defined wcsdup
 /* For -Wmismatched-dealloc: Associate wcsdup with free or rpl_free.  */
+#  if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (wcsdup, wchar_t *,
                   (const wchar_t *s)
                   _GL_ATTRIBUTE_NOTHROW
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#  else
+_GL_FUNCDECL_SYS (wcsdup, wchar_t *,
+                  (const wchar_t *s)
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#  endif
 # endif
 # if defined GNULIB_POSIXCHECK
 #  undef wcsdup
@@ -1359,10 +1371,16 @@ _GL_WARN_ON_USE (wcsdup, "wcsdup is unportable - "
 #   endif
 _GL_CXXALIAS_MDA (wcsdup, wchar_t *, (const wchar_t *s));
 #  else
+#   if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
 _GL_FUNCDECL_SYS (wcsdup, wchar_t *,
                   (const wchar_t *s)
                   _GL_ATTRIBUTE_NOTHROW
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#   else
+_GL_FUNCDECL_SYS (wcsdup, wchar_t *,
+                  (const wchar_t *s)
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#   endif
 #   if @HAVE_DECL_WCSDUP@
 _GL_CXXALIAS_SYS (wcsdup, wchar_t *, (const wchar_t *s));
 #   endif
