@@ -269,7 +269,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param OLD_FD The old file descriptor to duplicate.
  * @param NEW_FD The new file descriptor to duplicate to.
  */
-#define DUP2(OLD_FD, NEW_FD) \
+#define DUP2(OLD_FD,NEW_FD) \
   PERROR_EXIT_IF( dup2( (OLD_FD), (NEW_FD) ) != (NEW_FD), EX_OSERR )
 
 /**
