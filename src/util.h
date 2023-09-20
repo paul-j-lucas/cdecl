@@ -538,6 +538,17 @@ _GL_INLINE_HEADER_BEGIN
 #define MALLOC(TYPE,N) \
   check_realloc( NULL, sizeof(TYPE) * STATIC_CAST( size_t, (N) ) )
 
+/**
+ * Zeros the memory pointed to by \a PTR.  The number of bytes to zero is given
+ * by `sizeof *(PTR)`.
+ *
+ * @param PTR The pointer to the start of memory to zero.  \a PTR must be a
+ * pointer.  If it's an array, it'll generate a compile-time error.
+ */
+#define MEM_ZERO(PTR) BLOCK(                                    \
+  static_assert( IS_POINTER(PTR), #PTR " must be a pointer" );  \
+  memset( (PTR), 0, sizeof *(PTR) ); )
+
 /// @cond DOXYGEN_IGNORE
 #define NAME2_HELPER(A,B)         A##B
 /// @endcond
@@ -552,17 +563,6 @@ _GL_INLINE_HEADER_BEGIN
  * @param B The second name.
  */
 #define NAME2(A,B)                NAME2_HELPER(A,B)
-
-/**
- * Zeros the memory pointed to by \a PTR.  The number of bytes to zero is given
- * by `sizeof *(PTR)`.
- *
- * @param PTR The pointer to the start of memory to zero.  \a PTR must be a
- * pointer.  If it's an array, it'll generate a compile-time error.
- */
-#define MEM_ZERO(PTR) BLOCK(                                    \
-  static_assert( IS_POINTER(PTR), #PTR " must be a pointer" );  \
-  memset( (PTR), 0, sizeof *(PTR) ); )
 
 /**
  * No-operation statement.  (Useful for a `goto` target.)
