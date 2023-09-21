@@ -292,7 +292,7 @@
 
 /**
  * Possibly dumps a comma and a newline followed by the `printf()` arguments
- * &mdash; used for printing a key followed by a value.
+ * --- used for printing a key followed by a value.
  *
  * @param ... The `printf()` arguments.
  */

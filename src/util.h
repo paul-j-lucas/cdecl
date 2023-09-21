@@ -141,7 +141,7 @@ _GL_INLINE_HEADER_BEGIN
 
 #ifndef NDEBUG
 /**
- * Asserts that this line of code is run at most once &mdash; useful in
+ * Asserts that this line of code is run at most once --- useful in
  * initialization functions that must be called at most once.  For example:
  *
  *      void initialize() {
@@ -429,7 +429,7 @@ _GL_INLINE_HEADER_BEGIN
 #define IF_ELSE(EXPR1,EXPR2)      ( (EXPR1) ? (EXPR1) : (EXPR2) )
 
 /**
- * Cast either from or to an integral type &mdash; similar to C++'s
+ * Cast either from or to an integral type --- similar to C++'s
  * `reinterpret_cast`, but for integers only.
  *
  * @param T The integral type to cast to.
@@ -585,7 +585,7 @@ _GL_INLINE_HEADER_BEGIN
   BLOCK( if ( unlikely( EXPR ) ) perror_exit( STATUS ); )
 
 /**
- * Cast either from or to a pointer type &mdash; similar to C++'s
+ * Cast either from or to a pointer type --- similar to C++'s
  * `reinterpret_cast`, but for pointers only.
  *
  * @param T The type to cast to.
