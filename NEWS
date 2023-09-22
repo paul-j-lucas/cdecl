@@ -31,6 +31,9 @@ Help for new-style casts has been folded into the same line for C-style casts.
     define PI as pointer to int
     define PI as type pointer to int    // same as above
 
+** Showing `inline namespace` types
+Showing `inline namespace` types as gibberish has been fixed.
+
 ** Types in error & warning messages
 The offending type is now included in error messages.  For example:
 

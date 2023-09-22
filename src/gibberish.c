@@ -1173,6 +1173,9 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
   size_t scope_close_braces_to_print = 0;
   c_type_t scope_type = T_NONE;
 
+  c_sname_t temp_sname;
+  c_sname_init( &temp_sname );          // for unconditional c_sname_cleanup()
+
   c_sname_t const *sname = c_ast_find_name( tdef->ast, C_VISIT_DOWN );
   if ( sname != NULL && c_sname_count( sname ) > 1 ) {
     scope_type = *c_sname_first_type( sname );
@@ -1199,7 +1202,6 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
       // namespace form even though C doesn't have any namespaces because we
       // might be being asked to print all types.
       //
-      c_sname_t temp_sname;
       if ( c_tid_is_any( scope_type.stids, TS_inline ) ) {
         //
         // For an inline namespace, the "inline" is printed like:
@@ -1217,7 +1219,6 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
         sname = &temp_sname;
       }
       else {
-        c_sname_init( &temp_sname );    // for unconditional c_sname_cleanup()
         //
         // For all other cases (non-inline namespaces, enum, class, struct, and
         // union), the type is the scope's type, not the first type used above.
@@ -1250,7 +1251,6 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
         c_type_name_c( &scope_type ), c_sname_scope_name( sname ),
         graph_token_c( "{" )
       );
-      c_sname_cleanup( &temp_sname );
       scope_close_braces_to_print = 1;
     }
     else {
@@ -1308,6 +1308,8 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
       FPRINTF( gout, "%s ", c_tid_name_c( tdef->ast->type.atids ) );
     FPUTS( "= ", gout );
   }
+
+  c_sname_cleanup( &temp_sname );
 
   gib_state_t gib;
   gib_init( &gib, print_using ? C_GIB_USING : C_GIB_TYPEDEF, gout );
