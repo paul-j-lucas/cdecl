@@ -1,1281 +1,1281 @@
 cdecl> typedef int Int
 cdecl> show all
-define ATOM as WORD
-define BOOL as integer
-define BOOLEAN as BYTE
-define BYTE as unsigned character
-define CCHAR as character
-define CHAR as character
-define COLORREF as DWORD
-define DIR as structure _dirdesc
-define DWORD as unsigned long integer
-define DWORD32 as unsigned integer
-define DWORD64 as unsigned long integer
-define DWORDLONG as unsigned long integer
-define DWORD_PTR as ULONG_PTR
-define FILE as structure _iobuf
-define FLOAT as floating point
-define HALF_PTR as integer
-define HANDLE as PVOID
-define HBITMAP as HANDLE
-define HBRUSH as HANDLE
-define HCOLORSPACE as HANDLE
-define HCONV as HANDLE
-define HCONVLIST as HANDLE
-define HCURSOR as HICON
-define HDC as HANDLE
-define HDDEDATA as HANDLE
-define HDESK as HANDLE
-define HDROP as HANDLE
-define HDWP as HANDLE
-define HENHMETAFILE as HANDLE
-define HFILE as integer
-define HFONT as HANDLE
-define HGDIOBJ as HANDLE
-define HGLOBAL as HANDLE
-define HHOOK as HANDLE
-define HICON as HANDLE
-define HINSTANCE as HANDLE
-define HKEY as HANDLE
-define HKL as HANDLE
-define HLOCAL as HANDLE
-define HMENU as HANDLE
-define HMETAFILE as HANDLE
-define HMODULE as HINSTANCE
-define HMONITOR as HANDLE
-define HPALETTE as HANDLE
-define HPEN as HANDLE
-define HRESULT as long integer
-define HRGN as HANDLE
-define HRSRC as HANDLE
-define HSZ as HANDLE
-define HWINSTA as HANDLE
-define HWND as HANDLE
-define INT as integer
-define INT16 as short integer
-define INT32 as integer
-define INT64 as long integer
-define INT8 as signed character
-define INT_PTR as __int64
-define Int as integer
-define LANGID as WORD
-define LARGE_INTEGER as union _LARGE_INTEGER
-define LCID as DWORD
-define LCTYPE as DWORD
-define LGRPID as DWORD
-define LONG as long integer
-define LONG32 as integer
-define LONG64 as __int64
-define LONGLONG as long long integer
-define LONG_PTR as __int64
-define LPBOOL as pointer to BOOL
-define LPBYTE as pointer to BYTE
-define LPCHAR as pointer to CHAR
-define LPCOLORREF as pointer to COLORREF
-define LPCSTR as pointer to constant CHAR
-define LPCTSTR as LPCWSTR
-define LPCVOID as pointer to constant void
-define LPCWSTR as pointer to constant WCHAR
-define LPDWORD as pointer to DWORD
-define LPHANDLE as pointer to HANDLE
-define LPINT as pointer to integer
-define LPLONG as pointer to long integer
-define LPSTR as pointer to CHAR
-define LPTSTR as LPWSTR
-define LPVOID as pointer to void
-define LPWORD as pointer to WORD
-define LPWSTR as pointer to WCHAR
-define LRESULT as LONG_PTR
-define PBOOL as pointer to BOOL
-define PBOOLEAN as pointer to BOOLEAN
-define PBYTE as pointer to BYTE
-define PCHAR as pointer to CHAR
-define PCSTR as pointer to constant CHAR
-define PCTSTR as LPCWSTR
-define PCWSTR as pointer to constant WCHAR
-define PDWORD as pointer to DWORD
-define PDWORD32 as pointer to DWORD32
-define PDWORD64 as pointer to DWORD64
-define PDWORDLONG as pointer to DWORDLONG
-define PDWORD_PTR as pointer to DWORD_PTR
-define PFLOAT as pointer to FLOAT
-define PHALF_PTR as pointer to HALF_PTR
-define PHANDLE as pointer to HANDLE
-define PHKEY as pointer to HKEY
-define PINT as pointer to INT
-define PINT16 as pointer to INT16
-define PINT32 as pointer to INT32
-define PINT64 as pointer to INT64
-define PINT8 as pointer to INT8
-define PINT_PTR as pointer to INT_PTR
-define PLCID as PDWORD
-define PLONG as pointer to LONG
-define PLONG32 as pointer to LONG32
-define PLONG64 as pointer to LONG64
-define PLONGLONG as pointer to LONGLONG
-define PLONG_PTR as pointer to LONG_PTR
-define PSHORT as pointer to SHORT
-define PSIZE_T as pointer to SIZE_T
-define PSSIZE_T as pointer to SSIZE_T
-define PSTR as pointer to CHAR
-define PTBYTE as pointer to TBYTE
-define PTCHAR as pointer to TCHAR
-define PTSTR as LPWSTR
-define PUCHAR as pointer to UCHAR
-define PUHALF_PTR as pointer to UHALF_PTR
-define PUINT as pointer to UINT
-define PUINT16 as pointer to UINT16
-define PUINT32 as pointer to UINT32
-define PUINT64 as pointer to UINT64
-define PUINT8 as pointer to UINT8
-define PUINT_PTR as pointer to UINT_PTR
-define PULONG as pointer to ULONG
-define PULONG32 as pointer to ULONG32
-define PULONG64 as pointer to ULONG64
-define PULONGLONG as pointer to ULONGLONG
-define PULONG_PTR as pointer to ULONG_PTR
-define PUSHORT as pointer to USHORT
-define PVOID as pointer to void
-define PWCHAR as pointer to WCHAR
-define PWORD as pointer to WORD
-define PWSTR as pointer to WCHAR
-define QWORD as unsigned long long integer
-define SC_HANDLE as HANDLE
-define SC_LOCK as LPVOID
-define SERVICE_STATUS_HANDLE as HANDLE
-define SHORT as short integer
-define SIZE_T as ULONG_PTR
-define SSIZE_T as LONG_PTR
-define TBYTE as WCHAR
-define TCHAR as WCHAR
-define UCHAR as unsigned character
-define UHALF_PTR as unsigned integer
-define UINT as unsigned integer
-define UINT16 as unsigned short integer
-define UINT32 as unsigned integer
-define UINT64 as unsigned long integer
-define UINT8 as unsigned character
-define UINT_PTR as unsigned long integer
-define ULARGE_INTEGER as union _ULARGE_INTEGER
-define ULONG as unsigned long integer
-define ULONG32 as unsigned integer
-define ULONG64 as unsigned long integer
-define ULONGLONG as unsigned long long integer
-define ULONG_PTR as unsigned long integer
-define UNICODE_STRING as structure UNICODE_STRING
-define USHORT as unsigned short integer
-define USN as LONGLONG
-define WCHAR as wide character
-define WORD as unsigned short integer
-define WPARAM as UINT_PTR
-define _Decimal128 as long double precision
-define _Decimal128_t as _Decimal128
-define _Decimal128x as _Decimal128
-define _Decimal32 as floating point
-define _Decimal32_t as _Decimal32
-define _Decimal64 as double precision
-define _Decimal64_t as _Decimal64
-define _Decimal64x as _Decimal64
-define _Float128 as long double precision
-define _Float128_t as _Float128
-define _Float128x as _Float128
-define _Float16 as floating point
-define _Float16_t as _Float16
-define _Float32 as floating point
-define _Float32_t as _Float32
-define _Float32x as _Float32
-define _Float64 as double precision
-define _Float64_t as _Float64
-define _Float64x as _Float64
-define __float128 as _Float128
-define __float80 as _Float64x
-define __fp16 as _Float16
-define __ibm128 as long double precision
-define __int128 as long long integer
-define __int16 as short integer
-define __int32 as integer
-define __int64 as long long integer
-define __int8 as signed character
-define __m128 as structure __m128
-define __m128d as structure __m128d
-define __m128i as structure __m128i
-define __m64 as structure __m64
-define __wchar_t as wide character
-define _int16 as __int16
-define _int32 as __int32
-define _int64 as __int64
-define _int8 as __int8
-define atomic_bool as atomic boolean
-define atomic_char as atomic character
-define atomic_char16_t as atomic character 16
-define atomic_char32_t as atomic character 32
-define atomic_char8_t as atomic character 8
-define atomic_flag as structure atomic_flag
-define atomic_int as atomic integer
-define atomic_int_fast16_t as atomic int_fast16_t
-define atomic_int_fast32_t as atomic int_fast32_t
-define atomic_int_fast64_t as atomic int_fast64_t
-define atomic_int_fast8_t as atomic int_fast8_t
-define atomic_int_least16_t as atomic int_least16_t
-define atomic_int_least32_t as atomic int_least32_t
-define atomic_int_least64_t as atomic int_least64_t
-define atomic_int_least8_t as atomic int_least8_t
-define atomic_intmax_t as atomic intmax_t
-define atomic_intptr_t as atomic intptr_t
-define atomic_llong as atomic long long integer
-define atomic_long as atomic long integer
-define atomic_ptrdiff_t as atomic ptrdiff_t
-define atomic_schar as atomic signed character
-define atomic_short as atomic short integer
-define atomic_size_t as atomic size_t
-define atomic_uchar as atomic unsigned character
-define atomic_uint as atomic unsigned integer
-define atomic_uint_fast16_t as atomic uint_fast16_t
-define atomic_uint_fast32_t as atomic uint_fast32_t
-define atomic_uint_fast64_t as atomic uint_fast64_t
-define atomic_uint_fast8_t as atomic uint_fast8_t
-define atomic_uint_least16_t as atomic uint_least16_t
-define atomic_uint_least32_t as atomic uint_least32_t
-define atomic_uint_least64_t as atomic uint_least64_t
-define atomic_uint_least8_t as atomic uint_least8_t
-define atomic_uintmax_t as atomic uintmax_t
-define atomic_uintptr_t as atomic uintptr_t
-define atomic_ullong as atomic unsigned long long integer
-define atomic_ulong as atomic unsigned long integer
-define atomic_ushort as atomic unsigned short integer
-define atomic_wchar_t as atomic wide character
-define blkcnt_t as int32_t
-define blksize_t as int32_t
-define caddr_t as pointer to character
-define cc_t as unsigned integer
-define clock_t as long integer
-define clockid_t as enumeration clockid_t
-define cnd_t as pthread_cond_t
-define constraint_handler_t as pointer to function (restricted pointer to constant character, restricted pointer to void, errno_t) returning void
-define daddr_t as long integer
-define dev_t as integer
-define div_t as structure div_t
-define double_t as double precision
-define errno_t as integer
-define fd_set as structure fd_set
-define femode_t as structure femode_t
-define fenv_t as structure fenv_t
-define fexcept_t as unsigned short integer
-define float_t as floating point
-define fpos_t as structure fpos_t
-define fsblkcnt_t as unsigned long integer
-define fsfilcnt_t as unsigned long integer
-define gid_t as uint32_t
-define iconv_t as pointer to void
-define id_t as uint32_t
-define imaxdiv_t as structure imaxdiv_t
-define in_addr_t as uint32_t
-define in_port_t as uint16_t
-define ino_t as unsigned integer
-define int16_t as short integer
-define int32_t as integer
-define int64_t as long integer
-define int8_t as signed character
-define int_fast16_t as short integer
-define int_fast32_t as integer
-define int_fast64_t as long integer
-define int_fast8_t as signed character
-define int_hk_t as short accum
-define int_hr_t as short fract
-define int_k_t as accum
-define int_least16_t as short integer
-define int_least32_t as integer
-define int_least64_t as long integer
-define int_least8_t as signed character
-define int_lk_t as long accum
-define int_lr_t as long fract
-define int_r_t as fract
-define intmax_t as long integer
-define intptr_t as long integer
-define jmp_buf as array 37 of integer
-define key_t as int32_t
-define lconv as structure lconv
-define ldiv_t as structure ldiv_t
-define lldiv_t as structure lldiv_t
-define locale_t as structure locale_t
-define long_double_t as long double precision
-define max_align_t as long double precision
-define mbstate_t as structure mbstate_t
-define memory_order as enumeration memory_order
-define mode_t as int32_t
-define mtx_t as pthread_mutex_t
-define nfds_t as unsigned long integer
-define nlink_t as uint32_t
-define nullptr_t as pointer to void
-define off_t as long integer
-define once_flag as integer
-define pid_t as int32_t
-define posix_spawn_file_actions_t as pointer to void
-define posix_spawnattr_t as pointer to void
-define pthread_barrier_t as structure pthread_barrier_t
-define pthread_barrierattr_t as structure pthread_barrierattr_t
-define pthread_cond_t as structure pthread_cond_t
-define pthread_condattr_t as structure pthread_condattr_t
-define pthread_key_t as unsigned integer
-define pthread_mutex_t as structure pthread_mutex_t
-define pthread_mutexattr_t as structure pthread_mutexattr_t
-define pthread_once_t as integer
-define pthread_rwlock_t as structure pthread_rwlock_t
-define pthread_rwlockattr_t as structure pthread_rwlockattr_t
-define pthread_spinlock_t as volatile integer
-define pthread_t as unsigned long integer
-define ptrdiff_t as long integer
-define regex_t as structure regex_t
-define regmatch_t as structure regmatch_t
-define regoff_t as size_t
-define rlim_t as uint32_t
-define rsize_t as unsigned long integer
-define sa_family_t as uint32_t
-define sig_atomic_t as integer
-define sig_t as pointer to function (integer) returning void
-define sighandler_t as pointer to function (integer) returning void
-define siginfo_t as structure siginfo_t
-define sigset_t as unsigned long integer
-define size_t as unsigned long integer
-define socklen_t as uint32_t
-define ssize_t as long integer
-define adopt_lock_t of namespace std as structure adopt_lock_t
-define align_val_t of namespace std as enumeration class align_val_t
-define allocator_arg_t of namespace std as structure allocator_arg_t
-define ambiguous_local_time of namespace std as class ambiguous_local_time
-define any of namespace std as structure any
-define atomic_bool of namespace std as structure atomic_bool
-define atomic_char of namespace std as structure atomic_char
-define atomic_char16_t of namespace std as structure atomic_char16_t
-define atomic_char32_t of namespace std as structure atomic_char32_t
-define atomic_char8_t of namespace std as structure atomic_char8_t
-define atomic_flag of namespace std as structure atomic_flag
-define atomic_int of namespace std as structure atomic_int
-define atomic_int16_t of namespace std as structure atomic_int16_t
-define atomic_int32_t of namespace std as structure atomic_int32_t
-define atomic_int64_t of namespace std as structure atomic_int64_t
-define atomic_int8_t of namespace std as structure atomic_int8_t
-define atomic_int_fast16_t of namespace std as structure atomic_int_fast16_t
-define atomic_int_fast32_t of namespace std as structure atomic_int_fast32_t
-define atomic_int_fast64_t of namespace std as structure atomic_int_fast64_t
-define atomic_int_fast8_t of namespace std as structure atomic_int_fast8_t
-define atomic_int_least16_t of namespace std as structure atomic_int_least16_t
-define atomic_int_least32_t of namespace std as structure atomic_int_least32_t
-define atomic_int_least64_t of namespace std as structure atomic_int_least64_t
-define atomic_int_least8_t of namespace std as structure atomic_int_least8_t
-define atomic_intmax_t of namespace std as structure atomic_intmax_t
-define atomic_intptr_t of namespace std as structure atomic_intptr_t
-define atomic_llong of namespace std as structure atomic_llong
-define atomic_long of namespace std as structure atomic_long
-define atomic_ptrdiff_t of namespace std as structure atomic_ptrdiff_t
-define atomic_schar of namespace std as structure atomic_schar
-define atomic_short of namespace std as structure atomic_short
-define atomic_signed_lock_free of namespace std as structure atomic_signed_lock_free
-define atomic_size_t of namespace std as structure atomic_size_t
-define atomic_uchar of namespace std as structure atomic_uchar
-define atomic_uint of namespace std as structure atomic_uint
-define atomic_uint16_t of namespace std as structure atomic_uint16_t
-define atomic_uint32_t of namespace std as structure atomic_uint32_t
-define atomic_uint64_t of namespace std as structure atomic_uint64_t
-define atomic_uint8_t of namespace std as structure atomic_uint8_t
-define atomic_uint_fast16_t of namespace std as structure atomic_uint_fast16_t
-define atomic_uint_fast32_t of namespace std as structure atomic_uint_fast32_t
-define atomic_uint_fast64_t of namespace std as structure atomic_uint_fast64_t
-define atomic_uint_fast8_t of namespace std as structure atomic_uint_fast8_t
-define atomic_uint_least16_t of namespace std as structure atomic_uint_least16_t
-define atomic_uint_least32_t of namespace std as structure atomic_uint_least32_t
-define atomic_uint_least64_t of namespace std as structure atomic_uint_least64_t
-define atomic_uint_least8_t of namespace std as structure atomic_uint_least8_t
-define atomic_uintmax_t of namespace std as structure atomic_uintmax_t
-define atomic_uintptr_t of namespace std as structure atomic_uintptr_t
-define atomic_ullong of namespace std as structure atomic_ullong
-define atomic_ulong of namespace std as structure atomic_ulong
-define atomic_unsigned_lock_free of namespace std as structure atomic_unsigned_lock_free
-define atomic_ushort of namespace std as structure atomic_ushort
-define atomic_wchar_t of namespace std as structure atomic_wchar_t
-define bad_alloc of namespace std as class bad_alloc
-define bad_any_cast of namespace std as class bad_any_cast
-define bad_array_new_length of namespace std as class bad_array_new_length
-define bad_cast of namespace std as class bad_cast
-define bad_exception of namespace std as class bad_exception
-define bad_function_call of namespace std as class bad_function_call
-define bad_optional_access of namespace std as class bad_optional_access
-define bad_typeid of namespace std as class bad_typeid
-define bad_variant_access of namespace std as class bad_variant_access
-define bad_weak_ptr of namespace std as class bad_weak_ptr
-define bernoulli_distribution of namespace std as class bernoulli_distribution
-define bfloat16_t of namespace std as floating point
-define byte of namespace std as enumeration byte
-define chars_format of namespace std as enumeration class chars_format
-define choose of namespace chrono of namespace std as enumeration class choose
-define day of namespace chrono of namespace std as class day
-define file_clock of namespace chrono of namespace std as structure file_clock
-define gps_clock of namespace chrono of namespace std as structure gps_clock
-define high_resolution_clock of namespace chrono of namespace std as class high_resolution_clock
-define is_clock of namespace chrono of namespace std as structure is_clock
-define last_spec of namespace chrono of namespace std as structure last_spec
-define leap_second of namespace chrono of namespace std as class leap_second
-define local_info of namespace chrono of namespace std as structure local_info
-define local_t of namespace chrono of namespace std as structure local_t
-define month of namespace chrono of namespace std as class month
-define month_day of namespace chrono of namespace std as class month_day
-define month_day_last of namespace chrono of namespace std as class month_day_last
-define month_weekday of namespace chrono of namespace std as class month_weekday
-define month_weekday_last of namespace chrono of namespace std as class month_weekday_last
-define nonexistent_local_time of namespace chrono of namespace std as class nonexistent_local_time
-define steady_clock of namespace chrono of namespace std as class steady_clock
-define sys_info of namespace chrono of namespace std as structure sys_info
-define system_clock of namespace chrono of namespace std as class system_clock
-define tai_clock of namespace chrono of namespace std as structure tai_clock
-define time_zone of namespace chrono of namespace std as structure time_zone
-define time_zone_link of namespace chrono of namespace std as class time_zone_link
-define tzdb of namespace chrono of namespace std as structure tzdb
-define tzdb_list of namespace chrono of namespace std as structure tzdb_list
-define utc_clock of namespace chrono of namespace std as structure utc_clock
-define weekday of namespace chrono of namespace std as class weekday
-define weekday_indexed of namespace chrono of namespace std as class weekday_indexed
-define weekday_last of namespace chrono of namespace std as class weekday_last
-define year of namespace chrono of namespace std as class year
-define year_month of namespace chrono of namespace std as class year_month
-define year_month_day of namespace chrono of namespace std as class year_month_day
-define year_month_day_last of namespace chrono of namespace std as class year_month_day_last
-define year_month_weekday of namespace chrono of namespace std as class year_month_weekday
-define year_month_weekday_last of namespace chrono of namespace std as class year_month_weekday_last
-define codecvt_base of namespace std as class codecvt_base
-define compare_three_way of namespace std as structure compare_three_way
-define condition_variable of namespace std as class condition_variable
-define condition_variable_any of namespace std as class condition_variable_any
-define ctype_base of namespace std as class ctype_base
-define mask of class ctype_base of namespace std as unsigned integer
-define cv_status of namespace std as enumeration class cv_status
-define defer_lock_t of namespace std as structure defer_lock_t
-define destroying_delete_t of namespace std as structure destroying_delete_t
-define div_t of namespace std as structure div_t
-define domain_error of namespace std as class domain_error
-define endian of namespace std as enumeration class endian
-define error_category of namespace std as class error_category
-define error_code of namespace std as class error_code
-define error_condition of namespace std as class error_condition
-define exception of namespace std as class exception
-define filebuf of namespace std as class filebuf
-define copy_options of namespace filesystem of namespace std as enumeration class copy_options
-define directory_entry of namespace filesystem of namespace std as class directory_entry
-define directory_iterator of namespace filesystem of namespace std as class directory_iterator
-define directory_options of namespace filesystem of namespace std as enumeration class directory_options
-define file_status of namespace filesystem of namespace std as class file_status
-define file_type of namespace filesystem of namespace std as enumeration class file_type
-define filesystem_error of namespace filesystem of namespace std as class filesystem_error
-define path of namespace filesystem of namespace std as class path
-define perm_options of namespace filesystem of namespace std as enumeration class perm_options
-define perms of namespace filesystem of namespace std as enumeration class perms
-define recursive_directory_iterator of namespace filesystem of namespace std as class recursive_directory_iterator
-define space_info of namespace filesystem of namespace std as structure space_info
-define float128_t of namespace std as array 2 of double precision
-define float16_t of namespace std as floating point
-define float32_t of namespace std as floating point
-define float64_t of namespace std as double precision
-define format_error of namespace std as class format_error
-define from_chars_result of namespace std as structure from_chars_result
-define fstream of namespace std as class fstream
-define future_errc of namespace std as enumeration class future_errc
-define future_error of namespace std as class future_error
-define future_status of namespace std as enumeration class future_status
-define ifstream of namespace std as class ifstream
-define imaxdiv_t of namespace std as structure imaxdiv_t
-define invalid_argument of namespace std as class invalid_argument
-define ios of namespace std as class ios
-define ios_base of namespace std as class ios_base
-define Init of class ios_base of namespace std as class Init
-define event of class ios_base of namespace std as enumeration event
-define event_callback of class ios_base of namespace std as pointer to function (event of class ios_base of namespace std, reference to ios_base of namespace std, integer) returning void
-define failure of class ios_base of namespace std as class failure
-define fmtflags of class ios_base of namespace std as unsigned integer
-define iostate of class ios_base of namespace std as unsigned integer
-define openmode of class ios_base of namespace std as unsigned integer
-define seekdir of class ios_base of namespace std as integer
-define iostream of namespace std as class iostream
-define ispanstream of namespace std as class ispanstream
-define istream of namespace std as class istream
-define istringstream of namespace std as class istringstream
-define jthread of namespace std as class jthread
-define latch of namespace std as class latch
-define launch of namespace std as enumeration class launch
-define ldiv_t of namespace std as structure ldiv_t
-define length_error of namespace std as class length_error
-define lldiv_t of namespace std as structure lldiv_t
-define locale of namespace std as class locale
-define logic_error of namespace std as class logic_error
-define max_align_t of namespace std as long double precision
-define messages_base of namespace std as class messages_base
-define money_base of namespace std as class money_base
-define mono_state of namespace std as structure mono_state
-define mutex of namespace std as class mutex
-define new_handler of namespace std as pointer to function returning void
-define nonstopstate_t of namespace std as structure nonstopstate_t
-define noop_coroutine_promise of namespace std as structure noop_coroutine_promise
-define nothrow_t of namespace std as structure nothrow_t
-define nullptr_t of namespace std as pointer to void
-define ofstream of namespace std as class ofstream
-define ospanstream of namespace std as class ospanstream
-define ostream of namespace std as class ostream
-define ostringstream of namespace std as class ostringstream
-define osyncstream of namespace std as class osyncstream
-define out_of_range of namespace std as class out_of_range
-define overflow_error of namespace std as class overflow_error
-define partial_ordering of namespace std as structure partial_ordering
-define memory_resource of namespace pmr of namespace std as class memory_resource
-define monotonic_buffer_resource of namespace pmr of namespace std as class monotonic_buffer_resource
-define pool_options of namespace pmr of namespace std as structure pool_options
-define synchronized_pool_resource of namespace pmr of namespace std as class synchronized_pool_resource
-define unsynchronized_pool_resource of namespace pmr of namespace std as class unsynchronized_pool_resource
-define ptrdiff_t of namespace std as long integer
-define random_device of namespace std as class random_device
-define range_error of namespace std as class range_error
-define range_format of namespace std as enumeration class range_format
-define recursive_mutex of namespace std as class recursive_mutex
-define recursive_timed_mutex of namespace std as class recursive_timed_mutex
-define regex of namespace std as class regex
-define error_type of namespace regex_constants of namespace std as unsigned integer
-define match_flag_type of namespace regex_constants of namespace std as unsigned integer
-define syntax_option_type of namespace regex_constants of namespace std as unsigned integer
-define regex_error of namespace std as structure regex_error
-define runtime_error of namespace std as class runtime_error
-define shared_mutex of namespace std as class shared_mutex
-define shared_timed_mutex of namespace std as class shared_timed_mutex
-define sig_atomic_t of namespace std as integer
-define size_t of namespace std as unsigned long integer
-define source_location of namespace std as structure source_location
-define spanbuf of namespace std as class spanbuf
-define spanstream of namespace std as class spanstream
-define stacktrace of namespace std as class stacktrace
-define stacktrace_entry of namespace std as class stacktrace_entry
-define stop_source of namespace std as class stop_source
-define stop_token of namespace std as class stop_token
-define streambuf of namespace std as class streambuf
-define streamoff of namespace std as long long integer
-define streamsize of namespace std as long integer
-define string of namespace std as class string
-define string_view of namespace std as class string_view
-define stringbuf of namespace std as class stringbuf
-define stringstream of namespace std as class stringstream
-define strong_equality of namespace std as structure strong_equality
-define strong_ordering of namespace std as structure strong_ordering
-define suspend_always of namespace std as structure suspend_always
-define suspend_never of namespace std as structure suspend_never
-define syncbuf of namespace std as class syncbuf
-define system_error of namespace std as structure system_error
-define thread of namespace std as class thread
-define time_base of namespace std as class time_base
-define time_spec of namespace std as structure time_spec
-define timed_mutex of namespace std as class timed_mutex
-define tm of namespace std as structure tm
-define to_chars_result of namespace std as structure to_chars_result
-define try_to_lock_t of namespace std as structure try_to_lock_t
-define type_index of namespace std as class type_index
-define type_info of namespace std as class type_info
-define u16string of namespace std as class u16string
-define u16string_view of namespace std as class u16string_view
-define u32string of namespace std as class u32string
-define u32string_view of namespace std as class u32string_view
-define u8string_view of namespace std as class u8string_view
-define underflow_error of namespace std as class underflow_error
-define unexpect_t of namespace std as structure unexpect_t
-define weak_equality of namespace std as structure weak_equality
-define weak_ordering of namespace std as structure weak_ordering
-define wfilebuf of namespace std as class wfilebuf
-define wfstream of namespace std as class wfstream
-define wifstream of namespace std as class wifstream
-define wios of namespace std as class wios
-define wiostream of namespace std as class wiostream
-define wispanstream of namespace std as class wispanstream
-define wistream of namespace std as class wistream
-define wistringstream of namespace std as class wistringstream
-define wofstream of namespace std as class wofstream
-define wospanstream of namespace std as class wospanstream
-define wostream of namespace std as class wostream
-define wostringstream of namespace std as class wostringstream
-define wosyncstream of namespace std as class wosyncstream
-define wregex of namespace std as class wregex
-define wspanbuf of namespace std as class wspanbuf
-define wspanstream of namespace std as class wspanstream
-define wstreambuf of namespace std as class wstreambuf
-define wstring of namespace std as class wstring
-define wstring_view of namespace std as class wstring_view
-define wstringbuf of namespace std as class wstringbuf
-define wstringstream of namespace std as class wstringstream
-define wsyncbuf of namespace std as class wsyncbuf
-define suseconds_t as int64_t
-define thrd_start_t as pointer to function (pointer to void) returning integer
-define thrd_t as pthread_t
-define time_t as long integer
-define timer_t as pointer to void
-define tm as structure tm
-define tss_dtor_t as pointer to function (pointer to void) returning void
-define tss_t as pointer to void
-define uid_t as uint32_t
-define uint16_t as unsigned short integer
-define uint32_t as unsigned integer
-define uint64_t as unsigned long integer
-define uint8_t as unsigned character
-define uint_fast16_t as unsigned short integer
-define uint_fast32_t as unsigned integer
-define uint_fast64_t as unsigned long integer
-define uint_fast8_t as unsigned character
-define uint_least16_t as unsigned short integer
-define uint_least32_t as unsigned integer
-define uint_least64_t as unsigned long integer
-define uint_least8_t as unsigned character
-define uint_uhk_t as unsigned short accum
-define uint_uhr_t as unsigned short fract
-define uint_uk_t as unsigned accum
-define uint_ulk_t as unsigned long accum
-define uint_ulr_t as unsigned long fract
-define uint_ur_t as unsigned fract
-define uintmax_t as unsigned long integer
-define uintptr_t as unsigned long integer
-define useconds_t as uint32_t
-define va_list as pointer to void
-define wctrans_t as integer
-define wctype_t as unsigned long integer
-define wint_t as integer
+typedef WORD ATOM;
+typedef int BOOL;
+typedef BYTE BOOLEAN;
+typedef unsigned char BYTE;
+typedef char CCHAR;
+typedef char CHAR;
+typedef DWORD COLORREF;
+typedef struct _dirdesc DIR;
+typedef unsigned long DWORD;
+typedef unsigned DWORD32;
+typedef unsigned long DWORD64;
+typedef unsigned long DWORDLONG;
+typedef ULONG_PTR DWORD_PTR;
+typedef struct _iobuf FILE;
+typedef float FLOAT;
+typedef int HALF_PTR;
+typedef PVOID HANDLE;
+typedef HANDLE HBITMAP;
+typedef HANDLE HBRUSH;
+typedef HANDLE HCOLORSPACE;
+typedef HANDLE HCONV;
+typedef HANDLE HCONVLIST;
+typedef HICON HCURSOR;
+typedef HANDLE HDC;
+typedef HANDLE HDDEDATA;
+typedef HANDLE HDESK;
+typedef HANDLE HDROP;
+typedef HANDLE HDWP;
+typedef HANDLE HENHMETAFILE;
+typedef int HFILE;
+typedef HANDLE HFONT;
+typedef HANDLE HGDIOBJ;
+typedef HANDLE HGLOBAL;
+typedef HANDLE HHOOK;
+typedef HANDLE HICON;
+typedef HANDLE HINSTANCE;
+typedef HANDLE HKEY;
+typedef HANDLE HKL;
+typedef HANDLE HLOCAL;
+typedef HANDLE HMENU;
+typedef HANDLE HMETAFILE;
+typedef HINSTANCE HMODULE;
+typedef HANDLE HMONITOR;
+typedef HANDLE HPALETTE;
+typedef HANDLE HPEN;
+typedef long HRESULT;
+typedef HANDLE HRGN;
+typedef HANDLE HRSRC;
+typedef HANDLE HSZ;
+typedef HANDLE HWINSTA;
+typedef HANDLE HWND;
+typedef int INT;
+typedef short INT16;
+typedef int INT32;
+typedef long INT64;
+typedef signed char INT8;
+typedef __int64 INT_PTR;
+typedef int Int;
+typedef WORD LANGID;
+typedef union _LARGE_INTEGER LARGE_INTEGER;
+typedef DWORD LCID;
+typedef DWORD LCTYPE;
+typedef DWORD LGRPID;
+typedef long LONG;
+typedef int LONG32;
+typedef __int64 LONG64;
+typedef long long LONGLONG;
+typedef __int64 LONG_PTR;
+typedef BOOL *LPBOOL;
+typedef BYTE *LPBYTE;
+typedef CHAR *LPCHAR;
+typedef COLORREF *LPCOLORREF;
+typedef const CHAR *LPCSTR;
+typedef LPCWSTR LPCTSTR;
+typedef const void *LPCVOID;
+typedef const WCHAR *LPCWSTR;
+typedef DWORD *LPDWORD;
+typedef HANDLE *LPHANDLE;
+typedef int *LPINT;
+typedef long *LPLONG;
+typedef CHAR *LPSTR;
+typedef LPWSTR LPTSTR;
+typedef void *LPVOID;
+typedef WORD *LPWORD;
+typedef WCHAR *LPWSTR;
+typedef LONG_PTR LRESULT;
+typedef BOOL *PBOOL;
+typedef BOOLEAN *PBOOLEAN;
+typedef BYTE *PBYTE;
+typedef CHAR *PCHAR;
+typedef const CHAR *PCSTR;
+typedef LPCWSTR PCTSTR;
+typedef const WCHAR *PCWSTR;
+typedef DWORD *PDWORD;
+typedef DWORD32 *PDWORD32;
+typedef DWORD64 *PDWORD64;
+typedef DWORDLONG *PDWORDLONG;
+typedef DWORD_PTR *PDWORD_PTR;
+typedef FLOAT *PFLOAT;
+typedef HALF_PTR *PHALF_PTR;
+typedef HANDLE *PHANDLE;
+typedef HKEY *PHKEY;
+typedef INT *PINT;
+typedef INT16 *PINT16;
+typedef INT32 *PINT32;
+typedef INT64 *PINT64;
+typedef INT8 *PINT8;
+typedef INT_PTR *PINT_PTR;
+typedef PDWORD PLCID;
+typedef LONG *PLONG;
+typedef LONG32 *PLONG32;
+typedef LONG64 *PLONG64;
+typedef LONGLONG *PLONGLONG;
+typedef LONG_PTR *PLONG_PTR;
+typedef SHORT *PSHORT;
+typedef SIZE_T *PSIZE_T;
+typedef SSIZE_T *PSSIZE_T;
+typedef CHAR *PSTR;
+typedef TBYTE *PTBYTE;
+typedef TCHAR *PTCHAR;
+typedef LPWSTR PTSTR;
+typedef UCHAR *PUCHAR;
+typedef UHALF_PTR *PUHALF_PTR;
+typedef UINT *PUINT;
+typedef UINT16 *PUINT16;
+typedef UINT32 *PUINT32;
+typedef UINT64 *PUINT64;
+typedef UINT8 *PUINT8;
+typedef UINT_PTR *PUINT_PTR;
+typedef ULONG *PULONG;
+typedef ULONG32 *PULONG32;
+typedef ULONG64 *PULONG64;
+typedef ULONGLONG *PULONGLONG;
+typedef ULONG_PTR *PULONG_PTR;
+typedef USHORT *PUSHORT;
+typedef void *PVOID;
+typedef WCHAR *PWCHAR;
+typedef WORD *PWORD;
+typedef WCHAR *PWSTR;
+typedef unsigned long long QWORD;
+typedef HANDLE SC_HANDLE;
+typedef LPVOID SC_LOCK;
+typedef HANDLE SERVICE_STATUS_HANDLE;
+typedef short SHORT;
+typedef ULONG_PTR SIZE_T;
+typedef LONG_PTR SSIZE_T;
+typedef WCHAR TBYTE;
+typedef WCHAR TCHAR;
+typedef unsigned char UCHAR;
+typedef unsigned UHALF_PTR;
+typedef unsigned UINT;
+typedef unsigned short UINT16;
+typedef unsigned UINT32;
+typedef unsigned long UINT64;
+typedef unsigned char UINT8;
+typedef unsigned long UINT_PTR;
+typedef union _ULARGE_INTEGER ULARGE_INTEGER;
+typedef unsigned long ULONG;
+typedef unsigned ULONG32;
+typedef unsigned long ULONG64;
+typedef unsigned long long ULONGLONG;
+typedef unsigned long ULONG_PTR;
+typedef struct UNICODE_STRING UNICODE_STRING;
+typedef unsigned short USHORT;
+typedef LONGLONG USN;
+typedef wchar_t WCHAR;
+typedef unsigned short WORD;
+typedef UINT_PTR WPARAM;
+typedef long double _Decimal128;
+typedef _Decimal128 _Decimal128_t;
+typedef _Decimal128 _Decimal128x;
+typedef float _Decimal32;
+typedef _Decimal32 _Decimal32_t;
+typedef double _Decimal64;
+typedef _Decimal64 _Decimal64_t;
+typedef _Decimal64 _Decimal64x;
+typedef long double _Float128;
+typedef _Float128 _Float128_t;
+typedef _Float128 _Float128x;
+typedef float _Float16;
+typedef _Float16 _Float16_t;
+typedef float _Float32;
+typedef _Float32 _Float32_t;
+typedef _Float32 _Float32x;
+typedef double _Float64;
+typedef _Float64 _Float64_t;
+typedef _Float64 _Float64x;
+typedef _Float128 __float128;
+typedef _Float64x __float80;
+typedef _Float16 __fp16;
+typedef long double __ibm128;
+typedef long long __int128;
+typedef short __int16;
+typedef int __int32;
+typedef long long __int64;
+typedef signed char __int8;
+typedef struct __m128 __m128;
+typedef struct __m128d __m128d;
+typedef struct __m128i __m128i;
+typedef struct __m64 __m64;
+typedef wchar_t __wchar_t;
+typedef __int16 _int16;
+typedef __int32 _int32;
+typedef __int64 _int64;
+typedef __int8 _int8;
+typedef _Atomic bool atomic_bool;
+typedef _Atomic char atomic_char;
+typedef _Atomic char16_t atomic_char16_t;
+typedef _Atomic char32_t atomic_char32_t;
+typedef _Atomic char8_t atomic_char8_t;
+typedef struct atomic_flag atomic_flag;
+typedef _Atomic int atomic_int;
+typedef _Atomic int_fast16_t atomic_int_fast16_t;
+typedef _Atomic int_fast32_t atomic_int_fast32_t;
+typedef _Atomic int_fast64_t atomic_int_fast64_t;
+typedef _Atomic int_fast8_t atomic_int_fast8_t;
+typedef _Atomic int_least16_t atomic_int_least16_t;
+typedef _Atomic int_least32_t atomic_int_least32_t;
+typedef _Atomic int_least64_t atomic_int_least64_t;
+typedef _Atomic int_least8_t atomic_int_least8_t;
+typedef _Atomic intmax_t atomic_intmax_t;
+typedef _Atomic intptr_t atomic_intptr_t;
+typedef _Atomic long long atomic_llong;
+typedef _Atomic long atomic_long;
+typedef _Atomic ptrdiff_t atomic_ptrdiff_t;
+typedef _Atomic signed char atomic_schar;
+typedef _Atomic short atomic_short;
+typedef _Atomic size_t atomic_size_t;
+typedef _Atomic unsigned char atomic_uchar;
+typedef _Atomic unsigned atomic_uint;
+typedef _Atomic uint_fast16_t atomic_uint_fast16_t;
+typedef _Atomic uint_fast32_t atomic_uint_fast32_t;
+typedef _Atomic uint_fast64_t atomic_uint_fast64_t;
+typedef _Atomic uint_fast8_t atomic_uint_fast8_t;
+typedef _Atomic uint_least16_t atomic_uint_least16_t;
+typedef _Atomic uint_least32_t atomic_uint_least32_t;
+typedef _Atomic uint_least64_t atomic_uint_least64_t;
+typedef _Atomic uint_least8_t atomic_uint_least8_t;
+typedef _Atomic uintmax_t atomic_uintmax_t;
+typedef _Atomic uintptr_t atomic_uintptr_t;
+typedef _Atomic unsigned long long atomic_ullong;
+typedef _Atomic unsigned long atomic_ulong;
+typedef _Atomic unsigned short atomic_ushort;
+typedef _Atomic wchar_t atomic_wchar_t;
+typedef int32_t blkcnt_t;
+typedef int32_t blksize_t;
+typedef char *caddr_t;
+typedef unsigned cc_t;
+typedef long clock_t;
+typedef enum clockid_t clockid_t;
+typedef pthread_cond_t cnd_t;
+typedef void (*constraint_handler_t)(const char *restrict, void *restrict, errno_t);
+typedef long daddr_t;
+typedef int dev_t;
+typedef struct div_t div_t;
+typedef double double_t;
+typedef int errno_t;
+typedef struct fd_set fd_set;
+typedef struct femode_t femode_t;
+typedef struct fenv_t fenv_t;
+typedef unsigned short fexcept_t;
+typedef float float_t;
+typedef struct fpos_t fpos_t;
+typedef unsigned long fsblkcnt_t;
+typedef unsigned long fsfilcnt_t;
+typedef uint32_t gid_t;
+typedef void *iconv_t;
+typedef uint32_t id_t;
+typedef struct imaxdiv_t imaxdiv_t;
+typedef uint32_t in_addr_t;
+typedef uint16_t in_port_t;
+typedef unsigned ino_t;
+typedef short int16_t;
+typedef int int32_t;
+typedef long int64_t;
+typedef signed char int8_t;
+typedef short int_fast16_t;
+typedef int int_fast32_t;
+typedef long int_fast64_t;
+typedef signed char int_fast8_t;
+typedef short _Accum int_hk_t;
+typedef short _Fract int_hr_t;
+typedef _Accum int_k_t;
+typedef short int_least16_t;
+typedef int int_least32_t;
+typedef long int_least64_t;
+typedef signed char int_least8_t;
+typedef long _Accum int_lk_t;
+typedef long _Fract int_lr_t;
+typedef _Fract int_r_t;
+typedef long intmax_t;
+typedef long intptr_t;
+typedef int jmp_buf[37];
+typedef int32_t key_t;
+typedef struct lconv lconv;
+typedef struct ldiv_t ldiv_t;
+typedef struct lldiv_t lldiv_t;
+typedef struct locale_t locale_t;
+typedef long double long_double_t;
+typedef long double max_align_t;
+typedef struct mbstate_t mbstate_t;
+typedef enum memory_order memory_order;
+typedef int32_t mode_t;
+typedef pthread_mutex_t mtx_t;
+typedef unsigned long nfds_t;
+typedef uint32_t nlink_t;
+typedef void *nullptr_t;
+typedef long off_t;
+typedef int once_flag;
+typedef int32_t pid_t;
+typedef void *posix_spawn_file_actions_t;
+typedef void *posix_spawnattr_t;
+typedef struct pthread_barrier_t pthread_barrier_t;
+typedef struct pthread_barrierattr_t pthread_barrierattr_t;
+typedef struct pthread_cond_t pthread_cond_t;
+typedef struct pthread_condattr_t pthread_condattr_t;
+typedef unsigned pthread_key_t;
+typedef struct pthread_mutex_t pthread_mutex_t;
+typedef struct pthread_mutexattr_t pthread_mutexattr_t;
+typedef int pthread_once_t;
+typedef struct pthread_rwlock_t pthread_rwlock_t;
+typedef struct pthread_rwlockattr_t pthread_rwlockattr_t;
+typedef volatile int pthread_spinlock_t;
+typedef unsigned long pthread_t;
+typedef long ptrdiff_t;
+typedef struct regex_t regex_t;
+typedef struct regmatch_t regmatch_t;
+typedef size_t regoff_t;
+typedef uint32_t rlim_t;
+typedef unsigned long rsize_t;
+typedef uint32_t sa_family_t;
+typedef int sig_atomic_t;
+typedef void (*sig_t)(int);
+typedef void (*sighandler_t)(int);
+typedef struct siginfo_t siginfo_t;
+typedef unsigned long sigset_t;
+typedef unsigned long size_t;
+typedef uint32_t socklen_t;
+typedef long ssize_t;
+namespace std { struct adopt_lock_t; }
+namespace std { enum align_val_t; }
+namespace std { struct allocator_arg_t; }
+namespace std { class ambiguous_local_time; }
+namespace std { struct any; }
+namespace std { struct atomic_bool; }
+namespace std { struct atomic_char; }
+namespace std { struct atomic_char16_t; }
+namespace std { struct atomic_char32_t; }
+namespace std { struct atomic_char8_t; }
+namespace std { struct atomic_flag; }
+namespace std { struct atomic_int; }
+namespace std { struct atomic_int16_t; }
+namespace std { struct atomic_int32_t; }
+namespace std { struct atomic_int64_t; }
+namespace std { struct atomic_int8_t; }
+namespace std { struct atomic_int_fast16_t; }
+namespace std { struct atomic_int_fast32_t; }
+namespace std { struct atomic_int_fast64_t; }
+namespace std { struct atomic_int_fast8_t; }
+namespace std { struct atomic_int_least16_t; }
+namespace std { struct atomic_int_least32_t; }
+namespace std { struct atomic_int_least64_t; }
+namespace std { struct atomic_int_least8_t; }
+namespace std { struct atomic_intmax_t; }
+namespace std { struct atomic_intptr_t; }
+namespace std { struct atomic_llong; }
+namespace std { struct atomic_long; }
+namespace std { struct atomic_ptrdiff_t; }
+namespace std { struct atomic_schar; }
+namespace std { struct atomic_short; }
+namespace std { struct atomic_signed_lock_free; }
+namespace std { struct atomic_size_t; }
+namespace std { struct atomic_uchar; }
+namespace std { struct atomic_uint; }
+namespace std { struct atomic_uint16_t; }
+namespace std { struct atomic_uint32_t; }
+namespace std { struct atomic_uint64_t; }
+namespace std { struct atomic_uint8_t; }
+namespace std { struct atomic_uint_fast16_t; }
+namespace std { struct atomic_uint_fast32_t; }
+namespace std { struct atomic_uint_fast64_t; }
+namespace std { struct atomic_uint_fast8_t; }
+namespace std { struct atomic_uint_least16_t; }
+namespace std { struct atomic_uint_least32_t; }
+namespace std { struct atomic_uint_least64_t; }
+namespace std { struct atomic_uint_least8_t; }
+namespace std { struct atomic_uintmax_t; }
+namespace std { struct atomic_uintptr_t; }
+namespace std { struct atomic_ullong; }
+namespace std { struct atomic_ulong; }
+namespace std { struct atomic_unsigned_lock_free; }
+namespace std { struct atomic_ushort; }
+namespace std { struct atomic_wchar_t; }
+namespace std { class bad_alloc; }
+namespace std { class bad_any_cast; }
+namespace std { class bad_array_new_length; }
+namespace std { class bad_cast; }
+namespace std { class bad_exception; }
+namespace std { class bad_function_call; }
+namespace std { class bad_optional_access; }
+namespace std { class bad_typeid; }
+namespace std { class bad_variant_access; }
+namespace std { class bad_weak_ptr; }
+namespace std { class bernoulli_distribution; }
+namespace std { using bfloat16_t = float; }
+namespace std { enum byte; }
+namespace std { enum chars_format; }
+namespace std::chrono { enum choose; }
+namespace std::chrono { class day; }
+namespace std::chrono { struct file_clock; }
+namespace std::chrono { struct gps_clock; }
+namespace std::chrono { class high_resolution_clock; }
+namespace std::chrono { struct is_clock; }
+namespace std::chrono { struct last_spec; }
+namespace std::chrono { class leap_second; }
+namespace std::chrono { struct local_info; }
+namespace std::chrono { struct local_t; }
+namespace std::chrono { class month; }
+namespace std::chrono { class month_day; }
+namespace std::chrono { class month_day_last; }
+namespace std::chrono { class month_weekday; }
+namespace std::chrono { class month_weekday_last; }
+namespace std::chrono { class nonexistent_local_time; }
+namespace std::chrono { class steady_clock; }
+namespace std::chrono { struct sys_info; }
+namespace std::chrono { class system_clock; }
+namespace std::chrono { struct tai_clock; }
+namespace std::chrono { struct time_zone; }
+namespace std::chrono { class time_zone_link; }
+namespace std::chrono { struct tzdb; }
+namespace std::chrono { struct tzdb_list; }
+namespace std::chrono { struct utc_clock; }
+namespace std::chrono { class weekday; }
+namespace std::chrono { class weekday_indexed; }
+namespace std::chrono { class weekday_last; }
+namespace std::chrono { class year; }
+namespace std::chrono { class year_month; }
+namespace std::chrono { class year_month_day; }
+namespace std::chrono { class year_month_day_last; }
+namespace std::chrono { class year_month_weekday; }
+namespace std::chrono { class year_month_weekday_last; }
+namespace std { class codecvt_base; }
+namespace std { struct compare_three_way; }
+namespace std { class condition_variable; }
+namespace std { class condition_variable_any; }
+namespace std { class ctype_base; }
+class std::ctype_base { using mask = unsigned; };
+namespace std { enum cv_status; }
+namespace std { struct defer_lock_t; }
+namespace std { struct destroying_delete_t; }
+namespace std { struct div_t; }
+namespace std { class domain_error; }
+namespace std { enum endian; }
+namespace std { class error_category; }
+namespace std { class error_code; }
+namespace std { class error_condition; }
+namespace std { class exception; }
+namespace std { class filebuf; }
+namespace std::filesystem { enum copy_options; }
+namespace std::filesystem { class directory_entry; }
+namespace std::filesystem { class directory_iterator; }
+namespace std::filesystem { enum directory_options; }
+namespace std::filesystem { class file_status; }
+namespace std::filesystem { enum file_type; }
+namespace std::filesystem { class filesystem_error; }
+namespace std::filesystem { class path; }
+namespace std::filesystem { enum perm_options; }
+namespace std::filesystem { enum perms; }
+namespace std::filesystem { class recursive_directory_iterator; }
+namespace std::filesystem { struct space_info; }
+namespace std { using float128_t = double[2]; }
+namespace std { using float16_t = float; }
+namespace std { using float32_t = float; }
+namespace std { using float64_t = double; }
+namespace std { class format_error; }
+namespace std { struct from_chars_result; }
+namespace std { class fstream; }
+namespace std { enum future_errc; }
+namespace std { class future_error; }
+namespace std { enum future_status; }
+namespace std { class ifstream; }
+namespace std { struct imaxdiv_t; }
+namespace std { class invalid_argument; }
+namespace std { class ios; }
+namespace std { class ios_base; }
+class std::ios_base { class Init; };
+class std::ios_base { enum event; };
+class std::ios_base { using event_callback = void(*)(std::ios_base::event, std::ios_base&, int); };
+class std::ios_base { class failure; };
+class std::ios_base { using fmtflags = unsigned; };
+class std::ios_base { using iostate = unsigned; };
+class std::ios_base { using openmode = unsigned; };
+class std::ios_base { using seekdir = int; };
+namespace std { class iostream; }
+namespace std { class ispanstream; }
+namespace std { class istream; }
+namespace std { class istringstream; }
+namespace std { class jthread; }
+namespace std { class latch; }
+namespace std { enum launch; }
+namespace std { struct ldiv_t; }
+namespace std { class length_error; }
+namespace std { struct lldiv_t; }
+namespace std { class locale; }
+namespace std { class logic_error; }
+namespace std { using max_align_t = long double; }
+namespace std { class messages_base; }
+namespace std { class money_base; }
+namespace std { struct mono_state; }
+namespace std { class mutex; }
+namespace std { using new_handler = void(*)(); }
+namespace std { struct nonstopstate_t; }
+namespace std { struct noop_coroutine_promise; }
+namespace std { struct nothrow_t; }
+namespace std { using nullptr_t = void*; }
+namespace std { class ofstream; }
+namespace std { class ospanstream; }
+namespace std { class ostream; }
+namespace std { class ostringstream; }
+namespace std { class osyncstream; }
+namespace std { class out_of_range; }
+namespace std { class overflow_error; }
+namespace std { struct partial_ordering; }
+namespace std::pmr { class memory_resource; }
+namespace std::pmr { class monotonic_buffer_resource; }
+namespace std::pmr { struct pool_options; }
+namespace std::pmr { class synchronized_pool_resource; }
+namespace std::pmr { class unsynchronized_pool_resource; }
+namespace std { using ptrdiff_t = long; }
+namespace std { class random_device; }
+namespace std { class range_error; }
+namespace std { enum range_format; }
+namespace std { class recursive_mutex; }
+namespace std { class recursive_timed_mutex; }
+namespace std { class regex; }
+namespace std::regex_constants { using error_type = unsigned; }
+namespace std::regex_constants { using match_flag_type = unsigned; }
+namespace std::regex_constants { using syntax_option_type = unsigned; }
+namespace std { struct regex_error; }
+namespace std { class runtime_error; }
+namespace std { class shared_mutex; }
+namespace std { class shared_timed_mutex; }
+namespace std { using sig_atomic_t = int; }
+namespace std { using size_t = unsigned long; }
+namespace std { struct source_location; }
+namespace std { class spanbuf; }
+namespace std { class spanstream; }
+namespace std { class stacktrace; }
+namespace std { class stacktrace_entry; }
+namespace std { class stop_source; }
+namespace std { class stop_token; }
+namespace std { class streambuf; }
+namespace std { using streamoff = long long; }
+namespace std { using streamsize = long; }
+namespace std { class string; }
+namespace std { class string_view; }
+namespace std { class stringbuf; }
+namespace std { class stringstream; }
+namespace std { struct strong_equality; }
+namespace std { struct strong_ordering; }
+namespace std { struct suspend_always; }
+namespace std { struct suspend_never; }
+namespace std { class syncbuf; }
+namespace std { struct system_error; }
+namespace std { class thread; }
+namespace std { class time_base; }
+namespace std { struct time_spec; }
+namespace std { class timed_mutex; }
+namespace std { struct tm; }
+namespace std { struct to_chars_result; }
+namespace std { struct try_to_lock_t; }
+namespace std { class type_index; }
+namespace std { class type_info; }
+namespace std { class u16string; }
+namespace std { class u16string_view; }
+namespace std { class u32string; }
+namespace std { class u32string_view; }
+namespace std { class u8string_view; }
+namespace std { class underflow_error; }
+namespace std { struct unexpect_t; }
+namespace std { struct weak_equality; }
+namespace std { struct weak_ordering; }
+namespace std { class wfilebuf; }
+namespace std { class wfstream; }
+namespace std { class wifstream; }
+namespace std { class wios; }
+namespace std { class wiostream; }
+namespace std { class wispanstream; }
+namespace std { class wistream; }
+namespace std { class wistringstream; }
+namespace std { class wofstream; }
+namespace std { class wospanstream; }
+namespace std { class wostream; }
+namespace std { class wostringstream; }
+namespace std { class wosyncstream; }
+namespace std { class wregex; }
+namespace std { class wspanbuf; }
+namespace std { class wspanstream; }
+namespace std { class wstreambuf; }
+namespace std { class wstring; }
+namespace std { class wstring_view; }
+namespace std { class wstringbuf; }
+namespace std { class wstringstream; }
+namespace std { class wsyncbuf; }
+typedef int64_t suseconds_t;
+typedef int (*thrd_start_t)(void*);
+typedef pthread_t thrd_t;
+typedef long time_t;
+typedef void *timer_t;
+typedef struct tm tm;
+typedef void (*tss_dtor_t)(void*);
+typedef void *tss_t;
+typedef uint32_t uid_t;
+typedef unsigned short uint16_t;
+typedef unsigned uint32_t;
+typedef unsigned long uint64_t;
+typedef unsigned char uint8_t;
+typedef unsigned short uint_fast16_t;
+typedef unsigned uint_fast32_t;
+typedef unsigned long uint_fast64_t;
+typedef unsigned char uint_fast8_t;
+typedef unsigned short uint_least16_t;
+typedef unsigned uint_least32_t;
+typedef unsigned long uint_least64_t;
+typedef unsigned char uint_least8_t;
+typedef unsigned short _Accum uint_uhk_t;
+typedef unsigned short _Fract uint_uhr_t;
+typedef unsigned _Accum uint_uk_t;
+typedef unsigned long _Accum uint_ulk_t;
+typedef unsigned long _Fract uint_ulr_t;
+typedef unsigned _Fract uint_ur_t;
+typedef unsigned long uintmax_t;
+typedef unsigned long uintptr_t;
+typedef uint32_t useconds_t;
+typedef void *va_list;
+typedef int wctrans_t;
+typedef unsigned long wctype_t;
+typedef int wint_t;
 cdecl> show all predefined
-define ATOM as WORD
-define BOOL as integer
-define BOOLEAN as BYTE
-define BYTE as unsigned character
-define CCHAR as character
-define CHAR as character
-define COLORREF as DWORD
-define DIR as structure _dirdesc
-define DWORD as unsigned long integer
-define DWORD32 as unsigned integer
-define DWORD64 as unsigned long integer
-define DWORDLONG as unsigned long integer
-define DWORD_PTR as ULONG_PTR
-define FILE as structure _iobuf
-define FLOAT as floating point
-define HALF_PTR as integer
-define HANDLE as PVOID
-define HBITMAP as HANDLE
-define HBRUSH as HANDLE
-define HCOLORSPACE as HANDLE
-define HCONV as HANDLE
-define HCONVLIST as HANDLE
-define HCURSOR as HICON
-define HDC as HANDLE
-define HDDEDATA as HANDLE
-define HDESK as HANDLE
-define HDROP as HANDLE
-define HDWP as HANDLE
-define HENHMETAFILE as HANDLE
-define HFILE as integer
-define HFONT as HANDLE
-define HGDIOBJ as HANDLE
-define HGLOBAL as HANDLE
-define HHOOK as HANDLE
-define HICON as HANDLE
-define HINSTANCE as HANDLE
-define HKEY as HANDLE
-define HKL as HANDLE
-define HLOCAL as HANDLE
-define HMENU as HANDLE
-define HMETAFILE as HANDLE
-define HMODULE as HINSTANCE
-define HMONITOR as HANDLE
-define HPALETTE as HANDLE
-define HPEN as HANDLE
-define HRESULT as long integer
-define HRGN as HANDLE
-define HRSRC as HANDLE
-define HSZ as HANDLE
-define HWINSTA as HANDLE
-define HWND as HANDLE
-define INT as integer
-define INT16 as short integer
-define INT32 as integer
-define INT64 as long integer
-define INT8 as signed character
-define INT_PTR as __int64
-define LANGID as WORD
-define LARGE_INTEGER as union _LARGE_INTEGER
-define LCID as DWORD
-define LCTYPE as DWORD
-define LGRPID as DWORD
-define LONG as long integer
-define LONG32 as integer
-define LONG64 as __int64
-define LONGLONG as long long integer
-define LONG_PTR as __int64
-define LPBOOL as pointer to BOOL
-define LPBYTE as pointer to BYTE
-define LPCHAR as pointer to CHAR
-define LPCOLORREF as pointer to COLORREF
-define LPCSTR as pointer to constant CHAR
-define LPCTSTR as LPCWSTR
-define LPCVOID as pointer to constant void
-define LPCWSTR as pointer to constant WCHAR
-define LPDWORD as pointer to DWORD
-define LPHANDLE as pointer to HANDLE
-define LPINT as pointer to integer
-define LPLONG as pointer to long integer
-define LPSTR as pointer to CHAR
-define LPTSTR as LPWSTR
-define LPVOID as pointer to void
-define LPWORD as pointer to WORD
-define LPWSTR as pointer to WCHAR
-define LRESULT as LONG_PTR
-define PBOOL as pointer to BOOL
-define PBOOLEAN as pointer to BOOLEAN
-define PBYTE as pointer to BYTE
-define PCHAR as pointer to CHAR
-define PCSTR as pointer to constant CHAR
-define PCTSTR as LPCWSTR
-define PCWSTR as pointer to constant WCHAR
-define PDWORD as pointer to DWORD
-define PDWORD32 as pointer to DWORD32
-define PDWORD64 as pointer to DWORD64
-define PDWORDLONG as pointer to DWORDLONG
-define PDWORD_PTR as pointer to DWORD_PTR
-define PFLOAT as pointer to FLOAT
-define PHALF_PTR as pointer to HALF_PTR
-define PHANDLE as pointer to HANDLE
-define PHKEY as pointer to HKEY
-define PINT as pointer to INT
-define PINT16 as pointer to INT16
-define PINT32 as pointer to INT32
-define PINT64 as pointer to INT64
-define PINT8 as pointer to INT8
-define PINT_PTR as pointer to INT_PTR
-define PLCID as PDWORD
-define PLONG as pointer to LONG
-define PLONG32 as pointer to LONG32
-define PLONG64 as pointer to LONG64
-define PLONGLONG as pointer to LONGLONG
-define PLONG_PTR as pointer to LONG_PTR
-define PSHORT as pointer to SHORT
-define PSIZE_T as pointer to SIZE_T
-define PSSIZE_T as pointer to SSIZE_T
-define PSTR as pointer to CHAR
-define PTBYTE as pointer to TBYTE
-define PTCHAR as pointer to TCHAR
-define PTSTR as LPWSTR
-define PUCHAR as pointer to UCHAR
-define PUHALF_PTR as pointer to UHALF_PTR
-define PUINT as pointer to UINT
-define PUINT16 as pointer to UINT16
-define PUINT32 as pointer to UINT32
-define PUINT64 as pointer to UINT64
-define PUINT8 as pointer to UINT8
-define PUINT_PTR as pointer to UINT_PTR
-define PULONG as pointer to ULONG
-define PULONG32 as pointer to ULONG32
-define PULONG64 as pointer to ULONG64
-define PULONGLONG as pointer to ULONGLONG
-define PULONG_PTR as pointer to ULONG_PTR
-define PUSHORT as pointer to USHORT
-define PVOID as pointer to void
-define PWCHAR as pointer to WCHAR
-define PWORD as pointer to WORD
-define PWSTR as pointer to WCHAR
-define QWORD as unsigned long long integer
-define SC_HANDLE as HANDLE
-define SC_LOCK as LPVOID
-define SERVICE_STATUS_HANDLE as HANDLE
-define SHORT as short integer
-define SIZE_T as ULONG_PTR
-define SSIZE_T as LONG_PTR
-define TBYTE as WCHAR
-define TCHAR as WCHAR
-define UCHAR as unsigned character
-define UHALF_PTR as unsigned integer
-define UINT as unsigned integer
-define UINT16 as unsigned short integer
-define UINT32 as unsigned integer
-define UINT64 as unsigned long integer
-define UINT8 as unsigned character
-define UINT_PTR as unsigned long integer
-define ULARGE_INTEGER as union _ULARGE_INTEGER
-define ULONG as unsigned long integer
-define ULONG32 as unsigned integer
-define ULONG64 as unsigned long integer
-define ULONGLONG as unsigned long long integer
-define ULONG_PTR as unsigned long integer
-define UNICODE_STRING as structure UNICODE_STRING
-define USHORT as unsigned short integer
-define USN as LONGLONG
-define WCHAR as wide character
-define WORD as unsigned short integer
-define WPARAM as UINT_PTR
-define _Decimal128 as long double precision
-define _Decimal128_t as _Decimal128
-define _Decimal128x as _Decimal128
-define _Decimal32 as floating point
-define _Decimal32_t as _Decimal32
-define _Decimal64 as double precision
-define _Decimal64_t as _Decimal64
-define _Decimal64x as _Decimal64
-define _Float128 as long double precision
-define _Float128_t as _Float128
-define _Float128x as _Float128
-define _Float16 as floating point
-define _Float16_t as _Float16
-define _Float32 as floating point
-define _Float32_t as _Float32
-define _Float32x as _Float32
-define _Float64 as double precision
-define _Float64_t as _Float64
-define _Float64x as _Float64
-define __float128 as _Float128
-define __float80 as _Float64x
-define __fp16 as _Float16
-define __ibm128 as long double precision
-define __int128 as long long integer
-define __int16 as short integer
-define __int32 as integer
-define __int64 as long long integer
-define __int8 as signed character
-define __m128 as structure __m128
-define __m128d as structure __m128d
-define __m128i as structure __m128i
-define __m64 as structure __m64
-define __wchar_t as wide character
-define _int16 as __int16
-define _int32 as __int32
-define _int64 as __int64
-define _int8 as __int8
-define atomic_bool as atomic boolean
-define atomic_char as atomic character
-define atomic_char16_t as atomic character 16
-define atomic_char32_t as atomic character 32
-define atomic_char8_t as atomic character 8
-define atomic_flag as structure atomic_flag
-define atomic_int as atomic integer
-define atomic_int_fast16_t as atomic int_fast16_t
-define atomic_int_fast32_t as atomic int_fast32_t
-define atomic_int_fast64_t as atomic int_fast64_t
-define atomic_int_fast8_t as atomic int_fast8_t
-define atomic_int_least16_t as atomic int_least16_t
-define atomic_int_least32_t as atomic int_least32_t
-define atomic_int_least64_t as atomic int_least64_t
-define atomic_int_least8_t as atomic int_least8_t
-define atomic_intmax_t as atomic intmax_t
-define atomic_intptr_t as atomic intptr_t
-define atomic_llong as atomic long long integer
-define atomic_long as atomic long integer
-define atomic_ptrdiff_t as atomic ptrdiff_t
-define atomic_schar as atomic signed character
-define atomic_short as atomic short integer
-define atomic_size_t as atomic size_t
-define atomic_uchar as atomic unsigned character
-define atomic_uint as atomic unsigned integer
-define atomic_uint_fast16_t as atomic uint_fast16_t
-define atomic_uint_fast32_t as atomic uint_fast32_t
-define atomic_uint_fast64_t as atomic uint_fast64_t
-define atomic_uint_fast8_t as atomic uint_fast8_t
-define atomic_uint_least16_t as atomic uint_least16_t
-define atomic_uint_least32_t as atomic uint_least32_t
-define atomic_uint_least64_t as atomic uint_least64_t
-define atomic_uint_least8_t as atomic uint_least8_t
-define atomic_uintmax_t as atomic uintmax_t
-define atomic_uintptr_t as atomic uintptr_t
-define atomic_ullong as atomic unsigned long long integer
-define atomic_ulong as atomic unsigned long integer
-define atomic_ushort as atomic unsigned short integer
-define atomic_wchar_t as atomic wide character
-define blkcnt_t as int32_t
-define blksize_t as int32_t
-define caddr_t as pointer to character
-define cc_t as unsigned integer
-define clock_t as long integer
-define clockid_t as enumeration clockid_t
-define cnd_t as pthread_cond_t
-define constraint_handler_t as pointer to function (restricted pointer to constant character, restricted pointer to void, errno_t) returning void
-define daddr_t as long integer
-define dev_t as integer
-define div_t as structure div_t
-define double_t as double precision
-define errno_t as integer
-define fd_set as structure fd_set
-define femode_t as structure femode_t
-define fenv_t as structure fenv_t
-define fexcept_t as unsigned short integer
-define float_t as floating point
-define fpos_t as structure fpos_t
-define fsblkcnt_t as unsigned long integer
-define fsfilcnt_t as unsigned long integer
-define gid_t as uint32_t
-define iconv_t as pointer to void
-define id_t as uint32_t
-define imaxdiv_t as structure imaxdiv_t
-define in_addr_t as uint32_t
-define in_port_t as uint16_t
-define ino_t as unsigned integer
-define int16_t as short integer
-define int32_t as integer
-define int64_t as long integer
-define int8_t as signed character
-define int_fast16_t as short integer
-define int_fast32_t as integer
-define int_fast64_t as long integer
-define int_fast8_t as signed character
-define int_hk_t as short accum
-define int_hr_t as short fract
-define int_k_t as accum
-define int_least16_t as short integer
-define int_least32_t as integer
-define int_least64_t as long integer
-define int_least8_t as signed character
-define int_lk_t as long accum
-define int_lr_t as long fract
-define int_r_t as fract
-define intmax_t as long integer
-define intptr_t as long integer
-define jmp_buf as array 37 of integer
-define key_t as int32_t
-define lconv as structure lconv
-define ldiv_t as structure ldiv_t
-define lldiv_t as structure lldiv_t
-define locale_t as structure locale_t
-define long_double_t as long double precision
-define max_align_t as long double precision
-define mbstate_t as structure mbstate_t
-define memory_order as enumeration memory_order
-define mode_t as int32_t
-define mtx_t as pthread_mutex_t
-define nfds_t as unsigned long integer
-define nlink_t as uint32_t
-define nullptr_t as pointer to void
-define off_t as long integer
-define once_flag as integer
-define pid_t as int32_t
-define posix_spawn_file_actions_t as pointer to void
-define posix_spawnattr_t as pointer to void
-define pthread_barrier_t as structure pthread_barrier_t
-define pthread_barrierattr_t as structure pthread_barrierattr_t
-define pthread_cond_t as structure pthread_cond_t
-define pthread_condattr_t as structure pthread_condattr_t
-define pthread_key_t as unsigned integer
-define pthread_mutex_t as structure pthread_mutex_t
-define pthread_mutexattr_t as structure pthread_mutexattr_t
-define pthread_once_t as integer
-define pthread_rwlock_t as structure pthread_rwlock_t
-define pthread_rwlockattr_t as structure pthread_rwlockattr_t
-define pthread_spinlock_t as volatile integer
-define pthread_t as unsigned long integer
-define ptrdiff_t as long integer
-define regex_t as structure regex_t
-define regmatch_t as structure regmatch_t
-define regoff_t as size_t
-define rlim_t as uint32_t
-define rsize_t as unsigned long integer
-define sa_family_t as uint32_t
-define sig_atomic_t as integer
-define sig_t as pointer to function (integer) returning void
-define sighandler_t as pointer to function (integer) returning void
-define siginfo_t as structure siginfo_t
-define sigset_t as unsigned long integer
-define size_t as unsigned long integer
-define socklen_t as uint32_t
-define ssize_t as long integer
-define adopt_lock_t of namespace std as structure adopt_lock_t
-define align_val_t of namespace std as enumeration class align_val_t
-define allocator_arg_t of namespace std as structure allocator_arg_t
-define ambiguous_local_time of namespace std as class ambiguous_local_time
-define any of namespace std as structure any
-define atomic_bool of namespace std as structure atomic_bool
-define atomic_char of namespace std as structure atomic_char
-define atomic_char16_t of namespace std as structure atomic_char16_t
-define atomic_char32_t of namespace std as structure atomic_char32_t
-define atomic_char8_t of namespace std as structure atomic_char8_t
-define atomic_flag of namespace std as structure atomic_flag
-define atomic_int of namespace std as structure atomic_int
-define atomic_int16_t of namespace std as structure atomic_int16_t
-define atomic_int32_t of namespace std as structure atomic_int32_t
-define atomic_int64_t of namespace std as structure atomic_int64_t
-define atomic_int8_t of namespace std as structure atomic_int8_t
-define atomic_int_fast16_t of namespace std as structure atomic_int_fast16_t
-define atomic_int_fast32_t of namespace std as structure atomic_int_fast32_t
-define atomic_int_fast64_t of namespace std as structure atomic_int_fast64_t
-define atomic_int_fast8_t of namespace std as structure atomic_int_fast8_t
-define atomic_int_least16_t of namespace std as structure atomic_int_least16_t
-define atomic_int_least32_t of namespace std as structure atomic_int_least32_t
-define atomic_int_least64_t of namespace std as structure atomic_int_least64_t
-define atomic_int_least8_t of namespace std as structure atomic_int_least8_t
-define atomic_intmax_t of namespace std as structure atomic_intmax_t
-define atomic_intptr_t of namespace std as structure atomic_intptr_t
-define atomic_llong of namespace std as structure atomic_llong
-define atomic_long of namespace std as structure atomic_long
-define atomic_ptrdiff_t of namespace std as structure atomic_ptrdiff_t
-define atomic_schar of namespace std as structure atomic_schar
-define atomic_short of namespace std as structure atomic_short
-define atomic_signed_lock_free of namespace std as structure atomic_signed_lock_free
-define atomic_size_t of namespace std as structure atomic_size_t
-define atomic_uchar of namespace std as structure atomic_uchar
-define atomic_uint of namespace std as structure atomic_uint
-define atomic_uint16_t of namespace std as structure atomic_uint16_t
-define atomic_uint32_t of namespace std as structure atomic_uint32_t
-define atomic_uint64_t of namespace std as structure atomic_uint64_t
-define atomic_uint8_t of namespace std as structure atomic_uint8_t
-define atomic_uint_fast16_t of namespace std as structure atomic_uint_fast16_t
-define atomic_uint_fast32_t of namespace std as structure atomic_uint_fast32_t
-define atomic_uint_fast64_t of namespace std as structure atomic_uint_fast64_t
-define atomic_uint_fast8_t of namespace std as structure atomic_uint_fast8_t
-define atomic_uint_least16_t of namespace std as structure atomic_uint_least16_t
-define atomic_uint_least32_t of namespace std as structure atomic_uint_least32_t
-define atomic_uint_least64_t of namespace std as structure atomic_uint_least64_t
-define atomic_uint_least8_t of namespace std as structure atomic_uint_least8_t
-define atomic_uintmax_t of namespace std as structure atomic_uintmax_t
-define atomic_uintptr_t of namespace std as structure atomic_uintptr_t
-define atomic_ullong of namespace std as structure atomic_ullong
-define atomic_ulong of namespace std as structure atomic_ulong
-define atomic_unsigned_lock_free of namespace std as structure atomic_unsigned_lock_free
-define atomic_ushort of namespace std as structure atomic_ushort
-define atomic_wchar_t of namespace std as structure atomic_wchar_t
-define bad_alloc of namespace std as class bad_alloc
-define bad_any_cast of namespace std as class bad_any_cast
-define bad_array_new_length of namespace std as class bad_array_new_length
-define bad_cast of namespace std as class bad_cast
-define bad_exception of namespace std as class bad_exception
-define bad_function_call of namespace std as class bad_function_call
-define bad_optional_access of namespace std as class bad_optional_access
-define bad_typeid of namespace std as class bad_typeid
-define bad_variant_access of namespace std as class bad_variant_access
-define bad_weak_ptr of namespace std as class bad_weak_ptr
-define bernoulli_distribution of namespace std as class bernoulli_distribution
-define bfloat16_t of namespace std as floating point
-define byte of namespace std as enumeration byte
-define chars_format of namespace std as enumeration class chars_format
-define choose of namespace chrono of namespace std as enumeration class choose
-define day of namespace chrono of namespace std as class day
-define file_clock of namespace chrono of namespace std as structure file_clock
-define gps_clock of namespace chrono of namespace std as structure gps_clock
-define high_resolution_clock of namespace chrono of namespace std as class high_resolution_clock
-define is_clock of namespace chrono of namespace std as structure is_clock
-define last_spec of namespace chrono of namespace std as structure last_spec
-define leap_second of namespace chrono of namespace std as class leap_second
-define local_info of namespace chrono of namespace std as structure local_info
-define local_t of namespace chrono of namespace std as structure local_t
-define month of namespace chrono of namespace std as class month
-define month_day of namespace chrono of namespace std as class month_day
-define month_day_last of namespace chrono of namespace std as class month_day_last
-define month_weekday of namespace chrono of namespace std as class month_weekday
-define month_weekday_last of namespace chrono of namespace std as class month_weekday_last
-define nonexistent_local_time of namespace chrono of namespace std as class nonexistent_local_time
-define steady_clock of namespace chrono of namespace std as class steady_clock
-define sys_info of namespace chrono of namespace std as structure sys_info
-define system_clock of namespace chrono of namespace std as class system_clock
-define tai_clock of namespace chrono of namespace std as structure tai_clock
-define time_zone of namespace chrono of namespace std as structure time_zone
-define time_zone_link of namespace chrono of namespace std as class time_zone_link
-define tzdb of namespace chrono of namespace std as structure tzdb
-define tzdb_list of namespace chrono of namespace std as structure tzdb_list
-define utc_clock of namespace chrono of namespace std as structure utc_clock
-define weekday of namespace chrono of namespace std as class weekday
-define weekday_indexed of namespace chrono of namespace std as class weekday_indexed
-define weekday_last of namespace chrono of namespace std as class weekday_last
-define year of namespace chrono of namespace std as class year
-define year_month of namespace chrono of namespace std as class year_month
-define year_month_day of namespace chrono of namespace std as class year_month_day
-define year_month_day_last of namespace chrono of namespace std as class year_month_day_last
-define year_month_weekday of namespace chrono of namespace std as class year_month_weekday
-define year_month_weekday_last of namespace chrono of namespace std as class year_month_weekday_last
-define codecvt_base of namespace std as class codecvt_base
-define compare_three_way of namespace std as structure compare_three_way
-define condition_variable of namespace std as class condition_variable
-define condition_variable_any of namespace std as class condition_variable_any
-define ctype_base of namespace std as class ctype_base
-define mask of class ctype_base of namespace std as unsigned integer
-define cv_status of namespace std as enumeration class cv_status
-define defer_lock_t of namespace std as structure defer_lock_t
-define destroying_delete_t of namespace std as structure destroying_delete_t
-define div_t of namespace std as structure div_t
-define domain_error of namespace std as class domain_error
-define endian of namespace std as enumeration class endian
-define error_category of namespace std as class error_category
-define error_code of namespace std as class error_code
-define error_condition of namespace std as class error_condition
-define exception of namespace std as class exception
-define filebuf of namespace std as class filebuf
-define copy_options of namespace filesystem of namespace std as enumeration class copy_options
-define directory_entry of namespace filesystem of namespace std as class directory_entry
-define directory_iterator of namespace filesystem of namespace std as class directory_iterator
-define directory_options of namespace filesystem of namespace std as enumeration class directory_options
-define file_status of namespace filesystem of namespace std as class file_status
-define file_type of namespace filesystem of namespace std as enumeration class file_type
-define filesystem_error of namespace filesystem of namespace std as class filesystem_error
-define path of namespace filesystem of namespace std as class path
-define perm_options of namespace filesystem of namespace std as enumeration class perm_options
-define perms of namespace filesystem of namespace std as enumeration class perms
-define recursive_directory_iterator of namespace filesystem of namespace std as class recursive_directory_iterator
-define space_info of namespace filesystem of namespace std as structure space_info
-define float128_t of namespace std as array 2 of double precision
-define float16_t of namespace std as floating point
-define float32_t of namespace std as floating point
-define float64_t of namespace std as double precision
-define format_error of namespace std as class format_error
-define from_chars_result of namespace std as structure from_chars_result
-define fstream of namespace std as class fstream
-define future_errc of namespace std as enumeration class future_errc
-define future_error of namespace std as class future_error
-define future_status of namespace std as enumeration class future_status
-define ifstream of namespace std as class ifstream
-define imaxdiv_t of namespace std as structure imaxdiv_t
-define invalid_argument of namespace std as class invalid_argument
-define ios of namespace std as class ios
-define ios_base of namespace std as class ios_base
-define Init of class ios_base of namespace std as class Init
-define event of class ios_base of namespace std as enumeration event
-define event_callback of class ios_base of namespace std as pointer to function (event of class ios_base of namespace std, reference to ios_base of namespace std, integer) returning void
-define failure of class ios_base of namespace std as class failure
-define fmtflags of class ios_base of namespace std as unsigned integer
-define iostate of class ios_base of namespace std as unsigned integer
-define openmode of class ios_base of namespace std as unsigned integer
-define seekdir of class ios_base of namespace std as integer
-define iostream of namespace std as class iostream
-define ispanstream of namespace std as class ispanstream
-define istream of namespace std as class istream
-define istringstream of namespace std as class istringstream
-define jthread of namespace std as class jthread
-define latch of namespace std as class latch
-define launch of namespace std as enumeration class launch
-define ldiv_t of namespace std as structure ldiv_t
-define length_error of namespace std as class length_error
-define lldiv_t of namespace std as structure lldiv_t
-define locale of namespace std as class locale
-define logic_error of namespace std as class logic_error
-define max_align_t of namespace std as long double precision
-define messages_base of namespace std as class messages_base
-define money_base of namespace std as class money_base
-define mono_state of namespace std as structure mono_state
-define mutex of namespace std as class mutex
-define new_handler of namespace std as pointer to function returning void
-define nonstopstate_t of namespace std as structure nonstopstate_t
-define noop_coroutine_promise of namespace std as structure noop_coroutine_promise
-define nothrow_t of namespace std as structure nothrow_t
-define nullptr_t of namespace std as pointer to void
-define ofstream of namespace std as class ofstream
-define ospanstream of namespace std as class ospanstream
-define ostream of namespace std as class ostream
-define ostringstream of namespace std as class ostringstream
-define osyncstream of namespace std as class osyncstream
-define out_of_range of namespace std as class out_of_range
-define overflow_error of namespace std as class overflow_error
-define partial_ordering of namespace std as structure partial_ordering
-define memory_resource of namespace pmr of namespace std as class memory_resource
-define monotonic_buffer_resource of namespace pmr of namespace std as class monotonic_buffer_resource
-define pool_options of namespace pmr of namespace std as structure pool_options
-define synchronized_pool_resource of namespace pmr of namespace std as class synchronized_pool_resource
-define unsynchronized_pool_resource of namespace pmr of namespace std as class unsynchronized_pool_resource
-define ptrdiff_t of namespace std as long integer
-define random_device of namespace std as class random_device
-define range_error of namespace std as class range_error
-define range_format of namespace std as enumeration class range_format
-define recursive_mutex of namespace std as class recursive_mutex
-define recursive_timed_mutex of namespace std as class recursive_timed_mutex
-define regex of namespace std as class regex
-define error_type of namespace regex_constants of namespace std as unsigned integer
-define match_flag_type of namespace regex_constants of namespace std as unsigned integer
-define syntax_option_type of namespace regex_constants of namespace std as unsigned integer
-define regex_error of namespace std as structure regex_error
-define runtime_error of namespace std as class runtime_error
-define shared_mutex of namespace std as class shared_mutex
-define shared_timed_mutex of namespace std as class shared_timed_mutex
-define sig_atomic_t of namespace std as integer
-define size_t of namespace std as unsigned long integer
-define source_location of namespace std as structure source_location
-define spanbuf of namespace std as class spanbuf
-define spanstream of namespace std as class spanstream
-define stacktrace of namespace std as class stacktrace
-define stacktrace_entry of namespace std as class stacktrace_entry
-define stop_source of namespace std as class stop_source
-define stop_token of namespace std as class stop_token
-define streambuf of namespace std as class streambuf
-define streamoff of namespace std as long long integer
-define streamsize of namespace std as long integer
-define string of namespace std as class string
-define string_view of namespace std as class string_view
-define stringbuf of namespace std as class stringbuf
-define stringstream of namespace std as class stringstream
-define strong_equality of namespace std as structure strong_equality
-define strong_ordering of namespace std as structure strong_ordering
-define suspend_always of namespace std as structure suspend_always
-define suspend_never of namespace std as structure suspend_never
-define syncbuf of namespace std as class syncbuf
-define system_error of namespace std as structure system_error
-define thread of namespace std as class thread
-define time_base of namespace std as class time_base
-define time_spec of namespace std as structure time_spec
-define timed_mutex of namespace std as class timed_mutex
-define tm of namespace std as structure tm
-define to_chars_result of namespace std as structure to_chars_result
-define try_to_lock_t of namespace std as structure try_to_lock_t
-define type_index of namespace std as class type_index
-define type_info of namespace std as class type_info
-define u16string of namespace std as class u16string
-define u16string_view of namespace std as class u16string_view
-define u32string of namespace std as class u32string
-define u32string_view of namespace std as class u32string_view
-define u8string_view of namespace std as class u8string_view
-define underflow_error of namespace std as class underflow_error
-define unexpect_t of namespace std as structure unexpect_t
-define weak_equality of namespace std as structure weak_equality
-define weak_ordering of namespace std as structure weak_ordering
-define wfilebuf of namespace std as class wfilebuf
-define wfstream of namespace std as class wfstream
-define wifstream of namespace std as class wifstream
-define wios of namespace std as class wios
-define wiostream of namespace std as class wiostream
-define wispanstream of namespace std as class wispanstream
-define wistream of namespace std as class wistream
-define wistringstream of namespace std as class wistringstream
-define wofstream of namespace std as class wofstream
-define wospanstream of namespace std as class wospanstream
-define wostream of namespace std as class wostream
-define wostringstream of namespace std as class wostringstream
-define wosyncstream of namespace std as class wosyncstream
-define wregex of namespace std as class wregex
-define wspanbuf of namespace std as class wspanbuf
-define wspanstream of namespace std as class wspanstream
-define wstreambuf of namespace std as class wstreambuf
-define wstring of namespace std as class wstring
-define wstring_view of namespace std as class wstring_view
-define wstringbuf of namespace std as class wstringbuf
-define wstringstream of namespace std as class wstringstream
-define wsyncbuf of namespace std as class wsyncbuf
-define suseconds_t as int64_t
-define thrd_start_t as pointer to function (pointer to void) returning integer
-define thrd_t as pthread_t
-define time_t as long integer
-define timer_t as pointer to void
-define tm as structure tm
-define tss_dtor_t as pointer to function (pointer to void) returning void
-define tss_t as pointer to void
-define uid_t as uint32_t
-define uint16_t as unsigned short integer
-define uint32_t as unsigned integer
-define uint64_t as unsigned long integer
-define uint8_t as unsigned character
-define uint_fast16_t as unsigned short integer
-define uint_fast32_t as unsigned integer
-define uint_fast64_t as unsigned long integer
-define uint_fast8_t as unsigned character
-define uint_least16_t as unsigned short integer
-define uint_least32_t as unsigned integer
-define uint_least64_t as unsigned long integer
-define uint_least8_t as unsigned character
-define uint_uhk_t as unsigned short accum
-define uint_uhr_t as unsigned short fract
-define uint_uk_t as unsigned accum
-define uint_ulk_t as unsigned long accum
-define uint_ulr_t as unsigned long fract
-define uint_ur_t as unsigned fract
-define uintmax_t as unsigned long integer
-define uintptr_t as unsigned long integer
-define useconds_t as uint32_t
-define va_list as pointer to void
-define wctrans_t as integer
-define wctype_t as unsigned long integer
-define wint_t as integer
+typedef WORD ATOM;
+typedef int BOOL;
+typedef BYTE BOOLEAN;
+typedef unsigned char BYTE;
+typedef char CCHAR;
+typedef char CHAR;
+typedef DWORD COLORREF;
+typedef struct _dirdesc DIR;
+typedef unsigned long DWORD;
+typedef unsigned DWORD32;
+typedef unsigned long DWORD64;
+typedef unsigned long DWORDLONG;
+typedef ULONG_PTR DWORD_PTR;
+typedef struct _iobuf FILE;
+typedef float FLOAT;
+typedef int HALF_PTR;
+typedef PVOID HANDLE;
+typedef HANDLE HBITMAP;
+typedef HANDLE HBRUSH;
+typedef HANDLE HCOLORSPACE;
+typedef HANDLE HCONV;
+typedef HANDLE HCONVLIST;
+typedef HICON HCURSOR;
+typedef HANDLE HDC;
+typedef HANDLE HDDEDATA;
+typedef HANDLE HDESK;
+typedef HANDLE HDROP;
+typedef HANDLE HDWP;
+typedef HANDLE HENHMETAFILE;
+typedef int HFILE;
+typedef HANDLE HFONT;
+typedef HANDLE HGDIOBJ;
+typedef HANDLE HGLOBAL;
+typedef HANDLE HHOOK;
+typedef HANDLE HICON;
+typedef HANDLE HINSTANCE;
+typedef HANDLE HKEY;
+typedef HANDLE HKL;
+typedef HANDLE HLOCAL;
+typedef HANDLE HMENU;
+typedef HANDLE HMETAFILE;
+typedef HINSTANCE HMODULE;
+typedef HANDLE HMONITOR;
+typedef HANDLE HPALETTE;
+typedef HANDLE HPEN;
+typedef long HRESULT;
+typedef HANDLE HRGN;
+typedef HANDLE HRSRC;
+typedef HANDLE HSZ;
+typedef HANDLE HWINSTA;
+typedef HANDLE HWND;
+typedef int INT;
+typedef short INT16;
+typedef int INT32;
+typedef long INT64;
+typedef signed char INT8;
+typedef __int64 INT_PTR;
+typedef WORD LANGID;
+typedef union _LARGE_INTEGER LARGE_INTEGER;
+typedef DWORD LCID;
+typedef DWORD LCTYPE;
+typedef DWORD LGRPID;
+typedef long LONG;
+typedef int LONG32;
+typedef __int64 LONG64;
+typedef long long LONGLONG;
+typedef __int64 LONG_PTR;
+typedef BOOL *LPBOOL;
+typedef BYTE *LPBYTE;
+typedef CHAR *LPCHAR;
+typedef COLORREF *LPCOLORREF;
+typedef const CHAR *LPCSTR;
+typedef LPCWSTR LPCTSTR;
+typedef const void *LPCVOID;
+typedef const WCHAR *LPCWSTR;
+typedef DWORD *LPDWORD;
+typedef HANDLE *LPHANDLE;
+typedef int *LPINT;
+typedef long *LPLONG;
+typedef CHAR *LPSTR;
+typedef LPWSTR LPTSTR;
+typedef void *LPVOID;
+typedef WORD *LPWORD;
+typedef WCHAR *LPWSTR;
+typedef LONG_PTR LRESULT;
+typedef BOOL *PBOOL;
+typedef BOOLEAN *PBOOLEAN;
+typedef BYTE *PBYTE;
+typedef CHAR *PCHAR;
+typedef const CHAR *PCSTR;
+typedef LPCWSTR PCTSTR;
+typedef const WCHAR *PCWSTR;
+typedef DWORD *PDWORD;
+typedef DWORD32 *PDWORD32;
+typedef DWORD64 *PDWORD64;
+typedef DWORDLONG *PDWORDLONG;
+typedef DWORD_PTR *PDWORD_PTR;
+typedef FLOAT *PFLOAT;
+typedef HALF_PTR *PHALF_PTR;
+typedef HANDLE *PHANDLE;
+typedef HKEY *PHKEY;
+typedef INT *PINT;
+typedef INT16 *PINT16;
+typedef INT32 *PINT32;
+typedef INT64 *PINT64;
+typedef INT8 *PINT8;
+typedef INT_PTR *PINT_PTR;
+typedef PDWORD PLCID;
+typedef LONG *PLONG;
+typedef LONG32 *PLONG32;
+typedef LONG64 *PLONG64;
+typedef LONGLONG *PLONGLONG;
+typedef LONG_PTR *PLONG_PTR;
+typedef SHORT *PSHORT;
+typedef SIZE_T *PSIZE_T;
+typedef SSIZE_T *PSSIZE_T;
+typedef CHAR *PSTR;
+typedef TBYTE *PTBYTE;
+typedef TCHAR *PTCHAR;
+typedef LPWSTR PTSTR;
+typedef UCHAR *PUCHAR;
+typedef UHALF_PTR *PUHALF_PTR;
+typedef UINT *PUINT;
+typedef UINT16 *PUINT16;
+typedef UINT32 *PUINT32;
+typedef UINT64 *PUINT64;
+typedef UINT8 *PUINT8;
+typedef UINT_PTR *PUINT_PTR;
+typedef ULONG *PULONG;
+typedef ULONG32 *PULONG32;
+typedef ULONG64 *PULONG64;
+typedef ULONGLONG *PULONGLONG;
+typedef ULONG_PTR *PULONG_PTR;
+typedef USHORT *PUSHORT;
+typedef void *PVOID;
+typedef WCHAR *PWCHAR;
+typedef WORD *PWORD;
+typedef WCHAR *PWSTR;
+typedef unsigned long long QWORD;
+typedef HANDLE SC_HANDLE;
+typedef LPVOID SC_LOCK;
+typedef HANDLE SERVICE_STATUS_HANDLE;
+typedef short SHORT;
+typedef ULONG_PTR SIZE_T;
+typedef LONG_PTR SSIZE_T;
+typedef WCHAR TBYTE;
+typedef WCHAR TCHAR;
+typedef unsigned char UCHAR;
+typedef unsigned UHALF_PTR;
+typedef unsigned UINT;
+typedef unsigned short UINT16;
+typedef unsigned UINT32;
+typedef unsigned long UINT64;
+typedef unsigned char UINT8;
+typedef unsigned long UINT_PTR;
+typedef union _ULARGE_INTEGER ULARGE_INTEGER;
+typedef unsigned long ULONG;
+typedef unsigned ULONG32;
+typedef unsigned long ULONG64;
+typedef unsigned long long ULONGLONG;
+typedef unsigned long ULONG_PTR;
+typedef struct UNICODE_STRING UNICODE_STRING;
+typedef unsigned short USHORT;
+typedef LONGLONG USN;
+typedef wchar_t WCHAR;
+typedef unsigned short WORD;
+typedef UINT_PTR WPARAM;
+typedef long double _Decimal128;
+typedef _Decimal128 _Decimal128_t;
+typedef _Decimal128 _Decimal128x;
+typedef float _Decimal32;
+typedef _Decimal32 _Decimal32_t;
+typedef double _Decimal64;
+typedef _Decimal64 _Decimal64_t;
+typedef _Decimal64 _Decimal64x;
+typedef long double _Float128;
+typedef _Float128 _Float128_t;
+typedef _Float128 _Float128x;
+typedef float _Float16;
+typedef _Float16 _Float16_t;
+typedef float _Float32;
+typedef _Float32 _Float32_t;
+typedef _Float32 _Float32x;
+typedef double _Float64;
+typedef _Float64 _Float64_t;
+typedef _Float64 _Float64x;
+typedef _Float128 __float128;
+typedef _Float64x __float80;
+typedef _Float16 __fp16;
+typedef long double __ibm128;
+typedef long long __int128;
+typedef short __int16;
+typedef int __int32;
+typedef long long __int64;
+typedef signed char __int8;
+typedef struct __m128 __m128;
+typedef struct __m128d __m128d;
+typedef struct __m128i __m128i;
+typedef struct __m64 __m64;
+typedef wchar_t __wchar_t;
+typedef __int16 _int16;
+typedef __int32 _int32;
+typedef __int64 _int64;
+typedef __int8 _int8;
+typedef _Atomic bool atomic_bool;
+typedef _Atomic char atomic_char;
+typedef _Atomic char16_t atomic_char16_t;
+typedef _Atomic char32_t atomic_char32_t;
+typedef _Atomic char8_t atomic_char8_t;
+typedef struct atomic_flag atomic_flag;
+typedef _Atomic int atomic_int;
+typedef _Atomic int_fast16_t atomic_int_fast16_t;
+typedef _Atomic int_fast32_t atomic_int_fast32_t;
+typedef _Atomic int_fast64_t atomic_int_fast64_t;
+typedef _Atomic int_fast8_t atomic_int_fast8_t;
+typedef _Atomic int_least16_t atomic_int_least16_t;
+typedef _Atomic int_least32_t atomic_int_least32_t;
+typedef _Atomic int_least64_t atomic_int_least64_t;
+typedef _Atomic int_least8_t atomic_int_least8_t;
+typedef _Atomic intmax_t atomic_intmax_t;
+typedef _Atomic intptr_t atomic_intptr_t;
+typedef _Atomic long long atomic_llong;
+typedef _Atomic long atomic_long;
+typedef _Atomic ptrdiff_t atomic_ptrdiff_t;
+typedef _Atomic signed char atomic_schar;
+typedef _Atomic short atomic_short;
+typedef _Atomic size_t atomic_size_t;
+typedef _Atomic unsigned char atomic_uchar;
+typedef _Atomic unsigned atomic_uint;
+typedef _Atomic uint_fast16_t atomic_uint_fast16_t;
+typedef _Atomic uint_fast32_t atomic_uint_fast32_t;
+typedef _Atomic uint_fast64_t atomic_uint_fast64_t;
+typedef _Atomic uint_fast8_t atomic_uint_fast8_t;
+typedef _Atomic uint_least16_t atomic_uint_least16_t;
+typedef _Atomic uint_least32_t atomic_uint_least32_t;
+typedef _Atomic uint_least64_t atomic_uint_least64_t;
+typedef _Atomic uint_least8_t atomic_uint_least8_t;
+typedef _Atomic uintmax_t atomic_uintmax_t;
+typedef _Atomic uintptr_t atomic_uintptr_t;
+typedef _Atomic unsigned long long atomic_ullong;
+typedef _Atomic unsigned long atomic_ulong;
+typedef _Atomic unsigned short atomic_ushort;
+typedef _Atomic wchar_t atomic_wchar_t;
+typedef int32_t blkcnt_t;
+typedef int32_t blksize_t;
+typedef char *caddr_t;
+typedef unsigned cc_t;
+typedef long clock_t;
+typedef enum clockid_t clockid_t;
+typedef pthread_cond_t cnd_t;
+typedef void (*constraint_handler_t)(const char *restrict, void *restrict, errno_t);
+typedef long daddr_t;
+typedef int dev_t;
+typedef struct div_t div_t;
+typedef double double_t;
+typedef int errno_t;
+typedef struct fd_set fd_set;
+typedef struct femode_t femode_t;
+typedef struct fenv_t fenv_t;
+typedef unsigned short fexcept_t;
+typedef float float_t;
+typedef struct fpos_t fpos_t;
+typedef unsigned long fsblkcnt_t;
+typedef unsigned long fsfilcnt_t;
+typedef uint32_t gid_t;
+typedef void *iconv_t;
+typedef uint32_t id_t;
+typedef struct imaxdiv_t imaxdiv_t;
+typedef uint32_t in_addr_t;
+typedef uint16_t in_port_t;
+typedef unsigned ino_t;
+typedef short int16_t;
+typedef int int32_t;
+typedef long int64_t;
+typedef signed char int8_t;
+typedef short int_fast16_t;
+typedef int int_fast32_t;
+typedef long int_fast64_t;
+typedef signed char int_fast8_t;
+typedef short _Accum int_hk_t;
+typedef short _Fract int_hr_t;
+typedef _Accum int_k_t;
+typedef short int_least16_t;
+typedef int int_least32_t;
+typedef long int_least64_t;
+typedef signed char int_least8_t;
+typedef long _Accum int_lk_t;
+typedef long _Fract int_lr_t;
+typedef _Fract int_r_t;
+typedef long intmax_t;
+typedef long intptr_t;
+typedef int jmp_buf[37];
+typedef int32_t key_t;
+typedef struct lconv lconv;
+typedef struct ldiv_t ldiv_t;
+typedef struct lldiv_t lldiv_t;
+typedef struct locale_t locale_t;
+typedef long double long_double_t;
+typedef long double max_align_t;
+typedef struct mbstate_t mbstate_t;
+typedef enum memory_order memory_order;
+typedef int32_t mode_t;
+typedef pthread_mutex_t mtx_t;
+typedef unsigned long nfds_t;
+typedef uint32_t nlink_t;
+typedef void *nullptr_t;
+typedef long off_t;
+typedef int once_flag;
+typedef int32_t pid_t;
+typedef void *posix_spawn_file_actions_t;
+typedef void *posix_spawnattr_t;
+typedef struct pthread_barrier_t pthread_barrier_t;
+typedef struct pthread_barrierattr_t pthread_barrierattr_t;
+typedef struct pthread_cond_t pthread_cond_t;
+typedef struct pthread_condattr_t pthread_condattr_t;
+typedef unsigned pthread_key_t;
+typedef struct pthread_mutex_t pthread_mutex_t;
+typedef struct pthread_mutexattr_t pthread_mutexattr_t;
+typedef int pthread_once_t;
+typedef struct pthread_rwlock_t pthread_rwlock_t;
+typedef struct pthread_rwlockattr_t pthread_rwlockattr_t;
+typedef volatile int pthread_spinlock_t;
+typedef unsigned long pthread_t;
+typedef long ptrdiff_t;
+typedef struct regex_t regex_t;
+typedef struct regmatch_t regmatch_t;
+typedef size_t regoff_t;
+typedef uint32_t rlim_t;
+typedef unsigned long rsize_t;
+typedef uint32_t sa_family_t;
+typedef int sig_atomic_t;
+typedef void (*sig_t)(int);
+typedef void (*sighandler_t)(int);
+typedef struct siginfo_t siginfo_t;
+typedef unsigned long sigset_t;
+typedef unsigned long size_t;
+typedef uint32_t socklen_t;
+typedef long ssize_t;
+namespace std { struct adopt_lock_t; }
+namespace std { enum align_val_t; }
+namespace std { struct allocator_arg_t; }
+namespace std { class ambiguous_local_time; }
+namespace std { struct any; }
+namespace std { struct atomic_bool; }
+namespace std { struct atomic_char; }
+namespace std { struct atomic_char16_t; }
+namespace std { struct atomic_char32_t; }
+namespace std { struct atomic_char8_t; }
+namespace std { struct atomic_flag; }
+namespace std { struct atomic_int; }
+namespace std { struct atomic_int16_t; }
+namespace std { struct atomic_int32_t; }
+namespace std { struct atomic_int64_t; }
+namespace std { struct atomic_int8_t; }
+namespace std { struct atomic_int_fast16_t; }
+namespace std { struct atomic_int_fast32_t; }
+namespace std { struct atomic_int_fast64_t; }
+namespace std { struct atomic_int_fast8_t; }
+namespace std { struct atomic_int_least16_t; }
+namespace std { struct atomic_int_least32_t; }
+namespace std { struct atomic_int_least64_t; }
+namespace std { struct atomic_int_least8_t; }
+namespace std { struct atomic_intmax_t; }
+namespace std { struct atomic_intptr_t; }
+namespace std { struct atomic_llong; }
+namespace std { struct atomic_long; }
+namespace std { struct atomic_ptrdiff_t; }
+namespace std { struct atomic_schar; }
+namespace std { struct atomic_short; }
+namespace std { struct atomic_signed_lock_free; }
+namespace std { struct atomic_size_t; }
+namespace std { struct atomic_uchar; }
+namespace std { struct atomic_uint; }
+namespace std { struct atomic_uint16_t; }
+namespace std { struct atomic_uint32_t; }
+namespace std { struct atomic_uint64_t; }
+namespace std { struct atomic_uint8_t; }
+namespace std { struct atomic_uint_fast16_t; }
+namespace std { struct atomic_uint_fast32_t; }
+namespace std { struct atomic_uint_fast64_t; }
+namespace std { struct atomic_uint_fast8_t; }
+namespace std { struct atomic_uint_least16_t; }
+namespace std { struct atomic_uint_least32_t; }
+namespace std { struct atomic_uint_least64_t; }
+namespace std { struct atomic_uint_least8_t; }
+namespace std { struct atomic_uintmax_t; }
+namespace std { struct atomic_uintptr_t; }
+namespace std { struct atomic_ullong; }
+namespace std { struct atomic_ulong; }
+namespace std { struct atomic_unsigned_lock_free; }
+namespace std { struct atomic_ushort; }
+namespace std { struct atomic_wchar_t; }
+namespace std { class bad_alloc; }
+namespace std { class bad_any_cast; }
+namespace std { class bad_array_new_length; }
+namespace std { class bad_cast; }
+namespace std { class bad_exception; }
+namespace std { class bad_function_call; }
+namespace std { class bad_optional_access; }
+namespace std { class bad_typeid; }
+namespace std { class bad_variant_access; }
+namespace std { class bad_weak_ptr; }
+namespace std { class bernoulli_distribution; }
+namespace std { using bfloat16_t = float; }
+namespace std { enum byte; }
+namespace std { enum chars_format; }
+namespace std::chrono { enum choose; }
+namespace std::chrono { class day; }
+namespace std::chrono { struct file_clock; }
+namespace std::chrono { struct gps_clock; }
+namespace std::chrono { class high_resolution_clock; }
+namespace std::chrono { struct is_clock; }
+namespace std::chrono { struct last_spec; }
+namespace std::chrono { class leap_second; }
+namespace std::chrono { struct local_info; }
+namespace std::chrono { struct local_t; }
+namespace std::chrono { class month; }
+namespace std::chrono { class month_day; }
+namespace std::chrono { class month_day_last; }
+namespace std::chrono { class month_weekday; }
+namespace std::chrono { class month_weekday_last; }
+namespace std::chrono { class nonexistent_local_time; }
+namespace std::chrono { class steady_clock; }
+namespace std::chrono { struct sys_info; }
+namespace std::chrono { class system_clock; }
+namespace std::chrono { struct tai_clock; }
+namespace std::chrono { struct time_zone; }
+namespace std::chrono { class time_zone_link; }
+namespace std::chrono { struct tzdb; }
+namespace std::chrono { struct tzdb_list; }
+namespace std::chrono { struct utc_clock; }
+namespace std::chrono { class weekday; }
+namespace std::chrono { class weekday_indexed; }
+namespace std::chrono { class weekday_last; }
+namespace std::chrono { class year; }
+namespace std::chrono { class year_month; }
+namespace std::chrono { class year_month_day; }
+namespace std::chrono { class year_month_day_last; }
+namespace std::chrono { class year_month_weekday; }
+namespace std::chrono { class year_month_weekday_last; }
+namespace std { class codecvt_base; }
+namespace std { struct compare_three_way; }
+namespace std { class condition_variable; }
+namespace std { class condition_variable_any; }
+namespace std { class ctype_base; }
+class std::ctype_base { using mask = unsigned; };
+namespace std { enum cv_status; }
+namespace std { struct defer_lock_t; }
+namespace std { struct destroying_delete_t; }
+namespace std { struct div_t; }
+namespace std { class domain_error; }
+namespace std { enum endian; }
+namespace std { class error_category; }
+namespace std { class error_code; }
+namespace std { class error_condition; }
+namespace std { class exception; }
+namespace std { class filebuf; }
+namespace std::filesystem { enum copy_options; }
+namespace std::filesystem { class directory_entry; }
+namespace std::filesystem { class directory_iterator; }
+namespace std::filesystem { enum directory_options; }
+namespace std::filesystem { class file_status; }
+namespace std::filesystem { enum file_type; }
+namespace std::filesystem { class filesystem_error; }
+namespace std::filesystem { class path; }
+namespace std::filesystem { enum perm_options; }
+namespace std::filesystem { enum perms; }
+namespace std::filesystem { class recursive_directory_iterator; }
+namespace std::filesystem { struct space_info; }
+namespace std { using float128_t = double[2]; }
+namespace std { using float16_t = float; }
+namespace std { using float32_t = float; }
+namespace std { using float64_t = double; }
+namespace std { class format_error; }
+namespace std { struct from_chars_result; }
+namespace std { class fstream; }
+namespace std { enum future_errc; }
+namespace std { class future_error; }
+namespace std { enum future_status; }
+namespace std { class ifstream; }
+namespace std { struct imaxdiv_t; }
+namespace std { class invalid_argument; }
+namespace std { class ios; }
+namespace std { class ios_base; }
+class std::ios_base { class Init; };
+class std::ios_base { enum event; };
+class std::ios_base { using event_callback = void(*)(std::ios_base::event, std::ios_base&, int); };
+class std::ios_base { class failure; };
+class std::ios_base { using fmtflags = unsigned; };
+class std::ios_base { using iostate = unsigned; };
+class std::ios_base { using openmode = unsigned; };
+class std::ios_base { using seekdir = int; };
+namespace std { class iostream; }
+namespace std { class ispanstream; }
+namespace std { class istream; }
+namespace std { class istringstream; }
+namespace std { class jthread; }
+namespace std { class latch; }
+namespace std { enum launch; }
+namespace std { struct ldiv_t; }
+namespace std { class length_error; }
+namespace std { struct lldiv_t; }
+namespace std { class locale; }
+namespace std { class logic_error; }
+namespace std { using max_align_t = long double; }
+namespace std { class messages_base; }
+namespace std { class money_base; }
+namespace std { struct mono_state; }
+namespace std { class mutex; }
+namespace std { using new_handler = void(*)(); }
+namespace std { struct nonstopstate_t; }
+namespace std { struct noop_coroutine_promise; }
+namespace std { struct nothrow_t; }
+namespace std { using nullptr_t = void*; }
+namespace std { class ofstream; }
+namespace std { class ospanstream; }
+namespace std { class ostream; }
+namespace std { class ostringstream; }
+namespace std { class osyncstream; }
+namespace std { class out_of_range; }
+namespace std { class overflow_error; }
+namespace std { struct partial_ordering; }
+namespace std::pmr { class memory_resource; }
+namespace std::pmr { class monotonic_buffer_resource; }
+namespace std::pmr { struct pool_options; }
+namespace std::pmr { class synchronized_pool_resource; }
+namespace std::pmr { class unsynchronized_pool_resource; }
+namespace std { using ptrdiff_t = long; }
+namespace std { class random_device; }
+namespace std { class range_error; }
+namespace std { enum range_format; }
+namespace std { class recursive_mutex; }
+namespace std { class recursive_timed_mutex; }
+namespace std { class regex; }
+namespace std::regex_constants { using error_type = unsigned; }
+namespace std::regex_constants { using match_flag_type = unsigned; }
+namespace std::regex_constants { using syntax_option_type = unsigned; }
+namespace std { struct regex_error; }
+namespace std { class runtime_error; }
+namespace std { class shared_mutex; }
+namespace std { class shared_timed_mutex; }
+namespace std { using sig_atomic_t = int; }
+namespace std { using size_t = unsigned long; }
+namespace std { struct source_location; }
+namespace std { class spanbuf; }
+namespace std { class spanstream; }
+namespace std { class stacktrace; }
+namespace std { class stacktrace_entry; }
+namespace std { class stop_source; }
+namespace std { class stop_token; }
+namespace std { class streambuf; }
+namespace std { using streamoff = long long; }
+namespace std { using streamsize = long; }
+namespace std { class string; }
+namespace std { class string_view; }
+namespace std { class stringbuf; }
+namespace std { class stringstream; }
+namespace std { struct strong_equality; }
+namespace std { struct strong_ordering; }
+namespace std { struct suspend_always; }
+namespace std { struct suspend_never; }
+namespace std { class syncbuf; }
+namespace std { struct system_error; }
+namespace std { class thread; }
+namespace std { class time_base; }
+namespace std { struct time_spec; }
+namespace std { class timed_mutex; }
+namespace std { struct tm; }
+namespace std { struct to_chars_result; }
+namespace std { struct try_to_lock_t; }
+namespace std { class type_index; }
+namespace std { class type_info; }
+namespace std { class u16string; }
+namespace std { class u16string_view; }
+namespace std { class u32string; }
+namespace std { class u32string_view; }
+namespace std { class u8string_view; }
+namespace std { class underflow_error; }
+namespace std { struct unexpect_t; }
+namespace std { struct weak_equality; }
+namespace std { struct weak_ordering; }
+namespace std { class wfilebuf; }
+namespace std { class wfstream; }
+namespace std { class wifstream; }
+namespace std { class wios; }
+namespace std { class wiostream; }
+namespace std { class wispanstream; }
+namespace std { class wistream; }
+namespace std { class wistringstream; }
+namespace std { class wofstream; }
+namespace std { class wospanstream; }
+namespace std { class wostream; }
+namespace std { class wostringstream; }
+namespace std { class wosyncstream; }
+namespace std { class wregex; }
+namespace std { class wspanbuf; }
+namespace std { class wspanstream; }
+namespace std { class wstreambuf; }
+namespace std { class wstring; }
+namespace std { class wstring_view; }
+namespace std { class wstringbuf; }
+namespace std { class wstringstream; }
+namespace std { class wsyncbuf; }
+typedef int64_t suseconds_t;
+typedef int (*thrd_start_t)(void*);
+typedef pthread_t thrd_t;
+typedef long time_t;
+typedef void *timer_t;
+typedef struct tm tm;
+typedef void (*tss_dtor_t)(void*);
+typedef void *tss_t;
+typedef uint32_t uid_t;
+typedef unsigned short uint16_t;
+typedef unsigned uint32_t;
+typedef unsigned long uint64_t;
+typedef unsigned char uint8_t;
+typedef unsigned short uint_fast16_t;
+typedef unsigned uint_fast32_t;
+typedef unsigned long uint_fast64_t;
+typedef unsigned char uint_fast8_t;
+typedef unsigned short uint_least16_t;
+typedef unsigned uint_least32_t;
+typedef unsigned long uint_least64_t;
+typedef unsigned char uint_least8_t;
+typedef unsigned short _Accum uint_uhk_t;
+typedef unsigned short _Fract uint_uhr_t;
+typedef unsigned _Accum uint_uk_t;
+typedef unsigned long _Accum uint_ulk_t;
+typedef unsigned long _Fract uint_ulr_t;
+typedef unsigned _Fract uint_ur_t;
+typedef unsigned long uintmax_t;
+typedef unsigned long uintptr_t;
+typedef uint32_t useconds_t;
+typedef void *va_list;
+typedef int wctrans_t;
+typedef unsigned long wctype_t;
+typedef int wint_t;
 cdecl> show all predefined atomic* as typedef
 typedef _Atomic bool atomic_bool;
 typedef _Atomic char atomic_char;
@@ -1956,370 +1956,370 @@ typedef int wctrans_t;
 typedef unsigned long wctype_t;
 typedef int wint_t;
 cdecl> show int8_t
-define int8_t as signed character
+typedef signed char int8_t;
 cdecl> show int8_t typedef
 typedef signed char int8_t;
 cdecl> show predefined
-define ATOM as WORD
-define BOOL as integer
-define BOOLEAN as BYTE
-define BYTE as unsigned character
-define CCHAR as character
-define CHAR as character
-define COLORREF as DWORD
-define DIR as structure _dirdesc
-define DWORD as unsigned long integer
-define DWORD32 as unsigned integer
-define DWORD64 as unsigned long integer
-define DWORDLONG as unsigned long integer
-define DWORD_PTR as ULONG_PTR
-define FILE as structure _iobuf
-define FLOAT as floating point
-define HALF_PTR as integer
-define HANDLE as PVOID
-define HBITMAP as HANDLE
-define HBRUSH as HANDLE
-define HCOLORSPACE as HANDLE
-define HCONV as HANDLE
-define HCONVLIST as HANDLE
-define HCURSOR as HICON
-define HDC as HANDLE
-define HDDEDATA as HANDLE
-define HDESK as HANDLE
-define HDROP as HANDLE
-define HDWP as HANDLE
-define HENHMETAFILE as HANDLE
-define HFILE as integer
-define HFONT as HANDLE
-define HGDIOBJ as HANDLE
-define HGLOBAL as HANDLE
-define HHOOK as HANDLE
-define HICON as HANDLE
-define HINSTANCE as HANDLE
-define HKEY as HANDLE
-define HKL as HANDLE
-define HLOCAL as HANDLE
-define HMENU as HANDLE
-define HMETAFILE as HANDLE
-define HMODULE as HINSTANCE
-define HMONITOR as HANDLE
-define HPALETTE as HANDLE
-define HPEN as HANDLE
-define HRESULT as long integer
-define HRGN as HANDLE
-define HRSRC as HANDLE
-define HSZ as HANDLE
-define HWINSTA as HANDLE
-define HWND as HANDLE
-define INT as integer
-define INT16 as short integer
-define INT32 as integer
-define INT64 as long integer
-define INT8 as signed character
-define INT_PTR as __int64
-define LANGID as WORD
-define LARGE_INTEGER as union _LARGE_INTEGER
-define LCID as DWORD
-define LCTYPE as DWORD
-define LGRPID as DWORD
-define LONG as long integer
-define LONG32 as integer
-define LONG64 as __int64
-define LONGLONG as long long integer
-define LONG_PTR as __int64
-define LPBOOL as pointer to BOOL
-define LPBYTE as pointer to BYTE
-define LPCHAR as pointer to CHAR
-define LPCOLORREF as pointer to COLORREF
-define LPCSTR as pointer to constant CHAR
-define LPCTSTR as LPCWSTR
-define LPCVOID as pointer to constant void
-define LPCWSTR as pointer to constant WCHAR
-define LPDWORD as pointer to DWORD
-define LPHANDLE as pointer to HANDLE
-define LPINT as pointer to integer
-define LPLONG as pointer to long integer
-define LPSTR as pointer to CHAR
-define LPTSTR as LPWSTR
-define LPVOID as pointer to void
-define LPWORD as pointer to WORD
-define LPWSTR as pointer to WCHAR
-define LRESULT as LONG_PTR
-define PBOOL as pointer to BOOL
-define PBOOLEAN as pointer to BOOLEAN
-define PBYTE as pointer to BYTE
-define PCHAR as pointer to CHAR
-define PCSTR as pointer to constant CHAR
-define PCTSTR as LPCWSTR
-define PCWSTR as pointer to constant WCHAR
-define PDWORD as pointer to DWORD
-define PDWORD32 as pointer to DWORD32
-define PDWORD64 as pointer to DWORD64
-define PDWORDLONG as pointer to DWORDLONG
-define PDWORD_PTR as pointer to DWORD_PTR
-define PFLOAT as pointer to FLOAT
-define PHALF_PTR as pointer to HALF_PTR
-define PHANDLE as pointer to HANDLE
-define PHKEY as pointer to HKEY
-define PINT as pointer to INT
-define PINT16 as pointer to INT16
-define PINT32 as pointer to INT32
-define PINT64 as pointer to INT64
-define PINT8 as pointer to INT8
-define PINT_PTR as pointer to INT_PTR
-define PLCID as PDWORD
-define PLONG as pointer to LONG
-define PLONG32 as pointer to LONG32
-define PLONG64 as pointer to LONG64
-define PLONGLONG as pointer to LONGLONG
-define PLONG_PTR as pointer to LONG_PTR
-define PSHORT as pointer to SHORT
-define PSIZE_T as pointer to SIZE_T
-define PSSIZE_T as pointer to SSIZE_T
-define PSTR as pointer to CHAR
-define PTBYTE as pointer to TBYTE
-define PTCHAR as pointer to TCHAR
-define PTSTR as LPWSTR
-define PUCHAR as pointer to UCHAR
-define PUHALF_PTR as pointer to UHALF_PTR
-define PUINT as pointer to UINT
-define PUINT16 as pointer to UINT16
-define PUINT32 as pointer to UINT32
-define PUINT64 as pointer to UINT64
-define PUINT8 as pointer to UINT8
-define PUINT_PTR as pointer to UINT_PTR
-define PULONG as pointer to ULONG
-define PULONG32 as pointer to ULONG32
-define PULONG64 as pointer to ULONG64
-define PULONGLONG as pointer to ULONGLONG
-define PULONG_PTR as pointer to ULONG_PTR
-define PUSHORT as pointer to USHORT
-define PVOID as pointer to void
-define PWCHAR as pointer to WCHAR
-define PWORD as pointer to WORD
-define PWSTR as pointer to WCHAR
-define QWORD as unsigned long long integer
-define SC_HANDLE as HANDLE
-define SC_LOCK as LPVOID
-define SERVICE_STATUS_HANDLE as HANDLE
-define SHORT as short integer
-define SIZE_T as ULONG_PTR
-define SSIZE_T as LONG_PTR
-define TBYTE as WCHAR
-define TCHAR as WCHAR
-define UCHAR as unsigned character
-define UHALF_PTR as unsigned integer
-define UINT as unsigned integer
-define UINT16 as unsigned short integer
-define UINT32 as unsigned integer
-define UINT64 as unsigned long integer
-define UINT8 as unsigned character
-define UINT_PTR as unsigned long integer
-define ULARGE_INTEGER as union _ULARGE_INTEGER
-define ULONG as unsigned long integer
-define ULONG32 as unsigned integer
-define ULONG64 as unsigned long integer
-define ULONGLONG as unsigned long long integer
-define ULONG_PTR as unsigned long integer
-define UNICODE_STRING as structure UNICODE_STRING
-define USHORT as unsigned short integer
-define USN as LONGLONG
-define WCHAR as wide character
-define WORD as unsigned short integer
-define WPARAM as UINT_PTR
-define _Decimal128 as long double precision
-define _Decimal128_t as _Decimal128
-define _Decimal128x as _Decimal128
-define _Decimal32 as floating point
-define _Decimal32_t as _Decimal32
-define _Decimal64 as double precision
-define _Decimal64_t as _Decimal64
-define _Decimal64x as _Decimal64
-define _Float128 as long double precision
-define _Float128_t as _Float128
-define _Float128x as _Float128
-define _Float16 as floating point
-define _Float16_t as _Float16
-define _Float32 as floating point
-define _Float32_t as _Float32
-define _Float32x as _Float32
-define _Float64 as double precision
-define _Float64_t as _Float64
-define _Float64x as _Float64
-define __float128 as _Float128
-define __float80 as _Float64x
-define __fp16 as _Float16
-define __ibm128 as long double precision
-define __int128 as long long integer
-define __int16 as short integer
-define __int32 as integer
-define __int64 as long long integer
-define __int8 as signed character
-define __m128 as structure __m128
-define __m128d as structure __m128d
-define __m128i as structure __m128i
-define __m64 as structure __m64
-define __wchar_t as wide character
-define _int16 as __int16
-define _int32 as __int32
-define _int64 as __int64
-define _int8 as __int8
-define atomic_bool as atomic boolean
-define atomic_char as atomic character
-define atomic_char16_t as atomic character 16
-define atomic_char32_t as atomic character 32
-define atomic_char8_t as atomic character 8
-define atomic_flag as structure atomic_flag
-define atomic_int as atomic integer
-define atomic_int_fast16_t as atomic int_fast16_t
-define atomic_int_fast32_t as atomic int_fast32_t
-define atomic_int_fast64_t as atomic int_fast64_t
-define atomic_int_fast8_t as atomic int_fast8_t
-define atomic_int_least16_t as atomic int_least16_t
-define atomic_int_least32_t as atomic int_least32_t
-define atomic_int_least64_t as atomic int_least64_t
-define atomic_int_least8_t as atomic int_least8_t
-define atomic_intmax_t as atomic intmax_t
-define atomic_intptr_t as atomic intptr_t
-define atomic_llong as atomic long long integer
-define atomic_long as atomic long integer
-define atomic_ptrdiff_t as atomic ptrdiff_t
-define atomic_schar as atomic signed character
-define atomic_short as atomic short integer
-define atomic_size_t as atomic size_t
-define atomic_uchar as atomic unsigned character
-define atomic_uint as atomic unsigned integer
-define atomic_uint_fast16_t as atomic uint_fast16_t
-define atomic_uint_fast32_t as atomic uint_fast32_t
-define atomic_uint_fast64_t as atomic uint_fast64_t
-define atomic_uint_fast8_t as atomic uint_fast8_t
-define atomic_uint_least16_t as atomic uint_least16_t
-define atomic_uint_least32_t as atomic uint_least32_t
-define atomic_uint_least64_t as atomic uint_least64_t
-define atomic_uint_least8_t as atomic uint_least8_t
-define atomic_uintmax_t as atomic uintmax_t
-define atomic_uintptr_t as atomic uintptr_t
-define atomic_ullong as atomic unsigned long long integer
-define atomic_ulong as atomic unsigned long integer
-define atomic_ushort as atomic unsigned short integer
-define atomic_wchar_t as atomic wide character
-define blkcnt_t as int32_t
-define blksize_t as int32_t
-define caddr_t as pointer to character
-define cc_t as unsigned integer
-define clock_t as long integer
-define clockid_t as enumeration clockid_t
-define cnd_t as pthread_cond_t
-define constraint_handler_t as pointer to function (restricted pointer to constant character, restricted pointer to void, errno_t) returning void
-define daddr_t as long integer
-define dev_t as integer
-define div_t as structure div_t
-define double_t as double precision
-define errno_t as integer
-define fd_set as structure fd_set
-define femode_t as structure femode_t
-define fenv_t as structure fenv_t
-define fexcept_t as unsigned short integer
-define float_t as floating point
-define fpos_t as structure fpos_t
-define fsblkcnt_t as unsigned long integer
-define fsfilcnt_t as unsigned long integer
-define gid_t as uint32_t
-define iconv_t as pointer to void
-define id_t as uint32_t
-define imaxdiv_t as structure imaxdiv_t
-define in_addr_t as uint32_t
-define in_port_t as uint16_t
-define ino_t as unsigned integer
-define int16_t as short integer
-define int32_t as integer
-define int64_t as long integer
-define int8_t as signed character
-define int_fast16_t as short integer
-define int_fast32_t as integer
-define int_fast64_t as long integer
-define int_fast8_t as signed character
-define int_least16_t as short integer
-define int_least32_t as integer
-define int_least64_t as long integer
-define int_least8_t as signed character
-define intmax_t as long integer
-define intptr_t as long integer
-define jmp_buf as array 37 of integer
-define key_t as int32_t
-define lconv as structure lconv
-define ldiv_t as structure ldiv_t
-define lldiv_t as structure lldiv_t
-define locale_t as structure locale_t
-define long_double_t as long double precision
-define max_align_t as long double precision
-define mbstate_t as structure mbstate_t
-define memory_order as enumeration memory_order
-define mode_t as int32_t
-define mtx_t as pthread_mutex_t
-define nfds_t as unsigned long integer
-define nlink_t as uint32_t
-define nullptr_t as pointer to void
-define off_t as long integer
-define once_flag as integer
-define pid_t as int32_t
-define posix_spawn_file_actions_t as pointer to void
-define posix_spawnattr_t as pointer to void
-define pthread_barrier_t as structure pthread_barrier_t
-define pthread_barrierattr_t as structure pthread_barrierattr_t
-define pthread_cond_t as structure pthread_cond_t
-define pthread_condattr_t as structure pthread_condattr_t
-define pthread_key_t as unsigned integer
-define pthread_mutex_t as structure pthread_mutex_t
-define pthread_mutexattr_t as structure pthread_mutexattr_t
-define pthread_once_t as integer
-define pthread_rwlock_t as structure pthread_rwlock_t
-define pthread_rwlockattr_t as structure pthread_rwlockattr_t
-define pthread_spinlock_t as volatile integer
-define pthread_t as unsigned long integer
-define ptrdiff_t as long integer
-define regex_t as structure regex_t
-define regmatch_t as structure regmatch_t
-define regoff_t as size_t
-define rlim_t as uint32_t
-define rsize_t as unsigned long integer
-define sa_family_t as uint32_t
-define sig_atomic_t as integer
-define sig_t as pointer to function (integer) returning void
-define sighandler_t as pointer to function (integer) returning void
-define siginfo_t as structure siginfo_t
-define sigset_t as unsigned long integer
-define size_t as unsigned long integer
-define socklen_t as uint32_t
-define ssize_t as long integer
-define suseconds_t as int64_t
-define thrd_start_t as pointer to function (pointer to void) returning integer
-define thrd_t as pthread_t
-define time_t as long integer
-define timer_t as pointer to void
-define tm as structure tm
-define tss_dtor_t as pointer to function (pointer to void) returning void
-define tss_t as pointer to void
-define uid_t as uint32_t
-define uint16_t as unsigned short integer
-define uint32_t as unsigned integer
-define uint64_t as unsigned long integer
-define uint8_t as unsigned character
-define uint_fast16_t as unsigned short integer
-define uint_fast32_t as unsigned integer
-define uint_fast64_t as unsigned long integer
-define uint_fast8_t as unsigned character
-define uint_least16_t as unsigned short integer
-define uint_least32_t as unsigned integer
-define uint_least64_t as unsigned long integer
-define uint_least8_t as unsigned character
-define uintmax_t as unsigned long integer
-define uintptr_t as unsigned long integer
-define useconds_t as uint32_t
-define va_list as pointer to void
-define wctrans_t as integer
-define wctype_t as unsigned long integer
-define wint_t as integer
+typedef WORD ATOM;
+typedef int BOOL;
+typedef BYTE BOOLEAN;
+typedef unsigned char BYTE;
+typedef char CCHAR;
+typedef char CHAR;
+typedef DWORD COLORREF;
+typedef struct _dirdesc DIR;
+typedef unsigned long DWORD;
+typedef unsigned DWORD32;
+typedef unsigned long DWORD64;
+typedef unsigned long DWORDLONG;
+typedef ULONG_PTR DWORD_PTR;
+typedef struct _iobuf FILE;
+typedef float FLOAT;
+typedef int HALF_PTR;
+typedef PVOID HANDLE;
+typedef HANDLE HBITMAP;
+typedef HANDLE HBRUSH;
+typedef HANDLE HCOLORSPACE;
+typedef HANDLE HCONV;
+typedef HANDLE HCONVLIST;
+typedef HICON HCURSOR;
+typedef HANDLE HDC;
+typedef HANDLE HDDEDATA;
+typedef HANDLE HDESK;
+typedef HANDLE HDROP;
+typedef HANDLE HDWP;
+typedef HANDLE HENHMETAFILE;
+typedef int HFILE;
+typedef HANDLE HFONT;
+typedef HANDLE HGDIOBJ;
+typedef HANDLE HGLOBAL;
+typedef HANDLE HHOOK;
+typedef HANDLE HICON;
+typedef HANDLE HINSTANCE;
+typedef HANDLE HKEY;
+typedef HANDLE HKL;
+typedef HANDLE HLOCAL;
+typedef HANDLE HMENU;
+typedef HANDLE HMETAFILE;
+typedef HINSTANCE HMODULE;
+typedef HANDLE HMONITOR;
+typedef HANDLE HPALETTE;
+typedef HANDLE HPEN;
+typedef long HRESULT;
+typedef HANDLE HRGN;
+typedef HANDLE HRSRC;
+typedef HANDLE HSZ;
+typedef HANDLE HWINSTA;
+typedef HANDLE HWND;
+typedef int INT;
+typedef short INT16;
+typedef int INT32;
+typedef long INT64;
+typedef signed char INT8;
+typedef __int64 INT_PTR;
+typedef WORD LANGID;
+typedef union _LARGE_INTEGER LARGE_INTEGER;
+typedef DWORD LCID;
+typedef DWORD LCTYPE;
+typedef DWORD LGRPID;
+typedef long LONG;
+typedef int LONG32;
+typedef __int64 LONG64;
+typedef long long LONGLONG;
+typedef __int64 LONG_PTR;
+typedef BOOL *LPBOOL;
+typedef BYTE *LPBYTE;
+typedef CHAR *LPCHAR;
+typedef COLORREF *LPCOLORREF;
+typedef const CHAR *LPCSTR;
+typedef LPCWSTR LPCTSTR;
+typedef const void *LPCVOID;
+typedef const WCHAR *LPCWSTR;
+typedef DWORD *LPDWORD;
+typedef HANDLE *LPHANDLE;
+typedef int *LPINT;
+typedef long *LPLONG;
+typedef CHAR *LPSTR;
+typedef LPWSTR LPTSTR;
+typedef void *LPVOID;
+typedef WORD *LPWORD;
+typedef WCHAR *LPWSTR;
+typedef LONG_PTR LRESULT;
+typedef BOOL *PBOOL;
+typedef BOOLEAN *PBOOLEAN;
+typedef BYTE *PBYTE;
+typedef CHAR *PCHAR;
+typedef const CHAR *PCSTR;
+typedef LPCWSTR PCTSTR;
+typedef const WCHAR *PCWSTR;
+typedef DWORD *PDWORD;
+typedef DWORD32 *PDWORD32;
+typedef DWORD64 *PDWORD64;
+typedef DWORDLONG *PDWORDLONG;
+typedef DWORD_PTR *PDWORD_PTR;
+typedef FLOAT *PFLOAT;
+typedef HALF_PTR *PHALF_PTR;
+typedef HANDLE *PHANDLE;
+typedef HKEY *PHKEY;
+typedef INT *PINT;
+typedef INT16 *PINT16;
+typedef INT32 *PINT32;
+typedef INT64 *PINT64;
+typedef INT8 *PINT8;
+typedef INT_PTR *PINT_PTR;
+typedef PDWORD PLCID;
+typedef LONG *PLONG;
+typedef LONG32 *PLONG32;
+typedef LONG64 *PLONG64;
+typedef LONGLONG *PLONGLONG;
+typedef LONG_PTR *PLONG_PTR;
+typedef SHORT *PSHORT;
+typedef SIZE_T *PSIZE_T;
+typedef SSIZE_T *PSSIZE_T;
+typedef CHAR *PSTR;
+typedef TBYTE *PTBYTE;
+typedef TCHAR *PTCHAR;
+typedef LPWSTR PTSTR;
+typedef UCHAR *PUCHAR;
+typedef UHALF_PTR *PUHALF_PTR;
+typedef UINT *PUINT;
+typedef UINT16 *PUINT16;
+typedef UINT32 *PUINT32;
+typedef UINT64 *PUINT64;
+typedef UINT8 *PUINT8;
+typedef UINT_PTR *PUINT_PTR;
+typedef ULONG *PULONG;
+typedef ULONG32 *PULONG32;
+typedef ULONG64 *PULONG64;
+typedef ULONGLONG *PULONGLONG;
+typedef ULONG_PTR *PULONG_PTR;
+typedef USHORT *PUSHORT;
+typedef void *PVOID;
+typedef WCHAR *PWCHAR;
+typedef WORD *PWORD;
+typedef WCHAR *PWSTR;
+typedef unsigned long long QWORD;
+typedef HANDLE SC_HANDLE;
+typedef LPVOID SC_LOCK;
+typedef HANDLE SERVICE_STATUS_HANDLE;
+typedef short SHORT;
+typedef ULONG_PTR SIZE_T;
+typedef LONG_PTR SSIZE_T;
+typedef WCHAR TBYTE;
+typedef WCHAR TCHAR;
+typedef unsigned char UCHAR;
+typedef unsigned UHALF_PTR;
+typedef unsigned UINT;
+typedef unsigned short UINT16;
+typedef unsigned UINT32;
+typedef unsigned long UINT64;
+typedef unsigned char UINT8;
+typedef unsigned long UINT_PTR;
+typedef union _ULARGE_INTEGER ULARGE_INTEGER;
+typedef unsigned long ULONG;
+typedef unsigned ULONG32;
+typedef unsigned long ULONG64;
+typedef unsigned long long ULONGLONG;
+typedef unsigned long ULONG_PTR;
+typedef struct UNICODE_STRING UNICODE_STRING;
+typedef unsigned short USHORT;
+typedef LONGLONG USN;
+typedef wchar_t WCHAR;
+typedef unsigned short WORD;
+typedef UINT_PTR WPARAM;
+typedef long double _Decimal128;
+typedef _Decimal128 _Decimal128_t;
+typedef _Decimal128 _Decimal128x;
+typedef float _Decimal32;
+typedef _Decimal32 _Decimal32_t;
+typedef double _Decimal64;
+typedef _Decimal64 _Decimal64_t;
+typedef _Decimal64 _Decimal64x;
+typedef long double _Float128;
+typedef _Float128 _Float128_t;
+typedef _Float128 _Float128x;
+typedef float _Float16;
+typedef _Float16 _Float16_t;
+typedef float _Float32;
+typedef _Float32 _Float32_t;
+typedef _Float32 _Float32x;
+typedef double _Float64;
+typedef _Float64 _Float64_t;
+typedef _Float64 _Float64x;
+typedef _Float128 __float128;
+typedef _Float64x __float80;
+typedef _Float16 __fp16;
+typedef long double __ibm128;
+typedef long long __int128;
+typedef short __int16;
+typedef int __int32;
+typedef long long __int64;
+typedef signed char __int8;
+typedef struct __m128 __m128;
+typedef struct __m128d __m128d;
+typedef struct __m128i __m128i;
+typedef struct __m64 __m64;
+typedef wchar_t __wchar_t;
+typedef __int16 _int16;
+typedef __int32 _int32;
+typedef __int64 _int64;
+typedef __int8 _int8;
+typedef _Atomic bool atomic_bool;
+typedef _Atomic char atomic_char;
+typedef _Atomic char16_t atomic_char16_t;
+typedef _Atomic char32_t atomic_char32_t;
+typedef _Atomic char8_t atomic_char8_t;
+typedef struct atomic_flag atomic_flag;
+typedef _Atomic int atomic_int;
+typedef _Atomic int_fast16_t atomic_int_fast16_t;
+typedef _Atomic int_fast32_t atomic_int_fast32_t;
+typedef _Atomic int_fast64_t atomic_int_fast64_t;
+typedef _Atomic int_fast8_t atomic_int_fast8_t;
+typedef _Atomic int_least16_t atomic_int_least16_t;
+typedef _Atomic int_least32_t atomic_int_least32_t;
+typedef _Atomic int_least64_t atomic_int_least64_t;
+typedef _Atomic int_least8_t atomic_int_least8_t;
+typedef _Atomic intmax_t atomic_intmax_t;
+typedef _Atomic intptr_t atomic_intptr_t;
+typedef _Atomic long long atomic_llong;
+typedef _Atomic long atomic_long;
+typedef _Atomic ptrdiff_t atomic_ptrdiff_t;
+typedef _Atomic signed char atomic_schar;
+typedef _Atomic short atomic_short;
+typedef _Atomic size_t atomic_size_t;
+typedef _Atomic unsigned char atomic_uchar;
+typedef _Atomic unsigned atomic_uint;
+typedef _Atomic uint_fast16_t atomic_uint_fast16_t;
+typedef _Atomic uint_fast32_t atomic_uint_fast32_t;
+typedef _Atomic uint_fast64_t atomic_uint_fast64_t;
+typedef _Atomic uint_fast8_t atomic_uint_fast8_t;
+typedef _Atomic uint_least16_t atomic_uint_least16_t;
+typedef _Atomic uint_least32_t atomic_uint_least32_t;
+typedef _Atomic uint_least64_t atomic_uint_least64_t;
+typedef _Atomic uint_least8_t atomic_uint_least8_t;
+typedef _Atomic uintmax_t atomic_uintmax_t;
+typedef _Atomic uintptr_t atomic_uintptr_t;
+typedef _Atomic unsigned long long atomic_ullong;
+typedef _Atomic unsigned long atomic_ulong;
+typedef _Atomic unsigned short atomic_ushort;
+typedef _Atomic wchar_t atomic_wchar_t;
+typedef int32_t blkcnt_t;
+typedef int32_t blksize_t;
+typedef char *caddr_t;
+typedef unsigned cc_t;
+typedef long clock_t;
+typedef enum clockid_t clockid_t;
+typedef pthread_cond_t cnd_t;
+typedef void (*constraint_handler_t)(const char *restrict, void *restrict, errno_t);
+typedef long daddr_t;
+typedef int dev_t;
+typedef struct div_t div_t;
+typedef double double_t;
+typedef int errno_t;
+typedef struct fd_set fd_set;
+typedef struct femode_t femode_t;
+typedef struct fenv_t fenv_t;
+typedef unsigned short fexcept_t;
+typedef float float_t;
+typedef struct fpos_t fpos_t;
+typedef unsigned long fsblkcnt_t;
+typedef unsigned long fsfilcnt_t;
+typedef uint32_t gid_t;
+typedef void *iconv_t;
+typedef uint32_t id_t;
+typedef struct imaxdiv_t imaxdiv_t;
+typedef uint32_t in_addr_t;
+typedef uint16_t in_port_t;
+typedef unsigned ino_t;
+typedef short int16_t;
+typedef int int32_t;
+typedef long int64_t;
+typedef signed char int8_t;
+typedef short int_fast16_t;
+typedef int int_fast32_t;
+typedef long int_fast64_t;
+typedef signed char int_fast8_t;
+typedef short int_least16_t;
+typedef int int_least32_t;
+typedef long int_least64_t;
+typedef signed char int_least8_t;
+typedef long intmax_t;
+typedef long intptr_t;
+typedef int jmp_buf[37];
+typedef int32_t key_t;
+typedef struct lconv lconv;
+typedef struct ldiv_t ldiv_t;
+typedef struct lldiv_t lldiv_t;
+typedef struct locale_t locale_t;
+typedef long double long_double_t;
+typedef long double max_align_t;
+typedef struct mbstate_t mbstate_t;
+typedef enum memory_order memory_order;
+typedef int32_t mode_t;
+typedef pthread_mutex_t mtx_t;
+typedef unsigned long nfds_t;
+typedef uint32_t nlink_t;
+typedef void *nullptr_t;
+typedef long off_t;
+typedef int once_flag;
+typedef int32_t pid_t;
+typedef void *posix_spawn_file_actions_t;
+typedef void *posix_spawnattr_t;
+typedef struct pthread_barrier_t pthread_barrier_t;
+typedef struct pthread_barrierattr_t pthread_barrierattr_t;
+typedef struct pthread_cond_t pthread_cond_t;
+typedef struct pthread_condattr_t pthread_condattr_t;
+typedef unsigned pthread_key_t;
+typedef struct pthread_mutex_t pthread_mutex_t;
+typedef struct pthread_mutexattr_t pthread_mutexattr_t;
+typedef int pthread_once_t;
+typedef struct pthread_rwlock_t pthread_rwlock_t;
+typedef struct pthread_rwlockattr_t pthread_rwlockattr_t;
+typedef volatile int pthread_spinlock_t;
+typedef unsigned long pthread_t;
+typedef long ptrdiff_t;
+typedef struct regex_t regex_t;
+typedef struct regmatch_t regmatch_t;
+typedef size_t regoff_t;
+typedef uint32_t rlim_t;
+typedef unsigned long rsize_t;
+typedef uint32_t sa_family_t;
+typedef int sig_atomic_t;
+typedef void (*sig_t)(int);
+typedef void (*sighandler_t)(int);
+typedef struct siginfo_t siginfo_t;
+typedef unsigned long sigset_t;
+typedef unsigned long size_t;
+typedef uint32_t socklen_t;
+typedef long ssize_t;
+typedef int64_t suseconds_t;
+typedef int (*thrd_start_t)(void*);
+typedef pthread_t thrd_t;
+typedef long time_t;
+typedef void *timer_t;
+typedef struct tm tm;
+typedef void (*tss_dtor_t)(void*);
+typedef void *tss_t;
+typedef uint32_t uid_t;
+typedef unsigned short uint16_t;
+typedef unsigned uint32_t;
+typedef unsigned long uint64_t;
+typedef unsigned char uint8_t;
+typedef unsigned short uint_fast16_t;
+typedef unsigned uint_fast32_t;
+typedef unsigned long uint_fast64_t;
+typedef unsigned char uint_fast8_t;
+typedef unsigned short uint_least16_t;
+typedef unsigned uint_least32_t;
+typedef unsigned long uint_least64_t;
+typedef unsigned char uint_least8_t;
+typedef unsigned long uintmax_t;
+typedef unsigned long uintptr_t;
+typedef uint32_t useconds_t;
+typedef void *va_list;
+typedef int wctrans_t;
+typedef unsigned long wctype_t;
+typedef int wint_t;
 cdecl> show predefined typedef
 typedef WORD ATOM;
 typedef int BOOL;
@@ -2682,7 +2682,7 @@ typedef int wctrans_t;
 typedef unsigned long wctype_t;
 typedef int wint_t;
 cdecl> show user
-define Int as integer
+typedef int Int;
 cdecl> show user typedef
 typedef int Int;
 cdecl> set c++
@@ -3393,631 +3393,631 @@ namespace std::chrono { class system_clock; }
 namespace std::chrono { struct tai_clock; }
 namespace std::chrono { struct utc_clock; }
 c++decl> show predefined
-define ATOM as WORD
-define BOOL as integer
-define BOOLEAN as BYTE
-define BYTE as unsigned character
-define CCHAR as character
-define CHAR as character
-define COLORREF as DWORD
-define DIR as structure _dirdesc
-define DWORD as unsigned long integer
-define DWORD32 as unsigned integer
-define DWORD64 as unsigned long integer
-define DWORDLONG as unsigned long integer
-define DWORD_PTR as ULONG_PTR
-define FILE as structure _iobuf
-define FLOAT as floating point
-define HALF_PTR as integer
-define HANDLE as PVOID
-define HBITMAP as HANDLE
-define HBRUSH as HANDLE
-define HCOLORSPACE as HANDLE
-define HCONV as HANDLE
-define HCONVLIST as HANDLE
-define HCURSOR as HICON
-define HDC as HANDLE
-define HDDEDATA as HANDLE
-define HDESK as HANDLE
-define HDROP as HANDLE
-define HDWP as HANDLE
-define HENHMETAFILE as HANDLE
-define HFILE as integer
-define HFONT as HANDLE
-define HGDIOBJ as HANDLE
-define HGLOBAL as HANDLE
-define HHOOK as HANDLE
-define HICON as HANDLE
-define HINSTANCE as HANDLE
-define HKEY as HANDLE
-define HKL as HANDLE
-define HLOCAL as HANDLE
-define HMENU as HANDLE
-define HMETAFILE as HANDLE
-define HMODULE as HINSTANCE
-define HMONITOR as HANDLE
-define HPALETTE as HANDLE
-define HPEN as HANDLE
-define HRESULT as long integer
-define HRGN as HANDLE
-define HRSRC as HANDLE
-define HSZ as HANDLE
-define HWINSTA as HANDLE
-define HWND as HANDLE
-define INT as integer
-define INT16 as short integer
-define INT32 as integer
-define INT64 as long integer
-define INT8 as signed character
-define INT_PTR as __int64
-define LANGID as WORD
-define LARGE_INTEGER as union _LARGE_INTEGER
-define LCID as DWORD
-define LCTYPE as DWORD
-define LGRPID as DWORD
-define LONG as long integer
-define LONG32 as integer
-define LONG64 as __int64
-define LONGLONG as long long integer
-define LONG_PTR as __int64
-define LPBOOL as pointer to BOOL
-define LPBYTE as pointer to BYTE
-define LPCHAR as pointer to CHAR
-define LPCOLORREF as pointer to COLORREF
-define LPCSTR as pointer to constant CHAR
-define LPCTSTR as LPCWSTR
-define LPCVOID as pointer to constant void
-define LPCWSTR as pointer to constant WCHAR
-define LPDWORD as pointer to DWORD
-define LPHANDLE as pointer to HANDLE
-define LPINT as pointer to integer
-define LPLONG as pointer to long integer
-define LPSTR as pointer to CHAR
-define LPTSTR as LPWSTR
-define LPVOID as pointer to void
-define LPWORD as pointer to WORD
-define LPWSTR as pointer to WCHAR
-define LRESULT as LONG_PTR
-define PBOOL as pointer to BOOL
-define PBOOLEAN as pointer to BOOLEAN
-define PBYTE as pointer to BYTE
-define PCHAR as pointer to CHAR
-define PCSTR as pointer to constant CHAR
-define PCTSTR as LPCWSTR
-define PCWSTR as pointer to constant WCHAR
-define PDWORD as pointer to DWORD
-define PDWORD32 as pointer to DWORD32
-define PDWORD64 as pointer to DWORD64
-define PDWORDLONG as pointer to DWORDLONG
-define PDWORD_PTR as pointer to DWORD_PTR
-define PFLOAT as pointer to FLOAT
-define PHALF_PTR as pointer to HALF_PTR
-define PHANDLE as pointer to HANDLE
-define PHKEY as pointer to HKEY
-define PINT as pointer to INT
-define PINT16 as pointer to INT16
-define PINT32 as pointer to INT32
-define PINT64 as pointer to INT64
-define PINT8 as pointer to INT8
-define PINT_PTR as pointer to INT_PTR
-define PLCID as PDWORD
-define PLONG as pointer to LONG
-define PLONG32 as pointer to LONG32
-define PLONG64 as pointer to LONG64
-define PLONGLONG as pointer to LONGLONG
-define PLONG_PTR as pointer to LONG_PTR
-define PSHORT as pointer to SHORT
-define PSIZE_T as pointer to SIZE_T
-define PSSIZE_T as pointer to SSIZE_T
-define PSTR as pointer to CHAR
-define PTBYTE as pointer to TBYTE
-define PTCHAR as pointer to TCHAR
-define PTSTR as LPWSTR
-define PUCHAR as pointer to UCHAR
-define PUHALF_PTR as pointer to UHALF_PTR
-define PUINT as pointer to UINT
-define PUINT16 as pointer to UINT16
-define PUINT32 as pointer to UINT32
-define PUINT64 as pointer to UINT64
-define PUINT8 as pointer to UINT8
-define PUINT_PTR as pointer to UINT_PTR
-define PULONG as pointer to ULONG
-define PULONG32 as pointer to ULONG32
-define PULONG64 as pointer to ULONG64
-define PULONGLONG as pointer to ULONGLONG
-define PULONG_PTR as pointer to ULONG_PTR
-define PUSHORT as pointer to USHORT
-define PVOID as pointer to void
-define PWCHAR as pointer to WCHAR
-define PWORD as pointer to WORD
-define PWSTR as pointer to WCHAR
-define QWORD as unsigned long long integer
-define SC_HANDLE as HANDLE
-define SC_LOCK as LPVOID
-define SERVICE_STATUS_HANDLE as HANDLE
-define SHORT as short integer
-define SIZE_T as ULONG_PTR
-define SSIZE_T as LONG_PTR
-define TBYTE as WCHAR
-define TCHAR as WCHAR
-define UCHAR as unsigned character
-define UHALF_PTR as unsigned integer
-define UINT as unsigned integer
-define UINT16 as unsigned short integer
-define UINT32 as unsigned integer
-define UINT64 as unsigned long integer
-define UINT8 as unsigned character
-define UINT_PTR as unsigned long integer
-define ULARGE_INTEGER as union _ULARGE_INTEGER
-define ULONG as unsigned long integer
-define ULONG32 as unsigned integer
-define ULONG64 as unsigned long integer
-define ULONGLONG as unsigned long long integer
-define ULONG_PTR as unsigned long integer
-define UNICODE_STRING as structure UNICODE_STRING
-define USHORT as unsigned short integer
-define USN as LONGLONG
-define WCHAR as wide character
-define WORD as unsigned short integer
-define WPARAM as UINT_PTR
-define _Decimal128 as long double precision
-define _Decimal128_t as _Decimal128
-define _Decimal128x as _Decimal128
-define _Decimal32 as floating point
-define _Decimal32_t as _Decimal32
-define _Decimal64 as double precision
-define _Decimal64_t as _Decimal64
-define _Decimal64x as _Decimal64
-define _Float128 as long double precision
-define _Float128_t as _Float128
-define _Float128x as _Float128
-define _Float16 as floating point
-define _Float16_t as _Float16
-define _Float32 as floating point
-define _Float32_t as _Float32
-define _Float32x as _Float32
-define _Float64 as double precision
-define _Float64_t as _Float64
-define _Float64x as _Float64
-define __float128 as _Float128
-define __float80 as _Float64x
-define __fp16 as _Float16
-define __ibm128 as long double precision
-define __int128 as long long integer
-define __int16 as short integer
-define __int32 as integer
-define __int64 as long long integer
-define __int8 as signed character
-define __m128 as structure __m128
-define __m128d as structure __m128d
-define __m128i as structure __m128i
-define __m64 as structure __m64
-define __wchar_t as wide character
-define _int16 as __int16
-define _int32 as __int32
-define _int64 as __int64
-define _int8 as __int8
-define atomic_bool as atomic boolean
-define atomic_char as atomic character
-define atomic_char16_t as atomic character 16
-define atomic_char32_t as atomic character 32
-define atomic_char8_t as atomic character 8
-define atomic_flag as structure atomic_flag
-define atomic_int as atomic integer
-define atomic_int_fast16_t as atomic int_fast16_t
-define atomic_int_fast32_t as atomic int_fast32_t
-define atomic_int_fast64_t as atomic int_fast64_t
-define atomic_int_fast8_t as atomic int_fast8_t
-define atomic_int_least16_t as atomic int_least16_t
-define atomic_int_least32_t as atomic int_least32_t
-define atomic_int_least64_t as atomic int_least64_t
-define atomic_int_least8_t as atomic int_least8_t
-define atomic_intmax_t as atomic intmax_t
-define atomic_intptr_t as atomic intptr_t
-define atomic_llong as atomic long long integer
-define atomic_long as atomic long integer
-define atomic_ptrdiff_t as atomic ptrdiff_t
-define atomic_schar as atomic signed character
-define atomic_short as atomic short integer
-define atomic_size_t as atomic size_t
-define atomic_uchar as atomic unsigned character
-define atomic_uint as atomic unsigned integer
-define atomic_uint_fast16_t as atomic uint_fast16_t
-define atomic_uint_fast32_t as atomic uint_fast32_t
-define atomic_uint_fast64_t as atomic uint_fast64_t
-define atomic_uint_fast8_t as atomic uint_fast8_t
-define atomic_uint_least16_t as atomic uint_least16_t
-define atomic_uint_least32_t as atomic uint_least32_t
-define atomic_uint_least64_t as atomic uint_least64_t
-define atomic_uint_least8_t as atomic uint_least8_t
-define atomic_uintmax_t as atomic uintmax_t
-define atomic_uintptr_t as atomic uintptr_t
-define atomic_ullong as atomic unsigned long long integer
-define atomic_ulong as atomic unsigned long integer
-define atomic_ushort as atomic unsigned short integer
-define atomic_wchar_t as atomic wide character
-define blkcnt_t as int32_t
-define blksize_t as int32_t
-define caddr_t as pointer to character
-define cc_t as unsigned integer
-define clock_t as long integer
-define clockid_t as enumeration clockid_t
-define cnd_t as pthread_cond_t
-define constraint_handler_t as pointer to function (restricted pointer to constant character, restricted pointer to void, errno_t) returning void
-define daddr_t as long integer
-define dev_t as integer
-define div_t as structure div_t
-define double_t as double precision
-define errno_t as integer
-define fd_set as structure fd_set
-define femode_t as structure femode_t
-define fenv_t as structure fenv_t
-define fexcept_t as unsigned short integer
-define float_t as floating point
-define fpos_t as structure fpos_t
-define fsblkcnt_t as unsigned long integer
-define fsfilcnt_t as unsigned long integer
-define gid_t as uint32_t
-define iconv_t as pointer to void
-define id_t as uint32_t
-define imaxdiv_t as structure imaxdiv_t
-define in_addr_t as uint32_t
-define in_port_t as uint16_t
-define ino_t as unsigned integer
-define int16_t as short integer
-define int32_t as integer
-define int64_t as long integer
-define int8_t as signed character
-define int_fast16_t as short integer
-define int_fast32_t as integer
-define int_fast64_t as long integer
-define int_fast8_t as signed character
-define int_least16_t as short integer
-define int_least32_t as integer
-define int_least64_t as long integer
-define int_least8_t as signed character
-define intmax_t as long integer
-define intptr_t as long integer
-define jmp_buf as array 37 of integer
-define key_t as int32_t
-define lconv as structure lconv
-define ldiv_t as structure ldiv_t
-define lldiv_t as structure lldiv_t
-define locale_t as structure locale_t
-define long_double_t as long double precision
-define max_align_t as long double precision
-define mbstate_t as structure mbstate_t
-define memory_order as enumeration memory_order
-define mode_t as int32_t
-define mtx_t as pthread_mutex_t
-define nfds_t as unsigned long integer
-define nlink_t as uint32_t
-define nullptr_t as pointer to void
-define off_t as long integer
-define once_flag as integer
-define pid_t as int32_t
-define posix_spawn_file_actions_t as pointer to void
-define posix_spawnattr_t as pointer to void
-define pthread_barrier_t as structure pthread_barrier_t
-define pthread_barrierattr_t as structure pthread_barrierattr_t
-define pthread_cond_t as structure pthread_cond_t
-define pthread_condattr_t as structure pthread_condattr_t
-define pthread_key_t as unsigned integer
-define pthread_mutex_t as structure pthread_mutex_t
-define pthread_mutexattr_t as structure pthread_mutexattr_t
-define pthread_once_t as integer
-define pthread_rwlock_t as structure pthread_rwlock_t
-define pthread_rwlockattr_t as structure pthread_rwlockattr_t
-define pthread_spinlock_t as volatile integer
-define pthread_t as unsigned long integer
-define ptrdiff_t as long integer
-define regex_t as structure regex_t
-define regmatch_t as structure regmatch_t
-define regoff_t as size_t
-define rlim_t as uint32_t
-define rsize_t as unsigned long integer
-define sa_family_t as uint32_t
-define sig_atomic_t as integer
-define sig_t as pointer to function (integer) returning void
-define sighandler_t as pointer to function (integer) returning void
-define siginfo_t as structure siginfo_t
-define sigset_t as unsigned long integer
-define size_t as unsigned long integer
-define socklen_t as uint32_t
-define ssize_t as long integer
-define adopt_lock_t of namespace std as structure adopt_lock_t
-define align_val_t of namespace std as enumeration class align_val_t
-define allocator_arg_t of namespace std as structure allocator_arg_t
-define ambiguous_local_time of namespace std as class ambiguous_local_time
-define any of namespace std as structure any
-define atomic_bool of namespace std as structure atomic_bool
-define atomic_char of namespace std as structure atomic_char
-define atomic_char16_t of namespace std as structure atomic_char16_t
-define atomic_char32_t of namespace std as structure atomic_char32_t
-define atomic_char8_t of namespace std as structure atomic_char8_t
-define atomic_flag of namespace std as structure atomic_flag
-define atomic_int of namespace std as structure atomic_int
-define atomic_int16_t of namespace std as structure atomic_int16_t
-define atomic_int32_t of namespace std as structure atomic_int32_t
-define atomic_int64_t of namespace std as structure atomic_int64_t
-define atomic_int8_t of namespace std as structure atomic_int8_t
-define atomic_int_fast16_t of namespace std as structure atomic_int_fast16_t
-define atomic_int_fast32_t of namespace std as structure atomic_int_fast32_t
-define atomic_int_fast64_t of namespace std as structure atomic_int_fast64_t
-define atomic_int_fast8_t of namespace std as structure atomic_int_fast8_t
-define atomic_int_least16_t of namespace std as structure atomic_int_least16_t
-define atomic_int_least32_t of namespace std as structure atomic_int_least32_t
-define atomic_int_least64_t of namespace std as structure atomic_int_least64_t
-define atomic_int_least8_t of namespace std as structure atomic_int_least8_t
-define atomic_intmax_t of namespace std as structure atomic_intmax_t
-define atomic_intptr_t of namespace std as structure atomic_intptr_t
-define atomic_llong of namespace std as structure atomic_llong
-define atomic_long of namespace std as structure atomic_long
-define atomic_ptrdiff_t of namespace std as structure atomic_ptrdiff_t
-define atomic_schar of namespace std as structure atomic_schar
-define atomic_short of namespace std as structure atomic_short
-define atomic_signed_lock_free of namespace std as structure atomic_signed_lock_free
-define atomic_size_t of namespace std as structure atomic_size_t
-define atomic_uchar of namespace std as structure atomic_uchar
-define atomic_uint of namespace std as structure atomic_uint
-define atomic_uint16_t of namespace std as structure atomic_uint16_t
-define atomic_uint32_t of namespace std as structure atomic_uint32_t
-define atomic_uint64_t of namespace std as structure atomic_uint64_t
-define atomic_uint8_t of namespace std as structure atomic_uint8_t
-define atomic_uint_fast16_t of namespace std as structure atomic_uint_fast16_t
-define atomic_uint_fast32_t of namespace std as structure atomic_uint_fast32_t
-define atomic_uint_fast64_t of namespace std as structure atomic_uint_fast64_t
-define atomic_uint_fast8_t of namespace std as structure atomic_uint_fast8_t
-define atomic_uint_least16_t of namespace std as structure atomic_uint_least16_t
-define atomic_uint_least32_t of namespace std as structure atomic_uint_least32_t
-define atomic_uint_least64_t of namespace std as structure atomic_uint_least64_t
-define atomic_uint_least8_t of namespace std as structure atomic_uint_least8_t
-define atomic_uintmax_t of namespace std as structure atomic_uintmax_t
-define atomic_uintptr_t of namespace std as structure atomic_uintptr_t
-define atomic_ullong of namespace std as structure atomic_ullong
-define atomic_ulong of namespace std as structure atomic_ulong
-define atomic_unsigned_lock_free of namespace std as structure atomic_unsigned_lock_free
-define atomic_ushort of namespace std as structure atomic_ushort
-define atomic_wchar_t of namespace std as structure atomic_wchar_t
-define bad_alloc of namespace std as class bad_alloc
-define bad_any_cast of namespace std as class bad_any_cast
-define bad_array_new_length of namespace std as class bad_array_new_length
-define bad_cast of namespace std as class bad_cast
-define bad_exception of namespace std as class bad_exception
-define bad_function_call of namespace std as class bad_function_call
-define bad_optional_access of namespace std as class bad_optional_access
-define bad_typeid of namespace std as class bad_typeid
-define bad_variant_access of namespace std as class bad_variant_access
-define bad_weak_ptr of namespace std as class bad_weak_ptr
-define bernoulli_distribution of namespace std as class bernoulli_distribution
-define bfloat16_t of namespace std as floating point
-define byte of namespace std as enumeration byte
-define chars_format of namespace std as enumeration class chars_format
-define choose of namespace chrono of namespace std as enumeration class choose
-define day of namespace chrono of namespace std as class day
-define file_clock of namespace chrono of namespace std as structure file_clock
-define gps_clock of namespace chrono of namespace std as structure gps_clock
-define high_resolution_clock of namespace chrono of namespace std as class high_resolution_clock
-define is_clock of namespace chrono of namespace std as structure is_clock
-define last_spec of namespace chrono of namespace std as structure last_spec
-define leap_second of namespace chrono of namespace std as class leap_second
-define local_info of namespace chrono of namespace std as structure local_info
-define local_t of namespace chrono of namespace std as structure local_t
-define month of namespace chrono of namespace std as class month
-define month_day of namespace chrono of namespace std as class month_day
-define month_day_last of namespace chrono of namespace std as class month_day_last
-define month_weekday of namespace chrono of namespace std as class month_weekday
-define month_weekday_last of namespace chrono of namespace std as class month_weekday_last
-define nonexistent_local_time of namespace chrono of namespace std as class nonexistent_local_time
-define steady_clock of namespace chrono of namespace std as class steady_clock
-define sys_info of namespace chrono of namespace std as structure sys_info
-define system_clock of namespace chrono of namespace std as class system_clock
-define tai_clock of namespace chrono of namespace std as structure tai_clock
-define time_zone of namespace chrono of namespace std as structure time_zone
-define time_zone_link of namespace chrono of namespace std as class time_zone_link
-define tzdb of namespace chrono of namespace std as structure tzdb
-define tzdb_list of namespace chrono of namespace std as structure tzdb_list
-define utc_clock of namespace chrono of namespace std as structure utc_clock
-define weekday of namespace chrono of namespace std as class weekday
-define weekday_indexed of namespace chrono of namespace std as class weekday_indexed
-define weekday_last of namespace chrono of namespace std as class weekday_last
-define year of namespace chrono of namespace std as class year
-define year_month of namespace chrono of namespace std as class year_month
-define year_month_day of namespace chrono of namespace std as class year_month_day
-define year_month_day_last of namespace chrono of namespace std as class year_month_day_last
-define year_month_weekday of namespace chrono of namespace std as class year_month_weekday
-define year_month_weekday_last of namespace chrono of namespace std as class year_month_weekday_last
-define codecvt_base of namespace std as class codecvt_base
-define compare_three_way of namespace std as structure compare_three_way
-define condition_variable of namespace std as class condition_variable
-define condition_variable_any of namespace std as class condition_variable_any
-define ctype_base of namespace std as class ctype_base
-define mask of class ctype_base of namespace std as unsigned integer
-define cv_status of namespace std as enumeration class cv_status
-define defer_lock_t of namespace std as structure defer_lock_t
-define destroying_delete_t of namespace std as structure destroying_delete_t
-define div_t of namespace std as structure div_t
-define domain_error of namespace std as class domain_error
-define endian of namespace std as enumeration class endian
-define error_category of namespace std as class error_category
-define error_code of namespace std as class error_code
-define error_condition of namespace std as class error_condition
-define exception of namespace std as class exception
-define filebuf of namespace std as class filebuf
-define copy_options of namespace filesystem of namespace std as enumeration class copy_options
-define directory_entry of namespace filesystem of namespace std as class directory_entry
-define directory_iterator of namespace filesystem of namespace std as class directory_iterator
-define directory_options of namespace filesystem of namespace std as enumeration class directory_options
-define file_status of namespace filesystem of namespace std as class file_status
-define file_type of namespace filesystem of namespace std as enumeration class file_type
-define filesystem_error of namespace filesystem of namespace std as class filesystem_error
-define path of namespace filesystem of namespace std as class path
-define perm_options of namespace filesystem of namespace std as enumeration class perm_options
-define perms of namespace filesystem of namespace std as enumeration class perms
-define recursive_directory_iterator of namespace filesystem of namespace std as class recursive_directory_iterator
-define space_info of namespace filesystem of namespace std as structure space_info
-define float128_t of namespace std as array 2 of double precision
-define float16_t of namespace std as floating point
-define float32_t of namespace std as floating point
-define float64_t of namespace std as double precision
-define format_error of namespace std as class format_error
-define from_chars_result of namespace std as structure from_chars_result
-define fstream of namespace std as class fstream
-define future_errc of namespace std as enumeration class future_errc
-define future_error of namespace std as class future_error
-define future_status of namespace std as enumeration class future_status
-define ifstream of namespace std as class ifstream
-define imaxdiv_t of namespace std as structure imaxdiv_t
-define invalid_argument of namespace std as class invalid_argument
-define ios of namespace std as class ios
-define ios_base of namespace std as class ios_base
-define Init of class ios_base of namespace std as class Init
-define event of class ios_base of namespace std as enumeration event
-define event_callback of class ios_base of namespace std as pointer to function (event of class ios_base of namespace std, reference to ios_base of namespace std, integer) returning void
-define failure of class ios_base of namespace std as class failure
-define fmtflags of class ios_base of namespace std as unsigned integer
-define iostate of class ios_base of namespace std as unsigned integer
-define openmode of class ios_base of namespace std as unsigned integer
-define seekdir of class ios_base of namespace std as integer
-define iostream of namespace std as class iostream
-define ispanstream of namespace std as class ispanstream
-define istream of namespace std as class istream
-define istringstream of namespace std as class istringstream
-define jthread of namespace std as class jthread
-define latch of namespace std as class latch
-define launch of namespace std as enumeration class launch
-define ldiv_t of namespace std as structure ldiv_t
-define length_error of namespace std as class length_error
-define lldiv_t of namespace std as structure lldiv_t
-define locale of namespace std as class locale
-define logic_error of namespace std as class logic_error
-define max_align_t of namespace std as long double precision
-define messages_base of namespace std as class messages_base
-define money_base of namespace std as class money_base
-define mono_state of namespace std as structure mono_state
-define mutex of namespace std as class mutex
-define new_handler of namespace std as pointer to function returning void
-define nonstopstate_t of namespace std as structure nonstopstate_t
-define noop_coroutine_promise of namespace std as structure noop_coroutine_promise
-define nothrow_t of namespace std as structure nothrow_t
-define nullptr_t of namespace std as pointer to void
-define ofstream of namespace std as class ofstream
-define ospanstream of namespace std as class ospanstream
-define ostream of namespace std as class ostream
-define ostringstream of namespace std as class ostringstream
-define osyncstream of namespace std as class osyncstream
-define out_of_range of namespace std as class out_of_range
-define overflow_error of namespace std as class overflow_error
-define partial_ordering of namespace std as structure partial_ordering
-define memory_resource of namespace pmr of namespace std as class memory_resource
-define monotonic_buffer_resource of namespace pmr of namespace std as class monotonic_buffer_resource
-define pool_options of namespace pmr of namespace std as structure pool_options
-define synchronized_pool_resource of namespace pmr of namespace std as class synchronized_pool_resource
-define unsynchronized_pool_resource of namespace pmr of namespace std as class unsynchronized_pool_resource
-define ptrdiff_t of namespace std as long integer
-define random_device of namespace std as class random_device
-define range_error of namespace std as class range_error
-define range_format of namespace std as enumeration class range_format
-define recursive_mutex of namespace std as class recursive_mutex
-define recursive_timed_mutex of namespace std as class recursive_timed_mutex
-define regex of namespace std as class regex
-define error_type of namespace regex_constants of namespace std as unsigned integer
-define match_flag_type of namespace regex_constants of namespace std as unsigned integer
-define syntax_option_type of namespace regex_constants of namespace std as unsigned integer
-define regex_error of namespace std as structure regex_error
-define runtime_error of namespace std as class runtime_error
-define shared_mutex of namespace std as class shared_mutex
-define shared_timed_mutex of namespace std as class shared_timed_mutex
-define sig_atomic_t of namespace std as integer
-define size_t of namespace std as unsigned long integer
-define source_location of namespace std as structure source_location
-define spanbuf of namespace std as class spanbuf
-define spanstream of namespace std as class spanstream
-define stacktrace of namespace std as class stacktrace
-define stacktrace_entry of namespace std as class stacktrace_entry
-define stop_source of namespace std as class stop_source
-define stop_token of namespace std as class stop_token
-define streambuf of namespace std as class streambuf
-define streamoff of namespace std as long long integer
-define streamsize of namespace std as long integer
-define string of namespace std as class string
-define string_view of namespace std as class string_view
-define stringbuf of namespace std as class stringbuf
-define stringstream of namespace std as class stringstream
-define strong_equality of namespace std as structure strong_equality
-define strong_ordering of namespace std as structure strong_ordering
-define suspend_always of namespace std as structure suspend_always
-define suspend_never of namespace std as structure suspend_never
-define syncbuf of namespace std as class syncbuf
-define system_error of namespace std as structure system_error
-define thread of namespace std as class thread
-define time_base of namespace std as class time_base
-define time_spec of namespace std as structure time_spec
-define timed_mutex of namespace std as class timed_mutex
-define tm of namespace std as structure tm
-define to_chars_result of namespace std as structure to_chars_result
-define try_to_lock_t of namespace std as structure try_to_lock_t
-define type_index of namespace std as class type_index
-define type_info of namespace std as class type_info
-define u16string of namespace std as class u16string
-define u16string_view of namespace std as class u16string_view
-define u32string of namespace std as class u32string
-define u32string_view of namespace std as class u32string_view
-define u8string_view of namespace std as class u8string_view
-define underflow_error of namespace std as class underflow_error
-define unexpect_t of namespace std as structure unexpect_t
-define weak_equality of namespace std as structure weak_equality
-define weak_ordering of namespace std as structure weak_ordering
-define wfilebuf of namespace std as class wfilebuf
-define wfstream of namespace std as class wfstream
-define wifstream of namespace std as class wifstream
-define wios of namespace std as class wios
-define wiostream of namespace std as class wiostream
-define wispanstream of namespace std as class wispanstream
-define wistream of namespace std as class wistream
-define wistringstream of namespace std as class wistringstream
-define wofstream of namespace std as class wofstream
-define wospanstream of namespace std as class wospanstream
-define wostream of namespace std as class wostream
-define wostringstream of namespace std as class wostringstream
-define wosyncstream of namespace std as class wosyncstream
-define wregex of namespace std as class wregex
-define wspanbuf of namespace std as class wspanbuf
-define wspanstream of namespace std as class wspanstream
-define wstreambuf of namespace std as class wstreambuf
-define wstring of namespace std as class wstring
-define wstring_view of namespace std as class wstring_view
-define wstringbuf of namespace std as class wstringbuf
-define wstringstream of namespace std as class wstringstream
-define wsyncbuf of namespace std as class wsyncbuf
-define suseconds_t as int64_t
-define thrd_start_t as pointer to function (pointer to void) returning integer
-define thrd_t as pthread_t
-define time_t as long integer
-define timer_t as pointer to void
-define tm as structure tm
-define tss_dtor_t as pointer to function (pointer to void) returning void
-define tss_t as pointer to void
-define uid_t as uint32_t
-define uint16_t as unsigned short integer
-define uint32_t as unsigned integer
-define uint64_t as unsigned long integer
-define uint8_t as unsigned character
-define uint_fast16_t as unsigned short integer
-define uint_fast32_t as unsigned integer
-define uint_fast64_t as unsigned long integer
-define uint_fast8_t as unsigned character
-define uint_least16_t as unsigned short integer
-define uint_least32_t as unsigned integer
-define uint_least64_t as unsigned long integer
-define uint_least8_t as unsigned character
-define uintmax_t as unsigned long integer
-define uintptr_t as unsigned long integer
-define useconds_t as uint32_t
-define va_list as pointer to void
-define wctrans_t as integer
-define wctype_t as unsigned long integer
-define wint_t as integer
+typedef WORD ATOM;
+typedef int BOOL;
+typedef BYTE BOOLEAN;
+typedef unsigned char BYTE;
+typedef char CCHAR;
+typedef char CHAR;
+typedef DWORD COLORREF;
+typedef struct _dirdesc DIR;
+typedef unsigned long DWORD;
+typedef unsigned DWORD32;
+typedef unsigned long DWORD64;
+typedef unsigned long DWORDLONG;
+typedef ULONG_PTR DWORD_PTR;
+typedef struct _iobuf FILE;
+typedef float FLOAT;
+typedef int HALF_PTR;
+typedef PVOID HANDLE;
+typedef HANDLE HBITMAP;
+typedef HANDLE HBRUSH;
+typedef HANDLE HCOLORSPACE;
+typedef HANDLE HCONV;
+typedef HANDLE HCONVLIST;
+typedef HICON HCURSOR;
+typedef HANDLE HDC;
+typedef HANDLE HDDEDATA;
+typedef HANDLE HDESK;
+typedef HANDLE HDROP;
+typedef HANDLE HDWP;
+typedef HANDLE HENHMETAFILE;
+typedef int HFILE;
+typedef HANDLE HFONT;
+typedef HANDLE HGDIOBJ;
+typedef HANDLE HGLOBAL;
+typedef HANDLE HHOOK;
+typedef HANDLE HICON;
+typedef HANDLE HINSTANCE;
+typedef HANDLE HKEY;
+typedef HANDLE HKL;
+typedef HANDLE HLOCAL;
+typedef HANDLE HMENU;
+typedef HANDLE HMETAFILE;
+typedef HINSTANCE HMODULE;
+typedef HANDLE HMONITOR;
+typedef HANDLE HPALETTE;
+typedef HANDLE HPEN;
+typedef long HRESULT;
+typedef HANDLE HRGN;
+typedef HANDLE HRSRC;
+typedef HANDLE HSZ;
+typedef HANDLE HWINSTA;
+typedef HANDLE HWND;
+typedef int INT;
+typedef short INT16;
+typedef int INT32;
+typedef long INT64;
+typedef signed char INT8;
+typedef __int64 INT_PTR;
+typedef WORD LANGID;
+typedef union _LARGE_INTEGER LARGE_INTEGER;
+typedef DWORD LCID;
+typedef DWORD LCTYPE;
+typedef DWORD LGRPID;
+typedef long LONG;
+typedef int LONG32;
+typedef __int64 LONG64;
+typedef long long LONGLONG;
+typedef __int64 LONG_PTR;
+typedef BOOL *LPBOOL;
+typedef BYTE *LPBYTE;
+typedef CHAR *LPCHAR;
+typedef COLORREF *LPCOLORREF;
+typedef const CHAR *LPCSTR;
+typedef LPCWSTR LPCTSTR;
+typedef const void *LPCVOID;
+typedef const WCHAR *LPCWSTR;
+typedef DWORD *LPDWORD;
+typedef HANDLE *LPHANDLE;
+typedef int *LPINT;
+typedef long *LPLONG;
+typedef CHAR *LPSTR;
+typedef LPWSTR LPTSTR;
+typedef void *LPVOID;
+typedef WORD *LPWORD;
+typedef WCHAR *LPWSTR;
+typedef LONG_PTR LRESULT;
+typedef BOOL *PBOOL;
+typedef BOOLEAN *PBOOLEAN;
+typedef BYTE *PBYTE;
+typedef CHAR *PCHAR;
+typedef const CHAR *PCSTR;
+typedef LPCWSTR PCTSTR;
+typedef const WCHAR *PCWSTR;
+typedef DWORD *PDWORD;
+typedef DWORD32 *PDWORD32;
+typedef DWORD64 *PDWORD64;
+typedef DWORDLONG *PDWORDLONG;
+typedef DWORD_PTR *PDWORD_PTR;
+typedef FLOAT *PFLOAT;
+typedef HALF_PTR *PHALF_PTR;
+typedef HANDLE *PHANDLE;
+typedef HKEY *PHKEY;
+typedef INT *PINT;
+typedef INT16 *PINT16;
+typedef INT32 *PINT32;
+typedef INT64 *PINT64;
+typedef INT8 *PINT8;
+typedef INT_PTR *PINT_PTR;
+typedef PDWORD PLCID;
+typedef LONG *PLONG;
+typedef LONG32 *PLONG32;
+typedef LONG64 *PLONG64;
+typedef LONGLONG *PLONGLONG;
+typedef LONG_PTR *PLONG_PTR;
+typedef SHORT *PSHORT;
+typedef SIZE_T *PSIZE_T;
+typedef SSIZE_T *PSSIZE_T;
+typedef CHAR *PSTR;
+typedef TBYTE *PTBYTE;
+typedef TCHAR *PTCHAR;
+typedef LPWSTR PTSTR;
+typedef UCHAR *PUCHAR;
+typedef UHALF_PTR *PUHALF_PTR;
+typedef UINT *PUINT;
+typedef UINT16 *PUINT16;
+typedef UINT32 *PUINT32;
+typedef UINT64 *PUINT64;
+typedef UINT8 *PUINT8;
+typedef UINT_PTR *PUINT_PTR;
+typedef ULONG *PULONG;
+typedef ULONG32 *PULONG32;
+typedef ULONG64 *PULONG64;
+typedef ULONGLONG *PULONGLONG;
+typedef ULONG_PTR *PULONG_PTR;
+typedef USHORT *PUSHORT;
+typedef void *PVOID;
+typedef WCHAR *PWCHAR;
+typedef WORD *PWORD;
+typedef WCHAR *PWSTR;
+typedef unsigned long long QWORD;
+typedef HANDLE SC_HANDLE;
+typedef LPVOID SC_LOCK;
+typedef HANDLE SERVICE_STATUS_HANDLE;
+typedef short SHORT;
+typedef ULONG_PTR SIZE_T;
+typedef LONG_PTR SSIZE_T;
+typedef WCHAR TBYTE;
+typedef WCHAR TCHAR;
+typedef unsigned char UCHAR;
+typedef unsigned UHALF_PTR;
+typedef unsigned UINT;
+typedef unsigned short UINT16;
+typedef unsigned UINT32;
+typedef unsigned long UINT64;
+typedef unsigned char UINT8;
+typedef unsigned long UINT_PTR;
+typedef union _ULARGE_INTEGER ULARGE_INTEGER;
+typedef unsigned long ULONG;
+typedef unsigned ULONG32;
+typedef unsigned long ULONG64;
+typedef unsigned long long ULONGLONG;
+typedef unsigned long ULONG_PTR;
+typedef struct UNICODE_STRING UNICODE_STRING;
+typedef unsigned short USHORT;
+typedef LONGLONG USN;
+typedef wchar_t WCHAR;
+typedef unsigned short WORD;
+typedef UINT_PTR WPARAM;
+typedef long double _Decimal128;
+typedef _Decimal128 _Decimal128_t;
+typedef _Decimal128 _Decimal128x;
+typedef float _Decimal32;
+typedef _Decimal32 _Decimal32_t;
+typedef double _Decimal64;
+typedef _Decimal64 _Decimal64_t;
+typedef _Decimal64 _Decimal64x;
+typedef long double _Float128;
+typedef _Float128 _Float128_t;
+typedef _Float128 _Float128x;
+typedef float _Float16;
+typedef _Float16 _Float16_t;
+typedef float _Float32;
+typedef _Float32 _Float32_t;
+typedef _Float32 _Float32x;
+typedef double _Float64;
+typedef _Float64 _Float64_t;
+typedef _Float64 _Float64x;
+typedef _Float128 __float128;
+typedef _Float64x __float80;
+typedef _Float16 __fp16;
+typedef long double __ibm128;
+typedef long long __int128;
+typedef short __int16;
+typedef int __int32;
+typedef long long __int64;
+typedef signed char __int8;
+typedef struct __m128 __m128;
+typedef struct __m128d __m128d;
+typedef struct __m128i __m128i;
+typedef struct __m64 __m64;
+typedef wchar_t __wchar_t;
+typedef __int16 _int16;
+typedef __int32 _int32;
+typedef __int64 _int64;
+typedef __int8 _int8;
+typedef _Atomic(bool) atomic_bool;
+typedef _Atomic(char) atomic_char;
+typedef _Atomic(char16_t) atomic_char16_t;
+typedef _Atomic(char32_t) atomic_char32_t;
+typedef _Atomic(char8_t) atomic_char8_t;
+typedef struct atomic_flag atomic_flag;
+typedef _Atomic(int) atomic_int;
+typedef _Atomic(int_fast16_t) atomic_int_fast16_t;
+typedef _Atomic(int_fast32_t) atomic_int_fast32_t;
+typedef _Atomic(int_fast64_t) atomic_int_fast64_t;
+typedef _Atomic(int_fast8_t) atomic_int_fast8_t;
+typedef _Atomic(int_least16_t) atomic_int_least16_t;
+typedef _Atomic(int_least32_t) atomic_int_least32_t;
+typedef _Atomic(int_least64_t) atomic_int_least64_t;
+typedef _Atomic(int_least8_t) atomic_int_least8_t;
+typedef _Atomic(intmax_t) atomic_intmax_t;
+typedef _Atomic(intptr_t) atomic_intptr_t;
+typedef _Atomic(long long) atomic_llong;
+typedef _Atomic(long) atomic_long;
+typedef _Atomic(ptrdiff_t) atomic_ptrdiff_t;
+typedef _Atomic(signed char) atomic_schar;
+typedef _Atomic(short) atomic_short;
+typedef _Atomic(size_t) atomic_size_t;
+typedef _Atomic(unsigned char) atomic_uchar;
+typedef _Atomic(unsigned) atomic_uint;
+typedef _Atomic(uint_fast16_t) atomic_uint_fast16_t;
+typedef _Atomic(uint_fast32_t) atomic_uint_fast32_t;
+typedef _Atomic(uint_fast64_t) atomic_uint_fast64_t;
+typedef _Atomic(uint_fast8_t) atomic_uint_fast8_t;
+typedef _Atomic(uint_least16_t) atomic_uint_least16_t;
+typedef _Atomic(uint_least32_t) atomic_uint_least32_t;
+typedef _Atomic(uint_least64_t) atomic_uint_least64_t;
+typedef _Atomic(uint_least8_t) atomic_uint_least8_t;
+typedef _Atomic(uintmax_t) atomic_uintmax_t;
+typedef _Atomic(uintptr_t) atomic_uintptr_t;
+typedef _Atomic(unsigned long long) atomic_ullong;
+typedef _Atomic(unsigned long) atomic_ulong;
+typedef _Atomic(unsigned short) atomic_ushort;
+typedef _Atomic(wchar_t) atomic_wchar_t;
+typedef int32_t blkcnt_t;
+typedef int32_t blksize_t;
+typedef char *caddr_t;
+typedef unsigned cc_t;
+typedef long clock_t;
+typedef enum clockid_t clockid_t;
+typedef pthread_cond_t cnd_t;
+typedef void (*constraint_handler_t)(const char *__restrict, void *__restrict, errno_t);
+typedef long daddr_t;
+typedef int dev_t;
+typedef struct div_t div_t;
+typedef double double_t;
+typedef int errno_t;
+typedef struct fd_set fd_set;
+typedef struct femode_t femode_t;
+typedef struct fenv_t fenv_t;
+typedef unsigned short fexcept_t;
+typedef float float_t;
+typedef struct fpos_t fpos_t;
+typedef unsigned long fsblkcnt_t;
+typedef unsigned long fsfilcnt_t;
+typedef uint32_t gid_t;
+typedef void *iconv_t;
+typedef uint32_t id_t;
+typedef struct imaxdiv_t imaxdiv_t;
+typedef uint32_t in_addr_t;
+typedef uint16_t in_port_t;
+typedef unsigned ino_t;
+typedef short int16_t;
+typedef int int32_t;
+typedef long int64_t;
+typedef signed char int8_t;
+typedef short int_fast16_t;
+typedef int int_fast32_t;
+typedef long int_fast64_t;
+typedef signed char int_fast8_t;
+typedef short int_least16_t;
+typedef int int_least32_t;
+typedef long int_least64_t;
+typedef signed char int_least8_t;
+typedef long intmax_t;
+typedef long intptr_t;
+typedef int jmp_buf[37];
+typedef int32_t key_t;
+typedef struct lconv lconv;
+typedef struct ldiv_t ldiv_t;
+typedef struct lldiv_t lldiv_t;
+typedef struct locale_t locale_t;
+typedef long double long_double_t;
+typedef long double max_align_t;
+typedef struct mbstate_t mbstate_t;
+typedef enum memory_order memory_order;
+typedef int32_t mode_t;
+typedef pthread_mutex_t mtx_t;
+typedef unsigned long nfds_t;
+typedef uint32_t nlink_t;
+typedef void *nullptr_t;
+typedef long off_t;
+typedef int once_flag;
+typedef int32_t pid_t;
+typedef void *posix_spawn_file_actions_t;
+typedef void *posix_spawnattr_t;
+typedef struct pthread_barrier_t pthread_barrier_t;
+typedef struct pthread_barrierattr_t pthread_barrierattr_t;
+typedef struct pthread_cond_t pthread_cond_t;
+typedef struct pthread_condattr_t pthread_condattr_t;
+typedef unsigned pthread_key_t;
+typedef struct pthread_mutex_t pthread_mutex_t;
+typedef struct pthread_mutexattr_t pthread_mutexattr_t;
+typedef int pthread_once_t;
+typedef struct pthread_rwlock_t pthread_rwlock_t;
+typedef struct pthread_rwlockattr_t pthread_rwlockattr_t;
+typedef volatile int pthread_spinlock_t;
+typedef unsigned long pthread_t;
+typedef long ptrdiff_t;
+typedef struct regex_t regex_t;
+typedef struct regmatch_t regmatch_t;
+typedef size_t regoff_t;
+typedef uint32_t rlim_t;
+typedef unsigned long rsize_t;
+typedef uint32_t sa_family_t;
+typedef int sig_atomic_t;
+typedef void (*sig_t)(int);
+typedef void (*sighandler_t)(int);
+typedef struct siginfo_t siginfo_t;
+typedef unsigned long sigset_t;
+typedef unsigned long size_t;
+typedef uint32_t socklen_t;
+typedef long ssize_t;
+namespace std { struct adopt_lock_t; }
+namespace std { enum align_val_t; }
+namespace std { struct allocator_arg_t; }
+namespace std { class ambiguous_local_time; }
+namespace std { struct any; }
+namespace std { struct atomic_bool; }
+namespace std { struct atomic_char; }
+namespace std { struct atomic_char16_t; }
+namespace std { struct atomic_char32_t; }
+namespace std { struct atomic_char8_t; }
+namespace std { struct atomic_flag; }
+namespace std { struct atomic_int; }
+namespace std { struct atomic_int16_t; }
+namespace std { struct atomic_int32_t; }
+namespace std { struct atomic_int64_t; }
+namespace std { struct atomic_int8_t; }
+namespace std { struct atomic_int_fast16_t; }
+namespace std { struct atomic_int_fast32_t; }
+namespace std { struct atomic_int_fast64_t; }
+namespace std { struct atomic_int_fast8_t; }
+namespace std { struct atomic_int_least16_t; }
+namespace std { struct atomic_int_least32_t; }
+namespace std { struct atomic_int_least64_t; }
+namespace std { struct atomic_int_least8_t; }
+namespace std { struct atomic_intmax_t; }
+namespace std { struct atomic_intptr_t; }
+namespace std { struct atomic_llong; }
+namespace std { struct atomic_long; }
+namespace std { struct atomic_ptrdiff_t; }
+namespace std { struct atomic_schar; }
+namespace std { struct atomic_short; }
+namespace std { struct atomic_signed_lock_free; }
+namespace std { struct atomic_size_t; }
+namespace std { struct atomic_uchar; }
+namespace std { struct atomic_uint; }
+namespace std { struct atomic_uint16_t; }
+namespace std { struct atomic_uint32_t; }
+namespace std { struct atomic_uint64_t; }
+namespace std { struct atomic_uint8_t; }
+namespace std { struct atomic_uint_fast16_t; }
+namespace std { struct atomic_uint_fast32_t; }
+namespace std { struct atomic_uint_fast64_t; }
+namespace std { struct atomic_uint_fast8_t; }
+namespace std { struct atomic_uint_least16_t; }
+namespace std { struct atomic_uint_least32_t; }
+namespace std { struct atomic_uint_least64_t; }
+namespace std { struct atomic_uint_least8_t; }
+namespace std { struct atomic_uintmax_t; }
+namespace std { struct atomic_uintptr_t; }
+namespace std { struct atomic_ullong; }
+namespace std { struct atomic_ulong; }
+namespace std { struct atomic_unsigned_lock_free; }
+namespace std { struct atomic_ushort; }
+namespace std { struct atomic_wchar_t; }
+namespace std { class bad_alloc; }
+namespace std { class bad_any_cast; }
+namespace std { class bad_array_new_length; }
+namespace std { class bad_cast; }
+namespace std { class bad_exception; }
+namespace std { class bad_function_call; }
+namespace std { class bad_optional_access; }
+namespace std { class bad_typeid; }
+namespace std { class bad_variant_access; }
+namespace std { class bad_weak_ptr; }
+namespace std { class bernoulli_distribution; }
+namespace std { using bfloat16_t = float; }
+namespace std { enum byte; }
+namespace std { enum chars_format; }
+namespace std::chrono { enum choose; }
+namespace std::chrono { class day; }
+namespace std::chrono { struct file_clock; }
+namespace std::chrono { struct gps_clock; }
+namespace std::chrono { class high_resolution_clock; }
+namespace std::chrono { struct is_clock; }
+namespace std::chrono { struct last_spec; }
+namespace std::chrono { class leap_second; }
+namespace std::chrono { struct local_info; }
+namespace std::chrono { struct local_t; }
+namespace std::chrono { class month; }
+namespace std::chrono { class month_day; }
+namespace std::chrono { class month_day_last; }
+namespace std::chrono { class month_weekday; }
+namespace std::chrono { class month_weekday_last; }
+namespace std::chrono { class nonexistent_local_time; }
+namespace std::chrono { class steady_clock; }
+namespace std::chrono { struct sys_info; }
+namespace std::chrono { class system_clock; }
+namespace std::chrono { struct tai_clock; }
+namespace std::chrono { struct time_zone; }
+namespace std::chrono { class time_zone_link; }
+namespace std::chrono { struct tzdb; }
+namespace std::chrono { struct tzdb_list; }
+namespace std::chrono { struct utc_clock; }
+namespace std::chrono { class weekday; }
+namespace std::chrono { class weekday_indexed; }
+namespace std::chrono { class weekday_last; }
+namespace std::chrono { class year; }
+namespace std::chrono { class year_month; }
+namespace std::chrono { class year_month_day; }
+namespace std::chrono { class year_month_day_last; }
+namespace std::chrono { class year_month_weekday; }
+namespace std::chrono { class year_month_weekday_last; }
+namespace std { class codecvt_base; }
+namespace std { struct compare_three_way; }
+namespace std { class condition_variable; }
+namespace std { class condition_variable_any; }
+namespace std { class ctype_base; }
+class std::ctype_base { using mask = unsigned; };
+namespace std { enum cv_status; }
+namespace std { struct defer_lock_t; }
+namespace std { struct destroying_delete_t; }
+namespace std { struct div_t; }
+namespace std { class domain_error; }
+namespace std { enum endian; }
+namespace std { class error_category; }
+namespace std { class error_code; }
+namespace std { class error_condition; }
+namespace std { class exception; }
+namespace std { class filebuf; }
+namespace std::filesystem { enum copy_options; }
+namespace std::filesystem { class directory_entry; }
+namespace std::filesystem { class directory_iterator; }
+namespace std::filesystem { enum directory_options; }
+namespace std::filesystem { class file_status; }
+namespace std::filesystem { enum file_type; }
+namespace std::filesystem { class filesystem_error; }
+namespace std::filesystem { class path; }
+namespace std::filesystem { enum perm_options; }
+namespace std::filesystem { enum perms; }
+namespace std::filesystem { class recursive_directory_iterator; }
+namespace std::filesystem { struct space_info; }
+namespace std { using float128_t = double[2]; }
+namespace std { using float16_t = float; }
+namespace std { using float32_t = float; }
+namespace std { using float64_t = double; }
+namespace std { class format_error; }
+namespace std { struct from_chars_result; }
+namespace std { class fstream; }
+namespace std { enum future_errc; }
+namespace std { class future_error; }
+namespace std { enum future_status; }
+namespace std { class ifstream; }
+namespace std { struct imaxdiv_t; }
+namespace std { class invalid_argument; }
+namespace std { class ios; }
+namespace std { class ios_base; }
+class std::ios_base { class Init; };
+class std::ios_base { enum event; };
+class std::ios_base { using event_callback = void(*)(std::ios_base::event, std::ios_base&, int); };
+class std::ios_base { class failure; };
+class std::ios_base { using fmtflags = unsigned; };
+class std::ios_base { using iostate = unsigned; };
+class std::ios_base { using openmode = unsigned; };
+class std::ios_base { using seekdir = int; };
+namespace std { class iostream; }
+namespace std { class ispanstream; }
+namespace std { class istream; }
+namespace std { class istringstream; }
+namespace std { class jthread; }
+namespace std { class latch; }
+namespace std { enum launch; }
+namespace std { struct ldiv_t; }
+namespace std { class length_error; }
+namespace std { struct lldiv_t; }
+namespace std { class locale; }
+namespace std { class logic_error; }
+namespace std { using max_align_t = long double; }
+namespace std { class messages_base; }
+namespace std { class money_base; }
+namespace std { struct mono_state; }
+namespace std { class mutex; }
+namespace std { using new_handler = void(*)(); }
+namespace std { struct nonstopstate_t; }
+namespace std { struct noop_coroutine_promise; }
+namespace std { struct nothrow_t; }
+namespace std { using nullptr_t = void*; }
+namespace std { class ofstream; }
+namespace std { class ospanstream; }
+namespace std { class ostream; }
+namespace std { class ostringstream; }
+namespace std { class osyncstream; }
+namespace std { class out_of_range; }
+namespace std { class overflow_error; }
+namespace std { struct partial_ordering; }
+namespace std::pmr { class memory_resource; }
+namespace std::pmr { class monotonic_buffer_resource; }
+namespace std::pmr { struct pool_options; }
+namespace std::pmr { class synchronized_pool_resource; }
+namespace std::pmr { class unsynchronized_pool_resource; }
+namespace std { using ptrdiff_t = long; }
+namespace std { class random_device; }
+namespace std { class range_error; }
+namespace std { enum range_format; }
+namespace std { class recursive_mutex; }
+namespace std { class recursive_timed_mutex; }
+namespace std { class regex; }
+namespace std::regex_constants { using error_type = unsigned; }
+namespace std::regex_constants { using match_flag_type = unsigned; }
+namespace std::regex_constants { using syntax_option_type = unsigned; }
+namespace std { struct regex_error; }
+namespace std { class runtime_error; }
+namespace std { class shared_mutex; }
+namespace std { class shared_timed_mutex; }
+namespace std { using sig_atomic_t = int; }
+namespace std { using size_t = unsigned long; }
+namespace std { struct source_location; }
+namespace std { class spanbuf; }
+namespace std { class spanstream; }
+namespace std { class stacktrace; }
+namespace std { class stacktrace_entry; }
+namespace std { class stop_source; }
+namespace std { class stop_token; }
+namespace std { class streambuf; }
+namespace std { using streamoff = long long; }
+namespace std { using streamsize = long; }
+namespace std { class string; }
+namespace std { class string_view; }
+namespace std { class stringbuf; }
+namespace std { class stringstream; }
+namespace std { struct strong_equality; }
+namespace std { struct strong_ordering; }
+namespace std { struct suspend_always; }
+namespace std { struct suspend_never; }
+namespace std { class syncbuf; }
+namespace std { struct system_error; }
+namespace std { class thread; }
+namespace std { class time_base; }
+namespace std { struct time_spec; }
+namespace std { class timed_mutex; }
+namespace std { struct tm; }
+namespace std { struct to_chars_result; }
+namespace std { struct try_to_lock_t; }
+namespace std { class type_index; }
+namespace std { class type_info; }
+namespace std { class u16string; }
+namespace std { class u16string_view; }
+namespace std { class u32string; }
+namespace std { class u32string_view; }
+namespace std { class u8string_view; }
+namespace std { class underflow_error; }
+namespace std { struct unexpect_t; }
+namespace std { struct weak_equality; }
+namespace std { struct weak_ordering; }
+namespace std { class wfilebuf; }
+namespace std { class wfstream; }
+namespace std { class wifstream; }
+namespace std { class wios; }
+namespace std { class wiostream; }
+namespace std { class wispanstream; }
+namespace std { class wistream; }
+namespace std { class wistringstream; }
+namespace std { class wofstream; }
+namespace std { class wospanstream; }
+namespace std { class wostream; }
+namespace std { class wostringstream; }
+namespace std { class wosyncstream; }
+namespace std { class wregex; }
+namespace std { class wspanbuf; }
+namespace std { class wspanstream; }
+namespace std { class wstreambuf; }
+namespace std { class wstring; }
+namespace std { class wstring_view; }
+namespace std { class wstringbuf; }
+namespace std { class wstringstream; }
+namespace std { class wsyncbuf; }
+typedef int64_t suseconds_t;
+typedef int (*thrd_start_t)(void*);
+typedef pthread_t thrd_t;
+typedef long time_t;
+typedef void *timer_t;
+typedef struct tm tm;
+typedef void (*tss_dtor_t)(void*);
+typedef void *tss_t;
+typedef uint32_t uid_t;
+typedef unsigned short uint16_t;
+typedef unsigned uint32_t;
+typedef unsigned long uint64_t;
+typedef unsigned char uint8_t;
+typedef unsigned short uint_fast16_t;
+typedef unsigned uint_fast32_t;
+typedef unsigned long uint_fast64_t;
+typedef unsigned char uint_fast8_t;
+typedef unsigned short uint_least16_t;
+typedef unsigned uint_least32_t;
+typedef unsigned long uint_least64_t;
+typedef unsigned char uint_least8_t;
+typedef unsigned long uintmax_t;
+typedef unsigned long uintptr_t;
+typedef uint32_t useconds_t;
+typedef void *va_list;
+typedef int wctrans_t;
+typedef unsigned long wctype_t;
+typedef int wint_t;
 c++decl> show predefined typedef
 typedef WORD ATOM;
 typedef int BOOL;
@@ -5274,16 +5274,16 @@ c++decl> typedef int (*const CPF)(const char *const s)
 c++decl> typedef int *const CPI
 c++decl> typedef int S::*const CPMSI
 c++decl> show CPMSI
-define CPMSI as constant pointer to member of class S integer
+typedef int S::*const CPMSI;
 c++decl> show CPMSI typedef
 typedef int S::*const CPMSI;
 c++decl> show CPMSI using
 using CPMSI = int S::*const;
 c++decl> show user
-define CPF as constant pointer to function (s as constant pointer to constant character) returning integer
-define CPI as constant pointer to integer
-define CPMSI as constant pointer to member of class S integer
-define Int as integer
+typedef int (*const CPF)(const char *const s);
+typedef int *const CPI;
+typedef int S::*const CPMSI;
+typedef int Int;
 c++decl> show user typedef
 typedef int (*const CPF)(const char *const s);
 typedef int *const CPI;

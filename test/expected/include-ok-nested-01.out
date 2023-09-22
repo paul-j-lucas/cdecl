@@ -1,3 +1,3 @@
-define A1 as structure A1
-define A2 as structure A2
-define B1 as structure B1
+typedef struct A1 A1;
+typedef struct A2 A2;
+typedef struct B1 B1;

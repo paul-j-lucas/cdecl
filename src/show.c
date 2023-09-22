@@ -109,8 +109,12 @@ void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *tout ) {
   assert( tdef != NULL );
   assert( tout != NULL );
 
+  if ( (decl_flags & C_TYPE_DECL_ANY) == 0 )
+    decl_flags |= tdef->decl_flags;
+
   if ( opt_semicolon )
     decl_flags |= C_GIB_OPT_SEMICOLON;
+
   print_type_decl( tdef, decl_flags, tout );
   FPUTC( '\n', tout );
 }

@@ -2561,7 +2561,7 @@ show_format_exp
   ;
 
 show_format_opt
-  : /* empty */                   { $$ = C_ENG_DECL; }
+  : /* empty */                   { $$ = 0/*as declared*/; }
   | show_format
   ;
 

@@ -1,1 +1,1 @@
-define c_ast_id_t as unsigned integer
+typedef unsigned c_ast_id_t;

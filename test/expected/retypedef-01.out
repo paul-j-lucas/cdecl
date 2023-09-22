@@ -1,2 +1,2 @@
-define Int as integer
-define T as Int
+typedef int Int;
+typedef Int T;

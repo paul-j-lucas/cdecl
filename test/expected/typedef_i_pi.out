@@ -1,2 +1,2 @@
-define I as integer
-define PI as pointer to integer
+typedef int I;
+typedef int *PI;

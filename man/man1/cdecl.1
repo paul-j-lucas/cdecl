@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "September 9, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 22, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -987,16 +987,16 @@ equivalent to
 .RE
 .IP
 By default,
-definitions are shown in pseudo-English.
+types are shown as they were defined.
 If
 .B typedef
 is given,
-definitions are shown as \f(CWtypedef\fP declarations.
+types are shown as \f(CWtypedef\fP declarations.
 For C++11 or later only,
 if
 .B using
 is given,
-definitions are shown as \f(CWusing\fP declarations.
+types are shown as \f(CWusing\fP declarations.
 .TP
 .BR type [ def ] " \f2gibberish\fP" " [" , " \f2gibberish\fP]*"
 Defines types via a C (or C++) \f(CWtypedef\fP declaration.

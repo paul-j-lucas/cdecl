@@ -1,2 +1,2 @@
-define F as function (integer) returning void
-define PF as pointer to F
+typedef void F(int);
+typedef F *PF;

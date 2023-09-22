@@ -1,1 +1,1 @@
-define f as pointer to function (integer) returning void
+typedef void (*f)(int);

@@ -1,7 +1,7 @@
 include "data/not_found.cdeclrc"
         ^
 data/include-err-2.cdeclrc:2,9: error: data/not_found.cdeclrc: could not resolve path
-define A1 as structure A1
-define A2 as structure A2
-define B1 as structure B1
-define B2 as structure B2
+typedef struct A1 A1;
+typedef struct A2 A2;
+typedef struct B1 B1;
+typedef struct B2 B2;
