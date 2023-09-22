@@ -1,3 +1,13 @@
+2023-09-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1, parser.y, show.c, cdecl--no-typedefs.out, cl.out,
+     include-err-01.out, include-ok-nested-01.out, include-ok.out,
+     k_typedef_i_typedef_tn_i.out, retypedef-01.out, show.out,
+     typedef_fi_v_show.out, typedef_i_pi.out, typedef_pfi_v_show.out,
+     using_pfi_v_show_f.out: The `show` command now shows types as they were
+     declared by default.
+   * gibberish.c: Fixed showing `inline namespace` types as gibberish.
+
 2023-09-20  Paul J. Lucas <paul@lucasmail.org>
 
    * intprops-internal.h, mbtowc-lock.c, setlocale-lock.c, stdio.in.h,
