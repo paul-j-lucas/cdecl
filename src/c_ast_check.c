@@ -3087,6 +3087,7 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
     //      int j, *j;                  // error (different types)
     //
     if ( prev_ast != NULL &&
+         !c_sname_empty( &ast->sname ) &&
          c_sname_cmp( &ast->sname, &prev_ast->sname ) == 0 ) {
       if ( !OPT_LANG_IS( TENTATIVE_DEFS ) ) {
         print_error( &ast->loc,
@@ -3106,7 +3107,8 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
 
     if ( !c_ast_check( ast ) )
       return false;
-    prev_ast = ast;
+    if ( !c_sname_empty( &ast->sname ) )
+      prev_ast = ast;
   } // for
 
   return true;
