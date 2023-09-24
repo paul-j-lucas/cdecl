@@ -3,6 +3,9 @@ c++decl> using S2 = S
 c++decl> define SRE as reference to S
 c++decl> using SRU = S&
 c++decl> struct T
+c++decl> explain bool b, operator!(const S&)
+declare b as boolean
+declare ! as non-member operator (reference to constant S) returning boolean
 c++decl> explain S operator!(const S&)
 declare ! as non-member operator (reference to constant S) returning S
 c++decl> explain S operator!(const S2&)

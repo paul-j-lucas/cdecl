@@ -6,6 +6,8 @@ define SRE as reference to S
 using SRU = S&
 struct T
 
+explain bool b, operator!(const S&)
+
 explain S operator!(const S&)
 explain S operator!(const S2&)
 explain S operator!(const SRE)

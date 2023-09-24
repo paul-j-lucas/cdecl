@@ -31,6 +31,13 @@ Help for new-style casts has been folded into the same line for C-style casts.
     define PI as pointer to int
     define PI as type pointer to int    // same as above
 
+** Multiple declarations with an overloaded operator
+Declarations like:
+
+    explain bool b, operator!(const S&)
+
+now work.
+
 ** Showing `inline namespace` types
 Showing `inline namespace` types as gibberish has been fixed.
 

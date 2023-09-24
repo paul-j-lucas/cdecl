@@ -3595,6 +3595,18 @@ decl_c
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
+
+      if ( type_ast == $decl_astp.ast ) {
+        //
+        // If the type and the declarator are the same AST (which happens for
+        // simple declarations like "int x"), we have to replace the inherited
+        // attribute type with the duplicated one with its name cleared in case
+        // we're doing multiple declarations.
+        //
+        ia_type_ast_pop();
+        c_sname_cleanup( &dup_type_ast->sname );
+        ia_type_ast_push( dup_type_ast );
+      }
     }
   ;
 
