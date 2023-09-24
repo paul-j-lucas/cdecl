@@ -232,7 +232,7 @@ cdecl> explain _BitInt(4) x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1386,
+    unique_id: 1385,
     sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
@@ -387,7 +387,7 @@ cdecl> explain alignas(8) int x
   in_attr__alignas_bytes: 8,
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1388,
+    unique_id: 1387,
     sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
@@ -589,7 +589,7 @@ cdecl> explain alignas(long) int x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1391,
+    unique_id: 1390,
     sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
@@ -882,7 +882,7 @@ cdecl> explain enum E : int x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1394,
+    unique_id: 1393,
     sname: { string: "x", scopes: "none" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
@@ -892,11 +892,11 @@ cdecl> explain enum E : int x
     enum: {
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
-        unique_id: 1395,
+        unique_id: 1392,
         sname: null,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: 1394,
+        parent__unique_id: 0,
         loc: { first_column: 17, last_column: 19 },
         type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
         builtin: {
@@ -1073,7 +1073,7 @@ cdecl> explain enum E x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1397,
+    unique_id: 1396,
     sname: { string: "x", scopes: "none" },
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
@@ -1216,7 +1216,7 @@ cdecl> explain int x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1399,
+    unique_id: 1398,
     sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
@@ -1433,11 +1433,11 @@ cdecl> explain int x[4]
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1403,
+    unique_id: 1400,
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: 0,
+    parent__unique_id: 1401,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1674,11 +1674,11 @@ cdecl> explain int x[]
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1407,
+    unique_id: 1404,
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: 0,
+    parent__unique_id: 1405,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -1914,7 +1914,7 @@ cdecl> explain size_t x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1409,
+    unique_id: 1408,
     sname: { string: "x", scopes: "none" },
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
@@ -1923,11 +1923,11 @@ cdecl> explain size_t x
     type: { btid: 0x20000001, stid: 0x2, atid: 0x4, string: "none" },
     tdef: {
       for_ast: {
-        unique_id: 1410,
+        unique_id: 38,
         sname: { string: "size_t", scopes: "none" },
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        parent__unique_id: 1409,
+        parent__unique_id: 0,
         loc: { first_column: 8, last_column: 20 },
         type: { btid: 0x48001, stid: 0x2, atid: 0x4, string: "unsigned long" },
         builtin: {
@@ -2104,7 +2104,7 @@ cdecl> explain struct S x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1412,
+    unique_id: 1411,
     sname: { string: "x", scopes: "none" },
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
@@ -2215,7 +2215,7 @@ cdecl> explain unsigned x : 4
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1414,
+    unique_id: 1413,
     sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
@@ -2437,11 +2437,11 @@ cdecl> explain void f()
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1417,
+    unique_id: 1415,
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: 0,
+    parent__unique_id: 1416,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -3466,11 +3466,11 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1424,
+    unique_id: 1418,
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: 0,
+    parent__unique_id: 1423,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -4161,11 +4161,11 @@ cdecl> explain void f(int x[*])
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1430,
+    unique_id: 1425,
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: 0,
+    parent__unique_id: 1429,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -4816,11 +4816,11 @@ cdecl> explain void f(int x[static 2])
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1436,
+    unique_id: 1431,
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: 0,
+    parent__unique_id: 1435,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x11, stid: 0x2, atid: 0x4, string: "void" },
     builtin: {
@@ -5114,11 +5114,11 @@ c++decl> explain bool operator!() const
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1440,
+    unique_id: 1438,
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: 0,
+    parent__unique_id: 1439,
     loc: { first_column: 8, last_column: 11 },
     type: { btid: 0x81, stid: 0x2, atid: 0x4, string: "bool" },
     builtin: {
@@ -5450,11 +5450,11 @@ c++decl> explain int C::*p
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1443,
+    unique_id: 1441,
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: 0,
+    parent__unique_id: 1442,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -6220,11 +6220,11 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1450,
+    unique_id: 1446,
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    parent__unique_id: 0,
+    parent__unique_id: 1449,
     loc: { first_column: 8, last_column: 10 },
     type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
     builtin: {
@@ -8977,7 +8977,7 @@ c++decl> explain int x
   },
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
-    unique_id: 1488,
+    unique_id: 1487,
     sname: { string: "x", scopes: "none" },
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,

@@ -3564,13 +3564,8 @@ decl_list_c
 decl_c
   : // in_attr: alignas_specifier_c typename_flag_opt type_c_ast
     decl_c_astp[decl_astp]
-    { //
-      // The type has to be duplicated to guarantee a fresh type AST in case
-      // we're doing multiple declarations, e.g.:
-      //
-      //    explain int *p, *q
-      //
-      c_ast_t *const type_ast = c_ast_dup( ia_type_ast_peek(), &gc_ast_list );
+    {
+      c_ast_t *type_ast = ia_type_ast_peek();
 
       DUMP_START( "decl_c", "decl_c_astp" );
       switch ( in_attr.align.kind ) {
@@ -3586,6 +3581,14 @@ decl_c
       DUMP_BOOL( "in_attr__typename_flag_opt", in_attr.is_typename );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
+
+      //
+      // The type has to be duplicated to guarantee a fresh type AST in case
+      // we're doing multiple declarations, e.g.:
+      //
+      //    explain int *p, *q
+      //
+      type_ast = c_ast_dup( type_ast, &gc_ast_list );
 
       $$ = join_type_decl( type_ast, $decl_astp.ast );
       PARSE_ASSERT( $$ != NULL );
@@ -4565,7 +4568,8 @@ pc99_pointer_decl_c
   ;
 
 pc99_pointer_type_c_ast
-  : '*'[star] type_qualifier_list_c_stid_opt[qual_stids]
+  : // in_attr: type_c_ast
+    '*'[star] type_qualifier_list_c_stid_opt[qual_stids]
     {
       if ( OPT_LANG_IS( C_ANY ) && UNSUPPORTED( IMPLICIT_int ) ) {
         //
@@ -4580,17 +4584,20 @@ pc99_pointer_type_c_ast
         PARSE_ABORT();
       }
 
+      c_ast_t *type_ast = ia_type_ast_peek();
+
       DUMP_START( "pc99_pointer_type_c_ast",
                   "* type_qualifier_list_c_stid_opt" );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
       if ( false_set( &in_attr.is_implicit_int ) ) {
-        c_ast_t *const int_ast = c_ast_new_gc( K_BUILTIN, &@star );
-        int_ast->type.btids = TB_int;
-        ia_type_ast_push( int_ast );
+        type_ast = c_ast_new_gc( K_BUILTIN, &@star );
+        type_ast->type.btids = TB_int;
+        ia_type_ast_push( type_ast );
       }
 
-      c_ast_t *const type_ast = c_ast_dup( ia_type_ast_peek(), &gc_ast_list );
+      type_ast = c_ast_dup( type_ast, &gc_ast_list );
       $$ = c_ast_pointer( type_ast, &gc_ast_list );
       $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
 
