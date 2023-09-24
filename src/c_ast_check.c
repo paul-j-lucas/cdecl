@@ -989,7 +989,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
             if ( ret_ast == NULL || c_ast_params_count( ast ) != 1 )
               goto only_special;
             param_ast = c_ast_is_ref_to_tid_any( param_ast, TB_ANY_CLASS );
-            if ( param_ast != ret_ast )
+            if ( !c_ast_equal( param_ast, ret_ast ) )
               goto only_special;
             break;
           }
