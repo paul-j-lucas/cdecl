@@ -3086,8 +3086,10 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
     //      int i, i;                   // OK in C (same type); error in C++
     //      int j, *j;                  // error (different types)
     //
-    if ( prev_ast != NULL &&
-         !c_sname_empty( &ast->sname ) &&
+    bool const check_multi_decl =
+      (ast->kind & (K_ANY_OBJECT | K_FUNCTION | K_OPERATOR)) != 0 &&
+      !c_sname_empty( &ast->sname );
+    if ( check_multi_decl && prev_ast != NULL &&
          c_sname_cmp( &ast->sname, &prev_ast->sname ) == 0 ) {
       if ( !OPT_LANG_IS( TENTATIVE_DEFS ) ) {
         print_error( &ast->loc,
@@ -3107,7 +3109,7 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
 
     if ( !c_ast_check( ast ) )
       return false;
-    if ( !c_sname_empty( &ast->sname ) )
+    if ( check_multi_decl )
       prev_ast = ast;
   } // for
 
