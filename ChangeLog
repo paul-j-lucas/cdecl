@@ -1,3 +1,14 @@
+2023-09-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: Now using !c_ast_equal( param_ast, ret_ast ).
+   * parser.y, debug.out: Now dumping in_attr__type_c_ast before calling
+     c_ast_dup(); reworked pc99_pointer_type_c_ast.
+
+2023-09-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: Better check for multiple declarations.
+   * c_ast_check.c: Now checking c_sname_empty().
+
 2023-09-22  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1, parser.y, show.c, cdecl--no-typedefs.out, cl.out,
