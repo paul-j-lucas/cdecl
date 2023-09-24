@@ -3565,7 +3565,7 @@ decl_c
   : // in_attr: alignas_specifier_c typename_flag_opt type_c_ast
     decl_c_astp[decl_astp]
     {
-      c_ast_t *type_ast = ia_type_ast_peek();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "decl_c", "decl_c_astp" );
       switch ( in_attr.align.kind ) {
@@ -3588,9 +3588,9 @@ decl_c
       //
       //    explain int *p, *q
       //
-      type_ast = c_ast_dup( type_ast, &gc_ast_list );
+      c_ast_t *const dup_type_ast = c_ast_dup( type_ast, &gc_ast_list );
 
-      $$ = join_type_decl( type_ast, $decl_astp.ast );
+      $$ = join_type_decl( dup_type_ast, $decl_astp.ast );
       PARSE_ASSERT( $$ != NULL );
 
       DUMP_AST( "$$_ast", $$ );
