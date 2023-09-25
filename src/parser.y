@@ -469,7 +469,7 @@ static c_ast_list_t   typedef_ast_list; ///< List of ASTs for `typedef`s.
  * @sa c_ast_new_gc()
  * @sa c_ast_pair_new_gc()
  */
-static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
+static inline void c_ast_list_cleanup_gc( c_ast_list_t *ast_list ) {
   slist_cleanup( ast_list, POINTER_CAST( slist_free_fn_t, &c_ast_free ) );
 }
 
@@ -817,7 +817,7 @@ static void ia_cleanup( void ) {
   // Do _not_ pass &c_ast_free for the 2nd argument! All AST nodes were already
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
   slist_cleanup( &in_attr.type_ast_stack, /*free_fn=*/NULL );
-  c_ast_list_gc( &in_attr.typedef_ast_list );
+  c_ast_list_cleanup_gc( &in_attr.typedef_ast_list );
   MEM_ZERO( &in_attr );
 }
 
@@ -923,7 +923,7 @@ static void parse_cleanup( bool fatal_error ) {
   //
   lexer_reset( /*hard_reset=*/fatal_error );
 
-  c_ast_list_gc( &gc_ast_list );
+  c_ast_list_cleanup_gc( &gc_ast_list );
   ia_cleanup();
 }
 
@@ -8228,7 +8228,7 @@ static void fl_elaborate_error( char const *file, int line,
 ////////// extern functions ///////////////////////////////////////////////////
 
 void parser_cleanup( void ) {
-  c_ast_list_gc( &typedef_ast_list );
+  c_ast_list_cleanup_gc( &typedef_ast_list );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
