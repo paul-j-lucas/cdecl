@@ -3678,7 +3678,7 @@ array_decl_c_astp
       } else {
         $$ = (c_ast_pair_t){
           c_ast_add_array( $decl_astp.ast, $array_ast, type_ast ),
-          NULL
+          .target_ast = NULL
         };
       }
 
@@ -4970,7 +4970,7 @@ array_cast_c_astp
         c_ast_t *const ast = IF_ELSE( $cast_astp.ast, type_ast );
         $$ = (c_ast_pair_t){
           c_ast_add_array( ast, $array_ast, type_ast ),
-          NULL
+          .target_ast = NULL
         };
       }
 
