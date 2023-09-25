@@ -95,8 +95,7 @@ declare a as constant pointer to array 9 of integer
 cdecl> explain int (*f(void))[3][5]
 declare f as function (void) returning pointer to array 3 of array 5 of integer
 cdecl> explain int (*p), (*q)
-declare p as pointer to integer
-declare q as pointer to integer
+declare p, q as pointer to integer
 cdecl> explain int (*x(void))[3]
 declare x as function (void) returning pointer to array 3 of integer
 cdecl> explain int (*x)[3][5]
@@ -187,6 +186,12 @@ cdecl> explain int final
 declare final as integer
 cdecl> explain int func( char const array[], void *pointer, bool cast )
 declare func as function (array as array of constant character, pointer as pointer to void, cast as boolean) returning integer
+cdecl> explain int i, a21[2], *p, j, a22[2], *const cp, *q, **pp
+declare i, j as integer
+declare a21, a22 as array 2 of integer
+declare p, q as pointer to integer
+declare cp as constant pointer to integer
+declare pp as pointer to pointer to integer
 cdecl> explain int main( int, char **argv )
 declare main as function (integer, argv as pointer to pointer to character) returning integer
 cdecl> explain int main( int, char **argv, char **envp )
@@ -217,10 +222,8 @@ declare x as integer
 declare p as pointer to integer
 cdecl> explain int x, x
 declare x as integer
-declare x as integer
 cdecl> explain int x, y
-declare x as integer
-declare y as integer
+declare x, y as integer
 cdecl> explain int x[3][5]
 declare x as array 3 of array 5 of integer
 cdecl> explain int x[3][5][7]
@@ -412,8 +415,7 @@ cdecl> explain long float x
 declare x as long floating point
 cdecl> set c89
 cdecl> explain *p, *q
-declare p as pointer to integer
-declare q as pointer to integer
+declare p, q as pointer to integer
 cdecl> explain *a[4]
 declare a as array 4 of pointer to integer
 cdecl> explain *f()

@@ -12,6 +12,13 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 14.5
 
+** Coalesced `explain` output
+Output from `explain` coalesces same-base-type declarations together, e.g.:
+
+    cdecl> explain int x, *p, y
+    declare x, y as integer
+    declare p as pointer to integer
+
 ** Command help
 The `help` command now accepts a **cdecl** command name and prints help for
 only that command.

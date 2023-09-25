@@ -32,6 +32,7 @@
 #include "c_typedef.h"
 #include "decl_flags.h"
 #include "literals.h"
+#include "slist.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -533,11 +534,120 @@ void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *eout ) {
 
 void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout ) {
   assert( ast_list != NULL );
-  FOREACH_SLIST_NODE( node, ast_list ) {
-    c_ast_t const *const ast = node->data;
-    c_ast_english( ast, C_ENG_DECL, eout );
+
+  switch ( slist_len( ast_list ) ) {
+    case 1:
+      NO_OP;
+      c_ast_t const *const ast = slist_front( ast_list );
+      c_ast_english( ast, C_ENG_DECL, eout );
+      FPUTC( '\n', eout );
+      FALLTHROUGH;
+    case 0:
+      return;
+  } // switch
+
+  slist_t declare_list;
+  slist_init( &declare_list );
+
+  //
+  // We want to coalesce "like" declarations so that we print those having the
+  // same base type together in the same "declare" statement.  For example,
+  // given:
+  //
+  //      explain int i, a[2], *p, j, f(), b[2]
+  //
+  // we want:
+  //
+  //      declare i, j as integer
+  //      declare a, b as array 2 of integer
+  //      declare p as pointer to integer
+  //      declare f as function returning integer
+  //
+  // To do this, first split the declarations into separate lists where each
+  // list only contains ASTs that are all equal.
+  //
+  // However, we can coalesce only objects, functions, or operators; everything
+  // else must get its own "declare" statement.
+  //
+  FOREACH_SLIST_NODE( ast_node, ast_list ) {
+    c_ast_t const *const list_ast = ast_node->data;
+    slist_t *equal_ast_list = NULL;
+
+    if ( (list_ast->kind & (K_ANY_OBJECT | K_FUNCTION | K_OPERATOR)) != 0 ) {
+      FOREACH_SLIST_NODE( decl_node, &declare_list ) {
+        slist_t *const maybe_equal_ast_list = decl_node->data;
+        c_ast_t const *const ast = slist_front( maybe_equal_ast_list );
+        if ( c_ast_equal( list_ast, ast ) ) {
+          equal_ast_list = maybe_equal_ast_list;
+          break;
+        }
+      } // for
+    }
+
+    if ( equal_ast_list == NULL ) {
+      equal_ast_list = MALLOC( slist_t, 1 );
+      slist_init( equal_ast_list );
+      slist_push_back( &declare_list, equal_ast_list );
+    }
+    else {
+      //
+      // Even though we found an equal AST list, we have to look through it for
+      // an AST having the same name.  (This can happen for "tentative
+      // declarations" in C.)  If we find a match, don't add the AST to the
+      // list because we want only a single "declare" statement for it:
+      //
+      //      cdecl> explain int x, x   // legal "tentative declaration" in C
+      //      declare x as integer
+      //
+      bool found_equal_name = false;
+      FOREACH_SLIST_NODE( equal_node, equal_ast_list ) {
+        c_ast_t const *const equal_ast = equal_node->data;
+        if ( c_sname_cmp( &list_ast->sname, &equal_ast->sname ) == 0 ) {
+          found_equal_name = true;
+          break;
+        }
+      } // for
+      if ( found_equal_name )
+        continue;
+    }
+
+    slist_push_back( equal_ast_list, CONST_CAST( c_ast_t*, list_ast ) );
+  } // for
+
+  //
+  // Now print one "declare" statement for each list of equal declarations in
+  // declare_list.
+  //
+  FOREACH_SLIST_NODE( decl_node, &declare_list ) {
+    slist_t *const equal_ast_list = decl_node->data;
+    //
+    // First, print "declare" followed by the names of all the declarations
+    // that have the same base type.
+    //
+    FPUTS( "declare ", eout );
+    bool comma = false;
+    FOREACH_SLIST_NODE( equal_node, equal_ast_list ) {
+      c_ast_t const *const equal_ast = equal_node->data;
+      fput_sep( ", ", &comma, eout );
+      c_ast_name_english( equal_ast, eout );
+    } // for
+
+    //
+    // Now print "as" followed by the type.
+    //
+    FPUTS( " as ", eout );
+    c_ast_t const *const ast = slist_front( equal_ast_list );
+    c_ast_english( ast, C_ENG_DECL | C_ENG_OPT_OMIT_DECLARE, eout );
     FPUTC( '\n', eout );
   } // for
+
+  // Clean-up list and sub-lists.
+  FOREACH_SLIST_NODE( decl_node, &declare_list ) {
+    slist_t *const equal_ast_list = decl_node->data;
+    slist_cleanup( equal_ast_list, NULL );
+    free( equal_ast_list );
+  } // for
+  slist_cleanup( &declare_list, NULL );
 }
 
 char const* c_cast_english( c_cast_kind_t kind ) {

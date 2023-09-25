@@ -92,6 +92,7 @@ explain int f( void() )
 explain int f(char (*(*)())[])
 explain int final
 explain int func( char const array[], void *pointer, bool cast )
+explain int i, a21[2], *p, j, a22[2], *const cp, *q, **pp
 explain int main( int, char **argv )
 explain int main( int, char **argv, char **envp )
 explain int main( int, char *argv[] )
@@ -151,11 +152,15 @@ explain unsigned _BitInt(4) x
 explain unsigned char x
 explain unsigned long long x
 explain unsigned x : 3
+
 explain void (*signal(int sig, void (*f)(int)))(int)
+
 explain void (__cdecl *f)()
 explain void __cdecl f()
+
 explain void f( ... )
 explain void f( char const *fmt, ... )
+
 explain void f( double (*a)[5] )
 explain void f( int g() )
 explain void f( char[] )
@@ -175,7 +180,6 @@ explain void f( int n, int x[const n] )
 explain void f( int n, int x[static n] )
 explain void f( int n, int x[static const n] )
 explain void f( register int i )
-
 explain void f( _BitInt(4) n, int x[n] )
 explain void f( char n, int x[n] )
 explain void f( char16_t n, int x[n] )
@@ -194,8 +198,8 @@ explain void f( unsigned long n, int x[n] )
 explain void f( unsigned n, int x[n] )
 explain void f( unsigned short n, int x[n] )
 explain void f( wchar_t n, int x[n] )
-
 explain void f( void )
+
 explain wchar_t x
 
 typedef int *pint
