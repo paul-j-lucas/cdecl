@@ -1,5 +1,13 @@
+2023-09-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * english.c, explain.out, explain.test: Output from `explain` coalesces
+     same-base-type declarations together.
+
 2023-09-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, explain_operator.out, explain_operator.test: Fixed explaining
+     multiple declarations with an overloaded operator.
+   * parser.y: Now keeping type_ast const.
    * c_ast_check.c: Now using !c_ast_equal( param_ast, ret_ast ).
    * parser.y, debug.out: Now dumping in_attr__type_c_ast before calling
      c_ast_dup(); reworked pc99_pointer_type_c_ast.
