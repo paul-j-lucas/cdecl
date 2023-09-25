@@ -2074,7 +2074,7 @@ rel_2par: print_error( &ast->loc,
       param2_ast = param1_is_ref_to_class ?
         c_ast_is_ref_to_type_any( param2_ast, &T_ANY_const_CLASS ) :
         c_ast_is_tid_any( param2_ast, TB_ANY_CLASS );
-      if ( param2_ast == NULL || param1_ast != param2_ast )
+      if ( param2_ast == NULL || !c_ast_equal( param1_ast, param2_ast ) )
         goto rel_2par;
       break;
     }
