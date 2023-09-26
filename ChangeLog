@@ -1,3 +1,9 @@
+2023-09-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c, parser.y, debug.out, explain.out, explain.test: Fixed
+     multiple declarations.
+   * parser.y: Added c_ast_dup_gc().
+
 2023-09-25  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Split DUMP_START() into DUMP_START() and DUMP_PROD().
