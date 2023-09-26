@@ -92,7 +92,8 @@ explain int f( void() )
 explain int f(char (*(*)())[])
 explain int final
 explain int func( char const array[], void *pointer, bool cast )
-explain int i, a21[2], *p, j, a22[2], *const cp, *q, **pp
+explain int f(), a[2]
+explain int i, a21[2], *p, j, a22[2], *const cp, f(), *q, a3[3], **pp, a23[2]
 explain int main( int, char **argv )
 explain int main( int, char **argv, char **envp )
 explain int main( int, char *argv[] )

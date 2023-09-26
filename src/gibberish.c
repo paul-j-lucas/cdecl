@@ -1291,7 +1291,8 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
   //
   bool const print_typedef = (gib_flags & C_GIB_TYPEDEF) != 0 &&
     (!is_ecsu || c_lang_is_c( tdef->lang_ids ) ||
-    (OPT_LANG_IS( C_ANY ) && !c_lang_is_cpp( tdef->lang_ids )));
+    (OPT_LANG_IS( C_ANY ) && !c_lang_is_cpp( tdef->lang_ids ))) &&
+    c_ast_find_type_any( CONST_CAST( c_ast_t*, tdef->ast ), C_VISIT_DOWN, &T_TS_typedef ) == NULL;
 
   //
   // When printing a "using", we don't have to check languages since "using" is

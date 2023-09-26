@@ -431,16 +431,18 @@
  * Inherited attributes.
  */
 struct in_attr {
-  c_alignas_t   align;            ///< Alignment, if any.
-  unsigned      ast_depth;        ///< Parentheses nesting depth.
-  c_sname_t     current_scope;    ///< C++ only: current scope, if any.
-  bool          is_implicit_int;  ///< Created implicit `int` AST?
-  bool          is_typename;      ///< C++ only: `typename` specified?
-  c_operator_t const *operator;   ///< C++ only: current operator, if any.
-  c_ast_list_t  type_ast_stack;   ///< Type AST stack.
-  c_ast_t      *typedef_ast;      ///< AST of `typedef` being declared.
-  c_ast_list_t  typedef_ast_list; ///< AST nodes of `typedef` being declared.
-  rb_node_t    *typedef_rb;       ///< Red-black node for temporary `typedef`.
+  c_alignas_t     align;            ///< Alignment, if any.
+  unsigned        ast_depth;        ///< Parentheses nesting depth.
+  c_sname_t       current_scope;    ///< C++ only: current scope, if any.
+  bool            is_implicit_int;  ///< Created implicit `int` AST?
+  bool            is_typename;      ///< C++ only: `typename` specified?
+  c_operator_t const *operator;     ///< C++ only: current operator, if any.
+  c_ast_list_t    type_ast_stack;   ///< Type AST stack.
+  c_ast_t const  *type_spec_ast;    ///< Declaration type specifier AST.
+  c_ast_t        *typedef_ast;      ///< AST of `typedef` being declared.
+  c_ast_list_t    typedef_ast_list; ///< AST nodes of `typedef` being declared.
+  rb_node_t      *typedef_rb;       ///< Red-black node for temporary `typedef`.
+
 };
 typedef struct in_attr in_attr_t;
 
@@ -541,6 +543,10 @@ static inline c_ast_t* ia_type_ast_pop( void ) {
  * Pushes a type AST onto the
  * \ref in_attr.type_ast_stack "type AST inherited attribute  stack".
  *
+ * @remarks Additionally, if \a ast is #K_BUILTIN and \ref
+ * in_attr::type_spec_ast "type_spec_ast" is NULL, sets \ref
+ * in_attr::type_spec_ast "type_spec_ast" to \a ast.
+ *
  * @param ast The AST to push.
  *
  * @sa ia_type_ast_peek()
@@ -548,6 +554,24 @@ static inline c_ast_t* ia_type_ast_pop( void ) {
  */
 static inline void ia_type_ast_push( c_ast_t *ast ) {
   slist_push_front( &in_attr.type_ast_stack, ast );
+  if ( in_attr.type_spec_ast == NULL && ast->kind == K_BUILTIN )
+    in_attr.type_spec_ast = ast;
+}
+
+/**
+ * Given an AST for a type that is the "of type", return type, or "to type" of
+ * a declaration, returns a duplicate of \a type_ast if necessary.
+ *
+ * @param type_ast The AST of a type.
+ * @return If \a type_ast `==` \ref in_attr::type_spec_ast "type_spec_ast",
+ * returns a duplicate of \a type_ast; otherwise returns \a type_ast.
+ *
+ * @sa \ref in_attr::type_spec_ast
+ */
+static c_ast_t* ia_type_spec_ast( c_ast_t *type_ast ) {
+  // Yes, == is correct here: we mean the same AST node.
+  return type_ast == in_attr.type_spec_ast ?
+    c_ast_dup_gc( type_ast ) : type_ast;
 }
 
 /**
@@ -3720,15 +3744,16 @@ array_decl_c_astp
         c_ast_new_gc( K_PLACEHOLDER, &@decl_astp ), $array_ast
       );
 
+      c_ast_t *const of_ast = ia_type_spec_ast( type_ast );
       if ( $decl_astp.target_ast != NULL ) {
         // array-of or function-like-ret type
         $$ = (c_ast_pair_t){
           $decl_astp.ast,
-          c_ast_add_array( $decl_astp.target_ast, $array_ast, type_ast )
+          c_ast_add_array( $decl_astp.target_ast, $array_ast, of_ast )
         };
       } else {
         $$ = (c_ast_pair_t){
-          c_ast_add_array( $decl_astp.ast, $array_ast, type_ast ),
+          c_ast_add_array( $decl_astp.ast, $array_ast, of_ast ),
           .target_ast = NULL
         };
       }
@@ -4056,21 +4081,24 @@ func_decl_c_astp
       func_ast->type.stids = c_tid_check( func_stids, C_TPID_STORE );
       func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
+
       if ( assume_constructor ) {
         assert( $trailing_ret_ast == NULL );
         $$.ast = c_ast_add_func( $decl_astp.ast, func_ast, /*ret_ast=*/NULL );
       }
       else if ( $decl_astp.target_ast != NULL ) {
+        c_ast_t *const ret_ast = ia_type_spec_ast( type_ast );
         $$.ast = $decl_astp.ast;
         PJL_IGNORE_RV(
-          c_ast_add_func( $decl_astp.target_ast, func_ast, type_ast )
+          c_ast_add_func( $decl_astp.target_ast, func_ast, ret_ast )
         );
       }
       else {
+        c_ast_t *const ret_ast = ia_type_spec_ast( type_ast );
         $$.ast = c_ast_add_func(
           $decl_astp.ast,
           func_ast,
-          IF_ELSE( $trailing_ret_ast, type_ast )
+          IF_ELSE( $trailing_ret_ast, ret_ast )
         );
       }
 
@@ -4558,7 +4586,8 @@ oper_decl_c_astp
       oper_ast->oper.param_ast_list = slist_move( &$param_ast_list );
       oper_ast->oper.operator = operator;
 
-      c_ast_t *const ret_ast = IF_ELSE( $trailing_ret_ast, type_ast );
+      c_ast_t *const ret_ast =
+        IF_ELSE( $trailing_ret_ast, ia_type_spec_ast( type_ast ) );
 
       $$ = (c_ast_pair_t){
         c_ast_add_func( type_ast, oper_ast, ret_ast ),
@@ -4605,7 +4634,7 @@ pointer_type_c_ast
 
       $$ = c_ast_new_gc( K_POINTER, &@$ );
       $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
-      c_ast_set_parent( type_ast, $$ );
+      c_ast_set_parent( ia_type_spec_ast( type_ast ), $$ );
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
@@ -4678,8 +4707,7 @@ pc99_pointer_type_c_ast
         ia_type_ast_push( type_ast );
       }
 
-      type_ast = c_ast_dup_gc( type_ast );
-      $$ = c_ast_pointer( type_ast, &gc_ast_list );
+      $$ = c_ast_pointer( ia_type_spec_ast( type_ast ), &gc_ast_list );
       $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
 
       DUMP_AST( "$$_ast", $$ );
@@ -4740,7 +4768,7 @@ pointer_to_member_type_c_ast
       $$->type = c_type_or( &C_TYPE_LIT_S( $qual_stids ), &scope_type );
 
       $$->ptr_mbr.class_sname = c_sname_move( &$sname );
-      c_ast_set_parent( type_ast, $$ );
+      c_ast_set_parent( c_ast_dup_gc( type_ast ), $$ );
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
@@ -4781,7 +4809,7 @@ reference_type_c_ast
 
       $$ = c_ast_new_gc( K_REFERENCE, &@$ );
       $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
-      c_ast_set_parent( type_ast, $$ );
+      c_ast_set_parent( ia_type_spec_ast( type_ast ), $$ );
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
@@ -4799,7 +4827,7 @@ reference_type_c_ast
 
       $$ = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
       $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
-      c_ast_set_parent( type_ast, $$ );
+      c_ast_set_parent( ia_type_spec_ast( type_ast ), $$ );
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
@@ -5038,16 +5066,17 @@ array_cast_c_astp
         c_ast_new_gc( K_PLACEHOLDER, &@cast_astp ), $array_ast
       );
 
+      c_ast_t *const of_ast = ia_type_spec_ast( type_ast );
       if ( $cast_astp.target_ast != NULL ) {
         // array-of or function-like-ret type
         $$ = (c_ast_pair_t){
           $cast_astp.ast,
-          c_ast_add_array( $cast_astp.target_ast, $array_ast, type_ast )
+          c_ast_add_array( $cast_astp.target_ast, $array_ast, of_ast )
         };
       } else {
-        c_ast_t *const ast = IF_ELSE( $cast_astp.ast, type_ast );
+        c_ast_t *const ast = IF_ELSE( $cast_astp.ast, of_ast );
         $$ = (c_ast_pair_t){
-          c_ast_add_array( ast, $array_ast, type_ast ),
+          c_ast_add_array( ast, $array_ast, of_ast ),
           .target_ast = NULL
         };
       }
@@ -7505,9 +7534,7 @@ sname_c_ast
       DUMP_SNAME( "sname", $sname );
       DUMP_INT( "bit_field_c_uint_opt", $bit_width );
 
-      if ( !c_sname_empty( &type_ast->sname ) )
-        type_ast = c_ast_dup_gc( type_ast );
-
+      type_ast = ia_type_spec_ast( type_ast );
       c_sname_set( &type_ast->sname, &$sname );
 
       if ( $bit_width != 0 ) {

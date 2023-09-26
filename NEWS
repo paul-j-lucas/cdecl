@@ -38,10 +38,11 @@ Help for new-style casts has been folded into the same line for C-style casts.
     define PI as pointer to int
     define PI as type pointer to int    // same as above
 
-** Multiple declarations with an overloaded operator
+** Multiple declarations fixes
 Declarations like:
 
     explain bool b, operator!(const S&)
+    explain int f(), a[2]
 
 now work.
 

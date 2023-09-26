@@ -186,11 +186,16 @@ cdecl> explain int final
 declare final as integer
 cdecl> explain int func( char const array[], void *pointer, bool cast )
 declare func as function (array as array of constant character, pointer as pointer to void, cast as boolean) returning integer
-cdecl> explain int i, a21[2], *p, j, a22[2], *const cp, *q, **pp
+cdecl> explain int f(), a[2]
+declare f as function returning integer
+declare a as array 2 of integer
+cdecl> explain int i, a21[2], *p, j, a22[2], *const cp, f(), *q, a3[3], **pp, a23[2]
 declare i, j as integer
-declare a21, a22 as array 2 of integer
+declare a21, a22, a23 as array 2 of integer
 declare p, q as pointer to integer
 declare cp as constant pointer to integer
+declare f as function returning integer
+declare a3 as array 3 of integer
 declare pp as pointer to pointer to integer
 cdecl> explain int main( int, char **argv )
 declare main as function (integer, argv as pointer to pointer to character) returning integer
