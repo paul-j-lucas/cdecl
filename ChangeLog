@@ -1,5 +1,10 @@
 2023-09-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Fixed DUMP_START().
+   * cdecl.1, autocomplete.c, c_typedef.c, cli_options.c, dump.c, help.c,
+     options.c, options.h, parser.y, print.c, set_options.c, set_options.h,
+     cdecl--help.out, debug.out, help.out: `unique_id` values no longer dump by
+     default; added `u` argument for -d/--debug and `set debug` option.
    * gibberish.c, parser.y, debug.out, explain.out, explain.test: Fixed
      multiple declarations.
    * parser.y: Added c_ast_dup_gc().
