@@ -372,7 +372,7 @@
   bool dump_comma = false; IF_DEBUG(  \
   PUTS( "{\n" ); )
 #else
-#define DUMP_START(NAME,RULE)     NO_OP
+#define DUMP_START()              NO_OP
 #endif
 
 /**
