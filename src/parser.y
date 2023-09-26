@@ -460,12 +460,25 @@ static c_ast_list_t   typedef_ast_list; ///< List of ASTs for `typedef`s.
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
+ * Duplicates \a ast and adds it to \ref gc_ast_list.
+ *
+ * @param ast The AST to duplicate.
+ * @return Returns the duplicated AST.
+ *
+ * @sa c_ast_new_gc()
+ */
+static inline c_ast_t* c_ast_dup_gc( c_ast_t const *ast ) {
+  return c_ast_dup( ast, &gc_ast_list );
+}
+
+/**
  * Garbage-collects the AST nodes on \a ast_list but does _not_ free \a
  * ast_list itself.
  *
  * @param ast_list The AST list to free the nodes of.
  *
  * @sa c_ast_list_cleanup()
+ * @sa c_ast_dup_gc()
  * @sa c_ast_new_gc()
  * @sa c_ast_pair_new_gc()
  */
@@ -480,6 +493,7 @@ static inline void c_ast_list_cleanup_gc( c_ast_list_t *ast_list ) {
  * @param loc A pointer to the token location data.
  * @return Returns a pointer to a new AST.
  *
+ * @sa c_ast_dup_gc()
  * @sa c_ast_pair_new_gc()
  */
 NODISCARD
@@ -872,7 +886,7 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     // Because the raw_decl_ast for the existing type is about to be combined
     // with type_ast, duplicate raw_decl_ast first.
     //
-    decl_ast = c_ast_dup( raw_decl_ast, &gc_ast_list );
+    decl_ast = c_ast_dup_gc( raw_decl_ast );
   }
 
   c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
@@ -3312,7 +3326,7 @@ typedef_declaration_c
       assert( slist_empty( &in_attr.typedef_ast_list ) );
       slist_push_list_back( &in_attr.typedef_ast_list, &gc_ast_list );
       in_attr.typedef_ast = $type_ast;
-      ia_type_ast_push( c_ast_dup( in_attr.typedef_ast, &gc_ast_list ) );
+      ia_type_ast_push( c_ast_dup_gc( in_attr.typedef_ast ) );
     }
     typedef_decl_list_c
     {
@@ -3328,7 +3342,7 @@ typedef_decl_list_c
       // pristine one we kept earlier.
       //
       ia_type_ast_pop();
-      ia_type_ast_push( c_ast_dup( in_attr.typedef_ast, &gc_ast_list ) );
+      ia_type_ast_push( c_ast_dup_gc( in_attr.typedef_ast ) );
     }
     typedef_decl_c_exp
 
@@ -3624,7 +3638,7 @@ decl_c
       //
       //    explain int *p, *q
       //
-      c_ast_t *const dup_type_ast = c_ast_dup( type_ast, &gc_ast_list );
+      c_ast_t *const dup_type_ast = c_ast_dup_gc( type_ast );
 
       $$ = join_type_decl( dup_type_ast, $decl_astp.ast );
       PARSE_ASSERT( $$ != NULL );
@@ -4664,7 +4678,7 @@ pc99_pointer_type_c_ast
         ia_type_ast_push( type_ast );
       }
 
-      type_ast = c_ast_dup( type_ast, &gc_ast_list );
+      type_ast = c_ast_dup_gc( type_ast );
       $$ = c_ast_pointer( type_ast, &gc_ast_list );
       $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
 
@@ -4878,7 +4892,7 @@ typedef_type_decl_c_ast
         //
         // We have to duplicate the type to set the current location.
         //
-        $$ = c_ast_dup( raw_tdef_ast, &gc_ast_list );
+        $$ = c_ast_dup_gc( raw_tdef_ast );
         $$->loc = $tdef_ast->loc;
       }
 
@@ -7492,7 +7506,7 @@ sname_c_ast
       DUMP_INT( "bit_field_c_uint_opt", $bit_width );
 
       if ( !c_sname_empty( &type_ast->sname ) )
-        type_ast = c_ast_dup( type_ast, &gc_ast_list );
+        type_ast = c_ast_dup_gc( type_ast );
 
       c_sname_set( &type_ast->sname, &$sname );
 
