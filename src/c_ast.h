@@ -460,6 +460,7 @@ struct c_ast {
   c_ast_t              *parent_ast; ///< Parent AST node, if any.
 #ifdef ENABLE_CDECL_DEBUG
   c_ast_id_t            unique_id;  ///< Unique id (starts at 1).
+  c_ast_id_t            dup_from_id;///< ID of AST duplicated from, if any.
 #endif /* ENABLE_CDECL_DEBUG */
 
   /**

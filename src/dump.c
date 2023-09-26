@@ -154,8 +154,10 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
   json_state_t const ast_json =
     json_object_begin( JSON_INIT, /*key=*/NULL, dump );
 
-  if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_UNIQUE_ID) != 0 )
+  if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_UNIQUE_ID) != 0 ) {
     DUMP_KEY( dump, "unique_id: " PRId_C_AST_ID_T, ast->unique_id );
+    DUMP_KEY( dump, "dup_from_id: " PRId_C_AST_ID_T, ast->dup_from_id );
+  }
   DUMP_SNAME( dump, "sname", &ast->sname );
   DUMP_KEY( dump,
     "kind: { value: 0x%X, string: \"%s\" }",

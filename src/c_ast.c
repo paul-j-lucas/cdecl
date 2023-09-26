@@ -183,6 +183,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
     c_ast_new( ast->kind, ast->depth, &ast->loc, node_list );
 
   dup_ast->align = ast->align;
+  dup_ast->dup_from_id = ast->unique_id;
   dup_ast->sname = c_sname_dup( &ast->sname );
   dup_ast->type = ast->type;
 

@@ -32,6 +32,11 @@ Correspondingly, the `-d` and `--debug` command-line options and the `debug`
 `set` option now optionally take a `u` argment to re-enable printing
 `unique_id` values (that are useful for debugging).
 
+** `dup_from_id`
+When dumping JSON5 output and `unique_id` values are included, an additional
+`dup_from_id` value is now also printed. It is the `unique_id` of the AST node
+the current node was duplicated from, if any.
+
 ** Dump in JSON5 (really)
 The format of the dump output is now (really) in valid JSON5 format.
 
