@@ -121,7 +121,7 @@ static struct option const CLI_OPTIONS[] = {
   { "color",            required_argument,  NULL, COPT(COLOR)             },
   { "config",           required_argument,  NULL, COPT(CONFIG)            },
 #ifdef ENABLE_CDECL_DEBUG
-  { "debug",            no_argument,        NULL, COPT(CDECL_DEBUG)       },
+  { "debug",            optional_argument,  NULL, COPT(CDECL_DEBUG)       },
 #endif /* ENABLE_CDECL_DEBUG */
   { "digraphs",         no_argument,        NULL, COPT(DIGRAPHS)          },
   { "east-const",       no_argument,        NULL, COPT(EAST_CONST)        },
@@ -410,7 +410,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
       case COPT(CDECL_DEBUG):
-        opt_cdecl_debug = true;
+        if ( !parse_cdecl_debug( empty_if_null( optarg ) ) )
+          opt_invalid_value( COPT(CDECL_DEBUG), optarg, "*, -, or u" );
         break;
 #endif /* ENABLE_CDECL_DEBUG */
       case COPT(COLOR):
@@ -599,7 +600,7 @@ static void print_usage( int status ) {
     "  --color=WHEN        " UOPT(COLOR)            "Colorize output WHEN [default: not_file].\n"
     "  --config=FILE       " UOPT(CONFIG)           "Configuration file path [default: ~/." CONF_FILE_NAME_DEFAULT "].\n"
 #ifdef ENABLE_CDECL_DEBUG
-    "  --debug             " UOPT(CDECL_DEBUG)      "Print " CDECL " debug output.\n"
+    "  --debug[=OPTS]      " UOPT(CDECL_DEBUG)      "Print " CDECL " debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
     "  --digraphs          " UOPT(DIGRAPHS)         "Print digraphs.\n"
     "  --east-const        " UOPT(EAST_CONST)       "Print in \"east const\" form.\n"

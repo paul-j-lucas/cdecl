@@ -511,7 +511,7 @@ static void print_help_options( void ) {
   print_h( "  [no]bison-debug\n" );
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-  print_h( "  [no]debug\n" );
+  print_h( "  [no]debug[={u|\\*|-}]\n" );
 #endif /* ENABLE_CDECL_DEBUG */
   print_h( "  [no]east-const\n" );
   print_h( "  [no]echo-commands\n" );

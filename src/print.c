@@ -548,7 +548,7 @@ void print_debug_file_line( char const *file, int line ) {
 #ifdef ENABLE_CDECL_DEBUG
   assert( file != NULL );
   assert( line > 0 );
-  if ( opt_cdecl_debug )
+  if ( opt_cdecl_debug != CDECL_DEBUG_NO )
     EPRINTF( "[%s:%d] ", file, line );
 #else
   (void)file;

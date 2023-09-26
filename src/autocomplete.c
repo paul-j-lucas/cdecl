@@ -287,7 +287,7 @@ static char const* const* ac_set_options_new( void ) {
     switch ( opt->kind ) {
       case SET_OPTION_AFF_ONLY:
       case SET_OPTION_TOGGLE:
-        if ( opt->takes_value )
+        if ( opt->has_arg == required_argument )
           *popt++ = free_later( check_strdup_suffix( opt->name, " =", 2 ) );
         else
           *popt++ = opt->name;

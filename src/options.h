@@ -55,6 +55,18 @@
  * @{
  */
 
+#ifdef ENABLE_CDECL_DEBUG
+/**
+ * **cdecl** debug mode.
+ */
+enum cdecl_debug {
+  CDECL_DEBUG_NO            = 0u,         ///< Do not print debug output.
+  CDECL_DEBUG_YES           = (1u << 0),  ///< Print JSON5 debug output.
+  CDECL_DEBUG_OPT_UNIQUE_ID = (1u << 1)   ///< Include `unique_id` in output.
+};
+typedef enum cdecl_debug cdecl_debug_t;
+#endif /* ENABLE_CDECL_DEBUG */
+
 // extern option variables
 extern bool         opt_alt_tokens;     ///< Print alternative tokens?
 
@@ -67,7 +79,7 @@ extern bool         opt_alt_tokens;     ///< Print alternative tokens?
 #endif /* YYDEBUG */
 
 #ifdef ENABLE_CDECL_DEBUG
-extern bool         opt_cdecl_debug;    ///< Print JSON debug output?
+extern cdecl_debug_t opt_cdecl_debug;   ///< Print JSON5 debug output?
 #endif /* ENABLE_CDECL_DEBUG */
 
 extern color_when_t opt_color_when;     ///< When to print color.
@@ -122,6 +134,22 @@ extern int          yydebug;            ///< Bison variable for debugging.
 NODISCARD
 bool any_explicit_int( void );
 
+#ifdef ENABLE_CDECL_DEBUG
+/**
+ * Gets the string representation of the **cdecl** debug option.
+ *
+ * @return Returns said representation.
+ *
+ * @warning The pointer returned is to a static buffer.  Changing the value of
+ * \ref opt_explicit_ecsu_btids then calling this function again will change
+ * the value of the buffer.
+ *
+ * @sa parse_cdecl_debug()
+ */
+NODISCARD
+char const* cdecl_debug_str( void );
+#endif /* ENABLE_CDECL_DEBUG */
+
 /**
  * Gets the string representation of the explicit `enum`, `class`, `struct`,
  * `union` option.
@@ -166,6 +194,30 @@ char const* explicit_int_str( void );
  */
 NODISCARD
 bool is_explicit_int( c_tid_t btids );
+
+#ifdef ENABLE_CDECL_DEBUG
+/**
+ * Parses the **cdecl** debug option.
+ *
+ * @param debug_format
+ * @parblock
+ * The null-terminated **cdecl** debut option format
+ * string (case insensitive) to parse.  Valid formats are:
+ *
+ * Format | Meaning
+ * -------|---------------------
+ * `u`    | Include `unique_id`.
+ *
+ * Alternatively, `*` may be given to mean "all", NULL may be given to mean set
+ * with no options, or `-` or the empty string may be given to mean "none."
+ * @endparblock
+ * @return Returns `true` only if \a debug_format was parsed successfully.
+ *
+ * @sa cdecl_debug_str()
+ */
+NODISCARD
+bool parse_cdecl_debug( char const *debug_format );
+#endif /* ENABLE_CDECL_DEBUG */
 
 /**
  * Parses the explicit `enum`, `class`, `struct`, `union` option.

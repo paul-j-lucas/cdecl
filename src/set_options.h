@@ -37,6 +37,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <getopt.h>
 #include <stdbool.h>
 
 /// @endcond
@@ -90,7 +91,13 @@ typedef enum set_option_kind set_option_kind_t;
 struct set_option {
   char const       *name;               ///< Option name.
   set_option_kind_t kind;               ///< Option kind.
-  bool              takes_value;        ///< Takes a value?
+
+  /**
+   * Has the same meaning as in `struct option` used by `getopt_long()`, one of
+   * `no_argument`, `required_argument`, or `optional_argument`.
+   */
+  int               has_arg;
+
   set_option_fn_t   set_fn;             ///< Set function.
 };
 typedef struct set_option set_option_t;

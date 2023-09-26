@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "September 22, 2023" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 26, 2023" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -292,7 +292,7 @@ to read
 (see
 .BR "CONFIGURATION FILES" ).
 .TP
-.BR \-\-debug " | " \-d
+.BI \-\-debug \f1[\fP "=" s \f1]\fP " \f1|\fP " \-d\f1[\fP s \f1]\fP
 Turns on
 .B cdecl
 debugging output (if compiled in):
@@ -317,6 +317,23 @@ of the token that caused the error.
 (This is a debugging aid for developers of
 .B cdecl
 itself.)
+.IP
+Valid formats for
+.I s
+are:
+.RS 8
+.TP 4
+.PD 0
+.B u
+Include \f(CWunique_id\fP values in JSON5 output
+as an additional debugging aid.
+.RE
+.PD
+.IP
+Alternatively,
+\f(CW*\fP may be given to mean ``all''
+or
+\f(CW-\fP may be given to mean ``none.''
 .TP
 .BR \-\-digraphs " | " \-2
 Turns on digraph token output.

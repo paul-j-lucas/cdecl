@@ -50,7 +50,7 @@
 // extern option variables
 bool                opt_alt_tokens;
 #ifdef ENABLE_CDECL_DEBUG
-bool                opt_cdecl_debug;
+cdecl_debug_t       opt_cdecl_debug;
 #endif /* ENABLE_CDECL_DEBUG */
 color_when_t        opt_color_when = COLOR_NOT_FILE;
 char const         *opt_conf_path;
@@ -98,6 +98,19 @@ bool any_explicit_int( void ) {
   return  opt_explicit_int_btids[0] != TB_NONE ||
           opt_explicit_int_btids[1] != TB_NONE;
 }
+
+#ifdef ENABLE_CDECL_DEBUG
+char const* cdecl_debug_str( void ) {
+  static char buf[2];
+  char *s = buf;
+
+  if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_UNIQUE_ID) != 0 )
+    *s++ = 'u';
+  *s = '\0';
+
+  return buf;
+}
+#endif /* ENABLE_CDECL_DEBUG */
 
 char const* explicit_ecsu_str( void ) {
   static char buf[5];
@@ -174,6 +187,33 @@ bool is_explicit_int( c_tid_t btids ) {
   btids &= c_tid_compl( TB_unsigned );
   return c_tid_is_any( btids, opt_explicit_int_btids[ is_unsigned ] );
 }
+
+#ifdef ENABLE_CDECL_DEBUG
+bool parse_cdecl_debug( char const *debug_format ) {
+  if ( debug_format == NULL ) {
+    opt_cdecl_debug = CDECL_DEBUG_NO;
+    return true;
+  }
+
+  if ( strcmp( debug_format, "*" ) == 0 )
+    debug_format = "u";
+  else if ( strcmp( debug_format, "-" ) == 0 )
+    debug_format = "";
+
+  cdecl_debug_t cdecl_debug = CDECL_DEBUG_YES;
+
+  for ( char const *s = debug_format; *s != '\0'; ++s ) {
+    switch ( tolower( *s ) ) {
+      case 'u':
+        cdecl_debug |= CDECL_DEBUG_OPT_UNIQUE_ID;
+        break;
+    } // switch
+  } // for
+
+  opt_cdecl_debug = cdecl_debug;
+  return true;
+}
+#endif /* ENABLE_CDECL_DEBUG */
 
 bool parse_explicit_ecsu( char const *ecsu_format ) {
   assert( ecsu_format != NULL );

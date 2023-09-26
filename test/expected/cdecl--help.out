@@ -3,7 +3,7 @@ options:
   --alt-tokens         (-a) Print alternative tokens.
   --color=WHEN         (-k) Colorize output WHEN [default: not_file].
   --config=FILE        (-c) Configuration file path [default: ~/.cdeclrc].
-  --debug              (-d) Print cdecl debug output.
+  --debug[=OPTS]       (-d) Print cdecl debug output.
   --digraphs           (-2) Print digraphs.
   --east-const         (-E) Print in "east const" form.
   --echo-commands      (-O) Echo commands given before corresponding output.

@@ -1122,8 +1122,8 @@ void c_typedef_init( void ) {
   //
   // Temporarily turn off debug output for built-in typedefs.
   //
-  bool const orig_cdecl_debug = opt_cdecl_debug;
-  opt_cdecl_debug = false;
+  cdecl_debug_t const orig_cdecl_debug = opt_cdecl_debug;
+  opt_cdecl_debug = CDECL_DEBUG_NO;
 #endif /* ENABLE_CDECL_DEBUG */
 #ifdef ENABLE_FLEX_DEBUG
   //

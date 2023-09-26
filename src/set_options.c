@@ -111,14 +111,14 @@ static set_option_t const SET_OPTIONS[] = {
   //
   { "alt-tokens",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_alt_tokens
   },
 
 #ifdef YYDEBUG
   { "bison-debug",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_bison_debug
   },
 #endif /* YYDEBUG */
@@ -126,14 +126,14 @@ static set_option_t const SET_OPTIONS[] = {
 #ifdef ENABLE_CDECL_DEBUG
   { "debug",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = optional_argument,
     &set_debug
   },
 #endif /* ENABLE_CDECL_DEBUG */
 
   { "digraphs",                         // See comment for "graphs" entry.
     SET_OPTION_AFF_ONLY,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_digraphs
   },
 
@@ -155,99 +155,99 @@ static set_option_t const SET_OPTIONS[] = {
   //
   { "graphs",
     SET_OPTION_NEG_ONLY,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_digraphs
   },
 
   { "east-const",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_east_const
   },
 
   { "echo-commands",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_echo_commands
   },
 
   { "english-types",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_english_types
   },
 
   { "explain-by-default",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_explain_by_default
   },
 
   { "explicit-ecsu",
     SET_OPTION_TOGGLE,
-    .takes_value = true,
+    .has_arg = required_argument,
     &set_explicit_ecsu
   },
 
   { "explicit-int",
     SET_OPTION_TOGGLE,
-    .takes_value = true,
+    .has_arg = required_argument,
     &set_explicit_int
   },
 
 #ifdef ENABLE_FLEX_DEBUG
   { "flex-debug",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_flex_debug
   },
 #endif /* ENABLE_FLEX_DEBUG */
 
   { "lang",
     SET_OPTION_AFF_ONLY,
-    .takes_value = true,
+    .has_arg = required_argument,
     &set_lang
   },
 
   { "prompt",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_prompt
   },
 
   { "semicolon",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_semicolon
   },
 
   { "trailing-return",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_trailing_return
   },
 
   { "trigraphs",                        // See comment for "graphs" entry.
     SET_OPTION_AFF_ONLY,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_trigraphs
   },
 
   { "west-pointer",
     SET_OPTION_TOGGLE,
-    .takes_value = true,
+    .has_arg = required_argument,
     &set_west_pointer
   },
 
   { "using",
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     &set_using
   },
 
   { NULL,
     SET_OPTION_TOGGLE,
-    .takes_value = false,
+    .has_arg = no_argument,
     NULL
   }
 };
@@ -325,7 +325,11 @@ static void print_options( void ) {
   print_option( "bison-debug", po_bool_value( opt_bison_debug ), LANG_ANY );
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-  print_option( "debug", po_bool_value( opt_cdecl_debug ), LANG_ANY );
+  // opt_cdecl_debug is a special case in that it can be enabled with no value
+  if ( opt_cdecl_debug == CDECL_DEBUG_YES )
+    PUTS( "    debug\n" );
+  else
+    print_option( "debug", cdecl_debug_str(), LANG_ANY );
 #endif /* ENABLE_CDECL_DEBUG */
   print_option( "east-const", po_bool_value( opt_east_const ), LANG_const );
   print_option( "echo-commands", po_bool_value( opt_echo_commands ), LANG_ANY );
@@ -396,8 +400,24 @@ static bool set_bison_debug( set_option_fn_args_t const *args ) {
  * @return Always returns `true`.
  */
 static bool set_debug( set_option_fn_args_t const *args ) {
-  opt_cdecl_debug = args->opt_enabled;
-  return true;
+  bool ok;
+
+  if ( args->opt_enabled ) {
+    ok = parse_cdecl_debug( empty_if_null( args->opt_value ) );
+    if ( !ok ) {
+      print_error( args->opt_value_loc,
+        "\"%s\": invalid value for debug;"
+        " must be *, -, or u\n",
+        args->opt_value
+      );
+    }
+  }
+  else {
+    ok = parse_cdecl_debug( NULL );
+    assert( ok );
+  }
+
+  return ok;
 }
 #endif /* ENABLE_CDECL_DEBUG */
 
@@ -810,7 +830,7 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   } // switch
 
   if ( opt_value == NULL ) {
-    if ( !is_no && found_opt->takes_value ) {
+    if ( !is_no && found_opt->has_arg == required_argument ) {
       print_error( opt_name_loc,
         "set option \"%s\" requires =<value>\n",
         orig_name
@@ -822,7 +842,7 @@ bool set_option( char const *opt_name, c_loc_t const *opt_name_loc,
       print_error( opt_value_loc, "\"no\" set options take no value\n" );
       return false;
     }
-    if ( !found_opt->takes_value ) {
+    if ( found_opt->has_arg == no_argument ) {
       print_error( opt_value_loc,
         "\"%s\": set option \"%s\" takes no value\n",
         opt_value, orig_name

@@ -23,6 +23,15 @@ Output from `explain` coalesces same-base-type declarations together, e.g.:
 The `help` command now accepts a **cdecl** command name and prints help for
 only that command.
 
+** Optional `unique_id` in dump output
+By default, dumped AST JSON5 no longer includes `unique_id` values.  (This is
+so diffs of debug output that differ only by `unique_id` don't cause tests to
+fail.)
+
+Correspondingly, the `-d` and `--debug` command-line options and the `debug`
+`set` option now optionally take a `u` argment to re-enable printing
+`unique_id` values (that are useful for debugging).
+
 ** Dump in JSON5 (really)
 The format of the dump output is now (really) in valid JSON5 format.
 

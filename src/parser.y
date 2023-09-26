@@ -91,7 +91,7 @@
 
 #ifdef ENABLE_CDECL_DEBUG
 #define IF_DEBUG(...) \
-  BLOCK( if ( opt_cdecl_debug ) { __VA_ARGS__ } )
+  BLOCK( if ( opt_cdecl_debug != CDECL_DEBUG_NO ) { __VA_ARGS__ } )
 #else
 #define IF_DEBUG(...)             NO_OP
 #endif /* ENABLE_CDECL_DEBUG */
@@ -232,7 +232,7 @@
 /**
  * @defgroup parser-dump-group Debugging Macros
  * Macros that are used to dump a trace during parsing when \ref
- * opt_cdecl_debug is `true`.
+ * opt_cdecl_debug is set.
  * @ingroup parser-group
  * @{
  */
@@ -8370,7 +8370,7 @@ static void fl_elaborate_error( char const *file, int line,
   if ( error_token != NULL ) {
     EPRINTF( "\"%s\"", error_token );
 #ifdef ENABLE_CDECL_DEBUG
-    if ( opt_cdecl_debug ) {
+    if ( opt_cdecl_debug != CDECL_DEBUG_NO ) {
       switch ( yychar ) {
         case YYEMPTY:
           EPUTS( " [<empty>]" );
