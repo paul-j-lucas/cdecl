@@ -1,0 +1,5 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+typedef int I, *PI, A2[2], F_I(), *F_PI(), (*PF_I)()
+show as english
+END

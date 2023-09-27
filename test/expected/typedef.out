@@ -1,0 +1,8 @@
+cdecl> typedef int I, *PI, A2[2], F_I(), *F_PI(), (*PF_I)()
+cdecl> show as english
+define A2 as array 2 of integer
+define F_I as function returning integer
+define F_PI as function returning pointer to integer
+define I as integer
+define PF_I as pointer to function returning integer
+define PI as pointer to integer

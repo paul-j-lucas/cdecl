@@ -442,10 +442,7 @@ struct in_attr {
   c_sname_t       scope_sname;      ///< C++ only: current scope name, if any.
   c_ast_list_t    type_ast_stack;   ///< Type AST stack.
   c_ast_t const  *type_spec_ast;    ///< Declaration type specifier AST.
-  c_ast_t        *typedef_ast;      ///< AST of `typedef` being declared.
-  c_ast_list_t    typedef_ast_list; ///< AST nodes of `typedef` being declared.
   rb_node_t      *typedef_rb;       ///< Red-black node for temporary `typedef`.
-
 };
 typedef struct in_attr in_attr_t;
 
@@ -858,7 +855,6 @@ static void ia_cleanup( void ) {
   // Do _not_ pass &c_ast_free for the 2nd argument! All AST nodes were already
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
   slist_cleanup( &in_attr.type_ast_stack, /*free_fn=*/NULL );
-  c_ast_list_cleanup_gc( &in_attr.typedef_ast_list );
   MEM_ZERO( &in_attr );
 }
 
@@ -3337,22 +3333,7 @@ typedef_declaration_c
       PARSE_ASSERT(
         c_type_add_tid( &$type_ast->type, TS_typedef, &@type_ast )
       );
-
-      //
-      // We have to keep a pristine copy of the AST for the base type of the
-      // typedef being declared in case multiple types are defined in the same
-      // typedef.  For example, given:
-      //
-      //      typedef int I, *PI;
-      //              ^
-      // the "int" is the base type that needs to get patched twice to form two
-      // types: I and PI.  Hence, we keep a pristine copy and then duplicate it
-      // so every type gets a pristine copy.
-      //
-      assert( slist_empty( &in_attr.typedef_ast_list ) );
-      slist_push_list_back( &in_attr.typedef_ast_list, &gc_ast_list );
-      in_attr.typedef_ast = $type_ast;
-      ia_type_ast_push( c_ast_dup_gc( in_attr.typedef_ast ) );
+      ia_type_ast_push( $type_ast );
     }
     typedef_decl_list_c
     {
@@ -3361,17 +3342,7 @@ typedef_declaration_c
   ;
 
 typedef_decl_list_c
-  : typedef_decl_list_c ','
-    { //
-      // We're defining another type in the same typedef so we need to replace
-      // the current type AST inherited attribute with a new duplicate of the
-      // pristine one we kept earlier.
-      //
-      ia_type_ast_pop();
-      ia_type_ast_push( c_ast_dup_gc( in_attr.typedef_ast ) );
-    }
-    typedef_decl_c_exp
-
+  : typedef_decl_list_c ',' typedef_decl_c_exp
   | typedef_decl_c
   ;
 

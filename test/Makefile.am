@@ -518,12 +518,12 @@ TESTS+=	tests/2c_typedef_i.test \
 	tests/ns_typedef_i.test \
 	tests/ns_using_i.test \
 	tests/retypedef-01.test \
+	tests/typedef.test \
 	tests/typedef_fi_v_show.test \
 	tests/typedef_i.test \
 	tests/typedef_i_declare_i.test \
 	tests/typedef_i_explain_i.test \
 	tests/typedef_i_int_least32_t.test \
-	tests/typedef_i_pi.test \
 	tests/typedef_pfi_v_show.test \
 	tests/typedef_v.test \
 	tests/using_i.test \
