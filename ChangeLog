@@ -1,5 +1,6 @@
 2023-09-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * test/Makefile.am, typedef.out, typedef.test: typedef test consolidation.
    * parser.y, test/Makefile.am, typedef.out, typedef.test: Eliminated
      in_attr::typedef_ast and in_attr::typedef_ast_list.
    * parser.y: Added `inline`.
