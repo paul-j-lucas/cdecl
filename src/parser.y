@@ -436,10 +436,10 @@
 struct in_attr {
   c_alignas_t     align;            ///< Alignment, if any.
   unsigned        ast_depth;        ///< Parentheses nesting depth.
-  c_sname_t       current_scope;    ///< C++ only: current scope, if any.
   bool            is_implicit_int;  ///< Created implicit `int` AST?
-  bool            is_typename;      ///< C++ only: `typename` specified?
+  bool            is_typename;      ///< C++ only: is `typename` specified?
   c_operator_t const *operator;     ///< C++ only: current operator, if any.
+  c_sname_t       scope_sname;      ///< C++ only: current scope name, if any.
   c_ast_list_t    type_ast_stack;   ///< Type AST stack.
   c_ast_t const  *type_spec_ast;    ///< Declaration type specifier AST.
   c_ast_t        *typedef_ast;      ///< AST of `typedef` being declared.
@@ -737,7 +737,7 @@ NODISCARD
 static bool fl_is_nested_type_ok( char const *file, int line,
                                   c_loc_t const *type_loc ) {
   assert( type_loc != NULL );
-  if ( !c_sname_empty( &in_attr.current_scope ) &&
+  if ( !c_sname_empty( &in_attr.scope_sname ) &&
        !OPT_LANG_IS( NESTED_TYPES ) ) {
     fl_print_error( file, line, type_loc,
       "nested types not supported%s\n",
@@ -854,7 +854,7 @@ static void fl_punct_expected( char const *file, int line, char punct ) {
  * Cleans-up all resources used by \ref in_attr "inherited attributes".
  */
 static void ia_cleanup( void ) {
-  c_sname_cleanup( &in_attr.current_scope );
+  c_sname_cleanup( &in_attr.scope_sname );
   // Do _not_ pass &c_ast_free for the 2nd argument! All AST nodes were already
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
   slist_cleanup( &in_attr.type_ast_stack, /*free_fn=*/NULL );
@@ -2844,10 +2844,9 @@ class_struct_union_declaration_c
     any_sname_c_exp[sname]
     {
       c_type_t const *const cur_type =
-        c_sname_local_type( &in_attr.current_scope );
+        c_sname_local_type( &in_attr.scope_sname );
       if ( c_tid_is_any( cur_type->btids, TB_ANY_CLASS ) ) {
-        char const *const cur_name =
-          c_sname_local_name( &in_attr.current_scope );
+        char const *const cur_name = c_sname_local_name( &in_attr.scope_sname );
         char const *const mbr_name = c_sname_local_name( &$sname );
         if ( strcmp( mbr_name, cur_name ) == 0 ) {
           print_error( &@sname,
@@ -2864,21 +2863,21 @@ class_struct_union_declaration_c
                  "class_struct_union_btid sname '{' "
                  "in_scope_declaration_c_opt "
                  "'}' ';'" );
-      DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
+      DUMP_SNAME( "in_attr__scope_sname", in_attr.scope_sname );
       DUMP_TID( "class_struct_union_btid", $csu_btid );
       DUMP_SNAME( "any_sname_c", $sname );
 
-      c_sname_append_sname( &in_attr.current_scope, &$sname );
+      c_sname_append_sname( &in_attr.scope_sname, &$sname );
       c_sname_set_local_type(
-        &in_attr.current_scope, &C_TYPE_LIT_B( $csu_btid )
+        &in_attr.scope_sname, &C_TYPE_LIT_B( $csu_btid )
       );
-      PARSE_ASSERT( c_sname_check( &in_attr.current_scope, &@sname ) );
+      PARSE_ASSERT( c_sname_check( &in_attr.scope_sname, &@sname ) );
 
       c_ast_t *const csu_ast = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@sname );
-      csu_ast->sname = c_sname_dup( &in_attr.current_scope );
+      csu_ast->sname = c_sname_dup( &in_attr.scope_sname );
       c_sname_append_name(
         &csu_ast->csu.csu_sname,
-        check_strdup( c_sname_local_name( &in_attr.current_scope ) )
+        check_strdup( c_sname_local_name( &in_attr.scope_sname ) )
       );
       csu_ast->type.btids = c_tid_check( $csu_btid, C_TPID_BASE );
 
@@ -2907,7 +2906,7 @@ enum_declaration_c
       DUMP_SNAME( "any_sname_c", $sname );
       DUMP_AST( "enum_fixed_type_c_ast_opt", $fixed_type_ast );
 
-      c_sname_t enum_sname = c_sname_dup( &in_attr.current_scope );
+      c_sname_t enum_sname = c_sname_dup( &in_attr.scope_sname );
       c_sname_append_sname( &enum_sname, &$sname );
       c_sname_set_local_type( &enum_sname, &C_TYPE_LIT_B( $enum_btids ) );
       if ( !c_sname_check( &enum_sname, &@sname ) ) {
@@ -2946,7 +2945,7 @@ namespace_declaration_c
                  "namespace_type sname '{' "
                  "in_scope_declaration_c_opt "
                  "'}' [';']" );
-      DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
+      DUMP_SNAME( "in_attr__scope_sname", in_attr.scope_sname );
       DUMP_TYPE( "namespace_type", $namespace_type );
       DUMP_SNAME( "any_sname_c", $sname );
 
@@ -2995,12 +2994,12 @@ namespace_declaration_c
         )
       );
 
-      c_sname_append_sname( &in_attr.current_scope, &$sname );
+      c_sname_append_sname( &in_attr.scope_sname, &$sname );
 
       DUMP_SNAME( "$$_sname", $sname );
       DUMP_END();
 
-      PARSE_ASSERT( c_sname_check( &in_attr.current_scope, &@sname ) );
+      PARSE_ASSERT( c_sname_check( &in_attr.scope_sname, &@sname ) );
     }
     brace_in_scope_declaration_c_exp
   ;
@@ -3384,7 +3383,7 @@ typedef_decl_c
 
       DUMP_START();
       DUMP_PROD( "typedef_decl_c", "decl_c_astp" );
-      DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
+      DUMP_SNAME( "in_attr__scope_sname", in_attr.scope_sname );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
@@ -3432,7 +3431,7 @@ typedef_decl_c
         PARSE_ABORT();
       }
 
-      temp_sname = c_sname_dup( &in_attr.current_scope );
+      temp_sname = c_sname_dup( &in_attr.scope_sname );
       c_sname_prepend_sname( &typedef_ast->sname, &temp_sname );
 
       DUMP_AST( "$$_ast", typedef_ast );
@@ -3518,7 +3517,7 @@ using_decl_c_ast
       DUMP_PROD( "using_decl_c_ast",
                  "USING any_name_exp attribute_specifier_list_c_atid_opt '=' "
                  "type_c_ast cast_c_astp_opt" );
-      DUMP_SNAME( "in_attr__current_scope", in_attr.current_scope );
+      DUMP_SNAME( "in_attr__scope_sname", in_attr.scope_sname );
       DUMP_STR( "any_name_exp", $name );
       DUMP_TID( "attribute_specifier_list_c_atid_opt", $atids );
       DUMP_AST( "type_c_ast", $type_ast );
@@ -3541,7 +3540,7 @@ using_decl_c_ast
         PARSE_ABORT();
       }
 
-      c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
+      c_sname_t temp_sname = c_sname_dup( &in_attr.scope_sname );
       c_sname_append_name( &temp_sname, $name );
 
       $$ = c_ast_patch_placeholder( $type_ast, cast_ast );

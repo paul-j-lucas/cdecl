@@ -4338,7 +4338,7 @@ c++decl> class C
     lhs: "class_struct_union_declaration_c",
     rhs: "class_struct_union_btid sname '{' in_scope_declaration_c_opt '}' ';'"
   },
-  in_attr__current_scope: null,
+  in_attr__scope_sname: null,
   class_struct_union_btid: { btid: 0x4000001, string: "class" },
   any_sname_c: { string: "C", scopes: "none" },
   $$_ast: {
