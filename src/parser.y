@@ -436,7 +436,7 @@
 struct in_attr {
   c_alignas_t     align;            ///< Alignment, if any.
   unsigned        ast_depth;        ///< Parentheses nesting depth.
-  bool            is_implicit_int;  ///< Created implicit `int` AST?
+  bool            is_implicit_int;  ///< C only: created implicit `int` AST?
   bool            is_typename;      ///< C++ only: is `typename` specified?
   c_operator_t const *operator;     ///< C++ only: current operator, if any.
   c_sname_t       scope_sname;      ///< C++ only: current scope name, if any.
