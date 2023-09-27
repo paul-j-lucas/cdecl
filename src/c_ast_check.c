@@ -1405,22 +1405,13 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
 
   FOREACH_AST_FUNC_PARAM( param, ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
-    switch ( param_ast->kind ) {
-      case K_NAME:
-        break;
-      case K_VARIADIC:
-        print_error( &param_ast->loc,
-          "ellipsis not supported%s\n",
-          C_LANG_WHICH( PROTOTYPES )
-        );
-        return false;
-      default:
-        print_error( &param_ast->loc,
-          "function prototypes not supported%s\n",
-          C_LANG_WHICH( PROTOTYPES )
-        );
-        return false;
-    } // switch
+    if ( param_ast->kind != K_NAME ) {
+      print_error( &param_ast->loc,
+        "function prototypes not supported%s\n",
+        C_LANG_WHICH( PROTOTYPES )
+      );
+      return false;
+    }
   } // for
 
   return c_ast_check_func_params_redef( ast );
@@ -1770,7 +1761,7 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
 
     default:
       print_error( &ast->loc,
-        "only operator \"=\"%s operators can be default\n",
+        "only operator \"=\"%s operators can be \"default\"\n",
         OPT_LANG_IS( default_RELOPS ) ? " and relational" : ""
       );
       return false;
@@ -1800,13 +1791,12 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
   c_ast_t const *const param_ast = c_param_ast( param );
 
   if ( !c_ast_is_ptr_to_tid_any( param_ast, TB_void | TB_ANY_CLASS ) ) {
-    print_error( &param_ast->loc, "invalid parameter type " );
-    print_ast_type_aka( param_ast, stderr );
-    EPRINTF(
-      " for operator %s"
-      "; must be a pointer to void, class, struct, or union\n",
+    print_error( &param_ast->loc,
+      "invalid operator \"%s\" parameter type ",
       ast->oper.operator->literal
     );
+    print_ast_type_aka( param_ast, stderr );
+    EPRINTF( "; must be a pointer to void, class, struct, or union\n" );
     return false;
   }
 
@@ -1833,12 +1823,12 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
   c_ast_t const *const param_ast = c_param_ast( param );
 
   if ( !c_ast_is_size_t( param_ast ) ) {
-    print_error( &param_ast->loc, "invalid parameter type " );
-    print_ast_type_aka( param_ast, stderr );
-    EPRINTF( " for operator %s"
-      "; must be \"std::size_t\" (or equivalent)\n",
+    print_error( &param_ast->loc,
+      "invalid operator \"%s\" parameter type ",
       ast->oper.operator->literal
     );
+    print_ast_type_aka( param_ast, stderr );
+    EPRINTF( "; must be \"std::size_t\" (or equivalent)\n" );
     return false;
   }
 
@@ -1942,7 +1932,8 @@ same: print_error( c_ast_params_loc( ast ),
         print_error( c_ast_params_loc( ast ),
           "at least 1 parameter of a non-member operator must be an "
           "enum, class, struct, or union"
-          "; or a reference or rvalue reference thereto\n"
+          ", or a reference thereto"
+          ", or a typedef thereof\n"
         );
         return false;
       }
@@ -1963,7 +1954,7 @@ same: print_error( c_ast_params_loc( ast ),
       //
       if ( c_tid_is_any( ast->type.stids, TS_friend ) &&
            c_sname_empty( &ast->sname ) ) {
-        print_error( &ast->loc, "member operators can not be friend\n" );
+        print_error( &ast->loc, "member operators can not be \"friend\"\n" );
         return false;
       }
       break;
@@ -2053,7 +2044,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
     case C_FUNC_NON_MEMBER: {
       if ( !c_tid_is_any( ast->type.stids, TS_friend ) ) {
         print_error( &ast->loc,
-          "default non-member operator \"%s\" must also be friend\n",
+          "default non-member operator \"%s\" must also be \"friend\"\n",
           op->literal
         );
         return false;
@@ -2070,7 +2061,8 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
         if ( param1_ast == NULL ) {
 rel_2par: print_error( &ast->loc,
             "default non-member relational operators must take two "
-            "value or reference-to-const parameters of the same class\n"
+            "value or reference-to-const parameters of the same class "
+            "or a typedef thereof\n"
           );
           return false;
         }
@@ -2089,8 +2081,9 @@ rel_2par: print_error( &ast->loc,
     case C_FUNC_MEMBER: {
       if ( !c_tid_is_any( ast->type.stids, TS_const ) ) {
         print_error( &ast->loc,
-          "default member operator \"%s\" must also be \"const\"\n",
-          op->literal
+          "default member operator \"%s\" must also be \"%s\"\n",
+          op->literal,
+          c_tid_name_error( TS_const )
         );
         return false;
       }
@@ -2105,7 +2098,8 @@ rel_2par: print_error( &ast->loc,
         if ( param1_ast == NULL ) {
           print_error( c_ast_params_loc( ast ),
             "default member relational operators must take one "
-            "value or reference-to-const parameter to a class\n"
+            "value or reference-to-const parameter to a class "
+            "or a typedef thereof\n"
           );
           return false;
         }
@@ -2204,7 +2198,8 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
       if ( c_tid_is_any( raw_to_ast->type.btids, TB_auto ) &&
            !OPT_LANG_IS( auto_POINTER_TYPES ) ) {
         print_error( &ast->loc,
-          "\"auto\" with pointer declarator not supported%s\n",
+          "\"%s\" with pointer declarator not supported%s\n",
+          c_tid_name_error( TB_auto ),
           C_LANG_WHICH( auto_POINTER_TYPES )
         );
         return false;
@@ -2307,8 +2302,9 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       if ( c_tid_is_any( raw_ret_ast->type.btids, TB_auto ) &&
            !OPT_LANG_IS( auto_RETURN_TYPES ) ) {
         print_error( &ret_ast->loc,
-          "%s returning \"auto\" not supported%s\n",
+          "%s returning \"%s\" not supported%s\n",
           kind_name,
+          c_tid_name_error( TB_auto ),
           C_LANG_WHICH( auto_RETURN_TYPES )
         );
         return false;
@@ -2431,10 +2427,11 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
         default:                        // check for: char const*
           if ( !c_ast_is_ptr_to_type_any( param_ast,
                   &T_ANY, &T_const_char ) ) {
-            print_error( &param_ast->loc, "invalid parameter type " );
+            print_error( &param_ast->loc,
+              "invalid user-defined literal parameter type "
+            );
             print_ast_type_aka( param_ast, stderr );
-            EPRINTF( " for user-defined literal; must be " );
-            EPRINTF( "\"%s\", ",
+            EPRINTF( "; must be \"%s\", ",
                      c_tid_name_error( TB_unsigned | TB_long | TB_long_long ) );
             EPRINTF( "\"%s\", ", c_tid_name_error( TB_long | TB_double ) );
             EPRINTF( "\"%s\", ", c_tid_name_error( TB_char ) );
@@ -2460,9 +2457,11 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
       if ( ptr_to_ast == NULL ||
           !(c_ast_is_tid_any( ptr_to_ast, TS_const ) &&
             c_ast_is_tid_any( ptr_to_ast, TB_ANY_CHAR )) ) {
-        print_error( &param_ast->loc, "invalid parameter type " );
+        print_error( &param_ast->loc,
+          "invalid user-defined literal parameter type "
+        );
         print_ast_type_aka( param_ast, stderr );
-        EPRINTF( " for user-defined literal; must be "
+        EPRINTF( "; must be "
           "const (char%s|char16_t|char32_t|wchar_t)*\n",
           OPT_LANG_IS( char8_t ) ? "|char8_t" : ""
         );
@@ -2470,12 +2469,11 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
       }
       param_ast = c_param_ast( param->next );
       if ( param_ast == NULL || !c_ast_is_size_t( param_ast ) ) {
-        print_error( &param_ast->loc, "invalid parameter type " );
-        print_ast_type_aka( param_ast, stderr );
-        EPUTS(
-          " for user-defined literal; "
-          "must be \"std::size_t\" (or equivalent)\n"
+        print_error( &param_ast->loc,
+          "invalid user-defined literal parameter type "
         );
+        print_ast_type_aka( param_ast, stderr );
+        EPUTS( "; must be \"std::size_t\" (or equivalent)\n" );
         return false;
       }
       break;
@@ -2507,7 +2505,8 @@ static bool c_ast_check_upc( c_ast_t const *ast ) {
   if ( c_tid_is_any( ast->type.stids, TS_UPC_relaxed | TS_UPC_strict ) &&
       !c_tid_is_any( ast->type.stids, TS_UPC_shared ) ) {
     print_error( &ast->loc,
-      "\"%s\" requires \"shared\"\n", c_type_name_error( &ast->type )
+      "\"%s\" requires \"shared\"\n",
+      c_type_name_error( &ast->type )
     );
     return false;
   }
@@ -2693,7 +2692,10 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
 
   if ( ast->kind != K_FUNCTION &&
        c_tid_is_any( ast->type.stids, TS_consteval ) ) {
-    print_error( &ast->loc, "only functions can be \"consteval\"\n" );
+    print_error( &ast->loc,
+      "only functions can be \"%s\"\n",
+      c_tid_name_error( TS_consteval )
+    );
     return VISITOR_ERROR_FOUND;
   }
 
@@ -3076,7 +3078,8 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
   if ( first_ast->type.btids == TB_auto && ast_count > 1 &&
        !OPT_LANG_IS( auto_TYPE_MULTI_DECL ) ) {
     print_error( &first_ast->loc,
-      "\"auto\" with multiple declarators is not supported%s\n",
+      "\"%s\" with multiple declarators is not supported%s\n",
+      c_tid_name_error( TB_auto ),
       C_LANG_WHICH( auto_TYPE_MULTI_DECL )
     );
     return false;

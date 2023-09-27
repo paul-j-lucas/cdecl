@@ -1,3 +1,3 @@
 explain friend bool operator+(S const&, S const&) = default
                   ^
-19: error: only operator "=" and relational operators can be default
+19: error: only operator "=" and relational operators can be "default"

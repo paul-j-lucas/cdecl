@@ -1,3 +1,3 @@
 explain friend bool operator==(S const&, int) = default
                   ^
-19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class
+19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof

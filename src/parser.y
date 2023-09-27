@@ -4353,7 +4353,8 @@ trailing_return_type_c_ast_opt
       //
       if ( ret_ast->type.btids != TB_auto ) {
         print_error( &ret_ast->loc,
-          "function with trailing return type must only specify \"auto\"\n"
+          "function with trailing return type must only specify \"%s\"\n",
+          c_tid_name_error( TB_auto )
         );
         PARSE_ABORT();
       }
@@ -4664,7 +4665,8 @@ pc99_pointer_type_c_ast
         // would have no "memory" that the return type was implicitly int.
         //
         print_error( &@star,
-          "implicit \"int\" is illegal%s\n",
+          "implicit \"%s\" is illegal%s\n",
+          c_tid_name_error( TB_int ),
           C_LANG_WHICH( IMPLICIT_int )
         );
         PARSE_ABORT();
@@ -5589,7 +5591,8 @@ atomic_specifier_type_c_ast
         static c_type_t const TSA_ANY = { TB_NONE, TS_ANY, TA_ANY };
         c_type_t const error_type = c_type_and( &$$->type, &TSA_ANY );
         print_error( &@type_ast,
-          "\"_Atomic\" can not be of \"%s\"\n", c_type_name_c( &error_type )
+          "\"_Atomic\" can not be of \"%s\"\n",
+          c_type_name_c( &error_type )
         );
         PARSE_ABORT();
       }
@@ -6916,7 +6919,7 @@ user_defined_literal_decl_english_ast
       //
       if ( UNSUPPORTED( USER_DEF_LITS ) ) {
         print_error( &@user_defined,
-          "user-defined literal not supported%s\n",
+          "user-defined literals not supported%s\n",
           C_LANG_WHICH( USER_DEF_LITS )
         );
         PARSE_ABORT();
