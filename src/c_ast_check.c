@@ -449,8 +449,11 @@ static bool c_ast_check_array( c_ast_t const *ast,
 
     case K_BUILTIN:
       if ( c_ast_is_builtin_any( raw_of_ast, TB_void ) ) {
-        print_error( &ast->loc, "array of void" );
-        print_hint( "array of pointer to void" );
+        print_error( &ast->loc, "array of \"void\"" );
+        if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+          print_hint( "array of \"pointer to void\"" );
+        else
+          print_hint( "array of \"void*\"" );
         return false;
       }
       break;
@@ -516,7 +519,8 @@ static bool c_ast_check_builtin( c_ast_t const *ast,
   if ( ast->type.btids == TB_NONE && !OPT_LANG_IS( IMPLICIT_int ) &&
        !c_ast_parent_is_kind( ast, K_UDEF_CONV ) ) {
     print_error( &ast->loc,
-      "implicit \"int\" is illegal%s\n",
+      "implicit \"%s\" is illegal%s\n",
+      c_tid_name_error( TB_int ),
       C_LANG_WHICH( IMPLICIT_int )
     );
     return false;
@@ -588,8 +592,11 @@ static bool c_ast_check_builtin( c_ast_t const *ast,
        !(OPT_LANG_IS( C_ANY ) && c_tid_is_any( ast->type.stids, TS_extern )) &&
        (check->tdef_ast == NULL ||
         !c_ast_parent_is_kind( check->tdef_ast, K_POINTER )) ) {
-    print_error( &ast->loc, "variable of void" );
-    print_hint( "pointer to void" );
+    print_error( &ast->loc, "variable of \"void\"" );
+    if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+      print_hint( "\"pointer to void\"" );
+    else
+      print_hint( "\"void*\"" );
     return false;
   }
 
@@ -1366,8 +1373,8 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       return false;
   } // for
 
-  if ( !OPT_LANG_IS( VARIADIC_ONLY_PARAMS ) &&
-       variadic_ast != NULL && n_params == 1 ) {
+  if ( variadic_ast != NULL && n_params == 1 &&
+       !OPT_LANG_IS( VARIADIC_ONLY_PARAMS ) ) {
     print_error( &variadic_ast->loc,
       "variadic specifier can not be only parameter%s\n",
       C_LANG_WHICH( VARIADIC_ONLY_PARAMS )

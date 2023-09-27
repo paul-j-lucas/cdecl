@@ -4174,7 +4174,8 @@ pc99_func_or_constructor_declaration_c
           // would have no "memory" that the return type was implicitly int.
           //
           print_error( &@name,
-            "implicit \"int\" functions are illegal%s\n",
+            "implicit \"%s\" functions are illegal%s\n",
+            c_tid_name_error( TB_int ),
             C_LANG_WHICH( IMPLICIT_int )
           );
           FREE( $name );
