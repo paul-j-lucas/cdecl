@@ -4192,7 +4192,7 @@ pc99_func_or_constructor_declaration_c
         ret_ast->type.btids = TB_int;
 
         ast = c_ast_new_gc( K_FUNCTION, &@$ );
-        ast->func.ret_ast = ret_ast;
+        c_ast_set_parent( ret_ast, ast );
       }
 
       c_sname_init_name( &ast->sname, $name );
