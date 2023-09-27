@@ -313,9 +313,12 @@
   DUMP_KEY( KEY ": %d", STATIC_CAST( int, (NUM) ) )
 
 /**
- * Dumps a parser grammar production.  If a rule has a result, it should be
- * dumped as the final thing before the #DUMP_END() with the KEY of `$$_`
- * followed by a suffix denoting the type, e.g., `ast`.  For example:
+ * Dumps a parser grammar production.
+ *
+ * @remarks For grammar productions, it should be the first `DUMP_*()` after
+ * #DUMP_START(). If a production has a result, it should be dumped as the
+ * final thing before the #DUMP_END() with the KEY of `$$_` followed by a
+ * suffix denoting the type, e.g., `ast`.  For example:
  * ```
  *  DUMP_START();
  *  DUMP_PROD( "rule",
