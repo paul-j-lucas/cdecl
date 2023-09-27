@@ -682,16 +682,16 @@ static bool add_type( c_ast_t const *type_ast, unsigned decl_flags ) {
  * Prints a warning that the attribute \a keyword syntax is not supported (and
  * ignored).
  *
- * @param loc The source location of \a keyword.
  * @param keyword The attribute syntax keyword, e.g., `__attribute__` or
  * `__declspec`.
+ * @param keyword_loc The source location of \a keyword.
  */
-static void attr_syntax_not_supported( c_loc_t const *loc,
-                                       char const *keyword ) {
-  assert( loc != NULL );
+static void attr_syntax_not_supported( char const *keyword,
+                                       c_loc_t const *keyword_loc ) {
   assert( keyword != NULL );
+  assert( keyword_loc != NULL );
 
-  print_warning( loc,
+  print_warning( keyword_loc,
     "\"%s\" not supported by %s (ignoring)", keyword, CDECL
   );
   if ( OPT_LANG_IS( ATTRIBUTES ) )
@@ -6187,7 +6187,7 @@ gnu_attribute_specifier_list_c
 gnu_attribute_specifier_c
   : Y_GNU___attribute__
     {
-      attr_syntax_not_supported( &@1, L_GNU___attribute__ );
+      attr_syntax_not_supported( L_GNU___attribute__, &@1 );
       //
       // Temporariy disabling finding keywords allows GNU attributes that are C
       // keywords (e.g., const) to be found as ordinary string literals.
@@ -6256,7 +6256,7 @@ msc_attribute_specifier_list_c
 msc_attribute_specifier_c
   : Y_MSC___declspec
     {
-      attr_syntax_not_supported( &@1, L_MSC___declspec );
+      attr_syntax_not_supported( L_MSC___declspec, &@1 );
       // See comment in gnu_attribute_specifier_c.
       lexer_find &= ~LEXER_FIND_C_KEYWORDS;
     }
