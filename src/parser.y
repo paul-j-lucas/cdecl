@@ -432,6 +432,12 @@
 
 /**
  * Inherited attributes.
+ *
+ * @remarks These are grouped into a `struct` (rather than having them as
+ * separate global variables) so that they can all be reset (mostly) via a
+ * single #MEM_ZERO().
+ *
+ * @sa ia_cleanup()
  */
 struct in_attr {
   c_alignas_t     align;            ///< Alignment, if any.
@@ -441,7 +447,23 @@ struct in_attr {
   c_operator_t const *operator;     ///< C++ only: current operator, if any.
   c_sname_t       scope_sname;      ///< C++ only: current scope name, if any.
   c_ast_list_t    type_ast_stack;   ///< Type AST stack.
-  c_ast_t const  *type_spec_ast;    ///< Declaration type specifier AST.
+
+  /**
+   * Declaration type specifier AST.
+   *
+   * @remarks A C/C++ declaration is of the form:
+   *
+   *      type-specifier declarator+
+   *
+   * where one or more declarators all have the same base type, e.g.:
+   *
+   *      int i, *p, a[2], f(double);
+   *
+   * This AST is a pointer to the base type (above, `int`) that is duplicated
+   * for each declarator.  It's set by the first call to ia_type_ast_push().
+   */
+  c_ast_t const  *type_spec_ast;
+
   rb_node_t      *typedef_rb;       ///< Red-black node for temporary `typedef`.
 };
 typedef struct in_attr in_attr_t;
@@ -3754,49 +3776,49 @@ array_size_c_ast
       $$->array.kind = C_ARRAY_NAMED_SIZE;
       $$->array.size_name = $name;
     }
-  | '[' type_qualifier_list_c_stid[qual_stid] rbracket_exp
+  | '[' type_qualifier_list_c_stid[qual_stids] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->type.stids = c_tid_check( $qual_stid, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
       $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
-  | '[' type_qualifier_list_c_stid[qual_stid] static_stid_opt[static_stid]
+  | '[' type_qualifier_list_c_stid[qual_stids] static_stid_opt[static_stid]
     Y_INT_LIT[size] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->type.stids = c_tid_check( $qual_stid | $static_stid, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stids | $static_stid, C_TPID_STORE );
       $$->array.kind = C_ARRAY_INT_SIZE;
       $$->array.size_int = $size;
     }
-  | '[' type_qualifier_list_c_stid[qual_stid] static_stid_opt[static_stid]
+  | '[' type_qualifier_list_c_stid[qual_stids] static_stid_opt[static_stid]
     Y_NAME[name] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->type.stids = c_tid_check( $qual_stid | $static_stid, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stids | $static_stid, C_TPID_STORE );
       $$->array.kind = C_ARRAY_NAMED_SIZE;
       $$->array.size_name = $name;
     }
-  | '[' type_qualifier_list_c_stid_opt[qual_stid] '*' rbracket_exp
+  | '[' type_qualifier_list_c_stid_opt[qual_stids] '*' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->type.stids = c_tid_check( $qual_stid, C_TPID_STORE );
+      $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
       $$->array.kind = C_ARRAY_VLA_STAR;
     }
-  | '[' Y_static type_qualifier_list_c_stid_opt[qual_stid] Y_INT_LIT[size]
+  | '[' Y_static type_qualifier_list_c_stid_opt[qual_stids] Y_INT_LIT[size]
     rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->type.stids =
-        c_tid_check( TS_NON_EMPTY_ARRAY | $qual_stid, C_TPID_STORE );
+        c_tid_check( TS_NON_EMPTY_ARRAY | $qual_stids, C_TPID_STORE );
       $$->array.kind = C_ARRAY_INT_SIZE;
       $$->array.size_int = $size;
     }
-  | '[' Y_static type_qualifier_list_c_stid_opt[qual_stid] Y_NAME[name]
+  | '[' Y_static type_qualifier_list_c_stid_opt[qual_stids] Y_NAME[name]
     rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->type.stids =
-        c_tid_check( TS_NON_EMPTY_ARRAY | $qual_stid, C_TPID_STORE );
+        c_tid_check( TS_NON_EMPTY_ARRAY | $qual_stids, C_TPID_STORE );
       $$->array.kind = C_ARRAY_NAMED_SIZE;
       $$->array.size_name = $name;
     }
