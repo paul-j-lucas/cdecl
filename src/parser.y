@@ -459,7 +459,7 @@ struct in_attr {
    *
    *      int i, *p, a[2], f(double);
    *
-   * This AST is a pointer to the base type (above, `int`) that is duplicated
+   * This is a pointer to the base type AST (above, `int`) that is duplicated
    * for each declarator.  It's set by the first call to ia_type_ast_push().
    */
   c_ast_t const  *type_spec_ast;
