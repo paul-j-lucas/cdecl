@@ -1,5 +1,24 @@
 2023-09-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, parser.y, declare_nmo_amper_i_i.out,
+     declare_o_minus2_d_rk.out, declare_o_minus_iel_i.out,
+     declare_o_plus2_d_rk.out, declare_o_plus_iel_i.out,
+     declare_udl_pcci_i.out, explain_co_less_i_b++default.out,
+     explain_fkrel_i.out, explain_fo_eq2_crki_b++default.out,
+     explain_fo_eq2_crkk_b++default.out, explain_fo_eq2_crkrk_b++default.out,
+     explain_fo_eq2_icrk_b++default.out, explain_fo_eq2_ik_b++default.out,
+     explain_fo_eq2_kcrk_b++default.out, explain_fo_eq2_ki_b++default.out,
+     explain_fo_eq2_rkcrk_b++default.out, explain_fo_exclam__b.out,
+     explain_fo_plus_2crk_b++default.out, explain_o_delete_i_v.out,
+     explain_o_less_2rck_b++default.out, explain_o_minus2_d_rk.out,
+     explain_o_minus_iel_i.out, explain_o_new_i_pv.out,
+     explain_o_plus2_d_rk.out, explain_o_plus_iel_i.out, explain_udl_2c_i.out,
+     explain_udl_piul_i.out, explain_udl_ul_i.out: Made more error messages
+     more consistent.
+   * parser.y: Now using c_ast_set_parent().
+   * parser.y: Added assert().
+   * parser.y: s/add_type/define_type/
+   * parser.y: Switched attr_syntax_not_supported() parameter order.
    * parser.y: Eliminated special-case handling of type_spec_ast in decl_c
      production.
 
