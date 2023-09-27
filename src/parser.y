@@ -3651,31 +3651,11 @@ decl_c
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
-      //
-      // The type has to be duplicated to guarantee a fresh type AST in case
-      // we're doing multiple declarations, e.g.:
-      //
-      //    explain int *p, *q
-      //
-      c_ast_t *const dup_type_ast = c_ast_dup_gc( type_ast );
-
-      $$ = join_type_decl( dup_type_ast, $decl_astp.ast );
+      $$ = join_type_decl( ia_type_spec_ast( type_ast ), $decl_astp.ast );
       PARSE_ASSERT( $$ != NULL );
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
-
-      if ( type_ast == $decl_astp.ast ) {
-        //
-        // If the type and the declarator are the same AST (which happens for
-        // simple declarations like "int x"), we have to replace the inherited
-        // attribute type with the duplicated one with its name cleared in case
-        // we're doing multiple declarations.
-        //
-        ia_type_ast_pop();
-        c_sname_cleanup( &dup_type_ast->sname );
-        ia_type_ast_push( dup_type_ast );
-      }
     }
   ;
 
