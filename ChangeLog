@@ -1,3 +1,8 @@
+2023-09-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Eliminated special-case handling of type_spec_ast in decl_c
+     production.
+
 2023-09-26  Paul J. Lucas <paul@lucasmail.org>
 
    * test/Makefile.am, typedef.out, typedef.test: typedef test consolidation.
