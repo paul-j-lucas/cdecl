@@ -613,17 +613,71 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Adds a type to the global set.
+ * Prints a warning that the attribute \a keyword syntax is not supported (and
+ * ignored).
  *
- * @param type_ast The AST of the type to add.
+ * @param keyword The attribute syntax keyword, e.g., `__attribute__` or
+ * `__declspec`.
+ * @param keyword_loc The source location of \a keyword.
+ */
+static void attr_syntax_not_supported( char const *keyword,
+                                       c_loc_t const *keyword_loc ) {
+  assert( keyword != NULL );
+  assert( keyword_loc != NULL );
+
+  print_warning( keyword_loc,
+    "\"%s\" not supported by %s (ignoring)", keyword, CDECL
+  );
+  if ( OPT_LANG_IS( ATTRIBUTES ) )
+    print_hint( "[[...]]" );
+  else
+    EPUTC( '\n' );
+}
+
+/**
+ * A predicate function for slist_free_if() that checks whether \a ast is a
+ * #K_PLACEHOLDER: if so, c_ast_free()s it.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast is a #K_PLACEHOLDER.
+ */
+static bool c_ast_free_if_placeholder( c_ast_t *ast ) {
+  if ( ast->kind == K_PLACEHOLDER ) {
+    assert( c_ast_is_orphan( ast ) );
+    c_ast_free( ast );
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Checks whether `typename` is OK since the type's name is a qualified name.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only upon success.
+ */
+NODISCARD
+bool c_ast_is_typename_ok( c_ast_t const *ast ) {
+  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+  if ( c_sname_count( &raw_ast->sname ) < 2 ) {
+    print_error( &ast->loc, "qualified name expected after \"typename\"\n" );
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Defines a type by adding it to the global set.
+ *
+ * @param type_ast The AST of the type to define.
  * @param decl_flags The declaration flags to use; must only be one of
  * #C_ENG_DECL, #C_GIB_TYPEDEF, or #C_GIB_USING.
- * @return Returns `true` either if the type was added or it's equivalent to an
- * existing type; `false` if a different type already exists having the same
+ * @return Returns `true` either if the type was defined or it's equivalent to
+ * an existing type; `false` if a different type already exists having the same
  * name.
  */
 NODISCARD
-static bool add_type( c_ast_t const *type_ast, unsigned decl_flags ) {
+static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
   assert( type_ast != NULL );
 
   c_ast_t const *const leaf_ast = c_ast_leaf( type_ast );
@@ -675,60 +729,6 @@ static bool add_type( c_ast_t const *type_ast, unsigned decl_flags ) {
     }
   }
 
-  return true;
-}
-
-/**
- * Prints a warning that the attribute \a keyword syntax is not supported (and
- * ignored).
- *
- * @param keyword The attribute syntax keyword, e.g., `__attribute__` or
- * `__declspec`.
- * @param keyword_loc The source location of \a keyword.
- */
-static void attr_syntax_not_supported( char const *keyword,
-                                       c_loc_t const *keyword_loc ) {
-  assert( keyword != NULL );
-  assert( keyword_loc != NULL );
-
-  print_warning( keyword_loc,
-    "\"%s\" not supported by %s (ignoring)", keyword, CDECL
-  );
-  if ( OPT_LANG_IS( ATTRIBUTES ) )
-    print_hint( "[[...]]" );
-  else
-    EPUTC( '\n' );
-}
-
-/**
- * A predicate function for slist_free_if() that checks whether \a ast is a
- * #K_PLACEHOLDER: if so, c_ast_free()s it.
- *
- * @param ast The AST to check.
- * @return Returns `true` only if \a ast is a #K_PLACEHOLDER.
- */
-static bool c_ast_free_if_placeholder( c_ast_t *ast ) {
-  if ( ast->kind == K_PLACEHOLDER ) {
-    assert( c_ast_is_orphan( ast ) );
-    c_ast_free( ast );
-    return true;
-  }
-  return false;
-}
-
-/**
- * Checks whether `typename` is OK since the type's name is a qualified name.
- *
- * @param ast The AST to check.
- * @return Returns `true` only upon success.
- */
-NODISCARD
-bool c_ast_is_typename_ok( c_ast_t const *ast ) {
-  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
-  if ( c_sname_count( &raw_ast->sname ) < 2 ) {
-    print_error( &ast->loc, "qualified name expected after \"typename\"\n" );
-    return false;
-  }
   return true;
 }
 
@@ -2297,7 +2297,7 @@ define_command
       DUMP_END();
 
       PARSE_ASSERT( c_sname_check( &$decl_ast->sname, &@sname ) );
-      PARSE_ASSERT( add_type( $decl_ast, C_ENG_DECL ) );
+      PARSE_ASSERT( define_type( $decl_ast, C_ENG_DECL ) );
     }
   ;
 
@@ -2902,7 +2902,7 @@ class_struct_union_declaration_c
       DUMP_AST( "$$_ast", csu_ast );
       DUMP_END();
 
-      PARSE_ASSERT( add_type( csu_ast, C_GIB_TYPEDEF ) );
+      PARSE_ASSERT( define_type( csu_ast, C_GIB_TYPEDEF ) );
     }
     brace_in_scope_declaration_c_opt
   ;
@@ -2944,7 +2944,7 @@ enum_declaration_c
       DUMP_AST( "$$_ast", enum_ast );
       DUMP_END();
 
-      PARSE_ASSERT( add_type( enum_ast, C_GIB_TYPEDEF ) );
+      PARSE_ASSERT( define_type( enum_ast, C_GIB_TYPEDEF ) );
     }
   ;
 
@@ -3430,7 +3430,7 @@ typedef_decl_c
       DUMP_AST( "$$_ast", typedef_ast );
       DUMP_END();
 
-      PARSE_ASSERT( add_type( typedef_ast, C_GIB_TYPEDEF  ) );
+      PARSE_ASSERT( define_type( typedef_ast, C_GIB_TYPEDEF  ) );
     }
   ;
 
@@ -3467,7 +3467,7 @@ using_declaration_c
       // see the comment in "define_command" about TS_typedef
       PJL_IGNORE_RV( c_ast_take_type_any( $decl_ast, &T_TS_typedef ) );
 
-      PARSE_ASSERT( add_type( $decl_ast, C_GIB_USING ) );
+      PARSE_ASSERT( define_type( $decl_ast, C_GIB_USING ) );
     }
   ;
 
