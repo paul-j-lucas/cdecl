@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-typedef int int_least32_t
-END

@@ -1,5 +1,12 @@
 EXPECTED_EXIT=0
 cdecl -O <<END
-typedef int I, *PI, A2[2], F_I(), *F_PI(), (*PF_I)()
+typedef int I, *PI, A2[2], F_I(double), *F_PI(), (*PF_I)()
+typedef F_I *PF_I_2
+typedef void Void
 show as english
+
+declare x as I
+explain I x
+
+typedef int int_least32_t
 END

@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-typedef void (*f)(int)
-show
-END
