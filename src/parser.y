@@ -679,6 +679,7 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
 NODISCARD
 static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
   assert( type_ast != NULL );
+  assert( is_1_bit_only_in_set( decl_flags, C_TYPE_DECL_ANY ) );
 
   c_ast_t const *const leaf_ast = c_ast_leaf( type_ast );
   if ( c_ast_is_tid_any( leaf_ast, TB_auto ) ) {
