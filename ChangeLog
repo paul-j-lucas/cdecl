@@ -1,5 +1,7 @@
 2023-09-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Added `inline`.
+   * parser.y, debug.out: s/current_scope/scope_sname/
    * c_ast.c: Added missing #ifdef ENABLE_CDECL_DEBUG ... #endif.
    * c_ast.c, c_ast.h, dump.c: Added `dup_from_id` JSON5 field.
    * parser.y: Fixed DUMP_START().
