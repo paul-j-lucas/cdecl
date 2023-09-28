@@ -652,14 +652,14 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english, bool is_error ) {
 
   switch ( c_tid_tpid( tid ) ) {
     case C_TPID_NONE:
-      unreachable();
+      break;
 
     case C_TPID_BASE:
       FOREACH_ARRAY_ELEMENT( c_type_info_t, ti, C_TYPE_INFO ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english, is_error );
       } // for
-      unreachable();
+      break;
 
     case C_TPID_STORE:
       FOREACH_ARRAY_ELEMENT( c_type_info_t, ti, C_QUALIFIER_INFO ) {
@@ -671,14 +671,14 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english, bool is_error ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english, is_error );
       } // for
-      unreachable();
+      break;
 
     case C_TPID_ATTR:
       FOREACH_ARRAY_ELEMENT( c_type_info_t, ti, C_ATTRIBUTE_INFO ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english, is_error );
       } // for
-      unreachable();
+      break;
   } // switch
 
   UNEXPECTED_INT_VALUE( tid );
