@@ -1,5 +1,7 @@
 2023-09-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Eliminated in_attr::is_implicit_int.
+   * parser.y: Eliminated in_attr.operator.
    * c_ast_check.c, parser.y, declare_nmo_amper_i_i.out,
      declare_o_minus2_d_rk.out, declare_o_minus_iel_i.out,
      declare_o_plus2_d_rk.out, declare_o_plus_iel_i.out,
