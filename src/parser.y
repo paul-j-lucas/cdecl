@@ -442,7 +442,6 @@
 struct in_attr {
   c_alignas_t     align;            ///< Alignment, if any.
   unsigned        ast_depth;        ///< Parentheses nesting depth.
-  bool            is_implicit_int;  ///< C only: created implicit `int` AST?
   bool            is_typename;      ///< C++ only: is `typename` specified?
   c_sname_t       scope_sname;      ///< C++ only: current scope name, if any.
   c_ast_list_t    type_ast_stack;   ///< Type AST stack.
@@ -4707,7 +4706,7 @@ pc99_pointer_type_c_ast
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
-      if ( false_set( &in_attr.is_implicit_int ) ) {
+      if ( type_ast == NULL ) {
         type_ast = c_ast_new_gc( K_BUILTIN, &@star );
         type_ast->type.btids = TB_int;
         ia_type_ast_push( type_ast );
