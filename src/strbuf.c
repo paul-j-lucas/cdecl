@@ -148,7 +148,11 @@ void strbuf_printf( strbuf_t *sbuf, char const *format, ... ) {
 void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
   assert( s != NULL );
   strbuf_reserve( sbuf, s_len );
-  strncpy( sbuf->str + sbuf->len, s, s_len );
+
+  // Use memcpy() to eliminate "'strncpy' output truncated before terminating
+  // nul copying 1 byte from a string of the same length" warning.
+  memcpy( sbuf->str + sbuf->len, s, s_len );
+
   sbuf->len += s_len;
   sbuf->str[ sbuf->len ] = '\0';
 }
