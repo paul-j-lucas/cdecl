@@ -1,5 +1,11 @@
 2023-09-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c: Fixed "zero-length gnu_printf format string" warning.
+   * lexer.l: Eliminated "a label can only be part of a statement and a
+     declaration is not a statement" warning.
+   * lexer.l, parser.y, debug.out: Now always returning unsigned int to
+     eliminate (unsigned) casts.
+   * c_type.c: s/unreachable()/break/
    * autocomplete.c, c_type.c, cdecl.c, color.c, help.c, util.h: Put
      FOREACH_ARRAY_ELEMENT() back.
    * color.c: Eliminated NULL row from CAP_VAR_MAP; using ARRAY_SIZE().
