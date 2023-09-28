@@ -1,5 +1,8 @@
 2023-09-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Added missing optional argument for `set debug` option.
+   * strbuf.c: Use memcpy() to eliminate "'strncpy' output truncated before
+     terminating nul copying 1 byte from a string of the same length" warning.
    * dump.c: Fixed "zero-length gnu_printf format string" warning.
    * lexer.l: Eliminated "a label can only be part of a statement and a
      declaration is not a statement" warning.
