@@ -134,6 +134,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param A The array to get the number of elements of.
  *
  * @note \a A _must_ be a statically allocated array.
+ *
+ * @sa #FOREACH_ARRAY_ELEMENT()
  */
 #define ARRAY_SIZE(A) (     \
   sizeof(A) / sizeof(0[A])  \
@@ -332,6 +334,20 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define FFLUSH(STREAM) \
   PERROR_EXIT_IF( fflush( STREAM ) != 0, EX_IOERR )
+
+/**
+ * Convenience macro for iterating over the elements of a static array.
+ *
+ * @param TYPE The type of element.
+ * @param VAR The element loop variable.
+ * @param ARRAY The array to iterate over.
+ *
+ * @sa #ARRAY_SIZE()
+ */
+#define FOREACH_ARRAY_ELEMENT(TYPE,VAR,ARRAY)                 \
+  for ( TYPE const *VAR = ARRAY,                              \
+        *const UNIQUE_NAME(end) = ARRAY + ARRAY_SIZE(ARRAY);  \
+        VAR < UNIQUE_NAME(end); ++VAR )
 
 /**
  * Calls **fprintf**(3) on \a STREAM, checks for an error, and exits if there

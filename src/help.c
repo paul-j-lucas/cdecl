@@ -131,6 +131,56 @@ static bool is_title( char const *s ) {
 }
 
 /**
+ * Possibly maps \a what to another string.
+ *
+ * @param what What to possibly map to another string.  May be NULL.
+ * @return Returns that mapped-to string or \a what if there is no mapping.
+ */
+NODISCARD
+static char const* map_what( char const *what ) {
+  if ( what == NULL )
+    return L_commands;
+
+  struct str_map {
+    char const *from;
+    char const *to;
+  };
+  typedef struct str_map str_map_t;
+
+  static str_map_t const STR_MAP[] = {
+    { L_command,          L_commands },
+
+    //
+    // Special cases: the cdecl commands are only "const", "dynamic",
+    // "reinterpret", and "static" without the "cast", but the user might type
+    // "cast" additionally: remove the "cast".
+    //
+    // Note that the lexer will collapse multiple whitespace characters between
+    // words down to a single space.
+    //
+    { "const cast",       L_const },
+    { "dynamic cast",     L_dynamic },
+    { "reinterpret cast", L_reinterpret },
+    { "static cast",      L_static },
+
+    //
+    // Special case: there is no "q" command, only "quit". The lexer maps "q"
+    // to "quit" internally, but only when "q" is the only thing on a line (so
+    // "q" can be used as a variable name), so we have to map "q" to "quit"
+    // here too.
+    //
+    { "q",                L_quit },
+  };
+
+  FOREACH_ARRAY_ELEMENT( str_map_t, map, STR_MAP ) {
+    if ( strcmp( what, map->from ) == 0 )
+      return map->to;
+  } // for
+
+  return what;
+}
+
+/**
  * Prints a line of help text (in color, if possible and requested).
  *
  * @param line The line to print.
@@ -544,63 +594,26 @@ static void print_help_where( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+
 bool print_help( char const *what, c_loc_t const *what_loc ) {
   assert( what_loc != NULL );
 
-  if ( what == NULL ||
-       strcmp( what, L_command ) == 0 || strcmp( what, L_commands ) == 0 ) {
+  char const *const mapped_what = map_what( what );
+
+  if ( strcmp( mapped_what, L_commands ) == 0 ) {
     print_help_command( /*command=*/NULL );
     return true;
   }
 
-  if ( strcmp( what, L_english ) == 0 ) {
+  if ( strcmp( mapped_what, L_english ) == 0 ) {
     print_help_english();
     return true;
   }
 
-  if ( strcmp( what, L_options ) == 0 ) {
+  if ( strcmp( mapped_what, L_options ) == 0 ) {
     print_help_options();
     return true;
   }
-
-  struct str_map {
-    char const *from;
-    char const *to;
-  };
-  typedef struct str_map str_map_t;
-
-  static str_map_t const STR_MAP[] = {
-    //
-    // Special cases: the cdecl commands are only "const", "dynamic",
-    // "reinterpret", and "static" without the "cast", but the user might type
-    // "cast" additionally: remove the "cast".
-    //
-    // Note that the lexer will collapse multiple whitespace characters between
-    // words down to a single space.
-    //
-    { "const cast",       L_const },
-    { "dynamic cast",     L_dynamic },
-    { "reinterpret cast", L_reinterpret },
-    { "static cast",      L_static },
-
-    //
-    // Special case: there is no "q" command, only "quit". The lexer maps "q"
-    // to "quit" internally, but only when "q" is the only thing on a line (so
-    // "q" can be used as a variable name), so we have to map "q" to "quit"
-    // here too.
-    //
-    { "q",                L_quit },
-
-    { NULL,               NULL }
-  };
-
-  char const *mapped_what = what;
-  for ( str_map_t const *m = STR_MAP; m->from != NULL; ++m ) {
-    if ( strcmp( what, m->from ) == 0 ) {
-      mapped_what = m->to;
-      break;
-    }
-  } // for
 
   //
   // Note that cdecl_command_find() matches strings that _start with_ a
