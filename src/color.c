@@ -213,9 +213,9 @@ static char const** sgr_var_find( char const *name ) {
 
   assert( name != NULL );
 
-  for ( size_t i = 0; i < ARRAY_SIZE( CAP_VAR_MAP ); ++i ) {
-    if ( strcmp( name, CAP_VAR_MAP[i].cap_name ) == 0 )
-      return CAP_VAR_MAP[i].sgr_var;
+  FOREACH_ARRAY_ELEMENT( cap_var_map_t, map, CAP_VAR_MAP ) {
+    if ( strcmp( name, map->cap_name ) == 0 )
+      return map->sgr_var;
   } // for
 
   return NULL;

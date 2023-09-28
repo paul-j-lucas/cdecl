@@ -153,8 +153,8 @@ static char const* const* ac_help_keywords_new( void ) {
     free_later( MALLOC( char*, n + 1/*NULL*/ ) );
   char const **pk = ac_help_keywords;
 
-  for ( size_t i = 0; i < ARRAY_SIZE( AC_HELP_KEYWORDS_INIT ); ++i )
-    *pk++ = AC_HELP_KEYWORDS_INIT[ i ];
+  FOREACH_ARRAY_ELEMENT( char const*, hk, AC_HELP_KEYWORDS_INIT )
+    *pk++ = *hk;
   FOREACH_CDECL_COMMAND( command )
     *pk++ = command->literal;
 

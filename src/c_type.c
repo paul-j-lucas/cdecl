@@ -655,30 +655,26 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english, bool is_error ) {
       unreachable();
 
     case C_TPID_BASE:
-      for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
-        c_type_info_t const *const ti = &C_TYPE_INFO[i];
+      FOREACH_ARRAY_ELEMENT( c_type_info_t, ti, C_TYPE_INFO ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english, is_error );
       } // for
       unreachable();
 
     case C_TPID_STORE:
-      for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i ) {
-        c_type_info_t const *const ti = &C_QUALIFIER_INFO[i];
+      FOREACH_ARRAY_ELEMENT( c_type_info_t, ti, C_QUALIFIER_INFO ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english, is_error );
       } // for
 
-      for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_INFO ); ++i ) {
-        c_type_info_t const *const ti = &C_STORAGE_INFO[i];
+      FOREACH_ARRAY_ELEMENT( c_type_info_t, ti, C_STORAGE_INFO ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english, is_error );
       } // for
       unreachable();
 
     case C_TPID_ATTR:
-      for ( size_t i = 0; i < ARRAY_SIZE( C_ATTRIBUTE_INFO ); ++i ) {
-        c_type_info_t const *const ti = &C_ATTRIBUTE_INFO[i];
+      FOREACH_ARRAY_ELEMENT( c_type_info_t, ti, C_ATTRIBUTE_INFO ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english, is_error );
       } // for

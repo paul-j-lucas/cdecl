@@ -396,8 +396,8 @@ bool is_cppdecl( void ) {
     "cxxdecl"
   };
 
-  for ( size_t i = 0; i < ARRAY_SIZE( NAMES ); ++i ) {
-    if ( strcmp( me, NAMES[i] ) == 0 )
+  FOREACH_ARRAY_ELEMENT( char const*, name, NAMES ) {
+    if ( strcmp( me, *name ) == 0 )
       return true;
   } // for
   return false;
