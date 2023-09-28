@@ -1,5 +1,15 @@
+2023-09-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, util.h: Eliminated FOREACH_ARRAY_ELEMENT() -- it doesn't work for
+     strings.
+   * help.c, util.h: Refactored code into map_what(); added
+     FOREACH_ARRAY_ELEMENT().
+   * help.c, help.out, help.test: Now checking found command for an exact
+     match.
+
 2023-09-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.c: Now using ARRAY_SIZE().
    * lcovrc: Removed CASE_K_PLACEHOLDER.
    * gnulib-common.m4: Updated GnuLib.
    * configure.ac: Upped version to 15.0.
