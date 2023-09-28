@@ -736,6 +736,9 @@ command:
 c++decl> help const cast
 command:
   const cast [<name>] {as|[in]to} <english>
+c++decl> help const  cast
+command:
+  const cast [<name>] {as|[in]to} <english>
 c++decl> help declare
 command:
   declare <name> [, <name>]* as <english> [<declare-option>]

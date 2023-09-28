@@ -595,8 +595,10 @@ bool print_help( char const *what, c_loc_t const *what_loc ) {
     }
   } // for
 
+  // Note that cdecl_command_find() matches strings that _start with_ a
+  // command, so we have to check for an exact match if found.
   cdecl_command_t const *const command = cdecl_command_find( mapped_what );
-  if ( command == NULL ) {
+  if ( command == NULL || strcmp( mapped_what, command->literal ) != 0 ) {
     print_error( what_loc, "\"%s\": no such command", what );
     print_suggestions( DYM_COMMANDS, what );
     EPUTC( '\n' );

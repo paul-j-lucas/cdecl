@@ -66,6 +66,7 @@ help command
 help commands
 help const
 help const cast
+help const  cast
 help declare
 help dynamic
 help dynamic cast
