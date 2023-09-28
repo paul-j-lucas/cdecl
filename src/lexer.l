@@ -927,10 +927,26 @@ include{S}*\" {
               }
 
               /* Integer literals. */
-{bin_int}     { SET_TOKEN; yylval.int_val = parse_int(  2 ); return Y_INT_LIT; }
-{oct_int}     { SET_TOKEN; yylval.int_val = parse_int(  8 ); return Y_INT_LIT; }
-{dec_int}     { SET_TOKEN; yylval.int_val = parse_int( 10 ); return Y_INT_LIT; }
-{hex_int}     { SET_TOKEN; yylval.int_val = parse_int( 16 ); return Y_INT_LIT; }
+{bin_int}     {
+                SET_TOKEN;
+                yylval.uint_val = parse_int( 2 );
+                return Y_UINT_LIT;
+              }
+{oct_int}     {
+                SET_TOKEN;
+                yylval.uint_val = parse_int( 8 );
+                return Y_UINT_LIT;
+              }
+{dec_int}     {
+                SET_TOKEN;
+                yylval.uint_val = parse_int( 10 );
+                return Y_UINT_LIT;
+              }
+{hex_int}     {
+                SET_TOKEN;
+                yylval.uint_val = parse_int( 16 );
+                return Y_UINT_LIT;
+              }
 
               /*
                * Special case: if '[' is immediately followed by another '[',

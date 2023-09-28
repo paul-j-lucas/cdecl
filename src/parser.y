@@ -1078,7 +1078,6 @@ static void yyerror( char const *msg ) {
   c_cast_kind_t       cast_kind;  // C/C++ cast kind
   bool                flag;       // simple flag
   unsigned            flags;      // multipurpose bitwise flags
-  int                 int_val;    // signed integer value
   char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // identifier name, cf. sname
   c_func_member_t     member;     // member, non-member, or unspecified
@@ -1426,12 +1425,12 @@ static void yyerror( char const *msg ) {
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_GLOB
-%token  <int_val>   Y_INT_LIT
 %token  <name>      Y_NAME
 %token  <name>      Y_SET_OPTION
 %token  <str_val>   Y_STR_LIT
 %token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
 %token  <tdef>      Y_TYPEDEF_SNAME     // e.g., std::string
+%token  <uint_val>  Y_UINT_LIT
 
                     //
                     // When the lexer returns Y_LEXER_ERROR, it means that
@@ -1455,7 +1454,6 @@ static void yyerror( char const *msg ) {
 //      + <flag>: "_flag" is appended.
 //      + <flags>: "_flags" is appended.
 //      + <name>: "_name" is appended.
-//      + <int_val>: "_int" is appended.
 //      + <literal>: "_literal" is appended.
 //      + <sname>: "_sname" is appended.
 //      + <tid>: "_[bsa]tid" is appended.
@@ -1472,7 +1470,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>         array_decl_english_ast
 %type   <ast>         array_size_decl_ast
 %type   <tid>         attribute_english_atid
-%type   <int_val>     BitInt_english_int
+%type   <uint_val>    BitInt_english_int
 %type   <ast>         block_decl_english_ast
 %type   <tid>         builtin_no_BitInt_english_btid
 %type   <ast>         builtin_type_english_ast
@@ -1635,7 +1633,6 @@ static void yyerror( char const *msg ) {
 %type   <name>        glob glob_opt
 %type   <name>        help_what_opt
 %type   <tid>         inline_stid_opt
-%type   <int_val>     int_lit_exp int_lit_opt
 %type   <ast>         name_ast
 %type   <name>        name_cat name_exp name_opt
 %type   <tid>         namespace_btid_exp
@@ -1652,6 +1649,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>         this_stid_opt
 %type   <type>        type_modifier_base_type
 %type   <flag>        typename_flag_opt
+%type   <uint_val>    uint_lit_exp uint_lit_opt
 %type   <tid>         virtual_stid_exp virtual_stid_opt
 
 //
@@ -2081,11 +2079,11 @@ alignas_or_width_decl_english_ast
   ;
 
 alignas_specifier_english
-  : aligned_english Y_INT_LIT[width] bytes_opt
+  : aligned_english Y_UINT_LIT[width] bytes_opt
     {
       $$.kind = C_ALIGNAS_BYTES;
       $$.loc = @1;
-      $$.bytes = STATIC_CAST( unsigned, $width );
+      $$.bytes = $width;
     }
   | aligned_english decl_english_ast[decl_ast]
     {
@@ -2199,7 +2197,7 @@ capture_default_opt
   ;
 
 width_specifier_english_uint
-  : Y_width int_lit_exp[bit_width] bits_opt
+  : Y_width uint_lit_exp[bit_width] bits_opt
     { //
       // This check has to be done now in the parser rather than later in the
       // AST since we use 0 to mean "no bit-field."
@@ -2208,7 +2206,7 @@ width_specifier_english_uint
         print_error( &@bit_width, "bit-field width must be > 0\n" );
         PARSE_ABORT();
       }
-      $$ = STATIC_CAST( unsigned, $bit_width );
+      $$ = $bit_width;
     }
   ;
 
@@ -2818,16 +2816,16 @@ aligned_declaration_c
   ;
 
 alignas_specifier_c
-  : alignas lparen_exp Y_INT_LIT[bytes] rparen_exp
+  : alignas lparen_exp Y_UINT_LIT[bytes] rparen_exp
     {
       DUMP_START();
-      DUMP_PROD( "alignas_specifier_c", "ALIGNAS '(' Y_INT_LIT ')'" );
+      DUMP_PROD( "alignas_specifier_c", "ALIGNAS '(' Y_UINT_LIT ')'" );
       DUMP_INT( "INT_LIT", $bytes );
       DUMP_END();
 
       $$.kind = C_ALIGNAS_BYTES;
       $$.loc = @alignas;
-      $$.bytes = STATIC_CAST( unsigned, $bytes );
+      $$.bytes = $bytes;
     }
 
   | alignas lparen_exp type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
@@ -3771,7 +3769,7 @@ array_size_c_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
-  | '[' Y_INT_LIT[size] rbracket_exp
+  | '[' Y_UINT_LIT[size] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_INT_SIZE;
@@ -3790,7 +3788,7 @@ array_size_c_ast
       $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
   | '[' type_qualifier_list_c_stid[qual_stids] static_stid_opt[static_stid]
-    Y_INT_LIT[size] rbracket_exp
+    Y_UINT_LIT[size] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->type.stids = c_tid_check( $qual_stids | $static_stid, C_TPID_STORE );
@@ -3811,7 +3809,7 @@ array_size_c_ast
       $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
       $$->array.kind = C_ARRAY_VLA_STAR;
     }
-  | '[' Y_static type_qualifier_list_c_stid_opt[qual_stids] Y_INT_LIT[size]
+  | '[' Y_static type_qualifier_list_c_stid_opt[qual_stids] Y_UINT_LIT[size]
     rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
@@ -4396,7 +4394,7 @@ func_equals_c_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
   | '=' Y_default                 { $$ = $2; }
   | '=' Y_delete                  { $$ = $2; }
-  | '=' Y_INT_LIT
+  | '=' Y_UINT_LIT
     {
       if ( $2 != 0 ) {
         print_error( &@2, "'0' expected\n" );
@@ -5645,15 +5643,15 @@ builtin_type_c_ast
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
     }
-  | Y__BitInt lparen_exp int_lit_exp[width] rparen_exp
+  | Y__BitInt lparen_exp uint_lit_exp[width] rparen_exp
     {
       DUMP_START();
-      DUMP_PROD( "builtin_type_c_ast", "_BitInt '(' int_lit_exp ')'" );
+      DUMP_PROD( "builtin_type_c_ast", "_BitInt '(' uint_lit_exp ')'" );
       DUMP_INT( "int", $width );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = TB__BitInt;
-      $$->builtin.BitInt.width = STATIC_CAST( unsigned, $width );
+      $$->builtin.BitInt.width = $width;
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
@@ -6001,7 +5999,7 @@ restrict_qualifier_c_stid
 
 upc_layout_qualifier_c
   : '[' ']'
-  | '[' Y_INT_LIT rbracket_exp
+  | '[' Y_UINT_LIT rbracket_exp
   | '[' '*' rbracket_exp
   | '[' error ']'
     {
@@ -6269,7 +6267,7 @@ gnu_attribute_arg_list_c
 
 gnu_attribute_arg_c
   : Y_NAME                        { free( $1 ); }
-  | Y_INT_LIT
+  | Y_UINT_LIT
   | Y_CHAR_LIT                    { free( $1 ); }
   | Y_STR_LIT                     { free( $1 ); }
   | '(' gnu_attribute_arg_list_c rparen_exp
@@ -6372,7 +6370,7 @@ array_size_decl_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
-  | Y_INT_LIT[size]
+  | Y_UINT_LIT[size]
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_INT_SIZE;
@@ -6782,7 +6780,7 @@ type_qualifier_english_stid
   ;
 
 upc_layout_qualifier_english
-  : Y_INT_LIT
+  : Y_UINT_LIT
   | '*'
   ;
 
@@ -7084,7 +7082,7 @@ builtin_type_english_ast
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = TB__BitInt;
-      $$->builtin.BitInt.width = STATIC_CAST( unsigned, $width );
+      $$->builtin.BitInt.width = $width;
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
@@ -7096,7 +7094,7 @@ builtin_no_BitInt_english_btid
   | Y_auto_TYPE
   | Y__Bool
   | Y_bool
-  | Y_char int_lit_opt[bits]
+  | Y_char uint_lit_opt[bits]
     {
       switch ( $bits ) {
         case  0: $$ = TB_char    ; break;
@@ -7122,15 +7120,15 @@ builtin_no_BitInt_english_btid
   ;
 
 BitInt_english_int
-  : BitInt_english Y_INT_LIT[width] bits_opt
+  : BitInt_english Y_UINT_LIT[width] bits_opt
     {
       $$ = $width;
     }
-  | BitInt_english '(' int_lit_exp[width] rparen_exp
+  | BitInt_english '(' uint_lit_exp[width] rparen_exp
     {
       $$ = $width;
     }
-  | BitInt_english Y_width int_lit_exp[width] bits_opt
+  | BitInt_english Y_width uint_lit_exp[width] bits_opt
     {
       $$ = $width;
     }
@@ -7517,7 +7515,7 @@ sname_c_ast
           );
           PARSE_ABORT();
         }
-        type_ast->bit_field.bit_width = STATIC_CAST( unsigned, $bit_width );
+        type_ast->bit_field.bit_width = $bit_width;
       }
 
       $$ = type_ast;
@@ -7528,7 +7526,7 @@ sname_c_ast
 
 bit_field_c_uint_opt
   : /* empty */                   { $$ = 0; }
-  | ':' int_lit_exp[bit_width]
+  | ':' uint_lit_exp[bit_width]
     { //
       // This check has to be done now in the parser rather than later in the
       // AST since we use 0 to mean "no bit-field."
@@ -7537,7 +7535,7 @@ bit_field_c_uint_opt
         print_error( &@bit_width, "bit-field width must be > 0\n" );
         PARSE_ABORT();
       }
-      $$ = STATIC_CAST( unsigned, $bit_width );
+      $$ = $bit_width;
     }
   ;
 
@@ -7971,19 +7969,6 @@ int_exp
     }
   ;
 
-int_lit_exp
-  : Y_INT_LIT
-  | error
-    {
-      elaborate_error( "integer literal expected" );
-    }
-  ;
-
-int_lit_opt
-  : /* empty */                   { $$ = 0; }
-  | Y_INT_LIT
-  ;
-
 literal_exp
   : Y_literal
   | error
@@ -8250,6 +8235,19 @@ type_opt
 typename_flag_opt
   : /* empty */                   { $$ = false; }
   | Y_typename                    { $$ = true; }
+  ;
+
+uint_lit_exp
+  : Y_UINT_LIT
+  | error
+    {
+      elaborate_error( "integer literal expected" );
+    }
+  ;
+
+uint_lit_opt
+  : /* empty */                   { $$ = 0; }
+  | Y_UINT_LIT
   ;
 
 unused_exp

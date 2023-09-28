@@ -117,7 +117,7 @@ cdecl> explain _BitInt(4) x
 {
   rule: {
     lhs: "builtin_type_c_ast",
-    rhs: "_BitInt '(' int_lit_exp ')'"
+    rhs: "_BitInt '(' uint_lit_exp ')'"
   },
   int: 4,
   $$_ast: {
@@ -252,7 +252,7 @@ cdecl> explain alignas(8) int x
 {
   rule: {
     lhs: "alignas_specifier_c",
-    rhs: "ALIGNAS '(' Y_INT_LIT ')'"
+    rhs: "ALIGNAS '(' Y_UINT_LIT ')'"
   },
   INT_LIT: 8
 }
