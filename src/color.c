@@ -209,14 +209,13 @@ static char const** sgr_var_find( char const *name ) {
     { COLOR_CAP_LOCUS,        &sgr_locus        },
     { COLOR_CAP_PROMPT,       &sgr_prompt       },
     { COLOR_CAP_WARNING,      &sgr_warning      },
-    { NULL,                   NULL              }
   };
 
   assert( name != NULL );
 
-  for ( cap_var_map_t const *m = CAP_VAR_MAP; m->cap_name != NULL; ++m ) {
-    if ( strcmp( name, m->cap_name ) == 0 )
-      return m->sgr_var;
+  for ( size_t i = 0; i < ARRAY_SIZE( CAP_VAR_MAP ); ++i ) {
+    if ( strcmp( name, CAP_VAR_MAP[i].cap_name ) == 0 )
+      return CAP_VAR_MAP[i].sgr_var;
   } // for
 
   return NULL;
