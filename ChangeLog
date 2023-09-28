@@ -1,5 +1,6 @@
 2023-09-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * color.c: Eliminated NULL row from CAP_VAR_MAP; using ARRAY_SIZE().
    * help.c, util.h: Eliminated FOREACH_ARRAY_ELEMENT() -- it doesn't work for
      strings.
    * help.c, util.h: Refactored code into map_what(); added
