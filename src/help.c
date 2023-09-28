@@ -172,9 +172,9 @@ static char const* map_what( char const *what ) {
     { "q",                L_quit },
   };
 
-  FOREACH_ARRAY_ELEMENT( str_map_t, map, STR_MAP ) {
-    if ( strcmp( what, map->from ) == 0 )
-      return map->to;
+  for ( size_t i = 0; i < ARRAY_SIZE( STR_MAP ); ++i ) {
+    if ( strcmp( what, STR_MAP[i].from ) == 0 )
+      return STR_MAP[i].to;
   } // for
 
   return what;
