@@ -15,7 +15,7 @@ ARG USER_GID=$USER_UID
 # Configure apt and install packages
 RUN apt-get update \
     && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
-    # 
+    #
     # Verify git, process tools, lsb-release (useful for CLI installs) installed
     && apt-get -y install git iproute2 procps lsb-release python3-venv python3-pip \
     #
@@ -32,8 +32,7 @@ RUN apt-get update \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Install LLVM/Clang
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
-    && apt-get -y install libc++-14-dev libc++abi-14-dev
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
 # Install cpplint
 RUN /usr/bin/pip3 install cpplint
