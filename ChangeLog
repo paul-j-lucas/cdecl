@@ -1,5 +1,6 @@
 2023-09-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Upped version to 15.0.
    * parser.y: Eliminated in_attr::is_implicit_int.
    * parser.y: Eliminated in_attr.operator.
    * c_ast_check.c, parser.y, declare_nmo_amper_i_i.out,
