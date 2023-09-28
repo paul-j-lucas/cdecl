@@ -33,7 +33,7 @@ RUN apt-get update \
 
 # Install LLVM/Clang
 RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
-    && apt-get -y install libc++-9-dev libc++abi-9-dev
+    && apt-get -y install libc++-14-dev libc++abi-14-dev
 
 # Install cpplint
 RUN /usr/bin/pip3 install cpplint
