@@ -354,7 +354,7 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list,
   dump_init( &list_dump, dump->indent + 1, dump->dout );
 
   FOREACH_SLIST_NODE( node, list ) {
-    DUMP_KEY( &list_dump, "" );
+    DUMP_KEY( &list_dump, "%s", "" );
     c_ast_dump_impl( c_param_ast( node ), &list_dump );
   } // for
 
