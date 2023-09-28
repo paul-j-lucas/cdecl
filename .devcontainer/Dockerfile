@@ -20,7 +20,7 @@ RUN apt-get update \
     && apt-get -y install git iproute2 procps lsb-release python3-venv python3-pip \
     #
     # Install C++ tools
-    && apt-get -y install build-essential autoconf automake bison cmake cppcheck curl doxygen flex libreadline-dev valgrind wget software-properties-common \
+    && apt-get -y install build-essential autoconf automake bison cmake cppcheck curl doxygen expect flex libreadline-dev valgrind wget software-properties-common \
     #
     # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
     && groupadd --gid $USER_GID $USERNAME \
