@@ -31,9 +31,6 @@ RUN apt-get update \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# Install LLVM/Clang
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
-
 # Install cpplint
 RUN /usr/bin/pip3 install cpplint
 
