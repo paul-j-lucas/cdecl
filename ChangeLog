@@ -1,5 +1,6 @@
 2023-09-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * lcovrc: Removed CASE_K_PLACEHOLDER.
    * gnulib-common.m4: Updated GnuLib.
    * configure.ac: Upped version to 15.0.
    * parser.y: Eliminated in_attr::is_implicit_int.
