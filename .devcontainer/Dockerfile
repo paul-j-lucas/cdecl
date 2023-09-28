@@ -1,4 +1,4 @@
-FROM debian:10.3-slim
+FROM debian:stable-slim
 
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
