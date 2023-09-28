@@ -476,24 +476,24 @@ _GL_INLINE_HEADER_BEGIN
   fatal_error( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
 
 /**
- * Checks (at compile-time) whether \a A is an array.
+ * Checks (at compile-time) whether \a ARRAY is an array.
  *
- * @param A The alleged array to check.
- * @return Returns 1 (true) only if \a A is an array; 0 (false) otherwise.
+ * @param ARRAY The alleged array to check.
+ * @return Returns 1 (true) only if \a ARRAY is an array; 0 (false) otherwise.
  *
  * @sa #IS_POINTER()
  */
-#define IS_ARRAY(A)               !IS_SAME_TYPE( (A), &(A)[0] )
+#define IS_ARRAY(ARRAY)           !IS_SAME_TYPE( (ARRAY), &(ARRAY)[0] )
 
 /**
- * Checks (at compile-time) whether \a P is a pointer.
+ * Checks (at compile-time) whether \a PTR is a pointer.
  *
- * @param P The alleged pointer to check.
- * @return Returns 1 (true) only if \a P is a pointer; 0 (false) otherwise.
+ * @param PTR The alleged pointer to check.
+ * @return Returns 1 (true) only if \a PTR is a pointer; 0 (false) otherwise.
  *
  * @sa #IS_ARRAY()
  */
-#define IS_POINTER(P)             IS_SAME_TYPE( (P), &(P)[0] )
+#define IS_POINTER(PTR)           IS_SAME_TYPE( (PTR), &(PTR)[0] )
 
 /**
  * Checks (at compile-time) whether \a T1 and \a T2 are the same type.
