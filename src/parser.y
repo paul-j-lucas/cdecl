@@ -444,7 +444,6 @@ struct in_attr {
   unsigned        ast_depth;        ///< Parentheses nesting depth.
   bool            is_implicit_int;  ///< C only: created implicit `int` AST?
   bool            is_typename;      ///< C++ only: is `typename` specified?
-  c_operator_t const *operator;     ///< C++ only: current operator, if any.
   c_sname_t       scope_sname;      ///< C++ only: current scope name, if any.
   c_ast_list_t    type_ast_stack;   ///< Type AST stack.
 
@@ -464,7 +463,16 @@ struct in_attr {
    */
   c_ast_t const  *type_spec_ast;
 
-  rb_node_t      *typedef_rb;       ///< Red-black node for temporary `typedef`.
+  /**
+   * Red-black node for temporary `typedef`.
+   *
+   * @remarks This is used only in the `pc99_func_or_constructor_declaration_c`
+   * grammar production. It's needed because a temporary `typedef` needs to be
+   * created in a mid-rule action then removed in the end-rule action and
+   * there's no way to pass local variables between Bison actions, so it's
+   * passed via an inherited attribute.
+   */
+  rb_node_t      *typedef_rb;
 };
 typedef struct in_attr in_attr_t;
 
@@ -1488,7 +1496,6 @@ static void yyerror( char const *msg ) {
 %type   <sname>       of_scope_english
 %type   <sname>       of_scope_list_english of_scope_list_english_opt
 %type   <ast>         of_type_enum_fixed_type_english_ast_opt
-%type   <ast>         oper_decl_english_ast
 %type   <ast_list>    param_decl_list_english param_decl_list_english_opt
 %type   <ast_list>    paren_capture_decl_list_english
 %type   <ast_list>    paren_param_decl_list_english
@@ -1906,10 +1913,11 @@ declare_command
      */
   | Y_declare c_operator[oper_id]
     { //
-      // This check is done now in the parser rather than later in the AST
-      // since it yields a better error message since otherwise it would warn
-      // that "operator" is a keyword in C++98 which skims right past the
-      // bigger error that operator overloading isn't supported in C.
+      // This check is done now in the parser right here mid-rule rather than
+      // later in the end-rule action or in the AST since it yields a better
+      // error message since otherwise it would warn that "operator" is a
+      // keyword in C++98 which skims right past the bigger error that operator
+      // overloading isn't supported in C.
       //
       if ( UNSUPPORTED( operator ) ) {
         print_error( &@oper_id,
@@ -1918,30 +1926,49 @@ declare_command
         );
         PARSE_ABORT();
       }
-      in_attr.operator = c_oper_get( $oper_id );
     }
     of_scope_list_english_opt[scope_sname] as_exp
-    oper_decl_english_ast[oper_ast]
+    type_qualifier_list_english_type_opt[qual_type]
+    ref_qualifier_english_stid_opt[ref_qual_stid]
+    member_or_non_member_opt[member] operator_exp
+    paren_param_decl_list_english_opt[param_ast_list]
+    returning_english_ast_opt[ret_ast]
     {
+      c_operator_t const *const operator = c_oper_get( $oper_id );
+
       DUMP_START();
       DUMP_PROD( "declare_command",
                  "DECLARE c_operator of_scope_list_english_opt AS "
-                 "oper_decl_english_ast" );
-      DUMP_STR( "c_operator", $oper_ast->oper.operator->literal );
+                 "type_qualifier_list_english_type_opt "
+                 "ref_qualifier_english_stid_opt "
+                 "member_or_non_member_opt "
+                 "OPERATOR paren_param_decl_list_english_opt "
+                 "returning_english_ast_opt" );
+      DUMP_STR( "c_operator", operator->literal );
       DUMP_SNAME( "of_scope_list_english_opt", $scope_sname );
-      DUMP_AST( "oper_decl_english_ast", $oper_ast );
-
-      c_sname_set( &$oper_ast->sname, &$scope_sname );
-      $oper_ast->loc = @oper_id;
-
-      DUMP_AST( "$$_ast", $oper_ast );
+      DUMP_TYPE( "type_qualifier_list_english_type_opt", $qual_type );
+      DUMP_TID( "ref_qualifier_english_stid_opt", $ref_qual_stid );
+      DUMP_INT( "member_or_non_member_opt", $member );
+      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
+      DUMP_AST( "returning_english_ast_opt", $ret_ast );
       DUMP_END();
 
-      PARSE_ASSERT( c_ast_check( $oper_ast ) );
+      c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@oper_id );
+      c_sname_set( &oper_ast->sname, &$scope_sname );
+      PARSE_ASSERT( c_type_add( &oper_ast->type, &$qual_type, &@qual_type ) );
+      PARSE_ASSERT(
+        c_type_add_tid( &oper_ast->type, $ref_qual_stid, &@ref_qual_stid )
+      );
+      oper_ast->oper.operator = operator;
+      oper_ast->oper.param_ast_list = slist_move( &$param_ast_list );
+      oper_ast->oper.member = $member;
+      c_ast_set_parent( $ret_ast, oper_ast );
+
+      PARSE_ASSERT( c_ast_check( oper_ast ) );
       unsigned decl_flags = C_GIB_PRINT_DECL;
       if ( opt_semicolon )
         decl_flags |= C_GIB_OPT_SEMICOLON;
-      c_ast_gibberish( $oper_ast, decl_flags, stdout );
+      c_ast_gibberish( oper_ast, decl_flags, stdout );
       PUTC( '\n' );
     }
 
@@ -6479,45 +6506,6 @@ msc_calling_convention_atid
   | Y_MSC___stdcall
   | Y_MSC___thiscall
   | Y_MSC___vectorcall
-  ;
-
-/// English C++ operator declaration //////////////////////////////////////////
-
-oper_decl_english_ast
-  : // in_attr: operator
-    type_qualifier_list_english_type_opt[qual_type]
-    ref_qualifier_english_stid_opt[ref_qual_stid]
-    member_or_non_member_opt[member] operator_exp
-    paren_param_decl_list_english_opt[param_ast_list]
-    returning_english_ast_opt[ret_ast]
-    {
-      DUMP_START();
-      DUMP_PROD( "oper_decl_english_ast",
-                 "type_qualifier_list_english_type_opt "
-                 "ref_qualifier_english_stid_opt "
-                 "member_or_non_member_opt "
-                 "OPERATOR paren_param_decl_list_english_opt "
-                 "returning_english_ast_opt" );
-      DUMP_STR( "in_attr__operator", in_attr.operator->literal );
-      DUMP_TYPE( "type_qualifier_list_english_type_opt", $qual_type );
-      DUMP_TID( "ref_qualifier_english_stid_opt", $ref_qual_stid );
-      DUMP_INT( "member_or_non_member_opt", $member );
-      DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
-      DUMP_AST( "returning_english_ast_opt", $ret_ast );
-
-      $$ = c_ast_new_gc( K_OPERATOR, &@$ );
-      PARSE_ASSERT( c_type_add( &$$->type, &$qual_type, &@qual_type ) );
-      PARSE_ASSERT(
-        c_type_add_tid( &$$->type, $ref_qual_stid, &@ref_qual_stid )
-      );
-      $$->oper.operator = in_attr.operator;
-      $$->oper.param_ast_list = slist_move( &$param_ast_list );
-      $$->oper.member = $member;
-      c_ast_set_parent( $ret_ast, $$ );
-
-      DUMP_AST( "$$_ast", $$ );
-      DUMP_END();
-    }
   ;
 
 /// English C/C++ parameter list declaration //////////////////////////////////
