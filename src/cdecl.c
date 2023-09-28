@@ -393,12 +393,11 @@ bool is_cppdecl( void ) {
   static char const *const NAMES[] = {
     CPPDECL,
     "cppdecl",
-    "cxxdecl",
-    NULL
+    "cxxdecl"
   };
 
-  for ( char const *const *pname = NAMES; *pname != NULL; ++pname ) {
-    if ( strcmp( *pname, me ) == 0 )
+  for ( size_t i = 0; i < ARRAY_SIZE( NAMES ); ++i ) {
+    if ( strcmp( me, NAMES[i] ) == 0 )
       return true;
   } // for
   return false;
