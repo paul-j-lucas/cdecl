@@ -1,5 +1,7 @@
 2023-09-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.c, c_type.c, cdecl.c, color.c, help.c, util.h: Put
+     FOREACH_ARRAY_ELEMENT() back.
    * color.c: Eliminated NULL row from CAP_VAR_MAP; using ARRAY_SIZE().
    * help.c, util.h: Eliminated FOREACH_ARRAY_ELEMENT() -- it doesn't work for
      strings.
