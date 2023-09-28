@@ -570,18 +570,25 @@ bool print_help( char const *what, c_loc_t const *what_loc ) {
   typedef struct str_map str_map_t;
 
   static str_map_t const STR_MAP[] = {
+    //
     // Special cases: the cdecl commands are only "const", "dynamic",
     // "reinterpret", and "static" without the "cast", but the user might type
     // "cast" additionally: remove the "cast".
+    //
+    // Note that the lexer will collapse multiple whitespace characters between
+    // words down to a single space.
+    //
     { "const cast",       L_const },
     { "dynamic cast",     L_dynamic },
     { "reinterpret cast", L_reinterpret },
     { "static cast",      L_static },
 
+    //
     // Special case: there is no "q" command, only "quit". The lexer maps "q"
     // to "quit" internally, but only when "q" is the only thing on a line (so
     // "q" can be used as a variable name), so we have to map "q" to "quit"
     // here too.
+    //
     { "q",                L_quit },
 
     { NULL,               NULL }
@@ -595,8 +602,10 @@ bool print_help( char const *what, c_loc_t const *what_loc ) {
     }
   } // for
 
+  //
   // Note that cdecl_command_find() matches strings that _start with_ a
   // command, so we have to check for an exact match if found.
+  //
   cdecl_command_t const *const command = cdecl_command_find( mapped_what );
   if ( command == NULL || strcmp( mapped_what, command->literal ) != 0 ) {
     print_error( what_loc, "\"%s\": no such command", what );
