@@ -38,7 +38,6 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for offsetof() */
-#include <stdio.h>                      /* for NULL */
 
 /// @endcond
 

@@ -34,7 +34,7 @@
 
 // standard
 #include <assert.h>
-#include <stdio.h>                      /* for NULL */
+#include <stddef.h>                     /* for NULL */
 #include <stdlib.h>                     /* for free(3) */
 
 ////////// extern functions ///////////////////////////////////////////////////

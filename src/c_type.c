@@ -43,7 +43,6 @@
 // standard
 #include <assert.h>
 #include <stddef.h>
-#include <stdio.h>                      /* for NULL */
 #include <stdlib.h>
 #include <string.h>
 

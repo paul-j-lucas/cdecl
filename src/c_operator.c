@@ -37,7 +37,7 @@
 
 // standard
 #include <assert.h>
-#include <stdio.h>                      /* for NULL */
+#include <stddef.h>                     /* for NULL */
 
 /// @cond DOXYGEN_IGNORE
 #define EIT                       C_OVERLOAD_EITHER

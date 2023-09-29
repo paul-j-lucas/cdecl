@@ -39,8 +39,8 @@
 
 // standard
 #include <assert.h>
+#include <stddef.h>                     /* for NULL */
 #include <stdint.h>
-#include <stdio.h>                      /* for NULL */
 #include <stdlib.h>
 #include <sysexits.h>
 

@@ -42,7 +42,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include <stdio.h>                      /* for NULL */
+#include <stddef.h>                     /* for NULL */
 #include <stdlib.h>
 
 /// @endcond

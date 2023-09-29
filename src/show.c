@@ -40,7 +40,7 @@
 // standard
 #include <assert.h>
 #include <stdbool.h>
-#include <stdio.h>                      /* for NULL */
+#include <stddef.h>                     /* for NULL */
 
 /// @endcond
 
