@@ -2500,10 +2500,12 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
 NODISCARD
 static bool c_ast_check_visitor( c_ast_t const *ast,
                                  c_ast_check_fn_t check_fn ) {
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_visit_fn_t const visit_fn = POINTER_CAST( c_ast_visit_fn_t, check_fn );
-  user_data_t const data = { .pc = &(check_state_t){ 0 } };
-  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, data ) == NULL;
+  return NULL == c_ast_visit(
+    CONST_CAST( c_ast_t*, ast ),
+    C_VISIT_DOWN,
+    POINTER_CAST( c_ast_visit_fn_t, check_fn ),
+    (user_data_t){ .pc = &(check_state_t){ 0 } }
+  );
 }
 
 /**
