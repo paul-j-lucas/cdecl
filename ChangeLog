@@ -1,3 +1,10 @@
+2023-09-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_ast_check.c, dump.c, parser.y: Added
+     c_ast::param_of_ast; eliminated check_state::func_ast.
+   * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, english.c:
+     s/data/user_data/
+
 2023-09-28  Paul J. Lucas <paul@lucasmail.org>
 
    * c_kind.h, c_lang.h, help.h, print.h, show.h, types.h: #include file
