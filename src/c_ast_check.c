@@ -147,10 +147,10 @@ typedef struct check_state check_state_t;
  * The signature for functions passed to c_ast_check_visitor().
  *
  * @param ast The AST to check.
- * @param data The data to use.
+ * @param user_data The data to use.
  * @return Returns `true` only if all checks passed.
  */
-typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast, user_data_t data );
+typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast, user_data_t user_data );
 
 // local constants
 
@@ -2533,14 +2533,14 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
  * Visitor function that checks an AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param data The data to use.
+ * @param user_data The data to use.
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 NODISCARD
-static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
+static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  check_state_t const *const check = data.pc;
+  check_state_t const *const check = user_data.pc;
 
   if ( !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
@@ -2664,8 +2664,8 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
       check_state_t temp_check;
       check_state_init( &temp_check );
       temp_check.tdef_ast = ast;
-      data.pc = &temp_check;
-      return c_ast_visitor_error( &temp_ast, data );
+      user_data.pc = &temp_check;
+      return c_ast_visitor_error( &temp_ast, user_data );
     }
 
     case K_UDEF_CONV:
@@ -2705,14 +2705,14 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t data ) {
  * Visitor function that checks an AST for type errors.
  *
  * @param ast The AST to visit.
- * @param data The data to use.
+ * @param user_data The data to use.
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
 NODISCARD
-static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
+static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  (void)data;
+  (void)user_data;
 
   c_lang_id_t const ok_lang_ids = c_type_check( &ast->type );
   if ( ok_lang_ids != LANG_ANY ) {
@@ -2833,13 +2833,13 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t data ) {
  * Visitor function that checks an AST for semantic warnings.
  *
  * @param ast The AST to check.
- * @param data Not used.
+ * @param user_data Not used.
  * @return Always returns `false`.
  */
 NODISCARD
-static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t data ) {
+static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  (void)data;
+  (void)user_data;
 
   c_tid_t qual_stids;
   c_ast_t const *const raw_ast = c_ast_untypedef_qual( ast, &qual_stids );

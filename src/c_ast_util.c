@@ -482,13 +482,13 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
  * A visitor function to find an AST node having a particular kind(s).
  *
  * @param ast The AST to check.
- * @param data The bitwise-or of the kind(s) \a ast can be.
+ * @param user_data The bitwise-or of the kind(s) \a ast can be.
  * @return Returns `true` only if the kind of \a ast is one of the kinds.
  */
 NODISCARD
-static bool c_ast_vistor_kind_any( c_ast_t *ast, user_data_t data ) {
+static bool c_ast_vistor_kind_any( c_ast_t *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, data.ui32 );
+  c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, user_data.ui32 );
   return (ast->kind & kinds) != 0;
 }
 
@@ -496,13 +496,13 @@ static bool c_ast_vistor_kind_any( c_ast_t *ast, user_data_t data ) {
  * A visitor function to find an AST node having a non-empty name.
  *
  * @param ast The AST to check.
- * @param data Not used.
+ * @param user_data Not used.
  * @return Returns `true` only if \a ast has such a scoped name.
  */
 NODISCARD
-static bool c_ast_visitor_name( c_ast_t *ast, user_data_t data ) {
+static bool c_ast_visitor_name( c_ast_t *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  (void)data;
+  (void)user_data;
   return !c_sname_empty( &ast->sname );
 }
 
@@ -510,14 +510,14 @@ static bool c_ast_visitor_name( c_ast_t *ast, user_data_t data ) {
  * A visitor function to find an AST node having a particular type(s).
  *
  * @param ast The AST to check.
- * @param data A pointer to a type where each type part is the bitwise-or of
- * type IDs to find.
+ * @param user_data A pointer to a type where each type part is the bitwise-or
+ * of type IDs to find.
  * @return Returns `true` only if the type of \a ast is one of the types.
  */
 NODISCARD
-static bool c_ast_vistor_type_any( c_ast_t *ast, user_data_t data ) {
+static bool c_ast_vistor_type_any( c_ast_t *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  c_type_t const *const type = data.pc;
+  c_type_t const *const type = user_data.pc;
   return c_type_is_any( &ast->type, type );
 }
 

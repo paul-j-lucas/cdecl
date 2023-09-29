@@ -240,13 +240,13 @@ static void c_ast_visit_english( c_ast_t const *ast, eng_state_t const *eng ) {
  * Visitor function that prints \a ast as pseudo-English.
  *
  * @param ast The AST to print.
- * @param data A pointer to a `FILE` to emit to.
+ * @param user_data A pointer to a `FILE` to emit to.
  * @return Always returns `false`.
  */
 NODISCARD
-static bool c_ast_visitor_english( c_ast_t *ast, user_data_t data ) {
+static bool c_ast_visitor_english( c_ast_t *ast, user_data_t user_data ) {
   assert( ast != NULL );
-  eng_state_t const *const eng = data.pc;
+  eng_state_t const *const eng = user_data.pc;
   assert( eng != NULL );
 
   switch ( ast->kind ) {
