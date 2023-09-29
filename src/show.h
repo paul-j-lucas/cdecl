@@ -31,7 +31,7 @@
 #include "types.h"
 
 // standard
-#include <stdio.h>
+#include <stdio.h>                      /* for FILE */
 
 /**
  * @defgroup showing-c-types-group Showing C/C++ Types

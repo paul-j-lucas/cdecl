@@ -38,6 +38,7 @@
 #include "pjl_config.h"                 /* must go first */
 
 // standard
+#include <stdbool.h>
 #include <stdint.h>                     /* for uint*_t */
 
 /**

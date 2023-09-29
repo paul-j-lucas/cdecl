@@ -38,6 +38,7 @@
 // standard
 #include <assert.h>
 #include <stdbool.h>
+#include <stddef.h>                     /* for NULL */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_LANG_H_INLINE

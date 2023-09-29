@@ -30,6 +30,9 @@
 #include "pjl_config.h"                 /* must go first */
 #include "types.h"
 
+// standard
+#include <stdbool.h>
+
 /**
  * @defgroup printing-help-group Printing Help
  * Functions for printing help.

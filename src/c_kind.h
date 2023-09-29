@@ -30,9 +30,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "types.h"
 
-// standard
-#include <stddef.h>                     /* for unreachable() */
-
 /**
  * @defgroup c-kinds-group C/C++ Declaration Kinds
  * Types and functions for kinds of AST nodes in C/C++ declarations.
