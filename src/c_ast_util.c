@@ -30,16 +30,17 @@
 #define C_AST_UTIL_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_ast_util.h"
+#include "c_ast.h"
+#include "c_kind.h"
 #include "c_operator.h"
-#include "c_typedef.h"
-#include "gibberish.h"
-#include "literals.h"
-#include "print.h"
+#include "c_type.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
+#include <stdio.h>                      /* for NULL */
 
 /// @endcond
 

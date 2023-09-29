@@ -32,8 +32,6 @@
 #include "c_sname.h"
 #include "c_typedef.h"
 #include "decl_flags.h"
-#include "english.h"
-#include "gibberish.h"
 #include "options.h"
 #include "print.h"
 
@@ -41,6 +39,8 @@
 
 // standard
 #include <assert.h>
+#include <stdbool.h>
+#include <stdio.h>                      /* for NULL */
 
 /// @endcond
 

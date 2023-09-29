@@ -30,9 +30,11 @@
 #define C_SGLOB_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_sglob.h"
+#include "util.h"
 
 // standard
 #include <assert.h>
+#include <stdio.h>                      /* for NULL */
 #include <stdlib.h>                     /* for free(3) */
 
 ////////// extern functions ///////////////////////////////////////////////////

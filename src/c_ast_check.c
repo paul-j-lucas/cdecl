@@ -34,8 +34,6 @@
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
-#include "english.h"
-#include "gibberish.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -46,6 +44,7 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
+#include <stdio.h>                      /* for NULL */
 #include <string.h>
 
 /// @endcond

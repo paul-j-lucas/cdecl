@@ -35,6 +35,7 @@
 // standard
 #include <assert.h>
 #include <stdint.h>
+#include <stdio.h>                      /* for NULL */
 
 /// @endcond
 

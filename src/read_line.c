@@ -35,6 +35,8 @@
 
 // standard
 #include <assert.h>
+#include <stdbool.h>
+#include <stdio.h>                      /* for NULL */
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>                     /* for isatty(3) */

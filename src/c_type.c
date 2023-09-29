@@ -31,7 +31,7 @@
 #include "c_type.h"
 #include "c_lang.h"
 #include "cdecl.h"
-#include "gibberish.h"
+#include "gibberish.h"                  /* for graph_token_c() */
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -43,6 +43,7 @@
 // standard
 #include <assert.h>
 #include <stddef.h>
+#include <stdio.h>                      /* for NULL */
 #include <stdlib.h>
 #include <string.h>
 

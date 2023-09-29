@@ -39,6 +39,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <stdio.h>                      /* for NULL */
 #include <stdlib.h>                     /* for getenv() */
 #include <string.h>                     /* for str...() */
 #include <unistd.h>                     /* for isatty() */

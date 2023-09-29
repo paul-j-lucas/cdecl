@@ -35,8 +35,6 @@
 #include "c_type.h"
 #include "c_typedef.h"
 #include "color.h"
-#include "english.h"
-#include "gibberish.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -46,6 +44,7 @@
 // standard
 #include <assert.h>
 #include <fnmatch.h>
+#include <stdio.h>                      /* for NULL */
 #include <stdlib.h>                     /* for free(3) */
 
 /**
