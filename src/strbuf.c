@@ -35,6 +35,7 @@
 // standard
 #include <assert.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>                     /* for free(3) */
 
 /// @endcond
