@@ -1,5 +1,7 @@
 2023-09-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.h, parser.y, slist.c, slist.h, slist_test.c, types.h: Now doing
+     better garbage collection.
    * parser.y: Now correctly using c_ast_set_parent() for K_ENUM.
    * c_ast.c, c_ast.h, c_ast_check.c, dump.c, parser.y: Added
      c_ast::param_of_ast; eliminated check_state::func_ast.
