@@ -231,9 +231,10 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *eout ) {
  * @param eng The eng_state to use.
  */
 static void c_ast_visit_english( c_ast_t const *ast, eng_state_t const *eng ) {
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  user_data_t const data = { .pc = eng };
-  c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, data );
+  c_ast_visit(
+    CONST_CAST( c_ast_t*, ast ), C_VISIT_DOWN, c_ast_visitor_english,
+    (user_data_t){ .pc = eng }
+  );
 }
 
 /**

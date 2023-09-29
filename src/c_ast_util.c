@@ -549,14 +549,15 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_ast_visit_dir_t dir,
                               c_ast_kind_t kinds ) {
   assert( kinds != 0 );
-  user_data_t const data = { .ui32 = kinds };
-  return c_ast_visit( ast, dir, c_ast_vistor_kind_any, data );
+  return c_ast_visit(
+    ast, dir, c_ast_vistor_kind_any, (user_data_t){ .ui32 = kinds }
+  );
 }
 
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir ) {
-  user_data_t const data = { .ull = 0 };
-  c_ast_t *const found_ast =
-    c_ast_visit( CONST_CAST( c_ast_t*, ast ), dir, c_ast_visitor_name, data );
+  c_ast_t *const found_ast = c_ast_visit(
+    CONST_CAST( c_ast_t*, ast ), dir, c_ast_visitor_name, USER_DATA_ZERO
+  );
   return found_ast != NULL ? &found_ast->sname : NULL;
 }
 
@@ -584,8 +585,9 @@ c_ast_t const* c_ast_find_param_named( c_ast_t const *func_ast,
 
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
                               c_type_t const *type ) {
-  user_data_t const data = { .pc = type };
-  return c_ast_visit( ast, dir, c_ast_vistor_type_any, data );
+  return c_ast_visit(
+    ast, dir, c_ast_vistor_type_any, (user_data_t){ .pc = type }
+  );
 }
 
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
