@@ -1,5 +1,7 @@
 2023-09-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1, cli_options.c, cdecl--help.out: Added `--no-buffer-stdout` & `-b`
+     command-line options to set stdout to unbuffered.
    * cdecl.1: Added missing optional argument for `set debug` option.
    * strbuf.c: Use memcpy() to eliminate "'strncpy' output truncated before
      terminating nul copying 1 byte from a string of the same length" warning.
