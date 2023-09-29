@@ -572,8 +572,11 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast );
 void c_ast_free( c_ast_t *ast );
 
 /**
- * Checks whether \a ast is an "orphan," that is: either has no parent AST or
- * its parent no longer points to \a ast.
+ * Checks whether \a ast is an "orphan," that is:
+ *
+ *  + Isn't a parameter of some function-like AST; and:
+ *  + Has no parent AST; or:
+ *  + Its parent AST no longer points to \a ast.
  *
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast is an orphan.
@@ -583,7 +586,8 @@ void c_ast_free( c_ast_t *ast );
  */
 NODISCARD C_AST_H_INLINE
 bool c_ast_is_orphan( c_ast_t const *ast ) {
-  return ast->parent_ast == NULL || ast->parent_ast->parent.of_ast != ast;
+  return  ast->param_of_ast == NULL &&
+          (ast->parent_ast == NULL || ast->parent_ast->parent.of_ast != ast);
 }
 
 /**

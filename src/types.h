@@ -372,6 +372,11 @@ union user_data {
   void const         *pc;               ///< Pointer to `const` value.
 };
 
+/**
+ * Convenience macro for specifying a zero-initialized user_data literal.
+ */
+#define USER_DATA_ZERO            ((user_data_t){ .i64 = 0 })
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

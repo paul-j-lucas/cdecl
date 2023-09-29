@@ -139,7 +139,8 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
   return dst_list;
 }
 
-void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn ) {
+void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn,
+                    user_data_t user_data ) {
   assert( list != NULL );
   assert( pred_fn != NULL );
 
@@ -148,7 +149,7 @@ void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn ) {
     slist_node_t *const curr = list->head;
     if ( curr == NULL )
       return;
-    if ( !(*pred_fn)( curr->data ) )
+    if ( !(*pred_fn)( curr->data, user_data ) )
       break;
     if ( list->tail == curr )
       list->tail = NULL;
@@ -167,7 +168,7 @@ void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn ) {
     slist_node_t *const curr = prev->next;
     if ( curr == NULL )
       break;
-    if ( !(*pred_fn)( curr->data ) ) {
+    if ( !(*pred_fn)( curr->data, user_data ) ) {
       prev = curr;
       continue;
     }

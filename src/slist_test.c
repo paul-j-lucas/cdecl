@@ -42,7 +42,8 @@ static unsigned     test_failures;
 
 ////////// local functions ////////////////////////////////////////////////////
 
-static bool slist_node_str_equal( void *data ) {
+static bool slist_node_str_equal( void *data, user_data_t user_data ) {
+  (void)user_data;
   char const *const s = data;
   return strcmp( s, str_equal_to ) == 0;
 }
@@ -176,21 +177,21 @@ static bool test_slist_free_if( void ) {
   // test match list[0] with list->len == 1
   slist_push_back( &list, (void*)"A" );
   str_equal_to = "A";
-  slist_free_if( &list, &slist_node_str_equal );
+  slist_free_if( &list, &slist_node_str_equal, USER_DATA_ZERO );
   TEST( slist_empty( &list ) );
   TEST( slist_len( &list ) == 0 );
 
   // test match list[0] and list[1] with list->len == 2
   slist_push_back( &list, (void*)"A" );
   slist_push_back( &list, (void*)"A" );
-  slist_free_if( &list, &slist_node_str_equal );
+  slist_free_if( &list, &slist_node_str_equal, USER_DATA_ZERO );
   TEST( slist_empty( &list ) );
   TEST( slist_len( &list ) == 0 );
 
   // test match list[0] with list->len == 2
   slist_push_back( &list, (void*)"A" );
   slist_push_back( &list, (void*)"B" );
-  slist_free_if( &list, &slist_node_str_equal );
+  slist_free_if( &list, &slist_node_str_equal, USER_DATA_ZERO );
   TEST( slist_len( &list ) == 1 );
   if ( TEST( (p = slist_front( &list )) != NULL ) )
     TEST( *p == 'B' );
@@ -202,7 +203,7 @@ static bool test_slist_free_if( void ) {
   slist_push_back( &list, (void*)"A" );
   slist_push_back( &list, (void*)"A" );
   slist_push_back( &list, (void*)"B" );
-  slist_free_if( &list, &slist_node_str_equal );
+  slist_free_if( &list, &slist_node_str_equal, USER_DATA_ZERO );
   TEST( slist_len( &list ) == 1 );
   if ( TEST( (p = slist_front( &list )) != NULL ) )
     TEST( *p == 'B' );
@@ -215,7 +216,7 @@ static bool test_slist_free_if( void ) {
   slist_push_back( &list, (void*)"B" );
   slist_push_back( &list, (void*)"C" );
   str_equal_to = "B";
-  slist_free_if( &list, &slist_node_str_equal );
+  slist_free_if( &list, &slist_node_str_equal, USER_DATA_ZERO );
   TEST( slist_len( &list ) == 2 );
   if ( TEST( (p = slist_front( &list )) != NULL ) )
     TEST( *p == 'A' );
@@ -226,7 +227,7 @@ static bool test_slist_free_if( void ) {
   // test match list[1] with list->len == 2
   slist_push_back( &list, (void*)"A" );
   slist_push_back( &list, (void*)"B" );
-  slist_free_if( &list, &slist_node_str_equal );
+  slist_free_if( &list, &slist_node_str_equal, USER_DATA_ZERO );
   TEST( slist_len( &list ) == 1 );
   if ( TEST( (p = slist_front( &list )) != NULL ) )
     TEST( *p == 'A' );
@@ -238,7 +239,7 @@ static bool test_slist_free_if( void ) {
   slist_push_back( &list, (void*)"A" );
   slist_push_back( &list, (void*)"B" );
   slist_push_back( &list, (void*)"B" );
-  slist_free_if( &list, &slist_node_str_equal );
+  slist_free_if( &list, &slist_node_str_equal, USER_DATA_ZERO );
   TEST( slist_len( &list ) == 1 );
   if ( TEST( (p = slist_front( &list )) != NULL ) )
     TEST( *p == 'A' );

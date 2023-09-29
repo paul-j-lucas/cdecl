@@ -476,9 +476,6 @@ struct in_attr {
 typedef struct in_attr in_attr_t;
 
 // local functions
-NODISCARD
-static bool c_ast_free_if_placeholder( c_ast_t* );
-
 PJL_PRINTF_LIKE_FUNC(4)
 static void fl_elaborate_error( char const*, int, dym_kind_t, char const*,
                                 ... );
@@ -642,19 +639,32 @@ static void attr_syntax_not_supported( char const *keyword,
 }
 
 /**
- * A predicate function for slist_free_if() that checks whether \a ast is a
- * #K_PLACEHOLDER: if so, c_ast_free()s it.
+ * A predicate function for slist_free_if() that checks whether \a ast is one
+ * that can be garbage collected: if so, c_ast_free()s it.
  *
  * @param ast The AST to check.
- * @return Returns `true` only if \a ast is a #K_PLACEHOLDER.
+ * @param user_data Contains the AST of the type being declared.
+ * @return Returns `true` only if \a ast should be free'd.
  */
-static bool c_ast_free_if_placeholder( c_ast_t *ast ) {
-  if ( ast->kind == K_PLACEHOLDER ) {
-    assert( c_ast_is_orphan( ast ) );
-    c_ast_free( ast );
-    return true;
+NODISCARD
+static bool c_ast_free_if_garbage( c_ast_t *ast, user_data_t user_data ) {
+  c_ast_t const *const type_ast = user_data.pc;
+  assert( type_ast != NULL );
+
+  if ( ast == type_ast || !c_ast_is_orphan( ast ) ) {
+    assert( ast->kind != K_PLACEHOLDER );
+    return false;
   }
-  return false;
+
+  // We also need to ensure the AST isn't in the type_ast_stack.
+  FOREACH_SLIST_NODE( stack_type_node, &in_attr.type_ast_stack ) {
+    c_ast_t const *const stack_type_ast = stack_type_node->data;
+    if ( ast == stack_type_ast )
+      return false;
+  } // for
+
+  c_ast_free( ast );
+  return true;
 }
 
 /**
@@ -706,12 +716,14 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
     // be garbage collected at the end of the parse to a separate
     // typedef_ast_list that's freed only at program termination.
     //
-    // But first, free all orphaned placeholder AST nodes.  (For a non-type-
+    // But first, garbage collect all orphaned AST nodes.  (For a non-type-
     // defining parse, this step isn't necessary since all nodes are freed at
     // the end of the parse anyway.)
     //
     slist_free_if(
-      &gc_ast_list, POINTER_CAST( slist_pred_fn_t, &c_ast_free_if_placeholder )
+      &gc_ast_list,
+      POINTER_CAST( slist_pred_fn_t, &c_ast_free_if_garbage ),
+      (user_data_t){ .pc = type_ast }
     );
     slist_push_list_back( &typedef_ast_list, &gc_ast_list );
   }

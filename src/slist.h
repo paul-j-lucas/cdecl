@@ -119,9 +119,10 @@ typedef void (*slist_free_fn_t)( void *data );
  * whether a node should be freed.
  *
  * @param data A pointer to the node's data to check.
+ * @param user_data Optional data passed to slist_free_if().
  * @return Returns `true` only if the node should be freed.
  */
-typedef bool (*slist_pred_fn_t)( void *data );
+typedef bool (*slist_pred_fn_t)( void *data, user_data_t user_data );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -215,6 +216,7 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n, slist_dup_fn_t dup_fn );
  *
  * @param list A pointer to the list to possibly free nodes from.
  * @param pred_fn The predicate function to use.
+ * user_data Optional data passed to \a pred_fn.
  *
  * @note This function _only_ frees matching nodes from \a list and _not_ the
  * data at each node.  If the data at each node needs to be freed, \a pred_fn
@@ -223,7 +225,8 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n, slist_dup_fn_t dup_fn );
  *
  * @sa slist_cleanup()
  */
-void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn );
+void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn,
+                    user_data_t user_data );
 
 /**
  * Pops data from the front of \a list.
