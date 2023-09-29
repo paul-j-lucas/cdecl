@@ -90,8 +90,8 @@ _GL_INLINE_HEADER_BEGIN
  * The signature for a function passed to slist_cmp() used to compare data
  * associated with each node (if necessary).
  *
- * @param i_data A pointer to the first data to compare.
- * @param j_data A pointer to the second data to compare.
+ * @param i_data A pointer to the first node's data to compare.
+ * @param j_data A pointer to the second node's data to compare.
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
  * less than, equal to, or greater than \a j_data, respectively.
  */
@@ -101,7 +101,7 @@ typedef int (*slist_cmp_fn_t)( void const *i_data, void const *j_data );
  * The signature for a function passed to slist_dup() used to duplicate data
  * associated with each node (if necessary).
  *
- * @param data A pointer to the data to duplicate.
+ * @param data A pointer to the node's data to duplicate.
  * @return Returns a duplicate of \a data.
  */
 typedef void* (*slist_dup_fn_t)( void const *data );
@@ -110,7 +110,7 @@ typedef void* (*slist_dup_fn_t)( void const *data );
  * The signature for a function passed to slist_cleanup() used to free data
  * associated with each node (if necessary).
  *
- * @param data A pointer to the data to free.
+ * @param data A pointer to the node's data to free.
  */
 typedef void (*slist_free_fn_t)( void *data );
 
@@ -118,7 +118,7 @@ typedef void (*slist_free_fn_t)( void *data );
  * The signature for a function passed to slist_free_if() used to determine
  * whether a node should be freed.
  *
- * @param data A pointer to the data to check.
+ * @param data A pointer to the node's data to check.
  * @return Returns `true` only if the node should be freed.
  */
 typedef bool (*slist_pred_fn_t)( void *data );
@@ -139,17 +139,17 @@ struct slist {
  */
 struct slist_node {
   slist_node_t *next;                   ///< Pointer to next node or NULL.
-  void         *data;                   ///< Pointer to user data.
+  void         *data;                   ///< Pointer to node's data.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Peeks at the data at \a offset of \a list.
+ * Peeks at the node's data at \a offset of \a list.
  *
  * @param list A pointer to the \ref slist.
- * @param offset The offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a offset.
+ * @param offset The offset (starting at 0) of the node's data to get.
+ * @return Returns the node's data at \a offset.
  *
  * @warning \a offset is _not_ checked to ensure it's &lt; the list's length.
  * A value &ge; the list's length results in undefined behavior.
@@ -229,7 +229,7 @@ void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn );
  * Pops data from the front of \a list.
  *
  * @param list The pointer to the \ref slist.
- * @return Returns the data from the front of \a list.  The caller is
+ * @return Returns the node's data from the front of \a list.  The caller is
  * responsible for freeing it if necessary.
  *
  * @note This is an O(1) operation.
@@ -292,12 +292,12 @@ void slist_push_list_front( slist_t *dst_list, slist_t *src_list );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Peeks at the data at \a offset of \a list.
+ * Peeks at the node's data at \a offset of \a list.
  *
  * @param list A pointer to the \ref slist.
- * @param offset The offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a offset or NULL if \a offset
- * &ge; slist_len().
+ * @param offset The offset (starting at 0) of the node's data to get.
+ * @return Returns the node's data at \a offset or NULL if \a offset &ge;
+ * slist_len().
  *
  * @note This is an O(n) operation.
  *
@@ -312,12 +312,12 @@ void* slist_at( slist_t const *list, size_t offset ) {
 }
 
 /**
- * Peeks at the data at \a roffset from the back of \a list.
+ * Peeks at the node's data at \a roffset from the back of \a list.
  *
  * @param list A pointer to the \ref slist.
- * @param roffset The reverse offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a roffset or NULL if \a roffset
- * &ge; slist_len().
+ * @param roffset The reverse offset (starting at 0) of the node's data to get.
+ * @return Returns the node's data at \a roffset or NULL if \a roffset &ge;
+ * slist_len().
  *
  * @note This is an O(n) operation.
  *
@@ -333,11 +333,11 @@ void* slist_atr( slist_t const *list, size_t roffset ) {
 }
 
 /**
- * Peeks at the data at the back of \a list.
+ * Peeks at the node's data at the back of \a list.
  *
  * @param list A pointer to the \ref slist.
- * @return Returns the data from the node at the back of \a list or NULL if \a
- * list is empty.
+ * @return Returns the node's data at the back of \a list or NULL if \a list is
+ * empty.
  *
  * @note This is an O(1) operation.
  *
@@ -367,11 +367,11 @@ bool slist_empty( slist_t const *list ) {
 }
 
 /**
- * Peeks at the data at the front of \a list.
+ * Peeks at the node's data at the front of \a list.
  *
  * @param list A pointer to the \ref slist.
- * @return Returns the data from the node at the front of \a list or NULL if \a
- * list is empty.
+ * @return Returns the node's data at the front of \a list or NULL if \a list
+ * is empty.
  *
  * @note This is an O(1) operation.
  *
