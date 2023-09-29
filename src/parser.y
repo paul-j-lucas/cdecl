@@ -2963,7 +2963,7 @@ enum_declaration_c
       c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM, &@sname );
       enum_ast->sname = enum_sname;
       enum_ast->type.btids = c_tid_check( $enum_btids, C_TPID_BASE );
-      enum_ast->enum_.of_ast = $fixed_type_ast;
+      c_ast_set_parent( $fixed_type_ast, enum_ast );
       c_sname_append_name(
         &enum_ast->enum_.enum_sname,
         check_strdup( c_sname_local_name( &enum_sname ) )
@@ -5759,7 +5759,7 @@ enum_c_ast
       $$ = c_ast_new_gc( K_ENUM, &@$ );
       $$->type.btids = c_tid_check( $enum_btids, C_TPID_BASE );
       $$->type.atids = c_tid_check( $atids, C_TPID_ATTR );
-      $$->enum_.of_ast = $fixed_type_ast;
+      c_ast_set_parent( $fixed_type_ast, $$ );
       $$->enum_.enum_sname = c_sname_move( &$sname );
 
       DUMP_AST( "$$_ast", $$ );
@@ -7197,7 +7197,7 @@ enum_english_ast
 
       $$ = c_ast_new_gc( K_ENUM, &@$ );
       $$->type.btids = c_tid_check( $enum_btids, C_TPID_BASE );
-      $$->enum_.of_ast = $fixed_type_ast;
+      c_ast_set_parent( $fixed_type_ast, $$ );
       $$->enum_.enum_sname = c_sname_move( &$sname );
 
       DUMP_AST( "$$_ast", $$ );
