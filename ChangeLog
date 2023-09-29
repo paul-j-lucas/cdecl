@@ -1,5 +1,10 @@
 2023-09-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c, c_ast_check.c, c_ast_util.c, c_keyword.c, c_lang.c, c_operator.c,
+     c_sglob.c, c_sname.c, c_type.c, c_typedef.c, cdecl_command.c,
+     cdecl_keyword.c, color.c, dam_lev.c, did_you_mean.c, dump.c, english.c,
+     gibberish.c, options.c, prompt.c, read_line.c, red_black.c, show.c,
+     slist.c: #include file clean-up 3.
    * lexer.l: #include file clean-up 2.
    * c_ast.c, c_ast_check.c, c_ast_util.c, c_keyword.c, c_lang.c, c_operator.c,
      c_sglob.c, c_sname.c, c_type.c, c_typedef.c, cdecl_command.c,
