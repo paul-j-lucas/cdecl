@@ -53,6 +53,7 @@
 #define OPT_DIGRAPHS          2
 #define OPT_TRIGRAPHS         3
 #define OPT_ALT_TOKENS        a
+#define OPT_NO_BUFFER_STDOUT  b
 #ifdef YYDEBUG
 #define OPT_BISON_DEBUG       B
 #endif /* YYDEBUG */
@@ -135,6 +136,7 @@ static struct option const CLI_OPTIONS[] = {
 #endif /* ENABLE_FLEX_DEBUG */
   { "help",             no_argument,        NULL, COPT(HELP)              },
   { "language",         required_argument,  NULL, COPT(LANGUAGE)          },
+  { "no-buffer-stdout", no_argument,        NULL, COPT(NO_BUFFER_STDOUT)  },
   { "no-config",        no_argument,        NULL, COPT(NO_CONFIG)         },
   { "no-english-types", no_argument,        NULL, COPT(NO_ENGLISH_TYPES)  },
   { "no-prompt",        no_argument,        NULL, COPT(NO_PROMPT)         },
@@ -388,6 +390,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   char const *      fin_path = "-";
   char const *      fout_path = "-";
   int               opt;
+  bool              opt_buffer_stdout = true;
   bool              opt_help = false;
   unsigned          opt_version = 0;
   char const *const short_opts = make_short_opts( CLI_OPTIONS );
@@ -464,6 +467,9 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
       case COPT(TRIGRAPHS):
         opt_graph = C_GRAPH_TRI;
+        break;
+      case COPT(NO_BUFFER_STDOUT):
+        opt_buffer_stdout = false;
         break;
       case COPT(NO_CONFIG):
         opt_read_conf = false;
@@ -545,6 +551,9 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     PJL_IGNORE_RV( fclose( fout ) );
   }
 
+  if ( !opt_buffer_stdout )
+    setvbuf( stdout, /*buf=*/NULL, _IONBF, /*size=*/0 );
+
   if ( opt_help )
     print_usage( *pargc > 0 ? EX_USAGE : EX_OK );
 
@@ -614,6 +623,7 @@ static void print_usage( int status ) {
 #endif /* ENABLE_FLEX_DEBUG */
     "  --help              " UOPT(HELP)             "Print this help and exit.\n"
     "  --language=LANG     " UOPT(LANGUAGE)         "Use LANG.\n"
+    "  --no-buffer-stdout  " UOPT(NO_BUFFER_STDOUT) "Set stdout to unbuffered.\n"
     "  --no-config         " UOPT(NO_CONFIG)        "Suppress reading configuration file.\n"
     "  --no-english-types  " UOPT(NO_ENGLISH_TYPES) "Print types in C/C++, not English.\n"
     "  --no-prompt         " UOPT(NO_PROMPT)        "Suppress printing prompts.\n"

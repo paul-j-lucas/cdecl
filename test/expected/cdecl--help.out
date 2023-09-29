@@ -13,6 +13,7 @@ options:
   --file=FILE          (-f) Read from FILE [default: stdin].
   --help               (-h) Print this help and exit.
   --language=LANG      (-x) Use LANG.
+  --no-buffer-stdout   (-b) Set stdout to unbuffered.
   --no-config          (-C) Suppress reading configuration file.
   --no-english-types   (-T) Print types in C/C++, not English.
   --no-prompt          (-p) Suppress printing prompts.

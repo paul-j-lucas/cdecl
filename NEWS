@@ -46,6 +46,10 @@ Added more standard types.
 ** Folded `cast` help
 Help for new-style casts has been folded into the same line for C-style casts.
 
+** `--no-buffer-stdout` & `-b`
+Added command-line options to set stdout to unbuffered.  (This is useful to
+print output immediately while single-stepping in a debugger.)
+
 ** `type` in `define`
 **cdecl** now allows the word `type` to appear in a `define` command, e.g.:
 
