@@ -470,6 +470,19 @@ bool c_ast_list_equal( c_ast_list_t const *i_list,
   return i_node == NULL && j_node == NULL;
 }
 
+void c_ast_list_set_param_of( c_ast_list_t *param_ast_list,
+                              c_ast_t *func_ast ) {
+  assert( param_ast_list != NULL );
+  assert( func_ast != NULL );
+  assert( (func_ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
+
+  FOREACH_SLIST_NODE( param_node, param_ast_list ) {
+    c_ast_t *const param_ast = param_node->data;
+    assert( param_ast->param_of_ast == NULL );
+    param_ast->param_of_ast = func_ast;
+  } // for
+}
+
 c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
                     c_ast_list_t *node_list ) {
   assert( is_1_bit( kind ) );

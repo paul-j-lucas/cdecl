@@ -1957,6 +1957,7 @@ declare_command
         c_type_add_tid( &oper_ast->type, $ref_qual_stid, &@ref_qual_stid )
       );
       oper_ast->oper.operator = operator;
+      c_ast_list_set_param_of( &$param_ast_list, oper_ast );
       oper_ast->oper.param_ast_list = slist_move( &$param_ast_list );
       oper_ast->oper.member = $member;
       c_ast_set_parent( $ret_ast, oper_ast );
@@ -1991,7 +1992,9 @@ declare_command
 
       c_ast_t *const lambda_ast = c_ast_new_gc( K_LAMBDA, &@$ );
       lambda_ast->type = $store_type;
+      c_ast_list_set_param_of( &$capture_ast_list, lambda_ast );
       lambda_ast->lambda.capture_ast_list = slist_move( &$capture_ast_list );
+      c_ast_list_set_param_of( &$param_ast_list, lambda_ast );
       lambda_ast->lambda.param_ast_list = slist_move( &$param_ast_list );
       c_ast_set_parent( $ret_ast, lambda_ast );
 
@@ -3233,7 +3236,9 @@ lambda_declaration_c
 
       c_ast_t *const lambda_ast = c_ast_new_gc( K_LAMBDA, &@$ );
       lambda_ast->type = $type;
+      c_ast_list_set_param_of( &$capture_ast_list, lambda_ast );
       lambda_ast->lambda.capture_ast_list = slist_move( &$capture_ast_list );
+      c_ast_list_set_param_of( &$param_ast_list, lambda_ast );
       lambda_ast->lambda.param_ast_list = slist_move( &$param_ast_list );
       c_ast_set_parent( $ret_ast, lambda_ast );
 
@@ -3863,6 +3868,7 @@ block_decl_c_astp                       // Apple extension
       PARSE_ASSERT(
         c_type_add_tid( &block_ast->type, $qual_stids, &@qual_stids )
       );
+      c_ast_list_set_param_of( &$param_ast_list, block_ast );
       block_ast->block.param_ast_list = slist_move( &$param_ast_list );
       $$ = (c_ast_pair_t){
         c_ast_add_func( $decl_astp.ast, block_ast, type_ast ),
@@ -3938,6 +3944,7 @@ file_scope_constructor_declaration_c
         $inline_stid | $qual_stids | $noexcept_stid,
         C_TPID_STORE
       );
+      c_ast_list_set_param_of( &$param_ast_list, ctor_ast );
       ctor_ast->ctor.param_ast_list = slist_move( &$param_ast_list );
 
       DUMP_AST( "$$_ast", ctor_ast );
@@ -4079,6 +4086,7 @@ func_decl_c_astp
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
       func_ast->type.stids = c_tid_check( func_stids, C_TPID_STORE );
+      c_ast_list_set_param_of( &$param_ast_list, func_ast );
       func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
 
@@ -4222,6 +4230,7 @@ pc99_func_or_constructor_declaration_c
       c_sname_init_name( &ast->sname, $name );
       ast->type.stids =
         c_tid_check( $noexcept_stid | $equals_stid, C_TPID_STORE );
+      c_ast_list_set_param_of( &$param_ast_list, ast );
       ast->func.param_ast_list = slist_move( &$param_ast_list );
 
       DUMP_AST( "$$_ast", ast );
@@ -4585,6 +4594,7 @@ oper_decl_c_astp
       c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@$ );
       oper_ast->sname = c_sname_move( &$sname );
       oper_ast->type.stids = c_tid_check( oper_stids, C_TPID_STORE );
+      c_ast_list_set_param_of( &$param_ast_list, oper_ast );
       oper_ast->oper.param_ast_list = slist_move( &$param_ast_list );
       oper_ast->oper.operator = operator;
 
@@ -5007,6 +5017,7 @@ user_defined_literal_decl_c_astp
 
       c_ast_t *const udl_ast = c_ast_new_gc( K_UDEF_LIT, &@$ );
       udl_ast->type.stids = c_tid_check( $noexcept_stid, C_TPID_STORE );
+      c_ast_list_set_param_of( &$param_ast_list, udl_ast );
       udl_ast->udef_lit.param_ast_list = slist_move( &$param_ast_list );
 
       $$ = (c_ast_pair_t){
@@ -5118,6 +5129,7 @@ block_cast_c_astp                       // Apple extension
       PARSE_ASSERT(
         c_type_add_tid( &block_ast->type, $qual_stids, &@qual_stids )
       );
+      c_ast_list_set_param_of( &$param_ast_list, block_ast );
       block_ast->block.param_ast_list = slist_move( &$param_ast_list );
       $$ = (c_ast_pair_t){
         c_ast_add_func( $cast_astp.ast, block_ast, type_ast ),
@@ -5183,6 +5195,7 @@ func_cast_c_astp
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
       c_tid_t const func_stids = $ref_qual_stids | $noexcept_stid;
       func_ast->type.stids = c_tid_check( func_stids, C_TPID_STORE );
+      c_ast_list_set_param_of( &$param_ast_list, func_ast );
       func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
       if ( $cast_astp.target_ast != NULL ) {
@@ -6409,6 +6422,7 @@ block_decl_english_ast                  // Apple extension
       DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
       $$ = c_ast_new_gc( K_APPLE_BLOCK, &@$ );
+      c_ast_list_set_param_of( &$param_ast_list, $$ );
       $$->block.param_ast_list = slist_move( &$param_ast_list );
       c_ast_set_parent( $ret_ast, $$ );
 
@@ -6428,6 +6442,7 @@ constructor_decl_english_ast
       DUMP_AST_LIST( "paren_param_decl_list_english_opt", $param_ast_list );
 
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
+      c_ast_list_set_param_of( &$param_ast_list, $$ );
       $$->ctor.param_ast_list = slist_move( &$param_ast_list );
 
       DUMP_AST( "$$_ast", $$ );
@@ -6476,6 +6491,7 @@ func_decl_english_ast
 
       $$ = c_ast_new_gc( K_FUNCTION, &@$ );
       $$->type = $qual_type;
+      c_ast_list_set_param_of( &$param_ast_list, $$ );
       $$->func.param_ast_list = slist_move( &$param_ast_list );
       $$->func.member = $member;
       c_ast_set_parent( $ret_ast, $$ );
@@ -6918,6 +6934,7 @@ user_defined_literal_decl_english_ast
       DUMP_AST( "returning_english_ast_opt", $ret_ast );
 
       $$ = c_ast_new_gc( K_UDEF_LIT, &@$ );
+      c_ast_list_set_param_of( &$param_ast_list, $$ );
       $$->udef_lit.param_ast_list = slist_move( &$param_ast_list );
       c_ast_set_parent( $ret_ast, $$ );
 

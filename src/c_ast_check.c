@@ -116,8 +116,6 @@
  * State maintained by c_ast_check_visitor().
  */
 struct check_state {
-  c_ast_t const  *func_ast;             ///< The current function AST, if any.
-
   /**
    * If the current AST node is the \ref c_typedef_ast::for_ast "for_ast" of a
    * #K_TYPEDEF AST, store that #K_TYPEDEF AST here.
@@ -173,6 +171,7 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_oper_params( c_ast_t const* ),
                     c_ast_check_oper_relational_default( c_ast_t const* ),
                     c_ast_check_upc( c_ast_t const* ),
+                    c_ast_check_visitor( c_ast_t const*, c_ast_check_fn_t ),
                     c_ast_name_equal( c_ast_t const*, char const* ),
                     c_ast_visitor_error( c_ast_t const*, user_data_t ),
                     c_ast_visitor_type( c_ast_t const*, user_data_t ),
@@ -185,24 +184,6 @@ NODISCARD
 static c_lang_id_t  is_reserved_name( char const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Checks an entire AST for semantic errors using \a check_fn.
- *
- * @param ast The AST to check.
- * @param check_fn The check function to use.
- * @param check The check_state to use.
- * @return Returns `true` only if all checks passed.
- */
-NODISCARD
-static inline bool c_ast_check_visitor( c_ast_t const *ast,
-                                        c_ast_check_fn_t check_fn,
-                                        check_state_t const *check ) {
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_visit_fn_t const visit_fn = POINTER_CAST( c_ast_visit_fn_t, check_fn );
-  user_data_t const data = { .pc = check };
-  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, data ) == NULL;
-}
 
 /**
  * Gets whether \a ast is a lambda capture for either `this` or `*this`.
@@ -257,16 +238,6 @@ NODISCARD
 static inline c_loc_t const* c_ast_params_loc( c_ast_t const *ast ) {
   c_ast_t const *const param_ast = c_param_ast( c_ast_params( ast ) );
   return &IF_ELSE( param_ast, ast )->loc;
-}
-
-/**
- * Initializes a check_state.
- *
- * @param check The check_state to initialize.
- */
-static inline void check_state_init( check_state_t *check ) {
-  assert( check != NULL );
-  MEM_ZERO( check );
 }
 
 /**
@@ -354,15 +325,12 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
  * Checks an array AST for errors.
  *
  * @param ast The array AST to check.
- * @param check The check_state to use.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_array( c_ast_t const *ast,
-                               check_state_t const *check ) {
+static bool c_ast_check_array( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
-  assert( check != NULL );
 
   if ( c_tid_is_any( ast->type.stids, TS__Atomic ) ) {
     error_kind_not_tid( ast, TS__Atomic, LANG_NONE, "\n" );
@@ -400,10 +368,10 @@ static bool c_ast_check_array( c_ast_t const *ast,
       }
       break;
     case C_ARRAY_NAMED_SIZE: {
-      if ( check->func_ast == NULL )
+      if ( ast->param_of_ast == NULL )
         break;
       c_ast_t const *const size_param_ast =
-        c_ast_find_param_named( check->func_ast, ast->array.size_name, ast );
+        c_ast_find_param_named( ast->param_of_ast, ast->array.size_name, ast );
       if ( size_param_ast == NULL )
         break;
       // At this point, we know it's a VLA.
@@ -505,15 +473,14 @@ static bool c_ast_check_array( c_ast_t const *ast,
  * Checks a built-in type AST for errors.
  *
  * @param ast The built-in AST to check.
- * @param check The check_state to use.
+ * @param tdef_ast The #K_TYPEDEF AST \a ast is a `typedef` for, if any.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_builtin( c_ast_t const *ast,
-                                 check_state_t const *check ) {
+static bool c_ast_check_builtin( c_ast_t const *ast, c_ast_t const *tdef_ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_BUILTIN );
-  assert( check != NULL );
+  assert( tdef_ast == NULL || tdef_ast->kind == K_TYPEDEF );
 
   if ( ast->type.btids == TB_NONE && !OPT_LANG_IS( IMPLICIT_int ) &&
        !c_ast_parent_is_kind( ast, K_UDEF_CONV ) ) {
@@ -589,8 +556,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast,
        ast->kind != K_CAST &&
        !c_tid_is_any( ast->type.stids, TS_typedef ) &&
        !(OPT_LANG_IS( C_ANY ) && c_tid_is_any( ast->type.stids, TS_extern )) &&
-       (check->tdef_ast == NULL ||
-        !c_ast_parent_is_kind( check->tdef_ast, K_POINTER )) ) {
+       (tdef_ast == NULL || !c_ast_parent_is_kind( tdef_ast, K_POINTER )) ) {
     print_error( &ast->loc, "variable of \"void\"" );
     if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
       print_hint( "\"pointer to void\"" );
@@ -831,16 +797,14 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
  * Checks an entire AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param check The check_state to use.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_errors( c_ast_t const *ast,
-                                check_state_t const *check ) {
+static bool c_ast_check_errors( c_ast_t const *ast ) {
   assert( ast != NULL );
   // check in major-to-minor error order
-  return  c_ast_check_visitor( ast, c_ast_visitor_error, check ) &&
-          c_ast_check_visitor( ast, c_ast_visitor_type, check );
+  return  c_ast_check_visitor( ast, c_ast_visitor_error ) &&
+          c_ast_check_visitor( ast, c_ast_visitor_type );
 }
 
 /**
@@ -1365,10 +1329,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         UNEXPECTED_INT_VALUE( raw_param_ast->kind );
     } // switch
 
-    check_state_t param_check;
-    check_state_init( &param_check );
-    param_check.func_ast = ast;
-    if ( !c_ast_check_errors( param_ast, &param_check ) )
+    if ( !c_ast_check_errors( param_ast ) )
       return false;
   } // for
 
@@ -2530,6 +2491,22 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
 }
 
 /**
+ * Checks an entire AST for semantic errors using \a check_fn.
+ *
+ * @param ast The AST to check.
+ * @param check_fn The check function to use.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_check_visitor( c_ast_t const *ast,
+                                 c_ast_check_fn_t check_fn ) {
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_ast_visit_fn_t const visit_fn = POINTER_CAST( c_ast_visit_fn_t, check_fn );
+  user_data_t const data = { .pc = &(check_state_t){ 0 } };
+  return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visit_fn, data ) == NULL;
+}
+
+/**
  * Visitor function that checks an AST for semantic errors.
  *
  * @param ast The AST to check.
@@ -2541,18 +2518,19 @@ NODISCARD
 static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
   check_state_t const *const check = user_data.pc;
+  assert( check != NULL );
 
   if ( !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      if ( !c_ast_check_array( ast, check ) )
+      if ( !c_ast_check_array( ast ) )
         return VISITOR_ERROR_FOUND;
       break;
 
     case K_BUILTIN:
-      if ( !c_ast_check_builtin( ast, check ) )
+      if ( !c_ast_check_builtin( ast, check->tdef_ast ) )
         return VISITOR_ERROR_FOUND;
       break;
 
@@ -2661,10 +2639,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
       // recurse into it manually.
       //
       c_ast_t const temp_ast = c_ast_sub_typedef( ast );
-      check_state_t temp_check;
-      check_state_init( &temp_check );
-      temp_check.tdef_ast = ast;
-      user_data.pc = &temp_check;
+      user_data.pc = &(check_state_t){ .tdef_ast = ast };
       return c_ast_visitor_error( &temp_ast, user_data );
     }
 
@@ -2682,7 +2657,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_VARIADIC:
-      assert( check->func_ast != NULL );
+      assert( ast->param_of_ast != NULL );
       break;
 
     case K_PLACEHOLDER:
@@ -2705,7 +2680,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
  * Visitor function that checks an AST for type errors.
  *
  * @param ast The AST to visit.
- * @param user_data The data to use.
+ * @param user_data Not used.
  * @return Returns \ref VISITOR_ERROR_FOUND if an error was found;
  * \ref VISITOR_ERROR_NOT_FOUND if not.
  */
@@ -2816,12 +2791,9 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
   }
 
   if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
-    check_state_t param_check;
-    check_state_init( &param_check );
-    param_check.func_ast = ast;
     FOREACH_AST_FUNC_PARAM( param, ast ) {
       c_ast_t const *const param_ast = c_param_ast( param );
-      if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type, &param_check ) )
+      if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type ) )
         return VISITOR_ERROR_FOUND;
     } // for
   }
@@ -2916,14 +2888,11 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       FALLTHROUGH;
     }
 
-    case K_CONSTRUCTOR: {
-      check_state_t param_check;
-      check_state_init( &param_check );
-      param_check.func_ast = ast;
+    case K_CONSTRUCTOR:
       FOREACH_AST_FUNC_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
         PJL_IGNORE_RV(
-          c_ast_check_visitor( param_ast, c_ast_visitor_warning, &param_check )
+          c_ast_check_visitor( param_ast, c_ast_visitor_warning )
         );
         if ( c_tid_is_any( param_ast->type.stids, TS_volatile ) &&
              OPT_LANG_IS( CPP_MIN(20) ) ) {
@@ -2934,7 +2903,6 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
         }
       } // for
       FALLTHROUGH;
-    }
 
     case K_DESTRUCTOR:
       if ( c_tid_is_any( ast->type.stids, TS_throw ) &&
@@ -3056,13 +3024,9 @@ static c_lang_id_t is_reserved_name( char const *name ) {
 
 bool c_ast_check( c_ast_t const *ast ) {
   assert( ast != NULL );
-  check_state_t check;
-  check_state_init( &check );
-  if ( !c_ast_check_errors( ast, &check ) )
+  if ( !c_ast_check_errors( ast ) )
     return false;
-  PJL_IGNORE_RV(
-    c_ast_check_visitor( ast, c_ast_visitor_warning, &check )
-  );
+  PJL_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning ) );
   return true;
 }
 

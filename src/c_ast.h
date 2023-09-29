@@ -451,16 +451,17 @@ struct c_udef_lit_ast {
  * AST node for a parsed C/C++ declaration.
  */
 struct c_ast {
-  c_alignas_t           align;      ///< Alignment, if any.
-  unsigned              depth;      ///< How many `()` deep.
-  c_ast_kind_t          kind;       ///< AST kind.
-  c_loc_t               loc;        ///< Source location.
-  c_sname_t             sname;      ///< Scoped name, if any.
-  c_type_t              type;       ///< Type, if any.
-  c_ast_t              *parent_ast; ///< Parent AST node, if any.
+  c_alignas_t     align;                ///< Alignment, if any.
+  unsigned        depth;                ///< How many `()` deep.
+  c_ast_kind_t    kind;                 ///< AST kind.
+  c_loc_t         loc;                  ///< Source location.
+  c_sname_t       sname;                ///< Scoped name, if any.
+  c_type_t        type;                 ///< Type, if any.
+  c_ast_t        *parent_ast;           ///< Parent AST node, if any.
+  c_ast_t const  *param_of_ast;         ///< Parameter of this AST node, if any.
 #ifdef ENABLE_CDECL_DEBUG
-  c_ast_id_t            unique_id;  ///< Unique id (starts at 1).
-  c_ast_id_t            dup_from_id;///< ID of AST duplicated from, if any.
+  c_ast_id_t      unique_id;            ///< Unique id (starts at 1).
+  c_ast_id_t      dup_from_id;          ///< ID of AST duplicated from, if any.
 #endif /* ENABLE_CDECL_DEBUG */
 
   /**
@@ -635,6 +636,19 @@ void c_ast_list_cleanup( c_ast_list_t *list );
 NODISCARD
 bool c_ast_list_equal( c_ast_list_t const *i_list,
                        c_ast_list_t const *j_list );
+
+/**
+ * Sets that all AST nodes in \a param_ast_list are parameters of \a func_ast.
+ *
+ * @param param_ast_list The AST list of parameters whose \ref
+ * c_ast::param_of_ast "param_of_ast" to set.
+ * @param func_ast The #K_ANY_FUNCTION_LIKE AST that the AST nodes on \a
+ * param_ast_list are a parameter of.
+ *
+ * @warning The \ref c_ast::param_of_ast "param_of_ast" for each AST node in \a
+ * param_ast_list must be NULL.
+ */
+void c_ast_list_set_param_of( c_ast_list_t *param_ast_list, c_ast_t *func_ast );
 
 /**
  * Creates a new AST node.

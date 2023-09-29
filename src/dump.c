@@ -170,6 +170,10 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
       "parent__unique_id: " PRId_C_AST_ID_T,
       ast->parent_ast != NULL ? ast->parent_ast->unique_id : 0
     );
+    DUMP_KEY( dump,
+      "param_of__unique_id: " PRId_C_AST_ID_T,
+      ast->param_of_ast != NULL ? ast->param_of_ast->unique_id : 0
+    );
   }
   c_alignas_dump( &ast->align, dump );
   DUMP_LOC( dump, "loc", &ast->loc );
