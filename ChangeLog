@@ -1,5 +1,7 @@
 2023-09-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * cli_options.c, print.c, red_black_test.c, slist_test.c, strbuf.c: Added
+     missing #include <stdio.h>
    * cdecl.1, cli_options.c, cdecl--help.out: Added `--no-buffer-stdout` & `-b`
      command-line options to set stdout to unbuffered.
    * cdecl.1: Added missing optional argument for `set debug` option.
