@@ -1047,6 +1047,10 @@ _GL_CXXALIAS_RPL (putenv, int, (char *string));
 #   define putenv _putenv
 #  endif
 _GL_CXXALIAS_MDA (putenv, int, (char *string));
+# elif defined __KLIBC__
+/* Need to cast, because on OS/2 kLIBC, the first parameter is
+                                     const char *string.  */
+_GL_CXXALIAS_SYS_CAST (putenv, int, (char *string));
 # else
 _GL_CXXALIAS_SYS (putenv, int, (char *string));
 # endif
@@ -1063,6 +1067,10 @@ _GL_CXXALIASWARN (putenv);
 /* Need to cast, because on mingw, the parameter is either
    'const char *string' or 'char *string'.  */
 _GL_CXXALIAS_MDA_CAST (putenv, int, (char *string));
+# elif defined __KLIBC__
+/* Need to cast, because on OS/2 kLIBC, the first parameter is
+                                     const char *string.  */
+_GL_CXXALIAS_SYS_CAST (putenv, int, (char *string));
 # else
 _GL_CXXALIAS_SYS (putenv, int, (char *string));
 # endif
