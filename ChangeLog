@@ -1,3 +1,13 @@
+2023-09-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: Added {}.
+   * c_ast.c, c_ast_check.c, c_ast_util.c, english.c, gibberish.c: Removed {}
+     around case; using NO_OP instead.
+   * dump.c: 1. Coalesced unique_id dumping. 2. Now printing dup_from_id only
+     if > 0. 3. s/parent__unique_id/parent_id/ 4.
+     s/param_of__unique_id/param_of_id/ 5. Now printing param_of_if only if >
+     0.
+
 2023-09-29  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.h, parser.y, slist.c, slist.h, slist_test.c, types.h: Now doing
