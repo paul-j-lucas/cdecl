@@ -1850,18 +1850,19 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   //
   size_t const n_params = c_ast_params_count( ast );
   if ( n_params < req_params_min ) {
-    if ( req_params_min == req_params_max )
+    if ( req_params_min == req_params_max ) {
 same: print_error( c_ast_params_loc( ast ),
         "%soperator \"%s\" must have exactly %u parameter%s\n",
         member_or_nonmember, op->literal,
         req_params_min, plural_s( req_params_min )
       );
-    else
+    } else {
       print_error( c_ast_params_loc( ast ),
         "%soperator \"%s\" must have at least %u parameter%s\n",
         member_or_nonmember, op->literal,
         req_params_min, plural_s( req_params_min )
       );
+    }
     return false;
   }
   if ( n_params > req_params_max ) {
