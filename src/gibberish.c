@@ -394,7 +394,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       type.btids &= c_tid_compl( TB_struct | TB_class );
       FALLTHROUGH;
 
-    case K_CLASS_STRUCT_UNION: {
+    case K_CLASS_STRUCT_UNION:
       if ( opt_east_const ) {
         cv_qual_stids = type.stids & TS_CV;
         type.stids &= c_tid_compl( TS_CV );
@@ -470,7 +470,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       if ( ast->kind == K_ENUM )
         c_ast_bit_width_gibberish( ast, gib );
       break;
-    }
 
     case K_LAMBDA:
       FPUTS( graph_token_c( "[" ), gib->gout );
@@ -869,7 +868,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       FPUTC( '*', gib->gout );
       break;
 
-    case K_POINTER_TO_MEMBER: {
+    case K_POINTER_TO_MEMBER:
       FPRINTF( gib->gout,
         "%s::*", c_sname_full_name( &ast->ptr_mbr.class_sname )
       );
@@ -877,7 +876,6 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       gib->printed_space =
         func_ast == NULL || (func_ast->kind & opt_west_pointer_kinds) == 0;
       break;
-    }
 
     case K_REFERENCE:
       if ( opt_alt_tokens ) {
@@ -1004,6 +1002,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_CONSTRUCTOR:
       FPUTS( c_sname_full_name( &ast->sname ), gib->gout );
       break;
+
     case K_DESTRUCTOR:
       if ( c_sname_count( &ast->sname ) > 1 )
         FPRINTF( gib->gout, "%s::", c_sname_scope_name( &ast->sname ) );
@@ -1013,7 +1012,8 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
         FPUTC( '~', gib->gout );
       FPUTS( c_sname_local_name( &ast->sname ), gib->gout );
       break;
-    case K_OPERATOR: {
+
+    case K_OPERATOR:
       gib_print_space_once( gib );
       if ( !c_sname_empty( &ast->sname ) )
         FPRINTF( gib->gout, "%s::", c_sname_full_name( &ast->sname ) );
@@ -1022,10 +1022,11 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
         "operator%s%s", isalpha( token[0] ) ? " " : "", token
       );
       break;
-    }
+
     case K_UDEF_CONV:
       // Do nothing since these don't have names.
       break;
+
     case K_UDEF_LIT:
       gib_print_space_once( gib );
       if ( c_sname_count( &ast->sname ) > 1 )
@@ -1034,6 +1035,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
         "operator\"\" %s", c_sname_local_name( &ast->sname )
       );
       break;
+
     default:
       if ( !c_sname_empty( &ast->sname ) ) {
         if ( (gib->gib_flags & C_GIB_USING) == 0 )

@@ -318,7 +318,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t user_data ) {
           if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
             FPUTS( "member ", eng->eout );
           break;
-        case K_OPERATOR: {
+        case K_OPERATOR:
+          NO_OP;
           c_func_member_t const op_mbr = c_ast_oper_overload( ast );
           char const *const op_literal =
             op_mbr == C_FUNC_MEMBER     ? "member "     :
@@ -326,7 +327,6 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t user_data ) {
             "";
           FPUTS( op_literal, eng->eout );
           break;
-        }
         default:
           /* suppress warning */;
       } // switch

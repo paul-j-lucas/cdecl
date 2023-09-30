@@ -361,13 +361,15 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
         return false;
       }
       break;
+
     case C_ARRAY_INT_SIZE:
       if ( ast->array.size_int == 0 ) {
         print_error( &ast->loc, "array dimension must be > 0\n" );
         return false;
       }
       break;
-    case C_ARRAY_NAMED_SIZE: {
+
+    case C_ARRAY_NAMED_SIZE:
       if ( ast->param_of_ast == NULL )
         break;
       c_ast_t const *const size_param_ast =
@@ -382,7 +384,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
         return false;
       }
       FALLTHROUGH;
-    }
+
     case C_ARRAY_VLA_STAR:
       if ( !OPT_LANG_IS( VLAS ) ) {
         print_error( &ast->loc,
@@ -886,7 +888,8 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   }
 
   switch ( ast->func.member ) {
-    case C_FUNC_MEMBER: {
+    case C_FUNC_MEMBER:
+      NO_OP;
       //
       // Member functions can't have linkage -- except the new & delete
       // operators may have static explicitly specified.
@@ -905,7 +908,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         return false;
       }
       break;
-    }
+
     case C_FUNC_NON_MEMBER:
       if ( member_func_stids != TS_NONE ) {
         print_error( &ast->loc,
@@ -916,6 +919,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         return false;
       }
       break;
+
     case C_FUNC_UNSPECIFIED:
       // nothing to do
       break;
@@ -949,7 +953,8 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
 
       case K_OPERATOR:
         switch ( ast->oper.operator->oper_id ) {
-          case C_OP_EQUAL: {            // C& operator=(C const&)
+          case C_OP_EQUAL:              // C& operator=(C const&)
+            NO_OP;
             //
             // For C& operator=(C const&), the parameter and the return type
             // must both be a reference to the same class, struct, or union.
@@ -962,7 +967,6 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
             if ( !c_ast_equal( param_ast, ret_ast ) )
               goto only_special;
             break;
-          }
 
           case C_OP_EQUAL2:
           case C_OP_EXCLAM_EQUAL:
@@ -1926,7 +1930,8 @@ same: print_error( c_ast_params_loc( ast ),
 
   switch ( op->oper_id ) {
     case C_OP_MINUS2:
-    case C_OP_PLUS2: {
+    case C_OP_PLUS2:
+      NO_OP;
       //
       // Ensure that the dummy parameter for postfix -- or ++ is type int (or
       // is a typedef of int).
@@ -1955,7 +1960,6 @@ same: print_error( c_ast_params_loc( ast ),
         return false;
       }
       break;
-    }
 
     case C_OP_DELETE:
     case C_OP_DELETE_ARRAY:
@@ -2570,7 +2574,7 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
         return VISITOR_ERROR_FOUND;
       FALLTHROUGH;
 
-    case K_DESTRUCTOR: {
+    case K_DESTRUCTOR:
       if ( (ast->kind & (K_CONSTRUCTOR | K_DESTRUCTOR)) != 0 &&
            !c_ast_check_ctor_dtor( ast ) ) {
         return VISITOR_ERROR_FOUND;
@@ -2594,7 +2598,6 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
         return VISITOR_ERROR_FOUND;
       }
       break;
-    }
 
     case K_LAMBDA:
       if ( !(c_ast_check_lambda( ast ) &&
@@ -2634,7 +2637,8 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
         return VISITOR_ERROR_FOUND;
       break;
 
-    case K_TYPEDEF: {
+    case K_TYPEDEF:
+      NO_OP;
       //
       // K_TYPEDEF isn't a "parent" kind since it's not a parent "of" the
       // underlying type, but instead a synonym "for" it.  Hence, we have to
@@ -2643,7 +2647,6 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
       c_ast_t const temp_ast = c_ast_sub_typedef( ast );
       user_data.pc = &(check_state_t){ .tdef_ast = ast };
       return c_ast_visitor_error( &temp_ast, user_data );
-    }
 
     case K_UDEF_CONV:
       if ( !c_ast_check_udef_conv( ast ) )
@@ -2867,7 +2870,8 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
     case K_APPLE_BLOCK:
     case K_FUNCTION:
     case K_LAMBDA:
-    case K_OPERATOR: {
+    case K_OPERATOR:
+      NO_OP;
       c_ast_t const *const ret_ast = ast->func.ret_ast;
       if ( ret_ast != NULL ) {
         c_tid_t ret_qual_stids;
@@ -2888,7 +2892,6 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
         }
       }
       FALLTHROUGH;
-    }
 
     case K_CONSTRUCTOR:
       FOREACH_AST_FUNC_PARAM( param, ast ) {
