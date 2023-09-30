@@ -581,7 +581,17 @@ _GL_INLINE_HEADER_BEGIN
 #define NAME2(A,B)                NAME2_HELPER(A,B)
 
 /**
- * No-operation statement.  (Useful for a `goto` target.)
+ * No-operation statement.
+ *
+ * @remarks This is useful for a declaration immediately after either a `goto`
+ * or `case` label:
+ *
+ *      label:
+ *        NO_OP;                    // needed until C23
+ *        char const *s = f();
+ *        // ...
+ *
+ * C doesn't allow declarations after labels until C23.
  */
 #define NO_OP                     ((void)0)
 
