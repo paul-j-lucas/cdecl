@@ -216,7 +216,7 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n, slist_dup_fn_t dup_fn );
  *
  * @param list A pointer to the list to possibly free nodes from.
  * @param pred_fn The predicate function to use.
- * user_data Optional data passed to \a pred_fn.
+ * @param user_data Optional data passed to \a pred_fn.
  *
  * @note This function _only_ frees matching nodes from \a list and _not_ the
  * data at each node.  If the data at each node needs to be freed, \a pred_fn
