@@ -155,26 +155,26 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
   json_state_t const ast_json =
     json_object_begin( JSON_INIT, /*key=*/NULL, dump );
 
-  if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_UNIQUE_ID) != 0 ) {
-    DUMP_KEY( dump, "unique_id: " PRId_C_AST_ID_T, ast->unique_id );
-    DUMP_KEY( dump, "dup_from_id: " PRId_C_AST_ID_T, ast->dup_from_id );
-  }
   DUMP_SNAME( dump, "sname", &ast->sname );
   DUMP_KEY( dump,
     "kind: { value: 0x%X, string: \"%s\" }",
     ast->kind, c_kind_name( ast->kind )
   );
-  DUMP_KEY( dump, "depth: %u", ast->depth );
   if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_UNIQUE_ID) != 0 ) {
+    DUMP_KEY( dump, "unique_id: " PRId_C_AST_ID_T, ast->unique_id );
+    if ( ast->dup_from_id > 0 )
+      DUMP_KEY( dump, "dup_from_id: " PRId_C_AST_ID_T, ast->dup_from_id );
     DUMP_KEY( dump,
-      "parent__unique_id: " PRId_C_AST_ID_T,
+      "parent_id: " PRId_C_AST_ID_T,
       ast->parent_ast != NULL ? ast->parent_ast->unique_id : 0
     );
-    DUMP_KEY( dump,
-      "param_of__unique_id: " PRId_C_AST_ID_T,
-      ast->param_of_ast != NULL ? ast->param_of_ast->unique_id : 0
-    );
+    if ( ast->param_of_ast != NULL ) {
+      DUMP_KEY( dump,
+        "param_of_id: " PRId_C_AST_ID_T, ast->param_of_ast->unique_id
+      );
+    }
   }
+  DUMP_KEY( dump, "depth: %u", ast->depth );
   c_alignas_dump( &ast->align, dump );
   DUMP_LOC( dump, "loc", &ast->loc );
   DUMP_KEY( dump, "type: " );
