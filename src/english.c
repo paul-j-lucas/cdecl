@@ -646,10 +646,10 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout ) {
   // Clean-up list and sub-lists.
   FOREACH_SLIST_NODE( decl_node, &declare_list ) {
     slist_t *const equal_ast_list = decl_node->data;
-    slist_cleanup( equal_ast_list, NULL );
+    slist_cleanup( equal_ast_list, /*free_fn=*/NULL );
     free( equal_ast_list );
   } // for
-  slist_cleanup( &declare_list, NULL );
+  slist_cleanup( &declare_list, /*free_fn=*/NULL );
 }
 
 char const* c_cast_english( c_cast_kind_t kind ) {

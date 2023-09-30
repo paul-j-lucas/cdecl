@@ -3735,9 +3735,12 @@ decl2_c_astp
   | oper_decl_c_astp
   | sname_c_ast[ast] gnu_attribute_specifier_list_c_opt
     {
-      $$ = (c_ast_pair_t){ $ast, NULL };
+      $$ = (c_ast_pair_t){ $ast, .target_ast = NULL };
     }
-  | typedef_type_decl_c_ast       { $$ = (c_ast_pair_t){ $1, NULL }; }
+  | typedef_type_decl_c_ast
+    {
+      $$ = (c_ast_pair_t){ .ast = $1, .target_ast = NULL };
+    }
   | user_defined_conversion_decl_c_astp
   | user_defined_literal_decl_c_astp
   ;

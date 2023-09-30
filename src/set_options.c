@@ -257,7 +257,10 @@ static set_option_t const SET_OPTIONS[] = {
  * Always-enabled `set_*()` arguments used when re-setting options.
  */
 static set_option_fn_args_t const enabled_args = {
-  .opt_enabled = true, NULL, NULL, NULL
+  .opt_enabled = true,
+  .opt_name_loc = NULL,
+  .opt_value = NULL,
+  .opt_value_loc = NULL
 };
 
 ////////// local functions ////////////////////////////////////////////////////
