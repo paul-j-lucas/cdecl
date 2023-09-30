@@ -576,8 +576,8 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout ) {
     slist_t *equal_ast_list = NULL;
 
     if ( (list_ast->kind & (K_ANY_OBJECT | K_FUNCTION | K_OPERATOR)) != 0 ) {
-      FOREACH_SLIST_NODE( decl_node, &declare_list ) {
-        slist_t *const maybe_equal_ast_list = decl_node->data;
+      FOREACH_SLIST_NODE( declare_node, &declare_list ) {
+        slist_t *const maybe_equal_ast_list = declare_node->data;
         c_ast_t const *const ast = slist_front( maybe_equal_ast_list );
         if ( c_ast_equal( list_ast, ast ) ) {
           equal_ast_list = maybe_equal_ast_list;
@@ -620,8 +620,8 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout ) {
   // Now print one "declare" statement for each list of equal declarations in
   // declare_list.
   //
-  FOREACH_SLIST_NODE( decl_node, &declare_list ) {
-    slist_t *const equal_ast_list = decl_node->data;
+  FOREACH_SLIST_NODE( declare_node, &declare_list ) {
+    slist_t *const equal_ast_list = declare_node->data;
     //
     // First, print "declare" followed by the names of all the declarations
     // that have the same base type.
@@ -644,12 +644,11 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout ) {
   } // for
 
   // Clean-up list and sub-lists.
-  FOREACH_SLIST_NODE( decl_node, &declare_list ) {
-    slist_t *const equal_ast_list = decl_node->data;
+  FOREACH_SLIST_NODE( declare_node, &declare_list ) {
+    slist_t *const equal_ast_list = declare_node->data;
     slist_cleanup( equal_ast_list, /*free_fn=*/NULL );
-    free( equal_ast_list );
   } // for
-  slist_cleanup( &declare_list, /*free_fn=*/NULL );
+  slist_cleanup( &declare_list, &free );
 }
 
 char const* c_cast_english( c_cast_kind_t kind ) {
