@@ -60,7 +60,6 @@
 
    * cdecl.c: Now using ARRAY_SIZE().
    * lcovrc: Removed CASE_K_PLACEHOLDER.
-   * gnulib-common.m4: Updated GnuLib.
    * configure.ac: Upped version to 15.0.
    * parser.y: Eliminated in_attr::is_implicit_int.
    * parser.y: Eliminated in_attr.operator.
@@ -139,8 +138,6 @@
 
 2023-09-20  Paul J. Lucas <paul@lucasmail.org>
 
-   * intprops-internal.h, mbtowc-lock.c, setlocale-lock.c, stdio.in.h,
-     stdlib.in.h, string.in.h, wchar.in.h: Updated GnuLib.
    * configure.ac, util.h: Now using HAVE___BUILTIN_EXPECT rather than
      __GNUC__.
 
@@ -335,8 +332,6 @@
 
 2023-09-09  Paul J. Lucas <paul@lucasmail.org>
 
-   * lib/Makefile.am, getopt-cdefs.in.h, stddef.in.h, stdlib.in.h, string.in.h,
-     uchar.in.h, verify.h, wchar.in.h: Updated GnuLib.
    * c_ast.c: Now comparins slist_len() in c_ast_list_equal().
    * cdecl.1, autocomplete.c, help.c, help.h, parser.y, types.h, util.c,
      util.h, cl.out, help.out, ac-help.exp, help.test: The `help` command now
@@ -394,9 +389,6 @@
    * gibberish.c: Eliminated `if`s.
    * gibberish.c: Gibberish function renaming to parallel English function
      names.
-   * lib/Makefile.am, attribute.h, iswpunct.c, stdio.in.h, stdlib.in.h,
-     string.in.h, uchar.in.h, wchar.in.h, wctype.in.h, gnulib-common.m4,
-     gnulib-comp.m4, iswpunct.m4, wctype.m4, wctype_h.m4: Updated GnuLib.
    * c_lang.h, c_operator.c: Added LANG_N_ARY_OP_BRACKETS.
    * parser.y: Using slist_move() more.
    * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, c_operator.h,
@@ -504,11 +496,6 @@
 
    * parser.y, debug.out: s/enum_btid/enum_btids/
    * c_ast_check.c, c_lang.h: Added LANG_ALIGNED_CSU.
-   * mbrtoc32.c, stddef.in.h, unistr/u-strlen.h, absolute-header.m4, btowc.m4,
-     fnmatch.m4, getopt.m4, iswdigit.m4, iswxdigit.m4, locale-fr.m4,
-     locale-ja.m4, locale-zh.m4, locale_h.m4, mbrtoc32.m4, mbrtowc.m4,
-     mbsinit.m4, mbsrtowcs.m4, memchr.m4, setlocale_null.m4, stdint.m4,
-     threadlib.m4, wctype.m4: Updated GnuLib.
    * dump.c: Simplified.
    * dump.c: Now returning "XTID" from c_tpid_name() for an unknown TPID.
    * c_ast.h, c_ast_check.c, dump.c, parser.y, debug.out: s/conv_ast/to_ast/ --
@@ -603,7 +590,6 @@
 
 2023-08-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * gnulib-comp.m4: Updated Gnulib.
    * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, dump.c,
      english.c, gibberish.c, parser.y, test/Makefile.am, declare.out,
      explain.out, explain_fdan_v.out, declare.test, explain.test,
@@ -627,30 +613,6 @@
    * parser.y, print.c, print.h, explain_ai-c++11.out: Added
      print_is_a_keyword().
    * lexer.h, lexer.l, parser.y: s/printable_token/lexer_printable_token/
-   * lib/Makefile.am, btoc32.c, c32_apply_type_test.c, c32_get_type_test.c,
-     c32is-impl.h, c32isalnum.c, c32isalpha.c, c32isblank.c, c32iscntrl.c,
-     c32isdigit.c, c32isgraph.c, c32islower.c, c32isprint.c, c32ispunct.c,
-     c32isspace.c, c32isupper.c, c32isxdigit.c, c32to-impl.h, c32tolower.c,
-     fnmatch.c, fnmatch.in.h, fnmatch_loop.c, iswblank.c, iswctype-impl.h,
-     iswctype.c, iswdigit.c, iswxdigit.c, mbrtoc32.c, mbsrtoc32s-state.c,
-     mbsrtoc32s.c, uchar.in.h, unicase.in.h, unicase/simple-mapping.h,
-     unicase/tolower.c, unicase/tolower.h, unictype.in.h, unictype/bitmap.h,
-     unictype/ctype_alnum.c, unictype/ctype_alnum.h, unictype/ctype_alpha.c,
-     unictype/ctype_alpha.h, unictype/ctype_blank.c, unictype/ctype_blank.h,
-     unictype/ctype_cntrl.c, unictype/ctype_cntrl.h, unictype/ctype_digit.c,
-     unictype/ctype_digit.h, unictype/ctype_graph.c, unictype/ctype_graph.h,
-     unictype/ctype_lower.c, unictype/ctype_lower.h, unictype/ctype_print.c,
-     unictype/ctype_print.h, unictype/ctype_punct.c, unictype/ctype_punct.h,
-     unictype/ctype_space.c, unictype/ctype_space.h, unictype/ctype_upper.c,
-     unictype/ctype_upper.h, unictype/ctype_xdigit.c, unictype/ctype_xdigit.h,
-     uninorm.in.h, unistr.in.h, unistr/u-cpy.h, unistr/u-pcpy.h,
-     unistr/u-strcat.h, unistr/u-strlen.h, unistr/u32-chr.c, unistr/u32-cpy.c,
-     unistr/u32-pcpy.c, unistr/u32-strcat.c, unistr/u32-strlen.c,
-     unitypes.in.h, wchar.in.h, wctype-impl.h, wctype.c, wctype.in.h,
-     fnmatch.m4, gnulib-comp.m4, inline.m4, iswblank.m4, iswctype.m4,
-     iswdigit.m4, iswxdigit.m4, libunistring-base.m4, mbrtoc32.m4, uchar_h.m4,
-     unicase_h.m4, unictype_h.m4, uninorm_h.m4, wctype.m4, wctype_h.m4: Updated
-     GnuLib.
 
 2023-07-28  Paul J. Lucas <paul@lucasmail.org>
 
@@ -681,13 +643,6 @@
    * util.c: check_strdup_suffix() now copies only suffix_len characters.
    * autocomplete.c, did_you_mean.c, util.c, util.h: Moved
      check_prefix_strdup() and check_strdup_suffix() to util.c.
-
-2023-07-17  Paul J. Lucas <paul@lucasmail.org>
-
-   * lib/Makefile.am, btowc.c, localcharset.h, mbsinit.c, mbsrtowcs-impl.h,
-     mbsrtowcs-state.c, mbsrtowcs.c, mbszero.c, mbtowc-impl.h, mbtowc-lock.h,
-     wchar.in.h, gnulib-comp.m4, locale-fr.m4, locale-ja.m4, locale-zh.m4,
-     mbrtowc.m4, wchar_h.m4: Updated Gnulib.
 
 2023-06-27  Paul J. Lucas <paul@lucasmail.org>
 
@@ -722,8 +677,6 @@
 
 2023-06-18  Paul J. Lucas <paul@lucasmail.org>
 
-   * limits.in.h, wchar.in.h, locale-fr.m4, mbrtowc.m4, mbsrtowcs.m4: Updated
-     Gnulib.
    * dam_lev.c: s/matrix2_new/matrix2d_new/
 
 2023-06-17  Paul J. Lucas <paul@lucasmail.org>
@@ -775,13 +728,6 @@
    * cli_options.c, color.c, color.h, prompt.c: s/colorize/cdecl_colorize/
    * color.c, color.h: Moved most SGR_ macros to color.c file.
 
-2023-05-29  Paul J. Lucas <paul@lucasmail.org>
-
-   * flexmember.h, getdelim.c, limits.in.h, gnulib-common.m4, limits-h.m4,
-     ssize_t.m4: Updated GnuLib.
-   * configure.ac, src/Makefile.am: Added CDECL_CFLAGS so as not to compile
-     GnuLib code with cdecl CFLAGS.
-
 2023-05-21  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: Now fclose'ing fin/fout after dup2().
@@ -794,8 +740,6 @@
 
 2023-05-17  Paul J. Lucas <paul@lucasmail.org>
 
-   * limits.in.h, stdio.in.h, extern-inline.m4, gnulib-common.m4,
-     gnulib-comp.m4, limits-h.m4, stdio_h.m4, stdlib_h.m4: Updated GnuLib.
    * did_you_mean.c: s/strcpy/strncpy/
 
 2023-05-16  Paul J. Lucas <paul@lucasmail.org>
@@ -916,11 +860,6 @@
    * cdecl.1, options.c: Made value for --west-pointer to be case-insensitive.
    * options.c: Now using tolower().
    * cli_options.c: opt_format() now uses internal buffers.
-   * lib/Makefile.am, c++defs.h, ctype.in.h, fnmatch.in.h, inttypes.in.h,
-     locale.in.h, stdio.in.h, stdlib.in.h, string.in.h, sys_types.in.h,
-     unistd.in.h, verify.h, wchar.in.h, wctype.in.h, gnulib-common.m4,
-     locale-fr.m4, locale-ja.m4, locale-zh.m4, stdlib_h.m4, threadlib.m4,
-     wchar_h.m4: Updated GnuLib.
    * AUTHORS, cdecl.1, c_kind.h, cli_options.c, gibberish.c, options.c,
      options.h, set_options.c, test/Makefile.am, alt-tokens.out,
      cdecl--help.out, cl.out, debug.out, explain-by-default.out,
@@ -971,11 +910,6 @@
      https://github.com/westes/flex/issues/564.
    * src/Makefile.am: Work-around for
      https://github.com/westes/flex/issues/564.
-   * pjl_config.h: Fix for updated GnuLib !_GL_CONFIG_H_INCLUDED.
-   * attribute.h, ctype.in.h, flexmember.h, fnmatch.in.h, inttypes.in.h,
-     locale.in.h, stdarg.in.h, stddef.in.h, stdio.in.h, stdlib.in.h,
-     string.in.h, strnlen1.h, unistd.in.h, wchar.in.h, wctype.in.h,
-     gnulib-common.m4, mbrtowc.m4: Updated GnuLib.
 
 2023-04-12  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1001,8 +935,6 @@
    * dump.c: s/break/return "none"/
    * dump.c: When dumping, `this` and `*this` are now properly quoted.
    * lcovrc: Added unreachable() to lcov exclusion pattern.
-   * lib/Makefile.am, locale.in.h, stdio.in.h, stdlib.in.h, gnulib-common.m4,
-     stdlib_h.m4: Updated GnuLib.
 
 2023-04-08  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1033,8 +965,6 @@
 2023-04-04  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.h: Switched #include order.
-   * lib/Makefile.am, btowc.c, stddef.in.h, stdlib.in.h, btowc.m4, mbrtowc.m4,
-     mbsrtowcs.m4, stdlib_h.m4: Updated GnuLib.
 
 2023-04-03  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1089,8 +1019,6 @@
 
 2023-03-28  Paul J. Lucas <paul@lucasmail.org>
 
-   * lib/Makefile.am, fnmatch.c, stdio.in.h, wchar.in.h, gnulib-comp.m4,
-     musl.m4, stdio_h.m4, wchar_h.m4: Updated GnuLib.
    * c_ast_util.c, c_ast_util.h, c_sglob.c, c_sglob.h, c_sname.c, c_sname.h,
      lexer.h, lexer.l, print.c: Renamed pointer parameters that receive return
      values to be prefixed with `rv_`.
@@ -1156,7 +1084,6 @@
 2023-03-18  Paul J. Lucas <paul@lucasmail.org>
 
    * c_kind.h: Now using unreachable() for K_PLACEHOLDER.
-   * stddef.in.h, verify.h, stddef_h.m4: Updated GnuLib.
    * gibberish.c, alt-tokens.out, alt-tokens.test: Blocks now correctly print
      alternative tokens when the option is enabled.
    * gibberish.c, alt-tokens.out, alt-tokens.test: Lambda captures now
@@ -1212,11 +1139,6 @@
    * dump.c, print.c, util.h: Added FPUTNSP().
    * dump.c: Removed unnecessary #ifdef.
 
-2023-03-11  Paul J. Lucas <paul@lucasmail.org>
-
-   * lib/Makefile.am, gnulib-cache.m4, gnulib-comp.m4: Removed deprecated (and
-     no longer necessary) stdnoreturn GnuLib module.
-
 2023-03-10  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c: Added c_capture_kind_dump().
@@ -1251,7 +1173,6 @@
    * read_line.c: Moved `if ( interactive )` outside of #ifdef.
    * cdecl.1: Added missing mention of support for zero or more parameters for
      operator[] in C++23.
-   * stdio.in.h: Updated Gnulib.
 
 2023-03-06  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1269,7 +1190,6 @@
 
 2023-03-04  Paul J. Lucas <paul@lucasmail.org>
 
-   * unistd.in.h: Updated Gnulib.
    * cdecl.1, autocomplete.h, cli_options.c, prompt.c: Now printing configure
      feature & package options and whether GNU readline is genuine when -v is
      given twice.
@@ -1311,7 +1231,6 @@
    * c_ast_check.c, cast_a3i.out, explain_cast.out, explain_cast_a3a5a7i.out,
      explain_cast_a3a5i.out, explain_cast_a3i.out, explain_cast.test: Now
      correctly allowing casting into an array when there is no name.
-   * fnmatch.m4, getdelim.m4, getline.m4, setlocale_null.m4: Updated Gnulib.
    * cdecl_keyword.c: s/AC_POLICY_IN_NEXT_ONLY/
 
 2023-02-18  Paul J. Lucas <paul@lucasmail.org>
@@ -1360,9 +1279,6 @@
      around.
    * c_ast.c: Added static_assert() for c_ast_lambda::param_ast_list.
    * AUTHORS: Added mention of lambdas.
-   * getopt-pfx-core.h, hard-locale.h, limits.in.h, setlocale_null.c,
-     string.in.h, verify.h, wchar.in.h, assert_h.m4, gnulib-common.m4,
-     limits-h.m4, setlocale_null.m4: Updated Gnulib.
    * configure.ac: Updated to 14.0.
    * cdecl.1, c_ast.c, c_ast.h, c_ast_check.c, c_kind.c, c_kind.h, c_lang.h,
      c_type.c, c_type.h, cdecl_keyword.c, dump.c, english.c, gibberish.c,
@@ -1411,7 +1327,6 @@
    * update_test.sh: Now updating only *.test tests.
    * c_ast_check.c: Array of K_NAME is impossible.
    * explain.out, explain.test: More tests.
-   * cdefs.h, libc-config.h: Updated Gnulib.
 
 2023-01-30  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1435,7 +1350,6 @@
    * util.h: Made free_later() PJL_DISCARD.
    * color.c: Now asserting not called again after a successful parse.
    * color.c: Removed spurious SGR_CAP_SEP.
-   * gnulib-common.m4, stddef_h.m4: Updated Gnulib.
 
 2023-01-28  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1452,11 +1366,6 @@
    * read_line.c: Fixed prog_name not used warning.
    * cdecl_keyword.c: Fix PPC errors.
    * cdecl_keyword.c: Fix compile error on Linux.
-   * lib/Makefile.am, inttypes.in.h, locale.in.h, stdio.in.h, stdlib.in.h,
-     string.in.h, unistd.in.h, wchar.in.h, getdelim.m4, getline.m4,
-     gnulib-common.m4, gnulib-comp.m4, inttypes.m4, mbtowc.m4, mempcpy.m4,
-     stdlib_h.m4, string_h.m4, threadlib.m4, unistd_h.m4, wchar_h.m4,
-     wmempcpy.m4: Updated Gnulib.
    * autocomplete.c: Now taking advantage of sorted order.
    * cdecl_keyword.c: Sorted next keywords.
    * autocomplete.c: Whitespace.
@@ -1511,10 +1420,6 @@
    * cdecl_keyword.c, parser.y: s/Y_Apple_BLOCK/Y_Apple_block/
    * cdecl_keyword.c: Removed #undef restrict -- no longer needed.
    * configure.ac: Version number and NEWS fix-up.
-   * lib/Makefile.am, _Noreturn.h, hard-locale.c, stdlib.in.h, verify.h,
-     assert_h.m4, getdelim.m4, getline.m4, gnulib-common.m4, gnulib-comp.m4,
-     mbrtowc.m4, mbtowc.m4, mempcpy.m4, setlocale_null.m4, stdlib_h.m4,
-     threadlib.m4, wmempcpy.m4: Updated Gnulib.
 
 2023-01-21  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1595,38 +1500,6 @@
    * explain_udl.test: chmod -x
    * cli_options.c, cdecl--help.out: s/Suppress prompt/Suppress printing
      prompts/
-   * lib/Makefile.am, _Noreturn.h, alloca.in.h, arg-nonnull.h, assert.in.h,
-     attribute.h, btowc.c, c++defs.h, cdefs.h, ctype.in.h, errno.in.h,
-     flexmember.h, fnmatch.c, fnmatch.in.h, fnmatch_loop.c, getdelim.c,
-     getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
-     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
-     getopt_int.h, gettext.h, hard-locale.c, hard-locale.h, idx.h,
-     intprops-internal.h, inttypes.in.h, isblank.c, lc-charset-dispatch.c,
-     lc-charset-dispatch.h, libc-config.h, limits.in.h, localcharset.c,
-     localcharset.h, locale.in.h, mbrtowc-impl-utf8.h, mbrtowc-impl.h,
-     mbrtowc.c, mbsinit.c, mbsrtowcs-impl.h, mbsrtowcs-state.c, mbsrtowcs.c,
-     mbtowc-impl.h, mbtowc-lock.c, mbtowc-lock.h, mbtowc.c, memchr.c,
-     memchr.valgrind, mempcpy.c, setlocale-lock.c, setlocale_null.c,
-     setlocale_null.h, stdarg.in.h, stdckdint.in.h, stddef.in.h, stdint.in.h,
-     stdio-read.c, stdio-write.c, stdio.in.h, stdlib.in.h, stdnoreturn.in.h,
-     streq.h, string.in.h, strndup.c, strnlen.c, strnlen1.c, strnlen1.h,
-     strsep.c, sys_types.in.h, sysexits.in.h, unistd.c, unistd.in.h, verify.h,
-     warn-on-use.h, wchar.in.h, wctype-h.c, wctype.in.h, windows-initguard.h,
-     wmemchr-impl.h, wmemchr.c, wmempcpy.c, 00gnulib.m4, __inline.m4,
-     absolute-header.m4, alloca.m4, assert_h.m4, btowc.m4, builtin-expect.m4,
-     c-bool.m4, codeset.m4, ctype_h.m4, errno_h.m4, extensions.m4,
-     extern-inline.m4, flexmember.m4, fnmatch.m4, fnmatch_h.m4, getdelim.m4,
-     getline.m4, getopt.m4, gnulib-cache.m4, gnulib-common.m4, gnulib-comp.m4,
-     gnulib-tool.m4, include_next.m4, inttypes.m4, isblank.m4, limits-h.m4,
-     localcharset.m4, locale-fr.m4, locale-ja.m4, locale-zh.m4, locale_h.m4,
-     mbrtowc.m4, mbsinit.m4, mbsrtowcs.m4, mbstate_t.m4, mbtowc.m4, memchr.m4,
-     mempcpy.m4, mmap-anon.m4, multiarch.m4, nocrash.m4, off_t.m4, pid_t.m4,
-     setlocale_null.m4, ssize_t.m4, std-gnu11.m4, stdarg.m4, stddef_h.m4,
-     stdint.m4, stdio_h.m4, stdlib_h.m4, stdnoreturn.m4, string_h.m4,
-     strndup.m4, strnlen.m4, strsep.m4, sys_types_h.m4, sysexits.m4,
-     threadlib.m4, unistd_h.m4, vararrays.m4, visibility.m4, warn-on-use.m4,
-     wchar_h.m4, wchar_t.m4, wctype_h.m4, wint_t.m4, wmemchr.m4, wmempcpy.m4,
-     zzgnulib.m4: Updated Gnulib.
 
 2023-01-06  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1717,8 +1590,6 @@
 
 2022-12-30  Paul J. Lucas <paul@lucasmail.org>
 
-   * string.in.h, verify.h, wchar.in.h, extensions.m4, gnulib-common.m4:
-     Updated Gnulib.
    * lexer.l: Added () around BEGIN argument.
    * lexer.l: Moved BEGIN( INITIAL ).
 
@@ -1961,8 +1832,6 @@
      explain_fel_v.out, explain_fel_v-c17.test, explain_fel_v.test: A `...` is
      now correctly allowed as the only function parameter in C++ as well as
      C23.
-   * attribute.h, limits.in.h, stdnoreturn.in.h, gnulib-common.m4: Upgraded
-     Gnulib.
    * print.c, util.c, util.h: Moved term-columns code.
 
 2022-12-23  Paul J. Lucas <paul@lucasmail.org>
@@ -2015,7 +1884,6 @@
 2022-12-09  Paul J. Lucas <paul@lucasmail.org>
 
    * Doxyfile: Reordering.
-   * lib/Makefile.am, string.in.h, verify.h, string_h.m4: Updated Gnulib.
 
 2022-12-07  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2178,7 +2046,6 @@
 
    * configure.ac, read_line.c: Correct (?) way to check for libraries and
      headers.
-   * assert_h.m4, getdelim.m4: Updated Gnulib.
 
 2022-10-26  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2382,13 +2249,6 @@
 2022-10-04  Paul J. Lucas <paul@lucasmail.org>
 
    * slist.c, slist.h: s/slist_at_nocheck_offset/slist_at_nocheck/
-
-2022-10-03  Paul J. Lucas <paul@lucasmail.org>
-
-   * lib/Makefile.am, assert.in.h, fnmatch.c, fnmatch_loop.c, hard-locale.h,
-     intprops-internal.h, mbrtowc.c, mbsinit.c, stdckdint.in.h, stdlib.in.h,
-     string.in.h, unistd.in.h, verify.h, wchar.in.h, assert_h.m4, c-bool.m4,
-     gnulib-common.m4, gnulib-comp.m4, warn-on-use.m4: Updated Gnulib.
 
 2022-10-02  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2691,7 +2551,6 @@
 2022-07-05  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Changed version to 12.0.
-   * string.in.h, wchar.in.h: Updated GnuLib.
    * cdecl.c, cdecl.h, cdecl_command.c, cdecl_command.h, cli_options.c: Fixed
      when cdecl was invoked as `cast`, `declare`, or `explain`, or with a name
      that isn't a command without command-line arguments.
@@ -3647,8 +3506,6 @@
 
 2022-05-09  Paul J. Lucas <paul@lucasmail.org>
 
-   * cdefs.h, libc-config.h, stdlib.in.h, string.in.h, verify.h, wchar.in.h,
-     gnulib-common.m4: Updated GnuLib.
    * parser.y, test/Makefile.am, k_explain_ai.out, k_explain_b_i.out,
      k_explain_f_i.out, k_explain_i.out, k_explain_ai.test, k_explain_b_i.test,
      k_explain_f_i.test, k_explain_i.test: Now checking that previously
@@ -3883,7 +3740,6 @@
      until C89.
    * cdecl.1: Removed yet another remnant of file arguments.
    * cdecl.1: s/current/default/
-   * cdefs.h, gnulib-common.m4: Updated Gnulib.
 
 2022-03-06  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3922,7 +3778,6 @@
 
 2022-02-22  Paul J. Lucas <paul@lucasmail.org>
 
-   * lib/Makefile.am: Updated Gnulib.
    * c_ast.h, parser.y: s/constructor/ctor/
    * parser.y, test/Makefile.am, explain_ff_i_v-02.out, explain_ff_i_v-02.test:
      Fixed function returning function parameter crash.
@@ -4000,10 +3855,6 @@
      explain_rttdi.out, explain_rttdpi.out, explain_rttdi.test,
      explain_rttdpi.test: `restrict` is now correctly allowed on `typedef`s of
      pointer.
-
-2022-02-11  Paul J. Lucas <paul@lucasmail.org>
-
-   * string.in.h: Updated Gnulib.
 
 2022-02-09  Paul J. Lucas <paul@lucasmail.org>
 
@@ -4090,7 +3941,6 @@
    * c_ast.c, c_sname.c, c_sname.h, parser.y, set_options.c, slist.c, slist.h,
      slist_test.c, util.c: Renamed slist functions to be more C++ STL-like.
    * c_ast.h, types.h: s/c_alignas_arg/c_alignas_kind/
-   * extern-inline.m4: Updated Gnulib.
 
 2022-01-21  Paul J. Lucas <paul@lucasmail.org>
 
@@ -4130,38 +3980,6 @@
    * dam_lev.c: Renaming.
    * dam_lev.c, dam_lev.h, did_you_mean.c, did_you_mean.h: Got rid of
      dam_lev_t.
-   * lib/Makefile.am, _Noreturn.h, alloca.in.h, arg-nonnull.h, attribute.h,
-     btowc.c, c++defs.h, cdefs.h, ctype.in.h, errno.in.h, flexmember.h,
-     fnmatch.c, fnmatch.in.h, fnmatch_loop.c, getdelim.c, getline.c,
-     getopt-cdefs.in.h, getopt-core.h, getopt-ext.h, getopt-pfx-core.h,
-     getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c, getopt_int.h,
-     gettext.h, hard-locale.c, hard-locale.h, idx.h, intprops.h, inttypes.in.h,
-     isblank.c, lc-charset-dispatch.c, lc-charset-dispatch.h, libc-config.h,
-     limits.in.h, localcharset.c, localcharset.h, locale.in.h,
-     mbrtowc-impl-utf8.h, mbrtowc-impl.h, mbrtowc.c, mbsinit.c,
-     mbsrtowcs-impl.h, mbsrtowcs-state.c, mbsrtowcs.c, mbtowc-impl.h,
-     mbtowc-lock.c, mbtowc-lock.h, mbtowc.c, memchr.c, memchr.valgrind,
-     mempcpy.c, setlocale-lock.c, setlocale_null.c, setlocale_null.h,
-     stdarg.in.h, stdbool.in.h, stddef.in.h, stdint.in.h, stdio-read.c,
-     stdio-write.c, stdio.in.h, stdlib.in.h, stdnoreturn.in.h, streq.h,
-     string.in.h, strndup.c, strnlen.c, strnlen1.c, strnlen1.h, strsep.c,
-     sys_types.in.h, sysexits.in.h, unistd.c, unistd.in.h, verify.h,
-     warn-on-use.h, wchar.in.h, wctype-h.c, wctype.in.h, windows-initguard.h,
-     wmemchr-impl.h, wmemchr.c, wmempcpy.c, 00gnulib.m4, __inline.m4,
-     absolute-header.m4, alloca.m4, btowc.m4, builtin-expect.m4, codeset.m4,
-     ctype_h.m4, errno_h.m4, extensions.m4, extern-inline.m4, flexmember.m4,
-     fnmatch.m4, fnmatch_h.m4, getdelim.m4, getline.m4, getopt.m4,
-     gnulib-cache.m4, gnulib-common.m4, gnulib-comp.m4, gnulib-tool.m4,
-     include_next.m4, inttypes.m4, isblank.m4, limits-h.m4, localcharset.m4,
-     locale-fr.m4, locale-ja.m4, locale-zh.m4, locale_h.m4, mbrtowc.m4,
-     mbsinit.m4, mbsrtowcs.m4, mbstate_t.m4, mbtowc.m4, memchr.m4, mempcpy.m4,
-     mmap-anon.m4, multiarch.m4, nocrash.m4, off_t.m4, pid_t.m4,
-     setlocale_null.m4, ssize_t.m4, std-gnu11.m4, stdarg.m4, stdbool.m4,
-     stddef_h.m4, stdint.m4, stdio_h.m4, stdlib_h.m4, stdnoreturn.m4,
-     string_h.m4, strndup.m4, strnlen.m4, strsep.m4, sys_types_h.m4,
-     sysexits.m4, threadlib.m4, unistd_h.m4, vararrays.m4, visibility.m4,
-     warn-on-use.m4, wchar_h.m4, wchar_t.m4, wctype_h.m4, wint_t.m4,
-     wmemchr.m4, wmempcpy.m4, zzgnulib.m4: Updated Gnulib.
 
 2022-01-13  Paul J. Lucas <paul@lucasmail.org>
 
@@ -4394,7 +4212,6 @@
    * src/Makefile.am, c_keyword.c, c_keyword.h, cdecl_keyword.h,
      cdecl_parser.h, lexer.l: Added cdecl_parser.h.
    * print.h: Removed redundant declaration.
-   * gettext.h, intprops.h: Updated Gnulib.
    * print.c, read_line.c, util.c, util.h: s/is_blank_line/str_is_blank/;
      s/ends_with_any_chr/str_rtrim_len/; removed ends_with_chr().
    * lcovrc, cdecl.c, options.c, options.h, util.c, util.h:
@@ -4466,7 +4283,6 @@
    * check.c, test/Makefile.am, explain_a0i.out, explain_a0i.test: Zero-sized
      arrays are now correctly forbidden.
    * check.c, test/Makefile.am: `register` arrays are now correctly allowed.
-   * gettext.h, gnulib-comp.m4, vararrays.m4: Updated Gnulib.
    * configure.ac, src/Makefile.am, cdecl_keyword.c, cdecl_keyword.h,
      did_you_mean.c, did_you_mean.h, lexer.l, parser.y, print.c, types.h,
      declare_rgf_v.out, explain_ac9i.out, explain_as9i.out,
@@ -4584,10 +4400,6 @@
 2021-11-11  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c: Added cast_kind to c_ast_equiv() and c_ast_dup().
-
-2021-11-10  Paul J. Lucas <paul@lucasmail.org>
-
-   * cdefs.h, string.in.h, wchar.in.h: Updated Gnulib.
 
 2021-11-09  Paul J. Lucas <paul@lucasmail.org>
 
@@ -4974,8 +4786,6 @@
    * lexer.l: Removd PJL_WARN_UNUSED_RESULT from yywrap().
    * src/Makefile.am: "make clean" now removes BUILT_SOURCES.
    * configure.ac, src/Makefile.am: s/ENABLE_CODE_COVERAGE/ENABLE_COVERAGE/
-   * lib/Makefile.am, intprops.h, string.in.h, wchar.in.h, extern-inline.m4,
-     string_h.m4, threadlib.m4, wchar_h.m4: Updated Gnulib.
    * AUTHORS, Makefile.am, configure.ac, lcovrc, src/Makefile.am, c_ast.c,
      c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c, c_sglob.c, c_type.c,
      c_type.h, check.c, dump.c, lexer.l, options.c, options.h, parser.y,
@@ -5219,8 +5029,6 @@
      is enabled or disabled.
    * print.c: Made comparison explicit.
    * print.c: Setting term_columns = 0 only when !defined(ENABLE_TERM_SIZE).
-   * lib/Makefile.am, attribute.h, idx.h, stdlib.in.h, string.in.h, wchar.in.h,
-     gnulib-common.m4: Updated GnuLib.
    * cdecl.1, c_keyword.c, literals.c, literals.h: Added partial support for
      Microsoft's __forceinline.
 
@@ -5371,8 +5179,6 @@
 
 2021-08-22  Paul J. Lucas <paul@lucasmail.org>
 
-   * getopt.c, stdio.in.h, stdlib.in.h, string.in.h, gnulib-common.m4: Updated
-     GnuLib.
    * configure.ac, cdecl.1, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c,
      c_type.c, c_type.h, check.c, gibberish.c, lexer.l, literals.c, literals.h,
      parser.y, test/Makefile.am, declare_cdecl_f.out, declare_p_cdecl_f.out,
@@ -5400,8 +5206,6 @@
 
    * red_black.c, red_black.h: Made rb_tree_find() take pointer-to-const
      rb_tree.
-   * _Noreturn.h, cdefs.h, libc-config.h, stdio.in.h, stdlib.in.h, string.in.h,
-     wchar.in.h, gnulib-common.m4: Updated GnuLib.
 
 2021-08-08  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5410,8 +5214,6 @@
 
 2021-08-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * attribute.h, limits.in.h, stdlib.in.h, string.in.h, verify.h, wchar.in.h,
-     gnulib-common.m4, limits-h.m4: Updated Gnulib.
    * cdecl.1: Put when-to-colorize value synonyms on the same line.
 
 2021-08-06  Paul J. Lucas <paul@lucasmail.org>
@@ -5561,7 +5363,6 @@
 
 2021-07-29  Paul J. Lucas <paul@lucasmail.org>
 
-   * threadlib.m4: Updated Gnulib.
    * c_lang.h: Fixed printing of "(with XXXXX extensions)".
    * c_kind.h, c_type.h, types.h: s/0/0u/
 
@@ -5619,7 +5420,6 @@
 
 2021-06-28  Paul J. Lucas <paul@lucasmail.org>
 
-   * stdio.in.h, unistd.in.h: Updated GnuLib.
    * autocomplete.c, c_lang.c, c_lang.h, c_type.c, did_you_mean.c, gibberish.c,
      parser.y: Added opt_lang_is_any().
    * cdecl.c, types.h: s/C_COMMAND_ANY/C_COMMAND_ANYWHERE/
@@ -5654,8 +5454,6 @@
 
 2021-06-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * lib/Makefile.am, libc-config.h, string.in.h, unistd.in.h,
-     gnulib-common.m4, gnulib-comp.m4, unistd_h.m4: Updated Gnulib.
    * help.c, help_english-c++.out, help_english-c.out, help_english-c89.out,
      help_english-knr.out: `typedef` has been added to the "store" section of
      English help.
@@ -5728,21 +5526,6 @@
    * c_sname.h: Simplified SNAME_VAR_INIT().
    * parser.y: Didn't need c_type_is_none() check before setting TB_SCOPE.
    * parser.y: Now using c_sname_check() in of_scope_list_english.
-   * alloca.in.h, attribute.h, btowc.c, ctype.in.h, errno.in.h, fnmatch.in.h,
-     getdelim.c, getline.c, getopt-cdefs.in.h, getopt-pfx-core.h,
-     getopt-pfx-ext.h, getopt.in.h, gettext.h, hard-locale.c, hard-locale.h,
-     inttypes.in.h, isblank.c, lc-charset-dispatch.c, lc-charset-dispatch.h,
-     limits.in.h, localcharset.c, localcharset.h, locale.in.h,
-     mbrtowc-impl-utf8.h, mbrtowc-impl.h, mbrtowc.c, mbsinit.c,
-     mbsrtowcs-impl.h, mbsrtowcs-state.c, mbsrtowcs.c, mbtowc-impl.h,
-     mbtowc-lock.c, mbtowc-lock.h, mbtowc.c, memchr.c, memchr.valgrind,
-     mempcpy.c, setlocale-lock.c, setlocale_null.c, setlocale_null.h,
-     stdarg.in.h, stdbool.in.h, stddef.in.h, stdint.in.h, stdio.in.h,
-     stdlib.in.h, stdnoreturn.in.h, streq.h, string.in.h, strndup.c, strnlen.c,
-     strnlen1.c, strnlen1.h, strsep.c, sys_types.in.h, sysexits.in.h, unistd.c,
-     unistd.in.h, verify.h, wchar.in.h, wctype-h.c, wctype.in.h,
-     windows-initguard.h, wmemchr-impl.h, wmemchr.c, wmempcpy.c, visibility.m4:
-     Updated GnuLib.
 
 2021-06-05  Paul J. Lucas <paul@lucasmail.org>
 
@@ -6182,18 +5965,8 @@
 
    * c_keyword.h, c_sname.h, lexer.l, slist.h: s/null/NULL/
 
-2021-04-27  Paul J. Lucas <paul@lucasmail.org>
-
-   * lib/Makefile.am, cdefs.h, libc-config.h, stdlib.in.h, stdlib_h.m4: Updated
-     Gnulib.
-
 2021-04-21  Paul J. Lucas <paul@lucasmail.org>
 
-   * lib/Makefile.am, stdint.in.h, wchar.in.h, wctype.in.h, fnmatch_h.m4,
-     gnulib-common.m4, gnulib-comp.m4, inttypes.m4, locale_h.m4, memchr.m4,
-     mempcpy.m4, stddef_h.m4, stdint.m4, stdio_h.m4, stdlib_h.m4, string_h.m4,
-     strndup.m4, strnlen.m4, strsep.m4, sys_types_h.m4, unistd_h.m4,
-     wchar_h.m4, wctype_h.m4, wint_t.m4: Updated Gnulib.
    * util.h: Macro clean-up.
 
 2021-04-18  Paul J. Lucas <paul@lucasmail.org>
@@ -6245,10 +6018,6 @@
      "show" command now accepts globs.
    * lexer.l: State renaming.
    * parser.y: s/FREE/free/
-
-2021-04-05  Paul J. Lucas <paul@lucasmail.org>
-
-   * lib/Makefile.am, stdlib.in.h, stdlib_h.m4: Updated Gnulib.
 
 2021-04-04  Paul J. Lucas <paul@lucasmail.org>
 
@@ -6358,7 +6127,6 @@
 2021-03-15  Paul J. Lucas <paul@lucasmail.org>
 
    * did_you_mean.c: Moved declaration of best_count inside the `if`.
-   * sysexits.in.h: Updated Gnulib.
    * check.c, pjl_config.h, strbuf.h: s/argument/parameter/ where appropriate.
    * c_type.h, english.c, parser.y: s/c_type_name_eng/c_type_name_english/
    * check.c: A declaration having a storage class and a bit-field width is now
@@ -6448,7 +6216,6 @@
    * color.h, prompt.c, strbuf.c, strbuf.h: Replaced last sprintf() with
      strbuf.
    * strbuf.h: Sorted functions.
-   * stddef.in.h: Updated Gnulib.
    * configure.ac: Updated version to 9.8.
 
 2021-03-04  Paul J. Lucas <paul@lucasmail.org>
@@ -6578,7 +6345,6 @@
    * c_ast_util.c, c_type.c, c_type.h, parser.y: s/T_TYPEDEF/T_TS_TYPEDEF/ for
      clarity.
    * c_type.c: Macro clean-up.
-   * stddef.in.h: Updated Gnulib.
 
 2021-02-17  Paul J. Lucas <paul@lucasmail.org>
 
@@ -6695,7 +6461,6 @@
 
 2021-02-09  Paul J. Lucas <paul@lucasmail.org>
 
-   * stddef.in.h: Updated Gnulib.
    * parser.y, test/Makefile.am, declare_ff_i_v.out, explain_ff_i_v.out,
      declare_ff_i_v.test, explain_ff_i_v.test: A function as a parameter is now
      automatically converted to a pointer to function per 6.3.2.1(4) of the C
@@ -7057,7 +6822,6 @@
 2021-01-10  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Arranged predefined types by language introducted in.
-   * _Noreturn.h, gnulib-common.m4: Updated Gnulib.
    * c_keyword.c, c_keyword.h, errors.c, lexer.h, lexer.l, parser.y, print.c,
      types.h, test/Makefile.am, declare_yi.out, explain_yi.out,
      declare_yi.test, explain_yi.test: `final` and `override` are now
@@ -7083,8 +6847,6 @@
    * parser.y: Eliminated 2 shift-reduce conflicts by reworking operators.
    * parser.y: Blank lines.
    * c_lang.h: Added const.
-   * lib/Makefile.am, stddef.in.h, string.in.h, extensions.m4, stddef_h.m4,
-     string_h.m4: Updated GnuLib.
 
 2021-01-05  Paul J. Lucas <paul@lucasmail.org>
 
@@ -7144,21 +6906,6 @@
    * parser.y: s/enum_class_struct_union_ast/enum_class_struct_union_c_ast/
    * did_you_mean.c: No longer doing unnecessary != comparison.
    * did_you_mean.c: Simplification in copy_keywords().
-   * lib/Makefile.am, _Noreturn.h, arg-nonnull.h, c++defs.h, errno.in.h,
-     getdelim.c, getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
-     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
-     getopt_int.h, gettext.h, limits.in.h, stdarg.in.h, stdbool.in.h,
-     stddef.in.h, stdint.in.h, stdio.in.h, stdlib.in.h, stdnoreturn.in.h,
-     string.in.h, strndup.c, strnlen.c, strsep.c, sys_types.in.h,
-     sysexits.in.h, unistd.in.h, warn-on-use.h, 00gnulib.m4,
-     absolute-header.m4, errno_h.m4, extensions.m4, extern-inline.m4,
-     getdelim.m4, getline.m4, getopt.m4, gnulib-cache.m4, gnulib-common.m4,
-     gnulib-comp.m4, gnulib-tool.m4, include_next.m4, limits-h.m4,
-     multiarch.m4, nocrash.m4, off_t.m4, pid_t.m4, ssize_t.m4, stdarg.m4,
-     stdbool.m4, stddef_h.m4, stdint.m4, stdio_h.m4, stdlib_h.m4,
-     stdnoreturn.m4, string_h.m4, strndup.m4, strnlen.m4, strsep.m4,
-     sys_types_h.m4, sysexits.m4, unistd_h.m4, warn-on-use.m4, wchar_t.m4,
-     wint_t.m4, zzgnulib.m4: Updated Gnulib.
    * Doxyfile, Makefile.am, configure.ac, pjl_compile.m4, man/Makefile.am,
      man/man1/Makefile.am, cdecl.1, src/Makefile.am, autocomplete.c, c_ast.c,
      c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c, c_keyword.h, c_kind.c,
@@ -7212,9 +6959,6 @@
      show_predefined_typedef.out, show_predefined_using.out: K&R C now has a
      set of predefined typedef declarations distinct from C89 that include only
      those shown in the first edition of _The C Programming Language_.
-   * lib/Makefile.am, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h,
-     unistd.in.h, stdint.m4, stdio_h.m4, stdlib_h.m4, string_h.m4, unistd_h.m4,
-     wint_t.m4: Updated Gnulib.
    * parser.y, print.c: Fixed compiling with --disable-cdecl-debug.
 
 2020-12-27  Paul J. Lucas <paul@lucasmail.org>
@@ -7305,9 +7049,6 @@
    * types.h: Moved declaration.
    * gibberish.c, gibberish.h: Now longer using bits for c_gib_kind.
    * gibberish.c: Added assert().
-   * lib/Makefile.am, c++defs.h, stdio.in.h, stdlib.in.h, string.in.h,
-     unistd.in.h, extensions.m4, gnulib-common.m4, pid_t.m4, stdint.m4,
-     stdio_h.m4, stdlib_h.m4, sys_types_h.m4, unistd_h.m4: Updated Gnulib.
    * cdecl.1, c_keyword.c, gibberish.c, gibberish.h, help.c, lexer.l, parser.y,
      types.h, test/Makefile.am, help-c++.out, help_command-c++.out,
      help_commands-c++.out, show_predefined_using.out,
@@ -7453,10 +7194,6 @@
 
    * lexer.l, types.h: Now using Bison-defined yytokentype.
 
-2020-11-24  Paul J. Lucas <paul@lucasmail.org>
-
-   * stdio.in.h, unistd.in.h, unistd_h.m4: Updated Gnulib.
-
 2020-11-10  Paul J. Lucas <paul@lucasmail.org>
 
    * options.c, options.h: opt_fin & opt_fout have been made local to options.c
@@ -7477,7 +7214,6 @@
 2020-11-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c: s/i_ast/j_ast/
-   * lib/Makefile.am, stdlib.in.h, stdlib_h.m4: Updated Gnulib.
    * c_typedef.c, red_black.h, slist.h: Renaming.
    * parser.y, test/Makefile.am, explain_fac_v-1.out, explain_fac_v-1.test:
      Added support for C99 type-qualified arrays of unspecified size.
@@ -7500,7 +7236,6 @@
 
    * cdecl_lldb.py: Removed "et al.".
    * cdecl_lldb.py: Added LLDB pretty printer for c_scope_t.
-   * extensions.m4, gnulib-common.m4, pid_t.m4, sys_types_h.m4: Updated Gnulib.
    * configure.ac: Updated to 8.2.
    * cdecl.1, help.c, parser.y, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c.out, help_commands-c++.out, help_commands-c.out: The "set"
@@ -7598,20 +7333,6 @@
    * c_ast.c, c_ast.h, c_ast_util.c, debug.c, english.c, english.h,
      gibberish.c, gibberish.h, lexer.l, parser.y: Replaced c_typedef by
      typedef_ast.
-
-2020-09-24  Paul J. Lucas <paul@lucasmail.org>
-
-   * lib/Makefile.am, stdnoreturn.in.h, gnulib-cache.m4, gnulib-comp.m4,
-     stdnoreturn.m4, lexer.l, parser.y, pjl_config.h, util.h: Now using
-     Gnulib's stdnoreturn.h.
-
-2020-09-23  Paul J. Lucas <paul@lucasmail.org>
-
-   * lib/Makefile.am, arg-nonnull.h, c++defs.h, getopt-cdefs.in.h, stddef.in.h,
-     stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h, unistd.in.h,
-     warn-on-use.h, 00gnulib.m4, absolute-header.m4, gnulib-common.m4,
-     gnulib-comp.m4, include_next.m4, pid_t.m4, stddef_h.m4, stdint.m4,
-     string_h.m4, warn-on-use.m4, wint_t.m4: Updated Gnulib.
 
 2020-09-22  Paul J. Lucas <paul@lucasmail.org>
 
@@ -7768,7 +7489,6 @@
      s/scope_typedef_or_using_declaration_c_opt/in_scope_declaration_c_opt/
    * AUTHORS: Added more stuff added.
    * Makefile.am: Added "update-gnulib" rule.
-   * gnulib-common.m4, multiarch.m4: Updated Gnulib.
    * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added yet more types _Float16_t, _Float32_t, _Float64_t, _Float128_t,
@@ -8477,7 +8197,6 @@
 
 2020-06-29  Paul J. Lucas <paul@lucasmail.org>
 
-   * lib/Makefile.am, getopt.c, unistd.in.h, unistd_h.m4: Updated Gnulib.
    * c_type.h, errors.c: Added T_FUNC_LIKE; more documentation.
    * c_ast_util.h: Fixed @param.
 
@@ -8661,7 +8380,6 @@
 
 2020-05-26  Paul J. Lucas <paul@lucasmail.org>
 
-   * lib/Makefile.am, unistd.in.h, getdelim.m4, unistd_h.m4: Updated GnuLib.
    * configure.ac, cdecl.1, autocomplete.c, c_keyword.c, c_lang.c, c_lang.h,
      c_type.c, lexer.l, literals.c, literals.h, parser.y, typedefs.h,
      test/Makefile.am, declare_b-c++.out, declare_b.out, declare_ci-knr.out,
@@ -8698,8 +8416,6 @@
 
    * configure.ac, c_ast.c, c_ast_util.c, debug.c, english.c, errors.c,
      gibberish.c, help.c, lexer.l, pjl_config.h: Fixed fallthrough warning.
-   * limits.in.h, stdio.in.h, stdlib.in.h, string.in.h, warn-on-use.h,
-     gnulib-common.m4, wint_t.m4: Updated Gnulib.
    * parser.y, print.c, util.h: s/PRINT_ERR/PRINTF_ERR/
    * c_type.c, errors.c: Removed a few uses of FREE_STRDUP_LATER.
    * c_operator.c, c_type.h, english.c, errors.c:
@@ -8886,7 +8602,6 @@
    * c_ast_util.c: Added C_WARN_UNUSED_RESULT.
    * c_ast.c: Being explicit about pointer-to-function call.
    * c_typedef.c: Being explicit about pointer-to-function call.
-   * getopt-pfx-core.h: Updated Gnulib.
    * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added std::thread and std::jthread to predefined types.
@@ -8943,12 +8658,6 @@
    * Doxyfile: Changed STRIP_CODE_COMMENTS to NO.
    * autocomplete.c: Removed [no]create from autocompletion -- not sure why it
      was ever added.
-
-2020-02-25  Paul J. Lucas <paul@lucasmail.org>
-
-   * _Noreturn.h, c++defs.h, stdio.in.h, stdlib.in.h, string.in.h, unistd.in.h,
-     gnulib-common.m4, stdio_h.m4, stdlib_h.m4, string_h.m4, unistd_h.m4:
-     Updated Gnulib.
 
 2020-02-19  Paul J. Lucas <paul@lucasmail.org>
 
@@ -9030,19 +8739,6 @@
      cdecl-Iull.test, cdecl-Iulll.test, cdecl-Iulull.test, cdecl-Ius.test,
      cdecl-Ix.test: Added --explicit-int/-I and explicit-int set option.
    * lexer.l: Added casts to eliminate warnings with some versions of flex.
-   * lib/Makefile.am, _Noreturn.h, arg-nonnull.h, c++defs.h, errno.in.h,
-     getdelim.c, getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
-     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
-     getopt_int.h, gettext.h, limits.in.h, stdarg.in.h, stdbool.in.h,
-     stddef.in.h, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h, strndup.c,
-     strnlen.c, strsep.c, sys_types.in.h, sysexits.in.h, unistd.in.h,
-     warn-on-use.h, 00gnulib.m4, absolute-header.m4, errno_h.m4, extensions.m4,
-     extern-inline.m4, getdelim.m4, getline.m4, getopt.m4, gnulib-cache.m4,
-     gnulib-common.m4, gnulib-comp.m4, gnulib-tool.m4, include_next.m4,
-     limits-h.m4, multiarch.m4, nocrash.m4, off_t.m4, ssize_t.m4, stdarg.m4,
-     stdbool.m4, stddef_h.m4, stdint.m4, stdio_h.m4, stdlib_h.m4, string_h.m4,
-     strndup.m4, strnlen.m4, strsep.m4, sys_types_h.m4, sysexits.m4,
-     unistd_h.m4, warn-on-use.m4, wchar_t.m4, wint_t.m4: Updated GnuLib.
 
 2020-01-02  Paul J. Lucas <paul@lucasmail.org>
 
@@ -9345,7 +9041,6 @@
 
 2019-07-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * unistd.in.h: Updated Gnulib.
    * cdecl.1, c_lang.c, cdecl.c, help.c, options.c, options.h, set.c,
      help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
      help_commands-c++.out, help_commands-c.out, set.out, set_options.out:
@@ -9433,7 +9128,6 @@
      which typedefs are parsed fixed things so that the predefined typedefs are
      no longer order-dependent.
    * cdecl.1: More info about _Alignas.
-   * lib/Makefile.am, unistd.in.h, unistd_h.m4: Updated Gnulib.
    * errors.c: Refactored error-checking code into smaller functions.
    * errors.c: Added c_ast_check_alignas().
    * errors.c: Added c_ast_check_oper_args().
@@ -9716,7 +9410,6 @@
 
 2019-04-15  Paul J. Lucas <paul@lucasmail.org>
 
-   * _Noreturn.h: Updated Gnulib.
    * configure.ac, c_type.c, explain_oo_amper_rk_pk.out,
      explain_oo_minus2_i_rk.out, explain_oo_minus_rk_rk.out,
      explain_oo_plus2_i_rk.out, explain_oo_plus_rk_rk.out,
@@ -9738,10 +9431,6 @@
 
    * util.h: Fixed "cast to pointer from integer of different size" warning.
    * configure.ac: Updated version.
-   * lib/Makefile.am, _Noreturn.h, gettext.h, stdio.in.h, stdlib.in.h,
-     strndup.c, strnlen.c, unistd.in.h, getdelim.m4, getline.m4,
-     gnulib-cache.m4, gnulib-common.m4, gnulib-comp.m4, stdlib_h.m4,
-     strndup.m4, strnlen.m4: Updaed Gnulib; added strndup().
 
 2019-03-29  Paul J. Lucas <paul@lucasmail.org>
 
@@ -9851,22 +9540,6 @@
 2019-01-28  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.h: Removed #include <stddef.h> -- not needed.
-
-2019-01-11  Paul J. Lucas <paul@lucasmail.org>
-
-   * lib/Makefile.am, arg-nonnull.h, c++defs.h, errno.in.h, getdelim.c,
-     getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
-     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
-     getopt_int.h, gettext.h, limits.in.h, stdarg.in.h, stdbool.in.h,
-     stddef.in.h, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h, strsep.c,
-     sys_types.in.h, sysexits.in.h, unistd.in.h, warn-on-use.h, 00gnulib.m4,
-     absolute-header.m4, errno_h.m4, extensions.m4, extern-inline.m4,
-     getdelim.m4, getline.m4, getopt.m4, gnulib-cache.m4, gnulib-common.m4,
-     gnulib-comp.m4, gnulib-tool.m4, include_next.m4, limits-h.m4, longlong.m4,
-     multiarch.m4, nocrash.m4, off_t.m4, ssize_t.m4, stdarg.m4, stdbool.m4,
-     stddef_h.m4, stdint.m4, stdio_h.m4, stdlib_h.m4, string_h.m4, strsep.m4,
-     sys_types_h.m4, sysexits.m4, unistd_h.m4, warn-on-use.m4, wchar_t.m4,
-     wint_t.m4: Updaed Gnulib.
 
 2018-12-14  Paul J. Lucas <paul@lucasmail.org>
 
@@ -10504,11 +10177,6 @@
 
    * c_typedef.c: Suppressing warning when asserts not compiled in.
    * cdecl.1: s/eithter/either/
-
-2018-08-12  Paul J. Lucas <paul@lucasmail.org>
-
-   * lib/Makefile.am, unistd.in.h, warn-on-use.h, extern-inline.m4,
-     gnulib-cache.m4, gnulib-common.m4, warn-on-use.m4: Updated Gnulib.
 
 2018-07-03  Paul J. Lucas <paul@lucasmail.org>
 
@@ -11479,7 +11147,6 @@
    * english.c: Now using visitor function to generate English.
    * errors.c: Fixed typos in comments.
    * configure.ac: Fixed copy/paste error.
-   * lib/Makefile.am, gnulib-cache.m4: Added stddef and stdint to Gnulib.
    * configure.ac: Now requiring either bison or byacc.
    * configure.ac: Now checking for and requiring flex specifically.
    * cdecl.1: Made caveats more consise.
@@ -11503,22 +11170,10 @@
    * cdecl.1, color.c, color.h, diagnostics.c: Partial support for "locus"
      color.
    * color.h: Removed "note".
-   * lib/Makefile.am, arg-nonnull.h, c++defs.h, errno.in.h, getdelim.c,
-     getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
-     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
-     getopt_int.h, gettext.h, limits.in.h, stdarg.in.h, stdbool.in.h,
-     stddef.in.h, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h, strsep.c,
-     sys_types.in.h, sysexits.in.h, unistd.in.h, warn-on-use.h,
-     gnulib-cache.m4: Changed Gnulib to LGPL.
    * set.out, set_options.out: Fixed "set" expected results.
    * set.c: Removed HAVE_READLINE.
    * configure.ac, lib/Makefile.am, string.in.h, strsep.c, gnulib-cache.m4,
      gnulib-comp.m4, string_h.m4, strsep.m4: Added strsep().
-   * lib/Makefile.am, arg-nonnull.h, c++defs.h, getopt-cdefs.in.h,
-     getopt-core.h, getopt-ext.h, getopt-pfx-core.h, getopt-pfx-ext.h,
-     getopt.c, getopt.in.h, getopt1.c, getopt_int.h, limits.in.h, stdint.in.h,
-     unistd.in.h, warn-on-use.h, getopt.m4, gnulib-common.m4, gnulib-comp.m4:
-     Updared Gnulib.
    * lexer.l, prompt.c, util.h: Some Solaris fixes.
    * cdecl.1: Added mention that template declarations are not supported.
    * cdecl.1, autocomplete.c, help.c, keywords.c, literals.c, literals.h,
