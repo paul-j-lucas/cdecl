@@ -31,9 +31,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "parser.h"
 
-// standard
-#include <attribute.h>
-
 /**
  * @ingroup parser-group
  * @{
