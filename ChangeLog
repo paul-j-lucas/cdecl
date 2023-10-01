@@ -1,3 +1,8 @@
+2023-10-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, cdecl.c, cdecl.h, conf_file.c, conf_file.h, util.c,
+     util.h: Split off configuration file functions into conf_file.c.
+
 2023-09-30  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c: Added {}.
