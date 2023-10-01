@@ -60,8 +60,7 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
   assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
 
-  bool const is_fin_a_tty = isatty( fileno( fin ) );
-  bool const is_interactive = is_fin_a_tty && prompts != NULL;
+  bool const is_interactive = isatty( fileno( fin ) ) && prompts != NULL;
   bool is_cont_line = false;
 
   for (;;) {
