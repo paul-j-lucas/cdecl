@@ -1,5 +1,15 @@
 2023-10-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, test/Makefile.am, declare.out: Previously, `non-throwing` always
+     means `throw()`.  Now, the meaning changes based on the current language:
+     if it's C++11 or later, it means `noexcept`.
+   * read_line.c: Eliminated is_fin_a_tty variable.
+   * conf_file.c, parse.c, parse.h, read_line.c, read_line.h: Eliminated fout
+     parameter from cdecl_parse_file() and strbuf_read_line().
+   * src/Makefile.am, c_typedef.c, cdecl.c, cdecl.h, cdecl_parser.h,
+     conf_file.c, parse.c, parse.h: Split off cdecl_parse_*() functions into
+     parse.c.
+   * cdecl_parser.h: Removed #include.
    * src/Makefile.am, cdecl.c, cdecl.h, conf_file.c, conf_file.h, util.c,
      util.h: Split off configuration file functions into conf_file.c.
 
