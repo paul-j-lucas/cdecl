@@ -36,6 +36,7 @@
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
+#include <stdio.h>
 
 /// @endcond
 
@@ -59,6 +60,19 @@ extern cdecl_mode_t cdecl_mode;         ///< Converting English or gibberish?
 extern char const  *me;                 ///< Program name.
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Parses **cdecl** commands from \a fin.
+ *
+ * @param fin The `FILE` to read from.
+ * @param fout The `FILE` to write the prompts to, if any.
+ * @param return_on_error If `true`, return immediately upon encountering an
+ * error; if `false`, return only upon encountering EOF.
+ * @return Returns `EX_OK` upon success of the last line read or another value
+ * upon failure.
+ */
+NODISCARD
+int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error );
 
 /**
  * Parses a **cdecl** command from a string.

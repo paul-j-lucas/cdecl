@@ -1038,14 +1038,6 @@ void* free_later( void *p );
 void free_now( void );
 
 /**
- * Gets the full path of the user's home directory.
- *
- * @return Returns said directory or NULL if it is not obtainable.
- */
-NODISCARD
-char const* home_dir( void );
-
-/**
  * Checks whether \a n has either 0 or 1 bits set.
  *
  * @param n The number to check.

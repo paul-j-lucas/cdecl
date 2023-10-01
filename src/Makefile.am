@@ -68,6 +68,7 @@ cdecl_SOURCES =	parser.y \
 		cdecl_parser.h \
 		cli_options.c cli_options.h \
 		color.c color.h \
+		conf_file.c conf_file.h \
 		dam_lev.c dam_lev.h \
 		decl_flags.h \
 		did_you_mean.c did_you_mean.h \

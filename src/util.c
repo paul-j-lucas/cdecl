@@ -37,16 +37,12 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
-#if HAVE_PWD_H
-# include <pwd.h>                       /* for getpwuid() */
-#endif /* HAVE_PWD_H */
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>                   /* for fstat() */
 #include <sysexits.h>
-#include <unistd.h>                     /* for geteuid() */
 
 /// @endcond
 
@@ -227,23 +223,6 @@ void* free_later( void *p ) {
 
 void free_now( void ) {
   slist_cleanup( &free_later_list, &free );
-}
-
-char const* home_dir( void ) {
-  static char const *home;
-
-  RUN_ONCE {
-    home = null_if_empty( getenv( "HOME" ) );
-#if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
-    if ( home == NULL ) {
-      struct passwd *const pw = getpwuid( geteuid() );
-      if ( pw != NULL )
-        home = null_if_empty( pw->pw_dir );
-    }
-#endif /* HAVE_GETEUID && && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR */
-  }
-
-  return home;
 }
 
 bool is_ident_prefix( char const *ident, size_t ident_len, char const *s,

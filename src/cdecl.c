@@ -36,6 +36,7 @@
 #include "cdecl_parser.h"
 #include "cli_options.h"
 #include "color.h"
+#include "conf_file.h"
 #include "help.h"
 #include "lexer.h"
 #include "options.h"
@@ -48,7 +49,6 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <ctype.h>
 #include <errno.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -69,15 +69,11 @@ char const   *me;
 
 // local functions
 static void cdecl_cleanup( void );
-static void conf_init( void );
 
 NODISCARD
 static int  cdecl_parse_cli( size_t, char const *const[] ),
             cdecl_parse_command( char const*, size_t, char const *const[] ),
             cdecl_parse_stdin( void );
-
-NODISCARD
-static bool read_conf_file( char const* );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -226,17 +222,21 @@ static int cdecl_parse_command( char const *command, size_t cli_count,
 }
 
 /**
- * Parses **cdecl** commands from \a fin.
+ * Parses **cdecl** commands from standard input.
  *
- * @param fin The `FILE` to read from.
- * @param fout The `FILE` to write the prompts to, if any.
- * @param return_on_error If `true`, return immediately upon encountering an
- * error; if `false`, return only upon encountering EOF.
- * @return Returns `EX_OK` upon success of the last line read or another value
- * upon failure.
+ * @return Returns `EX_OK` upon success or another value upon failure.
  */
 NODISCARD
-static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
+static int cdecl_parse_stdin( void ) {
+  cdecl_interactive = isatty( STDIN_FILENO );
+  if ( cdecl_interactive && opt_prompt )
+    PUTS( "Type \"help\" or \"?\" for help\n" );
+  return cdecl_parse_file( stdin, stdout, /*return_on_error=*/false );
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
   assert( fin != NULL );
 
   strbuf_t sbuf;
@@ -255,81 +255,6 @@ static int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
   strbuf_cleanup( &sbuf );
   return status;
 }
-
-/**
- * Parses **cdecl** commands from standard input.
- *
- * @return Returns `EX_OK` upon success or another value upon failure.
- */
-NODISCARD
-static int cdecl_parse_stdin( void ) {
-  cdecl_interactive = isatty( STDIN_FILENO );
-  if ( cdecl_interactive && opt_prompt )
-    PUTS( "Type \"help\" or \"?\" for help\n" );
-  return cdecl_parse_file( stdin, stdout, /*return_on_error=*/false );
-}
-
-/**
- * Reads the configuration file, if any.
- * In priority order:
- *
- *  1. Either the `--config` or `-c` command-line option; or:
- *  2. The value of the `CDECLRC` environment variable; or:
- *  3. `~/.cdeclrc`
- *
- * @note This function must be called as most once.
- */
-static void conf_init( void ) {
-  ASSERT_RUN_ONCE();
-
-  char const *conf_path = opt_conf_path;
-  if ( conf_path == NULL )
-    conf_path = null_if_empty( getenv( "CDECLRC" ) );
-
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
-
-  if ( conf_path == NULL ) {
-    char const *const home = home_dir();
-    if ( home != NULL ) {
-      strbuf_puts( &sbuf, home );
-      strbuf_paths( &sbuf, "." CONF_FILE_NAME_DEFAULT );
-      conf_path = sbuf.str;
-    }
-  }
-
-  if ( conf_path != NULL ) {
-    print_params.conf_path = conf_path;
-    if ( !read_conf_file( conf_path ) && opt_conf_path != NULL )
-      fatal_error( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
-    print_params.conf_path = NULL;
-    strbuf_cleanup( &sbuf );
-  }
-}
-
-/**
- * Reads the configuration file \a conf_path.
- *
- * @param conf_path The full path of the configuration file to read.
- * @return Returns `false` only if \a conf_path could not be opened for
- * reading.
- */
-static bool read_conf_file( char const *conf_path ) {
-  assert( conf_path != NULL );
-
-  FILE *const conf_file = fopen( conf_path, "r" );
-  if ( conf_file == NULL )
-    return false;
-
-  PJL_IGNORE_RV(
-    cdecl_parse_file( conf_file, /*fout=*/NULL, /*return_on_error=*/true )
-  );
-
-  PJL_IGNORE_RV( fclose( conf_file ) );
-  return true;
-}
-
-////////// extern functions ///////////////////////////////////////////////////
 
 int cdecl_parse_string( char const *s, size_t s_len ) {
   assert( s != NULL );
