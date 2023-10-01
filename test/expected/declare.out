@@ -406,8 +406,7 @@ void f() noexcept;
 c++decl> declare f as no except function
 void f() noexcept;
 c++decl> declare f as non-throwing function returning void
-                 ^
-9: error: "throw" not supported since C++17; did you mean "noexcept"?
+void f() noexcept;
 c++decl> declare f as noreturn function (int) returning void
 [[noreturn]] void f(int);
 c++decl> declare f as no return function (int) returning void

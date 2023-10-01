@@ -165,7 +165,6 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_rv.test \
 	tests/declare_stctor.test \
 	tests/declare_stmi.test \
-	tests/declare_th_f_v.test \
 	tests/declare_v+f_v.test \
 	tests/declare_xvi.test
 
