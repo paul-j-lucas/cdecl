@@ -53,9 +53,8 @@
  * @param sbuf The \ref strbuf to use.
  * @param prog_name The program-specific values to parse from `~/.inputrc`.  If
  * NULL, does not read program-specific values.
- * @param fin The file to read from.
- * @param fout The file to print the prompts, if any, to.  If NULL, does not
- * read interactively.
+ * @param fin The file to read from.  If \a fin is not connected to a TTY, does
+ * not read interactively.
  * @param prompts A pointer to a 2-element array of the prompts to use: the
  * primary prompt and the the secondary prompt to use for a continuation line
  * (a line after ones ending with `\`).  If NULL, does not read interactively.
@@ -63,7 +62,7 @@
  */
 NODISCARD
 bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
-                       FILE *fout, char const *const prompts[const] );
+                       char const *const prompts[const] );
 
 ///////////////////////////////////////////////////////////////////////////////
 

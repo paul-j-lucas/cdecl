@@ -55,13 +55,13 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
-                       FILE *fout, char const *const prompts[const] ) {
+                       char const *const prompts[const] ) {
   assert( sbuf != NULL );
   assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
 
   bool const is_fin_a_tty = isatty( fileno( fin ) );
-  bool const is_interactive = is_fin_a_tty && fout != NULL && prompts != NULL;
+  bool const is_interactive = is_fin_a_tty && prompts != NULL;
   bool is_cont_line = false;
 
   for (;;) {
@@ -70,15 +70,15 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
 
     if ( is_interactive ) {
 #ifdef WITH_READLINE
-      readline_init( prog_name, fin, fout );
+      readline_init( prog_name, fin, stdout );
       free( line );
       got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
     }
     else
 #else /* WITH_READLINE */
       (void)prog_name;
-      FPUTS( prompts[ is_cont_line ], fout );
-      FFLUSH( fout );
+      PUTS( prompts[ is_cont_line ] );
+      FFLUSH( stdout );
     }
 #endif /* WITH_READLINE */
     {                                   // needed for "else" for WITH_READLINE

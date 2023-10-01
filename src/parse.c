@@ -113,7 +113,7 @@ static int cdecl_parse_stdin( void ) {
   cdecl_interactive = isatty( STDIN_FILENO );
   if ( cdecl_interactive && opt_prompt )
     PUTS( "Type \"help\" or \"?\" for help\n" );
-  return cdecl_parse_file( stdin, stdout, /*return_on_error=*/false );
+  return cdecl_parse_file( stdin, /*return_on_error=*/false );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -165,14 +165,14 @@ invalid_command:
   return EX_USAGE;
 }
 
-int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
+int cdecl_parse_file( FILE *fin, bool return_on_error ) {
   assert( fin != NULL );
 
   strbuf_t sbuf;
   strbuf_init( &sbuf );
   int status = EX_OK;
 
-  while ( strbuf_read_line( &sbuf, CDECL, fin, fout, cdecl_prompt ) ) {
+  while ( strbuf_read_line( &sbuf, CDECL, fin, cdecl_prompt ) ) {
     // We don't just call yyrestart( fin ) and yyparse() directly because
     // cdecl_parse_string() also inserts "explain " for opt_explain.
     status = cdecl_parse_string( sbuf.str, sbuf.len );
