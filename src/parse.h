@@ -32,7 +32,6 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 #include <stdio.h>
 
@@ -59,13 +58,10 @@ int cdecl_parse_cli( size_t cli_count, char const *const cli_value[const] );
  * Parses **cdecl** commands from \a fin.
  *
  * @param fin The `FILE` to read from.
- * @param return_on_error If `true`, return immediately upon encountering an
- * error; if `false`, return only upon encountering EOF.
- * @return Returns `EX_OK` upon success of the last line read or another value
- * upon failure.
+ * @return Returns `EX_OK` upon success or another value upon failure.
  */
 NODISCARD
-int cdecl_parse_file( FILE *fin, bool return_on_error );
+int cdecl_parse_file( FILE *fin );
 
 /**
  * Parses a **cdecl** command from a string.

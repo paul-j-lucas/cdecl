@@ -104,6 +104,36 @@ static int cdecl_parse_command( char const *command, size_t cli_count,
 }
 
 /**
+ * Parses **cdecl** commands from \a fin.
+ *
+ * @param fin The `FILE` to read from.
+ * @param return_on_error If `true`, return immediately upon encountering an
+ * error; if `false`, return only upon encountering EOF.
+ * @return Returns `EX_OK` upon success of the last line read or another value
+ * upon failure.
+ */
+NODISCARD
+static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
+  assert( fin != NULL );
+
+  strbuf_t sbuf;
+  strbuf_init( &sbuf );
+  int status = EX_OK;
+
+  while ( strbuf_read_line( &sbuf, CDECL, fin, cdecl_prompt ) ) {
+    // We don't just call yyrestart( fin ) and yyparse() directly because
+    // cdecl_parse_string() also inserts "explain " for opt_explain.
+    status = cdecl_parse_string( sbuf.str, sbuf.len );
+    if ( status != EX_OK && return_on_error )
+      break;
+    strbuf_reset( &sbuf );
+  } // while
+
+  strbuf_cleanup( &sbuf );
+  return status;
+}
+
+/**
  * Parses **cdecl** commands from standard input.
  *
  * @return Returns `EX_OK` upon success or another value upon failure.
@@ -113,7 +143,7 @@ static int cdecl_parse_stdin( void ) {
   cdecl_interactive = isatty( STDIN_FILENO );
   if ( cdecl_interactive && opt_prompt )
     PUTS( "Type \"help\" or \"?\" for help\n" );
-  return cdecl_parse_file( stdin, /*return_on_error=*/false );
+  return cdecl_parse_file_impl( stdin, /*return_on_error=*/false );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -165,24 +195,8 @@ invalid_command:
   return EX_USAGE;
 }
 
-int cdecl_parse_file( FILE *fin, bool return_on_error ) {
-  assert( fin != NULL );
-
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
-  int status = EX_OK;
-
-  while ( strbuf_read_line( &sbuf, CDECL, fin, cdecl_prompt ) ) {
-    // We don't just call yyrestart( fin ) and yyparse() directly because
-    // cdecl_parse_string() also inserts "explain " for opt_explain.
-    status = cdecl_parse_string( sbuf.str, sbuf.len );
-    if ( status != EX_OK && return_on_error )
-      break;
-    strbuf_reset( &sbuf );
-  } // while
-
-  strbuf_cleanup( &sbuf );
-  return status;
+int cdecl_parse_file( FILE *fin ) {
+  return cdecl_parse_file_impl( fin, /*return_on_error=*/true );
 }
 
 int cdecl_parse_string( char const *s, size_t s_len ) {
