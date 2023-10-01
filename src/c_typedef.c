@@ -29,9 +29,9 @@
 #include "c_typedef.h"
 #include "c_ast.h"
 #include "c_lang.h"
-#include "cdecl.h"
 #include "decl_flags.h"
 #include "options.h"
+#include "parse.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

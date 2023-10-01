@@ -25,8 +25,10 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "conf_file.h"
 #include "cdecl.h"
 #include "options.h"
+#include "parse.h"
 #include "print.h"
 #include "strbuf.h"
 #include "util.h"

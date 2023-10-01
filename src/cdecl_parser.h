@@ -29,7 +29,9 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "parser.h"
+#include "c_type.h"
+#include "slist.h"
+#include "parser.h"                     /* must go last */
 
 /**
  * @ingroup parser-group
@@ -42,27 +44,6 @@
  * Cleans up global parser data at program termination.
  */
 void parser_cleanup( void );
-
-#ifdef __GNUC__
-# pragma GCC diagnostic push
-  // Some versions of Bison don't declare yyparse() in the generated header
-  // file so we declare it below.  However, if the current version of Bison
-  // does declare it, then we'd get a redundant declaration warning -- so
-  // suppress that.
-# pragma GCC diagnostic ignored "-Wredundant-decls"
-#endif /* __GNUC__ */
-
-/**
- * Bison: parse input.
- *
- * @return Returns 0 only if parsing was successful.
- */
-NODISCARD
-int yyparse( void );
-
-#ifdef __GNUC__
-# pragma GCC diagnostic pop
-#endif /* __GNUC__ */
 
 ///////////////////////////////////////////////////////////////////////////////
 

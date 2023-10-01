@@ -20,8 +20,7 @@
 
 /**
  * @file
- * Defines main() as well as functions for initialization, clean-up, and
- * parsing user input.
+ * Defines main() as well as functions for initialization and clean-up.
  */
 
 // local
@@ -29,33 +28,22 @@
 #include "cdecl.h"
 #include "c_ast.h"
 #include "c_keyword.h"
-#include "c_lang.h"
 #include "c_typedef.h"
 #include "cdecl_command.h"
 #include "cdecl_keyword.h"
-#include "cdecl_parser.h"
 #include "cli_options.h"
 #include "color.h"
 #include "conf_file.h"
-#include "help.h"
 #include "lexer.h"
 #include "options.h"
-#include "print.h"
-#include "prompt.h"
-#include "read_line.h"
-#include "strbuf.h"
+#include "parse.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <errno.h>
-#include <stddef.h>
-#include <stdio.h>
+#include <stddef.h>                     /* for size_t */
 #include <stdlib.h>
-#include <string.h>
-#include <sysexits.h>
-#include <unistd.h>                     /* for isatty(3) */
 
 /// @endcond
 
@@ -67,15 +55,32 @@ bool          cdecl_interactive;
 cdecl_mode_t  cdecl_mode;
 char const   *me;
 
-// local functions
-static void cdecl_cleanup( void );
+////////// local functions ////////////////////////////////////////////////////
 
-NODISCARD
-static int  cdecl_parse_cli( size_t, char const *const[] ),
-            cdecl_parse_command( char const*, size_t, char const *const[] ),
-            cdecl_parse_stdin( void );
+/**
+ * Cleans up **cdecl** data.
+ */
+static void cdecl_cleanup( void ) {
+  free_now();
+  parser_cleanup();                     // must go before c_ast_cleanup()
+  c_ast_cleanup();
+}
 
-////////// main ///////////////////////////////////////////////////////////////
+////////// extern functions ///////////////////////////////////////////////////
+
+bool is_cppdecl( void ) {
+  static char const *const NAMES[] = {
+    CPPDECL,
+    "cppdecl",
+    "cxxdecl"
+  };
+
+  FOREACH_ARRAY_ELEMENT( char const*, name, NAMES ) {
+    if ( strcmp( me, *name ) == 0 )
+      return true;
+  } // for
+  return false;
+}
 
 /**
  * The main entry point.
@@ -102,230 +107,6 @@ int main( int argc, char const *argv[] ) {
   // first argument, if any, and no longer the program name.
   //
   exit( cdecl_parse_cli( STATIC_CAST( size_t, argc ), argv ) );
-}
-
-////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Cleans up **cdecl** data.
- */
-static void cdecl_cleanup( void ) {
-  free_now();
-  parser_cleanup();                     // must go before c_ast_cleanup()
-  c_ast_cleanup();
-}
-
-/**
- * Checks whether we're **cdecl**.
- *
- * @returns Returns `true` only if we are.
- *
- * @sa is_cppdecl()
- */
-NODISCARD
-static inline bool is_cdecl( void ) {
-  return strcmp( me, CDECL ) == 0;
-}
-
-/**
- * Parses the command-line.
- *
- * @param cli_count The size of \a cli_value.
- * @param cli_value The command-line argument values, if any.  Note that,
- * unlike `main()`'s `argv`, this contains _only_ the command-line arguments
- * _after_ the program name.
- * @return Returns `EX_OK` upon success or another value upon failure.
- *
- * @note The parameters are _not_ named `argc` and `argv` intentionally to
- * avoid confusion since they're not the same.
- */
-NODISCARD
-static int cdecl_parse_cli( size_t cli_count,
-                            char const *const cli_value[const] ) {
-  char const *command_literal = NULL;
-  char const *find_what;
-  cdecl_command_t const *found_command;
-  char const *invalid_as;
-
-  if ( is_cdecl() || is_cppdecl() ) {
-    if ( cli_count > 0 ) {
-      //
-      // Is the first word of the first argument a command?
-      //
-      find_what = cli_value[0];
-      found_command = cdecl_command_find( find_what );
-      if ( found_command != NULL ) {
-        if ( found_command->kind == CDECL_COMMAND_LANG_ONLY ) {
-          invalid_as = "a first argument";
-          goto invalid_command;
-        }
-      }
-    }
-  }
-  else {
-    //
-    // Is the program name itself a command, i.e., cast, declare, or explain?
-    //
-    find_what = me;
-    found_command = cdecl_command_find( find_what );
-    if ( found_command != NULL ) {
-      if ( found_command->kind != CDECL_COMMAND_PROG_NAME ) {
-        invalid_as = "a program name";
-        goto invalid_command;
-      }
-      command_literal = me;
-    }
-  }
-
-  return cdecl_parse_command( command_literal, cli_count, cli_value );
-
-invalid_command:
-  EPRINTF( "%s: \"%s\": invalid command (as %s)", me, find_what, invalid_as );
-  if ( found_command == NULL && print_suggestions( DYM_COMMANDS, find_what ) )
-    EPUTC( '\n' );
-  else
-    print_use_help();
-  return EX_USAGE;
-}
-
-/**
- * Parses a **cdecl** command.
- *
- * @param command The **cdecl** command to parse, but only if its \ref
- * cdecl_command::kind "kind" is #CDECL_COMMAND_PROG_NAME; NULL otherwise.
- * @param cli_count The size of \a cli_value.
- * @param cli_value The argument values, if any.  Note that, unlike `main()`'s
- * `argv`, this contains _only_ the command-line arguments _after_ the program
- * name.
- * @return Returns `EX_OK` upon success or another value upon failure.
- */
-NODISCARD
-static int cdecl_parse_command( char const *command, size_t cli_count,
-                                char const *const cli_value[const] ) {
-  if ( command == NULL && cli_count == 0 ) // invoked as just cdecl or c++decl
-    return cdecl_parse_stdin();
-
-  strbuf_t sbuf;
-  bool space;
-
-  strbuf_init( &sbuf );
-  // If command wasn't cdecl or c++decl, start the command string with it.
-  if ( (space = command != NULL) )
-    strbuf_puts( &sbuf, command );
-  // Concatenate arguments, if any, into a single string.
-  for ( size_t i = 0; i < cli_count; ++i )
-    strbuf_sepc_puts( &sbuf, ' ', &space, cli_value[i] );
-
-  int const status = cdecl_parse_string( sbuf.str, sbuf.len );
-  strbuf_cleanup( &sbuf );
-  return status;
-}
-
-/**
- * Parses **cdecl** commands from standard input.
- *
- * @return Returns `EX_OK` upon success or another value upon failure.
- */
-NODISCARD
-static int cdecl_parse_stdin( void ) {
-  cdecl_interactive = isatty( STDIN_FILENO );
-  if ( cdecl_interactive && opt_prompt )
-    PUTS( "Type \"help\" or \"?\" for help\n" );
-  return cdecl_parse_file( stdin, stdout, /*return_on_error=*/false );
-}
-
-////////// extern functions ///////////////////////////////////////////////////
-
-int cdecl_parse_file( FILE *fin, FILE *fout, bool return_on_error ) {
-  assert( fin != NULL );
-
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
-  int status = EX_OK;
-
-  while ( strbuf_read_line( &sbuf, CDECL, fin, fout, cdecl_prompt ) ) {
-    // We don't just call yyrestart( fin ) and yyparse() directly because
-    // cdecl_parse_string() also inserts "explain " for opt_explain.
-    status = cdecl_parse_string( sbuf.str, sbuf.len );
-    if ( status != EX_OK && return_on_error )
-      break;
-    strbuf_reset( &sbuf );
-  } // while
-
-  strbuf_cleanup( &sbuf );
-  return status;
-}
-
-int cdecl_parse_string( char const *s, size_t s_len ) {
-  assert( s != NULL );
-
-  // The code in print.c relies on command_line being set, so set it.
-  print_params.command_line = s;
-  print_params.command_line_len = s_len;
-
-  strbuf_t explain_buf;
-  bool const insert_explain = opt_explain && cdecl_command_find( s ) == NULL;
-
-  if ( insert_explain ) {
-    //
-    // The string doesn't start with a command: insert "explain " and set
-    // inserted_len so the print_*() functions subtract it from the error
-    // column to get the correct column within the original string.
-    //
-    static char const EXPLAIN_SP[] = "explain ";
-    print_params.inserted_len = ARRAY_SIZE( EXPLAIN_SP ) - 1/*\0*/;
-    strbuf_init( &explain_buf );
-    strbuf_reserve( &explain_buf, print_params.inserted_len + s_len );
-    strbuf_putsn( &explain_buf, EXPLAIN_SP, print_params.inserted_len );
-    strbuf_putsn( &explain_buf, s, s_len );
-    s = explain_buf.str;
-    s_len = explain_buf.len;
-  }
-
-  FILE *const temp_file = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
-  PERROR_EXIT_IF( temp_file == NULL, EX_IOERR );
-  yyrestart( temp_file );
-
-  if ( opt_echo_commands && !cdecl_interactive && cdecl_initialized ) {
-    //
-    // Echo the original command (without "explain" possibly having been
-    // inserted) without a trailing newline (if any) so we can always print a
-    // newline ourselves -- but don't touch the original command line.
-    //
-    size_t echo_len = print_params.command_line_len;
-    strn_rtrim( print_params.command_line, &echo_len );
-    PRINTF(
-      "%s%.*s\n",
-      cdecl_prompt[0], STATIC_CAST( int, echo_len ), print_params.command_line
-    );
-    FFLUSH( stdout );
-  }
-
-  int const status = yyparse() == 0 ? EX_OK : EX_DATAERR;
-  PJL_IGNORE_RV( fclose( temp_file ) );
-  if ( unlikely( status == 2 ) )
-    fatal_error( EX_SOFTWARE, "yyparse(): out of memory\n" );
-
-  if ( insert_explain ) {
-    strbuf_cleanup( &explain_buf );
-    print_params.inserted_len = 0;
-  }
-
-  return status;
-}
-
-bool is_cppdecl( void ) {
-  static char const *const NAMES[] = {
-    CPPDECL,
-    "cppdecl",
-    "cxxdecl"
-  };
-
-  FOREACH_ARRAY_ELEMENT( char const*, name, NAMES ) {
-    if ( strcmp( me, *name ) == 0 )
-      return true;
-  } // for
-  return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
