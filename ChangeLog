@@ -1,5 +1,7 @@
 2023-10-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * conf_file.c, parse.c, parse.h: Eliminated return_on_error parameter from
+     cdecl_parse_file(); added cdecl_parse_file_impl().
    * parser.y, test/Makefile.am, declare.out: Previously, `non-throwing` always
      means `throw()`.  Now, the meaning changes based on the current language:
      if it's C++11 or later, it means `noexcept`.
