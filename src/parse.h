@@ -37,6 +37,13 @@
 
 /// @endcond
 
+/**
+ * @ingroup parser-group
+ * @defgroup parser-api-group Parser API
+ * Functions for parsing and running **cdecl** commands.
+ * @{
+ */
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -55,7 +62,8 @@ NODISCARD
 int cdecl_parse_cli( size_t cli_count, char const *const cli_value[const] );
 
 /**
- * Parses **cdecl** commands from \a fin.
+ * Parses **cdecl** commands from \a fin until either an error occurs or until
+ * EOF.
  *
  * @param fin The `FILE` to read from.
  * @return Returns `EX_OK` upon success or another value upon failure.
@@ -77,6 +85,8 @@ NODISCARD
 int cdecl_parse_string( char const *s, size_t s_len );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_parse_H */
 /* vim:set et sw=2 ts=2: */

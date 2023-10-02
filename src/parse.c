@@ -52,6 +52,11 @@
 
 /// @endcond
 
+/**
+ * @addtogroup parser-api-group
+ * @{
+ */
+
 // local functions
 NODISCARD
 static int cdecl_parse_stdin( void );
@@ -72,6 +77,9 @@ static inline bool is_cdecl( void ) {
 
 /**
  * Parses a **cdecl** command.
+ *
+ * @remarks If \a command is NULL and \a cli_count is 0, calls
+ * cdecl_parse_stdin().
  *
  * @param command The **cdecl** command to parse, but only if its \ref
  * cdecl_command::kind "kind" is #CDECL_COMMAND_PROG_NAME; NULL otherwise.
@@ -134,7 +142,7 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
 }
 
 /**
- * Parses **cdecl** commands from standard input.
+ * Parses **cdecl** commands from standard input until EOF.
  *
  * @return Returns `EX_OK` upon success or another value upon failure.
  */
@@ -258,4 +266,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
+
 /* vim:set et sw=2 ts=2: */
