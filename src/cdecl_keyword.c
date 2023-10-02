@@ -1117,7 +1117,9 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { H_non_throwing,
     LANG_CPP_ANY,
-    SYNONYM( FIND_IN_ENGLISH_ONLY, L_throw ),
+    SYNONYMS( FIND_IN_ENGLISH_ONLY,
+      { LANG_noexcept, L_noexcept },
+      { LANG_ANY,      L_throw    } ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS

@@ -6757,9 +6757,6 @@ storage_class_english_stid
   | Y__Thread_local
   | Y_thread_local
   | Y_throw
-    {
-      $$ = OPT_LANG_IS( noexcept ) ? TS_noexcept : TS_throw;
-    }
   | Y_typedef
   | Y_virtual
   | Y_pure virtual_stid_exp       { $$ = TS_PURE_virtual | $2; }
