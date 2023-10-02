@@ -1118,10 +1118,10 @@ _GL_WARN_ON_USE (ftruncate, "ftruncate is unportable - "
    or SIZE was too small.
    See the POSIX:2008 specification
    <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getcwd.html>.
-   Additionally, the gnulib module 'getcwd' guarantees the following GNU
-   extension: If BUF is NULL, an array is allocated with 'malloc'; the array
-   is SIZE bytes long, unless SIZE == 0, in which case it is as big as
-   necessary.  */
+   Additionally, the gnulib module 'getcwd' or 'getcwd-lgpl' guarantees the
+   following GNU extension: If BUF is NULL, an array is allocated with
+   'malloc'; the array is SIZE bytes long, unless SIZE == 0, in which case
+   it is as big as necessary.  */
 # if @REPLACE_GETCWD@
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   define getcwd rpl_getcwd

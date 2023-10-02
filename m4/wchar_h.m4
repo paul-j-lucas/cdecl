@@ -7,7 +7,7 @@ dnl with or without modifications, as long as this notice is preserved.
 
 dnl Written by Eric Blake.
 
-# wchar_h.m4 serial 61
+# wchar_h.m4 serial 62
 
 AC_DEFUN_ONCE([gl_WCHAR_H],
 [
@@ -186,6 +186,7 @@ AC_DEFUN([gl_WCHAR_H_REQUIRE_DEFAULTS],
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_WCSTOK])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_WCSWIDTH])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_WCSFTIME])
+    gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_WGETCWD])
     dnl Support Microsoft deprecated alias function names by default.
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_MDA_WCSDUP], [1])
   ])
