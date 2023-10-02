@@ -1,4 +1,4 @@
-#! /usr/bin/env expect --
+#! /usr/bin/env expect
 
 #exp_internal 1
 spawn cdecl --color=never -xc++
