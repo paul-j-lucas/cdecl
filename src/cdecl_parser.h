@@ -42,6 +42,13 @@
 
 /**
  * Cleans up global parser data at program termination.
+ *
+ * @remarks The parser uses a "cleanup" function rather than an "init" function
+ * (that calls **atexit**(3) with <code>%parser_cleanup()</code>) because
+ * parser clean-up needs to be done at a specific point in the program's clean-
+ * up sequence and that's trivial to do by having to call this explicitly.
+ *
+ * @sa cdecl_cleanup()
  */
 void parser_cleanup( void );
 
