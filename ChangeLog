@@ -1,5 +1,8 @@
 2023-10-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * ac-cast_into.exp, ac-declare.exp, ac-explain.exp, ac-help.exp, ac-set.exp,
+     ac-show.exp: Removed "--" after "expect": it was failing in Github
+     Codespaces and doesn't seem to be necessary.
    * cdecl_keyword.c, parser.y: Better way to implement `non-throwing` meaning
      `noexcept` in C++11 and later.
 
