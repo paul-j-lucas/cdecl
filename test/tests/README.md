@@ -26,8 +26,8 @@ Within each test, sequences of characters are used to denote a C/C++
 declaration as it is in English.
 The characters are:
 
-+ `+` = scope (`S::x`; `2+` = `S::T::x`, etc.)
-+ `++` = scope (`++` = `of scope S`; `2++` = `of scope S of scope T`, etc.)
++ `+` = C++ scope (`+` = `S::x`; `2+` = `S::T::x`, etc.)
++ `++` = English scope (`++` = `of scope S`; `2++` = `of scope S of scope T`, etc.)
 + `0` = pure virtual
 + `a` = array (following digits specify array size)
 + `a_cd_` = `carries_dependency`
