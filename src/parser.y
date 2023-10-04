@@ -838,7 +838,9 @@ static void fl_keyword_expected( char const *file, int line,
       if ( ck != NULL ) {
         char const *const which_lang = c_lang_which( ck->lang_ids );
         if ( which_lang[0] != '\0' ) {
-          EPRINTF( ": \"%s\" not supported%s\n", keyword, which_lang );
+          EPUTS( ": " );
+          print_debug_file_line( file, line );
+          EPRINTF( "\"%s\" not supported%s\n", keyword, which_lang );
           return;
         }
       }
@@ -886,6 +888,7 @@ static void fl_punct_expected( char const *file, int line, char punct ) {
   if ( error_token != NULL )
     EPRINTF( "\"%s\": ", error_token );
 
+  print_debug_file_line( file, line );
   EPRINTF( "'%c' expected\n", punct );
 }
 
