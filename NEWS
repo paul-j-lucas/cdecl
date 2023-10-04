@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 14.5
+* Changes in Cdecl 15.0
 
 ** Coalesced `explain` output
 Output from `explain` coalesces same-base-type declarations together, e.g.:
