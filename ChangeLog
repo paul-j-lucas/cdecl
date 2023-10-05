@@ -1,3 +1,20 @@
+2023-10-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: s/postfix/is_postfix/
+   * configure.ac, gibberish.c, ntu.out, show.out, ntu.test: Fixed printing of
+     `typedef`s of nested types.
+   * c_ast_check.c, test/Makefile.am, cast-error.out, cast.out,
+     declare-error.out, declare_operator-error.out, declare_udc-error.out,
+     declare_udl-error.out, define-error.out, define.out, explain-error.out,
+     explain_cast-error.out, explain_operator-error.out, explain_udc-error.out,
+     explain_udl-error.out, ntu-error.out, ntu.out, show-error.out,
+     xec-error.out, cast-error.test, cast.test, declare-error.test,
+     declare_operator-error.test, define-error.test, define.test,
+     explain-error.test, explain_cast-error.test, explain_operator-error.test,
+     explain_udc-error.test, explain_udl-error.test, integers.test,
+     ntu-error.test, ntu.test, show-error.test, xec-error.test: Negative test
+     consolidation.
+
 2023-10-04  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Added missing calls to print_debug_file_line().
