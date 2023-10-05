@@ -62,7 +62,7 @@ struct gib_state {
   unsigned  gib_flags;                  ///< Gibberish printing flags.
   FILE     *gout;                       ///< Where to print the gibberish.
   bool      is_nested_scope;            ///< Within `{` ... `}`?
-  bool      postfix;                    ///< Doing postfix gibberish?
+  bool      is_postfix;                 ///< Doing postfix gibberish?
   bool      printed_space;              ///< Printed a space yet?
   bool      printed_typedef;            ///< Printed `typedef`?
 };
@@ -292,7 +292,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         //
         FPRINTF( gib->gout, " %s", c_tid_name_c( msc_call_atids ) );
       }
-      if ( false_set( &gib->postfix ) ) {
+      if ( false_set( &gib->is_postfix ) ) {
         if ( (gib->gib_flags & (C_GIB_PRINT_CAST | C_GIB_USING)) == 0 )
           gib_print_space_once( gib );
         c_ast_postfix_gibberish( ast, gib );
@@ -517,14 +517,14 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       c_ast_gibberish_impl( ast->ptr_ref.to_ast, gib );
       if ( c_ast_space_before_ptr_ref( ast, gib ) )
         gib_print_space_once( gib );
-      if ( !gib->postfix )
+      if ( !gib->is_postfix )
         c_ast_qual_name_gibberish( ast, gib );
       break;
 
     case K_POINTER_TO_MEMBER:
       c_ast_gibberish_impl( ast->ptr_mbr.to_ast, gib );
       gib_print_space_once( gib );
-      if ( !gib->postfix )
+      if ( !gib->is_postfix )
         c_ast_qual_name_gibberish( ast, gib );
       break;
 
