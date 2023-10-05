@@ -61,6 +61,7 @@
 struct gib_state {
   unsigned  gib_flags;                  ///< Gibberish printing flags.
   FILE     *gout;                       ///< Where to print the gibberish.
+  bool      is_nested_scope;            ///< Within `{` ... `}`?
   bool      postfix;                    ///< Doing postfix gibberish?
   bool      printed_space;              ///< Printed a space yet?
   bool      printed_typedef;            ///< Printed `typedef`?
@@ -608,6 +609,7 @@ static void c_ast_list_gibberish( c_ast_list_t const *ast_list,
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     gib_state_t node_gib;
     gib_init( &node_gib, gib->gib_flags & ~C_GIB_OPT_OMIT_TYPE, gib->gout );
+    node_gib.is_nested_scope = gib->is_nested_scope;
     fput_sep( ", ", &comma, gib->gout );
     c_ast_gibberish_impl( c_param_ast( ast_node ), &node_gib );
   } // for
@@ -660,10 +662,9 @@ static void c_ast_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 
   FPUTS(
     //
-    // For typedefs, the scope names (if any) were already printed in
-    // c_typedef_gibberish() so now we just print the local name.
+    // If we're in a nested scope, just print the local name.
     //
-    (gib->gib_flags & C_GIB_TYPEDEF) != 0 ?
+    gib->is_nested_scope ?
       c_sname_local_name( &ast->sname ) : c_sname_full_name( &ast->sname ),
     gib->gout
   );
@@ -1319,6 +1320,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
   gib_state_t gib;
   gib_init( &gib, print_using ? C_GIB_USING : C_GIB_TYPEDEF, gout );
   gib.printed_typedef = print_typedef;
+  gib.is_nested_scope = scope_close_braces_to_print > 0;
   c_ast_gibberish_impl( tdef->ast, &gib );
 
   if ( scope_close_braces_to_print > 0 ) {

@@ -15,7 +15,7 @@ set c++
 
 struct S1 { typedef int I; }
 explain S1::I x
-typedef typename S1::I T
+typedef typename S1::I S1_T
 show
 
 define I1 of inline namespace B1 of namespace A1 as int

@@ -487,7 +487,7 @@ namespace std { class ios; }
 namespace std { class ios_base; }
 class std::ios_base { class Init; };
 class std::ios_base { enum event; };
-class std::ios_base { using event_callback = void(*)(std::ios_base::event, std::ios_base&, int); };
+class std::ios_base { using event_callback = void(*)(event, ios_base&, int); };
 class std::ios_base { class failure; };
 class std::ios_base { using fmtflags = unsigned; };
 class std::ios_base { using iostate = unsigned; };
@@ -1125,7 +1125,7 @@ namespace std { class ios; }
 namespace std { class ios_base; }
 class std::ios_base { class Init; };
 class std::ios_base { enum event; };
-class std::ios_base { using event_callback = void(*)(std::ios_base::event, std::ios_base&, int); };
+class std::ios_base { using event_callback = void(*)(event, ios_base&, int); };
 class std::ios_base { class failure; };
 class std::ios_base { using fmtflags = unsigned; };
 class std::ios_base { using iostate = unsigned; };
@@ -3873,7 +3873,7 @@ namespace std { class ios; }
 namespace std { class ios_base; }
 class std::ios_base { class Init; };
 class std::ios_base { enum event; };
-class std::ios_base { using event_callback = void(*)(std::ios_base::event, std::ios_base&, int); };
+class std::ios_base { using event_callback = void(*)(event, ios_base&, int); };
 class std::ios_base { class failure; };
 class std::ios_base { using fmtflags = unsigned; };
 class std::ios_base { using iostate = unsigned; };
@@ -5125,7 +5125,7 @@ namespace std { class ios; }
 namespace std { class ios_base; }
 class std::ios_base { class Init; };
 class std::ios_base { enum event; };
-class std::ios_base { using event_callback = void(*)(std::ios_base::event, std::ios_base&, int); };
+class std::ios_base { using event_callback = void(*)(event, ios_base&, int); };
 class std::ios_base { class failure; };
 class std::ios_base { using fmtflags = unsigned; };
 class std::ios_base { using iostate = unsigned; };

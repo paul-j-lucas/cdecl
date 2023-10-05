@@ -18,7 +18,7 @@ cdecl> set c++
 c++decl> struct S1 { typedef int I; }
 c++decl> explain S1::I x
 declare x as I of structure S1
-c++decl> typedef typename S1::I T
+c++decl> typedef typename S1::I S1_T
 c++decl> show
 typedef int A2[2];
 typedef int F_I(double);
@@ -30,6 +30,7 @@ typedef F_I *PF_I_2;
 typedef int *PI;
 struct S1;
 struct S1 { typedef int I; };
+typedef S1::I S1_T;
 typedef Int T;
 typedef void Void;
 c++decl> define I1 of inline namespace B1 of namespace A1 as int
@@ -78,6 +79,7 @@ typedef F_I *PF_I_2;
 typedef int *PI;
 struct S1;
 struct S1 { typedef int I; };
+typedef S1::I S1_T;
 typedef Int T;
 typedef void Void;
 c++decl> using UI = int
