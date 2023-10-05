@@ -1,5 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++ <<END
-enum E
-namespace E { class C; }
-END

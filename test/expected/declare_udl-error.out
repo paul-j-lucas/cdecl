@@ -1,0 +1,3 @@
+c++decl> declare _x as user-defined literal (pointer to const char, int) returning int
+                                                                    ^
+60: error: invalid user-defined literal parameter type "integer"; must be "std::size_t" (or equivalent)

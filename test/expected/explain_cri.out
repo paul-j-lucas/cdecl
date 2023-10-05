@@ -1,3 +1,0 @@
-explain int &const r
-            ^
-13: error: reference can not be "const"; did you mean reference to const?

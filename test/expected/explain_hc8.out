@@ -1,3 +1,0 @@
-explain short char8_t x
-        ^
-9: error: "short char8_t" is illegal for built-in type

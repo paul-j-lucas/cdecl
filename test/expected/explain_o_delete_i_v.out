@@ -1,3 +1,0 @@
-explain void operator delete(int)
-                             ^
-30: error: invalid operator "delete" parameter type "int"; must be a pointer to void, class, struct, or union

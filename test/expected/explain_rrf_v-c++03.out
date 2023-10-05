@@ -1,3 +1,0 @@
-explain void f() &&
-             ^
-14: error: reference qualified functions not supported until C++11

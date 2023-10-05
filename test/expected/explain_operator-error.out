@@ -1,0 +1,145 @@
+c++decl> struct S
+c++decl> struct T
+c++decl> explain bool operator<(int) const = default
+                                ^
+24: error: default member relational operators must take one value or reference-to-const parameter to a class or a typedef thereof
+c++decl> explain bool operator!(S) const
+                                ^
+24: error: member operator "!" must have exactly 0 parameters
+c++decl> explain friend bool operator!()
+                           ^
+19: error: member operators can not be "friend"
+c++decl> explain friend bool operator==(int, S) = default
+                           ^
+19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+c++decl> explain friend bool operator==(int, S const&) = default
+                           ^
+19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+c++decl> explain friend bool operator==(S const&, int) = default
+                           ^
+19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+c++decl> explain friend bool operator==(S const&, S&) = default
+                           ^
+19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+c++decl> explain friend bool operator==(S const&, S) = default
+                           ^
+19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+c++decl> explain friend bool operator+(S const&, S const&) = default
+                           ^
+19: error: only operator "=" and relational operators can be "default"
+c++decl> explain friend bool operator==(S, int) = default
+                           ^
+19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+c++decl> explain friend bool operator==(S&, S const&) = default
+                           ^
+19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+c++decl> explain friend bool operator==(S, S const&) = default
+                           ^
+19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+c++decl> explain friend int operator<=>(const S&, const S&) = default
+                 ^
+9: error: invalid operator "<=>" return type "int"; must be "auto", "std::partial_ordering", "std::strong_ordering", or "std::weak_ordering"
+c++decl> explain int operator->()
+                 ^
+9: error: invalid operator "->" return type "int"; must be a pointer to struct, union, or class
+c++decl> explain int operator<=>(const S&) const = default
+                 ^
+9: error: invalid operator "<=>" return type "int"; must be "auto", "std::partial_ordering", "std::strong_ordering", or "std::weak_ordering"
+c++decl> explain int operator<(S const&) const = default
+                 ^
+9: error: invalid operator "<" return type "int"; must be "bool" or a typedef thereof
+c++decl> explain S& S::operator!=(S const&) = delete
+                  ^
+10: error: "delete" can be used only for special member functions
+c++decl> explain S& S::operator=(T const&) = default
+                  ^
+10: error: "default" can be used only for special member functions and relational operators
+c++decl> explain S& S::operator=(T const&) = delete
+                  ^
+10: error: "delete" can be used only for special member functions
+c++decl> explain bool operator!() = delete
+                    ^
+12: error: "delete" can be used only for special member functions
+c++decl> explain bool operator!(int, int)
+                                ^
+24: error: operator "!" can have at most 1 parameter
+c++decl> explain bool operator!(S) &
+                                ^
+24: error: member operator "!" must have exactly 0 parameters
+c++decl> explain bool operator!(S) &&
+                                ^
+24: error: member operator "!" must have exactly 0 parameters
+c++decl> explain bool operator<(S const&) = default
+                    ^
+12: error: default member operator "<" must also be "const"
+c++decl> explain bool operator<(S const&, S const&) = default
+                    ^
+12: error: default non-member operator "<" must also be "friend"
+c++decl> explain bool operator!(S) final
+                                ^
+24: error: member operator "!" must have exactly 0 parameters
+c++decl> explain bool operator!(S) override
+                                ^
+24: error: member operator "!" must have exactly 0 parameters
+c++decl> explain int operator delete(void*)
+                 ^
+9: error: invalid operator "delete" return type "int"; must be "void"
+c++decl> explain int operator+(int, ...)
+                               ^
+23: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
+c++decl> explain int operator-(int, ...)
+                               ^
+23: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
+c++decl> explain int operator+(S, ...)
+                                  ^
+26: error: operator "+" can not have a variadic parameter
+c++decl> explain int operator?:(S, int, int)
+                   ^
+11: error: operator "?:" can not be overloaded
+c++decl> explain S& operator++(double)
+                               ^
+23: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
+c++decl> explain S& operator--(double)
+                               ^
+23: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
+c++decl> explain S& operator++(S&, double)
+                                   ^
+27: error: invalid postfix non-member operator "++" parameter type "double"; must be "int" or a typedef thereof
+c++decl> explain S& operator--(S&, double)
+                                   ^
+27: error: invalid postfix non-member operator "--" parameter type "double"; must be "int" or a typedef thereof
+c++decl> explain static void operator=(int)
+                           ^
+19: error: operator "=" can not be "static"
+c++decl> explain std::size_t operator new( std::size_t )
+                 ^
+9: error: invalid operator "new" return type "std::size_t" (aka, "unsigned long"); must be "void*"
+c++decl> explain virtual bool operator!(S)
+                                        ^
+32: error: member operator "!" must have exactly 0 parameters
+c++decl> explain virtual void* operator new(size_t)
+                             ^
+21: error: operator "new" can not be "virtual"
+c++decl> explain void operator delete()
+                    ^
+12: error: non-member operator "delete" must have at least 1 parameter
+c++decl> explain void operator delete(int)
+                                      ^
+30: error: invalid operator "delete" parameter type "int"; must be a pointer to void, class, struct, or union
+c++decl> explain void* operator new(int n)
+                                    ^
+28: error: invalid operator "new" parameter type "int"; must be "std::size_t" (or equivalent)
+c++decl> explain void operator=(S const&) = default
+                    ^
+12: error: "default" can be used only for special member functions and relational operators
+c++decl> set c++17
+c++decl> explain bool S::operator==(S const&) const = default
+                      ^
+14: error: default operator "==" not supported until C++20
+c++decl> set c++20
+c++decl> explain int operator[](int, int)
+                                ^
+24: error: member operator "[]" must have exactly 1 parameter
+c++decl> explain static void operator()(int, int)
+                           ^
+19: error: operator "()" can not be "static" until C++23

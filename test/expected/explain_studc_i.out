@@ -1,3 +1,0 @@
-explain static operator int()
-             ^
-14: error: user-defined conversion operator can not be "static"

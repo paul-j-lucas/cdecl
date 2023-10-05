@@ -1,3 +1,0 @@
-explain const int x
-        ^
-9: error: "const": unsupported keyword until C89; did you mean "__const"?

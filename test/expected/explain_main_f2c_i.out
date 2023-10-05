@@ -1,3 +1,0 @@
-explain int main( char, char )
-                  ^
-19: error: invalid main() first parameter type "char"; must be "int" or a typedef thereof

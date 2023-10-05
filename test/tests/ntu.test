@@ -1,0 +1,53 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+
+typedef int I, *PI, A2[2], F_I(double), *F_PI(), (*PF_I)()
+typedef F_I *PF_I_2
+typedef void Void
+show as english
+
+typedef int int_least32_t
+typedef int Int
+typedef Int T
+typedef Int T
+
+set c++
+
+struct S1 { typedef int I; }
+explain S1::I x
+typedef typename S1::I T
+show
+
+define I1 of inline namespace B1 of namespace A1 as int
+show **::I1 typedef
+
+class C1 { class C1_C1 { typedef int Int; }; }
+
+namespace A1::B1 { typedef int Int; }
+namespace A2::inline A2_B2 { typedef int Int; }
+namespace A3::inline A3_B3::A3_B3_C3 { typedef int Int; }
+namespace N1 { class N1_C1 { typedef int Int; }; }
+namespace N2 { namespace N2_N2 { typedef int Int; } }
+namespace N3 { struct N3_S3 { typedef int Int; }; }
+namespace N4 { union N4_U4 { typedef int Int; }; }
+namespace N5 { class C; };
+namespace N5 { enum C::E; }
+namespace N5 { typedef int TI; }
+namespace N5 { using UI = int; }
+inline namespace IN1 { typedef int Int; }
+show
+
+using UI = int
+declare x as UI
+explain UI x
+
+using int_least32_t = int
+
+using Fi_v = void (*)(int)
+show Fi_v
+
+set c++14
+namespace A14 { namespace B14 { typedef int Int; } }
+show A14::*::Int
+
+END

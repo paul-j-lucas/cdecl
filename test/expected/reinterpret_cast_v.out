@@ -1,3 +1,0 @@
-reinterpret cast x into void
-                        ^
-25: error: invalid reinterpret_cast type "void"

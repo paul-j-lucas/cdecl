@@ -1,3 +1,0 @@
-explain friend bool operator!()
-                  ^
-19: error: member operators can not be "friend"

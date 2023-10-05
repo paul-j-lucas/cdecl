@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++ <<END
-explain int S::x : 3
-END

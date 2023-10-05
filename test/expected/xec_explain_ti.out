@@ -1,3 +1,0 @@
-explain _Sat int x
-        ^
-9: error: "_Sat" requires either "_Accum" or "_Fract"

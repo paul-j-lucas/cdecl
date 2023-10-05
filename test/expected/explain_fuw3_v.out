@@ -1,3 +1,0 @@
-explain void f(unsigned x : 3)
-               ^
-16: error: invalid parameter: can not have bit-field width

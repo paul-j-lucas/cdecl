@@ -1,3 +1,0 @@
-explain short char x
-        ^
-9: error: "short char" is illegal for built-in type

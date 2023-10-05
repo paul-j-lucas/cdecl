@@ -1,3 +1,0 @@
-explain (static int)x
-         ^
-10: error: can not cast into "static"

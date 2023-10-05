@@ -1,3 +1,0 @@
-typedef extern int SI
-        ^
-9: error: "typedef extern int" is illegal for built-in type

@@ -1,3 +1,0 @@
-declare x as short double
-        ^
-9: error: "short double" is illegal for built-in type

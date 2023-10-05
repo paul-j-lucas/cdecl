@@ -1,3 +1,0 @@
-explain ~C()
-      ^
-7: error: destructors not supported in C

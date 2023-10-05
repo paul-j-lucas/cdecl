@@ -1,3 +1,0 @@
-explain std::size_t operator new( std::size_t )
-        ^
-9: error: invalid operator "new" return type "std::size_t" (aka, "unsigned long"); must be "void*"

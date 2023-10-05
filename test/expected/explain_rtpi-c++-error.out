@@ -1,3 +1,0 @@
-explain int *restrict p
-             ^
-14: error: "restrict" not supported in C++; use "__restrict" instead

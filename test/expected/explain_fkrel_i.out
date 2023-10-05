@@ -1,3 +1,0 @@
-explain int f(x, ...)
-                 ^
-18: error: function prototypes not supported until C89

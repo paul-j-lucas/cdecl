@@ -79,25 +79,25 @@ cdecl> cast p into pointer to function (x) returning int
 34: warning: missing type specifier; "int" assumed
 (int(*)(int))p
 cdecl> set c++
-c++decl> cast S::x into int
-(int)S::x
 c++decl> cast p into pointer to member of class C int
 (int C::*)p
-c++decl> const cast x into pointer to int
-const_cast<int*>(x)
+c++decl> cast S::x into int
+(int)S::x
 c++decl> const cast S::x into pointer to int
 const_cast<int*>(S::x)
-c++decl> dynamic cast x into pointer to struct S
-dynamic_cast<struct S*>(x)
-c++decl> dynamic cast x into pointer to class C
-dynamic_cast<C*>(x)
+c++decl> const cast x into pointer to int
+const_cast<int*>(x)
 c++decl> dynamic cast S::x into pointer to class C
 dynamic_cast<C*>(S::x)
-c++decl> reinterpret cast x into pointer to void
-reinterpret_cast<void*>(x)
+c++decl> dynamic cast x into pointer to class C
+dynamic_cast<C*>(x)
+c++decl> dynamic cast x into pointer to struct S
+dynamic_cast<struct S*>(x)
 c++decl> reinterpret cast S::x into pointer to void
 reinterpret_cast<void*>(S::x)
-c++decl> static cast x into int
-static_cast<int>(x)
+c++decl> reinterpret cast x into pointer to void
+reinterpret_cast<void*>(x)
 c++decl> static cast S::x into int
 static_cast<int>(S::x)
+c++decl> static cast x into int
+static_cast<int>(x)

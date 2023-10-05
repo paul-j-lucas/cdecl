@@ -1,3 +1,0 @@
-explain unsigned void x
-        ^
-9: error: "unsigned void" is illegal for built-in type

@@ -1,3 +1,0 @@
-explain int operator<(S const&) const = default
-        ^
-9: error: invalid operator "<" return type "int"; must be "bool" or a typedef thereof

@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-explain _Atomic(const int) x
-END

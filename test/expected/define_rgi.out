@@ -1,3 +1,0 @@
-define SI as register int
-             ^
-14: error: "typedef register int" is illegal for built-in type

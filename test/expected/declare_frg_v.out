@@ -1,3 +1,0 @@
-declare f as function (i as register) returning void
-                       ^
-24: error: implicit "int" is illegal since C99

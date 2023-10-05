@@ -1,3 +1,0 @@
-explain unsigned float x
-        ^
-9: error: "unsigned float" is illegal for built-in type

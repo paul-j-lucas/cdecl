@@ -1,3 +1,0 @@
-explain signed bool x
-        ^
-9: error: "signed bool" is illegal for built-in type

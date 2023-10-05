@@ -1,0 +1,12 @@
+cdecl> explain long long _Accum x
+               ^
+9: error: "long long _Accum" is illegal for built-in type
+cdecl> explain long long _Fract x
+               ^
+9: error: "long long _Fract" is illegal for built-in type
+cdecl> explain _Sat x
+               ^
+9: error: "_Sat" requires either "_Accum" or "_Fract"
+cdecl> explain _Sat int x
+               ^
+9: error: "_Sat" requires either "_Accum" or "_Fract"

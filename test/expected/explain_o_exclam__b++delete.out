@@ -1,3 +1,0 @@
-explain bool operator!() = delete
-           ^
-12: error: "delete" can be used only for special member functions

@@ -1,3 +1,0 @@
-declare ! as rvalue reference operator (S) returning bool
-                                        ^
-41: error: member operator "!" must have exactly 0 parameters

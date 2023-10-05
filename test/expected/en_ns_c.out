@@ -1,3 +1,0 @@
-namespace E { class C; }
-          ^
-11: error: "E" was previously declared as "enum" ("enum E")

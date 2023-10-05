@@ -1,3 +1,0 @@
-explain virtual void C::f()
-                     ^
-22: error: "C::f": "virtual" can not be used in file-scoped functions

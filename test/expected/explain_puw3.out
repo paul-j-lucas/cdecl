@@ -1,3 +1,0 @@
-explain unsigned *x : 3
-                    ^
-21: error: invalid bit-field type "unsigned*"; must be an integral type

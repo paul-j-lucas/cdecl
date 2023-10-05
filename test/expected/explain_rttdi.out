@@ -1,3 +1,0 @@
-explain restrict Int p
-        ^
-9: error: built-in type can not be "restrict"

@@ -1,3 +1,0 @@
-explain virtual void f()
-        ^
-9: error: "virtual": unsupported keyword in C

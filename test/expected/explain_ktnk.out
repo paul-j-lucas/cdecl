@@ -1,3 +1,0 @@
-explain typename T x
-                 ^
-18: error: qualified name expected after "typename"

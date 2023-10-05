@@ -1,1 +1,0 @@
-namespace A { namespace B { typedef int Int; } }

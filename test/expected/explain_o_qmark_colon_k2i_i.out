@@ -1,3 +1,0 @@
-explain int operator?:(S, int, int)
-          ^
-11: error: operator "?:" can not be overloaded

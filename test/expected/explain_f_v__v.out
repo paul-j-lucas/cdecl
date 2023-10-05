@@ -1,3 +1,0 @@
-explain void f() -> void
-        ^
-9: error: function with trailing return type must only specify "auto"

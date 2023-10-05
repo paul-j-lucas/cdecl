@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++ <<END
-define Int of namespace X of class C as int
-END

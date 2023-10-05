@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-define Int of scope T of scope S as int
-show user typedef
-END

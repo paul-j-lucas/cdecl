@@ -1,2 +1,0 @@
-namespace A { class B; }
-class A::B { typedef int Int; };

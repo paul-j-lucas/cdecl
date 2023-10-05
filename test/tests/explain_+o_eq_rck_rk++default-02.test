@@ -1,6 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++ <<END
-struct S
-struct T
-explain S& S::operator=(T const&) = default
-END

@@ -1,3 +1,0 @@
-explain constexpr void f()
-                       ^
-24: error: "constexpr void" is illegal until C++14

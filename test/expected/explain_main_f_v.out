@@ -1,3 +1,0 @@
-explain void main()
-        ^
-9: error: invalid main() return type "void"; must be "int" or a typedef thereof

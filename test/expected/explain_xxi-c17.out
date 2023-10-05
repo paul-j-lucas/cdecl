@@ -1,3 +1,0 @@
-explain constexpr int x
-        ^
-9: error: "constexpr": unsupported keyword until C23

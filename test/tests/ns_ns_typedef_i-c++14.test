@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++14 <<END
-namespace A { namespace B { typedef int Int; } }
-show user typedef
-END

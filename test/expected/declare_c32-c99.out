@@ -1,3 +1,0 @@
-declare x as char32_t
-             ^
-14: error: "char32_t": unsupported type until C11; did you mean "wchar_t"?

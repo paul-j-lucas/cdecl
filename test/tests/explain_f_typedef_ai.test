@@ -1,5 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-typedef int A[2]
-explain A f()
-END

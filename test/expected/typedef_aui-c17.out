@@ -1,3 +1,0 @@
-typedef auto int SI
-        ^
-9: error: "typedef auto int" is illegal for built-in type

@@ -1,3 +1,0 @@
-explain (auto int)x
-         ^
-10: error: can not cast into "auto"

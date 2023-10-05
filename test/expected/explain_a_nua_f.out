@@ -1,3 +1,0 @@
-explain [[no_unique_address]] void f()
-                                   ^
-36: error: function can not be "no_unique_address"

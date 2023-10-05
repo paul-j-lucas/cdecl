@@ -1,3 +1,0 @@
-explain int operator<=>(const S&) const = default
-        ^
-9: error: invalid operator "<=>" return type "int"; must be "auto", "std::partial_ordering", "std::strong_ordering", or "std::weak_ordering"

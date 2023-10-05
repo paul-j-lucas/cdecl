@@ -1,3 +1,0 @@
-explain typedef char int32_t
-                     ^
-22: error: type "char" redefinition incompatible with original type "int"

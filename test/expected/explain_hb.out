@@ -1,3 +1,0 @@
-explain short bool x
-        ^
-9: error: "short bool" is illegal for built-in type

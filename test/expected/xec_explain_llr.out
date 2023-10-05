@@ -1,3 +1,0 @@
-explain long long _Fract x
-        ^
-9: error: "long long _Fract" is illegal for built-in type

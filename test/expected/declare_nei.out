@@ -1,3 +1,0 @@
-declare x as non-empty int
-        ^
-9: error: built-in type can not be "non-empty"

@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc99 <<END
-explain long long _Accum x
-END

@@ -1,3 +1,0 @@
-explain _Atomic A x
-        ^
-9: error: array can not be "_Atomic"

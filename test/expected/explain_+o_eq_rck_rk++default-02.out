@@ -1,3 +1,0 @@
-explain S& S::operator=(T const&) = default
-         ^
-10: error: "default" can be used only for special member functions and relational operators

@@ -1,0 +1,8 @@
+EXPECTED_EXIT=65
+cdecl -O -xc++ <<END
+explain int operator"" _x()
+explain int operator"" _x(char, char)
+explain int operator"" _x(char, char, char)
+explain int operator"" _x(int*, unsigned long)
+explain int operator"" _x(unsigned long)
+END

@@ -1,3 +1,0 @@
-explain void f() = 0
-             ^
-14: error: non-virtual function can not be pure

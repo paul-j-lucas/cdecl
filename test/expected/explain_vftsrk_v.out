@@ -1,3 +1,0 @@
-explain virtual void f( this S &self )
-                               ^
-32: error: function with "this" parameter can not be "virtual"

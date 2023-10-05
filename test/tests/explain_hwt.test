@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-explain short wchar_t x
-END

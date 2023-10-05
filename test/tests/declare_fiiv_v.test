@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-declare f as function (x as int, y as int, void) returning void
-END

@@ -1,3 +1,0 @@
-explain signed wchar_t x
-        ^
-9: error: "signed wchar_t" is illegal for built-in type

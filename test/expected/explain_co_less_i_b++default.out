@@ -1,3 +1,0 @@
-explain bool operator<(int) const = default
-                       ^
-24: error: default member relational operators must take one value or reference-to-const parameter to a class or a typedef thereof

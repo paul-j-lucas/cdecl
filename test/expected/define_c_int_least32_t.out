@@ -1,3 +1,0 @@
-define int_least32_t as char
-                        ^
-25: error: type "character" redefinition incompatible with original type "int"

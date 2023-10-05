@@ -1,5 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++ <<END
-struct S
-declare [] as non-member operator (reference to const S, int)
-END

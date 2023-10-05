@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-static cast x into int
-END

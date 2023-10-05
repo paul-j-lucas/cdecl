@@ -1,3 +1,0 @@
-explain void &x
-             ^
-14: error: reference to "void" is illegal; did you mean pointer to void?

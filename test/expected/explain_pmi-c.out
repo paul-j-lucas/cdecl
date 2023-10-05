@@ -1,3 +1,0 @@
-explain int C::*p
-            ^
-13: error: pointer to member not supported in C

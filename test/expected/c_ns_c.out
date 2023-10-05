@@ -1,3 +1,0 @@
-class C { namespace N { class D; } }
-                    ^
-21: error: namespace can not nest inside class

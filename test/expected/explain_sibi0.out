@@ -1,3 +1,0 @@
-explain signed _BitInt(0) x
-        ^
-9: error: signed _BitInt must be at least 2 bits

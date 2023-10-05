@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++ <<END
-explain std::size_t operator new( std::size_t )
-END

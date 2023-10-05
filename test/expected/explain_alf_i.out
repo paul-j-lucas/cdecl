@@ -1,3 +1,0 @@
-explain _Alignas(4) int f()
-        ^
-9: error: function can not be aligned

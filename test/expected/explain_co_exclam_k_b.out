@@ -1,3 +1,0 @@
-explain bool operator!(S) const
-                       ^
-24: error: member operator "!" must have exactly 0 parameters

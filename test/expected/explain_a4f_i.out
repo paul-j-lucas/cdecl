@@ -1,3 +1,0 @@
-explain int (f[4])()
-            ^
-13: error: array of function is illegal; did you mean array of pointer to function?

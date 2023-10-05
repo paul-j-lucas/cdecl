@@ -1,3 +1,0 @@
-typedef static int SI
-        ^
-9: error: "typedef static int" is illegal for built-in type

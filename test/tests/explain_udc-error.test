@@ -1,0 +1,9 @@
+EXPECTED_EXIT=65
+cdecl -O -xc++ <<END
+typedef int A4[4]
+
+explain friend operator int()
+explain operator A4()
+explain static operator int()
+
+END

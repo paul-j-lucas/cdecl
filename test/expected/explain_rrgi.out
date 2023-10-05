@@ -1,3 +1,0 @@
-explain register int &x
-                     ^
-22: error: reference not supported in C

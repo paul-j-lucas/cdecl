@@ -1,3 +1,0 @@
-explain void f( int ()() )
-                    ^
-21: error: function returning function is illegal; did you mean function returning pointer to function?

@@ -1,3 +1,0 @@
-declare x as char8_t
-             ^
-14: error: "char8_t": unsupported type until C++20; did you mean "char16_t", "char32_t", or "wchar_t"?

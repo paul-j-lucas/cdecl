@@ -1,3 +1,0 @@
-explain _Atomic(const int) x
-                ^
-17: error: "_Atomic" can not be of "const"

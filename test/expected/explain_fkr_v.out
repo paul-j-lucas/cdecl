@@ -1,3 +1,0 @@
-explain void f(x)
-               ^
-16: error: type specifier required in C++

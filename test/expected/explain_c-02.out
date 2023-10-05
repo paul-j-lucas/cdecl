@@ -1,3 +1,0 @@
-explain const i
-        ^
-9: error: implicit "int" is illegal since C99

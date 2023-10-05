@@ -1,3 +1,0 @@
-declare f as function returning array of int
-                                ^
-33: error: function returning array; did you mean function returning pointer?

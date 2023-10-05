@@ -1,3 +1,0 @@
-define D of namespace C of namespace N as class D
-         ^
-10: error: "C" was previously declared as "class" ("namespace N { class C; }")

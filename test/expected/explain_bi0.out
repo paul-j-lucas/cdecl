@@ -1,3 +1,0 @@
-explain _BitInt(0) x
-        ^
-9: error: _BitInt must be at least 2 bits

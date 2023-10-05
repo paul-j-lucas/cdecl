@@ -1,3 +1,0 @@
-explain short float x
-        ^
-9: error: "short float" is illegal for built-in type

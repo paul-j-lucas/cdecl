@@ -1,3 +1,0 @@
-explain explicit C(int) const
-                 ^
-18: error: function can not be "explicit"

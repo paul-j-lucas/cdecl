@@ -1,3 +1,0 @@
-explain int a[0]
-             ^
-14: error: array dimension must be > 0

@@ -1,3 +1,0 @@
-explain unsigned double x
-        ^
-9: error: "unsigned double" is illegal for built-in type

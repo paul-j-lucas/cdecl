@@ -1,4 +1,0 @@
-explain int (*f) const
-                 ^
-18: syntax error: "const": unexpected token ("const" is a keyword)
-declare f as pointer to integer

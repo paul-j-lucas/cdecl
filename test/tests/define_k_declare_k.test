@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-struct S
-declare x as struct S
-END

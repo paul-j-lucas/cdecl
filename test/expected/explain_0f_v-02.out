@@ -1,3 +1,0 @@
-explain virtual void f() = 1
-                           ^
-28: error: '0' expected

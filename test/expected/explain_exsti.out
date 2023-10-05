@@ -1,3 +1,0 @@
-explain export static int x
-        ^
-9: error: "export static int" is illegal for built-in type

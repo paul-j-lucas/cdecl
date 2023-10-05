@@ -1,3 +1,0 @@
-inline namespace A::B { typedef int Int; }
-                 ^
-18: error: nested namespace can not be inline

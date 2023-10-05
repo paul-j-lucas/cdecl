@@ -1,3 +1,0 @@
-explain short wchar_t x
-        ^
-9: error: "short wchar_t" is illegal for built-in type

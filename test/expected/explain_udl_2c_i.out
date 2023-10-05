@@ -1,3 +1,0 @@
-explain int operator"" _x(char, char)
-                          ^
-27: error: invalid user-defined literal parameter type "char"; must be const (char|char8_t|char16_t|char32_t|wchar_t)*

@@ -1,3 +1,0 @@
-explain int main( int, int** )
-                           ^
-28: error: invalid main() parameter type "int**"; must be "char**"

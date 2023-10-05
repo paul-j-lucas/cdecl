@@ -1,3 +1,0 @@
-explain volatile int x
-        ^
-9: error: "volatile": unsupported keyword until C89; did you mean "__volatile"?

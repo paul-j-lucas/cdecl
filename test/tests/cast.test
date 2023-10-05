@@ -44,21 +44,15 @@ set c17
 cast p into pointer to function (x) returning int
 
 set c++
-
-cast S::x into int
 cast p into pointer to member of class C int
-
-const cast x into pointer to int
+cast S::x into int
 const cast S::x into pointer to int
-
-dynamic cast x into pointer to struct S
-dynamic cast x into pointer to class C
+const cast x into pointer to int
 dynamic cast S::x into pointer to class C
-
-reinterpret cast x into pointer to void
+dynamic cast x into pointer to class C
+dynamic cast x into pointer to struct S
 reinterpret cast S::x into pointer to void
-
-static cast x into int
+reinterpret cast x into pointer to void
 static cast S::x into int
-
+static cast x into int
 END

@@ -1,3 +1,0 @@
-declare f as extern static function returning void
-        ^
-9: error: "extern static" is illegal for function

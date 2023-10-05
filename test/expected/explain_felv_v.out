@@ -1,3 +1,0 @@
-explain void f( ..., void )
-                ^
-17: error: variadic specifier must be last

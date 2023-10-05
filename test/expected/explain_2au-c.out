@@ -1,3 +1,0 @@
-explain auto x, y
-        ^
-9: error: "auto" with multiple declarators is not supported in C

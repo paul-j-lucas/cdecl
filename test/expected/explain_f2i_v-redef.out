@@ -1,3 +1,0 @@
-explain void f(int x, int x)
-                      ^
-23: error: "x": redefinition of parameter

@@ -1,3 +1,0 @@
-explain using f = void (*)(int)
-        ^
-9: error: "using": unsupported keyword in C

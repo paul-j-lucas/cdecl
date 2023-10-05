@@ -1,0 +1,246 @@
+EXPECTED_EXIT=65
+cdecl -O <<END
+struct S
+struct T
+typedef const void const_void
+typedef enum E EE
+typedef int A2[2]
+typedef int Int
+
+explain A2 f()
+explain _Alignas(3) char c
+explain _Alignas(4) char c : 3
+explain _Alignas(4) int f()
+explain alignas(4) register int x
+explain _Alignas(64) S x
+explain _Alignas(8) typedef int Int
+explain _Atomic A2 x
+explain _Atomic(const int) x
+explain auto f()
+explain auto *p
+explain auto x, y
+explain ~C()
+explain constexpr volatile int x
+explain EE x : 4
+explain enum E x : 3
+explain extern static void f()
+explain friend void f()
+explain inline int x
+explain int
+explain int a[0]
+explain int C::*p
+explain int f()[]
+explain int (*f) const
+explain int (f[4])()
+explain int f[5](double)
+explain int* f(x)
+explain int main( char, char )
+explain int main( int )
+explain int main( int, char )
+explain int main( int, char *argv[], int )
+explain int main( int, int** )
+explain int main(int, int, int, int)
+explain int (^S)()
+explain int S[4]
+explain int S::x
+explain int &*x
+explain int &x
+explain int x, *x
+explain long bool x
+explain long char x
+explain long char16_t x
+explain long char32_t x
+explain long float x
+explain long long long x
+explain long void x
+explain long wchar_t x
+explain [[nodiscard]] int x
+explain pure virtual void f()
+explain register int C::*x
+explain register int f(void)
+explain [[reproducible]] int x
+explain restrict Int p
+explain short bool x
+explain short char x
+explain short char16_t x
+explain short char32_t x
+explain short double x
+explain short float x
+explain short int main( int, char *argv[] )
+explain short long long x
+explain short long x
+explain short void x
+explain short wchar_t x
+explain signed _BitInt(0) x
+explain signed _BitInt(1) x
+explain signed bool x
+explain signed char16_t x
+explain signed char32_t x
+explain signed void x
+explain signed wchar_t x
+explain static int main()
+explain type int x
+explain typedef char int32_t
+explain unsigned _BitInt(0) x
+explain unsigned bool x
+explain unsigned char16_t x
+explain unsigned char32_t x
+explain unsigned double x
+explain unsigned float x
+explain unsigned void x
+explain unsigned wchar_t x
+explain unsigned *x : 3
+explain using f = void (*)(int)
+explain virtual void f()
+explain virtual void f() override final
+explain void a[4]
+explain void __cdecl *p
+explain void f( ..., ... )
+explain void f( ..., char const *fmt )
+explain void f( ..., void )
+explain void f() const
+explain void f( int ()() )
+explain void f( int, int, void )
+explain void f( int, void )
+explain void f( void, ... )
+explain void f( void, int )
+explain void f( void, void )
+explain void f(const void)
+explain void f(const_void)
+explain void f(double d, int x[d])
+explain void f(int x[][])
+explain void f(int x, int x)
+explain void f(int x[static *])
+explain void f(register i)
+explain void f(static int x)
+explain void f(t x)
+explain void f(unsigned x : 3)
+explain void f(void x)
+explain void main()
+explain void (*restrict p)()
+explain void x
+
+set knr
+explain const int x
+explain enum E x
+explain int f(double)
+explain int f(x, ...)
+explain int main(x)
+explain long double x
+explain long long x
+explain signed char x
+explain signed int x
+explain signed long x
+explain struct S f()
+explain void *p
+explain volatile int x
+
+set c89
+explain bool x
+explain long long x
+explain wchar_t x
+
+set c99
+explain char16_t x
+explain char32_t x
+explain thread_local int x
+
+set c17
+explain constexpr int x
+explain enum E : int x
+explain void f( ... )
+
+set c++
+typedef int &RI
+
+explain [&,&]
+explain [&,=]
+explain [=,&]
+explain [=,=]
+explain auto int x
+explain C(int, int) = default
+explain constinit int f()
+explain enum class C x
+explain enum E : double x
+explain enum struct C x
+explain explicit C(int) const
+explain export static int x
+explain extern R"abc(X)ab)abc" void f()
+explain extern void v
+explain [[foo]] int x
+explain friend static void f()
+explain [&,&i]
+explain [i,&]
+explain [i,=]
+explain [i,i]
+explain int &const r
+explain int& &&r
+explain int& &r
+explain int&& &&r
+explain int&& &r
+explain int& r[2]
+explain int *restrict p
+explain int S::x : 3
+explain int &&*x
+explain int x, x
+explain long char8_t x
+explain noreturn void f(int)
+explain [[no_unique_address]] int x : 4
+explain [[no_unique_address]] void f()
+explain register int &x
+explain RI *p
+explain short char8_t x
+explain signed char8_t x
+explain static mutable int x
+explain static void f() &
+explain static void f() &&
+explain static void f() const
+explain static void f( this S &self )
+explain [*this,*this]
+explain [*this,this]
+explain [this,*this]
+explain [this,this]
+explain typename T x
+explain unsigned char8_t x
+explain virtual void C::f()
+explain virtual void f() = 1
+explain virtual void f( this S &self )
+explain void f() = 0
+explain void f() = default
+explain void f() -> void
+explain void f( int x, this S &self )
+explain void f() restrict
+explain void f( this S &self ) &
+explain void f( this S &self ) const
+explain void f() throw()
+explain void f(int (*g) const)
+explain void f(int S::x)
+explain void f(int x[*])
+explain void f(int x[const 3])
+explain void f(int x[static 3])
+explain void f(x)
+explain void &x
+explain X::C()
+explain X::~C()
+
+set c++03
+explain auto f() -> void
+explain char16_t x
+explain char32_t x
+explain explicit operator bool()
+explain void f() &
+explain void f() &&
+explain void f(int &&r)
+
+set c++11
+explain auto f()
+explain constexpr void f()
+
+set c++17
+explain char8_t x
+explain void f(auto)
+
+set c++20
+explain _Atomic(int) x
+
+END

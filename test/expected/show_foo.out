@@ -1,3 +1,0 @@
-show foo
-     ^
-6: error: "foo": no such type defined via define, enum, struct, typedef, or union

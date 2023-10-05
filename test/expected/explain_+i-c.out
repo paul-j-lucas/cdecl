@@ -1,3 +1,0 @@
-explain int S::x
-             ^
-14: error: scoped names not supported in C

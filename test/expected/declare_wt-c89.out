@@ -1,3 +1,0 @@
-declare x as wchar_t
-             ^
-14: error: "wchar_t": unsupported type until C95

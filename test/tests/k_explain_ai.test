@@ -1,5 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-struct S
-explain int S[4]
-END

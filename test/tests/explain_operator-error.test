@@ -1,0 +1,59 @@
+EXPECTED_EXIT=65
+cdecl -O -xc++ <<END
+struct S
+struct T
+
+explain bool operator<(int) const = default
+explain bool operator!(S) const
+explain friend bool operator!()
+explain friend bool operator==(int, S) = default
+explain friend bool operator==(int, S const&) = default
+explain friend bool operator==(S const&, int) = default
+explain friend bool operator==(S const&, S&) = default
+explain friend bool operator==(S const&, S) = default
+explain friend bool operator+(S const&, S const&) = default
+explain friend bool operator==(S, int) = default
+explain friend bool operator==(S&, S const&) = default
+explain friend bool operator==(S, S const&) = default
+explain friend int operator<=>(const S&, const S&) = default
+explain int operator->()
+explain int operator<=>(const S&) const = default
+explain int operator<(S const&) const = default
+explain S& S::operator!=(S const&) = delete
+explain S& S::operator=(T const&) = default
+explain S& S::operator=(T const&) = delete
+
+explain bool operator!() = delete
+explain bool operator!(int, int)
+explain bool operator!(S) &
+explain bool operator!(S) &&
+explain bool operator<(S const&) = default
+explain bool operator<(S const&, S const&) = default
+explain bool operator!(S) final
+explain bool operator!(S) override
+explain int operator delete(void*)
+explain int operator+(int, ...)
+explain int operator-(int, ...)
+explain int operator+(S, ...)
+explain int operator?:(S, int, int)
+explain S& operator++(double)
+explain S& operator--(double)
+explain S& operator++(S&, double)
+explain S& operator--(S&, double)
+explain static void operator=(int)
+explain std::size_t operator new( std::size_t )
+explain virtual bool operator!(S)
+explain virtual void* operator new(size_t)
+explain void operator delete()
+explain void operator delete(int)
+explain void* operator new(int n)
+explain void operator=(S const&) = default
+
+set c++17
+explain bool S::operator==(S const&) const = default
+
+set c++20
+explain int operator[](int, int)
+explain static void operator()(int, int)
+
+END

@@ -1,3 +1,0 @@
-declare f as register function returning void
-                      ^
-23: syntax error: "function": "as" expected ("function" is a cdecl keyword)

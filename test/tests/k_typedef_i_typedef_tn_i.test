@@ -1,6 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-struct S { typedef int Int; }
-typedef typename S::Int T
-show user
-END

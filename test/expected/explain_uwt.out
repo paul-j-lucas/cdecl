@@ -1,3 +1,0 @@
-explain unsigned wchar_t x
-        ^
-9: error: "unsigned wchar_t" is illegal for built-in type

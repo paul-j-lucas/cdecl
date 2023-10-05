@@ -1,3 +1,0 @@
-explain char32_t x
-        ^
-9: error: "char32_t": unsupported type until C11; did you mean "wchar_t"?

@@ -1,1 +1,0 @@
-namespace A::inline B { typedef int I; }

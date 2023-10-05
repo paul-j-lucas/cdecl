@@ -1,7 +1,0 @@
-declare x as enum class C
-        ^
-9: warning: "class" is a keyword in C++98
-declare x as enum class C
-                        ^
-25: syntax error: "C": unexpected token
-enum class x;

@@ -1,5 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-typedef const void Void
-explain void f(Void)
-END

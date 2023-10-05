@@ -1,3 +1,0 @@
-register int f(void)
-^
-1: syntax error: "register": unexpected token ("register" is a keyword)

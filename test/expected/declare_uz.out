@@ -1,3 +1,0 @@
-declare x as unsigned size_t
-        ^
-9: error: "unsigned" is illegal for typedef

@@ -1,3 +1,0 @@
-explain [[reproducible]] int x
-        ^
-9: error: built-in type can not be "reproducible"

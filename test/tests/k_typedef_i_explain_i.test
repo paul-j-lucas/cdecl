@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-struct S { typedef int I; }
-explain S::I x
-END

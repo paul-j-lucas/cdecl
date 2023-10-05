@@ -1,3 +1,0 @@
-cast f into function returning int
-          ^
-11: error: can not cast into function; did you mean cast into pointer to function?

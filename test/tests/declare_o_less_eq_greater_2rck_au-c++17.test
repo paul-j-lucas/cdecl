@@ -1,5 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++17 <<END
-struct S
-declare <=> as operator (reference to const S, reference to const S) returning auto
-END

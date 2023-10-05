@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++03 <<END
-const cast x into int
-END

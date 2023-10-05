@@ -1,3 +1,0 @@
-explain RI *p
-           ^
-12: error: pointer to reference is illegal

@@ -1,3 +1,0 @@
-explain thread_local int x
-        ^
-9: error: "thread_local": unsupported keyword until C23

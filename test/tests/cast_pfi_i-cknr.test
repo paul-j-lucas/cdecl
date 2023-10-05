@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xknr <<END
-cast p into pointer to function (x as int) returning int
-END

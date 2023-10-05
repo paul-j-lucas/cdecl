@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-explain int (f[4])()
-END

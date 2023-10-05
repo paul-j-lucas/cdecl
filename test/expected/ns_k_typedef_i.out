@@ -1,2 +1,0 @@
-namespace A { struct B; }
-struct A::B { typedef int Int; };

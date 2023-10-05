@@ -1,0 +1,88 @@
+cdecl> typedef char int_least32_t
+               ^
+9: error: type "char" redefinition incompatible with original type "int"
+cdecl> typedef extern int SI
+               ^
+9: error: "typedef extern int" is illegal for built-in type
+cdecl> typedef int Int : 3
+               ^
+9: error: "typedef" can not have bit-field widths
+cdecl> typedef register int SI
+               ^
+9: error: "typedef register int" is illegal for built-in type
+cdecl> typedef static int SI
+               ^
+9: error: "typedef static int" is illegal for built-in type
+cdecl> typedef typename int Int
+               ^
+9: syntax error: "typename": unexpected token; not a keyword until C++98
+cdecl> struct S { typedef int I; }
+                  ^
+12: error: nested types not supported in C
+cdecl> typedef void Void
+cdecl> explain Void x
+               ^
+9: error: variable of "void"; did you mean "void*"?
+cdecl> using I = int
+       ^
+1: syntax error: "using": unexpected token; not a keyword until C++98
+cdecl> set c17
+cdecl> typedef auto int SI
+               ^
+9: error: "typedef auto int" is illegal for built-in type
+cdecl> set c++
+c++decl> class C { namespace N { class D; } }
+                             ^
+21: error: namespace can not nest inside class
+c++decl> inline namespace A::B { typedef int Int; }
+                          ^
+18: error: nested namespace can not be inline
+c++decl> struct S { namespace N { typedef int Int; } }
+                              ^
+22: error: namespace can not nest inside struct
+c++decl> struct S { struct S { typedef int Int; }; };
+                           ^
+19: error: "S": member has the same name as its enclosing struct
+c++decl> typedef auto *A
+                 ^
+9: error: "auto" illegal in type definition
+c++decl> typedef auto A
+                 ^
+9: error: "auto" illegal in type definition
+c++decl> typedef int S::Int
+                     ^
+13: error: typedef names can not be scoped; use: namespace S { typedef ... }
+c++decl> namespace N { class C; }
+c++decl> define D of namespace C of namespace N as class D
+                  ^
+10: error: "C" was previously declared as "class" ("namespace N { class C; }")
+c++decl> enum E
+c++decl> namespace E { class C; }
+                   ^
+11: error: "E" was previously declared as "enum" ("enum E")
+c++decl> namespace N { class C; }
+c++decl> namespace N::C { class D; }
+                   ^
+11: error: "C" was previously declared as "class" ("namespace N { class C; }")
+c++decl> using AI = auto int
+                    ^
+12: error: "auto" illegal in type definition
+c++decl> using int_least32_t = char
+                               ^
+23: error: type "char" redefinition incompatible with original type "int"
+c++decl> using SI = extern int
+                    ^
+12: error: "typedef extern int" is illegal for built-in type
+c++decl> using U = void (*F)(int)
+                        ^
+16: error: "using" type can not have a name
+c++decl> using SI = register int
+                    ^
+12: error: "typedef register int" is illegal for built-in type since C++17
+c++decl> using SI = static int
+                    ^
+12: error: "typedef static int" is illegal for built-in type
+c++decl> set c++14
+c++decl> namespace A::B { typedef int Int; }
+                   ^
+11: error: nested namespace declarations not supported until C++17

@@ -1,3 +1,0 @@
-declare = of structure S as default member operator (reference to constant S...
-        ^
-9: error: "default" is illegal for operator until C++11

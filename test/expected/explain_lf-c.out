@@ -1,3 +1,0 @@
-explain long float x
-        ^
-9: error: "long float" is illegal for built-in type unless K&RC

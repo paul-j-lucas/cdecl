@@ -1,3 +1,0 @@
-explain static void operator()(int, int)
-                  ^
-19: error: operator "()" can not be "static" until C++23

@@ -1,3 +1,0 @@
-explain int operator"" _x(int*, unsigned long)
-                             ^
-30: error: invalid user-defined literal parameter type "int*"; must be const (char|char8_t|char16_t|char32_t|wchar_t)*

@@ -1,3 +1,0 @@
-explain void f(double d, int x[d])
-                              ^
-31: error: invalid array dimension type "double"; must be integral

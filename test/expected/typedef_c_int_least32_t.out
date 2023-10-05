@@ -1,3 +1,0 @@
-typedef char int_least32_t
-        ^
-9: error: type "char" redefinition incompatible with original type "int"

@@ -1,3 +1,0 @@
-explain static_cast<int>(x)
-        ^
-9: error: "static_cast": unsupported keyword in C; did you mean "static_assert"?

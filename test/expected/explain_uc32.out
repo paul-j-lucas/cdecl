@@ -1,3 +1,0 @@
-explain unsigned char32_t x
-        ^
-9: error: "unsigned char32_t" is illegal for built-in type

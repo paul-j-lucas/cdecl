@@ -1,3 +1,0 @@
-cast x into type int
-            ^
-13: error: can not cast into "typedef"

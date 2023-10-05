@@ -1,3 +1,0 @@
-struct A { namespace B { typedef int Int; } }
-                     ^
-22: error: namespace can not nest inside struct

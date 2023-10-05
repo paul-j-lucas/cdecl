@@ -1,0 +1,23 @@
+EXPECTED_EXIT=0
+cdecl -O <<END
+struct S
+
+define Int as int
+define int_least32_t as int
+
+declare x as Int
+declare x as struct S
+explain Int x
+
+set c++
+
+define C_Int of class C as int
+define E as enum E of type int
+define S_Int of scope SS as int
+define S_T_Int of scope ST of scope SS as int
+
+define S2::T2 as struct T2
+explain int S2::T2::x
+
+show user typedef
+END

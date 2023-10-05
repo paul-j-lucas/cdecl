@@ -1,3 +1,0 @@
-explain long void x
-        ^
-9: error: "long void" is illegal for built-in type

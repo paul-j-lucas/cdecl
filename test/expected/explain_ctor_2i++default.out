@@ -1,3 +1,0 @@
-explain C(int, int) = default
-        ^
-9: error: "default" can be used only for special member functions and relational operators

@@ -1,3 +1,0 @@
-dynamic cast x into pointer to int
-                    ^
-21: error: invalid dynamic_cast type "pointer to integer"; must be a pointer or reference to a class, struct, or union

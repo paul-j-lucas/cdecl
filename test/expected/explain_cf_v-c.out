@@ -1,3 +1,0 @@
-explain void f() const
-             ^
-14: error: function can not be "const"

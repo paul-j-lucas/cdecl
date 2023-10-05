@@ -1,3 +1,0 @@
-explain extern R"abc(X)ab)abc" void f()
-               ^
-16: error: "X)ab": unknown linkage language; did you mean "C" or "C++"?

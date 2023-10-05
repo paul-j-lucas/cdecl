@@ -1,3 +1,0 @@
-declare ! as virtual operator (S) returning bool
-                               ^
-32: error: member operator "!" must have exactly 0 parameters

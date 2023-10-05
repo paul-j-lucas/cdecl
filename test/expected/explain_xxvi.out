@@ -1,3 +1,0 @@
-explain constexpr volatile int x
-        ^
-9: error: "constexpr volatile" is illegal in C

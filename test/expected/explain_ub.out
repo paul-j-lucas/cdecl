@@ -1,3 +1,0 @@
-explain unsigned bool x
-        ^
-9: error: "unsigned bool" is illegal for built-in type

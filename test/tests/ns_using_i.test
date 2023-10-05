@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-namespace NS { using Int = int; }
-show user typedef
-END

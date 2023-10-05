@@ -1,3 +1,0 @@
-explain [*this,*this]
-               ^
-16: error: "this" previously captured

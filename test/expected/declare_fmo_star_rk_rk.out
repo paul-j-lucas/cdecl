@@ -1,3 +1,0 @@
-declare * as friend member operator (reference to S) returning reference to S
-        ^
-9: error: operator overloading not supported in C

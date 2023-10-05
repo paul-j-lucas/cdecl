@@ -1,3 +1,0 @@
-explain int &&*x
-            ^
-13: error: pointer to rvalue reference is illegal; did you mean "*&"?

@@ -1,3 +1,0 @@
-explain int operator+(S, ...)
-                         ^
-26: error: operator "+" can not have a variadic parameter

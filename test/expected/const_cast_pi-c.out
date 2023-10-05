@@ -1,3 +1,0 @@
-const cast x into pointer to int
-^
-1: error: const_cast not supported in C

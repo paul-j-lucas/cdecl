@@ -1,0 +1,8 @@
+EXPECTED_EXIT=65
+cdecl -O <<END
+show foo
+
+set c++03
+show using
+
+END

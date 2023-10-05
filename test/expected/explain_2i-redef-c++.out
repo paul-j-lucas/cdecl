@@ -1,3 +1,0 @@
-explain int x, x
-        ^
-9: error: "x": redefinition

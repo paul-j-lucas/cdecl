@@ -1,5 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-struct S
-define S::T as struct T; explain int S::T::x
-END

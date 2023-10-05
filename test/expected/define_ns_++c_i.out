@@ -1,3 +1,0 @@
-define Int of namespace X of class C as int
-           ^
-12: error: namespace can not nest inside class

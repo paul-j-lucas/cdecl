@@ -1,5 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++ <<END
-namespace N { class C; }
-namespace N::C { class D; }
-END

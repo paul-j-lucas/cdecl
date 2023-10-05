@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-declare x as short char
-END

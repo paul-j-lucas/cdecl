@@ -1,3 +1,0 @@
-cast x into register int
-            ^
-13: error: can not cast into "register"

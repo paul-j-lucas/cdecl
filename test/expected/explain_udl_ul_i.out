@@ -1,3 +1,0 @@
-explain int operator"" _x(unsigned long)
-                          ^
-27: error: invalid user-defined literal parameter type "unsigned long"; must be "unsigned long long", "long double", "char", "const char*", "char8_t", "char16_t", "char32_t", or "wchar_t"

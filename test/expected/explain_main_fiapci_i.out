@@ -1,3 +1,0 @@
-explain int main( int, char *argv[], int )
-                                     ^
-38: error: invalid main() parameter type "int"; must be "char*[]"

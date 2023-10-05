@@ -1,3 +1,0 @@
-explain long char x
-        ^
-9: error: "long char" is illegal for built-in type

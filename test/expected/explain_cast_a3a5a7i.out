@@ -1,3 +1,0 @@
-explain (int[3][5][7])x
-        ^
-9: error: arithmetic or pointer type expected

@@ -1,3 +1,0 @@
-explain auto f()
-        ^
-9: error: function returning "auto" not supported until C++14

@@ -1,3 +1,0 @@
-explain void* operator new(int n)
-                           ^
-28: error: invalid operator "new" parameter type "int"; must be "std::size_t" (or equivalent)

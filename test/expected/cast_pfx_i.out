@@ -1,3 +1,0 @@
-cast p into pointer to function (x) returning int
-                                 ^
-34: error: type specifier required since C23

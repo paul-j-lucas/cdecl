@@ -1,7 +1,0 @@
-explain int operator"" _x(char)
-        ^
-9: warning: "operator" is a keyword in C++98
-explain int operator"" _x(char)
-                    ^
-21: syntax error: """": unexpected token
-declare operator as integer

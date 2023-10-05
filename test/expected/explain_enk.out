@@ -1,3 +1,0 @@
-explain enum struct C x
-        ^
-9: error: "enum struct": enum classes must just use "enum"

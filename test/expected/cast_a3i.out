@@ -1,3 +1,0 @@
-cast x into array 3 of int
-^
-1: error: arithmetic or pointer type expected

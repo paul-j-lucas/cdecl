@@ -1,3 +1,0 @@
-declare x as pointer to unsigned width 3 bits
-                                 ^
-34: error: invalid bit-field type "pointer to unsigned integer"; must be an integral type

@@ -1,3 +1,0 @@
-explain dynamic_cast<class C*>(x)
-        ^
-9: error: "dynamic_cast": unsupported keyword in C

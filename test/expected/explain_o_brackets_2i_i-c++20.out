@@ -1,3 +1,0 @@
-explain int operator[](int, int)
-                       ^
-24: error: member operator "[]" must have exactly 1 parameter

@@ -1,3 +1,0 @@
-explain enum class C x
-        ^
-9: error: "enum class": enum classes must just use "enum"

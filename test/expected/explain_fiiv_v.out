@@ -1,3 +1,0 @@
-explain void f( int, int, void )
-                          ^
-27: error: "void" must be only parameter if specified

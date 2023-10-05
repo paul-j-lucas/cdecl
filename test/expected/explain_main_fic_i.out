@@ -1,3 +1,0 @@
-explain int main( int, char )
-                       ^
-24: error: invalid main() parameter type "char"; must be "char*[]"

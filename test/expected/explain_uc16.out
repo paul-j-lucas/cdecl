@@ -1,3 +1,0 @@
-explain unsigned char16_t x
-        ^
-9: error: "unsigned char16_t" is illegal for built-in type

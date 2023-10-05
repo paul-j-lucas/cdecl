@@ -1,0 +1,19 @@
+EXPECTED_EXIT=65
+cdecl -O <<END
+explain const_cast<int*>(x)
+explain dynamic_cast<class C*>(x)
+explain (extern int)x
+explain (int[3][5][7])x
+explain (int[3][5])x
+explain (int[3])x
+explain (long long long)x
+explain (register int)x
+explain reinterpret_cast<void*>(x)
+explain (static int)x
+explain static_cast<int>(x)
+explain (typedef int)x
+
+set c17
+explain (auto int)x
+
+END

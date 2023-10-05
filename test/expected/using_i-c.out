@@ -1,3 +1,0 @@
-using I = int
-^
-1: syntax error: "using": unexpected token; not a keyword until C++98

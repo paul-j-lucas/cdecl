@@ -1,3 +1,0 @@
-explain short int main( int, char *argv[] )
-        ^
-9: error: invalid main() return type "short"; must be "int" or a typedef thereof

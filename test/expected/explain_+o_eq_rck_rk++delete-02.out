@@ -1,3 +1,0 @@
-explain S& S::operator=(T const&) = delete
-         ^
-10: error: "delete" can be used only for special member functions

@@ -1,3 +1,0 @@
-explain bool x
-        ^
-9: error: "bool": unsupported type in C

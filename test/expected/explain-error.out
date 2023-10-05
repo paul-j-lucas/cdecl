@@ -1,0 +1,660 @@
+cdecl> struct S
+cdecl> struct T
+cdecl> typedef const void const_void
+cdecl> typedef enum E EE
+cdecl> typedef int A2[2]
+cdecl> typedef int Int
+cdecl> explain A2 f()
+               ^
+9: error: function returning array; did you mean function returning pointer?
+cdecl> explain _Alignas(3) char c
+               ^
+9: error: "3": alignment must be a power of 2
+cdecl> explain _Alignas(4) char c : 3
+               ^
+9: error: bit fields can not be aligned
+cdecl> explain _Alignas(4) int f()
+               ^
+9: error: function can not be aligned
+cdecl> explain alignas(4) register int x
+               ^
+9: error: "alignas" can not be combined with "register"
+cdecl> explain _Alignas(64) S x
+               ^
+9: error: struct or union can not be aligned in C
+cdecl> explain _Alignas(8) typedef int Int
+               ^
+9: error: typedef can not be aligned
+cdecl> explain _Atomic A2 x
+               ^
+9: error: array can not be "_Atomic"
+cdecl> explain _Atomic(const int) x
+                       ^
+17: error: "_Atomic" can not be of "const"
+cdecl> explain auto f()
+               ^
+9: error: function returning "auto" not supported in C
+cdecl> explain auto *p
+                    ^
+14: error: "auto" with pointer declarator not supported in C
+cdecl> explain auto x, y
+               ^
+9: error: "auto" with multiple declarators not supported in C
+cdecl> explain ~C()
+             ^
+7: error: destructors not supported in C
+cdecl> explain constexpr volatile int x
+               ^
+9: error: "constexpr volatile" is illegal in C
+cdecl> explain EE x : 4
+               ^
+9: error: enum bit-fields not supported in C
+cdecl> explain enum E x : 3
+               ^
+9: error: enum bit-fields not supported in C
+cdecl> explain extern static void f()
+                                  ^
+28: error: "extern static" is illegal for function
+cdecl> explain friend void f()
+               ^
+9: error: "friend": unsupported keyword in C
+cdecl> explain inline int x
+               ^
+9: error: inline variables not supported in C
+cdecl> explain int
+                   ^
+13: error: declaration expected
+cdecl> explain int a[0]
+                    ^
+14: error: array dimension must be > 0
+cdecl> explain int C::*p
+                   ^
+13: error: pointer to member not supported in C
+cdecl> explain int f()[]
+                      ^
+16: error: function returning array; did you mean function returning pointer?
+cdecl> explain int (*f) const
+                        ^
+18: syntax error: "const": unexpected token ("const" is a keyword)
+declare f as pointer to integer
+cdecl> explain int (f[4])()
+                   ^
+13: error: array of function is illegal; did you mean array of pointer to function?
+cdecl> explain int f[5](double)
+                    ^
+14: error: array of function is illegal; did you mean array of pointer to function?
+cdecl> explain int* f(x)
+                      ^
+16: error: type specifier required since C23
+cdecl> explain int main( char, char )
+                         ^
+19: error: invalid main() first parameter type "char"; must be "int" or a typedef thereof
+cdecl> explain int main( int )
+                         ^
+19: error: a single parameter for main() must be "void"
+cdecl> explain int main( int, char )
+                              ^
+24: error: invalid main() parameter type "char"; must be "char*[]"
+cdecl> explain int main( int, char *argv[], int )
+                                            ^
+38: error: invalid main() parameter type "int"; must be "char*[]"
+cdecl> explain int main( int, int** )
+                                  ^
+28: error: invalid main() parameter type "int**"; must be "char**"
+cdecl> explain int main(int, int, int, int)
+                        ^
+18: error: main() must have 0-3 parameters
+cdecl> explain int (^S)()
+                     ^
+15: error: "S": previously declared as type "struct S"
+cdecl> explain int S[4]
+                   ^
+13: error: "S": previously declared as type "struct S"
+cdecl> explain int S::x
+declare x of structure S as integer
+cdecl> explain int &*x
+                   ^
+13: error: pointer to reference is illegal; did you mean "*&"?
+cdecl> explain int &x
+                   ^
+13: error: reference not supported in C
+cdecl> explain int x, *x
+                      ^
+16: error: "x": redefinition with different type
+cdecl> explain long bool x
+               ^
+9: error: "long bool" is illegal for built-in type
+cdecl> explain long char x
+               ^
+9: error: "long char" is illegal for built-in type
+cdecl> explain long char16_t x
+               ^
+9: error: "long char16_t" is illegal for built-in type
+cdecl> explain long char32_t x
+               ^
+9: error: "long char32_t" is illegal for built-in type
+cdecl> explain long float x
+               ^
+9: error: "long float" is illegal for built-in type unless K&RC
+cdecl> explain long long long x
+                         ^
+19: error: "long" can not be combined with "long long"
+cdecl> explain long void x
+               ^
+9: error: "long void" is illegal for built-in type
+cdecl> explain long wchar_t x
+               ^
+9: error: "long wchar_t" is illegal for built-in type
+cdecl> explain [[nodiscard]] int x
+               ^
+9: error: built-in type can not be "nodiscard"
+cdecl> explain pure virtual void f()
+               ^
+9: error: "pure": unknown name
+cdecl> explain register int C::*x
+                            ^
+22: error: pointer to member not supported in C
+cdecl> explain register int f(void)
+                            ^
+22: error: function can not be "register"
+cdecl> explain [[reproducible]] int x
+               ^
+9: error: built-in type can not be "reproducible"
+cdecl> explain restrict Int p
+               ^
+9: error: built-in type can not be "restrict"
+cdecl> explain short bool x
+               ^
+9: error: "short bool" is illegal for built-in type
+cdecl> explain short char x
+               ^
+9: error: "short char" is illegal for built-in type
+cdecl> explain short char16_t x
+               ^
+9: error: "short char16_t" is illegal for built-in type
+cdecl> explain short char32_t x
+               ^
+9: error: "short char32_t" is illegal for built-in type
+cdecl> explain short double x
+               ^
+9: error: "short double" is illegal for built-in type
+cdecl> explain short float x
+               ^
+9: error: "short float" is illegal for built-in type
+cdecl> explain short int main( int, char *argv[] )
+               ^
+9: error: invalid main() return type "short"; must be "int" or a typedef thereof
+cdecl> explain short long long x
+               ^
+9: error: "short long long" is illegal for built-in type
+cdecl> explain short long x
+               ^
+9: error: "short long" is illegal for built-in type
+cdecl> explain short void x
+               ^
+9: error: "short void" is illegal for built-in type
+cdecl> explain short wchar_t x
+               ^
+9: error: "short wchar_t" is illegal for built-in type
+cdecl> explain signed _BitInt(0) x
+               ^
+9: error: signed _BitInt must be at least 2 bits
+cdecl> explain signed _BitInt(1) x
+               ^
+9: error: signed _BitInt must be at least 2 bits
+cdecl> explain signed bool x
+               ^
+9: error: "signed bool" is illegal for built-in type
+cdecl> explain signed char16_t x
+               ^
+9: error: "signed char16_t" is illegal for built-in type
+cdecl> explain signed char32_t x
+               ^
+9: error: "signed char32_t" is illegal for built-in type
+cdecl> explain signed void x
+               ^
+9: error: variable of "void"; did you mean "void*"?
+cdecl> explain signed wchar_t x
+               ^
+9: error: "signed wchar_t" is illegal for built-in type
+cdecl> explain static int main()
+                          ^
+20: error: main() can not be "static" in C
+cdecl> explain type int x
+               ^
+9: error: "type": unknown name
+cdecl> explain typedef char int32_t
+                            ^
+22: error: type "char" redefinition incompatible with original type "int"
+cdecl> explain unsigned _BitInt(0) x
+               ^
+9: error: unsigned _BitInt must be at least 1 bit
+cdecl> explain unsigned bool x
+               ^
+9: error: "unsigned bool" is illegal for built-in type
+cdecl> explain unsigned char16_t x
+               ^
+9: error: "unsigned char16_t" is illegal for built-in type
+cdecl> explain unsigned char32_t x
+               ^
+9: error: "unsigned char32_t" is illegal for built-in type
+cdecl> explain unsigned double x
+               ^
+9: error: "unsigned double" is illegal for built-in type
+cdecl> explain unsigned float x
+               ^
+9: error: "unsigned float" is illegal for built-in type
+cdecl> explain unsigned void x
+               ^
+9: error: "unsigned void" is illegal for built-in type
+cdecl> explain unsigned wchar_t x
+               ^
+9: error: "unsigned wchar_t" is illegal for built-in type
+cdecl> explain unsigned *x : 3
+                           ^
+21: error: invalid bit-field type "unsigned*"; must be an integral type
+cdecl> explain using f = void (*)(int)
+               ^
+9: error: "using": unsupported keyword in C
+cdecl> explain virtual void f()
+               ^
+9: error: "virtual": unsupported keyword in C
+cdecl> explain virtual void f() override final
+               ^
+9: error: "virtual": unsupported keyword in C
+cdecl> explain void a[4]
+                     ^
+15: error: array of "void"; did you mean array of "void*"?
+cdecl> explain void __cdecl *p
+                    ^
+14: error: "__cdecl" can be used only for functions and pointers to function
+cdecl> explain void f( ..., ... )
+                       ^
+17: error: variadic specifier must be last
+cdecl> explain void f( ..., char const *fmt )
+                       ^
+17: error: variadic specifier must be last
+cdecl> explain void f( ..., void )
+                       ^
+17: error: variadic specifier must be last
+cdecl> explain void f() const
+                    ^
+14: error: function can not be "const"
+cdecl> explain void f( int ()() )
+                           ^
+21: error: function returning function is illegal; did you mean function returning pointer to function?
+cdecl> explain void f( int, int, void )
+                                 ^
+27: error: "void" must be only parameter if specified
+cdecl> explain void f( int, void )
+                            ^
+22: error: "void" must be only parameter if specified
+cdecl> explain void f( void, ... )
+                       ^
+17: error: "void" must be only parameter if specified
+cdecl> explain void f( void, int )
+                       ^
+17: error: "void" must be only parameter if specified
+cdecl> explain void f( void, void )
+                       ^
+17: error: "void" must be only parameter if specified
+cdecl> explain void f(const void)
+                      ^
+16: error: "void" parameters can not be "const"
+cdecl> explain void f(const_void)
+                      ^
+16: error: "void" parameters can not be "const"
+cdecl> explain void f(double d, int x[d])
+                                     ^
+31: error: invalid array dimension type "double"; must be integral
+cdecl> explain void f(int x[][])
+                             ^
+23: error: array dimension required
+cdecl> explain void f(int x, int x)
+                             ^
+23: error: "x": redefinition of parameter
+cdecl> explain void f(int x[static *])
+                                   ^
+29: syntax error: "*": ']' expected
+cdecl> explain void f(register i)
+                      ^
+16: error: implicit "int" is illegal since C99
+cdecl> explain void f(static int x)
+                      ^
+16: error: function parameters can not be "static"
+cdecl> explain void f(t x)
+                        ^
+18: syntax error: "x": ',' expected
+cdecl> explain void f(unsigned x : 3)
+                      ^
+16: error: invalid parameter: can not have bit-field width
+cdecl> explain void f(void x)
+                      ^
+16: error: "void" parameters can not have a name
+cdecl> explain void main()
+               ^
+9: error: invalid main() return type "void"; must be "int" or a typedef thereof
+cdecl> explain void (*restrict p)()
+                    ^
+14: error: pointer to function can not be "restrict"
+cdecl> explain void x
+               ^
+9: error: variable of "void"; did you mean "void*"?
+cdecl> set knr
+cdecl> explain const int x
+               ^
+9: error: "const": unsupported keyword until C89; did you mean "__const"?
+cdecl> explain enum E x
+               ^
+9: error: "enum": unsupported type until C89
+cdecl> explain int f(double)
+                     ^
+15: error: function prototypes not supported until C89
+cdecl> explain int f(x, ...)
+                        ^
+18: error: function prototypes not supported until C89
+cdecl> explain int main(x)
+                        ^
+18: error: main() must have 0, 2, or 3 parameters in K&RC
+cdecl> explain long double x
+               ^
+9: error: "long double" is illegal for built-in type until C89
+cdecl> explain long long x
+               ^
+9: error: "long long" is illegal for built-in type until C99
+cdecl> explain signed char x
+               ^
+9: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
+cdecl> explain signed int x
+               ^
+9: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
+cdecl> explain signed long x
+               ^
+9: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
+cdecl> explain struct S f()
+               ^
+9: error: function returning struct or union not supported until C89
+cdecl> explain void *p
+               ^
+9: error: "void": unsupported type until C89
+cdecl> explain volatile int x
+               ^
+9: error: "volatile": unsupported keyword until C89; did you mean "__volatile"?
+cdecl> set c89
+cdecl> explain bool x
+               ^
+9: error: "bool": unsupported type in C
+cdecl> explain long long x
+               ^
+9: error: "long long" is illegal for built-in type until C99
+cdecl> explain wchar_t x
+               ^
+9: error: "wchar_t": unsupported type until C95
+cdecl> set c99
+cdecl> explain char16_t x
+               ^
+9: error: "char16_t": unsupported type until C11; did you mean "wchar_t"?
+cdecl> explain char32_t x
+               ^
+9: error: "char32_t": unsupported type until C11; did you mean "wchar_t"?
+cdecl> explain thread_local int x
+               ^
+9: error: "thread_local": unsupported keyword until C23
+cdecl> set c17
+cdecl> explain constexpr int x
+               ^
+9: error: "constexpr": unsupported keyword until C23
+cdecl> explain enum E : int x
+                        ^
+18: error: enum with underlying type not supported until C23
+cdecl> explain void f( ... )
+                       ^
+17: error: variadic specifier can not be only parameter until C23
+cdecl> set c++
+c++decl> typedef int &RI
+c++decl> explain [&,&]
+                    ^
+12: error: default capture previously specified
+c++decl> explain [&,=]
+                    ^
+12: error: default capture previously specified
+c++decl> explain [=,&]
+                    ^
+12: error: default capture previously specified
+c++decl> explain [=,=]
+                    ^
+12: error: default capture previously specified
+c++decl> explain auto int x
+                      ^
+14: error: declaration expected ("int" is a keyword)
+c++decl> explain C(int, int) = default
+                 ^
+9: error: "default" can be used only for special member functions and relational operators
+c++decl> explain constinit int f()
+                               ^
+23: error: function can not be "constinit"
+c++decl> explain enum class C x
+                 ^
+9: error: "enum class": enum classes must just use "enum"
+c++decl> explain enum E : double x
+                          ^
+18: error: invalid enum underlying type "double"; must be integral
+c++decl> explain enum struct C x
+                 ^
+9: error: "enum struct": enum classes must just use "enum"
+c++decl> explain explicit C(int) const
+                          ^
+18: error: function can not be "explicit"
+c++decl> explain export static int x
+                 ^
+9: error: "export static int" is illegal for built-in type
+c++decl> explain extern R"abc(X)ab)abc" void f()
+                        ^
+16: error: "X)ab": unknown linkage language; did you mean "C" or "C++"?
+c++decl> explain extern void v
+                 ^
+9: error: variable of "void"; did you mean "void*"?
+c++decl> explain [[foo]] int x
+                   ^
+11: warning: "foo": unknown attribute
+declare x as integer
+c++decl> explain friend static void f()
+                                    ^
+28: error: "friend static" is illegal for function
+c++decl> explain [&,&i]
+                    ^
+12: error: default capture is already by reference
+c++decl> explain [i,&]
+                    ^
+12: error: default capture must be specified first
+c++decl> explain [i,=]
+                    ^
+12: error: default capture must be specified first
+c++decl> explain [i,i]
+                    ^
+12: error: "i" previously captured
+c++decl> explain int &const r
+                     ^
+13: error: reference can not be "const"; did you mean reference to const?
+c++decl> explain int& &&r
+declare r as rvalue reference to reference to integer
+c++decl> explain int& &r
+declare r as reference to reference to integer
+c++decl> explain int&& &&r
+declare r as rvalue reference to rvalue reference to integer
+c++decl> explain int&& &r
+declare r as reference to rvalue reference to integer
+c++decl> explain int& r[2]
+                    ^
+12: error: array of reference is illegal; did you mean (&r)[]?
+c++decl> explain int *restrict p
+                      ^
+14: error: "restrict" not supported in C++; use "__restrict" instead
+c++decl> explain int S::x : 3
+                          ^
+18: syntax error: ":": unexpected token
+declare x of structure S as integer
+c++decl> explain int &&*x
+                     ^
+13: error: pointer to rvalue reference is illegal; did you mean "*&"?
+c++decl> explain int x, x
+                 ^
+9: error: "x": redefinition
+c++decl> explain long char8_t x
+                 ^
+9: error: "long char8_t" is illegal for built-in type
+c++decl> explain noreturn void f(int)
+                 ^
+9: error: "noreturn" keyword not supported in C++; did you mean [[noreturn]]?
+c++decl> explain [[no_unique_address]] int x : 4
+                 ^
+9: error: [[no_unique_address]] built-in types can not have bit-field widths
+c++decl> explain [[no_unique_address]] void f()
+                                            ^
+36: error: function can not be "no_unique_address"
+c++decl> explain register int &x
+                              ^
+22: error: "register" is illegal for reference since C++17
+c++decl> explain RI *p
+                    ^
+12: error: pointer to reference is illegal
+c++decl> explain short char8_t x
+                 ^
+9: error: "short char8_t" is illegal for built-in type
+c++decl> explain signed char8_t x
+                 ^
+9: error: "signed char8_t" is illegal for built-in type
+c++decl> explain static mutable int x
+                 ^
+9: error: "mutable static int" is illegal for built-in type
+c++decl> explain static void f() &
+                             ^
+21: error: reference qualified functions can not be "static"
+c++decl> explain static void f() &&
+                             ^
+21: error: reference qualified functions can not be "static"
+c++decl> explain static void f() const
+                             ^
+21: error: "static" functions can not be "const"
+c++decl> explain static void f( this S &self )
+                                       ^
+31: error: function with "this" parameter can not be "static"
+c++decl> explain [*this,*this]
+                        ^
+16: error: "this" previously captured
+c++decl> explain [*this,this]
+                        ^
+16: error: "this" previously captured
+c++decl> explain [this,*this]
+                       ^
+15: error: "this" previously captured
+c++decl> explain [this,this]
+                       ^
+15: error: "this" previously captured
+c++decl> explain typename T x
+                          ^
+18: error: qualified name expected after "typename"
+c++decl> explain unsigned char8_t x
+                 ^
+9: error: "unsigned char8_t" is illegal for built-in type
+c++decl> explain virtual void C::f()
+                              ^
+22: error: "C::f": "virtual" can not be used in file-scoped functions
+c++decl> explain virtual void f() = 1
+                                    ^
+28: error: '0' expected
+c++decl> explain virtual void f( this S &self )
+                                        ^
+32: error: function with "this" parameter can not be "virtual"
+c++decl> explain void f() = 0
+                      ^
+14: error: non-virtual function can not be pure
+c++decl> explain void f() = default
+                      ^
+14: error: "default" can be used only for special member functions and relational operators
+c++decl> explain void f() -> void
+                 ^
+9: error: function with trailing return type must only specify "auto"
+c++decl> explain void f( int x, this S &self )
+                                       ^
+31: error: "this" can be only first parameter
+c++decl> explain void f() restrict
+                          ^
+18: syntax error: "restrict": unexpected token ("restrict" is a keyword)
+declare f as function returning void
+c++decl> explain void f( this S &self ) &
+                                ^
+24: error: function with "this" parameter can not be "reference"
+c++decl> explain void f( this S &self ) const
+                                ^
+24: error: function with "this" parameter can not be "const"
+c++decl> explain void f() throw()
+                      ^
+14: error: "throw" not supported since C++17; did you mean "noexcept"?
+c++decl> explain void f(int (*g) const)
+                                 ^
+25: syntax error: "const": ',' expected
+c++decl> explain void f(int S::x)
+                                ^
+24: syntax error: ")": cast or declaration expected
+c++decl> explain void f(int x[*])
+                             ^
+21: error: variable length arrays not supported in C++
+c++decl> explain void f(int x[const 3])
+                             ^
+21: error: "const" arrays not supported in C++
+c++decl> explain void f(int x[static 3])
+                             ^
+21: error: "static" arrays not supported in C++
+c++decl> explain void f(x)
+                        ^
+16: error: type specifier required in C++
+c++decl> explain void &x
+                      ^
+14: error: reference to "void" is illegal; did you mean pointer to void?
+c++decl> explain X::C()
+                 ^
+9: error: "X::C": unknown name
+c++decl> explain X::~C()
+                 ^
+9: error: matching class name after '~' expected
+c++decl> set c++03
+c++decl> explain auto f() -> void
+                          ^
+18: error: trailing return type not supported until C++11
+c++decl> explain char16_t x
+                 ^
+9: error: "char16_t": unsupported type until C++11; did you mean "wchar_t"?
+c++decl> explain char32_t x
+                 ^
+9: error: "char32_t": unsupported type until C++11; did you mean "wchar_t"?
+c++decl> explain explicit operator bool()
+                        ^
+16: error: user-defined conversion operator can not be "explicit" until C++11
+c++decl> explain void f() &
+                      ^
+14: error: reference qualified functions not supported until C++11
+c++decl> explain void f() &&
+                      ^
+14: error: reference qualified functions not supported until C++11
+c++decl> explain void f(int &&r)
+                            ^
+20: error: rvalue reference not supported until C++11
+c++decl> set c++11
+c++decl> explain auto f()
+                 ^
+9: error: function returning "auto" not supported until C++14
+c++decl> explain constexpr void f()
+                                ^
+24: error: "constexpr void" is illegal until C++14
+c++decl> set c++17
+c++decl> explain char8_t x
+                 ^
+9: error: "char8_t": unsupported type until C++20; did you mean "char16_t", "char32_t", or "wchar_t"?
+c++decl> explain void f(auto)
+                        ^
+16: error: "auto" parameters not supported until C++20
+c++decl> set c++20
+c++decl> explain _Atomic(int) x
+                 ^
+9: error: "_Atomic int" is illegal for built-in type until C++23

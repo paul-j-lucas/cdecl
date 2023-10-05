@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl <<END
-explain _BitInt(1) x
-END

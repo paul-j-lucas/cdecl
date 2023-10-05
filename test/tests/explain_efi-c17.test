@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc17 <<END
-explain enum E : int x
-END

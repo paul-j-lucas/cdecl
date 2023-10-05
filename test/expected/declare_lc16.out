@@ -1,3 +1,0 @@
-declare x as long char16_t
-        ^
-9: error: "long char16_t" is illegal for built-in type

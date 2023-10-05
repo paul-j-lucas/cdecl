@@ -1,3 +1,0 @@
-explain Void x
-        ^
-9: error: variable of "void"; did you mean "void*"?

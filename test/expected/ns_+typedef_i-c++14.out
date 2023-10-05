@@ -1,3 +1,0 @@
-namespace A::B { typedef int Int; }
-          ^
-11: error: nested namespace declarations not supported until C++17

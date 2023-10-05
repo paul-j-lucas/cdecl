@@ -1,3 +1,0 @@
-explain int operator-(int, ...)
-                      ^
-23: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof

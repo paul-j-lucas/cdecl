@@ -1,6 +1,0 @@
-EXPECTED_EXIT=0
-cdecl -xc++ <<END
-namespace N { class C; };
-namespace N { enum C::E; }
-show user typedef
-END

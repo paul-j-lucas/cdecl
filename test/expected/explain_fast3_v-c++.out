@@ -1,3 +1,0 @@
-explain void f(int x[static 3])
-                    ^
-21: error: "static" arrays not supported in C++

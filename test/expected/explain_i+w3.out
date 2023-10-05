@@ -1,3 +1,0 @@
-explain int S::x : 3
-        ^
-9: error: scoped names can not have bit-field widths

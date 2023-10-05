@@ -1,4 +1,0 @@
-EXPECTED_EXIT=0
-cdecl <<END
-define Int as int
-END

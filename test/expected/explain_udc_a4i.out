@@ -1,3 +1,0 @@
-explain operator A4()
-                 ^
-18: error: user-defined conversion operator return type "A4" (aka, "int[4]") can not be an array; did you mean pointer to array?

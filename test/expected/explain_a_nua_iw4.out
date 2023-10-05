@@ -1,3 +1,0 @@
-explain [[no_unique_address]] int x : 4
-        ^
-9: error: [[no_unique_address]] built-in types can not have bit-field widths

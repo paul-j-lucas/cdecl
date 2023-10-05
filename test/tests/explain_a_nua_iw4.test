@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++ <<END
-explain [[no_unique_address]] int x : 4
-END

@@ -1,3 +1,0 @@
-explain alignas(4) register int x
-        ^
-9: error: "alignas" can not be combined with "register"

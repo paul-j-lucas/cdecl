@@ -1,1 +1,0 @@
-declare p as pointer to member of structure S integer

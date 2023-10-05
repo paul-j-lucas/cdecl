@@ -1,3 +1,0 @@
-explain S& operator++(S&, double)
-                          ^
-27: error: invalid postfix non-member operator "++" parameter type "double"; must be "int" or a typedef thereof

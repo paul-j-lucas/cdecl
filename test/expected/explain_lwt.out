@@ -1,3 +1,0 @@
-explain long wchar_t x
-        ^
-9: error: "long wchar_t" is illegal for built-in type

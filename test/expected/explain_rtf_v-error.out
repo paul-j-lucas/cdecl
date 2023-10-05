@@ -1,4 +1,0 @@
-explain void f() restrict
-                 ^
-18: syntax error: "restrict": unexpected token ("restrict" is a keyword)
-declare f as function returning void

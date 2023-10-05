@@ -1,3 +1,0 @@
-struct S { typedef int I; }
-           ^
-12: error: nested types not supported in C

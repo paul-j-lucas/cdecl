@@ -1,3 +1,0 @@
-struct S;
-struct S { typedef int Int; };
-typedef Int T;

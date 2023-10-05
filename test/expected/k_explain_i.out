@@ -1,3 +1,0 @@
-explain int S
-            ^
-13: error: "S": previously declared as type "struct S"

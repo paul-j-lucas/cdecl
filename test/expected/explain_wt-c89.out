@@ -1,3 +1,0 @@
-explain wchar_t x
-        ^
-9: error: "wchar_t": unsupported type until C95

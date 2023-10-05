@@ -1,3 +1,0 @@
-explain int f(double)
-              ^
-15: error: function prototypes not supported until C89

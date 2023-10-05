@@ -1,3 +1,0 @@
-class A;
-class A { class B; };
-class A::B { typedef int Int; };

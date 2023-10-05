@@ -1,3 +1,0 @@
-explain (long long long)x
-                   ^
-20: error: "long" can not be combined with "long long"

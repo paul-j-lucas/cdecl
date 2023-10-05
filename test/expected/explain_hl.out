@@ -1,3 +1,0 @@
-explain short long x
-        ^
-9: error: "short long" is illegal for built-in type

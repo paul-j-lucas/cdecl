@@ -1,3 +1,0 @@
-explain void f(Void)
-               ^
-16: error: "void" parameters can not be "const"

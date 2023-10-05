@@ -1,3 +1,0 @@
-explain noreturn void f(int)
-        ^
-9: error: "noreturn" keyword not supported in C++; did you mean [[noreturn]]?

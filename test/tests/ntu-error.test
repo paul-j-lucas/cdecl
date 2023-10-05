@@ -1,0 +1,48 @@
+EXPECTED_EXIT=65
+cdecl -O <<END
+typedef char int_least32_t
+typedef extern int SI
+typedef int Int : 3
+typedef register int SI
+typedef static int SI
+typedef typename int Int
+
+struct S { typedef int I; }
+
+typedef void Void
+explain Void x
+
+using I = int
+
+set c17
+typedef auto int SI
+
+set c++
+class C { namespace N { class D; } }
+inline namespace A::B { typedef int Int; }
+struct S { namespace N { typedef int Int; } }
+struct S { struct S { typedef int Int; }; };
+typedef auto *A
+typedef auto A
+typedef int S::Int
+
+namespace N { class C; }
+define D of namespace C of namespace N as class D
+
+enum E
+namespace E { class C; }
+
+namespace N { class C; }
+namespace N::C { class D; }
+
+using AI = auto int
+using int_least32_t = char
+using SI = extern int
+using U = void (*F)(int)
+using SI = register int
+using SI = static int
+
+set c++14
+namespace A::B { typedef int Int; }
+
+END

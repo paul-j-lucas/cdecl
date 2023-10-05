@@ -1,3 +1,0 @@
-explain long long x
-        ^
-9: error: "long long" is illegal for built-in type until C99

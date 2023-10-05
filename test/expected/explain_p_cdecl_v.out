@@ -1,3 +1,0 @@
-explain void __cdecl *p
-             ^
-14: error: "__cdecl" can be used only for functions and pointers to function

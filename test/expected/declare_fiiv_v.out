@@ -1,3 +1,0 @@
-declare f as function (x as int, y as int, void) returning void
-                                           ^
-44: error: "void" must be only parameter if specified

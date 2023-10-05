@@ -1,3 +1,0 @@
-explain enum E x : 3
-        ^
-9: error: enum bit-fields not supported in C

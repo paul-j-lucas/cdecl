@@ -1,3 +1,0 @@
-declare x as long double
-        ^
-9: error: "long double" is illegal for built-in type until C89

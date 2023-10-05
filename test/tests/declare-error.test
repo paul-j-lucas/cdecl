@@ -1,0 +1,134 @@
+EXPECTED_EXIT=65
+cdecl -O <<END
+struct S
+
+declare ! as friend constant operator returning bool
+declare b as block returning array of int
+declare b as block returning function returning int
+declare f as const function returning void
+declare f as const non-member function
+declare f as extern static function returning void
+declare f as friend constant function
+declare f as friend function returning void
+declare f as friend member function
+declare f as function ( x as int, void ) returning void
+declare f as function ( x as non-empty array of int )
+declare f as function ( x as unsigned width 3 )
+declare f as function (i as register) returning void
+declare f as function returning array of int
+declare f as function returning auto
+declare f as function returning function returning int
+declare f as function (x as int, y as int, void) returning void
+declare f as function (x as static int)
+declare f as function (x as void) returning void
+declare f as function (x as y)
+declare f as function (x) returning pointer to int
+declare f as pure virtual function returning void
+declare f as register function returning void
+declare f as restricted function
+declare f as virtual function returning void
+declare i as restricted int
+declare p as pointer to function (x) returning int
+declare p as pointer to register int
+declare p as pointer to S
+declare r as const reference to int
+declare r as volatile reference to int
+declare S as int
+declare x as _BitInt(129)
+declare x as class C
+declare x as consteval int
+declare x as enum class C
+declare x as inline int
+declare x as long bool
+declare x as long char
+declare x as long char16_t
+declare x as long char32_t
+declare x as long float
+declare x as long long long
+declare x as long void
+declare x as long wchar_t
+declare x as non-empty int
+declare x as non-returning int
+declare x as pointer to member of C reference to int
+declare x as pointer to unsigned width 3 bits
+declare x as short bool
+declare x as short char
+declare x as short char16_t
+declare x as short char32_t
+declare x as short double
+declare x as short float
+declare x as short long
+declare x as short long long
+declare x as short void
+declare x as short wchar_t
+declare x as signed bool
+declare x as signed char16_t
+declare x as signed char32_t
+declare x as signed void
+declare x as signed wchar_t
+declare x as typedef int aligned 64
+declare x as unsigned bool
+declare x as unsigned char16_t
+declare x as unsigned char32_t
+declare x as unsigned double
+declare x as unsigned float
+declare x as unsigned size_t
+declare x as unsigned void
+declare x as unsigned wchar_t
+declare x as void
+declare x as y
+declare x of scope s as int
+explain [[unsequenced]] int x
+
+set knr
+declare p as pointer to void
+declare x as long double
+declare x as long long x
+declare x as signed char
+declare x as signed int
+declare x as signed long
+
+set c89
+declare x as bool
+declare x as long long x
+declare x as wchar_t
+
+set c99
+declare x as char16_t
+declare x as char32_t
+
+set c17
+declare x as constexpr int
+
+set c++
+declare C as static constructor
+declare C of class X as constructor
+declare f as const non-member function
+declare f as explicit function
+declare f as extern member function
+declare f as non-unique-address function
+declare f as _Noreturn function (int) returning void
+declare f of scope S as virtual function
+declare x as array of reference to int
+declare x as auto int
+declare x as consteval int
+declare x as exported static int x
+declare x as long char8_t
+declare x as pointer to reference to int
+declare x as reference to register int
+declare x as reference to void
+declare x as short char8_t
+declare x as signed char8_t
+declare x as static mutable int
+declare x as unsigned char8_t
+
+set c++03
+declare x as char16_t
+declare x as char32_t
+
+set c++17
+declare x as char8_t
+
+set c++20
+declare x as atomic int
+END

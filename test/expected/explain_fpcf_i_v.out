@@ -1,3 +1,0 @@
-explain void f(int (*g) const)
-                        ^
-25: syntax error: "const": ',' expected

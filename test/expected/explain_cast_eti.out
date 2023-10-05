@@ -1,3 +1,0 @@
-explain (extern int)x
-         ^
-10: error: can not cast into "extern"

@@ -1,0 +1,5 @@
+EXPECTED_EXIT=65
+cdecl -O -xc++ <<END
+typedef int A4[4]
+declare user-defined conversion operator returning A4
+END

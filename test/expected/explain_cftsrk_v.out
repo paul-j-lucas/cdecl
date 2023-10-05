@@ -1,3 +1,0 @@
-explain void f( this S &self ) const
-                       ^
-24: error: function with "this" parameter can not be "const"

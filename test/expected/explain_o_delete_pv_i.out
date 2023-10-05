@@ -1,3 +1,0 @@
-explain int operator delete(void*)
-        ^
-9: error: invalid operator "delete" return type "int"; must be "void"

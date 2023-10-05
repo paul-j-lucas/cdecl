@@ -1,3 +1,0 @@
-explain auto *p
-             ^
-14: error: "auto" with pointer declarator not supported in C

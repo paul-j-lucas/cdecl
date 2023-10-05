@@ -1,3 +1,0 @@
-explain int f()[]
-               ^
-16: error: function returning array; did you mean function returning pointer?

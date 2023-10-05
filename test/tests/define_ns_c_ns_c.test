@@ -1,5 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++ <<END
-namespace N { class C; }
-define D of namespace C of namespace N as class D
-END

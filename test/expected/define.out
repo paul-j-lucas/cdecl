@@ -1,0 +1,25 @@
+cdecl> struct S
+cdecl> define Int as int
+cdecl> define int_least32_t as int
+cdecl> declare x as Int
+Int x;
+cdecl> declare x as struct S
+struct S x;
+cdecl> explain Int x
+declare x as Int
+cdecl> set c++
+c++decl> define C_Int of class C as int
+c++decl> define E as enum E of type int
+c++decl> define S_Int of scope SS as int
+c++decl> define S_T_Int of scope ST of scope SS as int
+c++decl> define S2::T2 as struct T2
+c++decl> explain int S2::T2::x
+declare x of structure S2::T2 as integer
+c++decl> show user typedef
+class C { typedef int C_Int; };
+enum E : int;
+typedef int Int;
+typedef struct S S;
+namespace S2 { struct T2; }
+namespace SS::ST { typedef int S_T_Int; }
+namespace SS { typedef int S_Int; }

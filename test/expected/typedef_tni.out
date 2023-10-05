@@ -1,3 +1,0 @@
-typedef typename int Int
-        ^
-9: syntax error: "typename": unexpected token; not a keyword until C++98

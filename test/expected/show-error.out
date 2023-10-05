@@ -1,0 +1,7 @@
+cdecl> show foo
+            ^
+6: error: "foo": no such type defined via define, enum, struct, typedef, or union
+cdecl> set c++03
+c++decl> show using
+              ^
+6: error: "using" not supported until C++11

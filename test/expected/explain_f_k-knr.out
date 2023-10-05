@@ -1,3 +1,0 @@
-explain struct S f()
-        ^
-9: error: function returning struct or union not supported until C89

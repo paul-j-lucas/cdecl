@@ -1,3 +1,0 @@
-explain extern static void f()
-                           ^
-28: error: "extern static" is illegal for function

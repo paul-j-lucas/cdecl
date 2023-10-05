@@ -1,3 +1,0 @@
-explain void a[4]
-              ^
-15: error: array of "void"; did you mean array of "void*"?

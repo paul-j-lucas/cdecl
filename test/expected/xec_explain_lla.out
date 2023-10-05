@@ -1,3 +1,0 @@
-explain long long _Accum x
-        ^
-9: error: "long long _Accum" is illegal for built-in type

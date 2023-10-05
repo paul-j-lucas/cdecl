@@ -1,3 +1,0 @@
-explain long char8_t x
-        ^
-9: error: "long char8_t" is illegal for built-in type

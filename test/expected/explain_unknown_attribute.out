@@ -1,4 +1,0 @@
-explain [[foo]] int x
-          ^
-11: warning: "foo": unknown attribute
-declare x as integer

@@ -1,3 +1,0 @@
-explain int x, *x
-               ^
-16: error: "x": redefinition with different type

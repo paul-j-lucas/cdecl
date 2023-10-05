@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -xc++ <<END
-explain unsigned char8_t x
-END
