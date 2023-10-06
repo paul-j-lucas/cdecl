@@ -251,6 +251,42 @@ error:
 }
 
 /**
+ * Prints the name of \a ast followed by `(aka` followed by the underlying type
+ * in either pseudo-English or gibberish (depending on how it was declared).
+ * For example, if a type was declared in pseudo-English like:
+ *
+ *      define RI as reference to int
+ *
+ * prints `"RI" (aka "reference to integer")`, that is the type name followed
+ * by `(aka` and the underlying type in pseudo-English.
+ *
+ * However, if the underlying type was declared in gibberish like:
+ *
+ *      using RI = int&
+ *
+ * prints `"RI" (aka "int&")`, that is the type name followed by `(aka` and the
+ * underlying type in gibberish.
+ *
+ * @note A newline is _not_ printed.
+ *
+ * @param ast The \ref c_ast to print.
+ * @param pout The `FILE` to print to.
+ */
+static void print_ast_name_aka( c_ast_t const *ast, FILE *pout ) {
+  assert( ast != NULL );
+  assert( ast->kind != K_TYPEDEF );
+  assert( !c_sname_empty( &ast->sname ) );
+  assert( pout != NULL );
+
+  FPRINTF( pout, "\"%s\" (aka, \"", c_sname_full_name( &ast->sname ) );
+  // Look-up the type so we can print it how it was originally defined.
+  c_typedef_t const *const tdef = c_typedef_find_sname( &ast->sname );
+  assert( tdef != NULL );
+  print_type_ast( tdef, pout );
+  FPUTS( "\")", pout );
+}
+
+/**
  * Prints the error line (if not interactive) and a `^` (in color, if possible
  * and requested) under the offending token.
  *
@@ -522,26 +558,34 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
   va_end( args );
 }
 
-void print_ast_type_aka( c_ast_t const *ast, FILE *tout ) {
+void print_ast_kind_aka( c_ast_t const *ast, FILE *pout ) {
   assert( ast != NULL );
-  assert( tout != NULL );
+  assert( pout != NULL );
 
-  if ( ast->kind == K_TYPEDEF ) {
-    ast = c_ast_untypedef( ast );
-    FPRINTF( tout, "\"%s\" (aka, \"", c_sname_full_name( &ast->sname ) );
-    // Look-up the type so we can print it how it was originally defined.
-    c_typedef_t const *const tdef = c_typedef_find_sname( &ast->sname );
-    assert( tdef != NULL );
-    print_type_ast( tdef, tout );
-    FPUTS( "\")", tout );
+  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+  FPUTS( c_kind_name( raw_ast->kind ), pout );
+
+  if ( raw_ast != ast ) {
+    FPUTS( " type ", pout );
+    print_ast_name_aka( raw_ast, pout );
+  }
+}
+
+void print_ast_type_aka( c_ast_t const *ast, FILE *pout ) {
+  assert( ast != NULL );
+  assert( pout != NULL );
+
+  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+  if ( raw_ast == ast ) {               // not a typedef
+    FPUTC( '"', pout );
+    if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+      c_ast_english( ast, C_ENG_DECL | C_ENG_OPT_OMIT_DECLARE, pout );
+    else
+      c_ast_gibberish( ast, C_GIB_USING, pout );
+    FPUTC( '"', pout );
   }
   else {
-    FPUTC( '"', tout );
-    if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
-      c_ast_english( ast, C_ENG_DECL | C_ENG_OPT_OMIT_DECLARE, tout );
-    else
-      c_ast_gibberish( ast, C_GIB_USING, tout );
-    FPUTC( '"', tout );
+    print_ast_name_aka( raw_ast, pout );
   }
 }
 
@@ -609,26 +653,26 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
   return true;
 }
 
-void print_type_ast( c_typedef_t const *tdef, FILE *tout ) {
+void print_type_ast( c_typedef_t const *tdef, FILE *pout ) {
   assert( tdef != NULL );
-  assert( tout != NULL );
+  assert( pout != NULL );
 
   if ( (tdef->decl_flags & C_ENG_DECL) != 0 )
-    c_ast_english( tdef->ast, tdef->decl_flags | C_ENG_OPT_OMIT_DECLARE, tout );
+    c_ast_english( tdef->ast, tdef->decl_flags | C_ENG_OPT_OMIT_DECLARE, pout );
   else
-    c_ast_gibberish( tdef->ast, C_GIB_USING, tout );
+    c_ast_gibberish( tdef->ast, C_GIB_USING, pout );
 }
 
 void print_type_decl( c_typedef_t const *tdef, unsigned decl_flags,
-                      FILE *tout ) {
+                      FILE *pout ) {
   assert( tdef != NULL );
   assert( is_1_bit_in_set( decl_flags, C_TYPE_DECL_ANY ) );
-  assert( tout != NULL );
+  assert( pout != NULL );
 
   if ( (decl_flags & C_ENG_DECL) != 0 )
-    c_typedef_english( tdef, tout );
+    c_typedef_english( tdef, pout );
   else
-    c_typedef_gibberish( tdef, decl_flags, tout );
+    c_typedef_gibberish( tdef, decl_flags, pout );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

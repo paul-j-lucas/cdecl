@@ -277,6 +277,35 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Prints the name of the kind of \a ast (or of the underlying AST, if any); if
+ * \a ast is of kind #K_TYPEDEF, also prints `type` followed by `(aka` followed
+ * by the underlying type in either pseudo-English or gibberish (depending on
+ * how it was declared).
+ *
+ * For example, if a type was declared in pseudo-English like:
+ *
+ *      define RI as reference to int
+ *
+ * prints `type "RI" (aka "reference to integer")`, that is the type name
+ * followed by `(aka` and the underlying type in pseudo-English.
+ *
+ * However, if the underlying type was declared in gibberish like:
+ *
+ *      using RI = int&
+ *
+ * prints `type "RI" (aka "int&")`, that is the type name followed by `(aka`
+ * and the underlying type in gibberish.
+ *
+ * @note A newline is _not_ printed.
+ *
+ * @param ast The \ref c_ast to print.
+ * @param pout The `FILE` to print to.
+ *
+ * @sa print_ast_type_aka()
+ */
+void print_ast_kind_aka( c_ast_t const *ast, FILE *pout );
+
+/**
  * If \a ast is:
  *
  *  + A #K_TYPEDEF, prints the name of the type followed by `(aka` followed by
@@ -303,18 +332,19 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
  * @note A newline is _not_ printed.
  *
  * @param ast The \ref c_ast to print.
- * @param tout The `FILE` to print to.
+ * @param pout The `FILE` to print to.
  *
  * @sa c_ast_english()
  * @sa c_ast_gibberish()
  * @sa c_typedef_english()
  * @sa c_typedef_gibberish()
  * @sa opt_english_types
+ * @sa print_ast_kind_aka()
  * @sa print_type_ast()
  * @sa print_type_decl()
  * @sa show_type()
  */
-void print_ast_type_aka( c_ast_t const *ast, FILE *tout );
+void print_ast_type_aka( c_ast_t const *ast, FILE *pout );
 
 /**
  * Prints _only_ the underlying type of \a tdef either as pseudo-English via
@@ -324,7 +354,7 @@ void print_ast_type_aka( c_ast_t const *ast, FILE *tout );
  * @note A newline is _not_ printed.
  *
  * @param tdef The \ref c_typedef whose \ref c_typedef::ast "ast" to print.
- * @param tout The `FILE` to print to.
+ * @param pout The `FILE` to print to.
  *
  * @sa c_ast_english()
  * @sa c_ast_gibberish()
@@ -334,7 +364,7 @@ void print_ast_type_aka( c_ast_t const *ast, FILE *tout );
  * @sa print_type_decl()
  * @sa show_type()
  */
-void print_type_ast( c_typedef_t const *tdef, FILE *tout );
+void print_type_ast( c_typedef_t const *tdef, FILE *pout );
 
 /**
  * Prints \a tdef as a full type declaration either in pseudo-English via
@@ -346,7 +376,7 @@ void print_type_ast( c_typedef_t const *tdef, FILE *tout );
  * @param tdef The \ref c_typedef to print.
  * @param decl_flags The declaration flags to use (overriding \a tdef's \ref
  * c_typedef::decl_flags "decl_flags").
- * @param tout The `FILE` to print to.
+ * @param pout The `FILE` to print to.
  *
  * @sa c_typedef_english()
  * @sa c_typedef_gibberish()
@@ -355,7 +385,7 @@ void print_type_ast( c_typedef_t const *tdef, FILE *tout );
  * @sa show_type()
  */
 void print_type_decl( c_typedef_t const *tdef, unsigned decl_flags,
-                      FILE *tout );
+                      FILE *pout );
 
 ///////////////////////////////////////////////////////////////////////////////
 

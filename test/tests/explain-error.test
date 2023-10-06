@@ -6,6 +6,7 @@ typedef const void const_void
 typedef enum E EE
 typedef int A2[2]
 typedef int Int
+typedef void F_v()
 
 explain A2 f()
 explain _Alignas(3) char c
@@ -25,6 +26,7 @@ explain EE x : 4
 explain enum E x : 3
 explain extern static void f()
 explain friend void f()
+explain F_v f()
 explain inline int x
 explain int
 explain int a[0]
@@ -128,6 +130,7 @@ explain int f(x, ...)
 explain int main(x)
 explain long double x
 explain long long x
+explain S f()
 explain signed char x
 explain signed int x
 explain signed long x

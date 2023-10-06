@@ -20,6 +20,10 @@ Fixed printing of `typedef`s of nested types, e.g.:
     c++decl> show
     typedef S::I T;
 
+** Types in error & warning messages
+For types that are `typedef`s, now printing `aka` followed by their underlying
+types in more cases.
+
 
 * Changes in Cdecl 15.0
 

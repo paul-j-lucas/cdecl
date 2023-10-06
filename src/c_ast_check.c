@@ -281,9 +281,9 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
   c_ast_t const *const raw_ast = c_ast_untypedef( ast );
 
   if ( (raw_ast->kind & K_ANY_OBJECT) == 0 ) {
-    print_error( &ast->align.loc,
-      "%s can not be aligned\n", c_kind_name( ast->kind )
-    );
+    print_error( &ast->align.loc, "" );
+    print_ast_kind_aka( ast, stderr );
+    EPRINTF( " can not be aligned\n" );
     return false;
   }
 
@@ -295,11 +295,9 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
 
   if ( (raw_ast->kind & K_CLASS_STRUCT_UNION) != 0 &&
        !OPT_LANG_IS( ALIGNED_CSUS ) ) {
-    print_error( &ast->align.loc,
-      "%s can not be aligned%s\n",
-      c_kind_name( raw_ast->kind ),
-      C_LANG_WHICH( ALIGNED_CSUS )
-    );
+    print_error( &ast->align.loc, "" );
+    print_ast_kind_aka( ast, stderr );
+    EPRINTF( " can not be aligned%s\n", C_LANG_WHICH( ALIGNED_CSUS ) );
     return false;
   }
 
@@ -613,10 +611,8 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       }
       break;
     case K_FUNCTION:
-      print_error( &to_ast->loc,
-        "can not cast into %s",
-        c_kind_name( to_ast->kind )
-      );
+      print_error( &to_ast->loc, "can not cast into " );
+      print_ast_kind_aka( to_ast, stderr );
       print_hint( "cast into pointer to function" );
       return false;
     default:
@@ -2145,11 +2141,9 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   switch ( raw_to_ast->kind ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      print_error( &ast->loc,
-        "%s to %s is illegal",
-        c_kind_name( ast->kind ),
-        c_kind_name( raw_to_ast->kind )
-      );
+      print_error( &ast->loc, "%s to ", c_kind_name( ast->kind ) );
+      print_ast_kind_aka( to_ast, stderr );
+      EPRINTF( " is illegal" );
       if ( raw_to_ast == to_ast ) {
         if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
           print_hint( "reference to pointer" );
@@ -2277,22 +2271,18 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       break;
     case K_CLASS_STRUCT_UNION:
       if ( !OPT_LANG_IS( CSU_RETURN_TYPES ) ) {
-        print_error( &ret_ast->loc,
-          "%s returning %s not supported%s\n",
-          kind_name,
-          c_kind_name( raw_ret_ast->kind ),
-          C_LANG_WHICH( CSU_RETURN_TYPES )
-        );
+        print_error( &ret_ast->loc, "%s returning ", kind_name );
+        print_ast_kind_aka( ret_ast, stderr );
+        EPRINTF( " not supported%s\n", C_LANG_WHICH( CSU_RETURN_TYPES ) );
         return false;
       }
       break;
     case K_FUNCTION:
     case K_OPERATOR:
     case K_UDEF_LIT:
-      print_error( &ret_ast->loc,
-        "%s returning %s is illegal",
-        kind_name, c_kind_name( raw_ret_ast->kind )
-      );
+      print_error( &ret_ast->loc, "%s returning ", kind_name );
+      print_ast_kind_aka( ret_ast, stderr );
+      EPRINTF( " is illegal" );
       print_hint( "%s returning pointer to function", kind_name );
       return false;
     default:

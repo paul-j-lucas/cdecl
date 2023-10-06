@@ -4,6 +4,7 @@ cdecl> typedef const void const_void
 cdecl> typedef enum E EE
 cdecl> typedef int A2[2]
 cdecl> typedef int Int
+cdecl> typedef void F_v()
 cdecl> explain A2 f()
                ^
 9: error: function returning array; did you mean function returning pointer?
@@ -21,7 +22,7 @@ cdecl> explain alignas(4) register int x
 9: error: "alignas" can not be combined with "register"
 cdecl> explain _Alignas(64) S x
                ^
-9: error: struct or union can not be aligned in C
+9: error: struct or union type "S" (aka, "struct S") can not be aligned in C
 cdecl> explain _Alignas(8) typedef int Int
                ^
 9: error: typedef can not be aligned
@@ -58,6 +59,9 @@ cdecl> explain extern static void f()
 cdecl> explain friend void f()
                ^
 9: error: "friend": unsupported keyword in C
+cdecl> explain F_v f()
+               ^
+9: error: function returning function type "F_v" (aka, "void()") is illegal; did you mean function returning pointer to function?
 cdecl> explain inline int x
                ^
 9: error: inline variables not supported in C
@@ -362,6 +366,9 @@ cdecl> explain long double x
 cdecl> explain long long x
                ^
 9: error: "long long" is illegal for built-in type until C99
+cdecl> explain S f()
+               ^
+9: error: function returning struct or union type "S" (aka, "struct S") not supported until C89
 cdecl> explain signed char x
                ^
 9: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
@@ -517,7 +524,7 @@ c++decl> explain register int &x
 22: error: "register" is illegal for reference since C++17
 c++decl> explain RI *p
                     ^
-12: error: pointer to reference is illegal
+12: error: pointer to reference type "RI" (aka, "int&") is illegal
 c++decl> explain short char8_t x
                  ^
 9: error: "short char8_t" is illegal for built-in type
