@@ -282,7 +282,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
   if ( (raw_ast->kind & K_ANY_OBJECT) == 0 ) {
     print_error( &ast->align.loc, "" );
     print_ast_kind_aka( ast, stderr );
-    EPRINTF( " can not be aligned\n" );
+    EPUTS( " can not be aligned\n" );
     return false;
   }
 
@@ -637,7 +637,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
            !c_ast_is_ref_to_kind_any( raw_to_ast, K_CLASS_STRUCT_UNION ) ) {
         print_error( &to_ast->loc, "invalid dynamic_cast type " );
         print_ast_type_aka( to_ast, stderr );
-        EPRINTF(
+        EPUTS(
           "; must be a pointer or reference to a class, struct, or union\n"
         );
         return false;
@@ -1167,7 +1167,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
       if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
         EPRINTF( "\"array of pointer to %s\"\n", c_tid_name_error( TB_char ) );
       else
-        EPRINTF( "\"char*[]\"\n" );
+        EPUTS( "\"char*[]\"\n" );
       return false;
   } // switch
   return true;
@@ -1755,7 +1755,7 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
       ast->oper.operator->literal
     );
     print_ast_type_aka( param_ast, stderr );
-    EPRINTF( "; must be a pointer to void, class, struct, or union\n" );
+    EPUTS( "; must be a pointer to void, class, struct, or union\n" );
     return false;
   }
 
@@ -1787,7 +1787,7 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
       ast->oper.operator->literal
     );
     print_ast_type_aka( param_ast, stderr );
-    EPRINTF( "; must be \"std::size_t\" (or equivalent)\n" );
+    EPUTS( "; must be \"std::size_t\" (or equivalent)\n" );
     return false;
   }
 
@@ -2142,7 +2142,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
     case K_RVALUE_REFERENCE:
       print_error( &ast->loc, "%s to ", c_kind_name( ast->kind ) );
       print_ast_kind_aka( to_ast, stderr );
-      EPRINTF( " is illegal" );
+      EPUTS( " is illegal" );
       if ( raw_to_ast == to_ast ) {
         if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
           print_hint( "reference to pointer" );
@@ -2281,7 +2281,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
     case K_UDEF_LIT:
       print_error( &ret_ast->loc, "%s returning ", kind_name );
       print_ast_kind_aka( ret_ast, stderr );
-      EPRINTF( " is illegal" );
+      EPUTS( " is illegal" );
       print_hint( "%s returning pointer to function", kind_name );
       return false;
     default:
