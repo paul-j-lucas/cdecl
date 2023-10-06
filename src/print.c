@@ -530,7 +530,7 @@ void fl_print_error_unknown_name( char const *file, int line,
       dym_kind |= DYM_CDECL_KEYWORDS;
       cdecl_keyword_t const *const cdk = cdecl_keyword_find( name );
       if ( cdk != NULL )
-        EPRINTF( " (\"%s\" is a cdecl keyword)", name );
+        EPRINTF( " (\"%s\" is a " CDECL " keyword)", name );
     }
   }
 
@@ -627,7 +627,7 @@ void print_is_a_keyword( char const *error_token ) {
   else if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
     cdecl_keyword_t const *const cdk = cdecl_keyword_find( error_token );
     if ( cdk != NULL )
-      EPRINTF( " (\"%s\" is a cdecl keyword)", error_token );
+      EPRINTF( " (\"%s\" is a " CDECL " keyword)", error_token );
   }
 }
 
