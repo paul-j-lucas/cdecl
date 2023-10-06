@@ -67,9 +67,9 @@ struct set_option_fn_args {
 // local functions
 NODISCARD
 static bool set_alt_tokens( set_option_fn_args_t const* ),
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
             set_bison_debug( set_option_fn_args_t const* ),
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 #ifdef ENABLE_CDECL_DEBUG
             set_debug( set_option_fn_args_t const* ),
 #endif /* ENABLE_CDECL_DEBUG */
@@ -116,13 +116,13 @@ static set_option_t const SET_OPTIONS[] = {
     &set_alt_tokens
   },
 
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
   { "bison-debug",
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_bison_debug
   },
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 
 #ifdef ENABLE_CDECL_DEBUG
   { "debug",
@@ -325,9 +325,9 @@ static void print_option( char const *opt_name, char const *opt_value,
  */
 static void print_options( void ) {
   print_option( "alt-tokens", po_bool_value( opt_alt_tokens ), LANG_ALT_TOKENS );
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
   print_option( "bison-debug", po_bool_value( opt_bison_debug ), LANG_ANY );
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 #ifdef ENABLE_CDECL_DEBUG
   // opt_cdecl_debug is a special case in that it can be enabled with no value
   if ( opt_cdecl_debug == CDECL_DEBUG_YES )
@@ -383,7 +383,7 @@ static bool set_alt_tokens( set_option_fn_args_t const *args ) {
   return true;
 }
 
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
 /**
  * Sets the `bison-debug` option.
  *
@@ -394,7 +394,7 @@ static bool set_bison_debug( set_option_fn_args_t const *args ) {
   opt_bison_debug = args->opt_enabled;
   return true;
 }
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 
 #ifdef ENABLE_CDECL_DEBUG
 /**

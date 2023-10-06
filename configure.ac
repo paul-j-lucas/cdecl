@@ -113,6 +113,7 @@ AC_ARG_ENABLE([bison-debug],
   [enable_bison_debug=no]
 )
 AS_IF([test "x$enable_bison_debug" = xyes], [
+  AC_DEFINE([ENABLE_BISON_DEBUG], [1], [Define to 1 if Bison debugging is enabled.])
   AC_DEFINE([YYDEBUG], [1], [Define to 1 if Bison debugging is enabled.])
 ])
 

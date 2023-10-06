@@ -76,13 +76,13 @@ typedef enum cdecl_debug cdecl_debug_t;
 // extern option variables
 extern bool         opt_alt_tokens;     ///< Print alternative tokens?
 
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
 /// Print Bison debug output?
 ///
 /// @note This is an alias for \ref yydebug defined for consistency with the
 /// naming of **cdecl**'s other options.
 #define             opt_bison_debug     yydebug
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 
 #ifdef ENABLE_CDECL_DEBUG
 extern cdecl_debug_t opt_cdecl_debug;   ///< Print JSON5 debug output?
@@ -122,9 +122,9 @@ extern c_ast_kind_t opt_west_pointer_kinds;
 #ifdef ENABLE_FLEX_DEBUG
 extern int          yy_flex_debug;      ///< Flex variable for debugging.
 #endif /* ENABLE_FLEX_DEBUG */
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
 extern int          yydebug;            ///< Bison variable for debugging.
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////
 

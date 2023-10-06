@@ -1133,13 +1133,13 @@ void c_typedef_init( void ) {
   int const orig_flex_debug = opt_flex_debug;
   opt_flex_debug = false;
 #endif /* ENABLE_FLEX_DEBUG */
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
   //
   // Temporarily turn off Bison debug output for built-in typedefs.
   //
   int const orig_bison_debug = opt_bison_debug;
   opt_bison_debug = false;
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 
   c_lang_id_t const orig_lang = opt_lang;
 
@@ -1218,9 +1218,9 @@ void c_typedef_init( void ) {
 #ifdef ENABLE_FLEX_DEBUG
   opt_flex_debug = orig_flex_debug;
 #endif /* ENABLE_FLEX_DEBUG */
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
   opt_bison_debug = orig_bison_debug;
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 }
 
 c_typedef_t* c_typedef_remove( rb_node_t *node ) {

@@ -558,9 +558,9 @@ static void print_help_name( void ) {
 static void print_help_options( void ) {
   print_h( "option:\n" );
   print_h( "  [no]alt-tokens\n" );
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
   print_h( "  [no]bison-debug\n" );
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 #ifdef ENABLE_CDECL_DEBUG
   print_h( "  [no]debug[={u|\\*|-}]\n" );
 #endif /* ENABLE_CDECL_DEBUG */

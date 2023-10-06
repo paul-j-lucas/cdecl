@@ -27,10 +27,10 @@ FILE_PATTERNS           = *.c *.h *.l *.md *.y
 FILTER_PATTERNS         = "*.h=sed s/[A-Z][A-Z_]*[A-Z]_H_INLINE/inline/"
 PREDEFINED              = __GNUC__ \
                           ENABLE_CDECL_DEBUG \
+                          ENABLE_BISON_DEBUG \
                           ENABLE_FLEX_DEBUG \
                           ENABLE_TERM_SIZE \
-                          WITH_READLINE \
-                          YYDEBUG
+                          WITH_READLINE
 EXCLUDE                 = src/config.h \
                           src/lexer.c \
                           src/literals.h src/literals.c \

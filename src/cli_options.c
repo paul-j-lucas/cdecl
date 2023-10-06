@@ -55,9 +55,9 @@
 #define OPT_TRIGRAPHS         3
 #define OPT_ALT_TOKENS        a
 #define OPT_NO_BUFFER_STDOUT  b
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
 #define OPT_BISON_DEBUG       B
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 #define OPT_CONFIG            c
 #define OPT_NO_CONFIG         C
 #ifdef ENABLE_CDECL_DEBUG
@@ -117,9 +117,9 @@ static struct option const CLI_OPTIONS[] = {
   //  4. The corresponding "set" option in SET_OPTIONS in set_options.c.
   //
   { "alt-tokens",       no_argument,        NULL, COPT(ALT_TOKENS)        },
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
   { "bison-debug",      no_argument,        NULL, COPT(BISON_DEBUG)       },
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
   { "color",            required_argument,  NULL, COPT(COLOR)             },
   { "config",           required_argument,  NULL, COPT(CONFIG)            },
 #ifdef ENABLE_CDECL_DEBUG
@@ -407,11 +407,11 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(ALT_TOKENS):
         opt_alt_tokens = true;
         break;
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
       case COPT(BISON_DEBUG):
         opt_bison_debug = true;
         break;
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
 #ifdef ENABLE_CDECL_DEBUG
       case COPT(CDECL_DEBUG):
         if ( !parse_cdecl_debug( empty_if_null( optarg ) ) )
@@ -604,9 +604,9 @@ static void print_usage( int status ) {
     "usage: %s [options] [command...]\n"
     "options:\n"
     "  --alt-tokens        " UOPT(ALT_TOKENS)       "Print alternative tokens.\n"
-#ifdef YYDEBUG
+#ifdef ENABLE_BISON_DEBUG
     "  --bison-debug       " UOPT(BISON_DEBUG)      "Print Bison debug output.\n"
-#endif /* YYDEBUG */
+#endif /* ENABLE_BISON_DEBUG */
     "  --color=WHEN        " UOPT(COLOR)            "Colorize output WHEN [default: not_file].\n"
     "  --config=FILE       " UOPT(CONFIG)           "Configuration file path [default: ~/." CONF_FILE_NAME_DEFAULT "].\n"
 #ifdef ENABLE_CDECL_DEBUG
