@@ -208,6 +208,8 @@ bool parse_cdecl_debug( char const *debug_format ) {
       case 'u':
         cdecl_debug |= CDECL_DEBUG_OPT_UNIQUE_ID;
         break;
+      default:
+        return false;
     } // switch
   } // for
 
