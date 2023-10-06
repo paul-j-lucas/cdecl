@@ -93,6 +93,31 @@ c_ast_kind_t        opt_west_pointer_kinds = K_ANY_FUNCTION_RETURN;
  */
 static c_tid_t      opt_explicit_int_btids[] = { TB_NONE, TB_NONE };
 
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * If \a *pformat is:
+ *
+ *  + `"*"`: sets \a *pformat to \a all_value.
+ *  + `"-"`: sets \a *pformat to `""` (the empty string).
+ *
+ * Otherwise does nothing.
+ *
+ * @param pformat A pointer to the format string to possibly set.
+ * @param all_value The "all" value for when \a *pformat is `"*"`.
+ */
+static void set_all_or_none( char const **pformat, char const *all_value ) {
+  assert( pformat != NULL );
+  assert( *pformat != NULL );
+  assert( all_value != NULL );
+  assert( all_value[0] != '\0' );
+
+  if ( strcmp( *pformat, "*" ) == 0 )
+    *pformat = all_value;
+  else if ( strcmp( *pformat, "-" ) == 0 )
+    *pformat = "";
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool any_explicit_int( void ) {
@@ -196,11 +221,7 @@ bool parse_cdecl_debug( char const *debug_format ) {
     return true;
   }
 
-  if ( strcmp( debug_format, "*" ) == 0 )
-    debug_format = "u";
-  else if ( strcmp( debug_format, "-" ) == 0 )
-    debug_format = "";
-
+  set_all_or_none( &debug_format, "u" );
   cdecl_debug_t cdecl_debug = CDECL_DEBUG_YES;
 
   for ( char const *s = debug_format; *s != '\0'; ++s ) {
@@ -219,13 +240,7 @@ bool parse_cdecl_debug( char const *debug_format ) {
 #endif /* ENABLE_CDECL_DEBUG */
 
 bool parse_explicit_ecsu( char const *ecsu_format ) {
-  assert( ecsu_format != NULL );
-
-  if ( strcmp( ecsu_format, "*" ) == 0 )
-    ecsu_format = "ecsu";
-  else if ( strcmp( ecsu_format, "-" ) == 0 )
-    ecsu_format = "";
-
+  set_all_or_none( &ecsu_format, "ecsu" );
   c_tid_t btids = TB_NONE;
 
   for ( char const *s = ecsu_format; *s != '\0'; ++s ) {
@@ -252,13 +267,7 @@ bool parse_explicit_ecsu( char const *ecsu_format ) {
 }
 
 bool parse_explicit_int( char const *ei_format ) {
-  assert( ei_format != NULL );
-
-  if ( strcmp( ei_format, "*" ) == 0 )
-    ei_format = "iu";
-  else if ( strcmp( ei_format, "-" ) == 0 )
-    ei_format = "";
-
+  set_all_or_none( &ei_format, "iu" );
   c_tid_t btids = TB_NONE;
   c_tid_t tmp_ei_btids[] = { TB_NONE, TB_NONE };
 
@@ -309,13 +318,7 @@ bool parse_explicit_int( char const *ei_format ) {
 }
 
 bool parse_west_pointer( char const *wp_format ) {
-  assert( wp_format != NULL );
-
-  if ( strcmp( wp_format, "*" ) == 0 )
-    wp_format = "rt";
-  else if ( strcmp( wp_format, "-" ) == 0 )
-    wp_format = "";
-
+  set_all_or_none( &wp_format, "rt" );
   unsigned kinds = 0;
 
   for ( char const *s = wp_format; *s != '\0'; ++s ) {
