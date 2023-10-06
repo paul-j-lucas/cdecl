@@ -1,5 +1,7 @@
 2023-10-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * options.c: Added set_all_or_none().
+   * options.c: Added missing "default".
    * print.c: Now using CDECL macro more.
    * c_ast_check.c, parser.y: s/EPRINTF/EPUTS/
    * c_ast_check.c, explain-error.out, explain-error.test: For types that are
