@@ -90,11 +90,10 @@
  * @param AST1 The AST having the bad kind.
  * @param AST2 The AST having the other kind.
  */
-#define error_kind_of_kind(AST1,AST2)                         \
-  print_error( &(AST1)->loc,                                  \
-    "%s of %s is illegal",                                    \
-    c_kind_name( (AST1)->kind ), c_kind_name( (AST2)->kind )  \
-  )
+#define error_kind_of_kind(AST1,AST2) BLOCK(                          \
+  print_error( &(AST1)->loc, "%s of ", c_kind_name( (AST1)->kind ) ); \
+  print_ast_kind_aka( (AST2), stderr );                               \
+  EPUTS( " is illegal" ); )
 
 /**
  * Prints an error: `<kind> to <type> is illegal`.
@@ -427,13 +426,13 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
 
     case K_APPLE_BLOCK:
     case K_FUNCTION:
-      error_kind_of_kind( ast, raw_of_ast );
+      error_kind_of_kind( ast, of_ast );
       print_hint( "array of pointer to function" );
       return false;
 
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      error_kind_of_kind( ast, raw_of_ast );
+      error_kind_of_kind( ast, of_ast );
       if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
         print_hint( "%s to array", c_kind_name( raw_of_ast->kind ) );
       } else {

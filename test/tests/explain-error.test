@@ -27,6 +27,7 @@ explain enum E x : 3
 explain extern static void f()
 explain friend void f()
 explain F_v f()
+explain F_v x[4]
 explain inline int x
 explain int
 explain int a[0]

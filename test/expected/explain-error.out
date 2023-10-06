@@ -62,6 +62,9 @@ cdecl> explain friend void f()
 cdecl> explain F_v f()
                ^
 9: error: function returning function type "F_v" (aka, "void()") is illegal; did you mean function returning pointer to function?
+cdecl> explain F_v x[4]
+                    ^
+14: error: array of function type "F_v" (aka, "void()") is illegal; did you mean array of pointer to function?
 cdecl> explain inline int x
                ^
 9: error: inline variables not supported in C
