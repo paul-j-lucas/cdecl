@@ -834,8 +834,17 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_mutable                    LANG_CPP_ANY
 
 /**
+ * Languages `operator[]` can have only exactly 1 parameter.
+ *
+ * @sa #LANG_N_ARY_OP_BRACKETS
+ * @sa #LANG_operator
+ */
+#define LANG_1_ARY_OP_BRACKETS          LANG_CPP_MAX(20)
+
+/**
  * Languages `operator[]` can have any number of parameters.
  *
+ * @sa #LANG_1_ARY_OP_BRACKETS
  * @sa #LANG_operator
  */
 #define LANG_N_ARY_OP_BRACKETS          LANG_CPP_MIN(23)
@@ -930,6 +939,9 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Languages the `operator` keyword is supported in.
+ *
+ * @sa #LANG_1_ARY_OP_BRACKETS
+ * @sa #LANG_N_ARY_OP_BRACKETS
  */
 #define LANG_operator                   LANG_CPP_ANY
 
