@@ -1,5 +1,8 @@
 2023-10-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, print.c, print.h, explain-error.out, explain-error.test:
+     For types that are `typedef`s, now printing `aka` followed by their
+     underlying types in more cases.
    * gibberish.c: s/postfix/is_postfix/
    * configure.ac, gibberish.c, ntu.out, show.out, ntu.test: Fixed printing of
      `typedef`s of nested types.
