@@ -1,3 +1,12 @@
+2023-10-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c: Now using CDECL macro more.
+   * c_ast_check.c, parser.y: s/EPRINTF/EPUTS/
+   * c_ast_check.c, explain-error.out, explain-error.test: For types that are
+     `typedef`s, now printing `aka` followed by their underlying types in more
+     cases.
+   * c_lang.h, c_operator.c: Added LANG_1_ARY_OP_BRACKETS.
+
 2023-10-05  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, print.c, print.h, explain-error.out, explain-error.test:
