@@ -2843,7 +2843,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
         if ( c_tid_is_any( ast->type.atids, TA_nodiscard ) &&
             c_ast_is_builtin_any( ret_ast, TB_void ) ) {
           print_warning( &ret_ast->loc,
-            "\"%s\" %ss can not return void\n",
+            "\"%s\" %ss must return a value\n",
             c_tid_name_error( TA_nodiscard ),
             c_kind_name( ast->kind )
           );
