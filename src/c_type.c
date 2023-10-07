@@ -819,8 +819,8 @@ static char const* c_type_literal( c_type_info_t const *ti,
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
+ * can't do something like call this more than three times in the same
+ * `printf()` statement.
  *
  * @sa c_tid_nosigned()
  * @sa c_type_name_c()
@@ -832,7 +832,7 @@ NODISCARD
 static char const* c_type_name_impl( c_type_t const *type,
                                      bool apply_explicit_ecsu, bool in_english,
                                      bool is_error ) {
-  static strbuf_t sbufs[ 2 ];
+  static strbuf_t sbufs[3];
   static unsigned buf_index;
 
   strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];

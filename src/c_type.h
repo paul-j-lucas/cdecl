@@ -859,8 +859,8 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tids, c_loc_t const *new_loc );
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
+ * can't do something like call this more than three times in the same
+ * `printf()` statement.
  *
  * @sa c_tid_name_english()
  * @sa c_tid_name_error()
@@ -877,8 +877,8 @@ char const* c_tid_name_c( c_tid_t tids );
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
+ * can't do something like call this more than three times in the same
+ * `printf()` statement.
  *
  * @sa c_tid_name_c()
  * @sa c_tid_name_error()
@@ -896,8 +896,8 @@ char const* c_tid_name_english( c_tid_t tids );
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
+ * can't do something like call this more than three times in the same
+ * `printf()` statement.
  *
  * @sa c_tid_name_c()
  * @sa c_tid_name_english()
@@ -1080,8 +1080,8 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
+ * can't do something like call this more than three times in the same
+ * `printf()` statement.
  *
  * @sa c_tid_name_c()
  * @sa c_type_name_ecsu()
@@ -1098,8 +1098,8 @@ char const* c_type_name_c( c_type_t const *type );
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
+ * can't do something like call this more than three times in the same
+ * `printf()` statement.
  *
  * @sa c_type_name_c()
  * @sa c_type_name_english()
@@ -1116,8 +1116,8 @@ char const* c_type_name_ecsu( c_type_t const *type );
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
+ * can't do something like call this more than three times in the same
+ * `printf()` statement.
  *
  * @sa c_type_name_c()
  * @sa c_type_name_ecsu()
@@ -1135,8 +1135,8 @@ char const* c_type_name_english( c_type_t const *type );
  * @return Returns said name.
  *
  * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
+ * can't do something like call this more than three times in the same
+ * `printf()` statement.
  *
  * @sa c_tid_name_error()
  * @sa c_type_name_c()

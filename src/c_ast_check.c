@@ -718,7 +718,10 @@ static bool c_ast_check_emc( c_ast_t const *ast ) {
   if ( c_tid_is_any( ast->type.btids, TB_EMC__Sat ) &&
       !c_tid_is_any( ast->type.btids, TB_ANY_EMC ) ) {
     print_error( &ast->loc,
-      "\"_Sat\" requires either \"_Accum\" or \"_Fract\"\n"
+      "\"%s\" requires either \"%s\" or \"%s\"\n",
+      c_tid_name_error( TB_EMC__Sat ),
+      c_tid_name_error( TB_EMC__Accum ),
+      c_tid_name_error( TB_EMC__Fract )
     );
     return false;
   }
@@ -749,7 +752,8 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
 
   if ( ast->enum_.bit_width > 0 && !OPT_LANG_IS( enum_BITFIELDS ) ) {
     print_error( &ast->loc,
-      "enum bit-fields not supported%s\n",
+      "%s bit-fields not supported%s\n",
+      c_tid_name_error( TB_enum ),
       C_LANG_WHICH( enum_BITFIELDS )
     );
     return false;
@@ -759,14 +763,18 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
   if ( of_ast != NULL ) {
     if ( !OPT_LANG_IS( FIXED_TYPE_enum ) ) {
       print_error( &of_ast->loc,
-        "enum with underlying type not supported%s\n",
+        "%s with underlying type not supported%s\n",
+        c_tid_name_error( TB_enum ),
         C_LANG_WHICH( FIXED_TYPE_enum )
       );
       return false;
     }
 
     if ( !c_ast_is_builtin_any( of_ast, TB_ANY_INTEGRAL ) ) {
-      print_error( &of_ast->loc, "invalid enum underlying type " );
+      print_error( &of_ast->loc,
+        "invalid %s underlying type ",
+        c_tid_name_error( TB_enum )
+      );
       print_ast_type_aka( of_ast, stderr );
       EPUTS( "; must be integral\n" );
       return false;
@@ -989,8 +997,9 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   if ( c_tid_is_any( ast->type.stids, TS_virtual ) ) {
     if ( c_sname_count( &ast->sname ) > 1 ) {
       print_error( &ast->loc,
-        "\"%s\": \"virtual\" can not be used in file-scoped %ss\n",
+        "\"%s\": \"%s\" can not be used in file-scoped %ss\n",
         c_sname_full_name( &ast->sname ),
+        c_tid_name_error( TS_virtual ),
         c_kind_name( ast->kind )
       );
       return false;
@@ -1219,7 +1228,8 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         if ( c_tid_is_any( raw_param_ast->type.btids, TB_auto ) &&
              !OPT_LANG_IS( auto_PARAMS ) ) {
           print_error( &param_ast->loc,
-            "\"auto\" parameters not supported%s\n",
+            "\"%s\" parameters not supported%s\n",
+            c_tid_name_error( TB_auto ),
             C_LANG_WHICH( auto_PARAMS )
           );
           return false;
@@ -1586,8 +1596,10 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
         FALLTHROUGH;
       default:
         print_error( &ast->loc,
-          "operator \"%s\" can not be \"static\"%s\n",
-          op->literal, c_lang_which( ok_lang_ids )
+          "operator \"%s\" can not be \"%s\"%s\n",
+          op->literal,
+          c_tid_name_error( TS_static ),
+          c_lang_which( ok_lang_ids )
         );
         return false;
     } // switch
@@ -1705,8 +1717,9 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
 
     default:
       print_error( &ast->loc,
-        "only operator \"=\"%s operators can be \"default\"\n",
-        OPT_LANG_IS( default_RELOPS ) ? " and relational" : ""
+        "only operator \"=\"%s operators can be \"%s\"\n",
+        OPT_LANG_IS( default_RELOPS ) ? " and relational" : "",
+        c_tid_name_error( TS_default )
       );
       return false;
   } // switch
@@ -1874,7 +1887,10 @@ same: print_error( c_ast_params_loc( ast ),
       //
       if ( c_tid_is_any( ast->type.stids, TS_friend ) &&
            c_sname_empty( &ast->sname ) ) {
-        print_error( &ast->loc, "member operators can not be \"friend\"\n" );
+        print_error( &ast->loc,
+          "member operators can not be \"%s\"\n",
+          c_tid_name_error( TS_friend )
+        );
         return false;
       }
       break;
@@ -1964,8 +1980,8 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
     case C_FUNC_NON_MEMBER: {
       if ( !c_tid_is_any( ast->type.stids, TS_friend ) ) {
         print_error( &ast->loc,
-          "default non-member operator \"%s\" must also be \"friend\"\n",
-          op->literal
+          "default non-member operator \"%s\" must also be \"%s\"\n",
+          op->literal, c_tid_name_error( TS_friend )
         );
         return false;
       }
