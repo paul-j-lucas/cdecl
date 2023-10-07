@@ -2875,13 +2875,17 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
           "\"throw\" is deprecated%s",
           C_LANG_WHICH( CPP_MAX(03) )
         );
-        print_hint( "\"noexcept\"" );
+        print_hint( "\"%s\"", c_tid_name_error( TS_noexcept ) );
       }
       break;
 
     case K_NAME:
-      if ( OPT_LANG_IS( PROTOTYPES ) )
-        print_warning( &ast->loc, "missing type specifier; \"int\" assumed\n" );
+      if ( OPT_LANG_IS( PROTOTYPES ) ) {
+        print_warning( &ast->loc,
+          "missing type specifier; \"%s\" assumed\n",
+          c_tid_name_error( TB_int )
+        );
+      }
       break;
 
     case K_CAPTURE:
