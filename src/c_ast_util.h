@@ -567,35 +567,6 @@ c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
 }
 
 /**
- * Creates a temporary AST node that is a copy of the AST node that \a ast is a
- * `typedef` for, but keeping the original's alignment, bit-field width (only
- * if it's an integral type), source location, and qualifiers bitwise-or'd in,
- * effectively substituting the `typedef`'d
- *
- * For example, given:
- *
- *      cdecl> typedef enum E T
- *      cdecl> explain T x : 4
- *
- * we get what `T` is a `typedef` for and substitute it for `T`, but keeping
- * the original bit-field width yielding:
- *
- *      cdecl> explain enum E x : 4
- *
- * so that we can check _that_ for errors.  (In this case, it's an error in C
- * since enumerations can't be bit-fields in C.)
- *
- * @param ast The AST to get what it's a `typedef` for .  It _must_ be of kind
- * #K_TYPEDEF.
- * @return Returns a new AST that is the AST that \a ast is a `typedef` for,
- * but with the original alignment, bit-field width (only if an integral type),
- * source location, and qualifiers bitwise-or'd in.
- *
- * @sa c_ast_untypedef_qual()
- */
-c_ast_t c_ast_sub_typedef( c_ast_t const *ast );
-
-/**
  * Checks whether the \ref c_ast::kind "kind" of \ref c_ast::parent_ast
  * "parent_ast" of \a ast (if any) is \a kind.
  *
@@ -624,6 +595,35 @@ bool c_ast_print_as_using( c_ast_t const *ast ) {
   return  opt_using && OPT_LANG_IS( using_DECLS ) &&
           c_tid_is_any( ast->type.stids, TS_typedef );
 }
+
+/**
+ * Creates a temporary AST node that is a copy of the AST node that \a ast is a
+ * `typedef` for, but keeping the original's alignment, bit-field width (only
+ * if it's an integral type), source location, and qualifiers bitwise-or'd in,
+ * effectively substituting the `typedef`'d
+ *
+ * For example, given:
+ *
+ *      cdecl> typedef enum E T
+ *      cdecl> explain T x : 4
+ *
+ * we get what `T` is a `typedef` for and substitute it for `T`, but keeping
+ * the original bit-field width yielding:
+ *
+ *      cdecl> explain enum E x : 4
+ *
+ * so that we can check _that_ for errors.  (In this case, it's an error in C
+ * since enumerations can't be bit-fields in C.)
+ *
+ * @param ast The AST to get what it's a `typedef` for .  It _must_ be of kind
+ * #K_TYPEDEF.
+ * @return Returns a new AST that is the AST that \a ast is a `typedef` for,
+ * but with the original alignment, bit-field width (only if an integral type),
+ * source location, and qualifiers bitwise-or'd in.
+ *
+ * @sa c_ast_untypedef_qual()
+ */
+c_ast_t c_ast_sub_typedef( c_ast_t const *ast );
 
 ///////////////////////////////////////////////////////////////////////////////
 
