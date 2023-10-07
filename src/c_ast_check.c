@@ -3015,7 +3015,7 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
         );
         return false;
       }
-      else if ( !c_ast_equal( ast, prev_ast ) ) {
+      if ( !c_ast_equal( ast, prev_ast ) ) {
         print_error( &ast->loc,
           "\"%s\": redefinition with different type\n",
           c_sname_full_name( &ast->sname )
