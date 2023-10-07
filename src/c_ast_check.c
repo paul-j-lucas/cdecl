@@ -1455,14 +1455,15 @@ static bool c_ast_check_lambda_captures( c_ast_t const *ast ) {
     switch ( capture_ast->capture.kind ) {
       case C_CAPTURE_COPY:
         assert( c_sname_empty( &capture_ast->sname ) );
+set_default_capture:
         if ( default_capture_ast != NULL ) {
-prev:     print_error( &capture_ast->loc,
+          print_error( &capture_ast->loc,
             "default capture previously specified\n"
           );
           return false;
         }
         if ( n_captures > 1 ) {
-first:    print_error( &capture_ast->loc,
+          print_error( &capture_ast->loc,
             "default capture must be specified first\n"
           );
           return false;
@@ -1472,22 +1473,14 @@ first:    print_error( &capture_ast->loc,
         break;
 
       case C_CAPTURE_REFERENCE:
-        if ( c_sname_empty( &capture_ast->sname ) ) {
-          if ( default_capture_ast != NULL )
-            goto prev;
-          if ( n_captures > 1 )
-            goto first;
-          assert( default_capture_ast == NULL );
-          default_capture_ast = capture_ast;
-        }
-        else {
-          if ( default_capture_ast != NULL &&
-               default_capture_ast->capture.kind == C_CAPTURE_REFERENCE ) {
-            print_error( &capture_ast->loc,
-              "default capture is already by reference\n"
-            );
-            return false;
-          }
+        if ( c_sname_empty( &capture_ast->sname ) )
+          goto set_default_capture;
+        if ( default_capture_ast != NULL &&
+             default_capture_ast->capture.kind == C_CAPTURE_REFERENCE ) {
+          print_error( &capture_ast->loc,
+            "default capture is already by reference\n"
+          );
+          return false;
         }
         break;
 
