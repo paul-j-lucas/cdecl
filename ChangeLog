@@ -1,5 +1,16 @@
+2023-10-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_operator.c, c_operator.h, c_type.c, gibberish.c,
+     gibberish.h: Added other_token_c().
+   * c_ast_check.c: Using alt_token_c(), graph_token_c() more.
+   * c_ast_check.c, declare_synonyms.out, explain.out: Using c_tid_name_error()
+     more.
+   * c_ast_check.c: Removed "else".
+
 2023-10-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, c_ast_util.h: Moved c_ast_oper_mbr_matches().
+   * c_ast_check.c: Simplified.
    * c_ast_check.c, c_ast_util.c, c_ast_util.h: Factored out
      c_ast_oper_params_min_max().
    * c_ast_check.c: Renaming.
