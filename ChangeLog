@@ -1,5 +1,10 @@
 2023-10-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, c_ast_util.c, c_ast_util.h: Factored out
+     c_ast_oper_params_min_max().
+   * c_ast_check.c: Renaming.
+   * Doxyfile, configure.ac, c_typedef.c, cli_options.c, help.c, options.h,
+     set_options.c: Added ENABLE_BISON_DEBUG as a synonym for YYDEBUG.
    * options.c: Added set_all_or_none().
    * options.c: Added missing "default".
    * print.c: Now using CDECL macro more.
