@@ -2203,7 +2203,10 @@ static bool c_ast_check_reference( c_ast_t const *ast,
 
   if ( c_ast_is_builtin_any( to_ast, TB_void ) ) {
     error_kind_to_tid( ast, TB_void, "" );
-    print_hint( "pointer to void" );
+    if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+      print_hint( "\"pointer to void\"" );
+    else
+      print_hint( "\"void*\"" );
     return false;
   }
 

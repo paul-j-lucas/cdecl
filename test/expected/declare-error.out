@@ -321,7 +321,7 @@ c++decl> declare x as reference to register int
 27: error: "register int" is illegal for built-in type since C++17
 c++decl> declare x as reference to void
                  ^
-9: error: reference to "void" is illegal; did you mean pointer to void?
+9: error: reference to "void" is illegal; did you mean "pointer to void"?
 c++decl> declare x as short char8_t
                  ^
 9: error: "short char8_t" is illegal for built-in type

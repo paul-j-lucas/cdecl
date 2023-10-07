@@ -621,7 +621,7 @@ c++decl> explain void f(x)
 16: error: type specifier required in C++
 c++decl> explain void &x
                       ^
-14: error: reference to "void" is illegal; did you mean pointer to void?
+14: error: reference to "void" is illegal; did you mean "void*"?
 c++decl> explain X::C()
                  ^
 9: error: "X::C": unknown name
