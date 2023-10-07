@@ -358,7 +358,7 @@ NODISCARD
 c_sname_t c_ast_move_sname( c_ast_t *ast );
 
 /**
- * Gets whether the operator is overloaded as a member, non-member, or
+ * Gets whether the operator \a ast is overloaded as a member, non-member, or
  * unspecified.
  *
  * @param ast The AST of the operator.
@@ -368,6 +368,16 @@ c_sname_t c_ast_move_sname( c_ast_t *ast );
 NODISCARD
 c_func_member_t c_ast_oper_overload( c_ast_t const *ast );
 
+/**
+ * Gets the the minimum and maximum number of parameters the operator \a ast
+ * can have based on whether it's a member, non-member, or unspecified.
+ *
+ * @param ast The AST of the operator.
+ * @param params_min Receives the minimum number of parameters for \a ast.
+ * @param params_max Receives the maximum number of parameters for \a ast.
+ */
+void c_ast_oper_params_min_max( c_ast_t const *ast, unsigned *params_min,
+                                unsigned *params_max );
 /**
  * "Patches" \a type_ast into \a decl_ast only if:
  *  + \a type_ast has no \ref c_ast::parent_ast "parent_ast".

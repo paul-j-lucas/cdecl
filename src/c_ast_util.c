@@ -785,6 +785,38 @@ c_func_member_t c_ast_oper_overload( c_ast_t const *ast ) {
   return C_FUNC_UNSPECIFIED;
 }
 
+void c_ast_oper_params_min_max( c_ast_t const *ast, unsigned *params_min,
+                                unsigned *params_max ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_OPERATOR );
+  assert( params_min != NULL );
+  assert( params_max != NULL );
+
+  c_operator_t const *const op = ast->oper.operator;
+  bool const is_ambiguous = c_oper_is_ambiguous( op );
+  bool const is_params_unlimited = op->params_max == C_OPER_PARAMS_UNLIMITED;
+
+  switch ( c_ast_oper_overload( ast ) ) {
+    case C_FUNC_NON_MEMBER:
+      // Non-member operators must always take at least one parameter (the
+      // enum, class, struct, or union for which it's overloaded).
+      *params_min = is_ambiguous || is_params_unlimited ? 1 : op->params_max;
+      *params_max = op->params_max;
+      break;
+    case C_FUNC_MEMBER:
+      if ( !is_params_unlimited ) {
+        *params_min = op->params_min;
+        *params_max = is_ambiguous ? 1 : op->params_min;
+        break;
+      }
+      FALLTHROUGH;
+    case C_FUNC_UNSPECIFIED:
+      *params_min = op->params_min;
+      *params_max = op->params_max;
+      break;
+  } // switch
+}
+
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   assert( type_ast != NULL );
   if ( decl_ast == NULL )

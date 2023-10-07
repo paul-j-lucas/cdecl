@@ -1812,32 +1812,8 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
     member == C_FUNC_NON_MEMBER ? "non-member " :
     "";
 
-  //
-  // Determine the minimum and maximum number of parameters the operator can
-  // have based on whether it's a member, non-member, or unspecified.
-  //
-  bool const is_ambiguous = c_oper_is_ambiguous( op );
-  unsigned params_min = 0, params_max = 0;
-  bool const params_unlimited = op->params_max == C_OPER_PARAMS_UNLIMITED;
-  switch ( member ) {
-    case C_FUNC_NON_MEMBER:
-      // Non-member operators must always take at least one parameter (the
-      // enum, class, struct, or union for which it's overloaded).
-      params_min = is_ambiguous || params_unlimited ? 1 : op->params_max;
-      params_max = op->params_max;
-      break;
-    case C_FUNC_MEMBER:
-      if ( !params_unlimited ) {
-        params_min = op->params_min;
-        params_max = is_ambiguous ? 1 : op->params_min;
-        break;
-      }
-      FALLTHROUGH;
-    case C_FUNC_UNSPECIFIED:
-      params_min = op->params_min;
-      params_max = op->params_max;
-      break;
-  } // switch
+  unsigned params_min, params_max;
+  c_ast_oper_params_min_max( ast, &params_min, &params_max );
 
   //
   // Ensure the operator has the required number of parameters.
