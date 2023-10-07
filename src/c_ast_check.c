@@ -2064,9 +2064,9 @@ rel_2par: print_error( c_ast_params_loc( ast ),
         c_typedef_find_name( "std::weak_ordering" )->ast;
     }
     if ( !c_ast_is_builtin_any( ret_ast, TB_auto ) &&
-         raw_ret_ast != std_partial_ordering_ast &&
-         raw_ret_ast != std_strong_ordering_ast &&
-         raw_ret_ast != std_weak_ordering_ast ) {
+         !c_ast_equal( raw_ret_ast, std_partial_ordering_ast ) &&
+         !c_ast_equal( raw_ret_ast, std_strong_ordering_ast ) &&
+         !c_ast_equal( raw_ret_ast, std_weak_ordering_ast ) ) {
       print_error( &ret_ast->loc,
         "invalid operator \"%s\" return type ",
         op->literal
