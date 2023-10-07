@@ -1995,7 +1995,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
       if ( param1_ast == NULL ) {
         param1_ast = c_ast_is_ref_to_type_any( param_ast, &T_ANY_const_CLASS );
         if ( param1_ast == NULL ) {
-rel_2par: print_error( &ast->loc,
+rel_2par: print_error( c_ast_params_loc( ast ),
             "default non-member relational operators must take two "
             "value or reference-to-const parameters of the same class "
             "or a typedef thereof\n"

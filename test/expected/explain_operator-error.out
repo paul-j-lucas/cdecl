@@ -10,32 +10,32 @@ c++decl> explain friend bool operator!()
                            ^
 19: error: member operators can not be "friend"
 c++decl> explain friend bool operator==(int, S) = default
-                           ^
-19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+                                        ^
+32: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
 c++decl> explain friend bool operator==(int, S const&) = default
-                           ^
-19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+                                        ^
+32: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
 c++decl> explain friend bool operator==(S const&, int) = default
-                           ^
-19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+                                               ^
+39: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
 c++decl> explain friend bool operator==(S const&, S&) = default
-                           ^
-19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+                                               ^
+39: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
 c++decl> explain friend bool operator==(S const&, S) = default
-                           ^
-19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+                                               ^
+39: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
 c++decl> explain friend bool operator+(S const&, S const&) = default
                            ^
 19: error: only operator "=" and relational operators can be "default"
 c++decl> explain friend bool operator==(S, int) = default
-                           ^
-19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+                                        ^
+32: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
 c++decl> explain friend bool operator==(S&, S const&) = default
-                           ^
-19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+                                         ^
+33: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
 c++decl> explain friend bool operator==(S, S const&) = default
-                           ^
-19: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
+                                        ^
+32: error: default non-member relational operators must take two value or reference-to-const parameters of the same class or a typedef thereof
 c++decl> explain friend int operator<=>(const S&, const S&) = default
                  ^
 9: error: invalid operator "<=>" return type "int"; must be "auto", "std::partial_ordering", "std::strong_ordering", or "std::weak_ordering"
