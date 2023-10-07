@@ -172,7 +172,6 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_oper_relational_default( c_ast_t const* ),
                     c_ast_check_upc( c_ast_t const* ),
                     c_ast_check_visitor( c_ast_t const*, c_ast_check_fn_t ),
-                    c_ast_name_equal( c_ast_t const*, char const* ),
                     c_ast_visitor_error( c_ast_t const*, user_data_t ),
                     c_ast_visitor_type( c_ast_t const*, user_data_t ),
                     c_ast_visitor_warning( c_ast_t const*, user_data_t );
@@ -809,7 +808,8 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
 
-  if ( ast->kind == K_FUNCTION && c_ast_name_equal( ast, "main" ) &&
+  if ( ast->kind == K_FUNCTION &&
+       c_sname_cmp_name( &ast->sname, "main" ) == 0 &&
       ( //
         // Perform extra checks on a function named "main" if either:
         //
@@ -2359,8 +2359,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
         case TB_long | TB_double:
           break;
         default:                        // check for: char const*
-          if ( !c_ast_is_ptr_to_type_any( param_ast,
-                  &T_ANY, &T_const_char ) ) {
+          if ( !c_ast_is_ptr_to_type_any( param_ast, &T_ANY, &T_const_char ) ) {
             print_error( &param_ast->loc,
               "invalid user-defined literal parameter type "
             );
@@ -2439,29 +2438,14 @@ static bool c_ast_check_upc( c_ast_t const *ast ) {
   if ( c_tid_is_any( ast->type.stids, TS_UPC_relaxed | TS_UPC_strict ) &&
       !c_tid_is_any( ast->type.stids, TS_UPC_shared ) ) {
     print_error( &ast->loc,
-      "\"%s\" requires \"shared\"\n",
-      c_type_name_error( &ast->type )
+      "\"%s\" requires \"%s\"\n",
+      c_type_name_error( &ast->type ),
+      c_tid_name_error( TS_UPC_shared )
     );
     return false;
   }
 
   return true;
-}
-
-/**
- * Compares the name of \a ast to \a name for equality.
- *
- * @param ast The AST to check.
- * @param name The name to check for.
- * @return Returns `true` only if the name of \a ast is equal to \a name.
- */
-NODISCARD
-static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
-  assert( ast != NULL );
-  assert( name != NULL );
-
-  SNAME_VAR_INIT_NAME( sname, name );
-  return c_sname_cmp( &ast->sname, &sname ) == 0;
 }
 
 /**

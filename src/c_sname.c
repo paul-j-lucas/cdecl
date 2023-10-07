@@ -286,6 +286,14 @@ void c_sname_cleanup( c_sname_t *sname ) {
   slist_cleanup( sname, POINTER_CAST( slist_free_fn_t, &c_scope_data_free ) );
 }
 
+int c_sname_cmp_name( c_sname_t const *sname, char const *name ) {
+  assert( sname != NULL );
+  assert( name != NULL );
+
+  SNAME_VAR_INIT_NAME( name_sname, name );
+  return c_sname_cmp( sname, &name_sname );
+}
+
 void c_sname_fill_in_namespaces( c_sname_t *sname ) {
   assert( sname != NULL );
   c_type_t const *const local_type = c_sname_local_type( sname );

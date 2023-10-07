@@ -222,11 +222,26 @@ void c_sname_cleanup( c_sname_t *sname );
  * @param j_sname The second scoped name to compare.
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_sname is
  * less than, equal to, or greater than \a j_sname, respectively.
+ *
+ * @sa c_sname_cmp_name()
  */
 NODISCARD C_SNAME_H_INLINE
 int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
   return slist_cmp( i_sname, j_sname, (slist_cmp_fn_t)&c_scope_data_cmp );
 }
+
+/**
+ * Compares a scoped name and a name.
+ *
+ * @param sname The scoped name to compare.
+ * @param name The name to compare.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a sname is
+ * less than, equal to, or greater than \a name, respectively.
+ *
+ * @sa c_sname_cmp()
+ */
+NODISCARD
+int c_sname_cmp_name( c_sname_t const *sname, char const *name );
 
 /**
  * Gets the number of names of \a sname, e.g., `S::T::x` is 3.
