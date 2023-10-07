@@ -1817,26 +1817,25 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   // have based on whether it's a member, non-member, or unspecified.
   //
   bool const is_ambiguous = c_oper_is_ambiguous( op );
-  unsigned req_params_min = 0, req_params_max = 0;
-  bool const max_params_unlimited = op->params_max == C_OPER_PARAMS_UNLIMITED;
+  unsigned params_min = 0, params_max = 0;
+  bool const params_unlimited = op->params_max == C_OPER_PARAMS_UNLIMITED;
   switch ( member ) {
     case C_FUNC_NON_MEMBER:
       // Non-member operators must always take at least one parameter (the
       // enum, class, struct, or union for which it's overloaded).
-      req_params_min = is_ambiguous || max_params_unlimited ?
-        1 : op->params_max;
-      req_params_max = op->params_max;
+      params_min = is_ambiguous || params_unlimited ? 1 : op->params_max;
+      params_max = op->params_max;
       break;
     case C_FUNC_MEMBER:
-      if ( !max_params_unlimited ) {
-        req_params_min = op->params_min;
-        req_params_max = is_ambiguous ? 1 : op->params_min;
+      if ( !params_unlimited ) {
+        params_min = op->params_min;
+        params_max = is_ambiguous ? 1 : op->params_min;
         break;
       }
       FALLTHROUGH;
     case C_FUNC_UNSPECIFIED:
-      req_params_min = op->params_min;
-      req_params_max = op->params_max;
+      params_min = op->params_min;
+      params_max = op->params_max;
       break;
   } // switch
 
@@ -1844,24 +1843,24 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   // Ensure the operator has the required number of parameters.
   //
   size_t const n_params = c_ast_params_count( ast );
-  if ( n_params < req_params_min ) {
-    if ( req_params_min == req_params_max ) {
+  if ( n_params < params_min ) {
+    if ( params_min == params_max ) {
 same: print_error( c_ast_params_loc( ast ),
         "%soperator \"%s\" must have exactly %u parameter%s\n",
         member_or_nonmember, op->literal,
-        req_params_min, plural_s( req_params_min )
+        params_min, plural_s( params_min )
       );
     } else {
       print_error( c_ast_params_loc( ast ),
         "%soperator \"%s\" must have at least %u parameter%s\n",
         member_or_nonmember, op->literal,
-        req_params_min, plural_s( req_params_min )
+        params_min, plural_s( params_min )
       );
     }
     return false;
   }
-  if ( n_params > req_params_max ) {
-    if ( op->params_min == req_params_max )
+  if ( n_params > params_max ) {
+    if ( op->params_min == params_max )
       goto same;
     print_error( c_ast_params_loc( ast ),
       "%soperator \"%s\" can have at most %u parameter%s\n",
