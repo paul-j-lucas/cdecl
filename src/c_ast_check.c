@@ -510,7 +510,8 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_ast_t const *tdef_ast ) {
     }
     if ( c_tid_is_any( ast->type.atids, TA_no_unique_address ) ) {
       print_error( &ast->loc,
-        "[[no_unique_address]] %ss can not have bit-field widths\n",
+        "\"%s\" %ss can not have bit-field widths\n",
+        c_tid_name_error( TA_no_unique_address ),
         c_kind_name( ast->kind )
       );
       return false;

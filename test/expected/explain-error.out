@@ -518,7 +518,7 @@ c++decl> explain noreturn void f(int)
 9: error: "noreturn" keyword not supported in C++; did you mean [[noreturn]]?
 c++decl> explain [[no_unique_address]] int x : 4
                  ^
-9: error: [[no_unique_address]] built-in types can not have bit-field widths
+9: error: "no_unique_address" built-in types can not have bit-field widths
 c++decl> explain [[no_unique_address]] void f()
                                             ^
 36: error: function can not be "no_unique_address"
