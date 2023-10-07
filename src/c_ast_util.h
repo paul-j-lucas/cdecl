@@ -582,7 +582,7 @@ NODISCARD C_AST_UTIL_H_INLINE
 bool c_ast_oper_mbr_matches( c_ast_t const *ast, c_operator_t const *op ) {
   return  ast->oper.member == C_FUNC_UNSPECIFIED ||
           (STATIC_CAST( unsigned, ast->oper.member ) &
-           STATIC_CAST( unsigned, op->overload  )) != 0;
+           STATIC_CAST( unsigned, op->overload     )) != 0;
 }
 
 /**
