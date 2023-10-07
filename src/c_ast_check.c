@@ -2072,13 +2072,14 @@ rel_2par: print_error( c_ast_params_loc( ast ),
         op->literal
       );
       print_ast_type_aka( ret_ast, stderr );
-      EPUTS(
+      EPRINTF(
         "; must be "
-        "\"auto\", "
+        "\"%s\", "
         "\"std::partial_ordering\", "
         "\"std::strong_ordering\", "
         "or "
-        "\"std::weak_ordering\"\n"
+        "\"std::weak_ordering\"\n",
+        c_tid_name_error( TB_auto )
       );
       return false;
     }
@@ -2121,7 +2122,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
       EPUTS( " is illegal" );
       if ( raw_to_ast == to_ast ) {
         if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
-          print_hint( "reference to pointer" );
+          print_hint( "\"reference to pointer\"" );
         else
           print_hint( "\"*&\"" );
       } else {

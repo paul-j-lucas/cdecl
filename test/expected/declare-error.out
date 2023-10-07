@@ -315,7 +315,7 @@ c++decl> declare x as long char8_t
 9: error: "long char8_t" is illegal for built-in type
 c++decl> declare x as pointer to reference to int
                  ^
-9: error: pointer to reference is illegal; did you mean reference to pointer?
+9: error: pointer to reference is illegal; did you mean "reference to pointer"?
 c++decl> declare x as reference to register int
                                    ^
 27: error: "register int" is illegal for built-in type since C++17
