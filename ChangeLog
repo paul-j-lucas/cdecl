@@ -1,5 +1,14 @@
 2023-10-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c: Using c_tid_name_error() more.
+   * c_ast_check.c, declare_synonyms.out, explain.out: s/"nodiscard" functions
+     can not return void/"nodiscard" functions must return a value/
+   * c_ast_check.c, c_sname.c, c_sname.h: Added c_sname_cmp_name().
+   * c_ast_check.c: Now using c_ast_equal().
+   * c_ast_check.c, explain_operator-error.out: Better non-member relational
+     operator parameter location.
+   * c_ast_check.c, explain-error.out: Now using c_tid_name_error(
+     TA_no_unique_address ).
    * c_ast_check.c, c_operator.c, c_operator.h, c_type.c, gibberish.c,
      gibberish.h: Added other_token_c().
    * c_ast_check.c: Using alt_token_c(), graph_token_c() more.
