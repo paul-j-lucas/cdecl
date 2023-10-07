@@ -31,7 +31,6 @@
 #include "c_operator.h"
 #include "c_ast.h"
 #include "c_lang.h"
-#include "gibberish.h"
 #include "literals.h"
 #include "util.h"
 
@@ -158,12 +157,6 @@ bool c_oper_is_new_delete( c_oper_id_t oper_id ) {
     default:
       return false;
   } // switch
-}
-
-char const* c_oper_token_c( c_oper_id_t oper_id ) {
-  char const *const literal = c_oper_get( oper_id )->literal;
-  char const *const alt_token = alt_token_c( literal );
-  return alt_token != literal ? alt_token : graph_token_c( literal );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

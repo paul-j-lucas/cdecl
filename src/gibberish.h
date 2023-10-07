@@ -46,21 +46,6 @@
  */
 
 /**
- * If \ref opt_alt_tokens is `true`, gets the alternative token of a C++
- * operator \a token.
- *
- * @param token The C++ operator token to get the alternative token for.
- * @return If \ref opt_alt_tokens is `true` and if \a token is a token that has
- * an alternative token, returns said token; otherwise returns \a token as-is.
- *
- * @sa c_oper_token_c()
- * @sa graph_token_c()
- * @sa opt_alt_tokens
- */
-NODISCARD
-char const* alt_token_c( char const *token );
-
-/**
  * Prints \a ast as gibberish, aka, a C/C++ declaration or cast.
  *
  * @param ast The AST to print.
@@ -105,19 +90,22 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
                           FILE *gout );
 
 /**
- * Gets the digraph or trigraph (collectively, "graph") equivalent of \a token.
+ * Gets either the altertative or "graph" token, if any, of \a token.
  *
- * @param token The token to get the graph token for.
- * @return If we're \ref opt_graph "emitting graphs" and \a token contains one
- * or more characters that have a graph equivalent, returns \a token with said
- * characters replaced by their graphs; otherwise returns \a token as-is.
+ * @param token The C++ token to get the other token for.
+ * @return
+ *  + If \ref opt_alt_tokens is `true`, returns the alternative token of \a
+ *    token, if any; or:
+ * + If \ref opt_graph is not #C_GRAPH_NONE, returns the "graph" token of \a
+ *   token, if any; or:
+ * + Returns \a token as-is.
  *
  * @sa alt_token_c()
  * @sa c_oper_token_c()
- * @sa opt_graph
+ * @sa graph_token_c()
  */
 NODISCARD
-char const* graph_token_c( char const *token );
+char const* other_token_c( char const *token );
 
 /** @} */
 

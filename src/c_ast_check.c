@@ -422,7 +422,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
         print_hint( "%s to array", c_kind_name( raw_of_ast->kind ) );
       } else {
         print_hint( "(%s%s)[]",
-          alt_token_c( raw_of_ast->kind == K_REFERENCE ? "&" : "&&" ),
+          other_token_c( raw_of_ast->kind == K_REFERENCE ? "&" : "&&" ),
           c_sname_full_name( c_ast_find_name( ast, C_VISIT_DOWN ) )
         );
       }
@@ -1145,7 +1145,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
         }
         else {
           EPRINTF( "\"char*%s\"\n",
-            param_ast->kind == K_ARRAY ? graph_token_c( "[]" ) : "*"
+            param_ast->kind == K_ARRAY ? other_token_c( "[]" ) : "*"
           );
         }
         return false;
@@ -1158,7 +1158,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
       if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
         EPRINTF( "\"array of pointer to %s\"\n", c_tid_name_error( TB_char ) );
       else
-        EPRINTF( "\"char*%s\"\n", graph_token_c( "[]" ) );
+        EPRINTF( "\"char*%s\"\n", other_token_c( "[]" ) );
       return false;
   } // switch
   return true;

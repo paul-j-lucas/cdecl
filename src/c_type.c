@@ -31,7 +31,7 @@
 #include "c_type.h"
 #include "c_lang.h"
 #include "cdecl.h"
-#include "gibberish.h"                  /* for graph_token_c() */
+#include "gibberish.h"                  /* for other_token_c() */
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -882,10 +882,10 @@ static char const* c_type_name_impl( c_type_t const *type,
     bool *const sep_cat = print_brackets ? &comma : &space;
 
     if ( print_brackets )
-      strbuf_sepc_puts( sbuf, ' ', &space, graph_token_c( "[[" ) );
+      strbuf_sepc_puts( sbuf, ' ', &space, other_token_c( "[[" ) );
     C_TID_NAME_CAT( sbuf, atids, ATIDS, in_english, is_error, sep, sep_cat );
     if ( print_brackets )
-      strbuf_puts( sbuf, graph_token_c( "]]" ) );
+      strbuf_puts( sbuf, other_token_c( "]]" ) );
     space = true;
   }
 

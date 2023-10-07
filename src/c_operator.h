@@ -28,6 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "gibberish.h"
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -167,9 +168,12 @@ bool c_oper_is_new_delete( c_oper_id_t oper_id );
  *
  * @sa alt_token_c()
  * @sa graph_token_c()
+ * @sa other_token_c()
  */
-NODISCARD
-char const* c_oper_token_c( c_oper_id_t oper_id );
+NODISCARD C_OPERATOR_H_INLINE
+char const* c_oper_token_c( c_oper_id_t oper_id ) {
+  return other_token_c( c_oper_get( oper_id )->literal );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 

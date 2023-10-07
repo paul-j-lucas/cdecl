@@ -109,6 +109,49 @@ static inline void gib_print_space_once( gib_state_t *gib ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * If \ref opt_alt_tokens is `true`, gets the alternative token of a C++
+ * operator \a token.
+ *
+ * @param token The C++ operator token to get the alternative token for.
+ * @return If \ref opt_alt_tokens is `true` and if \a token is a token that has
+ * an alternative token, returns said token; otherwise returns \a token as-is.
+ *
+ * @sa c_oper_token_c()
+ * @sa graph_token_c()
+ * @sa opt_alt_tokens
+ */
+NODISCARD
+static char const* alt_token_c( char const *token ) {
+  assert( token != NULL );
+
+  if ( opt_alt_tokens ) {
+    switch ( token[0] ) {
+      case '!': switch ( token[1] ) {
+                  case '=': return L_not_eq;
+                  default : return L_not;
+                }
+      case '&': switch ( token[1] ) {
+                  case '&': return L_and;
+                  case '=': return L_and_eq;
+                  default : return L_bitand;
+                } // switch
+      case '|': switch ( token[1] ) {
+                  case '|': return L_or;
+                  case '=': return L_or_eq;
+                  default : return L_bitor;
+                } // switch
+      case '~': return L_compl;
+      case '^': switch ( token[1] ) {
+                  case '=': return L_xor_eq;
+                  default : return L_xor;
+                } // switch
+    } // switch
+  }
+
+  return token;
+}
+
+/**
  * Helper function for c_ast_gibberish_impl() that prints an array's size.
  *
  * @param ast The AST that is a \ref K_ARRAY whose size to print.
@@ -120,7 +163,7 @@ static void c_ast_array_size_gibberish( c_ast_t const *ast,
   assert( ast->kind == K_ARRAY );
   assert( gib != NULL );
 
-  FPUTS( graph_token_c( "[" ), gib->gout );
+  FPUTS( other_token_c( "[" ), gib->gout );
 
   bool const is_qual = c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER );
   if ( is_qual )
@@ -140,7 +183,7 @@ static void c_ast_array_size_gibberish( c_ast_t const *ast,
       break;
   } // switch
 
-  FPUTS( graph_token_c( "]" ), gib->gout );
+  FPUTS( other_token_c( "]" ), gib->gout );
 }
 
 /**
@@ -301,7 +344,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         FPRINTF( gib->gout, " %s", c_tid_name_c( cv_qual_stids ) );
       if ( ref_qual_stids != TS_NONE ) {
         FPRINTF( gib->gout, " %s",
-          alt_token_c(
+          other_token_c(
             c_tid_is_any( ref_qual_stids, TS_REFERENCE ) ? "&" : "&&"
           )
         );
@@ -351,7 +394,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
           FPUTC( '=', gib->gout );
           break;
         case C_CAPTURE_REFERENCE:
-          FPUTS( alt_token_c( "&" ), gib->gout );
+          FPUTS( other_token_c( "&" ), gib->gout );
           if ( c_sname_empty( &ast->sname ) )
             break;
           if ( opt_alt_tokens )
@@ -473,9 +516,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_LAMBDA:
-      FPUTS( graph_token_c( "[" ), gib->gout );
+      FPUTS( other_token_c( "[" ), gib->gout );
       c_ast_list_gibberish( &ast->lambda.capture_ast_list, gib );
-      FPUTS( graph_token_c( "]" ), gib->gout );
+      FPUTS( other_token_c( "]" ), gib->gout );
       if ( c_ast_params_count( ast ) > 0 ) {
         FPUTC( '(', gib->gout );
         c_ast_list_gibberish( &ast->lambda.param_ast_list, gib );
@@ -1065,37 +1108,74 @@ static void gib_init( gib_state_t *gib, unsigned gib_flags, FILE *gout ) {
   gib->printed_space = (gib_flags & C_GIB_OPT_OMIT_TYPE) != 0;
 }
 
-////////// extern functions ///////////////////////////////////////////////////
-
-char const* alt_token_c( char const *token ) {
+/**
+ * Gets the digraph or trigraph (collectively, "graph") equivalent of \a token.
+ *
+ * @param token The token to get the graph token for.
+ * @return If we're \ref opt_graph "emitting graphs" and \a token contains one
+ * or more characters that have a graph equivalent, returns \a token with said
+ * characters replaced by their graphs; otherwise returns \a token as-is.
+ *
+ * @sa alt_token_c()
+ * @sa c_oper_token_c()
+ * @sa opt_graph
+ */
+NODISCARD
+static char const* graph_token_c( char const *token ) {
   assert( token != NULL );
 
-  if ( opt_alt_tokens ) {
-    switch ( token[0] ) {
-      case '!': switch ( token[1] ) {
-                  case '=': return L_not_eq;
-                  default : return L_not;
-                }
-      case '&': switch ( token[1] ) {
-                  case '&': return L_and;
-                  case '=': return L_and_eq;
-                  default : return L_bitand;
-                } // switch
-      case '|': switch ( token[1] ) {
-                  case '|': return L_or;
-                  case '=': return L_or_eq;
-                  default : return L_bitor;
-                } // switch
-      case '~': return L_compl;
-      case '^': switch ( token[1] ) {
-                  case '=': return L_xor_eq;
-                  default : return L_xor;
-                } // switch
-    } // switch
-  }
+  switch ( opt_graph ) {
+    case C_GRAPH_NONE:
+      break;
+    //
+    // Even though this could be done character-by-character, it's easier for
+    // the calling code if multi-character tokens containing graph characters
+    // are returned as a single string.
+    //
+    case C_GRAPH_DI:
+      if ( OPT_LANG_IS( DIGRAPHS ) ) {
+        switch ( token[0] ) {
+          case '#'  : return token[1] == '#' ? "%:%:" : "%:";
+          case '['  : switch ( token[1] ) {
+                        case '[': return "<:<:";
+                        case ']': return "<::>";
+                        default : return "<:";
+                      } // switch
+          case ']'  : return token[1] == ']' ? ":>:>" : ":>";
+          case '{'  : return "<%";
+          case '}'  : return "%>";
+        } // switch
+      }
+      break;
+    case C_GRAPH_TRI:
+      if ( OPT_LANG_IS( TRIGRAPHS ) ) {
+        switch ( token[0] ) {
+          case '#'  : return "?\?=";
+          case '['  : switch ( token[1] ) {
+                        case '[': return "?\?(?\?(";
+                        case ']': return "?\?(?\?)";
+                        default : return "?\?(";
+                      } // switch
+          case ']'  : return token[1] == ']' ? "?\?)?\?)" : "?\?)";
+          case '\\' : return "?\?/";
+          case '^'  : return token[1] == '=' ? "?\?'=" : "?\?'";
+          case '{'  : return "?\?<";
+          case '}'  : return "?\?>";
+          case '|'  : switch ( token[1] ) {
+                        case '=': return "?\?!=";
+                        case '|': return "?\?!?\?!";
+                        default : return "?\?!";
+                      } // switch
+          case '~'  : return "?\?-";
+        } // switch
+      }
+      break;
+  } // switch
 
   return token;
 }
+
+////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
   assert( ast != NULL );
@@ -1254,7 +1334,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
       FPRINTF( gout,
         "%s %s %s ",
         c_type_name_c( &scope_type ), c_sname_scope_name( sname ),
-        graph_token_c( "{" )
+        other_token_c( "{" )
       );
       scope_close_braces_to_print = 1;
     }
@@ -1269,7 +1349,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
         FPRINTF( gout,
           "%s %s %s ",
           c_type_name_c( &scope_type ), c_scope_data( scope )->name,
-          graph_token_c( "{" )
+          other_token_c( "{" )
         );
       } // for
       scope_close_braces_to_print = c_sname_count( sname ) - 1;
@@ -1326,7 +1406,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
   if ( scope_close_braces_to_print > 0 ) {
     FPUTC( ';', gout );
     while ( scope_close_braces_to_print-- > 0 )
-      FPRINTF( gout, " %s", graph_token_c( "}" ) );
+      FPRINTF( gout, " %s", other_token_c( "}" ) );
   }
 
   if ( (gib_flags & C_GIB_OPT_SEMICOLON) != 0 &&
@@ -1335,60 +1415,9 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
   }
 }
 
-char const* graph_token_c( char const *token ) {
-  assert( token != NULL );
-
-  if ( !opt_alt_tokens ) {
-    switch ( opt_graph ) {
-      case C_GRAPH_NONE:
-        break;
-      //
-      // Even though this could be done character-by-character, it's easier for
-      // the calling code if multi-character tokens containing graph characters
-      // are returned as a single string.
-      //
-      case C_GRAPH_DI:
-        if ( OPT_LANG_IS( DIGRAPHS ) ) {
-          switch ( token[0] ) {
-            case '#'  : return token[1] == '#' ? "%:%:" : "%:";
-            case '['  : switch ( token[1] ) {
-                          case '[': return "<:<:";
-                          case ']': return "<::>";
-                          default : return "<:";
-                        } // switch
-            case ']'  : return token[1] == ']' ? ":>:>" : ":>";
-            case '{'  : return "<%";
-            case '}'  : return "%>";
-          } // switch
-        }
-        break;
-      case C_GRAPH_TRI:
-        if ( OPT_LANG_IS( TRIGRAPHS ) ) {
-          switch ( token[0] ) {
-            case '#'  : return "?\?=";
-            case '['  : switch ( token[1] ) {
-                          case '[': return "?\?(?\?(";
-                          case ']': return "?\?(?\?)";
-                          default : return "?\?(";
-                        } // switch
-            case ']'  : return token[1] == ']' ? "?\?)?\?)" : "?\?)";
-            case '\\' : return "?\?/";
-            case '^'  : return token[1] == '=' ? "?\?'=" : "?\?'";
-            case '{'  : return "?\?<";
-            case '}'  : return "?\?>";
-            case '|'  : switch ( token[1] ) {
-                          case '=': return "?\?!=";
-                          case '|': return "?\?!?\?!";
-                          default : return "?\?!";
-                        } // switch
-            case '~'  : return "?\?-";
-          } // switch
-        }
-        break;
-    } // switch
-  }
-
-  return token;
+char const* other_token_c( char const *token ) {
+  char const *const alt_token = alt_token_c( token );
+  return alt_token != token ? alt_token : graph_token_c( token );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
