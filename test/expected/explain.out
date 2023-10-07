@@ -500,7 +500,7 @@ c++decl> explain [[no_unique_address]] struct S x
 declare x as non-unique-address structure S
 c++decl> explain [[nodiscard]] void f()
                  ^
-9: warning: [[nodiscard]] functions can not return void
+9: warning: "nodiscard" functions can not return void
 declare f as non-discardable function returning void
 c++decl> explain [[noreturn]] void f(int)
 declare f as non-returning function (integer) returning void

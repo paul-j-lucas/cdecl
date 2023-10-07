@@ -396,7 +396,10 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
 
     case K_BUILTIN:
       if ( c_ast_is_builtin_any( raw_of_ast, TB_void ) ) {
-        print_error( &ast->loc, "array of \"void\"" );
+        print_error( &ast->loc,
+          "array of \"%s\"",
+          c_tid_name_error( TB_void )
+        );
         if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
           print_hint( "array of \"pointer to void\"" );
         else
@@ -537,7 +540,10 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_ast_t const *tdef_ast ) {
        !c_tid_is_any( ast->type.stids, TS_typedef ) &&
        !(OPT_LANG_IS( C_ANY ) && c_tid_is_any( ast->type.stids, TS_extern )) &&
        (tdef_ast == NULL || !c_ast_parent_is_kind( tdef_ast, K_POINTER )) ) {
-    print_error( &ast->loc, "variable of \"void\"" );
+    print_error( &ast->loc,
+      "variable of \"%s\"",
+      c_tid_name_error( TB_void )
+    );
     if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
       print_hint( "\"pointer to void\"" );
     else
@@ -1062,7 +1068,8 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
       }
       if ( !c_ast_is_builtin_any( param_ast, TB_void ) ) {
         print_error( &param_ast->loc,
-          "a single parameter for main() must be \"void\"\n"
+          "a single parameter for main() must be \"%s\"\n",
+          c_tid_name_error( TB_void )
         );
         return false;
       }
@@ -1224,14 +1231,16 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           //
           if ( !c_sname_empty( &param_ast->sname ) ) {
             print_error( &param_ast->loc,
-              "\"void\" parameters can not have a name\n"
+              "\"%s\" parameters can not have a name\n",
+              c_tid_name_error( TB_void )
             );
             return false;
           }
           c_tid_t qual_stids;
           if ( c_ast_is_tid_any_qual( param_ast, TS_CV, &qual_stids ) ) {
             print_error( &param_ast->loc,
-              "\"void\" parameters can not be \"%s\"\n",
+              "\"%s\" parameters can not be \"%s\"\n",
+              c_tid_name_error( TB_void ),
               c_tid_name_error( qual_stids )
             );
             return false;
@@ -1326,7 +1335,8 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
 only_void:
   print_error( &void_ast->loc,
-    "\"void\" must be only parameter if specified\n"
+    "\"%s\" must be only parameter if specified\n",
+    c_tid_name_error( TB_void )
   );
   return false;
 }
@@ -1625,7 +1635,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
           op->literal
         );
         print_ast_type_aka( ret_ast, stderr );
-        EPUTS( "; must be \"void\"\n" );
+        EPRINTF( "; must be \"%s\"\n", c_tid_name_error( TB_void ) );
         return false;
       }
       break;
@@ -2793,7 +2803,8 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
     case K_POINTER_TO_MEMBER:
       if ( c_ast_is_register( ast ) && OPT_LANG_IS( MIN(CPP_11) ) ) {
         print_warning( &ast->loc,
-          "\"register\" is deprecated%s\n",
+          "\"%s\" is deprecated%s\n",
+          c_tid_name_error( TS_register ),
           C_LANG_WHICH( MAX(CPP_03) )
         );
       }
@@ -2802,7 +2813,8 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
     case K_UDEF_LIT:
       if ( c_sname_local_name( &ast->sname )[0] != '_' )
         print_warning( &ast->loc,
-          "user-defined literals not starting with '_' are reserved\n"
+          "%ss not starting with '_' are reserved\n",
+          c_kind_name( K_UDEF_LIT )
         );
       FALLTHROUGH;
 
@@ -2818,14 +2830,16 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
         if ( c_tid_is_any( ret_qual_stids, TS_volatile ) &&
             OPT_LANG_IS( CPP_MIN(20) ) ) {
           print_warning( &ret_ast->loc,
-            "\"volatile\" return types are deprecated%s\n",
+            "\"%s\" return types are deprecated%s\n",
+            c_tid_name_error( TS_volatile ),
             C_LANG_WHICH( CPP_MAX(17) )
           );
         }
         if ( c_tid_is_any( ast->type.atids, TA_nodiscard ) &&
             c_ast_is_builtin_any( ret_ast, TB_void ) ) {
           print_warning( &ret_ast->loc,
-            "[[nodiscard]] %ss can not return void\n",
+            "\"%s\" %ss can not return void\n",
+            c_tid_name_error( TA_nodiscard ),
             c_kind_name( ast->kind )
           );
         }
@@ -2841,7 +2855,8 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
         if ( c_tid_is_any( param_ast->type.stids, TS_volatile ) &&
              OPT_LANG_IS( CPP_MIN(20) ) ) {
           print_warning( &param_ast->loc,
-            "\"volatile\" parameter types are deprecated%s\n",
+            "\"%s\" parameter types are deprecated%s\n",
+            c_tid_name_error( TS_volatile ),
             C_LANG_WHICH( CPP_MAX(17) )
           );
         }
