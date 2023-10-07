@@ -208,25 +208,6 @@ static inline bool c_ast_is_register( c_ast_t const *ast ) {
 }
 
 /**
- * Gets whether the membership specification of the C++ operator \a ast matches
- * the overloadability of \a op.
- *
- * @param ast The C++ operator AST to check.
- * @param op The C++ operator to check against.
- * @return Returns `true` only if either:
- *  + The user didn't specify either #C_FUNC_MEMBER or #C_FUNC_NON_MEMBER; or:
- *  + The membership specification of \a ast matches the overloadability of \a
- *    op.
- */
-NODISCARD
-static inline bool c_ast_oper_mbr_matches( c_ast_t const *ast,
-                                           c_operator_t const *op ) {
-  return  ast->oper.member == C_FUNC_UNSPECIFIED ||
-          (STATIC_CAST( unsigned, ast->oper.member ) &
-           STATIC_CAST( unsigned, op->overload  )) != 0;
-}
-
-/**
  * Gets the location of the first parameter of \a ast, if any.
  *
  * @param ast The AST to get the location of its first parameter of, if any.

@@ -30,6 +30,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "c_ast.h"
+#include "c_operator.h"
 #include "c_type.h"
 #include "options.h"
 #include "types.h"
@@ -564,6 +565,24 @@ NODISCARD C_AST_UTIL_H_INLINE
 c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   c_tid_t qual_stids = TS_NONE;
   return c_ast_is_tid_any_qual( ast, tids, &qual_stids );
+}
+
+/**
+ * Gets whether the membership specification of the C++ operator \a ast matches
+ * the overloadability of \a op.
+ *
+ * @param ast The C++ operator AST to check.
+ * @param op The C++ operator to check against.
+ * @return Returns `true` only if either:
+ *  + The user didn't specify either #C_FUNC_MEMBER or #C_FUNC_NON_MEMBER; or:
+ *  + The membership specification of \a ast matches the overloadability of \a
+ *    op.
+ */
+NODISCARD C_AST_UTIL_H_INLINE
+bool c_ast_oper_mbr_matches( c_ast_t const *ast, c_operator_t const *op ) {
+  return  ast->oper.member == C_FUNC_UNSPECIFIED ||
+          (STATIC_CAST( unsigned, ast->oper.member ) &
+           STATIC_CAST( unsigned, op->overload  )) != 0;
 }
 
 /**
