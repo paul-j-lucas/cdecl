@@ -1379,7 +1379,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_deprecated
 
                     // C23 & C++17
-%token              Y_discard
+%token              Y_discard           // "no discard"
 %token  <tid>       Y_maybe_unused
 %token              Y_maybe Y_unused
 %token  <tid>       Y_nodiscard
@@ -1389,7 +1389,6 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_char8_t
 
                     // C++20
-%token              Y_address
 %token              Y_concept
 %token  <tid>       Y_consteval
 %token  <tid>       Y_constinit
@@ -1399,7 +1398,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_export
 %token  <tid>       Y_no_unique_address
 %token              Y_requires
-%token              Y_unique
+%token              Y_unique Y_address  // "no unique address"
 
                     // Embedded C extensions
 %token  <tid>       Y_EMC__Accum
@@ -1432,13 +1431,13 @@ static void yyerror( char const *msg ) {
 %token              ':'
 %token              ';'
 %token              '{' '}'
-%token  <str_val>   Y_CHAR_LIT
+%token  <str_val>   Y_CHAR_LIT          // must be free'd
 %token              Y_END
 %token              Y_ERROR
-%token  <name>      Y_GLOB
-%token  <name>      Y_NAME
-%token  <name>      Y_SET_OPTION
-%token  <str_val>   Y_STR_LIT
+%token  <name>      Y_GLOB              // must be free'd
+%token  <name>      Y_NAME              // must be free'd
+%token  <name>      Y_SET_OPTION        // must be free'd
+%token  <str_val>   Y_STR_LIT           // must be free'd
 %token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
 %token  <tdef>      Y_TYPEDEF_SNAME     // e.g., std::string
 %token  <uint_val>  Y_UINT_LIT
