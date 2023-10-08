@@ -54,6 +54,7 @@
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_english()
+ * @sa c_sname_list_ast_gibberish()
  * @sa c_typedef_gibberish()
  * @sa print_ast_type_aka()
  * @sa print_type_decl()
@@ -72,6 +73,38 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout );
  */
 NODISCARD
 char const* c_cast_gibberish( c_cast_kind_t kind );
+
+/**
+ * Prints the names in \a sname_list as gibberish, aka, C/C++ declarations.
+ * For example, if \a sname_list is [ `"x"`, `"y"` ] and \a ast is:
+ *
+ *      $$_ast: {
+ *        sname: null,
+ *        kind: { value: 0x400, string: "pointer" },
+ *        ...
+ *        ptr_ref: {
+ *          to_ast: {
+ *            sname: null,
+ *            kind: { value: 0x2, string: "built-in type" },
+ *            ...
+ *            type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+ *            ...
+ *          }
+ *        }
+ *      }
+ *
+ * prints:
+ *
+ *      int *x, *y;
+ *
+ * @param sname_list The names to print as \a ast.
+ * @param ast The AST that is the type to print.
+ * @param gout The `FILE` to print to.
+ *
+ * @sa c_ast_gibberish()
+ */
+void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
+                                 FILE *gout );
 
 /**
  * Prints \a tdef as a C/C++ type declaration.

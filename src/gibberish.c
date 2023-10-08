@@ -1246,6 +1246,64 @@ char const* c_cast_gibberish( c_cast_kind_t kind ) {
   UNEXPECTED_INT_VALUE( kind );
 }
 
+void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
+                                 FILE *gout ) {
+  assert( sname_list != NULL );
+  assert( ast != NULL );
+  assert( gout != NULL );
+
+  unsigned decl_flags = C_GIB_PRINT_DECL;
+  if ( slist_len( sname_list ) > 1 )
+    decl_flags |= C_GIB_OPT_MULTI_DECL;
+  bool const print_as_using = c_ast_print_as_using( ast );
+  if ( print_as_using && opt_semicolon ) {
+    //
+    // When declaring multiple types via the same "declare" as "using"
+    // declarations, each type needs its own "using" declaration and hence its
+    // own semicolon:
+    //
+    //      c++decl> declare I, J as type int
+    //      using I = int;
+    //      using J = int;
+    //
+    decl_flags |= C_GIB_OPT_SEMICOLON;
+  }
+
+  FOREACH_SLIST_NODE( sname_node, sname_list ) {
+    c_sname_t *const cur_sname = sname_node->data;
+    c_sname_set( &ast->sname, cur_sname );
+    bool const is_last_sname = sname_node->next == NULL;
+    if ( is_last_sname && opt_semicolon )
+      decl_flags |= C_GIB_OPT_SEMICOLON;
+    c_ast_gibberish( ast, decl_flags, gout );
+    if ( is_last_sname )
+      continue;
+    if ( print_as_using ) {
+      //
+      // When declaring multiple types via the same "declare" as "using"
+      // declarations, they need to be separated by newlines.  (The final
+      // newine is handled below.)
+      //
+      FPUTC( '\n', gout );
+    }
+    else {
+      //
+      // When declaring multiple types (not as "using" declarations) or objects
+      // via the same "declare", the second and subsequent types or objects
+      // must not have the type name printed -- and they also need to be
+      // separated by commas.  For example, when printing:
+      //
+      //      cdecl> declare x, y as pointer to int
+      //      int *x, *y;
+      //
+      // the gibberish for `y` must not print the `int` again.
+      //
+      decl_flags |= C_GIB_OPT_OMIT_TYPE;
+      FPUTS( ", ", gout );
+    }
+  } // for
+}
+
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
                           FILE *gout ) {
   assert( tdef != NULL );

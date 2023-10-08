@@ -1858,58 +1858,8 @@ declare_command
         } // for
       }
 
-      if ( ok ) {
-        unsigned decl_flags = C_GIB_PRINT_DECL;
-        if ( slist_len( &$sname_list ) > 1 )
-          decl_flags |= C_GIB_OPT_MULTI_DECL;
-        bool const print_as_using = c_ast_print_as_using( $decl_ast );
-        if ( print_as_using && opt_semicolon ) {
-          //
-          // When declaring multiple types via the same "declare" as "using"
-          // declarations, each type needs its own "using" declaration and
-          // hence its own semicolon:
-          //
-          //      c++decl> declare I, J as type int
-          //      using I = int;
-          //      using J = int;
-          //
-          decl_flags |= C_GIB_OPT_SEMICOLON;
-        }
-
-        FOREACH_SLIST_NODE( sname_node, &$sname_list ) {
-          c_sname_t *const cur_sname = sname_node->data;
-          c_sname_set( &$decl_ast->sname, cur_sname );
-          bool const is_last_sname = sname_node->next == NULL;
-          if ( is_last_sname && opt_semicolon )
-            decl_flags |= C_GIB_OPT_SEMICOLON;
-          c_ast_gibberish( $decl_ast, decl_flags, stdout );
-          if ( is_last_sname )
-            continue;
-          if ( print_as_using ) {
-            //
-            // When declaring multiple types via the same "declare" as "using"
-            // declarations, they need to be separated by newlines.  (The final
-            // newine is handled below.)
-            //
-            PUTC( '\n' );
-          }
-          else {
-            //
-            // When declaring multiple types (not as "using" declarations) or
-            // objects via the same "declare", the second and subsequent types
-            // or objects must not have the type name printed -- and they also
-            // need to be separated by commas.  For example, when printing:
-            //
-            //      cdecl> declare x, y as pointer to int
-            //      int *x, *y;
-            //
-            // the gibberish for `y` must not print the `int` again.
-            //
-            decl_flags |= C_GIB_OPT_OMIT_TYPE;
-            PUTS( ", " );
-          }
-        } // for
-      }
+      if ( ok )
+        c_sname_list_ast_gibberish( &$sname_list, $decl_ast, stdout );
 
       c_sname_list_cleanup( &$sname_list );
       PARSE_ASSERT( ok );
