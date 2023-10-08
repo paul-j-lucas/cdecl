@@ -1,5 +1,6 @@
 2023-10-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Added -D_ISOC11_SOURCE.
    * parser.y: Using other_token_c() more.
    * c_ast_check.c, parser.y: Moved new-style casts check from parser.y to
      c_ast_check.c.
