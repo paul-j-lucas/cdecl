@@ -57,6 +57,9 @@ AS_IF([test "x$ac_cv_prog_cc_c11" = xno], [
 ])
 gl_EARLY
 
+AC_SUBST([CDECL_CFLAGS])
+CDECL_CFLAGS="-D_ISOC11_SOURCE"
+
 # Check for flex & bison only if lexer.c & parser.c aren't present. If present,
 # it likely means a released version was downloaded so flex & bison shouldn't
 # be required.
@@ -300,7 +303,6 @@ AM_CONDITIONAL([WITH_READLINE],       [test "x$with_readline"      != xno ])
 AX_C___ATTRIBUTE__
 
 # Compiler warnings.
-AC_SUBST([CDECL_CFLAGS])
 AX_CFLAGS_WARN_ALL([CDECL_CFLAGS])
 AX_CHECK_COMPILE_FLAG([-Wcast-align], [CDECL_CFLAGS="$CDECL_CFLAGS -Wcast-align"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wcast-function-type], [CDECL_CFLAGS="$CDECL_CFLAGS -Wcast-function-type"], [], [-Werror])
