@@ -1745,23 +1745,13 @@ cast_command
   | new_style_cast_english[cast_kind] sname_english_exp[sname] as_into_to_exp
     decl_english_ast[decl_ast]
     {
-      char const *const cast_literal = c_cast_gibberish( $cast_kind );
-
       DUMP_START();
       DUMP_PROD( "cast_command",
                  "new_style_cast_english CAST sname_english_exp "
                  "as_into_to_exp decl_english_ast" );
-      DUMP_STR( "new_style_cast_english", cast_literal );
+      DUMP_STR( "new_style_cast_english", c_cast_gibberish( $cast_kind ) );
       DUMP_SNAME( "sname_english_exp", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
-
-      if ( UNSUPPORTED( NEW_STYLE_CASTS ) ) {
-        print_error( &@cast_kind,
-          "%s not supported%s\n", cast_literal,
-          C_LANG_WHICH( NEW_STYLE_CASTS )
-        );
-        PARSE_ABORT();
-      }
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$sname );
@@ -2744,14 +2734,6 @@ new_style_cast_expr_c
 
       DUMP_AST( "$$_ast", cast_ast );
       DUMP_END();
-
-      if ( UNSUPPORTED( NEW_STYLE_CASTS ) ) {
-        print_error( &@cast_kind,
-          "%s_cast not supported%s\n",
-          cast_literal, C_LANG_WHICH( NEW_STYLE_CASTS )
-        );
-        PARSE_ABORT();
-      }
 
       PARSE_ASSERT( c_ast_check( cast_ast ) );
       c_ast_english( cast_ast, C_ENG_DECL, stdout );

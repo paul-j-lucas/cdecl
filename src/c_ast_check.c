@@ -563,6 +563,14 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_CAST );
 
+  if ( ast->cast.kind != C_CAST_C && !OPT_LANG_IS( NEW_STYLE_CASTS ) ) {
+    print_error( &ast->loc,
+      "%s not supported%s\n", c_cast_gibberish( ast->cast.kind ),
+      C_LANG_WHICH( NEW_STYLE_CASTS )
+    );
+    return false;
+  }
+
   c_ast_t *const to_ast = ast->cast.to_ast;
   c_ast_t const *const storage_ast = c_ast_find_type_any(
     to_ast, C_VISIT_DOWN, &C_TYPE_LIT_S( TS_ANY_STORAGE )
