@@ -232,7 +232,7 @@ cdecl> explain type int x
 9: error: "type": unknown name
 cdecl> explain typedef char int32_t
                             ^
-22: error: type "char" redefinition incompatible with original type "int"
+22: error: type "char" redefinition incompatible with original type "int32_t" (aka, "int")
 cdecl> explain unsigned _BitInt(0) x
                ^
 9: error: unsigned _BitInt must be at least 1 bit

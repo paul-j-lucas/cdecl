@@ -940,13 +940,9 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     if ( !c_ast_equal( type_ast, raw_decl_ast ) ) {
       print_error( &decl_ast->loc, "type " );
       print_ast_type_aka( type_ast, stderr );
-      EPUTS( " redefinition incompatible with original type \"" );
-      // Look-up the type so we can print it how it was originally defined.
-      c_typedef_t const *const tdef =
-        c_typedef_find_sname( &raw_decl_ast->sname );
-      assert( tdef != NULL );
-      print_type_ast( tdef, stderr );
-      EPUTS( "\"\n" );
+      EPUTS( " redefinition incompatible with original type " );
+      print_ast_type_aka( decl_ast, stderr );
+      EPUTS( "\n" );
       return NULL;
     }
 
