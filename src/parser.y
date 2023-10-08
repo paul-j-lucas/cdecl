@@ -942,7 +942,7 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
       print_ast_type_aka( type_ast, stderr );
       EPUTS( " redefinition incompatible with original type " );
       print_ast_type_aka( decl_ast, stderr );
-      EPUTS( "\n" );
+      EPUTC( '\n' );
       return NULL;
     }
 
