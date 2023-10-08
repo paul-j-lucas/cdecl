@@ -633,7 +633,7 @@ static void attr_syntax_not_supported( char const *keyword,
     "\"%s\" not supported by %s (ignoring)", keyword, CDECL
   );
   if ( OPT_LANG_IS( ATTRIBUTES ) )
-    print_hint( "[[...]]" );
+    print_hint( "%s...%s", other_token_c( "[[" ), other_token_c( "]]" ) );
   else
     EPUTC( '\n' );
 }
@@ -5573,7 +5573,8 @@ atomic_specifier_type_c_ast
         static c_type_t const TSA_ANY = { TB_NONE, TS_ANY, TA_ANY };
         c_type_t const error_type = c_type_and( &$$->type, &TSA_ANY );
         print_error( &@type_ast,
-          "\"_Atomic\" can not be of \"%s\"\n",
+          "\"%s\" can not be of \"%s\"\n",
+          c_tid_name_error( TS__Atomic ),
           c_type_name_c( &error_type )
         );
         PARSE_ABORT();
@@ -5993,7 +5994,9 @@ storage_class_c_type
           "\"%s\" keyword not supported%s",
           lexer_token, C_LANG_WHICH( _Noreturn )
         );
-        print_hint( "[[noreturn]]" );
+        print_hint(
+          "%snoreturn%s", other_token_c( "[[" ), other_token_c( "]]" )
+        );
         PARSE_ABORT();
       }
       if ( OPT_LANG_IS( C_MIN(23)) ) {
@@ -6001,7 +6004,9 @@ storage_class_c_type
           "\"%s\" is deprecated%s",
           lexer_token, C_LANG_WHICH( C_MAX(17) )
         );
-        print_hint( "[[noreturn]]" );
+        print_hint(
+          "%snoreturn%s", other_token_c( "[[" ), other_token_c( "]]" )
+        );
       }
 
       $$ = C_TYPE_LIT_A( $_Noreturn_atid );
@@ -6032,7 +6037,8 @@ attribute_specifier_list_c_atid
     {
       if ( UNSUPPORTED( ATTRIBUTES ) ) {
         print_error( &@Y_ATTR_BEGIN,
-          "\"[[\" attribute syntax not supported%s\n",
+          "\"%s\" attribute syntax not supported%s\n",
+          other_token_c( "[[" ),
           C_LANG_WHICH( ATTRIBUTES )
         );
         PARSE_ABORT();
