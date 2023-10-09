@@ -658,6 +658,7 @@ static void attr_syntax_not_supported( char const *keyword,
  */
 NODISCARD
 static bool c_ast_free_if_garbage( c_ast_t *ast, user_data_t user_data ) {
+  assert( ast != NULL );
   c_ast_t const *const type_ast = user_data.pc;
   assert( type_ast != NULL );
 
