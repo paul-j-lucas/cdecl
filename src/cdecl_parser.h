@@ -23,8 +23,9 @@
 
 /**
  * @file
- * Wrapper around the Bison-generated `parser.h` to add `#include` guards as
- * well as declarations for Bison types and functions.
+ * Wrapper around the Bison-generated `parser.h` to add necessary `#include`s
+ * for the types in Bison's <code>\%union</code> declaration as well as a
+ * declaration for the parser_cleanup() function.
  */
 
 // local
