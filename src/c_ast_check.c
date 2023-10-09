@@ -2842,11 +2842,11 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
         c_tid_t ret_qual_stids;
         PJL_IGNORE_RV( c_ast_untypedef_qual( ret_ast, &ret_qual_stids ) );
         if ( c_tid_is_any( ret_qual_stids, TS_volatile ) &&
-            OPT_LANG_IS( CPP_MIN(20) ) ) {
+             !OPT_LANG_IS( volatile_RETURN_TYPES_NOT_DEPRECATED ) ) {
           print_warning( &ret_ast->loc,
             "\"%s\" return types are deprecated%s\n",
             c_tid_name_error( TS_volatile ),
-            C_LANG_WHICH( CPP_MAX(17) )
+            C_LANG_WHICH( volatile_RETURN_TYPES_NOT_DEPRECATED )
           );
         }
         if ( c_tid_is_any( ast->type.atids, TA_nodiscard ) &&
@@ -2867,11 +2867,11 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
           c_ast_check_visitor( param_ast, c_ast_visitor_warning )
         );
         if ( c_tid_is_any( param_ast->type.stids, TS_volatile ) &&
-             OPT_LANG_IS( CPP_MIN(20) ) ) {
+             !OPT_LANG_IS( volatile_PARAMS_NOT_DEPRECATED ) ) {
           print_warning( &param_ast->loc,
             "\"%s\" parameter types are deprecated%s\n",
             c_tid_name_error( TS_volatile ),
-            C_LANG_WHICH( CPP_MAX(17) )
+            C_LANG_WHICH( volatile_PARAMS_NOT_DEPRECATED )
           );
         }
       } // for

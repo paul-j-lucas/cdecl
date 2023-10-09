@@ -4013,7 +4013,7 @@ func_decl_c_astp
       //
       bool const assume_constructor =
 
-        // + The current language is C++.
+        // + The current language supports constructors.
         OPT_LANG_IS( CONSTRUCTORS ) &&
 
         // + The existing base type is none (because constructors don't have
@@ -4201,7 +4201,7 @@ pc99_func_or_constructor_declaration_c
 rparen_func_qualifier_list_c_stid_opt
   : ')'
     {
-      if ( OPT_LANG_IS( CPP_ANY ) ) {
+      if ( OPT_LANG_IS( MEMBER_FUNCTIONS ) ) {
         //
         // Both "final" and "override" are matched only within member function
         // declarations.  Now that ')' has been parsed, we're within one, so

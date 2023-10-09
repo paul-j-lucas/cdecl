@@ -831,6 +831,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_maybe_unused               LANG_C_CPP_MIN(23,17)
 
 /**
+ * Languages member functions are supported in.
+ */
+#define LANG_MEMBER_FUNCTIONS           LANG_CPP_ANY
+
+/**
  * Languages Microsoft extensions are supported in.
  */
 #define LANG_MSC_EXTENSIONS             LANG_MIN(C_89)
@@ -1163,8 +1168,28 @@ _GL_INLINE_HEADER_BEGIN
  * Languages the `volatile` keyword is supported in.
  *
  * @sa #LANG_const
+ * @sa #LANG_volatile_PARAMS_NOT_DEPRECATED
+ * @sa #LANG_volatile_RETURN_TYPES_NOT_DEPRECATED
  */
 #define LANG_volatile                   LANG_const
+
+/**
+ * Languages `volatie` parameters are _not_ deprecated in.
+ *
+ * @sa #LANG_volatile
+ * @sa #LANG_volatile_RETURN_TYPES_NOT_DEPRECATED
+ */
+#define LANG_volatile_PARAMS_NOT_DEPRECATED \
+                                        LANG_MAX(CPP_17)
+
+/**
+ * Languages `volatie` return types are _not_ deprecated in.
+ *
+ * @sa #LANG_volatile
+ * @sa #LANG_volatile_PARAMS_NOT_DEPRECATED
+ */
+#define LANG_volatile_RETURN_TYPES_NOT_DEPRECATED \
+                                        LANG_MAX(CPP_17)
 
 /**
  * Languages the `wchar_t` keyword is supported in.
