@@ -521,8 +521,12 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
     assert( ok );
   }
 
-  if ( ok && OPT_LANG_IS( C_ANY ) )
-    print_warning( args->opt_name_loc, "explicit-ecsu is ignored in C\n" );
+  if ( ok && !OPT_LANG_IS( ECSU_IS_IMPLICIT_TYPE ) ) {
+    print_warning( args->opt_name_loc,
+      "explicit-ecsu is ignored%s\n",
+      C_LANG_WHICH( ECSU_IS_IMPLICIT_TYPE )
+    );
+  }
 
   return ok;
 }

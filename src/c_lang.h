@@ -657,6 +657,16 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_DIGRAPHS                   LANG_MIN(C_95)
 
 /**
+ * Languages in which `enum`, `class`, `struct`, and `union` declarations are
+ * implicitly types.
+ *  ```c
+ * struct S;            // In C, tag only (not a type); in C++, it's a type.
+ * typedef struct S S;  // Now it's a type in C.
+ *  ```
+ */
+#define LANG_ECSU_IS_IMPLICIT_TYPE      LANG_CPP_ANY
+
+/**
  * Languages the `enum` keyword is supported in.
  *
  * @sa #LANG_enum_BITFIELDS

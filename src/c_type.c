@@ -995,7 +995,7 @@ static char const* c_type_name_impl( c_type_t const *type,
   };
   C_TID_NAME_CAT( sbuf, stids, QUAL_STIDS, in_english, is_error, ' ', &space );
 
-  if ( OPT_LANG_IS( CPP_ANY ) && apply_explicit_ecsu &&
+  if ( OPT_LANG_IS( ECSU_IS_IMPLICIT_TYPE ) && apply_explicit_ecsu &&
        !in_english && !is_error && c_tid_is_any( btids, TB_ANY_ECSU ) ) {
     //
     // This isn't right for a declaration of an enum with a fixed type, e.g.:
