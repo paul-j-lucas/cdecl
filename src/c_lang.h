@@ -709,6 +709,13 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_export                     LANG_CPP_MIN(20)
 
 /**
+ * Languages `extern void x` is supported in.
+ *
+ * @sa #LANG_void
+ */
+#define LANG_extern_void                LANG_C_MIN(89)
+
+/**
  * Languages the `final` keyword is supported in.
  *
  * @sa #LANG_override
@@ -1147,6 +1154,8 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Languages the `void` keyword is supported in.
+ *
+ * @sa #LANG_extern_void
  */
 #define LANG_void                       LANG_MIN(C_89)
 

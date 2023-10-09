@@ -539,7 +539,8 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_ast_t const *tdef_ast ) {
        ast->parent_ast == NULL &&
        ast->kind != K_CAST &&
        !c_tid_is_any( ast->type.stids, TS_typedef ) &&
-       !(OPT_LANG_IS( C_ANY ) && c_tid_is_any( ast->type.stids, TS_extern )) &&
+       !(OPT_LANG_IS( extern_void ) &&
+         c_tid_is_any( ast->type.stids, TS_extern )) &&
        (tdef_ast == NULL || !c_ast_parent_is_kind( tdef_ast, K_POINTER )) ) {
     print_error( &ast->loc, "variable of \"%s\"", c_tid_name_error( TB_void ) );
     if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
