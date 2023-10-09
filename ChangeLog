@@ -1,3 +1,19 @@
+2023-10-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.c, c_lang.h, gibberish.c: Eliminated c_lang_is_c() and
+     c_lang_is_cpp().
+   * c_lang.h, c_type.c, gibberish.c, set_options.c: Added
+     LANG_ECSU_IS_IMPLICIT_TYPE.
+   * parser.y: Using LANG_MEMBER_FUNCTIONS more.
+   * c_lang.h, parser.y: Added LANG__Noreturn_NOT_DEPRECATED.
+   * parser.y, explain-error.out, explain-error.test: Implicit `int` pointer
+     declarations, e.g., `*p`, are now correctly illegal in C++.
+   * c_ast_check.c, c_lang.h, parser.y: Added LANG_MEMBER_FUNCTIONS,
+     LANG_volatile_PARAMS_NOT_DEPRECATED, &
+     LANG_volatile_RETURN_TYPES_NOT_DEPRECATED.
+   * c_ast_check.c, c_lang.h: Added LANG_extern_void.
+   * parser.y: Added assert().
+
 2023-10-08  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Added -D_ISOC11_SOURCE.
