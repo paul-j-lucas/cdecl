@@ -1054,7 +1054,7 @@ locale_charset (void)
           }
       }
     if (0)
-      done_table_lookup: ;
+      done_table_lookup: {}
     else
 # endif
       {
