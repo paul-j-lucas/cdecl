@@ -444,7 +444,15 @@ struct in_attr {
   unsigned        ast_depth;        ///< Parentheses nesting depth.
   bool            is_typename;      ///< C++ only: is `typename` specified?
   c_sname_t       scope_sname;      ///< C++ only: current scope name, if any.
-  c_ast_list_t    type_ast_stack;   ///< Type AST stack.
+
+  /**
+   * Type AST stack.
+   *
+   * @sa ia_type_ast_peek()
+   * @sa ia_type_ast_pop()
+   * @sa ia_type_ast_push()
+   */
+  c_ast_list_t    type_ast_stack;
 
   /**
    * Declaration type specifier AST.
@@ -459,6 +467,8 @@ struct in_attr {
    *
    * This is a pointer to the base type AST (above, `int`) that is duplicated
    * for each declarator.  It's set by the first call to ia_type_ast_push().
+   *
+   * @sa ia_type_spec_ast()
    */
   c_ast_t const  *type_spec_ast;
 
