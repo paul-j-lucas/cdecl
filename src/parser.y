@@ -6010,10 +6010,10 @@ storage_class_c_type
         );
         PARSE_ABORT();
       }
-      if ( OPT_LANG_IS( C_MIN(23)) ) {
+      if ( !OPT_LANG_IS( _Noreturn_NOT_DEPRECATED ) ) {
         print_warning( &@_Noreturn_atid,
           "\"%s\" is deprecated%s",
-          lexer_token, C_LANG_WHICH( C_MAX(17) )
+          lexer_token, C_LANG_WHICH( _Noreturn_NOT_DEPRECATED )
         );
         print_hint(
           "%snoreturn%s", other_token_c( "[[" ), other_token_c( "]]" )

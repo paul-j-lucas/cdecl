@@ -904,11 +904,19 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Languages the `_Noreturn` keyword is supported in.
  *
- * @sa #LANG_noreturn
- * @sa #LANG___noreturn__
  * @sa #LANG_NONRETURNING_FUNCS
+ * @sa #LANG___noreturn__
+ * @sa #LANG_noreturn
+ * @sa #LANG__Noreturn_NOT_DEPRECATED
  */
 #define LANG__Noreturn                  LANG_C_MIN(11)
+
+/**
+ * Languages `_Noreturn` is _not_ deprecated in.
+ *
+ * @sa #LANG__Noreturn
+ */
+#define LANG__Noreturn_NOT_DEPRECATED   LANG_C_MAX(17)
 
 /**
  * Languages the `noreturn` keyword is supported in.
