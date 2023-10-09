@@ -7700,7 +7700,7 @@ array_exp
 as_exp
   : Y_as
     {
-      if ( OPT_LANG_IS( CPP_ANY ) ) {
+      if ( OPT_LANG_IS( MEMBER_FUNCTIONS ) ) {
         //
         // For either "declare" or "define", neither "override" nor "final"
         // must be matched initially to allow for cases like:
