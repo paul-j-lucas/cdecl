@@ -654,7 +654,7 @@ static void attr_syntax_not_supported( char const *keyword,
  *
  * @param ast The AST to check.
  * @param user_data Contains the AST of the type being declared.
- * @return Returns `true` only if \a ast should be free'd.
+ * @return Returns `true` only if \a ast should be removed from the list.
  */
 NODISCARD
 static bool c_ast_free_if_garbage( c_ast_t *ast, user_data_t user_data ) {
@@ -668,8 +668,8 @@ static bool c_ast_free_if_garbage( c_ast_t *ast, user_data_t user_data ) {
   }
 
   // We also need to ensure the AST isn't in the type_ast_stack.
-  FOREACH_SLIST_NODE( stack_type_node, &in_attr.type_ast_stack ) {
-    c_ast_t const *const stack_type_ast = stack_type_node->data;
+  FOREACH_SLIST_NODE( type_node, &in_attr.type_ast_stack ) {
+    c_ast_t const *const stack_type_ast = type_node->data;
     if ( ast == stack_type_ast )
       return false;
   } // for
