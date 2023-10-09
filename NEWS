@@ -12,6 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 15.1
 
+** Implicit `int` pointers in C++
+Implicit `int` pointer declarations, e.g., `*p`, are now correctly illegal in
+C++.
+
 ** Nested `typdef`s
 Fixed printing of `typedef`s of nested types, e.g.:
 

@@ -4648,7 +4648,7 @@ pc99_pointer_type_c_ast
   : // in_attr: type_c_ast
     '*'[star] type_qualifier_list_c_stid_opt[qual_stids]
     {
-      if ( OPT_LANG_IS( C_ANY ) && UNSUPPORTED( IMPLICIT_int ) ) {
+      if ( UNSUPPORTED( IMPLICIT_int ) ) {
         //
         // In C99 and later, implicit int is an error.  This check has to be
         // done now in the parser rather than later in the AST since the AST

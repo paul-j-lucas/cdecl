@@ -191,6 +191,7 @@ explain long char8_t x
 explain noreturn void f(int)
 explain [[no_unique_address]] int x : 4
 explain [[no_unique_address]] void f()
+explain *p
 explain register int &x
 explain RI *p
 explain short char8_t x

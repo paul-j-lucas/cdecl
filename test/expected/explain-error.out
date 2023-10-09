@@ -522,6 +522,9 @@ c++decl> explain [[no_unique_address]] int x : 4
 c++decl> explain [[no_unique_address]] void f()
                                             ^
 36: error: function can not be "no_unique_address"
+c++decl> explain *p
+                 ^
+9: error: implicit "int" is illegal in C++
 c++decl> explain register int &x
                               ^
 22: error: "register" is illegal for reference since C++17
