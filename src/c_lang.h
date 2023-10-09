@@ -1293,34 +1293,6 @@ NODISCARD
 c_lang_id_t c_lang_find( char const *name );
 
 /**
- * Gets whether \a lang_ids is any version of C.
- *
- * @param lang_ids The bitwise-or of language(s) to check.
- * @return Returns `true` only if any one of \a lang_ids is a version of C.
- *
- * @sa c_lang_is_cpp()
- * @sa c_lang_is_one()
- */
-NODISCARD C_LANG_H_INLINE
-bool c_lang_is_c( c_lang_id_t lang_ids ) {
-  return (lang_ids & LANG_C_ANY) != LANG_NONE;
-}
-
-/**
- * Gets whether \a lang_ids is any version of C++.
- *
- * @param lang_ids The bitwise-of of language(s) to check.
- * @return Returns `true` only if any one of \a lang_ids is a version of C++.
- *
- * @sa c_lang_is_c()
- * @sa c_lang_is_one()
- */
-NODISCARD C_LANG_H_INLINE
-bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
-  return (lang_ids & LANG_CPP_ANY) != LANG_NONE;
-}
-
-/**
  * Gets whether \a lang_ids contains language(s) for only either C or C++, but
  * not both.
  *
@@ -1331,9 +1303,6 @@ bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
  *  + If \a lang_ids only contains any versions of C++ and no versions of C,
  *    returns #LANG_CPP_ANY.
  *  + Otherwise returns #LANG_NONE.
- *
- * @sa c_lang_is_c()
- * @sa c_lang_is_cpp()
  */
 NODISCARD
 c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids );

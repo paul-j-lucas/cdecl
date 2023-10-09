@@ -1434,7 +1434,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
   //
   bool const print_typedef =
     (gib_flags & C_GIB_TYPEDEF) != 0 &&
-    ( !is_ecsu || c_lang_is_c( tdef->lang_ids ) ||
+    ( !is_ecsu || (tdef->lang_ids & LANG_C_ANY) != LANG_NONE ||
       ( !OPT_LANG_IS( ECSU_IS_IMPLICIT_TYPE ) &&
         (tdef->lang_ids & LANG_ECSU_IS_IMPLICIT_TYPE) == LANG_NONE
       )
