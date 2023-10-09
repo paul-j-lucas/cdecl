@@ -1276,6 +1276,7 @@ c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
  *  + If \a lang_ids only contains any versions of C++, returns `"C++"`.
  *  + Otherwise returns NULL.
  *
+ * @sa c_lang_is_one()
  * @sa c_lang_name()
  */
 NODISCARD
@@ -1303,6 +1304,8 @@ c_lang_id_t c_lang_find( char const *name );
  *  + If \a lang_ids only contains any versions of C++ and no versions of C,
  *    returns #LANG_CPP_ANY.
  *  + Otherwise returns #LANG_NONE.
+ *
+ * @sa c_lang_coarse_name()
  */
 NODISCARD
 c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids );
