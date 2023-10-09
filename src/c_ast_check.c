@@ -53,7 +53,7 @@
 /**
  * Storage-class-like types that are _not_ legal with `constexpr` in C only.
  */
-#define TS_NOT_CONSTEXPR_C_ONLY   ( TS__Atomic | TS_restrict | TS_volatile )
+#define TS_NOT_constexpr_C_ONLY   ( TS__Atomic | TS_restrict | TS_volatile )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -2711,11 +2711,11 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
 
     if ( c_tid_is_any( ast->type.stids, TS_constexpr ) &&
          OPT_LANG_IS( C_ANY ) &&
-         c_tid_is_any( ast->type.stids, TS_NOT_CONSTEXPR_C_ONLY ) ) {
+         c_tid_is_any( ast->type.stids, TS_NOT_constexpr_C_ONLY ) ) {
       print_error( &ast->loc,
         "\"%s %s\" is illegal in C\n",
         c_tid_name_error( TS_constexpr ),
-        c_tid_name_error( ast->type.stids & TS_NOT_CONSTEXPR_C_ONLY )
+        c_tid_name_error( ast->type.stids & TS_NOT_constexpr_C_ONLY )
       );
       return VISITOR_ERROR_FOUND;
     }
