@@ -80,7 +80,7 @@ enum c_array_kind {
 enum c_capture_kind {
   C_CAPTURE_VARIABLE,                   ///< Capture a variable.
   C_CAPTURE_COPY,                       ///< Capture by copy (`=`).
-  C_CAPTURE_REFERENCE,                  ///< Capture by reference (`&`)
+  C_CAPTURE_REFERENCE,                  ///< Capture by reference (`&`).
   C_CAPTURE_THIS,                       ///< Capture `this`.
   C_CAPTURE_STAR_THIS                   ///< Capture `*this`.
 };
