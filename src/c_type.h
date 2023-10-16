@@ -797,7 +797,7 @@ typedef enum c_tpid c_tpid_t;
  *
  * @sa #TS_FUNC_LIKE_CPP
  */
-#define TS_NEW_DELETE_OPER    ( TS_extern | TS_friend | TS_noexcept \
+#define TS_NEW_DELETE_OP      ( TS_extern | TS_friend | TS_noexcept \
                               | TS_static | TS_throw )
 
 /**

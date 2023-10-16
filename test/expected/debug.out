@@ -4441,7 +4441,7 @@ c++decl> explain bool operator!() const
       loc: { first_column: 11, last_column: 29 },
       type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
       oper: {
-        oper_id: { value: 6, string: "!" },
+        op_id: { value: 6, string: "!" },
         member: "unspecified",
         param_ast_list: [],
         ret_ast: {
@@ -4493,7 +4493,7 @@ c++decl> explain bool operator!() const
       loc: { first_column: 11, last_column: 29 },
       type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
       oper: {
-        oper_id: { value: 6, string: "!" },
+        op_id: { value: 6, string: "!" },
         member: "unspecified",
         param_ast_list: [],
         ret_ast: {
@@ -4526,7 +4526,7 @@ c++decl> explain bool operator!() const
     loc: { first_column: 11, last_column: 29 },
     type: { btid: 0x1, stid: 0x200000002, atid: 0x4, string: "const" },
     oper: {
-      oper_id: { value: 6, string: "!" },
+      op_id: { value: 6, string: "!" },
       member: "unspecified",
       param_ast_list: [],
       ret_ast: {

@@ -116,7 +116,7 @@ static inline void gib_print_space_once( gib_state_t *gib ) {
  * @return If \ref opt_alt_tokens is `true` and if \a token is a token that has
  * an alternative token, returns said token; otherwise returns \a token as-is.
  *
- * @sa c_oper_token_c()
+ * @sa c_op_token_c()
  * @sa graph_token_c()
  * @sa opt_alt_tokens
  */
@@ -750,7 +750,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       case K_RVALUE_REFERENCE:
         switch ( ast->kind ) {
           case K_APPLE_BLOCK:
-            FPRINTF( gib->gout, "(%s", c_oper_token_c( C_OP_CARET ) );
+            FPRINTF( gib->gout, "(%s", c_op_token_c( C_OP_CARET ) );
             break;
 
           default:
@@ -818,7 +818,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     // printing the gibberish for.
     //
     if ( ast->kind == K_APPLE_BLOCK ) {
-      FPRINTF( gib->gout, "(%s", c_oper_token_c( C_OP_CARET ) );
+      FPRINTF( gib->gout, "(%s", c_op_token_c( C_OP_CARET ) );
       if ( opt_alt_tokens && !c_sname_empty( &ast->sname ) )
         FPUTC( ' ', gib->gout );
     }
@@ -1061,7 +1061,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       gib_print_space_once( gib );
       if ( !c_sname_empty( &ast->sname ) )
         FPRINTF( gib->gout, "%s::", c_sname_full_name( &ast->sname ) );
-      char const *const token = c_oper_token_c( ast->oper.operator->oper_id );
+      char const *const token = c_op_token_c( ast->oper.operator->op_id );
       FPRINTF( gib->gout,
         "operator%s%s", isalpha( token[0] ) ? " " : "", token
       );
@@ -1117,7 +1117,7 @@ static void gib_init( gib_state_t *gib, unsigned gib_flags, FILE *gout ) {
  * characters replaced by their graphs; otherwise returns \a token as-is.
  *
  * @sa alt_token_c()
- * @sa c_oper_token_c()
+ * @sa c_op_token_c()
  * @sa opt_graph
  */
 NODISCARD

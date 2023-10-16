@@ -1103,7 +1103,7 @@ static void yyerror( char const *msg ) {
   char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // identifier name, cf. sname
   c_func_member_t     member;     // member, non-member, or unspecified
-  c_oper_id_t         oper_id;    // overloaded operator ID
+  c_op_id_t           op_id;      // overloaded operator ID
   cdecl_show_t        show;       // which types to show
   c_sname_t           sname;      // scoped identifier name, cf. name
   slist_t             sname_list; // c_sname_t list
@@ -1647,7 +1647,7 @@ static void yyerror( char const *msg ) {
 %type   <tdef>        any_typedef
 %type   <tid>         class_struct_btid class_struct_btid_opt
 %type   <tid>         class_struct_union_btid class_struct_union_btid_exp
-%type   <oper_id>     c_operator
+%type   <op_id>       c_operator
 %type   <tid>         cv_qualifier_stid cv_qualifier_list_stid_opt
 %type   <tid>         enum_btids
 %type   <tid>         eval_expr_init_stid
@@ -1869,7 +1869,7 @@ declare_command
     /*
      * C++ overloaded operator declaration.
      */
-  | Y_declare c_operator[oper_id]
+  | Y_declare c_operator[op_id]
     { //
       // This check is done now in the parser right here mid-rule rather than
       // later in the end-rule action or in the AST since it yields a better
@@ -1878,7 +1878,7 @@ declare_command
       // overloading isn't supported in C.
       //
       if ( UNSUPPORTED( operator ) ) {
-        print_error( &@oper_id,
+        print_error( &@op_id,
           "operator overloading not supported%s\n",
           C_LANG_WHICH( operator )
         );
@@ -1892,7 +1892,7 @@ declare_command
     paren_param_decl_list_english_opt[param_ast_list]
     returning_english_ast_opt[ret_ast]
     {
-      c_operator_t const *const operator = c_oper_get( $oper_id );
+      c_operator_t const *const operator = c_op_get( $op_id );
 
       DUMP_START();
       DUMP_PROD( "declare_command",
@@ -1911,7 +1911,7 @@ declare_command
       DUMP_AST( "returning_english_ast_opt", $ret_ast );
       DUMP_END();
 
-      c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@oper_id );
+      c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@op_id );
       c_sname_set( &oper_ast->sname, &$scope_sname );
       PARSE_ASSERT( c_type_add( &oper_ast->type, &$qual_type, &@qual_type ) );
       PARSE_ASSERT(
@@ -4515,7 +4515,7 @@ nested_decl_c_astp
 
 oper_decl_c_astp
   : // in_attr: type_c_ast
-    oper_sname_c_opt[sname] Y_operator c_operator[oper_id] lparen_exp
+    oper_sname_c_opt[sname] Y_operator c_operator[op_id] lparen_exp
     param_c_ast_list_opt[param_ast_list]
     rparen_func_qualifier_list_c_stid_opt[qual_stids]
     func_ref_qualifier_c_stid_opt[ref_qual_stid]
@@ -4523,7 +4523,7 @@ oper_decl_c_astp
     trailing_return_type_c_ast_opt[trailing_ret_ast]
     func_equals_c_stid_opt[equals_stid]
     {
-      c_operator_t const *const operator = c_oper_get( $oper_id );
+      c_operator_t const *const operator = c_op_get( $op_id );
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START();

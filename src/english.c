@@ -202,7 +202,7 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *eout ) {
   c_type_t const *scope_type = NULL;
 
   if ( ast->kind == K_OPERATOR ) {
-    local_name = c_oper_token_c( ast->oper.operator->oper_id );
+    local_name = c_op_token_c( ast->oper.operator->op_id );
     if ( found_sname != NULL ) {
       scope_name = c_sname_full_name( found_sname );
       scope_type = c_sname_local_type( found_sname );
@@ -320,7 +320,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t user_data ) {
           break;
         case K_OPERATOR:
           NO_OP;
-          c_func_member_t const op_mbr = c_ast_oper_overload( ast );
+          c_func_member_t const op_mbr = c_ast_op_overload( ast );
           char const *const op_literal =
             op_mbr == C_FUNC_MEMBER     ? "member "     :
             op_mbr == C_FUNC_NON_MEMBER ? "non-member " :

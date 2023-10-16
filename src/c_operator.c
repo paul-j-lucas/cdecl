@@ -41,7 +41,7 @@
 /// @cond DOXYGEN_IGNORE
 #define EIT                       C_OVERLOAD_EITHER
 #define MBR                       C_OVERLOAD_MEMBER
-#define UNL                       C_OPER_PARAMS_UNLIMITED
+#define UNL                       C_OP_PARAMS_UNLIMITED
 #define XXX                       C_OVERLOAD_NONE
 /// @endcond
 
@@ -55,7 +55,7 @@
 /**
  * Array of c_operator for all C++ operators.
  *
- * @note Operators are in \ref c_oper_id order.
+ * @note Operators are in \ref c_op_id order.
  */
 static c_operator_t const C_OPERATOR[] = {
   { C_OP_NONE,                "none",     LANG_NONE,        XXX, 0, 0   },
@@ -115,21 +115,21 @@ static c_operator_t const C_OPERATOR[] = {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
-  assert( oper_id >= C_OP_NONE && oper_id <= C_OP_TILDE );
+c_operator_t const* c_op_get( c_op_id_t op_id ) {
+  assert( op_id >= C_OP_NONE && op_id <= C_OP_TILDE );
 
   c_operator_t const *best_op = NULL;
 
   //
-  // We can't just use oper_id as a direct index since operator[] has multiple
+  // We can't just use op_id as a direct index since operator[] has multiple
   // entries, but we can start looking there.
   //
-  for ( c_operator_t const *op = C_OPERATOR + oper_id;
+  for ( c_operator_t const *op = C_OPERATOR + op_id;
         op < C_OPERATOR + ARRAY_SIZE( C_OPERATOR );
         ++op ) {
-    if ( op->oper_id < oper_id )
+    if ( op->op_id < op_id )
       continue;
-    if ( op->oper_id > oper_id )        // the array is sorted
+    if ( op->op_id > op_id )            // the array is sorted
       break;
     if ( opt_lang_is_any( op->lang_ids ) )
       return op;
@@ -147,8 +147,8 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
   return best_op;
 }
 
-bool c_oper_is_new_delete( c_oper_id_t oper_id ) {
-  switch ( oper_id ) {
+bool c_op_is_new_delete( c_op_id_t op_id ) {
+  switch ( op_id ) {
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
     case C_OP_DELETE:

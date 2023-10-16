@@ -54,7 +54,7 @@ _GL_INLINE_HEADER_BEGIN
  * For c_operator::params_max of `operator()` or `operator[]` (in C++23 or
  * later), denotes an unlimited number of parameters.
  */
-#define C_OPER_PARAMS_UNLIMITED   UINT_MAX
+#define C_OP_PARAMS_UNLIMITED     UINT_MAX
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -70,7 +70,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa c_func_member
  */
-enum c_oper_overload {
+enum c_op_overload {
   C_OVERLOAD_NONE       = 0u,                 ///< Not overloadable.
   C_OVERLOAD_MEMBER     = C_FUNC_MEMBER,      ///< Overloadable as member.
   C_OVERLOAD_NON_MEMBER = C_FUNC_NON_MEMBER,  ///< Overloadable as non-member.
@@ -78,15 +78,15 @@ enum c_oper_overload {
   /// Overloadable as either member or non-member.
   C_OVERLOAD_EITHER     = C_OVERLOAD_MEMBER | C_OVERLOAD_NON_MEMBER,
 };
-typedef enum c_oper_overload c_oper_overload_t;
+typedef enum c_op_overload c_op_overload_t;
 
 /**
  * C++ operator information.
  *
- * @note There can be multiple `c_operator` objects having the sanme \ref
- * oper_id and \ref literal, but with different values for \ref params_min and
- * \ref params_max by \ref lang_ids.  Currently, `operator[]`, where the
- * parameter values change in C++23, is the only such case.
+ * @note There can be multiple `c_operator` objects having the same \ref op_id
+ * and \ref literal, but with different values for \ref params_min and \ref
+ * params_max by \ref lang_ids.  Currently, `operator[]`, where the parameter
+ * values change in C++23, is the only such case.
  *
  * @note \ref params_min and \ref params_max comprise the inclusive range for
  * the union of member and non-member versions.  If you know you're dealing
@@ -95,10 +95,10 @@ typedef enum c_oper_overload c_oper_overload_t;
  * which, use both.
  */
 struct c_operator {
-  c_oper_id_t       oper_id;            ///< ID.
+  c_op_id_t         op_id;              ///< Operator ID.
   char const       *literal;            ///< C string literal of the operator.
   c_lang_id_t       lang_ids;           ///< Language(s) OK in.
-  c_oper_overload_t overload;           ///< Overloadability.
+  c_op_overload_t   overload;           ///< Overloadability.
   unsigned          params_min;         ///< Minimum number of parameters.
   unsigned          params_max;         ///< Maximum number of parameters.
 };
@@ -106,13 +106,13 @@ struct c_operator {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets the c_operator for \a oper_id.
+ * Gets the c_operator for \a op_id.
  *
- * @param oper_id The ID of the c_operator to get.
+ * @param op_id The ID of the c_operator to get.
  * @return Returns a pointer to said c_operator.
  */
 NODISCARD
-c_operator_t const* c_oper_get( c_oper_id_t oper_id );
+c_operator_t const* c_op_get( c_op_id_t op_id );
 
 /**
  * Checks whether the C++ operator is ambiguous.
@@ -145,24 +145,24 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  * @return Returns `true` only if the operator is ambiguous.
  */
 NODISCARD C_OPERATOR_H_INLINE
-bool c_oper_is_ambiguous( c_operator_t const *op ) {
+bool c_op_is_ambiguous( c_operator_t const *op ) {
   return op->params_min == 0 && op->params_max == 2;
 }
 
 /**
- * Checks whether \a oper_id is one of #C_OP_NEW, #C_OP_NEW_ARRAY,
- * #C_OP_DELETE, or #C_OP_DELETE_ARRAY.
+ * Checks whether \a op_id is one of #C_OP_NEW, #C_OP_NEW_ARRAY, #C_OP_DELETE,
+ * or #C_OP_DELETE_ARRAY.
  *
- * @param oper_id The ID of the c_operator to check.
- * @return Returns `true` only of \a oper_id is one of said operators.
+ * @param op_id The ID of the c_operator to check.
+ * @return Returns `true` only of \a op_id is one of said operators.
  */
 NODISCARD
-bool c_oper_is_new_delete( c_oper_id_t oper_id );
+bool c_op_is_new_delete( c_op_id_t op_id );
 
 /**
- * Gets the C++ token for the operator having \a oper_id.
+ * Gets the C++ token for the operator having \a op_id.
  *
- * @param oper_id The ID of the c_operator to get the token for.
+ * @param op_id The ID of the c_operator to get the token for.
  * @return Returns said token (including alternative or graph tokens, if either
  * is enabled); otherwise, returns the unaltered token.
  *
@@ -171,8 +171,8 @@ bool c_oper_is_new_delete( c_oper_id_t oper_id );
  * @sa other_token_c()
  */
 NODISCARD C_OPERATOR_H_INLINE
-char const* c_oper_token_c( c_oper_id_t oper_id ) {
-  return other_token_c( c_oper_get( oper_id )->literal );
+char const* c_op_token_c( c_op_id_t op_id ) {
+  return other_token_c( c_op_get( op_id )->literal );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

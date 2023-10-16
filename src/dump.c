@@ -259,8 +259,8 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
     case K_OPERATOR:
       kind_json = json_object_begin( JSON_INIT, "oper", dump );
       DUMP_KEY( dump,
-        "oper_id: { value: %d, string: \"%s\" }",
-        STATIC_CAST( int, ast->oper.operator->oper_id ),
+        "op_id: { value: %d, string: \"%s\" }",
+        STATIC_CAST( int, ast->oper.operator->op_id ),
         ast->oper.operator->literal
       );
       FALLTHROUGH;

@@ -698,7 +698,7 @@ c_sname_t c_ast_move_sname( c_ast_t *ast ) {
   return rv_sname;
 }
 
-c_func_member_t c_ast_oper_overload( c_ast_t const *ast ) {
+c_func_member_t c_ast_op_overload( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
 
@@ -736,7 +736,7 @@ c_func_member_t c_ast_oper_overload( c_ast_t const *ast ) {
 
   size_t const n_params = c_ast_params_count( ast );
 
-  switch ( op->oper_id ) {
+  switch ( op->op_id ) {
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
     case C_OP_DELETE:
@@ -785,18 +785,18 @@ c_func_member_t c_ast_oper_overload( c_ast_t const *ast ) {
   return C_FUNC_UNSPECIFIED;
 }
 
-void c_ast_oper_params_min_max( c_ast_t const *ast, unsigned *params_min,
-                                unsigned *params_max ) {
+void c_ast_op_params_min_max( c_ast_t const *ast, unsigned *params_min,
+                              unsigned *params_max ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
   assert( params_min != NULL );
   assert( params_max != NULL );
 
   c_operator_t const *const op = ast->oper.operator;
-  bool const is_ambiguous = c_oper_is_ambiguous( op );
-  bool const is_params_unlimited = op->params_max == C_OPER_PARAMS_UNLIMITED;
+  bool const is_ambiguous = c_op_is_ambiguous( op );
+  bool const is_params_unlimited = op->params_max == C_OP_PARAMS_UNLIMITED;
 
-  switch ( c_ast_oper_overload( ast ) ) {
+  switch ( c_ast_op_overload( ast ) ) {
     case C_FUNC_NON_MEMBER:
       // Non-member operators must always take at least one parameter (the
       // enum, class, struct, or union for which it's overloaded).

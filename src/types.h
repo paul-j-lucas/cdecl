@@ -99,7 +99,7 @@ enum c_cast_kind {
 /**
  * User-specified C++ member or non-member function (or operator).
  *
- * @sa c_oper_overload
+ * @sa c_op_overload
  */
 enum c_func_member {
   C_FUNC_UNSPECIFIED  = 0u,             ///< Unspecified.
@@ -125,7 +125,7 @@ enum c_graph {
  * depending upon context, e.g. `*` is both the "multiplication" and the
  * "dereference" operator.
  */
-enum c_oper_id {
+enum c_op_id {
   C_OP_NONE,                            ///< No operator.
   C_OP_CO_AWAIT,                        ///< The `co_await` operator.
   C_OP_NEW,                             ///< The `new` operator.
@@ -241,9 +241,9 @@ typedef enum   c_graph            c_graph_t;
 typedef struct c_lambda_ast       c_lambda_ast_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_loc              c_loc_t;
+typedef enum   c_op_id            c_op_id_t;
 typedef struct c_operator         c_operator_t;
 typedef struct c_operator_ast     c_operator_ast_t;
-typedef enum   c_oper_id          c_oper_id_t;
 typedef slist_node_t              c_param_t;      ///< Function-like parameter.
 typedef struct c_parent_ast       c_parent_ast_t;
 typedef struct c_ptr_mbr_ast      c_ptr_mbr_ast_t;

@@ -134,7 +134,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
  * + Returns \a token as-is.
  *
  * @sa alt_token_c()
- * @sa c_oper_token_c()
+ * @sa c_op_token_c()
  * @sa graph_token_c()
  */
 NODISCARD

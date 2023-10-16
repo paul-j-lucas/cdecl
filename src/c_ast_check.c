@@ -167,9 +167,9 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_func_params_redef( c_ast_t const* ),
                     c_ast_check_lambda_captures( c_ast_t const* ),
                     c_ast_check_lambda_captures_redef( c_ast_t const* ),
-                    c_ast_check_oper_default( c_ast_t const* ),
-                    c_ast_check_oper_params( c_ast_t const* ),
-                    c_ast_check_oper_relational_default( c_ast_t const* ),
+                    c_ast_check_op_default( c_ast_t const* ),
+                    c_ast_check_op_params( c_ast_t const* ),
+                    c_ast_check_op_relational_default( c_ast_t const* ),
                     c_ast_check_upc( c_ast_t const* ),
                     c_ast_check_visitor( c_ast_t const*, c_ast_check_fn_t ),
                     c_ast_visitor_error( c_ast_t const*, user_data_t ),
@@ -894,7 +894,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
       //
       c_tid_t linkage_stids = TS_extern | TS_extern_C;
       if ( ast->kind == K_OPERATOR &&
-           !c_oper_is_new_delete( ast->oper.operator->oper_id ) ) {
+           !c_op_is_new_delete( ast->oper.operator->op_id ) ) {
         linkage_stids |= TS_static;
       }
       if ( c_tid_is_any( ast->type.stids, linkage_stids ) ) {
@@ -950,7 +950,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         break;
 
       case K_OPERATOR:
-        switch ( ast->oper.operator->oper_id ) {
+        switch ( ast->oper.operator->op_id ) {
           case C_OP_EQUAL:              // C& operator=(C const&)
             NO_OP;
             //
@@ -977,7 +977,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
               goto only_special;
             //
             // Detailed checks for defaulted overloaded relational operators
-            // are done in c_ast_check_oper_relational_default().
+            // are done in c_ast_check_op_relational_default().
             //
             break;
 
@@ -1298,7 +1298,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
       case K_VARIADIC:
         if ( ast->kind == K_OPERATOR &&
-             ast->oper.operator->oper_id != C_OP_PARENS ) {
+             ast->oper.operator->op_id != C_OP_PARENS ) {
           print_error( &param_ast->loc,
             "operator \"%s\" can not have a variadic parameter\n",
             ast->oper.operator->literal
@@ -1582,7 +1582,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( !c_ast_oper_mbr_matches( ast, op ) ) {
+  if ( !c_ast_op_mbr_matches( ast, op ) ) {
     //
     // The user explicitly specified either member or non-member, but the
     // operator can't be that.
@@ -1597,7 +1597,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   if ( op->overload == C_OVERLOAD_MEMBER &&
        c_tid_is_any( ast->type.stids, TS_static ) ) {
     c_lang_id_t ok_lang_ids = LANG_NONE;
-    switch ( op->oper_id ) {
+    switch ( op->op_id ) {
       case C_OP_PARENS:
         if ( OPT_LANG_IS( STATIC_OP_PARENS ) )
           break;
@@ -1614,8 +1614,8 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     } // switch
   }
 
-  if ( c_oper_is_new_delete( op->oper_id ) &&
-       c_tid_is_any( ast->type.stids, c_tid_compl( TS_NEW_DELETE_OPER ) ) ) {
+  if ( c_op_is_new_delete( op->op_id ) &&
+       c_tid_is_any( ast->type.stids, c_tid_compl( TS_NEW_DELETE_OP ) ) ) {
     //
     // Special case for operators new, new[], delete, and delete[] that can
     // only have specific types.
@@ -1629,7 +1629,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 
   c_ast_t const *const ret_ast = ast->oper.ret_ast;
 
-  switch ( op->oper_id ) {
+  switch ( op->op_id ) {
     case C_OP_ARROW:
       //
       // Special case for operator-> that must return a pointer to a struct,
@@ -1688,11 +1688,11 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   } // switch
 
   if ( c_tid_is_any( ast->type.stids, TS_default ) &&
-       !c_ast_check_oper_default( ast ) ) {
+       !c_ast_check_op_default( ast ) ) {
     return false;
   }
 
-  return c_ast_check_oper_params( ast );
+  return c_ast_check_op_params( ast );
 }
 
 /**
@@ -1702,12 +1702,12 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_oper_default( c_ast_t const *ast ) {
+static bool c_ast_check_op_default( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
   assert( c_tid_is_any( ast->type.stids, TS_default ) );
 
-  switch ( ast->oper.operator->oper_id ) {
+  switch ( ast->oper.operator->op_id ) {
     case C_OP_EQUAL:
       //
       // Detailed checks for defaulted assignment operators are done in
@@ -1722,7 +1722,7 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
     case C_OP_LESS:
     case C_OP_LESS_EQUAL:
     case C_OP_LESS_EQUAL_GREATER:
-      return c_ast_check_oper_relational_default( ast );
+      return c_ast_check_op_relational_default( ast );
 
     default:
       print_error( &ast->loc,
@@ -1744,13 +1744,13 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
+static bool c_ast_check_op_delete_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
-  assert( ast->oper.operator->oper_id == C_OP_DELETE ||
-          ast->oper.operator->oper_id == C_OP_DELETE_ARRAY );
+  assert( ast->oper.operator->op_id == C_OP_DELETE ||
+          ast->oper.operator->op_id == C_OP_DELETE_ARRAY );
 
-  // minimum number of parameters checked in c_ast_check_oper_params()
+  // minimum number of parameters checked in c_ast_check_op_params()
 
   c_param_t const *const param = c_ast_params( ast );
   assert( param != NULL );
@@ -1776,13 +1776,13 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
+static bool c_ast_check_op_new_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
-  assert( ast->oper.operator->oper_id == C_OP_NEW ||
-          ast->oper.operator->oper_id == C_OP_NEW_ARRAY );
+  assert( ast->oper.operator->op_id == C_OP_NEW ||
+          ast->oper.operator->op_id == C_OP_NEW_ARRAY );
 
-  // minimum number of parameters checked in c_ast_check_oper_params()
+  // minimum number of parameters checked in c_ast_check_op_params()
 
   c_param_t const *const param = c_ast_params( ast );
   assert( param != NULL );
@@ -1808,19 +1808,19 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_oper_params( c_ast_t const *ast ) {
+static bool c_ast_check_op_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
 
   c_operator_t const *const op = ast->oper.operator;
-  c_func_member_t const member = c_ast_oper_overload( ast );
+  c_func_member_t const member = c_ast_op_overload( ast );
   char const *const member_or_nonmember =
     member == C_FUNC_MEMBER     ? "member "     :
     member == C_FUNC_NON_MEMBER ? "non-member " :
     "";
 
   unsigned params_min, params_max;
-  c_ast_oper_params_min_max( ast, &params_min, &params_max );
+  c_ast_op_params_min_max( ast, &params_min, &params_max );
 
   //
   // Ensure the operator has the required number of parameters.
@@ -1870,7 +1870,7 @@ same: print_error( c_ast_params_loc( ast ),
       // Ensure non-member operators (except new, new[], delete, and delete[])
       // have at least one enum, class, struct, or union parameter.
       //
-      if ( !c_oper_is_new_delete( op->oper_id ) && ecsu_param_count == 0 ) {
+      if ( !c_op_is_new_delete( op->op_id ) && ecsu_param_count == 0 ) {
         print_error( c_ast_params_loc( ast ),
           "at least 1 parameter of a non-member operator must be an "
           "enum, class, struct, or union"
@@ -1909,7 +1909,7 @@ same: print_error( c_ast_params_loc( ast ),
       break;
   } // switch
 
-  switch ( op->oper_id ) {
+  switch ( op->op_id ) {
     case C_OP_MINUS2:
     case C_OP_PLUS2:
       NO_OP;
@@ -1944,11 +1944,11 @@ same: print_error( c_ast_params_loc( ast ),
 
     case C_OP_DELETE:
     case C_OP_DELETE_ARRAY:
-      return c_ast_check_oper_delete_params( ast );
+      return c_ast_check_op_delete_params( ast );
 
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
-      return c_ast_check_oper_new_params( ast );
+      return c_ast_check_op_new_params( ast );
 
     default:
       /* suppress warning */;
@@ -1964,12 +1964,12 @@ same: print_error( c_ast_params_loc( ast ),
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
-static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
+static bool c_ast_check_op_relational_default( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
   assert( c_tid_is_any( ast->type.stids, TS_default ) );
 
-  // number of parameters checked in c_ast_check_oper_params()
+  // number of parameters checked in c_ast_check_op_params()
 
   c_operator_t const *const op = ast->oper.operator;
 
@@ -1985,7 +1985,7 @@ static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
   assert( param != NULL );
   c_ast_t const *const param_ast = c_param_ast( param );
 
-  switch ( c_ast_oper_overload( ast ) ) {
+  switch ( c_ast_op_overload( ast ) ) {
     case C_FUNC_NON_MEMBER: {
       if ( !c_tid_is_any( ast->type.stids, TS_friend ) ) {
         print_error( &ast->loc,
@@ -2060,7 +2060,7 @@ rel_2par: print_error( c_ast_params_loc( ast ),
   c_ast_t const *const ret_ast = ast->oper.ret_ast;
   c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
-  if ( op->oper_id == C_OP_LESS_EQUAL_GREATER ) {
+  if ( op->op_id == C_OP_LESS_EQUAL_GREATER ) {
     static c_ast_t const *std_partial_ordering_ast;
     static c_ast_t const *std_strong_ordering_ast;
     static c_ast_t const *std_weak_ordering_ast;

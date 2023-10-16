@@ -367,7 +367,7 @@ c_sname_t c_ast_move_sname( c_ast_t *ast );
  * #C_FUNC_UNSPECIFIED.
  */
 NODISCARD
-c_func_member_t c_ast_oper_overload( c_ast_t const *ast );
+c_func_member_t c_ast_op_overload( c_ast_t const *ast );
 
 /**
  * Gets the the minimum and maximum number of parameters the operator \a ast
@@ -377,8 +377,8 @@ c_func_member_t c_ast_oper_overload( c_ast_t const *ast );
  * @param params_min Receives the minimum number of parameters for \a ast.
  * @param params_max Receives the maximum number of parameters for \a ast.
  */
-void c_ast_oper_params_min_max( c_ast_t const *ast, unsigned *params_min,
-                                unsigned *params_max );
+void c_ast_op_params_min_max( c_ast_t const *ast, unsigned *params_min,
+                              unsigned *params_max );
 /**
  * "Patches" \a type_ast into \a decl_ast only if:
  *  + \a type_ast has no \ref c_ast::parent_ast "parent_ast".
@@ -579,7 +579,7 @@ c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
  *    op.
  */
 NODISCARD C_AST_UTIL_H_INLINE
-bool c_ast_oper_mbr_matches( c_ast_t const *ast, c_operator_t const *op ) {
+bool c_ast_op_mbr_matches( c_ast_t const *ast, c_operator_t const *op ) {
   return  ast->oper.member == C_FUNC_UNSPECIFIED ||
           (STATIC_CAST( unsigned, ast->oper.member ) &
            STATIC_CAST( unsigned, op->overload     )) != 0;
