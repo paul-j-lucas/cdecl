@@ -716,7 +716,7 @@ typedef enum c_tpid c_tpid_t;
  * @sa #TS_CONSTRUCTOR_DEF
  * @sa #TS_FUNC_LIKE_NOT_CTOR
  * @sa #TS_MAIN_FUNC_CPP
- * @sa #TS_NEW_DELETE_OPER
+ * @sa #TS_NEW_DELETE_OP
  * @sa #TS_USER_DEF_CONV
  */
 #define TS_FUNC_LIKE_CPP      ( TS_CVR | TS_consteval | TS_constexpr \
