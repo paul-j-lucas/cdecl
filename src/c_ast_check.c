@@ -986,7 +986,24 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         } // switch
         break;
 
-      default:
+      case K_APPLE_BLOCK:
+      case K_ARRAY:
+      case K_BUILTIN:
+      case K_CAPTURE:
+      case K_CAST:
+      case K_CLASS_STRUCT_UNION:
+      case K_DESTRUCTOR:
+      case K_ENUM:
+      case K_LAMBDA:
+      case K_NAME:
+      case K_PLACEHOLDER:
+      case K_POINTER:
+      case K_POINTER_TO_MEMBER:
+      case K_REFERENCE:
+      case K_RVALUE_REFERENCE:
+      case K_TYPEDEF:
+      case K_UDEF_LIT:
+      case K_VARIADIC:
         //
         // The grammar allows only functions, operators, constructors,
         // destructors, and user-defined conversion operators to be either
@@ -2138,6 +2155,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
         EPUTC( '\n' );
       }
       return false;
+
     case K_BUILTIN:
       if ( c_tid_is_any( raw_to_ast->type.btids, TB_auto ) &&
            !OPT_LANG_IS( auto_POINTER_TYPES ) ) {
@@ -2149,7 +2167,15 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
         return false;
       }
       FALLTHROUGH;
-    default:
+
+    case K_APPLE_BLOCK:
+    case K_ARRAY:
+    case K_CLASS_STRUCT_UNION:
+    case K_ENUM:
+    case K_FUNCTION:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_TYPEDEF:
       if ( c_tid_is_any( ast->type.atids, TA_ANY_MSC_CALL ) ) {
         print_error( &ast->loc,
           "\"%s\" can be used only for functions and pointers to function\n",
@@ -2157,6 +2183,20 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
         );
         return false;
       }
+      break;
+
+    case K_CAPTURE:
+    case K_CAST:
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
+    case K_LAMBDA:
+    case K_NAME:
+    case K_OPERATOR:
+    case K_PLACEHOLDER:
+    case K_UDEF_CONV:
+    case K_UDEF_LIT:
+    case K_VARIADIC:
+      UNEXPECTED_INT_VALUE( raw_to_ast->kind );
   } // switch
 
   if ( c_ast_is_register( to_ast ) ) {
@@ -2245,6 +2285,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       print_error( &ret_ast->loc, "%s returning array", kind_name );
       print_hint( "%s returning pointer", kind_name );
       return false;
+
     case K_BUILTIN:
       if ( c_tid_is_any( raw_ret_ast->type.btids, TB_auto ) &&
            !OPT_LANG_IS( auto_RETURN_TYPES ) ) {
@@ -2257,6 +2298,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
         return false;
       }
       break;
+
     case K_CLASS_STRUCT_UNION:
       if ( !OPT_LANG_IS( CSU_RETURN_TYPES ) ) {
         print_error( &ret_ast->loc, "%s returning ", kind_name );
@@ -2265,16 +2307,36 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
         return false;
       }
       break;
+
     case K_FUNCTION:
-    case K_OPERATOR:
-    case K_UDEF_LIT:
       print_error( &ret_ast->loc, "%s returning ", kind_name );
       print_ast_kind_aka( ret_ast, stderr );
       EPUTS( " is illegal" );
       print_hint( "%s returning pointer to function", kind_name );
       return false;
-    default:
-      /* suppress warning */;
+
+    case K_APPLE_BLOCK:
+    case K_ENUM:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_TYPEDEF:
+      // nothing to check
+      break;
+
+    case K_CAPTURE:
+    case K_CAST:
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
+    case K_LAMBDA:
+    case K_NAME:
+    case K_OPERATOR:
+    case K_PLACEHOLDER:
+    case K_UDEF_CONV:
+    case K_UDEF_LIT:
+    case K_VARIADIC:
+      UNEXPECTED_INT_VALUE( raw_ret_ast->kind );
   } // switch
 
   if ( c_tid_is_any( ast->type.stids, TS_explicit ) ) {
@@ -2732,6 +2794,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
     switch ( raw_ast->kind ) {
       case K_ARRAY:                     // legal in C; __restrict legal in C++
         break;
+
       case K_FUNCTION:
       case K_OPERATOR:
       case K_REFERENCE:
@@ -2742,6 +2805,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
         // elsewhere.
         //
         break;
+
       case K_POINTER:
         if ( !c_ast_is_ptr_to_kind_any( raw_ast, K_ANY_OBJECT ) ) {
           print_error( &ast->loc,
@@ -2752,9 +2816,26 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
           return VISITOR_ERROR_FOUND;
         }
         break;
-      default:
+
+      case K_BUILTIN:
+      case K_CLASS_STRUCT_UNION:
+      case K_ENUM:
+      case K_POINTER_TO_MEMBER:
         error_kind_not_tid( raw_ast, TS_restrict, LANG_NONE, "\n" );
         return VISITOR_ERROR_FOUND;
+
+      case K_APPLE_BLOCK:
+      case K_CAPTURE:
+      case K_CAST:
+      case K_CONSTRUCTOR:
+      case K_DESTRUCTOR:
+      case K_LAMBDA:
+      case K_NAME:
+      case K_PLACEHOLDER:
+      case K_TYPEDEF:
+      case K_UDEF_LIT:
+      case K_VARIADIC:
+        UNEXPECTED_INT_VALUE( raw_ast->kind );
     } // switch
   }
 
@@ -2930,8 +3011,27 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
     case K_POINTER_TO_MEMBER:
       c_sname_warn( &ast->csu.csu_sname, &ast->loc );
       break;
-    default:
-      /* suppress warning */;
+    case K_APPLE_BLOCK:
+    case K_ARRAY:
+    case K_BUILTIN:
+    case K_CAPTURE:
+    case K_CAST:
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
+    case K_FUNCTION:
+    case K_LAMBDA:
+    case K_NAME:
+    case K_OPERATOR:
+    case K_PLACEHOLDER:
+    case K_POINTER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_TYPEDEF:
+    case K_UDEF_CONV:
+    case K_UDEF_LIT:
+    case K_VARIADIC:
+      // nothing to check
+      break;
   } // switch
 }
 

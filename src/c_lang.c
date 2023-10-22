@@ -130,9 +130,8 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
     case LANG_CPP_17  : return "C++17";
     case LANG_CPP_20  : return "C++20";
     case LANG_CPP_23  : return "C++23";
-    default:
-      UNEXPECTED_INT_VALUE( lang_id );
   } // switch
+  UNEXPECTED_INT_VALUE( lang_id );
 }
 
 c_lang_t const* c_lang_next( c_lang_t const *lang ) {

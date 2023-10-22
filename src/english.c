@@ -507,12 +507,35 @@ void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *eout ) {
     // We can't just check to see if ast->sname is empty and print it only if
     // it isn't because operators have a name but don't use ast->sname.
     switch ( ast->kind ) {
+      case K_APPLE_BLOCK:
+      case K_ARRAY:
+      case K_BUILTIN:
+      case K_CLASS_STRUCT_UNION:
+      case K_CONSTRUCTOR:
+      case K_DESTRUCTOR:
+      case K_ENUM:
+      case K_FUNCTION:
+      case K_NAME:
+      case K_OPERATOR:
+      case K_POINTER:
+      case K_POINTER_TO_MEMBER:
+      case K_REFERENCE:
+      case K_RVALUE_REFERENCE:
+      case K_TYPEDEF:
+      case K_UDEF_LIT:
+        c_ast_name_english( ast, eout );
+        FPUTS( " as ", eout );
+        break;
+
       case K_LAMBDA:
       case K_UDEF_CONV:
         break;                          // these don't have names
-      default:
-        c_ast_name_english( ast, eout );
-        FPUTS( " as ", eout );
+
+      case K_CAPTURE:
+      case K_CAST:
+      case K_PLACEHOLDER:
+      case K_VARIADIC:
+        UNEXPECTED_INT_VALUE( ast->kind );
     } // switch
   }
 

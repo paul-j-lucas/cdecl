@@ -1043,6 +1043,31 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     return;                             // for casts, print nothing
 
   switch ( ast->kind ) {
+    case K_APPLE_BLOCK:
+    case K_ARRAY:
+    case K_BUILTIN:
+    case K_CLASS_STRUCT_UNION:
+    case K_ENUM:
+    case K_FUNCTION:
+    case K_NAME:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_TYPEDEF:
+      if ( !c_sname_empty( &ast->sname ) ) {
+        if ( (gib->gib_flags & C_GIB_USING) == 0 )
+          gib_print_space_once( gib );
+        c_ast_name_gibberish( ast, gib );
+      }
+      break;
+
+    case K_CAST:
+    case K_UDEF_CONV:
+    case K_VARIADIC:
+      // Do nothing since these don't have names.
+      break;
+
     case K_CONSTRUCTOR:
       FPUTS( c_sname_full_name( &ast->sname ), gib->gout );
       break;
@@ -1067,10 +1092,6 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       );
       break;
 
-    case K_UDEF_CONV:
-      // Do nothing since these don't have names.
-      break;
-
     case K_UDEF_LIT:
       gib_print_space_once( gib );
       if ( c_sname_count( &ast->sname ) > 1 )
@@ -1080,13 +1101,10 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       );
       break;
 
-    default:
-      if ( !c_sname_empty( &ast->sname ) ) {
-        if ( (gib->gib_flags & C_GIB_USING) == 0 )
-          gib_print_space_once( gib );
-        c_ast_name_gibberish( ast, gib );
-      }
-      break;
+    case K_CAPTURE:
+    case K_LAMBDA:
+    case K_PLACEHOLDER:
+      UNEXPECTED_INT_VALUE( ast->kind );
   } // switch
 }
 

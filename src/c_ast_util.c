@@ -254,7 +254,10 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
         }
         FALLTHROUGH;
 
-      default:
+      case K_BUILTIN:
+      case K_CLASS_STRUCT_UNION:
+      case K_ENUM:
+      case K_TYPEDEF:
         if ( ast->kind == K_ARRAY ) {
           //
           // Before:
@@ -284,6 +287,19 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
       case K_APPLE_BLOCK:
         c_ast_set_parent( ret_ast, func_ast );
         return ast;
+
+      case K_CAPTURE:
+      case K_CAST:
+      case K_CONSTRUCTOR:
+      case K_DESTRUCTOR:
+      case K_FUNCTION:
+      case K_LAMBDA:
+      case K_NAME:
+      case K_OPERATOR:
+      case K_UDEF_CONV:
+      case K_UDEF_LIT:
+      case K_VARIADIC:
+        UNEXPECTED_INT_VALUE( ast->parent.of_ast->kind );
     } // switch
   }
 
