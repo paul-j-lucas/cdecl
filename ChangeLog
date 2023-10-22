@@ -1,3 +1,8 @@
+2023-10-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_ast_util.c, c_lang.c, english.c, gibberish.c: Eliminated
+     `default` for `switch` on `c_kind_t` in most cases.
+
 2023-10-16  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, c_ast_util.c, c_ast_util.h, c_operator.c, c_operator.h,
