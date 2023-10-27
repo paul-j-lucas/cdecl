@@ -1,3 +1,8 @@
+2023-10-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, dump.h, parser.y, debug.out: Added public c_alignas_dump(); now
+     dumping c_alignas objects.
+
 2023-10-22  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, c_ast_util.c, c_lang.c, english.c, gibberish.c: Eliminated
