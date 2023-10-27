@@ -114,14 +114,15 @@ static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
  * @param align The \ref c_alignas to dump.
  * @param dump The dump_state to use.
  */
-static void c_alignas_dump( c_alignas_t const *align, dump_state_t *dump ) {
+static void c_alignas_dump_impl( c_alignas_t const *align,
+                                 dump_state_t *dump ) {
   assert( align != NULL );
   assert( dump != NULL );
 
   if ( align->kind == C_ALIGNAS_NONE )
     return;
 
-  json_state_t const json = json_object_begin( JSON_INIT, "alignas", dump );
+  json_state_t const json = json_object_begin( JSON_INIT, /*key=*/NULL, dump );
 
   switch ( align->kind ) {
     case C_ALIGNAS_NONE:
@@ -175,7 +176,10 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
     }
   }
   DUMP_KEY( dump, "depth: %u", ast->depth );
-  c_alignas_dump( &ast->align, dump );
+  if ( ast->align.kind != C_ALIGNAS_NONE ) {
+    DUMP_KEY( dump, "align: " );
+    c_alignas_dump_impl( &ast->align, dump );
+  }
   DUMP_LOC( dump, "loc", &ast->loc );
   DUMP_KEY( dump, "type: " );
   c_type_dump( &ast->type, dump->dout );
@@ -496,6 +500,12 @@ static void json_object_end( json_state_t json, dump_state_t *dump ) {
 void bool_dump( bool value, FILE *dout ) {
   assert( dout != NULL );
   FPUTS( value ? L_true : L_false, dout );
+}
+
+void c_alignas_dump( c_alignas_t const *align, FILE *dout ) {
+  dump_state_t dump;
+  dump_init( &dump, 1, dout );
+  c_alignas_dump_impl( align, &dump );
 }
 
 void c_ast_dump( c_ast_t const *ast, FILE *dout ) {

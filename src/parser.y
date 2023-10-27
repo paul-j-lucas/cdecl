@@ -238,6 +238,15 @@
  */
 
 /**
+ * Dumps \a ALIGN.
+ *
+ * @param KEY The key name to print.
+ * @param ALIGN The \ref c_alignas to dump.
+ */
+#define DUMP_ALIGN(KEY,ALIGN) IF_DEBUG( \
+  DUMP_KEY( KEY ": " ); c_alignas_dump( &(ALIGN), stdout ); )
+
+/**
  * Dumps an AST.
  *
  * @param KEY The key name to print.
@@ -2017,9 +2026,18 @@ alignas_or_width_decl_english_ast
 
   | decl_english_ast[decl_ast] alignas_specifier_english[align]
     {
+      DUMP_START();
+      DUMP_PROD( "alignas_or_width_decl_english_ast",
+                 "decl_english_ast alignas_specifier_english" );
+      DUMP_AST( "decl_english_ast", $decl_ast );
+      DUMP_ALIGN( "alignas_specifier_english", $align );
+
       $$ = $decl_ast;
       $$->align = $align;
       $$->loc = @$;
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
     }
 
   | decl_english_ast[decl_ast] width_specifier_english_uint[bit_width]
@@ -2777,11 +2795,13 @@ alignas_specifier_c
       DUMP_START();
       DUMP_PROD( "alignas_specifier_c", "ALIGNAS '(' Y_UINT_LIT ')'" );
       DUMP_INT( "INT_LIT", $bytes );
-      DUMP_END();
 
       $$.kind = C_ALIGNAS_BYTES;
       $$.loc = @alignas;
       $$.bytes = $bytes;
+
+      DUMP_ALIGN( "$$_align", $$ );
+      DUMP_END();
     }
 
   | alignas lparen_exp type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
@@ -2794,11 +2814,13 @@ alignas_specifier_c
                  "ALIGNAS '(' type_c_ast cast_c_astp_opt ')'" );
       DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
-      DUMP_END();
 
       $$.kind = C_ALIGNAS_TYPE;
       $$.loc = @alignas;
       $$.type_ast = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
+
+      DUMP_ALIGN( "$$_align", $$ );
+      DUMP_END();
     }
 
   | alignas lparen_exp error ')'

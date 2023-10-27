@@ -59,6 +59,14 @@
 void bool_dump( bool b, FILE *dout );
 
 /**
+ * Dumps \a align in [JSON5](https://json5.org) format (for debugging).
+ *
+ * @param align The \ref c_alignas to dump.
+ * @param dout The `FILE` to dump to.
+ */
+void c_alignas_dump( c_alignas_t const *align, FILE *dout );
+
+/**
  * Dumps \a ast in [JSON5](https://json5.org) format (for debugging).
  *
  * @param ast The AST to dump.  If NULL, `null` is printed instead.
