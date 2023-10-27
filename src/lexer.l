@@ -639,7 +639,7 @@ const(ant)?/{S}+(eval(uation)?|expr(ession)?|init(ialization)?){NI} {
                *
                * (which is legal).
                */
-declare/{S}({S}|{L})*user-def(ined)?{NI} {
+declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 SET_TOKEN;
                 lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
                 return Y_declare;
