@@ -1,5 +1,7 @@
 2023-10-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Now accepting "user defined" (with a space instead of a "-") for
+     declaring user-defined operators.
    * dump.c, dump.h, parser.y, debug.out: Added public c_alignas_dump(); now
      dumping c_alignas objects.
 
