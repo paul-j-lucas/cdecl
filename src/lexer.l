@@ -1042,12 +1042,12 @@ include{S}*\" {
 ":"           | /* Not an operator: used for bitfields. */
 ";"           |
 "<"           |
-<*>"="        | /* allow in "set" command also, e.g.: set lang=c++ */
+<*>"="        | /* Allow in "set" command also, e.g.: set lang=c++ */
 ">"           |
 "["           |
 "]"           |
 "{"           |
-"}"           { SET_TOKEN; return lexer_token[0]    ; }
+"}"           { SET_TOKEN; return lexer_token[0]; }
 
 {rstr_pfx}    { // e.g.: u8R"abc(...)abc"
                 // find:    ^   ^
