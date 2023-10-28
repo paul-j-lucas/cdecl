@@ -1227,30 +1227,30 @@ include{S}*\" {
               }
 
 <X_SET>{
-  ";"         {
-                SET_TOKEN;
-                BEGIN( INITIAL );
-                return lexer_token[0];
-              }
-
   {set_option} {
                 SET_TOKEN;
                 yylval.name = check_strdup( lexer_token );
                 return Y_SET_OPTION;
               }
-}
 
-<S_SHOW>{
   ";"         {
                 SET_TOKEN;
                 BEGIN( INITIAL );
                 return lexer_token[0];
               }
+}
 
+<S_SHOW>{
   {glob}      {
                 SET_TOKEN;
                 yylval.name = check_strdup( lexer_token );
                 return Y_GLOB;
+              }
+
+  ";"         {
+                SET_TOKEN;
+                BEGIN( INITIAL );
+                return lexer_token[0];
               }
 }
 
