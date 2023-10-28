@@ -1095,32 +1095,32 @@ include{S}*\" {
                     strbuf_reset( &str_lit_buf );
                     return Y_LEXER_ERROR;
                   }
-                  if ( c != *d ) {
-                    //
-                    // Found a mismatch with the delimiter, e.g.:
-                    //
-                    //      )abc"       // delimiter
-                    //      )abx"       // what was found
-                    //
-                    // Hence, it's not the actual delimiter, but part of the
-                    // string literal: append the part that matched (")ab").
-                    //
-                    strbuf_printf( &str_lit_buf,
-                      ")%.*s", STATIC_CAST( int, d - rstr_delim ), rstr_delim
-                    );
-                    //
-                    // Unput the character that caused the mismatch since it
-                    // could be ')' that could potentially start a real match,
-                    // e.g.:
-                    //
-                    //      R"abc(X)ab)abc"
-                    //                ^
-                    //
-                    // Hence the raw string is "X)ab".
-                    //
-                    unput( c );
-                    break;
-                  }
+                  if ( c == *d )
+                    continue;
+                  //
+                  // Found a mismatch with the delimiter, e.g.:
+                  //
+                  //      )abc"       // delimiter
+                  //      )abx"       // what was found
+                  //
+                  // Hence, it's not the actual delimiter, but part of the
+                  // string literal: append the part that matched (")ab").
+                  //
+                  strbuf_printf( &str_lit_buf,
+                    ")%.*s", STATIC_CAST( int, d - rstr_delim ), rstr_delim
+                  );
+                  //
+                  // Unput the character that caused the mismatch since it
+                  // could be ')' that could potentially start a real match,
+                  // e.g.:
+                  //
+                  //      R"abc(X)ab)abc"
+                  //                ^
+                  //
+                  // Hence the raw string is "X)ab".
+                  //
+                  unput( c );
+                  break;
                 } // for
 
                 if ( *d == '\0' ) {     // found delimiter
