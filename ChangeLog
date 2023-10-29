@@ -1,3 +1,7 @@
+2023-10-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c: Now also escaping \f, \n, \r, \t, \v, \\ in str_dump().
+
 2023-10-27  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: Now accepting "user defined" (with a space instead of a "-") for
