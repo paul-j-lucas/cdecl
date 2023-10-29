@@ -607,10 +607,16 @@ void str_dump( char const *value, FILE *dout ) {
   }
   FPUTC( '"', dout );
   for ( char const *p = value; *p != '\0'; ++p ) {
-    if ( *p == '"' )
-      FPUTS( "\\\"", dout );
-    else
-      FPUTC( *p, dout );
+    switch ( *p ) {
+      case '\f': FPUTS( "\\f" , dout ); break;
+      case '\n': FPUTS( "\\n" , dout ); break;
+      case '\r': FPUTS( "\\r" , dout ); break;
+      case '\t': FPUTS( "\\t" , dout ); break;
+      case '\v': FPUTS( "\\v" , dout ); break;
+      case '"' : FPUTS( "\\\"", dout ); break;
+      case '\\': FPUTS( "\\\\", dout ); break;
+      default  : FPUTC( *p    , dout );
+    } // switch
   } // for
   FPUTC( '"', dout );
 }
