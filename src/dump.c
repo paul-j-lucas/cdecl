@@ -608,6 +608,7 @@ void str_dump( char const *value, FILE *dout ) {
   FPUTC( '"', dout );
   for ( char const *p = value; *p != '\0'; ++p ) {
     switch ( *p ) {
+      case '\b': FPUTS( "\\b" , dout ); break;
       case '\f': FPUTS( "\\f" , dout ); break;
       case '\n': FPUTS( "\\n" , dout ); break;
       case '\r': FPUTS( "\\r" , dout ); break;
