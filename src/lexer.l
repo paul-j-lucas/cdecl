@@ -1108,6 +1108,7 @@ include{S}*\" {
               }
 
 <X_RSTR>{
+
   [^)]+       { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
   ")"         {
                 char const *d;
@@ -1154,7 +1155,8 @@ include{S}*\" {
                   return Y_STR_LIT;
                 }
               }
-}
+
+} /* <X_RSTR> */
 
   /***************************************************************************/
   /*  STRING LITERALS, CHARACTER LITERALS, & INCLUDE FILES                   */
@@ -1177,6 +1179,7 @@ include{S}*\" {
                * literals are legal, but implementation-defined.
                */
 <X_CHAR,X_INCL,X_STR>{
+
               /* Escaped characters are copied verbatim, not interpreted. */
   \\(.|\n)    { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
   \n          {
@@ -1187,9 +1190,11 @@ include{S}*\" {
                 strbuf_reset( &str_lit_buf );
                 return Y_LEXER_ERROR;
               }
-}
+
+} /* <X_CHAR,X_INCL,X_STR> */
 
 <X_CHAR>{
+
   [^'\\\n]+   { strbuf_putsn( &str_lit_buf, yytext, yyleng ); }
   \'          {
                 yylloc.first_line   = str_lit_loc.first_line;
@@ -1198,7 +1203,8 @@ include{S}*\" {
                 BEGIN( INITIAL );
                 return Y_CHAR_LIT;
               }
-}
+
+} /* <X_CHAR> */
 
               /*
                * Common code between X_INCL and X_STR:
@@ -1267,6 +1273,7 @@ include{S}*\" {
   /***************************************************************************/
 
 <X_SET>{
+
   {set_option} {
                 SET_TOKEN;
                 yylval.name = check_strdup( lexer_token );
@@ -1278,9 +1285,11 @@ include{S}*\" {
                 BEGIN( INITIAL );
                 return lexer_token[0];
               }
-}
+
+} /* <X_SET> */
 
 <S_SHOW>{
+
   {glob}      {
                 SET_TOKEN;
                 yylval.name = check_strdup( lexer_token );
@@ -1292,7 +1301,8 @@ include{S}*\" {
                 BEGIN( INITIAL );
                 return lexer_token[0];
               }
-}
+
+} /* <S_SHOW> */
 
   /***************************************************************************/
   /*  NON-MATCH & EOF                                                        */
