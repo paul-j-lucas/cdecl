@@ -36,7 +36,7 @@
 /**
  * Convenience macro for iterating over all **cdecl** commands.
  *
- * @param VAR The cdecl_command loop variable.
+ * @param VAR The \ref cdecl_command loop variable.
  *
  * @sa cdecl_command_next()
  */

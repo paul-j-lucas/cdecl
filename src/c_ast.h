@@ -57,7 +57,7 @@ _GL_INLINE_HEADER_BEGIN
  * Convenience macro for iterating over all \ref c_capture_ast nodes of a \ref
  * c_lambda_ast.
  *
- * @param VAR The \ref c_capture_t loop variable.
+ * @param VAR The \ref slist_node loop variable.
  * @param AST The \ref c_lambda_ast to iterate the captures of.
  *
  * @sa c_ast_captures()
@@ -71,7 +71,7 @@ _GL_INLINE_HEADER_BEGIN
  * Convenience macro for iterating over all \ref c_capture_ast nodes of a \ref
  * c_lambda_ast up to but not including \a END.
  *
- * @param VAR The \ref c_capture_t loop variable.
+ * @param VAR The \ref slist_node loop variable.
  * @param AST The \ref c_lambda_ast to iterate the captures of.
  * @param END A pointer to the capture to end before.  If NULL, equivalent to
  * #FOREACH_AST_LAMBDA_CAPTURE().
@@ -86,7 +86,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Convenience macro for iterating over all parameters of a function-like AST.
  *
- * @param VAR The \ref c_param_t loop variable.
+ * @param VAR The \ref slist_node loop variable.
  * @param AST The function-like AST to iterate the parameters of.
  *
  * @sa c_ast_params()
@@ -100,7 +100,7 @@ _GL_INLINE_HEADER_BEGIN
  * Convenience macro for iterating over all parameters of a function-like AST
  * up to but not including \a END.
  *
- * @param VAR The \ref c_param_t loop variable.
+ * @param VAR The \ref slist_node loop variable.
  * @param AST The function-like AST to iterate the parameters of.
  * @param END A pointer to the parameter to end before.  If NULL, equivalent to
  * #FOREACH_AST_FUNC_PARAM().

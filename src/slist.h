@@ -53,7 +53,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Convenience macro for iterating over all the nodes of \a SLIST.
  *
- * @param VAR The slist_node loop variable.
+ * @param VAR The \ref slist_node loop variable.
  * @param SLIST A pointer to the \ref slist to iterate over.
  *
  * @sa #FOREACH_SLIST_NODE_UNTIL()
@@ -65,7 +65,7 @@ _GL_INLINE_HEADER_BEGIN
  * Convenience macro for iterating over the nodes of \a SLIST up to but not
  * including \a END.
  *
- * @param VAR The slist_node loop variable.
+ * @param VAR The \ref slist_node loop variable.
  * @param SLIST A pointer to the \ref slist to iterate over.
  * @param END A pointer to the node to end before; may be NULL.
  *

@@ -55,7 +55,7 @@
 /**
  * Convenience macro for iterating over all **cdecl** `set` command options.
  *
- * @param VAR The set_option loop variable.
+ * @param VAR The \ref set_option loop variable.
  *
  * @sa #FOREACH_CLI_OPTION()
  * @sa set_option_next()

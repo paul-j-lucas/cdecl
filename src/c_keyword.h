@@ -42,7 +42,7 @@
 /**
  * Convenience macro for iterating over all C/C++ keywords.
  *
- * @param VAR The c_keyword loop variable.
+ * @param VAR The \ref c_keyword loop variable.
  *
  * @sa c_keyword_next()
  */

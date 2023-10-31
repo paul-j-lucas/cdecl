@@ -48,7 +48,7 @@
 /**
  * Convenience macro for iterating over all **cdecl** keywords.
  *
- * @param VAR The cdecl_keyword loop variable.
+ * @param VAR The \ref cdecl_keyword loop variable.
  *
  * @sa cdecl_keyword_next()
  */
