@@ -277,13 +277,13 @@ cdecl> explain void __cdecl *p
 14: error: "__cdecl" can be used only for functions and pointers to function
 cdecl> explain void f( ..., ... )
                        ^
-17: error: variadic specifier must be last
+17: error: "..." must be last
 cdecl> explain void f( ..., char const *fmt )
                        ^
-17: error: variadic specifier must be last
+17: error: "..." must be last
 cdecl> explain void f( ..., void )
                        ^
-17: error: variadic specifier must be last
+17: error: "..." must be last
 cdecl> explain void f() const
                     ^
 14: error: function can not be "const"
@@ -419,7 +419,7 @@ cdecl> explain enum E : int x
 18: error: enum with underlying type not supported until C23
 cdecl> explain void f( ... )
                        ^
-17: error: variadic specifier can not be only parameter until C23
+17: error: "..." as only parameter not supported until C23
 cdecl> set c++
 c++decl> typedef int &RI
 c++decl> explain [&,&]

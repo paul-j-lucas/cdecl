@@ -1317,13 +1317,20 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         if ( ast->kind == K_OPERATOR &&
              ast->oper.operator->op_id != C_OP_PARENS ) {
           print_error( &param_ast->loc,
-            "operator \"%s\" can not have a variadic parameter\n",
+            "operator \"%s\" can not have \"...\" parameter\n",
             ast->oper.operator->literal
           );
           return false;
         }
         if ( param->next != NULL ) {
-          print_error( &param_ast->loc, "variadic specifier must be last\n" );
+          print_error( &param_ast->loc, "\"...\" must be last\n" );
+          return false;
+        }
+        if ( !OPT_LANG_IS( VARIADIC_ONLY_PARAMS ) && n_params == 1 ) {
+          print_error( &param_ast->loc,
+            "\"...\" as only parameter not supported%s\n",
+            C_LANG_WHICH( VARIADIC_ONLY_PARAMS )
+          );
           return false;
         }
         assert( variadic_ast == NULL );
@@ -1358,15 +1365,6 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     if ( !c_ast_check_errors( param_ast ) )
       return false;
   } // for
-
-  if ( variadic_ast != NULL && n_params == 1 &&
-       !OPT_LANG_IS( VARIADIC_ONLY_PARAMS ) ) {
-    print_error( &variadic_ast->loc,
-      "variadic specifier can not be only parameter%s\n",
-      C_LANG_WHICH( VARIADIC_ONLY_PARAMS )
-    );
-    return false;
-  }
 
   return c_ast_check_func_params_redef( ast );
 

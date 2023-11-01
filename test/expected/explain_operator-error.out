@@ -92,7 +92,7 @@ c++decl> explain int operator-(int, ...)
 23: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
 c++decl> explain int operator+(S, ...)
                                   ^
-26: error: operator "+" can not have a variadic parameter
+26: error: operator "+" can not have "..." parameter
 c++decl> explain int operator?:(S, int, int)
                    ^
 11: error: operator "?:" can not be overloaded
