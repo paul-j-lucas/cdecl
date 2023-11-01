@@ -1,3 +1,8 @@
+2023-11-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, explain-error.out, explain_operator-error.out: Beter `...`
+     checking.
+
 2023-10-31  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, dump.h, parser.y, util.c, util.h: Replaced str_dump() with
