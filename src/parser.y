@@ -397,7 +397,7 @@
  * @sa #DUMP_SNAME()
  */
 #define DUMP_STR(KEY,STR) IF_DEBUG( \
-  DUMP_KEY( KEY ": " ); str_dump( (STR), stdout ); )
+  DUMP_KEY( KEY ": " ); fputs_quoted( (STR), '"', stdout ); )
 
 /**
  * Dumps a \ref c_tid_t.

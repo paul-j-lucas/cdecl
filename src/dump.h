@@ -140,14 +140,6 @@ void c_tid_dump( c_tid_t tid, FILE *dout );
  */
 void c_type_dump( c_type_t const *type, FILE *dout );
 
-/**
- * Dumps a string value in [JSON5](https://json5.org) format (for debugging).
- *
- * @param s The string to dump, if any.  If NULL, prints `null` instead.
- * @param dout The `FILE` to dump to.
- */
-void str_dump( char const *s, FILE *dout );
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

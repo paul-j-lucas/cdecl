@@ -599,29 +599,6 @@ void c_type_dump( c_type_t const *type, FILE *dout ) {
   );
 }
 
-void str_dump( char const *value, FILE *dout ) {
-  assert( dout != NULL );
-  if ( value == NULL ) {
-    FPUTS( "null", dout );
-    return;
-  }
-  FPUTC( '"', dout );
-  for ( char const *p = value; *p != '\0'; ++p ) {
-    switch ( *p ) {
-      case '\b': FPUTS( "\\b" , dout ); break;
-      case '\f': FPUTS( "\\f" , dout ); break;
-      case '\n': FPUTS( "\\n" , dout ); break;
-      case '\r': FPUTS( "\\r" , dout ); break;
-      case '\t': FPUTS( "\\t" , dout ); break;
-      case '\v': FPUTS( "\\v" , dout ); break;
-      case '"' : FPUTS( "\\\"", dout ); break;
-      case '\\': FPUTS( "\\\\", dout ); break;
-      default  : FPUTC( *p    , dout );
-    } // switch
-  } // for
-  FPUTC( '"', dout );
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

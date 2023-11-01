@@ -1011,11 +1011,20 @@ void fput_list( FILE *out, void const *elt,
                 char const* (*gets)( void const **ppelt ) );
 
 /**
+ * Prints \a s as a quoted string with escaped characters.
+ *
+ * @param s The string to put.  If NULL, prints `null` (unquoted).
+ * @param quote The quote character to use, either `'` or `"`.
+ * @param fout The `FILE` to print to.
+ */
+void fputs_quoted( char const *s, char quote, FILE *fout );
+
+/**
  * If \a s is not empty, prints \a s followed by a space to \a out; otherwise
  * does nothing.
  *
  * @param s The string to print.
- * @param out the `FILE` to print to.
+ * @param out The `FILE` to print to.
  */
 void fputs_sp( char const *s, FILE *out );
 

@@ -210,6 +210,42 @@ void fput_list( FILE *out, void const *elt,
   } // for
 }
 
+void fputs_quoted( char const *s, char quote, FILE *fout ) {
+  assert( quote == '\'' || quote == '"' );
+  assert( fout != NULL );
+
+  if ( s == NULL ) {
+    FPUTS( "null", fout );
+    return;
+  }
+  FPUTC( quote, fout );
+  for ( char const *p = s; *p != '\0'; ++p ) {
+    switch ( *p ) {
+      case '"':
+        if ( quote == '"' )
+          FPUTS( "\\\"", fout );
+        else
+          FPUTC( '"', fout );
+        break;
+      case '\'':
+        if ( quote == '\'' )
+          FPUTS( "\\'", fout );
+        else
+          FPUTC( '\'', fout );
+        break;
+      case '\b': FPUTS( "\\b" , fout ); break;
+      case '\f': FPUTS( "\\f" , fout ); break;
+      case '\n': FPUTS( "\\n" , fout ); break;
+      case '\r': FPUTS( "\\r" , fout ); break;
+      case '\t': FPUTS( "\\t" , fout ); break;
+      case '\v': FPUTS( "\\v" , fout ); break;
+      case '\\': FPUTS( "\\\\", fout ); break;
+      default  : FPUTC( *p    , fout );
+    } // switch
+  } // for
+  FPUTC( quote, fout );
+}
+
 void fputs_sp( char const *s, FILE *out ) {
   if ( s[0] != '\0' )
     FPRINTF( out, "%s ", s );
