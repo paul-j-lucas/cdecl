@@ -1216,7 +1216,7 @@ static void yyerror( char const *msg ) {
 %left                                     '(' ')'
                                           '[' ']'
                                           '.'
-                    Y_ARROW               "->"
+                    Y_MINUS_GREATER       "->"
                     // C/C++ operators: precedence 15
 %right              Y_AMPER           //  '&' -- also has alt. token "bitand"
                                           '*'
@@ -1227,7 +1227,7 @@ static void yyerror( char const *msg ) {
                     Y_TILDE           //  '~' -- also has alt.token "compl"
                     // C/C++ operators: precedence 14
 %left               Y_DOT_STAR            ".*"
-                    Y_ARROW_STAR          "->*"
+                    Y_MINUS_GREATER_STAR  "->*"
                     // C/C++ operators: precedence 13
 %left                                 //  '*' -- covered by '*' above
                                           '/'
@@ -3305,7 +3305,7 @@ lambda_param_c_ast_list_opt
 
 lambda_return_type_c_ast_opt
   : /* empty */                   { $$ = NULL; }
-  | Y_ARROW type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+  | Y_MINUS_GREATER type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
     cast_c_astp_opt[cast_astp]
     {
       ia_type_ast_pop();
@@ -4318,7 +4318,7 @@ noexcept_bool_stid_exp
 trailing_return_type_c_ast_opt
   : /* empty */                   { $$ = NULL; }
   | // in_attr: type_c_ast
-    Y_ARROW type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+    Y_MINUS_GREATER type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
     cast_c_astp_opt[cast_astp]
     { //
       // The function trailing return-type syntax is supported only in C++11
@@ -4327,7 +4327,7 @@ trailing_return_type_c_ast_opt
       // type came from.
       //
       if ( UNSUPPORTED( TRAILING_RETURN_TYPES ) ) {
-        print_error( &@Y_ARROW,
+        print_error( &@Y_MINUS_GREATER,
           "trailing return type not supported%s\n",
           C_LANG_WHICH( TRAILING_RETURN_TYPES )
         );
@@ -7844,8 +7844,8 @@ c_operator
   | '-'                           { $$ = C_OP_MINUS             ; }
   | Y_MINUS2                      { $$ = C_OP_MINUS2            ; }
   | Y_MINUS_EQUAL                 { $$ = C_OP_MINUS_EQUAL       ; }
-  | Y_ARROW                       { $$ = C_OP_MINUS_GREATER     ; }
-  | Y_ARROW_STAR                  { $$ = C_OP_MINUS_GREATER_STAR; }
+  | Y_MINUS_GREATER               { $$ = C_OP_MINUS_GREATER     ; }
+  | Y_MINUS_GREATER_STAR          { $$ = C_OP_MINUS_GREATER_STAR; }
   | '.'                           { $$ = C_OP_DOT               ; }
   | Y_DOT_STAR                    { $$ = C_OP_DOT_STAR          ; }
   | '/'                           { $$ = C_OP_SLASH             ; }
