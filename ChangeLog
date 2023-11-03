@@ -1,5 +1,7 @@
 2023-11-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l, parser.y: s/Y_ARROW_STAR/Y_MINUS_GREATER_STAR/;
+     s/Y_ARROW/Y_MINUS_GREATER/
    * c_ast_check.c, c_operator.c, parser.y, types.h:
      s/C_OP_ARROW_STAR/C_OP_MINUS_GREATER_STAR/;
      s/C_OP_ARROW/C_OP_MINUS_GREATER/
