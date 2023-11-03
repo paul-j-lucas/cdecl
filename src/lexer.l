@@ -1023,7 +1023,7 @@ include{S}*\" {
 "->"          { SET_TOKEN; return Y_MINUS_GREATER     ; }
 "->*"         { SET_TOKEN; return Y_MINUS_GREATER_STAR; }
 ".*"          { SET_TOKEN; return Y_DOT_STAR          ; }
-"..."         { SET_TOKEN; return Y_ELLIPSIS          ; }
+"..."         { SET_TOKEN; return Y_DOT3              ; }
 "/="          { SET_TOKEN; return Y_SLASH_EQUAL       ; }
 "<<"          { SET_TOKEN; return Y_LESS2             ; }
 "<<="         { SET_TOKEN; return Y_LESS2_EQUAL       ; }

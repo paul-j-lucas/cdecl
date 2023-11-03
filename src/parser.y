@@ -1305,7 +1305,7 @@ static void yyerror( char const *msg ) {
                     // C89
 %token              Y_asm
 %token  <tid>       Y_const
-%token              Y_ELLIPSIS    "..." // for varargs
+%token              Y_DOT3        "..." // for varargs
 %token  <tid>       Y_enum
 %token  <tid>       Y_signed
 %token  <tid>       Y_void
