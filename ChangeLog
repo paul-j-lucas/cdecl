@@ -1,3 +1,9 @@
+2023-11-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_operator.c, parser.y, types.h:
+     s/C_OP_ARROW_STAR/C_OP_MINUS_GREATER_STAR/;
+     s/C_OP_ARROW/C_OP_MINUS_GREATER/
+
 2023-11-01  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, explain-error.out, explain_operator-error.out: Beter `...`
