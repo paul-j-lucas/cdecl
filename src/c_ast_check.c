@@ -1645,7 +1645,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   c_ast_t const *const ret_ast = ast->oper.ret_ast;
 
   switch ( op->op_id ) {
-    case C_OP_ARROW:
+    case C_OP_MINUS_GREATER:
       //
       // Special case for operator-> that must return a pointer to a struct,
       // union, or class.

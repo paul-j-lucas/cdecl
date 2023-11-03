@@ -7844,8 +7844,8 @@ c_operator
   | '-'                           { $$ = C_OP_MINUS             ; }
   | Y_MINUS2                      { $$ = C_OP_MINUS2            ; }
   | Y_MINUS_EQUAL                 { $$ = C_OP_MINUS_EQUAL       ; }
-  | Y_ARROW                       { $$ = C_OP_ARROW             ; }
-  | Y_ARROW_STAR                  { $$ = C_OP_ARROW_STAR        ; }
+  | Y_ARROW                       { $$ = C_OP_MINUS_GREATER     ; }
+  | Y_ARROW_STAR                  { $$ = C_OP_MINUS_GREATER_STAR; }
   | '.'                           { $$ = C_OP_DOT               ; }
   | Y_DOT_STAR                    { $$ = C_OP_DOT_STAR          ; }
   | '/'                           { $$ = C_OP_SLASH             ; }

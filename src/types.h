@@ -149,8 +149,8 @@ enum c_op_id {
   C_OP_MINUS,                           ///< The `-` operator.
   C_OP_MINUS2,                          ///< The `--` operator.
   C_OP_MINUS_EQUAL,                     ///< The `-=` operator.
-  C_OP_ARROW,                           ///< The `->` operator.
-  C_OP_ARROW_STAR,                      ///< The `->*` operator.
+  C_OP_MINUS_GREATER,                   ///< The `->` operator.
+  C_OP_MINUS_GREATER_STAR,              ///< The `->*` operator.
   C_OP_DOT,                             ///< The `.` operator.
   C_OP_DOT_STAR,                        ///< The `.*` operator.
   C_OP_SLASH,                           ///< The `/` operator.
