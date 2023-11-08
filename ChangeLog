@@ -1,3 +1,7 @@
+2023-11-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.h: Now using UNIQUE_NAME() in SLIST_VAR_INIT().
+
 2023-11-03  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl_keyword.c, lexer.l, parser.y: s/Y_ELLIPSIS/Y_DOT3/
