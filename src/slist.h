@@ -75,14 +75,15 @@ _GL_INLINE_HEADER_BEGIN
   for ( slist_node_t *VAR = CONST_CAST( slist_t*, (SLIST) )->head; VAR != (END); VAR = VAR->next )
 
 /**
- * Creates a single-node \ref slist on the stack with \a NODE_DATA.
+ * Creates a `const` \ref slist variable on the stack with \a NODE_DATA as its
+ * only element.
  *
  * @param VAR The name for the \ref slist variable.
  * @param NODE_DATA A pointer to the node data.
  */
-#define SLIST_VAR_INIT(VAR,NODE_DATA)                                 \
-  slist_node_t VAR##_node = { NULL, CONST_CAST(void*, (NODE_DATA)) }; \
-  slist_t const VAR = { &VAR##_node, &VAR##_node, 1 }
+#define SLIST_VAR_INIT(VAR,NODE_DATA) \
+  slist_node_t UNIQUE_NAME(VAR##_node) = { NULL, CONST_CAST(void*, (NODE_DATA)) }; \
+  slist_t const VAR = { &UNIQUE_NAME(VAR##_node), &UNIQUE_NAME(VAR##_node), 1 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
