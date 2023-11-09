@@ -204,8 +204,9 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
  * @param dup_fn A pointer to a function to use to duplicate the data at each
  * node of \a src_list or NULL if none is required (hence a shallow copy will
  * be done).
- * @return Returns a duplicate of \a src_list.  The caller is responsible for
- * calling slist_cleanup() on it.
+ * @return Returns a duplicate of \a src_list or an empty list only if \a
+ * src_list is NULL.  The caller is responsible for calling slist_cleanup() on
+ * it.
  *
  * @sa slist_cleanup()
  */

@@ -517,9 +517,9 @@ void c_ast_cleanup( void );
 /**
  * Duplicates \a ast.
  *
- * @param ast The AST to duplicate.
+ * @param ast The AST to duplicate; may be NULL.
  * @param node_list The list to append the duplicated AST nodes onto.
- * @return Returns the duplicated AST.
+ * @return Returns the duplicated AST or NULL only if \a ast is NULL.
  *
  * @sa c_ast_free()
  * @sa c_ast_new()
@@ -530,9 +530,10 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list );
 /**
  * Duplicates \a src_list.
  *
- * @param src_list The AST list to duplicate.  If NULL, does nothing.
+ * @param src_list The AST list to duplicate; may be NULL.
  * @param node_list The list to append the duplicated AST nodes onto.
- * @return Returns the duplicated AST list.
+ * @return Returns the duplicated AST list or an empty list only if \a src_list
+ * is NULL.
  *
  * @sa c_ast_dup()
  * @sa c_ast_list_cleanup()
