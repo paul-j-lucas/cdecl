@@ -1,3 +1,7 @@
+2023-11-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, c_sname.h: c_scope_data_dup() can now accept NULL.
+
 2023-11-08  Paul J. Lucas <paul@lucasmail.org>
 
    * slist.h: Now using UNIQUE_NAME() in SLIST_VAR_INIT().
