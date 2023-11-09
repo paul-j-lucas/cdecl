@@ -149,9 +149,9 @@ int c_scope_data_cmp( c_scope_data_t const *i_data,
 /**
  * Duplicates \a data.
  *
- * @param data The \ref c_scope_data to duplicate.
- * @return Returns a duplicate of \a data.  The caller is responsible for
- * calling c_scope_data_free() on it.
+ * @param data The \ref c_scope_data to duplicate; may be NULL.
+ * @return Returns a duplicate of \a data or NULL only if \a data is NULL.  The
+ * caller is responsible for calling c_scope_data_free() on it.
  *
  * @sa c_scope_data_free()
  */
@@ -261,8 +261,9 @@ size_t c_sname_count( c_sname_t const *sname ) {
  * Duplicates \a sname.  The caller is responsible for calling
  * c_sname_cleanup() on the duplicate.
  *
- * @param sname The scoped name to duplicate.
- * @return Returns a duplicate of \a sname.
+ * @param sname The scoped name to duplicate; may be NULL.
+ * @return Returns a duplicate of \a sname or an empty scoped name if \a sname
+ * is NULL.
  */
 NODISCARD C_SNAME_H_INLINE
 c_sname_t c_sname_dup( c_sname_t const *sname ) {

@@ -175,7 +175,8 @@ int c_scope_data_cmp( c_scope_data_t const *i_data,
 }
 
 c_scope_data_t* c_scope_data_dup( c_scope_data_t const *src ) {
-  assert( src != NULL );
+  if ( src == NULL )
+    return NULL;
   c_scope_data_t *const dst = MALLOC( c_scope_data_t, 1 );
   dst->name = check_strdup( src->name );
   dst->type = src->type;
