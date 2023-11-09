@@ -1,5 +1,6 @@
 2023-11-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.c: No longer double-escaping quotes.
    * c_sname.c, c_sname.h: c_scope_data_dup() can now accept NULL.
 
 2023-11-08  Paul J. Lucas <paul@lucasmail.org>
