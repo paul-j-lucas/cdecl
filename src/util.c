@@ -219,19 +219,18 @@ void fputs_quoted( char const *s, char quote, FILE *fout ) {
     return;
   }
   FPUTC( quote, fout );
-  for ( char const *p = s; *p != '\0'; ++p ) {
-    switch ( *p ) {
-      case '\b': FPUTS( "\\b" , fout ); continue;
-      case '\f': FPUTS( "\\f" , fout ); continue;
-      case '\n': FPUTS( "\\n" , fout ); continue;
-      case '\r': FPUTS( "\\r" , fout ); continue;
-      case '\t': FPUTS( "\\t" , fout ); continue;
-      case '\v': FPUTS( "\\v" , fout ); continue;
-      case '\\': FPUTS( "\\\\", fout ); continue;
+  for ( char prev = '\0'; *s != '\0'; prev = *s++ ) {
+    switch ( *s ) {
+      case '\b': FPUTS( "\\b", fout ); continue;
+      case '\f': FPUTS( "\\f", fout ); continue;
+      case '\n': FPUTS( "\\n", fout ); continue;
+      case '\r': FPUTS( "\\r", fout ); continue;
+      case '\t': FPUTS( "\\t", fout ); continue;
+      case '\v': FPUTS( "\\v", fout ); continue;
     } // switch
-    if ( *p == quote )
+    if ( *s == quote && prev != '\\' )
       FPUTC( '\\', fout );
-    FPUTC( *p, fout );
+    FPUTC( *s, fout );
   } // for
   FPUTC( quote, fout );
 }
