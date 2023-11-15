@@ -1,3 +1,9 @@
+2023-11-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c, lexer.l, parser.y: Eliminated named tokens Y_AMPER, Y_CARET,
+     Y_EXCLAM, Y_PIPE, and Y_TILDE.
+   * slist.c, slist.h: slist_move() can now accept NULL.
+
 2023-11-09  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c: No longer double-escaping quotes.
