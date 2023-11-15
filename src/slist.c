@@ -180,6 +180,17 @@ void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn,
   } // for
 }
 
+slist_t slist_move( slist_t *list ) {
+  slist_t rv_list;
+  if ( list != NULL ) {
+    rv_list = *list;
+    slist_init( list );
+  } else {
+    slist_init( &rv_list );
+  }
+  return rv_list;
+}
+
 void* slist_pop_front( slist_t *list ) {
   assert( list != NULL );
   if ( list->head == NULL )

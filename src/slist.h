@@ -435,17 +435,14 @@ size_t slist_len( slist_t const *list ) {
  * there's code that modifies `old_list` afterwards, it would interfere with
  * `new_list` since both point to the same underlying elements.
  *
- * @param list The \ref slist to move.
- * @return Returns the former value of \a list.
+ * @param list The \ref slist to move.  May be NULL.
+ * @return Returns the former value of \a list or an empty list if \a list is
+ * NULL.
  *
  * @sa slist_init()
  */
-NODISCARD SLIST_H_INLINE
-slist_t slist_move( slist_t *list ) {
-  slist_t const rv_list = *list;
-  slist_init( list );
-  return rv_list;
-}
+NODISCARD
+slist_t slist_move( slist_t *list );
 
 ///////////////////////////////////////////////////////////////////////////////
 
