@@ -985,13 +985,13 @@ include{S}*\" {
 "??'="        { set_trigraph( "^=" ); return Y_CARET_EQUAL; }
 "??!="        { set_trigraph( "|=" ); return Y_PIPE_EQUAL ; }
 "??!??!"      { set_trigraph( "||" ); return Y_PIPE2      ; }
-"??!"         { set_trigraph( "|"  ); return Y_PIPE       ; }
-"??'"         { set_trigraph( "^"  ); return Y_CARET      ; }
+"??!"         { set_trigraph( "|"  ); return '|'          ; }
+"??'"         { set_trigraph( "^"  ); return '^'          ; }
 "??("         { set_trigraph( "["  ); return '['          ; }
 "??)"         { set_trigraph( "]"  ); return ']'          ; }
 "??<"         { set_trigraph( "{"  ); return '{'          ; }
 "??>"         { set_trigraph( "}"  ); return '}'          ; }
-"??-"         { set_trigraph( "~"  ); return Y_TILDE      ; }
+"??-"         { set_trigraph( "~"  ); return '~'          ; }
 
   /***************************************************************************/
   /*  OPERATORS & PUNCTUATION                                                */
@@ -1038,18 +1038,13 @@ include{S}*\" {
 "|="          { SET_TOKEN; return Y_PIPE_EQUAL        ; }
 "||"          { SET_TOKEN; return Y_PIPE2             ; }
 
-              /* Single-character operators having alternative tokens. */
-"!"           { SET_TOKEN; return Y_EXCLAM            ; }
-"&"           { SET_TOKEN; return Y_AMPER             ; }
-"^"           { SET_TOKEN; return Y_CARET             ; }
-"|"           { SET_TOKEN; return Y_PIPE              ; }
-"~"           { SET_TOKEN; return Y_TILDE             ; }
-
               /* Synonym for "help", not "?:". */
 "?"           { SET_TOKEN; return Y_help              ; }
 
               /* Single-character operators and miscellaneous punctuation. */
+"!"           |
 "%"           |
+"&"           |
 "("           |
 ")"           |
 "*"           |
@@ -1065,8 +1060,11 @@ include{S}*\" {
 ">"           |
 "["           |
 "]"           |
+"^"           |
 "{"           |
-"}"           { SET_TOKEN; return lexer_token[0]; }
+"|"           |
+"}"           |
+"~"           { SET_TOKEN; return lexer_token[0]      ; }
 
   /***************************************************************************/
   /*  RAW STRING LITERALS                                                    */

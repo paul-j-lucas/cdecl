@@ -1218,13 +1218,13 @@ static void yyerror( char const *msg ) {
                                           '.'
                     Y_MINUS_GREATER       "->"
                     // C/C++ operators: precedence 15
-%right              Y_AMPER           //  '&' -- also has alt. token "bitand"
+%right                                    '&' // also has alt. token "bitand"
                                           '*'
-                    Y_EXCLAM          //  '!' -- also has alt. token "not"
+                                          '!' // also has alt. token "not"
                  // Y_UMINUS          //  '-' -- covered by '-' below
                  // Y_UPLUS           //  '+' -- covered by '+' below
                     Y_sizeof
-                    Y_TILDE           //  '~' -- also has alt.token "compl"
+                                          '~' // also has alt. token "compl"
                     // C/C++ operators: precedence 14
 %left               Y_DOT_STAR            ".*"
                     Y_MINUS_GREATER_STAR  "->*"
@@ -1249,11 +1249,11 @@ static void yyerror( char const *msg ) {
 %left               Y_EQUAL2              "=="
                     Y_EXCLAM_EQUAL    //  "!=" -- also has alt. token "not_eq"
                     // C/C++ operators: precedence 7 (covered above)
-%left               Y_bit_and         //  '&' -- covered by Y_AMPER
+%left               Y_bit_and         //  '&'  -- covered by '&' above
                     // C/C++ operators: precedence 6
-%left               Y_CARET           //  '^' -- also has alt. token "xor"
+%left                                     '^'  // also has alt. token "xor"
                     // C/C++ operators: precedence 5
-%left               Y_PIPE            //  '|' -- also has alt. token "bitor"
+%left                                     '|'  // also has alt. token "bitor"
                     // C/C++ operators: precedence 4
 %left               Y_AMPER2          //  "&&" -- also has alt. token "and"
                     // C/C++ operators: precedence 3
@@ -3265,12 +3265,12 @@ capture_decl_list_c
   ;
 
 capture_decl_c_ast
-  : Y_AMPER
+  : '&'
     {
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
       $$->capture.kind = C_CAPTURE_REFERENCE;
     }
-  | Y_AMPER Y_NAME[name]
+  | '&' Y_NAME[name]
     {
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
       c_sname_append_name( &$$->sname, $name );
@@ -3820,7 +3820,7 @@ array_size_c_ast
 
 block_decl_c_astp                       // Apple extension
   : // in_attr: type_c_ast
-    '(' Y_CARET
+    '(' '^'
     { //
       // A block AST has to be the type inherited attribute for decl_c_astp so
       // we have to create it here.
@@ -3864,7 +3864,7 @@ destructor_declaration_c
     /*
      * C++ in-class destructor declaration, e.g.: ~S().
      */
-  : virtual_stid_opt[virtual_stid] Y_TILDE any_name_exp[name]
+  : virtual_stid_opt[virtual_stid] '~' any_name_exp[name]
     lparen_exp rparen_func_qualifier_list_c_stid_opt[qual_stids]
     noexcept_c_stid_opt[noexcept_stid] gnu_attribute_specifier_list_c_opt
     func_equals_c_stid_opt[equals_stid]
@@ -4273,7 +4273,7 @@ func_qualifier_c_stid
 
 func_ref_qualifier_c_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | Y_AMPER                       { $$ = TS_REFERENCE; }
+  | '&'                           { $$ = TS_REFERENCE; }
   | Y_AMPER2                      { $$ = TS_RVALUE_REFERENCE; }
   ;
 
@@ -4789,7 +4789,7 @@ reference_decl_c_astp
 
 reference_type_c_ast
   : // in_attr: type_c_ast
-    Y_AMPER type_qualifier_list_c_stid_opt[qual_stids]
+    '&' type_qualifier_list_c_stid_opt[qual_stids]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
@@ -5082,7 +5082,7 @@ array_cast_c_astp
 
 block_cast_c_astp                       // Apple extension
   : // in_attr: type_c_ast
-    '(' Y_CARET
+    '(' '^'
     { //
       // A block AST has to be the type inherited attribute for cast_c_astp_opt
       // so we have to create it here.
@@ -7827,11 +7827,11 @@ c_operator
   | Y_new '[' rbracket_exp        { $$ = C_OP_NEW_ARRAY         ; }
   | Y_delete                      { $$ = C_OP_DELETE            ; }
   | Y_delete '[' rbracket_exp     { $$ = C_OP_DELETE_ARRAY      ; }
-  | Y_EXCLAM                      { $$ = C_OP_EXCLAM            ; }
+  | '!'                           { $$ = C_OP_EXCLAM            ; }
   | Y_EXCLAM_EQUAL                { $$ = C_OP_EXCLAM_EQUAL      ; }
   | '%'                           { $$ = C_OP_PERCENT           ; }
   | Y_PERCENT_EQUAL               { $$ = C_OP_PERCENT_EQUAL     ; }
-  | Y_AMPER                       { $$ = C_OP_AMPER             ; }
+  | '&'                           { $$ = C_OP_AMPER             ; }
   | Y_AMPER2                      { $$ = C_OP_AMPER2            ; }
   | Y_AMPER_EQUAL                 { $$ = C_OP_AMPER_EQUAL       ; }
   | '(' rparen_exp                { $$ = C_OP_PARENS            ; }
@@ -7864,12 +7864,12 @@ c_operator
   | Y_GREATER_EQUAL               { $$ = C_OP_GREATER_EQUAL     ; }
   | Y_QMARK_COLON                 { $$ = C_OP_QMARK_COLON       ; }
   | '[' rbracket_exp              { $$ = C_OP_BRACKETS          ; }
-  | Y_CARET                       { $$ = C_OP_CARET             ; }
+  | '^'                           { $$ = C_OP_CARET             ; }
   | Y_CARET_EQUAL                 { $$ = C_OP_CARET_EQUAL       ; }
-  | Y_PIPE                        { $$ = C_OP_PIPE              ; }
+  | '|'                           { $$ = C_OP_PIPE              ; }
   | Y_PIPE2                       { $$ = C_OP_PIPE2             ; }
   | Y_PIPE_EQUAL                  { $$ = C_OP_PIPE_EQUAL        ; }
-  | Y_TILDE                       { $$ = C_OP_TILDE             ; }
+  | '~'                           { $$ = C_OP_TILDE             ; }
   ;
 
 default_exp
