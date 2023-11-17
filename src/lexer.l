@@ -1257,7 +1257,6 @@ include{S}*\" {
   /***************************************************************************/
 
 <*>{S}+       ;                         /* ignore all other whitespace */
-<*>\\\n       ;                         /* eat escaped newlines */
 
 <*>\n         {
                 SET_TOKEN;
