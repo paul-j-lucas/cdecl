@@ -100,9 +100,13 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
       continue;                         // otherwise, ignore blank lines
     }
 
-    size_t const line_len = strlen( line );
+    size_t line_len = strlen( line );
+    if ( line_len > 0 && line[ line_len - 1 ] == '\n' )
+      --line_len;                       // chop off newline
     is_cont_line = line_len > 0 && line[ line_len - 1 ] == '\\';
-    strbuf_putsn( sbuf, line, line_len - is_cont_line /* don't copy '\' */ );
+    if ( is_cont_line )
+      --line_len;                       // eat '\'
+    strbuf_putsn( sbuf, line, line_len );
 
     if ( !is_cont_line )
       break;

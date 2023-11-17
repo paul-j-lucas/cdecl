@@ -69,8 +69,8 @@ cdecl> explain inline int x
                ^
 9: error: inline variables not supported in C
 cdecl> explain int
-                   ^
-13: error: declaration expected
+                  ^
+12: error: declaration expected
 cdecl> explain int a[0]
                     ^
 14: error: array dimension must be > 0
