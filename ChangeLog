@@ -1,3 +1,9 @@
+2023-11-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Removed <*>\\\n since strbuf_read_line() handles that internally.
+   * read_line.c, explain-error.out, file-cast_x.out: Fixed escaped newline
+     handling when not using GNU readline.
+
 2023-11-15  Paul J. Lucas <paul@lucasmail.org>
 
    * c_keyword.c, lexer.l, parser.y: Eliminated named tokens Y_AMPER, Y_CARET,
