@@ -1014,7 +1014,7 @@ void fput_list( FILE *out, void const *elt,
  * Prints \a s as a quoted string with escaped characters.
  *
  * @param s The string to put.  If NULL, prints `null` (unquoted).
- * @param quote The quote character to use, either `'` or `"`.
+ * @param quote The quote character to use, either <tt>'</tt> or <tt>"</tt>.
  * @param fout The `FILE` to print to.
  */
 void fputs_quoted( char const *s, char quote, FILE *fout );
