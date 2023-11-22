@@ -90,10 +90,10 @@
 #endif
 
 #ifdef ENABLE_CDECL_DEBUG
-#define IF_DEBUG(...) \
+#define IF_CDECL_DEBUG(...) \
   BLOCK( if ( opt_cdecl_debug != CDECL_DEBUG_NO ) { __VA_ARGS__ } )
 #else
-#define IF_DEBUG(...)             NO_OP
+#define IF_CDECL_DEBUG(...)       NO_OP
 #endif /* ENABLE_CDECL_DEBUG */
 
 /// @endcond
@@ -243,7 +243,7 @@
  * @param KEY The key name to print.
  * @param ALIGN The \ref c_alignas to dump.
  */
-#define DUMP_ALIGN(KEY,ALIGN) IF_DEBUG( \
+#define DUMP_ALIGN(KEY,ALIGN) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); c_alignas_dump( &(ALIGN), stdout ); )
 
 /**
@@ -255,7 +255,7 @@
  * @sa #DUMP_AST_LIST()
  * @sa #DUMP_AST_PAIR()
  */
-#define DUMP_AST(KEY,AST) IF_DEBUG( \
+#define DUMP_AST(KEY,AST) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); c_ast_dump( (AST), stdout ); )
 
 /**
@@ -267,7 +267,7 @@
  * @sa #DUMP_AST()
  * @sa #DUMP_AST_PAIR()
  */
-#define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
+#define DUMP_AST_LIST(KEY,AST_LIST) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); c_ast_list_dump( &(AST_LIST), stdout ); )
 
 /**
@@ -278,7 +278,7 @@
  *
  * @sa #DUMP_AST()
  */
-#define DUMP_AST_PAIR(KEY,ASTP) IF_DEBUG( \
+#define DUMP_AST_PAIR(KEY,ASTP) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); c_ast_pair_dump( &(ASTP), stdout ); )
 
 /**
@@ -289,7 +289,7 @@
  *
  * @sa #DUMP_KEY()
  */
-#define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(  \
+#define DUMP_BOOL(KEY,BOOL)  IF_CDECL_DEBUG(  \
   DUMP_KEY( KEY ": " ); bool_dump( (BOOL), stdout ); )
 
 /**
@@ -297,7 +297,7 @@
  *
  * @sa #DUMP_START()
  */
-#define DUMP_END()                IF_DEBUG( PUTS( "\n}\n\n" ); )
+#define DUMP_END()                IF_CDECL_DEBUG( PUTS( "\n}\n\n" ); )
 
 /**
  * Possibly dumps a comma and a newline followed by the `printf()` arguments
@@ -305,7 +305,7 @@
  *
  * @param ... The `printf()` arguments.
  */
-#define DUMP_KEY(...) IF_DEBUG(           \
+#define DUMP_KEY(...) IF_CDECL_DEBUG(     \
   fput_sep( ",\n", &dump_comma, stdout ); \
   PRINTF( "  " __VA_ARGS__ ); )
 
@@ -343,7 +343,7 @@
  * @param NAME The grammar production name.
  * @param RULE The grammar production rule.
  */
-#define DUMP_PROD(NAME,RULE) IF_DEBUG( \
+#define DUMP_PROD(NAME,RULE) IF_CDECL_DEBUG( \
   PUTS( "  rule: {\n    lhs: \"" NAME "\",\n    rhs: \"" RULE "\"\n  },\n" ); )
 
 /**
@@ -356,7 +356,7 @@
  * @sa #DUMP_SNAME_LIST()
  * @sa #DUMP_STR()
  */
-#define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
+#define DUMP_SNAME(KEY,SNAME) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); c_sname_dump( &(SNAME), stdout ); )
 
 /**
@@ -368,7 +368,7 @@
  * @sa #DUMP_KEY()
  * @sa #DUMP_SNAME()
  */
-#define DUMP_SNAME_LIST(KEY,LIST) IF_DEBUG( \
+#define DUMP_SNAME_LIST(KEY,LIST) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); c_sname_list_dump( &(LIST), stdout ); )
 
 #ifdef ENABLE_CDECL_DEBUG
@@ -380,8 +380,8 @@
  * @sa #DUMP_PROD
  * @sa #DUMP_END
  */
-#define DUMP_START()                  \
-  bool dump_comma = false; IF_DEBUG(  \
+#define DUMP_START()                        \
+  bool dump_comma = false; IF_CDECL_DEBUG(  \
   PUTS( "{\n" ); )
 #else
 #define DUMP_START()              NO_OP
@@ -396,7 +396,7 @@
  * @sa #DUMP_INT()
  * @sa #DUMP_SNAME()
  */
-#define DUMP_STR(KEY,STR) IF_DEBUG( \
+#define DUMP_STR(KEY,STR) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); fputs_quoted( (STR), '"', stdout ); )
 
 /**
@@ -407,7 +407,7 @@
  *
  * @sa #DUMP_TYPE()
  */
-#define DUMP_TID(KEY,TID) IF_DEBUG( \
+#define DUMP_TID(KEY,TID) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); c_tid_dump( (TID), stdout ); )
 
 /**
@@ -418,7 +418,7 @@
  *
  * @sa #DUMP_TID()
  */
-#define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
+#define DUMP_TYPE(KEY,TYPE) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); c_type_dump( &(TYPE), stdout ); )
 
 /** @} */
