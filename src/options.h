@@ -68,7 +68,7 @@ enum cdecl_debug {
    *
    * @note May be used _only_ in combination with #CDECL_DEBUG_YES.
    */
-  CDECL_DEBUG_OPT_UNIQUE_ID = (1u << 1)
+  CDECL_DEBUG_OPT_AST_UNIQUE_ID = (1u << 1)
 };
 typedef enum cdecl_debug cdecl_debug_t;
 #endif /* ENABLE_CDECL_DEBUG */

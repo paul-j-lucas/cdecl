@@ -130,7 +130,7 @@ char const* cdecl_debug_str( void ) {
   static char buf[2];
   char *s = buf;
 
-  if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_UNIQUE_ID) != 0 )
+  if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_AST_UNIQUE_ID) != 0 )
     *s++ = 'u';
   *s = '\0';
 
@@ -227,7 +227,7 @@ bool parse_cdecl_debug( char const *debug_format ) {
   for ( char const *s = debug_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
       case 'u':
-        cdecl_debug |= CDECL_DEBUG_OPT_UNIQUE_ID;
+        cdecl_debug |= CDECL_DEBUG_OPT_AST_UNIQUE_ID;
         break;
       default:
         return false;

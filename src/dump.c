@@ -161,7 +161,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
     "kind: { value: 0x%X, string: \"%s\" }",
     ast->kind, c_kind_name( ast->kind )
   );
-  if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_UNIQUE_ID) != 0 ) {
+  if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_AST_UNIQUE_ID) != 0 ) {
     DUMP_KEY( dump, "unique_id: " PRId_C_AST_ID_T, ast->unique_id );
     if ( ast->dup_from_id > 0 )
       DUMP_KEY( dump, "dup_from_id: " PRId_C_AST_ID_T, ast->dup_from_id );
