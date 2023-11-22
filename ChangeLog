@@ -1,3 +1,9 @@
+2023-11-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/IF_DEBUG/IF_CDECL_DEBUG/
+   * dump.c, options.c, options.h:
+     s/CDECL_DEBUG_OPT_UNIQUE_ID/CDECL_DEBUG_OPT_AST_UNIQUE_ID/
+
 2023-11-17  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: Removed <*>\\\n since strbuf_read_line() handles that internally.
