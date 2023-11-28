@@ -1,5 +1,6 @@
 2023-11-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Now implicitly setting target_ast.
    * parser.y: Now also setting target_ast in constructor case.
    * parser.y: Now setting target_ast implicitly.
    * parser.y: Made func_cast_c_astp consistent with func_decl_c_astp.
