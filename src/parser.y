@@ -4072,7 +4072,10 @@ func_decl_c_astp
 
       if ( assume_constructor ) {
         assert( $trailing_ret_ast == NULL );
-        $$.ast = c_ast_add_func( decl_ast, func_ast, /*ret_ast=*/NULL );
+        $$ = (c_ast_pair_t){
+          c_ast_add_func( decl_ast, func_ast, /*ret_ast=*/NULL ),
+          .target_ast = NULL
+        };
       }
       else {
         ret_ast = ia_type_spec_ast( ret_ast );
