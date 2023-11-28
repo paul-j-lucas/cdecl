@@ -510,14 +510,14 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
 }
 
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
-  assert( parent_ast == NULL || c_ast_is_referrer( parent_ast ) );
-
-  if ( child_ast != NULL )
-    child_ast->parent_ast = parent_ast;
-  if ( parent_ast != NULL )
+  if ( parent_ast != NULL ) {
+    assert( c_ast_is_referrer( parent_ast ) );
     parent_ast->parent.of_ast = child_ast;
-
-  assert( child_ast == NULL || !c_ast_has_cycle( child_ast ) );
+  }
+  if ( child_ast != NULL ) {
+    child_ast->parent_ast = parent_ast;
+    assert( !c_ast_has_cycle( child_ast ) );
+  }
 }
 
 c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visit_dir_t dir,
