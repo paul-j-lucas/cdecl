@@ -5197,11 +5197,9 @@ func_cast_c_astp
             func_ast,
             IF_ELSE( $trailing_ret_ast, ret_ast )
           ),
-          .target_ast = NULL
+          func_ast->func.ret_ast
         };
       }
-
-      $$.target_ast = func_ast->func.ret_ast;
 
       DUMP_AST_PAIR( "$$_astp", $$ );
       DUMP_END();
