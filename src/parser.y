@@ -3986,7 +3986,7 @@ func_decl_c_astp
     trailing_return_type_c_ast_opt[trailing_ret_ast]
     func_equals_c_stid_opt[equals_stid]
     {
-      c_ast_t *const type_ast = ia_type_ast_peek();
+      c_ast_t *ret_ast = ia_type_ast_peek();
 
       DUMP_START();
       DUMP_PROD( "func_decl_c_astp",
@@ -3995,7 +3995,7 @@ func_decl_c_astp
                  "func_ref_qualifier_c_stid_opt noexcept_c_stid_opt "
                  "trailing_return_type_c_ast_opt "
                  "func_equals_c_stid_opt" );
-      DUMP_AST( "in_attr__type_c_ast", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", ret_ast );
       DUMP_AST_PAIR( "decl2_c_astp", $decl_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
       DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
@@ -4040,20 +4040,20 @@ func_decl_c_astp
 
         // + The existing base type is none (because constructors don't have
         //   return types).
-        type_ast->type.btids == TB_NONE &&
+        ret_ast->type.btids == TB_NONE &&
 
         // + The existing type does _not_ have any non-constructor storage
         //   classes.
-        !c_tid_is_any( type_ast->type.stids, TS_FUNC_LIKE_NOT_CTOR ) &&
+        !c_tid_is_any( ret_ast->type.stids, TS_FUNC_LIKE_NOT_CTOR ) &&
 
         ( // + The existing type has any constructor-only storage-class-like
           //   types (e.g., explicit).
-          c_tid_is_any( type_ast->type.stids, TS_CONSTRUCTOR_ONLY ) ||
+          c_tid_is_any( ret_ast->type.stids, TS_CONSTRUCTOR_ONLY ) ||
 
           // + Or the existing type only has storage-class-like types that may
           //   be applied to constructors.
           is_1n_bit_only_in_set(
-            c_tid_no_tpid( type_ast->type.stids ),
+            c_tid_no_tpid( ret_ast->type.stids ),
             c_tid_no_tpid( TS_CONSTRUCTOR_DECL )
           )
         ) &&
@@ -4072,7 +4072,7 @@ func_decl_c_astp
         $$.ast = c_ast_add_func( $decl_astp.ast, func_ast, /*ret_ast=*/NULL );
       }
       else {
-        c_ast_t *const ret_ast = ia_type_spec_ast( type_ast );
+        ret_ast = ia_type_spec_ast( ret_ast );
         if ( $decl_astp.target_ast != NULL ) {
           $$ = (c_ast_pair_t){
             $decl_astp.ast,
