@@ -4074,17 +4074,20 @@ func_decl_c_astp
       else {
         c_ast_t *const ret_ast = ia_type_spec_ast( type_ast );
         if ( $decl_astp.target_ast != NULL ) {
-          $$.ast = $decl_astp.ast;
-          PJL_IGNORE_RV(
+          $$ = (c_ast_pair_t){
+            $decl_astp.ast,
             c_ast_add_func( $decl_astp.target_ast, func_ast, ret_ast )
-          );
+          };
         }
         else {
-          $$.ast = c_ast_add_func(
-            $decl_astp.ast,
-            func_ast,
-            IF_ELSE( $trailing_ret_ast, ret_ast )
-          );
+          $$ = (c_ast_pair_t){
+            c_ast_add_func(
+              $decl_astp.ast,
+              func_ast,
+              IF_ELSE( $trailing_ret_ast, ret_ast )
+            ),
+            .target_ast = NULL
+          };
         }
       }
 
