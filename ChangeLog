@@ -1,3 +1,7 @@
+2023-11-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, parser.y: Eliminated Y_QUOTE2 token.
+
 2023-11-22  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: s/IF_DEBUG/IF_CDECL_DEBUG/
