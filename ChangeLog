@@ -1,5 +1,10 @@
 2023-11-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Now also setting target_ast in constructor case.
+   * parser.y: Now setting target_ast implicitly.
+   * parser.y: Made func_cast_c_astp consistent with func_decl_c_astp.
+   * parser.y: Reworked func_decl_c_astp to match array_decl_c_astp -- unclear
+     whether it's actually better, but at least it's consistent.
    * parser.y: Added missing NODISCARD.
 
 2023-11-27  Paul J. Lucas <paul@lucasmail.org>
