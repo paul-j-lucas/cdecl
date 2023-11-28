@@ -4071,20 +4071,21 @@ func_decl_c_astp
         assert( $trailing_ret_ast == NULL );
         $$.ast = c_ast_add_func( $decl_astp.ast, func_ast, /*ret_ast=*/NULL );
       }
-      else if ( $decl_astp.target_ast != NULL ) {
-        c_ast_t *const ret_ast = ia_type_spec_ast( type_ast );
-        $$.ast = $decl_astp.ast;
-        PJL_IGNORE_RV(
-          c_ast_add_func( $decl_astp.target_ast, func_ast, ret_ast )
-        );
-      }
       else {
         c_ast_t *const ret_ast = ia_type_spec_ast( type_ast );
-        $$.ast = c_ast_add_func(
-          $decl_astp.ast,
-          func_ast,
-          IF_ELSE( $trailing_ret_ast, ret_ast )
-        );
+        if ( $decl_astp.target_ast != NULL ) {
+          $$.ast = $decl_astp.ast;
+          PJL_IGNORE_RV(
+            c_ast_add_func( $decl_astp.target_ast, func_ast, ret_ast )
+          );
+        }
+        else {
+          $$.ast = c_ast_add_func(
+            $decl_astp.ast,
+            func_ast,
+            IF_ELSE( $trailing_ret_ast, ret_ast )
+          );
+        }
       }
 
       $$.target_ast = func_ast->func.ret_ast;
