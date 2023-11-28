@@ -1,3 +1,7 @@
+2023-11-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added missing NODISCARD.
+
 2023-11-27  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l, parser.y: Eliminated Y_QUOTE2 token.
