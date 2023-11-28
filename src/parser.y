@@ -3831,14 +3831,14 @@ block_decl_c_astp                       // Apple extension
     lparen_exp param_c_ast_list_opt[param_ast_list] ')'
     gnu_attribute_specifier_list_c_opt
     {
-      c_ast_t *const  block_ast = ia_type_ast_pop();
-      c_ast_t *const  type_ast = ia_type_ast_peek();
+      c_ast_t *const block_ast = ia_type_ast_pop();
+      c_ast_t *const ret_ast = ia_type_ast_peek();
 
       DUMP_START();
       DUMP_PROD( "block_decl_c_astp",
                  "'(' '^' type_qualifier_list_c_stid_opt decl_c_astp ')' "
                  "'(' param_c_ast_list_opt ')'" );
-      DUMP_AST( "in_attr__type_c_ast", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", ret_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
@@ -3848,8 +3848,9 @@ block_decl_c_astp                       // Apple extension
       );
       c_ast_list_set_param_of( &$param_ast_list, block_ast );
       block_ast->block.param_ast_list = slist_move( &$param_ast_list );
+
       $$ = (c_ast_pair_t){
-        c_ast_add_func( $decl_astp.ast, block_ast, type_ast ),
+        c_ast_add_func( $decl_astp.ast, block_ast, ret_ast ),
         block_ast->block.ret_ast
       };
 
