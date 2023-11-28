@@ -5098,14 +5098,14 @@ block_cast_c_astp                       // Apple extension
     type_qualifier_list_c_stid_opt[qual_stids] cast_c_astp_opt[cast_astp]
     rparen_exp lparen_exp param_c_ast_list_opt[param_ast_list] ')'
     {
-      c_ast_t *const  block_ast = ia_type_ast_pop();
-      c_ast_t *const  type_ast = ia_type_ast_peek();
+      c_ast_t *const block_ast = ia_type_ast_pop();
+      c_ast_t *const ret_ast = ia_type_ast_peek();
 
       DUMP_START();
       DUMP_PROD( "block_cast_c_astp",
                  "'(' '^' type_qualifier_list_c_stid_opt cast_c_astp_opt ')' "
                  "'(' param_c_ast_list_opt ')'" );
-      DUMP_AST( "in_attr__type_c_ast", type_ast );
+      DUMP_AST( "in_attr__type_c_ast", ret_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
@@ -5115,8 +5115,9 @@ block_cast_c_astp                       // Apple extension
       );
       c_ast_list_set_param_of( &$param_ast_list, block_ast );
       block_ast->block.param_ast_list = slist_move( &$param_ast_list );
+
       $$ = (c_ast_pair_t){
-        c_ast_add_func( $cast_astp.ast, block_ast, type_ast ),
+        c_ast_add_func( $cast_astp.ast, block_ast, ret_ast ),
         block_ast->block.ret_ast
       };
 
