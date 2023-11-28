@@ -4067,7 +4067,6 @@ func_decl_c_astp
       c_ast_list_set_param_of( &$param_ast_list, func_ast );
       func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
-
       if ( assume_constructor ) {
         assert( $trailing_ret_ast == NULL );
         $$.ast = c_ast_add_func( $decl_astp.ast, func_ast, /*ret_ast=*/NULL );
