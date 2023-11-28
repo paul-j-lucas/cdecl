@@ -5180,17 +5180,20 @@ func_cast_c_astp
       func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
       if ( $cast_astp.target_ast != NULL ) {
-        $$.ast = cast_ast;
-        PJL_IGNORE_RV(
+        $$ = (c_ast_pair_t){
+          cast_ast,
           c_ast_add_func( $cast_astp.target_ast, func_ast, ret_ast )
-        );
+        };
       }
       else {
-        $$.ast = c_ast_add_func(
-          cast_ast,
-          func_ast,
-          IF_ELSE( $trailing_ret_ast, ret_ast )
-        );
+        $$ = (c_ast_pair_t){
+          c_ast_add_func(
+            cast_ast,
+            func_ast,
+            IF_ELSE( $trailing_ret_ast, ret_ast )
+          ),
+          .target_ast = NULL
+        };
       }
 
       $$.target_ast = func_ast->func.ret_ast;
