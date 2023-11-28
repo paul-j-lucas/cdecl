@@ -4089,12 +4089,10 @@ func_decl_c_astp
               func_ast,
               IF_ELSE( $trailing_ret_ast, ret_ast )
             ),
-            .target_ast = NULL
+            func_ast->func.ret_ast
           };
         }
       }
-
-      $$.target_ast = func_ast->func.ret_ast;
 
       c_tid_t const msc_call_atids = $$.ast->type.atids & TA_ANY_MSC_CALL;
       if ( msc_call_atids != TA_NONE ) {
