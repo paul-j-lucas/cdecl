@@ -1391,7 +1391,6 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_noexcept
 %token              Y_nullptr
 %token  <tid>       Y_override
-%token              Y_QUOTE2            // for user-defined literals
 %token              Y_static_assert
 %token  <tid>       Y_thread_local
 
@@ -4971,7 +4970,7 @@ user_defined_conversion_decl_c_astp
 
 user_defined_literal_decl_c_astp
   : // in_attr: type_c_ast
-    oper_sname_c_opt[sname] Y_operator quote2_exp name_exp[name]
+    oper_sname_c_opt[sname] Y_operator empty_str_lit_exp name_exp[name]
     lparen_exp param_c_ast_list_exp[param_ast_list] ')'
     noexcept_c_stid_opt[noexcept_stid]
     trailing_return_type_c_ast_opt[trailing_ret_ast]
@@ -7905,6 +7904,21 @@ destructor_sname
     }
   ;
 
+empty_str_lit_exp
+  : str_lit_exp[str]
+    { //
+      // This check is done now in the parser rather than later in the AST so
+      // we don't have to keep the string literal around.
+      //
+      bool const is_empty = $str == NULL || $str[0] == '\0';
+      free( $str );
+      if ( !is_empty ) {
+        print_error( &@str, "empty string literal expected\n" );
+        PARSE_ABORT();
+      }
+    }
+  ;
+
 equals_exp
   : '='
   | error
@@ -8095,14 +8109,6 @@ point_exp
 precision_opt
   : /* empty */
   | Y_precision
-  ;
-
-quote2_exp
-  : Y_QUOTE2
-  | error
-    {
-      elaborate_error( "\"\" expected" );
-    }
   ;
 
 rbrace_exp

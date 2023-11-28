@@ -1011,7 +1011,6 @@ include{S}*\" {
 
               /* Multi-character operators. */
 "!="          { SET_TOKEN; return Y_EXCLAM_EQUAL      ; }
-"\"\""        { SET_TOKEN; return Y_QUOTE2            ; }
 "%="          { SET_TOKEN; return Y_PERCENT_EQUAL     ; }
 "&&"          { SET_TOKEN; return Y_AMPER2            ; }
 "&="          { SET_TOKEN; return Y_AMPER_EQUAL       ; }
