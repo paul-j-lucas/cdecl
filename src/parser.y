@@ -3734,7 +3734,8 @@ array_decl_c_astp
           $decl_astp.ast,
           c_ast_add_array( $decl_astp.target_ast, $array_ast, of_ast )
         };
-      } else {
+      }
+      else {
         $$ = (c_ast_pair_t){
           c_ast_add_array( $decl_astp.ast, $array_ast, of_ast ),
           .target_ast = NULL
@@ -3832,13 +3833,13 @@ block_decl_c_astp                       // Apple extension
     gnu_attribute_specifier_list_c_opt
     {
       c_ast_t *const block_ast = ia_type_ast_pop();
-      c_ast_t *const ret_ast = ia_type_ast_peek();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START();
       DUMP_PROD( "block_decl_c_astp",
                  "'(' '^' type_qualifier_list_c_stid_opt decl_c_astp ')' "
                  "'(' param_c_ast_list_opt ')'" );
-      DUMP_AST( "in_attr__type_c_ast", ret_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
@@ -3849,10 +3850,19 @@ block_decl_c_astp                       // Apple extension
       c_ast_list_set_param_of( &$param_ast_list, block_ast );
       block_ast->block.param_ast_list = slist_move( &$param_ast_list );
 
-      $$ = (c_ast_pair_t){
-        c_ast_add_func( $decl_astp.ast, block_ast, ret_ast ),
-        block_ast->block.ret_ast
-      };
+      c_ast_t *const ret_ast = ia_type_spec_ast( type_ast );
+      if ( $decl_astp.target_ast != NULL ) {
+        $$ = (c_ast_pair_t){
+          $decl_astp.ast,
+          c_ast_add_func( $decl_astp.target_ast, block_ast, ret_ast )
+        };
+      }
+      else {
+        $$ = (c_ast_pair_t){
+          c_ast_add_func( $decl_astp.ast, block_ast, ret_ast ),
+          block_ast->block.ret_ast
+        };
+      }
 
       DUMP_AST_PAIR( "$$_astp", $$ );
       DUMP_END();
@@ -3987,7 +3997,7 @@ func_decl_c_astp
     trailing_return_type_c_ast_opt[trailing_ret_ast]
     func_equals_c_stid_opt[equals_stid]
     {
-      c_ast_t *ret_ast = ia_type_ast_peek();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START();
       DUMP_PROD( "func_decl_c_astp",
@@ -3996,7 +4006,7 @@ func_decl_c_astp
                  "func_ref_qualifier_c_stid_opt noexcept_c_stid_opt "
                  "trailing_return_type_c_ast_opt "
                  "func_equals_c_stid_opt" );
-      DUMP_AST( "in_attr__type_c_ast", ret_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST_PAIR( "decl2_c_astp", $decl_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
       DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
@@ -4041,20 +4051,20 @@ func_decl_c_astp
 
         // + The existing base type is none (because constructors don't have
         //   return types).
-        ret_ast->type.btids == TB_NONE &&
+        type_ast->type.btids == TB_NONE &&
 
         // + The existing type does _not_ have any non-constructor storage
         //   classes.
-        !c_tid_is_any( ret_ast->type.stids, TS_FUNC_LIKE_NOT_CTOR ) &&
+        !c_tid_is_any( type_ast->type.stids, TS_FUNC_LIKE_NOT_CTOR ) &&
 
         ( // + The existing type has any constructor-only storage-class-like
           //   types (e.g., explicit).
-          c_tid_is_any( ret_ast->type.stids, TS_CONSTRUCTOR_ONLY ) ||
+          c_tid_is_any( type_ast->type.stids, TS_CONSTRUCTOR_ONLY ) ||
 
           // + Or the existing type only has storage-class-like types that may
           //   be applied to constructors.
           is_1n_bit_only_in_set(
-            c_tid_no_tpid( ret_ast->type.stids ),
+            c_tid_no_tpid( type_ast->type.stids ),
             c_tid_no_tpid( TS_CONSTRUCTOR_DECL )
           )
         ) &&
@@ -4068,27 +4078,25 @@ func_decl_c_astp
       c_ast_list_set_param_of( &$param_ast_list, func_ast );
       func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
-      c_ast_t *const decl_ast = $decl_astp.ast;
-
       if ( assume_constructor ) {
         assert( $trailing_ret_ast == NULL );
         $$ = (c_ast_pair_t){
-          c_ast_add_func( decl_ast, func_ast, /*ret_ast=*/NULL ),
+          c_ast_add_func( $decl_astp.ast, func_ast, /*ret_ast=*/NULL ),
           .target_ast = NULL
         };
       }
       else {
-        ret_ast = ia_type_spec_ast( ret_ast );
+        c_ast_t *const ret_ast = ia_type_spec_ast( type_ast );
         if ( $decl_astp.target_ast != NULL ) {
           $$ = (c_ast_pair_t){
-            decl_ast,
+            $decl_astp.ast,
             c_ast_add_func( $decl_astp.target_ast, func_ast, ret_ast )
           };
         }
         else {
           $$ = (c_ast_pair_t){
             c_ast_add_func(
-              decl_ast,
+              $decl_astp.ast,
               func_ast,
               IF_ELSE( $trailing_ret_ast, ret_ast )
             ),
@@ -5100,13 +5108,13 @@ block_cast_c_astp                       // Apple extension
     rparen_exp lparen_exp param_c_ast_list_opt[param_ast_list] ')'
     {
       c_ast_t *const block_ast = ia_type_ast_pop();
-      c_ast_t *const ret_ast = ia_type_ast_peek();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START();
       DUMP_PROD( "block_cast_c_astp",
                  "'(' '^' type_qualifier_list_c_stid_opt cast_c_astp_opt ')' "
                  "'(' param_c_ast_list_opt ')'" );
-      DUMP_AST( "in_attr__type_c_ast", ret_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
@@ -5117,10 +5125,19 @@ block_cast_c_astp                       // Apple extension
       c_ast_list_set_param_of( &$param_ast_list, block_ast );
       block_ast->block.param_ast_list = slist_move( &$param_ast_list );
 
-      $$ = (c_ast_pair_t){
-        c_ast_add_func( $cast_astp.ast, block_ast, ret_ast ),
-        block_ast->block.ret_ast
-      };
+      c_ast_t *const ret_ast = ia_type_spec_ast( type_ast );
+      if ( $cast_astp.target_ast != NULL ) {
+        $$ = (c_ast_pair_t){
+          $cast_astp.ast,
+          c_ast_add_func( $cast_astp.target_ast, block_ast, ret_ast )
+        };
+      }
+      else {
+        $$ = (c_ast_pair_t){
+          c_ast_add_func( $cast_astp.ast, block_ast, ret_ast ),
+          block_ast->block.ret_ast
+        };
+      }
 
       DUMP_AST_PAIR( "$$_astp", $$ );
       DUMP_END();
