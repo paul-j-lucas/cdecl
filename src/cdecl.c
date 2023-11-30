@@ -96,9 +96,14 @@ int main( int argc, char const *argv[] ) {
   c_keyword_init();
   cdecl_keyword_init();
   color_init();
-  lexer_init();                         // must come before c_typedef_init()
+  lexer_init();
+  //
+  // Everything above must come before c_typedef_init() since it actually uses
+  // the parser.
+  //
   c_typedef_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
+
   if ( opt_read_conf )
     conf_init();
   cdecl_initialized = true;
