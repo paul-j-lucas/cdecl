@@ -227,6 +227,10 @@ void fputs_quoted( char const *s, char quote, FILE *fout ) {
       case '\r': FPUTS( "\\r", fout ); continue;
       case '\t': FPUTS( "\\t", fout ); continue;
       case '\v': FPUTS( "\\v", fout ); continue;
+      case '\\':
+        if ( prev != '\\' )
+          FPUTS( "\\\\", fout );
+        continue;
     } // switch
     if ( *s == quote && prev != '\\' )
       FPUTC( '\\', fout );
