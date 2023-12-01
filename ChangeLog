@@ -1,5 +1,6 @@
 2023-12-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.c: Now keeping track of whether we're inside quotes.
    * util.c: Now properly handling \\ in fputs_quoted().
 
 2023-11-28  Paul J. Lucas <paul@lucasmail.org>
