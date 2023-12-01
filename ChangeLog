@@ -1,3 +1,7 @@
+2023-12-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Now properly handling \\ in fputs_quoted().
+
 2023-11-28  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Made {block|func}_decl_c_astp more similar.
