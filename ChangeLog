@@ -1,3 +1,7 @@
+2023-12-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: Fixed latent bug in red-black tree implementation.
+
 2023-12-01  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c: Now keeping track of whether we're inside quotes.
