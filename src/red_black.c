@@ -228,6 +228,7 @@ static inline bool is_red( rb_node_t const *node ) {
 static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
                           rb_free_fn_t free_fn ) {
   assert( node != NULL );
+  assert( node != RB_ROOT(tree) );
 
   if ( node != RB_NIL(tree) ) {
     rb_node_free( tree, node->child[RB_L], free_fn );
@@ -387,7 +388,7 @@ static void rb_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
   //
   while ( is_red( node->parent ) ) {
     rb_dir_t const dir = child_dir( node->parent );
-    rb_node_t *const uncle = node->parent->parent->child[dir];
+    rb_node_t *const uncle = node->parent->parent->child[!dir];
     if ( is_red( uncle ) ) {
       node->parent->color = RB_BLACK;
       uncle->color = RB_BLACK;
@@ -395,13 +396,13 @@ static void rb_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
       node = node->parent->parent;
       continue;
     }
-    if ( is_dir_child( node, dir ) ) {
+    if ( is_dir_child( node, !dir ) ) {
       node = node->parent;
-      rb_node_rotate( tree, node, !dir );
+      rb_node_rotate( tree, node, dir );
     }
     node->parent->color = RB_BLACK;
     node->parent->parent->color = RB_RED;
-    rb_node_rotate( tree, node->parent->parent, dir );
+    rb_node_rotate( tree, node->parent->parent, !dir );
   } // while
 
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
@@ -491,6 +492,9 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
   else
     RB_PARENT_CHILD( proxy ) = proxy_child;
 
+  if ( is_black( proxy ) )
+    rb_delete_repair( tree, proxy_child );
+
   if ( proxy != delete ) {
     proxy->color = delete->color;
     proxy->child[RB_L] = delete->child[RB_L];
@@ -499,9 +503,6 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
     delete->child[RB_L]->parent = delete->child[RB_R]->parent = proxy;
     RB_PARENT_CHILD( delete ) = proxy;
   }
-
-  if ( is_black( proxy ) )
-    rb_delete_repair( tree, proxy_child );
 
   free( delete );
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
