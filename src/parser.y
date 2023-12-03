@@ -1210,7 +1210,7 @@ static void yyerror( char const *msg ) {
 
                     // C/C++ operators: precedence 17
 %left               Y_COLON2              "::"
-%left               Y_COLON2_STAR         "::*"
+                    Y_COLON2_STAR     //  "::" followed by '*'
                     // C/C++ operators: precedence 16
 %token              Y_PLUS2               "++"
 %token              Y_MINUS2              "--"
@@ -4745,7 +4745,7 @@ pointer_to_member_decl_c_astp
 
 pointer_to_member_type_c_ast
   : // in_attr: type_c_ast
-    any_sname_c[sname] Y_COLON2_STAR cv_qualifier_list_stid_opt[qual_stids]
+    any_sname_c[sname] Y_COLON2_STAR '*' cv_qualifier_list_stid_opt[qual_stids]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 

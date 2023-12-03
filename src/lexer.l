@@ -1006,7 +1006,7 @@ include{S}*\" {
                *
                * in an LALR(1) parser.
                */
-"::"{S}*"*"   { SET_TOKEN; return Y_COLON2_STAR       ; }
+"::"/{S}*"*"  { SET_TOKEN; return Y_COLON2_STAR       ; }
 "::"          { SET_TOKEN; return Y_COLON2            ; }
 
               /* Multi-character operators. */
@@ -1052,7 +1052,7 @@ include{S}*\" {
 "-"           |
 "."           |
 "/"           |
-":"           | /* Not an operator: used for bitfields. */
+":"           |
 ";"           |
 "<"           |
 <*>"="        | /* Allow in "set" command also, e.g.: set lang=c++ */
