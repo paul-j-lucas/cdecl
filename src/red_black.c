@@ -303,13 +303,12 @@ static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
 
 #ifndef NDEBUG
 /**
- * Checks that some invariants of \a tree still hold.
+ * Checks that some properties of \a tree hold.
  *
  * @param tree A pointer to the red-black tree to check.
  */
 static void rb_tree_check( rb_tree_t const *tree ) {
   assert( tree != NULL );
-  assert( RB_NIL(tree)->color == RB_BLACK );
   assert( RB_FIRST(tree)->color == RB_BLACK );
 }
 #else
@@ -328,25 +327,25 @@ static void rb_delete_repair( rb_tree_t *tree, rb_node_t *node ) {
   assert( node != NULL );
 
   while ( is_black( node ) ) {
-    rb_dir_t const dir = child_dir( node->parent );
-    rb_node_t *sibling = node->parent->child[dir];
+    rb_dir_t const dir = child_dir( node );
+    rb_node_t *sibling = node->parent->child[!dir];
     if ( is_red( sibling ) ) {
       sibling->color = RB_BLACK;
       node->parent->color = RB_RED;
-      rb_node_rotate( tree, node->parent, !dir );
-      sibling = node->parent->child[dir];
+      rb_node_rotate( tree, node->parent, dir );
+      sibling = node->parent->child[!dir];
     }
     if ( is_red( sibling->child[RB_L] ) || is_red( sibling->child[RB_R] ) ) {
-      if ( is_black( sibling->child[dir] ) ) {
-        sibling->child[!dir]->color = RB_BLACK;
+      if ( is_black( sibling->child[!dir] ) ) {
+        sibling->child[dir]->color = RB_BLACK;
         sibling->color = RB_RED;
-        rb_node_rotate( tree, sibling, dir );
-        sibling = node->parent->child[dir];
+        rb_node_rotate( tree, sibling, !dir );
+        sibling = node->parent->child[!dir];
       }
       sibling->color = node->parent->color;
       node->parent->color = RB_BLACK;
-      sibling->child[dir]->color = RB_BLACK;
-      rb_node_rotate( tree, node->parent, !dir );
+      sibling->child[!dir]->color = RB_BLACK;
+      rb_node_rotate( tree, node->parent, dir );
       break;
     }
     sibling->color = RB_RED;
@@ -518,7 +517,7 @@ rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
     int const cmp = (*tree->cmp_fn)( data, node->data );
     if ( cmp == 0 )
       return node;
-    node = node->child[ cmp > 0 ];
+    node = node->child[ cmp >= 0 ];
   } // for
   return NULL;
 }
@@ -546,7 +545,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
     if ( cmp == 0 )
       return (rb_insert_rv_t){ node, .inserted = false };
     parent = node;
-    node = node->child[ cmp > 0 ];
+    node = node->child[ cmp >= 0 ];
   } // while
 
   node = MALLOC( rb_node_t, 1 );
@@ -559,7 +558,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
 
   // Determine which child of the parent the new node should be.
   rb_dir_t const dir = STATIC_CAST( rb_dir_t,
-    parent != RB_ROOT(tree) && (*tree->cmp_fn)( data, parent->data ) > 0
+    parent != RB_ROOT(tree) && (*tree->cmp_fn)( data, parent->data ) >= 0
   );
   assert( parent->child[dir] == RB_NIL(tree) );
   parent->child[dir] = node;
