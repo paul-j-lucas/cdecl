@@ -1,3 +1,7 @@
+2023-12-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: More red_black latent fixes.
+
 2023-12-03  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l, parser.y: Made ::* be :: use trailing context for * to make them
