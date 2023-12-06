@@ -20,10 +20,16 @@
 <p></p>
 
 **cdecl** (_see-deh-kull_)
-is a program for composing and deciphering C (or C++)
-declarations or casts, aka ‘‘gibberish.’’
-It can be used interactively on a terminal or
-accept input from either the command line or standard input.
+is a program
+for composing
+and deciphering
+C (or C++) declarations
+or casts,
+aka ‘‘gibberish.’’
+It can be used interactively on a terminal
+or accept input
+from either the command line
+or standard input.
 For example:
 
 ```
@@ -191,20 +197,25 @@ then do:
 
 **cdecl** was originally written by Graham Ross
 sometime in the mid-1980s.
-Tony Hansen, a major contributor,
+Tony Hansen,
+a major contributor,
 posted the source code with his changes
 (parts [1](https://groups.google.com/g/comp.sources.unix/c/Y76scbXQQBk/m/MVrZZBG0nNwJ)
 &
 [2](https://groups.google.com/g/comp.sources.unix/c/yzWbI4agBE0/m/ddqzmuiEidwJ))
 to `comp.sources.unix` in 1988.
 
-The source files have never had either a copyright notice or license.
-Attempts have been made independently by several people
-to contact Graham over the years to clear-up the licensing issue,
+The source files have never had either a copyright notice
+or license.
+Attempts have been made independently
+by several people
+to contact Graham over the years
+to clear-up the licensing issue,
 all without success.
 
 In 1996,
-David Conrad made contributions for version 2.5 and wrote:
+David Conrad made contributions for version 2.5
+and wrote:
 
 > *I have no reason to believe there are any limitations on [**cdecl**'s] use,
 > and strongly believe it to be in the Public Domain.*
@@ -216,7 +227,9 @@ for David's full comments.)
 Something in the Public Domain allows anyone to do whatever they want with it.
 Assuming that David is correct
 and that **cdecl** is in the Public Domain,
-I therefore am licensing **cdecl** 3.0 (and later) under the
+I therefore am licensing **cdecl** 3.0
+(and later)
+under the
 [GNU General Public License, v3](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 However,
