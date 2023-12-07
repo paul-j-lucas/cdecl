@@ -1,3 +1,46 @@
+2023-12-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * declare-error.out, declare_config_tdu.out, explain-error.out,
+     explain_config_tdu.out, file-cast_i.out, file-cast_x.out,
+     file-declare_i.out, file-declare_x.out, file-explain_i.out,
+     file-explain_x.out, include-err-01.out, include-ok-nested-01.out,
+     include-ok.out, include-too_many_files.out, include-unquoted.out,
+     integers.out, set.out, set_expl.out, set_expli.out,
+     set_explicit-ecsu_x.out, set_explicit-int.out, set_explicit-int_x.out,
+     set_graphs.out, set_lang_xxx.out, set_nodigraphs.out,
+     set_noexplicit-int_u.out, set_options.out, set_prompt_x.out, set_xxx.out,
+     using_config_i.out, xec.out, xupc-error.out, xupc.out, __declspec.test,
+     alt-tokens.test, cast-error.test, cast.test, cast_au.test, cast_pau.test,
+     cdecl--no-typedefs.test, cl.test, debug.test, declare-error.test,
+     declare.test, declare_+ctor-error.test, declare_a_nua_f.test,
+     declare_ari.test, declare_ati-c++20.test, declare_aui-c++11.test,
+     declare_cnmf_v.test, declare_config_tdu.test, declare_epf.test,
+     declare_etmf.test, declare_exsti.test, declare_fcf.test,
+     declare_fco_exclam_b.test, declare_nrfi_v-01-c++.test,
+     declare_operator-error.test, declare_operator.test, declare_pmri.test,
+     declare_pri.test, declare_rrgi.test, declare_rv.test, declare_stctor.test,
+     declare_stmi.test, declare_synonyms.test, declare_udc-error.test,
+     declare_udc.test, declare_udl-error.test, declare_udl.test,
+     declare_v+f_v.test, declare_xvi.test, define-error.test, define.test,
+     digraphs.test, east-const.test, english-types.test,
+     explain-by-default.test, explain-error.test, explain.test,
+     explain_cast-error.test, explain_cast.test, explain_config_tdu.test,
+     explain_operator-error.test, explain_operator.test,
+     explain_udc-error.test, explain_udc.test, explain_udl-error.test,
+     explain_udl.test, explicit-ecsu.test, explicit-int.test, file-cast_i.test,
+     file-cast_x.test, file-declare_i.test, file-declare_x.test,
+     file-explain_i.test, file-explain_x.test, gnu_attributes.test, help.test,
+     include-err-01.test, include-ok-nested-01.test, include-ok.test,
+     include-too_many_files.test, include-unquoted.test, integers.test,
+     lang.test, ntu-error.test, ntu.test, prompt.test, semicolon.test,
+     set.test, set_expl.test, set_expli.test, set_explicit-ecsu_x.test,
+     set_explicit-int.test, set_explicit-int_x.test, set_graphs.test,
+     set_lang_xxx.test, set_nodigraphs.test, set_noexplicit-int_u.test,
+     set_options.test, set_prompt_x.test, set_xxx.test, show-error.test,
+     show.test, trigraphs.test, using.test, using_config_i.test,
+     west-pointer.test, xec-error.test, xec.test, xupc-error.test, xupc.test:
+     All tests now have -bO options.
+
 2023-12-05  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: s/36/32/ for green color.
