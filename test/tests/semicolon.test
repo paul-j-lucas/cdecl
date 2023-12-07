@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl --no-semicolon -xc++ -O <<END
+cdecl -bO --no-semicolon -xc++ <<END
 set
 
 typedef int Int

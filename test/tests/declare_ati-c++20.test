@@ -1,4 +1,4 @@
 EXPECTED_EXIT=65
-cdecl -xc++20 <<END
+cdecl -bO -xc++20 <<END
 declare x as atomic int
 END

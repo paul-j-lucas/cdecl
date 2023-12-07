@@ -1,3 +1,5 @@
+cdecl> include "data/include_1.cdeclrc"
+cdecl> show
 typedef struct A1 A1;
 typedef struct A2 A2;
 typedef struct B1 B1;

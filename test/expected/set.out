@@ -1,7 +1,8 @@
+cdecl> set
   noalt-tokens
   nodebug
   noeast-const
-  noecho-commands
+    echo-commands
     english-types
   noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)

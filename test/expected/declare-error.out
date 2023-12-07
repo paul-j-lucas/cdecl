@@ -106,9 +106,9 @@ cdecl> declare x as consteval int
 cdecl> declare x as enum class C
                ^
 9: warning: "class" is a keyword in C++98
+enum class x;
                                ^
 25: syntax error: "C": unexpected token
-enum class x;
 cdecl> declare x as inline int
                ^
 9: error: inline variables not supported in C
@@ -301,9 +301,9 @@ c++decl> declare x as array of reference to int
                  ^
 9: error: array of reference is illegal; did you mean reference to array?
 c++decl> declare x as auto int
+auto x;
                            ^
 19: syntax error: "int": unexpected token ("int" is a keyword)
-auto x;
 c++decl> declare x as consteval int
                  ^
 9: error: only functions can be "consteval"

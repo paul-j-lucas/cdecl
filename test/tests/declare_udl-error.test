@@ -1,4 +1,4 @@
 EXPECTED_EXIT=65
-cdecl -O -xc++ <<END
+cdecl -bO -xc++ <<END
 declare _x as user-defined literal (pointer to const char, int) returning int
 END

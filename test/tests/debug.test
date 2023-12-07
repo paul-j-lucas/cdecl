@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl --debug -O <<END
+cdecl -bO --debug <<END
 set
 explain (int)x
 explain _BitInt(4) x

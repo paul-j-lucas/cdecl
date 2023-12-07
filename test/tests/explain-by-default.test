@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl --explain -xc++ -O <<END
+cdecl -bO --explain -xc++ <<END
 set
 
 int x

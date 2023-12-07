@@ -1,3 +1,3 @@
-set noexplicit-int=u
-                   ^
+cdecl> set noexplicit-int=u
+                          ^
 20: error: "no" set options take no value

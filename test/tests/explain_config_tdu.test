@@ -1,4 +1,4 @@
 EXPECTED_EXIT=0
-cdecl -c data/config_tdu.cdeclrc <<END
+cdecl -bO -c data/config_tdu.cdeclrc <<END
 explain c_ast_id_t x
 END

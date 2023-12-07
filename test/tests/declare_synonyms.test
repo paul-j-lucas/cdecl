@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -O <<END
+cdecl -bO <<END
 declare c as character
 declare c as char 8
 declare c as char 16

@@ -1,6 +1,7 @@
-include "data/not_found.cdeclrc"
-        ^
+cdecl> include "data/include-err-1.cdeclrc"
+               ^
 data/include-err-2.cdeclrc:2,9: error: data/not_found.cdeclrc: could not resolve path
+cdecl> show
 typedef struct A1 A1;
 typedef struct A2 A2;
 typedef struct B1 B1;

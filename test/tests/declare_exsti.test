@@ -1,4 +1,4 @@
 EXPECTED_EXIT=65
-cdecl -xc++ <<END
+cdecl -bO -xc++ <<END
 declare x as exported static int x
 END

@@ -1,4 +1,4 @@
 EXPECTED_EXIT=0
-cdecl <<END
+cdecl -bO <<END
 include "*"
 END

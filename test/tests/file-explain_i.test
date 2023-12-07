@@ -1,4 +1,4 @@
 EXPECTED_EXIT=0
-cdecl -f data/explain_i.cdecl <<END
+cdecl -bO -f data/explain_i.cdecl <<END
 
 END

@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -2 -O <<END
+cdecl -bO -2 <<END
 declare a as array 9 of int
 
 set c++

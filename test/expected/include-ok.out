@@ -1,1 +1,3 @@
+cdecl> include "data/config_tdu.cdeclrc"
+cdecl> show
 typedef unsigned c_ast_id_t;

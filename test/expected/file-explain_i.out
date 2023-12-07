@@ -1,1 +1,2 @@
+cdecl> explain int x
 declare x as integer

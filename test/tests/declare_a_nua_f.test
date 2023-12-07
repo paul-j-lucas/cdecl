@@ -1,4 +1,4 @@
 EXPECTED_EXIT=65
-cdecl -xc++ <<END
+cdecl -bO -xc++ <<END
 declare f as non-unique-address function
 END

@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -O <<END
+cdecl -bO <<END
 cast b into block (x as int, y as int) returning double
 cast into array of constant pointer to constant character
 cast p into const pointer to array 3 of const pointer to array 5 of int

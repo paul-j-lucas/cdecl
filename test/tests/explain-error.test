@@ -1,5 +1,5 @@
 EXPECTED_EXIT=65
-cdecl -O <<END
+cdecl -bO <<END
 struct S
 struct T
 typedef const void const_void

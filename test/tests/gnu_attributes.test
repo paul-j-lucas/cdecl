@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -O <<END
+cdecl -bO <<END
 explain __attribute__(( foo("x") )) int i
 explain __attribute__(( foo('x') )) int i
 explain __attribute__(( foo() )) int i

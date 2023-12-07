@@ -1,5 +1,5 @@
 EXPECTED_EXIT=65
-cdecl -O <<END
+cdecl -bO <<END
 cast f into function returning int
 cast p into pointer to function (x) returning int
 cast x into array 3 of int

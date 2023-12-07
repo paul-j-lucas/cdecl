@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -3 -O <<END
+cdecl -bO -3 <<END
 struct S
 
 set c17

@@ -1,5 +1,5 @@
 EXPECTED_EXIT=65
-cdecl -O -xc++ <<END
+cdecl -bO -xc++ <<END
 typedef int A4[4]
 
 explain friend operator int()

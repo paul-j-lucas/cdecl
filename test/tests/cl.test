@@ -1,20 +1,20 @@
 EXPECTED_EXIT=0
-cdecl   -O  cast x into int
-c++decl -O 'class C; show'
-c++decl -O  const cast p into pointer to class C
-cdecl   -O  declare x as int
-cdecl   -O 'define Int as int; show'
-c++decl -O  dynamic cast p into pointer to class C
-cdecl   -O 'enum E; show'
-cdecl   -O  explain int x
-cdecl   -O  help
-c++decl -O 'inline namespace NS { using Int = int; }; show'
-c++decl -O 'namespace NS { using Int = int; }; show'
-c++decl -O  reinterpret cast x as int
-cdecl   -O  set
-cdecl   -O  show predefined
-c++decl -O  static cast x to int
-cdecl   -O 'struct S; show'
-cdecl   -O 'typedef int Int; show'
-cdecl   -O 'union U; show'
-c++decl -O 'using Int = int; show'
+cdecl   -bO  cast x into int
+c++decl -bO 'class C; show'
+c++decl -bO  const cast p into pointer to class C
+cdecl   -bO  declare x as int
+cdecl   -bO 'define Int as int; show'
+c++decl -bO  dynamic cast p into pointer to class C
+cdecl   -bO 'enum E; show'
+cdecl   -bO  explain int x
+cdecl   -bO  help
+c++decl -bO 'inline namespace NS { using Int = int; }; show'
+c++decl -bO 'namespace NS { using Int = int; }; show'
+c++decl -bO  reinterpret cast x as int
+cdecl   -bO  set
+cdecl   -bO  show predefined
+c++decl -bO  static cast x to int
+cdecl   -bO 'struct S; show'
+cdecl   -bO 'typedef int Int; show'
+cdecl   -bO 'union U; show'
+c++decl -bO 'using Int = int; show'

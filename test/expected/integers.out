@@ -1,46 +1,92 @@
+cdecl> explain int a[1]
 declare a as array 1 of integer
+cdecl> explain int a[12]
 declare a as array 12 of integer
+cdecl> explain int a[0b1]
 declare a as array 1 of integer
+cdecl> explain int a[0b10]
 declare a as array 2 of integer
+cdecl> explain int a[01]
 declare a as array 1 of integer
+cdecl> explain int a[012]
 declare a as array 10 of integer
+cdecl> explain int a[0x1]
 declare a as array 1 of integer
+cdecl> explain int a[0x1f]
 declare a as array 31 of integer
+cdecl> explain int a[0X1]
 declare a as array 1 of integer
+cdecl> explain int a[0X1F]
 declare a as array 31 of integer
+cdecl> explain int a[2l]
 declare a as array 2 of integer
+cdecl> explain int a[2L]
 declare a as array 2 of integer
+cdecl> explain int a[2ll]
 declare a as array 2 of integer
+cdecl> explain int a[2LL]
 declare a as array 2 of integer
+cdecl> explain int a[2u]
 declare a as array 2 of integer
+cdecl> explain int a[2ul]
 declare a as array 2 of integer
+cdecl> explain int a[2ull]
 declare a as array 2 of integer
+cdecl> explain int a[2ulL]
 declare a as array 2 of integer
+cdecl> explain int a[2U]
 declare a as array 2 of integer
+cdecl> explain int a[2UL]
 declare a as array 2 of integer
+cdecl> explain int a[2ULL]
 declare a as array 2 of integer
+cdecl> explain int a[2ULl]
 declare a as array 2 of integer
+cdecl> explain int a[2wb]
 declare a as array 2 of integer
+cdecl> explain int a[2WB]
 declare a as array 2 of integer
+cdecl> explain int a[2z]
 declare a as array 2 of integer
+cdecl> explain int a[2Z]
 declare a as array 2 of integer
+cdecl> explain int a[2uz]
 declare a as array 2 of integer
+cdecl> explain int a[2uZ]
 declare a as array 2 of integer
+cdecl> explain int a[2UZ]
 declare a as array 2 of integer
+cdecl> explain int a[2zu]
 declare a as array 2 of integer
+cdecl> explain int a[2Zu]
 declare a as array 2 of integer
+cdecl> explain int a[2ZU]
 declare a as array 2 of integer
+cdecl> explain int a[1'2]
 declare a as array 12 of integer
+cdecl> explain int a[1'23]
 declare a as array 123 of integer
+cdecl> explain int a[12'3]
 declare a as array 123 of integer
+cdecl> explain int a[1'2'3]
 declare a as array 123 of integer
+cdecl> explain int a[1'23'4]
 declare a as array 1234 of integer
+cdecl> explain int a[0b1'00]
 declare a as array 4 of integer
+cdecl> explain int a[0b10'0]
 declare a as array 4 of integer
+cdecl> explain int a[0b1'0'0]
 declare a as array 4 of integer
+cdecl> explain int a[0'12]
 declare a as array 10 of integer
+cdecl> explain int a[01'2]
 declare a as array 10 of integer
+cdecl> explain int a[0'1'2]
 declare a as array 10 of integer
+cdecl> explain int a[0x1'00]
 declare a as array 256 of integer
+cdecl> explain int a[0x10'0]
 declare a as array 256 of integer
+cdecl> explain int a[0x1'0'0]
 declare a as array 256 of integer

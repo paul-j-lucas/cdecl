@@ -81,9 +81,9 @@ cdecl> explain int f()[]
                       ^
 16: error: function returning array; did you mean function returning pointer?
 cdecl> explain int (*f) const
+declare f as pointer to integer
                         ^
 18: syntax error: "const": unexpected token ("const" is a keyword)
-declare f as pointer to integer
 cdecl> explain int (f[4])()
                    ^
 13: error: array of function is illegal; did you mean array of pointer to function?
@@ -501,9 +501,9 @@ c++decl> explain int *restrict p
                       ^
 14: error: "restrict" not supported in C++; use "__restrict" instead
 c++decl> explain int S::x : 3
+declare x of structure S as integer
                           ^
 18: syntax error: ":": unexpected token
-declare x of structure S as integer
 c++decl> explain int &&*x
                      ^
 13: error: pointer to rvalue reference is illegal; did you mean "*&"?
@@ -592,9 +592,9 @@ c++decl> explain void f( int x, this S &self )
                                        ^
 31: error: "this" can be only first parameter
 c++decl> explain void f() restrict
+declare f as function returning void
                           ^
 18: syntax error: "restrict": unexpected token ("restrict" is a keyword)
-declare f as function returning void
 c++decl> explain void f( this S &self ) &
                                 ^
 24: error: function with "this" parameter can not be "reference"

@@ -1,5 +1,5 @@
 EXPECTED_EXIT=65
-cdecl -O <<END
+cdecl -bO <<END
 show foo
 
 set c++03

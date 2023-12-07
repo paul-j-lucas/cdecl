@@ -1,4 +1,4 @@
 EXPECTED_EXIT=65
-cdecl <<END
+cdecl -bO <<END
 set explicit-int=x
 END

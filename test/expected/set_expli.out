@@ -1,3 +1,3 @@
-set expli
-    ^
+cdecl> set expli
+           ^
 5: error: "expli": ambiguous set option; could be explicit-ecsu or explicit-int

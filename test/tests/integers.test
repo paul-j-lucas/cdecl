@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl <<END
+cdecl -bO <<END
 explain int a[1]
 explain int a[12]
 

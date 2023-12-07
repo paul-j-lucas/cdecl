@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -xc99 <<END
+cdecl -bO -xc99 <<END
 explain _Accum x
 explain short _Accum x
 explain short _Fract x

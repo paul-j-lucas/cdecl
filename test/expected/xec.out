@@ -1,14 +1,28 @@
+cdecl> explain _Accum x
 declare x as accum
+cdecl> explain short _Accum x
 declare x as short accum
+cdecl> explain short _Fract x
 declare x as short fract
+cdecl> explain long _Accum x
 declare x as long accum
+cdecl> explain long _Fract x
 declare x as long fract
+cdecl> explain _Fract x
 declare x as fract
+cdecl> explain _Sat _Accum x
 declare x as saturated accum
+cdecl> explain _Sat _Fract x
 declare x as saturated fract
+cdecl> explain _Sat unsigned _Accum x
 declare x as unsigned saturated accum
+cdecl> explain unsigned _Accum x
 declare x as unsigned accum
+cdecl> explain unsigned short _Sat _Accum x
 declare x as unsigned short saturated accum
+cdecl> explain unsigned short _Sat _Fract x
 declare x as unsigned short saturated fract
+cdecl> explain unsigned _Fract x
 declare x as unsigned fract
+cdecl> explain unsigned _Sat _Accum x
 declare x as unsigned saturated accum

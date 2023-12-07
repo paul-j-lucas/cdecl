@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -xc++ -O <<END
+cdecl -bO -xc++ <<END
 
 set west-pointer=t
 set

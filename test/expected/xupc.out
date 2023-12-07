@@ -1,15 +1,30 @@
+cdecl> declare p as pointer to shared int
 shared int *p;
+cdecl> declare p as pointer to strict shared int
 strict shared int *p;
+cdecl> declare p as relaxed shared pointer to int
 int *relaxed shared p;
+cdecl> declare p as shared pointer to int
 int *shared p;
+cdecl> declare x as array 2 of shared int
 shared int x[2];
+cdecl> declare x as relaxed shared int
 relaxed shared int x;
+cdecl> declare x as strict shared int
 strict shared int x;
+cdecl> explain int *relaxed shared p
 declare p as relaxed shared pointer to integer
+cdecl> explain int *shared p
 declare p as shared pointer to integer
+cdecl> explain relaxed shared int x
 declare x as relaxed shared integer
+cdecl> explain shared int *p
 declare p as pointer to shared integer
+cdecl> explain shared int x[]
 declare x as array of shared integer
+cdecl> explain shared[*] int a[4]
 declare a as array 4 of shared integer
+cdecl> explain strict shared int *p
 declare p as pointer to strict shared integer
+cdecl> explain strict shared int x
 declare x as strict shared integer

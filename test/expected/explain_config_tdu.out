@@ -1,1 +1,2 @@
+cdecl> explain c_ast_id_t x
 declare x as c_ast_id_t
