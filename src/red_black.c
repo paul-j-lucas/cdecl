@@ -245,23 +245,27 @@ static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
  * @param tree A pointer to the red-black tree that \a node is part of.
  * @param node A pointer to the rb_node to get the next node from.
  * @return Returns said node.
+ *
+ * @sa "Introduction to Algorithms," 4th ed., section 12.2, p. 319.
  */
 NODISCARD
-static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
+static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *x_node ) {
   assert( tree != NULL );
-  assert( node != NULL );
+  assert( x_node != NULL );
 
-  rb_node_t *next = node->child[RB_R];
+  rb_node_t *next = x_node->child[RB_R];
 
   if ( next != RB_NIL(tree) ) {
+    // inline implementation ot TREE-MINIMUM(x), p. 318
     while ( next->child[RB_L] != RB_NIL(tree) )
       next = next->child[RB_L];
   } else {
-    // No right child, move up until we find it or hit the root.
-    for ( next = node->parent; node == next->child[RB_R]; next = next->parent )
-      node = next;
-    if ( next == RB_ROOT(tree) )
-      next = RB_NIL(tree);
+    // find the lowest ancestor of x whose left child is an ancestor of x
+    next = x_node->parent;
+    while ( next != RB_NIL(tree) && x_node == next->child[RB_R] ) {
+      x_node = next;
+      next = next->parent;
+    } // while
   }
   return next;
 }
@@ -284,21 +288,23 @@ static rb_node_t* rb_node_next( rb_tree_t *tree, rb_node_t *node ) {
  * @param tree A pointer to the red-black tree to manipulate.
  * @param node A pointer to the rb_node to rotate.
  * @param dir The direction to rotate.
+ *
+ * @sa "Introduction to Algorithms," 4th ed., section 13.2, p. 336.
  */
-static void rb_node_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
+static void rb_node_rotate( rb_tree_t *tree, rb_node_t *x_node, rb_dir_t dir ) {
   assert( tree != NULL );
-  assert( node != NULL );
+  assert( x_node != NULL );
 
-  rb_node_t *const temp = node->child[!dir];
-  node->child[!dir] = temp->child[dir];
+  rb_node_t *const y_temp = x_node->child[!dir];
+  x_node->child[!dir] = y_temp->child[dir];
 
-  if ( temp->child[dir] != RB_NIL(tree) )
-    temp->child[dir]->parent = node;
+  if ( y_temp->child[dir] != RB_NIL(tree) )
+    y_temp->child[dir]->parent = x_node;
 
-  temp->parent = node->parent;
-  RB_PARENT_CHILD( node ) = temp;
-  temp->child[dir] = node;
-  node->parent = temp;
+  y_temp->parent = x_node->parent;
+  RB_PARENT_CHILD( x_node ) = y_temp;
+  y_temp->child[dir] = x_node;
+  x_node->parent = y_temp;
 }
 
 #ifndef NDEBUG
@@ -322,34 +328,37 @@ static void rb_tree_check( rb_tree_t const *tree ) {
  * @param tree A pointer to the red-black tree to repair.
  * @param node A pointer to the rb_node to start the repair at.
  */
-static void rb_delete_repair( rb_tree_t *tree, rb_node_t *node ) {
+static void rb_delete_fixup( rb_tree_t *tree, rb_node_t *x_node ) {
   assert( tree != NULL );
-  assert( node != NULL );
+  assert( x_node != NULL );
 
-  while ( is_black( node ) ) {
-    rb_dir_t const dir = child_dir( node );
-    rb_node_t *sibling = node->parent->child[!dir];
-    if ( is_red( sibling ) ) {
-      sibling->color = RB_BLACK;
-      node->parent->color = RB_RED;
-      rb_node_rotate( tree, node->parent, dir );
-      sibling = node->parent->child[!dir];
+  while ( is_black( x_node ) ) {
+    rb_dir_t const dir = child_dir( x_node );
+    rb_node_t *w_sibling = x_node->parent->child[!dir];
+    if ( is_red( w_sibling ) ) {
+      w_sibling->color = RB_BLACK;
+      x_node->parent->color = RB_RED;
+      rb_node_rotate( tree, x_node->parent, dir );
+      w_sibling = x_node->parent->child[!dir];
     }
-    if ( is_red( sibling->child[RB_L] ) || is_red( sibling->child[RB_R] ) ) {
-      if ( is_black( sibling->child[!dir] ) ) {
-        sibling->child[dir]->color = RB_BLACK;
-        sibling->color = RB_RED;
-        rb_node_rotate( tree, sibling, !dir );
-        sibling = node->parent->child[!dir];
+    if ( is_black( w_sibling->child[RB_L] ) &&
+         is_black( w_sibling->child[RB_R] ) ) {
+      w_sibling->color = RB_RED;
+      x_node = x_node->parent;
+    }
+    else {
+      if ( is_black( w_sibling->child[!dir] ) ) {
+        w_sibling->child[dir]->color = RB_BLACK;
+        w_sibling->color = RB_RED;
+        rb_node_rotate( tree, w_sibling, !dir );
+        w_sibling = x_node->parent->child[!dir];
       }
-      sibling->color = node->parent->color;
-      node->parent->color = RB_BLACK;
-      sibling->child[!dir]->color = RB_BLACK;
-      rb_node_rotate( tree, node->parent, dir );
+      w_sibling->color = x_node->parent->color;
+      x_node->parent->color = RB_BLACK;
+      w_sibling->child[!dir]->color = RB_BLACK;
+      rb_node_rotate( tree, x_node->parent, dir );
       break;
     }
-    sibling->color = RB_RED;
-    node = node->parent;
   } // while
 }
 
@@ -358,11 +367,13 @@ static void rb_delete_repair( rb_tree_t *tree, rb_node_t *node ) {
  * colors to restore the 4 properties inherent in red-black trees.
  *
  * @param tree A pointer to the red-black tree to repair.
- * @param node A pointer to the rb_node to start the repair at.
+ * @param z_node A pointer to the rb_node to start the repair at.
+ *
+ * @sa "Introduction to Algorithms," 4th ed., section 13.3, p. 339.
  */
-static void rb_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
+static void rb_insert_fixup( rb_tree_t *tree, rb_node_t *z_node ) {
   assert( tree != NULL );
-  assert( node != NULL );
+  assert( z_node != NULL );
   //
   // If the parent node is black, we're all set; if it's red, we have the
   // following possible cases to deal with.  We iterate through the rest of the
@@ -385,23 +396,23 @@ static void rb_insert_repair( rb_tree_t *tree, rb_node_t *node ) {
   // Note that because we use a sentinel for the root node we never need to
   // worry about replacing the root.
   //
-  while ( is_red( node->parent ) ) {
-    rb_dir_t const dir = child_dir( node->parent );
-    rb_node_t *const uncle = node->parent->parent->child[!dir];
-    if ( is_red( uncle ) ) {
-      node->parent->color = RB_BLACK;
-      uncle->color = RB_BLACK;
-      node->parent->parent->color = RB_RED;
-      node = node->parent->parent;
+  while ( is_red( z_node->parent ) ) {
+    rb_dir_t const dir = child_dir( z_node->parent );
+    rb_node_t *const y_uncle = z_node->parent->parent->child[!dir];
+    if ( is_red( y_uncle ) ) {
+      z_node->parent->color = RB_BLACK;
+      y_uncle->color = RB_BLACK;
+      z_node->parent->parent->color = RB_RED;
+      z_node = z_node->parent->parent;
       continue;
     }
-    if ( is_dir_child( node, !dir ) ) {
-      node = node->parent;
-      rb_node_rotate( tree, node, dir );
+    if ( is_dir_child( z_node, !dir ) ) {
+      z_node = z_node->parent;
+      rb_node_rotate( tree, z_node, dir );
     }
-    node->parent->color = RB_BLACK;
-    node->parent->parent->color = RB_RED;
-    rb_node_rotate( tree, node->parent->parent, !dir );
+    z_node->parent->color = RB_BLACK;
+    z_node->parent->parent->color = RB_RED;
+    rb_node_rotate( tree, z_node->parent->parent, !dir );
   } // while
 
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
@@ -472,38 +483,38 @@ void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn ) {
   }
 }
 
-void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete ) {
+void* rb_tree_delete( rb_tree_t *tree, rb_node_t *z_delete ) {
   assert( tree != NULL );
-  assert( delete != NULL );
-  assert( delete != RB_NIL(tree) );
+  assert( z_delete != NULL );
+  assert( z_delete != RB_NIL(tree) );
 
-  void *const data = delete->data;
+  void *const data = z_delete->data;
 
-  rb_node_t *const proxy =
-    is_node_full( tree, delete ) ? rb_node_next( tree, delete ) : delete;
+  rb_node_t *const y_proxy =
+    is_node_full( tree, z_delete ) ? rb_node_next( tree, z_delete ) : z_delete;
 
-  rb_node_t *const proxy_child =
-    proxy->child[ proxy->child[RB_L] == RB_NIL(tree) ];
+  rb_node_t *const x_proxy_child =
+    y_proxy->child[ y_proxy->child[RB_L] == RB_NIL(tree) ];
 
-  proxy_child->parent = proxy->parent;
-  if ( proxy->parent == RB_ROOT(tree) )
-    RB_FIRST(tree) = proxy_child;
+  x_proxy_child->parent = y_proxy->parent;
+  if ( y_proxy->parent == RB_ROOT(tree) )
+    RB_FIRST(tree) = x_proxy_child;
   else
-    RB_PARENT_CHILD( proxy ) = proxy_child;
+    RB_PARENT_CHILD( y_proxy ) = x_proxy_child;
 
-  if ( is_black( proxy ) )
-    rb_delete_repair( tree, proxy_child );
-
-  if ( proxy != delete ) {
-    proxy->color = delete->color;
-    proxy->child[RB_L] = delete->child[RB_L];
-    proxy->child[RB_R] = delete->child[RB_R];
-    proxy->parent = delete->parent;
-    delete->child[RB_L]->parent = delete->child[RB_R]->parent = proxy;
-    RB_PARENT_CHILD( delete ) = proxy;
+  if ( y_proxy != z_delete ) {
+    y_proxy->color = z_delete->color;
+    y_proxy->child[RB_L] = z_delete->child[RB_L];
+    y_proxy->child[RB_R] = z_delete->child[RB_R];
+    y_proxy->parent = z_delete->parent;
+    z_delete->child[RB_L]->parent = z_delete->child[RB_R]->parent = y_proxy;
+    RB_PARENT_CHILD( z_delete ) = y_proxy;
   }
 
-  free( delete );
+  if ( is_black( y_proxy ) )
+    rb_delete_fixup( tree, x_proxy_child );
+
+  free( z_delete );
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
   rb_tree_check( tree );
   return data;
@@ -533,38 +544,40 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
   assert( tree != NULL );
   assert( data != NULL );
 
-  rb_node_t *node = RB_FIRST(tree);
-  rb_node_t *parent = RB_ROOT(tree);
+  // See "Introduction to Algorithms," 4th ed., section 13.3, p. 338.
+
+  rb_node_t *x_node = RB_FIRST(tree);
+  rb_node_t *y_parent = RB_ROOT(tree);
 
   //
   // Find either the existing node having the same data -OR- the parent for the
   // new node.
   //
-  while ( node != RB_NIL(tree) ) {
-    int const cmp = (*tree->cmp_fn)( data, node->data );
+  while ( x_node != RB_NIL(tree) ) {
+    int const cmp = (*tree->cmp_fn)( data, x_node->data );
     if ( cmp == 0 )
-      return (rb_insert_rv_t){ node, .inserted = false };
-    parent = node;
-    node = node->child[ cmp >= 0 ];
+      return (rb_insert_rv_t){ x_node, .inserted = false };
+    y_parent = x_node;
+    x_node = x_node->child[ cmp >= 0 ];
   } // while
 
-  node = MALLOC( rb_node_t, 1 );
-  *node = (rb_node_t){
+  x_node = MALLOC( rb_node_t, 1 );
+  *x_node = (rb_node_t){
     .data = data,
     .child = { RB_NIL(tree), RB_NIL(tree) },
-    .parent = parent,
+    .parent = y_parent,
     .color = RB_RED                     // new nodes are always red
   };
 
   // Determine which child of the parent the new node should be.
   rb_dir_t const dir = STATIC_CAST( rb_dir_t,
-    parent != RB_ROOT(tree) && (*tree->cmp_fn)( data, parent->data ) >= 0
+    y_parent != RB_ROOT(tree) && (*tree->cmp_fn)( data, y_parent->data ) >= 0
   );
-  assert( parent->child[dir] == RB_NIL(tree) );
-  parent->child[dir] = node;
+  assert( y_parent->child[dir] == RB_NIL(tree) );
+  y_parent->child[dir] = x_node;
 
-  rb_insert_repair( tree, node );
-  return (rb_insert_rv_t){ node, .inserted = true };
+  rb_insert_fixup( tree, x_node );
+  return (rb_insert_rv_t){ x_node, .inserted = true };
 }
 
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
