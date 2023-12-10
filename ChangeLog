@@ -1,3 +1,14 @@
+2023-12-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * Doxyfile, red_black.c, red_black.h, red_black_test.c: I discovered that
+     the implementation from Apple, et al, even though it seems to work, didn't
+     correctly preserve a red-black tree's properties; so I rewrote the code
+     using the pseudo-code given in _Introduction to Algorithms_, 4th ed.,
+     section 13. The rewritten code correctly preserves a red-black tree's
+     properties.
+   * red_black.c: Variable renaming to more closely match code in "Introduction
+     to Algorithme," 4th ed.
+
 2023-12-08  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c: Fixed "zero-length gnu_printf format string" warning.
