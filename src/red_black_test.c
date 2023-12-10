@@ -60,7 +60,7 @@ static void test_rb_validate_node( rb_tree_t const *tree,
 }
 
 static void test_rb_validate( rb_tree_t const *tree ) {
-  test_rb_validate_node( tree, tree->fake_root.child[0] );
+  test_rb_validate_node( tree, tree->root );
 }
 
 static bool test_rb_visitor( void *node_data, void *v_data ) {

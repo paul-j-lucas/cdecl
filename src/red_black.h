@@ -18,29 +18,6 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
- * Adapted from the code:
- * <https://opensource.apple.com/source/sudo/sudo-46/src/redblack.h>
- */
-
-/*
- * Copyright (c) 2004, 2007 Todd C. Miller <Todd.Miller@courtesan.com>
- *
- * Permission to use, copy, modify, and distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- *
- * $Sudo: redblack.h,v 1.4 2008/11/09 14:13:12 millert Exp $
- */
-
 #ifndef cdecl_red_black_H
 #define cdecl_red_black_H
 
@@ -69,7 +46,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * @defgroup red-black-group Red-Black Tree
- * Types and functions for manipulating red-black trees.
+ * Types for defining and functions for manipulating red-black trees.
  *
  * @sa [Red-Black Tree](https://en.wikipedia.org/wiki/Red-black_tree)
  *
@@ -114,7 +91,7 @@ typedef void (*rb_free_fn_t)( void *data );
 /**
  * The signature for a function passed to rb_tree_visit().
  *
- * @param node_data A pointer to the node's data.
+ * @param node_data A pointer to the rb_node's data.
  * @param v_data Optional data passed to to the visitor.
  * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of rb_tree_visit().
@@ -159,25 +136,24 @@ struct rb_node {
  */
 struct rb_tree {
   /**
-   * A convenience sentinel for the root node.
-   *
-   * @note This is _not_ the true root node of the tree; it's just an object to
-   * which the \ref rb_node::parent "parent" node pointer of the true root node
-   * (`fake_root`'s left child node) can point.  That is, when a node's \ref
-   * rb_node::parent "parent" pointer points to `fake_root`, it means _that_
-   * node _is_ the true root node.  The `fake_root` has no invariants.
+   * Root node of the tree or points to \ref nil if the tree is empty.
    */
-  rb_node_t   fake_root;
+  rb_node_t  *root;
 
   /**
-   * A convenience sentinel for all leaf nodes.  Its only invariant is that its
-   * \ref rb_node::color "color" _must_ be #RB_BLACK.  Its children, parent,
-   * and even data can take on arbitrary values.
+   * A convenience sentinel for all leaf nodes.
    *
-   * @remarks There is one nil per tree instead of a single static nil for all
-   * trees because those values can change.  In a multithreaded program,
-   * updates to different trees could affect such a single nil that would
-   * result in undefined behavior.
+   * @remarks
+   * @parblock
+   * Its only invariant is that its \ref rb_node::color "color" _must_ be
+   * #RB_BLACK.  Its children, parent, and even data can take on arbitrary
+   * values.
+   *
+   * There is one nil per tree instead of a single static nil for all trees
+   * because those values can change.  In a multithreaded program, updates to
+   * different trees could affect such a single nil that would result in
+   * undefined behavior.
+   * @endparblock
    */
   rb_node_t   nil;
 
@@ -230,8 +206,8 @@ void rb_tree_cleanup( rb_tree_t *tree, rb_free_fn_t free_fn );
 /**
  * Deletes \a node from \a tree.
  *
- * @param tree A pointer to the red-black tree to delete \a node from.
- * @param node A pointer to the node to delete.
+ * @param tree A pointer to the rb_tree to delete \a node from.
+ * @param node A pointer to the rb_node to delete.
  * @return Returns a pointer to the data of \a node.  The caller is responsible
  * for deleting said data if necessary.
  *
@@ -243,20 +219,20 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
 /**
  * Gets whether \a tree is empty.
  *
- * @param tree A pointer to the red-black tree to check.
+ * @param tree A pointer to the rb_tree to check.
  * @return Returns `true` only if \a tree is empty.
  */
 NODISCARD RED_BLACK_H_INLINE
 bool rb_tree_empty( rb_tree_t const *tree ) {
-  return tree->fake_root.child[0] == &tree->nil;
+  return tree->root == &tree->nil;
 }
 
 /**
  * Attempts to find \a data in \a tree.
  *
- * @param tree A pointer to the red-black tree to search through.
+ * @param tree A pointer to the rb_tree to search through.
  * @param data A pointer to the data to search for.
- * @return Returns a pointer to the node containing \a data or NULL if not
+ * @return Returns a pointer to the rb_node containing \a data or NULL if not
  * found.
  *
  * @warning Even though this function returns a pointer to a non-`const` \ref
@@ -280,7 +256,7 @@ void rb_tree_init( rb_tree_t *tree, rb_cmp_fn_t cmp_fn );
 /**
  * Inserts \a data into \a tree.
  *
- * @param tree A pointer to the red-black tree to insert into.
+ * @param tree A pointer to the rb_tree to insert into.
  * @param data A pointer to the data to insert.
  * @return Returns an \ref rb_insert_rv where its \ref rb_insert_rv::node
  * "node" points to either the newly inserted node or the existing node having
@@ -300,11 +276,11 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data );
 /**
  * Performs an in-order traversal of \a tree.
  *
- * @param tree A pointer to the red-black tree to visit.
+ * @param tree A pointer to the rb_tree to visit.
  * @param visit_fn The visitor function to use.
  * @param v_data Optional data passed to \a visit_fn.
- * @return Returns a pointer to the node at which visiting stopped or NULL if
- * the entire tree was visited.
+ * @return Returns a pointer to the rb_node at which visiting stopped or NULL
+ * if the entire tree was visited.
  *
  * @warning Even though this function returns a pointer to a non-`const` \ref
  * rb_node, the node's \ref rb_node::data "data" _must not_ be modified if that
