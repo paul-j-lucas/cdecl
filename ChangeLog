@@ -1,3 +1,8 @@
+2023-12-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c: Added LCOV_EXCL_LINE.
+   * lcovrc: Fixed exlude lines.
+
 2023-12-09  Paul J. Lucas <paul@lucasmail.org>
 
    * Doxyfile, red_black.c, red_black.h, red_black_test.c: I discovered that
