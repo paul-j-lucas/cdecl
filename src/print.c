@@ -594,7 +594,7 @@ void print_debug_file_line( char const *file, int line ) {
   assert( file != NULL );
   assert( line > 0 );
   if ( opt_cdecl_debug != CDECL_DEBUG_NO )
-    EPRINTF( "[%s:%d] ", file, line );
+    EPRINTF( "[%s:%d] ", file, line );  // LCOV_EXCL_LINE
 #else
   (void)file;
   (void)line;
