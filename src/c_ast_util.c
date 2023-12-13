@@ -62,14 +62,12 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t*, c_ast_t* );
 NODISCARD
 static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
                                       c_ast_t *of_ast ) {
+  assert( ast != NULL );
   assert( array_ast != NULL );
   assert( array_ast->kind == K_ARRAY );
   assert( array_ast->array.of_ast != NULL );
   assert( array_ast->array.of_ast->kind == K_PLACEHOLDER );
   assert( of_ast != NULL );
-
-  if ( ast == NULL )
-    return array_ast;
 
   switch ( ast->kind ) {
     case K_ARRAY:
