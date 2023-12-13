@@ -162,6 +162,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
     ast->kind, c_kind_name( ast->kind )
   );
   if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_AST_UNIQUE_ID) != 0 ) {
+    // LCOV_EXCL_START
     DUMP_KEY( dump, "unique_id: " PRId_C_AST_ID_T, ast->unique_id );
     if ( ast->dup_from_id > 0 )
       DUMP_KEY( dump, "dup_from_id: " PRId_C_AST_ID_T, ast->dup_from_id );
@@ -174,6 +175,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
         "param_of_id: " PRId_C_AST_ID_T, ast->param_of_ast->unique_id
       );
     }
+    // LCOV_EXCL_STOP
   }
   DUMP_KEY( dump, "depth: %u", ast->depth );
   if ( ast->align.kind != C_ALIGNAS_NONE ) {
