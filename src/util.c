@@ -148,12 +148,14 @@ char* check_strndup( char const *s, size_t n ) {
 #endif /* __GNUC__ */
 
 void fatal_error( int status, char const *format, ... ) {
+  // LCOV_EXCL_START
   EPRINTF( "%s: ", me );
   va_list args;
   va_start( args, format );
   vfprintf( stderr, format, args );
   va_end( args );
   _Exit( status );
+  // LCOV_EXCL_STOP
 }
 
 #ifdef __GNUC__
