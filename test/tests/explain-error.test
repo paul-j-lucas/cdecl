@@ -240,6 +240,7 @@ explain void f(int &&r)
 set c++11
 explain auto f()
 explain constexpr void f()
+explain [*this]
 
 set c++17
 explain char8_t x

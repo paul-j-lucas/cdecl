@@ -699,6 +699,10 @@ c++decl> explain [i]
 declare lambda capturing [i]
 c++decl> explain [i](int x)
 declare lambda capturing [i] (x as integer)
+c++decl> explain [this]
+declare lambda capturing [this]
+c++decl> explain [*this]
+declare lambda capturing [*this]
 c++decl> explain [=]
 declare lambda capturing [copy by default]
 c++decl> explain [=](int x)

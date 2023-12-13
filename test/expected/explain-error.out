@@ -659,6 +659,9 @@ c++decl> explain auto f()
 c++decl> explain constexpr void f()
                                 ^
 24: error: "constexpr void" is illegal until C++14
+c++decl> explain [*this]
+                  ^
+10: error: capturing "*this" not supported until C++17
 c++decl> set c++17
 c++decl> explain char8_t x
                  ^

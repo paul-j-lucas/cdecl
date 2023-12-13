@@ -356,6 +356,8 @@ explain N::C::I x
 explain []
 explain [i]
 explain [i](int x)
+explain [this]
+explain [*this]
 explain [=]
 explain [=](int x)
 explain [=, i, &j]
