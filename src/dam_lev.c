@@ -104,9 +104,9 @@ size_t dam_lev_dist( void *working_mem, char const *source, size_t slen,
    */
 
   if ( slen == 0 )
-    return tlen;
+    return tlen;                        // LCOV_EXCL_LINE
   if ( tlen == 0 )
-    return slen;
+    return slen;                        // LCOV_EXCL_LINE
 
   //
   // The zeroth row and column are for infinity; the last row and column are
