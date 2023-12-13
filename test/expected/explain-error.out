@@ -500,10 +500,9 @@ c++decl> explain int& r[2]
 c++decl> explain int *restrict p
                       ^
 14: error: "restrict" not supported in C++; use "__restrict" instead
-c++decl> explain int S::x : 3
-declare x of structure S as integer
-                          ^
-18: syntax error: ":": unexpected token
+c++decl> explain int S3::x : 3
+                 ^
+9: error: scoped names can not have bit-field widths
 c++decl> explain int &&*x
                      ^
 13: error: pointer to rvalue reference is illegal; did you mean "*&"?

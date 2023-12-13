@@ -184,7 +184,7 @@ explain int&& &&r
 explain int&& &r
 explain int& r[2]
 explain int *restrict p
-explain int S::x : 3
+explain int S3::x : 3
 explain int &&*x
 explain int x, x
 explain long char8_t x
