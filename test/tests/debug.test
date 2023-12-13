@@ -18,6 +18,9 @@ explain void f(int i, char const *fmt, ... )
 explain void f(int x[*])
 explain void f(int x[static 2])
 
+set k&rc
+explain int f(x)
+
 set c++
 class C
 explain bool operator!() const

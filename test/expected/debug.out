@@ -4339,6 +4339,304 @@ cdecl> explain void f(int x[static 2])
 }
 
 declare f as function (x as non-empty array 2 of integer) returning void
+cdecl> set k&rc
+cdecl> explain int f(x)
+{
+  rule: {
+    lhs: "builtin_type_c_ast",
+    rhs: "builtin_no_BitInt_c_btid"
+  },
+  builtin_no_BitInt_c_btid: { btid: 0x4001, string: "int" },
+  $$_ast: {
+    sname: null,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_column: 8, last_column: 10 },
+    type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+    builtin: {
+      bit_width: 0
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "east_modified_type_c_ast",
+    rhs: "atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt"
+  },
+  atomic_builtin_typedef_type_c_ast: {
+    sname: null,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_column: 8, last_column: 10 },
+    type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+    builtin: {
+      bit_width: 0
+    }
+  },
+  type_modifier_list_c_type_opt: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+  $$_ast: {
+    sname: null,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_column: 8, last_column: 10 },
+    type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+    builtin: {
+      bit_width: 0
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "sname_c",
+    rhs: "NAME"
+  },
+  NAME: "f",
+  $$_sname: { string: "f", scopes: "none" }
+}
+
+{
+  rule: {
+    lhs: "sname_c_ast",
+    rhs: "sname_c"
+  },
+  in_attr__type_c_ast: {
+    sname: null,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_column: 8, last_column: 10 },
+    type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+    builtin: {
+      bit_width: 0
+    }
+  },
+  sname: { string: "f", scopes: "none" },
+  bit_field_c_uint_opt: 0,
+  $$_ast: {
+    sname: { string: "f", scopes: "none" },
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_column: 8, last_column: 10 },
+    type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+    builtin: {
+      bit_width: 0
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "name_ast",
+    rhs: "NAME"
+  },
+  NAME: "x",
+  $$_ast: {
+    sname: { string: "x", scopes: "none" },
+    kind: { value: 0x10, string: "name" },
+    depth: 0,
+    loc: { first_column: 14 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
+  }
+}
+
+{
+  rule: {
+    lhs: "param_c_ast_list",
+    rhs: "param_c_ast"
+  },
+  param_c_ast: {
+    sname: { string: "x", scopes: "none" },
+    kind: { value: 0x10, string: "name" },
+    depth: 0,
+    loc: { first_column: 14 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
+  },
+  $$_ast_list: [
+    {
+      sname: { string: "x", scopes: "none" },
+      kind: { value: 0x10, string: "name" },
+      depth: 0,
+      loc: { first_column: 14 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
+    }
+  ]
+}
+
+{
+  rule: {
+    lhs: "func_decl_c_astp",
+    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
+  },
+  in_attr__type_c_ast: {
+    sname: null,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_column: 8, last_column: 10 },
+    type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+    builtin: {
+      bit_width: 0
+    }
+  },
+  decl2_c_astp: {
+    ast: {
+      sname: { string: "f", scopes: "none" },
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 10 },
+      type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+      builtin: {
+        bit_width: 0
+      }
+    },
+    target_ast: null
+  },
+  param_c_ast_list_opt: [
+    {
+      sname: { string: "x", scopes: "none" },
+      kind: { value: 0x10, string: "name" },
+      depth: 0,
+      loc: { first_column: 14 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
+    }
+  ],
+  func_qualifier_list_c_stid_opt: { stid: 0x2, string: "none" },
+  func_ref_qualifier_c_stid_opt: { stid: 0x2, string: "none" },
+  noexcept_c_stid_opt: { stid: 0x2, string: "none" },
+  trailing_return_type_c_ast_opt: null,
+  func_equals_c_stid_opt: { stid: 0x2, string: "none" },
+  $$_astp: {
+    ast: {
+      sname: { string: "f", scopes: "none" },
+      kind: { value: 0x20000, string: "function" },
+      depth: 0,
+      loc: { first_column: 12, last_column: 15 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      func: {
+        member: "unspecified",
+        param_ast_list: [
+          {
+            sname: { string: "x", scopes: "none" },
+            kind: { value: 0x10, string: "name" },
+            depth: 0,
+            loc: { first_column: 14 },
+            type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
+          }
+        ],
+        ret_ast: {
+          sname: null,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 10 },
+          type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    },
+    target_ast: {
+      sname: null,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 10 },
+      type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+      builtin: {
+        bit_width: 0
+      }
+    }
+  }
+}
+
+{
+  rule: {
+    lhs: "decl_c",
+    rhs: "decl_c_astp"
+  },
+  in_attr__typename_flag_opt: false,
+  in_attr__type_c_ast: {
+    sname: null,
+    kind: { value: 0x2, string: "built-in type" },
+    depth: 0,
+    loc: { first_column: 8, last_column: 10 },
+    type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+    builtin: {
+      bit_width: 0
+    }
+  },
+  decl_c_astp: {
+    ast: {
+      sname: { string: "f", scopes: "none" },
+      kind: { value: 0x20000, string: "function" },
+      depth: 0,
+      loc: { first_column: 12, last_column: 15 },
+      type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+      func: {
+        member: "unspecified",
+        param_ast_list: [
+          {
+            sname: { string: "x", scopes: "none" },
+            kind: { value: 0x10, string: "name" },
+            depth: 0,
+            loc: { first_column: 14 },
+            type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
+          }
+        ],
+        ret_ast: {
+          sname: null,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 10 },
+          type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    },
+    target_ast: {
+      sname: null,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 10 },
+      type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+      builtin: {
+        bit_width: 0
+      }
+    }
+  },
+  $$_ast: {
+    sname: { string: "f", scopes: "none" },
+    kind: { value: 0x20000, string: "function" },
+    depth: 0,
+    loc: { first_column: 12, last_column: 15 },
+    type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" },
+    func: {
+      member: "unspecified",
+      param_ast_list: [
+        {
+          sname: { string: "x", scopes: "none" },
+          kind: { value: 0x10, string: "name" },
+          depth: 0,
+          loc: { first_column: 14 },
+          type: { btid: 0x1, stid: 0x2, atid: 0x4, string: "none" }
+        }
+      ],
+      ret_ast: {
+        sname: null,
+        kind: { value: 0x2, string: "built-in type" },
+        depth: 0,
+        loc: { first_column: 8, last_column: 10 },
+        type: { btid: 0x4001, stid: 0x2, atid: 0x4, string: "int" },
+        builtin: {
+          bit_width: 0
+        }
+      }
+    }
+  }
+}
+
+declare f as function (x) returning integer
 cdecl> set c++
 c++decl> class C
 {
