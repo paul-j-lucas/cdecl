@@ -350,7 +350,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
       copy_cdecl_keywords( /*pdym=*/NULL ) : 0);
 
   if ( dym_size == 0 )
-    return NULL;
+    return NULL;                        // LCOV_EXCL_LINE
 
   did_you_mean_t *const dym_array = MALLOC( did_you_mean_t, dym_size + 1 );
   did_you_mean_t *dym = dym_array;
