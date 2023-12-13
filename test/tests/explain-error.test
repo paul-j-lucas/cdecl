@@ -150,6 +150,8 @@ explain wchar_t x
 set c99
 explain char16_t x
 explain char32_t x
+explain int _Accum
+explain int _Fract
 explain thread_local int x
 
 set c17

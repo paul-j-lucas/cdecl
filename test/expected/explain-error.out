@@ -416,6 +416,12 @@ cdecl> explain char16_t x
 cdecl> explain char32_t x
                ^
 9: error: "char32_t": unsupported type until C11; did you mean "wchar_t"?
+cdecl> explain int _Accum
+                   ^
+13: error: declaration expected ("_Accum" is a keyword in C99 (with Embedded C extensions))
+cdecl> explain int _Fract
+                   ^
+13: error: declaration expected ("_Fract" is a keyword in C99 (with Embedded C extensions))
 cdecl> explain thread_local int x
                ^
 9: error: "thread_local": unsupported keyword until C23

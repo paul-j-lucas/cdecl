@@ -19,6 +19,9 @@ C++.
 ** Lambdas in C
 Lambdas are not correctly illegal in C.
 
+** C99 with extension error messages
+Improved C99 with extension error messages.
+
 ** Nested `typedef`s
 Fixed printing of `typedef`s of nested types, e.g.:
 

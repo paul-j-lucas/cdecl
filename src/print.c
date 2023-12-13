@@ -618,11 +618,16 @@ void print_is_a_keyword( char const *error_token ) {
   c_keyword_t const *const ck =
     c_keyword_find( error_token, LANG_ANY, C_KW_CTX_DEFAULT );
   if ( ck != NULL ) {
-    c_lang_id_t const oldest_lang = c_lang_oldest( ck->lang_ids );
-    if ( oldest_lang > opt_lang )
+    c_lang_id_t const lang_ids = ck->lang_ids & ~LANGX_MASK;
+    c_lang_id_t const oldest_lang = c_lang_oldest( lang_ids );
+    if ( oldest_lang > opt_lang ) {
       EPRINTF( "; not a keyword until %s", c_lang_name( oldest_lang ) );
-    else
-      EPRINTF( " (\"%s\" is a keyword)", error_token );
+    } else {
+      EPRINTF( " (\"%s\" is a keyword", error_token );
+      if ( lang_ids != ck->lang_ids )
+        EPRINTF( " in %s", c_lang_name( ck->lang_ids ) );
+      EPUTC( ')' );
+    }
   }
   else if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
     cdecl_keyword_t const *const cdk = cdecl_keyword_find( error_token );
