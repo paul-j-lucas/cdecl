@@ -62,15 +62,18 @@ help options
 
 set c++
 help
+help class
 help command
 help commands
 help const
-help const cast
 help const  cast
+help const cast
 help declare
 help dynamic
 help dynamic cast
 help english
+help inline
+help namespace
 help options
 help reinterpret
 help reinterpret cast

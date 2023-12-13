@@ -682,6 +682,9 @@ gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help class
+command:
+  class <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
 c++decl> help command
 command:
   [const | dynamic | reinterpret | static] cast [<name>] {as|[in]to} <english>
@@ -733,10 +736,10 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help const
 command:
   const cast [<name>] {as|[in]to} <english>
-c++decl> help const cast
+c++decl> help const  cast
 command:
   const cast [<name>] {as|[in]to} <english>
-c++decl> help const  cast
+c++decl> help const cast
 command:
   const cast [<name>] {as|[in]to} <english>
 c++decl> help declare
@@ -783,6 +786,12 @@ scope-e: scope | class | struct | union | [inline] namespace
 store: const[eval|expr|init] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | this | thread_local | typedef | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> help inline
+command:
+  inline namespace <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+c++decl> help namespace
+command:
+  namespace <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
 c++decl> help options
 option:
   [no]alt-tokens
