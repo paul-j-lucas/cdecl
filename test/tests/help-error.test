@@ -1,0 +1,18 @@
+EXPECTED_EXIT=65
+cdecl -bO <<END
+help foo
+
+help class
+help const
+help const cast
+help dynamic
+help dynamic cast
+help inline
+help namespace
+help reinterpret
+help reinterpret cast
+help static
+help static cast
+help using
+
+END

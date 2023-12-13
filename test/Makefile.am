@@ -131,6 +131,7 @@ TESTS+=	tests/__declspec.test \
 	tests/explicit-int.test \
 	tests/gnu_attributes.test \
 	tests/help.test \
+	tests/help-error.test \
 	tests/integers.test \
 	tests/lang.test \
 	tests/prompt.test \

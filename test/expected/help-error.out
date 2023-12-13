@@ -1,0 +1,39 @@
+cdecl> help foo
+            ^
+6: error: "foo": no such command
+cdecl> help class
+            ^
+6: error: "class": not supported in C
+cdecl> help const
+            ^
+6: error: "const": not supported in C
+cdecl> help const cast
+            ^
+6: error: "const cast": not supported in C
+cdecl> help dynamic
+            ^
+6: error: "dynamic": not supported in C
+cdecl> help dynamic cast
+            ^
+6: error: "dynamic cast": not supported in C
+cdecl> help inline
+            ^
+6: error: "inline": not supported in C
+cdecl> help namespace
+            ^
+6: error: "namespace": not supported in C
+cdecl> help reinterpret
+            ^
+6: error: "reinterpret": not supported in C
+cdecl> help reinterpret cast
+            ^
+6: error: "reinterpret cast": not supported in C
+cdecl> help static
+            ^
+6: error: "static": not supported in C
+cdecl> help static cast
+            ^
+6: error: "static cast": not supported in C
+cdecl> help using
+            ^
+6: error: "using": not supported in C
