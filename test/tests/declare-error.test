@@ -126,6 +126,7 @@ declare x as short char8_t
 declare x as signed char8_t
 declare x as static mutable int
 declare x as unsigned char8_t
+declare _x as user-defined literal (int)
 
 set c++03
 declare x as char16_t

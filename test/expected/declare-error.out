@@ -349,6 +349,9 @@ c++decl> declare x as static mutable int
 c++decl> declare x as unsigned char8_t
                  ^
 9: error: "unsigned char8_t" is illegal for built-in type
+c++decl> declare _x as user-defined literal (int)
+                                             ^
+37: error: invalid user-defined literal parameter type "integer"; must be "unsigned long long int", "long double", "char", "pointer to const char", "char8_t", "char16_t", "char32_t", or "wchar_t"
 c++decl> set c++03
 c++decl> declare x as char16_t
                       ^
