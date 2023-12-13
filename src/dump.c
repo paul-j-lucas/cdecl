@@ -120,7 +120,7 @@ static void c_alignas_dump_impl( c_alignas_t const *align,
   assert( dump != NULL );
 
   if ( align->kind == C_ALIGNAS_NONE )
-    return;
+    return;                             // LCOV_EXCL_LINE
 
   json_state_t const json = json_object_begin( JSON_INIT, /*key=*/NULL, dump );
 
@@ -406,7 +406,7 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
       return "atid";
   } // switch
 
-  return "XTID";
+  return "XTID";                        // LCOV_EXCL_LINE
 }
 
 /**
