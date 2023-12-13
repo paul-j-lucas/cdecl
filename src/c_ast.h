@@ -614,20 +614,6 @@ bool c_ast_is_referrer( c_ast_t const *ast ) {
 void c_ast_list_cleanup( c_ast_list_t *list );
 
 /**
- * Checks whether to AST lists are equals _except_ for AST node names.
- *
- * @param i_list The first AST list.
- * @param j_list The second AST list.
- * @return Returns `true` only if the to AST lists are equal _except_ for AST
- * node names.
- *
- * @sa c_ast_equal()
- */
-NODISCARD
-bool c_ast_list_equal( c_ast_list_t const *i_list,
-                       c_ast_list_t const *j_list );
-
-/**
  * Sets that all AST nodes in \a param_ast_list are parameters of \a func_ast.
  *
  * @param param_ast_list The AST list of parameters whose \ref

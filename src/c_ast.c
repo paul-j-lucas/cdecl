@@ -198,6 +198,38 @@ static c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
   return dup_list;
 }
 
+/**
+ * Checks whether to AST lists are equals _except_ for AST node names.
+ *
+ * @param i_list The first AST list.
+ * @param j_list The second AST list.
+ * @return Returns `true` only if the to AST lists are equal _except_ for AST
+ * node names.
+ *
+ * @sa c_ast_equal()
+ */
+NODISCARD
+static bool c_ast_list_equal( c_ast_list_t const *i_list,
+                              c_ast_list_t const *j_list ) {
+  assert( i_list != NULL );
+  assert( j_list != NULL );
+
+  if ( slist_len( i_list ) != slist_len( j_list ) )
+    return false;
+
+  slist_node_t const *i_node = i_list->head;
+  slist_node_t const *j_node = j_list->head;
+
+  for ( ; i_node != NULL && j_node != NULL;
+          i_node = i_node->next, j_node = j_node->next ) {
+    c_ast_t const *const i_ast = i_node->data;
+    c_ast_t const *const j_ast = j_node->data;
+    if ( !c_ast_equal( i_ast, j_ast ) )
+      return false;
+  } // for
+
+  return i_node == NULL && j_node == NULL;
+}
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -459,28 +491,6 @@ void c_ast_list_cleanup( c_ast_list_t *list ) {
   // Do not pass &c_ast_free as the second argument since all ASTs are free'd
   // independently. Just free the list nodes.
   slist_cleanup( list, /*free_fn=*/NULL );
-}
-
-bool c_ast_list_equal( c_ast_list_t const *i_list,
-                       c_ast_list_t const *j_list ) {
-  assert( i_list != NULL );
-  assert( j_list != NULL );
-
-  if ( slist_len( i_list ) != slist_len( j_list ) )
-    return false;
-
-  slist_node_t const *i_node = i_list->head;
-  slist_node_t const *j_node = j_list->head;
-
-  for ( ; i_node != NULL && j_node != NULL;
-          i_node = i_node->next, j_node = j_node->next ) {
-    c_ast_t const *const i_ast = i_node->data;
-    c_ast_t const *const j_ast = j_node->data;
-    if ( !c_ast_equal( i_ast, j_ast ) )
-      return false;
-  } // for
-
-  return i_node == NULL && j_node == NULL;
 }
 
 void c_ast_list_set_param_of( c_ast_list_t *param_ast_list,
