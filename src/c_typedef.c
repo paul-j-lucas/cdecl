@@ -1100,7 +1100,7 @@ c_typedef_t const* c_typedef_find_name( char const *name ) {
     c_sname_cleanup( &sname );
     return tdef;
   }
-  return NULL;
+  return NULL;                          // LCOV_EXCL_LINE
 }
 
 c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
