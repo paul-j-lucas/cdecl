@@ -107,7 +107,7 @@ char const* c_lang_literal( c_lang_lit_t const *ll ) {
     if ( opt_lang_is_any( ll->lang_ids ) )
       return ll->literal;
   } // for
-  return NULL;
+  return NULL;                          // LCOV_EXCL_LINE
 }
 
 char const* c_lang_name( c_lang_id_t lang_id ) {
