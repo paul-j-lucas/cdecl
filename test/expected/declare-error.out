@@ -80,6 +80,15 @@ cdecl> declare f as virtual function returning void
 cdecl> declare i as restricted int
                ^
 9: error: built-in type can not be "restrict"
+cdecl> declare main as function ( argc as int, argv as int ) returning int
+                                               ^
+41: error: invalid main() parameter type "integer"; must be "array of pointer to char"
+cdecl> declare main as function ( argc as int, argv as array of int ) returning int
+                                               ^
+41: error: invalid main() parameter type "array of integer"; must be "array of pointer to char"
+cdecl> declare main as function ( argc as int, argv as pointer to int ) returning int
+                                               ^
+41: error: invalid main() parameter type "pointer to integer"; must be "pointer to pointer to char"
 cdecl> declare p as pointer to function (x) returning int
                                          ^
 35: error: type specifier required since C23

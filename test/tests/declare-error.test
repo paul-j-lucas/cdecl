@@ -29,6 +29,9 @@ declare f as register function returning void
 declare f as restricted function
 declare f as virtual function returning void
 declare i as restricted int
+declare main as function ( argc as int, argv as int ) returning int
+declare main as function ( argc as int, argv as array of int ) returning int
+declare main as function ( argc as int, argv as pointer to int ) returning int
 declare p as pointer to function (x) returning int
 declare p as pointer to register int
 declare p as pointer to S
