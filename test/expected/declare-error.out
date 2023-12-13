@@ -2,6 +2,9 @@ cdecl> struct S
 cdecl> declare ! as friend constant operator returning bool
                ^
 9: error: operator overloading not supported in C
+cdecl> declare a as array of void
+               ^
+9: error: array of "void"; did you mean array of "pointer to void"?
 cdecl> declare b as block returning array of int
                                     ^
 30: error: block returning array; did you mean block returning pointer?

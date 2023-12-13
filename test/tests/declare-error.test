@@ -3,6 +3,7 @@ cdecl -bO <<END
 struct S
 
 declare ! as friend constant operator returning bool
+declare a as array of void
 declare b as block returning array of int
 declare b as block returning function returning int
 declare f as const function returning void
