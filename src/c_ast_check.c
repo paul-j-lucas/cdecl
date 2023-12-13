@@ -2793,6 +2793,14 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
     c_ast_t const *const raw_ast = c_ast_untypedef( ast );
     switch ( raw_ast->kind ) {
       case K_ARRAY:                     // legal in C; __restrict legal in C++
+        if ( ast->param_of_ast == NULL ) {
+          print_error( &ast->loc,
+            "%s can not be \"%s\" except as function parameter\n",
+            c_kind_name( raw_ast->kind ),
+            c_tid_name_error( TS_restrict )
+          );
+          return VISITOR_ERROR_FOUND;
+        }
         break;
 
       case K_FUNCTION:

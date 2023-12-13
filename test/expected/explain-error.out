@@ -17,6 +17,12 @@ cdecl> explain _Alignas(4) char c : 3
 cdecl> explain _Alignas(4) int f()
                ^
 9: error: function can not be aligned
+cdecl> explain int a[restrict 4]
+                    ^
+14: error: array can not be "restrict" except as function parameter
+cdecl> explain restrict A2 x
+               ^
+9: error: array can not be "restrict" except as function parameter
 cdecl> explain alignas(4) register int x
                ^
 9: error: "alignas" can not be combined with "register"

@@ -12,6 +12,8 @@ explain A2 f()
 explain _Alignas(3) char c
 explain _Alignas(4) char c : 3
 explain _Alignas(4) int f()
+explain int a[restrict 4]
+explain restrict A2 x
 explain alignas(4) register int x
 explain _Alignas(64) S x
 explain _Alignas(8) typedef int Int
