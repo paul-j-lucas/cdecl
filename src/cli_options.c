@@ -652,6 +652,7 @@ static void print_usage( int status ) {
 #define PUT_CONFIG_OPT(OPT) BLOCK( \
   fputs( "\n  --" OPT, stdout ); printed_opt = true; )
 
+// LCOV_EXCL_START
 /**
  * Prints the **cdecl** version and possibly configure feature &amp; package
  * options and whether GNU **readline**(3) is genuine, then exits.
@@ -702,6 +703,7 @@ static void print_version( bool verbose ) {
   printf( "genuine GNU readline(3): %s\n", HAVE_GENUINE_GNU_READLINE ? "yes" : "no" );
 #endif /* WITH_READLINE */
 }
+// LCOV_EXCL_STOP
 
 ////////// extern functions ///////////////////////////////////////////////////
 
