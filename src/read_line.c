@@ -68,10 +68,12 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
     bool got_line;
 
     if ( is_interactive ) {
+      // LCOV_EXCL_START -- tests are not interactive
 #ifdef WITH_READLINE
       readline_init( prog_name, fin, stdout );
       free( line );
       got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
+      // LCOV_EXCL_STOP
     }
     else
 #else /* WITH_READLINE */
@@ -116,7 +118,7 @@ bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
   assert( sbuf->str[0] != '\0' );
 #ifdef HAVE_READLINE_HISTORY_H
   if ( is_interactive )
-    add_history( sbuf->str );
+    add_history( sbuf->str );           // LCOV_EXCL_LINE
 #endif /* HAVE_READLINE_HISTORY_H */
   return true;
 }

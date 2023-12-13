@@ -56,7 +56,7 @@
 NODISCARD
 static size_t next_pow_2( size_t n ) {
   if ( n == 0 )
-    return 1;
+    return 1;                           // LCOV_EXCL_LINE
   while ( (n & (n - 1)) != 0 )
     n &= n - 1;
   return n << 1;

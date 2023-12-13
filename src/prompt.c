@@ -118,17 +118,21 @@ static void prompt_create( char suffix, strbuf_t *sbuf ) {
   strbuf_reset( sbuf );
 
   if ( color_prompt() ) {
+    // LCOV_EXCL_START -- test output is not in color
     RL_PROMPT_IGNORE( sbuf, START );
     color_strbuf_start( sbuf, sgr_prompt );
     RL_PROMPT_IGNORE( sbuf, END );
+    // LCOV_EXCL_STOP
   }
 
   strbuf_printf( sbuf, "%s%c", OPT_LANG_IS( C_ANY ) ? CDECL : CPPDECL, suffix );
 
   if ( color_prompt() ) {
+    // LCOV_EXCL_START
     RL_PROMPT_IGNORE( sbuf, START );
     color_strbuf_end( sbuf, sgr_prompt );
     RL_PROMPT_IGNORE( sbuf, END );
+    // LCOV_EXCL_STOP
   }
 
   strbuf_putc( sbuf, ' ' );
