@@ -176,7 +176,7 @@ int c_scope_data_cmp( c_scope_data_t const *i_data,
 
 c_scope_data_t* c_scope_data_dup( c_scope_data_t const *src ) {
   if ( src == NULL )
-    return NULL;
+    return NULL;                        // LCOV_EXCL_LINE
   c_scope_data_t *const dst = MALLOC( c_scope_data_t, 1 );
   dst->name = check_strdup( src->name );
   dst->type = src->type;
@@ -340,7 +340,7 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
     if ( local_data != NULL )
       return local_data->name;
   }
-  return "";
+  return "";                            // LCOV_EXCL_LINE
 }
 
 bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
