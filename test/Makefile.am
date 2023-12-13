@@ -33,7 +33,7 @@ TESTS+= tests/cdecl--color.test \
 	tests/cdecl--no-typedefs.test
 
 # Command-line option error tests
-TESTS+=	tests/bad_cli_options.test
+TESTS+=	tests/cli_options-error.test
 
 # Cast tests
 TESTS+=	tests/cast.test \
