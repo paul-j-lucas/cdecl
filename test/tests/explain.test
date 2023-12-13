@@ -89,6 +89,7 @@ explain int a[*]
 explain int a__a
 explain int const x
 explain int f( void() )
+explain int f( char s[restrict] )
 explain int f(char (*(*)())[])
 explain int final
 explain int func( char const array[], void *pointer, bool cast )

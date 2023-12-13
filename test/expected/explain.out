@@ -180,6 +180,8 @@ cdecl> explain int const x
 declare x as constant integer
 cdecl> explain int f( void() )
 declare f as function (pointer to function returning void) returning integer
+cdecl> explain int f( char s[restrict] )
+declare f as function (s as restricted array of character) returning integer
 cdecl> explain int f(char (*(*)())[])
 declare f as function (pointer to function returning pointer to array of character) returning integer
 cdecl> explain int final
