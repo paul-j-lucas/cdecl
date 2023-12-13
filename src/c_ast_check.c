@@ -2571,10 +2571,6 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
         return VISITOR_ERROR_FOUND;
       break;
 
-    case K_CAPTURE:
-      // checked in c_ast_check_lambda_captures()
-      break;
-
     case K_CAST:
       if ( !c_ast_check_cast( ast ) )
         return VISITOR_ERROR_FOUND;
@@ -2692,11 +2688,9 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
       }
       break;
 
-    case K_VARIADIC:
-      assert( ast->param_of_ast != NULL );
-      break;
-
-    case K_PLACEHOLDER:
+    case K_CAPTURE:               // checked in c_ast_check_lambda_captures()
+    case K_PLACEHOLDER:           // should never occur
+    case K_VARIADIC:              // checked in c_ast_check_func_params()
       unreachable();
   } // switch
 
