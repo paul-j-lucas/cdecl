@@ -1,3 +1,51 @@
+2023-12-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * prompt.c, read_line.c, strbuf.c: Marked lines as LCOV_EXCL_LINE.
+   * lexer.l: Marked lines as LCOV_EXCL_LINE.
+   * dump.c: Marked lines as LCOV_EXCL_LINE.
+   * did_you_mean.c: Marked line as LCOV_EXCL_LINE.
+   * dam_lev.c: Marked lines as LCOV_EXCL_LINE.
+   * c_sname.c: Marked lines as LCOV_EXCL_LINE.
+   * c_typedef.c: Marked line as LCOV_EXCL_LINE.
+   * c_type.c: Marked lines as LCOV_EXCL_LINE.
+   * c_sglob.c: Marked line as LCOV_EXCL_LINE.
+   * c_lang.c: Marked line as LCOV_EXCL_LINE.
+   * test/Makefile.am: Renamed test.
+   * print.c, explain-error.out, explain-error.test: Improved C99 with
+     extension error messages.
+   * c_lang.c: Marked line as LCOV_EXCL_LINE.
+   * debug.out, debug.test: Added debug test to dump "name".
+   * c_ast_util.c: Converted NULL check to assert().
+   * c_ast_check.c: Marked line as LCOV_EXCL_LINE.
+   * c_ast_check.c, explain-error.out, explain-error.test: Arrays being
+     `restrict` except as function parameter is now correctly illegal.
+   * explain.out, explain.test: Added "restrict" test.
+   * c_ast_check.c: Coalesced K_CAPTURE, K_PLACEHOLDER, and K_VARIADIC.
+   * declare-error.out, declare-error.test: Added negative user-defined literal
+     test.
+   * declare-error.out, declare-error.test: Added negative declare operator new
+     test.
+   * c_ast_check.c, explain-error.out, explain-error.test: Lambdas are now
+     correctly illegal in C.
+   * explain-error.out, explain.out, explain-error.test, explain.test: Added
+     [this] and [*this] tests.
+   * explain-error.out, explain-error.test: Fixed explain error test.
+   * declare-error.out, declare-error.test: Added main() declare error tests.
+   * explain-error.out, explain-error.test: Fixed tests.
+   * declare-error.out, declare-error.test: Added declare array of void error
+     test.
+   * c_ast.h: Removed c_ast_captures() -- not used.
+
+2023-12-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am, help-error.out, help-error.test: Added help error tests.
+   * help.out, help.test: Added help tests.
+   * dump.c: Put dumping of unique IDs inside LCOV_EXCL_START/LCOV_EXCL_STOP.
+   * cli_options.c: Put print_version() inside LCOV_EXCL_START/LCOV_EXCL_STOP.
+   * c_ast.c, c_ast.h: Made c_ast_list_equal() static.
+   * c_ast.c, c_ast.h: Made c_ast_list_dup() static.
+   * util.c: Added LCOV_EXCL_START/LCOV_EXCL_STOP for fatal_error().
+
 2023-12-10  Paul J. Lucas <paul@lucasmail.org>
 
    * print.c: Added LCOV_EXCL_LINE.
