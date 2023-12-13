@@ -528,21 +528,6 @@ NODISCARD
 c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list );
 
 /**
- * Duplicates \a src_list.
- *
- * @param src_list The AST list to duplicate; may be NULL.
- * @param node_list The list to append the duplicated AST nodes onto.
- * @return Returns the duplicated AST list or an empty list only if \a src_list
- * is NULL.
- *
- * @sa c_ast_dup()
- * @sa c_ast_list_cleanup()
- */
-NODISCARD
-c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
-                             c_ast_list_t *node_list );
-
-/**
  * Checks whether two ASTs are equal _except_ for their names.
  *
  * @param i_ast The first AST; may be NULL.

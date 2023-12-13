@@ -170,6 +170,35 @@ static bool c_ast_has_cycle( c_ast_t const *ast ) {
 }
 #endif /* NDEBUG */
 
+/**
+ * Duplicates \a src_list.
+ *
+ * @param src_list The AST list to duplicate; may be NULL.
+ * @param node_list The list to append the duplicated AST nodes onto.
+ * @return Returns the duplicated AST list or an empty list only if \a src_list
+ * is NULL.
+ *
+ * @sa c_ast_dup()
+ * @sa c_ast_list_cleanup()
+ */
+NODISCARD
+static c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
+                                    c_ast_list_t *node_list ) {
+  slist_t dup_list;
+  slist_init( &dup_list );
+
+  if ( src_list != NULL ) {
+    FOREACH_SLIST_NODE( src_node, src_list ) {
+      c_ast_t const *const src_ast = src_node->data;
+      c_ast_t *const dup_ast = c_ast_dup( src_ast, node_list );
+      slist_push_back( &dup_list, dup_ast );
+    } // for
+  }
+
+  return dup_list;
+}
+
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_cleanup( void ) {
@@ -430,22 +459,6 @@ void c_ast_list_cleanup( c_ast_list_t *list ) {
   // Do not pass &c_ast_free as the second argument since all ASTs are free'd
   // independently. Just free the list nodes.
   slist_cleanup( list, /*free_fn=*/NULL );
-}
-
-c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
-                             c_ast_list_t *node_list ) {
-  slist_t dup_list;
-  slist_init( &dup_list );
-
-  if ( src_list != NULL ) {
-    FOREACH_SLIST_NODE( src_node, src_list ) {
-      c_ast_t const *const src_ast = src_node->data;
-      c_ast_t *const dup_ast = c_ast_dup( src_ast, node_list );
-      slist_push_back( &dup_list, dup_ast );
-    } // for
-  }
-
-  return dup_list;
 }
 
 bool c_ast_list_equal( c_ast_list_t const *i_list,
