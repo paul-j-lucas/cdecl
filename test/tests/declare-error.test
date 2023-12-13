@@ -113,6 +113,7 @@ declare f as extern member function
 declare f as non-unique-address function
 declare f as _Noreturn function (int) returning void
 declare f of scope S as virtual function
+declare new as operator (size_t) returning int
 declare x as array of reference to int
 declare x as auto int
 declare x as consteval int

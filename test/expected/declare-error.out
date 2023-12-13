@@ -309,6 +309,9 @@ c++decl> declare f as _Noreturn function (int) returning void
 c++decl> declare f of scope S as virtual function
                  ^
 9: error: "S::f": "virtual" can not be used in file-scoped functions
+c++decl> declare new as operator (size_t) returning int
+                                                    ^
+44: error: invalid operator "new" return type "integer"; must be "pointer to void"
 c++decl> declare x as array of reference to int
                  ^
 9: error: array of reference is illegal; did you mean reference to array?
