@@ -299,7 +299,7 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_cap ) {
   // return the input line in chunks; but might as well code for the case.
   //
   if ( unlikely( input_avail > buf_cap ) )
-    input_avail = buf_cap;
+    input_avail = buf_cap;              // LCOV_EXCL_LINE
   memcpy( buf, input_buf + input_sent, input_avail );
   input_sent += input_avail;
   return input_avail;
@@ -356,8 +356,10 @@ static int parse_int( int base ) {
   errno = 0;
   long const rv = strtol( s, /*endptr=*/NULL, base );
   if ( unlikely( errno != 0 || rv > INT_MAX ) ) {
+    // LCOV_EXCL_START
     print_warning( &yylloc, "integer out of range; clamped to %d\n", INT_MAX );
     return INT_MAX;
+    // LCOV_EXCL_STOP
   }
 
   return STATIC_CAST( int, rv );
