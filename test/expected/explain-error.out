@@ -606,9 +606,9 @@ c++decl> explain void f() throw()
 c++decl> explain void f(int (*g) const)
                                  ^
 25: syntax error: "const": ',' expected
-c++decl> explain void f(int S::x)
-                                ^
-24: syntax error: ")": cast or declaration expected
+c++decl> explain void f(int SP::x)
+                        ^
+16: error: parameter names can not be scoped
 c++decl> explain void f(int x[*])
                              ^
 21: error: variable length arrays not supported in C++

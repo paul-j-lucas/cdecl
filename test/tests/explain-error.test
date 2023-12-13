@@ -219,7 +219,7 @@ explain void f( this S &self ) &
 explain void f( this S &self ) const
 explain void f() throw()
 explain void f(int (*g) const)
-explain void f(int S::x)
+explain void f(int SP::x)
 explain void f(int x[*])
 explain void f(int x[const 3])
 explain void f(int x[static 3])
