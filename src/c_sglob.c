@@ -57,7 +57,7 @@ void c_sglob_parse( char const *s, c_sglob_t *rv_sglob ) {
     return;
   SKIP_WS( s );
   if ( s[0] == '\0' )
-    return;
+    return;                             // LCOV_EXCL_LINE
 
   //
   // Special case: if the scoped glob starts with `**`, match in any scope.
