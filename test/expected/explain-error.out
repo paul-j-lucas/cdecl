@@ -347,6 +347,9 @@ cdecl> explain void (*restrict p)()
 cdecl> explain void x
                ^
 9: error: variable of "void"; did you mean "void*"?
+cdecl> explain []
+               ^
+9: error: lambdas not supported in C
 cdecl> set knr
 cdecl> explain const int x
                ^

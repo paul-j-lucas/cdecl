@@ -1445,6 +1445,14 @@ static bool c_ast_check_lambda( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_LAMBDA );
 
+  if ( !OPT_LANG_IS( LAMBDAS ) ) {
+    print_error( &ast->loc,
+      "lambdas not supported%s\n",
+      C_LANG_WHICH( LAMBDAS )
+    );
+    return false;
+  }
+
   c_tid_t const stids = ast->type.stids & c_tid_compl( TS_LAMBDA );
   if ( stids != TS_NONE ) {
     print_error( &ast->loc,

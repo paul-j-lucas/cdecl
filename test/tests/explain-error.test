@@ -122,6 +122,7 @@ explain void f(void x)
 explain void main()
 explain void (*restrict p)()
 explain void x
+explain []
 
 set knr
 explain const int x
