@@ -3120,7 +3120,7 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
 
   size_t const ast_count = slist_len( ast_list );
   if ( ast_count == 0 )
-    return true;
+    return true;                        // LCOV_EXCL_LINE
 
   c_ast_t const *const first_ast = slist_front( ast_list );
   if ( first_ast->type.btids == TB_auto && ast_count > 1 &&
