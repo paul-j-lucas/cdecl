@@ -29,6 +29,9 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 
+// standard
+#include <stddef.h>                     /* for size_t */
+
 /**
  * @defgroup prompt-group Prompt
  * Global variables and functions for the prompt.
@@ -43,8 +46,9 @@
  *  + 0 = The primary prompt.
  *  + 1 = The secondary prompt (used for continuation lines).
  *
- * @note These may contain [Select Graphics Rendition (SGR) color
- * codes](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).
+ * @warning These may contain [Select Graphics Rendition (SGR) color
+ * codes](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR).  Do _not_ call
+ * `strlen()` on them; use cdecl_prompt_len() instead.
  */
 extern char const  *cdecl_prompt[2];
 
@@ -66,6 +70,14 @@ void cdecl_prompt_enable( void );
  * @sa cdecl_prompt_enable()
  */
 void cdecl_prompt_init( void );
+
+/**
+ * Gets the length of the current prompt, if any.
+ *
+ * @return Returns said length.
+ */
+NODISCARD
+size_t cdecl_prompt_len( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 

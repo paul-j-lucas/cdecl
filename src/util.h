@@ -775,6 +775,14 @@ _GL_INLINE_HEADER_BEGIN
 #define STRINGIFY(X)              STRINGIFY_HELPER(X)
 
 /**
+ * Gets the length of \a S.
+ *
+ * @param S The C string literal to get the length of.
+ * @return Returns said length.
+ */
+#define STRLITLEN(S)              (ARRAY_SIZE(S) - 1)
+
+/**
  * Synthesises a name prefixed by \a PREFIX unique to the line on which it's
  * used.
  *

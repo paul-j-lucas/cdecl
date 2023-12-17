@@ -76,8 +76,13 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/// @cond DOXYGEN_IGNORE
+/// Otherwise Doxygen generates two entries for each option.
+
 // extern variable definitions
 char const         *cdecl_prompt[2];
+
+/// @endcond
 
 // local variable definitions
 static strbuf_t     prompt_buf[2];      ///< Buffers for prompts.
@@ -155,6 +160,13 @@ void cdecl_prompt_init( void ) {
   prompt_create( '>', &prompt_buf[0] );
   prompt_create( '+', &prompt_buf[1] );
   cdecl_prompt_enable();
+}
+
+size_t cdecl_prompt_len( void ) {
+  if ( !opt_prompt )
+    return 0;
+  return (OPT_LANG_IS( C_ANY ) ? STRLITLEN( CDECL ) : STRLITLEN( CPPDECL ))
+          + 2/*> */;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

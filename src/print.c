@@ -307,7 +307,7 @@ static size_t print_caret( size_t error_column ) {
     // the already existing token we printed or the user typed for the recent
     // command, but we have to add the length of the prompt.
     //
-    caret_column = (error_column + strlen( cdecl_prompt[0] )) % term_columns;
+    caret_column = (error_column + cdecl_prompt_len()) % term_columns;
   }
   else {
     //
