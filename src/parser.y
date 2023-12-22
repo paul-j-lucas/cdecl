@@ -746,7 +746,7 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
     //
     slist_free_if(
       &gc_ast_list,
-      POINTER_CAST( slist_pred_fn_t, &c_ast_free_if_garbage ),
+      &c_ast_free_if_garbage,
       (user_data_t){ .pc = type_ast }
     );
     slist_push_list_back( &typedef_ast_list, &gc_ast_list );
