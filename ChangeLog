@@ -1,3 +1,12 @@
+2023-12-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, slist.c, slist.h, slist_test.c: slist_free_if() now takes
+     slist_node_t.
+
+2023-12-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c, prompt.c, prompt.h, util.h: Added cdecl_prompt_len().
+
 2023-12-13  Paul J. Lucas <paul@lucasmail.org>
 
    * prompt.c, read_line.c, strbuf.c: Marked lines as LCOV_EXCL_LINE.
