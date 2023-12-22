@@ -1,5 +1,6 @@
 2023-12-21  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Removed unecessary cast.
    * slist.c, slist.h: Made slist_free_if() return bool.
    * parser.y, slist.c, slist.h, slist_test.c: slist_free_if() now takes
      slist_node_t.
