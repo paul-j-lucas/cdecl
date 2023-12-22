@@ -42,9 +42,9 @@ static unsigned     test_failures;
 
 ////////// local functions ////////////////////////////////////////////////////
 
-static bool slist_node_str_equal( void *data, user_data_t user_data ) {
+static bool slist_node_str_equal( slist_node_t *node, user_data_t user_data ) {
   (void)user_data;
-  char const *const s = data;
+  char const *const s = node->data;
   return strcmp( s, str_equal_to ) == 0;
 }
 

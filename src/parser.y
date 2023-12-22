@@ -662,12 +662,15 @@ static void attr_syntax_not_supported( char const *keyword,
  * A predicate function for slist_free_if() that checks whether \a ast is one
  * that can be garbage collected: if so, c_ast_free()s it.
  *
- * @param ast The AST to check.
+ * @param ast_node The \ref slist_node pointing to the AST to check.
  * @param user_data Contains the AST of the type being declared.
  * @return Returns `true` only if \a ast should be removed from the list.
  */
 NODISCARD
-static bool c_ast_free_if_garbage( c_ast_t *ast, user_data_t user_data ) {
+static bool c_ast_free_if_garbage( slist_node_t *ast_node,
+                                   user_data_t user_data ) {
+  assert( ast_node != NULL );
+  c_ast_t *const ast = ast_node->data;
   assert( ast != NULL );
   c_ast_t const *const type_ast = user_data.pc;
   assert( type_ast != NULL );

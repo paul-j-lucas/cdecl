@@ -149,7 +149,7 @@ void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn,
     slist_node_t *const curr = list->head;
     if ( curr == NULL )
       return;
-    if ( !(*pred_fn)( curr->data, user_data ) )
+    if ( !(*pred_fn)( curr, user_data ) )
       break;
     if ( list->tail == curr )
       list->tail = NULL;
@@ -168,7 +168,7 @@ void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn,
     slist_node_t *const curr = prev->next;
     if ( curr == NULL )
       break;
-    if ( !(*pred_fn)( curr->data, user_data ) ) {
+    if ( !(*pred_fn)( curr, user_data ) ) {
       prev = curr;
       continue;
     }

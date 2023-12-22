@@ -119,11 +119,11 @@ typedef void (*slist_free_fn_t)( void *data );
  * The signature for a function passed to slist_free_if() used to determine
  * whether a node should be freed.
  *
- * @param data A pointer to the node's data to check.
+ * @param node A pointer to the node being visited.
  * @param user_data Optional data passed to slist_free_if().
  * @return Returns `true` only if the node should be freed.
  */
-typedef bool (*slist_pred_fn_t)( void *data, user_data_t user_data );
+typedef bool (*slist_pred_fn_t)( slist_node_t *node, user_data_t user_data );
 
 ///////////////////////////////////////////////////////////////////////////////
 
