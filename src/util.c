@@ -337,7 +337,7 @@ char* str_realloc_cat( char *dst, char const *sep, char const *src ) {
   size_t const sep_len = strlen( sep );
   size_t const src_len = strlen( src );
 
-  REALLOC( dst, char*, dst_len + sep_len + src_len );
+  REALLOC( dst, char*, dst_len + sep_len + src_len + 1/*\0*/ );
   strcpy( dst + dst_len, sep );
   strcpy( dst + dst_len + sep_len, src );
   return dst;
