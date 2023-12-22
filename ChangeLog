@@ -1,3 +1,7 @@
+2023-12-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Added +1 for \0 byte at end of string in str_realloc_cat().
+
 2023-12-21  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Removed unecessary cast.
