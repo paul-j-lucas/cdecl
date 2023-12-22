@@ -139,16 +139,18 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
   return dst_list;
 }
 
-void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn,
+bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn,
                     user_data_t user_data ) {
   assert( list != NULL );
   assert( pred_fn != NULL );
+
+  size_t const len_orig = list->len;
 
   // special case: predicate matches list->head
   for (;;) {
     slist_node_t *const curr = list->head;
     if ( curr == NULL )
-      return;
+      goto done;
     if ( !(*pred_fn)( curr, user_data ) )
       break;
     if ( list->tail == curr )
@@ -178,6 +180,9 @@ void slist_free_if( slist_t *list, slist_pred_fn_t pred_fn,
     free( curr );
     --list->len;
   } // for
+
+done:
+  return list->len < len_orig;
 }
 
 slist_t slist_move( slist_t *list ) {
