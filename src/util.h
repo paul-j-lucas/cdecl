@@ -1353,11 +1353,11 @@ bool str_is_prefix( char const *s1, char const *s2 );
  * @param dst The string onto which \a sep and \a src are appended.
  * @param sep The string to append to \a dst before appending \a src.
  * @param src The string to append to \a dst after appending \a sep.
- * @return Returns the concatenated string.
+ * @return Returns the concatenated string, aka, \a dst.
  *
  * @warning \a dst _must_ have been dynamically allocated.
  */
-NODISCARD
+PJL_DISCARD
 char* str_realloc_cat( char *dst, char const *sep, char const *src );
 
 /**
