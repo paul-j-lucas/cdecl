@@ -2490,7 +2490,9 @@ help_what_opt
   | error
     {
       $$ = NULL;
-      elaborate_error( "\"commands\", \"english\", or \"options\" expected" );
+      elaborate_error(
+        "<command>, \"commands\", \"english\", or \"options\" expected"
+      );
     }
   ;
 
