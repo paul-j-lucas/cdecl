@@ -129,7 +129,7 @@ static bool colors_parse( char const *capabilities ) {
   static bool set_any;                  // set at least one?
   assert( !set_any );
 
-  if ( capabilities == NULL )
+  if ( null_if_empty( capabilities ) == NULL )
     return false;
   char *const capabilities_dup = check_strdup( capabilities );
 
