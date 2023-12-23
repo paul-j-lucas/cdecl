@@ -117,7 +117,8 @@ char const *sgr_warning;
  *  </table>
  * where <i>sgr</i> is a [Select Graphics
  * Rendition](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR) code.  An
- * example \a capabilities is: `caret=42;1:error=41;1:warning=43;1`.
+ * example \a capabilities is: `caret=42;1:error=41;1:warning=43;1`.  If NULL,
+ * does nothing.
  * @return Returns `true` only if at least one capability was parsed
  * successfully.
  *
