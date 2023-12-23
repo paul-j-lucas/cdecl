@@ -1,5 +1,6 @@
 2023-12-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Added <command> to help_what_opt error message.
    * util.h: s/Changed str_realloc_cat() to PJL_DISCARD.
    * util.c: Added +1 for \0 byte at end of string in str_realloc_cat().
 
