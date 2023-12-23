@@ -1,3 +1,7 @@
+2023-12-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c: colors_parse() now treats "" the same as NULL.
+
 2023-12-22  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Added <command> to help_what_opt error message.
