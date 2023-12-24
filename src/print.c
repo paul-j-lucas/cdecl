@@ -628,8 +628,10 @@ void print_is_a_keyword( char const *error_token ) {
         EPRINTF( " in %s", c_lang_name( ck->lang_ids ) );
       EPUTC( ')' );
     }
+    return;
   }
-  else if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+
+  if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
     cdecl_keyword_t const *const cdk = cdecl_keyword_find( error_token );
     if ( cdk != NULL )
       EPRINTF( " (\"%s\" is a " CDECL " keyword)", error_token );
