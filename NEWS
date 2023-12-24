@@ -12,15 +12,19 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 15.1
 
+** C99 with extension error messages
+Improved C99 with extension error messages.
+
+** `GCC_COLORS`
+Support for `GCC_COLORS` has been removed. It was more of a hindrance than a
+help.
+
 ** Implicit `int` pointers in C++
 Implicit `int` pointer declarations, e.g., `*p`, are now correctly illegal in
 C++.
 
 ** Lambdas in C
 Lambdas are not correctly illegal in C.
-
-** C99 with extension error messages
-Improved C99 with extension error messages.
 
 ** Nested `typedef`s
 Fixed printing of `typedef`s of nested types, e.g.:

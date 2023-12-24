@@ -287,15 +287,13 @@ void color_init( void ) {
     return;
   if ( colors_parse( getenv( "CDECL_COLORS" ) ) )
     return;
-  if ( colors_parse( getenv( "GCC_COLORS" ) ) )
-    return;
 
   static char const COLORS_DEFAULT[] =
     COLOR_CAP_CARET         "=" SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
     COLOR_CAP_ERROR         "=" SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP
     COLOR_CAP_HELP_KEYWORD  "="                       SGR_BOLD  SGR_CAP_SEP
     COLOR_CAP_HELP_NONTERM  "=" SGR_FG_CYAN                     SGR_CAP_SEP
-    COLOR_CAP_HELP_PUNCT    "=" SGR_FG_BLACK  SGR_SEP SGR_BOLD  SGR_CAP_SEP
+    COLOR_CAP_HELP_PUNCT    "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP
     COLOR_CAP_HELP_TITLE    "=" SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP
     COLOR_CAP_LOCUS         "="                       SGR_BOLD  SGR_CAP_SEP
     COLOR_CAP_PROMPT        "=" SGR_FG_GREEN                    SGR_CAP_SEP
