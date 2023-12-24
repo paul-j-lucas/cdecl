@@ -2556,6 +2556,7 @@ C++-style \f(CW//\fP comments,
 and C preprocessor directives \f(CW#\fP,
 all of which are ignored.
 .SH EXAMPLES
+.SS C Declarations
 To declare an array of pointers to functions that are like
 .BR malloc (3):
 .cS
@@ -2605,7 +2606,8 @@ const int *pci;
 
 cdecl> declare cpi as const pointer to int
 int *const cpi;
-.cE
+.cE 0
+.SS C++ Declarations
 .B c++decl
 can help with declaring references:
 .cS
