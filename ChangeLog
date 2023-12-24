@@ -1,5 +1,6 @@
 2023-12-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Added subheadings in EXAMPLES section.
    * cdecl.1, color.c: Removed GCC_COLORS support.
 
 2023-12-23  Paul J. Lucas <paul@lucasmail.org>
