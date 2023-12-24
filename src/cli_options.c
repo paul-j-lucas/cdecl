@@ -336,12 +336,11 @@ static color_when_t parse_color_when( char const *when ) {
     { "not_file",  COLOR_NOT_FILE },    // !ISREG( stdout )
     { "not_isreg", COLOR_NOT_FILE },    // synonym for not_isfile
     { "tty",       COLOR_ISATTY   },    // synonym for isatty
-    { NULL,        COLOR_NEVER    }
   };
 
   assert( when != NULL );
 
-  for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m ) {
+  FOREACH_ARRAY_ELEMENT( colorize_map_t, m, COLORIZE_MAP ) {
     if ( strcasecmp( when, m->map_when ) == 0 )
       return m->map_colorization;
   } // for
@@ -350,7 +349,7 @@ static color_when_t parse_color_when( char const *when ) {
   strbuf_t when_sbuf;
   strbuf_init( &when_sbuf );
   bool comma = false;
-  for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m )
+  FOREACH_ARRAY_ELEMENT( colorize_map_t, m, COLORIZE_MAP )
     strbuf_sepsn_puts( &when_sbuf, ", ", 2, &comma, m->map_when );
   opt_invalid_value( COPT(COLOR), when, when_sbuf.str );
 }
