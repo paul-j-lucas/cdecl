@@ -4918,8 +4918,7 @@ typedef_type_decl_c_ast
         c_typedef_t const *const tdef =
           c_typedef_find_sname( &raw_tdef_ast->sname );
         if ( tdef != NULL ) {
-          print_error(
-            &$tdef_ast->loc,
+          print_error( &$tdef_ast->loc,
             "\"%s\": previously declared as type \"",
             c_sname_full_name( &raw_tdef_ast->sname )
           );
