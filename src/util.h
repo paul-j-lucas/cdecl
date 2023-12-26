@@ -124,6 +124,7 @@ _GL_INLINE_HEADER_BEGIN
 #define CHARIFY_y 'y'
 #define CHARIFY_z 'z'
 
+#define NAME2_HELPER(A,B)         A##B
 #define STRINGIFY_HELPER(X)       #X
 
 /// @endcond
@@ -564,10 +565,6 @@ _GL_INLINE_HEADER_BEGIN
 #define MEM_ZERO(PTR) BLOCK(                                    \
   static_assert( IS_POINTER(PTR), #PTR " must be a pointer" );  \
   memset( (PTR), 0, sizeof *(PTR) ); )
-
-/// @cond DOXYGEN_IGNORE
-#define NAME2_HELPER(A,B)         A##B
-/// @endcond
 
 /**
  * Concatenate \a A and \a B together to form a single token.
