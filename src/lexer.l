@@ -1397,8 +1397,11 @@ c_loc_t lexer_loc( void ) {
   else if ( lexer_token[0] == '\n' )
     rv_loc.first_column = token_column;
   else {
-    rv_loc.first_column =
-      token_column - STATIC_CAST( int, strlen( lexer_token ) );
+    //
+    // This has to be the original yytext, not lexer_token, since lexer_token
+    // could have been set to something else via SET_TOKEN_TO().
+    //
+    rv_loc.first_column = token_column - STATIC_CAST( int, strlen( yytext ) );
     assert( rv_loc.first_column >= 0 );
   }
 
