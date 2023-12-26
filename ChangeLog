@@ -1,3 +1,7 @@
+2023-12-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: s/lexer_token/yytext/ in lexer_loc().
+
 2023-12-24  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: Using FOREACH_ARRAY_ELEMENT more.
