@@ -347,7 +347,7 @@ void strn_rtrim( char const *s, size_t *s_len ) {
   assert( s != NULL );
   assert( s_len != NULL );
 
-  while ( *s_len > 0 && strchr( WS, s[ *s_len - 1 ] ) != NULL )
+  while ( *s_len > 0 && strchr( WS_CHARS, s[ *s_len - 1 ] ) != NULL )
     --*s_len;
 }
 

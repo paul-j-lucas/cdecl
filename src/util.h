@@ -713,7 +713,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #SKIP_CHARS()
  */
-#define SKIP_WS(S)                SKIP_CHARS( (S), WS )
+#define SKIP_WS(S)                SKIP_CHARS( (S), WS_CHARS )
 
 /**
  * Calls **stat**(2), checks for an error, and exits if there was one.
@@ -808,7 +808,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Whitespace characters.
  */
-#define WS                        " \n\t\r\f\v"
+#define WS_CHARS                  " \n\t\r\f\v"
 
 ////////// extern functions ///////////////////////////////////////////////////
 
