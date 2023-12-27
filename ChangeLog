@@ -1,5 +1,9 @@
 2023-12-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * parse.c: Fixed having `q` be a synonym for `quit` in `infer-command`
+     (formerly `explain-by-default`) mode.
+   * cdecl.c, cdecl.h, parser.y: s/quit()/cdecl_quit()/ and moved into cdecl.c.
+   * cdecl.1: Undid premature mention of "expand".
    * cdecl.1, autocomplete.c, cdecl_command.c, cli_options.c, help.c,
      options.c, options.h, parse.c, set_options.c, test/Makefile.am,
      alt-tokens.out, cdecl--help.out, cl.out, debug.out, explicit-ecsu.out,
