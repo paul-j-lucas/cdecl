@@ -214,7 +214,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   print_params.command_line = s;
   print_params.command_line_len = s_len;
 
-  strbuf_t explain_buf;
+  strbuf_t sbuf;
   bool const insert_explain = opt_explain && cdecl_command_find( s ) == NULL;
 
   if ( insert_explain ) {
@@ -225,12 +225,12 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     //
     static char const EXPLAIN_SP[] = "explain ";
     print_params.inserted_len = STRLITLEN( EXPLAIN_SP );
-    strbuf_init( &explain_buf );
-    strbuf_reserve( &explain_buf, print_params.inserted_len + s_len );
-    strbuf_putsn( &explain_buf, EXPLAIN_SP, print_params.inserted_len );
-    strbuf_putsn( &explain_buf, s, s_len );
-    s = explain_buf.str;
-    s_len = explain_buf.len;
+    strbuf_init( &sbuf );
+    strbuf_reserve( &sbuf, print_params.inserted_len + s_len );
+    strbuf_putsn( &sbuf, EXPLAIN_SP, print_params.inserted_len );
+    strbuf_putsn( &sbuf, s, s_len );
+    s = sbuf.str;
+    s_len = sbuf.len;
   }
 
   FILE *const temp_file = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
@@ -258,7 +258,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     fatal_error( EX_SOFTWARE, "yyparse(): out of memory\n" );
 
   if ( insert_explain ) {
-    strbuf_cleanup( &explain_buf );
+    strbuf_cleanup( &sbuf );
     print_params.inserted_len = 0;
   }
 
