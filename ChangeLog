@@ -1,5 +1,12 @@
 2023-12-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1, autocomplete.c, cdecl_command.c, cli_options.c, help.c,
+     options.c, options.h, parse.c, set_options.c, test/Makefile.am,
+     alt-tokens.out, cdecl--help.out, cl.out, debug.out, explicit-ecsu.out,
+     explicit-int.out, help.out, lang.out, prompt.out, semicolon.out, set.out,
+     set_expl.out, set_options.out, trigraphs.out, using.out, west-pointer.out:
+     Renamed --explain/-e to --infer-command/-I.
+   * util.c, util.h: s/WS/WS_CHARS/
    * parse.c: s/ARRAY_SIZE/STRLITLEN/
 
 2023-12-26  Paul J. Lucas <paul@lucasmail.org>
