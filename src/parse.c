@@ -224,7 +224,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     // column to get the correct column within the original string.
     //
     static char const EXPLAIN_SP[] = "explain ";
-    print_params.inserted_len = ARRAY_SIZE( EXPLAIN_SP ) - 1/*\0*/;
+    print_params.inserted_len = STRLITLEN( EXPLAIN_SP );
     strbuf_init( &explain_buf );
     strbuf_reserve( &explain_buf, print_params.inserted_len + s_len );
     strbuf_putsn( &explain_buf, EXPLAIN_SP, print_params.inserted_len );
