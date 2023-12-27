@@ -114,5 +114,9 @@ int main( int argc, char const *argv[] ) {
   exit( cdecl_parse_cli( STATIC_CAST( size_t, argc ), argv ) );
 }
 
+void cdecl_quit( void ) {
+  exit( EX_OK );
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

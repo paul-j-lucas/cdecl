@@ -1030,16 +1030,6 @@ static void parse_cleanup( bool fatal_error ) {
 }
 
 /**
- * Implements the **cdecl** `quit` command.
- *
- * @note This should be marked `noreturn` but isn't since that would generate a
- * warning that a `break` in the Bison-generated code won't be executed.
- */
-static void quit( void ) {
-  exit( EX_OK );
-}
-
-/**
  * Called by Bison to print a parsing error message to standard error.
  *
  * @remarks A custom error printing function via `%%define parse.error custom`
@@ -2499,7 +2489,7 @@ help_what_opt
 /// quit command //////////////////////////////////////////////////////////////
 
 quit_command
-  : Y_quit                        { quit(); }
+  : Y_quit                        { cdecl_quit(); }
   ;
 
 /// scope (enum, class, struct, union, namespace) command /////////////////////

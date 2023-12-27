@@ -69,6 +69,14 @@ extern char const  *me;                 ///< Program name.
 NODISCARD
 bool is_cppdecl( void );
 
+/**
+ * Implements the **cdecl** `quit` command.
+ *
+ * @note This should be marked `_Noreturn` but isn't since that would generate
+ * a warning that a `break` in the Bison-generated code won't be executed.
+ */
+void cdecl_quit( void );
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif /* cdecl_cdecl_H */
