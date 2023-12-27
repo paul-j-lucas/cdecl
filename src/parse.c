@@ -142,6 +142,22 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
 }
 
 /**
+ * Checks whether a single `q` is the only non-whitespace character in \a s.
+ *
+ * @param s The string to check.
+ * @return Returns `true` only if it is.
+ */
+static bool cdecl_parse_q( char const *s ) {
+  assert( s != NULL );
+  SKIP_WS( s );
+  if ( s[0] != 'q' )
+    return false;
+  ++s;
+  SKIP_WS( s );
+  return s[0] == '\0';
+}
+
+/**
  * Parses **cdecl** commands from standard input until EOF.
  *
  * @return Returns `EX_OK` upon success or another value upon failure.
@@ -215,7 +231,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   print_params.command_line_len = s_len;
 
   strbuf_t sbuf;
-  bool const infer_command =
+  bool const infer_command = !cdecl_parse_q( s ) &&
     opt_infer_command && cdecl_command_find( s ) == NULL;
 
   if ( infer_command ) {

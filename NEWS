@@ -49,6 +49,10 @@ types in more cases.
 ** Fixed escaped newlines
 Fixed escaped newline handling when not using GNU readline.
 
+** Fixed `q` command
+Fixed having `q` be a synonym for `quit` in `infer-command` (formerly `explain-
+by-default`) mode.
+
 
 * Changes in Cdecl 15.0
 
