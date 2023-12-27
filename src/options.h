@@ -93,7 +93,6 @@ extern char const  *opt_conf_path;      ///< Configuration file path.
 extern bool         opt_east_const;     ///< Print in "east const" form?
 extern bool         opt_echo_commands;  ///< Echo commands?
 extern bool         opt_english_types;  ///< Print types in English, not C/C++.
-extern bool         opt_explain;        ///< Assume `explain` if no command?
 
 /// Explicit `enum` | `class` | `struct` | `union`?
 extern c_tid_t      opt_explicit_ecsu_btids;
@@ -107,6 +106,7 @@ extern c_tid_t      opt_explicit_ecsu_btids;
 #endif /* ENABLE_FLEX_DEBUG */
 
 extern c_graph_t    opt_graph;          ///< Di/Trigraph mode.
+extern bool         opt_infer_command;  ///< Infer command if none given?
 extern c_lang_id_t  opt_lang;           ///< Current language.
 extern bool         opt_prompt;         ///< Print the prompt?
 extern bool         opt_read_conf;      ///< Read configuration file?

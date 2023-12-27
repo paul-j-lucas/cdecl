@@ -7,11 +7,11 @@ options:
   --digraphs           (-2) Print digraphs.
   --east-const         (-E) Print in "east const" form.
   --echo-commands      (-O) Echo commands given before corresponding output.
-  --explain            (-e) Assume "explain" when no other command is given.
   --explicit-ecsu=WHEN (-S) Print "class", "struct", "union" explicitly WHEN.
   --explicit-int=WHEN  (-i) Print "int" explicitly WHEN.
   --file=FILE          (-f) Read from FILE [default: stdin].
   --help               (-h) Print this help and exit.
+  --infer-command      (-I) Try to infer command when none is given.
   --language=LANG      (-x) Use LANG.
   --no-buffer-stdout   (-b) Set stdout to unbuffered.
   --no-config          (-C) Suppress reading configuration file.

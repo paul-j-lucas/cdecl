@@ -130,7 +130,7 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
 
   while ( strbuf_read_line( &sbuf, CDECL, fin, cdecl_prompt ) ) {
     // We don't just call yyrestart( fin ) and yyparse() directly because
-    // cdecl_parse_string() also inserts "explain " for opt_explain.
+    // cdecl_parse_string() may also insert a command for opt_infer_command.
     status = cdecl_parse_string( sbuf.str, sbuf.len );
     if ( status != EX_OK && return_on_error )
       break;
@@ -215,9 +215,10 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   print_params.command_line_len = s_len;
 
   strbuf_t sbuf;
-  bool const insert_explain = opt_explain && cdecl_command_find( s ) == NULL;
+  bool const infer_command =
+    opt_infer_command && cdecl_command_find( s ) == NULL;
 
-  if ( insert_explain ) {
+  if ( infer_command ) {
     //
     // The string doesn't start with a command: insert "explain " and set
     // inserted_len so the print_*() functions subtract it from the error
@@ -257,7 +258,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   if ( unlikely( status == 2 ) )
     fatal_error( EX_SOFTWARE, "yyparse(): out of memory\n" );
 
-  if ( insert_explain ) {
+  if ( infer_command ) {
     strbuf_cleanup( &sbuf );
     print_params.inserted_len = 0;
   }

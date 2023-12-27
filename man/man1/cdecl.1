@@ -360,10 +360,6 @@ for associating command output
 with input
 in test scripts.)
 .TP
-.BR \-\-explain " | " \-e
-Assumes \f(CWexplain\fP
-when an input line doesn't start with any command.
-.TP
 .BI \-\-explicit-ecsu \f1=\fPs "\f1 | \fP" "" \-S " s"
 For C++ only,
 sets the type keywords to
@@ -471,6 +467,16 @@ itself.)
 Prints a help message
 for command-line options
 and exits.
+.TP
+.BR \-\-infer-command " | " \-I
+Try to infer a command
+when an input line doesn't start with any.
+If an input line starts with a C (or C++) declaration,
+assumes
+.BR explain ;
+if an input line starts with a macro name,
+assumes
+.BR expand .
 .TP
 .BI \-\-language \f1=\fPs "\f1 | \fP" "" \-x " s"
 Specifies which version of what language
@@ -1644,11 +1650,6 @@ not C/C++
 when explaining gibberish
 \(em default is on.
 .TP
-.RB [ no ] explain-by-default
-Turns [off] on \f(CWexplain\fP being assumed
-when an input line doesn't start with any command
-\(em default is off.
-.TP
 .BI explicit-ecsu \f1=\fPs
 For C++ only,
 turns on explicit
@@ -1696,6 +1697,16 @@ Turns [off] on
 debugging output
 (if compiled in)
 \(em default is off.
+.TP
+.RB [ no ] infer-command
+Turns [off] on trying to infer a command
+when an input line doesn't start with any
+\(em default is off.
+(See the
+.B \-\-infer-command
+or
+.B \-I
+option for details.)
 .TP
 .BI lang \f1=\fPs
 Use

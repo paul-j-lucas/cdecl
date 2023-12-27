@@ -77,12 +77,12 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
             set_east_const( set_option_fn_args_t const* ),
             set_english_types( set_option_fn_args_t const* ),
             set_echo_commands( set_option_fn_args_t const* ),
-            set_explain_by_default( set_option_fn_args_t const* ),
             set_explicit_ecsu( set_option_fn_args_t const* ),
             set_explicit_int( set_option_fn_args_t const* ),
 #ifdef ENABLE_FLEX_DEBUG
             set_flex_debug( set_option_fn_args_t const* ),
 #endif /* ENABLE_FLEX_DEBUG */
+            set_infer_command( set_option_fn_args_t const* ),
             set_lang( set_option_fn_args_t const* ),
             set_lang_impl( char const* ),
             set_prompt( set_option_fn_args_t const* ),
@@ -178,12 +178,6 @@ static set_option_t const SET_OPTIONS[] = {
     &set_english_types
   },
 
-  { "explain-by-default",
-    SET_OPTION_TOGGLE,
-    .has_arg = no_argument,
-    &set_explain_by_default
-  },
-
   { "explicit-ecsu",
     SET_OPTION_TOGGLE,
     .has_arg = required_argument,
@@ -203,6 +197,12 @@ static set_option_t const SET_OPTIONS[] = {
     &set_flex_debug
   },
 #endif /* ENABLE_FLEX_DEBUG */
+
+  { "infer-command",
+    SET_OPTION_TOGGLE,
+    .has_arg = no_argument,
+    &set_infer_command
+  },
 
   { "lang",
     SET_OPTION_AFF_ONLY,
@@ -338,7 +338,6 @@ static void print_options( void ) {
   print_option( "east-const", po_bool_value( opt_east_const ), LANG_const );
   print_option( "echo-commands", po_bool_value( opt_echo_commands ), LANG_ANY );
   print_option( "english-types", po_bool_value( opt_english_types ), LANG_ANY );
-  print_option( "explain-by-default", po_bool_value( opt_explain ), LANG_ANY );
   print_option( "explicit-ecsu", explicit_ecsu_str(), LANG_CPP_ANY );
   print_option( "explicit-int", explicit_int_str(), LANG_ANY );
 #ifdef ENABLE_FLEX_DEBUG
@@ -358,6 +357,7 @@ static void print_options( void ) {
   }
   PUTC( '\n' );
 
+  print_option( "infer-command", po_bool_value( opt_infer_command ), LANG_ANY );
   print_option( "lang", c_lang_name( opt_lang ), LANG_ANY );
   print_option( "prompt", po_bool_value( opt_prompt ), LANG_ANY );
   print_option( "semicolon", po_bool_value( opt_semicolon ), LANG_ANY );
@@ -487,17 +487,6 @@ static bool set_english_types( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the `explain-by-default` option.
- *
- * @param args The set option arguments.
- * @return Always returns `true`.
- */
-static bool set_explain_by_default( set_option_fn_args_t const *args ) {
-  opt_explain = args->opt_enabled;
-  return true;
-}
-
-/**
  * Sets the `explicit-ecsu` option.
  *
  * @param args The set option arguments.
@@ -570,6 +559,17 @@ static bool set_flex_debug( set_option_fn_args_t const *args ) {
   return true;
 }
 #endif /* ENABLE_FLEX_DEBUG */
+
+/**
+ * Sets the `infer-command` option.
+ *
+ * @param args The set option arguments.
+ * @return Always returns `true`.
+ */
+static bool set_infer_command( set_option_fn_args_t const *args ) {
+  opt_infer_command = args->opt_enabled;
+  return true;
+}
 
 /**
  * Sets the `lang` option.

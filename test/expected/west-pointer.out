@@ -5,10 +5,10 @@ c++decl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
   nographs
+  noinfer-command
     lang=C++23
     prompt
     semicolon

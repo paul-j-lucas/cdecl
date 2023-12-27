@@ -13,10 +13,10 @@ c++decl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=ecsu
   noexplicit-int
   nographs
+  noinfer-command
     lang=C++23
     prompt
     semicolon
@@ -38,10 +38,10 @@ c++decl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
   noexplicit-ecsu
   noexplicit-int
   nographs
+  noinfer-command
     lang=C++23
     prompt
     semicolon

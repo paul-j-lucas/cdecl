@@ -98,10 +98,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -197,10 +197,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -281,10 +281,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -365,10 +365,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -451,10 +451,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -546,10 +546,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -641,10 +641,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -799,10 +799,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -921,10 +921,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -1025,10 +1025,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -1149,10 +1149,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -1273,10 +1273,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -1397,10 +1397,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt
@@ -1522,10 +1522,10 @@ option:
   [no]east-const
   [no]echo-commands
   [no]english-types
-  [no]explain-by-default
   [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   {di|tri|no}graphs
+  [no]infer-command
   lang=<lang>
   <lang>
   [no]prompt

@@ -126,12 +126,12 @@ TESTS+=	tests/__declspec.test \
 	tests/digraphs.test \
 	tests/east-const.test \
 	tests/english-types.test \
-	tests/explain-by-default.test \
 	tests/explicit-ecsu.test \
 	tests/explicit-int.test \
 	tests/gnu_attributes.test \
 	tests/help.test \
 	tests/help-error.test \
+	tests/infer-command.test \
 	tests/integers.test \
 	tests/lang.test \
 	tests/prompt.test \

@@ -64,13 +64,13 @@
 #define OPT_CDECL_DEBUG       d
 #endif /* ENABLE_CDECL_DEBUG */
 #define OPT_ECHO_COMMANDS     O
-#define OPT_EXPLAIN           e
 #define OPT_EAST_CONST        E
 #define OPT_FILE              f
 #ifdef ENABLE_FLEX_DEBUG
 #define OPT_FLEX_DEBUG        F
 #endif /* ENABLE_FLEX_DEBUG */
 #define OPT_HELP              h
+#define OPT_INFER_COMMAND     I
 #define OPT_EXPLICIT_INT      i
 #define OPT_COLOR             k
 #define OPT_OUTPUT            o
@@ -128,7 +128,6 @@ static struct option const CLI_OPTIONS[] = {
   { "digraphs",         no_argument,        NULL, COPT(DIGRAPHS)          },
   { "east-const",       no_argument,        NULL, COPT(EAST_CONST)        },
   { "echo-commands",    no_argument,        NULL, COPT(ECHO_COMMANDS)     },
-  { "explain",          no_argument,        NULL, COPT(EXPLAIN)           },
   { "explicit-ecsu",    required_argument,  NULL, COPT(EXPLICIT_ECSU)     },
   { "explicit-int",     required_argument,  NULL, COPT(EXPLICIT_INT)      },
   { "file",             required_argument,  NULL, COPT(FILE)              },
@@ -136,6 +135,7 @@ static struct option const CLI_OPTIONS[] = {
   { "flex-debug",       no_argument,        NULL, COPT(FLEX_DEBUG)        },
 #endif /* ENABLE_FLEX_DEBUG */
   { "help",             no_argument,        NULL, COPT(HELP)              },
+  { "infer-command",    no_argument,        NULL, COPT(INFER_COMMAND)     },
   { "language",         required_argument,  NULL, COPT(LANGUAGE)          },
   { "no-buffer-stdout", no_argument,        NULL, COPT(NO_BUFFER_STDOUT)  },
   { "no-config",        no_argument,        NULL, COPT(NO_CONFIG)         },
@@ -434,9 +434,6 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(ECHO_COMMANDS):
         opt_echo_commands = true;
         break;
-      case COPT(EXPLAIN):
-        opt_explain = true;
-        break;
       case COPT(EXPLICIT_ECSU):
         if ( !parse_explicit_ecsu( optarg ) )
           opt_invalid_value(
@@ -461,6 +458,9 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
 #endif /* ENABLE_FLEX_DEBUG */
       case COPT(HELP):
         opt_help = true;
+        break;
+      case COPT(INFER_COMMAND):
+        opt_infer_command = true;
         break;
       case COPT(LANGUAGE):
         opt_lang = parse_lang( optarg );
@@ -614,7 +614,6 @@ static void print_usage( int status ) {
     "  --digraphs          " UOPT(DIGRAPHS)         "Print digraphs.\n"
     "  --east-const        " UOPT(EAST_CONST)       "Print in \"east const\" form.\n"
     "  --echo-commands     " UOPT(ECHO_COMMANDS)    "Echo commands given before corresponding output.\n"
-    "  --explain           " UOPT(EXPLAIN)          "Assume \"explain\" when no other command is given.\n"
     "  --explicit-ecsu=WHEN" UOPT(EXPLICIT_ECSU)    "Print \"class\", \"struct\", \"union\" explicitly WHEN.\n"
     "  --explicit-int=WHEN " UOPT(EXPLICIT_INT)     "Print \"int\" explicitly WHEN.\n"
     "  --file=FILE         " UOPT(FILE)             "Read from FILE [default: stdin].\n"
@@ -622,6 +621,7 @@ static void print_usage( int status ) {
     "  --flex-debug        " UOPT(FLEX_DEBUG)       "Print Flex debug output.\n"
 #endif /* ENABLE_FLEX_DEBUG */
     "  --help              " UOPT(HELP)             "Print this help and exit.\n"
+    "  --infer-command     " UOPT(INFER_COMMAND)    "Try to infer command when none is given.\n"
     "  --language=LANG     " UOPT(LANGUAGE)         "Use LANG.\n"
     "  --no-buffer-stdout  " UOPT(NO_BUFFER_STDOUT) "Set stdout to unbuffered.\n"
     "  --no-config         " UOPT(NO_CONFIG)        "Suppress reading configuration file.\n"

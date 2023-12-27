@@ -645,7 +645,7 @@ static char* keyword_generator( char const *text, int state ) {
         }
       } // for
     }
-    if ( command == NULL && opt_explain )
+    if ( command == NULL && opt_infer_command )
       command = L_explain;
   }
 

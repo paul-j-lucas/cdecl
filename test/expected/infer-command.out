@@ -4,10 +4,10 @@ c++decl> set
   noeast-const
     echo-commands
     english-types
-    explain-by-default
     explicit-ecsu=su
   noexplicit-int
   nographs
+    infer-command
     lang=C++23
     prompt
     semicolon
@@ -20,34 +20,34 @@ c++decl> const int x
 declare x as constant integer
 c++decl> const cast p into pointer to int
 const_cast<int*>(p)
-c++decl> set noexplain-by-default
+c++decl> set noinfer-command
 c++decl> set
   noalt-tokens
   nodebug
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su
   noexplicit-int
   nographs
+  noinfer-command
     lang=C++23
     prompt
     semicolon
   notrailing-return
     using
     west-pointer=bflo
-c++decl> set explain-by-default
+c++decl> set infer-command
 c++decl> set
   noalt-tokens
   nodebug
   noeast-const
     echo-commands
     english-types
-    explain-by-default
     explicit-ecsu=su
   noexplicit-int
   nographs
+    infer-command
     lang=C++23
     prompt
     semicolon

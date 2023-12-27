@@ -21,10 +21,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=s
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -54,10 +54,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=i
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -87,10 +87,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=iu
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -120,10 +120,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=l
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -153,10 +153,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=ll
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -186,10 +186,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=u
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -219,10 +219,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=us
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -252,10 +252,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=ui
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -285,10 +285,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=ul
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -318,10 +318,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=ull
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -351,10 +351,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -384,10 +384,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
     explicit-int=lu
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon
@@ -409,10 +409,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon

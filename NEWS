@@ -23,6 +23,11 @@ help.
 Implicit `int` pointer declarations, e.g., `*p`, are now correctly illegal in
 C++.
 
+** `--infer-command`, `-I`
+The former `--explain` and `-e` options have been renamed `--infer-command` and
+`-I`; the former `explain-by-default` `set` option has been renamed `infer-
+command`.
+
 ** Lambdas in C
 Lambdas are not correctly illegal in C.
 

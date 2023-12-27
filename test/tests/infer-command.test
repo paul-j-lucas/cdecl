@@ -1,14 +1,14 @@
 EXPECTED_EXIT=0
-cdecl -bO --explain -xc++ <<END
+cdecl -bO --infer-command -xc++ <<END
 set
 
 int x
 const int x
 const cast p into pointer to int
 
-set noexplain-by-default
+set noinfer-command
 set
-set explain-by-default
+set infer-command
 set
 
 int x

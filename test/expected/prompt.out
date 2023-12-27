@@ -5,10 +5,10 @@ set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
+  noinfer-command
     lang=C23
   noprompt
     semicolon
@@ -22,10 +22,10 @@ cdecl> set
   noeast-const
     echo-commands
     english-types
-  noexplain-by-default
     explicit-ecsu=su         (Not supported in C.)
   noexplicit-int
   nographs
+  noinfer-command
     lang=C23
     prompt
     semicolon

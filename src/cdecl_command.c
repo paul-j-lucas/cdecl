@@ -119,13 +119,12 @@ cdecl_command_t const* cdecl_command_find( char const *s ) {
     size_t const literal_len = strlen( command->literal );
     if ( !starts_with_token( s, command->literal, literal_len ) )
       continue;
-    if ( !opt_explain )
+    if ( !opt_infer_command )
       return command;
     if ( command->literal == L_const || command->literal == L_static ) {
       //
-      // When in explain-by-default mode, a special case has to be made for
-      // const and static since explain is implied only when NOT followed by
-      // "cast":
+      // When in infer-command mode, a special case has to be made for const
+      // and static since explain is implied only when NOT followed by "cast":
       //
       //      const int *p                      // Implies explain.
       //      const cast p into pointer to int  // Does NOT imply explain.
