@@ -92,23 +92,23 @@ bool is_cppdecl( void ) {
 int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   ATEXIT( &cdecl_cleanup );
-  cli_option_init( &argc, &argv );
-  c_keyword_init();
-  cdecl_keyword_init();
-  color_init();
+  cli_options_init( &argc, &argv );
+  c_keywords_init();
+  cdecl_keywords_init();
+  colors_init();
   lexer_init();
   //
   // Everything above must come before c_typedef_init() since it actually uses
   // the parser.
   //
-  c_typedef_init();
+  c_typedefs_init();
   lexer_reset( /*hard_reset=*/true );   // resets line number
 
   if ( opt_read_conf )
     conf_init();
   cdecl_initialized = true;
   //
-  // Note that cli_option_init() adjusts argv such that argv[0] becomes the
+  // Note that cli_options_init() adjusts argv such that argv[0] becomes the
   // first argument, if any, and no longer the program name.
   //
   exit( cdecl_parse_cli( STATIC_CAST( size_t, argc ), argv ) );

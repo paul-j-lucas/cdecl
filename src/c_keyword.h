@@ -121,13 +121,6 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
                                    c_keyword_ctx_t kw_ctx );
 
 /**
- * Initializes \ref c_keyword data.
- *
- * @note This function must be called exactly once.
- */
-void c_keyword_init( void );
-
-/**
  * Iterates to the next C/C++ keyword or or C23/C++11 (or later) attribute
  *
  * @param k A pointer to the current keyword or attribute. For the first
@@ -142,6 +135,13 @@ void c_keyword_init( void );
  */
 NODISCARD
 c_keyword_t const* c_keyword_next( c_keyword_t const *k );
+
+/**
+ * Initializes \ref c_keyword data.
+ *
+ * @note This function must be called exactly once.
+ */
+void c_keywords_init( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 

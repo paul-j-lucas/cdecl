@@ -706,7 +706,7 @@ static void print_version( bool verbose ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void cli_option_init( int *pargc, char const **pargv[const] ) {
+void cli_options_init( int *pargc, char const **pargv[const] ) {
   ASSERT_RUN_ONCE();
   assert( pargc != NULL );
   assert( pargv != NULL );

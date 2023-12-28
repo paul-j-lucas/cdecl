@@ -123,13 +123,6 @@ NODISCARD
 c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname );
 
 /**
- * Initializes all \ref c_typedef data.
- *
- * @note This function must be called exactly once.
- */
-void c_typedef_init( void );
-
-/**
  * Removes a `typedef` (or `using`) from the global set.
  *
  * @param node The rb_node containing the `typedef` to remove.
@@ -152,6 +145,13 @@ c_typedef_t* c_typedef_remove( rb_node_t *node );
 PJL_DISCARD
 c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,
                                     void *v_data );
+
+/**
+ * Initializes all \ref c_typedef data.
+ *
+ * @note This function must be called exactly once.
+ */
+void c_typedefs_init( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -136,13 +136,6 @@ void color_end( FILE *file, char const *sgr_color ) {
 }
 
 /**
- * Initializes when to print in color and the colors.
- *
- * @note This function must be called exactly once.
- */
-void color_init( void );
-
-/**
  * Starts printing in the predefined \a sgr_color.
  *
  * @param file The `FILE` to print to.
@@ -188,6 +181,13 @@ void color_strbuf_start( strbuf_t *sbuf, char const *sgr_color ) {
   if ( sgr_color != NULL )
     strbuf_printf( sbuf, SGR_START SGR_EL, sgr_color );
 }
+
+/**
+ * Initializes when to print in color and the colors.
+ *
+ * @note This function must be called exactly once.
+ */
+void colors_init( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 

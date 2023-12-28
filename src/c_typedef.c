@@ -980,20 +980,6 @@ static predef_type_t const PREDEFINED_WIN32[] = {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Cleans up \ref c_typedef data.
- *
- * @sa c_typedef_init()
- */
-static void c_typedef_cleanup( void ) {
-  // There is no c_typedef_free() function because c_typedef_add() adds only
-  // c_typedef_t nodes pointing to pre-existing AST nodes.  The AST nodes are
-  // freed independently in parser_cleanup().  Hence, this function frees only
-  // the red-black tree, its nodes, and the c_typedef_t data each node points
-  // to, but not the AST nodes the c_typedef_t data points to.
-  rb_tree_cleanup( &typedef_set, &free );
-}
-
-/**
  * Comparison function for two \ref c_typedef.
  *
  * @param i_tdef A pointer to the first \ref c_typedef.
@@ -1039,6 +1025,22 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned decl_flags ) {
   };
 
   return tdef;
+}
+
+/**
+ * Cleans up \ref c_typedef data.
+ *
+ * @sa c_typedefs_init()
+ */
+static void c_typedefs_cleanup( void ) {
+  //
+  // There is no c_typedef_free() function because c_typedef_add() adds only
+  // c_typedef_t nodes pointing to pre-existing AST nodes.  The AST nodes are
+  // freed independently in parser_cleanup().  Hence, this function frees only
+  // the red-black tree, its nodes, and the c_typedef_t data each node points
+  // to, but not the AST nodes the c_typedef_t data points to.
+  //
+  rb_tree_cleanup( &typedef_set, &free );
 }
 
 /**
@@ -1113,11 +1115,23 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
   return found_rb != NULL ? found_rb->data : NULL;
 }
 
-void c_typedef_init( void ) {
+c_typedef_t* c_typedef_remove( rb_node_t *node ) {
+  return rb_tree_delete( &typedef_set, node );
+}
+
+c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,
+                                    void *v_data ) {
+  assert( visit_fn != NULL );
+  tdef_rb_visit_data_t trvd = { visit_fn, v_data };
+  rb_node_t const *const rb = rb_tree_visit( &typedef_set, &rb_visitor, &trvd );
+  return rb != NULL ? rb->data : NULL;
+}
+
+void c_typedefs_init( void ) {
   ASSERT_RUN_ONCE();
 
   rb_tree_init( &typedef_set, POINTER_CAST( rb_cmp_fn_t, &c_typedef_cmp ) );
-  ATEXIT( &c_typedef_cleanup );
+  ATEXIT( &c_typedefs_cleanup );
 
 #ifdef ENABLE_CDECL_DEBUG
   //
@@ -1221,18 +1235,6 @@ void c_typedef_init( void ) {
 #ifdef ENABLE_BISON_DEBUG
   opt_bison_debug = orig_bison_debug;
 #endif /* ENABLE_BISON_DEBUG */
-}
-
-c_typedef_t* c_typedef_remove( rb_node_t *node ) {
-  return rb_tree_delete( &typedef_set, node );
-}
-
-c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,
-                                    void *v_data ) {
-  assert( visit_fn != NULL );
-  tdef_rb_visit_data_t trvd = { visit_fn, v_data };
-  rb_node_t const *const rb = rb_tree_visit( &typedef_set, &rb_visitor, &trvd );
-  return rb != NULL ? rb->data : NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

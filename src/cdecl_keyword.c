@@ -1717,7 +1717,7 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   return NULL;
 }
 
-void cdecl_keyword_init( void ) {
+void cdecl_keywords_init( void ) {
   ASSERT_RUN_ONCE();
   qsort(                                // don't rely on manual sorting above
     CDECL_KEYWORDS, ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/,

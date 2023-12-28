@@ -510,16 +510,16 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
   return NULL;
 }
 
-void c_keyword_init( void ) {
+c_keyword_t const* c_keyword_next( c_keyword_t const *ck ) {
+  return ck == NULL ? C_KEYWORDS : (++ck)->literal == NULL ? NULL : ck;
+}
+
+void c_keywords_init( void ) {
   ASSERT_RUN_ONCE();
   qsort(                                // so we can stop the search early
     C_KEYWORDS, ARRAY_SIZE( C_KEYWORDS ) - 1/*NULL*/, sizeof( c_keyword_t ),
     POINTER_CAST( qsort_cmp_fn_t, &c_keyword_cmp )
   );
-}
-
-c_keyword_t const* c_keyword_next( c_keyword_t const *ck ) {
-  return ck == NULL ? C_KEYWORDS : (++ck)->literal == NULL ? NULL : ck;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

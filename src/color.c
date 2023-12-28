@@ -280,7 +280,7 @@ static bool should_colorize( color_when_t when ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void color_init( void ) {
+void colors_init( void ) {
   ASSERT_RUN_ONCE();
 
   if ( !should_colorize( opt_color_when ) )

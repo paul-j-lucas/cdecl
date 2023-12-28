@@ -65,18 +65,6 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Initializes **cdecl** options from the command-line.
- *
- * @param pargc A pointer to the argument count from main().
- * @param pargv A pointer to the argument values from main().
- *
- * @note This function must be called exactly once.
- * @note On return, `*pargc` and `*pargv` are updated to reflect the remaining
- * command-line with the options removed.
- */
-void cli_option_init( int *pargc, char const **pargv[] );
-
-/**
  * Iterates to the next **cdecl** command-line option.
  *
  * @param opt A pointer to the previous option. For the first iteration, NULL
@@ -90,6 +78,18 @@ void cli_option_init( int *pargc, char const **pargv[] );
  */
 NODISCARD
 struct option const* cli_option_next( struct option const *opt );
+
+/**
+ * Initializes **cdecl** options from the command-line.
+ *
+ * @param pargc A pointer to the argument count from main().
+ * @param pargv A pointer to the argument values from main().
+ *
+ * @note This function must be called exactly once.
+ * @note On return, `*pargc` and `*pargv` are updated to reflect the remaining
+ * command-line with the options removed.
+ */
+void cli_options_init( int *pargc, char const **pargv[] );
 
 ///////////////////////////////////////////////////////////////////////////////
 
