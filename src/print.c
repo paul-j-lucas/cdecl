@@ -295,8 +295,7 @@ static void print_ast_name_aka( c_ast_t const *ast, FILE *pout ) {
  */
 NODISCARD
 static size_t print_caret( size_t error_column ) {
-  if ( error_column >= print_params.inserted_len )
-    error_column -= print_params.inserted_len;
+  error_column -= print_params.inserted_len;
 
   unsigned const term_columns = get_term_columns();
   size_t caret_column;
