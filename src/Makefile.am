@@ -72,6 +72,7 @@ cdecl_SOURCES =	parser.y \
 		dam_lev.c dam_lev.h \
 		decl_flags.h \
 		did_you_mean.c did_you_mean.h \
+		dump.c dump.h \
 		english.c english.h \
 		gibberish.c gibberish.h \
 		help.c help.h \
@@ -89,10 +90,6 @@ cdecl_SOURCES =	parser.y \
 		strbuf.c strbuf.h \
 		types.h \
 		util.c util.h
-
-if ENABLE_CDECL_DEBUG
-cdecl_SOURCES += dump.c dump.h
-endif
 
 if WITH_READLINE
 cdecl_SOURCES += autocomplete.c autocomplete.h

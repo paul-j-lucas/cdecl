@@ -589,15 +589,10 @@ void print_ast_type_aka( c_ast_t const *ast, FILE *pout ) {
 }
 
 void print_debug_file_line( char const *file, int line ) {
-#ifdef ENABLE_CDECL_DEBUG
   assert( file != NULL );
   assert( line > 0 );
   if ( opt_cdecl_debug != CDECL_DEBUG_NO )
     EPRINTF( "[%s:%d] ", file, line );  // LCOV_EXCL_LINE
-#else
-  (void)file;
-  (void)line;
-#endif /* ENABLE_CDECL_DEBUG */
 }
 
 void print_hint( char const *format, ... ) {

@@ -70,9 +70,7 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
 #ifdef ENABLE_BISON_DEBUG
             set_bison_debug( set_option_fn_args_t const* ),
 #endif /* ENABLE_BISON_DEBUG */
-#ifdef ENABLE_CDECL_DEBUG
             set_debug( set_option_fn_args_t const* ),
-#endif /* ENABLE_CDECL_DEBUG */
             set_digraphs( set_option_fn_args_t const* ),
             set_east_const( set_option_fn_args_t const* ),
             set_english_types( set_option_fn_args_t const* ),
@@ -124,13 +122,11 @@ static set_option_t const SET_OPTIONS[] = {
   },
 #endif /* ENABLE_BISON_DEBUG */
 
-#ifdef ENABLE_CDECL_DEBUG
   { "debug",
     SET_OPTION_TOGGLE,
     .has_arg = optional_argument,
     &set_debug
   },
-#endif /* ENABLE_CDECL_DEBUG */
 
   { "digraphs",                         // See comment for "graphs" entry.
     SET_OPTION_AFF_ONLY,
@@ -328,13 +324,13 @@ static void print_options( void ) {
 #ifdef ENABLE_BISON_DEBUG
   print_option( "bison-debug", po_bool_value( opt_bison_debug ), LANG_ANY );
 #endif /* ENABLE_BISON_DEBUG */
-#ifdef ENABLE_CDECL_DEBUG
+
   // opt_cdecl_debug is a special case in that it can be enabled with no value
   if ( opt_cdecl_debug == CDECL_DEBUG_YES )
     PUTS( "    debug\n" );
   else
     print_option( "debug", cdecl_debug_str(), LANG_ANY );
-#endif /* ENABLE_CDECL_DEBUG */
+
   print_option( "east-const", po_bool_value( opt_east_const ), LANG_const );
   print_option( "echo-commands", po_bool_value( opt_echo_commands ), LANG_ANY );
   print_option( "english-types", po_bool_value( opt_english_types ), LANG_ANY );
@@ -396,7 +392,6 @@ static bool set_bison_debug( set_option_fn_args_t const *args ) {
 }
 #endif /* ENABLE_BISON_DEBUG */
 
-#ifdef ENABLE_CDECL_DEBUG
 /**
  * Sets the **cdecl** `debug` option.
  *
@@ -423,7 +418,6 @@ static bool set_debug( set_option_fn_args_t const *args ) {
 
   return ok;
 }
-#endif /* ENABLE_CDECL_DEBUG */
 
 /**
  * Sets the `digraphs` option.

@@ -48,9 +48,7 @@
 #include "cdecl_keyword.h"
 #include "color.h"
 #include "decl_flags.h"
-#ifdef ENABLE_CDECL_DEBUG
 #include "dump.h"
-#endif /* ENABLE_CDECL_DEBUG */
 #include "did_you_mean.h"
 #include "english.h"
 #include "gibberish.h"
@@ -89,12 +87,8 @@
 #define DTRACE                    NO_OP
 #endif
 
-#ifdef ENABLE_CDECL_DEBUG
 #define IF_CDECL_DEBUG(...) \
   BLOCK( if ( opt_cdecl_debug != CDECL_DEBUG_NO ) { __VA_ARGS__ } )
-#else
-#define IF_CDECL_DEBUG(...)       NO_OP
-#endif /* ENABLE_CDECL_DEBUG */
 
 /// @endcond
 
@@ -371,7 +365,6 @@
 #define DUMP_SNAME_LIST(KEY,LIST) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); c_sname_list_dump( &(LIST), stdout ); )
 
-#ifdef ENABLE_CDECL_DEBUG
 /**
  * @def DUMP_START
  *
@@ -383,9 +376,6 @@
 #define DUMP_START()                        \
   bool dump_comma = false; IF_CDECL_DEBUG(  \
   PUTS( "{\n" ); )
-#else
-#define DUMP_START()              NO_OP
-#endif
 
 /**
  * Dumps a C string.
@@ -8360,7 +8350,6 @@ static void fl_elaborate_error( char const *file, int line,
   char const *const error_token = lexer_printable_token();
   if ( error_token != NULL ) {
     EPRINTF( "\"%s\"", error_token );
-#ifdef ENABLE_CDECL_DEBUG
     if ( opt_cdecl_debug != CDECL_DEBUG_NO ) {
       switch ( yychar ) {
         case YYEMPTY:
@@ -8373,7 +8362,6 @@ static void fl_elaborate_error( char const *file, int line,
           EPRINTF( " [%d]", yychar );
       } // switch
     }
-#endif /* ENABLE_CDECL_DEBUG */
     EPUTS( ": " );
   }
 

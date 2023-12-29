@@ -120,17 +120,6 @@ AS_IF([test "x$enable_bison_debug" = xyes], [
   AC_DEFINE([YYDEBUG], [1], [Define to 1 if Bison debugging is enabled.])
 ])
 
-# Program feature: cdecl-debug (enabled by default)
-AC_ARG_ENABLE([cdecl-debug],
-  AS_HELP_STRING([--disable-cdecl-debug], [disable cdecl debugging]),
-  [],
-  [enable_cdecl_debug=yes]
-)
-AS_IF([test "x$enable_cdecl_debug" = xyes], [
-  AC_DEFINE([ENABLE_CDECL_DEBUG], [1],
-    [Define to 1 if cdecl debugging is enabled.])
-])
-
 # Program feature: Flex debug (disabled by default)
 AC_ARG_ENABLE([flex-debug],
   AS_HELP_STRING([--enable-flex-debug], [enable Flex debug output]),
@@ -290,7 +279,6 @@ AS_IF([test "x$with_readline" != xno], [
 
 # Makefile conditionals.
 AM_CONDITIONAL([ENABLE_ASAN],         [test "x$enable_asan"         = xyes])
-AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test "x$enable_cdecl_debug"  = xyes])
 AM_CONDITIONAL([ENABLE_COVERAGE],     [test "x$enable_coverage"     = xyes])
 AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test "x$enable_bison_debug"  = xyes])
 AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test "x$enable_flex_debug"   = xyes])

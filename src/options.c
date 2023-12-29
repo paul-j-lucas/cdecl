@@ -50,9 +50,7 @@
 
 // extern option variables
 bool                opt_alt_tokens;
-#ifdef ENABLE_CDECL_DEBUG
 cdecl_debug_t       opt_cdecl_debug;
-#endif /* ENABLE_CDECL_DEBUG */
 color_when_t        opt_color_when = COLOR_NOT_FILE;
 char const         *opt_conf_path;
 bool                opt_east_const;
@@ -125,7 +123,6 @@ bool any_explicit_int( void ) {
           opt_explicit_int_btids[1] != TB_NONE;
 }
 
-#ifdef ENABLE_CDECL_DEBUG
 char const* cdecl_debug_str( void ) {
   static char buf[2];
   char *s = buf;
@@ -136,7 +133,6 @@ char const* cdecl_debug_str( void ) {
 
   return buf;
 }
-#endif /* ENABLE_CDECL_DEBUG */
 
 char const* explicit_ecsu_str( void ) {
   static char buf[5];
@@ -214,7 +210,6 @@ bool is_explicit_int( c_tid_t btids ) {
   return c_tid_is_any( btids, opt_explicit_int_btids[ is_unsigned ] );
 }
 
-#ifdef ENABLE_CDECL_DEBUG
 bool parse_cdecl_debug( char const *debug_format ) {
   if ( debug_format == NULL ) {
     opt_cdecl_debug = CDECL_DEBUG_NO;
@@ -237,7 +232,6 @@ bool parse_cdecl_debug( char const *debug_format ) {
   opt_cdecl_debug = cdecl_debug;
   return true;
 }
-#endif /* ENABLE_CDECL_DEBUG */
 
 bool parse_explicit_ecsu( char const *ecsu_format ) {
   set_all_or_none( &ecsu_format, "ecsu" );

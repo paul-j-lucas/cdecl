@@ -15,6 +15,10 @@ with their complete changes, see the AUTHORS file.
 ** C99 with extension error messages
 Improved C99 with extension error messages.
 
+** `--disable-cdecl-debug` removed
+The `--disable-cdecl-debug` `configure` option has been removed (which means
+**cdecl** debug output is always compiled in).
+
 ** `GCC_COLORS`
 Support for `GCC_COLORS` has been removed. It was more of a hindrance than a
 help.

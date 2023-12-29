@@ -112,8 +112,6 @@ _GL_INLINE_HEADER_BEGIN
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifdef ENABLE_CDECL_DEBUG
-
 /**
  * Unique AST node ID (used only for debugging).
  *
@@ -125,8 +123,6 @@ typedef unsigned c_ast_id_t;
  * Decimal print conversion specifier for \ref c_ast_id_t.
  */
 #define PRId_C_AST_ID_T           "%u"
-
-#endif /* ENABLE_CDECL_DEBUG */
 
 /**
  * The direction to traverse an AST using c_ast_visit().
@@ -457,10 +453,8 @@ struct c_ast {
   c_type_t        type;                 ///< Type, if any.
   c_ast_t        *parent_ast;           ///< Parent AST node, if any.
   c_ast_t const  *param_of_ast;         ///< Parameter of this AST node, if any.
-#ifdef ENABLE_CDECL_DEBUG
   c_ast_id_t      unique_id;            ///< Unique id (starts at 1).
   c_ast_id_t      dup_from_id;          ///< ID of AST duplicated from, if any.
-#endif /* ENABLE_CDECL_DEBUG */
 
   /**
    * Additional data for each \ref kind.

@@ -55,7 +55,6 @@
  * @{
  */
 
-#ifdef ENABLE_CDECL_DEBUG
 /**
  * **cdecl** debug mode.
  */
@@ -71,7 +70,6 @@ enum cdecl_debug {
   CDECL_DEBUG_OPT_AST_UNIQUE_ID = (1u << 1)
 };
 typedef enum cdecl_debug cdecl_debug_t;
-#endif /* ENABLE_CDECL_DEBUG */
 
 // extern option variables
 extern bool         opt_alt_tokens;     ///< Print alternative tokens?
@@ -84,9 +82,7 @@ extern bool         opt_alt_tokens;     ///< Print alternative tokens?
 #define             opt_bison_debug     yydebug
 #endif /* ENABLE_BISON_DEBUG */
 
-#ifdef ENABLE_CDECL_DEBUG
 extern cdecl_debug_t opt_cdecl_debug;   ///< Print JSON5 debug output?
-#endif /* ENABLE_CDECL_DEBUG */
 
 extern color_when_t opt_color_when;     ///< When to print color.
 extern char const  *opt_conf_path;      ///< Configuration file path.
@@ -140,7 +136,6 @@ extern int          yydebug;            ///< Bison variable for debugging.
 NODISCARD
 bool any_explicit_int( void );
 
-#ifdef ENABLE_CDECL_DEBUG
 /**
  * Gets the string representation of the **cdecl** debug option.
  *
@@ -154,7 +149,6 @@ bool any_explicit_int( void );
  */
 NODISCARD
 char const* cdecl_debug_str( void );
-#endif /* ENABLE_CDECL_DEBUG */
 
 /**
  * Gets the string representation of the explicit `enum`, `class`, `struct`,
@@ -201,7 +195,6 @@ char const* explicit_int_str( void );
 NODISCARD
 bool is_explicit_int( c_tid_t btids );
 
-#ifdef ENABLE_CDECL_DEBUG
 /**
  * Parses the **cdecl** debug option.
  *
@@ -223,7 +216,6 @@ bool is_explicit_int( c_tid_t btids );
  */
 NODISCARD
 bool parse_cdecl_debug( char const *debug_format );
-#endif /* ENABLE_CDECL_DEBUG */
 
 /**
  * Parses the explicit `enum`, `class`, `struct`, `union` option.

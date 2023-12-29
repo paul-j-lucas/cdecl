@@ -60,9 +60,7 @@
 #endif /* ENABLE_BISON_DEBUG */
 #define OPT_CONFIG            c
 #define OPT_NO_CONFIG         C
-#ifdef ENABLE_CDECL_DEBUG
 #define OPT_CDECL_DEBUG       d
-#endif /* ENABLE_CDECL_DEBUG */
 #define OPT_ECHO_COMMANDS     O
 #define OPT_EAST_CONST        E
 #define OPT_FILE              f
@@ -122,9 +120,7 @@ static struct option const CLI_OPTIONS[] = {
 #endif /* ENABLE_BISON_DEBUG */
   { "color",            required_argument,  NULL, COPT(COLOR)             },
   { "config",           required_argument,  NULL, COPT(CONFIG)            },
-#ifdef ENABLE_CDECL_DEBUG
   { "debug",            optional_argument,  NULL, COPT(CDECL_DEBUG)       },
-#endif /* ENABLE_CDECL_DEBUG */
   { "digraphs",         no_argument,        NULL, COPT(DIGRAPHS)          },
   { "east-const",       no_argument,        NULL, COPT(EAST_CONST)        },
   { "echo-commands",    no_argument,        NULL, COPT(ECHO_COMMANDS)     },
@@ -411,12 +407,10 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         opt_bison_debug = true;
         break;
 #endif /* ENABLE_BISON_DEBUG */
-#ifdef ENABLE_CDECL_DEBUG
       case COPT(CDECL_DEBUG):
         if ( !parse_cdecl_debug( empty_if_null( optarg ) ) )
           opt_invalid_value( COPT(CDECL_DEBUG), optarg, "*, -, or u" );
         break;
-#endif /* ENABLE_CDECL_DEBUG */
       case COPT(COLOR):
         opt_color_when = parse_color_when( optarg );
         break;
@@ -608,9 +602,7 @@ static void print_usage( int status ) {
 #endif /* ENABLE_BISON_DEBUG */
     "  --color=WHEN        " UOPT(COLOR)            "Colorize output WHEN [default: not_file].\n"
     "  --config=FILE       " UOPT(CONFIG)           "Configuration file path [default: ~/." CONF_FILE_NAME_DEFAULT "].\n"
-#ifdef ENABLE_CDECL_DEBUG
     "  --debug[=OPTS]      " UOPT(CDECL_DEBUG)      "Print " CDECL " debug output.\n"
-#endif /* ENABLE_CDECL_DEBUG */
     "  --digraphs          " UOPT(DIGRAPHS)         "Print digraphs.\n"
     "  --east-const        " UOPT(EAST_CONST)       "Print in \"east const\" form.\n"
     "  --echo-commands     " UOPT(ECHO_COMMANDS)    "Echo commands given before corresponding output.\n"
@@ -674,9 +666,6 @@ static void print_version( bool verbose ) {
 #ifdef ENABLE_BISON_DEBUG
   PUT_CONFIG_OPT( "enable-bison-debug" );
 #endif /* ENABLE_BISON_DEBUG */
-#ifndef ENABLE_CDECL_DEBUG
-  PUT_CONFIG_OPT( "disable-cdecl-debug" );
-#endif /* ENABLE_CDECL_DEBUG */
 #ifdef ENABLE_COVERAGE
   PUT_CONFIG_OPT( "enable-coverage" );
 #endif /* ENABLE_COVERAGE */

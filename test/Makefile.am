@@ -122,6 +122,7 @@ TESTS+=	tests/xupc.test \
 # Miscellaneous tests
 TESTS+=	tests/__declspec.test \
 	tests/alt-tokens.test \
+	tests/debug.test \
 	tests/declare_synonyms.test \
 	tests/digraphs.test \
 	tests/east-const.test \
@@ -152,11 +153,6 @@ TESTS+=	tests/__declspec.test \
 	tests/trigraphs.test \
 	tests/using.test \
 	tests/west-pointer.test
-
-# Debug output tests
-if ENABLE_CDECL_DEBUG
-TESTS+=	tests/debug.test
-endif
 
 # Auto-completion tests
 if WITH_EXPECT

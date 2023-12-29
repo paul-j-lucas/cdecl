@@ -561,9 +561,7 @@ static void print_help_options( void ) {
 #ifdef ENABLE_BISON_DEBUG
   print_h( "  [no]bison-debug\n" );
 #endif /* ENABLE_BISON_DEBUG */
-#ifdef ENABLE_CDECL_DEBUG
   print_h( "  [no]debug[={u|\\*|-}]\n" );
-#endif /* ENABLE_CDECL_DEBUG */
   print_h( "  [no]east-const\n" );
   print_h( "  [no]echo-commands\n" );
   print_h( "  [no]english-types\n" );

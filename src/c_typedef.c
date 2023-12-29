@@ -1133,13 +1133,11 @@ void c_typedefs_init( void ) {
   rb_tree_init( &typedef_set, POINTER_CAST( rb_cmp_fn_t, &c_typedef_cmp ) );
   ATEXIT( &c_typedefs_cleanup );
 
-#ifdef ENABLE_CDECL_DEBUG
   //
   // Temporarily turn off debug output for built-in typedefs.
   //
   cdecl_debug_t const orig_cdecl_debug = opt_cdecl_debug;
   opt_cdecl_debug = CDECL_DEBUG_NO;
-#endif /* ENABLE_CDECL_DEBUG */
 #ifdef ENABLE_FLEX_DEBUG
   //
   // Temporarily turn off Flex debug output for built-in typedefs.
@@ -1226,9 +1224,7 @@ void c_typedefs_init( void ) {
   predef_lang_ids = LANG_NONE;
   opt_lang = orig_lang;
 
-#ifdef ENABLE_CDECL_DEBUG
   opt_cdecl_debug = orig_cdecl_debug;
-#endif /* ENABLE_CDECL_DEBUG */
 #ifdef ENABLE_FLEX_DEBUG
   opt_flex_debug = orig_flex_debug;
 #endif /* ENABLE_FLEX_DEBUG */
