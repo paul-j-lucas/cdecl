@@ -1,3 +1,16 @@
+2023-12-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, cdecl.1, src/Makefile.am, c_ast.c, c_ast.h, c_typedef.c,
+     cli_options.c, dump.h, help.c, options.c, options.h, parser.y, print.c,
+     set_options.c, test/Makefile.am: --disable-cdecl-debug has been removed.
+   * parser.y: Eliminated cast_literal.
+   * c_ast_check.c: Eliminated unused variadic_ast.
+   * print.c: Removed `if` before subtracting print_params.inserted_len.
+   * c_keyword.c, c_keyword.h, c_typedef.c, c_typedef.h, cdecl.c,
+     cdecl_keyword.c, cdecl_keyword.h, cli_options.c, cli_options.h, color.c,
+     color.h: Renaming.
+   * cdecl.1: Removed extra .RE.
+
 2023-12-27  Paul J. Lucas <paul@lucasmail.org>
 
    * parse.c: Fixed having `q` be a synonym for `quit` in `infer-command`
