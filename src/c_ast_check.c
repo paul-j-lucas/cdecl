@@ -1211,7 +1211,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
 
-  c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
+  c_ast_t const *void_ast = NULL;
   unsigned n_params = 0;
 
   FOREACH_AST_FUNC_PARAM( param, ast ) {
@@ -1333,8 +1333,6 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           );
           return false;
         }
-        assert( variadic_ast == NULL );
-        variadic_ast = param_ast;
         continue;
 
       case K_ARRAY:
