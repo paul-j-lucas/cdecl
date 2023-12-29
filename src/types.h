@@ -241,6 +241,7 @@ typedef enum   c_graph            c_graph_t;
 typedef struct c_lambda_ast       c_lambda_ast_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_loc              c_loc_t;
+typedef short                     c_loc_num_t;    ///< Location numeric type.
 typedef enum   c_op_id            c_op_id_t;
 typedef struct c_operator         c_operator_t;
 typedef struct c_operator_ast     c_operator_ast_t;
@@ -280,23 +281,19 @@ typedef int (*qsort_cmp_fn_t)( void const *i_data, void const *j_data );
 
 ////////// structs ////////////////////////////////////////////////////////////
 
+
 /**
  * The source location used by Bison.
+ *
+ * @remarks These should all be an unsigned type, but Flex & Bison generate
+ * code that assumes these are signed.  Making them unsigned generates
+ * warnings; hence these are kept as signed to prevent the warnings.
  */
 struct c_loc {
-  //
-  // These should be either unsigned or size_t, but Flex & Bison generate code
-  // that assumes these are signed.  Making them unsigned generates warnings;
-  // hence these are kept as int to eliminate the warnings.
-  //
-  int first_line;                       ///< First line of location range.
-  int first_column;                     ///< First column of location range.
-  //
-  // Cdecl doesn't use either of these, but Bison generates code that does, so
-  // we need to keep them.
-  //
-  int last_line;                        ///< Last line of location range.
-  int last_column;                      ///< Last column of location range.
+  c_loc_num_t first_line;               ///< First line of location range.
+  c_loc_num_t first_column;             ///< First column of location range.
+  c_loc_num_t last_line;                ///< Last line of location range.
+  c_loc_num_t last_column;              ///< Last column of location range.
 };
 
 /**

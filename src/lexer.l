@@ -140,7 +140,7 @@
  * This code must be manually inserted before a REJECT to undo #YY_USER_ACTION.
  */
 #define YY_USER_ACTION_UNDO_FOR_REJECT \
-  token_column -= STATIC_CAST( int, yyleng )
+  token_column -= STATIC_CAST( c_loc_num_t, yyleng )
 
 /**
  * Data to keep for a file that is `include`d.
@@ -164,7 +164,7 @@
 struct include_file_info {
   char const *prev_orig_path;           ///< The previous file's original path.
   char const *curr_real_path;           ///< The current file's real path.
-  int         prev_lineno;              ///< The file's last line number.
+  c_loc_num_t prev_lineno;              ///< The file's last line number.
 };
 typedef struct include_file_info include_file_info_t;
 
@@ -185,18 +185,18 @@ char const       *lexer_token = &lexer_token_init_buf;
 /// @endcond
 
 // local variables
-static bool       digraph_warned;       ///< Printed digraph warning once?
-static rb_tree_t  include_set;          ///< Set of resolved include paths.
-static slist_t    include_stack;        ///< Stack of include paths.
-static char      *input_buf;            ///< Entire current input line.
-static size_t     input_len;            ///< Length of `input_buf`.
-static size_t     input_sent;           ///< How many bytes returned to Flex.
-static bool       is_eof;               ///< Encountered EOF?
-static int        newline_column;       ///< Column position of newline.
-static strbuf_t   str_lit_buf;          ///< String (or character) literal.
-static c_loc_t    str_lit_loc;          ///< String literal starting location.
-static int        token_column;         ///< Column position of current token.
-static bool       trigraph_warned;      ///< Printed trigraph warning once?
+static bool         digraph_warned;     ///< Printed digraph warning once?
+static rb_tree_t    include_set;        ///< Set of resolved include paths.
+static slist_t      include_stack;      ///< Stack of include paths.
+static char        *input_buf;          ///< Entire current input line.
+static size_t       input_len;          ///< Length of `input_buf`.
+static size_t       input_sent;         ///< How many bytes returned to Flex.
+static bool         is_eof;             ///< Encountered EOF?
+static c_loc_num_t  newline_column;     ///< Column position of newline.
+static strbuf_t     str_lit_buf;        ///< String (or character) literal.
+static c_loc_t      str_lit_loc;        ///< String literal starting location.
+static c_loc_num_t  token_column;       ///< Column position of current token.
+static bool         trigraph_warned;    ///< Printed trigraph warning once?
 
 /// C++ raw string literal delimiter.
 static char       rstr_delim[ RSTR_DELIM_LEN_MAX + 1/*"*/ + 1/*\0*/ ];
@@ -310,10 +310,10 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_cap ) {
  * @note This is called by Flex via #YY_USER_ACTION.
  */
 static void lexer_update_loc( void ) {
-  yylloc.first_line   = yylloc.last_line = STATIC_CAST( int, yylineno );
+  yylloc.first_line   = yylloc.last_line = STATIC_CAST( c_loc_num_t, yylineno );
   yylloc.first_column = token_column;
-  yylloc.last_column  = token_column + STATIC_CAST( int, yyleng ) - 1;
-  token_column += STATIC_CAST( int, yyleng );
+  yylloc.last_column  = token_column + STATIC_CAST( c_loc_num_t, yyleng ) - 1;
+  token_column += STATIC_CAST( c_loc_num_t, yyleng );
 }
 
 /**
@@ -1390,7 +1390,7 @@ char const* lexer_input_line( size_t *rv_len ) {
 
 c_loc_t lexer_loc( void ) {
   c_loc_t rv_loc;
-  rv_loc.first_line = yylineno;
+  rv_loc.first_line = STATIC_CAST( c_loc_num_t, yylineno );
 
   if ( token_column == 0 )
     rv_loc.first_column = newline_column;
@@ -1401,7 +1401,8 @@ c_loc_t lexer_loc( void ) {
     // This has to be the original yytext, not lexer_token, since lexer_token
     // could have been set to something else via SET_TOKEN_TO().
     //
-    rv_loc.first_column = token_column - STATIC_CAST( int, strlen( yytext ) );
+    rv_loc.first_column =
+      token_column - STATIC_CAST( c_loc_num_t, strlen( yytext ) );
     assert( rv_loc.first_column >= 0 );
   }
 
