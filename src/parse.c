@@ -250,9 +250,9 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     s_len = sbuf.len;
   }
 
-  FILE *const temp_file = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
-  PERROR_EXIT_IF( temp_file == NULL, EX_IOERR );
-  yyrestart( temp_file );
+  FILE *const mem_file = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
+  PERROR_EXIT_IF( mem_file == NULL, EX_IOERR );
+  yyrestart( mem_file );
 
   if ( opt_echo_commands && !cdecl_interactive && cdecl_initialized ) {
     //
@@ -270,7 +270,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   }
 
   int const rv = yyparse();
-  PJL_IGNORE_RV( fclose( temp_file ) );
+  PJL_IGNORE_RV( fclose( mem_file ) );
   if ( unlikely( rv == 2 ) ) {
     //
     // Bison has already printed "memory exhausted" via yyerror() that doesn't
