@@ -366,9 +366,9 @@
   DUMP_KEY( KEY ": " ); c_sname_list_dump( &(LIST), stdout ); )
 
 /**
- * @def DUMP_START
+ * Starts a dump block.
  *
- * Starts a dump block.  The dump block _must_ end with #DUMP_END().
+ * @note The dump block _must_ end with #DUMP_END().
  *
  * @sa #DUMP_PROD
  * @sa #DUMP_END
