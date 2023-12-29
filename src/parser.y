@@ -2739,13 +2739,11 @@ new_style_cast_expr_c
     {
       ia_type_ast_pop();
 
-      char const *const cast_literal = c_cast_english( $cast_kind );
-
       DUMP_START();
       DUMP_PROD( "explain_command",
                  "EXPLAIN new_style_cast_c"
                  "'<' type_c_ast cast_c_astp_opt '>' '(' sname ')'" );
-      DUMP_STR( "new_style_cast_c", cast_literal );
+      DUMP_STR( "new_style_cast_c", c_cast_english( $cast_kind ) );
       DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
       DUMP_SNAME( "sname", $sname );
