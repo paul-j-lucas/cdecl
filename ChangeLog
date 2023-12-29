@@ -1,5 +1,6 @@
 2023-12-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * parse.c: Fixed handling of yyparse()'s return value and error message.
    * configure.ac, cdecl.1, src/Makefile.am, c_ast.c, c_ast.h, c_typedef.c,
      cli_options.c, dump.h, help.c, options.c, options.h, parser.y, print.c,
      set_options.c, test/Makefile.am: --disable-cdecl-debug has been removed.
