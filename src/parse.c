@@ -269,17 +269,23 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     FFLUSH( stdout );
   }
 
-  int const status = yyparse() == 0 ? EX_OK : EX_DATAERR;
+  int const rv = yyparse();
   PJL_IGNORE_RV( fclose( temp_file ) );
-  if ( unlikely( status == 2 ) )
-    fatal_error( EX_SOFTWARE, "yyparse(): out of memory\n" );
+  if ( unlikely( rv == 2 ) ) {
+    //
+    // Bison has already printed "memory exhausted" via yyerror() that doesn't
+    // print a newline, so print one now.
+    //
+    EPUTC( '\n' );
+    _Exit( EX_SOFTWARE );
+  }
 
   if ( infer_command ) {
     strbuf_cleanup( &sbuf );
     print_params.inserted_len = 0;
   }
 
-  return status;
+  return rv == 0 ? EX_OK : EX_DATAERR;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
