@@ -1,5 +1,6 @@
 2023-12-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Removed mention of gcc color capabilities.
    * lexer.l, types.h: Added c_loc_num_t as short to halve size of c_loc_t.
 
 2023-12-28  Paul J. Lucas <paul@lucasmail.org>
