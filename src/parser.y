@@ -6189,7 +6189,7 @@ attribute_c_atid_exp
     {
       if ( c_sname_count( &$sname ) > 1 ) {
         print_warning( &@sname,
-          "\"%s\": namespaced attributes not supported by %s\n",
+          "\"%s\": namespaced attributes not supported by %s (ignoring)\n",
           c_sname_full_name( &$sname ), CDECL
         );
       }
