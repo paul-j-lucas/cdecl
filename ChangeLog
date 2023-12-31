@@ -1,5 +1,11 @@
+2023-12-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, explain-error.out, explain-error.test: Fixed parsing `struct`
+     member with bit-field.
+
 2023-12-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Moved CDECL_CFLAGS.
    * cdecl.1: Slight rewording: "containing".
    * cdecl.1: Removed mention of gcc color capabilities.
    * lexer.l, types.h: Added c_loc_num_t as short to halve size of c_loc_t.
