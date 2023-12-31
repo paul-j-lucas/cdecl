@@ -20,7 +20,20 @@
 
 dist_man1_MANS = cdecl.1 c++decl.1
 
+GROFF_FLAGS =	-man -Tps
+
+PS2PDF_FLAGS =	-dEmbedAllFonts=true \
+		-dHaveTrueTypes=true \
+		-dPDFSETTINGS=/prepress \
+		-dSubsetFonts=false
+
 cdecl.ps: cdecl.1
-	groff -man -Tps $< > $@
+	groff $(GROFF_FLAGS) $< > $@
+
+cdecl.pdf: cdecl.ps
+	ps2pdf $(PS2PDF_FLAGS) $<
+
+
+#	gs -o $@ $(GS_FLAGS) -f $<
 
 # vim:set noet sw=8 ts=8:
