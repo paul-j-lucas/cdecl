@@ -1,5 +1,9 @@
 2023-12-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1, cli_options.c, cdecl--help.out: --east-const's short option is
+     now -e.
+   * man/man1/Makefile.am: Added PDF target.
+   * cdecl.1: s/CE/CW/
    * parser.y, explain-error.out, explain-error.test: Fixed parsing `struct`
      member with bit-field.
 
