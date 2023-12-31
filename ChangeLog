@@ -1,3 +1,8 @@
+2023-12-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added "(ignoring)" for consistency.
+   * parser.y: Renaming.
+
 2023-12-30  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: More formatting.
