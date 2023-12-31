@@ -1,5 +1,8 @@
 2023-12-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: More formatting.
+   * cdecl.1: Fixed formatting.
+   * cdecl.1: Added "east".
    * cdecl.1, cli_options.c, cdecl--help.out: --east-const's short option is
      now -e.
    * man/man1/Makefile.am: Added PDF target.
