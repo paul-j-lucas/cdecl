@@ -46,6 +46,15 @@ Fixed printing of `typedef`s of nested types, e.g.:
 ** `restrict` arrays
 Arrays being `restrict` except as function parameter is now correctly illegal.
 
+** Fixed parsing `struct` member bit-field
+A declararation like:
+
+    struct S
+    explain int S::x : 3
+
+was incorrectly parsed; that's now fixed.  (Scoped names still correctly can't
+be declared like that with bit fields, however.)
+
 ** Types in error & warning messages
 For types that are `typedef`s, now printing `aka` followed by their underlying
 types in more cases.

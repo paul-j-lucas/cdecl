@@ -123,8 +123,9 @@ cdecl> explain int (^S)()
 cdecl> explain int S[4]
                    ^
 13: error: "S": previously declared as type "struct S"
-cdecl> explain int S::x
-declare x of structure S as integer
+cdecl> explain int S::x : 3
+               ^
+9: error: scoped names can not have bit-field widths
 cdecl> explain int &*x
                    ^
 13: error: pointer to reference is illegal; did you mean "*&"?
@@ -264,8 +265,8 @@ cdecl> explain unsigned wchar_t x
                ^
 9: error: "unsigned wchar_t" is illegal for built-in type
 cdecl> explain unsigned *x : 3
-                           ^
-21: error: invalid bit-field type "unsigned*"; must be an integral type
+                        ^
+18: error: invalid bit-field type "unsigned*"; must be an integral type
 cdecl> explain using f = void (*)(int)
                ^
 9: error: "using": unsupported keyword in C

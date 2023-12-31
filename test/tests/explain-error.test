@@ -47,7 +47,7 @@ explain int main( int, int** )
 explain int main(int, int, int, int)
 explain int (^S)()
 explain int S[4]
-explain int S::x
+explain int S::x : 3
 explain int &*x
 explain int &x
 explain int x, *x

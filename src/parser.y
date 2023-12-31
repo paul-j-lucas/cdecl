@@ -698,6 +698,37 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
 }
 
 /**
+ * If \a bit_width is &gt; 0 and \a ast is an integral type, sets \a ast's \ref
+ * c_bit_field_ast::bit_width "bit_width" to \a bit_width.
+ *
+ * @remarks This check has to be done now in the parser rather than later in
+ * the AST since we need to use the \ref c_ast::bit_field `union` member now.
+ *
+ * @param ast The AST whose \ref c_bit_field_ast::bit_width "bit_width" to
+ * possibly set.
+ * @param bit_width The bit-field width.
+ * @return Return's `true` only if \a ast if an integral type.
+ */
+NODISCARD
+static bool c_ast_set_bit_field_width( c_ast_t *ast, unsigned bit_width ) {
+  assert( ast != NULL );
+
+  if ( bit_width > 0 ) {
+    if ( !c_ast_is_integral( ast ) ) {
+      print_error( &ast->loc, "invalid bit-field type " );
+      print_ast_type_aka( ast, stderr );
+      EPRINTF( "; must be an integral %stype\n",
+        OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
+      );
+      return false;
+    }
+    ast->bit_field.bit_width = bit_width;
+  }
+
+  return true;
+}
+
+/**
  * Defines a type by adding it to the global set.
  *
  * @param type_ast The AST of the type to define.
@@ -4827,7 +4858,7 @@ reference_type_c_ast
 
 typedef_type_decl_c_ast
   : // in_attr: type_c_ast
-    typedef_type_c_ast[tdef_ast]
+    typedef_type_c_ast[tdef_ast] bit_field_c_uint_opt[bit_width]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
@@ -4835,6 +4866,7 @@ typedef_type_decl_c_ast
       DUMP_PROD( "typedef_type_decl_c_ast", "typedef_type_c_ast" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "typedef_type_c_ast", $tdef_ast );
+      DUMP_INT( "bit_field_c_uint_opt", $bit_width );
 
       if ( c_tid_is_any( type_ast->type.stids, TS_typedef ) ) {
         //
@@ -4911,6 +4943,8 @@ typedef_type_decl_c_ast
         $$ = c_ast_dup_gc( raw_tdef_ast );
         $$->loc = $tdef_ast->loc;
       }
+
+      PARSE_ASSERT( c_ast_set_bit_field_width( $$, $bit_width ) );
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
@@ -7510,22 +7544,7 @@ sname_c_ast
 
       type_ast = ia_type_spec_ast( type_ast );
       c_sname_set( &type_ast->sname, &$sname );
-
-      if ( $bit_width != 0 ) {
-        //
-        // This check has to be done now in the parser rather than later in the
-        // AST since we need to use the builtin union member now.
-        //
-        if ( !c_ast_is_integral( type_ast ) ) {
-          print_error( &@bit_width, "invalid bit-field type " );
-          print_ast_type_aka( type_ast, stderr );
-          EPRINTF( "; must be an integral %stype\n",
-            OPT_LANG_IS( enum_BITFIELDS ) ? "or enumeration " : ""
-          );
-          PARSE_ABORT();
-        }
-        type_ast->bit_field.bit_width = $bit_width;
-      }
+      PARSE_ASSERT( c_ast_set_bit_field_width( type_ast, $bit_width ) );
 
       $$ = type_ast;
       DUMP_AST( "$$_ast", $$ );
