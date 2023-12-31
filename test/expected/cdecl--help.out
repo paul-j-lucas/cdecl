@@ -5,7 +5,7 @@ options:
   --config=FILE        (-c) Configuration file path [default: ~/.cdeclrc].
   --debug[=OPTS]       (-d) Print cdecl debug output.
   --digraphs           (-2) Print digraphs.
-  --east-const         (-E) Print in "east const" form.
+  --east-const         (-e) Print in "east const" form.
   --echo-commands      (-O) Echo commands given before corresponding output.
   --explicit-ecsu=WHEN (-S) Print "class", "struct", "union" explicitly WHEN.
   --explicit-int=WHEN  (-i) Print "int" explicitly WHEN.

@@ -32,6 +32,10 @@ The former `--explain` and `-e` options have been renamed `--infer-command` and
 `-I`; the former `explain-by-default` `set` option has been renamed `infer-
 command`.
 
+** `--east-const`, `-e`
+Since the old `-e` was renamed to `-I`, the short option for `--east-const` is
+now `-e`.
+
 ** Lambdas in C
 Lambdas are now correctly illegal in C.
 
