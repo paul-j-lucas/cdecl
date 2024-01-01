@@ -56,7 +56,7 @@ static void print_help_where( void );
  * @{
  */
 
-////////// local functions ////////////////////////////////////////////////////
+////////// inline functions ///////////////////////////////////////////////////
 
 /**
  * Checks whether **cdecl** \a command is \a literal.
@@ -73,6 +73,8 @@ static inline bool command_is( cdecl_command_t const *command,
                                char const *literal ) {
   return command == NULL || command->literal == literal;
 }
+
+////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Checks whether **cdecl** \a command is any of the given literals.
