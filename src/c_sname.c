@@ -100,6 +100,7 @@ static char const* c_sname_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
  *    either `~` or `compl `.
  *  + Otherwise 0.
  */
+NODISCARD
 size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
   assert( s != NULL );
   assert( rv_sname != NULL );
