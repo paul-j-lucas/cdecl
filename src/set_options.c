@@ -368,6 +368,7 @@ static void print_options( void ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_alt_tokens( set_option_fn_args_t const *args ) {
   opt_alt_tokens = args->opt_enabled;
   if ( opt_alt_tokens && !OPT_LANG_IS( ALT_TOKENS ) ) {
@@ -386,6 +387,7 @@ static bool set_alt_tokens( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_bison_debug( set_option_fn_args_t const *args ) {
   opt_bison_debug = args->opt_enabled;
   return true;
@@ -398,6 +400,7 @@ static bool set_bison_debug( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_debug( set_option_fn_args_t const *args ) {
   bool ok;
 
@@ -425,6 +428,7 @@ static bool set_debug( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_digraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_DI : C_GRAPH_NONE;
   if ( opt_graph && !OPT_LANG_IS( DIGRAPHS ) ) {
@@ -442,6 +446,7 @@ static bool set_digraphs( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_east_const( set_option_fn_args_t const *args ) {
   opt_east_const = args->opt_enabled;
   if ( opt_east_const && !OPT_LANG_IS( const ) ) {
@@ -459,6 +464,7 @@ static bool set_east_const( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_echo_commands( set_option_fn_args_t const *args ) {
   opt_echo_commands = args->opt_enabled;
   if ( opt_echo_commands && cdecl_interactive ) {
@@ -475,6 +481,7 @@ static bool set_echo_commands( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_english_types( set_option_fn_args_t const *args ) {
   opt_english_types = args->opt_enabled;
   return true;
@@ -486,6 +493,7 @@ static bool set_english_types( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Returns `true` only if the option was set.
  */
+NODISCARD
 static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
   bool ok;
 
@@ -520,6 +528,7 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Returns `true` only if the option was set.
  */
+NODISCARD
 static bool set_explicit_int( set_option_fn_args_t const *args ) {
   bool ok;
 
@@ -548,6 +557,7 @@ static bool set_explicit_int( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_flex_debug( set_option_fn_args_t const *args ) {
   opt_flex_debug = args->opt_enabled;
   return true;
@@ -560,6 +570,7 @@ static bool set_flex_debug( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_infer_command( set_option_fn_args_t const *args ) {
   opt_infer_command = args->opt_enabled;
   return true;
@@ -571,6 +582,7 @@ static bool set_infer_command( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Returns `true` only if the option was set.
  */
+NODISCARD
 static bool set_lang( set_option_fn_args_t const *args ) {
   assert( args->opt_enabled );
   if ( set_lang_impl( args->opt_value ) )
@@ -626,6 +638,7 @@ static bool set_lang_impl( char const *name ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_prompt( set_option_fn_args_t const *args ) {
   opt_prompt = args->opt_enabled;
   cdecl_prompt_enable();
@@ -638,6 +651,7 @@ static bool set_prompt( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_semicolon( set_option_fn_args_t const *args ) {
   opt_semicolon = args->opt_enabled;
   return true;
@@ -649,6 +663,7 @@ static bool set_semicolon( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_trailing_return( set_option_fn_args_t const *args ) {
   opt_trailing_ret = args->opt_enabled;
   if ( opt_trailing_ret && !OPT_LANG_IS( TRAILING_RETURN_TYPES ) ) {
@@ -666,6 +681,7 @@ static bool set_trailing_return( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_trigraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
   if ( opt_graph && !OPT_LANG_IS( TRIGRAPHS ) ) {
@@ -683,6 +699,7 @@ static bool set_trigraphs( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Always returns `true`.
  */
+NODISCARD
 static bool set_using( set_option_fn_args_t const *args ) {
   opt_using = args->opt_enabled;
   if ( opt_using && !OPT_LANG_IS( using_DECLS ) ) {
@@ -700,6 +717,7 @@ static bool set_using( set_option_fn_args_t const *args ) {
  * @param args The set option arguments.
  * @return Returns `true` only if the option was set.
  */
+NODISCARD
 static bool set_west_pointer( set_option_fn_args_t const *args ) {
   bool ok;
 
@@ -729,6 +747,7 @@ static bool set_west_pointer( set_option_fn_args_t const *args ) {
  * On return, it is advanced to the next list element.
  * @return Returns said string or NULL if none.
  */
+NODISCARD
 static char const* slist_set_option_gets( void const **ppelt ) {
   slist_node_t const *const node = *ppelt;
   if ( node == NULL )

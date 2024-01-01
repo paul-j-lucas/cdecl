@@ -177,6 +177,7 @@ static char const* get_input_line( size_t *rv_len ) {
  *
  * @return Returns the number of columns or 0 if can not be determined.
  */
+NODISCARD
 static unsigned get_term_columns( void ) {
   unsigned    cols = TERM_COLUMNS_DEFAULT;
 #ifdef ENABLE_TERM_SIZE
