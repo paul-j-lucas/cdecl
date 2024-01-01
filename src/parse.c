@@ -61,7 +61,7 @@
 NODISCARD
 static int cdecl_parse_stdin( void );
 
-////////// local functions ////////////////////////////////////////////////////
+////////// inline functions ///////////////////////////////////////////////////
 
 /**
  * Checks whether we're **cdecl**.
@@ -74,6 +74,8 @@ NODISCARD
 static inline bool is_cdecl( void ) {
   return strcmp( me, CDECL ) == 0;
 }
+
+////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Parses a **cdecl** command.
