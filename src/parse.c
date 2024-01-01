@@ -78,6 +78,26 @@ static inline bool is_cdecl( void ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Checks whether we should infer a command based on \a s.
+ *
+ * @param s The string to check.
+ * @return Returns `true` only if we should _not_ infer a command.
+ */
+NODISCARD
+static bool no_infer_command( char const *s ) {
+  assert( s != NULL );
+  SKIP_WS( s );
+  if ( s[0] == '/' && (s[1] == '*' || s[1] == '/') )
+    return true;
+  if ( s[0] == 'q' ) {
+    ++s;
+    SKIP_WS( s );
+    return s[0] == '\0';
+  }
+  return false;
+}
+
+/**
  * Parses a **cdecl** command.
  *
  * @remarks If \a command is NULL and \a cli_count is 0, calls
@@ -114,18 +134,6 @@ static int cdecl_parse_command( char const *command, size_t cli_count,
 }
 
 /**
- * Checks whether \a s starts a C comment.
- *
- * @param s The string to check.
- * @return Returns `true` only if it does.
- */
-static bool cdecl_parse_comment_start( char const *s ) {
-  assert( s != NULL );
-  SKIP_WS( s );
-  return s[0] == '/' && (s[1] == '*' || s[1] == '/');
-}
-
-/**
  * Parses **cdecl** commands from \a fin.
  *
  * @param fin The `FILE` to read from.
@@ -153,22 +161,6 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
 
   strbuf_cleanup( &sbuf );
   return status;
-}
-
-/**
- * Checks whether a single `q` is the only non-whitespace character in \a s.
- *
- * @param s The string to check.
- * @return Returns `true` only if it is.
- */
-static bool cdecl_parse_q( char const *s ) {
-  assert( s != NULL );
-  SKIP_WS( s );
-  if ( s[0] != 'q' )
-    return false;
-  ++s;
-  SKIP_WS( s );
-  return s[0] == '\0';
 }
 
 /**
@@ -246,8 +238,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
 
   strbuf_t sbuf;
   bool const infer_command = opt_infer_command &&
-    !cdecl_parse_comment_start( s ) &&
-    !cdecl_parse_q( s ) &&
+    !no_infer_command( s ) &&
     cdecl_command_find( s ) == NULL;
 
   if ( infer_command ) {
