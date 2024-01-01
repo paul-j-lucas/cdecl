@@ -14,6 +14,8 @@ c++decl> set
   notrailing-return
     using
     west-pointer=bflo
+c++decl> // comment
+c++decl> /* comment */
 c++decl> int x
 declare x as integer
 c++decl> const int x
