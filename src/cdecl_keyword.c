@@ -1717,6 +1717,10 @@ cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   return NULL;
 }
 
+cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *cdk ) {
+  return cdk == NULL ? CDECL_KEYWORDS : (++cdk)->literal == NULL ? NULL : cdk;
+}
+
 void cdecl_keywords_init( void ) {
   ASSERT_RUN_ONCE();
   qsort(                                // don't rely on manual sorting above
@@ -1724,10 +1728,6 @@ void cdecl_keywords_init( void ) {
     sizeof( cdecl_keyword_t ),
     POINTER_CAST( qsort_cmp_fn_t, &cdecl_keyword_cmp )
   );
-}
-
-cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *cdk ) {
-  return cdk == NULL ? CDECL_KEYWORDS : (++cdk)->literal == NULL ? NULL : cdk;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
