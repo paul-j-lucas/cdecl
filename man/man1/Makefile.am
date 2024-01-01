@@ -27,13 +27,18 @@ PS2PDF_FLAGS =	-dEmbedAllFonts=true \
 		-dPDFSETTINGS=/prepress \
 		-dSubsetFonts=false
 
+pdf-local: cdecl.pdf
+
 cdecl.ps: cdecl.1
 	groff $(GROFF_FLAGS) $< > $@
 
 cdecl.pdf: cdecl.ps
 	ps2pdf $(PS2PDF_FLAGS) $<
 
+clean-local:
+	rm -f cdecl.ps
 
-#	gs -o $@ $(GS_FLAGS) -f $<
+distclean-local:
+	rm -f cdecl.pdf
 
 # vim:set noet sw=8 ts=8:
