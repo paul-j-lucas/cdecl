@@ -112,6 +112,18 @@ static int cdecl_parse_command( char const *command, size_t cli_count,
 }
 
 /**
+ * Checks whether \a s starts a C comment.
+ *
+ * @param s The string to check.
+ * @return Returns `true` only if it does.
+ */
+static bool cdecl_parse_comment_start( char const *s ) {
+  assert( s != NULL );
+  SKIP_WS( s );
+  return s[0] == '/' && (s[1] == '*' || s[1] == '/');
+}
+
+/**
  * Parses **cdecl** commands from \a fin.
  *
  * @param fin The `FILE` to read from.
@@ -231,8 +243,10 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   print_params.command_line_len = s_len;
 
   strbuf_t sbuf;
-  bool const infer_command = !cdecl_parse_q( s ) &&
-    opt_infer_command && cdecl_command_find( s ) == NULL;
+  bool const infer_command = opt_infer_command &&
+    !cdecl_parse_comment_start( s ) &&
+    !cdecl_parse_q( s ) &&
+    cdecl_command_find( s ) == NULL;
 
   if ( infer_command ) {
     //
