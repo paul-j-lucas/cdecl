@@ -283,8 +283,10 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
     // Bison has already printed "memory exhausted" via yyerror() that doesn't
     // print a newline, so print one now.
     //
+    // LCOV_EXCL_START
     EPUTC( '\n' );
     _Exit( EX_SOFTWARE );
+    // LCOV_EXCL_STOP
   }
 
   if ( infer_command ) {
