@@ -1,5 +1,6 @@
 2023-12-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Added IGNORING() and UNSUPPORTED().
    * parser.y: s/IS_UNSUPPORTED/!IS_SUPPORTED/
    * parser.y: Added "(ignoring)" for consistency.
    * parser.y: Renaming.
