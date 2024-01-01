@@ -394,6 +394,7 @@ static void c_loc_dump( c_loc_t const *loc, FILE *dout ) {
  * @param tpid The type part id to get the string representation of.
  * @return Returns a string representation of \a tpid.
  */
+NODISCARD
 static char const* c_tpid_name( c_tpid_t tpid ) {
   switch ( tpid ) {
     case C_TPID_NONE:
@@ -460,6 +461,7 @@ static void dump_init( dump_state_t *dump, unsigned indent, FILE *dout ) {
  *
  * @sa json_object_end()
  */
+NODISCARD
 static json_state_t json_object_begin( json_state_t json, char const *key,
                                        dump_state_t *dump ) {
   assert( dump != NULL );
