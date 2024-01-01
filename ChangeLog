@@ -1,5 +1,7 @@
 2023-12-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * parse.c: Fixed a syntax error when in `infer-command` mode and a line
+     starts with a comment.
    * man/man1/Makefile.am: Added pdf-local, clean-local, distclean-local
      targets.
    * parser.y: Added IGNORING() and UNSUPPORTED().
