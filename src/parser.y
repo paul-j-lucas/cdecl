@@ -414,6 +414,24 @@
 /** @} */
 
 /**
+ * Prints that a particular language feature is not supported by **cdecl** and
+ * will be ignored.
+ *
+ * @param LOC The location of what's being ignored.
+ * @param ... The `printf()` arguments, the first of which _must_ be a string
+ * literal of what is being ignored.
+ *
+ * @sa #UNSUPPORTED()
+ */
+#define IGNORING(LOC,...) \
+  IGNORING_IMPL( (LOC), __VA_ARGS__, CDECL )
+
+/// @cond DOXYGEN_IGNORE
+#define IGNORING_IMPL(LOC,WHAT,...) \
+  print_warning( (LOC), WHAT " not supported by %s (ignoring)%s", __VA_ARGS__, "\n" )
+/// @endcond
+
+/**
  * Checks whether \ref opt_lang is among the bitwise-or of languages specified
  * by \a LANG_MACRO, i.e., \a LANG_MACRO is supported by \ref opt_lang.
  *
@@ -424,6 +442,24 @@
  */
 #define IS_SUPPORTED(LANG_MACRO) \
   ( !cdecl_initialized || opt_lang_is_any( LANG_##LANG_MACRO ) )
+
+/**
+ * Prints that a particular language feature is not supported by **cdecl** and
+ * it an error.
+ *
+ * @param LOC The location of what's not supported.
+ * @param ... The `printf()` arguments, the first of which _must_ be a string
+ * literal of what is unsupported.
+ *
+ * @sa #IGNORING()
+ */
+#define UNSUPPORTED(LOC,...) \
+  UNSUPPORTED_IMPL( (LOC), __VA_ARGS__, CDECL )
+
+/// @cond DOXYGEN_IGNORE
+#define UNSUPPORTED_IMPL(LOC,WHAT,...) \
+  print_error( (LOC), WHAT " not supported by %s%s", __VA_ARGS__, "\n" )
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -2843,7 +2879,7 @@ asm_declaration_c
   : Y_asm lparen_exp str_lit_exp[str] rparen_exp
     {
       free( $str );
-      print_error( &@Y_asm, "asm declarations not supported by %s\n", CDECL );
+      UNSUPPORTED( &@Y_asm, "asm declarations" );
       PARSE_ABORT();
     }
   ;
@@ -3331,9 +3367,7 @@ lambda_return_type_c_ast_opt
 template_declaration_c
   : Y_template
     {
-      print_error( &@Y_template,
-        "template declarations not supported by %s\n", CDECL
-      );
+      UNSUPPORTED( &@Y_template, "template declarations" );
       PARSE_ABORT();
     }
   ;
@@ -4311,9 +4345,7 @@ noexcept_c_stid_opt
       c_ast_list_cleanup( &$ast_list );
 
       if ( OPT_LANG_IS( throw ) ) {
-        print_error( &@ast_list,
-          "dynamic exception specifications not supported by %s\n", CDECL
-        );
+        UNSUPPORTED( &@ast_list, "dynamic exception specifications" );
       } else {
         print_error( &@ast_list,
           "dynamic exception specifications not supported%s\n",
@@ -5701,9 +5733,7 @@ builtin_no_BitInt_c_btid
 typeof_type_c_ast
   : typeof
     {
-      print_error( &@typeof,
-        "typeof declarations not supported by %s\n", CDECL
-      );
+      UNSUPPORTED( &@typeof, "typeof declarations" );
       PARSE_ABORT();
     }
   ;
@@ -5744,9 +5774,8 @@ class_struct_union_c_ast
   | class_struct_union_btid[csu_btid] attribute_specifier_list_c_atid_opt
     any_sname_c_opt[sname] '{'[brace]
     {
-      print_error( &@brace,
-        "explaining %s declarations not supported by %s\n",
-        c_tid_name_c( $csu_btid ), CDECL
+      UNSUPPORTED( &@brace,
+        "explaining %s declarations", c_tid_name_c( $csu_btid )
       );
       c_sname_cleanup( &$sname );
       PARSE_ABORT();
@@ -5779,11 +5808,10 @@ enum_c_ast
   | enum_btids attribute_specifier_list_c_atid_opt any_sname_c_opt[sname]
     '{'[brace]
     {
-      print_error( &@brace,
-        "explaining %s declarations not supported by %s\n",
-        c_tid_name_c( $enum_btids ), CDECL
-      );
       c_sname_cleanup( &$sname );
+      UNSUPPORTED( &@brace,
+        "explaining %s declarations", c_tid_name_c( $enum_btids )
+      );
       PARSE_ABORT();
     }
   ;
@@ -6133,9 +6161,7 @@ using_opt
   : /* empty */
   | Y_using name_exp[name] colon_exp
     {
-      print_warning( &@Y_using,
-        "\"using\" in attributes not supported by %s (ignoring)\n", CDECL
-      );
+      IGNORING( &@Y_using, "\"using\" in attributes" );
       free( $name );
     }
   ;
@@ -6176,9 +6202,8 @@ attribute_c_atid_exp
   | sname_c[sname]
     {
       if ( c_sname_count( &$sname ) > 1 ) {
-        print_warning( &@sname,
-          "\"%s\": namespaced attributes not supported by %s (ignoring)\n",
-          c_sname_full_name( &$sname ), CDECL
+        IGNORING( &@sname,
+          "\"%s\": namespaced attributes", c_sname_full_name( &$sname )
         );
       }
       else {
@@ -6214,9 +6239,7 @@ attribute_str_arg_c_opt
   : /* empty */
   | '('[paren] str_lit_exp[str] rparen_exp
     {
-      print_warning( &@paren,
-        "attribute arguments not supported by %s (ignoring)\n", CDECL
-      );
+      IGNORING( &@paren, "attribute arguments" );
       free( $str );
     }
   ;
@@ -7948,9 +7971,7 @@ extern_linkage_c_stid
   : Y_extern linkage_stid[stid]   { $$ = $stid; }
   | Y_extern linkage_stid '{'[brace]
     {
-      print_error( &@brace,
-        "scoped linkage declarations not supported by %s\n", CDECL
-      );
+      UNSUPPORTED( &@brace, "scoped linkage declarations" );
       PARSE_ABORT();
     }
   ;
