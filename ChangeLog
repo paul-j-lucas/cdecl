@@ -1,5 +1,6 @@
 2024-01-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * parse.c: Added LCOV_EXCL_START/LCOV_EXCL_STOP.
    * print.c, set_options.c: Added NODISCARD.
    * dump.c: Added NODISCARD.
    * c_sname.c: Added NODISCARD.
