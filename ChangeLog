@@ -1,5 +1,7 @@
 2023-12-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * man/man1/Makefile.am: Added pdf-local, clean-local, distclean-local
+     targets.
    * parser.y: Added IGNORING() and UNSUPPORTED().
    * parser.y: s/IS_UNSUPPORTED/!IS_SUPPORTED/
    * parser.y: Added "(ignoring)" for consistency.
