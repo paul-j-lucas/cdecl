@@ -1,5 +1,10 @@
 2024-01-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * print.c, set_options.c: Added NODISCARD.
+   * dump.c: Added NODISCARD.
+   * c_sname.c: Added NODISCARD.
+   * parse.c: Replaced cdecl_parse_comment_start() and cdecl_parse_q() with
+     no_infer_command().
    * Doxyfile, Makefile.am, bootstrap, cdecl.css, configure.ac, lcovrc,
      pjl_compile.m4, makedoc.sh, man/Makefile.am, man/man1/Makefile.am,
      man/man1/c++decl.1, cdecl.1, src/Makefile.am, autocomplete.c,
