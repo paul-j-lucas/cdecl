@@ -145,6 +145,24 @@
   fl_elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
 
 /**
+ * Prints that a particular language feature is not supported by **cdecl** and
+ * will be ignored.
+ *
+ * @param LOC The location of what's being ignored.
+ * @param ... The `printf()` arguments, the first of which _must_ be a string
+ * literal of what is being ignored.
+ *
+ * @sa #UNSUPPORTED()
+ */
+#define IGNORING(LOC,...) \
+  IGNORING_IMPL( (LOC), __VA_ARGS__, CDECL )
+
+/// @cond DOXYGEN_IGNORE
+#define IGNORING_IMPL(LOC,WHAT,...) \
+  print_warning( (LOC), WHAT " not supported by %s (ignoring)%s", __VA_ARGS__, "\n" )
+/// @endcond
+
+/**
  * Checks whether the type currently being declared (`enum`, `struct`,
  * `typedef`, or `union`) is nested within some other type (`struct` or
  * `union`) and whether the current language is C: if not, prints an error
@@ -161,6 +179,20 @@
  */
 #define is_nested_type_ok(TYPE_LOC) \
   fl_is_nested_type_ok( __FILE__, __LINE__, (TYPE_LOC) )
+
+/**
+ * Checks whether \ref opt_lang is among the bitwise-or of languages specified
+ * by \a LANG_MACRO, i.e., \a LANG_MACRO is supported by \ref opt_lang.
+ *
+ * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
+ * @return Returns `true` only if either **cdecl** is \ref cdecl_initialized is
+ * `false` or \ref opt_lang is among the bitwise-or of languages specified by
+ * \a LANG_MACRO.
+ *
+ * @sa #OPT_LANG_IS()
+ */
+#define IS_SUPPORTED(LANG_MACRO) \
+  ( !cdecl_initialized || OPT_LANG_IS( LANG_MACRO ) )
 
 /**
  * Calls fl_keyword_expected() followed by #PARSE_ABORT().
@@ -218,6 +250,24 @@
  */
 #define punct_expected(PUNCT) BLOCK( \
   fl_punct_expected( __FILE__, __LINE__, (PUNCT) ); PARSE_ABORT(); )
+
+/**
+ * Prints that a particular language feature is not supported by **cdecl** and
+ * it an error.
+ *
+ * @param LOC The location of what's not supported.
+ * @param ... The `printf()` arguments, the first of which _must_ be a string
+ * literal of what is unsupported.
+ *
+ * @sa #IGNORING()
+ */
+#define UNSUPPORTED(LOC,...) \
+  UNSUPPORTED_IMPL( (LOC), __VA_ARGS__, CDECL )
+
+/// @cond DOXYGEN_IGNORE
+#define UNSUPPORTED_IMPL(LOC,WHAT,...) \
+  print_error( (LOC), WHAT " not supported by %s%s", __VA_ARGS__, "\n" )
+/// @endcond
 
 /** @} */
 
@@ -412,56 +462,6 @@
   DUMP_KEY( KEY ": " ); c_type_dump( &(TYPE), stdout ); )
 
 /** @} */
-
-/**
- * Prints that a particular language feature is not supported by **cdecl** and
- * will be ignored.
- *
- * @param LOC The location of what's being ignored.
- * @param ... The `printf()` arguments, the first of which _must_ be a string
- * literal of what is being ignored.
- *
- * @sa #UNSUPPORTED()
- */
-#define IGNORING(LOC,...) \
-  IGNORING_IMPL( (LOC), __VA_ARGS__, CDECL )
-
-/// @cond DOXYGEN_IGNORE
-#define IGNORING_IMPL(LOC,WHAT,...) \
-  print_warning( (LOC), WHAT " not supported by %s (ignoring)%s", __VA_ARGS__, "\n" )
-/// @endcond
-
-/**
- * Checks whether \ref opt_lang is among the bitwise-or of languages specified
- * by \a LANG_MACRO, i.e., \a LANG_MACRO is supported by \ref opt_lang.
- *
- * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
- * @return Returns `true` only if either **cdecl** is \ref cdecl_initialized is
- * `false` or \ref opt_lang is among the bitwise-or of languages specified by
- * \a LANG_MACRO.
- *
- * @sa #OPT_LANG_IS()
- */
-#define IS_SUPPORTED(LANG_MACRO) \
-  ( !cdecl_initialized || OPT_LANG_IS( LANG_MACRO ) )
-
-/**
- * Prints that a particular language feature is not supported by **cdecl** and
- * it an error.
- *
- * @param LOC The location of what's not supported.
- * @param ... The `printf()` arguments, the first of which _must_ be a string
- * literal of what is unsupported.
- *
- * @sa #IGNORING()
- */
-#define UNSUPPORTED(LOC,...) \
-  UNSUPPORTED_IMPL( (LOC), __VA_ARGS__, CDECL )
-
-/// @cond DOXYGEN_IGNORE
-#define UNSUPPORTED_IMPL(LOC,WHAT,...) \
-  print_error( (LOC), WHAT " not supported by %s%s", __VA_ARGS__, "\n" )
-/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
