@@ -1,5 +1,6 @@
 2024-01-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: Added ().
    * c_typedef.c: Removed unnecessary assert().
    * util.h: s/int/char/
 
