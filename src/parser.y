@@ -283,7 +283,7 @@
  *
  * @sa #DUMP_KEY()
  */
-#define DUMP_BOOL(KEY,BOOL)  IF_CDECL_DEBUG(  \
+#define DUMP_BOOL(KEY,BOOL)  IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); bool_dump( (BOOL), stdout ); )
 
 /**
