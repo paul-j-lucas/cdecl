@@ -1,3 +1,7 @@
+2024-01-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: s/int/char/
+
 2024-01-01  Paul J. Lucas <paul@lucasmail.org>
 
    * parse.c: Added LCOV_EXCL_START/LCOV_EXCL_STOP.
