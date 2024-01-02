@@ -373,9 +373,9 @@
  * @sa #DUMP_PROD
  * @sa #DUMP_END
  */
-#define DUMP_START()                        \
-  bool dump_comma = false; IF_CDECL_DEBUG(  \
-  PUTS( "{\n" ); )
+#define DUMP_START()                \
+  bool dump_comma = false;          \
+  IF_CDECL_DEBUG( PUTS( "{\n" ); )
 
 /**
  * Dumps a C string.
