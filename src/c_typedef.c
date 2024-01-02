@@ -1050,7 +1050,6 @@ static void c_typedefs_cleanup( void ) {
  * _must_ have its \ref predef_type::str "str" be NULL.
  */
 static void parse_predef_types( predef_type_t const types[static const 2] ) {
-  assert( types != NULL );
   for ( predef_type_t const *pt = types; pt->str != NULL; ++pt ) {
     if ( unlikely( cdecl_parse_string( pt->str, strlen( pt->str ) ) != EX_OK ) )
       INTERNAL_ERROR( "failed parsing type predefined on line %u\n", pt->line );
