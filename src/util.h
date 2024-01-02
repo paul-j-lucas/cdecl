@@ -348,7 +348,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #ARRAY_SIZE()
  */
 #define FOREACH_ARRAY_ELEMENT(TYPE,VAR,ARRAY) \
-  for ( TYPE const *VAR = ARRAY; VAR < (ARRAY) + ARRAY_SIZE(ARRAY); ++VAR )
+  for ( TYPE const *VAR = (ARRAY); VAR < (ARRAY) + ARRAY_SIZE(ARRAY); ++VAR )
 
 /**
  * Calls **fprintf**(3) on \a STREAM, checks for an error, and exits if there
