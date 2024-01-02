@@ -1,6 +1,6 @@
 /* A GNU-like <stdio.h>.
 
-   Copyright (C) 2004, 2007-2023 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2007-2024 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -38,8 +38,14 @@
 
 /* Suppress macOS deprecation warnings for sprintf and vsprintf.  */
 #if (defined __APPLE__ && defined __MACH__) && !defined _POSIX_C_SOURCE
-# define _POSIX_C_SOURCE 200809L
-# define _GL_DEFINED__POSIX_C_SOURCE
+# ifdef __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__
+#  include <AvailabilityMacros.h>
+# endif
+# if (defined MAC_OS_X_VERSION_MIN_REQUIRED \
+      && 130000 <= MAC_OS_X_VERSION_MIN_REQUIRED)
+#  define _POSIX_C_SOURCE 200809L
+#  define _GL_DEFINED__POSIX_C_SOURCE
+# endif
 #endif
 
 #define _GL_ALREADY_INCLUDING_STDIO_H

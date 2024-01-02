@@ -1,5 +1,5 @@
 /* <uchar.h> substitute - 16-bit and 32-bit wide character types.
-   Copyright (C) 2019-2023 Free Software Foundation, Inc.
+   Copyright (C) 2019-2024 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as

@@ -1,5 +1,5 @@
 /* Query the name of the current global locale.
-   Copyright (C) 2019-2023 Free Software Foundation, Inc.
+   Copyright (C) 2019-2024 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -30,7 +30,12 @@
 #endif
 
 #if !(SETLOCALE_NULL_ALL_MTSAFE && SETLOCALE_NULL_ONE_MTSAFE)
-# if defined _WIN32 && !defined __CYGWIN__
+
+# if AVOID_ANY_THREADS
+
+/* The option '--disable-threads' explicitly requests no locking.  */
+
+# elif defined _WIN32 && !defined __CYGWIN__
 
 #  define WIN32_LEAN_AND_MEAN  /* avoid including junk */
 #  include <windows.h>
@@ -51,6 +56,7 @@
 #  include <threads.h>
 
 # endif
+
 #endif
 
 /* Use the system's setlocale() function, not the gnulib override, here.  */
@@ -181,7 +187,12 @@ setlocale_null_unlocked (int category, char *buf, size_t bufsize)
 /* Prohibit renaming this symbol.  */
 # undef gl_get_setlocale_null_lock
 
-# if defined _WIN32 && !defined __CYGWIN__
+# if AVOID_ANY_THREADS
+
+/* The option '--disable-threads' explicitly requests no locking.  */
+#  define setlocale_null_with_lock setlocale_null_unlocked
+
+# elif defined _WIN32 && !defined __CYGWIN__
 
 extern __declspec(dllimport) CRITICAL_SECTION *gl_get_setlocale_null_lock (void);
 

@@ -1,5 +1,5 @@
 /* Concatenate UTF-32 strings.
-   Copyright (C) 1999, 2002, 2006, 2009-2023 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002, 2006, 2009-2024 Free Software Foundation, Inc.
    Written by Bruno Haible <bruno@clisp.org>, 2002.
 
    This file is free software: you can redistribute it and/or modify

@@ -1,5 +1,5 @@
 /* Return the internal lock used by mbrtowc and mbrtoc32.
-   Copyright (C) 2019-2023 Free Software Foundation, Inc.
+   Copyright (C) 2019-2024 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -18,9 +18,10 @@
 
 #include <config.h>
 
+/* The option '--disable-threads' explicitly requests no locking.  */
 /* When it is known that the gl_get_mbtowc_lock function is defined
    by a dependency library, it should not be defined here.  */
-#if OMIT_MBTOWC_LOCK
+#if AVOID_ANY_THREADS || OMIT_MBTOWC_LOCK
 
 /* This declaration is solely to ensure that after preprocessing
    this file is never empty.  */

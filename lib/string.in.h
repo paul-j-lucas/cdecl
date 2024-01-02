@@ -1,6 +1,6 @@
 /* A GNU-like <string.h>.
 
-   Copyright (C) 1995-1996, 2001-2023 Free Software Foundation, Inc.
+   Copyright (C) 1995-1996, 2001-2024 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -1419,12 +1419,22 @@ _GL_WARN_ON_USE (strsignal, "strsignal is unportable - "
 #endif
 
 #if @GNULIB_STRVERSCMP@
-# if !@HAVE_STRVERSCMP@
+# if @REPLACE_STRVERSCMP@
+#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#   define strverscmp rpl_strverscmp
+#  endif
+_GL_FUNCDECL_RPL (strverscmp, int, (const char *, const char *)
+                                   _GL_ATTRIBUTE_PURE
+                                   _GL_ARG_NONNULL ((1, 2)));
+_GL_CXXALIAS_RPL (strverscmp, int, (const char *, const char *));
+# else
+#  if !@HAVE_STRVERSCMP@
 _GL_FUNCDECL_SYS (strverscmp, int, (const char *, const char *)
                                    _GL_ATTRIBUTE_PURE
                                    _GL_ARG_NONNULL ((1, 2)));
-# endif
+#  endif
 _GL_CXXALIAS_SYS (strverscmp, int, (const char *, const char *));
+# endif
 _GL_CXXALIASWARN (strverscmp);
 #elif defined GNULIB_POSIXCHECK
 # undef strverscmp
