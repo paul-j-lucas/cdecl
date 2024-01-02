@@ -439,9 +439,11 @@
  * @return Returns `true` only if either **cdecl** is \ref cdecl_initialized is
  * `false` or \ref opt_lang is among the bitwise-or of languages specified by
  * \a LANG_MACRO.
+ *
+ * @sa #OPT_LANG_IS()
  */
 #define IS_SUPPORTED(LANG_MACRO) \
-  ( !cdecl_initialized || opt_lang_is_any( LANG_##LANG_MACRO ) )
+  ( !cdecl_initialized || OPT_LANG_IS( LANG_MACRO ) )
 
 /**
  * Prints that a particular language feature is not supported by **cdecl** and
