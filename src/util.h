@@ -735,7 +735,7 @@ _GL_INLINE_HEADER_BEGIN
  * @return Always returns 1.
  */
 #define STATIC_ASSERT_EXPR(EXPR,MSG) \
-  (!!sizeof( struct { static_assert( (EXPR), MSG ); int required; } ))
+  (!!sizeof( struct { static_assert( (EXPR), MSG ); char c; } ))
 
 /**
  * C version of C++'s `static_cast`.
