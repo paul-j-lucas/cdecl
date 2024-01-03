@@ -1,3 +1,9 @@
+2024-01-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added call to c_tid_check().
+   * c_ast_util.c, c_ast_util.h, parser.y: Moved "assume constructor" code into
+     c_ast_is_likely_ctor() in c_ast_util.c.
+
 2024-01-02  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Added ().
