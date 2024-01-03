@@ -4054,8 +4054,10 @@ func_decl_c_astp
       DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
       DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
 
-      c_tid_t const func_stids =
-        $qual_stids | $ref_qual_stid | $noexcept_stid | $equals_stid;
+      c_tid_t const func_stids = c_tid_check(
+        $qual_stids | $ref_qual_stid | $noexcept_stid | $equals_stid,
+        C_TPID_STORE
+      );
 
       bool const assume_constructor =
         // + The type is likely for a constructor; and:
