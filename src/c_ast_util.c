@@ -626,6 +626,42 @@ bool c_ast_is_integral( c_ast_t const *ast ) {
   } // switch
 }
 
+bool c_ast_is_likely_ctor( c_ast_t const *type_ast ) {
+  assert( type_ast != NULL );
+
+  //
+  // Assume the declaration is for a constructor unless:
+  //
+  // + The current language does _not_ support constructors.
+  if ( !OPT_LANG_IS( CONSTRUCTORS ) )
+    return false;
+
+  // + The type is _not_ none (because constructors don't have return types).
+  if ( type_ast->type.btids != TB_NONE )
+    return false;
+
+  // + The type has any non-constructor storage classes.
+  if ( c_tid_is_any( type_ast->type.stids, TS_FUNC_LIKE_NOT_CTOR ) )
+    return false;
+
+  if (  // + The type does _not_ have any constructor-only storage-class-like
+        //   types (e.g., explicit).
+        !c_tid_is_any( type_ast->type.stids, TS_CONSTRUCTOR_ONLY ) &&
+        //
+        // And:
+        //
+        // + The type doed _not_ have a storage-class-like type that may be
+        //   applied to constructors.
+        !is_1n_bit_only_in_set(
+          c_tid_no_tpid( type_ast->type.stids ),
+          c_tid_no_tpid( TS_CONSTRUCTOR_DECL )
+        ) ) {
+    return false;
+  }
+
+  return true;
+}
+
 bool c_ast_is_ptr_to_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
   ast = c_ast_unpointer( ast );
   return ast != NULL && (ast->kind & kinds) != 0;

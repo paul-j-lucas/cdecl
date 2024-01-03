@@ -4057,56 +4057,9 @@ func_decl_c_astp
       c_tid_t const func_stids =
         $qual_stids | $ref_qual_stid | $noexcept_stid | $equals_stid;
 
-      //
-      // Cdecl can't know for certain whether a "function" name is really a
-      // constructor name because it:
-      //
-      //  1. Doesn't have the context of the surrounding class:
-      //
-      //          class T {
-      //          public:
-      //            T();                // <-- All cdecl usually has is this.
-      //            // ...
-      //          };
-      //
-      //  2. Can't check to see if the name is a typedef for a class, struct,
-      //     or union (even though that would greatly help) since:
-      //
-      //          T(U);
-      //
-      //     could be either:
-      //
-      //      + A constructor of type T with a parameter of type U; or:
-      //      + A variable named U of type T (with unnecessary parentheses).
-      //
-      // Hence, we have to infer which of a function or a constructor was
-      // likely the one meant.  Assume the declaration is for a constructor
-      // only if:
-      //
       bool const assume_constructor =
-
-        // + The current language supports constructors.
-        OPT_LANG_IS( CONSTRUCTORS ) &&
-
-        // + The existing base type is none (because constructors don't have
-        //   return types).
-        type_ast->type.btids == TB_NONE &&
-
-        // + The existing type does _not_ have any non-constructor storage
-        //   classes.
-        !c_tid_is_any( type_ast->type.stids, TS_FUNC_LIKE_NOT_CTOR ) &&
-
-        ( // + The existing type has any constructor-only storage-class-like
-          //   types (e.g., explicit).
-          c_tid_is_any( type_ast->type.stids, TS_CONSTRUCTOR_ONLY ) ||
-
-          // + Or the existing type only has storage-class-like types that may
-          //   be applied to constructors.
-          is_1n_bit_only_in_set(
-            c_tid_no_tpid( type_ast->type.stids ),
-            c_tid_no_tpid( TS_CONSTRUCTOR_DECL )
-          )
-        ) &&
+        // + The type is likely for a constructor; and:
+        c_ast_is_likely_ctor( type_ast ) &&
 
         // + The new type does _not_ have any non-constructor storage classes.
         !c_tid_is_any( func_stids, TS_FUNC_LIKE_NOT_CTOR );

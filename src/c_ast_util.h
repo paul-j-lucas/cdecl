@@ -167,6 +167,43 @@ NODISCARD
 bool c_ast_is_integral( c_ast_t const *ast );
 
 /**
+ * Checks whether \a type_ast is likely for a constructor (as opposed to an
+ * ordinary function).
+ *
+ * @remarks
+ * @parblock
+ * **Cdecl** can't know for certain whether a "function" name is really a
+ * constructor name because it:
+ *
+ *  1. Doesn't have the context of the surrounding class:
+ *
+ *          class T {
+ *          public:
+ *            T();                // <-- All cdecl usually has is this.
+ *            // ...
+ *          };
+ *
+ *  2. Can't check to see if the name is a `typedef` for a `class`, `struct`,
+ *     or `union` (even though that would greatly help) since:
+ *
+ *          T(U);
+ *
+ *     could be either:
+ *
+ *      + A constructor of type `T` with a parameter of type `U`; or:
+ *      + A variable named `U` of type `T` (with unnecessary parentheses).
+ *
+ * Hence, we have to infer which of a function or a constructor was likely the
+ * one meant.
+ * @endparblock
+ *
+ * @param type_ast The base type AST to check.
+ * @return Returns `true` only if \a type_ast is likely for a constructor.
+ */
+NODISCARD
+bool c_ast_is_likely_ctor( c_ast_t const *type_ast );
+
+/**
  * Checks whether \a ast is an AST for a #K_POINTER to another AST that is one
  * of \a kinds; or a `typedef` thereof.
  *
