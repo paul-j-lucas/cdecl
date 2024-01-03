@@ -4068,7 +4068,7 @@ func_decl_c_astp
 
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
-      func_ast->type.stids = c_tid_check( func_stids, C_TPID_STORE );
+      func_ast->type.stids = func_stids;
       c_ast_list_set_param_of( &$param_ast_list, func_ast );
       func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
