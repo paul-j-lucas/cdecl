@@ -237,7 +237,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
   assert( (func_ast->kind & K_ANY_FUNCTION_RETURN) != 0 || ret_ast == NULL );
   assert( func_ast->func.ret_ast == NULL );
 
-  if ( (ast->kind & (K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE)) != 0 ) {
+  if ( c_ast_is_parent( ast ) && ast->parent.of_ast != NULL ) {
     switch ( ast->parent.of_ast->kind ) {
       case K_ARRAY:
       case K_POINTER:
