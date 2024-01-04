@@ -495,7 +495,7 @@ void c_ast_list_set_param_of( c_ast_list_t *param_ast_list,
                               c_ast_t *func_ast ) {
   assert( param_ast_list != NULL );
   assert( func_ast != NULL );
-  assert( (func_ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
+  assert( is_1_bit_only_in_set( func_ast->kind, K_ANY_FUNCTION_LIKE ) );
 
   FOREACH_SLIST_NODE( param_node, param_ast_list ) {
     c_ast_t *const param_ast = param_node->data;

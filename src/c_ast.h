@@ -664,7 +664,7 @@ size_t c_ast_captures_count( c_ast_t const *ast ) {
  */
 NODISCARD C_AST_H_INLINE
 c_param_t const* c_ast_params( c_ast_t const *ast ) {
-  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
   return ast->func.param_ast_list.head;
 }
 
@@ -682,7 +682,7 @@ c_param_t const* c_ast_params( c_ast_t const *ast ) {
  */
 NODISCARD C_AST_H_INLINE
 size_t c_ast_params_count( c_ast_t const *ast ) {
-  assert( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
   return slist_len( &ast->func.param_ast_list );
 }
 
