@@ -4072,25 +4072,61 @@ func_decl_c_astp
       c_ast_list_set_param_of( &$param_ast_list, func_ast );
       func_ast->func.param_ast_list = slist_move( &$param_ast_list );
 
+      c_ast_t *const decl_ast = $decl_astp.ast;
+
       if ( assume_constructor ) {
         assert( $trailing_ret_ast == NULL );
         $$ = (c_ast_pair_t){
-          c_ast_add_func( $decl_astp.ast, func_ast, /*ret_ast=*/NULL ),
+          c_ast_add_func( decl_ast, func_ast, /*ret_ast=*/NULL ),
           .target_ast = NULL
         };
       }
       else {
-        c_ast_t *const ret_ast =
-          IF_ELSE( $trailing_ret_ast, ia_type_spec_ast( type_ast ) );
-        if ( $decl_astp.target_ast != NULL ) {
+        c_ast_t *ret_ast;
+        c_ast_t *target_ast = $decl_astp.target_ast;
+
+        if ( target_ast != NULL && target_ast->kind != K_POINTER ) {
+          //
+          // This is for a case like:
+          //
+          //      int f() ()
+          //       |    |  |
+          //       |    |  func
+          //       |    |
+          //       |    decl_ast (func)
+          //       |
+          //       ret_ast
+          //
+          // We replace ret_ast with decl_ast:
+          //
+          //      int f() ()
+          //       |    |  |
+          //       |    |  func
+          //       X    |
+          //       |    decl_ast (func)
+          //       |
+          //       ret_ast <- decl_ast (func)
+          //
+          // that is, a "function returning function" -- which is illegal
+          // (since functions can't return functions) and will be caught by
+          // c_ast_check_ret_type().
+          //
+          ret_ast = decl_ast;
+          target_ast = NULL;
+        }
+        else {
+          ret_ast = IF_ELSE( $trailing_ret_ast, ia_type_spec_ast( type_ast ) );
+        }
+
+        if ( target_ast != NULL ) {
           $$ = (c_ast_pair_t){
-            $decl_astp.ast,
-            c_ast_add_func( $decl_astp.target_ast, func_ast, ret_ast )
+            decl_ast,
+            c_ast_add_func( target_ast, func_ast, ret_ast )
           };
         }
         else {
           $$ = (c_ast_pair_t){
-            c_ast_add_func( $decl_astp.ast, func_ast, ret_ast ),
+            c_ast_add_func( decl_ast, func_ast, ret_ast ),
             func_ast->func.ret_ast
           };
         }

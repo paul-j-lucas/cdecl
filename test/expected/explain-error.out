@@ -83,6 +83,9 @@ cdecl> explain int a[0]
 cdecl> explain int C::*p
                    ^
 13: error: pointer to member not supported in C
+cdecl> explain int f()()
+                   ^
+13: error: function returning function is illegal; did you mean function returning pointer to function?
 cdecl> explain int f()[]
                       ^
 16: error: function returning array; did you mean function returning pointer?
