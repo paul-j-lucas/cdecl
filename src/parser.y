@@ -5158,44 +5158,38 @@ func_cast_c_astp
       DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
 
-      c_ast_t *const cast_ast = $cast_astp.ast;
-      c_ast_t *ret_ast;
-
-      if ( cast_ast->kind == K_FUNCTION ) {
-        //
-        // This is for a case like:
-        //
-        //      void f( int () () )
-        //              |   |  |
-        //              |   |  func
-        //              |   |
-        //              |   cast_ast (func)
-        //              |
-        //              ret_ast
-        //
-        // We replace ret_ast with cast_ast:
-        //
-        //      void f( int() () )
-        //              |     |
-        //              |     func
-        //              |
-        //              ret_ast <- cast_ast (func)
-        //
-        // that is, a "function returning function returning int" -- which is
-        // illegal (since functions can't return functions) and will be caught
-        // by c_ast_check_ret_type().
-        //
-        ret_ast = cast_ast;
-      }
-      else {
-        ret_ast = ia_type_spec_ast( type_ast );
-      }
-
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
-      c_tid_t const func_stids = $ref_qual_stids | $noexcept_stid;
-      func_ast->type.stids = c_tid_check( func_stids, C_TPID_STORE );
+      func_ast->type.stids =
+        c_tid_check( $ref_qual_stids | $noexcept_stid, C_TPID_STORE );
       c_ast_list_set_param_of( &$param_ast_list, func_ast );
       func_ast->func.param_ast_list = slist_move( &$param_ast_list );
+
+      c_ast_t *const cast_ast = $cast_astp.ast;
+      //
+      // This is for a case like:
+      //
+      //     void f( int () () )
+      //              |   |  |
+      //              |   |  func
+      //              |   |
+      //              |   cast_ast (func)
+      //              |
+      //              ret_ast
+      //
+      // We replace ret_ast with cast_ast:
+      //
+      //      void f( int() () )
+      //              |     |
+      //              |     func
+      //              |
+      //              ret_ast <- cast_ast (func)
+      //
+      // that is, a "function returning function returning int" -- which is
+      // illegal (since functions can't return functions) and will be caught by
+      // c_ast_check_ret_type().
+      //
+      c_ast_t *const ret_ast = cast_ast->kind == K_FUNCTION ?
+        cast_ast : IF_ELSE( $trailing_ret_ast, ia_type_spec_ast( type_ast ) );
 
       if ( $cast_astp.target_ast != NULL ) {
         $$ = (c_ast_pair_t){
@@ -5205,11 +5199,7 @@ func_cast_c_astp
       }
       else {
         $$ = (c_ast_pair_t){
-          c_ast_add_func(
-            cast_ast,
-            func_ast,
-            IF_ELSE( $trailing_ret_ast, ret_ast )
-          ),
+          c_ast_add_func( cast_ast, func_ast, ret_ast ),
           func_ast->func.ret_ast
         };
       }
