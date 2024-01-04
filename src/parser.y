@@ -3739,9 +3739,9 @@ decl2_c_astp
     {
       $$ = (c_ast_pair_t){ $ast, .target_ast = NULL };
     }
-  | typedef_type_decl_c_ast
+  | typedef_type_decl_c_ast[ast]
     {
-      $$ = (c_ast_pair_t){ .ast = $1, .target_ast = NULL };
+      $$ = (c_ast_pair_t){ $ast, .target_ast = NULL };
     }
   | user_defined_conversion_decl_c_astp
   | user_defined_literal_decl_c_astp
