@@ -5147,14 +5147,14 @@ func_cast_c_astp
     noexcept_c_stid_opt[noexcept_stid]
     trailing_return_type_c_ast_opt[trailing_ret_ast]
     {
-      c_ast_t *ret_ast = ia_type_ast_peek();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START();
       DUMP_PROD( "func_cast_c_astp",
                  "cast2_c_astp '(' param_c_ast_list_opt ')' "
                  "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                  "trailing_return_type_c_ast_opt" );
-      DUMP_AST( "in_attr__type_c_ast", ret_ast );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST_PAIR( "cast2_c_astp", $cast_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
       DUMP_TID( "func_qualifier_list_c_stid_opt", $ref_qual_stids );
@@ -5162,6 +5162,8 @@ func_cast_c_astp
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
 
       c_ast_t *const cast_ast = $cast_astp.ast;
+      c_ast_t *ret_ast;
+
       if ( cast_ast->kind == K_FUNCTION ) {
         //
         // This is for a case like:
@@ -5187,6 +5189,9 @@ func_cast_c_astp
         // by c_ast_check_ret_type().
         //
         ret_ast = cast_ast;
+      }
+      else {
+        ret_ast = ia_type_spec_ast( type_ast );
       }
 
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
