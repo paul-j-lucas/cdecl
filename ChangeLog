@@ -1,5 +1,23 @@
 2024-01-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * AUTHORS, configure.ac, cdecl.1, src/Makefile.am, autocomplete.c, c_lang.c,
+     c_lang.h, cdecl.c, cdecl_command.c, cdecl_keyword.c, color.c, color.h,
+     did_you_mean.c, did_you_mean.h, dump.c, dump.h, help.c, lexer.h, lexer.l,
+     literals.c, literals.h, p_keyword.c, p_keyword.h, p_macro.c, p_macro.h,
+     parse.c, parser.y, print.c, print.h, show.c, show.h, slist.c, slist.h,
+     strbuf.c, strbuf.h, types.h, util.c, util.h, test/Makefile.am,
+     alt-tokens.out, cl.out, debug.out, expand-C23_std-6.10.4.1-ex-2.out,
+     expand-C23_std-6.10.4.3-ex-1.out, expand-C23_std-6.10.4.5-ex-4.out,
+     expand-C23_std-6.10.4.5-ex-5.out, expand-C23_std-6.10.4.5-ex-7.out,
+     expand-error.out, expand-robertelder.out, expand.out, help.out,
+     infer-command.out, preprocessor-error.out, show-error.out, show.out,
+     ac-explain.exp, alt-tokens.test, debug.test,
+     expand-C23_std-6.10.4.1-ex-2.test, expand-C23_std-6.10.4.3-ex-1.test,
+     expand-C23_std-6.10.4.5-ex-4.test, expand-C23_std-6.10.4.5-ex-5.test,
+     expand-C23_std-6.10.4.5-ex-7.test, expand-error.test,
+     expand-robertelder.test, expand.test, infer-command.test,
+     preprocessor-error.test, show-error.test, show.test: Added macro expansion
+     feature.
    * red_black_test.c: More red-black tree tests.
    * Doxyfile: Added red_black_test.c, slist_test.c to EXCLUDE.
    * autocomplete.c, autocomplete.h, dump.c, dump.h, english.c, english.h,
