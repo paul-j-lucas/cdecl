@@ -35,6 +35,7 @@ explain int
 explain int a[0]
 explain int C::*p
 explain int f()()
+explain int f()()()
 explain int f()[]
 explain int (*f) const
 explain int (f[4])()

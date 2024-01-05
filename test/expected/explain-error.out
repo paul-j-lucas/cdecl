@@ -86,6 +86,9 @@ cdecl> explain int C::*p
 cdecl> explain int f()()
                    ^
 13: error: function returning function is illegal; did you mean function returning pointer to function?
+cdecl> explain int f()()()
+                   ^
+13: error: function returning function is illegal; did you mean function returning pointer to function?
 cdecl> explain int f()[]
                       ^
 16: error: function returning array; did you mean function returning pointer?

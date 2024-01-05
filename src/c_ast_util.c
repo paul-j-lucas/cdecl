@@ -286,11 +286,21 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
         c_ast_set_parent( ret_ast, func_ast );
         return ast;
 
+      case K_FUNCTION:
+        //
+        // This is for a case like:
+        //
+        //      int f() ()
+        //
+        // that is, "function returning function" -- which is illegal (since
+        // functions can't return functions) and will be caught by
+        // c_ast_check_ret_type().  For now, do nothing.
+        break;
+
       case K_CAPTURE:
       case K_CAST:
       case K_CONSTRUCTOR:
       case K_DESTRUCTOR:
-      case K_FUNCTION:
       case K_LAMBDA:
       case K_NAME:
       case K_OPERATOR:

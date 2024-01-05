@@ -32,6 +32,9 @@ The former `--explain` and `-e` options have been renamed `--infer-command` and
 `-I`; the former `explain-by-default` `set` option has been renamed `infer-
 command`.
 
+** Fixed issue #32: Invalid function declarator accepted as valid
+A declarator like "int f()()()" was incorrectly accepted as valid -- fixed.
+
 ** Fixed `infer-command` comment syntax error
 When in `infer-command` mode, a line starting with a comment would cause a
 syntax error. Fixed.
