@@ -154,7 +154,7 @@ static bool test_slist_dup( void ) {
 
   // check data_dup_fn
   slist_push_back( &list, (void*)&X );
-  list2 = slist_dup( &list, -1, (slist_dup_fn_t)&strdup );
+  list2 = slist_dup( &list, -1, POINTER_CAST( slist_dup_fn_t, &strdup ) );
   TEST( !slist_empty( &list2 ) );
   TEST( slist_len( &list2 ) == 1 );
   if ( TEST( (p = slist_front( &list2 )) != NULL ) ) {
