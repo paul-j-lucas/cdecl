@@ -1,0 +1,100 @@
+cdecl> #define F(...)                    f(0 __VA_OPT__(,) __VA_ARGS__)
+cdecl> #define G(X, ...)                 f(0, X __VA_OPT__(,) __VA_ARGS__)
+cdecl> #define SDEF(sname, ...)          S sname __VA_OPT__(= { __VA_ARGS__ })
+cdecl> #define EMP
+cdecl> expand F(a, b, c)
+F(a, b, c) => f(0 __VA_OPT__(,) __VA_ARGS__)
+| __VA_ARGS__ => a, b, c
+F(a, b, c) => f(0 __VA_OPT__(,) a, b, c)
+| __VA_OPT__ => ,
+F(a, b, c) => f(0 , a, b, c)
+cdecl> expand F()
+F() => f(0 __VA_OPT__(,) __VA_ARGS__)
+| __VA_ARGS__ =>
+F() => f(0 __VA_OPT__(,) )
+F() => f(0 )
+cdecl> expand F(EMP)
+F(EMP) => f(0 __VA_OPT__(,) __VA_ARGS__)
+| __VA_ARGS__ => EMP
+| | EMP =>
+| __VA_ARGS__ =>
+F(EMP) => f(0 __VA_OPT__(,) )
+F(EMP) => f(0 )
+cdecl> expand G(a, b, c)
+G(a, b, c) => f(0, X __VA_OPT__(,) __VA_ARGS__)
+| __VA_ARGS__ => b, c
+| X => a
+G(a, b, c) => f(0, a __VA_OPT__(,) __VA_ARGS__)
+G(a, b, c) => f(0, a __VA_OPT__(,) b, c)
+| __VA_OPT__ => ,
+G(a, b, c) => f(0, a , b, c)
+cdecl> expand G(a, )
+G(a,) => f(0, X __VA_OPT__(,) __VA_ARGS__)
+| __VA_ARGS__ =>
+| X => a
+G(a,) => f(0, a __VA_OPT__(,) __VA_ARGS__)
+G(a,) => f(0, a __VA_OPT__(,) )
+G(a,) => f(0, a )
+cdecl> expand G(a)
+G(a) => f(0, X __VA_OPT__(,) __VA_ARGS__)
+| __VA_ARGS__ =>
+| X => a
+G(a) => f(0, a __VA_OPT__(,) __VA_ARGS__)
+G(a) => f(0, a __VA_OPT__(,) )
+G(a) => f(0, a )
+cdecl> expand SDEF(foo)
+SDEF(foo) => S sname __VA_OPT__(= { __VA_ARGS__ })
+| __VA_ARGS__ =>
+| sname => foo
+SDEF(foo) => S foo __VA_OPT__(= { __VA_ARGS__ })
+SDEF(foo) => S foo __VA_OPT__(= { })
+SDEF(foo) => S foo
+cdecl> expand SDEF(bar, 1, 2)
+SDEF(bar, 1, 2) => S sname __VA_OPT__(= { __VA_ARGS__ })
+| __VA_ARGS__ => 1, 2
+| sname => bar
+SDEF(bar, 1, 2) => S bar __VA_OPT__(= { __VA_ARGS__ })
+SDEF(bar, 1, 2) => S bar __VA_OPT__(= { 1, 2 })
+| __VA_OPT__ => = { 1, 2 }
+SDEF(bar, 1, 2) => S bar = { 1, 2 }
+cdecl> #define H2(X, Y, ...)             __VA_OPT__(X ## Y,) __VA_ARGS__
+cdecl> expand H2(a, b, c, d)
+H2(a, b, c, d) => __VA_OPT__(X ## Y,) __VA_ARGS__
+| __VA_ARGS__ => c, d
+H2(a, b, c, d) => __VA_OPT__(a ## b,) __VA_ARGS__
+H2(a, b, c, d) => __VA_OPT__(a ## b,) c, d
+| __VA_OPT__ => a ## b,
+| __VA_OPT__ => ab,
+H2(a, b, c, d) => ab, c, d
+cdecl> #define H3(X, ...)                #__VA_OPT__(X##X X##X)
+cdecl> expand H3(, 0)
+H3(, 0) => #__VA_OPT__(X##X X##X)
+| __VA_ARGS__ => 0
+| __VA_OPT__ => X##X X##X
+| __VA_OPT__ => ## ##
+| __VA_OPT__ =>
+H3(, 0) => ""
+cdecl> #define H4(X, ...)                __VA_OPT__(a X ## X) ## b
+cdecl> expand H4(, 1)
+H4(, 1) => __VA_OPT__(a X ## X) ## b
+| __VA_ARGS__ => 1
+H4(, 1) => __VA_OPT__(a ## ) ## b
+| __VA_OPT__ => a ##
+| __VA_OPT__ => a
+H4(, 1) => a ## b
+H4(, 1) => ab
+cdecl> #define H5A(...)                  __VA_OPT__()/**/__VA_OPT__()
+cdecl> #define H5B(X)                    a ## X ## b
+cdecl> #define H5C(X)                    H5B(X)
+cdecl> expand H5C(H5A())
+H5C(H5A()) => H5B(X)
+| X => H5A()
+| | H5A() => __VA_OPT__() __VA_OPT__()
+| | | __VA_ARGS__ =>
+| | H5A() =>
+| X =>
+H5C() => H5B()
+| H5B() => a ## X ## b
+| H5B() => a ## ## b
+| H5B() => ab
+H5C() => ab

@@ -71,7 +71,7 @@ static void print_help_where( void );
 NODISCARD
 static inline bool command_is( cdecl_command_t const *command,
                                char const *literal ) {
-  return command == NULL || command->literal == literal;
+  return command == NULL || strcmp( command->literal, literal ) == 0;
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -165,6 +165,12 @@ static char const* map_what( char const *what ) {
     { "dynamic cast",     L_dynamic },
     { "reinterpret cast", L_reinterpret },
     { "static cast",      L_static },
+
+    //
+    // Special case: map plain "include" (the original cdecl "include" command)
+    // to "#include".
+    //
+    { L_include,          L_PP_include },
 
     //
     // Special case: there is no "q" command, only "quit". The lexer maps "q"
@@ -270,14 +276,20 @@ static void print_help_command( cdecl_command_t const *command ) {
   if ( command_is( command, L_define ) )
     print_h( "  define <name> as <english>\n" );
 
+  if ( command_is( command, L_PP_define ) )
+    print_h( "  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*\n" );
+
+  if ( command_is( command, L_expand ) )
+    print_h( "  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*\n" );
+
   if ( command_is( command, L_explain ) )
     print_h( "  explain <gibberish> [, <gibberish>]*\n" );
 
   if ( command_is( command, L_help ) )
     print_h( "  { help | ? } [command[s] | <command> | english | options]\n" );
 
-  if ( command_is( command, L_include ) )
-    print_h( "  include \"<path>\"\n" );
+  if ( command_is( command, L_PP_include ) )
+    print_h( "  [#]include \"<path>\"\n" );
 
   if ( command_is( command, L_set ) )
     print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
@@ -287,6 +299,7 @@ static void print_help_command( cdecl_command_t const *command ) {
     if ( OPT_LANG_IS( using_DECLS ) )
       print_h( "|using" );
     print_h( "}]\n" );
+    print_h( "  show {<name>|[predefined|user] macros}\n" );
   }
 
   if ( command_is( command, L_typedef ) )
@@ -313,6 +326,9 @@ static void print_help_command( cdecl_command_t const *command ) {
     print_h( "\n" );
   }
 
+  if ( command_is( command, L_PP_undef ) )
+    print_h( "  #undef <name>\n" );
+
   if ( OPT_LANG_IS( using_DECLS ) && command_is( command, L_using ) )
     print_h( "  using <name> = <gibberish>\n" );
 
@@ -330,9 +346,18 @@ static void print_help_command( cdecl_command_t const *command ) {
     if ( OPT_LANG_IS( CPP_ANY ) )
       print_h( "\\+\\+" );
     print_h( " declaration, like \"int x\"; or a cast, like \"(int)x\"\n" );
-
     print_help_name();
   }
+
+  if ( command_is( command, L_PP_define ) ) {
+    print_h( "pp-param: a macro parameter <name>" );
+    if ( OPT_LANG_IS( VARIADIC_MACROS ) )
+      print_h( " or ..." );
+    print_h( "\n" );
+  }
+
+  if ( command_is_any( command, L_PP_define, L_expand, NULL ) )
+    print_h( "pp-token: a preprocessor token\n" );
 
   if ( command == NULL && OPT_LANG_IS( SCOPED_NAMES ) ) {
     print_h( "scope-c: class | struct | union |" );

@@ -33,6 +33,7 @@
 #include "cdecl.h"
 #include "english.h"
 #include "literals.h"
+#include "p_macro.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -50,6 +51,9 @@
 #define DUMP_AST_LIST(D,KEY,LIST) BLOCK( \
   DUMP_KEY( (D), KEY ": " ); c_ast_list_dump_impl( (LIST), (D) ); )
 
+#define DUMP_BOOL(D,KEY,BOOL) BLOCK( \
+  DUMP_KEY( (D), KEY ": " ); bool_dump( (BOOL), (D)->fout ); )
+
 #define DUMP_FORMAT(D,...) BLOCK(                   \
   FPUTNSP( (D)->indent * DUMP_INDENT, (D)->fout );  \
   FPRINTF( (D)->fout, __VA_ARGS__ ); )
@@ -63,6 +67,9 @@
 
 #define DUMP_SNAME(D,KEY,SNAME) BLOCK( \
   DUMP_KEY( (D), KEY ": " ); c_sname_dump( (SNAME), (D)->fout ); )
+
+#define DUMP_STR(D,KEY,STR) BLOCK( \
+  DUMP_KEY( (D), KEY ": " ); fputs_quoted( (STR), '"', (D)->fout ); )
 
 /// @endcond
 
@@ -102,6 +109,8 @@ NODISCARD
 static json_state_t json_object_begin( json_state_t, char const*,
                                        dump_state_t* );
 static void json_object_end( json_state_t, dump_state_t* );
+static void p_param_list_dump_impl( p_param_list_t const*, dump_state_t* );
+static void p_token_list_dump_impl( p_token_list_t const*, dump_state_t* );
 
 // local constants
 static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
@@ -499,6 +508,171 @@ static void json_object_end( json_state_t json, dump_state_t *dump ) {
   DUMP_FORMAT( dump, "}" );
 }
 
+/**
+ * Dumps \a list of preprocessor macro arguments in [JSON5](https://json5.org)
+ * format (for debugging).
+ *
+ * @param list The list of macro arguments to dump.
+ * @param dump The dump_state to use.
+ */
+static void p_arg_list_dump_impl( p_arg_list_t const *list,
+                                  dump_state_t *dump ) {
+  assert( list != NULL );
+  assert( dump != NULL );
+
+  if ( slist_empty( list ) ) {
+    FPUTS( "[]", dump->fout );
+    return;
+  }
+  FPUTS( "[\n", dump->fout );
+
+  dump_state_t list_dump;
+  dump_init( &list_dump, dump->indent + 1, dump->fout );
+
+  FOREACH_SLIST_NODE( arg_seq_node, list ) {
+    p_token_list_t const *const arg_seq = arg_seq_node->data;
+    DUMP_KEY( &list_dump, "%s", "" );
+    p_token_list_dump_impl( arg_seq, &list_dump );
+  } // for
+
+  FPUTC( '\n', dump->fout );
+  DUMP_FORMAT( dump, "]" );
+}
+
+/**
+ * Dumps \a macro in [JSON5](https://json5.org) format (for debugging).
+ *
+ * @param macro The \ref p_macro to dump.
+ * @param dump The dump_state to use.
+ */
+static void p_macro_dump_impl( p_macro_t const *macro, dump_state_t *dump ) {
+  assert( macro != NULL );
+  assert( dump != NULL );
+
+  json_state_t const json = json_object_begin( JSON_INIT, /*key=*/NULL, dump );
+
+  DUMP_STR( dump, "name", macro->name );
+  DUMP_BOOL( dump, "is_dynamic", macro->is_dynamic );
+  if ( !macro->is_dynamic ) {
+    if ( macro->param_list != NULL ) {
+      DUMP_KEY( dump, "param_list: " );
+      p_param_list_dump_impl( macro->param_list, dump );
+    }
+    DUMP_KEY( dump, "replace_list: " );
+    p_token_list_dump_impl( &macro->replace_list, dump );
+  }
+
+  json_object_end( json, dump );
+}
+
+/**
+ * Dumps \a token in [JSON5](https://json5.org) format (for debugging).
+ *
+ * @param token The \ref p_token to dump.
+ * @param dump The dump_state to use.
+ */
+static void p_token_dump_impl( p_token_t const *token, dump_state_t *dump ) {
+  assert( token != NULL );
+  assert( dump != NULL );
+
+  DUMP_STR( dump, "{ kind", p_kind_name( token->kind ) );
+
+  switch ( token->kind ) {
+    case P_CHAR_LIT:
+    case P_NUM_LIT:
+    case P_STR_LIT:
+      FPUTS( ", string: ", dump->fout );
+      fputs_quoted( token->lit.value, '"', dump->fout );
+      break;
+    case P_IDENTIFIER:
+      FPUTS( ", string: ", dump->fout );
+      fputs_quoted( token->ident.name, '"', dump->fout );
+      break;
+    case P_OTHER:
+      FPUTS( ", string: ", dump->fout );
+      char const other_str[] = { token->other.value, '\0' };
+      fputs_quoted( other_str, '"', dump->fout );
+      break;
+    case P_PUNCTUATOR:
+      FPUTS( ", string: ", dump->fout );
+      fputs_quoted( token->punct.value, '"', dump->fout );
+      break;
+    case P_CONCAT:
+    case P_PLACEMARKER:
+    case P_SPACE:
+    case P_STRINGIFY:
+    case P___VA_ARGS__:
+    case P___VA_OPT__:
+      // nothing to do
+      break;
+  } // switch
+
+  FPUTS( ", loc: ", dump->fout );
+  c_loc_dump( &token->loc, dump->fout );
+
+  FPUTS( " }", dump->fout );
+}
+
+/**
+ * Dumps \a list of preprocessor macro parameters in [JSON5](https://json5.org)
+ * format (for debugging).
+ *
+ * @param list The list of \ref p_param to dump.
+ * @param dump The dump_state to use.
+ */
+static void p_param_list_dump_impl( p_param_list_t const *list,
+                                    dump_state_t *dump ) {
+  assert( list != NULL );
+  assert( dump != NULL );
+
+  if ( slist_empty( list ) ) {
+    FPUTS( "[]", dump->fout );
+    return;
+  }
+  FPUTS( "[\n", dump->fout );
+
+  dump_state_t list_dump;
+  dump_init( &list_dump, dump->indent + 1, dump->fout );
+
+  FOREACH_SLIST_NODE( node, list ) {
+    p_param_t const *const param = node->data;
+    DUMP_KEY( &list_dump, "{ name: \"%s\", loc: ", param->name );
+    c_loc_dump( &param->loc, dump->fout );
+    FPUTS( " }", dump->fout );
+  }
+
+  FPUTC( '\n', dump->fout );
+  DUMP_FORMAT( dump, "]" );
+}
+
+/**
+ * Dumps \a list of preprocessor tokens in [JSON5](https://json5.org) format
+ * (for debugging).
+ *
+ * @param list The list of \ref p_token to dump.
+ * @param dump The dump_state to use.
+ */
+static void p_token_list_dump_impl( p_token_list_t const *list,
+                                    dump_state_t *dump ) {
+  assert( list != NULL );
+  assert( dump != NULL );
+
+  if ( slist_empty( list ) ) {
+    FPUTS( "[]", dump->fout );
+    return;
+  }
+  FPUTS( "[\n", dump->fout );
+
+  dump_state_t list_dump;
+  dump_init( &list_dump, dump->indent + 1, dump->fout );
+
+  FOREACH_SLIST_NODE( node, list )
+    p_token_dump_impl( node->data, &list_dump );
+
+  FPUTC( '\n', dump->fout );
+  DUMP_FORMAT( dump, "]" );
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void bool_dump( bool value, FILE *fout ) {
@@ -601,6 +775,58 @@ void c_type_dump( c_type_t const *type, FILE *fout ) {
     c_tpid_name( C_TPID_ATTR  ), type->atids,
     type_name[0] != '\0' ? type_name : "none"
   );
+}
+
+void p_arg_list_dump( p_arg_list_t const *list, unsigned indent, FILE *fout ) {
+  dump_state_t dump;
+  dump_init( &dump, indent, fout );
+  p_arg_list_dump_impl( list, &dump );
+}
+
+void p_macro_dump( p_macro_t const *macro, FILE *fout ) {
+  dump_state_t dump;
+  dump_init( &dump, 1, fout );
+  p_macro_dump_impl( macro, &dump );
+}
+
+void p_param_list_dump( p_param_list_t const *list, unsigned indent,
+                        FILE *fout ) {
+  dump_state_t dump;
+  dump_init( &dump, indent, fout );
+  p_param_list_dump_impl( list, &dump );
+}
+
+void p_token_dump( p_token_t const *token, FILE *fout ) {
+  dump_state_t dump;
+  dump_init( &dump, 1, fout );
+  p_token_dump_impl( token, &dump );
+}
+
+void p_token_list_dump( p_token_list_t const *list, unsigned indent,
+                        FILE *fout ) {
+  dump_state_t dump;
+  dump_init( &dump, indent, fout );
+  p_token_list_dump_impl( list, &dump );
+}
+
+void str_list_dump( slist_t const *list, FILE *fout ) {
+  assert( list != NULL );
+  assert( fout != NULL );
+
+  if ( slist_empty( list ) ) {
+    FPUTS( "[]", fout );
+    return;
+  }
+
+  FPUTS( "[ ", fout );
+
+  bool comma = false;
+  FOREACH_SLIST_NODE( node, list ) {
+    fput_sep( ", ", &comma, fout );
+    fputs_quoted( node->data, '"', fout );
+  } // for
+
+  FPUTS( " ]", fout );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

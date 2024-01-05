@@ -233,6 +233,20 @@ bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn,
                     user_data_t user_data );
 
 /**
+ * Pops data from the back of \a list.
+ *
+ * @param list The pointer to the \ref slist.
+ * @return Returns the node's data from the back of \a list.  The caller is
+ * responsible for freeing it if necessary.
+ *
+ * @note This is an O(n) operation.
+ *
+ * @sa slist_pop_front()
+ */
+NODISCARD
+void* slist_pop_back( slist_t *list );
+
+/**
  * Pops data from the front of \a list.
  *
  * @param list The pointer to the \ref slist.
@@ -240,6 +254,8 @@ bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn,
  * responsible for freeing it if necessary.
  *
  * @note This is an O(1) operation.
+ *
+ * @sa slist_pop_back()
  */
 NODISCARD
 void* slist_pop_front( slist_t *list );

@@ -63,8 +63,9 @@ enum dym_kind {
   DYM_SET_OPTIONS     = (1u << 2),      ///< Did you mean _set option_?
   DYM_C_ATTRIBUTES    = (1u << 3),      ///< Did you mean C/C++ _attribute_?
   DYM_C_KEYWORDS      = (1u << 4),      ///< Did you mean C/C++ _keyword_?
-  DYM_C_TYPES         = (1u << 5),      ///< Did you mean C/C++ _type_?
-  DYM_CDECL_KEYWORDS  = (1u << 6),      ///< Did you mean **cdecl** _keyword_?
+  DYM_C_MACROS        = (1u << 5),      ///< Did you mean C/C++ _macro_?
+  DYM_C_TYPES         = (1u << 6),      ///< Did you mean C/C++ _type_?
+  DYM_CDECL_KEYWORDS  = (1u << 7),      ///< Did you mean **cdecl** _keyword_?
 };
 typedef enum dym_kind dym_kind_t;
 

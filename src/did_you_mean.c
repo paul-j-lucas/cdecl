@@ -35,6 +35,7 @@
 #include "cdecl_keyword.h"
 #include "cli_options.h"
 #include "dam_lev.h"
+#include "p_macro.h"
 #include "set_options.h"
 #include "util.h"
 
@@ -52,13 +53,13 @@
 /**
  * Used by copy_typedefs() and copy_typedef_visitor() to pass and return data.
  */
-struct copy_typedef_visit_data {
+struct dym_rb_visit_data {
   /// Pointer to a pointer to a candidate list or NULL to just get the count.
   did_you_mean_t  **pdym;
 
   size_t            count;              ///< The count.
 };
-typedef struct copy_typedef_visit_data copy_typedef_visit_data_t;
+typedef struct dym_rb_visit_data dym_rb_visit_data_t;
 
 /**
  * The edit distance must be less than or equal to this percent of a target
@@ -175,6 +176,49 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
 }
 
 /**
+ * A \ref p_macro visitor function to copy names of macro that are only valid
+ * in the current language to the candidate list pointed to.
+ *
+ * @param macro The \ref p_macro to visit.
+ * @param data A pointer to a \ref dym_rb_visit_data.
+ * @return Always returns `false`.
+ */
+PJL_DISCARD
+static bool copy_macro_vistor( p_macro_t const *macro, void *data ) {
+  assert( macro != NULL );
+  assert( data != NULL );
+
+  if ( macro->is_dynamic &&
+       !opt_lang_is_any( (*macro->dyn_fn)( /*ptoken=*/NULL ) ) ) {
+    return false;
+  }
+
+  dym_rb_visit_data_t *const drvd = data;
+  if ( drvd->pdym == NULL ) {
+    ++drvd->count;
+  } else {
+    (*drvd->pdym)++->literal = check_strdup( macro->name );
+  }
+  return false;
+}
+
+/**
+ * Counts the number of macros that are only valid in the current language.
+ *
+ * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
+ * just count macros, not copy.  If not NULL, on return, the pointed-to pointer
+ * is incremented.
+ * @return If \a pdym is NULL, returns said number of macross; otherwise the
+ * return value is unspecifed.
+ */
+PJL_DISCARD
+static size_t copy_macros( did_you_mean_t **const pdym ) {
+  dym_rb_visit_data_t drvd = { pdym, 0 };
+  p_macro_visit( &copy_macro_vistor, &drvd );
+  return drvd.count;
+}
+
+/**
  * Copies **cdecl** `set` options to the candidate list pointed to by \a pdym;
  * if \a pdym is NULL, only counts the number of options.
  *
@@ -219,7 +263,7 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
  * in the current language to the candidate list pointed to.
  *
  * @param tdef The c_typedef to visit.
- * @param data A pointer to a \ref copy_typedef_visit_data.
+ * @param data A pointer to a \ref dym_rb_visit_data.
  * @return Always returns `false`.
  */
 PJL_DISCARD
@@ -228,12 +272,12 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
   assert( data != NULL );
 
   if ( opt_lang_is_any( tdef->lang_ids ) ) {
-    copy_typedef_visit_data_t *const ctvd = data;
-    if ( ctvd->pdym == NULL ) {
-      ++ctvd->count;
+    dym_rb_visit_data_t *const drvd = data;
+    if ( drvd->pdym == NULL ) {
+      ++drvd->count;
     } else {
       char const *const name = c_sname_full_name( &tdef->ast->sname );
-      (*ctvd->pdym)++->literal = check_strdup( name );
+      (*drvd->pdym)++->literal = check_strdup( name );
     }
   }
   return false;
@@ -250,9 +294,9 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
  */
 PJL_DISCARD
 static size_t copy_typedefs( did_you_mean_t **const pdym ) {
-  copy_typedef_visit_data_t ctvd = { pdym, 0 };
-  c_typedef_visit( &copy_typedef_visitor, &ctvd );
-  return ctvd.count;
+  dym_rb_visit_data_t drvd = { pdym, 0 };
+  c_typedef_visit( &copy_typedef_visitor, &drvd );
+  return drvd.count;
 }
 
 /**
@@ -343,6 +387,8 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
       copy_c_keywords( /*pdym=*/NULL, C_TPID_STORE ) : 0) +
     ((kinds & DYM_C_ATTRIBUTES) != DYM_NONE ?
       copy_c_keywords( /*pdym=*/NULL, C_TPID_ATTR ) : 0) +
+    ((kinds & DYM_C_MACROS) != DYM_NONE ?
+      copy_macros( /*pdym=*/NULL ) : 0) +
     ((kinds & DYM_C_TYPES) != DYM_NONE ?
       copy_c_keywords( /*pdym=*/NULL, C_TPID_BASE ) +
       copy_typedefs( /*pdym=*/NULL ) : 0) +
@@ -371,6 +417,9 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
   }
   if ( (kinds & DYM_C_ATTRIBUTES) != DYM_NONE ) {
     copy_c_keywords( &dym, C_TPID_ATTR );
+  }
+  if ( (kinds & DYM_C_MACROS) != DYM_NONE ) {
+    copy_macros( &dym );
   }
   if ( (kinds & DYM_C_TYPES) != DYM_NONE ) {
     copy_c_keywords( &dym, C_TPID_BASE );

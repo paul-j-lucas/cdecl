@@ -1,0 +1,23 @@
+cdecl> #define hash_hash                 # ## #
+                                         ^
+35: warning: '#' in non-function-like macro treated as text
+cdecl> #define mkstr(a)                  # a
+cdecl> #define in_between(a)             mkstr(a)
+cdecl> #define join(c, d)                in_between(c hash_hash d)
+cdecl> expand join(x, y)
+join(x, y) => in_between(c hash_hash d)
+| c => x
+| d => y
+join(x, y) => in_between(x hash_hash y)
+| in_between(x hash_hash y) => mkstr(a)
+| | a => x hash_hash y
+| | | hash_hash => # ## #
+                   ^
+20: warning: '#' in non-function-like macro treated as text
+| | | hash_hash => ##
+| | a => x ## y
+| in_between(x ## y) => mkstr(x ## y)
+| | mkstr(x ## y) => # a
+| | mkstr(x ## y) => "x ## y"
+| in_between(x ## y) => "x ## y"
+join(x, y) => "x ## y"

@@ -39,6 +39,7 @@
 #include "gibberish.h"
 #include "lexer.h"
 #include "options.h"
+#include "p_macro.h"
 #include "prompt.h"
 #include "strbuf.h"
 #include "util.h"
@@ -217,7 +218,7 @@ static unsigned get_term_columns( void ) {
         reason = "terminfo database not found";
         break;
       case 0:
-        snprintf(
+        check_snprintf(
           reason_buf, sizeof reason_buf,
           "TERM=%s not found in database or too generic", term
         );
@@ -226,7 +227,7 @@ static unsigned get_term_columns( void ) {
         reason = "terminal is hardcopy";
         break;
       default:
-        snprintf(
+        check_snprintf(
           reason_buf, sizeof reason_buf,
           "setupterm(3) returned error code %d", sut_err
         );
@@ -296,23 +297,31 @@ static void print_ast_name_aka( c_ast_t const *ast, FILE *fout ) {
  */
 NODISCARD
 static size_t print_caret( size_t error_column ) {
-  error_column -= print_params.inserted_len;
+  if ( !print_params.opt_no_print_input_line )
+    error_column -= print_params.inserted_len;
 
   unsigned const term_columns = get_term_columns();
   size_t caret_column;
 
-  if ( cdecl_interactive || opt_echo_commands ) {
+  if ( cdecl_interactive || opt_echo_commands ||
+       print_params.opt_no_print_input_line ) {
     //
-    // If we're either interactive or echoing commands, we can put the ^ under
+    // If we're interactive or echoing commands, we can put the ^ under
     // the already existing token we printed or the user typed for the recent
     // command, but we have to add the length of the prompt.
     //
-    caret_column = (error_column + cdecl_prompt_len()) % term_columns;
+    // However, if opt_no_print_input_line is true, we were instructed not to
+    // print the input line (because the calling code will presumably print it
+    // itself), so don't add in the length of the prompt.
+    //
+    size_t const prompt_len =
+      print_params.opt_no_print_input_line ? 0 : cdecl_prompt_len();
+    caret_column = (error_column + prompt_len) % term_columns;
   }
   else {
     //
-    // Otherwise we have to print the line containing the error then put the ^
-    // under that.
+    // Otherwise we have to print the line containing the error then print the
+    // ^ under that.
     //
     print_input_line( &error_column, term_columns );
     caret_column = error_column;
@@ -596,19 +605,15 @@ void print_debug_file_line( char const *file, int line ) {
     EPRINTF( "[%s:%d] ", file, line );  // LCOV_EXCL_LINE
 }
 
-void print_hint( char const *format, ... ) {
-  assert( format != NULL );
-  EPUTS( "; did you mean " );
-  va_list args;
-  va_start( args, format );
-  vfprintf( stderr, format, args );
-  va_end( args );
-  EPUTS( "?\n" );
-}
-
-void print_is_a_keyword( char const *error_token ) {
+void print_error_token_is_a( char const *error_token ) {
   if ( error_token == NULL )
     return;
+
+  p_macro_t const *const macro = p_macro_find( error_token );
+  if ( macro != NULL ) {
+    EPRINTF( " (\"%s\" is a macro)", error_token );
+    return;
+  }
 
   c_keyword_t const *const ck =
     c_keyword_find( error_token, LANG_ANY, C_KW_CTX_DEFAULT );
@@ -631,6 +636,16 @@ void print_is_a_keyword( char const *error_token ) {
     if ( cdk != NULL )
       EPRINTF( " (\"%s\" is a " CDECL " keyword)", error_token );
   }
+}
+
+void print_hint( char const *format, ... ) {
+  assert( format != NULL );
+  EPUTS( "; did you mean " );
+  va_list args;
+  va_start( args, format );
+  vfprintf( stderr, format, args );
+  va_end( args );
+  EPUTS( "?\n" );
 }
 
 void print_loc( c_loc_t const *loc ) {

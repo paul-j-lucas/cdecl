@@ -31,7 +31,7 @@ declare D as destructor
 set alt-tokens
 declare D as destructor
 
-# Test that abbreviations work.
+// Test that abbreviations work.
 set noalt
 declare D as destructor
 set alt

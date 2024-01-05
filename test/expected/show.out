@@ -2685,6 +2685,40 @@ cdecl> show user
 typedef int Int;
 cdecl> show user typedef
 typedef int Int;
+cdecl> show __FILE__
+#define __FILE__ "example.c"
+cdecl> show __LINE__
+#define __LINE__ 42
+cdecl> show __STDC__
+#define __STDC__ 1
+cdecl> #define NAME2_HELPER(A,B)         A ## B
+cdecl> #define NAME2(A,B)                NAME2_HELPER(A,B)
+cdecl> show NAME2_HELPER
+#define NAME2_HELPER(A, B) A ## B
+cdecl> show macros
+#define NAME2(A, B) NAME2_HELPER(A,B)
+#define NAME2_HELPER(A, B) A ## B
+cdecl> show user macros
+#define NAME2(A, B) NAME2_HELPER(A,B)
+#define NAME2_HELPER(A, B) A ## B
+cdecl> set c89
+cdecl> show __STDC_VERSION__
+#define __STDC_VERSION__ 199409L
+cdecl> set c95
+cdecl> show __STDC_VERSION__
+#define __STDC_VERSION__ 199409L
+cdecl> set c99
+cdecl> show __STDC_VERSION__
+#define __STDC_VERSION__ 199901L
+cdecl> set c11
+cdecl> show __STDC_VERSION__
+#define __STDC_VERSION__ 201112L
+cdecl> set c17
+cdecl> show __STDC_VERSION__
+#define __STDC_VERSION__ 201710L
+cdecl> set c23
+cdecl> show __STDC_VERSION__
+#define __STDC_VERSION__ 202311L
 cdecl> set c++
 c++decl> show all predefined typedef
 typedef WORD ATOM;
@@ -5299,3 +5333,24 @@ using CPF = int(*const)(const char *const);
 using CPI = int *const;
 using CPMSI = int S::*const;
 using Int = int;
+c++decl> set c++98
+c++decl> show __cplusplus
+#define __cplusplus 199711L
+c++decl> set c++03
+c++decl> show __cplusplus
+#define __cplusplus 199711L
+c++decl> set c++11
+c++decl> show __cplusplus
+#define __cplusplus 201103L
+c++decl> set c++14
+c++decl> show __cplusplus
+#define __cplusplus 201402L
+c++decl> set c++17
+c++decl> show __cplusplus
+#define __cplusplus 201703L
+c++decl> set c++20
+c++decl> show __cplusplus
+#define __cplusplus 202002L
+c++decl> set c++23
+c++decl> show __cplusplus
+#define __cplusplus 202302L

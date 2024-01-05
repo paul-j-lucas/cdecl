@@ -373,6 +373,7 @@ static char const *const* command_ac_keywords( char const *command ) {
       // must be in sorted order
       L_all,
       L_english,
+      L_macros,
       L_predefined,
       L_typedef,
       L_user,
@@ -382,6 +383,7 @@ static char const *const* command_ac_keywords( char const *command ) {
       // must be in sorted order
       L_all,
       L_english,
+      L_macros,
       L_predefined,
       L_typedef,
       L_user,
@@ -787,10 +789,14 @@ void readline_init( char const *prog_name, FILE *fin, FILE *fout ) {
   assert( fin != NULL );
   assert( fout != NULL );
 
-  // Allow almost any non-identifier character to break a word -- except '-'
-  // since we use that as part of hyphenated keywords.
+  //
+  // Allow almost any non-identifier character to break a word -- except:
+  //
+  //  + '#' since it starts off #define and #undef.
+  //  + '-' since we use it as part of hyphenated keywords.
+  //
   rl_basic_word_break_characters =
-    CONST_CAST( char*, "\t\n \"!#$%&'()*+,./:;<=>?@[\\]^`{|}" );
+    CONST_CAST( char*, "\t\n \"!$%&'()*+,./:;<=>?@[\\]^`{|}" );
 
   rl_attempted_completion_function = cdecl_rl_completion;
   rl_instream = fin;

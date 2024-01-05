@@ -1,0 +1,23 @@
+##
+#   These tests are adapted from:
+#
+#     ISO/IEC 9899:2023: Programming languages -- C
+#     (working draft -- September 3, 2022)
+#
+#     section 6.10.4.5: Scope of macro definitions
+#     paragraph 9
+#     Example 7
+##
+
+EXPECTED_EXIT=0
+cdecl -bO <<END
+#define debug(...)            fprintf(stderr, __VA_ARGS__)
+#define showlist(...)         puts(#__VA_ARGS__)
+#define report(test, ...)     ((test)?puts(#test): printf(__VA_ARGS__))
+
+expand debug("Flag")
+expand debug("X = %d\n", x)
+expand showlist(The first, second, and third items.)
+expand report(x>y, "x is %d but y is %d", x, y)
+END
+# vim:set et sw=2 ts=2:

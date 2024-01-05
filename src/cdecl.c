@@ -36,6 +36,8 @@
 #include "conf_file.h"
 #include "lexer.h"
 #include "options.h"
+#include "p_keyword.h"
+#include "p_macro.h"
 #include "parse.h"
 #include "util.h"
 
@@ -97,6 +99,8 @@ int main( int argc, char const *argv[] ) {
   cdecl_keywords_init();
   colors_init();
   lexer_init();
+  p_keywords_init();
+  p_macros_init();
   //
   // Everything above must come before c_typedef_init() since it actually uses
   // the parser.

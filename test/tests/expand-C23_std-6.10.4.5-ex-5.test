@@ -1,0 +1,25 @@
+##
+#   These tests are adapted from:
+#
+#     ISO/IEC 9899:2023: Programming languages -- C
+#     (working draft -- September 3, 2022)
+#
+#     section 6.10.4.5: Scope of macro definitions
+#     paragraph 7
+#     Example 5
+##
+
+EXPECTED_EXIT=0
+cdecl -bO <<END
+#define t(x,y,z)  x ## y ## z
+
+expand t(1,2,3)
+expand t(,4,5)
+expand t(6,,7)
+expand t(8,9,)
+expand t(10,,)
+expand t(,11,)
+expand t(,,12)
+expand t(,,)
+END
+# vim:set et sw=2 ts=2:

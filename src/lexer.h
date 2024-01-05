@@ -124,6 +124,26 @@ NODISCARD
 char const* lexer_printable_token( void );
 
 /**
+ * Makes \a s the input source for the lexer so that subsequent tokens lex'd
+ * via yylex() will be from \a s.
+ *
+ * @param s The string to push.
+ * @param s_len The length of \a s.
+ *
+ * @note This _must_ be balanced by calling lexer_pop_string() eventually.
+ *
+ * @sa lexer_pop_string()
+ */
+void lexer_push_string( char const *s, size_t s_len );
+
+/**
+ * Pops a previously pushed string from the lexer's input.
+ *
+ * @sa lexer_push_string()
+ */
+void lexer_pop_string( void );
+
+/**
  * Resets the lexer to its initial state.
  *
  * @param hard_reset If `true`, does a "hard" reset that currently resets the

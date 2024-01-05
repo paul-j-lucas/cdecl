@@ -1,0 +1,31 @@
+##
+#   These tests are taken from:
+#
+#   "7 Scandalous Weird Old Things About The C Preprocessor"
+#   <https://blog.robertelder.org/7-weird-old-things-about-the-c-preprocessor/>
+##
+
+EXPECTED_EXIT=0
+cdecl -bO <<END
+#define function()                123
+#define concat(a,b)               a ## b
+expand concat(func,tion)()
+
+#define boo()                     123
+#define foo(y)                    boo y )
+#define open                      (
+expand foo(open)
+
+#undef foo
+
+#define foo(x)                    x #x
+expand foo(boo())
+
+#define recur4(C, T, E)           C-T-E
+#define recur3(X)                 [ X ]
+#define recur2(C, X)              recur4(C(X), recur4(C(X), ,),) |C|
+#define recur1(F, X)              F(recur3, X)
+expand recur1(recur2, recur1(recur2, 1))
+
+END
+# vim:set et sw=2 ts=2:

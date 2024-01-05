@@ -9,6 +9,10 @@ int x
 const int x
 const cast p into pointer to int
 
+__FILE__
+__LINE__
+__cplusplus
+
 set noinfer-command
 set
 set infer-command

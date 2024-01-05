@@ -1,8 +1,15 @@
 EXPECTED_EXIT=65
 cdecl -bO <<END
 show foo
+show __cplusplus
+
+set k&rc
+show __STDC__
+show __STDC_VERSION__
 
 set c++03
 show using
+show __STDC__
+show __STDC_VERSION__
 
 END

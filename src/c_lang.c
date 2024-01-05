@@ -89,6 +89,35 @@ static c_lang_t const C_LANG[] = {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+char const* c_lang___cplusplus( void ) {
+  c_lang_id_t const lang_id = opt_lang & ~LANGX_MASK;
+  assert( is_1_bit( lang_id ) );
+  switch ( lang_id ) {
+    case LANG_CPP_98:                   // Yes, this is correct.
+    case LANG_CPP_03: return "199711L"; // And so is this.
+    case LANG_CPP_11: return "201103L";
+    case LANG_CPP_14: return "201402L";
+    case LANG_CPP_17: return "201703L";
+    case LANG_CPP_20: return "202002L";
+    case LANG_CPP_23: return "202302L";
+    default         : return NULL;
+  } // switch
+}
+
+char const* c_lang___STDC_VERSION__( void ) {
+  c_lang_id_t const lang_id = opt_lang & ~LANGX_MASK;
+  assert( is_1_bit( lang_id ) );
+  switch ( lang_id ) {
+    case LANG_C_89:                     // Yes, this is correct.
+    case LANG_C_95: return "199409L";
+    case LANG_C_99: return "199901L";
+    case LANG_C_11: return "201112L";
+    case LANG_C_17: return "201710L";
+    case LANG_C_23: return "202311L";
+    default       : return NULL;
+  }
+}
+
 c_lang_id_t c_lang_find( char const *name ) {
   assert( name != NULL );
 

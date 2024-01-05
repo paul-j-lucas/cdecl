@@ -5,7 +5,7 @@ spawn cdecl --color=never
 
 expect "cdecl> "
 # explain int x
-send "ex\tint x\r";
+send "expl\tint x\r";
 expect default { exit 1 } -ex {declare x as int}
 
 expect "cdecl> "

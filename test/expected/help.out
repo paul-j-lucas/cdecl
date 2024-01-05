@@ -3,18 +3,24 @@ command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help cast
 command:
@@ -24,36 +30,48 @@ command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help declare
 command:
@@ -90,7 +108,7 @@ command:
   explain <gibberish> [, <gibberish>]*
 cdecl> help include
 command:
-  include "<path>"
+  [#]include "<path>"
 cdecl> help options
 option:
   [no]alt-tokens
@@ -123,6 +141,7 @@ command:
 cdecl> help show
 command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
 cdecl> help struct
 command:
 cdecl> help typedef
@@ -136,45 +155,63 @@ command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name>
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name>
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name>
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
@@ -219,45 +256,63 @@ command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name>
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name>
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name>
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
@@ -303,45 +358,63 @@ command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name>
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name>
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name>
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
@@ -387,45 +460,63 @@ command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [width <number> [bits]]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
@@ -473,54 +564,72 @@ command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
@@ -568,54 +677,72 @@ command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help command
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help commands
 command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help english
 english:
@@ -666,13 +793,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -680,6 +811,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help class
@@ -693,13 +826,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -707,6 +844,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
@@ -717,13 +856,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -731,6 +874,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help const
@@ -824,6 +969,7 @@ command:
 c++decl> help show
 command:
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
 c++decl> help static
 command:
   static cast [<name>] {as|[in]to} <english>
@@ -841,16 +987,22 @@ command:
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
+  #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
@@ -860,16 +1012,22 @@ command:
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
+  #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
@@ -879,16 +1037,22 @@ command:
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
+  #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
@@ -945,16 +1109,22 @@ command:
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
+  #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
@@ -964,16 +1134,22 @@ command:
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
+  #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
@@ -983,16 +1159,22 @@ command:
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
+  #undef <name>
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
@@ -1050,13 +1232,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1064,6 +1250,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
@@ -1074,13 +1262,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1088,6 +1280,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
@@ -1098,13 +1292,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1112,6 +1310,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
@@ -1174,13 +1374,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1188,6 +1392,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
@@ -1198,13 +1404,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1212,6 +1422,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
@@ -1222,13 +1434,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1236,6 +1452,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
@@ -1298,13 +1516,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1312,6 +1534,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
@@ -1322,13 +1546,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1336,6 +1564,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
@@ -1346,13 +1576,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1360,6 +1594,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
@@ -1422,13 +1658,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1436,6 +1676,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
@@ -1446,13 +1688,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1460,6 +1706,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
@@ -1470,13 +1718,17 @@ command:
   declare [<english>] lambda <lambda-english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef|using}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
+  #undef <name>
   using <name> = <gibberish>
   exit | q[uit]
 declare-option:
@@ -1484,6 +1736,8 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english

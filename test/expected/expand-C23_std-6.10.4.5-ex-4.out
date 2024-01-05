@@ -1,0 +1,38 @@
+cdecl> #define str(s)        # s
+cdecl> #define xstr(s)       str(s)
+cdecl> #define debug(s, t)   printf("x" # s "= %d, x" # t "= %s", x ## s, x ## t)
+cdecl> #define glue(a, b)    a ## b
+cdecl> #define xglue(a, b)   glue(a, b)
+cdecl> #define HIGHLOW       "hello"
+cdecl> #define LOW           LOW ", world"
+cdecl> expand debug(1, 2)
+debug(1, 2) => printf("x" # s "= %d, x" # t "= %s", x ## s, x ## t)
+debug(1, 2) => printf("x" "1" "= %d, x" " 2" "= %s", x ## s, x ## t)
+debug(1, 2) => printf("x" "1" "= %d, x" " 2" "= %s", x ## 1, x ## 2)
+debug(1, 2) => printf("x" "1" "= %d, x" " 2" "= %s", x1, x2)
+cdecl> expand str(strncmp("abc\0d", "abc", '\4') == 0)
+str(strncmp("abc\0d", "abc", '\4') == 0) => # s
+str(strncmp("abc\0d", "abc", '\4') == 0) => "strncmp(\"abc\\0d\", \"abc\", '\\4') == 0"
+cdecl> expand glue(HIGH, LOW)
+glue(HIGH, LOW) => a ## b
+glue(HIGH, LOW) => HIGH ## LOW
+                           ^
+28: warning: "##" doesn't expand macro arguments; "LOW" will not expand
+glue(HIGH, LOW) => HIGHLOW
+| HIGHLOW => "hello"
+glue(HIGH, LOW) => "hello"
+cdecl> expand xglue(HIGH, LOW)
+xglue(HIGH, LOW) => glue(a, b)
+| a => HIGH
+| b => LOW
+| | LOW => LOW ", world"
+           ^
+12: warning: recursive macro "LOW" will not expand
+| b => LOW ", world"
+xglue(HIGH, LOW ", world") => glue(HIGH, LOW ", world")
+| glue(HIGH, LOW ", world") => a ## b
+| glue(HIGH, LOW ", world") => HIGH ## LOW ", world"
+| glue(HIGH, LOW ", world") => HIGHLOW ", world"
+| | HIGHLOW => "hello"
+| glue(HIGH, LOW ", world") => "hello" ", world"
+xglue(HIGH, LOW ", world") => "hello" ", world"

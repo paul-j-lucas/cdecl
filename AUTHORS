@@ -116,6 +116,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added better warning and error messages
 	added checking for reserved identifiers
 	added "did you mean ...?" suggestions
+	added C preprocessor macro expansion
 	added Microsoft calling convention support
 	added west-pointer option
 	added optional code coverage

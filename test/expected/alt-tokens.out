@@ -61,7 +61,7 @@ c++decl> declare D as destructor
 c++decl> set alt-tokens
 c++decl> declare D as destructor
 compl D();
-c++decl> # Test that abbreviations work.
+c++decl> // Test that abbreviations work.
 c++decl> set noalt
 c++decl> declare D as destructor
 ~D();

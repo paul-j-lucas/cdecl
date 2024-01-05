@@ -622,6 +622,13 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CSU_RETURN_TYPES           LANG_MIN(C_89)
 
 /**
+ * Languages the `__DATE__` predefined macro is supported in.
+ *
+ * @sa #LANG___TIME__
+ */
+#define LANG___DATE__                   LANG_MIN(C_89)
+
+/**
  * Languages the `decltype` keyword is supported in.
  */
 #define LANG_decltype                   LANG_CPP_MIN(11)
@@ -726,6 +733,13 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_extern_void                LANG_C_MIN(89)
 
 /**
+ * Languages the `__FILE__` predefined macro is supported in.
+ *
+ * @sa #LANG___LINE__
+ */
+#define LANG___FILE__                   LANG_MIN(C_89)
+
+/**
  * Languages the `final` keyword is supported in.
  *
  * @sa #LANG_override
@@ -805,6 +819,13 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_operator
  */
 #define LANG_LESS_EQUAL_GREATER         LANG_CPP_MIN(20)
+
+/**
+ * Languages the `__LINE__` predefined macro is supported in.
+ *
+ * @sa #LANG___FILE__
+ */
+#define LANG___LINE__                   LANG_MIN(C_89)
 
 /**
  * Languages linkage declarations are supported in.
@@ -983,6 +1004,27 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_override                   LANG_CPP_MIN(11)
 
 /**
+ * Languages the preprocessor `##` operator is supported in.
+ *
+ * @sa #LANG_P_STRINGIFY
+ */
+#define LANG_P_CONCAT                   LANG_MIN(C_89)
+
+/**
+ * Languages the preprocessor `#` operator is supported in.
+ *
+ * @sa #LANG_P_CONCAT
+ */
+#define LANG_P_STRINGIFY                LANG_MIN(C_89)
+
+/**
+ * Languages `__VA_OPT__` is supported in.
+ *
+ * @sa #LANG_VARIADIC_MACROS
+ */
+#define LANG_P___VA_OPT__               LANG_C_CPP_MIN(23,20)
+
+/**
  * Languages pointers to member are supported in.
  */
 #define LANG_POINTERS_TO_MEMBER         LANG_CPP_ANY
@@ -1044,6 +1086,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_signed                     LANG_MIN(C_89)
 
 /**
+ * Languages `//` comments are supported in.
+ */
+#define LANG_SLASH_SLASH_COMMENT        LANG_MIN(C_89)
+
+/**
  * Languages the `_Static_assert` keyword is supported in.
  *
  * @sa #LANG_static_assert
@@ -1063,6 +1110,20 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_operator
  */
 #define LANG_STATIC_OP_PARENS           LANG_CPP_MIN(23)
+
+/**
+ * Languages the `__STDC__` predefined macro is supported in.
+ *
+ * @sa #LANG___STDC_VERSION__
+ */
+#define LANG___STDC__                   LANG_C_MIN(89)
+
+/**
+ * Languages the `__STDC__` predefined macro is supported in.
+ *
+ * @sa #LANG___STDC__
+ */
+#define LANG___STDC_VERSION__           LANG___STDC__
 
 /**
  * Languages "tentative definitions" are supported in.
@@ -1097,6 +1158,13 @@ _GL_INLINE_HEADER_BEGIN
  * Languages `throw` with dynamic exception specifications are supported in.
  */
 #define LANG_throw                      LANG_CPP_MAX(14)
+
+/**
+ * Languages the `__TIME__` predefined macro is supported in.
+ *
+ * @sa #LANG___DATE__
+ */
+#define LANG___TIME__                   LANG_MIN(C_89)
 
 /**
  * Languages trailing return types are supported in.
@@ -1159,6 +1227,13 @@ _GL_INLINE_HEADER_BEGIN
  * Languages `using` declarations are supported in.
  */
 #define LANG_using_DECLS                LANG_CPP_MIN(11)
+
+/**
+ * Languages variadic macros are supported in.
+ *
+ * @sa #LANG_P___VA_OPT__
+ */
+#define LANG_VARIADIC_MACROS            LANG_MIN(C_99)
 
 /**
  * Languages that allow `...` as the only function parameter.
@@ -1251,6 +1326,34 @@ typedef struct c_lang_lit c_lang_lit_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Gets the value of the `__cplusplus` macro for \ref opt_lang.
+ *
+ * @return Returns said value or NULL if `__cplusplus` does not have a value
+ * for \ref opt_lang.
+ *
+ * @sa c_lang_coarse_name()
+ * @sa c_lang_name()
+ * @sa c_lang___STDC__()
+ * @sa c_lang___STDC_VERSION__()
+ */
+NODISCARD
+char const* c_lang___cplusplus( void );
+
+/**
+ * Gets the value of the `__STDC_VERSION__` macro for \ref opt_lang.
+ *
+ * @return Returns said value or NULL if `__STDC_VERSION__` does not have a
+ * value for \ref opt_lang.
+ *
+ * @sa c_lang_coarse_name()
+ * @sa c_lang___cplusplus()
+ * @sa c_lang_name()
+ * @sa c_lang___STDC__()
+ */
+NODISCARD
+char const* c_lang___STDC_VERSION__( void );
+
+/**
  * Gets all the language(s) \a lang_id and \ref c-lang-order "newer".
  *
  * @param lang_id The language.  Exactly one language must be set.
@@ -1276,8 +1379,11 @@ c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
  *  + If \a lang_ids only contains any versions of C++, returns `"C++"`.
  *  + Otherwise returns NULL.
  *
+ * @sa c_lang___cplusplus()
  * @sa c_lang_is_one()
  * @sa c_lang_name()
+ * @sa c_lang___STDC__()
+ * @sa c_lang___STDC_VERSION__()
  */
 NODISCARD
 char const* c_lang_coarse_name( c_lang_id_t lang_ids );
@@ -1331,6 +1437,9 @@ char const* c_lang_literal( c_lang_lit_t const *lang_lit );
  * @return Returns said name.
  *
  * @sa c_lang_coarse_name()
+ * @sa c_lang___cplusplus()
+ * @sa c_lang___STDC__()
+ * @sa c_lang___STDC_VERSION__()
  */
 NODISCARD
 char const* c_lang_name( c_lang_id_t lang_id );
@@ -1460,6 +1569,22 @@ char const* c_lang_which( c_lang_id_t lang_ids );
 NODISCARD C_LANG_H_INLINE
 bool opt_lang_is_any( c_lang_id_t lang_ids ) {
   return (opt_lang & lang_ids) != LANG_NONE;
+}
+
+/**
+ * Gets the value of the `__STDC__` macro for \ref opt_lang.
+ *
+ * @return Returns said value or NULL if `__STDC__` does not have a value for
+ * \ref opt_lang.
+ *
+ * @sa c_lang_coarse_name()
+ * @sa c_lang___cplusplus()
+ * @sa c_lang_name()
+ * @sa c_lang___STDC_VERSION__()
+ */
+NODISCARD C_LANG_H_INLINE
+char const* c_lang___STDC__( void ) {
+  return opt_lang_is_any( LANG___STDC__ ) ? "1" : NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

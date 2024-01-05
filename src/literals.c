@@ -58,6 +58,7 @@ char const L_english[]                  = "english";
 char const L_eval[]                     = "eval";
 char const L_evaluation[]               = "evaluation";
 char const L_exit[]                     = "exit";
+char const L_expand[]                   = "expand";
 char const L_explain[]                  = "explain";
 char const L_expr[]                     = "expr";
 char const L_expression[]               = "expression";
@@ -70,6 +71,7 @@ char const L_init[]                     = "init";
 char const L_initialization[]           = "initialization";
 char const L_into[]                     = "into";
 char const L_linkage[]                  = "linkage";
+char const L_macros[]                   = "macros";
 char const L_mbr[]                      = "mbr";
 char const L_member[]                   = "member";
 char const L_no[]                       = "no";
@@ -97,6 +99,32 @@ char const L_user[]                     = "user";
 char const L_vector[]                   = "vector";
 char const L_wide[]                     = "wide";
 char const L_width[]                    = "width";
+
+// C Preprocessor
+char const L_P_define[]                 = "define";
+char const L_P_elif[]                   = "elif";
+char const L_P_else[]                   = "else";
+char const L_P_error[]                  = "error";
+char const L_P_file[]                   = "file";
+char const L_P_if[]                     = "if";
+char const L_P_ifdef[]                  = "ifdef";
+char const L_P_ifndef[]                 = "ifndef";
+//         L_P_include[]                // handled within the lexer
+char const L_P_line[]                   = "line";
+char const L_P_undef[]                  = "undef";
+
+char const L_PP_define[]                = "#define";
+char const L_PP_include[]               = "#include";
+char const L_PP_undef[]                 = "#undef";
+
+// C99 Preprocessor
+char const L_P_pragma[]                 = "pragma";
+
+// C23 Preprocessor
+char const L_P_elifdef[]                = "elifdef";
+char const L_P_elifndef[]               = "elifndef";
+char const L_P_embed[]                  = "embed";
+char const L_P_warning[]                = "warning";
 
 // K&R
 char const L_auto[]                     = "auto";
@@ -159,6 +187,7 @@ char const L_len[]                      = "len";
 char const L_length[]                   = "length";
 char const L_restrict[]                 = "restrict";
 char const L_restricted[]               = "restricted";
+char const L___VA_ARGS__[]              = "__VA_ARGS__";
 char const L_var[]                      = "var";
 char const L_variable[]                 = "variable";
 char const L_wchar_t[]                  = "wchar_t";
@@ -263,6 +292,9 @@ char const L_thread_local[]             = "thread_local";
 // C23 & C++14
 char const L_deprecated[]               = "deprecated";
 char const L___deprecated__[]           = "__deprecated__";
+
+// C23 & C++20
+char const L___VA_OPT__[]               = "__VA_OPT__";
 
 // C++17
 char const L_maybe_unused[]             = "maybe_unused";

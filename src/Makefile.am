@@ -78,6 +78,8 @@ cdecl_SOURCES =	parser.y \
 		help.c help.h \
 		literals.c literals.h \
 		options.c options.h \
+		p_keyword.c p_keyword.h \
+		p_macro.c p_macro.h \
 		parse.c parse.h \
 		pjl_config.h \
 		print.c print.h \
@@ -101,6 +103,7 @@ red_black_test_SOURCES = \
 		red_black.c red_black.h \
 		red_black_test.c \
 		slist.c slist.h \
+		strbuf.c strbuf.h \
 		types.h \
 		util.c util.h \
 		unit_test.h
@@ -110,6 +113,7 @@ slist_test_SOURCES = \
 		pjl_config.h \
 		slist.c slist.h \
 		slist_test.c \
+		strbuf.c strbuf.h \
 		types.h \
 		util.c util.h \
 		unit_test.h

@@ -1,0 +1,105 @@
+cdecl> #define function()                123
+cdecl> #define concat(a,b)               a ## b
+cdecl> expand concat(func,tion)()
+concat(func, tion) => a ## b
+concat(func, tion) => func ## tion
+concat(func, tion) => function
+                      ^
+23: warning: "function": function-like macro without arguments will not expand
+concat(func, tion) => function()
+| function() => 123
+concat(func, tion) => 123
+cdecl> #define boo()                     123
+cdecl> #define foo(y)                    boo y )
+cdecl> #define open                      (
+cdecl> expand foo(open)
+foo(open) => boo y )
+| y => open
+| | open => (
+| y => (
+foo(() => boo ( )
+| boo() => 123
+foo(() => 123
+cdecl> #undef foo
+cdecl> #define foo(x)                    x #x
+cdecl> expand foo(boo())
+foo(boo()) => x #x
+foo(boo()) => x "boo()"
+| x => boo()
+| | boo() => 123
+| x => 123
+foo(123) => 123 "boo()"
+cdecl> #define recur4(C, T, E)           C-T-E
+cdecl> #define recur3(X)                 [ X ]
+cdecl> #define recur2(C, X)              recur4(C(X), recur4(C(X), ,),) |C|
+cdecl> #define recur1(F, X)              F(recur3, X)
+                                           ^
+37: warning: "recur3": function-like macro without arguments will not expand
+cdecl> expand recur1(recur2, recur1(recur2, 1))
+                     ^
+15: warning: "recur2": function-like macro without arguments will not expand
+recur1(recur2, recur1(recur2, 1)) => F(recur3, X)
+                                       ^
+40: warning: "recur3": function-like macro without arguments will not expand
+| F => recur2
+| X => recur1(recur2, 1)
+              ^
+15: warning: "recur2": function-like macro without arguments will not expand
+| | recur1(recur2, 1) => F(recur3, X)
+| | | F => recur2
+| | | X => 1
+| | recur1(recur2, 1) => recur2(recur3, 1)
+| | | recur2(recur3, 1) => recur4(C(X), recur4(C(X), ,),) |C|
+| | | | C => recur3
+| | | | X => 1
+| | | recur2(recur3, 1) => recur4(recur3( 1), recur4(recur3( 1), ,),) |recur3|
+                                                                       ^
+72: warning: "recur3": function-like macro without arguments will not expand
+| | | | recur4(recur3( 1), recur4(recur3( 1), ,),) => C-T-E
+| | | | | C => recur3( 1)
+| | | | | | recur3(1) => [ X ]
+| | | | | | | X => 1
+| | | | | | recur3(1) => [ 1 ]
+| | | | | C => [ 1 ]
+| | | | | T => recur4(recur3( 1), ,)
+| | | | | | recur4(recur3( 1),,) => C-T-E
+| | | | | | | C => recur3( 1)
+| | | | | | | | recur3(1) => [ X ]
+| | | | | | | | | X => 1
+| | | | | | | | recur3(1) => [ 1 ]
+| | | | | | | C => [ 1 ]
+| | | | | | | T =>
+| | | | | | | E =>
+| | | | | | recur4([ 1 ],,) => [ 1 ]- -
+| | | | | T => [ 1 ]- -
+| | | | | E =>
+| | | | recur4([ 1 ], [ 1 ]- -,) => [ 1 ]-[ 1 ]- - -
+| | | recur2(recur3, 1) => [ 1 ]-[ 1 ]- - - |recur3|
+| | recur1(recur2, 1) => [ 1 ]-[ 1 ]- - - |recur3|
+| X => [ 1 ]-[ 1 ]- - - |recur3|
+recur1(recur2, [ 1 ]-[ 1 ]- - - |recur3|) => recur2(recur3, [ 1 ]-[ 1 ]- - - |recur3|)
+| recur2(recur3, [ 1 ]-[ 1 ]- - - |recur3|) => recur4(C(X), recur4(C(X), ,),) |C|
+| | C => recur3
+| | X => [ 1 ]-[ 1 ]- - - |recur3|
+| recur2(recur3, [ 1 ]-[ 1 ]- - - |recur3|) => recur4(recur3( [ 1 ]-[ 1 ]- - - |recur3|), recur4(recur3( [ 1 ]-[ 1 ]- - - |recur3|), ,),) |recur3|
+| | recur4(recur3( [ 1 ]-[ 1 ]- - - |recur3|), recur4(recur3( [ 1 ]-[ 1 ]- - - |recur3|), ,),) => C-T-E
+| | | C => recur3( [ 1 ]-[ 1 ]- - - |recur3|)
+| | | | recur3([ 1 ]-[ 1 ]- - - |recur3|) => [ X ]
+| | | | | X => [ 1 ]-[ 1 ]- - - |recur3|
+| | | | recur3([ 1 ]-[ 1 ]- - - |recur3|) => [ [ 1 ]-[ 1 ]- - - |recur3| ]
+| | | C => [ [ 1 ]-[ 1 ]- - - |recur3| ]
+| | | T => recur4(recur3( [ 1 ]-[ 1 ]- - - |recur3|), ,)
+| | | | recur4(recur3( [ 1 ]-[ 1 ]- - - |recur3|),,) => C-T-E
+| | | | | C => recur3( [ 1 ]-[ 1 ]- - - |recur3|)
+| | | | | | recur3([ 1 ]-[ 1 ]- - - |recur3|) => [ X ]
+| | | | | | | X => [ 1 ]-[ 1 ]- - - |recur3|
+| | | | | | recur3([ 1 ]-[ 1 ]- - - |recur3|) => [ [ 1 ]-[ 1 ]- - - |recur3| ]
+| | | | | C => [ [ 1 ]-[ 1 ]- - - |recur3| ]
+| | | | | T =>
+| | | | | E =>
+| | | | recur4([ [ 1 ]-[ 1 ]- - - |recur3| ],,) => [ [ 1 ]-[ 1 ]- - - |recur3| ]- -
+| | | T => [ [ 1 ]-[ 1 ]- - - |recur3| ]- -
+| | | E =>
+| | recur4([ [ 1 ]-[ 1 ]- - - |recur3| ], [ [ 1 ]-[ 1 ]- - - |recur3| ]- -,) => [ [ 1 ]-[ 1 ]- - - |recur3| ]-[ [ 1 ]-[ 1 ]- - - |recur3| ]- - -
+| recur2(recur3, [ 1 ]-[ 1 ]- - - |recur3|) => [ [ 1 ]-[ 1 ]- - - |recur3| ]-[ [ 1 ]-[ 1 ]- - - |recur3| ]- - - |recur3|
+recur1(recur2, [ 1 ]-[ 1 ]- - - |recur3|) => [ [ 1 ]-[ 1 ]- - - |recur3| ]-[ [ 1 ]-[ 1 ]- - - |recur3| ]- - - |recur3|

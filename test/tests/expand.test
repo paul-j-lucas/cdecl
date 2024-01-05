@@ -1,0 +1,243 @@
+EXPECTED_EXIT=0
+cdecl -bO <<END
+#define EMPTY
+#define AVOID_PASTE_1             -EMPTY-
+expand AVOID_PASTE_1
+
+#define AVOID_PASTE_2(X)          -X
+expand AVOID_PASTE_2(-)
+expand AVOID_PASTE_2(->)
+
+#define AVOID_PASTE_3(X)          X*
+expand AVOID_PASTE_3(->)
+set c++
+expand AVOID_PASTE_3(->)
+set c
+
+#define AVOID_PASTE_4(X)          /X
+expand AVOID_PASTE_4(/)
+expand AVOID_PASTE_4(*)
+
+#define EMPTY_MIDDLE(A,B,C)       A-B-C
+expand EMPTY_MIDDLE(x,,y)
+
+#define FILE                      "file.c"
+#undef FILE
+typedef FILE *FILE_PTR
+#define FILE_PTR                  FILE*
+
+#define INTEGER                   int
+expand INTEGER
+#define INTEGER_N                 int n
+expand INTEGER_N
+#define INTEGER_N_SEMI            int n ;
+expand INTEGER_N_SEMI
+
+#define CHAR_PTR(X)               char const *X = QUOTE(X)
+expand CHAR_PTR(p)
+
+#define LEFT_SHIFT                < ## <
+expand LEFT_SHIFT
+
+#define DEFINED                   1
+#define DEFINED                   2
+expand DEFINED
+
+#define NOT_FUNC_LIKE             object
+#define FAKE_ARG_1                fake_1
+#define FAKE_ARG_2                fake_2
+expand NOT_FUNC_LIKE(FAKE_ARG_1, FAKE_ARG_2)
+
+#define PASTE_WRONG(A,B)          A ## B
+expand PASTE_WRONG(__LINE__,x)
+expand PASTE_WRONG(x,__LINE__)
+
+#define PASTE_HELPER(A,B)         A ## B
+#define PASTE(A,B)                PASTE_HELPER(A,B)
+expand PASTE(x,__LINE__)
+expand PASTE(a b, c d)
+expand PASTE(+,=)
+expand PASTE(<,=>)
+expand PASTE(,)
+expand PASTE(,#)
+expand PASTE(,$)
+expand PASTE(,'x')
+expand PASTE(,"x")
+expand PASTE(,@)
+expand PASTE(,\`)                 // \ is for and eaten by the shell
+set c++
+expand PASTE(->,*)
+expand PASTE(.,*)
+expand PASTE(:,:)
+expand PASTE(<,=>)
+expand PASTE(<=,>)
+set c
+
+#define PRESCAN(X)                ((X) + 1)
+expand PRESCAN(PRESCAN(2))
+
+#define CHARIFY_c                 'c'
+#define CHARIFY(X)                PASTE(CHARIFY_,X)
+expand CHARIFY(c)
+
+#define QUOTE(X)                  #X
+expand QUOTE
+expand QUOTE(a)
+expand QUOTE( a )
+expand QUOTE((a,b))
+expand QUOTE((a , b))
+expand QUOTE( (a,b) )
+expand QUOTE(( a , b ))
+expand QUOTE (a)
+#define NOT_EXPANDED              expanded
+expand QUOTE(NOT_EXPANDED)
+
+#define QUOTE_VA_ARGS(...)        #__VA_ARGS__
+expand QUOTE_VA_ARGS(a b)
+expand QUOTE_VA_ARGS( a b )
+expand QUOTE_VA_ARGS( a  b )
+
+#define RECURSIVE_1               RECURSIVE_2
+#define RECURSIVE_2               RECURSIVE_1
+expand RECURSIVE_1
+
+#undef RECURSIVE_1
+#define RECURSIVE_1               f(RECURSIVE_2)
+expand RECURSIVE_1
+
+#define UNIQUE_NAME(PREFIX)       PASTE(PASTE(PREFIX,_),__LINE__)
+expand UNIQUE_NAME(unused)
+
+#define VA(A,...)                 f(A __VA_OPT__(,) __VA_ARGS__)
+expand VA(a)
+expand VA(a,b)
+
+#define CONCAT_VA_ARGS(...)       __VA ## _ARGS__
+expand CONCAT_VA_ARGS(x)
+
+#define CONCAT_VA_OPT(...)        __VA ## _OPT__(y)
+expand CONCAT_VA_OPT(x)
+
+#define VA_OPT_NESTED_PARENS(...) A __VA_OPT__( (x,y) ) B
+expand VA_OPT_NESTED_PARENS(a)
+
+#define VA_OPT_SPACING(A,...)     __VA_OPT__( VA_SPACING_VALUE )
+#define VA_OPT_SPACING_VALUE      42
+expand VA_OPT_SPACING(x,y)
+
+set c99
+#define VA_OPT_NOT_SUPPORTED(...) __VA_OPT__(,)
+#undef VA_OPT_NOT_SUPPORTED
+set c++17
+#define VA_OPT_NOT_SUPPORTED(...) __VA_OPT__(,)
+#undef VA_OPT_NOT_SUPPORTED
+set c
+#define VA_OPT_NOT_SUPPORTED(...) __VA_OPT__(,) __VA_ARGS__
+set c99
+expand VA_OPT_NOT_SUPPORTED(X)
+
+set c78
+#define OLD_PASTE(A,B)            A ## B
+expand OLD_PASTE(x, y)
+
+#define OLD_VA_ARGS(...)          __VA_ARGS__
+set c
+#define OLD_VA_ARGS(...)          __VA_ARGS__
+set c78
+expand OLD_VA_ARGS(x,y)
+
+#define OLD_USE_VA_ARGS           __VA_ARGS__
+
+#define OLD_QUOTE(X)              #X
+expand OLD_QUOTE(a)
+
+set c
+
+////////// NARG() /////////////////////////////////////////////////////////////
+
+#define ARG_N(_1,_2,_3,_4,_5,_6,_7,_8,_9,N,...) N
+#define REV_SEQ_N                 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+
+#define HAS_COMMA_N               1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+#define HAS_COMMA(...)            NARG_( __VA_ARGS__, HAS_COMMA_N )
+
+#define NARG_(...)                ARG_N( __VA_ARGS__ )
+#define NARG(...)                           \
+  NARG_HELPER1(                             \
+    HAS_COMMA( __VA_ARGS__ ),               \
+    HAS_COMMA( NARG_COMMA __VA_ARGS__ () ), \
+    NARG_( __VA_ARGS__, REV_SEQ_N ) )
+#define NARG_COMMA(...)           ,
+
+#define NARG_HELPER1(A,B,N)       NARG_HELPER2(A, B, N)
+#define NARG_HELPER2(A,B,N)       NARG_HELPER3_ ## A ## B(N)
+#define NARG_HELPER3_01(N)        0
+#define NARG_HELPER3_00(N)        1
+#define NARG_HELPER3_11(N)        N
+
+expand NARG()
+expand NARG(x)
+expand NARG(x, y)
+
+////////// DEF_ARGS() /////////////////////////////////////////////////////////
+
+#define DEF_ARGS(PREFIX,...) \
+  PASTE(PREFIX, NARG(__VA_ARGS__))(__VA_ARGS__)
+
+#define THROW_0()                 THROW_1( cx_tb.thrown_xid )
+#define THROW_1(XID)              THROW_2( (XID), cx_user_data() )
+#define THROW_2(XID,DATA) \
+  cx_impl_throw( __FILE__, __LINE__, (XID), (void*)(DATA) )
+
+#define cx_throw(...)             DEF_ARGS(THROW_, __VA_ARGS__)
+
+expand cx_throw()
+expand cx_throw(123)
+expand cx_throw(123, ptr)
+
+////////// Predefined macros //////////////////////////////////////////////////
+
+set knr
+
+#define OLD_DATE                  __DATE__
+expand OLD_DATE
+
+#define OLD_TIME                  __TIME__
+expand OLD_TIME
+
+set c
+
+expand __FILE__
+expand __LINE__
+
+expand __STDC__
+set c89
+expand __STDC_VERSION__
+set c95
+expand __STDC_VERSION__
+set c99
+expand __STDC_VERSION__
+set c11
+expand __STDC_VERSION__
+set c17
+expand __STDC_VERSION__
+set c23
+expand __STDC_VERSION__
+
+set c++98
+expand __cplusplus
+set c++03
+expand __cplusplus
+set c++11
+expand __cplusplus
+set c++14
+expand __cplusplus
+set c++17
+expand __cplusplus
+set c++20
+expand __cplusplus
+set c++23
+expand __cplusplus
+
+END
+# vim:set et sw=2 ts=2:

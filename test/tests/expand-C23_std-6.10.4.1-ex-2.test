@@ -1,0 +1,45 @@
+##
+#   These tests are taken verbatim from:
+#
+#     ISO/IEC 9899:2023: Programming languages -- C
+#     (working draft -- September 3, 2022)
+#
+#     section 6.10.4.1: Argument substitution
+#     paragraph 9
+#     Example 2
+##
+
+EXPECTED_EXIT=0
+cdecl -bO <<END
+#define F(...)                    f(0 __VA_OPT__(,) __VA_ARGS__)
+#define G(X, ...)                 f(0, X __VA_OPT__(,) __VA_ARGS__)
+#define SDEF(sname, ...)          S sname __VA_OPT__(= { __VA_ARGS__ })
+#define EMP
+
+expand F(a, b, c)
+expand F()
+expand F(EMP)
+
+expand G(a, b, c)
+expand G(a, )
+expand G(a)
+
+expand SDEF(foo)
+expand SDEF(bar, 1, 2)
+
+#define H2(X, Y, ...)             __VA_OPT__(X ## Y,) __VA_ARGS__
+expand H2(a, b, c, d)
+
+#define H3(X, ...)                #__VA_OPT__(X##X X##X)
+expand H3(, 0)
+
+#define H4(X, ...)                __VA_OPT__(a X ## X) ## b
+expand H4(, 1)
+
+#define H5A(...)                  __VA_OPT__()/**/__VA_OPT__()
+#define H5B(X)                    a ## X ## b
+#define H5C(X)                    H5B(X)
+expand H5C(H5A())
+
+END
+# vim:set et sw=2 ts=2:

@@ -33,6 +33,7 @@
 #include "help.h"
 #include "lexer.h"
 #include "options.h"
+#include "p_macro.h"
 #include "print.h"
 #include "prompt.h"
 #include "read_line.h"
@@ -164,6 +165,31 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
 }
 
 /**
+ * Attempts to parse a macro name at the beginning of \a s.
+ *
+ * @param s The string to parse.
+ * @return Returns `true` only if \a s begins with an identifier that is a
+ * macro.
+ */
+NODISCARD
+static bool cdecl_parse_macro( char const *s ) {
+  assert( s != NULL );
+  SKIP_WS( s );
+  if ( !is_ident_first( *s ) )
+    return false;
+  char const *const ident = s;
+  SKIP_CHARS( s, IDENT_CHARS );
+  size_t const ident_len = STATIC_CAST( size_t, s - ident );
+
+  strbuf_t sbuf;
+  strbuf_init( &sbuf );
+  strbuf_putsn( &sbuf, ident, ident_len );
+  p_macro_t const *const macro = p_macro_find( sbuf.str );
+  strbuf_cleanup( &sbuf );
+  return macro != NULL;
+}
+
+/**
  * Parses **cdecl** commands from standard input until EOF.
  *
  * @return Returns `EX_OK` upon success or another value upon failure.
@@ -243,15 +269,26 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
 
   if ( infer_command ) {
     //
-    // The string doesn't start with a command: insert "explain " and set
-    // inserted_len so the print_*() functions subtract it from the error
-    // column to get the correct column within the original string.
+    // The string doesn't start with either a command or a macro: insert either
+    // "explain " or "expand " and set inserted_len so the print_*() functions
+    // subtract it from the error column to get the correct column within the
+    // original string.
     //
-    static char const EXPLAIN_SP[] = "explain ";
-    print_params.inserted_len = STRLITLEN( EXPLAIN_SP );
+    char const *insert_str;
+    if ( cdecl_parse_macro( s ) ) {
+      static char const EXPAND_SP[] = "expand ";
+      print_params.inserted_len = STRLITLEN( EXPAND_SP );
+      insert_str = EXPAND_SP;
+    }
+    else {
+      static char const EXPLAIN_SP[] = "explain ";
+      print_params.inserted_len = STRLITLEN( EXPLAIN_SP );
+      insert_str = EXPLAIN_SP;
+    }
+
     strbuf_init( &sbuf );
     strbuf_reserve( &sbuf, print_params.inserted_len + s_len );
-    strbuf_putsn( &sbuf, EXPLAIN_SP, print_params.inserted_len );
+    strbuf_putsn( &sbuf, insert_str, print_params.inserted_len );
     strbuf_putsn( &sbuf, s, s_len );
     s = sbuf.str;
     s_len = sbuf.len;
@@ -263,9 +300,9 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
 
   if ( opt_echo_commands && !cdecl_interactive && cdecl_initialized ) {
     //
-    // Echo the original command (without "explain" possibly having been
-    // inserted) without a trailing newline (if any) so we can always print a
-    // newline ourselves -- but don't touch the original command line.
+    // Echo the original command (without "explain" or "expand" possibly having
+    // been inserted) without a trailing newline (if any) so we can always
+    // print a newline ourselves -- but don't touch the original command line.
     //
     size_t echo_len = print_params.command_line_len;
     strn_rtrim( print_params.command_line, &echo_len );

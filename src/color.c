@@ -55,6 +55,9 @@
 #define COLOR_CAP_HELP_PUNCT      "HELP-punct"
 #define COLOR_CAP_HELP_TITLE      "HELP-title"
 #define COLOR_CAP_LOCUS           "locus"
+#define COLOR_CAP_MACRO_NO_EXPAND "MACRO-no-expand"
+#define COLOR_CAP_MACRO_PUNCT     "MACRO-punct"
+#define COLOR_CAP_MACRO_SUBST     "MACRO-subst"
 #define COLOR_CAP_PROMPT          "PROMPT"
 #define COLOR_CAP_WARNING         "warning"
 
@@ -82,6 +85,9 @@ char const *sgr_help_nonterm;
 char const *sgr_help_punct;
 char const *sgr_help_title;
 char const *sgr_locus;
+char const *sgr_macro_no_expand;
+char const *sgr_macro_punct;
+char const *sgr_macro_subst;
 char const *sgr_prompt;
 char const *sgr_warning;
 
@@ -202,15 +208,18 @@ static char const** sgr_var_find( char const *name ) {
   typedef struct cap_var_map cap_var_map_t;
 
   static cap_var_map_t const CAP_VAR_MAP[] = {
-    { COLOR_CAP_CARET,        &sgr_caret        },
-    { COLOR_CAP_ERROR,        &sgr_error        },
-    { COLOR_CAP_HELP_KEYWORD, &sgr_help_keyword },
-    { COLOR_CAP_HELP_NONTERM, &sgr_help_nonterm },
-    { COLOR_CAP_HELP_PUNCT,   &sgr_help_punct   },
-    { COLOR_CAP_HELP_TITLE,   &sgr_help_title   },
-    { COLOR_CAP_LOCUS,        &sgr_locus        },
-    { COLOR_CAP_PROMPT,       &sgr_prompt       },
-    { COLOR_CAP_WARNING,      &sgr_warning      },
+    { COLOR_CAP_CARET,            &sgr_caret            },
+    { COLOR_CAP_ERROR,            &sgr_error            },
+    { COLOR_CAP_HELP_KEYWORD,     &sgr_help_keyword     },
+    { COLOR_CAP_HELP_NONTERM,     &sgr_help_nonterm     },
+    { COLOR_CAP_HELP_PUNCT,       &sgr_help_punct       },
+    { COLOR_CAP_HELP_TITLE,       &sgr_help_title       },
+    { COLOR_CAP_LOCUS,            &sgr_locus            },
+    { COLOR_CAP_MACRO_NO_EXPAND,  &sgr_macro_no_expand  },
+    { COLOR_CAP_MACRO_PUNCT,      &sgr_macro_punct      },
+    { COLOR_CAP_MACRO_SUBST,      &sgr_macro_subst      },
+    { COLOR_CAP_PROMPT,           &sgr_prompt           },
+    { COLOR_CAP_WARNING,          &sgr_warning          },
   };
 
   assert( name != NULL );
@@ -289,15 +298,18 @@ void colors_init( void ) {
     return;
 
   static char const COLORS_DEFAULT[] =
-    COLOR_CAP_CARET         "=" SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
-    COLOR_CAP_ERROR         "=" SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP
-    COLOR_CAP_HELP_KEYWORD  "="                       SGR_BOLD  SGR_CAP_SEP
-    COLOR_CAP_HELP_NONTERM  "=" SGR_FG_CYAN                     SGR_CAP_SEP
-    COLOR_CAP_HELP_PUNCT    "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP
-    COLOR_CAP_HELP_TITLE    "=" SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP
-    COLOR_CAP_LOCUS         "="                       SGR_BOLD  SGR_CAP_SEP
-    COLOR_CAP_PROMPT        "=" SGR_FG_GREEN                    SGR_CAP_SEP
-    COLOR_CAP_WARNING       "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  ;
+    COLOR_CAP_CARET           "=" SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
+    COLOR_CAP_ERROR           "=" SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP
+    COLOR_CAP_HELP_KEYWORD    "="                       SGR_BOLD  SGR_CAP_SEP
+    COLOR_CAP_HELP_NONTERM    "=" SGR_FG_CYAN                     SGR_CAP_SEP
+    COLOR_CAP_HELP_PUNCT      "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP
+    COLOR_CAP_HELP_TITLE      "=" SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP
+    COLOR_CAP_LOCUS           "="                       SGR_BOLD  SGR_CAP_SEP
+    COLOR_CAP_MACRO_NO_EXPAND "=" SGR_FG_MAGENTA                  SGR_CAP_SEP
+    COLOR_CAP_MACRO_PUNCT     "=" SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
+    COLOR_CAP_MACRO_SUBST     "=" SGR_FG_CYAN                     SGR_CAP_SEP
+    COLOR_CAP_PROMPT          "=" SGR_FG_GREEN                    SGR_CAP_SEP
+    COLOR_CAP_WARNING         "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  ;
 
   PJL_IGNORE_RV( colors_parse( COLORS_DEFAULT ) );
 }

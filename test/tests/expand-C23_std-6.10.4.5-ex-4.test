@@ -1,0 +1,27 @@
+##
+#   These tests are taken verbatim from:
+#
+#     ISO/IEC 9899:2023: Programming languages -- C
+#     (working draft -- September 3, 2022)
+#
+#     section 6.10.4.5: Scope of macro definitions
+#     paragraph 6
+#     Example 4
+##
+
+EXPECTED_EXIT=0
+cdecl -bO <<END
+#define str(s)        # s
+#define xstr(s)       str(s)
+#define debug(s, t)   printf("x" # s "= %d, x" # t "= %s", x ## s, x ## t)
+#define glue(a, b)    a ## b
+#define xglue(a, b)   glue(a, b)
+#define HIGHLOW       "hello"
+#define LOW           LOW ", world"
+
+expand debug(1, 2)
+expand str(strncmp("abc\0d", "abc", '\4') == 0)
+expand glue(HIGH, LOW)
+expand xglue(HIGH, LOW)
+END
+# vim:set et sw=2 ts=2:

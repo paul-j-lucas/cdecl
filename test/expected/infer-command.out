@@ -22,6 +22,12 @@ c++decl> const int x
 declare x as constant integer
 c++decl> const cast p into pointer to int
 const_cast<int*>(p)
+c++decl> __FILE__
+__FILE__ => "example.cpp"
+c++decl> __LINE__
+__LINE__ => 42
+c++decl> __cplusplus
+__cplusplus => 202302L
 c++decl> set noinfer-command
 c++decl> set
   noalt-tokens

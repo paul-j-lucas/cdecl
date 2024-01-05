@@ -101,6 +101,19 @@ void* check_realloc( void *p, size_t size ) {
   return p;
 }
 
+void check_snprintf( char *buf, size_t buf_size, char const *format, ... ) {
+  assert( buf != NULL );
+  assert( format != NULL );
+
+  va_list args;
+  va_start( args, format );
+  int const raw_len = vsnprintf( buf, buf_size, format, args );
+  va_end( args );
+
+  PERROR_EXIT_IF( raw_len < 0, EX_OSERR );
+  PERROR_EXIT_IF( STATIC_CAST( size_t, raw_len ) >= buf_size, EX_SOFTWARE );
+}
+
 char* check_strdup( char const *s ) {
   if ( s == NULL )
     return NULL;                        // LCOV_EXCL_LINE
@@ -142,10 +155,15 @@ char* check_strndup( char const *s, size_t n ) {
 }
 
 #ifdef __GNUC__
-  // Silence warning in call to vfprintf().
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wformat-nonliteral"
 #endif /* __GNUC__ */
+
+void check_strftime( char *buf, size_t buf_size, char const *format,
+                     struct tm const *timeptr ) {
+  size_t const raw_len = strftime( buf, buf_size, format, timeptr );
+  PERROR_EXIT_IF( raw_len == 0, EX_SOFTWARE );
+}
 
 void fatal_error( int status, char const *format, ... ) {
   // LCOV_EXCL_START
@@ -340,6 +358,24 @@ char* str_realloc_cat( char *dst, char const *sep, char const *src ) {
   REALLOC( dst, dst_len + sep_len + src_len + 1/*\0*/ );
   strcpy( dst + dst_len, sep );
   strcpy( dst + dst_len + sep_len, src );
+  return dst;
+}
+
+char* str_realloc_pcat( char const *src, char const *sep, char *dst ) {
+  assert( src != NULL );
+  assert( sep != NULL );
+  assert( dst != NULL );
+
+  size_t const dst_len = strlen( dst );
+  size_t const sep_len = strlen( sep );
+  size_t const src_len = strlen( src );
+
+  REALLOC( dst, src_len + sep_len + dst_len + 1/*\0*/ );
+  // use memmove() due to overlapping ranges
+  memmove( dst + src_len + sep_len, dst, dst_len + 1/*\0*/ );
+  // use memcpy() so as not to write a \0
+  memcpy( dst, src, src_len );
+  memcpy( dst + src_len, sep, sep_len );
   return dst;
 }
 

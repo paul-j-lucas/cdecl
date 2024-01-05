@@ -85,6 +85,7 @@ extern char const L_english[];
 extern char const L_eval[];               // synonym for "evaluation"
 extern char const L_evaluation[];
 extern char const L_exit[];
+extern char const L_expand[];
 extern char const L_explain[];
 extern char const L_expr[];               // synonym for "expression"
 extern char const L_expression[];
@@ -97,6 +98,7 @@ extern char const L_init[];               // synonym for "initialization"
 extern char const L_initialization[];
 extern char const L_into[];
 extern char const L_linkage[];
+extern char const L_macros[];
 extern char const L_mbr[];                // synonym for "member"
 extern char const L_member[];
 extern char const L_no[];
@@ -124,6 +126,33 @@ extern char const L_user[];
 extern char const L_vector[];             // synonym for "array"
 extern char const L_wide[];               // "wide character"
 extern char const L_width[];
+
+// C Preprocessor
+extern char const L_P_define[];
+extern char const L_P_elif[];
+extern char const L_P_else[];
+extern char const L_P_error[];
+extern char const L_P_file[];
+extern char const L_P_if[];
+extern char const L_P_ifdef[];
+extern char const L_P_ifndef[];
+//     char const L_P_include[];          // handled within the lexer
+extern char const L_P_line[];
+extern char const L_P_undef[];
+
+extern char const L_PP_define[];          // combined "#define"
+extern char const L_PP_include[];         // combined "#include"
+extern char const L_PP_undef[];           // combined "#undef"
+
+// C99 Preprocessor
+extern char const L_P_pragma[];
+
+// C23 Preprocessor
+extern char const L_P_elifdef[];
+extern char const L_P_elifndef[];
+extern char const L_P_embed[];
+extern char const L_P_warning[];
+
 
 // K&R
 extern char const L_auto[];
@@ -186,6 +215,7 @@ extern char const L_len[];                // synonym for "length"
 extern char const L_length[];             // for "variable [length] array"
 extern char const L_restrict[];
 extern char const L_restricted[];         // synonym for "restrict"
+extern char const L___VA_ARGS__[];
 extern char const L_var[];                // synonym for "variable"
 extern char const L_variable[];           // for "variable [length] array"
 extern char const L_wchar_t[];
@@ -290,6 +320,9 @@ extern char const L_thread_local[];
 // C23 & C++14
 extern char const L_deprecated[];
 extern char const L___deprecated__[];
+
+// C23 & C++20
+extern char const L___VA_OPT__[];
 
 // C++17
 extern char const L_maybe_unused[];

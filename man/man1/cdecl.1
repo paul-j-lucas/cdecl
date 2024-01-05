@@ -79,7 +79,17 @@ is a program for composing and deciphering C (or C++)
 declarations
 or casts,
 aka ``gibberish.''
-It can be used interactively on a terminal
+Additionally,
+.B cdecl
+is also for
+developing
+and
+debugging
+C preprocessor macros
+by performing expansion step-by-step.
+.PP
+.B cdecl
+can be used interactively on a terminal
 or accept input from either the command-line or standard input.
 .SH INVOCATION
 .SS Executable Name
@@ -298,10 +308,15 @@ Turns on
 debugging output:
 .RS 4
 .IP \(bu 3
-Prints additional JSON5 output of an abstract syntax tree
+While parsing a command,
+prints additional JSON5 output of an abstract syntax tree
+(AST)
 as it is being constructed
 from user input
 while the parser is reducing grammar productions.
+.IP \(bu
+While expanding a macro,
+prints additional JSON5 output of the tokens.
 .IP \(bu
 If an error or warning message is printed,
 includes the
@@ -325,7 +340,7 @@ are:
 .TP 4
 .PD 0
 .B u
-Include \f(CWunique_id\fP values in JSON5 output
+Include AST node \f(CWunique_id\fP values in JSON5 output
 as an additional debugging aid.
 .RE
 .PD
@@ -390,7 +405,7 @@ T *pt;
 .RE
 .IP
 (See
-.BR "Other Minor Caveats" .)
+.BR "Other Caveats" .)
 For C,
 \f(CWenum\fP,
 \f(CWstruct\fP,
@@ -471,9 +486,17 @@ and exits.
 .BR \-\-infer-command " | " \-I
 Try to infer a command
 when an input line doesn't start with any.
-If an input line starts with a C (or C++) declaration,
-assumes
+If an input line starts with a:
+.RS 4
+.IP \(bu 3
+Macro name,
+infers
+.BR expand ;
+.IP \(bu
+C (or C++) declaration,
+infers
 .BR explain .
+.RE
 .TP
 .BI \-\-language \f1=\fPs "\f1 | \fP" "" \-x " s"
 Specifies which version of what language
@@ -672,6 +695,11 @@ Adds support for
 \f(CWvoid\fP,
 \f(CWvolatile\fP,
 and function prototypes.
+Adds support for
+C preprocessor token concatenation
+via \f(CW##\fP
+and stringification
+via \f(CW#\fP.
 .TP
 .B C95
 Use the C95 version of the C language.
@@ -691,6 +719,7 @@ functions,
 and
 \f(CWstatic\fP, type-qualified, and variable length array
 function parameters.
+Adds support for C preprocessor variadic macros.
 .TP
 .B C11
 Use the C11 version of the C language.
@@ -729,6 +758,7 @@ fixed-type enumerations,
 \f(CWtrue\fP,
 and
 \f(CW[[unsequenced]]\fP.
+Adds support for the \f(CW__VA_OPT__\fP preprocessor macro.
 .TP
 .B C++
 Use the latest supported version of the C++ language.
@@ -815,6 +845,7 @@ nested \f(CWinline\fP namespaces,
 \f(CW[[no_unique_address]]\fP,
 and
 \f(CWoperator<=>\fP.
+Adds support for the \f(CW__VA_OPT__\fP preprocessor macro.
 .TP
 .B C++23
 Use the C++23 version of the C++ language.
@@ -871,6 +902,21 @@ from pseudo-English.
 .BI define " s-name" " as" " english"
 Defines a type (\f(CWtypedef\fP) from pseudo-English.
 .TP
+.BI #define " name " \f1[\fP pp-tokens \f1]\fP
+Defines an object-like macro
+that expands into
+.IR pp-tokens .
+.TP
+.BI #define " name" ( \f1[\fP "" pp-params "" \f1]\fP ") " \f1[\fP "" pp-tokens "" \f1]\fP
+Defines a function-like macro
+that expands into
+.IR pp-tokens .
+Note that the \f(CW(\fP
+.I must
+be adjacent to
+.IR name .
+.TP
+.TP
 .BR enum " [" class "] " \f2s-name\fP " [" ": " \f2type\fP "" ]
 Defines
 .I s-name
@@ -885,6 +931,17 @@ this is equivalent to:
 typedef enum \f2s-name\fP \f2s-name\fP
 .cE 0
 .RE
+.TP
+.BR expand " \f2name\fP [" ( [ \f2pp-args\fP ] ) "] [" \f2pp-tokens\fP ]
+Expands a previously defined macro
+step by step
+using the supplied arguments
+(if given).
+The additional
+.I pp-tokens
+(if given)
+are appended
+and expanded.
 .TP
 .BR explain " \f2gibberish\fP [" , " \f2gibberish\fP]*"
 Deciphers C (or C++) declarations or a new-style cast (C++ only)
@@ -910,6 +967,16 @@ is recognized as a
 .B cdecl
 command only when immediately followed
 by a string literal.
+.TP
+.BI "#include """ path """"
+Same as
+.BR include ,
+except
+.B #include
+may not end with \f(CW;\fP
+and
+.I must
+be on a line by itself.
 .TP
 .RB "{ " struct " | " union " | " class " } " \f2s-name\fP
 Defines
@@ -1025,8 +1092,38 @@ if
 is given,
 types are shown as \f(CWusing\fP declarations.
 .TP
+.BR show " { " \f2name\fP " | [" predefined " | " user "] " macros " }"
+.RS 4
+.IP \(bu 3
+For
+.IR name ,
+shows the definition for a previously defined macro
+(via
+.BR #define )
+having that name.
+.IP \(bu
+For
+.BR predefined ,
+shows only predefined macros
+that are valid in the current language.
+.IP \(bu
+For
+.BR user ,
+shows only user-defined macros.
+.IP \(bu
+For neither
+.B predefined
+nor
+.BR user,
+equivalent to
+.BR "show user" .
+.RE
+.TP
 .BR type [ def ] " \f2gibberish\fP" " [" , " \f2gibberish\fP]*"
 Defines types via a C (or C++) \f(CWtypedef\fP declaration.
+.TP
+.BI #undef " name"
+Undefines a previously defined macro.
 .TP
 .BI using " name" " = " gibberish
 For C++11 or later only,
@@ -1079,7 +1176,7 @@ other than whitespace.
 .P
 where:
 .RS 4
-.TP 10
+.TP 12
 .I args
 A comma-separated list of
 .IR s-name ,
@@ -1146,6 +1243,20 @@ e.g.,
 As a special case,
 .I glob
 may start with \f(CW**::\fP to match a type name in any scope.
+.TP
+.I pp-args
+A comma-separated list of valid C (or C++) tokens
+for macro arguments.
+.TP
+.I pp-params
+A comma-separated list of valid C (or C++) identifiers
+for macro parameters.
+In C99 and later,
+the last parameter may be
+.BR ... .
+.TP
+.I pp-tokens
+A set of valid C (or C++) tokens.
 .TP
 .I scope-c
 A C or C++ scope-creating keyword,
@@ -1476,6 +1587,7 @@ declaration of a
 variable,
 constant,
 array,
+macro,
 pointer,
 reference,
 rvalue reference,
@@ -2480,6 +2592,49 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWstd::wspanstream\fP
 .hy
 .ad
+.SH PREDEFINED MACROS
+The following macros are predefined
+in the specified language and later.
+.SS C89
+.TP 13
+.B __DATE__
+The local date
+in the form \f(CW"Mmm dd yyyy"\fP.
+.TP
+.B __FILE__
+An artbitrary file name.
+.TP
+.B __LINE__
+An artbitrary line number.
+.TP
+.B __STDC__
+\f(CW1\fP.
+(Not defined in C++.)
+.TP
+.B __STDC_VERSION__
+The current C version,
+e.g., \f(CW202311L\fP for C23.
+(Not defined in C++.)
+.TP
+.B __TIME__
+The local time
+in the form \f(CW"hh:mm:ss"\fP.
+.SS C99
+.TP 13
+.B __VA_ARGS__
+The variable arguments of a macro,
+if any.
+.SS C++
+.TP 13
+.B __cplusplus
+The current C++ version
+e.g., \f(CW202302L\fP for C++23.
+(Not defined in C.)
+.SS C23 | C++20
+.TP 13
+.B __VA_OPT__
+Optional preprocessor tokens
+enclosed between parentheses.
 .SH NOTES
 In C,
 a function named \f(CWmain\fP
@@ -2547,6 +2702,10 @@ to pre-define user-specific types
 so that they may be subsequently used
 when either composing or deciphering declarations.
 .IP \(bu
+.BR #define
+to pre-define macros
+so that they may be subsequently expanded.
+.IP \(bu
 .B include
 to include other configuration files.
 .IP \(bu
@@ -2558,8 +2717,8 @@ initially.
 Configuration files may include
 blank lines,
 C-style \f(CW/*\fP\ \f(CW*/\fP comments,
+and
 C++-style \f(CW//\fP comments,
-and C preprocessor directives \f(CW#\fP,
 all of which are ignored.
 .SH EXAMPLES
 .SS C Declarations
@@ -2647,6 +2806,24 @@ c++decl> namespace N { typedef int T; }
 c++decl> namespace N::M { typedef int T; }
 c++decl> union U { typedef int T; }
 .cE 0
+.SS Preprocessor Macros
+.B cdecl
+can help with understanding how macros expand:
+.cS
+cdecl> #define NAME2_HELPER(A,B)        A ## B
+cdecl> #define NAME2(A,B)               NAME2_HELPER(A,B)
+cdecl> expand NAME2(var_, __LINE__)
+NAME2(var_, __LINE__) => NAME2_HELPER(A,B)
+| A => var_
+| B => __LINE__
+| | __LINE__ => 42
+| B => 42
+NAME2(var_, 42) => NAME2_HELPER(var_,42)
+| NAME2_HELPER(var_, 42) => A ## B
+| NAME2_HELPER(var_, 42) => var_ ## 42
+| NAME2_HELPER(var_, 42) => var_42
+NAME2(var_, 42) => var_42
+.cE 0
 .SH EXIT STATUS
 .PD 0
 .IP 0
@@ -2705,7 +2882,7 @@ Capability names containing upper-case letters are unique to
 those in all lower-case are upwards compatibile with
 .BR gcc .
 .RS
-.TP 18
+.TP 21
 .BI caret= SGR
 SGR for the caret pointing to the error on the line above
 (as with
@@ -2742,6 +2919,21 @@ The default is \f(CW34;1\fP
 SGR for location information in error and warning messages.
 The default is \f(CW1\fP
 (bold current foreground over current terminal background).
+.TP
+.BI MACRO-no-expand= SGR
+SGR for a macro that can not expand.
+The default is \f(CW35\fP
+(magenta foreground over current terminal background).
+.TP
+.BI MACRO-punct= SGR
+SGR for macro expansion punctuation.
+The default is \f(CW32;1\fP
+(bright green foreground over current terminal background).
+.TP
+.BI MACRO-subst= SGR
+SGR for macro substituted tokens.
+The default is \f(CW36\fP
+(cyan foreground over current terminal background).
 .TP
 .BI PROMPT= SGR
 SGR for the prompt.
@@ -2991,8 +3183,23 @@ are not supported.
 .IP \(bu
 The C++20 \f(CWexplicit\fP specifier with an expression
 is not supported.
-.SS Other Minor Caveats
+.SS Other Caveats
 .IP \(bu 3
+Macros are expanded
+.I only
+via the
+.B expand
+command
+and can't be used elsewhere:
+.RS
+.cS
+cdecl> #define exp      explain
+cdecl> exp int *p           // error: can't alias commands
+cdecl> #define FILE_PTR FILE*
+cdecl> explain FILE_PTR f   // error: can't use as type
+.cE 0
+.RE
+.IP \(bu
 When converting from pseudo-English to a C++ declaration,
 any
 \f(CWenum\fP,
@@ -3207,8 +3414,8 @@ are keyword synonyms.
 These types can take modifiers:
 .RS
 .cS
-unsigned __int128 x128;         // legal in GNU C
-unsigned __int32  x32;          // legal in Microsoft C
+unsigned __int128 x128;     // legal in GNU C
+unsigned __int32  x32;      // legal in Microsoft C
 .cE 0
 .RE
 .IP

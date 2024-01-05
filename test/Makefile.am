@@ -154,6 +154,17 @@ TESTS+=	tests/__declspec.test \
 	tests/using.test \
 	tests/west-pointer.test
 
+# C Preprocessor tests
+TESTS+=	tests/expand.test \
+	tests/expand-error.test \
+	tests/expand-C23_std-6.10.4.1-ex-2.test \
+	tests/expand-C23_std-6.10.4.3-ex-1.test \
+	tests/expand-C23_std-6.10.4.5-ex-4.test \
+	tests/expand-C23_std-6.10.4.5-ex-5.test \
+	tests/expand-C23_std-6.10.4.5-ex-7.test \
+	tests/expand-robertelder.test \
+	tests/preprocessor-error.test
+
 # Auto-completion tests
 if WITH_EXPECT
 TESTS+=	tests/ac-cast_into.exp \

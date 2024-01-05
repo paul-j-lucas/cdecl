@@ -186,20 +186,21 @@ enum cdecl_mode {
 };
 
 /**
- * @ingroup showing-types-group
- * Which types to show for the **cdecl** `show` command.
+ * @ingroup showing-group
+ * Which types or macros to show for the **cdecl** `show` command.
  * @remarks The values can be bitwise-or'd together.
  */
 enum cdecl_show {
   /**
    * Show only predefined types that are valid in the current language (unless
-   * bitwise-or'd with #CDECL_SHOW_IGNORE_LANG).
+   * bitwise-or'd with #CDECL_SHOW_IGNORE_LANG) or only predefined macros.
    */
   CDECL_SHOW_PREDEFINED   = (1u << 0),
 
   /**
    * Show only types that were user-defined in the current language or earlier
-   * (unless bitwise-or'd with #CDECL_SHOW_IGNORE_LANG).
+   * (unless bitwise-or'd with #CDECL_SHOW_IGNORE_LANG) or only user-defined
+   * macros.
    */
   CDECL_SHOW_USER_DEFINED = (1u << 1),
 
@@ -260,6 +261,13 @@ typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
 typedef enum   cdecl_mode         cdecl_mode_t;
 typedef enum   cdecl_show         cdecl_show_t;
+typedef slist_t                   p_arg_list_t;
+typedef struct p_macro            p_macro_t;
+typedef struct p_param            p_param_t;
+typedef slist_t                   p_param_list_t;
+typedef struct p_token            p_token_t;
+typedef slist_t                   p_token_list_t;
+typedef slist_node_t              p_token_node_t;
 typedef union  user_data          user_data_t;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.

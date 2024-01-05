@@ -1,0 +1,39 @@
+cdecl> #elif
+        ^
+2: error: "#elif" not supported by cdecl
+cdecl> #else
+        ^
+2: error: "#else" not supported by cdecl
+cdecl> #error
+        ^
+2: error: "#error" not supported by cdecl
+cdecl> #file
+        ^
+2: error: "#file" not supported by cdecl
+cdecl> #if
+        ^
+2: error: "#if" not supported by cdecl
+cdecl> #ifdef
+        ^
+2: error: "#ifdef" not supported by cdecl
+cdecl> #ifndef
+        ^
+2: error: "#ifndef" not supported by cdecl
+cdecl> #line
+        ^
+2: error: "#line" not supported by cdecl
+cdecl> #pragma
+        ^
+2: error: "#pragma" not supported by cdecl
+cdecl> #elifdef
+        ^
+2: error: "#elifdef" not supported by cdecl
+cdecl> #elifndef
+        ^
+2: error: "#elifdef" not supported by cdecl
+cdecl> #embed
+        ^
+2: error: "#embed" not supported by cdecl
+cdecl> #warning
+        ^
+2: error: "#warning" not supported by cdecl

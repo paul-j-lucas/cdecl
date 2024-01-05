@@ -51,4 +51,8 @@ set debug
 set
 explain int x
 
+#define NAME2_HELPER(A,B)         A ## B
+#define NAME2(A,B)                NAME2_HELPER(A,B)
+expand NAME2(x, __LINE__)
+
 END

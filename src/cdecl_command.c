@@ -63,6 +63,9 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
   //
   // This _must_ be in sorted order.
   //
+  { L_PP_define,            LANG_ONLY,  LANG_SAME(ANY)                },
+  { L_PP_include,           LANG_ONLY,  LANG_SAME(ANY)                },
+  { L_PP_undef,             LANG_ONLY,  LANG_SAME(ANY)                },
   { L_cast,                 PROG_NAME,  LANG_SAME(ANY)                },
   { L_class,                FIRST_ARG,  LANG_SAME(class)              },
   { L_const /*cast*/,       FIRST_ARG,  LANG_SAME(NEW_STYLE_CASTS)    },
@@ -71,6 +74,7 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
   { L_dynamic /*cast*/,     FIRST_ARG,  LANG_SAME(NEW_STYLE_CASTS)    },
   { L_enum,                 FIRST_ARG,  LANG_SAME(enum)               },
   { L_exit,                 LANG_ONLY,  LANG_DIFF(ANY,NONE)           },
+  { L_expand,               FIRST_ARG,  LANG_SAME(ANY)                },
   { L_explain,              PROG_NAME,  LANG_SAME(ANY)                },
   { L_help,                 FIRST_ARG,  LANG_SAME(ANY)                },
   { L_include,              FIRST_ARG,  LANG_SAME(ANY)                },

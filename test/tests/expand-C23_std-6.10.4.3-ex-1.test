@@ -1,0 +1,21 @@
+##
+#   These tests are taken verbatim from:
+#
+#     ISO/IEC 9899:2023: Programming languages -- C
+#     (working draft -- September 3, 2022)
+#
+#     section 6.10.4.3: The ## operator
+#     paragraph 4
+#     Example 1
+##
+
+EXPECTED_EXIT=0
+cdecl -bO <<END
+#define hash_hash                 # ## #
+#define mkstr(a)                  # a
+#define in_between(a)             mkstr(a)
+#define join(c, d)                in_between(c hash_hash d)
+
+expand join(x, y)
+END
+# vim:set et sw=2 ts=2:

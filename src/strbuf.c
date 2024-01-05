@@ -158,6 +158,47 @@ void strbuf_putsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
   sbuf->str[ sbuf->len ] = '\0';
 }
 
+void strbuf_puts_quoted( strbuf_t *sbuf, char quote, char const *s ) {
+  assert( sbuf != NULL );
+  assert( quote == '\'' || quote == '"' );
+  assert( s != NULL );
+
+  bool in_quote = false;
+  char const other_quote = quote == '\'' ? '"' : '\'';
+
+  strbuf_putc( sbuf, quote );
+  for ( char prev = '\0'; *s != '\0'; prev = *s++ ) {
+    switch ( *s ) {
+      case '\b': strbuf_putsn( sbuf, "\\b", 2 ); continue;
+      case '\f': strbuf_putsn( sbuf, "\\f", 2 ); continue;
+      case '\n': strbuf_putsn( sbuf, "\\n", 2 ); continue;
+      case '\r': strbuf_putsn( sbuf, "\\r", 2 ); continue;
+      case '\t': strbuf_putsn( sbuf, "\\t", 2 ); continue;
+      case '\v': strbuf_putsn( sbuf, "\\v", 2 ); continue;
+      case '\\':
+        if ( in_quote ) {
+          if ( prev != '\\' )
+            strbuf_putsn( sbuf, "\\\\", 2 );
+          continue;
+        }
+        break;
+    } // switch
+
+    if ( prev != '\\' ) {
+      if ( *s == quote ) {
+        strbuf_putc( sbuf, '\\' );
+        in_quote = !in_quote;
+      }
+      else if ( *s == other_quote ) {
+        in_quote = !in_quote;
+      }
+    }
+
+    strbuf_putc( sbuf, *s );
+  } // for
+  strbuf_putc( sbuf, quote );
+}
+
 bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
   assert( sbuf != NULL );
   size_t const buf_rem = sbuf->cap - sbuf->len;

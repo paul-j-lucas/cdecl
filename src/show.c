@@ -45,31 +45,94 @@
 /// @endcond
 
 /**
- * @addtogroup showing-types-group
+ * @addtogroup showing-group
  * @{
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Information for show_macro_visitor().
+ */
+struct show_macros_info {
+  cdecl_show_t  show;                   ///< Which macros to show.
+  FILE         *fout;                   ///< Where to print the macros.
+};
+typedef struct show_macros_info show_macros_info_t;
+
+/**
  * Information for show_type_visitor().
  */
-struct show_info {
+struct show_types_info {
   cdecl_show_t  show;                   ///< Which types to show.
   c_sglob_t     sglob;                  ///< Scoped glob to match, if any.
   unsigned      decl_flags;             ///< Declaration flags.
   FILE         *fout;                   ///< Where to print the types.
 };
-typedef struct show_info show_info_t;
+typedef struct show_types_info show_types_info_t;
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Prints \a param_list between parentheses and separated by commas.
+ *
+ * @param param_list The macro parameter list to print.  If NULL, does nothing.
+ * @param fout The `FILE` to print to.
+ *
+ * @sa print_token_list()
+ */
+static void print_param_list( p_param_list_t const *param_list, FILE *fout ) {
+  assert( param_list != NULL );
+  assert( fout != NULL );
+
+  FPUTC( '(', fout );
+  bool comma = false;
+  FOREACH_SLIST_NODE( param_node, param_list ) {
+    p_param_t const *const param = param_node->data;
+    if ( true_or_set( &comma ) )
+      FPUTS( ", ", fout );
+    FPUTS( param->name, fout );
+  } // for
+  FPUTC( ')', fout );
+}
+
+/**
+ * A visitor function to show (print) \a macro.
+ *
+ * @param macro The \ref p_macro to show.
+ * @param data Optional data passed to the visitor: in this case, a \ref
+ * show_macros_info.
+ * @return Always returns `false`.
+ */
+NODISCARD
+static bool show_macro_visitor( p_macro_t const *macro, void *data ) {
+  assert( macro != NULL );
+  assert( data != NULL );
+
+  show_macros_info_t const *const smi = data;
+
+  if ( macro->is_dynamic ) {
+    if ( (smi->show & CDECL_SHOW_PREDEFINED) == 0 )
+      goto no_show;
+    if ( !opt_lang_is_any( (*macro->dyn_fn)( /*ptoken=*/NULL ) ) )
+      goto no_show;
+  } else {
+    if ( (smi->show & CDECL_SHOW_USER_DEFINED) == 0 )
+      goto no_show;
+  }
+
+  show_macro( macro, smi->fout );
+
+no_show:
+  return /*stop=*/false;
+}
 
 /**
  * A visitor function to show (print) \a tdef.
  *
  * @param tdef The \ref c_typedef to show.
  * @param data Optional data passed to the visitor: in this case, a \ref
- * show_info.
+ * show_types_info.
  * @return Always returns `false`.
  */
 NODISCARD
@@ -77,33 +140,65 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
   assert( tdef != NULL );
   assert( data != NULL );
 
-  show_info_t const *const si = data;
+  show_types_info_t const *const sti = data;
 
-  if ( (si->show & CDECL_SHOW_IGNORE_LANG) == 0 &&
+  if ( (sti->show & CDECL_SHOW_IGNORE_LANG) == 0 &&
        !opt_lang_is_any( tdef->lang_ids ) ) {
     goto no_show;
   }
 
   if ( tdef->is_predefined ) {
-    if ( (si->show & CDECL_SHOW_PREDEFINED) == 0 )
+    if ( (sti->show & CDECL_SHOW_PREDEFINED) == 0 )
       goto no_show;
   } else {
-    if ( (si->show & CDECL_SHOW_USER_DEFINED) == 0 )
+    if ( (sti->show & CDECL_SHOW_USER_DEFINED) == 0 )
       goto no_show;
   }
 
-  if ( !c_sglob_empty( &si->sglob ) &&
-       !c_sname_match( &tdef->ast->sname, &si->sglob ) ) {
+  if ( !c_sglob_empty( &sti->sglob ) &&
+       !c_sname_match( &tdef->ast->sname, &sti->sglob ) ) {
     goto no_show;
   }
 
-  show_type( tdef, si->decl_flags, si->fout );
+  show_type( tdef, sti->decl_flags, sti->fout );
 
 no_show:
   return /*stop=*/false;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+bool show_macro( p_macro_t const *macro, FILE *fout ) {
+  assert( macro != NULL );
+  assert( fout != NULL );
+
+  if ( macro->is_dynamic ) {
+    p_token_t *token;
+    (*macro->dyn_fn)( &token );
+    if ( token == NULL )
+      return false;
+    FPRINTF( fout, "#define %s %s\n", macro->name, p_token_str( token ) );
+    p_token_free( token );
+  }
+  else {
+    FPRINTF( fout, "#define %s", macro->name );
+    if ( macro->param_list != NULL )
+      print_param_list( macro->param_list, fout );
+    if ( !slist_empty( &macro->replace_list ) ) {
+      FPUTC( ' ', fout );
+      print_token_list( &macro->replace_list, fout );
+    }
+    FPUTC( '\n', fout );
+  }
+
+  return true;
+}
+
+void show_macros( cdecl_show_t show, FILE *fout ) {
+  assert( fout != NULL );
+  show_macros_info_t smi = { show, fout };
+  p_macro_visit( &show_macro_visitor, &smi );
+}
 
 void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *fout ) {
   assert( tdef != NULL );
@@ -123,17 +218,17 @@ void show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
                  FILE *fout ) {
   assert( fout != NULL );
 
-  show_info_t si = {
+  show_types_info_t sti = {
     .show = show,
     .decl_flags = decl_flags,
     .fout = fout
   };
-  c_sglob_init( &si.sglob );
-  c_sglob_parse( glob, &si.sglob );
+  c_sglob_init( &sti.sglob );
+  c_sglob_parse( glob, &sti.sglob );
 
-  c_typedef_visit( &show_type_visitor, &si );
+  c_typedef_visit( &show_type_visitor, &sti );
 
-  c_sglob_cleanup( &si.sglob );
+  c_sglob_cleanup( &sti.sglob );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

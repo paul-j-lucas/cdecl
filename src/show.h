@@ -28,20 +28,44 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "p_macro.h"
 #include "types.h"
 
 // standard
 #include <stdio.h>                      /* for FILE */
 
 /**
- * @defgroup showing-c-types-group Showing C/C++ Types
- * Functions for showing types for the **cdecl** `show` command.
+ * @defgroup showing-group Showing C/C++ Types & Macros
+ * Functions for showing types & macros for the **cdecl** `show` command.
  *
  * @sa \ref printing-c-types-group
  * @{
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Shows (prints) the definition of \a macro.
+ *
+ * @param macro The macro to show.
+ * @param fout The `FILE` to print to.
+ * @return Returns `false` only if \a macro is dynamic and is _not_ supported
+ * in the current language; `true` otherwise.
+ *
+ * @sa show_macros()
+ */
+PJL_DISCARD
+bool show_macro( p_macro_t const *macro, FILE *fout );
+
+/**
+ * Shows (prints) the definition of macros.
+ *
+ * @param show Which macros to show.
+ * @param fout The `FILE` to print to.
+ *
+ * @sa show_macro()
+ */
+void show_macros( cdecl_show_t show, FILE *fout );
 
 /**
  * Shows (prints) the definition of \a tdef.

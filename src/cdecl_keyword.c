@@ -792,6 +792,15 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     )
   },
 
+  { L_expand,
+    LANG_ANY,
+    TOKEN( Y_expand ),
+    AC_SETTINGS(
+      AC_POLICY_DEFAULT,
+      AC_NO_NEXT_KEYWORDS
+    )
+  },
+
   { L_explain,
     LANG_ANY,
     TOKEN( Y_explain ),
@@ -875,7 +884,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_help,
     LANG_ANY,
-    TOKEN( Y_help ),
+    TOKEN( '?' ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS               // see command_ac_keywords()
@@ -981,6 +990,15 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     AC_SETTINGS(
       AC_POLICY_IN_NEXT_ONLY,
       AC_NO_NEXT_KEYWORDS
+    )
+  },
+
+  { L_macros,
+    LANG_ANY,
+    TOKEN( Y_macros ),
+    AC_SETTINGS(
+      AC_POLICY_DEFAULT,
+      AC_NO_NEXT_KEYWORDS               // see command_ac_keywords()
     )
   },
 

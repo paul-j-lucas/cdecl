@@ -41,6 +41,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sysexits.h>
+#include <time.h>
 #include <unistd.h>                     /* for dup2() */
 
 _GL_INLINE_HEADER_BEGIN
@@ -346,9 +347,22 @@ _GL_INLINE_HEADER_BEGIN
  * @note \a ARRAY _must_ be a statically allocated array.
  *
  * @sa #ARRAY_SIZE()
+ * @sa #FOR_N_TIMES()
  */
 #define FOREACH_ARRAY_ELEMENT(TYPE,VAR,ARRAY) \
   for ( TYPE const *VAR = (ARRAY); VAR < (ARRAY) + ARRAY_SIZE(ARRAY); ++VAR )
+
+/**
+ * Convenience macro for iterating \a N times.
+ *
+ * @param N The number of times to iterate.
+ *
+ * @sa #FOREACH_ARRAY_ELEMENT()
+ */
+#define FOR_N_TIMES(N)                                \
+  for ( size_t UNIQUE_NAME(i) = 0;                    \
+        UNIQUE_NAME(i) < STATIC_CAST( size_t, (N) );  \
+        ++UNIQUE_NAME(i) )
 
 /**
  * Calls **fprintf**(3) on \a STREAM, checks for an error, and exits if there
@@ -432,6 +446,17 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define FSTAT(FD,PSTAT) \
   PERROR_EXIT_IF( fstat( (FD), (PSTAT) ) < 0, EX_IOERR )
+
+/**
+ * Identifier characters.
+ *
+ * @sa is_ident()
+ * @sa is_ident_first()
+ * @sa is_ident_prefix()
+ */
+#define IDENT_CHARS               "ABCDEFGHIJKLMNOPQRSTUVWXYZ_" \
+                                  "abcdefghijklmnopqrstuvwxyz" \
+                                  "0123456789"
 
 /**
  * Shorthand for `((EXPR1) ? (EXPR1) : (EXPR2))`.
@@ -857,6 +882,17 @@ NODISCARD
 void* check_realloc( void *p, size_t size );
 
 /**
+ * Calls **snprintf**(3) and checks for failure.
+ *
+ * @param buf The destination buffer to print into.
+ * @param buf_size The size of \a buf.
+ * @param format The `printf()` style format string.
+ * @param ... The `printf()` arguments.
+ */
+PJL_PRINTF_LIKE_FUNC(3)
+void check_snprintf( char *buf, size_t buf_size, char const *format, ... );
+
+/**
  * Calls **strdup**(3) and checks for failure.
  * If memory allocation fails, prints an error message and exits.
  *
@@ -897,6 +933,17 @@ char* check_strdup_suffix( char const *s, char const *suffix,
  */
 NODISCARD
 char* check_strdup_tolower( char const *s );
+
+/**
+ * Calls **strftime**(3) and checks for failure.
+ *
+ * @param buf The destination buffer to print into.
+ * @param buf_size The size of \a buf.
+ * @param format The `strftime()` style format string.
+ * @param timeptr A pointer to the time to format.
+ */
+void check_strftime( char *buf, size_t buf_size, char const *format,
+                     struct tm const *timeptr );
 
 /**
  * Calls **strndup**(3) and checks for failure.
@@ -1020,6 +1067,8 @@ void fput_list( FILE *out, void const *elt,
  * @param s The string to put.  If NULL, prints `null` (unquoted).
  * @param quote The quote character to use, either <tt>'</tt> or <tt>"</tt>.
  * @param fout The `FILE` to print to.
+ *
+ * @sa strbuf_puts_quoted()
  */
 void fputs_quoted( char const *s, char quote, FILE *fout );
 
@@ -1195,6 +1244,7 @@ bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
  * @return Returns `true` only if \a c is either an alphanumeric or `_`
  * character.
  *
+ * @sa #IDENT_CHARS
  * @sa is_ident_first()
  */
 NODISCARD C_UTIL_H_INLINE
@@ -1209,6 +1259,7 @@ bool is_ident( char c ) {
  * @return Returns `true` only if \a c is either an alphabetic or `_`
  * character.
  *
+ * @sa #IDENT_CHARS
  * @sa is_ident()
  */
 NODISCARD C_UTIL_H_INLINE
@@ -1235,6 +1286,7 @@ bool is_ident_first( char c ) {
  * @param s_len The length of \a s.
  * @return Returns `true` only if it is.
  *
+ * @sa #IDENT_CHARS
  * @sa str_is_prefix()
  */
 NODISCARD
@@ -1352,9 +1404,26 @@ bool str_is_prefix( char const *s1, char const *s2 );
  * @return Returns the concatenated string, aka, \a dst.
  *
  * @warning \a dst _must_ have been dynamically allocated.
+ *
+ * @sa str_realloc_pcat()
  */
 PJL_DISCARD
 char* str_realloc_cat( char *dst, char const *sep, char const *src );
+
+/**
+ * Prepends \a src to \a dst.
+ *
+ * @param src The string to prepend.
+ * @param sep The string to prepend to \a dst before prepending \a src.
+ * @param dst The string to prepend onto.
+ * @return Returns the concatenated string, aka, \a dst.
+ *
+ * @warning \a dst _must_ have been dynamically allocated.
+ *
+ * @sa str_realloc_cat()
+ */
+PJL_DISCARD
+char* str_realloc_pcat( char const *src, char const *sep, char *dst );
 
 /**
  * Decrements \a *s_len as if to trim whitespace, if any, from the end of \a s.

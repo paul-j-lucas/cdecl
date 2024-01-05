@@ -21,6 +21,7 @@
 
 **cdecl** (_see-deh-kull_)
 is a program
+primarily
 for composing
 and deciphering
 C (or C++) declarations
@@ -38,6 +39,32 @@ declare p as pointer to array 4 of constant pointer to integer
 
 cdecl> declare p as pointer to const pointer to const char
 const char *const *p;
+```
+
+Additionally,
+**cdecl**
+is also for
+developing
+and
+debugging
+C preprocessor macros
+by performing expansion step-by-step.
+For example:
+
+```
+cdecl> #define NAME2_HELPER(A,B)         A ## B
+cdecl> #define NAME2(A,B)                NAME2_HELPER(A,B)
+cdecl> expand NAME2(var_, __LINE__)
+NAME2(var_, __LINE__) => NAME2_HELPER(A,B)
+| A => var_
+| B => __LINE__
+| | __LINE__ => 42
+| B => 42
+NAME2(var_, 42) => NAME2_HELPER(var_,42)
+| NAME2_HELPER(var_, 42) => A ## B
+| NAME2_HELPER(var_, 42) => var_ ## 42
+| NAME2_HELPER(var_, 42) => var_42
+NAME2(var_, 42) => var_42
 ```
 
 This codebase fixes virtually all the deficiencies in earlier versions

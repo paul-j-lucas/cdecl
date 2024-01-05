@@ -19,18 +19,24 @@ command:
   cast [<name>] {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-option>]
   define <name> as <english>
+  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*
+  expand <name>[([<pp-token>* [, <pp-token>*]*])] <pp-token>*
   explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | <command> | english | options]
-  include "<path>"
+  [#]include "<path>"
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
+  show {<name>|[predefined|user] macros}
   type[def] <gibberish> [, <gibberish>]*
+  #undef <name>
   exit | q[uit]
 declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+pp-param: a macro parameter <name> or ...
+pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> inline namespace NS { using Int = int; }; show
 inline namespace NS { using Int = int; }

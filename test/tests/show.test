@@ -13,6 +13,29 @@ show predefined typedef
 show user
 show user typedef
 
+show __FILE__
+show __LINE__
+show __STDC__
+
+#define NAME2_HELPER(A,B)         A ## B
+#define NAME2(A,B)                NAME2_HELPER(A,B)
+show NAME2_HELPER
+show macros
+show user macros
+
+set c89
+show __STDC_VERSION__
+set c95
+show __STDC_VERSION__
+set c99
+show __STDC_VERSION__
+set c11
+show __STDC_VERSION__
+set c17
+show __STDC_VERSION__
+set c23
+show __STDC_VERSION__
+
 set c++
 show all predefined typedef
 show all predefined *::atomic* as typedef
@@ -33,5 +56,20 @@ show user
 show user typedef
 show user using
 show using
+
+set c++98
+show __cplusplus
+set c++03
+show __cplusplus
+set c++11
+show __cplusplus
+set c++14
+show __cplusplus
+set c++17
+show __cplusplus
+set c++20
+show __cplusplus
+set c++23
+show __cplusplus
 
 END

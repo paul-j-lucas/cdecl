@@ -137,6 +137,69 @@ void c_tid_dump( c_tid_t tid, FILE *fout );
  */
 void c_type_dump( c_type_t const *type, FILE *fout );
 
+/**
+ * Dumps \a macro in [JSON5](https://json5.org) format (for debugging).
+ *
+ * @param macro The \ref p_macro to dump.
+ * @param dout The `FILE` to dump to.
+ */
+void p_macro_dump( p_macro_t const *macro, FILE *dout );
+
+/**
+ * Dumps \a list of preprocessor macro arguments in [JSON5](https://json5.org)
+ * format (for debugging).
+ *
+ * @param list The list of macro arguments to dump.
+ * @param indent The indentation to use.
+ * @param dout The `FILE` to dump to.
+ */
+void p_arg_list_dump( p_arg_list_t const *list, unsigned indent, FILE *dout );
+
+/**
+ * Dumps \a list of preprocessor macro parameters in [JSON5](https://json5.org)
+ * format (for debugging).
+ *
+ * @param list The list of \ref p_param to dump.
+ * @param indent The indentation to use.
+ * @param dout The `FILE` to dump to.
+ */
+void p_param_list_dump( p_param_list_t const *list, unsigned indent,
+                        FILE *dout );
+
+/**
+ * Dumps \a token in [JSON5](https://json5.org) format (for debugging).
+ *
+ * @param token The \ref p_token to dump.
+ * @param dout The `FILE` to dump to.
+ *
+ * @sa p_token_list_dump()
+ */
+void p_token_dump( p_token_t const *token, FILE *dout );
+
+/**
+ * Dumps \a list of preprocessor macro tokens in [JSON5](https://json5.org)
+ * format (for debugging).
+ *
+ * @param list The list of \ref p_token to dump.
+ * @param indent The indentation to use.
+ * @param dout The `FILE` to dump to.
+ *
+ * @sa p_token_dump()
+ */
+void p_token_list_dump( p_token_list_t const *list, unsigned indent,
+                        FILE *dout );
+
+/**
+ * Dumps \a list of strings in [JSON5](https://json5.org) format (for
+ * debugging).
+ *
+ * @param list The list of strings to dump.
+ * @param dout The `FILE` to dump to.
+ *
+ * @sa str_dump()
+ */
+void str_list_dump( slist_t const *list, FILE *dout );
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

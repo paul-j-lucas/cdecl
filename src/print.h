@@ -101,6 +101,7 @@ struct print_params {
   size_t      command_line_len;         ///< Length of `command_line`.
   char const *conf_path;                ///< Configuration file path, if any.
   size_t      inserted_len;             ///< Length of inserted string, if any.
+  bool        opt_no_print_input_line;  ///< Don't print input line before `^`.
 };
 typedef struct print_params print_params_t;
 
@@ -209,6 +210,8 @@ void print_hint( char const *format, ... );
 /**
  * If \a error_token is:
  *
+ * + A macro, prints `"(\"___\" is a macro)"` where `___` is \a error_token.
+ *
  * + A C or C++ keyword:
  *     + And the oldest language in which \a error_token is a keyword is later
  *       than the current language, prints `"; not a keyword until"` followed
@@ -223,9 +226,9 @@ void print_hint( char const *format, ... );
  *
  * @note A newline is _not_ printed.
  *
- * @param error_token The current error token or NULL.
+ * @param error_token The current error token. May be NULL.
  */
-void print_is_a_keyword( char const *error_token );
+void print_error_token_is_a( char const *error_token );
 
 /**
  * Prints the location of the error including:
@@ -270,7 +273,7 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
  * @defgroup printing-c-types-group Printing C/C++ Types
  * Functions for printing C/C++ types.
  *
- * @sa \ref showing-c-types-group
+ * @sa \ref showing-group
  * @{
  */
 

@@ -27,7 +27,7 @@
 /** @cond DOXYGEN_IGNORE */
 
 %define api.header.include { "parser.h" }
-%expect 17
+%expect 22
 
 %{
 /** @endcond */
@@ -56,6 +56,7 @@
 #include "lexer.h"
 #include "literals.h"
 #include "options.h"
+#include "p_macro.h"
 #include "print.h"
 #include "set_options.h"
 #include "show.h"
@@ -366,6 +367,51 @@
   DUMP_KEY( KEY ": %d", STATIC_CAST( int, (NUM) ) )
 
 /**
+ * Dumps a \ref p_macro.
+ *
+ * @param KEY The key name to print.
+ * @param MACRO The \ref p_macro to dump.
+ */
+#define DUMP_MACRO(KEY,MACRO) IF_CDECL_DEBUG( \
+  DUMP_KEY( KEY ": " ); p_macro_dump( (MACRO), stdout ); )
+
+/**
+ * Dumps a list of macro arguments.
+ *
+ * @param KEY The key name to print.
+ * @param ARG_LIST The list of arguments to dump.
+ */
+#define DUMP_MACRO_ARG_LIST(KEY,ARG_LIST) IF_CDECL_DEBUG( \
+  if ( (ARG_LIST) != NULL ) {                             \
+    DUMP_KEY( KEY ": " );                                 \
+    p_arg_list_dump( (ARG_LIST), 1, stdout );             \
+  } )
+
+/**
+ * Dumps a list of \ref p_param.
+ *
+ * @param KEY The key name to print.
+ * @param PARAM_LIST The list of \ref p_param to dump.
+ */
+#define DUMP_MACRO_PARAM_LIST(KEY,PARAM_LIST) IF_CDECL_DEBUG( \
+  if ( (PARAM_LIST) != NULL ) {                               \
+    DUMP_KEY( KEY ": " );                                     \
+    p_param_list_dump( (PARAM_LIST), 1, stdout );             \
+  } )
+
+/**
+ * Dumps a list of \ref p_token.
+ *
+ * @param KEY The key name to print.
+ * @param TOKEN_LIST The list of \ref p_token to dump.
+ */
+#define DUMP_MACRO_TOKEN_LIST(KEY,TOKEN_LIST) IF_CDECL_DEBUG( \
+  if ( (TOKEN_LIST) != NULL ) {                               \
+    DUMP_KEY( KEY ": " );                                     \
+    p_token_list_dump( (TOKEN_LIST), 1, stdout );             \
+  } )
+
+/**
  * Dumps a parser grammar production.
  *
  * @remarks For grammar productions, it should be the first `DUMP_*()` after
@@ -435,9 +481,21 @@
  *
  * @sa #DUMP_INT()
  * @sa #DUMP_SNAME()
+ * @sa #DUMP_STR_LIST()
  */
 #define DUMP_STR(KEY,STR) IF_CDECL_DEBUG( \
   DUMP_KEY( KEY ": " ); fputs_quoted( (STR), '"', stdout ); )
+
+/**
+ * Dumps a list of C strings.
+ *
+ * @param KEY The key name to print.
+ * @param STR_LIST The list of C strings to dump.
+ *
+ * @sa #DUMP_STR()
+ */
+#define DUMP_STR_LIST(KEY,STR_LIST) IF_CDECL_DEBUG( \
+  DUMP_KEY( KEY ": " ); str_list_dump( (STR_LIST), stdout ); )
 
 /**
  * Dumps a \ref c_tid_t.
@@ -1078,6 +1136,19 @@ static void parse_cleanup( bool fatal_error ) {
 }
 
 /**
+ * Creates a new \ref p_token_list_t containing a single #P_PLACEMARKER token.
+ *
+ * @return Returns said list.
+ */
+NODISCARD
+static p_token_list_t* p_token_list_new_placemarker( void ) {
+  p_token_list_t *const rv_tokens = MALLOC( p_token_list_t, 1 );
+  slist_init( rv_tokens );
+  slist_push_back( rv_tokens, p_token_new( P_PLACEMARKER, /*literal=*/NULL ) );
+  return rv_tokens;
+}
+
+/**
  * Called by Bison to print a parsing error message to standard error.
  *
  * @remarks A custom error printing function via `%%define parse.error custom`
@@ -1145,24 +1216,32 @@ static void yyerror( char const *msg ) {
 //
 %union {
   c_alignas_t         align;
-  c_ast_t            *ast;        // for the AST being built
-  c_ast_list_t        ast_list;   // for declarations and function parameters
-  c_ast_pair_t        ast_pair;   // for the AST being built
-  c_cast_kind_t       cast_kind;  // C/C++ cast kind
-  bool                flag;       // simple flag
-  unsigned            flags;      // multipurpose bitwise flags
-  char const         *literal;    // token L_* literal (for new-style casts)
-  char               *name;       // identifier name, cf. sname
-  c_func_member_t     member;     // member, non-member, or unspecified
-  c_op_id_t           op_id;      // overloaded operator ID
-  cdecl_show_t        show;       // which types to show
-  c_sname_t           sname;      // scoped identifier name, cf. name
-  slist_t             sname_list; // c_sname_t list
-  char               *str_val;    // quoted string value
-  c_typedef_t const  *tdef;       // typedef
-  c_tid_t             tid;        // built-ins, storage classes, & qualifiers
-  c_type_t            type;       // complete type
-  unsigned            uint_val;   // unsigned integer value
+  c_ast_t            *ast;          // for the AST being built
+  c_ast_list_t        ast_list;     // for declarations and function parameters
+  c_ast_pair_t        ast_pair;     // for the AST being built
+  c_cast_kind_t       cast_kind;    // C/C++ cast kind
+  bool                flag;         // simple flag
+  unsigned            flags;        // multipurpose bitwise flags
+  char const         *literal;      // token L_* literal (for new-style casts)
+  int                 int_val;      // signed integer value
+  p_macro_t const    *macro;        // preprocessor macro
+  char               *name;         // identifier name, cf. sname
+  c_func_member_t     member;       // member, non-member, or unspecified
+  c_op_id_t           op_id;        // overloaded operator ID
+  p_arg_list_t       *p_arg_list;   // preprocessor macro argument list
+  p_param_t          *p_param;      // preprocessor macro parameter
+  p_param_list_t     *p_param_list; // preprocessor macro parameter list
+  p_token_t          *p_token;      // preprocessor token
+  p_token_list_t     *p_token_list; // preprocessor token list
+  void               *pair[2];      // pair of pointers
+  cdecl_show_t        show;         // which types to show
+  c_sname_t           sname;        // scoped identifier name, cf. name
+  slist_t             sname_list;   // c_sname_t list
+  char               *str_val;      // quoted string value
+  c_typedef_t const  *tdef;         // typedef
+  c_tid_t             tid;          // built-ins, storage classes, & qualifiers
+  c_type_t            type;         // complete type
+  unsigned            uint_val;     // unsigned integer value
 }
 
                     // cdecl commands
@@ -1175,7 +1254,6 @@ static void yyerror( char const *msg ) {
 %token              Y_dynamic
 //                  Y_exit              // mapped to Y_quit by lexer
 %token              Y_explain
-%token              Y_help
 //                  Y_inline            // covered in C99
 //                  Y_namespace         // covered in C++
 %token              Y_no
@@ -1208,6 +1286,7 @@ static void yyerror( char const *msg ) {
 %token              Y_destructor
 %token              Y_english
 %token              Y_evaluation
+%token              Y_expand
 %token              Y_expression
 %token              Y_floating
 %token              Y_function
@@ -1217,6 +1296,7 @@ static void yyerror( char const *msg ) {
 %token              Y_length
 %token              Y_linkage
 %token              Y_literal
+%token              Y_macros
 %token              Y_member
 %token              Y_non_empty
 %token              Y_non_member
@@ -1343,6 +1423,34 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_union
 %token  <tid>       Y_unsigned
 %token              Y_while
+
+                    // C Preprocessor
+%token              /*  stringify */      '#'
+%token              Y_P_CONCAT            "##"
+%token  <macro>     Y_P_MACRO_NAME;
+%token              Y_P_SPACE         //  whitespace
+%token              Y_P_define
+%token              Y_P_elif
+%token              Y_P_else
+%token              Y_P_error
+%token              Y_P_file
+%token              Y_P_if
+%token              Y_P_ifdef
+%token              Y_P_ifndef
+                 // Y_P_include       // handled within the lexer
+%token              Y_P_line
+%token              Y_P_undef
+%token              Y_P___VA_ARGS__
+%token              Y_P___VA_OPT__
+
+                    // C99 preprocessor
+%token              Y_P_pragma
+
+                    // C23 preprocessor
+%token              Y_P_elifdef
+%token              Y_P_elifndef
+%token              Y_P_embed
+%token              Y_P_warning
 
                     // C89
 %token              Y_asm
@@ -1495,13 +1603,14 @@ static void yyerror( char const *msg ) {
 %token  <str_val>   Y_CHAR_LIT          // must be free'd
 %token              Y_END
 %token              Y_ERROR
+%token              Y_FLOAT_LIT
 %token  <name>      Y_GLOB              // must be free'd
+%token  <int_val>   Y_INT_LIT
 %token  <name>      Y_NAME              // must be free'd
 %token  <name>      Y_SET_OPTION        // must be free'd
 %token  <str_val>   Y_STR_LIT           // must be free'd
 %token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
 %token  <tdef>      Y_TYPEDEF_SNAME     // e.g., std::string
-%token  <uint_val>  Y_UINT_LIT
 
                     //
                     // When the lexer returns Y_LEXER_ERROR, it means that
@@ -1597,6 +1706,25 @@ static void yyerror( char const *msg ) {
 %type   <ast>         user_defined_literal_decl_english_ast
 %type   <ast>         var_decl_english_ast
 %type   <uint_val>    width_specifier_english_uint
+
+                      // C Preprocessor
+%type  <pair>         expand_command2
+%type  <p_arg_list>   p_arg_list p_arg_list_opt
+%type  <p_token>      p_arg_token
+%type  <p_token_list> p_arg_token_as_list
+%type  <p_token>      p_arg_token_with_comma
+%type  <p_token_list> p_arg_token_with_comma_as_list
+%type  <p_token_list> p_arg_tokens
+%type  <p_token_list> p_arg_tokens_with_comma p_arg_tokens_with_comma_opt
+%type  <p_arg_list>   p_comma_arg_list
+%type  <p_token>      p_extra_token
+%type  <p_token>      p_extra_token_except_lparen
+%type  <p_token_list> p_extra_tokens p_extra_tokens_opt
+%type  <p_param>      p_param
+%type  <p_param_list> p_param_list p_param_list_opt
+%type  <p_param_list> p_paren_param_list_opt
+%type  <p_token_list> p_replace_list p_replace_list_opt
+%type  <p_token>      p_replace_token
 
                       // C/C++ casts
 %type   <ast_pair>    array_cast_c_astp
@@ -1720,7 +1848,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>         this_stid_opt
 %type   <type>        type_modifier_base_type
 %type   <flag>        typename_flag_opt
-%type   <uint_val>    uint_lit_exp uint_lit_opt
+%type   <uint_val>    uint_lit uint_lit_exp uint_lit_opt
 %type   <tid>         virtual_stid_exp virtual_stid_opt
 
 //
@@ -1728,11 +1856,16 @@ static void yyerror( char const *msg ) {
 //
 // Clean-up of AST nodes is done via garbage collection using gc_ast_list.
 //
-%destructor { DTRACE; c_ast_list_cleanup( &$$ ); }    <ast_list>
-%destructor { DTRACE; FREE( $$ ); }                   <name>
-%destructor { DTRACE; c_sname_cleanup( &$$ ); }       <sname>
-%destructor { DTRACE; c_sname_list_cleanup( &$$ ); }  <sname_list>
-%destructor { DTRACE; FREE( $$ ); }                   <str_val>
+%destructor { DTRACE; c_ast_list_cleanup( &$$ );              } <ast_list>
+%destructor { DTRACE; FREE( $$ );                             } <name>
+%destructor { DTRACE; p_arg_list_cleanup( $$ );   FREE( $$ ); } <p_arg_list>
+%destructor { DTRACE; p_param_free( $$ );                     } <p_param>
+%destructor { DTRACE; p_param_list_cleanup( $$ ); FREE( $$ ); } <p_param_list>
+%destructor { DTRACE; p_token_free( $$ );                     } <p_token>
+%destructor { DTRACE; p_token_list_cleanup( $$ ); FREE( $$ ); } <p_token_list>
+%destructor { DTRACE; c_sname_cleanup( &$$ );                 } <sname>
+%destructor { DTRACE; c_sname_list_cleanup( &$$ );            } <sname_list>
+%destructor { DTRACE; FREE( $$ );                             } <str_val>
 
 ///////////////////////////////////////////////////////////////////////////////
 %%
@@ -1751,8 +1884,10 @@ command
   : cast_command semi_or_end
   | declare_command semi_or_end
   | define_command semi_or_end
+  | expand_command semi_or_end
   | explain_command semi_or_end
   | help_command semi_or_end
+  | preprocessor_command Y_END
   | quit_command semi_or_end
   | scoped_command
   | set_command semi_or_end
@@ -2102,7 +2237,7 @@ alignas_or_width_decl_english_ast
   ;
 
 alignas_specifier_english
-  : aligned_english Y_UINT_LIT[width] bytes_opt
+  : aligned_english uint_lit[width] bytes_opt
     {
       $$.kind = C_ALIGNAS_BYTES;
       $$.loc = @1;
@@ -2349,6 +2484,418 @@ define_command
     }
   ;
 
+/// expand command ////////////////////////////////////////////////////////////
+
+expand_command
+  : Y_expand Y_NAME[name] expand_command2[expand2]
+    {
+      p_arg_list_t   *const arg_list   = $expand2[0];
+      p_token_list_t *const extra_list = $expand2[1];
+
+      DUMP_START();
+      DUMP_PROD( "expand_command", "EXPAND NAME arg_list_opt extra_list_opt" );
+      DUMP_STR( "name", $name );
+      DUMP_MACRO_ARG_LIST( "arg_list", arg_list );
+      DUMP_MACRO_TOKEN_LIST( "extra_list", extra_list );
+      DUMP_END();
+
+      bool const ok =
+        p_macro_expand( $name, &@name, arg_list, extra_list, stdout );
+      p_arg_list_cleanup( arg_list );
+      free( arg_list );
+      p_token_list_cleanup( extra_list );
+      free( extra_list );
+      free( $name );
+      PARSE_ASSERT( ok );
+    }
+
+  | Y_expand error
+    {
+      elaborate_error( "macro name expected" );
+    }
+  ;
+
+expand_command2
+  : /* empty */                   { $$[0] = $$[1] = NULL; }
+
+    /*
+     * This is for the case where there are no macro arguments, but perhaps
+     * additional tokens that do _not_ start with a '(' past the name of the
+     * macro.  These should be appended (and expaned if necessary):
+     *
+     *      cdecl> #define M   x
+     *      cdecl> expand M y
+     *      M => x
+     *      M => x y
+     *
+     * If the additional tokens started with a '(', then it would be the next
+     * case.
+     */
+  | p_extra_token_except_lparen[token] p_extra_tokens_opt[extra_list]
+    {
+      if ( $extra_list == NULL ) {
+        $extra_list = MALLOC( p_token_list_t, 1 );
+        slist_init( $extra_list );
+      }
+      slist_push_front( $extra_list, $token );
+
+      $$[0] = NULL;
+      $$[1] = $extra_list;
+    }
+
+  | '(' p_arg_list_opt[arg_list] ')' p_extra_tokens_opt[extra_list]
+    {
+      $$[0] = $arg_list;
+      $$[1] = $extra_list;
+    }
+  ;
+
+p_extra_token_except_lparen
+  : p_arg_token_with_comma
+  | ')'
+    {
+      $$ = p_token_new_loc( P_PUNCTUATOR, &@1, ")" );
+    }
+  ;
+
+p_extra_tokens_opt
+  : /* empty */                   { $$ = NULL; }
+  | p_extra_tokens
+  ;
+
+p_extra_tokens
+  : p_extra_tokens[extra_list] p_extra_token[token]
+    {
+      $$ = $extra_list;
+      slist_push_back( $extra_list, $token );
+    }
+  | p_extra_token[token]
+    {
+      $$ = MALLOC( p_token_list_t, 1 );
+      slist_init( $$ );
+      slist_push_back( $$, $token );
+    }
+  ;
+
+p_extra_token
+  : p_extra_token_except_lparen
+  | '('
+    {
+      $$ = p_token_new_loc( P_PUNCTUATOR, &@1, "(" );
+    }
+  ;
+
+p_arg_list_opt
+  : /* empty */
+    {
+      $$ = MALLOC( p_arg_list_t, 1 );
+      slist_init( $$ );
+    }
+
+  | p_arg_list
+
+    /*
+     * Handles cases where there are only empty macro arguments separated only
+     * by commas (no spaces), e.g.:
+     *
+     *      M(,)
+     *      M(,,)
+     *
+     * and so on.  Note that N commas returns N-1 arguments, so we have to add
+     * two placemarker arguments, one for each side of the commas.
+     */
+  | p_comma_arg_list[comma_arg_list]
+    {
+      slist_push_back( $comma_arg_list, p_token_list_new_placemarker() );
+      slist_push_back( $comma_arg_list, p_token_list_new_placemarker() );
+
+      $$ = MALLOC( p_arg_list_t, 1 );
+      slist_init( $$ );
+      slist_push_list_back( $$, $comma_arg_list );
+    }
+
+    /*
+     * Handles cases where there are empty macro arguments separated only by
+     * commas at the beginning, e.g.:
+     *
+     *      M(,x)
+     *      M(,,x)
+     *
+     * and so on.  Note than N commas returns N-1 arguments, so we have to add
+     * one placemarker argument for the left of the commas.
+     */
+  | p_comma_arg_list[comma_arg_list] p_arg_list[arg_list]
+    {
+      slist_push_back( $comma_arg_list, p_token_list_new_placemarker() );
+
+      $$ = $arg_list;
+      slist_push_list_front( $$, $comma_arg_list );
+    }
+
+    /*
+     * Handles cases where there are empty macro arguments separated only by
+     * commas and the beginning and end, e.g.:
+     *
+     *      M(,x,)
+     *      M(,x,,)
+     *      M(,,x,)
+     *
+     * and so on.  Note than N commas returns N-1 arguments, so we have to add
+     * two placemarker arguments, one for the left of the left commas and one
+     * for the right of the right commas.
+     */
+  | p_comma_arg_list[lcomma_arg_list]
+    p_arg_list[arg_list]
+    p_comma_arg_list[rcomma_arg_list]
+    {
+      slist_push_back( $lcomma_arg_list, p_token_list_new_placemarker() );
+      slist_push_back( $rcomma_arg_list, p_token_list_new_placemarker() );
+
+      $$ = $arg_list;
+      slist_push_list_front( $$, $lcomma_arg_list );
+      slist_push_list_back ( $$, $rcomma_arg_list );
+    }
+
+    /*
+     * Handles cases where there are empty macro arguments separated only by
+     * commas at the end, e.g.:
+     *
+     *      M(x,)
+     *      M(x,,)
+     *
+     * and so on.  Note than N commas returns N-1 arguments, so we have to add
+     * one placemarker argument for the right of the commas.
+     */
+  | p_arg_list[arg_list] p_comma_arg_list[comma_arg_list]
+    {
+      $$ = $arg_list;
+      slist_push_back( $comma_arg_list, p_token_list_new_placemarker() );
+      slist_push_list_back( $$, $comma_arg_list );
+    }
+
+  | error
+    {
+      $$ = NULL;
+      elaborate_error( "macro argument expected" );
+    }
+  ;
+
+p_comma_arg_list
+  : p_comma_arg_list[arg_list] ','
+    {
+      $$ = $arg_list;
+      slist_push_back( $$, p_token_list_new_placemarker() );
+    }
+  | ','
+    {
+      $$ = MALLOC( p_arg_list_t, 1 );
+      slist_init( $$ );
+    }
+  ;
+
+p_arg_list
+    /*
+     * Also handles cases where there are empty macro arguments separated only
+     * by commas in the middle, e.g.:
+     *
+     *      M(x,y)                      // normal case
+     *      M(x,,y)                     // one empty argument
+     *      M(x,,,y)                    // two empty arguments
+     *
+     * and so on.  Note that N commas returns N-1 arguments, so for the normal
+     * case of 1 comma, comma_arg_list will be empty and we do nothing special.
+     */
+  : p_arg_list[arg_list]
+    p_comma_arg_list[comma_arg_list]
+    p_arg_tokens[arg_tokens]
+    {
+      $$ = $arg_list;
+
+      if ( !slist_empty( $comma_arg_list ) )
+        slist_push_list_back( $$, $comma_arg_list );
+
+      slist_push_back( $$, $arg_tokens );
+    }
+  | p_arg_tokens[arg_tokens]
+    {
+      $$ = MALLOC( p_arg_list_t, 1 );
+      slist_init( $$ );
+      slist_push_back( $$, $arg_tokens );
+    }
+  ;
+
+p_arg_tokens
+  : p_arg_tokens[arg_tokens] p_arg_token_as_list[arg_token_list]
+    {
+      $$ = $arg_tokens;
+      slist_push_list_back( $$, $arg_token_list );
+    }
+  | p_arg_token_as_list
+  ;
+
+p_arg_token_as_list
+  : p_arg_token[arg_token]
+    {
+      $$ = MALLOC( p_token_list_t, 1 );
+      slist_init( $$ );
+      slist_push_back( $$, $arg_token );
+    }
+  | '('[lparen] p_arg_tokens_with_comma_opt[arg_tokens] ')'[rparen]
+    {
+      $$ = $arg_tokens;
+      slist_push_front( $$, p_token_new_loc( P_PUNCTUATOR, &@lparen, "(" ) );
+      slist_push_back ( $$, p_token_new_loc( P_PUNCTUATOR, &@rparen, ")" ) );
+    }
+  ;
+
+p_arg_token
+  : Y_CHAR_LIT[char]
+    {
+      $$ = p_token_new_loc( P_CHAR_LIT, &@char, $1 );
+    }
+  | Y_NAME[name]
+    {
+      $$ = p_token_new_loc( P_IDENTIFIER, &@name, $name );
+    }
+  | p_num_lit[num]
+    {
+      $$ = p_token_new_loc( P_NUM_LIT, &@num, check_strdup( lexer_token ) );
+    }
+  | Y_P_SPACE[space]
+    {
+      $$ = p_token_new_loc( P_SPACE, &@space, /*literal=*/NULL );
+    }
+  | Y_STR_LIT[str]
+    {
+      $$ = p_token_new_loc( P_STR_LIT, &@str, $str );
+    }
+  | p_other[other]
+    {
+      $$ = p_token_new_loc( P_OTHER, &@other, lexer_token );
+    }
+  | p_punctuator[punct]
+    {
+      $$ = p_token_new_loc( P_PUNCTUATOR, &@punct, lexer_token );
+    }
+  ;
+
+p_num_lit
+  : Y_FLOAT_LIT
+  | Y_INT_LIT
+  ;
+
+p_other
+  : '$'
+  | '@'
+  | '`'
+  ;
+
+p_punctuator
+  : '!'
+  | '#'
+  | '%'
+  | '&'
+/*| '(' -- handled separately for parenthesized arguments */
+/*| ')' -- handled separately for parenthesized arguments */
+  | '*'
+  | '+'
+/*| ',' -- handled separately to separate arguments */
+  | '-'
+  | '.'
+  | '/'
+  | ':'
+  | ';'
+  | '<'
+  | '='
+  | '>'
+  | '?'
+  | '['
+  | ']'
+  | '^'
+  | '{'
+  | '|'
+  | '}'
+  | '~'
+  | Y_AMPER2
+  | Y_AMPER_EQUAL
+  | Y_CARET_EQUAL
+  | Y_COLON2
+  | Y_DOT3
+  | Y_DOT_STAR
+  | Y_EQUAL2
+  | Y_EXCLAM_EQUAL
+  | Y_GREATER2
+  | Y_GREATER2_EQUAL
+  | Y_GREATER_EQUAL
+  | Y_LESS2
+  | Y_LESS2_EQUAL
+  | Y_LESS_EQUAL
+  | Y_LESS_EQUAL_GREATER
+  | Y_MINUS2
+  | Y_MINUS_EQUAL
+  | Y_MINUS_GREATER
+  | Y_MINUS_GREATER_STAR
+  | Y_PERCENT_EQUAL
+  | Y_PIPE2
+  | Y_PIPE_EQUAL
+  | Y_PLUS2
+  | Y_PLUS_EQUAL
+  | Y_SLASH_EQUAL
+  | Y_STAR_EQUAL
+  ;
+
+p_arg_tokens_with_comma_opt
+  : /* empty */
+    {
+      $$ = MALLOC( p_token_list_t, 1 );
+      slist_init( $$ );
+    }
+  | p_arg_tokens_with_comma
+  ;
+
+  /*
+   * We need a version of p_arg_tokens, p_arg_token_as_list, and p_arg_token
+   * where p_arg_token includes ',' because original set uses ',' to separate
+   * arguments whereas this set (that is within parentheses) treats ',' as just
+   * another token that's part of the same argument, e.g.:
+   *
+   *      expand M(x, (a,b), y)
+   *
+   * The ',' in the middle is part of the second argument of (a,b).
+   */
+p_arg_tokens_with_comma
+  : p_arg_tokens_with_comma[arg_tokens]
+    p_arg_token_with_comma_as_list[arg_token_list]
+    {
+      $$ = $arg_tokens;
+      slist_push_list_back( $$, $arg_token_list );
+    }
+  | p_arg_token_with_comma_as_list
+  ;
+
+p_arg_token_with_comma_as_list
+  : p_arg_token_with_comma[arg_token]
+    {
+      $$ = MALLOC( p_token_list_t, 1 );
+      slist_init( $$ );
+      slist_push_back( $$, $arg_token );
+    }
+  | '('[lparen] p_arg_tokens_with_comma_opt[arg_tokens] ')'[rparen]
+    {
+      $$ = $arg_tokens;
+      slist_push_front( $$, p_token_new_loc( P_PUNCTUATOR, &@lparen, "(" ) );
+      slist_push_back ( $$, p_token_new_loc( P_PUNCTUATOR, &@rparen, ")" ) );
+    }
+  ;
+
+p_arg_token_with_comma
+  : p_arg_token
+  | ','
+    {
+      $$ = p_token_new_loc( P_PUNCTUATOR, &@1, "," );
+    }
+  ;
+
 /// explain command ///////////////////////////////////////////////////////////
 
 explain_command
@@ -2504,7 +3051,7 @@ explain
 /// help command //////////////////////////////////////////////////////////////
 
 help_command
-  : Y_help
+  : '?'
     { //
       // We want cdecl commands (like "declare", etc.), other cdecl keywords
       // (like "cast", "commands", "english", "options", etc.), and C/C++
@@ -2525,12 +3072,274 @@ help_command
 help_what_opt
   : /* empty */                   { $$ = NULL; }
   | name_cat
+  | '#' Y_NAME[name]              { $$ = str_realloc_pcat( "#", "", $name ); }
+  | '#' error
+    {
+      $$ = NULL;
+      elaborate_error( "\"#define\", \"#include\", or \"#undef\" expected" );
+    }
   | error
     {
       $$ = NULL;
       elaborate_error(
         "<command>, \"commands\", \"english\", or \"options\" expected"
       );
+    }
+  ;
+
+/// preprocessor command //////////////////////////////////////////////////////
+
+preprocessor_command
+  : '#'                                 /* ignore null directive */
+  | '#' p_define
+/*| '#' include -- handled within the lexer */
+  | '#' p_undef
+
+  | '#' Y_P_elif
+    {
+      UNSUPPORTED( &@Y_P_elif, "\"#elif\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_elifdef
+    {
+      UNSUPPORTED( &@Y_P_elifdef, "\"#elifdef\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_elifndef
+    {
+      UNSUPPORTED( &@Y_P_elifndef, "\"#elifdef\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_else
+    {
+      UNSUPPORTED( &@Y_P_else, "\"#else\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_embed
+    {
+      UNSUPPORTED( &@Y_P_embed, "\"#embed\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_error
+    {
+      UNSUPPORTED( &@Y_P_error, "\"#error\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_file
+    {
+      UNSUPPORTED( &@Y_P_file, "\"#file\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_if
+    {
+      UNSUPPORTED( &@Y_P_if, "\"#if\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_ifdef
+    {
+      UNSUPPORTED( &@Y_P_ifdef, "\"#ifdef\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_ifndef
+    {
+      UNSUPPORTED( &@Y_P_ifndef, "\"#ifndef\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_line
+    {
+      UNSUPPORTED( &@Y_P_line, "\"#line\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_pragma
+    {
+      UNSUPPORTED( &@Y_P_pragma, "\"#pragma\"" );
+      PARSE_ABORT();
+    }
+  | '#' Y_P_warning
+    {
+      UNSUPPORTED( &@Y_P_warning, "\"#warning\"" );
+      PARSE_ABORT();
+    }
+  | '#' error
+    {
+      elaborate_error( "\"#define\", \"#include\", or \"#undef\" expected" );
+    }
+  ;
+
+p_define
+  : Y_P_define name_exp[name] p_paren_param_list_opt[param_list]
+    p_replace_list_opt[replace_list]
+    {
+      DUMP_START();
+      DUMP_PROD( "p_define",
+                 "#define NAME p_paren_param_list_opt p_replace_list_opt" );
+      DUMP_STR( "name", $name );
+      DUMP_MACRO_PARAM_LIST( "p_param_list_opt", $param_list );
+      DUMP_MACRO_TOKEN_LIST( "p_replace_list_opt", $replace_list );
+
+      c_typedef_t const *const tdef = c_typedef_find_name( $name );
+      if ( tdef != NULL ) {
+        if ( tdef->is_predefined ) {
+          print_warning( &@name,
+            "\"%s\" is a predefined type since %s\n",
+            $name,
+            c_lang_name( c_lang_oldest( tdef->lang_ids ) )
+          );
+        }
+        else {
+          print_warning( &@name,
+            "\"%s\" previously defined as type (\"",
+            $name
+          );
+          print_type_decl( tdef, tdef->decl_flags, stderr );
+          EPUTS( "\")\n" );
+        }
+      }
+
+      p_macro_t *const macro =
+        p_macro_define( $name, &@name, $param_list, $replace_list );
+      p_param_list_cleanup( $param_list );
+      free( $param_list );
+      p_token_list_cleanup( $replace_list );
+      free( $replace_list );
+      PARSE_ASSERT( macro != NULL );
+
+      DUMP_MACRO( "macro", macro );
+      DUMP_END();
+    }
+
+p_paren_param_list_opt
+  : /* empty */                   { $$ = NULL; }
+  | '(' p_param_list_opt ')'      { $$ = $2; }
+
+p_param_list_opt
+  : /* empty */
+    { //
+      // Use an empty list to distinguish a macro with an empty parameter list
+      // from one with no parameter list.
+      //
+      //      #define M   X       // no parameter list: use NULL
+      //      #define F() #X      // empty parameter list: use empty list
+      //
+      $$ = MALLOC( p_param_list_t, 1 );
+      slist_init( $$ );
+    }
+  | p_param_list
+  ;
+
+p_param_list
+  : p_param_list[param_list] comma_exp p_param[param]
+    {
+      DUMP_START();
+      DUMP_PROD( "p_param_list", "p_param" );
+      DUMP_MACRO_PARAM_LIST( "p_param_list", $param_list );
+      DUMP_STR( "p_param", $param->name );
+
+      $$ = $param_list;
+      slist_push_back( $$, $param );
+
+      DUMP_MACRO_PARAM_LIST( "$$_list", $$ );
+      DUMP_END();
+    }
+
+  | p_param[param]
+    {
+      DUMP_START();
+      DUMP_PROD( "p_param_list", "p_param" );
+      DUMP_STR( "p_param", $param->name );
+
+      $$ = MALLOC( p_param_list_t, 1 );
+      slist_init( $$ );
+      slist_push_back( $$, $param );
+
+      DUMP_MACRO_PARAM_LIST( "$$_list", $$ );
+      DUMP_END();
+    }
+  ;
+
+p_param
+  : Y_NAME[name]
+    {
+      $$ = MALLOC( p_param_t, 1 );
+      *$$ = (p_param_t){ .name = $name, .loc = @name };
+    }
+  | "..."
+    {
+      $$ = MALLOC( p_param_t, 1 );
+      *$$ = (p_param_t){ .name = check_strdup( L_ellipsis ), .loc = @1 };
+    }
+  | error
+    {
+      $$ = NULL;
+      if ( OPT_LANG_IS( VARIADIC_MACROS ) )
+        elaborate_error( "parameter name or \"...\" expected" );
+      else
+        elaborate_error( "parameter name expected" );
+    }
+  ;
+
+p_replace_list_opt
+  : /* empty */                   { $$ = NULL; }
+  | p_replace_list
+  ;
+
+p_replace_list
+  : p_replace_list[replace_list] p_replace_token[token]
+    {
+      $$ = $replace_list;
+      slist_push_back( $$, $token );
+    }
+
+  | p_replace_token[token]
+    {
+      $$ = MALLOC( p_token_list_t, 1 );
+      slist_init( $$ );
+      slist_push_back( $$, $token );
+    }
+  ;
+
+p_replace_token
+  : p_arg_token[token]
+    {
+      if ( p_token_is_punct( $token, '#' ) ) {
+        //
+        // A '#' macro argument token is an ordinary '#', but as a replacement
+        // token, retroactively make it P_STRINGIFY.
+        //
+        $token->kind = P_STRINGIFY;
+      }
+      $$ = $token;
+    }
+  | '('
+    {
+      $$ = p_token_new_loc( P_PUNCTUATOR, &@1, "(" );
+    }
+  | ')'
+    {
+      $$ = p_token_new_loc( P_PUNCTUATOR, &@1, ")" );
+    }
+  | ','
+    {
+      $$ = p_token_new_loc( P_PUNCTUATOR, &@1, "," );
+    }
+  | Y_P_CONCAT
+    {
+      $$ = p_token_new_loc( P_CONCAT, &@1, /*literal=*/NULL );
+    }
+  | Y_P___VA_ARGS__
+    {
+      $$ = p_token_new_loc( P___VA_ARGS__, &@1, /*literal=*/NULL );
+    }
+  | Y_P___VA_OPT__
+    {
+      $$ = p_token_new_loc( P___VA_OPT__, &@1, /*literal=*/NULL );
+    }
+  ;
+
+p_undef
+  : Y_P_undef name_exp[name]
+    {
+      PARSE_ASSERT( p_macro_undef( $name, &@name ) );
     }
   ;
 
@@ -2618,30 +3427,27 @@ show_command
       free( $glob_name );
     }
 
+  | Y_show Y_P_MACRO_NAME[macro]
+    {
+      if ( !show_macro( $macro, stdout ) ) {
+        c_lang_id_t const lang_ids = (*$macro->dyn_fn)( /*ptoken=*/NULL );
+        print_error( &@macro,
+          "\"%s\" not supported%s\n",
+          $macro->name, c_lang_which( lang_ids )
+        );
+        PARSE_ABORT();
+      }
+    }
+
+  | Y_show show_types_opt[show] Y_macros
+    {
+      show_macros( $show, stdout );
+    }
+
   | Y_show Y_NAME[name]
     {
-      static char const *const TYPE_COMMANDS_KNR[] = {
-        L_define, L_struct, L_typedef, L_union, NULL
-      };
-      static char const *const TYPE_COMMANDS_C[] = {
-        L_define, L_enum, L_struct, L_typedef, L_union, NULL
-      };
-      static char const *const TYPE_COMMANDS_CPP_WITHOUT_USING[] = {
-        L_class, L_define, L_enum, L_struct, L_typedef, L_union, NULL
-      };
-      static char const *const TYPE_COMMANDS_CPP_WITH_USING[] = {
-        L_class, L_define, L_enum, L_struct, L_typedef, L_union, L_using, NULL
-      };
-
-      char const *const *const type_commands =
-        OPT_LANG_IS( C_KNR )       ? TYPE_COMMANDS_KNR :
-        OPT_LANG_IS( C_ANY )       ? TYPE_COMMANDS_C :
-        OPT_LANG_IS( using_DECLS ) ? TYPE_COMMANDS_CPP_WITH_USING :
-                                     TYPE_COMMANDS_CPP_WITHOUT_USING;
-
-      print_error( &@name, "\"%s\": no such type defined via ", $name );
-      fput_list( stderr, type_commands, /*gets=*/NULL );
-      print_suggestions( DYM_C_TYPES, $name );
+      print_error( &@name, "\"%s\": no such type or macro defined", $name );
+      print_suggestions( DYM_C_MACROS | DYM_C_TYPES, $name );
       EPUTC( '\n' );
       free( $name );
       PARSE_ABORT();
@@ -2831,10 +3637,10 @@ aligned_declaration_c
   ;
 
 alignas_specifier_c
-  : alignas lparen_exp Y_UINT_LIT[bytes] rparen_exp
+  : alignas lparen_exp uint_lit[bytes] rparen_exp
     {
       DUMP_START();
-      DUMP_PROD( "alignas_specifier_c", "ALIGNAS '(' Y_UINT_LIT ')'" );
+      DUMP_PROD( "alignas_specifier_c", "ALIGNAS '(' uint_lit ')'" );
       DUMP_INT( "INT_LIT", $bytes );
 
       $$.kind = C_ALIGNAS_BYTES;
@@ -3619,7 +4425,7 @@ decl_list_c_opt
         //
         c_loc_t const loc = lexer_loc();
         print_error( &loc, "declaration expected" );
-        print_is_a_keyword( lexer_printable_token() );
+        print_error_token_is_a( lexer_printable_token() );
         EPUTC( '\n' );
         PARSE_ABORT();
       }
@@ -3792,7 +4598,7 @@ array_size_c_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
-  | '[' Y_UINT_LIT[size] rbracket_exp
+  | '[' uint_lit[size] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_INT_SIZE;
@@ -3811,7 +4617,7 @@ array_size_c_ast
       $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
   | '[' type_qualifier_list_c_stid[qual_stids] static_stid_opt[static_stid]
-    Y_UINT_LIT[size] rbracket_exp
+    uint_lit[size] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->type.stids = c_tid_check( $qual_stids | $static_stid, C_TPID_STORE );
@@ -3832,7 +4638,7 @@ array_size_c_ast
       $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
       $$->array.kind = C_ARRAY_VLA_STAR;
     }
-  | '[' Y_static type_qualifier_list_c_stid_opt[qual_stids] Y_UINT_LIT[size]
+  | '[' Y_static type_qualifier_list_c_stid_opt[qual_stids] uint_lit[size]
     rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
@@ -4421,7 +5227,7 @@ func_equals_c_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
   | '=' Y_default                 { $$ = $2; }
   | '=' Y_delete                  { $$ = $2; }
-  | '=' Y_UINT_LIT
+  | '=' uint_lit
     {
       if ( $2 != 0 ) {
         print_error( &@2, "'0' expected\n" );
@@ -6037,7 +6843,7 @@ restrict_qualifier_c_stid
 
 upc_layout_qualifier_c
   : '[' ']'
-  | '[' Y_UINT_LIT rbracket_exp
+  | '[' uint_lit rbracket_exp
   | '[' '*' rbracket_exp
   | '[' error ']'
     {
@@ -6305,8 +7111,8 @@ gnu_attribute_arg_list_c
 
 gnu_attribute_arg_c
   : Y_NAME                        { free( $1 ); }
-  | Y_UINT_LIT
   | Y_CHAR_LIT                    { free( $1 ); }
+  | Y_INT_LIT
   | Y_STR_LIT                     { free( $1 ); }
   | '(' gnu_attribute_arg_list_c rparen_exp
   | Y_LEXER_ERROR
@@ -6408,7 +7214,7 @@ array_size_decl_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_EMPTY_SIZE;
     }
-  | Y_UINT_LIT[size]
+  | uint_lit[size]
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->array.kind = C_ARRAY_INT_SIZE;
@@ -6821,7 +7627,7 @@ type_qualifier_english_stid
   ;
 
 upc_layout_qualifier_english
-  : Y_UINT_LIT
+  : uint_lit
   | '*'
   ;
 
@@ -7162,7 +7968,7 @@ builtin_no_BitInt_english_btid
   ;
 
 BitInt_english_int
-  : BitInt_english Y_UINT_LIT[width] bits_opt
+  : BitInt_english uint_lit[width] bits_opt
     {
       $$ = $width;
     }
@@ -8269,8 +9075,24 @@ typename_flag_opt
   | Y_typename                    { $$ = true; }
   ;
 
+uint_lit
+  : Y_INT_LIT[int_val]
+    {
+      if ( $int_val < 0 ) {
+        //
+        // This check is better to do now in the parser rather than later in
+        // the AST because we can store the value as unsigned plus gives a
+        // better error location.
+        //
+        print_error( &@int_val, "non-negative integer expected\n" );
+        PARSE_ABORT();
+      }
+      $$ = STATIC_CAST( unsigned, $int_val );
+    }
+  ;
+
 uint_lit_exp
-  : Y_UINT_LIT
+  : uint_lit
   | error
     {
       elaborate_error( "integer literal expected" );
@@ -8279,7 +9101,7 @@ uint_lit_exp
 
 uint_lit_opt
   : /* empty */                   { $$ = 0; }
-  | Y_UINT_LIT
+  | uint_lit
   ;
 
 unused_exp
@@ -8387,7 +9209,7 @@ static void fl_elaborate_error( char const *file, int line,
   va_end( args );
 
   if ( error_token != NULL ) {
-    print_is_a_keyword( error_token );
+    print_error_token_is_a( error_token );
     print_suggestions( dym_kinds, error_token );
   }
 

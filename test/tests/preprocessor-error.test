@@ -1,0 +1,20 @@
+EXPECTED_EXIT=65
+cdecl -bO <<END
+
+#elif
+#else
+#error
+#file
+#if
+#ifdef
+#ifndef
+#line
+#pragma
+
+#elifdef
+#elifndef
+#embed
+#warning
+
+END
+# vim:set et sw=2 ts=2:

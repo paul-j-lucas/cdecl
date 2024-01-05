@@ -196,6 +196,23 @@ slist_t slist_move( slist_t *list ) {
   return rv_list;
 }
 
+void* slist_pop_back( slist_t *list ) {
+  assert( list != NULL );
+  if ( list->len < 2 )
+    return slist_pop_front( list );
+
+  slist_node_t *new_tail = list->head;
+  while ( new_tail->next != list->tail )
+    new_tail = new_tail->next;
+  new_tail->next = NULL;
+
+  void *const data = list->tail->data;
+  free( list->tail );
+  list->tail = new_tail;
+  --list->len;
+  return data;
+}
+
 void* slist_pop_front( slist_t *list ) {
   assert( list != NULL );
   if ( list->head == NULL )

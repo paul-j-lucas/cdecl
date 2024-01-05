@@ -46,6 +46,8 @@
 #include "gibberish.h"
 #include "literals.h"
 #include "options.h"
+#include "p_keyword.h"
+#include "p_macro.h"
 #include "print.h"
 #include "red_black.h"
 #include "slist.h"
@@ -121,6 +123,23 @@
 #define YY_FATAL_ERROR(MSG)       lexer_fatal( MSG )
 
 /**
+ * Switch to lexer \a STATE start-state saving the current start-state.
+ *
+ * @param STATE The start-state to switch to.
+ *
+ * @sa #BEGIN_RETURN
+ */
+#define BEGIN_CALL(STATE) \
+  BLOCK( yy_start_stack_push(); BEGIN( STATE ); )
+
+/**
+ * Switch to the previous lexer start-state saved by #BEGIN_CALL().
+ *
+ * @sa #BEGIN_CALL()
+ */
+#define BEGIN_RETURN              BEGIN( yy_start_stack_pop() )
+
+/**
  * Overrides Flex's input.
  *
  * @param BUF The buffer to use.
@@ -192,6 +211,7 @@ static char        *input_buf;          ///< Entire current input line.
 static size_t       input_len;          ///< Length of `input_buf`.
 static size_t       input_sent;         ///< How many bytes returned to Flex.
 static bool         is_eof;             ///< Encountered EOF?
+static bool         is_func_like_macro; ///< Defining a function-like macro?
 static c_loc_num_t  newline_column;     ///< Column position of newline.
 static strbuf_t     str_lit_buf;        ///< String (or character) literal.
 static c_loc_t      str_lit_loc;        ///< String literal starting location.
@@ -200,6 +220,21 @@ static bool         trigraph_warned;    ///< Printed trigraph warning once?
 
 /// C++ raw string literal delimiter.
 static char       rstr_delim[ RSTR_DELIM_LEN_MAX + 1/*"*/ + 1/*\0*/ ];
+
+/**
+ * Stack of `YY_START` values.
+ *
+ * @remarks Currently, we need only to remember 1 previous value, but making
+ * this a "stack" future-proofs the code since it can much more easily be
+ * extended.
+ *
+ * @sa yy_start_stack_pop()
+ * @sa yy_start_stack_push()
+ */
+static int        yy_start_stack[1];
+
+/// Top of \ref yy_start_stack.
+static int        yy_start_stack_top = -1;
 
 // local functions
 _Noreturn
@@ -306,6 +341,19 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_cap ) {
 }
 
 /**
+ * Pops a buffer from Flex's input.
+ */
+static void lexer_pop_buffer( void ) {
+  // The example code in the Flex manual leaks file handles; see:
+  // https://stackoverflow.com/a/27512485/99089
+  assert( yyin != NULL );
+  assert( yyin != stdin );
+  PJL_IGNORE_RV( fclose( yyin ) );
+  yypop_buffer_state();
+  assert( YY_CURRENT_BUFFER != NULL );
+}
+
+/**
  * Update the parser's location.
  * @note This is called by Flex via #YY_USER_ACTION.
  */
@@ -333,6 +381,10 @@ static inline void newline( void ) {
 NODISCARD
 static int parse_int( int base ) {
   char const *s = lexer_token;
+  bool const is_neg = s[0] == '-';
+
+  if ( s[0] == '-' )
+    ++s;
 
   if ( base == 2 ) {
     // Prior to C23, strtol(3) doesn't understand a "0b" (binary) prefix, so
@@ -354,11 +406,13 @@ static int parse_int( int base ) {
   }
 
   errno = 0;
-  long const rv = strtol( s, /*endptr=*/NULL, base );
-  if ( unlikely( errno != 0 || rv > INT_MAX ) ) {
+  long rv = strtol( s, /*endptr=*/NULL, base );
+  if ( is_neg )
+    rv = -rv;
+  if ( unlikely( errno != 0 || rv < INT_MIN || rv > INT_MAX ) ) {
     // LCOV_EXCL_START
-    print_warning( &yylloc, "integer out of range; clamped to %d\n", INT_MAX );
-    return INT_MAX;
+    rv = rv < INT_MIN ? INT_MIN : INT_MAX;
+    print_warning( &yylloc, "integer out of range; clamped to %d\n", (int)rv );
     // LCOV_EXCL_STOP
   }
 
@@ -390,15 +444,7 @@ static bool pop_file( void ) {
   print_params.conf_path = ifi->prev_orig_path;
   yylineno = ifi->prev_lineno;
   ifi_free( ifi );
-
-  // The example code in the Flex manual leaks file handles; see:
-  // https://stackoverflow.com/a/27512485/99089
-  assert( yyin != NULL );
-  assert( yyin != stdin );
-  PJL_IGNORE_RV( fclose( yyin ) );
-  yypop_buffer_state();
-  assert( YY_CURRENT_BUFFER != NULL );
-
+  lexer_pop_buffer();
   return true;
 }
 
@@ -530,6 +576,29 @@ static void set_trigraph( char const *token ) {
 }
 
 /**
+ * Pops \ref yy_start_stack.
+ *
+ * @return Returns a previously pushed `YY_START` value.
+ *
+ * @sa yy_start_stack_push()
+ */
+static int yy_start_stack_pop( void ) {
+  assert( yy_start_stack_top >= 0 );
+  return yy_start_stack[ yy_start_stack_top-- ];
+}
+
+/**
+ * Pushes the current `YY_START` value onto \ref yy_start_stack.
+ *
+ * @sa yy_start_stack_pop()
+ */
+static void yy_start_stack_push( void ) {
+  ++yy_start_stack_top;
+  assert( yy_start_stack_top < ARRAY_SIZE( yy_start_stack ) );
+  yy_start_stack[ yy_start_stack_top ] = YY_START;
+}
+
+/**
  * Standard lex function to know whether to continue parsing upon reaching EOF.
  *
  * @return Returns 1 if done or 0 to continue parsing (a new file set via
@@ -567,18 +636,40 @@ glob          (\*\*|{glob_scope})({S}*::{S}*{glob_scope})*
 
 cstr_pfx      L|u8?|U
 rstr_pfx      {cstr_pfx}?R\"[^ \f\n\r\t\v()\\]*"("
+
+flt_sfx       [flFL]
+hex_pfx       0[xX]
 int_sfx       [lL][lL]?[uU]?|wb|WB|[uU]([lL][lL]?|wb|WB|[zZ])?|[zZ][uU]?
 set_option    [^=; \f\n\r\t\v]+
 
-bin_int       0[bB]{B}+('{B}+)*{int_sfx}?
-oct_int       0{O}*('{O}+)*{int_sfx}?
-dec_int       [1-9]{D}*('{D}+)*{int_sfx}?
-hex_int       0[xX]{H}+('{H}+)*{int_sfx}?
+bin_int       -?0[bB]{B}+('{B}+)*{int_sfx}?
+oct_int       -?0{O}*('{O}+)*{int_sfx}?
+dec_int       -?[1-9]{D}*('{D}+)*{int_sfx}?
+hex_int       -?{hex_pfx}{H}+('{H}+)*{int_sfx}?
+
+exp           [eE][+-]?{D}+
+bexp          [pP][+-]?{D}+
+dec_frac      ({D}*"."{D}+)|({D}+".")
+hex_frac      ({H}*"."{H}+)|({H}+".")
+dec_flt       ({dec_frac}{exp}?)|({D}+{exp})
+hex_flt       {hex_pfx}({hex_frac}|{H}+){bexp}
+
+flt_lit       -?({dec_flt}|{hex_flt}){flt_sfx}?
+
+/*
+ * For the "expand" command.
+ */
+%x X_EXPAND
 
 /*
  * For "include" files.
  */
 %x X_INCL
+
+/*
+ * For the C preprocessor.
+ */
+%x X_P_COMMAND X_P_TOKENS
 
 /*
  * For the "set" command, we want to allow (almost) any character sequence for
@@ -653,7 +744,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                *
                * http://westes.github.io/flex/manual/Multiple-Input-Buffers.html
                */
-include{S}*\" {
+^({S}*#{S}*)?include{S}*\" {
                 strbuf_init( &str_lit_buf );
                 //
                 // Save the start location because we want to use it as the
@@ -876,7 +967,15 @@ include{S}*\" {
                   lexer_cdecl_keyword_find( lexer_token );
                 if ( cdk != NULL ) {
                   if ( cdk->lang_syn == NULL ) {
-                    if ( cdk->literal == L_set ) {
+                    if ( cdk->literal == L_expand ) {
+                      //
+                      // For the "expand" command, we want to allow all tokens,
+                      // but also return a few more that ordinarily aren't
+                      // returned to the parser.
+                      //
+                      BEGIN( X_EXPAND );
+                    }
+                    else if ( cdk->literal == L_set ) {
                       //
                       // For the "set" command, we want to allow (almost) any
                       // character sequence for the command's options, so we
@@ -899,9 +998,18 @@ include{S}*\" {
                   }
                 }
 
+                //
+                // 2. See if it's a macro.
+                //
+                p_macro_t const *const macro = p_macro_find( lexer_token );
+                if ( macro != NULL ) {
+                  yylval.macro = macro;
+                  return Y_P_MACRO_NAME;
+                }
+
                 if ( (lexer_find & LEXER_FIND_TYPES) != 0 ) {
                   //
-                  // 2. See if it's a typedef'd type.
+                  // 3. See if it's a typedef'd type.
                   //
                   SNAME_VAR_INIT_NAME( sname, lexer_token );
                   c_typedef_t const *const tdef =
@@ -915,7 +1023,7 @@ include{S}*\" {
         find_c_keyword:
                 if ( (lexer_find & LEXER_FIND_C_KEYWORDS) != 0 ) {
                   //
-                  // 3. See if it's a C/C++ keyword.
+                  // 4. See if it's a C/C++ keyword.
                   //
                   c_keyword_t const *const ck =
                     c_keyword_find( lexer_token, opt_lang, lexer_keyword_ctx );
@@ -926,40 +1034,51 @@ include{S}*\" {
                 }
 
                 //
-                // 4. Otherwise, it's just an ordinary name.
+                // 5. Otherwise, it's just an ordinary name.
                 //
                 yylval.name = check_strdup( lexer_token );
                 return Y_NAME;
               }
 
   /***************************************************************************/
-  /*  INTEGER LITERALS                                                       */
+  /*  NUMERIC LITERALS                                                       */
   /***************************************************************************/
+
+<INITIAL,X_P_TOKENS>{
 
 {bin_int}     {
                 SET_TOKEN;
-                yylval.uint_val = parse_int( 2 );
-                return Y_UINT_LIT;
+                yylval.int_val = parse_int( 2 );
+                return Y_INT_LIT;
               }
 {oct_int}     {
                 SET_TOKEN;
-                yylval.uint_val = parse_int( 8 );
-                return Y_UINT_LIT;
+                yylval.int_val = parse_int( 8 );
+                return Y_INT_LIT;
               }
 {dec_int}     {
                 SET_TOKEN;
-                yylval.uint_val = parse_int( 10 );
-                return Y_UINT_LIT;
+                yylval.int_val = parse_int( 10 );
+                return Y_INT_LIT;
               }
 {hex_int}     {
                 SET_TOKEN;
-                yylval.uint_val = parse_int( 16 );
-                return Y_UINT_LIT;
+                yylval.int_val = parse_int( 16 );
+                return Y_INT_LIT;
               }
+
+{flt_lit}     {
+                SET_TOKEN;
+                return Y_FLOAT_LIT;
+              }
+
+} /* <INITIAL,X_P_TOKENS> */
 
   /***************************************************************************/
   /*  ATTRIBUTES                                                             */
   /***************************************************************************/
+
+<INITIAL,X_P_TOKENS>{
 
               /*
                * Special case: if '[' is immediately followed by another '[',
@@ -973,10 +1092,13 @@ include{S}*\" {
 "??("/{S}*"??(" { set_trigraph( "[" ); return Y_ATTR_BEGIN; }
 "["/{S}*"["     { SET_TOKEN;           return Y_ATTR_BEGIN; }
 
+} /* <INITIAL,X_P_TOKENS> */
+
   /***************************************************************************/
   /*  DIGRAPHS & TRIGRAPHS                                                   */
   /***************************************************************************/
 
+<*>{
               /* Digraphs. */
 "<%"          { set_digraph( "{" ); return '{'; }
 "%>"          { set_digraph( "}" ); return '}'; }
@@ -995,10 +1117,13 @@ include{S}*\" {
 "??>"         { set_trigraph( "}"  ); return '}'          ; }
 "??-"         { set_trigraph( "~"  ); return '~'          ; }
 
+} /* <*> */
+
   /***************************************************************************/
   /*  OPERATORS & PUNCTUATION                                                */
   /***************************************************************************/
 
+<INITIAL,X_P_TOKENS>{
               /*
                * Special case: if "::" is immediately followed by a '*', return
                * a distinct token to make it possible to distinguish between:
@@ -1039,11 +1164,22 @@ include{S}*\" {
 "|="          { SET_TOKEN; return Y_PIPE_EQUAL        ; }
 "||"          { SET_TOKEN; return Y_PIPE2             ; }
 
-              /* Synonym for "help", not "?:". */
-"?"           { SET_TOKEN; return Y_help              ; }
+              /*
+               * Special case: if '#' is the first non-whitespace character on
+               * a line, assume it's the start of a C preprocessor command.
+               *
+               * This needs to be here before the regular "#" a few lines below
+               * so Flex will match this rule before that rule.
+               */
+^{S}*"#"      {
+                SET_TOKEN;
+                BEGIN( X_P_COMMAND );
+                return lexer_token[0];
+              }
 
               /* Single-character operators and miscellaneous punctuation. */
 "!"           |
+"#"           |
 "%"           |
 "&"           |
 "("           |
@@ -1057,8 +1193,9 @@ include{S}*\" {
 ":"           |
 ";"           |
 "<"           |
-<*>"="        | /* Allow in "set" command also, e.g.: set lang=c++ */
+"="           |
 ">"           |
+"?"           |
 "["           |
 "]"           |
 "^"           |
@@ -1067,9 +1204,13 @@ include{S}*\" {
 "}"           |
 "~"           { SET_TOKEN; return lexer_token[0]      ; }
 
+} /* <INITIAL,X_P_TOKENS> */
+
   /***************************************************************************/
   /*  RAW STRING LITERALS                                                    */
   /***************************************************************************/
+
+<INITIAL,X_P_TOKENS>{
 
 {rstr_pfx}    { // e.g.: u8R"abc(...)abc"
                 // find:    ^   ^
@@ -1103,8 +1244,10 @@ include{S}*\" {
                 //
                 str_lit_loc = yylloc;
 
-                BEGIN( X_RSTR );
+                BEGIN_CALL( X_RSTR );
               }
+
+} /* <INITIAL,X_P_TOKENS> */
 
 <X_RSTR>{
 
@@ -1150,7 +1293,7 @@ include{S}*\" {
                   yylloc.first_line   = str_lit_loc.first_line;
                   yylloc.first_column = str_lit_loc.first_column;
                   yylval.str_val = strbuf_take( &str_lit_buf );
-                  BEGIN( INITIAL );
+                  BEGIN_RETURN;
                   return Y_STR_LIT;
                 }
               }
@@ -1161,7 +1304,9 @@ include{S}*\" {
   /*  STRING LITERALS, CHARACTER LITERALS, & INCLUDE FILES                   */
   /***************************************************************************/
 
-{cstr_pfx}?['"] {
+<INITIAL,X_P_TOKENS>{
+
+  {cstr_pfx}?['"] {
                 strbuf_init( &str_lit_buf );
                 //
                 // Save the start location because we want to use it as the
@@ -1170,8 +1315,10 @@ include{S}*\" {
                 str_lit_loc = yylloc;
 
                 char const quote = yytext[ yyleng - 1 ];
-                BEGIN( (quote == '"' ? X_STR : X_CHAR) );
+                BEGIN_CALL( (quote == '"' ? X_STR : X_CHAR) );
               }
+
+} /* <INITIAL,X_P_TOKENS> */
 
               /*
                * Common code between X_CHAR, X_INCL, and X_STR.  Multicharacter
@@ -1199,7 +1346,7 @@ include{S}*\" {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;
                 yylval.str_val = strbuf_take( &str_lit_buf );
-                BEGIN( INITIAL );
+                BEGIN_RETURN;
                 return Y_CHAR_LIT;
               }
 
@@ -1228,7 +1375,7 @@ include{S}*\" {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;
                 yylval.str_val = strbuf_take( &str_lit_buf );
-                BEGIN( INITIAL );
+                BEGIN_RETURN;
                 return Y_STR_LIT;
               }
 
@@ -1236,7 +1383,9 @@ include{S}*\" {
   /*  COMMENTS                                                               */
   /***************************************************************************/
 
-<*>"/*"       {                         /* ignore C-style comments */
+<*>{
+
+  "/*"        {                         /* ignore C-style comments */
                 for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
                   if ( c == EOF ) {
                     print_error( &yylloc, "unterminated comment\n" );
@@ -1248,16 +1397,40 @@ include{S}*\" {
                   if ( c == '\n' )
                     newline();
                 } // for
+
+                if ( YY_START == X_P_TOKENS ) {
+                  //
+                  // When lexing tokens for the C preprocessor, comments have
+                  // to turn into a space, e.g.:
+                  //
+                  //      cdecl> #define Q(A,B)  A/**/B
+                  //      cdecl> expand Q(x,y)
+                  //      Q(x, y) => A B
+                  //      | A => x
+                  //      | B => y
+                  //      Q(x, y) => x y
+                  //
+                  return Y_P_SPACE;
+                }
               }
 
-<*>"//".*     ;                         /* ignore C++-style comments */
-<*>#.*        ;                         /* ignore preprocessor directives */
+  "//".*      ;                         /* ignore C++-style comments */
+
+} /* <*> */
 
   /***************************************************************************/
   /*  WHITESPACE                                                             */
   /***************************************************************************/
 
-<*>{S}+       ;                         /* ignore all other whitespace */
+<*>{S}+       {
+                if ( YY_START == X_P_TOKENS ) {
+                  //
+                  // When lexing tokens for the C preprocessor, whitespace is
+                  // significant.
+                  //
+                  return Y_P_SPACE;
+                }
+              }
 
 <*>\n         {
                 SET_TOKEN;
@@ -1265,6 +1438,100 @@ include{S}*\" {
                 BEGIN( INITIAL );
                 return Y_END;
               }
+
+  /***************************************************************************/
+  /*  PREPROCESSOR                                                           */
+  /***************************************************************************/
+
+<X_P_COMMAND>{
+              /*
+               * Special case: if "define" is followed by an identifier that is
+               * _immediately_ followed by '(' with no intervening whitespace,
+               * it's defining a function-like macro, so set a flag we can use
+               * in {identifier} below.
+               */
+  define/{S}+{identifier}\( {
+                SET_TOKEN;
+                is_func_like_macro = true;
+                return Y_P_define;
+              }
+
+  {identifier} {
+                SET_TOKEN;
+                p_keyword_t const *const pk = p_keyword_find( lexer_token );
+                if ( pk != NULL )
+                  return pk->y_token_id;
+                yylval.name = check_strdup( lexer_token );
+                if ( !is_func_like_macro ) {
+                  //
+                  // We can switch to X_P_TOKENS now; otherwise we switch after
+                  // lexing ')' below.
+                  //
+                  BEGIN( X_P_TOKENS );
+                }
+                return Y_NAME;
+              }
+
+  "("         |
+  ","         { SET_TOKEN; return lexer_token[0]; }
+  ")"         {
+                SET_TOKEN;
+                BEGIN( X_P_TOKENS );
+                return ')';
+              }
+
+  "..."       { SET_TOKEN; return Y_DOT3; }
+
+} /* <X_P_COMMAND> */
+
+<X_P_TOKENS>{
+
+  {identifier} {
+                SET_TOKEN;
+                if ( strcmp( lexer_token, L___VA_ARGS__ ) == 0 )
+                  return Y_P___VA_ARGS__;
+                if ( strcmp( lexer_token, L___VA_OPT__ ) == 0 )
+                  return Y_P___VA_OPT__;
+                yylval.name = check_strdup( lexer_token );
+                return Y_NAME;
+              }
+
+  "##"        { SET_TOKEN; return Y_P_CONCAT    ; }
+
+  "#"         |
+  "$"         |
+  "@"         |
+  "`"         { SET_TOKEN; return lexer_token[0]; }
+
+} /* <X_P_TOKENS> */
+
+<X_EXPAND>{
+              /*
+               * Special case: if an identifier is followed by '(', it's a
+               * function-like macro, so defer switching to the X_P_TOKENS
+               * state until after lexing '(' so we don't have to deal with
+               * optional whitespace before the '(' being significant.
+               */
+  {identifier}/{S}*\( {
+                SET_TOKEN;
+                yylval.name = check_strdup( lexer_token );
+                return Y_NAME;
+              }
+
+  {identifier} {                        // object-like macro
+                SET_TOKEN;
+                yylval.name = check_strdup( lexer_token );
+                BEGIN( X_P_TOKENS );
+                return Y_NAME;
+              }
+
+  "("         {
+                SET_TOKEN;
+                BEGIN( X_P_TOKENS );
+                return '(';
+              }
+
+} /* <X_EXPAND> */
 
   /***************************************************************************/
   /*  OTHER START STATES                                                     */
@@ -1278,6 +1545,7 @@ include{S}*\" {
                 return Y_SET_OPTION;
               }
 
+  "="         { SET_TOKEN; return lexer_token[0]; }
   ";"         {
                 SET_TOKEN;
                 BEGIN( INITIAL );
@@ -1411,6 +1679,20 @@ c_loc_t lexer_loc( void ) {
   return rv_loc;
 }
 
+void lexer_push_string( char const *s, size_t s_len ) {
+  assert( s != NULL );
+  FILE *const f = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
+  PERROR_EXIT_IF( f == NULL, EX_IOERR );
+  yyin = f;
+  yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
+  BEGIN( X_P_TOKENS );
+}
+
+void lexer_pop_string( void ) {
+  lexer_pop_buffer();
+  BEGIN( INITIAL );
+}
+
 char const* lexer_printable_token( void ) {
   switch ( lexer_token[0] ) {
     case '\0': return NULL;
@@ -1430,9 +1712,11 @@ void lexer_reset( bool hard_reset ) {
   BEGIN( INITIAL );
   digraph_warned = trigraph_warned = false;
   input_len = input_sent = 0;
+  is_func_like_macro = false;
   lexer_find = LEXER_FIND_ANY;
   lexer_keyword_ctx = C_KW_CTX_DEFAULT;
   strbuf_reset( &str_lit_buf );
+  yy_start_stack_top = -1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

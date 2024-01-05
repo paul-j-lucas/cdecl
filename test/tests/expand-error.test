@@ -1,0 +1,83 @@
+EXPECTED_EXIT=65
+cdecl -bO <<END
+expand DOES_NOT_EXIST
+
+#define __cplusplus               X
+#define __DATE__                  X
+#define __FILE__                  X
+#define __LINE__                  X
+#define __STDC__                  X
+#define __STDC_VERSION__          X
+#define __TIME__                  X
+#define __VA_ARGS__               X
+#define __VA_OPT__                X
+
+#undef __cplusplus
+#undef __DATE__
+#undef __FILE__
+#undef __LINE__
+#undef __STDC__
+#undef __STDC_VERSION__
+#undef __TIME__
+#undef __VA_ARGS__
+#undef __VA_OPT__
+
+set knr
+expand __DATE__
+expand __TIME__
+set c
+
+#define PASTE_FIRST(A)            ## A
+#define PASTE_LAST(A)             A ##
+
+#define PASTE(A,B)                A ## B
+expand PASTE(->,*)
+expand PASTE(<,<<)
+expand PASTE(<=,>)
+expand PASTE(.,*)
+expand PASTE(:,:)
+
+#define DUP_ARG(A,A)              A
+
+#define ELLIPSIS_FIRST(...,A)     A
+#define ELLIPSIS_MIDDLE(A,...,Z)  A Z
+
+set c89
+#define STRINGIFY_BAD_FOLLOW(A)   #
+set c99
+#define STRINGIFY_BAD_FOLLOW(A)   #
+set c
+#define STRINGIFY_BAD_FOLLOW(A)   #
+
+#define VA_OPT_NESTED(A,...)      __VA_OPT__( __VA_OPT__ )
+#define VA_OPT_NO_LPAREN(...)     __VA_OPT__
+#define VA_OPT_NO_LPAREN(...)     __VA_OPT__ X
+#define VA_OPT_NO_RPAREN(...)     __VA_OPT__(X
+#define VA_OPT_NOT_VARIADIC       __VA_OPT__(,)
+#define VA_OPT_PASTE_FIRST(...)   __VA_OPT__(## X)
+#define VA_OPT_PASTE_LAST(...)    __VA_OPT__(X ##)
+
+#define STRINGIFY_NOT_PARAM(A)    # 1
+#define STRINGIFY_NOT_PARAM(A)    # X
+
+#define TOO_FEW(A,B)              A B
+expand TOO_FEW(x)
+#define TOO_FEW_VARIADIC(A,B,...) A B __VA_ARGS__
+expand TOO_FEW_VARIADIC(x)
+#define TOO_MANY(A,B)
+expand TOO_MANY(x,y,z)
+
+#define QUOTE(X)                  #X
+#define UNTERMINATED_MACRO(X)     QUOTE(X
+expand UNTERMINATED_MACRO(a)
+
+#define VA_ARGS_NOT_IN_VARIADIC   __VA_ARGS__
+
+#define VARIADIC(...)             __VA_ARGS__
+set c89
+expand VARIADIC(x)
+
+#define VARIADIC_NOT_SUPPORTED(...) x
+
+END
+# vim:set et sw=2 ts=2:

@@ -1,0 +1,999 @@
+cdecl> #define EMPTY
+cdecl> #define AVOID_PASTE_1             -EMPTY-
+cdecl> expand AVOID_PASTE_1
+AVOID_PASTE_1 => -EMPTY-
+| EMPTY =>
+AVOID_PASTE_1 => - -
+cdecl> #define AVOID_PASTE_2(X)          -X
+cdecl> expand AVOID_PASTE_2(-)
+AVOID_PASTE_2(-) => -X
+| X => -
+AVOID_PASTE_2(-) => - -
+cdecl> expand AVOID_PASTE_2(->)
+AVOID_PASTE_2(->) => -X
+| X => ->
+AVOID_PASTE_2(->) => - ->
+cdecl> #define AVOID_PASTE_3(X)          X*
+cdecl> expand AVOID_PASTE_3(->)
+AVOID_PASTE_3(->) => X*
+| X => ->
+AVOID_PASTE_3(->) => ->*
+cdecl> set c++
+c++decl> expand AVOID_PASTE_3(->)
+AVOID_PASTE_3(->) => X*
+| X => ->
+AVOID_PASTE_3(->) => -> *
+c++decl> set c
+cdecl> #define AVOID_PASTE_4(X)          /X
+cdecl> expand AVOID_PASTE_4(/)
+AVOID_PASTE_4(/) => /X
+| X => /
+AVOID_PASTE_4(/) => / /
+cdecl> expand AVOID_PASTE_4(*)
+AVOID_PASTE_4(*) => /X
+| X => *
+AVOID_PASTE_4(*) => / *
+cdecl> #define EMPTY_MIDDLE(A,B,C)       A-B-C
+cdecl> expand EMPTY_MIDDLE(x,,y)
+EMPTY_MIDDLE(x,, y) => A-B-C
+| A => x
+| B =>
+| C => y
+EMPTY_MIDDLE(x,, y) => x- -y
+cdecl> #define FILE                      "file.c"
+               ^
+9: warning: "FILE" is a predefined type since K&RC
+cdecl> #undef FILE
+cdecl> typedef FILE *FILE_PTR
+cdecl> #define FILE_PTR                  FILE*
+               ^
+9: warning: "FILE_PTR" previously defined as type ("typedef FILE *FILE_PTR")
+cdecl> #define INTEGER                   int
+cdecl> expand INTEGER
+INTEGER => int
+cdecl> #define INTEGER_N                 int n
+cdecl> expand INTEGER_N
+INTEGER_N => int n
+cdecl> #define INTEGER_N_SEMI            int n ;
+cdecl> expand INTEGER_N_SEMI
+INTEGER_N_SEMI => int n ;
+cdecl> #define CHAR_PTR(X)               char const *X = QUOTE(X)
+cdecl> expand CHAR_PTR(p)
+CHAR_PTR(p) => char const *X = QUOTE(X)
+| X => p
+CHAR_PTR(p) => char const *p = QUOTE(p)
+cdecl> #define LEFT_SHIFT                < ## <
+cdecl> expand LEFT_SHIFT
+LEFT_SHIFT => < ## <
+LEFT_SHIFT => <<
+cdecl> #define DEFINED                   1
+cdecl> #define DEFINED                   2
+               ^
+9: warning: "DEFINED" already exists; redefined
+cdecl> expand DEFINED
+DEFINED => 2
+cdecl> #define NOT_FUNC_LIKE             object
+cdecl> #define FAKE_ARG_1                fake_1
+cdecl> #define FAKE_ARG_2                fake_2
+cdecl> expand NOT_FUNC_LIKE(FAKE_ARG_1, FAKE_ARG_2)
+NOT_FUNC_LIKE => object
+| arg_1 => FAKE_ARG_1
+| | FAKE_ARG_1 => fake_1
+| arg_1 => fake_1
+| arg_2 => FAKE_ARG_2
+| | FAKE_ARG_2 => fake_2
+| arg_2 => fake_2
+NOT_FUNC_LIKE => object(fake_1, fake_2)
+cdecl> #define PASTE_WRONG(A,B)          A ## B
+cdecl> expand PASTE_WRONG(__LINE__,x)
+PASTE_WRONG(__LINE__, x) => A ## B
+PASTE_WRONG(__LINE__, x) => __LINE__ ## x
+                            ^
+29: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
+PASTE_WRONG(__LINE__, x) => __LINE__x
+cdecl> expand PASTE_WRONG(x,__LINE__)
+PASTE_WRONG(x, __LINE__) => A ## B
+PASTE_WRONG(x, __LINE__) => x ## __LINE__
+                                 ^
+34: warning: "##" doesn't expand macro arguments; "__LINE__" will not expand
+PASTE_WRONG(x, __LINE__) => x__LINE__
+cdecl> #define PASTE_HELPER(A,B)         A ## B
+cdecl> #define PASTE(A,B)                PASTE_HELPER(A,B)
+cdecl> expand PASTE(x,__LINE__)
+PASTE(x, __LINE__) => PASTE_HELPER(A,B)
+| A => x
+| B => __LINE__
+| | __LINE__ => 42
+| B => 42
+PASTE(x, 42) => PASTE_HELPER(x,42)
+| PASTE_HELPER(x, 42) => A ## B
+| PASTE_HELPER(x, 42) => x ## 42
+| PASTE_HELPER(x, 42) => x42
+PASTE(x, 42) => x42
+cdecl> expand PASTE(a b, c d)
+PASTE(a b, c d) => PASTE_HELPER(A,B)
+| A => a b
+| B => c d
+PASTE(a b, c d) => PASTE_HELPER(a b, c d)
+| PASTE_HELPER(a b, c d) => A ## B
+| PASTE_HELPER(a b, c d) => a b ## c d
+| PASTE_HELPER(a b, c d) => a bc d
+PASTE(a b, c d) => a bc d
+cdecl> expand PASTE(+,=)
+PASTE(+, =) => PASTE_HELPER(A,B)
+| A => +
+| B => =
+PASTE(+, =) => PASTE_HELPER(+,=)
+| PASTE_HELPER(+, =) => A ## B
+| PASTE_HELPER(+, =) => + ## =
+| PASTE_HELPER(+, =) => +=
+PASTE(+, =) => +=
+cdecl> expand PASTE(<,=>)
+PASTE(<, =>) => PASTE_HELPER(A,B)
+| A => <
+| B => =>
+PASTE(<, =>) => PASTE_HELPER(<,=>)
+| PASTE_HELPER(<, =>) => A ## B
+| PASTE_HELPER(<, =>) => < ## =>
+| PASTE_HELPER(<, =>) => <=>
+PASTE(<, =>) => <=>
+cdecl> expand PASTE(,)
+PASTE(,) => PASTE_HELPER(A,B)
+| A =>
+| B =>
+PASTE(,) => PASTE_HELPER(,)
+| PASTE_HELPER(,) => A ## B
+| PASTE_HELPER(,) => ##
+| PASTE_HELPER(,) =>
+PASTE(,) =>
+cdecl> expand PASTE(,#)
+PASTE(, #) => PASTE_HELPER(A,B)
+| A =>
+| B => #
+PASTE(, #) => PASTE_HELPER(,#)
+| PASTE_HELPER(, #) => A ## B
+| PASTE_HELPER(, #) => ## #
+| PASTE_HELPER(, #) => #
+PASTE(, #) => #
+cdecl> expand PASTE(,$)
+PASTE(, $) => PASTE_HELPER(A,B)
+| A =>
+| B => $
+PASTE(, $) => PASTE_HELPER(,$)
+| PASTE_HELPER(, $) => A ## B
+| PASTE_HELPER(, $) => ## $
+| PASTE_HELPER(, $) => $
+PASTE(, $) => $
+cdecl> expand PASTE(,'x')
+PASTE(, 'x') => PASTE_HELPER(A,B)
+| A =>
+| B => 'x'
+PASTE(, 'x') => PASTE_HELPER(,'x')
+| PASTE_HELPER(, 'x') => A ## B
+| PASTE_HELPER(, 'x') => ## 'x'
+| PASTE_HELPER(, 'x') => 'x'
+PASTE(, 'x') => 'x'
+cdecl> expand PASTE(,"x")
+PASTE(, "x") => PASTE_HELPER(A,B)
+| A =>
+| B => "x"
+PASTE(, "x") => PASTE_HELPER(,"x")
+| PASTE_HELPER(, "x") => A ## B
+| PASTE_HELPER(, "x") => ## "x"
+| PASTE_HELPER(, "x") => "x"
+PASTE(, "x") => "x"
+cdecl> expand PASTE(,@)
+PASTE(, @) => PASTE_HELPER(A,B)
+| A =>
+| B => @
+PASTE(, @) => PASTE_HELPER(,@)
+| PASTE_HELPER(, @) => A ## B
+| PASTE_HELPER(, @) => ## @
+| PASTE_HELPER(, @) => @
+PASTE(, @) => @
+cdecl> expand PASTE(,`)                 // \ is for and eaten by the shell
+PASTE(, `) => PASTE_HELPER(A,B)
+| A =>
+| B => `
+PASTE(, `) => PASTE_HELPER(,`)
+| PASTE_HELPER(, `) => A ## B
+| PASTE_HELPER(, `) => ## `
+| PASTE_HELPER(, `) => `
+PASTE(, `) => `
+cdecl> set c++
+c++decl> expand PASTE(->,*)
+PASTE(->, *) => PASTE_HELPER(A,B)
+| A => ->
+| B => *
+PASTE(->, *) => PASTE_HELPER(->,*)
+| PASTE_HELPER(->, *) => A ## B
+| PASTE_HELPER(->, *) => -> ## *
+| PASTE_HELPER(->, *) => ->*
+PASTE(->, *) => ->*
+c++decl> expand PASTE(.,*)
+PASTE(., *) => PASTE_HELPER(A,B)
+| A => .
+| B => *
+PASTE(., *) => PASTE_HELPER(.,*)
+| PASTE_HELPER(., *) => A ## B
+| PASTE_HELPER(., *) => . ## *
+| PASTE_HELPER(., *) => .*
+PASTE(., *) => .*
+c++decl> expand PASTE(:,:)
+PASTE(:, :) => PASTE_HELPER(A,B)
+| A => :
+| B => :
+PASTE(:, :) => PASTE_HELPER(:,:)
+| PASTE_HELPER(:, :) => A ## B
+| PASTE_HELPER(:, :) => : ## :
+| PASTE_HELPER(:, :) => ::
+PASTE(:, :) => ::
+c++decl> expand PASTE(<,=>)
+PASTE(<, =>) => PASTE_HELPER(A,B)
+| A => <
+| B => =>
+PASTE(<, =>) => PASTE_HELPER(<,=>)
+| PASTE_HELPER(<, =>) => A ## B
+| PASTE_HELPER(<, =>) => < ## =>
+| PASTE_HELPER(<, =>) => <= >
+PASTE(<, =>) => <= >
+c++decl> expand PASTE(<=,>)
+PASTE(<=, >) => PASTE_HELPER(A,B)
+| A => <=
+| B => >
+PASTE(<=, >) => PASTE_HELPER(<=,>)
+| PASTE_HELPER(<=, >) => A ## B
+| PASTE_HELPER(<=, >) => <= ## >
+| PASTE_HELPER(<=, >) => <=>
+PASTE(<=, >) => <=>
+c++decl> set c
+cdecl> #define PRESCAN(X)                ((X) + 1)
+cdecl> expand PRESCAN(PRESCAN(2))
+PRESCAN(PRESCAN(2)) => ((X) + 1)
+| X => PRESCAN(2)
+| | PRESCAN(2) => ((X) + 1)
+| | | X => 2
+| | PRESCAN(2) => ((2) + 1)
+| X => ((2) + 1)
+PRESCAN(((2) + 1)) => ((((2) + 1)) + 1)
+cdecl> #define CHARIFY_c                 'c'
+cdecl> #define CHARIFY(X)                PASTE(CHARIFY_,X)
+cdecl> expand CHARIFY(c)
+CHARIFY(c) => PASTE(CHARIFY_,X)
+| X => c
+CHARIFY(c) => PASTE(CHARIFY_,c)
+| PASTE(CHARIFY_, c) => PASTE_HELPER(A,B)
+| | A => CHARIFY_
+| | B => c
+| PASTE(CHARIFY_, c) => PASTE_HELPER(CHARIFY_,c)
+| | PASTE_HELPER(CHARIFY_, c) => A ## B
+| | PASTE_HELPER(CHARIFY_, c) => CHARIFY_ ## c
+| | PASTE_HELPER(CHARIFY_, c) => CHARIFY_c
+| | | CHARIFY_c => 'c'
+| | PASTE_HELPER(CHARIFY_, c) => 'c'
+| PASTE(CHARIFY_, c) => 'c'
+CHARIFY(c) => 'c'
+cdecl> #define QUOTE(X)                  #X
+cdecl> expand QUOTE
+              ^
+8: warning: "QUOTE": function-like macro without arguments will not expand
+cdecl> expand QUOTE(a)
+QUOTE(a) => #X
+QUOTE(a) => "a"
+cdecl> expand QUOTE( a )
+QUOTE(a) => #X
+QUOTE(a) => "a"
+cdecl> expand QUOTE((a,b))
+QUOTE((a,b)) => #X
+QUOTE((a,b)) => "(a,b)"
+cdecl> expand QUOTE((a , b))
+QUOTE((a , b)) => #X
+QUOTE((a , b)) => "(a , b)"
+cdecl> expand QUOTE( (a,b) )
+QUOTE((a,b)) => #X
+QUOTE((a,b)) => "(a,b)"
+cdecl> expand QUOTE(( a , b ))
+QUOTE(( a , b )) => #X
+QUOTE(( a , b )) => "( a , b )"
+cdecl> expand QUOTE (a)
+QUOTE(a) => #X
+QUOTE(a) => "a"
+cdecl> #define NOT_EXPANDED              expanded
+cdecl> expand QUOTE(NOT_EXPANDED)
+QUOTE(NOT_EXPANDED) => #X
+                        ^
+25: warning: '#' doesn't expand macro arguments; "NOT_EXPANDED" will not expand
+QUOTE(NOT_EXPANDED) => "NOT_EXPANDED"
+cdecl> #define QUOTE_VA_ARGS(...)        #__VA_ARGS__
+cdecl> expand QUOTE_VA_ARGS(a b)
+QUOTE_VA_ARGS(a b) => #__VA_ARGS__
+| __VA_ARGS__ => a b
+QUOTE_VA_ARGS(a b) => "a b"
+cdecl> expand QUOTE_VA_ARGS( a b )
+QUOTE_VA_ARGS(a b) => #__VA_ARGS__
+| __VA_ARGS__ => a b
+QUOTE_VA_ARGS(a b) => "a b"
+cdecl> expand QUOTE_VA_ARGS( a  b )
+QUOTE_VA_ARGS(a b) => #__VA_ARGS__
+| __VA_ARGS__ => a b
+QUOTE_VA_ARGS(a b) => "a b"
+cdecl> #define RECURSIVE_1               RECURSIVE_2
+cdecl> #define RECURSIVE_2               RECURSIVE_1
+cdecl> expand RECURSIVE_1
+RECURSIVE_1 => RECURSIVE_2
+| RECURSIVE_2 => RECURSIVE_1
+                 ^
+18: warning: recursive macro "RECURSIVE_1" will not expand
+RECURSIVE_1 => RECURSIVE_1
+cdecl> #undef RECURSIVE_1
+cdecl> #define RECURSIVE_1               f(RECURSIVE_2)
+cdecl> expand RECURSIVE_1
+RECURSIVE_1 => f(RECURSIVE_2)
+| RECURSIVE_2 => RECURSIVE_1
+                 ^
+18: warning: recursive macro "RECURSIVE_1" will not expand
+RECURSIVE_1 => f(RECURSIVE_1)
+cdecl> #define UNIQUE_NAME(PREFIX)       PASTE(PASTE(PREFIX,_),__LINE__)
+cdecl> expand UNIQUE_NAME(unused)
+UNIQUE_NAME(unused) => PASTE(PASTE(PREFIX,_),__LINE__)
+| PREFIX => unused
+UNIQUE_NAME(unused) => PASTE(PASTE(unused,_),__LINE__)
+| PASTE(PASTE(unused,_), __LINE__) => PASTE_HELPER(A,B)
+| | A => PASTE(unused,_)
+| | | PASTE(unused, _) => PASTE_HELPER(A,B)
+| | | | A => unused
+| | | | B => _
+| | | PASTE(unused, _) => PASTE_HELPER(unused,_)
+| | | | PASTE_HELPER(unused, _) => A ## B
+| | | | PASTE_HELPER(unused, _) => unused ## _
+| | | | PASTE_HELPER(unused, _) => unused_
+| | | PASTE(unused, _) => unused_
+| | A => unused_
+| | B => __LINE__
+| | | __LINE__ => 42
+| | B => 42
+| PASTE(unused_, 42) => PASTE_HELPER(unused_,42)
+| | PASTE_HELPER(unused_, 42) => A ## B
+| | PASTE_HELPER(unused_, 42) => unused_ ## 42
+| | PASTE_HELPER(unused_, 42) => unused_42
+| PASTE(unused_, 42) => unused_42
+UNIQUE_NAME(unused) => unused_42
+cdecl> #define VA(A,...)                 f(A __VA_OPT__(,) __VA_ARGS__)
+cdecl> expand VA(a)
+VA(a) => f(A __VA_OPT__(,) __VA_ARGS__)
+| __VA_ARGS__ =>
+| A => a
+VA(a) => f(a __VA_OPT__(,) __VA_ARGS__)
+VA(a) => f(a __VA_OPT__(,) )
+VA(a) => f(a )
+cdecl> expand VA(a,b)
+VA(a, b) => f(A __VA_OPT__(,) __VA_ARGS__)
+| __VA_ARGS__ => b
+| A => a
+VA(a, b) => f(a __VA_OPT__(,) __VA_ARGS__)
+VA(a, b) => f(a __VA_OPT__(,) b)
+| __VA_OPT__ => ,
+VA(a, b) => f(a , b)
+cdecl> #define CONCAT_VA_ARGS(...)       __VA ## _ARGS__
+cdecl> expand CONCAT_VA_ARGS(x)
+CONCAT_VA_ARGS(x) => __VA ## _ARGS__
+| __VA_ARGS__ => x
+CONCAT_VA_ARGS(x) => __VA_ARGS__
+cdecl> #define CONCAT_VA_OPT(...)        __VA ## _OPT__(y)
+cdecl> expand CONCAT_VA_OPT(x)
+CONCAT_VA_OPT(x) => __VA ## _OPT__(y)
+| __VA_ARGS__ => x
+CONCAT_VA_OPT(x) => __VA_OPT__(y)
+cdecl> #define VA_OPT_NESTED_PARENS(...) A __VA_OPT__( (x,y) ) B
+cdecl> expand VA_OPT_NESTED_PARENS(a)
+VA_OPT_NESTED_PARENS(a) => A __VA_OPT__( (x,y) ) B
+| __VA_ARGS__ => a
+| __VA_OPT__ => (x,y)
+VA_OPT_NESTED_PARENS(a) => A (x,y) B
+cdecl> #define VA_OPT_SPACING(A,...)     __VA_OPT__( VA_SPACING_VALUE )
+cdecl> #define VA_OPT_SPACING_VALUE      42
+cdecl> expand VA_OPT_SPACING(x,y)
+VA_OPT_SPACING(x, y) => __VA_OPT__( VA_SPACING_VALUE )
+| __VA_ARGS__ => y
+| __VA_OPT__ => VA_SPACING_VALUE
+VA_OPT_SPACING(x, y) => VA_SPACING_VALUE
+cdecl> set c99
+cdecl> #define VA_OPT_NOT_SUPPORTED(...) __VA_OPT__(,)
+                                         ^
+35: warning: "__VA_OPT__" not supported until C23; treated as text
+cdecl> #undef VA_OPT_NOT_SUPPORTED
+cdecl> set c++17
+c++decl> #define VA_OPT_NOT_SUPPORTED(...) __VA_OPT__(,)
+                                           ^
+35: warning: "__VA_OPT__" not supported until C++20; treated as text
+c++decl> #undef VA_OPT_NOT_SUPPORTED
+c++decl> set c
+cdecl> #define VA_OPT_NOT_SUPPORTED(...) __VA_OPT__(,) __VA_ARGS__
+cdecl> set c99
+cdecl> expand VA_OPT_NOT_SUPPORTED(X)
+VA_OPT_NOT_SUPPORTED(X) => __VA_OPT__(,) __VA_ARGS__
+                           ^
+28: warning: "__VA_OPT__" not supported until C23; will not expand
+| __VA_ARGS__ => X
+VA_OPT_NOT_SUPPORTED(X) => __VA_OPT__(,) X
+cdecl> set c78
+cdecl> #define OLD_PASTE(A,B)            A ## B
+                                           ^
+37: warning: "##" not supported until C89; treated as text
+cdecl> expand OLD_PASTE(x, y)
+OLD_PASTE(x, y) => A ## B
+                     ^
+22: warning: "##" not supported until C89; treated as text
+OLD_PASTE(x, y) => x ## y
+cdecl> #define OLD_VA_ARGS(...)          __VA_ARGS__
+                           ^
+21: error: variadic macros not supported until C99
+cdecl> set c
+cdecl> #define OLD_VA_ARGS(...)          __VA_ARGS__
+cdecl> set c78
+cdecl> expand OLD_VA_ARGS(x,y)
+#define OLD_VA_ARGS(...) __VA_ARGS__
+                    ^
+21: error: variadic macros not supported until C99
+cdecl> #define OLD_USE_VA_ARGS           __VA_ARGS__
+                                         ^
+35: warning: "__VA_ARGS__" not supported until C99; treated as text
+cdecl> #define OLD_QUOTE(X)              #X
+                                         ^
+35: warning: '#' not supported until C89; treated as text
+cdecl> expand OLD_QUOTE(a)
+OLD_QUOTE(a) => #X
+                ^
+17: warning: '#' not supported until C89; treated as text
+OLD_QUOTE(a) => #a
+cdecl> set c
+cdecl> ////////// NARG() /////////////////////////////////////////////////////////////
+cdecl> #define ARG_N(_1,_2,_3,_4,_5,_6,_7,_8,_9,N,...) N
+cdecl> #define REV_SEQ_N                 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+cdecl> #define HAS_COMMA_N               1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+cdecl> #define HAS_COMMA(...)            NARG_( __VA_ARGS__, HAS_COMMA_N )
+cdecl> #define NARG_(...)                ARG_N( __VA_ARGS__ )
+cdecl> #define NARG(...)                             NARG_HELPER1(                                 HAS_COMMA( __VA_ARGS__ ),                   HAS_COMMA( NARG_COMMA __VA_ARGS__ () ),     NARG_( __VA_ARGS__, REV_SEQ_N ) )
+cdecl> #define NARG_COMMA(...)           ,
+cdecl> #define NARG_HELPER1(A,B,N)       NARG_HELPER2(A, B, N)
+cdecl> #define NARG_HELPER2(A,B,N)       NARG_HELPER3_ ## A ## B(N)
+cdecl> #define NARG_HELPER3_01(N)        0
+cdecl> #define NARG_HELPER3_00(N)        1
+cdecl> #define NARG_HELPER3_11(N)        N
+cdecl> expand NARG()
+NARG() => NARG_HELPER1( HAS_COMMA( __VA_ARGS__ ), HAS_COMMA( NARG_COMMA __VA_ARGS__ () ), NARG_( __VA_ARGS__, REV_SEQ_N ) )
+| __VA_ARGS__ =>
+NARG() => NARG_HELPER1( HAS_COMMA( ), HAS_COMMA( NARG_COMMA () ), NARG_( , REV_SEQ_N ) )
+| NARG_HELPER1(HAS_COMMA( ), HAS_COMMA( NARG_COMMA () ), NARG_( , REV_SEQ_N )) => NARG_HELPER2(A, B, N)
+| | A => HAS_COMMA( )
+| | | HAS_COMMA() => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | __VA_ARGS__ =>
+| | | HAS_COMMA() => NARG_( , HAS_COMMA_N )
+| | | | NARG_(, HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | __VA_ARGS__ => , HAS_COMMA_N
+| | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | __VA_ARGS__ => , 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | NARG_(, HAS_COMMA_N) => ARG_N( , 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | ARG_N(, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | __VA_ARGS__ => 0
+| | | | | | N => 0
+| | | | | ARG_N(, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 0
+| | | | NARG_(, HAS_COMMA_N) => 0
+| | | HAS_COMMA() => 0
+| | A => 0
+| | B => HAS_COMMA( NARG_COMMA () )
+| | | HAS_COMMA(NARG_COMMA ()) => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | __VA_ARGS__ => NARG_COMMA ()
+| | | | | NARG_COMMA() => ,
+| | | | | | __VA_ARGS__ =>
+| | | | __VA_ARGS__ => ,
+| | | HAS_COMMA(NARG_COMMA ()) => NARG_( ,, HAS_COMMA_N )
+| | | | NARG_(,, HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | __VA_ARGS__ => ,, HAS_COMMA_N
+| | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | __VA_ARGS__ => ,, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | NARG_(,, HAS_COMMA_N) => ARG_N( ,, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | ARG_N(,, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | __VA_ARGS__ => 0, 0
+| | | | | | N => 1
+| | | | | ARG_N(,, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 1
+| | | | NARG_(,, HAS_COMMA_N) => 1
+| | | HAS_COMMA(NARG_COMMA ()) => 1
+| | B => 1
+| | N => NARG_( , REV_SEQ_N )
+| | | NARG_(, REV_SEQ_N) => ARG_N( __VA_ARGS__ )
+| | | | __VA_ARGS__ => , REV_SEQ_N
+| | | | | REV_SEQ_N => 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | | __VA_ARGS__ => , 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | NARG_(, REV_SEQ_N) => ARG_N( , 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 )
+| | | | ARG_N(, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => N
+| | | | | __VA_ARGS__ => 0
+| | | | | N => 1
+| | | | ARG_N(, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => 1
+| | | NARG_(, REV_SEQ_N) => 1
+| | N => 1
+| NARG_HELPER1(0, 1, 1) => NARG_HELPER2(0, 1, 1)
+| | NARG_HELPER2(0, 1, 1) => NARG_HELPER3_ ## A ## B(N)
+| | | N => 1
+| | NARG_HELPER2(0, 1, 1) => NARG_HELPER3_ ## 0 ## 1( 1)
+| | NARG_HELPER2(0, 1, 1) => NARG_HELPER3_01( 1)
+| | | NARG_HELPER3_01(1) => 0
+| | NARG_HELPER2(0, 1, 1) => 0
+| NARG_HELPER1(0, 1, 1) => 0
+NARG() => 0
+cdecl> expand NARG(x)
+NARG(x) => NARG_HELPER1( HAS_COMMA( __VA_ARGS__ ), HAS_COMMA( NARG_COMMA __VA_ARGS__ () ), NARG_( __VA_ARGS__, REV_SEQ_N ) )
+| __VA_ARGS__ => x
+NARG(x) => NARG_HELPER1( HAS_COMMA( x ), HAS_COMMA( NARG_COMMA x () ), NARG_( x, REV_SEQ_N ) )
+                                                    ^
+53: warning: "NARG_COMMA": function-like macro without arguments will not expand
+| NARG_HELPER1(HAS_COMMA( x ), HAS_COMMA( NARG_COMMA x () ), NARG_( x, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
+| | A => HAS_COMMA( x )
+| | | HAS_COMMA(x) => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | __VA_ARGS__ => x
+| | | HAS_COMMA(x) => NARG_( x, HAS_COMMA_N )
+| | | | NARG_(x, HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | __VA_ARGS__ => x, HAS_COMMA_N
+| | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | __VA_ARGS__ => x, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | NARG_(x, HAS_COMMA_N) => ARG_N( x, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | ARG_N(x, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | __VA_ARGS__ => 0
+| | | | | | N => 0
+| | | | | ARG_N(x, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 0
+| | | | NARG_(x, HAS_COMMA_N) => 0
+| | | HAS_COMMA(x) => 0
+| | A => 0
+| | B => HAS_COMMA( NARG_COMMA x () )
+| | | HAS_COMMA(NARG_COMMA x ()) => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | __VA_ARGS__ => NARG_COMMA x ()
+| | | HAS_COMMA(NARG_COMMA x ()) => NARG_( NARG_COMMA x (), HAS_COMMA_N )
+| | | | NARG_(NARG_COMMA x (), HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | __VA_ARGS__ => NARG_COMMA x (), HAS_COMMA_N
+| | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | __VA_ARGS__ => NARG_COMMA x (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | NARG_(NARG_COMMA x (), HAS_COMMA_N) => ARG_N( NARG_COMMA x (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | ARG_N(NARG_COMMA x (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | __VA_ARGS__ => 0
+| | | | | | N => 0
+| | | | | ARG_N(NARG_COMMA x (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 0
+| | | | NARG_(NARG_COMMA x (), HAS_COMMA_N) => 0
+| | | HAS_COMMA(NARG_COMMA x ()) => 0
+| | B => 0
+| | N => NARG_( x, REV_SEQ_N )
+| | | NARG_(x, REV_SEQ_N) => ARG_N( __VA_ARGS__ )
+| | | | __VA_ARGS__ => x, REV_SEQ_N
+| | | | | REV_SEQ_N => 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | | __VA_ARGS__ => x, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | NARG_(x, REV_SEQ_N) => ARG_N( x, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 )
+| | | | ARG_N(x, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => N
+| | | | | __VA_ARGS__ => 0
+| | | | | N => 1
+| | | | ARG_N(x, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => 1
+| | | NARG_(x, REV_SEQ_N) => 1
+| | N => 1
+| NARG_HELPER1(0, 0, 1) => NARG_HELPER2(0, 0, 1)
+| | NARG_HELPER2(0, 0, 1) => NARG_HELPER3_ ## A ## B(N)
+| | | N => 1
+| | NARG_HELPER2(0, 0, 1) => NARG_HELPER3_ ## 0 ## 0( 1)
+| | NARG_HELPER2(0, 0, 1) => NARG_HELPER3_00( 1)
+| | | NARG_HELPER3_00(1) => 1
+| | NARG_HELPER2(0, 0, 1) => 1
+| NARG_HELPER1(0, 0, 1) => 1
+NARG(x) => 1
+cdecl> expand NARG(x, y)
+NARG(x, y) => NARG_HELPER1( HAS_COMMA( __VA_ARGS__ ), HAS_COMMA( NARG_COMMA __VA_ARGS__ () ), NARG_( __VA_ARGS__, REV_SEQ_N ) )
+| __VA_ARGS__ => x, y
+NARG(x, y) => NARG_HELPER1( HAS_COMMA( x, y ), HAS_COMMA( NARG_COMMA x, y () ), NARG_( x, y, REV_SEQ_N ) )
+                                                          ^
+59: warning: "NARG_COMMA": function-like macro without arguments will not expand
+| NARG_HELPER1(HAS_COMMA( x, y ), HAS_COMMA( NARG_COMMA x, y () ), NARG_( x, y, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
+| | A => HAS_COMMA( x, y )
+| | | HAS_COMMA(x, y) => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | __VA_ARGS__ => x, y
+| | | HAS_COMMA(x, y) => NARG_( x, y, HAS_COMMA_N )
+| | | | NARG_(x, y, HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | __VA_ARGS__ => x, y, HAS_COMMA_N
+| | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | __VA_ARGS__ => x, y, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | NARG_(x, y, HAS_COMMA_N) => ARG_N( x, y, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | ARG_N(x, y, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | __VA_ARGS__ => 0, 0
+| | | | | | N => 1
+| | | | | ARG_N(x, y, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 1
+| | | | NARG_(x, y, HAS_COMMA_N) => 1
+| | | HAS_COMMA(x, y) => 1
+| | A => 1
+| | B => HAS_COMMA( NARG_COMMA x, y () )
+| | | HAS_COMMA(NARG_COMMA x, y ()) => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | __VA_ARGS__ => NARG_COMMA x, y ()
+| | | HAS_COMMA(NARG_COMMA x, y ()) => NARG_( NARG_COMMA x, y (), HAS_COMMA_N )
+| | | | NARG_(NARG_COMMA x, y (), HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | __VA_ARGS__ => NARG_COMMA x, y (), HAS_COMMA_N
+| | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | __VA_ARGS__ => NARG_COMMA x, y (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | NARG_(NARG_COMMA x, y (), HAS_COMMA_N) => ARG_N( NARG_COMMA x, y (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | ARG_N(NARG_COMMA x, y (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | __VA_ARGS__ => 0, 0
+| | | | | | N => 1
+| | | | | ARG_N(NARG_COMMA x, y (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 1
+| | | | NARG_(NARG_COMMA x, y (), HAS_COMMA_N) => 1
+| | | HAS_COMMA(NARG_COMMA x, y ()) => 1
+| | B => 1
+| | N => NARG_( x, y, REV_SEQ_N )
+| | | NARG_(x, y, REV_SEQ_N) => ARG_N( __VA_ARGS__ )
+| | | | __VA_ARGS__ => x, y, REV_SEQ_N
+| | | | | REV_SEQ_N => 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | | __VA_ARGS__ => x, y, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | NARG_(x, y, REV_SEQ_N) => ARG_N( x, y, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 )
+| | | | ARG_N(x, y, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => N
+| | | | | __VA_ARGS__ => 1, 0
+| | | | | N => 2
+| | | | ARG_N(x, y, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => 2
+| | | NARG_(x, y, REV_SEQ_N) => 2
+| | N => 2
+| NARG_HELPER1(1, 1, 2) => NARG_HELPER2(1, 1, 2)
+| | NARG_HELPER2(1, 1, 2) => NARG_HELPER3_ ## A ## B(N)
+| | | N => 2
+| | NARG_HELPER2(1, 1, 2) => NARG_HELPER3_ ## 1 ## 1( 2)
+| | NARG_HELPER2(1, 1, 2) => NARG_HELPER3_11( 2)
+| | | NARG_HELPER3_11(2) => N
+| | | | N => 2
+| | | NARG_HELPER3_11(2) => 2
+| | NARG_HELPER2(1, 1, 2) => 2
+| NARG_HELPER1(1, 1, 2) => 2
+NARG(x, y) => 2
+cdecl> ////////// DEF_ARGS() /////////////////////////////////////////////////////////
+cdecl> #define DEF_ARGS(PREFIX,...)   PASTE(PREFIX, NARG(__VA_ARGS__))(__VA_ARGS__)
+cdecl> #define THROW_0()                 THROW_1( cx_tb.thrown_xid )
+cdecl> #define THROW_1(XID)              THROW_2( (XID), cx_user_data() )
+cdecl> #define THROW_2(XID,DATA)   cx_impl_throw( __FILE__, __LINE__, (XID), (void*)(DATA) )
+cdecl> #define cx_throw(...)             DEF_ARGS(THROW_, __VA_ARGS__)
+cdecl> expand cx_throw()
+cx_throw() => DEF_ARGS(THROW_, __VA_ARGS__)
+| __VA_ARGS__ =>
+cx_throw() => DEF_ARGS(THROW_, )
+| DEF_ARGS(THROW_,) => PASTE(PREFIX, NARG(__VA_ARGS__))(__VA_ARGS__)
+| | __VA_ARGS__ =>
+| | PREFIX => THROW_
+| DEF_ARGS(THROW_,) => PASTE(THROW_, NARG(__VA_ARGS__))(__VA_ARGS__)
+| DEF_ARGS(THROW_,) => PASTE(THROW_, NARG())()
+| | PASTE(THROW_, NARG()) => PASTE_HELPER(A,B)
+| | | A => THROW_
+| | | B => NARG()
+| | | | NARG() => NARG_HELPER1( HAS_COMMA( __VA_ARGS__ ), HAS_COMMA( NARG_COMMA __VA_ARGS__ () ), NARG_( __VA_ARGS__, REV_SEQ_N ) )
+| | | | | __VA_ARGS__ =>
+| | | | NARG() => NARG_HELPER1( HAS_COMMA( ), HAS_COMMA( NARG_COMMA () ), NARG_( , REV_SEQ_N ) )
+| | | | | NARG_HELPER1(HAS_COMMA( ), HAS_COMMA( NARG_COMMA () ), NARG_( , REV_SEQ_N )) => NARG_HELPER2(A, B, N)
+| | | | | | A => HAS_COMMA( )
+| | | | | | | HAS_COMMA() => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | | | | | __VA_ARGS__ =>
+| | | | | | | HAS_COMMA() => NARG_( , HAS_COMMA_N )
+| | | | | | | | NARG_(, HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | | | | | __VA_ARGS__ => , HAS_COMMA_N
+| | | | | | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | | __VA_ARGS__ => , 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | NARG_(, HAS_COMMA_N) => ARG_N( , 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | | | | | ARG_N(, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | | | | | __VA_ARGS__ => 0
+| | | | | | | | | | N => 0
+| | | | | | | | | ARG_N(, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 0
+| | | | | | | | NARG_(, HAS_COMMA_N) => 0
+| | | | | | | HAS_COMMA() => 0
+| | | | | | A => 0
+| | | | | | B => HAS_COMMA( NARG_COMMA () )
+| | | | | | | HAS_COMMA(NARG_COMMA ()) => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | | | | | __VA_ARGS__ => NARG_COMMA ()
+| | | | | | | | | NARG_COMMA() => ,
+| | | | | | | | | | __VA_ARGS__ =>
+| | | | | | | | __VA_ARGS__ => ,
+| | | | | | | HAS_COMMA(NARG_COMMA ()) => NARG_( ,, HAS_COMMA_N )
+| | | | | | | | NARG_(,, HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | | | | | __VA_ARGS__ => ,, HAS_COMMA_N
+| | | | | | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | | __VA_ARGS__ => ,, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | NARG_(,, HAS_COMMA_N) => ARG_N( ,, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | | | | | ARG_N(,, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | | | | | __VA_ARGS__ => 0, 0
+| | | | | | | | | | N => 1
+| | | | | | | | | ARG_N(,, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 1
+| | | | | | | | NARG_(,, HAS_COMMA_N) => 1
+| | | | | | | HAS_COMMA(NARG_COMMA ()) => 1
+| | | | | | B => 1
+| | | | | | N => NARG_( , REV_SEQ_N )
+| | | | | | | NARG_(, REV_SEQ_N) => ARG_N( __VA_ARGS__ )
+| | | | | | | | __VA_ARGS__ => , REV_SEQ_N
+| | | | | | | | | REV_SEQ_N => 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | | | | | | __VA_ARGS__ => , 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | | | | | NARG_(, REV_SEQ_N) => ARG_N( , 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 )
+| | | | | | | | ARG_N(, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => N
+| | | | | | | | | __VA_ARGS__ => 0
+| | | | | | | | | N => 1
+| | | | | | | | ARG_N(, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => 1
+| | | | | | | NARG_(, REV_SEQ_N) => 1
+| | | | | | N => 1
+| | | | | NARG_HELPER1(0, 1, 1) => NARG_HELPER2(0, 1, 1)
+| | | | | | NARG_HELPER2(0, 1, 1) => NARG_HELPER3_ ## A ## B(N)
+| | | | | | | N => 1
+| | | | | | NARG_HELPER2(0, 1, 1) => NARG_HELPER3_ ## 0 ## 1( 1)
+| | | | | | NARG_HELPER2(0, 1, 1) => NARG_HELPER3_01( 1)
+| | | | | | | NARG_HELPER3_01(1) => 0
+| | | | | | NARG_HELPER2(0, 1, 1) => 0
+| | | | | NARG_HELPER1(0, 1, 1) => 0
+| | | | NARG() => 0
+| | | B => 0
+| | PASTE(THROW_, 0) => PASTE_HELPER(THROW_,0)
+| | | PASTE_HELPER(THROW_, 0) => A ## B
+| | | PASTE_HELPER(THROW_, 0) => THROW_ ## 0
+| | | PASTE_HELPER(THROW_, 0) => THROW_0
+                                 ^
+34: warning: "THROW_0": function-like macro without arguments will not expand
+| | PASTE(THROW_, 0) => THROW_0
+                        ^
+25: warning: "THROW_0": function-like macro without arguments will not expand
+| DEF_ARGS(THROW_,) => THROW_0()
+| | THROW_0() => THROW_1( cx_tb.thrown_xid )
+| | | THROW_1(cx_tb.thrown_xid) => THROW_2( (XID), cx_user_data() )
+| | | | XID => cx_tb.thrown_xid
+| | | THROW_1(cx_tb.thrown_xid) => THROW_2( (cx_tb.thrown_xid), cx_user_data() )
+| | | | THROW_2((cx_tb.thrown_xid), cx_user_data()) => cx_impl_throw( __FILE__, __LINE__, (XID), (void*)(DATA) )
+| | | | | XID => (cx_tb.thrown_xid)
+| | | | | DATA => cx_user_data()
+| | | | THROW_2((cx_tb.thrown_xid), cx_user_data()) => cx_impl_throw( __FILE__, __LINE__, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+| | | | | __FILE__ => "example.c"
+| | | | | __LINE__ => 42
+| | | | THROW_2((cx_tb.thrown_xid), cx_user_data()) => cx_impl_throw( "example.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+| | | THROW_1(cx_tb.thrown_xid) => cx_impl_throw( "example.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+| | THROW_0() => cx_impl_throw( "example.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+| DEF_ARGS(THROW_,) => cx_impl_throw( "example.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+cx_throw() => cx_impl_throw( "example.c", 42, ((cx_tb.thrown_xid)), (void*)( cx_user_data()) )
+cdecl> expand cx_throw(123)
+cx_throw(123) => DEF_ARGS(THROW_, __VA_ARGS__)
+| __VA_ARGS__ => 123
+cx_throw(123) => DEF_ARGS(THROW_, 123)
+| DEF_ARGS(THROW_, 123) => PASTE(PREFIX, NARG(__VA_ARGS__))(__VA_ARGS__)
+| | __VA_ARGS__ => 123
+| | PREFIX => THROW_
+| DEF_ARGS(THROW_, 123) => PASTE(THROW_, NARG(__VA_ARGS__))(__VA_ARGS__)
+| DEF_ARGS(THROW_, 123) => PASTE(THROW_, NARG( 123))( 123)
+| | PASTE(THROW_, NARG( 123)) => PASTE_HELPER(A,B)
+| | | A => THROW_
+| | | B => NARG( 123)
+| | | | NARG(123) => NARG_HELPER1( HAS_COMMA( __VA_ARGS__ ), HAS_COMMA( NARG_COMMA __VA_ARGS__ () ), NARG_( __VA_ARGS__, REV_SEQ_N ) )
+| | | | | __VA_ARGS__ => 123
+| | | | NARG(123) => NARG_HELPER1( HAS_COMMA( 123 ), HAS_COMMA( NARG_COMMA 123 () ), NARG_( 123, REV_SEQ_N ) )
+                                                                ^
+65: warning: "NARG_COMMA": function-like macro without arguments will not expand
+| | | | | NARG_HELPER1(HAS_COMMA( 123 ), HAS_COMMA( NARG_COMMA 123 () ), NARG_( 123, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
+| | | | | | A => HAS_COMMA( 123 )
+| | | | | | | HAS_COMMA(123) => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | | | | | __VA_ARGS__ => 123
+| | | | | | | HAS_COMMA(123) => NARG_( 123, HAS_COMMA_N )
+| | | | | | | | NARG_(123, HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | | | | | __VA_ARGS__ => 123, HAS_COMMA_N
+| | | | | | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | | __VA_ARGS__ => 123, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | NARG_(123, HAS_COMMA_N) => ARG_N( 123, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | | | | | ARG_N(123, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | | | | | __VA_ARGS__ => 0
+| | | | | | | | | | N => 0
+| | | | | | | | | ARG_N(123, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 0
+| | | | | | | | NARG_(123, HAS_COMMA_N) => 0
+| | | | | | | HAS_COMMA(123) => 0
+| | | | | | A => 0
+| | | | | | B => HAS_COMMA( NARG_COMMA 123 () )
+| | | | | | | HAS_COMMA(NARG_COMMA 123 ()) => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | | | | | __VA_ARGS__ => NARG_COMMA 123 ()
+| | | | | | | HAS_COMMA(NARG_COMMA 123 ()) => NARG_( NARG_COMMA 123 (), HAS_COMMA_N )
+| | | | | | | | NARG_(NARG_COMMA 123 (), HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | | | | | __VA_ARGS__ => NARG_COMMA 123 (), HAS_COMMA_N
+| | | | | | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | | __VA_ARGS__ => NARG_COMMA 123 (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | NARG_(NARG_COMMA 123 (), HAS_COMMA_N) => ARG_N( NARG_COMMA 123 (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | | | | | ARG_N(NARG_COMMA 123 (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | | | | | __VA_ARGS__ => 0
+| | | | | | | | | | N => 0
+| | | | | | | | | ARG_N(NARG_COMMA 123 (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 0
+| | | | | | | | NARG_(NARG_COMMA 123 (), HAS_COMMA_N) => 0
+| | | | | | | HAS_COMMA(NARG_COMMA 123 ()) => 0
+| | | | | | B => 0
+| | | | | | N => NARG_( 123, REV_SEQ_N )
+| | | | | | | NARG_(123, REV_SEQ_N) => ARG_N( __VA_ARGS__ )
+| | | | | | | | __VA_ARGS__ => 123, REV_SEQ_N
+| | | | | | | | | REV_SEQ_N => 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | | | | | | __VA_ARGS__ => 123, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | | | | | NARG_(123, REV_SEQ_N) => ARG_N( 123, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 )
+| | | | | | | | ARG_N(123, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => N
+| | | | | | | | | __VA_ARGS__ => 0
+| | | | | | | | | N => 1
+| | | | | | | | ARG_N(123, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => 1
+| | | | | | | NARG_(123, REV_SEQ_N) => 1
+| | | | | | N => 1
+| | | | | NARG_HELPER1(0, 0, 1) => NARG_HELPER2(0, 0, 1)
+| | | | | | NARG_HELPER2(0, 0, 1) => NARG_HELPER3_ ## A ## B(N)
+| | | | | | | N => 1
+| | | | | | NARG_HELPER2(0, 0, 1) => NARG_HELPER3_ ## 0 ## 0( 1)
+| | | | | | NARG_HELPER2(0, 0, 1) => NARG_HELPER3_00( 1)
+| | | | | | | NARG_HELPER3_00(1) => 1
+| | | | | | NARG_HELPER2(0, 0, 1) => 1
+| | | | | NARG_HELPER1(0, 0, 1) => 1
+| | | | NARG(123) => 1
+| | | B => 1
+| | PASTE(THROW_, 1) => PASTE_HELPER(THROW_,1)
+| | | PASTE_HELPER(THROW_, 1) => A ## B
+| | | PASTE_HELPER(THROW_, 1) => THROW_ ## 1
+| | | PASTE_HELPER(THROW_, 1) => THROW_1
+                                 ^
+34: warning: "THROW_1": function-like macro without arguments will not expand
+| | PASTE(THROW_, 1) => THROW_1
+                        ^
+25: warning: "THROW_1": function-like macro without arguments will not expand
+| DEF_ARGS(THROW_, 123) => THROW_1( 123)
+| | THROW_1(123) => THROW_2( (XID), cx_user_data() )
+| | | XID => 123
+| | THROW_1(123) => THROW_2( (123), cx_user_data() )
+| | | THROW_2((123), cx_user_data()) => cx_impl_throw( __FILE__, __LINE__, (XID), (void*)(DATA) )
+| | | | XID => (123)
+| | | | DATA => cx_user_data()
+| | | THROW_2((123), cx_user_data()) => cx_impl_throw( __FILE__, __LINE__, ((123)), (void*)( cx_user_data()) )
+| | | | __FILE__ => "example.c"
+| | | | __LINE__ => 42
+| | | THROW_2((123), cx_user_data()) => cx_impl_throw( "example.c", 42, ((123)), (void*)( cx_user_data()) )
+| | THROW_1(123) => cx_impl_throw( "example.c", 42, ((123)), (void*)( cx_user_data()) )
+| DEF_ARGS(THROW_, 123) => cx_impl_throw( "example.c", 42, ((123)), (void*)( cx_user_data()) )
+cx_throw(123) => cx_impl_throw( "example.c", 42, ((123)), (void*)( cx_user_data()) )
+cdecl> expand cx_throw(123, ptr)
+cx_throw(123, ptr) => DEF_ARGS(THROW_, __VA_ARGS__)
+| __VA_ARGS__ => 123, ptr
+cx_throw(123, ptr) => DEF_ARGS(THROW_, 123, ptr)
+| DEF_ARGS(THROW_, 123, ptr) => PASTE(PREFIX, NARG(__VA_ARGS__))(__VA_ARGS__)
+| | __VA_ARGS__ => 123, ptr
+| | PREFIX => THROW_
+| DEF_ARGS(THROW_, 123, ptr) => PASTE(THROW_, NARG(__VA_ARGS__))(__VA_ARGS__)
+| DEF_ARGS(THROW_, 123, ptr) => PASTE(THROW_, NARG( 123, ptr))( 123, ptr)
+| | PASTE(THROW_, NARG( 123, ptr)) => PASTE_HELPER(A,B)
+| | | A => THROW_
+| | | B => NARG( 123, ptr)
+| | | | NARG(123, ptr) => NARG_HELPER1( HAS_COMMA( __VA_ARGS__ ), HAS_COMMA( NARG_COMMA __VA_ARGS__ () ), NARG_( __VA_ARGS__, REV_SEQ_N ) )
+| | | | | __VA_ARGS__ => 123, ptr
+| | | | NARG(123, ptr) => NARG_HELPER1( HAS_COMMA( 123, ptr ), HAS_COMMA( NARG_COMMA 123, ptr () ), NARG_( 123, ptr, REV_SEQ_N ) )
+                                                                          ^
+75: warning: "NARG_COMMA": function-like macro without arguments will not expand
+| | | | | NARG_HELPER1(HAS_COMMA( 123, ptr ), HAS_COMMA( NARG_COMMA 123, ptr () ), NARG_( 123, ptr, REV_SEQ_N )) => NARG_HELPER2(A, B, N)
+| | | | | | A => HAS_COMMA( 123, ptr )
+| | | | | | | HAS_COMMA(123, ptr) => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | | | | | __VA_ARGS__ => 123, ptr
+| | | | | | | HAS_COMMA(123, ptr) => NARG_( 123, ptr, HAS_COMMA_N )
+| | | | | | | | NARG_(123, ptr, HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | | | | | __VA_ARGS__ => 123, ptr, HAS_COMMA_N
+| | | | | | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | | __VA_ARGS__ => 123, ptr, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | NARG_(123, ptr, HAS_COMMA_N) => ARG_N( 123, ptr, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | | | | | ARG_N(123, ptr, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | | | | | __VA_ARGS__ => 0, 0
+| | | | | | | | | | N => 1
+| | | | | | | | | ARG_N(123, ptr, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 1
+| | | | | | | | NARG_(123, ptr, HAS_COMMA_N) => 1
+| | | | | | | HAS_COMMA(123, ptr) => 1
+| | | | | | A => 1
+| | | | | | B => HAS_COMMA( NARG_COMMA 123, ptr () )
+| | | | | | | HAS_COMMA(NARG_COMMA 123, ptr ()) => NARG_( __VA_ARGS__, HAS_COMMA_N )
+| | | | | | | | __VA_ARGS__ => NARG_COMMA 123, ptr ()
+| | | | | | | HAS_COMMA(NARG_COMMA 123, ptr ()) => NARG_( NARG_COMMA 123, ptr (), HAS_COMMA_N )
+| | | | | | | | NARG_(NARG_COMMA 123, ptr (), HAS_COMMA_N) => ARG_N( __VA_ARGS__ )
+| | | | | | | | | __VA_ARGS__ => NARG_COMMA 123, ptr (), HAS_COMMA_N
+| | | | | | | | | | HAS_COMMA_N => 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | | __VA_ARGS__ => NARG_COMMA 123, ptr (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0
+| | | | | | | | NARG_(NARG_COMMA 123, ptr (), HAS_COMMA_N) => ARG_N( NARG_COMMA 123, ptr (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 )
+| | | | | | | | | ARG_N(NARG_COMMA 123, ptr (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => N
+| | | | | | | | | | __VA_ARGS__ => 0, 0
+| | | | | | | | | | N => 1
+| | | | | | | | | ARG_N(NARG_COMMA 123, ptr (), 1, 1, 1, 1, 1, 1, 1, 1, 0, 0) => 1
+| | | | | | | | NARG_(NARG_COMMA 123, ptr (), HAS_COMMA_N) => 1
+| | | | | | | HAS_COMMA(NARG_COMMA 123, ptr ()) => 1
+| | | | | | B => 1
+| | | | | | N => NARG_( 123, ptr, REV_SEQ_N )
+| | | | | | | NARG_(123, ptr, REV_SEQ_N) => ARG_N( __VA_ARGS__ )
+| | | | | | | | __VA_ARGS__ => 123, ptr, REV_SEQ_N
+| | | | | | | | | REV_SEQ_N => 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | | | | | | __VA_ARGS__ => 123, ptr, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+| | | | | | | NARG_(123, ptr, REV_SEQ_N) => ARG_N( 123, ptr, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 )
+| | | | | | | | ARG_N(123, ptr, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => N
+| | | | | | | | | __VA_ARGS__ => 1, 0
+| | | | | | | | | N => 2
+| | | | | | | | ARG_N(123, ptr, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) => 2
+| | | | | | | NARG_(123, ptr, REV_SEQ_N) => 2
+| | | | | | N => 2
+| | | | | NARG_HELPER1(1, 1, 2) => NARG_HELPER2(1, 1, 2)
+| | | | | | NARG_HELPER2(1, 1, 2) => NARG_HELPER3_ ## A ## B(N)
+| | | | | | | N => 2
+| | | | | | NARG_HELPER2(1, 1, 2) => NARG_HELPER3_ ## 1 ## 1( 2)
+| | | | | | NARG_HELPER2(1, 1, 2) => NARG_HELPER3_11( 2)
+| | | | | | | NARG_HELPER3_11(2) => N
+| | | | | | | | N => 2
+| | | | | | | NARG_HELPER3_11(2) => 2
+| | | | | | NARG_HELPER2(1, 1, 2) => 2
+| | | | | NARG_HELPER1(1, 1, 2) => 2
+| | | | NARG(123, ptr) => 2
+| | | B => 2
+| | PASTE(THROW_, 2) => PASTE_HELPER(THROW_,2)
+| | | PASTE_HELPER(THROW_, 2) => A ## B
+| | | PASTE_HELPER(THROW_, 2) => THROW_ ## 2
+| | | PASTE_HELPER(THROW_, 2) => THROW_2
+                                 ^
+34: warning: "THROW_2": function-like macro without arguments will not expand
+| | PASTE(THROW_, 2) => THROW_2
+                        ^
+25: warning: "THROW_2": function-like macro without arguments will not expand
+| DEF_ARGS(THROW_, 123, ptr) => THROW_2( 123, ptr)
+| | THROW_2(123, ptr) => cx_impl_throw( __FILE__, __LINE__, (XID), (void*)(DATA) )
+| | | XID => 123
+| | | DATA => ptr
+| | THROW_2(123, ptr) => cx_impl_throw( __FILE__, __LINE__, (123), (void*)( ptr) )
+| | | __FILE__ => "example.c"
+| | | __LINE__ => 42
+| | THROW_2(123, ptr) => cx_impl_throw( "example.c", 42, (123), (void*)( ptr) )
+| DEF_ARGS(THROW_, 123, ptr) => cx_impl_throw( "example.c", 42, (123), (void*)( ptr) )
+cx_throw(123, ptr) => cx_impl_throw( "example.c", 42, (123), (void*)( ptr) )
+cdecl> ////////// Predefined macros //////////////////////////////////////////////////
+cdecl> set knr
+cdecl> #define OLD_DATE                  __DATE__
+                                         ^
+35: warning: "__DATE__" not supported until C89; will not expand
+cdecl> expand OLD_DATE
+OLD_DATE => __DATE__
+            ^
+13: warning: "__DATE__" not supported until C89; will not expand
+cdecl> #define OLD_TIME                  __TIME__
+                                         ^
+35: warning: "__TIME__" not supported until C89; will not expand
+cdecl> expand OLD_TIME
+OLD_TIME => __TIME__
+            ^
+13: warning: "__TIME__" not supported until C89; will not expand
+cdecl> set c
+cdecl> expand __FILE__
+__FILE__ => "example.c"
+cdecl> expand __LINE__
+__LINE__ => 42
+cdecl> expand __STDC__
+__STDC__ => 1
+cdecl> set c89
+cdecl> expand __STDC_VERSION__
+__STDC_VERSION__ => 199409L
+cdecl> set c95
+cdecl> expand __STDC_VERSION__
+__STDC_VERSION__ => 199409L
+cdecl> set c99
+cdecl> expand __STDC_VERSION__
+__STDC_VERSION__ => 199901L
+cdecl> set c11
+cdecl> expand __STDC_VERSION__
+__STDC_VERSION__ => 201112L
+cdecl> set c17
+cdecl> expand __STDC_VERSION__
+__STDC_VERSION__ => 201710L
+cdecl> set c23
+cdecl> expand __STDC_VERSION__
+__STDC_VERSION__ => 202311L
+cdecl> set c++98
+c++decl> expand __cplusplus
+__cplusplus => 199711L
+c++decl> set c++03
+c++decl> expand __cplusplus
+__cplusplus => 199711L
+c++decl> set c++11
+c++decl> expand __cplusplus
+__cplusplus => 201103L
+c++decl> set c++14
+c++decl> expand __cplusplus
+__cplusplus => 201402L
+c++decl> set c++17
+c++decl> expand __cplusplus
+__cplusplus => 201703L
+c++decl> set c++20
+c++decl> expand __cplusplus
+__cplusplus => 202002L
+c++decl> set c++23
+c++decl> expand __cplusplus
+__cplusplus => 202302L

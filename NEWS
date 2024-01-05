@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 15.1
+* Changes in Cdecl 16.0
 
 ** C99 with extension error messages
 Improved C99 with extension error messages.
