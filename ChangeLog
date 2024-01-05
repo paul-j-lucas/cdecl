@@ -1,5 +1,9 @@
 2024-01-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c, explain-error.out, explain-error.test: Fixed issue #32:
+     Invalid function declarator accepted as valie -- part 2.
+   * parser.y, explain-error.out, explain-error.test: Fixed issue #32: Invalid
+     function declarator accepted as valie.
    * c_ast.c, c_ast.h: Using is_1_bit_only_in_set() more.
    * parser.y: Now calling ia_type_spec_ast() only if necessary.
    * parser.y: Now using ia_type_spec_ast() in func_cast_c_astp().
