@@ -1,5 +1,9 @@
 2024-01-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.c, autocomplete.h, dump.c, dump.h, english.c, english.h,
+     gibberish.c, gibberish.h, print.c, print.h, show.c, show.h, util.h:
+     Renaming.
+   * print.c: Not printing ':' and ',' in color in print_loc().
    * strbuf.c, util.c, util.h: Eliminated TYPE parameter from REALLOC().
    * util.c: s/char*/char/ for REALLOC().
 
