@@ -5202,7 +5202,7 @@ func_cast_c_astp
 
       c_ast_t *const cast_ast = $cast_astp.ast;
       //
-      // This is for a case like:
+      // This is for a case similar to the one in func_decl_c_astp like:
       //
       //     void f( int () () )
       //              |   |  |
@@ -5215,8 +5215,10 @@ func_cast_c_astp
       // We replace ret_ast with cast_ast:
       //
       //      void f( int() () )
-      //              |     |
-      //              |     func
+      //              |  |  |
+      //              |  |  func
+      //              X  |
+      //              |  cast_ast (func)
       //              |
       //              ret_ast <- cast_ast (func)
       //
