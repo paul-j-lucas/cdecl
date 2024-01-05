@@ -55,35 +55,35 @@ static bool test_slist_cmp( void ) {
   slist_init( &list2 );
 
   // test 2 empty lists
-  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) == 0 );
+  TEST( slist_cmp( &list, &list2, POINTER_CAST( slist_cmp_fn_t, &strcmp ) ) == 0 );
 
   // test empty and non-empty lists
   slist_push_back( &list2, (void*)"A" );
-  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) != 0 );
+  TEST( slist_cmp( &list, &list2, POINTER_CAST( slist_cmp_fn_t, &strcmp ) ) != 0 );
   slist_cleanup( &list2, /*free_fn=*/NULL );
 
   // test non-empty and empty lists
   slist_push_back( &list, (void*)"A" );
-  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) != 0 );
+  TEST( slist_cmp( &list, &list2, POINTER_CAST( slist_cmp_fn_t, &strcmp ) ) != 0 );
   slist_cleanup( &list, /*free_fn=*/NULL );
 
   // test matching 1,2,3-element lists
   slist_push_back( &list, (void*)"A" );
   slist_push_back( &list2, (void*)"A" );
-  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) == 0 );
+  TEST( slist_cmp( &list, &list2, POINTER_CAST( slist_cmp_fn_t, &strcmp ) ) == 0 );
   slist_push_back( &list, (void*)"B" );
   slist_push_back( &list2, (void*)"B" );
-  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) == 0 );
+  TEST( slist_cmp( &list, &list2, POINTER_CAST( slist_cmp_fn_t, &strcmp ) ) == 0 );
   slist_push_back( &list, (void*)"C" );
   slist_push_back( &list2, (void*)"C" );
-  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) == 0 );
+  TEST( slist_cmp( &list, &list2, POINTER_CAST( slist_cmp_fn_t, &strcmp ) ) == 0 );
   slist_cleanup( &list, /*free_fn=*/NULL );
   slist_cleanup( &list2, /*free_fn=*/NULL );
 
   // test 1-element non-matching lists
   slist_push_back( &list, (void*)"A" );
   slist_push_back( &list2, (void*)"B" );
-  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) < 0 );
+  TEST( slist_cmp( &list, &list2, POINTER_CAST( slist_cmp_fn_t, &strcmp ) ) < 0 );
   slist_cleanup( &list, /*free_fn=*/NULL );
   slist_cleanup( &list2, /*free_fn=*/NULL );
 
@@ -91,7 +91,7 @@ static bool test_slist_cmp( void ) {
   slist_push_back( &list, (void*)"A" );
   slist_push_back( &list2, (void*)"A" );
   slist_push_back( &list2, (void*)"B" );
-  TEST( slist_cmp( &list, &list2, (slist_cmp_fn_t)&strcmp ) < 0 );
+  TEST( slist_cmp( &list, &list2, POINTER_CAST( slist_cmp_fn_t, &strcmp ) ) < 0 );
   slist_cleanup( &list, /*free_fn=*/NULL );
   slist_cleanup( &list2, /*free_fn=*/NULL );
 
