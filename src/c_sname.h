@@ -32,6 +32,7 @@
 #include "c_type.h"
 #include "slist.h"
 #include "types.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -227,7 +228,9 @@ void c_sname_cleanup( c_sname_t *sname );
  */
 NODISCARD C_SNAME_H_INLINE
 int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
-  return slist_cmp( i_sname, j_sname, (slist_cmp_fn_t)&c_scope_data_cmp );
+  return slist_cmp(
+    i_sname, j_sname, POINTER_CAST( slist_cmp_fn_t, &c_scope_data_cmp )
+  );
 }
 
 /**
@@ -267,7 +270,9 @@ size_t c_sname_count( c_sname_t const *sname ) {
  */
 NODISCARD C_SNAME_H_INLINE
 c_sname_t c_sname_dup( c_sname_t const *sname ) {
-  return slist_dup( sname, -1, (slist_dup_fn_t)&c_scope_data_dup );
+  return slist_dup(
+    sname, -1, POINTER_CAST( slist_dup_fn_t, &c_scope_data_dup )
+  );
 }
 
 /**
