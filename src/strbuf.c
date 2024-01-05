@@ -168,7 +168,7 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
   // guaranteed to be at least n+1.
   //
   sbuf->cap = next_pow_2( sbuf->len + res_len );
-  REALLOC( sbuf->str, char, sbuf->cap );
+  REALLOC( sbuf->str, sbuf->cap );
   return true;
 }
 

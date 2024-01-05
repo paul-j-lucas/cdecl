@@ -667,14 +667,13 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param PTR The pointer to memory to reallocate.  It is set to the newly
  * reallocated memory.
- * @param TYPE The type of object to reallocate.
- * @param N The number of objects of \a TYPE to reallocate.
+ * @param N The number of objects to reallocate.
  *
  * @sa check_realloc()
  * @sa #MALLOC()
  */
-#define REALLOC(PTR,TYPE,N) \
-  ((PTR) = check_realloc( (PTR), sizeof(TYPE) * (N) ))
+#define REALLOC(PTR,N) \
+  ((PTR) = check_realloc( (PTR), sizeof(*(PTR)) * (N) ))
 
 /**
  * Runs a statement at most once even if control passes through it more than
