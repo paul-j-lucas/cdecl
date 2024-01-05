@@ -1,5 +1,7 @@
 2024-01-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * red_black_test.c: More red-black tree tests.
+   * Doxyfile: Added red_black_test.c, slist_test.c to EXCLUDE.
    * autocomplete.c, autocomplete.h, dump.c, dump.h, english.c, english.h,
      gibberish.c, gibberish.h, print.c, print.h, show.c, show.h, util.h:
      Renaming.
