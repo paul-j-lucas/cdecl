@@ -51,91 +51,91 @@
  * Dumps a Boolean value as either `true` or `false` (for debugging).
  *
  * @param b The Boolean to dump.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  */
-void bool_dump( bool b, FILE *dout );
+void bool_dump( bool b, FILE *fout );
 
 /**
  * Dumps \a align in [JSON5](https://json5.org) format (for debugging).
  *
  * @param align The \ref c_alignas to dump.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  */
-void c_alignas_dump( c_alignas_t const *align, FILE *dout );
+void c_alignas_dump( c_alignas_t const *align, FILE *fout );
 
 /**
  * Dumps \a ast in [JSON5](https://json5.org) format (for debugging).
  *
  * @param ast The AST to dump.  If NULL, `null` is printed instead.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  *
  * @sa c_ast_list_dump()
  * @sa c_ast_pair_dump()
  */
-void c_ast_dump( c_ast_t const *ast, FILE *dout );
+void c_ast_dump( c_ast_t const *ast, FILE *fout );
 
 /**
  * Dumps \a list of ASTs in [JSON5](https://json5.org) format (for debugging).
  *
  * @param list The \ref slist of ASTs to dump.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  *
  * @sa c_ast_dump()
  * @sa c_ast_pair_dump()
  */
-void c_ast_list_dump( c_ast_list_t const *list, FILE *dout );
+void c_ast_list_dump( c_ast_list_t const *list, FILE *fout );
 
 /**
  * Dumps \a astp in [JSON5](https://json5.org) format (for debugging).
  *
  * @param astp The \ref c_ast_pair to dump.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  *
  * @sa c_ast_dump()
  * @sa c_ast_list_dump()
  */
-void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *dout );
+void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *fout );
 
 /**
  * Dumps \a sname in [JSON5](https://json5.org) format (for debugging).
  *
  * @param sname The scoped name to dump.  If empty, prints `null` instead.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  *
  * @sa c_sname_list_dump()
  */
-void c_sname_dump( c_sname_t const *sname, FILE *dout );
+void c_sname_dump( c_sname_t const *sname, FILE *fout );
 
 /**
  * Dumps \a list of scoped names in [JSON5](https://json5.org) format (for
  * debugging).
  *
  * @param list The list of scoped names to dump.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  *
  * @sa c_sname_dump()
  */
-void c_sname_list_dump( slist_t const *list, FILE *dout );
+void c_sname_list_dump( slist_t const *list, FILE *fout );
 
 /**
  * Dumps \a tid in [JSON5](https://json5.org) format (for debugging).
  *
  * @param tid The \ref c_tid_t to dump.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  *
  * @sa c_type_dump()
  */
-void c_tid_dump( c_tid_t tid, FILE *dout );
+void c_tid_dump( c_tid_t tid, FILE *fout );
 
 /**
  * Dumps \a type in [JSON5](https://json5.org) format (for debugging).
  *
  * @param type The \ref c_type to dump.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  *
  * @sa c_tid_dump()
  */
-void c_type_dump( c_type_t const *type, FILE *dout );
+void c_type_dump( c_type_t const *type, FILE *fout );
 
 ///////////////////////////////////////////////////////////////////////////////
 

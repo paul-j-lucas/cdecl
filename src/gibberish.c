@@ -60,7 +60,7 @@
  */
 struct gib_state {
   unsigned  gib_flags;                  ///< Gibberish printing flags.
-  FILE     *gout;                       ///< Where to print the gibberish.
+  FILE     *fout;                       ///< Where to print the gibberish.
   bool      is_nested_scope;            ///< Within `{` ... `}`?
   bool      is_postfix;                 ///< Doing postfix gibberish?
   bool      printed_space;              ///< Printed a space yet?
@@ -103,7 +103,7 @@ static inline c_ast_t const* c_ast_find_parent_func( c_ast_t const *ast ) {
  */
 static inline void gib_print_space_once( gib_state_t *gib ) {
   if ( false_set( &gib->printed_space ) )
-    FPUTC( ' ', gib->gout );
+    FPUTC( ' ', gib->fout );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -163,27 +163,27 @@ static void c_ast_array_size_gibberish( c_ast_t const *ast,
   assert( ast->kind == K_ARRAY );
   assert( gib != NULL );
 
-  FPUTS( other_token_c( "[" ), gib->gout );
+  FPUTS( other_token_c( "[" ), gib->fout );
 
   bool const is_qual = c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER );
   if ( is_qual )
-    FPUTS( c_type_name_c( &ast->type ), gib->gout );
+    FPUTS( c_type_name_c( &ast->type ), gib->fout );
 
   switch ( ast->array.kind ) {
     case C_ARRAY_EMPTY_SIZE:
       break;
     case C_ARRAY_INT_SIZE:
-      FPRINTF( gib->gout, "%s%u", is_qual ? " " : "", ast->array.size_int );
+      FPRINTF( gib->fout, "%s%u", is_qual ? " " : "", ast->array.size_int );
       break;
     case C_ARRAY_NAMED_SIZE:
-      FPRINTF( gib->gout, "%s%s", is_qual ? " " : "", ast->array.size_name );
+      FPRINTF( gib->fout, "%s%s", is_qual ? " " : "", ast->array.size_name );
       break;
     case C_ARRAY_VLA_STAR:
-      FPUTC( '*', gib->gout );
+      FPUTC( '*', gib->fout );
       break;
   } // switch
 
-  FPUTS( other_token_c( "]" ), gib->gout );
+  FPUTS( other_token_c( "]" ), gib->fout );
 }
 
 /**
@@ -200,7 +200,7 @@ static void c_ast_bit_width_gibberish( c_ast_t const *ast,
   assert( gib != NULL );
 
   if ( ast->bit_field.bit_width > 0 )
-    FPRINTF( gib->gout, " : %u", ast->bit_field.bit_width );
+    FPRINTF( gib->fout, " : %u", ast->bit_field.bit_width );
 }
 
 /**
@@ -310,18 +310,18 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
     case K_ARRAY:
       if ( ast->kind != K_ARRAY ||
            ( !c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER ) ) ) {
-        fputs_sp( c_type_name_c( &type ), gib->gout );
+        fputs_sp( c_type_name_c( &type ), gib->fout );
       }
       if ( ast->kind == K_UDEF_CONV ) {
         if ( !c_sname_empty( &ast->sname ) )
-          FPRINTF( gib->gout, "%s::", c_sname_full_name( &ast->sname ) );
-        FPUTS( "operator ", gib->gout );
+          FPRINTF( gib->fout, "%s::", c_sname_full_name( &ast->sname ) );
+        FPUTS( "operator ", gib->fout );
       }
       if ( ast->parent.of_ast != NULL ) {
         is_trailing_ret = (ast->kind & K_ANY_TRAILING_RETURN) != 0 &&
           opt_trailing_ret && OPT_LANG_IS( TRAILING_RETURN_TYPES );
         if ( is_trailing_ret )
-          FPUTS( L_auto, gib->gout );
+          FPUTS( L_auto, gib->fout );
         else
           c_ast_gibberish_impl( ast->parent.of_ast, gib );
       }
@@ -333,7 +333,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         // (Pointers to such functions are handled in
         // c_ast_postfix_gibberish().)
         //
-        FPRINTF( gib->gout, " %s", c_tid_name_c( msc_call_atids ) );
+        FPRINTF( gib->fout, " %s", c_tid_name_c( msc_call_atids ) );
       }
       if ( false_set( &gib->is_postfix ) ) {
         if ( (gib->gib_flags & (C_GIB_PRINT_CAST | C_GIB_USING)) == 0 )
@@ -341,24 +341,24 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_postfix_gibberish( ast, gib );
       }
       if ( cv_qual_stids != TS_NONE )
-        FPRINTF( gib->gout, " %s", c_tid_name_c( cv_qual_stids ) );
+        FPRINTF( gib->fout, " %s", c_tid_name_c( cv_qual_stids ) );
       if ( ref_qual_stids != TS_NONE ) {
-        FPRINTF( gib->gout, " %s",
+        FPRINTF( gib->fout, " %s",
           other_token_c(
             c_tid_is_any( ref_qual_stids, TS_REFERENCE ) ? "&" : "&&"
           )
         );
       }
       if ( is_noexcept )
-        FPUTS( " noexcept", gib->gout );
+        FPUTS( " noexcept", gib->fout );
       else if ( is_throw )
-        FPUTS( " throw()", gib->gout );
+        FPUTS( " throw()", gib->fout );
       if ( is_override )
-        FPUTS( " override", gib->gout );
+        FPUTS( " override", gib->fout );
       else if ( is_final )
-        FPUTS( " final", gib->gout );
+        FPUTS( " final", gib->fout );
       if ( is_trailing_ret ) {
-        FPUTS( " -> ", gib->gout );
+        FPUTS( " -> ", gib->fout );
         //
         // Temporarily orphan the return type's AST in order to print it as a
         // stand-alone trailing type.
@@ -367,23 +367,23 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_t *const orig_ret_ast_parent_ast = ret_ast->parent_ast;
         ret_ast->parent_ast = NULL;
 
-        gib_init( &child_gib, C_GIB_PRINT_DECL, gib->gout );
+        gib_init( &child_gib, C_GIB_PRINT_DECL, gib->fout );
         c_ast_gibberish_impl( ret_ast, &child_gib );
         ret_ast->parent_ast = orig_ret_ast_parent_ast;
       }
       if ( is_pure_virtual )
-        FPUTS( " = 0", gib->gout );
+        FPUTS( " = 0", gib->fout );
       else if ( is_default )
-        FPUTS( " = default", gib->gout );
+        FPUTS( " = default", gib->fout );
       else if ( is_delete )
-        FPUTS( " = delete", gib->gout );
+        FPUTS( " = delete", gib->fout );
       break;
 
     case K_BUILTIN:
       if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 )
-        FPUTS( c_type_name_c( &type ), gib->gout );
+        FPUTS( c_type_name_c( &type ), gib->fout );
       if ( c_ast_is_tid_any( ast, TB__BitInt ) )
-        FPRINTF( gib->gout, "(%u)", ast->builtin.BitInt.width );
+        FPRINTF( gib->fout, "(%u)", ast->builtin.BitInt.width );
       c_ast_space_name_gibberish( ast, gib );
       c_ast_bit_width_gibberish( ast, gib );
       break;
@@ -391,38 +391,38 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
     case K_CAPTURE:
       switch ( ast->capture.kind ) {
         case C_CAPTURE_COPY:
-          FPUTC( '=', gib->gout );
+          FPUTC( '=', gib->fout );
           break;
         case C_CAPTURE_REFERENCE:
-          FPUTS( other_token_c( "&" ), gib->gout );
+          FPUTS( other_token_c( "&" ), gib->fout );
           if ( c_sname_empty( &ast->sname ) )
             break;
           if ( opt_alt_tokens )
-            FPUTC( ' ', gib->gout );
+            FPUTC( ' ', gib->fout );
           FALLTHROUGH;
         case C_CAPTURE_VARIABLE:
-          FPUTS( c_sname_full_name( &ast->sname ), gib->gout );
+          FPUTS( c_sname_full_name( &ast->sname ), gib->fout );
           break;
         case C_CAPTURE_STAR_THIS:
-          FPUTC( '*', gib->gout );
+          FPUTC( '*', gib->fout );
           FALLTHROUGH;
         case C_CAPTURE_THIS:
-          FPUTS( L_this, gib->gout );
+          FPUTS( L_this, gib->fout );
           break;
       } // switch
       break;
 
     case K_CAST:
       assert( gib->gib_flags == C_GIB_PRINT_CAST );
-      gib_init( &child_gib, C_GIB_PRINT_CAST, gib->gout );
+      gib_init( &child_gib, C_GIB_PRINT_CAST, gib->fout );
       if ( ast->cast.kind == C_CAST_C ) {
-        FPUTC( '(', gib->gout );
+        FPUTC( '(', gib->fout );
         c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
-        FPRINTF( gib->gout, ")%s\n", c_sname_full_name( &ast->sname ) );
+        FPRINTF( gib->fout, ")%s\n", c_sname_full_name( &ast->sname ) );
       } else {
-        FPRINTF( gib->gout, "%s<", c_cast_gibberish( ast->cast.kind ) );
+        FPRINTF( gib->fout, "%s<", c_cast_gibberish( ast->cast.kind ) );
         c_ast_gibberish_impl( ast->cast.to_ast, &child_gib );
-        FPRINTF( gib->gout, ">(%s)\n", c_sname_full_name( &ast->sname ) );
+        FPRINTF( gib->fout, ">(%s)\n", c_sname_full_name( &ast->sname ) );
       }
       break;
 
@@ -455,7 +455,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
           c_type_name_ecsu( &type ) :
           c_type_name_c( &type );
 
-      FPUTS( type_name, gib->gout );
+      FPUTS( type_name, gib->fout );
 
       if ( (gib->gib_flags & C_GIB_TYPEDEF) == 0 || gib->printed_typedef ) {
         //
@@ -474,7 +474,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         //
         //          typedef struct S T; // ast->sname ="T"; escu_name = "S"
         //
-        FPRINTF( gib->gout,
+        FPRINTF( gib->fout,
           "%s%s",
           type_name[0] != '\0' ? " " : "",
           c_sname_full_name( &ast->csu.csu_sname )
@@ -501,12 +501,12 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
           c_ast_space_name_gibberish( ast, gib );
           printed_name = true;
         }
-        FPUTS( " : ", gib->gout );
+        FPUTS( " : ", gib->fout );
         c_ast_gibberish_impl( ast->enum_.of_ast, gib );
       }
 
       if ( cv_qual_stids != TS_NONE )
-        FPRINTF( gib->gout, " %s", c_tid_name_c( cv_qual_stids ) );
+        FPRINTF( gib->fout, " %s", c_tid_name_c( cv_qual_stids ) );
 
       if ( !printed_name )
         c_ast_space_name_gibberish( ast, gib );
@@ -516,21 +516,21 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_LAMBDA:
-      FPUTS( other_token_c( "[" ), gib->gout );
+      FPUTS( other_token_c( "[" ), gib->fout );
       c_ast_list_gibberish( &ast->lambda.capture_ast_list, gib );
-      FPUTS( other_token_c( "]" ), gib->gout );
+      FPUTS( other_token_c( "]" ), gib->fout );
       if ( c_ast_params_count( ast ) > 0 ) {
-        FPUTC( '(', gib->gout );
+        FPUTC( '(', gib->fout );
         c_ast_list_gibberish( &ast->lambda.param_ast_list, gib );
-        FPUTC( ')', gib->gout );
+        FPUTC( ')', gib->fout );
       }
       if ( !c_tid_is_none( ast->type.stids ) )
-        FPRINTF( gib->gout, " %s", c_tid_name_c( ast->type.stids ) );
+        FPRINTF( gib->fout, " %s", c_tid_name_c( ast->type.stids ) );
       if ( !c_tid_is_none( ast->type.atids ) )
-        FPRINTF( gib->gout, " %s", c_tid_name_c( ast->type.atids ) );
+        FPRINTF( gib->fout, " %s", c_tid_name_c( ast->type.atids ) );
       if ( ast->lambda.ret_ast != NULL &&
            !c_ast_is_builtin_any( ast->lambda.ret_ast, TB_auto | TB_void ) ) {
-        FPUTS( " -> ", gib->gout );
+        FPUTS( " -> ", gib->fout );
         c_ast_gibberish_impl( ast->lambda.ret_ast, gib );
       }
       break;
@@ -543,11 +543,11 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         //      cdecl> declare f as function (x) returning double
         //      double f(int x)
         //
-        FPUTS( L_int, gib->gout );
+        FPUTS( L_int, gib->fout );
       }
       if ( (gib->gib_flags & C_GIB_PRINT_CAST) == 0 ) {
         if ( OPT_LANG_IS( PROTOTYPES ) )
-          FPUTC( ' ', gib->gout );
+          FPUTC( ' ', gib->fout );
         c_ast_name_gibberish( ast, gib );
       }
       break;
@@ -556,7 +556,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 )
-        fputs_sp( c_tid_name_c( type.stids & TS_ANY_STORAGE ), gib->gout );
+        fputs_sp( c_tid_name_c( type.stids & TS_ANY_STORAGE ), gib->fout );
       c_ast_gibberish_impl( ast->ptr_ref.to_ast, gib );
       if ( c_ast_space_before_ptr_ref( ast, gib ) )
         gib_print_space_once( gib );
@@ -581,7 +581,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
           !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_typedef ) );
 
         if ( is_more_than_plain_typedef && !opt_east_const )
-          FPUTS( c_type_name_c( &ast->type ), gib->gout );
+          FPUTS( c_type_name_c( &ast->type ), gib->fout );
 
         //
         // Special case: C++23 adds an _Atomic(T) macro for compatibility with
@@ -599,9 +599,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
           c_tid_is_any( type.stids, TS__Atomic );
 
         if ( print_parens_for_Atomic )
-          FPUTC( '(', gib->gout );
+          FPUTC( '(', gib->fout );
         else if ( is_more_than_plain_typedef && !opt_east_const )
-          FPUTC( ' ', gib->gout );
+          FPUTC( ' ', gib->fout );
 
         //
         // Temporarily turn off C_GIB_USING to force printing of the type's
@@ -617,9 +617,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_name_gibberish( ast->tdef.for_ast, gib );
         gib->gib_flags = orig_flags;
         if ( print_parens_for_Atomic )
-          FPUTC( ')', gib->gout );
+          FPUTC( ')', gib->fout );
         if ( is_more_than_plain_typedef && opt_east_const )
-          FPRINTF( gib->gout, " %s", c_type_name_c( &ast->type ) );
+          FPRINTF( gib->fout, " %s", c_type_name_c( &ast->type ) );
       }
 
       c_ast_space_name_gibberish( ast, gib );
@@ -627,7 +627,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_VARIADIC:
-      FPUTS( L_ellipsis, gib->gout );
+      FPUTS( L_ellipsis, gib->fout );
       break;
 
     case K_PLACEHOLDER:
@@ -651,9 +651,9 @@ static void c_ast_list_gibberish( c_ast_list_t const *ast_list,
   bool comma = false;
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     gib_state_t node_gib;
-    gib_init( &node_gib, gib->gib_flags & ~C_GIB_OPT_OMIT_TYPE, gib->gout );
+    gib_init( &node_gib, gib->gib_flags & ~C_GIB_OPT_OMIT_TYPE, gib->fout );
     node_gib.is_nested_scope = gib->is_nested_scope;
-    fput_sep( ", ", &comma, gib->gout );
+    fput_sep( ", ", &comma, gib->fout );
     c_ast_gibberish_impl( c_param_ast( ast_node ), &node_gib );
   } // for
 }
@@ -709,7 +709,7 @@ static void c_ast_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     //
     gib->is_nested_scope ?
       c_sname_local_name( &ast->sname ) : c_sname_full_name( &ast->sname ),
-    gib->gout
+    gib->fout
   );
 }
 
@@ -750,7 +750,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       case K_RVALUE_REFERENCE:
         switch ( ast->kind ) {
           case K_APPLE_BLOCK:
-            FPRINTF( gib->gout, "(%s", c_op_token_c( C_OP_CARET ) );
+            FPRINTF( gib->fout, "(%s", c_op_token_c( C_OP_CARET ) );
             break;
 
           default:
@@ -763,7 +763,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
             //
             // so we need to add parentheses.
             //
-            FPUTC( '(', gib->gout );
+            FPUTC( '(', gib->fout );
 
             if ( c_tid_is_any( ast->type.atids, TA_ANY_MSC_CALL ) ) {
               //
@@ -773,7 +773,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
               //      void (__stdcall *pf)(int, int)
               //
               c_tid_t const msc_call_atids = ast->type.atids & TA_ANY_MSC_CALL;
-              FPRINTF( gib->gout, "%s ", c_tid_name_c( msc_call_atids ) );
+              FPRINTF( gib->fout, "%s ", c_tid_name_c( msc_call_atids ) );
             }
             break;
 
@@ -795,7 +795,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
           c_ast_postfix_gibberish( parent_ast, gib );
 
         if ( (ast->kind & K_ANY_POINTER) == 0 )
-          FPUTC( ')', gib->gout );
+          FPUTC( ')', gib->fout );
         break;
 
       case K_CLASS_STRUCT_UNION:
@@ -818,13 +818,13 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     // printing the gibberish for.
     //
     if ( ast->kind == K_APPLE_BLOCK ) {
-      FPRINTF( gib->gout, "(%s", c_op_token_c( C_OP_CARET ) );
+      FPRINTF( gib->fout, "(%s", c_op_token_c( C_OP_CARET ) );
       if ( opt_alt_tokens && !c_sname_empty( &ast->sname ) )
-        FPUTC( ' ', gib->gout );
+        FPUTC( ' ', gib->fout );
     }
     c_ast_space_name_gibberish( ast, gib );
     if ( ast->kind == K_APPLE_BLOCK )
-      FPUTC( ')', gib->gout );
+      FPUTC( ')', gib->fout );
   }
 
   //
@@ -840,13 +840,13 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_UDEF_LIT:
-      FPUTC( '(', gib->gout );
+      FPUTC( '(', gib->fout );
       c_ast_list_gibberish( &ast->func.param_ast_list, gib );
-      FPUTC( ')', gib->gout );
+      FPUTC( ')', gib->fout );
       break;
     case K_DESTRUCTOR:
     case K_UDEF_CONV:
-      FPUTS( "()", gib->gout );
+      FPUTS( "()", gib->fout );
       break;
     case K_BUILTIN:
     case K_CAPTURE:
@@ -909,11 +909,11 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
         //
         gib_print_space_once( gib );
       }
-      FPUTC( '*', gib->gout );
+      FPUTC( '*', gib->fout );
       break;
 
     case K_POINTER_TO_MEMBER:
-      FPRINTF( gib->gout,
+      FPRINTF( gib->fout,
         "%s::*", c_sname_full_name( &ast->ptr_mbr.class_sname )
       );
       c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
@@ -924,18 +924,18 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_REFERENCE:
       if ( opt_alt_tokens ) {
         gib_print_space_once( gib );
-        FPUTS( "bitand ", gib->gout );
+        FPUTS( "bitand ", gib->fout );
       } else {
-        FPUTC( '&', gib->gout );
+        FPUTC( '&', gib->fout );
       }
       break;
 
     case K_RVALUE_REFERENCE:
       if ( opt_alt_tokens ) {
         gib_print_space_once( gib );
-        FPUTS( "and ", gib->gout );
+        FPUTS( "and ", gib->fout );
       } else {
-        FPUTS( "&&", gib->gout );
+        FPUTS( "&&", gib->fout );
       }
       break;
 
@@ -944,7 +944,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   } // switch
 
   if ( qual_stids != TS_NONE ) {
-    FPUTS( c_tid_name_c( qual_stids ), gib->gout );
+    FPUTS( c_tid_name_c( qual_stids ), gib->fout );
 
     if ( (gib->gib_flags & (C_GIB_PRINT_DECL | C_GIB_TYPEDEF)) != 0 &&
          c_ast_find_name( ast, C_VISIT_UP ) != NULL ) {
@@ -955,7 +955,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       //
       //      char *const p;
       //                 ^
-      FPUTC( ' ', gib->gout );
+      FPUTC( ' ', gib->fout );
       gib->printed_space = true;
     }
   }
@@ -1069,25 +1069,25 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_CONSTRUCTOR:
-      FPUTS( c_sname_full_name( &ast->sname ), gib->gout );
+      FPUTS( c_sname_full_name( &ast->sname ), gib->fout );
       break;
 
     case K_DESTRUCTOR:
       if ( c_sname_count( &ast->sname ) > 1 )
-        FPRINTF( gib->gout, "%s::", c_sname_scope_name( &ast->sname ) );
+        FPRINTF( gib->fout, "%s::", c_sname_scope_name( &ast->sname ) );
       if ( opt_alt_tokens )
-        FPUTS( "compl ", gib->gout );
+        FPUTS( "compl ", gib->fout );
       else
-        FPUTC( '~', gib->gout );
-      FPUTS( c_sname_local_name( &ast->sname ), gib->gout );
+        FPUTC( '~', gib->fout );
+      FPUTS( c_sname_local_name( &ast->sname ), gib->fout );
       break;
 
     case K_OPERATOR:
       gib_print_space_once( gib );
       if ( !c_sname_empty( &ast->sname ) )
-        FPRINTF( gib->gout, "%s::", c_sname_full_name( &ast->sname ) );
+        FPRINTF( gib->fout, "%s::", c_sname_full_name( &ast->sname ) );
       char const *const token = c_op_token_c( ast->oper.operator->op_id );
-      FPRINTF( gib->gout,
+      FPRINTF( gib->fout,
         "operator%s%s", isalpha( token[0] ) ? " " : "", token
       );
       break;
@@ -1095,8 +1095,8 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_UDEF_LIT:
       gib_print_space_once( gib );
       if ( c_sname_count( &ast->sname ) > 1 )
-        FPRINTF( gib->gout, "%s::", c_sname_scope_name( &ast->sname ) );
-      FPRINTF( gib->gout,
+        FPRINTF( gib->fout, "%s::", c_sname_scope_name( &ast->sname ) );
+      FPRINTF( gib->fout,
         "operator\"\" %s", c_sname_local_name( &ast->sname )
       );
       break;
@@ -1113,16 +1113,16 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
  *
  * @param gib The gib_state to initialize.
  * @param gib_flags The gibberish flags to use.
- * @param gout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  */
-static void gib_init( gib_state_t *gib, unsigned gib_flags, FILE *gout ) {
+static void gib_init( gib_state_t *gib, unsigned gib_flags, FILE *fout ) {
   assert( gib != NULL );
   assert( is_1n_bit_only_in_set( gib_flags, C_GIB_ANY ) );
-  assert( gout != NULL );
+  assert( fout != NULL );
 
   MEM_ZERO( gib );
   gib->gib_flags = gib_flags;
-  gib->gout = gout;
+  gib->fout = fout;
   gib->printed_space = (gib_flags & C_GIB_OPT_OMIT_TYPE) != 0;
 }
 
@@ -1195,7 +1195,7 @@ static char const* graph_token_c( char const *token ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
+void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *fout ) {
   assert( ast != NULL );
   assert( is_1n_bit_only_in_set( gib_flags, C_GIB_ANY ) );
   assert(
@@ -1203,7 +1203,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
       gib_flags, C_GIB_DECL_ANY | C_GIB_PRINT_DECL | C_GIB_PRINT_CAST
     )
   );
-  assert( gout != NULL );
+  assert( fout != NULL );
 
   if ( c_ast_print_as_using( ast ) ) {
     //
@@ -1216,7 +1216,7 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
     // c_typedef_gibberish().
     //
     c_typedef_t const tdef = C_TYPEDEF_LIT( ast, C_GIB_USING );
-    c_typedef_gibberish( &tdef, C_GIB_USING, gout );
+    c_typedef_gibberish( &tdef, C_GIB_USING, fout );
   }
   else {
     if ( (gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 ) {
@@ -1233,23 +1233,23 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout ) {
         case C_ALIGNAS_NONE:
           break;
         case C_ALIGNAS_BYTES:
-          FPRINTF( gout, "%s(%u) ", alignas_name(), ast->align.bytes );
+          FPRINTF( fout, "%s(%u) ", alignas_name(), ast->align.bytes );
           break;
         case C_ALIGNAS_TYPE:
-          FPRINTF( gout, "%s(", alignas_name() );
-          c_ast_gibberish( ast->align.type_ast, C_GIB_PRINT_DECL, gout );
-          FPUTS( ") ", gout );
+          FPRINTF( fout, "%s(", alignas_name() );
+          c_ast_gibberish( ast->align.type_ast, C_GIB_PRINT_DECL, fout );
+          FPUTS( ") ", fout );
           break;
       } // switch
     }
 
     gib_state_t gib;
-    gib_init( &gib, gib_flags, gout );
+    gib_init( &gib, gib_flags, fout );
     c_ast_gibberish_impl( ast, &gib );
   }
 
   if ( (gib_flags & C_GIB_OPT_SEMICOLON) != 0 )
-    FPUTC( ';', gout );
+    FPUTC( ';', fout );
 }
 
 char const* c_cast_gibberish( c_cast_kind_t kind ) {
@@ -1265,10 +1265,10 @@ char const* c_cast_gibberish( c_cast_kind_t kind ) {
 }
 
 void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
-                                 FILE *gout ) {
+                                 FILE *fout ) {
   assert( sname_list != NULL );
   assert( ast != NULL );
-  assert( gout != NULL );
+  assert( fout != NULL );
 
   unsigned decl_flags = C_GIB_PRINT_DECL;
   if ( slist_len( sname_list ) > 1 )
@@ -1293,7 +1293,7 @@ void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
     bool const is_last_sname = sname_node->next == NULL;
     if ( is_last_sname && opt_semicolon )
       decl_flags |= C_GIB_OPT_SEMICOLON;
-    c_ast_gibberish( ast, decl_flags, gout );
+    c_ast_gibberish( ast, decl_flags, fout );
     if ( is_last_sname )
       continue;
     if ( print_as_using ) {
@@ -1302,7 +1302,7 @@ void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
       // declarations, they need to be separated by newlines.  (The final
       // newine is handled below.)
       //
-      FPUTC( '\n', gout );
+      FPUTC( '\n', fout );
     }
     else {
       //
@@ -1317,19 +1317,19 @@ void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
       // the gibberish for `y` must not print the `int` again.
       //
       decl_flags |= C_GIB_OPT_OMIT_TYPE;
-      FPUTS( ", ", gout );
+      FPUTS( ", ", fout );
     }
   } // for
 }
 
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
-                          FILE *gout ) {
+                          FILE *fout ) {
   assert( tdef != NULL );
   assert( is_1_bit_in_set( gib_flags, C_GIB_DECL_ANY ) );
   assert(
     is_1n_bit_only_in_set( gib_flags, C_GIB_DECL_ANY | C_GIB_OPT_SEMICOLON )
   );
-  assert( gout != NULL );
+  assert( fout != NULL );
 
   size_t scope_close_braces_to_print = 0;
   c_type_t scope_type = T_NONE;
@@ -1407,7 +1407,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
         scope_type.stids &= c_tid_compl( TS_inline );
       }
 
-      FPRINTF( gout,
+      FPRINTF( fout,
         "%s %s %s ",
         c_type_name_c( &scope_type ), c_sname_scope_name( sname ),
         other_token_c( "{" )
@@ -1422,7 +1422,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
       //
       FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
         scope_type = c_scope_data( scope )->type;
-        FPRINTF( gout,
+        FPRINTF( fout,
           "%s %s %s ",
           c_type_name_c( &scope_type ), c_scope_data( scope )->name,
           other_token_c( "{" )
@@ -1468,32 +1468,32 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
   bool const print_using = (gib_flags & C_GIB_USING) != 0 && !is_ecsu;
 
   if ( print_typedef ) {
-    FPUTS( "typedef ", gout );
+    FPUTS( "typedef ", fout );
   }
   else if ( print_using ) {
-    FPRINTF( gout, "using %s ", c_sname_local_name( sname ) );
+    FPRINTF( fout, "using %s ", c_sname_local_name( sname ) );
     if ( tdef->ast->type.atids != TA_NONE )
-      FPRINTF( gout, "%s ", c_tid_name_c( tdef->ast->type.atids ) );
-    FPUTS( "= ", gout );
+      FPRINTF( fout, "%s ", c_tid_name_c( tdef->ast->type.atids ) );
+    FPUTS( "= ", fout );
   }
 
   c_sname_cleanup( &temp_sname );
 
   gib_state_t gib;
-  gib_init( &gib, print_using ? C_GIB_USING : C_GIB_TYPEDEF, gout );
+  gib_init( &gib, print_using ? C_GIB_USING : C_GIB_TYPEDEF, fout );
   gib.printed_typedef = print_typedef;
   gib.is_nested_scope = scope_close_braces_to_print > 0;
   c_ast_gibberish_impl( tdef->ast, &gib );
 
   if ( scope_close_braces_to_print > 0 ) {
-    FPUTC( ';', gout );
+    FPUTC( ';', fout );
     while ( scope_close_braces_to_print-- > 0 )
-      FPRINTF( gout, " %s", other_token_c( "}" ) );
+      FPRINTF( fout, " %s", other_token_c( "}" ) );
   }
 
   if ( (gib_flags & C_GIB_OPT_SEMICOLON) != 0 &&
        scope_type.btids != TB_namespace ) {
-    FPUTC( ';', gout );
+    FPUTC( ';', fout );
   }
 }
 

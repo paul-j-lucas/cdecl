@@ -1411,12 +1411,12 @@ bool true_clear( bool *flag ) {
  * @param sep The separator to print.
  * @param sep_flag If `true`, prints \a sep; if `false`, prints nothing, but
  * sets it to `true`.  The flag should be `false` initially.
- * @param sout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  */
 C_UTIL_H_INLINE
-void fput_sep( char const *sep, bool *sep_flag, FILE *sout ) {
+void fput_sep( char const *sep, bool *sep_flag, FILE *fout ) {
   if ( true_or_set( sep_flag ) )
-    FPUTS( sep, sout );
+    FPUTS( sep, fout );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

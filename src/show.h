@@ -48,7 +48,7 @@
  *
  * @param tdef The \ref c_typedef to show.
  * @param decl_flags The declaration flags to use.
- * @param tout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  *
  * @note A newline _is_ printed.
  *
@@ -58,7 +58,7 @@
  * @sa print_type_decl()
  * @sa show_types()
  */
-void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *tout );
+void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *fout );
 
 /**
  * Shows (prints) the definition of defined types.
@@ -66,13 +66,13 @@ void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *tout );
  * @param show Which types to show.
  * @param glob The glob string; may be NULL.
  * @param decl_flags The declaration flags to use.
- * @param tout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  *
  * @sa print_type_decl()
  * @sa show_type()
  */
 void show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
-                 FILE *tout );
+                 FILE *fout );
 
 ///////////////////////////////////////////////////////////////////////////////
 

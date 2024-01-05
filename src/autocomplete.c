@@ -783,9 +783,9 @@ done:
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void readline_init( char const *prog_name, FILE *rin, FILE *rout ) {
-  assert( rin != NULL );
-  assert( rout != NULL );
+void readline_init( char const *prog_name, FILE *fin, FILE *fout ) {
+  assert( fin != NULL );
+  assert( fout != NULL );
 
   // Allow almost any non-identifier character to break a word -- except '-'
   // since we use that as part of hyphenated keywords.
@@ -793,8 +793,8 @@ void readline_init( char const *prog_name, FILE *rin, FILE *rout ) {
     CONST_CAST( char*, "\t\n \"!#$%&'()*+,./:;<=>?@[\\]^`{|}" );
 
   rl_attempted_completion_function = cdecl_rl_completion;
-  rl_instream = rin;
-  rl_outstream = rout;
+  rl_instream = fin;
+  rl_outstream = fout;
   rl_readline_name = CONST_CAST( char*, prog_name );
 }
 

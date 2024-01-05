@@ -58,7 +58,7 @@ struct show_info {
   cdecl_show_t  show;                   ///< Which types to show.
   c_sglob_t     sglob;                  ///< Scoped glob to match, if any.
   unsigned      decl_flags;             ///< Declaration flags.
-  FILE         *tout;                   ///< Where to print the types.
+  FILE         *fout;                   ///< Where to print the types.
 };
 typedef struct show_info show_info_t;
 
@@ -97,7 +97,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
     goto no_show;
   }
 
-  show_type( tdef, si->decl_flags, si->tout );
+  show_type( tdef, si->decl_flags, si->fout );
 
 no_show:
   return /*stop=*/false;
@@ -105,9 +105,9 @@ no_show:
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *tout ) {
+void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *fout ) {
   assert( tdef != NULL );
-  assert( tout != NULL );
+  assert( fout != NULL );
 
   if ( (decl_flags & C_TYPE_DECL_ANY) == 0 )
     decl_flags |= tdef->decl_flags;
@@ -115,18 +115,18 @@ void show_type( c_typedef_t const *tdef, unsigned decl_flags, FILE *tout ) {
   if ( opt_semicolon )
     decl_flags |= C_GIB_OPT_SEMICOLON;
 
-  print_type_decl( tdef, decl_flags, tout );
-  FPUTC( '\n', tout );
+  print_type_decl( tdef, decl_flags, fout );
+  FPUTC( '\n', fout );
 }
 
 void show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
-                 FILE *tout ) {
-  assert( tout != NULL );
+                 FILE *fout ) {
+  assert( fout != NULL );
 
   show_info_t si = {
     .show = show,
     .decl_flags = decl_flags,
-    .tout = tout
+    .fout = fout
   };
   c_sglob_init( &si.sglob );
   c_sglob_parse( glob, &si.sglob );

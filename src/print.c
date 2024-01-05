@@ -271,20 +271,20 @@ error:
  * @note A newline is _not_ printed.
  *
  * @param ast The \ref c_ast to print.
- * @param pout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  */
-static void print_ast_name_aka( c_ast_t const *ast, FILE *pout ) {
+static void print_ast_name_aka( c_ast_t const *ast, FILE *fout ) {
   assert( ast != NULL );
   assert( ast->kind != K_TYPEDEF );
   assert( !c_sname_empty( &ast->sname ) );
-  assert( pout != NULL );
+  assert( fout != NULL );
 
-  FPRINTF( pout, "\"%s\" (aka, \"", c_sname_full_name( &ast->sname ) );
+  FPRINTF( fout, "\"%s\" (aka, \"", c_sname_full_name( &ast->sname ) );
   // Look-up the type so we can print it how it was originally defined.
   c_typedef_t const *const tdef = c_typedef_find_sname( &ast->sname );
   assert( tdef != NULL );
-  print_type_ast( tdef, pout );
-  FPUTS( "\")", pout );
+  print_type_ast( tdef, fout );
+  FPUTS( "\")", fout );
 }
 
 /**
@@ -558,34 +558,34 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
   va_end( args );
 }
 
-void print_ast_kind_aka( c_ast_t const *ast, FILE *pout ) {
+void print_ast_kind_aka( c_ast_t const *ast, FILE *fout ) {
   assert( ast != NULL );
-  assert( pout != NULL );
+  assert( fout != NULL );
 
   c_ast_t const *const raw_ast = c_ast_untypedef( ast );
-  FPUTS( c_kind_name( raw_ast->kind ), pout );
+  FPUTS( c_kind_name( raw_ast->kind ), fout );
 
   if ( raw_ast != ast ) {
-    FPUTS( " type ", pout );
-    print_ast_name_aka( raw_ast, pout );
+    FPUTS( " type ", fout );
+    print_ast_name_aka( raw_ast, fout );
   }
 }
 
-void print_ast_type_aka( c_ast_t const *ast, FILE *pout ) {
+void print_ast_type_aka( c_ast_t const *ast, FILE *fout ) {
   assert( ast != NULL );
-  assert( pout != NULL );
+  assert( fout != NULL );
 
   c_ast_t const *const raw_ast = c_ast_untypedef( ast );
   if ( raw_ast == ast ) {               // not a typedef
-    FPUTC( '"', pout );
+    FPUTC( '"', fout );
     if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
-      c_ast_english( ast, C_ENG_DECL | C_ENG_OPT_OMIT_DECLARE, pout );
+      c_ast_english( ast, C_ENG_DECL | C_ENG_OPT_OMIT_DECLARE, fout );
     else
-      c_ast_gibberish( ast, C_GIB_USING, pout );
-    FPUTC( '"', pout );
+      c_ast_gibberish( ast, C_GIB_USING, fout );
+    FPUTC( '"', fout );
   }
   else {
-    print_ast_name_aka( raw_ast, pout );
+    print_ast_name_aka( raw_ast, fout );
   }
 }
 
@@ -663,26 +663,26 @@ bool print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
   return true;
 }
 
-void print_type_ast( c_typedef_t const *tdef, FILE *pout ) {
+void print_type_ast( c_typedef_t const *tdef, FILE *fout ) {
   assert( tdef != NULL );
-  assert( pout != NULL );
+  assert( fout != NULL );
 
   if ( (tdef->decl_flags & C_ENG_DECL) != 0 )
-    c_ast_english( tdef->ast, tdef->decl_flags | C_ENG_OPT_OMIT_DECLARE, pout );
+    c_ast_english( tdef->ast, tdef->decl_flags | C_ENG_OPT_OMIT_DECLARE, fout );
   else
-    c_ast_gibberish( tdef->ast, C_GIB_USING, pout );
+    c_ast_gibberish( tdef->ast, C_GIB_USING, fout );
 }
 
 void print_type_decl( c_typedef_t const *tdef, unsigned decl_flags,
-                      FILE *pout ) {
+                      FILE *fout ) {
   assert( tdef != NULL );
   assert( is_1_bit_in_set( decl_flags, C_TYPE_DECL_ANY ) );
-  assert( pout != NULL );
+  assert( fout != NULL );
 
   if ( (decl_flags & C_ENG_DECL) != 0 )
-    c_typedef_english( tdef, pout );
+    c_typedef_english( tdef, fout );
   else
-    c_typedef_gibberish( tdef, decl_flags, pout );
+    c_typedef_gibberish( tdef, decl_flags, fout );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

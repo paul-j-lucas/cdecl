@@ -50,7 +50,7 @@
  *
  * @param ast The AST to explain.
  * @param eng_flags The English flags to use; _must_ include #C_ENG_DECL.
- * @param eout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  *
  * @note A newline is _not_ printed.
  *
@@ -60,13 +60,13 @@
  * @sa print_type_decl()
  * @sa show_type()
  */
-void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *eout );
+void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *fout );
 
 /**
  * Explains \a ast_list in pseudo-English.
  *
  * @param ast_list The list of AST nodes to explain.
- * @param eout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  *
  * @note A newline _is_ printed.
  *
@@ -74,7 +74,7 @@ void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *eout );
  * @sa c_ast_gibberish()
  * @sa c_typedef_english()
  */
-void c_ast_list_english( c_ast_list_t const *ast_list, FILE *eout );
+void c_ast_list_english( c_ast_list_t const *ast_list, FILE *fout );
 
 /**
  * Given \a kind, gets the associated English literal.
@@ -91,26 +91,26 @@ char const* c_cast_english( c_cast_kind_t kind );
  * Prints \a sname in pseudo-English.
  *
  * @param sname The name to print.
- * @param eout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  *
  * @note A newline is _not_ printed.
  *
  * @sa c_sname_full_name()
  */
-void c_sname_english( c_sname_t const *sname, FILE *eout );
+void c_sname_english( c_sname_t const *sname, FILE *fout );
 
 /**
  * Explains \a tdef as a type in pseudo-English.
  *
  * @param tdef The type to explain.
- * @param eout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  *
  * @sa c_ast_english()
  * @sa c_typedef_gibberish()
  * @sa print_type_decl()
  * @sa show_type()
  */
-void c_typedef_english( c_typedef_t const *tdef, FILE *eout );
+void c_typedef_english( c_typedef_t const *tdef, FILE *fout );
 
 ///////////////////////////////////////////////////////////////////////////////
 

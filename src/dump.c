@@ -51,18 +51,18 @@
   DUMP_KEY( (D), KEY ": " ); c_ast_list_dump_impl( (LIST), (D) ); )
 
 #define DUMP_FORMAT(D,...) BLOCK(                   \
-  FPUTNSP( (D)->indent * DUMP_INDENT, (D)->dout );  \
-  FPRINTF( (D)->dout, __VA_ARGS__ ); )
+  FPUTNSP( (D)->indent * DUMP_INDENT, (D)->fout );  \
+  FPRINTF( (D)->fout, __VA_ARGS__ ); )
 
 #define DUMP_KEY(D,...) BLOCK(                \
-  fput_sep( ",\n", &(D)->comma, (D)->dout );  \
+  fput_sep( ",\n", &(D)->comma, (D)->fout );  \
   DUMP_FORMAT( (D), __VA_ARGS__ ); )
 
 #define DUMP_LOC(D,KEY,LOC) BLOCK( \
-  DUMP_KEY( (D), KEY ": " ); c_loc_dump( (LOC), (D)->dout ); )
+  DUMP_KEY( (D), KEY ": " ); c_loc_dump( (LOC), (D)->fout ); )
 
 #define DUMP_SNAME(D,KEY,SNAME) BLOCK( \
-  DUMP_KEY( (D), KEY ": " ); c_sname_dump( (SNAME), (D)->dout ); )
+  DUMP_KEY( (D), KEY ": " ); c_sname_dump( (SNAME), (D)->fout ); )
 
 /// @endcond
 
@@ -77,7 +77,7 @@
  * Dump state.
  */
 struct dump_state {
-  FILE     *dout;                       ///< File to dump to.
+  FILE     *fout;                       ///< File to dump to.
   unsigned  indent;                     ///< Current indentation.
   bool      comma;                      ///< Print a comma?
 };
@@ -149,7 +149,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
   assert( dump != NULL );
 
   if ( ast == NULL ) {
-    FPUTS( "null", dump->dout );
+    FPUTS( "null", dump->fout );
     return;
   }
 
@@ -184,7 +184,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
   }
   DUMP_LOC( dump, "loc", &ast->loc );
   DUMP_KEY( dump, "type: " );
-  c_type_dump( &ast->type, dump->dout );
+  c_type_dump( &ast->type, dump->fout );
 
   json_state_t kind_json = JSON_INIT;
 
@@ -194,16 +194,16 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
       DUMP_KEY( dump, "size: " );
       switch ( ast->array.kind ) {
         case C_ARRAY_EMPTY_SIZE:
-          FPUTS( "\"unspecified\"", dump->dout );
+          FPUTS( "\"unspecified\"", dump->fout );
           break;
         case C_ARRAY_INT_SIZE:
-          FPRINTF( dump->dout, "%u", ast->array.size_int );
+          FPRINTF( dump->fout, "%u", ast->array.size_int );
           break;
         case C_ARRAY_NAMED_SIZE:
-          FPRINTF( dump->dout, "\"%s\"", ast->array.size_name );
+          FPRINTF( dump->fout, "\"%s\"", ast->array.size_name );
           break;
         case C_ARRAY_VLA_STAR:
-          FPUTS( "'*'", dump->dout );
+          FPUTS( "'*'", dump->fout );
           break;
       } // switch
       DUMP_AST( dump, "of_ast", ast->array.of_ast );
@@ -228,19 +228,19 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
       DUMP_KEY( dump, "kind: " );
       switch ( ast->capture.kind ) {
         case C_CAPTURE_COPY:
-          FPUTS( "'='", dump->dout );
+          FPUTS( "'='", dump->fout );
           break;
         case C_CAPTURE_REFERENCE:
-          FPUTS( "'&'", dump->dout );
+          FPUTS( "'&'", dump->fout );
           break;
         case C_CAPTURE_STAR_THIS:
-          FPUTS( "\"*this\"", dump->dout );
+          FPUTS( "\"*this\"", dump->fout );
           break;
         case C_CAPTURE_THIS:
-          FPUTS( "\"this\"", dump->dout );
+          FPUTS( "\"this\"", dump->fout );
           break;
         case C_CAPTURE_VARIABLE:
-          FPUTS( "\"variable\"", dump->dout );
+          FPUTS( "\"variable\"", dump->fout );
           break;
       } // switch
       json_object_end( kind_json, dump );
@@ -276,16 +276,16 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
       DUMP_KEY( dump, "member: \"" );
       switch ( ast->func.member ) {
         case C_FUNC_UNSPECIFIED:
-          FPUTS( "unspecified", dump->dout );
+          FPUTS( "unspecified", dump->fout );
           break;
         case C_FUNC_MEMBER:
-          FPUTS( "member", dump->dout );
+          FPUTS( "member", dump->fout );
           break;
         case C_FUNC_NON_MEMBER:
-          FPUTS( "non-member", dump->dout );
+          FPUTS( "non-member", dump->fout );
           break;
       } // switch
-      FPUTC( '"', dump->dout );
+      FPUTC( '"', dump->fout );
       FALLTHROUGH;
 
     case K_APPLE_BLOCK:
@@ -356,20 +356,20 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list,
   assert( dump != NULL );
 
   if ( slist_empty( list ) ) {
-    FPUTS( "[]", dump->dout );
+    FPUTS( "[]", dump->fout );
     return;
   }
-  FPUTS( "[\n", dump->dout );
+  FPUTS( "[\n", dump->fout );
 
   dump_state_t list_dump;
-  dump_init( &list_dump, dump->indent + 1, dump->dout );
+  dump_init( &list_dump, dump->indent + 1, dump->fout );
 
   FOREACH_SLIST_NODE( node, list ) {
     DUMP_KEY( &list_dump, "%s", "" );
     c_ast_dump_impl( c_param_ast( node ), &list_dump );
   } // for
 
-  FPUTC( '\n', dump->dout );
+  FPUTC( '\n', dump->fout );
   DUMP_FORMAT( dump, "]" );
 }
 
@@ -377,15 +377,15 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list,
  * Dumps \a loc in [JSON5](https://json5.org) format (for debugging).
  *
  * @param loc The location to dump.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  */
-static void c_loc_dump( c_loc_t const *loc, FILE *dout ) {
+static void c_loc_dump( c_loc_t const *loc, FILE *fout ) {
   assert( loc != NULL );
-  assert( dout != NULL );
-  FPRINTF( dout, "{ first_column: %d", loc->first_column );
+  assert( fout != NULL );
+  FPRINTF( fout, "{ first_column: %d", loc->first_column );
   if ( loc->last_column != loc->first_column )
-    FPRINTF( dout, ", last_column: %d", loc->last_column );
-  FPUTS( " }", dout );
+    FPRINTF( fout, ", last_column: %d", loc->last_column );
+  FPUTS( " }", fout );
 }
 
 /**
@@ -415,15 +415,15 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
  *
  * @param dump The dump_state to initialize.
  * @param indent The current indent.
- * @param dout The `FILE` to dump to.
+ * @param fout The `FILE` to dump to.
  */
-static void dump_init( dump_state_t *dump, unsigned indent, FILE *dout ) {
+static void dump_init( dump_state_t *dump, unsigned indent, FILE *fout ) {
   assert( dump != NULL );
-  assert( dout != NULL );
+  assert( fout != NULL );
 
   MEM_ZERO( dump );
   dump->indent = indent;
-  dump->dout = dout;
+  dump->fout = fout;
 }
 
 /**
@@ -470,7 +470,7 @@ static json_state_t json_object_begin( json_state_t json, char const *key,
     key = null_if_empty( key );
     if ( key != NULL )
       DUMP_KEY( dump, "%s: ", key );
-    FPUTS( "{\n", dump->dout );
+    FPUTS( "{\n", dump->fout );
     json = JSON_OBJ_BEGUN;
     if ( dump->comma ) {
       json |= JSON_COMMA;
@@ -493,7 +493,7 @@ static void json_object_end( json_state_t json, dump_state_t *dump ) {
   assert( json != JSON_INIT );
   assert( dump != NULL );
 
-  FPUTC( '\n', dump->dout );
+  FPUTC( '\n', dump->fout );
   dump->comma = !!(json & JSON_COMMA);
   --dump->indent;
   DUMP_FORMAT( dump, "}" );
@@ -501,34 +501,34 @@ static void json_object_end( json_state_t json, dump_state_t *dump ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void bool_dump( bool value, FILE *dout ) {
-  assert( dout != NULL );
-  FPUTS( value ? L_true : L_false, dout );
+void bool_dump( bool value, FILE *fout ) {
+  assert( fout != NULL );
+  FPUTS( value ? L_true : L_false, fout );
 }
 
-void c_alignas_dump( c_alignas_t const *align, FILE *dout ) {
+void c_alignas_dump( c_alignas_t const *align, FILE *fout ) {
   dump_state_t dump;
-  dump_init( &dump, 1, dout );
+  dump_init( &dump, 1, fout );
   c_alignas_dump_impl( align, &dump );
 }
 
-void c_ast_dump( c_ast_t const *ast, FILE *dout ) {
+void c_ast_dump( c_ast_t const *ast, FILE *fout ) {
   dump_state_t dump;
-  dump_init( &dump, 1, dout );
+  dump_init( &dump, 1, fout );
   c_ast_dump_impl( ast, &dump );
 }
 
-void c_ast_list_dump( c_ast_list_t const *list, FILE *dout ) {
+void c_ast_list_dump( c_ast_list_t const *list, FILE *fout ) {
   dump_state_t dump;
-  dump_init( &dump, 1, dout );
+  dump_init( &dump, 1, fout );
   c_ast_list_dump_impl( list, &dump );
 }
 
-void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *dout ) {
+void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *fout ) {
   assert( astp != NULL );
 
   dump_state_t dump;
-  dump_init( &dump, 1, dout );
+  dump_init( &dump, 1, fout );
 
   json_state_t const json = json_object_begin( JSON_INIT, /*key=*/NULL, &dump );
   DUMP_AST( &dump, "ast", astp->ast );
@@ -536,62 +536,62 @@ void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *dout ) {
   json_object_end( json, &dump );
 }
 
-void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
+void c_sname_dump( c_sname_t const *sname, FILE *fout ) {
   assert( sname != NULL );
-  assert( dout != NULL );
+  assert( fout != NULL );
 
   if ( c_sname_empty( sname ) ) {
-    FPUTS( "null", dout );
+    FPUTS( "null", fout );
     return;
   }
 
-  FPRINTF( dout, "{ string: \"%s\", scopes: \"", c_sname_full_name( sname ) );
+  FPRINTF( fout, "{ string: \"%s\", scopes: \"", c_sname_full_name( sname ) );
 
   bool colon2 = false;
   FOREACH_SNAME_SCOPE( scope, sname ) {
-    fput_sep( "::", &colon2, dout );
+    fput_sep( "::", &colon2, fout );
     c_type_t const *const t = &c_scope_data( scope )->type;
-    FPUTS( c_type_is_none( t ) ? "none" : c_type_name_c( t ), dout );
+    FPUTS( c_type_is_none( t ) ? "none" : c_type_name_c( t ), fout );
   } // for
 
-  FPUTS( "\" }", dout );
+  FPUTS( "\" }", fout );
 }
 
-void c_sname_list_dump( slist_t const *list, FILE *dout ) {
+void c_sname_list_dump( slist_t const *list, FILE *fout ) {
   assert( list != NULL );
-  assert( dout != NULL );
+  assert( fout != NULL );
 
   if ( slist_empty( list ) ) {
-    FPUTS( "[]", dout );
+    FPUTS( "[]", fout );
     return;
   }
 
-  FPUTS( "[ ", dout );
+  FPUTS( "[ ", fout );
 
   bool comma = false;
   FOREACH_SLIST_NODE( node, list ) {
-    fput_sep( ", ", &comma, dout );
-    c_sname_dump( node->data, dout );
+    fput_sep( ", ", &comma, fout );
+    c_sname_dump( node->data, fout );
   } // for
 
-  FPUTS( " ]", dout );
+  FPUTS( " ]", fout );
 }
 
-void c_tid_dump( c_tid_t tid, FILE *dout ) {
-  assert( dout != NULL );
-  FPRINTF( dout,
+void c_tid_dump( c_tid_t tid, FILE *fout ) {
+  assert( fout != NULL );
+  FPRINTF( fout,
     "{ %s: 0x%" PRIX_C_TID_T ", string: \"%s\" }",
     c_tpid_name( c_tid_tpid( tid ) ), tid,
     c_tid_is_none( tid ) ? "none" : c_tid_name_c( tid )
   );
 }
 
-void c_type_dump( c_type_t const *type, FILE *dout ) {
+void c_type_dump( c_type_t const *type, FILE *fout ) {
   assert( type != NULL );
-  assert( dout != NULL );
+  assert( fout != NULL );
 
   char const *const type_name = c_type_name_c( type );
-  FPRINTF( dout,
+  FPRINTF( fout,
     "{ %s: 0x%" PRIX_C_TID_T
     ", %s: 0x%" PRIX_C_TID_T
     ", %s: 0x%" PRIX_C_TID_T

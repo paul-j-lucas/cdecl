@@ -51,7 +51,7 @@
  * @param ast The AST to print.
  * @param gib_flags The gibberish flags to use; _must_ include one of
  * #C_GIB_PRINT_CAST, #C_GIB_PRINT_DECL, or #C_GIB_USING.
- * @param gout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  *
  * @sa c_ast_english()
  * @sa c_sname_list_ast_gibberish()
@@ -60,7 +60,7 @@
  * @sa print_type_decl()
  * @sa show_type()
  */
-void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *gout );
+void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *fout );
 
 /**
  * Given \a kind, gets the associated C++ literal.
@@ -99,12 +99,12 @@ char const* c_cast_gibberish( c_cast_kind_t kind );
  *
  * @param sname_list The names to print as \a ast.
  * @param ast The AST that is the type to print.
- * @param gout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  *
  * @sa c_ast_gibberish()
  */
 void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
-                                 FILE *gout );
+                                 FILE *fout );
 
 /**
  * Prints \a tdef as a C/C++ type declaration.
@@ -112,7 +112,7 @@ void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
  * @param tdef The type to print.
  * @param gib_flags The gibberish flags to use; _must_ include either
  * #C_GIB_TYPEDEF or #C_GIB_USING.
- * @param gout The `FILE` to print to.
+ * @param fout The `FILE` to print to.
  *
  * @sa c_ast_gibberish()
  * @sa c_typedef_english()
@@ -120,7 +120,7 @@ void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
  * @sa show_type()
  */
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
-                          FILE *gout );
+                          FILE *fout );
 
 /**
  * Gets either the altertative or "graph" token, if any, of \a token.
