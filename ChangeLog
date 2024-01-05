@@ -1,3 +1,8 @@
+2024-01-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * strbuf.c, util.c, util.h: Eliminated TYPE parameter from REALLOC().
+   * util.c: s/char*/char/ for REALLOC().
+
 2024-01-04  Paul J. Lucas <paul@lucasmail.org>
 
    * slist_test.c: Using POINTER_CAST more -- eliminated clang warnings.
