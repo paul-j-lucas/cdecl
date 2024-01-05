@@ -35,7 +35,10 @@ PREDEFINED              = __GNUC__ \
 EXCLUDE                 = src/config.h \
                           src/lexer.c \
                           src/literals.h src/literals.c \
-                          src/parser.h src/parser.c
+                          src/parser.h src/parser.c \
+                          src/red_black_test.c \
+                          src/slist_test.c
+
 OUTPUT_DIRECTORY        = docs
 HTML_EXTRA_STYLESHEET   = cdecl.css
 HTML_OUTPUT             = .
