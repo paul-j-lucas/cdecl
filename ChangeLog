@@ -1,5 +1,6 @@
 2024-01-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * slist_test.c: Using POINTER_CAST more -- eliminated clang warnings.
    * c_sname.h: Using POINTER_CAST more -- eliminated clang warnings.
    * c_ast_util.c, explain-error.out, explain-error.test: Fixed issue #32:
      Invalid function declarator accepted as valie -- part 2.
