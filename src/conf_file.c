@@ -124,8 +124,9 @@ void conf_init( void ) {
     if ( !read_conf_file( conf_path ) && opt_conf_path != NULL )
       fatal_error( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
     print_params.conf_path = NULL;
-    strbuf_cleanup( &sbuf );
   }
+
+  strbuf_cleanup( &sbuf );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
