@@ -1,5 +1,9 @@
 2024-01-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * conf_file.c: Moved strbuf_cleanup() outside of "if".
+   * cdecl.h, cli_options.c, conf_file.c: CONF_FILE_NAME_DEFAULT is now defined
+     to start with '.' implicitly.
+   * color.c: Added assert() for colors_parse().
    * Doxyfile: No longer need ENABLE_CDECL_DEBUG.
    * c_ast.c, c_sglob.h, dump.c, english.c, gibberish.c, slist.c, slist.h,
      strbuf.h: Now using compound literals more instead of MEM_ZERO().
