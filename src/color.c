@@ -311,7 +311,8 @@ void colors_init( void ) {
     COLOR_CAP_PROMPT          "=" SGR_FG_GREEN                    SGR_CAP_SEP
     COLOR_CAP_WARNING         "=" SGR_FG_YELLOW SGR_SEP SGR_BOLD  ;
 
-  PJL_IGNORE_RV( colors_parse( COLORS_DEFAULT ) );
+  MAYBE_UNUSED bool const ok = colors_parse( COLORS_DEFAULT );
+  assert( ok );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
