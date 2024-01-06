@@ -490,8 +490,9 @@ static void eng_init( eng_state_t *eng, FILE *fout ) {
   assert( eng != NULL );
   assert( fout != NULL );
 
-  MEM_ZERO( eng );
-  eng->fout = fout;
+  *eng = (eng_state_t){
+    .fout = fout
+  };
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

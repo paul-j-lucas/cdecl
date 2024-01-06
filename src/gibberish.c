@@ -1120,10 +1120,11 @@ static void gib_init( gib_state_t *gib, unsigned gib_flags, FILE *fout ) {
   assert( is_1n_bit_only_in_set( gib_flags, C_GIB_ANY ) );
   assert( fout != NULL );
 
-  MEM_ZERO( gib );
-  gib->gib_flags = gib_flags;
-  gib->fout = fout;
-  gib->printed_space = (gib_flags & C_GIB_OPT_OMIT_TYPE) != 0;
+  *gib = (gib_state_t){
+    .gib_flags = gib_flags,
+    .fout = fout,
+    .printed_space = (gib_flags & C_GIB_OPT_OMIT_TYPE) != 0
+  };
 }
 
 /**

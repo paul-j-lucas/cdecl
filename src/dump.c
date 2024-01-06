@@ -430,9 +430,10 @@ static void dump_init( dump_state_t *dump, unsigned indent, FILE *fout ) {
   assert( dump != NULL );
   assert( fout != NULL );
 
-  MEM_ZERO( dump );
-  dump->indent = indent;
-  dump->fout = fout;
+  *dump = (dump_state_t){
+    .indent = indent,
+    .fout = fout
+  };
 }
 
 /**

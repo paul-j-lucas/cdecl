@@ -29,6 +29,7 @@
 #define SLIST_H_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "slist.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 

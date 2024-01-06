@@ -30,7 +30,6 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "types.h"
-#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -104,7 +103,7 @@ bool c_sglob_empty( c_sglob_t const *sglob ) {
  */
 C_SGLOB_H_INLINE
 void c_sglob_init( c_sglob_t *sglob ) {
-  MEM_ZERO( sglob );
+  *sglob = (c_sglob_t){ 0 };
 }
 
 /**

@@ -29,13 +29,13 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "types.h"
-#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL, size_t */
+#include <unistd.h>                     /* for ssize_t */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef SLIST_H_INLINE
@@ -419,7 +419,7 @@ void* slist_front( slist_t const *list ) {
  */
 SLIST_H_INLINE
 void slist_init( slist_t *list ) {
-  MEM_ZERO( list );
+  *list = (slist_t){ 0 };
 }
 
 /**

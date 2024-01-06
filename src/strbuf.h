@@ -88,7 +88,7 @@ void strbuf_cleanup( strbuf_t *sbuf );
  */
 STRBUF_H_INLINE
 void strbuf_init( strbuf_t *sbuf ) {
-  MEM_ZERO( sbuf );
+  *sbuf = (strbuf_t){ 0 };
 }
 
 /**

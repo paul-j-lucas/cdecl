@@ -510,16 +510,16 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
   assert( loc != NULL );
   assert( node_list != NULL );
 
-  c_ast_t *const ast = MALLOC( c_ast_t, 1 );
-  MEM_ZERO( ast );
-
-  ast->depth = depth;
-  ast->kind = kind;
-  ast->loc = *loc;
-  ast->type = T_NONE;
-
   static c_ast_id_t next_id;
-  ast->unique_id = ++next_id;
+
+  c_ast_t *const ast = MALLOC( c_ast_t, 1 );
+  *ast = (c_ast_t){
+    .depth = depth,
+    .kind = kind,
+    .loc = *loc,
+    .type = T_NONE,
+    .unique_id = ++next_id
+  };
 
 #ifndef NDEBUG
   ++c_ast_count;
