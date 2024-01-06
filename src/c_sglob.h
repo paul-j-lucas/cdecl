@@ -97,7 +97,7 @@ bool c_sglob_empty( c_sglob_t const *sglob ) {
  *
  * @param sglob The scoped glob to initialize.
  *
- * @note This need not be called for either global or `static` scoped names.
+ * @note This need not be called for either global or `static` scoped globs.
  *
  * @sa c_sglob_cleanup()
  */

@@ -409,10 +409,11 @@ void* slist_front( slist_t const *list ) {
 }
 
 /**
- * Initializes \a list.  This is not necessary for either global or `static`
- * lists.
+ * Initializes \a list.
  *
  * @param list A pointer to the \ref slist to initialize.
+ *
+ * @note This need not be called for either global or `static` lists.
  *
  * @sa slist_cleanup()
  * @sa slist_move()

@@ -82,6 +82,8 @@ void strbuf_cleanup( strbuf_t *sbuf );
  *
  * @param sbuf A pointer to the \ref strbuf to initialize.
  *
+ * @note This need not be called for either global or `static` buffers.
+ *
  * @sa strbuf_cleanup()
  * @sa strbuf_reset()
  * @sa strbuf_take()
