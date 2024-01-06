@@ -41,7 +41,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /** Default configuration file name. */
-#define CONF_FILE_NAME_DEFAULT    CDECL "rc"
+#define CONF_FILE_NAME_DEFAULT    "." CDECL "rc"
 
 /** Program name when composing or deciphering C. */
 #define CDECL                     PACKAGE

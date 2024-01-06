@@ -601,7 +601,7 @@ static void print_usage( int status ) {
     "  --bison-debug       " UOPT(BISON_DEBUG)      "Print Bison debug output.\n"
 #endif /* ENABLE_BISON_DEBUG */
     "  --color=WHEN        " UOPT(COLOR)            "Colorize output WHEN [default: not_file].\n"
-    "  --config=FILE       " UOPT(CONFIG)           "Configuration file path [default: ~/." CONF_FILE_NAME_DEFAULT "].\n"
+    "  --config=FILE       " UOPT(CONFIG)           "Configuration file path [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
     "  --debug[=OPTS]      " UOPT(CDECL_DEBUG)      "Print " CDECL " debug output.\n"
     "  --digraphs          " UOPT(DIGRAPHS)         "Print digraphs.\n"
     "  --east-const        " UOPT(EAST_CONST)       "Print in \"east const\" form.\n"

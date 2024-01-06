@@ -114,7 +114,7 @@ void conf_init( void ) {
     char const *const home = home_dir();
     if ( home != NULL ) {
       strbuf_puts( &sbuf, home );
-      strbuf_paths( &sbuf, "." CONF_FILE_NAME_DEFAULT );
+      strbuf_paths( &sbuf, CONF_FILE_NAME_DEFAULT );
       conf_path = sbuf.str;
     }
   }
