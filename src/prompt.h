@@ -64,6 +64,8 @@ void cdecl_prompt_enable( void );
 /**
  * Initializes the prompt for \ref opt_lang.
  *
+ * @note This may be called more than once, specifically whenever \ref opt_lang
+ * changes to update the prompt.
  * @note This is called `cdecl_prompt_init` and not `prompt_init` so as not to
  * conflict with the latter function in `libedit`.
  *
