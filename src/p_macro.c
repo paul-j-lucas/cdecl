@@ -3453,7 +3453,7 @@ static char const* p_token_list_str( p_token_list_t const *token_list ) {
         stringified_opaque = true;
         break;
     } // switch
-  }
+  } // for
 
 done:
   return empty_if_null( sbuf.str );
