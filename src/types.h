@@ -261,13 +261,13 @@ typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
 typedef enum   cdecl_mode         cdecl_mode_t;
 typedef enum   cdecl_show         cdecl_show_t;
-typedef slist_t                   p_arg_list_t;
+typedef slist_t                   p_arg_list_t;   ///< Macro argument list.
 typedef struct p_macro            p_macro_t;
 typedef struct p_param            p_param_t;
-typedef slist_t                   p_param_list_t;
+typedef slist_t                   p_param_list_t; ///< Macro parameter list.
 typedef struct p_token            p_token_t;
-typedef slist_t                   p_token_list_t;
-typedef slist_node_t              p_token_node_t;
+typedef slist_t                   p_token_list_t; ///< Preprocessor token list.
+typedef slist_node_t              p_token_node_t; ///< Preprocessor token node.
 typedef union  user_data          user_data_t;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
