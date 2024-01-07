@@ -3268,7 +3268,7 @@ static bool p_macro_check_params( p_macro_t const *macro ) {
   if ( !p_macro_is_func_like( macro ) || OPT_LANG_IS( VARIADIC_MACROS ) )
     return true;
   p_param_t const *const last_param = slist_back( macro->param_list );
-  if ( last_param == NULL || strcmp( last_param->name, L_ellipsis ) != 0 )
+  if ( last_param == NULL || last_param->name[0] != '.' )
     return true;
 
   show_macro( macro, stderr );
