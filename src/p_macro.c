@@ -3471,7 +3471,7 @@ NODISCARD
 static p_token_node_t* p_token_node_not( p_token_node_t *token_node,
                                          p_token_kind_t kinds ) {
   for ( ; token_node != NULL; token_node = token_node->next ) {
-    p_token_t *const token = token_node->data;
+    p_token_t const *const token = token_node->data;
     if ( (token->kind & kinds) == 0 )
       break;
   } // for
