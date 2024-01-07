@@ -760,7 +760,7 @@ static char const* get___TIME___str( void ) {
  *  1. Ineligible; or:
  *  2. An argument of either #P_CONCAT or #P_STRINGIFY; or:
  *  3. Dynamic and not supported in the current language; or:
- *  4. Not followed by `(`.
+ *  4. A function-like macro not followed by `(`.
  * @endparblock
  *
  * @param identifier_token The #P_IDENTIFIER \ref p_token to check.
