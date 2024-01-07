@@ -10,6 +10,17 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 16.0.1
+
+** Leading/trailing whitespace stringification
+Previously:
+
+    #define Q2(A,B,C)  #B
+    expand Q2(, a b ,)
+
+incorrectly returned `" a b "` whereas now it correctly returns `"a b"`.
+
+
 * Changes in Cdecl 16.0
 
 ** Macro expansion

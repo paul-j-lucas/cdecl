@@ -3435,9 +3435,27 @@ static char const* p_token_list_str( p_token_list_t const *token_list ) {
   static strbuf_t sbuf;
   strbuf_reset( &sbuf );
 
-  FOREACH_SLIST_NODE( token_node, token_list )
-    strbuf_puts( &sbuf, p_token_str( token_node->data ) );
+  bool stringified_opaque = false;
 
+  FOREACH_SLIST_NODE( token_node, token_list ) {
+    p_token_t *const token = token_node->data;
+    switch ( token->kind ) {
+      case P_PLACEMARKER:
+        continue;
+      case P_SPACE:
+        if ( !stringified_opaque )
+          continue;                     // don't do leading spaces
+        if ( p_token_node_emptyish( token_node->next ) )
+          goto done;                    // don't do trailing spaces either
+        FALLTHROUGH;
+      default:
+        strbuf_puts( &sbuf, p_token_str( token ) );
+        stringified_opaque = true;
+        break;
+    } // switch
+  }
+
+done:
   return empty_if_null( sbuf.str );
 }
 
