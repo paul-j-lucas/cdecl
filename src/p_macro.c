@@ -2647,9 +2647,9 @@ static char const* mex_expanding_set_key( mex_state_t const *mex ) {
     bool comma = false;
     strbuf_putc( &sbuf, '(' );
     FOREACH_SLIST_NODE( arg_node, mex->arg_list ) {
-      if ( true_or_set( &comma ) )
-        strbuf_putc( &sbuf, ',' );
-      strbuf_puts( &sbuf, p_token_list_str( arg_node->data ) );
+      strbuf_sepc_puts(
+        &sbuf, ',', &comma, p_token_list_str( arg_node->data )
+      );
     } // for
     strbuf_putc( &sbuf, ')' );
   }
