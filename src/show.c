@@ -142,7 +142,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
   show_types_info_t const *const sti = data;
 
-  if ( (sti->show & CDECL_SHOW_IGNORE_LANG) == 0 &&
+  if ( (sti->show & CDECL_SHOW_OPT_IGNORE_LANG) == 0 &&
        !opt_lang_is_any( tdef->lang_ids ) ) {
     goto no_show;
   }

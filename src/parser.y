@@ -3497,7 +3497,7 @@ show_types_opt
   : /* empty */                   { $$ = CDECL_SHOW_USER_DEFINED; }
   | Y_all predefined_or_user_types_opt[show]
     {
-      $$ = CDECL_SHOW_IGNORE_LANG | $show;
+      $$ = $show | CDECL_SHOW_OPT_IGNORE_LANG;
     }
   | Y_predefined                  { $$ = CDECL_SHOW_PREDEFINED; }
   | Y_user                        { $$ = CDECL_SHOW_USER_DEFINED; }

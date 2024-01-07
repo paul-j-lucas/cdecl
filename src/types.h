@@ -193,16 +193,16 @@ enum cdecl_mode {
 enum cdecl_show {
   /**
    * Show only predefined types that are valid in the current language (unless
-   * bitwise-or'd with #CDECL_SHOW_IGNORE_LANG) or only predefined macros.
+   * bitwise-or'd with #CDECL_SHOW_OPT_IGNORE_LANG) or only predefined macros.
    */
-  CDECL_SHOW_PREDEFINED   = (1u << 0),
+  CDECL_SHOW_PREDEFINED       = (1u << 0),
 
   /**
    * Show only types that were user-defined in the current language or earlier
-   * (unless bitwise-or'd with #CDECL_SHOW_IGNORE_LANG) or only user-defined
-   * macros.
+   * (unless bitwise-or'd with #CDECL_SHOW_OPT_IGNORE_LANG) or only user-
+   * defined macros.
    */
-  CDECL_SHOW_USER_DEFINED = (1u << 1),
+  CDECL_SHOW_USER_DEFINED     = (1u << 1),
 
   /**
    * Show types ignoring the language they were defined in.
@@ -210,7 +210,7 @@ enum cdecl_show {
    * @note This _must_ be bitwise-or'd with either #CDECL_SHOW_PREDEFINED,
    * #CDECL_SHOW_USER_DEFINED, or both.
    */
-  CDECL_SHOW_IGNORE_LANG  = 0x10u
+  CDECL_SHOW_OPT_IGNORE_LANG  = (1u << 2)
 };
 
 ////////// typedefs ///////////////////////////////////////////////////////////
