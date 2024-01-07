@@ -3438,7 +3438,7 @@ static char const* p_token_list_str( p_token_list_t const *token_list ) {
   bool stringified_opaque = false;
 
   FOREACH_SLIST_NODE( token_node, token_list ) {
-    p_token_t *const token = token_node->data;
+    p_token_t const *const token = token_node->data;
     switch ( token->kind ) {
       case P_PLACEMARKER:
         continue;
