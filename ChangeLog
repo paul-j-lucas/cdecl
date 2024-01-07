@@ -1,3 +1,8 @@
+2024-01-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, show.c, types.h:
+     s/CDECL_SHOW_IGNORE_LANG/CDECL_SHOW_OPT_IGNORE_LANG/
+
 2024-01-06  Paul J. Lucas <paul@lucasmail.org>
 
    * conf_file.c: Moved strbuf_cleanup() outside of "if".
