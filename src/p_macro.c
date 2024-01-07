@@ -3672,7 +3672,9 @@ static void trim_args( p_arg_list_t *arg_list ) {
 }
 
 /**
- * Trims both leading and trailing #P_SPACE tokens from \a token_list.
+ * Trims both leading and trailing #P_SPACE tokens from \a token_list as well
+ * as squashes multiple consecutive intervening #P_SPACE to a single #P_SPACE
+ * within \a token_list.
  *
  * @param token_list The list of \ref p_token to trim.
  *
