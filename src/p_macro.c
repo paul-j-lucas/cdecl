@@ -2806,17 +2806,17 @@ static void mex_pre_filter___VA_OPT__( mex_state_t *mex ) {
 
   FOREACH_SLIST_NODE( token_node, mex->replace_list ) {
     p_token_t *const token = token_node->data;
-    if ( token->kind == P___VA_OPT__ ) {
-      if ( false_set( &mex->warned___VA_OPT___not_supported ) ) {
-        print_warning( &token->loc,
-          "\"__VA_OPT__\" not supported%s; will not expand\n",
-          C_LANG_WHICH( P___VA_OPT__ )
-        );
-      }
-      token->kind = P_IDENTIFIER;
-      token->ident.name = check_strdup( L___VA_OPT__ );
-      token->ident.ineligible = true;
+    if ( token->kind != P___VA_OPT__ )
+      continue;
+    if ( false_set( &mex->warned___VA_OPT___not_supported ) ) {
+      print_warning( &token->loc,
+        "\"__VA_OPT__\" not supported%s; will not expand\n",
+        C_LANG_WHICH( P___VA_OPT__ )
+      );
     }
+    token->kind = P_IDENTIFIER;
+    token->ident.name = check_strdup( L___VA_OPT__ );
+    token->ident.ineligible = true;
   } // for
 }
 
