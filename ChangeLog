@@ -1,5 +1,6 @@
 2024-01-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c: Simpler check for "...".
    * p_macro.c: Added "const".
    * configure.ac, p_macro.c, expand-C23_std-6.10.4.5-ex-4.out: Fixed
      leading/trailing whitespace stringification.
