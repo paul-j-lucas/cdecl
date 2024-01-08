@@ -53,7 +53,7 @@ _GL_INLINE_HEADER_BEGIN
  * @{
  */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// enumerations ///////////////////////////////////////////////////////
 
 /**
  * Red-black tree colors.
@@ -62,6 +62,8 @@ enum rb_color {
   RB_BLACK,                             ///< Black.
   RB_RED                                ///< Red.
 };
+
+////////// typedefs ///////////////////////////////////////////////////////////
 
 typedef enum   rb_color     rb_color_t;
 typedef struct rb_insert_rv rb_insert_rv_t;
@@ -97,6 +99,8 @@ typedef void (*rb_free_fn_t)( void *data );
  * to be returned to the caller of rb_tree_visit().
  */
 typedef bool (*rb_visit_fn_t)( void *node_data, void *v_data );
+
+////////// structs ////////////////////////////////////////////////////////////
 
 /**
  * A red-black tree node.
