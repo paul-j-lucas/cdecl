@@ -435,7 +435,7 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
 
 /**
  * Checks whether \a sname matches \a sglob where \a sglob is glob-like in that
- * `*` matches zero or more characters.  However, `*` matches only within a
+ * `*` matches zero or more characters; however, `*` matches only within a
  * single scope.  Examples:
  *
  *  + `foo*` matches all names starting with `foo` in the global scope.
@@ -464,7 +464,7 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
  * Reinitializes \a sname and returns its former value so that it can be
  * "moved" into another scoped name via assignment.  For example:
  *
- * ```
+ * ```c
  * c_sname_t new_sname = c_sname_move( old_sname );
  * ```
  *
