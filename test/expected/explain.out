@@ -497,7 +497,7 @@ declare s as maybe unused structure S
 c++decl> explain [[maybe_unused]] void f()
 declare f as maybe unused function returning void
 c++decl> explain [[no_unique_address]] S x
-declare x as non-unique-address S
+declare x as non-unique-address structure S
 c++decl> explain [[no_unique_address]] struct S x
 declare x as non-unique-address structure S
 c++decl> explain [[nodiscard]] void f()
@@ -647,7 +647,7 @@ declare f as function (variadic) returning void
 c++decl> explain void f( int &&r )
 declare f as function (r as rvalue reference to integer) returning void
 c++decl> explain void f( this S &self )
-declare f as function (self as this reference to S) returning void
+declare f as function (self as this reference to structure S) returning void
 c++decl> explain void f() &
 declare f as reference member function returning void
 c++decl> explain void f() &&

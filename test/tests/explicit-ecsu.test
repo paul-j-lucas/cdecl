@@ -14,6 +14,9 @@ declare u as union U
 declare e as enum E
 declare c as class C
 
+class C
+explain C *p
+
 set noexplicit-ecsu
 set
 

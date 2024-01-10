@@ -40,17 +40,17 @@ c++decl> set c++11
 c++decl> explain ??(??(noreturn??)??) void f(int)
 declare f as non-returning function (integer) returning void
 c++decl> explain S& operator??'=(int)
-declare ??'= as member operator (integer) returning reference to S
+declare ??'= as member operator (integer) returning reference to structure S
 c++decl> explain S operator??'(const S&, int)
-declare ??' as non-member operator (reference to constant S, integer) returning S
+declare ??' as non-member operator (reference to constant structure S, integer) returning structure S
 c++decl> explain bool operator??!??!(const S&, const S&)
-declare ??!??! as non-member operator (reference to constant S, reference to constant S) returning boolean
+declare ??!??! as non-member operator (reference to constant structure S, reference to constant structure S) returning boolean
 c++decl> explain S operator??!(const S&, const S&)
-declare ??! as non-member operator (reference to constant S, reference to constant S) returning S
+declare ??! as non-member operator (reference to constant structure S, reference to constant structure S) returning structure S
 c++decl> explain S& operator??!=(int)
-declare ??!= as member operator (integer) returning reference to S
+declare ??!= as member operator (integer) returning reference to structure S
 c++decl> explain S operator??-()
-declare ??- as member operator returning S
+declare ??- as member operator returning structure S
 c++decl> set nographs
 c++decl> set knr
 cdecl> set trigraphs

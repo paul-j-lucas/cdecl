@@ -31,6 +31,9 @@ c++decl> declare e as enum E
 enum E e;
 c++decl> declare c as class C
 class C c;
+c++decl> class C
+c++decl> explain C *p
+declare p as pointer to class C
 c++decl> set noexplicit-ecsu
 c++decl> set
   noalt-tokens

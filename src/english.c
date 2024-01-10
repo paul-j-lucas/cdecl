@@ -415,8 +415,16 @@ static bool c_ast_visitor_english( c_ast_t *ast, user_data_t user_data ) {
       break;
 
     case K_TYPEDEF:
-      if ( !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_typedef ) ) )
-        FPRINTF( eng->fout, "%s ", c_type_name_english( &ast->type ) );
+      NO_OP;
+      c_type_t type = ast->type;
+      bool print_type = type.atids != TA_NONE || type.stids != TS_NONE;
+      c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+      if ( c_tid_is_any( raw_ast->type.btids, opt_explicit_ecsu_btids ) ) {
+        type.btids = raw_ast->type.btids;
+        print_type = true;
+      }
+      if ( print_type )
+        FPRINTF( eng->fout, "%s ", c_type_name_english( &type ) );
       c_sname_english( &ast->tdef.for_ast->sname, eng->fout );
       c_ast_bit_width_english( ast, eng->fout );
       break;

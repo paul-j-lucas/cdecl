@@ -10,7 +10,22 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 16.0.1
+* Changes in Cdecl 16.1
+
+** `explicit-ecsu` in English
+The value of the `explicit-ecsu` option now also applies in pseudo-English.
+Previously:
+
+    c++decl> class C
+    c++decl> explain C *p
+    declare p as pointer to C
+
+Now (with `explicit-ecsu` containing `c`):
+
+    c++decl> class C
+    c++decl> set explicit-ecsu = csu
+    c++decl> explain C *p
+    declare p as pointer to class C
 
 ** Leading/trailing whitespace stringification
 Previously:
