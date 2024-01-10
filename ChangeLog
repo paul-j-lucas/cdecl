@@ -1,3 +1,9 @@
+2024-01-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, english.c, explain.out, explain_operator.out,
+     explicit-ecsu.out, trigraphs.out, explicit-ecsu.test: `explicit-ecsu` now
+     also applies in pseudo-English.
+
 2024-01-07  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c: Now using strbuf_sepc_puts().
