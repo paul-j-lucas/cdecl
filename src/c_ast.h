@@ -472,8 +472,8 @@ struct c_ast {
                     // nothing needed for K_DESTRUCTOR
     c_enum_ast_t        enum_;      ///< #K_ENUM members.
     c_function_ast_t    func;       ///< #K_FUNCTION members.
-                    // nothing needed for K_NAME
     c_lambda_ast_t      lambda;     ///< #K_LAMBDA members.
+                    // nothing needed for K_NAME
     c_operator_ast_t    oper;       ///< #K_OPERATOR members.
                     // nothing needed for K_PLACEHOLDER
     c_ptr_mbr_ast_t     ptr_mbr;    ///< #K_POINTER_TO_MEMBER members.
