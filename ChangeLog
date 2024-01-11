@@ -1,5 +1,6 @@
 2024-01-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * Doxyfile, util.h: Better handling of IS_SAME_TYPE().
    * configure.ac, english.c, explain.out, explain_operator.out,
      explicit-ecsu.out, trigraphs.out, explicit-ecsu.test: `explicit-ecsu` now
      also applies in pseudo-English.
