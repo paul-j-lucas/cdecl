@@ -239,10 +239,11 @@ struct mex_state {
   rb_tree_t            *expanding_set;  ///< Macros undergoing expansion.
 
   /**
-   * The set of macro names that won't expand we've warned about that include:
+   * The set of macro names that won't expand we've warned about that is one
+   * of:
    *
-   *  + Function-like macros without arguments.
-   *  + Unsupported dynamic macros.
+   *  + Dynamic and not supported in the current language; or:
+   *  + A function-like macro not followed by `(`.
    */
   rb_tree_t            *no_expand_set;
 
@@ -757,10 +758,10 @@ static char const* get___TIME___str( void ) {
  * @parblock
  * An identifier token will not expand if it's a macro and it's one of:
  *
- *  1. Ineligible; or:
- *  2. An argument of either #P_CONCAT or #P_STRINGIFY; or:
- *  3. Dynamic and not supported in the current language; or:
- *  4. A function-like macro not followed by `(`.
+ *  + Ineligible; or:
+ *  + An argument of either #P_CONCAT or #P_STRINGIFY; or:
+ *  + Dynamic and not supported in the current language; or:
+ *  + A function-like macro not followed by `(`.
  * @endparblock
  *
  * @param identifier_token The #P_IDENTIFIER \ref p_token to check.
