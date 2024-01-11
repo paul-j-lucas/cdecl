@@ -7,9 +7,6 @@ cdecl> #else
 cdecl> #error
         ^
 2: error: "#error" not supported by cdecl
-cdecl> #file
-        ^
-2: error: "#file" not supported by cdecl
 cdecl> #if
         ^
 2: error: "#if" not supported by cdecl

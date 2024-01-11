@@ -4,7 +4,6 @@ cdecl -bO <<END
 #elif
 #else
 #error
-#file
 #if
 #ifdef
 #ifndef

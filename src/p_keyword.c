@@ -58,7 +58,6 @@ static p_keyword_t P_KEYWORDS[] = {
   { L_P_elif,     Y_P_elif      },
   { L_P_else,     Y_P_else      },
   { L_P_error,    Y_P_error     },
-  { L_P_file,     Y_P_file      },
   { L_P_if,       Y_P_if        },
   { L_P_ifdef,    Y_P_ifdef     },
   { L_P_ifndef,   Y_P_ifndef    },

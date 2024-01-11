@@ -105,7 +105,6 @@ char const L_P_define[]                 = "define";
 char const L_P_elif[]                   = "elif";
 char const L_P_else[]                   = "else";
 char const L_P_error[]                  = "error";
-char const L_P_file[]                   = "file";
 char const L_P_if[]                     = "if";
 char const L_P_ifdef[]                  = "ifdef";
 char const L_P_ifndef[]                 = "ifndef";

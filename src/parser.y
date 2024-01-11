@@ -1433,7 +1433,6 @@ static void yyerror( char const *msg ) {
 %token              Y_P_elif
 %token              Y_P_else
 %token              Y_P_error
-%token              Y_P_file
 %token              Y_P_if
 %token              Y_P_ifdef
 %token              Y_P_ifndef
@@ -3123,11 +3122,6 @@ preprocessor_command
   | '#' Y_P_error
     {
       UNSUPPORTED( &@Y_P_error, "\"#error\"" );
-      PARSE_ABORT();
-    }
-  | '#' Y_P_file
-    {
-      UNSUPPORTED( &@Y_P_file, "\"#file\"" );
       PARSE_ABORT();
     }
   | '#' Y_P_if

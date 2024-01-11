@@ -132,7 +132,6 @@ extern char const L_P_define[];
 extern char const L_P_elif[];
 extern char const L_P_else[];
 extern char const L_P_error[];
-extern char const L_P_file[];
 extern char const L_P_if[];
 extern char const L_P_ifdef[];
 extern char const L_P_ifndef[];
