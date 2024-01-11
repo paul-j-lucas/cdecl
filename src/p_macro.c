@@ -1429,6 +1429,20 @@ static bool mex_check_identifier( mex_state_t *mex,
   if ( found_macro->is_dynamic ) {
     c_lang_id_t const lang_ids = (*found_macro->dyn_fn)( /*ptoken=*/NULL );
     if ( !opt_lang_is_any( lang_ids ) ) {
+      //
+      // We don't simply mark the token ineligible because, if we're currently
+      // doing a macro definition, then the warning would be suppressed during
+      // subsequent expansion, e.g., the second warning below:
+      //
+      //      cdecl> set knrc
+      //      #define OLD_DATE    __DATE__
+      //                          ^
+      //      21: warning: "__DATE__" not supported until C89; will not expand
+      //      cdecl> expand OLD_DATE
+      //      OLD_DATE => __DATE__
+      //                  ^
+      //      13: warning: "__DATE__" not supported until C89; will not expand
+      //
       rb_insert_rv_t rbi = rb_tree_insert(
         mex->no_expand_set, CONST_CAST( char*, found_macro->name )
       );
