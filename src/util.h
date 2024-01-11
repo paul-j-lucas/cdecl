@@ -49,6 +49,10 @@ _GL_INLINE_HEADER_BEGIN
 # define C_UTIL_H_INLINE _GL_INLINE
 #endif /* C_UTIL_H_INLINE */
 
+#if defined(HAVE___BUILTIN_TYPES_COMPATIBLE_P) && defined(HAVE___TYPEOF__)
+# define WITH_IS_SAME_TYPE
+#endif
+
 /// @endcond
 
 /**
@@ -509,7 +513,11 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #IS_POINTER()
  */
-#define IS_ARRAY(ARRAY)           !IS_SAME_TYPE( (ARRAY), &(ARRAY)[0] )
+#ifdef WITH_IS_SAME_TYPE
+# define IS_ARRAY(A)              !IS_SAME_TYPE( (A), &(A)[0] )
+#else
+# define IS_ARRAY(A)              1
+#endif /* WITH_IS_SAME_TYPE */
 
 /**
  * Checks (at compile-time) whether \a PTR is a pointer.
@@ -519,7 +527,11 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #IS_ARRAY()
  */
-#define IS_POINTER(PTR)           IS_SAME_TYPE( (PTR), &(PTR)[0] )
+#ifdef WITH_IS_SAME_TYPE
+# define IS_POINTER(P)            IS_SAME_TYPE( (P), &(P)[0] )
+#else
+# define IS_POINTER(P)            1
+#endif /* WITH_IS_SAME_TYPE */
 
 /**
  * Checks (at compile-time) whether \a T1 and \a T2 are the same type.
@@ -529,12 +541,10 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns 1 (true) only if \a T1 and \a T2 are the same type; 0
  * (false) otherwise.
  */
-#if defined(HAVE___BUILTIN_TYPES_COMPATIBLE_P) && defined(HAVE___TYPEOF__)
+#ifdef WITH_IS_SAME_TYPE
 # define IS_SAME_TYPE(T1,T2) \
     __builtin_types_compatible_p( __typeof__(T1), __typeof__(T2) )
-#else
-# define IS_SAME_TYPE(T1,T2)      1
-#endif
+#endif /* WITH_IS_SAME_TYPE */
 
 #ifdef HAVE___BUILTIN_EXPECT
 

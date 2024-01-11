@@ -30,6 +30,7 @@ PREDEFINED              = __GNUC__ \
                           ENABLE_FLEX_DEBUG \
                           ENABLE_TERM_SIZE \
                           RB_CHECK_ALL_NODES \
+                          WITH_IS_SAME_TYPE \
                           WITH_READLINE
 EXCLUDE                 = src/config.h \
                           src/lexer.c \
