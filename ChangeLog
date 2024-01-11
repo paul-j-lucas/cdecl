@@ -1,3 +1,8 @@
+2024-01-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * literals.c, literals.h, p_keyword.c, parser.y, preprocessor-error.out,
+     preprocessor-error.test: "#file" isn't a preprocessor directive.
+
 2024-01-10  Paul J. Lucas <paul@lucasmail.org>
 
    * Doxyfile, util.h: Better handling of IS_SAME_TYPE().
