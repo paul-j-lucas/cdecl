@@ -5406,12 +5406,14 @@ oper_decl_c_astp
       DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
       DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
 
-      c_tid_t const oper_stids =
-        $qual_stids | $ref_qual_stid | $noexcept_stid | $equals_stid;
+      c_tid_t const oper_stids = c_tid_check(
+        $qual_stids | $ref_qual_stid | $noexcept_stid | $equals_stid,
+        C_TPID_STORE
+      );
 
       c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@$ );
       oper_ast->sname = c_sname_move( &$sname );
-      oper_ast->type.stids = c_tid_check( oper_stids, C_TPID_STORE );
+      oper_ast->type.stids = oper_stids;
       c_ast_list_set_param_of( &$param_ast_list, oper_ast );
       oper_ast->oper.param_ast_list = slist_move( &$param_ast_list );
       oper_ast->oper.operator = operator;
