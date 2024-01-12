@@ -1112,7 +1112,9 @@ _GL_CXXALIAS_SYS (qsort_r, void, (void *base, size_t nmemb, size_t size,
                                   _gl_qsort_r_compar_fn compare,
                                   void *arg));
 # endif
+# if __GLIBC__ >= 2
 _GL_CXXALIASWARN (qsort_r);
+# endif
 #elif defined GNULIB_POSIXCHECK
 # undef qsort_r
 # if HAVE_RAW_DECL_QSORT_R
