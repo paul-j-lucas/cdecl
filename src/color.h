@@ -118,7 +118,7 @@ extern char const  *sgr_locus;          ///< Color of error location.
 extern char const  *sgr_macro_no_expand;///< Color of macro that can't expand.
 extern char const  *sgr_macro_punct;    ///< Color of macro punctuation.
 extern char const  *sgr_macro_subst;    ///< Color of macro substitution.
-extern char const  *sgr_prompt;         ///< Color of the **cdecl** prompt.
+extern char const  *sgr_prompt;         ///< Color of **cdecl** prompt.
 extern char const  *sgr_warning;        ///< Color of `warning`.
 
 ////////// extern functions ///////////////////////////////////////////////////
