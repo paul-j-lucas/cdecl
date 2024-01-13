@@ -1,3 +1,7 @@
+2024-01-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, debug.out: Improved tid and type dumping.
+
 2024-01-11  Paul J. Lucas <paul@lucasmail.org>
 
    * literals.c, literals.h, p_keyword.c, parser.y, preprocessor-error.out,
