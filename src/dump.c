@@ -104,6 +104,8 @@ typedef enum json_state json_state_t;
 static void c_ast_dump_impl( c_ast_t const*, dump_state_t* );
 static void c_ast_list_dump_impl( c_ast_list_t const*, dump_state_t const* );
 static void c_loc_dump( c_loc_t const*, FILE* );
+NODISCARD
+static char const* c_tpid_name( c_tpid_t );
 static void dump_init( dump_state_t*, unsigned, FILE* );
 NODISCARD
 static json_state_t json_object_begin( json_state_t, char const*,
@@ -395,6 +397,23 @@ static void c_loc_dump( c_loc_t const *loc, FILE *fout ) {
   if ( loc->last_column != loc->first_column )
     FPRINTF( fout, ", last_column: %d", loc->last_column );
   FPUTS( " }", fout );
+}
+
+/**
+ * Dumps \a tid in [JSON5](https://json5.org) format (for debugging).
+ *
+ * @param tid The \ref c_tid_t to dump.
+ * @param dump The dump_state to use.
+ */
+static void c_tid_dump_impl( c_tid_t tid, dump_state_t *dump ) {
+  assert( dump != NULL );
+
+  FPRINTF( dump->fout,
+    "%s%s: 0x%016" PRIX_C_TID_T,
+    true_or_set( &dump->comma ) ? ", " : "",
+    c_tpid_name( c_tid_tpid( tid ) ),
+    tid
+  );
 }
 
 /**
@@ -754,9 +773,15 @@ void c_sname_list_dump( slist_t const *list, FILE *fout ) {
 
 void c_tid_dump( c_tid_t tid, FILE *fout ) {
   assert( fout != NULL );
+
+  dump_state_t dump;
+  dump_init( &dump, 1, fout );
+  FPUTS( "{ ", fout );
+  if ( !c_tid_is_none( tid ) )
+    c_tid_dump_impl( tid, &dump );
   FPRINTF( fout,
-    "{ %s: 0x%" PRIX_C_TID_T ", string: \"%s\" }",
-    c_tpid_name( c_tid_tpid( tid ) ), tid,
+    "%sstring: \"%s\" }",
+    dump.comma ? ", " : "",
     c_tid_is_none( tid ) ? "none" : c_tid_name_c( tid )
   );
 }
@@ -765,15 +790,22 @@ void c_type_dump( c_type_t const *type, FILE *fout ) {
   assert( type != NULL );
   assert( fout != NULL );
 
+  FPUTS( "{ ", fout );
+
+  dump_state_t dump;
+  dump_init( &dump, 1, fout );
+
+  if ( type->btids != TB_NONE )
+    c_tid_dump_impl( type->btids, &dump );
+  if ( type->stids != TS_NONE )
+    c_tid_dump_impl( type->stids, &dump );
+  if ( type->atids != TA_NONE )
+    c_tid_dump_impl( type->atids, &dump );
+
   char const *const type_name = c_type_name_c( type );
   FPRINTF( fout,
-    "{ %s: 0x%" PRIX_C_TID_T
-    ", %s: 0x%" PRIX_C_TID_T
-    ", %s: 0x%" PRIX_C_TID_T
-    ", string: \"%s\" }",
-    c_tpid_name( C_TPID_BASE  ), type->btids,
-    c_tpid_name( C_TPID_STORE ), type->stids,
-    c_tpid_name( C_TPID_ATTR  ), type->atids,
+    "%sstring: \"%s\" }",
+    dump.comma ? ", " : "",
     type_name[0] != '\0' ? type_name : "none"
   );
 }
