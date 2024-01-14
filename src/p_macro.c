@@ -541,7 +541,7 @@ static inline bool p_token_node_is_punct( p_token_node_t const *token_node,
  * @returns Returns said location.
  */
 NODISCARD
-static c_loc_t str_loc( char const *s ) {
+static inline c_loc_t str_loc( char const *s ) {
   return (c_loc_t){
     .first_column = 0,
     .last_column = s[0] == '\0' ?
