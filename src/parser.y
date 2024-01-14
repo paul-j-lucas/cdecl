@@ -1330,11 +1330,11 @@ static void yyerror( char const *msg ) {
                     //
 
                     // C/C++ operators: precedence 17
-%left               Y_COLON2              "::"
-                    Y_COLON2_STAR     //  "::" followed by '*'
+%left               Y_COLON_COLON         "::"
+                    Y_COLON_COLON_STAR // "::" followed by '*'
                     // C/C++ operators: precedence 16
-%token              Y_PLUS2               "++"
-%token              Y_MINUS2              "--"
+%token              Y_PLUS_PLUS           "++"
+%token              Y_MINUS_MINUS         "--"
 %left                                     '(' ')'
                                           '[' ']'
                                           '.'
@@ -1358,8 +1358,8 @@ static void yyerror( char const *msg ) {
 %left                                     '-'
                                           '+'
                     // C/C++ operators: precedence 11
-%left               Y_LESS2               "<<"
-                    Y_GREATER2            ">>"
+%left               Y_LESS_LESS           "<<"
+                    Y_GREATER_GREATER     ">>"
                     // C/C++ operators: precedence 10
 %left               Y_LESS_EQUAL_GREATER  "<=>"
                     // C/C++ operators: precedence 9
@@ -1368,7 +1368,7 @@ static void yyerror( char const *msg ) {
                     Y_LESS_EQUAL          "<="
                     Y_GREATER_EQUAL       ">="
                     // C/C++ operators: precedence 8
-%left               Y_EQUAL2              "=="
+%left               Y_EQUAL_EQUAL         "=="
                     Y_EXCLAM_EQUAL    //  "!=" -- also has alt. token "not_eq"
                     // C/C++ operators: precedence 7 (covered above)
 %left               Y_bit_and         //  '&'  -- covered by '&' above
@@ -1377,9 +1377,9 @@ static void yyerror( char const *msg ) {
                     // C/C++ operators: precedence 5
 %left                                     '|'  // also has alt. token "bitor"
                     // C/C++ operators: precedence 4
-%left               Y_AMPER2          //  "&&" -- also has alt. token "and"
+%left               Y_AMPER_AMPER     //  "&&" -- also has alt. token "and"
                     // C/C++ operators: precedence 3
-%left               Y_PIPE2           //  "||" -- also has alt. token "or"
+%left               Y_PIPE_PIPE       //  "||" -- also has alt. token "or"
                     // C/C++ operators: precedence 2
 %right              Y_QMARK_COLON         "?:"
                                           '='
@@ -1389,8 +1389,8 @@ static void yyerror( char const *msg ) {
                     Y_PLUS_EQUAL          "+="
                     Y_MINUS_EQUAL         "-="
                     Y_SLASH_EQUAL         "/="
-                    Y_LESS2_EQUAL         "<<="
-                    Y_GREATER2_EQUAL      ">>="
+                    Y_LESS_LESS_EQUAL     "<<="
+                    Y_GREATER_GREATER_EQUAL ">>="
                     Y_CARET_EQUAL     //  "^=" -- also has alt. token "xor_eq"
                     Y_PIPE_EQUAL      //  "|=" -- also has alt. token "or_eq"
                     // C/C++ operators: precedence 1
@@ -1454,7 +1454,7 @@ static void yyerror( char const *msg ) {
                     // C89
 %token              Y_asm
 %token  <tid>       Y_const
-%token              Y_DOT3        "..." // for varargs
+%token              Y_DOT_DOT_DOT "..." // for varargs
 %token  <tid>       Y_enum
 %token  <tid>       Y_signed
 %token  <tid>       Y_void
@@ -2815,30 +2815,30 @@ p_punctuator
   | '|'
   | '}'
   | '~'
-  | Y_AMPER2
+  | Y_AMPER_AMPER
   | Y_AMPER_EQUAL
   | Y_CARET_EQUAL
-  | Y_COLON2
-  | Y_DOT3
+  | Y_COLON_COLON
+  | Y_DOT_DOT_DOT
   | Y_DOT_STAR
-  | Y_EQUAL2
+  | Y_EQUAL_EQUAL
   | Y_EXCLAM_EQUAL
-  | Y_GREATER2
-  | Y_GREATER2_EQUAL
   | Y_GREATER_EQUAL
-  | Y_LESS2
-  | Y_LESS2_EQUAL
+  | Y_GREATER_GREATER
+  | Y_GREATER_GREATER_EQUAL
   | Y_LESS_EQUAL
   | Y_LESS_EQUAL_GREATER
-  | Y_MINUS2
+  | Y_LESS_LESS
+  | Y_LESS_LESS_EQUAL
   | Y_MINUS_EQUAL
   | Y_MINUS_GREATER
   | Y_MINUS_GREATER_STAR
+  | Y_MINUS_MINUS
   | Y_PERCENT_EQUAL
-  | Y_PIPE2
   | Y_PIPE_EQUAL
-  | Y_PLUS2
+  | Y_PIPE_PIPE
   | Y_PLUS_EQUAL
+  | Y_PLUS_PLUS
   | Y_SLASH_EQUAL
   | Y_STAR_EQUAL
   ;
@@ -3882,7 +3882,7 @@ namespace_sname_c_exp
    * comments.
    */
 namespace_sname_c
-  : namespace_sname_c[sname] Y_COLON2 Y_NAME[name]
+  : namespace_sname_c[sname] Y_COLON_COLON Y_NAME[name]
     {
       DUMP_START();
       DUMP_PROD( "namespace_sname_c", "sname_c '::' NAME" );
@@ -3897,7 +3897,7 @@ namespace_sname_c
       DUMP_END();
     }
 
-  | namespace_sname_c[sname] Y_COLON2 any_typedef[tdef]
+  | namespace_sname_c[sname] Y_COLON_COLON any_typedef[tdef]
     {
       DUMP_START();
       DUMP_PROD( "namespace_sname_c", "namespace_sname_c '::' any_typedef" );
@@ -3913,7 +3913,7 @@ namespace_sname_c
       DUMP_END();
     }
 
-  | namespace_sname_c[sname] Y_COLON2 Y_inline[inline_stid] name_exp[name]
+  | namespace_sname_c[sname] Y_COLON_COLON Y_inline[inline_stid] name_exp[name]
     {
       DUMP_START();
       DUMP_PROD( "namespace_sname_c", "sname_c '::' NAME INLINE NAME" );
@@ -3950,7 +3950,7 @@ namespace_sname_c
    * detailed comments.
    */
 namespace_typedef_sname_c
-  : namespace_typedef_sname_c[ns_sname] Y_COLON2 sname_c[sname]
+  : namespace_typedef_sname_c[ns_sname] Y_COLON_COLON sname_c[sname]
     {
       DUMP_START();
       DUMP_PROD( "namespace_typedef_sname_c",
@@ -3965,7 +3965,7 @@ namespace_typedef_sname_c
       DUMP_END();
     }
 
-  | namespace_typedef_sname_c[ns_sname] Y_COLON2 any_typedef[tdef]
+  | namespace_typedef_sname_c[ns_sname] Y_COLON_COLON any_typedef[tdef]
     {
       DUMP_START();
       DUMP_PROD( "namespace_typedef_sname_c",
@@ -3982,7 +3982,7 @@ namespace_typedef_sname_c
       DUMP_END();
     }
 
-  | namespace_typedef_sname_c[ns_sname] Y_COLON2 Y_inline[inline_stid]
+  | namespace_typedef_sname_c[ns_sname] Y_COLON_COLON Y_inline[inline_stid]
     name_exp[name]
     {
       DUMP_START();
@@ -5116,7 +5116,7 @@ func_qualifier_c_stid
 func_ref_qualifier_c_stid_opt
   : /* empty */                   { $$ = TS_NONE; }
   | '&'                           { $$ = TS_REFERENCE; }
-  | Y_AMPER2                      { $$ = TS_RVALUE_REFERENCE; }
+  | Y_AMPER_AMPER                 { $$ = TS_RVALUE_REFERENCE; }
   ;
 
 noexcept_c_stid_opt
@@ -5572,7 +5572,8 @@ pointer_to_member_decl_c_astp
 
 pointer_to_member_type_c_ast
   : // in_attr: type_c_ast
-    any_sname_c[sname] Y_COLON2_STAR '*' cv_qualifier_list_stid_opt[qual_stids]
+    any_sname_c[sname] Y_COLON_COLON_STAR '*'
+    cv_qualifier_list_stid_opt[qual_stids]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
@@ -5649,7 +5650,7 @@ reference_type_c_ast
     }
 
   | // in_attr: type_c_ast
-    Y_AMPER2 type_qualifier_list_c_stid_opt[qual_stids]
+    Y_AMPER_AMPER type_qualifier_list_c_stid_opt[qual_stids]
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
@@ -8193,7 +8194,7 @@ name_opt
 oper_sname_c_opt
   : /* empty */                   { c_sname_init( &$$ ); }
 
-  | Y_OPERATOR_SNAME[sname] Y_COLON2
+  | Y_OPERATOR_SNAME[sname] Y_COLON_COLON
     {
       $$ = $sname;
       if ( c_type_is_none( c_sname_local_type( &$$ ) ) )
@@ -8265,11 +8266,14 @@ ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
 
 sub_scope_sname_c_opt
   : /* empty */                   { c_sname_init( &$$ ); }
-  | Y_COLON2 any_sname_c[sname]   { $$ = $sname; }
+  | Y_COLON_COLON any_sname_c[sname]
+    {
+      $$ = $sname;
+    }
   ;
 
 sname_c
-  : sname_c[sname] Y_COLON2 Y_NAME[name]
+  : sname_c[sname] Y_COLON_COLON Y_NAME[name]
     {
       // see the comment in "of_scope_english"
       if ( !IS_SUPPORTED( SCOPED_NAMES ) ) {
@@ -8295,7 +8299,7 @@ sname_c
       DUMP_END();
     }
 
-  | sname_c[sname] Y_COLON2 any_typedef[tdef]
+  | sname_c[sname] Y_COLON_COLON any_typedef[tdef]
     { //
       // This is for a case like:
       //
@@ -8481,7 +8485,7 @@ sname_list_english
   ;
 
 typedef_sname_c
-  : typedef_sname_c[tdef_sname] Y_COLON2 sname_c[sname]
+  : typedef_sname_c[tdef_sname] Y_COLON_COLON sname_c[sname]
     {
       DUMP_START();
       DUMP_PROD( "typedef_sname_c", "typedef_sname_c '::' sname_c" );
@@ -8501,7 +8505,7 @@ typedef_sname_c
       DUMP_END();
     }
 
-  | typedef_sname_c[sname] Y_COLON2 any_typedef[tdef]
+  | typedef_sname_c[sname] Y_COLON_COLON any_typedef[tdef]
     {
       DUMP_START();
       DUMP_PROD( "typedef_sname_c", "typedef_sname_c '::' any_typedef" );
@@ -8650,54 +8654,54 @@ conversion_exp
   ;
 
 c_operator
-  : Y_co_await                    { $$ = C_OP_CO_AWAIT          ; }
-  | Y_new                         { $$ = C_OP_NEW               ; }
-  | Y_new '[' rbracket_exp        { $$ = C_OP_NEW_ARRAY         ; }
-  | Y_delete                      { $$ = C_OP_DELETE            ; }
-  | Y_delete '[' rbracket_exp     { $$ = C_OP_DELETE_ARRAY      ; }
-  | '!'                           { $$ = C_OP_EXCLAM            ; }
-  | Y_EXCLAM_EQUAL                { $$ = C_OP_EXCLAM_EQUAL      ; }
-  | '%'                           { $$ = C_OP_PERCENT           ; }
-  | Y_PERCENT_EQUAL               { $$ = C_OP_PERCENT_EQUAL     ; }
-  | '&'                           { $$ = C_OP_AMPER             ; }
-  | Y_AMPER2                      { $$ = C_OP_AMPER2            ; }
-  | Y_AMPER_EQUAL                 { $$ = C_OP_AMPER_EQUAL       ; }
-  | '(' rparen_exp                { $$ = C_OP_PARENS            ; }
-  | '*'                           { $$ = C_OP_STAR              ; }
-  | Y_STAR_EQUAL                  { $$ = C_OP_STAR_EQUAL        ; }
-  | '+'                           { $$ = C_OP_PLUS              ; }
-  | Y_PLUS2                       { $$ = C_OP_PLUS2             ; }
-  | Y_PLUS_EQUAL                  { $$ = C_OP_PLUS_EQUAL        ; }
-  | ','                           { $$ = C_OP_COMMA             ; }
-  | '-'                           { $$ = C_OP_MINUS             ; }
-  | Y_MINUS2                      { $$ = C_OP_MINUS2            ; }
-  | Y_MINUS_EQUAL                 { $$ = C_OP_MINUS_EQUAL       ; }
-  | Y_MINUS_GREATER               { $$ = C_OP_MINUS_GREATER     ; }
-  | Y_MINUS_GREATER_STAR          { $$ = C_OP_MINUS_GREATER_STAR; }
-  | '.'                           { $$ = C_OP_DOT               ; }
-  | Y_DOT_STAR                    { $$ = C_OP_DOT_STAR          ; }
-  | '/'                           { $$ = C_OP_SLASH             ; }
-  | Y_SLASH_EQUAL                 { $$ = C_OP_SLASH_EQUAL       ; }
-  | Y_COLON2                      { $$ = C_OP_COLON2            ; }
-  | '<'                           { $$ = C_OP_LESS              ; }
-  | Y_LESS2                       { $$ = C_OP_LESS2             ; }
-  | Y_LESS2_EQUAL                 { $$ = C_OP_LESS2_EQUAL       ; }
-  | Y_LESS_EQUAL                  { $$ = C_OP_LESS_EQUAL        ; }
-  | Y_LESS_EQUAL_GREATER          { $$ = C_OP_LESS_EQUAL_GREATER; }
-  | '='                           { $$ = C_OP_EQUAL             ; }
-  | Y_EQUAL2                      { $$ = C_OP_EQUAL2            ; }
-  | '>'                           { $$ = C_OP_GREATER           ; }
-  | Y_GREATER2                    { $$ = C_OP_GREATER2          ; }
-  | Y_GREATER2_EQUAL              { $$ = C_OP_GREATER2_EQUAL    ; }
-  | Y_GREATER_EQUAL               { $$ = C_OP_GREATER_EQUAL     ; }
-  | Y_QMARK_COLON                 { $$ = C_OP_QMARK_COLON       ; }
-  | '[' rbracket_exp              { $$ = C_OP_BRACKETS          ; }
-  | '^'                           { $$ = C_OP_CARET             ; }
-  | Y_CARET_EQUAL                 { $$ = C_OP_CARET_EQUAL       ; }
-  | '|'                           { $$ = C_OP_PIPE              ; }
-  | Y_PIPE2                       { $$ = C_OP_PIPE2             ; }
-  | Y_PIPE_EQUAL                  { $$ = C_OP_PIPE_EQUAL        ; }
-  | '~'                           { $$ = C_OP_TILDE             ; }
+  : Y_co_await                    { $$ = C_OP_CO_AWAIT              ; }
+  | Y_new                         { $$ = C_OP_NEW                   ; }
+  | Y_new '[' rbracket_exp        { $$ = C_OP_NEW_ARRAY             ; }
+  | Y_delete                      { $$ = C_OP_DELETE                ; }
+  | Y_delete '[' rbracket_exp     { $$ = C_OP_DELETE_ARRAY          ; }
+  | '!'                           { $$ = C_OP_EXCLAM                ; }
+  | Y_EXCLAM_EQUAL                { $$ = C_OP_EXCLAM_EQUAL          ; }
+  | '%'                           { $$ = C_OP_PERCENT               ; }
+  | Y_PERCENT_EQUAL               { $$ = C_OP_PERCENT_EQUAL         ; }
+  | '&'                           { $$ = C_OP_AMPER                 ; }
+  | Y_AMPER_AMPER                 { $$ = C_OP_AMPER_AMPER           ; }
+  | Y_AMPER_EQUAL                 { $$ = C_OP_AMPER_EQUAL           ; }
+  | '(' rparen_exp                { $$ = C_OP_PARENS                ; }
+  | '*'                           { $$ = C_OP_STAR                  ; }
+  | Y_STAR_EQUAL                  { $$ = C_OP_STAR_EQUAL            ; }
+  | '+'                           { $$ = C_OP_PLUS                  ; }
+  | Y_PLUS_PLUS                   { $$ = C_OP_PLUS_PLUS             ; }
+  | Y_PLUS_EQUAL                  { $$ = C_OP_PLUS_EQUAL            ; }
+  | ','                           { $$ = C_OP_COMMA                 ; }
+  | '-'                           { $$ = C_OP_MINUS                 ; }
+  | Y_MINUS_MINUS                 { $$ = C_OP_MINUS_MINUS           ; }
+  | Y_MINUS_EQUAL                 { $$ = C_OP_MINUS_EQUAL           ; }
+  | Y_MINUS_GREATER               { $$ = C_OP_MINUS_GREATER         ; }
+  | Y_MINUS_GREATER_STAR          { $$ = C_OP_MINUS_GREATER_STAR    ; }
+  | '.'                           { $$ = C_OP_DOT                   ; }
+  | Y_DOT_STAR                    { $$ = C_OP_DOT_STAR              ; }
+  | '/'                           { $$ = C_OP_SLASH                 ; }
+  | Y_SLASH_EQUAL                 { $$ = C_OP_SLASH_EQUAL           ; }
+  | Y_COLON_COLON                 { $$ = C_OP_COLON_COLON           ; }
+  | '<'                           { $$ = C_OP_LESS                  ; }
+  | Y_LESS_LESS                   { $$ = C_OP_LESS_LESS             ; }
+  | Y_LESS_LESS_EQUAL             { $$ = C_OP_LESS_LESS_EQUAL       ; }
+  | Y_LESS_EQUAL                  { $$ = C_OP_LESS_EQUAL            ; }
+  | Y_LESS_EQUAL_GREATER          { $$ = C_OP_LESS_EQUAL_GREATER    ; }
+  | '='                           { $$ = C_OP_EQUAL                 ; }
+  | Y_EQUAL_EQUAL                 { $$ = C_OP_EQUAL_EQUAL           ; }
+  | '>'                           { $$ = C_OP_GREATER               ; }
+  | Y_GREATER_GREATER             { $$ = C_OP_GREATER_GREATER       ; }
+  | Y_GREATER_GREATER_EQUAL       { $$ = C_OP_GREATER_GREATER_EQUAL ; }
+  | Y_GREATER_EQUAL               { $$ = C_OP_GREATER_EQUAL         ; }
+  | Y_QMARK_COLON                 { $$ = C_OP_QMARK_COLON           ; }
+  | '[' rbracket_exp              { $$ = C_OP_BRACKETS              ; }
+  | '^'                           { $$ = C_OP_CARET                 ; }
+  | Y_CARET_EQUAL                 { $$ = C_OP_CARET_EQUAL           ; }
+  | '|'                           { $$ = C_OP_PIPE                  ; }
+  | Y_PIPE_PIPE                   { $$ = C_OP_PIPE_PIPE             ; }
+  | Y_PIPE_EQUAL                  { $$ = C_OP_PIPE_EQUAL            ; }
+  | '~'                           { $$ = C_OP_TILDE                 ; }
   ;
 
 default_exp

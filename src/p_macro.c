@@ -946,33 +946,33 @@ static p_token_t* lex_token( c_loc_t const *loc, strbuf_t *sbuf ) {
     case '|':
     case '}':
     case '~':
-    case Y_AMPER2:
+    case Y_AMPER_AMPER:
     case Y_AMPER_EQUAL:
     case Y_CARET_EQUAL:
-    case Y_COLON2_STAR:
-    case Y_DOT3:
-    case Y_EQUAL2:
+    case Y_COLON_COLON_STAR:
+    case Y_DOT_DOT_DOT:
+    case Y_EQUAL_EQUAL:
     case Y_EXCLAM_EQUAL:
-    case Y_GREATER2:
-    case Y_GREATER2_EQUAL:
     case Y_GREATER_EQUAL:
-    case Y_LESS2:
-    case Y_LESS2_EQUAL:
+    case Y_GREATER_GREATER:
+    case Y_GREATER_GREATER_EQUAL:
     case Y_LESS_EQUAL:
-    case Y_MINUS2:
+    case Y_LESS_LESS:
+    case Y_LESS_LESS_EQUAL:
     case Y_MINUS_EQUAL:
     case Y_MINUS_GREATER:
+    case Y_MINUS_MINUS:
     case Y_PERCENT_EQUAL:
-    case Y_PIPE2:
     case Y_PIPE_EQUAL:
-    case Y_PLUS2:
+    case Y_PIPE_PIPE:
     case Y_PLUS_EQUAL:
+    case Y_PLUS_PLUS:
     case Y_SLASH_EQUAL:
     case Y_STAR_EQUAL:
       token = p_token_new_loc( P_PUNCTUATOR, &yylloc, lexer_token );
       break;
 
-    case Y_COLON2:
+    case Y_COLON_COLON:
     case Y_DOT_STAR:
     case Y_MINUS_GREATER_STAR:
       //

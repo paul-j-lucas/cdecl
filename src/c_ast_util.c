@@ -809,8 +809,8 @@ c_func_member_t c_ast_op_overload( c_ast_t const *ast ) {
               c_tid_is_any( ast->type.stids, TS_static ) ?
         C_FUNC_MEMBER : C_FUNC_NON_MEMBER;
 
-    case C_OP_MINUS2:
-    case C_OP_PLUS2:
+    case C_OP_MINUS_MINUS:
+    case C_OP_PLUS_PLUS:
       //
       // Special case for ++ and -- operators: if the number of parameters is:
       //

@@ -292,7 +292,7 @@ static c_keyword_t C_KEYWORDS[] = {
     LANG_concept,           AC_LANG(NONE)                                 },
 
   // Alternative tokens
-  { L_and,                  Y_AMPER2,             KC__, TX_NONE,
+  { L_and,                  Y_AMPER_AMPER,        KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
   { L_and_eq,               Y_AMPER_EQUAL,        KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
@@ -306,7 +306,7 @@ static c_keyword_t C_KEYWORDS[] = {
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
   { L_not_eq,               Y_EXCLAM_EQUAL,       KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
-  { L_or,                   Y_PIPE2,              KC__, TX_NONE,
+  { L_or,                   Y_PIPE_PIPE,          KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },
   { L_or_eq,                Y_PIPE_EQUAL,         KC__, TX_NONE,
     LANG_ALT_TOKENS,        AC_LANG(ALT_TOKENS)                           },

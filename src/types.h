@@ -137,17 +137,17 @@ enum c_op_id {
   C_OP_PERCENT,                         ///< The `%` operator.
   C_OP_PERCENT_EQUAL,                   ///< The `%=` operator.
   C_OP_AMPER,                           ///< The `&` operator.
-  C_OP_AMPER2,                          ///< The `&&` operator.
+  C_OP_AMPER_AMPER,                     ///< The `&&` operator.
   C_OP_AMPER_EQUAL,                     ///< The `&=` operator.
   C_OP_PARENS,                          ///< The `()` operator.
   C_OP_STAR,                            ///< The `*` operator.
   C_OP_STAR_EQUAL,                      ///< The `*=` operator.
   C_OP_PLUS,                            ///< The `+` operator.
-  C_OP_PLUS2,                           ///< The `++` operator.
+  C_OP_PLUS_PLUS,                       ///< The `++` operator.
   C_OP_PLUS_EQUAL,                      ///< The `+=` operator.
   C_OP_COMMA,                           ///< The `,` operator.
   C_OP_MINUS,                           ///< The `-` operator.
-  C_OP_MINUS2,                          ///< The `--` operator.
+  C_OP_MINUS_MINUS,                     ///< The `--` operator.
   C_OP_MINUS_EQUAL,                     ///< The `-=` operator.
   C_OP_MINUS_GREATER,                   ///< The `->` operator.
   C_OP_MINUS_GREATER_STAR,              ///< The `->*` operator.
@@ -155,25 +155,25 @@ enum c_op_id {
   C_OP_DOT_STAR,                        ///< The `.*` operator.
   C_OP_SLASH,                           ///< The `/` operator.
   C_OP_SLASH_EQUAL,                     ///< The `/=` operator.
-  C_OP_COLON2,                          ///< The `::` operator.
+  C_OP_COLON_COLON,                     ///< The `::` operator.
   C_OP_LESS,                            ///< The `<` operator.
-  C_OP_LESS2,                           ///< The `<<` operator.
-  C_OP_LESS2_EQUAL,                     ///< The `<<=` operator.
+  C_OP_LESS_LESS,                       ///< The `<<` operator.
+  C_OP_LESS_LESS_EQUAL,                 ///< The `<<=` operator.
   C_OP_LESS_EQUAL,                      ///< The `<=` operator.
   C_OP_LESS_EQUAL_GREATER,              ///< The `<=>` operator.
   C_OP_EQUAL,                           ///< The `=` operator.
-  C_OP_EQUAL2,                          ///< The `==` operator.
+  C_OP_EQUAL_EQUAL,                     ///< The `==` operator.
   C_OP_GREATER,                         ///< The `>` operator.
   C_OP_GREATER_EQUAL,                   ///< The `>=` operator.
-  C_OP_GREATER2,                        ///< The `>>` operator.
-  C_OP_GREATER2_EQUAL,                  ///< The `>>=` operator.
+  C_OP_GREATER_GREATER,                 ///< The `>>` operator.
+  C_OP_GREATER_GREATER_EQUAL,           ///< The `>>=` operator.
   C_OP_QMARK_COLON,                     ///< The `?:` operator.
   C_OP_BRACKETS,                        ///< The `[]` operator.
   C_OP_CARET,                           ///< The `^` operator.
   C_OP_CARET_EQUAL,                     ///< The `^=` operator.
   C_OP_PIPE,                            ///< The `|` operator.
   C_OP_PIPE_EQUAL,                      ///< The `|=` operator.
-  C_OP_PIPE2,                           ///< The `||` operator.
+  C_OP_PIPE_PIPE,                       ///< The `||` operator.
   C_OP_TILDE,                           ///< The `~` operator.
 };
 

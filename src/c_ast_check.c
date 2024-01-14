@@ -966,7 +966,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
               goto only_special;
             break;
 
-          case C_OP_EQUAL2:
+          case C_OP_EQUAL_EQUAL:
           case C_OP_EXCLAM_EQUAL:
           case C_OP_GREATER:
           case C_OP_GREATER_EQUAL:
@@ -1736,7 +1736,7 @@ static bool c_ast_check_op_default( c_ast_t const *ast ) {
       //
       break;
 
-    case C_OP_EQUAL2:
+    case C_OP_EQUAL_EQUAL:
     case C_OP_EXCLAM_EQUAL:
     case C_OP_GREATER:
     case C_OP_GREATER_EQUAL:
@@ -1931,8 +1931,8 @@ same: print_error( c_ast_params_loc( ast ),
   } // switch
 
   switch ( op->op_id ) {
-    case C_OP_MINUS2:
-    case C_OP_PLUS2:
+    case C_OP_MINUS_MINUS:
+    case C_OP_PLUS_PLUS:
       NO_OP;
       //
       // Ensure that the dummy parameter for postfix -- or ++ is type int (or

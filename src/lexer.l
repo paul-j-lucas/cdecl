@@ -1108,7 +1108,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
               /* Trigraphs. */
 "??'="        { set_trigraph( "^=" ); return Y_CARET_EQUAL; }
 "??!="        { set_trigraph( "|=" ); return Y_PIPE_EQUAL ; }
-"??!??!"      { set_trigraph( "||" ); return Y_PIPE2      ; }
+"??!??!"      { set_trigraph( "||" ); return Y_PIPE_PIPE  ; }
 "??!"         { set_trigraph( "|"  ); return '|'          ; }
 "??'"         { set_trigraph( "^"  ); return '^'          ; }
 "??("         { set_trigraph( "["  ); return '['          ; }
@@ -1133,36 +1133,36 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                *
                * in an LALR(1) parser.
                */
-"::"/{S}*"*"  { SET_TOKEN; return Y_COLON2_STAR       ; }
-"::"          { SET_TOKEN; return Y_COLON2            ; }
+"::"/{S}*"*"  { SET_TOKEN; return Y_COLON_COLON_STAR      ; }
+"::"          { SET_TOKEN; return Y_COLON_COLON           ; }
 
               /* Multi-character operators. */
-"!="          { SET_TOKEN; return Y_EXCLAM_EQUAL      ; }
-"%="          { SET_TOKEN; return Y_PERCENT_EQUAL     ; }
-"&&"          { SET_TOKEN; return Y_AMPER2            ; }
-"&="          { SET_TOKEN; return Y_AMPER_EQUAL       ; }
-"*="          { SET_TOKEN; return Y_STAR_EQUAL        ; }
-"++"          { SET_TOKEN; return Y_PLUS2             ; }
-"+="          { SET_TOKEN; return Y_PLUS_EQUAL        ; }
-"--"          { SET_TOKEN; return Y_MINUS2            ; }
-"-="          { SET_TOKEN; return Y_MINUS_EQUAL       ; }
-"->"          { SET_TOKEN; return Y_MINUS_GREATER     ; }
-"->*"         { SET_TOKEN; return Y_MINUS_GREATER_STAR; }
-".*"          { SET_TOKEN; return Y_DOT_STAR          ; }
-"..."         { SET_TOKEN; return Y_DOT3              ; }
-"/="          { SET_TOKEN; return Y_SLASH_EQUAL       ; }
-"<<"          { SET_TOKEN; return Y_LESS2             ; }
-"<<="         { SET_TOKEN; return Y_LESS2_EQUAL       ; }
-"<="          { SET_TOKEN; return Y_LESS_EQUAL        ; }
-"<=>"         { SET_TOKEN; return Y_LESS_EQUAL_GREATER; }
-"=="          { SET_TOKEN; return Y_EQUAL2            ; }
-">="          { SET_TOKEN; return Y_GREATER_EQUAL     ; }
-">>"          { SET_TOKEN; return Y_GREATER2          ; }
-">>="         { SET_TOKEN; return Y_GREATER2_EQUAL    ; }
-"?:"          { SET_TOKEN; return Y_QMARK_COLON       ; }
-"^="          { SET_TOKEN; return Y_CARET_EQUAL       ; }
-"|="          { SET_TOKEN; return Y_PIPE_EQUAL        ; }
-"||"          { SET_TOKEN; return Y_PIPE2             ; }
+"!="          { SET_TOKEN; return Y_EXCLAM_EQUAL          ; }
+"%="          { SET_TOKEN; return Y_PERCENT_EQUAL         ; }
+"&&"          { SET_TOKEN; return Y_AMPER_AMPER           ; }
+"&="          { SET_TOKEN; return Y_AMPER_EQUAL           ; }
+"*="          { SET_TOKEN; return Y_STAR_EQUAL            ; }
+"++"          { SET_TOKEN; return Y_PLUS_PLUS             ; }
+"+="          { SET_TOKEN; return Y_PLUS_EQUAL            ; }
+"--"          { SET_TOKEN; return Y_MINUS_MINUS           ; }
+"-="          { SET_TOKEN; return Y_MINUS_EQUAL           ; }
+"->"          { SET_TOKEN; return Y_MINUS_GREATER         ; }
+"->*"         { SET_TOKEN; return Y_MINUS_GREATER_STAR    ; }
+".*"          { SET_TOKEN; return Y_DOT_STAR              ; }
+"..."         { SET_TOKEN; return Y_DOT_DOT_DOT           ; }
+"/="          { SET_TOKEN; return Y_SLASH_EQUAL           ; }
+"<<"          { SET_TOKEN; return Y_LESS_LESS             ; }
+"<<="         { SET_TOKEN; return Y_LESS_LESS_EQUAL       ; }
+"<="          { SET_TOKEN; return Y_LESS_EQUAL            ; }
+"<=>"         { SET_TOKEN; return Y_LESS_EQUAL_GREATER    ; }
+"=="          { SET_TOKEN; return Y_EQUAL_EQUAL           ; }
+">="          { SET_TOKEN; return Y_GREATER_EQUAL         ; }
+">>"          { SET_TOKEN; return Y_GREATER_GREATER       ; }
+">>="         { SET_TOKEN; return Y_GREATER_GREATER_EQUAL ; }
+"?:"          { SET_TOKEN; return Y_QMARK_COLON           ; }
+"^="          { SET_TOKEN; return Y_CARET_EQUAL           ; }
+"|="          { SET_TOKEN; return Y_PIPE_EQUAL            ; }
+"||"          { SET_TOKEN; return Y_PIPE_PIPE             ; }
 
               /*
                * Special case: if '#' is the first non-whitespace character on
@@ -1202,7 +1202,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 "{"           |
 "|"           |
 "}"           |
-"~"           { SET_TOKEN; return lexer_token[0]      ; }
+"~"           { SET_TOKEN; return lexer_token[0]          ; }
 
 } /* <INITIAL,X_P_TOKENS> */
 
@@ -1480,7 +1480,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 return ')';
               }
 
-  "..."       { SET_TOKEN; return Y_DOT3; }
+  "..."       { SET_TOKEN; return Y_DOT_DOT_DOT; }
 
 } /* <X_P_COMMAND> */
 
