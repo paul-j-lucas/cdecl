@@ -162,7 +162,7 @@
 ////////// enumerations ///////////////////////////////////////////////////////
 
 /**
- * Macro expansion function return value.
+ * Macro EXpansion function Return Value.
  *
  * @note These are in priority order from lowest to highest.  When performing
  * multiple expansion passes, the end result of the set of passes _must_ be the
