@@ -2107,7 +2107,8 @@ static mex_rv_t mex_expand_all_concat( mex_state_t *mex ) {
 
   FOREACH_SLIST_NODE( token_node, mex->replace_list ) {
     p_token_t const *const token = token_node->data;
-    p_token_node_t *next_node = p_token_node_not( token_node->next, P_SPACE );
+    p_token_node_t const *next_node =
+      p_token_node_not( token_node->next, P_SPACE );
     if ( next_node == NULL )
       goto skip;
     p_token_t const *next_token = next_node->data;
@@ -2233,7 +2234,7 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
     if ( arg_tokens == NULL )           // identifier isn't a parameter
       goto skip;
 
-    p_token_node_t *const next_node =
+    p_token_node_t const *const next_node =
       p_token_node_not( token_node->next, P_SPACE );
     if ( is_operator_arg( prev_node, next_node ) )
       goto append;
@@ -2390,7 +2391,7 @@ static mex_rv_t mex_expand_all___VA_ARGS__( mex_state_t *mex ) {
   mex_rv_t rv = MEX_DID_NOT_EXPAND;
 
   FOREACH_SLIST_NODE( token_node, mex->replace_list ) {
-    p_token_t *const token = token_node->data;
+    p_token_t const *const token = token_node->data;
     if ( token->kind == P___VA_ARGS__ ) {
       set_substituted(
         push_back_dup_tokens( mex->expand_list, &mex->va_args_list )
@@ -2465,7 +2466,7 @@ static mex_rv_t mex_expand_identifier( mex_state_t *mex,
   bool looks_func_like = false;
   mex_rv_t rv = MEX_ERROR;
 
-  p_token_node_t *const next_node =
+  p_token_node_t const *const next_node =
     p_token_node_not( token_node->next, P_SPACE );
   if ( p_token_node_is_punct( next_node, '(' ) ) {
     token_node = parse_args( next_node, &arg_list );
@@ -2523,7 +2524,7 @@ static mex_rv_t mex_expand_stringify( mex_state_t *mex,
   assert( OPT_LANG_IS( P_STRINGIFY ) );
   assert( mex != NULL );
   assert( ptoken_node != NULL );
-  p_token_node_t *const stringify_node = *ptoken_node;
+  p_token_node_t const *const stringify_node = *ptoken_node;
   assert( p_token_node_is_any( stringify_node, P_STRINGIFY ) );
 
   if ( !p_macro_is_func_like( mex->macro ) ) {
