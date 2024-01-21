@@ -359,7 +359,8 @@ static mex_rv_t         mex_expand_all_concat( mex_state_t* ),
                         mex_expand_stringify( mex_state_t*, p_token_node_t** );
 
 NODISCARD
-static p_token_node_t*  mex_expand___VA_OPT__( mex_state_t*, p_token_node_t*,
+static p_token_node_t*  mex_expand___VA_OPT__( mex_state_t*,
+                                               p_token_node_t const*,
                                                p_token_list_t* );
 
 NODISCARD
@@ -2573,7 +2574,8 @@ static mex_rv_t mex_expand_stringify( mex_state_t *mex,
  */
 NODISCARD
 static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
-                                              p_token_node_t *__VA_OPT___node,
+                                              p_token_node_t const
+                                                *__VA_OPT___node,
                                               p_token_list_t *dst_list ) {
   assert( mex != NULL );
   assert( p_macro_is_variadic( mex->macro ) );
