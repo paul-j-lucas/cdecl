@@ -342,9 +342,6 @@ static void rb_insert_fixup( rb_tree_t *tree, rb_node_t *z_node ) {
   //     around the grandparent.  This makes the former parent the parent of
   //     the new node and the former grandparent.
   //
-  // Note that because we use a sentinel for the root node we never need to
-  // worry about replacing the root.
-  //
   while ( is_red( z_node->parent ) ) {
     rb_dir_t const dir = child_dir( z_node->parent );
     rb_node_t *const y_uncle = z_node->parent->parent->child[!dir];
