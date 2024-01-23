@@ -725,7 +725,7 @@ static void attr_syntax_not_supported( char const *keyword,
   assert( keyword_loc != NULL );
 
   print_warning( keyword_loc,
-    "\"%s\" not supported by %s (ignoring)", keyword, CDECL
+    "\"%s\" not supported by " CDECL " (ignoring)", keyword
   );
   if ( OPT_LANG_IS( ATTRIBUTES ) )
     print_hint( "%s...%s", other_token_c( "[[" ), other_token_c( "]]" ) );
