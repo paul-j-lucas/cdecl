@@ -1,3 +1,7 @@
+2024-01-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.h, types.h: Moved cdecl_debug to types.h.
+
 2024-01-21  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c: Made __VA_OPT___node be pointer to const.
