@@ -146,6 +146,7 @@ _GL_INLINE_HEADER_BEGIN
  * C99 so that if a user does:
  *
  *      cdecl> declare _Sat as int
+ *                     ^
  *      9: warning: "_Sat" is a keyword in C99 (with Embedded C extensions)
  *
  * in a language other than C99, they'll get a warning.
@@ -166,6 +167,7 @@ _GL_INLINE_HEADER_BEGIN
  * instead of "plain" C99 so that if a user does:
  *
  *      cdecl> declare shared as int
+ *                     ^
  *      9: warning: "shared" is a keyword in C99 (with Unified Parallel C extensions)
  *
  * in a language other than C99, they'll get a warning.
