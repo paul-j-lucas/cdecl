@@ -178,6 +178,21 @@ enum c_op_id {
 };
 
 /**
+ * **cdecl** debug mode.
+ */
+enum cdecl_debug {
+  CDECL_DEBUG_NO            = 0u,         ///< Do not print debug output.
+  CDECL_DEBUG_YES           = (1u << 0),  ///< Print JSON5 debug output.
+
+  /**
+   * Include `unique_id` values in debug output.
+   *
+   * @note May be used _only_ in combination with #CDECL_DEBUG_YES.
+   */
+  CDECL_DEBUG_OPT_AST_UNIQUE_ID = (1u << 1)
+};
+
+/**
  * **Cdecl** mode of operation.
  */
 enum cdecl_mode {
@@ -259,6 +274,7 @@ typedef struct c_typedef_ast      c_typedef_ast_t;
 typedef struct c_type             c_type_t;
 typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
+typedef enum   cdecl_debug        cdecl_debug_t;
 typedef enum   cdecl_mode         cdecl_mode_t;
 typedef enum   cdecl_show         cdecl_show_t;
 typedef slist_t                   p_arg_list_t;   ///< Macro argument list.

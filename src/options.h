@@ -55,22 +55,6 @@
  * @{
  */
 
-/**
- * **cdecl** debug mode.
- */
-enum cdecl_debug {
-  CDECL_DEBUG_NO            = 0u,         ///< Do not print debug output.
-  CDECL_DEBUG_YES           = (1u << 0),  ///< Print JSON5 debug output.
-
-  /**
-   * Include `unique_id` values in debug output.
-   *
-   * @note May be used _only_ in combination with #CDECL_DEBUG_YES.
-   */
-  CDECL_DEBUG_OPT_AST_UNIQUE_ID = (1u << 1)
-};
-typedef enum cdecl_debug cdecl_debug_t;
-
 // extern option variables
 extern bool         opt_alt_tokens;     ///< Print alternative tokens?
 
