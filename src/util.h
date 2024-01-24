@@ -826,7 +826,7 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns said length.
  */
 #define STRLITLEN(S) \
-  (ARRAY_SIZE(S) - STATIC_ASSERT_EXPR( IS_C_STR(S), #S "must be a C string literal" ))
+  (ARRAY_SIZE(S) - STATIC_ASSERT_EXPR( IS_C_STR(S), #S " must be a C string literal" ))
 
 /**
  * Synthesises a name prefixed by \a PREFIX unique to the line on which it's
