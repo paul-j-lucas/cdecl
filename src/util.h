@@ -761,7 +761,7 @@ _GL_INLINE_HEADER_BEGIN
   PERROR_EXIT_IF( stat( (PATH), (PSTAT) ) < 0, EX_IOERR )
 
 /**
- * Like C11's `_Static_assert()` except that is can be used in an expression.
+ * Like C11's `_Static_assert()` except that it can be used in an expression.
  *
  * @param EXPR The expression to check.
  * @param MSG The string literal of the error message to print only if \a EXPR
