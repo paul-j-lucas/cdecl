@@ -577,8 +577,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         // Of course a K_TYPEDEF AST also has a type comprising TB_typedef, but
         // we need to see whether there's any more to the type, e.g., "const".
         //
-        bool const is_more_than_plain_typedef =
-          !c_type_equiv( &type, &C_TYPE_LIT_B( TB_typedef ) );
+        bool const is_more_than_plain_typedef = type.stids != TS_NONE;
 
         if ( is_more_than_plain_typedef && !opt_east_const )
           FPUTS( c_type_name_c( &type ), gib->fout );
