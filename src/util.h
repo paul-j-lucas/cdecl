@@ -520,6 +520,20 @@ _GL_INLINE_HEADER_BEGIN
 #endif /* WITH_IS_SAME_TYPE */
 
 /**
+ * Gets whether the type of \a T is a C string type, i.e., <code>char*</code>
+ * or <code>char const*</code>.
+ *
+ * @param T An expression. It is _not_ evaluated.
+ * @return Returns 1 only if \a T is a C string type.
+ */
+#define IS_C_STR(T)   \
+  _Generic( (T),      \
+    char*       : 1,  \
+    char const* : 1,  \
+    default     : 0   \
+  )
+
+/**
  * Checks (at compile-time) whether \a PTR is a pointer.
  *
  * @param PTR The alleged pointer to check.
@@ -811,7 +825,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param S The C string literal to get the length of.
  * @return Returns said length.
  */
-#define STRLITLEN(S)              (ARRAY_SIZE(S) - 1)
+#define STRLITLEN(S) \
+  (ARRAY_SIZE(S) - STATIC_ASSERT_EXPR( IS_C_STR(S), #S "must be a C string literal" ))
 
 /**
  * Synthesises a name prefixed by \a PREFIX unique to the line on which it's
