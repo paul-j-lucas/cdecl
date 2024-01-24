@@ -1,5 +1,9 @@
 2024-01-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: Added IS_C_STR(); STRLITLEN() now checking for C string literal.
+   * gibberish.c: Simplified is_more_than_plain_typedef.
+   * gibberish.c: s/ast->type/type/
+   * parser.y: Eliminated %s for CDECL.
    * options.h, types.h: Moved cdecl_debug to types.h.
 
 2024-01-21  Paul J. Lucas <paul@lucasmail.org>
