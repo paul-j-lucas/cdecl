@@ -309,7 +309,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
     case K_APPLE_BLOCK:
     case K_ARRAY:
       if ( ast->kind != K_ARRAY ||
-           ( !c_tid_is_any( ast->type.stids, TS_ANY_ARRAY_QUALIFIER ) ) ) {
+           ( !c_tid_is_any( type.stids, TS_ANY_ARRAY_QUALIFIER ) ) ) {
         fputs_sp( c_type_name_c( &type ), gib->fout );
       }
       if ( ast->kind == K_UDEF_CONV ) {
@@ -524,10 +524,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_list_gibberish( &ast->lambda.param_ast_list, gib );
         FPUTC( ')', gib->fout );
       }
-      if ( !c_tid_is_none( ast->type.stids ) )
-        FPRINTF( gib->fout, " %s", c_tid_name_c( ast->type.stids ) );
-      if ( !c_tid_is_none( ast->type.atids ) )
-        FPRINTF( gib->fout, " %s", c_tid_name_c( ast->type.atids ) );
+      if ( !c_tid_is_none( type.stids ) )
+        FPRINTF( gib->fout, " %s", c_tid_name_c( type.stids ) );
+      if ( !c_tid_is_none( type.atids ) )
+        FPRINTF( gib->fout, " %s", c_tid_name_c( type.atids ) );
       if ( ast->lambda.ret_ast != NULL &&
            !c_ast_is_builtin_any( ast->lambda.ret_ast, TB_auto | TB_void ) ) {
         FPUTS( " -> ", gib->fout );
@@ -578,10 +578,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         // we need to see whether there's any more to the type, e.g., "const".
         //
         bool const is_more_than_plain_typedef =
-          !c_type_equiv( &ast->type, &C_TYPE_LIT_B( TB_typedef ) );
+          !c_type_equiv( &type, &C_TYPE_LIT_B( TB_typedef ) );
 
         if ( is_more_than_plain_typedef && !opt_east_const )
-          FPUTS( c_type_name_c( &ast->type ), gib->fout );
+          FPUTS( c_type_name_c( &type ), gib->fout );
 
         //
         // Special case: C++23 adds an _Atomic(T) macro for compatibility with
@@ -619,7 +619,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         if ( print_parens_for_Atomic )
           FPUTC( ')', gib->fout );
         if ( is_more_than_plain_typedef && opt_east_const )
-          FPRINTF( gib->fout, " %s", c_type_name_c( &ast->type ) );
+          FPRINTF( gib->fout, " %s", c_type_name_c( &type ) );
       }
 
       c_ast_space_name_gibberish( ast, gib );
