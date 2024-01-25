@@ -506,10 +506,10 @@ _GL_INLINE_HEADER_BEGIN
   fatal_error( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
 
 /**
- * Checks (at compile-time) whether \a ARRAY is an array.
+ * Checks (at compile-time) whether \a A is an array.
  *
- * @param ARRAY The alleged array to check.
- * @return Returns 1 (true) only if \a ARRAY is an array; 0 (false) otherwise.
+ * @param A The alleged array to check.
+ * @return Returns 1 (true) only if \a A is an array; 0 (false) otherwise.
  *
  * @sa #IS_POINTER()
  */
