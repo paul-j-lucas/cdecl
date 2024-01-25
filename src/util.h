@@ -511,13 +511,18 @@ _GL_INLINE_HEADER_BEGIN
  * @param A The alleged array to check.
  * @return Returns 1 (true) only if \a A is an array; 0 (false) otherwise.
  *
+ * @sa https://stackoverflow.com/a/77881417/99089
  * @sa #IS_POINTER()
  */
-#ifdef WITH_IS_SAME_TYPE
-# define IS_ARRAY(A)              !IS_SAME_TYPE( (A), &(A)[0] )
+#ifdef HAVE___TYPEOF__
+# define IS_ARRAY(A)            \
+    _Generic( &(A),             \
+      __typeof__(*A) (*)[]: 1,  \
+      default             : 0   \
+    )
 #else
 # define IS_ARRAY(A)              1
-#endif /* WITH_IS_SAME_TYPE */
+#endif /* HAVE___TYPEOF__ */
 
 /**
  * Gets whether the type of \a T is a C string type, i.e., <code>char*</code>
