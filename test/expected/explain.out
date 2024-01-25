@@ -309,6 +309,25 @@ cdecl> explain typedef int x
 declare x as type integer
 cdecl> explain typedef unsigned long size_t
 declare size_t as type unsigned long integer
+cdecl> explain typeof(int) x
+declare x as integer
+cdecl> explain typeof(int) *x, y
+declare x as pointer to integer
+declare y as integer
+cdecl> explain typeof(typeof(int)) x
+declare x as integer
+cdecl> explain typeof(int*) x, y, a[2], f(char)
+declare x, y as pointer to integer
+declare a as array 2 of pointer to integer
+declare f as function (character) returning pointer to integer
+cdecl> explain typeof(_Bool(*)(char)) f
+declare f as pointer to function (character) returning boolean
+cdecl> explain enum E : typeof(unsigned char)
+define E as enumeration E of type unsigned character
+cdecl> explain int f( typeof(char const*) s )
+declare f as function (s as pointer to constant character) returning integer
+cdecl> explain __typeof__(int) x
+declare x as integer
 cdecl> explain union U x
 declare x as union U
 cdecl> explain unsigned _BitInt(1) x

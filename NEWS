@@ -12,6 +12,15 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 16.1
 
+** Partial `typeof` support
+Both `typeof` and `typeof_unqual` in C23 are partially supported in that types
+are accepted (but expressions are not):
+
+    typeof(int*) x                // supported
+    typeof(x) y                   // not supported
+
+Additionally, GNU's `__typeof__` is a synonym for `typeof`.
+
 ** `explicit-ecsu` in English
 The value of the `explicit-ecsu` option now also applies in pseudo-English.
 Previously:

@@ -246,6 +246,9 @@ cdecl> explain type int x
 cdecl> explain typedef char int32_t
                             ^
 22: error: type "char" redefinition incompatible with original type "int32_t" (aka, "int")
+cdecl> explain typeof(x) y
+                      ^
+16: syntax error: "x": typeof(expression) declarations not supported by cdecl
 cdecl> explain unsigned _BitInt(0) x
                ^
 9: error: unsigned _BitInt must be at least 1 bit
@@ -439,6 +442,9 @@ cdecl> explain constexpr int x
 cdecl> explain enum E : int x
                         ^
 18: error: enum with underlying type not supported until C23
+cdecl> explain typeof(int) x
+               ^
+9: error: implicit "int" functions are illegal since C99; "typeof" not a keyword until C23; use "__typeof__" instead
 cdecl> explain void f( ... )
                        ^
 17: error: "..." as only parameter not supported until C23

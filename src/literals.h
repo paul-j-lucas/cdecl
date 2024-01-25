@@ -394,6 +394,7 @@ extern char const L_GNU___restrict__[];
 extern char const L_GNU___signed[];
 extern char const L_GNU___signed__[];
 extern char const L_GNU___thread[];
+extern char const L_GNU___typeof__[];
 extern char const L_GNU___volatile[];
 extern char const L_GNU___volatile__[];
 

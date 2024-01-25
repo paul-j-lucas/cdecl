@@ -118,6 +118,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added "did you mean ...?" suggestions
 	added C preprocessor macro expansion
 	added Microsoft calling convention support
+	added partial typeof support
 	added west-pointer option
 	added optional code coverage
 	added optional Address Sanitizer, Memory Sanitizer, and Undefined

@@ -15,7 +15,7 @@ cdecl> typedef static int SI
 9: error: "typedef static int" is illegal for built-in type
 cdecl> typedef typename int Int
                ^
-9: syntax error: "typename": unexpected token; not a keyword until C++98
+9: syntax error: "typename": unexpected token; "typename" not a keyword until C++98
 cdecl> struct S { typedef int I; }
                   ^
 12: error: nested types not supported in C
@@ -25,7 +25,7 @@ cdecl> explain Void x
 9: error: variable of "void"; did you mean "void*"?
 cdecl> using I = int
        ^
-1: syntax error: "using": unexpected token; not a keyword until C++98
+1: syntax error: "using": unexpected token; "using" not a keyword until C++98
 cdecl> set c17
 cdecl> typedef auto int SI
                ^

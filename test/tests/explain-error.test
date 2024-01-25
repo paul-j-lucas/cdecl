@@ -88,6 +88,7 @@ explain signed wchar_t x
 explain static int main()
 explain type int x
 explain typedef char int32_t
+explain typeof(x) y
 explain unsigned _BitInt(0) x
 explain unsigned bool x
 explain unsigned char16_t x
@@ -159,6 +160,7 @@ explain thread_local int x
 set c17
 explain constexpr int x
 explain enum E : int x
+explain typeof(int) x
 explain void f( ... )
 
 set c++

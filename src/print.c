@@ -621,7 +621,11 @@ void print_error_token_is_a( char const *error_token ) {
     c_lang_id_t const lang_ids = ck->lang_ids & ~LANGX_MASK;
     c_lang_id_t const oldest_lang = c_lang_oldest( lang_ids );
     if ( oldest_lang > opt_lang ) {
-      EPRINTF( "; not a keyword until %s", c_lang_name( oldest_lang ) );
+      EPRINTF(
+        "; \"%s\" not a keyword until %s",
+        error_token,
+        c_lang_name( oldest_lang )
+      );
     } else {
       EPRINTF( " (\"%s\" is a keyword", error_token );
       if ( lang_ids != ck->lang_ids )

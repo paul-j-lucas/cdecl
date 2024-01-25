@@ -1801,6 +1801,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>         typedef_type_decl_c_ast
 %type   <type>        type_modifier_c_type
 %type   <type>        type_modifier_list_c_type type_modifier_list_c_type_opt
+%type   <flag>        typeof
 %type   <ast>         typeof_type_c_ast
 %type   <tid>         type_qualifier_c_stid
 %type   <tid>         type_qualifier_list_c_stid type_qualifier_list_c_stid_opt
@@ -5026,10 +5027,22 @@ pc99_func_or_constructor_declaration_c
           // would have no "memory" that the return type was implicitly int.
           //
           print_error( &@name,
-            "implicit \"%s\" functions are illegal%s\n",
+            "implicit \"%s\" functions are illegal%s",
             c_tid_name_error( TB_int ),
             C_LANG_WHICH( IMPLICIT_int )
           );
+          print_error_token_is_a( $name );
+          if ( strcmp( $name, L_typeof ) == 0 ||
+               strcmp( $name, L_typeof_unqual ) == 0 ) {
+            EPRINTF( "; use \"%s\" instead", L_GNU___typeof__ );
+          }
+          else {
+            print_suggestions(
+              DYM_C_KEYWORDS | DYM_C_MACROS | DYM_C_TYPES,
+              $name
+            );
+          }
+          EPUTC( '\n' );
           FREE( $name );
           PARSE_ABORT();
         }
@@ -6521,16 +6534,60 @@ builtin_no_BitInt_c_btid
   ;
 
 typeof_type_c_ast
-  : typeof
+  : typeof[is_unqual] lparen_exp type_c_ast[type_ast]
     {
-      UNSUPPORTED( &@typeof, "typeof declarations" );
-      PARSE_ABORT();
+      ia_type_ast_push( $type_ast );
+    }
+    cast_c_astp_opt[cast_astp] rparen_exp
+    {
+      ia_type_ast_pop();
+
+      DUMP_START();
+      DUMP_PROD( "typeof_type_c_ast",
+                 "TYPEOF '(' type_c_ast cast_c_astp_opt ')'" );
+      DUMP_BOOL( "is_unqual", $is_unqual );
+      DUMP_AST( "type_c_ast", $type_ast );
+      DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
+
+      if ( $is_unqual ) {
+        c_ast_t const *const raw_ast = c_ast_untypedef( $type_ast );
+        if ( raw_ast != $type_ast &&
+             c_tid_is_any( raw_ast->type.stids, TS__Atomic | TS_CVR ) ) {
+          //
+          // The type is a typedef and the type that it's for is ACVR-qualified
+          // so we need to dup _that_ type before un-ACVR-qualifying it because
+          // we don't want to modify it.
+          //
+          $type_ast = c_ast_dup_gc( raw_ast );
+        }
+        $type_ast->type.stids &= c_tid_compl( TS__Atomic | TS_CVR );
+      }
+
+      $$ = c_ast_patch_placeholder( $type_ast, $cast_astp.ast );
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
+
+      //
+      // Overwrite type_spec_ast to be the typeof type since _that_ is the base
+      // type for one or more declarators, e.g.:
+      //
+      //      typeof(int*) p, a[2], f(char)
+      //
+      in_attr.type_spec_ast = $$;
+    }
+
+  | typeof lparen_exp error
+    {
+      elaborate_error(
+        "typeof(expression) declarations not supported by " CDECL
+      );
     }
   ;
 
 typeof
-  : Y_typeof
-  | Y_typeof_unqual
+  : Y_typeof                      { $$ = /*is_unqual=*/false; }
+  | Y_typeof_unqual               { $$ = /*is_unqual=*/true;  }
   ;
 
 /// Gibberish C/C++ enum, class, struct, & union types ////////////////////////

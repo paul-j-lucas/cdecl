@@ -366,6 +366,7 @@ char const L_GNU___restrict__[]         = "__restrict__";
 char const L_GNU___signed[]             = "__signed";
 char const L_GNU___signed__[]           = "__signed__";
 char const L_GNU___thread[]             = "__thread";
+char const L_GNU___typeof__[]           = "__typeof__";
 char const L_GNU___volatile[]           = "__volatile";
 char const L_GNU___volatile__[]         = "__volatile__";
 

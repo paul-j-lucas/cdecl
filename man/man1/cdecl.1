@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 1, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 25, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -756,9 +756,10 @@ fixed-type enumerations,
 \f(CW[[reproducible]]\fP,
 \f(CWthread_local\fP,
 \f(CWtrue\fP,
+\f(CWtypeof\fP,
+\f(CW[[unsequenced]]\fP,
 and
-\f(CW[[unsequenced]]\fP.
-Adds support for the \f(CW__VA_OPT__\fP preprocessor macro.
+the \f(CW__VA_OPT__\fP preprocessor macro.
 .TP
 .B C++
 Use the latest supported version of the C++ language.
@@ -843,9 +844,9 @@ Adds support for
 \f(CWexport\fP,
 nested \f(CWinline\fP namespaces,
 \f(CW[[no_unique_address]]\fP,
+\f(CWoperator<=>\fP,
 and
-\f(CWoperator<=>\fP.
-Adds support for the \f(CW__VA_OPT__\fP preprocessor macro.
+the \f(CW__VA_OPT__\fP preprocessor macro.
 .TP
 .B C++23
 Use the C++23 version of the C++ language.
@@ -1646,6 +1647,7 @@ GNU C's
 \f(CW__signed\fP,
 \f(CW__signed__\fP,
 \f(CW__thread\fP,
+\f(CW__typeof__\fP,
 \f(CW__volatile\fP,
 and
 \f(CW__volatile__\fP.
@@ -3111,11 +3113,19 @@ In C23 and later,
 as a storage-class specifier
 is no longer supported.
 .IP \(bu
-C23
+For C23
 \f(CWtypeof\fP
 and
 \f(CWtypeof_unqual\fP
-declarations are not supported.
+declarations,
+only types are supported;
+arbitrary expressions are not:
+.RS
+.cS
+typeof(int*) x                  // supported
+typeof(x) y                     // not supported
+.cE 0
+.RE
 .IP \(bu
 Only C++ lambda signature declarations are supported;
 complete lambda declarations are not:

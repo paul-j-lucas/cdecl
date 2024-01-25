@@ -148,6 +148,16 @@ explain typedef int (*x)(char)
 explain typedef int int32_t
 explain typedef int x
 explain typedef unsigned long size_t
+
+explain typeof(int) x
+explain typeof(int) *x, y
+explain typeof(typeof(int)) x
+explain typeof(int*) x, y, a[2], f(char)
+explain typeof(_Bool(*)(char)) f
+explain enum E : typeof(unsigned char)
+explain int f( typeof(char const*) s )
+explain __typeof__(int) x
+
 explain union U x
 explain unsigned _BitInt(1) x
 explain unsigned _BitInt(4) x

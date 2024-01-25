@@ -257,9 +257,9 @@ static c_keyword_t C_KEYWORDS[] = {
   { L__BitInt,              Y__BitInt,            KC__, TB__BitInt,
     LANG__BitInt,           AC_LANG(_BitInt)                              },
   { L_typeof,               Y_typeof,             KC__, TX_NONE,
-    LANG_typeof,            AC_LANG(NONE)                                 },
+    LANG_typeof,            AC_LANG(typeof)                               },
   { L_typeof_unqual,        Y_typeof_unqual,      KC__, TX_NONE,
-    LANG_typeof,            AC_LANG(NONE)                                 },
+    LANG_typeof,            AC_LANG(typeof)                               },
 
   // C23 & C++11
   { L_nullptr,              Y_nullptr,            KC__, TX_NONE,
@@ -397,6 +397,8 @@ static c_keyword_t C_KEYWORDS[] = {
   { L_GNU___signed__,       Y_signed,             KC__, TB_signed,
     LANG_ANY,               AC_LANG(ANY)                                  },
   { L_GNU___thread,         Y_thread_local,       KC__, TS_thread_local,
+    LANG_ANY,               AC_LANG(ANY)                                  },
+  { L_GNU___typeof__,       Y_typeof,             KC__, TX_NONE,
     LANG_ANY,               AC_LANG(ANY)                                  },
   { L_GNU___volatile,       Y_volatile,           KC__, TS_volatile,
     LANG_ANY,               AC_LANG(ANY)                                  },
