@@ -1,5 +1,12 @@
+2024-01-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, cdecl.1, c_keyword.c, literals.c, literals.h, parser.y, print.c,
+     explain-error.out, explain.out, ntu-error.out, explain-error.test,
+     explain.test: Added typeof(type) support.
+
 2024-01-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: Added missing space.
    * util.h: Added IS_C_STR(); STRLITLEN() now checking for C string literal.
    * gibberish.c: Simplified is_more_than_plain_typedef.
    * gibberish.c: s/ast->type/type/
