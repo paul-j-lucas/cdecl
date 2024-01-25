@@ -539,10 +539,10 @@ _GL_INLINE_HEADER_BEGIN
   )
 
 /**
- * Checks (at compile-time) whether \a PTR is a pointer.
+ * Checks (at compile-time) whether \a P is a pointer.
  *
- * @param PTR The alleged pointer to check.
- * @return Returns 1 (true) only if \a PTR is a pointer; 0 (false) otherwise.
+ * @param P The alleged pointer to check.
+ * @return Returns 1 (true) only if \a P is a pointer; 0 (false) otherwise.
  *
  * @sa #IS_ARRAY()
  */
