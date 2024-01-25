@@ -525,8 +525,8 @@ _GL_INLINE_HEADER_BEGIN
 #endif /* HAVE___TYPEOF__ */
 
 /**
- * Gets whether the type of \a T is a C string type, i.e., <code>char*</code>
- * or <code>char const*</code>.
+ * Checks (at compile-time) whether the type of \a T is a C string type, i.e.,
+ * <code>char*</code> or <code>char const*</code>.
  *
  * @param T An expression. It is _not_ evaluated.
  * @return Returns 1 only if \a T is a C string type.
