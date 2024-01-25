@@ -1,5 +1,6 @@
 2024-01-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: Better implementation of IS_ARRAY().
    * AUTHORS, cdecl.1, c_keyword.c, literals.c, literals.h, parser.y, print.c,
      explain-error.out, explain.out, ntu-error.out, explain-error.test,
      explain.test: Added typeof(type) support.
