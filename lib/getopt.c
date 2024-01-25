@@ -268,7 +268,7 @@ process_long_option (int argc, char **argv, const char *optstring,
 			    ambig_set[indfound] = 1;
 			  }
 		      }
-		    if (ambig_set)
+		    if (ambig_set && ambig_set != &ambig_fallback)
 		      ambig_set[option_index] = 1;
 		  }
 	      }

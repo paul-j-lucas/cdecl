@@ -1,4 +1,4 @@
-# threadlib.m4 serial 41
+# threadlib.m4 serial 42
 dnl Copyright (C) 2005-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -206,7 +206,7 @@ AC_DEFUN([gl_PTHREADLIB_BODY],
       # If -pthread works, prefer it to -lpthread, since Ubuntu 14.04
       # needs -pthread for some reason.  See:
       # https://lists.gnu.org/r/bug-gnulib/2014-09/msg00023.html
-      save_LIBS=$LIBS
+      saved_LIBS="$LIBS"
       for gl_pthread in '' '-pthread'; do
         LIBS="$LIBS $gl_pthread"
         AC_LINK_IFELSE(
@@ -220,7 +220,7 @@ AC_DEFUN([gl_PTHREADLIB_BODY],
           [gl_pthread_api=yes
            LIBPTHREAD=$gl_pthread
            LIBPMULTITHREAD=$gl_pthread])
-        LIBS=$save_LIBS
+        LIBS="$saved_LIBS"
         test $gl_pthread_api = yes && break
       done
       echo "$as_me:__oline__: gl_pthread_api=$gl_pthread_api" >&AS_MESSAGE_LOG_FD
