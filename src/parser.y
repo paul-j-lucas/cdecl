@@ -4986,7 +4986,8 @@ pc99_func_or_constructor_declaration_c
         csu_ast->sname = c_sname_dup( &csu_ast->csu.csu_sname );
 
         in_attr.typedef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
-        MAYBE_UNUSED c_typedef_t *const csu_tdef = in_attr.typedef_rb->data;
+        MAYBE_UNUSED c_typedef_t const *const csu_tdef =
+          in_attr.typedef_rb->data;
         assert( csu_tdef->ast == csu_ast );
       }
     }
