@@ -1,3 +1,7 @@
+2024-01-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added "const".
+
 2024-01-25  Paul J. Lucas <paul@lucasmail.org>
 
    * util.h: Better implementation of IS_ARRAY().
