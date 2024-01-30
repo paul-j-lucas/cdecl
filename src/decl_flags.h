@@ -160,7 +160,7 @@
  * Dual purpose:
  *
  *  1. For \ref c_typedef::decl_flags "decl_flags", denotes that a type was
- *     declared via a `typedef` declaration (s opposed to a `using`
+ *     declared via a `typedef` declaration (as opposed to a `using`
  *     declaration).
  *
  *  2. When printing gibberish, c_typedef_gibberish() will print as a `typedef`
