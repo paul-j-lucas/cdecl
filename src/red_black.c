@@ -270,7 +270,7 @@ static void rb_tree_check( rb_tree_t const *tree ) {
  * Repairs a tree after a node has been deleted by rotating and repainting
  * colors to restore the properties inherent in red-black trees.
  *
- * @param tree A pointer rb_tree to repair.
+ * @param tree A pointer to the rb_tree to repair.
  * @param x_node A pointer to the rb_node to start the repair at.
  *
  * @sa _Introduction to Algorithms_, 4th ed., &sect; 13.4, p. 351.
@@ -437,7 +437,7 @@ static rb_node_t* rb_tree_minimum( rb_tree_t *tree, rb_node_t *x_node ) {
 /**
  * Resets \a tree to empty.
  *
- * @param tree A pointer rb_tree to reset.
+ * @param tree A pointer to the rb_tree to reset.
  *
  * @warning Unlike rb_tree_cleanup(), this function does _not_ free nodes of a
  * non-empty tree.  This function is to be used only on new (empty) trees or on
