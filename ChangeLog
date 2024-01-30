@@ -1,3 +1,7 @@
+2024-01-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Bumped version to 6.2.
+
 2024-01-27  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Added "const".
