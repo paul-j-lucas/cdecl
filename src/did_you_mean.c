@@ -428,7 +428,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
   if ( (kinds & DYM_CDECL_KEYWORDS) != DYM_NONE ) {
     copy_cdecl_keywords( &dym );
   }
-  MEM_ZERO( dym );                      // one past last is zero'd
+  *dym = (did_you_mean_t){ 0 };         // one past last is zero'd
 
   // calculate the maximum source and target lengths
   size_t const source_len = strlen( unknown_literal );

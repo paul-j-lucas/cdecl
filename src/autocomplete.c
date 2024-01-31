@@ -246,7 +246,7 @@ static ac_keyword_t const* ac_keywords_new( void ) {
     }
   } // for
 
-  MEM_ZERO( pack );
+  *pack = (ac_keyword_t){ 0 };
 
   //
   // Sort so C/C++ keywords come before their pseudo-English synonyms (e.g.,
