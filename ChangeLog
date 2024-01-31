@@ -1,3 +1,8 @@
+2024-01-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, autocomplete.c, did_you_mean.c, parser.y, util.h: Eliminated
+     MEM_ZERO(), IS_POINTER(), IS_SAME_TYPE(), __builtin_types_compatible_p().
+
 2024-01-29  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Bumped version to 6.2.
