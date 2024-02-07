@@ -42,7 +42,6 @@
 #include <string.h>
 #include <sysexits.h>
 #include <time.h>
-#include <unistd.h>                     /* for dup2() */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_UTIL_H_INLINE
@@ -266,15 +265,6 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define DECL_UNUSED(T) \
   _Alignas(T) char UNIQUE_NAME(unused)[ sizeof(T) ]
-
-/**
- * Calls **dup2**(2) and checks for failure.
- *
- * @param OLD_FD The old file descriptor to duplicate.
- * @param NEW_FD The new file descriptor to duplicate to.
- */
-#define DUP2(OLD_FD,NEW_FD) \
-  PERROR_EXIT_IF( dup2( (OLD_FD), (NEW_FD) ) != (NEW_FD), EX_OSERR )
 
 /**
  * Shorthand for printing to standard error.

@@ -529,21 +529,11 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   opt_check_exclusive( COPT(VERSION) );
   opt_check_mutually_exclusive( COPT(DIGRAPHS), SOPT(TRIGRAPHS) );
 
-  if ( strcmp( fin_path, "-" ) != 0 ) {
-    FILE *const fin = fopen( fin_path, "r" );
-    if ( fin == NULL )
-      fatal_error( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
-    DUP2( fileno( fin ), STDIN_FILENO );
-    PJL_IGNORE_RV( fclose( fin ) );
-  }
+  if ( strcmp( fin_path, "-" ) != 0 && !freopen( fin_path, "r", stdin ) )
+    fatal_error( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
 
-  if ( strcmp( fout_path, "-" ) != 0 ) {
-    FILE *const fout = fopen( fout_path, "w" );
-    if ( fout == NULL )
-      fatal_error( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
-    DUP2( fileno( fout ), STDOUT_FILENO );
-    PJL_IGNORE_RV( fclose( fout ) );
-  }
+  if ( strcmp( fout_path, "-" ) != 0 && !freopen( fout_path, "w", stdout ) )
+    fatal_error( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
 
   if ( !opt_buffer_stdout )
     setvbuf( stdout, /*buf=*/NULL, _IONBF, /*size=*/0 );
