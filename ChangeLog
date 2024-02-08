@@ -1,3 +1,7 @@
+2024-02-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.h: Using designated initializers for C_TYPEDEF_LIT().
+
 2024-02-07  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c, util.h: Now using simpler freopen().
