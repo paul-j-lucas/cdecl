@@ -1,8 +1,8 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* ISO C <ctype.h> like properties of Unicode characters.  */
-/* Generated automatically by gen-uni-tables.c for Unicode 15.0.0.  */
+/* Generated automatically by gen-uni-tables.c for Unicode 15.1.0.  */
 
-/* Copyright (C) 2000-2023 Free Software Foundation, Inc.
+/* Copyright (C) 2000-2024 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -653,11 +653,11 @@ u_is_punct =
     0xFFFFFFFFU, 0xFFFF7FFFU, 0x3FFFFFFFU, 0x00000000U,
     0xFBFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU, 0x000FFFFFU,
     0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU,
-    0xFFFFFFFFU, 0xFFFFFFFFU, 0x003FFFFFU, 0x0FFF0000U,
+    0xFFFFFFFFU, 0xFFFFFFFFU, 0x003FFFFFU, 0xFFFF0000U,
     0xFFFFFF1EU, 0xE0C1FC01U, 0x00000000U, 0x00000000U,
     0x1E000000U, 0x00000001U, 0x00000000U, 0x08000000U,
     0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U,
-    0xFFFF0000U, 0x00000000U, 0xFFFFFFFFU, 0x0000000FU,
+    0xFFFF0000U, 0x00000000U, 0xFFFFFFFFU, 0x0000800FU,
     0x7FFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU,
     0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU,
     0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU,

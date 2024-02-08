@@ -1,8 +1,8 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* ISO C <ctype.h> like properties of Unicode characters.  */
-/* Generated automatically by gen-uni-tables.c for Unicode 15.0.0.  */
+/* Generated automatically by gen-uni-tables.c for Unicode 15.1.0.  */
 
-/* Copyright (C) 2000-2023 Free Software Foundation, Inc.
+/* Copyright (C) 2000-2024 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -27,7 +27,7 @@ struct
     int header[1];
     int level1[4];
     short level2[4 << 7];
-    unsigned int level3[80 << 4];
+    unsigned int level3[81 << 4];
   }
 u_is_alpha =
 {
@@ -413,26 +413,18 @@ u_is_alpha =
         5 +   512 * sizeof (short) / sizeof (int) +   336,
         5 +   512 * sizeof (short) / sizeof (int) +   336,
         5 +   512 * sizeof (short) / sizeof (int) +  1216,
-       -1,
-       -1,
-       -1,
-       -1,
-       -1,
-       -1,
         5 +   512 * sizeof (short) / sizeof (int) +   336,
         5 +   512 * sizeof (short) / sizeof (int) +  1232,
        -1,
        -1,
-        5 +   512 * sizeof (short) / sizeof (int) +   336,
-        5 +   512 * sizeof (short) / sizeof (int) +   336,
-        5 +   512 * sizeof (short) / sizeof (int) +   336,
-        5 +   512 * sizeof (short) / sizeof (int) +   336,
-        5 +   512 * sizeof (short) / sizeof (int) +   336,
-        5 +   512 * sizeof (short) / sizeof (int) +   336,
-        5 +   512 * sizeof (short) / sizeof (int) +   336,
-        5 +   512 * sizeof (short) / sizeof (int) +   336,
+       -1,
+       -1,
         5 +   512 * sizeof (short) / sizeof (int) +   336,
         5 +   512 * sizeof (short) / sizeof (int) +  1248,
+       -1,
+       -1,
+        5 +   512 * sizeof (short) / sizeof (int) +   336,
+        5 +   512 * sizeof (short) / sizeof (int) +   336,
         5 +   512 * sizeof (short) / sizeof (int) +   336,
         5 +   512 * sizeof (short) / sizeof (int) +   336,
         5 +   512 * sizeof (short) / sizeof (int) +   336,
@@ -441,6 +433,14 @@ u_is_alpha =
         5 +   512 * sizeof (short) / sizeof (int) +   336,
         5 +   512 * sizeof (short) / sizeof (int) +   336,
         5 +   512 * sizeof (short) / sizeof (int) +  1264,
+        5 +   512 * sizeof (short) / sizeof (int) +   336,
+        5 +   512 * sizeof (short) / sizeof (int) +   336,
+        5 +   512 * sizeof (short) / sizeof (int) +   336,
+        5 +   512 * sizeof (short) / sizeof (int) +   336,
+        5 +   512 * sizeof (short) / sizeof (int) +   336,
+        5 +   512 * sizeof (short) / sizeof (int) +   336,
+        5 +   512 * sizeof (short) / sizeof (int) +   336,
+        5 +   512 * sizeof (short) / sizeof (int) +  1280,
        -1,
        -1,
        -1,
@@ -860,7 +860,11 @@ u_is_alpha =
     0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU,
     0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU,
     0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU,
-    0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU, 0x00000001U,
+    0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFFFFFFU, 0xFFFF0001U,
+    0xFFFFFFFFU, 0xFFFFFFFFU, 0x3FFFFFFFU, 0x00000000U,
+    0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U,
+    0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U,
+    0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U,
     0x3FFFFFFFU, 0x00000000U, 0x00000000U, 0x00000000U,
     0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U,
     0x00000000U, 0x00000000U, 0x00000000U, 0x00000000U,
