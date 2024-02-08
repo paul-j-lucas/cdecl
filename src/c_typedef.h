@@ -46,7 +46,7 @@
  * @param DECL_FLAGS The declaration flags to use.
  */
 #define C_TYPEDEF_LIT(AST,DECL_FLAGS) (c_typedef_t const) \
-  { (AST), LANG_ANY, (DECL_FLAGS), .is_predefined = false }
+  { .ast = (AST), .lang_ids = LANG_ANY, .decl_flags = (DECL_FLAGS) }
 
 ///////////////////////////////////////////////////////////////////////////////
 
