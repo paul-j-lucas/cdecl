@@ -659,7 +659,7 @@ static void p_param_list_dump_impl( p_param_list_t const *list,
     DUMP_KEY( &list_dump, "{ name: \"%s\", loc: ", param->name );
     c_loc_dump( &param->loc, dump->fout );
     FPUTS( " }", dump->fout );
-  }
+  } // for
 
   FPUTC( '\n', dump->fout );
   DUMP_FORMAT( dump, "]" );
