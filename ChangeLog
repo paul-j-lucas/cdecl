@@ -1,3 +1,7 @@
+2024-02-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c: Simplification.
+
 2024-02-08  Paul J. Lucas <paul@lucasmail.org>
 
    * c_typedef.h: Using designated initializers for C_TYPEDEF_LIT().
