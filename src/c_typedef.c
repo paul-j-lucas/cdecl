@@ -1106,10 +1106,7 @@ c_typedef_t const* c_typedef_find_name( char const *name ) {
 
 c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
   assert( sname != NULL );
-  c_typedef_t const tdef = C_TYPEDEF_LIT(
-    &(c_ast_t const){ .sname = *sname },
-    /*decl_flags=*/0                    // doesn't matter
-  );
+  c_typedef_t const tdef = { .ast = &(c_ast_t const){ .sname = *sname } };
   rb_node_t const *const found_rb = rb_tree_find( &typedef_set, &tdef );
   return found_rb != NULL ? found_rb->data : NULL;
 }
