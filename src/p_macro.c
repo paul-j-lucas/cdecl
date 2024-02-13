@@ -1971,7 +1971,7 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
 
   if ( mex->macro->is_dynamic ) {
     p_token_t *token;
-    if ( opt_lang_is_any( (*mex->macro->dyn_fn)( &token ) ) ) {;
+    if ( opt_lang_is_any( (*mex->macro->dyn_fn)( &token ) ) ) {
       push_back_substituted_token( mex->expand_list, token );
       mex_print_macro( mex, mex->expand_list );
       return MEX_EXPANDED;
