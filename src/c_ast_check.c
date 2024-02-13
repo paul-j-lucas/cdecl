@@ -1620,9 +1620,9 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     c_lang_id_t ok_lang_ids = LANG_NONE;
     switch ( op->op_id ) {
       case C_OP_PARENS:
-        if ( OPT_LANG_IS( STATIC_OP_PARENS ) )
+        if ( OPT_LANG_IS( static_OP_PARENS ) )
           break;
-        ok_lang_ids = LANG_STATIC_OP_PARENS;
+        ok_lang_ids = LANG_static_OP_PARENS;
         FALLTHROUGH;
       default:
         print_error( &ast->loc,

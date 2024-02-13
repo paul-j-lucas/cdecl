@@ -1111,7 +1111,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG_operator
  */
-#define LANG_STATIC_OP_PARENS           LANG_CPP_MIN(23)
+#define LANG_static_OP_PARENS           LANG_CPP_MIN(23)
 
 /**
  * Languages the `__STDC__` predefined macro is supported in.
@@ -1149,7 +1149,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_thread_local               LANG_C_CPP_MIN(23,11)
 
 /**
- * Language thread-local storage is supported in.
+ * Languages thread-local storage is supported in.
  *
  * @sa #LANG__Thread_local
  * @sa #LANG_thread_local
