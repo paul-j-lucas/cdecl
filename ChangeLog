@@ -1,3 +1,9 @@
+2024-02-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, dump.c, p_macro.c, p_macro.h, p_token.c, p_token.h,
+     parser.y, show.c: Split out p_token.[ch].
+   * p_macro.c: Removed extraneous ';'.
+
 2024-02-09  Paul J. Lucas <paul@lucasmail.org>
 
    * c_typedef.c: Simplification.
