@@ -260,24 +260,6 @@ static bool p_token_free_if_consec_space( p_token_node_t *token_node,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-char const* p_kind_name( p_token_kind_t kind ) {
-  switch ( kind ) {
-    case P_CHAR_LIT   : return "char_lit";
-    case P_CONCAT     : return "##";
-    case P_IDENTIFIER : return "identifier";
-    case P_NUM_LIT    : return "num_lit";
-    case P_OTHER      : return "other";
-    case P_PLACEMARKER: return "placemarker";
-    case P_PUNCTUATOR : return "punctuator";
-    case P_SPACE      : return " ";
-    case P_STRINGIFY  : return "#";
-    case P_STR_LIT    : return "str_lit";
-    case P___VA_ARGS__: return L___VA_ARGS__;
-    case P___VA_OPT__ : return L___VA_OPT__;
-  } // switch
-  UNEXPECTED_INT_VALUE( kind );
-}
-
 p_token_t* p_token_dup( p_token_t const *token ) {
   if ( token == NULL )
     return NULL;                        // LCOV_EXCL_LINE

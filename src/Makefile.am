@@ -79,6 +79,7 @@ cdecl_SOURCES =	parser.y \
 		literals.c literals.h \
 		options.c options.h \
 		p_keyword.c p_keyword.h \
+		p_kind.c p_kind.h \
 		p_macro.c p_macro.h \
 		p_token.c p_token.h \
 		parse.c parse.h \
