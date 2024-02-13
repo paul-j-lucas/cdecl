@@ -80,6 +80,7 @@ cdecl_SOURCES =	parser.y \
 		options.c options.h \
 		p_keyword.c p_keyword.h \
 		p_macro.c p_macro.h \
+		p_token.c p_token.h \
 		parse.c parse.h \
 		pjl_config.h \
 		print.c print.h \

@@ -33,6 +33,7 @@
 #include "c_typedef.h"
 #include "decl_flags.h"
 #include "options.h"
+#include "p_token.h"
 #include "print.h"
 
 /// @cond DOXYGEN_IGNORE

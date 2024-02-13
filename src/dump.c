@@ -34,6 +34,7 @@
 #include "english.h"
 #include "literals.h"
 #include "p_macro.h"
+#include "p_token.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

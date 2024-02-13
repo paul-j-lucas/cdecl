@@ -25,13 +25,11 @@
 /// @endcond
 #include "p_macro.h"
 #include "c_lang.h"
-#include "c_operator.h"
 #include "color.h"
 #include "dump.h"
-#include "lexer.h"
 #include "literals.h"
 #include "options.h"
-#include "parser.h"
+#include "p_token.h"
 #include "print.h"
 #include "prompt.h"
 #include "red_black.h"
@@ -41,6 +39,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <assert.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -136,28 +135,6 @@
  * given name does not exist.
  */
 #define NO_PARAM                  SIZE_MAX
-
-/**
- * Shorthand for any "opaque" \ref p_token_kind --- all kinds _except_ either
- * #P_PLACEMARKER or #P_SPACE.
- *
- * @sa #P_ANY_TRANSPARENT
- */
-#define P_ANY_OPAQUE              ( P_ANY_OPERATOR | P_CHAR_LIT | P_IDENTIFIER \
-                                  | P_NUM_LIT | P_OTHER | P_PUNCTUATOR \
-                                  | P_STR_LIT | P___VA_ARGS__ | P___VA_OPT__ )
-
-/**
- * Shorthand for either the #P_CONCAT or #P_STRINGIFY \ref p_token_kind.
- */
-#define P_ANY_OPERATOR            ( P_CONCAT | P_STRINGIFY )
-
-/**
- * Shorthand for either the #P_PLACEMARKER or #P_SPACE \ref p_token_kind.
- *
- * @sa #P_ANY_OPAQUE
- */
-#define P_ANY_TRANSPARENT         ( P_PLACEMARKER | P_SPACE )
 
 ////////// enumerations ///////////////////////////////////////////////////////
 
@@ -278,8 +255,8 @@ struct mex_state {
   unsigned              indent;         ///< Current indentation.
 
   /**
-   * When set, tokens are _not_ trimmed via trim_tokens() after each expansion
-   * function is called.
+   * When set, tokens are _not_ trimmed via p_token_list_trim() after each
+   * expansion function is called.
    *
    * @remarks This is set _only_ when appending "arguments" via
    * mex_append_args() to the expansion of a non-function-like macro so they
@@ -322,13 +299,7 @@ struct param_expand {
 ////////// local functions ////////////////////////////////////////////////////
 
 NODISCARD
-static bool             ident_will_not_expand( p_token_t const*,
-                                               p_token_node_t const*,
-                                               p_token_node_t const* ),
-                        is_multi_char_punctuator( char const* ),
-                        is_operator_arg( p_token_node_t const*,
-                                         p_token_node_t const* ),
-                        mex_check( mex_state_t *mex ),
+static bool             mex_check( mex_state_t *mex ),
                         mex_check_concat( mex_state_t*,
                                           p_token_node_t const* ),
                         mex_check_identifier( mex_state_t*,
@@ -395,23 +366,12 @@ NODISCARD
 static size_t           p_arg_list_count( p_arg_list_t const* ),
                         p_macro_find_param( p_macro_t const*, char const* );
 
+static void             p_arg_list_trim( p_arg_list_t* );
 static void             p_macro_free( p_macro_t* );
 
 NODISCARD
 static bool             p_macro_is_variadic( p_macro_t const* ),
                         p_macro_check_params( p_macro_t const* );
-
-NODISCARD
-static p_token_t*       p_token_dup( p_token_t const* );
-
-NODISCARD
-static size_t           p_token_list_relocate( p_token_list_t*, size_t );
-
-NODISCARD
-static char const*      p_token_list_str( p_token_list_t const* );
-
-NODISCARD
-static p_token_node_t*  p_token_node_not( p_token_node_t*, p_token_kind_t );
 
 NODISCARD
 static int              param_expand_cmp( param_expand_t const*,
@@ -420,19 +380,11 @@ static int              param_expand_cmp( param_expand_t const*,
 NODISCARD
 static p_token_node_t*  parse_args( p_token_node_t const*, p_arg_list_t* );
 
-static void             push_back_dup_token( p_token_list_t*,
-                                             p_token_t const* );
-
 PJL_DISCARD
 static p_token_node_t*  push_back_dup_tokens( p_token_list_t*,
                                               p_token_list_t const* );
 
-static void             push_back_substituted_token( p_token_list_t*,
-                                                     p_token_t* );
-
 static void             set_substituted( p_token_node_t* );
-static void             trim_args( p_arg_list_t* );
-static void             trim_tokens( p_token_list_t* );
 
 // local constants
 static char const ARROW[] = "=>";       ///< Separates macro name from tokens.
@@ -441,17 +393,6 @@ static char const ARROW[] = "=>";       ///< Separates macro name from tokens.
 static rb_tree_t  macro_set;            ///< Global set of macros.
 
 ////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Checks whether \a macro is a function-like macro.
- *
- * @param macro The \ref p_macro to check.
- * @return Returns `true` only if it is.
- */
-NODISCARD
-static inline bool p_macro_is_func_like( p_macro_t const *macro ) {
-  return !macro->is_dynamic && macro->param_list != NULL;
-}
 
 /**
  * Checks whether \a token is an eligible #P_IDENTIFIER and a macro exists
@@ -469,23 +410,6 @@ static inline bool p_token_is_macro( p_token_t const *token ) {
 }
 
 /**
- * Convenience function that checks whether the \ref p_token_list_t starting at
- * \a token_node is "empty-ish," that is empty or contains only #P_PLACEMARKER
- * or #P_SPACE tokens.
- *
- * @param token_node The \ref p_token_node_t to start checking at.
- * @return Returns `true` only if it's "empty-ish."
- *
- * @sa p_token_list_emptyish()
- */
-NODISCARD
-static inline bool p_token_node_emptyish( p_token_node_t const *token_node ) {
-  p_token_node_t *const nonconst_node =
-    CONST_CAST( p_token_node_t*, token_node );
-  return p_token_node_not( nonconst_node, P_ANY_TRANSPARENT ) == NULL;
-}
-
-/**
  * Convenience function that checks whether \a token_list is "empty-ish," that
  * is empty or contains only #P_PLACEMARKER or #P_SPACE tokens.
  *
@@ -497,41 +421,6 @@ static inline bool p_token_node_emptyish( p_token_node_t const *token_node ) {
 NODISCARD
 static inline bool p_token_list_emptyish( p_token_list_t const *token_list ) {
   return p_token_node_emptyish( token_list->head );
-}
-
-/**
- * Checks whether the \ref p_token to which \a token_node points is one of \a
- * kinds.
- *
- * @param token_node The \ref p_token_node_t to check.  May be NULL.
- * @param kinds The bitwise-or of kind(s) to check for.
- * @return Returns `true` only if \a token_node is not NULL and its token is
- * one of \a kinds.
- */
-NODISCARD
-static inline bool p_token_node_is_any( p_token_node_t const *token_node,
-                                        p_token_kind_t kinds ) {
-  if ( token_node == NULL )
-    return false;
-  p_token_t const *const token = token_node->data;
-  return (token->kind & kinds) != 0;
-}
-
-/**
- * Checks whether \a token_node is not NULL and whether the \ref p_token to
- * which it points is a #P_PUNCTUATOR that is equal to \a punct.
- *
- * @param token_node The \ref p_token_node_t to check.  May be NULL.
- * @param punct The punctuation character to check.
- * @return Returns `true` only if it is.
- *
- * @sa p_token_is_punct()
- * @sa p_token_node_is_any()
- */
-NODISCARD
-static inline bool p_token_node_is_punct( p_token_node_t const *token_node,
-                                          char punct ) {
-  return token_node != NULL && p_token_is_punct( token_node->data, punct );
 }
 
 /**
@@ -551,79 +440,6 @@ static inline c_loc_t str_loc( char const *s ) {
 }
 
 ////////// local functions ////////////////////////////////////////////////////
-
-/**
- * If the last non-#P_PLACEMARKER token of \a token_list, if any, and \a token
- * are both #P_PUNCTUATOR tokens and pasting (concatenating) them together
- * would form a different valid #P_PUNCTUATOR token, appends a #P_SPACE token
- * onto \a token_list to avoid this.
- *
- * @param token_list The \ref p_token_list_t whose last token, if any, to avoid
- * pasting with.
- * @param token The \ref p_token to avoid pasting.  It is _not_ appended to \a
- * token_list.
- *
- * @sa is_multi_char_punctuator()
- * @sa [Token Spacing](https://gcc.gnu.org/onlinedocs/gcc-4.9.3/cppinternals/Token-Spacing.html#Token-Spacing).
- */
-static void avoid_paste( p_token_list_t *token_list, p_token_t const *token ) {
-  assert( token != NULL );
-  assert( token_list != NULL );
-
-  if ( token->kind != P_PUNCTUATOR )
-    return;
-
-  //
-  // Get the last token of token_list that is not a P_PLACEMARKER, if any.  If
-  // said token is not a P_PUNCTUATOR, return.
-  //
-  p_token_t const *last_token;
-  for ( size_t roffset = 0; true; ++roffset ) {
-    last_token = slist_atr( token_list, roffset );
-    if ( last_token == NULL )
-      return;
-    if ( last_token->kind == P_PUNCTUATOR )
-      break;
-    if ( last_token->kind != P_PLACEMARKER )
-      return;
-  } // for
-
-  char const *const s1 = p_token_str( last_token );
-  char const *const s2 = p_token_str( token );
-
-  //
-  // It's large enough to hold two of the longest operators of `->*`, `<<=`,
-  // `<=>`, or `>>=`, consecutively, plus a terminating `\0`.
-  //
-  char paste_buf[7];                    // 1112220
-
-  check_snprintf( paste_buf, sizeof paste_buf, "%s%s", s1, s2 );
-  if ( is_multi_char_punctuator( paste_buf ) )
-    goto append;
-
-  if ( s2[1] != '\0' ) {
-    //
-    // We also have to check for cases where a partial paste of the token would
-    // form a different valid punctuator, e.g.:
-    //
-    //      cdecl> #define P(X)  -X
-    //      cdecl> expand P(->)
-    //      P(->) => -X
-    //      | X => ->
-    //      P(->) => - ->                 // not: -->
-    //
-    // That would later be parsed as -- > which is wrong.
-    //
-    check_snprintf( paste_buf, sizeof paste_buf, "%s%c", s1, s2[0] );
-    if ( is_multi_char_punctuator( paste_buf ) )
-      goto append;
-  }
-
-  return;
-
-append:
-  slist_push_back( token_list, p_token_new( P_SPACE, /*literal=*/NULL ) );
-}
 
 /**
  * Checks macro parameters, if any, for semantic errors.
@@ -667,60 +483,6 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
 }
 
 /**
- * Prints \a token_list in color.
- *
- * @param token_list The list of \ref p_token to print.
- * @param fout The `FILE` to print to.
- *
- * @sa print_token_list()
- */
-static void color_print_token_list( p_token_list_t const *token_list,
-                                    FILE *fout ) {
-  assert( token_list != NULL );
-  assert( fout != NULL );
-
-  bool printed_opaque = false;
-
-  p_token_node_t const *prev_node = NULL;
-  FOREACH_SLIST_NODE( token_node, token_list ) {
-    char const *color = NULL;
-    p_token_t const *const token = token_node->data;
-
-    p_token_node_t const *const next_node =
-      p_token_node_not( token_node->next, P_ANY_TRANSPARENT );
-
-    switch ( token->kind ) {
-      case P_IDENTIFIER:
-        if ( ident_will_not_expand( token, prev_node, next_node ) ) {
-          color = sgr_macro_no_expand;
-          break;
-        }
-        FALLTHROUGH;
-      default:
-        if ( token->is_substituted )
-          color = sgr_macro_subst;
-        break;
-      case P_PLACEMARKER:
-        continue;
-      case P_SPACE:
-        if ( !printed_opaque )
-          continue;                     // don't print leading spaces
-        if ( next_node == NULL )
-          return;                       // don't print trailing spaces either
-        break;
-    } // switch
-
-    color_start( fout, color );
-    FPUTS( p_token_str( token ), fout );
-    color_end( fout, color );
-    printed_opaque = true;
-
-    if ( token->kind != P_SPACE )
-      prev_node = token_node;
-  } // for
-}
-
-/**
  * Gets the current value of the `__DATE__` macro.
  *
  * @return Returns said value.
@@ -753,129 +515,6 @@ static char const* get___TIME___str( void ) {
 }
 
 /**
- * Checks whether \a identifier_token will not expand.
- *
- * @remarks
- * @parblock
- * An identifier token will not expand if it's a macro and it's one of:
- *
- *  + Ineligible; or:
- *  + An argument of either #P_CONCAT or #P_STRINGIFY; or:
- *  + Dynamic and not supported in the current language; or:
- *  + A function-like macro not followed by `(`.
- * @endparblock
- *
- * @param identifier_token The #P_IDENTIFIER \ref p_token to check.
- * @param prev_node The non-space \ref p_token_node_t just before \a
- * identifier_token.
- * @param next_node The non-space \ref p_token_node_t just after \a
- * identifier_token.
- * @return Returns `true` only if \a identifier_token will not expand.
- *
- * @note This is a helper function for color_print_token_list() to know whether
- * to print a #P_IDENTIFIER token in the \ref sgr_macro_no_expand color.
- */
-NODISCARD
-static bool ident_will_not_expand( p_token_t const *identifier_token,
-                                   p_token_node_t const *prev_node,
-                                   p_token_node_t const *next_node ) {
-  assert( identifier_token != NULL );
-  assert( identifier_token->kind == P_IDENTIFIER );
-
-  if ( identifier_token->ident.ineligible )
-    return true;
-
-  p_macro_t const *const macro = p_macro_find( identifier_token->ident.name );
-  if ( macro == NULL )
-    return false;
-
-  if ( is_operator_arg( prev_node, next_node ) )
-    return true;
-  if ( macro->is_dynamic &&
-       !opt_lang_is_any( (*macro->dyn_fn)( /*ptoken=*/NULL ) ) ) {
-    return true;
-  }
-  if ( !p_macro_is_func_like( macro ) )
-    return false;
-  if ( !p_token_node_is_punct( next_node, '(' ) )
-    return true;
-
-  return false;
-}
-
-/**
- * Checks whether \a s is a multi-character punctuator.
- *
- * @param s The literal to check.
- * @return Returns `true` only if \a s is a multi-character punctuator.
- *
- * @sa avoid_paste()
- */
-NODISCARD
-static bool is_multi_char_punctuator( char const *s ) {
-  static c_lang_lit_t const MULTI_CHAR_PUNCTUATORS[] = {
-    { LANG_ANY,                 "!="  },
-    { LANG_ANY,                 "%="  },
-    { LANG_ANY,                 "&&"  },
-    { LANG_ANY,                 "&="  },
-    { LANG_ANY,                 "*="  },
-    { LANG_ANY,                 "++"  },
-    { LANG_ANY,                 "+="  },
-    { LANG_ANY,                 "--"  },
-    { LANG_ANY,                 "-="  },
-    { LANG_ANY,                 "->"  },
-    { LANG_CPP_ANY,             "->*" },
-    { LANG_CPP_ANY,             ".*"  },
-    { LANG_ANY,                 "/*"  },
-    { LANG_SLASH_SLASH_COMMENT, "//"  },
-    { LANG_ANY,                 "/="  },
-    { LANG_CPP_ANY,             "::"  },
-    { LANG_ANY,                 "<<"  },
-    { LANG_ANY,                 "<<=" },
-    { LANG_ANY,                 "<="  },
-    { LANG_LESS_EQUAL_GREATER,  "<=>" },
-    { LANG_ANY,                 "=="  },
-    { LANG_ANY,                 ">="  },
-    { LANG_ANY,                 ">>=" },
-    { LANG_ANY,                 "^="  },
-    { LANG_ANY,                 "|="  },
-    { LANG_ANY,                 "||"  },
-  };
-
-  FOREACH_ARRAY_ELEMENT( c_lang_lit_t, punct, MULTI_CHAR_PUNCTUATORS ) {
-    if ( !opt_lang_is_any( punct->lang_ids ) )
-      continue;
-    if ( strcmp( s, punct->literal ) == 0 )
-      return true;
-  } // for
-
-  return false;
-}
-
-/**
- * Checks whether a macro is an argument for either #P_CONCAT or #P_STRINGIFY.
- *
- * @remarks For function-like macros, when a parameter name is encountered in
- * the replacement list, it is substituted with the token sequence comprising
- * the corresponding macro argument.  If that token sequence is a macro, then
- * it is recursively expanded --- except if it was preceded by either #P_CONCAT
- * or #P_STRINGIFY, or followed by #P_CONCAT.
- *
- * @param prev_node The node pointing to the non-space token before the
- * parameter, if any.
- * @param next_node The node pointing to the non-space token after the
- * parameter, if any.
- * @return Returns `true` only if the macro is an argument of either #P_CONCAT
- * or #P_STRINGIFY.
- */
-NODISCARD
-static bool is_operator_arg( p_token_node_t const *prev_node,
-                             p_token_node_t const *next_node ) {
-  return p_token_node_is_any( prev_node, P_ANY_OPERATOR ) ||
-         p_token_node_is_any( next_node, P_CONCAT );
-}
-
-/**
  * Checks whether \a name is a predefined macro or `__VA_ARGS__` or
  * `__VA_OPT__`.
  *
@@ -893,213 +532,6 @@ static bool is_predefined_macro_name( char const *name ) {
   }
   p_macro_t const *const macro = p_macro_find( name );
   return macro != NULL && macro->is_dynamic;
-}
-
-/**
- * Lexes \a sbuf into a \ref p_token.
- *
- * @remarks The need to re-lex a token from a string happens only as the result
- * of the concatenation operator `##`.
- *
- * @param loc The source location whence the string in \a sbuf came.
- * @param sbuf The \ref strbuf to lex.
- * @return Returns a pointer to a new token only if exactly one token was lex'd
- * successfully; otherwise returns NULL.
- */
-NODISCARD
-static p_token_t* lex_token( c_loc_t const *loc, strbuf_t *sbuf ) {
-  assert( loc != NULL );
-  assert( sbuf != NULL );
-
-  if ( sbuf->len == 0 )
-    return p_token_new_loc( P_PLACEMARKER, loc, /*literal=*/NULL );
-
-  // Preprocessor lines must end in a newline.
-  strbuf_putc( sbuf, '\n' );
-  lexer_push_string( sbuf->str, sbuf->len );
-
-  p_token_t *token = NULL;
-  int y_token_id = yylex();
-
-  switch ( y_token_id ) {
-    case '!':
-    case '#':                           // ordinary '#', not P_STRINGIFY
-    case '%':
-    case '&':
-    case '(':
-    case ')':
-    case '*':
-    case '+':
-    case ',':
-    case '-':
-    case '.':
-    case '/':
-    case ':':
-    case ';':
-    case '<':
-    case '=':
-    case '>':
-    case '?':
-    case '[':
-    case ']':
-    case '^':
-    case '{':
-    case '|':
-    case '}':
-    case '~':
-    case Y_AMPER_AMPER:
-    case Y_AMPER_EQUAL:
-    case Y_CARET_EQUAL:
-    case Y_COLON_COLON_STAR:
-    case Y_DOT_DOT_DOT:
-    case Y_EQUAL_EQUAL:
-    case Y_EXCLAM_EQUAL:
-    case Y_GREATER_EQUAL:
-    case Y_GREATER_GREATER:
-    case Y_GREATER_GREATER_EQUAL:
-    case Y_LESS_EQUAL:
-    case Y_LESS_LESS:
-    case Y_LESS_LESS_EQUAL:
-    case Y_MINUS_EQUAL:
-    case Y_MINUS_GREATER:
-    case Y_MINUS_MINUS:
-    case Y_PERCENT_EQUAL:
-    case Y_PIPE_EQUAL:
-    case Y_PIPE_PIPE:
-    case Y_PLUS_EQUAL:
-    case Y_PLUS_PLUS:
-    case Y_SLASH_EQUAL:
-    case Y_STAR_EQUAL:
-      token = p_token_new_loc( P_PUNCTUATOR, &yylloc, lexer_token );
-      break;
-
-    case Y_COLON_COLON:
-    case Y_DOT_STAR:
-    case Y_MINUS_GREATER_STAR:
-      //
-      // Special case: the lexer isn't language-sensitive (which would be hard
-      // to do) so these tokens are always recognized.  But if the current
-      // language isn't C++, consider them as two tokens (which is a
-      // concatenation error).
-      //
-      if ( !OPT_LANG_IS( CPP_ANY ) )
-        goto done;
-      token = p_token_new_loc( P_PUNCTUATOR, &yylloc, lexer_token );
-      break;
-
-    case Y_LESS_EQUAL_GREATER:
-      //
-      // Special case: same as above tokens.
-      //
-      if ( !OPT_LANG_IS( LESS_EQUAL_GREATER ) )
-        goto done;
-      token = p_token_new_loc( P_PUNCTUATOR, &yylloc, lexer_token );
-      break;
-
-    case Y_CHAR_LIT:
-      token = p_token_new_loc( P_CHAR_LIT, &yylloc, yylval.str_val );
-      break;
-
-    case Y_FLOAT_LIT:
-    case Y_INT_LIT:
-      token =
-        p_token_new_loc( P_NUM_LIT, &yylloc, check_strdup( lexer_token ) );
-      break;
-
-    case Y_NAME:
-      token = p_token_new_loc( P_IDENTIFIER, &yylloc, yylval.name );
-      break;
-
-    case Y_STR_LIT:
-      token = p_token_new_loc( P_STR_LIT, &yylloc, yylval.str_val );
-      break;
-
-    case Y_P_CONCAT:
-      //
-      // Given:
-      //
-      //      #define hash_hash # ## #
-      //
-      // when expanding hash_hash, the concat operator produces a new token
-      // consisting of two adjacent sharp signs, but this new token is NOT the
-      // concat operator.
-      //
-      token = p_token_new_loc( P_PUNCTUATOR, &yylloc, "##" );
-      break;
-
-    case Y_P_SPACE:                     // can't result from concatenation
-      UNEXPECTED_INT_VALUE( y_token_id );
-
-    case Y_P___VA_ARGS__:
-      //
-      // Given:
-      //
-      //      cdecl> #define M(...)   __VA ## _ARGS__
-      //      cdecl> expand M(x)
-      //      M(x) => __VA_ARGS__
-      //
-      // when expanding M, the concat operator produces a new __VA_ARGS__
-      // token, but this new token is NOT the normal __VA_ARGS__.
-      //
-      token = p_token_new_loc(
-        P_IDENTIFIER, &yylloc, check_strdup( L___VA_ARGS__ )
-      );
-      token->ident.ineligible = true;
-      break;
-
-    case Y_P___VA_OPT__:
-      //
-      // Given:
-      //
-      //      cdecl> #define M(...)   __VA_ARGS__ __VA ## _OPT__(y)
-      //      cdecl> expand M(x)
-      //      M(x) => x __VA_OPT__(y)
-      //
-      // when expanding M, the concat operator produces a new __VA_OPT__ token,
-      // but this new token is NOT the normal __VA_OPT__.
-      //
-      token = p_token_new_loc(
-        P_IDENTIFIER, &yylloc, check_strdup( L___VA_OPT__ )
-      );
-      token->ident.ineligible = true;
-      break;
-
-    case '$':
-    case '@':
-    case '`':
-      token = p_token_new_loc( P_OTHER, &yylloc, lexer_token );
-      break;
-
-    case Y_LEXER_ERROR:
-      goto done;
-
-    default:
-      UNEXPECTED_INT_VALUE( y_token_id );
-  } // switch
-
-  //
-  // We've successfully lex'd a token: now try to lex another one to see if
-  // there is another one.
-  //
-  y_token_id = yylex();
-
-done:
-  lexer_pop_string();
-  sbuf->str[ --sbuf->len ] = '\0';      // remove newline
-
-  switch ( y_token_id ) {
-    case Y_END:                         // exactly one token: success
-      return token;
-    case Y_LEXER_ERROR:
-      break;
-    default:                            // more than one token: failure
-      print_error( loc,
-        "\"%s\": concatenation formed invalid token\n", sbuf->str
-      );
-  } // switch
-
-  p_token_free( token );
-  return NULL;
 }
 
 /**
@@ -1938,7 +1370,7 @@ static mex_rv_t mex_expand_all_fns_impl( mex_state_t *mex,
         break;
       case MEX_EXPANDED:
         if ( !mex->expand_opt_no_trim_tokens )
-          trim_tokens( mex->expand_list );
+          p_token_list_trim( mex->expand_list );
         mex_relocate_expand_list( mex );
         mex_print_macro( mex, mex->expand_list );
         break;
@@ -1972,7 +1404,8 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
   if ( mex->macro->is_dynamic ) {
     p_token_t *token;
     if ( opt_lang_is_any( (*mex->macro->dyn_fn)( &token ) ) ) {
-      push_back_substituted_token( mex->expand_list, token );
+      token->is_substituted = true;
+      p_token_list_push_back( mex->expand_list, token );
       mex_print_macro( mex, mex->expand_list );
       return MEX_EXPANDED;
     }
@@ -2146,16 +1579,17 @@ static mex_rv_t mex_expand_all_concat( mex_state_t *mex ) {
       next_token = next_node->data;
     } while ( next_token->kind == P_CONCAT );
 
-    p_token_t *const concatted_token = lex_token( &token->loc, &sbuf );
+    p_token_t *const concatted_token = p_token_lex( &token->loc, &sbuf );
     strbuf_cleanup( &sbuf );
     if ( concatted_token == NULL )
       return MEX_ERROR;
-    push_back_substituted_token( mex->expand_list, concatted_token );
+    concatted_token->is_substituted = true;
+    p_token_list_push_back( mex->expand_list, concatted_token );
     rv = MEX_EXPANDED;
     continue;
 
 skip:
-    push_back_dup_token( mex->expand_list, token );
+    p_token_list_push_back( mex->expand_list, p_token_dup( token ) );
   } // for
 
   return rv;
@@ -2188,7 +1622,7 @@ static mex_rv_t mex_expand_all_macros( mex_state_t *mex ) {
       } // switch
     }
 
-    push_back_dup_token( mex->expand_list, token );
+    p_token_list_push_back( mex->expand_list, p_token_dup( token ) );
   } // for
 
   return rv;
@@ -2237,7 +1671,7 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
 
     p_token_node_t const *const next_node =
       p_token_node_not( token_node->next, P_SPACE );
-    if ( is_operator_arg( prev_node, next_node ) )
+    if ( p_is_operator_arg( prev_node, next_node ) )
       goto append;
 
     param_expand_t find_pe = { .name = token->ident.name };
@@ -2325,7 +1759,7 @@ append:
     goto next;
 
 skip:
-    push_back_dup_token( mex->expand_list, token );
+    p_token_list_push_back( mex->expand_list, p_token_dup( token ) );
 next:
     if ( token->kind != P_SPACE )
       prev_node = token_node;
@@ -2368,7 +1802,7 @@ static mex_rv_t mex_expand_all_stringify( mex_state_t *mex ) {
       } // switch
     }
 
-    push_back_dup_token( mex->expand_list, token );
+    p_token_list_push_back( mex->expand_list, p_token_dup( token ) );
   } // for
 
   return rv;
@@ -2400,7 +1834,7 @@ static mex_rv_t mex_expand_all___VA_ARGS__( mex_state_t *mex ) {
       rv = MEX_EXPANDED;
       continue;
     }
-    push_back_dup_token( mex->expand_list, token );
+    p_token_list_push_back( mex->expand_list, p_token_dup( token ) );
   } // for
 
   return rv;
@@ -2430,7 +1864,7 @@ static mex_rv_t mex_expand_all___VA_OPT__( mex_state_t *mex ) {
       rv = MEX_EXPANDED;
       continue;
     }
-    push_back_dup_token( mex->expand_list, token );
+    p_token_list_push_back( mex->expand_list, p_token_dup( token ) );
   } // for
 
   return rv;
@@ -2608,7 +2042,7 @@ static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
       } // switch
     }
     if ( !is_va_args_empty )
-      push_back_dup_token( &va_opt_list, token );
+      p_token_list_push_back( &va_opt_list, p_token_dup( token ) );
   } // for
 
   if ( !is_va_args_empty ) {
@@ -2934,7 +2368,7 @@ static bool mex_prep_args( mex_state_t *mex ) {
 
   if ( !p_macro_is_func_like( mex->macro ) || mex->arg_list == NULL )
     return true;
-  trim_args( mex->arg_list );
+  p_arg_list_trim( mex->arg_list );
   return mex_check_num_args( mex );
 }
 
@@ -2974,8 +2408,8 @@ static void mex_print_arg_list( mex_state_t const *mex ) {
  * @param mex The mex_state to use.
  * @param token_list The token list to print.
  *
- * @sa color_print_token_list()
  * @sa mex_print_arg_list()
+ * @sa print_token_list_color()
  */
 static void mex_print_macro( mex_state_t const *mex,
                              p_token_list_t const *token_list ) {
@@ -3006,7 +2440,7 @@ static void mex_print_macro( mex_state_t const *mex,
 
   if ( print_token_list ) {
     FPUTC( ' ', mex->fout );
-    color_print_token_list( token_list, mex->fout );
+    print_token_list_color( token_list, mex->fout );
   }
   FPUTC( '\n', mex->fout );
 
@@ -3097,7 +2531,8 @@ static void mex_stringify_identifier( mex_state_t *mex,
 
   p_token_t *const stringified_token =
     p_token_new( P_STR_LIT, check_strdup( p_token_list_str( arg_tokens ) ) );
-  push_back_substituted_token( mex->expand_list, stringified_token );
+  stringified_token->is_substituted = true;
+  p_token_list_push_back( mex->expand_list, stringified_token );
 }
 
 /**
@@ -3114,7 +2549,8 @@ static void mex_stringify___VA_ARGS__( mex_state_t *mex ) {
 
   p_token_t *const stringified_token =
     p_token_new( P_STR_LIT, check_strdup( mex->va_args_str ) );
-  push_back_substituted_token( mex->expand_list, stringified_token );
+  stringified_token->is_substituted = true;
+  p_token_list_push_back( mex->expand_list, stringified_token );
 }
 
 /**
@@ -3143,7 +2579,8 @@ static p_token_node_t* mex_stringify___VA_OPT__( mex_state_t *mex,
   p_token_t *const stringified_token =
     p_token_new( P_STR_LIT, check_strdup( p_token_list_str( &va_opt_list ) ) );
   p_token_list_cleanup( &va_opt_list );
-  push_back_substituted_token( mex->expand_list, stringified_token );
+  stringified_token->is_substituted = true;
+  p_token_list_push_back( mex->expand_list, stringified_token );
 
   return rv_node;
 }
@@ -3197,6 +2634,36 @@ static size_t p_arg_list_count( p_arg_list_t const *arg_list ) {
 
   p_token_list_t *const arg_tokens = slist_front( arg_list );
   return slist_empty( arg_tokens ) ? 0 : 1;
+}
+
+/**
+ * Trims leading #P_SPACE tokens from the first argument's tokens and trailing
+ * #P_SPACE tokens from the last argument's tokens.
+ *
+ * @param arg_list The macro argument list to trim.
+ *
+ * @sa p_token_list_trim()
+ */
+static void p_arg_list_trim( p_arg_list_t *arg_list ) {
+  p_token_list_t *const first_arg_tokens = slist_front( arg_list );
+  if ( first_arg_tokens != NULL ) {
+    while ( !slist_empty( first_arg_tokens ) ) {
+      p_token_t *const token = slist_front( first_arg_tokens );
+      if ( token->kind != P_SPACE )
+        break;
+      p_token_free( slist_pop_front( first_arg_tokens ) );
+    } // while
+  }
+
+  p_token_list_t *const last_arg_tokens = slist_back( arg_list );
+  if ( last_arg_tokens != NULL ) {
+    while ( !slist_empty( last_arg_tokens ) ) {
+      p_token_t *const token = slist_back( last_arg_tokens );
+      if ( token->kind != P_SPACE )
+        break;
+      p_token_free( slist_pop_back( last_arg_tokens ) );
+    } // while
+  }
 }
 
 /**
@@ -3324,179 +2791,6 @@ static void p_macro_relocate_params( p_macro_t *macro ) {
 }
 
 /**
- * Duplicates \a token.
- *
- * @param token The p_token to duplicate; may be NULL.
- * @return Returns the duplicated token or NULL only if \a token is NULL.
- */
-NODISCARD
-static p_token_t* p_token_dup( p_token_t const *token ) {
-  if ( token == NULL )
-    return NULL;                        // LCOV_EXCL_LINE
-  p_token_t *const dup_token = MALLOC( p_token_t, 1 );
-  dup_token->kind = token->kind;
-  dup_token->loc = token->loc;
-  dup_token->is_substituted = token->is_substituted;
-  switch ( token->kind ) {
-    case P_CHAR_LIT:
-    case P_NUM_LIT:
-    case P_STR_LIT:
-      dup_token->lit.value = check_strdup( token->lit.value );
-      break;
-    case P_IDENTIFIER:
-      dup_token->ident.ineligible = token->ident.ineligible;
-      dup_token->ident.name = check_strdup( token->ident.name );
-      break;
-    case P_OTHER:
-      dup_token->other.value = token->other.value;
-      break;
-    case P_PUNCTUATOR:
-      strcpy( dup_token->punct.value, token->punct.value );
-      break;
-    case P_CONCAT:
-    case P_PLACEMARKER:
-    case P_SPACE:
-    case P_STRINGIFY:
-    case P___VA_ARGS__:
-    case P___VA_OPT__:
-      // nothing to do
-      break;
-  } // switch
-  return dup_token;
-}
-
-/**
- * A predicate function for slist_free_if() that checks whether \a token_node
- * is a #P_SPACE token and precedes another: if so, frees it.
- *
- * @param token_node A pointer to the \ref p_token to possibly free.
- * @param user_data Not used.
- * @return Returns `true` only if \a token_node was freed.
- */
-static bool p_token_free_if_consec_space( p_token_node_t *token_node,
-                                          user_data_t user_data ) {
-  assert( token_node != NULL );
-  (void)user_data;
-  p_token_t *const token = token_node->data;
-  assert( token != NULL );
-
-  if ( token->kind != P_SPACE )
-    return false;
-
-  p_token_node_t const *const next_node =
-    p_token_node_not( token_node->next, P_PLACEMARKER );
-  if ( p_token_node_is_any( next_node, P_ANY_OPAQUE ) )
-    return false;
-
-  p_token_free( token );
-  return true;
-}
-
-/**
- * Adjusts the \ref c_loc::first_column "first_column" and \ref
- * c_loc::last_column "last_column" of \ref p_token::loc "loc" for every token
- * in \a token_list starting at \a first_column using the lengths of the
- * stringified tokens to calculate subsequent token locations.
- *
- * @param token_list The \ref p_token_list_t of tokens' locations to adjust.
- * @param first_column The zero-based column to start at.
- * @return Returns one past the last column of the last stringified token in \a
- * token_list.
- *
- * @sa mex_relocate_expand_list()
- */
-NODISCARD
-static size_t p_token_list_relocate( p_token_list_t *token_list,
-                                     size_t first_column ) {
-  assert( token_list != NULL );
-
-  bool relocated_opaque = false;
-
-  FOREACH_SLIST_NODE( token_node, token_list ) {
-    p_token_t *const token = token_node->data;
-    switch ( token->kind ) {
-      case P_PLACEMARKER:
-        continue;
-      case P_SPACE:
-        if ( !relocated_opaque )
-          continue;                     // don't do leading spaces
-        if ( p_token_node_emptyish( token_node->next ) )
-          goto done;                    // don't do trailing spaces either
-        FALLTHROUGH;
-      default:
-        token->loc.first_column = STATIC_CAST( c_loc_num_t, first_column );
-        first_column += strlen( p_token_str( token ) );
-        token->loc.last_column = STATIC_CAST( c_loc_num_t, first_column - 1 );
-        relocated_opaque = true;
-        break;
-    } // switch
-  } // for
-
-done:
-  return first_column;
-}
-
-/**
- * Gets the string representation of \a token_list concatenated.
- *
- * @param token_list The list of \a p_token to stringify.
- * @return Returns said representation.
- *
- * @warning The pointer returned is to a static buffer.
- *
- * @sa p_token_str()
- */
-NODISCARD
-static char const* p_token_list_str( p_token_list_t const *token_list ) {
-  assert( token_list != NULL );
-
-  static strbuf_t sbuf;
-  strbuf_reset( &sbuf );
-
-  bool stringified_opaque = false;
-
-  FOREACH_SLIST_NODE( token_node, token_list ) {
-    p_token_t const *const token = token_node->data;
-    switch ( token->kind ) {
-      case P_PLACEMARKER:
-        continue;
-      case P_SPACE:
-        if ( !stringified_opaque )
-          continue;                     // don't do leading spaces
-        if ( p_token_node_emptyish( token_node->next ) )
-          goto done;                    // don't do trailing spaces either
-        FALLTHROUGH;
-      default:
-        strbuf_puts( &sbuf, p_token_str( token ) );
-        stringified_opaque = true;
-        break;
-    } // switch
-  } // for
-
-done:
-  return empty_if_null( sbuf.str );
-}
-
-/**
- * Gets the first node for a token whose \ref p_token::kind "kind" is _not_ one
- * of \a kinds.
- *
- * @param token_node The node to start from.
- * @param kinds The bitwise-or of kind(s) _not_ to get.
- * @return Returns said node or NULL if no such node exists.
- */
-NODISCARD
-static p_token_node_t* p_token_node_not( p_token_node_t *token_node,
-                                         p_token_kind_t kinds ) {
-  for ( ; token_node != NULL; token_node = token_node->next ) {
-    p_token_t const *const token = token_node->data;
-    if ( (token->kind & kinds) == 0 )
-      break;
-  } // for
-  return token_node;
-}
-
-/**
  * Comparison function for two \ref param_expand.
  *
  * @param i_pe The first \ref param_expand.
@@ -3567,7 +2861,7 @@ static p_token_node_t* parse_args( p_token_node_t const *token_node,
       } // switch
     }
     if ( arg_tokens != NULL )
-      push_back_dup_token( arg_tokens, token );
+      p_token_list_push_back( arg_tokens, p_token_dup( token ) );
   } // for
 
   return CONST_CAST( p_token_node_t*, token_node );
@@ -3596,20 +2890,6 @@ static void predefine_macro( char const *name, p_macro_dyn_fn_t dyn_fn ) {
 }
 
 /**
- * Possibly appends a duplicate of \a token onto the end of \a token_list;
- * however, if \a token is #P_SPACE and \a token_list is either empty or its
- * last token is #P_SPACE, does nothing.
- *
- * @param token_list The \ref p_token_list_t to append onto.
- * @param token The \ref p_token to possibly duplicate.
- */
-static void push_back_dup_token( p_token_list_t *token_list,
-                                 p_token_t const *token ) {
-  avoid_paste( token_list, token );
-  slist_push_back( token_list, p_token_dup( token ) );
-}
-
-/**
  * Appends the tokens comprising \a src_list onto the end of \a dst_list.
  *
  * @param dst_list The \ref p_token_list_t to append onto.
@@ -3625,23 +2905,9 @@ static p_token_node_t* push_back_dup_tokens( p_token_list_t *dst_list,
   p_token_node_t *const dst_tail_orig = dst_list->tail;
 
   FOREACH_SLIST_NODE( src_node, src_list )
-    push_back_dup_token( dst_list, src_node->data );
+    p_token_list_push_back( dst_list, p_token_dup( src_node->data ) );
 
   return dst_tail_orig != NULL ? dst_tail_orig->next : dst_list->head;
-}
-
-/**
- * Convenience function to set \a token's \ref p_token::is_substituted
- * "is_substituted" then push it onto \a token_list.
- *
- * @param token_list The p_token_list to push onto.
- * @param token The \ref p_token to push back.
- */
-static void push_back_substituted_token( p_token_list_t *token_list,
-                                         p_token_t *token ) {
-  avoid_paste( token_list, token );
-  token->is_substituted = true;
-  slist_push_back( token_list, token );
 }
 
 /**
@@ -3677,65 +2943,6 @@ static void set_substituted( p_token_node_t *token_node ) {
   } // for
 }
 
-/**
- * Trims leading #P_SPACE tokens from the first argument's tokens and trailing
- * #P_SPACE tokens from the last argument's tokens.
- *
- * @param arg_list The macro argument list to trim.
- *
- * @sa trim_tokens()
- */
-static void trim_args( p_arg_list_t *arg_list ) {
-  p_token_list_t *const first_arg_tokens = slist_front( arg_list );
-  if ( first_arg_tokens != NULL ) {
-    while ( !slist_empty( first_arg_tokens ) ) {
-      p_token_t *const token = slist_front( first_arg_tokens );
-      if ( token->kind != P_SPACE )
-        break;
-      p_token_free( slist_pop_front( first_arg_tokens ) );
-    } // while
-  }
-
-  p_token_list_t *const last_arg_tokens = slist_back( arg_list );
-  if ( last_arg_tokens != NULL ) {
-    while ( !slist_empty( last_arg_tokens ) ) {
-      p_token_t *const token = slist_back( last_arg_tokens );
-      if ( token->kind != P_SPACE )
-        break;
-      p_token_free( slist_pop_back( last_arg_tokens ) );
-    } // while
-  }
-}
-
-/**
- * Trims both leading and trailing #P_SPACE tokens from \a token_list as well
- * as squashes multiple consecutive intervening #P_SPACE to a single #P_SPACE
- * within \a token_list.
- *
- * @param token_list The list of \ref p_token to trim.
- *
- * @sa trim_args()
- */
-static void trim_tokens( p_token_list_t *token_list ) {
-  assert( token_list != NULL );
-
-  while ( !slist_empty( token_list ) ) {
-    p_token_t *const token = slist_front( token_list );
-    if ( token->kind != P_SPACE )
-      break;
-    p_token_free( slist_pop_front( token_list ) );
-  } // while
-
-  while ( !slist_empty( token_list ) ) {
-    p_token_t *const token = slist_back( token_list );
-    if ( token->kind != P_SPACE )
-      break;
-    p_token_free( slist_pop_back( token_list ) );
-  } // while
-
-  slist_free_if( token_list, &p_token_free_if_consec_space, USER_DATA_ZERO );
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 void p_arg_list_cleanup( p_arg_list_t *arg_list ) {
@@ -3746,24 +2953,6 @@ void p_arg_list_cleanup( p_arg_list_t *arg_list ) {
     p_token_list_cleanup( arg_tokens );
     free( arg_tokens );
   } // for
-}
-
-char const* p_kind_name( p_token_kind_t kind ) {
-  switch ( kind ) {
-    case P_CHAR_LIT   : return "char_lit";
-    case P_CONCAT     : return "##";
-    case P_IDENTIFIER : return "identifier";
-    case P_NUM_LIT    : return "num_lit";
-    case P_OTHER      : return "other";
-    case P_PLACEMARKER: return "placemarker";
-    case P_PUNCTUATOR : return "punctuator";
-    case P_SPACE      : return " ";
-    case P_STRINGIFY  : return "#";
-    case P_STR_LIT    : return "str_lit";
-    case P___VA_ARGS__: return L___VA_ARGS__;
-    case P___VA_OPT__ : return L___VA_OPT__;
-  } // switch
-  UNEXPECTED_INT_VALUE( kind );
 }
 
 p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
@@ -3792,7 +2981,7 @@ p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
     *new_macro->param_list = slist_move( param_list );
   }
 
-  trim_tokens( &new_macro->replace_list );
+  p_token_list_trim( &new_macro->replace_list );
 
   mex_state_t check_mex;
   mex_init( &check_mex,
@@ -3977,144 +3166,6 @@ void p_param_free( p_param_t *param ) {
 
 void p_param_list_cleanup( p_param_list_t *list ) {
   slist_cleanup( list, POINTER_CAST( slist_free_fn_t, &p_param_free ) );
-}
-
-void p_token_free( p_token_t *token ) {
-  if ( token == NULL )
-    return;                             // LCOV_EXCL_LINE
-  switch ( token->kind ) {
-    case P_CHAR_LIT:
-    case P_NUM_LIT:
-    case P_STR_LIT:
-      FREE( token->lit.value );
-      break;
-    case P_IDENTIFIER:
-      FREE( token->ident.name );
-      break;
-    case P_CONCAT:
-    case P_OTHER:
-    case P_PLACEMARKER:
-    case P_PUNCTUATOR:
-    case P_SPACE:
-    case P_STRINGIFY:
-    case P___VA_ARGS__:
-    case P___VA_OPT__:
-      // nothing to do
-      break;
-  } // switch
-  free( token );
-}
-
-void p_token_list_cleanup( p_token_list_t *list ) {
-  slist_cleanup( list, POINTER_CAST( slist_free_fn_t, &p_token_free ) );
-}
-
-p_token_t* p_token_new_loc( p_token_kind_t kind, c_loc_t const *loc,
-                            char const *literal ) {
-  p_token_t *const token = MALLOC( p_token_t, 1 );
-  *token = (p_token_t){ .kind = kind };
-  if ( loc != NULL )
-    token->loc = *loc;
-  switch ( kind ) {
-    case P_CHAR_LIT:
-    case P_NUM_LIT:
-    case P_STR_LIT:
-      assert( literal != NULL );
-      token->lit.value = literal;
-      break;
-    case P_IDENTIFIER:
-      assert( literal != NULL );
-      token->ident.name = literal;
-      break;
-    case P_OTHER:
-      assert( literal != NULL );
-      assert( literal[0] != '\0' );
-      assert( literal[1] == '\0' );
-      token->other.value = literal[0];
-      break;
-    case P_PUNCTUATOR:
-      assert( literal != NULL );
-      assert( literal[0] != '\0' );
-      assert( literal[1] == '\0' || literal[2] == '\0' || literal[3] == '\0' );
-      strcpy( token->punct.value, literal );
-      break;
-    case P_CONCAT:
-    case P_PLACEMARKER:
-    case P_SPACE:
-    case P_STRINGIFY:
-    case P___VA_ARGS__:
-    case P___VA_OPT__:
-      assert( literal == NULL );
-      break;
-  } // switch
-  return token;
-}
-
-char const* p_token_str( p_token_t const *token ) {
-  assert( token != NULL );
-
-  static char other_str[2];
-  static strbuf_t sbuf;
-
-  switch ( token->kind ) {
-    case P_CHAR_LIT:
-      strbuf_reset( &sbuf );
-      strbuf_puts_quoted( &sbuf, '\'', token->lit.value );
-      return sbuf.str;
-    case P_CONCAT:
-      return "##";
-    case P_IDENTIFIER:
-      return token->ident.name;
-    case P_NUM_LIT:
-      return token->lit.value;
-    case P_OTHER:
-      other_str[0] = token->other.value;
-      return other_str;
-    case P_PLACEMARKER:
-      return "";
-    case P_PUNCTUATOR:
-      return token->punct.value;
-    case P_SPACE:
-      return " ";
-    case P_STRINGIFY:
-      return "#";
-    case P_STR_LIT:
-      strbuf_reset( &sbuf );
-      strbuf_puts_quoted( &sbuf, '"', token->lit.value );
-      return sbuf.str;
-    case P___VA_ARGS__:
-      return L___VA_ARGS__;
-    case P___VA_OPT__:
-      return L___VA_OPT__;
-  } // switch
-
-  UNEXPECTED_INT_VALUE( token->kind );
-}
-
-void print_token_list( p_token_list_t const *token_list, FILE *fout ) {
-  assert( token_list != NULL );
-  assert( fout != NULL );
-
-  bool printed_opaque = false;
-
-  FOREACH_SLIST_NODE( token_node, token_list ) {
-    p_token_t const *const token = token_node->data;
-    switch ( token->kind ) {
-      case P_PLACEMARKER:
-        continue;
-      case P_SPACE:
-        if ( !printed_opaque )
-          continue;                     // don't print leading spaces
-        if ( p_token_node_emptyish( token_node->next ) )
-          return;                       // don't print trailing spaces either
-        break;
-      default:
-        break;
-    } // switch
-
-    FPUTS( p_token_str( token ), fout );
-    printed_opaque = true;
-  } // for
 }
 
 ///////////////////////////////////////////////////////////////////////////////

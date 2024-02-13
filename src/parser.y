@@ -57,6 +57,7 @@
 #include "literals.h"
 #include "options.h"
 #include "p_macro.h"
+#include "p_token.h"
 #include "print.h"
 #include "set_options.h"
 #include "show.h"
