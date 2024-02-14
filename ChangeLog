@@ -1,5 +1,6 @@
 2024-02-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * Doxyfile: Removed WITH_IS_SAME_TYPE -- no longer needed.
    * src/Makefile.am, p_kind.c, p_kind.h, p_token.c, p_token.h: Split out
      p_kind.[ch].
    * src/Makefile.am, dump.c, p_macro.c, p_macro.h, p_token.c, p_token.h,
