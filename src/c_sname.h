@@ -117,7 +117,7 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Data for each scope of an sname.
+ * Data for each scope of an \ref c_sname_t.
  */
 struct c_scope_data {
   /**

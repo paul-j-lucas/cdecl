@@ -243,7 +243,14 @@ typedef slist_t                   c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;
 typedef struct c_bit_field_ast    c_bit_field_ast_t;
 typedef struct c_builtin_ast      c_builtin_ast_t;
-typedef slist_node_t              c_capture_t;    ///< Lambda capture.
+
+/**
+ * C++ lambda capture.
+ *
+ * @remarks The \ref slist_node::data "data" is the capture's AST.
+ */
+typedef slist_node_t              c_capture_t;
+
 typedef struct c_capture_ast      c_capture_ast_t;
 typedef enum   c_capture_kind     c_capture_kind_t;
 typedef struct c_cast_ast         c_cast_ast_t;
@@ -257,15 +264,38 @@ typedef enum   c_graph            c_graph_t;
 typedef struct c_lambda_ast       c_lambda_ast_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_loc              c_loc_t;
-typedef short                     c_loc_num_t;    ///< Location numeric type.
+
+/**
+ * Underlying source location numeric type for \ref c_loc.
+ *
+ * @remarks This should be an unsigned type, but Flex & Bison generate code
+ * that assumes it's signed.  Making it unsigned generates warnings; hence this
+ * is kept as signed to prevent the warnings.
+ */
+typedef short                     c_loc_num_t;
+
 typedef enum   c_op_id            c_op_id_t;
 typedef struct c_operator         c_operator_t;
 typedef struct c_operator_ast     c_operator_ast_t;
-typedef slist_node_t              c_param_t;      ///< Function-like parameter.
+
+/**
+ * C/C++ function-like parameter.
+ *
+ * @remarks The \ref slist_node::data "data" is the parameter's AST.
+ */
+typedef slist_node_t              c_param_t;
+
 typedef struct c_parent_ast       c_parent_ast_t;
 typedef struct c_ptr_mbr_ast      c_ptr_mbr_ast_t;
 typedef struct c_ptr_ref_ast      c_ptr_ref_ast_t;
-typedef slist_node_t              c_scope_t;      ///< Scope in \ref c_sname_t.
+
+/**
+ * A particular scope in an \a ref c_sname_t.
+ *
+ * @remarks The \ref slist_node::data "data" is a \ref c_scope_data.
+ */
+typedef slist_node_t              c_scope_t;
+
 typedef struct c_sglob            c_sglob_t;
 typedef slist_t                   c_sname_t;      ///< C++ scoped name.
 typedef uint64_t                  c_tid_t;        ///< Type ID(s) bits.
@@ -277,7 +307,21 @@ typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
 typedef enum   cdecl_debug        cdecl_debug_t;
 typedef enum   cdecl_mode         cdecl_mode_t;
 typedef enum   cdecl_show         cdecl_show_t;
-typedef slist_t                   p_arg_list_t;   ///< Macro argument list.
+
+/**
+ * C preprocessor macro argument list.
+ *
+ * @remarks
+ * @parblock
+ * Multiple tokens can comprise a macro argument, e.g.:
+ *
+ *     M(a b)
+ *
+ * Hence, each argument in an argument list is a \ref p_token_list_t.
+ * @endparblock
+ */
+typedef slist_t                   p_arg_list_t;
+
 typedef struct p_macro            p_macro_t;
 typedef struct p_param            p_param_t;
 typedef slist_t                   p_param_list_t; ///< Macro parameter list.
@@ -307,11 +351,7 @@ typedef int (*qsort_cmp_fn_t)( void const *i_data, void const *j_data );
 
 
 /**
- * The source location used by Bison.
- *
- * @remarks These should all be an unsigned type, but Flex & Bison generate
- * code that assumes these are signed.  Making them unsigned generates
- * warnings; hence these are kept as signed to prevent the warnings.
+ * The source location used by Flex & Bison.
  */
 struct c_loc {
   c_loc_num_t first_line;               ///< First line of location range.
