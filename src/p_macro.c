@@ -2948,11 +2948,16 @@ static void set_substituted( p_token_node_t *token_node ) {
 void p_arg_list_cleanup( p_arg_list_t *arg_list ) {
   if ( arg_list == NULL )
     return;                             // LCOV_EXCL_LINE
-  FOREACH_SLIST_NODE( arg_node, arg_list ) {
-    p_token_list_t *const arg_tokens = arg_node->data;
-    p_token_list_cleanup( arg_tokens );
-    free( arg_tokens );
-  } // for
+  //
+  // Using only the free_fn parameter of slist_cleanup() would also require a
+  // p_token_list_free() function in addition to p_token_list_cleanup(). It's
+  // not worth it since this is the only place where p_token_list_free() would
+  // be needed.  Instead, just iterate and call p_token_list_cleanup() first
+  // followed by free_fn = free().
+  //
+  FOREACH_SLIST_NODE( arg_node, arg_list )
+    p_token_list_cleanup( arg_node->data );
+  slist_cleanup( arg_list, &free );
 }
 
 p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
