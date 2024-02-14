@@ -1,5 +1,6 @@
 2024-02-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac, p_macro.c: Fixed macro argument list memory leak.
    * p_macro.c: Added "const".
 
 2024-02-13  Paul J. Lucas <paul@lucasmail.org>
