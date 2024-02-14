@@ -3123,7 +3123,7 @@ bool p_macro_undef( char const *name, c_loc_t const *name_loc ) {
     print_error( name_loc, "\"%s\": no such macro\n", name );
     return false;
   }
-  p_macro_t *const macro = found_rb->data;
+  p_macro_t const *const macro = found_rb->data;
   if ( macro->is_dynamic ) {
     print_error( name_loc,
       "\"%s\": predefined macro may not be undefined\n", name
