@@ -691,6 +691,7 @@ extern @GNULIB_UNICTYPE_PROPERTY_SPACE_DLL_VARIABLE@ const uc_property_t UC_PROP
 extern @GNULIB_UNICTYPE_PROPERTY_NON_BREAK_DLL_VARIABLE@ const uc_property_t UC_PROPERTY_NON_BREAK;
 extern @GNULIB_UNICTYPE_PROPERTY_ISO_CONTROL_DLL_VARIABLE@ const uc_property_t UC_PROPERTY_ISO_CONTROL;
 extern @GNULIB_UNICTYPE_PROPERTY_FORMAT_CONTROL_DLL_VARIABLE@ const uc_property_t UC_PROPERTY_FORMAT_CONTROL;
+extern @GNULIB_UNICTYPE_PROPERTY_PREPENDED_CONCATENATION_MARK_DLL_VARIABLE@ const uc_property_t UC_PROPERTY_PREPENDED_CONCATENATION_MARK;
 extern @GNULIB_UNICTYPE_PROPERTY_DASH_DLL_VARIABLE@ const uc_property_t UC_PROPERTY_DASH;
 extern @GNULIB_UNICTYPE_PROPERTY_HYPHEN_DLL_VARIABLE@ const uc_property_t UC_PROPERTY_HYPHEN;
 extern @GNULIB_UNICTYPE_PROPERTY_PUNCTUATION_DLL_VARIABLE@ const uc_property_t UC_PROPERTY_PUNCTUATION;
@@ -872,6 +873,8 @@ extern bool uc_is_property_non_break (ucs4_t uc)
 extern bool uc_is_property_iso_control (ucs4_t uc)
        _UC_ATTRIBUTE_CONST;
 extern bool uc_is_property_format_control (ucs4_t uc)
+       _UC_ATTRIBUTE_CONST;
+extern bool uc_is_property_prepended_concatenation_mark (ucs4_t uc)
        _UC_ATTRIBUTE_CONST;
 extern bool uc_is_property_dash (ucs4_t uc)
        _UC_ATTRIBUTE_CONST;
