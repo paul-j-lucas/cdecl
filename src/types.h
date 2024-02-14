@@ -178,7 +178,7 @@ enum c_op_id {
 };
 
 /**
- * **cdecl** debug mode.
+ * **Cdecl** debug mode.
  */
 enum cdecl_debug {
   CDECL_DEBUG_NO            = 0u,         ///< Do not print debug output.

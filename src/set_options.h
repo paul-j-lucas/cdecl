@@ -76,7 +76,7 @@ typedef struct set_option_fn_args set_option_fn_args_t;
 typedef bool (*set_option_fn_t)( set_option_fn_args_t const *args );
 
 /**
- * **cdecl** `set` option kind.
+ * **Cdecl** `set` option kind.
  */
 enum set_option_kind {
   SET_OPTION_TOGGLE,                    ///< Toggle, e.g., `foo` & `nofoo`.
@@ -86,7 +86,7 @@ enum set_option_kind {
 typedef enum set_option_kind set_option_kind_t;
 
 /**
- * **cdecl** `set` option.
+ * **Cdecl** `set` option.
  */
 struct set_option {
   char const       *name;               ///< Option name.

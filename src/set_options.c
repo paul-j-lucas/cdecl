@@ -99,7 +99,7 @@ static unsigned const OPTION_NOT_SUPPORTED_COLUMN = 30u;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * **cdecl** `set` options.
+ * **Cdecl** `set` options.
  */
 static set_option_t const SET_OPTIONS[] = {
   //
