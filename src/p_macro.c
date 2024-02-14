@@ -745,7 +745,7 @@ static c_lang_id_t macro_dyn___TIME__( p_token_t **ptoken ) {
 /**
  * Cleans up C preprocessor macro data.
  *
- * @sa p_macro_init()
+ * @sa p_macros_init()
  */
 static void macros_cleanup( void ) {
   rb_tree_cleanup( &macro_set, POINTER_CAST( rb_free_fn_t, &p_macro_free ) );
