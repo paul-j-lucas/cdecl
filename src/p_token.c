@@ -73,8 +73,8 @@ static bool is_multi_char_punctuator( char const* );
  * @sa [Token Spacing](https://gcc.gnu.org/onlinedocs/gcc-4.9.3/cppinternals/Token-Spacing.html#Token-Spacing).
  */
 static void avoid_paste( p_token_list_t *token_list, p_token_t const *token ) {
-  assert( token != NULL );
   assert( token_list != NULL );
+  assert( token != NULL );
 
   if ( token->kind != P_PUNCTUATOR )
     return;
