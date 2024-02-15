@@ -201,8 +201,6 @@ void p_token_list_push_back( p_token_list_t *token_list, p_token_t *token );
  * within \a token_list.
  *
  * @param token_list The list of \ref p_token to trim.
- *
- * @sa trim_args()
  */
 void p_token_list_trim( p_token_list_t *token_list );
 
