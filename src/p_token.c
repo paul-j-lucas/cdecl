@@ -364,7 +364,6 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
     case Y_AMPER_AMPER:
     case Y_AMPER_EQUAL:
     case Y_CARET_EQUAL:
-    case Y_COLON_COLON_STAR:
     case Y_DOT_DOT_DOT:
     case Y_EQUAL_EQUAL:
     case Y_EXCLAM_EQUAL:
@@ -388,6 +387,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       break;
 
     case Y_COLON_COLON:
+    case Y_COLON_COLON_STAR:
     case Y_DOT_STAR:
     case Y_MINUS_GREATER_STAR:
       //
