@@ -2451,7 +2451,7 @@ static void mex_print_macro( mex_state_t const *mex,
   DUMP_STR( mex->indent, "macro", mex->macro->name );
   if ( print_arg_list ) {
     DUMP_KEY( mex->indent, "arg_list: " );
-    p_arg_list_dump( mex->arg_list, mex->indent + 1, stdout );
+    p_arg_list_dump( mex->arg_list, mex->indent + 1, mex->fout );
   }
   if ( print_token_list ) {
     DUMP_KEY( mex->indent, "token_list: " );
