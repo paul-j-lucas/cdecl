@@ -62,7 +62,7 @@ static bool is_multi_char_punctuator( char const* );
  * If the last non-#P_PLACEMARKER token of \a token_list, if any, and \a token
  * are both #P_PUNCTUATOR tokens and pasting (concatenating) them together
  * would form a different valid #P_PUNCTUATOR token, appends a #P_SPACE token
- * onto \a token_list before \a token to avoid this.
+ * onto \a token_list to avoid this.
  *
  * @param token_list The \ref p_token_list_t whose last token, if any, to avoid
  * pasting with.
