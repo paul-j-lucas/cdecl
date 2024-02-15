@@ -1,3 +1,8 @@
+2024-02-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c: s/stdout/mex->fout/
+   * p_token.c: Moved Y_COLON_COLON_STAR.
+
 2024-02-14  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, p_macro.c: Fixed macro argument list memory leak.
