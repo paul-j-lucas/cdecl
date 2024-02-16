@@ -1452,7 +1452,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * Special case: if "define" is followed by an identifier that is
                * _immediately_ followed by '(' with no intervening whitespace,
                * it's defining a function-like macro, so set a flag we can use
-               * in {identifier} below.
+               * it in {identifier} below.
                */
   define/{S}+{identifier}\( {
                 SET_TOKEN;
