@@ -86,6 +86,8 @@
 
 /// @endcond
 
+///////////////////////////////////////////////////////////////////////////////
+
 /**
  * @addtogroup lexer-group
  * @{
@@ -115,14 +117,6 @@
 #define SET_TOKEN_TO(S)           (lexer_token = (S))
 
 /**
- * Overrides Flex's fatal error message to print the message in our format and
- * also exit with the status code we want.
- *
- * @param MSG The error message to print.
- */
-#define YY_FATAL_ERROR(MSG)       lexer_fatal( MSG )
-
-/**
  * Switch to lexer \a STATE start-state saving the current start-state.
  *
  * @param STATE The start-state to switch to.
@@ -138,6 +132,14 @@
  * @sa #BEGIN_CALL()
  */
 #define BEGIN_RETURN              BEGIN( yy_start_stack_pop() )
+
+/**
+ * Overrides Flex's fatal error message to print the message in our format and
+ * also exit with the status code we want.
+ *
+ * @param MSG The error message to print.
+ */
+#define YY_FATAL_ERROR(MSG)       lexer_fatal( MSG )
 
 /**
  * Overrides Flex's input.
@@ -160,6 +162,8 @@
  */
 #define YY_USER_ACTION_UNDO_FOR_REJECT \
   token_column -= STATIC_CAST( c_loc_num_t, yyleng )
+
+///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Data to keep for a file that is `include`d.
