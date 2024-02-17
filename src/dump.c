@@ -394,9 +394,9 @@ static void c_ast_list_dump_impl( c_ast_list_t const *list,
 static void c_loc_dump( c_loc_t const *loc, FILE *fout ) {
   assert( loc != NULL );
   assert( fout != NULL );
-  FPRINTF( fout, "{ first_column: %d", loc->first_column );
+  FPRINTF( fout, "{ first_column: " PRI_c_loc_num_t, loc->first_column );
   if ( loc->last_column != loc->first_column )
-    FPRINTF( fout, ", last_column: %d", loc->last_column );
+    FPRINTF( fout, ", last_column: " PRI_c_loc_num_t, loc->last_column );
   FPUTS( " }", fout );
 }
 
