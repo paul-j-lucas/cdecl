@@ -1,3 +1,8 @@
+2024-02-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c: c_loc_dump() now dumps lines too (when > 1).
+   * dump.c, print.c, types.h: Added PRI_c_loc_num_t.
+
 2024-02-15  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c: s/stdout/mex->fout/
