@@ -1234,7 +1234,7 @@ static void yyerror( char const *msg ) {
   p_param_list_t     *p_param_list; // preprocessor macro parameter list
   p_token_t          *p_token;      // preprocessor token
   p_token_list_t     *p_token_list; // preprocessor token list
-  void               *pair[2];      // pair of pointers
+  void               *ptrs[2];      // pair of pointers
   cdecl_show_t        show;         // which types to show
   c_sname_t           sname;        // scoped identifier name, cf. name
   slist_t             sname_list;   // c_sname_t list
@@ -1708,7 +1708,7 @@ static void yyerror( char const *msg ) {
 %type   <uint_val>    width_specifier_english_uint
 
                       // C Preprocessor
-%type  <pair>         expand_command2
+%type  <ptrs>         expand_command2
 %type  <p_arg_list>   p_arg_list p_arg_list_opt
 %type  <p_token>      p_arg_token
 %type  <p_token_list> p_arg_token_as_list
