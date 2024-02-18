@@ -67,6 +67,9 @@ enum p_token_kind {
   ///     expand NAME2(,y)
   ///     NAME2(, y) => {PLACEMARKER} ## y
   ///     NAME2(, y) => y
+  ///
+  /// Without the placemarker, neither `#` nor `##` could distinguish the above
+  /// valid cases from invalid cases where they have no argument.
   /// @endparblock
   ///
   P_PLACEMARKER = (1u << 5),
