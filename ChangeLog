@@ -1,3 +1,9 @@
+2024-02-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, c_typedef.h, p_macro.c, p_macro.h, red_black.h:
+     rb_tree_visit()'s return value is now discardable; other visitor functions
+     now return void.
+
 2024-02-17  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c: c_loc_dump() now dumps lines too (when > 1).
