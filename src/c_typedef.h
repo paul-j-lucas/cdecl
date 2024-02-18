@@ -139,12 +139,8 @@ c_typedef_t* c_typedef_remove( rb_node_t *node );
  *
  * @param visit_fn The visitor function to use.
  * @param v_data Optional data passed to \a visit_fn.
- * @return Returns a pointer to the \ref c_typedef the visitor stopped on or
- * NULL.
  */
-PJL_DISCARD
-c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,
-                                    void *v_data );
+void c_typedef_visit( c_typedef_visit_fn_t visit_fn, void *v_data );
 
 /**
  * Initializes all \ref c_typedef data.

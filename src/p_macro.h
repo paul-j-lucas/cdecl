@@ -194,11 +194,8 @@ bool p_macro_undef( char const *name, c_loc_t const *name_loc );
  *
  * @param visit_fn The visitor function to use.
  * @param v_data Optional data passed to \a visit_fn.
- * @return Returns a pointer to the \ref p_macro the visitor stopped on or
- * NULL.
  */
-PJL_DISCARD
-p_macro_t const* p_macro_visit( p_macro_visit_fn_t visit_fn, void *v_data );
+void p_macro_visit( p_macro_visit_fn_t visit_fn, void *v_data );
 
 /**
  * Initializes all C preprocessor macro data.

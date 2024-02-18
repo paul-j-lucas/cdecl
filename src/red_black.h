@@ -291,7 +291,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data );
  * would change the node's position within the tree according to its \ref
  * rb_tree::cmp_fn "cmp_fn".
  */
-NODISCARD
+PJL_DISCARD
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
                           void *v_data );
 

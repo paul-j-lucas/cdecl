@@ -1115,12 +1115,10 @@ c_typedef_t* c_typedef_remove( rb_node_t *node ) {
   return rb_tree_delete( &typedef_set, node );
 }
 
-c_typedef_t const* c_typedef_visit( c_typedef_visit_fn_t visit_fn,
-                                    void *v_data ) {
+void c_typedef_visit( c_typedef_visit_fn_t visit_fn, void *v_data ) {
   assert( visit_fn != NULL );
   tdef_rb_visit_data_t trvd = { visit_fn, v_data };
-  rb_node_t const *const rb = rb_tree_visit( &typedef_set, &rb_visitor, &trvd );
-  return rb != NULL ? rb->data : NULL;
+  rb_tree_visit( &typedef_set, &rb_visitor, &trvd );
 }
 
 void c_typedefs_init( void ) {

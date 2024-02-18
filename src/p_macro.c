@@ -3140,11 +3140,10 @@ bool p_macro_undef( char const *name, c_loc_t const *name_loc ) {
   return true;
 }
 
-p_macro_t const* p_macro_visit( p_macro_visit_fn_t visit_fn, void *v_data ) {
+void p_macro_visit( p_macro_visit_fn_t visit_fn, void *v_data ) {
   assert( visit_fn != NULL );
   macro_rb_visit_data_t mrvd = { visit_fn, v_data };
-  rb_node_t const *const rb = rb_tree_visit( &macro_set, &rb_visitor, &mrvd );
-  return rb != NULL ? rb->data : NULL;
+  rb_tree_visit( &macro_set, &rb_visitor, &mrvd );
 }
 
 void p_macros_init( void ) {
