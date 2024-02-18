@@ -45,7 +45,7 @@
  */
 enum p_token_kind {
   P_CHAR_LIT    = (1u << 0),            ///< Character literal.
-  P_CONCAT      = (1u << 1),            ///< `##`.
+  P_CONCAT      = (1u << 1),            ///< Concatenation operator `##`.
   P_IDENTIFIER  = (1u << 2),            ///< An identifier.
   P_NUM_LIT     = (1u << 3),            ///< Integer or floating point literal.
   P_OTHER       = (1u << 4),            ///< `@`, `$`, or <code>`</code>.
@@ -121,7 +121,7 @@ enum p_token_kind {
   ///
   P_SPACE       = (1u << 7),
 
-  P_STRINGIFY   = (1u << 8),            ///< `#`.
+  P_STRINGIFY   = (1u << 8),            ///< Stringify operator `#`.
   P_STR_LIT     = (1u << 9),            ///< String literal.
 
   P___VA_ARGS__ = (1u << 10),           ///< `__VA_ARGS__`.
