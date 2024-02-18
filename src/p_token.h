@@ -117,7 +117,7 @@ struct p_token {
      * #P_CHAR_LIT, #P_NUM_LIT, or #P_STR_LIT members.
      */
     struct {
-      char const *value;
+      char const *value;                ///< Literal value.
     } lit;
 
     /**
