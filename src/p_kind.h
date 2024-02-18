@@ -79,10 +79,45 @@ enum p_token_kind {
   ///
   /// Whitespace.
   ///
-  /// @remarks Ordinarily, whitespace is skipped over by the lexer.  The C
-  /// preprocessor, however, needs to maintain whitespace to know whether a
-  /// function-like macro name is _immediately_ followed by a `(` without an
-  /// intervening space to know whether to perform expansion on it.
+  /// @remarks
+  /// @parblock
+  /// Ordinarily, whitespace is skipped over by the lexer.  The C preprocessor,
+  /// however, needs to maintain whitespace:
+  ///
+  /// 1. To know if a macro name is _immediately_ followed by a `(` without an
+  ///    intervening space to know whether the macro is a function-like macro.
+  ///
+  /// 2. For stringification via #P_STRINGIFY, e.g.:
+  ///    @code
+  ///    cdecl> #define Q(X)      #X
+  ///    cdecl> expand Q(( a , b ))
+  ///    Q(( a , b )) => #X
+  ///    Q(( a , b )) => "( a , b )"
+  ///    @endcode
+  ///
+  /// 3. To avoid token pasting via macro parameter expansion forming a
+  ///    different token, e.g.:
+  ///    @code
+  ///    cdecl> #define P(X)      -X
+  ///    cdecl> expand P(-)
+  ///    P(-) => -X
+  ///    | X => -
+  ///    P(-) => - -
+  ///    @endcode
+  ///
+  /// 4. To avoid token pasting via comment elision where a comment has to turn
+  ///    into a space, e.g.:
+  ///    @code
+  ///    cdecl> #define P(A,B)    A/**/B
+  ///    cdecl> expand P(x,y)
+  ///    P(x, y) => A B
+  ///    | A => x
+  ///    | B => y
+  ///    P(x, y) => x y
+  ///    @endcode
+  /// @endparblock
+  ///
+  /// @sa avoid_paste()
   ///
   P_SPACE       = (1u << 7),
 
