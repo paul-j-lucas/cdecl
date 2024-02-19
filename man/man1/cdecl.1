@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 25, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "February 19, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -380,13 +380,29 @@ For C++ only,
 sets the type keywords to
 .I s
 (which is case-insensitive)
-that should be explicitly included in declarations,
-one or more of
-.BR e " (for \f(CWenum\fP),"
-.BR c " (for \f(CWclass\fP),"
-.BR s " (for \f(CWstruct\fP),"
-and
-.BR u " (for \f(CWunion\fP)."
+that should be explicitly included in declarations.
+Valid formats for
+.I s
+are:
+.RS 8
+.TP 4
+.PD 0
+.B e
+\f(CWenum\fP
+.TP
+.B c
+\f(CWclass\fP
+.TP
+.B s
+\f(CWstruct\fP
+.TP
+.B u
+\f(CWunion\fP
+.RE
+.PD
+.IP
+Multiple format may be given,
+one immediately after the other.
 Alternatively,
 \f(CW*\fP may be given to mean ``all''
 or
