@@ -1276,9 +1276,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   // Hence, it's not the actual delimiter, but part of the
                   // string literal: append the part that matched (")ab").
                   //
-                  strbuf_printf( &str_lit_buf,
-                    ")%.*s", STATIC_CAST( int, d - rstr_delim ), rstr_delim
-                  );
+                  int const part_len = STATIC_CAST( int, d - rstr_delim );
+                  strbuf_printf( &str_lit_buf, ")%.*s", part_len, rstr_delim );
                   //
                   // Unput the character that caused the mismatch since it
                   // could be ')' that could potentially start a real match,
