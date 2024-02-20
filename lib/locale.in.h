@@ -216,7 +216,7 @@ _GL_WARN_ON_USE (setlocale, "setlocale works differently on native Windows - "
 # include "setlocale_null.h"
 #endif
 
-#if /*@GNULIB_NEWLOCALE@ ||*/ (@GNULIB_LOCALENAME@ && @LOCALENAME_ENHANCE_LOCALE_FUNCS@ && @HAVE_NEWLOCALE@)
+#if /*@GNULIB_NEWLOCALE@ ||*/ (@GNULIB_LOCALENAME_UNSAFE@ && @LOCALENAME_ENHANCE_LOCALE_FUNCS@ && @HAVE_NEWLOCALE@)
 # if @REPLACE_NEWLOCALE@
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   undef newlocale
@@ -249,7 +249,7 @@ _GL_WARN_ON_USE (newlocale, "newlocale is not portable");
 # endif
 #endif
 
-#if @GNULIB_DUPLOCALE@ || (@GNULIB_LOCALENAME@ && @LOCALENAME_ENHANCE_LOCALE_FUNCS@ && @HAVE_DUPLOCALE@)
+#if @GNULIB_DUPLOCALE@ || (@GNULIB_LOCALENAME_UNSAFE@ && @LOCALENAME_ENHANCE_LOCALE_FUNCS@ && @HAVE_DUPLOCALE@)
 # if @HAVE_DUPLOCALE@ /* locale_t may be undefined if !@HAVE_DUPLOCALE@.  */
 #  if @REPLACE_DUPLOCALE@
 #   if !(defined __cplusplus && defined GNULIB_NAMESPACE)
@@ -279,7 +279,7 @@ _GL_WARN_ON_USE (duplocale, "duplocale is buggy on some glibc systems - "
 # endif
 #endif
 
-#if /*@GNULIB_FREELOCALE@ ||*/ (@GNULIB_LOCALENAME@ && @LOCALENAME_ENHANCE_LOCALE_FUNCS@ && @HAVE_FREELOCALE@)
+#if /*@GNULIB_FREELOCALE@ ||*/ (@GNULIB_LOCALENAME_UNSAFE@ && @LOCALENAME_ENHANCE_LOCALE_FUNCS@ && @HAVE_FREELOCALE@)
 # if @REPLACE_FREELOCALE@
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   undef freelocale

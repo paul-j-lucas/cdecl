@@ -105,6 +105,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module multiarch:
   # Code from module nocrash:
   # Code from module setlocale-null:
+  # Code from module setlocale-null-unlocked:
   # Code from module snippet/_Noreturn:
   # Code from module snippet/arg-nonnull:
   # Code from module snippet/c++defs:
@@ -863,6 +864,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/memchr.valgrind
   lib/mempcpy.c
   lib/setlocale-lock.c
+  lib/setlocale_null-unlocked.c
   lib/setlocale_null.c
   lib/setlocale_null.h
   lib/stdarg.in.h
