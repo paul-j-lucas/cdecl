@@ -10,6 +10,14 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 16.2.2
+
+** `long long` not until C++11
+Previously, **cdecl** allowed `long long` in C++98 and C++03, but it wasn't
+officially supported until C++11.  Now, **cdecl** allows `long long` in C++
+only since C++11.
+
+
 * Changes in Cdecl 16.2.1
 
 ** Fixed macro argument list memory leak

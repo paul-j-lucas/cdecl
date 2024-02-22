@@ -847,7 +847,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Lanuages the `long long` type is supported in.
  */
-#define LANG_long_long                  LANG_MIN(C_99)
+#define LANG_long_long                  LANG_C_CPP_MIN(99,11)
 
 /**
  * Languages the `__maybe_unused__` attribute is supported in.
