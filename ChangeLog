@@ -1,3 +1,8 @@
+2024-02-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, cdecl.1, c_lang.h: long long is now supported in C++ only in
+     C++11 and later.
+
 2024-02-19  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Made --explicit-ecsu section more consistent.
