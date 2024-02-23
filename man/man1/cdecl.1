@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "February 22, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "February 23, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -363,7 +363,15 @@ Turns on ``east const'' output
 where \f(CWconst\fP (and \f(CWvolatile\fP)
 are printed to the right
 (``east'')
-of the type.
+of the type,
+e.g.:
+.RS
+.cS
+const int i;  // west
+int const j;  // east
+.cE 0
+.RE
+.IP
 (Not supported in K&R\~C.)
 .TP
 .BR \-\-echo-commands " | " \-O
@@ -620,8 +628,8 @@ to
 e.g.:
 .RS
 .cS
-int *p;   // east
-int* p;   // west
+int *p;       // east
+int* q;       // west
 .cE 0
 .RE
 .IP
