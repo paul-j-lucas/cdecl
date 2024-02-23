@@ -1,3 +1,7 @@
+2024-02-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added example for east const.
+
 2024-02-22  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, cdecl.1, c_lang.h: long long is now supported in C++ only in
