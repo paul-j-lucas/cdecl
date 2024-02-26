@@ -1,3 +1,7 @@
+2024-02-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c: Now always printing "error: ".
+
 2024-02-23  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Added example for east const.
