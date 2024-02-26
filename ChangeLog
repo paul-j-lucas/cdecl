@@ -1,5 +1,6 @@
 2024-02-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.c: Added assert()s.
    * util.c, util.h: Added assert()s.
    * did_you_mean.c, did_you_mean.h: Added did_you_mean::literal_len.
    * did_you_mean.c: Factored out dym_copy().
