@@ -1,3 +1,7 @@
+2024-02-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Factored out dym_copy().
+
 2024-02-25  Paul J. Lucas <paul@lucasmail.org>
 
    * print.c: Now always printing "error: ".
