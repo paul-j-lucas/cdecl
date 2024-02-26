@@ -80,7 +80,7 @@ static double const SIMILAR_ENOUGH_PERCENT = .37;
  * @param tpid The type part ID that a keyword must have in order to be copied
  * (or counted).
  * @return If \a pdym is NULL, returns said number of keywords; otherwise the
- * return value is unspecifed.
+ * return value is unspecified.
  */
 PJL_DISCARD
 static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
@@ -105,7 +105,7 @@ static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
  * just count keywords, not copy.  If not NULL, on return, the pointed-to
  * pointer is incremented.
  * @return If \a pdym is NULL, returns said number of keywords; otherwise the
- * return value is unspecifed.
+ * return value is unspecified.
  */
 PJL_DISCARD
 static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
@@ -137,7 +137,7 @@ static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
  * just count commands, not copy.  If not NULL, on return, the pointed-to
  * pointer is incremented.
  * @return If \a pdym is NULL, returns said number of commands; otherwise the
- * return value is unspecifed.
+ * return value is unspecified.
  */
 PJL_DISCARD
 static size_t copy_commands( did_you_mean_t **const pdym ) {
@@ -161,7 +161,7 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
  * just count options, not copy.  If not NULL, on return, the pointed-to
  * pointer is incremented.
  * @return If \a pdym is NULL, returns said number of options; otherwise the
- * return value is unspecifed.
+ * return value is unspecified.
  */
 PJL_DISCARD
 static size_t copy_cli_options( did_you_mean_t **pdym ) {
@@ -176,8 +176,9 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
 }
 
 /**
- * A \ref p_macro visitor function to copy names of macro that are only valid
- * in the current language to the candidate list pointed to.
+ * A \ref p_macro visitor function that copies the names of macros that are
+ * valid only in the current language to the candidate list pointed to by \a
+ * pdym; if \a pdym is NULL, only counts the number of macro names.
  *
  * @param macro The \ref p_macro to visit.
  * @param data A pointer to a \ref dym_rb_visit_data.
@@ -203,13 +204,15 @@ static bool copy_macro_vistor( p_macro_t const *macro, void *data ) {
 }
 
 /**
- * Counts the number of macros that are only valid in the current language.
+ * Copies the names of macros that are valid only in the current language to
+ * the candidate list pointed to by \a pdym; if \a pdym is NULL, only counts
+ * the number of macro names.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count macros, not copy.  If not NULL, on return, the pointed-to pointer
  * is incremented.
  * @return If \a pdym is NULL, returns said number of macross; otherwise the
- * return value is unspecifed.
+ * return value is unspecified.
  */
 PJL_DISCARD
 static size_t copy_macros( did_you_mean_t **const pdym ) {
@@ -226,7 +229,7 @@ static size_t copy_macros( did_you_mean_t **const pdym ) {
  * just count options, not copy.  If not NULL, on return, the pointed-to
  * pointer is incremented.
  * @return If \a pdym is NULL, returns said number of options; otherwise the
- * return value is unspecifed.
+ * return value is unspecified.
  */
 PJL_DISCARD
 static size_t copy_set_options( did_you_mean_t **const pdym ) {
@@ -259,8 +262,9 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
 }
 
 /**
- * A \ref c_typedef visitor function to copy names of types that are only valid
- * in the current language to the candidate list pointed to.
+ * A \ref c_typedef visitor function to copy the names of types that are valid
+ * only in the current language to the candidate list pointed to by \a pdym; if
+ * \a pdym is NULL, only counts the number of type names.
  *
  * @param tdef The c_typedef to visit.
  * @param data A pointer to a \ref dym_rb_visit_data.
@@ -284,13 +288,15 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
 }
 
 /**
- * Counts the number of `typedef`s that are only valid in the current language.
+ * Counts the names of `typedef`s that are valid only in the current language
+ * to the candidate list pointed to by \a pdym; if \a pdym is NULL, only counts
+ * the number of `typedef` names.
  *
  * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
  * just count typedefs, not copy.  If not NULL, on return, the pointed-to
  * pointer is incremented.
  * @return If \a pdym is NULL, returns said number of `typedef`s; otherwise the
- * return value is unspecifed.
+ * return value is unspecified.
  */
 PJL_DISCARD
 static size_t copy_typedefs( did_you_mean_t **const pdym ) {
@@ -314,6 +320,46 @@ static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
     STATIC_CAST( ssize_t, j_dym->dam_lev_dist );
   return  cmp != 0 ? STATIC_CAST( int, cmp ) :
           strcmp( i_dym->literal, j_dym->literal );
+}
+
+/**
+ * Copies tokens to the candidate list pointed to by \a pdym; if \a pdym is
+ * NULL, only counts the number of tokens.
+ *
+ * @param kinds The bitwise-or of the kind(s) of things possibly meant.
+ * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
+ * just count things, not copy.  If not NULL, on return, the pointed-to pointer
+ * is incremented.
+ * @return If \a pdym is NULL, returns said number of tokens; otherwise the
+ * return value is unspecified.
+ */
+PJL_DISCARD
+static size_t dym_copy( dym_kind_t kinds, did_you_mean_t **pdym ) {
+  return  ((kinds & DYM_COMMANDS) != DYM_NONE ?
+            copy_commands( pdym ) : 0)
+
+        + ((kinds & DYM_CLI_OPTIONS) != DYM_NONE ?
+            copy_cli_options( pdym ) : 0)
+
+        + ((kinds & DYM_SET_OPTIONS) != DYM_NONE ?
+            copy_set_options( pdym ) : 0)
+
+        + ((kinds & DYM_C_ATTRIBUTES) != DYM_NONE ?
+            copy_c_keywords( pdym, C_TPID_ATTR ) : 0)
+
+        + ((kinds & DYM_C_KEYWORDS) != DYM_NONE ?
+            copy_c_keywords( pdym, C_TPID_NONE ) +
+            copy_c_keywords( pdym, C_TPID_STORE ) : 0)
+
+        + ((kinds & DYM_C_MACROS) != DYM_NONE ?
+            copy_macros( pdym ) : 0)
+
+        + ((kinds & DYM_C_TYPES) != DYM_NONE ?
+            copy_c_keywords( pdym, C_TPID_BASE ) +
+            copy_typedefs( pdym ) : 0)
+
+        + ((kinds & DYM_CDECL_KEYWORDS) != DYM_NONE ?
+            copy_cdecl_keywords( pdym ) : 0);
 }
 
 /**
@@ -374,60 +420,15 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
     return NULL;
   assert( unknown_literal != NULL );
 
-  // Pre-flight to calculate array size; the order here doesn't matter.
-  size_t const dym_size =
-    ((kinds & DYM_COMMANDS) != DYM_NONE ?
-      copy_commands( /*pdym=*/NULL ) : 0) +
-    ((kinds & DYM_CLI_OPTIONS) != DYM_NONE ?
-      copy_cli_options( /*pdym=*/NULL ) : 0) +
-    ((kinds & DYM_SET_OPTIONS) != DYM_NONE ?
-      copy_set_options( /*pdym=*/NULL ) : 0) +
-    ((kinds & DYM_C_KEYWORDS) != DYM_NONE ?
-      copy_c_keywords( /*pdym=*/NULL, C_TPID_NONE ) +
-      copy_c_keywords( /*pdym=*/NULL, C_TPID_STORE ) : 0) +
-    ((kinds & DYM_C_ATTRIBUTES) != DYM_NONE ?
-      copy_c_keywords( /*pdym=*/NULL, C_TPID_ATTR ) : 0) +
-    ((kinds & DYM_C_MACROS) != DYM_NONE ?
-      copy_macros( /*pdym=*/NULL ) : 0) +
-    ((kinds & DYM_C_TYPES) != DYM_NONE ?
-      copy_c_keywords( /*pdym=*/NULL, C_TPID_BASE ) +
-      copy_typedefs( /*pdym=*/NULL ) : 0) +
-    ((kinds & DYM_CDECL_KEYWORDS) != DYM_NONE ?
-      copy_cdecl_keywords( /*pdym=*/NULL ) : 0);
-
+  // Pre-flight to calculate array size.
+  size_t const dym_size = dym_copy( kinds, /*pdym=*/NULL );
   if ( dym_size == 0 )
     return NULL;                        // LCOV_EXCL_LINE
 
   did_you_mean_t *const dym_array = MALLOC( did_you_mean_t, dym_size + 1 );
   did_you_mean_t *dym = dym_array;
 
-  // The order here doesn't matter either.
-  if ( (kinds & DYM_COMMANDS) != DYM_NONE ) {
-    copy_commands( &dym );
-  }
-  if ( (kinds & DYM_CLI_OPTIONS) != DYM_NONE ) {
-    copy_cli_options( &dym );
-  }
-  if ( (kinds & DYM_SET_OPTIONS) != DYM_NONE ) {
-    copy_set_options( &dym );
-  }
-  if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE ) {
-    copy_c_keywords( &dym, C_TPID_NONE );
-    copy_c_keywords( &dym, C_TPID_STORE );
-  }
-  if ( (kinds & DYM_C_ATTRIBUTES) != DYM_NONE ) {
-    copy_c_keywords( &dym, C_TPID_ATTR );
-  }
-  if ( (kinds & DYM_C_MACROS) != DYM_NONE ) {
-    copy_macros( &dym );
-  }
-  if ( (kinds & DYM_C_TYPES) != DYM_NONE ) {
-    copy_c_keywords( &dym, C_TPID_BASE );
-    copy_typedefs( &dym );
-  }
-  if ( (kinds & DYM_CDECL_KEYWORDS) != DYM_NONE ) {
-    copy_cdecl_keywords( &dym );
-  }
+  dym_copy( kinds, &dym );
   *dym = (did_you_mean_t){ 0 };         // one past last is zero'd
 
   // calculate the maximum source and target lengths
