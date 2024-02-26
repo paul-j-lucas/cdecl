@@ -481,13 +481,12 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
                      char const *format, ... ) {
   assert( format != NULL );
 
-  if ( loc != NULL ) {
+  if ( loc != NULL )
     print_loc( loc );
-    color_start( stderr, sgr_error );
-    EPUTS( "error" );
-    color_end( stderr, sgr_error );
-    EPUTS( ": " );
-  }
+  color_start( stderr, sgr_error );
+  EPUTS( "error" );
+  color_end( stderr, sgr_error );
+  EPUTS( ": " );
 
   print_debug_file_line( file, line );
 
