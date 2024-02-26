@@ -171,6 +171,7 @@ void check_strftime( char *buf, size_t buf_size, char const *format,
 
 void fatal_error( int status, char const *format, ... ) {
   // LCOV_EXCL_START
+  assert( format != NULL );
   EPRINTF( "%s: ", me );
   va_list args;
   va_start( args, format );
@@ -280,6 +281,8 @@ void fputs_quoted( char const *s, char quote, FILE *fout ) {
 }
 
 void fputs_sp( char const *s, FILE *out ) {
+  assert( s != NULL );
+  assert( out != NULL );
   if ( s[0] != '\0' )
     FPRINTF( out, "%s ", s );
 }
@@ -333,6 +336,7 @@ char const* parse_identifier( char const *s ) {
 }
 
 bool path_is_file( char const *path ) {
+  assert( path != NULL );
   struct stat path_stat;
   STAT( path, &path_stat );
   return S_ISREG( path_stat.st_mode );
