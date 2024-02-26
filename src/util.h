@@ -913,14 +913,15 @@ char* check_strdup_tolower( char const *s );
 
 /**
  * Calls **strftime**(3) and checks for failure.
+ * If it fails, prints an error message and exits.
  *
  * @param buf The destination buffer to print into.
  * @param buf_size The size of \a buf.
  * @param format The `strftime()` style format string.
- * @param timeptr A pointer to the time to format.
+ * @param tm A pointer to the time to format.
  */
 void check_strftime( char *buf, size_t buf_size, char const *format,
-                     struct tm const *timeptr );
+                     struct tm const *tm );
 
 /**
  * Calls **strndup**(3) and checks for failure.
