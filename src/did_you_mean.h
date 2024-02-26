@@ -47,6 +47,7 @@
  */
 struct did_you_mean {
   char const *literal;                  ///< Candidate literal.
+  size_t      literal_len;              ///< Length of \ref literal.
   size_t      dam_lev_dist;             ///< Damerau-Levenshtein edit distance.
 };
 typedef struct did_you_mean did_you_mean_t;

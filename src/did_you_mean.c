@@ -435,9 +435,9 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
   size_t const source_len = strlen( unknown_literal );
   size_t max_target_len = 0;
   for ( dym = dym_array; dym->literal != NULL; ++dym ) {
-    size_t const len = strlen( dym->literal );
-    if ( len > max_target_len )
-      max_target_len = len;
+    dym->literal_len = strlen( dym->literal );
+    if ( dym->literal_len > max_target_len )
+      max_target_len = dym->literal_len;
   } // for
 
   /*
@@ -451,7 +451,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
     dym->dam_lev_dist = dam_lev_dist(
       dam_lev_mem,
       unknown_literal, source_len,
-      dym->literal, strlen( dym->literal )
+      dym->literal, dym->literal_len
     );
   } // for
   free( dam_lev_mem );
@@ -471,7 +471,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
     goto none;
   }
 
-  size_t const best_len = strlen( dym_array->literal );
+  size_t const best_len = dym_array->literal_len;
   if ( !is_similar_enough( best_dist, SIMILAR_ENOUGH_PERCENT, best_len ) )
     goto none;
 
@@ -485,7 +485,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_literal ) {
   // mark the end.
   //
   dym_free_literals( dym );
-  dym->literal = NULL;
+  *dym = (did_you_mean_t){ 0 };         // one past last is zero'd
 
   return dym_array;
 
