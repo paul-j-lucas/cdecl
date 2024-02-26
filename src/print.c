@@ -306,8 +306,8 @@ static size_t print_caret( size_t error_column ) {
   if ( cdecl_interactive || opt_echo_commands ||
        print_params.opt_no_print_input_line ) {
     //
-    // If we're interactive or echoing commands, we can put the ^ under
-    // the already existing token we printed or the user typed for the recent
+    // If we're interactive or echoing commands, we can put the ^ under the
+    // already existing token we printed or the user typed for the recent
     // command, but we have to add the length of the prompt.
     //
     // However, if opt_no_print_input_line is true, we were instructed not to
