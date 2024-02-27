@@ -80,47 +80,44 @@
 /**
  * Ends a dump block.
  *
- * @param INDENT The indentation to use.
- *
  * @sa #DUMP_START()
  */
-#define DUMP_END(INDENT) \
-  PRINTF( "\n%*s}\n", STATIC_CAST( int, 2 * (INDENT) ), "" )
+#define DUMP_END() \
+  FPRINTF( dump.fout, "\n%*s}\n", STATIC_CAST( int, 2 * dump.indent ), "" )
 
 /**
  * Possibly dumps a comma and a newline followed by the `printf()` arguments
  * --- used for printing a key followed by a value.
  *
- * @param INDENT The indentation to use.
  * @param ... The `printf()` arguments.
  */
-#define DUMP_KEY(INDENT, ...) BLOCK(      \
-  fput_sep( ",\n", &dump_comma, stdout ); \
-  FPUTNSP( 2 * (INDENT), stdout );        \
-  PRINTF( "  " __VA_ARGS__ ); )
+#define DUMP_KEY(...) BLOCK(                  \
+  fput_sep( ",\n", &dump.comma, dump.fout );  \
+  FPUTNSP( 2 * dump.indent, dump.fout );      \
+  FPRINTF( dump.fout, "  " __VA_ARGS__ ); )
 
 /**
  * Starts a dump block.
  *
  * @param INDENT The indentation to use.
+ * @param FOUT The `FILE` to dump to.
  *
  * @note The dump block _must_ end with #DUMP_END().
  *
  * @sa #DUMP_END()
  */
-#define DUMP_START(INDENT)  \
-  bool dump_comma = false;  \
-  PRINTF( "%*s{\n", STATIC_CAST( int, 2 * (INDENT) ), "" )
+#define DUMP_START(INDENT,FOUT)                               \
+  dump_state_t dump = { .fout = (FOUT), .indent = (INDENT) }; \
+  FPRINTF( dump.fout, "%*s{\n", STATIC_CAST( int, 2 * dump.indent ), "" )
 
 /**
  * Dumps a C string.
  *
- * @param INDENT The indentation to use.
  * @param KEY The key name to print.
  * @param STR The C string to dump.
  */
-#define DUMP_STR(INDENT,KEY,STR) BLOCK( \
-  DUMP_KEY( (INDENT), KEY ": " ); fputs_quoted( (STR), '"', stdout ); )
+#define DUMP_STR(KEY,STR) BLOCK( \
+  DUMP_KEY( KEY ": " ); fputs_quoted( (STR), '"', dump.fout ); )
 
 /**
  * The maximum indentation for printing macros.
@@ -178,6 +175,7 @@ enum mex_rv {
 
 ////////// typedefs ///////////////////////////////////////////////////////////
 
+typedef struct dump_state           dump_state_t;
 typedef struct macro_rb_visit_data  macro_rb_visit_data_t;
 typedef enum   mex_rv               mex_rv_t;
 typedef struct mex_state            mex_state_t;
@@ -192,6 +190,15 @@ typedef struct param_expand         param_expand_t;
 typedef mex_rv_t (*mex_expand_all_fn_t)( mex_state_t *mex );
 
 ////////// structs ////////////////////////////////////////////////////////////
+
+/**
+ * Dump state.
+ */
+struct dump_state {
+  FILE     *fout;                       ///< File to dump to.
+  unsigned  indent;                     ///< Current indentation.
+  bool      comma;                      ///< Print a comma?
+};
 
 /**
  * Data passed to our red-black tree visitor function.
@@ -2447,17 +2454,17 @@ static void mex_print_macro( mex_state_t const *mex,
   if ( opt_cdecl_debug == CDECL_DEBUG_NO )
     return;
 
-  DUMP_START( mex->indent );
-  DUMP_STR( mex->indent, "macro", mex->macro->name );
+  DUMP_START( mex->indent, mex->fout );
+  DUMP_STR( "macro", mex->macro->name );
   if ( print_arg_list ) {
-    DUMP_KEY( mex->indent, "arg_list: " );
+    DUMP_KEY( "arg_list: " );
     p_arg_list_dump( mex->arg_list, mex->indent + 1, mex->fout );
   }
   if ( print_token_list ) {
-    DUMP_KEY( mex->indent, "token_list: " );
+    DUMP_KEY( "token_list: " );
     p_token_list_dump( token_list, mex->indent + 1, mex->fout );
   }
-  DUMP_END( mex->indent );
+  DUMP_END();
 }
 
 /**
