@@ -85,7 +85,7 @@
  * @sa #DUMP_START()
  */
 #define DUMP_END(INDENT) \
-  FPRINTF( stdout, "\n%*s}\n", STATIC_CAST( int, 2 * (INDENT) ), "" )
+  PRINTF( "\n%*s}\n", STATIC_CAST( int, 2 * (INDENT) ), "" )
 
 /**
  * Possibly dumps a comma and a newline followed by the `printf()` arguments
@@ -110,7 +110,7 @@
  */
 #define DUMP_START(INDENT)  \
   bool dump_comma = false;  \
-  FPRINTF( stdout, "%*s{\n", STATIC_CAST( int, 2 * (INDENT) ), "" )
+  PRINTF( "%*s{\n", STATIC_CAST( int, 2 * (INDENT) ), "" )
 
 /**
  * Dumps a C string.
