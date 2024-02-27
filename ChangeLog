@@ -1,3 +1,8 @@
+2024-02-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c: Added dump_state.
+   * p_macro.c: s/FPRINTF/PRINTF/
+
 2024-02-26  Paul J. Lucas <paul@lucasmail.org>
 
    * util.c: Added assert()s.
