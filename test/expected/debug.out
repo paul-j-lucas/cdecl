@@ -119,7 +119,7 @@ cdecl> explain _BitInt(4) x
     lhs: "builtin_type_c_ast",
     rhs: "_BitInt '(' uint_lit_exp ')'"
   },
-  int: 4,
+  uint_lit_exp: 4,
   $$_ast: {
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
@@ -254,7 +254,7 @@ cdecl> explain alignas(8) int x
     lhs: "alignas_specifier_c",
     rhs: "ALIGNAS '(' uint_lit ')'"
   },
-  INT_LIT: 8,
+  uint_lit: 8,
   $$_align: {
     bytes: 8,
     loc: { first_column: 8, last_column: 14 }
@@ -653,11 +653,11 @@ cdecl> explain enum E : int x
 {
   rule: {
     lhs: "enum_c_ast",
-    rhs: "enum_btids attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt"
+    rhs: "enum_btids attribute_specifier_list_c_atid_opt any_sname_c_exp enum_fixed_type_c_ast_opt"
   },
   enum_btids: { btid: 0x0000000000800001, string: "enum" },
   attribute_specifier_list_c_atid_opt: { string: "none" },
-  any_sname_c: { string: "E", scopes: "none" },
+  any_sname_c_exp: { string: "E", scopes: "none" },
   enum_fixed_type_c_ast_opt: {
     sname: null,
     kind: { value: 0x2, string: "built-in type" },
@@ -881,11 +881,11 @@ cdecl> explain enum E x
 {
   rule: {
     lhs: "enum_c_ast",
-    rhs: "enum_btids attribute_specifier_list_c_atid_opt sname enum_fixed_type_c_ast_opt"
+    rhs: "enum_btids attribute_specifier_list_c_atid_opt any_sname_c_exp enum_fixed_type_c_ast_opt"
   },
   enum_btids: { btid: 0x0000000000800001, string: "enum" },
   attribute_specifier_list_c_atid_opt: { string: "none" },
-  any_sname_c: { string: "E", scopes: "none" },
+  any_sname_c_exp: { string: "E", scopes: "none" },
   enum_fixed_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
@@ -1787,11 +1787,11 @@ cdecl> explain struct S x
 {
   rule: {
     lhs: "enum_class_struct_union_c_ast",
-    rhs: "class_struct_union_btid attribute_specifier_list_c_atid_opt sname"
+    rhs: "class_struct_union_btid attribute_specifier_list_c_atid_opt any_sname_c_exp"
   },
   class_struct_union_btid: { btid: 0x0000000001000001, string: "struct" },
   attribute_specifier_list_c_atid_opt: { string: "none" },
-  any_sname_c: { string: "S", scopes: "none" },
+  any_sname_c_exp: { string: "S", scopes: "none" },
   $$_ast: {
     sname: null,
     kind: { value: 0x8, string: "struct or union" },
@@ -2526,7 +2526,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
 {
   rule: {
     lhs: "pointer_type_c_ast",
-    rhs: "* type_qualifier_list_c_stid_opt"
+    rhs: "'*' type_qualifier_list_c_stid_opt"
   },
   in_attr__type_c_ast: {
     sname: null,
@@ -4651,7 +4651,7 @@ c++decl> class C
 {
   rule: {
     lhs: "class_struct_union_declaration_c",
-    rhs: "class_struct_union_btid sname '{' in_scope_declaration_c_opt '}' ';'"
+    rhs: "class_struct_union_btid any_sname_c_exp"
   },
   in_attr__scope_sname: null,
   class_struct_union_btid: { btid: 0x0000000004000001, string: "class" },
@@ -4909,7 +4909,7 @@ c++decl> explain int C::*p
 {
   rule: {
     lhs: "pointer_to_member_type_c_ast",
-    rhs: "sname '::*' cv_qualifier_list_stid_opt"
+    rhs: "any_sname_c '::*' cv_qualifier_list_stid_opt"
   },
   in_attr__type_c_ast: {
     sname: null,
@@ -4921,7 +4921,7 @@ c++decl> explain int C::*p
       bit_width: 0
     }
   },
-  sname: { string: "C", scopes: "class" },
+  any_sname_c: { string: "C", scopes: "class" },
   cv_qualifier_list_stid_opt: { string: "none" },
   $$_ast: {
     sname: null,
@@ -5384,7 +5384,7 @@ c++decl> explain int operator ""_w(char const *arg)
 {
   rule: {
     lhs: "pointer_type_c_ast",
-    rhs: "* type_qualifier_list_c_stid_opt"
+    rhs: "'*' type_qualifier_list_c_stid_opt"
   },
   in_attr__type_c_ast: {
     sname: null,
@@ -5653,7 +5653,7 @@ c++decl> explain int operator ""_w(char const *arg)
 {
   rule: {
     lhs: "user_defined_literal_decl_c_astp",
-    rhs: "oper_sname_c_opt OPERATOR "" '(' param_c_ast_list_exp ')' noexcept_c_stid_opt trailing_return_type_c_ast_opt"
+    rhs: "oper_sname_c_opt OPERATOR '""' '(' param_c_ast_list_exp ')' noexcept_c_stid_opt trailing_return_type_c_ast_opt"
   },
   in_attr__type_c_ast: {
     sname: null,
@@ -5859,7 +5859,7 @@ c++decl> explain ~C()
 {
   rule: {
     lhs: "destructor_declaration_c",
-    rhs: "virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt"
+    rhs: "virtual_stid_opt '~' any_name_exp '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt"
   },
   virtual_stid_opt: { string: "none" },
   any_name_exp: "C",
@@ -8252,7 +8252,7 @@ c++decl> #define NAME2_HELPER(A,B)         A ## B
     rhs: "#define NAME p_paren_param_list_opt p_replace_list_opt"
   },
   name: "NAME2_HELPER",
-  p_param_list_opt: [
+  p_paren_param_list_opt: [
     { name: "A", loc: { first_column: 21 } },
     { name: "B", loc: { first_column: 23 } }
   ],
@@ -8314,7 +8314,7 @@ c++decl> #define NAME2(A,B)                NAME2_HELPER(A,B)
     rhs: "#define NAME p_paren_param_list_opt p_replace_list_opt"
   },
   name: "NAME2",
-  p_param_list_opt: [
+  p_paren_param_list_opt: [
     { name: "A", loc: { first_column: 14 } },
     { name: "B", loc: { first_column: 16 } }
   ],

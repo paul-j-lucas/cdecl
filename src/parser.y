@@ -1920,7 +1920,7 @@ cast_command
     {
       DUMP_START();
       DUMP_PROD( "cast_command",
-                 "CAST sname_english_opt as_into_to_exp decl_english_ast" );
+                 "CAST sname_english_opt {AS|[IN]TO} decl_english_ast" );
       DUMP_SNAME( "sname_english_opt", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
@@ -1944,8 +1944,8 @@ cast_command
     {
       DUMP_START();
       DUMP_PROD( "cast_command",
-                 "new_style_cast_english CAST sname_english_exp "
-                 "as_into_to_exp decl_english_ast" );
+                 "new_style_cast_english sname_english_exp {AS|[IN]TO} "
+                 "decl_english_ast" );
       DUMP_STR( "new_style_cast_english", c_cast_gibberish( $cast_kind ) );
       DUMP_SNAME( "sname_english_exp", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
@@ -2165,7 +2165,7 @@ declare_command
       DUMP_PROD( "declare_command",
                  "DECLARE storage_class_subset_english_type_opt "
                  "cv_qualifier_list_stid_opt "
-                 "USER-DEFINED CONVERSION OPERATOR "
+                 "USER-DEFINED CONVERSION [OPERATOR] "
                  "of_scope_list_english_opt "
                  "RETURNING decl_english_ast" );
       DUMP_TYPE( "storage_class_subset_english_type_opt", $store_type );
@@ -2218,7 +2218,14 @@ alignas_or_width_decl_english_ast
     }
 
   | decl_english_ast[decl_ast] width_specifier_english_uint[bit_width]
-    { //
+    {
+      DUMP_START();
+      DUMP_PROD( "alignas_or_width_decl_english_ast",
+                 "decl_english_ast width_specifier_english_uint" );
+      DUMP_AST( "decl_english_ast", $decl_ast );
+      DUMP_INT( "width_specifier_english_uint", $bit_width );
+
+      //
       // This check has to be done now in the parser rather than later in the
       // AST since we need to use the builtin union member now.
       //
@@ -2234,6 +2241,9 @@ alignas_or_width_decl_english_ast
       $$ = $decl_ast;
       $$->loc = @$;
       $$->bit_field.bit_width = $bit_width;
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
     }
   ;
 
@@ -2391,9 +2401,9 @@ storage_class_subset_english_type_opt
 
 storage_class_subset_english_type
   : attribute_english_atid        { $$ = C_TYPE_LIT_A( $1 ); }
-  | storage_class_subset_english_stid
+  | storage_class_subset_english_stid[stid]
     {
-      $$ = C_TYPE_LIT_S( $1 );
+      $$ = C_TYPE_LIT_S( $stid );
     }
   ;
 
@@ -2442,7 +2452,7 @@ define_command
       DUMP_START();
       DUMP_PROD( "define_command",
                  "DEFINE sname_english AS decl_english_ast" );
-      DUMP_SNAME( "sname", $sname );
+      DUMP_SNAME( "sname_english_exp", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
       c_sname_set( &$decl_ast->sname, &$sname );
@@ -3171,7 +3181,7 @@ p_define
       DUMP_PROD( "p_define",
                  "#define NAME p_paren_param_list_opt p_replace_list_opt" );
       DUMP_STR( "name", $name );
-      DUMP_MACRO_PARAM_LIST( "p_param_list_opt", $param_list );
+      DUMP_MACRO_PARAM_LIST( "p_paren_param_list_opt", $param_list );
       DUMP_MACRO_TOKEN_LIST( "p_replace_list_opt", $replace_list );
 
       c_typedef_t const *const tdef = c_typedef_find_name( $name );
@@ -3597,7 +3607,7 @@ new_style_cast_expr_c
       DUMP_STR( "new_style_cast_c", c_cast_english( $cast_kind ) );
       DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
-      DUMP_SNAME( "sname", $sname );
+      DUMP_SNAME( "sname_c_exp", $sname );
 
       c_ast_t *const cast_ast = c_ast_new_gc( K_CAST, &@$ );
       cast_ast->sname = c_sname_move( &$sname );
@@ -3638,7 +3648,7 @@ alignas_specifier_c
     {
       DUMP_START();
       DUMP_PROD( "alignas_specifier_c", "ALIGNAS '(' uint_lit ')'" );
-      DUMP_INT( "INT_LIT", $bytes );
+      DUMP_INT( "uint_lit", $bytes );
 
       $$.kind = C_ALIGNAS_BYTES;
       $$.loc = @alignas;
@@ -3725,12 +3735,10 @@ class_struct_union_declaration_c
 
       DUMP_START();
       DUMP_PROD( "class_struct_union_declaration_c",
-                 "class_struct_union_btid sname '{' "
-                 "in_scope_declaration_c_opt "
-                 "'}' ';'" );
+                 "class_struct_union_btid any_sname_c_exp" );
       DUMP_SNAME( "in_attr__scope_sname", in_attr.scope_sname );
       DUMP_TID( "class_struct_union_btid", $csu_btid );
-      DUMP_SNAME( "any_sname_c", $sname );
+      DUMP_SNAME( "any_sname_c_exp", $sname );
 
       c_sname_append_sname( &in_attr.scope_sname, &$sname );
       c_sname_set_local_type(
@@ -3766,9 +3774,10 @@ enum_declaration_c
     any_sname_c_exp[sname] enum_fixed_type_c_ast_opt[fixed_type_ast]
     {
       DUMP_START();
-      DUMP_PROD( "enum_declaration_c", "enum_btids sname ';'" );
+      DUMP_PROD( "enum_declaration_c",
+                 "enum_btids any_sname_c_exp enum_fixed_type_c_ast_opt" );
       DUMP_TID( "enum_btids", $enum_btids );
-      DUMP_SNAME( "any_sname_c", $sname );
+      DUMP_SNAME( "any_sname_c_exp", $sname );
       DUMP_AST( "enum_fixed_type_c_ast_opt", $fixed_type_ast );
 
       c_sname_t enum_sname = c_sname_dup( &in_attr.scope_sname );
@@ -3807,12 +3816,10 @@ namespace_declaration_c
     {
       DUMP_START();
       DUMP_PROD( "namespace_declaration_c",
-                 "namespace_type sname '{' "
-                 "in_scope_declaration_c_opt "
-                 "'}' [';']" );
+                 "namespace_type namespace_sname_c_exp" );
       DUMP_SNAME( "in_attr__scope_sname", in_attr.scope_sname );
       DUMP_TYPE( "namespace_type", $namespace_type );
-      DUMP_SNAME( "any_sname_c", $sname );
+      DUMP_SNAME( "namespace_sname_c_exp", $sname );
 
       //
       // Nested namespace declarations are supported only in C++17 and later.
@@ -3974,7 +3981,7 @@ namespace_typedef_sname_c
       DUMP_PROD( "namespace_typedef_sname_c",
                  "namespace_typedef_sname_c '::' any_typedef" );
       DUMP_SNAME( "namespace_typedef_sname_c", $ns_sname );
-      DUMP_AST( "any_typedef", $tdef->ast );
+      DUMP_AST( "any_typedef__ast", $tdef->ast );
 
       $$ = $ns_sname;
       c_sname_set_local_type( &$$, c_sname_local_type( &$tdef->ast->sname ) );
@@ -4156,7 +4163,7 @@ lambda_return_type_c_ast_opt
 
       DUMP_START();
       DUMP_PROD( "lambda_return_type_c_ast_opt",
-                 "type_c_ast cast_c_astp_opt" );
+                 "'->' type_c_ast cast_c_astp_opt" );
       DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
 
@@ -4412,7 +4419,6 @@ decl_list_c_opt
       DUMP_START();
       DUMP_PROD( "decl_list_c_opt", "<empty>" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "decl_list_c_opt", type_ast );
 
       if ( (type_ast->kind & K_ANY_ECSU) == 0 ) {
         //
@@ -4724,9 +4730,9 @@ destructor_declaration_c
     {
       DUMP_START();
       DUMP_PROD( "destructor_declaration_c",
-                 "virtual_opt '~' NAME '(' ')' func_qualifier_list_c_stid_opt "
-                 "noexcept_c_stid_opt gnu_attribute_specifier_list_c_opt "
-                 "func_equals_c_stid_opt" );
+                 "virtual_stid_opt '~' any_name_exp '(' ')' "
+                 "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
+                 "gnu_attribute_specifier_list_c_opt func_equals_c_stid_opt" );
       DUMP_TID( "virtual_stid_opt", $virtual_stid );
       DUMP_STR( "any_name_exp", $name );
       DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
@@ -4796,10 +4802,10 @@ file_scope_destructor_declaration_c
     {
       DUMP_START();
       DUMP_PROD( "file_scope_destructor_declaration_c",
-                 "inline_opt DESTRUCTOR_SNAME '(' ')' "
+                 "inline_opt destructor_sname '(' ')' "
                  "func_qualifier_list_c_stid_opt noexcept_c_stid_opt" );
       DUMP_TID( "inline_stid_opt", $inline_stid );
-      DUMP_SNAME( "DESTRUCTOR_SNAME", $sname );
+      DUMP_SNAME( "destructor_sname", $sname );
       DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
 
@@ -5195,7 +5201,7 @@ trailing_return_type_c_ast_opt
 
       DUMP_START();
       DUMP_PROD( "trailing_return_type_c_ast_opt",
-                 "type_c_ast cast_c_astp_opt" );
+                 "'->' type_c_ast cast_c_astp_opt" );
       DUMP_AST( "in_attr__type_c_ast", ret_ast );
       DUMP_AST( "type_c_ast", $type_ast );
       DUMP_AST_PAIR( "cast_c_astp_opt", $cast_astp );
@@ -5476,7 +5482,7 @@ pointer_type_c_ast
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START();
-      DUMP_PROD( "pointer_type_c_ast", "* type_qualifier_list_c_stid_opt" );
+      DUMP_PROD( "pointer_type_c_ast", "'*' type_qualifier_list_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
@@ -5546,7 +5552,7 @@ pc99_pointer_type_c_ast
 
       DUMP_START();
       DUMP_PROD( "pc99_pointer_type_c_ast",
-                 "* type_qualifier_list_c_stid_opt" );
+                 "'*' type_qualifier_list_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
@@ -5595,9 +5601,9 @@ pointer_to_member_type_c_ast
 
       DUMP_START();
       DUMP_PROD( "pointer_to_member_type_c_ast",
-                 "sname '::*' cv_qualifier_list_stid_opt" );
+                 "any_sname_c '::*' cv_qualifier_list_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_SNAME( "sname", $sname );
+      DUMP_SNAME( "any_sname_c", $sname );
       DUMP_TID( "cv_qualifier_list_stid_opt", $qual_stids );
 
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
@@ -5653,7 +5659,7 @@ reference_type_c_ast
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START();
-      DUMP_PROD( "reference_type_c_ast", "&" );
+      DUMP_PROD( "reference_type_c_ast", "'&' type_qualifier_list_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
@@ -5671,7 +5677,8 @@ reference_type_c_ast
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START();
-      DUMP_PROD( "reference_type_c_ast", "&&" );
+      DUMP_PROD( "reference_type_c_ast",
+                 "'&&' type_qualifier_list_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
@@ -5693,7 +5700,8 @@ typedef_type_decl_c_ast
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START();
-      DUMP_PROD( "typedef_type_decl_c_ast", "typedef_type_c_ast" );
+      DUMP_PROD( "typedef_type_decl_c_ast",
+                 "typedef_type_c_ast bit_field_c_uint_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "typedef_type_c_ast", $tdef_ast );
       DUMP_INT( "bit_field_c_uint_opt", $bit_width );
@@ -5841,7 +5849,7 @@ user_defined_literal_decl_c_astp
 
       DUMP_START();
       DUMP_PROD( "user_defined_literal_decl_c_astp",
-                 "oper_sname_c_opt OPERATOR \"\" "
+                 "oper_sname_c_opt OPERATOR '\"\"' "
                  "'(' param_c_ast_list_exp ')' noexcept_c_stid_opt "
                  "trailing_return_type_c_ast_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
@@ -6508,7 +6516,7 @@ builtin_type_c_ast
     {
       DUMP_START();
       DUMP_PROD( "builtin_type_c_ast", "_BitInt '(' uint_lit_exp ')'" );
-      DUMP_INT( "int", $width );
+      DUMP_INT( "uint_lit_exp", $width );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = TB__BitInt;
@@ -6607,10 +6615,10 @@ class_struct_union_c_ast
       DUMP_START();
       DUMP_PROD( "enum_class_struct_union_c_ast",
                  "class_struct_union_btid "
-                 "attribute_specifier_list_c_atid_opt sname" );
+                 "attribute_specifier_list_c_atid_opt any_sname_c_exp" );
       DUMP_TID( "class_struct_union_btid", $csu_btid );
       DUMP_TID( "attribute_specifier_list_c_atid_opt", $atids );
-      DUMP_SNAME( "any_sname_c", $sname );
+      DUMP_SNAME( "any_sname_c_exp", $sname );
 
       $$ = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@$ );
       $$->type.btids = c_tid_check( $csu_btid, C_TPID_BASE );
@@ -6638,11 +6646,11 @@ enum_c_ast
     {
       DUMP_START();
       DUMP_PROD( "enum_c_ast",
-                 "enum_btids attribute_specifier_list_c_atid_opt sname "
-                 "enum_fixed_type_c_ast_opt" );
+                 "enum_btids attribute_specifier_list_c_atid_opt "
+                 "any_sname_c_exp enum_fixed_type_c_ast_opt" );
       DUMP_TID( "enum_btids", $enum_btids );
       DUMP_TID( "attribute_specifier_list_c_atid_opt", $atids );
-      DUMP_SNAME( "any_sname_c", $sname );
+      DUMP_SNAME( "any_sname_c_exp", $sname );
       DUMP_AST( "enum_fixed_type_c_ast_opt", $fixed_type_ast );
 
       $$ = c_ast_new_gc( K_ENUM, &@$ );
@@ -7026,7 +7034,7 @@ attribute_list_c_atid
     {
       DUMP_START();
       DUMP_PROD( "attribute_list_c_atid",
-                 "attribute_list_c_atid , attribute_c_atid" );
+                 "attribute_list_c_atid ',' attribute_c_atid" );
       DUMP_TID( "attribute_list_c_atid", $atids );
       DUMP_TID( "attribute_c_atid_exp", $atid );
 
@@ -7344,7 +7352,7 @@ destructor_decl_english_ast
   : Y_destructor parens_opt
     {
       DUMP_START();
-      DUMP_PROD( "destructor_decl_english_ast", "DESTRUCTOR" );
+      DUMP_PROD( "destructor_decl_english_ast", "DESTRUCTOR ['(' ')']" );
 
       $$ = c_ast_new_gc( K_DESTRUCTOR, &@$ );
 
@@ -7840,8 +7848,8 @@ var_decl_english_ast
   : sname_c[sname] Y_as decl_english_ast[decl_ast]
     {
       DUMP_START();
-      DUMP_PROD( "var_decl_english_ast", "NAME AS decl_english_ast" );
-      DUMP_SNAME( "sname", $sname );
+      DUMP_PROD( "var_decl_english_ast", "sname_c AS decl_english_ast" );
+      DUMP_SNAME( "sname_c", $sname );
       DUMP_AST( "decl_english_ast", $decl_ast );
 
       if ( $decl_ast->kind == K_NAME ) { // see the comment in "declare_command"
@@ -7983,7 +7991,7 @@ builtin_type_english_ast
     {
       DUMP_START();
       DUMP_PROD( "builtin_type_english_ast", "BitInt_english_int" );
-      DUMP_INT( "int", $width );
+      DUMP_INT( "BitInt_english_int", $width );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       $$->type.btids = TB__BitInt;
@@ -8059,9 +8067,9 @@ class_struct_union_english_ast
     {
       DUMP_START();
       DUMP_PROD( "class_struct_union_english_ast",
-                 "class_struct_union_btid sname" );
+                 "class_struct_union_btid any_sname_c_exp" );
       DUMP_TID( "class_struct_union_btid", $csu_btid );
-      DUMP_SNAME( "sname", $sname );
+      DUMP_SNAME( "any_sname_c_exp", $sname );
 
       $$ = c_ast_new_gc( K_CLASS_STRUCT_UNION, &@$ );
       $$->type.btids = c_tid_check( $csu_btid, C_TPID_BASE );
@@ -8078,9 +8086,10 @@ enum_english_ast
     {
       DUMP_START();
       DUMP_PROD( "enum_english_ast",
-                 "enum_btids sname of_type_enum_fixed_type_english_ast_opt" );
+                 "enum_btids any_sname_c_exp "
+                 "of_type_enum_fixed_type_english_ast_opt" );
       DUMP_TID( "enum_btids", $enum_btids );
-      DUMP_SNAME( "sname", $sname );
+      DUMP_SNAME( "any_sname_c_exp", $sname );
       DUMP_AST( "enum_fixed_type_english_ast", $fixed_type_ast );
 
       $$ = c_ast_new_gc( K_ENUM, &@$ );
@@ -8269,7 +8278,7 @@ typedef_type_c_ast
       c_ast_t const *type_for_ast = $tdef->ast;
 
       DUMP_START();
-      DUMP_PROD( "typedef_type_c_ast", "any_typedef" );
+      DUMP_PROD( "typedef_type_c_ast", "any_typedef sub_scope_sname_c_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "any_typedef__ast", type_for_ast );
       DUMP_SNAME( "sub_scope_sname_c_opt", $sname );
@@ -8404,7 +8413,7 @@ sname_c_ast
       DUMP_START();
       DUMP_PROD( "sname_c_ast", "sname_c" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_SNAME( "sname", $sname );
+      DUMP_SNAME( "sname_c", $sname );
       DUMP_INT( "bit_field_c_uint_opt", $bit_width );
 
       type_ast = ia_type_spec_ast( type_ast );
@@ -8517,7 +8526,7 @@ sname_list_english
       DUMP_PROD( "sname_list_english",
                  "sname_list_english ',' sname_english" );
       DUMP_SNAME_LIST( "sname_list_english", $left_sname );
-      DUMP_SNAME( "sname_english", $right_sname );
+      DUMP_SNAME( "sname_english_exp", $right_sname );
 
       $$ = $left_sname;
       c_sname_t *const temp_sname = MALLOC( c_sname_t, 1 );
@@ -8570,7 +8579,7 @@ typedef_sname_c
       DUMP_START();
       DUMP_PROD( "typedef_sname_c", "typedef_sname_c '::' any_typedef" );
       DUMP_SNAME( "typedef_sname_c", $sname );
-      DUMP_AST( "any_typedef", $tdef->ast );
+      DUMP_AST( "any_typedef__ast", $tdef->ast );
 
       //
       // This is for a case like:
