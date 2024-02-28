@@ -2856,9 +2856,9 @@ p_arg_tokens_with_comma_opt
 
   /*
    * We need a version of p_arg_tokens, p_arg_token_as_list, and p_arg_token
-   * where p_arg_token includes ',' because original set uses ',' to separate
-   * arguments whereas this set (that is within parentheses) treats ',' as just
-   * another token that's part of the same argument, e.g.:
+   * where p_arg_token includes ',' because the original set uses ',' to
+   * separate arguments whereas this set (that is within parentheses) treats
+   * ',' as just another token that's part of the same argument, e.g.:
    *
    *      expand M(x, (a,b), y)
    *
