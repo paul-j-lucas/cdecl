@@ -2717,6 +2717,7 @@ p_arg_list
 
       slist_push_back( $$, $arg_tokens );
     }
+
   | p_arg_tokens[arg_tokens]
     {
       $$ = MALLOC( p_arg_list_t, 1 );
