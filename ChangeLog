@@ -1,5 +1,6 @@
 2024-02-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_type.h, dump.c: s/PRIX_C_TID_T/PRIX_c_tid_t/
    * parser.y: Now using $$.
 
 2024-02-27  Paul J. Lucas <paul@lucasmail.org>
