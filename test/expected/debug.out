@@ -188,7 +188,7 @@ cdecl> explain _BitInt(4) x
       BitInt: { width: 4 }
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -331,7 +331,7 @@ cdecl> explain alignas(8) int x
       bit_width: 0
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -515,7 +515,7 @@ cdecl> explain alignas(long) int x
       bit_width: 0
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -772,7 +772,7 @@ cdecl> explain enum E : int x
       }
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -951,7 +951,7 @@ cdecl> explain enum E x
       enum_sname: { string: "E", scopes: "none" }
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -1078,7 +1078,7 @@ cdecl> explain int x
       bit_width: 0
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -1205,7 +1205,7 @@ cdecl> explain int x[4]
       bit_width: 0
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -1416,7 +1416,7 @@ cdecl> explain int x[]
       bit_width: 0
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -1560,7 +1560,7 @@ cdecl> explain size_t x
 {
   rule: {
     lhs: "typedef_type_c_ast",
-    rhs: "any_typedef"
+    rhs: "any_typedef sub_scope_sname_c_opt"
   },
   in_attr__type_c_ast: null,
   any_typedef__ast: {
@@ -1678,7 +1678,7 @@ cdecl> explain size_t x
       bit_width: 0
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -1856,7 +1856,7 @@ cdecl> explain struct S x
       csu_sname: { string: "S", scopes: "none" }
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -1955,7 +1955,7 @@ cdecl> explain unsigned x : 4
       bit_width: 0
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 4,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -2082,7 +2082,7 @@ cdecl> explain void f()
       bit_width: 0
     }
   },
-  sname: { string: "f", scopes: "none" },
+  sname_c: { string: "f", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "f", scopes: "none" },
@@ -2309,7 +2309,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       bit_width: 0
     }
   },
-  sname: { string: "f", scopes: "none" },
+  sname_c: { string: "f", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "f", scopes: "none" },
@@ -2393,7 +2393,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       bit_width: 0
     }
   },
-  sname: { string: "i", scopes: "none" },
+  sname_c: { string: "i", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "i", scopes: "none" },
@@ -2593,7 +2593,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       }
     }
   },
-  sname: { string: "fmt", scopes: "none" },
+  sname_c: { string: "fmt", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "fmt", scopes: "none" },
@@ -3272,7 +3272,7 @@ cdecl> explain void f(int x[*])
       bit_width: 0
     }
   },
-  sname: { string: "f", scopes: "none" },
+  sname_c: { string: "f", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "f", scopes: "none" },
@@ -3356,7 +3356,7 @@ cdecl> explain void f(int x[*])
       bit_width: 0
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -3841,7 +3841,7 @@ cdecl> explain void f(int x[static 2])
       bit_width: 0
     }
   },
-  sname: { string: "f", scopes: "none" },
+  sname_c: { string: "f", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "f", scopes: "none" },
@@ -3925,7 +3925,7 @@ cdecl> explain void f(int x[static 2])
       bit_width: 0
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
@@ -4411,7 +4411,7 @@ cdecl> explain int f(x)
       bit_width: 0
     }
   },
-  sname: { string: "f", scopes: "none" },
+  sname_c: { string: "f", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "f", scopes: "none" },
@@ -4655,7 +4655,7 @@ c++decl> class C
   },
   in_attr__scope_sname: null,
   class_struct_union_btid: { btid: 0x0000000004000001, string: "class" },
-  any_sname_c: { string: "C", scopes: "none" },
+  any_sname_c_exp: { string: "C", scopes: "none" },
   $$_ast: {
     sname: { string: "C", scopes: "class" },
     kind: { value: 0x8, string: "class, struct, or union" },
@@ -4979,7 +4979,7 @@ c++decl> explain int C::*p
       }
     }
   },
-  sname: { string: "p", scopes: "none" },
+  sname_c: { string: "p", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "p", scopes: "none" },
@@ -5451,7 +5451,7 @@ c++decl> explain int operator ""_w(char const *arg)
       }
     }
   },
-  sname: { string: "arg", scopes: "none" },
+  sname_c: { string: "arg", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "arg", scopes: "none" },
@@ -5971,7 +5971,7 @@ c++decl> explain [](char c)
       bit_width: 0
     }
   },
-  sname: { string: "c", scopes: "none" },
+  sname_c: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
@@ -6275,7 +6275,7 @@ c++decl> explain [x](char c)
       bit_width: 0
     }
   },
-  sname: { string: "c", scopes: "none" },
+  sname_c: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
@@ -6601,7 +6601,7 @@ c++decl> explain [=](char c)
       bit_width: 0
     }
   },
-  sname: { string: "c", scopes: "none" },
+  sname_c: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
@@ -6927,7 +6927,7 @@ c++decl> explain [&](char c)
       bit_width: 0
     }
   },
-  sname: { string: "c", scopes: "none" },
+  sname_c: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
@@ -7253,7 +7253,7 @@ c++decl> explain [&x](char c)
       bit_width: 0
     }
   },
-  sname: { string: "c", scopes: "none" },
+  sname_c: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
@@ -7579,7 +7579,7 @@ c++decl> explain [this](char c)
       bit_width: 0
     }
   },
-  sname: { string: "c", scopes: "none" },
+  sname_c: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
@@ -7905,7 +7905,7 @@ c++decl> explain [*this](char c)
       bit_width: 0
     }
   },
-  sname: { string: "c", scopes: "none" },
+  sname_c: { string: "c", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
@@ -8163,7 +8163,7 @@ c++decl> explain int x
       bit_width: 0
     }
   },
-  sname: { string: "x", scopes: "none" },
+  sname_c: { string: "x", scopes: "none" },
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
