@@ -2568,7 +2568,7 @@ p_extra_tokens
   : p_extra_tokens[extra_list] p_extra_token[token]
     {
       $$ = $extra_list;
-      slist_push_back( $extra_list, $token );
+      slist_push_back( $$, $token );
     }
   | p_extra_token[token]
     {
@@ -2752,7 +2752,7 @@ p_arg_token_as_list
 p_arg_token
   : Y_CHAR_LIT[char]
     {
-      $$ = p_token_new_loc( P_CHAR_LIT, &@char, $1 );
+      $$ = p_token_new_loc( P_CHAR_LIT, &@char, $char );
     }
   | Y_NAME[name]
     {
