@@ -421,7 +421,7 @@ static void c_tid_dump_impl( c_tid_t tid, dump_state_t *dump ) {
   assert( dump != NULL );
 
   FPRINTF( dump->fout,
-    "%s%s: 0x%016" PRIX_C_TID_T,
+    "%s%s: 0x%016" PRIX_c_tid_t,
     true_or_set( &dump->comma ) ? ", " : "",
     c_tpid_name( c_tid_tpid( tid ) ),
     tid

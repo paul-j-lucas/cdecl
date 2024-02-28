@@ -822,7 +822,7 @@ typedef enum c_tpid c_tpid_t;
 /**
  * Hexadecimal print conversion specifier for \ref c_tid_t.
  */
-#define PRIX_C_TID_T          PRIX64
+#define PRIX_c_tid_t          PRIX64
 
 ////////// extern constants ///////////////////////////////////////////////////
 
