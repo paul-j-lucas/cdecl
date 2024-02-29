@@ -115,7 +115,7 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
   char const *prev_name = "";
 
   while ( (end = parse_identifier( s )) != NULL ) {
-    char *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
+    char const *const name = check_strndup( s, STATIC_CAST( size_t, end - s ) );
 
     // Ensure that the name is NOT a keyword.
     c_keyword_t const *const ck =
