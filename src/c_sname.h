@@ -432,7 +432,6 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? &T_NONE : &c_scope_data( sname->tail )->type;
 }
 
-
 /**
  * Checks whether \a sname matches \a sglob where \a sglob is glob-like in that
  * `*` matches zero or more characters; however, `*` matches only within a
