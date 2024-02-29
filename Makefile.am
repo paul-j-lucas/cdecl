@@ -22,7 +22,9 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = lib src man test
 
 EXTRA_DIST =	bootstrap \
+		cdecl.css \
 		Doxyfile \
+		lcovrc \
 		m4/gnulib-cache.m4 \
 		makedoc.sh \
 		README-2.5.txt \
