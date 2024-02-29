@@ -481,7 +481,7 @@ void c_ast_free( c_ast_t *ast ) {
         break;
     } // switch
 
-    FREE( ast );
+    free( ast );
   }
 }
 

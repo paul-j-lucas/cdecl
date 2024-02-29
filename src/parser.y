@@ -4383,7 +4383,7 @@ using_decl_c_ast
       c_sname_t const *const sname = c_ast_find_name( cast_ast, C_VISIT_DOWN );
       if ( sname != NULL ) {
         print_error( &cast_ast->loc, "\"using\" type can not have a name\n" );
-        FREE( $name );
+        free( $name );
         PARSE_ABORT();
       }
 
@@ -5052,7 +5052,7 @@ pc99_func_or_constructor_declaration_c
             );
           }
           EPUTC( '\n' );
-          FREE( $name );
+          free( $name );
           PARSE_ABORT();
         }
 

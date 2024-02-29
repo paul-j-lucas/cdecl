@@ -1088,7 +1088,7 @@ rb_node_t* c_typedef_add( c_ast_t const *ast, unsigned decl_flags ) {
     //
     // A typedef with the same name exists, so we don't need the new one.
     //
-    FREE( new_tdef );
+    free( new_tdef );
   }
   return rbi.node;
 }

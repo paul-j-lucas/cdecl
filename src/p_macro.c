@@ -3026,7 +3026,7 @@ p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
   return new_macro;
 
 error:
-  FREE( name );
+  free( name );
   return NULL;
 }
 
