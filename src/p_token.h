@@ -86,7 +86,7 @@ struct p_token {
       ///
       ///         #define F(X)    F( __FILE__, __LINE__, (X) )
       ///
-      ///   The `M` in the definition is _not_ expanded because it's already
+      ///   The `F` in the definition is _not_ expanded because it's already
       ///   being expanded.
       ///
       /// + It’s a dynamic macro that's not supported in the current language.
