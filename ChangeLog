@@ -1,3 +1,7 @@
+2024-02-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * Makefile.am: Added missing cdecl.css and lcovrc to EXTRA_DIST.
+
 2024-02-28  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.h, dump.c: s/PRIX_C_TID_T/PRIX_c_tid_t/
