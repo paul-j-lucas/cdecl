@@ -1,5 +1,7 @@
 2024-02-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sname.c: Added "const".
+   * c_ast.c, c_typedef.c, p_macro.c, parser.y: s/FREE/free/
    * Makefile.am: Added missing cdecl.css and lcovrc to EXTRA_DIST.
 
 2024-02-28  Paul J. Lucas <paul@lucasmail.org>
