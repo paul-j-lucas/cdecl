@@ -95,7 +95,7 @@ struct p_token {
       ///   followed by a token that's already been substituted (which means it
       ///   can never become a `(`).
       ///
-      /// + Is #P___VA_OPT__ and it's not supported in the current language.
+      /// + Is `__VA_OPT__` and it's not supported in the current language.
       ///
       /// + Is a #P_IDENTIFIER whose \ref name is either `__VA_ARGS__` or
       ///   `__VA_OPT__` that resulted from concatenation, e.g.:
