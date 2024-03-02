@@ -91,7 +91,7 @@ static bool c_ast_space_before_ptr_ref( c_ast_t const*, gib_state_t const* );
  */
 NODISCARD
 static inline c_ast_t const* c_ast_find_parent_func( c_ast_t const *ast ) {
-  c_ast_t *const parent_ast = ast->parent_ast;
+  c_ast_t const *const parent_ast = ast->parent_ast;
   return parent_ast != NULL ?
     c_ast_find_kind_any( parent_ast, C_VISIT_UP, K_ANY_FUNCTION_LIKE ) : NULL;
 }
@@ -1457,9 +1457,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,
         (tdef->lang_ids & LANG_ECSU_IS_IMPLICIT_TYPE) == LANG_NONE
       )
     ) &&
-    c_ast_find_type_any(
-      CONST_CAST( c_ast_t*, tdef->ast ), C_VISIT_DOWN, &T_TS_typedef
-    ) == NULL;
+    c_ast_find_type_any( tdef->ast, C_VISIT_DOWN, &T_TS_typedef ) == NULL;
 
   //
   // When printing a "using", we don't have to check languages since "using" is

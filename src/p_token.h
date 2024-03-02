@@ -304,8 +304,19 @@ bool p_token_node_is_punct( p_token_node_t const *token_node, char punct );
  * @return Returns said node or NULL if no such node exists.
  */
 NODISCARD
-p_token_node_t* p_token_node_not( p_token_node_t *token_node,
-                                  p_token_kind_t kinds );
+p_token_node_t const* p_token_node_not( p_token_node_t const *token_node,
+                                        p_token_kind_t kinds );
+
+/// @cond DOXYGEN_IGNORE
+NODISCARD P_TOKEN_H_INLINE
+p_token_node_t* nonconst_p_token_node_not( p_token_node_t *token_node,
+                                           p_token_kind_t kinds ) {
+  return CONST_CAST( p_token_node_t*, p_token_node_not( token_node, kinds ) );
+}
+
+#define p_token_node_not(TOKEN_NODE,KINDS) \
+  NONCONST_OVERLOAD( p_token_node_not, (TOKEN_NODE), (KINDS) )
+/// @endcond
 
 /**
  * Gets the string representation of \a token.
@@ -467,9 +478,7 @@ p_token_t* p_token_new( p_token_kind_t kind, char const *literal ) {
  */
 NODISCARD P_TOKEN_H_INLINE
 bool p_token_node_emptyish( p_token_node_t const *token_node ) {
-  p_token_node_t *const nonconst_node =
-    CONST_CAST( p_token_node_t*, token_node );
-  return p_token_node_not( nonconst_node, P_ANY_TRANSPARENT ) == NULL;
+  return p_token_node_not( token_node, P_ANY_TRANSPARENT ) == NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

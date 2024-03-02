@@ -94,8 +94,19 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast );
  * @sa c_ast_find_type_any()
  */
 NODISCARD
-c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_ast_visit_dir_t dir,
-                              c_ast_kind_t kinds );
+c_ast_t const* c_ast_find_kind_any( c_ast_t const *ast, c_ast_visit_dir_t dir,
+                                    c_ast_kind_t kinds );
+
+/// @cond DOXYGEN_IGNORE
+NODISCARD C_AST_UTIL_H_INLINE
+c_ast_t* nonconst_c_ast_find_kind_any( c_ast_t *ast, c_ast_visit_dir_t dir,
+                                       c_ast_kind_t kinds ) {
+  return CONST_CAST( c_ast_t*, c_ast_find_kind_any( ast, dir, kinds ) );
+}
+
+#define c_ast_find_kind_any(AST,DIR,KINDS) \
+  NONCONST_OVERLOAD( c_ast_find_kind_any, (AST), (DIR), (KINDS) )
+/// @endcond
 
 /**
  * Traverses \a ast attempting to find an AST node having a name.
@@ -107,7 +118,17 @@ c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_ast_visit_dir_t dir,
  * @sa c_ast_find_param_named()
  */
 NODISCARD
-c_sname_t* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir );
+c_sname_t const* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir );
+
+/// @cond DOXYGEN_IGNORE
+NODISCARD C_AST_UTIL_H_INLINE
+c_sname_t* nonconst_c_ast_find_name( c_ast_t *ast, c_ast_visit_dir_t dir ) {
+  return CONST_CAST( c_sname_t*, c_ast_find_name( ast, dir ) );
+}
+
+#define c_ast_find_name(AST,DIR) \
+  NONCONST_OVERLOAD( c_ast_find_name, (AST), (DIR) )
+/// @endcond
 
 /**
  * Find the parameter of \a func_ast having \a name, if any.
@@ -137,8 +158,19 @@ c_ast_t const* c_ast_find_param_named( c_ast_t const *func_ast,
  * @sa c_ast_find_kind_any()
  */
 NODISCARD
-c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
-                              c_type_t const *type );
+c_ast_t const* c_ast_find_type_any( c_ast_t const *ast, c_ast_visit_dir_t dir,
+                                    c_type_t const *type );
+
+/// @cond DOXYGEN_IGNORE
+NODISCARD C_AST_UTIL_H_INLINE
+c_ast_t* nonconst_c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
+                                       c_type_t const *type ) {
+  return CONST_CAST( c_ast_t*, c_ast_find_type_any( ast, dir, type ) );
+}
+
+#define c_ast_find_type_any(AST,DIR,TYPE) \
+  NONCONST_OVERLOAD( c_ast_find_type_any, (AST), (DIR), (TYPE) )
+/// @endcond
 
 /**
  * Checks whether \a ast is a #K_BUILTIN having one of \a btids built-in

@@ -573,7 +573,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     return false;
   }
 
-  c_ast_t *const to_ast = ast->cast.to_ast;
+  c_ast_t const *const to_ast = ast->cast.to_ast;
   c_ast_t const *const storage_ast = c_ast_find_type_any(
     to_ast, C_VISIT_DOWN, &C_TYPE_LIT_S( TS_ANY_STORAGE )
   );
@@ -2535,10 +2535,7 @@ NODISCARD
 static bool c_ast_check_visitor( c_ast_t const *ast,
                                  c_ast_check_fn_t check_fn ) {
   return NULL == c_ast_visit(
-    CONST_CAST( c_ast_t*, ast ),
-    C_VISIT_DOWN,
-    POINTER_CAST( c_ast_visit_fn_t, check_fn ),
-    (user_data_t){ .pc = &(check_state_t){ 0 } }
+    ast, C_VISIT_DOWN, check_fn, (user_data_t){ .pc = &(check_state_t){ 0 } }
   );
 }
 

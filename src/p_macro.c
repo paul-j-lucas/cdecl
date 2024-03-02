@@ -385,7 +385,7 @@ static int              param_expand_cmp( param_expand_t const*,
                                           param_expand_t const* );
 
 NODISCARD
-static p_token_node_t*  parse_args( p_token_node_t const*, p_arg_list_t* );
+static p_token_node_t*  parse_args( p_token_node_t*, p_arg_list_t* );
 
 PJL_DISCARD
 static p_token_node_t*  push_back_dup_tokens( p_token_list_t*,
@@ -1908,7 +1908,7 @@ static mex_rv_t mex_expand_identifier( mex_state_t *mex,
   bool looks_func_like = false;
   mex_rv_t rv = MEX_ERROR;
 
-  p_token_node_t const *const next_node =
+  p_token_node_t *const next_node =
     p_token_node_not( token_node->next, P_SPACE );
   if ( p_token_node_is_punct( next_node, '(' ) ) {
     token_node = parse_args( next_node, &arg_list );
@@ -2823,7 +2823,7 @@ static int param_expand_cmp( param_expand_t const *i_pe,
  * upon error.
  */
 NODISCARD
-static p_token_node_t* parse_args( p_token_node_t const *token_node,
+static p_token_node_t* parse_args( p_token_node_t *token_node,
                                    p_arg_list_t *arg_list ) {
   assert( p_token_node_is_punct( token_node, '(' ) );
 
@@ -2871,7 +2871,7 @@ static p_token_node_t* parse_args( p_token_node_t const *token_node,
       p_token_list_push_back( arg_tokens, p_token_dup( token ) );
   } // for
 
-  return CONST_CAST( p_token_node_t*, token_node );
+  return token_node;
 }
 
 /**
