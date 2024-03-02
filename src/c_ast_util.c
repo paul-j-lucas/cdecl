@@ -510,7 +510,7 @@ static c_ast_t const* c_ast_unreference_qual( c_ast_t const *ast,
  * @return Returns `true` only if the kind of \a ast is one of the kinds.
  */
 NODISCARD
-static bool c_ast_vistor_kind_any( c_ast_t *ast, user_data_t user_data ) {
+static bool c_ast_vistor_kind_any( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
   c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, user_data.ui32 );
   return (ast->kind & kinds) != 0;
@@ -524,7 +524,7 @@ static bool c_ast_vistor_kind_any( c_ast_t *ast, user_data_t user_data ) {
  * @return Returns `true` only if \a ast has such a scoped name.
  */
 NODISCARD
-static bool c_ast_visitor_name( c_ast_t *ast, user_data_t user_data ) {
+static bool c_ast_visitor_name( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
   (void)user_data;
   return !c_sname_empty( &ast->sname );
@@ -539,7 +539,7 @@ static bool c_ast_visitor_name( c_ast_t *ast, user_data_t user_data ) {
  * @return Returns `true` only if the type of \a ast is one of the types.
  */
 NODISCARD
-static bool c_ast_vistor_type_any( c_ast_t *ast, user_data_t user_data ) {
+static bool c_ast_vistor_type_any( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
   c_type_t const *const type = user_data.pc;
   return c_type_is_any( &ast->type, type );
@@ -570,18 +570,21 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
   return rv_ast;
 }
 
-c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_ast_visit_dir_t dir,
-                              c_ast_kind_t kinds ) {
+// See comment for NONCONST_OVERLOAD regarding ().
+c_ast_t const* (c_ast_find_kind_any)( c_ast_t const *ast,
+                                      c_ast_visit_dir_t dir,
+                                      c_ast_kind_t kinds ) {
   assert( kinds != 0 );
   return c_ast_visit(
     ast, dir, c_ast_vistor_kind_any, (user_data_t){ .ui32 = kinds }
   );
 }
 
-c_sname_t* c_ast_find_name( c_ast_t const *ast, c_ast_visit_dir_t dir ) {
-  c_ast_t *const found_ast = c_ast_visit(
-    CONST_CAST( c_ast_t*, ast ), dir, c_ast_visitor_name, USER_DATA_ZERO
-  );
+// See comment for NONCONST_OVERLOAD regarding ().
+c_sname_t const* (c_ast_find_name)( c_ast_t const *ast,
+                                    c_ast_visit_dir_t dir ) {
+  c_ast_t const *const found_ast =
+    c_ast_visit( ast, dir, c_ast_visitor_name, USER_DATA_ZERO );
   return found_ast != NULL ? &found_ast->sname : NULL;
 }
 
@@ -607,8 +610,9 @@ c_ast_t const* c_ast_find_param_named( c_ast_t const *func_ast,
   return NULL;
 }
 
-c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_ast_visit_dir_t dir,
-                              c_type_t const *type ) {
+// See comment for NONCONST_OVERLOAD regarding ().
+c_ast_t const* (c_ast_find_type_any)( c_ast_t const *ast, c_ast_visit_dir_t dir,
+                                      c_type_t const *type ) {
   return c_ast_visit(
     ast, dir, c_ast_vistor_type_any, (user_data_t){ .pc = type }
   );
@@ -883,7 +887,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     return type_ast;
 
   if ( type_ast->parent_ast == NULL ) {
-    c_ast_t *const placeholder_ast =
+    c_ast_t const *const placeholder_ast =
       c_ast_find_kind_any( decl_ast, C_VISIT_DOWN, K_PLACEHOLDER );
     if ( placeholder_ast != NULL ) {
       if ( type_ast->depth >= decl_ast->depth ||

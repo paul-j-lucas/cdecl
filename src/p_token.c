@@ -658,8 +658,9 @@ bool p_token_node_is_punct( p_token_node_t const *token_node, char punct ) {
   return token_node != NULL && p_token_is_punct( token_node->data, punct );
 }
 
-p_token_node_t* p_token_node_not( p_token_node_t *token_node,
-                                  p_token_kind_t kinds ) {
+// See comment for NONCONST_OVERLOAD regarding ().
+p_token_node_t const* (p_token_node_not)( p_token_node_t const *token_node,
+                                          p_token_kind_t kinds ) {
   for ( ; token_node != NULL; token_node = token_node->next ) {
     p_token_t const *const token = token_node->data;
     if ( (token->kind & kinds) == 0 )

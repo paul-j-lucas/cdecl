@@ -524,6 +524,19 @@ _GL_INLINE_HEADER_BEGIN
     default     : 0   \
   )
 
+/**
+ * Checks (at compile-time) whether \a P is a pointer to `const`.
+ *
+ * @param P A pointer.
+ * @return Returns 1 (true) only if \a P is a pointer to `const`; 0 (false)
+ * otherwise.
+ */
+#define IS_PTR_TO_CONST(P)  \
+  _Generic( TO_VOID_PTR(P), \
+    void const* : 1,        \
+    default     : 0         \
+  )
+
 #ifdef HAVE___BUILTIN_EXPECT
 
 /**
@@ -593,6 +606,71 @@ _GL_INLINE_HEADER_BEGIN
  * C doesn't allow declarations after labels until C23.
  */
 #define NO_OP                     ((void)0)
+
+/**
+ * Overloads \a FN such that if \a PTR is a pointer to:
+ *  + `const`, \a FN is called; or:
+ *  + Non-`const`, `nonconst_`\a FN is called.
+ *
+ * @remarks
+ * @parblock
+ * Sometimes for a given function `f`, you want `f` to return:
+ *
+ *  + `R const*` when passed a `T const*`; or:
+ *  + `R*` when passed a `T*`.
+ *
+ * That is you want the `const`-ness of `R` to match that of `T`.  In C++,
+ * you'd simply overload `f`:
+ *
+ *      R const* f( T const* );         // C++ only
+ *      R        f( T* );
+ *
+ * In C, you'd need two different functions:
+ *
+ *      R const*  f( T const* );        // C
+ *      inline R* nonconst_f( T *t ) {
+ *        return (R*)f( t );
+ *      }
+ *
+ * This macro allows `f` to be "overloaded" in C such that only `f` ever needs
+ * to be called explicitly and either `f` or `nonconst_f` is actually called
+ * depending on the `const`-ness of \a PTR.
+ *
+ * To use this macro:
+ *
+ *  1. Declare `f` as a function that takes a `T const*` and returns an `R
+ *     const*`.
+ *
+ *  2. Declare `nonconst_f` as an `inline` function that takes a `T*` and
+ *     returns an `R*` by calling `f` and casting the result to `R*`.
+ *
+ *  3. Define a macro also named `f` that expands into `NONCONST_OVERLOAD`
+ *     like:
+ *
+ *          #define f(P,A2,A3)    NONCONST_OVERLOAD( f, (P), (A2), (A3) )
+ *
+ *     where <code>A</code><i>n</i> are additional arguments for `f`.
+ *
+ *  4. Define the function `f` with an extra set of `()` to prevent the macro
+ *     `f` from expanding:
+ *
+ *          R const* (f)( T const *t, A2 a2, A3 a3 ) {
+ *            // ...
+ *          }
+ * @endparblock
+ *
+ * @param FN The name of the function to overload.
+ * @param PTR A pointer. If it's a pointer to:
+ *  + `const`, \a FN is called; or:
+ *  + Non-`const`, `nonconst_`\a FN is called.
+ *
+ * @param ... Additional arguments passed to \a FN.
+ */
+#define NONCONST_OVERLOAD(FN, PTR, ...) \
+  STATIC_IF( IS_PTR_TO_CONST(PTR),      \
+    FN,                                 \
+    nonconst_ ## FN                     \
+  )( (PTR), __VA_ARGS__ )
 
 /**
  * If \a EXPR is `true`, prints an error message for `errno` to standard error
@@ -755,6 +833,22 @@ _GL_INLINE_HEADER_BEGIN
 #define STATIC_CAST(T,EXPR)       ((T)(EXPR))
 
 /**
+ * Implements a "static if" similar to `if constexpr` in C++.
+ *
+ * @param EXPR An expression (evaluated at compile-time).
+ * @param THEN An expression returned only if \a EXPR is non-zero (true).
+ * @param ELSE An expression returned only if \a EXPR is zero (false).
+ * @return Returns:
+ *  + \a THEN only if \a EXPR is non-zero (true); or:
+ *  + \a ELSE only if \a EXPR is zero (false).
+ */
+#define STATIC_IF(EXPR,THEN,ELSE)     \
+  _Generic( &(char[1 + !!(EXPR)]){0}, \
+    char (*)[2]: (THEN),              \
+    char (*)[1]: (ELSE)               \
+  )
+
+/**
  * Shorthand for calling **strerror**(3) with `errno`.
  */
 #define STRERROR()                strerror( errno )
@@ -780,6 +874,16 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define STRLITLEN(S) \
   (ARRAY_SIZE(S) - STATIC_ASSERT_EXPR( IS_C_STR(S), #S " must be a C string literal" ))
+
+/**
+ * Converts \a P to a pointer to `void` preserving `const`-ness.
+ *
+ * @param P A pointer.
+ * @return Returns:
+ *  + `(void*)(P)` only if \a P is a pointer to non-`const`; or:
+ *  + `(void const*)(P)` only if \a P is a pointer to `const`.
+ */
+#define TO_VOID_PTR(P)            (1 ? (P) : (void*)(P))
 
 /**
  * Synthesises a name prefixed by \a PREFIX unique to the line on which it's

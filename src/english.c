@@ -61,11 +61,26 @@ typedef struct eng_state eng_state_t;
 
 // local functions
 NODISCARD
-static bool c_ast_visitor_english( c_ast_t*, user_data_t );
+static bool c_ast_visitor_english( c_ast_t const*, user_data_t );
 
 static void c_type_name_nobase_english( c_type_t const*, FILE* );
-static void c_ast_visit_english( c_ast_t const*, eng_state_t const* );
 static void eng_init( eng_state_t*, FILE* );
+
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Convenience function for calling c_ast_visit() to print \a ast as a
+ * declaration in pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eng The eng_state to use.
+ */
+static inline void c_ast_visit_english( c_ast_t const *ast,
+                                        eng_state_t const *eng ) {
+  c_ast_visit(
+    ast, C_VISIT_DOWN, c_ast_visitor_english, (user_data_t){ .pc = eng }
+  );
+}
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -224,20 +239,6 @@ static void c_ast_name_english( c_ast_t const *ast, FILE *fout ) {
 }
 
 /**
- * Convenience function for calling c_ast_visit() to print \a ast as a
- * declaration in pseudo-English.
- *
- * @param ast The AST to print.
- * @param eng The eng_state to use.
- */
-static void c_ast_visit_english( c_ast_t const *ast, eng_state_t const *eng ) {
-  c_ast_visit(
-    CONST_CAST( c_ast_t*, ast ), C_VISIT_DOWN, c_ast_visitor_english,
-    (user_data_t){ .pc = eng }
-  );
-}
-
-/**
  * Visitor function that prints \a ast as pseudo-English.
  *
  * @param ast The AST to print.
@@ -245,7 +246,7 @@ static void c_ast_visit_english( c_ast_t const *ast, eng_state_t const *eng ) {
  * @return Always returns `false`.
  */
 NODISCARD
-static bool c_ast_visitor_english( c_ast_t *ast, user_data_t user_data ) {
+static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
   assert( ast != NULL );
   eng_state_t const *const eng = user_data.pc;
   assert( eng != NULL );
@@ -604,7 +605,7 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *fout ) {
   // else must get its own "declare" statement.
   //
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
-    c_ast_t const *const list_ast = ast_node->data;
+    c_ast_t *const list_ast = ast_node->data;
     slist_t *equal_ast_list = NULL;
 
     if ( (list_ast->kind & (K_ANY_OBJECT | K_FUNCTION | K_OPERATOR)) != 0 ) {
@@ -645,7 +646,7 @@ void c_ast_list_english( c_ast_list_t const *ast_list, FILE *fout ) {
         continue;
     }
 
-    slist_push_back( equal_ast_list, CONST_CAST( c_ast_t*, list_ast ) );
+    slist_push_back( equal_ast_list, list_ast );
   } // for
 
   //
