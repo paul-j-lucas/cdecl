@@ -38,6 +38,12 @@
 
 /// @endcond
 
+/**
+ * @defgroup misc-globals Miscellaneous Globals
+ * Miscellaneous global macros, variables, and functions.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** Default configuration file name. */
@@ -87,6 +93,8 @@ bool is_cppdecl( void );
 void cdecl_quit( void );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_cdecl_H */
 /* vim:set et sw=2 ts=2: */

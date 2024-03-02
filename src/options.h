@@ -100,10 +100,12 @@ extern c_ast_kind_t opt_west_pointer_kinds;
 
 // other extern variables
 #ifdef ENABLE_FLEX_DEBUG
-extern int          yy_flex_debug;      ///< Flex variable for debugging.
+/// Flex variable for debugging; use #opt_flex_debug instead.
+extern int          yy_flex_debug;
 #endif /* ENABLE_FLEX_DEBUG */
 #ifdef ENABLE_BISON_DEBUG
-extern int          yydebug;            ///< Bison variable for debugging.
+/// Bison variable for debugging; use #opt_bison_debug instead.
+extern int          yydebug;
 #endif /* ENABLE_BISON_DEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////
