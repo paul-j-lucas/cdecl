@@ -1,3 +1,9 @@
+2024-03-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_keyword.c, c_type.c, cdecl.c, cdecl.h, did_you_mean.c,
+     lexer.h, lexer.l, parser.y, print.c, print.h, types.h: Eliminated
+     cdecl_mode.
+
 2024-02-29  Paul J. Lucas <paul@lucasmail.org>
 
    * c_sname.c: Added "const".
