@@ -46,6 +46,7 @@
 // standard
 #include <stddef.h>                     /* for size_t */
 #include <stdlib.h>
+#include <sysexits.h>
 
 /// @endcond
 
@@ -73,6 +74,10 @@ static void cdecl_cleanup( void ) {
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+void cdecl_quit( void ) {
+  exit( EX_OK );
+}
 
 bool is_cppdecl( void ) {
   static char const *const NAMES[] = {
@@ -120,10 +125,6 @@ int main( int argc, char const *argv[] ) {
   // first argument, if any, and no longer the program name.
   //
   exit( cdecl_parse_cli( STATIC_CAST( size_t, argc ), argv ) );
-}
-
-void cdecl_quit( void ) {
-  exit( EX_OK );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
