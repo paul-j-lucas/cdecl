@@ -582,11 +582,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
                           void *v_data ) {
   assert( visit_fn != NULL );
-
-  rb_tree_t *const nonconst_tree = CONST_CAST( rb_tree_t*, tree );
-  return rb_node_visit(
-    nonconst_tree, nonconst_tree->root, visit_fn, v_data
-  );
+  return rb_node_visit( tree, tree->root, visit_fn, v_data );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
