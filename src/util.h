@@ -514,7 +514,8 @@ _GL_INLINE_HEADER_BEGIN
  * <code>char*</code> or <code>char const*</code>.
  *
  * @param T An expression. It is _not_ evaluated.
- * @return Returns 1 only if \a T is a C string type.
+ * @return Returns 1 (true) only if \a T is a C string type; 0 (false)
+ * otherwise.
  */
 #define IS_C_STR(T)   \
   _Generic( (T),      \
