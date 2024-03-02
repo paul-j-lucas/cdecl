@@ -30,8 +30,8 @@
 /// @endcond
 #include "c_type.h"
 #include "c_lang.h"
-#include "cdecl.h"
 #include "gibberish.h"                  /* for other_token_c() */
+#include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -874,8 +874,7 @@ static char const* c_type_name_impl( c_type_t const *type,
     };
 
     bool const print_brackets =
-      OPT_LANG_IS( ATTRIBUTES ) &&
-      cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH && !in_english;
+      OPT_LANG_IS( ATTRIBUTES ) && is_english_to_gibberish() && !in_english;
 
     bool comma = false;
     char const sep = print_brackets ? ',' : ' ';
@@ -1244,7 +1243,7 @@ char const* c_tid_name_error( c_tid_t tids ) {
   // we're parsing pseudo-English or in C/C++ if we're parsing C/C++.
   return c_type_name_impl( &type,
     /*apply_explicit_ecsu=*/false,
-    /*in_english=*/cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH,
+    /*in_english=*/is_english_to_gibberish(),
     /*is_error=*/true
   );
 }
@@ -1344,7 +1343,7 @@ char const* c_type_name_error( c_type_t const *type ) {
   // See comment in c_tid_name_error().
   return c_type_name_impl( type,
     /*apply_explicit_ecsu=*/false,
-    /*in_english=*/cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH,
+    /*in_english=*/is_english_to_gibberish(),
     /*is_error=*/true
   );
 }

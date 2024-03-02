@@ -534,7 +534,7 @@ void fl_print_error_unknown_name( char const *file, int line,
     fl_print_error( file, line, loc, "\"%s\": unknown name", name );
 
     dym_kind = DYM_C_KEYWORDS | DYM_C_TYPES;
-    if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+    if ( is_english_to_gibberish() ) {
       dym_kind |= DYM_CDECL_KEYWORDS;
       cdecl_keyword_t const *const cdk = cdecl_keyword_find( name );
       if ( cdk != NULL )
@@ -586,7 +586,7 @@ void print_ast_type_aka( c_ast_t const *ast, FILE *fout ) {
   c_ast_t const *const raw_ast = c_ast_untypedef( ast );
   if ( raw_ast == ast ) {               // not a typedef
     FPUTC( '"', fout );
-    if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+    if ( is_english_to_gibberish() )
       c_ast_english( ast, C_ENG_DECL | C_ENG_OPT_OMIT_DECLARE, fout );
     else
       c_ast_gibberish( ast, C_GIB_USING, fout );
@@ -634,7 +634,7 @@ void print_error_token_is_a( char const *error_token ) {
     return;
   }
 
-  if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+  if ( is_english_to_gibberish() ) {
     cdecl_keyword_t const *const cdk = cdecl_keyword_find( error_token );
     if ( cdk != NULL )
       EPRINTF( " (\"%s\" is a " CDECL " keyword)", error_token );

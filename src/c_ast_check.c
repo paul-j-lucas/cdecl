@@ -35,6 +35,7 @@
 #include "c_typedef.h"
 #include "cdecl.h"
 #include "gibberish.h"
+#include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -400,7 +401,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
           "array of \"%s\"",
           c_tid_name_error( TB_void )
         );
-        if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+        if ( is_english_to_gibberish() )
           print_hint( "array of \"pointer to void\"" );
         else
           print_hint( "array of \"void*\"" );
@@ -417,7 +418,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       error_kind_of_kind( ast, of_ast );
-      if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+      if ( is_english_to_gibberish() ) {
         print_hint( "%s to array", c_kind_name( raw_of_ast->kind ) );
       } else {
         print_hint( "(%s%s)[]",
@@ -543,7 +544,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_ast_t const *tdef_ast ) {
          c_tid_is_any( ast->type.stids, TS_extern )) &&
        (tdef_ast == NULL || !c_ast_parent_is_kind( tdef_ast, K_POINTER )) ) {
     print_error( &ast->loc, "variable of \"%s\"", c_tid_name_error( TB_void ) );
-    if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+    if ( is_english_to_gibberish() )
       print_hint( "\"pointer to void\"" );
     else
       print_hint( "\"void*\"" );
@@ -748,7 +749,7 @@ static bool c_ast_check_enum( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_ENUM );
 
-  if ( cdecl_mode == CDECL_GIBBERISH_TO_ENGLISH &&
+  if ( is_gibberish_to_english() &&
        c_tid_is_any( ast->type.btids, TB_struct | TB_class ) &&
       !c_tid_is_any( ast->type.stids, TS_typedef ) ) {
     print_error( &ast->loc,
@@ -1169,7 +1170,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
         print_error( &param_ast->loc, "invalid main() parameter type " );
         print_ast_type_aka( param_ast, stderr );
         EPUTS( "; must be " );
-        if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+        if ( is_english_to_gibberish() ) {
           EPRINTF( "\"%s %s pointer to %s\"\n",
             c_kind_name( param_ast->kind ),
             param_ast->kind == K_ARRAY ? "of" : "to",
@@ -1188,7 +1189,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *param_ast ) {
       print_error( &param_ast->loc, "invalid main() parameter type " );
       print_ast_type_aka( param_ast, stderr );
       EPUTS( "; must be " );
-      if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+      if ( is_english_to_gibberish() )
         EPRINTF( "\"array of pointer to %s\"\n", c_tid_name_error( TB_char ) );
       else
         EPRINTF( "\"char*%s\"\n", other_token_c( "[]" ) );
@@ -1696,7 +1697,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
         );
         print_ast_type_aka( ret_ast, stderr );
         EPUTS( "; must be " );
-        if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+        if ( is_english_to_gibberish() )
           EPUTS( "\"pointer to void\"\n" );
         else
           EPUTS( "\"void*\"\n" );
@@ -2151,7 +2152,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
       print_ast_kind_aka( to_ast, stderr );
       EPUTS( " is illegal" );
       if ( raw_to_ast == to_ast ) {
-        if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+        if ( is_english_to_gibberish() )
           print_hint( "\"reference to pointer\"" );
         else
           print_hint( "\"*&\"" );
@@ -2256,7 +2257,7 @@ static bool c_ast_check_reference( c_ast_t const *ast,
 
   if ( c_ast_is_builtin_any( to_ast, TB_void ) ) {
     error_kind_to_tid( ast, TB_void, "" );
-    if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
+    if ( is_english_to_gibberish() )
       print_hint( "\"pointer to void\"" );
     else
       print_hint( "\"void*\"" );
@@ -2443,7 +2444,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
                      c_tid_name_error( TB_unsigned | TB_long | TB_long_long ) );
             EPRINTF( "\"%s\", ", c_tid_name_error( TB_long | TB_double ) );
             EPRINTF( "\"%s\", ", c_tid_name_error( TB_char ) );
-            if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ) {
+            if ( is_english_to_gibberish() ) {
               EPRINTF( "\"pointer to %s\", ",
                        c_type_name_error( &T_const_char ) );
             } else {

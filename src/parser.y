@@ -642,7 +642,6 @@ static inline c_ast_t* c_ast_new_gc( c_ast_kind_t kind, c_loc_t const *loc ) {
  * Set our mode to deciphering gibberish into English.
  */
 static inline void gibberish_to_english( void ) {
-  cdecl_mode = CDECL_GIBBERISH_TO_ENGLISH;
   lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
 }
 
@@ -977,8 +976,7 @@ static void fl_keyword_expected( char const *file, int line,
       }
     }
 
-    dym_kinds = cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH ?
-      DYM_CDECL_KEYWORDS : DYM_C_KEYWORDS;
+    dym_kinds = is_english_to_gibberish() ? DYM_CDECL_KEYWORDS : DYM_C_KEYWORDS;
   }
 
   fl_elaborate_error( file, line, dym_kinds, "\"%s\" expected", keyword );
@@ -1123,8 +1121,6 @@ c_ast_t* join_type_decl( c_ast_t *type_ast, c_ast_t *decl_ast ) {
  * returning from yyparse().
  */
 static void parse_cleanup( bool fatal_error ) {
-  cdecl_mode = CDECL_ENGLISH_TO_GIBBERISH;
-
   //
   // We need to reset the lexer differently depending on whether we completed a
   // parse with a fatal error.  If so, do a "hard" reset that also resets the

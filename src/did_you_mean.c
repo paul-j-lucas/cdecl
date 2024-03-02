@@ -35,6 +35,7 @@
 #include "cdecl_keyword.h"
 #include "cli_options.h"
 #include "dam_lev.h"
+#include "lexer.h"
 #include "p_macro.h"
 #include "set_options.h"
 #include "util.h"
@@ -109,7 +110,7 @@ static size_t copy_c_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
  */
 PJL_DISCARD
 static size_t copy_cdecl_keywords( did_you_mean_t **const pdym ) {
-  assert( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH );
+  assert( is_english_to_gibberish() );
 
   size_t count = 0;
   FOREACH_CDECL_KEYWORD( cdk ) {

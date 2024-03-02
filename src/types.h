@@ -198,14 +198,6 @@ enum cdecl_debug {
 };
 
 /**
- * **Cdecl** mode of operation.
- */
-enum cdecl_mode {
-  CDECL_ENGLISH_TO_GIBBERISH,           ///< Convert English into gibberish.
-  CDECL_GIBBERISH_TO_ENGLISH            ///< Decipher gibberish into English.
-};
-
-/**
  * @ingroup showing-group
  * Which types or macros to show for the **cdecl** `show` command.
  * @remarks The values can be bitwise-or'd together.
@@ -310,7 +302,6 @@ typedef struct c_type             c_type_t;
 typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
 typedef enum   cdecl_debug        cdecl_debug_t;
-typedef enum   cdecl_mode         cdecl_mode_t;
 typedef enum   cdecl_show         cdecl_show_t;
 
 /**

@@ -39,6 +39,11 @@
 #include <stddef.h>                     /* for size_t */
 #include <stdio.h>                      /* for FILE */
 
+_GL_INLINE_HEADER_BEGIN
+#ifndef LEXER_H_INLINE
+# define LEXER_H_INLINE _GL_INLINE
+#endif /* LEXER_H_INLINE */
+
 /// @endcond
 
 /**
@@ -51,13 +56,35 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * For the lexer, specifies what to look-up when an identifier is lex'd.
+ * For the lexer, specifies what to find when an identifier is lex'd.
  */
 enum lexer_find_kind {
-  LEXER_FIND_ANY            = ~0,       ///< Find everything (the default).
-  LEXER_FIND_C_KEYWORDS     = (1 << 0), ///< Find C/C++ keywords.
-  LEXER_FIND_CDECL_KEYWORDS = (1 << 1), ///< Find **cdecl** keywords.
-  LEXER_FIND_TYPES          = (1 << 2)  ///< Find `typedef`'d names.
+  /**
+   * Find everything (the default).
+   */
+  LEXER_FIND_ANY            = ~0,
+
+  /**
+   * Find C/C++ keywords.
+   */
+  LEXER_FIND_C_KEYWORDS     = (1 << 0),
+
+  /**
+   * Find **cdecl** keywords.
+   *
+   * @remarks This also controls the overall "mode" of **cdecl**:
+   *  + When set, **cdecl** converts English to gibberish (C/C++ declarations);
+   *  + When not set, **cdecl** deciphers gibberish to English.
+   *
+   * @sa is_english_to_gibberish()
+   * @sa is_gibberish_to_english()
+   */
+  LEXER_FIND_CDECL_KEYWORDS = (1 << 1),
+
+  /**
+   * Find `typedef`'d names.
+   */
+  LEXER_FIND_TYPES          = (1 << 2)
 };
 typedef enum lexer_find_kind lexer_find_kind_t;
 
@@ -90,6 +117,32 @@ extern c_keyword_ctx_t    lexer_keyword_ctx;
 extern char const        *lexer_token;
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Gets whether we're converting English to gibberish (C/C++ declarations).
+ *
+ * @return Returns `true` only if we are.
+ *
+ * @sa is_gibberish_to_english()
+ * @sa #LEXER_FIND_CDECL_KEYWORDS
+ */
+NODISCARD LEXER_H_INLINE
+bool is_english_to_gibberish( void ) {
+  return (lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0;
+}
+
+/**
+ * Gets whether we're deciphering gibberish (C/C++ declarations) to English.
+ *
+ * @return Returns `true` only if we are.
+ *
+ * @sa is_english_to_gibberish()
+ * @sa #LEXER_FIND_CDECL_KEYWORDS
+ */
+NODISCARD LEXER_H_INLINE
+bool is_gibberish_to_english( void ) {
+  return !is_english_to_gibberish();
+}
 
 /**
  * Initializes the lexer.
@@ -185,6 +238,8 @@ void yyrestart( FILE *in_file );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+_GL_INLINE_HEADER_END
 
 #endif /* cdecl_lexer_H */
 /* vim:set et sw=2 ts=2: */

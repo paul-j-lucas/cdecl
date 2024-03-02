@@ -329,8 +329,8 @@ void print_ast_kind_aka( c_ast_t const *ast, FILE *fout );
  *    the underlying type in gibberish.
  *
  *  + Otherwise prints only the type of \a ast either in pseudo-English or
- *    gibberish (depending on \ref cdecl_mode) without its name, for example
- *    `"reference to integer"` or `"int&"`.
+ *    gibberish without its name, for example `"reference to integer"` or
+ *    `"int&"`.
  *
  * @note A newline is _not_ printed.
  *

@@ -54,7 +54,6 @@
 // extern variables
 extern bool         cdecl_initialized;  ///< Initialized (read conf. file)?
 extern bool         cdecl_interactive;  ///< Interactive (connected to a tty)?
-extern cdecl_mode_t cdecl_mode;         ///< Converting English or gibberish?
 extern char const  *me;                 ///< Program name.
 
 ////////// extern functions ///////////////////////////////////////////////////

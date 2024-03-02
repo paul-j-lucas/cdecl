@@ -51,11 +51,15 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/// @cond DOXYGEN_IGNORE
+/// Otherwise Doxygen generates two entries for each option.
+
 // extern variable definitions
-bool          cdecl_initialized;
-bool          cdecl_interactive;
-cdecl_mode_t  cdecl_mode;
-char const   *me;
+bool        cdecl_initialized;
+bool        cdecl_interactive;
+char const *me;
+
+/// @endcond
 
 ////////// local functions ////////////////////////////////////////////////////
 

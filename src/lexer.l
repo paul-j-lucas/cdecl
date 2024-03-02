@@ -34,6 +34,7 @@
 }
 
 %{
+#define LEXER_H_INLINE _GL_EXTERN_INLINE
 /** @endcond */
 
 // local
