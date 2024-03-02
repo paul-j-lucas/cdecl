@@ -4949,11 +4949,11 @@ func_decl_c_astp
         //
         //      declare f as pointer to cdecl function returning void
         //
-        for ( c_ast_t const *ast = $$.ast;
-              (ast = c_ast_unpointer( ast )) != NULL; ) {
+        for ( c_ast_t *ast = $$.ast;
+              (ast = CONST_CAST(c_ast_t*, c_ast_unpointer( ast ))) != NULL; ) {
           if ( ast->kind == K_FUNCTION ) {
             $$.ast->type.atids &= c_tid_compl( TA_ANY_MSC_CALL );
-            CONST_CAST( c_ast_t*, ast )->type.atids |= msc_call_atids;
+            ast->type.atids |= msc_call_atids;
           }
         } // for
       }
