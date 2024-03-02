@@ -1,5 +1,9 @@
 2024-03-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Moved CONST_CAST().
+   * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, english.c,
+     gibberish.c, p_macro.c, p_token.c, p_token.h, util.h: Added
+     NONCONST_OVERLOAD() for several functions.
    * red_black.c: Eliminated nonconst_tree.
 
 2024-03-01  Paul J. Lucas <paul@lucasmail.org>
