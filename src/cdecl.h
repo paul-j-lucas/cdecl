@@ -43,10 +43,20 @@
 /** Default configuration file name. */
 #define CONF_FILE_NAME_DEFAULT    "." CDECL "rc"
 
-/** Program name when composing or deciphering C. */
+/**
+ * Program name when composing or deciphering C.
+ *
+ * @sa #CPPDECL
+ * @sa is_cdecl()
+ */
 #define CDECL                     PACKAGE
 
-/** Program name when composing or deciphering C++. */
+/**
+ * Program name when composing or deciphering C++.
+ *
+ * @sa #CDECL
+ * @sa is_cppdecl()
+ */
 #define CPPDECL                   "c++decl"
 
 ///////////////////////////////////////////////////////////////////////////////
