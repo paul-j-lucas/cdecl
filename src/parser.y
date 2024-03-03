@@ -837,7 +837,7 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
   }
 
   rb_node_t const *const typedef_rb = c_typedef_add( type_ast, decl_flags );
-  c_typedef_t const *const tdef = typedef_rb->data;
+  c_typedef_t *const tdef = typedef_rb->data;
 
   if ( tdef->ast == type_ast ) {
     //
@@ -876,6 +876,10 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
       EPUTS( "\"\n" );
       return false;
     }
+
+    // Update the language(s) the type is available in to include opt_lang.
+    if ( opt_lang < c_lang_oldest( tdef->lang_ids ) )
+      tdef->lang_ids = c_lang_and_newer( opt_lang );
   }
 
   return true;

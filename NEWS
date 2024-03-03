@@ -10,6 +10,26 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 16.3
+
+** Defining a type more than once
+If a type is defined again where the current language is older than the
+language in which it was previously defined, the type's set of languages is now
+updated to be the current language and newer.  For example, previously:
+
+    cdecl> set c23
+    cdecl> typedef int Int
+    cdecl> show
+    typedef int Int;
+    cdecl> set c17
+    cdecl> typedef int Int        # Already exists so did nothing.
+    cdecl> show                   # Would NOT show anything.
+    cdecl>
+
+Now the second `typedef` would update `Int` to make it available in C17 and
+newer so the second `show` would show it.
+
+
 * Changes in Cdecl 16.2.2
 
 ** `long long` not until C++11
