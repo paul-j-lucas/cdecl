@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/dam_lev.c
 **
 **      Copyright (C) 2020-2024  Paul J. Lucas
