@@ -216,19 +216,9 @@ static bool c_ast_list_equal( c_ast_list_t const *i_list,
 
   if ( slist_len( i_list ) != slist_len( j_list ) )
     return false;
-
-  slist_node_t const *i_node = i_list->head;
-  slist_node_t const *j_node = j_list->head;
-
-  for ( ; i_node != NULL && j_node != NULL;
-          i_node = i_node->next, j_node = j_node->next ) {
-    c_ast_t const *const i_ast = i_node->data;
-    c_ast_t const *const j_ast = j_node->data;
-    if ( !c_ast_equal( i_ast, j_ast ) )
-      return false;
-  } // for
-
-  return i_node == NULL && j_node == NULL;
+  return 0 == slist_cmp(
+    i_list, j_list, POINTER_CAST( slist_cmp_fn_t, &c_ast_equal )
+  );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
