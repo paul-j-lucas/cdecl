@@ -227,6 +227,8 @@ enum cdecl_show {
 
 ////////// typedefs ///////////////////////////////////////////////////////////
 
+// Also define these here so this file doesn't need to #include "slist.h" since
+// that file includes this file forming a circular dependency.
 typedef struct slist              slist_t;
 typedef struct slist_node         slist_node_t;
 

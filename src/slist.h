@@ -87,6 +87,9 @@ _GL_INLINE_HEADER_BEGIN
 
 ///////////////////////////////////////////////////////////////////////////////
 
+typedef struct slist      slist_t;
+typedef struct slist_node slist_node_t;
+
 /**
  * The signature for a function passed to slist_cmp() used to compare data
  * associated with each node (if necessary).
