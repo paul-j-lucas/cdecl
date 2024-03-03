@@ -1,5 +1,6 @@
 2024-03-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * slist.h, types.h: Add typedefs for slist_t, slist_node_t to slist.h.
    * read_line.c, strbuf.c, strbuf.h: Fixed some #includes.
 
 2024-03-02  Paul J. Lucas <paul@lucasmail.org>
