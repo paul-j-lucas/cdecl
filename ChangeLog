@@ -1,5 +1,6 @@
 2024-03-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * strbuf.c: Removed #include <stdio.h>.
    * dam_lev.c, dam_lev.h: Removed mention of cdecl from generic code.
    * red_black.c, red_black.h, red_black_test.c, slist.c, slist.h, strbuf.c,
      strbuf.h: Removed mention of cdecl from generic code.
