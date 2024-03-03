@@ -236,13 +236,13 @@ static bool is_multi_char_punctuator( char const *s ) {
  * is a #P_SPACE token and precedes another: if so, frees it.
  *
  * @param token_node A pointer to the \ref p_token to possibly free.
- * @param user_data Not used.
+ * @param data Not used.
  * @return Returns `true` only if \a token_node was freed.
  */
 static bool p_token_free_if_consec_space( p_token_node_t *token_node,
-                                          user_data_t user_data ) {
+                                          void *data ) {
   assert( token_node != NULL );
-  (void)user_data;
+  (void)data;
   p_token_t *const token = token_node->data;
   assert( token != NULL );
 
@@ -602,7 +602,7 @@ void p_token_list_trim( p_token_list_t *token_list ) {
     p_token_free( slist_pop_back( token_list ) );
   } // while
 
-  slist_free_if( token_list, &p_token_free_if_consec_space, USER_DATA_ZERO );
+  slist_free_if( token_list, &p_token_free_if_consec_space, /*data=*/NULL );
 }
 
 p_token_t* p_token_new_loc( p_token_kind_t kind, c_loc_t const *loc,

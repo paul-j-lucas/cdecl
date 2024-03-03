@@ -36,6 +36,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "slist.h"
 
 // standard
 #include <stdbool.h>
@@ -226,11 +227,6 @@ enum cdecl_show {
 };
 
 ////////// typedefs ///////////////////////////////////////////////////////////
-
-// Also define these here so this file doesn't need to #include "slist.h" since
-// that file includes this file forming a circular dependency.
-typedef struct slist              slist_t;
-typedef struct slist_node         slist_node_t;
 
 typedef struct c_alignas          c_alignas_t;
 typedef enum   c_alignas_kind     c_alignas_kind_t;

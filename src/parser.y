@@ -738,16 +738,15 @@ static void attr_syntax_not_supported( char const *keyword,
  * that can be garbage collected: if so, c_ast_free()s it.
  *
  * @param ast_node The \ref slist_node pointing to the AST to check.
- * @param user_data Contains the AST of the type being declared.
+ * @param data Contains the AST of the type being declared.
  * @return Returns `true` only if \a ast should be removed from the list.
  */
 NODISCARD
-static bool c_ast_free_if_garbage( slist_node_t *ast_node,
-                                   user_data_t user_data ) {
+static bool c_ast_free_if_garbage( slist_node_t *ast_node, void *data ) {
   assert( ast_node != NULL );
   c_ast_t *const ast = ast_node->data;
   assert( ast != NULL );
-  c_ast_t const *const type_ast = user_data.pc;
+  c_ast_t const *const type_ast = data;
   assert( type_ast != NULL );
 
   if ( ast == type_ast || !c_ast_is_orphan( ast ) ) {
@@ -853,7 +852,7 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
     slist_free_if(
       &gc_ast_list,
       &c_ast_free_if_garbage,
-      (user_data_t){ .pc = type_ast }
+      CONST_CAST( void*, type_ast )
     );
     slist_push_list_back( &typedef_ast_list, &gc_ast_list );
   }
