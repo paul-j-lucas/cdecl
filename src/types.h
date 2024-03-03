@@ -333,6 +333,17 @@ typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 /// @endcond
 
 /**
+ * The signature for a function passed to **bsearch**(3).
+ *
+ * @param i_data A pointer to data.
+ * @param j_data A pointer to data.
+ * @return Returns an integer less than, equal to, or greater than 0, according
+ * to whether the data pointed to by \a i_data is less than, equal to, or
+ * greater than the data pointed to by \a j_data.
+ */
+typedef int (*bsearch_cmp_fn_t)( void const *i_data, void const *j_data );
+
+/**
  * The signature for a function passed to **qsort**(3).
  *
  * @param i_data A pointer to data.

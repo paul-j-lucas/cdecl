@@ -96,18 +96,11 @@ static int p_keyword_cmp( p_keyword_t const *i_pk, p_keyword_t const *j_pk ) {
 
 p_keyword_t const* p_keyword_find( char const *literal ) {
   assert( literal != NULL );
-
-  // the list is small, so linear search is good enough
-  for ( p_keyword_t const *pk = P_KEYWORDS; pk->literal != NULL; ++pk ) {
-    int const cmp = strcmp( literal, pk->literal );
-    if ( cmp > 0 )
-      continue;
-    if ( cmp < 0 )                      // the array is sorted
-      break;
-    return pk;
-  } // for
-
-  return NULL;
+  return bsearch(
+    &(p_keyword_t){ .literal = literal }, P_KEYWORDS,
+    ARRAY_SIZE( P_KEYWORDS ) - 1/*NULL*/, sizeof( P_KEYWORDS[0] ),
+    POINTER_CAST( bsearch_cmp_fn_t, &p_keyword_cmp )
+  );
 }
 
 void p_keywords_init( void ) {

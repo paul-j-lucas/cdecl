@@ -1718,21 +1718,13 @@ static int cdecl_keyword_cmp( cdecl_keyword_t const *i_cdk,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
-  assert( s != NULL );
-
-  // the list is small, so linear search is good enough
-  for ( cdecl_keyword_t const *cdk = CDECL_KEYWORDS; cdk->literal != NULL;
-        ++cdk ) {
-    int const cmp = strcmp( s, cdk->literal );
-    if ( cmp > 0 )
-      continue;
-    if ( cmp < 0 )                      // the array is sorted
-      break;
-    return cdk;
-  } // for
-
-  return NULL;
+cdecl_keyword_t const* cdecl_keyword_find( char const *literal ) {
+  assert( literal != NULL );
+  return bsearch(
+    &(cdecl_keyword_t){ .literal = literal }, CDECL_KEYWORDS,
+    ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/, sizeof( CDECL_KEYWORDS[0] ),
+    POINTER_CAST( bsearch_cmp_fn_t, &cdecl_keyword_cmp )
+  );
 }
 
 cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *cdk ) {
