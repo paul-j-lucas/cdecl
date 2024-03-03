@@ -199,7 +199,7 @@ static c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
 }
 
 /**
- * Checks whether to AST lists are equals _except_ for AST node names.
+ * Checks whether two AST lists are equal _except_ for AST node names.
  *
  * @param i_list The first AST list.
  * @param j_list The second AST list.
