@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/slist.c
 **
 **      Copyright (C) 2017-2024  Paul J. Lucas

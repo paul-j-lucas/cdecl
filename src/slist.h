@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/slist.h
 **
 **      Copyright (C) 2017-2024  Paul J. Lucas
@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_slist_H
-#define cdecl_slist_H
+#ifndef pjl_slist_H
+#define pjl_slist_H
 
 /**
  * @file
@@ -470,5 +470,5 @@ slist_t slist_move( slist_t *list );
 
 _GL_INLINE_HEADER_END
 
-#endif /* cdecl_slist_H */
+#endif /* pjl_slist_H */
 /* vim:set et sw=2 ts=2: */

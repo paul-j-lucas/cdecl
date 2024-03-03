@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/strbuf.h
 **
 **      Copyright (C) 2021-2024  Paul J. Lucas
@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_strbuf_H
-#define cdecl_strbuf_H
+#ifndef pjl_strbuf_H
+#define pjl_strbuf_H
 
 /**
  * @file
@@ -336,5 +336,5 @@ char* strbuf_take( strbuf_t *sbuf ) {
 
 _GL_INLINE_HEADER_END
 
-#endif /* cdecl_strbuf_H */
+#endif /* pjl_strbuf_H */
 /* vim:set et sw=2 ts=2: */

@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/strbuf.c
 **
 **      Copyright (C) 2021-2024  Paul J. Lucas

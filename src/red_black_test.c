@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/red_black_test.c
 **
 **      Copyright (C) 2021-2024  Paul J. Lucas

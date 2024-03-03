@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      PJL Library
 **      src/red_black.h
 **
 **      Copyright (C) 2017-2024  Paul J. Lucas, et al.
@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_red_black_H
-#define cdecl_red_black_H
+#ifndef pjl_red_black_H
+#define pjl_red_black_H
 
 /**
  * @file
@@ -301,5 +301,5 @@ rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visit_fn_t visit_fn,
 
 _GL_INLINE_HEADER_END
 
-#endif /* cdecl_red_black_H */
+#endif /* pjl_red_black_H */
 /* vim:set et sw=2 ts=2: */
