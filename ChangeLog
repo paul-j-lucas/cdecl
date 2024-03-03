@@ -1,5 +1,9 @@
 2024-03-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac, parser.y: If a type is defined again where the current
+     language is older than the language in which it was previously defined,
+     the type's set of languages is now updated to be the current language and
+     newer.
    * strbuf.c: Removed #include <stdio.h>.
    * dam_lev.c, dam_lev.h: Removed mention of cdecl from generic code.
    * red_black.c, red_black.h, red_black_test.c, slist.c, slist.h, strbuf.c,
