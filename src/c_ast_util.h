@@ -420,7 +420,7 @@ c_ast_t const* c_ast_leaf( c_ast_t const *ast );
  * (with the intent of giving it to another AST).
  *
  * @param ast The AST (or one of its child nodes) to take from.
- * @return Returns said name or en empty name.
+ * @return Returns said name or an empty name.
  *
  * @sa c_sname_move()
  */
