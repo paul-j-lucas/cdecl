@@ -1,5 +1,9 @@
 2024-03-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * red_black.c, red_black.h, red_black_test.c, slist.c, slist.h, strbuf.c,
+     strbuf.h: Removed mention of cdecl from generic code.
+   * p_token.c, parser.y, slist.c, slist.h, slist_test.c, types.h: Made slist
+     not use user_data to break dependency on types.h.
    * slist.h, types.h: Add typedefs for slist_t, slist_node_t to slist.h.
    * read_line.c, strbuf.c, strbuf.h: Fixed some #includes.
 
