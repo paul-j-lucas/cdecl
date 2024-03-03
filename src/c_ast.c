@@ -203,7 +203,7 @@ static c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
  *
  * @param i_list The first AST list.
  * @param j_list The second AST list.
- * @return Returns `true` only if the to AST lists are equal _except_ for AST
+ * @return Returns `true` only if the two AST lists are equal _except_ for AST
  * node names.
  *
  * @sa c_ast_equal()
