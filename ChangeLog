@@ -1,5 +1,6 @@
 2024-03-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c: Now using slist_cmp() in c_ast_list_equal().
    * cdecl_keyword.c, p_keyword.c, types.h: Now using bsearch().
    * parser.y: Moved CONST_CAST().
    * c_ast.c, c_ast.h, c_ast_check.c, c_ast_util.c, c_ast_util.h, english.c,
