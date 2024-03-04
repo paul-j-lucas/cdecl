@@ -1,3 +1,8 @@
+2024-03-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.h: Changed c_lang_newest() and c_lang_oldest() to exclude language
+     extensions since they yield incorrect results.
+
 2024-03-03  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, parser.y: If a type is defined again where the current
