@@ -1,5 +1,6 @@
 2024-03-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * help.c: Added ATTRIBUTE_SENTINEL().
    * c_lang.h: Changed c_lang_newest() and c_lang_oldest() to exclude language
      extensions since they yield incorrect results.
 
