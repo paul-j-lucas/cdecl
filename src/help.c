@@ -88,6 +88,7 @@ static inline bool command_is( cdecl_command_t const *command,
  * @sa command_is()
  */
 NODISCARD
+ATTRIBUTE_SENTINEL()
 static bool command_is_any( cdecl_command_t const *command, ... ) {
   if ( command == NULL )
     return true;
