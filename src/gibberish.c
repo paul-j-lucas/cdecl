@@ -154,7 +154,7 @@ static char const* alt_token_c( char const *token ) {
 /**
  * Helper function for c_ast_gibberish_impl() that prints an array's size.
  *
- * @param ast The AST that is a \ref K_ARRAY whose size to print.
+ * @param ast The AST that is a #K_ARRAY whose size to print.
  * @param gib The gib_state to use.
  */
 static void c_ast_array_size_gibberish( c_ast_t const *ast,
@@ -872,9 +872,9 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
  * to-member, reference, or rvalue reference, its qualifier, if any, and the
  * name, if any.
  *
- * @param ast The AST that is one of \ref K_POINTER, \ref K_POINTER_TO_MEMBER,
- * \ref K_REFERENCE, or \ref K_RVALUE_REFERENCE whose qualifier, if any, and
- * name, if any, to print.
+ * @param ast The AST that is one of #K_POINTER, #K_POINTER_TO_MEMBER,
+ * #K_REFERENCE, or #K_RVALUE_REFERENCE whose qualifier, if any, and name, if
+ * any, to print.
  * @param gib The gib_state to use.
  */
 static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
