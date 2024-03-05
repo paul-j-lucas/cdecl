@@ -991,7 +991,7 @@ c_ast_t const* c_ast_unreference_any( c_ast_t const *ast ) {
   // This is a loop to implement the reference-collapsing rule.
   for (;;) {
     ast = c_ast_untypedef( ast );
-    if ( (ast->kind & (K_REFERENCE | K_RVALUE_REFERENCE)) == 0 )
+    if ( (ast->kind & K_ANY_REFERENCE) == 0 )
       return ast;
     ast = ast->ptr_ref.to_ast;
   } // for
