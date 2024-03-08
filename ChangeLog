@@ -1,3 +1,7 @@
+2024-03-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * parse.c: Added is_c_comment().
+
 2024-03-05  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c: Now using K_ANY_REFERENCE.
