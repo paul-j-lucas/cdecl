@@ -65,6 +65,17 @@ static int cdecl_parse_stdin( void );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
+ * Checks whether \a s is the start of a C/C++ comment.
+ *
+ * @param s The string to check.
+ * @return Returns `true` only if it is.
+ */
+NODISCARD
+static bool is_c_comment( char const *s ) {
+  return s[0] == '/' && (s[1] == '*' || s[1] == '/');
+}
+
+/**
  * Checks whether we're **cdecl**.
  *
  * @returns Returns `true` only if we are.
@@ -88,10 +99,10 @@ NODISCARD
 static bool no_infer_command( char const *s ) {
   assert( s != NULL );
   SKIP_WS( s );
-  if ( s[0] == '/' && (s[1] == '*' || s[1] == '/') )
+  if ( is_c_comment( s ) )
     return true;
   if ( s[0] == 'q' ) {
-    ++s;
+    ++s;                                // 'q' must be by itself on the line
     SKIP_WS( s );
     return s[0] == '\0';
   }
