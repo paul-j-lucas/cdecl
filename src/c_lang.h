@@ -1328,10 +1328,11 @@ typedef struct c_lang_lit c_lang_lit_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets the value of the `__cplusplus` macro for \ref opt_lang.
+ * Gets the value of the `__cplusplus` macro for \a lang_id.
  *
+ * @param lang_id The language.  _Exactly one_ language _must_ be set.
  * @return Returns said value or NULL if `__cplusplus` does not have a value
- * for \ref opt_lang.
+ * for \a lang_id.
  *
  * @sa c_lang_coarse_name()
  * @sa c_lang_name()
@@ -1339,13 +1340,14 @@ typedef struct c_lang_lit c_lang_lit_t;
  * @sa c_lang___STDC_VERSION__()
  */
 NODISCARD
-char const* c_lang___cplusplus( void );
+char const* c_lang___cplusplus( c_lang_id_t lang_id );
 
 /**
- * Gets the value of the `__STDC_VERSION__` macro for \ref opt_lang.
+ * Gets the value of the `__STDC_VERSION__` macro for \a lang_id.
  *
+ * @param lang_id The language.  _Exactly one_ language _must_ be set.
  * @return Returns said value or NULL if `__STDC_VERSION__` does not have a
- * value for \ref opt_lang.
+ * value for \a lang_id.
  *
  * @sa c_lang_coarse_name()
  * @sa c_lang___cplusplus()
@@ -1353,12 +1355,12 @@ char const* c_lang___cplusplus( void );
  * @sa c_lang___STDC__()
  */
 NODISCARD
-char const* c_lang___STDC_VERSION__( void );
+char const* c_lang___STDC_VERSION__( c_lang_id_t lang_id );
 
 /**
  * Gets all the language(s) \a lang_id and \ref c-lang-order "newer".
  *
- * @param lang_id The language.  Exactly one language must be set.
+ * @param lang_id The language.  _Exactly one_ language _must_ be set.
  * @return Returns the bitwise-or of all language(s) \a lang_id and newer.
  *
  * @sa c_lang_oldest()
@@ -1574,10 +1576,11 @@ bool opt_lang_is_any( c_lang_id_t lang_ids ) {
 }
 
 /**
- * Gets the value of the `__STDC__` macro for \ref opt_lang.
+ * Gets the value of the `__STDC__` macro for \a lang_id.
  *
- * @return Returns said value or NULL if `__STDC__` does not have a value for
- * \ref opt_lang.
+ * @param lang_id The language.  _Exactly one_ language _must_ be set.
+ * @return Returns `"1"` only if \a lang_id is any version of C _except_
+ * K&R&nbsp;C; NULL if \a lang_id is K&R&nbsp;C.
  *
  * @sa c_lang_coarse_name()
  * @sa c_lang___cplusplus()
@@ -1585,8 +1588,9 @@ bool opt_lang_is_any( c_lang_id_t lang_ids ) {
  * @sa c_lang___STDC_VERSION__()
  */
 NODISCARD C_LANG_H_INLINE
-char const* c_lang___STDC__( void ) {
-  return opt_lang_is_any( LANG___STDC__ ) ? "1" : NULL;
+char const* c_lang___STDC__( c_lang_id_t lang_id ) {
+  assert( is_1_bit( lang_id ) );
+  return (lang_id & LANG___STDC__) != LANG_NONE  ? "1" : NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

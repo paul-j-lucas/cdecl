@@ -627,7 +627,7 @@ static bool mex_append_args( mex_state_t *mex ) {
  */
 static c_lang_id_t macro_dyn___cplusplus( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
-    char const *const value = c_lang___cplusplus();
+    char const *const value = c_lang___cplusplus( opt_lang );
     *ptoken = value == NULL ? NULL :
       p_token_new( P_NUM_LIT, check_strdup( value ) );
   }
@@ -703,7 +703,7 @@ static c_lang_id_t macro_dyn___LINE__( p_token_t **ptoken ) {
  */
 static c_lang_id_t macro_dyn___STDC__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
-    char const *const value = c_lang___STDC__();
+    char const *const value = c_lang___STDC__( opt_lang );
     *ptoken = value == NULL ? NULL :
       p_token_new( P_NUM_LIT, check_strdup( value ) );
   }
@@ -723,7 +723,7 @@ static c_lang_id_t macro_dyn___STDC__( p_token_t **ptoken ) {
  */
 static c_lang_id_t macro_dyn___STDC_VERSION__( p_token_t **ptoken ) {
   if ( ptoken != NULL ) {
-    char const *const value = c_lang___STDC_VERSION__();
+    char const *const value = c_lang___STDC_VERSION__( opt_lang );
     *ptoken = value == NULL ? NULL :
       p_token_new( P_NUM_LIT, check_strdup( value ) );
   }

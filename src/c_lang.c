@@ -89,8 +89,8 @@ static c_lang_t const C_LANG[] = {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-char const* c_lang___cplusplus( void ) {
-  c_lang_id_t const lang_id = opt_lang & ~LANGX_MASK;
+char const* c_lang___cplusplus( c_lang_id_t lang_id ) {
+  lang_id &= ~LANGX_MASK;
   assert( is_1_bit( lang_id ) );
   switch ( lang_id ) {
     case LANG_CPP_98:                   // Yes, this is correct.
@@ -104,8 +104,8 @@ char const* c_lang___cplusplus( void ) {
   } // switch
 }
 
-char const* c_lang___STDC_VERSION__( void ) {
-  c_lang_id_t const lang_id = opt_lang & ~LANGX_MASK;
+char const* c_lang___STDC_VERSION__( c_lang_id_t lang_id ) {
+  lang_id &= ~LANGX_MASK;
   assert( is_1_bit( lang_id ) );
   switch ( lang_id ) {
     case LANG_C_89:                     // Yes, this is correct.
