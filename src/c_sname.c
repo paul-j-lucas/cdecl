@@ -119,7 +119,7 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
 
     // Ensure that the name is NOT a keyword.
     c_keyword_t const *const ck =
-      c_keyword_find( name, opt_lang, C_KW_CTX_DEFAULT );
+      c_keyword_find( name, opt_lang_id, C_KW_CTX_DEFAULT );
     if ( ck != NULL ) {
       FREE( name );
       // ck->literal is set to L_* so == is OK

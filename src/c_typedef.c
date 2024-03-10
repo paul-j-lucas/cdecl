@@ -1021,7 +1021,8 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast, unsigned decl_flags ) {
     // only in those language(s); otherwise we're defining a user-defined type
     // that's available in the current language and newer.
     //
-    .lang_ids = is_predefined ? predef_lang_ids : c_lang_and_newer( opt_lang )
+    .lang_ids = is_predefined ?
+      predef_lang_ids : c_lang_and_newer( opt_lang_id )
   };
 
   return tdef;
@@ -1150,14 +1151,14 @@ void c_typedefs_init( void ) {
   opt_bison_debug = false;
 #endif /* ENABLE_BISON_DEBUG */
 
-  c_lang_id_t const orig_lang = opt_lang;
+  c_lang_id_t const orig_lang_id = opt_lang_id;
 
   if ( opt_typedefs ) {
     //
     // Temporarily switch to the latest supported version of C so all keywords
     // will be available.
     //
-    opt_lang = LANG_C_NEW;
+    opt_lang_id = LANG_C_NEW;
 
     predef_lang_ids = LANG_MIN(C_KNR);
     parse_predef_types( PREDEFINED_KNR_C );
@@ -1176,10 +1177,10 @@ void c_typedefs_init( void ) {
     parse_predef_types( PREDEFINED_STD_C_99 );
 
     // However, Embedded C extensions are available only in C99.
-    opt_lang = LANG_C_99;
+    opt_lang_id = LANG_C_99;
     predef_lang_ids = LANG_C_99;
     parse_predef_types( PREDEFINED_EMBEDDED_C );
-    opt_lang = LANG_C_NEW;
+    opt_lang_id = LANG_C_NEW;
 
     // Must be defined after C99.
     predef_lang_ids = LANG_MIN(C_89);
@@ -1196,7 +1197,7 @@ void c_typedefs_init( void ) {
   // Temporarily switch to the latest supported version of C++ so all keywords
   // will be available.
   //
-  opt_lang = LANG_CPP_NEW;
+  opt_lang_id = LANG_CPP_NEW;
 
   if ( opt_typedefs ) {
     predef_lang_ids = LANG_MIN(CPP_OLD);
@@ -1219,7 +1220,7 @@ void c_typedefs_init( void ) {
   parse_predef_types( PREDEFINED_STD_CPP_20_REQUIRED );
 
   predef_lang_ids = LANG_NONE;
-  opt_lang = orig_lang;
+  opt_lang_id = orig_lang_id;
 
   opt_cdecl_debug = orig_cdecl_debug;
 #ifdef ENABLE_FLEX_DEBUG

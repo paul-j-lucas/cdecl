@@ -29,7 +29,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "options.h"                    /* for opt_lang */
+#include "options.h"                    /* for opt_lang_id */
 #include "types.h"
 #include "util.h"
 
@@ -310,14 +310,14 @@ _GL_INLINE_HEADER_BEGIN
 #define C_LANG_WHICH(LANG_MACRO)  c_lang_which( LANG_##LANG_MACRO )
 
 /**
- * Shorthand for the common case of getting whether \ref opt_lang is among the
- * languages specified by \a LANG_MACRO.
+ * Shorthand for the common case of getting whether \ref opt_lang_id is among
+ * the languages specified by \a LANG_MACRO.
  *
  * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
- * @return Returns `true` only if \ref opt_lang is among the languages
+ * @return Returns `true` only if \ref opt_lang_id is among the languages
  * specified by \a LANG_MACRO.
  *
- * @sa opt_lang
+ * @sa opt_lang_id
  * @sa opt_lang_is_any()
  */
 #define OPT_LANG_IS(LANG_MACRO)   opt_lang_is_any( LANG_##LANG_MACRO )
@@ -1561,18 +1561,18 @@ NODISCARD
 char const* c_lang_which( c_lang_id_t lang_ids );
 
 /**
- * Convenience function for checking whether \ref opt_lang is among \a
+ * Convenience function for checking whether \ref opt_lang_id is among \a
  * lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s) to check.
  * @return Returns `true` only if it is.
  *
- * @sa opt_lang
+ * @sa opt_lang_id
  * @sa #OPT_LANG_IS()
  */
 NODISCARD C_LANG_H_INLINE
 bool opt_lang_is_any( c_lang_id_t lang_ids ) {
-  return (opt_lang & lang_ids) != LANG_NONE;
+  return (opt_lang_id & lang_ids) != LANG_NONE;
 }
 
 /**

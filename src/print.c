@@ -618,12 +618,12 @@ void print_error_token_is_a( char const *error_token ) {
     c_keyword_find( error_token, LANG_ANY, C_KW_CTX_DEFAULT );
   if ( ck != NULL ) {
     c_lang_id_t const lang_ids = ck->lang_ids & ~LANGX_MASK;
-    c_lang_id_t const oldest_lang = c_lang_oldest( lang_ids );
-    if ( oldest_lang > opt_lang ) {
+    c_lang_id_t const oldest_lang_id = c_lang_oldest( lang_ids );
+    if ( oldest_lang_id > opt_lang_id ) {
       EPRINTF(
         "; \"%s\" not a keyword until %s",
         error_token,
-        c_lang_name( oldest_lang )
+        c_lang_name( oldest_lang_id )
       );
     } else {
       EPRINTF( " (\"%s\" is a keyword", error_token );

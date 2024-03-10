@@ -182,7 +182,7 @@ c_lang_id_t c_lang_is_one( c_lang_id_t lang_ids ) {
 void c_lang_set( c_lang_id_t lang_id ) {
   lang_id &= ~LANGX_MASK;
   assert( is_1_bit( lang_id ) );
-  opt_lang = lang_id;
+  opt_lang_id = lang_id;
   cdecl_prompt_init();                  // change prompt based on new language
 }
 
@@ -196,7 +196,7 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
   c_lang_id_t which_lang_id;
 
   if ( is_1_bit( lang_ids ) ) {
-    if ( opt_lang == lang_ids )
+    if ( opt_lang_id == lang_ids )
       return "";
     strbuf_putsn( &sbuf, " unless ", 8 );
     which_lang_id = lang_ids;
@@ -207,7 +207,7 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
       return OPT_LANG_IS( C_ANY ) ? " in C" : " in C++";
 
     which_lang_id = c_lang_oldest( lang_ids );
-    if ( opt_lang < which_lang_id ) {
+    if ( opt_lang_id < which_lang_id ) {
       strbuf_putsn( &sbuf, " until ", 7 );
     } else {
       strbuf_putsn( &sbuf, " since ", 7 );

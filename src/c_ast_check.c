@@ -1094,7 +1094,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 
     case 1:                             // main(void)
       param_ast = c_param_ast( param );
-      if ( opt_lang == LANG_C_KNR ) {
+      if ( opt_lang_id == LANG_C_KNR ) {
         print_error( &param_ast->loc,
           "main() must have 0, 2, or 3 parameters in %s\n",
           c_lang_name( LANG_C_KNR )

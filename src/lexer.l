@@ -1030,8 +1030,9 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   //
                   // 4. See if it's a C/C++ keyword.
                   //
-                  c_keyword_t const *const ck =
-                    c_keyword_find( lexer_token, opt_lang, lexer_keyword_ctx );
+                  c_keyword_t const *const ck = c_keyword_find(
+                    lexer_token, opt_lang_id, lexer_keyword_ctx
+                  );
                   if ( ck != NULL ) {
                     yylval.tid = ck->tid;
                     return ck->y_token_id;

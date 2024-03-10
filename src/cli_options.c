@@ -457,7 +457,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         opt_infer_command = true;
         break;
       case COPT(LANGUAGE):
-        opt_lang = parse_lang( optarg );
+        opt_lang_id = parse_lang( optarg );
         break;
       case COPT(TRIGRAPHS):
         opt_graph = C_GRAPH_TRI;
@@ -690,7 +690,7 @@ void cli_options_init( int *pargc, char const **pargv[const] ) {
   assert( pargc != NULL );
   assert( pargv != NULL );
 
-  opt_lang = is_cppdecl() ? LANG_CPP_NEW : LANG_C_NEW;
+  opt_lang_id = is_cppdecl() ? LANG_CPP_NEW : LANG_C_NEW;
 #ifdef ENABLE_FLEX_DEBUG
   //
   // When -d is specified, Flex enables debugging by default -- undo that.
@@ -698,7 +698,7 @@ void cli_options_init( int *pargc, char const **pargv[const] ) {
   opt_flex_debug = false;
 #endif /* ENABLE_FLEX_DEBUG */
   parse_options( pargc, pargv );
-  c_lang_set( opt_lang );
+  c_lang_set( opt_lang_id );
 }
 
 struct option const* cli_option_next( struct option const *opt ) {

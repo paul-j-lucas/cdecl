@@ -59,7 +59,7 @@ bool                opt_english_types = true;
 c_tid_t             opt_explicit_ecsu_btids = TB_struct | TB_union;
 c_graph_t           opt_graph;
 bool                opt_infer_command;
-c_lang_id_t         opt_lang;
+c_lang_id_t         opt_lang_id;
 bool                opt_prompt = true;
 bool                opt_read_conf = true;
 bool                opt_semicolon = true;

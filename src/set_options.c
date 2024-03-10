@@ -354,7 +354,7 @@ static void print_options( void ) {
   PUTC( '\n' );
 
   print_option( "infer-command", po_bool_value( opt_infer_command ), LANG_ANY );
-  print_option( "lang", c_lang_name( opt_lang ), LANG_ANY );
+  print_option( "lang", c_lang_name( opt_lang_id ), LANG_ANY );
   print_option( "prompt", po_bool_value( opt_prompt ), LANG_ANY );
   print_option( "semicolon", po_bool_value( opt_semicolon ), LANG_ANY );
   print_option( "trailing-return", po_bool_value( opt_trailing_ret ), LANG_TRAILING_RETURN_TYPES );

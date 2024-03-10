@@ -91,10 +91,12 @@ struct c_type_info {
   char const         *english_lit;      ///< English version (if not NULL).
 
   /**
-   * Array of language(s)/literal pair(s).  The array is terminated by an
-   * element that has #LANG_ANY for lang_ids; hence subset(s) of language(s)
-   * cases come first and, failing to match opt_lang against any of those,
-   * matches the last (default) element.
+   * Array of language(s)/literal pair(s).
+   *
+   * @remarks The array is terminated by an element that has #LANG_ANY for \ref
+   * lang_ids; hence subset(s) of language(s) cases come first and, failing to
+   * match \ref opt_lang_id against any of those, matches the last (default)
+   * element.
    */
   c_lang_lit_t const *lang_lit;
 };

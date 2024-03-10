@@ -183,13 +183,14 @@
   fl_is_nested_type_ok( __FILE__, __LINE__, (TYPE_LOC) )
 
 /**
- * Checks whether \ref opt_lang is among the bitwise-or of languages specified
- * by \a LANG_MACRO, i.e., \a LANG_MACRO is supported by \ref opt_lang.
+ * Checks whether \ref opt_lang_id is among the bitwise-or of languages
+ * specified by \a LANG_MACRO, i.e., \a LANG_MACRO is supported by \ref
+ * opt_lang_id.
  *
  * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
  * @return Returns `true` only if either **cdecl** is \ref cdecl_initialized is
- * `false` or \ref opt_lang is among the bitwise-or of languages specified by
- * \a LANG_MACRO.
+ * `false` or \ref opt_lang_id is among the bitwise-or of languages specified
+ * by \a LANG_MACRO.
  *
  * @sa #OPT_LANG_IS()
  */
@@ -877,9 +878,9 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
       return false;
     }
 
-    // Update the language(s) the type is available in to include opt_lang.
-    if ( opt_lang < c_lang_oldest( tdef->lang_ids ) )
-      tdef->lang_ids = c_lang_and_newer( opt_lang );
+    // Update the language(s) the type is available in to include opt_lang_id.
+    if ( opt_lang_id < c_lang_oldest( tdef->lang_ids ) )
+      tdef->lang_ids = c_lang_and_newer( opt_lang_id );
   }
 
   return true;
@@ -7068,8 +7069,9 @@ attribute_c_atid_exp
         c_lang_id_t lang_ids = LANG_NONE;
 
         char const *const name = c_sname_local_name( &$sname );
-        c_keyword_t const *const ck =
-          c_keyword_find( name, c_lang_newer( opt_lang ), C_KW_CTX_ATTRIBUTE );
+        c_keyword_t const *const ck = c_keyword_find(
+          name, c_lang_newer( opt_lang_id ), C_KW_CTX_ATTRIBUTE
+        );
         if ( ck != NULL && c_tid_tpid( ck->tid ) == C_TPID_ATTR ) {
           adj = "unsupported";
           lang_ids = ck->lang_ids;

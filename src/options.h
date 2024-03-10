@@ -87,7 +87,7 @@ extern c_tid_t      opt_explicit_ecsu_btids;
 
 extern c_graph_t    opt_graph;          ///< Di/Trigraph mode.
 extern bool         opt_infer_command;  ///< Infer command if none given?
-extern c_lang_id_t  opt_lang;           ///< Current language.
+extern c_lang_id_t  opt_lang_id;        ///< Current language.
 extern bool         opt_prompt;         ///< Print the prompt?
 extern bool         opt_read_conf;      ///< Read configuration file?
 extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?

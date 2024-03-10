@@ -83,7 +83,7 @@ struct cdecl_keyword {
    *
    * @note The array _must_ be terminated by an element that has #LANG_ANY for
    * \ref c_lang_lit::lang_ids "lang_ids"; hence subset(s) of language(s) cases
-   * come first and, failing to match \ref opt_lang against any of those,
+   * come first and, failing to match \ref opt_lang_id against any of those,
    * matches the last (default) element.
    */
   c_lang_lit_t const *lang_syn;
