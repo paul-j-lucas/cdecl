@@ -133,7 +133,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANGX_EMC
  * @sa #LANGX_UPC
  */
-#define LANGX_MASK    0x0180u
+#define LANGX_MASK    (LANGX_EMC | LANGX_UPC)
 
 /**
  * Embedded C, or more formally, _Programming languages - C - Extensions to
