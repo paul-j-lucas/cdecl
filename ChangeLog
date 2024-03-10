@@ -1,3 +1,14 @@
+2024-03-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.c, c_lang.h, p_macro.c: c_lang___cplusplus(),
+     c_lang___STDC_VERSION__(), and c_lang___STDC__() now take a c_lang_id_t
+     parameter.
+
+2024-03-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c: Now dynamically allocating a c_typedef only when actually
+     inserted.
+
 2024-03-08  Paul J. Lucas <paul@lucasmail.org>
 
    * parse.c: Added is_c_comment().
