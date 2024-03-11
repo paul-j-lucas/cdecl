@@ -985,8 +985,8 @@ static predef_type_t const PREDEFINED_WIN32[] = {
  * @param i_tdef A pointer to the first \ref c_typedef.
  * @param j_tdef A pointer to the second \ref c_typedef.
  * @return Returns an integer less than, equal to, or greater than 0, according
- * to whether the `typedef` name pointed to by \a i_data is less than, equal
- * to, or greater than the `typedef` name pointed to by \a j_data.
+ * to whether the `typedef` name pointed to by \a i_tdef is less than, equal
+ * to, or greater than the `typedef` name pointed to by \a j_tdef.
  */
 NODISCARD
 static int c_typedef_cmp( c_typedef_t const *i_tdef,
