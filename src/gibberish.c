@@ -653,7 +653,7 @@ static void c_ast_list_gibberish( c_ast_list_t const *ast_list,
     gib_init( &node_gib, gib->gib_flags & ~C_GIB_OPT_OMIT_TYPE, gib->fout );
     node_gib.is_nested_scope = gib->is_nested_scope;
     fput_sep( ", ", &comma, gib->fout );
-    c_ast_gibberish_impl( c_param_ast( ast_node ), &node_gib );
+    c_ast_gibberish_impl( ast_node->data, &node_gib );
   } // for
 }
 
