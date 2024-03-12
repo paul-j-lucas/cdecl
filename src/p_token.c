@@ -84,7 +84,7 @@ static void avoid_paste( p_token_list_t *token_list, p_token_t const *token ) {
   // said token is not a P_PUNCTUATOR, return.
   //
   p_token_t const *last_token;
-  for ( size_t roffset = 0; true; ++roffset ) {
+  for ( size_t roffset = 0; ; ++roffset ) {
     last_token = slist_atr( token_list, roffset );
     if ( last_token == NULL )
       return;
