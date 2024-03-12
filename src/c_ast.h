@@ -428,6 +428,13 @@ struct c_typedef_ast {
  */
 struct c_udef_conv_ast {
   c_ast_t  *to_ast;                     ///< What it's a conversion to.
+
+  /// @cond DOXYGEN_IGNORE
+  /// So any future additions to this struct are _not_ at the same offset as
+  /// param_ast_list in c_apple_block_ast, c_constructor_ast, c_function_ast,
+  /// c_lambda_ast, c_operator_ast, and c_udef_lit_ast.
+  DECL_UNUSED(c_ast_list_t);
+  /// @endcond
 };
 
 /**
