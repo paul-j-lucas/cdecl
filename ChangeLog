@@ -1,5 +1,6 @@
 2024-03-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.h: Added DECL_UNUSED(c_ast_list_t) to c_udef_conv_ast.
    * gibberish.c: In c_ast_postfix_gibberish(), consolidated K_DESTRUCTOR &
      K_UDEF_CONV cases.
    * c_ast.h, c_ast_check.c, c_ast_util.c, english.c, gibberish.c: Eliminated
