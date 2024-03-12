@@ -836,16 +836,14 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       break;
     case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
+    case K_UDEF_CONV:
     case K_UDEF_LIT:
       FPUTC( '(', gib->fout );
       c_ast_list_gibberish( &ast->func.param_ast_list, gib );
       FPUTC( ')', gib->fout );
-      break;
-    case K_DESTRUCTOR:
-    case K_UDEF_CONV:
-      FPUTS( "()", gib->fout );
       break;
     case K_BUILTIN:
     case K_CAPTURE:
