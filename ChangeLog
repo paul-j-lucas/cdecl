@@ -1,5 +1,15 @@
+2024-03-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: In c_ast_postfix_gibberish(), consolidated K_DESTRUCTOR &
+     K_UDEF_CONV cases.
+   * c_ast.h, c_ast_check.c, c_ast_util.c, english.c, gibberish.c: Eliminated
+     c_ast_params_count() and c_ast_captures_count().
+
 2024-03-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, c_lang.c, c_lang.h, c_sname.c, c_type.c, c_typedef.c,
+     cdecl_keyword.h, cli_options.c, lexer.l, options.c, options.h, p_macro.c,
+     parser.y, print.c, prompt.h, set_options.c: s/opt_lang/opt_lang_id/
    * c_lang.h: Changed definition of LANGX_MASK.
    * c_lang.c, c_lang.h, p_macro.c: c_lang___cplusplus(),
      c_lang___STDC_VERSION__(), and c_lang___STDC__() now take a c_lang_id_t
