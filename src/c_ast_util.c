@@ -798,7 +798,7 @@ c_func_member_t c_ast_op_overload( c_ast_t const *ast ) {
   if ( c_tid_is_any( ast->type.stids, TS_MEMBER_FUNC_ONLY ) )
     return C_FUNC_MEMBER;
 
-  size_t const n_params = c_ast_params_count( ast );
+  size_t const n_params = slist_len( &ast->oper.param_ast_list );
 
   switch ( op->op_id ) {
     case C_OP_NEW:

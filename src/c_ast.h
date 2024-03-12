@@ -636,28 +636,11 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
                     c_ast_list_t *node_list );
 
 /**
- * Convenience function for getting the number of function-like parameters.
- *
- * @param ast The function-like AST to get the number of parameters of.
- * @return Returns said number of parameters.
- *
- * @sa c_ast_params_count()
- * @sa c_capture_ast()
- * @sa #FOREACH_AST_LAMBDA_CAPTURE()
- */
-NODISCARD C_AST_H_INLINE
-size_t c_ast_captures_count( c_ast_t const *ast ) {
-  assert( ast->kind == K_LAMBDA );
-  return slist_len( &ast->lambda.capture_ast_list );
-}
-
-/**
  * Convenience function for getting function-like parameters.
  *
  * @param ast The function-like AST to get the parameters of.
  * @return Returns a pointer to the first parameter or NULL if none.
  *
- * @sa c_ast_params_count()
  * @sa c_param_ast()
  * @sa #FOREACH_AST_FUNC_PARAM()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
@@ -666,24 +649,6 @@ NODISCARD C_AST_H_INLINE
 c_param_t const* c_ast_params( c_ast_t const *ast ) {
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
   return ast->func.param_ast_list.head;
-}
-
-/**
- * Convenience function for getting the number of function-like parameters.
- *
- * @param ast The function-like AST to get the number of parameters of.
- * @return Returns said number of parameters.
- *
- * @sa c_ast_captures_count()
- * @sa c_ast_params()
- * @sa c_param_ast()
- * @sa #FOREACH_AST_FUNC_PARAM()
- * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()
- */
-NODISCARD C_AST_H_INLINE
-size_t c_ast_params_count( c_ast_t const *ast ) {
-  assert( is_1_bit_only_in_set( ast->kind, K_ANY_FUNCTION_LIKE ) );
-  return slist_len( &ast->func.param_ast_list );
 }
 
 /**
@@ -730,7 +695,6 @@ c_ast_t* nonconst_c_ast_visit( c_ast_t *ast, c_ast_visit_dir_t dir,
  * @param capture A pointer to a \ref c_capture_t or NULL.
  * @return Returns a pointer to the AST or NULL if \a capture is NULL.
  *
- * @sa c_ast_captures_count()
  * @sa #FOREACH_AST_LAMBDA_CAPTURE()
  * @sa #FOREACH_AST_LAMBDA_CAPTURE_UNTIL()
  */
@@ -746,7 +710,6 @@ c_ast_t const* c_capture_ast( c_capture_t const *capture ) {
  * @return Returns a pointer to the AST or NULL if \a param is NULL.
  *
  * @sa c_ast_params()
- * @sa c_ast_params_count()
  * @sa c_capture_ast()
  * @sa #FOREACH_AST_FUNC_PARAM()
  * @sa #FOREACH_AST_FUNC_PARAM_UNTIL()

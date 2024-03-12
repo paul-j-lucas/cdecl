@@ -927,7 +927,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   if ( c_tid_is_any( ast->type.stids, TS_default | TS_delete ) ) {
     switch ( ast->kind ) {
       case K_CONSTRUCTOR:
-        switch ( c_ast_params_count( ast ) ) {
+        switch ( slist_len( &ast->ctor.param_ast_list ) ) {
           case 0:                     // C()
             break;
           case 1:                     // C(C const&)
@@ -960,8 +960,10 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
             //
             c_ast_t const *const ret_ast =
               c_ast_is_ref_to_tid_any( ast->oper.ret_ast, TB_ANY_CLASS );
-            if ( ret_ast == NULL || c_ast_params_count( ast ) != 1 )
+            if ( ret_ast == NULL ||
+                 slist_len( &ast->oper.param_ast_list ) != 1 ) {
               goto only_special;
+            }
             param_ast = c_ast_is_ref_to_tid_any( param_ast, TB_ANY_CLASS );
             if ( !c_ast_equal( param_ast, ret_ast ) )
               goto only_special;
@@ -1084,7 +1086,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
     return false;
   }
 
-  size_t const n_params = c_ast_params_count( ast );
+  size_t const n_params = slist_len( &ast->func.param_ast_list );
   c_param_t const *param = c_ast_params( ast );
   c_ast_t const *param_ast;
 
@@ -1416,7 +1418,7 @@ static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
     if ( c_sname_empty( &param_ast->sname ) )
       continue;
-    FOREACH_AST_FUNC_PARAM_UNTIL( prev_param, ast, param ) {
+    FOREACH_SLIST_NODE_UNTIL( prev_param, &ast->func.param_ast_list, param ) {
       c_ast_t const *const prev_param_ast = c_param_ast( prev_param );
       if ( c_sname_empty( &prev_param_ast->sname ) )
         continue;
@@ -1847,7 +1849,7 @@ static bool c_ast_check_op_params( c_ast_t const *ast ) {
   //
   // Ensure the operator has the required number of parameters.
   //
-  size_t const n_params = c_ast_params_count( ast );
+  size_t const n_params = slist_len( &ast->oper.param_ast_list );
   if ( n_params < params_min ) {
     if ( params_min == params_max ) {
 same: print_error( c_ast_params_loc( ast ),
@@ -2417,7 +2419,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   c_ast_t const *raw_param_ast = c_ast_untypedef( param_ast );
   c_ast_t const *ptr_to_ast = NULL;
 
-  size_t const n_params = c_ast_params_count( ast );
+  size_t const n_params = slist_len( &ast->udef_lit.param_ast_list );
   switch ( n_params ) {
     case 0:
       // the grammar requires at least one parameter

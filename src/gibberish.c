@@ -519,7 +519,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       FPUTS( other_token_c( "[" ), gib->fout );
       c_ast_list_gibberish( &ast->lambda.capture_ast_list, gib );
       FPUTS( other_token_c( "]" ), gib->fout );
-      if ( c_ast_params_count( ast ) > 0 ) {
+      if ( !slist_empty( &ast->lambda.param_ast_list ) ) {
         FPUTC( '(', gib->fout );
         c_ast_list_gibberish( &ast->lambda.param_ast_list, gib );
         FPUTC( ')', gib->fout );

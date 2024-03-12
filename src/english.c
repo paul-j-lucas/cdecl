@@ -333,7 +333,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       } // switch
 
       FPUTS( c_kind_name( ast->kind ), eng->fout );
-      if ( c_ast_params_count( ast ) > 0 ) {
+      if ( !slist_empty( &ast->func.param_ast_list ) ) {
         FPUTC( ' ', eng->fout );
         c_ast_func_params_english( ast, eng );
       }
@@ -382,11 +382,11 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       if ( !c_type_is_none( &ast->type ) )
         FPRINTF( eng->fout, "%s ", c_type_name_english( &ast->type ) );
       FPUTS( L_lambda, eng->fout );
-      if ( c_ast_captures_count( ast ) > 0 ) {
+      if ( !slist_empty( &ast->lambda.capture_ast_list ) ) {
         FPUTS( " capturing ", eng->fout );
         c_ast_lambda_captures_english( ast, eng->fout );
       }
-      if ( c_ast_params_count( ast ) > 0 ) {
+      if ( !slist_empty( &ast->lambda.param_ast_list ) ) {
         FPUTC( ' ', eng->fout );
         c_ast_func_params_english( ast, eng );
       }
