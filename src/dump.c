@@ -431,7 +431,7 @@ static void c_tid_dump_impl( c_tid_t tid, dump_state_t *dump ) {
 /**
  * Gets a string representation of \a tpid for printing.
  *
- * @param tpid The type part id to get the string representation of.
+ * @param tpid The type part ID to get the string representation of.
  * @return Returns a string representation of \a tpid.
  */
 NODISCARD

@@ -460,7 +460,7 @@ struct c_ast {
   c_type_t        type;                 ///< Type, if any.
   c_ast_t        *parent_ast;           ///< Parent AST node, if any.
   c_ast_t const  *param_of_ast;         ///< Parameter of this AST node, if any.
-  c_ast_id_t      unique_id;            ///< Unique id (starts at 1).
+  c_ast_id_t      unique_id;            ///< Unique ID (starts at 1).
   c_ast_id_t      dup_from_id;          ///< ID of AST duplicated from, if any.
 
   /**
