@@ -1,3 +1,7 @@
+2024-03-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c, util.c, util.h: s/check_strftime/STRFTIME/
+
 2024-03-12  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.h: Added DECL_UNUSED(c_ast_list_t) to c_udef_conv_ast.
