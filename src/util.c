@@ -159,16 +159,6 @@ char* check_strndup( char const *s, size_t n ) {
 # pragma GCC diagnostic ignored "-Wformat-nonliteral"
 #endif /* __GNUC__ */
 
-void check_strftime( char *buf, size_t buf_size, char const *format,
-                     struct tm const *tm ) {
-  assert( buf != NULL );
-  assert( format != NULL );
-  assert( tm != NULL );
-
-  size_t const raw_len = strftime( buf, buf_size, format, tm );
-  PERROR_EXIT_IF( format[0] != '\0' && raw_len == 0, EX_SOFTWARE );
-}
-
 void fatal_error( int status, char const *format, ... ) {
   // LCOV_EXCL_START
   assert( format != NULL );

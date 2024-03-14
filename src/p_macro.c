@@ -501,7 +501,7 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
 static char const* get___DATE___str( void ) {
   static char buf[ sizeof( "MMM DD YYYY" ) ];
   time_t const now = time( /*tloc=*/NULL );
-  check_strftime( buf, sizeof buf, "%b %e %Y", localtime( &now ) );
+  STRFTIME( buf, sizeof buf, "%b %e %Y", localtime( &now ) );
   return buf;
 }
 
@@ -517,7 +517,7 @@ static char const* get___DATE___str( void ) {
 static char const* get___TIME___str( void ) {
   static char buf[ sizeof( "hh:mm:ss" ) ];
   time_t const now = time( /*tloc=*/NULL );
-  check_strftime( buf, sizeof buf, "%H:%M:%S", localtime( &now ) );
+  STRFTIME( buf, sizeof buf, "%H:%M:%S", localtime( &now ) );
   return buf;
 }
 

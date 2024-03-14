@@ -854,6 +854,17 @@ _GL_INLINE_HEADER_BEGIN
 #define STRERROR()                strerror( errno )
 
 /**
+ * Calls **strftime**(3) and checks for failure.
+ *
+ * @param BUF The destination buffer to print into.
+ * @param SIZE The size of \a buf.
+ * @param FORMAT The `strftime()` style format string.
+ * @param TM A pointer to the time to format.
+ */
+#define STRFTIME(BUF,SIZE,FORMAT,TM) \
+  PERROR_EXIT_IF( strftime( (BUF), (SIZE), (FORMAT), (TM) ) == 0, EX_SOFTWARE )
+
+/**
  * Macro that "string-ifies" its argument, e.g., <code>%STRINGIFY(x)</code>
  * becomes `"x"`.
  *
@@ -1015,18 +1026,6 @@ char* check_strdup_suffix( char const *s, char const *suffix,
  */
 NODISCARD
 char* check_strdup_tolower( char const *s );
-
-/**
- * Calls **strftime**(3) and checks for failure.
- * If it fails, prints an error message and exits.
- *
- * @param buf The destination buffer to print into.
- * @param buf_size The size of \a buf.
- * @param format The `strftime()` style format string.
- * @param tm A pointer to the time to format.
- */
-void check_strftime( char *buf, size_t buf_size, char const *format,
-                     struct tm const *tm );
 
 /**
  * Calls **strndup**(3) and checks for failure.
