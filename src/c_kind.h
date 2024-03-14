@@ -142,7 +142,7 @@ enum c_ast_kind {
   K_ENUM                = (1u << 9),
 
   /**
-   * C or C++ pointer.
+   * Pointer.
    */
   K_POINTER             = (1u << 10),
 
