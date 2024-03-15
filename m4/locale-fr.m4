@@ -116,7 +116,7 @@ int main () {
                 if (LC_ALL=fr_FR.iso88591 LC_TIME= LC_CTYPE= ./conftest; exit) 2>/dev/null; then
                   gt_cv_locale_fr=fr_FR.iso88591
                 else
-                  # Test for the Solaris 7 locale name.
+                  # Test for the Solaris 10 locale name.
                   if (LC_ALL=fr LC_TIME= LC_CTYPE= ./conftest; exit) 2>/dev/null; then
                     gt_cv_locale_fr=fr
                   else
@@ -250,7 +250,7 @@ int main () {
                 if (LC_ALL=fr_FR.UTF-8 LC_TIME= LC_CTYPE= ./conftest; exit) 2>/dev/null; then
                   gt_cv_locale_fr_utf8=fr_FR.UTF-8
                 else
-                  # Test for the Solaris 7 locale name.
+                  # Test for the Solaris 10 locale name.
                   if (LC_ALL=fr.UTF-8 LC_TIME= LC_CTYPE= ./conftest; exit) 2>/dev/null; then
                     gt_cv_locale_fr_utf8=fr.UTF-8
                   else
