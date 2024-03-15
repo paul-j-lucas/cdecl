@@ -243,6 +243,8 @@ typedef struct c_builtin_ast      c_builtin_ast_t;
  * C++ lambda capture.
  *
  * @remarks The \ref slist_node::data "data" is the capture's AST.
+ *
+ * @sa c_capture_ast()
  */
 typedef slist_node_t              c_capture_t;
 
@@ -277,6 +279,8 @@ typedef struct c_operator_ast     c_operator_ast_t;
  * C/C++ function-like parameter.
  *
  * @remarks The \ref slist_node::data "data" is the parameter's AST.
+ *
+ * @sa c_param_ast()
  */
 typedef slist_node_t              c_param_t;
 
@@ -369,6 +373,9 @@ struct c_loc {
  * Data for the `alignas` specifier.
  */
 struct c_alignas {
+  /**
+   * Additional data for each \ref kind.
+   */
   union {
     unsigned        bytes;              ///< Aligned to this number of bytes.
     c_ast_t        *type_ast;           ///< Aligned the same as this type.
