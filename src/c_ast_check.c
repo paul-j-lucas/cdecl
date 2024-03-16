@@ -3077,8 +3077,9 @@ static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
 }
 
 /**
- * Checks whether \a name is reserved in any language.  A name is reserved if
- * it matches any of these patterns:
+ * Checks whether \a name is reserved in any language.
+ *
+ * @remarks A name is reserved if it matches any of these patterns:
  *
  *      _*          // C: external only; C++: global namespace only.
  *      _[A-Z_]*
