@@ -2251,7 +2251,10 @@ static bool c_ast_check_reference( c_ast_t const *ast,
   if ( tdef_ast == NULL && c_tid_is_any( ast->type.stids, TS_CV ) ) {
     c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
     error_kind_not_tid( ast, qual_stids, LANG_NONE, "" );
-    print_hint( "reference to %s", c_tid_name_error( qual_stids ) );
+    if ( is_english_to_gibberish() )
+      print_hint( "\"reference to %s\"", c_tid_name_error( qual_stids ) );
+    else
+      print_hint( "\"%s&\"", c_tid_name_error( qual_stids ) );
     return false;
   }
 
