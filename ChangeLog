@@ -1,3 +1,8 @@
+2024-03-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, explain-error.out: For const &, now printing hint in C++ if
+     deciphering C++.
+
 2024-03-14  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c, util.c, util.h: s/check_strftime/STRFTIME/
