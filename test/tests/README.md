@@ -3,144 +3,16 @@ Test Names
 
 Test files are as follows:
 
-+ `ac-*.exp`           = Auto-completion test.
-+ `cast_*`             = A cast test.
-+ `cdecl-*`            = A command-line option test.
-+ `cl-*`               = A command-line test.
-+ `declare_*`          = A `declare` test.
-+ `explain_*`          = An `explain` test.
-+ `*-ec`               = An "east const" test.
-+ `file-*`             = A file test.
-+ `help-*`             = A help test.
-+ `include-*`          = An `include` test.
-+ `*-`_lang_`*`        = A test using _lang_ explicitly.
-+ `reinterpret_cast_*` = A `reinterpret_cast` test.
-+ `set_*`              = A `set` test.
-+ `static_cast_*`      = A `static_cast` test.
-+ `*typedef*`          = A `typedef` test.
-+ `using_*`            = A `using` test.
-+ `xec_*`              = An Embedded C test.
-+ `xupc_*`             = A Unified Parallel C test.
-
-Within each test, sequences of characters are used to denote a C/C++
-declaration as it is in English.
-The characters are:
-
-+ `+` = C++ scope
-  (`+` = `S::x`; `2+` = `S::T::x`, etc.)
-+ `++` = English scope
-  (`++` = `of scope S`; `2++` = `of scope S of scope T`, etc.)
-+ `0` = pure virtual
-+ `a` = array (following digits specify array size)
-+ `a_cd_` = `carries_dependency`
-+ `a_dep_` = `deprecated`
-+ `a_mu_` = `maybe_unused`
-+ `a_nd_` = `nodiscard`
-+ `a_nua_` = `no_unique_address`
-+ `a_re_` = `reproducible`
-+ `a_us_` = `unsequenced`
-+ `a_using_` = attribute with `using`
-+ `al` = `_Alignas` or `alignas`
-+ `an` = array with name for size, e.g., `a[n]`
-+ `at` = `_Atomic` or `atomic`
-+ `au` = `auto`
-+ `b` = `bool`
-+ `bi` = `_BitInt` (following digits specify number of bits)
-+ `bl` = block (Apple extension)
-+ `c` = `char`, `class`, or `const`
-+ `c8` = `char8_t`
-+ `c16` = `char16_t`
-+ `c32` = `char32_t`
-+ `co` = copy (for lambda capture)
-+ `ctor` = constructor
-+ `cx` = `_Complex`
-+ `d` = `double`
-+ `dtor` = destructor
-+ `ec` = `extern "C"`
-+ `ef` = `enum` with fixed type (that follows)
-+ `el` = `...` (ellipsis)
-+ `en` = `enum`
-+ `ep` = `explicit`
-+ `et` = `extern`
-+ `ex` = `export`
-+ `f` = `friend` or function
-+ `gat` = GNU C `__attribute__`
-+ `gau` = GNU C `__auto_type`
-+ `gi` = GNU C `__inline__`
-+ `grt` = GNU C `__restrict__`
-+ `h` = `short`
-+ `i` = `inline` or `int`
-+ `ii` = Pre-C99 implicit `int`
-+ `im` = `_Imaginary` or `imaginary`
-+ `k` = `struct`
-+ `kr` = untyped K&R C function argument
-+ `l` = `long`
-+ `la` = lambda
-+ `m` = member of class or `mutable`
-+ `mo` = member operator
-+ `mscc` = Microsoft C `__clrcall`
-+ `mscd` = Microsoft C `__cdecl`
-+ `msds` = Microsoft C `__declspec`
-+ `msfc` = Microsoft C `__fastcall`
-+ `mssc` = Microsoft C `__stdcall`
-+ `mstc` = Microsoft C `__thiscall`
-+ `msvc` = Microsoft C `__vectorcall`
-+ `mswa` = Microsoft C `WINAPI`
-+ `n` = name, nested, or `union`
-+ `ne` = `non-empty`
-+ `nm` = non-member
-+ `nr` = `noreturn`
-+ `ns` = `namespace`
-+ `nt` = non-throwing
-+ `nx` = `noexcept`
-+ `o` = `operator`
-+ `ov` = `override`
-+ `p` = pointer
-+ `r` = reference
-+ `rg` = `register`
-+ `rr` = rvalue reference
-+ `rt` = `restrict`
-+ `si` = `signed`
-+ `st` = `static`
-+ `t` = unknown type
-+ `td` = `typedef`
-+ `th` = `throw`
-+ `tl` = `thread_local`
-+ `tn` = `typename`
-+ `ts` = `this`
-+ `u` = `unsigned`
-+ `udc` = user-defined conversion
-+ `udl` = user-defined literal
-+ `v` = `virtual`, `void`, or `volatile`
-+ `w` = bit-field width (following digits specify width)
-+ `wt` = `wchar_t`
-+ `xi` = `constinit`
-+ `xv` = `consteval`
-+ `xx` = `constexpr`
-+ `y` = `final`
-+ `z` = `size_t`
-+ `zz` = `ssize_t`
-
-For an Embedded C test, some characters change meaning:
-
-+ `a` = `_Accum`
-+ `r` = `_Fract`
-+ `t` = `_Sat`
-
-For a Unified Parallel C test, some characters change meaning:
-
-+ `r` = `relaxed`
-+ `d` = `shared`
-+ `dq` = `shared` followed by layout qualifier
-  (followed by digits or `+` for `*`)
-+ `t` = `strict`
-
-Characters may be preceded by a count,
-e.g., `2i` for 2 consecutive `int`.
-
-A function's return type is separated from its arguments by `_`
-using the traditional "leading" syntax
-or `__` using the C++11 "trailing" syntax.
++ `ac-*.exp`  = Auto-completion test.
++ `cast_*`    = A cast test.
++ `cdecl-*`   = A command-line option test.
++ `cl-*`      = A command-line test.
++ `declare*`  = A `declare` test.
++ `explain*`  = An `explain` test.
++ `file-*`    = A file test.
++ `help-*`    = A help test.
++ `include-*` = An `include` test.
++ `set_*`     = A `set` test.
 
 Note on Test Names
 ------------------
@@ -192,12 +64,24 @@ and those values being equal is a prerequisite for the test passing.
 A test is typically like:
 
     EXPECTED_EXIT=0
-    cdecl -xc++ <<END
+    cdecl -bO -xc++ <<END
     explain int s::x
     END
 
 that is **cdecl** is invoked
 along with any options necessary for the test
 followed by a shell "here" document.
+The options:
+
++ _Must_ include `-b`
+  to disable buffering on stdout
+  so output from stdout and stderr
+  is printed in the correct order.
+
++ _Should_ include `-O`
+  to echo the command
+  before its corresponding output
+  to aid debugging.
+
 Use of "here" documents is preferred
 since shell metacharacters don't have to be quoted.
