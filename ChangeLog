@@ -1,3 +1,8 @@
+2024-03-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, parser.y, expand.out, expand.test: No longer looking-up and
+     returning macro names as macro name tokens.
+
 2024-03-16  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, explain-error.out: For const &, now printing hint in C++ if
