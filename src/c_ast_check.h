@@ -49,6 +49,8 @@
  *
  * @param ast The AST to check.
  * @return Returns `true` only if all checks passed.
+ *
+ * @sa c_ast_list_check()
  */
 NODISCARD
 bool c_ast_check( c_ast_t const *ast );
