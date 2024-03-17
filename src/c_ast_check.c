@@ -3120,19 +3120,20 @@ bool c_ast_check( c_ast_t const *ast ) {
 bool c_ast_list_check( c_ast_list_t const *ast_list ) {
   assert( ast_list != NULL );
 
-  size_t const ast_count = slist_len( ast_list );
-  if ( ast_count == 0 )
+  if ( slist_empty( ast_list ) )
     return true;                        // LCOV_EXCL_LINE
 
-  c_ast_t const *const first_ast = slist_front( ast_list );
-  if ( first_ast->type.btids == TB_auto && ast_count > 1 &&
-       !OPT_LANG_IS( auto_TYPE_MULTI_DECL ) ) {
-    print_error( &first_ast->loc,
-      "\"%s\" with multiple declarators not supported%s\n",
-      c_tid_name_error( TB_auto ),
-      C_LANG_WHICH( auto_TYPE_MULTI_DECL )
-    );
-    return false;
+  if ( slist_len( ast_list ) > 1 ) {
+    c_ast_t const *const first_ast = slist_front( ast_list );
+    if ( first_ast->type.btids == TB_auto &&
+        !OPT_LANG_IS( auto_TYPE_MULTI_DECL ) ) {
+      print_error( &first_ast->loc,
+        "\"%s\" with multiple declarators not supported%s\n",
+        c_tid_name_error( TB_auto ),
+        C_LANG_WHICH( auto_TYPE_MULTI_DECL )
+      );
+      return false;
+    }
   }
 
   c_ast_t const *prev_ast = NULL;
