@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "February 23, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "March 17, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -508,7 +508,7 @@ for command-line options
 and exits.
 .TP
 .BR \-\-infer-command " | " \-I
-Try to infer a command
+Tries to infer a command
 when an input line doesn't start with any.
 If an input line starts with a:
 .RS 4
@@ -575,7 +575,7 @@ etc.
 .BR "PREDEFINED TYPES" .)
 .TP
 .BR \-\-no-using " | " \-u
-Always declare types with \f(CWtypedef\fP
+Always declares types with \f(CWtypedef\fP
 rather than \f(CWusing\fP
 in C++11 and later.
 .TP
@@ -1131,7 +1131,8 @@ having that name.
 For
 .BR predefined ,
 shows only predefined macros
-that are valid in the current language.
+that are valid in the current language
+or later.
 .IP \(bu
 For
 .BR user ,
