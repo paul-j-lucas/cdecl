@@ -1003,18 +1003,9 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   }
                 }
 
-                //
-                // 2. See if it's a macro.
-                //
-                p_macro_t const *const macro = p_macro_find( lexer_token );
-                if ( macro != NULL ) {
-                  yylval.macro = macro;
-                  return Y_P_MACRO_NAME;
-                }
-
                 if ( (lexer_find & LEXER_FIND_TYPES) != 0 ) {
                   //
-                  // 3. See if it's a typedef'd type.
+                  // 2. See if it's a typedef'd type.
                   //
                   SNAME_VAR_INIT_NAME( sname, lexer_token );
                   c_typedef_t const *const tdef =
@@ -1028,7 +1019,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
         find_c_keyword:
                 if ( (lexer_find & LEXER_FIND_C_KEYWORDS) != 0 ) {
                   //
-                  // 4. See if it's a C/C++ keyword.
+                  // 3. See if it's a C/C++ keyword.
                   //
                   c_keyword_t const *const ck = c_keyword_find(
                     lexer_token, opt_lang_id, lexer_keyword_ctx
@@ -1040,7 +1031,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 }
 
                 //
-                // 5. Otherwise, it's just an ordinary name.
+                // 4. Otherwise, it's just an ordinary name.
                 //
                 yylval.name = check_strdup( lexer_token );
                 return Y_NAME;

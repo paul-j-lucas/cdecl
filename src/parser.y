@@ -1225,7 +1225,6 @@ static void yyerror( char const *msg ) {
   unsigned            flags;        // multipurpose bitwise flags
   char const         *literal;      // token L_* literal (for new-style casts)
   int                 int_val;      // signed integer value
-  p_macro_t const    *macro;        // preprocessor macro
   char               *name;         // identifier name, cf. sname
   c_func_member_t     member;       // member, non-member, or unspecified
   c_op_id_t           op_id;        // overloaded operator ID
@@ -1428,7 +1427,6 @@ static void yyerror( char const *msg ) {
                     // C Preprocessor
 %token              /*  stringify */      '#'
 %token              Y_P_CONCAT            "##"
-%token  <macro>     Y_P_MACRO_NAME;
 %token              Y_P_SPACE         //  whitespace
 %token              Y_P_define
 %token              Y_P_elif
@@ -3434,18 +3432,6 @@ show_command
       free( $glob_name );
     }
 
-  | Y_show Y_P_MACRO_NAME[macro]
-    {
-      if ( !show_macro( $macro, stdout ) ) {
-        c_lang_id_t const lang_ids = (*$macro->dyn_fn)( /*ptoken=*/NULL );
-        print_error( &@macro,
-          "\"%s\" not supported%s\n",
-          $macro->name, c_lang_which( lang_ids )
-        );
-        PARSE_ABORT();
-      }
-    }
-
   | Y_show show_types_opt[show] Y_macros
     {
       show_macros( $show, stdout );
@@ -3453,11 +3439,30 @@ show_command
 
   | Y_show Y_NAME[name]
     {
-      print_error( &@name, "\"%s\": no such type or macro defined", $name );
-      print_suggestions( DYM_C_MACROS | DYM_C_TYPES, $name );
-      EPUTC( '\n' );
+      bool ok = false;
+
+      //
+      // Check to see if $name is a macro here rather than in the lexer since
+      // this is the only place in the cdecl grammar where a name can be a
+      // macro since cdecl doesn't support using macros everywhere.
+      //
+      p_macro_t const *const macro = p_macro_find( $name );
+      if ( macro == NULL ) {
+        print_error( &@name, "\"%s\": no such type or macro defined", $name );
+        print_suggestions( DYM_C_MACROS | DYM_C_TYPES, $name );
+        EPUTC( '\n' );
+      }
+      else if ( !(ok = show_macro( macro, stdout )) ) {
+        c_lang_id_t const lang_ids = (*macro->dyn_fn)( /*ptoken=*/NULL );
+        print_error( &@name,
+          "\"%s\" not supported%s\n",
+          $name, c_lang_which( lang_ids )
+        );
+      }
+
       free( $name );
-      PARSE_ABORT();
+      if ( !ok )
+        PARSE_ABORT();
     }
 
   | Y_show error

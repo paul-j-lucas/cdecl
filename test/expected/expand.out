@@ -997,3 +997,9 @@ __cplusplus => 202002L
 c++decl> set c++23
 c++decl> expand __cplusplus
 __cplusplus => 202302L
+c++decl> ////////// Miscellaneous //////////////////////////////////////////////////////
+c++decl> // Test that macro names are treated as ordinary names in non-preprocessor
+c++decl> // contexts since cdecl doesn't support the use of macro names everywhere.
+c++decl> #define ARRAY_MAX                 5
+c++decl> explain int a[ ARRAY_MAX ]
+declare a as array ARRAY_MAX of integer

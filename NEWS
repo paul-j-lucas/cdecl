@@ -29,6 +29,18 @@ updated to be the current language and newer.  For example, previously:
 Now the second `typedef` would update `Int` to make it available in C17 and
 newer so the second `show` would show it.
 
+** Using macros elsewhere
+Previously, attempting to use a macro where names are generally allowed would
+result in an error like:
+
+    cdecl> #define N 5
+    cdecl> explain int a[N]
+                         ^
+    15: syntax error: "N": ']' expected
+
+because "N" was returned as a macro token by the lexer.  Now, the lexer ignores
+the fact that a name might be a macro.
+
 
 * Changes in Cdecl 16.2.2
 
