@@ -53,6 +53,7 @@ explain int S::x : 3
 explain int &*x
 explain int &x
 explain int x, *x
+explain int x, y, *x
 explain long bool x
 explain long char x
 explain long char16_t x

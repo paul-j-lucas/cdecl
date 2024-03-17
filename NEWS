@@ -29,6 +29,17 @@ updated to be the current language and newer.  For example, previously:
 Now the second `typedef` would update `Int` to make it available in C17 and
 newer so the second `show` would show it.
 
+** Multiple conflicting declarations
+Now exhaustively checking multiple declarations for conflicts in C.
+Previously, multiple declarations of a variable or function with conflicting
+types that was separated by a different variable or function wasn't caught:
+
+    int x, x;                     // OK in C
+    int x, *x;                    // error (different types)
+    int x, y, *x;                 // error, but wasn't caught
+
+Now it is.
+
 ** Using macros elsewhere
 Previously, attempting to use a macro where names are generally allowed would
 result in an error like:

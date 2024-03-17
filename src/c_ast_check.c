@@ -808,6 +808,23 @@ static bool c_ast_check_errors( c_ast_t const *ast ) {
 }
 
 /**
+ * Helper function for c_ast_list_check() that checks whether \a ast should be
+ * further checked for multiple conflicting declarations, e.g.:
+ *
+ *      int j, *j;                      // error (different types)
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast should be further checked for multiple
+ * conflicting declarations.
+ */
+NODISCARD
+static bool c_ast_check_for_multi_decl( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  return  (ast->kind & (K_ANY_OBJECT | K_FUNCTION | K_OPERATOR)) != 0 &&
+          !c_sname_empty( &ast->sname );
+}
+
+/**
  * Checks a function-like AST for errors.
  *
  * @param ast The function-like AST to check.
@@ -3136,9 +3153,8 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
     }
   }
 
-  c_ast_t const *prev_ast = NULL;
-  FOREACH_SLIST_NODE( node, ast_list ) {
-    c_ast_t const *const ast = node->data;
+  FOREACH_SLIST_NODE( ast_node, ast_list ) {
+    c_ast_t const *const ast = ast_node->data;
     //
     // Ensure that a name is not used more than once in the same declaration in
     // C++ or with different types in C.  (In C, more than once with the same
@@ -3147,31 +3163,32 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
     //      int i, i;                   // OK in C (same type); error in C++
     //      int j, *j;                  // error (different types)
     //
-    bool const check_multi_decl =
-      (ast->kind & (K_ANY_OBJECT | K_FUNCTION | K_OPERATOR)) != 0 &&
-      !c_sname_empty( &ast->sname );
-    if ( check_multi_decl && prev_ast != NULL &&
-         c_sname_cmp( &ast->sname, &prev_ast->sname ) == 0 ) {
-      if ( !OPT_LANG_IS( TENTATIVE_DEFS ) ) {
-        print_error( &ast->loc,
-          "\"%s\": redefinition\n",
-          c_sname_full_name( &ast->sname )
-        );
-        return false;
-      }
-      if ( !c_ast_equal( ast, prev_ast ) ) {
-        print_error( &ast->loc,
-          "\"%s\": redefinition with different type\n",
-          c_sname_full_name( &ast->sname )
-        );
-        return false;
-      }
+    if ( c_ast_check_for_multi_decl( ast ) ) {
+      FOREACH_SLIST_NODE_UNTIL( prev_ast_node, ast_list, ast_node ) {
+        c_ast_t const *const prev_ast = prev_ast_node->data;
+        if ( !c_ast_check_for_multi_decl( prev_ast ) )
+          continue;
+        if ( c_sname_cmp( &ast->sname, &prev_ast->sname ) != 0 )
+          continue;
+        if ( !OPT_LANG_IS( TENTATIVE_DEFS ) ) {
+          print_error( &ast->loc,
+            "\"%s\": redefinition\n",
+            c_sname_full_name( &ast->sname )
+          );
+          return false;
+        }
+        if ( !c_ast_equal( ast, prev_ast ) ) {
+          print_error( &ast->loc,
+            "\"%s\": redefinition with different type\n",
+            c_sname_full_name( &ast->sname )
+          );
+          return false;
+        }
+      } // for
     }
 
     if ( !c_ast_check( ast ) )
       return false;
-    if ( check_multi_decl )
-      prev_ast = ast;
   } // for
 
   return true;

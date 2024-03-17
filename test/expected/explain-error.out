@@ -141,6 +141,9 @@ cdecl> explain int &x
 cdecl> explain int x, *x
                       ^
 16: error: "x": redefinition with different type
+cdecl> explain int x, y, *x
+                         ^
+19: error: "x": redefinition with different type
 cdecl> explain long bool x
                ^
 9: error: "long bool" is illegal for built-in type
