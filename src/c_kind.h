@@ -82,16 +82,22 @@ enum c_ast_kind {
 
   /**
    * Built-in type, e.g., `void`, `char`, `int`, etc.
+   *
+   * @sa c_builtin_ast
    */
   K_BUILTIN             = (1u << 1),
 
   /**
    * C++ lambda capture.
+   *
+   * @sa c_capture_ast
    */
   K_CAPTURE             = (1u << 2),
 
   /**
    * A `class,` `struct,` or `union`.
+   *
+   * @sa c_csu_ast
    */
   K_CLASS_STRUCT_UNION  = (1u << 3),
 
@@ -113,6 +119,8 @@ enum c_ast_kind {
 
   /**
    * A `typedef` type, e.g., `size_t`.
+   *
+   * @sa c_typedef_ast
    */
   K_TYPEDEF             = (1u << 5),
 
@@ -125,11 +133,15 @@ enum c_ast_kind {
 
   /**
    * Array.
+   *
+   * @sa c_array_ast
    */
   K_ARRAY               = (1u << 7),
 
   /**
    * Cast.
+   *
+   * @sa c_cast_ast
    */
   K_CAST                = (1u << 8),
 
@@ -138,26 +150,36 @@ enum c_ast_kind {
    *
    * @note This is a "parent" kind because `enum` in C23/C++11 and later can be
    * "of" a fixed type.
+   *
+   * @sa c_enum_ast
    */
   K_ENUM                = (1u << 9),
 
   /**
    * Pointer.
+   *
+   * @sa c_ptr_ref_ast
    */
   K_POINTER             = (1u << 10),
 
   /**
    * C++ pointer-to-member.
+   *
+   * @sa c_ptr_mbr_ast
    */
   K_POINTER_TO_MEMBER   = (1u << 11),
 
   /**
    * C++ reference.
+   *
+   * @sa c_ptr_ref_ast
    */
   K_REFERENCE           = (1u << 12),
 
   /**
    * C++ rvalue reference.
+   *
+   * @sa c_ptr_ref_ast
    */
   K_RVALUE_REFERENCE    = (1u << 13),
 
@@ -165,6 +187,8 @@ enum c_ast_kind {
 
   /**
    * C++ constructor.
+   *
+   * @sa c_constructor_ast
    */
   K_CONSTRUCTOR         = (1u << 14),
 
@@ -178,6 +202,7 @@ enum c_ast_kind {
   /**
    * Block (Apple extension).
    *
+   * @sa c_apple_block_ast
    * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
    * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
    */
@@ -185,26 +210,36 @@ enum c_ast_kind {
 
   /**
    * Function.
+   *
+   * @sa c_function_ast
    */
   K_FUNCTION            = (1u << 17),
 
   /**
    * C++ lambda.
+   *
+   * @sa c_lambda_ast
    */
   K_LAMBDA              = (1u << 18),
 
   /**
    * C++ overloaded operator.
+   *
+   * @sa c_operator_ast
    */
   K_OPERATOR            = (1u << 19),
 
   /**
    * C++ user-defined conversion operator.
+   *
+   * @sa c_udef_conv_ast
    */
   K_UDEF_CONV           = (1u << 20),
 
   /**
    * C++ user-defined literal.
+   *
+   * @sa c_udef_lit_ast
    */
   K_UDEF_LIT            = (1u << 21),
 };
