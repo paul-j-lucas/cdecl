@@ -1,3 +1,7 @@
+2024-03-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_kind.h: Added K_ANY_NAME.
+
 2024-03-17  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, explain-error.out, explain-error.test: Now exhaustively
