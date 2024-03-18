@@ -242,6 +242,12 @@ typedef enum c_ast_kind c_ast_kind_t;
                                   | K_UDEF_CONV | K_UDEF_LIT )
 
 /**
+ * Shorthand for any kind that has a name: #K_CLASS_STRUCT_UNION, #K_ENUM, or
+ * #K_POINTER_TO_MEMBER.
+ */
+#define K_ANY_NAME                ( K_ANY_ECSU | K_POINTER_TO_MEMBER )
+
+/**
  * Shorthand for any kind of "object" that can be the type of a variable or
  * constant, i.e., something to which `sizeof` can be applied _except_ pointers
  * or references: #K_ARRAY, #K_BUILTIN, #K_CLASS_STRUCT_UNION, #K_ENUM, or

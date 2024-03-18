@@ -3031,34 +3031,8 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   c_sname_warn( &ast->sname, &ast->loc );
-  switch ( ast->kind ) {
-    case K_CLASS_STRUCT_UNION:
-    case K_ENUM:
-    case K_POINTER_TO_MEMBER:
-      c_sname_warn( &ast->csu.csu_sname, &ast->loc );
-      break;
-    case K_APPLE_BLOCK:
-    case K_ARRAY:
-    case K_BUILTIN:
-    case K_CAPTURE:
-    case K_CAST:
-    case K_CONSTRUCTOR:
-    case K_DESTRUCTOR:
-    case K_FUNCTION:
-    case K_LAMBDA:
-    case K_NAME:
-    case K_OPERATOR:
-    case K_PLACEHOLDER:
-    case K_POINTER:
-    case K_REFERENCE:
-    case K_RVALUE_REFERENCE:
-    case K_TYPEDEF:
-    case K_UDEF_CONV:
-    case K_UDEF_LIT:
-    case K_VARIADIC:
-      // nothing to check
-      break;
-  } // switch
+  if ( (ast->kind & K_ANY_NAME) != 0 )
+    c_sname_warn( &ast->csu.csu_sname, &ast->loc );
 }
 
 /**
