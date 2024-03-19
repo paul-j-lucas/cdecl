@@ -1,3 +1,7 @@
+2024-03-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Folded DUMP_PROD into DUMP_START.
+
 2024-03-18  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, print.c, types.h: Eliminated PRI_c_loc_num_t; just use %d instead.
