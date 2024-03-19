@@ -660,7 +660,7 @@ void print_loc( c_loc_t const *loc ) {
     color_end( stderr, sgr_locus );
     EPUTC( ':' );
     color_start( stderr, sgr_locus );
-    EPRINTF( PRI_c_loc_num_t, loc->first_line + 1 );
+    EPRINTF( "%d", loc->first_line + 1 );
     color_end( stderr, sgr_locus );
     EPUTC( ',' );
     color_start( stderr, sgr_locus );

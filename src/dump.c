@@ -398,15 +398,15 @@ static void c_loc_dump( c_loc_t const *loc, FILE *fout ) {
   FPUTS( "{ ", fout );
 
   if ( loc->first_line > 1 )
-    FPRINTF( fout, "first_line: " PRI_c_loc_num_t ", ", loc->first_line );
+    FPRINTF( fout, "first_line: %d, ", loc->first_line );
 
-  FPRINTF( fout, "first_column: " PRI_c_loc_num_t, loc->first_column );
+  FPRINTF( fout, "first_column: %d", loc->first_column );
 
   if ( loc->last_line != loc->first_line )
-    FPRINTF( fout, ", last_line: " PRI_c_loc_num_t, loc->last_line );
+    FPRINTF( fout, ", last_line: %d", loc->last_line );
 
   if ( loc->last_column != loc->first_column )
-    FPRINTF( fout, ", last_column: " PRI_c_loc_num_t, loc->last_column );
+    FPRINTF( fout, ", last_column: %d", loc->last_column );
 
   FPUTS( " }", fout );
 }

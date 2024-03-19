@@ -48,11 +48,6 @@
  * @{
  */
 
-/**
- * Decimal print conversion specifier for \ref c_loc_num_t.
- */
-#define PRI_c_loc_num_t           "%u"
-
 ////////// enumerations ///////////////////////////////////////////////////////
 
 // Enumerations have to be declared before typedefs of them since ISO C doesn't
