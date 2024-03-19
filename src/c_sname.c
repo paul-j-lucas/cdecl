@@ -179,8 +179,10 @@ c_scope_data_t* c_scope_data_dup( c_scope_data_t const *src ) {
   if ( src == NULL )
     return NULL;                        // LCOV_EXCL_LINE
   c_scope_data_t *const dst = MALLOC( c_scope_data_t, 1 );
-  dst->name = check_strdup( src->name );
-  dst->type = src->type;
+  *dst = (c_scope_data_t){
+    .name = check_strdup( src->name ),
+    .type = src->type
+  };
   return dst;
 }
 
@@ -195,8 +197,7 @@ void c_sname_append_name( c_sname_t *sname, char const *name ) {
   assert( sname != NULL );
   assert( name != NULL );
   c_scope_data_t *const data = MALLOC( c_scope_data_t, 1 );
-  data->name = name;
-  data->type = T_NONE;
+  *data = (c_scope_data_t){ .name = name, .type = T_NONE };
   slist_push_back( sname, data );
 }
 

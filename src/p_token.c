@@ -264,9 +264,11 @@ p_token_t* p_token_dup( p_token_t const *token ) {
   if ( token == NULL )
     return NULL;                        // LCOV_EXCL_LINE
   p_token_t *const dup_token = MALLOC( p_token_t, 1 );
-  dup_token->kind = token->kind;
-  dup_token->loc = token->loc;
-  dup_token->is_substituted = token->is_substituted;
+  *dup_token = (p_token_t){
+    .kind = token->kind,
+    .loc = token->loc,
+    .is_substituted = token->is_substituted
+  };
   switch ( token->kind ) {
     case P_CHAR_LIT:
     case P_NUM_LIT:

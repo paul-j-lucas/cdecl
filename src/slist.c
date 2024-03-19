@@ -230,8 +230,7 @@ void* slist_pop_front( slist_t *list ) {
 void slist_push_back( slist_t *list, void *data ) {
   assert( list != NULL );
   slist_node_t *const new_tail = MALLOC( slist_node_t, 1 );
-  new_tail->data = data;
-  new_tail->next = NULL;
+  *new_tail = (slist_node_t){ .data = data };
 
   if ( list->head == NULL ) {
     assert( list->tail == NULL );
@@ -248,8 +247,7 @@ void slist_push_back( slist_t *list, void *data ) {
 void slist_push_front( slist_t *list, void *data ) {
   assert( list != NULL );
   slist_node_t *const new_head = MALLOC( slist_node_t, 1 );
-  new_head->data = data;
-  new_head->next = list->head;
+  *new_head = (slist_node_t){ .data = data, .next = list->head };
   list->head = new_head;
   if ( list->tail == NULL )
     list->tail = new_head;
