@@ -1,5 +1,6 @@
 2024-03-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * dump.c, print.c, types.h: Eliminated PRI_c_loc_num_t; just use %d instead.
    * c_sname.c, p_token.c, slist.c: Using compound literals more.
    * c_ast_check.c, c_kind.h: Added K_ANY_NAME.
 
