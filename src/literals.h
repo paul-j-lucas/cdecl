@@ -128,29 +128,29 @@ extern char const L_wide[];               // "wide character"
 extern char const L_width[];
 
 // C Preprocessor
-extern char const L_P_define[];
-extern char const L_P_elif[];
-extern char const L_P_else[];
-extern char const L_P_error[];
-extern char const L_P_if[];
-extern char const L_P_ifdef[];
-extern char const L_P_ifndef[];
-//     char const L_P_include[];          // handled within the lexer
-extern char const L_P_line[];
-extern char const L_P_undef[];
+extern char const PL_define[];
+extern char const PL_elif[];
+extern char const PL_else[];
+extern char const PL_error[];
+extern char const PL_if[];
+extern char const PL_ifdef[];
+extern char const PL_ifndef[];
+//     char const PL_include[];           // handled within the lexer
+extern char const PL_line[];
+extern char const PL_undef[];
 
-extern char const L_PP_define[];          // combined "#define"
-extern char const L_PP_include[];         // combined "#include"
-extern char const L_PP_undef[];           // combined "#undef"
+extern char const PL_P_define[];          // combined "#define"
+extern char const PL_P_include[];         // combined "#include"
+extern char const PL_P_undef[];           // combined "#undef"
 
 // C99 Preprocessor
-extern char const L_P_pragma[];
+extern char const PL_pragma[];
 
 // C23 Preprocessor
-extern char const L_P_elifdef[];
-extern char const L_P_elifndef[];
-extern char const L_P_embed[];
-extern char const L_P_warning[];
+extern char const PL_elifdef[];
+extern char const PL_elifndef[];
+extern char const PL_embed[];
+extern char const PL_warning[];
 
 
 // K&R
@@ -214,10 +214,12 @@ extern char const L_len[];                // synonym for "length"
 extern char const L_length[];             // for "variable [length] array"
 extern char const L_restrict[];
 extern char const L_restricted[];         // synonym for "restrict"
-extern char const L___VA_ARGS__[];
 extern char const L_var[];                // synonym for "variable"
 extern char const L_variable[];           // for "variable [length] array"
 extern char const L_wchar_t[];
+
+// C99 Preprocessor
+extern char const PL___VA_ARGS__[];
 
 // C11
 extern char const L__Alignas[];
@@ -320,8 +322,8 @@ extern char const L_thread_local[];
 extern char const L_deprecated[];
 extern char const L___deprecated__[];
 
-// C23 & C++20
-extern char const L___VA_OPT__[];
+// C23 & C++20 Preprocessor
+extern char const PL___VA_OPT__[];
 
 // C++17
 extern char const L_maybe_unused[];

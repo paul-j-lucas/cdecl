@@ -1414,29 +1414,29 @@ static void yyerror( char const *msg ) {
 
                     // C Preprocessor
 %token              /*  stringify */      '#'
-%token              Y_P_CONCAT            "##"
-%token              Y_P_SPACE         //  whitespace
-%token              Y_P_define
-%token              Y_P_elif
-%token              Y_P_else
-%token              Y_P_error
-%token              Y_P_if
-%token              Y_P_ifdef
-%token              Y_P_ifndef
-                 // Y_P_include       // handled within the lexer
-%token              Y_P_line
-%token              Y_P_undef
-%token              Y_P___VA_ARGS__
-%token              Y_P___VA_OPT__
+%token              PY_CONCAT             "##"
+%token              PY_SPACE          //  whitespace
+%token              PY_define
+%token              PY_elif
+%token              PY_else
+%token              PY_error
+%token              PY_if
+%token              PY_ifdef
+%token              PY_ifndef
+                 // PY_include        // handled within the lexer
+%token              PY_line
+%token              PY_undef
+%token              PY___VA_ARGS__
+%token              PY___VA_OPT__
 
                     // C99 preprocessor
-%token              Y_P_pragma
+%token              PY_pragma
 
                     // C23 preprocessor
-%token              Y_P_elifdef
-%token              Y_P_elifndef
-%token              Y_P_embed
-%token              Y_P_warning
+%token              PY_elifdef
+%token              PY_elifndef
+%token              PY_embed
+%token              PY_warning
 
                     // C89
 %token              Y_asm
@@ -2746,7 +2746,7 @@ p_arg_token
     {
       $$ = p_token_new_loc( P_NUM_LIT, &@num, check_strdup( lexer_token ) );
     }
-  | Y_P_SPACE[space]
+  | PY_SPACE[space]
     {
       $$ = p_token_new_loc( P_SPACE, &@space, /*literal=*/NULL );
     }
@@ -3079,64 +3079,64 @@ preprocessor_command
 /*| '#' include -- handled within the lexer */
   | '#' p_undef
 
-  | '#' Y_P_elif
+  | '#' PY_elif
     {
-      UNSUPPORTED( &@Y_P_elif, "\"#elif\"" );
+      UNSUPPORTED( &@PY_elif, "\"#elif\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_elifdef
+  | '#' PY_elifdef
     {
-      UNSUPPORTED( &@Y_P_elifdef, "\"#elifdef\"" );
+      UNSUPPORTED( &@PY_elifdef, "\"#elifdef\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_elifndef
+  | '#' PY_elifndef
     {
-      UNSUPPORTED( &@Y_P_elifndef, "\"#elifdef\"" );
+      UNSUPPORTED( &@PY_elifndef, "\"#elifdef\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_else
+  | '#' PY_else
     {
-      UNSUPPORTED( &@Y_P_else, "\"#else\"" );
+      UNSUPPORTED( &@PY_else, "\"#else\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_embed
+  | '#' PY_embed
     {
-      UNSUPPORTED( &@Y_P_embed, "\"#embed\"" );
+      UNSUPPORTED( &@PY_embed, "\"#embed\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_error
+  | '#' PY_error
     {
-      UNSUPPORTED( &@Y_P_error, "\"#error\"" );
+      UNSUPPORTED( &@PY_error, "\"#error\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_if
+  | '#' PY_if
     {
-      UNSUPPORTED( &@Y_P_if, "\"#if\"" );
+      UNSUPPORTED( &@PY_if, "\"#if\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_ifdef
+  | '#' PY_ifdef
     {
-      UNSUPPORTED( &@Y_P_ifdef, "\"#ifdef\"" );
+      UNSUPPORTED( &@PY_ifdef, "\"#ifdef\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_ifndef
+  | '#' PY_ifndef
     {
-      UNSUPPORTED( &@Y_P_ifndef, "\"#ifndef\"" );
+      UNSUPPORTED( &@PY_ifndef, "\"#ifndef\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_line
+  | '#' PY_line
     {
-      UNSUPPORTED( &@Y_P_line, "\"#line\"" );
+      UNSUPPORTED( &@PY_line, "\"#line\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_pragma
+  | '#' PY_pragma
     {
-      UNSUPPORTED( &@Y_P_pragma, "\"#pragma\"" );
+      UNSUPPORTED( &@PY_pragma, "\"#pragma\"" );
       PARSE_ABORT();
     }
-  | '#' Y_P_warning
+  | '#' PY_warning
     {
-      UNSUPPORTED( &@Y_P_warning, "\"#warning\"" );
+      UNSUPPORTED( &@PY_warning, "\"#warning\"" );
       PARSE_ABORT();
     }
   | '#' error
@@ -3146,7 +3146,7 @@ preprocessor_command
   ;
 
 p_define
-  : Y_P_define name_exp[name] p_paren_param_list_opt[param_list]
+  : PY_define name_exp[name] p_paren_param_list_opt[param_list]
     p_replace_list_opt[replace_list]
     {
       DUMP_START( "p_define",
@@ -3298,22 +3298,22 @@ p_replace_token
     {
       $$ = p_token_new_loc( P_PUNCTUATOR, &@1, "," );
     }
-  | Y_P_CONCAT
+  | PY_CONCAT
     {
       $$ = p_token_new_loc( P_CONCAT, &@1, /*literal=*/NULL );
     }
-  | Y_P___VA_ARGS__
+  | PY___VA_ARGS__
     {
       $$ = p_token_new_loc( P___VA_ARGS__, &@1, /*literal=*/NULL );
     }
-  | Y_P___VA_OPT__
+  | PY___VA_OPT__
     {
       $$ = p_token_new_loc( P___VA_OPT__, &@1, /*literal=*/NULL );
     }
   ;
 
 p_undef
-  : Y_P_undef name_exp[name]
+  : PY_undef name_exp[name]
     {
       PARSE_ASSERT( p_macro_undef( $name, &@name ) );
     }

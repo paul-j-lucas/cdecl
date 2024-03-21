@@ -430,7 +430,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       token = p_token_new_loc( P_STR_LIT, &yylloc, yylval.str_val );
       break;
 
-    case Y_P_CONCAT:
+    case PY_CONCAT:
       //
       // Given:
       //
@@ -443,10 +443,10 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       token = p_token_new_loc( P_PUNCTUATOR, &yylloc, "##" );
       break;
 
-    case Y_P_SPACE:                     // can't result from concatenation
+    case PY_SPACE:                      // can't result from concatenation
       UNEXPECTED_INT_VALUE( y_token_id );
 
-    case Y_P___VA_ARGS__:
+    case PY___VA_ARGS__:
       //
       // Given:
       //
@@ -458,12 +458,12 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       // token, but this new token is NOT the normal __VA_ARGS__.
       //
       token = p_token_new_loc(
-        P_IDENTIFIER, &yylloc, check_strdup( L___VA_ARGS__ )
+        P_IDENTIFIER, &yylloc, check_strdup( PL___VA_ARGS__ )
       );
       token->ident.ineligible = true;
       break;
 
-    case Y_P___VA_OPT__:
+    case PY___VA_OPT__:
       //
       // Given:
       //
@@ -475,7 +475,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       // but this new token is NOT the normal __VA_OPT__.
       //
       token = p_token_new_loc(
-        P_IDENTIFIER, &yylloc, check_strdup( L___VA_OPT__ )
+        P_IDENTIFIER, &yylloc, check_strdup( PL___VA_OPT__ )
       );
       token->ident.ineligible = true;
       break;
@@ -704,9 +704,9 @@ char const* p_token_str( p_token_t const *token ) {
       strbuf_puts_quoted( &sbuf, '"', token->lit.value );
       return sbuf.str;
     case P___VA_ARGS__:
-      return L___VA_ARGS__;
+      return PL___VA_ARGS__;
     case P___VA_OPT__:
-      return L___VA_OPT__;
+      return PL___VA_OPT__;
   } // switch
 
   UNEXPECTED_INT_VALUE( token->kind );

@@ -171,7 +171,7 @@ static char const* map_what( char const *what ) {
     // Special case: map plain "include" (the original cdecl "include" command)
     // to "#include".
     //
-    { L_include,          L_PP_include },
+    { L_include,          PL_P_include },
 
     //
     // Special case: there is no "q" command, only "quit". The lexer maps "q"
@@ -277,7 +277,7 @@ static void print_help_command( cdecl_command_t const *command ) {
   if ( command_is( command, L_define ) )
     print_h( "  define <name> as <english>\n" );
 
-  if ( command_is( command, L_PP_define ) )
+  if ( command_is( command, PL_P_define ) )
     print_h( "  #define <name>[([<pp-param> [, <pp-param>]*])] <pp-token>*\n" );
 
   if ( command_is( command, L_expand ) )
@@ -289,7 +289,7 @@ static void print_help_command( cdecl_command_t const *command ) {
   if ( command_is( command, L_help ) )
     print_h( "  { help | ? } [command[s] | <command> | english | options]\n" );
 
-  if ( command_is( command, L_PP_include ) )
+  if ( command_is( command, PL_P_include ) )
     print_h( "  [#]include \"<path>\"\n" );
 
   if ( command_is( command, L_set ) )
@@ -327,7 +327,7 @@ static void print_help_command( cdecl_command_t const *command ) {
     print_h( "\n" );
   }
 
-  if ( command_is( command, L_PP_undef ) )
+  if ( command_is( command, PL_P_undef ) )
     print_h( "  #undef <name>\n" );
 
   if ( OPT_LANG_IS( using_DECLS ) && command_is( command, L_using ) )
@@ -350,14 +350,14 @@ static void print_help_command( cdecl_command_t const *command ) {
     print_help_name();
   }
 
-  if ( command_is( command, L_PP_define ) ) {
+  if ( command_is( command, PL_P_define ) ) {
     print_h( "pp-param: a macro parameter <name>" );
     if ( OPT_LANG_IS( VARIADIC_MACROS ) )
       print_h( " or ..." );
     print_h( "\n" );
   }
 
-  if ( command_is_any( command, L_PP_define, L_expand, NULL ) )
+  if ( command_is_any( command, PL_P_define, L_expand, NULL ) )
     print_h( "pp-token: a preprocessor token\n" );
 
   if ( command == NULL && OPT_LANG_IS( SCOPED_NAMES ) ) {
