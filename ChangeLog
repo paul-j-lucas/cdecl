@@ -1,5 +1,6 @@
 2024-03-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Eliminated extra "if ( opt_cdecl_debug ... )" check.
    * parser.y: Folded DUMP_PROD into DUMP_START.
 
 2024-03-18  Paul J. Lucas <paul@lucasmail.org>
