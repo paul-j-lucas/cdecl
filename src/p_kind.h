@@ -58,13 +58,13 @@ enum p_token_kind {
   /// This pseudo-token is used when a macro parameter's argument has no
   /// tokens.  This is used by `#` and `##`:
   ///
-  ///     #define Q2(A,B)         A = # B
-  ///     expand Q2(x,)
+  ///     cdecl> #define Q2(A,B)        A = # B
+  ///     cdecl> expand Q2(x,)
   ///     Q2(x,) => x = # {PLACEMARKER}
   ///     Q2(x,) => x = ""
   ///
-  ///     #define NAME2(A,B)      A ## B
-  ///     expand NAME2(,y)
+  ///     cdecl> #define NAME2(A,B)     A ## B
+  ///     cdecl> expand NAME2(,y)
   ///     NAME2(, y) => {PLACEMARKER} ## y
   ///     NAME2(, y) => y
   ///
