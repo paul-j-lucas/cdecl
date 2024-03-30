@@ -195,7 +195,7 @@ typedef struct include_file_info include_file_info_t;
 static char const lexer_token_init_buf; ///< So lexer_token is never NULL.
 
 /// @cond DOXYGEN_IGNORE
-/// Otherwise Doxygen generates two entries for each option.
+/// Otherwise Doxygen generates two entries.
 
 // extern variables
 lexer_find_kind_t lexer_find = LEXER_FIND_ANY;

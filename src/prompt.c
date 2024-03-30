@@ -77,7 +77,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /// @cond DOXYGEN_IGNORE
-/// Otherwise Doxygen generates two entries for each option.
+/// Otherwise Doxygen generates two entries.
 
 // extern variable definitions
 char const         *cdecl_prompt[2];

@@ -69,7 +69,7 @@
  */
 
 /// @cond DOXYGEN_IGNORE
-/// Otherwise Doxygen generates two entries for each option.
+/// Otherwise Doxygen generates two entries.
 
 // extern constants
 c_type_t const T_NONE             = { TB_NONE,      TS_NONE,    TA_NONE };
