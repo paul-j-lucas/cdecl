@@ -169,7 +169,9 @@
    /* Work around GCC bug 91450.  */
 #  define _GL_INT_MULTIPLY_WRAPV(a, b, r) \
     ((!_GL_SIGNED_TYPE_OR_EXPR (*(r)) && _GL_EXPR_SIGNED (a) && _GL_EXPR_SIGNED (b) \
-      && _GL_INT_MULTIPLY_RANGE_OVERFLOW (a, b, 0, (__typeof__ (*(r))) -1)) \
+      && _GL_INT_MULTIPLY_RANGE_OVERFLOW (a, b, \
+                                          (__typeof__ (*(r))) 0, \
+                                          (__typeof__ (*(r))) -1)) \
      ? ((void) __builtin_mul_overflow (a, b, r), 1) \
      : __builtin_mul_overflow (a, b, r))
 # endif
