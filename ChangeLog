@@ -276,9 +276,6 @@
      feature.
    * red_black_test.c: More red-black tree tests.
    * Doxyfile: Added red_black_test.c, slist_test.c to EXCLUDE.
-   * autocomplete.c, autocomplete.h, dump.c, dump.h, english.c, english.h,
-     gibberish.c, gibberish.h, print.c, print.h, show.c, show.h, util.h:
-     Renaming.
    * print.c: Not printing ':' and ',' in color in print_loc().
    * strbuf.c, util.c, util.h: Eliminated TYPE parameter from REALLOC().
    * util.c: s/char*/char/ for REALLOC().
@@ -348,7 +345,6 @@
    * parser.y: Added IGNORING() and UNSUPPORTED().
    * parser.y: s/IS_UNSUPPORTED/!IS_SUPPORTED/
    * parser.y: Added "(ignoring)" for consistency.
-   * parser.y: Renaming.
 
 2023-12-30  Paul J. Lucas <paul@lucasmail.org>
 
@@ -378,9 +374,6 @@
    * parser.y: Eliminated cast_literal.
    * c_ast_check.c: Eliminated unused variadic_ast.
    * print.c: Removed `if` before subtracting print_params.inserted_len.
-   * c_keyword.c, c_keyword.h, c_typedef.c, c_typedef.h, cdecl.c,
-     cdecl_keyword.c, cdecl_keyword.h, cli_options.c, cli_options.h, color.c,
-     color.h: Renaming.
    * cdecl.1: Removed extra .RE.
 
 2023-12-27  Paul J. Lucas <paul@lucasmail.org>
@@ -644,13 +637,6 @@
    * c_ast_check.c, c_ast_util.c, c_lang.c, english.c, gibberish.c: Eliminated
      `default` for `switch` on `c_kind_t` in most cases.
 
-2023-10-16  Paul J. Lucas <paul@lucasmail.org>
-
-   * c_ast_check.c, c_ast_util.c, c_ast_util.h, c_operator.c, c_operator.h,
-     c_type.h, dump.c, english.c, gibberish.c, gibberish.h, parser.y, types.h,
-     debug.out: Renaming: now more consistent about using "op" rather than
-     "oper".
-
 2023-10-09  Paul J. Lucas <paul@lucasmail.org>
 
    * c_lang.c, c_lang.h, gibberish.c: Eliminated c_lang_is_c() and
@@ -702,7 +688,6 @@
    * c_ast_check.c: Simplified.
    * c_ast_check.c, c_ast_util.c, c_ast_util.h: Factored out
      c_ast_oper_params_min_max().
-   * c_ast_check.c: Renaming.
    * Doxyfile, configure.ac, c_typedef.c, cli_options.c, help.c, options.h,
      set_options.c: Added ENABLE_BISON_DEBUG as a synonym for YYDEBUG.
    * options.c: Added set_all_or_none().
@@ -926,7 +911,6 @@
    * parser.y: Eliminated DUMP_COMMA.
    * cli_options.c: s/usage()/print_usage()/, s/version()/print_version()/
    * c_lang.h, c_type.c, cdecl_keyword.c: s/LANG_BOOL_TYPE/LANG_BOOLEAN/
-   * c_ast_check.c, c_lang.h, help.c, parser.y: Renaming.
    * c_lang.h, cdecl_keyword.c: s/LANG_USER_DEF_LITERALS/LANG_USER_DEF_LITS/
    * c_lang.c, c_lang.h: Eliminated LANG_C_MASK and LANG_CPP_MASK.
    * src/Makefile.am, c_ast_check.c, c_ast_util.h, c_sname.c, c_type.c,
@@ -1369,7 +1353,6 @@
 
 2023-08-04  Paul J. Lucas <paul@lucasmail.org>
 
-   * parser.y: Renaming.
    * util.c: Using is_ident_first().
    * parser.y: Moved print_is_a_keyword() inside `if`.
 
@@ -1402,7 +1385,6 @@
 
 2023-07-21  Paul J. Lucas <paul@lucasmail.org>
 
-   * autocomplete.c: Renaming.
    * autocomplete.c: When no command is matched at all for autocompletion, we
      now ring the bell.
    * util.c: check_strdup_suffix() now copies only suffix_len characters.
@@ -1707,10 +1689,6 @@
    * cdecl.c, cli_options.c, cli_options.h:
      s/cli_options_init()/cli_option_init()/ for consistency.
 
-2023-04-07  Paul J. Lucas <paul@lucasmail.org>
-
-   * autocomplete.c: Renaming.
-
 2023-04-06  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, parser.y, debug.out: When dumping, quotes in strings are now
@@ -1926,22 +1904,16 @@
 2023-03-08  Paul J. Lucas <paul@lucasmail.org>
 
    * print.c: Removed "or lines".
-   * autocomplete.c: Renaming.
 
 2023-03-07  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.h, read_line.c: Made prog_name optional.
    * read_line.c: Removed unnecessary #include.
    * read_line.c: Made assert(prog_name != NULL) check only when interactive.
-   * read_line.c: Renaming.
    * read_line.c, read_line.h: Removed `static` and `2` from `prompts`.
    * read_line.c: Moved `if ( interactive )` outside of #ifdef.
    * cdecl.1: Added missing mention of support for zero or more parameters for
      operator[] in C++23.
-
-2023-03-06  Paul J. Lucas <paul@lucasmail.org>
-
-   * autocomplete.c, c_keyword.c, cdecl_keyword.c: Renaming.
 
 2023-03-05  Paul J. Lucas <paul@lucasmail.org>
 
@@ -1950,7 +1922,6 @@
    * cli_options.c: Changed `verbose` to bool.
    * cli_options.c: Fixed checking of extra command-line arguments for --usage
      and --version.
-   * cli_options.c: Renaming.
    * cli_options.c: Added --enable-coverage to -vv.
 
 2023-03-04  Paul J. Lucas <paul@lucasmail.org>
@@ -1979,10 +1950,6 @@
 2023-02-22  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c, dump.h: Added #ifndef/#ifdef ENABLE_CDECL_DEBUG.
-
-2023-02-21  Paul J. Lucas <paul@lucasmail.org>
-
-   * did_you_mean.c: Renaming.
 
 2023-02-20  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2156,7 +2123,6 @@
 
 2023-01-24  Paul J. Lucas <paul@lucasmail.org>
 
-   * parser.y: Renaming.
    * did_you_mean.c, did_you_mean.h, print.c: s/token/literal/
    * c_lang.h, c_type.c: Reworked OK_*_LANGS arrays to use mnemonic element
      initializer macros.
@@ -3297,13 +3263,11 @@
    * red_black.c: More clean-up.
    * red_black.c: s/is_full/is_node_full/
    * c_typedef.c: Now using struct literal.
-   * c_typedef.c: Renaming.
    * red_black.c: Added child_dir() and RB_PARENT_CHILD().
 
 2022-07-09  Paul J. Lucas <paul@lucasmail.org>
 
    * red_black.c: Fixed apparent mis-transcription of code.
-   * red_black.c: Renaming.
    * red_black.c: Added rb_tree_insert_repair().
 
 2022-07-08  Paul J. Lucas <paul@lucasmail.org>
@@ -4005,7 +3969,6 @@
    * red_black.c: Sorted functions.
    * red_black.c: Fixed NDEBUG build.
    * red_black.c: s/surrogate->parent/RB_ROOT(tree)/
-   * red_black.c: Renaming.
    * red_black.c: s/rb_tree_repair_node/rb_tree_repair/
    * red_black.c, red_black_test.c: Removed rb_tree_check() from
      rb_node_rotate(); more tests.
@@ -4027,7 +3990,6 @@
 
 2022-06-29  Paul J. Lucas <paul@lucasmail.org>
 
-   * lexer.l: Renaming.
    * cdecl.1: s/supported//
    * cdecl.1: Mentioned lambdas as not being supported.
 
@@ -4182,7 +4144,6 @@
    * help.c, help_options.out: Help for options types was added.
    * util.c: Simlification.
    * print.c: Now incrementing *ppelt only if dym->token != NULL.
-   * print.c, util.c: Renaming.
    * set_options.c: print_options() now takes FILE*.
    * c_typedef.c, c_typedef.h, parser.y: Added "is_" prefix to some bool
      variables.
@@ -4615,7 +4576,6 @@
    * c_ast_util.c, check.c, parser.y, declare_a_cd_i.out, declare_ac3i.out,
      declare_as3i.out, declare_avi.out, explain_a_cd_i.out,
      explain_udl_c_i-01.out: print_error() and print_warning() clean-up.
-   * c_ast_util.c: Renaming.
    * configure.ac, c_ast_util.c, c_ast_util.h, check.c, test/Makefile.am,
      explain_rttdi.out, explain_rttdpi.out, explain_rttdi.test,
      explain_rttdpi.test: `restrict` is now correctly allowed on `typedef`s of
@@ -4742,7 +4702,6 @@
 
 2022-01-16  Paul J. Lucas <paul@lucasmail.org>
 
-   * dam_lev.c: Renaming.
    * dam_lev.c, dam_lev.h, did_you_mean.c, did_you_mean.h: Got rid of
      dam_lev_t.
 
@@ -4822,7 +4781,6 @@
      typedef_cv_explain_ftd_v.test: Now flagging `void f(const void)` as an
      error.
    * c_ast_util.c: s/ast_stids/ast_tids/
-   * c_ast_util.c: Renaming.
    * Doxyfile, Makefile.am, bootstrap, cdecl.css, configure.ac, lcovrc,
      makedoc.sh, man/Makefile.am, man/man1/c++decl.1, cdecl.1, src/Makefile.am,
      autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c,
@@ -4849,7 +4807,6 @@
    * set_options.c: Simplification.
    * print.c, set_options.c, util.c, set_expl.out, set_expli.out: Now using
      fprint_list() to print ambiguous set options.
-   * util.c: Renaming.
    * parser.y, print.c, util.c, util.h: Eliminated fprint_list() elt_size
      parameter.
 
@@ -4912,7 +4869,6 @@
 2021-12-20  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c, options.c, options.h: s/opt_no_conf/opt_read_conf/
-   * red_black.c, red_black.h: Renaming.
    * c_ast.c, c_sname.c, c_sname.h, check.c, dump.c, gibberish.c, lexer.l,
      options.c, parser.y, print.c, red_black_test.c, set_options.c, slist.h,
      slist_test.c: Added FOREACH_SNAME_SCOPE_UNTIL(); argument comments.
@@ -5065,7 +5021,6 @@
 2021-12-02  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c: "variadic" and "vector" are now autocompletable.
-   * c_typedef.c, cdecl.c, cdecl.h: Renaming.
 
 2021-12-01  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5155,7 +5110,6 @@
 
    * c_ast.c, c_ast.h, check.c, english.c, gibberish.c:
      s/FOREACH_PARAM/FOREACH_FUNC_PARAM/
-   * english.c: Renaming.
 
 2021-11-15  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5742,8 +5696,6 @@
      and default to C++23 for C++.
    * print.c: More print clean-up.
    * run_test.sh: Fixed columns-dependent tests.
-   * autocomplete.c, c_keyword.c, c_type.c, c_type.h, c_typedef.c, cdecl.c,
-     cdecl.h, check.c, help.c, parser.y, print.h, types.h: Renaming.
 
 2021-09-13  Paul J. Lucas <paul@lucasmail.org>
 
@@ -6243,7 +6195,6 @@
    * c_type.c, c_type.h, check.c, gibberish.c: More uses of TS_CONST_VOLATILE.
    * c_type.h: Simplification of c_tid_is_size_t().
    * c_type.c, c_type.h: s/TX_MASK_PART_ID/TX_MASK_TPID/
-   * c_type.h: Renaming.
    * c_type.c, check.c, gibberish.c, options.c: Now using c_tid_is_any() more.
    * dump.c: s/_/./
    * dump.c, dump.h, parser.y: s/kv_dump/str_dump/
@@ -6313,12 +6264,10 @@
    * c_type.h, parser.y, test/Makefile.am, define_namespace_c_namespace_c.test:
      Now also checking the scope-types of English snames.
    * parser.y: Fixed "previosuly declared as <type>".
-   * parser.y: Renaming.
 
 2021-06-03  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Fixed printing of previously declared type.
-   * parser.y: Renaming.
    * parser.y: Added c_typedef_find_scope().
    * parser.y: Removed redundant code.
    * configure.ac, c_type.h, c_typedef.c, parser.y, test/Makefile.am,
@@ -6817,7 +6766,6 @@
 
    * util.h: Added \n to SKIP_WS.
    * cdecl.c, util.c, util.h: Made fmemopen() now return NULL on error.
-   * cdecl.c, util.c: Renaming.
 
 2021-03-26  Paul J. Lucas <paul@lucasmail.org>
 
@@ -6841,7 +6789,6 @@
    * configure.ac, did_you_mean.c, did_you_mean.h, options.c, options.h,
      print.c, print.h, set_options.c, set_options.h: Added "did you mean ...?"
      suggestions for command-line options.
-   * options.c: Renaming.
    * options.c: Added missing 'h' to SHORT_OPTS.
    * options.c: Added FOREACH_CLI_OPTION().
 
@@ -6901,8 +6848,6 @@
 
    * check.c: A scoped name having a bit-field width is now correctly caught as
      an error.
-   * slist.c: Renaming.
-   * slist.c, slist.h: Renaming.
    * slist.c: Added needed (intptr_t) cast.
    * c_sname.h, slist.h: Added missing CONST_CAST() to SLIST_VAR_INIT().
    * strbuf.c: Now using only a single va_list.
@@ -6934,7 +6879,6 @@
    * c_typedef.c: Now correctly free'ing c_typedef_t data from red-black tree
      nodes.
    * c_typedef.c: s/C_TYPEDEF_VAR_INIT/C_TYPEDEF_LIT
-   * c_ast_util.c: Renaming.
    * parser.y: Got rid of placeholder_c_ast.
 
 2021-03-09  Paul J. Lucas <paul@lucasmail.org>
@@ -6946,7 +6890,6 @@
      show_predefined_using.out: Added `iconv_t`, `locale_t`,
      `posix_spawnattr_t`, `posix_spawn_file_actions_t`, `regex_t`,
      `regmatch_t`, and `regoff_t`.
-   * cdecl.c, strbuf.c, strbuf.h: Renaming.
    * options.c, options.h, set_options.c: Added PJL_WARN_UNUSED_RESULT; changed
      print_explicit_int() to take FILE*.
    * help.c, help_english-c.out: s/thread_local/_Thread_local/ in C help.
@@ -6995,7 +6938,6 @@
 2021-03-03  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c, cdecl.h, print.c: Moved some globals out of cdecl.h.
-   * c_lang.h, util.c, util.h: Renaming.
    * parser.y: Now using c_lang_which() in another place.
    * c_lang.c: Now using strbuf in c_lang_which().
 
@@ -7219,7 +7161,6 @@
 
 2021-02-10  Paul J. Lucas <paul@lucasmail.org>
 
-   * options.c, options.h, set_options.c: Renaming.
    * gibberish.c: s/C_GRAPH_NONE/C_GIB_NONE/
    * english.c, english.h, gibberish.c, parser.y: c_ast_english_type()
      clean-up.
@@ -7334,8 +7275,6 @@
 2021-01-29  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Renamed grammar rule.
-   * c_ast_util.c, c_type.c, c_type.h, did_you_mean.c, options.c, parser.y,
-     print.c: Renaming TPID.
    * parser.y: Added parsing support for attribute arguments.
    * parser.y, test/Makefile.am, explain_a_using_a_mu_i.out,
      explain_a_using_a_mu_i.test: Added suppport for [[using : ... ]].
@@ -7477,7 +7416,6 @@
      explain_k-itself.test: Forward `enum`, `class`, `struct`, and `union`
      declarations are now supported.
    * lexer.h, lexer.l, parser.y: lexer_loc() now returns a c_loc_t.
-   * c_typedef.c: Renaming.
    * gibberish.c: Function renaming.
    * gibberish.c: s/is_typedef/is_more_than_plain_typedef/ and added clarifying
      comment.
@@ -7621,14 +7559,11 @@
    * red_black.c, red_black.h: s/rb_node_delete/rb_tree_delete/
    * c_sname.c, c_sname.h, parser.y, slist.h: Removed SLIST macros -- not
      really needed.
-   * parser.y: Renaming.
 
 2021-01-04  Paul J. Lucas <paul@lucasmail.org>
 
-   * parser.y: Renaming.
    * parser.y: s/qualifier_pop/qualifier_tid_pop/
    * parser.y: Added missing c_sname_free().
-   * parser.y: Renaming.
 
 2021-01-03  Paul J. Lucas <paul@lucasmail.org>
 
@@ -7693,7 +7628,6 @@
 
 2020-12-30  Paul J. Lucas <paul@lucasmail.org>
 
-   * lexer.l: Renaming.
    * c_keyword.c: Whitespace fixes.
    * lexer.l: Eliminated C_HYPHEN_KEYWORDS, CDECL_HYPHEN_KEYWORDS,
      c_hyphen_find(), and cdecl_hyphen_find() special-case code for matching
@@ -7979,7 +7913,6 @@
 2020-11-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c: s/i_ast/j_ast/
-   * c_typedef.c, red_black.h, slist.h: Renaming.
    * parser.y, test/Makefile.am, explain_fac_v-1.out, explain_fac_v-1.test:
      Added support for C99 type-qualified arrays of unspecified size.
    * autocomplete.c, c_lang.c, c_type.c, c_typedef.c, cdecl.c, options.c: Added
@@ -8099,12 +8032,6 @@
      gibberish.c, gibberish.h, lexer.l, parser.y: Replaced c_typedef by
      typedef_ast.
 
-2020-09-22  Paul J. Lucas <paul@lucasmail.org>
-
-   * c_sname.c, c_sname.h: Renaming.
-   * options.h: Renaming.
-   * slist.c, slist.h: Renaming.
-
 2020-09-20  Paul J. Lucas <paul@lucasmail.org>
 
    * types.h: Whitespace change.
@@ -8117,8 +8044,6 @@
    * c_ast.c: Sorted functions.
    * c_ast.h: Sorted functions.
    * c_ast.h, c_sname.h: Removed unused functions.
-   * c_ast.c, c_ast.h, c_ast_util.c, c_operator.c, c_typedef.c, english.c,
-     errors.c, gibberish.c, parser.y: Renaming.
    * parser.y: s/c_sname_append_name/c_ast_sname_append_name/
    * errors.c: s/c_sname_local_name/c_ast_sname_local_name/
    * c_ast.c, c_ast.h, debug.c, english.c, errors.c, gibberish.c:
@@ -8134,7 +8059,6 @@
 
 2020-09-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_ast.c, c_ast.h, debug.c, errors.c, parser.y, types.h: Renaming.
    * cdecl--debug.out, cdecl-d.out: Now debug printing function flags better,
      part 2.
    * debug.c: Now debug printing function flags better.
@@ -8196,7 +8120,6 @@
    * cdecl.1: Added more mentions of Embedded C types.
    * cdecl.1: Added misssing "final", "override", and "export".
    * cdecl.1: Storage is * for constructor.
-   * c_type.c: Renaming.
 
 2020-07-31  Paul J. Lucas <paul@lucasmail.org>
 
@@ -8234,8 +8157,6 @@
 
 2020-07-26  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_ast_util.c, c_type.c, c_type.h, errors.c, gibberish.c, parser.y:
-     Renaming all c_type_id_t to end in _id.
    * configure.ac: Upped version to 8.0.
    * english.c, parser.y: Simplified explaining typedefs.
    * english.c: Reformatting.
@@ -9028,8 +8949,6 @@
      respectively.
    * c_ast.h, c_kind.h, c_lang.h, c_operator.h, c_sname.h, c_type.h, slist.h,
      util.h: Put C_WARN_UNUSED_RESULT last.
-   * c_operator.c, c_operator.h, debug.c, english.c, errors.c, gibberish.c,
-     parser.y: Renaming.
    * parser.y: Put DUMP_END() in the right place for several rules.
 
 2020-06-13  Paul J. Lucas <paul@lucasmail.org>
@@ -9094,7 +9013,6 @@
 2020-06-10  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c: Added comment; s/cin/fconf/
-   * cdecl.c: Renaming.
    * c_sname.h, c_type.c, c_type.h: Fixed a latent bug with the c_type_id_t
      stored in a c_sname on 32-bit platforms.
    * c_kind.h: Added missing "const".
@@ -9351,13 +9269,11 @@
 
 2020-04-14  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_type.c: Renaming.
    * c_type.c, test/Makefile.am, declare_+o_eq_rck_rk=default-c++03.test,
      declare_+o_eq_rck_rk=delete-c++03.test: "default" and "delete" are now
      allowed only in C++11 or later.
    * c_type.c, errors.c: Simplified "register" handling.
    * c_type.c: s/LANG_MIN(CPP_11)/LANG_MIN(CPP_11)/ for T_REFERENCE.
-   * c_kind.h, c_type.h: Renaming.
    * c_kind.h: Added K_USER_DEF_CONVERSION to comment.
    * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_typedef.c, c_typedef.h,
      typedefs.h: Renamed some types.
@@ -9389,7 +9305,6 @@
    * parser.y: Added (int).
    * parser.y: s/bison/Bison/
    * lexer.l: s/flex/Flex/
-   * lexer.l: Renaming.
 
 2020-04-02  Paul J. Lucas <paul@lucasmail.org>
 
@@ -10160,7 +10075,6 @@
 
 2019-04-17  Paul J. Lucas <paul@lucasmail.org>
 
-   * lexer.l: Renaming.
    * util.h: Made check explicit.
 
 2019-04-16  Paul J. Lucas <paul@lucasmail.org>
@@ -12021,7 +11935,6 @@
      line when not a TTY.
    * cdecl.1: Added more caveats.
    * lexer.h, lexer.l, parser.y: Renamed my_text to lexer_token.
-   * lexer.l: Renaming.
    * diagnostics.c, parser.y, set.c: Now using PUTS_ERR.
    * diagnostics.c, parser.y, util.h: Added PUTC_ERR, PUTS_ERR.
 
