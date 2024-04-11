@@ -110,7 +110,7 @@ enum c_tpid {
   /**
    * No types.
    */
-  C_TPID_NONE   = 0u,
+  C_TPID_NONE   = 0,
 
   /**
    * Base types, e.g., `int`.
@@ -118,7 +118,7 @@ enum c_tpid {
    * @sa \ref c-base-types-group
    * @sa \ref c-emc-types-group
    */
-  C_TPID_BASE   = (1u << 0),
+  C_TPID_BASE   = 1 << 0,
 
   /**
    * Storage types, e.g., `static`.
@@ -129,7 +129,7 @@ enum c_tpid {
    * @sa \ref c-ref-qualifiers-group
    * @sa \ref c-upc-qualifiers-group
    */
-  C_TPID_STORE  = (1u << 1),
+  C_TPID_STORE  = 1 << 1,
 
   /**
    * Attributes.
@@ -137,7 +137,7 @@ enum c_tpid {
    * @sa \ref c-attributes-group
    * @sa \ref c-msc-call-group
    */
-  C_TPID_ATTR   = (1u << 2)
+  C_TPID_ATTR   = 1 << 2
 };
 typedef enum c_tpid c_tpid_t;
 

@@ -95,9 +95,9 @@ typedef struct dump_state dump_state_t;
  * JSON object state.
  */
 enum json_state {
-  JSON_INIT      = 0u,                  ///< Initial state.
-  JSON_COMMA     = (1u << 0),           ///< Previous "print a comma?" state.
-  JSON_OBJ_BEGUN = (1u << 1)            ///< Has a JSON object already begun?
+  JSON_INIT      = 0,                   ///< Initial state.
+  JSON_COMMA     = 1 << 0,              ///< Previous "print a comma?" state.
+  JSON_OBJ_BEGUN = 1 << 1               ///< Has a JSON object already begun?
 };
 typedef enum json_state json_state_t;
 

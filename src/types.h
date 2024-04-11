@@ -103,9 +103,9 @@ enum c_cast_kind {
  * @sa c_op_overload
  */
 enum c_func_member {
-  C_FUNC_UNSPECIFIED  = 0u,             ///< Unspecified.
-  C_FUNC_MEMBER       = (1u << 0),      ///< Member function.
-  C_FUNC_NON_MEMBER   = (1u << 1)       ///< Non-member function.
+  C_FUNC_UNSPECIFIED  = 0,              ///< Unspecified.
+  C_FUNC_MEMBER       = 1 << 0,         ///< Member function.
+  C_FUNC_NON_MEMBER   = 1 << 1          ///< Non-member function.
 };
 
 /**
@@ -182,15 +182,15 @@ enum c_op_id {
  * **Cdecl** debug mode.
  */
 enum cdecl_debug {
-  CDECL_DEBUG_NO            = 0u,         ///< Do not print debug output.
-  CDECL_DEBUG_YES           = (1u << 0),  ///< Print JSON5 debug output.
+  CDECL_DEBUG_NO              = 0,      ///< Do not print debug output.
+  CDECL_DEBUG_YES             = 1 << 0, ///< Print JSON5 debug output.
 
   /**
    * Include `unique_id` values in debug output.
    *
    * @note May be used _only_ in combination with #CDECL_DEBUG_YES.
    */
-  CDECL_DEBUG_OPT_AST_UNIQUE_ID = (1u << 1)
+  CDECL_DEBUG_OPT_AST_UNIQUE_ID = 1 << 1
 };
 
 /**
@@ -203,14 +203,14 @@ enum cdecl_show {
    * Show only predefined types that are valid in the current language (unless
    * bitwise-or'd with #CDECL_SHOW_OPT_IGNORE_LANG) or only predefined macros.
    */
-  CDECL_SHOW_PREDEFINED       = (1u << 0),
+  CDECL_SHOW_PREDEFINED       = 1 << 0,
 
   /**
    * Show only types that were user-defined in the current language or earlier
    * (unless bitwise-or'd with #CDECL_SHOW_OPT_IGNORE_LANG) or only user-
    * defined macros.
    */
-  CDECL_SHOW_USER_DEFINED     = (1u << 1),
+  CDECL_SHOW_USER_DEFINED     = 1 << 1,
 
   /**
    * Show types ignoring the language they were defined in.
@@ -218,7 +218,7 @@ enum cdecl_show {
    * @note This _must_ be bitwise-or'd with either #CDECL_SHOW_PREDEFINED,
    * #CDECL_SHOW_USER_DEFINED, or both.
    */
-  CDECL_SHOW_OPT_IGNORE_LANG  = (1u << 2)
+  CDECL_SHOW_OPT_IGNORE_LANG  = 1 << 2
 };
 
 ////////// typedefs ///////////////////////////////////////////////////////////

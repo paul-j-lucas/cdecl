@@ -71,7 +71,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa c_func_member
  */
 enum c_op_overload {
-  C_OVERLOAD_NONE       = 0u,                 ///< Not overloadable.
+  C_OVERLOAD_NONE       = 0,                  ///< Not overloadable.
   C_OVERLOAD_MEMBER     = C_FUNC_MEMBER,      ///< Overloadable as member.
   C_OVERLOAD_NON_MEMBER = C_FUNC_NON_MEMBER,  ///< Overloadable as non-member.
 
