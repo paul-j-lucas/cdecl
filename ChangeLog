@@ -1,3 +1,8 @@
+2024-04-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_operator.h, c_type.h, did_you_mean.h, dump.c, types.h: Got rid of
+     pointless `u` and () in enum declarations.
+
 2024-03-19  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Eliminated extra "if ( opt_cdecl_debug ... )" check.
