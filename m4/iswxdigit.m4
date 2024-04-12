@@ -1,4 +1,5 @@
-# iswxdigit.m4 serial 6
+# iswxdigit.m4
+# serial 7
 dnl Copyright (C) 2020-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -66,7 +67,7 @@ main (int argc, char *argv[])
   if (strcmp ("$LOCALE_JA", "none") != 0
       && setlocale (LC_ALL, "$LOCALE_JA") != NULL)
     {
-      /* This fails on NetBSD 8.0.  */
+      /* This fails on NetBSD 10.0.  */
       /* U+FF21 FULLWIDTH LATIN CAPITAL LETTER A */
       is = for_character ("\243\301", 2);
       if (!(is == 0))
@@ -80,7 +81,7 @@ main (int argc, char *argv[])
       is = for_character ("\331\243", 2);
       if (!(is == 0))
         result |= 2;
-      /* This fails on MSVC 14.  */
+      /* This fails on NetBSD 10.0, MSVC 14.  */
       /* U+FF21 FULLWIDTH LATIN CAPITAL LETTER A */
       is = for_character ("\357\274\241", 3);
       if (!(is == 0))

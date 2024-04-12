@@ -1,4 +1,5 @@
-# locale-ja.m4 serial 18
+# locale-ja.m4
+# serial 18
 dnl Copyright (C) 2003, 2005-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
