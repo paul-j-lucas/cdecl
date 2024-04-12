@@ -685,6 +685,10 @@ static void print_version( bool verbose ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+struct option const* cli_option_next( struct option const *opt ) {
+  return opt == NULL ? CLI_OPTIONS : (++opt)->name == NULL ? NULL : opt;
+}
+
 void cli_options_init( int *pargc, char const **pargv[const] ) {
   ASSERT_RUN_ONCE();
   assert( pargc != NULL );
@@ -699,10 +703,6 @@ void cli_options_init( int *pargc, char const **pargv[const] ) {
 #endif /* ENABLE_FLEX_DEBUG */
   parse_options( pargc, pargv );
   c_lang_set( opt_lang_id );
-}
-
-struct option const* cli_option_next( struct option const *opt ) {
-  return opt == NULL ? CLI_OPTIONS : (++opt)->name == NULL ? NULL : opt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
