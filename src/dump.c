@@ -535,7 +535,7 @@ static void json_object_end( json_state_t json, dump_state_t *dump ) {
   assert( dump != NULL );
 
   FPUTC( '\n', dump->fout );
-  dump->comma = !!(json & JSON_COMMA);
+  dump->comma = (json & JSON_COMMA) != 0;
   --dump->indent;
   DUMP_FORMAT( dump, "}" );
 }
