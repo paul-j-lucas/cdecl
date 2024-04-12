@@ -1,3 +1,7 @@
+2024-04-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c: Changed !! to != 0.
+
 2024-04-11  Paul J. Lucas <paul@lucasmail.org>
 
    * c_operator.h, c_type.h, did_you_mean.h, dump.c, types.h: Got rid of
