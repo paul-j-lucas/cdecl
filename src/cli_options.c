@@ -206,6 +206,8 @@ static char const* make_short_opts( struct option const opts[static const 2] ) {
  * error message and exits; if \a opt was not given, does nothing.
  *
  * @param opt The option to check for.
+ *
+ * @sa opt_check_mutually_exclusive()
  */
 static void opt_check_exclusive( char opt ) {
   if ( !opts_given[ STATIC_CAST( unsigned, opt ) ] )
@@ -229,6 +231,8 @@ static void opt_check_exclusive( char opt ) {
  *
  * @param opt The option.
  * @param opts The set of options.
+ *
+ * @sa opt_check_exclusive()
  */
 static void opt_check_mutually_exclusive( char opt, char const *opts ) {
   assert( opts != NULL );
