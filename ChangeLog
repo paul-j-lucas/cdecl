@@ -1,3 +1,7 @@
+2024-04-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * cast-error.out, cast-error.test: Removed old test files.
+
 2024-04-12  Paul J. Lucas <paul@lucasmail.org>
 
    * dump.c: Changed !! to != 0.
