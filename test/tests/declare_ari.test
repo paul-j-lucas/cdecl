@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -bO <<END
-declare x as array of reference to int
-END

@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -bO -xc++ <<END
-cast x into pointer to auto
-END

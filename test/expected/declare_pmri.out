@@ -1,3 +1,0 @@
-declare x as pointer to member of C reference to int
-                                  ^
-35: syntax error: "C": "class", "struct", or "union" expected

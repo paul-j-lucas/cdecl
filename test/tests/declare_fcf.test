@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -bO <<END
-declare f as friend constant function
-END

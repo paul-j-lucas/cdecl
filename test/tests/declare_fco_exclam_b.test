@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -bO <<END
-declare ! as friend constant operator returning bool
-END

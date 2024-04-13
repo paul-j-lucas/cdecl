@@ -15,6 +15,7 @@ set knr
 cast p into pointer to function (x as int) returning int
 
 set c++
+cast x into auto
 cast p into pointer to auto
 cast p into pointer to member of class C int
 const cast x into int

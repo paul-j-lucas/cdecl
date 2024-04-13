@@ -1,3 +1,0 @@
-declare x as static mutable int
-        ^
-9: error: "mutable static int" is illegal for built-in type

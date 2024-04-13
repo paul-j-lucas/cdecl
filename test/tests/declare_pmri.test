@@ -1,4 +1,0 @@
-EXPECTED_EXIT=65
-cdecl -bO <<END
-declare x as pointer to member of C reference to int
-END

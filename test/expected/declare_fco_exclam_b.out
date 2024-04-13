@@ -1,3 +1,0 @@
-declare ! as friend constant operator returning bool
-        ^
-9: error: operator overloading not supported in C

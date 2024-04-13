@@ -33,6 +33,9 @@ cdecl> cast p into pointer to function (x as int) returning int
                                         ^
 34: error: function prototypes not supported until C89
 cdecl> set c++
+c++decl> cast x into auto
+                     ^
+13: error: can not cast into "auto"
 c++decl> cast p into pointer to auto
                                 ^
 24: error: can not cast into "auto"

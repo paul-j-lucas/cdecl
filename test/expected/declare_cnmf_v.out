@@ -1,3 +1,0 @@
-declare f as const non-member function
-        ^
-9: error: non-member functions can not be "const"

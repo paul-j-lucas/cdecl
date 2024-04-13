@@ -1,3 +1,0 @@
-declare f as extern member function
-        ^
-9: error: member functions can not be "extern"
