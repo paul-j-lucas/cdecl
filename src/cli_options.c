@@ -285,7 +285,7 @@ static char const* opt_format( char short_opt ) {
  * Gets the corresponding name of the long option for \a short_opt.
  *
  * @param short_opt The short option to get the corresponding long option for.
- * @return Returns said option or the empty string if none.
+ * @return Returns said name or the empty string if none.
  */
 NODISCARD
 static char const* opt_get_long( char short_opt ) {
