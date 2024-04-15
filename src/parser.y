@@ -385,7 +385,7 @@
 #define DUMP_MACRO_ARG_LIST(KEY,ARG_LIST) IF_CDECL_DEBUG( \
   if ( (ARG_LIST) != NULL ) {                             \
     DUMP_KEY_IMPL( KEY ": " );                            \
-    p_arg_list_dump( (ARG_LIST), 1, stdout );             \
+    p_arg_list_dump( (ARG_LIST), /*indent=*/1, stdout );  \
   } )
 
 /**
@@ -397,7 +397,7 @@
 #define DUMP_MACRO_PARAM_LIST(KEY,PARAM_LIST) IF_CDECL_DEBUG( \
   if ( (PARAM_LIST) != NULL ) {                               \
     DUMP_KEY_IMPL( KEY ": " );                                \
-    p_param_list_dump( (PARAM_LIST), 1, stdout );             \
+    p_param_list_dump( (PARAM_LIST), /*indent=*/1, stdout );  \
   } )
 
 /**
@@ -409,7 +409,7 @@
 #define DUMP_MACRO_TOKEN_LIST(KEY,TOKEN_LIST) IF_CDECL_DEBUG( \
   if ( (TOKEN_LIST) != NULL ) {                               \
     DUMP_KEY_IMPL( KEY ": " );                                \
-    p_token_list_dump( (TOKEN_LIST), 1, stdout );             \
+    p_token_list_dump( (TOKEN_LIST), /*indent=*/1, stdout );  \
   } )
 
 /**
