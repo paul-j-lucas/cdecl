@@ -106,6 +106,7 @@ declare x as constexpr int
 
 set c++
 declare C as static constructor
+declare C as destructor (int)
 declare C of class X as constructor
 declare f as const non-member function
 declare f as explicit function

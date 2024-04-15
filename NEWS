@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 16.4
+
+** Better destrucor parameter error message
+Attempting either to explain or declare a destructor having a parameter list
+now prints "destructors may not have parameters" explicitly.
+
+
 * Changes in Cdecl 16.3
 
 ** Defining a type more than once

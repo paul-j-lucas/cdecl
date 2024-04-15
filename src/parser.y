@@ -4673,7 +4673,8 @@ destructor_declaration_c
      * C++ in-class destructor declaration, e.g.: ~S().
      */
   : virtual_stid_opt[virtual_stid] '~' any_name_exp[name]
-    lparen_exp rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    lparen_exp no_destructor_params
+    rparen_func_qualifier_list_c_stid_opt[qual_stids]
     noexcept_c_stid_opt[noexcept_stid] gnu_attribute_specifier_list_c_opt
     func_equals_c_stid_opt[equals_stid]
     {
@@ -4700,6 +4701,49 @@ destructor_declaration_c
       PARSE_ASSERT( c_ast_check( dtor_ast ) );
       c_ast_english( dtor_ast, C_ENG_DECL, stdout );
       PUTC( '\n' );
+    }
+  ;
+
+no_destructor_params
+    /*
+     * Ensure destructors do _not_ have parameters.
+     *
+     * This rule isn't necessary.  The grammar could expect '(' immediately
+     * followed by ')', but then we'd get an error message like:
+     *
+     *      c++decl> explain ~C(int)
+     *                          ^
+     *      12: syntax error: "int": '(' expected
+     *
+     * that isn't helpful.  Better would be to say "destructors may not have
+     * parameters" explicity, hence this rule.
+     *
+     * This check is done now in the parser rather than later in the AST since
+     * it would be silly to parse and store a parameter list for a destructor
+     * in the AST when destructors don't have parameters.
+     */
+  : /* empty */
+  | error
+    { //
+      // Ordinarily, we'd get an error message like:
+      //
+      //      c++decl> explain ~C(int)
+      //                          ^
+      //      12: syntax error: "int": destructors may not have parameters
+      //      ("int" is a keyword)
+      //
+      // where the <<("int" is a keyword)>> part seems wrong since the user
+      // didn't try using "int" as an ordinary identifier.  To suppress that
+      // part, set lexer_token to the empty string so elaborate_error() won't
+      // print it nor call call print_error_token_is_a() and and we'll instead
+      // get an error message like:
+      //
+      //      c++decl> explain ~C(int)
+      //                          ^
+      //      12: syntax error: destructors may not have parameters
+      //
+      lexer_token = "";
+      elaborate_error( "destructors may not have parameters" );
     }
   ;
 
@@ -4744,7 +4788,8 @@ file_scope_constructor_declaration_c
 
 file_scope_destructor_declaration_c
   : inline_stid_opt[inline_stid] destructor_sname[sname]
-    lparen_exp rparen_func_qualifier_list_c_stid_opt[qual_stids]
+    lparen_exp no_destructor_params
+    rparen_func_qualifier_list_c_stid_opt[qual_stids]
     noexcept_c_stid_opt[noexcept_stid] gnu_attribute_specifier_list_c_opt
     {
       DUMP_START( "file_scope_destructor_declaration_c",
@@ -7242,7 +7287,7 @@ constructor_decl_english_ast
 /// English C++ destructor declaration ////////////////////////////////////////
 
 destructor_decl_english_ast
-  : Y_destructor parens_opt
+  : Y_destructor destructor_parens_opt
     {
       DUMP_START( "destructor_decl_english_ast", "DESTRUCTOR ['(' ')']" );
 
@@ -7253,9 +7298,9 @@ destructor_decl_english_ast
     }
   ;
 
-parens_opt
+destructor_parens_opt
   : /* empty */
-  | '(' rparen_exp
+  | '(' no_destructor_params ')'
   ;
 
 /// English C/C++ function declaration ////////////////////////////////////////

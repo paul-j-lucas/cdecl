@@ -655,6 +655,9 @@ c++decl> explain void f(x)
 c++decl> explain void &x
                       ^
 14: error: reference to "void" is illegal; did you mean "void*"?
+c++decl> explain C::~C(int)
+                       ^
+15: syntax error: destructors may not have parameters
 c++decl> explain X::C()
                  ^
 9: error: "X::C": unknown name

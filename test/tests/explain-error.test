@@ -235,6 +235,7 @@ explain void f(int x[const 3])
 explain void f(int x[static 3])
 explain void f(x)
 explain void &x
+explain C::~C(int)
 explain X::C()
 explain X::~C()
 

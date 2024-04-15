@@ -288,6 +288,9 @@ cdecl> set c++
 c++decl> declare C as static constructor
                  ^
 9: error: constructors can not be "static"
+c++decl> declare C as destructor (int)
+                                  ^
+26: syntax error: destructors may not have parameters
 c++decl> declare C of class X as constructor
                  ^
 9: error: "X", "C": class and constructor names don't match
