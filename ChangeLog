@@ -1,3 +1,9 @@
+2024-04-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, parser.y, declare-error.out, explain-error.out,
+     declare-error.test, explain-error.test: Now saying "destructors may not
+     have parameters" explicitly.
+
 2024-04-13  Paul J. Lucas <paul@lucasmail.org>
 
    * cast-error.out, cast-error.test: Removed old test files.
