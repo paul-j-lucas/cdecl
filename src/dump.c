@@ -714,19 +714,19 @@ void bool_dump( bool value, FILE *fout ) {
 
 void c_alignas_dump( c_alignas_t const *align, FILE *fout ) {
   dump_state_t dump;
-  dump_init( &dump, 1, fout );
+  dump_init( &dump, /*indent=*/1, fout );
   c_alignas_dump_impl( align, &dump );
 }
 
 void c_ast_dump( c_ast_t const *ast, FILE *fout ) {
   dump_state_t dump;
-  dump_init( &dump, 1, fout );
+  dump_init( &dump, /*indent=*/1, fout );
   c_ast_dump_impl( ast, &dump );
 }
 
 void c_ast_list_dump( c_ast_list_t const *list, FILE *fout ) {
   dump_state_t dump;
-  dump_init( &dump, 1, fout );
+  dump_init( &dump, /*indent=*/1, fout );
   c_ast_list_dump_impl( list, &dump );
 }
 
@@ -734,7 +734,7 @@ void c_ast_pair_dump( c_ast_pair_t const *astp, FILE *fout ) {
   assert( astp != NULL );
 
   dump_state_t dump;
-  dump_init( &dump, 1, fout );
+  dump_init( &dump, /*indent=*/1, fout );
 
   json_state_t const json = json_object_begin( JSON_INIT, /*key=*/NULL, &dump );
   DUMP_AST( &dump, "ast", astp->ast );
@@ -787,7 +787,7 @@ void c_tid_dump( c_tid_t tid, FILE *fout ) {
   assert( fout != NULL );
 
   dump_state_t dump;
-  dump_init( &dump, 1, fout );
+  dump_init( &dump, /*indent=*/1, fout );
   FPUTS( "{ ", fout );
   if ( !c_tid_is_none( tid ) )
     c_tid_dump_impl( tid, &dump );
@@ -805,7 +805,7 @@ void c_type_dump( c_type_t const *type, FILE *fout ) {
   FPUTS( "{ ", fout );
 
   dump_state_t dump;
-  dump_init( &dump, 1, fout );
+  dump_init( &dump, /*indent=*/1, fout );
 
   if ( type->btids != TB_NONE )
     c_tid_dump_impl( type->btids, &dump );
@@ -830,7 +830,7 @@ void p_arg_list_dump( p_arg_list_t const *list, unsigned indent, FILE *fout ) {
 
 void p_macro_dump( p_macro_t const *macro, FILE *fout ) {
   dump_state_t dump;
-  dump_init( &dump, 1, fout );
+  dump_init( &dump, /*indent=*/1, fout );
   p_macro_dump_impl( macro, &dump );
 }
 
@@ -843,7 +843,7 @@ void p_param_list_dump( p_param_list_t const *list, unsigned indent,
 
 void p_token_dump( p_token_t const *token, FILE *fout ) {
   dump_state_t dump;
-  dump_init( &dump, 1, fout );
+  dump_init( &dump, /*indent=*/1, fout );
   p_token_dump_impl( token, &dump );
 }
 
