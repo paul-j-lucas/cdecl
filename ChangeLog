@@ -1,3 +1,7 @@
+2024-04-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Reverted version to 16.3.
+
 2024-04-14  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, parser.y, declare-error.out, explain-error.out,
