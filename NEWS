@@ -26,8 +26,8 @@ updated to be the current language and newer.  For example, previously:
     cdecl> show
     typedef int Int;
     cdecl> set c17
-    cdecl> typedef int Int        # Already exists so did nothing.
-    cdecl> show                   # Would NOT show anything.
+    cdecl> typedef int Int        // Already exists so did nothing.
+    cdecl> show                   // Would NOT show anything.
     cdecl>
 
 Now the second `typedef` would update `Int` to make it available in C17 and
