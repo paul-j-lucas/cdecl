@@ -1,5 +1,34 @@
 2024-04-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac, cdecl.1, cli_options.c, cdecl--help.out, __declspec.test,
+     alt-tokens.test, cast-error.test, cast.test, cdecl--no-typedefs.test,
+     cl.test, debug.test, declare-error.test, declare.test,
+     declare_config_tdu.test, declare_operator-error.test,
+     declare_operator.test, declare_synonyms.test, declare_udc-error.test,
+     declare_udc.test, declare_udl-error.test, declare_udl.test,
+     define-error.test, define.test, digraphs.test, east-const.test,
+     english-types.test, expand-C23_std-6.10.4.1-ex-2.test,
+     expand-C23_std-6.10.4.3-ex-1.test, expand-C23_std-6.10.4.5-ex-4.test,
+     expand-C23_std-6.10.4.5-ex-5.test, expand-C23_std-6.10.4.5-ex-7.test,
+     expand-error.test, expand-robertelder.test, expand.test,
+     explain-error.test, explain.test, explain_cast-error.test,
+     explain_cast.test, explain_config_tdu.test, explain_operator-error.test,
+     explain_operator.test, explain_udc-error.test, explain_udc.test,
+     explain_udl-error.test, explain_udl.test, explicit-ecsu.test,
+     explicit-int.test, file-cast_i.test, file-cast_x.test,
+     file-declare_i.test, file-declare_x.test, file-explain_i.test,
+     file-explain_x.test, gnu_attributes.test, help-error.test, help.test,
+     include-err-01.test, include-ok-nested-01.test, include-ok.test,
+     include-too_many_files.test, include-unquoted.test, infer-command.test,
+     integers.test, lang.test, ntu-error.test, ntu.test,
+     preprocessor-error.test, prompt.test, semicolon.test, set.test,
+     set_expl.test, set_expli.test, set_explicit-ecsu_x.test,
+     set_explicit-int.test, set_explicit-int_x.test, set_graphs.test,
+     set_lang_xxx.test, set_nodigraphs.test, set_noexplicit-int_u.test,
+     set_options.test, set_prompt_x.test, set_xxx.test, show-error.test,
+     show.test, trigraphs.test, using.test, using_config_i.test,
+     west-pointer.test, xec-error.test, xec.test, xupc-error.test, xupc.test:
+     The short option for `--echo-commands` has been changed from `-O` to `-E`.
    * cli_options.c, cdecl--help.out: Added CLI_OPTIONS_HELP[].
 
 2024-04-23  Paul J. Lucas <paul@lucasmail.org>
