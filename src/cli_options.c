@@ -631,6 +631,8 @@ static void print_usage( int status ) {
   FOREACH_CLI_OPTION( opt ) {
     size_t opt_len = strlen( opt->name );
     switch ( opt->has_arg ) {
+      case no_argument:
+        break;
       case optional_argument:
         opt_len += STRLITLEN( "[=ARG]" );
         break;
