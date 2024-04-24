@@ -89,10 +89,6 @@
 /// Command-line option as a string literal.
 #define SOPT(X)                   STRINGIFY(OPT_##X)
 
-/// Command-line short option as a parenthesized, dashed string literal for the
-/// usage message.
-#define UOPT(X)                   " (-" SOPT(X) ") "
-
 /// @endcond
 
 /**
@@ -104,6 +100,8 @@
 
 /**
  * Long command-line options.
+ *
+ * @sa CLI_OPTIONS_HELP
  */
 static struct option const CLI_OPTIONS[] = {
   //
@@ -146,6 +144,47 @@ static struct option const CLI_OPTIONS[] = {
   { "version",          no_argument,        NULL, COPT(VERSION)           },
   { "west-pointer",     required_argument,  NULL, COPT(WEST_POINTER)      },
   { NULL,               0,                  NULL, 0                       }
+};
+
+/**
+ * Command-line options help.
+ *
+ * @note It is indexed by short option characters.
+ *
+ * @sa CLI_OPTIONS
+ */
+static char const *const CLI_OPTIONS_HELP[ 128 ] = {
+  [ COPT(ALT_TOKENS) ] = "Print alternative tokens",
+#ifdef ENABLE_BISON_DEBUG
+  [ COPT(BISON_DEBUG) ] = "Print Bison debug output",
+#endif /* ENABLE_BISON_DEBUG */
+  [ COPT(COLOR) ] = "Colorize output [default: not_file]",
+  [ COPT(CONFIG) ] = "Configuration file path [default: ~/" CONF_FILE_NAME_DEFAULT "]",
+  [ COPT(CDECL_DEBUG) ] = "Print " CDECL " debug output",
+  [ COPT(DIGRAPHS) ] = "Print digraphs",
+  [ COPT(EAST_CONST) ] = "Print in \"east const\" form",
+  [ COPT(ECHO_COMMANDS) ] = "Echo commands given before corresponding output",
+  [ COPT(EXPLICIT_ECSU) ] = "Print \"class\", \"struct\", \"union\" explicitly",
+  [ COPT(EXPLICIT_INT) ] = "Print \"int\" explicitly",
+  [ COPT(FILE) ] = "Read from file [default: stdin]",
+#ifdef ENABLE_FLEX_DEBUG
+  [ COPT(FLEX_DEBUG) ] = "Print Flex debug output",
+#endif /* ENABLE_FLEX_DEBUG */
+  [ COPT(HELP) ] = "Print this help and exit",
+  [ COPT(INFER_COMMAND) ] = "Try to infer command when none is given",
+  [ COPT(LANGUAGE) ] = "Use language",
+  [ COPT(NO_BUFFER_STDOUT) ] = "Set stdout to unbuffered",
+  [ COPT(NO_CONFIG) ] = "Suppress reading configuration file",
+  [ COPT(NO_ENGLISH_TYPES) ] = "Print types in C/C++, not English",
+  [ COPT(NO_PROMPT) ] = "Suppress printing prompts",
+  [ COPT(NO_SEMICOLON) ] = "Suppress printing final semicolon for declarations",
+  [ COPT(NO_TYPEDEFS) ] = "Suppress predefining standard types",
+  [ COPT(NO_USING) ] = "Declare types with typedef, not using, in C++",
+  [ COPT(OUTPUT) ] = "Write to file [default: stdout]",
+  [ COPT(TRAILING_RETURN) ] = "Print trailing return type in C++",
+  [ COPT(TRIGRAPHS) ] = "Print trigraphs",
+  [ COPT(VERSION) ] = "Print version and exit",
+  [ COPT(WEST_POINTER) ] = "Print *, &, and && next to type",
 };
 
 // local variables
@@ -587,45 +626,51 @@ missing_arg:
  */
 _Noreturn
 static void print_usage( int status ) {
-  fprintf( status == EX_OK ? stdout : stderr,
-    "usage: %s [options] [command...]\n"
-    "options:\n"
-    "  --alt-tokens        " UOPT(ALT_TOKENS)       "Print alternative tokens.\n"
-#ifdef ENABLE_BISON_DEBUG
-    "  --bison-debug       " UOPT(BISON_DEBUG)      "Print Bison debug output.\n"
-#endif /* ENABLE_BISON_DEBUG */
-    "  --color=WHEN        " UOPT(COLOR)            "Colorize output WHEN [default: not_file].\n"
-    "  --config=FILE       " UOPT(CONFIG)           "Configuration file path [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
-    "  --debug[=OPTS]      " UOPT(CDECL_DEBUG)      "Print " CDECL " debug output.\n"
-    "  --digraphs          " UOPT(DIGRAPHS)         "Print digraphs.\n"
-    "  --east-const        " UOPT(EAST_CONST)       "Print in \"east const\" form.\n"
-    "  --echo-commands     " UOPT(ECHO_COMMANDS)    "Echo commands given before corresponding output.\n"
-    "  --explicit-ecsu=WHEN" UOPT(EXPLICIT_ECSU)    "Print \"class\", \"struct\", \"union\" explicitly WHEN.\n"
-    "  --explicit-int=WHEN " UOPT(EXPLICIT_INT)     "Print \"int\" explicitly WHEN.\n"
-    "  --file=FILE         " UOPT(FILE)             "Read from FILE [default: stdin].\n"
-#ifdef ENABLE_FLEX_DEBUG
-    "  --flex-debug        " UOPT(FLEX_DEBUG)       "Print Flex debug output.\n"
-#endif /* ENABLE_FLEX_DEBUG */
-    "  --help              " UOPT(HELP)             "Print this help and exit.\n"
-    "  --infer-command     " UOPT(INFER_COMMAND)    "Try to infer command when none is given.\n"
-    "  --language=LANG     " UOPT(LANGUAGE)         "Use LANG.\n"
-    "  --no-buffer-stdout  " UOPT(NO_BUFFER_STDOUT) "Set stdout to unbuffered.\n"
-    "  --no-config         " UOPT(NO_CONFIG)        "Suppress reading configuration file.\n"
-    "  --no-english-types  " UOPT(NO_ENGLISH_TYPES) "Print types in C/C++, not English.\n"
-    "  --no-prompt         " UOPT(NO_PROMPT)        "Suppress printing prompts.\n"
-    "  --no-semicolon      " UOPT(NO_SEMICOLON)     "Suppress printing final semicolon for declarations.\n"
-    "  --no-typedefs       " UOPT(NO_TYPEDEFS)      "Suppress predefining standard types.\n"
-    "  --no-using          " UOPT(NO_USING)         "Declare types with typedef, not using, in C++.\n"
-    "  --output=FILE       " UOPT(OUTPUT)           "Write to FILE [default: stdout].\n"
-    "  --trailing-return   " UOPT(TRAILING_RETURN)  "Print trailing return type in C++.\n"
-    "  --trigraphs         " UOPT(TRIGRAPHS)        "Print trigraphs.\n"
-    "  --version           " UOPT(VERSION)          "Print version and exit.\n"
-    "  --west-pointer      " UOPT(WEST_POINTER)     "Print *, &, and && next to type.\n"
+  // pre-flight to calculate longest long option length
+  size_t longest_opt_len = 0;
+  FOREACH_CLI_OPTION( opt ) {
+    size_t opt_len = strlen( opt->name );
+    switch ( opt->has_arg ) {
+      case optional_argument:
+        opt_len += STRLITLEN( "[=ARG]" );
+        break;
+      case required_argument:
+        opt_len += STRLITLEN( "=ARG" );
+        break;
+    } // switch
+    if ( opt_len > longest_opt_len )
+      longest_opt_len = opt_len;
+  } // for
+
+  FILE *const fout =  status == EX_OK ? stdout : stderr;
+  FPRINTF( fout, "usage: %s [options] [command...]\noptions:\n", me );
+
+  FOREACH_CLI_OPTION( opt ) {
+    FPRINTF( fout, "  --%s", opt->name );
+    size_t opt_len = strlen( opt->name );
+    switch ( opt->has_arg ) {
+      case no_argument:
+        break;
+      case optional_argument:
+        opt_len += STATIC_CAST( size_t, fprintf( fout, "[=ARG]" ) );
+        break;
+      case required_argument:
+        opt_len += STATIC_CAST( size_t, fprintf( fout, "=ARG" ) );
+        break;
+    } // switch
+    assert( opt_len <= longest_opt_len );
+    FPUTNSP( longest_opt_len - opt_len, fout );
+    assert( CLI_OPTIONS_HELP[ opt->val ] != NULL );
+    FPRINTF( fout, " (-%c) %s.\n", opt->val, CLI_OPTIONS_HELP[ opt->val ] );
+  } // for
+
+  FPUTS(
     "\n"
     PACKAGE_NAME " home page: " PACKAGE_URL "\n"
     "Report bugs to: " PACKAGE_BUGREPORT "\n",
-    me
+    fout
   );
+
   exit( status );
 }
 
