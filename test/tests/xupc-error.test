@@ -1,4 +1,4 @@
 EXPECTED_EXIT=65
-cdecl -bO -xc99 <<END
+cdecl -bE -xc99 <<END
 explain relaxed int x
 END

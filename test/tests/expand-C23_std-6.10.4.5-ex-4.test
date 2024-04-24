@@ -10,7 +10,7 @@
 ##
 
 EXPECTED_EXIT=0
-cdecl -bO <<END
+cdecl -bE <<END
 #define str(s)        # s
 #define xstr(s)       str(s)
 #define debug(s, t)   printf("x" # s "= %d, x" # t "= %s", x ## s, x ## t)

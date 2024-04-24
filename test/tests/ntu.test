@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO <<END
+cdecl -bE <<END
 
 typedef int I, *PI, A2[2], F_I(double), *F_PI(), (*PF_I)()
 typedef F_I *PF_I_2

@@ -10,7 +10,7 @@
 ##
 
 EXPECTED_EXIT=0
-cdecl -bO <<END
+cdecl -bE <<END
 #define hash_hash                 # ## #
 #define mkstr(a)                  # a
 #define in_between(a)             mkstr(a)

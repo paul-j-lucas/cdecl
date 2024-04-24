@@ -1,4 +1,4 @@
 EXPECTED_EXIT=0
-cdecl -bO -c data/config_using_i.cdeclrc <<END
+cdecl -bE -c data/config_using_i.cdeclrc <<END
 declare i as Int
 END

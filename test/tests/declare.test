@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO <<END
+cdecl -bE <<END
 struct S
 
 declare a as array 3 of array 5 of array 7 of int

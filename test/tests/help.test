@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO <<END
+cdecl -bE <<END
 help
 help cast
 help command

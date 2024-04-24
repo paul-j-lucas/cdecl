@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO -t <<END
+cdecl -bE -t <<END
 define Int as int
 show all
 END

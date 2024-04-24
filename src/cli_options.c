@@ -61,8 +61,8 @@
 #define OPT_CONFIG            c
 #define OPT_NO_CONFIG         C
 #define OPT_CDECL_DEBUG       d
-#define OPT_ECHO_COMMANDS     O
 #define OPT_EAST_CONST        e
+#define OPT_ECHO_COMMANDS     E
 #define OPT_FILE              f
 #ifdef ENABLE_FLEX_DEBUG
 #define OPT_FLEX_DEBUG        F

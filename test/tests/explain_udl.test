@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO -xc++ <<END
+cdecl -bE -xc++ <<END
 explain int S::operator"" _x(char)
 explain int operator"" _x(char16_t)
 explain int operator"" _x(char32_t)

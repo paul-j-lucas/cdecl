@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO --east-const <<END
+cdecl -bE --east-const <<END
 struct S
 
 declare x as const int

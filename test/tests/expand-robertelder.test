@@ -6,7 +6,7 @@
 ##
 
 EXPECTED_EXIT=0
-cdecl -bO <<END
+cdecl -bE <<END
 #define function()                123
 #define concat(a,b)               a ## b
 expand concat(func,tion)()

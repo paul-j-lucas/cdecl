@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO -a -xc++ <<END
+cdecl -bE -a -xc++ <<END
 set
 
 struct S

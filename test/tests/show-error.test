@@ -1,5 +1,5 @@
 EXPECTED_EXIT=65
-cdecl -bO <<END
+cdecl -bE <<END
 show foo
 show __cplusplus
 

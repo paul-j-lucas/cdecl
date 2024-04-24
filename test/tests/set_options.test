@@ -1,4 +1,4 @@
 EXPECTED_EXIT=0
-cdecl -bO <<END
+cdecl -bE <<END
 set options
 END

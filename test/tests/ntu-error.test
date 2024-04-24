@@ -1,5 +1,5 @@
 EXPECTED_EXIT=65
-cdecl -bO <<END
+cdecl -bE <<END
 typedef char int_least32_t
 typedef extern int SI
 typedef int Int : 3

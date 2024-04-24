@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO -xc++ <<END
+cdecl -bE -xc++ <<END
 
 explain C::operator int()
 explain friend C::operator int()

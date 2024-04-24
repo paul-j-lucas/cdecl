@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO <<END
+cdecl -bE <<END
 explain __declspec(dllexport) int i
 explain __declspec(dllexport) struct S x
 explain int __declspec(dllexport) i

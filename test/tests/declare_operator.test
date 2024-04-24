@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO -xc++ <<END
+cdecl -bE -xc++ <<END
 struct S
 
 declare ! as member operator returning bool

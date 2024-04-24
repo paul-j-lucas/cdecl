@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO <<END
+cdecl -bE <<END
 include "data/include_1.cdeclrc"
 show
 END

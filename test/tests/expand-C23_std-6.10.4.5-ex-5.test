@@ -10,7 +10,7 @@
 ##
 
 EXPECTED_EXIT=0
-cdecl -bO <<END
+cdecl -bE <<END
 #define t(x,y,z)  x ## y ## z
 
 expand t(1,2,3)

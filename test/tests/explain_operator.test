@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO -xc++ <<END
+cdecl -bE -xc++ <<END
 struct S
 using S2 = S
 define SRE as reference to S

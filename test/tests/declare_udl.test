@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO -xc++ <<END
+cdecl -bE -xc++ <<END
 declare _x as user-defined literal (character 16) returning integer
 declare _x as user-defined literal (character 32) returning integer
 declare _x as user-defined literal (character 8) returning integer

@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO -xc++ <<END
+cdecl -bE -xc++ <<END
 declare user-defined conversion operator of class C returning int
 declare overridden virtual constant user-defined conversion operator returning int
 declare user-defined conversion operator returning int

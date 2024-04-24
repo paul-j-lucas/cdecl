@@ -1,5 +1,5 @@
 EXPECTED_EXIT=65
-cdecl -bO <<END
+cdecl -bE <<END
 struct S
 
 declare ! as friend constant operator returning bool

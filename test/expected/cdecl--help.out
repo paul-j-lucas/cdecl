@@ -6,7 +6,7 @@ options:
   --debug[=ARG]       (-d) Print cdecl debug output.
   --digraphs          (-2) Print digraphs.
   --east-const        (-e) Print in "east const" form.
-  --echo-commands     (-O) Echo commands given before corresponding output.
+  --echo-commands     (-E) Echo commands given before corresponding output.
   --explicit-ecsu=ARG (-S) Print "class", "struct", "union" explicitly.
   --explicit-int=ARG  (-i) Print "int" explicitly.
   --file=ARG          (-f) Read from file [default: stdin].

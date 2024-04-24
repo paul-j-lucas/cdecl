@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bO --infer-command -xc++ <<END
+cdecl -bE --infer-command -xc++ <<END
 set
 
 // comment

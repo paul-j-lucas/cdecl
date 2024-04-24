@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 16.4
+
+** Echoing commands short option
+The short option for `--echo-commands` has been changed from `-O` to `-E`.
+
+
 * Changes in Cdecl 16.3
 
 ** Better destructor parameter error message
