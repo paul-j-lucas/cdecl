@@ -89,9 +89,6 @@
 #define DTRACE                    NO_OP
 #endif
 
-#define IF_CDECL_DEBUG(...) \
-  BLOCK( if ( opt_cdecl_debug != CDECL_DEBUG_NO ) { __VA_ARGS__ } )
-
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -145,6 +142,15 @@
  */
 #define elaborate_error_dym(DYM_KINDS,...) BLOCK( \
   fl_elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
+
+/**
+ * Executes the given statements only if \ref opt_cdecl_debug `!=`
+ * #CDECL_DEBUG_NO.
+ *
+ * @param ... The statement(s) to execute.
+ */
+#define IF_CDECL_DEBUG(...) \
+  BLOCK( if ( opt_cdecl_debug != CDECL_DEBUG_NO ) { __VA_ARGS__ } )
 
 /**
  * Prints that a particular language feature is not supported by **cdecl** and
