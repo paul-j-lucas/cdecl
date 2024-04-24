@@ -1,3 +1,13 @@
+2024-04-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c, cdecl--help.out: Added CLI_OPTIONS_HELP[].
+
+2024-04-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * .github/ISSUE_TEMPLATE/bug_report.md,
+     .github/ISSUE_TEMPLATE/enhancement-request.md: Update issue templates
+   * .github/ISSUE_TEMPLATE/bug_report.md: Added bug reporting template
+
 2024-04-16  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Reverted version to 16.3.
