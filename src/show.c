@@ -77,7 +77,7 @@ typedef struct show_types_info show_types_info_t;
 /**
  * Prints \a param_list between parentheses and separated by commas.
  *
- * @param param_list The macro parameter list to print.  If NULL, does nothing.
+ * @param param_list The macro parameter list to print.
  * @param fout The `FILE` to print to.
  *
  * @sa print_token_list()
