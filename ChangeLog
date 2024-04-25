@@ -1,5 +1,6 @@
 2024-04-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * cli_options.c: Added opt_help().
    * configure.ac, cdecl.1, cli_options.c, cdecl--help.out, __declspec.test,
      alt-tokens.test, cast-error.test, cast.test, cdecl--no-typedefs.test,
      cl.test, debug.test, declare-error.test, declare.test,
