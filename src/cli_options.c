@@ -152,6 +152,7 @@ static struct option const CLI_OPTIONS[] = {
  * @note It is indexed by short option characters.
  *
  * @sa CLI_OPTIONS
+ * @sa opt_help()
  */
 static char const *const CLI_OPTIONS_HELP[ 128 ] = {
   [ COPT(ALT_TOKENS) ] = "Print alternative tokens",
