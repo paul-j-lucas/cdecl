@@ -660,7 +660,7 @@ static void print_usage( int status ) {
       longest_opt_len = opt_len;
   } // for
 
-  FILE *const fout =  status == EX_OK ? stdout : stderr;
+  FILE *const fout = status == EX_OK ? stdout : stderr;
   FPRINTF( fout, "usage: %s [options] [command...]\noptions:\n", me );
 
   FOREACH_CLI_OPTION( opt ) {
