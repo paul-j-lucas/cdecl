@@ -336,6 +336,21 @@ static char const* opt_get_long( char short_opt ) {
 }
 
 /**
+ * Gets the help message for \a opt.
+ *
+ * @param opt The option to get the help for.
+ * @return Returns said help message.
+ */
+NODISCARD
+static char const* opt_help( int opt ) {
+  unsigned const opt_u = STATIC_CAST( unsigned, opt );
+  assert( opt_u < ARRAY_SIZE( CLI_OPTIONS_HELP ) );
+  char const *const help = CLI_OPTIONS_HELP[ opt_u ];
+  assert( help != NULL );
+  return help;
+}
+
+/**
  * Prints that \a value is an invalid value for \a opt to standard error and
  * exits.
  *
@@ -662,8 +677,7 @@ static void print_usage( int status ) {
     } // switch
     assert( opt_len <= longest_opt_len );
     FPUTNSP( longest_opt_len - opt_len, fout );
-    assert( CLI_OPTIONS_HELP[ opt->val ] != NULL );
-    FPRINTF( fout, " (-%c) %s.\n", opt->val, CLI_OPTIONS_HELP[ opt->val ] );
+    FPRINTF( fout, " (-%c) %s.\n", opt->val, opt_help( opt->val ) );
   } // for
 
   FPUTS(
