@@ -32,6 +32,7 @@
 #include "c_lang.h"
 #include "c_type.h"
 #include "cdecl.h"
+#include "cdecl_command.h"
 #include "color.h"
 #include "help.h"
 #include "options.h"
@@ -71,7 +72,9 @@
 #define OPT_INFER_COMMAND     I
 #define OPT_EXPLICIT_INT      i
 #define OPT_COLOR             k
+#define OPT_COMMANDS          K
 #define OPT_OUTPUT            o
+#define OPT_OPTIONS           O
 #define OPT_NO_PROMPT         p
 #define OPT_TRAILING_RETURN   r
 #define OPT_NO_SEMICOLON      s
@@ -117,6 +120,7 @@ static struct option const CLI_OPTIONS[] = {
   { "bison-debug",      no_argument,        NULL, COPT(BISON_DEBUG)       },
 #endif /* ENABLE_BISON_DEBUG */
   { "color",            required_argument,  NULL, COPT(COLOR)             },
+  { "commands",         no_argument,        NULL, COPT(COMMANDS)          },
   { "config",           required_argument,  NULL, COPT(CONFIG)            },
   { "debug",            optional_argument,  NULL, COPT(CDECL_DEBUG)       },
   { "digraphs",         no_argument,        NULL, COPT(DIGRAPHS)          },
@@ -138,6 +142,7 @@ static struct option const CLI_OPTIONS[] = {
   { "no-semicolon",     no_argument,        NULL, COPT(NO_SEMICOLON)      },
   { "no-typedefs",      no_argument,        NULL, COPT(NO_TYPEDEFS)       },
   { "no-using",         no_argument,        NULL, COPT(NO_USING)          },
+  { "options",          no_argument,        NULL, COPT(OPTIONS)           },
   { "output",           required_argument,  NULL, COPT(OUTPUT)            },
   { "trailing-return",  no_argument,        NULL, COPT(TRAILING_RETURN)   },
   { "trigraphs",        no_argument,        NULL, COPT(TRIGRAPHS)         },
@@ -160,6 +165,7 @@ static char const *const CLI_OPTIONS_HELP[ 128 ] = {
   [ COPT(BISON_DEBUG) ] = "Print Bison debug output",
 #endif /* ENABLE_BISON_DEBUG */
   [ COPT(COLOR) ] = "Colorize output [default: not_file]",
+  [ COPT(COMMANDS) ] = "Print commands (for shell completion)",
   [ COPT(CONFIG) ] = "Configuration file path [default: ~/" CONF_FILE_NAME_DEFAULT "]",
   [ COPT(CDECL_DEBUG) ] = "Print " CDECL " debug output",
   [ COPT(DIGRAPHS) ] = "Print digraphs",
@@ -181,6 +187,7 @@ static char const *const CLI_OPTIONS_HELP[ 128 ] = {
   [ COPT(NO_SEMICOLON) ] = "Suppress printing final semicolon for declarations",
   [ COPT(NO_TYPEDEFS) ] = "Suppress predefining standard types",
   [ COPT(NO_USING) ] = "Declare types with typedef, not using, in C++",
+  [ COPT(OPTIONS) ] = "Print command-line options (for shell completion)",
   [ COPT(OUTPUT) ] = "Write to file [default: stdout]",
   [ COPT(TRAILING_RETURN) ] = "Print trailing return type in C++",
   [ COPT(TRIGRAPHS) ] = "Print trigraphs",
@@ -196,9 +203,12 @@ NODISCARD
 static char const*  opt_format( char ),
                  *  opt_get_long( char );
 
+static void         print_commands( void );
+
 _Noreturn
 static void         print_usage( int );
 
+static void         print_options( void );
 static void         print_version( bool );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -446,7 +456,9 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   char const *      fout_path = "-";
   int               opt;
   bool              opt_buffer_stdout = true;
+  bool              opt_commands = false;
   bool              opt_help = false;
+  bool              opt_options = false;
   unsigned          opt_version = 0;
   char const *const short_opts = make_short_opts( CLI_OPTIONS );
 
@@ -472,6 +484,9 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
       case COPT(COLOR):
         opt_color_when = parse_color_when( optarg );
+        break;
+      case COPT(COMMANDS):
+        opt_commands = true;
         break;
       case COPT(CONFIG):
         if ( *SKIP_WS( optarg ) == '\0' )
@@ -545,6 +560,9 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(TRAILING_RETURN):
         opt_trailing_ret = true;
         break;
+      case COPT(OPTIONS):
+        opt_options = true;
+        break;
       case COPT(OUTPUT):
         if ( *SKIP_WS( optarg ) == '\0' )
           goto missing_arg;
@@ -586,6 +604,47 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
 
   opt_check_exclusive( COPT(HELP) );
   opt_check_exclusive( COPT(VERSION) );
+
+  opt_check_mutually_exclusive( COPT(COMMANDS),
+    SOPT(ALT_TOKENS)
+    SOPT(COLOR)
+    SOPT(DIGRAPHS)
+    SOPT(EAST_CONST)
+    SOPT(EXPLICIT_ECSU)
+    SOPT(EXPLICIT_INT)
+    SOPT(FILE)
+    SOPT(INFER_COMMAND)
+    SOPT(NO_ENGLISH_TYPES)
+    SOPT(NO_PROMPT)
+    SOPT(NO_SEMICOLON)
+    SOPT(NO_TYPEDEFS)
+    SOPT(NO_USING)
+    SOPT(OPTIONS)
+    SOPT(TRAILING_RETURN)
+    SOPT(TRIGRAPHS)
+    SOPT(WEST_POINTER)
+  );
+
+  opt_check_mutually_exclusive( COPT(OPTIONS),
+    SOPT(ALT_TOKENS)
+    SOPT(COLOR)
+    SOPT(COMMANDS)
+    SOPT(DIGRAPHS)
+    SOPT(EAST_CONST)
+    SOPT(EXPLICIT_ECSU)
+    SOPT(EXPLICIT_INT)
+    SOPT(FILE)
+    SOPT(INFER_COMMAND)
+    SOPT(NO_ENGLISH_TYPES)
+    SOPT(NO_PROMPT)
+    SOPT(NO_SEMICOLON)
+    SOPT(NO_TYPEDEFS)
+    SOPT(NO_USING)
+    SOPT(TRAILING_RETURN)
+    SOPT(TRIGRAPHS)
+    SOPT(WEST_POINTER)
+  );
+
   opt_check_mutually_exclusive( COPT(DIGRAPHS), SOPT(TRIGRAPHS) );
 
   if ( strcmp( fin_path, "-" ) != 0 && !freopen( fin_path, "r", stdin ) )
@@ -597,8 +656,18 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
   if ( !opt_buffer_stdout )
     setvbuf( stdout, /*buf=*/NULL, _IONBF, /*size=*/0 );
 
+  if ( opt_commands ) {
+    print_commands();
+    exit( EX_OK );
+  }
+
   if ( opt_help )
     print_usage( *pargc > 0 ? EX_USAGE : EX_OK );
+
+  if ( opt_options ) {
+    print_options();
+    exit( EX_OK );
+  }
 
   if ( opt_version > 0 ) {
     if ( *pargc > 0 )                   // cdecl -v foo
@@ -632,6 +701,38 @@ missing_arg:
     "\"%s\" requires an argument\n",
     opt_format( STATIC_CAST( char, opt == ':' ? optopt : opt ) )
   );
+}
+
+/**
+ * Prints all **cdecl** commands for the current language that can be given on
+ * the command-line.
+ *
+ * @remarks The use-case is for a shell completion function to be able to call
+ * **cdecl** to generate the commands to complete.
+ *
+ * @sa print_options()
+ */
+static void print_commands( void ) {
+  FOREACH_CDECL_COMMAND( command ) {
+    if ( command->kind == CDECL_COMMAND_LANG_ONLY )
+      continue;
+    if ( !opt_lang_is_any( command->lang_ids ) )
+      continue;
+    puts( command->literal );
+  } // for
+}
+
+/**
+ * Prints all **cdecl** command-line options in an easily parsable format.
+ *
+ * @remarks The use-case is for a shell completion function to be able to call
+ * **cdecl** to generate the options to complete.
+ *
+ * @sa print_commands()
+ */
+static void print_options( void ) {
+  FOREACH_CLI_OPTION( opt )
+    PRINTF( "--%s -%c %s\n", opt->name, opt->val, opt_help( opt->val ) );
 }
 
 /**

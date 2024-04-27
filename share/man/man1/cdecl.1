@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 24, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 25, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -294,6 +294,20 @@ that produce color.
 .IP
 The default is
 .BR not_file .
+.TP
+.BR \-\-commands " | " \-K
+Prints a sorted list of all
+.B cdecl
+commands
+for the current language
+that may be used as the first argument
+on a command-line.
+(See
+.BR "First Argument" .)
+This is intended for consumption
+by a shell completion function.
+(See also
+.BR \-\-options .)
 .TP
 .BI \-\-config \f1=\fPf "\f1 | \fP" "" \-c " f"
 Specifies the configuration file
@@ -578,6 +592,17 @@ etc.
 Always declares types with \f(CWtypedef\fP
 rather than \f(CWusing\fP
 in C++11 and later.
+.TP
+.BR \-\-options " | " \-O
+Prints a sorted list of all
+.B cdecl
+options
+that may be used on a command-line
+in an easily parsable form.
+This is intended for consumption
+by a shell completion function.
+(See also
+.BR \-\-commands .)
 .TP
 .BI \-\-output \f1=\fPf "\f1 | \fP" "" \-o " f"
 Sends all non-error output to file

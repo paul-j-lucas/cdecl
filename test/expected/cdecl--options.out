@@ -1,0 +1,27 @@
+--alt-tokens -a Print alternative tokens
+--color -k Colorize output [default: not_file]
+--commands -K Print commands (for shell completion)
+--config -c Configuration file path [default: ~/.cdeclrc]
+--debug -d Print cdecl debug output
+--digraphs -2 Print digraphs
+--east-const -e Print in "east const" form
+--echo-commands -E Echo commands given before corresponding output
+--explicit-ecsu -S Print "class", "struct", "union" explicitly
+--explicit-int -i Print "int" explicitly
+--file -f Read from file [default: stdin]
+--help -h Print this help and exit
+--infer-command -I Try to infer command when none is given
+--language -x Use language
+--no-buffer-stdout -b Set stdout to unbuffered
+--no-config -C Suppress reading configuration file
+--no-english-types -T Print types in C/C++, not English
+--no-prompt -p Suppress printing prompts
+--no-semicolon -s Suppress printing final semicolon for declarations
+--no-typedefs -t Suppress predefining standard types
+--no-using -u Declare types with typedef, not using, in C++
+--options -O Print command-line options (for shell completion)
+--output -o Write to file [default: stdout]
+--trailing-return -r Print trailing return type in C++
+--trigraphs -3 Print trigraphs
+--version -v Print version and exit
+--west-pointer -w Print *, &, and && next to type

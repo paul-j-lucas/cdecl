@@ -1,8 +1,8 @@
 ##
 #	cdecl -- C gibberish translator
-#	man/man1/Makefile.am
+#	share/Makefile.am
 #
-#	Copyright (C) 2017-2024  Paul J. Lucas
+#	Copyright (C) 2024  Paul J. Lucas
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -18,27 +18,6 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-dist_man1_MANS = cdecl.1 c++decl.1
-
-GROFF_FLAGS =	-man -Tps
-
-PS2PDF_FLAGS =	-dEmbedAllFonts=true \
-		-dHaveTrueTypes=true \
-		-dPDFSETTINGS=/prepress \
-		-dSubsetFonts=false
-
-pdf-local: cdecl.pdf
-
-cdecl.ps: cdecl.1
-	groff $(GROFF_FLAGS) $< > $@
-
-cdecl.pdf: cdecl.ps
-	ps2pdf $(PS2PDF_FLAGS) $<
-
-clean-local:
-	rm -f cdecl.ps
-
-distclean-local:
-	rm -f cdecl.pdf
+SUBDIRS = bash-completions man zsh
 
 # vim:set noet sw=8 ts=8:

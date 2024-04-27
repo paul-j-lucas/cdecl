@@ -1,0 +1,7 @@
+EXPECTED_EXIT=0
+
+echo '$ cdecl -b --commands'
+cdecl -b --commands
+
+echo '$ cdecl -b -xc++ --commands'
+cdecl -b -xc++ --commands

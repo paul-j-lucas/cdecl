@@ -2,6 +2,7 @@ usage: cdecl [options] [command...]
 options:
   --alt-tokens        (-a) Print alternative tokens.
   --color=ARG         (-k) Colorize output [default: not_file].
+  --commands          (-K) Print commands (for shell completion).
   --config=ARG        (-c) Configuration file path [default: ~/.cdeclrc].
   --debug[=ARG]       (-d) Print cdecl debug output.
   --digraphs          (-2) Print digraphs.
@@ -20,6 +21,7 @@ options:
   --no-semicolon      (-s) Suppress printing final semicolon for declarations.
   --no-typedefs       (-t) Suppress predefining standard types.
   --no-using          (-u) Declare types with typedef, not using, in C++.
+  --options           (-O) Print command-line options (for shell completion).
   --output=ARG        (-o) Write to file [default: stdout].
   --trailing-return   (-r) Print trailing return type in C++.
   --trigraphs         (-3) Print trigraphs.

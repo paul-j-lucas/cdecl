@@ -342,8 +342,13 @@ AC_CONFIG_FILES([
   lib/Makefile
   src/Makefile
   test/Makefile
-  man/Makefile
-  man/man1/Makefile
+  share/Makefile
+  share/bash-completions/Makefile
+  share/bash-completions/completions/Makefile
+  share/man/Makefile
+  share/man/man1/Makefile
+  share/zsh/Makefile
+  share/zsh/site-functions/Makefile
 ])
 AC_OUTPUT
 

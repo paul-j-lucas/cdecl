@@ -19,7 +19,7 @@
 ##
 
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = lib src man test
+SUBDIRS = lib share src test
 
 EXTRA_DIST =	bootstrap \
 		cdecl.css \

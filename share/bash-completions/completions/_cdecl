@@ -1,0 +1,39 @@
+##
+#       cdecl -- C gibberish translator
+#       etc/bash_completion/completions/_cdecl
+#
+#       Copyright (C) 2024  Paul J. Lucas
+#
+#       This program is free software: you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation, either version 3 of the License, or
+#       (at your option) any later version.
+#
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#
+#       You should have received a copy of the GNU General Public License
+#       along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##
+
+_cdecl() {
+  local cdecl=${COMP_WORDS[0]}
+  local cur=${COMP_WORDS[COMP_CWORD]}
+
+  if [[ $cur == -* ]]
+  then
+    COMPREPLY=($(compgen -W "$($cdecl --options | cut -f1 -d' ')" -- $cur))
+  else
+    COMPREPLY=($(compgen -W "$($cdecl --commands)" -- $cur))
+    # Offer completions only if a command hasn't already been entered.
+    local common=($(comm -12 <(printf "%s\n" ${COMP_WORDS[@]} | sort) \
+                             <(printf "%s\n" ${COMPREPLY[@]})))
+    (( ${#common[@]} > 0 )) && COMPREPLY=()
+  fi
+}
+
+complete -F _cdecl cdecl c++decl
+
+# vim:set syntax=bash et sw=2 ts=2:

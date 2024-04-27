@@ -1,0 +1,36 @@
+$ cdecl -b --commands
+cast
+declare
+define
+enum
+expand
+explain
+help
+include
+set
+show
+struct
+typedef
+union
+$ cdecl -b -xc++ --commands
+cast
+class
+const
+declare
+define
+dynamic
+enum
+expand
+explain
+help
+include
+inline
+namespace
+reinterpret
+set
+show
+static
+struct
+typedef
+union
+using

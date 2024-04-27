@@ -29,8 +29,10 @@ TESTS=	tests/cl.test \
 
 # Command-line option tests
 TESTS+= tests/cdecl--color.test \
+	tests/cdecl--commands.test \
 	tests/cdecl--help.test \
-	tests/cdecl--no-typedefs.test
+	tests/cdecl--no-typedefs.test \
+	tests/cdecl--options.test
 
 # Command-line option error tests
 TESTS+=	tests/cli_options-error.test

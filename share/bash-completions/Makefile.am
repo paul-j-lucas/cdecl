@@ -1,8 +1,8 @@
 ##
 #	cdecl -- C gibberish translator
-#	man/Makefile.am
+#	share/bash-completions/Makefile.am
 #
-#	Copyright (C) 2017-2024  Paul J. Lucas
+#	Copyright (C) 2024  Paul J. Lucas
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -18,6 +18,6 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-SUBDIRS = man1
+SUBDIRS = completions
 
 # vim:set noet sw=8 ts=8:
