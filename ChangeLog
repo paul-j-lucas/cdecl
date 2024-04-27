@@ -1,3 +1,15 @@
+2024-04-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * Makefile.am, configure.ac, share/Makefile.am,
+     share/bash-completions/Makefile.am,
+     share/bash-completions/completions/Makefile.am,
+     share/bash-completions/completions/_cdecl, share/zsh/Makefile.am,
+     share/zsh/site-functions/Makefile.am, share/zsh/site-functions/_cdecl,
+     cli_options.c, test/Makefile.am, cdecl--commands.out, cdecl--help.out,
+     cdecl--options.out, cdecl--commands.test, cdecl--options.test: Added
+     --commands/-K and --options/-O options facilitating implemting
+     command-line completion for bash and zsh.
+
 2024-04-24  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: Added opt_help().
