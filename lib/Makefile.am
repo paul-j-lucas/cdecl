@@ -869,6 +869,7 @@ stddef.h: stddef.in.h $(top_builddir)/config.status
 	      -e 's|@''NEXT_STDDEF_H''@|$(NEXT_STDDEF_H)|g' \
 	      -e 's|@''HAVE_MAX_ALIGN_T''@|$(HAVE_MAX_ALIGN_T)|g' \
 	      -e 's|@''HAVE_WCHAR_T''@|$(HAVE_WCHAR_T)|g' \
+	      -e 's|@''NULLPTR_T_NEEDS_STDDEF''@|$(NULLPTR_T_NEEDS_STDDEF)|g' \
 	      -e 's|@''REPLACE_NULL''@|$(REPLACE_NULL)|g' \
 	      $(srcdir)/stddef.in.h > $@-t
 	$(AM_V_at)mv $@-t $@
@@ -1421,6 +1422,7 @@ sys/types.h: sys_types.in.h $(top_builddir)/config.status
 	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
 	      -e 's|@''NEXT_SYS_TYPES_H''@|$(NEXT_SYS_TYPES_H)|g' \
 	      -e 's|@''WINDOWS_64_BIT_OFF_T''@|$(WINDOWS_64_BIT_OFF_T)|g' \
+	      -e 's|@''HAVE_OFF64_T''@|$(HAVE_OFF64_T)|g' \
 	      -e 's|@''WINDOWS_STAT_INODES''@|$(WINDOWS_STAT_INODES)|g' \
 	      $(srcdir)/sys_types.in.h > $@-t
 	$(AM_V_at)mv $@-t $@
