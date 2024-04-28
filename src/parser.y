@@ -8787,7 +8787,7 @@ int_exp
   : Y_int
   | error
     {
-      elaborate_error( "int[eger] expected" );
+      elaborate_error( "\"int[eger]\" expected" );
     }
   ;
 
