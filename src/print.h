@@ -34,7 +34,7 @@
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
-#include <stdio.h>
+#include <stdio.h>                      /* for FILE */
 
 /**
  * @defgroup printing-errors-warnings-group Printing Hints, Errors, & Warnings

@@ -44,7 +44,6 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
-#include <stdint.h>
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_AST_H_INLINE

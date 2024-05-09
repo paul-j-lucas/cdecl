@@ -37,7 +37,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <getopt.h>
+#include <getopt.h>                     /* {no|required|optional}_argument */
 #include <stdbool.h>
 
 /// @endcond

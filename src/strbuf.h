@@ -34,7 +34,7 @@
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
-#include <string.h>                     /* for memset(3) */
+#include <string.h>
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef STRBUF_H_INLINE

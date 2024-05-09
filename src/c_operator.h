@@ -34,7 +34,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <limits.h>
+#include <limits.h>                     /* for UINT_MAX */
 #include <stdbool.h>
 
 _GL_INLINE_HEADER_BEGIN

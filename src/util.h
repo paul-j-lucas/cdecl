@@ -36,12 +36,12 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
-#include <stdint.h>
+#include <stdint.h>                     /* for uint*_t */
 #include <stdio.h>                      /* for FILE */
-#include <stdlib.h>
-#include <string.h>
+#include <stdlib.h>                     /* for atexit(3) */
+#include <string.h>                     /* for strspn(3) */
 #include <sysexits.h>
-#include <time.h>
+#include <time.h>                       /* for strftime(3) */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_UTIL_H_INLINE

@@ -39,7 +39,6 @@
 
 // standard
 #include <stdbool.h>
-#include <stdio.h>                      /* for FILE */
 
 /// @endcond
 

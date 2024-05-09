@@ -32,7 +32,7 @@
 #include "c_ast.h"
 #include "c_operator.h"
 #include "c_type.h"
-#include "options.h"
+#include "options.h"                    /* for opt_using */
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
