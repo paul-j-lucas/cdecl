@@ -354,9 +354,9 @@ static char const* opt_get_long( char short_opt ) {
  */
 NODISCARD
 static char const* opt_help( int opt ) {
-  unsigned const opt_u = STATIC_CAST( unsigned, opt );
-  assert( opt_u < ARRAY_SIZE( CLI_OPTIONS_HELP ) );
-  char const *const help = CLI_OPTIONS_HELP[ opt_u ];
+  unsigned const uopt = STATIC_CAST( unsigned, opt );
+  assert( uopt < ARRAY_SIZE( CLI_OPTIONS_HELP ) );
+  char const *const help = CLI_OPTIONS_HELP[ uopt ];
   assert( help != NULL );
   return help;
 }
