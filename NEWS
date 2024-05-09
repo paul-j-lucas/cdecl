@@ -17,7 +17,7 @@ The short option for `--echo-commands` has been changed from `-O` to `-E`.
 
 ** Shell completion options
 There are two new options: `--commands`/`-K` that prints **cdecl**'s commands
-for the current language and `--options`/`-O` that prints cdecl's options`.
+for the current language and `--options`/`-O` that prints cdecl's options.
 Both are intended to aid in writing shell completion functions for **cdecl**.
 
 ** Shell completion functions
