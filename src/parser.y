@@ -4741,8 +4741,8 @@ no_destructor_params
       // where the <<("int" is a keyword)>> part seems wrong since the user
       // didn't try using "int" as an ordinary identifier.  To suppress that
       // part, set lexer_token to the empty string so elaborate_error() won't
-      // print it nor call call print_error_token_is_a() and and we'll instead
-      // get an error message like:
+      // print it nor call print_error_token_is_a() and and we'll instead get
+      // an error message like:
       //
       //      c++decl> explain ~C(int)
       //                          ^
