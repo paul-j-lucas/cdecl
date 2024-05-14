@@ -1,3 +1,18 @@
+2024-05-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: fl_punct_expected() will now also print the look-ahead token's
+     token-id in debug mode.
+   * parser.y: Removed print_debug_file_line() duplicate call.
+
+2024-05-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_ast_util.h, c_operator.h, options.h, parse.h, print.h,
+     set_options.h, strbuf.h, util.h: #include clean-up and comments.
+
+2024-04-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Put quotes around "int[eger]".
+
 2024-04-27  Paul J. Lucas <paul@lucasmail.org>
 
    * Makefile.am, configure.ac, share/Makefile.am,
