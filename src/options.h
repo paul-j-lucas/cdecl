@@ -269,7 +269,7 @@ bool parse_explicit_int( char const *ei_format );
  * Format | Meaning
  * -------|-----------------------------------
  * `b`    | Apple block return type.
- * `f`    | Function (and pointer to function) return rype.
+ * `f`    | Function (and pointer to function) return type.
  * `l`    | User-defined literal return type.
  * `o`    | Operator return type.
  * `r`    | All return types (same as `bflo`).
