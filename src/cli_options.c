@@ -159,7 +159,7 @@ static struct option const CLI_OPTIONS[] = {
  * @sa CLI_OPTIONS
  * @sa opt_help()
  */
-static char const *const CLI_OPTIONS_HELP[ 128 ] = {
+static char const *const CLI_OPTIONS_HELP[] = {
   [ COPT(ALT_TOKENS) ] = "Print alternative tokens",
 #ifdef ENABLE_BISON_DEBUG
   [ COPT(BISON_DEBUG) ] = "Print Bison debug output",
