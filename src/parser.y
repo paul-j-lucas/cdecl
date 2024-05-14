@@ -583,6 +583,8 @@ typedef struct in_attr in_attr_t;
 PJL_PRINTF_LIKE_FUNC(4)
 static void fl_elaborate_error( char const*, int, dym_kind_t, char const*,
                                 ... );
+PJL_DISCARD
+static bool print_error_token( char const* );
 
 // local variables
 static c_ast_list_t   gc_ast_list;      ///< c_ast nodes freed after parse.
@@ -1010,11 +1012,8 @@ static void fl_keyword_expected( char const *file, int line,
 static void fl_punct_expected( char const *file, int line, char punct ) {
   EPUTS( ": " );
   print_debug_file_line( file, line );
-
-  char const *const error_token = lexer_printable_token();
-  if ( error_token != NULL )
-    EPRINTF( "\"%s\": ", error_token );
-
+  if ( print_error_token( lexer_printable_token() ) )
+    EPUTS( ": " );
   EPRINTF( "'%c' expected\n", punct );
 }
 
@@ -9161,22 +9160,8 @@ static void fl_elaborate_error( char const *file, int line,
   print_debug_file_line( file, line );
 
   char const *const error_token = lexer_printable_token();
-  if ( error_token != NULL ) {
-    EPRINTF( "\"%s\"", error_token );
-    if ( opt_cdecl_debug != CDECL_DEBUG_NO ) {
-      switch ( yychar ) {
-        case YYEMPTY:
-          EPUTS( " [<empty>]" );
-          break;
-        case YYEOF:
-          EPUTS( " [<EOF>]" );
-          break;
-        default:
-          EPRINTF( " [%d]", yychar );
-      } // switch
-    }
+  if ( print_error_token( error_token ) )
     EPUTS( ": " );
-  }
 
   va_list args;
   va_start( args, format );
@@ -9189,6 +9174,32 @@ static void fl_elaborate_error( char const *file, int line,
   }
 
   EPUTC( '\n' );
+}
+
+/**
+ * Prints \a token, quoted; if \ref opt_cdecl_debug `!=` #CDECL_DEBUG_NO, also
+ * prints the look-ahead character within `[]`.
+ *
+ * @param token The error token to print, if any.
+ * @return Returns `true` only if anything was printed.
+ */
+static bool print_error_token( char const *token ) {
+  if ( token == NULL )
+    return false;
+  EPRINTF( "\"%s\"", token );
+  if ( opt_cdecl_debug != CDECL_DEBUG_NO ) {
+    switch ( yychar ) {
+      case YYEMPTY:
+        EPUTS( " [<empty>]" );
+        break;
+      case YYEOF:
+        EPUTS( " [<EOF>]" );
+        break;
+      default:
+        EPRINTF( " [%d]", yychar );
+    } // switch
+  }
+  return true;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
