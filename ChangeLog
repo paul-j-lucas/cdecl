@@ -1,5 +1,6 @@
 2024-05-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * cli_options.c: Removed 128 specified size of CLI_OPTIONS_HELP.
    * parser.y: fl_punct_expected() will now also print the look-ahead token's
      token-id in debug mode.
    * parser.y: Removed print_debug_file_line() duplicate call.
