@@ -1015,7 +1015,6 @@ static void fl_punct_expected( char const *file, int line, char punct ) {
   if ( error_token != NULL )
     EPRINTF( "\"%s\": ", error_token );
 
-  print_debug_file_line( file, line );
   EPRINTF( "'%c' expected\n", punct );
 }
 
