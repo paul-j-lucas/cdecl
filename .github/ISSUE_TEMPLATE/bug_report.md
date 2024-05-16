@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+USE THIS FORM ONLY TO REPORT BUGS.  ANYTHING THAT IS NOT A BUG WILL BE CLOSED AND DELETED IMMEDIATELY.
+
 ## Issue Type
 
 There are a few types of issues:

@@ -8,6 +8,8 @@ assignees: ''
 
 ---
 
+USE THIS FORM ONLY FOR ENHANCEMENT REQUESTS.  ANYTHING THAT IS NOT AN ENHANCEMENT REQUEST WILL BE CLOSED AND DELETED IMMEDIATELY.
+
 ## Issue Type
 
 If your issue is a bug (build-time error, run-time error, or bad documentation), please use the **Bug report** template instead.
