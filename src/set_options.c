@@ -704,7 +704,7 @@ static bool set_using( set_option_fn_args_t const *args ) {
   opt_using = args->opt_enabled;
   if ( opt_using && !OPT_LANG_IS( using_DECLS ) ) {
     print_warning( args->opt_name_loc,
-      "using not supported%s\n",
+      "\"using\" not supported%s\n",
       C_LANG_WHICH( using_DECLS )
     );
   }
