@@ -1,0 +1,7 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contact the Author
+    url: mailto:paul@lucasmail.org
+    about: For anything else that is NOT a bug or enhancement request.
+
+# vim:set et sw=2 ts=2:
