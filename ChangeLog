@@ -1,3 +1,7 @@
+2024-05-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c: Added quotes around "using" in warning message.
+
 2024-05-14  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: Removed 128 specified size of CLI_OPTIONS_HELP.
@@ -59,12 +63,6 @@
      west-pointer.test, xec-error.test, xec.test, xupc-error.test, xupc.test:
      The short option for `--echo-commands` has been changed from `-O` to `-E`.
    * cli_options.c, cdecl--help.out: Added CLI_OPTIONS_HELP[].
-
-2024-04-23  Paul J. Lucas <paul@lucasmail.org>
-
-   * .github/ISSUE_TEMPLATE/bug_report.md,
-     .github/ISSUE_TEMPLATE/enhancement-request.md: Update issue templates
-   * .github/ISSUE_TEMPLATE/bug_report.md: Added bug reporting template
 
 2024-04-16  Paul J. Lucas <paul@lucasmail.org>
 
