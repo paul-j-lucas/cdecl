@@ -1,5 +1,6 @@
 2024-05-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * options.c: Now using ARRAY_SIZE() got static buffer sizes.
    * options.c: Added missing '\0' in west_pointer_str(); added assert() calls
      to all *_str().
    * options.c: Added calls to c_tid_check().
