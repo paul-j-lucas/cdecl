@@ -593,8 +593,8 @@ static void print_help_options( void ) {
   print_h( "  [no]east-const\n" );
   print_h( "  [no]echo-commands\n" );
   print_h( "  [no]english-types\n" );
-  print_h( "  [no]explicit-ecsu[={e|c|s|u}+]\n" );
-  print_h( "  [no]explicit-int[=<types>]\n" );
+  print_h( "  [no]explicit-ecsu[={{e|c|s|u}+|\\*|-}]\n" );
+  print_h( "  [no]explicit-int[={<types>|\\*|-}]\n" );
 #ifdef ENABLE_FLEX_DEBUG
   print_h( "  [no]flex-debug\n" );
 #endif /* ENABLE_FLEX_DEBUG */
@@ -606,7 +606,7 @@ static void print_help_options( void ) {
   print_h( "  [no]semicolon\n" );
   print_h( "  [no]trailing-return\n" );
   print_h( "  [no]using\n" );
-  print_h( "  [no]west-pointer[={b|f|l|o|r|t|\\*}+]\n" );
+  print_h( "  [no]west-pointer[={{b|f|l|o|r|t}+|\\*|-}]\n" );
   print_h( "lang:\n" );
   print_h( "  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C\\+\\+[98|03|11|14|17|20|23]\n" );
   print_h( "types:\n" );
