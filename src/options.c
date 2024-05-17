@@ -306,8 +306,8 @@ bool parse_explicit_int( char const *ei_format ) {
     btids = TB_NONE;
   } // for
 
-  opt_explicit_int_btids[0] = tmp_ei_btids[0];
-  opt_explicit_int_btids[1] = tmp_ei_btids[1];
+  opt_explicit_int_btids[0] = c_tid_check( tmp_ei_btids[0], C_TPID_BASE );
+  opt_explicit_int_btids[1] = c_tid_check( tmp_ei_btids[1], C_TPID_BASE );
   return true;
 }
 
