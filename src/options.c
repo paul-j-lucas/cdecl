@@ -124,7 +124,7 @@ bool any_explicit_int( void ) {
 }
 
 char const* cdecl_debug_str( void ) {
-  static char buf[2];
+  static char buf[ ARRAY_SIZE( "u" ) ];
   char *s = buf;
 
   if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_AST_UNIQUE_ID) != 0 )
@@ -136,7 +136,7 @@ char const* cdecl_debug_str( void ) {
 }
 
 char const* explicit_ecsu_str( void ) {
-  static char buf[5];
+  static char buf[ ARRAY_SIZE( "ecsu" ) ];
   char *s = buf;
 
   if ( (opt_explicit_ecsu_btids & TB_enum) != TB_NONE )
@@ -347,7 +347,7 @@ bool parse_west_pointer( char const *wp_format ) {
 }
 
 char const* west_pointer_str( void ) {
-  static char buf[6];
+  static char buf[ ARRAY_SIZE( "bflot" ) ];
   char *s = buf;
 
   if ( (opt_west_pointer_kinds & K_APPLE_BLOCK) != 0 )
