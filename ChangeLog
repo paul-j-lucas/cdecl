@@ -1,3 +1,7 @@
+2024-05-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, help.out: Added missing *|- to help for options.
+
 2024-05-16  Paul J. Lucas <paul@lucasmail.org>
 
    * set_options.c: Added quotes around "using" in warning message.
