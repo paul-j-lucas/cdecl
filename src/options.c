@@ -129,8 +129,9 @@ char const* cdecl_debug_str( void ) {
 
   if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_AST_UNIQUE_ID) != 0 )
     *s++ = 'u';
-  *s = '\0';
 
+  assert( s < buf + ARRAY_SIZE( buf ) );
+  *s = '\0';
   return buf;
 }
 
@@ -146,8 +147,9 @@ char const* explicit_ecsu_str( void ) {
     *s++ = 's';
   if ( (opt_explicit_ecsu_btids & TB_union) != TB_NONE )
     *s++ = 'u';
-  *s = '\0';
 
+  assert( s < buf + ARRAY_SIZE( buf ) );
+  *s = '\0';
   return buf;
 }
 
@@ -359,6 +361,8 @@ char const* west_pointer_str( void ) {
   if ( (opt_west_pointer_kinds & K_ANY_NON_PTR_REF_OBJECT) != 0 )
     *s++ = 't';
 
+  assert( s < buf + ARRAY_SIZE( buf ) );
+  *s = '\0';
   return buf;
 }
 
