@@ -310,7 +310,24 @@ typedef enum c_tpid c_tpid_t;
 #define TB_union              0x0000000002000001ull /**< `union`              */
 #define TB_class              0x0000000004000001ull /**< `class`              */
 #define TB_namespace          0x0000000008000001ull /**< `namespace`          */
-#define TB_SCOPE              0x0000000010000001ull /**< Generic scope.       */
+
+/**
+ * A generic scope when the specific type of scope is unknown.
+ *
+ * @remarks
+ * @parblock
+ * For example:
+ *
+ *      c++decl> explain int T::x
+ *      declare x of scope T as integer
+ *
+ * If `T` wasn't previously declared, **cdecl** knows `T` must be one of
+ * `class`, `namespace`, `struct`, or `union`, but it has no way to know which
+ * one, so it uses the generic `scope` instead.
+ * @endparblock
+ */
+#define TB_SCOPE              0x0000000010000001ull
+
 /**
  * A `typedef`'d type, e.g., `size_t`.
  *
