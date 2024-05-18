@@ -1,5 +1,5 @@
 # stddef_h.m4
-# serial 15
+# serial 16
 dnl Copyright (C) 2009-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -110,6 +110,7 @@ AC_DEFUN_ONCE([gl_STDDEF_H],
         [gl_cv_clean_version_stddef=yes],
         [gl_cv_clean_version_stddef=no])])
   if test "$gl_cv_clean_version_stddef" = no; then
+    STDDEF_NOT_IDEMPOTENT=1
     GL_GENERATE_STDDEF_H=true
   fi
 
@@ -144,6 +145,7 @@ AC_DEFUN([gl_STDDEF_H_DEFAULTS],
 [
   dnl Assume proper GNU behavior unless another module says otherwise.
   NULLPTR_T_NEEDS_STDDEF=1;      AC_SUBST([NULLPTR_T_NEEDS_STDDEF])
+  STDDEF_NOT_IDEMPOTENT=0;       AC_SUBST([STDDEF_NOT_IDEMPOTENT])
   REPLACE_NULL=0;                AC_SUBST([REPLACE_NULL])
   HAVE_MAX_ALIGN_T=1;            AC_SUBST([HAVE_MAX_ALIGN_T])
   HAVE_WCHAR_T=1;                AC_SUBST([HAVE_WCHAR_T])

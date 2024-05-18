@@ -27,10 +27,13 @@
 #endif
 @PRAGMA_COLUMNS@
 
-#if (!defined _@GUARD_PREFIX@_STDDEF_H \
-     && (defined __need_wchar_t || defined __need_size_t \
-         || defined __need_ptrdiff_t || defined __need_NULL \
-         || defined __need_wint_t))
+#if (defined __need_wchar_t || defined __need_size_t                \
+     || defined __need_ptrdiff_t || defined __need_NULL             \
+     || defined __need_wint_t)                                      \
+    /* Avoid warning triggered by "gcc -std=gnu23 -Wsystem-headers" \
+       in Fedora 40 with gcc 14.0.1.                                \
+       <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=114870>.  */   \
+    && !@STDDEF_NOT_IDEMPOTENT@
 /* Special invocation convention inside gcc header files.  In
    particular, <stddef.h> in some ancient versions of GCC blindly
    redefined NULL when __need_wint_t was defined, even though wint_t
@@ -38,7 +41,7 @@
    (FIXME: It's not clear what GCC versions those were - perhaps so
    ancient that we can stop worrying about this?)
    Although glibc 2.26 (2017) and later do not use __need_wint_t,
-   for portability to older Glibc + GCC,
+   for portability to macOS, Cygwin, Haiku, and older Glibc + GCC,
    remember if special invocation has ever been used to obtain wint_t,
    in which case we need to clean up NULL yet again.  */
 
@@ -57,6 +60,13 @@
 # endif
 
 #else
+/* For @STDDEF_NOT_IDEMPOTENT@.  */
+# undef __need_wchar_t
+# undef __need_size_t
+# undef __need_ptrdiff_t
+# undef __need_NULL
+# undef __need_wint_t
+
 /* Normal invocation convention.  */
 
 # ifndef _@GUARD_PREFIX@_STDDEF_H

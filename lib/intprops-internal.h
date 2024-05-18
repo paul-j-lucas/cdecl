@@ -185,10 +185,10 @@
 /* Nonzero if this compiler has GCC bug 68193 or Clang bug 25390.  See:
    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68193
    https://llvm.org/bugs/show_bug.cgi?id=25390
-   For now, assume all versions of GCC-like compilers generate bogus
+   For now, assume GCC < 14 and all Clang versions generate bogus
    warnings for _Generic.  This matters only for compilers that
    lack relevant builtins.  */
-#if __GNUC__ || defined __clang__
+#if (__GNUC__ && __GNUC__ < 14) || defined __clang__
 # define _GL__GENERIC_BOGUS 1
 #else
 # define _GL__GENERIC_BOGUS 0
