@@ -1,3 +1,8 @@
+2024-05-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, define-error.out, explain-error.out, ntu-error.out,
+     explain-error.test: Improved error messages for predefined types.
+
 2024-05-17  Paul J. Lucas <paul@lucasmail.org>
 
    * options.c: Now using ARRAY_SIZE() got static buffer sizes.
