@@ -863,42 +863,42 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
       CONST_CAST( void*, type_ast )
     );
     slist_push_list_back( &typedef_ast_list, &gc_ast_list );
+    return true;
   }
-  else {
-    //
-    // Type was NOT added because a previously declared type having the same
-    // name was returned: check if the types are equal.
-    //
-    // In C, multiple typedef declarations having the same name are allowed
-    // only if the types are equivalent:
-    //
-    //      typedef int T;
-    //      typedef int T;                // OK
-    //      typedef double T;             // error: types aren't equivalent
-    //
-    if ( !c_ast_equal( type_ast, tdef->ast ) ) {
-      if ( tdef->is_predefined ) {
-        print_error( &type_ast->loc,
-          "\"%s\" is a predefined type starting in %s\n",
-          c_sname_full_name( &type_ast->sname ),
-          c_lang_name( c_lang_oldest( tdef->lang_ids ) )
-        );
-      } else {
-        print_error( &type_ast->loc, "type " );
-        print_ast_type_aka( type_ast, stderr );
-        EPUTS( " redefinition incompatible with original type \"" );
-        print_type_ast( tdef, stderr );
-        EPUTS( "\"\n" );
-      }
-      return false;
-    }
 
+  //
+  // Type was NOT added because a previously declared type having the same name
+  // was returned: check if the types are equal.
+  //
+  // In C, multiple typedef declarations having the same name are allowed only
+  // if the types are equivalent:
+  //
+  //      typedef int T;
+  //      typedef int T;                // OK
+  //      typedef double T;             // error: types aren't equivalent
+  //
+  if ( c_ast_equal( type_ast, tdef->ast ) ) {
     // Update the language(s) the type is available in to include opt_lang_id.
     if ( opt_lang_id < c_lang_oldest( tdef->lang_ids ) )
       tdef->lang_ids = c_lang_and_newer( opt_lang_id );
+    return true;
   }
 
-  return true;
+  if ( tdef->is_predefined ) {
+    print_error( &type_ast->loc,
+      "\"%s\" is a predefined type starting in %s\n",
+      c_sname_full_name( &type_ast->sname ),
+      c_lang_name( c_lang_oldest( tdef->lang_ids ) )
+    );
+  } else {
+    print_error( &type_ast->loc, "type " );
+    print_ast_type_aka( type_ast, stderr );
+    EPUTS( " redefinition incompatible with original type \"" );
+    print_type_ast( tdef, stderr );
+    EPUTS( "\"\n" );
+  }
+
+  return false;
 }
 
 /**
