@@ -261,6 +261,17 @@
   fl_punct_expected( __FILE__, __LINE__, (PUNCT) ); PARSE_ABORT(); )
 
 /**
+ * Checks whether \a SNAME is a type.
+ *
+ * @param SNAME The scoped name to check.
+ * @param LOC The location of \a SNAME.
+ * @return Returns `true` only if \a SNAME is a type (and prints an error
+ * message); otherwise `false` (and does nothing).
+ */
+#define sname_is_type(SNAME,LOC) \
+  fl_sname_is_type( __FILE__, __LINE__, (SNAME), (LOC) )
+
+/**
  * Prints that a particular language feature is not supported by **cdecl** and
  * it an error.
  *
@@ -866,17 +877,63 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
     //      typedef double T;             // error: types aren't equivalent
     //
     if ( !c_ast_equal( type_ast, tdef->ast ) ) {
-      print_error( &type_ast->loc, "type " );
-      print_ast_type_aka( type_ast, stderr );
-      EPUTS( " redefinition incompatible with original type \"" );
-      print_type_ast( tdef, stderr );
-      EPUTS( "\"\n" );
+      if ( tdef->is_predefined ) {
+        print_error( &type_ast->loc,
+          "\"%s\" is a predefined type starting in %s\n",
+          c_sname_full_name( &type_ast->sname ),
+          c_lang_name( c_lang_oldest( tdef->lang_ids ) )
+        );
+      } else {
+        print_error( &type_ast->loc, "type " );
+        print_ast_type_aka( type_ast, stderr );
+        EPUTS( " redefinition incompatible with original type \"" );
+        print_type_ast( tdef, stderr );
+        EPUTS( "\"\n" );
+      }
       return false;
     }
 
     // Update the language(s) the type is available in to include opt_lang_id.
     if ( opt_lang_id < c_lang_oldest( tdef->lang_ids ) )
       tdef->lang_ids = c_lang_and_newer( opt_lang_id );
+  }
+
+  return true;
+}
+
+/**
+ * Checks whether \a sname is a type.
+ *
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
+ * @param sname The scoped name to check.
+ * @param loc The location of \a sname.
+ * @return Returns `true` only if \a sname is a type (and prints an error
+ * message); otherwise `false` (and does nothing).
+ */
+static bool fl_sname_is_type( char const *file, int line,
+                              c_sname_t const *sname, c_loc_t const *loc ) {
+  assert( sname != NULL );
+  assert( loc != NULL );
+
+  c_typedef_t const *const tdef = c_typedef_find_sname( sname );
+  if ( tdef == NULL )
+    return false;
+
+  if ( tdef->is_predefined ) {
+    fl_print_error( file, line, loc,
+      "\"%s\" is a predefined type starting in %s\n",
+      c_sname_full_name( sname ),
+      c_lang_name( c_lang_oldest( tdef->lang_ids ) )
+    );
+  } else {
+    fl_print_error( file, line, loc,
+      "\"%s\": previously declared as type \"",
+      c_sname_full_name( sname )
+    );
+    print_type_ast( tdef, stderr );
+    EPUTS( "\"\n" );
   }
 
   return true;
@@ -2017,14 +2074,7 @@ declare_command
         //
         FOREACH_SLIST_NODE( sname_node, &$sname_list ) {
           c_sname_t const *const sname = sname_node->data;
-          c_typedef_t const *const tdef = c_typedef_find_sname( sname );
-          if ( tdef != NULL ) {
-            print_error( &$decl_ast->loc,
-              "\"%s\": previously declared as type \"",
-              c_sname_full_name( sname )
-            );
-            print_type_ast( tdef, stderr );
-            EPUTS( "\"\n" );
+          if ( sname_is_type( sname, &$decl_ast->loc ) ) {
             ok = false;
             break;
           }
@@ -5739,17 +5789,7 @@ typedef_type_decl_c_ast
         //
         // but that name isn't of a previously declared type, so it's OK.
         //
-        c_typedef_t const *const tdef =
-          c_typedef_find_sname( &raw_tdef_ast->sname );
-        if ( tdef != NULL ) {
-          print_error( &$tdef_ast->loc,
-            "\"%s\": previously declared as type \"",
-            c_sname_full_name( &raw_tdef_ast->sname )
-          );
-          print_type_ast( tdef, stderr );
-          EPUTS( "\"\n" );
-          PARSE_ABORT();
-        }
+        PARSE_ASSERT( !sname_is_type( &raw_tdef_ast->sname, &$tdef_ast->loc ) );
 
         //
         // We have to duplicate the type to set the current location.

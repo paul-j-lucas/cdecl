@@ -24,6 +24,16 @@ Both are intended to aid in writing shell completion functions for **cdecl**.
 Bash and Zsh shell completion functions for **cdecl** are included under
 `share` and are installed as part of `make install`.
 
+** Improved error messages for predefined types
+Improved error messages in cases involving a predefined type such as:
+
+    cdecl> explain int int8_t
+    cdecl> struct int8_t
+
+In both cases, the error message printed now is:
+
+    error: "int8_t" is a predefined type starting in C99
+
 
 * Changes in Cdecl 16.3
 

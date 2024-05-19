@@ -41,6 +41,7 @@ explain int (*f) const
 explain int (f[4])()
 explain int f[5](double)
 explain int* f(x)
+explain int int8_t
 explain int main( char, char )
 explain int main( int )
 explain int main( int, char )

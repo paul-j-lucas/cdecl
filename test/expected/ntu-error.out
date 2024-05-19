@@ -1,6 +1,6 @@
 cdecl> typedef char int_least32_t
                ^
-9: error: type "char" redefinition incompatible with original type "int"
+9: error: "int_least32_t" is a predefined type starting in C99
 cdecl> typedef extern int SI
                ^
 9: error: "typedef extern int" is illegal for built-in type
@@ -69,7 +69,7 @@ c++decl> using AI = auto int
 12: error: "auto" illegal in type definition
 c++decl> using int_least32_t = char
                                ^
-23: error: type "char" redefinition incompatible with original type "int"
+23: error: "int_least32_t" is a predefined type starting in C99
 c++decl> using SI = extern int
                     ^
 12: error: "typedef extern int" is illegal for built-in type

@@ -105,6 +105,9 @@ cdecl> explain int f[5](double)
 cdecl> explain int* f(x)
                       ^
 16: error: type specifier required since C23
+cdecl> explain int int8_t
+                   ^
+13: error: "int8_t" is a predefined type starting in C99
 cdecl> explain int main( char, char )
                          ^
 19: error: invalid main() first parameter type "char"; must be "int" or a typedef thereof

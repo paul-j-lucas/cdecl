@@ -1,6 +1,6 @@
 cdecl> define int_least32_t as char
                                ^
-25: error: type "character" redefinition incompatible with original type "int"
+25: error: "int_least32_t" is a predefined type starting in C99
 cdecl> define SI as extern int
                     ^
 14: error: "typedef extern int" is illegal for built-in type
