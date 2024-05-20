@@ -844,8 +844,7 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
     return false;
   }
 
-  rb_node_t const *const tdef_rb = c_typedef_add( type_ast, decl_flags );
-  c_typedef_t *const tdef = tdef_rb->data;
+  c_typedef_t *const tdef = c_typedef_add( type_ast, decl_flags )->data;
 
   if ( tdef->ast == type_ast ) {
     //
