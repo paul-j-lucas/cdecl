@@ -1474,7 +1474,7 @@ static void yyerror( char const *msg ) {
 %token              Y_while
 
                     // C Preprocessor
-%token              /*  stringify */      '#'
+%token              /* stringify */       '#'
 %token              PY_CONCAT             "##"
 %token              PY_SPACE          //  whitespace
 %token              PY_define
