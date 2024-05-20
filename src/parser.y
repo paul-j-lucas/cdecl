@@ -799,7 +799,7 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
  * @param ast The AST whose \ref c_bit_field_ast::bit_width "bit_width" to
  * possibly set.
  * @param bit_width The bit-field width.
- * @return Return's `true` only if \a ast if an integral type.
+ * @return Returns `true` only if \a ast if an integral type.
  */
 NODISCARD
 static bool c_ast_set_bit_field_width( c_ast_t *ast, unsigned bit_width ) {
