@@ -1509,7 +1509,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_volatile
 
                     // C95
-%token  <tid>       Y_wchar_t
+%token  <tid>       Y_wchar_t           // see comment for TB_wchar_t
 
                     // C99
 %token  <tid>       Y__Bool
@@ -1562,8 +1562,8 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_virtual
 
                     // C11 & C++11
-%token  <tid>       Y_char16_t
-%token  <tid>       Y_char32_t
+%token  <tid>       Y_char16_t          // see comment for TB_char16_t
+%token  <tid>       Y_char32_t          // see comment for TB_char32_t
 
                     // C23
 %token  <tid>       Y__BitInt
@@ -1574,11 +1574,11 @@ static void yyerror( char const *msg ) {
 
                     // C23 & C++11
 %token              Y_ATTR_BEGIN        // First '[' of "[[" for an attribute.
+%token  <tid>       Y_auto_TYPE         // C23/C++11 version of "auto"
 
                     // C++11
 %token              Y_alignas
 %token              Y_alignof
-%token  <tid>       Y_auto_TYPE         // C23/C++11 version of "auto"
 %token              Y_carries Y_dependency
 %token  <tid>       Y_carries_dependency
 %token  <tid>       Y_constexpr
@@ -1602,7 +1602,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_noreturn
 
                     // C23 & C++20
-%token  <tid>       Y_char8_t
+%token  <tid>       Y_char8_t           // see comment for TB_char8_t
 
                     // C++20
 %token              Y_concept

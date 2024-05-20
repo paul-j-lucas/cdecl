@@ -291,10 +291,39 @@ typedef enum c_tpid c_tpid_t;
 #define TB__BitInt            0x0000000000000041ull /**< `_BitInt`            */
 #define TB_bool               0x0000000000000081ull /**< `_Bool` or `bool`    */
 #define TB_char               0x0000000000000101ull /**< `char`               */
-#define TB_char8_t            0x0000000000000201ull /**< `char8_t`            */
-#define TB_char16_t           0x0000000000000401ull /**< `char16_t`           */
-#define TB_char32_t           0x0000000000000801ull /**< `char32_t`           */
-#define TB_wchar_t            0x0000000000001001ull /**< `wchar_t`            */
+
+/**
+ * `char8_t`
+ *
+ * @remarks While this is a distinct type in C++20, it's just a `typedef` in
+ * C23.  It's simpler to treat it as a distinct type in C also.
+ */
+#define TB_char8_t            0x0000000000000201ull
+
+/**
+ * `char16_t`
+ *
+ * @remarks While this is a distinct type in C++11, it's just a `typedef` in
+ * C11.  It's simpler to treat it as a distinct type in C also.
+ */
+#define TB_char16_t           0x0000000000000401ull
+
+/**
+ * `char32_t`
+ *
+ * @remarks While this is a distinct type in C++11, it's just a `typedef` in
+ * C11.  It's simpler to treat it as a distinct type in C also.
+ */
+#define TB_char32_t           0x0000000000000801ull
+
+/**
+ * `wchar_t`
+ *
+ * @remarks While this is a distinct type in C++, it's just a `typedef` in C.
+ * It's simpler to treat it as a distinct type in C also.
+ */
+#define TB_wchar_t            0x0000000000001001ull
+
 #define TB_short              0x0000000000002001ull /**< `short`              */
 #define TB_int                0x0000000000004001ull /**< `int`                */
 #define TB_long               0x0000000000008001ull /**< `long`               */
@@ -309,7 +338,15 @@ typedef enum c_tpid c_tpid_t;
 #define TB_struct             0x0000000001000001ull /**< `struct`             */
 #define TB_union              0x0000000002000001ull /**< `union`              */
 #define TB_class              0x0000000004000001ull /**< `class`              */
-#define TB_namespace          0x0000000008000001ull /**< `namespace`          */
+
+/**
+ * `namespace`
+ *
+ * @remarks Even though a namespace isn't a type, it's simpler to store the
+ * fact that a name is a namespace as the scope of another name just like
+ * #TB_class, #TB_enum, #TB_struct, and #TB_union.
+ */
+#define TB_namespace          0x0000000008000001ull
 
 /**
  * A generic scope when the specific type of scope is unknown.
