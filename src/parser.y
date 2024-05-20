@@ -586,7 +586,7 @@ struct in_attr {
    * there's no way to pass local variables between Bison actions, so it's
    * passed via an inherited attribute.
    */
-  rb_node_t      *typedef_rb;
+  rb_node_t      *tdef_rb;
 };
 typedef struct in_attr in_attr_t;
 
@@ -844,8 +844,8 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
     return false;
   }
 
-  rb_node_t const *const typedef_rb = c_typedef_add( type_ast, decl_flags );
-  c_typedef_t *const tdef = typedef_rb->data;
+  rb_node_t const *const tdef_rb = c_typedef_add( type_ast, decl_flags );
+  c_typedef_t *const tdef = tdef_rb->data;
 
   if ( tdef->ast == type_ast ) {
     //
@@ -5037,9 +5037,8 @@ pc99_func_or_constructor_declaration_c
         c_sname_init_name( &csu_ast->csu.csu_sname, check_strdup( $name ) );
         csu_ast->sname = c_sname_dup( &csu_ast->csu.csu_sname );
 
-        in_attr.typedef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
-        MAYBE_UNUSED c_typedef_t const *const csu_tdef =
-          in_attr.typedef_rb->data;
+        in_attr.tdef_rb = c_typedef_add( csu_ast, C_GIB_TYPEDEF );
+        MAYBE_UNUSED c_typedef_t const *const csu_tdef = in_attr.tdef_rb->data;
         assert( csu_tdef->ast == csu_ast );
       }
     }
@@ -5063,7 +5062,7 @@ pc99_func_or_constructor_declaration_c
         // Note that we free only the typedef and not its AST; its AST will be
         // garbage collected.
         //
-        free( c_typedef_remove( in_attr.typedef_rb ) );
+        free( c_typedef_remove( in_attr.tdef_rb ) );
 
         //
         // In C++, encountering a name followed by '(' declares an in-class
