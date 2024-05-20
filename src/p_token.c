@@ -430,7 +430,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       token = p_token_new_loc( P_STR_LIT, &yylloc, yylval.str_val );
       break;
 
-    case PY_CONCAT:
+    case Y_PRE_CONCAT:
       //
       // Given:
       //
@@ -443,10 +443,10 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       token = p_token_new_loc( P_PUNCTUATOR, &yylloc, "##" );
       break;
 
-    case PY_SPACE:                      // can't result from concatenation
+    case Y_PRE_SPACE:                   // can't result from concatenation
       UNEXPECTED_INT_VALUE( y_token_id );
 
-    case PY___VA_ARGS__:
+    case Y_PRE___VA_ARGS__:
       //
       // Given:
       //
@@ -463,7 +463,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       token->ident.ineligible = true;
       break;
 
-    case PY___VA_OPT__:
+    case Y_PRE___VA_OPT__:
       //
       // Given:
       //

@@ -1406,7 +1406,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   //      | B => y
                   //      Q(x, y) => x y
                   //
-                  return PY_SPACE;
+                  return Y_PRE_SPACE;
                 }
               }
 
@@ -1424,7 +1424,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   // When lexing tokens for the C preprocessor, whitespace is
                   // significant.
                   //
-                  return PY_SPACE;
+                  return Y_PRE_SPACE;
                 }
               }
 
@@ -1449,7 +1449,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   define/{S}+{identifier}\( {
                 SET_TOKEN;
                 is_func_like_macro = true;
-                return PY_define;
+                return Y_PRE_define;
               }
 
   {identifier} {
@@ -1485,14 +1485,14 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   {identifier} {
                 SET_TOKEN;
                 if ( strcmp( lexer_token, PL___VA_ARGS__ ) == 0 )
-                  return PY___VA_ARGS__;
+                  return Y_PRE___VA_ARGS__;
                 if ( strcmp( lexer_token, PL___VA_OPT__ ) == 0 )
-                  return PY___VA_OPT__;
+                  return Y_PRE___VA_OPT__;
                 yylval.name = check_strdup( lexer_token );
                 return Y_NAME;
               }
 
-  "##"        { SET_TOKEN; return PY_CONCAT     ; }
+  "##"        { SET_TOKEN; return Y_PRE_CONCAT  ; }
 
   "#"         |
   "$"         |

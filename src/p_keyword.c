@@ -54,27 +54,27 @@
  * @note This is not declared `const` because it's sorted once.
  */
 static p_keyword_t P_KEYWORDS[] = {
-  { PL_define,    PY_define   },
-  { PL_elif,      PY_elif     },
-  { PL_else,      PY_else     },
-  { PL_error,     PY_error    },
-  { PL_if,        PY_if       },
-  { PL_ifdef,     PY_ifdef    },
-  { PL_ifndef,    PY_ifndef   },
-//{ PL_include,   PY_include  },        // handled within the lexer
-  { PL_line,      PY_line     },
-  { PL_undef,     PY_undef    },
+  { PL_define,    Y_PRE_define    },
+  { PL_elif,      Y_PRE_elif      },
+  { PL_else,      Y_PRE_else      },
+  { PL_error,     Y_PRE_error     },
+  { PL_if,        Y_PRE_if        },
+  { PL_ifdef,     Y_PRE_ifdef     },
+  { PL_ifndef,    Y_PRE_ifndef    },
+//{ PL_include,   Y_PRE_include   },    // handled within the lexer
+  { PL_line,      Y_PRE_line      },
+  { PL_undef,     Y_PRE_undef     },
 
   // C99
-  { PL_pragma,    PY_pragma   },
+  { PL_pragma,    Y_PRE_pragma    },
 
   // C23
-  { PL_elifdef,   PY_elifdef  },
-  { PL_elifndef,  PY_elifndef },
-  { PL_embed,     PY_embed    },
-  { PL_warning,   PY_warning  },
+  { PL_elifdef,   Y_PRE_elifdef   },
+  { PL_elifndef,  Y_PRE_elifndef  },
+  { PL_embed,     Y_PRE_embed     },
+  { PL_warning,   Y_PRE_warning   },
 
-  { NULL,         0           }
+  { NULL,         0               }
 };
 
 ////////// local functions ////////////////////////////////////////////////////
