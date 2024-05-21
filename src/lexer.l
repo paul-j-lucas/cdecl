@@ -388,20 +388,22 @@ static int parse_int( int base ) {
   char const *s = lexer_token;
   bool const is_neg = s[0] == '-';
 
-  if ( s[0] == '-' )
+  if ( is_neg )
     ++s;
 
   if ( base == 2 ) {
     // Prior to C23, strtol(3) doesn't understand a "0b" (binary) prefix, so
     // skip over it.
-    assert( s[0] == '0' );
-    assert( tolower( s[1] ) == 'b' );
+    assert( s[0] == '0' );              // String should start with "0b" ...
+    assert( tolower( s[1] ) == 'b' );   // ... since it was just lex'd as such.
     s += 2;
   }
 
   char no_digit_seps[ MAX_DIGITS_64 + 1/*\0*/ ];
 
   if ( strchr( s, '\'' ) != NULL ) {
+    // Strip digit separator (') characters since strtol(3) doesn't understand
+    // them.
     char *t = no_digit_seps;
     do {
       if ( *s != '\'' )
@@ -417,7 +419,7 @@ static int parse_int( int base ) {
   if ( unlikely( errno != 0 || rv < INT_MIN || rv > INT_MAX ) ) {
     // LCOV_EXCL_START
     rv = rv < INT_MIN ? INT_MIN : INT_MAX;
-    print_warning( &yylloc, "integer out of range; clamped to %d\n", (int)rv );
+    print_warning( &yylloc, "integer out of range; clamped to %ld\n", rv );
     // LCOV_EXCL_STOP
   }
 
