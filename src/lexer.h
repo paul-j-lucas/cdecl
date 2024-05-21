@@ -57,6 +57,8 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * For the lexer, specifies what to find when an identifier is lex'd.
+ *
+ * @sa lexer_find
  */
 enum lexer_find_kind {
   /**
@@ -91,7 +93,7 @@ typedef enum lexer_find_kind lexer_find_kind_t;
 ////////// extern variables ///////////////////////////////////////////////////
 
 /**
- * For the lexer, specifies what to look-up when an identifier is lex'd.
+ * For the lexer, specifies what to find when an identifier is lex'd.
  *
  * @remarks Defaults to #LEXER_FIND_ANY, but other values can be turned off
  * either individually or in combination via bitwise-and'ing the complement to
@@ -101,6 +103,9 @@ typedef enum lexer_find_kind lexer_find_kind_t;
  *
  * would find all _but_ **cdecl** keywords so they'd be returned as ordinary
  * identifiers.
+ *
+ * @sa is_english_to_gibberish()
+ * @sa is_gibberish_to_english()
  */
 extern lexer_find_kind_t  lexer_find;
 
@@ -124,6 +129,7 @@ extern char const        *lexer_token;
  * @return Returns `true` only if we are.
  *
  * @sa is_gibberish_to_english()
+ * @sa lexer_find
  * @sa #LEXER_FIND_CDECL_KEYWORDS
  */
 NODISCARD LEXER_H_INLINE
@@ -161,7 +167,7 @@ NODISCARD
 char const* lexer_input_line( size_t *rv_len );
 
 /**
- * Gets the lexer's current location.
+ * Gets the lexer's current location within the source string or file.
  *
  * @return Returns said location.
  */
