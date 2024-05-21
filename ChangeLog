@@ -1,3 +1,7 @@
+2024-05-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: parse_int() comments + minor clean-up.
+
 2024-05-20  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l, p_keyword.c, p_token.c, parser.y: s/PY_/Y_PRE_/
