@@ -557,10 +557,11 @@ done:
  * @sa set_trigraph()
  */
 static void set_digraph( char const *token ) {
-  if ( !OPT_LANG_IS( DIGRAPHS ) && false_set( &digraph_warned ) )
+  if ( !OPT_LANG_IS( DIGRAPHS ) && false_set( &digraph_warned ) ) {
     print_warning( &yylloc,
       "digraphs not supported%s\n", C_LANG_WHICH( DIGRAPHS )
     );
+  }
   SET_TOKEN_TO( token );
 }
 
