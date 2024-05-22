@@ -67,20 +67,20 @@
 
 #ifdef HAVE___TYPEOF__
 /**
- * Ignore the return value of a non-`void` function even if it was declared
+ * Discard the return value of a non-`void` function even if it was declared
  * with `NODISCARD`.
  *
  * @param FN_CALL The function call.
  */
-#define PJL_IGNORE_RV(FN_CALL) \
+#define PJL_DISCARD_RV(FN_CALL) \
   do { MAYBE_UNUSED __typeof__(FN_CALL) _rv = (FN_CALL); } while (0)
 #endif /* HAVE___TYPEOF__ */
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef PJL_IGNORE_RV
-#define PJL_IGNORE_RV(FN_CALL)    ((void)(FN_CALL))
-#endif /* PJL_IGNORE_RV */
+#ifndef PJL_DISCARD_RV
+#define PJL_DISCARD_RV(FN_CALL)   ((void)(FN_CALL))
+#endif /* PJL_DISCARD_RV */
 
 #ifndef PJL_PRINTF_LIKE_FUNC
 #define PJL_PRINTF_LIKE_FUNC(N)   /* nothing */

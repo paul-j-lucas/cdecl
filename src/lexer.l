@@ -353,7 +353,7 @@ static void lexer_pop_buffer( void ) {
   // https://stackoverflow.com/a/27512485/99089
   assert( yyin != NULL );
   assert( yyin != stdin );
-  PJL_IGNORE_RV( fclose( yyin ) );
+  fclose( yyin );
   yypop_buffer_state();
   assert( YY_CURRENT_BUFFER != NULL );
 }
@@ -446,7 +446,7 @@ static bool pop_file( void ) {
   assert( found_rb != NULL );
   // Ignore the curr_real_path returned by rb_tree_delete() since it's shared
   // with and owned by ifi.
-  PJL_IGNORE_RV( rb_tree_delete( &include_set, found_rb ) );
+  PJL_DISCARD_RV( rb_tree_delete( &include_set, found_rb ) );
 
   print_params.conf_path = ifi->prev_orig_path;
   yylineno = ifi->prev_lineno;
@@ -528,7 +528,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   // Now that we know the path resolves, it wasn't previously included, it's a
   // plain file, and we can open it, we can insert it into include_set.
   //
-  PJL_IGNORE_RV(
+  PJL_DISCARD_RV(
     rb_tree_insert( &include_set, CONST_CAST( void*, real_path ) )
   );
 

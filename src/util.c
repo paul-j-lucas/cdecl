@@ -202,7 +202,7 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
     return temp_file;
   }
 
-  PJL_IGNORE_RV( fclose( temp_file ) );
+  fclose( temp_file );
   return NULL;
 }
 #endif /* HAVE_FMEMOPEN */

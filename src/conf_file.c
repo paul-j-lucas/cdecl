@@ -93,8 +93,8 @@ static bool read_conf_file( char const *conf_path ) {
   if ( conf_file == NULL )
     return false;
 
-  PJL_IGNORE_RV( cdecl_parse_file( conf_file ) );
-  PJL_IGNORE_RV( fclose( conf_file ) );
+  PJL_DISCARD_RV( cdecl_parse_file( conf_file ) );
+  fclose( conf_file );
   return true;
 }
 

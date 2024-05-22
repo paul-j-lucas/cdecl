@@ -325,7 +325,7 @@ int cdecl_parse_string( char const *s, size_t s_len ) {
   }
 
   int const rv = yyparse();
-  PJL_IGNORE_RV( fclose( mem_file ) );
+  fclose( mem_file );
   if ( unlikely( rv == 2 ) ) {
     //
     // Bison has already printed "memory exhausted" via yyerror() that doesn't

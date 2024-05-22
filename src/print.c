@@ -240,7 +240,7 @@ static unsigned get_term_columns( void ) {
 
 error:
   if ( likely( cterm_fd != -1 ) )
-    PJL_IGNORE_RV( close( cterm_fd ) );
+    close( cterm_fd );
   if ( unlikely( reason != NULL ) ) {
     fatal_error( EX_UNAVAILABLE,
       "failed to determine number of columns in terminal: %s\n",

@@ -101,7 +101,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast,
         // else we'd end up with a "pointer to array 5 of array 3 of pointer to
         // int."
         //
-        PJL_IGNORE_RV(
+        PJL_DISCARD_RV(
           c_ast_add_array_impl( ast->ptr_ref.to_ast, array_ast, of_ast )
         );
         return ast;
@@ -245,7 +245,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
         if ( ast->depth > func_ast->depth ) {
-          PJL_IGNORE_RV(
+          PJL_DISCARD_RV(
             c_ast_add_func_impl( ast->ptr_ref.to_ast, func_ast, ret_ast )
           );
           return ast;

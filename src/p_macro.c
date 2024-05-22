@@ -2506,7 +2506,7 @@ static void mex_relocate_expand_list( mex_state_t *mex ) {
   }
 
   column += 1/*space*/ + STRLITLEN( ARROW ) + 1/*space*/;
-  PJL_IGNORE_RV( p_token_list_relocate( mex->expand_list, column ) );
+  PJL_DISCARD_RV( p_token_list_relocate( mex->expand_list, column ) );
 }
 
 /**

@@ -2947,7 +2947,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
       c_ast_t const *const ret_ast = ast->func.ret_ast;
       if ( ret_ast != NULL ) {
         c_tid_t ret_qual_stids;
-        PJL_IGNORE_RV( c_ast_untypedef_qual( ret_ast, &ret_qual_stids ) );
+        PJL_DISCARD_RV( c_ast_untypedef_qual( ret_ast, &ret_qual_stids ) );
         if ( c_tid_is_any( ret_qual_stids, TS_volatile ) &&
              !OPT_LANG_IS( volatile_RETURN_TYPES_NOT_DEPRECATED ) ) {
           print_warning( &ret_ast->loc,
@@ -2970,7 +2970,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
     case K_CONSTRUCTOR:
       FOREACH_AST_FUNC_PARAM( param, ast ) {
         c_ast_t const *const param_ast = c_param_ast( param );
-        PJL_IGNORE_RV(
+        PJL_DISCARD_RV(
           c_ast_check_visitor( param_ast, c_ast_visitor_warning )
         );
         if ( c_tid_is_any( param_ast->type.stids, TS_volatile ) &&
@@ -3104,7 +3104,7 @@ bool c_ast_check( c_ast_t const *ast ) {
   assert( ast != NULL );
   if ( !c_ast_check_errors( ast ) )
     return false;
-  PJL_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning ) );
+  PJL_DISCARD_RV( c_ast_check_visitor( ast, c_ast_visitor_warning ) );
   return true;
 }
 

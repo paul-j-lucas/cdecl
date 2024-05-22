@@ -2509,7 +2509,7 @@ define_command
         );
       }
       PARSE_ASSERT( c_ast_check( $decl_ast ) );
-      PJL_IGNORE_RV( c_ast_take_type_any( $decl_ast, &T_TS_typedef ) );
+      PJL_DISCARD_RV( c_ast_take_type_any( $decl_ast, &T_TS_typedef ) );
 
       if ( c_tid_is_any( $decl_ast->type.btids, TB_ANY_SCOPE ) )
         c_sname_set_local_type( &$decl_ast->sname, &$decl_ast->type );
@@ -4276,7 +4276,7 @@ typedef_decl_c
 
       PARSE_ASSERT( c_ast_check( typedef_ast ) );
       // see the comment in "define_command" about TS_typedef
-      PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_typedef ) );
+      PJL_DISCARD_RV( c_ast_take_type_any( typedef_ast, &T_TS_typedef ) );
 
       if ( c_sname_count( &typedef_ast->sname ) > 1 ) {
         print_error( &@decl_astp,
@@ -4327,7 +4327,7 @@ using_declaration_c
   : using_decl_c_ast[decl_ast]
     {
       // see the comment in "define_command" about TS_typedef
-      PJL_IGNORE_RV( c_ast_take_type_any( $decl_ast, &T_TS_typedef ) );
+      PJL_DISCARD_RV( c_ast_take_type_any( $decl_ast, &T_TS_typedef ) );
 
       PARSE_ASSERT( define_type( $decl_ast, C_GIB_USING ) );
     }
@@ -5499,7 +5499,7 @@ pointer_decl_c_astp
       DUMP_AST( "pointer_type_c_ast", $type_ast );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
-      PJL_IGNORE_RV( c_ast_patch_placeholder( $type_ast, $decl_astp.ast ) );
+      PJL_DISCARD_RV( c_ast_patch_placeholder( $type_ast, $decl_astp.ast ) );
       $$ = $decl_astp;
       $$.ast->loc = @$;
 

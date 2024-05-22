@@ -611,15 +611,15 @@ static bool set_lang_impl( char const *name ) {
   // user is re-warned if the option is not supported in the current language.
   //
   if ( opt_alt_tokens )
-    PJL_IGNORE_RV( set_alt_tokens( &enabled_args ) );
+    PJL_DISCARD_RV( set_alt_tokens( &enabled_args ) );
   switch ( opt_graph ) {
     case C_GRAPH_NONE:
       break;
     case C_GRAPH_DI:
-      PJL_IGNORE_RV( set_digraphs( &enabled_args ) );
+      PJL_DISCARD_RV( set_digraphs( &enabled_args ) );
       break;
     case C_GRAPH_TRI:
-      PJL_IGNORE_RV( set_trigraphs( &enabled_args ) );
+      PJL_DISCARD_RV( set_trigraphs( &enabled_args ) );
       break;
   } // switch
 
