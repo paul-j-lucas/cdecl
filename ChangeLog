@@ -1,3 +1,9 @@
+2024-05-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_ast_util.c, conf_file.c, lexer.l, p_macro.c, parse.c,
+     parser.y, pjl_config.h, print.c, set_options.c, util.c:
+     s/PJL_IGNORE_RV/PJL_DISCARD_RV/
+
 2024-05-21  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: parse_int() comments + minor clean-up.
