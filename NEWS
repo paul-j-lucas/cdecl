@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 16.4.1
+
+** Fixed `make install DESTDIR=...`
+Fixed `make install` of shell completion functions when setting `DESTDIR` on
+the command-line.
+
+
 * Changes in Cdecl 16.4
 
 ** Echoing commands short option

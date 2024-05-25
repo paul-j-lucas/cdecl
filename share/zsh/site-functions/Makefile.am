@@ -23,15 +23,15 @@
 
 EXTRA_DIST =	_cdecl
 
-DEST_DIR =	$(datarootdir)/zsh/site-functions
+TARGET_DIR =	$(DESTDIR)$(datarootdir)/zsh/site-functions
 
-install-data-local: $(DEST_DIR) _cdecl
-	$(INSTALL_SCRIPT) _cdecl $(DEST_DIR)
+install-data-local: $(TARGET_DIR) _cdecl
+	$(INSTALL_SCRIPT) _cdecl $(TARGET_DIR)
 
 uninstall-local:
-	rm -f $(DEST_DIR)/_cdecl
+	rm -f $(TARGET_DIR)/_cdecl
 
-$(DEST_DIR):
+$(TARGET_DIR):
 	mkdir -p $@
 
 # vim:set noet sw=8 ts=8:
