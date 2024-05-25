@@ -1069,6 +1069,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 
 {flt_lit}     {
                 SET_TOKEN;
+                // cdecl doesn't care what the actual float value is, only the
+                // characters comprising the token for the macro processor.
                 return Y_FLOAT_LIT;
               }
 
