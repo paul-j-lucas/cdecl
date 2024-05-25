@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** Echoing commands short option
 The short option for `--echo-commands` has been changed from `-O` to `-E`.
 
+** Number help
+Help now includes what a "number" is.
+
 ** Shell completion options
 There are two new options: `--commands`/`-K` that prints **cdecl**'s commands
 for the current language and `--options`/`-O` that prints cdecl's options.

@@ -35,6 +35,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

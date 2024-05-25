@@ -48,7 +48,7 @@
 /// @endcond
 
 // local functions
-static void print_help_name( void );
+static void print_help_name_number( void );
 static void print_help_where( void );
 
 /**
@@ -347,7 +347,7 @@ static void print_help_command( cdecl_command_t const *command ) {
     if ( OPT_LANG_IS( CPP_ANY ) )
       print_h( "\\+\\+" );
     print_h( " declaration, like \"int x\"; or a cast, like \"(int)x\"\n" );
-    print_help_name();
+    print_help_name_number();
   }
 
   if ( command_is( command, PL_P_define ) ) {
@@ -432,7 +432,7 @@ static void print_help_english( void ) {
     if ( OPT_LANG_IS( auto_TYPE ) )
       print_h( "auto | " );
     if ( OPT_LANG_IS( _BitInt ) )
-      print_h( "_BitInt(<int>) | " );
+      print_h( "_BitInt(<number>) | " );
     if ( OPT_LANG_IS( bool ) )
       print_h( "bool | " );
     else if ( OPT_LANG_IS( _Bool ) )
@@ -473,7 +473,7 @@ static void print_help_english( void ) {
       print_h( " | <cv-qual>" );
     print_h( "\n" );
 
-    print_help_name();
+    print_help_name_number();
 
     print_h( "store: " );
     if ( OPT_LANG_IS( auto_STORAGE ) )
@@ -537,7 +537,7 @@ static void print_help_english( void ) {
     print_h( "\n" );
 
     print_h( "modifier: short | long | signed | unsigned | <cv-qual>\n" );
-    print_help_name();
+    print_help_name_number();
 
     print_h( "scope-e: scope | class | struct | union |" );
     if ( OPT_LANG_IS( inline_namespace ) )
@@ -571,13 +571,14 @@ static void print_help_english( void ) {
 }
 
 /**
- * Prints help for a **cdecl** name.
+ * Prints help for a **cdecl** _name_ and _number_.
  */
-static void print_help_name( void ) {
+static void print_help_name_number( void ) {
   if ( OPT_LANG_IS( C_ANY ) )
     print_h( "name: a C identifier\n" );
   else
     print_h( "name: a C\\+\\+ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*\n" );
+  print_h( "number: a binary, octal, decimal, or hexadecimal integer\n" );
 }
 
 /**

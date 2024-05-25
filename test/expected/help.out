@@ -19,6 +19,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -46,6 +47,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -70,6 +72,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -93,11 +96,12 @@ english:
   <store>* <modifier>* [<C-type>]
 ar-qual: non-empty | const | restrict | volatile
 args: a comma separated list of [<name> as] <english>
-C-type: auto | _BitInt(<int>) | bool | char[{8|16|32}_t] | wchar_t | int |
+C-type: auto | _BitInt(<number>) | bool | char[{8|16|32}_t] | wchar_t | int |
         float | double | void
 cv-qual: _Atomic | const | restrict | volatile
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 store: constexpr | extern | register | static | thread_local | typedef
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help exit
@@ -168,6 +172,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name>
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -189,6 +194,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name>
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -210,6 +216,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name>
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -225,6 +232,7 @@ args: a comma separated list of <name>
 C-type: char | int | float | double
 modifier: short | long | unsigned
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 store: auto | extern | register | static | typedef
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
@@ -269,6 +277,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name>
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -290,6 +299,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name>
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -311,6 +321,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name>
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -327,6 +338,7 @@ C-type: char | int | float | double | void
 cv-qual: const | volatile
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 store: auto | extern | register | static | typedef
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
@@ -371,6 +383,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name>
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -392,6 +405,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name>
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -413,6 +427,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name>
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -429,6 +444,7 @@ C-type: char | wchar_t | int | float | double | void
 cv-qual: const | volatile
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 store: auto | extern | register | static | typedef
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
@@ -473,6 +489,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -494,6 +511,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -515,6 +533,7 @@ command:
   exit | q[uit]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -533,6 +552,7 @@ C-type: _Bool | char | wchar_t | int | float | double | void
 cv-qual: const | restrict | volatile
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 store: auto | extern | register | static | typedef
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
@@ -580,6 +600,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -604,6 +625,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -628,6 +650,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -646,6 +669,7 @@ C-type: _Bool | char[{16|32}_t] | wchar_t | int | float | double | void
 cv-qual: _Atomic | const | restrict | volatile
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 store: auto | extern | register | static | _Thread_local | typedef
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
@@ -693,6 +717,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -717,6 +742,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -741,6 +767,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -759,6 +786,7 @@ C-type: _Bool | char[{16|32}_t] | wchar_t | int | float | double | void
 cv-qual: _Atomic | const | restrict | volatile
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
+number: a binary, octal, decimal, or hexadecimal integer
 store: auto | extern | register | static | _Thread_local | typedef
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 cdecl> help options
@@ -811,6 +839,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -844,6 +873,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -874,6 +904,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -927,6 +958,7 @@ cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 scope-e: scope | class | struct | union | [inline] namespace
 store: const[eval|expr|init] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | this | thread_local | typedef | [pure] virtual
@@ -1001,6 +1033,7 @@ command:
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
@@ -1026,6 +1059,7 @@ command:
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
@@ -1051,6 +1085,7 @@ command:
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
@@ -1074,6 +1109,7 @@ cv-qual: const | volatile
 fn-qual: <cv-qual>
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 scope-e: scope | class | struct | union | namespace
 store: auto | const | explicit | extern ["C" [linkage]] | friend |
        mutable | static | typedef | [pure] virtual
@@ -1123,6 +1159,7 @@ command:
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
@@ -1148,6 +1185,7 @@ command:
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
@@ -1173,6 +1211,7 @@ command:
   exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
@@ -1196,6 +1235,7 @@ cv-qual: const | volatile
 fn-qual: <cv-qual>
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 scope-e: scope | class | struct | union | namespace
 store: auto | const | explicit | extern ["C" [linkage]] | friend |
        mutable | static | typedef | [pure] virtual
@@ -1250,6 +1290,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1280,6 +1321,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1310,6 +1352,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1338,6 +1381,7 @@ cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 scope-e: scope | class | struct | union | [inline] namespace
 store: const[expr] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | thread_local | typedef | [pure] virtual
@@ -1392,6 +1436,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1422,6 +1467,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1452,6 +1498,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1480,6 +1527,7 @@ cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 scope-e: scope | class | struct | union | [inline] namespace
 store: const[expr] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | thread_local | typedef | [pure] virtual
@@ -1534,6 +1582,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1564,6 +1613,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1594,6 +1644,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1622,6 +1673,7 @@ cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 scope-e: scope | class | struct | union | [inline] namespace
 store: const[expr] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | thread_local | typedef | [pure] virtual
@@ -1676,6 +1728,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1706,6 +1759,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1736,6 +1790,7 @@ declare-option:
   width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
@@ -1765,6 +1820,7 @@ cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
+number: a binary, octal, decimal, or hexadecimal integer
 scope-e: scope | class | struct | union | [inline] namespace
 store: const[eval|expr|init] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | thread_local | typedef | [pure] virtual
