@@ -129,6 +129,8 @@ c++decl$(EXEEXT): cdecl$(EXEEXT)
 	rm -f $@
 	$(LN_S) cdecl$(EXEEXT) $@
 
+TARGET_CPPDECL=	$(DESTDIR)$(bindir)/c++decl$(EXEEXT)
+
 TESTS =		$(check_PROGRAMS)
 
 check-local: clean-coverage-local
@@ -149,10 +151,10 @@ parser.output: parser.y
 	@rm -f parser.tab.c
 
 install-exec-hook:
-	rm -f "$(DESTDIR)$(bindir)/c++decl$(EXEEXT)"
-	$(LN_S) cdecl$(EXEEXT) "$(DESTDIR)$(bindir)/c++decl$(EXEEXT)"
+	rm -f $(TARGET_CPPDECL)
+	$(LN_S) cdecl$(EXEEXT) $(TARGET_CPPDECL)
 
 uninstall-hook:
-	rm -f "$(DESTDIR)$(bindir)/c++decl$(EXEEXT)"
+	rm -f $(TARGET_CPPDECL)
 
 # vim:set noet sw=8 ts=8:
