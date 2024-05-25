@@ -20,6 +20,9 @@
 
 AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 
+# Suppress printing of "--- target ---" when -j is given to BSD's make.
+.MAKE.JOB.PREFIX=
+
 ###############################################################################
 
 # Command-line tests

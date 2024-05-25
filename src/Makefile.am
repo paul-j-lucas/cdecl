@@ -18,6 +18,9 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+# Suppress printing of "--- target ---" when -j is given to BSD's make.
+.MAKE.JOB.PREFIX=
+
 bin_PROGRAMS =	cdecl
 check_PROGRAMS=	red_black_test slist_test
 
