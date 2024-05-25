@@ -26,6 +26,10 @@
 
 #@INCLUDE_NEXT@ @NEXT_STDLIB_H@
 
+/* Make sure that the macros that indicate the special invocation convention
+   get undefined.  This is needed at least on CentOS 7.  */
+#undef __need_malloc_and_calloc
+
 #else
 /* Normal invocation convention.  */
 
@@ -229,6 +233,14 @@ _GL_CXXALIAS_SYS (abort, void, (void));
 # endif
 # if __GLIBC__ >= 2
 _GL_CXXALIASWARN (abort);
+# endif
+#endif
+#if @GNULIB_ABORT_DEBUG@ && @REPLACE_ABORT@
+_GL_EXTERN_C void _gl_pre_abort (void);
+#else
+# if !GNULIB_defined_gl_pre_abort
+#  define _gl_pre_abort() /* nothing */
+#  define GNULIB_defined_gl_pre_abort 1
 # endif
 #endif
 

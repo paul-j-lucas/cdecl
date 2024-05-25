@@ -1004,6 +1004,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/strndup.m4
   m4/strnlen.m4
   m4/strsep.m4
+  m4/sys_cdefs_h.m4
   m4/sys_types_h.m4
   m4/sysexits.m4
   m4/threadlib.m4

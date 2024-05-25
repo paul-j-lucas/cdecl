@@ -2046,6 +2046,7 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's|@''REPLACE_GETPAGESIZE''@|$(REPLACE_GETPAGESIZE)|g' \
 	      -e 's|@''REPLACE_GETPASS''@|$(REPLACE_GETPASS)|g' \
 	      -e 's|@''REPLACE_GETPASS_FOR_GETPASS_GNU''@|$(REPLACE_GETPASS_FOR_GETPASS_GNU)|g' \
+	      -e 's|@''REPLACE_GETUSERSHELL''@|$(REPLACE_GETUSERSHELL)|g' \
 	      -e 's|@''REPLACE_ISATTY''@|$(REPLACE_ISATTY)|g' \
 	      -e 's|@''REPLACE_LCHOWN''@|$(REPLACE_LCHOWN)|g' \
 	      -e 's|@''REPLACE_LINK''@|$(REPLACE_LINK)|g' \
