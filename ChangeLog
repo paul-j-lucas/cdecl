@@ -1,3 +1,7 @@
+2024-05-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, cl.out, help.out: Help now includes what a "number" is.
+
 2024-05-22  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c, c_ast_util.c, conf_file.c, lexer.l, p_macro.c, parse.c,
