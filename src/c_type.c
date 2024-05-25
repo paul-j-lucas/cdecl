@@ -820,8 +820,8 @@ static char const* c_type_literal( c_type_info_t const *ti,
  * Specifically, c_tid_nosigned() is _not_ called.
  * @return Returns said name.
  *
- * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than three times in the same
+ * @warning The pointer returned is to one of a small number of static buffers,
+ * so you can't do something like call this more than three times in the same
  * `printf()` statement.
  *
  * @sa c_tid_nosigned()

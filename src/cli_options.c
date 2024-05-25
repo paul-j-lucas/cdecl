@@ -308,9 +308,9 @@ static void opt_check_mutually_exclusive( char opt, char const *opts ) {
  * if any) to format.
  * @return Returns said formatted string.
  *
- * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
+ * @warning The pointer returned is to one of a small number of static buffers,
+ * so you can't do something like call this more than twice in the same
+ * `printf()` statement.
  */
 NODISCARD
 static char const* opt_format( char short_opt ) {
