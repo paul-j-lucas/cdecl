@@ -1,5 +1,10 @@
 2024-05-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * Makefile.am, share/Makefile.am, share/bash-completions/Makefile.am,
+     share/bash-completions/completions/Makefile.am, share/man/Makefile.am,
+     share/man/man1/Makefile.am, share/zsh/Makefile.am,
+     share/zsh/site-functions/Makefile.am, test/Makefile.am: Suppress printing
+     of "--- target ---" when -j is given to BSD's make, part 2.
    * src/Makefile.am, test/Makefile.am: Suppress printing of "--- target ---"
      when -j is given to BSD's make.
    * help.c, cl.out, help.out: Help now includes what a "number" is.
