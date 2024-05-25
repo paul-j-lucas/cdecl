@@ -1,5 +1,9 @@
 2024-05-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac, share/bash-completions/completions/Makefile.am,
+     share/zsh/site-functions/Makefile.am: Fixed issue #36: DESTDIR not heeded
+     during make install.
+   * src/Makefile.am: Added TARGET_CPPDECL.
    * Makefile.am, share/Makefile.am, share/bash-completions/Makefile.am,
      share/bash-completions/completions/Makefile.am, share/man/Makefile.am,
      share/man/man1/Makefile.am, share/zsh/Makefile.am,
