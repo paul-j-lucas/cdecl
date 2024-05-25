@@ -18,6 +18,9 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+# Suppress printing of "--- target ---" when -j is given to BSD's make.
+.MAKE.JOB.PREFIX=
+
 EXTRA_DIST =	_cdecl
 
 DEST_DIR =	$(datarootdir)/zsh/site-functions

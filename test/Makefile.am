@@ -18,10 +18,10 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
-
 # Suppress printing of "--- target ---" when -j is given to BSD's make.
 .MAKE.JOB.PREFIX=
+
+AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 
 ###############################################################################
 
