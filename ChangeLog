@@ -1,5 +1,7 @@
 2024-05-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am, test/Makefile.am: Suppress printing of "--- target ---"
+     when -j is given to BSD's make.
    * help.c, cl.out, help.out: Help now includes what a "number" is.
 
 2024-05-22  Paul J. Lucas <paul@lucasmail.org>
