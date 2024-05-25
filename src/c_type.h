@@ -417,6 +417,7 @@ typedef enum c_tpid c_tpid_t;
 #define TS_NONE               0x0000000000000002ull /**< No storage type.     */
 #define TS_ANY                0xFFFFFFFFFFFFFFF2ull /**< Any storage type.    */
 #define TS_auto               0x0000000000000012ull /**< C's `auto`.          */
+
 /**
  * Block storage class.
  *
@@ -424,12 +425,14 @@ typedef enum c_tpid c_tpid_t;
  * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
  */
 #define TS_APPLE___block      0x0000000000000022ull
+
 #define TS_extern             0x0000000000000042ull /**< `extern`             */
 #define TS_extern_C           0x0000000000000082ull /**< `extern "C"`         */
 #define TS_mutable            0x0000000000000102ull /**< `mutable`            */
 #define TS_register           0x0000000000000202ull /**< `register`           */
 #define TS_static             0x0000000000000402ull /**< `static`             */
 #define TS_thread_local       0x0000000000000802ull /**< `thread_local`       */
+
 /**
  * `typedef` "storage class" in a declaration like:
  *
@@ -497,6 +500,7 @@ typedef enum c_tpid c_tpid_t;
 #define TS_const              0x0000000200000002ull /**< `const`              */
 #define TS_restrict           0x0000000400000002ull /**< `restrict`           */
 #define TS_volatile           0x0000000800000002ull /**< `volatile`           */
+
 /**
  * C99 adds yet another use for `static`: to make function parameters using
  * array syntax (really, pointers) require their arguments to be both non-null
