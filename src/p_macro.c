@@ -533,8 +533,8 @@ static char const* get___TIME___str( void ) {
 NODISCARD
 static bool is_predefined_macro_name( char const *name ) {
   assert( name != NULL );
-  if ( strcmp( name, PL___VA_ARGS__ ) == 0 ||
-       strcmp( name, PL___VA_OPT__  ) == 0 ) {
+  if ( strcmp( name, L_PRE___VA_ARGS__ ) == 0 ||
+       strcmp( name, L_PRE___VA_OPT__  ) == 0 ) {
     return true;
   }
   p_macro_t const *const macro = p_macro_find( name );
@@ -2057,7 +2057,7 @@ static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
     mex_init( &va_opt_mex,
       /*parent_mex=*/mex,
       &(p_macro_t){
-        .name = PL___VA_OPT__,
+        .name = L_PRE___VA_OPT__,
         .param_list = mex->macro->param_list
       },
       mex->arg_list,
@@ -2227,7 +2227,7 @@ static bool mex_pre_expand___VA_ARGS__( mex_state_t *mex ) {
   mex_state_t va_args_mex;
   mex_init( &va_args_mex,
     /*parent_mex=*/mex,
-    &(p_macro_t){ .name = PL___VA_ARGS__ },
+    &(p_macro_t){ .name = L_PRE___VA_ARGS__ },
     /*arg_list=*/NULL,
     /*replace_list=*/&va_args_list,
     mex->fout
@@ -2274,7 +2274,7 @@ static void mex_pre_filter___VA_OPT__( mex_state_t *mex ) {
       );
     }
     token->kind = P_IDENTIFIER;
-    token->ident.name = check_strdup( PL___VA_OPT__ );
+    token->ident.name = check_strdup( L_PRE___VA_OPT__ );
     token->ident.ineligible = true;
   } // for
 }

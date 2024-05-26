@@ -1489,9 +1489,9 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 
   {identifier} {
                 SET_TOKEN;
-                if ( strcmp( lexer_token, PL___VA_ARGS__ ) == 0 )
+                if ( strcmp( lexer_token, L_PRE___VA_ARGS__ ) == 0 )
                   return Y_PRE___VA_ARGS__;
-                if ( strcmp( lexer_token, PL___VA_OPT__ ) == 0 )
+                if ( strcmp( lexer_token, L_PRE___VA_OPT__ ) == 0 )
                   return Y_PRE___VA_OPT__;
                 yylval.name = check_strdup( lexer_token );
                 return Y_NAME;

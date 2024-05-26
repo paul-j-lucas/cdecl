@@ -38,8 +38,8 @@ char const* p_kind_name( p_token_kind_t kind ) {
     case P_SPACE      : return " ";
     case P_STRINGIFY  : return "#";
     case P_STR_LIT    : return "str_lit";
-    case P___VA_ARGS__: return PL___VA_ARGS__;
-    case P___VA_OPT__ : return PL___VA_OPT__;
+    case P___VA_ARGS__: return L_PRE___VA_ARGS__;
+    case P___VA_OPT__ : return L_PRE___VA_OPT__;
   } // switch
   UNEXPECTED_INT_VALUE( kind );
 }

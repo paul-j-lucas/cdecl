@@ -63,9 +63,9 @@ static cdecl_command_t const CDECL_COMMANDS[] = {
   //
   // This _must_ be in sorted order.
   //
-  { PL_P_define,            LANG_ONLY,  LANG_SAME(ANY)                },
-  { PL_P_include,           LANG_ONLY,  LANG_SAME(ANY)                },
-  { PL_P_undef,             LANG_ONLY,  LANG_SAME(ANY)                },
+  { L_PRE_P_define,         LANG_ONLY,  LANG_SAME(ANY)                },
+  { L_PRE_P_include,        LANG_ONLY,  LANG_SAME(ANY)                },
+  { L_PRE_P_undef,          LANG_ONLY,  LANG_SAME(ANY)                },
   { L_cast,                 PROG_NAME,  LANG_SAME(ANY)                },
   { L_class,                FIRST_ARG,  LANG_SAME(class)              },
   { L_const /*cast*/,       FIRST_ARG,  LANG_SAME(NEW_STYLE_CASTS)    },

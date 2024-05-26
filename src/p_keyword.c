@@ -54,27 +54,27 @@
  * @note This is not declared `const` because it's sorted once.
  */
 static p_keyword_t P_KEYWORDS[] = {
-  { PL_define,    Y_PRE_define    },
-  { PL_elif,      Y_PRE_elif      },
-  { PL_else,      Y_PRE_else      },
-  { PL_error,     Y_PRE_error     },
-  { PL_if,        Y_PRE_if        },
-  { PL_ifdef,     Y_PRE_ifdef     },
-  { PL_ifndef,    Y_PRE_ifndef    },
-//{ PL_include,   Y_PRE_include   },    // handled within the lexer
-  { PL_line,      Y_PRE_line      },
-  { PL_undef,     Y_PRE_undef     },
+  { L_PRE_define,   Y_PRE_define    },
+  { L_PRE_elif,     Y_PRE_elif      },
+  { L_PRE_else,     Y_PRE_else      },
+  { L_PRE_error,    Y_PRE_error     },
+  { L_PRE_if,       Y_PRE_if        },
+  { L_PRE_ifdef,    Y_PRE_ifdef     },
+  { L_PRE_ifndef,   Y_PRE_ifndef    },
+//{ L_PRE_include,  Y_PRE_include   },  // handled within the lexer
+  { L_PRE_line,     Y_PRE_line      },
+  { L_PRE_undef,    Y_PRE_undef     },
 
   // C99
-  { PL_pragma,    Y_PRE_pragma    },
+  { L_PRE_pragma,   Y_PRE_pragma    },
 
   // C23
-  { PL_elifdef,   Y_PRE_elifdef   },
-  { PL_elifndef,  Y_PRE_elifndef  },
-  { PL_embed,     Y_PRE_embed     },
-  { PL_warning,   Y_PRE_warning   },
+  { L_PRE_elifdef,  Y_PRE_elifdef   },
+  { L_PRE_elifndef, Y_PRE_elifndef  },
+  { L_PRE_embed,    Y_PRE_embed     },
+  { L_PRE_warning,  Y_PRE_warning   },
 
-  { NULL,         0               }
+  { NULL,           0               }
 };
 
 ////////// local functions ////////////////////////////////////////////////////

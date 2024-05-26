@@ -458,7 +458,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       // token, but this new token is NOT the normal __VA_ARGS__.
       //
       token = p_token_new_loc(
-        P_IDENTIFIER, &yylloc, check_strdup( PL___VA_ARGS__ )
+        P_IDENTIFIER, &yylloc, check_strdup( L_PRE___VA_ARGS__ )
       );
       token->ident.ineligible = true;
       break;
@@ -475,7 +475,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       // but this new token is NOT the normal __VA_OPT__.
       //
       token = p_token_new_loc(
-        P_IDENTIFIER, &yylloc, check_strdup( PL___VA_OPT__ )
+        P_IDENTIFIER, &yylloc, check_strdup( L_PRE___VA_OPT__ )
       );
       token->ident.ineligible = true;
       break;
@@ -704,9 +704,9 @@ char const* p_token_str( p_token_t const *token ) {
       strbuf_puts_quoted( &sbuf, '"', token->lit.value );
       return sbuf.str;
     case P___VA_ARGS__:
-      return PL___VA_ARGS__;
+      return L_PRE___VA_ARGS__;
     case P___VA_OPT__:
-      return PL___VA_OPT__;
+      return L_PRE___VA_OPT__;
   } // switch
 
   UNEXPECTED_INT_VALUE( token->kind );
