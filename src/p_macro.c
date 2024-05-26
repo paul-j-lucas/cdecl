@@ -402,6 +402,20 @@ static rb_tree_t  macro_set;            ///< Global set of macros.
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
+ * Checks whether \a name is either `__VA_ARGS__` or `__VA_OPT__`.
+ *
+ * @param name The name to check.
+ * @return Returns `true` only if it is.
+ *
+ * @sa is_predefined_macro_name()
+ */
+NODISCARD
+static inline bool is_VA_macro_name( char const *name ) {
+  return  strcmp( name, L_PRE___VA_ARGS__ ) == 0 ||
+          strcmp( name, L_PRE___VA_OPT__  ) == 0;
+}
+
+/**
  * Checks whether \a token is an eligible #P_IDENTIFIER and a macro exists
  * having the identifier's name.
  *
@@ -528,15 +542,14 @@ static char const* get___TIME___str( void ) {
  * @param name The name to check.
  * @return Returns `true` only if it is.
  *
+ * @sa is_VA_macro_name()
  * @sa p_token_is_macro()
  */
 NODISCARD
 static bool is_predefined_macro_name( char const *name ) {
   assert( name != NULL );
-  if ( strcmp( name, L_PRE___VA_ARGS__ ) == 0 ||
-       strcmp( name, L_PRE___VA_OPT__  ) == 0 ) {
+  if ( is_VA_macro_name( name ) )
     return true;
-  }
   p_macro_t const *const macro = p_macro_find( name );
   return macro != NULL && macro->is_dynamic;
 }
@@ -3039,7 +3052,10 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
 
   p_macro_t const *const macro = p_macro_find( name );
   if ( macro == NULL ) {
-    print_error( name_loc, "\"%s\": no such macro\n", name );
+    if ( is_VA_macro_name( name ) )
+      print_error( name_loc, "\"%s\" only valid in macro definition\n", name );
+    else
+      print_error( name_loc, "\"%s\": no such macro\n", name );
     return false;
   }
 

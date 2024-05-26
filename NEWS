@@ -16,6 +16,10 @@ with their complete changes, see the AUTHORS file.
 Fixed `make install` of shell completion functions when setting `DESTDIR` on
 the command-line.
 
+** Better error message when expanding `__VA_*` macros
+Attempting to expand either `__VA_ARGS__` or `__VA_OPT__` now says that either
+is valid only in a macro definition.
+
 
 * Changes in Cdecl 16.4
 

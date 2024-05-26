@@ -1,3 +1,12 @@
+cdecl> expand UNDEFINED
+              ^
+8: error: "UNDEFINED": no such macro
+cdecl> expand __VA_ARGS__
+              ^
+8: error: "__VA_ARGS__" only valid in macro definition
+cdecl> expand __VA_OPT__
+              ^
+8: error: "__VA_OPT__" only valid in macro definition
 cdecl> #elif
         ^
 2: error: "#elif" not supported by cdecl

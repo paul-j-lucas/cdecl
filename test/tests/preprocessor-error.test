@@ -1,6 +1,10 @@
 EXPECTED_EXIT=65
 cdecl -bE <<END
 
+expand UNDEFINED
+expand __VA_ARGS__
+expand __VA_OPT__
+
 #elif
 #else
 #error
