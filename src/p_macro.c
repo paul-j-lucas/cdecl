@@ -3050,12 +3050,14 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
   assert( name_loc != NULL );
   assert( fout != NULL );
 
+  if ( is_VA_macro_name( name ) ) {
+    print_error( name_loc, "\"%s\" only valid in macro definition\n", name );
+    return false;
+  }
+
   p_macro_t const *const macro = p_macro_find( name );
   if ( macro == NULL ) {
-    if ( is_VA_macro_name( name ) )
-      print_error( name_loc, "\"%s\" only valid in macro definition\n", name );
-    else
-      print_error( name_loc, "\"%s\": no such macro\n", name );
+    print_error( name_loc, "\"%s\": no such macro\n", name );
     return false;
   }
 
@@ -3145,22 +3147,28 @@ bool p_macro_undef( char const *name, c_loc_t const *name_loc ) {
   assert( name != NULL );
   assert( name_loc != NULL );
 
+  if ( is_VA_macro_name( name ) )
+    goto predef_macro;
+
   p_macro_t const find_macro = { .name = name };
   rb_node_t *const found_rb = rb_tree_find( &macro_set, &find_macro );
   if ( found_rb == NULL ) {
     print_error( name_loc, "\"%s\": no such macro\n", name );
     return false;
   }
+
   p_macro_t const *const macro = found_rb->data;
-  if ( macro->is_dynamic ) {
-    print_error( name_loc,
-      "\"%s\": predefined macro may not be undefined\n", name
-    );
-    return false;
-  }
+  if ( macro->is_dynamic )
+    goto predef_macro;
 
   p_macro_free( rb_tree_delete( &macro_set, found_rb ) );
   return true;
+
+predef_macro:
+  print_error( name_loc,
+    "\"%s\": predefined macro may not be undefined\n", name
+  );
+  return false;
 }
 
 void p_macro_visit( p_macro_visit_fn_t visit_fn, void *v_data ) {
