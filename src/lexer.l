@@ -677,7 +677,7 @@ flt_lit       -?({dec_flt}|{hex_flt}){flt_sfx}?
 /*
  * For the C preprocessor.
  */
-%x X_P_COMMAND X_P_TOKENS
+%x X_PRE_COMMAND X_PRE_TOKENS
 
 /*
  * For the "set" command, we want to allow (almost) any character sequence for
@@ -1044,7 +1044,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   /*  NUMERIC LITERALS                                                       */
   /***************************************************************************/
 
-<INITIAL,X_P_TOKENS>{
+<INITIAL,X_PRE_TOKENS>{
 
 {bin_int}     {
                 SET_TOKEN;
@@ -1074,13 +1074,13 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 return Y_FLOAT_LIT;
               }
 
-} /* <INITIAL,X_P_TOKENS> */
+} /* <INITIAL,X_PRE_TOKENS> */
 
   /***************************************************************************/
   /*  ATTRIBUTES                                                             */
   /***************************************************************************/
 
-<INITIAL,X_P_TOKENS>{
+<INITIAL,X_PRE_TOKENS>{
 
               /*
                * Special case: if '[' is immediately followed by another '[',
@@ -1094,7 +1094,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 "??("/{S}*"??(" { set_trigraph( "[" ); return Y_ATTR_BEGIN; }
 "["/{S}*"["     { SET_TOKEN;           return Y_ATTR_BEGIN; }
 
-} /* <INITIAL,X_P_TOKENS> */
+} /* <INITIAL,X_PRE_TOKENS> */
 
   /***************************************************************************/
   /*  DIGRAPHS & TRIGRAPHS                                                   */
@@ -1125,7 +1125,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   /*  OPERATORS & PUNCTUATION                                                */
   /***************************************************************************/
 
-<INITIAL,X_P_TOKENS>{
+<INITIAL,X_PRE_TOKENS>{
               /*
                * Special case: if "::" is immediately followed by a '*', return
                * a distinct token to make it possible to distinguish between:
@@ -1175,7 +1175,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                */
 ^{S}*"#"      {
                 SET_TOKEN;
-                BEGIN( X_P_COMMAND );
+                BEGIN( X_PRE_COMMAND );
                 return lexer_token[0];
               }
 
@@ -1206,13 +1206,13 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 "}"           |
 "~"           { SET_TOKEN; return lexer_token[0]          ; }
 
-} /* <INITIAL,X_P_TOKENS> */
+} /* <INITIAL,X_PRE_TOKENS> */
 
   /***************************************************************************/
   /*  RAW STRING LITERALS                                                    */
   /***************************************************************************/
 
-<INITIAL,X_P_TOKENS>{
+<INITIAL,X_PRE_TOKENS>{
 
 {rstr_pfx}    { // e.g.: u8R"abc(...)abc"
                 // find:    ^   ^
@@ -1249,7 +1249,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 BEGIN_CALL( X_RSTR );
               }
 
-} /* <INITIAL,X_P_TOKENS> */
+} /* <INITIAL,X_PRE_TOKENS> */
 
 <X_RSTR>{
 
@@ -1305,7 +1305,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   /*  STRING LITERALS, CHARACTER LITERALS, & INCLUDE FILES                   */
   /***************************************************************************/
 
-<INITIAL,X_P_TOKENS>{
+<INITIAL,X_PRE_TOKENS>{
 
   {cstr_pfx}?['"] {
                 strbuf_init( &str_lit_buf );
@@ -1319,7 +1319,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 BEGIN_CALL( (quote == '"' ? X_STR : X_CHAR) );
               }
 
-} /* <INITIAL,X_P_TOKENS> */
+} /* <INITIAL,X_PRE_TOKENS> */
 
               /*
                * Common code between X_CHAR, X_INCL, and X_STR.  Multicharacter
@@ -1399,7 +1399,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                     newline();
                 } // for
 
-                if ( YY_START == X_P_TOKENS ) {
+                if ( YY_START == X_PRE_TOKENS ) {
                   //
                   // When lexing tokens for the C preprocessor, comments have
                   // to turn into a space, e.g.:
@@ -1424,7 +1424,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   /***************************************************************************/
 
 <*>{S}+       {
-                if ( YY_START == X_P_TOKENS ) {
+                if ( YY_START == X_PRE_TOKENS ) {
                   //
                   // When lexing tokens for the C preprocessor, whitespace is
                   // significant.
@@ -1444,7 +1444,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   /*  PREPROCESSOR                                                           */
   /***************************************************************************/
 
-<X_P_COMMAND>{
+<X_PRE_COMMAND>{
               /*
                * Special case: if "define" is followed by an identifier that is
                * _immediately_ followed by '(' with no intervening whitespace,
@@ -1465,10 +1465,10 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 yylval.name = check_strdup( lexer_token );
                 if ( !is_func_like_macro ) {
                   //
-                  // We can switch to X_P_TOKENS now; otherwise we switch after
-                  // lexing ')' below.
+                  // We can switch to X_PRE_TOKENS now; otherwise we switch
+                  // after lexing ')' below.
                   //
-                  BEGIN( X_P_TOKENS );
+                  BEGIN( X_PRE_TOKENS );
                 }
                 return Y_NAME;
               }
@@ -1477,15 +1477,15 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   ","         { SET_TOKEN; return lexer_token[0]; }
   ")"         {
                 SET_TOKEN;
-                BEGIN( X_P_TOKENS );
+                BEGIN( X_PRE_TOKENS );
                 return ')';
               }
 
   "..."       { SET_TOKEN; return Y_DOT_DOT_DOT; }
 
-} /* <X_P_COMMAND> */
+} /* <X_PRE_COMMAND> */
 
-<X_P_TOKENS>{
+<X_PRE_TOKENS>{
 
   {identifier} {
                 SET_TOKEN;
@@ -1504,12 +1504,12 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   "@"         |
   "`"         { SET_TOKEN; return lexer_token[0]; }
 
-} /* <X_P_TOKENS> */
+} /* <X_PRE_TOKENS> */
 
 <X_EXPAND>{
               /*
                * Special case: if an identifier is followed by '(', it's a
-               * function-like macro, so defer switching to the X_P_TOKENS
+               * function-like macro, so defer switching to the X_PRE_TOKENS
                * state until after lexing '(' so we don't have to deal with
                * optional whitespace before the '(' being significant.
                */
@@ -1522,13 +1522,13 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   {identifier} {                        // object-like macro
                 SET_TOKEN;
                 yylval.name = check_strdup( lexer_token );
-                BEGIN( X_P_TOKENS );
+                BEGIN( X_PRE_TOKENS );
                 return Y_NAME;
               }
 
   "("         {
                 SET_TOKEN;
-                BEGIN( X_P_TOKENS );
+                BEGIN( X_PRE_TOKENS );
                 return '(';
               }
 
@@ -1686,7 +1686,7 @@ void lexer_push_string( char const *s, size_t s_len ) {
   PERROR_EXIT_IF( f == NULL, EX_IOERR );
   yyin = f;
   yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
-  BEGIN( X_P_TOKENS );
+  BEGIN( X_PRE_TOKENS );
 }
 
 void lexer_pop_string( void ) {
