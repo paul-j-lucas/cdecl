@@ -1,3 +1,12 @@
+2024-05-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c, expand-error.out, preprocessor-error.out, expand-error.test,
+     preprocessor-error.test: Better error message when attempting to #undef
+     __VA_* macros; macro error tests reorganization.
+   * p_macro.c, preprocessor-error.out, preprocessor-error.test: Better error
+     message when expanding `__VA_*` macros.
+   * share/man/man1/cdecl.1: Added missing commas.
+
 2024-05-25  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, share/bash-completions/completions/Makefile.am,
