@@ -2897,9 +2897,10 @@ static void predefine_macro( char const *name, p_macro_dyn_fn_t dyn_fn ) {
   assert( name != NULL );
   assert( dyn_fn != NULL );
 
+  static c_loc_t const NAME_LOC = C_LOC_COL( STRLITLEN( "#define " ) );
+
   p_macro_t *const macro = p_macro_define(
-    check_strdup( name ),
-    &C_LOC_COL( STRLITLEN( "#define " ) ),
+    check_strdup( name ), &NAME_LOC,
     /*param_list=*/NULL,
     /*replace_list=*/NULL
   );
