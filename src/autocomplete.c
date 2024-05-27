@@ -161,7 +161,7 @@ static char const* const* ac_help_keywords_new( void ) {
   *pk = NULL;
 
   qsort(
-    ac_help_keywords, n, sizeof( char* ),
+    ac_help_keywords, n, sizeof( ac_help_keywords[0] ),
     POINTER_CAST( qsort_cmp_fn_t, &str_ptr_cmp )
   );
 
@@ -254,7 +254,7 @@ static ac_keyword_t const* ac_keywords_new( void ) {
   // (almost) any keyword in keyword_generator().
   //
   qsort(
-    ac_keywords_array, n, sizeof( ac_keyword_t ),
+    ac_keywords_array, n, sizeof( ac_keywords_array[0] ),
     POINTER_CAST( qsort_cmp_fn_t, &ac_keyword_cmp )
   );
 
@@ -309,7 +309,7 @@ static char const* const* ac_set_options_new( void ) {
   *popt = NULL;
 
   qsort(
-    ac_set_options, n, sizeof( char* ),
+    ac_set_options, n, sizeof( ac_set_options[0] ),
     POINTER_CAST( qsort_cmp_fn_t, &str_ptr_cmp )
   );
 

@@ -1734,8 +1734,8 @@ cdecl_keyword_t const* cdecl_keyword_next( cdecl_keyword_t const *cdk ) {
 void cdecl_keywords_init( void ) {
   ASSERT_RUN_ONCE();
   qsort(                                // don't rely on manual sorting above
-    CDECL_KEYWORDS, ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/,
-    sizeof( cdecl_keyword_t ),
+    CDECL_KEYWORDS,
+    ARRAY_SIZE( CDECL_KEYWORDS ) - 1/*NULL*/, sizeof( CDECL_KEYWORDS[0] ),
     POINTER_CAST( qsort_cmp_fn_t, &cdecl_keyword_cmp )
   );
 }
