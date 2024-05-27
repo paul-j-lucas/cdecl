@@ -1,3 +1,11 @@
+2024-05-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_macro.c: s/2/STRLITLEN( ", " )/
+   * p_macro.c: Now using static NAME_LOC.
+   * autocomplete.c, c_keyword.c, cdecl_keyword.c, did_you_mean.c: Now always
+     using sizeof( array[0] ).
+   * p_keyword.c: Eliminated NULL element.
+
 2024-05-26  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c, expand-error.out, preprocessor-error.out, expand-error.test,
