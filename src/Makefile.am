@@ -123,20 +123,21 @@ slist_test_SOURCES = \
 		util.c util.h \
 		unit_test.h
 
-all-local: c++decl$(EXEEXT)
-
-c++decl$(EXEEXT): cdecl$(EXEEXT)
-	rm -f $@
-	$(LN_S) cdecl$(EXEEXT) $@
-
-TARGET_CPPDECL=	$(DESTDIR)$(bindir)/c++decl$(EXEEXT)
-
+CDECL =		cdecl$(EXEEXT)
+CPPDECL =	c++decl$(EXEEXT)
+INSTALL_CPPDECL= $(DESTDIR)$(bindir)/$(CPPDECL)
 TESTS =		$(check_PROGRAMS)
+
+all-local: $(CPPDECL)
+
+$(CPPDECL): $(CDECL)
+	rm -f $@
+	$(LN_S) $(CDECL) $@
 
 check-local: clean-coverage-local
 
 clean-local:
-	rm -f $(BUILT_SOURCES) c++decl$(EXEEXT) parser.output
+	rm -f $(BUILT_SOURCES) $(CPPDECL) parser.output
 
 distclean-local: distclean-coverage-local
 
@@ -152,9 +153,9 @@ parser.output: parser.y
 
 install-exec-hook:
 	rm -f $(TARGET_CPPDECL)
-	$(LN_S) cdecl$(EXEEXT) $(TARGET_CPPDECL)
+	$(LN_S) $(CDECL) $(INSTALL_CPPDECL)
 
 uninstall-hook:
-	rm -f $(TARGET_CPPDECL)
+	rm -f $(INSTALL_CPPDECL)
 
 # vim:set noet sw=8 ts=8:
