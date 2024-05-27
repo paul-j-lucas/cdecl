@@ -2376,7 +2376,7 @@ static void mex_preliminary_relocate_replace_list( mex_state_t *mex ) {
 }
 
 /**
- * Prepares macro arguments and expands them.
+ * Prepares macro arguments and checks their number.
  *
  * @param mex The mex_state to use.
  * @return Returns `true` only if the macro is not function-like, there are no
