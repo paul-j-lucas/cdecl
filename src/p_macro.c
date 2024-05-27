@@ -2803,7 +2803,7 @@ static void p_macro_relocate_params( p_macro_t *macro ) {
   FOREACH_SLIST_NODE( param_node, macro->param_list ) {
     p_param_t *const param = param_node->data;
     if ( true_or_set( &comma ) )
-      column += 2;                      // ", "
+      column += STRLITLEN( ", " );
     param->loc.first_column = STATIC_CAST( c_loc_num_t, column );
     column += strlen( param->name );
     param->loc.last_column = STATIC_CAST( c_loc_num_t, column - 1 );
