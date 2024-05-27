@@ -73,8 +73,6 @@ static p_keyword_t P_KEYWORDS[] = {
   { L_PRE_elifndef, Y_PRE_elifndef  },
   { L_PRE_embed,    Y_PRE_embed     },
   { L_PRE_warning,  Y_PRE_warning   },
-
-  { NULL,           0               }
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -97,8 +95,8 @@ static int p_keyword_cmp( p_keyword_t const *i_pk, p_keyword_t const *j_pk ) {
 p_keyword_t const* p_keyword_find( char const *literal ) {
   assert( literal != NULL );
   return bsearch(
-    &(p_keyword_t){ .literal = literal }, P_KEYWORDS,
-    ARRAY_SIZE( P_KEYWORDS ) - 1/*NULL*/, sizeof( P_KEYWORDS[0] ),
+    &(p_keyword_t){ .literal = literal },
+    P_KEYWORDS, ARRAY_SIZE( P_KEYWORDS ), sizeof( P_KEYWORDS[0] ),
     POINTER_CAST( bsearch_cmp_fn_t, &p_keyword_cmp )
   );
 }
@@ -106,7 +104,7 @@ p_keyword_t const* p_keyword_find( char const *literal ) {
 void p_keywords_init( void ) {
   ASSERT_RUN_ONCE();
   qsort(                                // don't rely on manual sorting above
-    P_KEYWORDS, ARRAY_SIZE( P_KEYWORDS ) - 1/*NULL*/, sizeof( p_keyword_t ),
+    P_KEYWORDS, ARRAY_SIZE( P_KEYWORDS ), sizeof( P_KEYWORDS[0] ),
     POINTER_CAST( qsort_cmp_fn_t, &p_keyword_cmp )
   );
 }
