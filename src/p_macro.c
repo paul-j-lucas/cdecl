@@ -1891,7 +1891,7 @@ static mex_rv_t mex_expand_all___VA_OPT__( mex_state_t *mex ) {
 }
 
 /**
- * Expands an #P_IDENTIFIER if it's a macro.
+ * Expands a #P_IDENTIFIER if it's a macro.
  *
  * @param mex The mex_state to use.
  * @param ptoken_node A pointer to the token node whose token is a
