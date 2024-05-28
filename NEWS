@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 16.5
+
+** `decltype` declarations
+Now recognizing `decltype` just to say it's not supported.
+
+
 * Changes in Cdecl 16.4.1
 
 ** Fixed `make install DESTDIR=...`

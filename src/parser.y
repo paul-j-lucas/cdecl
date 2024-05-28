@@ -6531,6 +6531,11 @@ builtin_no_BitInt_c_btid
   | Y_char8_t
   | Y_char16_t
   | Y_char32_t
+  | Y_decltype
+    {
+      UNSUPPORTED( &@Y_decltype, "decltype() declarations" );
+      PARSE_ABORT();
+    }
   | Y_wchar_t
   | Y_int
   | Y_float
@@ -7983,6 +7988,11 @@ builtin_no_BitInt_english_btid
   | Y_char8_t
   | Y_char16_t
   | Y_char32_t
+  | Y_decltype
+    {
+      UNSUPPORTED( &@Y_decltype, "decltype() declarations" );
+      PARSE_ABORT();
+    }
   | Y_wchar_t
   | Y_wide char_exp               { $$ = TB_wchar_t; }
   | Y_int
