@@ -474,6 +474,15 @@ c++decl> explain [=,=]
 c++decl> explain auto int x
                       ^
 14: error: declaration expected ("int" is a keyword)
+c++decl> explain auto [x, y]
+                 ^
+9: error: structured binding declarations not supported by cdecl
+c++decl> explain auto &[x, y]
+                 ^
+9: error: structured binding declarations not supported by cdecl
+c++decl> explain auto &&[x, y]
+                 ^
+9: error: structured binding declarations not supported by cdecl
 c++decl> explain C(int, int) = default
                  ^
 9: error: "default" can be used only for special member functions and relational operators

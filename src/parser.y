@@ -1594,6 +1594,9 @@ static void yyerror( char const *msg ) {
                     // C23 & C++14
 %token  <tid>       Y_deprecated
 
+                    // C++17
+%token              Y_auto_STRUCTURED_BINDING
+
                     // C23 & C++17
 %token              Y_discard           // "no discard"
 %token  <tid>       Y_maybe_unused
@@ -3003,6 +3006,11 @@ explain_command
     }
 
     /*
+     * Structured binding declaration -- not supported.
+     */
+  | explain structured_binding_declaration_c
+
+    /*
      * Template declaration -- not supported.
      */
   | explain template_declaration_c
@@ -4181,6 +4189,16 @@ lambda_return_type_c_ast_opt
 
       DUMP_AST( "$$_ast", $$ );
       DUMP_END();
+    }
+  ;
+
+/// Gibberish C++ structured binding declaration //////////////////////////////
+
+structured_binding_declaration_c
+  : Y_auto_STRUCTURED_BINDING
+    {
+      UNSUPPORTED( &@1, "structured binding declarations" );
+      PARSE_ABORT();
     }
   ;
 

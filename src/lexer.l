@@ -708,6 +708,16 @@ _Atomic/{S}*\( {
               }
 
               /*
+               * Special case: if "auto" is optionally followed by either '&'
+               * or "&&" followed by '[', it's a C++ structured binding
+               * declaration.
+               */
+auto/{S}*&?&?{S}*\[ {
+                SET_TOKEN;
+                return Y_auto_STRUCTURED_BINDING;
+              }
+
+              /*
                * Special case: if "const[ant]" is immediately followed by one
                * of "eval[uation]", "expr[ession]", or "init[ialization]",
                * return a special English version of the "const" token to

@@ -15,6 +15,10 @@ with their complete changes, see the AUTHORS file.
 ** `decltype` declarations
 Now recognizing `decltype` just to say it's not supported.
 
+** Structured binding declarations
+Now recognizing structured binding declarations just to say they're not
+supported.
+
 
 * Changes in Cdecl 16.4.1
 
