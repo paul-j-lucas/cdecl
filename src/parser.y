@@ -5680,13 +5680,18 @@ pointer_to_member_type_c_ast
 /// Gibberish C++ reference declaration ///////////////////////////////////////
 
 reference_decl_c_astp
-  : reference_type_c_ast[type_ast] { ia_type_ast_push( $type_ast ); }
+  : reference_type_c_ast[type_ast] type_qualifier_list_c_stid_opt[qual_stids]
+    {
+      $type_ast->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
+      ia_type_ast_push( $type_ast );
+    }
     decl_c_astp[decl_astp]
     {
       ia_type_ast_pop();
 
       DUMP_START( "reference_decl_c_astp", "reference_type_c_ast decl_c_astp" );
       DUMP_AST( "reference_type_c_ast", $type_ast );
+      DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
       DUMP_AST_PAIR( "decl_c_astp", $decl_astp );
 
       $$ = $decl_astp;
@@ -5699,17 +5704,14 @@ reference_decl_c_astp
 
 reference_type_c_ast
   : // in_attr: type_c_ast
-    '&' type_qualifier_list_c_stid_opt[qual_stids]
+    '&'
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
-      DUMP_START( "reference_type_c_ast",
-                  "'&' type_qualifier_list_c_stid_opt" );
+      DUMP_START( "reference_type_c_ast", "'&'" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
       $$ = c_ast_new_gc( K_REFERENCE, &@$ );
-      $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
       c_ast_set_parent( ia_type_spec_ast( type_ast ), $$ );
 
       DUMP_AST( "$$_ast", $$ );
@@ -5717,17 +5719,14 @@ reference_type_c_ast
     }
 
   | // in_attr: type_c_ast
-    Y_AMPER_AMPER type_qualifier_list_c_stid_opt[qual_stids]
+    Y_AMPER_AMPER
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
-      DUMP_START( "reference_type_c_ast",
-                  "'&&' type_qualifier_list_c_stid_opt" );
+      DUMP_START( "reference_type_c_ast", "'&&'" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_TID( "type_qualifier_list_c_stid_opt", $qual_stids );
 
       $$ = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
-      $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
       c_ast_set_parent( ia_type_spec_ast( type_ast ), $$ );
 
       DUMP_AST( "$$_ast", $$ );
