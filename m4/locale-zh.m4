@@ -1,5 +1,5 @@
 # locale-zh.m4
-# serial 18
+# serial 19
 dnl Copyright (C) 2003, 2005-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -22,6 +22,7 @@ AC_DEFUN_ONCE([gt_LOCALE_ZH_CN],
 #endif
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
 struct tm t;
 char buf[16];
 int main ()
@@ -80,6 +81,19 @@ int main ()
      single wide character.  This excludes the GB2312 and GBK encodings.  */
   if (mblen ("\203\062\332\066", 5) != 4)
     return 1;
+  /* Check whether mbrtowc accept this character one byte at a time.
+     This excludes NetBSD 10.0.  */
+  if (sizeof (wchar_t) > 2)
+    {
+      wchar_t wc;
+      mbstate_t state;
+      memset (&state, 0, sizeof (state));
+      if (!(mbrtowc (&wc, "\203", 1, &state) == (size_t)(-2)
+            && mbrtowc (&wc, "\062", 1, &state) == (size_t)(-2)
+            && mbrtowc (&wc, "\332", 1, &state) == (size_t)(-2)
+            && mbrtowc (&wc, "\066", 1, &state) == 1))
+        return 1;
+    }
   return 0;
 #endif
 }

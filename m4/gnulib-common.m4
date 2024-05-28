@@ -1,5 +1,5 @@
 # gnulib-common.m4
-# serial 93
+# serial 94
 dnl Copyright (C) 2007-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -114,8 +114,10 @@ AC_DEFUN([gl_COMMON_BODY], [
 #  define _GL_ATTR_nothrow _GL_GNUC_PREREQ (3, 3)
 #  define _GL_ATTR_packed _GL_GNUC_PREREQ (2, 7)
 #  define _GL_ATTR_pure _GL_GNUC_PREREQ (2, 96)
+#  define _GL_ATTR_reproducible 0 /* not yet supported, as of GCC 14 */
 #  define _GL_ATTR_returns_nonnull _GL_GNUC_PREREQ (4, 9)
 #  define _GL_ATTR_sentinel _GL_GNUC_PREREQ (4, 0)
+#  define _GL_ATTR_unsequenced 0 /* not yet supported, as of GCC 14 */
 #  define _GL_ATTR_unused _GL_GNUC_PREREQ (2, 7)
 #  define _GL_ATTR_warn_unused_result _GL_GNUC_PREREQ (3, 4)
 # endif
@@ -206,7 +208,9 @@ AC_DEFUN([gl_COMMON_BODY], [
    This attribute is safe for a function that neither depends on nor affects
    observable state, and always returns exactly once - e.g., does not loop
    forever, and does not call longjmp.
-   (This attribute is stricter than _GL_ATTRIBUTE_PURE.)  */
+   (This attribute is stricter than _GL_ATTRIBUTE_PURE.  It is equivalent to
+   _GL_ATTRIBUTE_UNSEQUENCED for a function that has no pointer or array
+   parameters.)  */
 /* Applies to: functions.  */
 #ifndef _GL_ATTRIBUTE_CONST
 # if _GL_HAS_ATTRIBUTE (const)
@@ -505,9 +509,9 @@ AC_DEFUN([gl_COMMON_BODY], [
    minimizing the memory required.  */
 /* Applies to: struct members, struct, union,
    in C++ also: class.  */
+#ifndef _GL_ATTRIBUTE_PACKED
 /* Oracle Studio 12.6 miscompiles code with __attribute__ ((__packed__)) despite
    __has_attribute OK.  */
-#ifndef _GL_ATTRIBUTE_PACKED
 # if _GL_HAS_ATTRIBUTE (packed) && !defined __SUNPRO_C
 #  define _GL_ATTRIBUTE_PACKED __attribute__ ((__packed__))
 # else
@@ -515,18 +519,37 @@ AC_DEFUN([gl_COMMON_BODY], [
 # endif
 #endif
 
-/* _GL_ATTRIBUTE_PURE declares that It is OK for a compiler to omit duplicate
+/* _GL_ATTRIBUTE_PURE declares that it is OK for a compiler to omit duplicate
    calls to the function with the same arguments if observable state is not
    changed between calls.
-   This attribute is safe for a function that does not affect
-   observable state, and always returns exactly once.
-   (This attribute is looser than _GL_ATTRIBUTE_CONST.)  */
+   This attribute is safe for a function that does not affect observable state
+   and always returns exactly once.
+   (This attribute is looser than _GL_ATTRIBUTE_CONST.  It is equivalent to
+   _GL_ATTRIBUTE_REPRODUCIBLE for a function for which all pointer or array
+   parameters have 'const'-qualified target types.)  */
 /* Applies to: functions.  */
 #ifndef _GL_ATTRIBUTE_PURE
 # if _GL_HAS_ATTRIBUTE (pure)
 #  define _GL_ATTRIBUTE_PURE __attribute__ ((__pure__))
 # else
 #  define _GL_ATTRIBUTE_PURE
+# endif
+#endif
+
+/* _GL_ATTRIBUTE_REPRODUCIBLE declares that it is OK for a compiler to omit
+   duplicate calls to the function with the same arguments if observable state
+   is not changed between calls.
+   This attribute is safe for a function that is effectless and idempotent; see
+   ISO C 23 § 6.7.12.7 for a definition of these terms.
+   (This attribute is looser than _GL_ATTRIBUTE_UNSEQUENCED.  It is equivalent
+   to _GL_ATTRIBUTE_PURE for a function for which all pointer or array
+   parameters have 'const'-qualified target types.)  */
+/* Applies to: functions.  */
+#ifndef _GL_ATTRIBUTE_REPRODUCIBLE
+# if _GL_HAS_ATTRIBUTE (reproducible)
+#  define _GL_ATTRIBUTE_REPRODUCIBLE [[reproducible]]
+# else
+#  define _GL_ATTRIBUTE_REPRODUCIBLE
 # endif
 #endif
 
@@ -551,6 +574,24 @@ AC_DEFUN([gl_COMMON_BODY], [
 #  define _GL_ATTRIBUTE_SENTINEL(pos) __attribute__ ((__sentinel__ pos))
 # else
 #  define _GL_ATTRIBUTE_SENTINEL(pos)
+# endif
+#endif
+
+/* _GL_ATTRIBUTE_UNSEQUENCED declares that it is OK for a compiler to move
+   calls to the function and to omit duplicate calls to the function with the
+   same arguments.
+   This attribute is safe for a function that is effectless, idempotent,
+   stateless, and independent; see ISO C 23 § 6.7.12.7 for a definition of
+   these terms.
+   (This attribute is stricter than _GL_ATTRIBUTE_REPRODUCIBLE.  It is
+   equivalent to _GL_ATTRIBUTE_CONST for a function that has no pointer or
+   array parameters.)  */
+/* Applies to: functions.  */
+#ifndef _GL_ATTRIBUTE_UNSEQUENCED
+# if _GL_HAS_ATTRIBUTE (unsequenced)
+#  define _GL_ATTRIBUTE_UNSEQUENCED [[unsequenced]]
+# else
+#  define _GL_ATTRIBUTE_UNSEQUENCED
 # endif
 #endif
 

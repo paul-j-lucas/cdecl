@@ -195,21 +195,49 @@
 /* Applies to: function.  */
 #define ATTRIBUTE_ALWAYS_INLINE _GL_ATTRIBUTE_ALWAYS_INLINE
 
-/* It is OK for a compiler to omit duplicate calls with the same arguments.
+/* It is OK for a compiler to omit duplicate calls to the function with the
+   same arguments.
    This attribute is safe for a function that neither depends on
    nor affects observable state, and always returns exactly once -
    e.g., does not loop forever, and does not call longjmp.
-   (This attribute is stricter than ATTRIBUTE_PURE.)  */
+   (This attribute is stricter than ATTRIBUTE_PURE.  It is equivalent to
+   UNSEQUENCED for a function that has no pointer or array parameters.)  */
 /* Applies to: functions.  */
 #define ATTRIBUTE_CONST _GL_ATTRIBUTE_CONST
 
-/* It is OK for a compiler to omit duplicate calls with the same
+/* It is OK for a compiler to move calls to the function and to omit duplicate
+   calls to the function with the same arguments.
+   This attribute is safe for a function that is effectless, idempotent,
+   stateless, and independent; see ISO C 23 § 6.7.12.7 for a definition of
+   these terms.
+   (This attribute is stricter than REPRODUCIBLE.  It is equivalent to
+   ATTRIBUTE_CONST for a function that has no pointer or array parameters.)
+   See also <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2956.htm> and
+   <https://stackoverflow.com/questions/76847905/>.  */
+/* Applies to: functions.  */
+#define UNSEQUENCED _GL_ATTRIBUTE_UNSEQUENCED
+
+/* It is OK for a compiler to omit duplicate calls to the function with the same
    arguments if observable state is not changed between calls.
-   This attribute is safe for a function that does not affect
-   observable state, and always returns exactly once.
-   (This attribute is looser than ATTRIBUTE_CONST.)  */
+   This attribute is safe for a function that does not affect observable state
+   and always returns exactly once.
+   (This attribute is looser than ATTRIBUTE_CONST.  It is equivalent to
+   REPRODUCIBLE for a function for which all pointer or array parameters have
+   'const'-qualified target types.)  */
 /* Applies to: functions.  */
 #define ATTRIBUTE_PURE _GL_ATTRIBUTE_PURE
+
+/* It is OK for a compiler to omit duplicate calls to the function with the same
+   arguments if observable state is not changed between calls.
+   This attribute is safe for a function that is effectless and idempotent; see
+   ISO C 23 § 6.7.12.7 for a definition of these terms.
+   (This attribute is looser than UNSEQUENCED.  It is equivalent to
+   ATTRIBUTE_PURE for a function for which all pointer or array parameters have
+   'const'-qualified target types.)
+   See also <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2956.htm> and
+   <https://stackoverflow.com/questions/76847905/>.  */
+/* Applies to: functions.  */
+#define REPRODUCIBLE _GL_ATTRIBUTE_REPRODUCIBLE
 
 /* The function is rarely executed.  */
 /* Applies to: functions.  */
