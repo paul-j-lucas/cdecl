@@ -6533,7 +6533,7 @@ builtin_no_BitInt_c_btid
   | Y_char32_t
   | Y_decltype
     {
-      UNSUPPORTED( &@Y_decltype, "decltype() declarations" );
+      UNSUPPORTED( &@Y_decltype, "decltype declarations" );
       PARSE_ABORT();
     }
   | Y_wchar_t

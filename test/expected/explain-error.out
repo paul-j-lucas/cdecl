@@ -26,6 +26,9 @@ cdecl> explain restrict A2 x
 cdecl> explain alignas(4) register int x
                ^
 9: error: "alignas" can not be combined with "register"
+cdecl> explain asm("x")
+               ^
+9: error: asm declarations not supported by cdecl
 cdecl> explain _Alignas(64) S x
                ^
 9: error: struct or union type "S" (aka, "struct S") can not be aligned in C
@@ -477,6 +480,9 @@ c++decl> explain C(int, int) = default
 c++decl> explain constinit int f()
                                ^
 23: error: function can not be "constinit"
+c++decl> explain decltype(x) y
+                 ^
+9: error: decltype declarations not supported by cdecl
 c++decl> explain enum class C x
                  ^
 9: error: "enum class": enum classes must just use "enum"

@@ -15,6 +15,7 @@ explain _Alignas(4) int f()
 explain int a[restrict 4]
 explain restrict A2 x
 explain alignas(4) register int x
+explain asm("x")
 explain _Alignas(64) S x
 explain _Alignas(8) typedef int Int
 explain _Atomic A2 x
@@ -175,6 +176,7 @@ explain [=,=]
 explain auto int x
 explain C(int, int) = default
 explain constinit int f()
+explain decltype(x) y
 explain enum class C x
 explain enum E : double x
 explain enum struct C x
