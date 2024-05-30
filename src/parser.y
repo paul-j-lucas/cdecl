@@ -2059,29 +2059,29 @@ declare_command
       DUMP_AST( "$$_ast", $decl_ast );
       DUMP_END();
 
-      // To check the declaration, it needs a name: just dup the first one.
-      c_sname_t temp_sname = c_sname_dup( slist_front( &$sname_list ) );
-      c_sname_set( &$decl_ast->sname, &temp_sname );
-
-      bool ok = c_ast_check( $decl_ast );
+      bool ok = true;
+      //
+      // Ensure that none of the names aren't of a previously declared type:
+      //
+      //      cdecl> struct S
+      //      cdecl> declare S as int // error: "S": previously declared
+      //
+      // This check is done now in the parser rather than later in the AST
+      // since similar checks are also done here in the parser.
+      //
+      FOREACH_SLIST_NODE( sname_node, &$sname_list ) {
+        c_sname_t const *const sname = sname_node->data;
+        if ( sname_is_type( sname, &$decl_ast->loc ) ) {
+          ok = false;
+          break;
+        }
+      } // for
 
       if ( ok ) {
-        //
-        // Ensure that none of the names aren't of a previously declared type:
-        //
-        //      cdecl> struct S
-        //      cdecl> declare S as int // error: "S": previously declared
-        //
-        // This check is done now in the parser rather than later in the AST
-        // since similar checks are also done here in the parser.
-        //
-        FOREACH_SLIST_NODE( sname_node, &$sname_list ) {
-          c_sname_t const *const sname = sname_node->data;
-          if ( sname_is_type( sname, &$decl_ast->loc ) ) {
-            ok = false;
-            break;
-          }
-        } // for
+        // To check the declaration, it needs a name: just dup the first one.
+        c_sname_t temp_sname = c_sname_dup( slist_front( &$sname_list ) );
+        c_sname_set( &$decl_ast->sname, &temp_sname );
+        ok = c_ast_check( $decl_ast );
       }
 
       if ( ok )
