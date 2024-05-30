@@ -277,6 +277,13 @@ void fputs_sp( char const *s, FILE *out ) {
     FPRINTF( out, "%s ", s );
 }
 
+void fputsp_s( char const *s, FILE *out ) {
+  assert( s != NULL );
+  assert( out != NULL );
+  if ( s[0] != '\0' )
+    FPRINTF( out, " %s", s );
+}
+
 void* free_later( void *p ) {
   assert( p != NULL );
   slist_push_back( &free_later_list, p );

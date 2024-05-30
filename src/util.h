@@ -1160,8 +1160,21 @@ void fputs_quoted( char const *s, char quote, FILE *fout );
  *
  * @param s The string to print.
  * @param out The `FILE` to print to.
+ *
+ * @sa fputsp_s()
  */
 void fputs_sp( char const *s, FILE *out );
+
+/**
+ * If \a s is not empty, prints a space followed by \a s to \a out; otherwise
+ * does nothing.
+ *
+ * @param s The string to print.
+ * @param out The `FILE` to print to.
+ *
+ * @sa fputs_sp()
+ */
+void fputsp_s( char const *s, FILE *out );
 
 /**
  * Adds a pointer to the head of the free-later-list.

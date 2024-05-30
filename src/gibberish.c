@@ -340,8 +340,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
           gib_print_space_once( gib );
         c_ast_postfix_gibberish( ast, gib );
       }
-      if ( cv_qual_stids != TS_NONE )
-        FPRINTF( gib->fout, " %s", c_tid_name_c( cv_qual_stids ) );
+      fputsp_s( c_tid_name_c( cv_qual_stids ), gib->fout );
       if ( ref_qual_stids != TS_NONE ) {
         FPRINTF( gib->fout, " %s",
           other_token_c(
@@ -505,8 +504,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_gibberish_impl( ast->enum_.of_ast, gib );
       }
 
-      if ( cv_qual_stids != TS_NONE )
-        FPRINTF( gib->fout, " %s", c_tid_name_c( cv_qual_stids ) );
+      fputsp_s( c_tid_name_c( cv_qual_stids ), gib->fout );
 
       if ( !printed_name )
         c_ast_space_name_gibberish( ast, gib );
@@ -524,10 +522,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_list_gibberish( &ast->lambda.param_ast_list, gib );
         FPUTC( ')', gib->fout );
       }
-      if ( !c_tid_is_none( type.stids ) )
-        FPRINTF( gib->fout, " %s", c_tid_name_c( type.stids ) );
-      if ( !c_tid_is_none( type.atids ) )
-        FPRINTF( gib->fout, " %s", c_tid_name_c( type.atids ) );
+      fputsp_s( c_tid_name_c( type.stids ), gib->fout );
+      fputsp_s( c_tid_name_c( type.atids ), gib->fout );
+
       if ( ast->lambda.ret_ast != NULL &&
            !c_ast_is_builtin_any( ast->lambda.ret_ast, TB_auto | TB_void ) ) {
         FPUTS( " -> ", gib->fout );
