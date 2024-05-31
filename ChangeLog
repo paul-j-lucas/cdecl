@@ -1,5 +1,12 @@
 2024-05-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * AUTHORS, share/man/man1/cdecl.1, c_ast.c, c_ast.h, c_ast_check.c,
+     c_ast_util.c, c_kind.c, c_kind.h, c_lang.h, c_type.h, cdecl_keyword.c,
+     dump.c, english.c, gibberish.c, gibberish.h, help.c, lexer.h, lexer.l,
+     literals.c, literals.h, options.c, parser.y, types.h, debug.out,
+     declare-error.out, declare.out, explain-error.out, explain.out, help.out,
+     declare-error.test, declare.test, explain-error.test, explain.test: Added
+     support for C++ structured bindings.
    * lexer.l: Sorted.
    * lexer.l: s/YY_USER_ACTION_UNDO_FOR_REJECT/CDECL_REJECT/
    * parser.y, debug.out:
