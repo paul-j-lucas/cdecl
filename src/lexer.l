@@ -95,6 +95,15 @@
  */
 
 /**
+ * A **cdecl**-specfic version of Flex's `REJECT` that also undoes
+ * #YY_USER_ACTION.
+ *
+ * @note This _must_ be used instead of Flex's `REJECT`.
+ */
+#define CDECL_REJECT \
+  BLOCK( token_column -= STATIC_CAST( c_loc_num_t, yyleng ); REJECT; )
+
+/**
  * The maximum number of decimal digits in the unsigned 64-bit integer
  * 18446744073709551615.
  */
@@ -157,12 +166,6 @@
  * current token location information.
  */
 #define YY_USER_ACTION            lexer_update_loc(); /* must include ';' */
-
-/**
- * This code must be manually inserted before a REJECT to undo #YY_USER_ACTION.
- */
-#define YY_USER_ACTION_UNDO_FOR_REJECT \
-  token_column -= STATIC_CAST( c_loc_num_t, yyleng )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -946,8 +949,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   //
                   c_sname_cleanup( &sname );
                 }
-                YY_USER_ACTION_UNDO_FOR_REJECT;
-                REJECT;
+                CDECL_REJECT;
               }
 
               /*
