@@ -1823,7 +1823,6 @@ static void yyerror( char const *msg ) {
 %type   <tid>         func_qualifier_c_stid
 %type   <tid>         func_qualifier_list_c_stid_opt
 %type   <tid>         func_ref_qualifier_c_stid_opt
-%type   <ast_list>    lambda_param_c_ast_list_opt
 %type   <ast>         lambda_return_type_c_ast_opt
 %type   <tid>         linkage_stid
 %type   <ast_pair>    nested_decl_c_astp
@@ -1832,6 +1831,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>       oper_sname_c_opt
 %type   <ast>         param_c_ast param_c_ast_exp
 %type   <ast_list>    param_c_ast_list param_c_ast_list_exp param_c_ast_list_opt
+%type   <ast_list>    paren_param_c_ast_list_opt
 %type   <ast>         pc99_pointer_type_c_ast
 %type   <ast_pair>    pointer_decl_c_astp
 %type   <ast_pair>    pointer_to_member_decl_c_astp
@@ -4068,16 +4068,16 @@ in_scope_declaration_c_exp
 
 lambda_declaration_c
   : '[' capture_decl_list_c_opt[capture_ast_list] ']'
-    lambda_param_c_ast_list_opt[param_ast_list]
+    paren_param_c_ast_list_opt[param_ast_list]
     storage_class_subset_english_type_opt[type]
     lambda_return_type_c_ast_opt[ret_ast]
     {
       DUMP_START( "lambda_declaration_c",
                   "'[' capture_decl_list_c_opt ']' "
-                  "lambda_param_c_ast_list_opt "
+                  "paren_param_c_ast_list_opt "
                   "lambda_return_type_c_ast_opt" );
       DUMP_AST_LIST( "capture_decl_list_c_opt", $capture_ast_list );
-      DUMP_AST_LIST( "lambda_param_c_ast_list_opt", $param_ast_list );
+      DUMP_AST_LIST( "paren_param_c_ast_list_opt", $param_ast_list );
       DUMP_TYPE( "storage_class_subset_english_type_opt", $type );
       DUMP_AST( "lambda_return_type_c_ast_opt", $ret_ast );
 
@@ -4166,11 +4166,6 @@ capture_decl_c_ast
       $$ = c_ast_new_gc( K_CAPTURE, &@$ );
       $$->capture.kind = C_CAPTURE_STAR_THIS;
     }
-  ;
-
-lambda_param_c_ast_list_opt
-  : /* empty */                   { slist_init( &$$ ); }
-  | '(' param_c_ast_list_opt ')'  { $$ = $2; }
   ;
 
 lambda_return_type_c_ast_opt
@@ -5422,6 +5417,11 @@ param_c_ast_exp
     {
       elaborate_error( "parameter declaration expected" );
     }
+  ;
+
+paren_param_c_ast_list_opt
+  : /* empty */                   { slist_init( &$$ ); }
+  | '(' param_c_ast_list_opt ')'  { $$ = $2; }
   ;
 
 /// Gibberish C/C++ nested declaration ////////////////////////////////////////

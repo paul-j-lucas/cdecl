@@ -5880,10 +5880,10 @@ c++decl> explain []
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [],
-  lambda_param_c_ast_list_opt: [],
+  paren_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { string: "none" },
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
@@ -6058,10 +6058,10 @@ c++decl> explain [](char c)
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [],
-  lambda_param_c_ast_list_opt: [
+  paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
@@ -6133,7 +6133,7 @@ c++decl> explain [x]
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -6147,7 +6147,7 @@ c++decl> explain [x]
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [],
+  paren_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { string: "none" },
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
@@ -6362,7 +6362,7 @@ c++decl> explain [x](char c)
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -6376,7 +6376,7 @@ c++decl> explain [x](char c)
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [
+  paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
@@ -6459,7 +6459,7 @@ c++decl> explain [=]
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -6473,7 +6473,7 @@ c++decl> explain [=]
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [],
+  paren_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { string: "none" },
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
@@ -6688,7 +6688,7 @@ c++decl> explain [=](char c)
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -6702,7 +6702,7 @@ c++decl> explain [=](char c)
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [
+  paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
@@ -6785,7 +6785,7 @@ c++decl> explain [&]
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -6799,7 +6799,7 @@ c++decl> explain [&]
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [],
+  paren_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { string: "none" },
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
@@ -7014,7 +7014,7 @@ c++decl> explain [&](char c)
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -7028,7 +7028,7 @@ c++decl> explain [&](char c)
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [
+  paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
@@ -7111,7 +7111,7 @@ c++decl> explain [&x]
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -7125,7 +7125,7 @@ c++decl> explain [&x]
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [],
+  paren_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { string: "none" },
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
@@ -7340,7 +7340,7 @@ c++decl> explain [&x](char c)
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -7354,7 +7354,7 @@ c++decl> explain [&x](char c)
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [
+  paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
@@ -7437,7 +7437,7 @@ c++decl> explain [this]
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -7451,7 +7451,7 @@ c++decl> explain [this]
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [],
+  paren_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { string: "none" },
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
@@ -7666,7 +7666,7 @@ c++decl> explain [this](char c)
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -7680,7 +7680,7 @@ c++decl> explain [this](char c)
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [
+  paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
@@ -7763,7 +7763,7 @@ c++decl> explain [*this]
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -7777,7 +7777,7 @@ c++decl> explain [*this]
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [],
+  paren_param_c_ast_list_opt: [],
   storage_class_subset_english_type_opt: { string: "none" },
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
@@ -7992,7 +7992,7 @@ c++decl> explain [*this](char c)
 {
   rule: {
     lhs: "lambda_declaration_c",
-    rhs: "'[' capture_decl_list_c_opt ']' lambda_param_c_ast_list_opt lambda_return_type_c_ast_opt"
+    rhs: "'[' capture_decl_list_c_opt ']' paren_param_c_ast_list_opt lambda_return_type_c_ast_opt"
   },
   capture_decl_list_c_opt: [
     {
@@ -8006,7 +8006,7 @@ c++decl> explain [*this](char c)
       }
     }
   ],
-  lambda_param_c_ast_list_opt: [
+  paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
       kind: { value: 0x2, string: "built-in type" },
