@@ -6560,6 +6560,8 @@ builtin_no_BitInt_c_btid
   | Y_EMC__Fract
   ;
 
+/// Gibberish C/C++ typeof types //////////////////////////////////////////////
+
 typeof_type_c_ast
   : typeof[is_unqual] lparen_exp type_c_ast[type_ast]
     {
