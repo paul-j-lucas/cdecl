@@ -307,6 +307,8 @@ char const L_discard[]                  = "discard";
 char const H_no_discard[]               = "no-discard";
 char const L___nodiscard__[]            = "__nodiscard__";
 char const H_non_discardable[]          = "non-discardable";
+char const L_structured[]               = "structured";
+char const L_binding[]                  = "binding";
 
 // C++20
 char const L_char8_t[]                  = "char8_t";

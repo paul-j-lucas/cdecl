@@ -202,6 +202,7 @@ static char const lexer_token_init_buf; ///< So lexer_token is never NULL.
 
 // extern variables
 lexer_find_kind_t lexer_find = LEXER_FIND_ANY;
+bool              lexer_is_param_list_decl;
 c_keyword_ctx_t   lexer_keyword_ctx;
 
 // A separate pointer for the current token allows it:
@@ -711,13 +712,37 @@ _Atomic/{S}*\( {
               }
 
               /*
-               * Special case: if "auto" is optionally followed by either '&'
-               * or "&&" followed by '[', it's a C++ structured binding
-               * declaration.
+               * Special case: if "auto" is optionally followed by "const"
+               * and/or "volatile", optionally followed by either '&' or "&&",
+               * and followed by '[', it's a C++ structured binding "auto" ---
+               * unless we're currently parsing a function-like parameter list
+               * (see below).
+               *
+               * For example, given:
+               *
+               *      auto const [N]        // structured binding
+               *      auto const x[N]       // array of reference to const auto
+               *
+               * you can't tell whether it's an ordinary "auto" declaration or
+               * a structured binding declaration until you see '[' without
+               * having seen a name like "x".  Hence, this special case to
+               * look-ahead more than one token and return a structured binding
+               * "auto".
+               *
+               * However, for function parameters, a declaration like:
+               *
+               *      int f(auto const[N])  // unnamed array N of const auto
+               *
+               * is always an (unnamed) array of const ordinary "auto" and
+               * never a structured binding.  When parsing a parameter list,
+               * the parser sets lexer_is_param_list_decl so a structured
+               * binding "auto" won't be returned.
                */
-auto/{S}*&?&?{S}*\[ {
+auto/({S}+(const|volatile))*{S}*?&?&?{S}*\[ {
                 SET_TOKEN;
-                return Y_auto_STRUCTURED_BINDING;
+                if ( !lexer_is_param_list_decl )
+                  return Y_auto_STRUCTURED_BINDING;
+                CDECL_REJECT;
               }
 
               /*
@@ -1727,6 +1752,7 @@ void lexer_reset( bool hard_reset ) {
   input_len = input_sent = 0;
   is_func_like_macro = false;
   lexer_find = LEXER_FIND_ANY;
+  lexer_is_param_list_decl = false;
   lexer_keyword_ctx = C_KW_CTX_DEFAULT;
   strbuf_reset( &str_lit_buf );
   yy_start_stack_top = -1;

@@ -407,6 +407,32 @@ struct c_ptr_ref_ast {
 };
 
 /**
+ * AST node for a #K_STRUCTURED_BINDING.
+ */
+struct c_struct_bind_ast {
+  ///
+  /// Name(s) to be bound.
+  ///
+  /// @remarks
+  /// @parblock
+  /// Since only unscoped names can be used in structured bindings, this could
+  /// be a list of just `char*`, but using a list of scoped names:
+  ///
+  /// + Makes the grammar simpler since the "common declaration" can be used
+  ///   for structured bindings also.
+  ///
+  /// + Allows a better error message to be given if the user attempts to bind
+  ///   a scoped name:
+  ///
+  ///         c++decl> declare S::x as structured binding
+  ///                          ^
+  ///         9: error: "S::x": structured binding names may not be scoped
+  /// @endparblock
+  ///
+  slist_t sname_list;
+};
+
+/**
  * AST node for a #K_TYPEDEF.
  *
  * @note Even though this has an AST pointer as its first `struct` member, it
@@ -484,6 +510,7 @@ struct c_ast {
                     // nothing needed for K_PLACEHOLDER
     c_ptr_mbr_ast_t     ptr_mbr;    ///< #K_POINTER_TO_MEMBER members.
     c_ptr_ref_ast_t     ptr_ref;    ///< #K_POINTER or #K_ANY_REFERENCE members.
+    c_struct_bind_ast_t struct_bind;///< #K_STRUCTURED_BINDING members.
     c_typedef_ast_t     tdef;       ///< #K_TYPEDEF members.
     c_udef_conv_ast_t   udef_conv;  ///< #K_UDEF_CONV members.
     c_udef_lit_ast_t    udef_lit;   ///< #K_UDEF_LIT members.

@@ -292,6 +292,7 @@ typedef slist_node_t              c_scope_t;
 
 typedef struct c_sglob            c_sglob_t;
 typedef slist_t                   c_sname_t;      ///< C++ scoped name.
+typedef struct c_struct_bind_ast  c_struct_bind_ast_t;
 typedef uint64_t                  c_tid_t;        ///< Type ID(s) bits.
 typedef struct c_typedef          c_typedef_t;
 typedef struct c_typedef_ast      c_typedef_ast_t;

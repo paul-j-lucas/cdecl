@@ -278,6 +278,14 @@ explain auto f() -> auto (*)() -> void
 explain auto f() -> void
 explain auto f() -> void*
 explain auto x
+explain auto [x, y]
+explain const auto [x, y]
+explain auto const [x, y]
+explain volatile auto [x, y]
+explain static auto [x, y]
+explain thread_local auto [x, y]
+explain auto &[x, y]
+explain auto &&[x, y]
 explain class C x
 explain class D *(C::*p)()
 explain compl C()

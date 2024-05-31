@@ -1321,6 +1321,7 @@ static void yyerror( char const *msg ) {
 %token              Y_all
 %token              Y_array
 %token              Y_as
+%token              Y_binding
 %token              Y_bit
 %token              Y_bit_precise
 %token              Y_bits
@@ -1361,6 +1362,7 @@ static void yyerror( char const *msg ) {
 %token              Y_returning
 %token              Y_rvalue
 %token              Y_scope
+%token              Y_structured
 %token              Y_to
 %token              Y_user
 %token              Y_user_defined
@@ -1744,6 +1746,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>         storage_class_subset_english_stid
 %type   <type>        storage_class_subset_english_type
 %type   <type>        storage_class_subset_english_type_opt
+%type   <ast>         structured_binding_decl_english_ast
 %type   <ast>         type_english_ast
 %type   <type>        type_modifier_english_type
 %type   <type>        type_modifier_list_english_type
@@ -1822,7 +1825,6 @@ static void yyerror( char const *msg ) {
 %type   <tid>         func_equals_c_stid_opt
 %type   <tid>         func_qualifier_c_stid
 %type   <tid>         func_qualifier_list_c_stid_opt
-%type   <tid>         func_ref_qualifier_c_stid_opt
 %type   <ast>         lambda_return_type_c_ast_opt
 %type   <tid>         linkage_stid
 %type   <ast_pair>    nested_decl_c_astp
@@ -1837,6 +1839,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>    pointer_to_member_decl_c_astp
 %type   <ast>         pointer_to_member_type_c_ast
 %type   <ast>         pointer_type_c_ast
+%type   <tid>         ref_qualifier_c_stid_opt
 %type   <ast_pair>    reference_decl_c_astp
 %type   <ast>         reference_type_c_ast
 %type   <tid>         restrict_qualifier_c_stid
@@ -1844,6 +1847,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>       sname_c sname_c_exp sname_c_opt
 %type   <ast>         sname_c_ast
 %type   <type>        storage_class_c_type
+%type   <ast>         structured_binding_c_ast
 %type   <sname>       sub_scope_sname_c_opt
 %type   <ast>         trailing_return_type_c_ast_opt
 %type   <ast>         type_c_ast
@@ -1894,6 +1898,7 @@ static void yyerror( char const *msg ) {
 %type   <str_val>     set_option_value_opt
 %type   <flags>       show_format show_format_exp show_format_opt
 %type   <show>        show_types_opt
+%type   <sname_list>  sname_list_c
 %type   <tid>         static_stid_opt
 %type   <str_val>     str_lit str_lit_exp
 %type   <tid>         this_stid_opt
@@ -2054,10 +2059,43 @@ declare_command
       DUMP_SNAME_LIST( "sname_list_english", $sname_list );
       DUMP_AST( "alignas_or_width_decl_english_ast", $decl_ast );
 
-      $decl_ast->loc = @sname_list;
+      slist_t *sname_list = &$sname_list;
+      c_ast_t *const struct_bind_ast =
+        CONST_CAST( c_ast_t*, c_ast_unreference_any( $decl_ast ) );
+
+      if ( struct_bind_ast->kind == K_STRUCTURED_BINDING ) {
+        //
+        // For ref-qualified structured bindings, it's much simpler to
+        // retroactively change $decl_ast to the structured binding AST
+        // directly eliding the reference AST and fold in the reference type.
+        //
+        struct_bind_ast->type.stids |= $decl_ast->type.stids;
+        switch ( $decl_ast->kind ) {
+          case K_REFERENCE:
+            struct_bind_ast->type.stids |= TS_REFERENCE;
+            break;
+          case K_RVALUE_REFERENCE:
+            struct_bind_ast->type.stids |= TS_RVALUE_REFERENCE;
+            break;
+          default:
+            /* suppress warning */;
+        } // switch
+        $decl_ast = struct_bind_ast;
+        c_ast_set_parent( $decl_ast, /*parent_ast=*/NULL );
+
+        //
+        // A structured binding is inverted: instead of having one structured
+        // binding AST for each name, we have just one structured binding AST
+        // with a list of name(s).
+        //
+        $decl_ast->struct_bind.sname_list = slist_move( sname_list );
+        sname_list = &$decl_ast->struct_bind.sname_list;
+      }
 
       DUMP_AST( "$$_ast", $decl_ast );
       DUMP_END();
+
+      $decl_ast->loc = @sname_list;
 
       bool ok = true;
       //
@@ -2069,7 +2107,7 @@ declare_command
       // This check is done now in the parser rather than later in the AST
       // since similar checks are also done here in the parser.
       //
-      FOREACH_SLIST_NODE( sname_node, &$sname_list ) {
+      FOREACH_SLIST_NODE( sname_node, sname_list ) {
         c_sname_t const *const sname = sname_node->data;
         if ( sname_is_type( sname, &$decl_ast->loc ) ) {
           ok = false;
@@ -2079,13 +2117,22 @@ declare_command
 
       if ( ok ) {
         // To check the declaration, it needs a name: just dup the first one.
-        c_sname_t temp_sname = c_sname_dup( slist_front( &$sname_list ) );
+        c_sname_t temp_sname = c_sname_dup( slist_front( sname_list ) );
         c_sname_set( &$decl_ast->sname, &temp_sname );
         ok = c_ast_check( $decl_ast );
       }
 
-      if ( ok )
-        c_sname_list_ast_gibberish( &$sname_list, $decl_ast, stdout );
+      if ( ok ) {
+        if ( $decl_ast->kind == K_STRUCTURED_BINDING ) {
+          unsigned decl_flags = C_GIB_PRINT_DECL;
+          if ( opt_semicolon )
+            decl_flags |= C_GIB_OPT_SEMICOLON;
+          c_ast_gibberish( $decl_ast, decl_flags, stdout );
+        }
+        else {
+          c_ast_sname_list_gibberish( $decl_ast, &$sname_list, stdout );
+        }
+      }
 
       c_sname_list_cleanup( &$sname_list );
       PARSE_ASSERT( ok );
@@ -3004,11 +3051,6 @@ explain_command
       PARSE_ASSERT( c_ast_list_check( &$decl_ast_list ) );
       c_ast_list_english( &$decl_ast_list, stdout );
     }
-
-    /*
-     * Structured binding declaration -- not supported.
-     */
-  | explain structured_binding_declaration_c
 
     /*
      * Template declaration -- not supported.
@@ -4189,11 +4231,23 @@ lambda_return_type_c_ast_opt
 
 /// Gibberish C++ structured binding declaration //////////////////////////////
 
-structured_binding_declaration_c
-  : Y_auto_STRUCTURED_BINDING
+structured_binding_c_ast
+  : Y_auto_STRUCTURED_BINDING cv_qualifier_list_stid_opt[cv_qual_stids]
+    ref_qualifier_c_stid_opt[ref_stid]
+    lbracket_exp sname_list_c[sname_list] rbracket_exp
     {
-      UNSUPPORTED( &@1, "structured binding declarations" );
-      PARSE_ABORT();
+      DUMP_START( "structured_binding_declaration_c",
+                  "AUTO cv_qualifier_list_stid_opt ref_qualifier_c_stid_opt "
+                  "'[' sname_list_c ']'" );
+      DUMP_TID( "cv_qualifier_list_stid_opt", $cv_qual_stids );
+      DUMP_TID( "ref_qualifier_c_stid_opt", $ref_stid );
+
+      $$ = c_ast_new_gc( K_STRUCTURED_BINDING, &@$ );
+      $$->type.stids = c_tid_check( $cv_qual_stids | $ref_stid, C_TPID_STORE );
+      $$->struct_bind.sname_list = slist_move( &$sname_list );
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
     }
   ;
 
@@ -4425,11 +4479,17 @@ using_decl_c_ast
 
 decl_list_c_opt
     /*
-     * An enum, class, struct, or union (ECSU) declaration by itself, e.g.:
+     * Either:
      *
-     *      explain struct S
+     * + An enum, class, struct, or union (ECSU) declaration by itself, e.g.:
      *
-     * without any object of that type.
+     *          explain struct S
+     *
+     *   without any object of that type.
+     *
+     * + A structured binding:
+     *
+     *          auto [x, y]
      */
   : // in_attr: type_c_ast
     /* empty */
@@ -4439,7 +4499,21 @@ decl_list_c_opt
       DUMP_START( "decl_list_c_opt", "<empty>" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
 
-      if ( (type_ast->kind & K_ANY_ECSU) == 0 ) {
+      if ( in_attr.align.kind != C_ALIGNAS_NONE ) {
+        print_error( &in_attr.align.loc,
+          "\"%s\" invalid here\n",
+          alignas_name()
+        );
+        PARSE_ABORT();
+      }
+
+      bool const is_structured_binding =
+        c_ast_unreference_any( type_ast )->kind == K_STRUCTURED_BINDING;
+
+      if ( is_structured_binding ) {
+        // do nothing
+      }
+      else if ( (type_ast->kind & K_ANY_ECSU) == 0 ) {
         //
         // The declaration is a non-ECSU type, e.g.:
         //
@@ -4451,33 +4525,29 @@ decl_list_c_opt
         EPUTC( '\n' );
         PARSE_ABORT();
       }
+      else {
+        c_sname_t const *const ecsu_sname = &type_ast->csu.csu_sname;
+        assert( !c_sname_empty( ecsu_sname ) );
 
-      if ( in_attr.align.kind != C_ALIGNAS_NONE ) {
-        print_error( &in_attr.align.loc,
-          "\"%s\" invalid here\n",
-          alignas_name()
-        );
-        PARSE_ABORT();
+        if ( c_sname_count( ecsu_sname ) > 1 ) {
+          print_error( &type_ast->loc,
+            "forward declaration can not have a scoped name\n"
+          );
+          PARSE_ABORT();
+        }
+
+        c_sname_t temp_sname = c_sname_dup( ecsu_sname );
+        c_sname_set( &type_ast->sname, &temp_sname );
       }
-
-      c_sname_t const *const ecsu_sname = &type_ast->csu.csu_sname;
-      assert( !c_sname_empty( ecsu_sname ) );
-
-      if ( c_sname_count( ecsu_sname ) > 1 ) {
-        print_error( &type_ast->loc,
-          "forward declaration can not have a scoped name\n"
-        );
-        PARSE_ABORT();
-      }
-
-      c_sname_t temp_sname = c_sname_dup( ecsu_sname );
-      c_sname_set( &type_ast->sname, &temp_sname );
 
       DUMP_AST( "$$_ast", type_ast );
       DUMP_END();
 
       PARSE_ASSERT( c_ast_check( type_ast ) );
-      c_typedef_english( &C_TYPEDEF_LIT( type_ast, C_ENG_DECL ), stdout );
+      if ( is_structured_binding )
+        c_ast_english( type_ast, C_ENG_DECL, stdout );
+      else
+        c_typedef_english( &C_TYPEDEF_LIT( type_ast, C_ENG_DECL ), stdout );
       PUTC( '\n' );
     }
 
@@ -4896,9 +4966,10 @@ func_decl_c_astp
      * parser).
      */
   : // in_attr: type_c_ast
-    decl2_c_astp[decl_astp] '(' param_c_ast_list_opt[param_ast_list]
+    decl2_c_astp[decl_astp]
+    param_list_c_lparen param_c_ast_list_opt[param_ast_list]
     rparen_func_qualifier_list_c_stid_opt[qual_stids]
-    func_ref_qualifier_c_stid_opt[ref_qual_stid]
+    ref_qualifier_c_stid_opt[ref_qual_stid]
     noexcept_c_stid_opt[noexcept_stid]
     trailing_return_type_c_ast_opt[trailing_ret_ast]
     func_equals_c_stid_opt[equals_stid]
@@ -4908,14 +4979,14 @@ func_decl_c_astp
       DUMP_START( "func_decl_c_astp",
                   "decl2_c_astp '(' param_c_ast_list_opt ')' "
                   "func_qualifier_list_c_stid_opt "
-                  "func_ref_qualifier_c_stid_opt noexcept_c_stid_opt "
+                  "ref_qualifier_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt "
                   "func_equals_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST_PAIR( "decl2_c_astp", $decl_astp );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
       DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
-      DUMP_TID( "func_ref_qualifier_c_stid_opt", $ref_qual_stid );
+      DUMP_TID( "ref_qualifier_c_stid_opt", $ref_qual_stid );
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
       DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
       DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
@@ -5032,7 +5103,7 @@ pc99_func_or_constructor_declaration_c
      * cause grammar conflicts if they were separate rules in an LALR(1)
      * parser).
      */
-  : Y_NAME[name] '('
+  : Y_NAME[name] param_list_c_lparen
     {
       if ( OPT_LANG_IS( CONSTRUCTORS ) ) {
         //
@@ -5055,8 +5126,8 @@ pc99_func_or_constructor_declaration_c
         assert( csu_tdef->ast == csu_ast );
       }
     }
-    param_c_ast_list_opt[param_ast_list] ')' noexcept_c_stid_opt[noexcept_stid]
-    func_equals_c_stid_opt[equals_stid]
+    param_c_ast_list_opt[param_ast_list] param_list_c_rparen
+    noexcept_c_stid_opt[noexcept_stid] func_equals_c_stid_opt[equals_stid]
     {
       DUMP_START( "pc99_func_or_constructor_declaration_c",
                   "NAME '(' param_c_ast_list_opt ')' noexcept_c_stid_opt "
@@ -5140,7 +5211,7 @@ pc99_func_or_constructor_declaration_c
   ;
 
 rparen_func_qualifier_list_c_stid_opt
-  : ')'
+  : param_list_c_rparen
     {
       if ( OPT_LANG_IS( MEMBER_FUNCTIONS ) ) {
         //
@@ -5187,12 +5258,6 @@ func_qualifier_c_stid
      * <https://gcc.gnu.org/onlinedocs/gcc/Restricted-Pointers.html>
      */
   | Y_GNU___restrict                    // GNU C++ extension
-  ;
-
-func_ref_qualifier_c_stid_opt
-  : /* empty */                   { $$ = TS_NONE; }
-  | '&'                           { $$ = TS_REFERENCE; }
-  | Y_AMPER_AMPER                 { $$ = TS_RVALUE_REFERENCE; }
   ;
 
 noexcept_c_stid_opt
@@ -5421,7 +5486,18 @@ param_c_ast_exp
 
 paren_param_c_ast_list_opt
   : /* empty */                   { slist_init( &$$ ); }
-  | '(' param_c_ast_list_opt ')'  { $$ = $2; }
+  | param_list_c_lparen param_c_ast_list_opt param_list_c_rparen
+    {
+      $$ = $2;
+    }
+  ;
+
+param_list_c_lparen
+  : '('                           { lexer_is_param_list_decl = true; }
+  ;
+
+param_list_c_rparen
+  : ')'                           { lexer_is_param_list_decl = false; }
   ;
 
 /// Gibberish C/C++ nested declaration ////////////////////////////////////////
@@ -5452,10 +5528,10 @@ nested_decl_c_astp
 
 oper_decl_c_astp
   : // in_attr: type_c_ast
-    oper_sname_c_opt[sname] Y_operator c_operator[op_id] lparen_exp
+    oper_sname_c_opt[sname] Y_operator c_operator[op_id] param_list_c_lparen
     param_c_ast_list_opt[param_ast_list]
     rparen_func_qualifier_list_c_stid_opt[qual_stids]
-    func_ref_qualifier_c_stid_opt[ref_qual_stid]
+    ref_qualifier_c_stid_opt[ref_qual_stid]
     noexcept_c_stid_opt[noexcept_stid]
     trailing_return_type_c_ast_opt[trailing_ret_ast]
     func_equals_c_stid_opt[equals_stid]
@@ -5467,7 +5543,7 @@ oper_decl_c_astp
                   "oper_sname_c_opt OPERATOR c_operator "
                   "'(' param_c_ast_list_opt ')' "
                   "func_qualifier_list_c_stid_opt "
-                  "func_ref_qualifier_c_stid_opt noexcept_c_stid_opt "
+                  "ref_qualifier_c_stid_opt noexcept_c_stid_opt "
                   "trailing_return_type_c_ast_opt "
                   "func_equals_c_stid_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
@@ -5475,7 +5551,7 @@ oper_decl_c_astp
       DUMP_STR( "c_operator", operator->literal );
       DUMP_AST_LIST( "param_c_ast_list_opt", $param_ast_list );
       DUMP_TID( "func_qualifier_list_c_stid_opt", $qual_stids );
-      DUMP_TID( "func_ref_qualifier_c_stid_opt", $ref_qual_stid );
+      DUMP_TID( "ref_qualifier_c_stid_opt", $ref_qual_stid );
       DUMP_TID( "noexcept_c_stid_opt", $noexcept_stid );
       DUMP_AST( "trailing_return_type_c_ast_opt", $trailing_ret_ast );
       DUMP_TID( "func_equals_c_stid_opt", $equals_stid );
@@ -5988,7 +6064,8 @@ block_cast_c_astp                       // Apple extension
       ia_type_ast_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
     type_qualifier_list_c_stid_opt[qual_stids] cast_c_astp_opt[cast_astp]
-    rparen_exp lparen_exp param_c_ast_list_opt[param_ast_list] ')'
+    rparen_exp
+    param_list_c_lparen param_c_ast_list_opt[param_ast_list] param_list_c_rparen
     {
       c_ast_t *const block_ast = ia_type_ast_pop();
       c_ast_t *const type_ast = ia_type_ast_peek();
@@ -6030,7 +6107,8 @@ block_cast_c_astp                       // Apple extension
 
 func_cast_c_astp
   : // in_attr: type_c_ast
-    cast2_c_astp[cast_astp] '(' param_c_ast_list_opt[param_ast_list]
+    cast2_c_astp[cast_astp]
+    param_list_c_lparen param_c_ast_list_opt[param_ast_list]
     rparen_func_qualifier_list_c_stid_opt[ref_qual_stids]
     noexcept_c_stid_opt[noexcept_stid]
     trailing_return_type_c_ast_opt[trailing_ret_ast]
@@ -6458,6 +6536,7 @@ east_modified_type_c_ast
 east_modifiable_type_c_ast
   : atomic_specifier_type_c_ast
   | builtin_type_c_ast
+  | structured_binding_c_ast
   | typedef_type_c_ast
   | typeof_type_c_ast
   ;
@@ -7699,6 +7778,7 @@ qualifiable_decl_english_ast
   | func_decl_english_ast
   | pointer_decl_english_ast
   | reference_decl_english_ast
+  | structured_binding_decl_english_ast
   | type_english_ast
   ;
 
@@ -7789,6 +7869,15 @@ reference_english_ast
   | Y_rvalue reference_exp
     {
       $$ = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
+    }
+  ;
+
+/// English C++ structured binding declaration ////////////////////////////////
+
+structured_binding_decl_english_ast
+  : Y_structured binding_exp
+    {
+      $$ = c_ast_new_gc( K_STRUCTURED_BINDING, &@$ );
     }
   ;
 
@@ -8495,6 +8584,37 @@ sname_english_opt
   | sname_english
   ;
 
+sname_list_c
+  : sname_list_c[sname_list] ',' sname_c[sname]
+    {
+      DUMP_START( "sname_list_c",
+                  "sname_list_c ',' sname_c" );
+      DUMP_SNAME_LIST( "sname_list_c", $sname_list );
+      DUMP_SNAME( "sname_c", $sname );
+
+      $$ = $sname_list;
+      c_sname_t *const temp_sname = MALLOC( c_sname_t, 1 );
+      *temp_sname = c_sname_move( &$sname );
+      slist_push_back( &$$, temp_sname );
+
+      DUMP_SNAME_LIST( "$$_sname_list", $$ );
+      DUMP_END();
+    }
+  | sname_c[sname]
+    {
+      DUMP_START( "sname_list_c", "sname_c" );
+      DUMP_SNAME( "sname_c", $sname );
+
+      c_sname_t *const temp_sname = MALLOC( c_sname_t, 1 );
+      *temp_sname = c_sname_move( &$sname );
+      slist_init( &$$ );
+      slist_push_back( &$$, temp_sname );
+
+      DUMP_SNAME_LIST( "$$_sname_list", $$ );
+      DUMP_END();
+    }
+  ;
+
 sname_list_english
   : sname_list_english[left_sname] ',' sname_english_exp[right_sname]
     {
@@ -8633,6 +8753,14 @@ as_or_to_opt
   : /* empty */
   | Y_as
   | Y_to
+  ;
+
+binding_exp
+  : Y_binding
+  | error
+    {
+      keyword_expected( L_binding );
+    }
   ;
 
 bits_opt
@@ -8856,6 +8984,14 @@ int_exp
     }
   ;
 
+lbracket_exp
+  : '['
+  | error
+    {
+      punct_expected( '[' );
+    }
+  ;
+
 literal_exp
   : Y_literal
   | error
@@ -8997,6 +9133,12 @@ rbracket_exp
     {
       punct_expected( ']' );
     }
+  ;
+
+ref_qualifier_c_stid_opt
+  : /* empty */                   { $$ = TS_NONE; }
+  | '&'                           { $$ = TS_REFERENCE; }
+  | Y_AMPER_AMPER                 { $$ = TS_RVALUE_REFERENCE; }
   ;
 
 reference_exp

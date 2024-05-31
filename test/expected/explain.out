@@ -541,6 +541,24 @@ c++decl> explain auto f() -> void*
 declare f as function returning pointer to void
 c++decl> explain auto x
 declare x as automatic
+c++decl> explain auto [x, y]
+declare x, y as structured binding
+c++decl> explain const auto [x, y]
+declare x, y as constant structured binding
+c++decl> explain auto const [x, y]
+declare x, y as constant structured binding
+c++decl> explain volatile auto [x, y]
+                 ^
+9: warning: "volatile" structured bindings are deprecated since C++20
+declare x, y as volatile structured binding
+c++decl> explain static auto [x, y]
+declare x, y as static structured binding
+c++decl> explain thread_local auto [x, y]
+declare x, y as thread local structured binding
+c++decl> explain auto &[x, y]
+declare x, y as reference to structured binding
+c++decl> explain auto &&[x, y]
+declare x, y as rvalue reference to structured binding
 c++decl> explain class C x
 declare x as class C
 c++decl> explain class D *(C::*p)()

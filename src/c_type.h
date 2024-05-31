@@ -868,6 +868,13 @@ typedef enum c_tpid c_tpid_t;
 
 /**
  * @ingroup c-storage-like-types-group
+ * The only types that can apply to structured bindings.
+ */
+#define TS_STRUCTURED_BINDING ( TS_ANY_REFERENCE | TS_CV | TS_static \
+                              | TS_thread_local)
+
+/**
+ * @ingroup c-storage-like-types-group
  * The only types that can apply to user-defined conversion operators.
  *
  * @sa #TS_FUNC_LIKE_CPP

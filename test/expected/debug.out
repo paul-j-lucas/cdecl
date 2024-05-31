@@ -2099,7 +2099,7 @@ cdecl> explain void f()
 {
   rule: {
     lhs: "func_decl_c_astp",
-    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
+    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
   },
   in_attr__type_c_ast: {
     sname: null,
@@ -2126,14 +2126,14 @@ cdecl> explain void f()
   },
   param_c_ast_list_opt: [],
   func_qualifier_list_c_stid_opt: { string: "none" },
-  func_ref_qualifier_c_stid_opt: { string: "none" },
+  ref_qualifier_c_stid_opt: { string: "none" },
   noexcept_c_stid_opt: { string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { string: "none" },
   $$_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
-      kind: { value: 0x20000, string: "function" },
+      kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 15 },
       type: { string: "none" },
@@ -2184,7 +2184,7 @@ cdecl> explain void f()
   decl_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
-      kind: { value: 0x20000, string: "function" },
+      kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 15 },
       type: { string: "none" },
@@ -2216,7 +2216,7 @@ cdecl> explain void f()
   },
   $$_ast: {
     sname: { string: "f", scopes: "none" },
-    kind: { value: 0x20000, string: "function" },
+    kind: { value: 0x40000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { string: "none" },
@@ -2914,7 +2914,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
 {
   rule: {
     lhs: "func_decl_c_astp",
-    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
+    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
   },
   in_attr__type_c_ast: {
     sname: null,
@@ -2978,14 +2978,14 @@ cdecl> explain void f(int i, char const *fmt, ... )
     }
   ],
   func_qualifier_list_c_stid_opt: { string: "none" },
-  func_ref_qualifier_c_stid_opt: { string: "none" },
+  ref_qualifier_c_stid_opt: { string: "none" },
   noexcept_c_stid_opt: { string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { string: "none" },
   $$_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
-      kind: { value: 0x20000, string: "function" },
+      kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 43 },
       type: { string: "none" },
@@ -3073,7 +3073,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   decl_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
-      kind: { value: 0x20000, string: "function" },
+      kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 43 },
       type: { string: "none" },
@@ -3142,7 +3142,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   $$_ast: {
     sname: { string: "f", scopes: "none" },
-    kind: { value: 0x20000, string: "function" },
+    kind: { value: 0x40000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 43 },
     type: { string: "none" },
@@ -3547,7 +3547,7 @@ cdecl> explain void f(int x[*])
 {
   rule: {
     lhs: "func_decl_c_astp",
-    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
+    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
   },
   in_attr__type_c_ast: {
     sname: null,
@@ -3595,14 +3595,14 @@ cdecl> explain void f(int x[*])
     }
   ],
   func_qualifier_list_c_stid_opt: { string: "none" },
-  func_ref_qualifier_c_stid_opt: { string: "none" },
+  ref_qualifier_c_stid_opt: { string: "none" },
   noexcept_c_stid_opt: { string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { string: "none" },
   $$_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
-      kind: { value: 0x20000, string: "function" },
+      kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 23 },
       type: { string: "none" },
@@ -3674,7 +3674,7 @@ cdecl> explain void f(int x[*])
   decl_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
-      kind: { value: 0x20000, string: "function" },
+      kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 23 },
       type: { string: "none" },
@@ -3727,7 +3727,7 @@ cdecl> explain void f(int x[*])
   },
   $$_ast: {
     sname: { string: "f", scopes: "none" },
-    kind: { value: 0x20000, string: "function" },
+    kind: { value: 0x40000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 23 },
     type: { string: "none" },
@@ -4116,7 +4116,7 @@ cdecl> explain void f(int x[static 2])
 {
   rule: {
     lhs: "func_decl_c_astp",
-    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
+    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
   },
   in_attr__type_c_ast: {
     sname: null,
@@ -4164,14 +4164,14 @@ cdecl> explain void f(int x[static 2])
     }
   ],
   func_qualifier_list_c_stid_opt: { string: "none" },
-  func_ref_qualifier_c_stid_opt: { string: "none" },
+  ref_qualifier_c_stid_opt: { string: "none" },
   noexcept_c_stid_opt: { string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { string: "none" },
   $$_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
-      kind: { value: 0x20000, string: "function" },
+      kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 30 },
       type: { string: "none" },
@@ -4243,7 +4243,7 @@ cdecl> explain void f(int x[static 2])
   decl_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
-      kind: { value: 0x20000, string: "function" },
+      kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 30 },
       type: { string: "none" },
@@ -4296,7 +4296,7 @@ cdecl> explain void f(int x[static 2])
   },
   $$_ast: {
     sname: { string: "f", scopes: "none" },
-    kind: { value: 0x20000, string: "function" },
+    kind: { value: 0x40000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 30 },
     type: { string: "none" },
@@ -4466,7 +4466,7 @@ cdecl> explain int f(x)
 {
   rule: {
     lhs: "func_decl_c_astp",
-    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
+    rhs: "decl2_c_astp '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
   },
   in_attr__type_c_ast: {
     sname: null,
@@ -4501,14 +4501,14 @@ cdecl> explain int f(x)
     }
   ],
   func_qualifier_list_c_stid_opt: { string: "none" },
-  func_ref_qualifier_c_stid_opt: { string: "none" },
+  ref_qualifier_c_stid_opt: { string: "none" },
   noexcept_c_stid_opt: { string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { string: "none" },
   $$_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
-      kind: { value: 0x20000, string: "function" },
+      kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { string: "none" },
@@ -4567,7 +4567,7 @@ cdecl> explain int f(x)
   decl_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
-      kind: { value: 0x20000, string: "function" },
+      kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { string: "none" },
@@ -4607,7 +4607,7 @@ cdecl> explain int f(x)
   },
   $$_ast: {
     sname: { string: "f", scopes: "none" },
-    kind: { value: 0x20000, string: "function" },
+    kind: { value: 0x40000, string: "function" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { string: "none" },
@@ -4728,7 +4728,7 @@ c++decl> explain bool operator!() const
 {
   rule: {
     lhs: "oper_decl_c_astp",
-    rhs: "oper_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
+    rhs: "oper_sname_c_opt OPERATOR c_operator '(' param_c_ast_list_opt ')' func_qualifier_list_c_stid_opt ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt"
   },
   in_attr__type_c_ast: {
     sname: null,
@@ -4744,14 +4744,14 @@ c++decl> explain bool operator!() const
   c_operator: "!",
   param_c_ast_list_opt: [],
   func_qualifier_list_c_stid_opt: { stid: 0x0000000200000002, string: "const" },
-  func_ref_qualifier_c_stid_opt: { string: "none" },
+  ref_qualifier_c_stid_opt: { string: "none" },
   noexcept_c_stid_opt: { string: "none" },
   trailing_return_type_c_ast_opt: null,
   func_equals_c_stid_opt: { string: "none" },
   $$_astp: {
     ast: {
       sname: null,
-      kind: { value: 0x80000, string: "operator" },
+      kind: { value: 0x100000, string: "operator" },
       depth: 0,
       loc: { first_column: 11, last_column: 29 },
       type: { stid: 0x0000000200000002, string: "const" },
@@ -4803,7 +4803,7 @@ c++decl> explain bool operator!() const
   decl_c_astp: {
     ast: {
       sname: null,
-      kind: { value: 0x80000, string: "operator" },
+      kind: { value: 0x100000, string: "operator" },
       depth: 0,
       loc: { first_column: 11, last_column: 29 },
       type: { stid: 0x0000000200000002, string: "const" },
@@ -4836,7 +4836,7 @@ c++decl> explain bool operator!() const
   },
   $$_ast: {
     sname: null,
-    kind: { value: 0x80000, string: "operator" },
+    kind: { value: 0x100000, string: "operator" },
     depth: 0,
     loc: { first_column: 11, last_column: 29 },
     type: { stid: 0x0000000200000002, string: "const" },
@@ -5219,7 +5219,7 @@ c++decl> explain operator bool() const
   $$_astp: {
     ast: {
       sname: null,
-      kind: { value: 0x100000, string: "user-defined conversion operator" },
+      kind: { value: 0x200000, string: "user-defined conversion operator" },
       depth: 0,
       loc: { first_column: 6, last_column: 28 },
       type: { stid: 0x0000000200000002, string: "const" },
@@ -5257,7 +5257,7 @@ c++decl> explain operator bool() const
   user_defined_conversion_declaration_c: {
     ast: {
       sname: null,
-      kind: { value: 0x100000, string: "user-defined conversion operator" },
+      kind: { value: 0x200000, string: "user-defined conversion operator" },
       depth: 0,
       loc: { first_column: 6, last_column: 28 },
       type: { stid: 0x0000000200000002, string: "const" },
@@ -5693,7 +5693,7 @@ c++decl> explain int operator ""_w(char const *arg)
   $$_astp: {
     ast: {
       sname: { string: "_w", scopes: "none" },
-      kind: { value: 0x200000, string: "user-defined literal" },
+      kind: { value: 0x400000, string: "user-defined literal" },
       depth: 0,
       loc: { first_column: 10, last_column: 41 },
       type: { string: "none" },
@@ -5763,7 +5763,7 @@ c++decl> explain int operator ""_w(char const *arg)
   decl_c_astp: {
     ast: {
       sname: { string: "_w", scopes: "none" },
-      kind: { value: 0x200000, string: "user-defined literal" },
+      kind: { value: 0x400000, string: "user-defined literal" },
       depth: 0,
       loc: { first_column: 10, last_column: 41 },
       type: { string: "none" },
@@ -5814,7 +5814,7 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   $$_ast: {
     sname: { string: "_w", scopes: "none" },
-    kind: { value: 0x200000, string: "user-defined literal" },
+    kind: { value: 0x400000, string: "user-defined literal" },
     depth: 0,
     loc: { first_column: 10, last_column: 41 },
     type: { string: "none" },
@@ -5868,7 +5868,7 @@ c++decl> explain ~C()
   func_equals_c_stid_opt: { string: "none" },
   $$_ast: {
     sname: { string: "C", scopes: "none" },
-    kind: { value: 0x8000, string: "destructor" },
+    kind: { value: 0x10000, string: "destructor" },
     depth: 0,
     loc: { first_column: 6, last_column: 11 },
     type: { string: "none" }
@@ -5888,7 +5888,7 @@ c++decl> explain []
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 9 },
     type: { string: "none" },
@@ -6077,7 +6077,7 @@ c++decl> explain [](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { string: "none" },
@@ -6152,7 +6152,7 @@ c++decl> explain [x]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { string: "none" },
@@ -6392,7 +6392,7 @@ c++decl> explain [x](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 18 },
     type: { string: "none" },
@@ -6478,7 +6478,7 @@ c++decl> explain [=]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { string: "none" },
@@ -6718,7 +6718,7 @@ c++decl> explain [=](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 18 },
     type: { string: "none" },
@@ -6804,7 +6804,7 @@ c++decl> explain [&]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { string: "none" },
@@ -7044,7 +7044,7 @@ c++decl> explain [&](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 18 },
     type: { string: "none" },
@@ -7130,7 +7130,7 @@ c++decl> explain [&x]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { string: "none" },
@@ -7370,7 +7370,7 @@ c++decl> explain [&x](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { string: "none" },
@@ -7456,7 +7456,7 @@ c++decl> explain [this]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { string: "none" },
@@ -7696,7 +7696,7 @@ c++decl> explain [this](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 21 },
     type: { string: "none" },
@@ -7782,7 +7782,7 @@ c++decl> explain [*this]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 14 },
     type: { string: "none" },
@@ -8022,7 +8022,7 @@ c++decl> explain [*this](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
-    kind: { value: 0x40000, string: "lambda" },
+    kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 22 },
     type: { string: "none" },

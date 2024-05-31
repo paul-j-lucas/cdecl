@@ -74,6 +74,7 @@ static void c_ast_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_postfix_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_qual_name_gibberish( c_ast_t const*, gib_state_t* );
 static void c_ast_space_name_gibberish( c_ast_t const*, gib_state_t* );
+static void c_struct_bind_ast_gibberish( c_ast_t const*, gib_state_t* );
 static void gib_init( gib_state_t*, unsigned, FILE* );
 
 NODISCARD
@@ -568,6 +569,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_qual_name_gibberish( ast, gib );
       break;
 
+    case K_STRUCTURED_BINDING:
+      c_struct_bind_ast_gibberish( ast, gib );
+      break;
+
     case K_TYPEDEF:
       if ( (gib->gib_flags & C_GIB_OPT_OMIT_TYPE) == 0 ) {
         //
@@ -805,6 +810,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       case K_ENUM:
       case K_NAME:
       case K_PLACEHOLDER:
+      case K_STRUCTURED_BINDING:
       case K_VARIADIC:
         UNEXPECTED_INT_VALUE( parent_ast->kind );
     } // switch
@@ -853,6 +859,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_POINTER_TO_MEMBER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
+    case K_STRUCTURED_BINDING:
     case K_TYPEDEF:
     case K_VARIADIC:
       // nothing to do
@@ -1058,6 +1065,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 
     case K_CAST:
     case K_UDEF_CONV:
+    case K_STRUCTURED_BINDING:
     case K_VARIADIC:
       // Do nothing since these don't have names.
       break;
@@ -1100,6 +1108,64 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_PLACEHOLDER:
       UNEXPECTED_INT_VALUE( ast->kind );
   } // switch
+}
+
+/**
+ * Prints each name in \a sname_list as type \a ast in gibberish for a C++
+ * structured binding.
+ *
+ * @param ast The AST of the type to print.
+ * @param gib The gib_state to use.
+ *
+ * @sa c_ast_gibberish()
+ * @sa c_ast_sname_list_gibberish()
+ */
+static void c_struct_bind_ast_gibberish( c_ast_t const *ast,
+                                         gib_state_t *gib ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_STRUCTURED_BINDING );
+  assert( gib != NULL );
+
+  c_tid_t cv_qual_stids = TS_NONE;
+  c_tid_t const ref_qual_stid = ast->type.stids & TS_ANY_REFERENCE;
+
+  c_type_t type = ast->type;
+  c_type_and_eq_compl( &type, &C_TYPE_LIT_S( TS_ANY_REFERENCE ) );
+
+  if ( opt_east_const ) {
+    cv_qual_stids = type.stids & TS_CV;
+    type.stids &= c_tid_compl( TS_CV );
+  }
+
+  fputs_sp( c_type_name_c( &type ), gib->fout );
+  if ( !opt_east_const )
+    fputs_sp( c_tid_name_c( cv_qual_stids ), gib->fout );
+  FPUTS( L_auto, gib->fout );
+  fputsp_s( c_tid_name_c( cv_qual_stids ), gib->fout );
+
+  if ( ref_qual_stid == TS_NONE ) {
+    FPUTC( ' ', gib->fout );
+  } else if ( opt_alt_tokens ) {
+    FPRINTF( gib->fout,
+      " %s ", ref_qual_stid == TS_REFERENCE ? L_bitand : L_and
+    );
+  } else {
+    if ( (opt_west_pointer_kinds & K_STRUCTURED_BINDING) == 0 )
+      FPUTC( ' ', gib->fout );
+    FPUTS( ref_qual_stid == TS_REFERENCE ? "&" : "&&", gib->fout );
+    if ( (opt_west_pointer_kinds & K_STRUCTURED_BINDING) != 0 )
+      FPUTC( ' ', gib->fout );
+  }
+
+  FPUTC( '[', gib->fout );
+
+  FOREACH_SLIST_NODE( sname_node, &ast->struct_bind.sname_list ) {
+    FPUTS( c_sname_local_name( sname_node->data ), gib->fout );
+    if ( sname_node->next != NULL )
+      FPUTS( ", ", gib->fout );
+  } // for
+
+  FPUTC( ']', gib->fout );
 }
 
 /**
@@ -1247,22 +1313,10 @@ void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *fout ) {
     FPUTC( ';', fout );
 }
 
-char const* c_cast_gibberish( c_cast_kind_t kind ) {
-  switch ( kind ) {
-    case C_CAST_C:
-      break;                            // LCOV_EXCL_LINE
-    case C_CAST_CONST       : return L_const_cast;
-    case C_CAST_DYNAMIC     : return L_dynamic_cast;
-    case C_CAST_REINTERPRET : return L_reinterpret_cast;
-    case C_CAST_STATIC      : return L_static_cast;
-  } // switch
-  UNEXPECTED_INT_VALUE( kind );
-}
-
-void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
+void c_ast_sname_list_gibberish( c_ast_t *ast, slist_t const *sname_list,
                                  FILE *fout ) {
-  assert( sname_list != NULL );
   assert( ast != NULL );
+  assert( sname_list != NULL );
   assert( fout != NULL );
 
   unsigned decl_flags = C_GIB_PRINT_DECL;
@@ -1315,6 +1369,18 @@ void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
       FPUTS( ", ", fout );
     }
   } // for
+}
+
+char const* c_cast_gibberish( c_cast_kind_t kind ) {
+  switch ( kind ) {
+    case C_CAST_C:
+      break;                            // LCOV_EXCL_LINE
+    case C_CAST_CONST       : return L_const_cast;
+    case C_CAST_DYNAMIC     : return L_dynamic_cast;
+    case C_CAST_REINTERPRET : return L_reinterpret_cast;
+    case C_CAST_STATIC      : return L_static_cast;
+  } // switch
+  UNEXPECTED_INT_VALUE( kind );
 }
 
 void c_typedef_gibberish( c_typedef_t const *tdef, unsigned gib_flags,

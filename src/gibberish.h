@@ -54,25 +54,13 @@
  * @param fout The `FILE` to print to.
  *
  * @sa c_ast_english()
- * @sa c_sname_list_ast_gibberish()
+ * @sa c_ast_sname_list_gibberish()
  * @sa c_typedef_gibberish()
  * @sa print_ast_type_aka()
  * @sa print_type_decl()
  * @sa show_type()
  */
 void c_ast_gibberish( c_ast_t const *ast, unsigned gib_flags, FILE *fout );
-
-/**
- * Given \a kind, gets the associated C++ literal.
- *
- * @param kind The cast kind to get the literal for.  _Must only_ be one of
- * #C_CAST_CONST, #C_CAST_DYNAMIC, #C_CAST_REINTERPRET, or #C_CAST_STATIC.
- * @return Returns said literal.
- *
- * @sa c_cast_english()
- */
-NODISCARD
-char const* c_cast_gibberish( c_cast_kind_t kind );
 
 /**
  * Prints the names in \a sname_list as gibberish, aka, C/C++ declarations.
@@ -97,14 +85,26 @@ char const* c_cast_gibberish( c_cast_kind_t kind );
  *
  *      int *x, *y;
  *
- * @param sname_list The names to print as \a ast.
  * @param ast The AST that is the type to print.
+ * @param sname_list The names to print as \a ast.
  * @param fout The `FILE` to print to.
  *
  * @sa c_ast_gibberish()
  */
-void c_sname_list_ast_gibberish( slist_t const *sname_list, c_ast_t *ast,
+void c_ast_sname_list_gibberish( c_ast_t *ast, slist_t const *sname_list,
                                  FILE *fout );
+
+/**
+ * Given \a kind, gets the associated C++ literal.
+ *
+ * @param kind The cast kind to get the literal for.  _Must only_ be one of
+ * #C_CAST_CONST, #C_CAST_DYNAMIC, #C_CAST_REINTERPRET, or #C_CAST_STATIC.
+ * @return Returns said literal.
+ *
+ * @sa c_cast_english()
+ */
+NODISCARD
+char const* c_cast_gibberish( c_cast_kind_t kind );
 
 /**
  * Prints \a tdef as a C/C++ type declaration.

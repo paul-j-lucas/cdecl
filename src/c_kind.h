@@ -183,6 +183,13 @@ enum c_ast_kind {
    */
   K_RVALUE_REFERENCE    = (1u << 13),
 
+  /**
+   * C++ structured binding.
+   *
+   * @sa c_struct_bind_ast
+   */
+  K_STRUCTURED_BINDING  = (1u << 14),
+
   ////////// function-like "parent" kinds /////////////////////////////////////
 
   /**
@@ -190,12 +197,12 @@ enum c_ast_kind {
    *
    * @sa c_constructor_ast
    */
-  K_CONSTRUCTOR         = (1u << 14),
+  K_CONSTRUCTOR         = (1u << 15),
 
   /**
    * C++ destructor.
    */
-  K_DESTRUCTOR          = (1u << 15),
+  K_DESTRUCTOR          = (1u << 16),
 
   ////////// function-like "parent" kinds that have return types //////////////
 
@@ -206,42 +213,42 @@ enum c_ast_kind {
    * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
    * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
    */
-  K_APPLE_BLOCK         = (1u << 16),
+  K_APPLE_BLOCK         = (1u << 17),
 
   /**
    * Function.
    *
    * @sa c_function_ast
    */
-  K_FUNCTION            = (1u << 17),
+  K_FUNCTION            = (1u << 18),
 
   /**
    * C++ lambda.
    *
    * @sa c_lambda_ast
    */
-  K_LAMBDA              = (1u << 18),
+  K_LAMBDA              = (1u << 19),
 
   /**
    * C++ overloaded operator.
    *
    * @sa c_operator_ast
    */
-  K_OPERATOR            = (1u << 19),
+  K_OPERATOR            = (1u << 20),
 
   /**
    * C++ user-defined conversion operator.
    *
    * @sa c_udef_conv_ast
    */
-  K_UDEF_CONV           = (1u << 20),
+  K_UDEF_CONV           = (1u << 21),
 
   /**
    * C++ user-defined literal.
    *
    * @sa c_udef_lit_ast
    */
-  K_UDEF_LIT            = (1u << 21),
+  K_UDEF_LIT            = (1u << 22),
 };
 typedef enum c_ast_kind c_ast_kind_t;
 

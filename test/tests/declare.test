@@ -283,6 +283,53 @@ declare x of scope s of scope t::u as int
 declare x of scope s::t as int
 declare x, y as type int
 
+declare x, y as structured binding
+declare x, y as rvalue reference to structured binding
+declare x, y as thread local structured binding
+
+declare x, y as const structured binding
+declare x, y as static structured binding
+declare x, y as const static structured binding
+declare x, y as static const structured binding
+
+declare x, y as reference to structured binding
+declare x, y as reference to const structured binding
+declare x, y as reference to static structured binding
+declare x, y as reference to const static structured binding
+declare x, y as reference to static const structured binding
+declare x, y as const reference to structured binding
+declare x, y as const reference to static structured binding
+declare x, y as static reference to structured binding
+declare x, y as static reference to const structured binding
+declare x, y as const static reference to structured binding
+declare x, y as static const reference to structured binding
+
+set east-const
+declare x, y as reference to const structured binding
+declare x, y as reference to const static structured binding
+declare x, y as reference to static const structured binding
+declare x, y as const reference to structured binding
+declare x, y as const reference to static structured binding
+declare x, y as static reference to const structured binding
+declare x, y as const static reference to structured binding
+declare x, y as static const reference to structured binding
+set noeast-const
+
+set west-pointer=s
+declare x, y as reference to structured binding
+declare x, y as rvalue reference to structured binding
+declare x, y as reference to const structured binding
+declare x, y as reference to static structured binding
+declare x, y as reference to const static structured binding
+declare x, y as reference to static const structured binding
+declare x, y as const reference to structured binding
+declare x, y as const reference to static structured binding
+declare x, y as static reference to structured binding
+declare x, y as static reference to const structured binding
+declare x, y as const static reference to structured binding
+declare x, y as static const reference to structured binding
+set west-pointer=r
+
 declare T as type deprecated int
 
 declare lambda

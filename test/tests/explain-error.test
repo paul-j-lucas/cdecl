@@ -174,9 +174,9 @@ explain [&,=]
 explain [=,&]
 explain [=,=]
 explain auto int x
-explain auto [x, y]
-explain auto &[x, y]
-explain auto &&[x, y]
+explain auto [x, x]
+explain auto [x] f()
+explain extern auto [x]
 explain C(int, int) = default
 explain constinit int f()
 explain decltype(x) y

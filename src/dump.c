@@ -345,6 +345,13 @@ dump_params:
       json_object_end( kind_json, dump );
       break;
 
+    case K_STRUCTURED_BINDING:
+      kind_json = json_object_begin( JSON_INIT, "struct_bind", dump );
+      DUMP_KEY( dump, "sname_list: " );
+      c_sname_list_dump( &ast->struct_bind.sname_list, dump->fout );
+      json_object_end( kind_json, dump );
+      break;
+
     case K_DESTRUCTOR:
     case K_NAME:
     case K_PLACEHOLDER:

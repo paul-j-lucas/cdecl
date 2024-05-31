@@ -335,6 +335,7 @@ extern char const L_discard[];
 extern char const H_no_discard[];         // English for "nodiscard"
 extern char const L___nodiscard__[];
 extern char const H_non_discardable[];    // English for "nodiscard"
+extern char const L_structured[], L_binding[];  // English for "auto []"
 
 // C++20
 extern char const L_char8_t[];

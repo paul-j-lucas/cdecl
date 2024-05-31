@@ -110,6 +110,12 @@ typedef enum lexer_find_kind lexer_find_kind_t;
 extern lexer_find_kind_t  lexer_find;
 
 /**
+ * Lets the lexer know whether we're currently parsing a C/C++ function-like
+ * parameter list.
+ */
+extern bool               lexer_is_param_list_decl;
+
+/**
  * Lexer keyword context.
  */
 extern c_keyword_ctx_t    lexer_keyword_ctx;

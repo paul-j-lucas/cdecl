@@ -315,6 +315,15 @@ c++decl> declare f of scope S as virtual function
 c++decl> declare new as operator (size_t) returning int
                                                     ^
 44: error: invalid operator "new" return type "integer"; must be "pointer to void"
+c++decl> declare p as pointer to structured binding
+                                 ^
+25: error: pointer to structured binding is illegal
+c++decl> declare S::x as structured binding
+                 ^
+9: error: "S::x": structured binding names may not be scoped
+c++decl> declare x, x as structured binding
+                 ^
+9: error: "x": redefinition of structured binding
 c++decl> declare x as array of reference to int
                  ^
 9: error: array of reference is illegal; did you mean reference to array?

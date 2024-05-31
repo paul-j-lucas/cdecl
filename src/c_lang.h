@@ -1128,6 +1128,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG___STDC_VERSION__           LANG___STDC__
 
 /**
+ * Languages "structured bindings" are supported in.
+ */
+#define LANG_STRUCTURED_BINDINGS        LANG_CPP_MIN(17)
+
+/**
  * Languages "tentative definitions" are supported in.
  */
 #define LANG_TENTATIVE_DEFS             LANG_C_ANY
@@ -1265,6 +1270,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #LANG_const
  * @sa #LANG_volatile_PARAMS_NOT_DEPRECATED
  * @sa #LANG_volatile_RETURN_TYPES_NOT_DEPRECATED
+ * @sa #LANG_volatile_STRUCTURED_BINDINGS_NOT_DEPRECATED
  */
 #define LANG_volatile                   LANG_const
 
@@ -1273,6 +1279,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG_volatile
  * @sa #LANG_volatile_RETURN_TYPES_NOT_DEPRECATED
+ * @sa #LANG_volatile_STRUCTURED_BINDINGS_NOT_DEPRECATED
  */
 #define LANG_volatile_PARAMS_NOT_DEPRECATED \
                                         LANG_MAX(CPP_17)
@@ -1282,9 +1289,20 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #LANG_volatile
  * @sa #LANG_volatile_PARAMS_NOT_DEPRECATED
+ * @sa #LANG_volatile_STRUCTURED_BINDINGS_NOT_DEPRECATED
  */
 #define LANG_volatile_RETURN_TYPES_NOT_DEPRECATED \
                                         LANG_MAX(CPP_17)
+
+/**
+ * Languages `volatie` structured bindings are _not_ deprecated in.
+ *
+ * @sa #LANG_volatile
+ * @sa #LANG_volatile_PARAMS_NOT_DEPRECATED
+ * @sa #LANG_volatile_RETURN_TYPES_NOT_DEPRECATED
+ */
+#define LANG_volatile_STRUCTURED_BINDINGS_NOT_DEPRECATED \
+                                        LANG_CPP_MAX(17)
 
 /**
  * Languages the `wchar_t` keyword is supported in.

@@ -108,6 +108,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added --echo-commands and -O command-line options and echo-commands
 		set option
 	added "include" command
+	added structured binding declarations
 	added "using" declarations
 	made "returning" optional in all cases where it is actually optional
 	added binary, octal, and hexadecimal array sizes

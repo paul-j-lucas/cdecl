@@ -494,6 +494,9 @@ static void print_help_english( void ) {
       print_h( " [rvalue]" );
     print_h( " reference to <english>\n" );
 
+    if ( OPT_LANG_IS( STRUCTURED_BINDINGS ) )
+      print_h( "  structured binding\n" );
+
     print_h( "  <store>* <modifier>* [<C\\+\\+-type>]\n" );
 
     if ( OPT_LANG_IS( LAMBDAS ) ) {

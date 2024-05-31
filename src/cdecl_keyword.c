@@ -329,6 +329,16 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     )
   },
 
+  {
+    L_binding,
+    LANG_STRUCTURED_BINDINGS,
+    TOKEN( Y_binding ),
+    AC_SETTINGS(
+      AC_POLICY_IN_NEXT_ONLY,
+      AC_NO_NEXT_KEYWORDS
+    )
+  },
+
   { L_bit,
     LANG__BitInt,
     TOKEN( Y_bit ),
@@ -1388,6 +1398,15 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS
+    )
+  },
+
+  { L_structured,
+    LANG_STRUCTURED_BINDINGS,
+    TOKEN( Y_structured ),
+    AC_SETTINGS(
+      AC_POLICY_DEFAULT,
+      AC_NEXT_KEYWORDS( L_binding )
     )
   },
 

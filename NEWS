@@ -16,8 +16,13 @@ with their complete changes, see the AUTHORS file.
 Now recognizing `decltype` just to say it's not supported.
 
 ** Structured binding declarations
-Now recognizing structured binding declarations just to say they're not
-supported.
+Structured binding declarations are now supported except that you don't assign
+them from anything (no `=` _expression_):
+
+    c++decl> explain auto [x, y]
+    declare x, y as structured binding
+    c++decl> explain auto&& [x, y]
+    declare x, y as rvalue reference to structured binding
 
 
 * Changes in Cdecl 16.4.1

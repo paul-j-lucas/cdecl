@@ -415,6 +415,13 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       FPUTC( ' ', eng->fout );
       break;
 
+    case K_STRUCTURED_BINDING:
+      fputs_sp( c_tid_name_english( ast->type.stids ), eng->fout );
+      if ( c_tid_is_any( ast->type.stids, TS_ANY_REFERENCE ) )
+        FPUTS( "to ", eng->fout );
+      FPUTS( c_kind_name( ast->kind ), eng->fout );
+      break;
+
     case K_TYPEDEF:
       NO_OP;
       c_type_t type = ast->type;
@@ -514,6 +521,7 @@ void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *fout ) {
 
   if ( (eng_flags & C_ENG_OPT_OMIT_DECLARE) == 0 && ast->kind != K_CAST ) {
     FPUTS( "declare ", fout );
+
     // We can't just check to see if ast->sname is empty and print it only if
     // it isn't because operators have a name but don't use ast->sname.
     switch ( ast->kind ) {
@@ -540,6 +548,15 @@ void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *fout ) {
       case K_LAMBDA:
       case K_UDEF_CONV:
         break;                          // these don't have names
+
+      case K_STRUCTURED_BINDING:
+        FOREACH_SLIST_NODE( sname_node, &ast->struct_bind.sname_list ) {
+          FPUTS( c_sname_local_name( sname_node->data ), fout );
+          if ( sname_node->next != NULL )
+            FPUTS( ", ", fout );
+        } // for
+        FPUTS( " as ", fout );
+        break;
 
       case K_CAPTURE:
       case K_CAST:

@@ -298,6 +298,13 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
         c_ast_list_dup( &ast->lambda.capture_ast_list, node_list );
       break;
 
+    case K_STRUCTURED_BINDING:
+      FOREACH_SLIST_NODE( sname_node, &ast->struct_bind.sname_list ) {
+        c_sname_t dup_sname = c_sname_dup( sname_node->data );
+        slist_push_back( &dup_ast->struct_bind.sname_list, &dup_sname );
+      } // for
+      break;
+
     case K_CAPTURE:
     case K_POINTER:
     case K_REFERENCE:
@@ -407,6 +414,14 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
         return false;
       break;
 
+    case K_STRUCTURED_BINDING:
+      if ( slist_cmp( &i_ast->struct_bind.sname_list,
+                      &j_ast->struct_bind.sname_list,
+                      POINTER_CAST( slist_cmp_fn_t, &c_sname_cmp ) ) != 0 ) {
+        return false;
+      }
+      break;
+
     case K_CAPTURE:
     case K_POINTER:
     case K_REFERENCE:
@@ -455,6 +470,10 @@ void c_ast_free( c_ast_t *ast ) {
       case K_POINTER_TO_MEMBER:
         c_sname_cleanup( &ast->csu.csu_sname );
         break;
+      case K_STRUCTURED_BINDING:
+        c_sname_list_cleanup( &ast->struct_bind.sname_list );
+        break;
+
       case K_BUILTIN:
       case K_CAPTURE:
       case K_CAST:

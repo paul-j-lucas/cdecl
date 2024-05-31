@@ -334,6 +334,9 @@ bool parse_west_pointer( char const *wp_format ) {
       case 'r':
         kinds |= K_ANY_FUNCTION_RETURN;
         break;
+      case 's':
+        kinds |= K_STRUCTURED_BINDING;
+        break;
       case 't':
         kinds |= K_ANY_NON_PTR_REF_OBJECT;
         break;
@@ -358,6 +361,8 @@ char const* west_pointer_str( void ) {
     *s++ = 'l';
   if ( (opt_west_pointer_kinds & K_OPERATOR) != 0 )
     *s++ = 'o';
+  if ( (opt_west_pointer_kinds & K_STRUCTURED_BINDING) != 0 )
+    *s++ = 's';
   if ( (opt_west_pointer_kinds & K_ANY_NON_PTR_REF_OBJECT) != 0 )
     *s++ = 't';
 

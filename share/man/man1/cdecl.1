@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 26, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 29, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -681,6 +681,9 @@ All return types
 (same as
 .BR bflo ).
 .TP
+.B s
+Structured binding.
+.TP
 .B t
 Non-return type.
 .RE
@@ -698,7 +701,9 @@ The default is
 However,
 when more than one name is given in the same
 .B declare
-command,
+command
+for anything other than
+a structured binding,
 the \f(CW*\fP,
 \f(CW&\fP,
 and
@@ -880,8 +885,9 @@ Adds support for
 variables,
 \f(CW[[maybe_unused]]\fP,
 nested namespace declarations,
+\f(CW[[nodiscard]]\fP,
 and
-\f(CW[[nodiscard]]\fP.
+structured bindings.
 .TP
 .B C++20
 Use the C++20 version of the C++ language.
@@ -1416,6 +1422,8 @@ is one of:
 .BR \f2cv-qual\fP "* " "pointer to" " [" "member of class" " \f2s-name\fP" "" ] " \f2english\fP"
 .br
 .RB [ rvalue "] " "reference to" " \f2english\fP"
+.br
+.B "structured binding"
 .br
 .BR \f2store\fP "* " "user-defined literal" " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
@@ -3191,7 +3199,6 @@ C++
 \f(CWdecltype\fP,
 abbreviated function template,
 default argument,
-structured binding,
 and
 template
 declarations are not supported.
@@ -3422,6 +3429,8 @@ the output doesn't include an initializer:
 .cS
 c++decl> declare x as auto
 auto x;
+c++decl> declare x, y as structured binding
+auto [x, y];
 c++decl> declare r as reference to int
 int &r;
 .cE 0

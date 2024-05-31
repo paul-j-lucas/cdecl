@@ -515,6 +515,86 @@ int s::t::x;
 c++decl> declare x, y as type int
 using x = int;
 using y = int;
+c++decl> declare x, y as structured binding
+auto [x, y];
+c++decl> declare x, y as rvalue reference to structured binding
+auto &&[x, y];
+c++decl> declare x, y as thread local structured binding
+thread_local auto [x, y];
+c++decl> declare x, y as const structured binding
+const auto [x, y];
+c++decl> declare x, y as static structured binding
+static auto [x, y];
+c++decl> declare x, y as const static structured binding
+static const auto [x, y];
+c++decl> declare x, y as static const structured binding
+static const auto [x, y];
+c++decl> declare x, y as reference to structured binding
+auto &[x, y];
+c++decl> declare x, y as reference to const structured binding
+const auto &[x, y];
+c++decl> declare x, y as reference to static structured binding
+static auto &[x, y];
+c++decl> declare x, y as reference to const static structured binding
+static const auto &[x, y];
+c++decl> declare x, y as reference to static const structured binding
+static const auto &[x, y];
+c++decl> declare x, y as const reference to structured binding
+const auto &[x, y];
+c++decl> declare x, y as const reference to static structured binding
+static const auto &[x, y];
+c++decl> declare x, y as static reference to structured binding
+static auto &[x, y];
+c++decl> declare x, y as static reference to const structured binding
+static const auto &[x, y];
+c++decl> declare x, y as const static reference to structured binding
+static const auto &[x, y];
+c++decl> declare x, y as static const reference to structured binding
+static const auto &[x, y];
+c++decl> set east-const
+c++decl> declare x, y as reference to const structured binding
+auto const &[x, y];
+c++decl> declare x, y as reference to const static structured binding
+static auto const &[x, y];
+c++decl> declare x, y as reference to static const structured binding
+static auto const &[x, y];
+c++decl> declare x, y as const reference to structured binding
+auto const &[x, y];
+c++decl> declare x, y as const reference to static structured binding
+static auto const &[x, y];
+c++decl> declare x, y as static reference to const structured binding
+static auto const &[x, y];
+c++decl> declare x, y as const static reference to structured binding
+static auto const &[x, y];
+c++decl> declare x, y as static const reference to structured binding
+static auto const &[x, y];
+c++decl> set noeast-const
+c++decl> set west-pointer=s
+c++decl> declare x, y as reference to structured binding
+auto& [x, y];
+c++decl> declare x, y as rvalue reference to structured binding
+auto&& [x, y];
+c++decl> declare x, y as reference to const structured binding
+const auto& [x, y];
+c++decl> declare x, y as reference to static structured binding
+static auto& [x, y];
+c++decl> declare x, y as reference to const static structured binding
+static const auto& [x, y];
+c++decl> declare x, y as reference to static const structured binding
+static const auto& [x, y];
+c++decl> declare x, y as const reference to structured binding
+const auto& [x, y];
+c++decl> declare x, y as const reference to static structured binding
+static const auto& [x, y];
+c++decl> declare x, y as static reference to structured binding
+static auto& [x, y];
+c++decl> declare x, y as static reference to const structured binding
+static const auto& [x, y];
+c++decl> declare x, y as const static reference to structured binding
+static const auto& [x, y];
+c++decl> declare x, y as static const reference to structured binding
+static const auto& [x, y];
+c++decl> set west-pointer=r
 c++decl> declare T as type deprecated int
 using T [[deprecated]] = int;
 c++decl> declare lambda

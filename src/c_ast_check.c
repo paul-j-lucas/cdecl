@@ -443,6 +443,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
     case K_NAME:
     case K_OPERATOR:
     case K_PLACEHOLDER:
+    case K_STRUCTURED_BINDING:
     case K_TYPEDEF:                     // impossible after c_ast_untypedef()
     case K_UDEF_CONV:
     case K_UDEF_LIT:
@@ -1021,6 +1022,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
       case K_POINTER_TO_MEMBER:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
+      case K_STRUCTURED_BINDING:
       case K_TYPEDEF:
       case K_UDEF_LIT:
       case K_VARIADIC:
@@ -1374,6 +1376,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       case K_LAMBDA:
       case K_OPERATOR:
       case K_PLACEHOLDER:
+      case K_STRUCTURED_BINDING:
       case K_TYPEDEF:                   // impossible after c_ast_untypedef()
       case K_UDEF_CONV:
       case K_UDEF_LIT:
@@ -2209,6 +2212,10 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
       }
       break;
 
+    case K_STRUCTURED_BINDING:
+      print_error( &to_ast->loc, "pointer to structured binding is illegal\n" );
+      return false;
+
     case K_CAPTURE:
     case K_CAST:
     case K_CONSTRUCTOR:
@@ -2342,6 +2349,13 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       print_hint( "%s returning pointer to function", kind_name );
       return false;
 
+    case K_STRUCTURED_BINDING:
+      print_error( &ret_ast->loc,
+        "%s returning %s is illegal\n",
+        kind_name, c_kind_name( ret_ast->kind )
+      );
+      return false;
+
     case K_APPLE_BLOCK:
     case K_ENUM:
     case K_POINTER:
@@ -2379,6 +2393,50 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
         return false;
     } // switch
   }
+
+  return true;
+}
+
+/**
+ * Checks a structured binding AST for errors.
+ *
+ * @param ast The structured binding AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_check_structured_binding( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_STRUCTURED_BINDING );
+
+  if ( c_tid_is_any( ast->type.stids, c_tid_compl( TS_STRUCTURED_BINDING ) ) ) {
+    print_error( &ast->loc,
+      "structured binding may not be \"%s\"\n",
+      c_tid_name_error( ast->type.stids )
+    );
+    return false;
+  }
+
+  FOREACH_SLIST_NODE( sname_node, &ast->struct_bind.sname_list ) {
+    c_sname_t const *const sname = sname_node->data;
+    if ( c_sname_count( sname ) > 1 ) {
+      print_error( &ast->loc,
+        "\"%s\": structured binding names may not be scoped\n",
+        c_sname_full_name( sname )
+      );
+      return false;
+    }
+    FOREACH_SLIST_NODE_UNTIL( prev_sname_node, &ast->struct_bind.sname_list,
+                              sname_node ) {
+      c_sname_t const *const prev_sname = prev_sname_node->data;
+      if ( c_sname_cmp( sname, prev_sname ) == 0 ) {
+        print_error( &ast->loc,
+          "\"%s\": redefinition of structured binding\n",
+          c_sname_full_name( prev_sname )
+        );
+        return false;
+      }
+    } // for
+  } // for
 
   return true;
 }
@@ -2682,6 +2740,11 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
         return VISITOR_ERROR_FOUND;
       break;
 
+    case K_STRUCTURED_BINDING:
+      if ( !c_ast_check_structured_binding( ast ) )
+        return VISITOR_ERROR_FOUND;
+      break;
+
     case K_TYPEDEF:
       NO_OP;
       //
@@ -2858,6 +2921,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
       case K_LAMBDA:
       case K_NAME:
       case K_PLACEHOLDER:
+      case K_STRUCTURED_BINDING:
       case K_TYPEDEF:
       case K_UDEF_LIT:
       case K_VARIADIC:
@@ -3000,6 +3064,17 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
         print_warning( &ast->loc,
           "missing type specifier; \"%s\" assumed\n",
           c_tid_name_error( TB_int )
+        );
+      }
+      break;
+
+    case K_STRUCTURED_BINDING:
+      if ( c_tid_is_any( ast->type.stids, TS_volatile ) &&
+           !OPT_LANG_IS( volatile_STRUCTURED_BINDINGS_NOT_DEPRECATED ) ) {
+        print_warning( &ast->loc,
+          "\"%s\" structured bindings are deprecated%s\n",
+          c_tid_name_error( TS_volatile ),
+          C_LANG_WHICH( volatile_STRUCTURED_BINDINGS_NOT_DEPRECATED )
         );
       }
       break;

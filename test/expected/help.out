@@ -943,6 +943,7 @@ english:
   <store>* <cv-qual>* pointer to [member of { class | struct } <name>] <english>
   { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
   <store>* [rvalue] reference to <english>
+  structured binding
   <store>* <modifier>* [<C++-type>]
 lambda-english:
   [[capturing] [[<captures>]] [([<args>])] [returning <english>]
@@ -1659,6 +1660,7 @@ english:
   <store>* <cv-qual>* pointer to [member of { class | struct } <name>] <english>
   { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
   <store>* [rvalue] reference to <english>
+  structured binding
   <store>* <modifier>* [<C++-type>]
 lambda-english:
   [[capturing] [[<captures>]] [([<args>])] [returning <english>]
@@ -1805,6 +1807,7 @@ english:
   <store>* <cv-qual>* pointer to [member of { class | struct } <name>] <english>
   { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
   <store>* [rvalue] reference to <english>
+  structured binding
   <store>* <modifier>* [<C++-type>]
 lambda-english:
   [[capturing] [[<captures>]] [([<args>])] [returning <english>]
