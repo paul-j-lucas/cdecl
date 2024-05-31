@@ -1,5 +1,7 @@
 2024-05-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Sorted.
+   * lexer.l: s/YY_USER_ACTION_UNDO_FOR_REJECT/CDECL_REJECT/
    * parser.y, debug.out:
      s/lambda_param_c_ast_list_opt/paren_param_c_ast_list_opt/
    * parser.y, debug.out:
