@@ -1792,7 +1792,6 @@ static void yyerror( char const *msg ) {
 %type   <sname>       any_sname_c any_sname_c_exp any_sname_c_opt
 %type   <ast_pair>    array_decl_c_astp
 %type   <ast>         array_size_c_ast
-%type   <ast>         atomic_builtin_typedef_type_c_ast
 %type   <ast>         atomic_specifier_type_c_ast
 %type   <tid>         attribute_c_atid_exp
 %type   <tid>         attribute_list_c_atid attribute_list_c_atid_opt
@@ -1809,6 +1808,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>    decl_c_astp decl2_c_astp
 %type   <ast_list>    decl_list_c
 %type   <sname>       destructor_sname
+%type   <ast>         east_modifiable_type_c_ast
 %type   <ast>         east_modified_type_c_ast
 %type   <ast>         enum_c_ast
 %type   <ast>         enum_class_struct_union_c_ast
@@ -6422,13 +6422,12 @@ type_modifier_base_type
   ;
 
 east_modified_type_c_ast
-  : atomic_builtin_typedef_type_c_ast[type_ast]
+  : east_modifiable_type_c_ast[type_ast]
     type_modifier_list_c_type_opt[mod_list_type]
     {
       DUMP_START( "east_modified_type_c_ast",
-                  "atomic_builtin_typedef_type_c_ast "
-                  "type_modifier_list_c_type_opt" );
-      DUMP_AST( "atomic_builtin_typedef_type_c_ast", $type_ast );
+                  "east_modifiable_type_c_ast type_modifier_list_c_type_opt" );
+      DUMP_AST( "east_modifiable_type_c_ast", $type_ast );
       DUMP_TYPE( "type_modifier_list_c_type_opt", $mod_list_type );
 
       $$ = $type_ast;
@@ -6456,7 +6455,7 @@ east_modified_type_c_ast
     }
   ;
 
-atomic_builtin_typedef_type_c_ast
+east_modifiable_type_c_ast
   : atomic_specifier_type_c_ast
   | builtin_type_c_ast
   | typedef_type_c_ast
