@@ -1,6 +1,8 @@
 2024-05-31  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y, debug.out:
+     s/lambda_param_c_ast_list_opt/paren_param_c_ast_list_opt/
+   * parser.y, debug.out:
      s/atomic_builtin_typedef_type_c_ast/east_modifiable_type_c_ast/
 
 2024-05-30  Paul J. Lucas <paul@lucasmail.org>
