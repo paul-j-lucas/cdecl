@@ -1,3 +1,27 @@
+2024-05-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, debug.out:
+     s/atomic_builtin_typedef_type_c_ast/east_modifiable_type_c_ast/
+
+2024-05-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c, util.c, util.h: Added fputsp_s().
+
+2024-05-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Rework of checking sname_list in declare_command for future
+     work.
+
+2024-05-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Factored type_qualifier_list_c_stid_opt out into
+     reference_decl_c_astp.
+   * lexer.l, parser.y, explain-error.out, explain-error.test: Now recognizing
+     structured binding declarations just to say they're not supported.
+   * parser.y, explain-error.out, explain-error.test: Added "asm" and
+     "decltype" tests.
+   * configure.ac, parser.y: Now recognizing  just to say it's not supported.
+
 2024-05-27  Paul J. Lucas <paul@lucasmail.org>
 
    * p_macro.c: s/2/STRLITLEN( ", " )/
