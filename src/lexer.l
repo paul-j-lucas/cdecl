@@ -95,6 +95,23 @@
  */
 
 /**
+ * Switch to lexer \a STATE start-state saving the current start-state.
+ *
+ * @param STATE The start-state to switch to.
+ *
+ * @sa #BEGIN_RETURN
+ */
+#define BEGIN_CALL(STATE) \
+  BLOCK( yy_start_stack_push(); BEGIN( STATE ); )
+
+/**
+ * Switch to the previous lexer start-state saved by #BEGIN_CALL().
+ *
+ * @sa #BEGIN_CALL()
+ */
+#define BEGIN_RETURN              BEGIN( yy_start_stack_pop() )
+
+/**
  * A **cdecl**-specfic version of Flex's `REJECT` that also undoes
  * #YY_USER_ACTION.
  *
@@ -125,23 +142,6 @@
  * @param S The string to set the token to.
  */
 #define SET_TOKEN_TO(S)           (lexer_token = (S))
-
-/**
- * Switch to lexer \a STATE start-state saving the current start-state.
- *
- * @param STATE The start-state to switch to.
- *
- * @sa #BEGIN_RETURN
- */
-#define BEGIN_CALL(STATE) \
-  BLOCK( yy_start_stack_push(); BEGIN( STATE ); )
-
-/**
- * Switch to the previous lexer start-state saved by #BEGIN_CALL().
- *
- * @sa #BEGIN_CALL()
- */
-#define BEGIN_RETURN              BEGIN( yy_start_stack_pop() )
 
 /**
  * Overrides Flex's fatal error message to print the message in our format and
