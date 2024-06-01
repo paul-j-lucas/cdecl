@@ -3343,7 +3343,7 @@ p_param
       $$ = MALLOC( p_param_t, 1 );
       *$$ = (p_param_t){ .name = $name, .loc = @name };
     }
-  | "..."
+  | Y_DOT_DOT_DOT
     {
       $$ = MALLOC( p_param_t, 1 );
       *$$ = (p_param_t){ .name = check_strdup( L_ellipsis ), .loc = @1 };
@@ -5465,7 +5465,7 @@ param_c_ast
     /*
      * Varargs declaration.
      */
-  | "..."
+  | Y_DOT_DOT_DOT
     {
       DUMP_START( "param_c_ast", "..." );
 
@@ -7954,7 +7954,7 @@ var_decl_english_ast
     /*
      * Varargs declaration.
      */
-  | "..."
+  | Y_DOT_DOT_DOT
     {
       DUMP_START( "var_decl_english_ast", "..." );
 
