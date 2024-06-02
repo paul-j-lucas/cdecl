@@ -1266,55 +1266,55 @@ static void yyerror( char const *msg ) {
 //
 %union {
   c_alignas_t         align;
-  c_ast_t            *ast;          // for the AST being built
-  c_ast_list_t        ast_list;     // for declarations and function parameters
-  c_ast_pair_t        ast_pair;     // for the AST being built
-  c_cast_kind_t       cast_kind;    // C/C++ cast kind
-  bool                flag;         // simple flag
-  unsigned            flags;        // multipurpose bitwise flags
-  char const         *literal;      // token L_* literal (for new-style casts)
-  int                 int_val;      // signed integer value
-  char               *name;         // identifier name, cf. sname
-  c_func_member_t     member;       // member, non-member, or unspecified
-  c_op_id_t           op_id;        // overloaded operator ID
-  p_arg_list_t       *p_arg_list;   // preprocessor macro argument list
-  p_param_t          *p_param;      // preprocessor macro parameter
-  p_param_list_t     *p_param_list; // preprocessor macro parameter list
-  p_token_t          *p_token;      // preprocessor token
-  p_token_list_t     *p_token_list; // preprocessor token list
-  void               *ptrs[2];      // pair of pointers
-  cdecl_show_t        show;         // which types to show
-  c_sname_t           sname;        // scoped identifier name, cf. name
-  slist_t             sname_list;   // c_sname_t list
-  char               *str_val;      // quoted string value
-  c_typedef_t const  *tdef;         // typedef
-  c_tid_t             tid;          // built-ins, storage classes, & qualifiers
-  c_type_t            type;         // complete type
-  unsigned            uint_val;     // unsigned integer value
+  c_ast_t            *ast;            // for the AST being built
+  c_ast_list_t        ast_list;       // for declarations & function parameters
+  c_ast_pair_t        ast_pair;       // for the AST being built
+  c_cast_kind_t       cast_kind;      // C/C++ cast kind
+  bool                flag;           // simple flag
+  unsigned            flags;          // multipurpose bitwise flags
+  char const         *literal;        // token L_* literal for new-style casts
+  int                 int_val;        // signed integer value
+  char               *name;           // identifier name, cf. sname
+  c_func_member_t     member;         // member, non-member, or unspecified
+  c_op_id_t           op_id;          // overloaded operator ID
+  p_arg_list_t       *p_arg_list;     // preprocessor macro argument list
+  p_param_t          *p_param;        // preprocessor macro parameter
+  p_param_list_t     *p_param_list;   // preprocessor macro parameter list
+  p_token_t          *p_token;        // preprocessor token
+  p_token_list_t     *p_token_list;   // preprocessor token list
+  void               *ptrs[2];        // pair of pointers
+  cdecl_show_t        show;           // which types to show
+  c_sname_t           sname;          // scoped identifier name, cf. name
+  slist_t             sname_list;     // c_sname_t list
+  char               *str_val;        // quoted string value
+  c_typedef_t const  *tdef;           // typedef
+  c_tid_t             tid;            // built-ins, storage classes, qualifiers
+  c_type_t            type;           // complete type
+  unsigned            uint_val;       // unsigned integer value
 }
 
                     // cdecl commands
 %token              Y_cast
-//                  Y_class             // covered in C++
-//                  Y_const             // covered in C89
-%token              Y_const_ENG         // see comment in lexer.l
+//                  Y_class           // covered in C++
+//                  Y_const           // covered in C89
+%token              Y_constant        // see comment in lexer.l
 %token              Y_declare
 %token              Y_define
-%token              Y_dynamic
-//                  Y_exit              // mapped to Y_quit by lexer
+%token              Y_dynamic         // cast
+//                  Y_exit            // mapped to Y_quit by lexer
 %token              Y_explain
-//                  Y_inline            // covered in C99
-//                  Y_namespace         // covered in C++
-%token              Y_no
+//                  Y_inline          // covered in C99
+//                  Y_namespace       // covered in C++
+%token              Y_no              // discard, except, return, unique address
 %token              Y_quit
-%token              Y_reinterpret
+%token              Y_reinterpret     // cast
 %token              Y_set
 %token              Y_show
-//                  Y_static            // covered in K&R C
-//                  Y_struct            // covered in K&R C
-//                  Y_typedef           // covered in K&R C
-//                  Y_union             // covered in K&R C
-//                  Y_using             // covered in C++
+//                  Y_static          // covered in K&R C
+//                  Y_struct          // covered in K&R C
+//                  Y_typedef         // covered in K&R C
+//                  Y_union           // covered in K&R C
+//                  Y_using           // covered in C++
 
                     // Pseudo-English
 %token              Y_aligned
@@ -1384,7 +1384,7 @@ static void yyerror( char const *msg ) {
 %left               Y_COLON_COLON         "::"
                     Y_COLON_COLON_STAR // "::" followed by '*'
                     // C/C++ operators: precedence 16
-%token              Y_PLUS_PLUS           "++"
+                    %token              Y_PLUS_PLUS           "++"
 %token              Y_MINUS_MINUS         "--"
 %left                                     '(' ')'
                                           '[' ']'
@@ -1448,7 +1448,7 @@ static void yyerror( char const *msg ) {
 %left                                     ','
 
                     // K&R C
-%token  <tid>       Y_auto_STORAGE      // Pre-C23/C++11 version of "auto"
+%token  <tid>       Y_auto_STORAGE      // pre-C23/C++11 version of "auto"
 %token              Y_break
 %token              Y_case
 %token  <tid>       Y_char
@@ -1504,7 +1504,7 @@ static void yyerror( char const *msg ) {
                     // C89
 %token              Y_asm
 %token  <tid>       Y_const
-%token              Y_DOT_DOT_DOT "..." // for varargs
+%token              Y_DOT_DOT_DOT "..."
 %token  <tid>       Y_enum
 %token  <tid>       Y_signed
 %token  <tid>       Y_void
@@ -1541,7 +1541,7 @@ static void yyerror( char const *msg ) {
 %token  <sname>     Y_DESTRUCTOR_SNAME  // e.g., S::T::~T
 %token  <literal>   Y_dynamic_cast
 %token  <tid>       Y_explicit
-%token  <tid>       Y_false             // for noexcept(false)
+%token  <tid>       Y_false             // noexcept(false)
 %token  <tid>       Y_friend
 %token  <tid>       Y_mutable
 %token  <tid>       Y_namespace
@@ -1556,7 +1556,7 @@ static void yyerror( char const *msg ) {
 %token              Y_template
 %token  <tid>       Y_this
 %token  <tid>       Y_throw
-%token  <tid>       Y_true              // for noexcept(true)
+%token  <tid>       Y_true              // noexcept(true)
 %token              Y_try
 %token              Y_typeid
 %token  <flag>      Y_typename
@@ -1575,7 +1575,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_unsequenced
 
                     // C23 & C++11
-%token              Y_ATTR_BEGIN        // First '[' of "[[" for an attribute.
+%token              Y_ATTR_BEGIN        // first '[' of "[[" for an attribute
 %token  <tid>       Y_auto_TYPE         // C23/C++11 version of "auto"
 
                     // C++11
@@ -1600,7 +1600,7 @@ static void yyerror( char const *msg ) {
 %token              Y_auto_STRUCTURED_BINDING
 
                     // C23 & C++17
-%token              Y_discard           // "no discard"
+%token              Y_discard           // no discard
 %token  <tid>       Y_maybe_unused
 %token              Y_maybe Y_unused
 %token  <tid>       Y_nodiscard
@@ -1619,7 +1619,7 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_export
 %token  <tid>       Y_no_unique_address
 %token              Y_requires
-%token              Y_unique Y_address  // "no unique address"
+%token              Y_unique Y_address  // no unique address
 
                     // Embedded C extensions
 %token  <tid>       Y_EMC__Accum
@@ -2501,7 +2501,7 @@ storage_class_subset_english_type
    * since only special members can be deleted anyway.
    */
 storage_class_subset_english_stid
-  : Y_const_ENG eval_expr_init_stid[stid]
+  : Y_constant eval_expr_init_stid[stid]
     {
       $$ = $stid;
     }
@@ -7681,7 +7681,7 @@ attribute_english_atid
 storage_class_english_stid
   : Y_auto_STORAGE
   | Y_Apple___block
-  | Y_const_ENG eval_expr_init_stid[stid]
+  | Y_constant eval_expr_init_stid[stid]
     {
       $$ = $stid;
     }
@@ -7724,7 +7724,7 @@ eval_expr_init_stid
   //
   // Normally, this rule would be named eval_expr_init_stid_exp and there would
   // be "| error" as the last alternate.  However, this rule is only ever
-  // preceded by the Y_const_ENG token in the grammar and that token is a
+  // preceded by the Y_constant token in the grammar and that token is a
   // special case that's returned only when followed by one of these three
   // tokens so we can't possibly get something else here.
   //

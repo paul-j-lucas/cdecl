@@ -754,7 +754,7 @@ auto/({S}+(const|volatile))*{S}*?&?&?{S}*\[ {
                */
 const(ant)?/{S}+(eval(uation)?|expr(ession)?|init(ialization)?){NI} {
                 SET_TOKEN;
-                return Y_const_ENG;
+                return Y_constant;
               }
 
               /*
