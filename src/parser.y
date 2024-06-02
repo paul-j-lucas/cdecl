@@ -6009,7 +6009,7 @@ cast2_c_astp
   | func_cast_c_astp
   | nested_cast_c_astp
 //| oper_cast_c_astp                    // can't cast to an operator
-  | sname_c_ast                   { $$ = (c_ast_pair_t){ $1, NULL }; }
+  | sname_c_ast[ast]              { $$ = (c_ast_pair_t){ $ast, NULL }; }
 //| typedef_type_cast_c_ast             // can't cast to a typedef
 //| user_defined_conversion_cast_c_astp // can't cast to a user-defined conv.
 //| user_defined_literal_cast_c_astp    // can't cast to a user-defined literal
