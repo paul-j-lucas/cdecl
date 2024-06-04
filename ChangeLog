@@ -1,5 +1,11 @@
 2024-06-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * AUTHORS, share/man/man1/cdecl.1, c_ast.c, c_ast.h, c_ast_check.c,
+     c_lang.h, cdecl_keyword.c, dump.c, english.c, gibberish.c, help.c,
+     literals.c, literals.h, parser.y, debug.out, declare.out,
+     explain-error.out, explain.out, help.out, declare.test,
+     explain-error.test, explain.test: Added support for abbreviated function
+     template parameter packs.
    * cdecl_keyword.c, gibberish.c, lexer.l, literals.c, literals.h, p_macro.c,
      p_token.c, parser.y: s/Y_DOT_DOT_DOT/Y_ELLIPSIS/
 
