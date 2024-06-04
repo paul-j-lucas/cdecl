@@ -1,4 +1,4 @@
-c++decl> set west-pointer=t
+c++decl> set west-decl=t
 c++decl> set
   noalt-tokens
   nodebug
@@ -14,7 +14,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=t
+    west-decl=t
 c++decl> declare p as pointer to int
 int* p;
 c++decl> declare p as pointer to pointer to int

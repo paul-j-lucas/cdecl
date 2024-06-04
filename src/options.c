@@ -66,7 +66,7 @@ bool                opt_semicolon = true;
 bool                opt_trailing_ret;
 bool                opt_typedefs = true;
 bool                opt_using = true;
-c_ast_kind_t        opt_west_pointer_kinds = K_ANY_FUNCTION_RETURN;
+c_ast_kind_t        opt_west_decl_kinds = K_ANY_FUNCTION_RETURN;
 
 /// @endcond
 
@@ -313,11 +313,11 @@ bool parse_explicit_int( char const *ei_format ) {
   return true;
 }
 
-bool parse_west_pointer( char const *wp_format ) {
-  set_all_or_none( &wp_format, "rt" );
+bool parse_west_decl( char const *wd_format ) {
+  set_all_or_none( &wd_format, "rt" );
   unsigned kinds = 0;
 
-  for ( char const *s = wp_format; *s != '\0'; ++s ) {
+  for ( char const *s = wd_format; *s != '\0'; ++s ) {
     switch ( tolower( *s ) ) {
       case 'b':
         kinds |= K_APPLE_BLOCK;
@@ -345,25 +345,25 @@ bool parse_west_pointer( char const *wp_format ) {
     } // switch
   } // for
 
-  opt_west_pointer_kinds = kinds;
+  opt_west_decl_kinds = kinds;
   return true;
 }
 
-char const* west_pointer_str( void ) {
+char const* west_decl_str( void ) {
   static char buf[ ARRAY_SIZE( "bflot" ) ];
   char *s = buf;
 
-  if ( (opt_west_pointer_kinds & K_APPLE_BLOCK) != 0 )
+  if ( (opt_west_decl_kinds & K_APPLE_BLOCK) != 0 )
     *s++ = 'b';
-  if ( (opt_west_pointer_kinds & K_FUNCTION) != 0 )
+  if ( (opt_west_decl_kinds & K_FUNCTION) != 0 )
     *s++ = 'f';
-  if ( (opt_west_pointer_kinds & K_UDEF_LIT) != 0 )
+  if ( (opt_west_decl_kinds & K_UDEF_LIT) != 0 )
     *s++ = 'l';
-  if ( (opt_west_pointer_kinds & K_OPERATOR) != 0 )
+  if ( (opt_west_decl_kinds & K_OPERATOR) != 0 )
     *s++ = 'o';
-  if ( (opt_west_pointer_kinds & K_STRUCTURED_BINDING) != 0 )
+  if ( (opt_west_decl_kinds & K_STRUCTURED_BINDING) != 0 )
     *s++ = 's';
-  if ( (opt_west_pointer_kinds & K_ANY_NON_PTR_REF_OBJECT) != 0 )
+  if ( (opt_west_decl_kinds & K_ANY_NON_PTR_REF_OBJECT) != 0 )
     *s++ = 't';
 
   assert( s < buf + ARRAY_SIZE( buf ) );

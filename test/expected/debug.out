@@ -13,7 +13,7 @@ cdecl> set
     semicolon
   notrailing-return
     using                    (Not supported in C.)
-    west-pointer=bflo
+    west-decl=bflo
 cdecl> explain (int)x
 {
   rule: {
@@ -8645,7 +8645,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> explain int x
 declare x as integer
 c++decl> set debug
@@ -8664,7 +8664,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> explain int x
 {
   rule: {

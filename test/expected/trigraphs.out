@@ -71,7 +71,7 @@ cdecl> set
     semicolon
   notrailing-return
     using                    (Not supported in C.)
-    west-pointer=bflo
+    west-decl=bflo
 cdecl> declare a as array 9 of int
 int a[9];
 cdecl> set nographs
@@ -94,7 +94,7 @@ cdecl> set
     semicolon
   notrailing-return
     using                    (Not supported in C.)
-    west-pointer=bflo
+    west-decl=bflo
 cdecl> declare a as array 9 of int
 int a[9];
 cdecl> set nographs
@@ -117,7 +117,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> declare a as array 9 of int
 int a[9];
 c++decl> set nographs

@@ -605,7 +605,7 @@ static auto const &[x, y];
 c++decl> declare x, y as static const reference to structured binding
 static auto const &[x, y];
 c++decl> set noeast-const
-c++decl> set west-pointer=s
+c++decl> set west-decl=s
 c++decl> declare x, y as reference to structured binding
 auto& [x, y];
 c++decl> declare x, y as rvalue reference to structured binding
@@ -630,7 +630,7 @@ c++decl> declare x, y as const static reference to structured binding
 static const auto& [x, y];
 c++decl> declare x, y as static const reference to structured binding
 static const auto& [x, y];
-c++decl> set west-pointer=r
+c++decl> set west-decl=r
 c++decl> declare T as type deprecated int
 using T [[deprecated]] = int;
 c++decl> declare lambda

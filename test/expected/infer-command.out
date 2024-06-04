@@ -13,7 +13,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> // comment
 c++decl> /* comment */
 c++decl> int x
@@ -44,7 +44,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> set infer-command
 c++decl> set
   noalt-tokens
@@ -61,6 +61,6 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> int x
 declare x as integer

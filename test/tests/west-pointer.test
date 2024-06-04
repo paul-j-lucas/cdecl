@@ -1,7 +1,7 @@
 EXPECTED_EXIT=0
 cdecl -bE -xc++ <<END
 
-set west-pointer=t
+set west-decl=t
 set
 
 declare p as pointer to int

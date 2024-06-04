@@ -927,7 +927,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       );
       c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
       gib->printed_space =
-        func_ast == NULL || (func_ast->kind & opt_west_pointer_kinds) == 0;
+        func_ast == NULL || (func_ast->kind & opt_west_decl_kinds) == 0;
       break;
 
     case K_REFERENCE:
@@ -1022,13 +1022,13 @@ static bool c_ast_space_before_ptr_ref( c_ast_t const *ast,
 
   c_ast_t const *const func_ast = c_ast_find_parent_func( ast );
   if ( func_ast != NULL )               // function returning pointer to ...
-    return (func_ast->kind & opt_west_pointer_kinds) == 0;
+    return (func_ast->kind & opt_west_decl_kinds) == 0;
 
   if ( c_ast_find_name( ast, C_VISIT_UP ) == NULL )
     return false;
 
   c_ast_t const *const to_ast = c_ast_find_kind_any(
-    ast->ptr_ref.to_ast, C_VISIT_DOWN, opt_west_pointer_kinds
+    ast->ptr_ref.to_ast, C_VISIT_DOWN, opt_west_decl_kinds
   );
   if ( to_ast != NULL )
     return false;
@@ -1163,10 +1163,10 @@ static void c_struct_bind_ast_gibberish( c_ast_t const *ast,
       " %s ", ref_qual_stid == TS_REFERENCE ? L_bitand : L_and
     );
   } else {
-    if ( (opt_west_pointer_kinds & K_STRUCTURED_BINDING) == 0 )
+    if ( (opt_west_decl_kinds & K_STRUCTURED_BINDING) == 0 )
       FPUTC( ' ', gib->fout );
     FPUTS( ref_qual_stid == TS_REFERENCE ? "&" : "&&", gib->fout );
-    if ( (opt_west_pointer_kinds & K_STRUCTURED_BINDING) != 0 )
+    if ( (opt_west_decl_kinds & K_STRUCTURED_BINDING) != 0 )
       FPUTC( ' ', gib->fout );
   }
 

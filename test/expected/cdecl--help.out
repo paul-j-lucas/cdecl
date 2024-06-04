@@ -26,7 +26,7 @@ options:
   --trailing-return   (-r) Print trailing return type in C++.
   --trigraphs         (-3) Print trigraphs.
   --version           (-v) Print version and exit.
-  --west-pointer=ARG  (-w) Print *, &, and && next to type.
+  --west-decl=ARG     (-w) Print *, &, and && next to type.
 
 cdecl home page: https://github.com/paul-j-lucas/cdecl
 Report bugs to: https://github.com/paul-j-lucas/cdecl/issues

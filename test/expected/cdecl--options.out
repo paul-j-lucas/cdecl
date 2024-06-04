@@ -24,4 +24,4 @@
 --trailing-return -r Print trailing return type in C++
 --trigraphs -3 Print trigraphs
 --version -v Print version and exit
---west-pointer -w Print *, &, and && next to type
+--west-decl -w Print *, &, and && next to type

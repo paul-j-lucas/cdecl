@@ -88,7 +88,7 @@ static bool set_alt_tokens( set_option_fn_args_t const* ),
             set_trailing_return( set_option_fn_args_t const* ),
             set_trigraphs( set_option_fn_args_t const* ),
             set_using( set_option_fn_args_t const* ),
-            set_west_pointer( set_option_fn_args_t const* );
+            set_west_decl( set_option_fn_args_t const* );
 
 /**
  * The column at which to print `(Not supported ...)` when an option is not
@@ -230,10 +230,10 @@ static set_option_t const SET_OPTIONS[] = {
     &set_trigraphs
   },
 
-  { "west-pointer",
+  { "west-decl",
     SET_OPTION_TOGGLE,
     .has_arg = required_argument,
-    &set_west_pointer
+    &set_west_decl
   },
 
   { "using",
@@ -359,7 +359,7 @@ static void print_options( void ) {
   print_option( "semicolon", po_bool_value( opt_semicolon ), LANG_ANY );
   print_option( "trailing-return", po_bool_value( opt_trailing_ret ), LANG_TRAILING_RETURN_TYPES );
   print_option( "using", po_bool_value( opt_using ), LANG_using_DECLS );
-  print_option( "west-pointer", west_pointer_str(), LANG_ANY );
+  print_option( "west-decl", west_decl_str(), LANG_ANY );
 }
 
 /**
@@ -712,27 +712,27 @@ static bool set_using( set_option_fn_args_t const *args ) {
 }
 
 /**
- * Sets the `west-pointer` option.
+ * Sets the `west-decl` option.
  *
  * @param args The set option arguments.
  * @return Returns `true` only if the option was set.
  */
 NODISCARD
-static bool set_west_pointer( set_option_fn_args_t const *args ) {
+static bool set_west_decl( set_option_fn_args_t const *args ) {
   bool ok;
 
   if ( args->opt_enabled ) {
-    ok = parse_west_pointer( args->opt_value );
+    ok = parse_west_decl( args->opt_value );
     if ( !ok ) {
       print_error( args->opt_value_loc,
-        "\"%s\": invalid value for west-pointer;"
+        "\"%s\": invalid value for west-decl;"
         " must be *, -, or {b|f|l|o|r|t}+\n",
         args->opt_value
       );
     }
   }
   else {
-    ok = parse_west_pointer( "" );
+    ok = parse_west_decl( "" );
     assert( ok );
   }
 

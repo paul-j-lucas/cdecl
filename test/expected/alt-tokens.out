@@ -13,7 +13,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> struct S
 c++decl> declare b as block
 void (xor b)();

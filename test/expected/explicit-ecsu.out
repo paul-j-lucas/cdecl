@@ -22,7 +22,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> declare s as struct S
 struct S s;
 c++decl> declare u as union U
@@ -50,7 +50,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> declare s as struct S
 S s;
 c++decl> declare u as union U

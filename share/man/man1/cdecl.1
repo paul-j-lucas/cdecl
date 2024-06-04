@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 3, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 4, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -640,9 +640,9 @@ and whether GNU
 (if compiled in)
 is genuine.
 .TP
-.BI \-\-west-pointer \f1=\fPs "\f1 | \fP" "" \-w " s"
+.BI \-\-west-decl \f1=\fPs "\f1 | \fP" "" \-w " s"
 Sets when to print the \f(CW*\fP for pointer
-(and \f(CW&\fP and \f(CW&&\fP for reference)
+and \f(CW&\fP and \f(CW&&\fP for reference
 adjacent to the type
 (``west'')
 versus adjacent to the name
@@ -1924,9 +1924,9 @@ rather than \f(CWtypedef\fP
 in C++11 and later
 \(em default is on.
 .TP
-.BI west-pointer \f1=\fPs
+.BI west-decl \f1=\fPs
 Turns on printing the \f(CW*\fP for pointer
-(and \f(CW&\fP and \f(CW&&\fP for reference)
+and \f(CW&\fP and \f(CW&&\fP for reference
 types adjacent to the type
 (``west'')
 to
@@ -1935,14 +1935,14 @@ to
 .B r
 (only all return types).
 (See the
-.B \-\-west-pointer
+.B \-\-west-decl
 or
 .B \-w
 option for details.)
 .TP
-.B nowest-pointer
+.B nowest-decl
 Turns off printing the \f(CW*\fP for pointer
-(and \f(CW&\fP and \f(CW&&\fP for reference)
+and \f(CW&\fP and \f(CW&&\fP for reference
 types adjacent to the type
 (``west'')
 for all types.

@@ -13,7 +13,7 @@ c++decl> set
   nosemicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> typedef int Int
 c++decl> declare x as int
 int x
@@ -46,7 +46,7 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> declare x as int
 int x;
 c++decl> declare x, y as int

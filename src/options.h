@@ -95,7 +95,7 @@ extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s?
 extern bool         opt_using;          ///< Print `using` in C++11 and later?
 
 /// Kinds to print `*` and `&` "west" of the space.
-extern c_ast_kind_t opt_west_pointer_kinds;
+extern c_ast_kind_t opt_west_decl_kinds;
 
 // other extern variables
 #ifdef ENABLE_FLEX_DEBUG
@@ -260,9 +260,9 @@ NODISCARD
 bool parse_explicit_int( char const *ei_format );
 
 /**
- * Parses the `west-pointer` option.
+ * Parses the `west-decl` option.
  *
- * @param wp_format
+ * @param wd_format
  * @parblock
  * The null-terminated west pointer format string to parse.  Valid formats are:
  *
@@ -279,12 +279,12 @@ bool parse_explicit_int( char const *ei_format );
  * Alternatively, `*` may be given to mean "all" or either the empty string or
  * `-` may be given to mean "none."
  * @endparblock
- * @return Returns `true` only if \a wp_format was parsed successfully.
+ * @return Returns `true` only if \a wd_format was parsed successfully.
  *
- * @sa west_pointer_str()
+ * @sa west_decl_str()
  */
 NODISCARD
-bool parse_west_pointer( char const *wp_format );
+bool parse_west_decl( char const *wd_format );
 
 /**
  * Gets the string representation of the west pointer option.
@@ -292,13 +292,13 @@ bool parse_west_pointer( char const *wp_format );
  * @return Returns said representation.
  *
  * @warning The pointer returned is to a static buffer.  Changing the value of
- * \ref opt_west_pointer_kinds then calling this function again will change the
+ * \ref opt_west_decl_kinds then calling this function again will change the
  * value of the buffer.
  *
- * @sa parse_west_pointer()
+ * @sa parse_west_decl()
  */
 NODISCARD
-char const* west_pointer_str( void );
+char const* west_decl_str( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 

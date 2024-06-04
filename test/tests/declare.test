@@ -335,7 +335,7 @@ declare x, y as const static reference to structured binding
 declare x, y as static const reference to structured binding
 set noeast-const
 
-set west-pointer=s
+set west-decl=s
 declare x, y as reference to structured binding
 declare x, y as rvalue reference to structured binding
 declare x, y as reference to const structured binding
@@ -348,7 +348,7 @@ declare x, y as static reference to structured binding
 declare x, y as static reference to const structured binding
 declare x, y as const static reference to structured binding
 declare x, y as static const reference to structured binding
-set west-pointer=r
+set west-decl=r
 
 declare T as type deprecated int
 

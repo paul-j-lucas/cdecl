@@ -130,7 +130,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -252,7 +252,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -358,7 +358,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -464,7 +464,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -572,7 +572,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -689,7 +689,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -806,7 +806,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -987,7 +987,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -1132,7 +1132,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -1258,7 +1258,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -1404,7 +1404,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -1550,7 +1550,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -1697,7 +1697,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:
@@ -1845,7 +1845,7 @@ option:
   [no]semicolon
   [no]trailing-return
   [no]using
-  [no]west-pointer[={{b|f|l|o|r|t}+|*|-}]
+  [no]west-decl[={{b|f|l|o|r|t}+|*|-}]
 lang:
   K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|23] | C++[98|03|11|14|17|20|23]
 types:

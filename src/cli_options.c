@@ -83,7 +83,7 @@
 #define OPT_NO_ENGLISH_TYPES  T
 #define OPT_NO_USING          u
 #define OPT_VERSION           v
-#define OPT_WEST_POINTER      w
+#define OPT_WEST_DECL         w
 #define OPT_LANGUAGE          x
 
 /// Command-line short option as a character literal.
@@ -147,7 +147,7 @@ static struct option const CLI_OPTIONS[] = {
   { "trailing-return",  no_argument,        NULL, COPT(TRAILING_RETURN)   },
   { "trigraphs",        no_argument,        NULL, COPT(TRIGRAPHS)         },
   { "version",          no_argument,        NULL, COPT(VERSION)           },
-  { "west-pointer",     required_argument,  NULL, COPT(WEST_POINTER)      },
+  { "west-decl",        required_argument,  NULL, COPT(WEST_DECL)         },
   { NULL,               0,                  NULL, 0                       }
 };
 
@@ -192,7 +192,7 @@ static char const *const CLI_OPTIONS_HELP[] = {
   [ COPT(TRAILING_RETURN) ] = "Print trailing return type in C++",
   [ COPT(TRIGRAPHS) ] = "Print trigraphs",
   [ COPT(VERSION) ] = "Print version and exit",
-  [ COPT(WEST_POINTER) ] = "Print *, &, and && next to type",
+  [ COPT(WEST_DECL) ] = "Print *, &, and && next to type",
 };
 
 // local variables
@@ -571,10 +571,10 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(VERSION):
         ++opt_version;
         break;
-      case COPT(WEST_POINTER):
-        if ( !parse_west_pointer( optarg ) )
+      case COPT(WEST_DECL):
+        if ( !parse_west_decl( optarg ) )
           opt_invalid_value(
-            COPT(WEST_POINTER), optarg, "*, -, or {b|f|l|o|r|t}+"
+            COPT(WEST_DECL), optarg, "*, -, or {b|f|l|o|r|t}+"
           );
         break;
 
@@ -622,7 +622,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     SOPT(OPTIONS)
     SOPT(TRAILING_RETURN)
     SOPT(TRIGRAPHS)
-    SOPT(WEST_POINTER)
+    SOPT(WEST_DECL)
   );
 
   opt_check_mutually_exclusive( COPT(OPTIONS),
@@ -642,7 +642,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
     SOPT(NO_USING)
     SOPT(TRAILING_RETURN)
     SOPT(TRIGRAPHS)
-    SOPT(WEST_POINTER)
+    SOPT(WEST_DECL)
   );
 
   opt_check_mutually_exclusive( COPT(DIGRAPHS), SOPT(TRIGRAPHS) );

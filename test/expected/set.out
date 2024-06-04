@@ -13,4 +13,4 @@ cdecl> set
     semicolon
   notrailing-return
     using                    (Not supported in C.)
-    west-pointer=bflo
+    west-decl=bflo

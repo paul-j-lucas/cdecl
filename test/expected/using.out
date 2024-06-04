@@ -14,7 +14,7 @@ c++decl> set
     semicolon
   notrailing-return
   nousing
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> declare Int as type int
 typedef int Int;
 c++decl> set using
@@ -33,6 +33,6 @@ c++decl> set
     semicolon
   notrailing-return
     using
-    west-pointer=bflo
+    west-decl=bflo
 c++decl> declare Int as type int
 using Int = int;

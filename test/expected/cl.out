@@ -60,7 +60,7 @@ cdecl> set
     semicolon
   notrailing-return
     using                    (Not supported in C.)
-    west-pointer=bflo
+    west-decl=bflo
 cdecl> show predefined
 typedef WORD ATOM;
 typedef int BOOL;
