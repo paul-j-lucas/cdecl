@@ -240,6 +240,11 @@ explain void f(int x[*])
 explain void f(int x[const 3])
 explain void f(int x[static 3])
 explain void f(x)
+
+explain auto ...
+explain void f(int ...)
+explain void f(int &...)
+
 explain void &x
 explain C::~C(int)
 explain X::C()

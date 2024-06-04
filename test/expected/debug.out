@@ -23,6 +23,7 @@ cdecl> explain (int)x
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 9, last_column: 11 },
@@ -40,6 +41,7 @@ cdecl> explain (int)x
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 9, last_column: 11 },
@@ -51,6 +53,7 @@ cdecl> explain (int)x
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 9, last_column: 11 },
@@ -77,6 +80,7 @@ cdecl> explain (int)x
   },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 9, last_column: 11 },
@@ -92,6 +96,7 @@ cdecl> explain (int)x
   sname_c_opt: { string: "x", scopes: "none" },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x100, string: "cast" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -100,6 +105,7 @@ cdecl> explain (int)x
       kind: { value: 0x0, string: "C" },
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 9, last_column: 11 },
@@ -122,6 +128,7 @@ cdecl> explain _BitInt(4) x
   uint_lit_exp: 4,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 17 },
@@ -140,6 +147,7 @@ cdecl> explain _BitInt(4) x
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 17 },
@@ -152,6 +160,7 @@ cdecl> explain _BitInt(4) x
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 17 },
@@ -179,6 +188,7 @@ cdecl> explain _BitInt(4) x
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 17 },
@@ -192,6 +202,7 @@ cdecl> explain _BitInt(4) x
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 17 },
@@ -211,6 +222,7 @@ cdecl> explain _BitInt(4) x
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 17 },
@@ -223,6 +235,7 @@ cdecl> explain _BitInt(4) x
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 17 },
@@ -236,6 +249,7 @@ cdecl> explain _BitInt(4) x
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 17 },
@@ -269,6 +283,7 @@ cdecl> explain alignas(8) int x
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 19, last_column: 21 },
@@ -286,6 +301,7 @@ cdecl> explain alignas(8) int x
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 19, last_column: 21 },
@@ -297,6 +313,7 @@ cdecl> explain alignas(8) int x
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 19, last_column: 21 },
@@ -323,6 +340,7 @@ cdecl> explain alignas(8) int x
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 19, last_column: 21 },
@@ -335,6 +353,7 @@ cdecl> explain alignas(8) int x
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 19, last_column: 21 },
@@ -354,6 +373,7 @@ cdecl> explain alignas(8) int x
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 19, last_column: 21 },
@@ -365,6 +385,7 @@ cdecl> explain alignas(8) int x
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 19, last_column: 21 },
@@ -377,6 +398,7 @@ cdecl> explain alignas(8) int x
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     align: {
@@ -401,6 +423,7 @@ cdecl> explain alignas(long) int x
   type_modifier_list_c_type: { btid: 0x0000000000008001, string: "long" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -418,6 +441,7 @@ cdecl> explain alignas(long) int x
   },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -433,6 +457,7 @@ cdecl> explain alignas(long) int x
   $$_align: {
     type_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 16, last_column: 19 },
@@ -453,6 +478,7 @@ cdecl> explain alignas(long) int x
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 24 },
@@ -470,6 +496,7 @@ cdecl> explain alignas(long) int x
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 24 },
@@ -481,6 +508,7 @@ cdecl> explain alignas(long) int x
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 24 },
@@ -507,6 +535,7 @@ cdecl> explain alignas(long) int x
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 24 },
@@ -519,6 +548,7 @@ cdecl> explain alignas(long) int x
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 24 },
@@ -536,6 +566,7 @@ cdecl> explain alignas(long) int x
   },
   in_attr__alignas_type_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -547,6 +578,7 @@ cdecl> explain alignas(long) int x
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 24 },
@@ -558,6 +590,7 @@ cdecl> explain alignas(long) int x
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 22, last_column: 24 },
@@ -570,11 +603,13 @@ cdecl> explain alignas(long) int x
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     align: {
       type_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 16, last_column: 19 },
@@ -612,6 +647,7 @@ cdecl> explain enum E : int x
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 17, last_column: 19 },
@@ -629,6 +665,7 @@ cdecl> explain enum E : int x
   },
   enum_unmodified_fixed_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 17, last_column: 19 },
@@ -640,6 +677,7 @@ cdecl> explain enum E : int x
   enum_fixed_type_modifier_list_btid_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 17, last_column: 19 },
@@ -660,6 +698,7 @@ cdecl> explain enum E : int x
   any_sname_c_exp: { string: "E", scopes: "none" },
   enum_fixed_type_c_ast_opt: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 17, last_column: 19 },
@@ -670,6 +709,7 @@ cdecl> explain enum E : int x
   },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
@@ -678,6 +718,7 @@ cdecl> explain enum E : int x
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 17, last_column: 19 },
@@ -697,6 +738,7 @@ cdecl> explain enum E : int x
   },
   enum_class_struct_union_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
@@ -705,6 +747,7 @@ cdecl> explain enum E : int x
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 17, last_column: 19 },
@@ -718,6 +761,7 @@ cdecl> explain enum E : int x
   cv_qualifier_list_stid_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
@@ -726,6 +770,7 @@ cdecl> explain enum E : int x
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 17, last_column: 19 },
@@ -754,6 +799,7 @@ cdecl> explain enum E : int x
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
@@ -762,6 +808,7 @@ cdecl> explain enum E : int x
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 17, last_column: 19 },
@@ -776,6 +823,7 @@ cdecl> explain enum E : int x
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
@@ -784,6 +832,7 @@ cdecl> explain enum E : int x
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 17, last_column: 19 },
@@ -804,6 +853,7 @@ cdecl> explain enum E : int x
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
@@ -812,6 +862,7 @@ cdecl> explain enum E : int x
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 17, last_column: 19 },
@@ -825,6 +876,7 @@ cdecl> explain enum E : int x
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x200, string: "enumeration" },
       depth: 0,
       loc: { first_column: 8, last_column: 19 },
@@ -833,6 +885,7 @@ cdecl> explain enum E : int x
         enum_sname: { string: "E", scopes: "none" },
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 17, last_column: 19 },
@@ -847,6 +900,7 @@ cdecl> explain enum E : int x
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
@@ -855,6 +909,7 @@ cdecl> explain enum E : int x
       enum_sname: { string: "E", scopes: "none" },
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 17, last_column: 19 },
@@ -889,6 +944,7 @@ cdecl> explain enum E x
   enum_fixed_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -906,6 +962,7 @@ cdecl> explain enum E x
   },
   enum_class_struct_union_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -917,6 +974,7 @@ cdecl> explain enum E x
   cv_qualifier_list_stid_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -943,6 +1001,7 @@ cdecl> explain enum E x
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -955,6 +1014,7 @@ cdecl> explain enum E x
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -973,6 +1033,7 @@ cdecl> explain enum E x
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -984,6 +1045,7 @@ cdecl> explain enum E x
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x200, string: "enumeration" },
       depth: 0,
       loc: { first_column: 8, last_column: 13 },
@@ -996,6 +1058,7 @@ cdecl> explain enum E x
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x200, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -1016,6 +1079,7 @@ cdecl> explain int x
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1033,6 +1097,7 @@ cdecl> explain int x
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1044,6 +1109,7 @@ cdecl> explain int x
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1070,6 +1136,7 @@ cdecl> explain int x
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1082,6 +1149,7 @@ cdecl> explain int x
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1100,6 +1168,7 @@ cdecl> explain int x
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1111,6 +1180,7 @@ cdecl> explain int x
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 10 },
@@ -1123,6 +1193,7 @@ cdecl> explain int x
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1143,6 +1214,7 @@ cdecl> explain int x[4]
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1160,6 +1232,7 @@ cdecl> explain int x[4]
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1171,6 +1244,7 @@ cdecl> explain int x[4]
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1197,6 +1271,7 @@ cdecl> explain int x[4]
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1209,6 +1284,7 @@ cdecl> explain int x[4]
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1226,6 +1302,7 @@ cdecl> explain int x[4]
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1237,6 +1314,7 @@ cdecl> explain int x[4]
   decl2_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 10 },
@@ -1249,6 +1327,7 @@ cdecl> explain int x[4]
   },
   array_size_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80, string: "array" },
     depth: 0,
     loc: { first_column: 13, last_column: 15 },
@@ -1261,6 +1340,7 @@ cdecl> explain int x[4]
   $$_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 13, last_column: 15 },
@@ -1269,6 +1349,7 @@ cdecl> explain int x[4]
         size: 4,
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -1291,6 +1372,7 @@ cdecl> explain int x[4]
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1302,6 +1384,7 @@ cdecl> explain int x[4]
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 13, last_column: 15 },
@@ -1310,6 +1393,7 @@ cdecl> explain int x[4]
         size: 4,
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -1324,6 +1408,7 @@ cdecl> explain int x[4]
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x80, string: "array" },
     depth: 0,
     loc: { first_column: 13, last_column: 15 },
@@ -1332,6 +1417,7 @@ cdecl> explain int x[4]
       size: 4,
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 10 },
@@ -1354,6 +1440,7 @@ cdecl> explain int x[]
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1371,6 +1458,7 @@ cdecl> explain int x[]
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1382,6 +1470,7 @@ cdecl> explain int x[]
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1408,6 +1497,7 @@ cdecl> explain int x[]
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1420,6 +1510,7 @@ cdecl> explain int x[]
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1437,6 +1528,7 @@ cdecl> explain int x[]
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1448,6 +1540,7 @@ cdecl> explain int x[]
   decl2_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 10 },
@@ -1460,6 +1553,7 @@ cdecl> explain int x[]
   },
   array_size_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80, string: "array" },
     depth: 0,
     loc: { first_column: 13, last_column: 14 },
@@ -1472,6 +1566,7 @@ cdecl> explain int x[]
   $$_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 13, last_column: 14 },
@@ -1480,6 +1575,7 @@ cdecl> explain int x[]
         size: "unspecified",
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -1502,6 +1598,7 @@ cdecl> explain int x[]
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -1513,6 +1610,7 @@ cdecl> explain int x[]
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 13, last_column: 14 },
@@ -1521,6 +1619,7 @@ cdecl> explain int x[]
         size: "unspecified",
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -1535,6 +1634,7 @@ cdecl> explain int x[]
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x80, string: "array" },
     depth: 0,
     loc: { first_column: 13, last_column: 14 },
@@ -1543,6 +1643,7 @@ cdecl> explain int x[]
       size: "unspecified",
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 10 },
@@ -1565,6 +1666,7 @@ cdecl> explain size_t x
   in_attr__type_c_ast: null,
   any_typedef__ast: {
     sname: { string: "size_t", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 20 },
@@ -1576,6 +1678,7 @@ cdecl> explain size_t x
   sub_scope_sname_c_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -1583,6 +1686,7 @@ cdecl> explain size_t x
     tdef: {
       for_ast: {
         sname: { string: "size_t", scopes: "none" },
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 20 },
@@ -1603,6 +1707,7 @@ cdecl> explain size_t x
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -1610,6 +1715,7 @@ cdecl> explain size_t x
     tdef: {
       for_ast: {
         sname: { string: "size_t", scopes: "none" },
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 20 },
@@ -1624,6 +1730,7 @@ cdecl> explain size_t x
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -1631,6 +1738,7 @@ cdecl> explain size_t x
     tdef: {
       for_ast: {
         sname: { string: "size_t", scopes: "none" },
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 20 },
@@ -1660,6 +1768,7 @@ cdecl> explain size_t x
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -1667,6 +1776,7 @@ cdecl> explain size_t x
     tdef: {
       for_ast: {
         sname: { string: "size_t", scopes: "none" },
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 20 },
@@ -1682,6 +1792,7 @@ cdecl> explain size_t x
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -1689,6 +1800,7 @@ cdecl> explain size_t x
     tdef: {
       for_ast: {
         sname: { string: "size_t", scopes: "none" },
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 20 },
@@ -1710,6 +1822,7 @@ cdecl> explain size_t x
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -1717,6 +1830,7 @@ cdecl> explain size_t x
     tdef: {
       for_ast: {
         sname: { string: "size_t", scopes: "none" },
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 20 },
@@ -1731,6 +1845,7 @@ cdecl> explain size_t x
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x20, string: "typedef" },
       depth: 0,
       loc: { first_column: 8, last_column: 13 },
@@ -1738,6 +1853,7 @@ cdecl> explain size_t x
       tdef: {
         for_ast: {
           sname: { string: "size_t", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 20 },
@@ -1753,6 +1869,7 @@ cdecl> explain size_t x
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x20, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -1760,6 +1877,7 @@ cdecl> explain size_t x
     tdef: {
       for_ast: {
         sname: { string: "size_t", scopes: "none" },
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 20 },
@@ -1794,6 +1912,7 @@ cdecl> explain struct S x
   any_sname_c_exp: { string: "S", scopes: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1811,6 +1930,7 @@ cdecl> explain struct S x
   },
   enum_class_struct_union_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1822,6 +1942,7 @@ cdecl> explain struct S x
   cv_qualifier_list_stid_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1848,6 +1969,7 @@ cdecl> explain struct S x
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1860,6 +1982,7 @@ cdecl> explain struct S x
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1878,6 +2001,7 @@ cdecl> explain struct S x
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1889,6 +2013,7 @@ cdecl> explain struct S x
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x8, string: "struct or union" },
       depth: 0,
       loc: { first_column: 8, last_column: 15 },
@@ -1901,6 +2026,7 @@ cdecl> explain struct S x
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x8, string: "struct or union" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1921,6 +2047,7 @@ cdecl> explain unsigned x : 4
   type_modifier_list_c_type: { btid: 0x0000000000040001, string: "unsigned" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1947,6 +2074,7 @@ cdecl> explain unsigned x : 4
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1959,6 +2087,7 @@ cdecl> explain unsigned x : 4
   bit_field_c_uint_opt: 4,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1977,6 +2106,7 @@ cdecl> explain unsigned x : 4
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -1988,6 +2118,7 @@ cdecl> explain unsigned x : 4
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 15 },
@@ -2000,6 +2131,7 @@ cdecl> explain unsigned x : 4
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 15 },
@@ -2020,6 +2152,7 @@ cdecl> explain void f()
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000011, string: "void" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2037,6 +2170,7 @@ cdecl> explain void f()
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2048,6 +2182,7 @@ cdecl> explain void f()
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2074,6 +2209,7 @@ cdecl> explain void f()
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2086,6 +2222,7 @@ cdecl> explain void f()
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "f", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2103,6 +2240,7 @@ cdecl> explain void f()
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2114,6 +2252,7 @@ cdecl> explain void f()
   decl2_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -2133,6 +2272,7 @@ cdecl> explain void f()
   $$_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 15 },
@@ -2142,6 +2282,7 @@ cdecl> explain void f()
         param_ast_list: [],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 11 },
@@ -2154,6 +2295,7 @@ cdecl> explain void f()
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -2173,6 +2315,7 @@ cdecl> explain void f()
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2184,6 +2327,7 @@ cdecl> explain void f()
   decl_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 15 },
@@ -2193,6 +2337,7 @@ cdecl> explain void f()
         param_ast_list: [],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 11 },
@@ -2205,6 +2350,7 @@ cdecl> explain void f()
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -2216,6 +2362,7 @@ cdecl> explain void f()
   },
   $$_ast: {
     sname: { string: "f", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x40000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 15 },
@@ -2225,6 +2372,7 @@ cdecl> explain void f()
       param_ast_list: [],
       ret_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 11 },
@@ -2247,6 +2395,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000011, string: "void" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2264,6 +2413,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2275,6 +2425,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2301,6 +2452,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2313,6 +2465,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "f", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2331,6 +2484,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -2348,6 +2502,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -2359,6 +2514,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -2385,6 +2541,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -2397,6 +2554,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "i", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -2415,6 +2573,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: { string: "i", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -2426,6 +2585,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   cast_c_astp_opt: {
     ast: {
       sname: { string: "i", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 17 },
@@ -2438,6 +2598,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   $$_ast: {
     sname: { string: "i", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -2455,6 +2616,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   param_c_ast: {
     sname: { string: "i", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -2466,6 +2628,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   $$_ast_list: [
     {
       sname: { string: "i", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 17 },
@@ -2485,6 +2648,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 25 },
@@ -2502,6 +2666,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 25 },
@@ -2513,6 +2678,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   type_modifier_list_c_type_opt: { stid: 0x0000000200000002, string: "const" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 31 },
@@ -2530,6 +2696,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 31 },
@@ -2541,6 +2708,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   type_qualifier_list_c_stid_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
@@ -2548,6 +2716,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 22, last_column: 31 },
@@ -2576,6 +2745,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
@@ -2583,6 +2753,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 22, last_column: 31 },
@@ -2597,6 +2768,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "fmt", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
@@ -2604,6 +2776,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 22, last_column: 31 },
@@ -2623,6 +2796,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   pointer_type_c_ast: {
     sname: { string: "fmt", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
@@ -2630,6 +2804,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 22, last_column: 31 },
@@ -2643,6 +2818,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   cast_c_astp_opt: {
     ast: {
       sname: { string: "fmt", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
@@ -2650,6 +2826,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 22, last_column: 31 },
@@ -2665,6 +2842,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   $$_astp: {
     ast: {
       sname: { string: "fmt", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
@@ -2672,6 +2850,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 22, last_column: 31 },
@@ -2694,6 +2873,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 22, last_column: 31 },
@@ -2705,6 +2885,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   cast_c_astp_opt: {
     ast: {
       sname: { string: "fmt", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
@@ -2712,6 +2893,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 22, last_column: 31 },
@@ -2726,6 +2908,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   $$_ast: {
     sname: { string: "fmt", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
@@ -2733,6 +2916,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 22, last_column: 31 },
@@ -2753,6 +2937,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   param_c_ast_list: [
     {
       sname: { string: "i", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 17 },
@@ -2764,6 +2949,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   ],
   param_c_ast: {
     sname: { string: "fmt", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
@@ -2771,6 +2957,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 22, last_column: 31 },
@@ -2784,6 +2971,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   $$_ast_list: [
     {
       sname: { string: "i", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 17 },
@@ -2794,6 +2982,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     },
     {
       sname: { string: "fmt", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
@@ -2801,6 +2990,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 22, last_column: 31 },
@@ -2821,6 +3011,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x40, string: "variadic" },
     depth: 0,
     loc: { first_column: 39, last_column: 41 },
@@ -2836,6 +3027,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   param_c_ast_list: [
     {
       sname: { string: "i", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 17 },
@@ -2846,6 +3038,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     },
     {
       sname: { string: "fmt", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
@@ -2853,6 +3046,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 22, last_column: 31 },
@@ -2866,6 +3060,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   ],
   param_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x40, string: "variadic" },
     depth: 0,
     loc: { first_column: 39, last_column: 41 },
@@ -2874,6 +3069,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   $$_ast_list: [
     {
       sname: { string: "i", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 17 },
@@ -2884,6 +3080,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     },
     {
       sname: { string: "fmt", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
@@ -2891,6 +3088,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 22, last_column: 31 },
@@ -2903,6 +3101,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     },
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x40, string: "variadic" },
       depth: 0,
       loc: { first_column: 39, last_column: 41 },
@@ -2918,6 +3117,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -2929,6 +3129,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   decl2_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -2942,6 +3143,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   param_c_ast_list_opt: [
     {
       sname: { string: "i", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 17 },
@@ -2952,6 +3154,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     },
     {
       sname: { string: "fmt", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
@@ -2959,6 +3162,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 22, last_column: 31 },
@@ -2971,6 +3175,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     },
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x40, string: "variadic" },
       depth: 0,
       loc: { first_column: 39, last_column: 41 },
@@ -2985,6 +3190,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   $$_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 43 },
@@ -2994,6 +3200,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
         param_ast_list: [
           {
             sname: { string: "i", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x2, string: "built-in type" },
             depth: 0,
             loc: { first_column: 15, last_column: 17 },
@@ -3004,6 +3211,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
           },
           {
             sname: { string: "fmt", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x400, string: "pointer" },
             depth: 0,
             loc: { first_column: 33 },
@@ -3011,6 +3219,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
             ptr_ref: {
               to_ast: {
                 sname: null,
+                is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 loc: { first_column: 22, last_column: 31 },
@@ -3023,6 +3232,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
           },
           {
             sname: null,
+            is_param_pack: false,
             kind: { value: 0x40, string: "variadic" },
             depth: 0,
             loc: { first_column: 39, last_column: 41 },
@@ -3031,6 +3241,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
         ],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 11 },
@@ -3043,6 +3254,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -3062,6 +3274,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3073,6 +3286,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   decl_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 43 },
@@ -3082,6 +3296,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
         param_ast_list: [
           {
             sname: { string: "i", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x2, string: "built-in type" },
             depth: 0,
             loc: { first_column: 15, last_column: 17 },
@@ -3092,6 +3307,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
           },
           {
             sname: { string: "fmt", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x400, string: "pointer" },
             depth: 0,
             loc: { first_column: 33 },
@@ -3099,6 +3315,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
             ptr_ref: {
               to_ast: {
                 sname: null,
+                is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 loc: { first_column: 22, last_column: 31 },
@@ -3111,6 +3328,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
           },
           {
             sname: null,
+            is_param_pack: false,
             kind: { value: 0x40, string: "variadic" },
             depth: 0,
             loc: { first_column: 39, last_column: 41 },
@@ -3119,6 +3337,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
         ],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 11 },
@@ -3131,6 +3350,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -3142,6 +3362,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   },
   $$_ast: {
     sname: { string: "f", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x40000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 43 },
@@ -3151,6 +3372,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       param_ast_list: [
         {
           sname: { string: "i", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 15, last_column: 17 },
@@ -3161,6 +3383,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
         },
         {
           sname: { string: "fmt", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x400, string: "pointer" },
           depth: 0,
           loc: { first_column: 33 },
@@ -3168,6 +3391,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
           ptr_ref: {
             to_ast: {
               sname: null,
+              is_param_pack: false,
               kind: { value: 0x2, string: "built-in type" },
               depth: 0,
               loc: { first_column: 22, last_column: 31 },
@@ -3180,6 +3404,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
         },
         {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x40, string: "variadic" },
           depth: 0,
           loc: { first_column: 39, last_column: 41 },
@@ -3188,6 +3413,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
       ],
       ret_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 11 },
@@ -3210,6 +3436,7 @@ cdecl> explain void f(int x[*])
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000011, string: "void" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3227,6 +3454,7 @@ cdecl> explain void f(int x[*])
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3238,6 +3466,7 @@ cdecl> explain void f(int x[*])
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3264,6 +3493,7 @@ cdecl> explain void f(int x[*])
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3276,6 +3506,7 @@ cdecl> explain void f(int x[*])
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "f", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3294,6 +3525,7 @@ cdecl> explain void f(int x[*])
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3311,6 +3543,7 @@ cdecl> explain void f(int x[*])
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3322,6 +3555,7 @@ cdecl> explain void f(int x[*])
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3348,6 +3582,7 @@ cdecl> explain void f(int x[*])
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3360,6 +3595,7 @@ cdecl> explain void f(int x[*])
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3377,6 +3613,7 @@ cdecl> explain void f(int x[*])
   },
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3388,6 +3625,7 @@ cdecl> explain void f(int x[*])
   cast_c_astp_opt: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 17 },
@@ -3400,6 +3638,7 @@ cdecl> explain void f(int x[*])
   },
   array_size_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 22 },
@@ -3412,6 +3651,7 @@ cdecl> explain void f(int x[*])
   $$_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 22 },
@@ -3420,6 +3660,7 @@ cdecl> explain void f(int x[*])
         size: '*',
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 15, last_column: 17 },
@@ -3442,6 +3683,7 @@ cdecl> explain void f(int x[*])
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3453,6 +3695,7 @@ cdecl> explain void f(int x[*])
   cast_c_astp_opt: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 22 },
@@ -3461,6 +3704,7 @@ cdecl> explain void f(int x[*])
         size: '*',
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 15, last_column: 17 },
@@ -3475,6 +3719,7 @@ cdecl> explain void f(int x[*])
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x80, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 22 },
@@ -3483,6 +3728,7 @@ cdecl> explain void f(int x[*])
       size: '*',
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 15, last_column: 17 },
@@ -3502,6 +3748,7 @@ cdecl> explain void f(int x[*])
   },
   param_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x80, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 22 },
@@ -3510,6 +3757,7 @@ cdecl> explain void f(int x[*])
       size: '*',
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 15, last_column: 17 },
@@ -3523,6 +3771,7 @@ cdecl> explain void f(int x[*])
   $$_ast_list: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 22 },
@@ -3531,6 +3780,7 @@ cdecl> explain void f(int x[*])
         size: '*',
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 15, last_column: 17 },
@@ -3551,6 +3801,7 @@ cdecl> explain void f(int x[*])
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3562,6 +3813,7 @@ cdecl> explain void f(int x[*])
   decl2_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -3575,6 +3827,7 @@ cdecl> explain void f(int x[*])
   param_c_ast_list_opt: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 22 },
@@ -3583,6 +3836,7 @@ cdecl> explain void f(int x[*])
         size: '*',
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 15, last_column: 17 },
@@ -3602,6 +3856,7 @@ cdecl> explain void f(int x[*])
   $$_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 23 },
@@ -3611,6 +3866,7 @@ cdecl> explain void f(int x[*])
         param_ast_list: [
           {
             sname: { string: "x", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x80, string: "array" },
             depth: 0,
             loc: { first_column: 20, last_column: 22 },
@@ -3619,6 +3875,7 @@ cdecl> explain void f(int x[*])
               size: '*',
               of_ast: {
                 sname: null,
+                is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 loc: { first_column: 15, last_column: 17 },
@@ -3632,6 +3889,7 @@ cdecl> explain void f(int x[*])
         ],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 11 },
@@ -3644,6 +3902,7 @@ cdecl> explain void f(int x[*])
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -3663,6 +3922,7 @@ cdecl> explain void f(int x[*])
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3674,6 +3934,7 @@ cdecl> explain void f(int x[*])
   decl_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 23 },
@@ -3683,6 +3944,7 @@ cdecl> explain void f(int x[*])
         param_ast_list: [
           {
             sname: { string: "x", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x80, string: "array" },
             depth: 0,
             loc: { first_column: 20, last_column: 22 },
@@ -3691,6 +3953,7 @@ cdecl> explain void f(int x[*])
               size: '*',
               of_ast: {
                 sname: null,
+                is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 loc: { first_column: 15, last_column: 17 },
@@ -3704,6 +3967,7 @@ cdecl> explain void f(int x[*])
         ],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 11 },
@@ -3716,6 +3980,7 @@ cdecl> explain void f(int x[*])
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -3727,6 +3992,7 @@ cdecl> explain void f(int x[*])
   },
   $$_ast: {
     sname: { string: "f", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x40000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 23 },
@@ -3736,6 +4002,7 @@ cdecl> explain void f(int x[*])
       param_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x80, string: "array" },
           depth: 0,
           loc: { first_column: 20, last_column: 22 },
@@ -3744,6 +4011,7 @@ cdecl> explain void f(int x[*])
             size: '*',
             of_ast: {
               sname: null,
+              is_param_pack: false,
               kind: { value: 0x2, string: "built-in type" },
               depth: 0,
               loc: { first_column: 15, last_column: 17 },
@@ -3757,6 +4025,7 @@ cdecl> explain void f(int x[*])
       ],
       ret_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 11 },
@@ -3779,6 +4048,7 @@ cdecl> explain void f(int x[static 2])
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000011, string: "void" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3796,6 +4066,7 @@ cdecl> explain void f(int x[static 2])
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3807,6 +4078,7 @@ cdecl> explain void f(int x[static 2])
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3833,6 +4105,7 @@ cdecl> explain void f(int x[static 2])
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3845,6 +4118,7 @@ cdecl> explain void f(int x[static 2])
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "f", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -3863,6 +4137,7 @@ cdecl> explain void f(int x[static 2])
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3880,6 +4155,7 @@ cdecl> explain void f(int x[static 2])
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3891,6 +4167,7 @@ cdecl> explain void f(int x[static 2])
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3917,6 +4194,7 @@ cdecl> explain void f(int x[static 2])
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3929,6 +4207,7 @@ cdecl> explain void f(int x[static 2])
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3946,6 +4225,7 @@ cdecl> explain void f(int x[static 2])
   },
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -3957,6 +4237,7 @@ cdecl> explain void f(int x[static 2])
   cast_c_astp_opt: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 17 },
@@ -3969,6 +4250,7 @@ cdecl> explain void f(int x[static 2])
   },
   array_size_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 29 },
@@ -3981,6 +4263,7 @@ cdecl> explain void f(int x[static 2])
   $$_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 29 },
@@ -3989,6 +4272,7 @@ cdecl> explain void f(int x[static 2])
         size: 2,
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 15, last_column: 17 },
@@ -4011,6 +4295,7 @@ cdecl> explain void f(int x[static 2])
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 17 },
@@ -4022,6 +4307,7 @@ cdecl> explain void f(int x[static 2])
   cast_c_astp_opt: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 29 },
@@ -4030,6 +4316,7 @@ cdecl> explain void f(int x[static 2])
         size: 2,
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 15, last_column: 17 },
@@ -4044,6 +4331,7 @@ cdecl> explain void f(int x[static 2])
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x80, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 29 },
@@ -4052,6 +4340,7 @@ cdecl> explain void f(int x[static 2])
       size: 2,
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 15, last_column: 17 },
@@ -4071,6 +4360,7 @@ cdecl> explain void f(int x[static 2])
   },
   param_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x80, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 29 },
@@ -4079,6 +4369,7 @@ cdecl> explain void f(int x[static 2])
       size: 2,
       of_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 15, last_column: 17 },
@@ -4092,6 +4383,7 @@ cdecl> explain void f(int x[static 2])
   $$_ast_list: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 29 },
@@ -4100,6 +4392,7 @@ cdecl> explain void f(int x[static 2])
         size: 2,
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 15, last_column: 17 },
@@ -4120,6 +4413,7 @@ cdecl> explain void f(int x[static 2])
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -4131,6 +4425,7 @@ cdecl> explain void f(int x[static 2])
   decl2_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -4144,6 +4439,7 @@ cdecl> explain void f(int x[static 2])
   param_c_ast_list_opt: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x80, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 29 },
@@ -4152,6 +4448,7 @@ cdecl> explain void f(int x[static 2])
         size: 2,
         of_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 15, last_column: 17 },
@@ -4171,6 +4468,7 @@ cdecl> explain void f(int x[static 2])
   $$_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 30 },
@@ -4180,6 +4478,7 @@ cdecl> explain void f(int x[static 2])
         param_ast_list: [
           {
             sname: { string: "x", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x80, string: "array" },
             depth: 0,
             loc: { first_column: 20, last_column: 29 },
@@ -4188,6 +4487,7 @@ cdecl> explain void f(int x[static 2])
               size: 2,
               of_ast: {
                 sname: null,
+                is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 loc: { first_column: 15, last_column: 17 },
@@ -4201,6 +4501,7 @@ cdecl> explain void f(int x[static 2])
         ],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 11 },
@@ -4213,6 +4514,7 @@ cdecl> explain void f(int x[static 2])
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -4232,6 +4534,7 @@ cdecl> explain void f(int x[static 2])
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -4243,6 +4546,7 @@ cdecl> explain void f(int x[static 2])
   decl_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 30 },
@@ -4252,6 +4556,7 @@ cdecl> explain void f(int x[static 2])
         param_ast_list: [
           {
             sname: { string: "x", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x80, string: "array" },
             depth: 0,
             loc: { first_column: 20, last_column: 29 },
@@ -4260,6 +4565,7 @@ cdecl> explain void f(int x[static 2])
               size: 2,
               of_ast: {
                 sname: null,
+                is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 loc: { first_column: 15, last_column: 17 },
@@ -4273,6 +4579,7 @@ cdecl> explain void f(int x[static 2])
         ],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 11 },
@@ -4285,6 +4592,7 @@ cdecl> explain void f(int x[static 2])
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -4296,6 +4604,7 @@ cdecl> explain void f(int x[static 2])
   },
   $$_ast: {
     sname: { string: "f", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x40000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 30 },
@@ -4305,6 +4614,7 @@ cdecl> explain void f(int x[static 2])
       param_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x80, string: "array" },
           depth: 0,
           loc: { first_column: 20, last_column: 29 },
@@ -4313,6 +4623,7 @@ cdecl> explain void f(int x[static 2])
             size: 2,
             of_ast: {
               sname: null,
+              is_param_pack: false,
               kind: { value: 0x2, string: "built-in type" },
               depth: 0,
               loc: { first_column: 15, last_column: 17 },
@@ -4326,6 +4637,7 @@ cdecl> explain void f(int x[static 2])
       ],
       ret_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 11 },
@@ -4349,6 +4661,7 @@ cdecl> explain int f(x)
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4366,6 +4679,7 @@ cdecl> explain int f(x)
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4377,6 +4691,7 @@ cdecl> explain int f(x)
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4403,6 +4718,7 @@ cdecl> explain int f(x)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4415,6 +4731,7 @@ cdecl> explain int f(x)
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "f", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4433,6 +4750,7 @@ cdecl> explain int f(x)
   NAME: "x",
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x10, string: "name" },
     depth: 0,
     loc: { first_column: 14 },
@@ -4447,6 +4765,7 @@ cdecl> explain int f(x)
   },
   param_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x10, string: "name" },
     depth: 0,
     loc: { first_column: 14 },
@@ -4455,6 +4774,7 @@ cdecl> explain int f(x)
   $$_ast_list: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x10, string: "name" },
       depth: 0,
       loc: { first_column: 14 },
@@ -4470,6 +4790,7 @@ cdecl> explain int f(x)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4481,6 +4802,7 @@ cdecl> explain int f(x)
   decl2_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 10 },
@@ -4494,6 +4816,7 @@ cdecl> explain int f(x)
   param_c_ast_list_opt: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x10, string: "name" },
       depth: 0,
       loc: { first_column: 14 },
@@ -4508,6 +4831,7 @@ cdecl> explain int f(x)
   $$_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -4517,6 +4841,7 @@ cdecl> explain int f(x)
         param_ast_list: [
           {
             sname: { string: "x", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x10, string: "name" },
             depth: 0,
             loc: { first_column: 14 },
@@ -4525,6 +4850,7 @@ cdecl> explain int f(x)
         ],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -4537,6 +4863,7 @@ cdecl> explain int f(x)
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 10 },
@@ -4556,6 +4883,7 @@ cdecl> explain int f(x)
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4567,6 +4895,7 @@ cdecl> explain int f(x)
   decl_c_astp: {
     ast: {
       sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x40000, string: "function" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -4576,6 +4905,7 @@ cdecl> explain int f(x)
         param_ast_list: [
           {
             sname: { string: "x", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x10, string: "name" },
             depth: 0,
             loc: { first_column: 14 },
@@ -4584,6 +4914,7 @@ cdecl> explain int f(x)
         ],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -4596,6 +4927,7 @@ cdecl> explain int f(x)
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 10 },
@@ -4607,6 +4939,7 @@ cdecl> explain int f(x)
   },
   $$_ast: {
     sname: { string: "f", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x40000, string: "function" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -4616,6 +4949,7 @@ cdecl> explain int f(x)
       param_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x10, string: "name" },
           depth: 0,
           loc: { first_column: 14 },
@@ -4624,6 +4958,7 @@ cdecl> explain int f(x)
       ],
       ret_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 10 },
@@ -4658,6 +4993,7 @@ c++decl> class C
   any_sname_c_exp: { string: "C", scopes: "none" },
   $$_ast: {
     sname: { string: "C", scopes: "class" },
+    is_param_pack: false,
     kind: { value: 0x8, string: "class, struct, or union" },
     depth: 0,
     loc: { first_column: 6 },
@@ -4677,6 +5013,7 @@ c++decl> explain bool operator!() const
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000081, string: "bool" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -4694,6 +5031,7 @@ c++decl> explain bool operator!() const
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -4705,6 +5043,7 @@ c++decl> explain bool operator!() const
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -4732,6 +5071,7 @@ c++decl> explain bool operator!() const
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -4751,6 +5091,7 @@ c++decl> explain bool operator!() const
   $$_astp: {
     ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x100000, string: "operator" },
       depth: 0,
       loc: { first_column: 11, last_column: 29 },
@@ -4761,6 +5102,7 @@ c++decl> explain bool operator!() const
         param_ast_list: [],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 11 },
@@ -4773,6 +5115,7 @@ c++decl> explain bool operator!() const
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -4792,6 +5135,7 @@ c++decl> explain bool operator!() const
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -4803,6 +5147,7 @@ c++decl> explain bool operator!() const
   decl_c_astp: {
     ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x100000, string: "operator" },
       depth: 0,
       loc: { first_column: 11, last_column: 29 },
@@ -4813,6 +5158,7 @@ c++decl> explain bool operator!() const
         param_ast_list: [],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 11 },
@@ -4825,6 +5171,7 @@ c++decl> explain bool operator!() const
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 11 },
@@ -4836,6 +5183,7 @@ c++decl> explain bool operator!() const
   },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x100000, string: "operator" },
     depth: 0,
     loc: { first_column: 11, last_column: 29 },
@@ -4846,6 +5194,7 @@ c++decl> explain bool operator!() const
       param_ast_list: [],
       ret_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 11 },
@@ -4868,6 +5217,7 @@ c++decl> explain int C::*p
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4885,6 +5235,7 @@ c++decl> explain int C::*p
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4896,6 +5247,7 @@ c++decl> explain int C::*p
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4913,6 +5265,7 @@ c++decl> explain int C::*p
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -4925,6 +5278,7 @@ c++decl> explain int C::*p
   cv_qualifier_list_stid_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -4933,6 +5287,7 @@ c++decl> explain int C::*p
       class_sname: { string: "C", scopes: "class" },
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 10 },
@@ -4961,6 +5316,7 @@ c++decl> explain int C::*p
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -4969,6 +5325,7 @@ c++decl> explain int C::*p
       class_sname: { string: "C", scopes: "class" },
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 10 },
@@ -4983,6 +5340,7 @@ c++decl> explain int C::*p
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "p", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -4991,6 +5349,7 @@ c++decl> explain int C::*p
       class_sname: { string: "C", scopes: "class" },
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 10 },
@@ -5010,6 +5369,7 @@ c++decl> explain int C::*p
   },
   pointer_to_member_type_c_ast: {
     sname: { string: "p", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -5018,6 +5378,7 @@ c++decl> explain int C::*p
       class_sname: { string: "C", scopes: "class" },
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 10 },
@@ -5031,6 +5392,7 @@ c++decl> explain int C::*p
   decl_c_astp: {
     ast: {
       sname: { string: "p", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x800, string: "pointer to member" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -5039,6 +5401,7 @@ c++decl> explain int C::*p
         class_sname: { string: "C", scopes: "class" },
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -5054,6 +5417,7 @@ c++decl> explain int C::*p
   $$_astp: {
     ast: {
       sname: { string: "p", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x800, string: "pointer to member" },
       depth: 0,
       loc: { first_column: 12, last_column: 16 },
@@ -5062,6 +5426,7 @@ c++decl> explain int C::*p
         class_sname: { string: "C", scopes: "class" },
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -5084,6 +5449,7 @@ c++decl> explain int C::*p
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -5095,6 +5461,7 @@ c++decl> explain int C::*p
   decl_c_astp: {
     ast: {
       sname: { string: "p", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x800, string: "pointer to member" },
       depth: 0,
       loc: { first_column: 12, last_column: 16 },
@@ -5103,6 +5470,7 @@ c++decl> explain int C::*p
         class_sname: { string: "C", scopes: "class" },
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -5117,6 +5485,7 @@ c++decl> explain int C::*p
   },
   $$_ast: {
     sname: { string: "p", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x800, string: "pointer to member" },
     depth: 0,
     loc: { first_column: 12, last_column: 16 },
@@ -5125,6 +5494,7 @@ c++decl> explain int C::*p
       class_sname: { string: "C", scopes: "class" },
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 10 },
@@ -5147,6 +5517,7 @@ c++decl> explain operator bool() const
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000081, string: "bool" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 17, last_column: 20 },
@@ -5164,6 +5535,7 @@ c++decl> explain operator bool() const
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 17, last_column: 20 },
@@ -5175,6 +5547,7 @@ c++decl> explain operator bool() const
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 17, last_column: 20 },
@@ -5204,6 +5577,7 @@ c++decl> explain operator bool() const
   oper_sname_c_opt: null,
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 17, last_column: 20 },
@@ -5219,6 +5593,7 @@ c++decl> explain operator bool() const
   $$_astp: {
     ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x200000, string: "user-defined conversion operator" },
       depth: 0,
       loc: { first_column: 6, last_column: 28 },
@@ -5226,6 +5601,7 @@ c++decl> explain operator bool() const
       udef_conv: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 17, last_column: 20 },
@@ -5238,6 +5614,7 @@ c++decl> explain operator bool() const
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 17, last_column: 20 },
@@ -5257,6 +5634,7 @@ c++decl> explain operator bool() const
   user_defined_conversion_declaration_c: {
     ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x200000, string: "user-defined conversion operator" },
       depth: 0,
       loc: { first_column: 6, last_column: 28 },
@@ -5264,6 +5642,7 @@ c++decl> explain operator bool() const
       udef_conv: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 17, last_column: 20 },
@@ -5276,6 +5655,7 @@ c++decl> explain operator bool() const
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 17, last_column: 20 },
@@ -5297,6 +5677,7 @@ c++decl> explain int operator ""_w(char const *arg)
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -5314,6 +5695,7 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -5325,6 +5707,7 @@ c++decl> explain int operator ""_w(char const *arg)
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -5343,6 +5726,7 @@ c++decl> explain int operator ""_w(char const *arg)
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 26, last_column: 29 },
@@ -5360,6 +5744,7 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 26, last_column: 29 },
@@ -5371,6 +5756,7 @@ c++decl> explain int operator ""_w(char const *arg)
   type_modifier_list_c_type_opt: { stid: 0x0000000200000002, string: "const" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 26, last_column: 35 },
@@ -5388,6 +5774,7 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 26, last_column: 35 },
@@ -5399,6 +5786,7 @@ c++decl> explain int operator ""_w(char const *arg)
   type_qualifier_list_c_stid_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
@@ -5406,6 +5794,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 26, last_column: 35 },
@@ -5434,6 +5823,7 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
@@ -5441,6 +5831,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 26, last_column: 35 },
@@ -5455,6 +5846,7 @@ c++decl> explain int operator ""_w(char const *arg)
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "arg", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
@@ -5462,6 +5854,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 26, last_column: 35 },
@@ -5481,6 +5874,7 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   pointer_type_c_ast: {
     sname: { string: "arg", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
@@ -5488,6 +5882,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 26, last_column: 35 },
@@ -5501,6 +5896,7 @@ c++decl> explain int operator ""_w(char const *arg)
   cast_c_astp_opt: {
     ast: {
       sname: { string: "arg", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 37 },
@@ -5508,6 +5904,7 @@ c++decl> explain int operator ""_w(char const *arg)
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 26, last_column: 35 },
@@ -5523,6 +5920,7 @@ c++decl> explain int operator ""_w(char const *arg)
   $$_astp: {
     ast: {
       sname: { string: "arg", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 37 },
@@ -5530,6 +5928,7 @@ c++decl> explain int operator ""_w(char const *arg)
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 26, last_column: 35 },
@@ -5552,6 +5951,7 @@ c++decl> explain int operator ""_w(char const *arg)
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 26, last_column: 35 },
@@ -5563,6 +5963,7 @@ c++decl> explain int operator ""_w(char const *arg)
   cast_c_astp_opt: {
     ast: {
       sname: { string: "arg", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 37 },
@@ -5570,6 +5971,7 @@ c++decl> explain int operator ""_w(char const *arg)
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 26, last_column: 35 },
@@ -5584,6 +5986,7 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   $$_ast: {
     sname: { string: "arg", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
@@ -5591,6 +5994,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 26, last_column: 35 },
@@ -5610,6 +6014,7 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   param_c_ast: {
     sname: { string: "arg", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x400, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
@@ -5617,6 +6022,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ptr_ref: {
       to_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 26, last_column: 35 },
@@ -5630,6 +6036,7 @@ c++decl> explain int operator ""_w(char const *arg)
   $$_ast_list: [
     {
       sname: { string: "arg", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 37 },
@@ -5637,6 +6044,7 @@ c++decl> explain int operator ""_w(char const *arg)
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 26, last_column: 35 },
@@ -5657,6 +6065,7 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -5670,6 +6079,7 @@ c++decl> explain int operator ""_w(char const *arg)
   param_c_ast_list_exp: [
     {
       sname: { string: "arg", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400, string: "pointer" },
       depth: 0,
       loc: { first_column: 37 },
@@ -5677,6 +6087,7 @@ c++decl> explain int operator ""_w(char const *arg)
       ptr_ref: {
         to_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 26, last_column: 35 },
@@ -5693,6 +6104,7 @@ c++decl> explain int operator ""_w(char const *arg)
   $$_astp: {
     ast: {
       sname: { string: "_w", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400000, string: "user-defined literal" },
       depth: 0,
       loc: { first_column: 10, last_column: 41 },
@@ -5701,6 +6113,7 @@ c++decl> explain int operator ""_w(char const *arg)
         param_ast_list: [
           {
             sname: { string: "arg", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x400, string: "pointer" },
             depth: 0,
             loc: { first_column: 37 },
@@ -5708,6 +6121,7 @@ c++decl> explain int operator ""_w(char const *arg)
             ptr_ref: {
               to_ast: {
                 sname: null,
+                is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 loc: { first_column: 26, last_column: 35 },
@@ -5721,6 +6135,7 @@ c++decl> explain int operator ""_w(char const *arg)
         ],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -5733,6 +6148,7 @@ c++decl> explain int operator ""_w(char const *arg)
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 10 },
@@ -5752,6 +6168,7 @@ c++decl> explain int operator ""_w(char const *arg)
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -5763,6 +6180,7 @@ c++decl> explain int operator ""_w(char const *arg)
   decl_c_astp: {
     ast: {
       sname: { string: "_w", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x400000, string: "user-defined literal" },
       depth: 0,
       loc: { first_column: 10, last_column: 41 },
@@ -5771,6 +6189,7 @@ c++decl> explain int operator ""_w(char const *arg)
         param_ast_list: [
           {
             sname: { string: "arg", scopes: "none" },
+            is_param_pack: false,
             kind: { value: 0x400, string: "pointer" },
             depth: 0,
             loc: { first_column: 37 },
@@ -5778,6 +6197,7 @@ c++decl> explain int operator ""_w(char const *arg)
             ptr_ref: {
               to_ast: {
                 sname: null,
+                is_param_pack: false,
                 kind: { value: 0x2, string: "built-in type" },
                 depth: 0,
                 loc: { first_column: 26, last_column: 35 },
@@ -5791,6 +6211,7 @@ c++decl> explain int operator ""_w(char const *arg)
         ],
         ret_ast: {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 8, last_column: 10 },
@@ -5803,6 +6224,7 @@ c++decl> explain int operator ""_w(char const *arg)
     },
     target_ast: {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 10 },
@@ -5814,6 +6236,7 @@ c++decl> explain int operator ""_w(char const *arg)
   },
   $$_ast: {
     sname: { string: "_w", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x400000, string: "user-defined literal" },
     depth: 0,
     loc: { first_column: 10, last_column: 41 },
@@ -5822,6 +6245,7 @@ c++decl> explain int operator ""_w(char const *arg)
       param_ast_list: [
         {
           sname: { string: "arg", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x400, string: "pointer" },
           depth: 0,
           loc: { first_column: 37 },
@@ -5829,6 +6253,7 @@ c++decl> explain int operator ""_w(char const *arg)
           ptr_ref: {
             to_ast: {
               sname: null,
+              is_param_pack: false,
               kind: { value: 0x2, string: "built-in type" },
               depth: 0,
               loc: { first_column: 26, last_column: 35 },
@@ -5842,6 +6267,7 @@ c++decl> explain int operator ""_w(char const *arg)
       ],
       ret_ast: {
         sname: null,
+        is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
         loc: { first_column: 8, last_column: 10 },
@@ -5868,6 +6294,7 @@ c++decl> explain ~C()
   func_equals_c_stid_opt: { string: "none" },
   $$_ast: {
     sname: { string: "C", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x10000, string: "destructor" },
     depth: 0,
     loc: { first_column: 6, last_column: 11 },
@@ -5888,6 +6315,7 @@ c++decl> explain []
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 9 },
@@ -5909,6 +6337,7 @@ c++decl> explain [](char c)
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 11, last_column: 14 },
@@ -5926,6 +6355,7 @@ c++decl> explain [](char c)
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 11, last_column: 14 },
@@ -5937,6 +6367,7 @@ c++decl> explain [](char c)
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 11, last_column: 14 },
@@ -5963,6 +6394,7 @@ c++decl> explain [](char c)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 11, last_column: 14 },
@@ -5975,6 +6407,7 @@ c++decl> explain [](char c)
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 11, last_column: 14 },
@@ -5993,6 +6426,7 @@ c++decl> explain [](char c)
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 11, last_column: 14 },
@@ -6004,6 +6438,7 @@ c++decl> explain [](char c)
   cast_c_astp_opt: {
     ast: {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 11, last_column: 14 },
@@ -6016,6 +6451,7 @@ c++decl> explain [](char c)
   },
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 11, last_column: 14 },
@@ -6033,6 +6469,7 @@ c++decl> explain [](char c)
   },
   param_c_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 11, last_column: 14 },
@@ -6044,6 +6481,7 @@ c++decl> explain [](char c)
   $$_ast_list: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 11, last_column: 14 },
@@ -6064,6 +6502,7 @@ c++decl> explain [](char c)
   paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 11, last_column: 14 },
@@ -6077,6 +6516,7 @@ c++decl> explain [](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 17 },
@@ -6086,6 +6526,7 @@ c++decl> explain [](char c)
       param_ast_list: [
         {
           sname: { string: "c", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 11, last_column: 14 },
@@ -6108,6 +6549,7 @@ c++decl> explain [x]
   },
   capture_decl_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9 },
@@ -6119,6 +6561,7 @@ c++decl> explain [x]
   $$_ast_list: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6138,6 +6581,7 @@ c++decl> explain [x]
   capture_decl_list_c_opt: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6152,6 +6596,7 @@ c++decl> explain [x]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -6160,6 +6605,7 @@ c++decl> explain [x]
       capture_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9 },
@@ -6183,6 +6629,7 @@ c++decl> explain [x](char c)
   },
   capture_decl_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9 },
@@ -6194,6 +6641,7 @@ c++decl> explain [x](char c)
   $$_ast_list: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6213,6 +6661,7 @@ c++decl> explain [x](char c)
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6230,6 +6679,7 @@ c++decl> explain [x](char c)
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6241,6 +6691,7 @@ c++decl> explain [x](char c)
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6267,6 +6718,7 @@ c++decl> explain [x](char c)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6279,6 +6731,7 @@ c++decl> explain [x](char c)
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6297,6 +6750,7 @@ c++decl> explain [x](char c)
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6308,6 +6762,7 @@ c++decl> explain [x](char c)
   cast_c_astp_opt: {
     ast: {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -6320,6 +6775,7 @@ c++decl> explain [x](char c)
   },
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6337,6 +6793,7 @@ c++decl> explain [x](char c)
   },
   param_c_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6348,6 +6805,7 @@ c++decl> explain [x](char c)
   $$_ast_list: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -6367,6 +6825,7 @@ c++decl> explain [x](char c)
   capture_decl_list_c_opt: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6379,6 +6838,7 @@ c++decl> explain [x](char c)
   paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -6392,6 +6852,7 @@ c++decl> explain [x](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 18 },
@@ -6400,6 +6861,7 @@ c++decl> explain [x](char c)
       capture_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9 },
@@ -6412,6 +6874,7 @@ c++decl> explain [x](char c)
       param_ast_list: [
         {
           sname: { string: "c", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 12, last_column: 15 },
@@ -6434,6 +6897,7 @@ c++decl> explain [=]
   },
   capture_decl_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9 },
@@ -6445,6 +6909,7 @@ c++decl> explain [=]
   $$_ast_list: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6464,6 +6929,7 @@ c++decl> explain [=]
   capture_decl_list_c_opt: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6478,6 +6944,7 @@ c++decl> explain [=]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -6486,6 +6953,7 @@ c++decl> explain [=]
       capture_ast_list: [
         {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9 },
@@ -6509,6 +6977,7 @@ c++decl> explain [=](char c)
   },
   capture_decl_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9 },
@@ -6520,6 +6989,7 @@ c++decl> explain [=](char c)
   $$_ast_list: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6539,6 +7009,7 @@ c++decl> explain [=](char c)
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6556,6 +7027,7 @@ c++decl> explain [=](char c)
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6567,6 +7039,7 @@ c++decl> explain [=](char c)
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6593,6 +7066,7 @@ c++decl> explain [=](char c)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6605,6 +7079,7 @@ c++decl> explain [=](char c)
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6623,6 +7098,7 @@ c++decl> explain [=](char c)
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6634,6 +7110,7 @@ c++decl> explain [=](char c)
   cast_c_astp_opt: {
     ast: {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -6646,6 +7123,7 @@ c++decl> explain [=](char c)
   },
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6663,6 +7141,7 @@ c++decl> explain [=](char c)
   },
   param_c_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6674,6 +7153,7 @@ c++decl> explain [=](char c)
   $$_ast_list: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -6693,6 +7173,7 @@ c++decl> explain [=](char c)
   capture_decl_list_c_opt: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6705,6 +7186,7 @@ c++decl> explain [=](char c)
   paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -6718,6 +7200,7 @@ c++decl> explain [=](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 18 },
@@ -6726,6 +7209,7 @@ c++decl> explain [=](char c)
       capture_ast_list: [
         {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9 },
@@ -6738,6 +7222,7 @@ c++decl> explain [=](char c)
       param_ast_list: [
         {
           sname: { string: "c", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 12, last_column: 15 },
@@ -6760,6 +7245,7 @@ c++decl> explain [&]
   },
   capture_decl_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9 },
@@ -6771,6 +7257,7 @@ c++decl> explain [&]
   $$_ast_list: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6790,6 +7277,7 @@ c++decl> explain [&]
   capture_decl_list_c_opt: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6804,6 +7292,7 @@ c++decl> explain [&]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -6812,6 +7301,7 @@ c++decl> explain [&]
       capture_ast_list: [
         {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9 },
@@ -6835,6 +7325,7 @@ c++decl> explain [&](char c)
   },
   capture_decl_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9 },
@@ -6846,6 +7337,7 @@ c++decl> explain [&](char c)
   $$_ast_list: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -6865,6 +7357,7 @@ c++decl> explain [&](char c)
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6882,6 +7375,7 @@ c++decl> explain [&](char c)
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6893,6 +7387,7 @@ c++decl> explain [&](char c)
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6919,6 +7414,7 @@ c++decl> explain [&](char c)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6931,6 +7427,7 @@ c++decl> explain [&](char c)
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6949,6 +7446,7 @@ c++decl> explain [&](char c)
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6960,6 +7458,7 @@ c++decl> explain [&](char c)
   cast_c_astp_opt: {
     ast: {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -6972,6 +7471,7 @@ c++decl> explain [&](char c)
   },
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -6989,6 +7489,7 @@ c++decl> explain [&](char c)
   },
   param_c_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
@@ -7000,6 +7501,7 @@ c++decl> explain [&](char c)
   $$_ast_list: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -7019,6 +7521,7 @@ c++decl> explain [&](char c)
   capture_decl_list_c_opt: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9 },
@@ -7031,6 +7534,7 @@ c++decl> explain [&](char c)
   paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
@@ -7044,6 +7548,7 @@ c++decl> explain [&](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 18 },
@@ -7052,6 +7557,7 @@ c++decl> explain [&](char c)
       capture_ast_list: [
         {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9 },
@@ -7064,6 +7570,7 @@ c++decl> explain [&](char c)
       param_ast_list: [
         {
           sname: { string: "c", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 12, last_column: 15 },
@@ -7086,6 +7593,7 @@ c++decl> explain [&x]
   },
   capture_decl_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9, last_column: 10 },
@@ -7097,6 +7605,7 @@ c++decl> explain [&x]
   $$_ast_list: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 10 },
@@ -7116,6 +7625,7 @@ c++decl> explain [&x]
   capture_decl_list_c_opt: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 10 },
@@ -7130,6 +7640,7 @@ c++decl> explain [&x]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
@@ -7138,6 +7649,7 @@ c++decl> explain [&x]
       capture_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9, last_column: 10 },
@@ -7161,6 +7673,7 @@ c++decl> explain [&x](char c)
   },
   capture_decl_c_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9, last_column: 10 },
@@ -7172,6 +7685,7 @@ c++decl> explain [&x](char c)
   $$_ast_list: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 10 },
@@ -7191,6 +7705,7 @@ c++decl> explain [&x](char c)
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 13, last_column: 16 },
@@ -7208,6 +7723,7 @@ c++decl> explain [&x](char c)
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 13, last_column: 16 },
@@ -7219,6 +7735,7 @@ c++decl> explain [&x](char c)
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 13, last_column: 16 },
@@ -7245,6 +7762,7 @@ c++decl> explain [&x](char c)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 13, last_column: 16 },
@@ -7257,6 +7775,7 @@ c++decl> explain [&x](char c)
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 13, last_column: 16 },
@@ -7275,6 +7794,7 @@ c++decl> explain [&x](char c)
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 13, last_column: 16 },
@@ -7286,6 +7806,7 @@ c++decl> explain [&x](char c)
   cast_c_astp_opt: {
     ast: {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 13, last_column: 16 },
@@ -7298,6 +7819,7 @@ c++decl> explain [&x](char c)
   },
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 13, last_column: 16 },
@@ -7315,6 +7837,7 @@ c++decl> explain [&x](char c)
   },
   param_c_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 13, last_column: 16 },
@@ -7326,6 +7849,7 @@ c++decl> explain [&x](char c)
   $$_ast_list: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 13, last_column: 16 },
@@ -7345,6 +7869,7 @@ c++decl> explain [&x](char c)
   capture_decl_list_c_opt: [
     {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 10 },
@@ -7357,6 +7882,7 @@ c++decl> explain [&x](char c)
   paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 13, last_column: 16 },
@@ -7370,6 +7896,7 @@ c++decl> explain [&x](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
@@ -7378,6 +7905,7 @@ c++decl> explain [&x](char c)
       capture_ast_list: [
         {
           sname: { string: "x", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9, last_column: 10 },
@@ -7390,6 +7918,7 @@ c++decl> explain [&x](char c)
       param_ast_list: [
         {
           sname: { string: "c", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 13, last_column: 16 },
@@ -7412,6 +7941,7 @@ c++decl> explain [this]
   },
   capture_decl_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9, last_column: 12 },
@@ -7423,6 +7953,7 @@ c++decl> explain [this]
   $$_ast_list: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 12 },
@@ -7442,6 +7973,7 @@ c++decl> explain [this]
   capture_decl_list_c_opt: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 12 },
@@ -7456,6 +7988,7 @@ c++decl> explain [this]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
@@ -7464,6 +7997,7 @@ c++decl> explain [this]
       capture_ast_list: [
         {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9, last_column: 12 },
@@ -7487,6 +8021,7 @@ c++decl> explain [this](char c)
   },
   capture_decl_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9, last_column: 12 },
@@ -7498,6 +8033,7 @@ c++decl> explain [this](char c)
   $$_ast_list: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 12 },
@@ -7517,6 +8053,7 @@ c++decl> explain [this](char c)
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 18 },
@@ -7534,6 +8071,7 @@ c++decl> explain [this](char c)
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 18 },
@@ -7545,6 +8083,7 @@ c++decl> explain [this](char c)
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 18 },
@@ -7571,6 +8110,7 @@ c++decl> explain [this](char c)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 18 },
@@ -7583,6 +8123,7 @@ c++decl> explain [this](char c)
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 18 },
@@ -7601,6 +8142,7 @@ c++decl> explain [this](char c)
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 18 },
@@ -7612,6 +8154,7 @@ c++decl> explain [this](char c)
   cast_c_astp_opt: {
     ast: {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 18 },
@@ -7624,6 +8167,7 @@ c++decl> explain [this](char c)
   },
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 18 },
@@ -7641,6 +8185,7 @@ c++decl> explain [this](char c)
   },
   param_c_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 15, last_column: 18 },
@@ -7652,6 +8197,7 @@ c++decl> explain [this](char c)
   $$_ast_list: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 18 },
@@ -7671,6 +8217,7 @@ c++decl> explain [this](char c)
   capture_decl_list_c_opt: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 12 },
@@ -7683,6 +8230,7 @@ c++decl> explain [this](char c)
   paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 15, last_column: 18 },
@@ -7696,6 +8244,7 @@ c++decl> explain [this](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 21 },
@@ -7704,6 +8253,7 @@ c++decl> explain [this](char c)
       capture_ast_list: [
         {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9, last_column: 12 },
@@ -7716,6 +8266,7 @@ c++decl> explain [this](char c)
       param_ast_list: [
         {
           sname: { string: "c", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 15, last_column: 18 },
@@ -7738,6 +8289,7 @@ c++decl> explain [*this]
   },
   capture_decl_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9, last_column: 13 },
@@ -7749,6 +8301,7 @@ c++decl> explain [*this]
   $$_ast_list: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 13 },
@@ -7768,6 +8321,7 @@ c++decl> explain [*this]
   capture_decl_list_c_opt: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 13 },
@@ -7782,6 +8336,7 @@ c++decl> explain [*this]
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 14 },
@@ -7790,6 +8345,7 @@ c++decl> explain [*this]
       capture_ast_list: [
         {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9, last_column: 13 },
@@ -7813,6 +8369,7 @@ c++decl> explain [*this](char c)
   },
   capture_decl_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x4, string: "capture" },
     depth: 0,
     loc: { first_column: 9, last_column: 13 },
@@ -7824,6 +8381,7 @@ c++decl> explain [*this](char c)
   $$_ast_list: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 13 },
@@ -7843,6 +8401,7 @@ c++decl> explain [*this](char c)
   builtin_no_BitInt_c_btid: { btid: 0x0000000000000101, string: "char" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -7860,6 +8419,7 @@ c++decl> explain [*this](char c)
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -7871,6 +8431,7 @@ c++decl> explain [*this](char c)
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -7897,6 +8458,7 @@ c++decl> explain [*this](char c)
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -7909,6 +8471,7 @@ c++decl> explain [*this](char c)
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -7927,6 +8490,7 @@ c++decl> explain [*this](char c)
   this_stid_opt: { string: "none" },
   type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -7938,6 +8502,7 @@ c++decl> explain [*this](char c)
   cast_c_astp_opt: {
     ast: {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 16, last_column: 19 },
@@ -7950,6 +8515,7 @@ c++decl> explain [*this](char c)
   },
   $$_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -7967,6 +8533,7 @@ c++decl> explain [*this](char c)
   },
   param_c_ast: {
     sname: { string: "c", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 16, last_column: 19 },
@@ -7978,6 +8545,7 @@ c++decl> explain [*this](char c)
   $$_ast_list: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 16, last_column: 19 },
@@ -7997,6 +8565,7 @@ c++decl> explain [*this](char c)
   capture_decl_list_c_opt: [
     {
       sname: null,
+      is_param_pack: false,
       kind: { value: 0x4, string: "capture" },
       depth: 0,
       loc: { first_column: 9, last_column: 13 },
@@ -8009,6 +8578,7 @@ c++decl> explain [*this](char c)
   paren_param_c_ast_list_opt: [
     {
       sname: { string: "c", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 16, last_column: 19 },
@@ -8022,6 +8592,7 @@ c++decl> explain [*this](char c)
   lambda_return_type_c_ast_opt: null,
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x80000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 22 },
@@ -8030,6 +8601,7 @@ c++decl> explain [*this](char c)
       capture_ast_list: [
         {
           sname: null,
+          is_param_pack: false,
           kind: { value: 0x4, string: "capture" },
           depth: 0,
           loc: { first_column: 9, last_column: 13 },
@@ -8042,6 +8614,7 @@ c++decl> explain [*this](char c)
       param_ast_list: [
         {
           sname: { string: "c", scopes: "none" },
+          is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
           loc: { first_column: 16, last_column: 19 },
@@ -8101,6 +8674,7 @@ c++decl> explain int x
   builtin_no_BitInt_c_btid: { btid: 0x0000000000004001, string: "int" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -8118,6 +8692,7 @@ c++decl> explain int x
   },
   east_modifiable_type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -8129,6 +8704,7 @@ c++decl> explain int x
   type_modifier_list_c_type_opt: { string: "none" },
   $$_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -8155,6 +8731,7 @@ c++decl> explain int x
   },
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -8167,6 +8744,7 @@ c++decl> explain int x
   bit_field_c_uint_opt: 0,
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -8185,6 +8763,7 @@ c++decl> explain int x
   in_attr__typename_flag_opt: false,
   in_attr__type_c_ast: {
     sname: null,
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
@@ -8196,6 +8775,7 @@ c++decl> explain int x
   decl_c_astp: {
     ast: {
       sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
       kind: { value: 0x2, string: "built-in type" },
       depth: 0,
       loc: { first_column: 8, last_column: 10 },
@@ -8208,6 +8788,7 @@ c++decl> explain int x
   },
   $$_ast: {
     sname: { string: "x", scopes: "none" },
+    is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },

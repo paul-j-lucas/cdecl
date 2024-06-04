@@ -328,6 +328,8 @@ char const L_no_unique_address[]        = "no_unique_address";
 char const L_unique[]                   = "unique", L_address[] = "address";
 char const H_no_unique_address[]        = "no-unique-address";
 char const H_non_unique_address[]       = "non-unique-address";
+char const L_pack[]                     = "pack";
+char const L_parameter[]                = "parameter";
 char const L_requires[]                 = "requires";
 
 // Alternative tokens

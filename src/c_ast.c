@@ -235,6 +235,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
 
   dup_ast->align = ast->align;
   dup_ast->dup_from_id = ast->unique_id;
+  dup_ast->is_param_pack = ast->is_param_pack;
   dup_ast->sname = c_sname_dup( &ast->sname );
   dup_ast->type = ast->type;
 
@@ -337,6 +338,8 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
   if ( !c_alignas_equal( &i_ast->align, &j_ast->align ) )
     return false;
   if ( !c_type_equiv( &i_ast->type, &j_ast->type ) )
+    return false;
+  if ( i_ast->is_param_pack != j_ast->is_param_pack )
     return false;
 
   switch ( i_ast->kind ) {
@@ -545,6 +548,39 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   if ( child_ast != NULL ) {
     child_ast->parent_ast = parent_ast;
     assert( !c_ast_has_cycle( child_ast ) );
+
+    if ( child_ast->is_param_pack && parent_ast != NULL ) {
+      //
+      // The root AST node of a tree must always be the one that is a parameter
+      // pack.  For example, given:
+      //
+      //      auto &...x
+      //
+      // the AST should be:
+      //
+      //      {
+      //        sname: { string: "x", scopes: "none" },
+      //        is_param_pack: true,
+      //        kind: { value: 0x1000, string: "reference" },
+      //        ...
+      //        ptr_ref: {
+      //          to_ast: {
+      //            ...
+      //            is_param_pack: false,
+      //            kind: { value: 0x2, string: "built-in type" },
+      //            ...
+      //            type: { btid: 0x0000000000000021, string: "auto" },
+      //            ...
+      //          }
+      //        }
+      //      }
+      //
+      // where it's a parameter pack of references, not a reference to a
+      // parameter pack.
+      //
+      child_ast->is_param_pack = false;
+      parent_ast->is_param_pack = true;
+    }
   }
 }
 

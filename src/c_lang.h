@@ -1027,6 +1027,11 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_P___VA_OPT__               LANG_C_CPP_MIN(23,20)
 
 /**
+ * Languages parameter packs (`...`) are supported in.
+ */
+#define LANG_PARAMETER_PACKS            LANG_CPP_MIN(20)
+
+/**
  * Languages pointers to member are supported in.
  */
 #define LANG_POINTERS_TO_MEMBER         LANG_CPP_ANY

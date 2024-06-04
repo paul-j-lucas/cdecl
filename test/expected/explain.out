@@ -643,6 +643,46 @@ c++decl> explain int bitand x
 declare x as reference to integer
 c++decl> explain int f([[carries_dependency]] int x)
 declare f as function (x as carries dependency integer) returning integer
+c++decl> explain auto ...x
+declare x as parameter pack
+c++decl> explain auto &...x
+declare x as reference to parameter pack
+c++decl> explain auto *...x
+declare x as pointer to parameter pack
+c++decl> explain auto const ...x
+declare x as constant parameter pack
+c++decl> explain auto const &...x
+declare x as reference to constant parameter pack
+c++decl> explain auto const *...x
+declare x as pointer to constant parameter pack
+c++decl> explain auto *const ...x
+declare x as constant pointer to parameter pack
+c++decl> explain const auto &...x
+declare x as reference to constant parameter pack
+c++decl> explain const auto *...x
+declare x as pointer to constant parameter pack
+c++decl> explain const auto ...x
+declare x as constant parameter pack
+c++decl> explain int f(auto ...)
+declare f as function (parameter pack) returning integer
+c++decl> explain int f(auto &...)
+declare f as function (reference to parameter pack) returning integer
+c++decl> explain int f(auto *...)
+declare f as function (pointer to parameter pack) returning integer
+c++decl> explain int f(const auto ...)
+declare f as function (constant parameter pack) returning integer
+c++decl> explain int f(const auto &...)
+declare f as function (reference to constant parameter pack) returning integer
+c++decl> explain int f(const auto *...)
+declare f as function (pointer to constant parameter pack) returning integer
+c++decl> explain int f(auto const ...)
+declare f as function (constant parameter pack) returning integer
+c++decl> explain int f(auto const &...)
+declare f as function (reference to constant parameter pack) returning integer
+c++decl> explain int f(auto const *...)
+declare f as function (pointer to constant parameter pack) returning integer
+c++decl> explain int f(auto *const ...)
+declare f as function (constant pointer to parameter pack) returning integer
 c++decl> explain int s::t::x
 declare x of scope s::t as integer
 c++decl> explain int s::x

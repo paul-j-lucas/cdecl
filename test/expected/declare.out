@@ -383,6 +383,42 @@ auto operator!(const S&) -> bool;
 c++decl> set notrailing-return
 c++decl> declare f as deprecated function returning void
 [[deprecated]] void f();
+c++decl> declare x as parameter pack
+auto ...x;
+c++decl> declare x as reference to parameter pack
+auto &...x;
+c++decl> declare x as pointer to parameter pack
+auto *...x;
+c++decl> declare x as const parameter pack
+const auto ...x;
+c++decl> declare x as reference to const parameter pack
+const auto &...x;
+c++decl> declare x as pointer to const parameter pack
+const auto *...x;
+c++decl> declare x as const pointer to parameter pack
+auto *const ...x;
+c++decl> declare x as reference to const parameter pack
+const auto &...x;
+c++decl> declare x as pointer to const parameter pack
+const auto *...x;
+c++decl> declare f as function (parameter pack) returning int
+int f(auto ...);
+c++decl> declare f as function (const parameter pack) returning int
+int f(const auto ...);
+c++decl> declare f as function (reference to parameter pack) returning int
+int f(auto &...);
+c++decl> declare f as function (pointer to parameter pack) returning int
+int f(auto *...);
+c++decl> declare f as function (reference to const parameter pack) returning int
+int f(const auto &...);
+c++decl> declare f as function (pointer to const parameter pack) returning int
+int f(const auto *...);
+c++decl> declare f as function (const pointer to parameter pack) returning int
+int f(auto *const ...);
+c++decl> declare f as function (reference to const parameter pack) returning int
+int f(const auto &...);
+c++decl> declare f as function (pointer to const parameter pack) returning int
+int f(const auto *...);
 c++decl> declare f as maybe unused int
 [[maybe_unused]] int f;
 c++decl> declare x as maybe-unused int

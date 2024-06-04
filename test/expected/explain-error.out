@@ -670,6 +670,15 @@ c++decl> explain void f(int x[static 3])
 c++decl> explain void f(x)
                         ^
 16: error: type specifier required in C++
+c++decl> explain auto ...
+                         ^
+17: syntax error: name expected
+c++decl> explain void f(int ...)
+                        ^
+16: error: parameter pack type must be "auto"
+c++decl> explain void f(int &...)
+                        ^
+16: error: parameter pack type must be "auto"
 c++decl> explain void &x
                       ^
 14: error: reference to "void" is illegal; did you mean "void*"?

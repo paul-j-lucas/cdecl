@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 29, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 3, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -892,7 +892,7 @@ structured bindings.
 .B C++20
 Use the C++20 version of the C++ language.
 Adds support for
-\f(CWauto\fP parameters,
+\f(CWauto\fP parameters and parameter packs,
 \f(CWchar8_t\fP,
 \f(CWconsteval\fP,
 \f(CWconstinit\fP,
@@ -1455,6 +1455,7 @@ One of:
 \f(CWint\fP,
 \f(CWfloat\fP,
 \f(CWdouble\fP,
+\f(CWparameter pack\fP,
 or
 \f(CWvoid\fP;
 or for C99 only:

@@ -12,6 +12,16 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 16.5
 
+** Abbreviated function template parameter packs
+Functions with `auto` parameters (abbreviated function templates) like:
+
+    int f( auto x )
+
+have been supported since **cdecl** 9.6; this release adds additional support
+for parameter packs like:
+
+    int f( auto ...x )
+
 ** `decltype` declarations
 Now recognizing `decltype` just to say it's not supported.
 

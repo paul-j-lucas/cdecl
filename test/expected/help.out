@@ -954,7 +954,7 @@ args: a comma separated list of [<name> as] <english>
 captures: [<capture-default>,] [[&]<name>][,[&]<name>]*
 capture-default: {copy|reference} [by] default | = | &
 C++-type: auto | bool | char[{8|16|32}_t] | wchar_t | int | float | double |
-          void
+          parameter pack | void
 cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
@@ -1818,7 +1818,7 @@ args: a comma separated list of [<name> as] <english>
 captures: [<capture-default>,] [[&]<name>][,[&]<name>]*
 capture-default: {copy|reference} [by] default | = | &
 C++-type: auto | bool | char[{8|16|32}_t] | wchar_t | int | float | double |
-          void
+          parameter pack | void
 cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>

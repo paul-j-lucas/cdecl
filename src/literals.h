@@ -355,6 +355,7 @@ extern char const L_no_unique_address[];
 extern char const L_unique[], L_address[];
 extern char const H_no_unique_address[];  // English for "no_unique_address"
 extern char const H_non_unique_address[]; // English for "no_unique_address"
+extern char const L_parameter[], L_pack[];// English for "..."
 extern char const L_requires[];
 
 // Alternative tokens

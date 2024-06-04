@@ -1618,6 +1618,7 @@ static void yyerror( char const *msg ) {
 %token              Y_co_yield
 %token  <tid>       Y_export
 %token  <tid>       Y_no_unique_address
+%token              Y_parameter Y_pack
 %token              Y_requires
 %token              Y_unique Y_address  // no unique address
 
@@ -1726,6 +1727,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>       of_scope_list_english of_scope_list_english_opt
 %type   <ast>         of_type_enum_fixed_type_english_ast_opt
 %type   <ast_list>    param_decl_list_english param_decl_list_english_opt
+%type   <ast>         parameter_pack_english_ast
 %type   <ast_list>    paren_capture_decl_list_english
 %type   <ast_list>    paren_param_decl_list_english
 %type   <ast_list>    paren_param_decl_list_english_opt
@@ -1786,6 +1788,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>    func_cast_c_astp
 %type   <ast_pair>    nested_cast_c_astp
 %type   <cast_kind>   new_style_cast_c
+%type   <ast>         param_pack_cast_c_ast
 %type   <ast_pair>    pointer_cast_c_astp
 %type   <ast_pair>    pointer_to_member_cast_c_astp
 %type   <ast_pair>    reference_cast_c_astp
@@ -1833,6 +1836,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>       oper_sname_c_opt
 %type   <ast>         param_c_ast param_c_ast_exp
 %type   <ast_list>    param_c_ast_list param_c_ast_list_exp param_c_ast_list_opt
+%type   <ast>         param_pack_decl_c_ast
 %type   <ast_list>    paren_param_c_ast_list_opt
 %type   <ast>         pc99_pointer_type_c_ast
 %type   <ast_pair>    pointer_decl_c_astp
@@ -4632,6 +4636,7 @@ decl2_c_astp
   | func_decl_c_astp
   | nested_decl_c_astp
   | oper_decl_c_astp
+  | param_pack_decl_c_ast[ast]     { $$ = (c_ast_pair_t){ $ast, NULL }; }
   | sname_c_ast[ast] gnu_attribute_specifier_list_c_opt
     {
       $$ = (c_ast_pair_t){ $ast, .target_ast = NULL };
@@ -4642,6 +4647,19 @@ decl2_c_astp
     }
   | user_defined_conversion_decl_c_astp
   | user_defined_literal_decl_c_astp
+  ;
+
+param_pack_decl_c_ast
+  : Y_ELLIPSIS sname_c_ast[ast]
+    {
+      $ast->is_param_pack = true;
+      $$ = $ast;
+    }
+  | Y_ELLIPSIS error
+    {
+      $$ = NULL;
+      elaborate_error( "name expected" );
+    }
   ;
 
 /// Gibberish C/C++ array declaration /////////////////////////////////////////
@@ -6009,10 +6027,25 @@ cast2_c_astp
   | func_cast_c_astp
   | nested_cast_c_astp
 //| oper_cast_c_astp                    // can't cast to an operator
+  | param_pack_cast_c_ast[ast]    { $$ = (c_ast_pair_t){ $ast, NULL }; }
   | sname_c_ast[ast]              { $$ = (c_ast_pair_t){ $ast, NULL }; }
 //| typedef_type_cast_c_ast             // can't cast to a typedef
 //| user_defined_conversion_cast_c_astp // can't cast to a user-defined conv.
 //| user_defined_literal_cast_c_astp    // can't cast to a user-defined literal
+  ;
+
+param_pack_cast_c_ast
+  : // in_attr: type_c_ast
+    Y_ELLIPSIS
+    {
+      ia_type_ast_peek()->is_param_pack = true;
+      $$ = NULL;
+    }
+  | Y_ELLIPSIS sname_c_ast[ast]
+    {
+      $ast->is_param_pack = true;
+      $$ = $ast;
+    }
   ;
 
 /// Gibberish C/C++ array cast ////////////////////////////////////////////////
@@ -8045,6 +8078,7 @@ unmodified_type_english_ast
   : builtin_type_english_ast
   | class_struct_union_english_ast
   | enum_english_ast
+  | parameter_pack_english_ast
   | typedef_type_c_ast
   ;
 
@@ -8133,6 +8167,23 @@ BitInt_english
   : Y__BitInt
   | Y_bit_precise int_exp
   | Y_bit precise_opt int_exp
+  ;
+
+parameter_pack_english_ast
+  : Y_parameter pack_exp
+    {
+      $$ = c_ast_new_gc( K_BUILTIN, &@$ );
+      $$->is_param_pack = true;
+      $$->type.btids = TB_auto;         // for consistency with C++ case
+    }
+  ;
+
+pack_exp
+  : Y_pack
+  | error
+    {
+      keyword_expected( L_pack );
+    }
   ;
 
 precise_opt

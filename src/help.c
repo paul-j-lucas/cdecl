@@ -530,6 +530,8 @@ static void print_help_english( void ) {
     print_h( " | wchar_t | int | float | double |" );
     if ( OPT_LANG_IS( char8_t ) && OPT_LANG_IS( auto_TYPE ) )
       print_h( "\n         " );
+    if ( OPT_LANG_IS( PARAMETER_PACKS ) )
+      print_h( " parameter pack |" );
     print_h( " void\n" );
 
     print_h( "cv-qual: const | volatile\n" );

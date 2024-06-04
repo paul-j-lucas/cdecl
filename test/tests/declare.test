@@ -206,6 +206,26 @@ set notrailing-return
 
 declare f as deprecated function returning void
 
+declare x as parameter pack
+declare x as reference to parameter pack
+declare x as pointer to parameter pack
+declare x as const parameter pack
+declare x as reference to const parameter pack
+declare x as pointer to const parameter pack
+declare x as const pointer to parameter pack
+declare x as reference to const parameter pack
+declare x as pointer to const parameter pack
+
+declare f as function (parameter pack) returning int
+declare f as function (const parameter pack) returning int
+declare f as function (reference to parameter pack) returning int
+declare f as function (pointer to parameter pack) returning int
+declare f as function (reference to const parameter pack) returning int
+declare f as function (pointer to const parameter pack) returning int
+declare f as function (const pointer to parameter pack) returning int
+declare f as function (reference to const parameter pack) returning int
+declare f as function (pointer to const parameter pack) returning int
+
 declare f as maybe unused int
 declare x as maybe-unused int
 declare x as maybe_unused int

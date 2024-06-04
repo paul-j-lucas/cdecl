@@ -888,25 +888,33 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
 
   switch ( ast->kind ) {
     case K_POINTER:
-      if ( qual_stids != TS_NONE && (gib->gib_flags & C_GIB_PRINT_CAST) == 0 &&
-           !c_ast_is_ptr_to_kind_any( ast, K_FUNCTION ) ) {
+      if ( (qual_stids != TS_NONE && (gib->gib_flags & C_GIB_PRINT_CAST) == 0 &&
+           !c_ast_is_ptr_to_kind_any( ast, K_FUNCTION)) ||
+           ast->is_param_pack ) {
         //
-        // If we're printing a type as a "using" declaration and there's a
-        // qualifier for the pointer, print a space before it.  For example:
+        // Two cases:
         //
-        //      typedef int *const PI;
+        // 1. If we're printing a type as a "using" declaration and there's a
+        //    qualifier for the pointer, print a space before it.  For example:
         //
-        // when printed as a "using":
+        //          typedef int *const PI;
         //
-        //      using PI = int *const;
+        //    when printed as a "using":
         //
-        // However, if it's a pointer-to-function, don't.  For example:
+        //          using PI = int *const;
         //
-        //      typedef int (*const PF)(char c);
+        //    However, if it's a pointer-to-function, don't.  For example:
         //
-        // when printed as a "using":
+        //          typedef int (*const PF)(char c);
         //
-        //      using PF = int(*const)(char c);
+        //    when printed as a "using":
+        //
+        //          using PF = int(*const)(char c);
+        //
+        //  2. If we're printing a parameter pack, print a space before it.
+        //     For exmaple:
+        //
+        //          auto *...
         //
         gib_print_space_once( gib );
       }
@@ -927,6 +935,8 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
         gib_print_space_once( gib );
         FPUTS( "bitand ", gib->fout );
       } else {
+        if ( ast->is_param_pack )
+          gib_print_space_once( gib );
         FPUTC( '&', gib->fout );
       }
       break;
@@ -947,8 +957,8 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   if ( qual_stids != TS_NONE ) {
     FPUTS( c_tid_name_c( qual_stids ), gib->fout );
 
-    if ( (gib->gib_flags & (C_GIB_PRINT_DECL | C_GIB_TYPEDEF)) != 0 &&
-         c_ast_find_name( ast, C_VISIT_UP ) != NULL ) {
+    if ( ((gib->gib_flags & (C_GIB_PRINT_DECL | C_GIB_TYPEDEF)) != 0 &&
+         c_ast_find_name( ast, C_VISIT_UP ) != NULL) || ast->is_param_pack ) {
       //
       // For declarations and typedefs, if there is a qualifier and if a name
       // has yet to be printed, we always need to print a space after the
@@ -1056,11 +1066,14 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
     case K_TYPEDEF:
-      if ( !c_sname_empty( &ast->sname ) ) {
-        if ( (gib->gib_flags & C_GIB_USING) == 0 )
-          gib_print_space_once( gib );
+      if ( (gib->gib_flags & C_GIB_USING) != 0 )
+        break;
+      if ( !c_sname_empty( &ast->sname ) || ast->is_param_pack )
+        gib_print_space_once( gib );
+      if ( ast->is_param_pack )
+        FPUTS( L_ELLIPSIS, gib->fout );
+      if ( !c_sname_empty( &ast->sname ) )
         c_ast_name_gibberish( ast, gib );
-      }
       break;
 
     case K_CAST:

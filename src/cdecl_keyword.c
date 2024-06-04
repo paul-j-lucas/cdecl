@@ -1219,6 +1219,24 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
     )
   },
 
+  { L_pack,
+    LANG_PARAMETER_PACKS,
+    TOKEN( Y_pack ),
+    AC_SETTINGS(
+      AC_POLICY_IN_NEXT_ONLY,
+      AC_NO_NEXT_KEYWORDS
+    )
+  },
+
+  { L_parameter,
+    LANG_PARAMETER_PACKS,
+    TOKEN( Y_parameter ),
+    AC_SETTINGS(
+      AC_POLICY_DEFAULT,
+      AC_NEXT_KEYWORDS( L_pack )
+    )
+  },
+
   { L_point,
     LANG_ANY,
     TOKEN( Y_point ),

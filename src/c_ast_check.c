@@ -2826,6 +2826,44 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
     return VISITOR_ERROR_FOUND;
   }
 
+  if ( ast->is_param_pack ) {
+    //
+    // For a parameter pack like:
+    //
+    //      auto &...x
+    //
+    // where the AST is:
+    //
+    //      {
+    //        sname: { string: "x", scopes: "none" },
+    //        is_param_pack: true,
+    //        kind: { value: 0x1000, string: "reference" },
+    //        ...
+    //        ptr_ref: {
+    //          to_ast: {
+    //            ...
+    //            is_param_pack: false,
+    //            kind: { value: 0x2, string: "built-in type" },
+    //            ...
+    //            type: { btid: 0x0000000000000021, string: "auto" },
+    //            ...
+    //          }
+    //        }
+    //      }
+    //
+    // it's the reference that's a parameter pack, but we have to ensure the
+    // type of the AST the reference is to (the leaf AST) is "auto".
+    //
+    c_ast_t const *const leaf_ast = c_ast_leaf( ast );
+    if ( leaf_ast->type.btids != TB_auto ) {
+      print_error( &leaf_ast->loc,
+        "parameter pack type must be \"%s\"\n",
+        c_tid_name_error( TB_auto )
+      );
+      return VISITOR_ERROR_FOUND;
+    }
+  }
+
   if ( (ast->kind & K_ANY_FUNCTION_LIKE) != 0 ) {
     if ( c_tid_is_any( ast->type.stids, TS_constexpr ) &&
          !OPT_LANG_IS( constexpr_RETURN_TYPES ) &&

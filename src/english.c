@@ -342,10 +342,22 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name_english( &ast->type ), eng->fout );
-      if ( c_ast_is_tid_any( ast, TB__BitInt ) )
-        FPRINTF( eng->fout, " width %u bits", ast->builtin.BitInt.width );
-      c_ast_bit_width_english( ast, eng->fout );
+      if ( c_ast_root( CONST_CAST( c_ast_t*, ast ) )->is_param_pack ) {
+        //
+        // Special case: if the root AST is a parameter pack, print that
+        // instead of this AST's type.
+        //
+        c_type_t type = ast->type;
+        assert( type.btids == TB_auto );
+        type.btids = TB_NONE;
+        fputs_sp( c_type_name_english( &type ), eng->fout );
+        FPUTS( "parameter pack", eng->fout );
+      } else {
+        FPUTS( c_type_name_english( &ast->type ), eng->fout );
+        if ( c_ast_is_tid_any( ast, TB__BitInt ) )
+          FPRINTF( eng->fout, " width %u bits", ast->builtin.BitInt.width );
+        c_ast_bit_width_english( ast, eng->fout );
+      }
       break;
 
     case K_CAPTURE:

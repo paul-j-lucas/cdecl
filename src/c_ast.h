@@ -479,6 +479,7 @@ struct c_udef_lit_ast {
 struct c_ast {
   c_alignas_t     align;                ///< Alignment, if any.
   unsigned        depth;                ///< How many `()` deep.
+  bool            is_param_pack;        ///< Is this a parameter pack (`...`)?
   c_ast_kind_t    kind;                 ///< AST kind.
   c_loc_t         loc;                  ///< Source location.
   c_sname_t       sname;                ///< Scoped name, if any.
@@ -685,7 +686,10 @@ c_param_t const* c_ast_params( c_ast_t const *ast ) {
 }
 
 /**
- * Sets the two-way pointer links between parent/child AST nodes.
+ * Sets the two-way pointer links between parent/child AST nodes; additionally,
+ * if \a child_ast has \ref c_ast::is_param_pack "is_param_pack" set and \a
+ * parent_ast is not NULL, "moves" the "parameter pack-ness" from \a child_ast
+ * to \a parent_ast.
  *
  * @param child_ast The "child" AST node to set the parent of; may be NULL.  If
  * it already has a parent, it's overwritten.

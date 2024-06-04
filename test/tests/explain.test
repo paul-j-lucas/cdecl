@@ -328,6 +328,31 @@ explain int C::*p
 explain int S::x
 explain int bitand x
 explain int f([[carries_dependency]] int x)
+
+explain auto ...x
+explain auto &...x
+explain auto *...x
+explain auto const ...x
+explain auto const &...x
+explain auto const *...x
+explain auto *const ...x
+explain const auto &...x
+explain const auto *...x
+explain const auto ...x
+
+explain int f(auto ...)
+explain int f(auto &...)
+explain int f(auto *...)
+
+explain int f(const auto ...)
+explain int f(const auto &...)
+explain int f(const auto *...)
+
+explain int f(auto const ...)
+explain int f(auto const &...)
+explain int f(auto const *...)
+explain int f(auto *const ...)
+
 explain int s::t::x
 explain int s::x
 explain mutable int x

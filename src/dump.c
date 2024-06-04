@@ -169,6 +169,7 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
     json_object_begin( JSON_INIT, /*key=*/NULL, dump );
 
   DUMP_SNAME( dump, "sname", &ast->sname );
+  DUMP_BOOL( dump, "is_param_pack", ast->is_param_pack );
   DUMP_KEY( dump,
     "kind: { value: 0x%X, string: \"%s\" }",
     ast->kind, c_kind_name( ast->kind )
