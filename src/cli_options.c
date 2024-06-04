@@ -574,7 +574,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(WEST_DECL):
         if ( !parse_west_decl( optarg ) )
           opt_invalid_value(
-            COPT(WEST_DECL), optarg, "*, -, or {b|f|l|o|r|t}+"
+            COPT(WEST_DECL), optarg, "*, -, or {b|f|l|o|r|s|t}+"
           );
         break;
 
