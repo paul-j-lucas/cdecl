@@ -1,5 +1,13 @@
 2024-06-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * cli_options.c, help.c, help.out: Added missing 's' from west-decl.
+   * share/man/man1/cdecl.1, cli_options.c, gibberish.c, help.c, options.c,
+     options.h, set_options.c, alt-tokens.out, cdecl--help.out,
+     cdecl--options.out, cl.out, debug.out, declare.out, explicit-ecsu.out,
+     explicit-int.out, help.out, infer-command.out, lang.out, prompt.out,
+     semicolon.out, set.out, set_options.out, trigraphs.out, using.out,
+     west-pointer.out, declare.test, west-pointer.test: Renamed west-pointer to
+     west-decl.
    * AUTHORS, share/man/man1/cdecl.1, c_ast.c, c_ast.h, c_ast_check.c,
      c_lang.h, cdecl_keyword.c, dump.c, english.c, gibberish.c, help.c,
      literals.c, literals.h, parser.y, debug.out, declare.out,
