@@ -1,3 +1,12 @@
+2024-06-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_keyword.c, gibberish.c, lexer.l, literals.c, literals.h, p_macro.c,
+     p_token.c, parser.y: s/Y_DOT_DOT_DOT/Y_ELLIPSIS/
+
+2024-06-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/"..."/Y_DOT_DOT_DOT/
+
 2024-05-31  Paul J. Lucas <paul@lucasmail.org>
 
    * AUTHORS, share/man/man1/cdecl.1, c_ast.c, c_ast.h, c_ast_check.c,
