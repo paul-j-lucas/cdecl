@@ -1188,7 +1188,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 "->"          { SET_TOKEN; return Y_MINUS_GREATER         ; }
 "->*"         { SET_TOKEN; return Y_MINUS_GREATER_STAR    ; }
 ".*"          { SET_TOKEN; return Y_DOT_STAR              ; }
-"..."         { SET_TOKEN; return Y_DOT_DOT_DOT           ; }
+"..."         { SET_TOKEN; return Y_ELLIPSIS              ; }
 "/="          { SET_TOKEN; return Y_SLASH_EQUAL           ; }
 "<<"          { SET_TOKEN; return Y_LESS_LESS             ; }
 "<<="         { SET_TOKEN; return Y_LESS_LESS_EQUAL       ; }
@@ -1518,7 +1518,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 return ')';
               }
 
-  "..."       { SET_TOKEN; return Y_DOT_DOT_DOT; }
+  "..."       { SET_TOKEN; return Y_ELLIPSIS   ; }
 
 } /* <X_PRE_COMMAND> */
 

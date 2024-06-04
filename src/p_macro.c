@@ -474,7 +474,7 @@ static bool check_macro_params( p_param_list_t const *param_list ) {
 
   FOREACH_SLIST_NODE( param_node, param_list ) {
     p_param_t const *const param = param_node->data;
-    if ( strcmp( param->name, L_ellipsis ) == 0 ) {
+    if ( strcmp( param->name, L_ELLIPSIS ) == 0 ) {
       if ( !OPT_LANG_IS( VARIADIC_MACROS ) ) {
         print_error( &param->loc,
           "variadic macros not supported%s\n",

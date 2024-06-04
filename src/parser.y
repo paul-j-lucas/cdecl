@@ -1504,7 +1504,7 @@ static void yyerror( char const *msg ) {
                     // C89
 %token              Y_asm
 %token  <tid>       Y_const
-%token              Y_DOT_DOT_DOT "..."
+%token              Y_ELLIPSIS            "..."
 %token  <tid>       Y_enum
 %token  <tid>       Y_signed
 %token  <tid>       Y_void
@@ -2909,8 +2909,8 @@ p_punctuator
   | Y_AMPER_EQUAL
   | Y_CARET_EQUAL
   | Y_COLON_COLON
-  | Y_DOT_DOT_DOT
   | Y_DOT_STAR
+  | Y_ELLIPSIS
   | Y_EQUAL_EQUAL
   | Y_EXCLAM_EQUAL
   | Y_GREATER_EQUAL
@@ -3343,10 +3343,10 @@ p_param
       $$ = MALLOC( p_param_t, 1 );
       *$$ = (p_param_t){ .name = $name, .loc = @name };
     }
-  | Y_DOT_DOT_DOT
+  | Y_ELLIPSIS
     {
       $$ = MALLOC( p_param_t, 1 );
-      *$$ = (p_param_t){ .name = check_strdup( L_ellipsis ), .loc = @1 };
+      *$$ = (p_param_t){ .name = check_strdup( L_ELLIPSIS ), .loc = @1 };
     }
   | error
     {
@@ -5465,7 +5465,7 @@ param_c_ast
     /*
      * Varargs declaration.
      */
-  | Y_DOT_DOT_DOT
+  | Y_ELLIPSIS
     {
       DUMP_START( "param_c_ast", "..." );
 
@@ -7954,7 +7954,7 @@ var_decl_english_ast
     /*
      * Varargs declaration.
      */
-  | Y_DOT_DOT_DOT
+  | Y_ELLIPSIS
     {
       DUMP_START( "var_decl_english_ast", "..." );
 

@@ -1537,7 +1537,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_varargs,
     LANG_PROTOTYPES,
-    TOKEN( Y_DOT_DOT_DOT ),
+    TOKEN( Y_ELLIPSIS ),
     AC_SETTINGS(
       AC_POLICY_NO_OTHER,
       AC_NO_NEXT_KEYWORDS
@@ -1555,7 +1555,7 @@ static cdecl_keyword_t CDECL_KEYWORDS[] = {
 
   { L_variadic,
     LANG_PROTOTYPES,
-    TOKEN( Y_DOT_DOT_DOT ),
+    TOKEN( Y_ELLIPSIS ),
     AC_SETTINGS(
       AC_POLICY_DEFAULT,
       AC_NO_NEXT_KEYWORDS

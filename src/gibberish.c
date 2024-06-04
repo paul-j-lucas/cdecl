@@ -628,7 +628,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
       break;
 
     case K_VARIADIC:
-      FPUTS( L_ellipsis, gib->fout );
+      FPUTS( L_ELLIPSIS, gib->fout );
       break;
 
     case K_PLACEHOLDER:

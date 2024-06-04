@@ -194,7 +194,7 @@ extern char const L_while[];
 extern char const L_asm[];
 extern char const L_const[];
 extern char const L_constant[];           // English for "const"
-extern char const L_ellipsis[];           // ...
+extern char const L_ELLIPSIS[];           // ...
 extern char const L_enum[];
 extern char const L_enumeration[];        // English for "enum"
 extern char const L_signed[];
