@@ -692,6 +692,7 @@ static predef_type_t const PREDEFINED_GNU_C[] = {
   PT( "typedef _Float16    __fp16" ),
   PT( "typedef long double __ibm128" ),
   PT( "typedef _Float64x   __float80" ),
+
   //
   // In GNU C, this is a distinct type, not a typedef, which means you can add
   // type modifiers:
