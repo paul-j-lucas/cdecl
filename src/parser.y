@@ -1851,7 +1851,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>       sname_c sname_c_exp sname_c_opt
 %type   <ast>         sname_c_ast
 %type   <type>        storage_class_c_type
-%type   <ast>         structured_binding_c_ast
+%type   <ast>         structured_binding_type_c_ast
 %type   <sname>       sub_scope_sname_c_opt
 %type   <ast>         trailing_return_type_c_ast_opt
 %type   <ast>         type_c_ast
@@ -4233,28 +4233,6 @@ lambda_return_type_c_ast_opt
     }
   ;
 
-/// Gibberish C++ structured binding declaration //////////////////////////////
-
-structured_binding_c_ast
-  : Y_auto_STRUCTURED_BINDING cv_qualifier_list_stid_opt[cv_qual_stids]
-    ref_qualifier_c_stid_opt[ref_stid]
-    lbracket_exp sname_list_c[sname_list] rbracket_exp
-    {
-      DUMP_START( "structured_binding_declaration_c",
-                  "AUTO cv_qualifier_list_stid_opt ref_qualifier_c_stid_opt "
-                  "'[' sname_list_c ']'" );
-      DUMP_TID( "cv_qualifier_list_stid_opt", $cv_qual_stids );
-      DUMP_TID( "ref_qualifier_c_stid_opt", $ref_stid );
-
-      $$ = c_ast_new_gc( K_STRUCTURED_BINDING, &@$ );
-      $$->type.stids = c_tid_check( $cv_qual_stids | $ref_stid, C_TPID_STORE );
-      $$->struct_bind.sname_list = slist_move( &$sname_list );
-
-      DUMP_AST( "$$_ast", $$ );
-      DUMP_END();
-    }
-  ;
-
 /// Gibberish C++ template declaration ////////////////////////////////////////
 
 template_declaration_c
@@ -6569,7 +6547,7 @@ east_modified_type_c_ast
 east_modifiable_type_c_ast
   : atomic_specifier_type_c_ast
   | builtin_type_c_ast
-  | structured_binding_c_ast
+  | structured_binding_type_c_ast
   | typedef_type_c_ast
   | typeof_type_c_ast
   ;
@@ -6670,6 +6648,99 @@ builtin_no_BitInt_c_btid
   | Y_double
   | Y_EMC__Accum
   | Y_EMC__Fract
+  ;
+
+/// Gibberish C++ structured binding types ////////////////////////////////////
+
+structured_binding_type_c_ast
+  : Y_auto_STRUCTURED_BINDING cv_qualifier_list_stid_opt[cv_qual_stids]
+    ref_qualifier_c_stid_opt[ref_stid]
+    lbracket_exp sname_list_c[sname_list] rbracket_exp
+    {
+      DUMP_START( "structured_binding_type_c_ast",
+                  "AUTO cv_qualifier_list_stid_opt ref_qualifier_c_stid_opt "
+                  "'[' sname_list_c ']'" );
+      DUMP_TID( "cv_qualifier_list_stid_opt", $cv_qual_stids );
+      DUMP_TID( "ref_qualifier_c_stid_opt", $ref_stid );
+
+      $$ = c_ast_new_gc( K_STRUCTURED_BINDING, &@$ );
+      $$->type.stids = c_tid_check( $cv_qual_stids | $ref_stid, C_TPID_STORE );
+      $$->struct_bind.sname_list = slist_move( &$sname_list );
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+/// Gibberish C/C++ typedef types /////////////////////////////////////////////
+
+typedef_type_c_ast
+  : any_typedef[tdef] sub_scope_sname_c_opt[sname]
+    {
+      c_ast_t *type_ast = ia_type_ast_peek();
+      c_ast_t const *type_for_ast = $tdef->ast;
+
+      DUMP_START( "typedef_type_c_ast", "any_typedef sub_scope_sname_c_opt" );
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
+      DUMP_AST( "any_typedef__ast", type_for_ast );
+      DUMP_SNAME( "sub_scope_sname_c_opt", $sname );
+
+      if ( c_sname_empty( &$sname ) ) {
+ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
+        $$->type.btids = TB_typedef;
+        $$->tdef.for_ast = type_for_ast;
+      }
+      else {
+        c_sname_t temp_name = c_sname_dup( &$tdef->ast->sname );
+        c_sname_append_sname( &temp_name, &$sname );
+
+        if ( type_ast == NULL ) {
+          //
+          // This is for a case like:
+          //
+          //      define S as struct S
+          //      explain S::T x
+          //
+          // that is: a typedef'd type followed by ::T where T is an unknown
+          // name used as a type. Just assume the T is some type, say int, and
+          // create a name for it.
+          //
+          type_ast = c_ast_new_gc( K_BUILTIN, &@sname );
+          type_ast->type.btids = TB_int;
+          c_sname_set( &type_ast->sname, &temp_name );
+          type_for_ast = type_ast;
+          goto ttntd;
+        }
+
+        //
+        // Otherwise, this is for cases like:
+        //
+        //  1. A typedef'd type used for a scope:
+        //
+        //          define S as struct S
+        //          explain int S::x
+        //
+        //  2. A typedef'd type used for an intermediate scope:
+        //
+        //          define S as struct S
+        //          define T as struct T
+        //          explain int S::T::x
+        //
+        $$ = type_ast;
+        c_sname_set( &$$->sname, &temp_name );
+      }
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+sub_scope_sname_c_opt
+  : /* empty */                   { c_sname_init( &$$ ); }
+  | Y_COLON_COLON any_sname_c[sname]
+    {
+      $$ = $sname;
+    }
   ;
 
 /// Gibberish C/C++ typeof types //////////////////////////////////////////////
@@ -8391,75 +8462,6 @@ oper_sname_c_opt
       $$ = $sname;
       if ( c_type_is_none( c_sname_local_type( &$$ ) ) )
         c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
-    }
-  ;
-
-typedef_type_c_ast
-  : any_typedef[tdef] sub_scope_sname_c_opt[sname]
-    {
-      c_ast_t *type_ast = ia_type_ast_peek();
-      c_ast_t const *type_for_ast = $tdef->ast;
-
-      DUMP_START( "typedef_type_c_ast", "any_typedef sub_scope_sname_c_opt" );
-      DUMP_AST( "in_attr__type_c_ast", type_ast );
-      DUMP_AST( "any_typedef__ast", type_for_ast );
-      DUMP_SNAME( "sub_scope_sname_c_opt", $sname );
-
-      if ( c_sname_empty( &$sname ) ) {
-ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
-        $$->type.btids = TB_typedef;
-        $$->tdef.for_ast = type_for_ast;
-      }
-      else {
-        c_sname_t temp_name = c_sname_dup( &$tdef->ast->sname );
-        c_sname_append_sname( &temp_name, &$sname );
-
-        if ( type_ast == NULL ) {
-          //
-          // This is for a case like:
-          //
-          //      define S as struct S
-          //      explain S::T x
-          //
-          // that is: a typedef'd type followed by ::T where T is an unknown
-          // name used as a type. Just assume the T is some type, say int, and
-          // create a name for it.
-          //
-          type_ast = c_ast_new_gc( K_BUILTIN, &@sname );
-          type_ast->type.btids = TB_int;
-          c_sname_set( &type_ast->sname, &temp_name );
-          type_for_ast = type_ast;
-          goto ttntd;
-        }
-
-        //
-        // Otherwise, this is for cases like:
-        //
-        //  1. A typedef'd type used for a scope:
-        //
-        //          define S as struct S
-        //          explain int S::x
-        //
-        //  2. A typedef'd type used for an intermediate scope:
-        //
-        //          define S as struct S
-        //          define T as struct T
-        //          explain int S::T::x
-        //
-        $$ = type_ast;
-        c_sname_set( &$$->sname, &temp_name );
-      }
-
-      DUMP_AST( "$$_ast", $$ );
-      DUMP_END();
-    }
-  ;
-
-sub_scope_sname_c_opt
-  : /* empty */                   { c_sname_init( &$$ ); }
-  | Y_COLON_COLON any_sname_c[sname]
-    {
-      $$ = $sname;
     }
   ;
 
