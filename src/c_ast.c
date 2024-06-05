@@ -431,8 +431,8 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_RVALUE_REFERENCE:
     case K_UDEF_CONV:
       // checked by referrer code below
-    case K_NAME:                        // names don't matter
     case K_DESTRUCTOR:
+    case K_NAME:                        // names don't matter
     case K_PLACEHOLDER:
     case K_VARIADIC:
       // nothing to do
