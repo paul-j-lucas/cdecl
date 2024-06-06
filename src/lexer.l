@@ -965,7 +965,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                     if ( tdef != NULL ) {
                       yylval.tdef = tdef;
                       c_sname_cleanup( &sname );
-                      return Y_TYPEDEF_SNAME;
+                      return Y_TYPEDEF_SNAME_TDEF;
                     }
                   }
 
@@ -1052,7 +1052,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                     c_typedef_find_sname( &sname );
                   if ( tdef != NULL ) {
                     yylval.tdef = tdef;
-                    return Y_TYPEDEF_NAME;
+                    return Y_TYPEDEF_NAME_TDEF;
                   }
                 }
 

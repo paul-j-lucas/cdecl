@@ -1662,8 +1662,8 @@ static void yyerror( char const *msg ) {
 %token  <name>      Y_NAME              // must be free'd
 %token  <name>      Y_SET_OPTION        // must be free'd
 %token  <str_val>   Y_STR_LIT           // must be free'd
-%token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
-%token  <tdef>      Y_TYPEDEF_SNAME     // e.g., std::string
+%token  <tdef>      Y_TYPEDEF_NAME_TDEF // e.g., size_t
+%token  <tdef>      Y_TYPEDEF_SNAME_TDEF// e.g., std::string
 
                     //
                     // When the lexer returns Y_LEXER_ERROR, it means that
@@ -1689,6 +1689,7 @@ static void yyerror( char const *msg ) {
 //      + <name>: "_name" is appended.
 //      + <literal>: "_literal" is appended.
 //      + <sname>: "_sname" is appended.
+//      + <tdef>: "_tdef" is appended.
 //      + <tid>: "_[bsa]tid" is appended.
 //      + <type>: "_type" is appended.
 //      + <uint_val>: "_uint" is appended.
@@ -1881,7 +1882,7 @@ static void yyerror( char const *msg ) {
                       // Miscellaneous
 %type   <tid>         _Noreturn_atid
 %type   <name>        any_name any_name_exp
-%type   <tdef>        any_typedef
+%type   <tdef>        any_typedef_tdef
 %type   <tid>         class_struct_btid class_struct_btid_opt
 %type   <tid>         class_struct_union_btid class_struct_union_btid_exp
 %type   <op_id>       c_operator
@@ -3477,9 +3478,9 @@ set_option_value_opt
 /// show command //////////////////////////////////////////////////////////////
 
 show_command
-  : Y_show any_typedef[tdef] show_format_opt[format]
+  : Y_show any_typedef_tdef[tdef] show_format_opt[format]
     {
-      DUMP_START( "show_command", "SHOW any_typedef show_format_opt" );
+      DUMP_START( "show_command", "SHOW any_typedef_tdef show_format_opt" );
       DUMP_AST( "any_typedef__ast", $tdef->ast );
       DUMP_INT( "show_format_opt", $format );
       DUMP_END();
@@ -3487,9 +3488,9 @@ show_command
       show_type( $tdef, $format, stdout );
     }
 
-  | Y_show any_typedef[tdef] Y_as show_format_exp[format]
+  | Y_show any_typedef_tdef[tdef] Y_as show_format_exp[format]
     {
-      DUMP_START( "show_command", "SHOW any_typedef AS show_format_exp" );
+      DUMP_START( "show_command", "SHOW any_typedef_tdef AS show_format_exp" );
       DUMP_AST( "any_typedef__ast", $tdef->ast );
       DUMP_INT( "show_format_exp", $format );
       DUMP_END();
@@ -3981,9 +3982,10 @@ namespace_sname_c
       DUMP_END();
     }
 
-  | namespace_sname_c[sname] Y_COLON_COLON any_typedef[tdef]
+  | namespace_sname_c[sname] Y_COLON_COLON any_typedef_tdef[tdef]
     {
-      DUMP_START( "namespace_sname_c", "namespace_sname_c '::' any_typedef" );
+      DUMP_START( "namespace_sname_c",
+                  "namespace_sname_c '::' any_typedef_tdef" );
       DUMP_SNAME( "namespace_sname_c", $sname );
       DUMP_AST( "any_typedef__ast", $tdef->ast );
 
@@ -4045,10 +4047,10 @@ namespace_typedef_sname_c
       DUMP_END();
     }
 
-  | namespace_typedef_sname_c[ns_sname] Y_COLON_COLON any_typedef[tdef]
+  | namespace_typedef_sname_c[ns_sname] Y_COLON_COLON any_typedef_tdef[tdef]
     {
       DUMP_START( "namespace_typedef_sname_c",
-                  "namespace_typedef_sname_c '::' any_typedef" );
+                  "namespace_typedef_sname_c '::' any_typedef_tdef" );
       DUMP_SNAME( "namespace_typedef_sname_c", $ns_sname );
       DUMP_AST( "any_typedef__ast", $tdef->ast );
 
@@ -4079,7 +4081,7 @@ namespace_typedef_sname_c
       DUMP_END();
     }
 
-  | any_typedef[tdef]             { $$ = c_sname_dup( &$tdef->ast->sname ); }
+  | any_typedef_tdef[tdef]        { $$ = c_sname_dup( &$tdef->ast->sname ); }
   ;
 
 brace_in_scope_declaration_c_exp
@@ -6479,9 +6481,9 @@ type_modifier_c_type
       //
       // Since type modifiers can't apply to a typedef'd type (e.g., "long
       // size_t" is illegal), we tell the lexer not to return either
-      // Y_TYPEDEF_NAME or Y_TYPEDEF_SNAME if we encounter at least one type
-      // modifier (except "register" since it's is really a storage class --
-      // see the comment in type_modifier_base_type about "register").
+      // Y_TYPEDEF_NAME_TDEF or Y_TYPEDEF_SNAME_TDEF if we encounter at least
+      // one type modifier (except "register" since it's is really a storage
+      // class -- see the comment in type_modifier_base_type about "register").
       //
       if ( $$.stids != TS_register )
         lexer_find &= ~LEXER_FIND_TYPES;
@@ -6675,12 +6677,13 @@ structured_binding_type_c_ast
 /// Gibberish C/C++ typedef types /////////////////////////////////////////////
 
 typedef_type_c_ast
-  : any_typedef[tdef] sub_scope_sname_c_opt[sname]
+  : any_typedef_tdef[tdef] sub_scope_sname_c_opt[sname]
     {
       c_ast_t *type_ast = ia_type_ast_peek();
       c_ast_t const *type_for_ast = $tdef->ast;
 
-      DUMP_START( "typedef_type_c_ast", "any_typedef sub_scope_sname_c_opt" );
+      DUMP_START( "typedef_type_c_ast",
+                  "any_typedef_tdef sub_scope_sname_c_opt" );
       DUMP_AST( "in_attr__type_c_ast", type_ast );
       DUMP_AST( "any_typedef__ast", type_for_ast );
       DUMP_SNAME( "sub_scope_sname_c_opt", $sname );
@@ -8377,7 +8380,7 @@ enum_unmodified_fixed_type_english_ast
 
 any_name
   : Y_NAME
-  | Y_TYPEDEF_NAME[tdef]
+  | Y_TYPEDEF_NAME_TDEF[tdef]
     {
       assert( c_sname_count( &$tdef->ast->sname ) == 1 );
       $$ = check_strdup( c_sname_local_name( &$tdef->ast->sname ) );
@@ -8412,9 +8415,9 @@ any_sname_c_opt
   | any_sname_c
   ;
 
-any_typedef
-  : Y_TYPEDEF_NAME
-  | Y_TYPEDEF_SNAME
+any_typedef_tdef
+  : Y_TYPEDEF_NAME_TDEF
+  | Y_TYPEDEF_SNAME_TDEF
   ;
 
 name_ast
@@ -8491,7 +8494,7 @@ sname_c
       DUMP_END();
     }
 
-  | sname_c[sname] Y_COLON_COLON any_typedef[tdef]
+  | sname_c[sname] Y_COLON_COLON any_typedef_tdef[tdef]
     { //
       // This is for a case like:
       //
@@ -8500,7 +8503,7 @@ sname_c
       // that is: the type int8_t is an existing type in no scope being defined
       // as a distinct type in a new scope.
       //
-      DUMP_START( "sname_c", "sname_c '::' any_typedef" );
+      DUMP_START( "sname_c", "sname_c '::' any_typedef_tdef" );
       DUMP_SNAME( "sname_c", $sname );
       DUMP_AST( "any_typedef__ast", $tdef->ast );
 
@@ -8720,9 +8723,9 @@ typedef_sname_c
       DUMP_END();
     }
 
-  | typedef_sname_c[sname] Y_COLON_COLON any_typedef[tdef]
+  | typedef_sname_c[sname] Y_COLON_COLON any_typedef_tdef[tdef]
     {
-      DUMP_START( "typedef_sname_c", "typedef_sname_c '::' any_typedef" );
+      DUMP_START( "typedef_sname_c", "typedef_sname_c '::' any_typedef_tdef" );
       DUMP_SNAME( "typedef_sname_c", $sname );
       DUMP_AST( "any_typedef__ast", $tdef->ast );
 
@@ -8742,7 +8745,7 @@ typedef_sname_c
       DUMP_END();
     }
 
-  | any_typedef[tdef]             { $$ = c_sname_dup( &$tdef->ast->sname ); }
+  | any_typedef_tdef[tdef]        { $$ = c_sname_dup( &$tdef->ast->sname ); }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////

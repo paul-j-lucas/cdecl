@@ -1661,7 +1661,7 @@ cdecl> explain size_t x
 {
   rule: {
     lhs: "typedef_type_c_ast",
-    rhs: "any_typedef sub_scope_sname_c_opt"
+    rhs: "any_typedef_tdef sub_scope_sname_c_opt"
   },
   in_attr__type_c_ast: null,
   any_typedef__ast: {
