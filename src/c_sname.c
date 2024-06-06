@@ -133,7 +133,7 @@ size_t c_sname_parse_impl( char const *s, c_sname_t *rv_sname, bool is_dtor ) {
         }
       }
       if ( c_sname_empty( &temp_sname ) )
-        return 0;
+        goto error;
       goto done;
     }
     c_sname_append_name( &temp_sname, name );
