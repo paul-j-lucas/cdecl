@@ -300,7 +300,7 @@ int c_sname_cmp_name( c_sname_t const *sname, char const *name ) {
 void c_sname_fill_in_namespaces( c_sname_t *sname ) {
   assert( sname != NULL );
   c_type_t const *const local_type = c_sname_local_type( sname );
-  if ( !c_tid_is_any( local_type->btids, TB_namespace ) )
+  if ( local_type->btids != TB_namespace )
     return;
 
   FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
