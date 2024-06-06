@@ -846,7 +846,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 SET_TOKEN;
 
                 c_sname_t sname;
-                if ( c_sname_parse_dtor( lexer_token, &sname ) ) {
+                if ( c_sname_parse_dtor( lexer_token, &sname ) > 0 ) {
                   yylval.sname = sname;
                   return Y_DESTRUCTOR_SNAME;
                 }
@@ -945,36 +945,37 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 
                 c_sname_t sname;
                 size_t const sname_len = c_sname_parse( lexer_token, &sname );
-                if ( sname_len > 0 ) {
-                  if ( sname_len < STATIC_CAST( size_t, yyleng ) )
-                    yyless( sname_len );
+                if ( sname_len == 0 )
+                  CDECL_REJECT;
 
-                  //
-                  // 1. See if it's a constructor name.
-                  //
-                  if ( c_sname_is_ctor( &sname ) ) {
-                    yylval.sname = sname;
-                    return Y_CONSTRUCTOR_SNAME;
-                  }
+                if ( sname_len < STATIC_CAST( size_t, yyleng ) )
+                  yyless( sname_len );
 
-                  if ( (lexer_find & LEXER_FIND_TYPES) != 0 ) {
-                    //
-                    // 2. See if it's a typedef'd type.
-                    //
-                    c_typedef_t const *const tdef =
-                      c_typedef_find_sname( &sname );
-                    if ( tdef != NULL ) {
-                      yylval.tdef = tdef;
-                      c_sname_cleanup( &sname );
-                      return Y_TYPEDEF_SNAME_TDEF;
-                    }
-                  }
-
-                  //
-                  // 3. Otherwise, reject it.
-                  //
-                  c_sname_cleanup( &sname );
+                //
+                // 1. See if it's a constructor name.
+                //
+                if ( c_sname_is_ctor( &sname ) ) {
+                  yylval.sname = sname;
+                  return Y_CONSTRUCTOR_SNAME;
                 }
+
+                if ( (lexer_find & LEXER_FIND_TYPES) != 0 ) {
+                  //
+                  // 2. See if it's a typedef'd type.
+                  //
+                  c_typedef_t const *const tdef =
+                    c_typedef_find_sname( &sname );
+                  if ( tdef != NULL ) {
+                    yylval.tdef = tdef;
+                    c_sname_cleanup( &sname );
+                    return Y_TYPEDEF_SNAME_TDEF;
+                  }
+                }
+
+                //
+                // 3. Otherwise, reject it.
+                //
+                c_sname_cleanup( &sname );
                 CDECL_REJECT;
               }
 
