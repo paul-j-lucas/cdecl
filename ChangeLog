@@ -1,5 +1,6 @@
 2024-06-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sname.c: s/return 0/goto error/
    * lexer.l, parser.y, debug.out: Renamed typedef tokens and any_typedef.
 
 2024-06-04  Paul J. Lucas <paul@lucasmail.org>
