@@ -493,6 +493,7 @@ c_sname_t c_sname_move( c_sname_t *sname ) {
  * &ge; c_sname_count().
  *
  * @sa c_sname_full_name()
+ * @sa c_sname_local_name()
  * @sa c_sname_scope_name()
  */
 NODISCARD C_SNAME_H_INLINE
