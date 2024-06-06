@@ -867,7 +867,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 
                 c_sname_t sname;
                 size_t const sname_len = c_sname_parse( lexer_token, &sname );
-                assert( sname_len > 0 );
+                if ( sname_len == 0 )
+                  CDECL_REJECT;
 
                 //
                 // c_sname_parse() will not include "::operator" in the parsed

@@ -57,6 +57,9 @@ c++decl> explain S& S::operator=(T const&) = default
 c++decl> explain S& S::operator=(T const&) = delete
                   ^
 10: error: "delete" can be used only for special member functions
+c++decl> explain bool int::operator!()
+                      ^
+14: error: declaration expected ("int" is a keyword)
 c++decl> explain bool operator!() = delete
                     ^
 12: error: "delete" can be used only for special member functions

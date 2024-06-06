@@ -23,6 +23,8 @@ explain S& S::operator!=(S const&) = delete
 explain S& S::operator=(T const&) = default
 explain S& S::operator=(T const&) = delete
 
+explain bool int::operator!()
+
 explain bool operator!() = delete
 explain bool operator!(int, int)
 explain bool operator!(S) &

@@ -34,6 +34,13 @@ them from anything (no `=` _expression_):
     c++decl> explain auto&& [x, y]
     declare x, y as rvalue reference to structured binding
 
+** Fixed `operator` declaration core dump
+An invalid scoped operator name containing a keyword like:
+
+    c++decl> explain bool int::operator!()
+
+would dump core; fixed.
+
 
 * Changes in Cdecl 16.4.1
 
