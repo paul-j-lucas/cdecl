@@ -235,7 +235,7 @@ static inline char const* plural_s( uint64_t n ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Checks the `alignas` of an AST for errors.
+ * Checks the \ref c_ast::align "align" of an AST for errors.
  *
  * @param ast The AST to check.
  * @return Returns `true` only if all checks passed.
@@ -301,9 +301,9 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
 }
 
 /**
- * Checks an array AST for errors.
+ * Checks a #K_ARRAY AST for errors.
  *
- * @param ast The array AST to check.
+ * @param ast The #K_ARRAY AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -455,9 +455,9 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
 }
 
 /**
- * Checks a built-in type AST for errors.
+ * Checks a #K_BUILTIN AST for errors.
  *
- * @param ast The built-in AST to check.
+ * @param ast The #K_BUILTIN AST to check.
  * @param tdef_ast The #K_TYPEDEF AST \a ast is a `typedef` for, if any.
  * @return Returns `true` only if all checks passed.
  */
@@ -556,9 +556,9 @@ static bool c_ast_check_builtin( c_ast_t const *ast, c_ast_t const *tdef_ast ) {
 }
 
 /**
- * Checks a cast AST for cast-specific errors.
+ * Checks a #K_CAST AST for errors.
  *
- * @param ast The AST to check.
+ * @param ast The #K_CAST AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -661,9 +661,9 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 }
 
 /**
- * Checks a constructor or destructor AST for errors.
+ * Checks a #K_CONSTRUCTOR or #K_DESTRUCTOR AST for errors.
  *
- * @param ast The constructor or destructor AST to check.
+ * @param ast The #K_CONSTRUCTOR or #K_DESTRUCTOR AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -713,9 +713,9 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
 }
 
 /**
- * Checks a built-in Embedded C type AST for errors.
+ * Checks a #K_BUILTIN Embedded C type AST for errors.
  *
- * @param ast The built-in AST to check.
+ * @param ast The #K_BUILTIN AST to check.
  * @return Returns `true` only if all checks passed.
  *
  * @sa [Information Technology — Programming languages - C - Extensions to support embedded processors](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1169.pdf)
@@ -740,9 +740,9 @@ static bool c_ast_check_emc( c_ast_t const *ast ) {
 }
 
 /**
- * Checks an `enum` AST for errors.
+ * Checks a #K_ENUM AST for errors.
  *
- * @param ast The `enum` AST to check.
+ * @param ast The #K_ENUM AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -1398,7 +1398,7 @@ only_void:
 }
 
 /**
- * Checks all function parameters for semantic errors in K&R C.
+ * Checks all function parameters for semantic errors in #LANG_C_KNR.
  *
  * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
@@ -1456,9 +1456,9 @@ static bool c_ast_check_func_params_redef( c_ast_t const *ast ) {
 }
 
 /**
- * Checks a lambda for semantic errors.
+ * Checks a #K_LAMBDA AST for semantic errors.
  *
- * @param ast The lambda AST to check.
+ * @param ast The #K_LAMBDA AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -1489,9 +1489,9 @@ static bool c_ast_check_lambda( c_ast_t const *ast ) {
 }
 
 /**
- * Checks lambda captures for semantic errors.
+ * Checks #K_LAMBDA captures for semantic errors.
  *
- * @param ast The lambda AST to check.
+ * @param ast The #K_LAMBDA AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -1562,10 +1562,10 @@ set_default_capture:
 }
 
 /**
- * Checks lambda captures for redefinition (duplicate names, `this`, or
+ * Checks #K_LAMBDA captures for redefinition (duplicate names, `this`, or
  * `*this`).
  *
- * @param ast The lambda AST to check.
+ * @param ast The #K_LAMBDA AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -1599,9 +1599,9 @@ static bool c_ast_check_lambda_captures_redef( c_ast_t const *ast ) {
 }
 
 /**
- * Checks an overloaded operator AST for errors.
+ * Checks a #K_OPERATOR AST for errors.
  *
- * @param ast The overloaded operator AST to check.
+ * @param ast The #K_OPERATOR AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -1740,9 +1740,9 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 }
 
 /**
- * Checks overloaded operators that are marked `= default`.
+ * Checks a #K_OPERATOR AST that is marked `= default`.
  *
- * @param ast The defaulted operator AST to check.
+ * @param ast The defaulted #K_OPERATOR AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -1781,10 +1781,10 @@ static bool c_ast_check_op_default( c_ast_t const *ast ) {
 }
 
 /**
- * Checks overloaded operator `delete` and `delete[]` parameters for semantic
+ * Checks #K_OPERATOR `delete` and `delete[]` AST parameters for semantic
  * errors.
  *
- * @param ast The overloaded operator AST to check.
+ * @param ast The #K_OPERATOR AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -1814,9 +1814,9 @@ static bool c_ast_check_op_delete_params( c_ast_t const *ast ) {
 }
 
 /**
- * Checks overloaded operator `new` and `new[]` parameters for semantic errors.
+ * Checks #K_OPERATOR `new` and `new[]` AST parameters for semantic errors.
  *
- * @param ast The overloaded operator `new` AST to check.
+ * @param ast The #K_OPERATOR `new` AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -1846,9 +1846,9 @@ static bool c_ast_check_op_new_params( c_ast_t const *ast ) {
 }
 
 /**
- * Checks all overloaded operator parameters for semantic errors.
+ * Checks all #K_OPERATOR AST parameters for semantic errors.
  *
- * @param ast The overloaded operator AST to check.
+ * @param ast The #K_OPERATOR AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -2002,9 +2002,9 @@ same: print_error( c_ast_params_loc( ast ),
 }
 
 /**
- * Checks overloaded relational operators that are marked `= default`.
+ * Checks a relational #K_OPERATOR AST that is marked `= default`.
  *
- * @param ast The defaulted relational operator AST to check.
+ * @param ast The defaulted relational #K_OPERATOR AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -2154,9 +2154,9 @@ rel_2par: print_error( c_ast_params_loc( ast ),
 }
 
 /**
- * Checks a pointer or pointer-to-member AST for errors.
+ * Checks a #K_POINTER or #K_POINTER_TO_MEMBER AST for errors.
  *
- * @param ast The pointer or pointer-to-member AST to check.
+ * @param ast The #K_POINTER or #K_POINTER_TO_MEMBER AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -2398,9 +2398,9 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
 }
 
 /**
- * Checks a structured binding AST for errors.
+ * Checks a #K_STRUCTURED_BINDING AST for errors.
  *
- * @param ast The structured binding AST to check.
+ * @param ast The #K_STRUCTURED_BINDING AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -2442,9 +2442,9 @@ static bool c_ast_check_structured_binding( c_ast_t const *ast ) {
 }
 
 /**
- * Checks a user-defined conversion operator AST for errors.
+ * Checks a #K_UDEF_CONV AST for errors.
  *
- * @param ast The user-defined conversion operator AST to check.
+ * @param ast The #K_UDEF_CONV AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -2481,9 +2481,9 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
 }
 
 /**
- * Checks all user-defined literal parameters for semantic errors.
+ * Checks all #K_UDEF_LIT parameters for semantic errors.
  *
- * @param ast The user-defined literal AST to check.
+ * @param ast The #K_UDEF_LIT AST to check.
  * @return Returns `true` only if all checks passed.
  */
 NODISCARD
@@ -2579,9 +2579,9 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
 }
 
 /**
- * Checks a built-in Unified Parallel C type AST for errors.
+ * Checks a #K_BUILTIN Unified Parallel C type AST for errors.
  *
- * @param ast The built-in AST to check.
+ * @param ast The #K_BUILTIN AST to check.
  * @return Returns `true` only if all checks passed.
  *
  * @sa [Unified Parallel C](http://upc-lang.org/)
