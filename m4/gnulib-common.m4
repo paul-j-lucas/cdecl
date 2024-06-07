@@ -1,5 +1,5 @@
 # gnulib-common.m4
-# serial 94
+# serial 95
 dnl Copyright (C) 2007-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -154,7 +154,7 @@ AC_DEFUN([gl_COMMON_BODY], [
    _GL_ATTRIBUTE_ALLOC_SIZE ((M, N)) declares that the Mth argument multiplied
    by the Nth argument of the function is the size of the returned memory block.
  */
-/* Applies to: function, pointer to function, function types.  */
+/* Applies to: functions, pointer to functions, function types.  */
 #ifndef _GL_ATTRIBUTE_ALLOC_SIZE
 # if _GL_HAS_ATTRIBUTE (alloc_size)
 #  define _GL_ATTRIBUTE_ALLOC_SIZE(args) __attribute__ ((__alloc_size__ args))
@@ -165,7 +165,7 @@ AC_DEFUN([gl_COMMON_BODY], [
 
 /* _GL_ATTRIBUTE_ALWAYS_INLINE tells that the compiler should always inline the
    function and report an error if it cannot do so.  */
-/* Applies to: function.  */
+/* Applies to: functions.  */
 #ifndef _GL_ATTRIBUTE_ALWAYS_INLINE
 # if _GL_HAS_ATTRIBUTE (always_inline)
 #  define _GL_ATTRIBUTE_ALWAYS_INLINE __attribute__ ((__always_inline__))
@@ -177,7 +177,7 @@ AC_DEFUN([gl_COMMON_BODY], [
 /* _GL_ATTRIBUTE_ARTIFICIAL declares that the function is not important to show
     in stack traces when debugging.  The compiler should omit the function from
     stack traces.  */
-/* Applies to: function.  */
+/* Applies to: functions.  */
 #ifndef _GL_ATTRIBUTE_ARTIFICIAL
 # if _GL_HAS_ATTRIBUTE (artificial)
 #  define _GL_ATTRIBUTE_ARTIFICIAL __attribute__ ((__artificial__))
@@ -203,20 +203,23 @@ AC_DEFUN([gl_COMMON_BODY], [
 # endif
 #endif
 
-/* _GL_ATTRIBUTE_CONST declares that it is OK for a compiler to omit duplicate
-   calls to the function with the same arguments.
-   This attribute is safe for a function that neither depends on nor affects
-   observable state, and always returns exactly once - e.g., does not loop
-   forever, and does not call longjmp.
-   (This attribute is stricter than _GL_ATTRIBUTE_PURE.  It is equivalent to
-   _GL_ATTRIBUTE_UNSEQUENCED for a function that has no pointer or array
-   parameters.)  */
+/* _GL_ATTRIBUTE_CONST declares:
+   It is OK for a compiler to move calls to the function and to omit
+   calls to the function if another call has the same arguments or the
+   result is not used.
+   This attribute is safe for a function that neither depends on
+   nor affects state, and always returns exactly once -
+   e.g., does not raise an exception, call longjmp, or loop forever.
+   (This attribute is stricter than _GL_ATTRIBUTE_PURE because the
+   function cannot observe state.  It is stricter than
+   _GL_ATTRIBUTE_UNSEQUENCED because the function must return exactly
+   once and cannot depend on state addressed by its arguments.)  */
 /* Applies to: functions.  */
 #ifndef _GL_ATTRIBUTE_CONST
 # if _GL_HAS_ATTRIBUTE (const)
 #  define _GL_ATTRIBUTE_CONST __attribute__ ((__const__))
 # else
-#  define _GL_ATTRIBUTE_CONST
+#  define _GL_ATTRIBUTE_CONST _GL_ATTRIBUTE_UNSEQUENCED
 # endif
 #endif
 
@@ -519,36 +522,48 @@ AC_DEFUN([gl_COMMON_BODY], [
 # endif
 #endif
 
-/* _GL_ATTRIBUTE_PURE declares that it is OK for a compiler to omit duplicate
-   calls to the function with the same arguments if observable state is not
-   changed between calls.
+/* _GL_ATTRIBUTE_PURE declares:
+   It is OK for a compiler to move calls to the function and to omit
+   calls to the function if another call has the same arguments or the
+   result is not used, and if observable state is the same.
    This attribute is safe for a function that does not affect observable state
    and always returns exactly once.
-   (This attribute is looser than _GL_ATTRIBUTE_CONST.  It is equivalent to
-   _GL_ATTRIBUTE_REPRODUCIBLE for a function for which all pointer or array
-   parameters have 'const'-qualified target types.)  */
+   (This attribute is looser than _GL_ATTRIBUTE_CONST because the function
+   can depend on observable state.  It is stricter than
+   _GL_ATTRIBUTE_REPRODUCIBLE because the function must return exactly
+   once and cannot affect state addressed by its arguments.)  */
 /* Applies to: functions.  */
 #ifndef _GL_ATTRIBUTE_PURE
 # if _GL_HAS_ATTRIBUTE (pure)
 #  define _GL_ATTRIBUTE_PURE __attribute__ ((__pure__))
 # else
-#  define _GL_ATTRIBUTE_PURE
+#  define _GL_ATTRIBUTE_PURE _GL_ATTRIBUTE_REPRODUCIBLE
 # endif
 #endif
 
-/* _GL_ATTRIBUTE_REPRODUCIBLE declares that it is OK for a compiler to omit
-   duplicate calls to the function with the same arguments if observable state
-   is not changed between calls.
+/* _GL_ATTRIBUTE_REPRODUCIBLE declares:
+   It is OK for a compiler to move calls to the function and to omit duplicate
+   calls to the function with the same arguments, so long as the state
+   addressed by its arguments is the same and is updated in time for
+   the rest of the program.
    This attribute is safe for a function that is effectless and idempotent; see
    ISO C 23 § 6.7.12.7 for a definition of these terms.
-   (This attribute is looser than _GL_ATTRIBUTE_UNSEQUENCED.  It is equivalent
-   to _GL_ATTRIBUTE_PURE for a function for which all pointer or array
-   parameters have 'const'-qualified target types.)  */
-/* Applies to: functions.  */
+   (This attribute is looser than _GL_ATTRIBUTE_UNSEQUENCED because
+   the function need not be stateless and idempotent.  It is looser
+   than _GL_ATTRIBUTE_PURE because the function need not return
+   exactly once and can affect state addressed by its arguments.)
+   See also <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2956.htm> and
+   <https://stackoverflow.com/questions/76847905/>.  */
+/* Applies to: functions, pointer to functions, function types.  */
 #ifndef _GL_ATTRIBUTE_REPRODUCIBLE
-# if _GL_HAS_ATTRIBUTE (reproducible)
-#  define _GL_ATTRIBUTE_REPRODUCIBLE [[reproducible]]
-# else
+/* This may be revisited when gcc and clang support [[reproducible]] or possibly
+   __attribute__ ((__reproducible__)).  */
+# ifndef _GL_BRACKET_BEFORE_ATTRIBUTE
+#  if _GL_HAS_ATTRIBUTE (reproducible)
+#   define _GL_ATTRIBUTE_REPRODUCIBLE [[reproducible]]
+#  endif
+# endif
+# ifndef _GL_ATTRIBUTE_REPRODUCIBLE
 #  define _GL_ATTRIBUTE_REPRODUCIBLE
 # endif
 #endif
@@ -577,20 +592,29 @@ AC_DEFUN([gl_COMMON_BODY], [
 # endif
 #endif
 
-/* _GL_ATTRIBUTE_UNSEQUENCED declares that it is OK for a compiler to move
-   calls to the function and to omit duplicate calls to the function with the
-   same arguments.
+/* _GL_ATTRIBUTE_UNSEQUENCED declares:
+   It is OK for a compiler to move calls to the function and to omit duplicate
+   calls to the function with the same arguments, so long as the state
+   addressed by its arguments is the same.
    This attribute is safe for a function that is effectless, idempotent,
    stateless, and independent; see ISO C 23 § 6.7.12.7 for a definition of
    these terms.
-   (This attribute is stricter than _GL_ATTRIBUTE_REPRODUCIBLE.  It is
-   equivalent to _GL_ATTRIBUTE_CONST for a function that has no pointer or
-   array parameters.)  */
-/* Applies to: functions.  */
+   (This attribute is stricter than _GL_ATTRIBUTE_REPRODUCIBLE because
+   the function must be stateless and independent.  It is looser than
+   _GL_ATTRIBUTE_CONST because the function need not return exactly
+   once and can depend on state addressed by its arguments.)
+   See also <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2956.htm> and
+   <https://stackoverflow.com/questions/76847905/>.  */
+/* Applies to: functions, pointer to functions, function types.  */
 #ifndef _GL_ATTRIBUTE_UNSEQUENCED
-# if _GL_HAS_ATTRIBUTE (unsequenced)
-#  define _GL_ATTRIBUTE_UNSEQUENCED [[unsequenced]]
-# else
+/* This may be revisited when gcc and clang support [[unsequenced]] or possibly
+   __attribute__ ((__unsequenced__)).  */
+# ifndef _GL_BRACKET_BEFORE_ATTRIBUTE
+#  if _GL_HAS_ATTRIBUTE (unsequenced)
+#   define _GL_ATTRIBUTE_UNSEQUENCED [[unsequenced]]
+#  endif
+# endif
+# ifndef _GL_ATTRIBUTE_UNSEQUENCED
 #  define _GL_ATTRIBUTE_UNSEQUENCED
 # endif
 #endif
