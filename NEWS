@@ -22,6 +22,14 @@ for parameter packs like:
 
     int f( auto ...x )
 
+** `auto` parameters in `typedef`s
+Use of `auto` in `typedef` function-like parameters is now correctly reported
+as an error:
+
+    c++decl> typedef int F(auto)
+                           ^
+    15: error: "auto" illegal in type definition
+
 ** `decltype` declarations
 Now recognizing `decltype` just to say it's not supported.
 

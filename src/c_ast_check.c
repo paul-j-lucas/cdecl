@@ -2979,6 +2979,67 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
 }
 
 /**
+ * Performs additional checks on an AST for a type.
+ *
+ * @param type_ast The AST of a type to check.
+ * @param user_data Not used.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_visitor_typedef( c_ast_t const *ast, user_data_t user_data ) {
+  assert( ast != NULL );
+  (void)user_data;
+
+  switch ( ast->kind ) {
+    case K_APPLE_BLOCK:
+    case K_CONSTRUCTOR:
+    case K_FUNCTION:
+      FOREACH_AST_FUNC_PARAM( param, ast ) {
+        if ( !c_ast_check_typedef( c_param_ast( param ) ) )
+          return VISITOR_ERROR_FOUND;
+      } // for
+      break;
+
+    case K_BUILTIN:
+      if ( c_ast_is_tid_any( ast, TB_auto ) ) {
+        print_error( &ast->loc,
+          "\"%s\" illegal in type definition\n",
+          c_tid_name_error( TB_auto )
+        );
+        return VISITOR_ERROR_FOUND;
+      }
+      break;
+
+    case K_ARRAY:
+    case K_CAPTURE:
+    case K_CAST:
+    case K_CLASS_STRUCT_UNION:
+    case K_DESTRUCTOR:
+    case K_ENUM:
+    case K_NAME:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_STRUCTURED_BINDING:
+    case K_TYPEDEF:
+    case K_VARIADIC:
+      // nothing to check
+      break;
+
+    case K_LAMBDA:
+    case K_OPERATOR:
+    case K_UDEF_CONV:
+    case K_UDEF_LIT:
+      // even though these have parameters, they can't be used in a typedef
+    case K_PLACEHOLDER:
+      UNEXPECTED_INT_VALUE( ast->kind );
+  } // switch
+
+  return VISITOR_ERROR_NOT_FOUND;
+}
+
+/**
  * Visitor function that checks an AST for semantic warnings.
  *
  * @param ast The AST to check.
@@ -3219,6 +3280,13 @@ bool c_ast_check( c_ast_t const *ast ) {
     return false;
   PJL_DISCARD_RV( c_ast_check_visitor( ast, c_ast_visitor_warning ) );
   return true;
+}
+
+bool c_ast_check_typedef( c_ast_t const *type_ast ) {
+  assert( type_ast != NULL );
+  return NULL == c_ast_visit(
+    type_ast, C_VISIT_DOWN, &c_ast_visitor_typedef, USER_DATA_ZERO
+  );
 }
 
 bool c_ast_list_check( c_ast_list_t const *ast_list ) {

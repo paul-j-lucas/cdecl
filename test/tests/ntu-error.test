@@ -18,6 +18,9 @@ set c17
 typedef auto int SI
 
 set c++
+typedef auto F()
+typedef int F( auto )
+
 class C { namespace N { class D; } }
 inline namespace A::B { typedef int Int; }
 struct S { namespace N { typedef int Int; } }

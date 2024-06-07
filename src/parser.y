@@ -836,14 +836,8 @@ static bool define_type( c_ast_t const *type_ast, unsigned decl_flags ) {
   assert( type_ast != NULL );
   assert( is_1_bit_only_in_set( decl_flags, C_TYPE_DECL_ANY ) );
 
-  c_ast_t const *const leaf_ast = c_ast_leaf( type_ast );
-  if ( c_ast_is_tid_any( leaf_ast, TB_auto ) ) {
-    print_error( &leaf_ast->loc,
-      "\"%s\" illegal in type definition\n",
-      c_type_name_error( &leaf_ast->type )
-    );
+  if ( !c_ast_check_typedef( type_ast ) )
     return false;
-  }
 
   c_typedef_t *const tdef = c_typedef_add( type_ast, decl_flags )->data;
 

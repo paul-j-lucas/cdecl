@@ -51,9 +51,24 @@
  * @return Returns `true` only if all checks passed.
  *
  * @sa c_ast_list_check()
+ * @sa c_ast_check_typedef()
  */
 NODISCARD
 bool c_ast_check( c_ast_t const *ast );
+
+/**
+ * Performs additional checks on an AST for a type.
+ *
+ * @param type_ast The AST of a type to check.
+ * @return Returns `true` only if all checks passed.
+ *
+ * @note It's presumed that c_ast_check() was called before calling this
+ * function.
+ *
+ * @sa c_ast_check()
+ */
+NODISCARD
+bool c_ast_check_typedef( c_ast_t const *type_ast );
 
 /**
  * Checks a list of AST nodes that are part of the _same_ declaration for
