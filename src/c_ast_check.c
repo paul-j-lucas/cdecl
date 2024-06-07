@@ -2981,7 +2981,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
 /**
  * Performs additional checks on an AST for a type.
  *
- * @param type_ast The AST of a type to check.
+ * @param ast The AST of a type to check.
  * @param user_data Not used.
  * @return Returns `true` only if all checks passed.
  */
