@@ -1,3 +1,9 @@
+2024-06-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c, c_ast_check.h, parser.y, ntu-error.out, ntu-error.test: Use
+     of `auto` in `typedef` function-like parameters is now correctly reported
+     as an error.
+
 2024-06-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_check.c: Put additional check for == K_BUILTIN.
