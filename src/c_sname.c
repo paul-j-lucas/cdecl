@@ -234,6 +234,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     //
     c_scope_t *const orig_next = scope->next;
     scope->next = NULL;
+
     c_typedef_t const *const tdef = c_typedef_find_sname( sname );
     if ( tdef != NULL ) {
       c_type_t const *const tdef_type = c_sname_local_type( &tdef->ast->sname );
@@ -267,6 +268,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
         *scope_type = *tdef_type;
       }
     }
+
     scope->next = orig_next;
 
     unsigned const scope_order = c_tid_scope_order( scope_type->btids );
