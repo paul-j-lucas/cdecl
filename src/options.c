@@ -350,7 +350,7 @@ bool parse_west_decl( char const *wd_format ) {
 }
 
 char const* west_decl_str( void ) {
-  static char buf[ ARRAY_SIZE( "bflot" ) ];
+  static char buf[ ARRAY_SIZE( "bflost" ) ];
   char *s = buf;
 
   if ( (opt_west_decl_kinds & K_APPLE_BLOCK) != 0 )
