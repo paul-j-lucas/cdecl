@@ -2855,7 +2855,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
     // type of the AST the reference is to (the leaf AST) is "auto".
     //
     c_ast_t const *const leaf_ast = c_ast_leaf( ast );
-    if ( leaf_ast->type.btids != TB_auto ) {
+    if ( leaf_ast->kind == K_BUILTIN && leaf_ast->type.btids != TB_auto ) {
       print_error( &leaf_ast->loc,
         "parameter pack type must be \"%s\"\n",
         c_tid_name_error( TB_auto )
