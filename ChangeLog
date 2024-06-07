@@ -1,5 +1,6 @@
 2024-06-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * options.c: Added missing 's'.
    * lexer.l, explain_operator-error.out, explain_operator-error.test: Fixed
      `operator` declaration core dump, e.g. `explain bool int::operator!()`.
    * c_sname.c: s/return 0/goto error/
