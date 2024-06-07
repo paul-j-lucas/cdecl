@@ -254,6 +254,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func_ast,
 
       case K_BUILTIN:
       case K_CLASS_STRUCT_UNION:
+      case K_CONCEPT:
       case K_ENUM:
       case K_STRUCTURED_BINDING:
       case K_TYPEDEF:

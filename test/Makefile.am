@@ -44,6 +44,10 @@ TESTS+=	tests/cli_options-error.test
 TESTS+=	tests/cast.test \
 	tests/cast-error.test
 
+# Concept using tests
+TESTS+=	tests/concept.test \
+	tests/concept-error.test
+
 # Declare tests
 TESTS+=	tests/declare.test \
 	tests/declare-error.test

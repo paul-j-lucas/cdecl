@@ -1,0 +1,43 @@
+EXPECTED_EXIT=0
+cdecl -bE -xc++ <<END
+declare x as concept C
+declare x as const concept C
+
+declare x as reference to concept C
+declare x as reference to const concept C
+
+declare x as concept C parameter pack
+declare x as const concept C parameter pack
+
+declare x as reference to concept C parameter pack
+declare x as reference to const concept C parameter pack
+
+declare x as concept std::integral
+declare x as concept integral of namespace std
+
+declare x as maybe unused concept C
+
+set east-const
+declare x as const concept C
+set noeast-const
+
+set west-decl=t
+declare x as reference to concept C
+declare x as reference to const concept C
+set west-decl=r
+
+explain C auto x
+explain const C auto x
+explain C auto const x
+
+explain C auto ...x
+explain const C auto ...x
+explain C auto const ...x
+
+explain C auto &...x
+explain const C auto &...x
+explain C auto const &...x
+
+explain std::integral auto x
+
+END

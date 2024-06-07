@@ -429,6 +429,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
       return false;
 
     case K_CLASS_STRUCT_UNION:
+    case K_CONCEPT:
     case K_ENUM:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
@@ -656,6 +657,44 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       // the object being cast, so nothing to check.
       break;
   } // switch
+
+  return true;
+}
+
+/**
+ * Checks a #K_CONCEPT AST for errors.
+ *
+ * @param ast the #K_CONCEPT AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+NODISCARD
+static bool c_ast_check_concept( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_CONCEPT );
+
+  c_tid_t const not_concept_stids = ast->type.stids & c_tid_compl( TS_CONCEPT );
+  if ( not_concept_stids != TS_NONE ) {
+    error_kind_not_tid( ast, not_concept_stids, LANG_NONE, "\n" );
+    return false;
+  }
+
+  c_sname_t const *const concept_sname = &ast->concept.concept_sname;
+
+  FOREACH_SNAME_SCOPE_UNTIL( scope, concept_sname, concept_sname->tail ) {
+    c_type_t const *const scope_type = &c_scope_data( scope )->type;
+    if ( scope_type->btids != TB_namespace ) {
+      c_sname_t scope_sname = c_sname_scope_sname( concept_sname );
+      print_error( &ast->loc,
+        "concept \"%s\" may only be within a namespace; "
+        "\"%s\" was previously declared as \"%s\"\n",
+        c_sname_local_name( concept_sname ),
+        c_sname_full_name( &scope_sname ),
+        c_tid_name_error( scope_type->btids )
+      );
+      c_sname_cleanup( &scope_sname );
+      return false;
+    }
+  } // for
 
   return true;
 }
@@ -1013,6 +1052,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
       case K_CAPTURE:
       case K_CAST:
       case K_CLASS_STRUCT_UNION:
+      case K_CONCEPT:
       case K_DESTRUCTOR:
       case K_ENUM:
       case K_LAMBDA:
@@ -1359,6 +1399,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
       case K_ARRAY:
       case K_CLASS_STRUCT_UNION:
+      case K_CONCEPT:
       case K_ENUM:
       case K_POINTER:
       case K_POINTER_TO_MEMBER:
@@ -2216,6 +2257,10 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
       print_error( &to_ast->loc, "pointer to structured binding is illegal\n" );
       return false;
 
+    case K_CONCEPT:
+      // nothing to do
+      break;
+
     case K_CAPTURE:
     case K_CAST:
     case K_CONSTRUCTOR:
@@ -2368,6 +2413,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
 
     case K_CAPTURE:
     case K_CAST:
+    case K_CONCEPT:
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_LAMBDA:
@@ -2654,6 +2700,11 @@ static bool c_ast_visitor_error( c_ast_t const *ast, user_data_t user_data ) {
 
     case K_CLASS_STRUCT_UNION:
       // nothing to check
+      break;
+
+    case K_CONCEPT:
+      if ( !c_ast_check_concept( ast ) )
+        return VISITOR_ERROR_FOUND;
       break;
 
     case K_ENUM:
@@ -2946,6 +2997,7 @@ static bool c_ast_visitor_type( c_ast_t const *ast, user_data_t user_data ) {
 
       case K_BUILTIN:
       case K_CLASS_STRUCT_UNION:
+      case K_CONCEPT:
       case K_ENUM:
       case K_POINTER_TO_MEMBER:
         error_kind_not_tid( raw_ast, TS_restrict, LANG_NONE, "\n" );
@@ -3009,6 +3061,13 @@ static bool c_ast_visitor_typedef( c_ast_t const *ast, user_data_t user_data ) {
         return VISITOR_ERROR_FOUND;
       }
       break;
+
+    case K_CONCEPT:
+      print_error( &ast->loc,
+        "\"%s\" illegal in type definition\n",
+        c_kind_name( ast->kind )
+      );
+      return VISITOR_ERROR_FOUND;
 
     case K_ARRAY:
     case K_CAPTURE:
@@ -3180,6 +3239,7 @@ static bool c_ast_visitor_warning( c_ast_t const *ast, user_data_t user_data ) {
 
     case K_CAPTURE:
     case K_CAST:
+    case K_CONCEPT:
     case K_UDEF_CONV:
     case K_VARIADIC:
       // nothing to check

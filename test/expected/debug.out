@@ -97,7 +97,7 @@ cdecl> explain (int)x
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x100, string: "cast" },
+    kind: { value: 0x200, string: "cast" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { string: "none" },
@@ -710,7 +710,7 @@ cdecl> explain enum E : int x
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -739,7 +739,7 @@ cdecl> explain enum E : int x
   enum_class_struct_union_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -762,7 +762,7 @@ cdecl> explain enum E : int x
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -800,7 +800,7 @@ cdecl> explain enum E : int x
   in_attr__type_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -824,7 +824,7 @@ cdecl> explain enum E : int x
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -854,7 +854,7 @@ cdecl> explain enum E : int x
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -877,7 +877,7 @@ cdecl> explain enum E : int x
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x200, string: "enumeration" },
+      kind: { value: 0x400, string: "enumeration" },
       depth: 0,
       loc: { first_column: 8, last_column: 19 },
       type: { btid: 0x0000000000800001, string: "enum" },
@@ -901,7 +901,7 @@ cdecl> explain enum E : int x
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -945,7 +945,7 @@ cdecl> explain enum E x
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -963,7 +963,7 @@ cdecl> explain enum E x
   enum_class_struct_union_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -975,7 +975,7 @@ cdecl> explain enum E x
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -1002,7 +1002,7 @@ cdecl> explain enum E x
   in_attr__type_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -1015,7 +1015,7 @@ cdecl> explain enum E x
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -1034,7 +1034,7 @@ cdecl> explain enum E x
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -1046,7 +1046,7 @@ cdecl> explain enum E x
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x200, string: "enumeration" },
+      kind: { value: 0x400, string: "enumeration" },
       depth: 0,
       loc: { first_column: 8, last_column: 13 },
       type: { btid: 0x0000000000800001, string: "enum" },
@@ -1059,7 +1059,7 @@ cdecl> explain enum E x
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x200, string: "enumeration" },
+    kind: { value: 0x400, string: "enumeration" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000000800001, string: "enum" },
@@ -1328,7 +1328,7 @@ cdecl> explain int x[4]
   array_size_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80, string: "array" },
+    kind: { value: 0x100, string: "array" },
     depth: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { string: "none" },
@@ -1341,7 +1341,7 @@ cdecl> explain int x[4]
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 13, last_column: 15 },
       type: { string: "none" },
@@ -1385,7 +1385,7 @@ cdecl> explain int x[4]
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 13, last_column: 15 },
       type: { string: "none" },
@@ -1409,7 +1409,7 @@ cdecl> explain int x[4]
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x80, string: "array" },
+    kind: { value: 0x100, string: "array" },
     depth: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { string: "none" },
@@ -1554,7 +1554,7 @@ cdecl> explain int x[]
   array_size_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80, string: "array" },
+    kind: { value: 0x100, string: "array" },
     depth: 0,
     loc: { first_column: 13, last_column: 14 },
     type: { string: "none" },
@@ -1567,7 +1567,7 @@ cdecl> explain int x[]
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 13, last_column: 14 },
       type: { string: "none" },
@@ -1611,7 +1611,7 @@ cdecl> explain int x[]
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 13, last_column: 14 },
       type: { string: "none" },
@@ -1635,7 +1635,7 @@ cdecl> explain int x[]
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x80, string: "array" },
+    kind: { value: 0x100, string: "array" },
     depth: 0,
     loc: { first_column: 13, last_column: 14 },
     type: { string: "none" },
@@ -1679,7 +1679,7 @@ cdecl> explain size_t x
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x20, string: "typedef" },
+    kind: { value: 0x40, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000020000001, string: "none" },
@@ -1708,7 +1708,7 @@ cdecl> explain size_t x
   east_modifiable_type_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x20, string: "typedef" },
+    kind: { value: 0x40, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000020000001, string: "none" },
@@ -1731,7 +1731,7 @@ cdecl> explain size_t x
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x20, string: "typedef" },
+    kind: { value: 0x40, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000020000001, string: "none" },
@@ -1769,7 +1769,7 @@ cdecl> explain size_t x
   in_attr__type_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x20, string: "typedef" },
+    kind: { value: 0x40, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000020000001, string: "none" },
@@ -1793,7 +1793,7 @@ cdecl> explain size_t x
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x20, string: "typedef" },
+    kind: { value: 0x40, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000020000001, string: "none" },
@@ -1823,7 +1823,7 @@ cdecl> explain size_t x
   in_attr__type_c_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x20, string: "typedef" },
+    kind: { value: 0x40, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000020000001, string: "none" },
@@ -1846,7 +1846,7 @@ cdecl> explain size_t x
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x20, string: "typedef" },
+      kind: { value: 0x40, string: "typedef" },
       depth: 0,
       loc: { first_column: 8, last_column: 13 },
       type: { btid: 0x0000000020000001, string: "none" },
@@ -1870,7 +1870,7 @@ cdecl> explain size_t x
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x20, string: "typedef" },
+    kind: { value: 0x40, string: "typedef" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { btid: 0x0000000020000001, string: "none" },
@@ -2273,7 +2273,7 @@ cdecl> explain void f()
     ast: {
       sname: { string: "f", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x40000, string: "function" },
+      kind: { value: 0x80000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 15 },
       type: { string: "none" },
@@ -2328,7 +2328,7 @@ cdecl> explain void f()
     ast: {
       sname: { string: "f", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x40000, string: "function" },
+      kind: { value: 0x80000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 15 },
       type: { string: "none" },
@@ -2363,7 +2363,7 @@ cdecl> explain void f()
   $$_ast: {
     sname: { string: "f", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x40000, string: "function" },
+    kind: { value: 0x80000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 15 },
     type: { string: "none" },
@@ -2709,7 +2709,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
     type: { string: "none" },
@@ -2746,7 +2746,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   in_attr__type_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
     type: { string: "none" },
@@ -2769,7 +2769,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   $$_ast: {
     sname: { string: "fmt", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
     type: { string: "none" },
@@ -2797,7 +2797,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   pointer_type_c_ast: {
     sname: { string: "fmt", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
     type: { string: "none" },
@@ -2819,7 +2819,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ast: {
       sname: { string: "fmt", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
       type: { string: "none" },
@@ -2843,7 +2843,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ast: {
       sname: { string: "fmt", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
       type: { string: "none" },
@@ -2886,7 +2886,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ast: {
       sname: { string: "fmt", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
       type: { string: "none" },
@@ -2909,7 +2909,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   $$_ast: {
     sname: { string: "fmt", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
     type: { string: "none" },
@@ -2950,7 +2950,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   param_c_ast: {
     sname: { string: "fmt", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 33 },
     type: { string: "none" },
@@ -2983,7 +2983,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     {
       sname: { string: "fmt", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
       type: { string: "none" },
@@ -3012,7 +3012,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x40, string: "variadic" },
+    kind: { value: 0x80, string: "variadic" },
     depth: 0,
     loc: { first_column: 39, last_column: 41 },
     type: { string: "none" }
@@ -3039,7 +3039,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     {
       sname: { string: "fmt", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
       type: { string: "none" },
@@ -3061,7 +3061,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   param_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x40, string: "variadic" },
+    kind: { value: 0x80, string: "variadic" },
     depth: 0,
     loc: { first_column: 39, last_column: 41 },
     type: { string: "none" }
@@ -3081,7 +3081,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     {
       sname: { string: "fmt", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
       type: { string: "none" },
@@ -3102,7 +3102,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     {
       sname: null,
       is_param_pack: false,
-      kind: { value: 0x40, string: "variadic" },
+      kind: { value: 0x80, string: "variadic" },
       depth: 0,
       loc: { first_column: 39, last_column: 41 },
       type: { string: "none" }
@@ -3155,7 +3155,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     {
       sname: { string: "fmt", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 33 },
       type: { string: "none" },
@@ -3176,7 +3176,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     {
       sname: null,
       is_param_pack: false,
-      kind: { value: 0x40, string: "variadic" },
+      kind: { value: 0x80, string: "variadic" },
       depth: 0,
       loc: { first_column: 39, last_column: 41 },
       type: { string: "none" }
@@ -3191,7 +3191,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ast: {
       sname: { string: "f", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x40000, string: "function" },
+      kind: { value: 0x80000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 43 },
       type: { string: "none" },
@@ -3212,7 +3212,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
           {
             sname: { string: "fmt", scopes: "none" },
             is_param_pack: false,
-            kind: { value: 0x400, string: "pointer" },
+            kind: { value: 0x800, string: "pointer" },
             depth: 0,
             loc: { first_column: 33 },
             type: { string: "none" },
@@ -3233,7 +3233,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
           {
             sname: null,
             is_param_pack: false,
-            kind: { value: 0x40, string: "variadic" },
+            kind: { value: 0x80, string: "variadic" },
             depth: 0,
             loc: { first_column: 39, last_column: 41 },
             type: { string: "none" }
@@ -3287,7 +3287,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
     ast: {
       sname: { string: "f", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x40000, string: "function" },
+      kind: { value: 0x80000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 43 },
       type: { string: "none" },
@@ -3308,7 +3308,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
           {
             sname: { string: "fmt", scopes: "none" },
             is_param_pack: false,
-            kind: { value: 0x400, string: "pointer" },
+            kind: { value: 0x800, string: "pointer" },
             depth: 0,
             loc: { first_column: 33 },
             type: { string: "none" },
@@ -3329,7 +3329,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
           {
             sname: null,
             is_param_pack: false,
-            kind: { value: 0x40, string: "variadic" },
+            kind: { value: 0x80, string: "variadic" },
             depth: 0,
             loc: { first_column: 39, last_column: 41 },
             type: { string: "none" }
@@ -3363,7 +3363,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
   $$_ast: {
     sname: { string: "f", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x40000, string: "function" },
+    kind: { value: 0x80000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 43 },
     type: { string: "none" },
@@ -3384,7 +3384,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
         {
           sname: { string: "fmt", scopes: "none" },
           is_param_pack: false,
-          kind: { value: 0x400, string: "pointer" },
+          kind: { value: 0x800, string: "pointer" },
           depth: 0,
           loc: { first_column: 33 },
           type: { string: "none" },
@@ -3405,7 +3405,7 @@ cdecl> explain void f(int i, char const *fmt, ... )
         {
           sname: null,
           is_param_pack: false,
-          kind: { value: 0x40, string: "variadic" },
+          kind: { value: 0x80, string: "variadic" },
           depth: 0,
           loc: { first_column: 39, last_column: 41 },
           type: { string: "none" }
@@ -3639,7 +3639,7 @@ cdecl> explain void f(int x[*])
   array_size_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80, string: "array" },
+    kind: { value: 0x100, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 22 },
     type: { string: "none" },
@@ -3652,7 +3652,7 @@ cdecl> explain void f(int x[*])
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 22 },
       type: { string: "none" },
@@ -3696,7 +3696,7 @@ cdecl> explain void f(int x[*])
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 22 },
       type: { string: "none" },
@@ -3720,7 +3720,7 @@ cdecl> explain void f(int x[*])
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x80, string: "array" },
+    kind: { value: 0x100, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 22 },
     type: { string: "none" },
@@ -3749,7 +3749,7 @@ cdecl> explain void f(int x[*])
   param_c_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x80, string: "array" },
+    kind: { value: 0x100, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 22 },
     type: { string: "none" },
@@ -3772,7 +3772,7 @@ cdecl> explain void f(int x[*])
     {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 22 },
       type: { string: "none" },
@@ -3828,7 +3828,7 @@ cdecl> explain void f(int x[*])
     {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 22 },
       type: { string: "none" },
@@ -3857,7 +3857,7 @@ cdecl> explain void f(int x[*])
     ast: {
       sname: { string: "f", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x40000, string: "function" },
+      kind: { value: 0x80000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 23 },
       type: { string: "none" },
@@ -3867,7 +3867,7 @@ cdecl> explain void f(int x[*])
           {
             sname: { string: "x", scopes: "none" },
             is_param_pack: false,
-            kind: { value: 0x80, string: "array" },
+            kind: { value: 0x100, string: "array" },
             depth: 0,
             loc: { first_column: 20, last_column: 22 },
             type: { string: "none" },
@@ -3935,7 +3935,7 @@ cdecl> explain void f(int x[*])
     ast: {
       sname: { string: "f", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x40000, string: "function" },
+      kind: { value: 0x80000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 23 },
       type: { string: "none" },
@@ -3945,7 +3945,7 @@ cdecl> explain void f(int x[*])
           {
             sname: { string: "x", scopes: "none" },
             is_param_pack: false,
-            kind: { value: 0x80, string: "array" },
+            kind: { value: 0x100, string: "array" },
             depth: 0,
             loc: { first_column: 20, last_column: 22 },
             type: { string: "none" },
@@ -3993,7 +3993,7 @@ cdecl> explain void f(int x[*])
   $$_ast: {
     sname: { string: "f", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x40000, string: "function" },
+    kind: { value: 0x80000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 23 },
     type: { string: "none" },
@@ -4003,7 +4003,7 @@ cdecl> explain void f(int x[*])
         {
           sname: { string: "x", scopes: "none" },
           is_param_pack: false,
-          kind: { value: 0x80, string: "array" },
+          kind: { value: 0x100, string: "array" },
           depth: 0,
           loc: { first_column: 20, last_column: 22 },
           type: { string: "none" },
@@ -4251,7 +4251,7 @@ cdecl> explain void f(int x[static 2])
   array_size_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80, string: "array" },
+    kind: { value: 0x100, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 29 },
     type: { stid: 0x0000001000000002, string: "static" },
@@ -4264,7 +4264,7 @@ cdecl> explain void f(int x[static 2])
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 29 },
       type: { stid: 0x0000001000000002, string: "static" },
@@ -4308,7 +4308,7 @@ cdecl> explain void f(int x[static 2])
     ast: {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 29 },
       type: { stid: 0x0000001000000002, string: "static" },
@@ -4332,7 +4332,7 @@ cdecl> explain void f(int x[static 2])
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x80, string: "array" },
+    kind: { value: 0x100, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 29 },
     type: { stid: 0x0000001000000002, string: "static" },
@@ -4361,7 +4361,7 @@ cdecl> explain void f(int x[static 2])
   param_c_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x80, string: "array" },
+    kind: { value: 0x100, string: "array" },
     depth: 0,
     loc: { first_column: 20, last_column: 29 },
     type: { stid: 0x0000001000000002, string: "static" },
@@ -4384,7 +4384,7 @@ cdecl> explain void f(int x[static 2])
     {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 29 },
       type: { stid: 0x0000001000000002, string: "static" },
@@ -4440,7 +4440,7 @@ cdecl> explain void f(int x[static 2])
     {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x80, string: "array" },
+      kind: { value: 0x100, string: "array" },
       depth: 0,
       loc: { first_column: 20, last_column: 29 },
       type: { stid: 0x0000001000000002, string: "static" },
@@ -4469,7 +4469,7 @@ cdecl> explain void f(int x[static 2])
     ast: {
       sname: { string: "f", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x40000, string: "function" },
+      kind: { value: 0x80000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 30 },
       type: { string: "none" },
@@ -4479,7 +4479,7 @@ cdecl> explain void f(int x[static 2])
           {
             sname: { string: "x", scopes: "none" },
             is_param_pack: false,
-            kind: { value: 0x80, string: "array" },
+            kind: { value: 0x100, string: "array" },
             depth: 0,
             loc: { first_column: 20, last_column: 29 },
             type: { stid: 0x0000001000000002, string: "static" },
@@ -4547,7 +4547,7 @@ cdecl> explain void f(int x[static 2])
     ast: {
       sname: { string: "f", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x40000, string: "function" },
+      kind: { value: 0x80000, string: "function" },
       depth: 0,
       loc: { first_column: 13, last_column: 30 },
       type: { string: "none" },
@@ -4557,7 +4557,7 @@ cdecl> explain void f(int x[static 2])
           {
             sname: { string: "x", scopes: "none" },
             is_param_pack: false,
-            kind: { value: 0x80, string: "array" },
+            kind: { value: 0x100, string: "array" },
             depth: 0,
             loc: { first_column: 20, last_column: 29 },
             type: { stid: 0x0000001000000002, string: "static" },
@@ -4605,7 +4605,7 @@ cdecl> explain void f(int x[static 2])
   $$_ast: {
     sname: { string: "f", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x40000, string: "function" },
+    kind: { value: 0x80000, string: "function" },
     depth: 0,
     loc: { first_column: 13, last_column: 30 },
     type: { string: "none" },
@@ -4615,7 +4615,7 @@ cdecl> explain void f(int x[static 2])
         {
           sname: { string: "x", scopes: "none" },
           is_param_pack: false,
-          kind: { value: 0x80, string: "array" },
+          kind: { value: 0x100, string: "array" },
           depth: 0,
           loc: { first_column: 20, last_column: 29 },
           type: { stid: 0x0000001000000002, string: "static" },
@@ -4751,7 +4751,7 @@ cdecl> explain int f(x)
   $$_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x10, string: "name" },
+    kind: { value: 0x20, string: "name" },
     depth: 0,
     loc: { first_column: 14 },
     type: { string: "none" }
@@ -4766,7 +4766,7 @@ cdecl> explain int f(x)
   param_c_ast: {
     sname: { string: "x", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x10, string: "name" },
+    kind: { value: 0x20, string: "name" },
     depth: 0,
     loc: { first_column: 14 },
     type: { string: "none" }
@@ -4775,7 +4775,7 @@ cdecl> explain int f(x)
     {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x10, string: "name" },
+      kind: { value: 0x20, string: "name" },
       depth: 0,
       loc: { first_column: 14 },
       type: { string: "none" }
@@ -4817,7 +4817,7 @@ cdecl> explain int f(x)
     {
       sname: { string: "x", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x10, string: "name" },
+      kind: { value: 0x20, string: "name" },
       depth: 0,
       loc: { first_column: 14 },
       type: { string: "none" }
@@ -4832,7 +4832,7 @@ cdecl> explain int f(x)
     ast: {
       sname: { string: "f", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x40000, string: "function" },
+      kind: { value: 0x80000, string: "function" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { string: "none" },
@@ -4842,7 +4842,7 @@ cdecl> explain int f(x)
           {
             sname: { string: "x", scopes: "none" },
             is_param_pack: false,
-            kind: { value: 0x10, string: "name" },
+            kind: { value: 0x20, string: "name" },
             depth: 0,
             loc: { first_column: 14 },
             type: { string: "none" }
@@ -4896,7 +4896,7 @@ cdecl> explain int f(x)
     ast: {
       sname: { string: "f", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x40000, string: "function" },
+      kind: { value: 0x80000, string: "function" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { string: "none" },
@@ -4906,7 +4906,7 @@ cdecl> explain int f(x)
           {
             sname: { string: "x", scopes: "none" },
             is_param_pack: false,
-            kind: { value: 0x10, string: "name" },
+            kind: { value: 0x20, string: "name" },
             depth: 0,
             loc: { first_column: 14 },
             type: { string: "none" }
@@ -4940,7 +4940,7 @@ cdecl> explain int f(x)
   $$_ast: {
     sname: { string: "f", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x40000, string: "function" },
+    kind: { value: 0x80000, string: "function" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { string: "none" },
@@ -4950,7 +4950,7 @@ cdecl> explain int f(x)
         {
           sname: { string: "x", scopes: "none" },
           is_param_pack: false,
-          kind: { value: 0x10, string: "name" },
+          kind: { value: 0x20, string: "name" },
           depth: 0,
           loc: { first_column: 14 },
           type: { string: "none" }
@@ -5092,7 +5092,7 @@ c++decl> explain bool operator!() const
     ast: {
       sname: null,
       is_param_pack: false,
-      kind: { value: 0x100000, string: "operator" },
+      kind: { value: 0x200000, string: "operator" },
       depth: 0,
       loc: { first_column: 11, last_column: 29 },
       type: { stid: 0x0000000200000002, string: "const" },
@@ -5148,7 +5148,7 @@ c++decl> explain bool operator!() const
     ast: {
       sname: null,
       is_param_pack: false,
-      kind: { value: 0x100000, string: "operator" },
+      kind: { value: 0x200000, string: "operator" },
       depth: 0,
       loc: { first_column: 11, last_column: 29 },
       type: { stid: 0x0000000200000002, string: "const" },
@@ -5184,7 +5184,7 @@ c++decl> explain bool operator!() const
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x100000, string: "operator" },
+    kind: { value: 0x200000, string: "operator" },
     depth: 0,
     loc: { first_column: 11, last_column: 29 },
     type: { stid: 0x0000000200000002, string: "const" },
@@ -5279,7 +5279,7 @@ c++decl> explain int C::*p
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x800, string: "pointer to member" },
+    kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
@@ -5317,7 +5317,7 @@ c++decl> explain int C::*p
   in_attr__type_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x800, string: "pointer to member" },
+    kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
@@ -5341,7 +5341,7 @@ c++decl> explain int C::*p
   $$_ast: {
     sname: { string: "p", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x800, string: "pointer to member" },
+    kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
@@ -5370,7 +5370,7 @@ c++decl> explain int C::*p
   pointer_to_member_type_c_ast: {
     sname: { string: "p", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x800, string: "pointer to member" },
+    kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
     loc: { first_column: 12, last_column: 15 },
     type: { btid: 0x0000000004000001, string: "class" },
@@ -5393,7 +5393,7 @@ c++decl> explain int C::*p
     ast: {
       sname: { string: "p", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x800, string: "pointer to member" },
+      kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
       loc: { first_column: 12, last_column: 15 },
       type: { btid: 0x0000000004000001, string: "class" },
@@ -5418,7 +5418,7 @@ c++decl> explain int C::*p
     ast: {
       sname: { string: "p", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x800, string: "pointer to member" },
+      kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
       loc: { first_column: 12, last_column: 16 },
       type: { btid: 0x0000000004000001, string: "class" },
@@ -5462,7 +5462,7 @@ c++decl> explain int C::*p
     ast: {
       sname: { string: "p", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x800, string: "pointer to member" },
+      kind: { value: 0x1000, string: "pointer to member" },
       depth: 0,
       loc: { first_column: 12, last_column: 16 },
       type: { btid: 0x0000000004000001, string: "class" },
@@ -5486,7 +5486,7 @@ c++decl> explain int C::*p
   $$_ast: {
     sname: { string: "p", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x800, string: "pointer to member" },
+    kind: { value: 0x1000, string: "pointer to member" },
     depth: 0,
     loc: { first_column: 12, last_column: 16 },
     type: { btid: 0x0000000004000001, string: "class" },
@@ -5594,7 +5594,7 @@ c++decl> explain operator bool() const
     ast: {
       sname: null,
       is_param_pack: false,
-      kind: { value: 0x200000, string: "user-defined conversion operator" },
+      kind: { value: 0x400000, string: "user-defined conversion operator" },
       depth: 0,
       loc: { first_column: 6, last_column: 28 },
       type: { stid: 0x0000000200000002, string: "const" },
@@ -5635,7 +5635,7 @@ c++decl> explain operator bool() const
     ast: {
       sname: null,
       is_param_pack: false,
-      kind: { value: 0x200000, string: "user-defined conversion operator" },
+      kind: { value: 0x400000, string: "user-defined conversion operator" },
       depth: 0,
       loc: { first_column: 6, last_column: 28 },
       type: { stid: 0x0000000200000002, string: "const" },
@@ -5787,7 +5787,7 @@ c++decl> explain int operator ""_w(char const *arg)
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
     type: { string: "none" },
@@ -5824,7 +5824,7 @@ c++decl> explain int operator ""_w(char const *arg)
   in_attr__type_c_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
     type: { string: "none" },
@@ -5847,7 +5847,7 @@ c++decl> explain int operator ""_w(char const *arg)
   $$_ast: {
     sname: { string: "arg", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
     type: { string: "none" },
@@ -5875,7 +5875,7 @@ c++decl> explain int operator ""_w(char const *arg)
   pointer_type_c_ast: {
     sname: { string: "arg", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
     type: { string: "none" },
@@ -5897,7 +5897,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ast: {
       sname: { string: "arg", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 37 },
       type: { string: "none" },
@@ -5921,7 +5921,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ast: {
       sname: { string: "arg", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 37 },
       type: { string: "none" },
@@ -5964,7 +5964,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ast: {
       sname: { string: "arg", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 37 },
       type: { string: "none" },
@@ -5987,7 +5987,7 @@ c++decl> explain int operator ""_w(char const *arg)
   $$_ast: {
     sname: { string: "arg", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
     type: { string: "none" },
@@ -6015,7 +6015,7 @@ c++decl> explain int operator ""_w(char const *arg)
   param_c_ast: {
     sname: { string: "arg", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x400, string: "pointer" },
+    kind: { value: 0x800, string: "pointer" },
     depth: 0,
     loc: { first_column: 37 },
     type: { string: "none" },
@@ -6037,7 +6037,7 @@ c++decl> explain int operator ""_w(char const *arg)
     {
       sname: { string: "arg", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 37 },
       type: { string: "none" },
@@ -6080,7 +6080,7 @@ c++decl> explain int operator ""_w(char const *arg)
     {
       sname: { string: "arg", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400, string: "pointer" },
+      kind: { value: 0x800, string: "pointer" },
       depth: 0,
       loc: { first_column: 37 },
       type: { string: "none" },
@@ -6105,7 +6105,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ast: {
       sname: { string: "_w", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400000, string: "user-defined literal" },
+      kind: { value: 0x800000, string: "user-defined literal" },
       depth: 0,
       loc: { first_column: 10, last_column: 41 },
       type: { string: "none" },
@@ -6114,7 +6114,7 @@ c++decl> explain int operator ""_w(char const *arg)
           {
             sname: { string: "arg", scopes: "none" },
             is_param_pack: false,
-            kind: { value: 0x400, string: "pointer" },
+            kind: { value: 0x800, string: "pointer" },
             depth: 0,
             loc: { first_column: 37 },
             type: { string: "none" },
@@ -6181,7 +6181,7 @@ c++decl> explain int operator ""_w(char const *arg)
     ast: {
       sname: { string: "_w", scopes: "none" },
       is_param_pack: false,
-      kind: { value: 0x400000, string: "user-defined literal" },
+      kind: { value: 0x800000, string: "user-defined literal" },
       depth: 0,
       loc: { first_column: 10, last_column: 41 },
       type: { string: "none" },
@@ -6190,7 +6190,7 @@ c++decl> explain int operator ""_w(char const *arg)
           {
             sname: { string: "arg", scopes: "none" },
             is_param_pack: false,
-            kind: { value: 0x400, string: "pointer" },
+            kind: { value: 0x800, string: "pointer" },
             depth: 0,
             loc: { first_column: 37 },
             type: { string: "none" },
@@ -6237,7 +6237,7 @@ c++decl> explain int operator ""_w(char const *arg)
   $$_ast: {
     sname: { string: "_w", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x400000, string: "user-defined literal" },
+    kind: { value: 0x800000, string: "user-defined literal" },
     depth: 0,
     loc: { first_column: 10, last_column: 41 },
     type: { string: "none" },
@@ -6246,7 +6246,7 @@ c++decl> explain int operator ""_w(char const *arg)
         {
           sname: { string: "arg", scopes: "none" },
           is_param_pack: false,
-          kind: { value: 0x400, string: "pointer" },
+          kind: { value: 0x800, string: "pointer" },
           depth: 0,
           loc: { first_column: 37 },
           type: { string: "none" },
@@ -6295,7 +6295,7 @@ c++decl> explain ~C()
   $$_ast: {
     sname: { string: "C", scopes: "none" },
     is_param_pack: false,
-    kind: { value: 0x10000, string: "destructor" },
+    kind: { value: 0x20000, string: "destructor" },
     depth: 0,
     loc: { first_column: 6, last_column: 11 },
     type: { string: "none" }
@@ -6316,7 +6316,7 @@ c++decl> explain []
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 9 },
     type: { string: "none" },
@@ -6517,7 +6517,7 @@ c++decl> explain [](char c)
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 17 },
     type: { string: "none" },
@@ -6597,7 +6597,7 @@ c++decl> explain [x]
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { string: "none" },
@@ -6853,7 +6853,7 @@ c++decl> explain [x](char c)
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 18 },
     type: { string: "none" },
@@ -6945,7 +6945,7 @@ c++decl> explain [=]
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { string: "none" },
@@ -7201,7 +7201,7 @@ c++decl> explain [=](char c)
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 18 },
     type: { string: "none" },
@@ -7293,7 +7293,7 @@ c++decl> explain [&]
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 10 },
     type: { string: "none" },
@@ -7549,7 +7549,7 @@ c++decl> explain [&](char c)
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 18 },
     type: { string: "none" },
@@ -7641,7 +7641,7 @@ c++decl> explain [&x]
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 11 },
     type: { string: "none" },
@@ -7897,7 +7897,7 @@ c++decl> explain [&x](char c)
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 19 },
     type: { string: "none" },
@@ -7989,7 +7989,7 @@ c++decl> explain [this]
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 13 },
     type: { string: "none" },
@@ -8245,7 +8245,7 @@ c++decl> explain [this](char c)
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 21 },
     type: { string: "none" },
@@ -8337,7 +8337,7 @@ c++decl> explain [*this]
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 14 },
     type: { string: "none" },
@@ -8593,7 +8593,7 @@ c++decl> explain [*this](char c)
   $$_ast: {
     sname: null,
     is_param_pack: false,
-    kind: { value: 0x80000, string: "lambda" },
+    kind: { value: 0x100000, string: "lambda" },
     depth: 0,
     loc: { first_column: 8, last_column: 22 },
     type: { string: "none" },

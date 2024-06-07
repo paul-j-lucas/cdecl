@@ -37,6 +37,9 @@ c++decl> typedef auto F()
 c++decl> typedef int F( auto )
                         ^
 16: error: "auto" illegal in type definition
+c++decl> typedef int F( C auto )
+                        ^
+16: error: "concept" illegal in type definition
 c++decl> class C { namespace N { class D; } }
                              ^
 21: error: namespace can not nest inside class

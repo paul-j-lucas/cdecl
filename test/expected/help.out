@@ -936,6 +936,7 @@ command:
 c++decl> help english
 english:
   <store>* <cv-qual>* array [<number>] of <english>
+  <cv-qual>* concept <name> [parameter pack]
   <store>* constructor [([<args>])]
   [virtual] destructor [()]
   <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
@@ -1094,6 +1095,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
   <store>* <cv-qual>* array [<number>] of <english>
+  <cv-qual>* concept <name> [parameter pack]
   <store>* constructor [([<args>])]
   [virtual] destructor [()]
   <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
@@ -1220,6 +1222,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
   <store>* <cv-qual>* array [<number>] of <english>
+  <cv-qual>* concept <name> [parameter pack]
   <store>* constructor [([<args>])]
   [virtual] destructor [()]
   <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
@@ -1361,6 +1364,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
   <store>* <cv-qual>* array [<number>] of <english>
+  <cv-qual>* concept <name> [parameter pack]
   <store>* constructor [([<args>])]
   [virtual] destructor [()]
   <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
@@ -1507,6 +1511,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
   <store>* <cv-qual>* array [<number>] of <english>
+  <cv-qual>* concept <name> [parameter pack]
   <store>* constructor [([<args>])]
   [virtual] destructor [()]
   <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
@@ -1653,6 +1658,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
   <store>* <cv-qual>* array [<number>] of <english>
+  <cv-qual>* concept <name> [parameter pack]
   <store>* constructor [([<args>])]
   [virtual] destructor [()]
   <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
@@ -1800,6 +1806,7 @@ where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
   <store>* <cv-qual>* array [<number>] of <english>
+  <cv-qual>* concept <name> [parameter pack]
   <store>* constructor [([<args>])]
   [virtual] destructor [()]
   <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]

@@ -697,6 +697,10 @@ typedef enum c_tpid c_tpid_t;
 #define TS_ANY_UPC            ( TS_UPC_relaxed | TS_UPC_shared | TS_UPC_strict )
 
 /// @ingroup c-qualifiers-group
+/// The only qualfiers that can apply to concepts.
+#define TS_CONCEPT            TS_CV
+
+/// @ingroup c-qualifiers-group
 /// Shorthand for `const` or `volatile`.
 #define TS_CV                 ( TS_const | TS_volatile )
 

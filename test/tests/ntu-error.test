@@ -20,6 +20,7 @@ typedef auto int SI
 set c++
 typedef auto F()
 typedef int F( auto )
+typedef int F( C auto )
 
 class C { namespace N { class D; } }
 inline namespace A::B { typedef int Int; }

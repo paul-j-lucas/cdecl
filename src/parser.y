@@ -1648,6 +1648,7 @@ static void yyerror( char const *msg ) {
 %token              ';'
 %token              '{' '}'
 %token  <str_val>   Y_CHAR_LIT          // must be free'd
+%token  <sname>     Y_CONCEPT_SNAME
 %token              Y_END
 %token              Y_ERROR
 %token              Y_FLOAT_LIT
@@ -1706,6 +1707,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_list>    capture_decl_list_english capture_decl_list_english_opt
 %type   <ast_list>    capturing_paren_capture_decl_list_english_opt
 %type   <ast>         class_struct_union_english_ast
+%type   <ast>         concept_type_english_ast
 %type   <ast>         constructor_decl_english_ast
 %type   <ast>         decl_english_ast decl_english_ast_exp
 %type   <ast>         destructor_decl_english_ast
@@ -1805,6 +1807,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>         capture_decl_c_ast
 %type   <ast_list>    capture_decl_list_c capture_decl_list_c_opt
 %type   <ast>         class_struct_union_c_ast
+%type   <ast>         concept_type_c_ast
 %type   <ast>         decl_c decl_c_exp
 %type   <ast_pair>    decl_c_astp decl2_c_astp
 %type   <ast_list>    decl_list_c
@@ -6543,6 +6546,7 @@ east_modified_type_c_ast
 east_modifiable_type_c_ast
   : atomic_specifier_type_c_ast
   | builtin_type_c_ast
+  | concept_type_c_ast
   | structured_binding_type_c_ast
   | typedef_type_c_ast
   | typeof_type_c_ast
@@ -6644,6 +6648,24 @@ builtin_no_BitInt_c_btid
   | Y_double
   | Y_EMC__Accum
   | Y_EMC__Fract
+  ;
+
+/// Gibberish C++ concept (constrained) auto types ////////////////////////////
+
+concept_type_c_ast
+  : Y_CONCEPT_SNAME[sname] auto_TYPE_exp
+    {
+      DUMP_START( "concept_type_c_ast", "Y_CONCEPT_SNAME AUTO" );
+      DUMP_SNAME( "Y_CONCEPT_SNAME", $sname );
+
+      c_sname_set_all_types( &$sname, &C_TYPE_LIT_B( TB_namespace ) );
+
+      $$ = c_ast_new_gc( K_CONCEPT, &@sname );
+      $$->concept.concept_sname = c_sname_move( &$sname );
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
+    }
   ;
 
 /// Gibberish C++ structured binding types ////////////////////////////////////
@@ -8145,6 +8167,7 @@ type_modifier_english_type
 unmodified_type_english_ast
   : builtin_type_english_ast
   | class_struct_union_english_ast
+  | concept_type_english_ast
   | enum_english_ast
   | parameter_pack_english_ast
   | typedef_type_c_ast
@@ -8235,6 +8258,37 @@ BitInt_english
   : Y__BitInt
   | Y_bit_precise int_exp
   | Y_bit precise_opt int_exp
+  ;
+
+concept_type_english_ast
+  : Y_concept sname_english_exp[sname]
+    {
+      DUMP_START( "concept_type_english_ast", "CONCEPT sname_english_exp" );
+      DUMP_SNAME( "sname_english_exp", $sname );
+
+      c_sname_set_all_types( &$sname, &C_TYPE_LIT_B( TB_namespace ) );
+
+      $$ = c_ast_new_gc( K_CONCEPT, &@$ );
+      $$->concept.concept_sname = c_sname_move( &$sname );
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
+    }
+
+  | Y_concept sname_english_exp[sname] Y_parameter pack_exp
+    {
+      DUMP_START( "concept_type_english_ast", "CONCEPT sname_english_exp" );
+      DUMP_SNAME( "sname_english_exp", $sname );
+
+      c_sname_set_all_types( &$sname, &C_TYPE_LIT_B( TB_namespace ) );
+
+      $$ = c_ast_new_gc( K_CONCEPT, &@$ );
+      $$->is_param_pack = true;
+      $$->concept.concept_sname = c_sname_move( &$sname );
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
+    }
   ;
 
 parameter_pack_english_ast
@@ -8803,6 +8857,14 @@ as_or_to_opt
   : /* empty */
   | Y_as
   | Y_to
+  ;
+
+auto_TYPE_exp
+  : Y_auto_TYPE
+  | error
+    {
+      keyword_expected( L_auto );
+    }
   ;
 
 binding_exp

@@ -413,11 +413,66 @@ char const* c_sname_scope_name( c_sname_t const *sname ) {
   return sname != NULL ? c_sname_name_impl( &sbuf, sname, sname->tail ) : "";
 }
 
+c_sname_t c_sname_scope_sname( c_sname_t const *sname ) {
+  c_sname_t rv_sname;
+  c_sname_init( &rv_sname );
+
+  if ( sname != NULL ) {
+    FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
+      c_scope_data_t const *const scope_data = c_scope_data( scope );
+      c_sname_append_name( &rv_sname, check_strdup( scope_data->name ) );
+      c_sname_set_local_type( &rv_sname, &scope_data->type );
+    } // for
+  }
+
+  return rv_sname;
+}
+
 void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname ) {
   if ( dst_sname != src_sname ) {
     c_sname_cleanup( dst_sname );
     c_sname_append_sname( dst_sname, src_sname );
   }
+}
+
+void c_sname_set_all_types( c_sname_t *sname, c_type_t const *default_type ) {
+  assert( sname != NULL );
+
+  if ( default_type == NULL )
+    default_type = &C_TYPE_LIT_B( TB_SCOPE );
+
+  FOREACH_SNAME_SCOPE_UNTIL( scope, sname, sname->tail ) {
+    c_type_t *const scope_type = &c_scope_data( scope )->type;
+    //
+    // Temporarily set scope->next to NULL to chop off any scopes past the
+    // current scope to look up a partial sname. For example, given "A::B::C",
+    // see if "A::B" exists.  If it does, copy that sname's scope's type.
+    //
+    c_scope_t *const orig_next = scope->next;
+    scope->next = NULL;
+
+    c_typedef_t const *const tdef = c_typedef_find_sname( sname );
+    if ( tdef != NULL ) {
+      slist_node_t *sname_node = sname->head;
+      FOREACH_SNAME_SCOPE( tdef_scope, &tdef->ast->sname ) {
+        c_scope_data( sname_node )->type = c_scope_data( tdef_scope )->type;
+        sname_node = sname_node->next;
+      } // for
+    }
+    else {
+      *scope_type = *default_type;
+    }
+
+    scope->next = orig_next;
+  } // for
+
+  //
+  // Special case: if the outermost scope's name is "std", make the scope's
+  // type be TB_namespace.
+  //
+  c_scope_data_t *const scope = c_scope_data( sname->head );
+  if ( scope->type.btids == TB_SCOPE && strcmp( scope->name, "std" ) == 0 )
+    scope->type.btids = TB_namespace;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

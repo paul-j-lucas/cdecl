@@ -339,6 +339,7 @@ void c_sname_free( c_sname_t *sname );
  * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name()
+ * @sa c_sname_scope_sname()
  */
 NODISCARD
 char const* c_sname_full_name( c_sname_t const *sname );
@@ -412,6 +413,7 @@ void c_sname_list_cleanup( slist_t *list );
  * @sa c_sname_full_name()
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name()
+ * @sa c_sname_scope_sname()
  */
 NODISCARD
 char const* c_sname_local_name( c_sname_t const *sname );
@@ -495,6 +497,7 @@ c_sname_t c_sname_move( c_sname_t *sname ) {
  * @sa c_sname_full_name()
  * @sa c_sname_local_name()
  * @sa c_sname_scope_name()
+ * @sa c_sname_scope_sname()
  */
 NODISCARD C_SNAME_H_INLINE
 char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
@@ -558,9 +561,28 @@ void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
  * @sa c_sname_full_name()
  * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
+ * @sa c_sname_scope_sname()
  */
 NODISCARD
 char const* c_sname_scope_name( c_sname_t const *sname );
+
+/**
+ * Gets just the scope sname of \a sname.
+ * Examples:
+ *  + For `a::b::c`, returns `a::b`.
+ *  + For `c`, returns an empty scoped name.
+ *
+ * @param sname The scoped name to get the scope name of; may be NULL.
+ * @return Returns said scoped name or an empty scoped name if \a sname is
+ * empty, NULL, or not within a scope.
+ *
+ * @sa c_sname_full_name()
+ * @sa c_sname_local_name()
+ * @sa c_sname_name_atr()
+ * @sa c_sname_scope_name()
+ */
+NODISCARD
+c_sname_t c_sname_scope_sname( c_sname_t const *sname );
 
 /**
  * Gets the scope scope-type of \a sname (which is the type of the next
@@ -595,6 +617,32 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
 void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname );
 
 /**
+ * Sets all the scope-types (except that of the local scope) of \a sname to the
+ * types found in `typedef`'s names.
+ *
+ * For example, given:
+ *
+ *      class C { struct S; };
+ *
+ * and an \a sname of `C::S::x`, set `C`'s scope-type to #TB_class and `S`'s
+ * scope-type to #TB_struct; the scope-type of `x` is not changed.
+ *
+ * If there is no `typedef` for a partial scoped name, then that scope-type is
+ * set to \a default_type.
+ *
+ * As a special case, if the first scope's name is `std`, sets that scope-type
+ * to #TB_namespace.
+ *
+ * @param sname The scoped name to set all the scope-types of.
+ * @param default_type The default type.  If NULL, then the default type is
+ * #TB_SCOPE.
+ *
+ * @sa c_sname_set_first_type()
+ * @sa c_sname_set_local_type()
+ */
+void c_sname_set_all_types( c_sname_t *sname, c_type_t const *default_type );
+
+/**
  * Sets the first scope-type of \a sname (which is the type of the outermost
  * scope).
  *
@@ -602,6 +650,7 @@ void c_sname_set( c_sname_t *dst_sname, c_sname_t *src_sname );
  * @param type The type.
  *
  * @sa c_sname_first_type()
+ * @sa c_sname_set_all_types()
  * @sa c_sname_set_local_type()
  * @sa c_sname_set_scope_type()
  */
@@ -618,6 +667,7 @@ void c_sname_set_first_type( c_sname_t *sname, c_type_t const *type ) {
  * @param type The type.
  *
  * @sa c_sname_local_type()
+ * @sa c_sname_set_all_types()
  * @sa c_sname_set_first_type()
  * @sa c_sname_set_scope_type()
  */

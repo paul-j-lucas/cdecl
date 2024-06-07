@@ -395,6 +395,7 @@ static void print_help_english( void ) {
   }
   else /* C++ */ {
     print_h( "  <store>* <cv-qual>* array [<number>] of <english>\n" );
+    print_h( "  <cv-qual>* concept <name> [parameter pack]\n" );
     print_h( "  <store>* constructor [([<args>])]\n" );
     print_h( "  [virtual] destructor [()]\n" );
     print_h( "  <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]\n" );

@@ -514,6 +514,20 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
         c_ast_bit_width_gibberish( ast, gib );
       break;
 
+    case K_CONCEPT:
+      if ( opt_east_const ) {
+        cv_qual_stids = type.stids & TS_CV;
+        type.stids &= c_tid_compl( TS_CV );
+      }
+      fputs_sp( c_type_name_c( &type ), gib->fout );
+      FPRINTF( gib->fout,
+        "%s %s",
+        c_sname_full_name( &ast->concept.concept_sname ), L_auto
+      );
+      fputsp_s( c_tid_name_c( cv_qual_stids ), gib->fout );
+      c_ast_space_name_gibberish( ast, gib );
+      break;
+
     case K_LAMBDA:
       FPUTS( other_token_c( "[" ), gib->fout );
       c_ast_list_gibberish( &ast->lambda.capture_ast_list, gib );
@@ -807,6 +821,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       case K_BUILTIN:
       case K_CAPTURE:
       case K_CAST:
+      case K_CONCEPT:
       case K_ENUM:
       case K_NAME:
       case K_PLACEHOLDER:
@@ -852,6 +867,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_CAPTURE:
     case K_CAST:
     case K_CLASS_STRUCT_UNION:
+    case K_CONCEPT:
     case K_ENUM:
     case K_LAMBDA:                      // handled in c_ast_gibberish_impl()
     case K_NAME:
@@ -1058,6 +1074,7 @@ static void c_ast_space_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_ARRAY:
     case K_BUILTIN:
     case K_CLASS_STRUCT_UNION:
+    case K_CONCEPT:
     case K_ENUM:
     case K_FUNCTION:
     case K_NAME:

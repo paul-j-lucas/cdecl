@@ -275,6 +275,12 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
       json_object_end( kind_json, dump );
       break;
 
+    case K_CONCEPT:
+      kind_json = json_object_begin( JSON_INIT, "concept", dump );
+      DUMP_SNAME( dump, "concept_sname", &ast->concept.concept_sname );
+      json_object_end( kind_json, dump );
+      break;
+
     case K_OPERATOR:
       kind_json = json_object_begin( JSON_INIT, "oper", dump );
       DUMP_KEY( dump,

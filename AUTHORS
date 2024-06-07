@@ -108,7 +108,8 @@ Paul J. Lucas <paul@lucasmail.org>
 	added --echo-commands and -O command-line options and echo-commands
 		set option
 	added "include" command
-	added abbreviated function template and parameter pack declarations
+	added abbreviated function template, constrained auto, and parameter
+		pack declarations
 	added structured binding declarations
 	added "using" declarations
 	made "returning" optional in all cases where it is actually optional

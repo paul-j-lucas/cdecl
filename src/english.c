@@ -381,6 +381,14 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       c_sname_english( &ast->csu.csu_sname, eng->fout );
       break;
 
+    case K_CONCEPT:
+      fputs_sp( c_type_name_english( &ast->type ), eng->fout );
+      FPRINTF( eng->fout, "%s ", L_concept );
+      c_sname_english( &ast->concept.concept_sname, eng->fout );
+      if ( c_ast_root( CONST_CAST( c_ast_t*, ast ) )->is_param_pack )
+        FPUTS( " parameter pack", eng->fout );
+      break;
+
     case K_ENUM:
       FPRINTF( eng->fout, "%s ", c_type_name_english( &ast->type ) );
       c_sname_english( &ast->enum_.enum_sname, eng->fout );
@@ -541,6 +549,7 @@ void c_ast_english( c_ast_t const *ast, unsigned eng_flags, FILE *fout ) {
       case K_ARRAY:
       case K_BUILTIN:
       case K_CLASS_STRUCT_UNION:
+      case K_CONCEPT:
       case K_CONSTRUCTOR:
       case K_DESTRUCTOR:
       case K_ENUM:

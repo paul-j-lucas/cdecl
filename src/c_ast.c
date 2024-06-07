@@ -90,6 +90,12 @@ static_assert(
 );
 
 static_assert(
+  offsetof( c_concept_ast_t, concept_sname ) ==
+  offsetof( c_csu_ast_t, csu_sname ),
+  "offsetof concept_sname != offsetof csu_sname"
+);
+
+static_assert(
   offsetof( c_csu_ast_t, csu_sname ) ==
   offsetof( c_enum_ast_t, enum_sname ),
   "offsetof csu_sname != offsetof enum_sname"
@@ -273,6 +279,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
       // of_ast duplicated by referrer code below
       FALLTHROUGH;
     case K_CLASS_STRUCT_UNION:
+    case K_CONCEPT:
     case K_POINTER_TO_MEMBER:
       dup_ast->csu.csu_sname = c_sname_dup( &ast->csu.csu_sname );
       break;
@@ -412,6 +419,7 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
         return false;
       FALLTHROUGH;
     case K_CLASS_STRUCT_UNION:
+    case K_CONCEPT:
     case K_POINTER_TO_MEMBER:
       if ( c_sname_cmp( &i_ast->csu.csu_sname, &j_ast->csu.csu_sname ) != 0 )
         return false;
@@ -469,6 +477,7 @@ void c_ast_free( c_ast_t *ast ) {
         c_ast_list_cleanup( &ast->func.param_ast_list );
         break;
       case K_CLASS_STRUCT_UNION:
+      case K_CONCEPT:
       case K_ENUM:
       case K_POINTER_TO_MEMBER:
         c_sname_cleanup( &ast->csu.csu_sname );

@@ -279,6 +279,20 @@ struct c_cast_ast {
 };
 
 /**
+ * AST node for a #K_CONCEPT.
+ */
+struct c_concept_ast {
+  /// @cond DOXYGEN_IGNORE
+  /// Concepts have neither an "of" type nor a bit width, but concept_sname
+  /// needs to be at the same offset as csu_sname, class_sname, and enum_sname.
+  DECL_UNUSED(c_ast_t*);
+  DECL_UNUSED(unsigned);
+  /// @endcond
+
+  c_sname_t   concept_sname;            ///< Concept name.
+};
+
+/**
  * AST node for a #K_CONSTRUCTOR.
  *
  * @note Members are laid out in the same order as c_function_ast: this is
@@ -303,8 +317,8 @@ struct c_constructor_ast {
 struct c_csu_ast {
   /// @cond DOXYGEN_IGNORE
   /// Class, struct, and union types have neither an "of" type nor a bit width,
-  /// but csu_sname needs to be at the same offset as enum_sname and
-  /// class_sname.
+  /// but csu_sname needs to be at the same offset as class_sname,
+  /// concept_sname, and enum_sname.
   DECL_UNUSED(c_ast_t*);
   DECL_UNUSED(unsigned);
   /// @endcond
@@ -392,7 +406,8 @@ struct c_ptr_mbr_ast {
   c_ast_t    *to_ast;                   ///< Member type.
 
   /// @cond DOXYGEN_IGNORE
-  /// So class_sname is at the same offset as in c_csu_ast and c_enum_ast.
+  /// So class_sname is at the same offset as in c_concept_ast, c_csu_ast, and
+  /// c_enum_ast.
   DECL_UNUSED(unsigned);
   /// @endcond
 
@@ -501,6 +516,7 @@ struct c_ast {
     c_capture_ast_t     capture;    ///< #K_CAPTURE members.
     c_cast_ast_t        cast;       ///< #K_CAST members.
     c_csu_ast_t         csu;        ///< #K_CLASS_STRUCT_UNION members.
+    c_concept_ast_t     concept;    ///< #K_CONCEPT members.
     c_constructor_ast_t ctor;       ///< #K_CONSTRUCTOR members.
                     // nothing needed for K_DESTRUCTOR
     c_enum_ast_t        enum_;      ///< #K_ENUM members.

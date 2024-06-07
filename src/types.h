@@ -247,6 +247,7 @@ typedef struct c_capture_ast      c_capture_ast_t;
 typedef enum   c_capture_kind     c_capture_kind_t;
 typedef struct c_cast_ast         c_cast_ast_t;
 typedef enum   c_cast_kind        c_cast_kind_t;
+typedef struct c_concept_ast      c_concept_ast_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_csu_ast          c_csu_ast_t;
 typedef struct c_enum_ast         c_enum_ast_t;

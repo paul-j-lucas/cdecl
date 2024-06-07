@@ -165,7 +165,8 @@
  * This code is inserted by Flex at the beginning of each rule to set the
  * current token location information.
  */
-#define YY_USER_ACTION            lexer_update_loc(); /* must include ';' */
+#define YY_USER_ACTION \
+  BLOCK( is_constrained_auto = false; lexer_update_loc(); );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -219,6 +220,7 @@ static slist_t      include_stack;      ///< Stack of include paths.
 static char        *input_buf;          ///< Entire current input line.
 static size_t       input_len;          ///< Length of `input_buf`.
 static size_t       input_sent;         ///< How many bytes returned to Flex.
+static bool         is_constrained_auto;///< _Identifier_ followed by `auto`?
 static bool         is_eof;             ///< Encountered EOF?
 static bool         is_func_like_macro; ///< Defining a function-like macro?
 static c_loc_num_t  newline_column;     ///< Column position of newline.
@@ -894,6 +896,35 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
               }
 
               /*
+               * Special case: handle concept (constrained) "auto" for an
+               * {sname}, e.g.:
+               *
+               *      std::integral auto x
+               *
+               * in the lexer so:
+               *
+               * 1. Conflicts don't arrise in the grammar since you can't tell
+               *    an {sname} is a concept until you parse the "auto".
+               *
+               * 2. Concepts don't have to be pre-declared via a pseudo-C++
+               *    syntax like:
+               *
+               *          namespace std { concept integral; }
+               *
+               *    prior to use.
+               */
+{sname}/{S}+auto{NI} {
+                SET_TOKEN;
+
+                c_sname_t sname;
+                size_t const sname_len = c_sname_parse( lexer_token, &sname );
+                if ( sname_len == 0 )
+                  CDECL_REJECT;
+                yylval.sname = sname;
+                return Y_CONCEPT_SNAME;
+              }
+
+              /*
                * Special case: handle scoped names in the lexer so:
                *
                * 1. Constructors are recognized as such, specifically, when the
@@ -1002,6 +1033,24 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   /*  IDENTIFIERS                                                            */
   /***************************************************************************/
 
+              /*
+               * Special case: similar to the special case for {sname} auto,
+               * handle concept (constrained) auto for an {identifier}, e.g.:
+               *
+               *      C auto x
+               *
+               * where "C" is a concept.
+               */
+{identifier}/{S}+auto{NI} {
+                SET_TOKEN;
+                is_constrained_auto = true;
+                //
+                // Now that we've set the flag, use the same keyword-matching
+                // code.
+                //
+                goto find_cdecl_keyword;
+              }
+
 {identifier}  {
                 SET_TOKEN;
 
@@ -1072,8 +1121,18 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   }
                 }
 
+                if ( is_constrained_auto ) {
+                  //
+                  // 4. If it's constrained auto, it's a concept name.
+                  //
+                  c_sname_init_name(
+                    &yylval.sname, check_strdup( lexer_token )
+                  );
+                  return Y_CONCEPT_SNAME;
+                }
+
                 //
-                // 4. Otherwise, it's just an ordinary name.
+                // 5. Otherwise, it's just an ordinary name.
                 //
                 yylval.name = check_strdup( lexer_token );
                 return Y_NAME;
@@ -1752,6 +1811,7 @@ void lexer_reset( bool hard_reset ) {
   BEGIN( INITIAL );
   digraph_warned = trigraph_warned = false;
   input_len = input_sent = 0;
+  is_constrained_auto = false;
   is_func_like_macro = false;
   lexer_find = LEXER_FIND_ANY;
   lexer_is_param_list_decl = false;

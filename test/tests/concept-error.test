@@ -1,0 +1,12 @@
+EXPECTED_EXIT=65
+cdecl -bE -xc++ <<END
+
+explain static C auto x
+
+struct S
+explain S::C auto x
+
+namespace N { struct NS; }
+explain N::NS::C auto x
+
+END

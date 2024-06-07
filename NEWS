@@ -22,6 +22,15 @@ for parameter packs like:
 
     int f( auto ...x )
 
+** Constrained `auto`
+For abbreviated function templates, _constrained_ `auto` declarations are now
+supported:
+
+    c++decl> explain C auto x
+    declare x as concept C
+    c++decl> explain C auto ...x
+    declare x as concept C parameter pack
+
 ** `auto` parameters in `typedef`s
 Use of `auto` in `typedef` function-like parameters is now correctly reported
 as an error:

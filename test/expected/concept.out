@@ -1,0 +1,52 @@
+c++decl> declare x as concept C
+C auto x;
+c++decl> declare x as const concept C
+const C auto x;
+c++decl> declare x as reference to concept C
+C auto &x;
+c++decl> declare x as reference to const concept C
+const C auto &x;
+c++decl> declare x as concept C parameter pack
+C auto ...x;
+c++decl> declare x as const concept C parameter pack
+const C auto ...x;
+c++decl> declare x as reference to concept C parameter pack
+C auto &...x;
+c++decl> declare x as reference to const concept C parameter pack
+const C auto &...x;
+c++decl> declare x as concept std::integral
+std::integral auto x;
+c++decl> declare x as concept integral of namespace std
+std::integral auto x;
+c++decl> declare x as maybe unused concept C
+[[maybe_unused]] C auto x;
+c++decl> set east-const
+c++decl> declare x as const concept C
+C auto const x;
+c++decl> set noeast-const
+c++decl> set west-decl=t
+c++decl> declare x as reference to concept C
+C auto& x;
+c++decl> declare x as reference to const concept C
+const C auto& x;
+c++decl> set west-decl=r
+c++decl> explain C auto x
+declare x as concept C
+c++decl> explain const C auto x
+declare x as constant concept C
+c++decl> explain C auto const x
+declare x as constant concept C
+c++decl> explain C auto ...x
+declare x as concept C parameter pack
+c++decl> explain const C auto ...x
+declare x as constant concept C parameter pack
+c++decl> explain C auto const ...x
+declare x as constant concept C parameter pack
+c++decl> explain C auto &...x
+declare x as reference to concept C parameter pack
+c++decl> explain const C auto &...x
+declare x as reference to constant concept C parameter pack
+c++decl> explain C auto const &...x
+declare x as reference to constant concept C parameter pack
+c++decl> explain std::integral auto x
+declare x as concept integral of namespace std

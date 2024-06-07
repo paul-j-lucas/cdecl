@@ -51,6 +51,7 @@ char const* c_kind_name( c_ast_kind_t kind ) {
     case K_BUILTIN            : return "built-in type";
     case K_CAPTURE            : return "capture";
     case K_CAST               : return "cast";
+    case K_CONCEPT            : return "concept";
     case K_CONSTRUCTOR        : return "constructor";
     case K_DESTRUCTOR         : return "destructor";
     case K_ENUM               : return "enumeration";
