@@ -1,5 +1,12 @@
 2024-06-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * AUTHORS, share/man/man1/cdecl.1, c_ast.c, c_ast.h, c_ast_check.c,
+     c_ast_util.c, c_kind.c, c_kind.h, c_sname.c, c_sname.h, c_type.h, dump.c,
+     english.c, gibberish.c, help.c, lexer.l, parser.y, types.h,
+     test/Makefile.am, concept-error.out, concept.out, debug.out, help.out,
+     ntu-error.out, concept-error.test, concept.test, ntu-error.test: Added
+     support for constrained via concepts auto abbreviated function template
+     parameters.
    * c_ast_check.c, c_ast_check.h, parser.y, ntu-error.out, ntu-error.test: Use
      of `auto` in `typedef` function-like parameters is now correctly reported
      as an error.
