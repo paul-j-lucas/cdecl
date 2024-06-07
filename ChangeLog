@@ -1,5 +1,6 @@
 2024-06-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c: Put additional check for == K_BUILTIN.
    * options.c: Added missing 's'.
    * lexer.l, explain_operator-error.out, explain_operator-error.test: Fixed
      `operator` declaration core dump, e.g. `explain bool int::operator!()`.
