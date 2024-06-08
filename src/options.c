@@ -70,6 +70,15 @@ c_ast_kind_t        opt_west_decl_kinds = K_ANY_FUNCTION_RETURN;
 
 /// @endcond
 
+/// What `*` expands into for `set debug=*`.
+static char const DEBUG_ALL[]     = "u";
+
+/// What `*` expands into for `set escu=*`.
+static char const ECSU_ALL[]      = "ecsu";
+
+/// What `*` expands into for `set west-decl=*`.
+static char const WEST_DECL_ALL[] = "bflost";
+
 /**
  * The integer type(s) that `int` shall be printed explicitly for in C/C++
  * declarations even when not needed because the type(s) contain at least one
@@ -124,7 +133,7 @@ bool any_explicit_int( void ) {
 }
 
 char const* cdecl_debug_str( void ) {
-  static char buf[ ARRAY_SIZE( "u" ) ];
+  static char buf[ ARRAY_SIZE( DEBUG_ALL ) ];
   char *s = buf;
 
   if ( (opt_cdecl_debug & CDECL_DEBUG_OPT_AST_UNIQUE_ID) != 0 )
@@ -136,7 +145,7 @@ char const* cdecl_debug_str( void ) {
 }
 
 char const* explicit_ecsu_str( void ) {
-  static char buf[ ARRAY_SIZE( "ecsu" ) ];
+  static char buf[ ARRAY_SIZE( ECSU_ALL ) ];
   char *s = buf;
 
   if ( (opt_explicit_ecsu_btids & TB_enum) != TB_NONE )
@@ -218,7 +227,7 @@ bool parse_cdecl_debug( char const *debug_format ) {
     return true;
   }
 
-  set_all_or_none( &debug_format, "u" );
+  set_all_or_none( &debug_format, DEBUG_ALL );
   cdecl_debug_t cdecl_debug = CDECL_DEBUG_YES;
 
   for ( char const *s = debug_format; *s != '\0'; ++s ) {
@@ -236,7 +245,7 @@ bool parse_cdecl_debug( char const *debug_format ) {
 }
 
 bool parse_explicit_ecsu( char const *ecsu_format ) {
-  set_all_or_none( &ecsu_format, "ecsu" );
+  set_all_or_none( &ecsu_format, ECSU_ALL );
   c_tid_t btids = TB_NONE;
 
   for ( char const *s = ecsu_format; *s != '\0'; ++s ) {
@@ -314,7 +323,7 @@ bool parse_explicit_int( char const *ei_format ) {
 }
 
 bool parse_west_decl( char const *wd_format ) {
-  set_all_or_none( &wd_format, "rt" );
+  set_all_or_none( &wd_format, WEST_DECL_ALL );
   unsigned kinds = 0;
 
   for ( char const *s = wd_format; *s != '\0'; ++s ) {
@@ -350,7 +359,7 @@ bool parse_west_decl( char const *wd_format ) {
 }
 
 char const* west_decl_str( void ) {
-  static char buf[ ARRAY_SIZE( "bflost" ) ];
+  static char buf[ ARRAY_SIZE( WEST_DECL_ALL ) ];
   char *s = buf;
 
   if ( (opt_west_decl_kinds & K_APPLE_BLOCK) != 0 )
