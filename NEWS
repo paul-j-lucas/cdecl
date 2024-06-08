@@ -50,6 +50,11 @@ as an error:
 ** `decltype` declarations
 Now recognizing `decltype` just to say it's not supported.
 
+** GNU `--version`
+Now printing **cdecl** copyright year, author, license, free software
+statement, and no warranty statement to conform to the GNU Coding Standards;
+see <https://www.gnu.org/prep/standards/html_node/_002d_002dversion.html>.
+
 ** Structured binding declarations
 Structured binding declarations are now supported except that you don't assign
 them from anything (no `=` _expression_):

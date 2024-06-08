@@ -809,11 +809,17 @@ static void print_usage( int status ) {
  * whether GNU **readline**(3) is genuine.
  */
 static void print_version( bool verbose ) {
-  puts( PACKAGE_STRING );
+  PUTS(
+    PACKAGE_STRING "\n"
+    "Copyright (C) " CDECL_COPYRIGHT_YEAR " " CDECL_PRIMARY_AUTHOR "\n"
+    "License " CDECL_LICENSE " <" CDECL_LICENSE_URL ">.\n"
+    "This is free software: you are free to change and redistribute it.\n"
+    "There is NO WARRANTY to the extent permitted by law.\n"
+  );
   if ( !verbose )
     return;
 
-  PUTS( "configure feature & package options:" );
+  PUTS( "\nconfigure feature & package options:" );
   bool printed_opt = false;
 #ifdef ENABLE_ASAN
   PUT_CONFIG_OPT( "enable-asan" );

@@ -58,6 +58,30 @@
 #define CDECL                     PACKAGE
 
 /**
+ * **cdecl** latest copyright year.
+ */
+#define CDECL_COPYRIGHT_YEAR      "2024"
+
+/**
+ * **cdecl** license.
+ *
+ * @sa #CDECL_LICENSE_URL
+ */
+#define CDECL_LICENSE             "GPLv3+: GNU GPL version 3 or later"
+
+/**
+ * **cdecl** license URL.
+ *
+ * @sa #CDECL_LICENSE
+ */
+#define CDECL_LICENSE_URL         "https://gnu.org/licenses/gpl.html"
+
+/**
+ * **cdecl** primary author.
+ */
+#define CDECL_PRIMARY_AUTHOR      "Paul J. Lucas"
+
+/**
  * Program name when composing or deciphering C++.
  *
  * @sa #CDECL
