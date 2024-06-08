@@ -628,7 +628,6 @@ static void print_help_where( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-
 bool print_help( char const *what, c_loc_t const *what_loc ) {
   assert( what_loc != NULL );
 
