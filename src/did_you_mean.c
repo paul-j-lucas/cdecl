@@ -35,6 +35,7 @@
 #include "cdecl_keyword.h"
 #include "cli_options.h"
 #include "dam_lev.h"
+#include "help.h"
 #include "lexer.h"
 #include "p_macro.h"
 #include "set_options.h"
@@ -172,6 +173,28 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
       ++count;
     else
       (*pdym)++->literal = check_strdup( opt->name );
+  } // for
+  return count;
+}
+
+/**
+ * Copies **cdecl** `help` options to the candidate list pointed to by \a pdym;
+ * if \a pdym is NULL, only counts the number of options.
+ *
+ * @param pdym A pointer to the current \ref did_you_mean pointer or NULL to
+ * just count options, not copy.  If not NULL, on return, the pointed-to
+ * pointer is incremented.
+ * @return If \a pdym is NULL, returns said number of options; otherwise the
+ * return value is unspecified.
+ */
+PJL_DISCARD
+static size_t copy_help_options( did_you_mean_t **const pdym ) {
+  size_t count = 0;
+  FOREACH_HELP_OPTION( opt ) {
+    if ( pdym == NULL )
+      ++count;
+    else
+      (*pdym)++->literal = check_strdup( *opt );
   } // for
   return count;
 }
@@ -341,6 +364,9 @@ static size_t dym_copy( dym_kind_t kinds, did_you_mean_t **pdym ) {
 
         + ((kinds & DYM_CLI_OPTIONS) != DYM_NONE ?
             copy_cli_options( pdym ) : 0)
+
+        + ((kinds & DYM_HELP_OPTIONS) != DYM_NONE ?
+            copy_help_options( pdym ) : 0)
 
         + ((kinds & DYM_SET_OPTIONS) != DYM_NONE ?
             copy_set_options( pdym ) : 0)

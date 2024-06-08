@@ -39,7 +39,32 @@
  * @{
  */
 
+/**
+ * Convenience macro for iterating over all **cdecl** `help` options.
+ *
+ * @param VAR The `char const *const*`  loop variable.
+ *
+ * @sa help_option_next()
+ */
+#define FOREACH_HELP_OPTION(VAR) \
+  for ( char const *const *VAR = NULL; (VAR = help_option_next( VAR )) != NULL; )
+
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Iterates to the next **cdecl** `help` option.
+ *
+ * @param opt A pointer to the current option. For the first iteration, NULL
+ * should be passed.
+ * @return Returns the next **cdecl** `help` option or NULL for none.
+ *
+ * @note This function isn't normally called directly; use the
+ * #FOREACH_HELP_OPTION() macro instead.
+ *
+ * @sa #FOREACH_HELP_OPTION()
+ */
+NODISCARD
+char const* const* help_option_next( char const *const *opt );
 
 /**
  * Prints **cdecl** help.

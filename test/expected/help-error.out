@@ -1,6 +1,6 @@
 cdecl> help foo
             ^
-6: error: "foo": no such command
+6: error: "foo": no such command or option
 cdecl> help class
             ^
 6: error: "class": not supported in C

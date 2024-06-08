@@ -30,6 +30,7 @@
 #include "c_lang.h"
 #include "cdecl_command.h"
 #include "cdecl_keyword.h"
+#include "help.h"
 #include "literals.h"
 #include "options.h"
 #include "set_options.h"
@@ -138,14 +139,11 @@ cdecl_command_t const* ac_cdecl_command_next( cdecl_command_t const *command ) {
  */
 NODISCARD
 static char const* const* ac_help_keywords_new( void ) {
-  static char const *const AC_HELP_KEYWORDS_INIT[] = {
-    L_commands,
-    L_english,
-    L_options
-  };
+  size_t n = 0;
 
   // pre-flight to calculate array size
-  size_t n = ARRAY_SIZE( AC_HELP_KEYWORDS_INIT );
+  FOREACH_HELP_OPTION( opt )
+    ++n;
   FOREACH_CDECL_COMMAND( command )
     ++n;
 
@@ -153,8 +151,8 @@ static char const* const* ac_help_keywords_new( void ) {
     free_later( MALLOC( char*, n + 1/*NULL*/ ) );
   char const **pk = ac_help_keywords;
 
-  FOREACH_ARRAY_ELEMENT( char const*, hk, AC_HELP_KEYWORDS_INIT )
-    *pk++ = *hk;
+  FOREACH_HELP_OPTION( opt )
+    *pk++ = *opt;
   FOREACH_CDECL_COMMAND( command )
     *pk++ = command->literal;
 

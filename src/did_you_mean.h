@@ -61,12 +61,13 @@ enum dym_kind {
   DYM_NONE            = 0,              ///< Did you mean nothing.
   DYM_COMMANDS        = 1 << 0,         ///< Did you mean **cdecl** _command_?
   DYM_CLI_OPTIONS     = 1 << 1,         ///< Did you mean _CLI option_?
-  DYM_SET_OPTIONS     = 1 << 2,         ///< Did you mean _set option_?
-  DYM_C_ATTRIBUTES    = 1 << 3,         ///< Did you mean C/C++ _attribute_?
-  DYM_C_KEYWORDS      = 1 << 4,         ///< Did you mean C/C++ _keyword_?
-  DYM_C_MACROS        = 1 << 5,         ///< Did you mean C/C++ _macro_?
-  DYM_C_TYPES         = 1 << 6,         ///< Did you mean C/C++ _type_?
-  DYM_CDECL_KEYWORDS  = 1 << 7,         ///< Did you mean **cdecl** _keyword_?
+  DYM_HELP_OPTIONS    = 1 << 2,         ///< Did you mean `help` _option_?
+  DYM_SET_OPTIONS     = 1 << 3,         ///< Did you mean _set option_?
+  DYM_C_ATTRIBUTES    = 1 << 4,         ///< Did you mean C/C++ _attribute_?
+  DYM_C_KEYWORDS      = 1 << 5,         ///< Did you mean C/C++ _keyword_?
+  DYM_C_MACROS        = 1 << 6,         ///< Did you mean C/C++ _macro_?
+  DYM_C_TYPES         = 1 << 7,         ///< Did you mean C/C++ _type_?
+  DYM_CDECL_KEYWORDS  = 1 << 8,         ///< Did you mean **cdecl** _keyword_?
 };
 typedef enum dym_kind dym_kind_t;
 

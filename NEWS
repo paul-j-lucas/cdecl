@@ -22,6 +22,14 @@ for parameter packs like:
 
     int f( auto ...x )
 
+** Added `help` option suggestions
+Added suggestions to error messages for the help options `commands`, `english`,
+and `options`, for example:
+
+    cdecl> help eglish
+                ^
+    6: "eglish": no such command or option; did you mean "english"?
+
 ** Constrained `auto`
 For abbreviated function templates, _constrained_ `auto` declarations are now
 supported:
