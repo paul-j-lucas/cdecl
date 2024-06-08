@@ -590,7 +590,7 @@ static void print_help_name_number( void ) {
 /**
  * Prints help for `set` options.
  */
-static void print_help_options( void ) {
+static void print_help_set_options( void ) {
   print_h( "option:\n" );
   print_h( "  [no]alt-tokens\n" );
 #ifdef ENABLE_BISON_DEBUG
@@ -645,7 +645,7 @@ bool print_help( char const *what, c_loc_t const *what_loc ) {
   }
 
   if ( strcmp( mapped_what, L_options ) == 0 ) {
-    print_help_options();
+    print_help_set_options();
     return true;
   }
 
