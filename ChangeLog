@@ -1,5 +1,8 @@
 2024-06-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.h, cli_options.c: Now conforming to the GNU Coding Standards for
+     `--version`.
+   * cli_options.c: s/fputs()/PUTS()/
    * autocomplete.c, did_you_mean.c, did_you_mean.h, help.c, help.h,
      help-error.out: Added suggestions to error messages for the help options.
    * options.c: Added *_ALL constants.
