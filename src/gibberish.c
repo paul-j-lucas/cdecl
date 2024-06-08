@@ -1175,11 +1175,13 @@ static void c_struct_bind_ast_gibberish( c_ast_t const *ast,
 
   if ( ref_qual_stid == TS_NONE ) {
     FPUTC( ' ', gib->fout );
-  } else if ( opt_alt_tokens ) {
+  }
+  else if ( opt_alt_tokens ) {
     FPRINTF( gib->fout,
       " %s ", ref_qual_stid == TS_REFERENCE ? L_bitand : L_and
     );
-  } else {
+  }
+  else {
     if ( (opt_west_decl_kinds & K_STRUCTURED_BINDING) == 0 )
       FPUTC( ' ', gib->fout );
     FPUTS( ref_qual_stid == TS_REFERENCE ? "&" : "&&", gib->fout );
