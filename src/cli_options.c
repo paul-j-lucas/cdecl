@@ -812,7 +812,8 @@ static void print_version( bool verbose ) {
   puts( PACKAGE_STRING );
   if ( !verbose )
     return;
-  fputs( "configure feature & package options:", stdout );
+
+  PUTS( "configure feature & package options:" );
   bool printed_opt = false;
 #ifdef ENABLE_ASAN
   PUT_CONFIG_OPT( "enable-asan" );
@@ -842,7 +843,7 @@ static void print_version( bool verbose ) {
   PUT_CONFIG_OPT( "enable-ubsan" );
 #endif /* ENABLE_UBSAN */
   if ( !printed_opt )
-    fputs( " none", stdout );
+    PUTS( " none" );
   putchar( '\n' );
 #ifdef WITH_READLINE
   printf( "genuine GNU readline(3): %s\n", HAVE_GENUINE_GNU_READLINE ? "yes" : "no" );
