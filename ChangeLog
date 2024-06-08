@@ -1,5 +1,8 @@
 2024-06-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.c, did_you_mean.c, did_you_mean.h, help.c, help.h,
+     help-error.out: Added suggestions to error messages for the help options.
+   * options.c: Added *_ALL constants.
    * help.c: s/print_help_options()/print_help_set_options()/
 
 2024-06-07  Paul J. Lucas <paul@lucasmail.org>
