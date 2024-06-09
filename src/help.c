@@ -49,7 +49,7 @@
 
 // local functions
 static void print_help_name_number( void );
-static void print_help_scope( void );
+static void print_help_scopes( void );
 static void print_help_where( void );
 
 /**
@@ -376,11 +376,11 @@ static void print_help_command( cdecl_command_t const *command ) {
   if ( command_is_any( command, L_PRE_P_define, L_expand, NULL ) )
     print_h( "pp-token: a preprocessor token\n" );
 
-  if ( command == NULL && OPT_LANG_IS( SCOPED_NAMES ) )
-    print_help_scope();
-
-  if ( command == NULL )
+  if ( command == NULL ) {
+    if ( OPT_LANG_IS( SCOPED_NAMES ) )
+      print_help_scopes();
     print_help_where();
+  }
 }
 
 /**
@@ -556,7 +556,7 @@ static void print_help_english( void ) {
 
     print_h( "modifier: short | long | signed | unsigned | <cv-qual>\n" );
     print_help_name_number();
-    print_help_scope();
+    print_help_scopes();
 
     print_h( "store:" );
     if ( OPT_LANG_IS( auto_STORAGE ) )
@@ -598,7 +598,7 @@ static void print_help_name_number( void ) {
 /**
  * Prints help for **cdecl** scoped names.
  */
-static void print_help_scope( void ) {
+static void print_help_scopes( void ) {
   assert( OPT_LANG_IS( SCOPED_NAMES ) );
 
   print_h( "scope-c: class | struct | union |" );
