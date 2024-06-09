@@ -1,6 +1,6 @@
 ##
 #       cdecl -- C gibberish translator
-#       etc/bash_completion/completions/_cdecl
+#       share/bash_completion/completions/_cdecl
 #
 #       Copyright (C) 2024  Paul J. Lucas
 #
