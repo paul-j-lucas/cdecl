@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 7, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 9, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1291,12 +1291,13 @@ For C,
 a
 .IR name ;
 or for C++,
-a scoped name using \f(CW::\fP,
-that may contain one or more \f(CW*\fP,
+a scoped name
+that may contain \f(CW::\fP.
+Either may contain \f(CW*\fP as a wildcard,
 e.g.,
-\f(CWx*\fP (any type name starting with \f(CWx\fP),
-\f(CW*::x*\fP (any type name starting with \f(CWx\fP in any top-level scope).
-As a special case,
+\f(CWT*\fP (any type name starting with \f(CWT\fP),
+\f(CW*::T*\fP (any type name starting with \f(CWT\fP in any top-level scope).
+As a special case for C++,
 .I glob
 may start with \f(CW**::\fP to match a type name in any scope.
 .TP
