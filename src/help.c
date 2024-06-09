@@ -120,6 +120,14 @@ static bool command_is_any( cdecl_command_t const *command, ... ) {
 }
 
 /**
+ * Convenience macro for calling the function of the same name ensuring the
+ * arguments always end with NULL.
+ *
+ * @param ... The function's arguments.
+ */
+#define command_is_any(...)       command_is_any( __VA_ARGS__, NULL )
+
+/**
  * Checks whether the string \a s is a title.
  *
  * @param s The string to check.
@@ -259,7 +267,7 @@ static void print_help_command( cdecl_command_t const *command ) {
   print_h( "command:\n" );
 
   if ( command_is_any( command, L_cast, L_const, L_dynamic, L_reinterpret,
-                       L_static, NULL ) ) {
+                       L_static ) ) {
     print_h( "  " );
     if ( command == NULL ) {
       if ( OPT_LANG_IS( NEW_STYLE_CASTS ) )
@@ -319,7 +327,7 @@ static void print_help_command( cdecl_command_t const *command ) {
 
   if ( OPT_LANG_IS( SCOPED_NAMES ) &&
        command_is_any( command, L_class, L_inline, L_namespace, L_struct,
-                       L_union, NULL ) ) {
+                       L_union ) ) {
     print_h( "  " );
     if ( command == NULL ) {
       print_h( "<scope-c>" );
@@ -344,7 +352,7 @@ static void print_help_command( cdecl_command_t const *command ) {
   if ( OPT_LANG_IS( using_DECLS ) && command_is( command, L_using ) )
     print_h( "  using <name> = <gibberish>\n" );
 
-  if ( command_is_any( command, L_exit, L_quit, NULL ) )
+  if ( command_is_any( command, L_exit, L_quit ) )
     print_h( "  exit | q[uit]\n" );
 
   if ( OPT_LANG_IS( ALIGNMENT ) && command_is( command, L_declare ) ) {
@@ -373,7 +381,7 @@ static void print_help_command( cdecl_command_t const *command ) {
     print_h( "\n" );
   }
 
-  if ( command_is_any( command, L_PRE_P_define, L_expand, NULL ) )
+  if ( command_is_any( command, L_PRE_P_define, L_expand ) )
     print_h( "pp-token: a preprocessor token\n" );
 
   if ( command == NULL ) {
