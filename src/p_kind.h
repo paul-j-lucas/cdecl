@@ -135,9 +135,8 @@ typedef enum p_token_kind p_token_kind_t;
  *
  * @sa #P_ANY_TRANSPARENT
  */
-#define P_ANY_OPAQUE              ( P_ANY_OPERATOR | P_CHAR_LIT | P_IDENTIFIER \
-                                  | P_NUM_LIT | P_OTHER | P_PUNCTUATOR \
-                                  | P_STR_LIT | P___VA_ARGS__ | P___VA_OPT__ )
+#define P_ANY_OPAQUE \
+  STATIC_CAST( p_token_kind_t, ~P_ANY_TRANSPARENT )
 
 /**
  * Shorthand for either the #P_CONCAT or #P_STRINGIFY \ref p_token_kind.
