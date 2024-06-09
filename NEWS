@@ -50,6 +50,9 @@ as an error:
 ** `decltype` declarations
 Now recognizing `decltype` just to say it's not supported.
 
+** Glob help
+The help text now defines "glob."
+
 ** GNU `--version`
 Now printing **cdecl** copyright year, author, license, free software
 statement, and no warranty statement to conform to the GNU Coding Standards;

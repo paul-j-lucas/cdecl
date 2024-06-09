@@ -34,6 +34,7 @@ declare-option:
   align[ed] [as|to] {<number> [bytes] | <english>}
   width <number> [bits]
 gibberish: a C declaration, like "int x"; or a cast, like "(int)x"
+glob: a <name> containing zero or more literal *
 name: a C identifier
 number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
