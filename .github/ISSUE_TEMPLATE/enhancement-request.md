@@ -8,13 +8,15 @@ assignees: ''
 
 ---
 
-USE THIS FORM ONLY FOR ENHANCEMENT REQUESTS.  ANYTHING THAT IS NOT AN ENHANCEMENT REQUEST WILL BE CLOSED AND DELETED IMMEDIATELY.
+## Notes
+
+1. **USE THIS TEMPLATE ONLY FOR ENHANCEMENT REQUESTS**.  Anything that is not an enhancement request will be closed and deleted immediately.
+
+2. Please delete sections that do not apply to your particular request.
 
 ## Issue Type
 
 If your issue is a bug (build-time error, run-time error, or bad documentation), please use the **Bug report** template instead.
-
-If your issue is neither of those, **DO NOT CREATE AN ISSUE**. It will be closed and deleted. General comments and questions should be sent by e-mail instead.
 
 ## Enhancement Request
 
