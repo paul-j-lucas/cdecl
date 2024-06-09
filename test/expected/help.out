@@ -865,6 +865,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help class
 command:
@@ -900,6 +901,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
@@ -932,6 +934,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help const
 command:
@@ -985,7 +988,8 @@ fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
-scope-e: scope | class | struct | union | [inline] namespace
+scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 store: const[eval|expr|init] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | this | thread_local | typedef | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1064,6 +1068,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
@@ -1091,6 +1096,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
@@ -1118,6 +1124,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
@@ -1140,7 +1147,8 @@ fn-qual: <cv-qual>
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
-scope-e: scope | class | struct | union | namespace
+scope-c: class | struct | union | namespace
+scope-e: <scope-c> | scope
 store: auto | const | explicit | extern ["C" [linkage]] | friend |
        mutable | static | typedef | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1194,6 +1202,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
@@ -1221,6 +1230,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
@@ -1248,6 +1258,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
@@ -1270,7 +1281,8 @@ fn-qual: <cv-qual>
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
-scope-e: scope | class | struct | union | namespace
+scope-c: class | struct | union | namespace
+scope-e: <scope-c> | scope
 store: auto | const | explicit | extern ["C" [linkage]] | friend |
        mutable | static | typedef | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1329,6 +1341,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
@@ -1361,6 +1374,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
@@ -1393,6 +1407,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
@@ -1420,7 +1435,8 @@ fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
-scope-e: scope | class | struct | union | [inline] namespace
+scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 store: const[expr] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | thread_local | typedef | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1479,6 +1495,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
@@ -1511,6 +1528,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
@@ -1543,6 +1561,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
@@ -1570,7 +1589,8 @@ fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
-scope-e: scope | class | struct | union | [inline] namespace
+scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 store: const[expr] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | thread_local | typedef | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1629,6 +1649,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
@@ -1661,6 +1682,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
@@ -1693,6 +1715,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
@@ -1721,7 +1744,8 @@ fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
-scope-e: scope | class | struct | union | [inline] namespace
+scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 store: const[expr] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | thread_local | typedef | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
@@ -1780,6 +1804,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help command
 command:
@@ -1812,6 +1837,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help commands
 command:
@@ -1844,6 +1870,7 @@ number: a binary, octal, decimal, or hexadecimal integer
 pp-param: a macro parameter <name> or ...
 pp-token: a preprocessor token
 scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
 c++decl> help english
 english:
@@ -1873,7 +1900,8 @@ fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 number: a binary, octal, decimal, or hexadecimal integer
-scope-e: scope | class | struct | union | [inline] namespace
+scope-c: class | struct | union | [inline] namespace
+scope-e: <scope-c> | scope
 store: const[eval|expr|init] | explicit | extern ["C" [linkage]] | friend |
        mutable | static | thread_local | typedef | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
