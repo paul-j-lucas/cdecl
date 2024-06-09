@@ -1,5 +1,7 @@
 2024-06-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Removed -Wpedantic to suppress the "[[]] attributes are a
+     C23 extension [-Wc23-extensions]" warning on clang.
    * cdecl.h, cli_options.c: Now conforming to the GNU Coding Standards for
      `--version`.
    * cli_options.c: s/fputs()/PUTS()/
