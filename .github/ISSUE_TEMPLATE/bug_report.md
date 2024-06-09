@@ -29,25 +29,33 @@ If your issue is none of the above, **DO NOT CREATE AN ISSUE**. It will be close
 
 **What error or warning did you get?**
 
-Please include **_only_** the error or warning message line of output and **_not_** the entire build output (unless subsequently requested).
+(Please include **_only_** the error or warning message line of output and **_not_** the entire build output unless subsequently requested.)
 
 **What compiler and version are you using?**
 
-Please include the output given by your compiler when you request its version information (typically via the `--version` command-line option).
+(Please include the output given by your compiler when you request its version information typically via the `--version` command-line option.)
 
 **What operating system and version (Linux, FreeBSD, macOS, etc.) are you building on?**
+
+**Additional Comments**
+
+(Please include any additional comments that may be relevant.)
 
 ## Run-time Issue
 
 **What was the input given to cdecl?**
 
-Please include **_only_** the input necessary to elicit the bug.
+(Please include **_only_** the input necessary to elicit the bug.)
 
 **What output did you expect to be given by cdecl?**
 
 **What output was actually given by cdecl?**
 
 **If cdecl crashed, what was the crash message?**
+
+**Additional Comments**
+
+(Please include any additional comments that may be relevant.)
 
 ## Documentation Issue
 
