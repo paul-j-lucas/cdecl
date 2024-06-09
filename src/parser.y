@@ -8277,7 +8277,8 @@ concept_type_english_ast
 
   | Y_concept sname_english_exp[sname] Y_parameter pack_exp
     {
-      DUMP_START( "concept_type_english_ast", "CONCEPT sname_english_exp" );
+      DUMP_START( "concept_type_english_ast",
+                  "CONCEPT sname_english_exp PARAMTER PACK" );
       DUMP_SNAME( "sname_english_exp", $sname );
 
       c_sname_set_all_types( &$sname, &C_TYPE_LIT_B( TB_namespace ) );
