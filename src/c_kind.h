@@ -266,6 +266,9 @@ typedef enum c_ast_kind c_ast_kind_t;
  * #K_TYPEDEF.
  *
  * @note Enumerations are allowed to be bit fields only in C++.
+ *
+ * @sa c_ast_check_enum()
+ * @sa #LANG_enum_BITFIELDS
  */
 #define K_ANY_BIT_FIELD           ( K_BUILTIN | K_ENUM | K_TYPEDEF )
 
@@ -278,6 +281,9 @@ typedef enum c_ast_kind c_ast_kind_t;
  * Shorthand for any kind of function-like AST: #K_APPLE_BLOCK, #K_CONSTRUCTOR,
  * #K_DESTRUCTOR, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_UDEF_CONV, or
  * #K_UDEF_LIT.
+ *
+ * @sa #K_ANY_FUNCTION_RETURN
+ * @sa #K_ANY_TRAILING_RETURN
  */
 #define K_ANY_FUNCTION_LIKE       ( K_ANY_FUNCTION_RETURN | K_CONSTRUCTOR \
                                   | K_DESTRUCTOR )
@@ -286,6 +292,9 @@ typedef enum c_ast_kind c_ast_kind_t;
  * Shorthand for any kind of function-like AST that has a return type:
  * #K_APPLE_BLOCK, #K_FUNCTION, #K_LAMBDA, #K_OPERATOR, #K_UDEF_CONV, or
  * #K_UDEF_LIT.
+ *
+ * @sa #K_ANY_FUNCTION_LIKE
+ * @sa #K_ANY_TRAILING_RETURN
  */
 #define K_ANY_FUNCTION_RETURN     ( K_ANY_TRAILING_RETURN | K_APPLE_BLOCK \
                                   | K_UDEF_CONV | K_UDEF_LIT )
@@ -354,6 +363,9 @@ typedef enum c_ast_kind c_ast_kind_t;
 /**
  * Shorthand for any kind of function-like AST that can have a trailing return
  * type: #K_FUNCTION, #K_LAMBDA, or #K_OPERATOR.
+ *
+ * @sa #K_ANY_FUNCTION_LIKE
+ * @sa #K_ANY_FUNCTION_RETURN
  */
 #define K_ANY_TRAILING_RETURN     ( K_FUNCTION | K_LAMBDA | K_OPERATOR )
 
