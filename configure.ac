@@ -311,7 +311,6 @@ AX_CHECK_COMPILE_FLAG([-Wimplicit-fallthrough], [CDECL_CFLAGS="$CDECL_CFLAGS -Wi
 AX_CHECK_COMPILE_FLAG([-Wlogical-op-parentheses], [CDECL_CFLAGS="$CDECL_CFLAGS -Wlogical-op-parentheses"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wmisleading-indentation], [CDECL_CFLAGS="$CDECL_CFLAGS -Wmisleading-indentation"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wnewline-eof], [CDECL_CFLAGS="$CDECL_CFLAGS -Wnewline-eof"], [], [-Werror])
-AX_CHECK_COMPILE_FLAG([-Wpedantic], [CDECL_CFLAGS="$CDECL_CFLAGS -Wpedantic"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wredundant-decls], [CDECL_CFLAGS="$CDECL_CFLAGS -Wredundant-decls"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wreserved-identifier], [CDECL_CFLAGS="$CDECL_CFLAGS -Wreserved-identifier"], [], [-Werror])
 AX_CHECK_COMPILE_FLAG([-Wshadow], [CDECL_CFLAGS="$CDECL_CFLAGS -Wshadow"], [], [-Werror])
