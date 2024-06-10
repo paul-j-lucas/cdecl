@@ -1,3 +1,13 @@
+2024-06-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c: Added command_is_any() macro.
+   * help.c, help.out: Added help for "scope-e."
+   * help.c, cl.out, help.out: The help text now defines "glob."
+   * share/man/man1/cdecl.1: Clarified wording for "glob".
+   * p_kind.h: Simplified definition of P_ANY_OPAQUE.
+   * c_kind.h: Added K_CONCEPT to K_ANY_NAME.
+   * parser.y: Added missing "parameter pack" from DUMP_START().
+
 2024-06-08  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Removed -Wpedantic to suppress the "[[]] attributes are a
