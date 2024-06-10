@@ -1,3 +1,8 @@
+2024-06-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am: s/west-pointer/west-decl/
+   * c_ast_check.c, c_kind.h, gibberish.c: Added K_ANY_POINTER_OR_REFERENCE.
+
 2024-06-09  Paul J. Lucas <paul@lucasmail.org>
 
    * help.c: Added command_is_any() macro.
