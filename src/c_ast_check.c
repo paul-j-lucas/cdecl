@@ -617,7 +617,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 
   switch ( ast->cast.kind ) {
     case C_CAST_CONST:
-      if ( (raw_to_ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) == 0 ) {
+      if ( (raw_to_ast->kind & K_ANY_POINTER_OR_REFERENCE) == 0 ) {
         print_error( &to_ast->loc, "invalid const_cast type " );
         print_ast_type_aka( to_ast, stderr );
         EPRINTF(

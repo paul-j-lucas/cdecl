@@ -345,11 +345,25 @@ typedef enum c_ast_kind c_ast_kind_t;
 
 /**
  * Shorthand for any kind of pointer: #K_POINTER or #K_POINTER_TO_MEMBER.
+ *
+ * @sa #K_ANY_POINTER_OR_REFERENCE
  */
 #define K_ANY_POINTER             ( K_POINTER | K_POINTER_TO_MEMBER )
 
 /**
+ * Shorthand for any kind of pointer or reference: #K_POINTER,
+ * #K_POINTER_TO_MEMBER, #K_REFERENCE, or #K_RVALUE_REFERENCE.
+ *
+ * @sa #K_ANY_POINTER
+ * @sa #K_ANY_REFERENCE
+ */
+#define K_ANY_POINTER_OR_REFERENCE \
+                                  ( K_ANY_POINTER | K_ANY_REFERENCE)
+
+/**
  * Shorthand for any kind of reference: #K_REFERENCE or #K_RVALUE_REFERENCE.
+ *
+ * @sa #K_ANY_POINTER_OR_REFERENCE
  */
 #define K_ANY_REFERENCE           ( K_REFERENCE | K_RVALUE_REFERENCE )
 

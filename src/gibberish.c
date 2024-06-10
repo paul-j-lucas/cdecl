@@ -897,7 +897,7 @@ static void c_ast_postfix_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
  */
 static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   assert( ast != NULL );
-  assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER | K_ANY_REFERENCE ) );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER_OR_REFERENCE ) );
   assert( gib != NULL );
 
   c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
@@ -1028,7 +1028,7 @@ NODISCARD
 static bool c_ast_space_before_ptr_ref( c_ast_t const *ast,
                                         gib_state_t const *gib ) {
   assert( ast != NULL );
-  assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER | K_ANY_REFERENCE ) );
+  assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER_OR_REFERENCE ) );
   assert( gib != NULL );
 
   if ( (gib->gib_flags & (C_GIB_PRINT_CAST | C_GIB_USING)) != 0 )
