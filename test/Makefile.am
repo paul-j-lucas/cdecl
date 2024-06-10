@@ -161,7 +161,7 @@ TESTS+=	tests/__declspec.test \
 	tests/set_xxx.test \
 	tests/trigraphs.test \
 	tests/using.test \
-	tests/west-pointer.test
+	tests/west-decl.test
 
 # C Preprocessor tests
 TESTS+=	tests/expand.test \
