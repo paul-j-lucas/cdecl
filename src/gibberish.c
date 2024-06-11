@@ -906,7 +906,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     case K_POINTER:
       if ( (qual_stids != TS_NONE &&
             (gib->gib_flags & C_GIB_PRINT_CAST) == 0 &&
-            !c_ast_is_ptr_to_kind_any( ast, K_FUNCTION)) ||
+            !c_ast_is_ptr_to_kind_any( ast, K_FUNCTION )) ||
            ast->is_param_pack ) {
         //
         // Two cases:
