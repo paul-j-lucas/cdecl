@@ -1,3 +1,8 @@
+2024-06-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c, declare.out, west-decl.out, west-decl.test: Fixed issue #37:
+     --west-decl=t for "pointer to const pointer to ..." has no effect.
+
 2024-06-10  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c: c_ast_find_kind_any() can now accept kinds == 0
