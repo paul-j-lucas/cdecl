@@ -1,5 +1,6 @@
 2024-06-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c: c_ast_find_kind_any() can now accept kinds == 0
    * test/Makefile.am: s/west-pointer/west-decl/
    * c_ast_check.c, c_kind.h, gibberish.c: Added K_ANY_POINTER_OR_REFERENCE.
 
