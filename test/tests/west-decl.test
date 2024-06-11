@@ -7,6 +7,10 @@ set
 declare p as pointer to int
 declare p as pointer to pointer to int
 
+declare p as pointer to const pointer to int
+declare p as const pointer to pointer to int
+declare p as const pointer to const pointer to int
+
 declare p, q as pointer to int
 declare p, q as pointer to pointer to int
 
@@ -37,6 +41,9 @@ declare f, g as function returning pointer to pointer to int
 declare p as pointer to function returning int
 declare p as pointer to function returning pointer to int
 declare p as pointer to function returning pointer to pointer to int
+
+declare p as pointer to const pointer to function
+declare p as pointer to const pointer to function returning pointer to int
 
 declare p, q as pointer to function returning int
 declare p, q as pointer to function returning pointer to int

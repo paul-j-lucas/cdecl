@@ -98,6 +98,18 @@ static inline c_ast_t const* c_ast_find_parent_func( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks whether \a ast or any child AST thereof is of \ref
+ * opt_west_decl_kinds.
+ *
+ * @param ast The AST node to start checking at.
+ * @return Returns `true` only if it is.
+ */
+NODISCARD
+static inline bool c_ast_is_west_decl_kind( c_ast_t const *ast ) {
+  return c_ast_find_kind_any( ast, C_VISIT_DOWN, opt_west_decl_kinds ) != NULL;
+}
+
+/**
  * Prints a space only if we haven't printed one yet.
  *
  * @param gib The gib_state to use.
@@ -900,6 +912,8 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   assert( is_1_bit_only_in_set( ast->kind, K_ANY_POINTER_OR_REFERENCE ) );
   assert( gib != NULL );
 
+  bool defer_space = false;
+  bool const is_west_decl_kind = c_ast_is_west_decl_kind( ast );
   c_tid_t const qual_stids = ast->type.stids & TS_ANY_QUALIFIER;
 
   switch ( ast->kind ) {
@@ -909,33 +923,36 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
             !c_ast_is_ptr_to_kind_any( ast, K_FUNCTION )) ||
            ast->is_param_pack ) {
         //
-        // Two cases:
+        // 1. If we're not printing a cast and there's a qualifier for the
+        //    pointer, print a space before it.  For example:
         //
-        // 1. If we're printing a type as a "using" declaration and there's a
-        //    qualifier for the pointer, print a space before it.  For example:
-        //
+        //          int const *PI;
         //          typedef int *const PI;
         //
-        //    when printed as a "using":
-        //
-        //          using PI = int *const;
-        //
-        //    However, if it's a pointer-to-function, don't.  For example:
+        //    However, for a pointer-to-function:
         //
         //          typedef int (*const PF)(char c);
         //
-        //    when printed as a "using":
+        //    when printed as a "using", don't print the space:
         //
         //          using PF = int(*const)(char c);
         //
-        //  2. If we're printing a parameter pack, print a space before it.
-        //     For exmaple:
+        // 2. If we're printing a parameter pack, print a space before it.  For
+        //    exmaple:
         //
         //          auto *...
         //
-        gib_print_space_once( gib );
+        // However, if the AST is one of opt_west_decl_kinds, defer printing
+        // the space until after the '*':
+        //
+        if ( is_west_decl_kind )
+          defer_space = true;
+        else
+          gib_print_space_once( gib );
       }
       FPUTC( '*', gib->fout );
+      if ( defer_space )
+        gib_print_space_once( gib );
       break;
 
     case K_POINTER_TO_MEMBER:
@@ -974,8 +991,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
   if ( qual_stids != TS_NONE ) {
     FPUTS( c_tid_name_c( qual_stids ), gib->fout );
 
-    if ( ((gib->gib_flags & (C_GIB_PRINT_DECL | C_GIB_TYPEDEF)) != 0 &&
-         c_ast_find_name( ast, C_VISIT_UP ) != NULL) || ast->is_param_pack ) {
+    if ( (gib->gib_flags & (C_GIB_PRINT_DECL | C_GIB_TYPEDEF)) != 0 ) {
       //
       // For declarations and typedefs, if there's a qualifier and if a name
       // has yet to be printed, we always need to print a space after the
@@ -983,10 +999,26 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
       //
       //      char *const p;
       //                 ^
-      FPUTC( ' ', gib->fout );
-      gib->printed_space = true;
+      //
+      // However, similar to the above case, if the AST is one of
+      // opt_west_decl_kinds, defer printing the space:
+      //
+      if ( is_west_decl_kind && !ast->is_param_pack ) {
+        defer_space = true;
+      }
+      else if ( c_ast_find_name( ast, C_VISIT_UP ) != NULL ) {
+        //
+        // Don't use gib_print_space_once(): we must always print a space
+        // between the qualifier and the name.
+        //
+        FPUTC( ' ', gib->fout );
+        gib->printed_space = true;
+      }
     }
   }
+
+  if ( defer_space )
+    gib->printed_space = false;
 
   c_ast_space_name_gibberish( ast, gib );
 }
@@ -1044,10 +1076,7 @@ static bool c_ast_space_before_ptr_ref( c_ast_t const *ast,
   if ( c_ast_find_name( ast, C_VISIT_UP ) == NULL )
     return false;
 
-  c_ast_t const *const to_ast = c_ast_find_kind_any(
-    ast->ptr_ref.to_ast, C_VISIT_DOWN, opt_west_decl_kinds
-  );
-  if ( to_ast != NULL )
+  if ( c_ast_is_west_decl_kind( ast ) )
     return false;
 
   return true;

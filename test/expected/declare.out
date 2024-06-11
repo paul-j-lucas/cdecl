@@ -414,7 +414,7 @@ int f(const auto &...);
 c++decl> declare f as function (pointer to const parameter pack) returning int
 int f(const auto *...);
 c++decl> declare f as function (const pointer to parameter pack) returning int
-int f(auto *const ...);
+int f(auto *const...);
 c++decl> declare f as function (reference to const parameter pack) returning int
 int f(const auto &...);
 c++decl> declare f as function (pointer to const parameter pack) returning int

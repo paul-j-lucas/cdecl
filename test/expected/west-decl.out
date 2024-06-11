@@ -19,6 +19,12 @@ c++decl> declare p as pointer to int
 int* p;
 c++decl> declare p as pointer to pointer to int
 int** p;
+c++decl> declare p as pointer to const pointer to int
+int* const* p;
+c++decl> declare p as const pointer to pointer to int
+int** const p;
+c++decl> declare p as const pointer to const pointer to int
+int* const* const p;
 c++decl> declare p, q as pointer to int
 int *p, *q;
 c++decl> declare p, q as pointer to pointer to int
@@ -61,6 +67,10 @@ c++decl> declare p as pointer to function returning pointer to int
 int *(*p)();
 c++decl> declare p as pointer to function returning pointer to pointer to int
 int **(*p)();
+c++decl> declare p as pointer to const pointer to function
+void (*const* p)();
+c++decl> declare p as pointer to const pointer to function returning pointer to int
+int *(*const* p)();
 c++decl> declare p, q as pointer to function returning int
 int (*p)(), (*q)();
 c++decl> declare p, q as pointer to function returning pointer to int

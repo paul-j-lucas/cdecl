@@ -74,6 +74,19 @@ An invalid scoped operator name containing a keyword like:
 
 would dump core; fixed.
 
+** Fixed `--west-decl=t` for `pointer to const pointer`
+Given:
+
+    c++decl --west-decl=t 'declare p as pointer to const pointer to int'
+
+you'd incorrectly get:
+
+    int *const *p;
+
+You now correctly get:
+
+    int* const* p;
+
 
 * Changes in Cdecl 16.4.1
 
