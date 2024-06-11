@@ -576,10 +576,10 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func_ast, c_ast_t *ret_ast ) {
 c_ast_t const* (c_ast_find_kind_any)( c_ast_t const *ast,
                                       c_ast_visit_dir_t dir,
                                       c_ast_kind_t kinds ) {
-  assert( kinds != 0 );
-  return c_ast_visit(
-    ast, dir, c_ast_vistor_kind_any, (user_data_t){ .ui32 = kinds }
-  );
+  return kinds == 0 ? NULL :
+    c_ast_visit(
+      ast, dir, c_ast_vistor_kind_any, (user_data_t){ .ui32 = kinds }
+    );
 }
 
 // See comment for NONCONST_OVERLOAD regarding ().
