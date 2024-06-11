@@ -977,7 +977,7 @@ static void c_ast_qual_name_gibberish( c_ast_t const *ast, gib_state_t *gib ) {
     if ( ((gib->gib_flags & (C_GIB_PRINT_DECL | C_GIB_TYPEDEF)) != 0 &&
          c_ast_find_name( ast, C_VISIT_UP ) != NULL) || ast->is_param_pack ) {
       //
-      // For declarations and typedefs, if there is a qualifier and if a name
+      // For declarations and typedefs, if there's a qualifier and if a name
       // has yet to be printed, we always need to print a space after the
       // qualifier, e.g.:
       //
