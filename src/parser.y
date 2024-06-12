@@ -2062,8 +2062,7 @@ declare_command
       DUMP_AST( "alignas_or_width_decl_english_ast", $decl_ast );
 
       slist_t *sname_list = &$sname_list;
-      c_ast_t *const struct_bind_ast =
-        CONST_CAST( c_ast_t*, c_ast_unreference_any( $decl_ast ) );
+      c_ast_t *const struct_bind_ast = c_ast_unreference_any( $decl_ast );
 
       if ( struct_bind_ast->kind == K_STRUCTURED_BINDING ) {
         //
@@ -5076,8 +5075,7 @@ func_decl_c_astp
         //
         //      declare f as pointer to cdecl function returning void
         //
-        for ( c_ast_t *ast = $$.ast;
-              (ast = CONST_CAST(c_ast_t*, c_ast_unpointer( ast ))) != NULL; ) {
+        for ( c_ast_t *ast = $$.ast; (ast = c_ast_unpointer( ast )) != NULL; ) {
           if ( ast->kind == K_FUNCTION ) {
             $$.ast->type.atids &= c_tid_compl( TA_ANY_MSC_CALL );
             ast->type.atids |= msc_call_atids;

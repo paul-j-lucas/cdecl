@@ -342,7 +342,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       break;
 
     case K_BUILTIN:
-      if ( c_ast_root( CONST_CAST( c_ast_t*, ast ) )->is_param_pack ) {
+      if ( c_ast_root( ast )->is_param_pack ) {
         //
         // Special case: if the root AST is a parameter pack, print that
         // instead of this AST's type.
@@ -385,7 +385,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       fputs_sp( c_type_name_english( &ast->type ), eng->fout );
       FPRINTF( eng->fout, "%s ", L_concept );
       c_sname_english( &ast->concept.concept_sname, eng->fout );
-      if ( c_ast_root( CONST_CAST( c_ast_t*, ast ) )->is_param_pack )
+      if ( c_ast_root( ast )->is_param_pack )
         FPUTS( " parameter pack", eng->fout );
       break;
 

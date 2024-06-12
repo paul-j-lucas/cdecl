@@ -743,7 +743,8 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
   return c_ast_is_tid_any_qual_impl( ast, tids, *rv_qual_stids );
 }
 
-c_ast_t const* c_ast_leaf( c_ast_t const *ast ) {
+// See comment for NONCONST_OVERLOAD regarding ().
+c_ast_t const* (c_ast_leaf)( c_ast_t const *ast ) {
   while ( c_ast_is_referrer( ast ) ) {
     c_ast_t const *const child_ast = ast->parent.of_ast;
     if ( child_ast == NULL )            // can be NULL for K_ENUM
@@ -942,7 +943,8 @@ c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list ) {
   return ptr_ast;
 }
 
-c_ast_t* c_ast_root( c_ast_t *ast ) {
+// See comment for NONCONST_OVERLOAD regarding ().
+c_ast_t const* (c_ast_root)( c_ast_t const *ast ) {
   assert( ast != NULL );
   while ( ast->parent_ast != NULL )
     ast = ast->parent_ast;
@@ -974,7 +976,8 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type ) {
   return rv_type;
 }
 
-c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
+// See comment for NONCONST_OVERLOAD regarding ().
+c_ast_t const* (c_ast_unpointer)( c_ast_t const *ast ) {
   ast = c_ast_untypedef( ast );
   return ast->kind == K_POINTER ? c_ast_untypedef( ast->ptr_ref.to_ast ) : NULL;
 }
@@ -989,7 +992,8 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
   } // for
 }
 
-c_ast_t const* c_ast_unreference_any( c_ast_t const *ast ) {
+// See comment for NONCONST_OVERLOAD regarding ().
+c_ast_t const* (c_ast_unreference_any)( c_ast_t const *ast ) {
   // This is a loop to implement the reference-collapsing rule.
   for (;;) {
     ast = c_ast_untypedef( ast );

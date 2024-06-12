@@ -415,6 +415,15 @@ c_ast_t const* c_ast_is_tid_any_qual( c_ast_t const *ast, c_tid_t tids,
  */
 c_ast_t const* c_ast_leaf( c_ast_t const *ast );
 
+/// @cond DOXYGEN_IGNORE
+NODISCARD C_AST_UTIL_H_INLINE
+c_ast_t* nonconst_c_ast_leaf( c_ast_t *ast ) {
+  return CONST_CAST( c_ast_t*, c_ast_leaf( ast ) );
+}
+
+#define c_ast_leaf(AST)           NONCONST_OVERLOAD( c_ast_leaf, (AST) )
+/// @endcond
+
 /**
  * Takes the name, if any, away from \a ast
  * (with the intent of giving it to another AST).
@@ -484,7 +493,16 @@ c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list );
  * @sa c_ast_leaf()
  */
 NODISCARD
-c_ast_t* c_ast_root( c_ast_t *ast );
+c_ast_t const* c_ast_root( c_ast_t const *ast );
+
+/// @cond DOXYGEN_IGNORE
+NODISCARD C_AST_UTIL_H_INLINE
+c_ast_t* nonconst_c_ast_root( c_ast_t *ast ) {
+  return CONST_CAST( c_ast_t*, c_ast_root( ast ) );
+}
+
+#define c_ast_root(AST)           NONCONST_OVERLOAD( c_ast_root, (AST) )
+/// @endcond
 
 /**
  * Checks \a ast to see if it contains one or more of \a type: if so, removes
@@ -529,6 +547,15 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
 NODISCARD
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
+/// @cond DOXYGEN_IGNORE
+NODISCARD C_AST_UTIL_H_INLINE
+c_ast_t* nonconst_c_ast_unpointer( c_ast_t *ast ) {
+  return CONST_CAST( c_ast_t*, c_ast_unpointer( ast ) );
+}
+
+#define c_ast_unpointer(AST)      NONCONST_OVERLOAD( c_ast_unpointer, (AST) )
+/// @endcond
+
 /**
  * Un-references \a ast, i.e., if \a ast is a #K_REFERENCE, returns the
  * referred-to AST.
@@ -562,6 +589,16 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  */
 NODISCARD
 c_ast_t const* c_ast_unreference_any( c_ast_t const *ast );
+
+/// @cond DOXYGEN_IGNORE
+NODISCARD C_AST_UTIL_H_INLINE
+c_ast_t* nonconst_c_ast_unreference_any( c_ast_t *ast ) {
+  return CONST_CAST( c_ast_t*, c_ast_unreference_any( ast ) );
+}
+
+#define c_ast_unreference_any(AST) \
+  NONCONST_OVERLOAD( c_ast_unreference_any, (AST) )
+/// @endcond
 
 /**
  * Un-`typedef`s \a ast, i.e., if \a ast is of \ref c_ast::kind "kind"
