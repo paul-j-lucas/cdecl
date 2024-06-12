@@ -587,8 +587,8 @@ _GL_INLINE_HEADER_BEGIN
  * @remarks This macro is needed instead of simply using `##` when either
  * argument needs to be expanded first, e.g., `__LINE__`.
  *
- * @param A The first name.
- * @param B The second name.
+ * @param A The first token.
+ * @param B The second token.
  */
 #define NAME2(A,B)                NAME2_HELPER(A,B)
 
