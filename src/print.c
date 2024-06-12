@@ -110,7 +110,7 @@ print_params_t            print_params;
  */
 NODISCARD
 static unsigned check_tigetnum( char const *capname ) {
-  int const num = tigetnum( CONST_CAST(char*, capname) );
+  int const num = tigetnum( CONST_CAST( char*, capname ) );
   if ( unlikely( num < 0 ) ) {
     fatal_error( EX_UNAVAILABLE,
       "tigetnum(\"%s\") returned error code %d", capname, num
@@ -210,7 +210,7 @@ static unsigned get_term_columns( void ) {
   }
 
   int sut_err;
-  if ( setupterm( CONST_CAST(char*, term), cterm_fd, &sut_err ) == ERR ) {
+  if ( setupterm( CONST_CAST( char*, term ), cterm_fd, &sut_err ) == ERR ) {
     // LCOV_EXCL_START
     reason = reason_buf;
     switch ( sut_err ) {
