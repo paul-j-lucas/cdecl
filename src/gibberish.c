@@ -98,7 +98,7 @@ static inline c_ast_t const* c_ast_find_parent_func( c_ast_t const *ast ) {
 }
 
 /**
- * Checks whether \a ast or any child AST thereof is of \ref
+ * Checks whether \a ast or any child AST thereof is one of \ref
  * opt_west_decl_kinds.
  *
  * @param ast The AST node to start checking at.
