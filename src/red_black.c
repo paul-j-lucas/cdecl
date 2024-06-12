@@ -22,10 +22,10 @@
  * @file
  * Defines functions for manipulating a _Red-Black Tree_.
  *
+ * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
+ * 4th ed., Thomas H. Cormen, Charles E.  Leiserson, Ronald L. Rivest, and
+ * Clifford Stein, MIT Press, ISBN 9780262046305, &sect; 13.
  * @sa [Red-Black Tree](https://en.wikipedia.org/wiki/Red-black_tree)
- * @sa _Introduction to Algorithms_, 4th ed., Thomas H. Cormen, Charles E.
- * Leiserson, Ronald L. Rivest, and Clifford Stein, MIT Press, ISBN
- * 9780262046305, &sect; 13.
  */
 
 // local
@@ -181,7 +181,7 @@ static void rb_node_free( rb_tree_t *tree, rb_node_t *node,
  * @param x_node A pointer to the rb_node to rotate.
  * @param dir The direction to rotate.
  *
- * @sa _Introduction to Algorithms_, 4th ed., &sect; 13.2, p. 336.
+ * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/), 4th ed., &sect; 13.2, p. 336.
  */
 static void rb_node_rotate( rb_tree_t *tree, rb_node_t *x_node, rb_dir_t dir ) {
   assert( tree != NULL );
@@ -235,7 +235,8 @@ static void rb_node_check( rb_tree_t const *tree, rb_node_t const *node ) {
  *
  * @remarks
  * @parblock
- * From _Introduction to Algorithms_, 4th ed., &sect; 13.1, p. 331:
+ * From [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
+ * 4th ed., &sect; 13.1, p. 331:
  *
  * > A red-black tree is a binary search tree that satisfies the following
  * > _red-black properties_:
@@ -273,7 +274,8 @@ static void rb_tree_check( rb_tree_t const *tree ) {
  * @param tree A pointer to the rb_tree to repair.
  * @param x_node A pointer to the rb_node to start the repair at.
  *
- * @sa _Introduction to Algorithms_, 4th ed., &sect; 13.4, p. 351.
+ * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
+ * 4th ed., &sect; 13.4, p. 351.
  */
 static void rb_delete_fixup( rb_tree_t *tree, rb_node_t *x_node ) {
   assert( tree != NULL );
@@ -318,7 +320,8 @@ static void rb_delete_fixup( rb_tree_t *tree, rb_node_t *x_node ) {
  * @param tree A pointer to the rb_tree to repair.
  * @param z_node A pointer to the rb_node to start the repair at.
  *
- * @sa _Introduction to Algorithms_, 4th ed., &sect; 13.3, p. 339.
+ * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
+ * 4th ed., &sect; 13.3, p. 339.
  */
 static void rb_insert_fixup( rb_tree_t *tree, rb_node_t *z_node ) {
   assert( tree != NULL );
@@ -401,7 +404,8 @@ static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
  * @param u_node The root of the subtree to be replaced.
  * @param v_node The root of the subtree to replace with.
  *
- * @sa _Introduction to Algorithms_, 4th ed., &sect; 13.4, p. 347.
+ * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
+ * 4th ed., &sect; 13.4, p. 347.
  */
 static void rb_transplant( rb_tree_t *tree, rb_node_t *u_node,
                            rb_node_t *v_node ) {
@@ -423,7 +427,8 @@ static void rb_transplant( rb_tree_t *tree, rb_node_t *u_node,
  * @param x_node A pointer to a subtree of \a tree.
  * @return Returns said node.
  *
- * @sa _Introduction to Algorithms_, 4th ed., &sect; 12.2, p. 318.
+ * @sa [Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/),
+ * 4th ed., &sect; 12.2, p. 318.
  */
 static rb_node_t* rb_tree_minimum( rb_tree_t *tree, rb_node_t *x_node ) {
   assert( tree != NULL );
@@ -474,7 +479,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *z_delete ) {
   assert( z_delete != NULL );
   assert( z_delete != RB_NIL(tree) );
 
-  // See _Introduction to Algorithms_, 4th ed., &sect; 13.4, p. 348.
+  // See "Introduction to Algorithms," 4th ed., &sect; 13.4, p. 348.
 
   rb_node_t *x_node;
   rb_node_t *y_node = z_delete;
@@ -538,7 +543,7 @@ rb_insert_rv_t rb_tree_insert( rb_tree_t *tree, void *data ) {
   assert( tree != NULL );
   assert( data != NULL );
 
-  // See _Introduction to Algorithms_, 4th ed., &sect; 13.3, p. 338.
+  // See "Introduction to Algorithms," 4th ed., &sect; 13.3, p. 338.
 
   rb_node_t *x_node = tree->root;
   rb_node_t *y_parent = RB_NIL(tree);
