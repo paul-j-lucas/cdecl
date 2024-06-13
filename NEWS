@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 16.5
+* Changes in Cdecl 17.0
 
 ** Abbreviated function template parameter packs
 Functions with `auto` parameters (abbreviated function templates) like:
