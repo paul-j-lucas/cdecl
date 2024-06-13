@@ -1,3 +1,9 @@
+2024-06-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Proper __VA_OPT__ substitute.
+   * util.h: Eliminated ARGS_COUNT().
+   * configure.ac, pjl_config.h, util.h: Added PJL_TYPEOF.
+
 2024-06-12  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, c_ast_util.c, c_ast_util.h, english.c, parser.y, util.h:
