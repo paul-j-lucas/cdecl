@@ -66,10 +66,10 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns `0` for 0 or 1 argument, or `1` for 2 or more arguments.
  */
 #define ARGS_HAS_COMMA(...) \
-  ARG_10( __VA_ARGS__, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+  ARGS_HAS_COMMA_HELPER( __VA_ARGS__, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 
 /// @cond DOXYGEN_IGNORE
-#define ARG_10(_,_10,_9,_8,_7,_6,_5,_4,_3,_2,X,...) X
+#define ARGS_HAS_COMMA_HELPER(_,_10,_9,_8,_7,_6,_5,_4,_3,_2,X,...) X
 /// @endcond
 
 /**
