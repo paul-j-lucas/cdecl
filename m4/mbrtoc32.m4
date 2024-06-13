@@ -1,5 +1,5 @@
 # mbrtoc32.m4
-# serial 19
+# serial 20
 dnl Copyright (C) 2014-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -230,7 +230,7 @@ AC_DEFUN([gl_MBRTOC32_SANITYCHECK],
   AC_REQUIRE([gl_CHECK_FUNC_MBRTOC32])
   AC_REQUIRE([gt_LOCALE_FR])
   AC_REQUIRE([gt_LOCALE_ZH_CN])
-  AC_REQUIRE([AC_CANONICAL_HOST]) dnl for cross-compiles
+  AC_REQUIRE([AC_CANONICAL_HOST])
   if test $GNULIBHEADERS_OVERRIDE_CHAR32_T = 1 || test $gl_cv_func_mbrtoc32 = no; then
     HAVE_WORKING_MBRTOC32=0
   else
@@ -320,5 +320,6 @@ int main ()
 
 # Prerequisites of lib/mbrtoc32.c and lib/lc-charset-dispatch.c.
 AC_DEFUN([gl_PREREQ_MBRTOC32], [
+  AC_REQUIRE([gl_C32RTOMB_SANITYCHECK])
   :
 ])

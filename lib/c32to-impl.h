@@ -53,7 +53,7 @@ FUNC (wint_t wc)
   else
     return wc;
 
-#elif HAVE_WORKING_MBRTOC32             /* glibc, Android */
+#elif HAVE_WORKING_MBRTOC32 && HAVE_WORKING_C32RTOMB /* glibc, Android */
   /* mbrtoc32() is essentially defined by the system libc.  */
 
 # if _GL_WCHAR_T_IS_UCS4
