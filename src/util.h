@@ -101,8 +101,10 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @cond DOXYGEN_IGNORE
 #define ARG_WITHIN_PARENS(...)    ,
+#define ARGS_5(A,B,C,D,E)         ARGS_5_HELPER( A, B, C, D, E )
+#define ARGS_5_HELPER(A,B,C,D,E)  A ## B ## C ## D ## E
 #define ARGS_IS_EMPTY_HELPER(_1,_2,_3,_4) \
-  ARGS_HAS_COMMA( NAME5( ARGS_IS_EMPTY_RESULT_, _1, _2, _3, _4 ) )
+  ARGS_HAS_COMMA( ARGS_5( ARGS_IS_EMPTY_RESULT_, _1, _2, _3, _4 ) )
 #define ARGS_IS_EMPTY_RESULT_0001 ,
 /// @endcond
 
@@ -640,21 +642,6 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
- * Concatenate \a A, \a B, \a C, \a D, and E together to form a single token.
- *
- * @param A The first token.
- * @param B The second token.
- * @param C The third token.
- * @param D The fourth token.
- * @param E The fifth token.
- */
-#define NAME5(A,B,C,D,E)          NAME5_HELPER( A, B, C, D, E )
-
-/// @cond DOXYGEN_IGNORE
-#define NAME5_HELPER(A,B,C,D,E)   A ## B ## C ## D ## E
-/// @endcond
-
-/**
  * No-operation statement.
  *
  * @remarks This is useful for a declaration immediately after either a `goto`
@@ -732,7 +719,7 @@ _GL_INLINE_HEADER_BEGIN
   STATIC_IF( IS_PTR_TO_CONST(PTR),      \
     FN,                                 \
     nonconst_ ## FN                     \
-  )( (PTR) VA_OPT_COMMA( __VA_ARGS__ ) __VA_ARGS__ )
+  )( (PTR) VA_OPT( (,), __VA_ARGS__ ) )
 
 /**
  * If \a EXPR is `true`, prints an error message for `errno` to standard error
@@ -944,6 +931,18 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
+ * Strips the enclosing parentheses from \a ARG.
+ *
+ * @param ARG The argument.  It _must_ be enclosed within parentheses.
+ * @return Returns \a ARG without enclosing parentheses.
+ */
+#define STRIP_PARENS(ARG)         STRIP_PARENS_HELPER ARG
+
+/// @cond DOXYGEN_IGNORE
+#define STRIP_PARENS_HELPER(...)  __VA_ARGS__
+/// @endcond
+
+/**
  * Gets the length of \a S.
  *
  * @param S The C string literal to get the length of.
@@ -989,30 +988,39 @@ _GL_INLINE_HEADER_BEGIN
   INTERNAL_ERROR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (unsigned long long)(EXPR) )
 
 /**
- * If 1 or more arguments are passed, returns a `,`; otherwise returns nothing.
+ * Pre-C23/C++20 substitution for `__VA_OPT__`, that is returns \a TOKENS only
+ * if 1 or more additional arguments are passed.
  *
  * @remarks
  * @parblock
- * This is a pre-C23/C++20 `__VA_OPT__` substitute for generating a comma only
- * if `__VA_ARGS__` is not empty:
+ * For compilers that don't yet support `__VA_OPT__`, instead of doing
+ * something like:
  *
- *      ARG __VA_OPT__(,) __VA_ARGS__               // C23/C++20 way
- *      ARG VA_OPT_COMMA( __VA_ARGS__ ) __VA_ARGS__ // substitute way
+ *      ARG __VA_OPT__(,) __VA_ARGS__   // C23/C++20 way
+ *
+ * do this instead:
+ *
+ *      ARG VA_OPT( (,), __VA_ARGS__ )  // substitute way
+ *
  * @endparblock
  *
+ * @param TOKENS The token(s) possibly to be returned.  They _must_ be enclosed
+ * within parentheses.
  * @param ... Zero to 10 arguments, invariably `__VA_ARGS__`.
- * @return Returns `,` only if 1 more more arguments are passed; returns
+ * @return Returns \a TOKENS (with enclosing parentheses stripped) followed by
+ * `__VA_ARGS__` only if 1 or more additional arguments are passed; returns
  * nothing otherwise.
  */
 #ifdef HAVE___VA_OPT__
-# define VA_OPT_COMMA(...)        __VA_OPT__(,)
+# define VA_OPT(TOKENS,...) \
+    __VA_OPT__( STRIP_PARENS( TOKENS ) ) __VA_ARGS__
 #else
-# define VA_OPT_COMMA(...) \
-    NAME2( VA_OPT_COMMA_, ARGS_IS_EMPTY( __VA_ARGS__ ) )
+# define VA_OPT(TOKENS,...) \
+    NAME2( VA_OPT_EMPTY_, ARGS_IS_EMPTY( __VA_ARGS__ ) )( TOKENS, __VA_ARGS__ )
 
   /// @cond DOXYGEN_IGNORE
-# define VA_OPT_COMMA_0           ,
-# define VA_OPT_COMMA_1
+# define VA_OPT_EMPTY_0(TOKENS,...) STRIP_PARENS(TOKENS) __VA_ARGS__
+# define VA_OPT_EMPTY_1(TOKENS,...) /* nothing */
   /// @endcond
 #endif /* HAVE___VA_OPT__ */
 
