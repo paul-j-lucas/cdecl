@@ -1,5 +1,6 @@
 2024-06-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Updated version to 17.0.
    * util.h: Proper __VA_OPT__ substitute.
    * util.h: Eliminated ARGS_COUNT().
    * configure.ac, pjl_config.h, util.h: Added PJL_TYPEOF.
