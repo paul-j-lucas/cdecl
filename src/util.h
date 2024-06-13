@@ -58,77 +58,6 @@ _GL_INLINE_HEADER_BEGIN
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/// @cond DOXYGEN_IGNORE
-
-#define CHARIFY_0 '0'
-#define CHARIFY_1 '1'
-#define CHARIFY_2 '2'
-#define CHARIFY_3 '3'
-#define CHARIFY_4 '4'
-#define CHARIFY_5 '5'
-#define CHARIFY_6 '6'
-#define CHARIFY_7 '7'
-#define CHARIFY_8 '8'
-#define CHARIFY_9 '9'
-#define CHARIFY_A 'A'
-#define CHARIFY_B 'B'
-#define CHARIFY_C 'C'
-#define CHARIFY_D 'D'
-#define CHARIFY_E 'E'
-#define CHARIFY_F 'F'
-#define CHARIFY_G 'G'
-#define CHARIFY_H 'H'
-#define CHARIFY_I 'I'
-#define CHARIFY_J 'J'
-#define CHARIFY_K 'K'
-#define CHARIFY_L 'L'
-#define CHARIFY_M 'M'
-#define CHARIFY_N 'N'
-#define CHARIFY_O 'O'
-#define CHARIFY_P 'P'
-#define CHARIFY_Q 'Q'
-#define CHARIFY_R 'R'
-#define CHARIFY_S 'S'
-#define CHARIFY_T 'T'
-#define CHARIFY_U 'U'
-#define CHARIFY_V 'V'
-#define CHARIFY_W 'W'
-#define CHARIFY_X 'X'
-#define CHARIFY_Y 'Y'
-#define CHARIFY_Z 'Z'
-#define CHARIFY__ '_'
-#define CHARIFY_a 'a'
-#define CHARIFY_b 'b'
-#define CHARIFY_c 'c'
-#define CHARIFY_d 'd'
-#define CHARIFY_e 'e'
-#define CHARIFY_f 'f'
-#define CHARIFY_g 'g'
-#define CHARIFY_h 'h'
-#define CHARIFY_i 'i'
-#define CHARIFY_j 'j'
-#define CHARIFY_k 'k'
-#define CHARIFY_l 'l'
-#define CHARIFY_m 'm'
-#define CHARIFY_n 'n'
-#define CHARIFY_o 'o'
-#define CHARIFY_p 'p'
-#define CHARIFY_q 'q'
-#define CHARIFY_r 'r'
-#define CHARIFY_s 's'
-#define CHARIFY_t 't'
-#define CHARIFY_u 'u'
-#define CHARIFY_v 'v'
-#define CHARIFY_w 'w'
-#define CHARIFY_x 'x'
-#define CHARIFY_y 'y'
-#define CHARIFY_z 'z'
-
-#define NAME2_HELPER(A,B)         A ## B
-#define STRINGIFY_HELPER(X)       #X
-
-/// @endcond
-
 /**
  * Returns the number of arguments passed.
  *
@@ -300,6 +229,72 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #STRINGIFY()
  */
 #define CHARIFY(X)                NAME2(CHARIFY_,X)
+
+/// @cond DOXYGEN_IGNORE
+#define CHARIFY_0 '0'
+#define CHARIFY_1 '1'
+#define CHARIFY_2 '2'
+#define CHARIFY_3 '3'
+#define CHARIFY_4 '4'
+#define CHARIFY_5 '5'
+#define CHARIFY_6 '6'
+#define CHARIFY_7 '7'
+#define CHARIFY_8 '8'
+#define CHARIFY_9 '9'
+#define CHARIFY_A 'A'
+#define CHARIFY_B 'B'
+#define CHARIFY_C 'C'
+#define CHARIFY_D 'D'
+#define CHARIFY_E 'E'
+#define CHARIFY_F 'F'
+#define CHARIFY_G 'G'
+#define CHARIFY_H 'H'
+#define CHARIFY_I 'I'
+#define CHARIFY_J 'J'
+#define CHARIFY_K 'K'
+#define CHARIFY_L 'L'
+#define CHARIFY_M 'M'
+#define CHARIFY_N 'N'
+#define CHARIFY_O 'O'
+#define CHARIFY_P 'P'
+#define CHARIFY_Q 'Q'
+#define CHARIFY_R 'R'
+#define CHARIFY_S 'S'
+#define CHARIFY_T 'T'
+#define CHARIFY_U 'U'
+#define CHARIFY_V 'V'
+#define CHARIFY_W 'W'
+#define CHARIFY_X 'X'
+#define CHARIFY_Y 'Y'
+#define CHARIFY_Z 'Z'
+#define CHARIFY__ '_'
+#define CHARIFY_a 'a'
+#define CHARIFY_b 'b'
+#define CHARIFY_c 'c'
+#define CHARIFY_d 'd'
+#define CHARIFY_e 'e'
+#define CHARIFY_f 'f'
+#define CHARIFY_g 'g'
+#define CHARIFY_h 'h'
+#define CHARIFY_i 'i'
+#define CHARIFY_j 'j'
+#define CHARIFY_k 'k'
+#define CHARIFY_l 'l'
+#define CHARIFY_m 'm'
+#define CHARIFY_n 'n'
+#define CHARIFY_o 'o'
+#define CHARIFY_p 'p'
+#define CHARIFY_q 'q'
+#define CHARIFY_r 'r'
+#define CHARIFY_s 's'
+#define CHARIFY_t 't'
+#define CHARIFY_u 'u'
+#define CHARIFY_v 'v'
+#define CHARIFY_w 'w'
+#define CHARIFY_x 'x'
+#define CHARIFY_y 'y'
+#define CHARIFY_z 'z'
+/// @endcond
 
 /**
  * C version of C++'s `const_cast`.
@@ -652,6 +647,10 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define NAME2(A,B)                NAME2_HELPER(A,B)
 
+/// @cond DOXYGEN_IGNORE
+#define NAME2_HELPER(A,B)         A ## B
+/// @endcond
+
 /**
  * Concatenate \a A, \a B, \a C, \a D, and E together to form a single token.
  *
@@ -951,6 +950,10 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #CHARIFY()
  */
 #define STRINGIFY(X)              STRINGIFY_HELPER(X)
+
+/// @cond DOXYGEN_IGNORE
+#define STRINGIFY_HELPER(X)       #X
+/// @endcond
 
 /**
  * Gets the length of \a S.
