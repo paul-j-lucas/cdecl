@@ -173,7 +173,8 @@ AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
 AC_CHECK_MEMBERS([struct passwd.pw_dir],[],[],[[#include <pwd.h>]])
 PJL_COMPILE([__builtin_expect],[], [(void)__builtin_expect(1,1);])
-PJL_COMPILE([__typeof__],[],[__typeof__(1) x __attribute__((unused)) = 1;])
+PJL_COMPILE([typeof],[],[typeof(1) x = 1;])
+PJL_COMPILE([__typeof__],[],[__typeof__(1) x = 1;])
 PJL_COMPILE([__VA_OPT__],
   [#define VA_OPT_TEST(...) __VA_OPT__(int) __VA_ARGS__
   ],

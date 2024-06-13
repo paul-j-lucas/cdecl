@@ -65,7 +65,13 @@
 
 #endif /* HAVE___ATTRIBUTE__ */
 
-#ifdef HAVE___TYPEOF__
+#if defined HAVE_TYPEOF
+# define PJL_TYPEOF               typeof
+#elif defined HAVE___TYPEOF__
+# define PJL_TYPEOF               __typeof__
+#endif
+
+#ifdef PJL_TYPEOF
 /**
  * Discard the return value of a non-`void` function even if it was declared
  * with `NODISCARD`.
@@ -73,17 +79,17 @@
  * @param FN_CALL The function call.
  */
 #define PJL_DISCARD_RV(FN_CALL) \
-  do { MAYBE_UNUSED __typeof__(FN_CALL) _rv = (FN_CALL); } while (0)
-#endif /* HAVE___TYPEOF__ */
+  do { MAYBE_UNUSED PJL_TYPEOF(FN_CALL) _rv = (FN_CALL); } while (0)
+#endif /* PJL_TYPEOF */
 
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef PJL_DISCARD_RV
-#define PJL_DISCARD_RV(FN_CALL)   ((void)(FN_CALL))
+# define PJL_DISCARD_RV(FN_CALL)  ((void)(FN_CALL))
 #endif /* PJL_DISCARD_RV */
 
 #ifndef PJL_PRINTF_LIKE_FUNC
-#define PJL_PRINTF_LIKE_FUNC(N)   /* nothing */
+# define PJL_PRINTF_LIKE_FUNC(N)  /* nothing */
 #endif /* PJL_PRINTF_LIKE_FUNC */
 
 ///////////////////////////////////////////////////////////////////////////////
