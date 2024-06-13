@@ -155,7 +155,10 @@ most notably:
   the function trailing return-type syntax,
   and
   ref-qualified member function declarations.
+* Support for C++17 structured bindings.
 * Support for C++20
+  abbreviated function template parameter pack,
+  constrained `auto`,
   `consteval`,
   `constinit`,
   and
