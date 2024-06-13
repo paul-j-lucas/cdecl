@@ -59,22 +59,6 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Returns the number of arguments passed.
- *
- * @param ... Zero to 10 arguments, invariably `__VA_ARGS__`.
- * @return Returns an integer in the range 0-10.
- */
-#define ARGS_COUNT(...) \
-  NAME2( ARGS_COUNT_EMPTY_, ARGS_IS_EMPTY( __VA_ARGS__ ) )( __VA_ARGS__ )
-
-/// @cond DOXYGEN_IGNORE
-#define ARG_10(_,_10,_9,_8,_7,_6,_5,_4,_3,_2,X,...) X
-#define ARGS_COUNT_EMPTY_0(...) \
-  ARG_10( __VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 )
-#define ARGS_COUNT_EMPTY_1(...)   0
-/// @endcond
-
-/**
  * Gets whether the argument(s) contains a comma, that is there are 2 or more
  * arguments.
  *
@@ -83,6 +67,10 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define ARGS_HAS_COMMA(...) \
   ARG_10( __VA_ARGS__, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+/// @cond DOXYGEN_IGNORE
+#define ARG_10(_,_10,_9,_8,_7,_6,_5,_4,_3,_2,X,...) X
+/// @endcond
 
 /**
  * Gets whether there are no arguments.
@@ -1020,20 +1008,11 @@ _GL_INLINE_HEADER_BEGIN
 # define VA_OPT_COMMA(...)        __VA_OPT__(,)
 #else
 # define VA_OPT_COMMA(...) \
-    NAME2( VA_OPT_COMMA_, ARGS_COUNT( __VA_ARGS__ ) )
+    NAME2( VA_OPT_COMMA_, ARGS_IS_EMPTY( __VA_ARGS__ ) )
 
   /// @cond DOXYGEN_IGNORE
-# define VA_OPT_COMMA_0
-# define VA_OPT_COMMA_1           ,
-# define VA_OPT_COMMA_2           ,
-# define VA_OPT_COMMA_3           ,
-# define VA_OPT_COMMA_4           ,
-# define VA_OPT_COMMA_5           ,
-# define VA_OPT_COMMA_6           ,
-# define VA_OPT_COMMA_7           ,
-# define VA_OPT_COMMA_8           ,
-# define VA_OPT_COMMA_9           ,
-# define VA_OPT_COMMA_10          ,
+# define VA_OPT_COMMA_0           ,
+# define VA_OPT_COMMA_1
   /// @endcond
 #endif /* HAVE___VA_OPT__ */
 
