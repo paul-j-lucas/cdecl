@@ -533,8 +533,11 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #PERROR_EXIT_IF()
  * @sa #UNEXPECTED_INT_VALUE()
  */
-#define INTERNAL_ERROR(FORMAT,...) \
-  fatal_error( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
+#define INTERNAL_ERROR(FORMAT,...)                  \
+  fatal_error( EX_SOFTWARE,                         \
+    "%s:%d: internal error: " FORMAT,               \
+    __FILE__, __LINE__ VA_OPT( (,),  __VA_ARGS__ )  \
+  )
 
 /**
  * Checks (at compile-time) whether \a A is an array.
