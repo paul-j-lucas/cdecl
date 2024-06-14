@@ -69,7 +69,7 @@ _GL_INLINE_HEADER_BEGIN
   ARGS_HAS_COMMA_HELPER( __VA_ARGS__, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 
 /// @cond DOXYGEN_IGNORE
-#define ARGS_HAS_COMMA_HELPER(_,_10,_9,_8,_7,_6,_5,_4,_3,_2,X,...) X
+#define ARGS_HAS_COMMA_HELPER(_0,_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,...) _10
 /// @endcond
 
 /**
