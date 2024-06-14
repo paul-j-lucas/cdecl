@@ -162,12 +162,14 @@
  *
  * @sa #UNSUPPORTED()
  */
-#define IGNORING(LOC,...) \
-  IGNORING_IMPL( (LOC), __VA_ARGS__, CDECL )
+#define IGNORING(LOC,...)         IGNORING_HELPER( (LOC), __VA_ARGS__ )
 
 /// @cond DOXYGEN_IGNORE
-#define IGNORING_IMPL(LOC,WHAT,...) \
-  print_warning( (LOC), WHAT " not supported by %s (ignoring)%s", __VA_ARGS__, "\n" )
+#define IGNORING_HELPER(LOC,WHAT,...)               \
+  print_warning( (LOC),                             \
+    WHAT " not supported by " CDECL " (ignoring)\n" \
+    VA_OPT( (,), __VA_ARGS__ )                      \
+  )
 /// @endcond
 
 /**
@@ -281,12 +283,14 @@
  *
  * @sa #IGNORING()
  */
-#define UNSUPPORTED(LOC,...) \
-  UNSUPPORTED_IMPL( (LOC), __VA_ARGS__, CDECL )
+#define UNSUPPORTED(LOC,...)      UNSUPPORTED_HELPER( (LOC), __VA_ARGS__ )
 
 /// @cond DOXYGEN_IGNORE
-#define UNSUPPORTED_IMPL(LOC,WHAT,...) \
-  print_error( (LOC), WHAT " not supported by %s%s", __VA_ARGS__, "\n" )
+#define UNSUPPORTED_HELPER(LOC,WHAT,...)  \
+  print_error( (LOC),                     \
+    WHAT " not supported by " CDECL "\n"  \
+    VA_OPT( (,), __VA_ARGS__ )            \
+  )
 /// @endcond
 
 /** @} */
