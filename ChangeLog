@@ -1,3 +1,9 @@
+2024-06-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.h: Now using designated initializer.
+   * c_ast_check.c, c_sname.h, c_typedef.c, lexer.l, red_black.c, util.h: Put
+     more macro arguments inside parentheses.
+
 2024-06-14  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Now using VA_OPT() in IGNORING() and UNSUPPORTED().
