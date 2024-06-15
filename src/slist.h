@@ -81,7 +81,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param NODE_DATA A pointer to the node data.
  */
 #define SLIST_VAR_INIT(VAR,NODE_DATA) \
-  slist_node_t UNIQUE_NAME(VAR##_node) = { NULL, CONST_CAST(void*, (NODE_DATA)) }; \
+  slist_node_t UNIQUE_NAME(VAR##_node) = { .data = CONST_CAST(void*, (NODE_DATA)) }; \
   slist_t const VAR = { &UNIQUE_NAME(VAR##_node), &UNIQUE_NAME(VAR##_node), 1 }
 
 ///////////////////////////////////////////////////////////////////////////////
