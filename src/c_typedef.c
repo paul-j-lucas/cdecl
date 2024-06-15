@@ -55,7 +55,7 @@
  *
  * @param S The string literal of the **cdecl** command defining a type.
  */
-#define PT(S)                     { S, __LINE__ }
+#define PT(S)                     { (S), __LINE__ }
 
 ///////////////////////////////////////////////////////////////////////////////
 

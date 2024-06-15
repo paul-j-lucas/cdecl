@@ -99,7 +99,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FOREACH_SNAME_SCOPE_UNTIL()
  */
 #define FOREACH_SNAME_SCOPE(VAR,SNAME) \
-  FOREACH_SLIST_NODE( VAR, SNAME )
+  FOREACH_SLIST_NODE( VAR, (SNAME) )
 
 /**
  * Convenience macro for iterating over all scopes of an sname up to but not
@@ -112,7 +112,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #FOREACH_SNAME_SCOPE()
  */
 #define FOREACH_SNAME_SCOPE_UNTIL(VAR,SNAME,END) \
-  FOREACH_SLIST_NODE_UNTIL( VAR, SNAME, END )
+  FOREACH_SLIST_NODE_UNTIL( VAR, (SNAME), (END) )
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -149,7 +149,7 @@
  *
  * @param MSG The error message to print.
  */
-#define YY_FATAL_ERROR(MSG)       lexer_fatal( MSG )
+#define YY_FATAL_ERROR(MSG)       lexer_fatal( (MSG) )
 
 /**
  * Overrides Flex's input.

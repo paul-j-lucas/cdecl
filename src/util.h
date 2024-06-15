@@ -147,7 +147,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param FN The pointer to the function to call **atexit**(3) with.
  */
-#define ATEXIT(FN)                PERROR_EXIT_IF( atexit( FN ) != 0, EX_OSERR )
+#define ATEXIT(FN) \
+  PERROR_EXIT_IF( atexit( (FN) ) != 0, EX_OSERR )
 
 /**
  * Gets a value where all bits that are greater than or equal to the one bit
@@ -161,7 +162,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #BITS_LE()
  * @sa #BITS_LT()
  */
-#define BITS_GE(N)                (~BITS_LT(N))
+#define BITS_GE(N)                (~BITS_LT( (N) ))
 
 /**
  * Gets a value where all bits that are greater than the one bit set in \a N
@@ -174,7 +175,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #BITS_LE()
  * @sa #BITS_LT()
  */
-#define BITS_GT(N)                (~BITS_LE(N))
+#define BITS_GT(N)                (~BITS_LE( (N) ))
 
 /**
  * Gets a value where all bits that are less than or equal to the one bit set
@@ -188,7 +189,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #BITS_GT()
  * @sa #BITS_LT()
  */
-#define BITS_LE(N)                (BITS_LT(N) | (N))
+#define BITS_LE(N)                (BITS_LT( (N) ) | (N))
 
 /**
  * Gets a value where all bits that are less than the one bit set in \a N are
@@ -360,7 +361,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #PERROR_EXIT_IF()
  */
 #define FERROR(STREAM) \
-  PERROR_EXIT_IF( ferror( STREAM ) != 0, EX_IOERR )
+  PERROR_EXIT_IF( ferror( (STREAM) ) != 0, EX_IOERR )
 
 /**
  * Calls **fflush(3)** on \a STREAM, checks for an error, and exits if there
@@ -371,7 +372,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #PERROR_EXIT_IF()
  */
 #define FFLUSH(STREAM) \
-  PERROR_EXIT_IF( fflush( STREAM ) != 0, EX_IOERR )
+  PERROR_EXIT_IF( fflush( (STREAM) ) != 0, EX_IOERR )
 
 /**
  * Convenience macro for iterating over the elements of a static array.
@@ -580,10 +581,10 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns 1 (true) only if \a P is a pointer to `const`; 0 (false)
  * otherwise.
  */
-#define IS_PTR_TO_CONST(P)  \
-  _Generic( TO_VOID_PTR(P), \
-    void const* : 1,        \
-    default     : 0         \
+#define IS_PTR_TO_CONST(P)      \
+  _Generic( TO_VOID_PTR( (P) ), \
+    void const* : 1,            \
+    default     : 0             \
   )
 
 #ifdef HAVE___BUILTIN_EXPECT
@@ -628,7 +629,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #REALLOC()
  */
 #define MALLOC(TYPE,N) \
-  check_realloc( NULL, sizeof(TYPE) * STATIC_CAST( size_t, (N) ) )
+  check_realloc( /*p=*/NULL, sizeof(TYPE) * STATIC_CAST( size_t, (N) ) )
 
 /**
  * Concatenate \a A and \a B together to form a single token.
@@ -720,7 +721,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param ... Additional arguments passed to \a FN.
  */
 #define NONCONST_OVERLOAD(FN, PTR, ...) \
-  STATIC_IF( IS_PTR_TO_CONST(PTR),      \
+  STATIC_IF( IS_PTR_TO_CONST( (PTR) ),  \
     FN,                                 \
     nonconst_ ## FN                     \
   )( (PTR) VA_OPT( (,), __VA_ARGS__ ) )
@@ -738,7 +739,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #UNEXPECTED_INT_VALUE()
  */
 #define PERROR_EXIT_IF( EXPR, STATUS ) \
-  BLOCK( if ( unlikely( EXPR ) ) perror_exit( STATUS ); )
+  BLOCK( if ( unlikely( (EXPR) ) ) perror_exit( (STATUS) ); )
 
 /**
  * Cast either from or to a pointer type --- similar to C++'s
@@ -806,7 +807,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #MALLOC()
  */
 #define REALLOC(PTR,N) \
-  ((PTR) = check_realloc( (PTR), sizeof(*(PTR)) * (N) ))
+  ((PTR) = check_realloc( (PTR), sizeof( *(PTR) ) * (N) ))
 
 /**
  * Runs a statement at most once even if control passes through it more than

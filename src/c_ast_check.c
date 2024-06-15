@@ -64,10 +64,10 @@
  * @param AST The AST having the unsupported kind.
  * @param LANG_IDS The bitwise-or of legal language(s).
  */
-#define error_kind_not_supported(AST,LANG_IDS)            \
-  print_error( &(AST)->loc,                               \
-    "%s not supported%s\n",                               \
-    c_kind_name( (AST)->kind ), c_lang_which( LANG_IDS )  \
+#define error_kind_not_supported(AST,LANG_IDS)              \
+  print_error( &(AST)->loc,                                 \
+    "%s not supported%s\n",                                 \
+    c_kind_name( (AST)->kind ), c_lang_which( (LANG_IDS) )  \
   )
 
 /**
@@ -79,11 +79,11 @@
  * @param END_STR_LIT A string literal appended to the end of the error message
  * (either `"\n"` or `""`).
  */
-#define error_kind_not_tid(AST,TID,LANG_IDS,END_STR_LIT)  \
-  print_error( &(AST)->loc,                               \
-    "%s can not be \"%s\"%s" END_STR_LIT,                 \
-    c_kind_name( (AST)->kind ), c_tid_name_error( TID ),  \
-    c_lang_which( LANG_IDS )                              \
+#define error_kind_not_tid(AST,TID,LANG_IDS,END_STR_LIT)    \
+  print_error( &(AST)->loc,                                 \
+    "%s can not be \"%s\"%s" END_STR_LIT,                   \
+    c_kind_name( (AST)->kind ), c_tid_name_error( (TID) ),  \
+    c_lang_which( (LANG_IDS) )                              \
   )
 
 /**
@@ -105,10 +105,10 @@
  * @param END_STR_LIT A string literal appended to the end of the error message
  * (either `"\n"` or `""`).
  */
-#define error_kind_to_tid(AST,TID,END_STR_LIT)          \
-  print_error( &(AST)->loc,                             \
-    "%s to \"%s\" is illegal" END_STR_LIT,              \
-    c_kind_name( (AST)->kind ), c_tid_name_error( TID ) \
+#define error_kind_to_tid(AST,TID,END_STR_LIT)            \
+  print_error( &(AST)->loc,                               \
+    "%s to \"%s\" is illegal" END_STR_LIT,                \
+    c_kind_name( (AST)->kind ), c_tid_name_error( (TID) ) \
   )
 
 ///////////////////////////////////////////////////////////////////////////////

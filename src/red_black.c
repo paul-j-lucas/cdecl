@@ -69,7 +69,7 @@
  * @param NODE A pointer to the rb_node to get said reference from.
  * @return Returns said lvalue reference.
  */
-#define RB_PARENT_CHILD(NODE)     ((NODE)->parent->child[ child_dir( NODE ) ])
+#define RB_PARENT_CHILD(NODE)     ((NODE)->parent->child[ child_dir( (NODE) ) ])
 
 /**
  * Red-black tree child direction.
