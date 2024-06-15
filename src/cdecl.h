@@ -23,8 +23,7 @@
 
 /**
  * @file
- * Declares miscellaneous macros, global variables, and the main parsing
- * function.
+ * Declares miscellaneous macros, global variables, and functions.
  */
 
 // local
