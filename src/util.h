@@ -79,6 +79,7 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns `0` for 0 arguments or `1` otherwise.
  *
  * @sa https://stackoverflow.com/a/66556553/99089
+ * @sa https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
  */
 #define ARGS_IS_EMPTY(...)                                                  \
   ARGS_IS_EMPTY_HELPER(                                                     \
