@@ -906,6 +906,11 @@ static bool mex_check_identifier( mex_state_t *mex,
         mex->no_expand_set, CONST_CAST( char*, found_macro->name )
       );
       if ( rbi.inserted ) {
+        //
+        // Now that we know the macro has been inserted, replace macro's name
+        // used to test for insertion with a copy.  Doing it this way means we
+        // do the look-up only once and the strdup() only if inserted.
+        //
         rbi.node->data = check_strdup( rbi.node->data );
         print_warning( &identifier_token->loc,
           "\"%s\" not supported%s; will not expand\n",
