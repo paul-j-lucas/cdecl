@@ -902,16 +902,16 @@ static bool mex_check_identifier( mex_state_t *mex,
       //                  ^
       //      13: warning: "__DATE__" not supported until C89; will not expand
       //
-      rb_insert_rv_t rbi = rb_tree_insert(
+      rb_insert_rv_t rbi_rv = rb_tree_insert(
         mex->no_expand_set, CONST_CAST( char*, found_macro->name )
       );
-      if ( rbi.inserted ) {
+      if ( rbi_rv.inserted ) {
         //
         // Now that we know the macro has been inserted, replace macro's name
         // used to test for insertion with a copy.  Doing it this way means we
         // do the look-up only once and the strdup() only if inserted.
         //
-        rbi.node->data = check_strdup( rbi.node->data );
+        rbi_rv.node->data = check_strdup( rbi_rv.node->data );
         print_warning( &identifier_token->loc,
           "\"%s\" not supported%s; will not expand\n",
           identifier_token->ident.name,
@@ -1002,7 +1002,7 @@ static bool mex_check_identifier( mex_state_t *mex,
   }
 
   char const *const macro_key = macro_flmwa_key( mex->macro, found_macro );
-  rb_insert_rv_t rbi = rb_tree_insert(
+  rb_insert_rv_t rbi_rv = rb_tree_insert(
     mex->no_expand_set, CONST_CAST( char*, macro_key )
   );
 
@@ -1015,7 +1015,7 @@ static bool mex_check_identifier( mex_state_t *mex,
     identifier_token->ident.ineligible = true;
   }
 
-  if ( !rbi.inserted )
+  if ( !rbi_rv.inserted )
     return true;
 
   //
@@ -1023,7 +1023,7 @@ static bool mex_check_identifier( mex_state_t *mex,
   // to test for insertion with a dynamically allocated copy.  Doing it this
   // way means we do the look-up only once and the strdup() only if inserted.
   //
-  rbi.node->data = check_strdup( rbi.node->data );
+  rbi_rv.node->data = check_strdup( rbi_rv.node->data );
 
   print_warning( &identifier_token->loc,
     "\"%s\": function-like macro without arguments will not expand\n",
@@ -1452,11 +1452,11 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
     return MEX_CAN_NOT_EXPAND;
 
   char const *macro_key = mex_expanding_set_key( mex );
-  rb_insert_rv_t const rbi = rb_tree_insert(
+  rb_insert_rv_t const rbi_rv = rb_tree_insert(
     mex->expanding_set,
     CONST_CAST( char*, macro_key )
   );
-  if ( !rbi.inserted ) {
+  if ( !rbi_rv.inserted ) {
     identifier_token->ident.ineligible = true;
     print_warning( &identifier_token->loc,
       "recursive macro \"%s\" will not expand\n",
@@ -1470,7 +1470,7 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
   // to test for insertion with a dynamically allocated copy.  Doing it this
   // way means we do the look-up only once and the strdup() only if inserted.
   //
-  rbi.node->data = check_strdup( rbi.node->data );
+  rbi_rv.node->data = check_strdup( rbi_rv.node->data );
 
   mex_print_macro( mex, mex->replace_list );
   mex_pre_filter___VA_OPT__( mex );
@@ -1513,7 +1513,7 @@ static mex_rv_t mex_expand( mex_state_t *mex, p_token_t *identifier_token ) {
   bool const ok = mex_pre_expand___VA_ARGS__( mex ) &&
                   mex_expand_all_fns( mex, EXPAND_FNS );
 
-  macro_key = rb_tree_delete( mex->expanding_set, rbi.node );
+  macro_key = rb_tree_delete( mex->expanding_set, rbi_rv.node );
   assert( macro_key != NULL );
   FREE( macro_key );
 
@@ -1706,10 +1706,10 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
       goto append;
 
     param_expand_t find_pe = { .name = token->ident.name };
-    rb_insert_rv_t rbi = rb_tree_insert( &param_cache, &find_pe );
+    rb_insert_rv_t rbi_rv = rb_tree_insert( &param_cache, &find_pe );
 
-    if ( !rbi.inserted ) {
-      param_expand_t const *const found_pe = rbi.node->data;
+    if ( !rbi_rv.inserted ) {
+      param_expand_t const *const found_pe = rbi_rv.node->data;
       arg_tokens = found_pe->expand_list;
       goto append;
     }
@@ -1775,7 +1775,7 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
         .name = token->ident.name,
         .expand_list = arg_tokens
       };
-      rbi.node->data = new_pe;
+      rbi_rv.node->data = new_pe;
     }
 
     mex_cleanup( &param_mex );
@@ -3039,12 +3039,12 @@ p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
   if ( p_macro_is_func_like( new_macro ) )
     p_macro_relocate_params( new_macro );
 
-  rb_insert_rv_t const rbi = rb_tree_insert( &macro_set, new_macro );
-  if ( !rbi.inserted ) {
-    p_macro_t *const old_macro = rbi.node->data;
+  rb_insert_rv_t const rbi_rv = rb_tree_insert( &macro_set, new_macro );
+  if ( !rbi_rv.inserted ) {
+    p_macro_t *const old_macro = rbi_rv.node->data;
     assert( !old_macro->is_dynamic );
     p_macro_free( old_macro );
-    rbi.node->data = new_macro;
+    rbi_rv.node->data = new_macro;
     print_warning( name_loc, "\"%s\" already exists; redefined\n", name );
   }
 

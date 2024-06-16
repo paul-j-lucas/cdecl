@@ -1085,17 +1085,17 @@ rb_node_t* c_typedef_add( c_ast_t const *ast, unsigned decl_flags ) {
   assert( !c_sname_empty( &ast->sname ) );
 
   c_typedef_t find_tdef = { .ast = ast };
-  rb_insert_rv_t rbi = rb_tree_insert( &typedef_set, &find_tdef );
-  if ( rbi.inserted ) {
+  rb_insert_rv_t rbi_rv = rb_tree_insert( &typedef_set, &find_tdef );
+  if ( rbi_rv.inserted ) {
     //
     // Now that we know the typedef has been inserted, replace the find_tdef
     // key used to test for insertion with a dynamically allocated one.  Doing
     // it this way means we do the look-up only once and the dynamic allocation
     // only if inserted.
     //
-    rbi.node->data = c_typedef_new( ast, decl_flags );
+    rbi_rv.node->data = c_typedef_new( ast, decl_flags );
   }
-  return rbi.node;
+  return rbi_rv.node;
 }
 
 c_typedef_t const* c_typedef_find_name( char const *name ) {
