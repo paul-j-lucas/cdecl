@@ -1,5 +1,7 @@
 2024-06-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_check.c, c_ast_util.h, gibberish.c:
+     s/c_ast_parent_is_kind()/c_ast_parent_is_kind_any()/
    * parser.y, debug.out: Added DUMP_*() macros to decl_list_c_opt:
      decl_list_c.
    * c_ast.c, c_ast.h, dump.c: s/dup_from_id/dup_from_ast/
