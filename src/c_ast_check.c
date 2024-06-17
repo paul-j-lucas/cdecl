@@ -2206,6 +2206,14 @@ static bool c_ast_check_param_pack( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->is_param_pack );
 
+  if ( c_ast_parent_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) ) {
+    print_error( &ast->loc,
+      "%s can not return parameter pack\n",
+      c_kind_name( ast->parent_ast->kind )
+    );
+    return false;
+  }
+
   //
   // For a parameter pack like:
   //
@@ -3384,6 +3392,16 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
     );
     return false;
   }
+
+  FOREACH_SLIST_NODE( ast_node, ast_list ) {
+    c_ast_t const *const ast = ast_node->data;
+    if ( ast->is_param_pack ) {
+      print_error( &first_ast->loc,
+        "can not use parameter pack in multiple declaration\n"
+      );
+      return false;
+    }
+  } // for
 
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
     c_ast_t const *const ast = ast_node->data;

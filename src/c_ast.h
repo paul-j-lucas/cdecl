@@ -702,6 +702,15 @@ c_param_t const* c_ast_params( c_ast_t const *ast ) {
 }
 
 /**
+ * Sets \ref c_ast::is_param_pack "is_param_pack" of \a ast as well as of the
+ * entire \ref "c_ast::dup_from_ast" "dup_from_ast" chain starting from \a ast
+ * to `true`.
+ *
+ * @param ast The AST to start from.
+ */
+void c_ast_set_parameter_pack( c_ast_t *ast );
+
+/**
  * Sets the two-way pointer links between parent/child AST nodes; additionally,
  * if \a child_ast has \ref c_ast::is_param_pack "is_param_pack" set and \a
  * parent_ast is not NULL, "moves" the "parameter pack-ness" from \a child_ast

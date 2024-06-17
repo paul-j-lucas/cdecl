@@ -549,47 +549,60 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, unsigned depth, c_loc_t const *loc,
   return ast;
 }
 
+void c_ast_set_parameter_pack( c_ast_t *ast ) {
+  assert( ast != NULL );
+  ast->is_param_pack = true;
+  if ( ast->dup_from_ast != NULL ) {
+    // I don't like this CONST_CAST(), but I can't think of a way around it.
+    c_ast_set_parameter_pack( CONST_CAST( c_ast_t*, ast->dup_from_ast ) );
+  }
+}
+
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   if ( parent_ast != NULL ) {
     assert( c_ast_is_referrer( parent_ast ) );
     parent_ast->parent.of_ast = child_ast;
   }
-  if ( child_ast != NULL ) {
-    child_ast->parent_ast = parent_ast;
-    assert( !c_ast_has_cycle( child_ast ) );
+  if ( child_ast == NULL )
+    return;
+  child_ast->parent_ast = parent_ast;
 
-    if ( child_ast->is_param_pack && parent_ast != NULL ) {
-      //
-      // The root AST node of a tree must always be the one that is a parameter
-      // pack.  For example, given:
-      //
-      //      auto &...x
-      //
-      // the AST should be:
-      //
-      //      {
-      //        sname: { string: "x", scopes: "none" },
-      //        is_param_pack: true,
-      //        kind: { value: 0x1000, string: "reference" },
-      //        ...
-      //        ptr_ref: {
-      //          to_ast: {
-      //            ...
-      //            is_param_pack: false,
-      //            kind: { value: 0x2, string: "built-in type" },
-      //            ...
-      //            type: { btid: 0x0000000000000021, string: "auto" },
-      //            ...
-      //          }
-      //        }
-      //      }
-      //
-      // where it's a parameter pack of references, not a reference to a
-      // parameter pack.
-      //
-      child_ast->is_param_pack = false;
-      parent_ast->is_param_pack = true;
-    }
+  if ( parent_ast == NULL )
+    return;
+  assert( !c_ast_has_cycle( child_ast ) );
+
+  if ( child_ast->is_param_pack &&
+       (parent_ast->kind & K_ANY_FUNCTION_LIKE) == 0 ) {
+    //
+    // Except for function-like return type ASTs, the root AST node of a tree
+    // must always be the one that is a parameter pack.  For example, given:
+    //
+    //      auto &...x
+    //
+    // the AST should be:
+    //
+    //      {
+    //        sname: { string: "x", scopes: "none" },
+    //        is_param_pack: true,
+    //        kind: { value: 0x1000, string: "reference" },
+    //        ...
+    //        ptr_ref: {
+    //          to_ast: {
+    //            ...
+    //            is_param_pack: false,
+    //            kind: { value: 0x2, string: "built-in type" },
+    //            ...
+    //            type: { btid: 0x0000000000000021, string: "auto" },
+    //            ...
+    //          }
+    //        }
+    //      }
+    //
+    // where it's a parameter pack of references, not a reference to a
+    // parameter pack.
+    //
+    child_ast->is_param_pack = false;
+    parent_ast->is_param_pack = true;
   }
 }
 

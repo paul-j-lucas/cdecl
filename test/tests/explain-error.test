@@ -242,6 +242,13 @@ explain void f(int x[static 3])
 explain void f(x)
 
 explain auto ...
+explain auto... f()
+explain auto... f(), x
+explain auto... x, f()
+explain auto&... f()
+explain auto&... f(), x
+explain auto&... x, f()
+explain auto*... f()
 explain void f(int ...)
 explain void f(int &...)
 

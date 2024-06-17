@@ -673,6 +673,27 @@ c++decl> explain void f(x)
 c++decl> explain auto ...
                          ^
 17: syntax error: name expected
+c++decl> explain auto... f()
+                 ^
+9: error: function can not return parameter pack
+c++decl> explain auto... f(), x
+                     ^
+13: error: can not use parameter pack in multiple declaration
+c++decl> explain auto... x, f()
+                 ^
+9: error: can not use parameter pack in multiple declaration
+c++decl> explain auto&... f()
+                     ^
+13: error: function can not return parameter pack
+c++decl> explain auto&... f(), x
+                     ^
+13: error: function can not return parameter pack
+c++decl> explain auto&... x, f()
+                     ^
+13: error: can not use parameter pack in multiple declaration
+c++decl> explain auto*... f()
+                     ^
+13: error: function can not return parameter pack
 c++decl> explain void f(int ...)
                         ^
 16: error: parameter pack type must be "auto"

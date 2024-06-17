@@ -4636,8 +4636,14 @@ decl2_c_astp
 param_pack_decl_c_ast
   : Y_ELLIPSIS sname_c_ast[ast]
     {
-      $ast->is_param_pack = true;
+      DUMP_START( "param_pack_decl_c_ast", "... sname_c_ast" );\
+      DUMP_AST( "sname_c_ast", $ast );
+
+      c_ast_set_parameter_pack( $ast );
       $$ = $ast;
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
     }
   | Y_ELLIPSIS error
     {
@@ -6021,13 +6027,27 @@ param_pack_cast_c_ast
   : // in_attr: type_c_ast
     Y_ELLIPSIS
     {
-      ia_type_ast_peek()->is_param_pack = true;
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
+      DUMP_START( "param_pack_cast_c_ast", "..." );\
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
+
+      c_ast_set_parameter_pack( type_ast );
       $$ = NULL;
+
+      DUMP_AST( "in_attr__type_c_ast", type_ast );
+      DUMP_END();
     }
   | Y_ELLIPSIS sname_c_ast[ast]
     {
-      $ast->is_param_pack = true;
+      DUMP_START( "param_pack_cast_c_ast", "... sname_c_ast" );\
+      DUMP_AST( "sname_c_ast", $ast );
+
+      c_ast_set_parameter_pack( $ast );
       $$ = $ast;
+
+      DUMP_AST( "$$_ast", $$ );
+      DUMP_END();
     }
   ;
 
