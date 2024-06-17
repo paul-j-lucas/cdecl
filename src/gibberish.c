@@ -339,7 +339,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, gib_state_t *gib ) {
           c_ast_gibberish_impl( ast->parent.of_ast, gib );
       }
       if ( msc_call_atids != TA_NONE &&
-           !c_ast_parent_is_kind( ast, K_POINTER ) ) {
+           !c_ast_parent_is_kind_any( ast, K_POINTER ) ) {
         //
         // If ast is a function having a Microsoft calling convention, but not
         // a pointer to such a function, print the calling convention.

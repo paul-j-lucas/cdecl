@@ -696,13 +696,13 @@ bool c_ast_op_mbr_matches( c_ast_t const *ast, c_operator_t const *op ) {
  * "parent_ast" of \a ast (if any) is \a kind.
  *
  * @param ast The AST to check the \ref c_ast::parent_ast "parent_ast" of.
- * @param kind The kind to check for.
+ * @param kinds The bitwise-or of kind(s) to check for.
  * @return Returns `true` only if the \ref c_ast::parent_ast "parent_ast" of \a
- * ast is \a kind.
+ * ast is one of \a kinds.
  */
 NODISCARD C_AST_UTIL_H_INLINE
-bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
-  return ast->parent_ast != NULL && ast->parent_ast->kind == kind;
+bool c_ast_parent_is_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
+  return ast->parent_ast != NULL && (ast->parent_ast->kind & kinds) != 0;
 }
 
 /**
