@@ -3370,17 +3370,18 @@ bool c_ast_list_check( c_ast_list_t const *ast_list ) {
   if ( slist_empty( ast_list ) )
     return true;                        // LCOV_EXCL_LINE
 
-  if ( slist_len( ast_list ) > 1 ) {
-    c_ast_t const *const first_ast = slist_front( ast_list );
-    if ( first_ast->type.btids == TB_auto &&
-        !OPT_LANG_IS( auto_TYPE_MULTI_DECL ) ) {
-      print_error( &first_ast->loc,
-        "\"%s\" with multiple declarators not supported%s\n",
-        c_tid_name_error( TB_auto ),
-        C_LANG_WHICH( auto_TYPE_MULTI_DECL )
-      );
-      return false;
-    }
+  c_ast_t const *const first_ast = slist_front( ast_list );
+  if ( slist_len( ast_list ) == 1 )
+    return c_ast_check( first_ast );
+
+  if ( first_ast->type.btids == TB_auto &&
+      !OPT_LANG_IS( auto_TYPE_MULTI_DECL ) ) {
+    print_error( &first_ast->loc,
+      "\"%s\" with multiple declarators not supported%s\n",
+      c_tid_name_error( TB_auto ),
+      C_LANG_WHICH( auto_TYPE_MULTI_DECL )
+    );
+    return false;
   }
 
   FOREACH_SLIST_NODE( ast_node, ast_list ) {
