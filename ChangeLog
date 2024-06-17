@@ -1,5 +1,7 @@
 2024-06-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, debug.out: Added DUMP_*() macros to decl_list_c_opt:
+     decl_list_c.
    * c_ast.c, c_ast.h, dump.c: s/dup_from_id/dup_from_ast/
 
 2024-06-16  Paul J. Lucas <paul@lucasmail.org>
