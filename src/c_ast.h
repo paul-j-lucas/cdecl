@@ -494,6 +494,7 @@ struct c_udef_lit_ast {
 struct c_ast {
   c_alignas_t     align;                ///< Alignment, if any.
   unsigned        depth;                ///< How many `()` deep.
+  c_ast_t const  *dup_from_ast;         ///< AST duplicated from, if any.
   bool            is_param_pack;        ///< Is this a parameter pack (`...`)?
   c_ast_kind_t    kind;                 ///< AST kind.
   c_loc_t         loc;                  ///< Source location.
@@ -502,7 +503,6 @@ struct c_ast {
   c_ast_t        *parent_ast;           ///< Parent AST node, if any.
   c_ast_t const  *param_of_ast;         ///< Parameter of this AST node, if any.
   c_ast_id_t      unique_id;            ///< Unique ID (starts at 1).
-  c_ast_id_t      dup_from_id;          ///< ID of AST duplicated from, if any.
 
   /**
    * Additional data for each \ref kind.
