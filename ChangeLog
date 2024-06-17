@@ -1,3 +1,7 @@
+2024-06-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: Added c_ast_check_param_pack().
+
 2024-06-15  Paul J. Lucas <paul@lucasmail.org>
 
    * slist.h: Now using designated initializer.
