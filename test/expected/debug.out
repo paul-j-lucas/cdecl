@@ -261,6 +261,27 @@ cdecl> explain _BitInt(4) x
   }
 }
 
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 17 },
+      type: { btid: 0x0000000000000041, string: "_BitInt" },
+      builtin: {
+        bit_width: 0,
+        BitInt: { width: 4 }
+      }
+    }
+  ]
+}
+
 declare x as bit-precise integer width 4 bits
 cdecl> explain alignas(8) int x
 {
@@ -411,6 +432,30 @@ cdecl> explain alignas(8) int x
       bit_width: 0
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      align: {
+        bytes: 8,
+        loc: { first_column: 8, last_column: 14 }
+      },
+      loc: { first_column: 19, last_column: 21 },
+      type: { btid: 0x0000000000004001, string: "int" },
+      builtin: {
+        bit_width: 0
+      }
+    }
+  ]
 }
 
 declare x as integer aligned as 8 bytes
@@ -626,6 +671,40 @@ cdecl> explain alignas(long) int x
       bit_width: 0
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      align: {
+        type_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 16, last_column: 19 },
+          type: { btid: 0x0000000000008001, string: "long" },
+          builtin: {
+            bit_width: 0
+          }
+        },
+        loc: { first_column: 8, last_column: 14 }
+      },
+      loc: { first_column: 22, last_column: 24 },
+      type: { btid: 0x0000000000004001, string: "int" },
+      builtin: {
+        bit_width: 0
+      }
+    }
+  ]
 }
 
 declare x as integer aligned as long integer
@@ -922,6 +1001,37 @@ cdecl> explain enum E : int x
   }
 }
 
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x400, string: "enumeration" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 19 },
+      type: { btid: 0x0000000000800001, string: "enum" },
+      enum: {
+        enum_sname: { string: "E", scopes: "none" },
+        of_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 17, last_column: 19 },
+          type: { btid: 0x0000000000004001, string: "int" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
+}
+
 declare x as enumeration E of type integer
 cdecl> explain enum E x
 {
@@ -1069,6 +1179,26 @@ cdecl> explain enum E x
   }
 }
 
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x400, string: "enumeration" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 13 },
+      type: { btid: 0x0000000000800001, string: "enum" },
+      enum: {
+        enum_sname: { string: "E", scopes: "none" }
+      }
+    }
+  ]
+}
+
 declare x as enumeration E
 cdecl> explain int x
 {
@@ -1202,6 +1332,26 @@ cdecl> explain int x
       bit_width: 0
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 10 },
+      type: { btid: 0x0000000000004001, string: "int" },
+      builtin: {
+        bit_width: 0
+      }
+    }
+  ]
 }
 
 declare x as integer
@@ -1430,6 +1580,37 @@ cdecl> explain int x[4]
   }
 }
 
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x100, string: "array" },
+      depth: 0,
+      loc: { first_column: 13, last_column: 15 },
+      type: { string: "none" },
+      array: {
+        size: 4,
+        of_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 10 },
+          type: { btid: 0x0000000000004001, string: "int" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
+}
+
 declare x as array 4 of integer
 cdecl> explain int x[]
 {
@@ -1654,6 +1835,37 @@ cdecl> explain int x[]
       }
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x100, string: "array" },
+      depth: 0,
+      loc: { first_column: 13, last_column: 14 },
+      type: { string: "none" },
+      array: {
+        size: "unspecified",
+        of_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 10 },
+          type: { btid: 0x0000000000004001, string: "int" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
 }
 
 declare x as array of integer
@@ -1891,6 +2103,37 @@ cdecl> explain size_t x
   }
 }
 
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x40, string: "typedef" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 13 },
+      type: { btid: 0x0000000020000001, string: "none" },
+      tdef: {
+        for_ast: {
+          sname: { string: "size_t", scopes: "none" },
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 20 },
+          type: { btid: 0x0000000000048001, string: "unsigned long" },
+          builtin: {
+            bit_width: 0
+          }
+        },
+        bit_width: 0
+      }
+    }
+  ]
+}
+
 declare x as size_t
 cdecl> explain struct S x
 {
@@ -2037,6 +2280,26 @@ cdecl> explain struct S x
   }
 }
 
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x8, string: "struct or union" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 15 },
+      type: { btid: 0x0000000001000001, string: "struct" },
+      csu: {
+        csu_sname: { string: "S", scopes: "none" }
+      }
+    }
+  ]
+}
+
 declare x as structure S
 cdecl> explain unsigned x : 4
 {
@@ -2140,6 +2403,26 @@ cdecl> explain unsigned x : 4
       bit_width: 4
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 15 },
+      type: { btid: 0x0000000000040001, string: "unsigned" },
+      builtin: {
+        bit_width: 4
+      }
+    }
+  ]
 }
 
 declare x as unsigned integer width 4 bits
@@ -2383,6 +2666,38 @@ cdecl> explain void f()
       }
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x80000, string: "function" },
+      depth: 0,
+      loc: { first_column: 13, last_column: 15 },
+      type: { string: "none" },
+      func: {
+        member: "unspecified",
+        param_ast_list: [],
+        ret_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 11 },
+          type: { btid: 0x0000000000000011, string: "void" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
 }
 
 declare f as function returning void
@@ -3426,6 +3741,79 @@ cdecl> explain void f(int i, char const *fmt, ... )
   }
 }
 
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x80000, string: "function" },
+      depth: 0,
+      loc: { first_column: 13, last_column: 43 },
+      type: { string: "none" },
+      func: {
+        member: "unspecified",
+        param_ast_list: [
+          {
+            sname: { string: "i", scopes: "none" },
+            is_param_pack: false,
+            kind: { value: 0x2, string: "built-in type" },
+            depth: 0,
+            loc: { first_column: 15, last_column: 17 },
+            type: { btid: 0x0000000000004001, string: "int" },
+            builtin: {
+              bit_width: 0
+            }
+          },
+          {
+            sname: { string: "fmt", scopes: "none" },
+            is_param_pack: false,
+            kind: { value: 0x800, string: "pointer" },
+            depth: 0,
+            loc: { first_column: 33 },
+            type: { string: "none" },
+            ptr_ref: {
+              to_ast: {
+                sname: null,
+                is_param_pack: false,
+                kind: { value: 0x2, string: "built-in type" },
+                depth: 0,
+                loc: { first_column: 22, last_column: 31 },
+                type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
+                builtin: {
+                  bit_width: 0
+                }
+              }
+            }
+          },
+          {
+            sname: null,
+            is_param_pack: false,
+            kind: { value: 0x80, string: "variadic" },
+            depth: 0,
+            loc: { first_column: 39, last_column: 41 },
+            type: { string: "none" }
+          }
+        ],
+        ret_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 11 },
+          type: { btid: 0x0000000000000011, string: "void" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
+}
+
 declare f as function (i as integer, fmt as pointer to constant character, variadic) returning void
 cdecl> explain void f(int x[*])
 {
@@ -4036,6 +4424,61 @@ cdecl> explain void f(int x[*])
       }
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x80000, string: "function" },
+      depth: 0,
+      loc: { first_column: 13, last_column: 23 },
+      type: { string: "none" },
+      func: {
+        member: "unspecified",
+        param_ast_list: [
+          {
+            sname: { string: "x", scopes: "none" },
+            is_param_pack: false,
+            kind: { value: 0x100, string: "array" },
+            depth: 0,
+            loc: { first_column: 20, last_column: 22 },
+            type: { string: "none" },
+            array: {
+              size: '*',
+              of_ast: {
+                sname: null,
+                is_param_pack: false,
+                kind: { value: 0x2, string: "built-in type" },
+                depth: 0,
+                loc: { first_column: 15, last_column: 17 },
+                type: { btid: 0x0000000000004001, string: "int" },
+                builtin: {
+                  bit_width: 0
+                }
+              }
+            }
+          }
+        ],
+        ret_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 11 },
+          type: { btid: 0x0000000000000011, string: "void" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
 }
 
 declare f as function (x as variable length array of integer) returning void
@@ -4650,6 +5093,61 @@ cdecl> explain void f(int x[static 2])
   }
 }
 
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x80000, string: "function" },
+      depth: 0,
+      loc: { first_column: 13, last_column: 30 },
+      type: { string: "none" },
+      func: {
+        member: "unspecified",
+        param_ast_list: [
+          {
+            sname: { string: "x", scopes: "none" },
+            is_param_pack: false,
+            kind: { value: 0x100, string: "array" },
+            depth: 0,
+            loc: { first_column: 20, last_column: 29 },
+            type: { stid: 0x0000001000000002, string: "static" },
+            array: {
+              size: 2,
+              of_ast: {
+                sname: null,
+                is_param_pack: false,
+                kind: { value: 0x2, string: "built-in type" },
+                depth: 0,
+                loc: { first_column: 15, last_column: 17 },
+                type: { btid: 0x0000000000004001, string: "int" },
+                builtin: {
+                  bit_width: 0
+                }
+              }
+            }
+          }
+        ],
+        ret_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 11 },
+          type: { btid: 0x0000000000000011, string: "void" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
+}
+
 declare f as function (x as non-empty array 2 of integer) returning void
 cdecl> set k&rc
 cdecl> explain int f(x)
@@ -4971,6 +5469,47 @@ cdecl> explain int f(x)
   }
 }
 
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "f", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x80000, string: "function" },
+      depth: 0,
+      loc: { first_column: 12, last_column: 15 },
+      type: { string: "none" },
+      func: {
+        member: "unspecified",
+        param_ast_list: [
+          {
+            sname: { string: "x", scopes: "none" },
+            is_param_pack: false,
+            kind: { value: 0x20, string: "name" },
+            depth: 0,
+            loc: { first_column: 14 },
+            type: { string: "none" }
+          }
+        ],
+        ret_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 10 },
+          type: { btid: 0x0000000000004001, string: "int" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
+}
+
 declare f as function (x) returning integer
 cdecl> set c++
 c++decl> class C
@@ -5205,6 +5744,39 @@ c++decl> explain bool operator!() const
       }
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: null,
+      is_param_pack: false,
+      kind: { value: 0x200000, string: "operator" },
+      depth: 0,
+      loc: { first_column: 11, last_column: 29 },
+      type: { stid: 0x0000000200000002, string: "const" },
+      oper: {
+        op_id: { value: 6, string: "!" },
+        member: "unspecified",
+        param_ast_list: [],
+        ret_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 11 },
+          type: { btid: 0x0000000000000081, string: "bool" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
 }
 
 declare ! as constant member operator returning boolean
@@ -5505,6 +6077,37 @@ c++decl> explain int C::*p
       }
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "p", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x1000, string: "pointer to member" },
+      depth: 0,
+      loc: { first_column: 12, last_column: 16 },
+      type: { btid: 0x0000000004000001, string: "class" },
+      ptr_mbr: {
+        class_sname: { string: "C", scopes: "class" },
+        to_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 10 },
+          type: { btid: 0x0000000000004001, string: "int" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
 }
 
 declare p as pointer to member of class C integer
@@ -6278,6 +6881,59 @@ c++decl> explain int operator ""_w(char const *arg)
       }
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "_w", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x800000, string: "user-defined literal" },
+      depth: 0,
+      loc: { first_column: 10, last_column: 41 },
+      type: { string: "none" },
+      udef_lit: {
+        param_ast_list: [
+          {
+            sname: { string: "arg", scopes: "none" },
+            is_param_pack: false,
+            kind: { value: 0x800, string: "pointer" },
+            depth: 0,
+            loc: { first_column: 37 },
+            type: { string: "none" },
+            ptr_ref: {
+              to_ast: {
+                sname: null,
+                is_param_pack: false,
+                kind: { value: 0x2, string: "built-in type" },
+                depth: 0,
+                loc: { first_column: 26, last_column: 35 },
+                type: { btid: 0x0000000000000101, stid: 0x0000000200000002, string: "const char" },
+                builtin: {
+                  bit_width: 0
+                }
+              }
+            }
+          }
+        ],
+        ret_ast: {
+          sname: null,
+          is_param_pack: false,
+          kind: { value: 0x2, string: "built-in type" },
+          depth: 0,
+          loc: { first_column: 8, last_column: 10 },
+          type: { btid: 0x0000000000004001, string: "int" },
+          builtin: {
+            bit_width: 0
+          }
+        }
+      }
+    }
+  ]
 }
 
 declare _w as user-defined literal (arg as pointer to constant character) returning integer
@@ -8797,6 +9453,26 @@ c++decl> explain int x
       bit_width: 0
     }
   }
+}
+
+{
+  rule: {
+    lhs: "decl_list_c_opt",
+    rhs: "decl_list_c"
+  },
+  decl_list_c: [
+    {
+      sname: { string: "x", scopes: "none" },
+      is_param_pack: false,
+      kind: { value: 0x2, string: "built-in type" },
+      depth: 0,
+      loc: { first_column: 8, last_column: 10 },
+      type: { btid: 0x0000000000004001, string: "int" },
+      builtin: {
+        bit_width: 0
+      }
+    }
+  ]
 }
 
 declare x as integer

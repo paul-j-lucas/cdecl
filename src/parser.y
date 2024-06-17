@@ -4537,6 +4537,10 @@ decl_list_c_opt
 
   | decl_list_c[decl_ast_list]
     {
+      DUMP_START( "decl_list_c_opt", "decl_list_c" );
+      DUMP_AST_LIST( "decl_list_c", $decl_ast_list );
+      DUMP_END();
+
       PARSE_ASSERT( c_ast_list_check( &$decl_ast_list ) );
       c_ast_list_english( &$decl_ast_list, stdout );
     }
