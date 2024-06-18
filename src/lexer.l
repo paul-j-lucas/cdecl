@@ -133,6 +133,8 @@
 
 /**
  * Sets \ref lexer_token to the current Flex token.
+ *
+ * @sa #SET_TOKEN_TO()
  */
 #define SET_TOKEN                 SET_TOKEN_TO( yytext )
 
@@ -140,6 +142,8 @@
  * Sets \ref lexer_token to \a S.
  *
  * @param S The string to set the token to.
+ *
+ * @sa #SET_TOKEN
  */
 #define SET_TOKEN_TO(S)           (lexer_token = (S))
 
