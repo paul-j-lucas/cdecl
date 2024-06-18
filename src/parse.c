@@ -162,7 +162,7 @@ static int cdecl_parse_file_impl( FILE *fin, bool return_on_error ) {
   strbuf_init( &sbuf );
   int status = EX_OK;
 
-  while ( strbuf_read_line( &sbuf, CDECL, fin, cdecl_prompt ) ) {
+  while ( strbuf_read_line( &sbuf, fin, CDECL, cdecl_prompt ) ) {
     // We don't just call yyrestart( fin ) and yyparse() directly because
     // cdecl_parse_string() may also insert a command for opt_infer_command.
     status = cdecl_parse_string( sbuf.str, sbuf.len );

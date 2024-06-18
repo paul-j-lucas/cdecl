@@ -51,17 +51,17 @@
  *  + Adds non-whitespace-only lines to the history.
  *
  * @param sbuf The \ref strbuf to use.
- * @param prog_name The program-specific values to parse from `~/.inputrc`.  If
- * NULL, does not read program-specific values.
  * @param fin The file to read from.  If \a fin is not connected to a TTY, does
  * not read interactively.
+ * @param prog_name The program-specific values to parse from `~/.inputrc`.  If
+ * NULL, does not read program-specific values.
  * @param prompts A pointer to a 2-element array of the prompts to use: the
  * primary prompt and the the secondary prompt to use for a continuation line
  * (a line after ones ending with `\`).  If NULL, does not read interactively.
  * @return Returns `false` only if encountered EOF.
  */
 NODISCARD
-bool strbuf_read_line( strbuf_t *sbuf, char const *prog_name, FILE *fin,
+bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *prog_name,
                        char const *const prompts[const] );
 
 ///////////////////////////////////////////////////////////////////////////////
