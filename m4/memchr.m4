@@ -1,5 +1,5 @@
 # memchr.m4
-# serial 19
+# serial 20
 dnl Copyright (C) 2002-2004, 2009-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -49,7 +49,7 @@ AC_DEFUN_ONCE([gl_FUNC_MEMCHR],
   if (fd >= 0)
 # endif
     {
-      int pagesize = getpagesize ();
+      long int pagesize = sysconf (_SC_PAGESIZE);
       char *two_pages =
         (char *) mmap (NULL, 2 * pagesize, PROT_READ | PROT_WRITE,
                        flags, fd, 0);
