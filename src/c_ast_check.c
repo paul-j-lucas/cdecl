@@ -174,8 +174,7 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_upc( c_ast_t const* ),
                     c_ast_check_visitor( c_ast_t const*, c_ast_check_fn_t ),
                     c_ast_visitor_error( c_ast_t const*, user_data_t ),
-                    c_ast_visitor_type( c_ast_t const*, user_data_t ),
-                    c_ast_visitor_warning( c_ast_t const*, user_data_t );
+                    c_ast_visitor_type( c_ast_t const*, user_data_t );
 
 static void         c_ast_warn_name( c_ast_t const* );
 
