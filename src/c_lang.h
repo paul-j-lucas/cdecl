@@ -1584,6 +1584,24 @@ NODISCARD
 char const* c_lang_which( c_lang_id_t lang_ids );
 
 /**
+ * Checks whether \a name is reserved in any language.
+ *
+ * @remarks A name is reserved if it matches any of these patterns:
+ *
+ *      _*          // C: external only; C++: global namespace only.
+ *      _[A-Z_]*
+ *      *__*        // C++ only.
+ *
+ * However, we don't check for the first one since **cdecl** doesn't have
+ * either the linkage or the scope of a name.
+ *
+ * @param name The name to check.
+ * @return Returns the bitwise-or of language(s) that \a name is reserved in.
+ */
+NODISCARD
+c_lang_id_t is_reserved_name( char const *name );
+
+/**
  * Convenience function for checking whether \ref opt_lang_id is among \a
  * lang_ids.
  *

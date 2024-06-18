@@ -178,10 +178,6 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_visitor_warning( c_ast_t const*, user_data_t );
 
 static void         c_ast_warn_name( c_ast_t const* );
-static void         c_sname_warn( c_sname_t const*, c_loc_t const* );
-
-NODISCARD
-static c_lang_id_t  is_reserved_name( char const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -3291,69 +3287,6 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
   c_sname_warn( &ast->sname, &ast->loc );
   if ( (ast->kind & K_ANY_NAME) != 0 )
     c_sname_warn( &ast->csu.csu_sname, &ast->loc );
-}
-
-/**
- * Checks a scoped name for warnings.
- *
- * @param sname The scoped name to check.
- * @param loc The location of \a sname.
- */
-static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
-  assert( sname != NULL );
-
-  FOREACH_SNAME_SCOPE( scope, sname ) {
-    char const *const name = c_scope_data( scope )->name;
-
-    // First, check to see if the name is a keyword in some other language.
-    c_keyword_t const *const ck =
-      c_keyword_find( name, LANG_ANY, C_KW_CTX_DEFAULT );
-    if ( ck != NULL ) {
-      print_warning( loc,
-        "\"%s\" is a keyword in %s\n",
-        name, c_lang_name( c_lang_oldest( ck->lang_ids ) )
-      );
-      continue;
-    }
-
-    // Next, check to see if the name is reserved in any language.
-    c_lang_id_t const reserved_lang_ids = is_reserved_name( name );
-    if ( reserved_lang_ids != LANG_NONE ) {
-      print_warning( loc, "\"%s\" is a reserved identifier", name );
-      char const *const coarse_name = c_lang_coarse_name( reserved_lang_ids );
-      if ( coarse_name != NULL )
-        EPRINTF( " in %s", coarse_name );
-      EPUTC( '\n' );
-    }
-  } // for
-}
-
-/**
- * Checks whether \a name is reserved in any language.
- *
- * @remarks A name is reserved if it matches any of these patterns:
- *
- *      _*          // C: external only; C++: global namespace only.
- *      _[A-Z_]*
- *      *__*        // C++ only.
- *
- * However, we don't check for the first one since **cdecl** doesn't have
- * either the linkage or the scope of a name.
- *
- * @param name The name to check.
- * @return Returns the bitwise-or of language(s) that \a name is reserved in.
- */
-NODISCARD
-static c_lang_id_t is_reserved_name( char const *name ) {
-  assert( name != NULL );
-
-  if ( name[0] == '_' && (isupper( name[1] ) || name[1] == '_') )
-    return LANG_ANY;
-
-  if ( strstr( name, "__" ) != NULL )
-    return LANG_CPP_ANY;
-
-  return LANG_NONE;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

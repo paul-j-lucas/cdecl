@@ -694,6 +694,14 @@ void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
     data->type = *type;
 }
 
+/**
+ * Checks a scoped name for warnings.
+ *
+ * @param sname The scoped name to check.
+ * @param sname_loc The location of \a sname.
+ */
+void c_sname_warn( c_sname_t const *sname, c_loc_t const *sname_loc );
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

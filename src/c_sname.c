@@ -475,6 +475,36 @@ void c_sname_set_all_types( c_sname_t *sname, c_type_t const *default_type ) {
     scope->type.btids = TB_namespace;
 }
 
+void c_sname_warn( c_sname_t const *sname, c_loc_t const *sname_loc ) {
+  assert( sname != NULL );
+  assert( sname_loc != NULL );
+
+  FOREACH_SNAME_SCOPE( scope, sname ) {
+    char const *const name = c_scope_data( scope )->name;
+
+    // First, check to see if the name is a keyword in some other language.
+    c_keyword_t const *const ck =
+      c_keyword_find( name, LANG_ANY, C_KW_CTX_DEFAULT );
+    if ( ck != NULL ) {
+      print_warning( sname_loc,
+        "\"%s\" is a keyword in %s\n",
+        name, c_lang_name( c_lang_oldest( ck->lang_ids ) )
+      );
+      continue;
+    }
+
+    // Next, check to see if the name is reserved in any language.
+    c_lang_id_t const reserved_lang_ids = is_reserved_name( name );
+    if ( reserved_lang_ids != LANG_NONE ) {
+      print_warning( sname_loc, "\"%s\" is a reserved identifier", name );
+      char const *const coarse_name = c_lang_coarse_name( reserved_lang_ids );
+      if ( coarse_name != NULL )
+        EPRINTF( " in %s", coarse_name );
+      EPUTC( '\n' );
+    }
+  } // for
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

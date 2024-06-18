@@ -225,6 +225,18 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
   return sbuf.str;
 }
 
+c_lang_id_t is_reserved_name( char const *name ) {
+  assert( name != NULL );
+
+  if ( name[0] == '_' && (isupper( name[1] ) || name[1] == '_') )
+    return LANG_ANY;
+
+  if ( strstr( name, "__" ) != NULL )
+    return LANG_CPP_ANY;
+
+  return LANG_NONE;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
