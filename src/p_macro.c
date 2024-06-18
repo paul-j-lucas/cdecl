@@ -1714,6 +1714,22 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
       goto append;
     }
 
+    //
+    // Now that we know the parameter has been inserted, replace the find_pe
+    // key used to test for insertion with a dynamically allocated copy.  Doing
+    // it this way means we do the look-up only once and the dynamic allocation
+    // only if inserted.
+    //
+    param_expand_t *const new_pe = MALLOC( param_expand_t, 1 );
+    *new_pe = (param_expand_t){
+      //
+      // There's no need to strdup() the name because it will outlive this
+      // param_expand_t node.
+      //
+      .name = token->ident.name
+    };
+    rbi_rv.node->data = new_pe;
+
     mex_state_t param_mex;
     mex_init( &param_mex,
       /*parent_mex=*/mex,
@@ -1761,21 +1777,10 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
       }
 
       //
-      // Now that we know the parameter is newly and successfully expanded,
-      // replace the find_pe key used to test for insertion with a dynamically
-      // allocated copy.  Doing it this way means we do the look-up only once
-      // and the dynamic allocation only if inserted.
+      // There's no need to duplicate the tokens because they will outlive this
+      // param_expand_t node.
       //
-      param_expand_t *const new_pe = MALLOC( param_expand_t, 1 );
-      *new_pe = (param_expand_t){
-        //
-        // There's no need either to strdup() the name or duplicate the tokens
-        // here because the both will outlive this param_expand_t node.
-        //
-        .name = token->ident.name,
-        .expand_list = arg_tokens
-      };
-      rbi_rv.node->data = new_pe;
+      new_pe->expand_list = arg_tokens;
     }
 
     mex_cleanup( &param_mex );
