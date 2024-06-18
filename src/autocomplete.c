@@ -783,7 +783,7 @@ done:
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void readline_init( char const *prog_name, FILE *fin, FILE *fout ) {
+void readline_init( FILE *fin, FILE *fout ) {
   assert( fin != NULL );
   assert( fout != NULL );
 
@@ -799,7 +799,7 @@ void readline_init( char const *prog_name, FILE *fin, FILE *fout ) {
   rl_attempted_completion_function = cdecl_rl_completion;
   rl_instream = fin;
   rl_outstream = fout;
-  rl_readline_name = CONST_CAST( char*, prog_name );
+  rl_readline_name = CONST_CAST( char*, CDECL );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

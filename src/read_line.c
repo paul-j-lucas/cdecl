@@ -55,7 +55,7 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *prog_name,
+bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
                        char const *const prompts[const] ) {
   assert( sbuf != NULL );
   assert( fin != NULL );
@@ -71,14 +71,13 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin, char const *prog_name,
     if ( is_interactive ) {
       // LCOV_EXCL_START -- tests are not interactive
 #ifdef WITH_READLINE
-      readline_init( prog_name, fin, stdout );
+      readline_init( fin, stdout );
       free( line );
       got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
       // LCOV_EXCL_STOP
     }
     else
 #else /* WITH_READLINE */
-      (void)prog_name;
       PUTS( prompts[ is_cont_line ] );
       FFLUSH( stdout );
     }
