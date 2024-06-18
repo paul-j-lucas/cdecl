@@ -1,3 +1,15 @@
+2024-06-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_check.c: Eliminated c_ast_check_fn_t.
+   * c_ast_check.c: Removed unnecessary forward declaration of
+     c_ast_visitor_warning().
+   * c_ast_check.c, c_lang.c, c_lang.h, c_sname.c, c_sname.h: Moved
+     c_sname_warn().
+   * test/Makefile.am, set-error.out, set-error.test: "set" test reform, part
+     2.
+   * configure.ac: Updated version.
+   * test/Makefile.am, set-error.out, set.out, set.test: "set" test reform.
+
 2024-06-17  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_ast.h, c_ast_check.c, parser.y, explain-error.out,
