@@ -302,12 +302,12 @@ for which there are four factors to consider:
    that Hansen's version is:
    | Hansen's   | Lines | Lucas's    | Lines | %     |
    | :--------- | ----: | :--------- | ----: | ----: |
-   | `cdgram.y` |  855  | `parser.y` |  9535 |  9.0% |
+   | `cdgram.y` |  855  | `parser.y` |  9563 |  8.9% |
    | `cdlex.l`  |   75  | `lexer.l`  |  1824 |  4.1% |
-   | `cdecl.c`  | 1014  | `*.[ch]`   | 41849 |  2.4% |
-   | **Total**  | 1944  |            | 53208 |  3.7% |
+   | `cdecl.c`  | 1014  | `*.[ch]`   | 41915 |  2.4% |
+   | **Total**  | 1944  |            | 53302 |  3.6% |
 
-   Hansen's version of **cdecl** accounts for only 3.7%
+   Hansen's version of **cdecl** accounts for only 3.6%
    of a recent total
    of the number of lines of code
    of my version of **cdecl**.
