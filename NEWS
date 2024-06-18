@@ -13,7 +13,7 @@ with their complete changes, see the AUTHORS file.
 * Changes in Cdecl 17.0.1
 
 ** Fixed returning parameter packs
-Functions returning paraketer packs is now correctly illegal.
+Functions returning parameter packs is now correctly illegal.
 
 
 * Changes in Cdecl 17.0
