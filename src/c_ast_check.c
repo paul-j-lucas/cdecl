@@ -142,15 +142,6 @@ struct check_state {
 };
 typedef struct check_state check_state_t;
 
-/**
- * The signature for functions passed to c_ast_check_visitor().
- *
- * @param ast The AST to check.
- * @param user_data The data to use.
- * @return Returns `true` only if all checks passed.
- */
-typedef bool (*c_ast_check_fn_t)( c_ast_t const *ast, user_data_t user_data );
-
 // local constants
 
 /// Convenience return value for \ref c_ast_visit_fn_t functions.
@@ -172,7 +163,7 @@ static bool         c_ast_check_emc( c_ast_t const* ),
                     c_ast_check_op_params( c_ast_t const* ),
                     c_ast_check_op_relational_default( c_ast_t const* ),
                     c_ast_check_upc( c_ast_t const* ),
-                    c_ast_check_visitor( c_ast_t const*, c_ast_check_fn_t ),
+                    c_ast_check_visitor( c_ast_t const*, c_ast_visit_fn_t ),
                     c_ast_visitor_error( c_ast_t const*, user_data_t ),
                     c_ast_visitor_type( c_ast_t const*, user_data_t );
 
@@ -2713,7 +2704,7 @@ static bool c_ast_check_upc( c_ast_t const *ast ) {
  */
 NODISCARD
 static bool c_ast_check_visitor( c_ast_t const *ast,
-                                 c_ast_check_fn_t check_fn ) {
+                                 c_ast_visit_fn_t check_fn ) {
   return NULL == c_ast_visit(
     ast, C_VISIT_DOWN, check_fn, (user_data_t){ .pc = &(check_state_t){ 0 } }
   );
