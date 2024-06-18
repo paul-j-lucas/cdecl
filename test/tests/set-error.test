@@ -1,4 +1,8 @@
 EXPECTED_EXIT=65
 cdecl -bE <<END
+set expl
+set expli
 set lang=xxx
+set prompt=x
+set xxx
 END

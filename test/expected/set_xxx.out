@@ -1,3 +1,0 @@
-cdecl> set xxx
-           ^
-5: error: "xxx": unknown set option

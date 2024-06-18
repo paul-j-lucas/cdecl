@@ -1,3 +1,0 @@
-cdecl> set lang=xxx
-                ^
-10: error: "xxx": unknown language

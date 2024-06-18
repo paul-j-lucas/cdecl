@@ -147,18 +147,13 @@ TESTS+=	tests/__declspec.test \
 	tests/prompt.test \
 	tests/semicolon.test \
 	tests/set.test \
-	tests/set_expl.test \
-	tests/set_expli.test \
+	tests/set-error.test \
 	tests/set_explicit-ecsu_x.test \
 	tests/set_explicit-int.test \
 	tests/set_explicit-int_x.test \
 	tests/set_graphs.test \
-	tests/set_lang_xxx.test \
 	tests/set_nodigraphs.test \
 	tests/set_noexplicit-int_u.test \
-	tests/set_options.test \
-	tests/set_prompt_x.test \
-	tests/set_xxx.test \
 	tests/trigraphs.test \
 	tests/using.test \
 	tests/west-decl.test

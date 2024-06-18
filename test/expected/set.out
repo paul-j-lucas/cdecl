@@ -14,3 +14,19 @@ cdecl> set
   notrailing-return
     using                    (Not supported in C.)
     west-decl=bflo
+cdecl> set options
+  noalt-tokens
+  nodebug
+  noeast-const
+    echo-commands
+    english-types
+    explicit-ecsu=su         (Not supported in C.)
+  noexplicit-int
+  nographs
+  noinfer-command
+    lang=C23
+    prompt
+    semicolon
+  notrailing-return
+    using                    (Not supported in C.)
+    west-decl=bflo
