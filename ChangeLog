@@ -1,5 +1,8 @@
 2024-06-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c: Avoid possible free() of non-malloc()'d memory.
+   * autocomplete.c, autocomplete.h, parse.c, read_line.c, read_line.h:
+     Eliminated prog_name from readline_init() and strbuf_read_line().
    * c_ast_check.c: Eliminated c_ast_check_fn_t.
    * c_ast_check.c: Removed unnecessary forward declaration of
      c_ast_visitor_warning().
