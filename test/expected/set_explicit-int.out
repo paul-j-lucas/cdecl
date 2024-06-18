@@ -1,3 +1,0 @@
-cdecl> set explicit-int
-           ^
-5: error: set option "explicit-int" requires =<value>

@@ -1,3 +1,0 @@
-c++decl> set explicit-ecsu=x
-                           ^
-19: error: "x": invalid value for explicit-ecsu; must be *, -, or {e|c|s|u}+

@@ -2,7 +2,13 @@ EXPECTED_EXIT=65
 cdecl -bE <<END
 set expl
 set expli
+set explicit-ecsu=x
+set explicit-int
+set explicit-int=x
+set graphs
 set lang=xxx
+set nodigraphs
+set noexplicit-int=u
 set prompt=x
 set xxx
 END
