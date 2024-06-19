@@ -550,7 +550,7 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   yyin = include_file;
   yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
   print_params.conf_path = check_strdup( we.we_wordv[0] );
-  yylineno = 0;
+  yylineno = 1;
 
 done:
   FREE( real_path );
@@ -1810,7 +1810,7 @@ void lexer_reset( bool hard_reset ) {
     include_cleanup();
     include_init();
     newline();
-    yylineno = 0;
+    yylineno = 1;
   }
   BEGIN( INITIAL );
   digraph_warned = trigraph_warned = false;
