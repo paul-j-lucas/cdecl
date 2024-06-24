@@ -257,7 +257,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
       switch ( ast->array.kind ) {
         case C_ARRAY_NAMED_SIZE:
           //
-          // Just because an array has named size doesn't mean it's a VLA.
+          // Just because an array has a named size doesn't mean it's a VLA.
           //
           if ( eng->func_ast == NULL ) {
             //
