@@ -726,7 +726,7 @@ static bool set_west_decl( set_option_fn_args_t const *args ) {
     if ( !ok ) {
       print_error( args->opt_value_loc,
         "\"%s\": invalid value for west-decl;"
-        " must be *, -, or {b|f|l|o|r|t}+\n",
+        " must be *, -, or {b|f|l|o|r|s|t}+\n",
         args->opt_value
       );
     }
