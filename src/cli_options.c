@@ -227,7 +227,7 @@ static char const* make_short_opts( struct option const opts[static const 2] ) {
   size_t len = 1;                       // for leading ':'
   for ( struct option const *opt = opts; opt->name != NULL; ++opt ) {
     assert( opt->has_arg >= 0 && opt->has_arg <= 2 );
-    len += 1 + STATIC_CAST( unsigned, opt->has_arg );
+    len += 1 + STATIC_CAST( size_t, opt->has_arg );
   } // for
 
   char *const short_opts = MALLOC( char, len + 1/*\0*/ );
