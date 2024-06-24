@@ -1,5 +1,9 @@
 2024-06-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * options.c, options.h, set_options.c, set-error.out, set-error.test: Added
+     OPT_CDECL_DEBUG_ALL, OPT_ECSU_ALL, OPT_WEST_DECL_ALL.
+   * c_ast_check.c, c_kind.h, explain.out, explain.test: Now allowing blocks &
+     user-defined literals in multi-declarations.
    * configure.ac, c_ast.c, slist.c, slist.h, explain.out, explain.test: Fixed
      multi-declaration of functions.
 
