@@ -26,6 +26,9 @@ e.g.:
     declare f as function (integer) returning integer
     declare g as function (double precision) returning integer
 
+** Invalid conf file is now fatal
+An error in a conf file is now fatal.
+
 
 * Changes in Cdecl 17.0.1
 

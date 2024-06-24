@@ -78,26 +78,6 @@ static char const* home_dir( void ) {
   return home;
 }
 
-/**
- * Reads the configuration file \a conf_path.
- *
- * @param conf_path The full path of the configuration file to read.
- * @return Returns `false` only if \a conf_path could not be opened for
- * reading.
- */
-NODISCARD
-static bool read_conf_file( char const *conf_path ) {
-  assert( conf_path != NULL );
-
-  FILE *const conf_file = fopen( conf_path, "r" );
-  if ( conf_file == NULL )
-    return false;
-
-  PJL_DISCARD_RV( cdecl_parse_file( conf_file ) );
-  fclose( conf_file );
-  return true;
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 void conf_init( void ) {
@@ -119,14 +99,27 @@ void conf_init( void ) {
     }
   }
 
+  int parse_rv = EX_OK;
+
   if ( conf_path != NULL ) {
     print_params.conf_path = conf_path;
-    if ( !read_conf_file( conf_path ) && opt_conf_path != NULL )
+
+    FILE *const conf_file = fopen( conf_path, "r" );
+    if ( conf_file != NULL ) {
+      parse_rv = cdecl_parse_file( conf_file );
+      fclose( conf_file );
+    }
+    else if ( opt_conf_path != NULL ) {
       fatal_error( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
+    }
+
     print_params.conf_path = NULL;
   }
 
   strbuf_cleanup( &sbuf );
+
+  if ( parse_rv != EX_OK )
+    exit( parse_rv );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
