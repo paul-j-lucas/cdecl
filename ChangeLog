@@ -1,3 +1,8 @@
+2024-06-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, c_ast.c, slist.c, slist.h, explain.out, explain.test: Fixed
+     multi-declaration of functions.
+
 2024-06-23  Paul J. Lucas <paul@lucasmail.org>
 
    * cli_options.c: s/unsigned/size_t/
