@@ -140,6 +140,36 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
   return dst_list;
 }
 
+bool slist_equal( slist_t const *i_list, slist_t const *j_list,
+                  slist_equal_fn_t equal_fn ) {
+  assert( i_list != NULL );
+  assert( j_list != NULL );
+
+  if ( i_list == j_list )
+    return true;
+  if ( slist_len( i_list ) != slist_len( j_list ) )
+    return false;
+
+  slist_node_t const *i_node = i_list->head, *j_node = j_list->head;
+
+  if ( equal_fn == NULL ) {             // avoid repeated check in loop
+    for ( ; i_node != NULL && j_node != NULL;
+          i_node = i_node->next, j_node = j_node->next ) {
+      if ( i_node->data != j_node->data )
+        return false;
+    } // for
+  }
+  else {
+    for ( ; i_node != NULL && j_node != NULL;
+          i_node = i_node->next, j_node = j_node->next ) {
+      if ( !(*equal_fn)( i_node->data, j_node->data ) )
+        return false;
+    } // for
+  }
+
+  return true;
+}
+
 bool slist_free_if( slist_t *list, slist_pred_fn_t pred_fn, void *data ) {
   assert( list != NULL );
   assert( pred_fn != NULL );

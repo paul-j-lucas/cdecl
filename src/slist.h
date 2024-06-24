@@ -97,6 +97,8 @@ typedef struct slist_node slist_node_t;
  * @param j_data A pointer to the second node's data to compare.
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
  * less than, equal to, or greater than \a j_data, respectively.
+ *
+ * @sa slist_equal_fn_t
  */
 typedef int (*slist_cmp_fn_t)( void const *i_data, void const *j_data );
 
@@ -108,6 +110,18 @@ typedef int (*slist_cmp_fn_t)( void const *i_data, void const *j_data );
  * @return Returns a duplicate of \a data.
  */
 typedef void* (*slist_dup_fn_t)( void const *data );
+
+/**
+ * The signature for a function passed to slist_equal() used to compare data
+ * associated with each node (if necessary).
+ *
+ * @param i_data A pointer to the first node's data to compare.
+ * @param j_data A pointer to the second node's data to compare.
+ * @return Returns `true` only if \a i_data is equal to \a j_data.
+ *
+ * @sa slist_cmp_fn_t
+ */
+typedef bool (*slist_equal_fn_t)( void const *i_data, void const *j_data );
 
 /**
  * The signature for a function passed to slist_cleanup() used to free data
@@ -193,6 +207,8 @@ void slist_cleanup( slist_t *list, slist_free_fn_t free_fn );
  * compared directly as signed integers).
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_list is
  * less than, equal to, or greater than \a j_list, respectively.
+ *
+ * @sa slist_equal()
  */
 NODISCARD
 int slist_cmp( slist_t const *i_list, slist_t const *j_list,
@@ -214,6 +230,22 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
  */
 NODISCARD
 slist_t slist_dup( slist_t const *src_list, ssize_t n, slist_dup_fn_t dup_fn );
+
+/**
+ * Compares two lists for equality.
+ *
+ * @param i_list The first list.
+ * @param j_list The second list.
+ * @param equal_fn A pointer to a function to use to compare data at each node
+ * of \a i_list and \a j_list or NULL if none is required (hence the data will
+ * be compared directly).
+ * @return Returns `true` only if \a i_list is equal to \a j_list.
+ *
+ * @sa slist_cmp()
+ */
+NODISCARD
+bool slist_equal( slist_t const *i_list, slist_t const *j_list,
+                  slist_equal_fn_t equal_fn );
 
 /**
  * Frees select nodes from \a list for which \a pred_fn returns `true`.

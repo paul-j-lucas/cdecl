@@ -352,6 +352,9 @@ cdecl> explain void f( char const *fmt, ... )
 declare f as function (fmt as pointer to constant character, variadic) returning void
 cdecl> explain void f( double (*a)[5] )
 declare f as function (a as pointer to array 5 of double precision) returning void
+cdecl> explain void f( int ), g( double )
+declare f as function (integer) returning void
+declare g as function (double precision) returning void
 cdecl> explain void f( int g() )
 declare f as function (g as pointer to function returning integer) returning void
 cdecl> explain void f( char[] )

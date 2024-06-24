@@ -10,6 +10,17 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 17.0.2
+
+** Fixed multi-declaration of functions
+A multi-declaration of functions with different signatures has been fixed,
+e.g.:
+
+    cdecl> explain int f(int), g(double)
+    declare f as function (integer) returning integer
+    declare g as function (double precision) returning integer
+
+
 * Changes in Cdecl 17.0.1
 
 ** Fixed returning parameter packs

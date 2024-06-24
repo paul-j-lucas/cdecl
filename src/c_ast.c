@@ -215,15 +215,10 @@ static c_ast_list_t c_ast_list_dup( c_ast_list_t const *src_list,
  * @sa c_ast_equal()
  */
 NODISCARD
-static bool c_ast_list_equal( c_ast_list_t const *i_list,
-                              c_ast_list_t const *j_list ) {
-  assert( i_list != NULL );
-  assert( j_list != NULL );
-
-  if ( slist_len( i_list ) != slist_len( j_list ) )
-    return false;
-  return 0 == slist_cmp(
-    i_list, j_list, POINTER_CAST( slist_cmp_fn_t, &c_ast_equal )
+static inline bool c_ast_list_equal( c_ast_list_t const *i_list,
+                                     c_ast_list_t const *j_list ) {
+  return slist_equal(
+    i_list, j_list, POINTER_CAST( slist_equal_fn_t, &c_ast_equal )
   );
 }
 
