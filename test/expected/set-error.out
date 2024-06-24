@@ -1,3 +1,6 @@
+cdecl> set debug=x
+                 ^
+11: error: "x": invalid value for debug; must be [u]+|*|-
 cdecl> set expl
            ^
 5: error: "expl": ambiguous set option; could be explicit-ecsu or explicit-int
@@ -6,7 +9,7 @@ cdecl> set expli
 5: error: "expli": ambiguous set option; could be explicit-ecsu or explicit-int
 cdecl> set explicit-ecsu=x
                          ^
-19: error: "x": invalid value for explicit-ecsu; must be *, -, or {e|c|s|u}+
+19: error: "x": invalid value for explicit-ecsu; must be [ecsu]+|*|-
 cdecl> set explicit-int
            ^
 5: error: set option "explicit-int" requires =<value>
@@ -28,6 +31,9 @@ cdecl> set noexplicit-int=u
 cdecl> set prompt=x
                   ^
 12: error: "x": set option "prompt" takes no value
+cdecl> set west-decl=x
+                     ^
+15: error: "x": invalid value for west-decl; must be [bflost]+|*|-
 cdecl> set xxx
            ^
 5: error: "xxx": unknown set option

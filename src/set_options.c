@@ -409,8 +409,9 @@ static bool set_debug( set_option_fn_args_t const *args ) {
     if ( !ok ) {
       print_error( args->opt_value_loc,
         "\"%s\": invalid value for debug;"
-        " must be *, -, or u\n",
-        args->opt_value
+        " must be [%s]+|*|-\n",
+        args->opt_value,
+        OPT_CDECL_DEBUG_ALL
       );
     }
   }
@@ -502,8 +503,9 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
     if ( !ok ) {
       print_error( args->opt_value_loc,
         "\"%s\": invalid value for explicit-ecsu;"
-        " must be *, -, or {e|c|s|u}+\n",
-        args->opt_value
+        " must be [%s]+|*|-\n",
+        args->opt_value,
+        OPT_ECSU_ALL
       );
     }
   }
@@ -726,8 +728,8 @@ static bool set_west_decl( set_option_fn_args_t const *args ) {
     if ( !ok ) {
       print_error( args->opt_value_loc,
         "\"%s\": invalid value for west-decl;"
-        " must be *, -, or {b|f|l|o|r|s|t}+\n",
-        args->opt_value
+        " must be [%s]+|*|-\n",
+        args->opt_value, OPT_WEST_DECL_ALL
       );
     }
   }

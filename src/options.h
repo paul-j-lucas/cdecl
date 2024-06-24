@@ -97,6 +97,15 @@ extern bool         opt_using;          ///< Print `using` in C++11 and later?
 /// Kinds to print `*` and `&` "west" of the space.
 extern c_ast_kind_t opt_west_decl_kinds;
 
+/// What `*` expands into for `set debug=*`.
+extern char const   OPT_CDECL_DEBUG_ALL[];
+
+/// What `*` expands into for `set escu=*`.
+extern char const   OPT_ECSU_ALL[];
+
+/// What `*` expands into for `set west-decl=*`.
+extern char const   OPT_WEST_DECL_ALL[];
+
 // other extern variables
 #ifdef ENABLE_FLEX_DEBUG
 /// Flex variable for debugging; use #opt_flex_debug instead.
