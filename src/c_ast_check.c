@@ -847,8 +847,11 @@ static bool c_ast_check_errors( c_ast_t const *ast ) {
 NODISCARD
 static bool c_ast_check_for_multi_decl( c_ast_t const *ast ) {
   assert( ast != NULL );
-  return  (ast->kind & (K_ANY_OBJECT | K_FUNCTION | K_OPERATOR)) != 0 &&
-          !c_sname_empty( &ast->sname );
+  if ( (ast->kind & K_ANY_MULTI_DECL) == 0 )
+    return false;
+  if ( (ast->kind & K_ANY_NAME) != 0 && c_sname_empty( &ast->sname ) )
+    return false;
+  return true;
 }
 
 /**

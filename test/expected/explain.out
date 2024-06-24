@@ -646,6 +646,13 @@ c++decl> explain int bitand x
 declare x as reference to integer
 c++decl> explain int f([[carries_dependency]] int x)
 declare f as function (x as carries dependency integer) returning integer
+c++decl> explain int i, a[2], (^b)(char), f(double), operator~(S&), operator""_x(char)
+declare i as integer
+declare a as array 2 of integer
+declare b as block (character) returning integer
+declare f as function (double precision) returning integer
+declare ~ as non-member operator (reference to structure S) returning integer
+declare _x as user-defined literal (character) returning integer
 c++decl> explain auto ...x
 declare x as parameter pack
 c++decl> explain auto &...x

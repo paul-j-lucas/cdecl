@@ -12,6 +12,12 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 17.0.2
 
+** Allowing blocks & user-defined literals in multi-declarations
+Apple blocks and C++ user-defined literals are now correctly allowed in multi-
+declarations, e.g.:
+
+    int i, a[2], (^b)(char), f(double), operator~(S&), operator""_x(char)
+
 ** Fixed multi-declaration of functions
 A multi-declaration of functions with different signatures has been fixed,
 e.g.:

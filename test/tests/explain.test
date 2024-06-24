@@ -329,6 +329,7 @@ explain int C::*p
 explain int S::x
 explain int bitand x
 explain int f([[carries_dependency]] int x)
+explain int i, a[2], (^b)(char), f(double), operator~(S&), operator""_x(char)
 
 explain auto ...x
 explain auto &...x
