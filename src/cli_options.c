@@ -532,9 +532,6 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(LANGUAGE):
         opt_lang_id = parse_lang( optarg );
         break;
-      case COPT(TRIGRAPHS):
-        opt_graph = C_GRAPH_TRI;
-        break;
       case COPT(NO_BUFFER_STDOUT):
         opt_buffer_stdout = false;
         break;
@@ -558,6 +555,9 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
       case COPT(TRAILING_RETURN):
         opt_trailing_ret = true;
+        break;
+      case COPT(TRIGRAPHS):
+        opt_graph = C_GRAPH_TRI;
         break;
       case COPT(OPTIONS):
         opt_options = true;
