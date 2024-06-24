@@ -405,8 +405,8 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
 
     case K_LAMBDA:
-      if ( !c_ast_list_equal( &i_ast->func.param_ast_list,
-                              &j_ast->func.param_ast_list ) ||
+      if ( !c_ast_list_equal( &i_ast->lambda.param_ast_list,
+                              &j_ast->lambda.param_ast_list ) ||
            !c_ast_list_equal( &i_ast->lambda.capture_ast_list,
                               &j_ast->lambda.capture_ast_list ) ) {
         return false;
