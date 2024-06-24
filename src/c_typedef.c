@@ -568,6 +568,8 @@ static predef_type_t const PREDEFINED_STD_CPP_17[] = {
 
 /**
  * Predefined types for C++20.
+ *
+ * @sa PREDEFINED_STD_CPP_20_REQUIRED
  */
 static predef_type_t const PREDEFINED_STD_CPP_20[] = {
   PT( "namespace std         {      class   ambiguous_local_time; }" ),
@@ -624,6 +626,8 @@ static predef_type_t const PREDEFINED_STD_CPP_20[] = {
 
 /**
  * Predefined required types for C++20.
+ *
+ * @sa PREDEFINED_STD_CPP_20
  */
 static predef_type_t const PREDEFINED_STD_CPP_20_REQUIRED[] = {
   // required for operator <=>
