@@ -1,5 +1,8 @@
 2024-06-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * cli_options.c, options.c, options.h, print.c, print.h, file-cast_x.out,
+     file-declare_x.out, file-explain_x.out: Added file path and error line
+     number when an error occurs in a file.
    * conf_file.c: Invalid conf file is now fatal.
    * options.c, options.h, set_options.c, set-error.out, set-error.test: Added
      OPT_CDECL_DEBUG_ALL, OPT_ECSU_ALL, OPT_WEST_DECL_ALL.
