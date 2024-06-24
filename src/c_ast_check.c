@@ -724,13 +724,13 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
     (is_definition ? TS_CONSTRUCTOR_DEF : TS_CONSTRUCTOR_DECL) :
     (is_definition ? TS_DESTRUCTOR_DEF  : TS_DESTRUCTOR_DECL ) ;
 
-  c_tid_t const stids = ast->type.stids & c_tid_compl( ok_stids );
-  if ( stids != TS_NONE ) {
+  c_tid_t const not_ok_stids = ast->type.stids & c_tid_compl( ok_stids );
+  if ( not_ok_stids != TS_NONE ) {
     print_error( &ast->loc,
       "%s%s can not be \"%s\"\n",
       c_kind_name( ast->kind ),
       is_definition ? " definitions" : "s",
-      c_tid_name_error( stids )
+      c_tid_name_error( not_ok_stids )
     );
     return false;
   }
