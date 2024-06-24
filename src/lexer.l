@@ -1798,13 +1798,11 @@ void lexer_pop_string( void ) {
 
 char const* lexer_printable_token( void ) {
   switch ( lexer_token[0] ) {
-    case '\0': return NULL;
-    case '\f': return "\\f";
-    case '\n': return "\\n";
-    case '\r': return "\\r";
-    case '\t': return "\\t";
-    case '\v': return "\\v";
-    default  : return lexer_token;
+    case '\0':
+    case '\n':
+      return NULL;
+    default:
+      return lexer_token;
   } // switch
 }
 
