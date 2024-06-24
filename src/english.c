@@ -383,7 +383,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
 
     case K_CONCEPT:
       fputs_sp( c_type_name_english( &ast->type ), eng->fout );
-      FPRINTF( eng->fout, "%s ", L_concept );
+      FPUTS( "concept ", eng->fout );
       c_sname_english( &ast->concept.concept_sname, eng->fout );
       if ( c_ast_root( ast )->is_param_pack )
         FPUTS( " parameter pack", eng->fout );
