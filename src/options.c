@@ -57,6 +57,7 @@ bool                opt_east_const;
 bool                opt_echo_commands;
 bool                opt_english_types = true;
 c_tid_t             opt_explicit_ecsu_btids = TB_struct | TB_union;
+char const         *opt_file = "-";
 c_graph_t           opt_graph;
 bool                opt_infer_command;
 c_lang_id_t         opt_lang_id;

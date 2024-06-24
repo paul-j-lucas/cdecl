@@ -76,6 +76,8 @@ extern bool         opt_english_types;  ///< Print types in English, not C/C++.
 /// Explicit `enum` | `class` | `struct` | `union`?
 extern c_tid_t      opt_explicit_ecsu_btids;
 
+extern char const  *opt_file;           ///< Read from this file.
+
 #ifdef ENABLE_FLEX_DEBUG
 /// Print Flex debug output?
 ///

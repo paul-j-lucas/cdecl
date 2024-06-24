@@ -235,6 +235,7 @@ void print_error_token_is_a( char const *error_token );
  *
  *  + The error line (if neither a TTY nor interactive).
  *  + A `^` (in color, if possible and requested) under the offending token.
+ *  + The file and line the error is in (if reading from a file).
  *  + The error column.
  *
  * @note A newline is _not_ printed.

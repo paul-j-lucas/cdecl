@@ -451,7 +451,6 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
 static void parse_options( int *pargc, char const **pargv[const] ) {
   opterr = 0;                           // suppress default error message
 
-  char const *      fin_path = "-";
   char const *      fout_path = "-";
   int               opt;
   bool              opt_buffer_stdout = true;
@@ -516,7 +515,7 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
       case COPT(FILE):
         if ( *SKIP_WS( optarg ) == '\0' )
           goto missing_arg;
-        fin_path = optarg;
+        opt_file = optarg;
         break;
 #ifdef ENABLE_FLEX_DEBUG
       case COPT(FLEX_DEBUG):
@@ -646,8 +645,8 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
 
   opt_check_mutually_exclusive( COPT(DIGRAPHS), SOPT(TRIGRAPHS) );
 
-  if ( strcmp( fin_path, "-" ) != 0 && !freopen( fin_path, "r", stdin ) )
-    fatal_error( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
+  if ( strcmp( opt_file, "-" ) != 0 && !freopen( opt_file, "r", stdin ) )
+    fatal_error( EX_NOINPUT, "\"%s\": %s\n", opt_file, STRERROR() );
 
   if ( strcmp( fout_path, "-" ) != 0 && !freopen( fout_path, "w", stdout ) )
     fatal_error( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );

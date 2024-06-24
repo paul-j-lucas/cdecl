@@ -18,6 +18,10 @@ declarations, e.g.:
 
     int i, a[2], (^b)(char), f(double), operator~(S&), operator""_x(char)
 
+** File line number
+When reading from a file via `-f`, now includes the file name and error line
+number in error messages.
+
 ** Fixed multi-declaration of functions
 A multi-declaration of functions with different signatures has been fixed,
 e.g.:
