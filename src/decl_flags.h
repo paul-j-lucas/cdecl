@@ -123,7 +123,7 @@
  * @sa #C_GIB_OPT_OMIT_TYPE
  * @sa #C_GIB_PRINT_DECL
  */
-#define C_GIB_OPT_MULTI_DECL      (1u << 11)
+#define C_GIB_OPT_MULTI_DECL      (1u << 10)
 
 /**
  * Flag for c_ast_gibberish() to omit the type name when printing gibberish for
@@ -142,7 +142,7 @@
  * @sa #C_GIB_OPT_MULTI_DECL
  * @sa #C_GIB_PRINT_DECL
  */
-#define C_GIB_OPT_OMIT_TYPE       (1u << 12)
+#define C_GIB_OPT_OMIT_TYPE       (1u << 11)
 
 /**
  * Flag for c_ast_gibberish() or c_typedef_gibberish() to print the final
@@ -154,7 +154,7 @@
  * @sa c_ast_gibberish()
  * @sa c_typedef_gibberish()
  */
-#define C_GIB_OPT_SEMICOLON       (1u << 10)
+#define C_GIB_OPT_SEMICOLON       (1u << 12)
 
 /**
  * Dual purpose:
