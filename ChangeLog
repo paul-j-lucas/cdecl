@@ -1,5 +1,14 @@
+2024-06-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * cli_options.c: s/unsigned/size_t/
+   * set_options.c: Added missing 's'.
+   * decl_flags.h: Sorted C_GIB_OPT_MULTI_DECL's value.
+   * lexer.l: Added other escaped whitespace characters.
+
 2024-06-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l, print.c: Made yylineno correctly 1-based.
+   * strbuf.c: Now always setting sbuf->len = 0.
    * p_macro.c: Avoid possible free() of non-malloc()'d memory.
    * autocomplete.c, autocomplete.h, parse.c, read_line.c, read_line.h:
      Eliminated prog_name from readline_init() and strbuf_read_line().
