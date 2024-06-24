@@ -230,16 +230,16 @@ static set_option_t const SET_OPTIONS[] = {
     &set_trigraphs
   },
 
-  { "west-decl",
-    SET_OPTION_TOGGLE,
-    .has_arg = required_argument,
-    &set_west_decl
-  },
-
   { "using",
     SET_OPTION_TOGGLE,
     .has_arg = no_argument,
     &set_using
+  },
+
+  { "west-decl",
+    SET_OPTION_TOGGLE,
+    .has_arg = required_argument,
+    &set_west_decl
   },
 
   { NULL,
