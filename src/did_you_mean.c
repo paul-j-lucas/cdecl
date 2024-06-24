@@ -219,11 +219,10 @@ static bool copy_macro_vistor( p_macro_t const *macro, void *data ) {
   }
 
   dym_rb_visit_data_t *const drvd = data;
-  if ( drvd->pdym == NULL ) {
+  if ( drvd->pdym == NULL )
     ++drvd->count;
-  } else {
+  else
     (*drvd->pdym)++->literal = check_strdup( macro->name );
-  }
   return false;
 }
 
