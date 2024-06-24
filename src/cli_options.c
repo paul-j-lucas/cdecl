@@ -112,8 +112,7 @@ static struct option const CLI_OPTIONS[] = {
   //
   //  1. Calls to opt_check_exclusive().
   //  2. Calls to opt_check_mutually_exclusive().
-  //  3. The message in print_usage().
-  //  4. The corresponding "set" option in SET_OPTIONS in set_options.c.
+  //  3. The corresponding "set" option in SET_OPTIONS in set_options.c.
   //
   { "alt-tokens",       no_argument,        NULL, COPT(ALT_TOKENS)        },
 #ifdef ENABLE_BISON_DEBUG
