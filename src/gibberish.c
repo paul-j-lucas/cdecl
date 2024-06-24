@@ -183,15 +183,15 @@ static void c_ast_array_size_gibberish( c_ast_t const *ast,
     FPUTS( c_type_name_c( &ast->type ), gib->fout );
 
   switch ( ast->array.kind ) {
-    case C_ARRAY_EMPTY_SIZE:
+    case C_ARRAY_SIZE_NONE:
       break;
-    case C_ARRAY_INT_SIZE:
+    case C_ARRAY_SIZE_INT:
       FPRINTF( gib->fout, "%s%u", is_qual ? " " : "", ast->array.size_int );
       break;
-    case C_ARRAY_NAMED_SIZE:
+    case C_ARRAY_SIZE_NAME:
       FPRINTF( gib->fout, "%s%s", is_qual ? " " : "", ast->array.size_name );
       break;
-    case C_ARRAY_VLA_STAR:
+    case C_ARRAY_SIZE_VLA:
       FPUTC( '*', gib->fout );
       break;
   } // switch

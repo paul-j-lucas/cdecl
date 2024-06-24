@@ -249,14 +249,14 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *node_list ) {
     case K_ARRAY:
       dup_ast->array.kind = ast->array.kind;
       switch ( ast->array.kind ) {
-        case C_ARRAY_INT_SIZE:
+        case C_ARRAY_SIZE_INT:
           dup_ast->array.size_int = ast->array.size_int;
           break;
-        case C_ARRAY_NAMED_SIZE:
+        case C_ARRAY_SIZE_NAME:
           dup_ast->array.size_name = check_strdup( ast->array.size_name );
           break;
-        case C_ARRAY_EMPTY_SIZE:
-        case C_ARRAY_VLA_STAR:
+        case C_ARRAY_SIZE_NONE:
+        case C_ARRAY_SIZE_VLA:
           // nothing to do
           break;
       } // switch
@@ -357,16 +357,16 @@ bool c_ast_equal( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       if ( ai_ast->kind != aj_ast->kind )
         return false;
       switch ( ai_ast->kind ) {
-        case C_ARRAY_INT_SIZE:
+        case C_ARRAY_SIZE_INT:
           if ( ai_ast->size_int != aj_ast->size_int )
             return false;
           break;
-        case C_ARRAY_NAMED_SIZE:
+        case C_ARRAY_SIZE_NAME:
           if ( strcmp( ai_ast->size_name, aj_ast->size_name ) != 0 )
             return false;
           break;
-        case C_ARRAY_EMPTY_SIZE:
-        case C_ARRAY_VLA_STAR:
+        case C_ARRAY_SIZE_NONE:
+        case C_ARRAY_SIZE_VLA:
           break;
       } // switch
       break;
@@ -463,7 +463,7 @@ void c_ast_free( c_ast_t *ast ) {
     c_sname_cleanup( &ast->sname );
     switch ( ast->kind ) {
       case K_ARRAY:
-        if ( ast->array.kind == C_ARRAY_NAMED_SIZE )
+        if ( ast->array.kind == C_ARRAY_SIZE_NAME )
           FREE( ast->array.size_name );
         break;
       case K_LAMBDA:

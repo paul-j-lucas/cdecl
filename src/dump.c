@@ -209,16 +209,16 @@ static void c_ast_dump_impl( c_ast_t const *ast, dump_state_t *dump ) {
       kind_json = json_object_begin( JSON_INIT, "array", dump );
       DUMP_KEY( dump, "size: " );
       switch ( ast->array.kind ) {
-        case C_ARRAY_EMPTY_SIZE:
+        case C_ARRAY_SIZE_NONE:
           FPUTS( "\"unspecified\"", dump->fout );
           break;
-        case C_ARRAY_INT_SIZE:
+        case C_ARRAY_SIZE_INT:
           FPRINTF( dump->fout, "%u", ast->array.size_int );
           break;
-        case C_ARRAY_NAMED_SIZE:
+        case C_ARRAY_SIZE_NAME:
           FPRINTF( dump->fout, "\"%s\"", ast->array.size_name );
           break;
-        case C_ARRAY_VLA_STAR:
+        case C_ARRAY_SIZE_VLA:
           FPUTS( "'*'", dump->fout );
           break;
       } // switch

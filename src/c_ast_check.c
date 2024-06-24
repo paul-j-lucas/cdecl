@@ -303,7 +303,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
   }
 
   switch ( ast->array.kind ) {
-    case C_ARRAY_EMPTY_SIZE:
+    case C_ARRAY_SIZE_NONE:
       if ( c_tid_is_any( ast->type.stids, TS_NON_EMPTY_ARRAY ) ) {
         //
         // When deciphering gibberish into pseudo-English, this situation is
@@ -327,14 +327,14 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
       }
       break;
 
-    case C_ARRAY_INT_SIZE:
+    case C_ARRAY_SIZE_INT:
       if ( ast->array.size_int == 0 ) {
         print_error( &ast->loc, "array dimension must be > 0\n" );
         return false;
       }
       break;
 
-    case C_ARRAY_NAMED_SIZE:
+    case C_ARRAY_SIZE_NAME:
       if ( ast->param_of_ast == NULL )
         break;
       c_ast_t const *const size_param_ast =
@@ -350,7 +350,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
       }
       FALLTHROUGH;
 
-    case C_ARRAY_VLA_STAR:
+    case C_ARRAY_SIZE_VLA:
       if ( !OPT_LANG_IS( VLAS ) ) {
         print_error( &ast->loc,
           "variable length arrays not supported%s\n",
@@ -375,7 +375,7 @@ static bool c_ast_check_array( c_ast_t const *ast ) {
   c_ast_t const *const raw_of_ast = c_ast_untypedef( of_ast );
   switch ( raw_of_ast->kind ) {
     case K_ARRAY:
-      if ( of_ast->array.kind == C_ARRAY_EMPTY_SIZE ) {
+      if ( of_ast->array.kind == C_ARRAY_SIZE_NONE ) {
         print_error( &of_ast->loc, "array dimension required\n" );
         return false;
       }

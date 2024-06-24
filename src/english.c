@@ -255,7 +255,7 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
     case K_ARRAY:
       c_type_name_nobase_english( &ast->type, eng->fout );
       switch ( ast->array.kind ) {
-        case C_ARRAY_NAMED_SIZE:
+        case C_ARRAY_SIZE_NAME:
           //
           // Just because an array has a named size doesn't mean it's a VLA.
           //
@@ -284,24 +284,24 @@ static bool c_ast_visitor_english( c_ast_t const *ast, user_data_t user_data ) {
           //
           FALLTHROUGH;
 
-        case C_ARRAY_VLA_STAR:
+        case C_ARRAY_SIZE_VLA:
           FPUTS( "variable length ", eng->fout );
           break;
 
-        case C_ARRAY_EMPTY_SIZE:
-        case C_ARRAY_INT_SIZE:
+        case C_ARRAY_SIZE_NONE:
+        case C_ARRAY_SIZE_INT:
           break;
       } // switch
       FPUTS( "array ", eng->fout );
       switch ( ast->array.kind ) {
-        case C_ARRAY_INT_SIZE:
+        case C_ARRAY_SIZE_INT:
           FPRINTF( eng->fout, "%u ", ast->array.size_int );
           break;
-        case C_ARRAY_NAMED_SIZE:
+        case C_ARRAY_SIZE_NAME:
           FPRINTF( eng->fout, "%s ", ast->array.size_name );
           break;
-        case C_ARRAY_EMPTY_SIZE:
-        case C_ARRAY_VLA_STAR:
+        case C_ARRAY_SIZE_NONE:
+        case C_ARRAY_SIZE_VLA:
           break;
       } // switch
       FPUTS( "of ", eng->fout );

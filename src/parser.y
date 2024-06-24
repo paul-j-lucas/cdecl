@@ -4694,32 +4694,32 @@ array_size_c_ast
   : '[' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.kind = C_ARRAY_EMPTY_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_NONE;
     }
   | '[' uint_lit[size] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.kind = C_ARRAY_INT_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_INT;
       $$->array.size_int = $size;
     }
   | '[' Y_NAME[name] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.kind = C_ARRAY_NAMED_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_NAME;
       $$->array.size_name = $name;
     }
   | '[' type_qualifier_list_c_stid[qual_stids] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
-      $$->array.kind = C_ARRAY_EMPTY_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_NONE;
     }
   | '[' type_qualifier_list_c_stid[qual_stids] static_stid_opt[static_stid]
     uint_lit[size] rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->type.stids = c_tid_check( $qual_stids | $static_stid, C_TPID_STORE );
-      $$->array.kind = C_ARRAY_INT_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_INT;
       $$->array.size_int = $size;
     }
   | '[' type_qualifier_list_c_stid[qual_stids] static_stid_opt[static_stid]
@@ -4727,14 +4727,14 @@ array_size_c_ast
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->type.stids = c_tid_check( $qual_stids | $static_stid, C_TPID_STORE );
-      $$->array.kind = C_ARRAY_NAMED_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_NAME;
       $$->array.size_name = $name;
     }
   | '[' type_qualifier_list_c_stid_opt[qual_stids] '*' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->type.stids = c_tid_check( $qual_stids, C_TPID_STORE );
-      $$->array.kind = C_ARRAY_VLA_STAR;
+      $$->array.kind = C_ARRAY_SIZE_VLA;
     }
   | '[' Y_static type_qualifier_list_c_stid_opt[qual_stids] uint_lit[size]
     rbracket_exp
@@ -4742,7 +4742,7 @@ array_size_c_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->type.stids =
         c_tid_check( TS_NON_EMPTY_ARRAY | $qual_stids, C_TPID_STORE );
-      $$->array.kind = C_ARRAY_INT_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_INT;
       $$->array.size_int = $size;
     }
   | '[' Y_static type_qualifier_list_c_stid_opt[qual_stids] Y_NAME[name]
@@ -4751,7 +4751,7 @@ array_size_c_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->type.stids =
         c_tid_check( TS_NON_EMPTY_ARRAY | $qual_stids, C_TPID_STORE );
-      $$->array.kind = C_ARRAY_NAMED_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_NAME;
       $$->array.size_name = $name;
     }
   | '[' error ']'
@@ -7495,9 +7495,9 @@ array_decl_english_ast
 
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       if ( $name == NULL ) {
-        $$->array.kind = C_ARRAY_VLA_STAR;
+        $$->array.kind = C_ARRAY_SIZE_VLA;
       } else {
-        $$->array.kind = C_ARRAY_NAMED_SIZE;
+        $$->array.kind = C_ARRAY_SIZE_NAME;
         $$->array.size_name = $name;
       }
       c_ast_set_parent( $decl_ast, $$ );
@@ -7511,24 +7511,24 @@ array_size_decl_ast
   : /* empty */
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.kind = C_ARRAY_EMPTY_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_NONE;
     }
   | uint_lit[size]
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.kind = C_ARRAY_INT_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_INT;
       $$->array.size_int = $size;
     }
   | Y_NAME[name]
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.kind = C_ARRAY_NAMED_SIZE;
+      $$->array.kind = C_ARRAY_SIZE_NAME;
       $$->array.size_name = $name;
     }
   | '*'
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->array.kind = C_ARRAY_VLA_STAR;
+      $$->array.kind = C_ARRAY_SIZE_VLA;
     }
   ;
 

@@ -69,10 +69,10 @@ enum c_alignas_kind {
  * Array kind.
  */
 enum c_array_kind {
-  C_ARRAY_EMPTY_SIZE,                   ///< E.g., `a[]`.
-  C_ARRAY_INT_SIZE,                     ///< E.g., `a[4]`.
-  C_ARRAY_NAMED_SIZE,                   ///< E.g., `a[n]`.
-  C_ARRAY_VLA_STAR                      ///< E.g., `a[*]` (C99 and later only).
+  C_ARRAY_SIZE_NONE,                    ///< E.g., `a[]`.
+  C_ARRAY_SIZE_INT,                     ///< E.g., `a[4]`.
+  C_ARRAY_SIZE_NAME,                    ///< E.g., `a[n]`.
+  C_ARRAY_SIZE_VLA                      ///< E.g., `a[*]` (C99 and later only).
 };
 
 /**

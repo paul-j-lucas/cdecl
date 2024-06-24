@@ -201,8 +201,8 @@ struct c_array_ast {
   c_ast_t        *of_ast;               ///< What it's an array of.
   c_array_kind_t  kind;                 ///< Kind.
   union {
-    unsigned      size_int;             ///< For #C_ARRAY_INT_SIZE.
-    char const   *size_name;            ///< For #C_ARRAY_NAMED_SIZE.
+    unsigned      size_int;             ///< For #C_ARRAY_SIZE_INT.
+    char const   *size_name;            ///< For #C_ARRAY_SIZE_NAME.
   };
 };
 
