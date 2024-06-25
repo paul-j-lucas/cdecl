@@ -50,6 +50,7 @@
 #include "p_keyword.h"
 #include "p_macro.h"
 #include "print.h"
+#include "read_line.h"
 #include "red_black.h"
 #include "slist.h"
 #include "strbuf.h"
@@ -221,8 +222,7 @@ char const       *lexer_token = &lexer_token_init_buf;
 static bool         digraph_warned;     ///< Printed digraph warning once?
 static rb_tree_t    include_set;        ///< Set of resolved include paths.
 static slist_t      include_stack;      ///< Stack of include paths.
-static char        *input_buf;          ///< Entire current input line.
-static size_t       input_len;          ///< Length of `input_buf`.
+static strbuf_t     input_sbuf;         ///< Entire current input line.
 static size_t       input_sent;         ///< How many bytes returned to Flex.
 static bool         is_constrained_auto;///< _Identifier_ followed by `auto`?
 static bool         is_eof;             ///< Encountered EOF?
@@ -346,15 +346,13 @@ static void lexer_cleanup( void ) {
 NODISCARD
 static yy_size_t lexer_get_input( char *buf, yy_size_t buf_cap ) {
   assert( buf != NULL );
-  yy_size_t input_avail = input_len - input_sent;
+  yy_size_t input_avail = input_sbuf.len - input_sent;
   if ( input_avail == 0 ) {
-    static size_t input_cap;
-    ssize_t bytes_read = getline( &input_buf, &input_cap, yyin );
-    if ( unlikely( bytes_read == -1 ) ) {
-      FERROR( yyin );
-      bytes_read = 0;
+    strbuf_reset( &input_sbuf );
+    if ( !strbuf_read_line( &input_sbuf, yyin, /*prompts=*/NULL ) ) {
+      strbuf_reset( &input_sbuf );
     }
-    input_avail = input_len = STATIC_CAST( yy_size_t, bytes_read );
+    input_avail = STATIC_CAST( yy_size_t, input_sbuf.len );
     input_sent = 0;
   }
   //
@@ -364,7 +362,7 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_cap ) {
   //
   if ( unlikely( input_avail > buf_cap ) )
     input_avail = buf_cap;              // LCOV_EXCL_LINE
-  memcpy( buf, input_buf + input_sent, input_avail );
+  memcpy( buf, input_sbuf.str + input_sent, input_avail );
   input_sent += input_avail;
   return input_avail;
 }
@@ -1789,8 +1787,8 @@ void lexer_init( void ) {
 
 char const* lexer_input_line( size_t *rv_len ) {
   assert( rv_len != NULL );
-  *rv_len = input_len;
-  return input_buf;
+  *rv_len = input_sbuf.len;
+  return input_sbuf.str;
 }
 
 c_loc_t lexer_loc( void ) {
@@ -1844,7 +1842,8 @@ void lexer_reset( bool hard_reset ) {
   }
   BEGIN( INITIAL );
   digraph_warned = trigraph_warned = false;
-  input_len = input_sent = 0;
+  strbuf_reset( &input_sbuf );
+  input_sent = 0;
   is_constrained_auto = false;
   is_func_like_macro = false;
   lexer_find = LEXER_FIND_ANY;
