@@ -1,5 +1,26 @@
 2024-06-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.h, lexer.l, p_token.c, read_line.c, alt-tokens.out, cast-error.out,
+     cast.out, concept-error.out, concept.out, debug.out, declare-error.out,
+     declare.out, declare_operator-error.out, declare_operator.out,
+     declare_synonyms.out, declare_udc.out, declare_udl.out, define-error.out,
+     define.out, digraphs.out, east-const.out, english-types.out,
+     expand-C23_std-6.10.4.1-ex-2.out, expand-C23_std-6.10.4.3-ex-1.out,
+     expand-C23_std-6.10.4.5-ex-4.out, expand-C23_std-6.10.4.5-ex-5.out,
+     expand-C23_std-6.10.4.5-ex-7.out, expand-error.out,
+     expand-robertelder.out, expand.out, explain-error.out, explain.out,
+     explain_cast-error.out, explain_cast.out, explain_operator-error.out,
+     explain_operator.out, explain_udc-error.out, explain_udc.out,
+     explicit-ecsu.out, explicit-int.out, gnu_attributes.out, help-error.out,
+     help.out, infer-command.out, integers.out, lang.out, ntu-error.out,
+     ntu.out, preprocessor-error.out, semicolon.out, show-error.out, show.out,
+     trigraphs.out, using.out, west-decl.out, concept-error.test, debug.test,
+     declare_operator-error.test, define-error.test, explain-error.test,
+     explain_cast-error.test, explain_operator-error.test,
+     explain_udc-error.test, help-error.test, infer-command.test,
+     ntu-error.test, preprocessor-error.test, show-error.test: Reworked
+     strbuf_read_line() to return lines always terminated with '\n' including
+     empty lines so the lexer can keep track of the correct line number.
    * parse.c: no_infer_command() now returns true for empty strings also.
 
 2024-06-24  Paul J. Lucas <paul@lucasmail.org>
