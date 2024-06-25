@@ -349,9 +349,8 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_cap ) {
   yy_size_t input_avail = input_sbuf.len - input_sent;
   if ( input_avail == 0 ) {
     strbuf_reset( &input_sbuf );
-    if ( !strbuf_read_line( &input_sbuf, yyin, /*prompts=*/NULL ) ) {
+    if ( !strbuf_read_line( &input_sbuf, yyin, /*prompts=*/NULL ) )
       strbuf_reset( &input_sbuf );
-    }
     input_avail = STATIC_CAST( yy_size_t, input_sbuf.len );
     input_sent = 0;
   }
