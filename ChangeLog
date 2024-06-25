@@ -1,5 +1,7 @@
 2024-06-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * cli_options.c, conf_file.c, print.c: Removed #include <errno.h>.
+   * util.h: Added #include <errno.h>.
    * lexer.h, lexer.l, p_token.c, read_line.c, alt-tokens.out, cast-error.out,
      cast.out, concept-error.out, concept.out, debug.out, declare-error.out,
      declare.out, declare_operator-error.out, declare_operator.out,
