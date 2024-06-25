@@ -37,7 +37,6 @@
 
 // standard
 #include <assert.h>
-#include <errno.h>
 #if HAVE_PWD_H
 # include <pwd.h>                       /* for getpwuid() */
 #endif /* HAVE_PWD_H */
