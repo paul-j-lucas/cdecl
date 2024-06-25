@@ -1,5 +1,6 @@
 2024-06-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Now using strbuf_t in lexer.
    * file-cast_i.test, file-cast_x.test, file-declare_i.test,
      file-declare_x.test, file-explain_i.test, file-explain_x.test: Eliminted
      unnecessary "here" documents.
