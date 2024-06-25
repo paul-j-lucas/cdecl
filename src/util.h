@@ -34,6 +34,7 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
+#include <errno.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 #include <stdint.h>                     /* for uint*_t */
