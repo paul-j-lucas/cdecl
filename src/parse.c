@@ -99,14 +99,16 @@ NODISCARD
 static bool no_infer_command( char const *s ) {
   assert( s != NULL );
   SKIP_WS( s );
-  if ( is_c_comment( s ) )
-    return true;
-  if ( s[0] == 'q' ) {
-    ++s;                                // 'q' must be by itself on the line
-    SKIP_WS( s );
-    return s[0] == '\0';
-  }
-  return false;
+  switch ( s[0] ) {
+    case '\0':
+      return true;
+    case 'q':
+      ++s;                              // 'q' must be by itself on the line
+      SKIP_WS( s );
+      return s[0] == '\0';
+    default:
+      return is_c_comment( s );
+  } // switch
 }
 
 /**
