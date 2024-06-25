@@ -330,8 +330,8 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
   if ( sbuf->len == 0 )
     return p_token_new_loc( P_PLACEMARKER, loc, /*literal=*/NULL );
 
-  // Preprocessor lines must end in a newline.
-  strbuf_putc( sbuf, '\n' );
+  strbuf_putc( sbuf, '\n' );            // preprocessor lines must end with \n
+
   lexer_push_string( sbuf->str, sbuf->len );
 
   p_token_t *token = NULL;
