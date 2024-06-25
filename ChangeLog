@@ -1,5 +1,11 @@
+2024-06-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * parse.c: no_infer_command() now returns true for empty strings also.
+
 2024-06-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Undid returning other escaped whitespace characters; now
+     returning NULL for '\n'.
    * cli_options.c, options.c, options.h, print.c, print.h, file-cast_x.out,
      file-declare_x.out, file-explain_x.out: Added file path and error line
      number when an error occurs in a file.
