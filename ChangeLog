@@ -1,5 +1,8 @@
 2024-06-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * file-cast_i.test, file-cast_x.test, file-declare_i.test,
+     file-declare_x.test, file-explain_i.test, file-explain_x.test: Eliminted
+     unnecessary "here" documents.
    * cli_options.c, conf_file.c, print.c: Removed #include <errno.h>.
    * util.h: Added #include <errno.h>.
    * lexer.h, lexer.l, p_token.c, read_line.c, alt-tokens.out, cast-error.out,
