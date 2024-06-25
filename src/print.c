@@ -654,7 +654,6 @@ void print_hint( char const *format, ... ) {
 void print_loc( c_loc_t const *loc ) {
   assert( loc != NULL );
   size_t const column = print_caret( STATIC_CAST( size_t, loc->first_column ) );
-  color_start( stderr, sgr_locus );
 
   char const *path = NULL;
   if ( print_params.conf_path != NULL )
@@ -663,6 +662,7 @@ void print_loc( c_loc_t const *loc ) {
     path = opt_file;
 
   if ( path != NULL ) {
+    color_start( stderr, sgr_locus );
     EPUTS( path );
     color_end( stderr, sgr_locus );
     EPUTC( ':' );
@@ -670,9 +670,9 @@ void print_loc( c_loc_t const *loc ) {
     EPRINTF( "%d", loc->first_line );
     color_end( stderr, sgr_locus );
     EPUTC( ',' );
-    color_start( stderr, sgr_locus );
   }
 
+  color_start( stderr, sgr_locus );
   EPRINTF( "%zu", column + 1 );
   color_end( stderr, sgr_locus );
   EPUTS( ": " );
