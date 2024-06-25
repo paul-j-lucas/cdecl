@@ -1,3 +1,4 @@
+cdecl> 
 cdecl> typedef int I, *PI, A2[2], F_I(double), *F_PI(), (*PF_I)()
 cdecl> typedef F_I *PF_I_2
 cdecl> typedef void Void
@@ -10,11 +11,14 @@ define PF_I as pointer to function returning integer
 define PF_I_2 as pointer to F_I
 define PI as pointer to integer
 define Void as void
+cdecl> 
 cdecl> typedef int int_least32_t
 cdecl> typedef int Int
 cdecl> typedef Int T
 cdecl> typedef Int T
+cdecl> 
 cdecl> set c++
+c++decl> 
 c++decl> struct S1 { typedef int I; }
 c++decl> explain S1::I x
 declare x as I of structure S1
@@ -33,10 +37,13 @@ struct S1 { typedef int I; };
 typedef S1::I S1_T;
 typedef Int T;
 typedef void Void;
+c++decl> 
 c++decl> define I1 of inline namespace B1 of namespace A1 as int
 c++decl> show **::I1 typedef
 namespace A1::inline B1 { typedef int I1; }
+c++decl> 
 c++decl> class C1 { class C1_C1 { typedef int Int; }; }
+c++decl> 
 c++decl> namespace A1::B1 { typedef int Int; }
 c++decl> namespace A2::inline A2_B2 { typedef int Int; }
 c++decl> namespace A3::inline A3_B3::A3_B3_C3 { typedef int Int; }
@@ -82,16 +89,21 @@ struct S1 { typedef int I; };
 typedef S1::I S1_T;
 typedef Int T;
 typedef void Void;
+c++decl> 
 c++decl> using UI = int
 c++decl> declare x as UI
 UI x;
 c++decl> explain UI x
 declare x as UI
+c++decl> 
 c++decl> using int_least32_t = int
+c++decl> 
 c++decl> using Fi_v = void (*)(int)
 c++decl> show Fi_v
 using Fi_v = void(*)(int);
+c++decl> 
 c++decl> set c++14
 c++decl> namespace A14 { namespace B14 { typedef int Int; } }
 c++decl> show A14::*::Int
 namespace A14 { namespace B14 { typedef int Int; } }
+c++decl> 

@@ -1,4 +1,5 @@
 cdecl> typedef int Int
+cdecl> 
 cdecl> show all
 typedef WORD ATOM;
 typedef int BOOL;
@@ -2685,12 +2686,14 @@ cdecl> show user
 typedef int Int;
 cdecl> show user typedef
 typedef int Int;
+cdecl> 
 cdecl> show __FILE__
 #define __FILE__ "example.c"
 cdecl> show __LINE__
 #define __LINE__ 42
 cdecl> show __STDC__
 #define __STDC__ 1
+cdecl> 
 cdecl> #define NAME2_HELPER(A,B)         A ## B
 cdecl> #define NAME2(A,B)                NAME2_HELPER(A,B)
 cdecl> show NAME2_HELPER
@@ -2701,6 +2704,7 @@ cdecl> show macros
 cdecl> show user macros
 #define NAME2(A, B) NAME2_HELPER(A,B)
 #define NAME2_HELPER(A, B) A ## B
+cdecl> 
 cdecl> set c89
 cdecl> show __STDC_VERSION__
 #define __STDC_VERSION__ 199409L
@@ -2719,6 +2723,7 @@ cdecl> show __STDC_VERSION__
 cdecl> set c23
 cdecl> show __STDC_VERSION__
 #define __STDC_VERSION__ 202311L
+cdecl> 
 cdecl> set c++
 c++decl> show all predefined typedef
 typedef WORD ATOM;
@@ -5304,9 +5309,11 @@ using va_list = void*;
 using wctrans_t = int;
 using wctype_t = unsigned long;
 using wint_t = int;
+c++decl> 
 c++decl> typedef int (*const CPF)(const char *const s)
 c++decl> typedef int *const CPI
 c++decl> typedef int S::*const CPMSI
+c++decl> 
 c++decl> show CPMSI
 typedef int S::*const CPMSI;
 c++decl> show CPMSI typedef
@@ -5333,6 +5340,7 @@ using CPF = int(*const)(const char *const);
 using CPI = int *const;
 using CPMSI = int S::*const;
 using Int = int;
+c++decl> 
 c++decl> set c++98
 c++decl> show __cplusplus
 #define __cplusplus 199711L
@@ -5354,3 +5362,4 @@ c++decl> show __cplusplus
 c++decl> set c++23
 c++decl> show __cplusplus
 #define __cplusplus 202302L
+c++decl> 

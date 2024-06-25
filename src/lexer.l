@@ -227,7 +227,6 @@ static size_t       input_sent;         ///< How many bytes returned to Flex.
 static bool         is_constrained_auto;///< _Identifier_ followed by `auto`?
 static bool         is_eof;             ///< Encountered EOF?
 static bool         is_func_like_macro; ///< Defining a function-like macro?
-static c_loc_num_t  newline_column;     ///< Column position of newline.
 static strbuf_t     str_lit_buf;        ///< String (or character) literal.
 static c_loc_t      str_lit_loc;        ///< String literal starting location.
 static c_loc_num_t  token_column;       ///< Column position of current token.
@@ -235,6 +234,21 @@ static bool         trigraph_warned;    ///< Printed trigraph warning once?
 
 /// C++ raw string literal delimiter.
 static char       rstr_delim[ RSTR_DELIM_LEN_MAX + 1/*"*/ + 1/*\0*/ ];
+
+/**
+ * Stack of `yylineno` values.
+ *
+ * @remarks Currently, we need only to remember 1 previous value between
+ * lexer_push_string() and lexer_pop_string(), but making this a "stack"
+ * future-proofs the code since it can much more easily be extended.
+ *
+ * @sa yylineno_stack_pop()
+ * @sa yylineno_stack_push()
+ */
+static int          yylineno_stack[1];
+
+/// Top of \ref yylineno_stack.
+static int          yylineno_stack_top = -1;
 
 /**
  * Stack of `YY_START` values.
@@ -383,7 +397,6 @@ static void lexer_update_loc( void ) {
  * Resets the token column position upon encountering a newline.
  */
 static inline void newline( void ) {
-  newline_column = token_column;
   token_column = 0;
 }
 
@@ -591,6 +604,27 @@ static void set_trigraph( char const *token ) {
     );
   }
   SET_TOKEN_TO( token );
+}
+
+/**
+ * Pops \ref yylineno_stack into `yylineno`.
+ *
+ * @sa yylineno_stack_push()
+ */
+static void yylineno_stack_pop( void ) {
+  assert( yylineno_stack_top >= 0 );
+  yylineno = yylineno_stack[ yylineno_stack_top-- ];
+}
+
+/**
+ * Pushes the current `yylineno` value onto \ref yylineno_stack.
+ *
+ * @sa yylineno_stack_pop()
+ */
+static void yylineno_stack_push( void ) {
+  ++yylineno_stack_top;
+  assert( yylineno_stack_top < ARRAY_SIZE( yylineno_stack ) );
+  yylineno_stack[ yylineno_stack_top ] = yylineno;
 }
 
 /**
@@ -1760,39 +1794,33 @@ char const* lexer_input_line( size_t *rv_len ) {
 }
 
 c_loc_t lexer_loc( void ) {
-  c_loc_t rv_loc;
-  rv_loc.first_line = STATIC_CAST( c_loc_num_t, yylineno );
-
-  if ( token_column == 0 )
-    rv_loc.first_column = newline_column;
-  else if ( lexer_token[0] == '\n' )
-    rv_loc.first_column = token_column;
-  else {
+  c_loc_t rv_loc = yylloc;
+  if ( lexer_token[0] == '\n' ) {
     //
-    // This has to be the original yytext, not lexer_token, since lexer_token
-    // could have been set to something else via SET_TOKEN_TO().
+    // If the current token is '\n', it means first_line & last_line are
+    // already on the next line, but we want the line that the '\n' is on which
+    // is the previous line.
     //
-    rv_loc.first_column =
-      token_column - STATIC_CAST( c_loc_num_t, strlen( yytext ) );
-    assert( rv_loc.first_column >= 0 );
+    --rv_loc.first_line;
+    --rv_loc.last_line;
   }
-
-  rv_loc.last_line = rv_loc.first_line;
-  rv_loc.last_column = rv_loc.first_column;
   return rv_loc;
 }
 
-void lexer_push_string( char const *s, size_t s_len ) {
+void lexer_push_string( char const *s, size_t s_len, c_loc_num_t line_no ) {
   assert( s != NULL );
   FILE *const f = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
   PERROR_EXIT_IF( f == NULL, EX_IOERR );
   yyin = f;
   yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
+  yylineno_stack_push();
+  yylineno = line_no;
   BEGIN( X_PRE_TOKENS );
 }
 
 void lexer_pop_string( void ) {
   lexer_pop_buffer();
+  yylineno_stack_pop();
   BEGIN( INITIAL );
 }
 

@@ -4,6 +4,7 @@ cdecl> show foo
 cdecl> show __cplusplus
             ^
 6: error: "__cplusplus" not supported in C
+cdecl> 
 cdecl> set k&rc
 cdecl> show __STDC__
             ^
@@ -11,6 +12,7 @@ cdecl> show __STDC__
 cdecl> show __STDC_VERSION__
             ^
 6: error: "__STDC_VERSION__" not supported until C89
+cdecl> 
 cdecl> set c++03
 c++decl> show using
               ^

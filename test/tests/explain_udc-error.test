@@ -5,5 +5,4 @@ typedef int A4[4]
 explain friend operator int()
 explain operator A4()
 explain static operator int()
-
 END

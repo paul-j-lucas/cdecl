@@ -194,12 +194,13 @@ char const* lexer_printable_token( void );
  *
  * @param s The string to push.
  * @param s_len The length of \a s.
+ * @param line_no The source line number whence \a s came.
  *
  * @note This _must_ be balanced by calling lexer_pop_string() eventually.
  *
  * @sa lexer_pop_string()
  */
-void lexer_push_string( char const *s, size_t s_len );
+void lexer_push_string( char const *s, size_t s_len, c_loc_num_t line_no );
 
 /**
  * Pops a previously pushed string from the lexer's input.

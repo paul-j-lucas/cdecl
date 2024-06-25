@@ -28,10 +28,12 @@ cdecl> reinterpret cast x into pointer to void
 cdecl> static cast x into int
        ^
 1: error: static_cast not supported in C
+cdecl> 
 cdecl> set knr
 cdecl> cast p into pointer to function (x as int) returning int
                                         ^
 34: error: function prototypes not supported until C89
+cdecl> 
 cdecl> set c++
 c++decl> cast x into auto
                      ^
@@ -56,6 +58,7 @@ c++decl> dynamic cast x into reference to int
 c++decl> reinterpret cast x into void
                                  ^
 25: error: invalid reinterpret_cast type "void"
+c++decl> 
 c++decl> set c++03
 c++decl> const cast x into int
                            ^

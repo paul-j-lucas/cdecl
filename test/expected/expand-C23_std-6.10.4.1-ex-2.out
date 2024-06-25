@@ -2,6 +2,7 @@ cdecl> #define F(...)                    f(0 __VA_OPT__(,) __VA_ARGS__)
 cdecl> #define G(X, ...)                 f(0, X __VA_OPT__(,) __VA_ARGS__)
 cdecl> #define SDEF(sname, ...)          S sname __VA_OPT__(= { __VA_ARGS__ })
 cdecl> #define EMP
+cdecl> 
 cdecl> expand F(a, b, c)
 F(a, b, c) => f(0 __VA_OPT__(,) __VA_ARGS__)
 | __VA_ARGS__ => a, b, c
@@ -20,6 +21,7 @@ F(EMP) => f(0 __VA_OPT__(,) __VA_ARGS__)
 | __VA_ARGS__ =>
 F(EMP) => f(0 __VA_OPT__(,) )
 F(EMP) => f(0 )
+cdecl> 
 cdecl> expand G(a, b, c)
 G(a, b, c) => f(0, X __VA_OPT__(,) __VA_ARGS__)
 | __VA_ARGS__ => b, c
@@ -42,6 +44,7 @@ G(a) => f(0, X __VA_OPT__(,) __VA_ARGS__)
 G(a) => f(0, a __VA_OPT__(,) __VA_ARGS__)
 G(a) => f(0, a __VA_OPT__(,) )
 G(a) => f(0, a )
+cdecl> 
 cdecl> expand SDEF(foo)
 SDEF(foo) => S sname __VA_OPT__(= { __VA_ARGS__ })
 | __VA_ARGS__ =>
@@ -57,6 +60,7 @@ SDEF(bar, 1, 2) => S bar __VA_OPT__(= { __VA_ARGS__ })
 SDEF(bar, 1, 2) => S bar __VA_OPT__(= { 1, 2 })
 | __VA_OPT__ => = { 1, 2 }
 SDEF(bar, 1, 2) => S bar = { 1, 2 }
+cdecl> 
 cdecl> #define H2(X, Y, ...)             __VA_OPT__(X ## Y,) __VA_ARGS__
 cdecl> expand H2(a, b, c, d)
 H2(a, b, c, d) => __VA_OPT__(X ## Y,) __VA_ARGS__
@@ -66,6 +70,7 @@ H2(a, b, c, d) => __VA_OPT__(a ## b,) c, d
 | __VA_OPT__ => a ## b,
 | __VA_OPT__ => ab,
 H2(a, b, c, d) => ab, c, d
+cdecl> 
 cdecl> #define H3(X, ...)                #__VA_OPT__(X##X X##X)
 cdecl> expand H3(, 0)
 H3(, 0) => #__VA_OPT__(X##X X##X)
@@ -74,6 +79,7 @@ H3(, 0) => #__VA_OPT__(X##X X##X)
 | __VA_OPT__ => ## ##
 | __VA_OPT__ =>
 H3(, 0) => ""
+cdecl> 
 cdecl> #define H4(X, ...)                __VA_OPT__(a X ## X) ## b
 cdecl> expand H4(, 1)
 H4(, 1) => __VA_OPT__(a X ## X) ## b
@@ -83,6 +89,7 @@ H4(, 1) => __VA_OPT__(a ## ) ## b
 | __VA_OPT__ => a
 H4(, 1) => a ## b
 H4(, 1) => ab
+cdecl> 
 cdecl> #define H5A(...)                  __VA_OPT__()/**/__VA_OPT__()
 cdecl> #define H5B(X)                    a ## X ## b
 cdecl> #define H5C(X)                    H5B(X)
@@ -98,3 +105,4 @@ H5C() => H5B()
 | H5B() => a ## ## b
 | H5B() => ab
 H5C() => ab
+cdecl> 

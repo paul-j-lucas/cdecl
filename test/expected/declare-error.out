@@ -1,4 +1,5 @@
 cdecl> struct S
+cdecl> 
 cdecl> declare ! as friend constant operator returning bool
                ^
 9: error: operator overloading not supported in C
@@ -244,6 +245,7 @@ cdecl> declare x of scope s as int
 cdecl> explain [[unsequenced]] int x
                ^
 9: error: built-in type can not be "unsequenced"
+cdecl> 
 cdecl> set knr
 cdecl> declare p as pointer to void
                                ^
@@ -263,6 +265,7 @@ cdecl> declare x as signed int
 cdecl> declare x as signed long
                     ^
 14: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?
+cdecl> 
 cdecl> set c89
 cdecl> declare x as bool
                     ^
@@ -273,6 +276,7 @@ cdecl> declare x as long long x
 cdecl> declare x as wchar_t
                     ^
 14: error: "wchar_t": unsupported type until C95
+cdecl> 
 cdecl> set c99
 cdecl> declare x as char16_t
                     ^
@@ -280,10 +284,12 @@ cdecl> declare x as char16_t
 cdecl> declare x as char32_t
                     ^
 14: error: "char32_t": unsupported type until C11; did you mean "wchar_t"?
+cdecl> 
 cdecl> set c17
 cdecl> declare x as constexpr int
                     ^
 14: error: "constexpr": unsupported keyword until C23
+cdecl> 
 cdecl> set c++
 c++decl> declare C as static constructor
                  ^
@@ -364,6 +370,7 @@ c++decl> declare x as unsigned char8_t
 c++decl> declare _x as user-defined literal (int)
                                              ^
 37: error: invalid user-defined literal parameter type "integer"; must be "unsigned long long int", "long double", "char", "pointer to const char", "char8_t", "char16_t", "char32_t", or "wchar_t"
+c++decl> 
 c++decl> set c++03
 c++decl> declare x as char16_t
                       ^
@@ -371,10 +378,12 @@ c++decl> declare x as char16_t
 c++decl> declare x as char32_t
                       ^
 14: error: "char32_t": unsupported type until C++11; did you mean "wchar_t"?
+c++decl> 
 c++decl> set c++17
 c++decl> declare x as char8_t
                       ^
 14: error: "char8_t": unsupported type until C++20; did you mean "char16_t", "char32_t", or "wchar_t"?
+c++decl> 
 c++decl> set c++20
 c++decl> declare x as atomic int
                       ^

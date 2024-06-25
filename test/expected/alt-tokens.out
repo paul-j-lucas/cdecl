@@ -14,7 +14,9 @@ c++decl> set
   notrailing-return
     using
     west-decl=bflo
+c++decl> 
 c++decl> struct S
+c++decl> 
 c++decl> declare b as block
 void (xor b)();
 c++decl> declare pb as pointer to block
@@ -55,12 +57,15 @@ c++decl> declare || as operator (r as reference to const S) returning bool
 bool operator or(const S bitand r);
 c++decl> declare ~ as operator returning S
 S operator compl();
+c++decl> 
 c++decl> set noalt-tokens
 c++decl> declare D as destructor
 ~D();
+c++decl> 
 c++decl> set alt-tokens
 c++decl> declare D as destructor
 compl D();
+c++decl> 
 c++decl> // Test that abbreviations work.
 c++decl> set noalt
 c++decl> declare D as destructor
@@ -68,3 +73,4 @@ c++decl> declare D as destructor
 c++decl> set alt
 c++decl> declare D as destructor
 compl D();
+c++decl> 

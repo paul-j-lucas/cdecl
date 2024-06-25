@@ -14,7 +14,9 @@ c++decl> set
   notrailing-return
     using
     west-decl=bflo
+c++decl> 
 c++decl> typedef int Int
+c++decl> 
 c++decl> declare x as int
 int x
 c++decl> declare x, y as int
@@ -30,6 +32,7 @@ c++decl> show as typedef
 typedef int Int
 c++decl> show as using
 using Int = int
+c++decl> 
 c++decl> set semicolon
 c++decl> set
   noalt-tokens
@@ -62,3 +65,4 @@ c++decl> show as typedef
 typedef int Int;
 c++decl> show as using
 using Int = int;
+c++decl> 

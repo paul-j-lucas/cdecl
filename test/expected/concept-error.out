@@ -1,10 +1,13 @@
+c++decl> 
 c++decl> explain static C auto x
                  ^
 9: error: concept can not be "static"
+c++decl> 
 c++decl> struct S
 c++decl> explain S::C auto x
                  ^
 9: error: concept "C" may only be within a namespace; "S" was previously declared as "struct"
+c++decl> 
 c++decl> namespace N { struct NS; }
 c++decl> explain N::NS::C auto x
                  ^

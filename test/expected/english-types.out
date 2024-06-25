@@ -1,3 +1,4 @@
+c++decl> 
 c++decl> explain auto x
 declare x as auto
 c++decl> explain bool x
@@ -28,7 +29,9 @@ c++decl> explain struct S
 define S as struct S
 c++decl> explain wchar_t x
 declare x as wchar_t
+c++decl> 
 c++decl> set english-types
+c++decl> 
 c++decl> explain auto x
 declare x as automatic
 c++decl> explain bool x
@@ -59,3 +62,4 @@ c++decl> explain struct S
 define S as structure S
 c++decl> explain wchar_t x
 declare x as wide character
+c++decl> 

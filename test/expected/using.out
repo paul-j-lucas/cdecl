@@ -1,3 +1,4 @@
+c++decl> 
 c++decl> set nousing
 c++decl> set
   noalt-tokens
@@ -17,6 +18,7 @@ c++decl> set
     west-decl=bflo
 c++decl> declare Int as type int
 typedef int Int;
+c++decl> 
 c++decl> set using
 c++decl> set
   noalt-tokens
@@ -36,3 +38,4 @@ c++decl> set
     west-decl=bflo
 c++decl> declare Int as type int
 using Int = int;
+c++decl> 

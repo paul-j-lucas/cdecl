@@ -1,3 +1,4 @@
+cdecl> 
 cdecl> #define __cplusplus               X
                ^
 9: error: "__cplusplus": predefined macro may not be redefined
@@ -25,6 +26,7 @@ cdecl> #define __VA_ARGS__               X
 cdecl> #define __VA_OPT__                X
                ^
 9: error: "__VA_OPT__": predefined macro may not be redefined
+cdecl> 
 cdecl> #undef __cplusplus
               ^
 8: error: "__cplusplus": predefined macro may not be undefined
@@ -52,6 +54,7 @@ cdecl> #undef __VA_ARGS__
 cdecl> #undef __VA_OPT__
               ^
 8: error: "__VA_OPT__": predefined macro may not be undefined
+cdecl> 
 cdecl> #elif
         ^
 2: error: "#elif" not supported by cdecl
@@ -76,6 +79,7 @@ cdecl> #line
 cdecl> #pragma
         ^
 2: error: "#pragma" not supported by cdecl
+cdecl> 
 cdecl> #elifdef
         ^
 2: error: "#elifdef" not supported by cdecl
@@ -88,30 +92,36 @@ cdecl> #embed
 cdecl> #warning
         ^
 2: error: "#warning" not supported by cdecl
+cdecl> 
 cdecl> #define DUP_ARG(A,A)              A
                          ^
 19: error: "A": duplicate macro parameter
+cdecl> 
 cdecl> #define ELLIPSIS_FIRST(...,A)     A
                               ^
 24: error: "..." must be last parameter
 cdecl> #define ELLIPSIS_MIDDLE(A,...,Z)  A Z
                                  ^
 27: error: "..." must be last parameter
+cdecl> 
 cdecl> #define PASTE_FIRST(A)            ## A
                                          ^
 35: error: "##" can not be first
 cdecl> #define PASTE_LAST(A)             A ##
                                            ^
 37: error: "##" can not be last
+cdecl> 
 cdecl> #define STRINGIFY_NOT_PARAM(A)    # 1
                                          ^
 35: error: '#' not followed by macro parameter, "__VA_ARGS__", or "__VA_OPT__"
 cdecl> #define STRINGIFY_NOT_PARAM(A)    # X
                                          ^
 35: error: '#' not followed by macro parameter, "__VA_ARGS__", or "__VA_OPT__"
+cdecl> 
 cdecl> #define VA_ARGS_NOT_IN_VARIADIC   __VA_ARGS__
                                          ^
 35: error: "__VA_ARGS__" not allowed in non-variadic macro
+cdecl> 
 cdecl> #define VA_OPT_NESTED(A,...)      __VA_OPT__( __VA_OPT__ )
                                                      ^
 47: error: "__VA_OPT__" can not nest
@@ -133,6 +143,7 @@ cdecl> #define VA_OPT_PASTE_FIRST(...)   __VA_OPT__(## X)
 cdecl> #define VA_OPT_PASTE_LAST(...)    __VA_OPT__(X ##)
                                                       ^
 48: error: "##" can not be last within "__VA_OPT__"
+cdecl> 
 cdecl> set c89
 cdecl> #define STRINGIFY_BAD_FOLLOW(A)   #
                                          ^
@@ -140,11 +151,14 @@ cdecl> #define STRINGIFY_BAD_FOLLOW(A)   #
 cdecl> #define VARIADIC_NOT_SUPPORTED(...) x
                                       ^
 32: error: variadic macros not supported until C99
+cdecl> 
 cdecl> set c99
 cdecl> #define STRINGIFY_BAD_FOLLOW(A)   #
                                          ^
 35: error: '#' not followed by macro parameter or "__VA_ARGS__"
+cdecl> 
 cdecl> set c
+cdecl> 
 cdecl> #define STRINGIFY_BAD_FOLLOW(A)   #
                                          ^
 35: error: '#' not followed by macro parameter, "__VA_ARGS__", or "__VA_OPT__"

@@ -1,4 +1,5 @@
 cdecl> struct S
+cdecl> 
 cdecl> declare x as const int
 int const x;
 cdecl> declare x as const S
@@ -17,36 +18,43 @@ cdecl> declare p as const pointer to pointer to int
 int **const p;
 cdecl> declare p as const pointer to const pointer to int
 int *const *const p;
+cdecl> 
 cdecl> set noeast-const
 cdecl> declare x as const int
 const int x;
+cdecl> 
 cdecl> set east-const
 cdecl> declare x as const int
 int const x;
 cdecl> set noeast-const
 cdecl> declare x as const int
 const int x;
+cdecl> 
 cdecl> set ea
 cdecl> declare x as const int
 int const x;
 cdecl> set noea
 cdecl> declare x as const int
 const int x;
+cdecl> 
 cdecl> set east
 cdecl> declare x as const int
 int const x;
 cdecl> set noeast
 cdecl> declare x as const int
 const int x;
+cdecl> 
 cdecl> set eastconst
 cdecl> declare x as const int
 int const x;
 cdecl> set noeastconst
 cdecl> declare x as const int
 const int x;
+cdecl> 
 cdecl> set -e-a--st-
 cdecl> declare x as const int
 int const x;
 cdecl> set no-e-a--st-
 cdecl> declare x as const int
 const int x;
+cdecl> 

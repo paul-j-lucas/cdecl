@@ -1,4 +1,5 @@
 c++decl> struct S
+c++decl> 
 c++decl> declare ! as const operator(S) returning bool
                                      ^
 29: error: member operator "!" must have exactly 0 parameters
@@ -77,6 +78,7 @@ c++decl> declare ! as rvalue reference operator (S) returning bool
 c++decl> declare ! as virtual operator (S) returning bool
                                         ^
 32: error: member operator "!" must have exactly 0 parameters
+c++decl> 
 c++decl> set c++03
 c++decl> declare = of structure S as default member operator (reference to constant S) returning reference to S
                  ^
@@ -84,10 +86,12 @@ c++decl> declare = of structure S as default member operator (reference to const
 c++decl> declare = of structure S as deleted member operator (reference to constant S) returning reference to S
                  ^
 9: error: "delete" is illegal for operator until C++11
+c++decl> 
 c++decl> set c++17
 c++decl> declare <=> as operator (reference to const S, reference to const S) returning auto
                  ^
 9: error: overloading operator "<=>" not supported until C++20
+c++decl> 
 c++decl> set c++20
 c++decl> declare [] as operator (int, int) returning int
                                  ^

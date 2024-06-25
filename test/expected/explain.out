@@ -309,6 +309,7 @@ cdecl> explain typedef int x
 declare x as type integer
 cdecl> explain typedef unsigned long size_t
 declare size_t as type unsigned long integer
+cdecl> 
 cdecl> explain typeof(int) x
 declare x as integer
 cdecl> explain typeof(int) *x, y
@@ -328,6 +329,7 @@ cdecl> explain int f( typeof(char const*) s )
 declare f as function (s as pointer to constant character) returning integer
 cdecl> explain __typeof__(int) x
 declare x as integer
+cdecl> 
 cdecl> explain union U x
 declare x as union U
 cdecl> explain unsigned _BitInt(1) x
@@ -340,16 +342,20 @@ cdecl> explain unsigned long long x
 declare x as unsigned long long integer
 cdecl> explain unsigned x : 3
 declare x as unsigned integer width 3 bits
+cdecl> 
 cdecl> explain void (*signal(int sig, void (*f)(int)))(int)
 declare signal as function (sig as integer, f as pointer to function (integer) returning void) returning pointer to function (integer) returning void
+cdecl> 
 cdecl> explain void (__cdecl *f)()
 declare f as pointer to cdecl function returning void
 cdecl> explain void __cdecl f()
 declare f as cdecl function returning void
+cdecl> 
 cdecl> explain void f( ... )
 declare f as function (variadic) returning void
 cdecl> explain void f( char const *fmt, ... )
 declare f as function (fmt as pointer to constant character, variadic) returning void
+cdecl> 
 cdecl> explain void f( double (*a)[5] )
 declare f as function (a as pointer to array 5 of double precision) returning void
 cdecl> explain void f( int ), g( double )
@@ -429,19 +435,24 @@ cdecl> explain void f( wchar_t n, int x[n] )
 declare f as function (n as wide character, x as variable length array n of integer) returning void
 cdecl> explain void f( void )
 declare f as function (void) returning void
+cdecl> 
 cdecl> explain wchar_t x
 declare x as wide character
+cdecl> 
 cdecl> typedef int *pint
 cdecl> explain restrict pint p
 declare p as restricted pint
+cdecl> 
 cdecl> typedef void V
 cdecl> explain V *p
 declare p as pointer to V
+cdecl> 
 cdecl> set knr
 cdecl> explain f(x)
 declare f as function (x) returning integer
 cdecl> explain long float x
 declare x as long floating point
+cdecl> 
 cdecl> set c89
 cdecl> explain *p, *q
 declare p, q as pointer to integer
@@ -461,19 +472,23 @@ declare p as pointer to integer
 cdecl> explain *p, i
 declare p as pointer to integer
 declare i as integer
+cdecl> 
 cdecl> set c17
 cdecl> explain auto int x
 declare x as automatic integer
 cdecl> explain noreturn void f(int)
 declare f as non-returning function (integer) returning void
+cdecl> 
 cdecl> set c18
 cdecl> explain int* f(x)
                       ^
 16: warning: missing type specifier; "int" assumed
 declare f as function (x) returning pointer to integer
+cdecl> 
 cdecl> set c++
 c++decl> struct S
 c++decl> using vint = volatile int
+c++decl> 
 c++decl> explain A::C::~C()
 declare C of class A::C as destructor
 c++decl> explain C()
@@ -653,6 +668,7 @@ declare b as block (character) returning integer
 declare f as function (double precision) returning integer
 declare ~ as non-member operator (reference to structure S) returning integer
 declare _x as user-defined literal (character) returning integer
+c++decl> 
 c++decl> explain auto ...x
 declare x as parameter pack
 c++decl> explain auto &...x
@@ -673,18 +689,21 @@ c++decl> explain const auto *...x
 declare x as pointer to constant parameter pack
 c++decl> explain const auto ...x
 declare x as constant parameter pack
+c++decl> 
 c++decl> explain int f(auto ...)
 declare f as function (parameter pack) returning integer
 c++decl> explain int f(auto &...)
 declare f as function (reference to parameter pack) returning integer
 c++decl> explain int f(auto *...)
 declare f as function (pointer to parameter pack) returning integer
+c++decl> 
 c++decl> explain int f(const auto ...)
 declare f as function (constant parameter pack) returning integer
 c++decl> explain int f(const auto &...)
 declare f as function (reference to constant parameter pack) returning integer
 c++decl> explain int f(const auto *...)
 declare f as function (pointer to constant parameter pack) returning integer
+c++decl> 
 c++decl> explain int f(auto const ...)
 declare f as function (constant parameter pack) returning integer
 c++decl> explain int f(auto const &...)
@@ -693,6 +712,7 @@ c++decl> explain int f(auto const *...)
 declare f as function (pointer to constant parameter pack) returning integer
 c++decl> explain int f(auto *const ...)
 declare f as function (constant pointer to parameter pack) returning integer
+c++decl> 
 c++decl> explain int s::t::x
 declare x of scope s::t as integer
 c++decl> explain int s::x
@@ -779,9 +799,11 @@ c++decl> explain ~C()
 declare C as destructor
 c++decl> explain ~C() final
 declare C as final virtual destructor
+c++decl> 
 c++decl> namespace N { class C { typedef int I; }; }
 c++decl> explain N::C::I x
 declare x as I of class C of namespace N
+c++decl> 
 c++decl> explain []
 declare lambda
 c++decl> explain [i]
@@ -810,9 +832,11 @@ c++decl> explain [](int x) noexcept
 declare no-exception lambda (x as integer)
 c++decl> explain [](int x) noexcept -> double
 declare no-exception lambda (x as integer) returning double precision
+c++decl> 
 c++decl> set c++98
 c++decl> explain void f() throw()
 declare f as non-throwing function returning void
+c++decl> 
 c++decl> set c++11
 c++decl> explain register int x
                  ^
@@ -822,3 +846,4 @@ c++decl> explain ~C() throw()
                ^
 7: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 declare C as non-throwing destructor
+c++decl> 

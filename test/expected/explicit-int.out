@@ -1,3 +1,4 @@
+cdecl> 
 cdecl> declare x as short
 short x;
 cdecl> declare x as int
@@ -14,6 +15,7 @@ cdecl> declare x as unsigned long
 unsigned long x;
 cdecl> declare x as unsigned long long
 unsigned long long x;
+cdecl> 
 cdecl> set explicit-int=s
 cdecl> set
   noalt-tokens
@@ -47,6 +49,7 @@ cdecl> declare x as unsigned long
 unsigned long x;
 cdecl> declare x as unsigned long long
 unsigned long long x;
+cdecl> 
 cdecl> set explicit-int=i
 cdecl> set
   noalt-tokens
@@ -80,6 +83,7 @@ cdecl> declare x as unsigned long
 unsigned long x;
 cdecl> declare x as unsigned long long
 unsigned long long x;
+cdecl> 
 cdecl> set explicit-int=iu
 cdecl> set
   noalt-tokens
@@ -113,6 +117,7 @@ cdecl> declare x as unsigned long
 unsigned long int x;
 cdecl> declare x as unsigned long long
 unsigned long long int x;
+cdecl> 
 cdecl> set explicit-int=l
 cdecl> set
   noalt-tokens
@@ -146,6 +151,7 @@ cdecl> declare x as unsigned long
 unsigned long x;
 cdecl> declare x as unsigned long long
 unsigned long long x;
+cdecl> 
 cdecl> set explicit-int=ll
 cdecl> set
   noalt-tokens
@@ -179,6 +185,7 @@ cdecl> declare x as unsigned long
 unsigned long x;
 cdecl> declare x as unsigned long long
 unsigned long long x;
+cdecl> 
 cdecl> set explicit-int=u
 cdecl> set
   noalt-tokens
@@ -212,6 +219,7 @@ cdecl> declare x as unsigned long
 unsigned long int x;
 cdecl> declare x as unsigned long long
 unsigned long long int x;
+cdecl> 
 cdecl> set explicit-int=us
 cdecl> set
   noalt-tokens
@@ -245,6 +253,7 @@ cdecl> declare x as unsigned long
 unsigned long x;
 cdecl> declare x as unsigned long long
 unsigned long long x;
+cdecl> 
 cdecl> set explicit-int=ui
 cdecl> set
   noalt-tokens
@@ -278,6 +287,7 @@ cdecl> declare x as unsigned long
 unsigned long x;
 cdecl> declare x as unsigned long long
 unsigned long long x;
+cdecl> 
 cdecl> set explicit-int=ul
 cdecl> set
   noalt-tokens
@@ -311,6 +321,7 @@ cdecl> declare x as unsigned long
 unsigned long int x;
 cdecl> declare x as unsigned long long
 unsigned long long x;
+cdecl> 
 cdecl> set explicit-int=ull
 cdecl> set
   noalt-tokens
@@ -344,6 +355,7 @@ cdecl> declare x as unsigned long
 unsigned long x;
 cdecl> declare x as unsigned long long
 unsigned long long int x;
+cdecl> 
 cdecl> set noexplicit-int
 cdecl> set
   noalt-tokens
@@ -377,6 +389,7 @@ cdecl> declare x as unsigned long
 unsigned long x;
 cdecl> declare x as unsigned long long
 unsigned long long x;
+cdecl> 
 cdecl> set explicit-int=u,l
 cdecl> set
   noalt-tokens
@@ -402,6 +415,7 @@ cdecl> declare x as unsigned
 unsigned int x;
 cdecl> declare x as unsigned long
 unsigned long int x;
+cdecl> 
 cdecl> set noexplicit-int
 cdecl> set
   noalt-tokens
@@ -427,3 +441,4 @@ cdecl> declare x as unsigned
 unsigned x;
 cdecl> declare x as unsigned long
 unsigned long x;
+cdecl> 

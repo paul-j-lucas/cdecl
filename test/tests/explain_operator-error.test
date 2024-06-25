@@ -57,5 +57,4 @@ explain bool S::operator==(S const&) const = default
 set c++20
 explain int operator[](int, int)
 explain static void operator()(int, int)
-
 END

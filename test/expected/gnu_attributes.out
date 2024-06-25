@@ -34,6 +34,7 @@ cdecl> explain __attribute__((unused)) int i
                ^
 9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
+cdecl> 
 cdecl> explain int *__attribute__(( foo )) const p
                     ^
 14: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?

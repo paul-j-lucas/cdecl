@@ -277,5 +277,4 @@ explain void f(auto)
 
 set c++20
 explain _Atomic(int) x
-
 END

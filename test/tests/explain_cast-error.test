@@ -15,5 +15,4 @@ explain (typedef int)x
 
 set c17
 explain (auto int)x
-
 END

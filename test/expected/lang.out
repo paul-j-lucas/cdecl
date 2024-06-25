@@ -1,3 +1,4 @@
+cdecl> 
 cdecl> set c
 cdecl> set
   noalt-tokens
@@ -406,6 +407,7 @@ c++decl> set
   notrailing-return
     using
     west-decl=bflo
+c++decl> 
 c++decl> set lang=c
 cdecl> set
   noalt-tokens
@@ -814,3 +816,4 @@ c++decl> set
   notrailing-return
     using
     west-decl=bflo
+c++decl> 

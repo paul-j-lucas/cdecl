@@ -4,8 +4,10 @@ c++decl> declare overridden virtual constant user-defined conversion operator re
 operator int() const override;
 c++decl> declare user-defined conversion operator returning int
 operator int();
+c++decl> 
 c++decl> declare user defined conversion operator returning int
 operator int();
+c++decl> 
 c++decl> class C
 c++decl> declare user-defined conversion operator returning reference to constant C
 operator const C&();

@@ -332,7 +332,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
 
   strbuf_putc( sbuf, '\n' );            // preprocessor lines must end with \n
 
-  lexer_push_string( sbuf->str, sbuf->len );
+  lexer_push_string( sbuf->str, sbuf->len, loc->first_line );
 
   p_token_t *token = NULL;
   int y_token_id = yylex();

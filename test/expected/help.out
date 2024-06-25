@@ -156,6 +156,7 @@ command:
   type[def] <gibberish> [, <gibberish>]*
 cdecl> help union
 command:
+cdecl> 
 cdecl> set knr
 cdecl> help
 command:
@@ -264,6 +265,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> 
 cdecl> set c89
 cdecl> help
 command:
@@ -373,6 +375,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> 
 cdecl> set c95
 cdecl> help
 command:
@@ -482,6 +485,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> 
 cdecl> set c99
 cdecl> help
 command:
@@ -593,6 +597,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> 
 cdecl> set c11
 cdecl> help
 command:
@@ -713,6 +718,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> 
 cdecl> set c17
 cdecl> help
 command:
@@ -833,6 +839,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+cdecl> 
 cdecl> set c++
 c++decl> help
 command:
@@ -1041,6 +1048,7 @@ command:
 c++decl> help using
 command:
   using <name> = <gibberish>
+c++decl> 
 c++decl> set c++98
 c++decl> help
 command:
@@ -1175,6 +1183,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> 
 c++decl> set c++03
 c++decl> help
 command:
@@ -1309,6 +1318,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> 
 c++decl> set c++11
 c++decl> help
 command:
@@ -1463,6 +1473,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> 
 c++decl> set c++14
 c++decl> help
 command:
@@ -1617,6 +1628,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> 
 c++decl> set c++17
 c++decl> help
 command:
@@ -1772,6 +1784,7 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> 
 c++decl> set c++20
 c++decl> help
 command:
@@ -1928,3 +1941,4 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+c++decl> 

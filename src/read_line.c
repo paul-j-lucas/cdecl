@@ -64,7 +64,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
   bool const is_interactive = isatty( fileno( fin ) ) && prompts != NULL;
   bool is_cont_line = false;
 
-  for (;;) {
+  do {
     static char *line;
     bool got_line;
 
@@ -92,32 +92,22 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
       return false;
     }
 
-    if ( str_is_empty( line ) ) {
-      if ( is_cont_line ) {
-        //
-        // If we've been accumulating continuation lines, a blank line ends it.
-        //
-        break;
-      }
-      continue;                         // otherwise, ignore blank lines
-    }
-
     size_t line_len = strlen( line );
-    if ( line_len > 0 && line[ line_len - 1 ] == '\n' )
-      --line_len;                       // chop off newline
-    is_cont_line = line_len > 0 && line[ line_len - 1 ] == '\\';
+
+    is_cont_line = line_len >= 2 &&
+      strcmp( line + line_len - 2, "\\\n" ) == 0;
+
     if ( is_cont_line )
-      --line_len;                       // eat '\'
+      line_len -= 2;                    // eat '\'
+
     strbuf_putsn( sbuf, line, line_len );
+  } while ( is_cont_line );
 
-    if ( !is_cont_line )
-      break;
-  } // for
+  if ( sbuf->len == 0 )
+    strbuf_putc( sbuf, '\n' );
 
-  assert( sbuf->str != NULL );
-  assert( sbuf->str[0] != '\0' );
 #ifdef HAVE_READLINE_HISTORY_H
-  if ( is_interactive )
+  if ( is_interactive && !str_is_empty( sbuf->str ) )
     add_history( sbuf->str );           // LCOV_EXCL_LINE
 #endif /* HAVE_READLINE_HISTORY_H */
   return true;

@@ -1,13 +1,16 @@
 cdecl> struct S
+cdecl> 
 cdecl> set c17
 cdecl> declare a as array 9 of int
 int a??(9??);
 cdecl> explain int a??(9??)
 declare a as array 9 of integer
+cdecl> 
 cdecl> set c++
 warning: trigraphs not supported since C++17
 c++decl> declare f as non-returning function (int) returning void
 [[noreturn]] void f(int);
+c++decl> 
 c++decl> set c++11
 c++decl> declare f as non-returning function (int) returning void
 ??(??(noreturn??)??) void f(int);
@@ -25,17 +28,20 @@ c++decl> declare ??- as operator returning S
 S operator??-();
 c++decl> declare [] as operator (int) returning int
 int operator??(??)(int);
+c++decl> 
 c++decl> set c++
 warning: trigraphs not supported since C++17
 c++decl> explain int a??(9??)
                       ^
 14: warning: trigraphs not supported since C++17
 declare a as array 9 of integer
+c++decl> 
 c++decl> set c++03
 c++decl> struct S ??< typedef int I; ??>
 c++decl> show typedef
 typedef struct S S;
 struct S ??< typedef int I; ??>;
+c++decl> 
 c++decl> set c++11
 c++decl> explain ??(??(noreturn??)??) void f(int)
 declare f as non-returning function (integer) returning void
@@ -51,7 +57,9 @@ c++decl> explain S& operator??!=(int)
 declare ??!= as member operator (integer) returning reference to structure S
 c++decl> explain S operator??-()
 declare ??- as member operator returning structure S
+c++decl> 
 c++decl> set nographs
+c++decl> 
 c++decl> set knr
 cdecl> set trigraphs
            ^
@@ -75,6 +83,7 @@ cdecl> set
 cdecl> declare a as array 9 of int
 int a[9];
 cdecl> set nographs
+cdecl> 
 cdecl> set c23
 cdecl> set trigraphs
            ^
@@ -98,6 +107,7 @@ cdecl> set
 cdecl> declare a as array 9 of int
 int a[9];
 cdecl> set nographs
+cdecl> 
 cdecl> set c++
 c++decl> set trigraphs
              ^
@@ -121,3 +131,4 @@ c++decl> set
 c++decl> declare a as array 9 of int
 int a[9];
 c++decl> set nographs
+c++decl> 

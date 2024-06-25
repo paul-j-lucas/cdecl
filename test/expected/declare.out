@@ -1,4 +1,5 @@
 cdecl> struct S
+cdecl> 
 cdecl> declare a as array 3 of array 5 of array 7 of int
 int a[3][5][7];
 cdecl> declare a as array 3 of array 5 of int
@@ -237,14 +238,17 @@ cdecl> declare x, y as array 4 of int
 int x[4], y[4];
 cdecl> declare x, y as int
 int x, y;
+cdecl> 
 cdecl> declare x as register int
 register int x;
 cdecl> declare f as function (i as register int) returning void
 void f(register int i);
+cdecl> 
 cdecl> declare f as cdecl function
 void __cdecl f();
 cdecl> declare p as pointer to cdecl function
 void (__cdecl *p)();
+cdecl> 
 cdecl> declare x as const int
 const int x;
 cdecl> declare x as const S
@@ -257,6 +261,7 @@ cdecl> declare p as pointer to const int
 const int *p;
 cdecl> declare p as pointer to const pointer to int
 int *const *p;
+cdecl> 
 cdecl> declare _x as int
 int _x;
 cdecl> declare _X as int
@@ -271,6 +276,7 @@ cdecl> declare x__x as int
                ^
 9: warning: "x__x" is a reserved identifier in C++
 int x__x;
+cdecl> 
 cdecl> set knr
 cdecl> declare x as auto int
 auto int x;
@@ -282,6 +288,7 @@ cdecl> declare x as long float
 long float x;
 cdecl> declare x as volatile int
 __volatile int x;
+cdecl> 
 cdecl> set c89
 cdecl> declare f as function (i as register) returning void
 void f(register int i);
@@ -289,23 +296,27 @@ cdecl> declare p as pointer to function (x) returning int
                                          ^
 35: warning: missing type specifier; "int" assumed
 int (*p)(int x);
+cdecl> 
 cdecl> set c17
 cdecl> declare f as function (x) returning pointer to int
                               ^
 24: warning: missing type specifier; "int" assumed
 int* f(int x);
+cdecl> 
 cdecl> declare f as _Noreturn function (int) returning void
 _Noreturn void f(int);
 cdecl> declare f as non-returning function (int) returning void
 _Noreturn void f(int);
 cdecl> declare f as noreturn function (int) returning void
 _Noreturn void f(int);
+cdecl> 
 cdecl> declare x as __auto_type
 __auto_type x;
 cdecl> declare x as bool
 _Bool x;
 cdecl> declare x as char aligned as 8 bytes
 _Alignas(8) char x;
+cdecl> 
 cdecl> set c++
 c++decl> declare C as constructor
 C();
@@ -365,6 +376,7 @@ c++decl> declare f as function returning pointer to member of class C int
 int C::* f();
 c++decl> declare f as function returning pointer to member of class C pointer to int
 int* C::* f();
+c++decl> 
 c++decl> set trailing-return
 c++decl> declare f as function returning int
 auto f() -> int;
@@ -381,8 +393,10 @@ auto f() -> auto (*)(int) -> const char*;
 c++decl> declare ! as operator (reference to const S) returning bool
 auto operator!(const S&) -> bool;
 c++decl> set notrailing-return
+c++decl> 
 c++decl> declare f as deprecated function returning void
 [[deprecated]] void f();
+c++decl> 
 c++decl> declare x as parameter pack
 auto ...x;
 c++decl> declare x as reference to parameter pack
@@ -401,6 +415,7 @@ c++decl> declare x as reference to const parameter pack
 const auto &...x;
 c++decl> declare x as pointer to const parameter pack
 const auto *...x;
+c++decl> 
 c++decl> declare f as function (parameter pack) returning int
 int f(auto ...);
 c++decl> declare f as function (const parameter pack) returning int
@@ -419,6 +434,7 @@ c++decl> declare f as function (reference to const parameter pack) returning int
 int f(const auto &...);
 c++decl> declare f as function (pointer to const parameter pack) returning int
 int f(const auto *...);
+c++decl> 
 c++decl> declare f as maybe unused int
 [[maybe_unused]] int f;
 c++decl> declare x as maybe-unused int
@@ -431,32 +447,39 @@ c++decl> declare f as maybe-unused function
 [[maybe_unused]] void f();
 c++decl> declare f as maybe_unused function
 [[maybe_unused]] void f();
+c++decl> 
 c++decl> declare f as nodiscard function returning int
 [[nodiscard]] int f();
 c++decl> declare f as no discard function returning int
 [[nodiscard]] int f();
 c++decl> declare f as non-discardable function returning int
 [[nodiscard]] int f();
+c++decl> 
 c++decl> declare f as noexcept function
 void f() noexcept;
 c++decl> declare f as no except function
 void f() noexcept;
+c++decl> 
 c++decl> declare f as non-throwing function returning void
 void f() noexcept;
+c++decl> 
 c++decl> declare f as noreturn function (int) returning void
 [[noreturn]] void f(int);
 c++decl> declare f as no return function (int) returning void
 [[noreturn]] void f(int);
 c++decl> declare f as non-returning function (int) returning void
 [[noreturn]] void f(int);
+c++decl> 
 c++decl> declare f as override final function
 void f() final;
 c++decl> declare f as overridden final function
 void f() final;
+c++decl> 
 c++decl> declare f as pure virtual function returning void
 virtual void f() = 0;
 c++decl> declare f as restricted function
 void f() __restrict;
+c++decl> 
 c++decl> declare f as reference function returning void
 void f() &;
 c++decl> declare f as rvalue reference function returning void
@@ -465,19 +488,23 @@ c++decl> declare f as const reference function returning void
 void f() const &;
 c++decl> declare f as const rvalue reference function returning void
 void f() const &&;
+c++decl> 
 c++decl> declare f as virtual function returning void
 virtual void f();
 c++decl> declare f as virtual override final function
 void f() final;
+c++decl> 
 c++decl> declare final as int
                        ^
 15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
+c++decl> 
 c++decl> declare x as constexpr int
 constexpr int x;
 c++decl> declare x as const expression int
 constexpr int x;
 c++decl> declare x as constant expression int
 constexpr int x;
+c++decl> 
 c++decl> declare new as operator (n as std::size_t) returning pointer to void
 void* operator new(std::size_t n);
 c++decl> declare new[] as operator (n as std::size_t) returning pointer to void
@@ -551,12 +578,14 @@ int s::t::x;
 c++decl> declare x, y as type int
 using x = int;
 using y = int;
+c++decl> 
 c++decl> declare x, y as structured binding
 auto [x, y];
 c++decl> declare x, y as rvalue reference to structured binding
 auto &&[x, y];
 c++decl> declare x, y as thread local structured binding
 thread_local auto [x, y];
+c++decl> 
 c++decl> declare x, y as const structured binding
 const auto [x, y];
 c++decl> declare x, y as static structured binding
@@ -565,6 +594,7 @@ c++decl> declare x, y as const static structured binding
 static const auto [x, y];
 c++decl> declare x, y as static const structured binding
 static const auto [x, y];
+c++decl> 
 c++decl> declare x, y as reference to structured binding
 auto &[x, y];
 c++decl> declare x, y as reference to const structured binding
@@ -587,6 +617,7 @@ c++decl> declare x, y as const static reference to structured binding
 static const auto &[x, y];
 c++decl> declare x, y as static const reference to structured binding
 static const auto &[x, y];
+c++decl> 
 c++decl> set east-const
 c++decl> declare x, y as reference to const structured binding
 auto const &[x, y];
@@ -605,6 +636,7 @@ static auto const &[x, y];
 c++decl> declare x, y as static const reference to structured binding
 static auto const &[x, y];
 c++decl> set noeast-const
+c++decl> 
 c++decl> set west-decl=s
 c++decl> declare x, y as reference to structured binding
 auto& [x, y];
@@ -631,8 +663,10 @@ static const auto& [x, y];
 c++decl> declare x, y as static const reference to structured binding
 static const auto& [x, y];
 c++decl> set west-decl=r
+c++decl> 
 c++decl> declare T as type deprecated int
 using T [[deprecated]] = int;
+c++decl> 
 c++decl> declare lambda
 []
 c++decl> declare lambda [i]
@@ -673,6 +707,8 @@ c++decl> declare noexcept lambda (x as int)
 [](int x) noexcept
 c++decl> declare noexcept lambda (x as int) returning double
 [](int x) noexcept -> double
+c++decl> 
 c++decl> set c++03
 c++decl> declare C as non-throwing destructor
 ~C() throw();
+c++decl> 

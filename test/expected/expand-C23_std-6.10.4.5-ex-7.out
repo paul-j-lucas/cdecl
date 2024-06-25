@@ -1,6 +1,7 @@
 cdecl> #define debug(...)            fprintf(stderr, __VA_ARGS__)
 cdecl> #define showlist(...)         puts(#__VA_ARGS__)
 cdecl> #define report(test, ...)     ((test)?puts(#test): printf(__VA_ARGS__))
+cdecl> 
 cdecl> expand debug("Flag")
 debug("Flag") => fprintf(stderr, __VA_ARGS__)
 | __VA_ARGS__ => "Flag"

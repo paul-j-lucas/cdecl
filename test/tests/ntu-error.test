@@ -48,5 +48,4 @@ using SI = static int
 
 set c++14
 namespace A::B { typedef int Int; }
-
 END

@@ -11,5 +11,4 @@ set c++03
 show using
 show __STDC__
 show __STDC_VERSION__
-
 END

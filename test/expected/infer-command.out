@@ -14,20 +14,24 @@ c++decl> set
   notrailing-return
     using
     west-decl=bflo
+c++decl> 
 c++decl> // comment
 c++decl> /* comment */
+c++decl> 
 c++decl> int x
 declare x as integer
 c++decl> const int x
 declare x as constant integer
 c++decl> const cast p into pointer to int
 const_cast<int*>(p)
+c++decl> 
 c++decl> __FILE__
 __FILE__ => "example.cpp"
 c++decl> __LINE__
 __LINE__ => 42
 c++decl> __cplusplus
 __cplusplus => 202302L
+c++decl> 
 c++decl> set noinfer-command
 c++decl> set
   noalt-tokens
@@ -62,5 +66,6 @@ c++decl> set
   notrailing-return
     using
     west-decl=bflo
+c++decl> 
 c++decl> int x
 declare x as integer

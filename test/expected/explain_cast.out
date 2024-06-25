@@ -68,6 +68,7 @@ cdecl> explain (void*[])
 cast into array of pointer to void
 cdecl> explain (char const *const[])
 cast into array of constant pointer to constant character
+cdecl> 
 cdecl> set c++
 c++decl> explain (int&)x
 cast x into reference to integer
@@ -91,3 +92,4 @@ c++decl> explain static_cast<int>(S::x)
 static cast x of scope S into integer
 c++decl> explain static_cast<int>(x)
 static cast x into integer
+c++decl> 

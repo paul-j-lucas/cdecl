@@ -1,3 +1,4 @@
+c++decl> 
 c++decl> declare s as struct S
 struct S s;
 c++decl> declare u as union U
@@ -6,6 +7,7 @@ c++decl> declare e as enum E
 E e;
 c++decl> declare c as class C
 C c;
+c++decl> 
 c++decl> set explicit-ecsu=ecsu
 c++decl> set
   noalt-tokens
@@ -23,6 +25,7 @@ c++decl> set
   notrailing-return
     using
     west-decl=bflo
+c++decl> 
 c++decl> declare s as struct S
 struct S s;
 c++decl> declare u as union U
@@ -31,9 +34,11 @@ c++decl> declare e as enum E
 enum E e;
 c++decl> declare c as class C
 class C c;
+c++decl> 
 c++decl> class C
 c++decl> explain C *p
 declare p as pointer to class C
+c++decl> 
 c++decl> set noexplicit-ecsu
 c++decl> set
   noalt-tokens
@@ -51,6 +56,7 @@ c++decl> set
   notrailing-return
     using
     west-decl=bflo
+c++decl> 
 c++decl> declare s as struct S
 S s;
 c++decl> declare u as union U
@@ -59,3 +65,4 @@ c++decl> declare e as enum E
 E e;
 c++decl> declare c as class C
 C c;
+c++decl> 

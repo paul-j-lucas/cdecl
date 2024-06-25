@@ -5,6 +5,7 @@ cdecl> typedef enum E EE
 cdecl> typedef int A2[2]
 cdecl> typedef int Int
 cdecl> typedef void F_v()
+cdecl> 
 cdecl> explain A2 f()
                ^
 9: error: function returning array; did you mean function returning pointer?
@@ -375,6 +376,7 @@ cdecl> explain void x
 cdecl> explain []
                ^
 9: error: lambdas not supported in C
+cdecl> 
 cdecl> set knr
 cdecl> explain const int x
                ^
@@ -418,6 +420,7 @@ cdecl> explain void *p
 cdecl> explain volatile int x
                ^
 9: error: "volatile": unsupported keyword until C89; did you mean "__volatile"?
+cdecl> 
 cdecl> set c89
 cdecl> explain bool x
                ^
@@ -428,6 +431,7 @@ cdecl> explain long long x
 cdecl> explain wchar_t x
                ^
 9: error: "wchar_t": unsupported type until C95
+cdecl> 
 cdecl> set c99
 cdecl> explain char16_t x
                ^
@@ -444,6 +448,7 @@ cdecl> explain int _Fract
 cdecl> explain thread_local int x
                ^
 9: error: "thread_local": unsupported keyword until C23
+cdecl> 
 cdecl> set c17
 cdecl> explain constexpr int x
                ^
@@ -457,8 +462,10 @@ cdecl> explain typeof(int) x
 cdecl> explain void f( ... )
                        ^
 17: error: "..." as only parameter not supported until C23
+cdecl> 
 cdecl> set c++
 c++decl> typedef int &RI
+c++decl> 
 c++decl> explain [&,&]
                     ^
 12: error: default capture previously specified
@@ -670,6 +677,7 @@ c++decl> explain void f(int x[static 3])
 c++decl> explain void f(x)
                         ^
 16: error: type specifier required in C++
+c++decl> 
 c++decl> explain auto ...
                          ^
 17: syntax error: name expected
@@ -700,6 +708,7 @@ c++decl> explain void f(int ...)
 c++decl> explain void f(int &...)
                         ^
 16: error: parameter pack type must be "auto"
+c++decl> 
 c++decl> explain void &x
                       ^
 14: error: reference to "void" is illegal; did you mean "void*"?
@@ -712,6 +721,7 @@ c++decl> explain X::C()
 c++decl> explain X::~C()
                  ^
 9: error: matching class name after '~' expected
+c++decl> 
 c++decl> set c++03
 c++decl> explain auto f() -> void
                           ^
@@ -734,6 +744,7 @@ c++decl> explain void f() &&
 c++decl> explain void f(int &&r)
                             ^
 20: error: rvalue reference not supported until C++11
+c++decl> 
 c++decl> set c++11
 c++decl> explain auto f()
                  ^
@@ -744,6 +755,7 @@ c++decl> explain constexpr void f()
 c++decl> explain [*this]
                   ^
 10: error: capturing "*this" not supported until C++17
+c++decl> 
 c++decl> set c++17
 c++decl> explain char8_t x
                  ^
@@ -751,6 +763,7 @@ c++decl> explain char8_t x
 c++decl> explain void f(auto)
                         ^
 16: error: "auto" parameters not supported until C++20
+c++decl> 
 c++decl> set c++20
 c++decl> explain _Atomic(int) x
                  ^

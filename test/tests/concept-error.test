@@ -8,5 +8,4 @@ explain S::C auto x
 
 namespace N { struct NS; }
 explain N::NS::C auto x
-
 END

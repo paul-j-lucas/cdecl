@@ -1,3 +1,4 @@
+cdecl> 
 cdecl> define int_least32_t as char
                                ^
 25: error: "int_least32_t" is a predefined type starting in C99
@@ -10,10 +11,12 @@ cdecl> define SI as register int
 cdecl> define SI as static int
                     ^
 14: error: "typedef static int" is illegal for built-in type
+cdecl> 
 cdecl> set c17
 cdecl> define SI as auto int
                     ^
 14: error: "typedef auto int" is illegal for built-in type
+cdecl> 
 cdecl> set c++
 c++decl> define Int of namespace X of class C as int
                     ^

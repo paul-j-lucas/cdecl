@@ -12,5 +12,4 @@ define SI as auto int
 set c++
 define Int of namespace X of class C as int
 define Int of scope X of class C as int
-
 END

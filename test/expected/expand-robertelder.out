@@ -9,6 +9,7 @@ concat(func, tion) => function
 concat(func, tion) => function()
 | function() => 123
 concat(func, tion) => 123
+cdecl> 
 cdecl> #define boo()                     123
 cdecl> #define foo(y)                    boo y )
 cdecl> #define open                      (
@@ -20,7 +21,9 @@ foo(open) => boo y )
 foo(() => boo ( )
 | boo() => 123
 foo(() => 123
+cdecl> 
 cdecl> #undef foo
+cdecl> 
 cdecl> #define foo(x)                    x #x
 cdecl> expand foo(boo())
 foo(boo()) => x #x
@@ -29,6 +32,7 @@ foo(boo()) => x "boo()"
 | | boo() => 123
 | x => 123
 foo(123) => 123 "boo()"
+cdecl> 
 cdecl> #define recur4(C, T, E)           C-T-E
 cdecl> #define recur3(X)                 [ X ]
 cdecl> #define recur2(C, X)              recur4(C(X), recur4(C(X), ,),) |C|
@@ -103,3 +107,4 @@ recur1(recur2, [ 1 ]-[ 1 ]- - - |recur3|) => recur2(recur3, [ 1 ]-[ 1 ]- - - |re
 | | recur4([ [ 1 ]-[ 1 ]- - - |recur3| ], [ [ 1 ]-[ 1 ]- - - |recur3| ]- -,) => [ [ 1 ]-[ 1 ]- - - |recur3| ]-[ [ 1 ]-[ 1 ]- - - |recur3| ]- - -
 | recur2(recur3, [ 1 ]-[ 1 ]- - - |recur3|) => [ [ 1 ]-[ 1 ]- - - |recur3| ]-[ [ 1 ]-[ 1 ]- - - |recur3| ]- - - |recur3|
 recur1(recur2, [ 1 ]-[ 1 ]- - - |recur3|) => [ [ 1 ]-[ 1 ]- - - |recur3| ]-[ [ 1 ]-[ 1 ]- - - |recur3| ]- - - |recur3|
+cdecl> 

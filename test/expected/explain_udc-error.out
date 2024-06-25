@@ -1,4 +1,5 @@
 c++decl> typedef int A4[4]
+c++decl> 
 c++decl> explain friend operator int()
                       ^
 14: error: friend user-defined conversion operator must use qualified name

@@ -34,6 +34,7 @@ cdecl> explain static_cast<int>(x)
 cdecl> explain (typedef int)x
                 ^
 10: error: can not cast into "typedef"
+cdecl> 
 cdecl> set c17
 cdecl> explain (auto int)x
                 ^

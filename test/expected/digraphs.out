@@ -1,5 +1,6 @@
 cdecl> declare a as array 9 of int
 int a<:9:>;
+cdecl> 
 cdecl> set c++
 c++decl> declare f as non-returning function (int) returning void
 <:<:noreturn:>:> void f(int);
@@ -14,26 +15,32 @@ struct S;
 struct S <% typedef int I; %>;
 struct T;
 struct T <% typedef int I; %>;
+c++decl> 
 c++decl> set c
 cdecl> explain int a<:9:>
 declare a as array 9 of integer
+cdecl> 
 cdecl> set c89
 warning: digraphs not supported until C95
 cdecl> explain int a<:9:>
                     ^
 14: warning: digraphs not supported until C95
 declare a as array 9 of integer
+cdecl> 
 cdecl> set nographs
 cdecl> declare a as array 9 of int
 int a[9];
+cdecl> 
 cdecl> set di
            ^
 5: warning: digraphs not supported until C95
 cdecl> declare a as array 9 of int
 int a[9];
+cdecl> 
 cdecl> set nog
 cdecl> declare a as array 9 of int
 int a[9];
+cdecl> 
 cdecl> set c89 digraphs
                ^
 9: warning: digraphs not supported until C95

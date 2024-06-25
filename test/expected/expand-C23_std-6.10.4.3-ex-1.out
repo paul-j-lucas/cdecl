@@ -4,6 +4,7 @@ cdecl> #define hash_hash                 # ## #
 cdecl> #define mkstr(a)                  # a
 cdecl> #define in_between(a)             mkstr(a)
 cdecl> #define join(c, d)                in_between(c hash_hash d)
+cdecl> 
 cdecl> expand join(x, y)
 join(x, y) => in_between(c hash_hash d)
 | c => x

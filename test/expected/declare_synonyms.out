@@ -6,24 +6,31 @@ cdecl> declare c as char 16
 char16_t c;
 cdecl> declare c as char 32
 char32_t c;
+cdecl> 
 cdecl> declare c as constant char
 const char c;
+cdecl> 
 cdecl> declare c as complex float
 _Complex float c;
 cdecl> declare i as imaginary float
 _Imaginary float i;
+cdecl> 
 cdecl> declare c as constant expression int
 constexpr int c;
+cdecl> 
 cdecl> declare d as double precision
 double d;
 cdecl> declare d as double-precision
 double d;
+cdecl> 
 cdecl> declare f as floating point
 float f;
 cdecl> declare f as floating-point
 float f;
+cdecl> 
 cdecl> declare i as integer
 int i;
+cdecl> 
 cdecl> declare f as external function
 extern void f();
 cdecl> declare f as no discard function
@@ -44,39 +51,48 @@ cdecl> declare f as no-return function
 [[noreturn]] void f();
 cdecl> declare f as non-returning function
 [[noreturn]] void f();
+cdecl> 
 cdecl> declare m as maybe unused int
 [[maybe_unused]] int m;
 cdecl> declare m as maybe-unused int
 [[maybe_unused]] int m;
+cdecl> 
 cdecl> declare p as restricted pointer to int
 int *restrict p;
+cdecl> 
 cdecl> declare t as thread local int
 thread_local int t;
 cdecl> declare t as thread-local int
 thread_local int t;
+cdecl> 
 cdecl> declare w as wide char
 wchar_t w;
 cdecl> declare w as wide character
 wchar_t w;
+cdecl> 
 cdecl> set c++
+c++decl> 
 c++decl> declare f as constant evaluation function returning int
 consteval int f();
 c++decl> declare f as constant-evaluation function returning int
 consteval int f();
 c++decl> declare f as const-eval function returning int
 consteval int f();
+c++decl> 
 c++decl> declare f as constant expression function returning int
 constexpr int f();
 c++decl> declare f as constant-expression function returning int
 constexpr int f();
 c++decl> declare f as const-expr function returning int
 constexpr int f();
+c++decl> 
 c++decl> declare i as constant initialization int
 constinit int i;
 c++decl> declare i as constant-initialization int
 constinit int i;
 c++decl> declare i as const-init int
 constinit int i;
+c++decl> 
 c++decl> declare n as no unique address int
 [[no_unique_address]] int n;
 c++decl> declare n as no-unique-address int

@@ -5,6 +5,7 @@ cdecl> #define glue(a, b)    a ## b
 cdecl> #define xglue(a, b)   glue(a, b)
 cdecl> #define HIGHLOW       "hello"
 cdecl> #define LOW           LOW ", world"
+cdecl> 
 cdecl> expand debug(1, 2)
 debug(1, 2) => printf("x" # s "= %d, x" # t "= %s", x ## s, x ## t)
 debug(1, 2) => printf("x" "1" "= %d, x" "2" "= %s", x ## s, x ## t)

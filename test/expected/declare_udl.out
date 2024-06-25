@@ -34,10 +34,12 @@ c++decl> declare _x as user-defined literal (unsigned long long integer) returni
 int operator"" _x(unsigned long long);
 c++decl> declare _x as user-defined literal (wide character) returning integer
 int operator"" _x(wchar_t);
+c++decl> 
 c++decl> declare _x as user defined literal (character) returning integer
 int operator"" _x(char);
 c++decl> declare _x of scope S as user-defined literal (character) returning integer
 int S::operator"" _x(char);
+c++decl> 
 c++decl> declare m as user-defined literal (character) returning integer
                  ^
 9: warning: user-defined literals not starting with '_' are reserved
