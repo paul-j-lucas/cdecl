@@ -1,4 +1,2 @@
 EXPECTED_EXIT=0
-cdecl -bE -f data/explain_i.cdecl <<END
-
-END
+cdecl -bE -f data/explain_i.cdecl

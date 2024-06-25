@@ -1,4 +1,2 @@
 EXPECTED_EXIT=0
-cdecl -bE -f data/declare_i.cdecl <<END
-
-END
+cdecl -bE -f data/declare_i.cdecl
