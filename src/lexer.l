@@ -1849,6 +1849,7 @@ void lexer_reset( bool hard_reset ) {
   lexer_is_param_list_decl = false;
   lexer_keyword_ctx = C_KW_CTX_DEFAULT;
   strbuf_reset( &str_lit_buf );
+  yylineno_stack_top = -1;
   yy_start_stack_top = -1;
 }
 
