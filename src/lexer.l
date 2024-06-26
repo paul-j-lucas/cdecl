@@ -553,7 +553,11 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   );
 
   include_file_info_t *const ifi = MALLOC( include_file_info_t, 1 );
-  *ifi = (include_file_info_t){ print_params.conf_path, real_path, yylineno };
+  *ifi = (include_file_info_t){
+    .prev_orig_path = print_params.conf_path,
+    .curr_real_path = real_path,
+    .prev_lineno = yylineno
+  };
   slist_push_front( &include_stack, ifi );
   real_path = NULL;                     // now owned by ifi above
 
