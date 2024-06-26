@@ -56,7 +56,7 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
-                       char const *const prompts[const] ) {
+                       char const *const prompts[const], int *line_no ) {
   assert( sbuf != NULL );
   assert( fin != NULL );
   assert( prompts == NULL || (prompts[0] != NULL && prompts[1] != NULL) );
@@ -97,8 +97,11 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
     is_cont_line = line_len >= 2 &&
       strcmp( line + line_len - 2, "\\\n" ) == 0;
 
-    if ( is_cont_line )
+    if ( is_cont_line ) {
       line_len -= 2;                    // eat '\'
+      if ( line_no != NULL )
+        ++*line_no;
+    }
 
     strbuf_putsn( sbuf, line, line_len );
   } while ( is_cont_line );

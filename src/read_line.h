@@ -56,11 +56,13 @@
  * @param prompts A pointer to a 2-element array of the prompts to use: the
  * primary prompt and the the secondary prompt to use for a continuation line
  * (a line after ones ending with `\`).  If NULL, does not read interactively.
+ * @param line_no A pointer to the current line number within a file that will
+ * be incremented for every `\\\n` encountered.` May be NULL.
  * @return Returns `false` only if encountered EOF.
  */
 NODISCARD
 bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
-                       char const *const prompts[const] );
+                       char const *const prompts[const], int *line_no );
 
 ///////////////////////////////////////////////////////////////////////////////
 
