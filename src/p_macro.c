@@ -450,22 +450,6 @@ static inline bool p_token_list_emptyish( p_token_list_t const *token_list ) {
   return p_token_node_emptyish( token_list->head );
 }
 
-/**
- * Creates a \ref c_loc where \ref c_loc::first_column "first_column" is 0 and
- * \ref c_loc::last_column "last_column" is the length of \a s.
- *
- * @param s The string to use the length of.
- * @returns Returns said location.
- */
-NODISCARD
-static inline c_loc_t str_loc( char const *s ) {
-  return (c_loc_t){
-    .first_column = 0,
-    .last_column = s[0] == '\0' ?
-      0 : (STATIC_CAST( c_loc_num_t, strlen( s ) ) - 1)
-  };
-}
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -2187,7 +2171,10 @@ static void mex_init( mex_state_t *mex, mex_state_t *parent_mex,
   *mex = (mex_state_t){
     .parent_mex = parent_mex,
     .macro = macro,
-    .name_loc = str_loc( macro->name ),
+    .name_loc = (c_loc_t){
+      .last_column = macro->name[0] == '\0' ?
+        0 : STATIC_CAST( c_loc_num_t, strlen( macro->name ) ) - 1
+    },
     .arg_list = arg_list,
     .replace_list = replace_list,
     .expand_list = &mex->work_lists[0],
