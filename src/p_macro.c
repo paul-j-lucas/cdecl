@@ -55,27 +55,12 @@
  */
 
 /**
- * Convenience macro for specifying a \ref c_loc having \a COL as its \ref
- * c_loc::first_column "first_column".
+ * Convenience macro for casting to \ref c_loc_num_t.
  *
- * @param COL The first column.
- * @return Returns said \ref c_loc
- *
- * @sa C_LOC_NEXT_COL()
+ * @param N The integer to case.
+ * @return Returns \a N cast to \ref c_loc_num_t.
  */
-#define C_LOC_COL(COL) \
-  (c_loc_t){ .first_column = STATIC_CAST( c_loc_num_t, (COL) ) }
-
-/**
- * Gets a \ref c_loc literal whose \ref c_loc::first_column "first_column" is
- * \a LOC's \ref c_loc::last_column "last_column" + 1.
- *
- * @param LOC The location to get the \ref c_loc::last_column "last_column" of.
- * @return Returns said \ref c_loc.
- *
- * @sa C_LOC_COL()
- */
-#define C_LOC_NEXT_COL(LOC)       C_LOC_COL( (LOC).last_column + 1 )
+#define C_LOC_NUM_T(N)            STATIC_CAST( c_loc_num_t, (N) )
 
 /**
  * Ends a dump block.
@@ -1183,7 +1168,15 @@ static bool mex_check___VA_OPT__( mex_state_t const *mex,
 
   token_node = p_token_node_not( token_node->next, P_SPACE );
   if ( token_node == NULL ) {
-    print_error( &C_LOC_NEXT_COL( __VA_OPT___token->loc ), "'(' expected\n" );
+    print_error(
+      &(c_loc_t){
+        .first_line = __VA_OPT___token->loc.first_line,
+        .first_column = __VA_OPT___token->loc.last_column + 1,
+        .last_line = __VA_OPT___token->loc.last_line,
+        .last_column = __VA_OPT___token->loc.last_column + 1
+      },
+      "'(' expected\n"
+    );
     return false;
   }
 
@@ -2173,7 +2166,7 @@ static void mex_init( mex_state_t *mex, mex_state_t *parent_mex,
     .macro = macro,
     .name_loc = (c_loc_t){
       .last_column = macro->name[0] == '\0' ?
-        0 : STATIC_CAST( c_loc_num_t, strlen( macro->name ) ) - 1
+        0 : C_LOC_NUM_T( strlen( macro->name ) - 1 )
     },
     .arg_list = arg_list,
     .replace_list = replace_list,
@@ -2807,9 +2800,9 @@ static void p_macro_relocate_params( p_macro_t *macro ) {
     p_param_t *const param = param_node->data;
     if ( true_or_set( &comma ) )
       column += STRLITLEN( ", " );
-    param->loc.first_column = STATIC_CAST( c_loc_num_t, column );
+    param->loc.first_column = C_LOC_NUM_T( column );
     column += strlen( param->name );
-    param->loc.last_column = STATIC_CAST( c_loc_num_t, column - 1 );
+    param->loc.last_column = C_LOC_NUM_T( column - 1 );
   } // for
 }
 
@@ -2900,10 +2893,12 @@ static void predefine_macro( char const *name, p_macro_dyn_fn_t dyn_fn ) {
   assert( name != NULL );
   assert( dyn_fn != NULL );
 
-  static c_loc_t const NAME_LOC = C_LOC_COL( STRLITLEN( "#define " ) );
-
   p_macro_t *const macro = p_macro_define(
-    check_strdup( name ), &NAME_LOC,
+    check_strdup( name ),
+    &(c_loc_t){
+      .first_column = C_LOC_NUM_T( STRLITLEN( "#define " ) ),
+      .last_column = C_LOC_NUM_T( STRLITLEN( "#define " ) + strlen( name ) - 1 )
+    },
     /*param_list=*/NULL,
     /*replace_list=*/NULL
   );
