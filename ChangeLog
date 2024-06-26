@@ -1,5 +1,6 @@
 2024-06-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c: Eliminated str_loc().
    * lexer.h, lexer.l, parse.c, read_line.c, read_line.h: Now incremening
      yylineno when escaped newlines are elided.
 
