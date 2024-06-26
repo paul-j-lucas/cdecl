@@ -1,5 +1,7 @@
 2024-06-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * p_macro.c: Eliminated C_LOC_COL() and C_LOC_NEXT_COL() in favor or
+     C_LOC_NUM_T().
    * p_macro.c: Eliminated str_loc().
    * lexer.h, lexer.l, parse.c, read_line.c, read_line.h: Now incremening
      yylineno when escaped newlines are elided.
