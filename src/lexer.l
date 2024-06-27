@@ -1808,6 +1808,12 @@ c_loc_t lexer_loc( void ) {
   return rv_loc;
 }
 
+void lexer_pop_string( void ) {
+  lexer_pop_buffer();
+  yylineno_stack_pop();
+  BEGIN( INITIAL );
+}
+
 void lexer_push_string( char const *s, size_t s_len, c_loc_num_t line_no ) {
   assert( s != NULL );
   FILE *const f = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
@@ -1817,12 +1823,6 @@ void lexer_push_string( char const *s, size_t s_len, c_loc_num_t line_no ) {
   yylineno_stack_push();
   yylineno = line_no;
   BEGIN( X_PRE_TOKENS );
-}
-
-void lexer_pop_string( void ) {
-  lexer_pop_buffer();
-  yylineno_stack_pop();
-  BEGIN( INITIAL );
 }
 
 char const* lexer_printable_token( void ) {
