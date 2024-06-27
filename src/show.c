@@ -69,6 +69,7 @@ struct show_types_info {
   c_sglob_t     sglob;                  ///< Scoped glob to match, if any.
   unsigned      decl_flags;             ///< Declaration flags.
   FILE         *fout;                   ///< Where to print the types.
+  bool          showed_any;             ///< Did we actually show any?
 };
 typedef struct show_types_info show_types_info_t;
 
@@ -141,7 +142,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
   assert( tdef != NULL );
   assert( data != NULL );
 
-  show_types_info_t const *const sti = data;
+  show_types_info_t *const sti = data;
 
   if ( (sti->show & CDECL_SHOW_OPT_IGNORE_LANG) == 0 &&
        !opt_lang_is_any( tdef->lang_ids ) ) {
@@ -162,6 +163,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
   }
 
   show_type( tdef, sti->decl_flags, sti->fout );
+  sti->showed_any = true;
 
 no_show:
   return /*stop=*/false;
@@ -228,6 +230,16 @@ void show_types( cdecl_show_t show, char const *glob, unsigned decl_flags,
   c_sglob_parse( glob, &sti.sglob );
 
   c_typedef_visit( &show_type_visitor, &sti );
+
+  if ( !sti.showed_any && show == CDECL_SHOW_USER_DEFINED &&
+       glob != NULL && strchr( glob, '*' ) == NULL ) {
+    //
+    // We didn't show a specific user-defined type, so try showing a specific
+    // predefined type.
+    //
+    sti.show = CDECL_SHOW_PREDEFINED;
+    c_typedef_visit( &show_type_visitor, &sti );
+  }
 
   c_sglob_cleanup( &sti.sglob );
 }

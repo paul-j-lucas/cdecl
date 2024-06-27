@@ -43,6 +43,15 @@ An error in a conf file is now fatal.
 Specifies an integer to add to all line numbers in error and warning messages
 as a debugging aid.  (See the man page for details.)
 
+** `show` fixed glob
+Previously, doing something like:
+
+    c++decl> show std::ios
+
+wouldn't show anything because the default show-type is user-defined and
+std::ios is predefined.  Now, if we didn't show a specific user-defined type
+(having a name with no `*`s in it), try showing a specific predefined type.
+
 
 * Changes in Cdecl 17.0.1
 
