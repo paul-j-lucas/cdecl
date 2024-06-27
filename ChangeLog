@@ -1,5 +1,6 @@
 2024-06-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Added missing SET_TOKEN;.
    * configure.ac, share/man/man1/cdecl.1, cdecl.c, util.c, util.h: Added
      CDECL_DEBUG debugger attach support.
    * p_macro.c: Eliminated C_LOC_COL() and C_LOC_NEXT_COL() in favor or
