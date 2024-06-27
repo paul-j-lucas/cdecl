@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 9, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 26, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -3014,6 +3014,32 @@ In addition to colors,
 other character attributes
 such as bold, underlined, reverse video, etc.,
 may be possible depending on the capabilities of the terminal.
+.TP
+.B CDECL_DEBUG
+If set to an ``affirmative'' value
+(one of
+.BR 1 ,
+.BR t ,
+.BR true ,
+.BR y ,
+or
+.BR yes ,
+case-insensitive),
+then
+.B cdecl
+will print its process ID
+and a ``waiting for debugger to attach'' message
+to standard error
+and wait indefinitely for a debugger to attach.
+(This is a debugging aid for developers of
+.B cdecl
+itself.
+It is enabled only when
+.B cdecl
+was compiled with
+.B NDEBUG
+.I not
+defined.)
 .TP
 .B CDECLRC
 The full path to the user-specific configuration file

@@ -37,6 +37,10 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
+#include <errno.h>
+#ifndef NDEBUG
+#include <signal.h>                     /* for raise(3) */
+#endif /* NDEBUG */
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,6 +76,46 @@ static char const* fput_list_apc_gets( void const **ppelt ) {
   *ppelt = ps + 1;
   return *ps;
 }
+
+#ifndef NDEBUG
+/**
+ * Checks whether \a s is any one of \a matches, case-insensitive.
+ *
+ * @param s The null-terminated string to check or null.
+ * @param matches The null-terminated array of values to check against.
+ * @return Returns `true` only if \a s is among \a matches.
+ */
+NODISCARD
+static bool is_any( char const *s, char const *const matches[const static 2] ) {
+  if ( s != NULL ) {
+    for ( char const *const *match = matches; *match != NULL; ++match ) {
+      if ( strcasecmp( s, *match ) == 0 )
+        return true;
+    } // for
+  }
+  return false;
+}
+
+/**
+ * Checks whether \a s is an affirmative value.  An affirmative value is one of
+ * 1, t, true, y, or yes, case-insensitive.
+ *
+ * @param s The null-terminated string to check or null.
+ * @return Returns `true` only if \a s is affirmative.
+ */
+NODISCARD
+static bool is_affirmative( char const *s ) {
+  static char const *const AFFIRMATIVES[] = {
+    "1",
+    "t",
+    "true",
+    "y",
+    "yes",
+    NULL
+  };
+  return is_any( s, AFFIRMATIVES );
+}
+#endif /* NDEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -408,6 +452,19 @@ void perror_exit( int status ) {
   exit( status );
 }
 // LCOV_EXCL_STOP
+
+#ifndef NDEBUG
+void wait_for_debugger_attach( char const *env_var ) {
+  assert( env_var != NULL );
+  if ( is_affirmative( getenv( env_var ) ) ) {
+    EPRINTF(
+      "%s: pid=%d: waiting for debugger to attach...\n",
+      me, STATIC_CAST( int, getpid() )
+    );
+    PERROR_EXIT_IF( raise( SIGSTOP ) == -1, EX_OSERR );
+  }
+}
+#endif /* NDEBUG */
 
 ///////////////////////////////////////////////////////////////////////////////
 

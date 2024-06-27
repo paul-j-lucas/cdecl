@@ -103,6 +103,7 @@ bool is_cppdecl( void ) {
 int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   ATEXIT( &cdecl_cleanup );
+  wait_for_debugger_attach( "CDECL_DEBUG" );
   cli_options_init( &argc, &argv );
   c_keywords_init();
   cdecl_keywords_init();
