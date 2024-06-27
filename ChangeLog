@@ -1,5 +1,7 @@
 2024-06-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.h, lexer.l, p_token.c, parser.y: Eliminated lexer_token in favor of
+     just using yytext directly.
    * lexer.l: Added missing SET_TOKEN;.
    * configure.ac, share/man/man1/cdecl.1, cdecl.c, util.c, util.h: Added
      CDECL_DEBUG debugger attach support.
