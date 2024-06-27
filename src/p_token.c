@@ -544,7 +544,6 @@ size_t p_token_list_relocate( p_token_list_t *token_list,
         first_column += strlen( p_token_str( token ) );
         token->loc.last_column = STATIC_CAST( c_loc_num_t, first_column - 1 );
         relocated_opaque = true;
-        break;
     } // switch
   } // for
 
@@ -579,7 +578,6 @@ char const* p_token_list_str( p_token_list_t const *token_list ) {
       default:
         strbuf_puts( &sbuf, p_token_str( token ) );
         stringified_opaque = true;
-        break;
     } // switch
   } // for
 
