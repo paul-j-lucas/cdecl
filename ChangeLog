@@ -1,3 +1,7 @@
+2024-06-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * p_token.c: Removed unnecessary "break"s.
+
 2024-06-26  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.h, lexer.l, p_token.c, parser.y: Eliminated lexer_token in favor of
