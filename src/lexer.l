@@ -539,8 +539,8 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
     .prev_lineno = yylineno
   };
   slist_push_front( &include_stack, ifi );
-  opt_lineno = 0;                       // applies only to original file
   real_path = NULL;                     // now owned by ifi above
+  opt_lineno = 0;                       // applies only to original file
 
   yyin = include_file;
   yypush_buffer_state( yy_create_buffer( yyin, YY_BUF_SIZE ) );
