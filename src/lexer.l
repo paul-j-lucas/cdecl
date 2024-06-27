@@ -377,6 +377,7 @@ static void lexer_pop_buffer( void ) {
   fclose( yyin );
   yypop_buffer_state();
   assert( YY_CURRENT_BUFFER != NULL );
+  SET_TOKEN;
 }
 
 /**
