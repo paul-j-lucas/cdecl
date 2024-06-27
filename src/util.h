@@ -1578,21 +1578,6 @@ char const* parse_identifier( char const *s );
 _Noreturn void perror_exit( int status );
 
 /**
- * Checks whether \a s is either an empty string or a line consisting only of
- * whitespace.
- *
- * @param s The null-terminated string to check.
- * @return Returns `true` only if \a s is either an empty string or a line
- * consisting only of whitespace.
- *
- * @sa null_if_empty()
- */
-NODISCARD C_UTIL_H_INLINE
-bool str_is_empty( char const *s ) {
-  return *SKIP_WS( s ) == '\0';
-}
-
-/**
  * Checks whether \a s is null, an empty string, or consists only of
  * whitespace.
  *
@@ -1618,6 +1603,21 @@ char const* null_if_empty( char const *s ) {
  */
 NODISCARD
 bool path_is_file( char const *path );
+
+/**
+ * Checks whether \a s is either an empty string or a line consisting only of
+ * whitespace.
+ *
+ * @param s The null-terminated string to check.
+ * @return Returns `true` only if \a s is either an empty string or a line
+ * consisting only of whitespace.
+ *
+ * @sa null_if_empty()
+ */
+NODISCARD C_UTIL_H_INLINE
+bool str_is_empty( char const *s ) {
+  return *SKIP_WS( s ) == '\0';
+}
 
 /**
  * Checks whether \a s1 is a prefix of (or equal to) \a s2.
