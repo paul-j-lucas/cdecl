@@ -385,7 +385,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
     case Y_PLUS_PLUS:
     case Y_SLASH_EQUAL:
     case Y_STAR_EQUAL:
-      token = p_token_new_loc( P_PUNCTUATOR, &yylloc, lexer_token );
+      token = p_token_new_loc( P_PUNCTUATOR, &yylloc, yytext );
       break;
 
     case Y_COLON_COLON:
@@ -400,7 +400,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       //
       if ( !OPT_LANG_IS( CPP_ANY ) )
         goto done;
-      token = p_token_new_loc( P_PUNCTUATOR, &yylloc, lexer_token );
+      token = p_token_new_loc( P_PUNCTUATOR, &yylloc, yytext );
       break;
 
     case Y_LESS_EQUAL_GREATER:
@@ -409,7 +409,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
       //
       if ( !OPT_LANG_IS( LESS_EQUAL_GREATER ) )
         goto done;
-      token = p_token_new_loc( P_PUNCTUATOR, &yylloc, lexer_token );
+      token = p_token_new_loc( P_PUNCTUATOR, &yylloc, yytext );
       break;
 
     case Y_CHAR_LIT:
@@ -419,7 +419,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
     case Y_FLOAT_LIT:
     case Y_INT_LIT:
       token =
-        p_token_new_loc( P_NUM_LIT, &yylloc, check_strdup( lexer_token ) );
+        p_token_new_loc( P_NUM_LIT, &yylloc, check_strdup( yytext ) );
       break;
 
     case Y_NAME:
@@ -483,7 +483,7 @@ p_token_t* p_token_lex( c_loc_t const *loc, strbuf_t *sbuf ) {
     case '$':
     case '@':
     case '`':
-      token = p_token_new_loc( P_OTHER, &yylloc, lexer_token );
+      token = p_token_new_loc( P_OTHER, &yylloc, yytext );
       break;
 
     case Y_LEXER_ERROR:

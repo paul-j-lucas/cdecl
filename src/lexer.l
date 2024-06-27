@@ -133,22 +133,6 @@
 #define RSTR_DELIM_LEN_MAX        16u
 
 /**
- * Sets \ref lexer_token to the current Flex token.
- *
- * @sa #SET_TOKEN_TO()
- */
-#define SET_TOKEN                 SET_TOKEN_TO( yytext )
-
-/**
- * Sets \ref lexer_token to \a S.
- *
- * @param S The string to set the token to.
- *
- * @sa #SET_TOKEN
- */
-#define SET_TOKEN_TO(S)           (lexer_token = (S))
-
-/**
  * Overrides Flex's fatal error message to print the message in our format and
  * also exit with the status code we want.
  *
@@ -201,8 +185,6 @@ struct include_file_info {
 };
 typedef struct include_file_info include_file_info_t;
 
-static char const lexer_token_init_buf; ///< So lexer_token is never NULL.
-
 /// @cond DOXYGEN_IGNORE
 /// Otherwise Doxygen generates two entries.
 
@@ -210,11 +192,6 @@ static char const lexer_token_init_buf; ///< So lexer_token is never NULL.
 lexer_find_kind_t lexer_find = LEXER_FIND_ANY;
 bool              lexer_is_param_list_decl;
 c_keyword_ctx_t   lexer_keyword_ctx;
-
-// A separate pointer for the current token allows it:
-//  + To be `const`.
-//  + To be assigned to either other `const` strings or string literals.
-char const       *lexer_token = &lexer_token_init_buf;
 
 /// @endcond
 
@@ -377,7 +354,6 @@ static void lexer_pop_buffer( void ) {
   fclose( yyin );
   yypop_buffer_state();
   assert( YY_CURRENT_BUFFER != NULL );
-  SET_TOKEN;
 }
 
 /**
@@ -399,14 +375,14 @@ static inline void newline( void ) {
 }
 
 /**
- * Parses an integer from \ref lexer_token.
+ * Parses an integer from \ref yytext.
  *
  * @param base The integer base to use.
  * @return Returns the integer value.
  */
 NODISCARD
 static int parse_int( int base ) {
-  char const *s = lexer_token;
+  char const *s = yytext;
   bool const is_neg = s[0] == '-';
 
   if ( is_neg )
@@ -587,7 +563,7 @@ static void set_digraph( char const *token ) {
       "digraphs not supported%s\n", C_LANG_WHICH( DIGRAPHS )
     );
   }
-  SET_TOKEN_TO( token );
+  set_yytext( token );
 }
 
 /**
@@ -605,7 +581,7 @@ static void set_trigraph( char const *token ) {
       "trigraphs not supported%s\n", C_LANG_WHICH( TRIGRAPHS )
     );
   }
-  SET_TOKEN_TO( token );
+  set_yytext( token );
 }
 
 /**
@@ -749,7 +725,6 @@ flt_lit       -?({dec_flt}|{hex_flt}){flt_sfx}?
                * qualifier.
                */
 _Atomic/{S}*\( {
-                SET_TOKEN;
                 return Y__Atomic_SPEC;
               }
 
@@ -781,7 +756,6 @@ _Atomic/{S}*\( {
                * binding "auto" won't be returned.
                */
 auto/({S}+(const|volatile))*{S}*?&?&?{S}*\[ {
-                SET_TOKEN;
                 if ( !lexer_is_param_list_decl )
                   return Y_auto_STRUCTURED_BINDING;
                 CDECL_REJECT;
@@ -795,7 +769,6 @@ auto/({S}+(const|volatile))*{S}*?&?&?{S}*\[ {
                * classes) from the normal "const" that's a CV qualifier.
                */
 const(ant)?/{S}+(eval(uation)?|expr(ession)?|init(ialization)?){NI} {
-                SET_TOKEN;
                 return Y_constant;
               }
 
@@ -821,7 +794,6 @@ const(ant)?/{S}+(eval(uation)?|expr(ession)?|init(ialization)?){NI} {
                * (which is legal).
                */
 declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
-                SET_TOKEN;
                 lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
                 return Y_declare;
               }
@@ -869,10 +841,10 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                 // Set the offending token to the one past the `q`.
                 while ( !isspace( s[-1] ) )
                   --s;
-                SET_TOKEN_TO( s );
+                set_yytext( s );
                 return Y_LEXER_ERROR;
               }
-^{S}*q{S}*    { SET_TOKEN_TO( L_quit ); return Y_quit; }
+^{S}*q{S}*    { set_yytext( L_quit ); return Y_quit; }
 
               /*
                * Special case: similar to {sname} below, handle scoped
@@ -885,10 +857,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                *      S::T::~U          // not a destructor (and an error)
                */
 {dtor_sname}  {
-                SET_TOKEN;
-
                 c_sname_t sname;
-                if ( c_sname_parse_dtor( lexer_token, &sname ) > 0 ) {
+                if ( c_sname_parse_dtor( yytext, &sname ) > 0 ) {
                   yylval.sname = sname;
                   return Y_DESTRUCTOR_SNAME;
                 }
@@ -905,10 +875,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                *      S::T::operator    // sname = "S::T"
                */
 {oper_sname}  {
-                SET_TOKEN;
-
                 c_sname_t sname;
-                size_t const sname_len = c_sname_parse( lexer_token, &sname );
+                size_t const sname_len = c_sname_parse( yytext, &sname );
                 if ( sname_len == 0 )
                   CDECL_REJECT;
 
@@ -954,10 +922,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                *    prior to use.
                */
 {sname}/{S}+auto{NI} {
-                SET_TOKEN;
-
                 c_sname_t sname;
-                size_t const sname_len = c_sname_parse( lexer_token, &sname );
+                size_t const sname_len = c_sname_parse( yytext, &sname );
                 if ( sname_len == 0 )
                   CDECL_REJECT;
                 yylval.sname = sname;
@@ -1012,10 +978,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * partial token.
                */
 {sname}/{NI}  {
-                SET_TOKEN;
-
                 c_sname_t sname;
-                size_t const sname_len = c_sname_parse( lexer_token, &sname );
+                size_t const sname_len = c_sname_parse( yytext, &sname );
                 if ( sname_len == 0 )
                   CDECL_REJECT;
 
@@ -1055,7 +1019,6 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * rule because '-' isn't a valid character in an identifier.
                */
 {hyphenated}  {
-                SET_TOKEN;
                 //
                 // Hyphenated tokens are legal only in pseudo-English.
                 //
@@ -1082,7 +1045,6 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * where "C" is a concept.
                */
 {identifier}/{S}+auto{NI} {
-                SET_TOKEN;
                 is_constrained_auto = true;
                 //
                 // Now that we've set the flag, use the same keyword-matching
@@ -1092,15 +1054,13 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
               }
 
 {identifier}  {
-                SET_TOKEN;
-
                 //
                 // 1. See if it's a cdecl keyword.
                 //
         find_cdecl_keyword:
                 NO_OP;
                 cdecl_keyword_t const *const cdk =
-                  lexer_cdecl_keyword_find( lexer_token );
+                  lexer_cdecl_keyword_find( yytext );
                 if ( cdk != NULL ) {
                   if ( cdk->lang_syn == NULL ) {
                     if ( cdk->literal == L_expand ) {
@@ -1129,7 +1089,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   }
                   char const *const literal = c_lang_literal( cdk->lang_syn );
                   if ( literal != NULL ) {
-                    SET_TOKEN_TO( literal );
+                    set_yytext( literal );
                     goto find_c_keyword;
                   }
                 }
@@ -1138,7 +1098,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   //
                   // 2. See if it's a typedef'd type.
                   //
-                  SNAME_VAR_INIT_NAME( sname, lexer_token );
+                  SNAME_VAR_INIT_NAME( sname, yytext );
                   c_typedef_t const *const tdef =
                     c_typedef_find_sname( &sname );
                   if ( tdef != NULL ) {
@@ -1153,7 +1113,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   // 3. See if it's a C/C++ keyword.
                   //
                   c_keyword_t const *const ck = c_keyword_find(
-                    lexer_token, opt_lang_id, lexer_keyword_ctx
+                    yytext, opt_lang_id, lexer_keyword_ctx
                   );
                   if ( ck != NULL ) {
                     yylval.tid = ck->tid;
@@ -1165,16 +1125,14 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                   //
                   // 4. If it's constrained auto, it's a concept name.
                   //
-                  c_sname_init_name(
-                    &yylval.sname, check_strdup( lexer_token )
-                  );
+                  c_sname_init_name( &yylval.sname, check_strdup( yytext ) );
                   return Y_CONCEPT_SNAME;
                 }
 
                 //
                 // 5. Otherwise, it's just an ordinary name.
                 //
-                yylval.name = check_strdup( lexer_token );
+                yylval.name = check_strdup( yytext );
                 return Y_NAME;
               }
 
@@ -1185,28 +1143,23 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 <INITIAL,X_PRE_TOKENS>{
 
 {bin_int}     {
-                SET_TOKEN;
                 yylval.int_val = parse_int( 2 );
                 return Y_INT_LIT;
               }
 {oct_int}     {
-                SET_TOKEN;
                 yylval.int_val = parse_int( 8 );
                 return Y_INT_LIT;
               }
 {dec_int}     {
-                SET_TOKEN;
                 yylval.int_val = parse_int( 10 );
                 return Y_INT_LIT;
               }
 {hex_int}     {
-                SET_TOKEN;
                 yylval.int_val = parse_int( 16 );
                 return Y_INT_LIT;
               }
 
 {flt_lit}     {
-                SET_TOKEN;
                 // cdecl doesn't care what the actual float value is, only the
                 // characters comprising the token for the macro processor.
                 return Y_FLOAT_LIT;
@@ -1230,7 +1183,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                */
 "<:"/{S}*"<:"   { set_digraph( "[" );  return Y_ATTR_BEGIN; }
 "??("/{S}*"??(" { set_trigraph( "[" ); return Y_ATTR_BEGIN; }
-"["/{S}*"["     { SET_TOKEN;           return Y_ATTR_BEGIN; }
+"["/{S}*"["     {                      return Y_ATTR_BEGIN; }
 
 } /* <INITIAL,X_PRE_TOKENS> */
 
@@ -1273,36 +1226,36 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                *
                * in an LALR(1) parser.
                */
-"::"/{S}*"*"  { SET_TOKEN; return Y_COLON_COLON_STAR      ; }
-"::"          { SET_TOKEN; return Y_COLON_COLON           ; }
+"::"/{S}*"*"  { return Y_COLON_COLON_STAR       ; }
+"::"          { return Y_COLON_COLON            ; }
 
               /* Multi-character operators. */
-"!="          { SET_TOKEN; return Y_EXCLAM_EQUAL          ; }
-"%="          { SET_TOKEN; return Y_PERCENT_EQUAL         ; }
-"&&"          { SET_TOKEN; return Y_AMPER_AMPER           ; }
-"&="          { SET_TOKEN; return Y_AMPER_EQUAL           ; }
-"*="          { SET_TOKEN; return Y_STAR_EQUAL            ; }
-"++"          { SET_TOKEN; return Y_PLUS_PLUS             ; }
-"+="          { SET_TOKEN; return Y_PLUS_EQUAL            ; }
-"--"          { SET_TOKEN; return Y_MINUS_MINUS           ; }
-"-="          { SET_TOKEN; return Y_MINUS_EQUAL           ; }
-"->"          { SET_TOKEN; return Y_MINUS_GREATER         ; }
-"->*"         { SET_TOKEN; return Y_MINUS_GREATER_STAR    ; }
-".*"          { SET_TOKEN; return Y_DOT_STAR              ; }
-"..."         { SET_TOKEN; return Y_ELLIPSIS              ; }
-"/="          { SET_TOKEN; return Y_SLASH_EQUAL           ; }
-"<<"          { SET_TOKEN; return Y_LESS_LESS             ; }
-"<<="         { SET_TOKEN; return Y_LESS_LESS_EQUAL       ; }
-"<="          { SET_TOKEN; return Y_LESS_EQUAL            ; }
-"<=>"         { SET_TOKEN; return Y_LESS_EQUAL_GREATER    ; }
-"=="          { SET_TOKEN; return Y_EQUAL_EQUAL           ; }
-">="          { SET_TOKEN; return Y_GREATER_EQUAL         ; }
-">>"          { SET_TOKEN; return Y_GREATER_GREATER       ; }
-">>="         { SET_TOKEN; return Y_GREATER_GREATER_EQUAL ; }
-"?:"          { SET_TOKEN; return Y_QMARK_COLON           ; }
-"^="          { SET_TOKEN; return Y_CARET_EQUAL           ; }
-"|="          { SET_TOKEN; return Y_PIPE_EQUAL            ; }
-"||"          { SET_TOKEN; return Y_PIPE_PIPE             ; }
+"!="          { return Y_EXCLAM_EQUAL           ; }
+"%="          { return Y_PERCENT_EQUAL          ; }
+"&&"          { return Y_AMPER_AMPER            ; }
+"&="          { return Y_AMPER_EQUAL            ; }
+"*="          { return Y_STAR_EQUAL             ; }
+"++"          { return Y_PLUS_PLUS              ; }
+"+="          { return Y_PLUS_EQUAL             ; }
+"--"          { return Y_MINUS_MINUS            ; }
+"-="          { return Y_MINUS_EQUAL            ; }
+"->"          { return Y_MINUS_GREATER          ; }
+"->*"         { return Y_MINUS_GREATER_STAR     ; }
+".*"          { return Y_DOT_STAR               ; }
+"..."         { return Y_ELLIPSIS               ; }
+"/="          { return Y_SLASH_EQUAL            ; }
+"<<"          { return Y_LESS_LESS              ; }
+"<<="         { return Y_LESS_LESS_EQUAL        ; }
+"<="          { return Y_LESS_EQUAL             ; }
+"<=>"         { return Y_LESS_EQUAL_GREATER     ; }
+"=="          { return Y_EQUAL_EQUAL            ; }
+">="          { return Y_GREATER_EQUAL          ; }
+">>"          { return Y_GREATER_GREATER        ; }
+">>="         { return Y_GREATER_GREATER_EQUAL  ; }
+"?:"          { return Y_QMARK_COLON            ; }
+"^="          { return Y_CARET_EQUAL            ; }
+"|="          { return Y_PIPE_EQUAL             ; }
+"||"          { return Y_PIPE_PIPE              ; }
 
               /*
                * Special case: if '#' is the first non-whitespace character on
@@ -1312,9 +1265,8 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * so Flex will match this rule before that rule.
                */
 ^{S}*"#"      {
-                SET_TOKEN;
                 BEGIN( X_PRE_COMMAND );
-                return lexer_token[0];
+                return yytext[0];
               }
 
               /* Single-character operators and miscellaneous punctuation. */
@@ -1342,7 +1294,7 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 "{"           |
 "|"           |
 "}"           |
-"~"           { SET_TOKEN; return lexer_token[0]          ; }
+"~"           { return yytext[0]                ; }
 
 } /* <INITIAL,X_PRE_TOKENS> */
 
@@ -1572,7 +1524,6 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
               }
 
 <*>\n         {
-                SET_TOKEN;
                 newline();
                 BEGIN( INITIAL );
                 return Y_END;
@@ -1590,17 +1541,15 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * it in {identifier} below.
                */
   define/{S}+{identifier}\( {
-                SET_TOKEN;
                 is_func_like_macro = true;
                 return Y_PRE_define;
               }
 
   {identifier} {
-                SET_TOKEN;
-                p_keyword_t const *const pk = p_keyword_find( lexer_token );
+                p_keyword_t const *const pk = p_keyword_find( yytext );
                 if ( pk != NULL )
                   return pk->y_token_id;
-                yylval.name = check_strdup( lexer_token );
+                yylval.name = check_strdup( yytext );
                 if ( !is_func_like_macro ) {
                   //
                   // We can switch to X_PRE_TOKENS now; otherwise we switch
@@ -1612,35 +1561,33 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
               }
 
   "("         |
-  ","         { SET_TOKEN; return lexer_token[0]; }
+  ","         { return yytext[0]    ; }
   ")"         {
-                SET_TOKEN;
                 BEGIN( X_PRE_TOKENS );
                 return ')';
               }
 
-  "..."       { SET_TOKEN; return Y_ELLIPSIS   ; }
+  "..."       { return Y_ELLIPSIS   ; }
 
 } /* <X_PRE_COMMAND> */
 
 <X_PRE_TOKENS>{
 
   {identifier} {
-                SET_TOKEN;
-                if ( strcmp( lexer_token, L_PRE___VA_ARGS__ ) == 0 )
+                if ( strcmp( yytext, L_PRE___VA_ARGS__ ) == 0 )
                   return Y_PRE___VA_ARGS__;
-                if ( strcmp( lexer_token, L_PRE___VA_OPT__ ) == 0 )
+                if ( strcmp( yytext, L_PRE___VA_OPT__ ) == 0 )
                   return Y_PRE___VA_OPT__;
-                yylval.name = check_strdup( lexer_token );
+                yylval.name = check_strdup( yytext );
                 return Y_NAME;
               }
 
-  "##"        { SET_TOKEN; return Y_PRE_CONCAT  ; }
+  "##"        { return Y_PRE_CONCAT ; }
 
   "#"         |
   "$"         |
   "@"         |
-  "`"         { SET_TOKEN; return lexer_token[0]; }
+  "`"         { return yytext[0]    ; }
 
 } /* <X_PRE_TOKENS> */
 
@@ -1652,20 +1599,17 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
                * optional whitespace before the '(' being significant.
                */
   {identifier}/{S}*\( {
-                SET_TOKEN;
-                yylval.name = check_strdup( lexer_token );
+                yylval.name = check_strdup( yytext );
                 return Y_NAME;
               }
 
   {identifier} {                        // object-like macro
-                SET_TOKEN;
-                yylval.name = check_strdup( lexer_token );
+                yylval.name = check_strdup( yytext );
                 BEGIN( X_PRE_TOKENS );
                 return Y_NAME;
               }
 
   "("         {
-                SET_TOKEN;
                 BEGIN( X_PRE_TOKENS );
                 return '(';
               }
@@ -1679,16 +1623,14 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 <X_SET>{
 
   {set_option} {
-                SET_TOKEN;
-                yylval.name = check_strdup( lexer_token );
+                yylval.name = check_strdup( yytext );
                 return Y_SET_OPTION;
               }
 
-  "="         { SET_TOKEN; return lexer_token[0]; }
+  "="         { return yytext[0]; }
   ";"         {
-                SET_TOKEN;
                 BEGIN( INITIAL );
-                return lexer_token[0];
+                return yytext[0];
               }
 
 } /* <X_SET> */
@@ -1696,15 +1638,13 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
 <S_SHOW>{
 
   {glob}      {
-                SET_TOKEN;
-                yylval.name = check_strdup( lexer_token );
+                yylval.name = check_strdup( yytext );
                 return Y_GLOB;
               }
 
   ";"         {
-                SET_TOKEN;
                 BEGIN( INITIAL );
-                return lexer_token[0];
+                return yytext[0];
               }
 
 } /* <S_SHOW> */
@@ -1714,12 +1654,10 @@ declare/{S}({S}|{L})*user(-|{S}+)def(ined)?{NI} {
   /***************************************************************************/
 
 <*>.          {
-                SET_TOKEN;
                 return Y_ERROR;
               }
 
 <*><<EOF>>    {
-                SET_TOKEN;
                 newline();
                 BEGIN( INITIAL );
 
@@ -1797,7 +1735,7 @@ char const* lexer_input_line( size_t *rv_len ) {
 
 c_loc_t lexer_loc( void ) {
   c_loc_t rv_loc = yylloc;
-  if ( lexer_token[0] == '\n' ) {
+  if ( yytext[0] == '\n' ) {
     //
     // If the current token is '\n', it means first_line & last_line are
     // already on the next line, but we want the line that the '\n' is on which
@@ -1826,16 +1764,6 @@ void lexer_push_string( char const *s, size_t s_len, c_loc_num_t line_no ) {
   BEGIN( X_PRE_TOKENS );
 }
 
-char const* lexer_printable_token( void ) {
-  switch ( lexer_token[0] ) {
-    case '\0':
-    case '\n':
-      return NULL;
-    default:
-      return lexer_token;
-  } // switch
-}
-
 void lexer_reset( bool hard_reset ) {
   if ( hard_reset ) {
     is_eof = false;
@@ -1856,6 +1784,16 @@ void lexer_reset( bool hard_reset ) {
   strbuf_reset( &str_lit_buf );
   yylineno_stack_top = -1;
   yy_start_stack_top = -1;
+}
+
+char const* printable_yytext( void ) {
+  switch ( yytext[0] ) {
+    case '\0':
+    case '\n':
+      return NULL;
+    default:
+      return yytext;
+  } // switch
 }
 
 ///////////////////////////////////////////////////////////////////////////////

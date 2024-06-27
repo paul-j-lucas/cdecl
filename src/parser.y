@@ -1010,7 +1010,7 @@ static void fl_keyword_expected( char const *file, int line,
 
   dym_kind_t dym_kinds = DYM_NONE;
 
-  char const *const error_token = lexer_printable_token();
+  char const *const error_token = printable_yytext();
   if ( error_token != NULL ) {
     if ( strcmp( error_token, keyword ) == 0 ) {
       //
@@ -1067,7 +1067,7 @@ static void fl_keyword_expected( char const *file, int line,
 static void fl_punct_expected( char const *file, int line, char punct ) {
   EPUTS( ": " );
   print_debug_file_line( file, line );
-  if ( print_error_token( lexer_printable_token() ) )
+  if ( print_error_token( printable_yytext() ) )
     EPUTS( ": " );
   EPRINTF( "'%c' expected\n", punct );
 }
@@ -1960,7 +1960,7 @@ command
   | semi_or_end                         // allows for blank lines
   | error
     {
-      if ( lexer_printable_token() != NULL )
+      if ( printable_yytext() != NULL )
         elaborate_error_dym( DYM_COMMANDS, "unexpected token" );
       else
         elaborate_error( "unexpected end of command" );
@@ -2853,7 +2853,7 @@ p_arg_token
     }
   | p_num_lit[num]
     {
-      $$ = p_token_new_loc( P_NUM_LIT, &@num, check_strdup( lexer_token ) );
+      $$ = p_token_new_loc( P_NUM_LIT, &@num, check_strdup( yytext ) );
     }
   | Y_PRE_SPACE[space]
     {
@@ -2865,11 +2865,11 @@ p_arg_token
     }
   | p_other[other]
     {
-      $$ = p_token_new_loc( P_OTHER, &@other, lexer_token );
+      $$ = p_token_new_loc( P_OTHER, &@other, yytext );
     }
   | p_punctuator[punct]
     {
-      $$ = p_token_new_loc( P_PUNCTUATOR, &@punct, lexer_token );
+      $$ = p_token_new_loc( P_PUNCTUATOR, &@punct, yytext );
     }
   ;
 
@@ -4505,7 +4505,7 @@ decl_list_c_opt
         //
         c_loc_t const loc = lexer_loc();
         print_error( &loc, "declaration expected" );
-        print_error_token_is_a( lexer_printable_token() );
+        print_error_token_is_a( printable_yytext() );
         EPUTC( '\n' );
         PARSE_ABORT();
       }
@@ -4879,15 +4879,15 @@ no_destructor_params
       //
       // where the <<("int" is a keyword)>> part seems wrong since the user
       // didn't try using "int" as an ordinary identifier.  To suppress that
-      // part, set lexer_token to the empty string so elaborate_error() won't
-      // print it nor call print_error_token_is_a() and and we'll instead get
-      // an error message like:
+      // part, set yytext to the empty string so elaborate_error() won't print
+      // it nor call print_error_token_is_a() and and we'll instead get an
+      // error message like:
       //
       //      c++decl> explain ~C(int)
       //                          ^
       //      12: syntax error: destructors may not have parameters
       //
-      lexer_token = "";
+      set_yytext( "" );
       elaborate_error( "destructors may not have parameters" );
     }
   ;
@@ -7179,7 +7179,7 @@ storage_class_c_type
       if ( !IS_SUPPORTED( _Noreturn ) ) {
         print_error( &@_Noreturn_atid,
           "\"%s\" keyword not supported%s",
-          lexer_token, C_LANG_WHICH( _Noreturn )
+          yytext, C_LANG_WHICH( _Noreturn )
         );
         print_hint(
           "%snoreturn%s", other_token_c( "[[" ), other_token_c( "]]" )
@@ -7189,7 +7189,7 @@ storage_class_c_type
       if ( !OPT_LANG_IS( _Noreturn_NOT_DEPRECATED ) ) {
         print_warning( &@_Noreturn_atid,
           "\"%s\" is deprecated%s",
-          lexer_token, C_LANG_WHICH( _Noreturn_NOT_DEPRECATED )
+          yytext, C_LANG_WHICH( _Noreturn_NOT_DEPRECATED )
         );
         print_hint(
           "%snoreturn%s", other_token_c( "[[" ), other_token_c( "]]" )
@@ -9472,7 +9472,7 @@ virtual_stid_opt
  * Prints an additional parsing error message including a newline to standard
  * error that continues from where yyerror() left off.  Additionally:
  *
- * + If the lexer_printable_token() isn't NULL:
+ * + If the printable_yytext() isn't NULL:
  *     + Checks to see if it's a keyword: if it is, mentions that it's a
  *       keyword in the error message.
  *     + May print "did you mean ...?" \a dym_kinds suggestions.
@@ -9507,7 +9507,7 @@ static void fl_elaborate_error( char const *file, int line,
   EPUTS( ": " );
   print_debug_file_line( file, line );
 
-  char const *const error_token = lexer_printable_token();
+  char const *const error_token = printable_yytext();
   if ( print_error_token( error_token ) )
     EPUTS( ": " );
 

@@ -31,6 +31,7 @@
 #include "pjl_config.h"                 /* must go first */
 #include "c_keyword.h"
 #include "types.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -121,16 +122,17 @@ extern bool               lexer_is_param_list_decl;
 extern c_keyword_ctx_t    lexer_keyword_ctx;
 
 /**
- * Text of current token.
- *
- * @sa lexer_printable_token()
- */
-extern char const        *lexer_token;
-
-/**
  * Flex's current line number.
  */
 extern int                yylineno;
+
+/**
+ * Flex's current token.
+ *
+ * @sa printable_yytext()
+ * @sa set_yytext()
+ */
+extern char              *yytext;
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -186,14 +188,6 @@ NODISCARD
 c_loc_t lexer_loc( void );
 
 /**
- * Gets a printable string of \ref lexer_token.
- *
- * @return Returns said string or NULL if \ref lexer_token is the empty string.
- */
-NODISCARD
-char const* lexer_printable_token( void );
-
-/**
  * Makes \a s the input source for the lexer so that subsequent tokens lex'd
  * via yylex() will be from \a s.
  *
@@ -221,6 +215,28 @@ void lexer_pop_string( void );
  * EOF flag also.
  */
 void lexer_reset( bool hard_reset );
+
+/**
+ * Gets a printable version of \ref yytext.
+ *
+ * @return If \ref yytext is either the empty string or a newline, returns
+ * NULL; otherwise returns \ref yytext.
+ */
+NODISCARD
+char const* printable_yytext( void );
+
+/**
+ * Sets Flex's \ref yytext to \a s.
+ *
+ * @remarks This is a convenience function to set \ref yytext to a constant
+ * string without having to explicitly cast away `const`.
+ *
+ * @param s The string to set \ref yytext to.
+ */
+LEXER_H_INLINE
+void set_yytext( char const *s ) {
+  yytext = CONST_CAST( char*, s );
+}
 
 /**
  * Flex: gets the next token ID.
