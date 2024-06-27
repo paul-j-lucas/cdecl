@@ -181,6 +181,7 @@
 struct include_file_info {
   char const *prev_orig_path;           ///< The previous file's original path.
   char const *curr_real_path;           ///< The current file's real path.
+  c_loc_num_t opt_lineno_orig;          ///< Original value of \ref opt_lineno.
   c_loc_num_t prev_lineno;              ///< The file's last line number.
 };
 typedef struct include_file_info include_file_info_t;
@@ -446,6 +447,7 @@ static bool pop_file( void ) {
   PJL_DISCARD_RV( rb_tree_delete( &include_set, found_rb ) );
 
   print_params.conf_path = ifi->prev_orig_path;
+  opt_lineno = ifi->opt_lineno_orig;
   yylineno = ifi->prev_lineno;
   ifi_free( ifi );
   lexer_pop_buffer();
@@ -533,9 +535,11 @@ static void push_file( char const *path, c_loc_t const *path_loc ) {
   *ifi = (include_file_info_t){
     .prev_orig_path = print_params.conf_path,
     .curr_real_path = real_path,
+    .opt_lineno_orig = opt_lineno,
     .prev_lineno = yylineno
   };
   slist_push_front( &include_stack, ifi );
+  opt_lineno = 0;                       // applies only to original file
   real_path = NULL;                     // now owned by ifi above
 
   yyin = include_file;
@@ -1770,7 +1774,8 @@ void lexer_reset( bool hard_reset ) {
     include_cleanup();
     include_init();
     newline();
-    yylineno = 1;
+    if ( opt_lineno == 0 )
+      yylineno = 1;
   }
   BEGIN( INITIAL );
   digraph_warned = trigraph_warned = false;

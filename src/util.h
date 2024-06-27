@@ -958,6 +958,11 @@ _GL_INLINE_HEADER_BEGIN
   (ARRAY_SIZE(S) - STATIC_ASSERT_EXPR( IS_C_STR(S), #S " must be a C string literal" ))
 
 /**
+ * The return value from check_strtoull() indicating an error.
+ */
+#define STRTOULL_ERROR            STATIC_CAST( unsigned long long, -1 )
+
+/**
  * Converts \a P to a pointer to `void` preserving `const`-ness.
  *
  * @param P A pointer.
@@ -1148,6 +1153,24 @@ char* check_strdup_tolower( char const *s );
  */
 NODISCARD
 char* check_strndup( char const *s, size_t n );
+
+/**
+ * Calls **strtoull**(3) and:
+ *
+ *  + Ensures \a s contains only decimal digits; and:
+ *  + Checks `errno` for failture; and:
+ *  + Ensures the value &ge; min; and:
+ *  + Ensures the value &le; max.
+ *
+ * @param s The null-terminated string to convert.
+ * @param min The minimum allowed value.
+ * @param max The maximum allowed value.
+ * @return Returns \a s convervted to an unsigned integer upon success or
+ * #STRTOULL_ERROR upon failure.
+ */
+NODISCARD
+unsigned long long check_strtoull( char const *s, unsigned long long min,
+                                   unsigned long long max );
 
 /**
  * Checks whether \a s is null: if so, returns the empty string.
@@ -1438,6 +1461,17 @@ bool is_01_bit_only_in_set( uint64_t n, uint64_t set ) {
 NODISCARD C_UTIL_H_INLINE
 bool is_1n_bit_only_in_set( uint64_t n, uint64_t set ) {
   return n != 0 && is_0n_bit_only_in_set( n, set );
+}
+
+/**
+ * Checks whether \a s contains only decimal digit characters.
+ *
+ * @param s The null-terminated string to check.
+ * @return Returns `true` only if \a s contains only decimal digits.
+ */
+NODISCARD C_UTIL_H_INLINE
+bool is_digits( char const *s ) {
+  return *SKIP_CHARS( s, "0123456789" ) == '\0';
 }
 
 /**

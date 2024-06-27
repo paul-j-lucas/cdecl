@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE -xc++ <<END
+cdecl -bEL$LINENO -xc++ <<END
 
 set nousing
 set

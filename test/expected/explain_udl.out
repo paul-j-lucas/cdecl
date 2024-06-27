@@ -8,7 +8,7 @@ c++decl> explain int operator"" _x(char8_t)
 declare _x as user-defined literal (character 8) returning integer
 c++decl> explain int operator"" m(char)
                    ^
-11: warning: user-defined literals not starting with '_' are reserved
+7,11: warning: user-defined literals not starting with '_' are reserved
 declare m as user-defined literal (character) returning integer
 c++decl> explain int operator"" _x(char)
 declare _x as user-defined literal (character) returning integer

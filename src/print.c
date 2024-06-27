@@ -665,8 +665,10 @@ void print_loc( c_loc_t const *loc ) {
     EPUTS( path );
     color_end( stderr, sgr_locus );
     EPUTC( ':' );
+  }
+  if ( path != NULL || opt_lineno > 0 ) {
     color_start( stderr, sgr_locus );
-    EPRINTF( "%d", loc->first_line );
+    EPRINTF( "%u", opt_lineno + STATIC_CAST( unsigned, loc->first_line ) );
     color_end( stderr, sgr_locus );
     EPUTC( ',' );
   }

@@ -336,7 +336,8 @@ NODISCARD
 static char const*      mex_expanding_set_key( mex_state_t const* );
 
 static void             mex_init( mex_state_t*, mex_state_t*, p_macro_t const*,
-                                  p_arg_list_t*, p_token_list_t const*, FILE* );
+                                  c_loc_t const*, p_arg_list_t*,
+                                  p_token_list_t const*, FILE* );
 
 NODISCARD
 static p_token_list_t*  mex_param_arg( mex_state_t const*, char const* );
@@ -581,6 +582,7 @@ static bool mex_append_args( mex_state_t *mex ) {
     mex_init( &arg_mex,
       /*parent_mex=*/mex,
       &(p_macro_t){ .name = arg_name },
+      &mex->name_loc,
       /*arg_list=*/NULL,
       /*replace_list=*/arg_node->data,
       mex->fout
@@ -1711,6 +1713,7 @@ static mex_rv_t mex_expand_all_params( mex_state_t *mex ) {
     mex_init( &param_mex,
       /*parent_mex=*/mex,
       &(p_macro_t){ .name = token->ident.name },
+      &mex->name_loc,
       /*arg_list=*/NULL,
       /*replace_list=*/arg_tokens,
       mex->fout
@@ -1927,6 +1930,7 @@ static mex_rv_t mex_expand_identifier( mex_state_t *mex,
   mex_init( &macro_mex,
     /*parent_mex=*/mex,
     found_macro,
+    &mex->name_loc,
     looks_func_like ? &arg_list : NULL,
     &found_macro->replace_list,
     mex->fout
@@ -2066,6 +2070,7 @@ static p_token_node_t* mex_expand___VA_OPT__( mex_state_t *mex,
         .name = L_PRE___VA_OPT__,
         .param_list = mex->macro->param_list
       },
+      &mex->name_loc,
       mex->arg_list,
       /*replace_list=*/&va_opt_list,
       mex->fout
@@ -2128,6 +2133,7 @@ static char const* mex_expanding_set_key( mex_state_t const *mex ) {
  * @param mex The mex_state to initialize.
  * @param parent_mex The parent mex_state, if any.
  * @param macro The macro to use.
+ * @param name_loc The source location of \a macro's name.
  * @param arg_list The argument list, if any.
  * @param replace_list The replacement token list.
  * @param fout The `FILE` to print to.
@@ -2135,11 +2141,13 @@ static char const* mex_expanding_set_key( mex_state_t const *mex ) {
  * @sa mex_cleanup()
  */
 static void mex_init( mex_state_t *mex, mex_state_t *parent_mex,
-                      p_macro_t const *macro, p_arg_list_t *arg_list,
+                      p_macro_t const *macro, c_loc_t const *name_loc,
+                      p_arg_list_t *arg_list,
                       p_token_list_t const *replace_list, FILE *fout ) {
   assert( mex != NULL );
   assert( macro != NULL );
   assert( macro->name != NULL );
+  assert( name_loc != NULL );
   assert( replace_list != NULL );
   assert( fout != NULL );
 
@@ -2164,10 +2172,7 @@ static void mex_init( mex_state_t *mex, mex_state_t *parent_mex,
   *mex = (mex_state_t){
     .parent_mex = parent_mex,
     .macro = macro,
-    .name_loc = (c_loc_t){
-      .last_column = macro->name[0] == '\0' ?
-        0 : C_LOC_NUM_T( strlen( macro->name ) - 1 )
-    },
+    .name_loc = *name_loc,
     .arg_list = arg_list,
     .replace_list = replace_list,
     .expand_list = &mex->work_lists[0],
@@ -2237,6 +2242,7 @@ static bool mex_pre_expand___VA_ARGS__( mex_state_t *mex ) {
   mex_init( &va_args_mex,
     /*parent_mex=*/mex,
     &(p_macro_t){ .name = L_PRE___VA_ARGS__ },
+    &mex->name_loc,
     /*arg_list=*/NULL,
     /*replace_list=*/&va_args_list,
     mex->fout
@@ -2336,6 +2342,7 @@ static bool mex_preliminary_check( mex_state_t const *mex ) {
   mex_init( &check_mex,
     /*parent_mex=*/NULL,
     &(p_macro_t){ .name = "preliminary_check" },
+    &mex->name_loc,
     /*arg_list=*/NULL,
     &replace_list,
     mex->fout
@@ -2348,10 +2355,15 @@ static bool mex_preliminary_check( mex_state_t const *mex ) {
 }
 
 /**
- * Only before the first expansion pass, adjusts the \ref c_loc::first_column
- * "first_column" and \ref c_loc::last_column "last_column" of \ref
- * p_token::loc "loc" for every token comprising the current \ref
- * mex_state::replace_list "replace_list".
+ * Only before the first expansion pass, for every token comprising the current
+ * \ref mex_state::replace_list "replace_list":
+ *
+ *  + Adjusts the \ref c_loc::first_column "first_column" and \ref
+ *    c_loc::last_column "last_column" of \ref p_token::loc "loc".
+ *
+ *  + Sets the \ref c_loc::first_line "first_line" and \ref c_loc::last_line
+ *    "last_line" of \ref p_token::loc "loc" to \ref c_loc::first_line
+ *    "first_line" of \ref mex_state::name_loc.
  *
  * @param mex The mex_state to use.
  *
@@ -2367,6 +2379,12 @@ static void mex_preliminary_relocate_replace_list( mex_state_t *mex ) {
     assert( slist_empty( mex->expand_list ) );
     push_back_dup_tokens( mex->expand_list, mex->replace_list );
     mex_relocate_expand_list( mex );
+
+    FOREACH_SLIST_NODE( token_node, mex->expand_list ) {
+      p_token_t *const token = token_node->data;
+      token->loc.first_line = token->loc.last_line = mex->name_loc.first_line;
+    } // for
+
     mex_swap_lists( mex );
   }
 }
@@ -3011,6 +3029,7 @@ p_macro_t* p_macro_define( char *name, c_loc_t const *name_loc,
   mex_init( &check_mex,
     /*parent_mex=*/NULL,
     new_macro,
+    name_loc,
     /*arg_list=*/NULL,
     &new_macro->replace_list,
     stdout
@@ -3075,11 +3094,11 @@ bool p_macro_expand( char const *name, c_loc_t const *name_loc,
   mex_init( &mex,
     /*parent_mex=*/NULL,
     macro,
+    name_loc,
     arg_list,
     &macro->replace_list,
     fout
   );
-  mex.name_loc = *name_loc;
 
   bool ok = false;
 

@@ -14,6 +14,7 @@ options:
   --help              (-h) Print this help and exit.
   --infer-command     (-I) Try to infer command when none is given.
   --language=ARG      (-x) Use language.
+  --lineno=ARG        (-L) Add to all line numbers in messages.
   --no-buffer-stdout  (-b) Set stdout to unbuffered.
   --no-config         (-C) Suppress reading configuration file.
   --no-english-types  (-T) Print types in C/C++, not English.

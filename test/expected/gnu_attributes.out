@@ -1,61 +1,61 @@
 cdecl> explain __attribute__(( foo("x") )) int i
                ^
-9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+3,9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> explain __attribute__(( foo('x') )) int i
                ^
-9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+4,9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> explain __attribute__(( foo() )) int i
                ^
-9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+5,9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> explain __attribute__(( foo(1) )) int i
                ^
-9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+6,9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> explain __attribute__(( foo(1), bar )) int i
                ^
-9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+7,9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> explain __attribute__(( foo(1,2) )) int i
                ^
-9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+8,9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> explain __attribute__(( foo(name) )) int i
                ^
-9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+9,9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> explain __attribute__((const)) int i
                ^
-9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+10,9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> explain __attribute__((unused)) int i
                ^
-9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+11,9: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> 
 cdecl> explain int *__attribute__(( foo )) const p
                     ^
-14: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+13,14: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant pointer to integer
 cdecl> explain int *const __attribute__(( foo )) p
                           ^
-20: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+14,20: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant pointer to integer
 cdecl> explain int *const __attribute__(( foo )) __attribute__(( bar )) p
                           ^
-20: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+15,20: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
                                                  ^
-43: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+15,43: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant pointer to integer
 cdecl> explain int *volatile __attribute__(( foo )) const p
                              ^
-23: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+16,23: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant volatile pointer to integer
 cdecl> explain int *volatile __attribute__(( foo )) const __attribute__(( bar )) p
                              ^
-23: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+17,23: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
                                                           ^
-52: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
+17,52: warning: "__attribute__" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant volatile pointer to integer

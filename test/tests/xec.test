@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE -xc99 <<END
+cdecl -bEL$LINENO -xc99 <<END
 explain _Accum x
 explain short _Accum x
 explain short _Fract x

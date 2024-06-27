@@ -5,7 +5,7 @@ concat(func, tion) => a ## b
 concat(func, tion) => func ## tion
 concat(func, tion) => function
                       ^
-23: warning: "function": function-like macro without arguments will not expand
+12,23: warning: "function": function-like macro without arguments will not expand
 concat(func, tion) => function()
 | function() => 123
 concat(func, tion) => 123
@@ -38,17 +38,17 @@ cdecl> #define recur3(X)                 [ X ]
 cdecl> #define recur2(C, X)              recur4(C(X), recur4(C(X), ,),) |C|
 cdecl> #define recur1(F, X)              F(recur3, X)
                                            ^
-37: warning: "recur3": function-like macro without arguments will not expand
+27,37: warning: "recur3": function-like macro without arguments will not expand
 cdecl> expand recur1(recur2, recur1(recur2, 1))
                      ^
-15: warning: "recur2": function-like macro without arguments will not expand
+28,15: warning: "recur2": function-like macro without arguments will not expand
 recur1(recur2, recur1(recur2, 1)) => F(recur3, X)
                                        ^
-40: warning: "recur3": function-like macro without arguments will not expand
+28,40: warning: "recur3": function-like macro without arguments will not expand
 | F => recur2
 | X => recur1(recur2, 1)
               ^
-15: warning: "recur2": function-like macro without arguments will not expand
+28,15: warning: "recur2": function-like macro without arguments will not expand
 | | recur1(recur2, 1) => F(recur3, X)
 | | | F => recur2
 | | | X => 1
@@ -58,7 +58,7 @@ recur1(recur2, recur1(recur2, 1)) => F(recur3, X)
 | | | | X => 1
 | | | recur2(recur3, 1) => recur4(recur3( 1), recur4(recur3( 1), ,),) |recur3|
                                                                        ^
-72: warning: "recur3": function-like macro without arguments will not expand
+28,72: warning: "recur3": function-like macro without arguments will not expand
 | | | | recur4(recur3( 1), recur4(recur3( 1), ,),) => C-T-E
 | | | | | C => recur3( 1)
 | | | | | | recur3(1) => [ X ]

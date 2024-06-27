@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE --no-english-types -xc++ <<END
+cdecl -bEL$LINENO --no-english-types -xc++ <<END
 
 explain auto x
 explain bool x

@@ -10,7 +10,7 @@
 ##
 
 EXPECTED_EXIT=0
-cdecl -bE <<END
+cdecl -bEL$LINENO <<END
 #define F(...)                    f(0 __VA_OPT__(,) __VA_ARGS__)
 #define G(X, ...)                 f(0, X __VA_OPT__(,) __VA_ARGS__)
 #define SDEF(sname, ...)          S sname __VA_OPT__(= { __VA_ARGS__ })

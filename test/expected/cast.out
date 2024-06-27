@@ -78,7 +78,7 @@ cdecl>
 cdecl> set c17
 cdecl> cast p into pointer to function (x) returning int
                                         ^
-34: warning: missing type specifier; "int" assumed
+44,34: warning: missing type specifier; "int" assumed
 (int(*)(int))p
 cdecl> 
 cdecl> set c++

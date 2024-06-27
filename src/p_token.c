@@ -506,12 +506,21 @@ done:
   switch ( y_token_id ) {
     case Y_END:                         // exactly one token: success
       return token;
-    case Y_LEXER_ERROR:
-      break;
     default:                            // more than one token: failure
       print_error( loc,
         "\"%s\": concatenation formed invalid token\n", sbuf->str
       );
+      FALLTHROUGH;
+    case Y_LEXER_ERROR:
+      //
+      // In the Y_END (success) case above, the code in parse_cleanup() that
+      // increments yylineno will not execute (because no error occurred).
+      //
+      // In the failure cases, the code in parse_cleanup() will increment
+      // yylineno, but we don't want it to be because we're lex'ing a string,
+      // not an actual source line, so decrement yylineno to compensate.
+      //
+      --yylineno;
   } // switch
 
   p_token_free( token );

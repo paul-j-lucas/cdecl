@@ -1179,6 +1179,15 @@ static void parse_cleanup( bool fatal_error ) {
   //
   lexer_reset( /*hard_reset=*/fatal_error );
 
+  if ( fatal_error && yytext[0] != '\n' ) {
+    //
+    // Generally, PARSE_ABORT() was called before getting to the '\n' at the
+    // end of the line, so Flex will not have incremented yylineno: manually
+    // increment yylineno here to compensate.
+    //
+    ++yylineno;
+  }
+
   c_ast_list_cleanup_gc( &gc_ast_list );
   ia_cleanup();
 }

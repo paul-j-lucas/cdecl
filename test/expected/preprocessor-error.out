@@ -1,164 +1,164 @@
 cdecl> 
 cdecl> #define __cplusplus               X
                ^
-9: error: "__cplusplus": predefined macro may not be redefined
+4,9: error: "__cplusplus": predefined macro may not be redefined
 cdecl> #define __DATE__                  X
                ^
-9: error: "__DATE__": predefined macro may not be redefined
+5,9: error: "__DATE__": predefined macro may not be redefined
 cdecl> #define __FILE__                  X
                ^
-9: error: "__FILE__": predefined macro may not be redefined
+6,9: error: "__FILE__": predefined macro may not be redefined
 cdecl> #define __LINE__                  X
                ^
-9: error: "__LINE__": predefined macro may not be redefined
+7,9: error: "__LINE__": predefined macro may not be redefined
 cdecl> #define __STDC__                  X
                ^
-9: error: "__STDC__": predefined macro may not be redefined
+8,9: error: "__STDC__": predefined macro may not be redefined
 cdecl> #define __STDC_VERSION__          X
                ^
-9: error: "__STDC_VERSION__": predefined macro may not be redefined
+9,9: error: "__STDC_VERSION__": predefined macro may not be redefined
 cdecl> #define __TIME__                  X
                ^
-9: error: "__TIME__": predefined macro may not be redefined
+10,9: error: "__TIME__": predefined macro may not be redefined
 cdecl> #define __VA_ARGS__               X
                ^
-9: error: "__VA_ARGS__": predefined macro may not be redefined
+11,9: error: "__VA_ARGS__": predefined macro may not be redefined
 cdecl> #define __VA_OPT__                X
                ^
-9: error: "__VA_OPT__": predefined macro may not be redefined
+12,9: error: "__VA_OPT__": predefined macro may not be redefined
 cdecl> 
 cdecl> #undef __cplusplus
               ^
-8: error: "__cplusplus": predefined macro may not be undefined
+14,8: error: "__cplusplus": predefined macro may not be undefined
 cdecl> #undef __DATE__
               ^
-8: error: "__DATE__": predefined macro may not be undefined
+15,8: error: "__DATE__": predefined macro may not be undefined
 cdecl> #undef __FILE__
               ^
-8: error: "__FILE__": predefined macro may not be undefined
+16,8: error: "__FILE__": predefined macro may not be undefined
 cdecl> #undef __LINE__
               ^
-8: error: "__LINE__": predefined macro may not be undefined
+17,8: error: "__LINE__": predefined macro may not be undefined
 cdecl> #undef __STDC__
               ^
-8: error: "__STDC__": predefined macro may not be undefined
+18,8: error: "__STDC__": predefined macro may not be undefined
 cdecl> #undef __STDC_VERSION__
               ^
-8: error: "__STDC_VERSION__": predefined macro may not be undefined
+19,8: error: "__STDC_VERSION__": predefined macro may not be undefined
 cdecl> #undef __TIME__
               ^
-8: error: "__TIME__": predefined macro may not be undefined
+20,8: error: "__TIME__": predefined macro may not be undefined
 cdecl> #undef __VA_ARGS__
               ^
-8: error: "__VA_ARGS__": predefined macro may not be undefined
+21,8: error: "__VA_ARGS__": predefined macro may not be undefined
 cdecl> #undef __VA_OPT__
               ^
-8: error: "__VA_OPT__": predefined macro may not be undefined
+22,8: error: "__VA_OPT__": predefined macro may not be undefined
 cdecl> 
 cdecl> #elif
         ^
-2: error: "#elif" not supported by cdecl
+24,2: error: "#elif" not supported by cdecl
 cdecl> #else
         ^
-2: error: "#else" not supported by cdecl
+25,2: error: "#else" not supported by cdecl
 cdecl> #error
         ^
-2: error: "#error" not supported by cdecl
+26,2: error: "#error" not supported by cdecl
 cdecl> #if
         ^
-2: error: "#if" not supported by cdecl
+27,2: error: "#if" not supported by cdecl
 cdecl> #ifdef
         ^
-2: error: "#ifdef" not supported by cdecl
+28,2: error: "#ifdef" not supported by cdecl
 cdecl> #ifndef
         ^
-2: error: "#ifndef" not supported by cdecl
+29,2: error: "#ifndef" not supported by cdecl
 cdecl> #line
         ^
-2: error: "#line" not supported by cdecl
+30,2: error: "#line" not supported by cdecl
 cdecl> #pragma
         ^
-2: error: "#pragma" not supported by cdecl
+31,2: error: "#pragma" not supported by cdecl
 cdecl> 
 cdecl> #elifdef
         ^
-2: error: "#elifdef" not supported by cdecl
+33,2: error: "#elifdef" not supported by cdecl
 cdecl> #elifndef
         ^
-2: error: "#elifdef" not supported by cdecl
+34,2: error: "#elifdef" not supported by cdecl
 cdecl> #embed
         ^
-2: error: "#embed" not supported by cdecl
+35,2: error: "#embed" not supported by cdecl
 cdecl> #warning
         ^
-2: error: "#warning" not supported by cdecl
+36,2: error: "#warning" not supported by cdecl
 cdecl> 
 cdecl> #define DUP_ARG(A,A)              A
                          ^
-19: error: "A": duplicate macro parameter
+38,19: error: "A": duplicate macro parameter
 cdecl> 
 cdecl> #define ELLIPSIS_FIRST(...,A)     A
                               ^
-24: error: "..." must be last parameter
+40,24: error: "..." must be last parameter
 cdecl> #define ELLIPSIS_MIDDLE(A,...,Z)  A Z
                                  ^
-27: error: "..." must be last parameter
+41,27: error: "..." must be last parameter
 cdecl> 
 cdecl> #define PASTE_FIRST(A)            ## A
                                          ^
-35: error: "##" can not be first
+43,35: error: "##" can not be first
 cdecl> #define PASTE_LAST(A)             A ##
                                            ^
-37: error: "##" can not be last
+44,37: error: "##" can not be last
 cdecl> 
 cdecl> #define STRINGIFY_NOT_PARAM(A)    # 1
                                          ^
-35: error: '#' not followed by macro parameter, "__VA_ARGS__", or "__VA_OPT__"
+46,35: error: '#' not followed by macro parameter, "__VA_ARGS__", or "__VA_OPT__"
 cdecl> #define STRINGIFY_NOT_PARAM(A)    # X
                                          ^
-35: error: '#' not followed by macro parameter, "__VA_ARGS__", or "__VA_OPT__"
+47,35: error: '#' not followed by macro parameter, "__VA_ARGS__", or "__VA_OPT__"
 cdecl> 
 cdecl> #define VA_ARGS_NOT_IN_VARIADIC   __VA_ARGS__
                                          ^
-35: error: "__VA_ARGS__" not allowed in non-variadic macro
+49,35: error: "__VA_ARGS__" not allowed in non-variadic macro
 cdecl> 
 cdecl> #define VA_OPT_NESTED(A,...)      __VA_OPT__( __VA_OPT__ )
                                                      ^
-47: error: "__VA_OPT__" can not nest
+51,47: error: "__VA_OPT__" can not nest
 cdecl> #define VA_OPT_NO_LPAREN(...)     __VA_OPT__
                                                    ^
-45: error: '(' expected
+52,45: error: '(' expected
 cdecl> #define VA_OPT_NO_LPAREN(...)     __VA_OPT__ X
                                                     ^
-46: error: "X": '(' expected
+53,46: error: "X": '(' expected
 cdecl> #define VA_OPT_NO_RPAREN(...)     __VA_OPT__(X
                                          ^
-35: error: unterminated "__VA_OPT__" macro
+54,35: error: unterminated "__VA_OPT__" macro
 cdecl> #define VA_OPT_NOT_VARIADIC       __VA_OPT__(,)
                                          ^
-35: error: "__VA_OPT__" not allowed in non-variadic macro
+55,35: error: "__VA_OPT__" not allowed in non-variadic macro
 cdecl> #define VA_OPT_PASTE_FIRST(...)   __VA_OPT__(## X)
                                                     ^
-46: error: "##" can not be first within "__VA_OPT__"
+56,46: error: "##" can not be first within "__VA_OPT__"
 cdecl> #define VA_OPT_PASTE_LAST(...)    __VA_OPT__(X ##)
                                                       ^
-48: error: "##" can not be last within "__VA_OPT__"
+57,48: error: "##" can not be last within "__VA_OPT__"
 cdecl> 
 cdecl> set c89
 cdecl> #define STRINGIFY_BAD_FOLLOW(A)   #
                                          ^
-35: error: '#' not followed by macro parameter
+60,35: error: '#' not followed by macro parameter
 cdecl> #define VARIADIC_NOT_SUPPORTED(...) x
                                       ^
-32: error: variadic macros not supported until C99
+61,32: error: variadic macros not supported until C99
 cdecl> 
 cdecl> set c99
 cdecl> #define STRINGIFY_BAD_FOLLOW(A)   #
                                          ^
-35: error: '#' not followed by macro parameter or "__VA_ARGS__"
+64,35: error: '#' not followed by macro parameter or "__VA_ARGS__"
 cdecl> 
 cdecl> set c
 cdecl> 
 cdecl> #define STRINGIFY_BAD_FOLLOW(A)   #
                                          ^
-35: error: '#' not followed by macro parameter, "__VA_ARGS__", or "__VA_OPT__"
+68,35: error: '#' not followed by macro parameter, "__VA_ARGS__", or "__VA_OPT__"

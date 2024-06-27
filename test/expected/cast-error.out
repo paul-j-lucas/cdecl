@@ -1,65 +1,65 @@
 cdecl> cast f into function returning int
                  ^
-11: error: can not cast into function; did you mean cast into pointer to function?
+3,11: error: can not cast into function; did you mean cast into pointer to function?
 cdecl> cast p into pointer to function (x) returning int
                                         ^
-34: error: type specifier required since C23
+4,34: error: type specifier required since C23
 cdecl> cast x into array 3 of int
        ^
-1: error: arithmetic or pointer type expected
+5,1: error: arithmetic or pointer type expected
 cdecl> cast x into register int
                    ^
-13: error: can not cast into "register"
+6,13: error: can not cast into "register"
 cdecl> cast x into type int
                    ^
-13: error: can not cast into "typedef"
+7,13: error: can not cast into "typedef"
 cdecl> cast x into typedef int
                    ^
-13: error: can not cast into "typedef"
+8,13: error: can not cast into "typedef"
 cdecl> const cast x into pointer to int
        ^
-1: error: const_cast not supported in C
+9,1: error: const_cast not supported in C
 cdecl> dynamic cast x into pointer to class C
                                       ^
-32: error: "class": unsupported type in C
+10,32: error: "class": unsupported type in C
 cdecl> reinterpret cast x into pointer to void
        ^
-1: error: reinterpret_cast not supported in C
+11,1: error: reinterpret_cast not supported in C
 cdecl> static cast x into int
        ^
-1: error: static_cast not supported in C
+12,1: error: static_cast not supported in C
 cdecl> 
 cdecl> set knr
 cdecl> cast p into pointer to function (x as int) returning int
                                         ^
-34: error: function prototypes not supported until C89
+15,34: error: function prototypes not supported until C89
 cdecl> 
 cdecl> set c++
 c++decl> cast x into auto
                      ^
-13: error: can not cast into "auto"
+18,13: error: can not cast into "auto"
 c++decl> cast p into pointer to auto
                                 ^
-24: error: can not cast into "auto"
+19,24: error: can not cast into "auto"
 c++decl> cast p into pointer to member of class C int
 (int C::*)p
 c++decl> const cast x into int
                            ^
-19: error: invalid const_cast type "integer"; must be a pointer, pointer to member, reference, or rvalue reference
+21,19: error: invalid const_cast type "integer"; must be a pointer, pointer to member, reference, or rvalue reference
 c++decl> dynamic cast x into int
                              ^
-21: error: invalid dynamic_cast type "integer"; must be a pointer or reference to a class, struct, or union
+22,21: error: invalid dynamic_cast type "integer"; must be a pointer or reference to a class, struct, or union
 c++decl> dynamic cast x into pointer to int
                              ^
-21: error: invalid dynamic_cast type "pointer to integer"; must be a pointer or reference to a class, struct, or union
+23,21: error: invalid dynamic_cast type "pointer to integer"; must be a pointer or reference to a class, struct, or union
 c++decl> dynamic cast x into reference to int
                              ^
-21: error: invalid dynamic_cast type "reference to integer"; must be a pointer or reference to a class, struct, or union
+24,21: error: invalid dynamic_cast type "reference to integer"; must be a pointer or reference to a class, struct, or union
 c++decl> reinterpret cast x into void
                                  ^
-25: error: invalid reinterpret_cast type "void"
+25,25: error: invalid reinterpret_cast type "void"
 c++decl> 
 c++decl> set c++03
 c++decl> const cast x into int
                            ^
-19: error: invalid const_cast type "integer"; must be a pointer, pointer to member, or reference
+28,19: error: invalid const_cast type "integer"; must be a pointer, pointer to member, or reference

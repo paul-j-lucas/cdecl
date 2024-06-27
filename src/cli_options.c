@@ -45,6 +45,7 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -72,6 +73,7 @@
 #define OPT_INFER_COMMAND     I
 #define OPT_COLOR             k
 #define OPT_COMMANDS          K
+#define OPT_LINENO            L
 #define OPT_OUTPUT            o
 #define OPT_OPTIONS           O
 #define OPT_NO_PROMPT         p
@@ -133,6 +135,7 @@ static struct option const CLI_OPTIONS[] = {
   { "help",             no_argument,        NULL, COPT(HELP)              },
   { "infer-command",    no_argument,        NULL, COPT(INFER_COMMAND)     },
   { "language",         required_argument,  NULL, COPT(LANGUAGE)          },
+  { "lineno",           required_argument,  NULL, COPT(LINENO)            },
   { "no-buffer-stdout", no_argument,        NULL, COPT(NO_BUFFER_STDOUT)  },
   { "no-config",        no_argument,        NULL, COPT(NO_CONFIG)         },
   { "no-english-types", no_argument,        NULL, COPT(NO_ENGLISH_TYPES)  },
@@ -178,6 +181,7 @@ static char const *const CLI_OPTIONS_HELP[] = {
   [ COPT(HELP) ] = "Print this help and exit",
   [ COPT(INFER_COMMAND) ] = "Try to infer command when none is given",
   [ COPT(LANGUAGE) ] = "Use language",
+  [ COPT(LINENO) ] = "Add to all line numbers in messages",
   [ COPT(NO_BUFFER_STDOUT) ] = "Set stdout to unbuffered",
   [ COPT(NO_CONFIG) ] = "Suppress reading configuration file",
   [ COPT(NO_ENGLISH_TYPES) ] = "Print types in C/C++, not English",
@@ -529,6 +533,17 @@ static void parse_options( int *pargc, char const **pargv[const] ) {
         break;
       case COPT(LANGUAGE):
         opt_lang_id = parse_lang( optarg );
+        break;
+      case COPT(LINENO):
+        NO_OP;
+        unsigned long long n = check_strtoull( optarg, 1, USHRT_MAX );
+        if ( n == STRTOULL_ERROR ) {
+          fatal_error( EX_USAGE,
+            "\"%s\": invalid value for %s; must be in range 1-%u\n",
+            optarg, opt_format( COPT(LINENO) ), USHRT_MAX
+          );
+        }
+        opt_lineno = STATIC_CAST( unsigned, n );
         break;
       case COPT(NO_BUFFER_STDOUT):
         opt_buffer_stdout = false;

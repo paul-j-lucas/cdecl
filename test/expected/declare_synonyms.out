@@ -35,15 +35,15 @@ cdecl> declare f as external function
 extern void f();
 cdecl> declare f as no discard function
                                       ^
-32: warning: "nodiscard" functions must return a value
+24,32: warning: "nodiscard" functions must return a value
 [[nodiscard]] void f();
 cdecl> declare f as no-discard function
                                       ^
-32: warning: "nodiscard" functions must return a value
+25,32: warning: "nodiscard" functions must return a value
 [[nodiscard]] void f();
 cdecl> declare f as non-discardable function
                                            ^
-37: warning: "nodiscard" functions must return a value
+26,37: warning: "nodiscard" functions must return a value
 [[nodiscard]] void f();
 cdecl> declare f as no return function
 [[noreturn]] void f();

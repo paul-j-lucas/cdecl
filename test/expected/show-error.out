@@ -1,25 +1,25 @@
 cdecl> show foo
             ^
-6: error: "foo": no such type or macro defined
+3,6: error: "foo": no such type or macro defined
 cdecl> show __cplusplus
             ^
-6: error: "__cplusplus" not supported in C
+4,6: error: "__cplusplus" not supported in C
 cdecl> 
 cdecl> set k&rc
 cdecl> show __STDC__
             ^
-6: error: "__STDC__" not supported until C89
+7,6: error: "__STDC__" not supported until C89
 cdecl> show __STDC_VERSION__
             ^
-6: error: "__STDC_VERSION__" not supported until C89
+8,6: error: "__STDC_VERSION__" not supported until C89
 cdecl> 
 cdecl> set c++03
 c++decl> show using
               ^
-6: error: "using" not supported until C++11
+11,6: error: "using" not supported until C++11
 c++decl> show __STDC__
               ^
-6: error: "__STDC__" not supported in C++
+12,6: error: "__STDC__" not supported in C++
 c++decl> show __STDC_VERSION__
               ^
-6: error: "__STDC_VERSION__" not supported in C++
+13,6: error: "__STDC_VERSION__" not supported in C++

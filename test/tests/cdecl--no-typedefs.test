@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE -t <<END
+cdecl -bEL$LINENO -t <<END
 define Int as int
 show all
 END

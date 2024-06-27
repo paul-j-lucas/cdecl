@@ -1,5 +1,5 @@
 EXPECTED_EXIT=65
-cdecl -bE <<END
+cdecl -bEL$LINENO <<END
 
 #define __cplusplus               X
 #define __DATE__                  X

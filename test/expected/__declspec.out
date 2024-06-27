@@ -1,20 +1,20 @@
 cdecl> explain __declspec(dllexport) int i
                ^
-9: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
+3,9: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> explain __declspec(dllexport) struct S x
                ^
-9: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
+4,9: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
 declare x as structure S
 cdecl> explain int __declspec(dllexport) i
                    ^
-13: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
+5,13: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as integer
 cdecl> explain int __declspec(selectany) *p
                    ^
-13: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
+6,13: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as pointer to integer
 cdecl> explain struct __declspec(dllexport) S
                       ^
-16: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
+7,16: warning: "__declspec" not supported by cdecl (ignoring); did you mean [[...]]?
 define S as structure S

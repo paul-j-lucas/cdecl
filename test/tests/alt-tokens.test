@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE -a -xc++ <<END
+cdecl -bEL$LINENO -a -xc++ <<END
 set
 
 struct S

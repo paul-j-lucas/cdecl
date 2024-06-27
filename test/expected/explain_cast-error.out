@@ -1,41 +1,41 @@
 cdecl> explain const_cast<int*>(x)
                ^
-9: error: "const_cast": unsupported keyword in C
+3,9: error: "const_cast": unsupported keyword in C
 cdecl> explain dynamic_cast<class C*>(x)
                ^
-9: error: "dynamic_cast": unsupported keyword in C
+4,9: error: "dynamic_cast": unsupported keyword in C
 cdecl> explain (extern int)x
                 ^
-10: error: can not cast into "extern"
+5,10: error: can not cast into "extern"
 cdecl> explain (int[3][5][7])x
                ^
-9: error: arithmetic or pointer type expected
+6,9: error: arithmetic or pointer type expected
 cdecl> explain (int[3][5])x
                ^
-9: error: arithmetic or pointer type expected
+7,9: error: arithmetic or pointer type expected
 cdecl> explain (int[3])x
                ^
-9: error: arithmetic or pointer type expected
+8,9: error: arithmetic or pointer type expected
 cdecl> explain (long long long)x
                           ^
-20: error: "long" can not be combined with "long long"
+9,20: error: "long" can not be combined with "long long"
 cdecl> explain (register int)x
                 ^
-10: error: can not cast into "register"
+10,10: error: can not cast into "register"
 cdecl> explain reinterpret_cast<void*>(x)
                ^
-9: error: "reinterpret_cast": unsupported keyword in C
+11,9: error: "reinterpret_cast": unsupported keyword in C
 cdecl> explain (static int)x
                 ^
-10: error: can not cast into "static"
+12,10: error: can not cast into "static"
 cdecl> explain static_cast<int>(x)
                ^
-9: error: "static_cast": unsupported keyword in C; did you mean "static_assert"?
+13,9: error: "static_cast": unsupported keyword in C; did you mean "static_assert"?
 cdecl> explain (typedef int)x
                 ^
-10: error: can not cast into "typedef"
+14,10: error: can not cast into "typedef"
 cdecl> 
 cdecl> set c17
 cdecl> explain (auto int)x
                 ^
-10: error: can not cast into "auto"
+17,10: error: can not cast into "auto"

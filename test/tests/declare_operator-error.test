@@ -1,5 +1,5 @@
 EXPECTED_EXIT=65
-cdecl -bE -xc++ <<END
+cdecl -bEL$LINENO -xc++ <<END
 struct S
 
 declare ! as const operator(S) returning bool

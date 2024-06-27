@@ -1,5 +1,5 @@
 EXPECTED_EXIT=65
-cdecl -bE -xc99 <<END
+cdecl -bEL$LINENO -xc99 <<END
 explain long long _Accum x
 explain long long _Fract x
 explain _Sat x

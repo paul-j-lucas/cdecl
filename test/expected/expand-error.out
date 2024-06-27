@@ -1,20 +1,20 @@
 cdecl> expand DOES_NOT_EXIST
               ^
-8: error: "DOES_NOT_EXIST": no such macro
+3,8: error: "DOES_NOT_EXIST": no such macro
 cdecl> expand __VA_ARGS__
               ^
-8: error: "__VA_ARGS__" only valid in macro definition
+4,8: error: "__VA_ARGS__" only valid in macro definition
 cdecl> expand __VA_OPT__
               ^
-8: error: "__VA_OPT__" only valid in macro definition
+5,8: error: "__VA_OPT__" only valid in macro definition
 cdecl> 
 cdecl> set knr
 cdecl> expand __DATE__
               ^
-8: warning: "__DATE__" not supported until C89; will not expand
+8,8: warning: "__DATE__" not supported until C89; will not expand
 cdecl> expand __TIME__
               ^
-8: warning: "__TIME__" not supported until C89; will not expand
+9,8: warning: "__TIME__" not supported until C89; will not expand
 cdecl> set c
 cdecl> 
 cdecl> #define PASTE(A,B)                A ## B
@@ -22,40 +22,40 @@ cdecl> expand PASTE(->,*)
 PASTE(->, *) => A ## B
 PASTE(->, *) => -> ## *
                 ^
-17: error: "->*": concatenation formed invalid token
+13,17: error: "->*": concatenation formed invalid token
 cdecl> expand PASTE(<,<<)
 PASTE(<, <<) => A ## B
 PASTE(<, <<) => < ## <<
                 ^
-17: error: "<<<": concatenation formed invalid token
+14,17: error: "<<<": concatenation formed invalid token
 cdecl> expand PASTE(<=,>)
 PASTE(<=, >) => A ## B
 PASTE(<=, >) => <= ## >
                 ^
-17: error: "<=>": concatenation formed invalid token
+15,17: error: "<=>": concatenation formed invalid token
 cdecl> expand PASTE(.,*)
 PASTE(., *) => A ## B
 PASTE(., *) => . ## *
                ^
-16: error: ".*": concatenation formed invalid token
+16,16: error: ".*": concatenation formed invalid token
 cdecl> expand PASTE(:,:)
 PASTE(:, :) => A ## B
 PASTE(:, :) => : ## :
                ^
-16: error: "::": concatenation formed invalid token
+17,16: error: "::": concatenation formed invalid token
 cdecl> 
 cdecl> #define TOO_FEW(A,B)              A B
 cdecl> expand TOO_FEW(x)
               ^
-8: error: too few arguments (1) for function-like macro (need 2)
+20,8: error: too few arguments (1) for function-like macro (need 2)
 cdecl> #define TOO_FEW_VARIADIC(A,B,...) A B __VA_ARGS__
 cdecl> expand TOO_FEW_VARIADIC(x)
               ^
-8: error: too few arguments (1) for function-like macro (need at least 2)
+22,8: error: too few arguments (1) for function-like macro (need at least 2)
 cdecl> #define TOO_MANY(A,B)
 cdecl> expand TOO_MANY(x,y,z)
               ^
-8: error: too many arguments (3) for function-like macro (need 2)
+24,8: error: too many arguments (3) for function-like macro (need 2)
 cdecl> 
 cdecl> #define QUOTE(X)                  #X
 cdecl> #define UNTERMINATED_MACRO(X)     QUOTE(X
@@ -64,12 +64,12 @@ UNTERMINATED_MACRO(a) => QUOTE(X
 | X => a
 UNTERMINATED_MACRO(a) => QUOTE(a
                                ^
-32: error: unterminated function-like macro
+28,32: error: unterminated function-like macro
 cdecl> 
 cdecl> #define VARIADIC(...)             __VA_ARGS__
 cdecl> set c89
 cdecl> expand VARIADIC(x)
 #define VARIADIC(...) __VA_ARGS__
                  ^
-18: error: variadic macros not supported until C99
+30,18: error: variadic macros not supported until C99
 cdecl> 

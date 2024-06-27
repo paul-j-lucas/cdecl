@@ -2,97 +2,97 @@ c++decl> struct S
 c++decl> 
 c++decl> declare ! as const operator(S) returning bool
                                      ^
-29: error: member operator "!" must have exactly 0 parameters
+5,29: error: member operator "!" must have exactly 0 parameters
 c++decl> declare ! as final operator (S) returning bool
                                       ^
-30: error: member operator "!" must have exactly 0 parameters
+6,30: error: member operator "!" must have exactly 0 parameters
 c++decl> declare * as friend member operator (reference to S) returning reference to S
                  ^
-9: error: member operators can not be "friend"
+7,9: error: member operators can not be "friend"
 c++decl> declare -> as member operator returning int
                                                  ^
-41: error: invalid operator "->" return type "integer"; must be a pointer to struct, union, or class
+8,41: error: invalid operator "->" return type "integer"; must be a pointer to struct, union, or class
 c++decl> declare & as non-member operator (int) returning int
                                            ^
-35: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
+9,35: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
 c++decl> declare () as non-member operator (reference to const S)
                  ^
-9: error: operator "()" can only be a member
+10,9: error: operator "()" can only be a member
 c++decl> declare [] as non-member operator (reference to const S, int)
                  ^
-9: error: operator "[]" can only be a member
+11,9: error: operator "[]" can only be a member
 c++decl> declare = as non-member operator (reference to S, int)
                  ^
-9: error: operator "=" can only be a member
+12,9: error: operator "=" can only be a member
 c++decl> declare -> as non-member operator (reference to S) returning pointer to S
                  ^
-9: error: operator "->" can only be a member
+13,9: error: operator "->" can only be a member
 c++decl> declare ++ as operator (double) returning reference to S
                                  ^
-25: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
+14,25: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
 c++decl> declare -- as operator (double) returning reference to S
                                  ^
-25: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
+15,25: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
 c++decl> declare + as operator (int, ...) returning int
                                 ^
-24: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
+16,24: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
 c++decl> declare - as operator (int, ...) returning int
                                 ^
-24: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
+17,24: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union, or a reference thereto, or a typedef thereof
 c++decl> declare ! as operator (int, int) returning bool
                                 ^
-24: error: operator "!" can have at most 1 parameter
+18,24: error: operator "!" can have at most 1 parameter
 c++decl> declare ++ as operator (reference to S, double) returning reference to S
                                                  ^
-41: error: invalid postfix non-member operator "++" parameter type "double precision"; must be "int" or a typedef thereof
+19,41: error: invalid postfix non-member operator "++" parameter type "double precision"; must be "int" or a typedef thereof
 c++decl> declare -- as operator (reference to S, double) returning reference to S
                                                  ^
-41: error: invalid postfix non-member operator "--" parameter type "double precision"; must be "int" or a typedef thereof
+20,41: error: invalid postfix non-member operator "--" parameter type "double precision"; must be "int" or a typedef thereof
 c++decl> declare -> as operator (reference to S) returning pointer to S
                                  ^
-25: error: member operator "->" must have exactly 0 parameters
+21,25: error: member operator "->" must have exactly 0 parameters
 c++decl> declare .* as operator (reference to S) returning reference to S
                  ^
-9: error: operator ".*" can not be overloaded
+22,9: error: operator ".*" can not be overloaded
 c++decl> declare :: as operator (reference to S) returning reference to S
                  ^
-9: error: operator "::" can not be overloaded
+23,9: error: operator "::" can not be overloaded
 c++decl> declare -> as operator returning int
                                           ^
-34: error: invalid operator "->" return type "integer"; must be a pointer to struct, union, or class
+24,34: error: invalid operator "->" return type "integer"; must be a pointer to struct, union, or class
 c++decl> declare . as operator returning S
                  ^
-9: error: operator "." can not be overloaded
+25,9: error: operator "." can not be overloaded
 c++decl> declare ?: as operator (S, int, int) returning int
                  ^
-9: error: operator "?:" can not be overloaded
+26,9: error: operator "?:" can not be overloaded
 c++decl> declare ! as overridden operator (S) returning bool
                                            ^
-35: error: member operator "!" must have exactly 0 parameters
+27,35: error: member operator "!" must have exactly 0 parameters
 c++decl> declare ! as reference operator (S) returning bool
                                           ^
-34: error: member operator "!" must have exactly 0 parameters
+28,34: error: member operator "!" must have exactly 0 parameters
 c++decl> declare ! as rvalue reference operator (S) returning bool
                                                  ^
-41: error: member operator "!" must have exactly 0 parameters
+29,41: error: member operator "!" must have exactly 0 parameters
 c++decl> declare ! as virtual operator (S) returning bool
                                         ^
-32: error: member operator "!" must have exactly 0 parameters
+30,32: error: member operator "!" must have exactly 0 parameters
 c++decl> 
 c++decl> set c++03
 c++decl> declare = of structure S as default member operator (reference to constant S) returning reference to S
                  ^
-9: error: "default" is illegal for operator until C++11
+33,9: error: "default" is illegal for operator until C++11
 c++decl> declare = of structure S as deleted member operator (reference to constant S) returning reference to S
                  ^
-9: error: "delete" is illegal for operator until C++11
+34,9: error: "delete" is illegal for operator until C++11
 c++decl> 
 c++decl> set c++17
 c++decl> declare <=> as operator (reference to const S, reference to const S) returning auto
                  ^
-9: error: overloading operator "<=>" not supported until C++20
+37,9: error: overloading operator "<=>" not supported until C++20
 c++decl> 
 c++decl> set c++20
 c++decl> declare [] as operator (int, int) returning int
                                  ^
-25: error: member operator "[]" must have exactly 1 parameter
+40,25: error: member operator "[]" must have exactly 1 parameter

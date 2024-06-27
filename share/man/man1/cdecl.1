@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 26, 2024" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 27, 2024" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -213,7 +213,10 @@ editing.
 An option argument
 .I f
 means
-.I file
+.IR file ,
+.I n
+means
+.IR "unsigned integer" ,
 and
 .I s
 means
@@ -552,6 +555,60 @@ and
 .B C++23
 (for
 .BR c++decl ).
+.TP
+.BI \-\-lineno \f1=\fPn "\f1 | \fP" "" \-L " n"
+Specifies an integer
+.I n
+to add to all line numbers
+in error
+and warning
+messages.
+(This is a debugging aid for developers of
+.B cdecl
+itself.)
+.IP
+This is useful when
+.B cdecl
+is called from a shell script
+with a
+.I "here document"
+for input.
+Consider a \f(CWtest-script\fP
+(showing line numbers)
+like:
+.RS
+.cS
+1 #! /usr/bin/env bash
+2 cdecl --echo-commands --lineno=$LINENO <<END
+3 explain int
+4 END
+.cE 0
+.RE
+.IP
+where \f(CW$LINENO\fP
+(the line number of the script
+.B cdecl
+is called on \(em in this example: 2)
+is given.
+When executed,
+the script will print:
+.RS
+.cS
+$ test-script
+cdecl> explain int
+                  ^
+3,12: error: declaration expected
+.cE 0
+.RE
+.IP
+where the line number printed is 3
+(the starting line number 1 plus 2 from \f(CW$LINENO\fP)
+which is the absolute line number
+within the script
+as opposed to the here document
+that makes locating offending lines easier.
+(See
+.BR "Other Caveats" .)
 .TP
 .BR \-\-no-buffer-stdout " | " \-b
 Sets standard output to unbuffered.
@@ -3522,6 +3579,29 @@ In
 these types are \f(CWtypedef\fPs
 and can't take modifiers
 since that's illegal in C.
+.IP \(bu
+When using the
+.B \-\-lineno
+or
+.B \-L
+option
+with a
+.I "here document"
+containing escaped newlines
+(lines ending in \f(CW\\\fP),
+the \f(CW\\\fPs
+.I also
+need to be escaped
+to get the line numbers correct
+because the shell ordinarily strips escaped newlines;
+for example:
+.RS
+.cS
+#define IDENT_CHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZ_" \\\\
+                    "abcdefghijklmnopqrstuvwxyz" \\\\
+                    "0123456789"
+.cE 0
+.RE
 .SH AUTHORS
 .B cdecl
 has been around since the mid-1980s

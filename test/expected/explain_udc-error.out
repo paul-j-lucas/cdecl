@@ -2,10 +2,10 @@ c++decl> typedef int A4[4]
 c++decl> 
 c++decl> explain friend operator int()
                       ^
-14: error: friend user-defined conversion operator must use qualified name
+5,14: error: friend user-defined conversion operator must use qualified name
 c++decl> explain operator A4()
                           ^
-18: error: user-defined conversion operator return type "A4" (aka, "int[4]") can not be an array; did you mean pointer to array?
+6,18: error: user-defined conversion operator return type "A4" (aka, "int[4]") can not be an array; did you mean pointer to array?
 c++decl> explain static operator int()
                       ^
-14: error: user-defined conversion operator can not be "static"
+7,14: error: user-defined conversion operator can not be "static"

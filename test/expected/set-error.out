@@ -1,39 +1,39 @@
 cdecl> set debug=x
                  ^
-11: error: "x": invalid value for debug; must be [u]+|*|-
+3,11: error: "x": invalid value for debug; must be [u]+|*|-
 cdecl> set expl
            ^
-5: error: "expl": ambiguous set option; could be explicit-ecsu or explicit-int
+4,5: error: "expl": ambiguous set option; could be explicit-ecsu or explicit-int
 cdecl> set expli
            ^
-5: error: "expli": ambiguous set option; could be explicit-ecsu or explicit-int
+5,5: error: "expli": ambiguous set option; could be explicit-ecsu or explicit-int
 cdecl> set explicit-ecsu=x
                          ^
-19: error: "x": invalid value for explicit-ecsu; must be [ecsu]+|*|-
+6,19: error: "x": invalid value for explicit-ecsu; must be [ecsu]+|*|-
 cdecl> set explicit-int
            ^
-5: error: set option "explicit-int" requires =<value>
+7,5: error: set option "explicit-int" requires =<value>
 cdecl> set explicit-int=x
                         ^
-18: error: "x": invalid value for explicit-int; must be *, -, i, u, or {[u]{i|s|l[l]}[,]}+
+8,18: error: "x": invalid value for explicit-int; must be *, -, i, u, or {[u]{i|s|l[l]}[,]}+
 cdecl> set graphs
            ^
-5: error: "no" required for "graphs"
+9,5: error: "no" required for "graphs"
 cdecl> set lang=xxx
                 ^
-10: error: "xxx": unknown language
+10,10: error: "xxx": unknown language
 cdecl> set nodigraphs
            ^
-5: error: "no" not valid for "digraphs"
+11,5: error: "no" not valid for "digraphs"
 cdecl> set noexplicit-int=u
                           ^
-20: error: "no" set options take no value
+12,20: error: "no" set options take no value
 cdecl> set prompt=x
                   ^
-12: error: "x": set option "prompt" takes no value
+13,12: error: "x": set option "prompt" takes no value
 cdecl> set west-decl=x
                      ^
-15: error: "x": invalid value for west-decl; must be [bflost]+|*|-
+14,15: error: "x": invalid value for west-decl; must be [bflost]+|*|-
 cdecl> set xxx
            ^
-5: error: "xxx": unknown set option
+15,5: error: "xxx": unknown set option

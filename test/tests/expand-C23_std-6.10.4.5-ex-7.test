@@ -10,7 +10,7 @@
 ##
 
 EXPECTED_EXIT=0
-cdecl -bE <<END
+cdecl -bEL$LINENO <<END
 #define debug(...)            fprintf(stderr, __VA_ARGS__)
 #define showlist(...)         puts(#__VA_ARGS__)
 #define report(test, ...)     ((test)?puts(#test): printf(__VA_ARGS__))

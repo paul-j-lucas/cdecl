@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE <<END
+cdecl -bEL$LINENO <<END
 
 set c
 set

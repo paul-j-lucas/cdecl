@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE --east-const <<END
+cdecl -bEL$LINENO --east-const <<END
 struct S
 
 declare x as const int

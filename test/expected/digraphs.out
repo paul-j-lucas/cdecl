@@ -24,7 +24,7 @@ cdecl> set c89
 warning: digraphs not supported until C95
 cdecl> explain int a<:9:>
                     ^
-14: warning: digraphs not supported until C95
+17,14: warning: digraphs not supported until C95
 declare a as array 9 of integer
 cdecl> 
 cdecl> set nographs
@@ -33,7 +33,7 @@ int a[9];
 cdecl> 
 cdecl> set di
            ^
-5: warning: digraphs not supported until C95
+22,5: warning: digraphs not supported until C95
 cdecl> declare a as array 9 of int
 int a[9];
 cdecl> 
@@ -43,4 +43,4 @@ int a[9];
 cdecl> 
 cdecl> set c89 digraphs
                ^
-9: warning: digraphs not supported until C95
+28,9: warning: digraphs not supported until C95

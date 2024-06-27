@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE -xc99 <<END
+cdecl -bEL$LINENO -xc99 <<END
 declare p as pointer to shared int
 declare p as pointer to strict shared int
 declare p as relaxed shared pointer to int

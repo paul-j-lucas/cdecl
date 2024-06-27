@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE -xc++ <<END
+cdecl -bEL$LINENO -xc++ <<END
 declare x as concept C
 declare x as const concept C
 

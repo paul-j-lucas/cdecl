@@ -116,7 +116,8 @@ int main( int argc, char const *argv[] ) {
   // the parser.
   //
   c_typedefs_init();
-  lexer_reset( /*hard_reset=*/true );   // resets line number
+  lexer_reset( /*hard_reset=*/true );
+  yylineno = 1;
 
   if ( opt_read_conf )
     conf_init();

@@ -1,15 +1,15 @@
 c++decl> explain int operator"" _x()
                                    ^
-27: syntax error: ")": parameter list expected
+3,27: syntax error: ")": parameter list expected
 c++decl> explain int operator"" _x(char, char)
                                    ^
-27: error: invalid user-defined literal parameter type "char"; must be const (char|char8_t|char16_t|char32_t|wchar_t)*
+4,27: error: invalid user-defined literal parameter type "char"; must be const (char|char8_t|char16_t|char32_t|wchar_t)*
 c++decl> explain int operator"" _x(char, char, char)
                                                ^
-39: error: user-defined literal may have at most 2 parameters
+5,39: error: user-defined literal may have at most 2 parameters
 c++decl> explain int operator"" _x(int*, unsigned long)
                                       ^
-30: error: invalid user-defined literal parameter type "int*"; must be const (char|char8_t|char16_t|char32_t|wchar_t)*
+6,30: error: invalid user-defined literal parameter type "int*"; must be const (char|char8_t|char16_t|char32_t|wchar_t)*
 c++decl> explain int operator"" _x(unsigned long)
                                    ^
-27: error: invalid user-defined literal parameter type "unsigned long"; must be "unsigned long long", "long double", "char", "const char*", "char8_t", "char16_t", "char32_t", or "wchar_t"
+7,27: error: invalid user-defined literal parameter type "unsigned long"; must be "unsigned long long", "long double", "char", "const char*", "char8_t", "char16_t", "char32_t", or "wchar_t"

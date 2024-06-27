@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE --debug <<END
+cdecl -bEL$LINENO --debug <<END
 set
 explain (int)x
 explain _BitInt(4) x

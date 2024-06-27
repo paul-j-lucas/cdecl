@@ -42,5 +42,5 @@ int S::operator"" _x(char);
 c++decl> 
 c++decl> declare m as user-defined literal (character) returning integer
                  ^
-9: warning: user-defined literals not starting with '_' are reserved
+25,9: warning: user-defined literals not starting with '_' are reserved
 int operator"" m(char);

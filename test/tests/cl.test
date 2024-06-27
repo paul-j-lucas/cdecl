@@ -1,20 +1,20 @@
 EXPECTED_EXIT=0
-cdecl   -bE  cast x into int
-c++decl -bE 'class C; show'
-c++decl -bE  const cast p into pointer to class C
-cdecl   -bE  declare x as int
-cdecl   -bE 'define Int as int; show'
-c++decl -bE  dynamic cast p into pointer to class C
-cdecl   -bE 'enum E; show'
-cdecl   -bE  explain int x
-cdecl   -bE  help
-c++decl -bE 'inline namespace NS { using Int = int; }; show'
-c++decl -bE 'namespace NS { using Int = int; }; show'
-c++decl -bE  reinterpret cast x as int
-cdecl   -bE  set
-cdecl   -bE  show predefined
-c++decl -bE  static cast x to int
-cdecl   -bE 'struct S; show'
-cdecl   -bE 'typedef int Int; show'
-cdecl   -bE 'union U; show'
-c++decl -bE 'using Int = int; show'
+cdecl   -bEL$LINENO  cast x into int
+c++decl -bEL$LINENO 'class C; show'
+c++decl -bEL$LINENO  const cast p into pointer to class C
+cdecl   -bEL$LINENO  declare x as int
+cdecl   -bEL$LINENO 'define Int as int; show'
+c++decl -bEL$LINENO  dynamic cast p into pointer to class C
+cdecl   -bEL$LINENO 'enum E; show'
+cdecl   -bEL$LINENO  explain int x
+cdecl   -bEL$LINENO  help
+c++decl -bEL$LINENO 'inline namespace NS { using Int = int; }; show'
+c++decl -bEL$LINENO 'namespace NS { using Int = int; }; show'
+c++decl -bEL$LINENO  reinterpret cast x as int
+cdecl   -bEL$LINENO  set
+cdecl   -bEL$LINENO  show predefined
+c++decl -bEL$LINENO  static cast x to int
+cdecl   -bEL$LINENO 'struct S; show'
+cdecl   -bEL$LINENO 'typedef int Int; show'
+cdecl   -bEL$LINENO 'union U; show'
+c++decl -bEL$LINENO 'using Int = int; show'

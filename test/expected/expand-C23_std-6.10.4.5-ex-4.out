@@ -18,7 +18,7 @@ cdecl> expand glue(HIGH, LOW)
 glue(HIGH, LOW) => a ## b
 glue(HIGH, LOW) => HIGH ## LOW
                            ^
-28: warning: "##" doesn't expand macro arguments; "LOW" will not expand
+24,28: warning: "##" doesn't expand macro arguments; "LOW" will not expand
 glue(HIGH, LOW) => HIGHLOW
 | HIGHLOW => "hello"
 glue(HIGH, LOW) => "hello"
@@ -28,7 +28,7 @@ xglue(HIGH, LOW) => glue(a, b)
 | b => LOW
 | | LOW => LOW ", world"
            ^
-12: warning: recursive macro "LOW" will not expand
+25,12: warning: recursive macro "LOW" will not expand
 | b => LOW ", world"
 xglue(HIGH, LOW ", world") => glue(HIGH, LOW ", world")
 | glue(HIGH, LOW ", world") => a ## b

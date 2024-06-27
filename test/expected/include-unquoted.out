@@ -1,3 +1,3 @@
 cdecl> include "|"
                ^
-9: error: |: contains unquoted shell characters
+3,9: error: |: contains unquoted shell characters

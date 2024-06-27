@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE <<END
+cdecl -bEL$LINENO <<END
 explain __attribute__(( foo("x") )) int i
 explain __attribute__(( foo('x') )) int i
 explain __attribute__(( foo() )) int i

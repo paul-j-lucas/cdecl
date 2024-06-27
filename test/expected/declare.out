@@ -266,15 +266,15 @@ cdecl> declare _x as int
 int _x;
 cdecl> declare _X as int
                ^
-9: warning: "_X" is a reserved identifier
+139,9: warning: "_X" is a reserved identifier
 int _X;
 cdecl> declare __x as int
                ^
-9: warning: "__x" is a reserved identifier
+140,9: warning: "__x" is a reserved identifier
 int __x;
 cdecl> declare x__x as int
                ^
-9: warning: "x__x" is a reserved identifier in C++
+141,9: warning: "x__x" is a reserved identifier in C++
 int x__x;
 cdecl> 
 cdecl> set knr
@@ -294,13 +294,13 @@ cdecl> declare f as function (i as register) returning void
 void f(register int i);
 cdecl> declare p as pointer to function (x) returning int
                                          ^
-35: warning: missing type specifier; "int" assumed
+152,35: warning: missing type specifier; "int" assumed
 int (*p)(int x);
 cdecl> 
 cdecl> set c17
 cdecl> declare f as function (x) returning pointer to int
                               ^
-24: warning: missing type specifier; "int" assumed
+155,24: warning: missing type specifier; "int" assumed
 int* f(int x);
 cdecl> 
 cdecl> declare f as _Noreturn function (int) returning void
@@ -496,7 +496,7 @@ void f() final;
 c++decl> 
 c++decl> declare final as int
                        ^
-15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
+263,15: syntax error: "as": name or operator expected ("as" is a cdecl keyword)
 c++decl> 
 c++decl> declare x as constexpr int
 constexpr int x;

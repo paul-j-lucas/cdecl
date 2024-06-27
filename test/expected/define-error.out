@@ -1,26 +1,26 @@
 cdecl> 
 cdecl> define int_least32_t as char
                                ^
-25: error: "int_least32_t" is a predefined type starting in C99
+4,25: error: "int_least32_t" is a predefined type starting in C99
 cdecl> define SI as extern int
                     ^
-14: error: "typedef extern int" is illegal for built-in type
+5,14: error: "typedef extern int" is illegal for built-in type
 cdecl> define SI as register int
                     ^
-14: error: "typedef register int" is illegal for built-in type
+6,14: error: "typedef register int" is illegal for built-in type
 cdecl> define SI as static int
                     ^
-14: error: "typedef static int" is illegal for built-in type
+7,14: error: "typedef static int" is illegal for built-in type
 cdecl> 
 cdecl> set c17
 cdecl> define SI as auto int
                     ^
-14: error: "typedef auto int" is illegal for built-in type
+10,14: error: "typedef auto int" is illegal for built-in type
 cdecl> 
 cdecl> set c++
 c++decl> define Int of namespace X of class C as int
                     ^
-12: error: namespace can not nest inside class
+13,12: error: namespace can not nest inside class
 c++decl> define Int of scope X of class C as int
                     ^
-12: error: scope can not nest inside class
+14,12: error: scope can not nest inside class

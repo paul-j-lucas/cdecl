@@ -1,5 +1,5 @@
 EXPECTED_EXIT=0
-cdecl -bE <<END
+cdecl -bEL$LINENO <<END
 #define EMPTY
 #define AVOID_PASTE_1             -EMPTY-
 expand AVOID_PASTE_1
@@ -162,10 +162,10 @@ set c
 #define HAS_COMMA(...)            NARG_( __VA_ARGS__, HAS_COMMA_N )
 
 #define NARG_(...)                ARG_N( __VA_ARGS__ )
-#define NARG(...)                           \
-  NARG_HELPER1(                             \
-    HAS_COMMA( __VA_ARGS__ ),               \
-    HAS_COMMA( NARG_COMMA __VA_ARGS__ () ), \
+#define NARG(...)                           \\
+  NARG_HELPER1(                             \\
+    HAS_COMMA( __VA_ARGS__ ),               \\
+    HAS_COMMA( NARG_COMMA __VA_ARGS__ () ), \\
     NARG_( __VA_ARGS__, REV_SEQ_N ) )
 #define NARG_COMMA(...)           ,
 
@@ -181,12 +181,12 @@ expand NARG(x, y)
 
 ////////// DEF_ARGS() /////////////////////////////////////////////////////////
 
-#define DEF_ARGS(PREFIX,...) \
+#define DEF_ARGS(PREFIX,...) \\
   PASTE(PREFIX, NARG(__VA_ARGS__))(__VA_ARGS__)
 
 #define THROW_0()                 THROW_1( cx_tb.thrown_xid )
 #define THROW_1(XID)              THROW_2( (XID), cx_user_data() )
-#define THROW_2(XID,DATA) \
+#define THROW_2(XID,DATA) \\
   cx_impl_throw( __FILE__, __LINE__, (XID), (void*)(DATA) )
 
 #define cx_throw(...)             DEF_ARGS(THROW_, __VA_ARGS__)
