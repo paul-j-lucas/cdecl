@@ -1,5 +1,7 @@
 2024-06-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * show.c: Now showing a predefined specific type if no user-defined type was
+     shown.
    * share/man/man1/cdecl.1, cdecl.c, cli_options.c, lexer.l, options.c,
      options.h, p_macro.c, p_token.c, parser.y, print.c, util.c, util.h,
      __declspec.out, cast-error.out, cast.out, cdecl--help.out,
