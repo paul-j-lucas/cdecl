@@ -1,11 +1,9 @@
 EXPECTED_EXIT=0
 cdecl -bEL$LINENO -xc++ <<END
-
-set nousing
-set
-declare Int as type int
-
 set using
 set
 declare Int as type int
+set nousing
+set c++03
+set using
 END
