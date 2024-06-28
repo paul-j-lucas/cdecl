@@ -30,6 +30,11 @@ declare D as destructor
 
 set alt-tokens
 declare D as destructor
+set noalt-tokens
+
+set c89
+set alt-tokens
+set c++
 
 // Test that abbreviations work.
 set noalt
