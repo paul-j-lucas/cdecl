@@ -65,20 +65,23 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
   bool is_cont_line = false;
 
   do {
-    static char *line;
-    size_t line_len = 0;
     bool got_line;
+    char *line = NULL;
+    size_t line_len = 0;
 
     if ( is_interactive ) {
       // LCOV_EXCL_START -- tests are not interactive
 #ifdef WITH_READLINE
       readline_init( fin, stdout );
-      free( line );
+      static char *readline_line;
+      free( readline_line );
       // Note: readline() does NOT include the '\n'.
-      line = readline( prompts[ is_cont_line ] );
-      got_line = line != NULL;
-      if ( got_line )
+      readline_line = readline( prompts[ is_cont_line ] );
+      got_line = readline_line != NULL;
+      if ( got_line ) {
+        line = readline_line;
         line_len = strlen( line );
+      }
       // LCOV_EXCL_STOP
     }
     else
@@ -88,11 +91,13 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
     }
 #endif /* WITH_READLINE */
     {                                   // needed for "else" for WITH_READLINE
-      static size_t line_cap;
+      static char *getline_line;
+      static size_t getline_cap;
       // Note: getline() DOES include the '\n'.
-      ssize_t const rv = getline( &line, &line_cap, fin );
+      ssize_t const rv = getline( &getline_line, &getline_cap, fin );
       got_line = rv != -1;
       if ( got_line ) {
+        line = getline_line;
         line_len = STATIC_CAST( size_t, rv );
         // Chop off the newline so it's consistent with readline().
         str_chomp( line, &line_len );
