@@ -34,4 +34,6 @@ bad_opts -hv
 bad_opts --lang=x
 bad_opts -xx
 
+bad_opts -v help
+
 # vim:set et sw=2 ts=2:
