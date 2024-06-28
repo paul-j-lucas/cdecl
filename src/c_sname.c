@@ -455,6 +455,7 @@ void c_sname_set_all_types( c_sname_t *sname, c_type_t const *default_type ) {
     if ( tdef != NULL ) {
       slist_node_t *sname_node = sname->head;
       FOREACH_SNAME_SCOPE( tdef_scope, &tdef->ast->sname ) {
+        assert( sname_node != NULL );
         c_scope_data( sname_node )->type = c_scope_data( tdef_scope )->type;
         sname_node = sname_node->next;
       } // for
