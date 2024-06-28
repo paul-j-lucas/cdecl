@@ -80,17 +80,6 @@ _GL_INLINE_HEADER_BEGIN
   SLIST_VAR_INIT( VAR, (&(c_scope_data_t){ (NAME), T_NONE }) )
 
 /**
- * Gets the data associated with \a SCOPE.
- *
- * @param SCOPE The scope to get the data of.
- *
- * @note This is a macro instead of an inline function so it'll work with
- * either a `const` or non-`const` \a SCOPE.
- */
-#define c_scope_data(SCOPE) \
-  POINTER_CAST( c_scope_data_t*, (SCOPE)->data )
-
-/**
  * Convenience macro for iterating over all scopes of an sname.
  *
  * @param VAR The \ref slist_node loop variable.
@@ -134,6 +123,26 @@ struct c_scope_data {
 typedef struct c_scope_data c_scope_data_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Gets the \ref c_scope_data associated with \a scope.
+ *
+ * @param scope The scope to get the data of.
+ * @return Returns said data.
+ */
+NODISCARD C_SNAME_H_INLINE
+c_scope_data_t const* c_scope_data( c_scope_t const *scope ) {
+  return scope->data;
+}
+
+/// @cond DOXYGEN_IGNORE
+NODISCARD C_SNAME_H_INLINE
+c_scope_data_t* nonconst_c_scope_data( c_scope_t *scope ) {
+  return CONST_CAST( c_scope_data_t*, c_scope_data( scope ) );
+}
+
+#define c_scope_data(SCOPE)       NONCONST_OVERLOAD( c_scope_data, (SCOPE) )
+/// @endcond
 
 /**
  * Compares two \ref c_scope_data.
