@@ -73,6 +73,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
 #ifdef WITH_READLINE
       readline_init( fin, stdout );
       free( line );
+      // Note: readline() does NOT include the '\n'
       got_line = (line = readline( prompts[ is_cont_line ] )) != NULL;
       // LCOV_EXCL_STOP
     }
@@ -84,6 +85,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
 #endif /* WITH_READLINE */
     {                                   // needed for "else" for WITH_READLINE
       static size_t line_cap;
+      // Note: getline() DOES include the '\n'
       got_line = getline( &line, &line_cap, fin ) != -1;
     }
 
@@ -93,12 +95,12 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
     }
 
     size_t line_len = strlen( line );
+    str_chomp( line, &line_len );
 
-    is_cont_line = line_len >= 2 &&
-      strcmp( line + line_len - 2, "\\\n" ) == 0;
+    is_cont_line = line_len >= 1 && line[ line_len - 1 ] == '\\';
 
     if ( is_cont_line ) {
-      line_len -= 2;                    // eat '\'
+      --line_len;                       // eat '\'
       if ( line_no != NULL )
         ++*line_no;
     }
@@ -106,8 +108,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
     strbuf_putsn( sbuf, line, line_len );
   } while ( is_cont_line );
 
-  if ( sbuf->len == 0 )
-    strbuf_putc( sbuf, '\n' );
+  strbuf_putc( sbuf, '\n' );
 
 #ifdef HAVE_READLINE_HISTORY_H
   if ( is_interactive && !str_is_empty( sbuf->str ) )
