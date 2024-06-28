@@ -54,5 +54,4 @@ set trigraphs
 set
 declare a as array 9 of int
 set nographs
-
 END

@@ -420,5 +420,4 @@ explain void f() throw()
 set c++11
 explain register int x
 explain ~C() throw()
-
 END

@@ -105,4 +105,3 @@ H5C() => H5B()
 | H5B() => a ## ## b
 | H5B() => ab
 H5C() => ab
-cdecl> 

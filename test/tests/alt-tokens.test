@@ -36,5 +36,4 @@ set noalt
 declare D as destructor
 set alt
 declare D as destructor
-
 END

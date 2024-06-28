@@ -1055,4 +1055,3 @@ c++decl>
 c++decl> #define ARRAY_MAX                 5
 c++decl> explain int a[ ARRAY_MAX ]
 declare a as array ARRAY_MAX of integer
-c++decl> 

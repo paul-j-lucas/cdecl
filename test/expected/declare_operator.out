@@ -248,4 +248,3 @@ c++decl> declare ~ as operator (reference to const S) returning S
 S operator~(const S&);
 c++decl> declare ~ as operator returning S
 S operator~();
-c++decl> 

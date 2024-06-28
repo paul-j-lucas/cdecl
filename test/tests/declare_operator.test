@@ -127,5 +127,4 @@ declare || as operator (reference to const S) returning bool
 declare || as operator (reference to const S, reference to const S) returning bool
 declare ~ as operator (reference to const S) returning S
 declare ~ as operator returning S
-
 END

@@ -71,5 +71,4 @@ set c++20
 show __cplusplus
 set c++23
 show __cplusplus
-
 END

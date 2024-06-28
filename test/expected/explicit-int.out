@@ -441,4 +441,3 @@ cdecl> declare x as unsigned
 unsigned x;
 cdecl> declare x as unsigned long
 unsigned long x;
-cdecl> 

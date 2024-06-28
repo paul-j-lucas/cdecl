@@ -34,5 +34,4 @@ explain float x
 explain int const x
 explain struct S
 explain wchar_t x
-
 END

@@ -73,4 +73,3 @@ c++decl> declare D as destructor
 c++decl> set alt
 c++decl> declare D as destructor
 compl D();
-c++decl> 

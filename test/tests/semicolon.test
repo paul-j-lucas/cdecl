@@ -21,5 +21,4 @@ declare ! as operator returning bool
 declare user-defined conversion operator returning bool
 show as typedef
 show as using
-
 END

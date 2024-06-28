@@ -78,5 +78,4 @@ declare ! as operator returning pointer to pointer to int
 
 declare _x as user-defined literal( char ) returning pointer to int
 declare _x as user-defined literal( char ) returning pointer to pointer to int
-
 END

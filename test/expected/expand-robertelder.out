@@ -107,4 +107,3 @@ recur1(recur2, [ 1 ]-[ 1 ]- - - |recur3|) => recur2(recur3, [ 1 ]-[ 1 ]- - - |re
 | | recur4([ [ 1 ]-[ 1 ]- - - |recur3| ], [ [ 1 ]-[ 1 ]- - - |recur3| ]- -,) => [ [ 1 ]-[ 1 ]- - - |recur3| ]-[ [ 1 ]-[ 1 ]- - - |recur3| ]- - -
 | recur2(recur3, [ 1 ]-[ 1 ]- - - |recur3|) => [ [ 1 ]-[ 1 ]- - - |recur3| ]-[ [ 1 ]-[ 1 ]- - - |recur3| ]- - - |recur3|
 recur1(recur2, [ 1 ]-[ 1 ]- - - |recur3|) => [ [ 1 ]-[ 1 ]- - - |recur3| ]-[ [ 1 ]-[ 1 ]- - - |recur3| ]- - - |recur3|
-cdecl> 

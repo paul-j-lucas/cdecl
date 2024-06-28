@@ -57,4 +57,3 @@ int const x;
 cdecl> set no-e-a--st-
 cdecl> declare x as const int
 const int x;
-cdecl> 

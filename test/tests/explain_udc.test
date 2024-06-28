@@ -13,5 +13,4 @@ explain operator C const&()
 
 explain operator int()
 explain operator int() const override
-
 END

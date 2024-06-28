@@ -8,5 +8,4 @@ declare Int as type int
 set using
 set
 declare Int as type int
-
 END

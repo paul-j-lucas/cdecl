@@ -62,4 +62,3 @@ c++decl> explain struct S
 define S as structure S
 c++decl> explain wchar_t x
 declare x as wide character
-c++decl> 

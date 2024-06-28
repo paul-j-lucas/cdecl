@@ -144,5 +144,4 @@ declare x as long
 declare x as long long
 declare x as unsigned
 declare x as unsigned long
-
 END

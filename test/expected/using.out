@@ -38,4 +38,3 @@ c++decl> set
     west-decl=bflo
 c++decl> declare Int as type int
 using Int = int;
-c++decl> 

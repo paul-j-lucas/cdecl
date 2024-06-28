@@ -43,5 +43,4 @@ explain const C auto *...x
 explain C auto const *...x
 
 explain std::integral auto x
-
 END

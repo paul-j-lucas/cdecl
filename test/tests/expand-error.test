@@ -30,6 +30,5 @@ expand UNTERMINATED_MACRO(a)
 #define VARIADIC(...)             __VA_ARGS__
 set c89
 expand VARIADIC(x)
-
 END
 # vim:set et sw=2 ts=2:

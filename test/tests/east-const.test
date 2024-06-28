@@ -39,5 +39,4 @@ set -e-a--st-
 declare x as const int
 set no-e-a--st-
 declare x as const int
-
 END

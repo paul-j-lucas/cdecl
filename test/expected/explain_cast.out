@@ -92,4 +92,3 @@ c++decl> explain static_cast<int>(S::x)
 static cast x of scope S into integer
 c++decl> explain static_cast<int>(x)
 static cast x into integer
-c++decl> 

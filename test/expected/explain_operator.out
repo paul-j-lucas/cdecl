@@ -346,4 +346,3 @@ c++decl> explain void* operator new[](std::size_t n)
 declare new[] as non-member operator (n as size_t of namespace std) returning pointer to void
 c++decl> explain ~S() = delete
 declare S as deleted destructor
-c++decl> 

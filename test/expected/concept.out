@@ -68,4 +68,3 @@ declare x as pointer to constant concept C parameter pack
 c++decl> 
 c++decl> explain std::integral auto x
 declare x as concept integral of namespace std
-c++decl> 

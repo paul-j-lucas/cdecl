@@ -375,5 +375,4 @@ declare noexcept lambda (x as int) returning double
 
 set c++03
 declare C as non-throwing destructor
-
 END

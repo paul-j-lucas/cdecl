@@ -131,4 +131,3 @@ c++decl> set
 c++decl> declare a as array 9 of int
 int a[9];
 c++decl> set nographs
-c++decl> 

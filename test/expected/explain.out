@@ -846,4 +846,3 @@ c++decl> explain ~C() throw()
                ^
 422,7: warning: "throw" is deprecated since C++11; did you mean "noexcept"?
 declare C as non-throwing destructor
-c++decl> 

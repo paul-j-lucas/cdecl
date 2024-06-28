@@ -144,4 +144,3 @@ c++decl> declare _x as user-defined literal( char ) returning pointer to int
 int *operator"" _x(char);
 c++decl> declare _x as user-defined literal( char ) returning pointer to pointer to int
 int **operator"" _x(char);
-c++decl> 

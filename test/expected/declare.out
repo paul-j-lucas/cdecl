@@ -711,4 +711,3 @@ c++decl>
 c++decl> set c++03
 c++decl> declare C as non-throwing destructor
 ~C() throw();
-c++decl> 

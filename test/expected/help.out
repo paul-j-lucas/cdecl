@@ -1941,4 +1941,3 @@ lang:
 types:
   i|u|[u]{i|s|l[l]}[,[u]{i|s|l[l]}]*
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
-c++decl> 

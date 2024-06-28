@@ -182,5 +182,4 @@ explain void* operator new(size_t, S&&)
 explain void* operator new(std::size_t n)
 explain void* operator new[](std::size_t n)
 explain ~S() = delete
-
 END

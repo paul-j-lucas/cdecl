@@ -18,4 +18,3 @@ c++decl> explain operator int()
 declare user-defined conversion operator returning integer
 c++decl> explain operator int() const override
 declare overridden virtual constant user-defined conversion operator returning integer
-c++decl> 

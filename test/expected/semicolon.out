@@ -65,4 +65,3 @@ c++decl> show as typedef
 typedef int Int;
 c++decl> show as using
 using Int = int;
-c++decl> 

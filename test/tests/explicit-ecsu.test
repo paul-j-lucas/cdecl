@@ -24,5 +24,4 @@ declare s as struct S
 declare u as union U
 declare e as enum E
 declare c as class C
-
 END

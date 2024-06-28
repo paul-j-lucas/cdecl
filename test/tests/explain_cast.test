@@ -48,5 +48,4 @@ explain dynamic_cast<class C*>(x)
 explain reinterpret_cast<void*>(x)
 explain static_cast<int>(S::x)
 explain static_cast<int>(x)
-
 END

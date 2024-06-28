@@ -246,6 +246,5 @@ expand __cplusplus
 
 #define ARRAY_MAX                 5
 explain int a[ ARRAY_MAX ]
-
 END
 # vim:set et sw=2 ts=2:

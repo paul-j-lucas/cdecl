@@ -72,4 +72,3 @@ cdecl> expand VARIADIC(x)
 #define VARIADIC(...) __VA_ARGS__
                  ^
 30,18: error: variadic macros not supported until C99
-cdecl> 

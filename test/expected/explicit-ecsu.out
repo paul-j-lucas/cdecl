@@ -65,4 +65,3 @@ c++decl> declare e as enum E
 E e;
 c++decl> declare c as class C
 C c;
-c++decl> 

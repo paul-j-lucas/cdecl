@@ -106,4 +106,3 @@ c++decl> set c++14
 c++decl> namespace A14 { namespace B14 { typedef int Int; } }
 c++decl> show A14::*::Int
 namespace A14 { namespace B14 { typedef int Int; } }
-c++decl> 
