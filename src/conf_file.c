@@ -109,7 +109,7 @@ void conf_init( void ) {
       fclose( conf_file );
     }
     else if ( opt_conf_path != NULL ) {
-      fatal_error( EX_NOINPUT, "%s: %s\n", conf_path, STRERROR() );
+      fatal_error( EX_NOINPUT, "\"%s\": %s\n", conf_path, STRERROR() );
     }
 
     print_params.conf_path = NULL;
