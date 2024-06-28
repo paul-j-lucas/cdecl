@@ -480,7 +480,7 @@ static bool set_echo_commands( set_option_fn_args_t const *args ) {
   if ( opt_echo_commands && cdecl_interactive ) {
     // LCOV_EXCL_START -- tests are not interactive
     print_warning( args->opt_name_loc,
-      "echo-commands has no effect when interactive\n"
+      "\"echo-commands\" has no effect when interactive\n"
     );
     // LCOV_EXCL_STOP
   }
@@ -521,7 +521,7 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
 
   if ( ok && !OPT_LANG_IS( ECSU_IS_IMPLICIT_TYPE ) ) {
     print_warning( args->opt_name_loc,
-      "explicit-ecsu is ignored%s\n",
+      "\"explicit-ecsu\" is ignored%s\n",
       C_LANG_WHICH( ECSU_IS_IMPLICIT_TYPE )
     );
   }
