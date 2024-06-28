@@ -5309,6 +5309,8 @@ using va_list = void*;
 using wctrans_t = int;
 using wctype_t = unsigned long;
 using wint_t = int;
+c++decl> show std::ios
+namespace std { class ios; }
 c++decl> 
 c++decl> typedef int (*const CPF)(const char *const s)
 c++decl> typedef int *const CPI

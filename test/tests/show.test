@@ -44,6 +44,7 @@ show all predefined ** :: *clock as typedef
 show predefined
 show predefined typedef
 show predefined using
+show std::ios
 
 typedef int (*const CPF)(const char *const s)
 typedef int *const CPI
