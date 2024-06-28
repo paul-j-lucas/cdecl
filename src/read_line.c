@@ -101,7 +101,7 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
         line = getline_line;
         line_len = STATIC_CAST( size_t, rv );
         // Chop off the newline so it's consistent with readline().
-        str_chomp( line, &line_len );
+        strn_rtrim( line, &line_len );
       }
     }
 

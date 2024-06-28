@@ -397,14 +397,6 @@ bool path_is_file( char const *path ) {
   return S_ISREG( path_stat.st_mode );
 }
 
-void str_chomp( char *s, size_t *s_len ) {
-  assert( s != NULL );
-  assert( s_len != NULL );
-
-  while ( *s_len >= 1 && s[ *s_len - 1 ] == '\n' )
-    s[ --*s_len ] = '\0';
-}
-
 bool str_is_prefix( char const *s1, char const *s2 ) {
   assert( s1 != NULL );
   assert( s2 != NULL );

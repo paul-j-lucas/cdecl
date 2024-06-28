@@ -1605,17 +1605,6 @@ NODISCARD
 bool path_is_file( char const *path );
 
 /**
- * "Chomps" off all trailing newlines, if any, from \a s.
- *
- * @param s The string to chomp.
- * @param s_len A pointer to the length of \a s that is decremented by the
- * number of trailing newlines removed.
- *
- * @note The name is inspired by the `chomp()` function in Perl.
- */
-void str_chomp( char *s, size_t *s_len );
-
-/**
  * Checks whether \a s is either an empty string or a line consisting only of
  * whitespace.
  *
