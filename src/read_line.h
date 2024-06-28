@@ -38,26 +38,34 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Reads an input line from \a fin such that:
+ * Reads a line from \a fin, perhaps interactively with editing and
+ * autocompletion.
  *
- *  + Multiple lines separated by `\` are stiched together.
- *  + Returns only non-whitespace-only lines.
+ * @remarks
+ * @parblock
+ * Only if:
  *
- * If \a fin is connected to a TTY, both \a fout and \a prompts are non-NULL,
- * and GNU **readline**(3) is compiled in, also:
+ *  + \a fin is connected to a TTY; and:
+ *  + \a prompts is non-NULL; and:
+ *  + GNU **readline**(3) is compiled in;
  *
- *  + Uses GNU **readline**(3) to read the line with editing and
- *    autocompletion.
- *  + Adds non-whitespace-only lines to the history.
+ * then reads interactively by:
+ *
+ *  + Using GNU **readline**(3) to read a line with editing and autocompletion.
+ *  + Adding non-whitespace-only lines to the history.
+ *
+ * Multiple lines separated by `\` are joined together and returned as a single
+ * line.  Lines always end with a newline.
+ * @endparblock
  *
  * @param sbuf The \ref strbuf to use.
  * @param fin The file to read from.  If \a fin is not connected to a TTY, does
  * not read interactively.
- * @param prompts A pointer to a 2-element array of the prompts to use: the
- * primary prompt and the the secondary prompt to use for a continuation line
- * (a line after ones ending with `\`).  If NULL, does not read interactively.
+ * @param prompts A pointer to a 2-element array of prompts to use: the primary
+ * prompt and the secondary prompt for continuation lines (lines after ones
+ * ending with `\`).  If NULL, does not read interactively.
  * @param line_no A pointer to the current line number within a file that will
- * be incremented for every `\\\n` encountered.` May be NULL.
+ * be incremented for every `\`-newline encountered. May be NULL.
  * @return Returns `false` only if encountered EOF.
  */
 NODISCARD
