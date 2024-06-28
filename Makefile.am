@@ -41,6 +41,8 @@ LCOV_FLAGS =	--capture \
 		--config-file "$(top_srcdir)/lcovrc" \
 		--directory "$(abs_top_builddir)" \
 		--exclude "*/autocomplete.c" \
+		--exclude "*/color.c" \
+		--exclude "*/color.h" \
 		--exclude "*/lexer.c" \
 		--exclude "*/parser.c" \
 		--output-file $(COVERAGE_INFO)
