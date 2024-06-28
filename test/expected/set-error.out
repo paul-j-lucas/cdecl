@@ -15,7 +15,7 @@ cdecl> set explicit-int
 7,5: error: set option "explicit-int" requires =<value>
 cdecl> set explicit-int=x
                         ^
-8,18: error: "x": invalid value for explicit-int; must be *, -, i, u, or {[u]{i|s|l[l]}[,]}+
+8,18: error: "x": invalid value for explicit-int; must be i|u|{[u]{i|s|l[l]}[,]}+|*|-
 cdecl> set graphs
            ^
 9,5: error: "no" required for "graphs"

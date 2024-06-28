@@ -52,6 +52,21 @@
  * @{
  */
 
+/**
+ * Prints that \a VALUE is an invalid value for \a OPT and what it must be
+ * instead to standard error and exits.
+ *
+ * @param OPT The option name.
+ * @param ARGS The set option arguments.
+ * @param FORMAT The `printf()` format string literal to use.
+ * @param ... The `printf()` arguments.
+ */
+#define OPTION_INVALID_VALUE(OPT,ARGS,FORMAT,...)               \
+  print_error( (ARGS)->opt_value_loc,                           \
+    "\"%s\": invalid value for " OPT "; must be " FORMAT "\n",  \
+    (ARGS)->opt_value VA_OPT( (,), __VA_ARGS__ )                \
+  )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -406,14 +421,8 @@ static bool set_debug( set_option_fn_args_t const *args ) {
 
   if ( args->opt_enabled ) {
     ok = parse_cdecl_debug( empty_if_null( args->opt_value ) );
-    if ( !ok ) {
-      print_error( args->opt_value_loc,
-        "\"%s\": invalid value for debug;"
-        " must be [%s]+|*|-\n",
-        args->opt_value,
-        OPT_CDECL_DEBUG_ALL
-      );
-    }
+    if ( !ok )
+      OPTION_INVALID_VALUE( "debug", args, "[%s]+|*|-", OPT_CDECL_DEBUG_ALL );
   }
   else {
     ok = parse_cdecl_debug( NULL );
@@ -502,14 +511,8 @@ static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
 
   if ( args->opt_enabled ) {
     ok = parse_explicit_ecsu( args->opt_value );
-    if ( !ok ) {
-      print_error( args->opt_value_loc,
-        "\"%s\": invalid value for explicit-ecsu;"
-        " must be [%s]+|*|-\n",
-        args->opt_value,
-        OPT_ECSU_ALL
-      );
-    }
+    if ( !ok )
+      OPTION_INVALID_VALUE( "explicit-ecsu", args, "[%s]+|*|-", OPT_ECSU_ALL );
   }
   else {
     ok = parse_explicit_ecsu( "" );
@@ -539,10 +542,8 @@ static bool set_explicit_int( set_option_fn_args_t const *args ) {
   if ( args->opt_enabled ) {
     ok = parse_explicit_int( args->opt_value );
     if ( !ok ) {
-      print_error( args->opt_value_loc,
-        "\"%s\": invalid value for explicit-int;"
-        " must be *, -, i, u, or {[u]{i|s|l[l]}[,]}+\n",
-        args->opt_value
+      OPTION_INVALID_VALUE(
+        "explicit-int", args, "i|u|{[u]{i|s|l[l]}[,]}+|*|-"
       );
     }
   }
@@ -727,13 +728,8 @@ static bool set_west_decl( set_option_fn_args_t const *args ) {
 
   if ( args->opt_enabled ) {
     ok = parse_west_decl( args->opt_value );
-    if ( !ok ) {
-      print_error( args->opt_value_loc,
-        "\"%s\": invalid value for west-decl;"
-        " must be [%s]+|*|-\n",
-        args->opt_value, OPT_WEST_DECL_ALL
-      );
-    }
+    if ( !ok )
+      OPTION_INVALID_VALUE( "west-decl", args, "[%s]+|*|-", OPT_WEST_DECL_ALL );
   }
   else {
     ok = parse_west_decl( "" );
