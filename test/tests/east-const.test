@@ -20,6 +20,11 @@ declare x as const int
 set noeast-const
 declare x as const int
 
+set cknr
+set east-const
+set c
+set noeast-const
+
 set ea
 declare x as const int
 set noea

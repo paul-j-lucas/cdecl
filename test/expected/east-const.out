@@ -30,6 +30,13 @@ cdecl> set noeast-const
 cdecl> declare x as const int
 const int x;
 cdecl> 
+cdecl> set cknr
+cdecl> set east-const
+           ^
+24,5: warning: "const" not supported until C89
+cdecl> set c
+cdecl> set noeast-const
+cdecl> 
 cdecl> set ea
 cdecl> declare x as const int
 int const x;
