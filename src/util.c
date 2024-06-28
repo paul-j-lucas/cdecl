@@ -78,6 +78,7 @@ static char const* fput_list_apc_gets( void const **ppelt ) {
 }
 
 #ifndef NDEBUG
+// LCOV_EXCL_START
 /**
  * Checks whether \a s is any one of \a matches, case-insensitive.
  *
@@ -115,6 +116,7 @@ static bool is_affirmative( char const *s ) {
   };
   return is_any( s, AFFIRMATIVES );
 }
+// LCOV_EXCL_STOP
 #endif /* NDEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////
