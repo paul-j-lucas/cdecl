@@ -1,10 +1,15 @@
 cdecl: --digraphs/-2 and --trigraphs/-3 are mutually exclusive
+cdecl: --digraphs/-2 and --trigraphs/-3 are mutually exclusive
 cdecl: '9': invalid option; use --help or -h for help
 cdecl: "--color/-k" requires an argument
 cdecl: "--color/-k" requires an argument
 cdecl: "xxx": invalid value for --color/-k; must be always, auto, isatty, never, not_file, not_isreg, tty
 cdecl: "xxx": invalid value for --color/-k; must be always, auto, isatty, never, not_file, not_isreg, tty
 cdecl: "kolor": invalid option; did you mean "color"?
+cdecl: "--lineno/-L" requires an argument
+cdecl: "--lineno/-L" requires an argument
+cdecl: "0": invalid value for --lineno/-L; must be in range 1-65535
+cdecl: "0": invalid value for --lineno/-L; must be in range 1-65535
 cdecl: "--explicit-ecsu/-S" requires an argument
 cdecl: "--explicit-ecsu/-S" requires an argument
 cdecl: "x": invalid value for --explicit-ecsu/-S; must be *, -, or {e|c|s|u}+

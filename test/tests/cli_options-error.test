@@ -4,6 +4,7 @@ bad_opts() {
   echo | cdecl $* && exit 1
 }
 
+bad_opts --digraphs --trigraphs
 bad_opts -23
 bad_opts -9
 
@@ -12,6 +13,11 @@ bad_opts -k
 bad_opts --color=xxx
 bad_opts -kxxx
 bad_opts --kolor
+
+bad_opts --lineno
+bad_opts -L
+bad_opts --lineno=0
+bad_opts -L0
 
 bad_opts --explicit-ecsu
 bad_opts -S
