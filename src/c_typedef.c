@@ -30,6 +30,7 @@
 #include "c_ast.h"
 #include "c_lang.h"
 #include "decl_flags.h"
+#include "lexer.h"
 #include "options.h"
 #include "parse.h"
 #include "util.h"
@@ -1057,6 +1058,12 @@ static void c_typedefs_cleanup( void ) {
  */
 static void parse_predef_types( predef_type_t const types[static const 2] ) {
   for ( predef_type_t const *pt = types; pt->str != NULL; ++pt ) {
+    //
+    // Set Flex's current line number to the predefined type's source line
+    // number in this file.
+    //
+    yylineno = STATIC_CAST( int, pt->line );
+
     if ( unlikely( cdecl_parse_string( pt->str, strlen( pt->str ) ) != EX_OK ) )
       INTERNAL_ERROR( "failed parsing type predefined on line %u\n", pt->line );
   } // for

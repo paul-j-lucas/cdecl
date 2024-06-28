@@ -1881,7 +1881,7 @@ cdecl> explain size_t x
     is_param_pack: false,
     kind: { value: 0x2, string: "built-in type" },
     depth: 0,
-    loc: { first_column: 8, last_column: 20 },
+    loc: { first_line: 134, first_column: 8, last_column: 20 },
     type: { btid: 0x0000000000048001, string: "unsigned long" },
     builtin: {
       bit_width: 0
@@ -1901,7 +1901,7 @@ cdecl> explain size_t x
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_column: 8, last_column: 20 },
+        loc: { first_line: 134, first_column: 8, last_column: 20 },
         type: { btid: 0x0000000000048001, string: "unsigned long" },
         builtin: {
           bit_width: 0
@@ -1930,7 +1930,7 @@ cdecl> explain size_t x
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_column: 8, last_column: 20 },
+        loc: { first_line: 134, first_column: 8, last_column: 20 },
         type: { btid: 0x0000000000048001, string: "unsigned long" },
         builtin: {
           bit_width: 0
@@ -1953,7 +1953,7 @@ cdecl> explain size_t x
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_column: 8, last_column: 20 },
+        loc: { first_line: 134, first_column: 8, last_column: 20 },
         type: { btid: 0x0000000000048001, string: "unsigned long" },
         builtin: {
           bit_width: 0
@@ -1991,7 +1991,7 @@ cdecl> explain size_t x
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_column: 8, last_column: 20 },
+        loc: { first_line: 134, first_column: 8, last_column: 20 },
         type: { btid: 0x0000000000048001, string: "unsigned long" },
         builtin: {
           bit_width: 0
@@ -2015,7 +2015,7 @@ cdecl> explain size_t x
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_column: 8, last_column: 20 },
+        loc: { first_line: 134, first_column: 8, last_column: 20 },
         type: { btid: 0x0000000000048001, string: "unsigned long" },
         builtin: {
           bit_width: 0
@@ -2045,7 +2045,7 @@ cdecl> explain size_t x
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_column: 8, last_column: 20 },
+        loc: { first_line: 134, first_column: 8, last_column: 20 },
         type: { btid: 0x0000000000048001, string: "unsigned long" },
         builtin: {
           bit_width: 0
@@ -2068,7 +2068,7 @@ cdecl> explain size_t x
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_column: 8, last_column: 20 },
+          loc: { first_line: 134, first_column: 8, last_column: 20 },
           type: { btid: 0x0000000000048001, string: "unsigned long" },
           builtin: {
             bit_width: 0
@@ -2092,7 +2092,7 @@ cdecl> explain size_t x
         is_param_pack: false,
         kind: { value: 0x2, string: "built-in type" },
         depth: 0,
-        loc: { first_column: 8, last_column: 20 },
+        loc: { first_line: 134, first_column: 8, last_column: 20 },
         type: { btid: 0x0000000000048001, string: "unsigned long" },
         builtin: {
           bit_width: 0
@@ -2122,7 +2122,7 @@ cdecl> explain size_t x
           is_param_pack: false,
           kind: { value: 0x2, string: "built-in type" },
           depth: 0,
-          loc: { first_column: 8, last_column: 20 },
+          loc: { first_line: 134, first_column: 8, last_column: 20 },
           type: { btid: 0x0000000000048001, string: "unsigned long" },
           builtin: {
             bit_width: 0
