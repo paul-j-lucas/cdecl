@@ -1,3 +1,7 @@
+2024-06-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * read_line.c, util.c, util.h: Eliminated str_chomp().
+
 2024-06-27  Paul J. Lucas <paul@lucasmail.org>
 
    * read_line.c: readline_line is no longer static.
