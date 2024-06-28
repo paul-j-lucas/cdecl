@@ -1,5 +1,9 @@
 2024-06-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sname.h: Converted c_scope_data() into an inline function.
+   * c_sname.c: Added assert().
+   * read_line.c: Now using getline()'s return value; calling str_chomp() only
+     in getline() case.
    * read_line.c, util.c, util.h: Finally (?) proper newline handling.
    * c_typedef.c, debug.out: Now setting yylineno to pt->line.
    * show.c: Now showing a predefined specific type if no user-defined type was
