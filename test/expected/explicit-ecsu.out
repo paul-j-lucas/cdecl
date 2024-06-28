@@ -65,3 +65,8 @@ c++decl> declare e as enum E
 E e;
 c++decl> declare c as class C
 C c;
+c++decl> 
+c++decl> set c
+cdecl> set explicit-ecsu=su
+           ^
+29,5: warning: "explicit-ecsu" is ignored in C
