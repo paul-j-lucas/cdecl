@@ -68,13 +68,14 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
     bool got_line;
     char *line = NULL;
     size_t line_len = 0;
+#ifdef WITH_READLINE
+    char *readline_line = NULL;
+#endif /* WITH_READLINE */
 
     if ( is_interactive ) {
       // LCOV_EXCL_START -- tests are not interactive
 #ifdef WITH_READLINE
       readline_init( fin, stdout );
-      static char *readline_line;
-      free( readline_line );
       // Note: readline() does NOT include the '\n'.
       readline_line = readline( prompts[ is_cont_line ] );
       got_line = readline_line != NULL;
@@ -117,6 +118,9 @@ bool strbuf_read_line( strbuf_t *sbuf, FILE *fin,
     }
 
     strbuf_putsn( sbuf, line, line_len );
+#ifdef WITH_READLINE
+    free( readline_line );
+#endif /* WITH_READLINE */
   } while ( is_cont_line );
 
   strbuf_putc( sbuf, '\n' );
